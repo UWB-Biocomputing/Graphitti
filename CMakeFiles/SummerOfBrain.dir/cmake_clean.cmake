@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o"
-  "CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o"
   "CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o"
+  "CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o"
+  "CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o"
   "SummerOfBrain.pdb"
   "SummerOfBrain"
 )

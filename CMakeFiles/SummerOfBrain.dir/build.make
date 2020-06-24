@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/users/chris/onedrive/desktop/summerofbrain
+CMAKE_SOURCE_DIR = /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/users/chris/onedrive/desktop/summerofbrain
+CMAKE_BINARY_DIR = /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain
 
 # Include any dependencies generated for this target.
 include CMakeFiles/SummerOfBrain.dir/depend.make
@@ -57,66 +57,18 @@ include CMakeFiles/SummerOfBrain.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/SummerOfBrain.dir/flags.make
 
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o: CMakeFiles/SummerOfBrain.dir/flags.make
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o: ChainOfResponsibility/Fish.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o -c /mnt/c/users/chris/onedrive/desktop/summerofbrain/ChainOfResponsibility/Fish.cpp
-
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/users/chris/onedrive/desktop/summerofbrain/ChainOfResponsibility/Fish.cpp > CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.i
-
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/users/chris/onedrive/desktop/summerofbrain/ChainOfResponsibility/Fish.cpp -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.s
-
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.requires:
-
-.PHONY : CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.requires
-
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.provides: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.requires
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.provides.build
-.PHONY : CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.provides
-
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.provides.build: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o
-
-
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o: CMakeFiles/SummerOfBrain.dir/flags.make
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o: ChainOfResponsibility/Dog.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o -c /mnt/c/users/chris/onedrive/desktop/summerofbrain/ChainOfResponsibility/Dog.cpp
-
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/users/chris/onedrive/desktop/summerofbrain/ChainOfResponsibility/Dog.cpp > CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.i
-
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/users/chris/onedrive/desktop/summerofbrain/ChainOfResponsibility/Dog.cpp -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.s
-
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.requires:
-
-.PHONY : CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.requires
-
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.provides: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.requires
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.provides.build
-.PHONY : CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.provides
-
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.provides.build: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o
-
-
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o: CMakeFiles/SummerOfBrain.dir/flags.make
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o: ChainOfResponsibility/ChainNodeTest.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o -c /mnt/c/users/chris/onedrive/desktop/summerofbrain/ChainOfResponsibility/ChainNodeTest.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o -c /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNodeTest.cpp
 
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/users/chris/onedrive/desktop/summerofbrain/ChainOfResponsibility/ChainNodeTest.cpp > CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNodeTest.cpp > CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.i
 
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/users/chris/onedrive/desktop/summerofbrain/ChainOfResponsibility/ChainNodeTest.cpp -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNodeTest.cpp -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.s
 
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o.requires:
 
@@ -129,24 +81,72 @@ CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o.provides:
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o.provides.build: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o
 
 
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o: CMakeFiles/SummerOfBrain.dir/flags.make
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o: ChainOfResponsibility/Dog.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o -c /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.cpp
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.cpp > CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.i
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.cpp -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.s
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.requires:
+
+.PHONY : CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.requires
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.provides: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.requires
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.provides.build
+.PHONY : CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.provides
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.provides.build: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o
+
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o: CMakeFiles/SummerOfBrain.dir/flags.make
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o: ChainOfResponsibility/Fish.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o -c /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Fish.cpp
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Fish.cpp > CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.i
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Fish.cpp -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.s
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.requires:
+
+.PHONY : CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.requires
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.provides: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.requires
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.provides.build
+.PHONY : CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.provides
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.provides.build: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o
+
+
 # Object files for target SummerOfBrain
 SummerOfBrain_OBJECTS = \
-"CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o" \
+"CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o" \
 "CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o" \
-"CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o"
+"CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o"
 
 # External object files for target SummerOfBrain
 SummerOfBrain_EXTERNAL_OBJECTS =
 
-SummerOfBrain: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o
-SummerOfBrain: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o
 SummerOfBrain: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o
+SummerOfBrain: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o
+SummerOfBrain: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o
 SummerOfBrain: CMakeFiles/SummerOfBrain.dir/build.make
-SummerOfBrain: lib/libgtestd.a
-SummerOfBrain: lib/libgtest_maind.a
-SummerOfBrain: lib/libgtestd.a
+SummerOfBrain: lib/libgtest.a
+SummerOfBrain: lib/libgtest_main.a
+SummerOfBrain: lib/libgtest.a
 SummerOfBrain: CMakeFiles/SummerOfBrain.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable SummerOfBrain"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable SummerOfBrain"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SummerOfBrain.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -154,9 +154,9 @@ CMakeFiles/SummerOfBrain.dir/build: SummerOfBrain
 
 .PHONY : CMakeFiles/SummerOfBrain.dir/build
 
-CMakeFiles/SummerOfBrain.dir/requires: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.requires
-CMakeFiles/SummerOfBrain.dir/requires: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.requires
 CMakeFiles/SummerOfBrain.dir/requires: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o.requires
+CMakeFiles/SummerOfBrain.dir/requires: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o.requires
+CMakeFiles/SummerOfBrain.dir/requires: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o.requires
 
 .PHONY : CMakeFiles/SummerOfBrain.dir/requires
 
@@ -165,6 +165,6 @@ CMakeFiles/SummerOfBrain.dir/clean:
 .PHONY : CMakeFiles/SummerOfBrain.dir/clean
 
 CMakeFiles/SummerOfBrain.dir/depend:
-	cd /mnt/c/users/chris/onedrive/desktop/summerofbrain && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/c/users/chris/onedrive/desktop/summerofbrain /mnt/c/users/chris/onedrive/desktop/summerofbrain /mnt/c/users/chris/onedrive/desktop/summerofbrain /mnt/c/users/chris/onedrive/desktop/summerofbrain /mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles/SummerOfBrain.dir/DependInfo.cmake --color=$(COLOR)
+	cd /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/SummerOfBrain.dir/depend
 

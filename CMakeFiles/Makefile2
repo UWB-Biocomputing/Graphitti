@@ -54,10 +54,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/users/chris/onedrive/desktop/summerofbrain
+CMAKE_SOURCE_DIR = /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/users/chris/onedrive/desktop/summerofbrain
+CMAKE_BINARY_DIR = /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain
 
 #=============================================================================
 # Target rules for target CMakeFiles/SummerOfBrain.dir
@@ -67,7 +67,7 @@ CMakeFiles/SummerOfBrain.dir/all: Testing/lib/googletest-master/googletest/CMake
 CMakeFiles/SummerOfBrain.dir/all: Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/depend
 	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles --progress-num=1,2,3,4 "Built target SummerOfBrain"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=1,2,3,4 "Built target SummerOfBrain"
 .PHONY : CMakeFiles/SummerOfBrain.dir/all
 
 # Include target in all.
@@ -77,9 +77,9 @@ all: CMakeFiles/SummerOfBrain.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/SummerOfBrain.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles 8
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/SummerOfBrain.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles 0
 .PHONY : CMakeFiles/SummerOfBrain.dir/rule
 
 # Convenience name for target.
@@ -145,7 +145,7 @@ Testing/lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/all: Testing/
 Testing/lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/all: Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f Testing/lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/build.make Testing/lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/depend
 	$(MAKE) -f Testing/lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/build.make Testing/lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles --progress-num=7,8 "Built target gmock_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=7,8 "Built target gmock_main"
 .PHONY : Testing/lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/all
 
 # Include target in all.
@@ -155,9 +155,9 @@ all: Testing/lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/all
 
 # Build rule for subdir invocation for target.
 Testing/lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 Testing/lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles 0
 .PHONY : Testing/lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/rule
 
 # Convenience name for target.
@@ -182,7 +182,7 @@ clean: Testing/lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/clean
 Testing/lib/googletest-master/googlemock/CMakeFiles/gmock.dir/all: Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f Testing/lib/googletest-master/googlemock/CMakeFiles/gmock.dir/build.make Testing/lib/googletest-master/googlemock/CMakeFiles/gmock.dir/depend
 	$(MAKE) -f Testing/lib/googletest-master/googlemock/CMakeFiles/gmock.dir/build.make Testing/lib/googletest-master/googlemock/CMakeFiles/gmock.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles --progress-num=5,6 "Built target gmock"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=5,6 "Built target gmock"
 .PHONY : Testing/lib/googletest-master/googlemock/CMakeFiles/gmock.dir/all
 
 # Include target in all.
@@ -192,9 +192,9 @@ all: Testing/lib/googletest-master/googlemock/CMakeFiles/gmock.dir/all
 
 # Build rule for subdir invocation for target.
 Testing/lib/googletest-master/googlemock/CMakeFiles/gmock.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 Testing/lib/googletest-master/googlemock/CMakeFiles/gmock.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles 0
 .PHONY : Testing/lib/googletest-master/googlemock/CMakeFiles/gmock.dir/rule
 
 # Convenience name for target.
@@ -239,7 +239,7 @@ Testing/lib/googletest-master/googletest/preinstall:
 Testing/lib/googletest-master/googletest/CMakeFiles/gtest_main.dir/all: Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f Testing/lib/googletest-master/googletest/CMakeFiles/gtest_main.dir/build.make Testing/lib/googletest-master/googletest/CMakeFiles/gtest_main.dir/depend
 	$(MAKE) -f Testing/lib/googletest-master/googletest/CMakeFiles/gtest_main.dir/build.make Testing/lib/googletest-master/googletest/CMakeFiles/gtest_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles --progress-num=11,12 "Built target gtest_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=11,12 "Built target gtest_main"
 .PHONY : Testing/lib/googletest-master/googletest/CMakeFiles/gtest_main.dir/all
 
 # Include target in all.
@@ -249,9 +249,9 @@ all: Testing/lib/googletest-master/googletest/CMakeFiles/gtest_main.dir/all
 
 # Build rule for subdir invocation for target.
 Testing/lib/googletest-master/googletest/CMakeFiles/gtest_main.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 Testing/lib/googletest-master/googletest/CMakeFiles/gtest_main.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles 0
 .PHONY : Testing/lib/googletest-master/googletest/CMakeFiles/gtest_main.dir/rule
 
 # Convenience name for target.
@@ -276,7 +276,7 @@ clean: Testing/lib/googletest-master/googletest/CMakeFiles/gtest_main.dir/clean
 Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/all:
 	$(MAKE) -f Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/build.make Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/depend
 	$(MAKE) -f Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/build.make Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles --progress-num=9,10 "Built target gtest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=9,10 "Built target gtest"
 .PHONY : Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/all
 
 # Include target in all.
@@ -286,9 +286,9 @@ all: Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/all
 
 # Build rule for subdir invocation for target.
 Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles 0
 .PHONY : Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/rule
 
 # Convenience name for target.

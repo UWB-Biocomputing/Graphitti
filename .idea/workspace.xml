@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="SummerOfBrain" targetName="gtest_main" />
+      <config projectName="SummerOfBrain" targetName="SummerOfBrain" />
+      <config projectName="SummerOfBrain" targetName="gtest" />
+      <config projectName="SummerOfBrain" targetName="gmock_main" />
+      <config projectName="SummerOfBrain" targetName="gmock" />
+    </generated>
+  </component>
+  <component name="CMakeSettings" AUTO_RELOAD="true">
+    <configurations>
+      <configuration PROFILE_NAME="Default" GENERATION_DIR="." />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ff6793a0-67a4-4394-9a81-1e7c5684d1f2" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Default" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CMakeLists.txt" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1dkjqG4vod0FjpXNn0dqw8yapAW" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+  </component>
+  <component name="RunManager" selected="CMake Application.SummerOfBrain">
+    <configuration name="SummerOfBrain" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="gmock" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="gmock" CONFIG_NAME="Default">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="gmock_main" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="gmock_main" CONFIG_NAME="Default">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="gtest" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="gtest" CONFIG_NAME="Default">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="gtest_main" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="gtest_main" CONFIG_NAME="Default">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.SummerOfBrain" />
+      <item itemvalue="CMake Application.gmock" />
+      <item itemvalue="CMake Application.gmock_main" />
+      <item itemvalue="CMake Application.gtest" />
+      <item itemvalue="CMake Application.gtest_main" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ff6793a0-67a4-4394-9a81-1e7c5684d1f2" name="Default Changelist" comment="" />
+      <created>1592976173208</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1592976173208</updated>
+      <workItem from="1592976174388" duration="62000" />
+      <workItem from="1592976237414" duration="25000" />
+      <workItem from="1592976262740" duration="33000" />
+      <workItem from="1592976341239" duration="45000" />
+      <workItem from="1592976402088" duration="1178000" />
+      <workItem from="1592977582193" duration="335000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2334" y="179" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1592977702835">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2334" y="179" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592977702835" />
+    <state x="2660" y="279" key="FileChooserDialogImpl" timestamp="1592977556504">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2660" y="279" key="FileChooserDialogImpl/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592977556504" />
+    <state width="1877" height="396" key="GridCell.Tab.0.bottom" timestamp="1592976173090">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="396" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592976173090" />
+    <state width="1877" height="396" key="GridCell.Tab.0.center" timestamp="1592976173090">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="396" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592976173090" />
+    <state width="1877" height="396" key="GridCell.Tab.0.left" timestamp="1592976173090">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="396" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592976173090" />
+    <state width="1877" height="396" key="GridCell.Tab.0.right" timestamp="1592976173090">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="396" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592976173090" />
+    <state width="640" height="204" key="ImportCMakeProjectWizard.bottomPanel" timestamp="1592977578099">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="640" height="204" key="ImportCMakeProjectWizard.bottomPanel/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592977578099" />
+    <state width="640" height="476" key="ImportCMakeProjectWizard.topPanel" timestamp="1592977578099">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="640" height="476" key="ImportCMakeProjectWizard.topPanel/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592977578099" />
+    <state x="2588" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1592976402621">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2588" y="349" key="com.intellij.ide.util.TipDialog/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592976402621" />
+  </component>
+</project>
