@@ -346,9 +346,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNodeTest.cpp">
-			<Option target="SummerOfBrain"/>
-		</Unit>
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.cpp">
 			<Option target="SummerOfBrain"/>
 		</Unit>
@@ -362,6 +359,9 @@
 			<Option target="SummerOfBrain"/>
 		</Unit>
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h">
+			<Option target="SummerOfBrain"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainNodeTest.cpp">
 			<Option target="SummerOfBrain"/>
 		</Unit>
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock/src/gmock-all.cc">

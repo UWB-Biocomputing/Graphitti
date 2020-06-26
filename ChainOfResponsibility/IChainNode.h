@@ -9,10 +9,13 @@
 
 using namespace std;
 
+// Interface
 class IChainNode {
 public:
+    // Method for setting the next node in the chain
     virtual IChainNode *SetNextNode(IChainNode *nextNode) = 0;
 
+    // Generic operation
     virtual string PerformOperation(string request) = 0;
 };
 

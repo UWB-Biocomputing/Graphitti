@@ -44,6 +44,13 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\chris\OneDrive\Desktop\SummerOfBrain\Testing" />
+    </key>
   </component>
   <component name="RunManager" selected="CMake Application.SummerOfBrain">
     <configuration name="SummerOfBrain" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain">
@@ -110,22 +117,22 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2660" y="279" key="FileChooserDialogImpl/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592977556504" />
-    <state width="1877" height="396" key="GridCell.Tab.0.bottom" timestamp="1592976173090">
+    <state width="1877" height="182" key="GridCell.Tab.0.bottom" timestamp="1593206417724">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="396" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592976173090" />
-    <state width="1877" height="396" key="GridCell.Tab.0.center" timestamp="1592976173090">
+    <state width="1877" height="182" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593206417724" />
+    <state width="1877" height="182" key="GridCell.Tab.0.center" timestamp="1593206417724">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="396" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592976173090" />
-    <state width="1877" height="396" key="GridCell.Tab.0.left" timestamp="1592976173090">
+    <state width="1877" height="182" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593206417724" />
+    <state width="1877" height="182" key="GridCell.Tab.0.left" timestamp="1593206417724">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="396" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592976173090" />
-    <state width="1877" height="396" key="GridCell.Tab.0.right" timestamp="1592976173090">
+    <state width="1877" height="182" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593206417724" />
+    <state width="1877" height="182" key="GridCell.Tab.0.right" timestamp="1593206417724">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="396" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592976173090" />
+    <state width="1877" height="182" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593206417724" />
     <state width="640" height="204" key="ImportCMakeProjectWizard.bottomPanel" timestamp="1592977578099">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>

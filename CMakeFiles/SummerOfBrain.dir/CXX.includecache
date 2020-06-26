@@ -6,18 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNodeTest.cpp
-iostream
--
-IChainNode.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h
-Dog.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.h
-Fish.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Fish.h
-gtest/gtest.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/gtest/gtest.h
-
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.cpp
 Dog.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.h
@@ -39,6 +27,30 @@ IChainNode.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h
 
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h
+string
+-
+
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainNodeTest.cpp
+iostream
+-
+IChainNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/IChainNode.h
+Dog.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/Dog.h
+Fish.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/Fish.h
+gtest/gtest.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/gtest/gtest.h
+
+ChainOfResponsibility/Dog.h
+IChainNode.h
+ChainOfResponsibility/IChainNode.h
+
+ChainOfResponsibility/Fish.h
+IChainNode.h
+ChainOfResponsibility/IChainNode.h
+
+ChainOfResponsibility/IChainNode.h
 string
 -
 
