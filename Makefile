@@ -221,6 +221,33 @@ gtest/fast:
 	$(MAKE) -f Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/build.make Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/build
 .PHONY : gtest/fast
 
+ChainOfResponsibility/ChainObjectHandler.o: ChainOfResponsibility/ChainObjectHandler.cpp.o
+
+.PHONY : ChainOfResponsibility/ChainObjectHandler.o
+
+# target to build an object file
+ChainOfResponsibility/ChainObjectHandler.cpp.o:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainObjectHandler.cpp.o
+.PHONY : ChainOfResponsibility/ChainObjectHandler.cpp.o
+
+ChainOfResponsibility/ChainObjectHandler.i: ChainOfResponsibility/ChainObjectHandler.cpp.i
+
+.PHONY : ChainOfResponsibility/ChainObjectHandler.i
+
+# target to preprocess a source file
+ChainOfResponsibility/ChainObjectHandler.cpp.i:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainObjectHandler.cpp.i
+.PHONY : ChainOfResponsibility/ChainObjectHandler.cpp.i
+
+ChainOfResponsibility/ChainObjectHandler.s: ChainOfResponsibility/ChainObjectHandler.cpp.s
+
+.PHONY : ChainOfResponsibility/ChainObjectHandler.s
+
+# target to generate assembly for a file
+ChainOfResponsibility/ChainObjectHandler.cpp.s:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainObjectHandler.cpp.s
+.PHONY : ChainOfResponsibility/ChainObjectHandler.cpp.s
+
 ChainOfResponsibility/Dog.o: ChainOfResponsibility/Dog.cpp.o
 
 .PHONY : ChainOfResponsibility/Dog.o
@@ -275,32 +302,86 @@ ChainOfResponsibility/Fish.cpp.s:
 	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.s
 .PHONY : ChainOfResponsibility/Fish.cpp.s
 
-Testing/ChainNodeTest.o: Testing/ChainNodeTest.cpp.o
+Testing/ChainOfResponsibility/ChainNodeTests.o: Testing/ChainOfResponsibility/ChainNodeTests.cpp.o
 
-.PHONY : Testing/ChainNodeTest.o
+.PHONY : Testing/ChainOfResponsibility/ChainNodeTests.o
 
 # target to build an object file
-Testing/ChainNodeTest.cpp.o:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainNodeTest.cpp.o
-.PHONY : Testing/ChainNodeTest.cpp.o
+Testing/ChainOfResponsibility/ChainNodeTests.cpp.o:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o
+.PHONY : Testing/ChainOfResponsibility/ChainNodeTests.cpp.o
 
-Testing/ChainNodeTest.i: Testing/ChainNodeTest.cpp.i
+Testing/ChainOfResponsibility/ChainNodeTests.i: Testing/ChainOfResponsibility/ChainNodeTests.cpp.i
 
-.PHONY : Testing/ChainNodeTest.i
+.PHONY : Testing/ChainOfResponsibility/ChainNodeTests.i
 
 # target to preprocess a source file
-Testing/ChainNodeTest.cpp.i:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainNodeTest.cpp.i
-.PHONY : Testing/ChainNodeTest.cpp.i
+Testing/ChainOfResponsibility/ChainNodeTests.cpp.i:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.i
+.PHONY : Testing/ChainOfResponsibility/ChainNodeTests.cpp.i
 
-Testing/ChainNodeTest.s: Testing/ChainNodeTest.cpp.s
+Testing/ChainOfResponsibility/ChainNodeTests.s: Testing/ChainOfResponsibility/ChainNodeTests.cpp.s
 
-.PHONY : Testing/ChainNodeTest.s
+.PHONY : Testing/ChainOfResponsibility/ChainNodeTests.s
 
 # target to generate assembly for a file
-Testing/ChainNodeTest.cpp.s:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainNodeTest.cpp.s
-.PHONY : Testing/ChainNodeTest.cpp.s
+Testing/ChainOfResponsibility/ChainNodeTests.cpp.s:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.s
+.PHONY : Testing/ChainOfResponsibility/ChainNodeTests.cpp.s
+
+Testing/ChainOfResponsibility/ChainObjectHandlerTests.o: Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o
+
+.PHONY : Testing/ChainOfResponsibility/ChainObjectHandlerTests.o
+
+# target to build an object file
+Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o
+.PHONY : Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o
+
+Testing/ChainOfResponsibility/ChainObjectHandlerTests.i: Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.i
+
+.PHONY : Testing/ChainOfResponsibility/ChainObjectHandlerTests.i
+
+# target to preprocess a source file
+Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.i:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.i
+.PHONY : Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.i
+
+Testing/ChainOfResponsibility/ChainObjectHandlerTests.s: Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.s
+
+.PHONY : Testing/ChainOfResponsibility/ChainObjectHandlerTests.s
+
+# target to generate assembly for a file
+Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.s:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.s
+.PHONY : Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.s
+
+Testing/RunTests.o: Testing/RunTests.cpp.o
+
+.PHONY : Testing/RunTests.o
+
+# target to build an object file
+Testing/RunTests.cpp.o:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.o
+.PHONY : Testing/RunTests.cpp.o
+
+Testing/RunTests.i: Testing/RunTests.cpp.i
+
+.PHONY : Testing/RunTests.i
+
+# target to preprocess a source file
+Testing/RunTests.cpp.i:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.i
+.PHONY : Testing/RunTests.cpp.i
+
+Testing/RunTests.s: Testing/RunTests.cpp.s
+
+.PHONY : Testing/RunTests.s
+
+# target to generate assembly for a file
+Testing/RunTests.cpp.s:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.s
+.PHONY : Testing/RunTests.cpp.s
 
 # Help Target
 help:
@@ -319,15 +400,24 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
+	@echo "... ChainOfResponsibility/ChainObjectHandler.o"
+	@echo "... ChainOfResponsibility/ChainObjectHandler.i"
+	@echo "... ChainOfResponsibility/ChainObjectHandler.s"
 	@echo "... ChainOfResponsibility/Dog.o"
 	@echo "... ChainOfResponsibility/Dog.i"
 	@echo "... ChainOfResponsibility/Dog.s"
 	@echo "... ChainOfResponsibility/Fish.o"
 	@echo "... ChainOfResponsibility/Fish.i"
 	@echo "... ChainOfResponsibility/Fish.s"
-	@echo "... Testing/ChainNodeTest.o"
-	@echo "... Testing/ChainNodeTest.i"
-	@echo "... Testing/ChainNodeTest.s"
+	@echo "... Testing/ChainOfResponsibility/ChainNodeTests.o"
+	@echo "... Testing/ChainOfResponsibility/ChainNodeTests.i"
+	@echo "... Testing/ChainOfResponsibility/ChainNodeTests.s"
+	@echo "... Testing/ChainOfResponsibility/ChainObjectHandlerTests.o"
+	@echo "... Testing/ChainOfResponsibility/ChainObjectHandlerTests.i"
+	@echo "... Testing/ChainOfResponsibility/ChainObjectHandlerTests.s"
+	@echo "... Testing/RunTests.o"
+	@echo "... Testing/RunTests.i"
+	@echo "... Testing/RunTests.s"
 .PHONY : help
 
 

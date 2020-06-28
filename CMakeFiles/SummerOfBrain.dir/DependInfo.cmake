@@ -4,15 +4,19 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainObjectHandler.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainObjectHandler.cpp.o"
   "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o"
   "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Fish.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o"
-  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainNodeTest.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/Testing/ChainNodeTest.cpp.o"
+  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainNodeTests.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o"
+  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o"
+  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/RunTests.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "ChainOfResponsibility"
+  "Testing"
   "Testing/lib/googletest-master/googletest/include"
   "Testing/lib/googletest-master/googletest"
   )

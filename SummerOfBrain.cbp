@@ -65,6 +65,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 					<Add directory="/usr/include/c++/7"/>
@@ -91,6 +92,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 					<Add directory="/usr/include/c++/7"/>
@@ -137,6 +139,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
@@ -165,6 +168,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
@@ -193,6 +197,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
@@ -221,6 +226,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
@@ -249,6 +255,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 					<Add directory="/usr/include/c++/7"/>
@@ -275,6 +282,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 					<Add directory="/usr/include/c++/7"/>
@@ -301,6 +309,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 					<Add directory="/usr/include/c++/7"/>
@@ -327,6 +336,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 					<Add directory="/usr/include/c++/7"/>
@@ -346,6 +356,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainObjectHandler.cpp">
+			<Option target="SummerOfBrain"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainObjectHandler.h">
+			<Option target="SummerOfBrain"/>
+		</Unit>
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.cpp">
 			<Option target="SummerOfBrain"/>
 		</Unit>
@@ -361,7 +377,16 @@
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h">
 			<Option target="SummerOfBrain"/>
 		</Unit>
-		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainNodeTest.cpp">
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Operations.h">
+			<Option target="SummerOfBrain"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainNodeTests.cpp">
+			<Option target="SummerOfBrain"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp">
+			<Option target="SummerOfBrain"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/RunTests.cpp">
 			<Option target="SummerOfBrain"/>
 		</Unit>
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock/src/gmock-all.cc">

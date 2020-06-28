@@ -1,8 +1,9 @@
 //
-// Created by chris on 6/23/2020.
+// Created by Chris O'Keefe on 6/23/2020.
 //
 
 #include <iostream>
+#include "ChainObjectHandler.h"
 #include "IChainNode.h"
 #include "Dog.h"
 #include "Fish.h"
@@ -10,11 +11,6 @@
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
-    testing::InitGoogleTest();
-    RUN_ALL_TESTS();
-    return 0;
-}
 
 struct ChainNodeTest : testing::Test {
     IChainNode *fish;

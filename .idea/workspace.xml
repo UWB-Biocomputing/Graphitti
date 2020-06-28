@@ -2,10 +2,10 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="SummerOfBrain" targetName="gtest_main" />
       <config projectName="SummerOfBrain" targetName="SummerOfBrain" />
-      <config projectName="SummerOfBrain" targetName="gtest" />
       <config projectName="SummerOfBrain" targetName="gmock_main" />
+      <config projectName="SummerOfBrain" targetName="gtest" />
+      <config projectName="SummerOfBrain" targetName="gtest_main" />
       <config projectName="SummerOfBrain" targetName="gmock" />
     </generated>
   </component>
@@ -35,6 +35,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="OCResolveContextSettings">
+    <option name="configuration" value="0-Default-SummerOfBrain" />
+  </component>
   <component name="ProjectId" id="1dkjqG4vod0FjpXNn0dqw8yapAW" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -44,15 +47,26 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="cf.advertisement.text.has.clang-format" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Testing/ChainOfResponsibilityTest" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\chris\OneDrive\Desktop\SummerOfBrain\Testing\ChainOfResponsibilityTest" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\chris\OneDrive\Desktop\SummerOfBrain\Testing" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.SummerOfBrain">
+    <configuration name="ChainObjectHandlerTest.ChainObjectInstanceIsNotNull" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain" TEST_CLASS="ChainObjectHandlerTest" TEST_METHOD="ChainObjectInstanceIsNotNull" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="SummerOfBrain" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -84,7 +98,13 @@
       <item itemvalue="CMake Application.gmock_main" />
       <item itemvalue="CMake Application.gtest" />
       <item itemvalue="CMake Application.gtest_main" />
+      <item itemvalue="Google Test.ChainObjectHandlerTest.ChainObjectInstanceIsNotNull" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Google Test.ChainObjectHandlerTest.ChainObjectInstanceIsNotNull" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -102,6 +122,7 @@
       <workItem from="1592976341239" duration="45000" />
       <workItem from="1592976402088" duration="1178000" />
       <workItem from="1592977582193" duration="335000" />
+      <workItem from="1593379816254" duration="435000" />
     </task>
     <servers />
   </component>
@@ -109,30 +130,34 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2334" y="179" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1592977702835">
+    <state x="2334" y="179" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593213922435">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2334" y="179" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592977702835" />
+    <state x="2334" y="179" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593213922435" />
+    <state x="2635" y="331" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1593214248469">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2635" y="331" key="#com.intellij.fileTypes.FileTypeChooser/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593214248469" />
     <state x="2660" y="279" key="FileChooserDialogImpl" timestamp="1592977556504">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2660" y="279" key="FileChooserDialogImpl/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592977556504" />
-    <state width="1877" height="182" key="GridCell.Tab.0.bottom" timestamp="1593206417724">
+    <state width="1877" height="182" key="GridCell.Tab.0.bottom" timestamp="1593294738688">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="182" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593206417724" />
-    <state width="1877" height="182" key="GridCell.Tab.0.center" timestamp="1593206417724">
+    <state width="1877" height="182" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593294738688" />
+    <state width="1877" height="182" key="GridCell.Tab.0.center" timestamp="1593294738688">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="182" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593206417724" />
-    <state width="1877" height="182" key="GridCell.Tab.0.left" timestamp="1593206417724">
+    <state width="1877" height="182" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593294738688" />
+    <state width="1877" height="182" key="GridCell.Tab.0.left" timestamp="1593294738687">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="182" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593206417724" />
-    <state width="1877" height="182" key="GridCell.Tab.0.right" timestamp="1593206417724">
+    <state width="1877" height="182" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593294738687" />
+    <state width="1877" height="182" key="GridCell.Tab.0.right" timestamp="1593294738688">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="182" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593206417724" />
+    <state width="1877" height="182" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593294738688" />
     <state width="640" height="204" key="ImportCMakeProjectWizard.bottomPanel" timestamp="1592977578099">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
