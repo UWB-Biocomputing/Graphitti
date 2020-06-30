@@ -56,27 +56,23 @@ bool deserializeSynapseInfo(SimulationInfo *simInfo, Simulator *simulator);
  *  @return -1 if error, else if success.
  */
 int main(int argc, char* argv[]) {
-    SimulationInfo *simInfo = NULL;    // simulation information
-    Simulator *simulator = NULL;       // Simulator object
-
-    // create simulation info object
-    simInfo = new SimulationInfo();
+    Simulator *simulator = Simulator::getInstance();       // Simulator object
 
     // Handles parsing of the command line
-    if (!parseCommandLine(argc, argv, simInfo)) {
+    if (!parseCommandLine(argc, argv)) {
         cerr << "! ERROR: failed during command line parse" << endl;
         return -1;
     }
 
     // Create all model instances and load parameters from a file.
-    if (!LoadAllParameters(simInfo)) {
+    if (!LoadAllParameters()) {
         cerr << "! ERROR: failed while parsing simulation parameters." << endl;
         return -1;
     }
 
     // create & init simulation recorder
-    simInfo->simRecorder = simInfo->model->getConnections()->createRecorder(simInfo);
-    if (simInfo->simRecorder == NULL) {
+    simRecorder = model->getConnections()->createRecorder(simInfo);
+    if (simRecorder == NULL) {
         cerr << "! ERROR: invalid state output file name extension." << endl;
         return -1;
     }
@@ -87,12 +83,10 @@ int main(int argc, char* argv[]) {
     time_t start_time, end_time;
     time(&start_time);
 
-    // create the simulator
-    simulator = new Simulator();
 	
     // setup simulation
     DEBUG(cerr << "Setup simulation." << endl;)
-    simulator->setup(simInfo);
+    simulator->setup();
 
     // Deserializes internal state from a prior run of the simulation
     if (!simInfo->memInputFileName.empty()) {
@@ -101,11 +95,11 @@ int main(int argc, char* argv[]) {
         DEBUG(
         // Prints out internal state information before deserialization
         cout << "------------------------------Before Deserialization:------------------------------" << endl;
-        printKeyStateInfo(simInfo);
+        printKeyStateInfo();
         )
 
         // Deserialization
-        if(!deserializeSynapseInfo(simInfo, simulator)) {
+        if(!deserializeSynapseInfo(simulator)) {
             cerr << "! ERROR: failed while deserializing objects" << endl;
             return -1;
         }
@@ -113,12 +107,12 @@ int main(int argc, char* argv[]) {
         DEBUG(
         // Prints out internal state information after deserialization
         cout << "------------------------------After Deserialization:------------------------------" << endl;
-        printKeyStateInfo(simInfo);
+        printKeyStateInfo();
         )
     }
 
     // Run simulation
-    simulator->simulate(simInfo);
+    simulator->simulate();
 
     // Terminate the stimulus input 
     if (simInfo->pInput != NULL)
@@ -160,21 +154,18 @@ int main(int argc, char* argv[]) {
 
     time(&end_time);
     double time_elapsed = difftime(end_time, start_time);
-    double ssps = simInfo->epochDuration * simInfo->maxSteps / time_elapsed;
-    cout << "time simulated: " << simInfo->epochDuration * simInfo->maxSteps << endl;
+    double ssps = epochDuration * maxSteps / time_elapsed;
+    cout << "time simulated: " << epochDuration * maxSteps << endl;
     cout << "time elapsed: " << time_elapsed << endl;
     cout << "ssps (simulation seconds / real time seconds): " << ssps << endl;
     
-    delete simInfo->model;
-    simInfo->model = NULL;
+    delete model;
+    model = NULL;
     
-    if (simInfo->simRecorder != NULL) {
-        delete simInfo->simRecorder;
-        simInfo->simRecorder = NULL;
+    if (simRecorder != NULL) {
+        delete simRecorder;
+        simRecorder = NULL;
     }
-
-    delete simInfo;
-    simInfo = NULL;
 
     delete simulator;
     simulator = NULL;
