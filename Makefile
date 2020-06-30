@@ -221,86 +221,59 @@ gtest/fast:
 	$(MAKE) -f Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/build.make Testing/lib/googletest-master/googletest/CMakeFiles/gtest.dir/build
 .PHONY : gtest/fast
 
-ChainOfResponsibility/ChainObjectHandler.o: ChainOfResponsibility/ChainObjectHandler.cpp.o
+ChainOfResponsibility/ChainOperationHandler.o: ChainOfResponsibility/ChainOperationHandler.cpp.o
 
-.PHONY : ChainOfResponsibility/ChainObjectHandler.o
-
-# target to build an object file
-ChainOfResponsibility/ChainObjectHandler.cpp.o:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainObjectHandler.cpp.o
-.PHONY : ChainOfResponsibility/ChainObjectHandler.cpp.o
-
-ChainOfResponsibility/ChainObjectHandler.i: ChainOfResponsibility/ChainObjectHandler.cpp.i
-
-.PHONY : ChainOfResponsibility/ChainObjectHandler.i
-
-# target to preprocess a source file
-ChainOfResponsibility/ChainObjectHandler.cpp.i:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainObjectHandler.cpp.i
-.PHONY : ChainOfResponsibility/ChainObjectHandler.cpp.i
-
-ChainOfResponsibility/ChainObjectHandler.s: ChainOfResponsibility/ChainObjectHandler.cpp.s
-
-.PHONY : ChainOfResponsibility/ChainObjectHandler.s
-
-# target to generate assembly for a file
-ChainOfResponsibility/ChainObjectHandler.cpp.s:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainObjectHandler.cpp.s
-.PHONY : ChainOfResponsibility/ChainObjectHandler.cpp.s
-
-ChainOfResponsibility/Dog.o: ChainOfResponsibility/Dog.cpp.o
-
-.PHONY : ChainOfResponsibility/Dog.o
+.PHONY : ChainOfResponsibility/ChainOperationHandler.o
 
 # target to build an object file
-ChainOfResponsibility/Dog.cpp.o:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o
-.PHONY : ChainOfResponsibility/Dog.cpp.o
+ChainOfResponsibility/ChainOperationHandler.cpp.o:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o
+.PHONY : ChainOfResponsibility/ChainOperationHandler.cpp.o
 
-ChainOfResponsibility/Dog.i: ChainOfResponsibility/Dog.cpp.i
+ChainOfResponsibility/ChainOperationHandler.i: ChainOfResponsibility/ChainOperationHandler.cpp.i
 
-.PHONY : ChainOfResponsibility/Dog.i
+.PHONY : ChainOfResponsibility/ChainOperationHandler.i
 
 # target to preprocess a source file
-ChainOfResponsibility/Dog.cpp.i:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.i
-.PHONY : ChainOfResponsibility/Dog.cpp.i
+ChainOfResponsibility/ChainOperationHandler.cpp.i:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.i
+.PHONY : ChainOfResponsibility/ChainOperationHandler.cpp.i
 
-ChainOfResponsibility/Dog.s: ChainOfResponsibility/Dog.cpp.s
+ChainOfResponsibility/ChainOperationHandler.s: ChainOfResponsibility/ChainOperationHandler.cpp.s
 
-.PHONY : ChainOfResponsibility/Dog.s
+.PHONY : ChainOfResponsibility/ChainOperationHandler.s
 
 # target to generate assembly for a file
-ChainOfResponsibility/Dog.cpp.s:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.s
-.PHONY : ChainOfResponsibility/Dog.cpp.s
+ChainOfResponsibility/ChainOperationHandler.cpp.s:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.s
+.PHONY : ChainOfResponsibility/ChainOperationHandler.cpp.s
 
-ChainOfResponsibility/Fish.o: ChainOfResponsibility/Fish.cpp.o
+ChainOfResponsibility/Foo.o: ChainOfResponsibility/Foo.cpp.o
 
-.PHONY : ChainOfResponsibility/Fish.o
+.PHONY : ChainOfResponsibility/Foo.o
 
 # target to build an object file
-ChainOfResponsibility/Fish.cpp.o:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o
-.PHONY : ChainOfResponsibility/Fish.cpp.o
+ChainOfResponsibility/Foo.cpp.o:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.o
+.PHONY : ChainOfResponsibility/Foo.cpp.o
 
-ChainOfResponsibility/Fish.i: ChainOfResponsibility/Fish.cpp.i
+ChainOfResponsibility/Foo.i: ChainOfResponsibility/Foo.cpp.i
 
-.PHONY : ChainOfResponsibility/Fish.i
+.PHONY : ChainOfResponsibility/Foo.i
 
 # target to preprocess a source file
-ChainOfResponsibility/Fish.cpp.i:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.i
-.PHONY : ChainOfResponsibility/Fish.cpp.i
+ChainOfResponsibility/Foo.cpp.i:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.i
+.PHONY : ChainOfResponsibility/Foo.cpp.i
 
-ChainOfResponsibility/Fish.s: ChainOfResponsibility/Fish.cpp.s
+ChainOfResponsibility/Foo.s: ChainOfResponsibility/Foo.cpp.s
 
-.PHONY : ChainOfResponsibility/Fish.s
+.PHONY : ChainOfResponsibility/Foo.s
 
 # target to generate assembly for a file
-ChainOfResponsibility/Fish.cpp.s:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.s
-.PHONY : ChainOfResponsibility/Fish.cpp.s
+ChainOfResponsibility/Foo.cpp.s:
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.s
+.PHONY : ChainOfResponsibility/Foo.cpp.s
 
 Testing/ChainOfResponsibility/ChainNodeTests.o: Testing/ChainOfResponsibility/ChainNodeTests.cpp.o
 
@@ -400,15 +373,12 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
-	@echo "... ChainOfResponsibility/ChainObjectHandler.o"
-	@echo "... ChainOfResponsibility/ChainObjectHandler.i"
-	@echo "... ChainOfResponsibility/ChainObjectHandler.s"
-	@echo "... ChainOfResponsibility/Dog.o"
-	@echo "... ChainOfResponsibility/Dog.i"
-	@echo "... ChainOfResponsibility/Dog.s"
-	@echo "... ChainOfResponsibility/Fish.o"
-	@echo "... ChainOfResponsibility/Fish.i"
-	@echo "... ChainOfResponsibility/Fish.s"
+	@echo "... ChainOfResponsibility/ChainOperationHandler.o"
+	@echo "... ChainOfResponsibility/ChainOperationHandler.i"
+	@echo "... ChainOfResponsibility/ChainOperationHandler.s"
+	@echo "... ChainOfResponsibility/Foo.o"
+	@echo "... ChainOfResponsibility/Foo.i"
+	@echo "... ChainOfResponsibility/Foo.s"
 	@echo "... Testing/ChainOfResponsibility/ChainNodeTests.o"
 	@echo "... Testing/ChainOfResponsibility/ChainNodeTests.i"
 	@echo "... Testing/ChainOfResponsibility/ChainNodeTests.s"

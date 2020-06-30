@@ -136,7 +136,7 @@ We support the following meta programming constructs:
 | `$$ comment`                     | Meta comment.                            |
 
 **Note:** To give the user some freedom in formatting the Pump source code, Pump
-ignores a new-line character if it's right after `$for foo` or next to `[[` or
+ignores a new-line character if it's right after `$for foo` or nextNode to `[[` or
 `]]`. Without this rule you'll often be forced to write very long lines to get
 the desired output. Therefore sometimes you may need to insert an extra new-line
 in such places for a new-line to show up in your output.
@@ -183,5 +183,5 @@ source file `foo.h.pump` generates `foo.h`.
     generate `Foo1Helper` when `j` is 1.
 *   To avoid extra-long Pump source lines, you can break a line anywhere you
     want by inserting `[[]]` followed by a new line. Since any new-line
-    character next to `[[` or `]]` is ignored, the generated code won't contain
+    character nextNode to `[[` or `]]` is ignored, the generated code won't contain
     this new line.

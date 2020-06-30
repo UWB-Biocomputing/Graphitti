@@ -1444,7 +1444,7 @@ DeathTest::TestRole ExecDeathTest::AssumeRole() {
   DeathTest::set_last_death_test_message("");
 
   CaptureStderr();
-  // See the comment in NoExecDeathTest::AssumeRole for why the next line
+  // See the comment in NoExecDeathTest::AssumeRole for why the nextNode line
   // is necessary.
   FlushInfoLog();
 

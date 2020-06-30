@@ -2,10 +2,10 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="SummerOfBrain" targetName="SummerOfBrain" />
-      <config projectName="SummerOfBrain" targetName="gmock_main" />
-      <config projectName="SummerOfBrain" targetName="gtest" />
       <config projectName="SummerOfBrain" targetName="gtest_main" />
+      <config projectName="SummerOfBrain" targetName="SummerOfBrain" />
+      <config projectName="SummerOfBrain" targetName="gtest" />
+      <config projectName="SummerOfBrain" targetName="gmock_main" />
       <config projectName="SummerOfBrain" targetName="gmock" />
     </generated>
   </component>
@@ -15,7 +15,61 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff6793a0-67a4-4394-9a81-1e7c5684d1f2" name="Default Changelist" comment="" />
+    <list default="true" id="ff6793a0-67a4-4394-9a81-1e7c5684d1f2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/ChainOfResponsibility/ChainNode.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ChainOfResponsibility/Foo.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ChainOfResponsibility/Foo.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BGDriver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/BGDriver.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/Makefile2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/CXX.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/DependInfo.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/build.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/cmake_clean.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/depend.internal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/link.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/link.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/progress.make" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/progress.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeFiles/progress.marks" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/progress.marks" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/ChainObjectHandler.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/ChainObjectHandler.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/Dog.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/Dog.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/Fish.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/Fish.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/IChainNode.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/Operations.h" beforeDir="false" afterPath="$PROJECT_DIR$/ChainOfResponsibility/Operations.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IChainNode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/IChainNode.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SummerOfBrain" beforeDir="false" afterPath="$PROJECT_DIR$/SummerOfBrain" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SummerOfBrain.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/SummerOfBrain.cbp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/ChainOfResponsibility/ChainNodeTests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/ChainOfResponsibility/ChainNodeTests.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/docs/cheat_sheet.md" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/docs/cheat_sheet.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/docs/cook_book.md" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/docs/cook_book.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/docs/for_dummies.md" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/docs/for_dummies.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/docs/pump_manual.md" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/docs/pump_manual.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/include/gmock/gmock-actions.h" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/include/gmock/gmock-actions.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/include/gmock/gmock-matchers.h" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/include/gmock/gmock-matchers.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/include/gmock/gmock-more-actions.h" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/include/gmock/gmock-more-actions.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/include/gmock/gmock-spec-builders.h" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/include/gmock/gmock-spec-builders.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/src/gmock-spec-builders.cc" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/src/gmock-spec-builders.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/docs/advanced.md" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/docs/advanced.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/docs/faq.md" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/docs/faq.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/docs/primer.md" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/docs/primer.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/include/gtest/gtest-matchers.h" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/include/gtest/gtest-matchers.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/include/gtest/gtest.h" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/include/gtest/gtest.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/include/gtest/internal/gtest-param-util.h" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/include/gtest/internal/gtest-param-util.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/include/gtest/internal/gtest-port.h" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/include/gtest/internal/gtest-port.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/src/gtest-death-test.cc" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/src/gtest-death-test.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/src/gtest-port.cc" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/src/gtest-port.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/src/gtest.cc" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/src/gtest.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/SummerOfBrain.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/SummerOfBrain.dir/CXX.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/SummerOfBrain.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/SummerOfBrain.dir/depend.internal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/SummerOfBrain.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/SummerOfBrain.dir/depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/SummerOfBrain.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/SummerOfBrain.cbp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,6 +77,20 @@
   </component>
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Default" />
   <component name="FileTemplateManagerImpl">
@@ -46,11 +114,20 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="cf.advertisement.text.has.clang-format" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/Testing/ChainOfResponsibilityTest" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -61,6 +138,12 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.SummerOfBrain">
+    <configuration name="ChainNode.TemplateFunctionTest" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain" TEST_CLASS="ChainNode" TEST_METHOD="TemplateFunctionTest" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ChainObjectHandlerTest.ChainObjectInstanceIsNotNull" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain" TEST_CLASS="ChainObjectHandlerTest" TEST_METHOD="ChainObjectInstanceIsNotNull" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -99,9 +182,11 @@
       <item itemvalue="CMake Application.gtest" />
       <item itemvalue="CMake Application.gtest_main" />
       <item itemvalue="Google Test.ChainObjectHandlerTest.ChainObjectInstanceIsNotNull" />
+      <item itemvalue="Google Test.ChainNode.TemplateFunctionTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Google Test.ChainNode.TemplateFunctionTest" />
         <item itemvalue="Google Test.ChainObjectHandlerTest.ChainObjectInstanceIsNotNull" />
       </list>
     </recent_temporary>
@@ -122,7 +207,7 @@
       <workItem from="1592976341239" duration="45000" />
       <workItem from="1592976402088" duration="1178000" />
       <workItem from="1592977582193" duration="335000" />
-      <workItem from="1593379816254" duration="435000" />
+      <workItem from="1593379816254" duration="27719000" />
     </task>
     <servers />
   </component>
@@ -138,26 +223,38 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2635" y="331" key="#com.intellij.fileTypes.FileTypeChooser/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593214248469" />
-    <state x="2660" y="279" key="FileChooserDialogImpl" timestamp="1592977556504">
+    <state x="2685" y="219" key="#com.intellij.ide.util.MemberChooser" timestamp="1593381478342">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2660" y="279" key="FileChooserDialogImpl/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592977556504" />
-    <state width="1877" height="182" key="GridCell.Tab.0.bottom" timestamp="1593294738688">
+    <state x="2685" y="219" key="#com.intellij.ide.util.MemberChooser/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593381478342" />
+    <state x="2610" y="271" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1593477263054">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="182" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593294738688" />
-    <state width="1877" height="182" key="GridCell.Tab.0.center" timestamp="1593294738688">
+    <state x="2610" y="271" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593477263054" />
+    <state x="2479" y="119" key="CommitChangelistDialog2" timestamp="1593540247740">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="182" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593294738688" />
-    <state width="1877" height="182" key="GridCell.Tab.0.left" timestamp="1593294738687">
+    <state x="2479" y="119" key="CommitChangelistDialog2/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593540247740" />
+    <state x="2660" y="279" key="FileChooserDialogImpl" timestamp="1593464207276">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="182" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593294738687" />
-    <state width="1877" height="182" key="GridCell.Tab.0.right" timestamp="1593294738688">
+    <state x="2660" y="279" key="FileChooserDialogImpl/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593464207276" />
+    <state width="1877" height="182" key="GridCell.Tab.0.bottom" timestamp="1593540219807">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="182" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593294738688" />
+    <state width="1877" height="182" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593540219807" />
+    <state width="1877" height="182" key="GridCell.Tab.0.center" timestamp="1593540219807">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="182" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593540219807" />
+    <state width="1877" height="182" key="GridCell.Tab.0.left" timestamp="1593540219806">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="182" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593540219806" />
+    <state width="1877" height="182" key="GridCell.Tab.0.right" timestamp="1593540219807">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="182" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593540219807" />
     <state width="640" height="204" key="ImportCMakeProjectWizard.bottomPanel" timestamp="1592977578099">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
@@ -166,6 +263,10 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="640" height="476" key="ImportCMakeProjectWizard.topPanel/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592977578099" />
+    <state x="2383" y="166" key="SettingsEditor" timestamp="1593464209219">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2383" y="166" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593464209219" />
     <state x="2588" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1592976402621">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>

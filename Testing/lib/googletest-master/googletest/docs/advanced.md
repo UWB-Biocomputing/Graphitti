@@ -1174,7 +1174,7 @@ use the shared resources.
 Remember that the test order is undefined, so your code can't depend on a test
 preceding or following another. Also, the tests must either not modify the state
 of any shared resource, or, if they do modify the state, they must restore the
-state to its original value before passing control to the next test.
+state to its original value before passing control to the nextNode test.
 
 Here's an example of per-test-suite set-up and tear-down:
 
@@ -2593,7 +2593,7 @@ command line flag.
 
 googletest can be used either with or without exceptions enabled. If a test
 throws a C++ exception or (on Windows) a structured exception (SEH), by default
-googletest catches it, reports it as a test failure, and continues with the next
+googletest catches it, reports it as a test failure, and continues with the nextNode
 test method. This maximizes the coverage of a test run. Also, on Windows an
 uncaught exception will cause a pop-up window, so catching the exceptions allows
 you to run the tests automatically.

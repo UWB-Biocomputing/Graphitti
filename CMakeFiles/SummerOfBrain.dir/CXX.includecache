@@ -6,61 +6,55 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainObjectHandler.cpp
-ChainObjectHandler.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainObjectHandler.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
+Operations.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Operations.h
 IChainNode.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h
+functional
+-
+iostream
+-
 
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainObjectHandler.h
-IChainNode.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationHandler.cpp
+ChainOperationHandler.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationHandler.h
+ChainNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
+
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationHandler.h
+ChainNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
 Operations.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Operations.h
 
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.cpp
-Dog.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.h
-IChainNode.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Foo.cpp
+Foo.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Foo.h
 
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.h
-IChainNode.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h
-
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Fish.cpp
-Fish.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Fish.h
-IChainNode.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h
-
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Fish.h
-IChainNode.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h
-
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h
-string
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Foo.h
+iostream
 -
+
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h
 
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Operations.h
 
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainNodeTests.cpp
 iostream
 -
-ChainObjectHandler.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainObjectHandler.h
-IChainNode.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/IChainNode.h
-Dog.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/Dog.h
-Fish.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/Fish.h
+Foo.h
+-
+ChainOperationHandler.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainOperationHandler.h
+ChainNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainNode.h
 gtest/gtest.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/gtest/gtest.h
 
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp
-ChainObjectHandler.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainObjectHandler.h
+ChainOperationHandler.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainOperationHandler.h
 Operations.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/Operations.h
 gtest/gtest.h
@@ -70,23 +64,27 @@ gtest/gtest.h
 gtest/gtest.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/gtest/gtest.h
 
-ChainOfResponsibility/ChainObjectHandler.h
+ChainOfResponsibility/ChainNode.h
+Operations.h
+ChainOfResponsibility/Operations.h
 IChainNode.h
 ChainOfResponsibility/IChainNode.h
+functional
+-
+iostream
+-
+
+ChainOfResponsibility/ChainOperationHandler.h
+ChainNode.h
+ChainOfResponsibility/ChainNode.h
 Operations.h
 ChainOfResponsibility/Operations.h
 
-ChainOfResponsibility/Dog.h
-IChainNode.h
-ChainOfResponsibility/IChainNode.h
-
-ChainOfResponsibility/Fish.h
-IChainNode.h
-ChainOfResponsibility/IChainNode.h
-
-ChainOfResponsibility/IChainNode.h
-string
+ChainOfResponsibility/Foo.h
+iostream
 -
+
+ChainOfResponsibility/IChainNode.h
 
 ChainOfResponsibility/Operations.h
 

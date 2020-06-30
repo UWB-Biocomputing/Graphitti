@@ -1190,7 +1190,7 @@ class TypedExpectation : public ExpectationBase {
 
   // Given the arguments of a mock function call, if the call will
   // over-saturate this expectation, returns the default action;
-  // otherwise, returns the next action in this expectation.  Also
+  // otherwise, returns the nextNode action in this expectation.  Also
   // describes *what* happened to 'what', and explains *why* Google
   // Mock does it to 'why'.  This method is not const as it calls
   // IncrementCallCount().  A return value of NULL means the default

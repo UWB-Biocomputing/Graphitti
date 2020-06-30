@@ -683,7 +683,7 @@ bool UnitTestOptions::MatchesFilter(
       return true;
     }
 
-    // Finds the next pattern in the filter.
+    // Finds the nextNode pattern in the filter.
     cur_pattern = strchr(cur_pattern, ':');
 
     // Returns if no more pattern can be found.
@@ -1412,12 +1412,12 @@ std::string CreateUnifiedDiff(const std::vector<std::string>& left,
     size_t n_suffix = 0;
     for (; edit_i < edits.size(); ++edit_i) {
       if (n_suffix >= context) {
-        // Continue only if the next hunk is very close.
+        // Continue only if the nextNode hunk is very close.
         auto it = edits.begin() + static_cast<int>(edit_i);
         while (it != edits.end() && *it == kMatch) ++it;
         if (it == edits.end() ||
             static_cast<size_t>(it - edits.begin()) - edit_i >= context) {
-          // There is no next edit or it is too far away.
+          // There is no nextNode edit or it is too far away.
           break;
         }
       }
@@ -6243,7 +6243,7 @@ static void PrintColorEncoded(const char* str) {
   // Conceptually, we split the string into segments divided by escape
   // sequences.  Then we print one segment at a time.  At the end of
   // each iteration, the str pointer advances to the beginning of the
-  // next segment.
+  // nextNode segment.
   for (;;) {
     const char* p = strchr(str, '@');
     if (p == nullptr) {

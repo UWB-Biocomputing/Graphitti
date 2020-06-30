@@ -56,11 +56,7 @@ bool deserializeSynapseInfo(SimulationInfo *simInfo, Simulator *simulator);
  *  @return -1 if error, else if success.
  */
 int main(int argc, char* argv[]) {
-    SimulationInfo *simInfo = NULL;    // simulation information
-    Simulator *simulator = NULL;       // Simulator object
-
-    // create simulation info object
-    simInfo = new SimulationInfo();
+    Simulator *simulator = Simulator::getInstance();
 
     // Handles parsing of the command line
     if (!parseCommandLine(argc, argv, simInfo)) {
@@ -86,9 +82,6 @@ int main(int argc, char* argv[]) {
 
     time_t start_time, end_time;
     time(&start_time);
-
-    // create the simulator
-    simulator = new Simulator();
 	
     // setup simulation
     DEBUG(cerr << "Setup simulation." << endl;)
@@ -164,7 +157,7 @@ int main(int argc, char* argv[]) {
     cout << "time simulated: " << simInfo->epochDuration * simInfo->maxSteps << endl;
     cout << "time elapsed: " << time_elapsed << endl;
     cout << "ssps (simulation seconds / real time seconds): " << ssps << endl;
-    
+
     delete simInfo->model;
     simInfo->model = NULL;
     

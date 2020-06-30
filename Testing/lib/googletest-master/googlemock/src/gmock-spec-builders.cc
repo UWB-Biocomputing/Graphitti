@@ -172,7 +172,7 @@ void ExpectationBase::FindUnsatisfiedPrerequisites(ExpectationSet* result) const
           expectations.push_back(next);
         }
       } else {
-        // Now that we know next is unsatisfied, we are not so interested
+        // Now that we know nextNode is unsatisfied, we are not so interested
         // in whether its pre-requisites are satisfied.  Therefore we
         // don't iterate into it here.
         *result += *it;

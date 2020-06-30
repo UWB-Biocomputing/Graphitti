@@ -14,13 +14,11 @@ include_directories(Testing/lib/googletest-master/googletest/include)
 # Add all class paths needed for main to be ran
 add_executable(SummerOfBrain
         Testing/RunTests.cpp
-        ChainOfResponsibility/Dog.cpp
-        ChainOfResponsibility/Dog.h
-        ChainOfResponsibility/Fish.cpp
-        ChainOfResponsibility/Fish.h
-        ChainOfResponsibility/IChainNode.h
-        ChainOfResponsibility/ChainObjectHandler.h
-        ChainOfResponsibility/ChainObjectHandler.cpp
+        ChainOfResponsibility/Foo.h
+        ChainOfResponsibility/Foo.cpp
+        ChainOfResponsibility/ChainNode.h
+        ChainOfResponsibility/ChainOperationHandler.h
+        ChainOfResponsibility/ChainOperationHandler.cpp
         ChainOfResponsibility/Operations.h
         Testing/ChainOfResponsibility/ChainNodeTests.cpp
         Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp)

@@ -103,7 +103,7 @@ ACTION_TEMPLATE(SetArgReferee,
                 AND_1_VALUE_PARAMS(value)) {
   typedef typename ::std::tuple_element<k, args_type>::type argk_type;
   // Ensures that argument #k is a reference.  If you get a compiler
-  // error on the next line, you are using SetArgReferee<k>(value) in
+  // error on the nextNode line, you are using SetArgReferee<k>(value) in
   // a mock function whose k-th (0-based) argument is not a reference.
   GTEST_COMPILE_ASSERT_(std::is_reference<argk_type>::value,
                         SetArgReferee_must_be_used_with_a_reference_argument);
