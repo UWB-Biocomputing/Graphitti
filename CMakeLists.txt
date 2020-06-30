@@ -17,11 +17,12 @@ add_executable(SummerOfBrain
         ChainOfResponsibility/Foo.h
         ChainOfResponsibility/Foo.cpp
         ChainOfResponsibility/ChainNode.h
-        ChainOfResponsibility/ChainOperationHandler.h
-        ChainOfResponsibility/ChainOperationHandler.cpp
+        ChainOfResponsibility/ChainNode.cpp
+        ChainOfResponsibility/ChainOperationManager.h
+        ChainOfResponsibility/ChainOperationManager.cpp
         ChainOfResponsibility/Operations.h
         Testing/ChainOfResponsibility/ChainNodeTests.cpp
-        Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp)
+        Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp)
 
 # Links the Googletest framework with Braingrid
 target_link_libraries(SummerOfBrain gtest gtest_main)

@@ -2,8 +2,7 @@
 // Created by chris on 6/22/2020.
 //
 
-#ifndef SUMMEROFBRAIN_CHAINNODE_H
-#define SUMMEROFBRAIN_CHAINNODE_H
+#pragma once
 
 #include "Operations.h"
 #include "IChainNode.h"
@@ -12,32 +11,15 @@
 
 using namespace std;
 
-// Interface
-template <class OperationObject>
 class ChainNode : public IChainNode {
 public:
-    ChainNode(OperationObject operationObject, std::function<void()> function) {
-        this->operationObject = &operationObject;
-        this->function = function;
-    }
-
-    OperationObject *operationObject;
-
-    std::function<void()> function;
-
-    IChainNode *nextNode;
-
-    // Method for setting the nextNode node in the chain
-    IChainNode *setNextNode(IChainNode *nextNode) override {
-        this->nextNode = nextNode;
-    }
+    ChainNode(std::function<void()> function);
 
     // Generic operation
-    void performOperation() {
-        __invoke(function);
-    }
+    void performOperation() override;
 
+private:
+    std::function<void()> function;
 };
 
 
-#endif //SUMMEROFBRAIN_CHAINNODE_H

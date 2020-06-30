@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.cpp
+ChainNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
+
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
 Operations.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Operations.h
@@ -16,17 +20,23 @@ functional
 iostream
 -
 
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationHandler.cpp
-ChainOperationHandler.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationHandler.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationManager.cpp
+ChainOperationManager.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationManager.h
 ChainNode.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
 
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationHandler.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationManager.h
+IChainNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h
 ChainNode.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
 Operations.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Operations.h
+list
+-
+iterator
+-
 
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Foo.cpp
 Foo.h
@@ -37,6 +47,8 @@ iostream
 -
 
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/IChainNode.h
+iostream
+-
 
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Operations.h
 
@@ -45,18 +57,22 @@ iostream
 -
 Foo.h
 -
-ChainOperationHandler.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainOperationHandler.h
 ChainNode.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainNode.h
 gtest/gtest.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/gtest/gtest.h
 
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp
-ChainOperationHandler.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainOperationHandler.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp
+ChainOperationManager.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainOperationManager.h
+ChainNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainNode.h
+IChainNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/IChainNode.h
 Operations.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/Operations.h
+Foo.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/Foo.h
 gtest/gtest.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/gtest/gtest.h
 
@@ -74,17 +90,25 @@ functional
 iostream
 -
 
-ChainOfResponsibility/ChainOperationHandler.h
+ChainOfResponsibility/ChainOperationManager.h
+IChainNode.h
+ChainOfResponsibility/IChainNode.h
 ChainNode.h
 ChainOfResponsibility/ChainNode.h
 Operations.h
 ChainOfResponsibility/Operations.h
+list
+-
+iterator
+-
 
 ChainOfResponsibility/Foo.h
 iostream
 -
 
 ChainOfResponsibility/IChainNode.h
+iostream
+-
 
 ChainOfResponsibility/Operations.h
 

@@ -356,13 +356,16 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.cpp">
+			<Option target="SummerOfBrain"/>
+		</Unit>
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h">
 			<Option target="SummerOfBrain"/>
 		</Unit>
-		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationHandler.cpp">
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationManager.cpp">
 			<Option target="SummerOfBrain"/>
 		</Unit>
-		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationHandler.h">
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationManager.h">
 			<Option target="SummerOfBrain"/>
 		</Unit>
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Foo.cpp">
@@ -377,7 +380,7 @@
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainNodeTests.cpp">
 			<Option target="SummerOfBrain"/>
 		</Unit>
-		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp">
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp">
 			<Option target="SummerOfBrain"/>
 		</Unit>
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/RunTests.cpp">

@@ -2,8 +2,7 @@
 // Created by chris on 6/29/2020.
 //
 
-#ifndef SUMMEROFBRAIN_FOO_H
-#define SUMMEROFBRAIN_FOO_H
+#pragma once
 
 #include <iostream>
 
@@ -11,7 +10,7 @@ class Foo {
 
 public:
     void Burr();
+
+    void BurrSure();
 };
 
-
-#endif //SUMMEROFBRAIN_FOO_H

@@ -105,33 +105,57 @@ CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.o.provides: CMakeFile
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.o.provides.build: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.o
 
 
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o: CMakeFiles/SummerOfBrain.dir/flags.make
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o: ChainOfResponsibility/ChainOperationHandler.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o -c /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationHandler.cpp
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o: CMakeFiles/SummerOfBrain.dir/flags.make
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o: ChainOfResponsibility/ChainNode.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o -c /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.cpp
 
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationHandler.cpp > CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.i
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.cpp > CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.i
 
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationHandler.cpp -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.s
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.cpp -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.s
 
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o.requires:
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o.requires:
 
-.PHONY : CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o.requires
+.PHONY : CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o.requires
 
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o.provides: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o.requires
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o.provides.build
-.PHONY : CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o.provides
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o.provides: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o.requires
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o.provides.build
+.PHONY : CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o.provides
 
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o.provides.build: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o.provides.build: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o
+
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o: CMakeFiles/SummerOfBrain.dir/flags.make
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o: ChainOfResponsibility/ChainOperationManager.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o -c /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationManager.cpp
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationManager.cpp > CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.i
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationManager.cpp -o CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.s
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o.requires:
+
+.PHONY : CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o.requires
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o.provides: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o.requires
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o.provides.build
+.PHONY : CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o.provides
+
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o.provides.build: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o
 
 
 CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o: CMakeFiles/SummerOfBrain.dir/flags.make
 CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o: Testing/ChainOfResponsibility/ChainNodeTests.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o -c /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainNodeTests.cpp
 
 CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.i: cmake_force
@@ -153,52 +177,54 @@ CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o.
 CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o.provides.build: CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o
 
 
-CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o: CMakeFiles/SummerOfBrain.dir/flags.make
-CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o: Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o -c /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp
+CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o: CMakeFiles/SummerOfBrain.dir/flags.make
+CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o: Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o -c /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp
 
-CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp > CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.i
+CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp > CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.i
 
-CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp -o CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.s
+CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp -o CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.s
 
-CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o.requires:
+CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o.requires:
 
-.PHONY : CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o.requires
+.PHONY : CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o.requires
 
-CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o.provides: CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o.requires
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o.provides.build
-.PHONY : CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o.provides
+CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o.provides: CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o.requires
+	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o.provides.build
+.PHONY : CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o.provides
 
-CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o.provides.build: CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o
+CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o.provides.build: CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o
 
 
 # Object files for target SummerOfBrain
 SummerOfBrain_OBJECTS = \
 "CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.o" \
 "CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.o" \
-"CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o" \
+"CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o" \
+"CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o" \
 "CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o" \
-"CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o"
+"CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o"
 
 # External object files for target SummerOfBrain
 SummerOfBrain_EXTERNAL_OBJECTS =
 
 SummerOfBrain: CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.o
 SummerOfBrain: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.o
-SummerOfBrain: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o
+SummerOfBrain: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o
+SummerOfBrain: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o
 SummerOfBrain: CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o
-SummerOfBrain: CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o
+SummerOfBrain: CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o
 SummerOfBrain: CMakeFiles/SummerOfBrain.dir/build.make
 SummerOfBrain: lib/libgtest.a
 SummerOfBrain: lib/libgtest_main.a
 SummerOfBrain: lib/libgtest.a
 SummerOfBrain: CMakeFiles/SummerOfBrain.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable SummerOfBrain"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable SummerOfBrain"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SummerOfBrain.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -208,9 +234,10 @@ CMakeFiles/SummerOfBrain.dir/build: SummerOfBrain
 
 CMakeFiles/SummerOfBrain.dir/requires: CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.o.requires
 CMakeFiles/SummerOfBrain.dir/requires: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.o.requires
-CMakeFiles/SummerOfBrain.dir/requires: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o.requires
+CMakeFiles/SummerOfBrain.dir/requires: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o.requires
+CMakeFiles/SummerOfBrain.dir/requires: CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o.requires
 CMakeFiles/SummerOfBrain.dir/requires: CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o.requires
-CMakeFiles/SummerOfBrain.dir/requires: CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o.requires
+CMakeFiles/SummerOfBrain.dir/requires: CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o.requires
 
 .PHONY : CMakeFiles/SummerOfBrain.dir/requires
 

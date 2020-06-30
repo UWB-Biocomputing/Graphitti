@@ -7,5 +7,9 @@
 using namespace std;
 
 void Foo::Burr() {
-    cout << "hello burr :)" << endl;
+    //cout << "hello burr :)" << endl;
+}
+
+void Foo::BurrSure() {
+    //cout << "oh burrsure" << endl;
 }

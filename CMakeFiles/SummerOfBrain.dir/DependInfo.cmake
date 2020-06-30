@@ -4,10 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationHandler.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationHandler.cpp.o"
+  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o"
+  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationManager.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o"
   "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Foo.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.o"
   "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainNodeTests.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o"
-  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainObjectHandlerTests.cpp.o"
+  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o"
   "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/RunTests.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
