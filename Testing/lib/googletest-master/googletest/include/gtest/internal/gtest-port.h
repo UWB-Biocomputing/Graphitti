@@ -939,7 +939,7 @@ class GTEST_API_ RE {
 GTEST_API_ ::std::string FormatFileLocation(const char* file, int line);
 
 // Formats a file location for compiler-independent XML output.
-// Although this function is not platform dependent, we put it next to
+// Although this function is not platform dependent, we put it nextNode to
 // FormatFileLocation in order to contrast the two functions.
 GTEST_API_ ::std::string FormatCompilerIndependentFileLocation(const char* file,
                                                                int line);

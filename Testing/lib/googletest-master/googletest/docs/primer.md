@@ -26,7 +26,7 @@ So what makes a good test, and how does googletest fit in? We believe:
     exceptions, so googletest tests can work with a variety of configurations.
 4.  When tests fail, they should provide as much *information* about the problem
     as possible. googletest doesn't stop at the first test failure. Instead, it
-    only stops the current test and continues with the next. You can also set up
+    only stops the current test and continues with the nextNode. You can also set up
     tests that report non-fatal failures after which the current test continues.
     Thus, you can detect and fix multiple bugs in a single run-edit-compile
     cycle.
@@ -347,7 +347,7 @@ For each test defined with `TEST_F()`, googletest will create a *fresh* test
 fixture at runtime, immediately initialize it via `SetUp()`, run the test,
 clean up by calling `TearDown()`, and then delete the test fixture. Note that
 different tests in the same test suite have different test fixture objects, and
-googletest always deletes a test fixture before it creates the next one.
+googletest always deletes a test fixture before it creates the nextNode one.
 googletest does **not** reuse the same test fixture for multiple tests. Any
 changes one test makes to the fixture do not affect other tests.
 
@@ -460,7 +460,7 @@ When invoked, the `RUN_ALL_TESTS()` macro:
 
 *   Restores the state of all googletest flags.
 
-*   Repeats the above steps for the next test, until all tests have run.
+*   Repeats the above steps for the nextNode test, until all tests have run.
 
 If a fatal failure happens the subsequent steps will be skipped.
 

@@ -34,7 +34,7 @@ When using gMock,
 
 1.  first, you use some simple macros to describe the interface you want to
     mock, and they will expand to the implementation of your mock class;
-2.  next, you create some mock objects and specify its expectations and behavior
+2.  nextNode, you create some mock objects and specify its expectations and behavior
     using an intuitive syntax;
 3.  then you exercise code that uses the mock objects. gMock will catch any
     violation to the expectations as soon as it arises.
@@ -49,7 +49,7 @@ them fast and reliable, using mocks manually in C++ is *hard*:
 *   The quality of those manually written mocks is a bit, uh, unpredictable. You
     may see some really polished ones, but you may also see some that were
     hacked up in a hurry and have all sorts of ad hoc restrictions.
-*   The knowledge you gained from using one mock doesn't transfer to the next
+*   The knowledge you gained from using one mock doesn't transfer to the nextNode
     one.
 
 In contrast, Java and Python programmers have some fine mock frameworks (jMock,

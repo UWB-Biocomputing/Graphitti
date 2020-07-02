@@ -511,7 +511,7 @@ inline Matcher<T> MatcherCast(const M& matcher) {
 }
 
 // This overload handles polymorphic matchers and values only since
-// monomorphic matchers are handled by the next one.
+// monomorphic matchers are handled by the nextNode one.
 template <typename T, typename M>
 inline Matcher<T> SafeMatcherCast(const M& polymorphic_matcher_or_value) {
   return MatcherCast<T>(polymorphic_matcher_or_value);

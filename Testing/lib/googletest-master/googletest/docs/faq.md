@@ -123,7 +123,7 @@ rough guidelines:
 I hope I didn't confuse you more. :-) If you don't mind, I'd suggest you to give
 both approaches a try. Practice is a much better way to grasp the subtle
 differences between the two tools. Once you have some concrete experience, you
-can much more easily decide which one to use the next time.
+can much more easily decide which one to use the nextNode time.
 
 ## I got some run-time errors about invalid proto descriptors when using `ProtocolMessageEquals`. Help!
 
@@ -610,7 +610,7 @@ runs on, you shouldn't depend on this.
 ## Why does googletest require the entire test suite, instead of individual tests, to be named *DeathTest when it uses ASSERT_DEATH?
 
 googletest does not interleave tests from different test suites. That is, it
-runs all tests in one test suite first, and then runs all tests in the next test
+runs all tests in one test suite first, and then runs all tests in the nextNode test
 suite, and so on. googletest does this because it needs to set up a test suite
 before the first test in it is run, and tear it down afterwords. Splitting up
 the test case would require multiple set-up and tear-down processes, which is

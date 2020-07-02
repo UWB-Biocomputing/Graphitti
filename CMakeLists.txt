@@ -3,18 +3,26 @@ project(SummerOfBrain)
 
 set(CMAKE_CXX_STANDARD 14)
 
-include_directories(ChainOfResponsibility)
+# Add all directories that contain used classes
+include_directories(ChainOfResponsibility
+        Testing)
 
+# Including Googletest subdirectories
 add_subdirectory(Testing/lib/googletest-master)
-
 include_directories(Testing/lib/googletest-master/googletest/include)
 
+# Add all class paths needed for main to be ran
 add_executable(SummerOfBrain
-        ChainOfResponsibility/ChainNodeTest.cpp
-        ChainOfResponsibility/Dog.cpp
-        ChainOfResponsibility/Dog.h
-        ChainOfResponsibility/Fish.cpp
-        ChainOfResponsibility/Fish.h
-        ChainOfResponsibility/IChainNode.h)
+        Testing/RunTests.cpp
+        ChainOfResponsibility/Foo.h
+        ChainOfResponsibility/Foo.cpp
+        ChainOfResponsibility/GenericFunctionNode.h
+        ChainOfResponsibility/GenericFunctionNode.cpp
+        Core/OperationManager.h
+        Core/OperationManager.cpp
+        ChainOfResponsibility/Operations.h
+        Testing/ChainOfResponsibility/FunctionNodeTests.cpp
+        Testing/ChainOfResponsibility/OperationManagerTests.cpp)
 
+# Links the Googletest framework with Braingrid
 target_link_libraries(SummerOfBrain gtest gtest_main)

@@ -142,7 +142,7 @@ template <typename T>
 class MatcherInterface : public MatcherDescriberInterface {
  public:
   // Returns true if and only if the matcher matches x; also explains the
-  // match result to 'listener' if necessary (see the next paragraph), in
+  // match result to 'listener' if necessary (see the nextNode paragraph), in
   // the form of a non-restrictive relative clause ("which ...",
   // "whose ...", etc) that describes x.  For example, the
   // MatchAndExplain() method of the Pointee(...) matcher should

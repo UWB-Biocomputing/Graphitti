@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=gnu++14
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility -isystem /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include -isystem /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest 
+CXX_INCLUDES = -I/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility -I/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing -isystem /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include -isystem /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest 
 
