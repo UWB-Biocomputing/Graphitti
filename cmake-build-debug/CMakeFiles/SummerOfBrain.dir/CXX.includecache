@@ -9,8 +9,8 @@
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNodeTest.cpp
 iostream
 -
-ChainNode.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
+GenericFunctionNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/GenericFunctionNode.h
 Dog.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.h
 Fish.h
@@ -21,24 +21,24 @@ gtest/gtest.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.cpp
 Dog.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.h
-ChainNode.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
+GenericFunctionNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/GenericFunctionNode.h
 
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.h
-ChainNode.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
+GenericFunctionNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/GenericFunctionNode.h
 
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Fish.cpp
 Fish.h
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Fish.h
-ChainNode.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
+GenericFunctionNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/GenericFunctionNode.h
 
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Fish.h
-ChainNode.h
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
+GenericFunctionNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/GenericFunctionNode.h
 
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/GenericFunctionNode.h
 string
 -
 

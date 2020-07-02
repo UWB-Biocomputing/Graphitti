@@ -6,10 +6,10 @@
 
 using namespace std;
 
-void Foo::Burr() {
-    //cout << "hello burr :)" << endl;
+void Foo::allocateMemory() {
+    // cout << "allocating memory" << endl;
 }
 
-void Foo::BurrSure() {
-    //cout << "oh burrsure" << endl;
+void Foo::deallocateMemory() {
+    // cout << "deallocating memory" << endl;
 }

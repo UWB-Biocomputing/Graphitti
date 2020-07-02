@@ -9,8 +9,8 @@
 class Foo {
 
 public:
-    void Burr();
+    void allocateMemory();
 
-    void BurrSure();
+    void deallocateMemory();
 };
 

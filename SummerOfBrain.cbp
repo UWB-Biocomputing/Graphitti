@@ -356,31 +356,31 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.cpp">
-			<Option target="SummerOfBrain"/>
-		</Unit>
-		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h">
-			<Option target="SummerOfBrain"/>
-		</Unit>
-		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationManager.cpp">
-			<Option target="SummerOfBrain"/>
-		</Unit>
-		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationManager.h">
-			<Option target="SummerOfBrain"/>
-		</Unit>
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Foo.cpp">
 			<Option target="SummerOfBrain"/>
 		</Unit>
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Foo.h">
 			<Option target="SummerOfBrain"/>
 		</Unit>
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/GenericFunctionNode.cpp">
+			<Option target="SummerOfBrain"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/GenericFunctionNode.h">
+			<Option target="SummerOfBrain"/>
+		</Unit>
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Operations.h">
 			<Option target="SummerOfBrain"/>
 		</Unit>
-		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainNodeTests.cpp">
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/OperationManager.cpp">
 			<Option target="SummerOfBrain"/>
 		</Unit>
-		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp">
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/OperationManager.h">
+			<Option target="SummerOfBrain"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/FunctionNodeTests.cpp">
+			<Option target="SummerOfBrain"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/OperationManagerTests.cpp">
 			<Option target="SummerOfBrain"/>
 		</Unit>
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/RunTests.cpp">

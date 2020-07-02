@@ -1,10 +1,10 @@
 file(REMOVE_RECURSE
   "CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.o"
   "CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.o"
-  "CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o"
-  "CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o"
-  "CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o"
-  "CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o"
+  "CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/GenericFunctionNode.cpp.o"
+  "CMakeFiles/SummerOfBrain.dir/Core/OperationManager.cpp.o"
+  "CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/FunctionNodeTests.cpp.o"
+  "CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/OperationManagerTests.cpp.o"
   "SummerOfBrain.pdb"
   "SummerOfBrain"
 )

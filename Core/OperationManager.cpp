@@ -2,23 +2,39 @@
 // Created by chris on 6/26/2020.
 //
 
-#include "ChainOperationManager.h"
-#include "ChainNode.h"
+#include "OperationManager.h"
+#include "GenericFunctionNode.h"
+
+/**
+ * Singleton instance method that registers and executes functions based on operation types.
+ *
+ * This class allows high level classes to perform high level operations that are defined by lower level classes.
+ * Implementation of chain of responsibility design pattern.
+ *
+ */
 
 // Singleton instance, reference to this class, initialized as nullptr so that it can be accessed
-ChainOperationManager *ChainOperationManager::instance = nullptr;
+OperationManager *OperationManager::instance = nullptr;
 
-// Get Instance method that acts as a constructor, returns the instance of the singleton object
-ChainOperationManager *ChainOperationManager::getInstance() {
+// Get Instance method that creates an instance one doesn't already exist, returns the instance of the singleton object
+OperationManager *OperationManager::getInstance() {
     if (instance == nullptr) {
-        instance = new ChainOperationManager();
+        instance = new OperationManager();
     }
     return instance;
 }
 
-// Method for executing operations in the chain of objects
-bool ChainOperationManager::executeOperation(const Operations::op &operation) {
-    list<IChainNode*> *listToExecute;
+// Called by lower level classes constructors on creation to register their operations categorized by the operation type
+// This method can be overloaded to handle different function signatures
+// Handles function signature: void ()
+bool OperationManager::registerOperation(const Operations::op &operation, const function<void()> function) {
+    IFunctionNode *chainNode = new GenericFunctionNode(function);
+    return registerOperationHelper(operation, chainNode);
+}
+
+// Takes in a operation type and invokes all registered functions that are registered as that operation type
+bool OperationManager::executeOperation(const Operations::op &operation) {
+    list<IFunctionNode *> *listToExecute;
     switch (operation) {
         case Operations::op::allocateMemory :
             listToExecute = &allocateMemoryList;
@@ -39,17 +55,18 @@ bool ChainOperationManager::executeOperation(const Operations::op &operation) {
             return false;
     }
     if (listToExecute->size() > 0) {
-        list<IChainNode*>::iterator i;
+        list<IFunctionNode *>::iterator i;
         for (i = listToExecute->begin(); i != listToExecute->end(); ++i) {
-            (*i)->performOperation();
+            (*i)->invokeFunction();
         }
         return true;
     }
     return false;
 }
 
-bool ChainOperationManager::addNodeToChain(const Operations::op &operation, IChainNode *newNode) {
-    list<IChainNode*> *listToAddNode;
+// private function: helper method that adds the registered function as part of the specified operation type
+bool OperationManager::registerOperationHelper(const Operations::op &operation, IFunctionNode *newNode) {
+    list<IFunctionNode *> *listToAddNode;
     switch (operation) {
         case Operations::op::allocateMemory :
             listToAddNode = &allocateMemoryList;

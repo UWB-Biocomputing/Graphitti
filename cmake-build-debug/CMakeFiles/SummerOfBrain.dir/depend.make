@@ -4,7 +4,7 @@
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNodeTest.cpp
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.h
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Fish.h
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/GenericFunctionNode.h
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include/gtest/gtest-death-test.h
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include/gtest/gtest-matchers.h
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include/gtest/gtest-message.h
@@ -28,9 +28,9 @@ CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNodeTest.cpp.o: /mnt/c/U
 
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.cpp
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Dog.h
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Dog.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/GenericFunctionNode.h
 
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Fish.cpp
 CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Fish.h
-CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.h
+CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Fish.cpp.o: /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/GenericFunctionNode.h
 

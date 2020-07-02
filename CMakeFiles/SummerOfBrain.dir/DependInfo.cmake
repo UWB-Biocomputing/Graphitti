@@ -4,11 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainNode.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainNode.cpp.o"
-  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/ChainOperationManager.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/ChainOperationManager.cpp.o"
   "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/Foo.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.o"
-  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainNodeTests.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainNodeTests.cpp.o"
-  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp.o"
+  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility/GenericFunctionNode.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/GenericFunctionNode.cpp.o"
+  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/OperationManager.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/Core/OperationManager.cpp.o"
+  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/FunctionNodeTests.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/FunctionNodeTests.cpp.o"
+  "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/ChainOfResponsibility/OperationManagerTests.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/OperationManagerTests.cpp.o"
   "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/RunTests.cpp" "/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
