@@ -10,7 +10,7 @@
 /**
  * This class is used for testing the GenericFunctionNode using GTest.
  *
- * Must test manually since the operations provide no return value.
+ *
  */
 
 
@@ -20,6 +20,6 @@ using namespace std::placeholders;
 TEST(ChainNode, TemplateFunctionTest) {
     Foo foo;
     function<void()> func = std::bind(&Foo::allocateMemory, foo);
-    IFunctionNode *chainNode = new GenericFunctionNode(func);
-    chainNode->invokeFunction();
+    IFunctionNode *chainNode = new GenericFunctionNode(Operations::op::allocateMemory, func);
+    ASSERT_TRUE(chainNode->invokeFunction(Operations::op::allocateMemory));
 }

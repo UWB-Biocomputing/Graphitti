@@ -7,9 +7,9 @@
 using namespace std;
 
 void Foo::allocateMemory() {
-    // cout << "allocating memory" << endl;
+    //cout << "allocating memory" << endl;
 }
 
 void Foo::deallocateMemory() {
-    // cout << "deallocating memory" << endl;
+    //cout << "deallocating memory" << endl;
 }

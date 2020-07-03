@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "Operations.h"
 #include <iostream>
 
 /**
@@ -15,5 +16,7 @@ using namespace std;
 
 class IFunctionNode {
 public:
-    virtual void invokeFunction() = 0;
+    Operations::op operationType;
+
+    virtual bool invokeFunction(const Operations::op &operation) = 0;
 };

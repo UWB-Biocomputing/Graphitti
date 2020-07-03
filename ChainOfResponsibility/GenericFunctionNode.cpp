@@ -5,18 +5,23 @@
 #include "GenericFunctionNode.h"
 
 /**
- * Stores a function to invoke.
- * Used by operation manager to store functions to defined by an operation type.
+ * Stores a function and the operation type of that function.
+ * Used by operation manager to execute operations by invoking functions of a certain operation type
  *
  * Function Signature supported : void ()
  */
 
 // Constructor
-GenericFunctionNode::GenericFunctionNode(std::function<void()> function) {
-    this->function = function;
+GenericFunctionNode::GenericFunctionNode(const Operations::op &operation, std::function<void()> func) {
+    operationType = operation;
+    function = func;
 }
 
-// Invokes the stored function
-void GenericFunctionNode::invokeFunction() {
-    __invoke(function);
+// Invokes the stored function if the sent operation type matches the operation type the function is stored as
+bool GenericFunctionNode::invokeFunction(const Operations::op &operation) {
+    if (operation == operationType) {
+        __invoke(function);
+        return true;
+    }
+    return false;
 }

@@ -22,16 +22,20 @@ TEST(OperationManager, GetInstanceReturnsInstance) {
     ASSERT_TRUE(OperationManager::getInstance() != nullptr);
 }
 
-TEST(OperationManager, AddNodeToChain) {
-    Foo foo;
-    function<void()> function = std::bind(&Foo::deallocateMemory, foo);
-    ASSERT_TRUE(OperationManager::getInstance()->registerOperation(Operations::op::deallocateMemory, function));
+TEST(OperationManagerTestObject, OperationExecutionWithEmptyList) {
+    ASSERT_FALSE(OperationManager::getInstance()->executeOperation(Operations::op::allocateMemory));
 }
 
-TEST(OperationManager, OperationPassedToChain) {
+TEST(OperationManager, AddNode) {
+    Foo foo;
+    function<void()> function = std::bind(&Foo::deallocateMemory, foo);
+    OperationManager::getInstance()->registerOperation(Operations::op::deallocateMemory, function);
+}
+
+TEST(OperationManager, OperationExecutionSuccess) {
     ASSERT_TRUE(OperationManager::getInstance()->executeOperation(Operations::op::deallocateMemory));
 }
 
-TEST(OperationManagerTestObject, OperationPassedToEmptyChain) {
-    ASSERT_FALSE(OperationManager::getInstance()->executeOperation(Operations::op::copyFromGPU));
+TEST(OperationManager, OperationExecutionContainsNoFunctionsOfOperationType) {
+    ASSERT_FALSE(OperationManager::getInstance()->executeOperation(Operations::copyToGPU));
 }
