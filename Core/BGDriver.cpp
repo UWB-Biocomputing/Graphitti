@@ -56,7 +56,7 @@ bool deserializeSynapseInfo(SimulationInfo *simInfo, Simulator *simulator);
  *  @return -1 if error, else if success.
  */
 int main(int argc, char* argv[]) {
-    Simulator *simulator = Simulator::getInstance();       // Simulator object
+    Simulator *simulator = Simulator::getInstance();
 
     // Handles parsing of the command line
     if (!parseCommandLine(argc, argv)) {
@@ -82,7 +82,6 @@ int main(int argc, char* argv[]) {
 
     time_t start_time, end_time;
     time(&start_time);
-
 	
     // setup simulation
     DEBUG(cerr << "Setup simulation." << endl;)
@@ -161,7 +160,7 @@ int main(int argc, char* argv[]) {
     
     delete model;
     model = NULL;
-    
+
     if (simRecorder != NULL) {
         delete simRecorder;
         simRecorder = NULL;

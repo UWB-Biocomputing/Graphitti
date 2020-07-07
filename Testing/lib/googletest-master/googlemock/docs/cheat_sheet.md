@@ -524,7 +524,7 @@ which must be a permanent callback.
 | `ReturnPointee(ptr)`              | Return the value pointed to by `ptr`.         |
 | `ReturnRef(variable)`             | Return a reference to `variable`.             |
 | `ReturnRefOfCopy(value)`          | Return a reference to a copy of `value`; the  copy lives as long as the action. |
-| `ReturnRoundRobin({a1, ..., ak})` | Each call will return the next `ai` in the list, starting at the beginning when the end of the list is reached. |
+| `ReturnRoundRobin({a1, ..., ak})` | Each call will return the nextNode `ai` in the list, starting at the beginning when the end of the list is reached. |
 <!-- mdformat on -->
 
 #### Side Effects

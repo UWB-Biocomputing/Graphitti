@@ -1507,7 +1507,7 @@ contract of the code.** If a test over-specifies, it doesn't leave enough
 freedom to the implementation. As a result, changing the implementation without
 breaking the contract (e.g. refactoring and optimization), which should be
 perfectly fine to do, can break such tests. Then you have to spend time fixing
-them, only to see them broken again the next time the implementation is changed.
+them, only to see them broken again the nextNode time the implementation is changed.
 
 Keep in mind that one doesn't have to verify more than one property in one test.
 In fact, **it's a good style to verify only one thing in one test.** If you do
@@ -2130,7 +2130,7 @@ class MockFoo : public Foo {
 
 Please note that changing the default value for a type can make you tests hard
 to understand. We recommend you to use this feature judiciously. For example,
-you may want to make sure the `Set()` and `Clear()` calls are right next to the
+you may want to make sure the `Set()` and `Clear()` calls are right nextNode to the
 code that uses your mock.
 
 ### Setting the Default Actions for a Mock Method
@@ -2804,7 +2804,7 @@ Quiz time! What do you think will happen if a `Return(ByMove(...))` action is
 performed more than once (e.g. you write `...
 .WillRepeatedly(Return(ByMove(...)));`)? Come think of it, after the first time
 the action runs, the source value will be consumed (since it’s a move-only
-value), so the next time around, there’s no value to move from -- you’ll get a
+value), so the nextNode time around, there’s no value to move from -- you’ll get a
 run-time error that `Return(ByMove(...))` can only be run once.
 
 If you need your mock method to do more than just moving a pre-defined value,
@@ -3279,15 +3279,15 @@ command line.
 If you build and run your tests in Emacs using the `M-x google-compile` command
 (as many googletest users do), the source file locations of gMock and googletest
 errors will be highlighted. Just press `<Enter>` on one of them and you'll be
-taken to the offending line. Or, you can just type `C-x`` to jump to the next
+taken to the offending line. Or, you can just type `C-x`` to jump to the nextNode
 error.
 
 To make it even easier, you can add the following lines to your `~/.emacs` file:
 
 ```text
 (global-set-key "\M-m"  'google-compile)  ; m is for make
-(global-set-key [M-down] 'next-error)
-(global-set-key [M-up]  '(lambda () (interactive) (next-error -1)))
+(global-set-key [M-down] 'nextNode-error)
+(global-set-key [M-up]  '(lambda () (interactive) (nextNode-error -1)))
 ```
 
 Then you can type `M-m` to start a build (if you want to run the test as well,

@@ -97,7 +97,7 @@ class ParamIteratorInterface {
   // Used only for the purposes of iterator comparison
   // to make sure that two iterators belong to the same generator.
   virtual const ParamGeneratorInterface<T>* BaseGenerator() const = 0;
-  // Advances iterator to point to the next element
+  // Advances iterator to point to the nextNode element
   // provided by the generator. The caller is responsible
   // for not calling Advance() on an iterator equal to
   // BaseGenerator()->End().
