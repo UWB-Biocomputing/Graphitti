@@ -1,12 +1,12 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.o"
   "CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.o"
   "CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/GenericFunctionNode.cpp.o"
   "CMakeFiles/SummerOfBrain.dir/Core/OperationManager.cpp.o"
   "CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/FunctionNodeTests.cpp.o"
   "CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/OperationManagerTests.cpp.o"
-  "SummerOfBrain.pdb"
+  "CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.o"
   "SummerOfBrain"
+  "SummerOfBrain.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

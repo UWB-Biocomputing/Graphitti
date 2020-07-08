@@ -14,7 +14,7 @@ public:
     // Available operations the OperationManager can register and execute
     enum op {
         allocateMemory,
-        deallocateMemory,
+        deallocateMemory,  // free resources () ?? 
         restoreToDefault,
         copyToGPU,
         copyFromGPU

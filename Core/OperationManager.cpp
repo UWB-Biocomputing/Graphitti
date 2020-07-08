@@ -37,6 +37,7 @@ OperationManager *OperationManager::getInstance() {
 // Called by lower level classes constructors on creation to register their operations with their operation type
 // This method can be overloaded to handle different function signatures
 // Handles function signature: void ()
+// takes in function we want to register, and also type (TS), makes new node and adds to list
 void OperationManager::registerOperation(const Operations::op &operation, function<void()> function) {
     IFunctionNode *functionNode = new GenericFunctionNode(operation, function);
     functionList->push_back(functionNode);

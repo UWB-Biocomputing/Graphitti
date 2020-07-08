@@ -6,13 +6,11 @@
 
 #include "IChainNode.h"
 
-class Vertices : public IChainNode {
+class Vertices {
 public:
     Vertices();
 
-    IChainNode *SetNextNode(IChainNode *nextNode);
 
-    void PerformOperation(const Operations::op &operation);
 
 private:
     void allocateMemory();

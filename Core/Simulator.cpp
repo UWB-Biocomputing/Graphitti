@@ -440,6 +440,11 @@ BGFLOAT Simulator::getMaxRate() {return maxRate;}
 //! List of summation points (either host or device memory)
 BGFLOAT* Simulator::getPSummationMap() {return pSummationMap;}
 
+//! List of summation points (either host or device memory)
+void Simulator::setPSummationMap(BGFLOAT* summationMap) {
+  pSummationMap = summationMap;
+  }
+
 //! Seed used for the simulation random SINGLE THREADED
 long Simulator::getSeed() {return seed;}
 

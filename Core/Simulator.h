@@ -81,6 +81,9 @@ class Simulator : public TiXmlVisitor                                       // a
 	//! List of summation points (either host or device memory)
         BGFLOAT* getPSummationMap();
 
+        // Mutator for summation map (added late)
+        void setPSummationMap(BGFLOAT* summationMap); 
+
 	//! Seed used for the simulation random SINGLE THREADED
         long getSeed();
 

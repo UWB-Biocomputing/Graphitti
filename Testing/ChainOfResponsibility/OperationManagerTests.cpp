@@ -22,6 +22,7 @@ TEST(OperationManager, GetInstanceReturnsInstance) {
     ASSERT_TRUE(OperationManager::getInstance() != nullptr);
 }
 
+// call high level operation (execute operation) to get rid of hassle of going down to lower level classes. 
 TEST(OperationManagerTestObject, OperationExecutionWithEmptyList) {
     ASSERT_FALSE(OperationManager::getInstance()->executeOperation(Operations::op::allocateMemory));
 }
