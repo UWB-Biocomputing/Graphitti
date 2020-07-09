@@ -7,6 +7,7 @@
 #include "IFunctionNode.h"
 #include "GenericFunctionNode.h"
 #include "Operations.h"
+#include <memory>
 #include <list>
 #include <iterator>
 
@@ -26,13 +27,13 @@ public:
     // Destructor
     ~OperationManager();
 
-    // Takes in a operation type and invokes all registered functions that are registered as that operation type
-    bool executeOperation(const Operations::op &operation);
-
     // Called by lower level classes constructors on creation to register their operations categorized by
     // the operation type
     // Handles function signature: void ()
     void registerOperation(const Operations::op &operation, function<void()> function);
+
+    // Takes in a operation type and invokes all registered functions that are registered as that operation type
+    void executeOperation(const Operations::op &operation);
 
 private:
     // Constructor is private to keep a singleton instance of this class
@@ -42,7 +43,7 @@ private:
     static OperationManager *instance;
 
     // LinkedLists of functions based on operation type
-    list<IFunctionNode *> *functionList;
+    list<unique_ptr<IFunctionNode>> functionList;
 };
 
 

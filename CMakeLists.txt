@@ -5,14 +5,24 @@ set(CMAKE_CXX_STANDARD 14)
 
 # Add all directories that contain used classes
 include_directories(ChainOfResponsibility
+        Core
         Testing)
 
 # Including Googletest subdirectories
 add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/googletest-master/googletest/include)
 
-# Add all class paths needed for main to be ran
-add_executable(SummerOfBrain
+# CPU SIMULATOR EXECUTABLE
+# Add all class paths needed for dependencies
+#add_executable(BrainGrid)
+
+# GPU SIMULATOR EXECUTABLE
+# Add all class paths needed for dependencies
+#add_executable(BrainGrid-cuda)
+
+# TEST EXECUTABLE
+# Add all class paths needed for dependencies
+add_executable(Tests
         Testing/RunTests.cpp
         ChainOfResponsibility/Foo.h
         ChainOfResponsibility/Foo.cpp
@@ -24,5 +34,5 @@ add_executable(SummerOfBrain
         Testing/ChainOfResponsibility/FunctionNodeTests.cpp
         Testing/ChainOfResponsibility/OperationManagerTests.cpp)
 
-# Links the Googletest framework with Braingrid
-target_link_libraries(SummerOfBrain gtest gtest_main)
+# Links the Googletest framework with the testing classes
+target_link_libraries(Tests gtest gtest_main)

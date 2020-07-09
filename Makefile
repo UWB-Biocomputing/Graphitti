@@ -79,6 +79,17 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
+
 # Special rule for the target list_install_components
 list_install_components:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
@@ -100,17 +111,6 @@ install/local/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
-
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
 
 # Special rule for the target install
 install: preinstall
@@ -157,17 +157,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named SummerOfBrain
+# Target rules for targets named Tests
 
 # Build rule for target.
-SummerOfBrain: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 SummerOfBrain
-.PHONY : SummerOfBrain
+Tests: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Tests
+.PHONY : Tests
 
 # fast build rule for target.
-SummerOfBrain/fast:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/build
-.PHONY : SummerOfBrain/fast
+Tests/fast:
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/build
+.PHONY : Tests/fast
 
 #=============================================================================
 # Target rules for targets named gmock_main
@@ -227,7 +227,7 @@ ChainOfResponsibility/Foo.o: ChainOfResponsibility/Foo.cpp.o
 
 # target to build an object file
 ChainOfResponsibility/Foo.cpp.o:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.o
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/ChainOfResponsibility/Foo.cpp.o
 .PHONY : ChainOfResponsibility/Foo.cpp.o
 
 ChainOfResponsibility/Foo.i: ChainOfResponsibility/Foo.cpp.i
@@ -236,7 +236,7 @@ ChainOfResponsibility/Foo.i: ChainOfResponsibility/Foo.cpp.i
 
 # target to preprocess a source file
 ChainOfResponsibility/Foo.cpp.i:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.i
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/ChainOfResponsibility/Foo.cpp.i
 .PHONY : ChainOfResponsibility/Foo.cpp.i
 
 ChainOfResponsibility/Foo.s: ChainOfResponsibility/Foo.cpp.s
@@ -245,7 +245,7 @@ ChainOfResponsibility/Foo.s: ChainOfResponsibility/Foo.cpp.s
 
 # target to generate assembly for a file
 ChainOfResponsibility/Foo.cpp.s:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/Foo.cpp.s
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/ChainOfResponsibility/Foo.cpp.s
 .PHONY : ChainOfResponsibility/Foo.cpp.s
 
 ChainOfResponsibility/GenericFunctionNode.o: ChainOfResponsibility/GenericFunctionNode.cpp.o
@@ -254,7 +254,7 @@ ChainOfResponsibility/GenericFunctionNode.o: ChainOfResponsibility/GenericFuncti
 
 # target to build an object file
 ChainOfResponsibility/GenericFunctionNode.cpp.o:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/GenericFunctionNode.cpp.o
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/ChainOfResponsibility/GenericFunctionNode.cpp.o
 .PHONY : ChainOfResponsibility/GenericFunctionNode.cpp.o
 
 ChainOfResponsibility/GenericFunctionNode.i: ChainOfResponsibility/GenericFunctionNode.cpp.i
@@ -263,7 +263,7 @@ ChainOfResponsibility/GenericFunctionNode.i: ChainOfResponsibility/GenericFuncti
 
 # target to preprocess a source file
 ChainOfResponsibility/GenericFunctionNode.cpp.i:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/GenericFunctionNode.cpp.i
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/ChainOfResponsibility/GenericFunctionNode.cpp.i
 .PHONY : ChainOfResponsibility/GenericFunctionNode.cpp.i
 
 ChainOfResponsibility/GenericFunctionNode.s: ChainOfResponsibility/GenericFunctionNode.cpp.s
@@ -272,7 +272,7 @@ ChainOfResponsibility/GenericFunctionNode.s: ChainOfResponsibility/GenericFuncti
 
 # target to generate assembly for a file
 ChainOfResponsibility/GenericFunctionNode.cpp.s:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/ChainOfResponsibility/GenericFunctionNode.cpp.s
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/ChainOfResponsibility/GenericFunctionNode.cpp.s
 .PHONY : ChainOfResponsibility/GenericFunctionNode.cpp.s
 
 Core/OperationManager.o: Core/OperationManager.cpp.o
@@ -281,7 +281,7 @@ Core/OperationManager.o: Core/OperationManager.cpp.o
 
 # target to build an object file
 Core/OperationManager.cpp.o:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Core/OperationManager.cpp.o
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Core/OperationManager.cpp.o
 .PHONY : Core/OperationManager.cpp.o
 
 Core/OperationManager.i: Core/OperationManager.cpp.i
@@ -290,7 +290,7 @@ Core/OperationManager.i: Core/OperationManager.cpp.i
 
 # target to preprocess a source file
 Core/OperationManager.cpp.i:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Core/OperationManager.cpp.i
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Core/OperationManager.cpp.i
 .PHONY : Core/OperationManager.cpp.i
 
 Core/OperationManager.s: Core/OperationManager.cpp.s
@@ -299,7 +299,7 @@ Core/OperationManager.s: Core/OperationManager.cpp.s
 
 # target to generate assembly for a file
 Core/OperationManager.cpp.s:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Core/OperationManager.cpp.s
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Core/OperationManager.cpp.s
 .PHONY : Core/OperationManager.cpp.s
 
 Testing/ChainOfResponsibility/FunctionNodeTests.o: Testing/ChainOfResponsibility/FunctionNodeTests.cpp.o
@@ -308,7 +308,7 @@ Testing/ChainOfResponsibility/FunctionNodeTests.o: Testing/ChainOfResponsibility
 
 # target to build an object file
 Testing/ChainOfResponsibility/FunctionNodeTests.cpp.o:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/FunctionNodeTests.cpp.o
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Testing/ChainOfResponsibility/FunctionNodeTests.cpp.o
 .PHONY : Testing/ChainOfResponsibility/FunctionNodeTests.cpp.o
 
 Testing/ChainOfResponsibility/FunctionNodeTests.i: Testing/ChainOfResponsibility/FunctionNodeTests.cpp.i
@@ -317,7 +317,7 @@ Testing/ChainOfResponsibility/FunctionNodeTests.i: Testing/ChainOfResponsibility
 
 # target to preprocess a source file
 Testing/ChainOfResponsibility/FunctionNodeTests.cpp.i:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/FunctionNodeTests.cpp.i
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Testing/ChainOfResponsibility/FunctionNodeTests.cpp.i
 .PHONY : Testing/ChainOfResponsibility/FunctionNodeTests.cpp.i
 
 Testing/ChainOfResponsibility/FunctionNodeTests.s: Testing/ChainOfResponsibility/FunctionNodeTests.cpp.s
@@ -326,7 +326,7 @@ Testing/ChainOfResponsibility/FunctionNodeTests.s: Testing/ChainOfResponsibility
 
 # target to generate assembly for a file
 Testing/ChainOfResponsibility/FunctionNodeTests.cpp.s:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/FunctionNodeTests.cpp.s
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Testing/ChainOfResponsibility/FunctionNodeTests.cpp.s
 .PHONY : Testing/ChainOfResponsibility/FunctionNodeTests.cpp.s
 
 Testing/ChainOfResponsibility/OperationManagerTests.o: Testing/ChainOfResponsibility/OperationManagerTests.cpp.o
@@ -335,7 +335,7 @@ Testing/ChainOfResponsibility/OperationManagerTests.o: Testing/ChainOfResponsibi
 
 # target to build an object file
 Testing/ChainOfResponsibility/OperationManagerTests.cpp.o:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/OperationManagerTests.cpp.o
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Testing/ChainOfResponsibility/OperationManagerTests.cpp.o
 .PHONY : Testing/ChainOfResponsibility/OperationManagerTests.cpp.o
 
 Testing/ChainOfResponsibility/OperationManagerTests.i: Testing/ChainOfResponsibility/OperationManagerTests.cpp.i
@@ -344,7 +344,7 @@ Testing/ChainOfResponsibility/OperationManagerTests.i: Testing/ChainOfResponsibi
 
 # target to preprocess a source file
 Testing/ChainOfResponsibility/OperationManagerTests.cpp.i:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/OperationManagerTests.cpp.i
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Testing/ChainOfResponsibility/OperationManagerTests.cpp.i
 .PHONY : Testing/ChainOfResponsibility/OperationManagerTests.cpp.i
 
 Testing/ChainOfResponsibility/OperationManagerTests.s: Testing/ChainOfResponsibility/OperationManagerTests.cpp.s
@@ -353,7 +353,7 @@ Testing/ChainOfResponsibility/OperationManagerTests.s: Testing/ChainOfResponsibi
 
 # target to generate assembly for a file
 Testing/ChainOfResponsibility/OperationManagerTests.cpp.s:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/ChainOfResponsibility/OperationManagerTests.cpp.s
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Testing/ChainOfResponsibility/OperationManagerTests.cpp.s
 .PHONY : Testing/ChainOfResponsibility/OperationManagerTests.cpp.s
 
 Testing/RunTests.o: Testing/RunTests.cpp.o
@@ -362,7 +362,7 @@ Testing/RunTests.o: Testing/RunTests.cpp.o
 
 # target to build an object file
 Testing/RunTests.cpp.o:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.o
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Testing/RunTests.cpp.o
 .PHONY : Testing/RunTests.cpp.o
 
 Testing/RunTests.i: Testing/RunTests.cpp.i
@@ -371,7 +371,7 @@ Testing/RunTests.i: Testing/RunTests.cpp.i
 
 # target to preprocess a source file
 Testing/RunTests.cpp.i:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.i
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Testing/RunTests.cpp.i
 .PHONY : Testing/RunTests.cpp.i
 
 Testing/RunTests.s: Testing/RunTests.cpp.s
@@ -380,7 +380,7 @@ Testing/RunTests.s: Testing/RunTests.cpp.s
 
 # target to generate assembly for a file
 Testing/RunTests.cpp.s:
-	$(MAKE) -f CMakeFiles/SummerOfBrain.dir/build.make CMakeFiles/SummerOfBrain.dir/Testing/RunTests.cpp.s
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Testing/RunTests.cpp.s
 .PHONY : Testing/RunTests.cpp.s
 
 # Help Target
@@ -391,10 +391,10 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... edit_cache"
+	@echo "... Tests"
+	@echo "... rebuild_cache"
 	@echo "... list_install_components"
 	@echo "... install/local"
-	@echo "... SummerOfBrain"
-	@echo "... rebuild_cache"
 	@echo "... install"
 	@echo "... gmock_main"
 	@echo "... gmock"

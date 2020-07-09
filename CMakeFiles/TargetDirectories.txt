@@ -1,9 +1,9 @@
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/install/strip.dir
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/edit_cache.dir
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/Tests.dir
+/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/rebuild_cache.dir
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/list_install_components.dir
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/install/local.dir
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/SummerOfBrain.dir
-/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/rebuild_cache.dir
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/CMakeFiles/install.dir
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/CMakeFiles/install/strip.dir
 /mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/CMakeFiles/install.dir

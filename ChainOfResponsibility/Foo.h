@@ -9,6 +9,8 @@
 class Foo {
 
 public:
+    Foo();
+
     void allocateMemory();
 
     void deallocateMemory();

@@ -9,13 +9,10 @@
 
 /**
  * This class is used for testing the GenericFunctionNode using GTest.
- *
- *
  */
 
 
 using namespace std;
-using namespace std::placeholders;
 
 TEST(ChainNode, TemplateFunctionTest) {
     Foo foo;

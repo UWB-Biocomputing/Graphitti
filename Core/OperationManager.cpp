@@ -4,6 +4,7 @@
 
 #include "OperationManager.h"
 #include "GenericFunctionNode.h"
+#include <iostream>
 
 /**
  * Singleton instance method that registers and executes functions based on operation types.
@@ -13,18 +14,16 @@
  *
  */
 
+using namespace std;
+
 // Singleton instance, reference to this class, initialized as nullptr so that it can be accessed
 OperationManager *OperationManager::instance = nullptr;
 
 // Private Constructor to keep a singleton instance of this class
-OperationManager::OperationManager() {
-    functionList = new list<IFunctionNode *>();
-}
+OperationManager::OperationManager() {}
 
 // Destructor
-OperationManager::~OperationManager() {
-    delete functionList;
-}
+OperationManager::~OperationManager() {}
 
 // Get Instance method that creates an instance if one doesn't already exist, returns the instance of the singleton object
 OperationManager *OperationManager::getInstance() {
@@ -38,22 +37,20 @@ OperationManager *OperationManager::getInstance() {
 // This method can be overloaded to handle different function signatures
 // Handles function signature: void ()
 void OperationManager::registerOperation(const Operations::op &operation, function<void()> function) {
-    IFunctionNode *functionNode = new GenericFunctionNode(operation, function);
-    functionList->push_back(functionNode);
+    try {
+        functionList.push_back(unique_ptr<IFunctionNode>(new GenericFunctionNode(operation, function)));
+    }
+    catch (exception e) {
+        throw runtime_error(string(e.what()) + " in OperationManager::registerOperation");
+    }
 }
 
 // Takes in a operation type and invokes all registered functions that are classified as that operation type
-bool OperationManager::executeOperation(const Operations::op &operation) {
-    if (functionList->size() > 0) {
-        bool operationExecuted = false;
-        list<IFunctionNode *>::iterator i;
-        for (i = functionList->begin(); i != functionList->end(); ++i) {
-            if ((*i)->invokeFunction(operation)) {
-                operationExecuted = true;
-            }
+void OperationManager::executeOperation(const Operations::op &operation) {
+    if (functionList.size() > 0) {
+        for (auto i = functionList.begin(); i != functionList.end(); ++i) {
+            (*i)->invokeFunction(operation);
         }
-        return operationExecuted;
     }
-    return false;
 }
 

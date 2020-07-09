@@ -17,25 +17,30 @@
  * run properly. These tests should be executed in sequence.
  */
 
+// Classifier, Name of Test
 
 TEST(OperationManager, GetInstanceReturnsInstance) {
     ASSERT_TRUE(OperationManager::getInstance() != nullptr);
 }
 
-TEST(OperationManagerTestObject, OperationExecutionWithEmptyList) {
-    ASSERT_FALSE(OperationManager::getInstance()->executeOperation(Operations::op::allocateMemory));
-}
-
-TEST(OperationManager, AddNode) {
+TEST(OperationManager, AddingOneOperation) {
     Foo foo;
     function<void()> function = std::bind(&Foo::deallocateMemory, foo);
     OperationManager::getInstance()->registerOperation(Operations::op::deallocateMemory, function);
 }
 
+TEST(OperationManager, AddingManyOperations) {
+    Foo foo;
+    function<void()> function = std::bind(&Foo::deallocateMemory, foo);
+    for (int i = 0; i < 10000; i++) {
+        OperationManager::getInstance()->registerOperation(Operations::op::deallocateMemory, function);
+    }
+}
+
 TEST(OperationManager, OperationExecutionSuccess) {
-    ASSERT_TRUE(OperationManager::getInstance()->executeOperation(Operations::op::deallocateMemory));
+    OperationManager::getInstance()->executeOperation(Operations::op::deallocateMemory);
 }
 
 TEST(OperationManager, OperationExecutionContainsNoFunctionsOfOperationType) {
-    ASSERT_FALSE(OperationManager::getInstance()->executeOperation(Operations::copyToGPU));
+    OperationManager::getInstance()->executeOperation(Operations::copyToGPU);
 }

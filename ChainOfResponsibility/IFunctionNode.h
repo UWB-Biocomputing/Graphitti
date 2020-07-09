@@ -16,7 +16,8 @@ using namespace std;
 
 class IFunctionNode {
 public:
-    Operations::op operationType;
-
     virtual bool invokeFunction(const Operations::op &operation) = 0;
+
+protected:
+    Operations::op operationType;
 };

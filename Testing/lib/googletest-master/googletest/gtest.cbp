@@ -25,6 +25,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
@@ -52,6 +53,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
@@ -79,6 +81,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
@@ -106,6 +109,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>

@@ -3,10 +3,10 @@
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
       <config projectName="SummerOfBrain" targetName="gtest_main" />
-      <config projectName="SummerOfBrain" targetName="SummerOfBrain" />
       <config projectName="SummerOfBrain" targetName="gtest" />
       <config projectName="SummerOfBrain" targetName="gmock_main" />
       <config projectName="SummerOfBrain" targetName="gmock" />
+      <config projectName="SummerOfBrain" targetName="Tests" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -16,34 +16,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff6793a0-67a4-4394-9a81-1e7c5684d1f2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/DependInfo.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/link.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/SummerOfBrain.dir/link.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/Makefile2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeFiles/TargetDirectories.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/ChainOperationManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ChainOfResponsibility/OperationManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/ChainOperationManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/ChainOfResponsibility/OperationManager.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/Foo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ChainOfResponsibility/Foo.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/Foo.h" beforeDir="false" afterPath="$PROJECT_DIR$/ChainOfResponsibility/Foo.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/GenericFunctionNode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ChainOfResponsibility/GenericFunctionNode.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/GenericFunctionNode.h" beforeDir="false" afterPath="$PROJECT_DIR$/ChainOfResponsibility/GenericFunctionNode.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/IFunctionNode.h" beforeDir="false" afterPath="$PROJECT_DIR$/ChainOfResponsibility/IFunctionNode.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChainOfResponsibility/Operations.h" beforeDir="false" afterPath="$PROJECT_DIR$/ChainOfResponsibility/Operations.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/OperationManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Core/OperationManager.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/OperationManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Core/OperationManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IChainNode.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SummerOfBrain" beforeDir="false" afterPath="$PROJECT_DIR$/SummerOfBrain" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Testing/ChainOfResponsibility/ChainOperationManagerTests.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SummerOfBrain" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SummerOfBrain.cbp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Testing/ChainOfResponsibility/FunctionNodeTests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/ChainOfResponsibility/FunctionNodeTests.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Testing/ChainOfResponsibility/OperationManagerTests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/ChainOfResponsibility/OperationManagerTests.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/SummerOfBrain.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/SummerOfBrain.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/SummerOfBrain.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/SummerOfBrain.dir/depend.internal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/SummerOfBrain.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/SummerOfBrain.dir/depend.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/SummerOfBrain.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/SummerOfBrain.cbp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/RunTests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/RunTests.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/gmock.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googlemock/gmock.cbp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest-distribution.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest-distribution.cbp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/gtest.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/lib/googletest-master/googletest/gtest.cbp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,9 +70,6 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="OCResolveContextSettings">
-    <option name="configuration" value="0-Default-SummerOfBrain" />
-  </component>
   <component name="ProjectId" id="1dkjqG4vod0FjpXNn0dqw8yapAW" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -105,45 +94,45 @@
     <property name="settings.editor.selected.configurable" value="dynamic.analysis.tools.valgrind" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\chris\OneDrive\Desktop\SummerOfBrain\Testing" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\chris\OneDrive\Desktop\SummerOfBrain\Testing\ChainOfResponsibilityTest" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\chris\OneDrive\Desktop\SummerOfBrain\Testing" />
+    </key>
   </component>
-  <component name="RunManager" selected="CMake Application.SummerOfBrain">
-    <configuration name="ChainOperationManagerTest.OperationPassedToChain" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain" TEST_CLASS="ChainOperationManagerTest" TEST_METHOD="OperationPassedToChain" TEST_MODE="SUITE_TEST">
+  <component name="RunManager" selected="CMake Application.Tests">
+    <configuration name="ChainNode.TemplateFunctionTest" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="Tests" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="Tests" TEST_CLASS="ChainNode" TEST_METHOD="TemplateFunctionTest" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OperationManagerTestObject.OperationExecutionWithEmptyList" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain" TEST_CLASS="OperationManagerTestObject" TEST_METHOD="OperationExecutionWithEmptyList" TEST_MODE="SUITE_TEST">
+    <configuration name="OperationManagerTestObject.OperationExecutionWithEmptyList" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain" TEST_CLASS="OperationManagerTestObject" TEST_METHOD="OperationExecutionWithEmptyList" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OperationManager.AddNode" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain" TEST_CLASS="OperationManager" TEST_METHOD="AddNode" TEST_MODE="SUITE_TEST">
+    <configuration name="OperationManager.AddNode" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain" TEST_CLASS="OperationManager" TEST_METHOD="AddNode" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OperationManager.GetInstanceReturnsInstance" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain" TEST_CLASS="OperationManager" TEST_METHOD="GetInstanceReturnsInstance" TEST_MODE="SUITE_TEST">
+    <configuration name="OperationManager.GetInstanceReturnsInstance" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain" TEST_CLASS="OperationManager" TEST_METHOD="GetInstanceReturnsInstance" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OperationManager.OperationExecutionSuccess" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain" TEST_CLASS="OperationManager" TEST_METHOD="OperationExecutionSuccess" TEST_MODE="SUITE_TEST">
+    <configuration name="OperationManager.OperationExecutionSuccess" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain" TEST_CLASS="OperationManager" TEST_METHOD="OperationExecutionSuccess" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SummerOfBrain" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="SummerOfBrain" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="SummerOfBrain">
+    <configuration name="Tests" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SummerOfBrain" TARGET_NAME="Tests" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="SummerOfBrain" RUN_TARGET_NAME="Tests">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -169,24 +158,24 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="CMake Application.SummerOfBrain" />
       <item itemvalue="CMake Application.gmock" />
       <item itemvalue="CMake Application.gmock_main" />
       <item itemvalue="CMake Application.gtest" />
       <item itemvalue="CMake Application.gtest_main" />
-      <item itemvalue="Google Test.ChainOperationManagerTest.OperationPassedToChain" />
+      <item itemvalue="CMake Application.Tests" />
       <item itemvalue="Google Test.OperationManagerTestObject.OperationExecutionWithEmptyList" />
       <item itemvalue="Google Test.OperationManager.GetInstanceReturnsInstance" />
       <item itemvalue="Google Test.OperationManager.AddNode" />
       <item itemvalue="Google Test.OperationManager.OperationExecutionSuccess" />
+      <item itemvalue="Google Test.ChainNode.TemplateFunctionTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Google Test.ChainNode.TemplateFunctionTest" />
         <item itemvalue="Google Test.OperationManager.OperationExecutionSuccess" />
         <item itemvalue="Google Test.OperationManager.AddNode" />
         <item itemvalue="Google Test.OperationManager.GetInstanceReturnsInstance" />
         <item itemvalue="Google Test.OperationManagerTestObject.OperationExecutionWithEmptyList" />
-        <item itemvalue="Google Test.ChainOperationManagerTest.OperationPassedToChain" />
       </list>
     </recent_temporary>
   </component>
@@ -207,6 +196,7 @@
       <workItem from="1592976402088" duration="1178000" />
       <workItem from="1592977582193" duration="335000" />
       <workItem from="1593379816254" duration="53454000" />
+      <workItem from="1593989287406" duration="20765000" />
     </task>
     <servers />
   </component>
@@ -226,10 +216,18 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2685" y="219" key="#com.intellij.ide.util.MemberChooser/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593381478342" />
-    <state x="2610" y="271" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1593477263054">
+    <state x="2610" y="271" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1594252534412">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2610" y="271" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593477263054" />
+    <state x="2610" y="271" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1594252534412" />
+    <state x="2606" y="248" key="#gmock" timestamp="1594243326166">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2606" y="248" key="#gmock/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1594243326166" />
+    <state x="2606" y="248" key="#gtest_main" timestamp="1594243321844">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2606" y="248" key="#gtest_main/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1594243321844" />
     <state x="2479" y="119" key="CommitChangelistDialog2" timestamp="1593540247740">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
@@ -238,38 +236,38 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2660" y="279" key="FileChooserDialogImpl/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593464207276" />
-    <state width="1877" height="182" key="GridCell.Tab.0.bottom" timestamp="1593736190725">
+    <state width="1877" height="182" key="GridCell.Tab.0.bottom" timestamp="1594334948720">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="182" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593736190725" />
-    <state width="1877" height="182" key="GridCell.Tab.0.center" timestamp="1593736190725">
+    <state width="1877" height="182" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1594334948720" />
+    <state width="1877" height="182" key="GridCell.Tab.0.center" timestamp="1594334948720">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="182" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593736190725" />
-    <state width="1877" height="182" key="GridCell.Tab.0.left" timestamp="1593736190724">
+    <state width="1877" height="182" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1594334948720" />
+    <state width="1877" height="182" key="GridCell.Tab.0.left" timestamp="1594334948719">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="182" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593736190724" />
-    <state width="1877" height="182" key="GridCell.Tab.0.right" timestamp="1593736190725">
+    <state width="1877" height="182" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1594334948719" />
+    <state width="1877" height="182" key="GridCell.Tab.0.right" timestamp="1594334948720">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="182" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593736190725" />
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1593736190064">
+    <state width="1877" height="182" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1594334948720" />
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1594252524879">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593736190064" />
-    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1593736190064">
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1594252524879" />
+    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1594252524879">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.center/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593736190064" />
-    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1593736190064">
+    <state width="1877" height="348" key="GridCell.Tab.1.center/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1594252524879" />
+    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1594252524879">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.left/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593736190064" />
-    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1593736190064">
+    <state width="1877" height="348" key="GridCell.Tab.1.left/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1594252524879" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1594252524879">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.right/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1593736190064" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1594252524879" />
     <state width="640" height="204" key="ImportCMakeProjectWizard.bottomPanel" timestamp="1592977578099">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
@@ -286,16 +284,13 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2588" y="349" key="com.intellij.ide.util.TipDialog/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1592976402621" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Testing/ChainOfResponsibility/OperationManagerTests.cpp</url>
-          <line>25</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <state x="2536" y="240" key="run.anything.popup" timestamp="1594256604186">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2536" y="240" key="run.anything.popup/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1594256604186" />
+    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1594256612137">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1594256612137" />
   </component>
 </project>
