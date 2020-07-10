@@ -49,3 +49,9 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 *.cbp
+
+# Ignore IDE, editor, and system files
+.DS_Store
+.*.sw?
+.idea/
+.vs/
