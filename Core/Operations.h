@@ -1,7 +1,3 @@
-//
-// Created by chris on 6/26/2020.
-//
-
 #pragma once
 
 /**
@@ -10,7 +6,7 @@
 
 class Operations {
 public:
-    // Available operations the OperationManager can register and execute
+    // Available operations the OperationManager can register and execute.
     enum op {
         allocateMemory,
         deallocateMemory,

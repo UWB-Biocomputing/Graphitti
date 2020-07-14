@@ -1,11 +1,6 @@
-//
-// Created by Chris O'Keefe on 6/26/2020.
-//
+#include <iostream>
 
 #include "gtest/gtest.h"
-#include "OperationManager.h"
-#include "Foo.h"
-#include <iostream>
 
 using namespace std;
 

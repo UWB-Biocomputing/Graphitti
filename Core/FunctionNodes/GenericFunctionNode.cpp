@@ -1,8 +1,9 @@
-//
-// Created by chris on 6/30/2020.
-//
+#include "Core/FunctionNodes/GenericFunctionNode.h"
 
-#include "GenericFunctionNode.h"
+#include <functional>
+
+#include "Core/FunctionNodes/IFunctionNode.h"
+#include "Core/Operations.h"
 
 /**
  * Stores a function and the operation type of that function.

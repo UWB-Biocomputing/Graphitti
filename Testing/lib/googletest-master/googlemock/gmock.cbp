@@ -24,8 +24,9 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/../SummerOfBrain"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock"/>
@@ -54,8 +55,9 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/../SummerOfBrain"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock"/>
@@ -84,8 +86,9 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/../SummerOfBrain"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock"/>
@@ -114,8 +117,9 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/../SummerOfBrain"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googlemock"/>
@@ -144,8 +148,9 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/../SummerOfBrain"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
@@ -172,8 +177,9 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/../SummerOfBrain"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
@@ -200,8 +206,9 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/../SummerOfBrain"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
@@ -228,8 +235,9 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ChainOfResponsibility"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/../SummerOfBrain"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>

@@ -1,11 +1,6 @@
-//
-// Created by chris on 6/29/2020.
-//
-
 #pragma once
 
 #include "Operations.h"
-#include <iostream>
 
 /**
  * Interface for storing and invoking functions.
