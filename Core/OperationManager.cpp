@@ -1,6 +1,3 @@
-//
-// Created by chris on 6/26/2020.
-//
 
 #include "OperationManager.h"
 #include "GenericFunctionNode.h"

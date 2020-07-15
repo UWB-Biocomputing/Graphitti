@@ -1,18 +1,19 @@
-/*
+/**
  * @file Simulator.cpp
  *
- * @author Derek McLean
+ * @brief Platform independent base class for the Brain Grid simulator.
+ * Simulator is a singleton class (a class that can only have one object)
  *
- * @brief Base class for model-independent simulators targeting different
- * platforms.
+ * @ingroup Core
  */
 
 #include "Simulator.h"
-#include "ParseParamError.h"                                            // added from siminfo
+// #include "ParseParamError.h"
 
+/// ToDo: Does this need to be a smart ptr?
 Simulator *Simulator::instance = nullptr; 
 
-// Get Instance method that acts as a constructor, returns the instance of the singleton object
+/// Acts as constructor, returns the instance of the singleton object
 static Simulator *Simulator::getInstance() {
   if (instance == nullptr) {
     instance = Simulator;    
@@ -20,27 +21,19 @@ static Simulator *Simulator::getInstance() {
   return instance;
 };
 
-/*
- *  Constructor
- */
+/// Constructor
 Simulator::Simulator() 
 {
-  g_simulationStep = 0;
+  g_simulationStep = 0;  /// uint64_t g_simulationStep instantiated in Global
 }
 
-/*
- * Destructor.
- */
+/// Destructor
 Simulator::~Simulator()
 {
   freeResources();
 }
 
-/*
- *  Initialize and prepare network for simulation.
- *
- *  @param  sim_info    parameters for the simulation.
- */
+/// Initialize and prepare network for simulation.
 void Simulator::setup()
 {
 #ifdef PERFORMANCE_METRICS
@@ -53,11 +46,9 @@ void Simulator::setup()
   timer.start();
   cerr << "done." << endl;
 #endif
-
   DEBUG(cerr << "Initializing models in network... ";)
   model->setupSim();
   DEBUG(cerr << "\ndone init models." << endl;)
-
   // init stimulus input object
   if (pInput != NULL) {
     cout << "Initializing input." << endl;
@@ -65,26 +56,15 @@ void Simulator::setup()
   }
 }
 
-/*
- *  Begin terminating the simulator.
- *
- *  @param  sim_info    parameters for the simulation.
- */
+/// Begin terminating the simulator
 void Simulator::finish()
 {
-  // Terminate the simulator
-  model->cleanupSim(); // Can #term be removed w/ the new model architecture?  // =>ISIMULATION
+  model->cleanupSim(); // ToDo: Can #term be removed w/ the new model architecture?  // =>ISIMULATION
 }
 
-// *********************    added from siminfo      ***********************
-
-
-/*
- *  Attempts to read parameters from a XML file.
- *
- *  @param  simDoc  the TiXmlDocument to read from.
- *  @return true if successful, false otherwise.
- */
+/// Attempts to read parameters from a XML file.
+/// @param  simDoc  the TiXmlDocument to read from.
+/// @return true if successful, false otherwise.
 bool Simulator::readParameters(TiXmlDocument* simDoc)
 {
     TiXmlElement* parms = NULL;
@@ -96,7 +76,7 @@ bool Simulator::readParameters(TiXmlDocument* simDoc)
 
     try {
          parms->Accept(this);
-    } catch (ParseParamError &error) {
+    } catch (ParseParamError &error) {  // ToDo: is ParseParamError.h necessary after Lizzy's contrib?
         error.print(cerr);
         cerr << endl;
         return false;
@@ -111,13 +91,10 @@ bool Simulator::readParameters(TiXmlDocument* simDoc)
     return true;
 }
 
-/*
- *  Handles loading of parameters using tinyxml from the parameter file.
- *
- *  @param  element TiXmlElement to examine.
- *  @param  firstAttribute  ***NOT USED***.
- *  @return true if method finishes without errors.
- */
+/// Handles loading of parameters using tinyxml from the parameter file.
+/// @param  element TiXmlElement to examine.
+/// @param  firstAttribute  ***NOT USED***.
+/// @return true if method finishes without errors.
 bool Simulator::VisitEnter(const TiXmlElement& element, const TiXmlAttribute* firstAttribute)
 //TODO: firstAttribute does not seem to be used! Delete?
 {
@@ -204,7 +181,7 @@ bool Simulator::VisitEnter(const TiXmlElement& element, const TiXmlAttribute* fi
     }
 
     if (element.Parent()->ValueStr().compare("OutputParams") == 0) {
-        // file name specified in commond line is higher priority
+        // file name specified in command line is higher priority
 
         if (stateOutputFileName.empty()) {
 /*
@@ -224,16 +201,11 @@ bool Simulator::VisitEnter(const TiXmlElement& element, const TiXmlAttribute* fi
     return false;
 }
 
-/*
- *  Prints out loaded parameters to ostream.
- *
- *  @param  output  ostream to send output to.
- */
+/// Prints out loaded parameters to ostream.
+/// @param  output  ostream to send output to.
 void Simulator::printParameters(ostream &output) const
 {
     cout << "poolsize x:" << width << " y:" << height
-         //z dimmension is for future expansion and not currently supported
-         //<< " z:" <<
          << endl;
     cout << "Simulation Parameters:\n";
     cout << "\tTime between growth updates (in seconds): " << epochDuration << endl;
@@ -241,75 +213,44 @@ void Simulator::printParameters(ostream &output) const
 }
 
 
-
-// ********************** finish added from siminfo *********************
-/**
- * Copy GPU Synapse data to CPU.
- *
- *  @param  sim_info    parameters for the simulation.
- */
+/// Copy GPU Synapse data to CPU.
 void Simulator::copyGPUSynapseToCPU() {
-  model->copyGPUSynapseToCPUModel(sim_info); 
+  model->copyGPUSynapseToCPUModel();
 }
 
- /**
- * Copy CPU Synapse data to GPU.
- *
- *  @param  sim_info    parameters for the simulation.
- */
+/// Copy CPU Synapse data to GPU.
 void Simulator::copyCPUSynapseToGPU() {
   model->copyCPUSynapseToGPUModel(); 
 }		
 
-/*
- * Resets all of the maps.
- * Releases and re-allocates memory for each map, clearing them as necessary.
- *
- *  @param  sim_info    parameters for the simulation.
- */
+/// Resets all of the maps. Releases and re-allocates memory for each map, clearing them as necessary.
 void Simulator::reset()
 {
   DEBUG(cout << "\nEntering Simulator::reset()" << endl;)
-
-    // Terminate the simulator
-    model->cleanupSim();
-
+  // Terminate the simulator
+  model->cleanupSim();
   // Clean up objects
   freeResources();
-
   // Reset global simulation Step to 0
   g_simulationStep = 0;
-
   // Initialize and prepare network for simulation
   model->setupSim();
-
   DEBUG(cout << "\nExiting Simulator::reset()" << endl;)
-    }
-
-/*
- *  Clean up objects.
- */
-void Simulator::freeResources()
-{
 }
 
-/*
- * Run simulation
- *
- *  @param  sim_info    parameters for the simulation.
- */
+/// Clean up objects.
+void Simulator::freeResources() {}
+
+/// Run simulation
 void Simulator::simulate()
 {
   // Main simulation loop - execute maxGrowthSteps
   for (int currentStep = 1; currentStep <= maxSteps; currentStep++) {
-
-    DEBUG(cout << endl << endl;)
-      DEBUG(cout << "Performing simulation number " << currentStep << endl;)
-      DEBUG(cout << "Begin network state:" << endl;)
-
-      // Init SimulationInfo parameters
-      currentStep = currentStep;
-
+     DEBUG(cout << endl << endl;)
+     DEBUG(cout << "Performing simulation number " << currentStep << endl;)
+     DEBUG(cout << "Begin network state:" << endl;)
+     // Init SimulationInfo parameters
+     currentStep = currentStep;
 #ifdef PERFORMANCE_METRICS
       // Start timer for advance
       short_timer.start();
@@ -320,20 +261,19 @@ void Simulator::simulate()
     // Time to advance
     t_host_advance += short_timer.lap() / 1000000.0;
 #endif
-
     DEBUG(cout << endl << endl;)
-      DEBUG(
-            cout << "Done with simulation cycle, beginning growth update "
-	    << currentStep << endl;
-	    )
+    DEBUG(
+          cout << "Done with simulation cycle, beginning growth update "
+          << currentStep << endl;
+          )
+          // Update the neuron network
 
-      // Update the neuron network
 #ifdef PERFORMANCE_METRICS
       // Start timer for connection update
       short_timer.start();
 #endif
+
     model->updateConnections();
-      
     model->updateHistory();
 
 #ifdef PERFORMANCE_METRICS
@@ -350,23 +290,16 @@ void Simulator::simulate()
   }
 }
 
-/*
- * Helper for #simulate().
- * Advance simulation until it's ready for the next growth cycle. This should simulate all neuron and
- * synapse activity for one epoch.
- *
- *  @param currentStep the current epoch in which the network is being simulated.
- *  @param  sim_info    parameters for the simulation.
- */
+/// Helper for #simulate(). Advance simulation until ready for next growth cycle.
+/// This should simulate all neuron and synapse activity for one epoch.
+/// @param currentStep the current epoch in which the network is being simulated.
 void Simulator::advanceUntilGrowth(const int currentStep)
 {
   uint64_t count = 0;
   // Compute step number at end of this simulation epoch
   uint64_t endStep = g_simulationStep
     + static_cast<uint64_t>(epochDuration / deltaT);
-
   DEBUG_MID(model->logSimStep();) // Generic model debug call
-
     while (g_simulationStep < endStep) {
       DEBUG_LOW(
 		// Output status once every 10,000 steps
@@ -379,106 +312,84 @@ void Simulator::advanceUntilGrowth(const int currentStep)
 		  }
 		count++;
 		)
-
         // input stimulus
         if (pInput != NULL)
 	  pInput->inputStimulus();
-
       // Advance the Network one time step
       model->advance();
-
       g_simulationStep++;
     }
 }
 
-/*
- * Writes simulation results to an output destination.
- * 
- *  @param  sim_info    parameters for the simulation. 
- */
+/// Writes simulation results to an output destination.
 void Simulator::saveData() const
 {
   model->saveData();
 }
 
-//! Width of neuron map (assumes square)
-int Simulator::getWidth() {return width;}
+/************************************************
+ *  Mutators
+ ***********************************************/
 
-//! Height of neuron map
-int Simulator::getHeight() {return height;}
-
-//! Count of neurons in the simulation
-int Simulator::getTotalNeurons() {return totalNeurons;}
-
-//! Current simulation step
-int Simulator::getCurrentStep() {return currentStep;}
-
-//! Maximum number of simulation steps
-int Simulator::getMaxSteps() {return maxSteps;}
-
-//! The length of each step in simulation time
-BGFLOAT Simulator::getEpochDuration() {return epochDuration;}
-
-//! Maximum firing rate. **Only used by GPU simulation.**
-int Simulator::getMaxFiringRate() {return maxFiringRate;}
-
-//! Maximum number of synapses per neuron. **Only used by GPU simulation.**
-int Simulator::getMaxSynapsesPerNeuron() {return maxSynapsesPerNeuron;}
-
-//! Time elapsed between the beginning and end of the simulation step
-BGFLOAT Simulator::getDeltaT() {return deltaT;}
-
-//! The neuron type map (INH, EXC).
-neuronType* Simulator::getRgNeuronTypeMap() {return rgNeuronTypeMap;}
-
-//! The starter existence map (T/F).
-bool* Simulator::getRgEndogenouslyActiveNeuronMap() {return rgEndogenouslyActiveNeuronMap;}
-
-//! growth variable (m_targetRate / m_epsilon) TODO: more detail here
-BGFLOAT Simulator::getMaxRate() {return maxRate;}
-
-//! List of summation points (either host or device memory)
-BGFLOAT* Simulator::getPSummationMap() {return pSummationMap;}
-
-//! List of summation points (either host or device memory)
+/// List of summation points (either host or device memory)
 void Simulator::setPSummationMap(BGFLOAT* summationMap) {
   pSummationMap = summationMap;
   }
 
-//! Seed used for the simulation random SINGLE THREADED
-long Simulator::getSeed() {return seed;}
+/************************************************
+ *  Accessors
+ ***********************************************/
 
-//! File name of the simulation results.
-string Simulator::getStateOutputFileName() {return stateOutputFileName;}
+int Simulator::getWidth() const {return width;} /// Width of neuron map (assumes square)
 
-//! File name of the parameter description file.
-string Simulator::getStateInputFileName() {return stateInputFileName;}
+int Simulator::getHeight() const {return height;} /// Height of neuron map
 
-//! File name of the memory dump output file.
-string Simulator::getMemOutputFileName() {return memOutputFileName;}
+int Simulator::getTotalNeurons() const {return totalNeurons;} /// Count of neurons in the simulation
 
-//! File name of the memory dump input file.
-string Simulator::getMemInputFileName() {return memInputFileName;}
+int Simulator::getCurrentStep() const {return currentStep;} /// Current simulation step
 
-//! File name of the stimulus input file.
-string Simulator::getStimulusInputFileName() {return stimulusInputFileName;}
+int Simulator::getMaxSteps() const {return maxSteps;} /// Maximum number of simulation steps
 
-//! Neural Network Model interface.
-IModel* Simulator::getModel() {return model;}
+BGFLOAT Simulator::getEpochDuration() const {return epochDuration;} /// The length of each step in simulation time
 
-//! Recorder object.
-IRecorder* Simulator::getSimRecorder() {return simRecorder;}
+int Simulator::getMaxFiringRate() const {return maxFiringRate;} /// Max firing rate. **GPU Only**
 
-//! Stimulus input object.
-ISInput* Simulator::getPInput() {return pInput;}
+int Simulator::getMaxSynapsesPerNeuron() const {return maxSynapsesPerNeuron;} /// Max num of synapses/neuron. **GPU Only.**
 
-/**
-  * Timer for measuring performance of an epoch.
-  */
-Timer Simulator::getTimer() {return timer;}
+BGFLOAT Simulator::getDeltaT() const {return deltaT;} /// Time elapsed between the beginning and end of the simulation step
 
-/**
-  * Timer for measuring performance of connection update.
-  */
-Timer Simulator::getShort_timer() {return short_timer;}
+// ToDo: should be a vector of neuron type
+// ToDo: vector should be contiguous array, resize is used.
+neuronType* Simulator::getRgNeuronTypeMap() const {return rgNeuronTypeMap;} /// The neuron type map (INH, EXC).
+
+// ToDo: make smart ptr
+/// Starter existence map (T/F).
+bool* Simulator::getRgEndogenouslyActiveNeuronMap() const {return rgEndogenouslyActiveNeuronMap;}
+
+BGFLOAT Simulator::getMaxRate() const {return maxRate;} /// growth variable (m_targetRate / m_epsilon) TODO: more detail here
+
+BGFLOAT* Simulator::getPSummationMap() const {return pSummationMap;} /// List of summation pts (either host or device memory)
+
+long Simulator::getSeed() const {return seed;} /// Seed used for the simulation random SINGLE THREADED
+
+string Simulator::getStateOutputFileName() const {return stateOutputFileName;}  /// File name of the simulation results.
+
+string Simulator::getStateInputFileName() const {return stateInputFileName;} /// File name of the parameter description file.
+
+string Simulator::getMemOutputFileName() const {return memOutputFileName;} /// File name of the memory dump output file.
+
+string Simulator::getMemInputFileName() const {return memInputFileName;} /// File name of the memory dump input file.
+
+string Simulator::getStimulusInputFileName() const {return stimulusInputFileName;} /// File name of the stimulus input file
+
+IModel* Simulator::getModel() const {return model;} /// Neural Network Model interface. ToDo: make smart ptr
+
+IRecorder* Simulator::getSimRecorder() const {return simRecorder;} /// Recorder object. ToDo: make smart ptr
+
+ISInput* Simulator::getPInput() const {return pInput;} /// Stimulus input object. ToDo: make smart ptr
+
+Timer Simulator::getTimer() const {return timer;}  /// Timer for measuring performance of an epoch.
+
+Timer Simulator::getShort_timer() const {return short_timer;}  /// Timer for measuring performance of connection update.
+
 

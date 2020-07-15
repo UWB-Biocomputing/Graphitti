@@ -1,10 +1,7 @@
 /**
- *      @file Model.h
+ * @file Model.h
  *
- *      @brief Implementation of Model for the spiking neunal networks.
- */
-
-/**
+ * @brief Implementation of Model for the spiking neunal networks.
  *
  * @class Model Model.h "Model.h"
  *
@@ -38,9 +35,6 @@
  *
  * \latexonly  \subsubsection*{Credits} \endlatexonly
  * \htmlonly   <h3>Credits</h3> \endhtmlonly
- *
- * Some models in this simulator is a rewrite of CSIM (2006) and other
- * work (Stiber and Kawasaki (2007?))
  */
 
 #pragma once
@@ -49,126 +43,84 @@
 #include "Coordinate.h"
 #include "Layout.h"
 #include "SynapseIndexMap.h"
+#include "Simulator.h"
 
 #include <vector>
 #include <iostream>
 
 using namespace std;
 
-class Model : public IModel
+class Model : public IModel // ToDo: is this supposed to be protected?
 {
-    public:
-        Model(Connections *conns, IAllNeurons *neurons, IAllSynapses *synapses, Layout *layout);
-        virtual ~Model();
 
-        /**
-         * Writes simulation results to an output destination.
-         *
-         *  @param  sim_info    parameters for the simulation.
-         */
-        virtual void saveData(SimulationInfo *sim_info);
+public:
 
-        /**
-         * Set up model state, if anym for a specific simulation run.
-         *
-         * @param sim_info - parameters defining the simulation to be run with the given collection of neurons.
-         * @param simRecorder    Pointer to the simulation recordig object.
-         */
-        virtual void setupSim(SimulationInfo *sim_info);
+    /// Constructor
+    Model(
+          Connections *conns,
+          IAllNeurons *neurons,
+          IAllSynapses *synapses,
+          Layout *layout);
 
-        /**
-         * Performs any finalization tasks on network following a simulation.
-         *
-         * @param sim_info - parameters defining the simulation to be run with the given collection of neurons.
-         */
-        virtual void cleanupSim(SimulationInfo *sim_info);
+   /// Destructor
+   virtual        ~Model();
 
-        /**
-         *  Get the IAllNeurons class object.
-         *
-         *  @return Pointer to the AllNeurons class object.
-         */
-        virtual IAllNeurons* getNeurons();
+   /// Writes simulation results to an output destination.
+   /// Downstream from IModel saveData()
+   virtual void   saveData();
 
-        /**
-         *  Get the Connections class object.
-         *
-         *  @return Pointer to the Connections class object.
-         */
-        virtual Connections* getConnections();
+   /// Set up model state, for a specific simulation run.
+   /// Downstream from IModel setupSim()
+   virtual void   setupSim();
 
-        /**
-         *  Get the Layout class object.
-         *
-         *  @return Pointer to the Layout class object.
-         */
-        virtual Layout* getLayout();
+   /// Performs any finalization tasks on network following a simulation.
+   /// Downstream from IModel cleanupSim()
+   virtual void   cleanupSim();
 
-        /**
-         *  Update the simulation history of every epoch.
-         *
-         *  @param  sim_info    SimulationInfo to refer from.
-         */
-        virtual void updateHistory(const SimulationInfo *sim_info);
+   /// returns ptr for AllNeurons class object.
+   virtual        IAllNeurons* getNeurons();
 
-        /**
-         *  Copy GPU Synapse data to CPU.
-         *
-         *  @param  sim_info    SimulationInfo to refer.
-         */
-        virtual void copyGPUSynapseToCPUModel(SimulationInfo *sim_info) = 0;
-        
-        /**
-         *  Copy CPU Synapse data to GPU.
-         *
-         *  @param  sim_info    SimulationInfo to refer.
-         */
-        virtual void copyCPUSynapseToGPUModel(SimulationInfo *sim_info) = 0;
+   /// returns ptr for Connections class object.
+   virtual        Connections* getConnections();
 
-    protected:
+   /// returns ptr for Layouts class object.
+   virtual        Layout* getLayout();
 
-        /* -----------------------------------------------------------------------------------------
-         * # Helper Functions
-         * ------------------
-         */
+   /// Update the simulation history of every epoch.
+   virtual void   updateHistory();
 
-        // # Print Parameters
-        // ------------------
+   /// Copy GPU Synapse data to CPU.
+   virtual void   copyGPUSynapseToCPUModel() = 0;
 
-        // # Save State
-        // ------------
-	void logSimStep(const SimulationInfo *sim_info) const;
+   ///  Copy CPU Synapse data to GPU.
+   virtual void   copyCPUSynapseToGPUModel() = 0;
 
-        // -----------------------------------------------------------------------------------------
-        // # Generic Functions for handling synapse types
-        // ---------------------------------------------
+protected:
 
-        // Tracks the number of parameters that have been read by read params -
-        // kind of a hack to do error handling for read params
-        int m_read_params;
+   /// Prints debug information about the current state of the network.
+   void logSimStep() const;
 
-    public:// 2020/03/14 Modified access level to public for allowing the access in BGDriver for serialization/deserialization
-        // TODO
-        Connections *m_conns;
+   /// error handling for read params
+   // ToDo: do we need this?
+   int m_read_params;
 
-        //
-        IAllNeurons *m_neurons;
+public:
+   // 2020/03/14 Modified access level to public for allowing the access in BGDriver for serialization/deserialization
+   // ToDo: make private again after serialization is fixed... shouldn't these be private with public accessors?
+   // ToDo: Should model own these? Or should simulator?
+   Connections    *m_conns;
 
-        //
-        IAllSynapses *m_synapses;
+   IAllNeurons    *m_neurons;
 
-        // 
-        Layout *m_layout;
+   IAllSynapses   *m_synapses;
 
-        //
-        SynapseIndexMap *m_synapseIndexMap;
+   Layout         *m_layout;
 
-    private:
-        /**
-         * Populate an instance of IAllNeurons with an initial state for each neuron.
-         *
-         * @param sim_info - parameters defining the simulation to be run with the given collection of neurons.
-         */
-        void createAllNeurons(SimulationInfo *sim_info);
+   SynapseIndexMap *m_synapseIndexMap;
+
+private:
+        void createAllNeurons(); /// Populate an instance of IAllNeurons with an initial state for each neuron.
+
+        std::weak_ptr<Simulator>() simulator;  /// Weak ptr to instance of simulator
 
 };

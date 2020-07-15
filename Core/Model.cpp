@@ -1,15 +1,11 @@
 #include "Model.h"
-
 #include "tinyxml.h"
-
 #include "ParseParamError.h"
 #include "Util.h"
 #include "ConnGrowth.h"
 
-
-/*
- *  Constructor
- */
+/// Constructor
+/// ToDo: Stays the same right now, change further in refactor
 Model::Model(Connections *conns, IAllNeurons *neurons, IAllSynapses *synapses, Layout *layout) :
     m_read_params(0),
     m_conns(conns),
@@ -18,11 +14,10 @@ Model::Model(Connections *conns, IAllNeurons *neurons, IAllSynapses *synapses, L
     m_layout(layout),
     m_synapseIndexMap(NULL)
 {
+    simulator = Simulator::getInstance();
 }
 
-/*
- *  Destructor
- */
+/// Destructor
 Model::~Model()
 {
     if (m_conns != NULL) {
@@ -51,67 +46,61 @@ Model::~Model()
     }
 }
 
-/*
- *  Save simulation results to an output destination.
- *
- *  @param  sim_info    parameters for the simulation. 
- */
-void Model::saveData(SimulationInfo *sim_info)
+/// Save simulation results to an output destination.
+void Model::saveData()
 {
-    if (sim_info->simRecorder != NULL) {
-        sim_info->simRecorder->saveSimData(*m_neurons);
+    if (simulator->getSimRecorder() != NULL)
+    {
+        simulator->getSimRecorder()->saveSimData(*m_neurons);
     }
 }
 
-/*
- *  Creates all the Neurons and generates data for them.
- *
- *  @param  sim_info    SimulationInfo class to read information from.
- */
-void Model::createAllNeurons(SimulationInfo *sim_info)
+/// Creates all the Neurons and generates data for them.
+void Model::createAllNeurons()
 {
     DEBUG(cerr << "\nAllocating neurons..." << endl;)
 
-    // init neuron's map with layout
-    m_layout->generateNeuronTypeMap(sim_info->totalNeurons);
-    m_layout->initStarterMap(sim_info->totalNeurons);
+    // init neuron's map with layout OLD
+    //m_layout->generateNeuronTypeMap(sim_info->totalNeurons);
+    //m_layout->initStarterMap(sim_info->totalNeurons);
+
+    // init neuron's map with layout NEW
+    // m_layout is a reference in model
+    m_layout->generateNeuronTypeMap(simulator->getTotalNeurons());
+    m_layout->initStarterMap(simulator->getTotalNeurons());
 
     // set their specific types
-    m_neurons->createAllNeurons(sim_info, m_layout);
+    m_neurons->createAllNeurons(m_layout);
 
     DEBUG(cerr << "Done initializing neurons..." << endl;)
 }
 
-/*
- *  Sets up the Simulation.
- *
- *  @param  sim_info    SimulationInfo class to read information from.
- */
-void Model::setupSim(SimulationInfo *sim_info)
+/// Sets up the Simulation.
+/// ToDo: find siminfo actual things being passed through
+void Model::setupSim()
 {
     DEBUG(cerr << "\tSetting up neurons....";)
-    m_neurons->setupNeurons(sim_info);
+    m_neurons->setupNeurons();
     DEBUG(cerr << "done.\n\tSetting up synapses....";)
-    m_synapses->setupSynapses(sim_info);
+    m_synapses->setupSynapses();
 #ifdef PERFORMANCE_METRICS
     // Start timer for initialization
     sim_info->short_timer.start();
 #endif
     DEBUG(cerr << "done.\n\tSetting up layout....";)
-    m_layout->setupLayout(sim_info);
+    m_layout->setupLayout();
     DEBUG(cerr << "done." << endl;)
 #ifdef PERFORMANCE_METRICS
     // Time to initialization (layout)
     t_host_initialization_layout += sim_info->short_timer.lap() / 1000000.0;
 #endif
-
     // Init radii and rates history matrices with default values
-    if (sim_info->simRecorder != NULL) {
-        sim_info->simRecorder->initDefaultValues();
+    if (simulator->getSimRecorder() != NULL) {
+        simulator->getSimRecorder()->initDefaultValues();
     }
 
     // Creates all the Neurons and generates data for them.
-    createAllNeurons(sim_info);
+    createAllNeurons();
 
 #ifdef PERFORMANCE_METRICS
     // Start timer for initialization
@@ -124,27 +113,19 @@ void Model::setupSim(SimulationInfo *sim_info)
 #endif
 
     // create a synapse index map 
-    m_synapses->createSynapseImap(m_synapseIndexMap, sim_info);
+    m_synapses->createSynapseImap(m_synapseIndexMap);
 }
 
-/*
- *  Clean up the simulation.
- *
- *  @param  sim_info    SimulationInfo to refer.
- */
-void Model::cleanupSim(SimulationInfo *sim_info)
+/// Clean up the simulation.
+void Model::cleanupSim()
 {
     m_neurons->cleanupNeurons();
     m_synapses->cleanupSynapses();
     m_conns->cleanupConnections();
 }
 
-/*
- *  Log this simulation step.
- *
- *  @param  sim_info    SimulationInfo to reference.
- */
-void Model::logSimStep(const SimulationInfo *sim_info) const
+/// Log this simulation step.
+void Model::logSimStep() const
 {
     ConnGrowth* pConnGrowth = dynamic_cast<ConnGrowth*>(m_conns);
     if (pConnGrowth == NULL)
@@ -152,15 +133,15 @@ void Model::logSimStep(const SimulationInfo *sim_info) const
 
     cout << "format:\ntype,radius,firing rate" << endl;
 
-    for (int y = 0; y < sim_info->height; y++) {
+    for (int y = 0; y < simulator->getHeight; y++) {
         stringstream ss;
         ss << fixed;
         ss.precision(1);
 
-        for (int x = 0; x < sim_info->width; x++) {
-            switch (m_layout->neuron_type_map[x + y * sim_info->width]) {
+        for (int x = 0; x < simulator->getWidth; x++) {
+            switch (m_layout->neuron_type_map[x + y * simulator->getWidth]) {
             case EXC:
-                if (m_layout->starter_map[x + y * sim_info->width])
+                if (m_layout->starter_map[x + y * simulator->getWidth])
                     ss << "s";
                 else
                     ss << "e";
@@ -173,9 +154,9 @@ void Model::logSimStep(const SimulationInfo *sim_info) const
                 break;
             }
 
-            ss << " " << (*pConnGrowth->radii)[x + y * sim_info->width];
+            ss << " " << (*pConnGrowth->radii)[x + y * simulator->getWidth];
 
-            if (x + 1 < sim_info->width) {
+            if (x + 1 < simulator->getWidth) {
                 ss.width(2);
                 ss << "|";
                 ss.width(2);
@@ -193,46 +174,28 @@ void Model::logSimStep(const SimulationInfo *sim_info) const
     }
 }
 
-/*
- *  Update the simulation history of every epoch.
- *
- *  @param  sim_info    SimulationInfo to refer from.
- */
-void Model::updateHistory(const SimulationInfo *sim_info)
+/// Update the simulation history of every epoch.
+void Model::updateHistory()
 {
     // Compile history information in every epoch
-    if (sim_info->simRecorder != NULL) {
-        sim_info->simRecorder->compileHistories(*m_neurons);
+    if (simulator->getSimRecorder() != NULL) {
+       simulator->getSimRecorder()->compileHistories(*m_neurons);
     }
 }
 
-/*
- *  Get the IAllNeurons class object.
- *
- *  @return Pointer to the AllNeurons class object.
- */
-IAllNeurons* Model::getNeurons()
-{
-    return m_neurons;
-}
+/************************************************
+ *  Accessors
+ ***********************************************/
 
-/*
- *  Get the Connections class object.
- *
- *  @return Pointer to the Connections class object.
- */
-Connections* Model::getConnections()
-{
-    return m_conns;
-}
+/// Get the IAllNeurons class object.
+/// @return Pointer to the AllNeurons class object.  ToDo: make smart ptr
+IAllNeurons* Model::getNeurons() {return m_neurons;}
 
-/*
- *  Get the Layout class object.
- *
- *  @return Pointer to the Layout class object.
- */
-Layout* Model::getLayout()
-{
-    return m_layout;
-}
+/// Get the Connections class object.
+/// @return Pointer to the Connections class object.  ToDo: make smart ptr
+Connections* Model::getConnections() {return m_conns;}
+
+/// Get the Layout class object.
+/// @return Pointer to the Layout class object. ToDo: make smart ptr
+Layout* Model::getLayout() {return m_layout;}
 

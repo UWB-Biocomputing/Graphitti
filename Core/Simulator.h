@@ -1,319 +1,176 @@
 /**
  * @file Simulator.h
  *
- * @brief Platform independent base class for the Brain Grid simulator. 
+ * @brief Platform independent base class for the Brain Grid simulator.
+ * Simulator is a singleton class (a class that can only have one object)
  *
  * @ingroup Core
- *
- * @authors contributing Derek McLean & Sean Blackbourn       // ToDo: Authorship timeline in main docs. 
- *
  */
-#pragma once                                                                  // modern ifendif
 
-// todo: revisit big decisions here for high level architecture 
+#pragma once
+
+// ToDo: revisit big decisions here for high level architecture
 #include "Global.h"
-#include "IModel.h"  // model owns connections, layout
+#include "IModel.h"  /// model owns connections, layout
 #include "ISInput.h"
-// class IRecorder;                                                        // simulator.h. IRecorder is not in simulator. 
+// class IRecorder;
 
-#ifdef PERFORMANCE_METRICS                                                  // added from siminfo
+#ifdef PERFORMANCE_METRICS
 // Home-brewed performance measurement  *doesnt affect runtime itself. *also collects performance on GPU *warner smidt paper with details "profiling braingrid"
 #include "Timer.h"
 #endif
 
-/**
- * @class Simulator Simulator.h "Simulator.h"
- *
- *
- * This class should be extended when developing the simulator for a specific platform.
- *
- * \latexonly  \subsubsection*{Credits} \endlatexonly
- * \htmlonly   <h3>Credits</h3> \endhtmlonly
- *
- * Some models in this simulator is a rewrite of CSIM (2006) and other
- * work (Stiber and Kawasaki (2007?))
- */
-class Simulator : public TiXmlVisitor                                       // added from siminfo
+// ToDo: siminfo had TiXmlVisitor. Wondering if still needed?
+class Simulator : public TiXmlVisitor
 {
-    public:
-        // Get Instance method that acts as a constructor, returns the instance of the singleton object
-        static Simulator *getInstance();
+public:
 
-        // todo: one accessor get current timestep 
-        // todo: inline int getter() check if inline keyword has significance
+   static Simulator *getInstance(); /// Acts as constructor, returns the instance of singleton object
 
-        //! Width of neuron map (assumes square)
-        int getWidth();
+   // ToDo: one accessor get current timestep
+   // ToDo: make all getters const.
 
-	//! Height of neuron map
-        int getHeight();
+   int      getWidth() const;   /// Width of neuron map (assumes square)
 
-	//! Count of neurons in the simulation
-        int getTotalNeurons();
+	int      getHeight() const;  /// Height of neuron map
 
-	//! Current simulation step
-        int getCurrentStep();
+	int      getTotalNeurons() const;  /// Count of neurons in the simulation
 
-	//! Maximum number of simulation steps
-        int getMaxSteps();
+	int      getCurrentStep() const;    /// Current simulation step
 
-	//! The length of each step in simulation time
-        BGFLOAT getEpochDuration();
+	int      getMaxSteps() const;   /// Maximum number of simulation steps
 
-	//! Maximum firing rate. **Only used by GPU simulation.**
-        int getMaxFiringRate();
+	BGFLOAT  getEpochDuration() const;    /// The length of each step in simulation time
 
-	//! Maximum number of synapses per neuron. **Only used by GPU simulation.**
-        int getMaxSynapsesPerNeuron();
+	int      getMaxFiringRate() const; 	/// Maximum firing rate. **GPU Only**
 
-	//! Time elapsed between the beginning and end of the simulation step
-        BGFLOAT getDeltaT();
+	int      getMaxSynapsesPerNeuron() const; 	/// Maximum number of synapses per neuron. **GPU Only**
 
-	//! The neuron type map (INH, EXC).
-        neuronType* getRgNeuronTypeMap();
+	BGFLOAT  getDeltaT() const;    /// Time elapsed between the beginning and end of the simulation step
 
-	//! The starter existence map (T/F).
-        bool* getRgEndogenouslyActiveNeuronMap();
+	neuronType* getRgNeuronTypeMap() const;    /// The neuron type map (INH, EXC).
 
-	//! growth variable (m_targetRate / m_epsilon) TODO: more detail here
-        BGFLOAT getMaxRate();
+	bool*    getRgEndogenouslyActiveNeuronMap() const;  /// The starter existence map (T/F).
 
-	//! List of summation points (either host or device memory)
-        BGFLOAT* getPSummationMap();
+	BGFLOAT  getMaxRate() const; 	/// growth variable (m_targetRate / m_epsilon) TODO: more detail here
 
-        // Mutator for summation map (added late)
-        void setPSummationMap(BGFLOAT* summationMap); 
+	BGFLOAT* getPSummationMap() const;   /// List of summation points (either host or device memory)
 
-	//! Seed used for the simulation random SINGLE THREADED
-        long getSeed();
+	void     setPSummationMap(BGFLOAT* summationMap);     /// Mutator for summation map (added late)
 
-        //! File name of the simulation results.
-        string getStateOutputFileName();
+	long     getSeed() const;    /// Seed used for the simulation random **SingleThreaded Only**
 
-        //! File name of the parameter description file.
-        string getStateInputFileName();
+	string   getStateOutputFileName() const;    /// File name of the simulation results.
 
-        //! File name of the memory dump output file.
-        string getMemOutputFileName();
+	string   getStateInputFileName() const;    /// File name of the parameter description file.
 
-        //! File name of the memory dump input file.
-        string getMemInputFileName();
+	string   getMemOutputFileName() const;    /// File name of the memory dump output file.
 
-        //! File name of the stimulus input file.
-        string getStimulusInputFileName() const;    // todo: make all const. 
+	string   getMemInputFileName() const; /// File name of the memory dump input file.
 
-        //! Neural Network Model interface.
-        IModel* getModel();
+	string   getStimulusInputFileName() const;     /// File name of the stimulus input file.
 
-        //! Recorder object.
-        IRecorder* getSimRecorder();
+	IModel* getModel() const;    /// Neural Network Model interface. ToDo: make smart ptr
 
-        //! Stimulus input object.
-        ISInput* getPInput();           // <--- do we need to return these? do these need to be accessible outside. figure out something else to return beside ptr. maybe safely return const reference? todo. 
+	IRecorder* getSimRecorder() const;    /// Recorder object. ToDo: make smart ptr
 
-        // ***** big questions: 
-        // is this something other classes should be modifying? 
-        // is returning a copy helpful? if modified by other classes... 
-        // todo: look@ how other classes are using performance metrics. 
-        // do other classes make their own timers? was this to output timing? 
-        // should be read only
-    #ifdef PERFORMANCE_METRICS
-        /**
-         * Timer for measuring performance of an epoch.
-         */
-        Timer getTimer();  //returns copy of internal timer owned by simulator. 
-        /**
-         * Timer for measuring performance of connection update.
-         */
-        Timer getShort_timer();
+   // ToDo: Questions
+   // ToDo:  do we need to return these?
+   // ToDo: do these need to be accessible outside?
+   // ToDo: figure out something else to return beside ptr. maybe safely return const reference?
+   ISInput* getPInput();  /// Stimulus input object.
+
+   #ifdef PERFORMANCE_METRICS
+   Timer getTimer();  /// Timer measures performance of epoch. returns copy of internal timer owned by simulator.
+   Timer getShort_timer(); ///Timer for measuring performance of connection update.
     #endif
 
+    virtual ~Simulator(); /// Destructor
 
+    void setup(); /// Setup simulation.
 
+    void finish(); /// Cleanup after simulation.
 
-        /** Destructor */
-        virtual ~Simulator();
+    bool readParameters(TiXmlDocument* simDoc); /// returns true if success, simDoc is TiXmlDocument to read from.
 
-        /**
-         * Setup simulation.
-         *
-         *  @param  sim_info    parameters for the simulation.
-         */
-        void setup(SimulationInfo *sim_info);
+    void printParameters(ostream &output) const; /// Prints out loaded parameters to ostream.
 
-        /**
-         * Cleanup after simulation.
-         *
-         *  @param  sim_info    parameters for the simulation.
-         */
-        void finish(SimulationInfo *sim_info);
+    void copyGPUSynapseToCPU(); /// Copy GPU Synapse data to CPU.
 
-        
+    void copyCPUSynapseToGPU(); /// Copy CPU Synapse data to GPU.
 
-        /**                                                         // added from siminfo
-         *  Attempts to read parameters from a XML file.
-         *
-         *  @param  simDoc  the TiXmlDocument to read from.
-         *  @return true if successful, false otherwise.
-         */
-        bool readParameters(TiXmlDocument* simDoc);   
+    void reset(); /// Reset simulation objects.
 
-        /**                                                       // added from siminfo
-         *  Prints out loaded parameters to ostream.
-         *
-         *  @param  output  ostream to send output to.
-         */
-        void printParameters(ostream &output) const;      
+    void simulate(); Performs the simulation.
 
-        /**
-         * Copy GPU Synapse data to CPU.
-         *
-         *  @param  sim_info    parameters for the simulation.
-         */
-        void copyGPUSynapseToCPU(SimulationInfo *sim_info);
-        
-        /**
-         * Copy CPU Synapse data to GPU.
-         *
-         *  @param  sim_info    parameters for the simulation.
-         */
-        void copyCPUSynapseToGPU(SimulationInfo *sim_info);
+    void advanceUntilGrowth(); /// Advance simulation to next growth cycle. Helper for #simulate().
 
-        /** 
-         * Reset simulation objects.
-         *
-         *  @param  sim_info    parameters for the simulation.
-         */
-        void reset(SimulationInfo *sim_info);
+    void saveData() const; /// Writes simulation results to an output destination.
 
-        /**
-         * Performs the simulation.
-         *
-         *  @param  sim_info    parameters for the simulation.
-         */
-        void simulate();
+protected:
 
-        /**
-         * Advance simulation to next growth cycle. Helper for #simulate().
-         *
-         *  @param currentStep the current epoch in which the network is being simulated.
-         *  @param  sim_info    parameters for the simulation.
-         */
-        void advanceUntilGrowth(const int currentStep, SimulationInfo *sim_info);
+   using TiXmlVisitor::VisitEnter;
 
-        /**
-         * Writes simulation results to an output destination.
-         *
-         *  @param  sim_info    parameters for the simulation.
-         */
-        void saveData(SimulationInfo *sim_info) const;
+   /// True if no errors, Handles loading of parameters using tinyxml from the parameter file.
+   /// param  firstAttribute  ***NOT USED***. ToDo: investigate comment
+   virtual bool VisitEnter(const TiXmlElement& element, const TiXmlAttribute* firstAttribute);
 
-    protected:                                                                  // added from siminfo
-        using TiXmlVisitor::VisitEnter;
+private:
 
-        /*
-         *  Handles loading of parameters using tinyxml from the parameter file.
-         *
-         *  @param  element TiXmlElement to examine.
-         *  @param  firstAttribute  ***NOT USED***.
-         *  @return true if method finishes without errors.
-         */
-        virtual bool VisitEnter(const TiXmlElement& element, const TiXmlAttribute* firstAttribute);
+	Simulator(); /// Constructor
 
-    private:
-        /**
-        *  Constructor
-        */
-	Simulator();
+	static Simulator *instance; /// pointer to instance
 
-        // pointer to instance 
-        static Simulator *instance;
-        
-        /**
-         * Frees dynamically allocated memory associated with the maps.
-         */
-        void freeResources();
-        
-        //! Width of neuron map (assumes square)
-	int width;
+	void freeResources(); /// Frees dynamically allocated memory associated with the maps.
 
-	//! Height of neuron map
-	int height;
+	int width; /// Width of neuron map (assumes square)
 
-	//! Count of neurons in the simulation
-	int totalNeurons;
+	int height; 	/// Height of neuron map
 
-	//! Current simulation step
-	int currentStep;
+	int totalNeurons; 	/// Count of neurons in the simulation
 
-	//! Maximum number of simulation steps
-	int maxSteps; // TODO: delete
+	int currentStep; 	/// Current simulation step
 
-	//! The length of each step in simulation time
-	BGFLOAT epochDuration; // Epoch duration !!!!!!!!
+	int maxSteps; // TODO: delete /// Maximum number of simulation steps
 
-	//! Maximum firing rate. **Only used by GPU simulation.**
-	int maxFiringRate;
+	BGFLOAT epochDuration; /// The length of each step in simulation time
 
-	//! Maximum number of synapses per neuron. **Only used by GPU simulation.**
-	int maxSynapsesPerNeuron;
+	int maxFiringRate;  /// Maximum firing rate. **GPU Only**
 
-	//! Time elapsed between the beginning and end of the simulation step
-        // did so could change between float and double. purely investigative type. gives more confidence. 
-	BGFLOAT deltaT; // Inner Simulation Step Duration !!!!!!!!
+	int maxSynapsesPerNeuron;  /// Maximum number of synapses per neuron. **GPU Only**
 
-	//! The neuron type map (INH, EXC).
-	neuronType* rgNeuronTypeMap;
+	BGFLOAT deltaT;   /// Inner Simulation Step Duration, purely investigative.
 
-	//! The starter existence map (T/F).
-	bool* rgEndogenouslyActiveNeuronMap;
+	neuronType* rgNeuronTypeMap; /// The neuron type map (INH, EXC). ToDo: make smart ptr
 
-	//! growth variable (m_targetRate / m_epsilon) TODO: more detail here
-	BGFLOAT maxRate;
+	bool* rgEndogenouslyActiveNeuronMap; 	/// The starter existence map (T/F). ToDo: make smart ptr
 
-	//! List of summation points (either host or device memory)
-	BGFLOAT* pSummationMap;
+	BGFLOAT maxRate; 	/// growth variable (m_targetRate / m_epsilon) TODO: more detail here
 
-	//! Seed used for the simulation random SINGLE THREADED
-	long seed;
+	BGFLOAT* pSummationMap;    /// List of summation points (either host or device memory) ToDo: make smart ptr
 
-        //! File name of the simulation results.
-        string stateOutputFileName;
+	long seed; 	/// Seed used for the simulation random SINGLE THREADED
 
-        //! File name of the parameter description file.
-        string stateInputFileName;
+	string stateOutputFileName;    /// File name of the simulation results.
 
-        //! File name of the memory dump output file.
-        string memOutputFileName;
+	string stateInputFileName;    /// File name of the parameter description file.
 
-        //! File name of the memory dump input file.
-        string memInputFileName;
+	string memOutputFileName;    /// File name of the memory dump output file.
 
-        //! File name of the stimulus input file.
-        string stimulusInputFileName;
+	string memInputFileName;    /// File name of the memory dump input file.
 
-        //! Neural Network Model interface.
-        IModel* model;
+	string stimulusInputFileName;    /// File name of the stimulus input file.
 
-        //! Recorder object.
-        IRecorder* simRecorder;
+	IModel* model;    /// Neural Network Model interface. ToDo: make smart ptr
 
-        //! Stimulus input object.
-        ISInput* pInput;
+	IRecorder* simRecorder;    /// ptr to Recorder object. ToDo: make smart ptr
 
-    #ifdef PERFORMANCE_METRICS
-        /**
-         * Timer for measuring performance of an epoch.
-         */
-        Timer timer;
+   ISInput* pInput;    /// Stimulus input object. ToDo: make smart ptr
 
-        /**
-         * Timer for measuring performance of connection update.
-         */
-        Timer short_timer;
-
-    #endif
-
+   #ifdef PERFORMANCE_METRICS
+   Timer timer;   /// Timer for measuring performance of an epoch.
+   Timer short_timer; /// Timer for measuring performance of connection update.
+   #endif
 
 };
 
