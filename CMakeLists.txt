@@ -3,38 +3,44 @@ project(SummerOfBrain)
 
 set(CMAKE_CXX_STANDARD 14)
 
-# Add all directories that contain used classes
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+
+# Add all directories that contain required classes
 include_directories(
         ../SummerOfBrain
         Core
         Core/FunctionNodes
-        Testing)
+        Testing
+        Utils)
 
 # Including Googletest subdirectories
 add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/googletest-master/googletest/include)
 
-# CPU SIMULATOR EXECUTABLE
+# ------ CPU SIMULATOR EXECUTABLE -------
 # Add all class paths needed for dependencies
 #add_executable(BrainGrid)
 
-# GPU SIMULATOR EXECUTABLE
+# ------ GPU SIMULATOR EXECUTABLE ------
 # Add all class paths needed for dependencies
 #add_executable(BrainGrid-cuda)
 
-# TEST EXECUTABLE
+# ------ TESTS EXECUTABLE ------
 # Add all class paths needed for dependencies
 add_executable(Tests
-        Testing/RunTests.cpp
-        Testing/Core/Foo.h
-        Testing/Core/Foo.cpp
-        Core/FunctionNodes/GenericFunctionNode.h
-        Core/FunctionNodes/GenericFunctionNode.cpp
         Core/OperationManager.h
         Core/OperationManager.cpp
         Core/Operations.h
+        Core/SynapseIndexMap.h
+        Core/FunctionNodes/GenericFunctionNode.h
+        Core/FunctionNodes/GenericFunctionNode.cpp
+        Testing/RunTests.cpp
+        Testing/Core/Foo.h
+        Testing/Core/Foo.cpp
         Testing/Core/FunctionNodeTests.cpp
-        Testing/Core/OperationManagerTests.cpp)
+        Testing/Core/OperationManagerTests.cpp
+        Testing/Core/SynapseIndexMapTests.cpp
+        Utils/BGTypes.h)
 
-# Links the Googletest framework with the testing classes
+# Links the Googletest framework with the testing executable
 target_link_libraries(Tests gtest gtest_main)

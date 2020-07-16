@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
+int main() {
     testing::InitGoogleTest();
     int result = RUN_ALL_TESTS();
     if (result != 0) {
