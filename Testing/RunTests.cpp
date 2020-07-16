@@ -1,11 +1,14 @@
-//
-// Created by Chris O'Keefe on 6/26/2020.
-//
+/*
+ * @file RunTests.cpp
+ *
+ * @brief This file is used to initiate Gtest and to run all tests in the project.
+ *
+ * @ingroup Testing
+ */
+
+#include <iostream>
 
 #include "gtest/gtest.h"
-#include "OperationManager.h"
-#include "Foo.h"
-#include <iostream>
 
 using namespace std;
 

@@ -4,8 +4,10 @@ project(SummerOfBrain)
 set(CMAKE_CXX_STANDARD 14)
 
 # Add all directories that contain used classes
-include_directories(ChainOfResponsibility
+include_directories(
+        ../SummerOfBrain
         Core
+        Core/FunctionNodes
         Testing)
 
 # Including Googletest subdirectories
@@ -24,15 +26,15 @@ include_directories(Testing/lib/googletest-master/googletest/include)
 # Add all class paths needed for dependencies
 add_executable(Tests
         Testing/RunTests.cpp
-        ChainOfResponsibility/Foo.h
-        ChainOfResponsibility/Foo.cpp
-        ChainOfResponsibility/GenericFunctionNode.h
-        ChainOfResponsibility/GenericFunctionNode.cpp
+        Testing/Core/Foo.h
+        Testing/Core/Foo.cpp
+        Core/FunctionNodes/GenericFunctionNode.h
+        Core/FunctionNodes/GenericFunctionNode.cpp
         Core/OperationManager.h
         Core/OperationManager.cpp
-        ChainOfResponsibility/Operations.h
-        Testing/ChainOfResponsibility/FunctionNodeTests.cpp
-        Testing/ChainOfResponsibility/OperationManagerTests.cpp)
+        Core/Operations.h
+        Testing/Core/FunctionNodeTests.cpp
+        Testing/Core/OperationManagerTests.cpp)
 
 # Links the Googletest framework with the testing classes
 target_link_libraries(Tests gtest gtest_main)

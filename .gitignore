@@ -55,3 +55,6 @@ _deps
 .*.sw?
 .idea/
 .vs/
+
+# Google Test
+Testing/lib
