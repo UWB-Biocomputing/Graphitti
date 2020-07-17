@@ -1,3 +1,5 @@
+
+
 #include "Model.h"
 #include "tinyxml.h"
 #include "ParseParamError.h"
@@ -17,7 +19,7 @@ Model::Model(Connections *conns, IAllNeurons *neurons, IAllSynapses *synapses, L
     simulator = Simulator::getInstance();
 }
 
-/// Destructor
+/// Destructor todo: this will change
 Model::~Model()
 {
     if (m_conns != NULL) {
@@ -47,6 +49,7 @@ Model::~Model()
 }
 
 /// Save simulation results to an output destination.
+// todo: recorder should be under model if not layout or connections
 void Model::saveData()
 {
     if (simulator->getSimRecorder() != NULL)
@@ -56,6 +59,7 @@ void Model::saveData()
 }
 
 /// Creates all the Neurons and generates data for them.
+// todo: this is going to go away
 void Model::createAllNeurons()
 {
     DEBUG(cerr << "\nAllocating neurons..." << endl;)
@@ -70,6 +74,7 @@ void Model::createAllNeurons()
     m_layout->initStarterMap(simulator->getTotalNeurons());
 
     // set their specific types
+    // todo: neurons_
     m_neurons->createAllNeurons(m_layout);
 
     DEBUG(cerr << "Done initializing neurons..." << endl;)
@@ -77,6 +82,8 @@ void Model::createAllNeurons()
 
 /// Sets up the Simulation.
 /// ToDo: find siminfo actual things being passed through
+// todo: to be setup: tell layouts and connections to setup. will setup neurons/synapses.
+// todo: setup recorders.
 void Model::setupSim()
 {
     DEBUG(cerr << "\tSetting up neurons....";)
@@ -112,7 +119,7 @@ void Model::setupSim()
     t_host_initialization_connections += sim_info->short_timer.lap() / 1000000.0;
 #endif
 
-    // create a synapse index map 
+    // create a synapse index map
     m_synapses->createSynapseImap(m_synapseIndexMap);
 }
 

@@ -8,13 +8,6 @@
  * \latexonly  \subsubsection*{Implementation} \endlatexonly
  * \htmlonly   <h3>Implementation</h3> \endhtmlonly
  *
- * The Model class maintains and manages classes of objects that make up
- * essential components of the spiking neunal network.
- *    -# IAllNeurons: A class to define a list of partiular type of neurons.
- *    -# IAllSynapses: A class to define a list of partiular type of synapses.
- *    -# Connections: A class to define connections of the neunal network.
- *    -# Layout: A class to define neurons' layout information in the network.
- *
  * \image html bg_data_layout.png
  *
  * The network is composed of 3 superimposed 2-d arrays: neurons, synapses, and
@@ -23,15 +16,7 @@
  * Synapses in the synapse map are located at the coordinates of the neuron
  * from which they receive output.  Each synapse stores a pointer into a
  * summation point. 
- * 
- * If, during an advance cycle, a neuron \f$A\f$ at coordinates \f$x,y\f$ fires, every synapse
- * which receives output is notified of the spike. Those synapses then hold
- * the spike until their delay period is completed.  At a later advance cycle, once the delay
- * period has been completed, the synapses apply their PSRs (Post-Synaptic-Response) to 
- * the summation points.  
- * Finally, on the next advance cycle, each neuron \f$B\f$ adds the value stored
- * in their corresponding summation points to their \f$V_m\f$ and resets the summation points to
- * zero.
+ *
  *
  * \latexonly  \subsubsection*{Credits} \endlatexonly
  * \htmlonly   <h3>Credits</h3> \endhtmlonly
@@ -57,6 +42,8 @@ public:
 
     /// Constructor
     Model(
+          /// factory class knows which synapse/neuron class to make.
+          // ToDo: since these are getting created in factory fclassofcategory, these stay here
           Connections *conns,
           IAllNeurons *neurons,
           IAllSynapses *synapses,
@@ -67,6 +54,7 @@ public:
 
    /// Writes simulation results to an output destination.
    /// Downstream from IModel saveData()
+   // todo: put in chain of responsibility.
    virtual void   saveData();
 
    /// Set up model state, for a specific simulation run.
@@ -77,23 +65,12 @@ public:
    /// Downstream from IModel cleanupSim()
    virtual void   cleanupSim();
 
-   /// returns ptr for AllNeurons class object.
-   virtual        IAllNeurons* getNeurons();
-
-   /// returns ptr for Connections class object.
-   virtual        Connections* getConnections();
-
-   /// returns ptr for Layouts class object.
-   virtual        Layout* getLayout();
-
    /// Update the simulation history of every epoch.
    virtual void   updateHistory();
 
-   /// Copy GPU Synapse data to CPU.
-   virtual void   copyGPUSynapseToCPUModel() = 0;
+   /// todo: where is advance? is it in gpu cpu ?
 
-   ///  Copy CPU Synapse data to GPU.
-   virtual void   copyCPUSynapseToGPUModel() = 0;
+   // todo: advance and update connections.
 
 protected:
 
@@ -104,23 +81,24 @@ protected:
    // ToDo: do we need this?
    int m_read_params;
 
-public:
-   // 2020/03/14 Modified access level to public for allowing the access in BGDriver for serialization/deserialization
+private:
+   // DONE: 2020/03/14 (It was Emily!) Modified access level to public for allowing the access in BGDriver for serialization/deserialization
    // ToDo: make private again after serialization is fixed... shouldn't these be private with public accessors?
    // ToDo: Should model own these? Or should simulator?
-   Connections    *m_conns;
+   Connections    *m_conns;  // ToDo: make shared pointers
 
-   IAllNeurons    *m_neurons;
-
-   IAllSynapses   *m_synapses;
+   // todo: have connections own synapses, have layouts own neurons
 
    Layout         *m_layout;
 
+   // todo: put synapse index map in connections.
+   // todo: how do synapses get neurons, neurons get synapses. should have member variable.
    SynapseIndexMap *m_synapseIndexMap;
 
-private:
+
         void createAllNeurons(); /// Populate an instance of IAllNeurons with an initial state for each neuron.
 
+         // todo: get rid of ptr. sim should return &reference in getinsstance
         std::weak_ptr<Simulator>() simulator;  /// Weak ptr to instance of simulator
 
 };
