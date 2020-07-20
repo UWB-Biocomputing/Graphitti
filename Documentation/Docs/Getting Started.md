@@ -3,6 +3,8 @@
 
 [BrainGrid](https://github.com/UWB-Biocomputing/BrainGrid) and
 
+ - List item
+
 [WorkBench](https://github.com/UWB-Biocomputing/WorkBench)
 
 Workbench is used to understand whether previously-generated results are still valid and how they might or might not be comparable to new results.
@@ -17,5 +19,5 @@ Workbench is used to understand whether previously-generated results are still v
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTI2OTk2OTgzNF19
+eyJoaXN0b3J5IjpbLTEzNzgyODMzNiwtMjY5OTY5ODM0XX0=
 -->
