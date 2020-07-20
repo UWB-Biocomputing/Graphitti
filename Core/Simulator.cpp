@@ -330,8 +330,6 @@ neuronType *Simulator::getRgNeuronTypeMap() const { return rgNeuronTypeMap; }
 /// Starter existence map (T/F).
 bool *Simulator::getRgEndogenouslyActiveNeuronMap() const { return rgEndogenouslyActiveNeuronMap; }
 
-BGFLOAT Simulator::getMaxRate() const { return maxRate; } // TODO: more detail here
-
 BGFLOAT *Simulator::getPSummationMap() const { return pSummationMap; }
 
 long Simulator::getSeed() const { return seed; }
@@ -355,5 +353,7 @@ ISInput *Simulator::getPInput() const { return pInput; } /// ToDo: make smart pt
 Timer Simulator::getTimer() const { return timer; }
 
 Timer Simulator::getShort_timer() const { return short_timer; }
+
+BGFLOAT Simulator::getMaxRate() const { return maxRate; } // TODO: more detail here
 
 
