@@ -10,14 +10,9 @@
 #include "Simulator.h"
 // #include "ParseParamError.h"
 
-// ToDo: Does this need to be a smart ptr?
-Simulator *Simulator::instance = nullptr;
-
 /// Acts as constructor, returns the instance of the singleton object
-static Simulator *Simulator::getInstance() {
-   if (instance == nullptr) {
-      instance = Simulator;
-   }
+Simulator &Simulator::getInstance() {
+   static Simulator instance;
    return instance;
 };
 

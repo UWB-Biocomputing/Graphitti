@@ -10,10 +10,14 @@
 #pragma once
 
 // ToDo: revisit big decisions here for high level architecture
-#include "Global.h"
+
+#include "BGTypes.h"
+
+// #include "Global.h"
 #include "IModel.h"  /// model owns connections, layout
-#include "ISInput.h"
-// class IRecorder;
+// #include "ISInput.h"
+
+class IRecorder;
 
 #ifdef PERFORMANCE_METRICS
 // Home-brewed performance measurement  *doesnt affect runtime itself. *also collects performance on GPU *warner smidt paper with details "profiling braingrid"
@@ -24,7 +28,7 @@
 class Simulator : public TiXmlVisitor {
 public:
 
-   static Simulator *getInstance(); /// Acts as constructor, returns the instance of singleton object
+   static Simulator &getInstance(); /// Acts as constructor, returns the instance of singleton object
 
    // ToDo: one accessor get current timestep
    // ToDo: make all getters const.
@@ -102,9 +106,6 @@ public:
 
    void simulate();
 
-   Performs the
-   simulation.
-
    void advanceUntilGrowth(); /// Advance simulation to next growth cycle. Helper for #simulate().
 
    void saveData() const; /// Writes simulation results to an output destination.
@@ -119,9 +120,7 @@ protected:
 
 private:
 
-   Simulator(); /// Constructor
-
-   static Simulator *instance; /// pointer to instance
+   Simulator() {} /// Constructor
 
    void freeResources(); /// Frees dynamically allocated memory associated with the maps.
 
@@ -168,6 +167,10 @@ private:
    IRecorder *simRecorder;    /// ptr to Recorder object. ToDo: make smart ptr
 
    ISInput *pInput;    /// Stimulus input object. ToDo: make smart ptr
+
+   /// Delete these methods because they can cause copy instances of the singleton when using threads.
+   Simulator(Simulator const &) = delete;
+   void operator=(Simulator const &) = delete;
 
 #ifdef PERFORMANCE_METRICS
    Timer timer;   /// Timer for measuring performance of an epoch.

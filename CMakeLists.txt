@@ -31,6 +31,8 @@ add_executable(Tests
         Core/OperationManager.h
         Core/OperationManager.cpp
         Core/Operations.h
+        Core/Simulator.h
+        Core/Simulator.cpp
         Core/SynapseIndexMap.h
         Core/FunctionNodes/GenericFunctionNode.h
         Core/FunctionNodes/GenericFunctionNode.cpp
