@@ -27,8 +27,34 @@
 *.lib
 
 # Executables
+BrainGrid
+BrainGrid-cuda
+Tests
 *.exe
 *.out
 *.app
 
+# CMake Directories
+CMakeFiles
+cmake-build-debug
+
+# CMake Files
+CMakeLists.txt.user
 CMakeCache.txt
+CMakeScripts
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+*.cbp
+
+# Ignore IDE, editor, and system files
+.DS_Store
+.*.sw?
+.idea/
+.vs/
+
+# Google Test
+Testing/lib
