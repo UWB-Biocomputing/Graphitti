@@ -12,12 +12,12 @@
 // ToDo: revisit big decisions here for high level architecture
 
 #include "BGTypes.h"
+#include "Global.h"
+#include "IModel.h"  /// model owns connections, layout
+//#include "ISInput.h"
+#include "Timer.h"
 
-// #include "Global.h"
-// #include "ISInput.h"
-#include "Model.h"
-// ToDo: does IRecorder need to be here?
-// class IRecorder;
+class IRecorder;
 
 #ifdef PERFORMANCE_METRICS
 // Home-brewed performance measurement  *doesnt affect runtime itself. *also collects performance on GPU *warner smidt paper with details "profiling braingrid"
@@ -25,7 +25,7 @@
 #endif
 
 // ToDo: siminfo had TiXmlVisitor. Wondering if still needed?
-class Simulator : public TiXmlVisitor {
+class Simulator {
 public:
 
    static Simulator &getInstance(); /// Acts as constructor, returns the instance of singleton object
@@ -81,7 +81,7 @@ public:
    // ToDo:  do we need to return these?
    // ToDo: do these need to be accessible outside?
    // ToDo: figure out something else to return beside ptr. maybe safely return const reference?
-   ISInput *getPInput();  /// Stimulus input object.
+   // ISInput *getPInput();  /// Stimulus input object.
 
 #ifdef PERFORMANCE_METRICS
    Timer getTimer();  /// Timer measures performance of epoch. returns copy of internal timer owned by simulator.
@@ -94,8 +94,6 @@ public:
 
    void finish(); /// Cleanup after simulation.
 
-   bool readParameters(TiXmlDocument *simDoc); /// returns true if success, simDoc is TiXmlDocument to read from.
-
    void printParameters(ostream &output) const; /// Prints out loaded parameters to ostream.
 
    void copyGPUSynapseToCPU(); /// Copy GPU Synapse data to CPU.
@@ -106,21 +104,18 @@ public:
 
    void simulate();
 
-   void advanceUntilGrowth(); /// Advance simulation to next growth cycle. Helper for #simulate().
+   void advanceUntilGrowth(
+           const int &currentStep) const; /// Advance simulation to next growth cycle. Helper for #simulate().
 
    void saveData() const; /// Writes simulation results to an output destination.
 
-protected:
-
-   using TiXmlVisitor::VisitEnter;
-
-   /// True if no errors, Handles loading of parameters using tinyxml from the parameter file.
-   /// param  firstAttribute  ***NOT USED***. ToDo: investigate comment
-   virtual bool VisitEnter(const TiXmlElement &element, const TiXmlAttribute *firstAttribute);
+   /// Delete these methods because they can cause copy instances of the singleton when using threads.
+   Simulator(Simulator const &) = delete;
+   void operator=(Simulator const &) = delete;
 
 private:
 
-   Simulator() {} /// Constructor
+   Simulator(); /// Constructor
 
    void freeResources(); /// Frees dynamically allocated memory associated with the maps.
 
@@ -166,17 +161,12 @@ private:
 
    IRecorder *simRecorder;    /// ptr to Recorder object. ToDo: make smart ptr
 
-   ISInput *pInput;    /// Stimulus input object. ToDo: make smart ptr
-
-   /// Delete these methods because they can cause copy instances of the singleton when using threads.
-   Simulator(Simulator const &) = delete;
-   void operator=(Simulator const &) = delete;
+   // ISInput *pInput;    /// Stimulus input object. ToDo: make smart ptr
 
 #ifdef PERFORMANCE_METRICS
    Timer timer;   /// Timer for measuring performance of an epoch.
    Timer short_timer; /// Timer for measuring performance of connection update.
 #endif
-
 };
 
 

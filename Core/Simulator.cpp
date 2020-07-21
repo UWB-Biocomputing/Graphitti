@@ -53,119 +53,6 @@ void Simulator::finish() {
    model->cleanupSim(); // ToDo: Can #term be removed w/ the new model architecture?  // =>ISIMULATION
 }
 
-/// Attempts to read parameters from a XML file.
-/// @param  simDoc  the TiXmlDocument to read from.
-/// @return true if successful, false otherwise.
-bool Simulator::readParameters(TiXmlDocument *simDoc) {
-   TiXmlElement *parms = NULL;
-
-   if ((parms = simDoc->FirstChildElement()->FirstChildElement("SimInfoParams")) == NULL) {
-      cerr << "Could not find <SimInfoParams> in simulation parameter file " << endl;
-      return false;
-   }
-
-   try {
-      parms->Accept(this);
-   } catch (ParseParamError &error) {  // ToDo: is ParseParamError.h necessary after Lizzy's contrib?
-      error.print(cerr);
-      cerr << endl;
-      return false;
-   }
-
-   // check to see if all required parameters were successfully read
-   if (checkNumParameters() != true) {
-      cerr << "Some parameters are missing in <SimInfoParams> in simulation parameter file " << endl;
-      return false;
-   }
-
-   return true;
-}
-
-/// Handles loading of parameters using tinyxml from the parameter file.
-/// @param  element TiXmlElement to examine.
-/// @param  firstAttribute  ***NOT USED***.
-/// @return true if method finishes without errors.
-bool Simulator::VisitEnter(const TiXmlElement &element, const TiXmlAttribute *firstAttribute)
-//TODO: firstAttribute does not seem to be used! Delete?
-{
-   static string parentNode = "";
-   if (element.ValueStr().compare("SimInfoParams") == 0) {
-      return true;
-   }
-
-   if (element.ValueStr().compare("PoolSize") == 0 ||
-       element.ValueStr().compare("SimParams") == 0 ||
-       element.ValueStr().compare("SimConfig") == 0 ||
-       element.ValueStr().compare("Seed") == 0 ||
-       element.ValueStr().compare("OutputParams") == 0) {
-      nParams++;                                                                               // where is first value of nparams being sourced from? declared but cant find initial value.
-
-      return true;
-   }
-
-   if (element.Parent()->ValueStr().compare("PoolSize") == 0) {
-      if (element.ValueStr().compare("x") == 0) {
-         width = atoi(element.GetText());
-      } else if (element.ValueStr().compare("y") == 0) {
-         height = atoi(element.GetText());
-      }
-
-      if (width != 0 && height != 0) {
-         totalNeurons = width * height;
-      }
-      return true;
-   }
-
-   if (element.Parent()->ValueStr().compare("SimParams") == 0) {
-
-      if (element.ValueStr().compare("Tsim") == 0) {
-         epochDuration = atof(element.GetText());
-      } else if (element.ValueStr().compare("numSims") == 0) {
-         maxSteps = atof(element.GetText());
-      }
-
-      if (epochDuration < 0 || maxSteps < 0) {
-         throw ParseParamError("SimParams", "Invalid negative SimParams value.");
-      }
-
-      return true;
-   }
-
-   if (element.Parent()->ValueStr().compare("SimConfig") == 0) {
-      if (element.ValueStr().compare("maxFiringRate") == 0) {
-         maxFiringRate = atoi(element.GetText());
-      } else if (element.ValueStr().compare("maxSynapsesPerNeuron") == 0) {
-         maxSynapsesPerNeuron = atoi(element.GetText());
-      }
-
-      if (maxFiringRate < 0 || maxSynapsesPerNeuron < 0) {
-         throw ParseParamError("SimConfig", "Invalid negative SimConfig value.");
-      }
-
-      return true;
-   }
-
-   if (element.Parent()->ValueStr().compare("Seed") == 0) {
-      if (element.ValueStr().compare("value") == 0) {
-         seed = atoi(element.GetText());
-      }
-      return true;
-   }
-
-   if (element.Parent()->ValueStr().compare("OutputParams") == 0) {
-      // file name specified in command line is higher priority
-
-      if (stateOutputFileName.empty()) {
-         if (element.ValueStr().compare("stateOutputFileName") == 0) {
-            stateOutputFileName = element.GetText();
-         }
-      }
-      return true;
-   }
-
-   return false;
-}
-
 /// Prints out loaded parameters to ostream.
 /// @param  output  ostream to send output to.
 void Simulator::printParameters(ostream &output) const {
@@ -255,7 +142,7 @@ void Simulator::simulate() {
 /// Helper for #simulate(). Advance simulation until ready for next growth cycle.
 /// This should simulate all neuron and synapse activity for one epoch.
 /// @param currentStep the current epoch in which the network is being simulated.
-void Simulator::advanceUntilGrowth(const int currentStep) {
+void Simulator::advanceUntilGrowth(const int &currentStep) const {
    uint64_t count = 0;
    // Compute step number at end of this simulation epoch
    uint64_t endStep = g_simulationStep
@@ -273,8 +160,9 @@ void Simulator::advanceUntilGrowth(const int currentStep) {
       count++;
       )
       // input stimulus
-      if (pInput != NULL)
-         pInput->inputStimulus();
+      /***** S_INPUT NOT IN REPO YET *******/
+//      if (pInput != NULL)
+//         pInput->inputStimulus();
       // Advance the Network one time step
       model->advance();
       g_simulationStep++;
@@ -345,9 +233,11 @@ IRecorder *Simulator::getSimRecorder() const { return simRecorder; } /// ToDo: m
 
 ISInput *Simulator::getPInput() const { return pInput; } /// ToDo: make smart ptr
 
+#ifdef PERFOMANCE_METRICS
 Timer Simulator::getTimer() const { return timer; }
 
 Timer Simulator::getShort_timer() const { return short_timer; }
+#endif
 
 BGFLOAT Simulator::getMaxRate() const { return maxRate; } // TODO: more detail here
 
