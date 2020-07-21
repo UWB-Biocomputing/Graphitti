@@ -1,7 +1,4 @@
-
-
 #include "Model.h"
-#include "tinyxml.h"
 #include "ParseParamError.h"
 #include "Util.h"
 #include "ConnGrowth.h"
@@ -9,42 +6,41 @@
 /// Constructor
 /// ToDo: Stays the same right now, change further in refactor
 Model::Model(Connections *conns, IAllNeurons *neurons, IAllSynapses *synapses, Layout *layout) :
-    m_read_params(0),
-    m_conns(conns),
-    m_neurons(neurons),
-    m_synapses(synapses),
-    m_layout(layout),
-    m_synapseIndexMap(NULL)
+    read_params_(0),
+    conns_(conns),
+    neurons_(neurons),
+    synapses_(synapses),
+    layout_(layout),
+    synapseIndexMap_(NULL)
 {
-    simulator = Simulator::getInstance();
 }
 
 /// Destructor todo: this will change
 Model::~Model()
 {
-    if (m_conns != NULL) {
-        delete m_conns;
-        m_conns = NULL;
+    if (conns_ != NULL) {
+        delete conns_;
+        conns_ = NULL;
     }
 
-    if (m_neurons != NULL) {
-        delete m_neurons;
-        m_neurons = NULL;
+    if (neurons_ != NULL) {
+        delete neurons_;
+        neurons_ = NULL;
     }
 
-    if (m_synapses != NULL) {
-        delete m_synapses;
-        m_synapses = NULL;
+    if (synapses_ != NULL) {
+        delete synapses_;
+        synapses_ = NULL;
     }
 
-    if (m_layout != NULL) {
-        delete m_layout;
-        m_layout = NULL;
+    if (layout_ != NULL) {
+        delete layout_;
+        layout_ = NULL;
     }
 
-    if (m_synapseIndexMap != NULL) {
-        delete m_synapseIndexMap;
-        m_synapseIndexMap = NULL;
+    if (synapseIndexMap_ != NULL) {
+        delete synapseIndexMap_;
+        synapseIndexMap_ = NULL;
     }
 }
 
@@ -52,9 +48,9 @@ Model::~Model()
 // todo: recorder should be under model if not layout or connections
 void Model::saveData()
 {
-    if (simulator->getSimRecorder() != NULL)
+    if (Simulator::getInstance.getSimRecorder() != NULL)
     {
-        simulator->getSimRecorder()->saveSimData(*m_neurons);
+       Simulator::getInstance.getSimRecorder()->saveSimData(*neurons_);
     }
 }
 
@@ -64,18 +60,12 @@ void Model::createAllNeurons()
 {
     DEBUG(cerr << "\nAllocating neurons..." << endl;)
 
-    // init neuron's map with layout OLD
-    //m_layout->generateNeuronTypeMap(sim_info->totalNeurons);
-    //m_layout->initStarterMap(sim_info->totalNeurons);
-
-    // init neuron's map with layout NEW
-    // m_layout is a reference in model
-    m_layout->generateNeuronTypeMap(simulator->getTotalNeurons());
-    m_layout->initStarterMap(simulator->getTotalNeurons());
+    layout_->generateNeuronTypeMap(Simulator::getInstance.getTotalNeurons());
+    layout_->initStarterMap(Simulator::getInstance.getTotalNeurons());
 
     // set their specific types
     // todo: neurons_
-    m_neurons->createAllNeurons(m_layout);
+    neurons_->createAllNeurons(layout_);
 
     DEBUG(cerr << "Done initializing neurons..." << endl;)
 }
@@ -87,23 +77,23 @@ void Model::createAllNeurons()
 void Model::setupSim()
 {
     DEBUG(cerr << "\tSetting up neurons....";)
-    m_neurons->setupNeurons();
+    neurons_->setupNeurons();
     DEBUG(cerr << "done.\n\tSetting up synapses....";)
-    m_synapses->setupSynapses();
+    synapses_->setupSynapses();
 #ifdef PERFORMANCE_METRICS
     // Start timer for initialization
-    sim_info->short_timer.start();
+    Simulator::getInstance.short_timer.start();
 #endif
     DEBUG(cerr << "done.\n\tSetting up layout....";)
-    m_layout->setupLayout();
+    layout_->setupLayout();
     DEBUG(cerr << "done." << endl;)
 #ifdef PERFORMANCE_METRICS
     // Time to initialization (layout)
     t_host_initialization_layout += sim_info->short_timer.lap() / 1000000.0;
 #endif
     // Init radii and rates history matrices with default values
-    if (simulator->getSimRecorder() != NULL) {
-        simulator->getSimRecorder()->initDefaultValues();
+    if (Simulator::getInstance.getSimRecorder() != NULL) {
+        Simulator::getInstance.getSimRecorder()->initDefaultValues();
     }
 
     // Creates all the Neurons and generates data for them.
@@ -113,42 +103,42 @@ void Model::setupSim()
     // Start timer for initialization
     sim_info->short_timer.start();
 #endif
-    m_conns->setupConnections(sim_info, m_layout, m_neurons, m_synapses);
+    conns_->setupConnections(sim_info, layout_, neurons_, synapses_);
 #ifdef PERFORMANCE_METRICS
     // Time to initialization (connections)
     t_host_initialization_connections += sim_info->short_timer.lap() / 1000000.0;
 #endif
 
     // create a synapse index map
-    m_synapses->createSynapseImap(m_synapseIndexMap);
+    synapses_->createSynapseImap(synapseIndexMap_);
 }
 
 /// Clean up the simulation.
 void Model::cleanupSim()
 {
-    m_neurons->cleanupNeurons();
-    m_synapses->cleanupSynapses();
-    m_conns->cleanupConnections();
+    neurons_->cleanupNeurons();
+    synapses_->cleanupSynapses();
+    conns_->cleanupConnections();
 }
 
 /// Log this simulation step.
 void Model::logSimStep() const
 {
-    ConnGrowth* pConnGrowth = dynamic_cast<ConnGrowth*>(m_conns);
+    ConnGrowth* pConnGrowth = dynamic_cast<ConnGrowth*>(conns_);
     if (pConnGrowth == NULL)
         return;
 
     cout << "format:\ntype,radius,firing rate" << endl;
 
-    for (int y = 0; y < simulator->getHeight; y++) {
+    for (int y = 0; y < Simulator::getInstance.getHeight; y++) {
         stringstream ss;
         ss << fixed;
         ss.precision(1);
 
-        for (int x = 0; x < simulator->getWidth; x++) {
-            switch (m_layout->neuron_type_map[x + y * simulator->getWidth]) {
+        for (int x = 0; x < Simulator::getInstance.getWidth; x++) {
+            switch (layout_->neuron_type_map[x + y * Simulator::getInstance.getWidth]) {
             case EXC:
-                if (m_layout->starter_map[x + y * simulator->getWidth])
+                if (layout_->starter_map[x + y * Simulator::getInstance.getWidth])
                     ss << "s";
                 else
                     ss << "e";
@@ -161,9 +151,9 @@ void Model::logSimStep() const
                 break;
             }
 
-            ss << " " << (*pConnGrowth->radii)[x + y * simulator->getWidth];
+            ss << " " << (*pConnGrowth->radii)[x + y * Simulator::getInstance.getWidth];
 
-            if (x + 1 < simulator->getWidth) {
+            if (x + 1 < Simulator::getInstance.getWidth) {
                 ss.width(2);
                 ss << "|";
                 ss.width(2);
@@ -185,8 +175,8 @@ void Model::logSimStep() const
 void Model::updateHistory()
 {
     // Compile history information in every epoch
-    if (simulator->getSimRecorder() != NULL) {
-       simulator->getSimRecorder()->compileHistories(*m_neurons);
+    if (Simulator::getInstance.getSimRecorder() != NULL) {
+       Simulator::getInstance.getSimRecorder()->compileHistories(*neurons_);
     }
 }
 
@@ -196,13 +186,13 @@ void Model::updateHistory()
 
 /// Get the IAllNeurons class object.
 /// @return Pointer to the AllNeurons class object.  ToDo: make smart ptr
-IAllNeurons* Model::getNeurons() {return m_neurons;}
+IAllNeurons* Model::getNeurons() {return neurons_;}
 
 /// Get the Connections class object.
 /// @return Pointer to the Connections class object.  ToDo: make smart ptr
-Connections* Model::getConnections() {return m_conns;}
+Connections* Model::getConnections() {return conns_;}
 
 /// Get the Layout class object.
 /// @return Pointer to the Layout class object. ToDo: make smart ptr
-Layout* Model::getLayout() {return m_layout;}
+Layout* Model::getLayout() {return layout_;}
 

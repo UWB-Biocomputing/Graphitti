@@ -1,14 +1,7 @@
 /**
- * @file Model.h
+ * @file Model
  *
- * @brief Implementation of Model for the spiking neunal networks.
- *
- * @class Model Model.h "Model.h"
- *
- * \latexonly  \subsubsection*{Implementation} \endlatexonly
- * \htmlonly   <h3>Implementation</h3> \endhtmlonly
- *
- * \image html bg_data_layout.png
+ * @brief Implementation of Model for the spiking neural networks.
  *
  * The network is composed of 3 superimposed 2-d arrays: neurons, synapses, and
  * summation points.
@@ -17,88 +10,101 @@
  * from which they receive output.  Each synapse stores a pointer into a
  * summation point. 
  *
- *
- * \latexonly  \subsubsection*{Credits} \endlatexonly
- * \htmlonly   <h3>Credits</h3> \endhtmlonly
  */
 
 #pragma once
 
-#include "IModel.h"
 #include "Coordinate.h"
 #include "Layout.h"
 #include "SynapseIndexMap.h"
 #include "Simulator.h"
+#include "Global.h"
+
 
 #include <vector>
 #include <iostream>
 
 using namespace std;
 
-class Model : public IModel // ToDo: is this supposed to be protected?
-{
+class Model :
+      {
+      public:
+         /// Constructor
+         Model(
+               /// factory class knows which synapse/neuron class to make.
+               // ToDo: since these are getting created in factory fclassofcategory, these stay here
+               Connections *conns,
+               IAllNeurons *neurons,
+               IAllSynapses *synapses,
+               Layout *layout);
 
-public:
+         /// Destructor
+         virtual        ~Model();
 
-    /// Constructor
-    Model(
-          /// factory class knows which synapse/neuron class to make.
-          // ToDo: since these are getting created in factory fclassofcategory, these stay here
-          Connections *conns,
-          IAllNeurons *neurons,
-          IAllSynapses *synapses,
-          Layout *layout);
+         /// Writes simulation results to an output destination.
+         /// Downstream from IModel saveData()
+         // todo: put in chain of responsibility.
+         virtual void   saveData();
 
-   /// Destructor
-   virtual        ~Model();
+         /// Set up model state, for a specific simulation run.
+         /// Downstream from IModel setupSim()
+         virtual void   setupSim();
 
-   /// Writes simulation results to an output destination.
-   /// Downstream from IModel saveData()
-   // todo: put in chain of responsibility.
-   virtual void   saveData();
+         /// Performs any finalization tasks on network following a simulation.
+         /// Downstream from IModel cleanupSim()
+         virtual void   cleanupSim();
 
-   /// Set up model state, for a specific simulation run.
-   /// Downstream from IModel setupSim()
-   virtual void   setupSim();
+         /// Update the simulation history of every epoch.
+         virtual void   updateHistory();
 
-   /// Performs any finalization tasks on network following a simulation.
-   /// Downstream from IModel cleanupSim()
-   virtual void   cleanupSim();
+         /// Advances network state one simulation step.
+         /// accessors (getNeurons, etc. owned by advance.)
+         /// advance has detailed control over what does what when.
+         /// detailed, low level control. clear onn what is happening when, how much time it is taking.
+         /// If, during an advance cycle, a neuron \f$A\f$ at coordinates \f$x,y\f$ fires, every synapse
+         /// which receives output is notified of the spike. Those synapses then hold
+         /// the spike until their delay period is completed.  At a later advance cycle, once the delay
+         /// period has been completed, the synapses apply their PSRs (Post-Synaptic-Response) to
+         /// the summation points.
+         /// Finally, on the next advance cycle, each neuron \f$B\f$ adds the value stored
+         /// in their corresponding summation points to their \f$V_m\f$ and resets the summation points to zero.
+         virtual void advance() = 0;
 
-   /// Update the simulation history of every epoch.
-   virtual void   updateHistory();
+         /// Modifies connections between neurons based on current state of the network and
+         /// behavior over the past epoch. Should be called once every epoch.
+         /// ToDo: Look at why simulator calls model->updateconnections
+         /// might be similar to advance.
+         virtual void updateConnections() = 0;
 
-   /// todo: where is advance? is it in gpu cpu ?
+   protected:
 
-   // todo: advance and update connections.
+      /// Prints debug information about the current state of the network.
+      void logSimStep() const;
 
-protected:
+      /// error handling for read params
+      // ToDo: do we need this?
+      int read_params_;
 
-   /// Prints debug information about the current state of the network.
-   void logSimStep() const;
+      /// Copy GPU Synapse data to CPU.
+      virtual void copyGPUtoCPU() = 0;
 
-   /// error handling for read params
-   // ToDo: do we need this?
-   int m_read_params;
+      /// Copy CPU Synapse data to GPU.
+      virtual void copyCPUtoGPU() = 0;
 
-private:
-   // DONE: 2020/03/14 (It was Emily!) Modified access level to public for allowing the access in BGDriver for serialization/deserialization
-   // ToDo: make private again after serialization is fixed... shouldn't these be private with public accessors?
-   // ToDo: Should model own these? Or should simulator?
-   Connections    *m_conns;  // ToDo: make shared pointers
+   private:
+      // DONE: 2020/03/14 (It was Emily!) Modified access level to public for allowing the access in BGDriver for serialization/deserialization
+      // ToDo: make private again after serialization is fixed... shouldn't these be private with public accessors?
+      // ToDo: Should model own these? Or should simulator?
+      Connections    *conns_;  // ToDo: make shared pointers
 
-   // todo: have connections own synapses, have layouts own neurons
+      // todo: have connections own synapses, have layouts own neurons
 
-   Layout         *m_layout;
+      Layout         *layout_;
 
-   // todo: put synapse index map in connections.
-   // todo: how do synapses get neurons, neurons get synapses. should have member variable.
-   SynapseIndexMap *m_synapseIndexMap;
+      // todo: put synapse index map in connections.
+      // todo: how do synapses get neurons, neurons get synapses. should have member variable.
+      SynapseIndexMap *synapseIndexMap_;
 
+           void createAllNeurons(); /// Populate an instance of IAllNeurons with an initial state for each neuron.
 
-        void createAllNeurons(); /// Populate an instance of IAllNeurons with an initial state for each neuron.
-
-         // todo: get rid of ptr. sim should return &reference in getinsstance
-        std::weak_ptr<Simulator>() simulator;  /// Weak ptr to instance of simulator
-
-};
+   };

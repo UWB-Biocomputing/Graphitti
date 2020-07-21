@@ -14,10 +14,10 @@
 #include "BGTypes.h"
 
 // #include "Global.h"
-#include "IModel.h"  /// model owns connections, layout
 // #include "ISInput.h"
-
-class IRecorder;
+#include "Model.h"
+// ToDo: does IRecorder need to be here?
+// class IRecorder;
 
 #ifdef PERFORMANCE_METRICS
 // Home-brewed performance measurement  *doesnt affect runtime itself. *also collects performance on GPU *warner smidt paper with details "profiling braingrid"
