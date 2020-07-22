@@ -11,7 +11,8 @@ include_directories(
         Core
         Core/FunctionNodes
         Testing
-        Utils)
+        Utils
+        Utils/TinyXPath)
 
 # Including Googletest subdirectories
 add_subdirectory(Testing/lib/googletest-master)
