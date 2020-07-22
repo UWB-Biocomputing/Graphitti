@@ -1,18 +1,18 @@
-/*
- *  The driver for braingrid.
+/**
+ * @file Driver
+ *
  *  The driver performs the following steps:
  *  1) reads parameters from an xml file (specified as the first argument)
  *  2) creates the network
  *  3) launches the simulation
  *
- *  @authors Allan Ortiz and Cory Mayberry.
  */
 
 #include <fstream>
 #include "Global.h"
 #include "ParamContainer.h"
 
-#include "IModel.h"
+#include "Model.h"
 #include "FClassOfCategory.h"
 #include "IRecorder.h"
 #include "FSInput.h"
@@ -32,19 +32,19 @@
 #elif defined(USE_OMP)
 //    #include "MultiThreadedSim.h"
 #else 
-    #include "SingleThreadedSpikingModel.h"
+    #include "CPUSpikingModel.h"
 #endif
 
 using namespace std;
 
 // functions
-bool LoadAllParameters(SimulationInfo *simInfo);
-void printParams(SimulationInfo *simInfo);
-bool parseCommandLine(int argc, char* argv[], SimulationInfo *simInfo);
-bool createAllModelClassInstances(TiXmlDocument* simDoc, SimulationInfo *simInfo);
-void printKeyStateInfo(SimulationInfo *simInfo);
-void serializeSynapseInfo(SimulationInfo *simInfo, Simulator *simulator);
-bool deserializeSynapseInfo(SimulationInfo *simInfo, Simulator *simulator);
+bool LoadAllParameters();
+void printParams();
+bool parseCommandLine(int argc, char* argv[]);
+bool createAllModelClassInstances();
+void printKeyStateInfo();
+void serializeSynapseInfo();
+bool deserializeSynapseInfo();
 
 /*
  *  Main for Simulator. Handles command line arguments and loads parameters
@@ -59,33 +59,33 @@ int main(int argc, char* argv[]) {
     Simulator *simulator = Simulator::getInstance();
 
     // Handles parsing of the command line
-    if (!parseCommandLine(argc, argv, simInfo)) {
+    if (!parseCommandLine(argc, argv)) {
         cerr << "! ERROR: failed during command line parse" << endl;
         return -1;
     }
 
     // Create all model instances and load parameters from a file.
-    if (!LoadAllParameters(simInfo)) {
+    if (!LoadAllParameters()) {
         cerr << "! ERROR: failed while parsing simulation parameters." << endl;
         return -1;
     }
 
     // create & init simulation recorder
-    simInfo->simRecorder = simInfo->model->getConnections()->createRecorder(simInfo);
+    simInfo->simRecorder = simInfo->model->getConnections()->createRecorder();
     if (simInfo->simRecorder == NULL) {
         cerr << "! ERROR: invalid state output file name extension." << endl;
         return -1;
     }
 
     // Create a stimulus input object
-    simInfo->pInput = FSInput::get()->CreateInstance(simInfo);
+    simInfo->pInput = FSInput::get()->CreateInstance();
 
     time_t start_time, end_time;
     time(&start_time);
 	
     // setup simulation
     DEBUG(cerr << "Setup simulation." << endl;)
-    simulator->setup(simInfo);
+    simulator->setup();
 
     // Deserializes internal state from a prior run of the simulation
     if (!simInfo->memInputFileName.empty()) {
@@ -94,11 +94,11 @@ int main(int argc, char* argv[]) {
         DEBUG(
         // Prints out internal state information before deserialization
         cout << "------------------------------Before Deserialization:------------------------------" << endl;
-        printKeyStateInfo(simInfo);
+        printKeyStateInfo();
         )
 
         // Deserialization
-        if(!deserializeSynapseInfo(simInfo, simulator)) {
+        if(!deserializeSynapseInfo()) {
             cerr << "! ERROR: failed while deserializing objects" << endl;
             return -1;
         }
@@ -111,34 +111,34 @@ int main(int argc, char* argv[]) {
     }
 
     // Run simulation
-    simulator->simulate(simInfo);
+    simulator->simulate();
 
     // Terminate the stimulus input 
     if (simInfo->pInput != NULL)
     {
-        simInfo->pInput->term(simInfo);
+        simInfo->pInput->term();
         delete simInfo->pInput;
     }
 
     // Writes simulation results to an output destination
-    simulator->saveData(simInfo);
+    simulator->saveData();
 
     // Serializes internal state for the current simulation
     if (!simInfo->memOutputFileName.empty()) {
 
         // Serialization
-        serializeSynapseInfo(simInfo, simulator);
+        serializeSynapseInfo();
 
         DEBUG(
         // Prints out internal state information after serialization
         cout << "------------------------------After Serialization:------------------------------" << endl;
-        printKeyStateInfo(simInfo);
+        printKeyStateInfo();
         )
 
     }
 
     // Tell simulation to clean-up and run any post-simulation logic.
-    simulator->finish(simInfo);
+    simulator->finish();
 
     // terminates the simulation recorder
     if (simInfo->simRecorder != NULL) {
