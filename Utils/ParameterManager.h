@@ -18,32 +18,50 @@
  * Supervised by Dr. Michael Stiber, UW Bothell CSSE Division
  */
 
-#include "tinyxml.h"
+# pragma once
+
+#include <memory>
 #include <string>
+#include <tinyxml.h>
+#include <tinystr.h>
+
 #include "BGTypes.h"
 
 using namespace std;
 
-#ifndef PARAMETER_MANAGER_H__
-#define PARAMETER_MANAGER_H__
-
 class ParameterManager {
-    public:
-        // Utility methods
-        ParameterManager();
-        ~ParameterManager();
-        bool loadParameterFile(string path);
-        // Interface methods for simulator objects
-        bool getStringByXpath(string xpath, string& result);
-        bool getIntByXpath(string xpath, int& var);
-        bool getDoubleByXpath(string xpath, double& var);
-        bool getFloatByXpath(string xpath, float& var);
-        bool getBGFloatByXpath(string xpath, BGFLOAT& var);
-        bool getLongByXpath(string xpath, long& var);
-    private:
-        TiXmlDocument* xmlDoc;
-        TiXmlElement* root;
-        bool checkDocumentStatus();
-};
+public:
+   /// Get Instance method that returns a reference to this object.
+   static ParameterManager &getInstance();
 
-#endif          // PARAMETER_MANAGER_H__
+   bool loadParameterFile(string path);
+
+   /// Interface methods for simulator objects
+   bool getStringByXpath(string xpath, string &result);
+
+   bool getIntByXpath(string xpath, int &var);
+
+   bool getDoubleByXpath(string xpath, double &var);
+
+   bool getFloatByXpath(string xpath, float &var);
+
+   bool getBGFloatByXpath(string xpath, BGFLOAT &var);
+
+   bool getLongByXpath(string xpath, long &var);
+
+   /// Delete these methods because they can cause copy instances of the singleton when using threads.
+   ParameterManager(ParameterManager const &) = delete;
+   void operator=(ParameterManager const &) = delete;
+
+private:
+   /// Constructor is private to keep a singleton instance of this class.
+   ParameterManager() {};
+
+   TiXmlDocument *xmlDoc;
+   TiXmlElement *root;
+
+//   unique_ptr<TiXmlDocument> xmlDoc;
+//   unique_ptr<TiXmlElement> root;
+
+   bool checkDocumentStatus();
+};

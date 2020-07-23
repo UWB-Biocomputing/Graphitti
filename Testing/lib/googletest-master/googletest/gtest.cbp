@@ -5,7 +5,7 @@
 		<Option title="gtest"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\Testing\;CMake Files\Testing\lib\;CMake Files\Testing\lib\googletest-master\;CMake Files\Testing\lib\googletest-master\googlemock\;CMake Files\Testing\lib\googletest-master\googlemock\cmake\;CMake Files\Testing\lib\googletest-master\googletest\;CMake Files\Testing\lib\googletest-master\googletest\cmake\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\Testing\;CMake Files\Testing\lib\;CMake Files\Testing\lib\googletest-master\;CMake Files\Testing\lib\googletest-master\googlemock\;CMake Files\Testing\lib\googletest-master\googlemock\cmake\;CMake Files\Testing\lib\googletest-master\googletest\;CMake Files\Testing\lib\googletest-master\googletest\cmake\;CMake Files\ThirdParty\;CMake Files\ThirdParty\TinyXPath\;"/>
 		<Build>
 			<Target title="all">
 				<Option working_dir="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
@@ -18,7 +18,7 @@
 				</MakeCommands>
 			</Target>
 			<Target title="gtest_main">
-				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtest_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtest_maind.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
@@ -28,6 +28,8 @@
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils/TinyXPath"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 					<Add directory="/usr/include/c++/7"/>
@@ -47,7 +49,7 @@
 				</MakeCommands>
 			</Target>
 			<Target title="gtest_main/fast">
-				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtest_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtest_maind.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
@@ -57,6 +59,8 @@
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils/TinyXPath"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 					<Add directory="/usr/include/c++/7"/>
@@ -76,7 +80,7 @@
 				</MakeCommands>
 			</Target>
 			<Target title="gtest">
-				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtestd.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
@@ -86,6 +90,8 @@
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils/TinyXPath"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 					<Add directory="/usr/include/c++/7"/>
@@ -105,7 +111,7 @@
 				</MakeCommands>
 			</Target>
 			<Target title="gtest/fast">
-				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtestd.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
@@ -115,6 +121,8 @@
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils/TinyXPath"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 					<Add directory="/usr/include/c++/7"/>
@@ -169,6 +177,9 @@
 		</Unit>
 		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/cmake/internal_utils.cmake">
 			<Option virtualFolder="CMake Files\Testing\lib\googletest-master\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/ThirdParty/TinyXPath/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\TinyXPath\"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>

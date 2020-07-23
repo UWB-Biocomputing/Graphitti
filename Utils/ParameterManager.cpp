@@ -19,12 +19,13 @@
  * Supervised by Dr. Michael Stiber, UW Bothell CSSE Division
  */
 
+#include "ParameterManager.h"
+
 #include <iostream>
 #include <string>
 #include <stdexcept>
 #include <boost/regex.hpp>
-#include "ParameterManager.h"
-#include "tinyxml.h"
+
 #include "xpath_static.h"
 #include "BGTypes.h"
 
@@ -32,21 +33,10 @@
 // ----------------- UTILITY METHODS ------------------
 // ----------------------------------------------------
 
-/**
- * Class constructor
- * Initialize any heap variables to null
- */
-ParameterManager::ParameterManager() {
-    xmlDoc = nullptr;
-    root = nullptr;
-}
-
-/**
- * Class destructor
- * Deallocate all heap memory managed by the class
- */
-ParameterManager::~ParameterManager() {
-    if (xmlDoc != nullptr) delete xmlDoc;
+/// Get Instance method that returns a reference to this object.
+ParameterManager &ParameterManager::getInstance() {
+   static ParameterManager instance;
+   return instance;
 }
 
 /**
@@ -94,7 +84,7 @@ bool ParameterManager::checkDocumentStatus() {
  */
 bool ParameterManager::getStringByXpath(string xpath, string& var) {
     if (!checkDocumentStatus()) return false;
-    if (!TinyXPath::o_xpath_string(root, xpath.c_str(), var)) {
+    if (!TinyXPath::o_xpath_string(root, xpath.c_str(), reinterpret_cast<TiXmlString &>(var))) {
         cerr << "Failed loading simulation parameter for xpath " 
              << xpath << endl;
         // TODO: possibly get better error information?
