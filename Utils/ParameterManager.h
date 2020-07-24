@@ -1,5 +1,5 @@
 /**
- * A class which contains and manages access to the XML 
+ * A singleton class which contains and manages access to the XML
  * parameter file used by a simulator instance at runtime.
  *
  * The class provides a simple interface to access 
@@ -9,6 +9,8 @@
  *   - The class makes all its own schema calls as needed.
  *   - The class will validate its own parameters unless 
  *     otherwise defined here.
+ *
+ * This class supports multi-threaded programming.
  *
  * This class makes use of TinyXPath, an open-source utility 
  * which enables XPath parsing of a TinyXml document object.
@@ -22,30 +24,34 @@
 
 #include <memory>
 #include <string>
-#include <tinyxml.h>
-#include <tinystr.h>
 
 #include "BGTypes.h"
+#include "tinystr.h"
+#include "tinyxml.h"
 
 using namespace std;
 
 class ParameterManager {
 public:
+
    /// Get Instance method that returns a reference to this object.
    static ParameterManager &getInstance();
+
+   /// Utility Methods
+   ~ParameterManager();
 
    bool loadParameterFile(string path);
 
    /// Interface methods for simulator objects
-   bool getStringByXpath(string xpath, string &result);
+   bool getStringByXpath(string xpath, string &referenceVar);
 
-   bool getIntByXpath(string xpath, int &var);
+   bool getIntByXpath(string xpath, int &referenceVar);
 
-   bool getDoubleByXpath(string xpath, double &var);
+   bool getDoubleByXpath(string xpath, double &referenceVar);
 
-   bool getFloatByXpath(string xpath, float &var);
+   bool getFloatByXpath(string xpath, float &referenceVariable);
 
-   bool getBGFloatByXpath(string xpath, BGFLOAT &var);
+   bool getBGFloatByXpath(string xpath, BGFLOAT &referenceVar);
 
    bool getLongByXpath(string xpath, long &var);
 
@@ -54,14 +60,11 @@ public:
    void operator=(ParameterManager const &) = delete;
 
 private:
+   TiXmlDocument *xmlDocument_;
+   TiXmlElement *root_;
+
    /// Constructor is private to keep a singleton instance of this class.
-   ParameterManager() {};
-
-   TiXmlDocument *xmlDoc;
-   TiXmlElement *root;
-
-//   unique_ptr<TiXmlDocument> xmlDoc;
-//   unique_ptr<TiXmlElement> root;
+   ParameterManager();
 
    bool checkDocumentStatus();
 };

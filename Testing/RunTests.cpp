@@ -13,10 +13,13 @@
 using namespace std;
 
 int main() {
-    testing::InitGoogleTest();
-    int result = RUN_ALL_TESTS();
-    if (result != 0) {
-        cerr << "\nError occured while running the tests. Error number: " << result << endl;
-    }
-    return 0;
+   // Disabling cerr so error messages won't interupt test flow
+   std::cerr.setstate(std::ios_base::failbit);
+
+   testing::InitGoogleTest();
+   int result = RUN_ALL_TESTS();
+   if (result != 0) {
+      cerr << "\nError occured while running the tests. Error number: " << result << endl;
+   }
+   return 0;
 }

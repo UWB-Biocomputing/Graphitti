@@ -22,6 +22,7 @@
 
 using namespace std;
 
+/// Used for comparing types with no "==" operator
 template<typename T>
 static bool AreEqual(T f1, T f2) {
    return (fabs(f1 - f2) <= numeric_limits<T>::epsilon() * fmax(fabs(f1), fabs(f2)));
@@ -33,184 +34,139 @@ TEST(ParameterManager, GetInstanceReturnsInstance) {
 }
 
 TEST(ParameterManager, LoadingXMLFile) {
-   fstream fstream;
-   string filepath = "../configfiles/test-medium-100.xml";
-   fstream.open("C:\\Users\\chris\\OneDrive\\Desktop\\SummerOfBrain\\Utils\\text.txt");
-   ASSERT_TRUE(fstream.is_open());
-   //ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile(filepath));
+   string filepath = "ThirdParty/TinyXPath/test.xml";
+   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile(filepath));
 }
 
 TEST(ParameterManager, LoadingMultipleValidXMLFiles) {
-   string valid[] = {"../configfiles/test-medium-100.xml", "../configfiles/test-large-conected.xml",
-                     "../configfiles/test-medium.xml", "../configfiles/test-tiny.xml"};
-   for (int i = 0; i < valid->size(); i++) {
+   string valid[]{"configfiles/test-medium-100.xml", "configfiles/test-small.xml", "configfiles/test-tiny.xml"};
+   for (int i = 0; i < 3; i++) {
       ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile(valid[i]));
    }
 }
 
 TEST(ParameterManager, LoadingMultipleInvalidFiles) {
    string invalid[] = {"../Core/BGDriver.cpp", "/.this"};
-   for (int i = 0; i < invalid->size(); i++) {
+   for (int i = 0; i < 2; i++) {
       ASSERT_FALSE(ParameterManager::getInstance().loadParameterFile(invalid[i]));
    }
 }
 
 TEST(ParameterManager, ValidStringTargeting) {
-   ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml");
-   string validXPaths[] = {"/BGSimParams/SimInfoParams/OutputParams/stateOutputFileName/text()",
-                            "//stateOutputFileName/text()", "//NeuronsParams/@class"};
+   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   string validXPaths[]{"/BGSimParams/SimInfoParams/OutputParams/stateOutputFileName/text()",
+                        "//stateOutputFileName/text()", "//NeuronsParams/@class"};
    string result[] = {"results/test-medium-500-out.xml", "results/test-medium-500-out.xml", "AllLIFNeurons"};
-   string s;
+   string referenceVar;
    for (int i = 0; i < 3; i++) {
-      ASSERT_TRUE(ParameterManager::getInstance().getStringByXpath(validXPaths[i], s));
-      EXPECT_EQ(s, result[i]);
+      ASSERT_TRUE(ParameterManager::getInstance().getStringByXpath(validXPaths[i], referenceVar));
+      EXPECT_EQ(referenceVar, result[i]);
    }
 }
 
-//   bool testValidIntTargeting() {
-//      cout << "\nEntered test method for targeting valid integers in XML file" << endl;
-//      ParameterManager *pm = new ParameterManager();
-//      if (pm->loadParameterFile("../configfiles/test-medium-500.xml")) {
-//         cout << "Testing valid integers..." << endl;
-//         string valid_xpath[] = {"//maxFiringRate/text()", "//PoolSize/x/text()", "//PoolSize/y/text()",
-//                                 "//PoolSize/z/text()", "//Seed/value/text()", "//numSims/text()"};
-//         int result[] = {200, 30, 30, 1, 1, 500};
-//         int val;
-//         for (int i = 0; i < 6; i++) {
-//            assert(pm->getIntByXpath(valid_xpath[i], val));
-//            assert(val == result[i]);
-//         }
-//         /*
-//          * Test the following invalid paths:
-//          * string result from XMLNode
-//          * string result from string text() value
-//          * float/double result
-//          * float/double result with scientific notation
-//          * @name value that is a string
-//          * invalid xpath (node doesn't exist)
-//          */
-//         cout << "Testing NON-valid integers..." << endl;
-//         string invalid_xpath[] = {"//Iinject", "//activeNListFileName/text()",
-//                                   "//beta/text()", "//Iinject/min/text()",
-//                                   "//LayoutFiles/@name", "//NoSuchPath", ""};
-//         for (int i = 0; i < 7; i++) {
-//            assert(!(pm->getIntByXpath(invalid_xpath[i], val)));
-//         }
-//      }
-//      delete pm;
-//      return true;
-//   }
-//
-//
-//   bool testValidFloatTargeting() {
-//      cout << "\nEntered test method for targeting valid floats in XML file" << endl;
-//      ParameterManager *pm = new ParameterManager();
-//      if (pm->loadParameterFile("../configfiles/test-medium-500.xml")) {
-//         string valid_xpaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//Tsim/text()", "//z/text()"};
-//         float vals[] = {15.0e-03f, 0.0f, 100.0f, 1};
-//         float var;
-//         for (int i = 0; i < 4; i++) {
-//            assert(pm->getFloatByXpath(valid_xpaths[i], var));
-//            assert(AreEqual(var, vals[i]));
-//         }
-//         string invalid_xpaths[] = {"//starter_vthresh", "//nonexistent", ""};
-//         for (int i = 0; i < 3; i++) {
-//            assert(!pm->getFloatByXpath(invalid_xpaths[i], var));
-//         }
-//      }
-//      return true;
-//   }
-//
-//   bool testValidDoubleTargeting() {
-//      cout << "\nEntered test method for targeting valid doubles in XML file" << endl;
-//      ParameterManager *pm = new ParameterManager();
-//      if (pm->loadParameterFile("../configfiles/test-medium-500.xml")) {
-//         string valid_xpaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//Tsim/text()", "//z/text()"};
-//         double vals[] = {15.0e-03, 0.0, 100.0, 1};
-//         double var;
-//         for (int i = 0; i < 4; i++) {
-//            assert(pm->getDoubleByXpath(valid_xpaths[i], var));
-//            assert(AreEqual(var, vals[i]));
-//         }
-//         string invalid_xpaths[] = {"//stateOutputFileName/text()", "//starter_vthresh", "//nonexistent", ""};
-//         for (int i = 0; i < 4; i++) {
-//            assert(!pm->getDoubleByXpath(invalid_xpaths[i], var));
-//         }
-//      }
-//      return true;
-//   }
-//
-//   bool testValidBGFloatTargeting() {
-//      cout << "\nEntered test method for targeting valid BGFLOATs in XML file" << endl;
-//      ParameterManager *pm = new ParameterManager();
-//      if (pm->loadParameterFile("../configfiles/test-medium-500.xml")) {
-//         string valid_xpaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//Tsim/text()", "//z/text()"};
-//         BGFLOAT vals[] = {15.0e-03, 0.0, 100.0, 1};
-//         BGFLOAT var;
-//         for (int i = 0; i < 4; i++) {
-//            assert(pm->getBGFloatByXpath(valid_xpaths[i], var));
-//            assert(AreEqual(var, vals[i]));
-//         }
-//         string invalid_xpaths[] = {"//stateOutputFileName/text()", "//starter_vthresh", "//nonexistent", ""};
-//         for (int i = 0; i < 4; i++) {
-//            assert(!pm->getBGFloatByXpath(invalid_xpaths[i], var));
-//         }
-//      }
-//      return true;
-//   }
-//
-//   bool testValidLongTargeting() {
-//      cout << "\nEntered test method for targeting valid integers in XML file" << endl;
-//      ParameterManager *pm = new ParameterManager();
-//      if (pm->loadParameterFile("../configfiles/test-medium-500.xml")) {
-//         cout << "Testing valid integers..." << endl;
-//         string valid_xpath[] = {"//maxFiringRate/text()", "//PoolSize/x/text()", "//PoolSize/y/text()",
-//                                 "//PoolSize/z/text()", "//Seed/value/text()", "//numSims/text()"};
-//         long result[] = {200, 30, 30, 1, 1, 500};
-//         long val;
-//         for (int i = 0; i < 6; i++) {
-//            assert(pm->getLongByXpath(valid_xpath[i], val));
-//            assert(val == result[i]);
-//         }
-//         /*
-//          * Test the following invalid paths:
-//          * string result from XMLNode
-//          * string result from string text() value
-//          * float/double result
-//          * float/double result with scientific notation
-//          * @name value that is a string
-//          * invalid xpath (node doesn't exist)
-//          */
-//         cout << "Testing NON-valid integers..." << endl;
-//         string invalid_xpath[] = {"//Iinject", "//activeNListFileName/text()",
-//                                   "//beta/text()", "//Iinject/min/text()",
-//                                   "//LayoutFiles/@name", "//NoSuchPath", ""};
-//         for (int i = 0; i < 7; i++) {
-//            assert(!(pm->getLongByXpath(invalid_xpath[i], val)));
-//         }
-//      }
-//      delete pm;
-//      return true;
-//   }
-//
-////int main() {
-//////   cout << "\nRunning tests for ParameterManager.cpp functionality..." << endl;
-//////   bool success = testConstructorAndDestructor();
-//////   if (!success) return 1;
-//////   success = testValidXmlFileReading();
-//////   if (!success) return 1;
-//////   success = testValidStringTargeting();
-//////   if (!success) return 1;
-//////   success = testValidIntTargeting();
-//////   if (!success) return 1;
-//////   success = testValidFloatTargeting();
-//////   if (!success) return 1;
-//////   success = testValidDoubleTargeting();
-//////   if (!success) return 1;
-//////   success = testValidBGFloatTargeting();
-//////   if (!success) return 1;
-//////   success = testValidLongTargeting();
-//////   if (!success) return 1;
-//////   return 0;
-////}
-//
+TEST(ParameterManager, ValidIntTargeting) {
+   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   string valid_xpath[] = {"//maxFiringRate/text()", "//PoolSize/x/text()", "//PoolSize/y/text()",
+                           "//PoolSize/z/text()", "//Seed/value/text()", "//numSims/text()"};
+   int result[] = {200, 30, 30, 1, 1, 500};
+   int referenceVar;
+   for (int i = 0; i < 6; i++) {
+      ASSERT_TRUE(ParameterManager::getInstance().getIntByXpath(valid_xpath[i], referenceVar));
+      ASSERT_EQ(referenceVar, result[i]);
+   }
+}
+
+TEST(ParameterManager, InvalidIntTargeting) {
+   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   string invalidXPath[] = {"//Iinject", "//activeNListFileName/text()",
+                            "//beta/text()", "//Iinject/min/text()",
+                            "//LayoutFiles/@name", "//NoSuchPath", ""};
+   int referenceVar;
+   for (int i = 0; i < 7; i++) {
+      ASSERT_FALSE(ParameterManager::getInstance().getIntByXpath(invalidXPath[i], referenceVar));
+   }
+}
+
+TEST(ParameterManager, ValidFloatTargeting) {
+   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   string validXPaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//Tsim/text()", "//z/text()"};
+   float vals[] = {15.0e-03f, 0.0f, 100.0f, 1};
+   float referenceVar;
+   for (int i = 0; i < 4; i++) {
+      ASSERT_TRUE(ParameterManager::getInstance().getFloatByXpath(validXPaths[i], referenceVar));
+      ASSERT_TRUE(AreEqual(referenceVar, vals[i]));
+   }
+}
+
+TEST(ParameterManager, InvalidFloatTargeting) {
+   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   string invalidXPaths[] = {"//starter_vthresh", "//nonexistent", ""};
+   float referenceVar;
+   for (int i = 0; i < 3; i++) {
+      ASSERT_FALSE(ParameterManager::getInstance().getFloatByXpath(invalidXPaths[i], referenceVar));
+   }
+}
+
+TEST(ParameterManager, ValidDoubleTargeting) {
+   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   string validXPaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//Tsim/text()", "//z/text()"};
+   double vals[] = {15.0e-03, 0.0, 100.0, 1};
+   double referenceVar;
+   for (int i = 0; i < 4; i++) {
+      ASSERT_TRUE(ParameterManager::getInstance().getDoubleByXpath(validXPaths[i], referenceVar));
+      ASSERT_TRUE(AreEqual(referenceVar, vals[i]));
+   }
+
+}
+
+TEST(ParameterManager, InvalidDoubleTargeting) {
+   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   string invalidXPaths[] = {"//stateOutputFileName/text()", "//starter_vthresh", "//nonexistent", ""};
+   double referenceVar;
+   for (int i = 0; i < 4; i++) {
+      ASSERT_FALSE(ParameterManager::getInstance().getDoubleByXpath(invalidXPaths[i], referenceVar));
+   }
+}
+
+TEST(ParameterManager, ValidBGFloatTargeting) {
+   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   string validXPaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//Tsim/text()", "//z/text()"};
+   BGFLOAT vals[] = {15.0e-03, 0.0, 100.0, 1};
+   BGFLOAT referenceVar;
+   for (int i = 0; i < 4; i++) {
+      ASSERT_TRUE(ParameterManager::getInstance().getBGFloatByXpath(validXPaths[i], referenceVar));
+      ASSERT_TRUE(AreEqual(referenceVar, vals[i]));
+   }
+}
+
+TEST(ParameterManager, InvalidBGFloatTargeting) {
+   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   string invalidXPaths[] = {"//stateOutputFileName/text()", "//starter_vthresh", "//nonexistent", ""};
+   BGFLOAT referenceVar;
+   for (int i = 0; i < 4; i++) {
+      ASSERT_FALSE(ParameterManager::getInstance().getBGFloatByXpath(invalidXPaths[i], referenceVar));
+   }
+}
+
+TEST(ParameterManager, ValidLongTargeting) {
+   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   string valid_xpath[] = {"//maxFiringRate/text()", "//PoolSize/x/text()", "//PoolSize/y/text()",
+                           "//PoolSize/z/text()", "//Seed/value/text()", "//numSims/text()"};
+   long result[] = {200, 30, 30, 1, 1, 500};
+   long referenceVar;
+   for (int i = 0; i < 6; i++) {
+      ASSERT_TRUE(ParameterManager::getInstance().getLongByXpath(valid_xpath[i], referenceVar));
+      EXPECT_EQ(referenceVar, result[i]);
+   }
+}
+
+TEST(ParameterManager, InvalidLongTargeting) {
+   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   string invalid_xpath[] = {"//Iinject", "//activeNListFileName/text()",
+                             "//beta/text()", "//Iinject/min/text()",
+                             "//LayoutFiles/@name", "//NoSuchPath", ""};
+   long referenceVar;
+   for (int i = 0; i < 7; i++) {
+      ASSERT_FALSE(ParameterManager::getInstance().getLongByXpath(invalid_xpath[i], referenceVar));
+   }
+}
