@@ -13,11 +13,14 @@ class Operations {
 public:
     /// Available operations the OperationManager can register and execute.
     enum op {
-        allocateMemory,
-        deallocateMemory,
-        restoreToDefault,
-        copyToGPU,
-        copyFromGPU
+       // todo: initializeFromParameters,
+       allocateMemory,
+       // todo: simulationSetup,
+       // todo: deserialize
+       deallocateMemory,
+       restoreToDefault,
+       copyToGPU,
+       copyFromGPU
     };
 };
 

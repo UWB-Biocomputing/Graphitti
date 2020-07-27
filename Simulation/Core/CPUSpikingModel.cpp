@@ -28,7 +28,8 @@ void CPUSpikingModel::setupSim()
 /// Advance everything in the model one time step.
 void CPUSpikingModel::advance()
 {
-   // ToDo: look at pointer v no pointer in params
+   // ToDo: look at pointer v no pointer in params - to change
+   // dereferencing the ptr, lose late binding -- look into changing!
     neurons_->advanceNeurons(*synapses_, synapseIndexMap_);
     synapses_->advanceSynapses(neurons_, synapseIndexMap_);
 }
