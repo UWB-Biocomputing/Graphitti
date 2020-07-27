@@ -20,7 +20,7 @@
 #pragma once
 
 #include "Global.h"
-#include "SimulationInfo.h"
+#include "Simulator.h"
 #include <vector>
 #include <iostream>
 

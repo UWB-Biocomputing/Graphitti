@@ -37,7 +37,7 @@
 #pragma once
 
 #include "Global.h"
-#include "SimulationInfo.h"
+#include "Simulator.h"
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
 #include "Layout.h"
@@ -46,8 +46,6 @@
 #include <iostream>
 
 using namespace std;
-
-class IModel;
 
 class Connections
 {
@@ -63,7 +61,7 @@ class Connections
          *  @param  neurons   The Neuron list to search from.
          *  @param  synapses  The Synapse list to search from.
          */
-        virtual void setupConnections(const SimulationInfo *sim_info, Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses) = 0;
+        virtual void setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses) = 0;
 
         /**
          *  Cleanup the class (deallocate memories).

@@ -13,7 +13,6 @@
 
 #include "BGTypes.h"
 #include "Global.h"
-#include "IModel.h"  /// model owns connections, layout
 //#include "ISInput.h"
 #include "Timer.h"
 

@@ -39,13 +39,13 @@
 #pragma once
 
 #include "Global.h"
-#include "SimulationInfo.h"
+#include "Simulator.h"
 #include "IAllSynapses.h"
 
 /**
  * cereal
  */
-#include <cereal/types/vector.hpp>
+#include <ThirdParty/cereal/types/vector.hpp>
 #include <vector>
 
 #ifdef _WIN32
