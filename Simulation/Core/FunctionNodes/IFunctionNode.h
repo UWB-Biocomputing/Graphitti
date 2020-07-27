@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Operations.h"
+#include "Simulation/Core/Operations.h"
 
 /**
  *  @file IFunctionNode.h

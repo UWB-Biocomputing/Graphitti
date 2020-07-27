@@ -16,7 +16,7 @@
 #include <memory>
 #include <list>
 
-#include "FunctionNodes/GenericFunctionNode.h"
+#include "Simulation/Core/FunctionNodes/GenericFunctionNode.h"
 
 /// Get Instance method that returns a reference to this object.
 OperationManager &OperationManager::getInstance() {

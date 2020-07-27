@@ -17,7 +17,7 @@
 #include <list>
 #include <memory>
 
-#include "IFunctionNode.h"
+#include "Simulation/Core/FunctionNodes/IFunctionNode.h"
 #include "Operations.h"
 
 using namespace std;

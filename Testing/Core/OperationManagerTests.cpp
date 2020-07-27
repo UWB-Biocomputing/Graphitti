@@ -12,8 +12,8 @@
 #include "gtest/gtest.h"
 
 #include "Foo.h"
-#include "Core/OperationManager.h"
-#include "Core/Operations.h"
+#include "Simulation/Core/OperationManager.h"
+#include "Simulation/Core/Operations.h"
 
 TEST(OperationManager, GetInstanceReturnsInstance) {
     OperationManager *operationManager = &OperationManager::getInstance();

@@ -8,6 +8,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 # Add all directories that contain required classes
 include_directories(
         ../SummerOfBrain
+        Connections
         Core
         Core/FunctionNodes
         Testing
@@ -16,7 +17,7 @@ include_directories(
 
 # Including Googletest subdirectories
 add_subdirectory(Testing/lib/googletest-master)
-include_directories(Testing/lib/googletest-master/googletest/include)
+include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
 # ------ CPU SIMULATOR EXECUTABLE -------
 # Add all class paths needed for dependencies
@@ -29,12 +30,12 @@ include_directories(Testing/lib/googletest-master/googletest/include)
 # ------ TESTS EXECUTABLE ------
 # Add all class paths needed for dependencies
 add_executable(Tests
-        Core/OperationManager.h
-        Core/OperationManager.cpp
-        Core/Operations.h
-        Core/SynapseIndexMap.h
-        Core/FunctionNodes/GenericFunctionNode.h
-        Core/FunctionNodes/GenericFunctionNode.cpp
+        Simulation/Core/OperationManager.h
+        Simulation/Core/OperationManager.cpp
+        Simulation/Core/Operations.h
+        Simulation/Core/SynapseIndexMap.h
+        Simulation/Core/FunctionNodes/GenericFunctionNode.h
+        Simulation/Core/FunctionNodes/GenericFunctionNode.cpp
         Testing/RunTests.cpp
         Testing/Core/Foo.h
         Testing/Core/Foo.cpp

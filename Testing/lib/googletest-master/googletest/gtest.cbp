@@ -18,24 +18,27 @@
 				</MakeCommands>
 			</Target>
 			<Target title="gtest_main">
-				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtest_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtest_maind.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/../SummerOfBrain"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Connections"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils/TinyXPath"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 					<Add directory="/usr/include/c++/7"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
 					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/GoogleTest/gcc/x86_64-linux-gnu/7/include"/>
 					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/GoogleTest/gcc/x86_64-linux-gnu/7/include-fixed"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
@@ -47,24 +50,27 @@
 				</MakeCommands>
 			</Target>
 			<Target title="gtest_main/fast">
-				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtest_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtest_maind.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/../SummerOfBrain"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Connections"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils/TinyXPath"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 					<Add directory="/usr/include/c++/7"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
 					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/GoogleTest/gcc/x86_64-linux-gnu/7/include"/>
 					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/GoogleTest/gcc/x86_64-linux-gnu/7/include-fixed"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
@@ -76,24 +82,27 @@
 				</MakeCommands>
 			</Target>
 			<Target title="gtest">
-				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtestd.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/../SummerOfBrain"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Connections"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils/TinyXPath"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 					<Add directory="/usr/include/c++/7"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
 					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/GoogleTest/gcc/x86_64-linux-gnu/7/include"/>
 					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/GoogleTest/gcc/x86_64-linux-gnu/7/include-fixed"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
@@ -105,24 +114,27 @@
 				</MakeCommands>
 			</Target>
 			<Target title="gtest/fast">
-				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtestd.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/../SummerOfBrain"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Connections"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Core/FunctionNodes"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils"/>
+					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Utils/TinyXPath"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
 					<Add directory="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 					<Add directory="/usr/include/c++/7"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
 					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/GoogleTest/gcc/x86_64-linux-gnu/7/include"/>
 					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/GoogleTest/gcc/x86_64-linux-gnu/7/include-fixed"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>

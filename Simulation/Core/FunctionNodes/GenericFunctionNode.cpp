@@ -7,11 +7,11 @@
  *  @ingroup FunctionNodes
  */
 
-#include "Core/FunctionNodes/GenericFunctionNode.h"
+#include "GenericFunctionNode.h"
 
 #include <functional>
 
-#include "Core/Operations.h"
+#include "Simulation/Core/Operations.h"
 
 /// Constructor, Function Signature: void ()
 GenericFunctionNode::GenericFunctionNode(const Operations::op &operation, const std::function<void()> &func) {

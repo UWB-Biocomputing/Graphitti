@@ -57,4 +57,4 @@ _deps
 .vs/
 
 # Google Test
-Testing/lib
+Testing/GoogleTest
