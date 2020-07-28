@@ -64,7 +64,6 @@ ConnGrowth::~ConnGrowth()
 /*
  *  Setup the internal structure of the class (allocate memories and initialize them).
  *
- *  @param  sim_info  SimulationInfo class to read information from.
  *  @param  layout    Layout information of the neunal network.
  *  @param  neurons   The Neuron list to search from.
  *  @param  synapses  The Synapse list to search from.
@@ -141,7 +140,6 @@ void ConnGrowth::printParameters(ostream &output) const
  *  Update the connections status in every epoch.
  *
  *  @param  neurons  The Neuron list to search from.
- *  @param  sim_info SimulationInfo class to read information from.
  *  @param  layout   Layout information of the neunal network.
  *  @return true if successful, false otherwise.
  */
@@ -163,7 +161,6 @@ bool ConnGrowth::updateConnections(IAllNeurons &neurons, Layout *layout)
  *  Calculates firing rates, neuron radii change and assign new values.
  *
  *  @param  neurons  The Neuron list to search from.
- *  @param  sim_info SimulationInfo class to read information from.
  */
 void ConnGrowth::updateConns(IAllNeurons &neurons)
 {
@@ -263,7 +260,6 @@ void ConnGrowth::updateOverlap(BGFLOAT num_neurons, Layout *layout)
  *  @param  num_neurons Number of neurons to update.
  *  @param  ineurons    The Neuron list to search from.
  *  @param  isynapses   The Synapse list to search from.
- *  @param  sim_info    SimulationInfo to refer from.
  */
 void ConnGrowth::updateSynapsesWeights(const int num_neurons, IAllNeurons &ineurons, IAllSynapses &isynapses, Layout *layout)
 {
@@ -348,7 +344,6 @@ void ConnGrowth::updateSynapsesWeights(const int num_neurons, IAllNeurons &ineur
  *  This function tries to create either Xml recorder or
  *  Hdf5 recorder based on the extension of the file name.
  *
- *  @param  simInfo              SimulationInfo to refer from.
  *  @return Pointer to the recorder class object.
  */
 IRecorder* ConnGrowth::createRecorder()

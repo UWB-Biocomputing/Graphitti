@@ -133,7 +133,7 @@ class GPUSpikingModel : public Model
 
       private:
 
-        void updateHistory(const SimulationInfo *sim_infos);
+        void updateHistory();
 
         // TODO
         void eraseSynapse(IAllSynapses &synapses, const int neuron_index, const int synapse_index);

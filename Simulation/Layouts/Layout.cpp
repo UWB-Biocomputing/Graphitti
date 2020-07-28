@@ -2,6 +2,7 @@
 #include "ParseParamError.h"
 #include "Util.h"
 
+/// Constructor
 Layout::Layout() :
     num_endogenously_active_neurons(0),
     nParams(0),
@@ -15,14 +16,15 @@ Layout::Layout() :
     starter_map = NULL;
 }
 
+/// Destructor
 Layout::~Layout()
 {
     if (xloc != NULL) delete xloc;
     if (yloc != NULL) delete yloc;
     if (dist2 != NULL) delete dist2;
     if (dist != NULL) delete dist;
-    if (neuron_type_map != NULL) delete[] neuron_type_map;
-    if (starter_map != NULL) delete[] starter_map;
+    if (neuron_type_map != NULL) delete[] neuron_type_map;  //todo: is delete[] changing once array becomes vector?
+    if (starter_map != NULL) delete[] starter_map; //todo: is delete[] changing once array becomes vector?
 
     xloc = NULL;
     yloc = NULL;
@@ -32,25 +34,22 @@ Layout::~Layout()
     starter_map = NULL;
 }
 
-/*
- *  Setup the internal structure of the class. 
- *  Allocate memories to store all layout state.
- *
- *  @param  sim_info  SimulationInfo class to read information from.
- */
+/// Setup the internal structure of the class.
+/// Allocate memories to store all layout state, no sequential dependency in this method
 void Layout::setupLayout()
 {
     int num_neurons = Simulator::getInstance().getTotalNeurons();
 
+    // Allocate memory
     xloc = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons);
     yloc = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons);
     dist2 = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, num_neurons, num_neurons);
     dist = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, num_neurons, num_neurons);
 
-    // Initialize neuron locations
+    // Initialize neuron locations memory, grab global info
     initNeuronsLocs();
 
-    // calculate the distance between neurons
+    // computing distance between each pair of neurons given each neuron's xy location
     for (int n = 0; n < num_neurons - 1; n++)
     {
         for (int n2 = n + 1; n2 < num_neurons; n2++)
@@ -65,38 +64,29 @@ void Layout::setupLayout()
     }
 
     // take the square root to get actual distance (Pythagoras was right!)
-    // (The CompleteMatrix class makes this assignment look so easy...)
     (*dist) = sqrt((*dist2));
 
+    // more allocation of internal memory
     neuron_type_map = new neuronType[num_neurons];
     starter_map = new bool[num_neurons];
 }
 
-/*
- *  Attempts to read parameters from a XML file.
- *
- *  @param  element TiXmlElement to examine.
- *  @return true if successful, false otherwise.
- */
+/// Attempts to read parameters from a XML file.
+/// @param  element TiXmlElement to examine.
+/// @return true if successful, false otherwise.
 bool Layout::readParameters(const TiXmlElement& element)
 {
     return false;
 }
 
-/*
- *  Prints out all parameters of the layout to ostream.
- *
- *  @param  output  ostream to send output to.
- */
+/// Prints out all parameters of the layout to ostream.
+/// @param  output  ostream to send output to.
 void Layout::printParameters(ostream &output) const
 {
 }
 
-/*
- *  Creates a neurons type map.
- *
- *  @param  num_neurons number of the neurons to have in the type map.
- */
+/// Creates a neurons type map.
+/// @param  num_neurons number of the neurons to have in the type map.
 void Layout::generateNeuronTypeMap(int num_neurons)
 {
     DEBUG(cout << "\nInitializing neuron type map"<< endl;);
@@ -106,12 +96,9 @@ void Layout::generateNeuronTypeMap(int num_neurons)
     }
 }
 
-/*
- *  Populates the starter map.
- *  Selects num_endogenously_active_neurons excitory neurons and converts them into starter neurons.
- *
- *  @param  num_neurons number of neurons to have in the map.
- */
+/// Populates the starter map.
+/// Selects num_endogenously_active_neurons excitory neurons and converts them into starter neurons.
+/// @param  num_neurons number of neurons to have in the map.
 void Layout::initStarterMap(const int num_neurons)
 {
     for (int i = 0; i < num_neurons; i++) {
@@ -140,11 +127,7 @@ synapseType Layout::synType(const int src_neuron, const int dest_neuron)
     return STYPE_UNDEF;
 }
 
-/*
- *  Initialize the location maps (xloc and yloc).
- *
- *  @param sim_info   SimulationInfo class to read information from.
- */
+/// Initialize the location maps (xloc and yloc).
 void Layout::initNeuronsLocs()
 {
     int num_neurons = Simulator::getInstance().getTotalNeurons();

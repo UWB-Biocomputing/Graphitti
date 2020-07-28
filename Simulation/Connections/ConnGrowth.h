@@ -99,7 +99,6 @@ class ConnGrowth : public Connections
         /**
          *  Setup the internal structure of the class (allocate memories and initialize them).
          *
-         *  @param  sim_info  SimulationInfo class to read information from.
          *  @param  layout    Layout information of the neunal network.
          *  @param  neurons   The Neuron list to search from.
          *  @param  synapses  The Synapse list to search from.
@@ -129,7 +128,6 @@ class ConnGrowth : public Connections
          *  Update the connections status in every epoch.
          *
          *  @param  neurons  The Neuron list to search from.
-         *  @param  sim_info SimulationInfo class to read information from.
          *  @param  layout   Layout information of the neunal network.
          *  @return true if successful, false otherwise.
          */
@@ -140,7 +138,6 @@ class ConnGrowth : public Connections
          *  This function tries to create either Xml recorder or
          *  Hdf5 recorder based on the extension of the file name.
          *
-         *  @param  simInfo              SimulationInfo to refer from.
          *  @return Pointer to the recorder class object.
          */
         virtual IRecorder* createRecorder();
@@ -172,12 +169,11 @@ class ConnGrowth : public Connections
          *  @param  num_neurons         number of neurons to update.
          *  @param  neurons             the Neuron list to search from.
          *  @param  synapses            the Synapse list to search from.
-         *  @param  sim_info            SimulationInfo to refer from.
-         *  @param  m_allNeuronsDevice  Reference to the allNeurons struct on device memory. 
+         *  @param  m_allNeuronsDevice  Reference to the allNeurons struct on device memory.
          *  @param  m_allSynapsesDevice Reference to the allSynapses struct on device memory.
          *  @param  layout              Layout information of the neunal network.
          */
-        virtual void updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, const SimulationInfo *sim_info, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout);
+        virtual void updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout);
 #else
     public:
         /**
@@ -187,7 +183,6 @@ class ConnGrowth : public Connections
          *  @param  num_neurons Number of neurons to update.
          *  @param  ineurons    The Neuron list to search from.
          *  @param  isynapses   The Synapse list to search from.
-         *  @param  sim_info    SimulationInfo to refer from.
          */
         virtual void updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout);
 #endif
@@ -196,7 +191,6 @@ class ConnGrowth : public Connections
          *  Calculates firing rates, neuron radii change and assign new values.
          *
          *  @param  neurons  The Neuron list to search from.
-         *  @param  sim_info SimulationInfo class to read information from.
          */
         void updateConns(IAllNeurons &neurons);
 
@@ -290,7 +284,7 @@ void ConnGrowth::load(Archive & archive) {
 
      // check to see if serialized data size matches object size 
     if(radiiVector.size() != radiiSize) {
-        cerr << "Failed deserializing radii. Please verify totalNeurons data member in SimulationInfo class." << endl;
+        cerr << "Failed deserializing radii. Please verify totalNeurons data member." << endl;
         throw cereal::Exception("Deserialization Error");
     }
 

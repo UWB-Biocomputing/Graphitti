@@ -56,7 +56,6 @@ public:
    /**
     *  Setup the internal structure of the class (allocate memories and initialize them).
     *
-    *  @param  sim_info  SimulationInfo class to read information from.
     *  @param  layout    Layout information of the neunal network.
     *  @param  neurons   The Neuron list to search from.
     *  @param  synapses  The Synapse list to search from.
@@ -86,7 +85,6 @@ public:
     *  Update the connections status in every epoch.
     *
     *  @param  neurons  The Neuron list to search from.
-    *  @param  sim_info SimulationInfo class to read information from.
     *  @param  layout   Layout information of the neunal network.
     *  @return true if successful, false otherwise.
     */
@@ -97,7 +95,6 @@ public:
     *  This function tries to create either Xml recorder or
     *  Hdf5 recorder based on the extension of the file name.
     *
-    *  @param  simInfo              SimulationInfo to refer from.
     *  @return Pointer to the recorder class object.
     */
    virtual IRecorder *createRecorder() = 0;
@@ -106,7 +103,6 @@ public:
     *  Creates synapses from synapse weights saved in the serialization file.
     *
     *  @param  num_neurons Number of neurons to update.
-    *  @param  sim_info    SimulationInfo to refer from.
     *  @param  layout      Layout information of the neunal network.
     *  @param  ineurons    The Neuron list to search from.
     *  @param  isynapses   The Synapse list to search from.
@@ -123,12 +119,11 @@ public:
         *  @param  num_neurons         number of neurons to update.
         *  @param  neurons             the Neuron list to search from.
         *  @param  synapses            the Synapse list to search from.
-        *  @param  sim_info            SimulationInfo to refer from.
         *  @param  m_allNeuronsDevice  Reference to the allNeurons struct on device memory.
         *  @param  m_allSynapsesDevice Reference to the allSynapses struct on device memory.
         *  @param  layout              Layout information of the neunal network.
         */
-       virtual void updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, const SimulationInfo *sim_info, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout);
+       virtual void updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout);
 #else
 public:
    /**
@@ -138,7 +133,6 @@ public:
     *  @param  num_neurons Number of neurons to update.
     *  @param  ineurons    The Neuron list to search from.
     *  @param  isynapses   The Synapse list to search from.
-    *  @param  sim_info    SimulationInfo to refer from.
     */
    virtual void
    updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout);

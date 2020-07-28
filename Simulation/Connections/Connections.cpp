@@ -51,7 +51,6 @@ Connections::~Connections()
  *  Update the connections status in every epoch.
  *
  *  @param  neurons  The Neuron list to search from.
- *  @param  sim_info SimulationInfo class to read information from.
  *  @param  layout   Layout information of the neunal network.
  *  @return true if successful, false otherwise.
  */
@@ -61,7 +60,7 @@ bool Connections::updateConnections(IAllNeurons &neurons, Layout *layout)
 }
 
 #if defined(USE_GPU)
-void Connections::updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, const SimulationInfo *sim_info, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout)
+void Connections::updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout)
 {
 }
 #else
@@ -72,7 +71,6 @@ void Connections::updateSynapsesWeights(const int num_neurons, IAllNeurons &neur
  *  @param  num_neurons Number of neurons to update.
  *  @param  neurons     The Neuron list to search from.
  *  @param  synapses    The Synapse list to search from.
- *  @param  sim_info    SimulationInfo to refer from.
  */
 void Connections::updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout)
 {
@@ -83,7 +81,6 @@ void Connections::updateSynapsesWeights(const int num_neurons, IAllNeurons &neur
  *  Creates synapses from synapse weights saved in the serialization file.
  *
  *  @param  num_neurons Number of neurons to update.
- *  @param  sim_info    SimulationInfo to refer from.
  *  @param  layout      Layout information of the neunal network.
  *  @param  ineurons    The Neuron list to search from.
  *  @param  isynapses   The Synapse list to search from.

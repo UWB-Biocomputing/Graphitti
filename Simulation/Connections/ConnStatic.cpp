@@ -25,7 +25,6 @@ ConnStatic::~ConnStatic()
  *  number of maximum connections per neurons, connection radius threshold, and
  *  small-world rewiring probability.
  *
- *  @param  sim_info  SimulationInfo class to read information from.
  *  @param  layout    Layout information of the neunal network.
  *  @param  neurons   The Neuron list to search from.
  *  @param  synapses  The Synapse list to search from.
@@ -118,7 +117,6 @@ void ConnStatic::printParameters(ostream &output) const
  *  This function tries to create either Xml recorder or
  *  Hdf5 recorder based on the extension of the file name.
  *
- *  @param  simInfo              SimulationInfo to refer from.
  *  @return Pointer to the recorder class object.
  */
 IRecorder* ConnStatic::createRecorder() {
@@ -128,8 +126,8 @@ IRecorder* ConnStatic::createRecorder() {
         simRecorder = new XmlRecorder();
     }
 #ifdef USE_HDF5
-    else if (simInfo->stateOutputFileName.find(".h5") != string::npos) {
-        simRecorder = new Hdf5Recorder(simInfo);
+    else if (Simulator::getInstance().getStateOutputFileName().find(".h5") != string::npos) {
+        simRecorder = new Hdf5Recorder();
     }
 #endif // USE_HDF5
     else {

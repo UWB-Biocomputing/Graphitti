@@ -166,7 +166,7 @@ void GPUSpikingModel::calcSummationMap()
 }
 
 /// Update the connection of all the Neurons and Synapses of the simulation.
-void GPUSpikingModel::updateConnections(const SimulationInfo *sim_info)
+void GPUSpikingModel::updateConnections()
 {
   dynamic_cast<AllSpikingNeurons*>(neurons_)->copyNeuronDeviceSpikeCountsToHost(allNeuronsDevice_);
   dynamic_cast<AllSpikingNeurons*>(neurons_)->copyNeuronDeviceSpikeHistoryToHost(allNeuronsDevice_);
