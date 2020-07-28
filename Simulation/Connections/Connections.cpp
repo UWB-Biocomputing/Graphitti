@@ -1,6 +1,10 @@
 #include "Connections.h"
 #include "ParseParamError.h"
 #include "IAllSynapses.h"
+#include "IAllNeurons.h"
+#include "AllSynapses.h"
+#include "AllNeurons.h"
+
 
 /* ------------- CONNECTIONS STRUCT ------------ *\
  * Below all of the resources for the various

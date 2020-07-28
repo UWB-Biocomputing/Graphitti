@@ -14,6 +14,7 @@
 
 #include <iostream>
 #include "Matrix.h"
+#include "BGTypes.h"
 
 // Initialize attributes at construction time
 // The subclass constructor must set dimensions

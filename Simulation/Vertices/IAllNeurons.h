@@ -8,8 +8,9 @@
 
 using namespace std;
 
+#include <iostream>
+
 #include "SynapseIndexMap.h"
-#include "Layout.h"
 
 class IAllSynapses;
 class Layout;
@@ -39,14 +40,6 @@ class IAllNeurons
          * @return true if all required parameters were successfully read, false otherwise.
          */
         virtual bool checkNumParameters() = 0;
-
-        /**
-         *  Attempts to read parameters from a XML file.
-         *
-         *  @param  element TiXmlElement to examine.
-         *  @return true if successful, false otherwise.
-         */
-        virtual bool readParameters(const TiXmlElement& element) = 0;
 
         /**
          *  Prints out all parameters of the neurons to ostream.

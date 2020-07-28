@@ -37,11 +37,8 @@
 
 using namespace std;
 
-#include "Global.h"
-#include "Simulator.h"
-#include "SynapseIndexMap.h"
-#include "Layout.h"
 #include "IAllNeurons.h"
+#include "BGTypes.h"
 
 class AllNeurons : public IAllNeurons
 {
@@ -50,7 +47,7 @@ class AllNeurons : public IAllNeurons
         virtual ~AllNeurons();
 
         /**
-         *  Setup the internal structure of the class. 
+         *  Setup the internal structure of the class.
          *  Allocate memories to store all neurons' state.
          *
          *  @param  sim_info  SimulationInfo class to read information from.
@@ -59,15 +56,15 @@ class AllNeurons : public IAllNeurons
 
         /**
          *  Cleanup the class.
-         *  Deallocate memories. 
+         *  Deallocate memories.
          */
         virtual void cleanupNeurons();
 
-        /** 
+        /**
          *  The summation point for each neuron.
-         *  Summation points are places where the synapses connected to the neuron 
-         *  apply (summed up) their PSRs (Post-Synaptic-Response). 
-         *  On the next advance cycle, neurons add the values stored in their corresponding 
+         *  Summation points are places where the synapses connected to the neuron
+         *  apply (summed up) their PSRs (Post-Synaptic-Response).
+         *  On the next advance cycle, neurons add the values stored in their corresponding
          *  summation points to their Vm and resets the summation points to zero
          */
         BGFLOAT *summation_map;
@@ -82,7 +79,7 @@ class AllNeurons : public IAllNeurons
          *  Number of parameters read.
          */
         int nParams;
- 
+
     private:
         /**
          *  Deallocate all resources

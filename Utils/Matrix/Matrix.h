@@ -17,6 +17,7 @@
 
 #include <string>
 #include "MatrixExceptions.h"
+#include "BGTypes.h"
 
 using namespace std;
 

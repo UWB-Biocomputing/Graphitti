@@ -1,6 +1,9 @@
 #include "ConnStatic.h"
 #include "ParseParamError.h"
 #include "IAllSynapses.h"
+#include "AllNeurons.h"
+#include "AllSynapses.h"
+
 #include "XmlRecorder.h"
 #ifdef USE_HDF5
 #include "Hdf5Recorder.h"

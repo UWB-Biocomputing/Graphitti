@@ -1,4 +1,6 @@
 #include "AllNeurons.h"
+#include "Simulator.h"
+
 // Default constructor
 AllNeurons::AllNeurons() : 
         size(0), 

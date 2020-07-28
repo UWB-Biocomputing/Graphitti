@@ -1,5 +1,6 @@
 #include "AllSTDPSynapses.h"
 #include "IAllNeurons.h"
+#include "AllSpikingNeurons.h"
 
 AllSTDPSynapses::AllSTDPSynapses() : AllSpikingSynapses()
 {

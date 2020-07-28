@@ -32,9 +32,9 @@ AllSynapses::~AllSynapses()
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllSynapses::setupSynapses(SimulationInfo *sim_info)
+void AllSynapses::setupSynapses()
 {
-    setupSynapses(Simulator::getInstance().totalNeurons, Simulator::getInstance().maxSynapsesPerNeuron);
+    setupSynapses(Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
 }
 
 /*
@@ -158,15 +158,15 @@ void AllSynapses::writeSynapse(ostream& output, const BGSIZE iSyn) const
  *  @param  synapseIndexMap   Reference to the pointer to SynapseIndexMap structure.
  *  @param  sim_info          Pointer to the simulation information.
  */
-void AllSynapses::createSynapseImap(SynapseIndexMap *&synapseIndexMap, const SimulationInfo* sim_info)
+void AllSynapses::createSynapseImap(SynapseIndexMap *&synapseIndexMap)
 {
-        int neuron_count = Simulator::getInstance().totalNeurons;
+        int neuron_count = Simulator::getInstance().getTotalNeurons();
         int total_synapse_counts = 0;
 
         // count the total synapses
         for ( int i = 0; i < neuron_count; i++ )
         {
-                assert( static_cast<int>(synapse_counts[i]) < Simulator::getInstance().maxSynapsesPerNeuron );
+                assert( static_cast<int>(synapse_counts[i]) < Simulator::getInstance().getMaxSynapsesPerNeuron());
                 total_synapse_counts += synapse_counts[i];
         }
 
@@ -194,21 +194,21 @@ void AllSynapses::createSynapseImap(SynapseIndexMap *&synapseIndexMap, const Sim
         for (int i = 0; i < neuron_count; i++)
         {
                 BGSIZE synapse_count = 0;
-                synapseIndexMap->incomingSynapseBegin[i] = n_inUse;
-                for ( int j = 0; j < Simulator::getInstance().maxSynapsesPerNeuron; j++, syn_i++ )
+                synapseIndexMap->incomingSynapseBegin_[i] = n_inUse;
+                for ( int j = 0; j < Simulator::getInstance().getMaxSynapsesPerNeuron(); j++, syn_i++ )
                 {
                         if ( in_use[syn_i] == true )
                         {
                                 int idx = sourceNeuronIndex[syn_i];
                                 rgSynapseSynapseIndexMap[idx].push_back(syn_i);
 
-                                synapseIndexMap->incomingSynapseIndexMap[n_inUse] = syn_i;
+                                synapseIndexMap->incomingSynapseIndexMap_[n_inUse] = syn_i;
                                 n_inUse++;
                                 synapse_count++;
                         }
                 }
                 assert( synapse_count == this->synapse_counts[i] );
-                synapseIndexMap->incomingSynapseCount[i] = synapse_count;
+                synapseIndexMap->incomingSynapseCount_[i] = synapse_count;
         }
 
         assert( total_synapse_counts == n_inUse );
@@ -217,12 +217,12 @@ void AllSynapses::createSynapseImap(SynapseIndexMap *&synapseIndexMap, const Sim
         syn_i = 0;
         for (int i = 0; i < neuron_count; i++)
         {
-                synapseIndexMap->outgoingSynapseBegin[i] = syn_i;
-                synapseIndexMap->outgoingSynapseCount[i] = rgSynapseSynapseIndexMap[i].size();
+                synapseIndexMap->outgoingSynapseBegin_[i] = syn_i;
+                synapseIndexMap->outgoingSynapseCount_[i] = rgSynapseSynapseIndexMap[i].size();
 
                 for ( BGSIZE j = 0; j < rgSynapseSynapseIndexMap[i].size(); j++, syn_i++)
                 {
-                        synapseIndexMap->outgoingSynapseIndexMap[syn_i] = rgSynapseSynapseIndexMap[i][j];
+                        synapseIndexMap->outgoingSynapseIndexMap_[syn_i] = rgSynapseSynapseIndexMap[i][j];
                 }
         }
 
@@ -260,11 +260,11 @@ synapseType AllSynapses::synapseOrdinalToType(const int type_ordinal)
  *  @param  neurons           The Neuron list to search from.
  *  @param  synapseIndexMap   Pointer to SynapseIndexMap structure.
  */
-void AllSynapses::advanceSynapses(const SimulationInfo *sim_info, IAllNeurons *neurons, SynapseIndexMap *synapseIndexMap)
+void AllSynapses::advanceSynapses(IAllNeurons *neurons, SynapseIndexMap *synapseIndexMap)
 {
     for (BGSIZE i = 0; i < total_synapse_counts; i++) {
-        BGSIZE iSyn = synapseIndexMap->incomingSynapseIndexMap[i];
-        advanceSynapse(iSyn, sim_info, neurons);
+        BGSIZE iSyn = synapseIndexMap->incomingSynapseIndexMap_[i];
+        advanceSynapse(iSyn, neurons);
     }
 }
 
