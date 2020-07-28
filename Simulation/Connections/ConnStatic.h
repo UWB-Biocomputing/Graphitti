@@ -39,7 +39,7 @@
 
 #include "Global.h"
 #include "Connections.h"
-#include "SimulationInfo.h"
+#include "Simulator.h"
 #include <vector>
 #include <iostream>
 
@@ -64,7 +64,7 @@ class ConnStatic : public Connections
          *  @param  neurons   The Neuron list to search from.
          *  @param  synapses  The Synapse list to search from.
          */
-        virtual void setupConnections(const SimulationInfo *sim_info, Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses);
+        virtual void setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses);
 
         /**
          *  Cleanup the class.
@@ -77,14 +77,6 @@ class ConnStatic : public Connections
          * @return true if all required parameters were successfully read, false otherwise.
          */
         virtual bool checkNumParameters();
-
-        /**
-         *  Attempts to read parameters from a XML file.
-         *
-         *  @param  element TiXmlElement to examine.
-         *  @return true if successful, false otherwise.
-         */
-        virtual bool readParameters(const TiXmlElement& element);
 
         /**
          *  Prints out all parameters of the connections to ostream.
@@ -101,7 +93,7 @@ class ConnStatic : public Connections
          *  @param  simInfo              SimulationInfo to refer from.
          *  @return Pointer to the recorder class object.
          */
-        virtual IRecorder* createRecorder(const SimulationInfo *sim_info);
+        virtual IRecorder* createRecorder();
 
     private:
         //! number of maximum connections per neurons

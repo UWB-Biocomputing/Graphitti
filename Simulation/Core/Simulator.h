@@ -13,10 +13,12 @@
 
 #include "BGTypes.h"
 #include "Global.h"
+#include "Core/Model.h"
 //#include "ISInput.h"
 #include "Timer.h"
 
 class IRecorder;
+class Model;
 
 #ifdef PERFORMANCE_METRICS
 // Home-brewed performance measurement  *doesnt affect runtime itself. *also collects performance on GPU *warner smidt paper with details "profiling braingrid"
@@ -60,6 +62,8 @@ public:
 
    void setPSummationMap(BGFLOAT *summationMap);     /// Mutator for summation map (added late)
 
+   void setSimRecorder(IRecorder *recorder);
+
    long getSeed() const;    /// Seed used for the simulation random **SingleThreaded Only**
 
    string getStateOutputFileName() const;    /// File name of the simulation results.
@@ -72,7 +76,7 @@ public:
 
    string getStimulusInputFileName() const;     /// File name of the stimulus input file.
 
-   IModel *getModel() const;    /// Neural Network Model interface. ToDo: make smart ptr
+   Model *getModel() const;    /// Neural Network Model interface. ToDo: make smart ptr
 
    IRecorder *getSimRecorder() const;    /// Recorder object. ToDo: make smart ptr
 
@@ -156,7 +160,7 @@ private:
 
    string stimulusInputFileName;    /// File name of the stimulus input file.
 
-   IModel *model;    /// Neural Network Model interface. ToDo: make smart ptr
+   Model *model;    /// Neural Network Model interface. ToDo: make smart ptr
 
    IRecorder *simRecorder;    /// ptr to Recorder object. ToDo: make smart ptr
 

@@ -14,6 +14,7 @@
 #include <list>
 #include <vector>
 
+#include "tinyxml.h"
 #include "Matrix.h"
 #include "VectorMatrix.h"
 

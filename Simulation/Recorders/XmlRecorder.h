@@ -38,7 +38,7 @@ class XmlRecorder : public IRecorder
 {
 public:
     //! THe constructor and destructor
-    XmlRecorder(const SimulationInfo* sim_info);
+    XmlRecorder();
     ~XmlRecorder();
 
     /**
@@ -82,7 +82,7 @@ public:
     virtual void saveSimData(const IAllNeurons &neurons);
 
 protected:
-    void getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starter_map, const SimulationInfo *sim_info);
+    void getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starter_map);
 
     // a file stream for xml output
     ofstream stateOut;
@@ -92,9 +92,6 @@ protected:
 
     // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
     VectorMatrix spikesHistory;
-
-    // Struct that holds information about a simulation
-    const SimulationInfo *m_sim_info;
 
     // TODO comment
     Model *m_model;

@@ -55,7 +55,7 @@ class AllNeurons : public IAllNeurons
          *
          *  @param  sim_info  SimulationInfo class to read information from.
          */
-        virtual void setupNeurons(SimulationInfo *sim_info);
+        virtual void setupNeurons();
 
         /**
          *  Cleanup the class.

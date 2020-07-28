@@ -56,7 +56,7 @@ class AllSpikingNeurons : public AllNeurons
          *
          *  @param  sim_info  SimulationInfo class to read information from.
          */
-        virtual void setupNeurons(SimulationInfo *sim_info);
+        virtual void setupNeurons();
 
         /**
          *  Cleanup the class.
@@ -69,7 +69,7 @@ class AllSpikingNeurons : public AllNeurons
          *
          *  @param  sim_info  SimulationInfo class to read information from.
          */
-        void clearSpikeCounts(const SimulationInfo *sim_info);
+        void clearSpikeCounts();
 
 #if defined(USE_GPU)
     public:
@@ -142,7 +142,7 @@ class AllSpikingNeurons : public AllNeurons
          *  @param  sim_info         SimulationInfo class to read information from.
          *  @param  synapseIndexMap  Reference to the SynapseIndexMap.
          */
-        virtual void advanceNeurons(IAllSynapses &synapses, const SimulationInfo *sim_info, const SynapseIndexMap *synapseIndexMap);
+        virtual void advanceNeurons(IAllSynapses &synapses, const SynapseIndexMap *synapseIndexMap);
 
         /**
          *  Get the spike history of neuron[index] at the location offIndex.
@@ -151,7 +151,7 @@ class AllSpikingNeurons : public AllNeurons
          *  @param  offIndex         Offset of the history buffer to get from.
          *  @param  sim_info         SimulationInfo class to read information from.
          */
-        uint64_t getSpikeHistory(int index, int offIndex, const SimulationInfo *sim_info);
+        uint64_t getSpikeHistory(int index, int offIndex);
 
     protected:
         /**
@@ -160,7 +160,7 @@ class AllSpikingNeurons : public AllNeurons
          *  @param  index            Index of the neuron to update.
          *  @param  sim_info         SimulationInfo class to read information from.
          */
-        virtual void advanceNeuron(const int index, const SimulationInfo *sim_info) = 0;
+        virtual void advanceNeuron(const int index) = 0;
 
         /**
          *  Initiates a firing of a neuron to connected neurons
@@ -168,7 +168,7 @@ class AllSpikingNeurons : public AllNeurons
          *  @param  index            Index of the neuron to fire.
          *  @param  sim_info         SimulationInfo class to read information from.
          */
-        virtual void fire(const int index, const SimulationInfo *sim_info) const;
+        virtual void fire(const int index) const;
 #endif // defined(USE_GPU)
 
     private:

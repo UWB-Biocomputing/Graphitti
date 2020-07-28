@@ -21,64 +21,6 @@ bool DynamicLayout::checkNumParameters()
 }
 
 /*
- *  Attempts to read parameters from a XML file.
- *
- *  @param  element TiXmlElement to examine.
- *  @return true if successful, false otherwise.
- */
-bool DynamicLayout::readParameters(const TiXmlElement& element)
-{
-    if (Layout::readParameters(element)) {
-        // this parameter was already handled
-        return true;
-    }
-
-    if (element. ValueStr().compare("LayoutNeurons") == 0){
-	nParams++;
-	return true;
-    }
-/*
-    if (element.ValueStr().compare("DynamicLayoutParams") == 0) {
-        if (element.QueryFLOATAttribute("frac_EXC", &m_frac_excitatory_neurons) != TIXML_SUCCESS) {
-            throw ParseParamError("frac_EXC", "Fraction Excitatory missing in XML.");
-        }
-        if (m_frac_excitatory_neurons < 0 || m_frac_excitatory_neurons > 1) {
-            throw ParseParamError("frac_EXC", "Invalid range for a fraction.");
-        }
-
-        if (element.QueryFLOATAttribute("starter_neurons", &m_frac_starter_neurons) != TIXML_SUCCESS) {
-            throw ParseParamError("starter_neurons", "Fraction endogenously active missing in XML.");
-        }
-        if (m_frac_starter_neurons < 0 || m_frac_starter_neurons > 1) {
-            throw ParseParamError("starter_neurons", "Invalid range for a fraction.");
-        }
-        nParams++;
-        return true;
-    }
-*/
-    if(element.Parent()->ValueStr().compare("LayoutNeurons") == 0){
-	if(element.ValueStr().compare("frac_EXC") == 0){
-	    m_frac_excitatory_neurons = atof(element.GetText());
-
-            if (m_frac_excitatory_neurons < 0 || m_frac_excitatory_neurons > 1) {
-                throw ParseParamError("frac_EXC", "Invalid range for a fraction.");
-            }
-	}
-	else if(element.ValueStr().compare("starter_neurons") == 0){
-	    m_frac_starter_neurons = atof(element.GetText());
-
-            if (m_frac_starter_neurons < 0 || m_frac_starter_neurons > 1) {
-                throw ParseParamError("starter_neurons", "Invalid range for a fraction.");
-            }
-	}
-
-        return true;
-    }
-
-    return false;
-}
-
-/*
  *  Prints out all parameters of the layout to ostream.
  *
  *  @param  output  ostream to send output to.

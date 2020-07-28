@@ -11,10 +11,10 @@
 
 //! THe constructor and destructor
 XmlRecorder::XmlRecorder(const SimulationInfo* sim_info) :
-        burstinessHist(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(sim_info->epochDuration * sim_info->maxSteps), 0),
-        spikesHistory(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(sim_info->epochDuration * sim_info->maxSteps * 100), 0),
+        burstinessHist(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().epochDuration * Simulator::getInstance().maxSteps), 0),
+        spikesHistory(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().epochDuration * Simulator::getInstance().maxSteps * 100), 0),
         m_sim_info(sim_info),
-        m_model(dynamic_cast<Model*> (sim_info->model))
+        m_model(dynamic_cast<Model*> (Simulator::getInstance().model))
 {
 }
 
@@ -71,10 +71,10 @@ void XmlRecorder::term()
 void XmlRecorder::compileHistories(IAllNeurons &neurons)
 {
     AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons&>(neurons);
-    int max_spikes = (int) ((m_sim_info->epochDuration * m_sim_info->maxFiringRate));
+    int max_spikes = (int) ((m_Simulator::getInstance().epochDuration * m_Simulator::getInstance().maxFiringRate));
 
     // output spikes
-    for (int iNeuron = 0; iNeuron < m_sim_info->totalNeurons; iNeuron++)
+    for (int iNeuron = 0; iNeuron < m_Simulator::getInstance().totalNeurons; iNeuron++)
     {
         uint64_t* pSpikes = spNeurons.spike_history[iNeuron];
 
@@ -90,11 +90,11 @@ void XmlRecorder::compileHistories(IAllNeurons &neurons)
 
             if (idxSp >= max_spikes) idxSp = 0;
             // compile network wide burstiness index data in 1s bins
-            int idx1 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * m_sim_info->deltaT );
+            int idx1 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * m_Simulator::getInstance().deltaT );
             burstinessHist[idx1] = burstinessHist[idx1] + 1.0;
 
             // compile network wide spike count in 10ms bins
-            int idx2 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * m_sim_info->deltaT * 100 );
+            int idx2 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * m_Simulator::getInstance().deltaT * 100 );
             spikesHistory[idx2] = spikesHistory[idx2] + 1.0;
         }
     }
@@ -111,14 +111,14 @@ void XmlRecorder::compileHistories(IAllNeurons &neurons)
 void XmlRecorder::saveSimData(const IAllNeurons &neurons)
 {
     // create Neuron Types matrix
-    VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, m_sim_info->totalNeurons, EXC);
-    for (int i = 0; i < m_sim_info->totalNeurons; i++) {
+    VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, m_Simulator::getInstance().totalNeurons, EXC);
+    for (int i = 0; i < m_Simulator::getInstance().totalNeurons; i++) {
         neuronTypes[i] = m_model->getLayout()->neuron_type_map[i];
     }
 
     // create neuron threshold matrix
-    VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, m_sim_info->totalNeurons, 0);
-    for (int i = 0; i < m_sim_info->totalNeurons; i++) {
+    VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, m_Simulator::getInstance().totalNeurons, 0);
+    for (int i = 0; i < m_Simulator::getInstance().totalNeurons; i++) {
         neuronThresh[i] = dynamic_cast<const AllIFNeurons&>(neurons).Vthresh[i];
     }
 
@@ -148,12 +148,12 @@ void XmlRecorder::saveSimData(const IAllNeurons &neurons)
 
     // write time between growth cycles
     stateOut << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << endl;
-    stateOut << "   " << m_sim_info->epochDuration << endl;
+    stateOut << "   " << m_Simulator::getInstance().epochDuration << endl;
     stateOut << "</Matrix>" << endl;
 
     // write simulation end time
     stateOut << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << endl;
-    stateOut << "   " << g_simulationStep * m_sim_info->deltaT << endl;
+    stateOut << "   " << g_simulationStep * m_Simulator::getInstance().deltaT << endl;
     stateOut << "</Matrix>" << endl;
     stateOut << "</SimState>" << endl;
 }
@@ -168,7 +168,7 @@ void XmlRecorder::saveSimData(const IAllNeurons &neurons)
 void XmlRecorder::getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starter_map, const SimulationInfo *sim_info)
 {
     int cur = 0;
-    for (int i = 0; i < sim_info->totalNeurons; i++) {
+    for (int i = 0; i < Simulator::getInstance().totalNeurons; i++) {
         if (starter_map[i]) {
             matrix[cur] = i;
             cur++;

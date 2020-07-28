@@ -66,7 +66,7 @@ class AllSynapses : public IAllSynapses
          *
          *  @param  sim_info  SimulationInfo class to read information from.
          */
-        virtual void setupSynapses(SimulationInfo *sim_info);
+        virtual void setupSynapses();
 
         /**
          *  Cleanup the class (deallocate memories).
@@ -112,7 +112,7 @@ class AllSynapses : public IAllSynapses
          *  @param  synapseIndexMap   Reference to thw pointer to SynapseIndexMap structure.
          *  @param  sim_info          Pointer to the simulation information.
          */
-        virtual void createSynapseImap(SynapseIndexMap *&synapseIndexMap, const SimulationInfo* sim_info);
+        virtual void createSynapseImap(SynapseIndexMap *&synapseIndexMap);
 
         /**
          *  Get the sign of the synapseType.
@@ -184,7 +184,7 @@ class AllSynapses : public IAllSynapses
          *  @param  neurons   The Neuron list to search from.
          *  @param  synapseIndexMap   Pointer to SynapseIndexMap structure.
          */
-        virtual void advanceSynapses(const SimulationInfo *sim_info, IAllNeurons *neurons, SynapseIndexMap *synapseIndexMap);
+        virtual void advanceSynapses(IAllNeurons *neurons, SynapseIndexMap *synapseIndexMap);
 
         /**
          *  Remove a synapse from the network.

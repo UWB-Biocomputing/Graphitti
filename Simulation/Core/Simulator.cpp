@@ -42,10 +42,12 @@ void Simulator::setup() {
    model->setupSim();
    DEBUG(cerr << "\ndone init models." << endl;)
    // init stimulus input object
+   /* PInput not in project yet
    if (pInput != NULL) {
       cout << "Initializing input." << endl;
       pInput->init();
    }
+    */
 }
 
 /// Begin terminating the simulator
@@ -66,12 +68,14 @@ void Simulator::printParameters(ostream &output) const {
 
 /// Copy GPU Synapse data to CPU.
 void Simulator::copyGPUSynapseToCPU() {
-   model->copyGPUSynapseToCPUModel();
+   // ToDo: Delete this method and implement using OperationManager
+   // model->copyGPUSynapseToCPUModel();
 }
 
 /// Copy CPU Synapse data to GPU.
 void Simulator::copyCPUSynapseToGPU() {
-   model->copyCPUSynapseToGPUModel();
+   // ToDo: Delete this method and implement using OperationManager
+   // model->copyCPUSynapseToGPUModel();
 }
 
 /// Resets all of the maps. Releases and re-allocates memory for each map, clearing them as necessary.
@@ -147,7 +151,7 @@ void Simulator::advanceUntilGrowth(const int &currentStep) const {
    // Compute step number at end of this simulation epoch
    uint64_t endStep = g_simulationStep
                       + static_cast<uint64_t>(epochDuration / deltaT);
-   DEBUG_MID(model->logSimStep();) // Generic model debug call
+   // DEBUG_MID(model->logSimStep();) // Generic model debug call
    while (g_simulationStep < endStep) {
       DEBUG_LOW(
       // Output status once every 10,000 steps
@@ -181,6 +185,10 @@ void Simulator::saveData() const {
 /// List of summation points (either host or device memory)
 void Simulator::setPSummationMap(BGFLOAT *summationMap) {
    pSummationMap = summationMap;
+}
+
+void Simulator::setSimRecorder(IRecorder *recorder) {
+   simRecorder = recorder;
 }
 
 /************************************************
@@ -227,11 +235,12 @@ string Simulator::getMemInputFileName() const { return memInputFileName; }
 
 string Simulator::getStimulusInputFileName() const { return stimulusInputFileName; }
 
-IModel *Simulator::getModel() const { return model; } /// ToDo: make smart ptr
+Model *Simulator::getModel() const { return model; } /// ToDo: make smart ptr
 
 IRecorder *Simulator::getSimRecorder() const { return simRecorder; } /// ToDo: make smart ptr
 
-ISInput *Simulator::getPInput() const { return pInput; } /// ToDo: make smart ptr
+// ISInput not in repo yet
+// ISInput *Simulator::getPInput() const { return pInput; } /// ToDo: make smart ptr
 
 #ifdef PERFOMANCE_METRICS
 Timer Simulator::getTimer() const { return timer; }

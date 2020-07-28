@@ -17,9 +17,9 @@ AllNeurons::~AllNeurons()
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllNeurons::setupNeurons(SimulationInfo *sim_info)
+void AllNeurons::setupNeurons()
 {
-    size = sim_info->totalNeurons;
+    size = Simulator::getInstance().getTotalNeurons();
     // TODO: Rename variables for easier identification
     summation_map = new BGFLOAT[size];
 
@@ -27,7 +27,7 @@ void AllNeurons::setupNeurons(SimulationInfo *sim_info)
         summation_map[i] = 0;
     }
 
-    sim_info->pSummationMap = summation_map;
+    Simulator::getInstance().setPSummationMap(summation_map);
 }
 
 /*

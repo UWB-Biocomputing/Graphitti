@@ -38,7 +38,7 @@ class Layout
          *
          *  @param  sim_info  SimulationInfo class to read information from.
          */
-        virtual void setupLayout(const SimulationInfo *sim_info);
+        virtual void setupLayout();
 
         /**
          *  Checks the number of required parameters to read.
@@ -127,7 +127,7 @@ class Layout
          *
          *  @param sim_info   SimulationInfo class to read information from.
          */
-        void initNeuronsLocs(const SimulationInfo *sim_info);
+        void initNeuronsLocs();
 
         // True if grid layout.
         bool m_grid_layout;

@@ -55,7 +55,7 @@ Connections::~Connections()
  *  @param  layout   Layout information of the neunal network.
  *  @return true if successful, false otherwise.
  */
-bool Connections::updateConnections(IAllNeurons &neurons, const SimulationInfo *sim_info, Layout *layout)
+bool Connections::updateConnections(IAllNeurons &neurons, Layout *layout)
 {
     return false;
 }
@@ -74,7 +74,7 @@ void Connections::updateSynapsesWeights(const int num_neurons, IAllNeurons &neur
  *  @param  synapses    The Synapse list to search from.
  *  @param  sim_info    SimulationInfo to refer from.
  */
-void Connections::updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, const SimulationInfo *sim_info, Layout *layout)
+void Connections::updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout)
 {
 }
 #endif // !USE_GPU
@@ -88,7 +88,7 @@ void Connections::updateSynapsesWeights(const int num_neurons, IAllNeurons &neur
  *  @param  ineurons    The Neuron list to search from.
  *  @param  isynapses   The Synapse list to search from.
  */
-void Connections::createSynapsesFromWeights(const int num_neurons, const SimulationInfo *sim_info, Layout *layout, IAllNeurons &ineurons, IAllSynapses &isynapses) 
+void Connections::createSynapsesFromWeights(const int num_neurons, Layout *layout, IAllNeurons &ineurons, IAllSynapses &isynapses)
 {
     AllNeurons &neurons = dynamic_cast<AllNeurons&>(ineurons);
     AllSynapses &synapses = dynamic_cast<AllSynapses&>(isynapses);
@@ -96,8 +96,8 @@ void Connections::createSynapsesFromWeights(const int num_neurons, const Simulat
     // for each neuron
     for (int iNeuron = 0; iNeuron < num_neurons; iNeuron++) {
         // for each synapse in the neuron
-        for (BGSIZE synapse_index = 0; synapse_index < sim_info->maxSynapsesPerNeuron; synapse_index++) {
-            BGSIZE iSyn = sim_info->maxSynapsesPerNeuron * iNeuron + synapse_index;
+        for (BGSIZE synapse_index = 0; synapse_index < Simulator::getInstance().getMaxSynapsesPerNeuron(); synapse_index++) {
+            BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * iNeuron + synapse_index;
             // if the synapse weight is not zero (which means there is a connection), create the synapse
             if(synapses.W[iSyn] != 0.0) {
                 BGFLOAT theW = synapses.W[iSyn];
@@ -106,10 +106,9 @@ void Connections::createSynapsesFromWeights(const int num_neurons, const Simulat
                 int dest_neuron = synapses.destNeuronIndex[iSyn];
                 synapseType type = layout->synType(src_neuron, dest_neuron);
                 synapses.synapse_counts[iNeuron]++;
-                synapses.createSynapse(iSyn, src_neuron, dest_neuron, sum_point, sim_info->deltaT, type);
+                synapses.createSynapse(iSyn, src_neuron, dest_neuron, sum_point, Simulator::getInstance().getDeltaT(), type);
                 synapses.W[iSyn] = theW;
             }
         }
     }
-
 }

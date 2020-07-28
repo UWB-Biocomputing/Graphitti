@@ -29,7 +29,7 @@
 #define _IRECORDER_H_
 
 #include "Global.h"
-#include "SimulationInfo.h"
+#include "Simulator.h"
 #include "AllSpikingNeurons.h"
 
 class IRecorder

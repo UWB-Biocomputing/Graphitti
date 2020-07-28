@@ -34,7 +34,7 @@ AllSynapses::~AllSynapses()
  */
 void AllSynapses::setupSynapses(SimulationInfo *sim_info)
 {
-    setupSynapses(sim_info->totalNeurons, sim_info->maxSynapsesPerNeuron);
+    setupSynapses(Simulator::getInstance().totalNeurons, Simulator::getInstance().maxSynapsesPerNeuron);
 }
 
 /*
@@ -160,13 +160,13 @@ void AllSynapses::writeSynapse(ostream& output, const BGSIZE iSyn) const
  */
 void AllSynapses::createSynapseImap(SynapseIndexMap *&synapseIndexMap, const SimulationInfo* sim_info)
 {
-        int neuron_count = sim_info->totalNeurons;
+        int neuron_count = Simulator::getInstance().totalNeurons;
         int total_synapse_counts = 0;
 
         // count the total synapses
         for ( int i = 0; i < neuron_count; i++ )
         {
-                assert( static_cast<int>(synapse_counts[i]) < sim_info->maxSynapsesPerNeuron );
+                assert( static_cast<int>(synapse_counts[i]) < Simulator::getInstance().maxSynapsesPerNeuron );
                 total_synapse_counts += synapse_counts[i];
         }
 
@@ -195,7 +195,7 @@ void AllSynapses::createSynapseImap(SynapseIndexMap *&synapseIndexMap, const Sim
         {
                 BGSIZE synapse_count = 0;
                 synapseIndexMap->incomingSynapseBegin[i] = n_inUse;
-                for ( int j = 0; j < sim_info->maxSynapsesPerNeuron; j++, syn_i++ )
+                for ( int j = 0; j < Simulator::getInstance().maxSynapsesPerNeuron; j++, syn_i++ )
                 {
                         if ( in_use[syn_i] == true )
                         {

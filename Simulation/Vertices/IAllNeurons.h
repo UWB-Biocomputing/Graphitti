@@ -12,6 +12,7 @@ using namespace std;
 #include "Layout.h"
 
 class IAllSynapses;
+class Layout;
 
 class IAllNeurons
 {
@@ -24,7 +25,7 @@ class IAllNeurons
          *
          *  @param  sim_info  SimulationInfo class to read information from.
          */
-        virtual void setupNeurons(SimulationInfo *sim_info) = 0;
+        virtual void setupNeurons() = 0;
 
         /**
          *  Cleanup the class.
@@ -60,7 +61,7 @@ class IAllNeurons
          *  @param  sim_info    SimulationInfo class to read information from.
          *  @param  layout      Layout information of the neunal network.
          */
-        virtual void createAllNeurons(SimulationInfo *sim_info, Layout *layout) = 0;
+        virtual void createAllNeurons(Layout *layout) = 0;
 
         /**
          *  Outputs state of the neuron chosen as a string.
@@ -134,6 +135,6 @@ class IAllNeurons
          *  @param  sim_info         SimulationInfo class to read information from.
          *  @param  synapseIndexMap  Reference to the SynapseIndexMap.
          */
-        virtual void advanceNeurons(IAllSynapses &synapses, const SimulationInfo *sim_info, const SynapseIndexMap *synapseIndexMap) = 0;
+        virtual void advanceNeurons(IAllSynapses &synapses, const SynapseIndexMap *synapseIndexMap) = 0;
 #endif // defined(USE_GPU)
 };

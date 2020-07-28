@@ -36,9 +36,9 @@ AllSTDPSynapses::~AllSTDPSynapses()
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllSTDPSynapses::setupSynapses(SimulationInfo *sim_info)
+void AllSTDPSynapses::setupSynapses()
 {
-    setupSynapses(sim_info->totalNeurons, sim_info->maxSynapsesPerNeuron);
+    setupSynapses(Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
 }
 
 /*
@@ -284,12 +284,12 @@ void AllSTDPSynapses::createSynapse(const BGSIZE iSyn, int source_index, int des
  *  @param  sim_info  SimulationInfo class to read information from.
  *  @param  neurons   The Neuron list to search from.
  */
-void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, const SimulationInfo *sim_info, IAllNeurons *neurons)
+void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons)
 {
     // If the synapse is inhibitory or its weight is zero, update synapse state using AllSpikingSynapses::advanceSynapse method
     BGFLOAT &W = this->W[iSyn];
     if(W <= 0.0) {
-        AllSpikingSynapses::advanceSynapse(iSyn, sim_info, neurons);
+        AllSpikingSynapses::advanceSynapse(iSyn, neurons);
         return;
     }
 
@@ -309,7 +309,7 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, const SimulationInfo *si
         int &total_delay = this->total_delay[iSyn];
         bool &useFroemkeDanSTDP = this->useFroemkeDanSTDP[iSyn];
 
-        BGFLOAT deltaT = sim_info->deltaT;
+        BGFLOAT deltaT = Simulator::getInstance().getDeltaT();
         AllSpikingNeurons* spNeurons = dynamic_cast<AllSpikingNeurons*>(neurons);
 
         // pre and post neurons index
@@ -323,7 +323,7 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, const SimulationInfo *si
             // spikeCount points to the next available position of spike_history,
             // so the getSpikeHistory w/offset = -2 will return the spike time 
             // just one before the last spike.
-            spikeHistory = spNeurons->getSpikeHistory(idxPre, -2, sim_info);
+            spikeHistory = spNeurons->getSpikeHistory(idxPre, -2);
             if (spikeHistory != ULONG_MAX && useFroemkeDanSTDP) {
                 // delta will include the transmission delay
                 delta = static_cast<BGFLOAT>(g_simulationStep - spikeHistory) * deltaT;
@@ -336,7 +336,7 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, const SimulationInfo *si
             // pre-post spikes
             int offIndex = -1;	// last spike
             while (true) {
-                spikeHistory = spNeurons->getSpikeHistory(idxPost, offIndex, sim_info);
+                spikeHistory = spNeurons->getSpikeHistory(idxPost, offIndex);
                 if (spikeHistory == ULONG_MAX)
                     break;
                 // delta is the spike interval between pre-post spikes
@@ -355,7 +355,7 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, const SimulationInfo *si
                 if (delta <= -3.0 * tauneg)
                     break;
                 if (useFroemkeDanSTDP) {
-                    spikeHistory2 = spNeurons->getSpikeHistory(idxPost, offIndex-1, sim_info);
+                    spikeHistory2 = spNeurons->getSpikeHistory(idxPost, offIndex-1);
                     if (spikeHistory2 == ULONG_MAX)
                         break;
                     epost = 1.0 - exp(-(static_cast<BGFLOAT>(spikeHistory - spikeHistory2) * deltaT) / tauspost);
@@ -373,7 +373,7 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, const SimulationInfo *si
             // spikeCount points to the next available position of spike_history,
             // so the getSpikeHistory w/offset = -2 will return the spike time
             // just one before the last spike.
-            spikeHistory = spNeurons->getSpikeHistory(idxPost, -2, sim_info);
+            spikeHistory = spNeurons->getSpikeHistory(idxPost, -2);
             if (spikeHistory != ULONG_MAX && useFroemkeDanSTDP) {
                 // delta will include the transmission delay
                 delta = static_cast<BGFLOAT>(g_simulationStep - spikeHistory) * deltaT;
@@ -386,7 +386,7 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, const SimulationInfo *si
             // post-pre spikes
             int offIndex = -1;	// last spike
             while (true) {
-                spikeHistory = spNeurons->getSpikeHistory(idxPre, offIndex, sim_info);
+                spikeHistory = spNeurons->getSpikeHistory(idxPre, offIndex);
                 if (spikeHistory == ULONG_MAX)
                     break;
                     
@@ -409,7 +409,7 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, const SimulationInfo *si
                 if (delta >= 3.0 * taupos)
                     break;
                 if (useFroemkeDanSTDP) {
-                    spikeHistory2 = spNeurons->getSpikeHistory(idxPre, offIndex-1, sim_info);
+                    spikeHistory2 = spNeurons->getSpikeHistory(idxPre, offIndex-1);
                     if (spikeHistory2 == ULONG_MAX)
                         break;                
                     epre = 1.0 - exp(-(static_cast<BGFLOAT>(spikeHistory - spikeHistory2) * deltaT) / tauspre);

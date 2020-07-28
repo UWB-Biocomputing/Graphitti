@@ -26,9 +26,9 @@ AllDSSynapses::~AllDSSynapses()
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllDSSynapses::setupSynapses(SimulationInfo *sim_info)
+void AllDSSynapses::setupSynapses()
 {
-    setupSynapses(sim_info->totalNeurons, sim_info->maxSynapsesPerNeuron);
+    setupSynapses(Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
 }
 
 /*
@@ -87,22 +87,6 @@ void AllDSSynapses::cleanupSynapses()
 bool AllDSSynapses::checkNumParameters()
 {
     return (nParams >= 0);
-}
-
-/*
- *  Attempts to read parameters from a XML file.
- *
- *  @param  element TiXmlElement to examine.
- *  @return true if successful, false otherwise.
- */
-bool AllDSSynapses::readParameters(const TiXmlElement& element)
-{
-    if (AllSpikingSynapses::readParameters(element)) {
-        // this parameter was already handled
-        return true;
-    }
-
-    return false;
 }
 
 /*

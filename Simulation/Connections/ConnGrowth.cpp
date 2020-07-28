@@ -69,9 +69,9 @@ ConnGrowth::~ConnGrowth()
  *  @param  neurons   The Neuron list to search from.
  *  @param  synapses  The Synapse list to search from.
  */
-void ConnGrowth::setupConnections(const SimulationInfo *sim_info, Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses)
+void ConnGrowth::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses)
 {
-    int num_neurons = sim_info->totalNeurons;
+    int num_neurons = Simulator::getInstance().getTotalNeurons();
     radiiSize = num_neurons;
 
     W = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, num_neurons, num_neurons, 0);
@@ -120,98 +120,6 @@ bool ConnGrowth::checkNumParameters()
 }
 
 /*
- *  Attempts to read parameters from a XML file.
- *
- *  @param  element TiXmlElement to examine.
- *  @return true if successful, false otherwise.
- */
-bool ConnGrowth::readParameters(const TiXmlElement& element)
-{
-    if (element.ValueStr().compare("GrowthParams") == 0) {
-	nParams++;
-	return true;
-    }
-
-    if (element.Parent()->ValueStr().compare("GrowthParams") == 0) {
-/*
-        if (element.QueryFLOATAttribute("epsilon", &m_growth.epsilon) != TIXML_SUCCESS) {
-                throw ParseParamError("epsilon", "Growth param 'epsilon' missing in XML.");
-        }
-        if (m_growth.epsilon < 0) {
-                throw ParseParamError("epsilon", "Invalid negative Growth param 'epsilon' value.");
-        }
-
-        if (element.QueryFLOATAttribute("beta", &m_growth.beta) != TIXML_SUCCESS) {
-                throw ParseParamError("beta", "Growth param 'beta' missing in XML.");
-        }
-        if (m_growth.beta < 0) {
-                throw ParseParamError("beta", "Invalid negative Growth param 'beta' value.");
-        }
-
-        if (element.QueryFLOATAttribute("rho", &m_growth.rho) != TIXML_SUCCESS) {
-                throw ParseParamError("rho", "Growth param 'rho' missing in XML.");
-        }
-        if (m_growth.rho < 0) {
-                throw ParseParamError("rho", "Invalid negative Growth param 'rho' value.");
-        }
-
-        //check if 'beta' is erroneous info
-        if (element.QueryFLOATAttribute("targetRate", &m_growth.targetRate) != TIXML_SUCCESS) {
-                throw ParseParamError("targetRate", "Growth targetRate 'beta' missing in XML.");
-        }
-        if (m_growth.targetRate < 0) {
-                throw ParseParamError("targetRate", "Invalid negative Growth targetRate.");
-        }
-
-        if (element.QueryFLOATAttribute("minRadius", &m_growth.minRadius) != TIXML_SUCCESS) {
-                throw ParseParamError("minRadius", "Growth minRadius 'beta' missing in XML.");
-        }
-        if (m_growth.minRadius < 0) {
-                throw ParseParamError("minRadius", "Invalid negative Growth minRadius.");
-        }
-
-        if (element.QueryFLOATAttribute("startRadius", &m_growth.startRadius) != TIXML_SUCCESS) {
-                throw ParseParamError("startRadius", "Growth startRadius 'beta' missing in XML.");
-        }
-        if (m_growth.startRadius < 0) {
-                throw ParseParamError("startRadius", "Invalid negative Growth startRadius.");
-        }
-
-        // initial maximum firing rate
-        m_growth.maxRate = m_growth.targetRate / m_growth.epsilon;
-
-        nParams++;
-*/
-	if(element.ValueStr().compare("epsilon") == 0){
-            m_growth.epsilon = atof(element.GetText());
-        }
-	else if(element.ValueStr().compare("beta") == 0){
-            m_growth.beta = atof(element.GetText());
-        }
-	else if(element.ValueStr().compare("rho") == 0){
-            m_growth.rho = atof(element.GetText());
-        }
-	else if(element.ValueStr().compare("targetRate") == 0){
-            m_growth.targetRate = atof(element.GetText());
-        }
-	else if(element.ValueStr().compare("minRadius") == 0){
-            m_growth.minRadius = atof(element.GetText());
-        }
-	else if(element.ValueStr().compare("startRadius") == 0){
-            m_growth.startRadius = atof(element.GetText());
-        }
-	
-	if(m_growth.epsilon != 0){
-	    m_growth.maxRate = m_growth.targetRate / m_growth.epsilon;
-	}
-
-        return true;
-    }
-
-    return false;
-}
-
-/*
  *  Prints out all parameters of the connections to ostream.
  *
  *  @param  output  ostream to send output to.
@@ -237,16 +145,16 @@ void ConnGrowth::printParameters(ostream &output) const
  *  @param  layout   Layout information of the neunal network.
  *  @return true if successful, false otherwise.
  */
-bool ConnGrowth::updateConnections(IAllNeurons &neurons, const SimulationInfo *sim_info, Layout *layout)
+bool ConnGrowth::updateConnections(IAllNeurons &neurons, Layout *layout)
 {
     // Update Connections data
-    updateConns(neurons, sim_info);
+    updateConns(neurons);
  
     // Update the distance between frontiers of Neurons
-    updateFrontiers(sim_info->totalNeurons, layout);
+    updateFrontiers(Simulator::getInstance().getTotalNeurons(), layout);
 
     // Update the areas of overlap in between Neurons
-    updateOverlap(sim_info->totalNeurons, layout);
+    updateOverlap(Simulator::getInstance().getTotalNeurons(), layout);
 
     return true;
 }
@@ -257,21 +165,21 @@ bool ConnGrowth::updateConnections(IAllNeurons &neurons, const SimulationInfo *s
  *  @param  neurons  The Neuron list to search from.
  *  @param  sim_info SimulationInfo class to read information from.
  */
-void ConnGrowth::updateConns(IAllNeurons &neurons, const SimulationInfo *sim_info)
+void ConnGrowth::updateConns(IAllNeurons &neurons)
 {
     AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons&>(neurons);
 
     // Calculate growth cycle firing rate for previous period
-    int max_spikes = static_cast<int> (sim_info->epochDuration * sim_info->maxFiringRate);
-    for (int i = 0; i < sim_info->totalNeurons; i++) {
+    int max_spikes = static_cast<int> (Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate());
+    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
         // Calculate firing rate
         assert(spNeurons.spikeCount[i] < max_spikes);
-        (*rates)[i] = spNeurons.spikeCount[i] / sim_info->epochDuration;
+        (*rates)[i] = spNeurons.spikeCount[i] / Simulator::getInstance().getEpochDuration();
     }
 
     // compute neuron radii change and assign new values
     (*outgrowth) = 1.0 - 2.0 / (1.0 + exp((m_growth.epsilon - *rates / m_growth.maxRate) / m_growth.beta));
-    (*deltaR) = sim_info->epochDuration * m_growth.rho * *outgrowth;
+    (*deltaR) = Simulator::getInstance().getEpochDuration() * m_growth.rho * *outgrowth;
     (*radii) += (*deltaR);
 }
 
@@ -357,7 +265,7 @@ void ConnGrowth::updateOverlap(BGFLOAT num_neurons, Layout *layout)
  *  @param  isynapses   The Synapse list to search from.
  *  @param  sim_info    SimulationInfo to refer from.
  */
-void ConnGrowth::updateSynapsesWeights(const int num_neurons, IAllNeurons &ineurons, IAllSynapses &isynapses, const SimulationInfo *sim_info, Layout *layout)
+void ConnGrowth::updateSynapsesWeights(const int num_neurons, IAllNeurons &ineurons, IAllSynapses &isynapses, Layout *layout)
 {
     AllNeurons &neurons = dynamic_cast<AllNeurons&>(ineurons);
     AllSynapses &synapses = dynamic_cast<AllSynapses&>(isynapses);
@@ -385,7 +293,7 @@ void ConnGrowth::updateSynapsesWeights(const int num_neurons, IAllNeurons &ineur
             // for each existing synapse
             BGSIZE synapse_counts = synapses.synapse_counts[dest_neuron];
             BGSIZE synapse_adjusted = 0;
-            BGSIZE iSyn = sim_info->maxSynapsesPerNeuron * dest_neuron;
+            BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * dest_neuron;
             for (BGSIZE synapse_index = 0; synapse_adjusted < synapse_counts; synapse_index++, iSyn++) {
                 if (synapses.in_use[iSyn] == true) {
                     // if there is a synapse between a and b
@@ -421,7 +329,7 @@ void ConnGrowth::updateSynapsesWeights(const int num_neurons, IAllNeurons &ineur
                 added++;
 
                 BGSIZE iSyn;
-                synapses.addSynapse(iSyn, type, src_neuron, dest_neuron, sum_point, sim_info->deltaT);
+                synapses.addSynapse(iSyn, type, src_neuron, dest_neuron, sum_point, Simulator::getInstance().getDeltaT());
                 synapses.W[iSyn] = (*W)(src_neuron, dest_neuron) * synapses.synSign(type) * AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
 
             }
@@ -443,12 +351,12 @@ void ConnGrowth::updateSynapsesWeights(const int num_neurons, IAllNeurons &ineur
  *  @param  simInfo              SimulationInfo to refer from.
  *  @return Pointer to the recorder class object.
  */
-IRecorder* ConnGrowth::createRecorder(const SimulationInfo *simInfo)
+IRecorder* ConnGrowth::createRecorder()
 {
     // create & init simulation recorder
     IRecorder* simRecorder = NULL;
-    if (simInfo->stateOutputFileName.find(".xml") != string::npos) {
-        simRecorder = new XmlGrowthRecorder(simInfo);
+    if (Simulator::getInstance().getStateOutputFileName().find(".xml") != string::npos) {
+       simRecorder = new XmlRecorder();
     }
 #ifdef USE_HDF5
     else if (simInfo->stateOutputFileName.find(".h5") != string::npos) {
@@ -459,7 +367,7 @@ IRecorder* ConnGrowth::createRecorder(const SimulationInfo *simInfo)
         return NULL;
     }
     if (simRecorder != NULL) {
-        simRecorder->init(simInfo->stateOutputFileName);
+        simRecorder->init(Simulator::getInstance().getStateOutputFileName());
     }
 
     return simRecorder;

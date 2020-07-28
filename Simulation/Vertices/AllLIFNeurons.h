@@ -133,7 +133,7 @@ class AllLIFNeurons : public AllIFNeurons
          *  @param  index            Index of the neuron to update.
          *  @param  sim_info         SimulationInfo class to read information from.
          */
-        virtual void advanceNeuron(const int index, const SimulationInfo *sim_info);
+        virtual void advanceNeuron(const int index);
 
         /**
          *  Initiates a firing of a neuron to connected neurons.
@@ -141,7 +141,7 @@ class AllLIFNeurons : public AllIFNeurons
          *  @param  index            Index of the neuron to fire.
          *  @param  sim_info         SimulationInfo class to read information from.
          */
-        virtual void fire(const int index, const SimulationInfo *sim_info) const;
+        virtual void fire(const int index) const;
 #endif // defined(USE_GPU)
 };
 

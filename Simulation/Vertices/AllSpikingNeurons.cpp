@@ -20,9 +20,9 @@ AllSpikingNeurons::~AllSpikingNeurons()
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllSpikingNeurons::setupNeurons(SimulationInfo *sim_info)
+void AllSpikingNeurons::setupNeurons()
 {
-    AllNeurons::setupNeurons(sim_info);
+    AllNeurons::setupNeurons();
 
     // TODO: Rename variables for easier identification
     hasFired = new bool[size];
@@ -37,7 +37,7 @@ void AllSpikingNeurons::setupNeurons(SimulationInfo *sim_info)
         spikeCountOffset[i] = 0;
     }
 
-    sim_info->pSummationMap = summation_map;
+    Simulator::getInstance().setPSummationMap(summation_map);
 }
 
 /*
@@ -76,11 +76,11 @@ void AllSpikingNeurons::freeResources()
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllSpikingNeurons::clearSpikeCounts(const SimulationInfo *sim_info)
+void AllSpikingNeurons::clearSpikeCounts()
 {
-    int max_spikes = (int) ((sim_info->epochDuration * sim_info->maxFiringRate));
+    int max_spikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
-    for (int i = 0; i < sim_info->totalNeurons; i++) {
+    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
         spikeCountOffset[i] = (spikeCount[i] + spikeCountOffset[i]) % max_spikes;
         spikeCount[i] = 0;
     }
@@ -95,19 +95,19 @@ void AllSpikingNeurons::clearSpikeCounts(const SimulationInfo *sim_info)
  *  @param  sim_info         SimulationInfo class to read information from.
  *  @param  synapseIndexMap  Reference to the SynapseIndexMap.
  */
-void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SimulationInfo *sim_info, const SynapseIndexMap *synapseIndexMap)
+void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SynapseIndexMap *synapseIndexMap)
 {
-    int max_spikes = (int) ((sim_info->epochDuration * sim_info->maxFiringRate));
+    int max_spikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
     AllSpikingSynapses &spSynapses = dynamic_cast<AllSpikingSynapses&>(synapses);
     // For each neuron in the network
-    for (int idx = sim_info->totalNeurons - 1; idx >= 0; --idx) {
+    for (int idx = Simulator::getInstance().getTotalNeurons() - 1; idx >= 0; --idx) {
         // advance neurons
-        advanceNeuron(idx, sim_info);
+        advanceNeuron(idx);
 
         // notify outgoing/incomming synapses if neuron has fired
         if (hasFired[idx]) {
-            DEBUG_MID(cout << " !! Neuron" << idx << "has Fired @ t: " << g_simulationStep * sim_info->deltaT << endl;)
+            DEBUG_MID(cout << " !! Neuron" << idx << "has Fired @ t: " << g_simulationStep * Simulator::getInstance().getDeltaT() << endl;)
 
             assert( spikeCount[idx] < max_spikes );
 
@@ -115,13 +115,12 @@ void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SimulationI
             BGSIZE synapse_counts;
 
             if(synapseIndexMap != NULL){
-                synapse_counts = synapseIndexMap->outgoingSynapseCount[idx];
+                synapse_counts = synapseIndexMap->outgoingSynapseCount_[idx];
                 if (synapse_counts != 0) {
-                    int beginIndex = synapseIndexMap->outgoingSynapseBegin[idx];
-                    BGSIZE* outgoingMap_begin = &( synapseIndexMap->outgoingSynapseIndexMap[beginIndex] );
+                    int beginIndex = synapseIndexMap->outgoingSynapseBegin_[idx];
                     BGSIZE iSyn;
                     for ( BGSIZE i = 0; i < synapse_counts; i++ ) {
-                        iSyn = outgoingMap_begin[i];
+                        iSyn = synapseIndexMap->outgoingSynapseBegin_[beginIndex + i];
                         spSynapses.preSpikeHit(iSyn);
                     }
                 }
@@ -133,7 +132,7 @@ void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SimulationI
 
             if (spSynapses.allowBackPropagation()) {
                 for (int z = 0; synapse_notified < synapse_counts; z++) {
-                     BGSIZE iSyn = sim_info->maxSynapsesPerNeuron * idx + z;
+                     BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * idx + z;
                      if (spSynapses.in_use[iSyn] == true) {
                          spSynapses.postSpikeHit(iSyn);
                          synapse_notified++;
@@ -152,13 +151,13 @@ void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SimulationI
  *  @param  index       Index of the Neuron to update.
  *  @param  sim_info    SimulationInfo class to read information from.
  */
-void AllSpikingNeurons::fire(const int index, const SimulationInfo *sim_info) const
+void AllSpikingNeurons::fire(const int index) const
 {
     // Note that the neuron has fired!
     hasFired[index] = true;
     
     // record spike time
-    int max_spikes = (int) ((sim_info->epochDuration * sim_info->maxFiringRate));
+    int max_spikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
     int idxSp = (spikeCount[index] + spikeCountOffset[index]) % max_spikes;
     spike_history[index][idxSp] = g_simulationStep;
 
@@ -179,10 +178,10 @@ void AllSpikingNeurons::fire(const int index, const SimulationInfo *sim_info) co
  *  @param  offIndex         Offset of the history buffer to get from.
  *  @param  sim_info         SimulationInfo class to read information from.
  */
-uint64_t AllSpikingNeurons::getSpikeHistory(int index, int offIndex, const SimulationInfo *sim_info)
+uint64_t AllSpikingNeurons::getSpikeHistory(int index, int offIndex)
 {
     // offIndex is a minus offset
-    int max_spikes = (int) ((sim_info->epochDuration * sim_info->maxFiringRate));
+    int max_spikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
     int idxSp = (spikeCount[index] + spikeCountOffset[index] +  max_spikes + offIndex) % max_spikes;
     return spike_history[index][idxSp];
 }

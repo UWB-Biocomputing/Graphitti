@@ -101,7 +101,7 @@ class AllSTDPSynapses : public AllSpikingSynapses
          *
          *  @param  sim_info  SimulationInfo class to read information from.
          */
-        virtual void setupSynapses(SimulationInfo *sim_info);
+        virtual void setupSynapses();
 
         /**
          *  Cleanup the class (deallocate memories).
@@ -328,7 +328,7 @@ class AllSTDPSynapses : public AllSpikingSynapses
          *  @param  sim_info  SimulationInfo class to read information from.
          *  @param  neurons   The Neuron list to search from.
          */
-        virtual void advanceSynapse(const BGSIZE iSyn, const SimulationInfo *sim_info, IAllNeurons *neurons);
+        virtual void advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons);
 
         /**
          *  Prepares Synapse for a spike hit (for back propagation).

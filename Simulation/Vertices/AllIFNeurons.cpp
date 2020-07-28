@@ -1,5 +1,6 @@
 #include "AllIFNeurons.h"
 #include "ParseParamError.h"
+#include "Layout.h"
 
 // Default constructor
 AllIFNeurons::AllIFNeurons() : AllSpikingNeurons()
@@ -32,9 +33,9 @@ AllIFNeurons::~AllIFNeurons()
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllIFNeurons::setupNeurons(SimulationInfo *sim_info)
+void AllIFNeurons::setupNeurons()
 {
-    AllSpikingNeurons::setupNeurons(sim_info);
+    AllSpikingNeurons::setupNeurons();
 
     // TODO: Rename variables for easier identification
     C1 = new BGFLOAT[size];
@@ -121,224 +122,6 @@ bool AllIFNeurons::checkNumParameters()
 }
 
 /*
- *  Attempts to read parameters from a XML file.
- *
- *  @param  element TiXmlElement to examine.
- *  @return true if successful, false otherwise.
- */
-bool AllIFNeurons::readParameters(const TiXmlElement& element)
-{
-    if (element.ValueStr().compare("Iinject") == 0         ||
-	element.ValueStr().compare("Inoise") == 0          ||
-    	element.ValueStr().compare("Vthresh") == 0         ||
-    	element.ValueStr().compare("Vresting") == 0        ||
-    	element.ValueStr().compare("Vreset") == 0          ||
-	element.ValueStr().compare("Vinit") == 0           ||
-	element.ValueStr().compare("starter_vthresh") == 0 ||
-	element.ValueStr().compare("starter_vreset") == 0    )     {
-	nParams++;
-	return true;
-    }
-
-    if (element.Parent()->ValueStr().compare("Iinject") == 0) {
-/*
-        if (element.QueryFLOATAttribute("min", &m_Iinject[0]) != TIXML_SUCCESS) {
-            throw ParseParamError("Iinject min", "Iinject missing minimum value in XML.");
-        }
-        if (m_Iinject[0] < 0) {
-            throw ParseParamError("Iinject min", "Invalid negative Iinject value.");
-        }
-        if (element.QueryFLOATAttribute("max", &m_Iinject[1]) != TIXML_SUCCESS) {
-            throw ParseParamError("Iinject max", "Iinject missing maximum value in XML.");
-        }
-        if (m_Iinject[0] > m_Iinject[1]) {
-            throw ParseParamError("Iinject max", "Invalid range for Iinject value.");
-        }
-	
-        nParams++;
-*/
-	if(element.ValueStr().compare("min") == 0){
-            m_Iinject[0] = atof(element.GetText());
-        }
-	else if(element.ValueStr().compare("max") == 0){
-            m_Iinject[1] = atof(element.GetText());
-        }
-
-        return true;
-    }
-
-    if (element.Parent()->ValueStr().compare("Inoise") == 0) {
-/*
-        if (element.QueryFLOATAttribute("min", &m_Inoise[0]) != TIXML_SUCCESS) {
-            throw ParseParamError("Inoise min", "Inoise missing minimum value in XML.");
-        }
-        if (m_Inoise[0] < 0) {
-            throw ParseParamError("Inoise min", "Invalid negative Inoise value.");
-        }
-        if (element.QueryFLOATAttribute("max", &m_Inoise[1]) != TIXML_SUCCESS) {
-            throw ParseParamError("Inoise max", "Inoise missing maximum value in XML.");
-        }
-        if (m_Inoise[0] > m_Inoise[1]) {
-            throw ParseParamError("Inoise max", "Invalid range for Inoise value.");
-        }
-        nParams++;
-*/
-	if(element.ValueStr().compare("min") == 0){
-            m_Inoise[0] = atof(element.GetText());
-        }
-	else if(element.ValueStr().compare("max") == 0){
-            m_Inoise[1] = atof(element.GetText());
-        }
-
-        return true;
-    }
-
-    if (element.Parent()->ValueStr().compare("Vthresh") == 0) {
-/*
-        if (element.QueryFLOATAttribute("min", &m_Vthresh[0]) != TIXML_SUCCESS) {
-            throw ParseParamError("Vthresh min", "Vthresh missing minimum value in XML.");
-        }
-        if (m_Vthresh[0] < 0) {
-            throw ParseParamError("Vthresh min", "Invalid negative Vthresh value.");
-        }
-        if (element.QueryFLOATAttribute("max", &m_Vthresh[1]) != TIXML_SUCCESS) {
-            throw ParseParamError("Vthresh max", "Vthresh missing maximum value in XML.");
-        }
-        if (m_Vthresh[0] > m_Vthresh[1]) {
-            throw ParseParamError("Vthresh max", "Invalid range for Vthresh value.");
-        }
-        nParams++;
-*/	
-	if(element.ValueStr().compare("min") == 0){
-            m_Vthresh[0] = atof(element.GetText());
-        }
-	else if(element.ValueStr().compare("max") == 0){
-            m_Vthresh[1] = atof(element.GetText());
-        }
-
-        return true;
-    }
-
-    if (element.Parent()->ValueStr().compare("Vresting") == 0) {
-/*
-        if (element.QueryFLOATAttribute("min", &m_Vresting[0]) != TIXML_SUCCESS) {
-            throw ParseParamError("Vresting min", "Vresting missing minimum value in XML.");
-        }
-        if (element.QueryFLOATAttribute("max", &m_Vresting[1]) != TIXML_SUCCESS) {
-            throw ParseParamError("Vresting max", "Vresting missing maximum value in XML.");
-        }
-        if (m_Vresting[0] > m_Vresting[1]) {
-            throw ParseParamError("Vresting max", "Invalid range for Vresting value.");
-        }
-        nParams++;
-*/
-	if(element.ValueStr().compare("min") == 0){
-            m_Vresting[0] = atof(element.GetText());
-        }
-	else if(element.ValueStr().compare("max") == 0){
-            m_Vresting[1] = atof(element.GetText());
-        }
-        return true;
-    }
-
-    if (element.Parent()->ValueStr().compare("Vreset") == 0) {
-/*
-        if (element.QueryFLOATAttribute("min", &m_Vreset[0]) != TIXML_SUCCESS) {
-            throw ParseParamError("Vreset min", "Vreset missing minimum value in XML.");
-        }
-        if (element.QueryFLOATAttribute("max", &m_Vreset[1]) != TIXML_SUCCESS) {
-            throw ParseParamError("Vreset max", "Vreset missing maximum value in XML.");
-        }
-        if (m_Vreset[0] > m_Vreset[1]) {
-            throw ParseParamError("Vreset max", "Invalid range for Vreset value.");
-        }
-        nParams++;
-*/
-	if(element.ValueStr().compare("min") == 0){
-            m_Vreset[0] = atof(element.GetText());
-        }
-	else if(element.ValueStr().compare("max") == 0){
-            m_Vreset[1] = atof(element.GetText());
-        }
-        return true;
-    }
-
-    if (element.Parent()->ValueStr().compare("Vinit") == 0) {
-/*
-        if (element.QueryFLOATAttribute("min", &m_Vinit[0]) != TIXML_SUCCESS) {
-            throw ParseParamError("Vinit min", "Vinit missing minimum value in XML.");
-        }
-        if (element.QueryFLOATAttribute("max", &m_Vinit[1]) != TIXML_SUCCESS) {
-            throw ParseParamError("Vinit max", "Vinit missing maximum value in XML.");
-        }
-        if (m_Vinit[0] > m_Vinit[1]) {
-            throw ParseParamError("Vinit max", "Invalid range for Vinit value.");
-        }
-        nParams++;
-*/
-	if(element.ValueStr().compare("min") == 0){
-            m_Vinit[0] = atof(element.GetText());
-        }
-	else if(element.ValueStr().compare("max") == 0){
-            m_Vinit[1] = atof(element.GetText());
-        }
-        return true;
-    }
-
-    if (element.Parent()->ValueStr().compare("starter_vthresh") == 0) {
-/*
-        if (element.QueryFLOATAttribute("min", &m_starter_Vthresh[0]) != TIXML_SUCCESS) {
-            throw ParseParamError("starter_vthresh min", "starter_vthresh missing minimum value in XML.");
-        }
-        if (m_starter_Vthresh[0] < 0) {
-            throw ParseParamError("starter_vthresh min", "Invalid negative starter_vthresh value.");
-        }
-        if (element.QueryFLOATAttribute("max", &m_starter_Vthresh[1]) != TIXML_SUCCESS) {
-            throw ParseParamError("starter_vthresh max", "starter_vthresh missing maximum value in XML.");
-        }
-        if (m_starter_Vthresh[0] > m_starter_Vthresh[1]) {
-            throw ParseParamError("starter_vthresh max", "Invalid range for starter_vthresh value.");
-        }
-        nParams++;
-*/
-	if(element.ValueStr().compare("min") == 0){
-            m_starter_Vthresh[0] = atof(element.GetText());
-        }
-	else if(element.ValueStr().compare("max") == 0){
-            m_starter_Vthresh[1] = atof(element.GetText());
-        }
-        return true;
-    }
-
-    if (element.Parent()->ValueStr().compare("starter_vreset") == 0) {
-/*
-        if (element.QueryFLOATAttribute("min", &m_starter_Vreset[0]) != TIXML_SUCCESS) {
-            throw ParseParamError("starter_vreset min", "starter_vreset missing minimum value in XML.");
-        }
-        if (m_starter_Vreset[0] < 0) {
-            throw ParseParamError("starter_vreset min", "Invalid negative starter_vreset value.");
-        }
-        if (element.QueryFLOATAttribute("max", &m_starter_Vreset[1]) != TIXML_SUCCESS) {
-            throw ParseParamError("starter_vreset max", "starter_vreset missing maximum value in XML.");
-        }
-        if (m_starter_Vreset[0] > m_starter_Vreset[1]) {
-            throw ParseParamError("starter_vreset max", "Invalid range for starter_vreset value.");
-        }
-        nParams++;
-*/
-	if(element.ValueStr().compare("min") == 0){
-            m_starter_Vreset[0] = atof(element.GetText());
-        }
-	else if(element.ValueStr().compare("max") == 0){
-            m_starter_Vreset[1] = atof(element.GetText());
-        }
-        return true;
-    }
-
-    return false;
-}
-
-/*
  *  Prints out all parameters of the neurons to ostream.
  * 
  *  @param  output  ostream to send output to.
@@ -377,14 +160,14 @@ void AllIFNeurons::printParameters(ostream &output) const
  *  @param  sim_info    SimulationInfo class to read information from.
  *  @param  layout      Layout information of the neunal network.
  */
-void AllIFNeurons::createAllNeurons(SimulationInfo *sim_info, Layout *layout)
+void AllIFNeurons::createAllNeurons(Layout *layout)
 {
     /* set their specific types */
-    for (int neuron_index = 0; neuron_index < sim_info->totalNeurons; neuron_index++) {
+    for (int neuron_index = 0; neuron_index < Simulator::getInstance().getTotalNeurons(); neuron_index++) {
         setNeuronDefaults(neuron_index);
 
         // set the neuron info for neurons
-        createNeuron(sim_info, neuron_index, layout);
+        createNeuron(neuron_index, layout);
     }
 }
 
@@ -395,7 +178,7 @@ void AllIFNeurons::createAllNeurons(SimulationInfo *sim_info, Layout *layout)
  *  @param  neuron_index Index of the neuron to create.
  *  @param  layout       Layout information of the neunal network.
  */
-void AllIFNeurons::createNeuron(SimulationInfo *sim_info, int neuron_index, Layout *layout)
+void AllIFNeurons::createNeuron(int neuron_index, Layout *layout)
 {
     // set the neuron info for neurons
     Iinject[neuron_index] = rng.inRange(m_Iinject[0], m_Iinject[1]);
@@ -406,9 +189,9 @@ void AllIFNeurons::createNeuron(SimulationInfo *sim_info, int neuron_index, Layo
     Vinit[neuron_index] = rng.inRange(m_Vinit[0], m_Vinit[1]);
     Vm[neuron_index] = Vinit[neuron_index];
 
-    initNeuronConstsFromParamValues(neuron_index, sim_info->deltaT);
+    initNeuronConstsFromParamValues(neuron_index, Simulator::getInstance().getDeltaT());
 
-    int max_spikes = (int) ((sim_info->epochDuration * sim_info->maxFiringRate));
+    int max_spikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
     spike_history[neuron_index] = new uint64_t[max_spikes];
     for (int j = 0; j < max_spikes; ++j) {
         spike_history[neuron_index][j] = ULONG_MAX;
@@ -535,10 +318,10 @@ string AllIFNeurons::toString(const int i) const
  *  @param  input       istream to read from.
  *  @param  sim_info    used as a reference to set info for neuronss.
  */
-void AllIFNeurons::deserialize(istream &input, const SimulationInfo *sim_info)
+void AllIFNeurons::deserialize(istream &input)
 {
-    for (int i = 0; i < sim_info->totalNeurons; i++) {
-        readNeuron(input, sim_info, i);
+    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
+        readNeuron(input, i);
     }
 }
 
@@ -549,7 +332,7 @@ void AllIFNeurons::deserialize(istream &input, const SimulationInfo *sim_info)
  *  @param  sim_info    used as a reference to set info for neurons.
  *  @param  i           index of the neuron (in neurons).
  */
-void AllIFNeurons::readNeuron(istream &input, const SimulationInfo *sim_info, int i)
+void AllIFNeurons::readNeuron(istream &input, int i)
 {
     // input.ignore() so input skips over end-of-line characters.
     input >> Cm[i]; input.ignore();
@@ -577,10 +360,10 @@ void AllIFNeurons::readNeuron(istream &input, const SimulationInfo *sim_info, in
  *  @param  output      stream to write out to.
  *  @param  sim_info    used as a reference to set info for neuronss.
  */
-void AllIFNeurons::serialize(ostream& output, const SimulationInfo *sim_info) const 
+void AllIFNeurons::serialize(ostream& output) const
 {
-    for (int i = 0; i < sim_info->totalNeurons; i++) {
-        writeNeuron(output, sim_info, i);
+    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
+        writeNeuron(output, i);
     }
 }
 
@@ -591,7 +374,7 @@ void AllIFNeurons::serialize(ostream& output, const SimulationInfo *sim_info) co
  *  @param  sim_info    used as a reference to set info for neuronss.
  *  @param  i           index of the neuron (in neurons).
  */
-void AllIFNeurons::writeNeuron(ostream& output, const SimulationInfo *sim_info, int i) const
+void AllIFNeurons::writeNeuron(ostream& output, int i) const
 {
     output << Cm[i] << ends;
     output << Rm[i] << ends;

@@ -25,9 +25,9 @@ AllSpikingSynapses::~AllSpikingSynapses()
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllSpikingSynapses::setupSynapses(SimulationInfo *sim_info)
+void AllSpikingSynapses::setupSynapses()
 {
-    setupSynapses(sim_info->totalNeurons, sim_info->maxSynapsesPerNeuron);
+    setupSynapses(Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
 }
 
 /*
@@ -294,7 +294,7 @@ void AllSpikingSynapses::postSpikeHit(const BGSIZE iSyn)
  *  @param  sim_info  SimulationInfo class to read information from.
  *  @param  neurons   The Neuron list to search from.
  */
-void AllSpikingSynapses::advanceSynapse(const BGSIZE iSyn, const SimulationInfo *sim_info, IAllNeurons * neurons)
+void AllSpikingSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons * neurons)
 {
     BGFLOAT &decay = this->decay[iSyn];
     BGFLOAT &psr = this->psr[iSyn];
@@ -302,7 +302,7 @@ void AllSpikingSynapses::advanceSynapse(const BGSIZE iSyn, const SimulationInfo 
 
     // is an input in the queue?
     if (isSpikeQueue(iSyn)) {
-        changePSR(iSyn, sim_info->deltaT);
+        changePSR(iSyn, Simulator::getInstance().getDeltaT());
     }
 
     // decay the post spike response

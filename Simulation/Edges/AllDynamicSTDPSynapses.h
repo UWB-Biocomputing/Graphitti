@@ -91,7 +91,7 @@ class AllDynamicSTDPSynapses : public AllSTDPSynapses
          *
          *  @param  sim_info  SimulationInfo class to read information from.
          */
-        virtual void setupSynapses(SimulationInfo *sim_info);
+        virtual void setupSynapses();
 
         /**
          *  Cleanup the class (deallocate memories).

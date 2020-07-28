@@ -26,9 +26,9 @@ AllDynamicSTDPSynapses::~AllDynamicSTDPSynapses()
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllDynamicSTDPSynapses::setupSynapses(SimulationInfo *sim_info)
+void AllDynamicSTDPSynapses::setupSynapses()
 {
-    setupSynapses(sim_info->totalNeurons, sim_info->maxSynapsesPerNeuron);
+    setupSynapses(Simulator::getInstance().getDeltaT(), Simulator::getInstance().getMaxSynapsesPerNeuron());
 }
 
 /*

@@ -395,7 +395,7 @@ void AllIZHNeurons::printParameters(ostream &output) const
 void AllIZHNeurons::createAllNeurons(SimulationInfo *sim_info, Layout *layout)
 {
     /* set their specific types */
-    for (int neuron_index = 0; neuron_index < sim_info->totalNeurons; neuron_index++) {
+    for (int neuron_index = 0; neuron_index < Simulator::getInstance().totalNeurons; neuron_index++) {
         setNeuronDefaults(neuron_index);
 
         // set the neuron info for neurons
@@ -504,7 +504,7 @@ string AllIZHNeurons::toString(const int i) const
  */
 void AllIZHNeurons::deserialize(istream &input, const SimulationInfo *sim_info)
 {
-    for (int i = 0; i < sim_info->totalNeurons; i++) {
+    for (int i = 0; i < Simulator::getInstance().totalNeurons; i++) {
         readNeuron(input, sim_info, i);
     }
 }
@@ -536,7 +536,7 @@ void AllIZHNeurons::readNeuron(istream &input, const SimulationInfo *sim_info, i
  */
 void AllIZHNeurons::serialize(ostream& output, const SimulationInfo *sim_info) const 
 {
-    for (int i = 0; i < sim_info->totalNeurons; i++) {
+    for (int i = 0; i < Simulator::getInstance().totalNeurons; i++) {
         writeNeuron(output, sim_info, i);
     }
 }
@@ -635,7 +635,7 @@ void AllIZHNeurons::advanceNeuron(const int index, const SimulationInfo *sim_inf
  */
 void AllIZHNeurons::fire(const int index, const SimulationInfo *sim_info) const
 {
-    const BGFLOAT deltaT = sim_info->deltaT;
+    const BGFLOAT deltaT = Simulator::getInstance().deltaT;
     AllSpikingNeurons::fire(index, sim_info);
 
     // calculate the number of steps in the absolute refractory period

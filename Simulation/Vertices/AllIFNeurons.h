@@ -54,7 +54,7 @@ class AllIFNeurons : public AllSpikingNeurons
          *
          *  @param  sim_info  SimulationInfo class to read information from.
          */
-        virtual void setupNeurons(SimulationInfo *sim_info);
+        virtual void setupNeurons();
 
         /**
          *  Cleanup the class.
@@ -90,7 +90,7 @@ class AllIFNeurons : public AllSpikingNeurons
          *  @param  sim_info    SimulationInfo class to read information from.
          *  @param  layout      Layout information of the neunal network.
          */
-        virtual void createAllNeurons(SimulationInfo *sim_info, Layout *layout);
+        virtual void createAllNeurons(Layout *layout);
 
         /**
          *  Outputs state of the neuron chosen as a string.
@@ -106,7 +106,7 @@ class AllIFNeurons : public AllSpikingNeurons
          *  @param  input       istream to read from.
          *  @param  sim_info    used as a reference to set info for neuronss.
          */
-        virtual void deserialize(istream &input, const SimulationInfo *sim_info);
+        virtual void deserialize(istream &input);
 
         /**
          *  Writes out the data in all neurons to output stream.
@@ -114,7 +114,7 @@ class AllIFNeurons : public AllSpikingNeurons
          *  @param  output      stream to write out to.
          *  @param  sim_info    used as a reference to set info for neuronss.
          */
-        virtual void serialize(ostream& output, const SimulationInfo *sim_info) const;
+        virtual void serialize(ostream& output) const;
 
 #if defined(USE_GPU)
     public:
@@ -235,7 +235,7 @@ class AllIFNeurons : public AllSpikingNeurons
          *  @param  neuron_index Index of the neuron to create.
          *  @param  layout       Layout information of the neunal network.
          */
-        void createNeuron(SimulationInfo *sim_info, int neuron_index, Layout *layoug);
+        void createNeuron(int neuron_index, Layout *layoug);
 
         /**
          *  Set the Neuron at the indexed location to default values.
@@ -259,7 +259,7 @@ class AllIFNeurons : public AllSpikingNeurons
          *  @param  sim_info    used as a reference to set info for neurons.
          *  @param  i           index of the neuron (in neurons).
          */
-        void readNeuron(istream &input, const SimulationInfo *sim_info, int i);
+        void readNeuron(istream &input, int i);
 
         /**
          *  Writes out the data in the selected Neuron.
@@ -268,7 +268,7 @@ class AllIFNeurons : public AllSpikingNeurons
          *  @param  sim_info    used as a reference to set info for neuronss.
          *  @param  i           index of the neuron (in neurons).
          */
-        void writeNeuron(ostream& output, const SimulationInfo *sim_info, int i) const;
+        void writeNeuron(ostream& output, int i) const;
 
     private:
         /**

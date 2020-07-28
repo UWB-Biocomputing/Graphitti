@@ -38,9 +38,9 @@ Layout::~Layout()
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void Layout::setupLayout(const SimulationInfo *sim_info)
+void Layout::setupLayout()
 {
-    int num_neurons = sim_info->totalNeurons;
+    int num_neurons = Simulator::getInstance().getTotalNeurons();
 
     xloc = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons);
     yloc = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons);
@@ -48,7 +48,7 @@ void Layout::setupLayout(const SimulationInfo *sim_info)
     dist = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, num_neurons, num_neurons);
 
     // Initialize neuron locations
-    initNeuronsLocs(sim_info);
+    initNeuronsLocs();
 
     // calculate the distance between neurons
     for (int n = 0; n < num_neurons - 1; n++)
@@ -145,22 +145,22 @@ synapseType Layout::synType(const int src_neuron, const int dest_neuron)
  *
  *  @param sim_info   SimulationInfo class to read information from.
  */
-void Layout::initNeuronsLocs(const SimulationInfo *sim_info)
+void Layout::initNeuronsLocs()
 {
-    int num_neurons = sim_info->totalNeurons;
+    int num_neurons = Simulator::getInstance().getTotalNeurons();
 
     // Initialize neuron locations
     if (m_grid_layout) {
-        // grid layoug
+        // grid layout
         for (int i = 0; i < num_neurons; i++) {
-            (*xloc)[i] = i % sim_info->width;
-            (*yloc)[i] = i / sim_info->width;
+            (*xloc)[i] = i % Simulator::getInstance().getHeight();
+            (*yloc)[i] = i / Simulator::getInstance().getHeight();
         }
     } else {
         // random layout
         for (int i = 0; i < num_neurons; i++) {
-            (*xloc)[i] = rng.inRange(0, sim_info->width);
-            (*yloc)[i] = rng.inRange(0, sim_info->height);
+            (*xloc)[i] = rng.inRange(0, Simulator::getInstance().getWidth());
+            (*yloc)[i] = rng.inRange(0, Simulator::getInstance().getHeight());
         }
     }
 }

@@ -12,99 +12,109 @@
  *
  */
 
+
+
 #pragma once
 
+#include "Connections/Connections.h"
 #include "Coordinate.h"
-#include "Layout.h"
+#include "Layouts/Layout.h"
 #include "SynapseIndexMap.h"
 #include "Simulator.h"
 #include "Global.h"
-
+#include "IAllNeurons.h"
 
 #include <vector>
 #include <iostream>
+#include <Simulation/Connections/Connections.h>
+
+class Connections;
 
 using namespace std;
 
-class Model :
-      {
-      public:
-         /// Constructor
-         Model(
-               /// factory class knows which synapse/neuron class to make.
-               // ToDo: since these are getting created in factory fclassofcategory, these stay here
-               Connections *conns,
-               IAllNeurons *neurons,
-               IAllSynapses *synapses,
-               Layout *layout);
+class Model {
+public:
+   /// Constructor
+   Model(
+         /// factory class knows which synapse/neuron class to make.
+         // ToDo: since these are getting created in factory fclassofcategory, these stay here
+         Connections *conns,
+         Layout *layout);
 
-         /// Destructor
-         virtual        ~Model();
+   /// Destructor
+   virtual        ~Model();
 
-         /// Writes simulation results to an output destination.
-         /// Downstream from IModel saveData()
-         // todo: put in chain of responsibility.
-         virtual void   saveData();
+   /// Writes simulation results to an output destination.
+   /// Downstream from IModel saveData()
+   // todo: put in chain of responsibility.
+   virtual void saveData();
 
-         /// Set up model state, for a specific simulation run.
-         /// Downstream from IModel setupSim()
-         virtual void   setupSim();
+   /// Set up model state, for a specific simulation run.
+   /// Downstream from IModel setupSim()
+   virtual void setupSim();
 
-         /// Performs any finalization tasks on network following a simulation.
-         /// Downstream from IModel cleanupSim()
-         virtual void   cleanupSim();
+   /// Performs any finalization tasks on network following a simulation.
+   /// Downstream from IModel cleanupSim()
+   virtual void cleanupSim();
 
-         /// Update the simulation history of every epoch.
-         virtual void   updateHistory();
+   /// Update the simulation history of every epoch.
+   virtual void updateHistory();
 
-         /// Advances network state one simulation step.
-         /// accessors (getNeurons, etc. owned by advance.)
-         /// advance has detailed control over what does what when.
-         /// detailed, low level control. clear onn what is happening when, how much time it is taking.
-         /// If, during an advance cycle, a neuron \f$A\f$ at coordinates \f$x,y\f$ fires, every synapse
-         /// which receives output is notified of the spike. Those synapses then hold
-         /// the spike until their delay period is completed.  At a later advance cycle, once the delay
-         /// period has been completed, the synapses apply their PSRs (Post-Synaptic-Response) to
-         /// the summation points.
-         /// Finally, on the next advance cycle, each neuron \f$B\f$ adds the value stored
-         /// in their corresponding summation points to their \f$V_m\f$ and resets the summation points to zero.
-         virtual void advance() = 0;
+   /// Advances network state one simulation step.
+   /// accessors (getNeurons, etc. owned by advance.)
+   /// advance has detailed control over what does what when.
+   /// detailed, low level control. clear onn what is happening when, how much time it is taking.
+   /// If, during an advance cycle, a neuron \f$A\f$ at coordinates \f$x,y\f$ fires, every synapse
+   /// which receives output is notified of the spike. Those synapses then hold
+   /// the spike until their delay period is completed.  At a later advance cycle, once the delay
+   /// period has been completed, the synapses apply their PSRs (Post-Synaptic-Response) to
+   /// the summation points.
+   /// Finally, on the next advance cycle, each neuron \f$B\f$ adds the value stored
+   /// in their corresponding summation points to their \f$V_m\f$ and resets the summation points to zero.
+   virtual void advance() = 0;
 
-         /// Modifies connections between neurons based on current state of the network and
-         /// behavior over the past epoch. Should be called once every epoch.
-         /// ToDo: Look at why simulator calls model->updateconnections
-         /// might be similar to advance.
-         virtual void updateConnections() = 0;
+   /// Modifies connections between neurons based on current state of the network and
+   /// behavior over the past epoch. Should be called once every epoch.
+   /// ToDo: Look at why simulator calls model->updateconnections
+   /// might be similar to advance.
+   virtual void updateConnections() = 0;
 
-   protected:
+   Connections *getConnections();
 
-      /// Prints debug information about the current state of the network.
-      void logSimStep() const;
+   Layout *getLayout();
 
-      /// error handling for read params
-      // ToDo: do we need this?
-      int read_params_;
+protected:
 
-      /// Copy GPU Synapse data to CPU.
-      virtual void copyGPUtoCPU() = 0;
+   /// Prints debug information about the current state of the network.
+   void logSimStep() const;
 
-      /// Copy CPU Synapse data to GPU.
-      virtual void copyCPUtoGPU() = 0;
+   /// error handling for read params
+   // ToDo: do we need this?
+   int read_params_;
 
-   private:
-      // DONE: 2020/03/14 (It was Emily!) Modified access level to public for allowing the access in BGDriver for serialization/deserialization
-      // ToDo: make private again after serialization is fixed... shouldn't these be private with public accessors?
-      // ToDo: Should model own these? Or should simulator?
-      Connections    *conns_;  // ToDo: make shared pointers
+   /// Copy GPU Synapse data to CPU.
+   virtual void copyGPUtoCPU() = 0;
 
-      // todo: have connections own synapses, have layouts own neurons
+   /// Copy CPU Synapse data to GPU.
+   virtual void copyCPUtoGPU() = 0;
 
-      Layout         *layout_;
+private:
+   // DONE: 2020/03/14 (It was Emily!) Modified access level to public for allowing the access in BGDriver for serialization/deserialization
+   // ToDo: make private again after serialization is fixed... shouldn't these be private with public accessors?
+   // ToDo: Should model own these? Or should simulator?
+   Connections *conns_;  // ToDo: make shared pointers
 
-      // todo: put synapse index map in connections.
-      // todo: how do synapses get neurons, neurons get synapses. should have member variable.
-      SynapseIndexMap *synapseIndexMap_;
+   // todo: have connections own synapses, have layouts own neurons
 
-           void createAllNeurons(); /// Populate an instance of IAllNeurons with an initial state for each neuron.
+   Layout *layout_;
 
-   };
+   // ToDo: Delete these and put them in connections and synapses accordingly
+   IAllNeurons *neurons_;
+   IAllSynapses *synapses_;
+
+   // todo: put synapse index map in connections.
+   // todo: how do synapses get neurons, neurons get synapses. should have member variable.
+   SynapseIndexMap *synapseIndexMap_;
+
+   void createAllNeurons(); /// Populate an instance of IAllNeurons with an initial state for each neuron.
+};

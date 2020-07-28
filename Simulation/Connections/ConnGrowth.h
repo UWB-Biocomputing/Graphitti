@@ -77,7 +77,7 @@
 
 #include "Global.h"
 #include "Connections.h"
-#include "SimulationInfo.h"
+#include "Simulator.h"
 #include <vector>
 #include <iostream>
 
@@ -104,7 +104,7 @@ class ConnGrowth : public Connections
          *  @param  neurons   The Neuron list to search from.
          *  @param  synapses  The Synapse list to search from.
          */
-        virtual void setupConnections(const SimulationInfo *sim_info, Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses);
+        virtual void setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses);
 
         /**
          *  Cleanup the class (deallocate memories).
@@ -117,14 +117,6 @@ class ConnGrowth : public Connections
          * @return true if all required parameters were successfully read, false otherwise.
          */
         virtual bool checkNumParameters();
-
-        /**
-         *  Attempts to read parameters from a XML file.
-         *
-         *  @param  element TiXmlElement to examine.
-         *  @return true if successful, false otherwise.
-         */
-        virtual bool readParameters(const TiXmlElement& element);
 
         /**
          *  Prints out all parameters of the connections to ostream.
@@ -141,7 +133,7 @@ class ConnGrowth : public Connections
          *  @param  layout   Layout information of the neunal network.
          *  @return true if successful, false otherwise.
          */
-        virtual bool updateConnections(IAllNeurons &neurons, const SimulationInfo *sim_info, Layout *layout);
+        virtual bool updateConnections(IAllNeurons &neurons, Layout *layout);
 
         /**
          *  Creates a recorder class object for the connection.
@@ -151,7 +143,7 @@ class ConnGrowth : public Connections
          *  @param  simInfo              SimulationInfo to refer from.
          *  @return Pointer to the recorder class object.
          */
-        virtual IRecorder* createRecorder(const SimulationInfo *sim_info);
+        virtual IRecorder* createRecorder();
         
         /**
          *  Cereal serialization method
@@ -197,7 +189,7 @@ class ConnGrowth : public Connections
          *  @param  isynapses   The Synapse list to search from.
          *  @param  sim_info    SimulationInfo to refer from.
          */
-        virtual void updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, const SimulationInfo *sim_info, Layout *layout);
+        virtual void updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout);
 #endif
     private:
         /**
@@ -206,7 +198,7 @@ class ConnGrowth : public Connections
          *  @param  neurons  The Neuron list to search from.
          *  @param  sim_info SimulationInfo class to read information from.
          */
-        void updateConns(IAllNeurons &neurons, const SimulationInfo *sim_info);
+        void updateConns(IAllNeurons &neurons);
 
         /**
          *  Update the distance between frontiers of Neurons.
