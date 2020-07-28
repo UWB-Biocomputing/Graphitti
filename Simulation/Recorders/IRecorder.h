@@ -30,7 +30,7 @@
 
 #include "Global.h"
 #include "Simulator.h"
-#include "AllSpikingNeurons.h"
+#include "IAllNeurons.h"
 
 class IRecorder
 {

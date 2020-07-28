@@ -2,6 +2,11 @@
 #include "ParseParamError.h"
 #include "IAllSynapses.h"
 #include "XmlGrowthRecorder.h"
+#include "AllSpikingNeurons.h"
+#include "Matrix/CompleteMatrix.h"
+#include "Matrix/Matrix.h"
+#include "Matrix/VectorMatrix.h"
+
 #ifdef USE_HDF5
 #include "Hdf5GrowthRecorder.h"
 #endif

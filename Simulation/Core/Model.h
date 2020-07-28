@@ -16,17 +16,19 @@
 
 #pragma once
 
-#include "Connections/Connections.h"
-#include "Coordinate.h"
-#include "Layouts/Layout.h"
-#include "SynapseIndexMap.h"
-#include "Simulator.h"
-#include "Global.h"
-#include "IAllNeurons.h"
+//#include "Coordinate.h"
+//#include "Layouts/Layout.h"
+//#include "SynapseIndexMap.h"
+//#include "Simulator.h"
+//#include "Global.h"
+//#include "IAllNeurons.h"
+//
+//#include <vector>
+//#include <iostream>
+//#include <Simulation/Connections/Connections.h>
 
-#include <vector>
-#include <iostream>
-#include <Simulation/Connections/Connections.h>
+#include "Layout.h"
+#include "IAllNeurons.h"
 
 class Connections;
 

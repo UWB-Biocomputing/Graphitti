@@ -1,6 +1,6 @@
 #include "Model.h"
-#include "ParseParamError.h"
-#include "Util.h"
+#include "IRecorder.h"
+#include "Connections.h"
 #include "ConnGrowth.h"
 
 /// Constructor

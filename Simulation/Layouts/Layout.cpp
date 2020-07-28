@@ -1,5 +1,7 @@
 #include "Layout.h"
 #include "ParseParamError.h"
+#include "Matrix/VectorMatrix.h"
+#include "Matrix/CompleteMatrix.h"
 #include "Util.h"
 
 Layout::Layout() :
@@ -70,17 +72,6 @@ void Layout::setupLayout()
 
     neuron_type_map = new neuronType[num_neurons];
     starter_map = new bool[num_neurons];
-}
-
-/*
- *  Attempts to read parameters from a XML file.
- *
- *  @param  element TiXmlElement to examine.
- *  @return true if successful, false otherwise.
- */
-bool Layout::readParameters(const TiXmlElement& element)
-{
-    return false;
 }
 
 /*

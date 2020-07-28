@@ -36,14 +36,12 @@
 
 #pragma once
 
-#include "Global.h"
-#include "Simulator.h"
-#include "AllSpikingNeurons.h"
-#include "AllSpikingSynapses.h"
+#include "IAllNeurons.h"
+#include "IAllSynapses.h"
 #include "Layout.h"
-#include "IRecorder.h"
-#include <vector>
-#include <iostream>
+// #include "IRecorder.h"
+
+class IRecorder;
 
 using namespace std;
 

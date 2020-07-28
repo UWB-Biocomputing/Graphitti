@@ -67,18 +67,19 @@ add_executable(Tests
         Simulation/Layouts/FixedLayout.cpp
 
         # Simulator Vertices
+        Simulation/Vertices/IAllNeurons.h
+        Simulation/Vertices/AllNeurons.h
+        Simulation/Vertices/AllNeurons.cpp
         Simulation/Vertices/AllIFNeurons.h
         Simulation/Vertices/AllIFNeurons.cpp
         Simulation/Vertices/AllIZHNeurons.h
         Simulation/Vertices/AllIFNeurons.cpp
         Simulation/Vertices/AllLIFNeurons.h
         Simulation/Vertices/AllLIFNeurons.cpp
-        Simulation/Vertices/AllNeurons.h
-        Simulation/Vertices/AllNeurons.cpp
         Simulation/Vertices/AllNeuronsDeviceFuncs.h
         Simulation/Vertices/AllSpikingNeurons.h
         Simulation/Vertices/AllSpikingNeurons.cpp
-        Simulation/Vertices/IAllNeurons.h
+
 
         # Simulator Edges
         Simulation/Edges/AllDSSynapses.h
@@ -95,10 +96,10 @@ add_executable(Tests
         Simulation/Edges/IAllSynapses.h
 
         # Simulator Recorders
-        Simulation/Recorders/Hdf5GrowthRecorder.h
-        Simulation/Recorders/Hdf5GrowthRecorder.cpp
-        Simulation/Recorders/Hdf5Recorder.h
-        Simulation/Recorders/Hdf5Recorder.cpp
+#        Simulation/Recorders/Hdf5GrowthRecorder.h
+#        Simulation/Recorders/Hdf5GrowthRecorder.cpp
+#        Simulation/Recorders/Hdf5Recorder.h
+#        Simulation/Recorders/Hdf5Recorder.cpp
         Simulation/Recorders/IRecorder.h
         Simulation/Recorders/XmlGrowthRecorder.h
         Simulation/Recorders/XmlGrowthRecorder.cpp
@@ -107,6 +108,24 @@ add_executable(Tests
 
         # Util Files
         Utils/BGTypes.h
+        Utils/Global.h
+        Utils/Global.cpp
+        Utils/Timer.h
+        Utils/Timer.cpp
+
+        # Matrix
+        Utils/Matrix/Matrix.h
+        Utils/Matrix/Matrix.cpp
+        Utils/Matrix/CompleteMatrix.h
+        Utils/Matrix/CompleteMatrix.cpp
+        Utils/Matrix/VectorMatrix.h
+        Utils/Matrix/VectorMatrix.cpp
+
+        # MersenneTwister
+        Utils/RNG/MersenneTwister.h
+        Utils/RNG/MersenneTwister.cpp
+        Utils/RNG/Norm.h
+        Utils/RNG/Norm.cpp
 
         # Test Files
         Testing/RunTests.cpp

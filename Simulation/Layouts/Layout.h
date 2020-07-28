@@ -48,14 +48,6 @@ class Layout
         virtual bool checkNumParameters() = 0;
 
         /**
-         *  Attempts to read parameters from a XML file.
-         *
-         *  @param  element TiXmlElement to examine.
-         *  @return true if successful, false otherwise.
-         */
-        virtual bool readParameters(const TiXmlElement& element);
-
-        /**
          *  Prints out all parameters of the neurons to ostream.
          *
          *  @param  output  ostream to send output to.
