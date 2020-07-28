@@ -67,8 +67,8 @@ void Layout::setupLayout()
     (*dist) = sqrt((*dist2));
 
     // more allocation of internal memory
-    neuron_type_map = new neuronType[num_neurons];
-    starter_map = new bool[num_neurons];
+    neuron_type_map = new neuronType[num_neurons]; // todo: make array into vector
+    starter_map = new bool[num_neurons]; // todo: make array into vector
 }
 
 /// Attempts to read parameters from a XML file.

@@ -133,7 +133,8 @@ add_executable(Tests
         Testing/Core/Foo.cpp
         Testing/Core/FunctionNodeTests.cpp
         Testing/Core/OperationManagerTests.cpp
-        Testing/Core/SynapseIndexMapTests.cpp)
+        Testing/Core/SynapseIndexMapTests.cpp
+        Testing/Core/SimulatorTests.cpp)
 
 # Links the Googletest framework with the testing executable
 target_link_libraries(Tests gtest gtest_main)

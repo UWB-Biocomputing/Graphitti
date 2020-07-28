@@ -15,6 +15,8 @@
 
 #include <memory>
 #include <list>
+#include <string>
+
 
 #include "Simulation/Core/FunctionNodes/GenericFunctionNode.h"
 
