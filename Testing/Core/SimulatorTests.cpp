@@ -20,7 +20,7 @@ TEST(Simulator, GetInstanceSuccess) {
 
 TEST(Simulator, OstreamSuccess) {
    ostream *os;
-   EXPECT_NO_FATAL_FAILURE(Simulator::getInstance().printParameters(*os) );
+   EXPECT_NO_FATAL_FAILURE(Simulator::getInstance().printParameters(*os));
 }
 
 // advanceuntilgrowth

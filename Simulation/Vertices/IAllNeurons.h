@@ -10,7 +10,7 @@ using namespace std;
 
 #include <iostream>
 
-#include "SynapseIndexMap.h"
+#include "Core/SynapseIndexMap.h"
 
 class IAllSynapses;
 class Layout;

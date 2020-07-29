@@ -30,9 +30,10 @@
 
 #pragma once
 
-#include "IRecorder.h"
-#include "Model.h"
 #include <fstream>
+
+#include "Recorders/IRecorder.h"
+#include "Core/Model.h"
 
 class XmlRecorder : public IRecorder
 {

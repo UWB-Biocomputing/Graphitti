@@ -7,7 +7,7 @@
 #pragma once
 
 #include "Global.h"
-#include "Simulator.h"
+#include "Core/Simulator.h"
 #include "Simulation/Core/SynapseIndexMap.h"
 
 class IAllNeurons;

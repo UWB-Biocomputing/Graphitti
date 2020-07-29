@@ -39,7 +39,7 @@
 #pragma once
 
 #include "Global.h"
-#include "Simulator.h"
+#include "Core/Simulator.h"
 #include "IAllSynapses.h"
 
 /**
