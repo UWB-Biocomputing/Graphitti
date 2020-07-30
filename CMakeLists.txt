@@ -4,7 +4,7 @@ project(SummerOfBrain)
 # Setting the base version to C++ 14
 set(CMAKE_CXX_STANDARD 14)
 
-# Extra warning flags
+# Set extra warning flags
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 # Used to define file paths for #include paths. For example you can write:
@@ -70,4 +70,5 @@ target_link_libraries(Tests
         FunctionNodes
         Utils
         RNG
-        Matrix)
+        Matrix
+        Inputs)
