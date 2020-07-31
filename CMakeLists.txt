@@ -1,22 +1,39 @@
 cmake_minimum_required(VERSION 3.10)
 project(SummerOfBrain)
 
-set(CMAKE_CXX_STANDARD 14)
+# Setting the base version to C++ 11
+set(CMAKE_CXX_STANDARD 11)
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+# Set extra warning flags and define TIXML_USE_STL to use the C++ standard library with TinyXML
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -DTIXML_USE_STL")
 
-# Add all directories that contain required files
+# Used to define file paths for #include paths. For example you can write:
+# #include "Simulator.h"
+# rather than:
+# #include "Simulation/Core/Simulator.h"
+# if the file path is in the following statement.
 include_directories(
         ../SummerOfBrain
-        Core
-        Core/FunctionNodes
+        Simulation
+        Simulation/Connections
+        Simulation/Core
+        Simulation/Core/FunctionNodes
+        Simulation/Edges
+        Simulation/Layouts
+        Simulation/Recorders
+        Simulation/Vertices
+        Simulation/Utils
         Testing
-        Utils
-        Utils/TinyXPath)
+        ThirdParty
+        ThirdParty/cereal
+        ThirdParty/TinyXPath)
+
+# Used to locate other CMakeLists.txt files for further compilation of the project.
+add_subdirectory(Simulation)
 
 # Googletest subdirectories support
 add_subdirectory(Testing/lib/googletest-master)
-include_directories(Testing/lib/googletest-master/googletest/include)
+include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
 # Boost Library support
 find_package(Boost COMPONENTS regex)
@@ -27,32 +44,23 @@ add_subdirectory(ThirdParty/TinyXPath)
 #target_include_directories(TinyXLib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Utils/TinyXPath")
 
 # ------ CPU SIMULATOR EXECUTABLE -------
-# Add all files that needed to build
+# Add all files that aren't in a library and are needed to run
 #add_executable(BrainGrid)
 
 # ------ GPU SIMULATOR EXECUTABLE ------
-# Add all files that needed to build
+# Add all files that aren't in a library and are needed to run
 #add_executable(BrainGrid-cuda)
 
 # ------ TESTS EXECUTABLE ------
-# Add all user created files that are need to build
+# Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
+# included in the executable.
 add_executable(Tests
-        Core/OperationManager.h
-        Core/OperationManager.cpp
-        Core/Operations.h
-        Core/SynapseIndexMap.h
-        Core/FunctionNodes/GenericFunctionNode.h
-        Core/FunctionNodes/GenericFunctionNode.cpp
-        Utils/ParameterManager.h
-        Utils/ParameterManager.cpp
         Testing/RunTests.cpp
-        Testing/Core/Foo.h
-        Testing/Core/Foo.cpp
-        Testing/Core/FunctionNodeTests.cpp
         Testing/Core/OperationManagerTests.cpp
         Testing/Core/SynapseIndexMapTests.cpp
-        Testing/Utils/ParamaterManagerTests.cpp
-        Utils/BGTypes.h)
+        Testing/Core/FunctionNodeTests.cpp
+        Testing/Core/SimulatorTests.cpp
+        Testing/Core/Foo.cpp)
 
 # Links the required Boost libraries with the testing executable
 if(Boost_FOUND)
@@ -63,5 +71,25 @@ endif()
 # Links the Googletest framework with the testing executable
 target_link_libraries(Tests gtest gtest_main)
 
-# Links the TinyXPath library with the the testing executable
-target_link_libraries(Tests TinyXLib)
+# Link all libraries created in the project's subdirectories into a combined library.
+add_library(combinedLib INTERFACE)
+target_link_libraries(combinedLib INTERFACE
+        # Simulator
+        Connections
+        Core
+        Edges
+        Layouts
+        Recorders
+        Vertices
+        FunctionNodes
+
+        # Utils
+        Utils
+        Inputs
+        Matrix
+
+        # ThirdParty
+        RNG)
+
+# Link the combined library into the 'Tests' executable.
+target_link_libraries(Tests combinedLib)

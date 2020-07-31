@@ -7,8 +7,8 @@
 
 #include <functional>
 
-#include "Operations.h"
-#include "OperationManager.h"
+#include "Simulation/Core/Operations.h"
+#include "Simulation/Core/OperationManager.h"
 
 Foo::Foo() {
     auto function = std::bind(&Foo::allocateMemory, this);

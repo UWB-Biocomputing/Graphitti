@@ -8,7 +8,7 @@
 
 #include "gtest/gtest.h"
 
-#include "SynapseIndexMap.h"
+#include "Simulation/Core/SynapseIndexMap.h"
 
 /// Static variable used for neuron count initialization of the SynapseIndexMap in the tests
 static int NEURON_COUNT = 50;

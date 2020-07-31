@@ -10,7 +10,7 @@
 #include "gtest/gtest.h"
 
 #include "Foo.h"
-#include "Core/FunctionNodes/GenericFunctionNode.h"
+#include "Simulation/Core/FunctionNodes/GenericFunctionNode.h"
 
 using namespace std;
 
