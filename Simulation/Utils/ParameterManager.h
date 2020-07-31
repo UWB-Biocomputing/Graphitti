@@ -26,7 +26,6 @@
 #include <string>
 
 #include "BGTypes.h"
-#include "tinystr.h"
 #include "tinyxml.h"
 
 using namespace std;

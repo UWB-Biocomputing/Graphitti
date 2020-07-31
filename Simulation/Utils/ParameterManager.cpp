@@ -25,10 +25,11 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
+#include <tinyxml.h>
+#include <tinystr.h>
 
 #include "BGTypes.h"
 #include "xpath_static.h"
-
 
 // ----------------------------------------------------
 // ----------------- UTILITY METHODS ------------------
@@ -59,20 +60,20 @@ ParameterManager &ParameterManager::getInstance() {
  * for the client classes to use.
  */
 bool ParameterManager::loadParameterFile(string path) {
-    // load the XML document
-    if (xmlDocument_) delete xmlDocument_;
-    xmlDocument_ = new TiXmlDocument(path.c_str());
-    if (!xmlDocument_->LoadFile()) {
-        cerr << "Failed loading simulation parameter file "
-             << path << ":" << "\n\t" << xmlDocument_->ErrorDesc()
-             << endl;
-        cerr << " error: " << xmlDocument_->ErrorRow() << ", " << xmlDocument_->ErrorCol()
-             << endl;
-        return false;
-    }
-    // assign the document root_ object
-    root_ = xmlDocument_->RootElement();
-    return true;
+   // load the XML document
+   if (xmlDocument_) delete xmlDocument_;
+   xmlDocument_ = new TiXmlDocument(path.c_str());
+   if (!xmlDocument_->LoadFile()) {
+      cerr << "Failed loading simulation parameter file "
+           << path << ":" << "\n\t" << xmlDocument_->ErrorDesc()
+           << endl;
+      cerr << " error: " << xmlDocument_->ErrorRow() << ", " << xmlDocument_->ErrorCol()
+           << endl;
+      return false;
+   }
+   // assign the document root_ object
+   root_ = xmlDocument_->RootElement();
+   return true;
 }
 
 /**
@@ -81,7 +82,7 @@ bool ParameterManager::loadParameterFile(string path) {
  * interface methods should terminate early.
  */
 bool ParameterManager::checkDocumentStatus() {
-    return xmlDocument_ != nullptr && root_ != nullptr;
+   return xmlDocument_ != nullptr && root_ != nullptr;
 }
 
 // ----------------------------------------------------
@@ -97,17 +98,16 @@ bool ParameterManager::checkDocumentStatus() {
  * @param referenceVar The variable to store the string result into
  * @return bool A T/F flag indicating whether the retrieval succeeded
  */
-bool ParameterManager::getStringByXpath(string xpath, string& referenceVar) {
-    if (!checkDocumentStatus()) return false;
-    TiXmlString result(referenceVar.c_str());
-    if (!TinyXPath::o_xpath_string(root_, xpath.c_str(), result)) {
-        cerr << "Failed loading simulation parameter for xpath " 
-             << xpath << endl;
-        // TODO: possibly get better error information?
-        return false;
-    }
-   referenceVar = result.data();
-    return true;
+bool ParameterManager::getStringByXpath(string xpath, string &referenceVar) {
+   if (!checkDocumentStatus()) return false;
+   if (!TinyXPath::o_xpath_string(root_, xpath.c_str(), xpath)) {
+      cerr << "Failed loading simulation parameter for xpath "
+           << xpath << endl;
+      // TODO: possibly get better error information?
+      return false;
+   }
+   referenceVar = xpath;
+   return true;
 }
 
 /**
@@ -119,39 +119,39 @@ bool ParameterManager::getStringByXpath(string xpath, string& referenceVar) {
  * @param referenceVar The variable to store the int result into
  * @return bool A T/F flag indicating whether the retrieval succeeded
  */
-bool ParameterManager::getIntByXpath(string xpath, int& referenceVar) {
-    if (!checkDocumentStatus()) return false;
-    string tmp;
-    if (!getStringByXpath(xpath, tmp)) {
-        cerr << "Failed loading simulation parameter for xpath " 
-             << xpath << endl;
-        return false;
-    }
-    // Workaround for standard value conversion functions.
-    // stoi() will cast floats to ints.
-    if (boost::regex_match(tmp, boost::regex("\\d+[.]\\d+(e[+-]?\\d+)?f?|\\d+[.]?\\d+(e[+-]?\\d+)?f"))) {
-        cerr << "Parsed parameter is likely a float/double value. "
-             << "Terminating integer cast. Value: " 
-             << tmp << endl;
-        return false;
-    } else if (boost::regex_match(tmp, boost::regex(".*[^\\def.]+.*"))) {
-        cerr << "Parsed parameter is likely a string. "
-             << "Terminating integer cast. Value: " 
-             << tmp << endl;
-        return false;
-    }
-    try {
-       referenceVar = stoi(tmp);
-    } catch (invalid_argument& arg_exception) {
-        cerr << "Parsed parameter could not be parsed as an integer. Value: "
-             << tmp << endl;
-        return false;
-    } catch (out_of_range& range_exception) {
-        cerr << "Parsed string parameter could not be converted to an integer. Value: "
-             << tmp << endl;
-        return false;
-    }
-    return true;
+bool ParameterManager::getIntByXpath(string xpath, int &referenceVar) {
+   if (!checkDocumentStatus()) return false;
+   string tmp;
+   if (!getStringByXpath(xpath, tmp)) {
+      cerr << "Failed loading simulation parameter for xpath "
+           << xpath << endl;
+      return false;
+   }
+   // Workaround for standard value conversion functions.
+   // stoi() will cast floats to ints.
+   if (boost::regex_match(tmp, boost::regex("\\d+[.]\\d+(e[+-]?\\d+)?f?|\\d+[.]?\\d+(e[+-]?\\d+)?f"))) {
+      cerr << "Parsed parameter is likely a float/double value. "
+           << "Terminating integer cast. Value: "
+           << tmp << endl;
+      return false;
+   } else if (boost::regex_match(tmp, boost::regex(".*[^\\def.]+.*"))) {
+      cerr << "Parsed parameter is likely a string. "
+           << "Terminating integer cast. Value: "
+           << tmp << endl;
+      return false;
+   }
+   try {
+      referenceVar = stoi(tmp);
+   } catch (invalid_argument &arg_exception) {
+      cerr << "Parsed parameter could not be parsed as an integer. Value: "
+           << tmp << endl;
+      return false;
+   } catch (out_of_range &range_exception) {
+      cerr << "Parsed string parameter could not be converted to an integer. Value: "
+           << tmp << endl;
+      return false;
+   }
+   return true;
 }
 
 /**
@@ -163,32 +163,32 @@ bool ParameterManager::getIntByXpath(string xpath, int& referenceVar) {
  * @param referenceVar The variable to store the double result into
  * @return bool A T/F flag indicating whether the retrieval succeeded
  */
-bool ParameterManager::getDoubleByXpath(string xpath, double& referenceVar) {
-    if (!checkDocumentStatus()) return false;
-    string tmp;
-    if (!getStringByXpath(xpath, tmp)) {
-        cerr << "Failed loading simulation parameter for xpath " 
-             << xpath << endl;
-        return false;
-    }
-    if (boost::regex_match(tmp, boost::regex(".*[^\\def.+-]+.*"))) {
-        cerr << "Parsed parameter is likely a string. "
-             << "Terminating double conversion. Value: " 
-             << tmp << endl;
-        return false;
-    }
-    try {
-       referenceVar = stod(tmp);
-    } catch (invalid_argument& arg_exception) {
-        cerr << "Parsed parameter could not be parsed as a double. Value: "
-             << tmp << endl;
-        return false;
-    } catch (out_of_range& range_exception) {
-        cerr << "Parsed string parameter could not be converted to a double. Value: "
-             << tmp << endl;
-        return false;
-    }
-    return true;
+bool ParameterManager::getDoubleByXpath(string xpath, double &referenceVar) {
+   if (!checkDocumentStatus()) return false;
+   string tmp;
+   if (!getStringByXpath(xpath, tmp)) {
+      cerr << "Failed loading simulation parameter for xpath "
+           << xpath << endl;
+      return false;
+   }
+   if (boost::regex_match(tmp, boost::regex(".*[^\\def.+-]+.*"))) {
+      cerr << "Parsed parameter is likely a string. "
+           << "Terminating double conversion. Value: "
+           << tmp << endl;
+      return false;
+   }
+   try {
+      referenceVar = stod(tmp);
+   } catch (invalid_argument &arg_exception) {
+      cerr << "Parsed parameter could not be parsed as a double. Value: "
+           << tmp << endl;
+      return false;
+   } catch (out_of_range &range_exception) {
+      cerr << "Parsed string parameter could not be converted to a double. Value: "
+           << tmp << endl;
+      return false;
+   }
+   return true;
 }
 
 
@@ -201,32 +201,32 @@ bool ParameterManager::getDoubleByXpath(string xpath, double& referenceVar) {
  * @param referenceVariable The variable to store the float result into
  * @return bool A T/F flag indicating whether the retrieval succeeded
  */
-bool ParameterManager::getFloatByXpath(string xpath, float& referenceVariable) {
-    if (!checkDocumentStatus()) return false;
-    string tmp;
-    if (!getStringByXpath(xpath, tmp)) {
-        cerr << "Failed loading simulation parameter for xpath " 
-             << xpath << endl;
-        return false;
-    }
-    if (boost::regex_match(tmp, boost::regex(".*[^\\def.+-]+.*"))) {
-        cerr << "Parsed parameter is likely a string. "
-             << "Terminating double conversion. Value: " 
-             << tmp << endl;
-        return false;
-    }
-    try {
-       referenceVariable = stof(tmp);
-    } catch (invalid_argument& arg_exception) {
-        cerr << "Parsed parameter could not be parsed as a float. Value: "
-             << tmp << endl;
-        return false;
-    } catch (out_of_range& range_exception) {
-        cerr << "Parsed string parameter could not be converted to a float. Value: "
-             << tmp << endl;
-        return false;
-    }
-    return true;
+bool ParameterManager::getFloatByXpath(string xpath, float &referenceVariable) {
+   if (!checkDocumentStatus()) return false;
+   string tmp;
+   if (!getStringByXpath(xpath, tmp)) {
+      cerr << "Failed loading simulation parameter for xpath "
+           << xpath << endl;
+      return false;
+   }
+   if (boost::regex_match(tmp, boost::regex(".*[^\\def.+-]+.*"))) {
+      cerr << "Parsed parameter is likely a string. "
+           << "Terminating double conversion. Value: "
+           << tmp << endl;
+      return false;
+   }
+   try {
+      referenceVariable = stof(tmp);
+   } catch (invalid_argument &arg_exception) {
+      cerr << "Parsed parameter could not be parsed as a float. Value: "
+           << tmp << endl;
+      return false;
+   } catch (out_of_range &range_exception) {
+      cerr << "Parsed string parameter could not be converted to a float. Value: "
+           << tmp << endl;
+      return false;
+   }
+   return true;
 }
 
 /**
@@ -243,42 +243,42 @@ bool ParameterManager::getFloatByXpath(string xpath, float& referenceVariable) {
  * @param referenceVar The variable to store the float result into
  * @return bool A T/F flag indicating whether the retrieval succeeded
  */
-bool ParameterManager::getBGFloatByXpath(string xpath, BGFLOAT& referenceVar) {
-    #ifdef SINGLEPRECISION
-        return getFloatByXpath(xpath, referenceVar);
-    #endif
-    #ifdef DOUBLEPRECISION
-        return getDoubleByXpath(xpath, referenceVar);
-    #endif
-    cerr << "Could not infer primitive type for BGFLOAT variable."
-         << endl;
-    return false;
+bool ParameterManager::getBGFloatByXpath(string xpath, BGFLOAT &referenceVar) {
+#ifdef SINGLEPRECISION
+   return getFloatByXpath(xpath, referenceVar);
+#endif
+#ifdef DOUBLEPRECISION
+   return getDoubleByXpath(xpath, referenceVar);
+#endif
+   cerr << "Could not infer primitive type for BGFLOAT variable."
+        << endl;
+   return false;
 }
 
-bool ParameterManager::getLongByXpath(string xpath, long& var) {
-    if (!checkDocumentStatus()) return false;
-    string tmp;
-    if (!getStringByXpath(xpath, tmp)) {
-        cerr << "Failed loading simulation parameter for xpath " 
-             << xpath << endl;
-        return false;
-    }
-    if (!boost::regex_match(tmp, boost::regex("[\\d]+l?"))) {
-        cerr << "Parsed parameter is not a valid long format. "
-             << "Terminating long conversion. Value: " 
-             << tmp << endl;
-        return false;
-    }
-    try {
-        var = stol(tmp);
-    } catch (invalid_argument& arg_exception) {
-        cerr << "Parsed parameter could not be parsed as a long. Value: "
-             << tmp << endl;
-        return false;
-    } catch (out_of_range& range_exception) {
-        cerr << "Parsed string parameter could not be converted to a long. Value: "
-             << tmp << endl;
-        return false;
-    }
-    return true;
+bool ParameterManager::getLongByXpath(string xpath, long &var) {
+   if (!checkDocumentStatus()) return false;
+   string tmp;
+   if (!getStringByXpath(xpath, tmp)) {
+      cerr << "Failed loading simulation parameter for xpath "
+           << xpath << endl;
+      return false;
+   }
+   if (!boost::regex_match(tmp, boost::regex("[\\d]+l?"))) {
+      cerr << "Parsed parameter is not a valid long format. "
+           << "Terminating long conversion. Value: "
+           << tmp << endl;
+      return false;
+   }
+   try {
+      var = stol(tmp);
+   } catch (invalid_argument &arg_exception) {
+      cerr << "Parsed parameter could not be parsed as a long. Value: "
+           << tmp << endl;
+      return false;
+   } catch (out_of_range &range_exception) {
+      cerr << "Parsed string parameter could not be converted to a long. Value: "
+           << tmp << endl;
+      return false;
+   }
+   return true;
 }

@@ -7,6 +7,7 @@
  */
 
 #include <iostream>
+#include <fstream>
 
 #include "gtest/gtest.h"
 
@@ -19,11 +20,5 @@ int main() {
 
    // Initialize Google test and run all tests.
    testing::InitGoogleTest();
-   int result = RUN_ALL_TESTS();
-
-   // Check result of the tests.
-   if (result != 0) {
-      cerr << "\nError occured while running the tests. Error number: " << result << endl;
-   }
-   return 0;
+   return RUN_ALL_TESTS();
 }

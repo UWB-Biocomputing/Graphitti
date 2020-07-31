@@ -4,8 +4,11 @@ project(SummerOfBrain)
 # Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 11)
 
-# Set extra warning flags and define TIXML_USE_STL to use the C++ standard library with TinyXML
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -DTIXML_USE_STL")
+# Set extra warning flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+
+#define TIXML_USE_STL and TIXML_STRING_INCLUDED to use the C++ standard library with TinyXML
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTIXML_USE_STL")
 
 # Used to define file paths for #include paths. For example you can write:
 # #include "Simulator.h"
@@ -30,16 +33,15 @@ include_directories(
 
 # Used to locate other CMakeLists.txt files for further compilation of the project.
 add_subdirectory(Simulation)
+add_subdirectory(ThirdParty)
 
 # Googletest subdirectories support
 add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
 # Boost Library support
-find_package(Boost COMPONENTS regex)
-
-# TinyXPath support
-add_subdirectory(ThirdParty/TinyXPath)
+find_package(Boost REQUIRED regex)
+link_directories(${Boost_LIBRARY_DIR})
 
 #target_include_directories(TinyXLib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Utils/TinyXPath")
 
@@ -60,13 +62,8 @@ add_executable(Tests
         Testing/Core/SynapseIndexMapTests.cpp
         Testing/Core/FunctionNodeTests.cpp
         Testing/Core/SimulatorTests.cpp
-        Testing/Core/Foo.cpp)
-
-# Links the required Boost libraries with the testing executable
-if(Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS})
-    target_link_libraries(Tests ${Boost_LIBRARIES})
-endif()
+        Testing/Core/Foo.cpp
+        Testing/Utils/ParamaterManagerTests.cpp)
 
 # Links the Googletest framework with the testing executable
 target_link_libraries(Tests gtest gtest_main)
@@ -85,11 +82,15 @@ target_link_libraries(combinedLib INTERFACE
 
         # Utils
         Utils
+        RNG
         Inputs
         Matrix
 
         # ThirdParty
-        RNG)
+        TinyXPath
+
+        # External Libraries
+        ${Boost_LIBRARIES})
 
 # Link the combined library into the 'Tests' executable.
 target_link_libraries(Tests combinedLib)
