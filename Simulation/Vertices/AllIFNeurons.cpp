@@ -1,8 +1,8 @@
 #include "AllIFNeurons.h"
 #include "ParseParamError.h"
 #include "Layout.h"
-#include "MersenneTwister.h"
-#include "Norm.h"
+#include "RNG/MersenneTwister.h"
+#include "RNG/Norm.h"
 
 // Default constructor
 AllIFNeurons::AllIFNeurons() : AllSpikingNeurons()
