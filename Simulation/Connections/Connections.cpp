@@ -1,11 +1,3 @@
-#include "Connections.h"
-#include "ParseParamError.h"
-#include "IAllSynapses.h"
-#include "IAllNeurons.h"
-#include "AllSynapses.h"
-#include "AllNeurons.h"
-
-
 /* ------------- CONNECTIONS STRUCT ------------ *\
  * Below all of the resources for the various
  * connections are instantiated and initialized.
@@ -43,6 +35,13 @@
  * problematic matricies mentioned above will use
  * only 1/250 of their current space.
 \* --------------------------------------------- */
+
+#include "Connections.h"
+#include "IAllSynapses.h"
+#include "IAllNeurons.h"
+#include "AllSynapses.h"
+#include "AllNeurons.h"
+
 Connections::Connections() : nParams(0)
 {
 }

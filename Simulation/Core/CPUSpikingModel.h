@@ -59,7 +59,7 @@ class CPUSpikingModel : public Model
          virtual void updateConnections();
 
          /// Copy GPU Synapse data to CPU.
-         virtual void copyGPUSynapseToCPUModel();
+         virtual void copyGPUtoCPU();
 
          /// Copy CPU Synapse data to GPU.
          virtual void copyCPUtoGPU();

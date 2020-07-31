@@ -39,9 +39,7 @@
 #include "IAllNeurons.h"
 #include "IAllSynapses.h"
 #include "Layout.h"
-// #include "IRecorder.h"
-
-class IRecorder;
+#include "IRecorder.h"
 
 using namespace std;
 

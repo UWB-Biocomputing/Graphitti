@@ -30,9 +30,9 @@
 #include "Layout.h"
 #include "IAllNeurons.h"
 
-class Connections;
-
 using namespace std;
+
+class Connections;
 
 class Model {
 public:

@@ -50,25 +50,34 @@ include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 # included in the executable.
 add_executable(Tests
         Testing/RunTests.cpp
-        Testing/Core/Foo.h
-        Testing/Core/Foo.cpp
-        Testing/Core/FunctionNodeTests.cpp
         Testing/Core/OperationManagerTests.cpp
         Testing/Core/SynapseIndexMapTests.cpp
-        Testing/Core/SimulatorTests.cpp)
+        Testing/Core/FunctionNodeTests.cpp
+        Testing/Core/SimulatorTests.cpp
+        Testing/Core/Foo.cpp)
 
-# Links the Googletest framework with the testing executable
+# Links the Googletest framework with the 'Tests' executable.
 target_link_libraries(Tests gtest gtest_main)
 
-# Link all libraries created in the project's subdirectories to the 'Tests' executable.
-target_link_libraries(Tests
+# Link all libraries created in the project's subdirectories into a combined library.
+add_library(combinedLib INTERFACE)
+target_link_libraries(combinedLib INTERFACE
+        # Simulator
         Connections
         Core
-        Layouts
         Edges
+        Layouts
+        Recorders
         Vertices
         FunctionNodes
+
+        # Utils
         Utils
-        RNG
+        Inputs
         Matrix
-        Inputs)
+
+        # ThirdParty
+        RNG)
+
+# Link the combined library into the 'Tests' executable.
+target_link_libraries(Tests combinedLib)

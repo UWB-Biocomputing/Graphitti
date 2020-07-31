@@ -21,7 +21,6 @@
 #pragma once
 
 #include "Global.h"
-#include "Core/Simulator.h"
 #include <vector>
 #include <iostream>
 

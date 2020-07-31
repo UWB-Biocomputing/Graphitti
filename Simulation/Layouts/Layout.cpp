@@ -1,4 +1,5 @@
 #include "Layout.h"
+#include "Simulator.h"
 #include "ParseParamError.h"
 #include "Util.h"
 
