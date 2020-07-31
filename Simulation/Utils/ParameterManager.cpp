@@ -19,34 +19,38 @@
  * Supervised by Dr. Michael Stiber, UW Bothell CSSE Division
  */
 
+#include "ParameterManager.h"
+
+#include <boost/regex.hpp>
 #include <iostream>
 #include <string>
 #include <stdexcept>
-#include <boost/regex.hpp>
-#include "ParameterManager.h"
-#include "tinyxml.h"
-#include "xpath_static.h"
+
 #include "BGTypes.h"
+#include "xpath_static.h"
+
 
 // ----------------------------------------------------
 // ----------------- UTILITY METHODS ------------------
 // ----------------------------------------------------
 
-/**
- * Class constructor
- * Initialize any heap variables to null
- */
+/// Private Class constructor
+/// Initialize any heap variables to null
 ParameterManager::ParameterManager() {
-    xmlDoc = nullptr;
-    root = nullptr;
+   xmlDocument_ = nullptr;
+   root_ = nullptr;
 }
 
-/**
- * Class destructor
- * Deallocate all heap memory managed by the class
- */
+/// Class destructor
+/// Deallocate all heap memory managed by the class
 ParameterManager::~ParameterManager() {
-    if (xmlDoc != nullptr) delete xmlDoc;
+   if (xmlDocument_ != nullptr) delete xmlDocument_;
+}
+
+/// Get Instance method that returns a reference to this object.
+ParameterManager &ParameterManager::getInstance() {
+   static ParameterManager instance;
+   return instance;
 }
 
 /**
@@ -56,17 +60,18 @@ ParameterManager::~ParameterManager() {
  */
 bool ParameterManager::loadParameterFile(string path) {
     // load the XML document
-    xmlDoc = new TiXmlDocument(path.c_str());
-    if (!xmlDoc->LoadFile()) {
+    if (xmlDocument_) delete xmlDocument_;
+    xmlDocument_ = new TiXmlDocument(path.c_str());
+    if (!xmlDocument_->LoadFile()) {
         cerr << "Failed loading simulation parameter file "
-             << path << ":" << "\n\t" << xmlDoc->ErrorDesc()
+             << path << ":" << "\n\t" << xmlDocument_->ErrorDesc()
              << endl;
-        cerr << " error: " << xmlDoc->ErrorRow() << ", " << xmlDoc->ErrorCol()
+        cerr << " error: " << xmlDocument_->ErrorRow() << ", " << xmlDocument_->ErrorCol()
              << endl;
         return false;
     }
-    // assign the document root object
-    root = xmlDoc->RootElement();
+    // assign the document root_ object
+    root_ = xmlDocument_->RootElement();
     return true;
 }
 
@@ -76,7 +81,7 @@ bool ParameterManager::loadParameterFile(string path) {
  * interface methods should terminate early.
  */
 bool ParameterManager::checkDocumentStatus() {
-    return xmlDoc != nullptr && root != nullptr;
+    return xmlDocument_ != nullptr && root_ != nullptr;
 }
 
 // ----------------------------------------------------
@@ -89,17 +94,19 @@ bool ParameterManager::checkDocumentStatus() {
  * the value.
  * 
  * @param xpath The xpath for the desired string value in the XML file
- * @param var The variable to store the string result into
+ * @param referenceVar The variable to store the string result into
  * @return bool A T/F flag indicating whether the retrieval succeeded
  */
-bool ParameterManager::getStringByXpath(string xpath, string& var) {
+bool ParameterManager::getStringByXpath(string xpath, string& referenceVar) {
     if (!checkDocumentStatus()) return false;
-    if (!TinyXPath::o_xpath_string(root, xpath.c_str(), var)) {
+    TiXmlString result(referenceVar.c_str());
+    if (!TinyXPath::o_xpath_string(root_, xpath.c_str(), result)) {
         cerr << "Failed loading simulation parameter for xpath " 
              << xpath << endl;
         // TODO: possibly get better error information?
         return false;
     }
+   referenceVar = result.data();
     return true;
 }
 
@@ -109,10 +116,10 @@ bool ParameterManager::getStringByXpath(string xpath, string& var) {
  * the value.
  *
  * @param xpath The xpath for the desired int value in the XML file
- * @param var The variable to store the int result into
+ * @param referenceVar The variable to store the int result into
  * @return bool A T/F flag indicating whether the retrieval succeeded
  */
-bool ParameterManager::getIntByXpath(string xpath, int& var) {
+bool ParameterManager::getIntByXpath(string xpath, int& referenceVar) {
     if (!checkDocumentStatus()) return false;
     string tmp;
     if (!getStringByXpath(xpath, tmp)) {
@@ -134,7 +141,7 @@ bool ParameterManager::getIntByXpath(string xpath, int& var) {
         return false;
     }
     try {
-        var = stoi(tmp);
+       referenceVar = stoi(tmp);
     } catch (invalid_argument& arg_exception) {
         cerr << "Parsed parameter could not be parsed as an integer. Value: "
              << tmp << endl;
@@ -153,10 +160,10 @@ bool ParameterManager::getIntByXpath(string xpath, int& var) {
  * the value.
  *
  * @param xpath The xpath for the desired double value in the XML file
- * @param var The variable to store the double result into
+ * @param referenceVar The variable to store the double result into
  * @return bool A T/F flag indicating whether the retrieval succeeded
  */
-bool ParameterManager::getDoubleByXpath(string xpath, double& var) {
+bool ParameterManager::getDoubleByXpath(string xpath, double& referenceVar) {
     if (!checkDocumentStatus()) return false;
     string tmp;
     if (!getStringByXpath(xpath, tmp)) {
@@ -171,7 +178,7 @@ bool ParameterManager::getDoubleByXpath(string xpath, double& var) {
         return false;
     }
     try {
-        var = stod(tmp);
+       referenceVar = stod(tmp);
     } catch (invalid_argument& arg_exception) {
         cerr << "Parsed parameter could not be parsed as a double. Value: "
              << tmp << endl;
@@ -191,10 +198,10 @@ bool ParameterManager::getDoubleByXpath(string xpath, double& var) {
  * the value.
  *
  * @param xpath The xpath for the desired float value in the XML file
- * @param var The variable to store the float result into
+ * @param referenceVariable The variable to store the float result into
  * @return bool A T/F flag indicating whether the retrieval succeeded
  */
-bool ParameterManager::getFloatByXpath(string xpath, float& var) {
+bool ParameterManager::getFloatByXpath(string xpath, float& referenceVariable) {
     if (!checkDocumentStatus()) return false;
     string tmp;
     if (!getStringByXpath(xpath, tmp)) {
@@ -209,7 +216,7 @@ bool ParameterManager::getFloatByXpath(string xpath, float& var) {
         return false;
     }
     try {
-        var = stof(tmp);
+       referenceVariable = stof(tmp);
     } catch (invalid_argument& arg_exception) {
         cerr << "Parsed parameter could not be parsed as a float. Value: "
              << tmp << endl;
@@ -233,15 +240,15 @@ bool ParameterManager::getFloatByXpath(string xpath, float& var) {
  * double usage is available for single-threaded CPU instances.)
  *
  * @param xpath The xpath for the desired float value in the XML file
- * @param var The variable to store the float result into
+ * @param referenceVar The variable to store the float result into
  * @return bool A T/F flag indicating whether the retrieval succeeded
  */
-bool ParameterManager::getBGFloatByXpath(string xpath, BGFLOAT& var) {
+bool ParameterManager::getBGFloatByXpath(string xpath, BGFLOAT& referenceVar) {
     #ifdef SINGLEPRECISION
-        return getFloatByXpath(xpath, var);
+        return getFloatByXpath(xpath, referenceVar);
     #endif
     #ifdef DOUBLEPRECISION
-        return getDoubleByXpath(xpath, var);
+        return getDoubleByXpath(xpath, referenceVar);
     #endif
     cerr << "Could not infer primitive type for BGFLOAT variable."
          << endl;

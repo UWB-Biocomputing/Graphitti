@@ -31,9 +31,17 @@ include_directories(
 # Used to locate other CMakeLists.txt files for further compilation of the project.
 add_subdirectory(Simulation)
 
-# Including Googletest subdirectories
+# Googletest subdirectories support
 add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
+
+# Boost Library support
+find_package(Boost COMPONENTS regex)
+
+# TinyXPath support
+add_subdirectory(ThirdParty/TinyXPath)
+
+#target_include_directories(TinyXLib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Utils/TinyXPath")
 
 # ------ CPU SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
@@ -54,7 +62,13 @@ add_executable(Tests
         Testing/Core/SimulatorTests.cpp
         Testing/Core/Foo.cpp)
 
-# Links the Googletest framework with the 'Tests' executable.
+# Links the required Boost libraries with the testing executable
+if(Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})
+    target_link_libraries(Tests ${Boost_LIBRARIES})
+endif()
+
+# Links the Googletest framework with the testing executable
 target_link_libraries(Tests gtest gtest_main)
 
 # Link all libraries created in the project's subdirectories into a combined library.
