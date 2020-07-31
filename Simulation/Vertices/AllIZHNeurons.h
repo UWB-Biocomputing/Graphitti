@@ -102,7 +102,7 @@ class AllIZHNeurons : public AllIFNeurons
          *
          *  @param  sim_info  SimulationInfo class to read information from.
          */
-        virtual void setupNeurons(SimulationInfo *sim_info);
+        virtual void setupNeurons();
 
         /**
          *  Cleanup the class.
@@ -118,14 +118,6 @@ class AllIZHNeurons : public AllIFNeurons
         virtual bool checkNumParameters();
 
         /**
-         *  Attempts to read parameters from a XML file.
-         *
-         *  @param  element TiXmlElement to examine.
-         *  @return true if successful, false otherwise.
-         */
-        virtual bool readParameters(const TiXmlElement& element);
-
-        /**
          *  Prints out all parameters of the neurons to ostream.
          *
          *  @param  output  ostream to send output to.
@@ -138,7 +130,7 @@ class AllIZHNeurons : public AllIFNeurons
          *  @param  sim_info    SimulationInfo class to read information from.
          *  @param  layout      Layout information of the neunal network.
          */
-        virtual void createAllNeurons(SimulationInfo *sim_info, Layout *layout);
+        virtual void createAllNeurons(Layout *layout);
 
         /**
          *  Outputs state of the neuron chosen as a string.
@@ -154,7 +146,7 @@ class AllIZHNeurons : public AllIFNeurons
          *  @param  input       istream to read from.
          *  @param  sim_info    used as a reference to set info for neuronss.
          */
-        virtual void deserialize(istream &input, const SimulationInfo *sim_info);
+        virtual void deserialize(istream &input);
 
         /**
          *  Writes out the data in all neurons to output stream.
@@ -162,7 +154,7 @@ class AllIZHNeurons : public AllIFNeurons
          *  @param  output      stream to write out to.
          *  @param  sim_info    used as a reference to set info for neuronss.
          */
-        virtual void serialize(ostream& output, const SimulationInfo *sim_info) const;
+        virtual void serialize(ostream& output) const;
 
 #if defined(USE_GPU)
     public:
@@ -283,7 +275,7 @@ class AllIZHNeurons : public AllIFNeurons
          *  @param  index            Index of the neuron to update.
          *  @param  sim_info         SimulationInfo class to read information from.
          */
-        virtual void advanceNeuron(const int index, const SimulationInfo *sim_info);
+        virtual void advanceNeuron(const int index);
 
         /**
          *  Initiates a firing of a neuron to connected neurons.
@@ -291,7 +283,7 @@ class AllIZHNeurons : public AllIFNeurons
          *  @param  index            Index of the neuron to fire.
          *  @param  sim_info         SimulationInfo class to read information from.
          */
-        virtual void fire(const int index, const SimulationInfo *sim_info) const;
+        virtual void fire(const int index) const;
 #endif  // defined(USE_GPU)
 
     protected:
@@ -302,7 +294,7 @@ class AllIZHNeurons : public AllIFNeurons
          *  @param  neuron_index Index of the neuron to create.
          *  @param  layout       Layout information of the neunal network.
          */
-        void createNeuron(SimulationInfo *sim_info, int neuron_index, Layout *layout);
+        void createNeuron(int neuron_index, Layout *layout);
 
         /**
          *  Set the Neuron at the indexed location to default values.
@@ -326,7 +318,7 @@ class AllIZHNeurons : public AllIFNeurons
          *  @param  sim_info    used as a reference to set info for neurons.
          *  @param  i           index of the neuron (in neurons).
          */
-        void readNeuron(istream &input, const SimulationInfo *sim_info, int i);
+        void readNeuron(istream &input, int i);
 
         /**
          *  Writes out the data in the selected Neuron.
@@ -335,7 +327,7 @@ class AllIZHNeurons : public AllIFNeurons
          *  @param  sim_info    used as a reference to set info for neuronss.
          *  @param  i           index of the neuron (in neurons).
          */
-        void writeNeuron(ostream& output, const SimulationInfo *sim_info, int i) const;
+        void writeNeuron(ostream& output, int i) const;
 
     private:
         /**

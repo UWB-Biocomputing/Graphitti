@@ -6,6 +6,8 @@
 //! An implementation for recording spikes history on xml file
 
 #include "XmlGrowthRecorder.h"
+#include "Simulator.h"
+#include "Model.h"
 #include "AllIFNeurons.h"      // TODO: remove LIF model specific code
 #include "ConnGrowth.h"
 

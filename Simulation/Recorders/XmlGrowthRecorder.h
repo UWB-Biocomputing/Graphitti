@@ -31,9 +31,10 @@
 
 #pragma once
 
-#include "XmlRecorder.h"
-#include "Model.h"
 #include <fstream>
+
+#include "Recorders/XmlRecorder.h"
+#include "Core/Model.h"
 
 class XmlGrowthRecorder : public XmlRecorder
 {

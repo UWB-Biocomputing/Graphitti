@@ -1,5 +1,5 @@
 #include "AllNeurons.h"
-#include "Simulator.h"
+#include "Core/Simulator.h"
 
 // Default constructor
 AllNeurons::AllNeurons() : 

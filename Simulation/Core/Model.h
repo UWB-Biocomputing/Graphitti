@@ -100,7 +100,7 @@ protected:
    /// Copy CPU Synapse data to GPU.
    virtual void copyCPUtoGPU() = 0;
 
-private:
+protected:
    // DONE: 2020/03/14 (It was Emily!) Modified access level to public for allowing the access in BGDriver for serialization/deserialization
    // ToDo: make private again after serialization is fixed... shouldn't these be private with public accessors?
    // ToDo: Should model own these? Or should simulator?
