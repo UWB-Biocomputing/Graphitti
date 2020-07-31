@@ -110,6 +110,9 @@ private:
 
    Layout *layout_;
 
+   // todo: model is going to own recorders and inputs 7/29
+
+   // todo: 7/29
    // ToDo: Delete these and put them in connections and synapses accordingly
    IAllNeurons *neurons_;
    IAllSynapses *synapses_;

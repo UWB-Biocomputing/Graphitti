@@ -140,9 +140,9 @@ private:
 
    BGFLOAT deltaT;   /// Inner Simulation Step Duration, purely investigative.
 
-   neuronType *rgNeuronTypeMap; /// The neuron type map (INH, EXC). ToDo: make smart ptr
+   neuronType *rgNeuronTypeMap; /// The neuron type map (INH, EXC). ToDo: become a vector
 
-   bool *rgEndogenouslyActiveNeuronMap;   /// The starter existence map (T/F). ToDo: make smart ptr
+   bool *rgEndogenouslyActiveNeuronMap;   /// The starter existence map (T/F). ToDo: become a vector
 
    BGFLOAT maxRate;   /// growth variable (m_targetRate / m_epsilon) TODO: more detail here
 
@@ -160,9 +160,16 @@ private:
 
    string stimulusInputFileName;    /// File name of the stimulus input file.
 
-   Model *model;    /// Neural Network Model interface. ToDo: make smart ptr
+   // todo: change model to become conditionally alloc
+   // does not need to be dynAMICALLY AALLOC.
+   // line of code becomes: if gpu, then GPUSPIKINGMODEL, else CPUSPIKINGMODEL
+   // simulator contains model, doesnt necessarily imply where owned obj is created/
+   // just implies that this object contains this.
+   Model *model;    /// Neural Network Model interface.
 
-   IRecorder *simRecorder;    /// ptr to Recorder object. ToDo: make smart ptr
+   // todo: recorder obj is created by factory. has to be dynamically allocated
+   //
+   IRecorder *simRecorder;    /// ptr to Recorder object. ToDo: make smart ptr (shared)
 
    // ISInput *pInput;    /// Stimulus input object. ToDo: make smart ptr
 

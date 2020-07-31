@@ -25,7 +25,7 @@
 //! Cereal
 #include <cereal/archives/xml.hpp>
 #include <cereal/archives/binary.hpp>
-#include "ConnGrowth.h"
+#include "ConnGrowth.h" // hacked in. that's why its here. todo: should we fix?
 
 #if defined(USE_GPU)
     #include "GPUSpikingModel.h"
@@ -56,19 +56,27 @@ bool deserializeSynapseInfo();
  *  @return -1 if error, else if success.
  */
 int main(int argc, char* argv[]) {
-    Simulator *simulator = Simulator::getInstance();
+   // todo: getinstance returns refereence. make match. fix ptr
+    Simulator &simulator = Simulator::getInstance();
 
     // Handles parsing of the command line
-    if (!parseCommandLine(argc, argv)) {
+   if (!parseCommandLine(argc, argv)) {
         cerr << "! ERROR: failed during command line parse" << endl;
         return -1;
     }
 
     // Create all model instances and load parameters from a file.
-    if (!LoadAllParameters()) {
+   // todo: parameter manager replaces this - parses config file
+   // todo: all readparams methods in lower level classes are going to look very different.
+   // objects will be calling param manager asking for their own things .
+
+   // two phase process: global params, and then obj init.
+   if (!LoadAllParameters()) {
         cerr << "! ERROR: failed while parsing simulation parameters." << endl;
         return -1;
     }
+
+   // todo: this should be a job of the simulator. replaced by a call to simulator
 
     // create & init simulation recorder
     simInfo->simRecorder = simInfo->model->getConnections()->createRecorder();
@@ -82,7 +90,8 @@ int main(int argc, char* argv[]) {
 
     time_t start_time, end_time;
     time(&start_time);
-	
+
+    // in chain of responsibility. still going to exist!
     // setup simulation
     DEBUG(cerr << "Setup simulation." << endl;)
     simulator->setup();
@@ -113,6 +122,7 @@ int main(int argc, char* argv[]) {
     // Run simulation
     simulator->simulate();
 
+    // todo:put someplace else, like chain of responsibility. doesnt have to happen here.
     // Terminate the stimulus input 
     if (simInfo->pInput != NULL)
     {
@@ -120,9 +130,11 @@ int main(int argc, char* argv[]) {
         delete simInfo->pInput;
     }
 
+    // todo: before this, do copy from gpu.
     // Writes simulation results to an output destination
     simulator->saveData();
 
+    // todo: going to be moved. with the "hack"
     // Serializes internal state for the current simulation
     if (!simInfo->memOutputFileName.empty()) {
 
@@ -137,6 +149,7 @@ int main(int argc, char* argv[]) {
 
     }
 
+    // todo: handled by chain of responsibility for termination/cleanup.
     // Tell simulation to clean-up and run any post-simulation logic.
     simulator->finish();
 
@@ -182,9 +195,11 @@ int main(int argc, char* argv[]) {
  *  @param  simInfo   SimulationInfo class to read information from.
  *  @retrun true if successful, false if not
  */
-bool createAllModelClassInstances(TiXmlDocument* simDoc, SimulationInfo *simInfo)
+bool createAllModelClassInstances(TiXmlDocument* simDoc)
 {
-    TiXmlElement* parms = NULL;
+   // todo: this whole method gets refactored
+
+   TiXmlElement* parms = NULL;
 
     //cout << "Child:" <<  simDoc->FirstChildElement()->Value() << endl;
 
@@ -199,6 +214,14 @@ bool createAllModelClassInstances(TiXmlDocument* simDoc, SimulationInfo *simInfo
     Connections *conns = NULL;
     Layout *layout = NULL;
     const TiXmlNode* pNode = NULL;
+
+    // todo: 1. we are going to have a seperate factory for each type - six
+   //          neuron, layout, connection, synapse, input, recorders
+   //          have six singletons for each of these ^^ - singletons are factories
+
+   // todo: 2. we can find out what the actual class to instantiate from param file.
+    //          factory will return object.
+    //         can instantiate now in place where object will be contained - obj owning class.
 
     while ((pNode = parms->IterateChildren(pNode)) != NULL) {
         if (strcmp(pNode->Value(), "NeuronsParams") == 0) {
@@ -222,6 +245,8 @@ bool createAllModelClassInstances(TiXmlDocument* simDoc, SimulationInfo *simInfo
         return false;
     }
 
+    // todo: this gets refactored
+    // still want conditional compilation so we dont need cuda libs for single threaded compilation
     // create the model
     #if defined(USE_GPU)
          simInfo->model = new GPUSpikingModel(conns, neurons, synapses, layout);
@@ -280,30 +305,15 @@ bool LoadAllParameters(SimulationInfo *simInfo)
 }
 
 /*
- *  Prints loaded parameters out to console.
- *
- *  @param  simInfo   SimulationInfo class to read information from.
- */
-void printParams(SimulationInfo *simInfo) {
-    cout << "\nPrinting simulation parameters...\n";
-    simInfo->printParameters(cout);
-
-    cout << "Model Parameters:" << endl;
-    FClassOfCategory::get()->printParameters(cout);
-    cout << "Done printing parameters" << endl;
-}
-
-/*
  *  Handles parsing of the command line
  *
  *  @param  argc      argument count.
  *  @param  argv      arguments.
- *  @param  simInfo   SimulationInfo class to read information from.
  *  @returns    true if successful, false otherwise.
  */
 bool parseCommandLine(int argc, char* argv[], SimulationInfo *simInfo)
 {
-    ParamContainer cl;
+    ParamContainer cl; // todo: note as third party class.
     cl.initOptions(false);  // don't allow unknown parameters
     cl.setHelpString(string("The DCT growth modeling simulator\nUsage: ") + argv[0] + " ");
 
@@ -334,7 +344,7 @@ bool parseCommandLine(int argc, char* argv[], SimulationInfo *simInfo)
         return false;
     }
 
-    // Get the values
+    // Get the command line values
     simInfo->stateOutputFileName = cl["stateoutfile"];
     simInfo->stateInputFileName = cl["stateinfile"];
     simInfo->memInputFileName = cl["meminfile"];
@@ -342,6 +352,7 @@ bool parseCommandLine(int argc, char* argv[], SimulationInfo *simInfo)
     simInfo->stimulusInputFileName = cl["stiminfile"];
 
 #if defined(USE_GPU)
+    // todo: think about how we want to handle this.
     if (EOF == sscanf(cl["deviceid"].c_str(), "%d", &g_deviceId)) {
         g_deviceId = 0;
     }
@@ -404,6 +415,7 @@ void serializeSynapseInfo(SimulationInfo *simInfo, Simulator *simulator)
 
 }
 
+// todo: needs to be moved someplace else.
 /*
  *  Deserializes synapse weights, source neurons, destination neurons,
  *  maxSynapsesPerNeuron, totalNeurons, and
