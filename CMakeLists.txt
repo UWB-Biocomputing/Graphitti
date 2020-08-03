@@ -4,6 +4,10 @@ project(SummerOfBrain)
 # Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 11)
 
+# Setting the location of the executable to be in the SummerOfBrain directory. This helps when using file paths during
+# runtime.
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
 # Set extra warning flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
