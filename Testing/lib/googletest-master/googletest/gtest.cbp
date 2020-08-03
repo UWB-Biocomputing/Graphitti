@@ -4,182 +4,300 @@
 	<Project>
 		<Option title="gtest"/>
 		<Option makefile_is_custom="1"/>
-		<Option compiler="clang"/>
-		<Option virtualFolders="CMake Files\;CMake Files\Testing\;CMake Files\Testing\lib\;CMake Files\Testing\lib\googletest-master\;CMake Files\Testing\lib\googletest-master\googlemock\;CMake Files\Testing\lib\googletest-master\googlemock\cmake\;CMake Files\Testing\lib\googletest-master\googletest\;CMake Files\Testing\lib\googletest-master\googletest\cmake\;"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\Simulation\;CMake Files\Simulation\Connections\;CMake Files\Simulation\Core\;CMake Files\Simulation\Core\FunctionNodes\;CMake Files\Simulation\Edges\;CMake Files\Simulation\Layouts\;CMake Files\Simulation\Recorders\;CMake Files\Simulation\Vertices\;CMake Files\Simulation\Utils\;CMake Files\Simulation\Utils\Matrix\;CMake Files\Simulation\Utils\RNG\;CMake Files\Simulation\Utils\Inputs\;CMake Files\ThirdParty\;CMake Files\ThirdParty\TinyXPath\;CMake Files\ThirdParty\log4cplus-1.2.0\;CMake Files\ThirdParty\log4cplus-1.2.0\src\;CMake Files\ThirdParty\log4cplus-1.2.0\src\cmake\;CMake Files\ThirdParty\log4cplus-1.2.0\simpleserver\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\appender_test\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\configandwatch_test\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\customloglevel_test\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\fileappender_test\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\filter_test\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\hierarchy_test\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\loglog_test\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\ndc_test\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\ostream_test\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\patternlayout_test\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\performance_test\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\priority_test\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\propertyconfig_test\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\thread_test\;CMake Files\ThirdParty\log4cplus-1.2.0\tests\timeformat_test\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\Users\;CMake Files\..\..\..\..\..\Users\chris\;CMake Files\..\..\..\..\..\Users\chris\OneDrive\;CMake Files\..\..\..\..\..\Users\chris\OneDrive\Desktop\;CMake Files\..\..\..\..\..\Users\chris\OneDrive\Desktop\SummerOfBrain\;CMake Files\..\..\..\..\..\Users\chris\OneDrive\Desktop\SummerOfBrain\ThirdParty\;CMake Files\..\..\..\..\..\Users\chris\OneDrive\Desktop\SummerOfBrain\ThirdParty\log4cplus-1.2.0\;CMake Files\..\..\..\..\..\Users\chris\OneDrive\Desktop\SummerOfBrain\ThirdParty\log4cplus-1.2.0\include\;CMake Files\..\..\..\..\..\Users\chris\OneDrive\Desktop\SummerOfBrain\ThirdParty\log4cplus-1.2.0\include\log4cplus\;CMake Files\..\..\..\..\..\Users\chris\OneDrive\Desktop\SummerOfBrain\ThirdParty\log4cplus-1.2.0\include\log4cplus\config\;CMake Files\Testing\;CMake Files\Testing\lib\;CMake Files\Testing\lib\googletest-master\;CMake Files\Testing\lib\googletest-master\googlemock\;CMake Files\Testing\lib\googletest-master\googlemock\cmake\;CMake Files\Testing\lib\googletest-master\googletest\;CMake Files\Testing\lib\googletest-master\googletest\cmake\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
+				<Option working_dir="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="gtest_main">
-				<Option output="/Users/tori/Projects/SummerOfBrain/lib/libgtest_maind.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
+				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtest_maind.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 				<Option object_output="./"/>
-				<Option type="2"/>
-				<Option compiler="clang"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/../SummerOfBrain"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Connections"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Core"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Core/FunctionNodes"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Edges"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Layouts"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Recorders"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Vertices"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Testing"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/ThirdParty"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/ThirdParty/cereal"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Utils"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Utils/RNG"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Utils/TinyXPath"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
+					<Add option="-DGTEST_CREATE_SHARED_LIBRARY=1"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/../SummerOfBrain"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Connections"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/FunctionNodes"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Edges"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Layouts"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Recorders"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Vertices"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Utils"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/cereal"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/TinyXPath"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/include"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest/include"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 gtest_main"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 gtest_main"/>
+					<CompileFile command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="gtest_main/fast">
-				<Option output="/Users/tori/Projects/SummerOfBrain/lib/libgtest_maind.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
+				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtest_maind.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 				<Option object_output="./"/>
-				<Option type="2"/>
-				<Option compiler="clang"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/../SummerOfBrain"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Connections"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Core"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Core/FunctionNodes"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Edges"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Layouts"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Recorders"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Vertices"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Testing"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/ThirdParty"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/ThirdParty/cereal"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Utils"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Utils/RNG"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Utils/TinyXPath"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
+					<Add option="-DGTEST_CREATE_SHARED_LIBRARY=1"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/../SummerOfBrain"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Connections"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/FunctionNodes"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Edges"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Layouts"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Recorders"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Vertices"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Utils"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/cereal"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/TinyXPath"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/include"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest/include"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 gtest_main/fast"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 gtest_main/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="gtest">
-				<Option output="/Users/tori/Projects/SummerOfBrain/lib/libgtestd.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
+				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtestd.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 				<Option object_output="./"/>
-				<Option type="2"/>
-				<Option compiler="clang"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/../SummerOfBrain"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Connections"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Core"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Core/FunctionNodes"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Edges"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Layouts"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Recorders"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Vertices"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Testing"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/ThirdParty"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/ThirdParty/cereal"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Utils"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Utils/RNG"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Utils/TinyXPath"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
+					<Add option="-DGTEST_CREATE_SHARED_LIBRARY=1"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/../SummerOfBrain"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Connections"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/FunctionNodes"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Edges"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Layouts"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Recorders"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Vertices"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Utils"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/cereal"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/TinyXPath"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/include"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest/include"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 gtest"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 gtest"/>
+					<CompileFile command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="gtest/fast">
-				<Option output="/Users/tori/Projects/SummerOfBrain/lib/libgtestd.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
+				<Option output="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/lib/libgtestd.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
 				<Option object_output="./"/>
-				<Option type="2"/>
-				<Option compiler="clang"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/../SummerOfBrain"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Connections"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Core"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Core/FunctionNodes"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Edges"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Layouts"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Recorders"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Simulation/Vertices"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Testing"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/ThirdParty"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/ThirdParty/cereal"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Utils"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Utils/RNG"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Utils/TinyXPath"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/include"/>
-					<Add directory="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest"/>
+					<Add option="-DGTEST_CREATE_SHARED_LIBRARY=1"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/../SummerOfBrain"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Connections"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/FunctionNodes"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Edges"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Layouts"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Recorders"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Vertices"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Utils"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/cereal"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/TinyXPath"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/include"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest/include"/>
+					<Add directory="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 gtest/fast"/>
-					<CompileFile command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -f &quot;/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 gtest/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/mnt/c/Users/chris/OneDrive/Desktop/SummerOfBrain/Testing/lib/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/src/gtest-all.cc">
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest/src/gtest-all.cc">
 			<Option target="gtest"/>
 		</Unit>
-		<Unit filename="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/src/gtest_main.cc">
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest/src/gtest_main.cc">
 			<Option target="gtest_main"/>
 		</Unit>
-		<Unit filename="/Users/tori/Projects/SummerOfBrain/CMakeLists.txt">
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/CMakeLists.txt">
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Simulation\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Connections/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Simulation\Connections\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Simulation\Core\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/FunctionNodes/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Simulation\Core\FunctionNodes\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Edges/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Simulation\Edges\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Layouts/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Simulation\Layouts\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Recorders/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Simulation\Recorders\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Vertices/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Simulation\Vertices\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Utils/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Simulation\Utils\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Utils/Matrix/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Simulation\Utils\Matrix\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Utils/RNG/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Simulation\Utils\RNG\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Utils/Inputs/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Simulation\Utils\Inputs\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/TinyXPath/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\TinyXPath\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/ConfigureChecks.cmake">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/Log4CPlusCPack.cmake">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/Log4CPlusUtils.cmake">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\src\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/src/cmake/Config.cmake.in">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\src\cmake\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/simpleserver/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\simpleserver\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/appender_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\appender_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/configandwatch_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\configandwatch_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/customloglevel_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\customloglevel_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/fileappender_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\fileappender_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/filter_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\filter_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/hierarchy_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\hierarchy_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/loglog_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\loglog_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/ndc_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\ndc_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/ostream_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\ostream_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/patternlayout_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\patternlayout_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/performance_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\performance_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/priority_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\priority_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/propertyconfig_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\propertyconfig_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/thread_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\thread_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/ThirdParty/log4cplus-1.2.0/tests/timeformat_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ThirdParty\log4cplus-1.2.0\tests\timeformat_test\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/../../../../../Users/chris/OneDrive/Desktop/SummerOfBrain/ThirdParty/log4cplus-1.2.0/include/log4cplus/config/defines.hxx.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\Users\chris\OneDrive\Desktop\SummerOfBrain\ThirdParty\log4cplus-1.2.0\include\log4cplus\config\"/>
+		</Unit>
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\Testing\lib\googletest-master\"/>
 		</Unit>
-		<Unit filename="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googlemock/CMakeLists.txt">
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googlemock/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\Testing\lib\googletest-master\googlemock\"/>
 		</Unit>
-		<Unit filename="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googlemock/cmake/gmock.pc.in">
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googlemock/cmake/gmock.pc.in">
 			<Option virtualFolder="CMake Files\Testing\lib\googletest-master\googlemock\cmake\"/>
 		</Unit>
-		<Unit filename="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googlemock/cmake/gmock_main.pc.in">
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googlemock/cmake/gmock_main.pc.in">
 			<Option virtualFolder="CMake Files\Testing\lib\googletest-master\googlemock\cmake\"/>
 		</Unit>
-		<Unit filename="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/CMakeLists.txt">
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\Testing\lib\googletest-master\googletest\"/>
 		</Unit>
-		<Unit filename="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/cmake/Config.cmake.in">
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest/cmake/Config.cmake.in">
 			<Option virtualFolder="CMake Files\Testing\lib\googletest-master\googletest\cmake\"/>
 		</Unit>
-		<Unit filename="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/cmake/gtest.pc.in">
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest/cmake/gtest.pc.in">
 			<Option virtualFolder="CMake Files\Testing\lib\googletest-master\googletest\cmake\"/>
 		</Unit>
-		<Unit filename="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/cmake/gtest_main.pc.in">
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest/cmake/gtest_main.pc.in">
 			<Option virtualFolder="CMake Files\Testing\lib\googletest-master\googletest\cmake\"/>
 		</Unit>
-		<Unit filename="/Users/tori/Projects/SummerOfBrain/Testing/lib/googletest-master/googletest/cmake/internal_utils.cmake">
+		<Unit filename="/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/lib/googletest-master/googletest/cmake/internal_utils.cmake">
 			<Option virtualFolder="CMake Files\Testing\lib\googletest-master\googletest\cmake\"/>
 		</Unit>
 	</Project>

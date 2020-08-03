@@ -33,7 +33,8 @@ include_directories(
         Testing
         ThirdParty
         ThirdParty/cereal
-        ThirdParty/TinyXPath)
+        ThirdParty/TinyXPath
+        ThirdParty/log4cplus-1.2.0/include)
 
 # Used to locate other CMakeLists.txt files for further compilation of the project.
 add_subdirectory(Simulation)
@@ -76,8 +77,8 @@ target_link_libraries(Tests gtest gtest_main)
 add_library(combinedLib INTERFACE)
 target_link_libraries(combinedLib INTERFACE
         # Simulator
-        Connections
         Core
+        Connections
         Edges
         Layouts
         Recorders
@@ -92,6 +93,7 @@ target_link_libraries(combinedLib INTERFACE
 
         # ThirdParty
         TinyXPath
+        log4cplus
 
         # External Libraries
         ${Boost_LIBRARIES})

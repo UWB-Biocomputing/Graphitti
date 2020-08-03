@@ -11,19 +11,19 @@
 
 class Operations {
 public:
-    /// Available operations the OperationManager can register and execute.
-    enum op {
-       // todo: initializeFromParameters, (lower level, non global)
-       allocateMemory,
-       // todo: simulationSetup,
-       // todo: serialize
-       // todo: deserialize
-       deallocateMemory,
-       restoreToDefault,
-       copyToGPU,
-       copyFromGPU
-       // todo: cleanup/terminate
-    };
+   /// Available operations the OperationManager can register and execute.
+   // ToDo: SetupSimulator?
+   enum op {
+      initializeFromParameters,
+      allocateMemory,
+      deallocateMemory,
+      serialize,
+      deserialize,
+      restoreToDefault,
+      copyToGPU,
+      copyFromGPU,
+      terminate
+   };
 };
 
 

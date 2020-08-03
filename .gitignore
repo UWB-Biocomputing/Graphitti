@@ -58,3 +58,6 @@ _deps
 
 # Google Test
 Testing/lib
+
+# log4cplus logging file
+Output/Debug
