@@ -15,11 +15,9 @@ using namespace std;
 class VerticesFactory {
 
 public:
-   VerticesFactory();
-
    ~VerticesFactory();
 
-   static VerticesFactory *get() {
+   static VerticesFactory *getInstance() {
       static VerticesFactory instance;
       return &instance;
    }
@@ -30,21 +28,34 @@ public:
    // Shortcut for copy constructor for existing concrete object
    IAllNeurons *createNeuronsCopy();
 
+   /// Delete these methods because they can cause copy instances of the singleton when using threads.
+   VerticesFactory(VerticesFactory const &) = delete;
+   void operator=(VerticesFactory const &) = delete;
+
 private:
+   /// Constructor is private to keep a singleton instance of this class.
+   VerticesFactory();
+
    /// Pointer to neurons instance
    IAllNeurons *neuronsInstance;
+
    string neuronClassName;
+
    /* Type definitions */
    /// Defines function type for usage in internal map
    typedef IAllNeurons *(*CreateNeuronsFn)(void);
 
    /// Defines map between class name and corresponding ::Create() function.
    typedef map<string, CreateNeuronsFn> NeuronFunctionMap;
+
    /// Makes class-to-function map an internal factory member.
    NeuronFunctionMap createFunctions;
 
-   /// Retrieves and invokes correct ::Create() function
+   string getVerticeType();
+
+   /// Retrieves and invokes correct ::Create() function.
    IAllNeurons *invokeNeuronsCreateFunction(const string &className);
 
+   /// Register neuron class and it's create function to the factory.
    void registerNeurons(const string &neuronsClassName, CreateNeuronsFn function);
 };

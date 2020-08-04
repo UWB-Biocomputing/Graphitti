@@ -14,8 +14,8 @@
 //! THe constructor and destructor
 XmlGrowthRecorder::XmlGrowthRecorder() :
         XmlRecorder(),
-        ratesHistory(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getMaxSteps() + 1), Simulator::getInstance().getTotalNeurons()),
-        radiiHistory(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getMaxSteps() + 1), Simulator::getInstance().getTotalNeurons())
+        ratesHistory(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1), Simulator::getInstance().getTotalNeurons()),
+        radiiHistory(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1), Simulator::getInstance().getTotalNeurons())
 {
 }
 

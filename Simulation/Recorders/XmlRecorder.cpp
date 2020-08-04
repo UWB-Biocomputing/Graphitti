@@ -11,8 +11,10 @@
 
 //! THe constructor and destructor
 XmlRecorder::XmlRecorder() :
-        burstinessHist(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxSteps()), 0),
-        spikesHistory(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxSteps() * 100), 0),
+        burstinessHist(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
+              Simulator::getInstance().getNumEpochs()), 0),
+        spikesHistory(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
+              Simulator::getInstance().getNumEpochs() * 100), 0),
         m_model(dynamic_cast<Model*> (Simulator::getInstance().getModel()))
 {
 }

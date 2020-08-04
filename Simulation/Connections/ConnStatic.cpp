@@ -125,7 +125,7 @@ void ConnStatic::printParameters(ostream &output) const
 IRecorder* ConnStatic::createRecorder() {
     // create & init simulation recorder
     IRecorder* simRecorder = NULL;
-    if (Simulator::getInstance().getStateOutputFileName().find(".xml") != string::npos) {
+    if (Simulator::getInstance().getResultFileName().find(".xml") != string::npos) {
         simRecorder = new XmlRecorder();
     }
 #ifdef USE_HDF5
@@ -137,7 +137,7 @@ IRecorder* ConnStatic::createRecorder() {
         return NULL;
     }
     if (simRecorder != NULL) {
-        simRecorder->init(Simulator::getInstance().getStateOutputFileName());
+        simRecorder->init(Simulator::getInstance().getResultFileName());
     }
 
     return simRecorder;

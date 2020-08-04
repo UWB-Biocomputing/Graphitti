@@ -4,10 +4,11 @@
  */
 
 #include "VerticiesFactory.h"
+#include "ParameterManager.h"
 #include "AllLIFNeurons.h"
 #include "AllIZHNeurons.h"
 
-// constructor
+/// Constructor is private to keep a singleton instance of this class.
 VerticesFactory::VerticesFactory() {
    // register neurons classes
    registerNeurons("AllLIFNeurons", &AllLIFNeurons::Create);
@@ -28,12 +29,10 @@ void VerticesFactory::registerNeurons(const string &neuronsClassName, CreateNeur
    createFunctions[neuronsClassName] = function;
 }
 
-/**
- * Creates concrete instance of the desired neurons class.
- */
+
+/// Creates concrete instance of the desired neurons class.
 IAllNeurons *VerticesFactory::createNeurons(const string &className) {
    neuronsInstance = invokeNeuronsCreateFunction(className);
-   //neuronsInstance->createNeuronsProps();
    return neuronsInstance;
 }
 
@@ -45,22 +44,19 @@ IAllNeurons *VerticesFactory::createNeurons(const string &className) {
  * value assignment.
  */
 IAllNeurons *VerticesFactory::invokeNeuronsCreateFunction(const string &className) {
-   neuronClassName = className;
    NeuronFunctionMap::iterator it = createFunctions.find(neuronClassName);
    if (it != createFunctions.end()) return it->second();
    return NULL;
 }
 
 /*
- * Create an instance of the neurons class and copy neurons parameters from the 
+ * Create an instance of the neurons class and copy neurons parameters from the
  * neurons class object that has been already created.
  *
  * @return Poiner to the neurons object.
  */
 IAllNeurons *VerticesFactory::createNeuronsCopy() {
    IAllNeurons *neurons = invokeNeuronsCreateFunction(neuronClassName);
-   //neurons->createNeuronsProps();
-   // copy basic parameters
    *neurons = *neuronsInstance;
    return neurons;
 }

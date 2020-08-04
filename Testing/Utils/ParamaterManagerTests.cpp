@@ -54,8 +54,8 @@ TEST(ParameterManager, LoadingMultipleInvalidFiles) {
 
 TEST(ParameterManager, ValidStringTargeting) {
    ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
-   string validXPaths[]{"/BGSimParams/SimInfoParams/OutputParams/stateOutputFileName/text()",
-                        "//stateOutputFileName/text()", "//NeuronsParams/@class"};
+   string validXPaths[]{"/BGSimParams/SimInfoParams/OutputParams/resultFileName/text()",
+                        "//resultFileName/text()", "//NeuronsParams/@class"};
    string result[] = {"results/test-medium-500-out.xml", "results/test-medium-500-out.xml", "AllLIFNeurons"};
    string referenceVar;
    for (int i = 0; i < 3; i++) {
@@ -67,7 +67,7 @@ TEST(ParameterManager, ValidStringTargeting) {
 TEST(ParameterManager, ValidIntTargeting) {
    ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
    string valid_xpath[] = {"//maxFiringRate/text()", "//PoolSize/x/text()", "//PoolSize/y/text()",
-                           "//PoolSize/z/text()", "//Seed/value/text()", "//numSims/text()"};
+                           "//PoolSize/z/text()", "//Seed/value/text()", "//numEpochs/text()"};
    int result[] = {200, 30, 30, 1, 1, 500};
    int referenceVar;
    for (int i = 0; i < 6; i++) {
@@ -89,7 +89,7 @@ TEST(ParameterManager, InvalidIntTargeting) {
 
 TEST(ParameterManager, ValidFloatTargeting) {
    ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
-   string validXPaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//Tsim/text()", "//z/text()"};
+   string validXPaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//epochDuration/text()", "//z/text()"};
    float vals[] = {15.0e-03f, 0.0f, 100.0f, 1};
    float referenceVar;
    for (int i = 0; i < 4; i++) {
@@ -109,7 +109,7 @@ TEST(ParameterManager, InvalidFloatTargeting) {
 
 TEST(ParameterManager, ValidDoubleTargeting) {
    ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
-   string validXPaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//Tsim/text()", "//z/text()"};
+   string validXPaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//epochDuration/text()", "//z/text()"};
    double vals[] = {15.0e-03, 0.0, 100.0, 1};
    double referenceVar;
    for (int i = 0; i < 4; i++) {
@@ -130,7 +130,7 @@ TEST(ParameterManager, InvalidDoubleTargeting) {
 
 TEST(ParameterManager, ValidBGFloatTargeting) {
    ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
-   string validXPaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//Tsim/text()", "//z/text()"};
+   string validXPaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//epochDuration/text()", "//z/text()"};
    BGFLOAT vals[] = {15.0e-03, 0.0, 100.0, 1};
    BGFLOAT referenceVar;
    for (int i = 0; i < 4; i++) {
@@ -151,7 +151,7 @@ TEST(ParameterManager, InvalidBGFloatTargeting) {
 TEST(ParameterManager, ValidLongTargeting) {
    ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
    string valid_xpath[] = {"//maxFiringRate/text()", "//PoolSize/x/text()", "//PoolSize/y/text()",
-                           "//PoolSize/z/text()", "//Seed/value/text()", "//numSims/text()"};
+                           "//PoolSize/z/text()", "//Seed/value/text()", "//numEpochs/text()"};
    long result[] = {200, 30, 30, 1, 1, 500};
    long referenceVar;
    for (int i = 0; i < 6; i++) {

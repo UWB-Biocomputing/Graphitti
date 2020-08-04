@@ -8,15 +8,18 @@
  */
 
 #include "Simulator.h"
+#include "ParameterManager.h"
+#include "CPUSpikingModel.h"
+#include "GPUSpikingModel.h"
 // #include "ParseParamError.h"
 
-/// Acts as constructor, returns the instance of the singleton object
+/// Acts as constructor first time it's called, returns the instance of the singleton object
 Simulator &Simulator::getInstance() {
    static Simulator instance;
    return instance;
 };
 
-/// Constructor
+/// Constructor is private to keep a singleton instance of this class.
 Simulator::Simulator() {
    g_simulationStep = 0;  /// uint64_t g_simulationStep instantiated in Global
 }
@@ -55,14 +58,33 @@ void Simulator::finish() {
    model->cleanupSim(); // ToDo: Can #term be removed w/ the new model architecture?  // =>ISIMULATION
 }
 
-/// Prints out loaded parameters to ostream.
-/// @param  output  ostream to send output to.
-void Simulator::printParameters(ostream &output) const {
-   cout << "poolsize x:" << width << " y:" << height
+void Simulator::readParametersFromConfigFile() {
+   ParameterManager::getInstance().getIntByXpath("//PoolSize/x/text()", width_);
+   ParameterManager::getInstance().getIntByXpath("//PoolSize/y/text()", height_);
+   ParameterManager::getInstance().getBGFloatByXpath("//SimParams/epochDuration/text()", epochDuration_);
+   ParameterManager::getInstance().getIntByXpath("//SimParams/numEpochs/text()", numEpochs_);
+   ParameterManager::getInstance().getIntByXpath("//SimConfig/maxFiringRate/text()", maxFiringRate_);
+   ParameterManager::getInstance().getIntByXpath("//SimConfig/maxSynapsesPerNeuron/text()", maxSynapsesPerNeuron_);
+   ParameterManager::getInstance().getLongByXpath("//Seed/value/text()", seed_);
+   if (resultFileName_ == "") {
+      ParameterManager::getInstance().getStringByXpath("//OutputParams/resultFileName/text()", resultFileName_);
+   }
+}
+
+/// Prints out loaded parameters to console.
+void Simulator::printParameters() const {
+   cout << "poolsize x:" << width_ << " y:" << height_
         << endl;
-   cout << "Simulation Parameters:\n";
-   cout << "\tTime between growth updates (in seconds): " << epochDuration << endl;
-   cout << "\tNumber of simulations to run: " << maxSteps << endl;
+   cout << "Simulation Parameters:" << endl;
+   cout << "\tTime between growth updates (in seconds): " << epochDuration_ << endl;
+   cout << "\tNumber of epochs to run: " << numEpochs_ << endl;
+
+   cout << "\nSim Config:" << endl;
+   cout << "\tMax firing rate: " << maxFiringRate_ << endl;
+   cout << "\tMax synapses per neuron: " << maxSynapsesPerNeuron_ << endl;
+
+   cout << "\tSeed: " << seed_ << endl;
+   cout << "\tResult file path: " << resultFileName_ << endl;
 }
 
 
@@ -98,18 +120,18 @@ void Simulator::freeResources() {}
 /// Run simulation
 void Simulator::simulate() {
    // Main simulation loop - execute maxGrowthSteps
-   for (int currentStep = 1; currentStep <= maxSteps; currentStep++) {
+   for (int currentEpoch = 1; currentEpoch <= numEpochs_; currentEpoch++) {
       DEBUG(cout << endl << endl;)
-      DEBUG(cout << "Performing simulation number " << currentStep << endl;)
+      DEBUG(cout << "Performing simulation number " << currentEpoch << endl;)
       DEBUG(cout << "Begin network state:" << endl;)
       // Init SimulationInfo parameters
-      currentStep = currentStep;
+      currentEpoch_ = currentEpoch;
 #ifdef PERFORMANCE_METRICS
       // Start timer for advance
       short_timer.start();
 #endif
       // Advance simulation to next growth cycle
-      advanceUntilGrowth(currentStep);
+      advanceUntilGrowth(currentEpoch);
 #ifdef PERFORMANCE_METRICS
       // Time to advance
       t_host_advance += short_timer.lap() / 1000000.0;
@@ -117,7 +139,7 @@ void Simulator::simulate() {
       DEBUG(cout << endl << endl;)
       DEBUG(
             cout << "Done with simulation cycle, beginning growth update "
-                 << currentStep << endl;
+                 << currentEpoch << endl;
       )
       // Update the neuron network
 
@@ -137,7 +159,7 @@ void Simulator::simulate() {
       double total_time = timer.lap() / 1000000.0;
 
       cout << "\ntotal_time: " << total_time << " seconds" << endl;
-      printPerformanceMetrics(total_time, currentStep);
+      printPerformanceMetrics(total_time, currentEpoch);
       cout << endl;
 #endif
    }
@@ -146,19 +168,19 @@ void Simulator::simulate() {
 /// Helper for #simulate(). Advance simulation until ready for next growth cycle.
 /// This should simulate all neuron and synapse activity for one epoch.
 /// @param currentStep the current epoch in which the network is being simulated.
-void Simulator::advanceUntilGrowth(const int &currentStep) const {
+void Simulator::advanceUntilGrowth(const int &currentEpoch) const {
    uint64_t count = 0;
    // Compute step number at end of this simulation epoch
    uint64_t endStep = g_simulationStep
-                      + static_cast<uint64_t>(epochDuration / deltaT);
+                      + static_cast<uint64_t>(epochDuration_ / deltaT_);
    // DEBUG_MID(model->logSimStep();) // Generic model debug call
    while (g_simulationStep < endStep) {
       DEBUG_LOW(
       // Output status once every 10,000 steps
       if (count % 10000 == 0) {
-         cout << currentStep << "/" << maxSteps
+         cout << currentEpoch << "/" << numEpochs_
               << " simulating time: "
-              << g_simulationStep * deltaT << endl;
+              << g_simulationStep * deltaT_ << endl;
          count = 0;
       }
       count++;
@@ -183,59 +205,65 @@ void Simulator::saveData() const {
  ***********************************************/
 
 /// List of summation points (either host or device memory)
-void Simulator::setPSummationMap(BGFLOAT *summationMap) {
-   pSummationMap = summationMap;
-}
+void Simulator::setPSummationMap(BGFLOAT *summationMap) { pSummationMap_ = summationMap; }
 
-void Simulator::setSimRecorder(IRecorder *recorder) {
-   simRecorder = recorder;
-}
+void Simulator::setSimRecorder(IRecorder *recorder) { simRecorder = recorder; }
+
+void Simulator::setResultFileName(const string &fileName) { resultFileName_ = fileName; }
+
+void Simulator::setParameterFileName(const string &fileName) { parameterFileName_ = fileName; }
+
+void Simulator::setMemOutputFileName(const string &fileName) { memOutputFileName_ = fileName; }
+
+void Simulator::setMemInputFileName(const string &fileName) { memInputFileName_ = fileName; }
+
+void Simulator::setStimulusFileName(const string &fileName) { stimulusFileName_ = fileName; }
 
 /************************************************
  *  Accessors
  ***********************************************/
 
-int Simulator::getWidth() const { return width; }
+int Simulator::getWidth() const { return width_; }
 
-int Simulator::getHeight() const { return height; }
+int Simulator::getHeight() const { return height_; }
 
-int Simulator::getTotalNeurons() const { return totalNeurons; }
+int Simulator::getTotalNeurons() const { return totalNeurons_; }
 
-int Simulator::getCurrentStep() const { return currentStep; }
+int Simulator::getCurrentStep() const { return currentEpoch_; }
 
-int Simulator::getMaxSteps() const { return maxSteps; }
+int Simulator::getNumEpochs() const { return numEpochs_; }
 
-BGFLOAT Simulator::getEpochDuration() const { return epochDuration; }
+BGFLOAT Simulator::getEpochDuration() const { return epochDuration_; }
 
-int Simulator::getMaxFiringRate() const { return maxFiringRate; } /// **GPU Only**
+int Simulator::getMaxFiringRate() const { return maxFiringRate_; } /// **GPU Only**
 
-int Simulator::getMaxSynapsesPerNeuron() const { return maxSynapsesPerNeuron; } ///  **GPU Only.**
+int Simulator::getMaxSynapsesPerNeuron() const { return maxSynapsesPerNeuron_; } ///  **GPU Only.**
 
-BGFLOAT Simulator::getDeltaT() const { return deltaT; }
+BGFLOAT Simulator::getDeltaT() const { return deltaT_; }
 
 // ToDo: should be a vector of neuron type
 // ToDo: vector should be contiguous array, resize is used.
-neuronType *Simulator::getRgNeuronTypeMap() const { return rgNeuronTypeMap; }
+neuronType *Simulator::getRgNeuronTypeMap() const { return rgNeuronTypeMap_; }
 
 // ToDo: make smart ptr
 /// Starter existence map (T/F).
-bool *Simulator::getRgEndogenouslyActiveNeuronMap() const { return rgEndogenouslyActiveNeuronMap; }
+bool *Simulator::getRgEndogenouslyActiveNeuronMap() const { return rgEndogenouslyActiveNeuronMap_; }
 
-BGFLOAT *Simulator::getPSummationMap() const { return pSummationMap; }
+BGFLOAT *Simulator::getPSummationMap() const { return pSummationMap_; }
 
-long Simulator::getSeed() const { return seed; }
+long Simulator::getSeed() const { return seed_; }
 
-string Simulator::getStateOutputFileName() const { return stateOutputFileName; }
+string Simulator::getResultFileName() const { return resultFileName_; }
 
-string Simulator::getStateInputFileName() const { return stateInputFileName; }
+string Simulator::getParameterFileName() const { return parameterFileName_; }
 
-string Simulator::getMemOutputFileName() const { return memOutputFileName; }
+string Simulator::getMemOutputFileName() const { return memOutputFileName_; }
 
-string Simulator::getMemInputFileName() const { return memInputFileName; }
+string Simulator::getMemInputFileName() const { return memInputFileName_; }
 
-string Simulator::getStimulusInputFileName() const { return stimulusInputFileName; }
+string Simulator::getStimulusFileName() const { return stimulusFileName_; }
 
-Model *Simulator::getModel() const { return model; } /// ToDo: make smart ptr
+Model *Simulator::getModel() const { return model; }
 
 IRecorder *Simulator::getSimRecorder() const { return simRecorder; } /// ToDo: make smart ptr
 
@@ -248,6 +276,12 @@ Timer Simulator::getTimer() const { return timer; }
 Timer Simulator::getShort_timer() const { return short_timer; }
 #endif
 
-BGFLOAT Simulator::getMaxRate() const { return maxRate; } // TODO: more detail here
+BGFLOAT Simulator::getMaxRate() const { return maxRate_; }
+
+
+
+
+
+// TODO: more detail here
 
 

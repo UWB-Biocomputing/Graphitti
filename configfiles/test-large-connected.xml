@@ -7,8 +7,8 @@
       <z name="z">1</z>
     </PoolSize>
     <SimParams name="SimParams">
-      <Tsim name="Tsim">100.0</Tsim>
-      <numSims name="numSims">20</numSims>
+      <epochDuration name="epochDuration">100.0</epochDuration>
+      <numEpochs name="numEpochs">20</numEpochs>
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">200</maxFiringRate>
@@ -18,7 +18,7 @@
       <value name="value">1</value>
     </Seed>
     <OutputParams name="OutputParams">
-      <stateOutputFileName name="stateOutputFileName">results/test-large-connected-out.xml</stateOutputFileName>
+      <resultFileName name="resultFileName">results/test-large-connected-out.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 

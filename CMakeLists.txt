@@ -4,7 +4,7 @@ project(SummerOfBrain)
 # Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 11)
 
-# Setting the location of the executable to be in the SummerOfBrain directory. This helps when using file paths during
+# Setting the location of the executable to be in the top-level directory. This helps when using file paths during
 # runtime.
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
@@ -51,7 +51,8 @@ link_directories(${Boost_LIBRARY_DIR})
 
 # ------ CPU SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
-#add_executable(BrainGrid)
+add_executable(braingrid
+        Simulation/Core/BGDriver.cpp)
 
 # ------ GPU SIMULATOR EXECUTABLE ------
 # Add all files that aren't in a library and are needed to run
@@ -60,7 +61,7 @@ link_directories(${Boost_LIBRARY_DIR})
 # ------ TESTS EXECUTABLE ------
 # Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
 # included in the executable.
-add_executable(Tests
+add_executable(tests
         Testing/RunTests.cpp
         Testing/Core/OperationManagerTests.cpp
         Testing/Core/SynapseIndexMapTests.cpp
@@ -70,14 +71,14 @@ add_executable(Tests
         Testing/Utils/ParamaterManagerTests.cpp)
 
 # Links the Googletest framework with the testing executable
-target_link_libraries(Tests gtest gtest_main)
+target_link_libraries(tests gtest gtest_main)
 
 # Link all libraries created in the project's subdirectories into a combined library.
 add_library(combinedLib INTERFACE)
 target_link_libraries(combinedLib INTERFACE
         # Simulator
-        Connections
         Core
+        Connections
         Edges
         Layouts
         Recorders
@@ -92,9 +93,12 @@ target_link_libraries(combinedLib INTERFACE
 
         # ThirdParty
         TinyXPath
+        paramcontainer
 
         # External Libraries
         ${Boost_LIBRARIES})
 
+target_link_libraries(braingrid combinedLib)
+
 # Link the combined library into the 'Tests' executable.
-target_link_libraries(Tests combinedLib)
+target_link_libraries(tests combinedLib)
