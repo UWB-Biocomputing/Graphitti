@@ -18,6 +18,7 @@
 #include "Simulator.h"
 #include "ParameterManager.h"
 #include "OperationManager.h"
+#include "VerticiesFactory.h"
 
 // Uncomment to use visual leak detector (Visual Studios Plugin)
 // #include <vld.h>
@@ -42,6 +43,8 @@ using namespace std;
 
 // functions
 bool parseCommandLine(int argc, char *argv[]);
+
+void instantiateSimulationObjects();
 
 /*
  *  Main for Simulator. Handles command line arguments and loads parameters
@@ -73,8 +76,37 @@ int main(int argc, char *argv[]) {
 
    // Instantiate objects using the factories
    // ToDo: Figure out how to call the factory classes i.e should the factories call the parameter themselves or should the type be passed in
-   OperationManager()
 
+   // Pseudo code for type being found in BGDriver:
+
+   // for each factory class
+   //    Get type of object to make
+   //    Create object and pass in the object
+   //    Check if object is null
+
+   // pros : simple logic and clear on what its doing
+   // cons : must include each factory class in the dependencies and much longer, could be seperate method
+
+   string verticeType;
+   ParameterManager::getInstance().getStringByXpath("//NeuronsParams/@class", verticeType);
+   if (VerticesFactory::getInstance()->createNeurons(verticeType) == NULL) {
+      cerr << "ERROR: Vertice type '" << verticeType << "' specified in configuration file is not supported" << endl;
+      return -1;
+   }
+
+   // Pseudo code for object type being read in factory:
+
+   // Execute in operation in OperationManager that calls all creates all objects of certain type
+
+   // pros : short and only need to include OperationManager
+   // cons : doesn't check for null value, forces factories to do additional work i.e. Use ParameterManager to find
+   // type name, and factories will need to register their functions with OperationManager.
+
+   // OperationManager::getInstance().executeOperation(Operations::op::instantiateSimulatorObjects);
+
+
+
+   // Setup class ownership and initialize each classes parameters using parameter manager
 
    // Create all model instances and load parameters from a file.
    // todo: parameter manager replaces this - parses config file
@@ -239,9 +271,9 @@ bool parseCommandLine(int argc, char *argv[]) {
    Simulator::getInstance().setStimulusFileName(cl["stimulusfile"]);
 
 #if defined(USE_GPU)
-    if (EOF == sscanf(cl["deviceid"].c_str(), "%d", &g_deviceId)) {
-        g_deviceId = 0;
-    }
+   if (EOF == sscanf(cl["deviceid"].c_str(), "%d", &g_deviceId)) {
+       g_deviceId = 0;
+   }
 #endif  // USE_GPU
    return true;
 }

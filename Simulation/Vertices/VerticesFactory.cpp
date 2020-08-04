@@ -44,8 +44,10 @@ IAllNeurons *VerticesFactory::createNeurons(const string &className) {
  * value assignment.
  */
 IAllNeurons *VerticesFactory::invokeNeuronsCreateFunction(const string &className) {
-   NeuronFunctionMap::iterator it = createFunctions.find(neuronClassName);
-   if (it != createFunctions.end()) return it->second();
+   for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
+      if (className == i->first)
+         return i->second();
+   }
    return NULL;
 }
 
