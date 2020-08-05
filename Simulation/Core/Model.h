@@ -12,27 +12,19 @@
  *
  */
 
-
-
 #pragma once
 
-//#include "Coordinate.h"
-//#include "Layouts/Layout.h"
-//#include "SynapseIndexMap.h"
-//#include "Simulator.h"
-//#include "Global.h"
-//#include "IAllNeurons.h"
-//
-//#include <vector>
-//#include <iostream>
-//#include <Simulation/Connections/Connections.h>
+#include <memory>
 
 #include "Layout.h"
 #include "IAllNeurons.h"
+#include "IRecorder.h"
 
 using namespace std;
 
 class Connections;
+
+class IRecorder;
 
 class Model {
 public:
@@ -44,7 +36,13 @@ public:
          Layout *layout);
 
    /// Destructor
-   virtual        ~Model();
+   virtual ~Model();
+
+   shared_ptr<Connections> getConnections() const;
+
+   Layout *getLayout() const;
+
+   IRecorder *getRecorder() const;
 
    /// Writes simulation results to an output destination.
    /// Downstream from IModel saveData()
@@ -81,18 +79,10 @@ public:
    /// might be similar to advance.
    virtual void updateConnections() = 0;
 
-   Connections *getConnections();
-
-   Layout *getLayout();
-
 protected:
 
    /// Prints debug information about the current state of the network.
    void logSimStep() const;
-
-   /// error handling for read params
-   // ToDo: do we need this?
-   int read_params_;
 
    /// Copy GPU Synapse data to CPU.
    virtual void copyGPUtoCPU() = 0;
@@ -104,18 +94,16 @@ protected:
    // DONE: 2020/03/14 (It was Emily!) Modified access level to public for allowing the access in BGDriver for serialization/deserialization
    // ToDo: make private again after serialization is fixed... shouldn't these be private with public accessors?
    // ToDo: Should model own these? Or should simulator?
-   Connections *conns_;  // ToDo: make shared pointers
+   shared_ptr<Connections> conns_;  // ToDo: make shared pointers
 
    // todo: have connections own synapses, have layouts own neurons
 
-   Layout *layout_;
+   shared_ptr<Layout> layout_;
 
    // todo: model is going to own recorders and inputs 7/29
+   shared_ptr<IRecorder> recorder_;
 
-   // todo: 7/29
-   // ToDo: Delete these and put them in connections and synapses accordingly
-   IAllNeurons *neurons_;
-   IAllSynapses *synapses_;
+   // unique_ptr<ISInput> input_;    /// Stimulus input object. ToDo: make smart ptr
 
    // todo: put synapse index map in connections.
    // todo: how do synapses get neurons, neurons get synapses. should have member variable.

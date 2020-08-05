@@ -14,9 +14,10 @@ XmlRecorder::XmlRecorder() :
         burstinessHist(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
               Simulator::getInstance().getNumEpochs()), 0),
         spikesHistory(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
-              Simulator::getInstance().getNumEpochs() * 100), 0),
-        m_model(dynamic_cast<Model*> (Simulator::getInstance().getModel()))
+              Simulator::getInstance().getNumEpochs() * 100), 0)
+
 {
+   model_ = Simulator::getInstance().getModel();
 }
 
 XmlRecorder::~XmlRecorder()
@@ -114,7 +115,7 @@ void XmlRecorder::saveSimData(const IAllNeurons &neurons)
     // create Neuron Types matrix
     VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalNeurons(), EXC);
     for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
-        neuronTypes[i] = m_model->getLayout()->neuron_type_map[i];
+        neuronTypes[i] = model_->getLayout()->neuron_type_map[i];
     }
 
     // create neuron threshold matrix
@@ -131,16 +132,16 @@ void XmlRecorder::saveSimData(const IAllNeurons &neurons)
     stateOut << "<SimState>\n";
     stateOut << "   " << burstinessHist.toXML("burstinessHist") << endl;
     stateOut << "   " << spikesHistory.toXML("spikesHistory") << endl;
-    stateOut << "   " << m_model->getLayout()->xloc->toXML("xloc") << endl;
-    stateOut << "   " << m_model->getLayout()->yloc->toXML("yloc") << endl;
+    stateOut << "   " << model_->getLayout()->xloc->toXML("xloc") << endl;
+    stateOut << "   " << model_->getLayout()->yloc->toXML("yloc") << endl;
     stateOut << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
     // create starter nuerons matrix
-    int num_starter_neurons = static_cast<int>(m_model->getLayout()->num_endogenously_active_neurons);
+    int num_starter_neurons = static_cast<int>(model_->getLayout()->num_endogenously_active_neurons);
     if (num_starter_neurons > 0)
     {
         VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
-        getStarterNeuronMatrix(starterNeurons, m_model->getLayout()->starter_map);
+        getStarterNeuronMatrix(starterNeurons, model_->getLayout()->starter_map);
         stateOut << "   " << starterNeurons.toXML("starterNeurons") << endl;
     }
 

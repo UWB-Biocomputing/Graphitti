@@ -36,6 +36,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "IAllNeurons.h"
 #include "IAllSynapses.h"
 #include "Layout.h"
@@ -48,6 +50,8 @@ public:
    Connections();
 
    virtual ~Connections();
+
+   IAllSynapses *getSynapses() const;
 
    /**
     *  Setup the internal structure of the class (allocate memories and initialize them).
@@ -62,13 +66,6 @@ public:
     *  Cleanup the class (deallocate memories).
     */
    virtual void cleanupConnections() = 0;
-
-   /**
-    *  Checks the number of required parameters to read.
-    *
-    * @return true if all required parameters were successfully read, false otherwise.
-    */
-   virtual bool checkNumParameters() = 0;
 
    /**
     *  Prints out all parameters of the connections to ostream.
@@ -133,10 +130,10 @@ public:
    virtual void
    updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout);
 
-#endif
+#endif // USE_GPU
 
 protected:
-   //!  Number of parameters read.
-   int nParams;
+
+   unique_ptr<IAllSynapses> synapses_;
 };
 

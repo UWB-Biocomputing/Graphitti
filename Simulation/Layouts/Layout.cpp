@@ -6,7 +6,6 @@
 /// Constructor
 Layout::Layout() :
     num_endogenously_active_neurons(0),
-    nParams(0),
     m_grid_layout(true)
 {
     xloc = NULL;
@@ -34,6 +33,11 @@ Layout::~Layout()
     neuron_type_map = NULL;
     starter_map = NULL;
 }
+
+IAllNeurons *Layout::getNeurons() const {
+   return neurons_.get();
+}
+
 
 /// Setup the internal structure of the class.
 /// Allocate memories to store all layout state, no sequential dependency in this method
@@ -72,13 +76,6 @@ void Layout::setupLayout()
     starter_map = new bool[num_neurons]; // todo: make array into vector
 }
 
-/// Attempts to read parameters from a XML file.
-/// @param  element TiXmlElement to examine.
-/// @return true if successful, false otherwise.
-bool Layout::readParameters(const TiXmlElement& element)
-{
-    return false;
-}
 
 /// Prints out all parameters of the layout to ostream.
 /// @param  output  ostream to send output to.
@@ -148,3 +145,4 @@ void Layout::initNeuronsLocs()
         }
     }
 }
+

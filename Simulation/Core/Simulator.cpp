@@ -9,8 +9,7 @@
 
 #include "Simulator.h"
 #include "ParameterManager.h"
-#include "CPUSpikingModel.h"
-#include "GPUSpikingModel.h"
+#include "VerticiesFactory.h"
 // #include "ParseParamError.h"
 
 /// Acts as constructor first time it's called, returns the instance of the singleton object
@@ -42,7 +41,7 @@ void Simulator::setup() {
    cerr << "done." << endl;
 #endif
    DEBUG(cerr << "Initializing models in network... ";)
-   model->setupSim();
+   model_->setupSim();
    DEBUG(cerr << "\ndone init models." << endl;)
    // init stimulus input object
    /* PInput not in project yet
@@ -55,10 +54,10 @@ void Simulator::setup() {
 
 /// Begin terminating the simulator
 void Simulator::finish() {
-   model->cleanupSim(); // ToDo: Can #term be removed w/ the new model architecture?  // =>ISIMULATION
+   model_->cleanupSim(); // ToDo: Can #term be removed w/ the new model architecture?  // =>ISIMULATION
 }
 
-void Simulator::readParametersFromConfigFile() {
+void Simulator::loadParameters() {
    ParameterManager::getInstance().getIntByXpath("//PoolSize/x/text()", width_);
    ParameterManager::getInstance().getIntByXpath("//PoolSize/y/text()", height_);
    ParameterManager::getInstance().getBGFloatByXpath("//SimParams/epochDuration/text()", epochDuration_);
@@ -104,13 +103,13 @@ void Simulator::copyCPUSynapseToGPU() {
 void Simulator::reset() {
    DEBUG(cout << "\nEntering Simulator::reset()" << endl;)
    // Terminate the simulator
-   model->cleanupSim();
+   model_->cleanupSim();
    // Clean up objects
    freeResources();
    // Reset global simulation Step to 0
    g_simulationStep = 0;
    // Initialize and prepare network for simulation
-   model->setupSim();
+   model_->setupSim();
    DEBUG(cout << "\nExiting Simulator::reset()" << endl;)
 }
 
@@ -148,8 +147,8 @@ void Simulator::simulate() {
       short_timer.start();
 #endif
 
-      model->updateConnections();
-      model->updateHistory();
+      model_->updateConnections();
+      model_->updateHistory();
 
 #ifdef PERFORMANCE_METRICS
       // Times converted from microseconds to seconds
@@ -190,15 +189,29 @@ void Simulator::advanceUntilGrowth(const int &currentEpoch) const {
 //      if (pInput != NULL)
 //         pInput->inputStimulus();
       // Advance the Network one time step
-      model->advance();
+      model_->advance();
       g_simulationStep++;
    }
 }
 
 /// Writes simulation results to an output destination.
 void Simulator::saveData() const {
-   model->saveData();
+   model_->saveData();
 }
+
+bool Simulator::instantiateSimulatorObjects() {
+   string verticeType;
+   if (!ParameterManager::getInstance().getStringByXpath("//NeuronsParams/@class", verticeType)) {
+      cerr << "ERROR: Vertice type not specified in configuration file" << endl;
+      return false;
+   }
+   if (VerticesFactory::getInstance()->createNeurons(verticeType) == NULL) {
+      cerr << "ERROR: Vertice type '" << verticeType << "' specified in configuration file is not supported" << endl;
+      return false;
+   }
+   return true;
+}
+
 
 /************************************************
  *  Mutators
@@ -206,8 +219,6 @@ void Simulator::saveData() const {
 
 /// List of summation points (either host or device memory)
 void Simulator::setPSummationMap(BGFLOAT *summationMap) { pSummationMap_ = summationMap; }
-
-void Simulator::setSimRecorder(IRecorder *recorder) { simRecorder = recorder; }
 
 void Simulator::setResultFileName(const string &fileName) { resultFileName_ = fileName; }
 
@@ -249,6 +260,8 @@ neuronType *Simulator::getRgNeuronTypeMap() const { return rgNeuronTypeMap_; }
 /// Starter existence map (T/F).
 bool *Simulator::getRgEndogenouslyActiveNeuronMap() const { return rgEndogenouslyActiveNeuronMap_; }
 
+BGFLOAT Simulator::getMaxRate() const { return maxRate_; }
+
 BGFLOAT *Simulator::getPSummationMap() const { return pSummationMap_; }
 
 long Simulator::getSeed() const { return seed_; }
@@ -263,12 +276,8 @@ string Simulator::getMemInputFileName() const { return memInputFileName_; }
 
 string Simulator::getStimulusFileName() const { return stimulusFileName_; }
 
-Model *Simulator::getModel() const { return model; }
+shared_ptr<Model> Simulator::getModel() const { return model_; }
 
-IRecorder *Simulator::getSimRecorder() const { return simRecorder; } /// ToDo: make smart ptr
-
-// ISInput not in repo yet
-// ISInput *Simulator::getPInput() const { return pInput; } /// ToDo: make smart ptr
 
 #ifdef PERFOMANCE_METRICS
 Timer Simulator::getTimer() const { return timer; }
@@ -276,12 +285,6 @@ Timer Simulator::getTimer() const { return timer; }
 Timer Simulator::getShort_timer() const { return short_timer; }
 #endif
 
-BGFLOAT Simulator::getMaxRate() const { return maxRate_; }
 
-
-
-
-
-// TODO: more detail here
 
 

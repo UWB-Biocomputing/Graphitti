@@ -114,16 +114,6 @@ void ConnGrowth::cleanupConnections()
 }
 
 /*
- *  Checks the number of required parameters.
- *
- * @return true if all required parameters were successfully read, false otherwise.
- */
-bool ConnGrowth::checkNumParameters()
-{
-    return (nParams >= 1);
-}
-
-/*
  *  Prints out all parameters of the connections to ostream.
  *
  *  @param  output  ostream to send output to.

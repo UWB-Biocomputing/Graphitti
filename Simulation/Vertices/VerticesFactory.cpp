@@ -37,8 +37,7 @@ IAllNeurons *VerticesFactory::createNeurons(const string &className) {
 }
 
 /**
- * Returns the static ::Create() method which allocates 
- * a new instance of the desired class.
+ * Create an instance of the neurons class using the static ::Create() method.
  *
  * The calling method uses this retrieval mechanism in 
  * value assignment.
@@ -49,16 +48,4 @@ IAllNeurons *VerticesFactory::invokeNeuronsCreateFunction(const string &classNam
          return i->second();
    }
    return NULL;
-}
-
-/*
- * Create an instance of the neurons class and copy neurons parameters from the
- * neurons class object that has been already created.
- *
- * @return Poiner to the neurons object.
- */
-IAllNeurons *VerticesFactory::createNeuronsCopy() {
-   IAllNeurons *neurons = invokeNeuronsCreateFunction(neuronClassName);
-   *neurons = *neuronsInstance;
-   return neurons;
 }

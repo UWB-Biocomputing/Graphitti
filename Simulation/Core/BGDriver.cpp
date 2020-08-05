@@ -71,43 +71,15 @@ int main(int argc, char *argv[]) {
    }
 
    // Read in global parameters from configuration file
-   simulator.readParametersFromConfigFile();
+   simulator.loadParameters();
    simulator.printParameters();
 
    // Instantiate objects using the factories
    // ToDo: Figure out how to call the factory classes i.e should the factories call the parameter themselves or should the type be passed in
-
-   // Pseudo code for type being found in BGDriver:
-
-   // for each factory class
-   //    Get type of object to make
-   //    Create object and pass in the object
-   //    Check if object is null
-
-   // pros : simple logic and clear on what its doing
-   // cons : must include each factory class in the dependencies and much longer, could be seperate method
-
-   string verticeType;
-   if (ParameterManager::getInstance().getStringByXpath("//NeuronsParams/@class", verticeType)) {
-      cerr << "ERROR: Vertice type not specified in configuration file" << endl;
+   if (!simulator.instantiateSimulatorObjects()) {
+      cerr << "ERROR: Unable to instantiate all simulator classes" << endl;
       return -1;
    }
-   if (VerticesFactory::getInstance()->createNeurons(verticeType) == NULL) {
-      cerr << "ERROR: Vertice type '" << verticeType << "' specified in configuration file is not supported" << endl;
-      return -1;
-   }
-
-   // Pseudo code for object type being read in factory:
-
-   // Execute in operation in OperationManager that calls all creates all objects of certain type
-
-   // pros : short and only need to include OperationManager
-   // cons : doesn't check for null value, forces factories to do additional work i.e. Use ParameterManager to find
-   // type name, and factories will need to register their functions with OperationManager.
-
-   // OperationManager::getInstance().executeOperation(Operations::op::instantiateSimulatorObjects);
-
-
 
    // Setup class ownership and initialize each classes parameters using parameter manager
 

@@ -35,13 +35,6 @@ class FixedLayout : public Layout
         static Layout* Create() { return new FixedLayout(); }
 
         /**
-         *  Checks the number of required parameters to read.
-         *
-         * @return true if all required parameters were successfully read, false otherwise.
-         */
-        virtual bool checkNumParameters();
-
-        /**
          *  Prints out all parameters of the neurons to ostream.
          *
          *  @param  output  ostream to send output to.

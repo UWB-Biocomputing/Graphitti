@@ -110,12 +110,6 @@ class ConnGrowth : public Connections
          */
         virtual void cleanupConnections();
 
-        /**
-         *  Checks the number of required parameters to read.
-         *
-         * @return true if all required parameters were successfully read, false otherwise.
-         */
-        virtual bool checkNumParameters();
 
         /**
          *  Prints out all parameters of the connections to ostream.

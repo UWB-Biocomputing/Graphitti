@@ -43,7 +43,7 @@ class CPUSpikingModel : public Model
       public:
          /// Constructor
          // todo: no longer needs arguments each obj will be created inside its creating class
-         CPUSpikingModel(Connections *conns, IAllNeurons *neurons, IAllSynapses *synapses, Layout *layout);
+         CPUSpikingModel(Connections *conns, Layout *layout);
 
          /// Destructor
          virtual ~CPUSpikingModel();

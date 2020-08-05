@@ -1,7 +1,7 @@
 add_subdirectory(FunctionNodes)
 
 # Get all header and source files from current directory
-file(GLOB Core *.cpp *.h)
+file(GLOB Core *.cpp *.h GPUSpikingModel.cu)
 
 # Remove BGDriver from the list of files, don't want 'main' in the library
 list(REMOVE_ITEM Core "${CMAKE_CURRENT_SOURCE_DIR}/BGDriver-old.cpp")

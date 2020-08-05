@@ -20,9 +20,12 @@
 
 #pragma once
 
-#include "Utils/Global.h"
-#include <vector>
 #include <iostream>
+#include <memory>
+#include <vector>
+
+#include "Utils/Global.h"
+#include "IAllNeurons.h"
 
 using namespace std;
 
@@ -32,25 +35,15 @@ public:
    Layout();
    virtual ~Layout();
 
+   IAllNeurons *getNeurons() const;
+
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.
    virtual void setupLayout();
 
-   /// Checks the number of required parameters to read.
-   /// @return true if all required parameters were successfully read, false otherwise.
-   virtual bool checkNumParameters() = 0;
-
-
-   /// Attempts to read parameters from a XML file.
-   /// @param  element TiXmlElement to examine.
-   /// @return true if successful, false otherwise.
-   virtual bool readParameters(const TiXmlElement& element);
-
-
    /// Prints out all parameters of the neurons to ostream.
    /// @param  output  ostream to send output to.
    virtual void printParameters(ostream &output) const;
-
 
    /// Creates a neurons type map.
    /// @param  num_neurons number of the neurons to have in the type map.
@@ -87,7 +80,7 @@ public:
    BGSIZE num_endogenously_active_neurons;    ///< Number of endogenously active neurons.
 
 protected:
-   int nParams;    ///< Number of parameters read.
+   unique_ptr<IAllNeurons> neurons_;
 
    vector<int> m_endogenously_active_neuron_list;    ///< Endogenously active neurons list.
 

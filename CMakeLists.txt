@@ -98,7 +98,8 @@ target_link_libraries(combinedLib INTERFACE
         # External Libraries
         ${Boost_LIBRARIES})
 
+# Link the combined library into the 'braingrid' executable.
 target_link_libraries(braingrid combinedLib)
 
-# Link the combined library into the 'Tests' executable.
+# Link the combined library into the 'tests' executable.
 target_link_libraries(tests combinedLib)

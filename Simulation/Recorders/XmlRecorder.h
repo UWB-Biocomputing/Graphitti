@@ -95,6 +95,6 @@ protected:
     VectorMatrix spikesHistory;
 
     // TODO comment
-    Model *m_model;
+    shared_ptr<Model> model_;
 };
 
