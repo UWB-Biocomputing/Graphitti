@@ -4,6 +4,7 @@
  */
 
 #include "VerticiesFactory.h"
+
 #include "ParameterManager.h"
 #include "AllLIFNeurons.h"
 #include "AllIZHNeurons.h"
@@ -31,8 +32,8 @@ void VerticesFactory::registerNeurons(const string &neuronsClassName, CreateNeur
 
 
 /// Creates concrete instance of the desired neurons class.
-IAllNeurons *VerticesFactory::createNeurons(const string &className) {
-   neuronsInstance = invokeNeuronsCreateFunction(className);
+shared_ptr<IAllNeurons> VerticesFactory::createNeurons(const string &className) {
+   neuronsInstance = shared_ptr<IAllNeurons>(invokeNeuronsCreateFunction(className));
    return neuronsInstance;
 }
 

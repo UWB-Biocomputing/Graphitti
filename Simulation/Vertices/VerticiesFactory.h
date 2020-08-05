@@ -6,7 +6,9 @@
 #pragma once
 
 #include <map>
+#include <memory>
 #include <string>
+
 #include "Global.h"
 #include "IAllNeurons.h"
 
@@ -23,7 +25,7 @@ public:
    }
 
    // Invokes constructor for desired concrete class
-   IAllNeurons *createNeurons(const string &className);
+   shared_ptr<IAllNeurons> createNeurons(const string &className);
 
    // Shortcut for copy constructor for existing concrete object
    IAllNeurons *createNeuronsCopy();
@@ -37,7 +39,7 @@ private:
    VerticesFactory();
 
    /// Pointer to neurons instance
-   IAllNeurons *neuronsInstance;
+   shared_ptr<IAllNeurons> neuronsInstance;
 
    string neuronClassName;
 
