@@ -76,8 +76,8 @@ target_link_libraries(Tests gtest gtest_main)
 add_library(combinedLib INTERFACE)
 target_link_libraries(combinedLib INTERFACE
         # Simulator
-        Connections
         Core
+        Connections
         Edges
         Layouts
         Recorders
