@@ -88,7 +88,10 @@ int main(int argc, char *argv[]) {
    // cons : must include each factory class in the dependencies and much longer, could be seperate method
 
    string verticeType;
-   ParameterManager::getInstance().getStringByXpath("//NeuronsParams/@class", verticeType);
+   if (ParameterManager::getInstance().getStringByXpath("//NeuronsParams/@class", verticeType)) {
+      cerr << "ERROR: Vertice type not specified in configuration file" << endl;
+      return -1;
+   }
    if (VerticesFactory::getInstance()->createNeurons(verticeType) == NULL) {
       cerr << "ERROR: Vertice type '" << verticeType << "' specified in configuration file is not supported" << endl;
       return -1;
