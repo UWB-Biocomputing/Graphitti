@@ -35,7 +35,7 @@ public:
    Layout();
    virtual ~Layout();
 
-   IAllNeurons *getNeurons() const;
+   shared_ptr<IAllNeurons> getNeurons() const;
 
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.
@@ -80,7 +80,7 @@ public:
    BGSIZE num_endogenously_active_neurons;    ///< Number of endogenously active neurons.
 
 protected:
-   unique_ptr<IAllNeurons> neurons_;
+   shared_ptr<IAllNeurons> neurons_;
 
    vector<int> m_endogenously_active_neuron_list;    ///< Endogenously active neurons list.
 

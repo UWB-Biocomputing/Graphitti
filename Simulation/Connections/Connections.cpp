@@ -48,8 +48,12 @@ Connections::Connections() {
 Connections::~Connections() {
 }
 
-IAllSynapses *Connections::getSynapses() const {
-   return synapses_.get();
+shared_ptr<IAllSynapses> Connections::getSynapses() const {
+   return synapses_;
+}
+
+shared_ptr<SynapseIndexMap> Connections::getSynapseIndexMap() const {
+   return synapseIndexMap_;
 }
 
 /*

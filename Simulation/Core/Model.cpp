@@ -7,16 +7,12 @@
 /// ToDo: Stays the same right now, change further in refactor
 Model::Model(Connections *conns, Layout *layout) :
       conns_(conns),
-      layout_(layout),
-      synapseIndexMap_(NULL) {
-}
+      layout_(layout)
+      {}
 
 /// Destructor todo: this will change
 Model::~Model() {
-   if (synapseIndexMap_ != NULL) {
-      delete synapseIndexMap_;
-      synapseIndexMap_ = NULL;
-   }
+
 }
 
 /// Save simulation results to an output destination.
@@ -74,14 +70,14 @@ void Model::setupSim() {
    // Start timer for initialization
    Simulator::getInstance().short_timer.start();
 #endif
-   conns_->setupConnections(layout_.get(), layout_->getNeurons(), conns_->getSynapses());
+   conns_->setupConnections(layout_.get(), layout_->getNeurons().get(), conns_->getSynapses().get());
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (connections)
    t_host_initialization_connections += Simulator::getInstance().short_timer.lap() / 1000000.0;
 #endif
 
    // create a synapse index map
-   conns_->getSynapses()->createSynapseImap(synapseIndexMap_);
+   conns_->getSynapses()->createSynapseImap(conns_->getSynapseIndexMap().get());
 }
 
 /// Clean up the simulation.
@@ -158,6 +154,6 @@ shared_ptr<Connections> Model::getConnections() const { return conns_; }
 
 /// Get the Layout class object.
 /// @return Pointer to the Layout class object. ToDo: make smart ptr
-Layout *Model::getLayout() const { return layout_.get(); }
+shared_ptr<Layout> Model::getLayout() const { return layout_; }
 
-IRecorder *Model::getRecorder() const { return recorder_.get(); }
+shared_ptr<IRecorder> Model::getRecorder() const { return recorder_; }

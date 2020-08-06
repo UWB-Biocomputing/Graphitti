@@ -158,7 +158,7 @@ void AllSynapses::writeSynapse(ostream& output, const BGSIZE iSyn) const
  *  @param  synapseIndexMap   Reference to the pointer to SynapseIndexMap structure.
  *  @param  sim_info          Pointer to the simulation information.
  */
-void AllSynapses::createSynapseImap(SynapseIndexMap *&synapseIndexMap)
+void AllSynapses::createSynapseImap(SynapseIndexMap *synapseIndexMap)
 {
         int neuron_count = Simulator::getInstance().getTotalNeurons();
         int total_synapse_counts = 0;

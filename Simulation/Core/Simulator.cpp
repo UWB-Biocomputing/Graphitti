@@ -200,15 +200,21 @@ void Simulator::saveData() const {
 }
 
 bool Simulator::instantiateSimulatorObjects() {
-   string verticeType;
-   if (!ParameterManager::getInstance().getStringByXpath("//NeuronsParams/@class", verticeType)) {
+   string type;
+   // Creating vertices/neurons class
+   if (!ParameterManager::getInstance().getStringByXpath("//NeuronsParams/@class", type)) {
       cerr << "ERROR: Vertice type not specified in configuration file" << endl;
       return false;
    }
-   if (VerticesFactory::getInstance()->createNeurons(verticeType) == NULL) {
-      cerr << "ERROR: Vertice type '" << verticeType << "' specified in configuration file is not supported" << endl;
+   if (VerticesFactory::getInstance()->createNeurons(type) == NULL) {
+      cerr << "ERROR: Vertice type '" << type << "' specified in configuration file is not supported" << endl;
       return false;
    }
+
+   // Creating edges/synapses class
+
+
+
    return true;
 }
 
@@ -277,7 +283,6 @@ string Simulator::getMemInputFileName() const { return memInputFileName_; }
 string Simulator::getStimulusFileName() const { return stimulusFileName_; }
 
 shared_ptr<Model> Simulator::getModel() const { return model_; }
-
 
 #ifdef PERFOMANCE_METRICS
 Timer Simulator::getTimer() const { return timer; }

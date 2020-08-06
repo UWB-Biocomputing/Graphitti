@@ -25,8 +25,8 @@ void CPUSpikingModel::setupSim() {
 void CPUSpikingModel::advance() {
    // ToDo: look at pointer v no pointer in params - to change
    // dereferencing the ptr, lose late binding -- look into changing!
-   layout_->getNeurons()->advanceNeurons(*conns_->getSynapses(), synapseIndexMap_);
-   conns_->getSynapses()->advanceSynapses(layout_->getNeurons(), synapseIndexMap_);
+   layout_->getNeurons()->advanceNeurons(*conns_->getSynapses(), conns_->getSynapseIndexMap().get());
+   conns_->getSynapses()->advanceSynapses(layout_->getNeurons().get(), conns_->getSynapseIndexMap().get());
 }
 
 /// Update the connection of all the Neurons and Synapses of the simulation.
@@ -39,7 +39,7 @@ void CPUSpikingModel::updateConnections() {
             *conns_->getSynapses(),
             layout_.get());
       // create synapse inverse map
-      conns_->getSynapses()->createSynapseImap(synapseIndexMap_);
+      conns_->getSynapses()->createSynapseImap(conns_->getSynapseIndexMap().get());
    }
 }
 

@@ -40,9 +40,9 @@ public:
 
    shared_ptr<Connections> getConnections() const;
 
-   Layout *getLayout() const;
+   shared_ptr<Layout> getLayout() const;
 
-   IRecorder *getRecorder() const;
+   shared_ptr<IRecorder> getRecorder() const;
 
    /// Writes simulation results to an output destination.
    /// Downstream from IModel saveData()
@@ -103,11 +103,7 @@ protected:
    // todo: model is going to own recorders and inputs 7/29
    shared_ptr<IRecorder> recorder_;
 
-   // unique_ptr<ISInput> input_;    /// Stimulus input object. ToDo: make smart ptr
-
-   // todo: put synapse index map in connections.
-   // todo: how do synapses get neurons, neurons get synapses. should have member variable.
-   SynapseIndexMap *synapseIndexMap_;
+   // shared_ptr<ISInput> input_;    /// Stimulus input object. ToDo: make smart ptr
 
    void createAllNeurons(); /// Populate an instance of IAllNeurons with an initial state for each neuron.
 };

@@ -34,8 +34,8 @@ Layout::~Layout()
     starter_map = NULL;
 }
 
-IAllNeurons *Layout::getNeurons() const {
-   return neurons_.get();
+shared_ptr<IAllNeurons> Layout::getNeurons() const {
+   return neurons_;
 }
 
 

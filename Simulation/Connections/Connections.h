@@ -42,6 +42,7 @@
 #include "IAllSynapses.h"
 #include "Layout.h"
 #include "IRecorder.h"
+#include "SynapseIndexMap.h"
 
 using namespace std;
 
@@ -51,7 +52,9 @@ public:
 
    virtual ~Connections();
 
-   IAllSynapses *getSynapses() const;
+   shared_ptr<IAllSynapses> getSynapses() const;
+
+   shared_ptr<SynapseIndexMap> getSynapseIndexMap() const;
 
    /**
     *  Setup the internal structure of the class (allocate memories and initialize them).
@@ -134,6 +137,8 @@ public:
 
 protected:
 
-   unique_ptr<IAllSynapses> synapses_;
+   shared_ptr<IAllSynapses> synapses_;
+
+   shared_ptr<SynapseIndexMap> synapseIndexMap_;
 };
 

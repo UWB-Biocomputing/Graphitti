@@ -112,7 +112,7 @@ class AllSynapses : public IAllSynapses
          *  @param  synapseIndexMap   Reference to thw pointer to SynapseIndexMap structure.
          *  @param  sim_info          Pointer to the simulation information.
          */
-        virtual void createSynapseImap(SynapseIndexMap *&synapseIndexMap);
+        virtual void createSynapseImap(SynapseIndexMap *synapseIndexMap);
 
         /**
          *  Get the sign of the synapseType.

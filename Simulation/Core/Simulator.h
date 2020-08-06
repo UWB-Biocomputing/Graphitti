@@ -168,13 +168,7 @@ private:
 
    string stimulusFileName_;    /// File name of the stimulus input file.
 
-   shared_ptr<Model> model_;
-
-//#ifdef USE_GPU
-//   GPUSpikingModel model;
-//#else
-//   CPUSpikingModel model;
-//#endif // USE_GPU
+   shared_ptr<Model> model_;  /// Smart pointer to model class (Model is an interface class)
 
 #ifdef PERFORMANCE_METRICS
    Timer timer;   /// Timer for measuring performance of an epoch.
