@@ -51,7 +51,7 @@ class Hdf5Recorder : public IRecorder
 {
 public:
     //! THe constructor and destructor
-    Hdf5Recorder();
+    Hdf5Recorder(const SimulationInfo* sim_info);
     ~Hdf5Recorder();
 
     /**
@@ -98,7 +98,7 @@ public:
 protected:
     virtual void initDataSet();
 
-    void getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starter_map);
+    void getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starter_map, const SimulationInfo *sim_info);
 
     // hdf5 file identifier
     H5File* stateOut;
@@ -118,6 +118,9 @@ protected:
     DataSet* dataSetSpikesProbedNeurons;
     DataSet* dataSetProbedNeurons;
 
+   // Keep track of where we are in incrementally writing spikes
+    hsize_t* offsetSpikesProbedNeurons;
+
     // burstiness Histogram goes through the
     int* burstinessHist;
 
@@ -126,6 +129,9 @@ protected:
 
     // track spikes count of probed neurons
     vector<uint64_t>* spikesProbedNeurons;
+
+    // Struct that holds information about a simulation
+    const SimulationInfo *m_sim_info;
 
     // TODO comment
     Model *m_model;

@@ -55,12 +55,6 @@ public:
     ~Hdf5GrowthRecorder();
 
     /**
-     * Initialize data
-     * @param[in] stateOutputFileName       File name to save histories
-     */
-    virtual void init(const string& stateOutputFileName);
-
-    /**
      * Init radii and rates history matrices with default values
      */
     virtual void initDefaultValues();
