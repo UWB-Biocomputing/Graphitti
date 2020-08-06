@@ -14,58 +14,12 @@ const H5std_string  nameRatesHist("ratesHistory");
 const H5std_string  nameRadiiHist("radiiHistory");
 
 //! THe constructor and destructor
-Hdf5GrowthRecorder::Hdf5GrowthRecorder(const SimulationInfo* sim_info) :
-    Hdf5Recorder(sim_info)
+Hdf5GrowthRecorder::Hdf5GrowthRecorder()
 {
 }
 
 Hdf5GrowthRecorder::~Hdf5GrowthRecorder()
 {
-}
-
-/*
- * Initialize data.
- * Create a new hdf5 file with default properties.
- *
- * @param[in] stateOutputFileName	File name to save histories
- */
-void Hdf5GrowthRecorder::init(const string& stateOutputFileName)
-{
-    try
-    {
-        // create a new file using the default property lists
-        stateOut = new H5File( stateOutputFileName, H5F_ACC_TRUNC );
-
-        initDataSet();
-    }
-    
-    // catch failure caused by the H5File operations
-    catch( FileIException error )
-    {
-        error.printErrorStack();
-        return;
-    }
-
-    // catch failure caused by the DataSet operations
-    catch( DataSetIException error )
-    {
-        error.printErrorStack();
-        return;
-    }
-
-    // catch failure caused by the DataSpace operations
-    catch( DataSpaceIException error )
-    {
-        error.printErrorStack();
-        return;
-    }
-
-    // catch failure caused by the DataType operations
-    catch( DataTypeIException error )
-    {
-        error.printErrorStack();
-        return;
-    }
 }
 
 /*
@@ -77,20 +31,20 @@ void Hdf5GrowthRecorder::initDataSet()
 
     // create the data space & dataset for rates history
     hsize_t dims[2];
-    dims[0] = static_cast<hsize_t>(m_Simulator::getInstance().maxSteps + 1);
-    dims[1] = static_cast<hsize_t>(m_Simulator::getInstance().totalNeurons);
+    dims[0] = static_cast<hsize_t>(Simulator::getInstance().maxSteps + 1);
+    dims[1] = static_cast<hsize_t>(Simulator::getInstance().totalNeurons);
     DataSpace dsRatesHist(2, dims);
     dataSetRatesHist = new DataSet(stateOut->createDataSet(nameRatesHist, H5_FLOAT, dsRatesHist));
 
     // create the data space & dataset for radii history
-    dims[0] = static_cast<hsize_t>(m_Simulator::getInstance().maxSteps + 1);
-    dims[1] = static_cast<hsize_t>(m_Simulator::getInstance().totalNeurons);
+    dims[0] = static_cast<hsize_t>(Simulator::getInstance().maxSteps + 1);
+    dims[1] = static_cast<hsize_t>(Simulator::getInstance().totalNeurons);
     DataSpace dsRadiiHist(2, dims);
     dataSetRadiiHist = new DataSet(stateOut->createDataSet(nameRadiiHist, H5_FLOAT, dsRadiiHist));
 
     // allocate data memories
-    ratesHistory = new BGFLOAT[m_Simulator::getInstance().totalNeurons];
-    radiiHistory = new BGFLOAT[m_Simulator::getInstance().totalNeurons];
+    ratesHistory = new BGFLOAT[Simulator::getInstance().totalNeurons];
+    radiiHistory = new BGFLOAT[Simulator::getInstance().totalNeurons];
 }
 
 /*
@@ -101,7 +55,7 @@ void Hdf5GrowthRecorder::initDefaultValues()
     Connections* pConn = m_model->getConnections();
     BGFLOAT startRadius = dynamic_cast<ConnGrowth*>(pConn)->m_growth.startRadius;
 
-    for (int i = 0; i < m_Simulator::getInstance().totalNeurons; i++)
+    for (int i = 0; i < Simulator::getInstance().totalNeurons; i++)
     {
         radiiHistory[i] = startRadius;
         ratesHistory[i] = 0;
@@ -119,7 +73,7 @@ void Hdf5GrowthRecorder::initValues()
 {
     Connections* pConn = m_model->getConnections();
 
-    for (int i = 0; i < m_Simulator::getInstance().totalNeurons; i++)
+    for (int i = 0; i < Simulator::getInstance().totalNeurons; i++)
     {
         radiiHistory[i] = (*dynamic_cast<ConnGrowth*>(pConn)->radii)[i];
         ratesHistory[i] = (*dynamic_cast<ConnGrowth*>(pConn)->rates)[i];
@@ -137,7 +91,7 @@ void Hdf5GrowthRecorder::getValues()
 {
     Connections* pConn = m_model->getConnections();
 
-    for (int i = 0; i < m_Simulator::getInstance().totalNeurons; i++)
+    for (int i = 0; i < Simulator::getInstance().totalNeurons; i++)
     {
         (*dynamic_cast<ConnGrowth*>(pConn)->radii)[i] = radiiHistory[i];
         (*dynamic_cast<ConnGrowth*>(pConn)->rates)[i] = ratesHistory[i];
@@ -171,8 +125,8 @@ void Hdf5GrowthRecorder::compileHistories(IAllNeurons &neurons)
     VectorMatrix& rates = (*dynamic_cast<ConnGrowth*>(pConn)->rates);
     VectorMatrix& radii = (*dynamic_cast<ConnGrowth*>(pConn)->radii);
 
-    // output spikes
-    for (int iNeuron = 0; iNeuron < m_Simulator::getInstance().totalNeurons; iNeuron++)
+    // output radii and rates
+    for (int iNeuron = 0; iNeuron < Simulator::getInstance().totalNeurons; iNeuron++)
     {
         // record firing rate to history matrix
         ratesHistory[iNeuron] = rates[iNeuron];
@@ -205,12 +159,12 @@ void Hdf5GrowthRecorder::writeRadiiRates()
         DataSpace* memspace;
 
         // write radii history
-        offset[0] = m_Simulator::getInstance().currentStep;
+        offset[0] = Simulator::getInstance().currentStep;
         offset[1] = 0;
         count[0] = 1;
-        count[1] = m_Simulator::getInstance().totalNeurons;
+        count[1] = Simulator::getInstance().totalNeurons;
         dimsm[0] = 1;
-        dimsm[1] = m_Simulator::getInstance().totalNeurons;
+        dimsm[1] = Simulator::getInstance().totalNeurons;
         memspace = new DataSpace(2, dimsm, NULL);
         dataspace = new DataSpace(dataSetRadiiHist->getSpace());
         dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
@@ -219,12 +173,12 @@ void Hdf5GrowthRecorder::writeRadiiRates()
         delete memspace;
 
         // write rates history
-        offset[0] = m_Simulator::getInstance().currentStep;
+        offset[0] = Simulator::getInstance().currentStep;
         offset[1] = 0;
         count[0] = 1;
-        count[1] = m_Simulator::getInstance().totalNeurons;
+        count[1] = Simulator::getInstance().totalNeurons;
         dimsm[0] = 1;
-        dimsm[1] = m_Simulator::getInstance().totalNeurons;
+        dimsm[1] = Simulator::getInstance().totalNeurons;
         memspace = new DataSpace(2, dimsm, NULL);
         dataspace = new DataSpace(dataSetRadiiHist->getSpace());
         dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);

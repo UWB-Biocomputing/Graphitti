@@ -51,14 +51,8 @@ class Hdf5GrowthRecorder : public Hdf5Recorder
 {
 public:
     //! THe constructor and destructor
-    Hdf5GrowthRecorder(const SimulationInfo* sim_info);
+    Hdf5GrowthRecorder();
     ~Hdf5GrowthRecorder();
-
-    /**
-     * Initialize data
-     * @param[in] stateOutputFileName       File name to save histories
-     */
-    virtual void init(const string& stateOutputFileName);
 
     /**
      * Init radii and rates history matrices with default values

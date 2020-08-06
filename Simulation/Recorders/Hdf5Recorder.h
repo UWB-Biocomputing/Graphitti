@@ -118,6 +118,9 @@ protected:
     DataSet* dataSetSpikesProbedNeurons;
     DataSet* dataSetProbedNeurons;
 
+   // Keep track of where we are in incrementally writing spikes
+    hsize_t* offsetSpikesProbedNeurons;
+
     // burstiness Histogram goes through the
     int* burstinessHist;
 
@@ -126,6 +129,9 @@ protected:
 
     // track spikes count of probed neurons
     vector<uint64_t>* spikesProbedNeurons;
+
+    // Struct that holds information about a simulation
+    const SimulationInfo *m_sim_info;
 
     // TODO comment
     Model *m_model;
