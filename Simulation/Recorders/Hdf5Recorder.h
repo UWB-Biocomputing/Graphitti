@@ -51,7 +51,7 @@ class Hdf5Recorder : public IRecorder
 {
 public:
     //! THe constructor and destructor
-    Hdf5Recorder(const SimulationInfo* sim_info);
+    Hdf5Recorder();
     ~Hdf5Recorder();
 
     /**
@@ -98,7 +98,7 @@ public:
 protected:
     virtual void initDataSet();
 
-    void getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starter_map, const SimulationInfo *sim_info);
+    void getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starter_map);
 
     // hdf5 file identifier
     H5File* stateOut;
