@@ -1,0 +1,16 @@
+//
+// Created by chris on 8/6/2020.
+//
+
+#ifndef SUMMEROFBRAIN_CONNECTIONSFACTORY_H
+#define SUMMEROFBRAIN_CONNECTIONSFACTORY_H
+
+
+
+class ConnectionsFactory {
+
+};
+
+
+
+#endif //SUMMEROFBRAIN_CONNECTIONSFACTORY_H
