@@ -51,9 +51,9 @@ class AllSpikingSynapses : public AllSynapses
         AllSpikingSynapses(const int num_neurons, const int max_synapses);
         virtual ~AllSpikingSynapses();
 
-//        static IAllSynapses* Create() {
-//           return new AllSpikingSynapses();
-//        }
+        static IAllSynapses* Create() {
+           return new AllSpikingSynapses();
+        }
 
         /**
          *  Setup the internal structure of the class (allocate memories and initialize them).

@@ -10,6 +10,11 @@
 #include "Simulator.h"
 #include "ParameterManager.h"
 #include "VerticiesFactory.h"
+#include "EdgesFactory.h"
+#include "LayoutFactory.h"
+#include "ConnectionsFactory.h"
+#include "RecorderFactory.h"
+#include "CPUSpikingModel.h"
 // #include "ParseParamError.h"
 
 /// Acts as constructor first time it's called, returns the instance of the singleton object
@@ -199,22 +204,25 @@ void Simulator::saveData() const {
    model_->saveData();
 }
 
+/// Instantiates Model which causes all other lower level simulator objects to be instantiated. Checks if all
+/// expected objects were created correctly and returns T/F on the success of the check.
 bool Simulator::instantiateSimulatorObjects() {
-   string type;
-   // Creating vertices/neurons class
-   if (!ParameterManager::getInstance().getStringByXpath("//NeuronsParams/@class", type)) {
-      cerr << "ERROR: Vertice type not specified in configuration file" << endl;
+   // Model Definition
+#ifdef USE_GPU
+   model_ = shared_ptr<Model>(new GPUSpikingModel());
+#else
+   model_ = shared_ptr<Model>(new CPUSpikingModel());
+#endif
+
+   // Perform check on all instantiated objects.
+   if (!model_
+   || !model_->getConnections()
+   || !model_->getConnections()->getSynapses()
+   || !model_->getLayout()
+   || !model_->getLayout()->getNeurons()
+   || !model_->getRecorder()) {
       return false;
    }
-   if (VerticesFactory::getInstance()->createNeurons(type) == NULL) {
-      cerr << "ERROR: Vertice type '" << type << "' specified in configuration file is not supported" << endl;
-      return false;
-   }
-
-   // Creating edges/synapses class
-
-
-
    return true;
 }
 

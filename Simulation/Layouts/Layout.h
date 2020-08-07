@@ -29,10 +29,10 @@
 
 using namespace std;
 
-class Layout
-{
+class Layout {
 public:
    Layout();
+
    virtual ~Layout();
 
    shared_ptr<IAllNeurons> getNeurons() const;
@@ -75,7 +75,6 @@ public:
    neuronType *neuron_type_map;    ///< The neuron type map (INH, EXC).
 
    bool *starter_map; ///< The starter existence map (T/F).
-
 
    BGSIZE num_endogenously_active_neurons;    ///< Number of endogenously active neurons.
 

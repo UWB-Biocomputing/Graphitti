@@ -1,5 +1,5 @@
 /**
- *  A factory class for creating Neuron objects.
+ *  A factory class for creating Vertices objects.
  *  Lizzy Presland, October 2019
  */
 
@@ -25,10 +25,7 @@ public:
    }
 
    // Invokes constructor for desired concrete class
-   shared_ptr<IAllNeurons> createNeurons(const string &className);
-
-   // Shortcut for copy constructor for existing concrete object
-   IAllNeurons *createNeuronsCopy();
+   shared_ptr<IAllNeurons> createVertices(const string &className);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    VerticesFactory(VerticesFactory const &) = delete;
@@ -39,25 +36,21 @@ private:
    VerticesFactory();
 
    /// Pointer to neurons instance
-   shared_ptr<IAllNeurons> neuronsInstance;
-
-   string neuronClassName;
+   shared_ptr<IAllNeurons> verticesInstance;
 
    /* Type definitions */
    /// Defines function type for usage in internal map
-   typedef IAllNeurons *(*CreateNeuronsFn)(void);
+   typedef IAllNeurons *(*CreateFunction)(void);
 
    /// Defines map between class name and corresponding ::Create() function.
-   typedef map<string, CreateNeuronsFn> NeuronFunctionMap;
+   typedef map<string, CreateFunction> VerticesFunctionMap;
 
    /// Makes class-to-function map an internal factory member.
-   NeuronFunctionMap createFunctions;
-
-   string getVerticeType();
+   VerticesFunctionMap createFunctions;
 
    /// Retrieves and invokes correct ::Create() function.
-   IAllNeurons *invokeNeuronsCreateFunction(const string &className);
+   IAllNeurons *invokeCreateFunction(const string &className);
 
    /// Register neuron class and it's create function to the factory.
-   void registerNeurons(const string &neuronsClassName, CreateNeuronsFn function);
+   void registerClass(const string &className, CreateFunction function);
 };

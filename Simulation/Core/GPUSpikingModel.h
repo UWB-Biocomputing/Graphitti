@@ -71,7 +71,7 @@ class GPUSpikingModel : public Model {
    friend class GpuSInputPoisson;
 
 public:
-   GPUSpikingModel(Connections *conns, Layout *layout);
+   GPUSpikingModel();
 
    virtual ~GPUSpikingModel();
 

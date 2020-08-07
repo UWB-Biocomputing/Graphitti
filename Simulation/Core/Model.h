@@ -29,11 +29,7 @@ class IRecorder;
 class Model {
 public:
    /// Constructor
-   Model(
-         /// factory class knows which synapse/neuron class to make.
-         // ToDo: since these are getting created in factory fclassofcategory, these stay here
-         Connections *conns,
-         Layout *layout);
+   Model();
 
    /// Destructor
    virtual ~Model();
@@ -91,19 +87,15 @@ protected:
    virtual void copyCPUtoGPU() = 0;
 
 protected:
-   // DONE: 2020/03/14 (It was Emily!) Modified access level to public for allowing the access in BGDriver for serialization/deserialization
    // ToDo: make private again after serialization is fixed... shouldn't these be private with public accessors?
    // ToDo: Should model own these? Or should simulator?
    shared_ptr<Connections> conns_;  // ToDo: make shared pointers
 
-   // todo: have connections own synapses, have layouts own neurons
-
    shared_ptr<Layout> layout_;
 
-   // todo: model is going to own recorders and inputs 7/29
    shared_ptr<IRecorder> recorder_;
 
-   // shared_ptr<ISInput> input_;    /// Stimulus input object. ToDo: make smart ptr
+   // shared_ptr<ISInput> input_;    /// Stimulus input object.
 
    void createAllNeurons(); /// Populate an instance of IAllNeurons with an initial state for each neuron.
 };

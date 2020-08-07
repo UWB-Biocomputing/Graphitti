@@ -3,10 +3,7 @@
 #include "AllDSSynapses.h"
 
 /// Constructor
-CPUSpikingModel::CPUSpikingModel(
-      Connections *conns,
-      Layout *layout) :
-      Model(conns, layout) {
+CPUSpikingModel::CPUSpikingModel() : Model() {
 }
 
 /// Destructor

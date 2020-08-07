@@ -25,10 +25,9 @@ const H5std_string  nameAttrPNUnit("attrPNUint");
 const H5std_string  nameProbedNeurons("probedNeurons");
 
 //! THe constructor and destructor
-Hdf5Recorder::Hdf5Recorder(const SimulationInfo* sim_info) :
-    m_sim_info(sim_info),
-    m_model(dynamic_cast<Model*> (Simulator::getInstance().model))
-{
+Hdf5Recorder::Hdf5Recorder() {
+   resultFileName_ = Simulator::getInstance().getResultFileName();
+   model_ = Simulator::getInstance().getModel();
 }
 
 Hdf5Recorder::~Hdf5Recorder()
@@ -41,12 +40,13 @@ Hdf5Recorder::~Hdf5Recorder()
  *
  * @param[in] stateOutputFileName	File name to save histories
  */
-void Hdf5Recorder::init(const string& stateOutputFileName)
+void Hdf5Recorder::init()
 {
     try
     {
+       
         // create a new file using the default property lists
-        stateOut = new H5File( stateOutputFileName, H5F_ACC_TRUNC );
+        stateOut = new H5File( resultFileName_, H5F_ACC_TRUNC );
 
         initDataSet();
     }
@@ -253,14 +253,14 @@ void Hdf5Recorder::compileHistories(IAllNeurons &neurons)
         delete memspace;
 
         // write network wide spike count in 10ms bins
-        offset[0] = (m_Simulator::getInstance().currentStep - 1) * m_Simulator::getInstance().epochDuration * 100;
-        count[0] = m_Simulator::getInstance().epochDuration * 100;
-        dimsm[0] = m_Simulator::getInstance().epochDuration * 100;
+        offset[0] = (m_Simulator::getInstance().currentStep - 1) * m_Simulator::getInstance().getEpochDuration() * 100;
+        count[0] = m_Simulator::getInstance().getEpochDuration() * 100;
+        dimsm[0] = m_Simulator::getInstance().getEpochDuration() * 100;
         memspace = new DataSpace(1, dimsm, NULL);
         dataspace = new DataSpace(dataSetSpikesHist->getSpace());
         dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
         dataSetSpikesHist->write(spikesHistory, PredType::NATIVE_INT, *memspace, *dataspace); 
-        memset(spikesHistory, 0, static_cast<int>(m_Simulator::getInstance().epochDuration * 100 * sizeof(int)));
+        memset(spikesHistory, 0, static_cast<int>(m_Simulator::getInstance().getEpochDuration() * 100 * sizeof(int)));
         delete dataspace;
         delete memspace;
     }
@@ -307,21 +307,21 @@ void Hdf5Recorder::saveSimData(const IAllNeurons &neurons)
     try
     {
         // create Neuron Types matrix
-        VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, m_Simulator::getInstance().totalNeurons, EXC);
-        for (int i = 0; i < m_Simulator::getInstance().totalNeurons; i++) {
+        VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, m_Simulator::getInstance().getTotalNeurons(), EXC);
+        for (int i = 0; i < m_Simulator::getInstance().getTotalNeurons(); i++) {
             neuronTypes[i] = m_model->getLayout()->neuron_type_map[i];
         }
 
         // create neuron threshold matrix
-        VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, m_Simulator::getInstance().totalNeurons, 0);
-        for (int i = 0; i < m_Simulator::getInstance().totalNeurons; i++) {
+        VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, m_Simulator::getInstance().getTotalNeurons(), 0);
+        for (int i = 0; i < m_Simulator::getInstance().getTotalNeurons(); i++) {
             neuronThresh[i] = dynamic_cast<const AllIFNeurons&>(neurons).Vthresh[i];
         }
 
         // Write the neuron location matrices
-        int* iXloc = new int[m_Simulator::getInstance().totalNeurons];
-        int* iYloc = new int[m_Simulator::getInstance().totalNeurons];
-        for (int i = 0; i < m_Simulator::getInstance().totalNeurons; i++) {
+        int* iXloc = new int[m_Simulator::getInstance().getTotalNeurons()];
+        int* iYloc = new int[m_Simulator::getInstance().getTotalNeurons()];
+        for (int i = 0; i < m_Simulator::getInstance().getTotalNeurons(); i++) {
             // convert VectorMatrix to int array
             iXloc[i] = (*m_model->getLayout()->xloc)[i];
             iYloc[i] = (*m_model->getLayout()->yloc)[i];

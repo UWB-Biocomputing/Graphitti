@@ -8,8 +8,8 @@ cudaEvent_t start, stop;
 
 __constant__ int d_debug_mask[1];
 
-GPUSpikingModel::GPUSpikingModel(Connections *conns, Layout *layout) :
-  Model::Model(conns, layout),
+GPUSpikingModel::GPUSpikingModel() :
+  Model::Model(),
   synapseIndexMapDevice(NULL),
   randNoise_d(NULL),
   allNeuronsDevice_(NULL),

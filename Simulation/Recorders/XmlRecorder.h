@@ -35,66 +35,65 @@
 #include "Recorders/IRecorder.h"
 #include "Core/Model.h"
 
-class XmlRecorder : public IRecorder
-{
+class XmlRecorder : public IRecorder {
 public:
-    //! THe constructor and destructor
-    XmlRecorder();
-    ~XmlRecorder();
+   //! THe constructor and destructor
+   XmlRecorder();
 
-    /**
-     * Initialize data
-     * @param[in] stateOutputFileName       File name to save histories
-     */
-    virtual void init(const string& stateOutputFileName);
+   ~XmlRecorder();
 
-    /**
-     * Init radii and rates history matrices with default values
-     */
-    virtual void initDefaultValues();
+   static IRecorder* Create() { return new XmlRecorder(); }
 
-    /**
-     * Init radii and rates history matrices with current radii and rates
-     */
-    virtual void initValues();
+   /**
+    * Initialize data
+    * @param[in] stateOutputFileName       File name to save histories
+    */
+   virtual void init();
 
-    /**
-     * Get the current radii and rates vlaues
-     */
-    virtual void getValues();
+   /**
+    * Init radii and rates history matrices with default values
+    */
+   virtual void initDefaultValues();
 
-    /**
-     * Terminate process
-     */
-    virtual void term();
+   /**
+    * Init radii and rates history matrices with current radii and rates
+    */
+   virtual void initValues();
 
-    /**
-     * Compile history information in every epoch
-     *
-     * @param[in] neurons   The entire list of neurons.
-     */
-    virtual void compileHistories(IAllNeurons &neurons);
+   /**
+    * Get the current radii and rates vlaues
+    */
+   virtual void getValues();
 
-    /**
-     * Writes simulation results to an output destination.
-     *
-     * @param  neurons the Neuron list to search from.
-     **/
-    virtual void saveSimData(const IAllNeurons &neurons);
+   /**
+    * Terminate process
+    */
+   virtual void term();
+
+   /**
+    * Compile history information in every epoch
+    *
+    * @param[in] neurons   The entire list of neurons.
+    */
+   virtual void compileHistories(IAllNeurons &neurons);
+
+   /**
+    * Writes simulation results to an output destination.
+    *
+    * @param  neurons the Neuron list to search from.
+    **/
+   virtual void saveSimData(const IAllNeurons &neurons);
 
 protected:
-    void getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starter_map);
+   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starter_map);
 
-    // a file stream for xml output
-    ofstream stateOut;
+   // a file stream for xml output
+   ofstream stateOut;
 
-    // burstiness Histogram goes through the
-    VectorMatrix burstinessHist;
+   // burstiness Histogram goes through the
+   VectorMatrix burstinessHist;
 
-    // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
-    VectorMatrix spikesHistory;
-
-    // TODO comment
-    shared_ptr<Model> model_;
+   // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
+   VectorMatrix spikesHistory;
 };
 

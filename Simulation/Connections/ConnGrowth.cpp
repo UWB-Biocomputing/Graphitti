@@ -357,7 +357,7 @@ IRecorder* ConnGrowth::createRecorder()
         return NULL;
     }
     if (simRecorder != NULL) {
-        simRecorder->init(Simulator::getInstance().getResultFileName());
+        simRecorder->init();
     }
 
     return simRecorder;

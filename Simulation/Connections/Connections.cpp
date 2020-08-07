@@ -41,8 +41,14 @@
 #include "IAllNeurons.h"
 #include "AllSynapses.h"
 #include "AllNeurons.h"
+#include "ParameterManager.h"
+#include "EdgesFactory.h"
 
 Connections::Connections() {
+   // Create Edges/Synapses class using type definition in configuration file
+   string type;
+   ParameterManager::getInstance().getStringByXpath("//SynapsesParams/@class", type);
+   synapses_ = EdgesFactory::getInstance()->createEdges(type);
 }
 
 Connections::~Connections() {

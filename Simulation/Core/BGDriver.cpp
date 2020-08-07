@@ -74,10 +74,11 @@ int main(int argc, char *argv[]) {
    simulator.loadParameters();
    simulator.printParameters();
 
-   // Instantiate objects using the factories
-   // ToDo: Figure out how to call the factory classes i.e should the factories call the parameter themselves or should the type be passed in
+   // Instantiate simulator objects
    if (!simulator.instantiateSimulatorObjects()) {
-      cerr << "ERROR: Unable to instantiate all simulator classes" << endl;
+      cerr << "ERROR: Unable to instantiate all simulator classes, check configuration file: "
+           << simulator.getParameterFileName()
+           << " for incorrectly declared class types." << endl;
       return -1;
    }
 
@@ -222,11 +223,16 @@ bool parseCommandLine(int argc, char *argv[]) {
         return false;
     }
 #else    // !USE_GPU
-   if ((cl.addParam("resultfile", 'o', ParamContainer::filename, "simulation results filepath") != ParamContainer::errOk)
-       || (cl.addParam("paramfile", 't', ParamContainer::filename | ParamContainer::required,"parameter configuration filepath") != ParamContainer::errOk)
-       || (cl.addParam("stimulusfile", 's', ParamContainer::filename, "stimulus input filepath") != ParamContainer::errOk)
-       || (cl.addParam("meminfile", 'r', ParamContainer::filename, "simulation memory image filepath") != ParamContainer::errOk)
-       || (cl.addParam("memoutfile", 'w', ParamContainer::filename, "simulation memory image output filepath") != ParamContainer::errOk)) {
+   if ((cl.addParam("resultfile", 'o', ParamContainer::filename, "simulation results filepath") !=
+        ParamContainer::errOk)
+       || (cl.addParam("paramfile", 't', ParamContainer::filename | ParamContainer::required,
+                       "parameter configuration filepath") != ParamContainer::errOk)
+       ||
+       (cl.addParam("stimulusfile", 's', ParamContainer::filename, "stimulus input filepath") != ParamContainer::errOk)
+       || (cl.addParam("meminfile", 'r', ParamContainer::filename, "simulation memory image filepath") !=
+           ParamContainer::errOk)
+       || (cl.addParam("memoutfile", 'w', ParamContainer::filename, "simulation memory image output filepath") !=
+           ParamContainer::errOk)) {
       cerr << "Internal error creating command line parser" << endl;
       return false;
    }

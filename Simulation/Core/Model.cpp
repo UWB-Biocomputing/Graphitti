@@ -2,13 +2,29 @@
 #include "IRecorder.h"
 #include "Connections.h"
 #include "ConnGrowth.h"
+#include "ParameterManager.h"
+#include "LayoutFactory.h"
+#include "ConnectionsFactory.h"
+#include "RecorderFactory.h"
 
 /// Constructor
 /// ToDo: Stays the same right now, change further in refactor
-Model::Model(Connections *conns, Layout *layout) :
-      conns_(conns),
-      layout_(layout)
-      {}
+Model::Model() {
+   // Reference variable used to get class type from ParameterManager.
+   string type;
+
+   // Create Layout class using type definition from configuration file.
+   ParameterManager::getInstance().getStringByXpath("//LayoutParams/@class", type);
+   layout_ = LayoutFactory::getInstance()->createLayout(type);
+
+   // Create Connections class using type definition from configuration file.
+   ParameterManager::getInstance().getStringByXpath("//ConnectionsParams/@class", type);
+   conns_ = ConnectionsFactory::getInstance()->createConnections(type);
+
+   // Create Recorder class using type definition from configuration file.
+   ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
+   recorder_ = RecorderFactory::getInstance()->createRecorder(type);
+}
 
 /// Destructor todo: this will change
 Model::~Model() {

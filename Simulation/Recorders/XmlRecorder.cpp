@@ -8,6 +8,7 @@
 #include "XmlRecorder.h"
 #include "AllIFNeurons.h"      // TODO: remove LIF model specific code
 #include "ConnGrowth.h"
+#include "ParameterManager.h"
 
 //! THe constructor and destructor
 XmlRecorder::XmlRecorder() :
@@ -17,6 +18,7 @@ XmlRecorder::XmlRecorder() :
               Simulator::getInstance().getNumEpochs() * 100), 0)
 
 {
+   resultFileName_ = Simulator::getInstance().getResultFileName();
    model_ = Simulator::getInstance().getModel();
 }
 
@@ -30,10 +32,9 @@ XmlRecorder::~XmlRecorder()
  *
  * @param[in] stateOutputFileName	File name to save histories
  */
-void XmlRecorder::init(const string& stateOutputFileName)
+void XmlRecorder::init()
 {
-    stateOut.open( stateOutputFileName.c_str( ) );
-
+    stateOut.open( resultFileName_.c_str( ) );
 }
 
 /*
