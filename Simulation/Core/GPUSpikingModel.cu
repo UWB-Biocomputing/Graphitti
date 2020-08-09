@@ -234,7 +234,7 @@ void GPUSpikingModel::deleteSynapseImap(  )
 /// @param  synapseIndexMapHost		Reference to the SynapseIndexMap in host memory.
 void GPUSpikingModel::copySynapseIndexMapHostToDevice(SynapseIndexMap &synapseIndexMapHost, int neuron_count)
 {
-  int total_synapse_counts = dynamic_cast<AllSynapses*>(synapses_)->total_synapse_counts;
+  int total_synapse_counts = dynamic_cast<AllSynapses*>(synapses_)->totalSynapseCounts_;
 
   if (total_synapse_counts == 0)
     return;

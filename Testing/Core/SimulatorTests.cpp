@@ -20,8 +20,7 @@ TEST(Simulator, GetInstanceSuccess) {
 }
 
 TEST(Simulator, PrintParameters) {
-   ostream *os;
-   EXPECT_NO_FATAL_FAILURE(Simulator::getInstance().printParameters(*os));
+   EXPECT_NO_FATAL_FAILURE(Simulator::getInstance().printParameters());
 }
 
 TEST(Simulator, ParametersInitializedSuccessfully) {

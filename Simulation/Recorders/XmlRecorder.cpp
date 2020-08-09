@@ -79,10 +79,10 @@ void XmlRecorder::compileHistories(IAllNeurons &neurons)
     // output spikes
     for (int iNeuron = 0; iNeuron < Simulator::getInstance().getTotalNeurons(); iNeuron++)
     {
-        uint64_t* pSpikes = spNeurons.spike_history[iNeuron];
+        uint64_t* pSpikes = spNeurons.spikeHistory_[iNeuron];
 
-        int& spike_count = spNeurons.spikeCount[iNeuron];
-        int& offset = spNeurons.spikeCountOffset[iNeuron];
+        int& spike_count = spNeurons.spikeCount_[iNeuron];
+        int& offset = spNeurons.spikeCountOffset_[iNeuron];
         for (int i = 0, idxSp = offset; i < spike_count; i++, idxSp++)
         {
             // Single precision (float) gives you 23 bits of significand, 8 bits of exponent, 

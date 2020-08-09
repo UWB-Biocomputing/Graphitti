@@ -2,26 +2,24 @@
 #include "ParseParamError.h"
 
 // Default constructor
-AllLIFNeurons::AllLIFNeurons() : AllIFNeurons()
-{
+AllLIFNeurons::AllLIFNeurons() : AllIFNeurons() {
 }
 
-AllLIFNeurons::~AllLIFNeurons()
-{
+AllLIFNeurons::~AllLIFNeurons() {
 }
 
 #if !defined(USE_GPU)
+
 /*
  *  Update internal state of the indexed Neuron (called by every simulation step).
  *
  *  @param  index       Index of the Neuron to update.
  *  @param  sim_info    SimulationInfo class to read information from.
  */
-void AllLIFNeurons::advanceNeuron(const int index)
-{
+void AllLIFNeurons::advanceNeuron(const int index) {
     BGFLOAT &Vm = this->Vm[index];
     BGFLOAT &Vthresh = this->Vthresh[index];
-    BGFLOAT &summationPoint = this->summation_map[index];
+    BGFLOAT &summationPoint = this->summationMap_[index];
     BGFLOAT &I0 = this->I0[index];
     BGFLOAT &Inoise = this->Inoise[index];
     BGFLOAT &C1 = this->C1[index];
@@ -46,16 +44,15 @@ void AllLIFNeurons::advanceNeuron(const int index)
     summationPoint = 0;
 
     DEBUG_MID(cout << index << " " << Vm << endl;)
-        DEBUG_MID(cout << "NEURON[" << index << "] {" << endl
-            << "\tVm = " << Vm << endl
-            << "\tVthresh = " << Vthresh << endl
-            << "\tsummationPoint = " << summationPoint << endl
-            << "\tI0 = " << I0 << endl
-            << "\tInoise = " << Inoise << endl
-            << "\tC1 = " << C1 << endl
-            << "\tC2 = " << C2 << endl
-            << "}" << endl
-    ;)
+    DEBUG_MID(cout << "NEURON[" << index << "] {" << endl
+                   << "\tVm = " << Vm << endl
+                   << "\tVthresh = " << Vthresh << endl
+                   << "\tsummationPoint = " << summationPoint << endl
+                   << "\tI0 = " << I0 << endl
+                   << "\tInoise = " << Inoise << endl
+                   << "\tC1 = " << C1 << endl
+                   << "\tC2 = " << C2 << endl
+                   << "}" << endl;)
 }
 
 /*
@@ -64,8 +61,7 @@ void AllLIFNeurons::advanceNeuron(const int index)
  *  @param  index       Index of the Neuron to update.
  *  @param  sim_info    SimulationInfo class to read information from.
  */
-void AllLIFNeurons::fire(const int index) const
-{
+void AllLIFNeurons::fire(const int index) const {
     const BGFLOAT deltaT = Simulator::getInstance().getDeltaT();
     AllSpikingNeurons::fire(index);
 
@@ -75,4 +71,5 @@ void AllLIFNeurons::fire(const int index) const
     // reset to 'Vreset'
     Vm[index] = Vreset[index];
 }
+
 #endif

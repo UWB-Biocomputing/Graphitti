@@ -8,12 +8,12 @@
 
 // Default constructor
 AllIZHNeurons::AllIZHNeurons() : AllIFNeurons() {
-   Aconst = NULL;
-   Bconst = NULL;
-   Cconst = NULL;
-   Dconst = NULL;
-   u = NULL;
-   C3 = NULL;
+   Aconst_ = NULL;
+   Bconst_ = NULL;
+   Cconst_ = NULL;
+   Dconst_ = NULL;
+   u_ = NULL;
+   C3_ = NULL;
 }
 
 AllIZHNeurons::~AllIZHNeurons() {
@@ -28,12 +28,12 @@ AllIZHNeurons::~AllIZHNeurons() {
 void AllIZHNeurons::setupNeurons() {
    AllIFNeurons::setupNeurons();
 
-   Aconst = new BGFLOAT[size];
-   Bconst = new BGFLOAT[size];
-   Cconst = new BGFLOAT[size];
-   Dconst = new BGFLOAT[size];
-   u = new BGFLOAT[size];
-   C3 = new BGFLOAT[size];
+   Aconst_ = new BGFLOAT[size_];
+   Bconst_ = new BGFLOAT[size_];
+   Cconst_ = new BGFLOAT[size_];
+   Dconst_ = new BGFLOAT[size_];
+   u_ = new BGFLOAT[size_];
+   C3_ = new BGFLOAT[size_];
 }
 
 /*
@@ -48,30 +48,21 @@ void AllIZHNeurons::cleanupNeurons() {
  *  Deallocate all resources
  */
 void AllIZHNeurons::freeResources() {
-   if (size != 0) {
-      delete[] Aconst;
-      delete[] Bconst;
-      delete[] Cconst;
-      delete[] Dconst;
-      delete[] u;
-      delete[] C3;
+   if (size_ != 0) {
+      delete[] Aconst_;
+      delete[] Bconst_;
+      delete[] Cconst_;
+      delete[] Dconst_;
+      delete[] u_;
+      delete[] C3_;
    }
 
-   Aconst = NULL;
-   Bconst = NULL;
-   Cconst = NULL;
-   Dconst = NULL;
-   u = NULL;
-   C3 = NULL;
-}
-
-/*
- * Checks the number of required parameters.
- *
- * @return true if all required parameters were successfully read, false otherwise.
- */
-bool AllIZHNeurons::checkNumParameters() {
-   return (nParams >= 12);
+   Aconst_ = NULL;
+   Bconst_ = NULL;
+   Cconst_ = NULL;
+   Dconst_ = NULL;
+   u_ = NULL;
+   C3_ = NULL;
 }
 
 /*
@@ -83,28 +74,28 @@ void AllIZHNeurons::printParameters(ostream &output) const {
    AllIFNeurons::printParameters(output);
 
    output << "Interval of A constant for excitatory neurons: ["
-          << m_excAconst[0] << ", " << m_excAconst[1] << "]"
+          << excAconst_[0] << ", " << excAconst_[1] << "]"
           << endl;
    output << "Interval of A constant for inhibitory neurons: ["
-          << m_inhAconst[0] << ", " << m_inhAconst[1] << "]"
+          << inhAconst_[0] << ", " << inhAconst_[1] << "]"
           << endl;
    output << "Interval of B constant for excitatory neurons: ["
-          << m_excBconst[0] << ", " << m_excBconst[1] << "]"
+          << excBconst_[0] << ", " << excBconst_[1] << "]"
           << endl;
    output << "Interval of B constant for inhibitory neurons: ["
-          << m_inhBconst[0] << ", " << m_inhBconst[1] << "]"
+          << inhBconst_[0] << ", " << inhBconst_[1] << "]"
           << endl;
    output << "Interval of C constant for excitatory neurons: ["
-          << m_excCconst[0] << ", " << m_excCconst[1] << "]"
+          << excCconst_[0] << ", " << excCconst_[1] << "]"
           << endl;
    output << "Interval of C constant for inhibitory neurons: ["
-          << m_inhCconst[0] << ", " << m_inhCconst[1] << "]"
+          << inhCconst_[0] << ", " << inhCconst_[1] << "]"
           << endl;
    output << "Interval of D constant for excitatory neurons: ["
-          << m_excDconst[0] << ", " << m_excDconst[1] << "]"
+          << excDconst_[0] << ", " << excDconst_[1] << "]"
           << endl;
    output << "Interval of D constant for inhibitory neurons: ["
-          << m_inhDconst[0] << ", " << m_inhDconst[1] << "]"
+          << inhDconst_[0] << ", " << inhDconst_[1] << "]"
           << endl;
 }
 
@@ -138,26 +129,26 @@ void AllIZHNeurons::createNeuron(int neuron_index, Layout *layout) {
    // TODO: we may need another distribution mode besides flat distribution
    if (layout->neuron_type_map[neuron_index] == EXC) {
       // excitatory neuron
-      Aconst[neuron_index] = rng.inRange(m_excAconst[0], m_excAconst[1]);
-      Bconst[neuron_index] = rng.inRange(m_excBconst[0], m_excBconst[1]);
-      Cconst[neuron_index] = rng.inRange(m_excCconst[0], m_excCconst[1]);
-      Dconst[neuron_index] = rng.inRange(m_excDconst[0], m_excDconst[1]);
+      Aconst_[neuron_index] = rng.inRange(excAconst_[0], excAconst_[1]);
+      Bconst_[neuron_index] = rng.inRange(excBconst_[0], excBconst_[1]);
+      Cconst_[neuron_index] = rng.inRange(excCconst_[0], excCconst_[1]);
+      Dconst_[neuron_index] = rng.inRange(excDconst_[0], excDconst_[1]);
    } else {
       // inhibitory neuron
-      Aconst[neuron_index] = rng.inRange(m_inhAconst[0], m_inhAconst[1]);
-      Bconst[neuron_index] = rng.inRange(m_inhBconst[0], m_inhBconst[1]);
-      Cconst[neuron_index] = rng.inRange(m_inhCconst[0], m_inhCconst[1]);
-      Dconst[neuron_index] = rng.inRange(m_inhDconst[0], m_inhDconst[1]);
+      Aconst_[neuron_index] = rng.inRange(inhAconst_[0], inhAconst_[1]);
+      Bconst_[neuron_index] = rng.inRange(inhBconst_[0], inhBconst_[1]);
+      Cconst_[neuron_index] = rng.inRange(inhCconst_[0], inhCconst_[1]);
+      Dconst_[neuron_index] = rng.inRange(inhDconst_[0], inhDconst_[1]);
    }
 
-   u[neuron_index] = 0;
+   u_[neuron_index] = 0;
 
    DEBUG_HI(cout << "CREATE NEURON[" << neuron_index << "] {" << endl
-                 << "\tAconst = " << Aconst[neuron_index] << endl
-                 << "\tBconst = " << Bconst[neuron_index] << endl
-                 << "\tCconst = " << Cconst[neuron_index] << endl
-                 << "\tDconst = " << Dconst[neuron_index] << endl
-                 << "\tC3 = " << C3[neuron_index] << endl
+                 << "\tAconst = " << Aconst_[neuron_index] << endl
+                 << "\tBconst = " << Bconst_[neuron_index] << endl
+                 << "\tCconst = " << Cconst_[neuron_index] << endl
+                 << "\tDconst = " << Dconst_[neuron_index] << endl
+                 << "\tC3 = " << C3_[neuron_index] << endl
                  << "}" << endl;)
 
 }
@@ -173,10 +164,10 @@ void AllIZHNeurons::setNeuronDefaults(const int index) {
    // no refractory period
    Trefract[index] = 0;
 
-   Aconst[index] = DEFAULT_a;
-   Bconst[index] = DEFAULT_b;
-   Cconst[index] = DEFAULT_c;
-   Dconst[index] = DEFAULT_d;
+   Aconst_[index] = DEFAULT_a;
+   Bconst_[index] = DEFAULT_b;
+   Cconst_[index] = DEFAULT_c;
+   Dconst_[index] = DEFAULT_d;
 }
 
 /*
@@ -188,7 +179,7 @@ void AllIZHNeurons::setNeuronDefaults(const int index) {
 void AllIZHNeurons::initNeuronConstsFromParamValues(int neuron_index, const BGFLOAT deltaT) {
    AllIFNeurons::initNeuronConstsFromParamValues(neuron_index, deltaT);
 
-   BGFLOAT &C3 = this->C3[neuron_index];
+   BGFLOAT &C3 = this->C3_[neuron_index];
    C3 = deltaT * 1000;
 }
 
@@ -203,12 +194,12 @@ string AllIZHNeurons::toString(const int i) const {
 
    ss << AllIFNeurons::toString(i);
 
-   ss << "Aconst: " << Aconst[i] << " ";
-   ss << "Bconst: " << Bconst[i] << " ";
-   ss << "Cconst: " << Cconst[i] << " ";
-   ss << "Dconst: " << Dconst[i] << " ";
-   ss << "u: " << u[i] << " ";
-   ss << "C3: " << C3[i] << " ";
+   ss << "Aconst: " << Aconst_[i] << " ";
+   ss << "Bconst: " << Bconst_[i] << " ";
+   ss << "Cconst: " << Cconst_[i] << " ";
+   ss << "Dconst: " << Dconst_[i] << " ";
+   ss << "u: " << u_[i] << " ";
+   ss << "C3: " << C3_[i] << " ";
    return ss.str();
 }
 
@@ -234,17 +225,17 @@ void AllIZHNeurons::deserialize(istream &input) {
 void AllIZHNeurons::readNeuron(istream &input, int i) {
    AllIFNeurons::readNeuron(input, i);
 
-   input >> Aconst[i];
+   input >> Aconst_[i];
    input.ignore();
-   input >> Bconst[i];
+   input >> Bconst_[i];
    input.ignore();
-   input >> Cconst[i];
+   input >> Cconst_[i];
    input.ignore();
-   input >> Dconst[i];
+   input >> Dconst_[i];
    input.ignore();
-   input >> u[i];
+   input >> u_[i];
    input.ignore();
-   input >> C3[i];
+   input >> C3_[i];
    input.ignore();
 }
 
@@ -270,12 +261,12 @@ void AllIZHNeurons::serialize(ostream &output) const {
 void AllIZHNeurons::writeNeuron(ostream &output, int i) const {
    AllIFNeurons::writeNeuron(output, i);
 
-   output << Aconst[i] << ends;
-   output << Bconst[i] << ends;
-   output << Cconst[i] << ends;
-   output << Dconst[i] << ends;
-   output << u[i] << ends;
-   output << C3[i] << ends;
+   output << Aconst_[i] << ends;
+   output << Bconst_[i] << ends;
+   output << Cconst_[i] << ends;
+   output << Dconst_[i] << ends;
+   output << u_[i] << ends;
+   output << C3_[i] << ends;
 }
 
 #if !defined(USE_GPU)
@@ -289,17 +280,17 @@ void AllIZHNeurons::writeNeuron(ostream &output, int i) const {
 void AllIZHNeurons::advanceNeuron(const int index) {
    BGFLOAT &Vm = this->Vm[index];
    BGFLOAT &Vthresh = this->Vthresh[index];
-   BGFLOAT &summationPoint = this->summation_map[index];
+   BGFLOAT &summationPoint = this->summationMap_[index];
    BGFLOAT &I0 = this->I0[index];
    BGFLOAT &Inoise = this->Inoise[index];
    BGFLOAT &C1 = this->C1[index];
    BGFLOAT &C2 = this->C2[index];
-   BGFLOAT &C3 = this->C3[index];
+   BGFLOAT &C3 = this->C3_[index];
    int &nStepsInRefr = this->nStepsInRefr[index];
 
-   BGFLOAT &a = Aconst[index];
-   BGFLOAT &b = Bconst[index];
-   BGFLOAT &u = this->u[index];
+   BGFLOAT &a = Aconst_[index];
+   BGFLOAT &b = Bconst_[index];
+   BGFLOAT &u = this->u_[index];
 
    if (nStepsInRefr > 0) {
       // is neuron refractory?
@@ -328,8 +319,8 @@ void AllIZHNeurons::advanceNeuron(const int index) {
                   << "\tVm = " << Vm << endl
                   << "\ta = " << a << endl
                   << "\tb = " << b << endl
-                  << "\tc = " << Cconst[index] << endl
-                  << "\td = " << Dconst[index] << endl
+                  << "\tc = " << Cconst_[index] << endl
+                  << "\td = " << Dconst_[index] << endl
                   << "\tu = " << u << endl
                   << "\tVthresh = " << Vthresh << endl
                   << "\tsummationPoint = " << summationPoint << endl
@@ -359,9 +350,9 @@ void AllIZHNeurons::fire(const int index) const {
    int &nStepsInRefr = this->nStepsInRefr[index];
    BGFLOAT &Trefract = this->Trefract[index];
 
-   BGFLOAT &c = Cconst[index];
-   BGFLOAT &d = Dconst[index];
-   BGFLOAT &u = this->u[index];
+   BGFLOAT &c = Cconst_[index];
+   BGFLOAT &d = Dconst_[index];
+   BGFLOAT &u = this->u_[index];
 
    nStepsInRefr = static_cast<int> ( Trefract / deltaT + 0.5 );
 

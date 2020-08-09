@@ -201,68 +201,61 @@ class AllSynapses : public IAllSynapses
         /**
          *  The location of the synapse.
          */
-        int *sourceNeuronIndex;
+        int *sourceNeuronIndex_;
 
         /** 
          *  The coordinates of the summation point.
          */
-        int *destNeuronIndex;
+        int *destNeuronIndex_;
 
         /**
          *   The weight (scaling factor, strength, maximal amplitude) of the synapse.
          */
-         BGFLOAT *W;
+         BGFLOAT *W_;
 
         /**
          *  This synapse's summation point's address.
          */
-        BGFLOAT **summationPoint;
+        BGFLOAT **summationPoint_;
 
     	/**
          *  Synapse type
          */
-        synapseType *type;
+        synapseType *type_;
 
         /** 
          *  The post-synaptic response is the result of whatever computation 
          *  is going on in the synapse.
          */
-        BGFLOAT *psr;
+        BGFLOAT *psr_;
 
     	/**
          *  The boolean value indicating the entry in the array is in use.
          */
-        bool *in_use;
+        bool *inUse_;
 
         /**
          *  The number of (incoming) synapses for each neuron.
          *  Note: Likely under a different name in GpuSim_struct, see synapse_count. -Aaron
          */
-        BGSIZE *synapse_counts;
+        BGSIZE *synapseCounts_;
 
         /**
          *  The total number of active synapses.
          */
-        BGSIZE total_synapse_counts;
+        BGSIZE totalSynapseCounts_;
 
     	/**
          *  The maximum number of synapses for each neurons.
          */
-        BGSIZE maxSynapsesPerNeuron;
+        BGSIZE maxSynapsesPerNeuron_;
 
         /**
          *  The number of neurons
          *  Aaron: Is this even supposed to be here?!
          *  Usage: Used by destructor
          */
-        int count_neurons;
-
-    protected:
-
-        /**
-         *  Number of parameters read.
-         */
-        int nParams;
+        int countNeurons_;
 };
 
 #if defined(USE_GPU)
@@ -271,56 +264,56 @@ struct AllSynapsesDeviceProperties
         /**
          *  The location of the synapse.
          */
-        int *sourceNeuronIndex;
+        int *sourceNeuronIndex_;
 
         /** 
          *  The coordinates of the summation point.
          */
-        int *destNeuronIndex;
+        int *destNeuronIndex_;
 
         /**
          *   The weight (scaling factor, strength, maximal amplitude) of the synapse.
          */
-         BGFLOAT *W;
+         BGFLOAT *W_;
 
     	/**
          *  Synapse type
          */
-        synapseType *type;
+        synapseType *type_;
 
         /** 
          *  The post-synaptic response is the result of whatever computation 
          *  is going on in the synapse.
          */
-        BGFLOAT *psr;
+        BGFLOAT *psr_;
 
     	/**
          *  The boolean value indicating the entry in the array is in use.
          */
-        bool *in_use;
+        bool *inUse_;
 
         /**
          *  The number of synapses for each neuron.
          *  Note: Likely under a different name in GpuSim_struct, see synapse_count. -Aaron
          */
-        BGSIZE *synapse_counts;
+        BGSIZE *synapseCounts_;
 
         /**
          *  The total number of active synapses.
          */
-        BGSIZE total_synapse_counts;
+        BGSIZE totalSynapseCounts_;
 
     	/**
          *  The maximum number of synapses for each neurons.
          */
-        BGSIZE maxSynapsesPerNeuron;
+        BGSIZE maxSynapsesPerNeuron_;
 
         /**
          *  The number of neurons
          *  Aaron: Is this even supposed to be here?!
          *  Usage: Used by destructor
          */
-        int count_neurons;
+        int countNeurons_;
 }; 
 #endif // defined(USE_GPU)
 
@@ -336,10 +329,10 @@ void AllSynapses::save(Archive & archive) const
     vector<int>sourceNeuronLayoutIndexVector;
     vector<int>destNeuronLayoutIndexVector;
 
-    for(int i = 0; i < maxSynapsesPerNeuron * count_neurons; i++) {
-        WVector.push_back(W[i]);
-        sourceNeuronLayoutIndexVector.push_back(sourceNeuronIndex[i]);
-        destNeuronLayoutIndexVector.push_back(destNeuronIndex[i]);
+    for(int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
+        WVector.push_back(W_[i]);
+        sourceNeuronLayoutIndexVector.push_back(sourceNeuronIndex_[i]);
+        destNeuronLayoutIndexVector.push_back(destNeuronIndex_[i]);
     }
 
     // serialization
@@ -362,15 +355,15 @@ void AllSynapses::load(Archive & archive)
     archive(WVector, sourceNeuronLayoutIndexVector, destNeuronLayoutIndexVector);
 
     // check to see if serialized data sizes matches object sizes  
-    if(WVector.size() != maxSynapsesPerNeuron * count_neurons) {
+    if(WVector.size() != maxSynapsesPerNeuron_ * countNeurons_) {
         cerr << "Failed deserializing synapse weights, source neurons, and/or destination neurons. Please verify maxSynapsesPerNeuron and count_neurons data members in AllSynapses class." << endl;
         throw cereal::Exception("Deserialization Error");
     }
 
     // assigns serialized data to objects 
-    for(int i = 0; i < maxSynapsesPerNeuron * count_neurons; i++) {
-        W[i] = WVector[i];
-        sourceNeuronIndex[i] = sourceNeuronLayoutIndexVector[i];
-        destNeuronIndex[i] = destNeuronLayoutIndexVector[i];
+    for(int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
+       W_[i] = WVector[i];
+       sourceNeuronIndex_[i] = sourceNeuronLayoutIndexVector[i];
+       destNeuronIndex_[i] = destNeuronLayoutIndexVector[i];
     }
 }

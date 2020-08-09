@@ -1,23 +1,20 @@
 #include "AllSpikingSynapses.h"
 
-AllSpikingSynapses::AllSpikingSynapses() : AllSynapses()
-{
-    decay = NULL;
-    total_delay = NULL;
-    delayQueue = NULL;
-    delayIdx = NULL;
-    ldelayQueue = NULL;
-    tau = NULL;
+AllSpikingSynapses::AllSpikingSynapses() : AllSynapses() {
+   decay_ = NULL;
+   totalDelay_ = NULL;
+   delayQueue_ = NULL;
+   delayIndex_ = NULL;
+   delayQueueLength_ = NULL;
+   tau_ = NULL;
 }
 
-AllSpikingSynapses::AllSpikingSynapses(const int num_neurons, const int max_synapses) 
-{
-    setupSynapses(num_neurons, max_synapses);
+AllSpikingSynapses::AllSpikingSynapses(const int num_neurons, const int max_synapses) {
+   setupSynapses(num_neurons, max_synapses);
 }
 
-AllSpikingSynapses::~AllSpikingSynapses()
-{
-    cleanupSynapses();
+AllSpikingSynapses::~AllSpikingSynapses() {
+   cleanupSynapses();
 }
 
 /*
@@ -25,9 +22,8 @@ AllSpikingSynapses::~AllSpikingSynapses()
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllSpikingSynapses::setupSynapses()
-{
-    setupSynapses(Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
+void AllSpikingSynapses::setupSynapses() {
+   setupSynapses(Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
 }
 
 /*
@@ -36,46 +32,44 @@ void AllSpikingSynapses::setupSynapses()
  *  @param  num_neurons   Total number of neurons in the network.
  *  @param  max_synapses  Maximum number of synapses per neuron.
  */
-void AllSpikingSynapses::setupSynapses(const int num_neurons, const int max_synapses)
-{
-    AllSynapses::setupSynapses(num_neurons, max_synapses);
+void AllSpikingSynapses::setupSynapses(const int num_neurons, const int max_synapses) {
+   AllSynapses::setupSynapses(num_neurons, max_synapses);
 
-    BGSIZE max_total_synapses = max_synapses * num_neurons;
+   BGSIZE max_total_synapses = max_synapses * num_neurons;
 
-    if (max_total_synapses != 0) {
-        decay = new BGFLOAT[max_total_synapses];
-        total_delay = new int[max_total_synapses];
-        delayQueue = new uint32_t[max_total_synapses];
-        delayIdx = new int[max_total_synapses];
-        ldelayQueue = new int[max_total_synapses];
-        tau = new BGFLOAT[max_total_synapses];
-    }
+   if (max_total_synapses != 0) {
+      decay_ = new BGFLOAT[max_total_synapses];
+      totalDelay_ = new int[max_total_synapses];
+      delayQueue_ = new uint32_t[max_total_synapses];
+      delayIndex_ = new int[max_total_synapses];
+      delayQueueLength_ = new int[max_total_synapses];
+      tau_ = new BGFLOAT[max_total_synapses];
+   }
 }
 
 /*
  *  Cleanup the class (deallocate memories).
  */
-void AllSpikingSynapses::cleanupSynapses()
-{
-    BGSIZE max_total_synapses = maxSynapsesPerNeuron * count_neurons;
+void AllSpikingSynapses::cleanupSynapses() {
+   BGSIZE max_total_synapses = maxSynapsesPerNeuron_ * countNeurons_;
 
-    if (max_total_synapses != 0) {
-        delete[] decay;
-        delete[] total_delay;
-        delete[] delayQueue;
-        delete[] delayIdx;
-        delete[] ldelayQueue;
-        delete[] tau;
-    }
+   if (max_total_synapses != 0) {
+      delete[] decay_;
+      delete[] totalDelay_;
+      delete[] delayQueue_;
+      delete[] delayIndex_;
+      delete[] delayQueueLength_;
+      delete[] tau_;
+   }
 
-    decay = NULL;
-    total_delay = NULL;
-    delayQueue = NULL;
-    delayIdx = NULL;
-    ldelayQueue = NULL;
-    tau = NULL;
+   decay_ = NULL;
+   totalDelay_ = NULL;
+   delayQueue_ = NULL;
+   delayIndex_ = NULL;
+   delayQueueLength_ = NULL;
+   tau_ = NULL;
 
-    AllSynapses::cleanupSynapses();
+   AllSynapses::cleanupSynapses();
 }
 
 /*
@@ -83,18 +77,17 @@ void AllSpikingSynapses::cleanupSynapses()
  *
  *  @param  iSyn   index of the synapse to set.
  */
-void AllSpikingSynapses::initSpikeQueue(const BGSIZE iSyn)
-{
-    int &total_delay = this->total_delay[iSyn];
-    uint32_t &delayQueue = this->delayQueue[iSyn];
-    int &delayIdx = this->delayIdx[iSyn];
-    int &ldelayQueue = this->ldelayQueue[iSyn];
+void AllSpikingSynapses::initSpikeQueue(const BGSIZE iSyn) {
+   int &total_delay = this->totalDelay_[iSyn];
+   uint32_t &delayQueue = this->delayQueue_[iSyn];
+   int &delayIdx = this->delayIndex_[iSyn];
+   int &ldelayQueue = this->delayQueueLength_[iSyn];
 
-    uint32_t size = total_delay / ( sizeof(uint8_t) * 8 ) + 1;
-    assert( size <= BYTES_OF_DELAYQUEUE );
-    delayQueue = 0;
-    delayIdx = 0;
-    ldelayQueue = LENGTH_OF_DELAYQUEUE;
+   uint32_t size = total_delay / (sizeof(uint8_t) * 8) + 1;
+   assert(size <= BYTES_OF_DELAYQUEUE);
+   delayQueue = 0;
+   delayIdx = 0;
+   ldelayQueue = LENGTH_OF_DELAYQUEUE;
 }
 
 /*
@@ -103,41 +96,16 @@ void AllSpikingSynapses::initSpikeQueue(const BGSIZE iSyn)
  *  @param  iSyn     Index of the synapse to set.
  *  @param  deltaT   Inner simulation step duration
  */
-void AllSpikingSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT)
-{
-    AllSynapses::resetSynapse(iSyn, deltaT);
+void AllSpikingSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
+   AllSynapses::resetSynapse(iSyn, deltaT);
 
-    assert( updateDecay(iSyn, deltaT) );
+   assert(updateDecay(iSyn, deltaT));
 }
 
 /*
- *  Checks the number of required parameters.
- *
- * @return true if all required parameters were successfully read, false otherwise.
+ *  Prints out all parameters of the neurons to console.
  */
-bool AllSpikingSynapses::checkNumParameters()
-{
-    return (nParams >= 0);
-}
-
-/*
- *  Attempts to read parameters from a XML file.
- *
- *  @param  element TiXmlElement to examine.
- *  @return true if successful, false otherwise.
- */
-bool AllSpikingSynapses::readParameters(const TiXmlElement& element)
-{
-    return false;
-}
-
-/*
- *  Prints out all parameters of the neurons to ostream.
- *
- *  @param  output  ostream to send output to.
- */
-void AllSpikingSynapses::printParameters(ostream &output) const
-{
+void AllSpikingSynapses::printParameters() const {
 }
 
 /*
@@ -146,17 +114,22 @@ void AllSpikingSynapses::printParameters(ostream &output) const
  *  @param  input  istream to read from.
  *  @param  iSyn   Index of the synapse to set.
  */
-void AllSpikingSynapses::readSynapse(istream &input, const BGSIZE iSyn)
-{
-    AllSynapses::readSynapse(input, iSyn);
+void AllSpikingSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
+   AllSynapses::readSynapse(input, iSyn);
 
-    // input.ignore() so input skips over end-of-line characters.
-    input >> decay[iSyn]; input.ignore();
-    input >> total_delay[iSyn]; input.ignore();
-    input >> delayQueue[iSyn]; input.ignore();
-    input >> delayIdx[iSyn]; input.ignore();
-    input >> ldelayQueue[iSyn]; input.ignore();
-    input >> tau[iSyn]; input.ignore();
+   // input.ignore() so input skips over end-of-line characters.
+   input >> decay_[iSyn];
+   input.ignore();
+   input >> totalDelay_[iSyn];
+   input.ignore();
+   input >> delayQueue_[iSyn];
+   input.ignore();
+   input >> delayIndex_[iSyn];
+   input.ignore();
+   input >> delayQueueLength_[iSyn];
+   input.ignore();
+   input >> tau_[iSyn];
+   input.ignore();
 }
 
 /*
@@ -165,16 +138,15 @@ void AllSpikingSynapses::readSynapse(istream &input, const BGSIZE iSyn)
  *  @param  output  stream to print out to.
  *  @param  iSyn    Index of the synapse to print out.
  */
-void AllSpikingSynapses::writeSynapse(ostream& output, const BGSIZE iSyn) const
-{
-    AllSynapses::writeSynapse(output, iSyn);
+void AllSpikingSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
+   AllSynapses::writeSynapse(output, iSyn);
 
-    output << decay[iSyn] << ends;
-    output << total_delay[iSyn] << ends;
-    output << delayQueue[iSyn] << ends;
-    output << delayIdx[iSyn] << ends;
-    output << ldelayQueue[iSyn] << ends;
-    output << tau[iSyn] << ends;
+   output << decay_[iSyn] << ends;
+   output << totalDelay_[iSyn] << ends;
+   output << delayQueue_[iSyn] << ends;
+   output << delayIndex_[iSyn] << ends;
+   output << delayQueueLength_[iSyn] << ends;
+   output << tau_[iSyn] << ends;
 }
 
 /*
@@ -188,69 +160,69 @@ void AllSpikingSynapses::writeSynapse(ostream& output, const BGSIZE iSyn) const
  *  @param  deltaT      Inner simulation step duration.
  *  @param  type        Type of the Synapse to create.
  */
-void AllSpikingSynapses::createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sum_point, const BGFLOAT deltaT, synapseType type)
-{
-    BGFLOAT delay;
+void AllSpikingSynapses::createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sum_point,
+                                       const BGFLOAT deltaT, synapseType type) {
+   BGFLOAT delay;
 
-    in_use[iSyn] = true;
-    summationPoint[iSyn] = sum_point;
-    destNeuronIndex[iSyn] = dest_index;
-    sourceNeuronIndex[iSyn] = source_index;
-    W[iSyn] = synSign(type) * 10.0e-9;
-    this->type[iSyn] = type;
-    tau[iSyn] = DEFAULT_tau;
+   inUse_[iSyn] = true;
+   summationPoint_[iSyn] = sum_point;
+   destNeuronIndex_[iSyn] = dest_index;
+   sourceNeuronIndex_[iSyn] = source_index;
+   W_[iSyn] = synSign(type) * 10.0e-9;
+   this->type_[iSyn] = type;
+   tau_[iSyn] = DEFAULT_tau;
 
-    BGFLOAT tau;
-    switch (type) {
-        case II:
-            tau = 6e-3;
-            delay = 0.8e-3;
-            break;
-        case IE:
-            tau = 6e-3;
-            delay = 0.8e-3;
-            break;
-        case EI:
-            tau = 3e-3;
-            delay = 0.8e-3;
-            break;
-        case EE:
-            tau = 3e-3;
-            delay = 1.5e-3;
-            break;
-        default:
-            assert( false );
-            break;
-    }
+   BGFLOAT tau;
+   switch (type) {
+      case II:
+         tau = 6e-3;
+         delay = 0.8e-3;
+         break;
+      case IE:
+         tau = 6e-3;
+         delay = 0.8e-3;
+         break;
+      case EI:
+         tau = 3e-3;
+         delay = 0.8e-3;
+         break;
+      case EE:
+         tau = 3e-3;
+         delay = 1.5e-3;
+         break;
+      default:
+         assert(false);
+         break;
+   }
 
-    this->tau[iSyn] = tau;
-    this->total_delay[iSyn] = static_cast<int>( delay / deltaT ) + 1;
+   this->tau_[iSyn] = tau;
+   this->totalDelay_[iSyn] = static_cast<int>( delay / deltaT ) + 1;
 
-    // initializes the queues for the Synapses
-    initSpikeQueue(iSyn);
-    // reset time varying state vars and recompute decay
-    resetSynapse(iSyn, deltaT);
+   // initializes the queues for the Synapses
+   initSpikeQueue(iSyn);
+   // reset time varying state vars and recompute decay
+   resetSynapse(iSyn, deltaT);
 }
 
 #if !defined(USE_GPU)
+
 /*
  *  Checks if there is an input spike in the queue.
  *
  *  @param  iSyn   Index of the Synapse to connect to.
  *  @return true if there is an input spike event.
  */
-bool AllSpikingSynapses::isSpikeQueue(const BGSIZE iSyn)
-{
-    uint32_t &delayQueue = this->delayQueue[iSyn];
-    int &delayIdx = this->delayIdx[iSyn];
-    int &ldelayQueue = this->ldelayQueue[iSyn];
+bool AllSpikingSynapses::isSpikeQueue(const BGSIZE iSyn) {
+   uint32_t &delayQueue = this->delayQueue_[iSyn];
+   int &delayIdx = this->delayIndex_[iSyn];
+   int &ldelayQueue = this->delayQueueLength_[iSyn];
 
-    bool r = delayQueue & (0x1 << delayIdx);
-    delayQueue &= ~(0x1 << delayIdx);
-    if ( ++delayIdx >= ldelayQueue ) {
-        delayIdx = 0;
-    }
-    return r;
+   bool r = delayQueue & (0x1 << delayIdx);
+   delayQueue &= ~(0x1 << delayIdx);
+   if (++delayIdx >= ldelayQueue) {
+      delayIdx = 0;
+   }
+   return r;
 }
 
 /*
@@ -258,24 +230,23 @@ bool AllSpikingSynapses::isSpikeQueue(const BGSIZE iSyn)
  *
  *  @param  iSyn   Index of the Synapse to update.
  */
-void AllSpikingSynapses::preSpikeHit(const BGSIZE iSyn)
-{
-    uint32_t &delay_queue = this->delayQueue[iSyn];
-    int &delayIdx = this->delayIdx[iSyn];
-    int &ldelayQueue = this->ldelayQueue[iSyn];
-    int &total_delay = this->total_delay[iSyn];
+void AllSpikingSynapses::preSpikeHit(const BGSIZE iSyn) {
+   uint32_t &delay_queue = this->delayQueue_[iSyn];
+   int &delayIdx = this->delayIndex_[iSyn];
+   int &ldelayQueue = this->delayQueueLength_[iSyn];
+   int &total_delay = this->totalDelay_[iSyn];
 
-    // Add to spike queue
+   // Add to spike queue
 
-    // calculate index where to insert the spike into delayQueue
-    int idx = delayIdx +  total_delay;
-    if ( idx >= ldelayQueue ) {
-        idx -= ldelayQueue;
-    }
+   // calculate index where to insert the spike into delayQueue
+   int idx = delayIdx + total_delay;
+   if (idx >= ldelayQueue) {
+      idx -= ldelayQueue;
+   }
 
-    // set a spike
-    assert( !(delay_queue & (0x1 << idx)) );
-    delay_queue |= (0x1 << idx);
+   // set a spike
+   assert(!(delay_queue & (0x1 << idx)));
+   delay_queue |= (0x1 << idx);
 }
 
 /*
@@ -283,8 +254,7 @@ void AllSpikingSynapses::preSpikeHit(const BGSIZE iSyn)
  *
  *  @param  iSyn   Index of the Synapse to update.
  */
-void AllSpikingSynapses::postSpikeHit(const BGSIZE iSyn)
-{
+void AllSpikingSynapses::postSpikeHit(const BGSIZE iSyn) {
 }
 
 /*
@@ -294,27 +264,26 @@ void AllSpikingSynapses::postSpikeHit(const BGSIZE iSyn)
  *  @param  sim_info  SimulationInfo class to read information from.
  *  @param  neurons   The Neuron list to search from.
  */
-void AllSpikingSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons * neurons)
-{
-    BGFLOAT &decay = this->decay[iSyn];
-    BGFLOAT &psr = this->psr[iSyn];
-    BGFLOAT &summationPoint = *(this->summationPoint[iSyn]);
+void AllSpikingSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
+   BGFLOAT &decay = this->decay_[iSyn];
+   BGFLOAT &psr = this->psr_[iSyn];
+   BGFLOAT &summationPoint = *(this->summationPoint_[iSyn]);
 
-    // is an input in the queue?
-    if (isSpikeQueue(iSyn)) {
-        changePSR(iSyn, Simulator::getInstance().getDeltaT());
-    }
+   // is an input in the queue?
+   if (isSpikeQueue(iSyn)) {
+      changePSR(iSyn, Simulator::getInstance().getDeltaT());
+   }
 
-    // decay the post spike response
-    psr *= decay;
-    // and apply it to the summation point
+   // decay the post spike response
+   psr *= decay;
+   // and apply it to the summation point
 #ifdef USE_OMP
 #pragma omp atomic #endif
 #endif
-    summationPoint += psr;
+   summationPoint += psr;
 #ifdef USE_OMP
-    //PAB: atomic above has implied flush (following statement generates error -- can't be member variable)
-    //#pragma omp flush (summationPoint)
+   //PAB: atomic above has implied flush (following statement generates error -- can't be member variable)
+   //#pragma omp flush (summationPoint)
 #endif
 }
 
@@ -324,13 +293,12 @@ void AllSpikingSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons * neurons
  *  @param  iSyn        Index of the synapse to set.
  *  @param  deltaT      Inner simulation step duration.
  */
-void AllSpikingSynapses::changePSR(const BGSIZE iSyn, const BGFLOAT deltaT)
-{
-    BGFLOAT &psr = this->psr[iSyn];
-    BGFLOAT &W = this->W[iSyn];
-    BGFLOAT &decay = this->decay[iSyn];
+void AllSpikingSynapses::changePSR(const BGSIZE iSyn, const BGFLOAT deltaT) {
+   BGFLOAT &psr = this->psr_[iSyn];
+   BGFLOAT &W = this->W_[iSyn];
+   BGFLOAT &decay = this->decay_[iSyn];
 
-    psr += ( W / decay );    // calculate psr
+   psr += (W / decay);    // calculate psr
 }
 
 #endif //!defined(USE_GPU)
@@ -341,16 +309,15 @@ void AllSpikingSynapses::changePSR(const BGSIZE iSyn, const BGFLOAT deltaT)
  *  @param  iSyn    Index of the synapse to set.
  *  @param  deltaT  Inner simulation step duration
  */
-bool AllSpikingSynapses::updateDecay(const BGSIZE iSyn, const BGFLOAT deltaT)
-{
-        BGFLOAT &tau = this->tau[iSyn];
-        BGFLOAT &decay = this->decay[iSyn];
+bool AllSpikingSynapses::updateDecay(const BGSIZE iSyn, const BGFLOAT deltaT) {
+   BGFLOAT &tau = this->tau_[iSyn];
+   BGFLOAT &decay = this->decay_[iSyn];
 
-        if (tau > 0) {
-                decay = exp( -deltaT / tau );
-                return true;
-        }
-        return false;
+   if (tau > 0) {
+      decay = exp(-deltaT / tau);
+      return true;
+   }
+   return false;
 }
 
 /*
@@ -359,22 +326,20 @@ bool AllSpikingSynapses::updateDecay(const BGSIZE iSyn, const BGFLOAT deltaT)
  *
  *  @retrun true if the back propagation is allowed.
  */
-bool AllSpikingSynapses::allowBackPropagation()
-{
-    return false;
+bool AllSpikingSynapses::allowBackPropagation() {
+   return false;
 }
 
 /*
  *  Prints SynapsesProps data.
  */
-void AllSpikingSynapses::printSynapsesProps() const
-{
-    AllSynapses::printSynapsesProps();
-    for(int i = 0; i < maxSynapsesPerNeuron * count_neurons; i++) {
-        if (W[i] != 0.0) {
-            cout << "decay[" << i << "] = " << decay[i];
-            cout << " tau: " << tau[i];
-            cout << " total_delay: " << total_delay[i]<<endl;
-        }
-    }
+void AllSpikingSynapses::printSynapsesProps() const {
+   AllSynapses::printSynapsesProps();
+   for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
+      if (W_[i] != 0.0) {
+         cout << "decay[" << i << "] = " << decay_[i];
+         cout << " tau: " << tau_[i];
+         cout << " total_delay: " << totalDelay_[i] << endl;
+      }
+   }
 }

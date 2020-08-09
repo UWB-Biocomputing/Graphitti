@@ -63,7 +63,7 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
         for (BGSIZE i = 0; i < distDestNeurons[src_neuron].size() && (int)i < m_nConnsPerNeuron; i++) {
             int dest_neuron = distDestNeurons[src_neuron][i].dest_neuron;
             synapseType type = layout->synType(src_neuron, dest_neuron);
-            BGFLOAT* sum_point = &( dynamic_cast<AllNeurons*>(neurons)->summation_map[dest_neuron] );
+            BGFLOAT* sum_point = &( dynamic_cast<AllNeurons*>(neurons)->summationMap_[dest_neuron] );
 
             DEBUG_MID (cout << "source: " << src_neuron << " dest: " << dest_neuron << " dist: " << distDestNeurons[src_neuron][i].dist << endl;)
 
@@ -74,10 +74,10 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
             // set synapse weight
             // TODO: we need another synaptic weight distibution mode (normal distribution)
             if (synapses->synSign(type) > 0) {
-                dynamic_cast<AllSynapses*>(synapses)->W[iSyn] = rng.inRange(m_excWeight[0], m_excWeight[1]);
+                dynamic_cast<AllSynapses*>(synapses)->W_[iSyn] = rng.inRange(m_excWeight[0], m_excWeight[1]);
             }
             else {
-                dynamic_cast<AllSynapses*>(synapses)->W[iSyn] = rng.inRange(m_inhWeight[0], m_inhWeight[1]);
+                dynamic_cast<AllSynapses*>(synapses)->W_[iSyn] = rng.inRange(m_inhWeight[0], m_inhWeight[1]);
             } 
         }
     }

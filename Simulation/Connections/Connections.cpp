@@ -112,16 +112,16 @@ void Connections::createSynapsesFromWeights(const int num_neurons, Layout *layou
            synapse_index < Simulator::getInstance().getMaxSynapsesPerNeuron(); synapse_index++) {
          BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * iNeuron + synapse_index;
          // if the synapse weight is not zero (which means there is a connection), create the synapse
-         if (synapses.W[iSyn] != 0.0) {
-            BGFLOAT theW = synapses.W[iSyn];
-            BGFLOAT *sum_point = &(neurons.summation_map[iNeuron]);
-            int src_neuron = synapses.sourceNeuronIndex[iSyn];
-            int dest_neuron = synapses.destNeuronIndex[iSyn];
+         if (synapses.W_[iSyn] != 0.0) {
+            BGFLOAT theW = synapses.W_[iSyn];
+            BGFLOAT *sum_point = &(neurons.summationMap_[iNeuron]);
+            int src_neuron = synapses.sourceNeuronIndex_[iSyn];
+            int dest_neuron = synapses.destNeuronIndex_[iSyn];
             synapseType type = layout->synType(src_neuron, dest_neuron);
-            synapses.synapse_counts[iNeuron]++;
+            synapses.synapseCounts_[iNeuron]++;
             synapses.createSynapse(iSyn, src_neuron, dest_neuron, sum_point, Simulator::getInstance().getDeltaT(),
                                    type);
-            synapses.W[iSyn] = theW;
+            synapses.W_[iSyn] = theW;
          }
       }
    }

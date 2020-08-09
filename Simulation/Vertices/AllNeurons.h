@@ -40,51 +40,46 @@ using namespace std;
 #include "IAllNeurons.h"
 #include "BGTypes.h"
 
-class AllNeurons : public IAllNeurons
-{
-    public:
-        AllNeurons();
-        virtual ~AllNeurons();
+class AllNeurons : public IAllNeurons {
+public:
+   AllNeurons();
 
-        /**
-         *  Setup the internal structure of the class.
-         *  Allocate memories to store all neurons' state.
-         *
-         *  @param  sim_info  SimulationInfo class to read information from.
-         */
-        virtual void setupNeurons();
+   virtual ~AllNeurons();
 
-        /**
-         *  Cleanup the class.
-         *  Deallocate memories.
-         */
-        virtual void cleanupNeurons();
+   /**
+    *  Setup the internal structure of the class.
+    *  Allocate memories to store all neurons' state.
+    *
+    *  @param  sim_info  SimulationInfo class to read information from.
+    */
+   virtual void setupNeurons();
 
-        /**
-         *  The summation point for each neuron.
-         *  Summation points are places where the synapses connected to the neuron
-         *  apply (summed up) their PSRs (Post-Synaptic-Response).
-         *  On the next advance cycle, neurons add the values stored in their corresponding
-         *  summation points to their Vm and resets the summation points to zero
-         */
-        BGFLOAT *summation_map;
+   /**
+    *  Cleanup the class.
+    *  Deallocate memories.
+    */
+   virtual void cleanupNeurons();
 
-    protected:
-        /**
-         *  Total number of neurons.
-         */
-        int size;
+   /**
+    *  The summation point for each neuron.
+    *  Summation points are places where the synapses connected to the neuron
+    *  apply (summed up) their PSRs (Post-Synaptic-Response).
+    *  On the next advance cycle, neurons add the values stored in their corresponding
+    *  summation points to their Vm and resets the summation points to zero
+    */
+   BGFLOAT *summationMap_;
 
-        /**
-         *  Number of parameters read.
-         */
-        int nParams;
+protected:
+   /**
+    *  Total number of neurons.
+    */
+   int size_;
 
-    private:
-        /**
-         *  Deallocate all resources
-         */
-        void freeResources();
+private:
+   /**
+    *  Deallocate all resources
+    */
+   void freeResources();
 };
 
 #if defined(USE_GPU)
@@ -97,6 +92,6 @@ struct AllNeuronsDeviceProperties
          *  On the next advance cycle, neurons add the values stored in their corresponding 
          *  summation points to their Vm and resets the summation points to zero
          */
-        BGFLOAT *summation_map;
+        BGFLOAT *summationMap_;
 };
 #endif // defined(USE_GPU)
