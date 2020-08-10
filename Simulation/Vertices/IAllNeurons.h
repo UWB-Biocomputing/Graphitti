@@ -34,6 +34,9 @@ public:
     */
    virtual void cleanupNeurons() = 0;
 
+   /// Load member variables from configuration file. Registered to OperationManager as Operation::op::loadParameters
+   virtual void loadParameters() = 0;
+
    /**
     *  Prints out all parameters of the neurons to ostream.
     *

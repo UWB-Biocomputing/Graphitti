@@ -3,6 +3,8 @@
 #include "Layout.h"
 #include "RNG/MersenneTwister.h"
 #include "RNG/Norm.h"
+#include "ParameterManager.h"
+#include "OperationManager.h"
 
 // Default constructor
 AllIFNeurons::AllIFNeurons() : AllSpikingNeurons() {
@@ -22,6 +24,10 @@ AllIFNeurons::AllIFNeurons() : AllSpikingNeurons() {
    Vrest_ = NULL;
    Vthresh_ = NULL;
    numStepsInRefractoryPeriod_ = NULL;
+
+   // Register loadParameters function with Operation Manager
+   auto function = std::bind(&AllIFNeurons::loadParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function);
 }
 
 AllIFNeurons::~AllIFNeurons() {
@@ -108,35 +114,65 @@ void AllIFNeurons::freeResources() {
    numStepsInRefractoryPeriod_ = NULL;
 }
 
+/**
+ *  Load member variables from configuration file.
+ *  Registered to OperationManager as Operation::op::loadParameters
+ */
+void AllIFNeurons::loadParameters() {
+   ParameterManager::getInstance().getBGFloatByXpath("//Iinject/min/text()", IinjectRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//Iinject/max/text()", IinjectRange_[1]);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//Inoise/min/text()", InoiseRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//Inoise/max/text()", InoiseRange_[1]);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//Vthresh/min/text()", VthreshRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//Vthresh/max/text()", VthreshRange_[1]);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//Vresting/min/text()", VrestingRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//Vresting/max/text()", VrestingRange_[1]);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//Vreset/min/text()", VresetRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//Vreset/max/text()", VresetRange_[1]);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//Vinit/min/text()", VinitRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//Vinit/max/text()", VinitRange_[1]);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//starter_vthresh/min/text()", starterVthreshRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//starter_vthresh/max/text()", starterVthreshRange_[1]);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//starter_vreset/min/text()", starterVresetRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//starter_vreset/max/text()", starterVresetRange_[1]);
+}
+
 /*
  *  Prints out all parameters of the neurons to ostream.
  * 
  *  @param  output  ostream to send output to.
  */
 void AllIFNeurons::printParameters() const {
-   cout << "Interval of constant injected current: ["
+   cout << "\tInterval of constant injected current: ["
           << IinjectRange_[0] << ", " << IinjectRange_[1] << "]"
           << endl;
-   cout << "Interval of STD of (gaussian) noise current: ["
+   cout << "\tInterval of STD of (gaussian) noise current: ["
           << InoiseRange_[0] << ", " << InoiseRange_[1] << "]"
           << endl;
-   cout << "Interval of firing threshold: ["
+   cout << "\tInterval of firing threshold: ["
           << VthreshRange_[0] << ", " << VthreshRange_[1] << "]"
           << endl;
-   cout << "Interval of asymptotic voltage (Vresting): [" << VrestingRange_[0]
+   cout << "\tInterval of asymptotic voltage (Vresting): [" << VrestingRange_[0]
           << ", " << VrestingRange_[1] << "]"
           << endl;
-   cout << "Interval of reset voltage: [" << VresetRange_[0]
+   cout << "\tInterval of reset voltage: [" << VresetRange_[0]
           << ", " << VresetRange_[1] << "]"
           << endl;
-   cout << "Interval of initial membrance voltage: [" << VinitRange_[0]
+   cout << "\tInterval of initial membrance voltage: [" << VinitRange_[0]
           << ", " << VinitRange_[1] << "]"
           << endl;
-   cout << "Starter firing threshold: [" << starterVthreshRange_[0]
-          << ", " << starterVthreshRange_[1] << "]"
+   cout << "\tStarter firing threshold: [" << starterVthreshRange_[0]
+        << ", " << starterVthreshRange_[1] << "]"
           << endl;
-   cout << "Starter reset threshold: [" << starterVresetRange_[0]
-          << ", " << starterVresetRange_[1] << "]"
+   cout << "\tStarter reset threshold: [" << starterVresetRange_[0]
+        << ", " << starterVresetRange_[1] << "]"
           << endl;
 }
 
@@ -181,7 +217,7 @@ void AllIFNeurons::createNeuron(int neuron_index, Layout *layout) {
       spikeHistory_[neuron_index][j] = ULONG_MAX;
    }
 
-   switch (layout->neuron_type_map[neuron_index]) {
+   switch (layout->neuronTypeMap_[neuron_index]) {
       case INH: DEBUG_MID(cout << "setting inhibitory neuron: " << neuron_index << endl;)
          // set inhibitory absolute refractory period
          Trefract_[neuron_index] = DEFAULT_InhibTrefract;// TODO(derek): move defaults inside model.
@@ -193,13 +229,13 @@ void AllIFNeurons::createNeuron(int neuron_index, Layout *layout) {
          break;
 
       default: DEBUG_MID(
-            cout << "ERROR: unknown neuron type: " << layout->neuron_type_map[neuron_index] << "@" << neuron_index
+            cout << "ERROR: unknown neuron type: " << layout->neuronTypeMap_[neuron_index] << "@" << neuron_index
                  << endl;)
          assert(false);
          break;
    }
    // endogenously_active_neuron_map -> Model State
-   if (layout->starter_map[neuron_index]) {
+   if (layout->starterMap_[neuron_index]) {
       // set endogenously active threshold voltage, reset voltage, and refractory period
       Vthresh_[neuron_index] = rng.inRange(starterVthreshRange_[0], starterVthreshRange_[1]);
       Vreset_[neuron_index] = rng.inRange(starterVresetRange_[0], starterVresetRange_[1]);
@@ -387,3 +423,5 @@ void AllIFNeurons::writeNeuron(ostream &output, int i) const {
    output << hasFired_[i] << ends;
    output << Tau_[i] << ends;
 }
+
+

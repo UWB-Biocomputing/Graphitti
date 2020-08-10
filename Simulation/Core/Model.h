@@ -71,7 +71,6 @@ public:
 
    /// Modifies connections between neurons based on current state of the network and
    /// behavior over the past epoch. Should be called once every epoch.
-   /// ToDo: Look at why simulator calls model->updateconnections
    /// might be similar to advance.
    virtual void updateConnections() = 0;
 
@@ -87,9 +86,7 @@ protected:
    virtual void copyCPUtoGPU() = 0;
 
 protected:
-   // ToDo: make private again after serialization is fixed... shouldn't these be private with public accessors?
-   // ToDo: Should model own these? Or should simulator?
-   shared_ptr<Connections> conns_;  // ToDo: make shared pointers
+   shared_ptr<Connections> conns_;
 
    shared_ptr<Layout> layout_;
 
@@ -97,5 +94,6 @@ protected:
 
    // shared_ptr<ISInput> input_;    /// Stimulus input object.
 
+   // ToDo: Find a good place for this method. Makes sense to put it in Layout
    void createAllNeurons(); /// Populate an instance of IAllNeurons with an initial state for each neuron.
 };

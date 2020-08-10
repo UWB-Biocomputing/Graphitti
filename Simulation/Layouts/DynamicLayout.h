@@ -25,42 +25,40 @@
 
 using namespace std;
 
-class DynamicLayout : public Layout
-{
-    public:
-        DynamicLayout();
-        virtual ~DynamicLayout();
+class DynamicLayout : public Layout {
+public:
+   DynamicLayout();
 
-        static Layout* Create() { return new DynamicLayout(); }
+   virtual ~DynamicLayout();
 
-        /**
-         *  Prints out all parameters of the neurons to ostream.
-         *
-         *  @param  output  ostream to send output to.
-         */
-        virtual void printParameters(ostream &output) const;
+   static Layout *Create() { return new DynamicLayout(); }
 
-        /**
-         *  Creates a randomly ordered distribution with the specified numbers of neuron types.
-         *
-         *  @param  num_neurons number of the neurons to have in the type map.
-         */
-        virtual void generateNeuronTypeMap(int num_neurons);
+   /**
+    *  Prints out all parameters of the neurons to console.
+    */
+   virtual void printParameters() const;
 
-        /**
-         *  Populates the starter map.
-         *  Selects num_endogenously_active_neurons excitory neurons 
-         *  and converts them into starter neurons.
-         *
-         *  @param  num_neurons number of neurons to have in the map.
-         */
-        virtual void initStarterMap(const int num_neurons);
+   /**
+    *  Creates a randomly ordered distribution with the specified numbers of neuron types.
+    *
+    *  @param  num_neurons number of the neurons to have in the type map.
+    */
+   virtual void generateNeuronTypeMap(int num_neurons);
 
-    private:
-        //! Fraction of endogenously active neurons.
-        BGFLOAT m_frac_starter_neurons;
+   /**
+    *  Populates the starter map.
+    *  Selects num_endogenously_active_neurons excitory neurons
+    *  and converts them into starter neurons.
+    *
+    *  @param  num_neurons number of neurons to have in the map.
+    */
+   virtual void initStarterMap(const int num_neurons);
 
-        //! Fraction of exitatory neurons.
-        BGFLOAT m_frac_excitatory_neurons;
+private:
+   //! Fraction of endogenously active neurons.
+   BGFLOAT m_frac_starter_neurons;
+
+   //! Fraction of exitatory neurons.
+   BGFLOAT m_frac_excitatory_neurons;
 };
 

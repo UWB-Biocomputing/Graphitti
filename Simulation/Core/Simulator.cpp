@@ -62,6 +62,7 @@ void Simulator::finish() {
    model_->cleanupSim(); // ToDo: Can #term be removed w/ the new model architecture?  // =>ISIMULATION
 }
 
+/// Load member variables from configuration file
 void Simulator::loadParameters() {
    ParameterManager::getInstance().getIntByXpath("//PoolSize/x/text()", width_);
    ParameterManager::getInstance().getIntByXpath("//PoolSize/y/text()", height_);
@@ -70,6 +71,8 @@ void Simulator::loadParameters() {
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxFiringRate/text()", maxFiringRate_);
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxSynapsesPerNeuron/text()", maxSynapsesPerNeuron_);
    ParameterManager::getInstance().getLongByXpath("//Seed/value/text()", seed_);
+
+   // Result file name can be set by the command line arguments so check for default string value as to not overwrite it
    if (resultFileName_ == "") {
       ParameterManager::getInstance().getStringByXpath("//OutputParams/resultFileName/text()", resultFileName_);
    }

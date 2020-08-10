@@ -38,35 +38,29 @@
 
 #pragma once
 
-class CPUSpikingModel : public Model
-      {
-      public:
-         /// Constructor
-         CPUSpikingModel();
+class CPUSpikingModel : public Model {
+public:
+   /// Constructor
+   CPUSpikingModel();
 
-         /// Destructor
-         virtual ~CPUSpikingModel();
+   /// Destructor
+   virtual ~CPUSpikingModel();
 
-         /// Set up model state, if anym for a specific simulation run.
-         virtual void setupSim();
+   /// Set up model state, if anym for a specific simulation run.
+   virtual void setupSim();
 
-         /// Advances network state one simulation step.
-         virtual void advance();
+   /// Advances network state one simulation step.
+   virtual void advance();
 
-         /// Modifies connections between neurons based on current state of the network and behavior
-         /// over the past epoch. Should be called once every epoch.
-         virtual void updateConnections();
+   /// Modifies connections between neurons based on current state of the network and behavior
+   /// over the past epoch. Should be called once every epoch.
+   virtual void updateConnections();
 
-         /// Copy GPU Synapse data to CPU.
-         virtual void copyGPUtoCPU();
+   /// Copy GPU Synapse data to CPU.
+   virtual void copyGPUtoCPU();
 
-         /// Copy CPU Synapse data to GPU.
-         virtual void copyCPUtoGPU();
-
-         // ToDo: doesn't have cleanupSim()
-protected:
-
-private:
+   /// Copy CPU Synapse data to GPU.
+   virtual void copyCPUtoGPU();
 
 };
 

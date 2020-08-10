@@ -70,12 +70,18 @@ public:
     */
    virtual void cleanupConnections() = 0;
 
+   /*
+    * Load member variables from configuration file.
+    * Registered to OperationManager as Operations::op::loadParameters
+    */
+   virtual void loadParameters() = 0;
+
    /**
     *  Prints out all parameters of the connections to ostream.
     *
     *  @param  output  ostream to send output to.
     */
-   virtual void printParameters(ostream &output) const = 0;
+   virtual void printParameters() const = 0;
 
    /**
     *  Update the connections status in every epoch.

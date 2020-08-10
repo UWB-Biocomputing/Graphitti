@@ -73,6 +73,7 @@ int main(int argc, char *argv[]) {
    // Read in global parameters from configuration file
    simulator.loadParameters();
    simulator.printParameters();
+   cout << endl;
 
    // Instantiate simulator objects
    if (!simulator.instantiateSimulatorObjects()) {
@@ -82,38 +83,28 @@ int main(int argc, char *argv[]) {
       return -1;
    }
 
-   // Setup class ownership and initialize each classes parameters using parameter manager
+   // Have instantiated simulator objects load parameters from the configuration file
+   OperationManager::getInstance().executeOperation(Operations::op::loadParameters);
 
-   // Create all model instances and load parameters from a file.
-   // todo: parameter manager replaces this - parses config file
-   // todo: all readparams methods in lower level classes are going to look very different.
-   // objects will be calling param manager asking for their own things .
+   cout << "Printing Layout Params" << endl;
+   simulator.getModel()->getLayout()->printParameters();
+   cout << endl;
 
-   // two phase process: global params, and then obj init.
-//   if (!LoadAllParameters()) {
-//      cerr << "! ERROR: failed while parsing simulation parameters." << endl;
-//      return -1;
-//   }
-//
-//   // todo: this should be a job of the simulator. replaced by a call to simulator
-//
-//   // create & init simulation recorder
-//   simInfo->simRecorder = simInfo->model->getConnections()->createRecorder();
-//   if (simInfo->simRecorder == NULL) {
-//      cerr << "! ERROR: invalid state output file name extension." << endl;
-//      return -1;
-//   }
-//
-//   // Create a stimulus input object
-//   simInfo->pInput = FSInput::get()->CreateInstance();
-//
+   cout << "Printing Neuron Params" << endl;
+   simulator.getModel()->getLayout()->getNeurons()->printParameters();
+   cout << endl;
+
+   cout << "Printing Connections Params" << endl;
+   simulator.getModel()->getConnections()->printParameters();
+
+
 //   time_t start_time, end_time;
 //   time(&start_time);
 //
 //   // in chain of responsibility. still going to exist!
 //   // setup simulation
 //   DEBUG(cerr << "Setup simulation." << endl;)
-//   simulator->setup();
+//   simulator.setup();
 //
 //   // Deserializes internal state from a prior run of the simulation
 //   if (!simInfo->memInputFileName.empty()) {

@@ -132,9 +132,7 @@ void AllSTDPSynapses::initSpikeQueue(const BGSIZE iSyn) {
 }
 
 /*
- *  Prints out all parameters of the neurons to ostream.
- *
- *  @param  output  ostream to send output to.
+ *  Prints out all parameters of the neurons to console.
  */
 void AllSTDPSynapses::printParameters() const {
 }

@@ -170,3 +170,20 @@ TEST(ParameterManager, InvalidLongTargeting) {
       ASSERT_FALSE(ParameterManager::getInstance().getLongByXpath(invalid_xpath[i], referenceVar));
    }
 }
+
+TEST(ParameterManager, ValidIntVectorTargeting) {
+   vector<int> referenceVar;
+   ASSERT_TRUE(ParameterManager::getInstance().getIntVectorByXpath("configfiles/NList/ActiveNList10x10-0.1.xml", "A", referenceVar));
+
+   vector<int> result{7, 11, 14, 37, 41, 44, 67, 71, 74, 97};
+   for (int i = 0; i < 10; i++) {
+      EXPECT_EQ(referenceVar[i], result[i]);
+   }
+}
+
+TEST(ParameterManager, InvalidIntVectorTargeting) {
+   vector<int> referenceVar;
+   ASSERT_FALSE(ParameterManager::getInstance().getIntVectorByXpath("configfiles/NList/ActiveNList10x10-0.1.xml", "P", referenceVar));
+
+   ASSERT_FALSE(ParameterManager::getInstance().getIntVectorByXpath("notfound.xml", "A", referenceVar));
+}

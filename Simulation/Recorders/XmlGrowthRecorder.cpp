@@ -28,7 +28,7 @@ XmlGrowthRecorder::~XmlGrowthRecorder() {
  */
 void XmlGrowthRecorder::initDefaultValues() {
    shared_ptr<Connections> pConn = model_->getConnections();
-   BGFLOAT startRadius = dynamic_cast<ConnGrowth *>(pConn.get())->m_growth.startRadius;
+   BGFLOAT startRadius = dynamic_cast<ConnGrowth *>(pConn.get())->growthParams_.startRadius;
 
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
       radiiHistory(0, i) = startRadius;
@@ -43,8 +43,8 @@ void XmlGrowthRecorder::initValues() {
    shared_ptr<Connections> pConn = model_->getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
-      radiiHistory(0, i) = (*dynamic_cast<ConnGrowth *>(pConn.get())->radii)[i];
-      ratesHistory(0, i) = (*dynamic_cast<ConnGrowth *>(pConn.get())->rates)[i];
+      radiiHistory(0, i) = (*dynamic_cast<ConnGrowth *>(pConn.get())->radii_)[i];
+      ratesHistory(0, i) = (*dynamic_cast<ConnGrowth *>(pConn.get())->rates_)[i];
    }
 }
 
@@ -55,8 +55,8 @@ void XmlGrowthRecorder::getValues() {
    Connections *pConn = model_->getConnections().get();
 
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
-      (*dynamic_cast<ConnGrowth *>(pConn)->radii)[i] = radiiHistory(Simulator::getInstance().getCurrentStep(), i);
-      (*dynamic_cast<ConnGrowth *>(pConn)->rates)[i] = ratesHistory(Simulator::getInstance().getCurrentStep(), i);
+      (*dynamic_cast<ConnGrowth *>(pConn)->radii_)[i] = radiiHistory(Simulator::getInstance().getCurrentStep(), i);
+      (*dynamic_cast<ConnGrowth *>(pConn)->rates_)[i] = ratesHistory(Simulator::getInstance().getCurrentStep(), i);
    }
 }
 
@@ -70,9 +70,9 @@ void XmlGrowthRecorder::compileHistories(IAllNeurons &neurons) {
 
    shared_ptr<Connections> pConn = model_->getConnections();
 
-   BGFLOAT minRadius = dynamic_cast<ConnGrowth *>(pConn.get())->m_growth.minRadius;
-   VectorMatrix &rates = (*dynamic_cast<ConnGrowth *>(pConn.get())->rates);
-   VectorMatrix &radii = (*dynamic_cast<ConnGrowth *>(pConn.get())->radii);
+   BGFLOAT minRadius = dynamic_cast<ConnGrowth *>(pConn.get())->growthParams_.minRadius;
+   VectorMatrix &rates = (*dynamic_cast<ConnGrowth *>(pConn.get())->rates_);
+   VectorMatrix &radii = (*dynamic_cast<ConnGrowth *>(pConn.get())->radii_);
 
    for (int iNeuron = 0; iNeuron < Simulator::getInstance().getTotalNeurons(); iNeuron++) {
       // record firing rate to history matrix
@@ -99,7 +99,7 @@ void XmlGrowthRecorder::saveSimData(const IAllNeurons &neurons) {
    // create Neuron Types matrix
    VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalNeurons(), EXC);
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
-      neuronTypes[i] = model_->getLayout()->neuron_type_map[i];
+      neuronTypes[i] = model_->getLayout()->neuronTypeMap_[i];
    }
 
    // create neuron threshold matrix
@@ -119,15 +119,15 @@ void XmlGrowthRecorder::saveSimData(const IAllNeurons &neurons) {
    stateOut << "   " << ratesHistory.toXML("ratesHistory") << endl;
    stateOut << "   " << burstinessHist.toXML("burstinessHist") << endl;
    stateOut << "   " << spikesHistory.toXML("spikesHistory") << endl;
-   stateOut << "   " << model_->getLayout()->xloc->toXML("xloc") << endl;
-   stateOut << "   " << model_->getLayout()->yloc->toXML("yloc") << endl;
+   stateOut << "   " << model_->getLayout()->xloc_->toXML("xloc") << endl;
+   stateOut << "   " << model_->getLayout()->yloc_->toXML("yloc") << endl;
    stateOut << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
    // create starter nuerons matrix
-   int num_starter_neurons = static_cast<int>(model_->getLayout()->num_endogenously_active_neurons);
+   int num_starter_neurons = static_cast<int>(model_->getLayout()->numEndogenouslyActiveNeurons_);
    if (num_starter_neurons > 0) {
       VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
-      getStarterNeuronMatrix(starterNeurons, model_->getLayout()->starter_map);
+      getStarterNeuronMatrix(starterNeurons, model_->getLayout()->starterMap_);
       stateOut << "   " << starterNeurons.toXML("starterNeurons") << endl;
    }
 

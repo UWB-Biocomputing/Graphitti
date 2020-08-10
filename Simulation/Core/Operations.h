@@ -13,7 +13,7 @@ class Operations {
 public:
     /// Available operations the OperationManager can register and execute.
     enum op {
-       // todo: initializeFromParameters, (lower level, non global)
+       loadParameters,
        allocateMemory,
        // todo: simulationSetup,
        // todo: serialize

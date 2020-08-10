@@ -39,7 +39,7 @@ public:
     *
     *  @param  output  ostream to send output to.
     */
-   virtual void printParameters(ostream &output) const;
+   virtual void printParameters() const;
 
    /**
     *  Creates a neurons type map.

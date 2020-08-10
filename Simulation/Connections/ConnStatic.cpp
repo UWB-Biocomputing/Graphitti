@@ -3,6 +3,7 @@
 #include "IAllSynapses.h"
 #include "AllNeurons.h"
 #include "AllSynapses.h"
+#include "OperationManager.h"
 
 #include "XmlRecorder.h"
 #ifdef USE_HDF5
@@ -15,6 +16,10 @@ ConnStatic::ConnStatic() : Connections()
     m_threshConnsRadius = 0;
     m_nConnsPerNeuron = 0;
     m_pRewiring = 0;
+
+    // Register loadParameters function with Operation Manager
+    auto function = std::bind(&ConnStatic::loadParameters, this);
+    OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function);
 }
 
 ConnStatic::~ConnStatic()
@@ -47,7 +52,7 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
         // pick the connections shorter than threshConnsRadius
         for (int dest_neuron = 0; dest_neuron < num_neurons; dest_neuron++) {
             if (src_neuron != dest_neuron) {
-                BGFLOAT dist = (*layout->dist)(src_neuron, dest_neuron);
+                BGFLOAT dist = (*layout->dist_)(src_neuron, dest_neuron);
                 if (dist <= m_threshConnsRadius) {
                     DistDestNeuron distDestNeuron;
                     distDestNeuron.dist = dist;
@@ -97,11 +102,18 @@ void ConnStatic::cleanupConnections()
 }
 
 /*
- *  Prints out all parameters of the connections to ostream.
- *
- *  @param  output  ostream to send output to.
+ * Load member variables from configuration file.
+ * Registered to OperationManager as Operations::op::loadParameters
  */
-void ConnStatic::printParameters(ostream &output) const
+void ConnStatic::loadParameters() {
+    // ConnStatic doesn't have any parameters to load from the configuration file.
+}
+
+
+/*
+ *  Prints out all parameters of the connections to console.
+ */
+void ConnStatic::printParameters() const
 {
 }
 
@@ -132,3 +144,4 @@ IRecorder* ConnStatic::createRecorder() {
 
     return simRecorder;
 }
+

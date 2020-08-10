@@ -8,7 +8,6 @@
 #include "RecorderFactory.h"
 
 /// Constructor
-/// ToDo: Stays the same right now, change further in refactor
 Model::Model() {
    // Reference variable used to get class type from ParameterManager.
    string type;
@@ -117,9 +116,9 @@ void Model::logSimStep() const {
       ss.precision(1);
 
       for (int x = 0; x < Simulator::getInstance().getWidth(); x++) {
-         switch (layout_->neuron_type_map[x + y * Simulator::getInstance().getWidth()]) {
+         switch (layout_->neuronTypeMap_[x + y * Simulator::getInstance().getWidth()]) {
             case EXC:
-               if (layout_->starter_map[x + y * Simulator::getInstance().getWidth()])
+               if (layout_->starterMap_[x + y * Simulator::getInstance().getWidth()])
                   ss << "s";
                else
                   ss << "e";
@@ -132,7 +131,7 @@ void Model::logSimStep() const {
                break;
          }
 
-         ss << " " << (*pConnGrowth->radii)[x + y * Simulator::getInstance().getWidth()];
+         ss << " " << (*pConnGrowth->radii_)[x + y * Simulator::getInstance().getWidth()];
 
          if (x + 1 < Simulator::getInstance().getWidth()) {
             ss.width(2);

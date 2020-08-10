@@ -38,7 +38,7 @@ public:
 
    void finish(); /// Cleanup after simulation.
 
-   void loadParameters();
+   void loadParameters(); /// Load member variables from configuration file
 
    void printParameters() const; /// Prints out loaded parameters to console.
 

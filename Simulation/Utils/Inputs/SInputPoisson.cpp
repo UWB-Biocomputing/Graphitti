@@ -132,7 +132,7 @@ void SInputPoisson::init()
     for (int neuron_index = 0; neuron_index < Simulator::getInstance().getTotalNeurons(); neuron_index++)
     {
         synapseType type;
-        if (Simulator::getInstance().getModel()->getLayout()->neuron_type_map[neuron_index] == INH)
+        if (Simulator::getInstance().getModel()->getLayout()->neuronTypeMap_[neuron_index] == INH)
             type = EI;
         else
             type = EE;
