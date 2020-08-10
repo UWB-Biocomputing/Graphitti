@@ -68,8 +68,6 @@ add_executable(tests
         Testing/Core/FunctionNodeTests.cpp
         Testing/Core/SimulatorTests.cpp
         Testing/Core/Foo.cpp
-        Testing/Core/Bar.cpp
-        Testing/Core/Coo.cpp
         Testing/Utils/ParamaterManagerTests.cpp)
 
 # Links the Googletest framework with the testing executable
