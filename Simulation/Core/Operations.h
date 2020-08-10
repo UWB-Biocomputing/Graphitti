@@ -15,14 +15,14 @@ public:
     enum op {
        loadParameters,
        allocateMemory,
-       // todo: simulationSetup,
-       // todo: serialize
-       // todo: deserialize
+       simulationSetup,
+       serialize,
+       deserialize,
        deallocateMemory,
        restoreToDefault,
        copyToGPU,
-       copyFromGPU
-       // todo: cleanup/terminate
+       copyFromGPU,
+       terminate
     };
 };
 
