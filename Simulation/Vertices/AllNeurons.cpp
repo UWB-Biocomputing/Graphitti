@@ -18,7 +18,6 @@ AllNeurons::~AllNeurons() {
  */
 void AllNeurons::setupNeurons() {
    size_ = Simulator::getInstance().getTotalNeurons();
-   // TODO: Rename variables for easier identification
    summationMap_ = new BGFLOAT[size_];
 
    for (int i = 0; i < size_; ++i) {

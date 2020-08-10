@@ -63,11 +63,9 @@ public:
    virtual void cleanupNeurons();
 
    /**
-    *  Prints out all parameters of the neurons to ostream.
-    *
-    *  @param  output  ostream to send output to.
+    *  Prints out all parameters of the neurons to console.
     */
-   virtual void printParameters(ostream &output) const;
+   virtual void printParameters() const;
 
    /**
     *  Creates all the Neurons and assigns initial data for them.
@@ -265,48 +263,48 @@ public:
    /**
     *  The length of the absolute refractory period. [units=sec; range=(0,1);]
     */
-   BGFLOAT *Trefract;
+   BGFLOAT *Trefract_;
 
    /**
     *  If \f$V_m\f$ exceeds \f$V_{thresh}\f$ a spike is emmited. [units=V; range=(-10,100);]
     */
-   BGFLOAT *Vthresh;
+   BGFLOAT *Vthresh_;
 
    /**
     *  The resting membrane voltage. [units=V; range=(-1,1);]
     */
-   BGFLOAT *Vrest;
+   BGFLOAT *Vrest_;
 
    /**
     *  The voltage to reset \f$V_m\f$ to after a spike. [units=V; range=(-1,1);]
     */
-   BGFLOAT *Vreset;
+   BGFLOAT *Vreset_;
 
    /**
     *  The initial condition for \f$V_m\f$ at time \f$t=0\f$. [units=V; range=(-1,1);]
     */
-   BGFLOAT *Vinit;
+   BGFLOAT *Vinit_;
 
    /**
     *  The membrane capacitance \f$C_m\f$ [range=(0,1); units=F;]
     *  Used to initialize Tau (no use after that)
     */
-   BGFLOAT *Cm;
+   BGFLOAT *Cm_;
 
    /**
     *  The membrane resistance \f$R_m\f$ [units=Ohm; range=(0,1e30)]
     */
-   BGFLOAT *Rm;
+   BGFLOAT *Rm_;
 
    /**
     * The standard deviation of the noise to be added each integration time constant. [range=(0,1); units=A;]
     */
-   BGFLOAT *Inoise;
+   BGFLOAT *Inoise_;
 
    /**
     *  A constant current to be injected into the LIF neuron. [units=A; range=(-1,1);]
     */
-   BGFLOAT *Iinject;
+   BGFLOAT *Iinject_;
 
    /**
     * What the hell is this used for???
@@ -314,78 +312,78 @@ public:
     *  Possibly from the old code before using a separate summation point
     *  The synaptic input current.
     */
-   BGFLOAT *Isyn;
+   BGFLOAT *Isyn_;
 
    /**
     * The remaining number of time steps for the absolute refractory period.
     */
-   int *nStepsInRefr;
+   int *numStepsInRefractoryPeriod_;
 
    /**
     * Internal constant for the exponential Euler integration of f$V_m\f$.
     */
-   BGFLOAT *C1;
+   BGFLOAT *C1_;
 
    /**
     * Internal constant for the exponential Euler integration of \f$V_m\f$.
     */
-   BGFLOAT *C2;
+   BGFLOAT *C2_;
 
    /**
     * Internal constant for the exponential Euler integration of \f$V_m\f$.
     */
-   BGFLOAT *I0;
+   BGFLOAT *I0_;
 
    /**
     * The membrane voltage \f$V_m\f$ [readonly; units=V;]
     */
-   BGFLOAT *Vm;
+   BGFLOAT *Vm_;
 
    /**
     * The membrane time constant \f$(R_m \cdot C_m)\f$
     */
-   BGFLOAT *Tau;
+   BGFLOAT *Tau_;
 
 private:
    /**
     * Min/max values of Iinject.
     */
-   BGFLOAT m_Iinject[2];
+   BGFLOAT IinjectRange_[2];
 
    /**
     * Min/max values of Inoise.
     */
-   BGFLOAT m_Inoise[2];
+   BGFLOAT InoiseRange_[2];
 
    /**
     * Min/max values of Vthresh.
     */
-   BGFLOAT m_Vthresh[2];
+   BGFLOAT VthreshRange_[2];
 
    /**
     * Min/max values of Vresting.
     */
-   BGFLOAT m_Vresting[2];
+   BGFLOAT VrestingRange_[2];
 
    /**
     * Min/max values of Vreset.
     */
-   BGFLOAT m_Vreset[2];
+   BGFLOAT VresetRange_[2];
 
    /**
     * Min/max values of Vinit.
     */
-   BGFLOAT m_Vinit[2];
+   BGFLOAT VinitRange_[2];
 
    /**
     * Min/max values of Vthresh.
     */
-   BGFLOAT m_starter_Vthresh[2];
+   BGFLOAT starterVthreshRange_[2];
 
    /**
     * Min/max values of Vreset.
     */
-   BGFLOAT m_starter_Vreset[2];
+   BGFLOAT starterVresetRange_[2];
 };
 
 #if defined(USE_GPU)
@@ -394,48 +392,48 @@ struct AllIFNeuronsDeviceProperties : public AllSpikingNeuronsDeviceProperties
         /**
          *  The length of the absolute refractory period. [units=sec; range=(0,1);]
          */
-        BGFLOAT *Trefract;
+        BGFLOAT *Trefract_;
 
         /**
          *  If \f$V_m\f$ exceeds \f$V_{thresh}\f$ a spike is emmited. [units=V; range=(-10,100);]
          */
-        BGFLOAT *Vthresh;
+        BGFLOAT *Vthresh_;
 
         /**
          *  The resting membrane voltage. [units=V; range=(-1,1);]
          */
-        BGFLOAT *Vrest;
+        BGFLOAT *Vrest_;
 
         /**
          *  The voltage to reset \f$V_m\f$ to after a spike. [units=V; range=(-1,1);]
          */
-        BGFLOAT *Vreset;
+        BGFLOAT *Vreset_;
 
         /**
          *  The initial condition for \f$V_m\f$ at time \f$t=0\f$. [units=V; range=(-1,1);]
          */
-        BGFLOAT *Vinit;
+        BGFLOAT *Vinit_;
 
         /**
          *  The membrane capacitance \f$C_m\f$ [range=(0,1); units=F;]
          *  Used to initialize Tau (no use after that)
          */
-        BGFLOAT *Cm;
+        BGFLOAT *Cm_;
 
         /**
          *  The membrane resistance \f$R_m\f$ [units=Ohm; range=(0,1e30)]
          */
-        BGFLOAT *Rm;
+        BGFLOAT *Rm_;
 
         /**
          * The standard deviation of the noise to be added each integration time constant. [range=(0,1); units=A;]
          */
-        BGFLOAT *Inoise;
+        BGFLOAT *Inoise_;
 
         /**
          *  A constant current to be injected into the LIF neuron. [units=A; range=(-1,1);]
          */
-        BGFLOAT *Iinject;
+        BGFLOAT *Iinject_;
 
         /**
          * What the hell is this used for???
@@ -443,36 +441,36 @@ struct AllIFNeuronsDeviceProperties : public AllSpikingNeuronsDeviceProperties
          *  Possibly from the old code before using a separate summation point
          *  The synaptic input current.
          */
-        BGFLOAT *Isyn;
+        BGFLOAT *Isyn_;
 
         /**
          * The remaining number of time steps for the absolute refractory period.
          */
-        int *nStepsInRefr;
+        int *numStepsInRefractoryPeriod_;
 
         /**
          * Internal constant for the exponential Euler integration of f$V_m\f$.
          */
-        BGFLOAT *C1;
+        BGFLOAT *C1_;
 
         /**
          * Internal constant for the exponential Euler integration of \f$V_m\f$.
          */
-        BGFLOAT *C2;
+        BGFLOAT *C2_;
 
         /**
          * Internal constant for the exponential Euler integration of \f$V_m\f$.
          */
-        BGFLOAT *I0;
+        BGFLOAT *I0_;
 
         /**
          * The membrane voltage \f$V_m\f$ [readonly; units=V;]
          */
-        BGFLOAT *Vm;
+        BGFLOAT *Vm_;
 
         /**
          * The membrane time constant \f$(R_m \cdot C_m)\f$
          */
-        BGFLOAT *Tau;
+        BGFLOAT *Tau_;
 };
 #endif // defined(USE_GPU)

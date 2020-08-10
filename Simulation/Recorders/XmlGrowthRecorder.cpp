@@ -105,7 +105,7 @@ void XmlGrowthRecorder::saveSimData(const IAllNeurons &neurons) {
    // create neuron threshold matrix
    VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalNeurons(), 0);
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
-      neuronThresh[i] = dynamic_cast<const AllIFNeurons &>(neurons).Vthresh[i];
+      neuronThresh[i] = dynamic_cast<const AllIFNeurons &>(neurons).Vthresh_[i];
    }
 
    // Write XML header information:

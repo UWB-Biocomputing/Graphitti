@@ -111,11 +111,9 @@ public:
    virtual void cleanupNeurons();
 
    /**
-    *  Prints out all parameters of the neurons to ostream.
-    *
-    *  @param  output  ostream to send output to.
+    *  Prints out all parameters of the neurons to console.
     */
-   virtual void printParameters(ostream &output) const;
+   virtual void printParameters() const;
 
    /**
     *  Creates all the Neurons and assigns initial data for them.

@@ -70,31 +70,31 @@ void AllIZHNeurons::freeResources() {
  *
  *  @param  output  ostream to send output to.
  */
-void AllIZHNeurons::printParameters(ostream &output) const {
-   AllIFNeurons::printParameters(output);
+void AllIZHNeurons::printParameters() const {
+   AllIFNeurons::printParameters();
 
-   output << "Interval of A constant for excitatory neurons: ["
+   cout << "Interval of A constant for excitatory neurons: ["
           << excAconst_[0] << ", " << excAconst_[1] << "]"
           << endl;
-   output << "Interval of A constant for inhibitory neurons: ["
+   cout << "Interval of A constant for inhibitory neurons: ["
           << inhAconst_[0] << ", " << inhAconst_[1] << "]"
           << endl;
-   output << "Interval of B constant for excitatory neurons: ["
+   cout << "Interval of B constant for excitatory neurons: ["
           << excBconst_[0] << ", " << excBconst_[1] << "]"
           << endl;
-   output << "Interval of B constant for inhibitory neurons: ["
+   cout << "Interval of B constant for inhibitory neurons: ["
           << inhBconst_[0] << ", " << inhBconst_[1] << "]"
           << endl;
-   output << "Interval of C constant for excitatory neurons: ["
+   cout << "Interval of C constant for excitatory neurons: ["
           << excCconst_[0] << ", " << excCconst_[1] << "]"
           << endl;
-   output << "Interval of C constant for inhibitory neurons: ["
+   cout << "Interval of C constant for inhibitory neurons: ["
           << inhCconst_[0] << ", " << inhCconst_[1] << "]"
           << endl;
-   output << "Interval of D constant for excitatory neurons: ["
+   cout << "Interval of D constant for excitatory neurons: ["
           << excDconst_[0] << ", " << excDconst_[1] << "]"
           << endl;
-   output << "Interval of D constant for inhibitory neurons: ["
+   cout << "Interval of D constant for inhibitory neurons: ["
           << inhDconst_[0] << ", " << inhDconst_[1] << "]"
           << endl;
 }
@@ -162,7 +162,7 @@ void AllIZHNeurons::setNeuronDefaults(const int index) {
    AllIFNeurons::setNeuronDefaults(index);
 
    // no refractory period
-   Trefract[index] = 0;
+   Trefract_[index] = 0;
 
    Aconst_[index] = DEFAULT_a;
    Bconst_[index] = DEFAULT_b;
@@ -278,15 +278,15 @@ void AllIZHNeurons::writeNeuron(ostream &output, int i) const {
  *  @param  sim_info    SimulationInfo class to read information from.
  */
 void AllIZHNeurons::advanceNeuron(const int index) {
-   BGFLOAT &Vm = this->Vm[index];
-   BGFLOAT &Vthresh = this->Vthresh[index];
+   BGFLOAT &Vm = this->Vm_[index];
+   BGFLOAT &Vthresh = this->Vthresh_[index];
    BGFLOAT &summationPoint = this->summationMap_[index];
-   BGFLOAT &I0 = this->I0[index];
-   BGFLOAT &Inoise = this->Inoise[index];
-   BGFLOAT &C1 = this->C1[index];
-   BGFLOAT &C2 = this->C2[index];
+   BGFLOAT &I0 = this->I0_[index];
+   BGFLOAT &Inoise = this->Inoise_[index];
+   BGFLOAT &C1 = this->C1_[index];
+   BGFLOAT &C2 = this->C2_[index];
    BGFLOAT &C3 = this->C3_[index];
-   int &nStepsInRefr = this->nStepsInRefr[index];
+   int &nStepsInRefr = this->numStepsInRefractoryPeriod_[index];
 
    BGFLOAT &a = Aconst_[index];
    BGFLOAT &b = Bconst_[index];
@@ -346,9 +346,9 @@ void AllIZHNeurons::fire(const int index) const {
    AllSpikingNeurons::fire(index);
 
    // calculate the number of steps in the absolute refractory period
-   BGFLOAT &Vm = this->Vm[index];
-   int &nStepsInRefr = this->nStepsInRefr[index];
-   BGFLOAT &Trefract = this->Trefract[index];
+   BGFLOAT &Vm = this->Vm_[index];
+   int &nStepsInRefr = this->numStepsInRefractoryPeriod_[index];
+   BGFLOAT &Trefract = this->Trefract_[index];
 
    BGFLOAT &c = Cconst_[index];
    BGFLOAT &d = Dconst_[index];

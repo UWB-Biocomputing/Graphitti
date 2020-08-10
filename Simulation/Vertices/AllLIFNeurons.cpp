@@ -17,14 +17,14 @@ AllLIFNeurons::~AllLIFNeurons() {
  *  @param  sim_info    SimulationInfo class to read information from.
  */
 void AllLIFNeurons::advanceNeuron(const int index) {
-    BGFLOAT &Vm = this->Vm[index];
-    BGFLOAT &Vthresh = this->Vthresh[index];
+    BGFLOAT &Vm = this->Vm_[index];
+    BGFLOAT &Vthresh = this->Vthresh_[index];
     BGFLOAT &summationPoint = this->summationMap_[index];
-    BGFLOAT &I0 = this->I0[index];
-    BGFLOAT &Inoise = this->Inoise[index];
-    BGFLOAT &C1 = this->C1[index];
-    BGFLOAT &C2 = this->C2[index];
-    int &nStepsInRefr = this->nStepsInRefr[index];
+    BGFLOAT &I0 = this->I0_[index];
+    BGFLOAT &Inoise = this->Inoise_[index];
+    BGFLOAT &C1 = this->C1_[index];
+    BGFLOAT &C2 = this->C2_[index];
+    int &nStepsInRefr = this->numStepsInRefractoryPeriod_[index];
 
     if (nStepsInRefr > 0) {
         // is neuron refractory?
@@ -66,10 +66,10 @@ void AllLIFNeurons::fire(const int index) const {
     AllSpikingNeurons::fire(index);
 
     // calculate the number of steps in the absolute refractory period
-    nStepsInRefr[index] = static_cast<int> ( Trefract[index] / deltaT + 0.5 );
+    numStepsInRefractoryPeriod_[index] = static_cast<int> ( Trefract_[index] / deltaT + 0.5 );
 
     // reset to 'Vreset'
-    Vm[index] = Vreset[index];
+    Vm_[index] = Vreset_[index];
 }
 
 #endif

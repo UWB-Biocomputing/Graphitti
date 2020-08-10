@@ -39,7 +39,7 @@ public:
     *
     *  @param  output  ostream to send output to.
     */
-   virtual void printParameters(ostream &output) const = 0;
+   virtual void printParameters() const = 0;
 
    /**
     *  Creates all the Neurons and assigns initial data for them.
