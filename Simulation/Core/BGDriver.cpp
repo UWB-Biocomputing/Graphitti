@@ -224,9 +224,9 @@ bool parseCommandLine(int argc, char *argv[]) {
 
    // Get the command line values
    Simulator::getInstance().setResultFileName(cl["resultfile"]);
-   Simulator::getInstance().setParameterFileName(cl["configfile"]);
+   Simulator::getInstance().setConfigFileName(cl["configfile"]);
    Simulator::getInstance().setDeserializationFileName(cl["deserializefile"]);
-   Simulator::getInstance().setSerializationName(cl["serializefile"]);
+   Simulator::getInstance().setSerializationFileName(cl["serializefile"]);
    Simulator::getInstance().setStimulusFileName(cl["stimulusfile"]);
 
 #if defined(USE_GPU)
