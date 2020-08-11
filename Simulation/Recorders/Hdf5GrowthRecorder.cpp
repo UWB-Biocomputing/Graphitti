@@ -13,51 +13,12 @@
 const H5std_string nameRatesHist("ratesHistory");
 const H5std_string nameRadiiHist("radiiHistory");
 
-//! THe constructor and destructor
-Hdf5GrowthRecorder::Hdf5GrowthRecorder() :
-      Hdf5Recorder() {
+//! The constructor and destructor
+Hdf5GrowthRecorder::Hdf5GrowthRecorder()
+{
 }
 
 Hdf5GrowthRecorder::~Hdf5GrowthRecorder() {
-}
-
-/*
- * Initialize data.
- * Create a new hdf5 file with default properties.
- *
- * @param[in] stateOutputFileName	File name to save histories
- */
-void Hdf5GrowthRecorder::init(const string &stateOutputFileName) {
-   try {
-      // create a new file using the default property lists
-      stateOut = new H5File(stateOutputFileName, H5F_ACC_TRUNC);
-
-      initDataSet();
-   }
-
-      // catch failure caused by the H5File operations
-   catch (FileIException error) {
-      error.printErrorStack();
-      return;
-   }
-
-      // catch failure caused by the DataSet operations
-   catch (DataSetIException error) {
-      error.printErrorStack();
-      return;
-   }
-
-      // catch failure caused by the DataSpace operations
-   catch (DataSpaceIException error) {
-      error.printErrorStack();
-      return;
-   }
-
-      // catch failure caused by the DataType operations
-   catch (DataTypeIException error) {
-      error.printErrorStack();
-      return;
-   }
 }
 
 /*
@@ -176,65 +137,71 @@ void Hdf5GrowthRecorder::compileHistories(IAllNeurons &neurons) {
 /*
  * Incrementaly write radii and rates histories
  */
-void Hdf5GrowthRecorder::writeRadiiRates() {
-   try {
-      // Write radii and rates histories information:
-      hsize_t offset[2], count[2];
-      hsize_t dimsm[2];
-      DataSpace *dataspace;
-      DataSpace *memspace;
+void Hdf5GrowthRecorder::writeRadiiRates()
+{
+    try
+    {
+        // Write radii and rates histories information:
+        hsize_t offset[2], count[2];
+        hsize_t dimsm[2];
+        DataSpace* dataspace;
+        DataSpace* memspace;
 
-      // write radii history
-      offset[0] = m_Simulator::getInstance().currentStep;
-      offset[1] = 0;
-      count[0] = 1;
-      count[1] = m_Simulator::getInstance().totalNeurons;
-      dimsm[0] = 1;
-      dimsm[1] = m_Simulator::getInstance().totalNeurons;
-      memspace = new DataSpace(2, dimsm, NULL);
-      dataspace = new DataSpace(dataSetRadiiHist->getSpace());
-      dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
-      dataSetRadiiHist->write(radiiHistory, H5_FLOAT, *memspace, *dataspace);
-      delete dataspace;
-      delete memspace;
+        // write radii history
+        offset[0] = Simulator::getInstance().currentStep;
+        offset[1] = 0;
+        count[0] = 1;
+        count[1] = Simulator::getInstance().totalNeurons;
+        dimsm[0] = 1;
+        dimsm[1] = Simulator::getInstance().totalNeurons;
+        memspace = new DataSpace(2, dimsm, NULL);
+        dataspace = new DataSpace(dataSetRadiiHist->getSpace());
+        dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
+        dataSetRadiiHist->write(radiiHistory, H5_FLOAT, *memspace, *dataspace); 
+        delete dataspace;
+        delete memspace;
 
-      // write rates history
-      offset[0] = m_Simulator::getInstance().currentStep;
-      offset[1] = 0;
-      count[0] = 1;
-      count[1] = m_Simulator::getInstance().totalNeurons;
-      dimsm[0] = 1;
-      dimsm[1] = m_Simulator::getInstance().totalNeurons;
-      memspace = new DataSpace(2, dimsm, NULL);
-      dataspace = new DataSpace(dataSetRadiiHist->getSpace());
-      dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
-      dataSetRatesHist->write(ratesHistory, H5_FLOAT, *memspace, *dataspace);
-      delete dataspace;
-      delete memspace;
-   }
+        // write rates history
+        offset[0] = Simulator::getInstance().currentStep;
+        offset[1] = 0;
+        count[0] = 1;
+        count[1] = Simulator::getInstance().totalNeurons;
+        dimsm[0] = 1;
+        dimsm[1] = Simulator::getInstance().totalNeurons;
+        memspace = new DataSpace(2, dimsm, NULL);
+        dataspace = new DataSpace(dataSetRadiiHist->getSpace());
+        dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
+        dataSetRatesHist->write(ratesHistory, H5_FLOAT, *memspace, *dataspace); 
+        delete dataspace;
+        delete memspace;
+    }
+    
+    // catch failure caused by the H5File operations
+    catch( FileIException error )
+    {
+        error.printErrorStack();
+        return;
+    }
 
-      // catch failure caused by the H5File operations
-   catch (FileIException error) {
-      error.printErrorStack();
-      return;
-   }
+    // catch failure caused by the DataSet operations
+    catch( DataSetIException error )
+    {
+        error.printErrorStack();
+        return;
+    }
 
-      // catch failure caused by the DataSet operations
-   catch (DataSetIException error) {
-      error.printErrorStack();
-      return;
-   }
+    // catch failure caused by the DataSpace operations
+    catch( DataSpaceIException error )
+    {
+        error.printErrorStack();
+        return;
+    }
 
-      // catch failure caused by the DataSpace operations
-   catch (DataSpaceIException error) {
-      error.printErrorStack();
-      return;
-   }
-
-      // catch failure caused by the DataType operations
-   catch (DataTypeIException error) {
-      error.printErrorStack();
-      return;
-   }
+    // catch failure caused by the DataType operations
+    catch( DataTypeIException error )
+    {
+        error.printErrorStack();
+        return;
+    }
 }
 

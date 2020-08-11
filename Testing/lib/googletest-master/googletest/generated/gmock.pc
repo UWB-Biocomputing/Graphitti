@@ -1,4 +1,4 @@
-libdir=/usr/local/lib
+libdir=/usr/local/lib64
 includedir=/usr/local/include
 
 Name: gmock

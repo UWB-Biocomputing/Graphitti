@@ -49,18 +49,12 @@ using namespace H5;
 
 class Hdf5GrowthRecorder : public Hdf5Recorder {
 public:
-   //! THe constructor and destructor
+   //! The constructor and destructor
    Hdf5GrowthRecorder();
 
    ~Hdf5GrowthRecorder();
 
    static IRecorder* Create() { return new Hdf5GrowthRecorder(); }
-
-   /**
-    * Initialize data
-    * @param[in] stateOutputFileName       File name to save histories
-    */
-   virtual void init();
 
    /**
     * Init radii and rates history matrices with default values

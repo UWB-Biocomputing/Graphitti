@@ -120,8 +120,11 @@ protected:
    DataSet *dataSetSpikesProbedNeurons;
    DataSet *dataSetProbedNeurons;
 
-   // burstiness Histogram goes through the
-   int *burstinessHist;
+   // Keep track of where we are in incrementally writing spikes
+    hsize_t* offsetSpikesProbedNeurons;
+
+    // burstiness Histogram goes through the
+    int* burstinessHist;
 
    // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
    int *spikesHistory;
