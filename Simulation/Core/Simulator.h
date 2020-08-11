@@ -92,11 +92,11 @@ public:
 
    string getResultFileName() const;    /// File name of the simulation results.
 
-   string getParameterFileName() const;    /// File name of the parameter description file.
+   string getConfigFileName() const;    /// File name of the parameter configuration file.
 
-   string getMemOutputFileName() const;    /// File name of the memory dump output file.
+   string getSerializationFileName() const;    /// File name of the serialization file.
 
-   string getMemInputFileName() const; /// File name of the memory dump input file.
+   string getDeserializationFileName() const; /// File name of the deserialization file.
 
    string getStimulusFileName() const;     /// File name of the stimulus input file.
 
@@ -109,11 +109,11 @@ public:
 
    void setResultFileName(const string &fileName);
 
-   void setParameterFileName(const string &fileName);
+   void setConfigFileName(const string &fileName);
 
-   void setMemOutputFileName(const string &fileName);
+   void setSerializationFileName(const string &fileName);
 
-   void setMemInputFileName(const string &fileName);
+   void setDeserializationFileName(const string &fileName);
 
    void setStimulusFileName(const string &fileName);
 
@@ -162,11 +162,11 @@ private:
 
    string resultFileName_;    /// File name of the simulation results.
 
-   string parameterFileName_;    /// File name of the parameter description file.
+   string configFileName_;    /// File name of the parameter configuration file.
 
-   string memOutputFileName_;    /// File name of the memory dump output file.
+   string serializationFileName_;    /// File name of the serialization file.
 
-   string memInputFileName_;    /// File name of the memory dump input file.
+   string deserializationFileName_;    /// File name of the deserialization file.
 
    string stimulusFileName_;    /// File name of the stimulus input file.
 

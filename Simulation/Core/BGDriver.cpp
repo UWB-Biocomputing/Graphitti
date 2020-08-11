@@ -41,7 +41,7 @@
 
 using namespace std;
 
-// functions
+// forward declarations
 bool parseCommandLine(int argc, char *argv[]);
 
 void instantiateSimulationObjects();
@@ -65,8 +65,8 @@ int main(int argc, char *argv[]) {
    }
 
    // Loads the configuration file into the Parameter Manager.
-   if (!ParameterManager::getInstance().loadParameterFile(Simulator::getInstance().getParameterFileName())) {
-      cerr << "ERROR: failed to load config file: " << Simulator::getInstance().getParameterFileName() << endl;
+   if (!ParameterManager::getInstance().loadParameterFile(simulator.getConfigFileName())) {
+      cerr << "ERROR: failed to load config file: " << simulator.getConfigFileName() << endl;
       return -1;
    }
 
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
    // Instantiate simulator objects
    if (!simulator.instantiateSimulatorObjects()) {
       cerr << "ERROR: Unable to instantiate all simulator classes, check configuration file: "
-           << simulator.getParameterFileName()
+           << simulator.getConfigFileName()
            << " for incorrectly declared class types." << endl;
       return -1;
    }
@@ -201,33 +201,20 @@ int main(int argc, char *argv[]) {
 bool parseCommandLine(int argc, char *argv[]) {
    ParamContainer cl; // todo: note as third party class.
    cl.initOptions(false);  // don't allow unknown parameters
-   cl.setHelpString(string("The DCT growth modeling simulator\nUsage: ") + argv[0] + " ");
+   cl.setHelpString(string("The UW Bothell graph-based simulation environment, for high-performance\nneural network and other graph-based problems\nUsage: ") + argv[0] + " ");
 
+   // Set up the comment line parser.
+   if ((cl.addParam("resultfile", 'o', ParamContainer::filename, "simulation results filepath (deprecated)") != ParamContainer::errOk)
+      || (cl.addParam("configfile", 'c', ParamContainer::filename | ParamContainer::required, "parameter configuration filepath") != ParamContainer::errOk)
 #if defined(USE_GPU)
-   if ((cl.addParam("stateoutfile", 'o', ParamContainer::filename, "simulation results filepath") != ParamContainer::errOk)
-            || (cl.addParam("resultfile", 't', ParamContainer::filename | ParamContainer::required, "parameter configuration filepath") != ParamContainer::errOk)
-            || (cl.addParam("paramfile", 'd', ParamContainer::regular, "CUDA device id") != ParamContainer::errOk)
-            || (cl.addParam( "stimulusfile", 's', ParamContainer::filename, "stimulus input filepath" ) != ParamContainer::errOk)
-            || (cl.addParam("meminfile", 'r', ParamContainer::filename, "simulation memory image input filepath") != ParamContainer::errOk)
-            || (cl.addParam("memoutfile", 'w', ParamContainer::filename, "simulation memory image output filepath") != ParamContainer::errOk)) {
+      || (cl.addParam("device", 'd', ParamContainer::regular, "CUDA device id") != ParamContainer::errOk)
+#endif  // USE_GPU
+      || (cl.addParam( "stimulusfile", 's', ParamContainer::filename, "stimulus input filepath" ) != ParamContainer::errOk)
+      || (cl.addParam("deserializefile", 'r', ParamContainer::filename, "simulation deserialization filepath (enables deserialization)") != ParamContainer::errOk)
+      || (cl.addParam("serializefile", 'w', ParamContainer::filename, "simulation serialization filepath (enables serialization)") != ParamContainer::errOk)) {
         cerr << "Internal error creating command line parser" << endl;
         return false;
-    }
-#else    // !USE_GPU
-   if ((cl.addParam("resultfile", 'o', ParamContainer::filename, "simulation results filepath") !=
-        ParamContainer::errOk)
-       || (cl.addParam("paramfile", 't', ParamContainer::filename | ParamContainer::required,
-                       "parameter configuration filepath") != ParamContainer::errOk)
-       ||
-       (cl.addParam("stimulusfile", 's', ParamContainer::filename, "stimulus input filepath") != ParamContainer::errOk)
-       || (cl.addParam("meminfile", 'r', ParamContainer::filename, "simulation memory image filepath") !=
-           ParamContainer::errOk)
-       || (cl.addParam("memoutfile", 'w', ParamContainer::filename, "simulation memory image output filepath") !=
-           ParamContainer::errOk)) {
-      cerr << "Internal error creating command line parser" << endl;
-      return false;
    }
-#endif  // USE_GPU
 
    // Parse the command line
    if (cl.parseCommandLine(argc, argv) != ParamContainer::errOk) {
@@ -237,13 +224,13 @@ bool parseCommandLine(int argc, char *argv[]) {
 
    // Get the command line values
    Simulator::getInstance().setResultFileName(cl["resultfile"]);
-   Simulator::getInstance().setParameterFileName(cl["paramfile"]);
-   Simulator::getInstance().setMemInputFileName(cl["meminfile"]);
-   Simulator::getInstance().setMemOutputFileName(cl["memoutfile"]);
+   Simulator::getInstance().setParameterFileName(cl["configfile"]);
+   Simulator::getInstance().setDeserializationFileName(cl["deserializefile"]);
+   Simulator::getInstance().setSerializationName(cl["serializefile"]);
    Simulator::getInstance().setStimulusFileName(cl["stimulusfile"]);
 
 #if defined(USE_GPU)
-   if (EOF == sscanf(cl["deviceid"].c_str(), "%d", &g_deviceId)) {
+   if (EOF == sscanf(cl["device"].c_str(), "%d", &g_deviceId)) {
        g_deviceId = 0;
    }
 #endif  // USE_GPU

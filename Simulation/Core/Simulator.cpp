@@ -239,11 +239,11 @@ void Simulator::setPSummationMap(BGFLOAT *summationMap) { pSummationMap_ = summa
 
 void Simulator::setResultFileName(const string &fileName) { resultFileName_ = fileName; }
 
-void Simulator::setParameterFileName(const string &fileName) { parameterFileName_ = fileName; }
+void Simulator::setConfigFileName(const string &fileName) { configFileName_ = fileName; }
 
-void Simulator::setMemOutputFileName(const string &fileName) { memOutputFileName_ = fileName; }
+void Simulator::setSerializationFileName(const string &fileName) { serializationFileName_ = fileName; }
 
-void Simulator::setMemInputFileName(const string &fileName) { memInputFileName_ = fileName; }
+void Simulator::setDeserializationFileName(const string &fileName) { deserializationFileName_ = fileName; }
 
 void Simulator::setStimulusFileName(const string &fileName) { stimulusFileName_ = fileName; }
 
@@ -285,11 +285,11 @@ long Simulator::getSeed() const { return seed_; }
 
 string Simulator::getResultFileName() const { return resultFileName_; }
 
-string Simulator::getParameterFileName() const { return parameterFileName_; }
+string Simulator::getConfigFileName() const { return configFileName_; }
 
-string Simulator::getMemOutputFileName() const { return memOutputFileName_; }
+string Simulator::getSerializationFileName() const { return serializationFileName_; }
 
-string Simulator::getMemInputFileName() const { return memInputFileName_; }
+string Simulator::getDeserializationFileName() const { return deserializationFileName_; }
 
 string Simulator::getStimulusFileName() const { return stimulusFileName_; }
 
