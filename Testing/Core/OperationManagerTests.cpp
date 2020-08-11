@@ -14,30 +14,33 @@
 #include "Foo.h"
 #include "Simulation/Core/OperationManager.h"
 #include "Simulation/Core/Operations.h"
+#include "Layout.h"
 
 TEST(OperationManager, GetInstanceReturnsInstance) {
-    OperationManager *operationManager = &OperationManager::getInstance();
-    ASSERT_TRUE(operationManager != nullptr);
+   OperationManager *operationManager = &OperationManager::getInstance();
+   ASSERT_TRUE(operationManager != nullptr);
 }
 
 TEST(OperationManager, AddingOneOperation) {
-    Foo foo;
-    function<void()> function = std::bind(&Foo::deallocateMemory, foo);
-    EXPECT_NO_FATAL_FAILURE(OperationManager::getInstance().registerOperation(Operations::op::deallocateMemory, function));
+   Foo foo;
+   function<void()> function = std::bind(&Foo::deallocateMemory, foo);
+   EXPECT_NO_FATAL_FAILURE(
+         OperationManager::getInstance().registerOperation(Operations::op::deallocateMemory, function));
 }
 
 TEST(OperationManager, AddingManyOperations) {
-    Foo foo;
-    function<void()> function = std::bind(&Foo::deallocateMemory, foo);
-    for (int i = 0; i < 10000; i++) {
-        EXPECT_NO_FATAL_FAILURE(OperationManager::getInstance().registerOperation(Operations::op::deallocateMemory, function));
-    }
+   Foo foo;
+   function<void()> function = std::bind(&Foo::deallocateMemory, foo);
+   for (int i = 0; i < 10000; i++) {
+      EXPECT_NO_FATAL_FAILURE(
+            OperationManager::getInstance().registerOperation(Operations::op::deallocateMemory, function));
+   }
 }
 
 TEST(OperationManager, OperationExecutionSuccess) {
-    EXPECT_NO_FATAL_FAILURE(OperationManager::getInstance().executeOperation(Operations::op::deallocateMemory));
+   EXPECT_NO_FATAL_FAILURE(OperationManager::getInstance().executeOperation(Operations::deallocateMemory));
 }
 
 TEST(OperationManager, OperationExecutionContainsNoFunctionsOfOperationType) {
-    EXPECT_NO_FATAL_FAILURE(OperationManager::getInstance().executeOperation(Operations::copyToGPU));
+   EXPECT_NO_FATAL_FAILURE(OperationManager::getInstance().executeOperation(Operations::op::copyToGPU));
 }

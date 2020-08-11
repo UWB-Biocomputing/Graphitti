@@ -35,6 +35,7 @@
 
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
+
 #ifdef __CUDACC__
 #include "Book.h"
 #endif
@@ -51,99 +52,101 @@ extern float g_time;
 extern cudaEvent_t start, stop;
 
 inline void cudaStartTimer() {
-       	cudaEventRecord( start, 0 );
+          cudaEventRecord( start, 0 );
 };
 
 //*! Increment elapsed time in seconds
 inline void cudaLapTime(double& t_event) {
-       	cudaEventRecord( stop, 0 );
-       	cudaEventSynchronize( stop );
-       	cudaEventElapsedTime( &g_time, start, stop );
-	// The CUDA functions return time in milliseconds
-       	t_event += g_time/1000.0;
+          cudaEventRecord( stop, 0 );
+          cudaEventSynchronize( stop );
+          cudaEventElapsedTime( &g_time, start, stop );
+   // The CUDA functions return time in milliseconds
+          t_event += g_time/1000.0;
 };
 #endif // PERFORMANCE_METRICS
 
 class AllSpikingSynapses;
 
-class GPUSpikingModel : public Model
-      {
+class GPUSpikingModel : public Model {
    friend class GpuSInputPoisson;
 
-      public:
-	      GPUSpikingModel(Connections *conns, IAllNeurons *neurons, IAllSynapses *synapses, Layout *layout);
-	      virtual ~GPUSpikingModel();
+public:
+   GPUSpikingModel();
 
-	      /// Set up model state, if anym for a specific simulation run.
-	      virtual void setupSim();
+   virtual ~GPUSpikingModel();
 
-	      /// Performs any finalization tasks on network following a simulation.
-	      virtual void cleanupSim();
+   /// Set up model state, if anym for a specific simulation run.
+   virtual void setupSim();
 
-	      /// Advances network state one simulation step.
-	      virtual void advance();
+   /// Performs any finalization tasks on network following a simulation.
+   virtual void cleanupSim();
 
-	      /// Modifies connections between neurons based on current state of the network and behavior
-	      /// over the past epoch. Should be called once every epoch.
-	      virtual void updateConnections();
+   /// Advances network state one simulation step.
+   virtual void advance();
 
-	      /// Copy GPU Synapse data to CPU.
-	      virtual void copyGPUSynapseToCPUModel();
+   /// Modifies connections between neurons based on current state of the network and behavior
+   /// over the past epoch. Should be called once every epoch.
+   virtual void updateConnections();
 
-	      /// Copy CPU Synapse data to GPU.
-	      virtual void copyCPUSynapseToGPUModel();
+   /// Copy GPU Synapse data to CPU.
+   virtual void copyGPUSynapseToCPUModel();
 
-	      /// Print out SynapseProps on the GPU.
-	      void printGPUSynapsesPropsModel() const;
-    
-      protected:
-         /// Allocates  and initializes memories on CUDA device.
-         /// @param[out] allNeuronsDevice          Memory location of the pointer to the neurons list on device memory.
-         /// @param[out] allSynapsesDevice         Memory location of the pointer to the synapses list on device memory.
-         void allocDeviceStruct(void** allNeuronsDevice, void** allSynapsesDevice);
+   /// Copy CPU Synapse data to GPU.
+   virtual void copyCPUSynapseToGPUModel();
 
-         /// Copies device memories to host memories and deallocates them.
-         /// @param[out] allNeuronsDevice          Memory location of the pointer to the neurons list on device memory.
-         /// @param[out] allSynapsesDevice         Memory location of the pointer to the synapses list on device memory.
-         virtual void deleteDeviceStruct(void** allNeuronsDevice, void** allSynapsesDevice);
+   /// Print out SynapseProps on the GPU.
+   void printGPUSynapsesPropsModel() const;
 
-         /// Add psr of all incoming synapses to summation points.
-         virtual void calcSummationMap();
+protected:
+   /// Allocates  and initializes memories on CUDA device.
+   /// @param[out] allNeuronsDevice          Memory location of the pointer to the neurons list on device memory.
+   /// @param[out] allSynapsesDevice         Memory location of the pointer to the synapses list on device memory.
+   void allocDeviceStruct(void **allNeuronsDevice, void **allSynapsesDevice);
 
-         /// Pointer to device random noise array.
-         float* randNoise_d;
+   /// Copies device memories to host memories and deallocates them.
+   /// @param[out] allNeuronsDevice          Memory location of the pointer to the neurons list on device memory.
+   /// @param[out] allSynapsesDevice         Memory location of the pointer to the synapses list on device memory.
+   virtual void deleteDeviceStruct(void **allNeuronsDevice, void **allSynapsesDevice);
 
-         /// Pointer to synapse index map in device memory.
-         SynapseIndexMap* synapseIndexMapDevice;
+   /// Add psr of all incoming synapses to summation points.
+   virtual void calcSummationMap();
 
-         /// Synapse structures in device memory.
-         AllSpikingSynapsesDeviceProperties* allSynapsesDevice_;
+   /// Pointer to device random noise array.
+   float *randNoise_d;
 
-         /// Neuron structure in device memory.
-         AllSpikingNeuronsDeviceProperties* allNeuronsDevice_;
+   /// Pointer to synapse index map in device memory.
+   SynapseIndexMap *synapseIndexMapDevice;
 
-      private:
-         void allocSynapseImap(int count);
+   /// Synapse structures in device memory.
+   AllSpikingSynapsesDeviceProperties *allSynapsesDevice_;
 
-         void deleteSynapseImap();
+   /// Neuron structure in device memory.
+   AllSpikingNeuronsDeviceProperties *allNeuronsDevice_;
 
-      public: //2020/03/14 changed to public for accessing in BGDriver
+private:
+   void allocSynapseImap(int count);
 
-         void copySynapseIndexMapHostToDevice(SynapseIndexMap &synapseIndexMapHost, int neuron_count);
+   void deleteSynapseImap();
 
-      private:
+public: //2020/03/14 changed to public for accessing in BGDriver
 
-        void updateHistory();
+   void copySynapseIndexMapHostToDevice(SynapseIndexMap &synapseIndexMapHost, int neuron_count);
 
-        // TODO
-        void eraseSynapse(IAllSynapses &synapses, const int neuron_index, const int synapse_index);
-        // TODO
-        void addSynapse(IAllSynapses &synapses, synapseType type, const int src_neuron, const int dest_neuron,
-              Coordinate &source, Coordinate &dest, BGFLOAT *sum_point, BGFLOAT deltaT);
-        // TODO
-        void createSynapse(IAllSynapses &synapses, const int neuron_index, const int synapse_index,
-              Coordinate source, Coordinate dest, BGFLOAT* sp, BGFLOAT deltaT, synapseType type);
-      };
+private:
+
+   void updateHistory();
+
+   // TODO
+   void eraseSynapse(IAllSynapses &synapses, const int neuron_index, const int synapse_index);
+
+   // TODO
+   void addSynapse(IAllSynapses &synapses, synapseType type, const int src_neuron, const int dest_neuron,
+                   Coordinate &source, Coordinate &dest, BGFLOAT *sum_point, BGFLOAT deltaT);
+
+   // TODO
+   void createSynapse(IAllSynapses &synapses, const int neuron_index, const int synapse_index,
+                      Coordinate source, Coordinate dest, BGFLOAT *sp, BGFLOAT deltaT, synapseType type);
+};
 
 #if defined(__CUDACC__)
 extern "C" {
@@ -153,7 +156,7 @@ void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, uns
         
 //! Calculate summation point.
 extern __global__ void calcSummationMapDevice(int totalNeurons,
-		    AllSpikingNeuronsDeviceProperties* __restrict__ allNeurnsDevice,
-		    const SynapseIndexMap* __restrict__ synapseIndexMapDevice,
+          AllSpikingNeuronsDeviceProperties* __restrict__ allNeurnsDevice,
+          const SynapseIndexMap* __restrict__ synapseIndexMapDevice,
                     const AllSpikingSynapsesDeviceProperties* __restrict__ allSynapsesDevice );
 #endif

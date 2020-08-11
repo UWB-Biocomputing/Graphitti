@@ -7,8 +7,8 @@
             <z name="z">1</z>
         </PoolSize>
         <SimParams name="SimParams">
-            <Tsim name="Tsim">1</Tsim>
-            <numSims name="numSims">1</numSims>
+            <epochDuration name="epochDuration">1</epochDuration>
+            <numEpochs name="numEpochs">1</numEpochs>
         </SimParams>
         <SimConfig name="SimConfig">
             <maxFiringRate name="maxFiringRate">1000</maxFiringRate>
@@ -18,7 +18,7 @@
             <value name="value">777</value>
         </Seed>
         <OutputParams name="OutputParams">
-            <stateOutputFileName name="stateOutputFileName">results/static_izh_historyDump.h5</stateOutputFileName>
+            <resultFileName name="resultFileName">results/static_izh_historyDump.h5</resultFileName>
         </OutputParams>
     </SimInfoParams>
     <ModelParams>

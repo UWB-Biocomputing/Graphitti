@@ -27,6 +27,7 @@
 #include <stdexcept>
 #include <tinyxml.h>
 #include <tinystr.h>
+#include <vector>
 
 #include "BGTypes.h"
 #include "xpath_static.h"
@@ -255,7 +256,16 @@ bool ParameterManager::getBGFloatByXpath(string xpath, BGFLOAT &referenceVar) {
    return false;
 }
 
-bool ParameterManager::getLongByXpath(string xpath, long &var) {
+/**
+ * Interface method to pull a long value from the xml
+ * schema. The calling object must know the xpath to retrieve
+ * the value.
+ *
+ * @param xpath The xpath for the desired float value in the XML file
+ * @param referenceVariable The variable to store the long result into
+ * @return bool A T/F flag indicating whether the retrieval succeeded
+ */
+bool ParameterManager::getLongByXpath(string xpath, long &referenceVar) {
    if (!checkDocumentStatus()) return false;
    string tmp;
    if (!getStringByXpath(xpath, tmp)) {
@@ -270,7 +280,7 @@ bool ParameterManager::getLongByXpath(string xpath, long &var) {
       return false;
    }
    try {
-      var = stol(tmp);
+      referenceVar = stol(tmp);
    } catch (invalid_argument &arg_exception) {
       cerr << "Parsed parameter could not be parsed as a long. Value: "
            << tmp << endl;
@@ -282,3 +292,46 @@ bool ParameterManager::getLongByXpath(string xpath, long &var) {
    }
    return true;
 }
+
+/**
+ * Interface method to pull a list of ints into a vector<int> from the xml
+ * schema. The calling object must match the elementName that stores the list. The xml files
+ * in the NLists directory name the element by which type of neuron lists is expected.
+ *
+ * A - Active Neuron List
+ * I - Inhibitory Neuron List
+ * P - Probed Neuron List
+ *
+ * @param path the path to the xml file to read from
+ * @param elementName The name of the element that stores the list of ints
+ * @param referenceVariable The reference variable to store the list of ints
+ * @return bool A T/F flag indicating whether the retrieval succeeded
+ */
+bool ParameterManager::getIntVectorByXpath(const string &path, const string &elementName, vector<int> &referenceVar) {
+   // Open file using a local XmlDocument object
+   TiXmlDocument xmlDocument(path.c_str());
+   if (!xmlDocument.LoadFile()) {
+      cerr << "Failed to load " << path.c_str() << ":" << "\n\t"
+           << xmlDocument.ErrorDesc() << endl;
+      return false;
+   }
+
+   // Check file for matching element
+   TiXmlNode *xmlNode = NULL;
+   if ((xmlNode = xmlDocument.FirstChildElement(elementName)) == NULL) {
+      cerr << "Could not find <" << elementName << "> in neurons list file " << path << endl;
+      return false;
+   }
+
+   // Get list of ints as a string stream
+   std::istringstream valueStream(xmlNode->ToElement()->GetText());
+
+   // Parse integers out of the string and add them to a list
+   int i;
+   while (valueStream.good()) {
+      valueStream >> i;
+      referenceVar.push_back(i);
+   }
+   return true;
+}
+

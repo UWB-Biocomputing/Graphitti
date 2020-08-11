@@ -36,10 +36,13 @@
 
 #pragma once
 
+#include <memory>
+
 #include "IAllNeurons.h"
 #include "IAllSynapses.h"
 #include "Layout.h"
 #include "IRecorder.h"
+#include "SynapseIndexMap.h"
 
 using namespace std;
 
@@ -48,6 +51,10 @@ public:
    Connections();
 
    virtual ~Connections();
+
+   shared_ptr<IAllSynapses> getSynapses() const;
+
+   shared_ptr<SynapseIndexMap> getSynapseIndexMap() const;
 
    /**
     *  Setup the internal structure of the class (allocate memories and initialize them).
@@ -63,19 +70,18 @@ public:
     */
    virtual void cleanupConnections() = 0;
 
-   /**
-    *  Checks the number of required parameters to read.
-    *
-    * @return true if all required parameters were successfully read, false otherwise.
+   /*
+    * Load member variables from configuration file.
+    * Registered to OperationManager as Operations::op::loadParameters
     */
-   virtual bool checkNumParameters() = 0;
+   virtual void loadParameters() = 0;
 
    /**
     *  Prints out all parameters of the connections to ostream.
     *
     *  @param  output  ostream to send output to.
     */
-   virtual void printParameters(ostream &output) const = 0;
+   virtual void printParameters() const = 0;
 
    /**
     *  Update the connections status in every epoch.
@@ -133,10 +139,12 @@ public:
    virtual void
    updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout);
 
-#endif
+#endif // USE_GPU
 
 protected:
-   //!  Number of parameters read.
-   int nParams;
+
+   shared_ptr<IAllSynapses> synapses_;
+
+   shared_ptr<SynapseIndexMap> synapseIndexMap_;
 };
 

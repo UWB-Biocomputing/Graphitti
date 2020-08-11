@@ -7,8 +7,8 @@
       <z name="z">1</z>
     </PoolSize>
     <SimParams name="SimParams">
-      <Tsim name="Tsim">100.0</Tsim>
-      <numSims name="numSims">20</numSims>
+      <epochDuration name="epochDuration">100.0</epochDuration>
+      <numEpochs name="numEpochs">20</numEpochs>
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">200</maxFiringRate>
@@ -18,7 +18,7 @@
       <value name="value">1</value>
     </Seed>
     <OutputParams name="OutputParams">
-      <stateOutputFileName name="stateOutputFileName">results/test-medium-out.xml</stateOutputFileName>
+      <resultFileName name="resultFileName">results/test-small-out.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 
@@ -77,8 +77,12 @@
       <LayoutFiles name="LayoutFiles">
         <activeNListFileName name="activeNListFileName" type="InputFile">configfiles/NList/ActiveNList30x30-0.01.xml</activeNListFileName>
         <inhNListFileName name="inhNListFileName" type="InputFile">configfiles/NList/InhibitoryNList30x30-0.02.xml</inhNListFileName>
-        <probedNListFileName name="prbNListFileName" type="InputFile"/>
       </LayoutFiles>
     </LayoutParams>
+
+    <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
+      <probedNListFileName name="prbNListFileName" type="InputFile">configfiles/NList/probedNList_900.xml</probedNListFileName>
+    </RecorderParams>
   </ModelParams>
 </BGSimParams>
+

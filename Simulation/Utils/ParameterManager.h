@@ -24,6 +24,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "BGTypes.h"
 #include "tinyxml.h"
@@ -52,7 +53,9 @@ public:
 
    bool getBGFloatByXpath(string xpath, BGFLOAT &referenceVar);
 
-   bool getLongByXpath(string xpath, long &var);
+   bool getLongByXpath(string xpath, long &referenceVar);
+
+   bool getIntVectorByXpath(const string &path, const string &elementName, vector<int> &referenceVar);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    ParameterManager(ParameterManager const &) = delete;

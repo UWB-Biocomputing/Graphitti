@@ -25,58 +25,64 @@
 
 #pragma once
 
-#ifndef _IRECORDER_H_
-#define _IRECORDER_H_
+#include <string>
 
 #include "Global.h"
+#include "Model.h"
 #include "Core/Simulator.h"
 #include "IAllNeurons.h"
 
-class IRecorder
-{
+class Model;
+
+class IRecorder {
 public:
-    virtual ~IRecorder() {}
+   virtual ~IRecorder() {}
 
-    /**
-     * Initialize data
-     *
-     * @param[in] stateOutputFileName       File name to save histories
-     */
-    virtual void init(const string& stateOutputFileName) = 0;
+   /**
+    * Initialize data
+    *
+    * @param[in] stateOutputFileName       File name to save histories
+    */
+   virtual void init() = 0;
 
-    /**
-     * Init radii and rates history matrices with default values
-     */
-    virtual void initDefaultValues() = 0;
+   /**
+    * Init radii and rates history matrices with default values
+    */
+   virtual void initDefaultValues() = 0;
 
-    /**
-     * Init radii and rates history matrices with current radii and rates
-     */
-    virtual void initValues() = 0;
+   /**
+    * Init radii and rates history matrices with current radii and rates
+    */
+   virtual void initValues() = 0;
 
-    /**
-     * Get the current radii and rates vlaues
-     */
-    virtual void getValues() = 0;
+   /**
+    * Get the current radii and rates vlaues
+    */
+   virtual void getValues() = 0;
 
-    /**
-     * Terminate process
-     */
-    virtual void term() = 0;
+   /**
+    * Terminate process
+    */
+   virtual void term() = 0;
 
-    /**
-     * Compile history information in every epoch
-     *
-     * @param[in] neurons   The entire list of neurons.
-     */
-    virtual void compileHistories(IAllNeurons &neurons) = 0;
+   /**
+    * Compile history information in every epoch
+    *
+    * @param[in] neurons   The entire list of neurons.
+    */
+   virtual void compileHistories(IAllNeurons &neurons) = 0;
 
-    /**
-     * Writes simulation results to an output destination.
-     *
-     * @param[in] neurons   The entire list of neurons.
-     **/
-    virtual void saveSimData(const IAllNeurons &neurons) = 0;
+   /**
+    * Writes simulation results to an output destination.
+    *
+    * @param[in] neurons   The entire list of neurons.
+    **/
+   virtual void saveSimData(const IAllNeurons &neurons) = 0;
+
+protected:
+   // File path to the file that the results will be printed to.
+   string resultFileName_;
+
+   // Smart pointer to model so the recorders can access layout and connections.
+   shared_ptr<Model> model_;
 };
-
-#endif // _IRECORDER_H_

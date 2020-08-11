@@ -38,7 +38,7 @@
 #include "H5Cpp.h"
 
 #ifndef H5_NO_NAMESPACE
-    using namespace H5;
+using namespace H5;
 #endif
 
 #ifdef SINGLEPRECISION
@@ -47,76 +47,78 @@
 #define H5_FLOAT PredType::NATIVE_DOUBLE
 #endif
 
-class Hdf5Recorder : public IRecorder
-{
+class Hdf5Recorder : public IRecorder {
 public:
-    //! THe constructor and destructor
-    Hdf5Recorder();
-    ~Hdf5Recorder();
+   //! THe constructor and destructor
+   Hdf5Recorder();
 
-    /**
-     * Initialize data
-     *
-     * @param[in] stateOutputFileName       File name to save histories
-     */
-    virtual void init(const string& stateOutputFileName);
+   ~Hdf5Recorder();
 
-    /**
-     * Init radii and rates history matrices with default values
-     */
-    virtual void initDefaultValues();
+   static IRecorder* Create() { return new Hdf5Recorder(); }
 
-    /**
-     * Init radii and rates history matrices with current radii and rates
-     */
-    virtual void initValues();
+   /**
+    * Initialize data
+    *
+    * @param[in] stateOutputFileName       File name to save histories
+    */
+   virtual void init();
 
-    /**
-     * Get the current radii and rates vlaues
-     */
-    virtual void getValues();
+   /**
+    * Init radii and rates history matrices with default values
+    */
+   virtual void initDefaultValues();
 
-    /**
-     * Terminate process
-     */
-    virtual void term();
+   /**
+    * Init radii and rates history matrices with current radii and rates
+    */
+   virtual void initValues();
 
-    /**
-     * Compile history information in every epoch
-     *
-     * @param[in] neurons   The entire list of neurons.
-     */
-    virtual void compileHistories(IAllNeurons &neurons);
+   /**
+    * Get the current radii and rates vlaues
+    */
+   virtual void getValues();
 
-    /**
-     * Writes simulation results to an output destination.
-     *
-     * @param  neurons the Neuron list to search from.
-     **/
-    virtual void saveSimData(const IAllNeurons &neurons);
+   /**
+    * Terminate process
+    */
+   virtual void term();
+
+   /**
+    * Compile history information in every epoch
+    *
+    * @param[in] neurons   The entire list of neurons.
+    */
+   virtual void compileHistories(IAllNeurons &neurons);
+
+   /**
+    * Writes simulation results to an output destination.
+    *
+    * @param  neurons the Neuron list to search from.
+    **/
+   virtual void saveSimData(const IAllNeurons &neurons);
 
 protected:
-    virtual void initDataSet();
+   virtual void initDataSet();
 
-    void getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starter_map);
+   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starter_map);
 
-    // hdf5 file identifier
-    H5File* stateOut;
+   // hdf5 file identifier
+   H5File *stateOut;
 
-    // hdf5 file dataset
-    DataSet* dataSetBurstHist;
-    DataSet* dataSetSpikesHist;
+   // hdf5 file dataset
+   DataSet *dataSetBurstHist;
+   DataSet *dataSetSpikesHist;
 
-    DataSet* dataSetXloc;
-    DataSet* dataSetYloc;
-    DataSet* dataSetNeuronTypes;
-    DataSet* dataSetNeuronThresh;
-    DataSet* dataSetStarterNeurons;
-    DataSet* dataSetTsim;
-    DataSet* dataSetSimulationEndTime;
+   DataSet *dataSetXloc;
+   DataSet *dataSetYloc;
+   DataSet *dataSetNeuronTypes;
+   DataSet *dataSetNeuronThresh;
+   DataSet *dataSetStarterNeurons;
+   DataSet *dataSetTsim;
+   DataSet *dataSetSimulationEndTime;
 
-    DataSet* dataSetSpikesProbedNeurons;
-    DataSet* dataSetProbedNeurons;
+   DataSet *dataSetSpikesProbedNeurons;
+   DataSet *dataSetProbedNeurons;
 
    // Keep track of where we are in incrementally writing spikes
     hsize_t* offsetSpikesProbedNeurons;
@@ -124,16 +126,10 @@ protected:
     // burstiness Histogram goes through the
     int* burstinessHist;
 
-    // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
-    int* spikesHistory;
+   // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
+   int *spikesHistory;
 
-    // track spikes count of probed neurons
-    vector<uint64_t>* spikesProbedNeurons;
-
-    // Struct that holds information about a simulation
-    const SimulationInfo *m_sim_info;
-
-    // TODO comment
-    Model *m_model;
+   // track spikes count of probed neurons
+   vector<uint64_t> *spikesProbedNeurons;
 };
 

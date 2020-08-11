@@ -27,11 +27,10 @@ const H5std_string  nameProbedNeurons("probedNeurons");
 //! The constructor and destructor
 Hdf5Recorder::Hdf5Recorder() :
    offsetSpikesProbedNeurons(NULL),
-   spikesProbedNeurons(NULL),
-// TODO: probably can be deleted (note: still need to fix member var names)
-//    m_sim_info(sim_info),
-    m_model(dynamic_cast<Model*> (Simulator::getInstance().model))
-{
+   spikesProbedNeurons(NULL) {
+   // TODO: I don't think these member variables exist in the .h file
+   resultFileName_ = Simulator::getInstance().getResultFileName();
+   model_ = Simulator::getInstance().getModel();
 }
 
 Hdf5Recorder::~Hdf5Recorder()
@@ -44,43 +43,44 @@ Hdf5Recorder::~Hdf5Recorder()
  *
  * @param[in] stateOutputFileName	File name to save histories
  */
-void Hdf5Recorder::init(const string& stateOutputFileName)
+void Hdf5Recorder::init()
 {
-   try
-   {
-      // create a new file using the default property lists
-      stateOut = new H5File( stateOutputFileName, H5F_ACC_TRUNC );
+    try
+    {
+       
+        // create a new file using the default property lists
+        stateOut = new H5File( resultFileName_, H5F_ACC_TRUNC );
 
-      initDataSet();
-   }
-   
-   // catch failure caused by the H5File operations
-   catch( FileIException error )
-   {
-      error.printErrorStack();
-      return;
-   }
+        initDataSet();
+    }
+    
+    // catch failure caused by the H5File operations
+    catch( FileIException error )
+    {
+        error.printErrorStack();
+        return;
+    }
 
-   // catch failure caused by the DataSet operations
-   catch( DataSetIException error )
-   {
-      error.printErrorStack();
-      return;
-   }
+    // catch failure caused by the DataSet operations
+    catch( DataSetIException error )
+    {
+        error.printErrorStack();
+        return;
+    }
 
-   // catch failure caused by the DataSpace operations
-   catch( DataSpaceIException error )
-   {
-      error.printErrorStack();
-      return;
-   }
+    // catch failure caused by the DataSpace operations
+    catch( DataSpaceIException error )
+    {
+        error.printErrorStack();
+        return;
+    }
 
-   // catch failure caused by the DataType operations
-   catch( DataTypeIException error )
-   {
-      error.printErrorStack();
-      return;
-   }
+    // catch failure caused by the DataType operations
+    catch( DataTypeIException error )
+    {
+        error.printErrorStack();
+        return;
+    }
 }
 
 /*
@@ -399,21 +399,21 @@ void Hdf5Recorder::saveSimData(const IAllNeurons &neurons)
     try
     {
         // create Neuron Types matrix
-        VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().totalNeurons, EXC);
-        for (int i = 0; i < Simulator::getInstance().totalNeurons; i++) {
+        VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, m_Simulator::getInstance().getTotalNeurons(), EXC);
+        for (int i = 0; i < m_Simulator::getInstance().getTotalNeurons(); i++) {
             neuronTypes[i] = m_model->getLayout()->neuron_type_map[i];
         }
 
         // create neuron threshold matrix
-        VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().totalNeurons, 0);
-        for (int i = 0; i < Simulator::getInstance().totalNeurons; i++) {
+        VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, m_Simulator::getInstance().getTotalNeurons(), 0);
+        for (int i = 0; i < m_Simulator::getInstance().getTotalNeurons(); i++) {
             neuronThresh[i] = dynamic_cast<const AllIFNeurons&>(neurons).Vthresh[i];
         }
 
         // Write the neuron location matrices
-        int* iXloc = new int[Simulator::getInstance().totalNeurons];
-        int* iYloc = new int[Simulator::getInstance().totalNeurons];
-        for (int i = 0; i < Simulator::getInstance().totalNeurons; i++) {
+        int* iXloc = new int[m_Simulator::getInstance().getTotalNeurons()];
+        int* iYloc = new int[m_Simulator::getInstance().getTotalNeurons()];
+        for (int i = 0; i < m_Simulator::getInstance().getTotalNeurons(); i++) {
             // convert VectorMatrix to int array
             iXloc[i] = (*m_model->getLayout()->xloc)[i];
             iYloc[i] = (*m_model->getLayout()->yloc)[i];

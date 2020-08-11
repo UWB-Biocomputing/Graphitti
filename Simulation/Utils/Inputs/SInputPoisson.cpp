@@ -132,7 +132,7 @@ void SInputPoisson::init()
     for (int neuron_index = 0; neuron_index < Simulator::getInstance().getTotalNeurons(); neuron_index++)
     {
         synapseType type;
-        if (Simulator::getInstance().getModel()->getLayout()->neuron_type_map[neuron_index] == INH)
+        if (Simulator::getInstance().getModel()->getLayout()->neuronTypeMap_[neuron_index] == INH)
             type = EI;
         else
             type = EE;
@@ -141,7 +141,7 @@ void SInputPoisson::init()
         BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * neuron_index;
 
         m_synapses->createSynapse(iSyn, 0, neuron_index, sum_point, Simulator::getInstance().getDeltaT(), type);
-        dynamic_cast<AllSynapses*>(m_synapses)->W[iSyn] = weight * AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
+        dynamic_cast<AllSynapses*>(m_synapses)->W_[iSyn] = weight * AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
     }
 }
 

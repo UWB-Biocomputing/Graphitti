@@ -36,47 +36,49 @@
 #include "Recorders/XmlRecorder.h"
 #include "Core/Model.h"
 
-class XmlGrowthRecorder : public XmlRecorder
-{
+class XmlGrowthRecorder : public XmlRecorder {
 public:
-    //! THe constructor and destructor
-    XmlGrowthRecorder();
-    ~XmlGrowthRecorder();
+   //! THe constructor and destructor
+   XmlGrowthRecorder();
 
-    /**
-     * Init radii and rates history matrices with default values
-     */
-    virtual void initDefaultValues();
+   ~XmlGrowthRecorder();
 
-    /**
-     * Init radii and rates history matrices with current radii and rates
-     */
-    virtual void initValues();
+   static IRecorder* Create() { return new XmlRecorder(); }
 
-    /**
-     * Get the current radii and rates vlaues
-     */
-    virtual void getValues();
+   /**
+    * Init radii and rates history matrices with default values
+    */
+   virtual void initDefaultValues();
 
-    /**
-     * Compile history information in every epoch
-     *
-     * @param[in] neurons   The entire list of neurons.
-     */
-    virtual void compileHistories(IAllNeurons &neurons);
+   /**
+    * Init radii and rates history matrices with current radii and rates
+    */
+   virtual void initValues();
 
-    /**
-     * Writes simulation results to an output destination.
-     *
-     * @param  neurons the Neuron list to search from.
-     **/
-    virtual void saveSimData(const IAllNeurons &neurons);
+   /**
+    * Get the current radii and rates vlaues
+    */
+   virtual void getValues();
+
+   /**
+    * Compile history information in every epoch
+    *
+    * @param[in] neurons   The entire list of neurons.
+    */
+   virtual void compileHistories(IAllNeurons &neurons);
+
+   /**
+    * Writes simulation results to an output destination.
+    *
+    * @param  neurons the Neuron list to search from.
+    **/
+   virtual void saveSimData(const IAllNeurons &neurons);
 
 private:
-    // track firing rate
-    CompleteMatrix ratesHistory;
+   // track firing rate
+   CompleteMatrix ratesHistory;
 
-    // track radii
-    CompleteMatrix radiiHistory;
+   // track radii
+   CompleteMatrix radiiHistory;
 };
 

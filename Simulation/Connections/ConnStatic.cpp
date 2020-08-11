@@ -3,6 +3,7 @@
 #include "IAllSynapses.h"
 #include "AllNeurons.h"
 #include "AllSynapses.h"
+#include "OperationManager.h"
 
 #include "XmlRecorder.h"
 #ifdef USE_HDF5
@@ -15,6 +16,10 @@ ConnStatic::ConnStatic() : Connections()
     m_threshConnsRadius = 0;
     m_nConnsPerNeuron = 0;
     m_pRewiring = 0;
+
+    // Register loadParameters function with Operation Manager
+    auto function = std::bind(&ConnStatic::loadParameters, this);
+    OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function);
 }
 
 ConnStatic::~ConnStatic()
@@ -47,7 +52,7 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
         // pick the connections shorter than threshConnsRadius
         for (int dest_neuron = 0; dest_neuron < num_neurons; dest_neuron++) {
             if (src_neuron != dest_neuron) {
-                BGFLOAT dist = (*layout->dist)(src_neuron, dest_neuron);
+                BGFLOAT dist = (*layout->dist_)(src_neuron, dest_neuron);
                 if (dist <= m_threshConnsRadius) {
                     DistDestNeuron distDestNeuron;
                     distDestNeuron.dist = dist;
@@ -63,7 +68,7 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
         for (BGSIZE i = 0; i < distDestNeurons[src_neuron].size() && (int)i < m_nConnsPerNeuron; i++) {
             int dest_neuron = distDestNeurons[src_neuron][i].dest_neuron;
             synapseType type = layout->synType(src_neuron, dest_neuron);
-            BGFLOAT* sum_point = &( dynamic_cast<AllNeurons*>(neurons)->summation_map[dest_neuron] );
+            BGFLOAT* sum_point = &( dynamic_cast<AllNeurons*>(neurons)->summationMap_[dest_neuron] );
 
             DEBUG_MID (cout << "source: " << src_neuron << " dest: " << dest_neuron << " dist: " << distDestNeurons[src_neuron][i].dist << endl;)
 
@@ -74,10 +79,10 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
             // set synapse weight
             // TODO: we need another synaptic weight distibution mode (normal distribution)
             if (synapses->synSign(type) > 0) {
-                dynamic_cast<AllSynapses*>(synapses)->W[iSyn] = rng.inRange(m_excWeight[0], m_excWeight[1]);
+                dynamic_cast<AllSynapses*>(synapses)->W_[iSyn] = rng.inRange(m_excWeight[0], m_excWeight[1]);
             }
             else {
-                dynamic_cast<AllSynapses*>(synapses)->W[iSyn] = rng.inRange(m_inhWeight[0], m_inhWeight[1]);
+                dynamic_cast<AllSynapses*>(synapses)->W_[iSyn] = rng.inRange(m_inhWeight[0], m_inhWeight[1]);
             } 
         }
     }
@@ -97,21 +102,18 @@ void ConnStatic::cleanupConnections()
 }
 
 /*
- *  Checks the number of required parameters.
- *
- * @return true if all required parameters were successfully read, false otherwise.
+ * Load member variables from configuration file.
+ * Registered to OperationManager as Operations::op::loadParameters
  */
-bool ConnStatic::checkNumParameters()
-{
-    return (nParams >= 2);
+void ConnStatic::loadParameters() {
+    // ConnStatic doesn't have any parameters to load from the configuration file.
 }
 
+
 /*
- *  Prints out all parameters of the connections to ostream.
- *
- *  @param  output  ostream to send output to.
+ *  Prints out all parameters of the connections to console.
  */
-void ConnStatic::printParameters(ostream &output) const
+void ConnStatic::printParameters() const
 {
 }
 
@@ -125,7 +127,7 @@ void ConnStatic::printParameters(ostream &output) const
 IRecorder* ConnStatic::createRecorder() {
     // create & init simulation recorder
     IRecorder* simRecorder = NULL;
-    if (Simulator::getInstance().getStateOutputFileName().find(".xml") != string::npos) {
+    if (Simulator::getInstance().getResultFileName().find(".xml") != string::npos) {
         simRecorder = new XmlRecorder();
     }
 #ifdef USE_HDF5
@@ -137,8 +139,9 @@ IRecorder* ConnStatic::createRecorder() {
         return NULL;
     }
     if (simRecorder != NULL) {
-        simRecorder->init(Simulator::getInstance().getStateOutputFileName());
+        simRecorder->init();
     }
 
     return simRecorder;
 }
+

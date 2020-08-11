@@ -2,16 +2,13 @@
 #include "Core/Simulator.h"
 
 // Default constructor
-AllNeurons::AllNeurons() : 
-        size(0), 
-        nParams(0)
-{
-    summation_map = NULL;
+AllNeurons::AllNeurons() :
+      size_(0) {
+   summationMap_ = NULL;
 }
 
-AllNeurons::~AllNeurons()
-{
-    freeResources();
+AllNeurons::~AllNeurons() {
+   freeResources();
 }
 
 /*
@@ -19,37 +16,33 @@ AllNeurons::~AllNeurons()
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllNeurons::setupNeurons()
-{
-    size = Simulator::getInstance().getTotalNeurons();
-    // TODO: Rename variables for easier identification
-    summation_map = new BGFLOAT[size];
+void AllNeurons::setupNeurons() {
+   size_ = Simulator::getInstance().getTotalNeurons();
+   summationMap_ = new BGFLOAT[size_];
 
-    for (int i = 0; i < size; ++i) {
-        summation_map[i] = 0;
-    }
+   for (int i = 0; i < size_; ++i) {
+      summationMap_[i] = 0;
+   }
 
-    Simulator::getInstance().setPSummationMap(summation_map);
+   Simulator::getInstance().setPSummationMap(summationMap_);
 }
 
 /*
  *  Cleanup the class (deallocate memories).
  */
-void AllNeurons::cleanupNeurons()
-{
-    freeResources();
+void AllNeurons::cleanupNeurons() {
+   freeResources();
 }
 
 /*
  *  Deallocate all resources
  */
-void AllNeurons::freeResources()
-{
-    if (size != 0) {
-        delete[] summation_map;
-    }
-        
-    summation_map = NULL;
+void AllNeurons::freeResources() {
+   if (size_ != 0) {
+      delete[] summationMap_;
+   }
 
-    size = 0;
+   summationMap_ = NULL;
+
+   size_ = 0;
 }
