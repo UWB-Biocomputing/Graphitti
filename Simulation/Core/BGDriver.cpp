@@ -201,7 +201,7 @@ int main(int argc, char *argv[]) {
 bool parseCommandLine(int argc, char *argv[]) {
    ParamContainer cl; // todo: note as third party class.
    cl.initOptions(false);  // don't allow unknown parameters
-   cl.setHelpString(string("The UW Bothell graph-based simulation environment, for high-performance\nneural network and other graph-based problems\nUsage: ") + argv[0] + " ");
+   cl.setHelpString(string("The UW Bothell graph-based simulation environment, for high-performance neural network and other graph-based problems.\nUsage: ") + argv[0] + " ");
 
    // Set up the comment line parser.
    if ((cl.addParam("resultfile", 'o', ParamContainer::filename, "simulation results filepath (deprecated)") != ParamContainer::errOk)
