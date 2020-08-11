@@ -13,10 +13,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: cmake
-      run: cmake .
-    - name: make
+    - name: configure
+      run: cmake . -DBOOST_ROOT=$BOOST_ROOT_1_72_0
+    - name: build
       run: make
-    - name: test
+    - name: run tests
       run: ./tests
 
