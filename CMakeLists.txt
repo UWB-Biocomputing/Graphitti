@@ -44,7 +44,7 @@ add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
 # Boost Library support
-find_package(Boost REQUIRED regex)
+find_package(Boost REQUIRED COMPONENTS regex NAMES Boost boost)
 link_directories(${Boost_LIBRARY_DIR})
 
 #target_include_directories(TinyXLib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Utils/TinyXPath")
