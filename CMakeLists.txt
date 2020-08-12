@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.12)
 project(SummerOfBrain)
 
 # Setting the base version to C++ 11
@@ -34,7 +34,7 @@ include_directories(
         ThirdParty
         ThirdParty/cereal
         ThirdParty/TinyXPath
-        ThirdParty/log4cplus-1.2.0/include)
+        ThirdParty/log4cplus-2.0.2/include)
 
 # Used to locate other CMakeLists.txt files for further compilation of the project.
 add_subdirectory(Simulation)
@@ -61,7 +61,7 @@ link_directories(${Boost_LIBRARY_DIR})
 # ------ TESTS EXECUTABLE ------
 # Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
 # included in the executable.
-add_executable(Tests
+add_executable(tests
         Testing/RunTests.cpp
         Testing/Core/OperationManagerTests.cpp
         Testing/Core/SynapseIndexMapTests.cpp
@@ -71,7 +71,7 @@ add_executable(Tests
         Testing/Utils/ParamaterManagerTests.cpp)
 
 # Links the Googletest framework with the testing executable
-target_link_libraries(Tests gtest gtest_main)
+target_link_libraries(tests gtest gtest_main)
 
 # Link all libraries created in the project's subdirectories into a combined library.
 add_library(combinedLib INTERFACE)
@@ -99,4 +99,4 @@ target_link_libraries(combinedLib INTERFACE
         ${Boost_LIBRARIES})
 
 # Link the combined library into the 'Tests' executable.
-target_link_libraries(Tests combinedLib)
+target_link_libraries(tests combinedLib)

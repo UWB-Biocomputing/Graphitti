@@ -20,7 +20,7 @@ using namespace std;
 int main() {
    // Initialize log4cplus and set properties based on configure file
    ::log4cplus::initialize();
-   ::log4cplus::PropertyConfigurator::doConfigure("ThirdParty/log4cplus-1.2.0/log4cplus_configure.ini");
+   ::log4cplus::PropertyConfigurator::doConfigure("ThirdParty/log4cplus-2.0.2/log4cplus_configure.ini");
 
    // Get the instance of the rootLogger and begin tests
    log4cplus::Logger logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("rootLogger"));
