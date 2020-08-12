@@ -43,10 +43,6 @@ add_subdirectory(ThirdParty)
 add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
-# Boost Library support
-find_package(Boost REQUIRED regex)
-link_directories(${Boost_LIBRARY_DIR})
-
 #target_include_directories(TinyXLib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Utils/TinyXPath")
 
 # ------ CPU SIMULATOR EXECUTABLE -------
@@ -93,10 +89,7 @@ target_link_libraries(combinedLib INTERFACE
 
         # ThirdParty
         TinyXPath
-        paramcontainer
-
-        # External Libraries
-        ${Boost_LIBRARIES})
+        paramcontainer)
 
 # Link the combined library into the 'braingrid' executable.
 target_link_libraries(braingrid combinedLib)
