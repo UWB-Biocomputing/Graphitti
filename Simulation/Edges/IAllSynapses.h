@@ -12,9 +12,7 @@
 
 class IAllNeurons;
 
-class IAllSynapses;
-
-typedef void (*fpCreateSynapse_t)(void *, const int, const int, int, int, BGFLOAT *, const BGFLOAT, synapseType);
+//typedef void (*fpCreateSynapse_t)(void *, const int, const int, int, int, BGFLOAT *, const BGFLOAT, synapseType);
 
 // enumerate all non-abstract synapse classes.
 enum enumClassSynapses {
@@ -44,6 +42,12 @@ public:
     *  @param  deltaT   Inner simulation step duration
     */
    virtual void resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) = 0;
+
+   /**
+    * Load member variables from configuration file.
+    * Registered to OperationManager as Operation::op::loadParameters
+    */
+   virtual void loadParameters() = 0;
 
    /**
     *  Prints out all parameters of the neurons to console.

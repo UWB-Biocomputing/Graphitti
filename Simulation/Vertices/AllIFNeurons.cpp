@@ -7,7 +7,7 @@
 #include "OperationManager.h"
 
 // Default constructor
-AllIFNeurons::AllIFNeurons() : AllSpikingNeurons() {
+AllIFNeurons::AllIFNeurons() {
    C1_ = NULL;
    C2_ = NULL;
    Cm_ = NULL;

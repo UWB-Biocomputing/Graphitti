@@ -36,7 +36,7 @@ private:
    EdgesFactory();
 
    /// Pointer to edges instance
-   shared_ptr<IAllSynapses> edgesInstance;
+   shared_ptr<IAllSynapses> edgesInstance_;
 
    /* Type definitions */
    /// Defines function type for usage in internal map
