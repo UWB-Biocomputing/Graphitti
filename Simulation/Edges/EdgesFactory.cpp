@@ -18,7 +18,7 @@ EdgesFactory::EdgesFactory() {
    registerClass("AllSpikingSynapses", &AllSpikingSynapses::Create);
    registerClass("AllSTDPSynapses", &AllSTDPSynapses::Create);
    registerClass("AllDSSynapses", &AllDSSynapses::Create);
-   registerClass("AllDynamicSTDPSynapses", &AllDynamicSTDPSynapses().Create);
+   registerClass("AllDynamicSTDPSynapses", &AllDynamicSTDPSynapses::Create);
 }
 
 EdgesFactory::~EdgesFactory() {
@@ -38,8 +38,8 @@ void EdgesFactory::registerClass(const string &className, CreateFunction functio
 
 /// Creates concrete instance of the desired neurons class.
 shared_ptr<IAllSynapses> EdgesFactory::createEdges(const string &className) {
-   edgesInstance = shared_ptr<IAllSynapses>(invokeCreateFunction(className));
-   return edgesInstance;
+   edgesInstance_ = shared_ptr<IAllSynapses>(invokeCreateFunction(className));
+   return edgesInstance_;
 }
 
 /**

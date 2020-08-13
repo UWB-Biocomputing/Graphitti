@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.12)
 project(SummerOfBrain)
 
 # Setting the base version to C++ 11
@@ -43,10 +43,6 @@ add_subdirectory(ThirdParty)
 add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
-# Boost Library support
-find_package(Boost REQUIRED COMPONENTS regex NAMES Boost boost)
-link_directories(${Boost_LIBRARY_DIR})
-
 #target_include_directories(TinyXLib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Utils/TinyXPath")
 
 # ------ CPU SIMULATOR EXECUTABLE -------
@@ -67,7 +63,7 @@ add_executable(tests
         Testing/Core/SynapseIndexMapTests.cpp
         Testing/Core/FunctionNodeTests.cpp
         Testing/Core/SimulatorTests.cpp
-        Testing/Core/Foo.cpp
+        Testing/Core/Foo.h
         Testing/Utils/ParamaterManagerTests.cpp)
 
 # Links the Googletest framework with the testing executable
@@ -93,10 +89,7 @@ target_link_libraries(combinedLib INTERFACE
 
         # ThirdParty
         TinyXPath
-        paramcontainer
-
-        # External Libraries
-        ${Boost_LIBRARIES})
+        paramcontainer)
 
 # Link the combined library into the 'braingrid' executable.
 target_link_libraries(braingrid combinedLib)

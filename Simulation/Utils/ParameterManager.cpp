@@ -21,7 +21,7 @@
 
 #include "ParameterManager.h"
 
-#include <boost/regex.hpp>
+#include <regex>
 #include <iostream>
 #include <string>
 #include <stdexcept>
@@ -130,12 +130,12 @@ bool ParameterManager::getIntByXpath(string xpath, int &referenceVar) {
    }
    // Workaround for standard value conversion functions.
    // stoi() will cast floats to ints.
-   if (boost::regex_match(tmp, boost::regex("\\d+[.]\\d+(e[+-]?\\d+)?f?|\\d+[.]?\\d+(e[+-]?\\d+)?f"))) {
+   if (regex_match(tmp, regex("\\d+[.]\\d+(e[+-]?\\d+)?f?|\\d+[.]?\\d+(e[+-]?\\d+)?f"))) {
       cerr << "Parsed parameter is likely a float/double value. "
            << "Terminating integer cast. Value: "
            << tmp << endl;
       return false;
-   } else if (boost::regex_match(tmp, boost::regex(".*[^\\def.]+.*"))) {
+   } else if (regex_match(tmp, regex(".*[^\\def.]+.*"))) {
       cerr << "Parsed parameter is likely a string. "
            << "Terminating integer cast. Value: "
            << tmp << endl;
@@ -172,7 +172,7 @@ bool ParameterManager::getDoubleByXpath(string xpath, double &referenceVar) {
            << xpath << endl;
       return false;
    }
-   if (boost::regex_match(tmp, boost::regex(".*[^\\def.+-]+.*"))) {
+   if (regex_match(tmp, regex(".*[^\\def.+-]+.*"))) {
       cerr << "Parsed parameter is likely a string. "
            << "Terminating double conversion. Value: "
            << tmp << endl;
@@ -210,7 +210,7 @@ bool ParameterManager::getFloatByXpath(string xpath, float &referenceVariable) {
            << xpath << endl;
       return false;
    }
-   if (boost::regex_match(tmp, boost::regex(".*[^\\def.+-]+.*"))) {
+   if (regex_match(tmp, regex(".*[^\\def.+-]+.*"))) {
       cerr << "Parsed parameter is likely a string. "
            << "Terminating double conversion. Value: "
            << tmp << endl;
@@ -273,7 +273,7 @@ bool ParameterManager::getLongByXpath(string xpath, long &referenceVar) {
            << xpath << endl;
       return false;
    }
-   if (!boost::regex_match(tmp, boost::regex("[\\d]+l?"))) {
+   if (!regex_match(tmp, regex("[\\d]+l?"))) {
       cerr << "Parsed parameter is not a valid long format. "
            << "Terminating long conversion. Value: "
            << tmp << endl;

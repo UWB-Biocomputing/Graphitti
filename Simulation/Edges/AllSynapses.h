@@ -75,10 +75,10 @@ public:
    virtual void cleanupSynapses();
 
    /**
-    * Load member variables from configuration file. Can't be virtual
+    * Load member variables from configuration file.
     * Registered to OperationManager as Operation::op::loadParameters
     */
-   void loadParameters();
+   virtual void loadParameters();
 
    /**
     *  Reset time varying state vars and recompute decay.
