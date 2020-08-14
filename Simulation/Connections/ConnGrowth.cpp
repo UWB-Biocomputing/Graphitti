@@ -269,8 +269,9 @@ void ConnGrowth::updateOverlap(BGFLOAT num_neurons, Layout *layout) {
  *  @param  ineurons    The Neuron list to search from.
  *  @param  isynapses   The Synapse list to search from.
  */
-void ConnGrowth::updateSynapsesWeights(const int num_neurons, IAllNeurons &ineurons, IAllSynapses &isynapses,
-                                       Layout *layout) {
+void ConnGrowth::updateSynapsesWeights(const int num_neurons,
+         IAllNeurons &ineurons, IAllSynapses &isynapses,
+         Layout *layout) {
     AllNeurons &neurons = dynamic_cast<AllNeurons &>(ineurons);
     AllSynapses &synapses = dynamic_cast<AllSynapses &>(isynapses);
 

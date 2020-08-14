@@ -161,23 +161,29 @@ public:
    void printRadii() const;
 
 #if defined(USE_GPU)
-   public:
-       /**
-        *  Update the weight of the Synapses in the simulation.
-        *  Note: Platform Dependent.
-        *
-        *  @param  num_neurons         number of neurons to update.
-        *  @param  neurons             the Neuron list to search from.
-        *  @param  synapses            the Synapse list to search from.
-        *  @param  m_allNeuronsDevice  Reference to the allNeurons struct on device memory.
-        *  @param  m_allSynapsesDevice Reference to the allSynapses struct on device memory.
-        *  @param  layout              Layout information of the neunal network.
-        */
-       virtual void updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout);
-#else
-public:
    /**
-    *  Update the weight of the Synapses in the simulation.
+    *  Update the weights of the Synapses in the simulation. To be clear,
+    *  iterates through all source and destination neurons and updates their
+    *  synaptic strengths from the weight matrix.
+    *  Note: Platform Dependent.
+    *
+    *  @param  num_neurons         number of neurons to update.
+    *  @param  neurons             the Neuron list to search from.
+    *  @param  synapses            the Synapse list to search from.
+    *  @param  m_allNeuronsDevice  Reference to the allNeurons struct on device memory.
+    *  @param  m_allSynapsesDevice Reference to the allSynapses struct on device memory.
+    *  @param  layout              Layout information of the neunal network.
+    */
+   virtual void updateSynapsesWeights(const int num_neurons,
+         IAllNeurons &neurons, IAllSynapses &synapses,
+         AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice,
+         AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice,
+         Layout *layout);
+#else
+   /**
+    *  Update the weights of the Synapses in the simulation. To be clear,
+    *  iterates through all source and destination neurons and updates their
+    *  synaptic strengths from the weight matrix.
     *  Note: Platform Dependent.
     *
     *  @param  num_neurons Number of neurons to update.
@@ -185,7 +191,10 @@ public:
     *  @param  isynapses   The Synapse list to search from.
     */
    virtual void
-   updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout);
+   updateSynapsesWeights(const int num_neurons,
+         IAllNeurons &neurons,
+         IAllSynapses &synapses,
+         Layout *layout);
 
 #endif
 private:
