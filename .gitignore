@@ -59,7 +59,8 @@ _deps
 .vs/
 
 # Google Test
-Testing/lib
+Testing/lib/
+/lib/
 
 # log4cplus logging file
 Output/Debug
