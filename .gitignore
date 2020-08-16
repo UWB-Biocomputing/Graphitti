@@ -49,6 +49,8 @@ cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
+CPackConfig.cmake
+CPackSourceConfig.cmake
 _deps
 *.cbp
 
@@ -60,3 +62,7 @@ _deps
 
 # Google Test
 Testing/lib/
+/lib/
+
+# log4cplus logging file
+Output/Debug

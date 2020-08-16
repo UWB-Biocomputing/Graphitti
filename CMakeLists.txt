@@ -33,7 +33,8 @@ include_directories(
         Testing
         ThirdParty
         ThirdParty/cereal
-        ThirdParty/TinyXPath)
+        ThirdParty/TinyXPath
+        ThirdParty/log4cplus-2.0.2/include)
 
 # Used to locate other CMakeLists.txt files for further compilation of the project.
 add_subdirectory(Simulation)
@@ -89,6 +90,7 @@ target_link_libraries(combinedLib INTERFACE
 
         # ThirdParty
         TinyXPath
+        log4cplus
         paramcontainer)
 
 # Link the combined library into the 'braingrid' executable.

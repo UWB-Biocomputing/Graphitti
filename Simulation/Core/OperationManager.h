@@ -17,6 +17,8 @@
 #include <list>
 #include <memory>
 
+#include <log4cplus/loggingmacros.h>
+
 #include "Simulation/Core/FunctionNodes/IFunctionNode.h"
 #include "Operations.h"
 
@@ -24,27 +26,36 @@ using namespace std;
 
 class OperationManager {
 public:
-    /// Get Instance method that returns a reference to this object.
-    static OperationManager &getInstance();
+   /// Get Instance method that returns a reference to this object.
+   static OperationManager &getInstance();
 
-    /// Called by lower level classes constructors on creation to register their operations with their operation type
-    /// This method can be overloaded to handle different function signatures.
-    /// Handles function signature: void ()
-    void registerOperation(const Operations::op &operation, function<void()> function);
+   /// Called by lower level classes constructors on creation to register their operations with their operation type
+   /// This method can be overloaded to handle different function signatures.
+   /// Handles function signature: void ()
+   void registerOperation(const Operations::op &operation, function<void()> function);
 
-    /// Takes in a operation type and invokes all registered functions that are classified as that operation type.
-    void executeOperation(const Operations::op &operation) const;
+   /// Takes in a operation type and invokes all registered functions that are classified as that operation type.
+   void executeOperation(const Operations::op &operation) const;
 
-    /// Delete these methods because they can cause copy instances of the singleton when using threads.
-    OperationManager(OperationManager const &) = delete;
-    void operator=(OperationManager const &) = delete;
+   /// Takes in the operation enum and returns the enum as a string. Used for debugging purposes.
+   string OperationToString(const Operations::op &operation) const;
+
+   /// Delete these methods because they can cause copy instances of the singleton when using threads.
+   OperationManager(OperationManager const &) = delete;
+   void operator=(OperationManager const &) = delete;
 
 private:
-    /// Constructor is private to keep a singleton instance of this class.
-    OperationManager() {}
+   /// Constructor is private to keep a singleton instance of this class.
+   OperationManager() {
+      // Set logger_ to a reference to the rootLogger
+      logger_ = (log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("rootLogger")));
+   }
 
-    /// LinkedLists of functions based on operation type.
-    list<unique_ptr<IFunctionNode>> functionList_;
+   /// LinkedLists of functions based on operation type.
+   list<unique_ptr<IFunctionNode>> functionList_;
+
+   /// Logger for log4plus
+   log4cplus::Logger logger_;
 };
 
 
