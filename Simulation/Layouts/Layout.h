@@ -20,37 +20,33 @@
 
 #pragma once
 
-#include "Utils/Global.h"
-#include <vector>
 #include <iostream>
+#include <memory>
+#include <vector>
+
+#include "Utils/Global.h"
+#include "IAllNeurons.h"
 
 using namespace std;
 
-class Layout
-{
+class Layout {
 public:
    Layout();
+
    virtual ~Layout();
+
+   shared_ptr<IAllNeurons> getNeurons() const;
 
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.
    virtual void setupLayout();
 
-   /// Checks the number of required parameters to read.
-   /// @return true if all required parameters were successfully read, false otherwise.
-   virtual bool checkNumParameters() = 0;
-
-
-   /// Attempts to read parameters from a XML file.
-   /// @param  element TiXmlElement to examine.
-   /// @return true if successful, false otherwise.
-   virtual bool readParameters(const TiXmlElement& element);
-
+   /// Load member variables from configuration file. Registered to OperationManager as Operation::op::loadParameters
+   virtual void loadParameters();
 
    /// Prints out all parameters of the neurons to ostream.
    /// @param  output  ostream to send output to.
-   virtual void printParameters(ostream &output) const;
-
+   virtual void printParameters() const;
 
    /// Creates a neurons type map.
    /// @param  num_neurons number of the neurons to have in the type map.
@@ -69,35 +65,34 @@ public:
    /// @return type of the synapse.
    synapseType synType(const int src_neuron, const int dest_neuron);
 
-   VectorMatrix *xloc;  ///< Store neuron i's x location.
+   VectorMatrix *xloc_;  ///< Store neuron i's x location.
 
-   VectorMatrix *yloc;   ///< Store neuron i's y location.
+   VectorMatrix *yloc_;   ///< Store neuron i's y location.
 
-   CompleteMatrix *dist2;  ///< Inter-neuron distance squared.
+   CompleteMatrix *dist2_;  ///< Inter-neuron distance squared.
 
-   CompleteMatrix *dist;    ///< The true inter-neuron distance.
+   CompleteMatrix *dist_;    ///< The true inter-neuron distance.
 
-   vector<int> m_probed_neuron_list;   ///< Probed neurons list.
+   vector<int> probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project
 
-   neuronType *neuron_type_map;    ///< The neuron type map (INH, EXC).
+   neuronType *neuronTypeMap_;    ///< The neuron type map (INH, EXC).
 
-   bool *starter_map; ///< The starter existence map (T/F).
+   bool *starterMap_; ///< The starter existence map (T/F).
 
-
-   BGSIZE num_endogenously_active_neurons;    ///< Number of endogenously active neurons.
+   BGSIZE numEndogenouslyActiveNeurons_;    ///< Number of endogenously active neurons.
 
 protected:
-   int nParams;    ///< Number of parameters read.
+   shared_ptr<IAllNeurons> neurons_;
 
-   vector<int> m_endogenously_active_neuron_list;    ///< Endogenously active neurons list.
+   vector<int> endogenouslyActiveNeuronList_;    ///< Endogenously active neurons list.
 
-   vector<int> m_inhibitory_neuron_layout;    ///< Inhibitory neurons list.
+   vector<int> inhibitoryNeuronLayout_;    ///< Inhibitory neurons list.
 
 private:
    /// initialize the location maps (xloc and yloc).
    void initNeuronsLocs();
 
-   bool m_grid_layout;    ///< True if grid layout.
+   bool gridLayout_;    ///< True if grid layout.
 
 };
 

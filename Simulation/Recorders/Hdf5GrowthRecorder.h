@@ -38,7 +38,7 @@
 #include "H5Cpp.h"
 
 #ifndef H5_NO_NAMESPACE
-    using namespace H5;
+using namespace H5;
 #endif
 
 #ifdef SINGLEPRECISION
@@ -47,61 +47,57 @@
 #define H5_FLOAT PredType::NATIVE_DOUBLE
 #endif
 
-class Hdf5GrowthRecorder : public Hdf5Recorder
-{
+class Hdf5GrowthRecorder : public Hdf5Recorder {
 public:
-    //! THe constructor and destructor
-    Hdf5GrowthRecorder(const SimulationInfo* sim_info);
-    ~Hdf5GrowthRecorder();
+   //! The constructor and destructor
+   Hdf5GrowthRecorder();
 
-    /**
-     * Initialize data
-     * @param[in] stateOutputFileName       File name to save histories
-     */
-    virtual void init(const string& stateOutputFileName);
+   ~Hdf5GrowthRecorder();
 
-    /**
-     * Init radii and rates history matrices with default values
-     */
-    virtual void initDefaultValues();
+   static IRecorder* Create() { return new Hdf5GrowthRecorder(); }
 
-    /**
-     * Init radii and rates history matrices with current radii and rates
-     */
-    virtual void initValues();
+   /**
+    * Init radii and rates history matrices with default values
+    */
+   virtual void initDefaultValues();
 
-    /**
-     * Get the current radii and rates vlaues
-     */
-    virtual void getValues();
+   /**
+    * Init radii and rates history matrices with current radii and rates
+    */
+   virtual void initValues();
 
-    /**
-     * Terminate process
-     */
-    virtual void term();
+   /**
+    * Get the current radii and rates vlaues
+    */
+   virtual void getValues();
 
-    /**
-     * Compile history information in every epoch
-     * @param[in] neurons   The entire list of neurons.
-     */
-    virtual void compileHistories(IAllNeurons &neurons);
+   /**
+    * Terminate process
+    */
+   virtual void term();
+
+   /**
+    * Compile history information in every epoch
+    * @param[in] neurons   The entire list of neurons.
+    */
+   virtual void compileHistories(IAllNeurons &neurons);
 
 protected:
-    virtual void initDataSet();
+   virtual void initDataSet();
 
-    /**
-     * Incrementaly write radii and rates histories
-     */
-    void writeRadiiRates();
+   /**
+    * Incrementaly write radii and rates histories
+    */
+   void writeRadiiRates();
 
-    // hdf5 file dataset
-    DataSet* dataSetRatesHist;
-    DataSet* dataSetRadiiHist;
+   // hdf5 file dataset
+   DataSet *dataSetRatesHist;
+   DataSet *dataSetRadiiHist;
 
-    // track radii
-    BGFLOAT* radiiHistory;
+   // track radii
+   BGFLOAT *radiiHistory;
 
-    // track firing rate
-    BGFLOAT* ratesHistory;
+   // track firing rate
+   BGFLOAT *ratesHistory;
 };
 

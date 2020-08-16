@@ -4,7 +4,7 @@ project(SummerOfBrain)
 # Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 11)
 
-# Setting the location of the executable to be in the SummerOfBrain directory. This helps when using file paths during
+# Setting the location of the executable to be in the top-level directory. This helps when using file paths during
 # runtime.
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
@@ -44,15 +44,12 @@ add_subdirectory(ThirdParty)
 add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
-# Boost Library support
-find_package(Boost REQUIRED regex)
-link_directories(${Boost_LIBRARY_DIR})
-
 #target_include_directories(TinyXLib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Utils/TinyXPath")
 
 # ------ CPU SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
-#add_executable(BrainGrid)
+add_executable(braingrid
+        Simulation/Core/BGDriver.cpp)
 
 # ------ GPU SIMULATOR EXECUTABLE ------
 # Add all files that aren't in a library and are needed to run
@@ -67,7 +64,7 @@ add_executable(tests
         Testing/Core/SynapseIndexMapTests.cpp
         Testing/Core/FunctionNodeTests.cpp
         Testing/Core/SimulatorTests.cpp
-        Testing/Core/Foo.cpp
+        Testing/Core/Foo.h
         Testing/Utils/ParamaterManagerTests.cpp)
 
 # Links the Googletest framework with the testing executable
@@ -94,9 +91,10 @@ target_link_libraries(combinedLib INTERFACE
         # ThirdParty
         TinyXPath
         log4cplus
+        paramcontainer)
 
-        # External Libraries
-        ${Boost_LIBRARIES})
+# Link the combined library into the 'braingrid' executable.
+target_link_libraries(braingrid combinedLib)
 
-# Link the combined library into the 'Tests' executable.
+# Link the combined library into the 'tests' executable.
 target_link_libraries(tests combinedLib)

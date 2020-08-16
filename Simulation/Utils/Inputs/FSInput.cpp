@@ -39,16 +39,16 @@ FSInput::~FSInput()
  */
 ISInput* FSInput::CreateInstance()
 {
-    if (Simulator::getInstance().getStimulusInputFileName().empty())
+    if (Simulator::getInstance().getStimulusFileName().empty())
     {
         return NULL;
     }
 
     // load stimulus input file
-    TiXmlDocument siDoc( Simulator::getInstance().getStimulusInputFileName().c_str( ) );
+    TiXmlDocument siDoc(Simulator::getInstance().getStimulusFileName().c_str( ) );
     if (!siDoc.LoadFile( )) 
     {
-        cerr << "Failed loading stimulus input file " << Simulator::getInstance().getStimulusInputFileName() << ":" << "\n\t"
+        cerr << "Failed loading stimulus input file " << Simulator::getInstance().getStimulusFileName() << ":" << "\n\t"
                 << siDoc.ErrorDesc( ) << endl;
         cerr << " error: " << siDoc.ErrorRow( ) << ", " << siDoc.ErrorCol( ) << endl;
         return NULL;
@@ -58,7 +58,7 @@ ISInput* FSInput::CreateInstance()
     TiXmlElement* parms = NULL;
     if (( parms = siDoc.FirstChildElement( "InputParams" ) ) == NULL) 
     {
-        cerr << "Could not find <InputParms> in stimulus input file " << Simulator::getInstance().getStimulusInputFileName() << endl;
+        cerr << "Could not find <InputParms> in stimulus input file " << Simulator::getInstance().getStimulusFileName() << endl;
         return NULL;
     }
 

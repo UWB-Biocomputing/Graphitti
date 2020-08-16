@@ -29,7 +29,9 @@
 # Executables
 BrainGrid
 BrainGrid-cuda
+braingrid
 Tests
+tests
 *.exe
 *.out
 *.app

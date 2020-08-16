@@ -45,78 +45,75 @@
 
 using namespace std;
 
-class ConnStatic : public Connections
-{
-    public:
-        ConnStatic();
-        virtual ~ConnStatic();
+class ConnStatic : public Connections {
+public:
+   ConnStatic();
 
-        static Connections* Create() { return new ConnStatic(); }
+   virtual ~ConnStatic();
 
-        /**
-         *  Setup the internal structure of the class (allocate memories and initialize them).
-         *  Initialize the small world network characterized by parameters: 
-         *  number of maximum connections per neurons, connection radius threshold, and
-         *  small-world rewiring probability.
-         *
-         *  @param  layout    Layout information of the neunal network.
-         *  @param  neurons   The Neuron list to search from.
-         *  @param  synapses  The Synapse list to search from.
-         */
-        virtual void setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses);
+   static Connections *Create() { return new ConnStatic(); }
 
-        /**
-         *  Cleanup the class.
-         */
-        virtual void cleanupConnections();
+   /**
+    *  Setup the internal structure of the class (allocate memories and initialize them).
+    *  Initialize the small world network characterized by parameters:
+    *  number of maximum connections per neurons, connection radius threshold, and
+    *  small-world rewiring probability.
+    *
+    *  @param  layout    Layout information of the neunal network.
+    *  @param  neurons   The Neuron list to search from.
+    *  @param  synapses  The Synapse list to search from.
+    */
+   virtual void setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses);
 
-        /**
-         *  Checks the number of required parameters to read.
-         *
-         * @return true if all required parameters were successfully read, false otherwise.
-         */
-        virtual bool checkNumParameters();
+   /**
+    *  Cleanup the class.
+    */
+   virtual void cleanupConnections();
 
-        /**
-         *  Prints out all parameters of the connections to ostream.
-         *
-         *  @param  output  ostream to send output to.
-         */
-        virtual void printParameters(ostream &output) const;
+   /**
+    * Load member variables from configuration file.
+    * Registered to OperationManager as Operations::op::loadParameters
+    */
+   virtual void loadParameters();
 
-        /**
-         *  Creates a recorder class object for the connection.
-         *  This function tries to create either Xml recorder or
-         *  Hdf5 recorder based on the extension of the file name.
-         *
-         *  @return Pointer to the recorder class object.
-         */
-        virtual IRecorder* createRecorder();
+   /**
+    *  Prints out all parameters of the connections to ostream.
+    *
+    *  @param  output  ostream to send output to.
+    */
+   virtual void printParameters() const;
 
-    private:
-        //! number of maximum connections per neurons
-        int m_nConnsPerNeuron;
+   /**
+    *  Creates a recorder class object for the connection.
+    *  This function tries to create either Xml recorder or
+    *  Hdf5 recorder based on the extension of the file name.
+    *
+    *  @return Pointer to the recorder class object.
+    */
+   virtual IRecorder *createRecorder();
 
-        //! Connection radius threshold
-        BGFLOAT m_threshConnsRadius;
+private:
+   //! number of maximum connections per neurons
+   int m_nConnsPerNeuron;
 
-        //! Small-world rewiring probability
-        BGFLOAT m_pRewiring;
+   //! Connection radius threshold
+   BGFLOAT m_threshConnsRadius;
 
-        //! Min/max values of excitatory neuron's synapse weight
-        BGFLOAT m_excWeight[2];
+   //! Small-world rewiring probability
+   BGFLOAT m_pRewiring;
 
-        //! Min/max values of inhibitory neuron's synapse weight
-        BGFLOAT m_inhWeight[2];
- 
-        struct DistDestNeuron
-        {
-            BGFLOAT dist;     // destance to the destination neuron
-            int dest_neuron;  // index of the destination neuron
+   //! Min/max values of excitatory neuron's synapse weight
+   BGFLOAT m_excWeight[2];
 
-            bool operator<(const DistDestNeuron& other) const
-            {
-                return (dist < other.dist);
-            }
-        };
+   //! Min/max values of inhibitory neuron's synapse weight
+   BGFLOAT m_inhWeight[2];
+
+   struct DistDestNeuron {
+      BGFLOAT dist;     // destance to the destination neuron
+      int dest_neuron;  // index of the destination neuron
+
+      bool operator<(const DistDestNeuron &other) const {
+         return (dist < other.dist);
+      }
+   };
 };

@@ -1,24 +1,21 @@
 #include "AllDSSynapses.h"
 
-AllDSSynapses::AllDSSynapses() : AllSpikingSynapses()
-{
-    lastSpike = NULL;
-    r = NULL;
-    u = NULL;
-    D = NULL;
-    U = NULL;
-    F = NULL;
+AllDSSynapses::AllDSSynapses() : AllSpikingSynapses() {
+   lastSpike_ = NULL;
+   r_ = NULL;
+   u_ = NULL;
+   D_ = NULL;
+   U_ = NULL;
+   F_ = NULL;
 }
 
 AllDSSynapses::AllDSSynapses(const int num_neurons, const int max_synapses) :
-        AllSpikingSynapses(num_neurons, max_synapses)
-{
-    setupSynapses(num_neurons, max_synapses);
+      AllSpikingSynapses(num_neurons, max_synapses) {
+   setupSynapses(num_neurons, max_synapses);
 }
 
-AllDSSynapses::~AllDSSynapses()
-{
-    cleanupSynapses();
+AllDSSynapses::~AllDSSynapses() {
+   cleanupSynapses();
 }
 
 /*
@@ -26,9 +23,8 @@ AllDSSynapses::~AllDSSynapses()
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllDSSynapses::setupSynapses()
-{
-    setupSynapses(Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
+void AllDSSynapses::setupSynapses() {
+   setupSynapses(Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
 }
 
 /*
@@ -37,65 +33,50 @@ void AllDSSynapses::setupSynapses()
  *  @param  num_neurons   Total number of neurons in the network.
  *  @param  max_synapses  Maximum number of synapses per neuron.
  */
-void AllDSSynapses::setupSynapses(const int num_neurons, const int max_synapses)
-{
-    AllSpikingSynapses::setupSynapses(num_neurons, max_synapses);
+void AllDSSynapses::setupSynapses(const int num_neurons, const int max_synapses) {
+   AllSpikingSynapses::setupSynapses(num_neurons, max_synapses);
 
-    BGSIZE max_total_synapses = max_synapses * num_neurons;
+   BGSIZE max_total_synapses = max_synapses * num_neurons;
 
-    if (max_total_synapses != 0) {
-        lastSpike = new uint64_t[max_total_synapses];
-        r = new BGFLOAT[max_total_synapses];
-        u = new BGFLOAT[max_total_synapses];
-        D = new BGFLOAT[max_total_synapses];
-        U = new BGFLOAT[max_total_synapses];
-        F = new BGFLOAT[max_total_synapses];
-    }
+   if (max_total_synapses != 0) {
+      lastSpike_ = new uint64_t[max_total_synapses];
+      r_ = new BGFLOAT[max_total_synapses];
+      u_ = new BGFLOAT[max_total_synapses];
+      D_ = new BGFLOAT[max_total_synapses];
+      U_ = new BGFLOAT[max_total_synapses];
+      F_ = new BGFLOAT[max_total_synapses];
+   }
 }
 
 /*
  *  Cleanup the class (deallocate memories).
  */
-void AllDSSynapses::cleanupSynapses()
-{
-    BGSIZE max_total_synapses = maxSynapsesPerNeuron * count_neurons;
+void AllDSSynapses::cleanupSynapses() {
+   BGSIZE max_total_synapses = maxSynapsesPerNeuron_ * countNeurons_;
 
-    if (max_total_synapses != 0) {
-        delete[] lastSpike;
-        delete[] r;
-        delete[] u;
-        delete[] D;
-        delete[] U;
-        delete[] F;
-    }
+   if (max_total_synapses != 0) {
+      delete[] lastSpike_;
+      delete[] r_;
+      delete[] u_;
+      delete[] D_;
+      delete[] U_;
+      delete[] F_;
+   }
 
-    lastSpike = NULL;
-    r = NULL;
-    u = NULL;
-    D = NULL;
-    U = NULL;
-    F = NULL;
+   lastSpike_ = NULL;
+   r_ = NULL;
+   u_ = NULL;
+   D_ = NULL;
+   U_ = NULL;
+   F_ = NULL;
 
-    AllSpikingSynapses::cleanupSynapses();
+   AllSpikingSynapses::cleanupSynapses();
 }
 
 /*
- *  Checks the number of required parameters.
- *
- * @return true if all required parameters were successfully read, false otherwise.
+ *  Prints out all parameters of the neurons to console.
  */
-bool AllDSSynapses::checkNumParameters()
-{
-    return (nParams >= 0);
-}
-
-/*
- *  Prints out all parameters of the neurons to ostream.
- *
- *  @param  output  ostream to send output to.
- */
-void AllDSSynapses::printParameters(ostream &output) const
-{
+void AllDSSynapses::printParameters() const {
 }
 
 /*
@@ -104,17 +85,22 @@ void AllDSSynapses::printParameters(ostream &output) const
  *  @param  input  istream to read from.
  *  @param  iSyn   Index of the synapse to set.
  */
-void AllDSSynapses::readSynapse(istream &input, const BGSIZE iSyn)
-{
-    AllSpikingSynapses::readSynapse(input, iSyn);
+void AllDSSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
+   AllSpikingSynapses::readSynapse(input, iSyn);
 
-    // input.ignore() so input skips over end-of-line characters.
-    input >> lastSpike[iSyn]; input.ignore();
-    input >> r[iSyn]; input.ignore();
-    input >> u[iSyn]; input.ignore();
-    input >> D[iSyn]; input.ignore();
-    input >> U[iSyn]; input.ignore();
-    input >> F[iSyn]; input.ignore();
+   // input.ignore() so input skips over end-of-line characters.
+   input >> lastSpike_[iSyn];
+   input.ignore();
+   input >> r_[iSyn];
+   input.ignore();
+   input >> u_[iSyn];
+   input.ignore();
+   input >> D_[iSyn];
+   input.ignore();
+   input >> U_[iSyn];
+   input.ignore();
+   input >> F_[iSyn];
+   input.ignore();
 }
 
 /*
@@ -123,16 +109,15 @@ void AllDSSynapses::readSynapse(istream &input, const BGSIZE iSyn)
  *  @param  output  stream to print out to.
  *  @param  iSyn    Index of the synapse to print out.
  */
-void AllDSSynapses::writeSynapse(ostream& output, const BGSIZE iSyn) const 
-{
-    AllSpikingSynapses::writeSynapse(output, iSyn);
+void AllDSSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
+   AllSpikingSynapses::writeSynapse(output, iSyn);
 
-    output << lastSpike[iSyn] << ends;
-    output << r[iSyn] << ends;
-    output << u[iSyn] << ends;
-    output << D[iSyn] << ends;
-    output << U[iSyn] << ends;
-    output << F[iSyn] << ends;
+   output << lastSpike_[iSyn] << ends;
+   output << r_[iSyn] << ends;
+   output << u_[iSyn] << ends;
+   output << D_[iSyn] << ends;
+   output << U_[iSyn] << ends;
+   output << F_[iSyn] << ends;
 }
 
 /*
@@ -141,13 +126,12 @@ void AllDSSynapses::writeSynapse(ostream& output, const BGSIZE iSyn) const
  *  @param  iSyn            Index of the synapse to set.
  *  @param  deltaT          Inner simulation step duration
  */
-void AllDSSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT)
-{
-    AllSpikingSynapses::resetSynapse(iSyn, deltaT);
+void AllDSSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
+   AllSpikingSynapses::resetSynapse(iSyn, deltaT);
 
-    u[iSyn] = DEFAULT_U;
-    r[iSyn] = 1.0;
-    lastSpike[iSyn] = ULONG_MAX;
+   u_[iSyn] = DEFAULT_U;
+   r_[iSyn] = 1.0;
+   lastSpike_[iSyn] = ULONG_MAX;
 }
 
 /*
@@ -161,73 +145,73 @@ void AllDSSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT)
  *  @param  deltaT      Inner simulation step duration.
  *  @param  type        Type of the Synapse to create.
  */
-void AllDSSynapses::createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sum_point, const BGFLOAT deltaT, synapseType type)
-{
-    AllSpikingSynapses::createSynapse(iSyn, source_index, dest_index, sum_point, deltaT, type);
+void AllDSSynapses::createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sum_point,
+                                  const BGFLOAT deltaT, synapseType type) {
+   AllSpikingSynapses::createSynapse(iSyn, source_index, dest_index, sum_point, deltaT, type);
 
-    U[iSyn] = DEFAULT_U;
+   U_[iSyn] = DEFAULT_U;
 
-    BGFLOAT U;
-    BGFLOAT D;
-    BGFLOAT F;
-    switch (type) {
-        case II:
-            U = 0.32;
-            D = 0.144;
-            F = 0.06;
-            break;
-        case IE:
-            U = 0.25;
-            D = 0.7;
-            F = 0.02;
-            break;
-        case EI:
-            U = 0.05;
-            D = 0.125;
-            F = 1.2;
-            break;
-        case EE:
-            U = 0.5;
-            D = 1.1;
-            F = 0.05;
-            break;
-        default:
-            assert( false );
-            break;
-    }
+   BGFLOAT U;
+   BGFLOAT D;
+   BGFLOAT F;
+   switch (type) {
+      case II:
+         U = 0.32;
+         D = 0.144;
+         F = 0.06;
+         break;
+      case IE:
+         U = 0.25;
+         D = 0.7;
+         F = 0.02;
+         break;
+      case EI:
+         U = 0.05;
+         D = 0.125;
+         F = 1.2;
+         break;
+      case EE:
+         U = 0.5;
+         D = 1.1;
+         F = 0.05;
+         break;
+      default:
+         assert(false);
+         break;
+   }
 
-    this->U[iSyn] = U;
-    this->D[iSyn] = D;
-    this->F[iSyn] = F;
+   this->U_[iSyn] = U;
+   this->D_[iSyn] = D;
+   this->F_[iSyn] = F;
 }
 
 #if !defined(USE_GPU)
+
 /*
  *  Calculate the post synapse response after a spike.
  *
  *  @param  iSyn        Index of the synapse to set.
  *  @param  deltaT      Inner simulation step duration.
  */
-void AllDSSynapses::changePSR(const BGSIZE iSyn, const BGFLOAT deltaT)
-{
-    BGFLOAT &psr = this->psr[iSyn];
-    BGFLOAT &W = this->W[iSyn];
-    BGFLOAT &decay = this->decay[iSyn];
-    uint64_t &lastSpike = this->lastSpike[iSyn];
-    BGFLOAT &r = this->r[iSyn];
-    BGFLOAT &u = this->u[iSyn];
-    BGFLOAT &D = this->D[iSyn];
-    BGFLOAT &F = this->F[iSyn];
-    BGFLOAT &U = this->U[iSyn];
+void AllDSSynapses::changePSR(const BGSIZE iSyn, const BGFLOAT deltaT) {
+   BGFLOAT &psr = this->psr_[iSyn];
+   BGFLOAT &W = this->W_[iSyn];
+   BGFLOAT &decay = this->decay_[iSyn];
+   uint64_t &lastSpike = this->lastSpike_[iSyn];
+   BGFLOAT &r = this->r_[iSyn];
+   BGFLOAT &u = this->u_[iSyn];
+   BGFLOAT &D = this->D_[iSyn];
+   BGFLOAT &F = this->F_[iSyn];
+   BGFLOAT &U = this->U_[iSyn];
 
-    // adjust synapse parameters
-    if (lastSpike != ULONG_MAX) {
-        BGFLOAT isi = (g_simulationStep - lastSpike) * deltaT ;
-        r = 1 + ( r * ( 1 - u ) - 1 ) * exp( -isi / D );
-        u = U + u * ( 1 - U ) * exp( -isi / F );
-    }
-    psr += ( ( W / decay ) * u * r );    // calculate psr
-    lastSpike = g_simulationStep;        // record the time of the spike
+   // adjust synapse parameters
+   if (lastSpike != ULONG_MAX) {
+      BGFLOAT isi = (g_simulationStep - lastSpike) * deltaT;
+      r = 1 + (r * (1 - u) - 1) * exp(-isi / D);
+      u = U + u * (1 - U) * exp(-isi / F);
+   }
+   psr += ((W / decay) * u * r);    // calculate psr
+   lastSpike = g_simulationStep;        // record the time of the spike
 }
 
 #endif // !defined(USE_GPU)
@@ -235,18 +219,17 @@ void AllDSSynapses::changePSR(const BGSIZE iSyn, const BGFLOAT deltaT)
 /*
  *  Prints SynapsesProps data.
  */
-void AllDSSynapses::printSynapsesProps() const
-{
-    AllSpikingSynapses::printSynapsesProps();
-    for(int i = 0; i < maxSynapsesPerNeuron * count_neurons; i++) {
-        if (W[i] != 0.0) {
-            cout << "lastSpike[" << i << "] = " << lastSpike[i];
-            cout << " r: " << r[i];
-            cout << " u: " << u[i];
-            cout << " D: " << D[i];
-            cout << " U: " << U[i];
-            cout << " F: " << F[i] << endl;
-        }
-    }
-    cout << endl;
+void AllDSSynapses::printSynapsesProps() const {
+   AllSpikingSynapses::printSynapsesProps();
+   for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
+      if (W_[i] != 0.0) {
+         cout << "lastSpike[" << i << "] = " << lastSpike_[i];
+         cout << " r: " << r_[i];
+         cout << " u: " << u_[i];
+         cout << " D: " << D_[i];
+         cout << " U: " << U_[i];
+         cout << " F: " << F_[i] << endl;
+      }
+   }
+   cout << endl;
 }

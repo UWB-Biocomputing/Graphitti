@@ -3,31 +3,35 @@
 #include "Layout.h"
 #include "RNG/MersenneTwister.h"
 #include "RNG/Norm.h"
+#include "ParameterManager.h"
+#include "OperationManager.h"
 
 // Default constructor
-AllIFNeurons::AllIFNeurons() : AllSpikingNeurons()
-{
-    C1 = NULL;
-    C2 = NULL;
-    Cm = NULL;
-    I0 = NULL;
-    Iinject = NULL;
-    Inoise = NULL;
-    Isyn = NULL;
-    Rm = NULL;
-    Tau = NULL;
-    Trefract = NULL;
-    Vinit = NULL;
-    Vm = NULL;
-    Vreset = NULL;
-    Vrest = NULL;
-    Vthresh = NULL;
-    nStepsInRefr = NULL;
+AllIFNeurons::AllIFNeurons() {
+   C1_ = NULL;
+   C2_ = NULL;
+   Cm_ = NULL;
+   I0_ = NULL;
+   Iinject_ = NULL;
+   Inoise_ = NULL;
+   Isyn_ = NULL;
+   Rm_ = NULL;
+   Tau_ = NULL;
+   Trefract_ = NULL;
+   Vinit_ = NULL;
+   Vm_ = NULL;
+   Vreset_ = NULL;
+   Vrest_ = NULL;
+   Vthresh_ = NULL;
+   numStepsInRefractoryPeriod_ = NULL;
+
+   // Register loadParameters function with Operation Manager
+   auto function = std::bind(&AllIFNeurons::loadParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function);
 }
 
-AllIFNeurons::~AllIFNeurons()
-{
-    freeResources();
+AllIFNeurons::~AllIFNeurons() {
+   freeResources();
 }
 
 /*
@@ -35,92 +39,109 @@ AllIFNeurons::~AllIFNeurons()
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllIFNeurons::setupNeurons()
-{
-    AllSpikingNeurons::setupNeurons();
+void AllIFNeurons::setupNeurons() {
+   AllSpikingNeurons::setupNeurons();
 
-    // TODO: Rename variables for easier identification
-    C1 = new BGFLOAT[size];
-    C2 = new BGFLOAT[size];
-    Cm = new BGFLOAT[size];
-    I0 = new BGFLOAT[size];
-    Iinject = new BGFLOAT[size];
-    Inoise = new BGFLOAT[size];
-    Isyn = new BGFLOAT[size];
-    Rm = new BGFLOAT[size];
-    Tau = new BGFLOAT[size];
-    Trefract = new BGFLOAT[size];
-    Vinit = new BGFLOAT[size];
-    Vm = new BGFLOAT[size];
-    Vreset = new BGFLOAT[size];
-    Vrest = new BGFLOAT[size];
-    Vthresh = new BGFLOAT[size];
-    nStepsInRefr = new int[size];
+   // TODO: Rename variables for easier identification
+   C1_ = new BGFLOAT[size_];
+   C2_ = new BGFLOAT[size_];
+   Cm_ = new BGFLOAT[size_];
+   I0_ = new BGFLOAT[size_];
+   Iinject_ = new BGFLOAT[size_];
+   Inoise_ = new BGFLOAT[size_];
+   Isyn_ = new BGFLOAT[size_];
+   Rm_ = new BGFLOAT[size_];
+   Tau_ = new BGFLOAT[size_];
+   Trefract_ = new BGFLOAT[size_];
+   Vinit_ = new BGFLOAT[size_];
+   Vm_ = new BGFLOAT[size_];
+   Vreset_ = new BGFLOAT[size_];
+   Vrest_ = new BGFLOAT[size_];
+   Vthresh_ = new BGFLOAT[size_];
+   numStepsInRefractoryPeriod_ = new int[size_];
 
-    for (int i = 0; i < size; ++i) {
-        nStepsInRefr[i] = 0;
-    }
+   for (int i = 0; i < size_; ++i) {
+      numStepsInRefractoryPeriod_[i] = 0;
+   }
 }
 
 /*
  *  Cleanup the class (deallocate memories).
  */
-void AllIFNeurons::cleanupNeurons()
-{
-    freeResources();
-    AllSpikingNeurons::cleanupNeurons();
+void AllIFNeurons::cleanupNeurons() {
+   freeResources();
+   AllSpikingNeurons::cleanupNeurons();
 }
 
 /**
  *  Deallocate all resources
  */
-void AllIFNeurons::freeResources()
-{
-    if (size != 0) {
-        delete[] C1;
-        delete[] C2;
-        delete[] Cm;
-        delete[] I0;
-        delete[] Iinject;
-        delete[] Inoise;
-        delete[] Isyn;
-        delete[] Rm;
-        delete[] Tau;
-        delete[] Trefract;
-        delete[] Vinit;
-        delete[] Vm;
-        delete[] Vreset;
-        delete[] Vrest;
-        delete[] Vthresh;
-        delete[] nStepsInRefr;
-    }
+void AllIFNeurons::freeResources() {
+   if (size_ != 0) {
+      delete[] C1_;
+      delete[] C2_;
+      delete[] Cm_;
+      delete[] I0_;
+      delete[] Iinject_;
+      delete[] Inoise_;
+      delete[] Isyn_;
+      delete[] Rm_;
+      delete[] Tau_;
+      delete[] Trefract_;
+      delete[] Vinit_;
+      delete[] Vm_;
+      delete[] Vreset_;
+      delete[] Vrest_;
+      delete[] Vthresh_;
+      delete[] numStepsInRefractoryPeriod_;
+   }
 
-    C1 = NULL;
-    C2 = NULL;
-    Cm = NULL;
-    I0 = NULL;
-    Iinject = NULL;
-    Inoise = NULL;
-    Isyn = NULL;
-    Rm = NULL;
-    Tau = NULL;
-    Trefract = NULL;
-    Vinit = NULL;
-    Vm = NULL;
-    Vreset = NULL;
-    Vrest = NULL;
-    Vthresh = NULL;
-    nStepsInRefr = NULL;
+   C1_ = NULL;
+   C2_ = NULL;
+   Cm_ = NULL;
+   I0_ = NULL;
+   Iinject_ = NULL;
+   Inoise_ = NULL;
+   Isyn_ = NULL;
+   Rm_ = NULL;
+   Tau_ = NULL;
+   Trefract_ = NULL;
+   Vinit_ = NULL;
+   Vm_ = NULL;
+   Vreset_ = NULL;
+   Vrest_ = NULL;
+   Vthresh_ = NULL;
+   numStepsInRefractoryPeriod_ = NULL;
 }
 
-/*
- *  Checks the number of required parameters.
- *
- * @return true if all required parameters were successfully read, false otherwise.
+/**
+ *  Load member variables from configuration file.
+ *  Registered to OperationManager as Operation::op::loadParameters
  */
-bool AllIFNeurons::checkNumParameters()
-{
-    return (nParams >= 8);
+void AllIFNeurons::loadParameters() {
+   ParameterManager::getInstance().getBGFloatByXpath("//Iinject/min/text()", IinjectRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//Iinject/max/text()", IinjectRange_[1]);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//Inoise/min/text()", InoiseRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//Inoise/max/text()", InoiseRange_[1]);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//Vthresh/min/text()", VthreshRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//Vthresh/max/text()", VthreshRange_[1]);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//Vresting/min/text()", VrestingRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//Vresting/max/text()", VrestingRange_[1]);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//Vreset/min/text()", VresetRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//Vreset/max/text()", VresetRange_[1]);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//Vinit/min/text()", VinitRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//Vinit/max/text()", VinitRange_[1]);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//starter_vthresh/min/text()", starterVthreshRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//starter_vthresh/max/text()", starterVthreshRange_[1]);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//starter_vreset/min/text()", starterVresetRange_[0]);
+   ParameterManager::getInstance().getBGFloatByXpath("//starter_vreset/max/text()", starterVresetRange_[1]);
 }
 
 /*
@@ -128,32 +149,31 @@ bool AllIFNeurons::checkNumParameters()
  * 
  *  @param  output  ostream to send output to.
  */
-void AllIFNeurons::printParameters(ostream &output) const
-{
-    output << "Interval of constant injected current: ["
-           << m_Iinject[0] << ", " << m_Iinject[1] << "]"
-           << endl;
-    output << "Interval of STD of (gaussian) noise current: ["
-           << m_Inoise[0] << ", " << m_Inoise[1] << "]"
-           << endl;
-    output << "Interval of firing threshold: ["
-           << m_Vthresh[0] << ", "<< m_Vthresh[1] << "]"
-           << endl;
-    output << "Interval of asymptotic voltage (Vresting): [" << m_Vresting[0]
-           << ", " << m_Vresting[1] << "]"
-           << endl;
-    output << "Interval of reset voltage: [" << m_Vreset[0]
-           << ", " << m_Vreset[1] << "]"
-           << endl;
-    output << "Interval of initial membrance voltage: [" << m_Vinit[0]
-           << ", " << m_Vinit[1] << "]"
-           << endl;
-    output << "Starter firing threshold: [" << m_starter_Vthresh[0]
-           << ", " << m_starter_Vthresh[1] << "]"
-           << endl;
-    output << "Starter reset threshold: [" << m_starter_Vreset[0]
-           << ", " << m_starter_Vreset[1] << "]"
-           << endl;
+void AllIFNeurons::printParameters() const {
+   cout << "\tInterval of constant injected current: ["
+          << IinjectRange_[0] << ", " << IinjectRange_[1] << "]"
+          << endl;
+   cout << "\tInterval of STD of (gaussian) noise current: ["
+          << InoiseRange_[0] << ", " << InoiseRange_[1] << "]"
+          << endl;
+   cout << "\tInterval of firing threshold: ["
+          << VthreshRange_[0] << ", " << VthreshRange_[1] << "]"
+          << endl;
+   cout << "\tInterval of asymptotic voltage (Vresting): [" << VrestingRange_[0]
+          << ", " << VrestingRange_[1] << "]"
+          << endl;
+   cout << "\tInterval of reset voltage: [" << VresetRange_[0]
+          << ", " << VresetRange_[1] << "]"
+          << endl;
+   cout << "\tInterval of initial membrance voltage: [" << VinitRange_[0]
+          << ", " << VinitRange_[1] << "]"
+          << endl;
+   cout << "\tStarter firing threshold: [" << starterVthreshRange_[0]
+        << ", " << starterVthreshRange_[1] << "]"
+          << endl;
+   cout << "\tStarter reset threshold: [" << starterVresetRange_[0]
+        << ", " << starterVresetRange_[1] << "]"
+          << endl;
 }
 
 /*
@@ -162,15 +182,14 @@ void AllIFNeurons::printParameters(ostream &output) const
  *  @param  sim_info    SimulationInfo class to read information from.
  *  @param  layout      Layout information of the neunal network.
  */
-void AllIFNeurons::createAllNeurons(Layout *layout)
-{
-    /* set their specific types */
-    for (int neuron_index = 0; neuron_index < Simulator::getInstance().getTotalNeurons(); neuron_index++) {
-        setNeuronDefaults(neuron_index);
+void AllIFNeurons::createAllNeurons(Layout *layout) {
+   /* set their specific types */
+   for (int neuron_index = 0; neuron_index < Simulator::getInstance().getTotalNeurons(); neuron_index++) {
+      setNeuronDefaults(neuron_index);
 
-        // set the neuron info for neurons
-        createNeuron(neuron_index, layout);
-    }
+      // set the neuron info for neurons
+      createNeuron(neuron_index, layout);
+   }
 }
 
 /*
@@ -180,60 +199,58 @@ void AllIFNeurons::createAllNeurons(Layout *layout)
  *  @param  neuron_index Index of the neuron to create.
  *  @param  layout       Layout information of the neunal network.
  */
-void AllIFNeurons::createNeuron(int neuron_index, Layout *layout)
-{
-    // set the neuron info for neurons
-    Iinject[neuron_index] = rng.inRange(m_Iinject[0], m_Iinject[1]);
-    Inoise[neuron_index] = rng.inRange(m_Inoise[0], m_Inoise[1]);
-    Vthresh[neuron_index] = rng.inRange(m_Vthresh[0], m_Vthresh[1]);
-    Vrest[neuron_index] = rng.inRange(m_Vresting[0], m_Vresting[1]);
-    Vreset[neuron_index] = rng.inRange(m_Vreset[0], m_Vreset[1]);
-    Vinit[neuron_index] = rng.inRange(m_Vinit[0], m_Vinit[1]);
-    Vm[neuron_index] = Vinit[neuron_index];
+void AllIFNeurons::createNeuron(int neuron_index, Layout *layout) {
+   // set the neuron info for neurons
+   Iinject_[neuron_index] = rng.inRange(IinjectRange_[0], IinjectRange_[1]);
+   Inoise_[neuron_index] = rng.inRange(InoiseRange_[0], InoiseRange_[1]);
+   Vthresh_[neuron_index] = rng.inRange(VthreshRange_[0], VthreshRange_[1]);
+   Vrest_[neuron_index] = rng.inRange(VrestingRange_[0], VrestingRange_[1]);
+   Vreset_[neuron_index] = rng.inRange(VresetRange_[0], VresetRange_[1]);
+   Vinit_[neuron_index] = rng.inRange(VinitRange_[0], VinitRange_[1]);
+   Vm_[neuron_index] = Vinit_[neuron_index];
 
-    initNeuronConstsFromParamValues(neuron_index, Simulator::getInstance().getDeltaT());
+   initNeuronConstsFromParamValues(neuron_index, Simulator::getInstance().getDeltaT());
 
-    int max_spikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
-    spike_history[neuron_index] = new uint64_t[max_spikes];
-    for (int j = 0; j < max_spikes; ++j) {
-        spike_history[neuron_index][j] = ULONG_MAX;
-    }
+   int max_spikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
+   spikeHistory_[neuron_index] = new uint64_t[max_spikes];
+   for (int j = 0; j < max_spikes; ++j) {
+      spikeHistory_[neuron_index][j] = ULONG_MAX;
+   }
 
-    switch (layout->neuron_type_map[neuron_index]) {
-        case INH:
-            DEBUG_MID(cout << "setting inhibitory neuron: "<< neuron_index << endl;)
-            // set inhibitory absolute refractory period
-            Trefract[neuron_index] = DEFAULT_InhibTrefract;// TODO(derek): move defaults inside model.
-            break;
+   switch (layout->neuronTypeMap_[neuron_index]) {
+      case INH: DEBUG_MID(cout << "setting inhibitory neuron: " << neuron_index << endl;)
+         // set inhibitory absolute refractory period
+         Trefract_[neuron_index] = DEFAULT_InhibTrefract;// TODO(derek): move defaults inside model.
+         break;
 
-        case EXC:
-            DEBUG_MID(cout << "setting exitory neuron: " << neuron_index << endl;)
-            // set excitory absolute refractory period
-            Trefract[neuron_index] = DEFAULT_ExcitTrefract;
-            break;
+      case EXC: DEBUG_MID(cout << "setting exitory neuron: " << neuron_index << endl;)
+         // set excitory absolute refractory period
+         Trefract_[neuron_index] = DEFAULT_ExcitTrefract;
+         break;
 
-        default:
-            DEBUG_MID(cout << "ERROR: unknown neuron type: " << layout->neuron_type_map[neuron_index] << "@" << neuron_index << endl;)
-            assert(false);
-            break;
-    }
-    // endogenously_active_neuron_map -> Model State
-    if (layout->starter_map[neuron_index]) {
-        // set endogenously active threshold voltage, reset voltage, and refractory period
-        Vthresh[neuron_index] = rng.inRange(m_starter_Vthresh[0], m_starter_Vthresh[1]);
-        Vreset[neuron_index] = rng.inRange(m_starter_Vreset[0], m_starter_Vreset[1]);
-        Trefract[neuron_index] = DEFAULT_ExcitTrefract; // TODO(derek): move defaults inside model.
-    }
+      default: DEBUG_MID(
+            cout << "ERROR: unknown neuron type: " << layout->neuronTypeMap_[neuron_index] << "@" << neuron_index
+                 << endl;)
+         assert(false);
+         break;
+   }
+   // endogenously_active_neuron_map -> Model State
+   if (layout->starterMap_[neuron_index]) {
+      // set endogenously active threshold voltage, reset voltage, and refractory period
+      Vthresh_[neuron_index] = rng.inRange(starterVthreshRange_[0], starterVthreshRange_[1]);
+      Vreset_[neuron_index] = rng.inRange(starterVresetRange_[0], starterVresetRange_[1]);
+      Trefract_[neuron_index] = DEFAULT_ExcitTrefract; // TODO(derek): move defaults inside model.
+   }
 
-    DEBUG_HI(cout << "CREATE NEURON[" << neuron_index << "] {" << endl
-            << "\tVm = " << Vm[neuron_index] << endl
-            << "\tVthresh = " << Vthresh[neuron_index] << endl
-            << "\tI0 = " << I0[neuron_index] << endl
-            << "\tInoise = " << Inoise[neuron_index] << "from : (" << m_Inoise[0] << "," << m_Inoise[1] << ")" << endl
-            << "\tC1 = " << C1[neuron_index] << endl
-            << "\tC2 = " << C2[neuron_index] << endl
-            << "}" << endl
-    ;)
+   DEBUG_HI(cout << "CREATE NEURON[" << neuron_index << "] {" << endl
+                 << "\tVm = " << Vm_[neuron_index] << endl
+                 << "\tVthresh = " << Vthresh_[neuron_index] << endl
+                 << "\tI0 = " << I0_[neuron_index] << endl
+                 << "\tInoise = " << Inoise_[neuron_index] << "from : (" << InoiseRange_[0] << "," << InoiseRange_[1] << ")"
+                 << endl
+                 << "\tC1 = " << C1_[neuron_index] << endl
+                 << "\tC2 = " << C2_[neuron_index] << endl
+                 << "}" << endl;)
 }
 
 /*
@@ -241,18 +258,17 @@ void AllIFNeurons::createNeuron(int neuron_index, Layout *layout)
  *
  *  @param  neuron_index    Index of the Neuron that the synapse belongs to.
  */
-void AllIFNeurons::setNeuronDefaults(const int index)
-{
-    Cm[index] = DEFAULT_Cm;
-    Rm[index] = DEFAULT_Rm;
-    Vthresh[index] = DEFAULT_Vthresh;
-    Vrest[index] = DEFAULT_Vrest;
-    Vreset[index] = DEFAULT_Vreset;
-    Vinit[index] = DEFAULT_Vreset;
-    Trefract[index] = DEFAULT_Trefract;
-    Inoise[index] = DEFAULT_Inoise;
-    Iinject[index] = DEFAULT_Iinject;
-    Tau[index] = DEFAULT_Cm * DEFAULT_Rm;
+void AllIFNeurons::setNeuronDefaults(const int index) {
+   Cm_[index] = DEFAULT_Cm;
+   Rm_[index] = DEFAULT_Rm;
+   Vthresh_[index] = DEFAULT_Vthresh;
+   Vrest_[index] = DEFAULT_Vrest;
+   Vreset_[index] = DEFAULT_Vreset;
+   Vinit_[index] = DEFAULT_Vreset;
+   Trefract_[index] = DEFAULT_Trefract;
+   Inoise_[index] = DEFAULT_Inoise;
+   Iinject_[index] = DEFAULT_Iinject;
+   Tau_[index] = DEFAULT_Cm * DEFAULT_Rm;
 }
 
 /*
@@ -261,30 +277,29 @@ void AllIFNeurons::setNeuronDefaults(const int index)
  *  @param  neuron_index    Index of the Neuron.
  *  @param  deltaT          Inner simulation step duration
  */
-void AllIFNeurons::initNeuronConstsFromParamValues(int neuron_index, const BGFLOAT deltaT)
-{
-        BGFLOAT &Tau = this->Tau[neuron_index];
-        BGFLOAT &C1 = this->C1[neuron_index];
-        BGFLOAT &C2 = this->C2[neuron_index];
-        BGFLOAT &Rm = this->Rm[neuron_index];
-        BGFLOAT &I0 = this->I0[neuron_index];
-        BGFLOAT &Iinject = this->Iinject[neuron_index];
-        BGFLOAT &Vrest = this->Vrest[neuron_index];
+void AllIFNeurons::initNeuronConstsFromParamValues(int neuron_index, const BGFLOAT deltaT) {
+   BGFLOAT &Tau = this->Tau_[neuron_index];
+   BGFLOAT &C1 = this->C1_[neuron_index];
+   BGFLOAT &C2 = this->C2_[neuron_index];
+   BGFLOAT &Rm = this->Rm_[neuron_index];
+   BGFLOAT &I0 = this->I0_[neuron_index];
+   BGFLOAT &Iinject = this->Iinject_[neuron_index];
+   BGFLOAT &Vrest = this->Vrest_[neuron_index];
 
-        /* init consts C1,C2 for exponential Euler integration */
-        if (Tau > 0) {
-                C1 = exp( -deltaT / Tau );
-                C2 = Rm * ( 1 - C1 );
-        } else {
-                C1 = 0.0;
-                C2 = Rm;
-        }
-        /* calculate const IO */
-        if (Rm > 0) {
-                I0 = Iinject + Vrest / Rm;
-        }else {
-                assert(false);
-        }
+   /* init consts C1,C2 for exponential Euler integration */
+   if (Tau > 0) {
+      C1 = exp(-deltaT / Tau);
+      C2 = Rm * (1 - C1);
+   } else {
+      C1 = 0.0;
+      C2 = Rm;
+   }
+   /* calculate const IO */
+   if (Rm > 0) {
+      I0 = Iinject + Vrest / Rm;
+   } else {
+      assert(false);
+   }
 }
 
 /*
@@ -293,25 +308,24 @@ void AllIFNeurons::initNeuronConstsFromParamValues(int neuron_index, const BGFLO
  *  @param  i   index of the neuron (in neurons) to output info from.
  *  @return the complete state of the neuron.
  */
-string AllIFNeurons::toString(const int i) const
-{
-    stringstream ss;
-    ss << "Cm: " << Cm[i] << " "; // membrane capacitance
-    ss << "Rm: " << Rm[i] << " "; // membrane resistance
-    ss << "Vthresh: " << Vthresh[i] << " "; // if Vm exceeds, Vthresh, a spike is emitted
-    ss << "Vrest: " << Vrest[i] << " "; // the resting membrane voltage
-    ss << "Vreset: " << Vreset[i] << " "; // The voltage to reset Vm to after a spike
-    ss << "Vinit: " << Vinit[i] << endl; // The initial condition for V_m at t=0
-    ss << "Trefract: " << Trefract[i] << " "; // the number of steps in the refractory period
-    ss << "Inoise: " << Inoise[i] << " "; // the stdev of the noise to be added each delta_t
-    ss << "Iinject: " << Iinject[i] << " "; // A constant current to be injected into the LIF neuron
-    ss << "nStepsInRefr: " << nStepsInRefr[i] << endl; // the number of steps left in the refractory period
-    ss << "Vm: " << Vm[i] << " "; // the membrane voltage
-    ss << "hasFired: " << hasFired[i] << " "; // it done fired?
-    ss << "C1: " << C1[i] << " ";
-    ss << "C2: " << C2[i] << " ";
-    ss << "I0: " << I0[i] << " ";
-    return ss.str( );
+string AllIFNeurons::toString(const int i) const {
+   stringstream ss;
+   ss << "Cm: " << Cm_[i] << " "; // membrane capacitance
+   ss << "Rm: " << Rm_[i] << " "; // membrane resistance
+   ss << "Vthresh: " << Vthresh_[i] << " "; // if Vm exceeds, Vthresh, a spike is emitted
+   ss << "Vrest: " << Vrest_[i] << " "; // the resting membrane voltage
+   ss << "Vreset: " << Vreset_[i] << " "; // The voltage to reset Vm to after a spike
+   ss << "Vinit: " << Vinit_[i] << endl; // The initial condition for V_m at t=0
+   ss << "Trefract: " << Trefract_[i] << " "; // the number of steps in the refractory period
+   ss << "Inoise: " << Inoise_[i] << " "; // the stdev of the noise to be added each delta_t
+   ss << "Iinject: " << Iinject_[i] << " "; // A constant current to be injected into the LIF neuron
+   ss << "nStepsInRefr: " << numStepsInRefractoryPeriod_[i] << endl; // the number of steps left in the refractory period
+   ss << "Vm: " << Vm_[i] << " "; // the membrane voltage
+   ss << "hasFired: " << hasFired_[i] << " "; // it done fired?
+   ss << "C1: " << C1_[i] << " ";
+   ss << "C2: " << C2_[i] << " ";
+   ss << "I0: " << I0_[i] << " ";
+   return ss.str();
 }
 
 /*
@@ -320,11 +334,10 @@ string AllIFNeurons::toString(const int i) const
  *  @param  input       istream to read from.
  *  @param  sim_info    used as a reference to set info for neuronss.
  */
-void AllIFNeurons::deserialize(istream &input)
-{
-    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
-        readNeuron(input, i);
-    }
+void AllIFNeurons::deserialize(istream &input) {
+   for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
+      readNeuron(input, i);
+   }
 }
 
 /*
@@ -334,26 +347,42 @@ void AllIFNeurons::deserialize(istream &input)
  *  @param  sim_info    used as a reference to set info for neurons.
  *  @param  i           index of the neuron (in neurons).
  */
-void AllIFNeurons::readNeuron(istream &input, int i)
-{
-    // input.ignore() so input skips over end-of-line characters.
-    input >> Cm[i]; input.ignore();
-    input >> Rm[i]; input.ignore();
-    input >> Vthresh[i]; input.ignore();
-    input >> Vrest[i]; input.ignore();
-    input >> Vreset[i]; input.ignore();
-    input >> Vinit[i]; input.ignore();
-    input >> Trefract[i]; input.ignore();
-    input >> Inoise[i]; input.ignore();
-    input >> Iinject[i]; input.ignore();
-    input >> Isyn[i]; input.ignore();
-    input >> nStepsInRefr[i]; input.ignore();
-    input >> C1[i]; input.ignore();
-    input >> C2[i]; input.ignore();
-    input >> I0[i]; input.ignore();
-    input >> Vm[i]; input.ignore();
-    input >> hasFired[i]; input.ignore();
-    input >> Tau[i]; input.ignore();
+void AllIFNeurons::readNeuron(istream &input, int i) {
+   // input.ignore() so input skips over end-of-line characters.
+   input >> Cm_[i];
+   input.ignore();
+   input >> Rm_[i];
+   input.ignore();
+   input >> Vthresh_[i];
+   input.ignore();
+   input >> Vrest_[i];
+   input.ignore();
+   input >> Vreset_[i];
+   input.ignore();
+   input >> Vinit_[i];
+   input.ignore();
+   input >> Trefract_[i];
+   input.ignore();
+   input >> Inoise_[i];
+   input.ignore();
+   input >> Iinject_[i];
+   input.ignore();
+   input >> Isyn_[i];
+   input.ignore();
+   input >> numStepsInRefractoryPeriod_[i];
+   input.ignore();
+   input >> C1_[i];
+   input.ignore();
+   input >> C2_[i];
+   input.ignore();
+   input >> I0_[i];
+   input.ignore();
+   input >> Vm_[i];
+   input.ignore();
+   input >> hasFired_[i];
+   input.ignore();
+   input >> Tau_[i];
+   input.ignore();
 }
 
 /*
@@ -362,11 +391,10 @@ void AllIFNeurons::readNeuron(istream &input, int i)
  *  @param  output      stream to write out to.
  *  @param  sim_info    used as a reference to set info for neuronss.
  */
-void AllIFNeurons::serialize(ostream& output) const
-{
-    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
-        writeNeuron(output, i);
-    }
+void AllIFNeurons::serialize(ostream &output) const {
+   for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
+      writeNeuron(output, i);
+   }
 }
 
 /*
@@ -376,23 +404,24 @@ void AllIFNeurons::serialize(ostream& output) const
  *  @param  sim_info    used as a reference to set info for neuronss.
  *  @param  i           index of the neuron (in neurons).
  */
-void AllIFNeurons::writeNeuron(ostream& output, int i) const
-{
-    output << Cm[i] << ends;
-    output << Rm[i] << ends;
-    output << Vthresh[i] << ends;
-    output << Vrest[i] << ends;
-    output << Vreset[i] << ends;
-    output << Vinit[i] << ends;
-    output << Trefract[i] << ends;
-    output << Inoise[i] << ends;
-    output << Iinject[i] << ends;
-    output << Isyn[i] << ends;
-    output << nStepsInRefr[i] << ends;
-    output << C1[i] << ends;
-    output << C2[i] << ends;
-    output << I0[i] << ends;
-    output << Vm[i] << ends;
-    output << hasFired[i] << ends;
-    output << Tau[i] << ends;
+void AllIFNeurons::writeNeuron(ostream &output, int i) const {
+   output << Cm_[i] << ends;
+   output << Rm_[i] << ends;
+   output << Vthresh_[i] << ends;
+   output << Vrest_[i] << ends;
+   output << Vreset_[i] << ends;
+   output << Vinit_[i] << ends;
+   output << Trefract_[i] << ends;
+   output << Inoise_[i] << ends;
+   output << Iinject_[i] << ends;
+   output << Isyn_[i] << ends;
+   output << numStepsInRefractoryPeriod_[i] << ends;
+   output << C1_[i] << ends;
+   output << C2_[i] << ends;
+   output << I0_[i] << ends;
+   output << Vm_[i] << ends;
+   output << hasFired_[i] << ends;
+   output << Tau_[i] << ends;
 }
+
+

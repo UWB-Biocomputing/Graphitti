@@ -7,7 +7,9 @@ file(GLOB Recorders
         XmlRecorder.h
         XmlRecorder.cpp
         XmlGrowthRecorder.h
-        XmlGrowthRecorder.cpp)
+        XmlGrowthRecorder.cpp
+        RecorderFactory.h
+        RecorderFactory.cpp)
 
 # Create a library from the list of files gathered
 add_library(Recorders ${Recorders})

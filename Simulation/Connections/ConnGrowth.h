@@ -81,177 +81,178 @@
 #include <vector>
 #include <iostream>
 
- /**
- * cereal
- */
+/**
+* cereal
+*/
 #include <cereal/types/vector.hpp>
 
 using namespace std;
 
-class ConnGrowth : public Connections
-{
-    public:
-        ConnGrowth();
-        virtual ~ConnGrowth();
+class ConnGrowth : public Connections {
+public:
+   ConnGrowth();
 
-        static Connections* Create() { return new ConnGrowth(); }
+   virtual ~ConnGrowth();
 
-        /**
-         *  Setup the internal structure of the class (allocate memories and initialize them).
-         *
-         *  @param  layout    Layout information of the neunal network.
-         *  @param  neurons   The Neuron list to search from.
-         *  @param  synapses  The Synapse list to search from.
-         */
-        virtual void setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses);
+   static Connections *Create() { return new ConnGrowth(); }
 
-        /**
-         *  Cleanup the class (deallocate memories).
-         */
-        virtual void cleanupConnections();
+   /**
+    *  Setup the internal structure of the class (allocate memories and initialize them).
+    *
+    *  @param  layout    Layout information of the neunal network.
+    *  @param  neurons   The Neuron list to search from.
+    *  @param  synapses  The Synapse list to search from.
+    */
+   virtual void setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses);
 
-        /**
-         *  Checks the number of required parameters to read.
-         *
-         * @return true if all required parameters were successfully read, false otherwise.
-         */
-        virtual bool checkNumParameters();
+   /**
+    *  Cleanup the class (deallocate memories).
+    */
+   virtual void cleanupConnections();
 
-        /**
-         *  Prints out all parameters of the connections to ostream.
-         *
-         *  @param  output  ostream to send output to.
-         */
-        virtual void printParameters(ostream &output) const;
+   /**
+    * Load member variables from configuration file.
+    * Registered to OperationManager as Operations::op::loadParameters
+    */
+   virtual void loadParameters();
 
-        /**
-         *  Update the connections status in every epoch.
-         *
-         *  @param  neurons  The Neuron list to search from.
-         *  @param  layout   Layout information of the neunal network.
-         *  @return true if successful, false otherwise.
-         */
-        virtual bool updateConnections(IAllNeurons &neurons, Layout *layout);
+   /**
+    *  Prints out all parameters of the connections to ostream.
+    *
+    *  @param  output  ostream to send output to.
+    */
+   virtual void printParameters() const;
 
-        /**
-         *  Creates a recorder class object for the connection.
-         *  This function tries to create either Xml recorder or
-         *  Hdf5 recorder based on the extension of the file name.
-         *
-         *  @return Pointer to the recorder class object.
-         */
-        virtual IRecorder* createRecorder();
-        
-        /**
-         *  Cereal serialization method
-         *  (Serializes radii)
-         */
-        template<class Archive>
-        void save(Archive & archive) const;
+   /**
+    *  Update the connections status in every epoch.
+    *
+    *  @param  neurons  The Neuron list to search from.
+    *  @param  layout   Layout information of the neunal network.
+    *  @return true if successful, false otherwise.
+    */
+   virtual bool updateConnections(IAllNeurons &neurons, Layout *layout);
 
-        /**
-         *  Cereal deserialization method
-         *  (Deserializes radii)
-         */
-        template<class Archive>
-        void load(Archive & archive);  
+   /**
+    *  Creates a recorder class object for the connection.
+    *  This function tries to create either Xml recorder or
+    *  Hdf5 recorder based on the extension of the file name.
+    *
+    *  @return Pointer to the recorder class object.
+    */
+   virtual IRecorder *createRecorder();
 
-        /**
-         *  Prints radii 
-         */
-        void printRadii() const;
+   /**
+    *  Cereal serialization method
+    *  (Serializes radii)
+    */
+   template<class Archive>
+   void save(Archive &archive) const;
+
+   /**
+    *  Cereal deserialization method
+    *  (Deserializes radii)
+    */
+   template<class Archive>
+   void load(Archive &archive);
+
+   /**
+    *  Prints radii
+    */
+   void printRadii() const;
+
 #if defined(USE_GPU)
-    public:
-        /**
-         *  Update the weight of the Synapses in the simulation.
-         *  Note: Platform Dependent.
-         *
-         *  @param  num_neurons         number of neurons to update.
-         *  @param  neurons             the Neuron list to search from.
-         *  @param  synapses            the Synapse list to search from.
-         *  @param  m_allNeuronsDevice  Reference to the allNeurons struct on device memory.
-         *  @param  m_allSynapsesDevice Reference to the allSynapses struct on device memory.
-         *  @param  layout              Layout information of the neunal network.
-         */
-        virtual void updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout);
+   public:
+       /**
+        *  Update the weight of the Synapses in the simulation.
+        *  Note: Platform Dependent.
+        *
+        *  @param  num_neurons         number of neurons to update.
+        *  @param  neurons             the Neuron list to search from.
+        *  @param  synapses            the Synapse list to search from.
+        *  @param  m_allNeuronsDevice  Reference to the allNeurons struct on device memory.
+        *  @param  m_allSynapsesDevice Reference to the allSynapses struct on device memory.
+        *  @param  layout              Layout information of the neunal network.
+        */
+       virtual void updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout);
 #else
-    public:
-        /**
-         *  Update the weight of the Synapses in the simulation.
-         *  Note: Platform Dependent.
-         *
-         *  @param  num_neurons Number of neurons to update.
-         *  @param  ineurons    The Neuron list to search from.
-         *  @param  isynapses   The Synapse list to search from.
-         */
-        virtual void updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout);
+public:
+   /**
+    *  Update the weight of the Synapses in the simulation.
+    *  Note: Platform Dependent.
+    *
+    *  @param  num_neurons Number of neurons to update.
+    *  @param  ineurons    The Neuron list to search from.
+    *  @param  isynapses   The Synapse list to search from.
+    */
+   virtual void
+   updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout);
+
 #endif
-    private:
-        /**
-         *  Calculates firing rates, neuron radii change and assign new values.
-         *
-         *  @param  neurons  The Neuron list to search from.
-         */
-        void updateConns(IAllNeurons &neurons);
+private:
+   /**
+    *  Calculates firing rates, neuron radii change and assign new values.
+    *
+    *  @param  neurons  The Neuron list to search from.
+    */
+   void updateConns(IAllNeurons &neurons);
 
-        /**
-         *  Update the distance between frontiers of Neurons.
-         *
-         *  @param  num_neurons Number of neurons to update.
-         *  @param  layout      Layout information of the neunal network.
-         */
-        void updateFrontiers(const int num_neurons, Layout *layout);
+   /**
+    *  Update the distance between frontiers of Neurons.
+    *
+    *  @param  num_neurons Number of neurons to update.
+    *  @param  layout      Layout information of the neunal network.
+    */
+   void updateFrontiers(const int num_neurons, Layout *layout);
 
-        /**
-         *  Update the areas of overlap in between Neurons.
-         *
-         *  @param  num_neurons Number of Neurons to update.
-         *  @param  layout      Layout information of the neunal network.
-         */
-        void updateOverlap(BGFLOAT num_neurons, Layout *layout);
+   /**
+    *  Update the areas of overlap in between Neurons.
+    *
+    *  @param  num_neurons Number of Neurons to update.
+    *  @param  layout      Layout information of the neunal network.
+    */
+   void updateOverlap(BGFLOAT num_neurons, Layout *layout);
 
-    public:
-        struct GrowthParams
-        {
-            BGFLOAT epsilon;   //null firing rate(zero outgrowth)
-            BGFLOAT beta;      //sensitivity of outgrowth to firing rate
-            BGFLOAT rho;       //outgrowth rate constant
-            BGFLOAT targetRate; // Spikes/second
-            BGFLOAT maxRate;   // = targetRate / epsilon;
-            BGFLOAT minRadius; // To ensure that even rapidly-firing neurons will connect to
-                               // other neurons, when within their RFS.
-            BGFLOAT startRadius; // No need to wait a long time before RFs start to overlap
-        };
+public:
+   struct GrowthParams {
+      BGFLOAT epsilon;   //null firing rate(zero outgrowth)
+      BGFLOAT beta;      //sensitivity of outgrowth to firing rate
+      BGFLOAT rho;       //outgrowth rate constant
+      BGFLOAT targetRate; // Spikes/second
+      BGFLOAT maxRate;   // = targetRate / epsilon;
+      BGFLOAT minRadius; // To ensure that even rapidly-firing neurons will connect to
+      // other neurons, when within their RFS.
+      BGFLOAT startRadius; // No need to wait a long time before RFs start to overlap
+   };
 
-        //! structure to keep growth parameters
-        GrowthParams m_growth;
+   //! structure to keep growth parameters
+   GrowthParams growthParams_;
 
-        //! spike count for each epoch
-        int *spikeCounts;
+   //! spike count for each epoch
+   int *spikeCounts_;
 
-        //! radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
-        int radiiSize;
+   //! radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
+   int radiiSize_;
 
-        //! synapse weight
-        CompleteMatrix *W;
+   //! synapse weight
+   CompleteMatrix *W_;
 
-        //! neuron radii
-        VectorMatrix *radii;
+   //! neuron radii
+   VectorMatrix *radii_;
 
-        //! spiking rate
-        VectorMatrix *rates;
+   //! spiking rate
+   VectorMatrix *rates_;
 
-        //! distance between connection frontiers
-        CompleteMatrix *delta;
+   //! distance between connection frontiers
+   CompleteMatrix *delta_;
 
-        //! areas of overlap
-        CompleteMatrix *area;
+   //! areas of overlap
+   CompleteMatrix *area_;
 
-        //! neuron's outgrowth
-        VectorMatrix *outgrowth;
+   //! neuron's outgrowth
+   VectorMatrix *outgrowth_;
 
-        //! displacement of neuron radii
-        VectorMatrix *deltaR;
+   //! displacement of neuron radii
+   VectorMatrix *deltaR_;
 
 };
 
@@ -260,14 +261,14 @@ class ConnGrowth : public Connections
  *  (Serializes radii)
  */
 template<class Archive>
-void ConnGrowth::save(Archive & archive) const {
-    // uses vector to save radii
-    vector<BGFLOAT> radiiVector;
-    for(int i = 0; i < radiiSize; i++) {
-        radiiVector.push_back((*radii)[i]);
-    }
-    // serialization
-    archive(radiiVector);
+void ConnGrowth::save(Archive &archive) const {
+   // uses vector to save radii
+   vector<BGFLOAT> radiiVector;
+   for (int i = 0; i < radiiSize_; i++) {
+      radiiVector.push_back((*radii_)[i]);
+   }
+   // serialization
+   archive(radiiVector);
 }
 
 /**
@@ -275,21 +276,21 @@ void ConnGrowth::save(Archive & archive) const {
  *  (Deserializes radii)
  */
 template<class Archive>
-void ConnGrowth::load(Archive & archive) {
-    // uses vector to load radii
-    vector<BGFLOAT> radiiVector;
+void ConnGrowth::load(Archive &archive) {
+   // uses vector to load radii
+   vector<BGFLOAT> radiiVector;
 
-     // deserializing data to this vector
-    archive(radiiVector);
+   // deserializing data to this vector
+   archive(radiiVector);
 
-     // check to see if serialized data size matches object size 
-    if(radiiVector.size() != radiiSize) {
-        cerr << "Failed deserializing radii. Please verify totalNeurons data member." << endl;
-        throw cereal::Exception("Deserialization Error");
-    }
+   // check to see if serialized data size matches object size
+   if (radiiVector.size() != radiiSize_) {
+      cerr << "Failed deserializing radii. Please verify totalNeurons data member." << endl;
+      throw cereal::Exception("Deserialization Error");
+   }
 
-     // assigns serialized data to objects
-    for(int i = 0; i < radiiSize; i++) {
-        (*radii)[i] = radiiVector[i];
-    }
+   // assigns serialized data to objects
+   for (int i = 0; i < radiiSize_; i++) {
+      (*radii_)[i] = radiiVector[i];
+   }
 }

@@ -41,355 +41,342 @@
 
 struct AllSpikingSynapsesDeviceProperties;
 
-typedef void (*fpPreSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDeviceProperties*);
-typedef void (*fpPostSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDeviceProperties*);
+typedef void (*fpPreSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
 
-class AllSpikingSynapses : public AllSynapses
-{
-    public:
-        AllSpikingSynapses();
-        AllSpikingSynapses(const int num_neurons, const int max_synapses);
-        virtual ~AllSpikingSynapses();
+typedef void (*fpPostSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
 
-//        static IAllSynapses* Create() {
-//           return new AllSpikingSynapses();
-//        }
+class AllSpikingSynapses : public AllSynapses {
+public:
+   AllSpikingSynapses();
 
-        /**
-         *  Setup the internal structure of the class (allocate memories and initialize them).
-         *
-         *  @param  sim_info  SimulationInfo class to read information from.
-         */
-        virtual void setupSynapses();
+   AllSpikingSynapses(const int num_neurons, const int max_synapses);
 
-        /**
-         *  Cleanup the class (deallocate memories).
-         */
-        virtual void cleanupSynapses();
+   virtual ~AllSpikingSynapses();
 
-        /**
-         *  Reset time varying state vars and recompute decay.
-         *
-         *  @param  iSyn     Index of the synapse to set.
-         *  @param  deltaT   Inner simulation step duration
-         */
-        virtual void resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT);
+   static IAllSynapses *Create() {
+      return new AllSpikingSynapses();
+   }
 
-        /**
-         *  Checks the number of required parameters to read.
-         *
-         * @return true if all required parameters were successfully read, false otherwise.
-         */
-        virtual bool checkNumParameters();
+   /**
+    *  Setup the internal structure of the class (allocate memories and initialize them).
+    *
+    *  @param  sim_info  SimulationInfo class to read information from.
+    */
+   virtual void setupSynapses();
 
-        /**
-         *  Attempts to read parameters from a XML file.
-         *
-         *  @param  element TiXmlElement to examine.
-         *  @return true if successful, false otherwise.
-         */
-        virtual bool readParameters(const TiXmlElement& element);
+   /**
+    *  Cleanup the class (deallocate memories).
+    */
+   virtual void cleanupSynapses();
 
-        /**
-         *  Prints out all parameters of the neurons to ostream.
-         *
-         *  @param  output  ostream to send output to.
-         */
-        virtual void printParameters(ostream &output) const;
+   /**
+    *  Reset time varying state vars and recompute decay.
+    *
+    *  @param  iSyn     Index of the synapse to set.
+    *  @param  deltaT   Inner simulation step duration
+    */
+   virtual void resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT);
 
-        /**
-         *  Create a Synapse and connect it to the model.
-         *
-         *  @param  synapses    The synapse list to reference.
-         *  @param  iSyn        Index of the synapse to set.
-         *  @param  source      Coordinates of the source Neuron.
-         *  @param  dest        Coordinates of the destination Neuron.
-         *  @param  sum_point   Summation point address.
-         *  @param  deltaT      Inner simulation step duration.
-         *  @param  type        Type of the Synapse to create.
-         */
-        virtual void createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT* sp, const BGFLOAT deltaT, synapseType type);
+   /**
+    *  Prints out all parameters of the neurons to console.
+    */
+   virtual void printParameters() const;
 
-        /**
-         *  Check if the back propagation (notify a spike event to the pre neuron)
-         *  is allowed in the synapse class.
-         *
-         *  @retrun true if the back propagation is allowed.
-         */
-        virtual bool allowBackPropagation();
+   /**
+    *  Create a Synapse and connect it to the model.
+    *
+    *  @param  synapses    The synapse list to reference.
+    *  @param  iSyn        Index of the synapse to set.
+    *  @param  source      Coordinates of the source Neuron.
+    *  @param  dest        Coordinates of the destination Neuron.
+    *  @param  sum_point   Summation point address.
+    *  @param  deltaT      Inner simulation step duration.
+    *  @param  type        Type of the Synapse to create.
+    */
+   virtual void createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sp, const BGFLOAT deltaT,
+                              synapseType type);
 
-        /**
-         *  Prints SynapsesProps data.
-         */
-        virtual void printSynapsesProps() const;
+   /**
+    *  Check if the back propagation (notify a spike event to the pre neuron)
+    *  is allowed in the synapse class.
+    *
+    *  @retrun true if the back propagation is allowed.
+    */
+   virtual bool allowBackPropagation();
 
-    protected:
-        /**
-         *  Setup the internal structure of the class (allocate memories and initialize them).
-         *
-         *  @param  num_neurons   Total number of neurons in the network.
-         *  @param  max_synapses  Maximum number of synapses per neuron.
-         */
-        virtual void setupSynapses(const int num_neurons, const int max_synapses);
+   /**
+    *  Prints SynapsesProps data.
+    */
+   virtual void printSynapsesProps() const;
 
-        /**
-         *  Initializes the queues for the Synapse.
-         *
-         *  @param  iSyn   index of the synapse to set.
-         */
-        virtual void initSpikeQueue(const BGSIZE iSyn);
+protected:
+   /**
+    *  Setup the internal structure of the class (allocate memories and initialize them).
+    *
+    *  @param  num_neurons   Total number of neurons in the network.
+    *  @param  max_synapses  Maximum number of synapses per neuron.
+    */
+   virtual void setupSynapses(const int num_neurons, const int max_synapses);
 
-        /**
-         *  Updates the decay if the synapse selected.
-         *
-         *  @param  iSyn    Index of the synapse to set.
-         *  @param  deltaT  Inner simulation step duration
-         *  @return true is success.
-         */
-        bool updateDecay(const BGSIZE iSyn, const BGFLOAT deltaT);
+   /**
+    *  Initializes the queues for the Synapse.
+    *
+    *  @param  iSyn   index of the synapse to set.
+    */
+   virtual void initSpikeQueue(const BGSIZE iSyn);
 
-        /**
-         *  Sets the data for Synapse to input's data.
-         *
-         *  @param  input  istream to read from.
-         *  @param  iSyn   Index of the synapse to set.
-         */
-        virtual void readSynapse(istream &input, const BGSIZE iSyn);
+   /**
+    *  Updates the decay if the synapse selected.
+    *
+    *  @param  iSyn    Index of the synapse to set.
+    *  @param  deltaT  Inner simulation step duration
+    *  @return true is success.
+    */
+   bool updateDecay(const BGSIZE iSyn, const BGFLOAT deltaT);
 
-        /**
-         *  Write the synapse data to the stream.
-         *
-         *  @param  output  stream to print out to.
-         *  @param  iSyn    Index of the synapse to print out.
-         */
-        virtual void writeSynapse(ostream& output, const BGSIZE iSyn) const;
+   /**
+    *  Sets the data for Synapse to input's data.
+    *
+    *  @param  input  istream to read from.
+    *  @param  iSyn   Index of the synapse to set.
+    */
+   virtual void readSynapse(istream &input, const BGSIZE iSyn);
+
+   /**
+    *  Write the synapse data to the stream.
+    *
+    *  @param  output  stream to print out to.
+    *  @param  iSyn    Index of the synapse to print out.
+    */
+   virtual void writeSynapse(ostream &output, const BGSIZE iSyn) const;
 
 #if defined(USE_GPU)
-    public:
-        /**
-         *  Allocate GPU memories to store all synapses' states,
-         *  and copy them from host to GPU memory.
-         *
-         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-         *  @param  sim_info           SimulationInfo to refer from.
-         */
-        virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, const SimulationInfo *sim_info );
+   public:
+       /**
+        *  Allocate GPU memories to store all synapses' states,
+        *  and copy them from host to GPU memory.
+        *
+        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  sim_info           SimulationInfo to refer from.
+        */
+       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, const SimulationInfo *sim_info );
 
-        /**
-         *  Allocate GPU memories to store all synapses' states,
-         *  and copy them from host to GPU memory.
-         *
-         *  @param  allSynapsesDevice     Reference to the allSynapses struct on device memory.
-         *  @param  num_neurons           Number of neurons.
-         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
-         */
-        virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, int num_neurons, int maxSynapsesPerNeuron );
+       /**
+        *  Allocate GPU memories to store all synapses' states,
+        *  and copy them from host to GPU memory.
+        *
+        *  @param  allSynapsesDevice     Reference to the allSynapses struct on device memory.
+        *  @param  num_neurons           Number of neurons.
+        *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
+        */
+       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, int num_neurons, int maxSynapsesPerNeuron );
 
-        /**
-         *  Delete GPU memories.
-         *
-         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-         *  @param  sim_info           SimulationInfo to refer from.
-         */
-        virtual void deleteSynapseDeviceStruct( void* allSynapsesDevice );
+       /**
+        *  Delete GPU memories.
+        *
+        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  sim_info           SimulationInfo to refer from.
+        */
+       virtual void deleteSynapseDeviceStruct( void* allSynapsesDevice );
 
-        /**
-         *  Copy all synapses' data from host to device.
-         *
-         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-         *  @param  sim_info           SimulationInfo to refer from.
-         */
-        virtual void copySynapseHostToDevice( void* allSynapsesDevice, const SimulationInfo *sim_info );
+       /**
+        *  Copy all synapses' data from host to device.
+        *
+        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  sim_info           SimulationInfo to refer from.
+        */
+       virtual void copySynapseHostToDevice( void* allSynapsesDevice, const SimulationInfo *sim_info );
 
-        /**
-         *  Copy all synapses' data from host to device.
-         *
-         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-         *  @param  num_neurons           Number of neurons.
-         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
-         */
-        virtual void copySynapseHostToDevice( void* allSynapsesDevice, int num_neurons, int maxSynapsesPerNeuron );
-        /**
-         *  Copy all synapses' data from device to host.
-         *
-         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-         *  @param  sim_info           SimulationInfo to refer from.
-         */
-        virtual void copySynapseDeviceToHost( void* allSynapsesDevice, const SimulationInfo *sim_info );
+       /**
+        *  Copy all synapses' data from host to device.
+        *
+        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  num_neurons           Number of neurons.
+        *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
+        */
+       virtual void copySynapseHostToDevice( void* allSynapsesDevice, int num_neurons, int maxSynapsesPerNeuron );
+       /**
+        *  Copy all synapses' data from device to host.
+        *
+        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  sim_info           SimulationInfo to refer from.
+        */
+       virtual void copySynapseDeviceToHost( void* allSynapsesDevice, const SimulationInfo *sim_info );
 
-        /**
-         *  Get synapse_counts in AllSynapses struct on device memory.
-         *
-         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-         *  @param  sim_info           SimulationInfo to refer from.
-         */
-        virtual void copyDeviceSynapseCountsToHost(void* allSynapsesDevice, const SimulationInfo *sim_info);
+       /**
+        *  Get synapse_counts in AllSynapses struct on device memory.
+        *
+        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  sim_info           SimulationInfo to refer from.
+        */
+       virtual void copyDeviceSynapseCountsToHost(void* allSynapsesDevice, const SimulationInfo *sim_info);
 
-        /** 
-         *  Get summationCoord and in_use in AllSynapses struct on device memory.
-         *
-         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-         *  @param  sim_info           SimulationInfo to refer from.
-         */
-        virtual void copyDeviceSynapseSumIdxToHost(void* allSynapsesDevice, const SimulationInfo *sim_info);
+       /**
+        *  Get summationCoord and in_use in AllSynapses struct on device memory.
+        *
+        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  sim_info           SimulationInfo to refer from.
+        */
+       virtual void copyDeviceSynapseSumIdxToHost(void* allSynapsesDevice, const SimulationInfo *sim_info);
 
-        /**
-         *  Advance all the Synapses in the simulation.
-         *  Update the state of all synapses for a time step.
-         *
-         *  @param  allSynapsesDevice      Reference to the allSynapses struct on device memory.
-         *  @param  allNeuronsDevice       Reference to the allNeurons struct on device memory.
-         *  @param  synapseIndexMapDevice  Reference to the SynapseIndexMap on device memory.
-         *  @param  sim_info               SimulationInfo class to read information from.
-         */
-        virtual void advanceSynapses(void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice, const SimulationInfo *sim_info);
+       /**
+        *  Advance all the Synapses in the simulation.
+        *  Update the state of all synapses for a time step.
+        *
+        *  @param  allSynapsesDevice      Reference to the allSynapses struct on device memory.
+        *  @param  allNeuronsDevice       Reference to the allNeurons struct on device memory.
+        *  @param  synapseIndexMapDevice  Reference to the SynapseIndexMap on device memory.
+        *  @param  sim_info               SimulationInfo class to read information from.
+        */
+       virtual void advanceSynapses(void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice, const SimulationInfo *sim_info);
 
-        /**
-         *  Set some parameters used for advanceSynapsesDevice.
-         *  Currently we set a member variable: m_fpChangePSR_h.
-         */
-        virtual void setAdvanceSynapsesDeviceParams();
+       /**
+        *  Set some parameters used for advanceSynapsesDevice.
+        *  Currently we set a member variable: m_fpChangePSR_h.
+        */
+       virtual void setAdvanceSynapsesDeviceParams();
 
-        /**
-         *  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
-         *  The class ID will be set to classSynapses_d in device memory,
-         *  and the classSynapses_d will be referred to call a device function for the
-         *  particular synapse class.
-         *  Because we cannot use virtual function (Polymorphism) in device functions,
-         *  we use this scheme.
-         *  Note: we used to use a function pointer; however, it caused the growth_cuda crash
-         *  (see issue#137).
-         */
-        virtual void setSynapseClassID();
-        
-        /**
-         *  Prints GPU SynapsesProps data.
-         * 
-         *  @param  allSynapsesDeviceProps   Reference to the corresponding SynapsesDeviceProperties struct on device memory.
-         */
-        virtual void printGPUSynapsesProps(void* allSynapsesDeviceProps) const;
+       /**
+        *  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
+        *  The class ID will be set to classSynapses_d in device memory,
+        *  and the classSynapses_d will be referred to call a device function for the
+        *  particular synapse class.
+        *  Because we cannot use virtual function (Polymorphism) in device functions,
+        *  we use this scheme.
+        *  Note: we used to use a function pointer; however, it caused the growth_cuda crash
+        *  (see issue#137).
+        */
+       virtual void setSynapseClassID();
 
-    protected:
-        /**
-         *  Allocate GPU memories to store all synapses' states,
-         *  and copy them from host to GPU memory.
-         *  (Helper function of allocSynapseDeviceStruct)
-         *
-         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-         *  @param  num_neurons           Number of neurons.
-         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
-         */
-        void allocDeviceStruct( AllSpikingSynapsesDeviceProperties &allSynapses, int num_neurons, int maxSynapsesPerNeuron );
+       /**
+        *  Prints GPU SynapsesProps data.
+        *
+        *  @param  allSynapsesDeviceProps   Reference to the corresponding SynapsesDeviceProperties struct on device memory.
+        */
+       virtual void printGPUSynapsesProps(void* allSynapsesDeviceProps) const;
 
-        /**
-         *  Delete GPU memories.
-         *  (Helper function of deleteSynapseDeviceStruct)
-         *
-         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-         */
-        void deleteDeviceStruct( AllSpikingSynapsesDeviceProperties& allSynapses );
+   protected:
+       /**
+        *  Allocate GPU memories to store all synapses' states,
+        *  and copy them from host to GPU memory.
+        *  (Helper function of allocSynapseDeviceStruct)
+        *
+        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  num_neurons           Number of neurons.
+        *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
+        */
+       void allocDeviceStruct( AllSpikingSynapsesDeviceProperties &allSynapses, int num_neurons, int maxSynapsesPerNeuron );
 
-        /**
-         *  Copy all synapses' data from host to device.
-         *  (Helper function of copySynapseHostToDevice)
-         *
-         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-         *  @param  num_neurons           Number of neurons.
-         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
-         */
-        void copyHostToDevice( void* allSynapsesDevice, AllSpikingSynapsesDeviceProperties& allSynapses, int num_neurons, int maxSynapsesPerNeuron );
+       /**
+        *  Delete GPU memories.
+        *  (Helper function of deleteSynapseDeviceStruct)
+        *
+        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        */
+       void deleteDeviceStruct( AllSpikingSynapsesDeviceProperties& allSynapses );
 
-        /**
-         *  Copy all synapses' data from device to host.
-         *  (Helper function of copySynapseDeviceToHost)
-         *
-         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-         *  @param  num_neurons           Number of neurons.
-         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
-         */
-        void copyDeviceToHost( AllSpikingSynapsesDeviceProperties& allSynapses, const SimulationInfo *sim_info );
+       /**
+        *  Copy all synapses' data from host to device.
+        *  (Helper function of copySynapseHostToDevice)
+        *
+        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  num_neurons           Number of neurons.
+        *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
+        */
+       void copyHostToDevice( void* allSynapsesDevice, AllSpikingSynapsesDeviceProperties& allSynapses, int num_neurons, int maxSynapsesPerNeuron );
+
+       /**
+        *  Copy all synapses' data from device to host.
+        *  (Helper function of copySynapseDeviceToHost)
+        *
+        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  num_neurons           Number of neurons.
+        *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
+        */
+       void copyDeviceToHost( AllSpikingSynapsesDeviceProperties& allSynapses, const SimulationInfo *sim_info );
 #else  // !defined(USE_GPU)
 public:
-        /**
-         *  Advance one specific Synapse.
-         *
-         *  @param  iSyn      Index of the Synapse to connect to.
-         *  @param  sim_info  SimulationInfo class to read information from.
-         *  @param  neurons   The Neuron list to search from.
-         */
-        virtual void advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons);
+   /**
+    *  Advance one specific Synapse.
+    *
+    *  @param  iSyn      Index of the Synapse to connect to.
+    *  @param  sim_info  SimulationInfo class to read information from.
+    *  @param  neurons   The Neuron list to search from.
+    */
+   virtual void advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons);
 
-        /**
-         *  Prepares Synapse for a spike hit.
-         *
-         *  @param  iSyn   Index of the Synapse to update.
-         */
-        virtual void preSpikeHit(const BGSIZE iSyn);
+   /**
+    *  Prepares Synapse for a spike hit.
+    *
+    *  @param  iSyn   Index of the Synapse to update.
+    */
+   virtual void preSpikeHit(const BGSIZE iSyn);
 
-        /**
-         *  Prepares Synapse for a spike hit (for back propagation).
-         *
-         *  @param  iSyn   Index of the Synapse to update.
-         */
-        virtual void postSpikeHit(const BGSIZE iSyn);
+   /**
+    *  Prepares Synapse for a spike hit (for back propagation).
+    *
+    *  @param  iSyn   Index of the Synapse to update.
+    */
+   virtual void postSpikeHit(const BGSIZE iSyn);
 
-    protected:
-        /**
-         *  Checks if there is an input spike in the queue.
-         *
-         *  @param  iSyn   Index of the Synapse to connect to.
-         *  @return true if there is an input spike event.
-         */
-        bool isSpikeQueue(const BGSIZE iSyn);
+protected:
+   /**
+    *  Checks if there is an input spike in the queue.
+    *
+    *  @param  iSyn   Index of the Synapse to connect to.
+    *  @return true if there is an input spike event.
+    */
+   bool isSpikeQueue(const BGSIZE iSyn);
 
-        /**
-         *  Calculate the post synapse response after a spike.
-         *
-         *  @param  iSyn        Index of the synapse to set.
-         *  @param  deltaT      Inner simulation step duration.
-         */
-        virtual void changePSR(const BGSIZE iSyn, const BGFLOAT deltaT);
+   /**
+    *  Calculate the post synapse response after a spike.
+    *
+    *  @param  iSyn        Index of the synapse to set.
+    *  @param  deltaT      Inner simulation step duration.
+    */
+   virtual void changePSR(const BGSIZE iSyn, const BGFLOAT deltaT);
+
 #endif
 
-    public:
+public:
 
-        /**
-         *  The decay for the psr.
-         */
-        BGFLOAT *decay;
+   /**
+    *  The decay for the psr.
+    */
+   BGFLOAT *decay_;
 
-        /**
-         *  The synaptic time constant \f$\tau\f$ [units=sec; range=(0,100)].
-         */
-        BGFLOAT *tau;
+   /**
+    *  The synaptic time constant \f$\tau\f$ [units=sec; range=(0,100)].
+    */
+   BGFLOAT *tau_;
 
 #define BYTES_OF_DELAYQUEUE         ( sizeof(uint32_t) / sizeof(uint8_t) )
 #define LENGTH_OF_DELAYQUEUE        ( BYTES_OF_DELAYQUEUE * 8 )
 
-        /**
-         *  The synaptic transmission delay, descretized into time steps.
-         */
-        int *total_delay;
+   /**
+    *  The synaptic transmission delay, descretized into time steps.
+    */
+   int *totalDelay_;
 
-        /**
-         *  Pointer to the delayed queue.
-         */
-        uint32_t *delayQueue;
+   /**
+    *  Pointer to the delayed queue.
+    */
+   uint32_t *delayQueue_;
 
-        /**
-         *  The index indicating the current time slot in the delayed queue
-         *  Note: This variable is used in GpuSim_struct.cu but I am not sure 
-         *  if it is actually from a synapse. Will need a little help here. -Aaron
-         *  Note: This variable can be GLOBAL VARIABLE, but need to modify the code.
-         */
-        int *delayIdx;
+   /**
+    *  The index indicating the current time slot in the delayed queue
+    *  Note: This variable is used in GpuSim_struct.cu but I am not sure
+    *  if it is actually from a synapse. Will need a little help here. -Aaron
+    *  Note: This variable can be GLOBAL VARIABLE, but need to modify the code.
+    */
+   int *delayIndex_;
 
-        /**
-         *  Length of the delayed queue.
-         */
-        int *ldelayQueue;
+   /**
+    *  Length of the delayed queue.
+    */
+   int *delayQueueLength_;
 
-    protected:
+protected:
 };
 
 #if defined(USE_GPU)
@@ -398,22 +385,22 @@ struct AllSpikingSynapsesDeviceProperties : public AllSynapsesDeviceProperties
         /**
          *  The decay for the psr.
          */
-        BGFLOAT *decay;
+        BGFLOAT *decay_;
 
         /**
          *  The synaptic time constant \f$\tau\f$ [units=sec; range=(0,100)].
          */
-        BGFLOAT *tau;
+        BGFLOAT *tau_;
 
         /**
          *  The synaptic transmission delay, descretized into time steps.
          */
-        int *total_delay;
+        int *totalDelay_;
 
         /**
          *  Pointer to the delayed queue.
          */
-        uint32_t *delayQueue;
+        uint32_t *delayQueue_;
 
         /**
          *  The index indicating the current time slot in the delayed queue
@@ -421,12 +408,12 @@ struct AllSpikingSynapsesDeviceProperties : public AllSynapsesDeviceProperties
          *  if it is actually from a synapse. Will need a little help here. -Aaron
          *  Note: This variable can be GLOBAL VARIABLE, but need to modify the code.
          */
-        int *delayIdx;
+        int *delayIndex_;
 
         /**
          *  Length of the delayed queue.
          */
-        int *ldelayQueue;
+        int *delayQueueLength_;
 };
 #endif // defined(USE_GPU)
 

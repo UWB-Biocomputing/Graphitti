@@ -1,4 +1,5 @@
 #include "GPUSpikingModel.h"
+#include "Utils/Global.h"
 
 #ifdef PERFORMANCE_METRICS
 float g_time;
@@ -7,8 +8,8 @@ cudaEvent_t start, stop;
 
 __constant__ int d_debug_mask[1];
 
-GPUSpikingModel::GPUSpikingModel(Connections *conns, IAllNeurons *neurons, IAllSynapses *synapses, Layout *layout) : 	
-  Model::Model(conns, neurons, synapses, layout),
+GPUSpikingModel::GPUSpikingModel() :
+  Model::Model(),
   synapseIndexMapDevice(NULL),
   randNoise_d(NULL),
   allNeuronsDevice_(NULL),
@@ -75,7 +76,7 @@ void GPUSpikingModel::setupSim()
   int rng_nPerRng = 4; //# of iterations per thread (thread granularity, # of rands generated per thread)
   int rng_mt_rng_count = Simulator::getInstance.getTotalNeurons()/rng_nPerRng; //# of threads to generate for neuron_count rand #s
   int rng_threads = rng_mt_rng_count/rng_blocks; //# threads per block needed
-  initMTGPU(Simulator::getInstance().seed, rng_blocks, rng_threads, rng_nPerRng, rng_mt_rng_count);
+  initMTGPU(Simulator::getInstance().getSeed(), rng_blocks, rng_threads, rng_nPerRng, rng_mt_rng_count);
 
 #ifdef PERFORMANCE_METRICS
   cudaEventCreate( &start );
@@ -131,7 +132,7 @@ void GPUSpikingModel::advance()
 
   // display running info to console
   // Advance neurons ------------->
-  neurons_->advanceNeurons(*synapses_, allNeuronsDevice_, allSynapsesDevice_, randNoise_d, synapseIndexMapDevice);
+   dynamic_cast<AllSpikingNeurons>(layout_->getNeurons()).advanceNeurons(conns_->getSynapses(), allNeuronsDevice_, allSynapsesDevice_, randNoise_d, synapseIndexMapDevice);
 
 #ifdef PERFORMANCE_METRICS
   cudaLapTime(t_gpu_advanceNeurons);
@@ -161,7 +162,7 @@ void GPUSpikingModel::calcSummationMap()
   const int threadsPerBlock = 256;
   int blocksPerGrid = ( Simulator::getInstance.getTotalNeurons() + threadsPerBlock - 1 ) / threadsPerBlock;
 
-  calcSummationMapDevice <<< blocksPerGrid, threadsPerBlock >>> ( 
+  calcSummationMapDevice <<< blocksPerGrid, threadsPerBlock >>> (
         Simulator::getInstance.getTotalNeurons(), allNeuronsDevice_, synapseIndexMapDevice, allSynapsesDevice_ );
 }
 
@@ -233,7 +234,7 @@ void GPUSpikingModel::deleteSynapseImap(  )
 /// @param  synapseIndexMapHost		Reference to the SynapseIndexMap in host memory.
 void GPUSpikingModel::copySynapseIndexMapHostToDevice(SynapseIndexMap &synapseIndexMapHost, int neuron_count)
 {
-  int total_synapse_counts = dynamic_cast<AllSynapses*>(synapses_)->total_synapse_counts;
+  int total_synapse_counts = dynamic_cast<AllSynapses*>(synapses_)->totalSynapseCounts_;
 
   if (total_synapse_counts == 0)
     return;

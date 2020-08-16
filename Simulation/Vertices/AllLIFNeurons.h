@@ -93,55 +93,56 @@
 #include "AllSpikingSynapses.h"
 
 // Class to hold all data necessary for all the Neurons.
-class AllLIFNeurons : public AllIFNeurons
-{
-    public:
+class AllLIFNeurons : public AllIFNeurons {
+public:
 
-        AllLIFNeurons();
-        virtual ~AllLIFNeurons();
+   AllLIFNeurons();
 
-        /**
-         *  Creates an instance of the class.
-         *  The function is called from FClassOfCategory.
-         *
-         *  @return Reference to the instance of the class.
-         */
-        static IAllNeurons* Create() { return new AllLIFNeurons(); }
+   virtual ~AllLIFNeurons();
+
+   /**
+    *  Creates an instance of the class.
+    *  The function is called from FClassOfCategory.
+    *
+    *  @return Reference to the instance of the class.
+    */
+   static IAllNeurons *Create() { return new AllLIFNeurons(); }
 
 #if defined(USE_GPU)
-    public:
+   public:
 
-        /**
-         *  Update the state of all neurons for a time step
-         *  Notify outgoing synapses if neuron has fired.
-         *
-         *  @param  synapses               Reference to the allSynapses struct on host memory.
-         *  @param  allNeuronsDevice       Reference to the allNeurons struct on device memory.
-         *  @param  allSynapsesDevice      Reference to the allSynapses struct on device memory.
-         *  @param  sim_info               SimulationInfo to refer from.
-         *  @param  randNoise              Reference to the random noise array.
-         *  @param  synapseIndexMapDevice  Reference to the SynapseIndexMap on device memory.
-         */
-        virtual void advanceNeurons(IAllSynapses &synapses, void* allNeuronsDevice, void* allSynapsesDevice, const SimulationInfo *sim_info, float* randNoise, SynapseIndexMap* synapseIndexMapDevice);
+       /**
+        *  Update the state of all neurons for a time step
+        *  Notify outgoing synapses if neuron has fired.
+        *
+        *  @param  synapses               Reference to the allSynapses struct on host memory.
+        *  @param  allNeuronsDevice       Reference to the allNeurons struct on device memory.
+        *  @param  allSynapsesDevice      Reference to the allSynapses struct on device memory.
+        *  @param  sim_info               SimulationInfo to refer from.
+        *  @param  randNoise              Reference to the random noise array.
+        *  @param  synapseIndexMapDevice  Reference to the SynapseIndexMap on device memory.
+        */
+       virtual void advanceNeurons(IAllSynapses &synapses, void* allNeuronsDevice, void* allSynapsesDevice, const SimulationInfo *sim_info, float* randNoise, SynapseIndexMap* synapseIndexMapDevice);
 
 #else  // !defined(USE_GPU)
-    protected:
+protected:
 
-        /**
-         *  Helper for #advanceNeuron. Updates state of a single neuron.
-         *
-         *  @param  index            Index of the neuron to update.
-         *  @param  sim_info         SimulationInfo class to read information from.
-         */
-        virtual void advanceNeuron(const int index);
+   /**
+    *  Helper for #advanceNeuron. Updates state of a single neuron.
+    *
+    *  @param  index            Index of the neuron to update.
+    *  @param  sim_info         SimulationInfo class to read information from.
+    */
+   virtual void advanceNeuron(const int index);
 
-        /**
-         *  Initiates a firing of a neuron to connected neurons.
-         *
-         *  @param  index            Index of the neuron to fire.
-         *  @param  sim_info         SimulationInfo class to read information from.
-         */
-        virtual void fire(const int index) const;
+   /**
+    *  Initiates a firing of a neuron to connected neurons.
+    *
+    *  @param  index            Index of the neuron to fire.
+    *  @param  sim_info         SimulationInfo class to read information from.
+    */
+   virtual void fire(const int index) const;
+
 #endif // defined(USE_GPU)
 };
 

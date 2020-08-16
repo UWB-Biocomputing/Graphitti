@@ -26,46 +26,35 @@
 
 using namespace std;
 
-class FixedLayout : public Layout
-{
-    public:
-        FixedLayout();
-        virtual ~FixedLayout();
+class FixedLayout : public Layout {
+public:
+   FixedLayout();
 
-        static Layout* Create() { return new FixedLayout(); }
+   virtual ~FixedLayout();
 
-        /**
-         *  Checks the number of required parameters to read.
-         *
-         * @return true if all required parameters were successfully read, false otherwise.
-         */
-        virtual bool checkNumParameters();
+   static Layout *Create() { return new FixedLayout(); }
 
-        /**
-         *  Prints out all parameters of the neurons to ostream.
-         *
-         *  @param  output  ostream to send output to.
-         */
-        virtual void printParameters(ostream &output) const;
+   /**
+    *  Prints out all parameters of the neurons to ostream.
+    *
+    *  @param  output  ostream to send output to.
+    */
+   virtual void printParameters() const;
 
-        /**
-         *  Creates a neurons type map.
-         *
-         *  @param  num_neurons number of the neurons to have in the type map.
-         */
-        virtual void generateNeuronTypeMap(int num_neurons);
+   /**
+    *  Creates a neurons type map.
+    *
+    *  @param  num_neurons number of the neurons to have in the type map.
+    */
+   virtual void generateNeuronTypeMap(int num_neurons);
 
-        /**
-         *  Populates the starter map.
-         *  Selects num_endogenously_active_neurons excitory neurons 
-         *  and converts them into starter neurons.
-         *
-         *  @param  num_neurons number of neurons to have in the map.
-         */
-        virtual void initStarterMap(const int num_neurons);
-
-    protected:
-
-    private:
+   /**
+    *  Populates the starter map.
+    *  Selects num_endogenously_active_neurons excitory neurons
+    *  and converts them into starter neurons.
+    *
+    *  @param  num_neurons number of neurons to have in the map.
+    */
+   virtual void initStarterMap(const int num_neurons);
 };
 

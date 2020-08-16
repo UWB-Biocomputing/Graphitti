@@ -54,274 +54,278 @@ typedef unsigned _int8 uint8_t;
 
 class IAllNeurons;
 
-class AllSynapses : public IAllSynapses
-{
-    public:
-        AllSynapses();
-        AllSynapses(const int num_neurons, const int max_synapses);
-        virtual ~AllSynapses();
+class AllSynapses : public IAllSynapses {
+public:
+   AllSynapses();
 
-        /**
-         *  Setup the internal structure of the class (allocate memories and initialize them).
-         *
-         *  @param  sim_info  SimulationInfo class to read information from.
-         */
-        virtual void setupSynapses();
+   AllSynapses(const int num_neurons, const int max_synapses);
 
-        /**
-         *  Cleanup the class (deallocate memories).
-         */
-        virtual void cleanupSynapses();
+   virtual ~AllSynapses();
 
-        /**
-         *  Reset time varying state vars and recompute decay.
-         *
-         *  @param  iSyn     Index of the synapse to set.
-         *  @param  deltaT   Inner simulation step duration
-         */
-        virtual void resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT);
+   /**
+    *  Setup the internal structure of the class (allocate memories and initialize them).
+    *
+    *  @param  sim_info  SimulationInfo class to read information from.
+    */
+   virtual void setupSynapses();
 
-        /**
-         *  Adds a Synapse to the model, connecting two Neurons.
-         *
-         *  @param  iSyn        Index of the synapse to be added.
-         *  @param  type        The type of the Synapse to add.
-         *  @param  src_neuron  The Neuron that sends to this Synapse.
-         *  @param  dest_neuron The Neuron that receives from the Synapse.
-         *  @param  sum_point   Summation point address.
-         *  @param  deltaT      Inner simulation step duration
-         */
-        virtual void addSynapse(BGSIZE &iSyn, synapseType type, const int src_neuron, const int dest_neuron, BGFLOAT *sum_point, const BGFLOAT deltaT);
+   /**
+    *  Cleanup the class (deallocate memories).
+    */
+   virtual void cleanupSynapses();
 
-        /**
-         *  Create a Synapse and connect it to the model.
-         *
-         *  @param  synapses    The synapse list to reference.
-         *  @param  iSyn        Index of the synapse to set.
-         *  @param  source      Coordinates of the source Neuron.
-         *  @param  dest        Coordinates of the destination Neuron.
-         *  @param  sum_point   Summation point address.
-         *  @param  deltaT      Inner simulation step duration.
-         *  @param  type        Type of the Synapse to create.
-         */
-        virtual void createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT* sp, const BGFLOAT deltaT, synapseType type) = 0;
+   /**
+    * Load member variables from configuration file.
+    * Registered to OperationManager as Operation::op::loadParameters
+    */
+   virtual void loadParameters();
 
-        /**
-         *  Create a synapse index map.
-         *
-         *  @param  synapseIndexMap   Reference to thw pointer to SynapseIndexMap structure.
-         *  @param  sim_info          Pointer to the simulation information.
-         */
-        virtual void createSynapseImap(SynapseIndexMap *&synapseIndexMap);
+   /**
+    *  Reset time varying state vars and recompute decay.
+    *
+    *  @param  iSyn     Index of the synapse to set.
+    *  @param  deltaT   Inner simulation step duration
+    */
+   virtual void resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT);
 
-        /**
-         *  Get the sign of the synapseType.
-         *
-         *  @param    type    synapseType I to I, I to E, E to I, or E to E
-         *  @return   1 or -1, or 0 if error
-         */
-        int synSign(const synapseType type);
+   /**
+    *  Adds a Synapse to the model, connecting two Neurons.
+    *
+    *  @param  iSyn        Index of the synapse to be added.
+    *  @param  type        The type of the Synapse to add.
+    *  @param  src_neuron  The Neuron that sends to this Synapse.
+    *  @param  dest_neuron The Neuron that receives from the Synapse.
+    *  @param  sum_point   Summation point address.
+    *  @param  deltaT      Inner simulation step duration
+    */
+   virtual void
+   addSynapse(BGSIZE &iSyn, synapseType type, const int src_neuron, const int dest_neuron, BGFLOAT *sum_point,
+              const BGFLOAT deltaT);
 
-        /**
-         *  Prints SynapsesProps data.
-         */
-        virtual void printSynapsesProps() const;
+   /**
+    *  Create a Synapse and connect it to the model.
+    *
+    *  @param  synapses    The synapse list to reference.
+    *  @param  iSyn        Index of the synapse to set.
+    *  @param  source      Coordinates of the source Neuron.
+    *  @param  dest        Coordinates of the destination Neuron.
+    *  @param  sum_point   Summation point address.
+    *  @param  deltaT      Inner simulation step duration.
+    *  @param  type        Type of the Synapse to create.
+    */
+   virtual void createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sp, const BGFLOAT deltaT,
+                              synapseType type) = 0;
 
-        /**
-         *  Cereal serialization method
-         *  (Serializes synapse weights, source neurons, and destination neurons)
-         */
-        template<class Archive>
-        void save(Archive & archive) const;
+   /**
+    *  Create a synapse index map.
+    *
+    *  @param  synapseIndexMap   Reference to thw pointer to SynapseIndexMap structure.
+    *  @param  sim_info          Pointer to the simulation information.
+    */
+   virtual void createSynapseImap(SynapseIndexMap *synapseIndexMap);
 
-        /**
-         *  Cereal deserialization method
-         *  (Deserializes synapse weights, source neurons, and destination neurons)
-         */
-        template<class Archive>
-        void load(Archive & archive);
+   /**
+    *  Get the sign of the synapseType.
+    *
+    *  @param    type    synapseType I to I, I to E, E to I, or E to E
+    *  @return   1 or -1, or 0 if error
+    */
+   int synSign(const synapseType type);
 
-    protected:
-        /**
-         *  Setup the internal structure of the class (allocate memories and initialize them).
-         *
-         *  @param  num_neurons   Total number of neurons in the network.
-         *  @param  max_synapses  Maximum number of synapses per neuron.
-         */
-        virtual void setupSynapses(const int num_neurons, const int max_synapses);
+   /**
+    *  Prints SynapsesProps data.
+    */
+   virtual void printSynapsesProps() const;
 
-        /**
-         *  Sets the data for Synapse to input's data.
-         *
-         *  @param  input  istream to read from.
-         *  @param  iSyn   Index of the synapse to set.
-         */
-        virtual void readSynapse(istream &input, const BGSIZE iSyn);
+   /**
+    *  Cereal serialization method
+    *  (Serializes synapse weights, source neurons, and destination neurons)
+    */
+   template<class Archive>
+   void save(Archive &archive) const;
 
-        /**
-         *  Write the synapse data to the stream.
-         *
-         *  @param  output  stream to print out to.
-         *  @param  iSyn    Index of the synapse to print out.
-         */
-        virtual void writeSynapse(ostream& output, const BGSIZE iSyn) const;
+   /**
+    *  Cereal deserialization method
+    *  (Deserializes synapse weights, source neurons, and destination neurons)
+    */
+   template<class Archive>
+   void load(Archive &archive);
 
-        /**
-         *  Returns an appropriate synapseType object for the given integer.
-         *
-         *  @param  type_ordinal    Integer that correspond with a synapseType.
-         *  @return the SynapseType that corresponds with the given integer.
-         */
-        synapseType synapseOrdinalToType(const int type_ordinal);
+protected:
+   /**
+    *  Setup the internal structure of the class (allocate memories and initialize them).
+    *
+    *  @param  num_neurons   Total number of neurons in the network.
+    *  @param  max_synapses  Maximum number of synapses per neuron.
+    */
+   virtual void setupSynapses(const int num_neurons, const int max_synapses);
+
+   /**
+    *  Sets the data for Synapse to input's data.
+    *
+    *  @param  input  istream to read from.
+    *  @param  iSyn   Index of the synapse to set.
+    */
+   virtual void readSynapse(istream &input, const BGSIZE iSyn);
+
+   /**
+    *  Write the synapse data to the stream.
+    *
+    *  @param  output  stream to print out to.
+    *  @param  iSyn    Index of the synapse to print out.
+    */
+   virtual void writeSynapse(ostream &output, const BGSIZE iSyn) const;
+
+   /**
+    *  Returns an appropriate synapseType object for the given integer.
+    *
+    *  @param  type_ordinal    Integer that correspond with a synapseType.
+    *  @return the SynapseType that corresponds with the given integer.
+    */
+   synapseType synapseOrdinalToType(const int type_ordinal);
 
 #if !defined(USE_GPU)
-    public:
-        /**
-         *  Advance all the Synapses in the simulation.
-         *  Update the state of all synapses for a time step.
-         *
-         *  @param  sim_info  SimulationInfo class to read information from.
-         *  @param  neurons   The Neuron list to search from.
-         *  @param  synapseIndexMap   Pointer to SynapseIndexMap structure.
-         */
-        virtual void advanceSynapses(IAllNeurons *neurons, SynapseIndexMap *synapseIndexMap);
+public:
+   /**
+    *  Advance all the Synapses in the simulation.
+    *  Update the state of all synapses for a time step.
+    *
+    *  @param  sim_info  SimulationInfo class to read information from.
+    *  @param  neurons   The Neuron list to search from.
+    *  @param  synapseIndexMap   Pointer to SynapseIndexMap structure.
+    */
+   virtual void advanceSynapses(IAllNeurons *neurons, SynapseIndexMap *synapseIndexMap);
 
-        /**
-         *  Remove a synapse from the network.
-         *
-         *  @param  neuron_index   Index of a neuron to remove from.
-         *  @param  iSyn           Index of a synapse to remove.
-         */
-        virtual void eraseSynapse(const int neuron_index, const BGSIZE iSyn);
+   /**
+    *  Remove a synapse from the network.
+    *
+    *  @param  neuron_index   Index of a neuron to remove from.
+    *  @param  iSyn           Index of a synapse to remove.
+    */
+   virtual void eraseSynapse(const int neuron_index, const BGSIZE iSyn);
+
 #endif // !defined(USE_GPU)
-    public:
-        // The factor to adjust overlapping area to synapse weight.
-        static constexpr BGFLOAT SYNAPSE_STRENGTH_ADJUSTMENT = 1.0e-8;
- 
-        /**
-         *  The location of the synapse.
-         */
-        int *sourceNeuronIndex;
+public:
+   // The factor to adjust overlapping area to synapse weight.
+   static constexpr BGFLOAT SYNAPSE_STRENGTH_ADJUSTMENT = 1.0e-8;
 
-        /** 
-         *  The coordinates of the summation point.
-         */
-        int *destNeuronIndex;
+   /**
+    *  The location of the synapse.
+    */
+   int *sourceNeuronIndex_;
 
-        /**
-         *   The weight (scaling factor, strength, maximal amplitude) of the synapse.
-         */
-         BGFLOAT *W;
+   /**
+    *  The coordinates of the summation point.
+    */
+   int *destNeuronIndex_;
 
-        /**
-         *  This synapse's summation point's address.
-         */
-        BGFLOAT **summationPoint;
+   /**
+    *   The weight (scaling factor, strength, maximal amplitude) of the synapse.
+    */
+   BGFLOAT *W_;
 
-    	/**
-         *  Synapse type
-         */
-        synapseType *type;
+   /**
+    *  This synapse's summation point's address.
+    */
+   BGFLOAT **summationPoint_;
 
-        /** 
-         *  The post-synaptic response is the result of whatever computation 
-         *  is going on in the synapse.
-         */
-        BGFLOAT *psr;
+   /**
+     *  Synapse type
+     */
+   synapseType *type_;
 
-    	/**
-         *  The boolean value indicating the entry in the array is in use.
-         */
-        bool *in_use;
+   /**
+    *  The post-synaptic response is the result of whatever computation
+    *  is going on in the synapse.
+    */
+   BGFLOAT *psr_;
 
-        /**
-         *  The number of (incoming) synapses for each neuron.
-         *  Note: Likely under a different name in GpuSim_struct, see synapse_count. -Aaron
-         */
-        BGSIZE *synapse_counts;
+   /**
+     *  The boolean value indicating the entry in the array is in use.
+     */
+   bool *inUse_;
 
-        /**
-         *  The total number of active synapses.
-         */
-        BGSIZE total_synapse_counts;
+   /**
+    *  The number of (incoming) synapses for each neuron.
+    *  Note: Likely under a different name in GpuSim_struct, see synapse_count. -Aaron
+    */
+   BGSIZE *synapseCounts_;
 
-    	/**
-         *  The maximum number of synapses for each neurons.
-         */
-        BGSIZE maxSynapsesPerNeuron;
+   /**
+    *  The total number of active synapses.
+    */
+   BGSIZE totalSynapseCounts_;
 
-        /**
-         *  The number of neurons
-         *  Aaron: Is this even supposed to be here?!
-         *  Usage: Used by destructor
-         */
-        int count_neurons;
+   /**
+     *  The maximum number of synapses for each neurons.
+     */
+   BGSIZE maxSynapsesPerNeuron_;
 
-    protected:
-
-        /**
-         *  Number of parameters read.
-         */
-        int nParams;
+   /**
+    *  The number of neurons
+    *  Aaron: Is this even supposed to be here?!
+    *  Usage: Used by destructor
+    */
+   int countNeurons_;
 };
 
 #if defined(USE_GPU)
-struct AllSynapsesDeviceProperties 
+struct AllSynapsesDeviceProperties
 {
         /**
          *  The location of the synapse.
          */
-        int *sourceNeuronIndex;
+        int *sourceNeuronIndex_;
 
         /** 
          *  The coordinates of the summation point.
          */
-        int *destNeuronIndex;
+        int *destNeuronIndex_;
 
         /**
          *   The weight (scaling factor, strength, maximal amplitude) of the synapse.
          */
-         BGFLOAT *W;
+         BGFLOAT *W_;
 
-    	/**
+       /**
          *  Synapse type
          */
-        synapseType *type;
+        synapseType *type_;
 
-        /** 
-         *  The post-synaptic response is the result of whatever computation 
+        /**
+         *  The post-synaptic response is the result of whatever computation
          *  is going on in the synapse.
          */
-        BGFLOAT *psr;
+        BGFLOAT *psr_;
 
-    	/**
+       /**
          *  The boolean value indicating the entry in the array is in use.
          */
-        bool *in_use;
+        bool *inUse_;
 
         /**
          *  The number of synapses for each neuron.
          *  Note: Likely under a different name in GpuSim_struct, see synapse_count. -Aaron
          */
-        BGSIZE *synapse_counts;
+        BGSIZE *synapseCounts_;
 
         /**
          *  The total number of active synapses.
          */
-        BGSIZE total_synapse_counts;
+        BGSIZE totalSynapseCounts_;
 
-    	/**
+       /**
          *  The maximum number of synapses for each neurons.
          */
-        BGSIZE maxSynapsesPerNeuron;
+        BGSIZE maxSynapsesPerNeuron_;
 
         /**
          *  The number of neurons
          *  Aaron: Is this even supposed to be here?!
          *  Usage: Used by destructor
          */
-        int count_neurons;
-}; 
+        int countNeurons_;
+};
 #endif // defined(USE_GPU)
 
 /**
@@ -329,21 +333,20 @@ struct AllSynapsesDeviceProperties
  *  (Serializes synapse weights, source neurons, and destination neurons)
  */
 template<class Archive>
-void AllSynapses::save(Archive & archive) const
-{
-    // uses vector to save synapse weights, source neurons, and destination neurons
-    vector<BGFLOAT> WVector;
-    vector<int>sourceNeuronLayoutIndexVector;
-    vector<int>destNeuronLayoutIndexVector;
+void AllSynapses::save(Archive &archive) const {
+   // uses vector to save synapse weights, source neurons, and destination neurons
+   vector<BGFLOAT> WVector;
+   vector<int> sourceNeuronLayoutIndexVector;
+   vector<int> destNeuronLayoutIndexVector;
 
-    for(int i = 0; i < maxSynapsesPerNeuron * count_neurons; i++) {
-        WVector.push_back(W[i]);
-        sourceNeuronLayoutIndexVector.push_back(sourceNeuronIndex[i]);
-        destNeuronLayoutIndexVector.push_back(destNeuronIndex[i]);
-    }
+   for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
+      WVector.push_back(W_[i]);
+      sourceNeuronLayoutIndexVector.push_back(sourceNeuronIndex_[i]);
+      destNeuronLayoutIndexVector.push_back(destNeuronIndex_[i]);
+   }
 
-    // serialization
-    archive(WVector, sourceNeuronLayoutIndexVector, destNeuronLayoutIndexVector);
+   // serialization
+   archive(WVector, sourceNeuronLayoutIndexVector, destNeuronLayoutIndexVector);
 }
 
 /**
@@ -351,26 +354,27 @@ void AllSynapses::save(Archive & archive) const
  *  (Deserializes synapse weights, source neurons, and destination neurons)
  */
 template<class Archive>
-void AllSynapses::load(Archive & archive) 
-{
-    // uses vectors to load synapse weights, source neurons, and destination neurons
-    vector<BGFLOAT> WVector;
-    vector<int>sourceNeuronLayoutIndexVector;
-    vector<int>destNeuronLayoutIndexVector;
+void AllSynapses::load(Archive &archive) {
+   // uses vectors to load synapse weights, source neurons, and destination neurons
+   vector<BGFLOAT> WVector;
+   vector<int> sourceNeuronLayoutIndexVector;
+   vector<int> destNeuronLayoutIndexVector;
 
-    // deserializing data to these vectors
-    archive(WVector, sourceNeuronLayoutIndexVector, destNeuronLayoutIndexVector);
+   // deserializing data to these vectors
+   archive(WVector, sourceNeuronLayoutIndexVector, destNeuronLayoutIndexVector);
 
-    // check to see if serialized data sizes matches object sizes  
-    if(WVector.size() != maxSynapsesPerNeuron * count_neurons) {
-        cerr << "Failed deserializing synapse weights, source neurons, and/or destination neurons. Please verify maxSynapsesPerNeuron and count_neurons data members in AllSynapses class." << endl;
-        throw cereal::Exception("Deserialization Error");
-    }
+   // check to see if serialized data sizes matches object sizes
+   if (WVector.size() != maxSynapsesPerNeuron_ * countNeurons_) {
+      cerr
+            << "Failed deserializing synapse weights, source neurons, and/or destination neurons. Please verify maxSynapsesPerNeuron and count_neurons data members in AllSynapses class."
+            << endl;
+      throw cereal::Exception("Deserialization Error");
+   }
 
-    // assigns serialized data to objects 
-    for(int i = 0; i < maxSynapsesPerNeuron * count_neurons; i++) {
-        W[i] = WVector[i];
-        sourceNeuronIndex[i] = sourceNeuronLayoutIndexVector[i];
-        destNeuronIndex[i] = destNeuronLayoutIndexVector[i];
-    }
+   // assigns serialized data to objects
+   for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
+      W_[i] = WVector[i];
+      sourceNeuronIndex_[i] = sourceNeuronLayoutIndexVector[i];
+      destNeuronIndex_[i] = destNeuronLayoutIndexVector[i];
+   }
 }

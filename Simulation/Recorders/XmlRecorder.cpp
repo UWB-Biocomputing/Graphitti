@@ -8,13 +8,18 @@
 #include "XmlRecorder.h"
 #include "AllIFNeurons.h"      // TODO: remove LIF model specific code
 #include "ConnGrowth.h"
+#include "ParameterManager.h"
 
 //! THe constructor and destructor
 XmlRecorder::XmlRecorder() :
-        burstinessHist(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxSteps()), 0),
-        spikesHistory(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxSteps() * 100), 0),
-        m_model(dynamic_cast<Model*> (Simulator::getInstance().getModel()))
+        burstinessHist(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
+              Simulator::getInstance().getNumEpochs()), 0),
+        spikesHistory(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
+              Simulator::getInstance().getNumEpochs() * 100), 0)
+
 {
+   resultFileName_ = Simulator::getInstance().getResultFileName();
+   model_ = Simulator::getInstance().getModel();
 }
 
 XmlRecorder::~XmlRecorder()
@@ -27,10 +32,9 @@ XmlRecorder::~XmlRecorder()
  *
  * @param[in] stateOutputFileName	File name to save histories
  */
-void XmlRecorder::init(const string& stateOutputFileName)
+void XmlRecorder::init()
 {
-    stateOut.open( stateOutputFileName.c_str( ) );
-
+    stateOut.open( resultFileName_.c_str( ) );
 }
 
 /*
@@ -75,10 +79,10 @@ void XmlRecorder::compileHistories(IAllNeurons &neurons)
     // output spikes
     for (int iNeuron = 0; iNeuron < Simulator::getInstance().getTotalNeurons(); iNeuron++)
     {
-        uint64_t* pSpikes = spNeurons.spike_history[iNeuron];
+        uint64_t* pSpikes = spNeurons.spikeHistory_[iNeuron];
 
-        int& spike_count = spNeurons.spikeCount[iNeuron];
-        int& offset = spNeurons.spikeCountOffset[iNeuron];
+        int& spike_count = spNeurons.spikeCount_[iNeuron];
+        int& offset = spNeurons.spikeCountOffset_[iNeuron];
         for (int i = 0, idxSp = offset; i < spike_count; i++, idxSp++)
         {
             // Single precision (float) gives you 23 bits of significand, 8 bits of exponent, 
@@ -112,13 +116,13 @@ void XmlRecorder::saveSimData(const IAllNeurons &neurons)
     // create Neuron Types matrix
     VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalNeurons(), EXC);
     for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
-        neuronTypes[i] = m_model->getLayout()->neuron_type_map[i];
+        neuronTypes[i] = model_->getLayout()->neuronTypeMap_[i];
     }
 
     // create neuron threshold matrix
     VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalNeurons(), 0);
     for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
-        neuronThresh[i] = dynamic_cast<const AllIFNeurons&>(neurons).Vthresh[i];
+        neuronThresh[i] = dynamic_cast<const AllIFNeurons&>(neurons).Vthresh_[i];
     }
 
     // Write XML header information:
@@ -129,16 +133,16 @@ void XmlRecorder::saveSimData(const IAllNeurons &neurons)
     stateOut << "<SimState>\n";
     stateOut << "   " << burstinessHist.toXML("burstinessHist") << endl;
     stateOut << "   " << spikesHistory.toXML("spikesHistory") << endl;
-    stateOut << "   " << m_model->getLayout()->xloc->toXML("xloc") << endl;
-    stateOut << "   " << m_model->getLayout()->yloc->toXML("yloc") << endl;
+    stateOut << "   " << model_->getLayout()->xloc_->toXML("xloc") << endl;
+    stateOut << "   " << model_->getLayout()->yloc_->toXML("yloc") << endl;
     stateOut << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
     // create starter nuerons matrix
-    int num_starter_neurons = static_cast<int>(m_model->getLayout()->num_endogenously_active_neurons);
+    int num_starter_neurons = static_cast<int>(model_->getLayout()->numEndogenouslyActiveNeurons_);
     if (num_starter_neurons > 0)
     {
         VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
-        getStarterNeuronMatrix(starterNeurons, m_model->getLayout()->starter_map);
+        getStarterNeuronMatrix(starterNeurons, model_->getLayout()->starterMap_);
         stateOut << "   " << starterNeurons.toXML("starterNeurons") << endl;
     }
 

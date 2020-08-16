@@ -25,49 +25,40 @@
 
 using namespace std;
 
-class DynamicLayout : public Layout
-{
-    public:
-        DynamicLayout();
-        virtual ~DynamicLayout();
+class DynamicLayout : public Layout {
+public:
+   DynamicLayout();
 
-        static Layout* Create() { return new DynamicLayout(); }
+   virtual ~DynamicLayout();
 
-        /**
-         *  Checks the number of required parameters to read.
-         *
-         * @return true if all required parameters were successfully read, false otherwise.
-         */
-        virtual bool checkNumParameters();
+   static Layout *Create() { return new DynamicLayout(); }
 
-        /**
-         *  Prints out all parameters of the neurons to ostream.
-         *
-         *  @param  output  ostream to send output to.
-         */
-        virtual void printParameters(ostream &output) const;
+   /**
+    *  Prints out all parameters of the neurons to console.
+    */
+   virtual void printParameters() const;
 
-        /**
-         *  Creates a randomly ordered distribution with the specified numbers of neuron types.
-         *
-         *  @param  num_neurons number of the neurons to have in the type map.
-         */
-        virtual void generateNeuronTypeMap(int num_neurons);
+   /**
+    *  Creates a randomly ordered distribution with the specified numbers of neuron types.
+    *
+    *  @param  num_neurons number of the neurons to have in the type map.
+    */
+   virtual void generateNeuronTypeMap(int num_neurons);
 
-        /**
-         *  Populates the starter map.
-         *  Selects num_endogenously_active_neurons excitory neurons 
-         *  and converts them into starter neurons.
-         *
-         *  @param  num_neurons number of neurons to have in the map.
-         */
-        virtual void initStarterMap(const int num_neurons);
+   /**
+    *  Populates the starter map.
+    *  Selects num_endogenously_active_neurons excitory neurons
+    *  and converts them into starter neurons.
+    *
+    *  @param  num_neurons number of neurons to have in the map.
+    */
+   virtual void initStarterMap(const int num_neurons);
 
-    private:
-        //! Fraction of endogenously active neurons.
-        BGFLOAT m_frac_starter_neurons;
+private:
+   //! Fraction of endogenously active neurons.
+   BGFLOAT m_frac_starter_neurons;
 
-        //! Fraction of exitatory neurons.
-        BGFLOAT m_frac_excitatory_neurons;
+   //! Fraction of exitatory neurons.
+   BGFLOAT m_frac_excitatory_neurons;
 };
 
