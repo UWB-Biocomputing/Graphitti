@@ -108,6 +108,11 @@ public:
     */
    static IAllNeurons *Create() { return new AllLIFNeurons(); }
 
+   /**
+ *  Prints out all parameters of the neurons to console.
+ */
+   virtual void printParameters() const;
+
 #if defined(USE_GPU)
    public:
 

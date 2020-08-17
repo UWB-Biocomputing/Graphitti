@@ -37,10 +37,12 @@
 \* --------------------------------------------- */
 
 #include "Connections.h"
+
 #include "IAllSynapses.h"
 #include "IAllNeurons.h"
 #include "AllSynapses.h"
 #include "AllNeurons.h"
+#include "OperationManager.h"
 #include "ParameterManager.h"
 #include "EdgesFactory.h"
 
@@ -49,6 +51,10 @@ Connections::Connections() {
    string type;
    ParameterManager::getInstance().getStringByXpath("//SynapsesParams/@class", type);
    synapses_ = EdgesFactory::getInstance()->createEdges(type);
+
+   // Register printParameters function as a printParameters operation in the OperationManager
+   function<void()> printParametersFunc = bind(&Connections::printParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
 }
 
 Connections::~Connections() {

@@ -15,9 +15,13 @@ AllSynapses::AllSynapses() :
    inUse_ = NULL;
    synapseCounts_ = NULL;
 
-   // Register loadParameters function with Operation Manager
-   auto function = std::bind(&AllSynapses::loadParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function);
+   // Register loadParameters function as a loadParameters operation in the OperationManager
+   auto loadParametersFunc = std::bind(&IAllSynapses::loadParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, loadParametersFunc);
+
+   // Register printParameters function as a printParameters operation in the OperationManager
+   function<void()> printParametersFunc = bind(&IAllSynapses::printParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
 }
 
 AllSynapses::AllSynapses(const int num_neurons, const int max_synapses) {
@@ -79,6 +83,18 @@ void AllSynapses::setupSynapses(const int num_neurons, const int max_synapses) {
 void AllSynapses::loadParameters() {
    // Nothing to load from configuration file besides SynapseType in the current implementation.
 }
+
+/**
+ *  Prints out all parameters of the neurons to console.
+ */
+void AllSynapses::printParameters() const {
+   cout << "EDGES PARAMETERS" << endl;
+   cout << "\t*AllSynapses Parameters*" << endl;
+   cout << "\tTotal synapse counts: " << totalSynapseCounts_ << endl;
+   cout << "\tMax synapses per neuron: " << maxSynapsesPerNeuron_ << endl;
+   cout << "\tNeuron count: " << countNeurons_ << endl << endl;
+}
+
 
 /*
  *  Cleanup the class (deallocate memories).
@@ -366,6 +382,7 @@ void AllSynapses::printSynapsesProps() const {
    cout << "maxSynapsesPerNeuron:" << maxSynapsesPerNeuron_ << endl;
    cout << "count_neurons:" << countNeurons_ << endl;
 }
+
 
 
 

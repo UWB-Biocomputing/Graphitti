@@ -61,7 +61,7 @@ void instantiateSimulationObjects();
 int main(int argc, char *argv[]) {
    // Initialize log4cplus and set properties based on configure file
    ::log4cplus::initialize();
-   ::log4cplus::PropertyConfigurator::doConfigure("ThirdParty/log4cplus-2.0.2/log4cplus_configure.ini");
+   ::log4cplus::PropertyConfigurator::doConfigure("RuntimeFiles/log4cplus_configure.ini");
 
    // Get the instance of the rootLogger and begin tests
    log4cplus::Logger logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("rootLogger"));
@@ -83,8 +83,6 @@ int main(int argc, char *argv[]) {
 
    // Read in global parameters from configuration file
    simulator.loadParameters();
-   simulator.printParameters();
-   cout << endl;
 
    // Instantiate simulator objects
    if (!simulator.instantiateSimulatorObjects()) {
@@ -95,18 +93,10 @@ int main(int argc, char *argv[]) {
    }
 
    // Have instantiated simulator objects load parameters from the configuration file
-   OperationManager::getInstance().executeOperation(Operations::op::loadParameters);
+   OperationManager::getInstance().executeOperation(Operations::loadParameters);
 
-   cout << "Printing Layout Params" << endl;
-   simulator.getModel()->getLayout()->printParameters();
-   cout << endl;
-
-   cout << "Printing Neuron Params" << endl;
-   simulator.getModel()->getLayout()->getNeurons()->printParameters();
-   cout << endl;
-
-   cout << "Printing Connections Params" << endl;
-   simulator.getModel()->getConnections()->printParameters();
+   // Have instantiated simulator objects print parameters, used for testing purposes only.
+   OperationManager::getInstance().executeOperation(Operations::printParameters);
 
 
 //   time_t start_time, end_time;

@@ -8,14 +8,21 @@
  */
 
 #include "Simulator.h"
+
+#include <functional>
+
+#include "CPUSpikingModel.h"
+#include "OperationManager.h"
 #include "ParameterManager.h"
-#include "VerticiesFactory.h"
+#include "RecorderFactory.h"
+// #include "ParseParamError.h"
+
+// Factory classes
+#include "ConnectionsFactory.h"
 #include "EdgesFactory.h"
 #include "LayoutFactory.h"
-#include "ConnectionsFactory.h"
-#include "RecorderFactory.h"
-#include "CPUSpikingModel.h"
-// #include "ParseParamError.h"
+#include "VerticiesFactory.h"
+
 
 /// Acts as constructor first time it's called, returns the instance of the singleton object
 Simulator &Simulator::getInstance() {
@@ -26,6 +33,10 @@ Simulator &Simulator::getInstance() {
 /// Constructor is private to keep a singleton instance of this class.
 Simulator::Simulator() {
    g_simulationStep = 0;  /// uint64_t g_simulationStep instantiated in Global
+
+   // Register printParameters function as a printParameters operation in the OperationManager
+   function<void()> printParametersFunc = bind(&Simulator::printParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
 }
 
 /// Destructor
@@ -80,18 +91,15 @@ void Simulator::loadParameters() {
 
 /// Prints out loaded parameters to console.
 void Simulator::printParameters() const {
-   cout << "poolsize x:" << width_ << " y:" << height_
+   cout << "SIMULATION PARAMETERS" << endl;
+   cout << "\tpoolsize x:" << width_ << " y:" << height_
         << endl;
-   cout << "Simulation Parameters:" << endl;
    cout << "\tTime between growth updates (in seconds): " << epochDuration_ << endl;
    cout << "\tNumber of epochs to run: " << numEpochs_ << endl;
-
-   cout << "\nSim Config:" << endl;
    cout << "\tMax firing rate: " << maxFiringRate_ << endl;
    cout << "\tMax synapses per neuron: " << maxSynapsesPerNeuron_ << endl;
-
    cout << "\tSeed: " << seed_ << endl;
-   cout << "\tResult file path: " << resultFileName_ << endl;
+   cout << "\tResult file path: " << resultFileName_ << endl << endl;
 }
 
 

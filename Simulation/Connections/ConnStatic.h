@@ -94,19 +94,19 @@ public:
 
 private:
    //! number of maximum connections per neurons
-   int m_nConnsPerNeuron;
+   int connsPerNeuron_;
 
    //! Connection radius threshold
-   BGFLOAT m_threshConnsRadius;
+   BGFLOAT threshConnsRadius_;
 
    //! Small-world rewiring probability
-   BGFLOAT m_pRewiring;
+   BGFLOAT rewiringProbability_;
 
    //! Min/max values of excitatory neuron's synapse weight
-   BGFLOAT m_excWeight[2];
+   BGFLOAT excWeight_[2];
 
    //! Min/max values of inhibitory neuron's synapse weight
-   BGFLOAT m_inhWeight[2];
+   BGFLOAT inhWeight_[2];
 
    struct DistDestNeuron {
       BGFLOAT dist;     // destance to the destination neuron

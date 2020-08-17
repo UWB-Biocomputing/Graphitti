@@ -13,9 +13,9 @@
 
 ConnStatic::ConnStatic() : Connections()
 {
-    m_threshConnsRadius = 0;
-    m_nConnsPerNeuron = 0;
-    m_pRewiring = 0;
+   threshConnsRadius_ = 0;
+   connsPerNeuron_ = 0;
+   rewiringProbability_ = 0;
 
     // Register loadParameters function with Operation Manager
     auto function = std::bind(&ConnStatic::loadParameters, this);
@@ -53,7 +53,7 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
         for (int dest_neuron = 0; dest_neuron < num_neurons; dest_neuron++) {
             if (src_neuron != dest_neuron) {
                 BGFLOAT dist = (*layout->dist_)(src_neuron, dest_neuron);
-                if (dist <= m_threshConnsRadius) {
+                if (dist <= threshConnsRadius_) {
                     DistDestNeuron distDestNeuron;
                     distDestNeuron.dist = dist;
                     distDestNeuron.dest_neuron = dest_neuron;
@@ -65,7 +65,7 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
         // sort ascendant
         sort(distDestNeurons[src_neuron].begin(), distDestNeurons[src_neuron].end());
         // pick the shortest m_nConnsPerNeuron connections
-        for (BGSIZE i = 0; i < distDestNeurons[src_neuron].size() && (int)i < m_nConnsPerNeuron; i++) {
+        for (BGSIZE i = 0; i < distDestNeurons[src_neuron].size() && (int)i < connsPerNeuron_; i++) {
             int dest_neuron = distDestNeurons[src_neuron][i].dest_neuron;
             synapseType type = layout->synType(src_neuron, dest_neuron);
             BGFLOAT* sum_point = &( dynamic_cast<AllNeurons*>(neurons)->summationMap_[dest_neuron] );
@@ -79,15 +79,15 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
             // set synapse weight
             // TODO: we need another synaptic weight distibution mode (normal distribution)
             if (synapses->synSign(type) > 0) {
-                dynamic_cast<AllSynapses*>(synapses)->W_[iSyn] = rng.inRange(m_excWeight[0], m_excWeight[1]);
+                dynamic_cast<AllSynapses*>(synapses)->W_[iSyn] = rng.inRange(excWeight_[0], excWeight_[1]);
             }
             else {
-                dynamic_cast<AllSynapses*>(synapses)->W_[iSyn] = rng.inRange(m_inhWeight[0], m_inhWeight[1]);
+                dynamic_cast<AllSynapses*>(synapses)->W_[iSyn] = rng.inRange(inhWeight_[0], inhWeight_[1]);
             } 
         }
     }
 
-    int nRewiring = added * m_pRewiring;
+    int nRewiring = added * rewiringProbability_;
 
     DEBUG(cout << "Rewiring connections: " << nRewiring << endl;)
 
@@ -115,6 +115,11 @@ void ConnStatic::loadParameters() {
  */
 void ConnStatic::printParameters() const
 {
+   cout << "CONNECTIONS PARAMETERS" << endl;
+   cout << "\tConnections Type: ConnStatic" << endl;
+   cout << "\tConnection radius threshold: " << threshConnsRadius_ << endl;
+   cout << "\tConnections per neuron: " << connsPerNeuron_ << endl;
+   cout << "\tRewiring probability: " << rewiringProbability_ << endl << endl;
 }
 
 /*

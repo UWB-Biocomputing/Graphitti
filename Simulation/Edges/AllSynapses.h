@@ -81,6 +81,11 @@ public:
    virtual void loadParameters();
 
    /**
+    *  Prints out all parameters of the neurons to console.
+    */
+   virtual void printParameters() const;
+
+   /**
     *  Reset time varying state vars and recompute decay.
     *
     *  @param  iSyn     Index of the synapse to set.

@@ -8,6 +8,12 @@ AllLIFNeurons::AllLIFNeurons() : AllIFNeurons() {
 AllLIFNeurons::~AllLIFNeurons() {
 }
 
+void AllLIFNeurons::printParameters() const {
+   AllNeurons::printParameters();
+   cout << "\tVertice Type: AllLIFNeurons" << endl;
+   AllIFNeurons::printParameters();
+}
+
 #if !defined(USE_GPU)
 
 /*
