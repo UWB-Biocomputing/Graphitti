@@ -266,8 +266,9 @@ void ConnGrowth::updateOverlap(BGFLOAT num_neurons, Layout *layout) {
  *  Note: Platform Dependent.
  *
  *  @param  num_neurons Number of neurons to update.
- *  @param  ineurons    The Neuron list to search from.
- *  @param  isynapses   The Synapse list to search from.
+ *  @param  ineurons    the AllNeurons object.
+ *  @param  isynapses   the AllSynapses object.
+ *  @param  layout      the Layout object.
  */
 void ConnGrowth::updateSynapsesWeights(const int num_neurons,
          IAllNeurons &ineurons, IAllSynapses &isynapses,

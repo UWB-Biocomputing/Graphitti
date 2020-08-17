@@ -168,11 +168,11 @@ public:
     *  Note: Platform Dependent.
     *
     *  @param  num_neurons         number of neurons to update.
-    *  @param  neurons             the Neuron list to search from.
-    *  @param  synapses            the Synapse list to search from.
-    *  @param  m_allNeuronsDevice  Reference to the allNeurons struct on device memory.
-    *  @param  m_allSynapsesDevice Reference to the allSynapses struct on device memory.
-    *  @param  layout              Layout information of the neunal network.
+    *  @param  neurons             the AllNeurons object.
+    *  @param  synapses            the AllSynapses object.
+    *  @param  m_allNeuronsDevice  Reference to the allNeurons struct in device memory.
+    *  @param  m_allSynapsesDevice Reference to the allSynapses struct in device memory.
+    *  @param  layout              the Layout object.
     */
    virtual void updateSynapsesWeights(const int num_neurons,
          IAllNeurons &neurons, IAllSynapses &synapses,
@@ -187,8 +187,10 @@ public:
     *  Note: Platform Dependent.
     *
     *  @param  num_neurons Number of neurons to update.
-    *  @param  ineurons    The Neuron list to search from.
-    *  @param  isynapses   The Synapse list to search from.
+    *  @param  ineurons    the AllNeurons object.
+    *  @param  isynapses   the AllSynapses object.
+    *  @param  layout      the Layout object.
+    * 
     */
    virtual void
    updateSynapsesWeights(const int num_neurons,
