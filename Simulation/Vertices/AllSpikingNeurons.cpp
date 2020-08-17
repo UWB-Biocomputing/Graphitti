@@ -167,10 +167,15 @@ void AllSpikingNeurons::fire(const int index) const {
 
 /*
  *  Get the spike history of neuron[index] at the location offIndex.
+ *  More specifically, retrieves the global simulation time step for the spike
+ *  in question from the spike history record.
+ *  
+ *  TODO: need to document clearly how spikeHistory_ is updated, when/if it gets
+ *  cleared/dumped to file, and how the actual index (idxSp) computation works,
+ *  as it is very unobvious.
  *
  *  @param  index            Index of the neuron to get spike history.
  *  @param  offIndex         Offset of the history buffer to get from.
- *  @param  sim_info         SimulationInfo class to read information from.
  */
 uint64_t AllSpikingNeurons::getSpikeHistory(int index, int offIndex) {
    // offIndex is a minus offset
