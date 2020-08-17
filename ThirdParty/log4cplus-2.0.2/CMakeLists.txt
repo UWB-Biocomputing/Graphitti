@@ -172,7 +172,7 @@ if (LOG4CPLUS_BUILD_LOGGINGSERVER)
 endif (LOG4CPLUS_BUILD_LOGGINGSERVER)
 
 if (LOG4CPLUS_BUILD_TESTING)
-  add_subdirectory (tests)
+  add_subdirectory (testing)
 endif (LOG4CPLUS_BUILD_TESTING)
 if (LOG4CPLUS_QT4)
   add_subdirectory (qt4debugappender)
