@@ -263,6 +263,8 @@ void ConnGrowth::updateOverlap(BGFLOAT num_neurons, Layout *layout) {
 
 /*
  *  Update the weight of the Synapses in the simulation.
+ *  To be clear, iterates through all source and destination neurons
+ *  and updates their synaptic strengths from the weight matrix.
  *  Note: Platform Dependent.
  *
  *  @param  num_neurons Number of neurons to update.
