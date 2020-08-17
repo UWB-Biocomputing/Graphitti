@@ -62,7 +62,7 @@ _deps
 
 # Google Test
 Testing/lib/
-/lib/
+lib/
 
 # log4cplus logging file
-Output/Debug
+Output/Debug/logging.txt

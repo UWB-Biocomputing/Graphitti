@@ -51,12 +51,14 @@ void OperationManager::executeOperation(const Operations::op &operation) const {
 /// Takes in the operation enum and returns the enum as a string. Used for debugging purposes.
 string OperationManager::OperationToString(const Operations::op &operation) const {
    switch (operation) {
-      case Operations::op::initializeFromParameters:
-         return "initializeFromParameters";
+      case Operations::op::loadParameters:
+         return "loadParameters";
       case Operations::op::allocateMemory:
          return "allocateMemory";
       case Operations::op::deallocateMemory:
          return "deallocateMemory";
+      case Operations::simulationSetup:
+         return "simulationSetup";
       case Operations::op::serialize:
          return "serialize";
       case Operations::op::deserialize:

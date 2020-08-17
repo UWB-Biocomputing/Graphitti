@@ -9,8 +9,12 @@
  */
 
 #include <fstream>
+
 #include "Global.h"
 #include "ThirdParty/paramcontainer/ParamContainer.h"
+#include "log4cplus/logger.h"
+#include "log4cplus/configurator.h"
+#include "log4cplus/loggingmacros.h"
 
 #include "Model.h"
 #include "IRecorder.h"
@@ -18,7 +22,6 @@
 #include "Simulator.h"
 #include "ParameterManager.h"
 #include "OperationManager.h"
-#include "VerticiesFactory.h"
 
 // Uncomment to use visual leak detector (Visual Studios Plugin)
 // #include <vld.h>
@@ -56,6 +59,14 @@ void instantiateSimulationObjects();
  *  @return -1 if error, else if success.
  */
 int main(int argc, char *argv[]) {
+   // Initialize log4cplus and set properties based on configure file
+   ::log4cplus::initialize();
+   ::log4cplus::PropertyConfigurator::doConfigure("ThirdParty/log4cplus-2.0.2/log4cplus_configure.ini");
+
+   // Get the instance of the rootLogger and begin tests
+   log4cplus::Logger logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("rootLogger"));
+   LOG4CPLUS_TRACE(logger, "Starting Tests");
+
    Simulator &simulator = Simulator::getInstance();
 
    // Handles parsing of the command line.
