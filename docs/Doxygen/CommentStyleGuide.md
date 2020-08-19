@@ -52,15 +52,23 @@ int var; ///< Brief description after the member
 ```
 
 #### Method Section Dividers
-If there is a section of methods/functions, 
-#### ***todo: finish this ***
-	/** @name Math Operations
-     
-	 Math operations. For efficiency's sake, these methods will be
-	 implemented as being "aware" of each other (i.e., using "friend"
-	 and including the other subclasses' headers).
-	 */
-	//@{
+If there is a section of methods/functions, organize the comments as follows:
+```
+///@{ 
+...
+///@}
+```
+Before the `///@{`, use `@name` to title the group as follows:
+```	
+/******************************************
+*  @name Group of Functions Title
+*  Description of group
+******************************************/
+///@{
+void Memgrp_Test::func1InGroup() {}
+void Memgrp_Test::func2InGroup() {}
+///@}
+```
 
 ***********************************
 
