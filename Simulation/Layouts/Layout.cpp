@@ -23,7 +23,7 @@ Layout::Layout() :
    neurons_ = VerticesFactory::getInstance()->createVertices(type);
 
    // Register loadParameters function as a loadParameters operation in the Operation Manager
-   auto loadParametersFunc = std::bind(&Layout::loadParameters, this);
+   function<void()> loadParametersFunc = std::bind(&Layout::loadParameters, this);
    OperationManager::getInstance().registerOperation(Operations::op::loadParameters, loadParametersFunc);
 
    // Register printParameters function as a printParameters operation in the OperationManager

@@ -1,3 +1,1 @@
-[TRACE][2020/08/03 15:43:33:534][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Testing/RunTests.cpp:27] Starting Tests
-[DEBUG][2020/08/03 15:43:33:540][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/OperationManager.cpp:43] Executing operation deallocateMemory
-[DEBUG][2020/08/03 15:43:33:541][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/OperationManager.cpp:43] Executing operation copyToGPU
+[INFO ][2020/08/25 16:42:16:355][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:72] Simulator Initiated

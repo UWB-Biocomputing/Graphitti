@@ -61,10 +61,6 @@ ConnGrowth::ConnGrowth() : Connections() {
    outgrowth_ = NULL;
    deltaR_ = NULL;
    radiiSize_ = 0;
-
-   // Register loadParameters function with Operation Manager
-   auto function = std::bind(&ConnGrowth::loadParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function);
 }
 
 ConnGrowth::~ConnGrowth() {

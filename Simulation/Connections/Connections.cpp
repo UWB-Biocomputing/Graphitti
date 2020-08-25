@@ -52,9 +52,17 @@ Connections::Connections() {
    ParameterManager::getInstance().getStringByXpath("//SynapsesParams/@class", type);
    synapses_ = EdgesFactory::getInstance()->createEdges(type);
 
+   // Create synapse index map
+   synapseIndexMap_ = shared_ptr<SynapseIndexMap>(new SynapseIndexMap());
+   synapses_->createSynapseImap(synapseIndexMap_.get());
+
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&Connections::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+
+   // Register loadParameters function with Operation Manager
+   function<void()> function = std::bind(&Connections::loadParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function);
 }
 
 Connections::~Connections() {

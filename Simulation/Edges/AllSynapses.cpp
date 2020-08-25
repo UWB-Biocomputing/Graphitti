@@ -16,7 +16,7 @@ AllSynapses::AllSynapses() :
    synapseCounts_ = NULL;
 
    // Register loadParameters function as a loadParameters operation in the OperationManager
-   auto loadParametersFunc = std::bind(&IAllSynapses::loadParameters, this);
+   function<void()> loadParametersFunc = std::bind(&IAllSynapses::loadParameters, this);
    OperationManager::getInstance().registerOperation(Operations::op::loadParameters, loadParametersFunc);
 
    // Register printParameters function as a printParameters operation in the OperationManager
@@ -102,16 +102,16 @@ void AllSynapses::printParameters() const {
 void AllSynapses::cleanupSynapses() {
    BGSIZE max_total_synapses = maxSynapsesPerNeuron_ * countNeurons_;
 
-   if (max_total_synapses != 0) {
-      delete[] destNeuronIndex_;
-      delete[] W_;
-      delete[] summationPoint_;
-      delete[] sourceNeuronIndex_;
-      delete[] psr_;
-      delete[] type_;
-      delete[] inUse_;
-      delete[] synapseCounts_;
-   }
+//   if (max_total_synapses != 0) {
+//      delete[] destNeuronIndex_;
+//      delete[] W_;
+//      delete[] summationPoint_;
+//      delete[] sourceNeuronIndex_;
+//      delete[] psr_;
+//      delete[] type_;
+//      delete[] inUse_;
+//      delete[] synapseCounts_;
+//   }
 
    destNeuronIndex_ = NULL;
    W_ = NULL;

@@ -22,15 +22,16 @@
 #include "Simulator.h"
 #include "ParameterManager.h"
 #include "OperationManager.h"
+#include "AllSynapses.h"
 
 // Uncomment to use visual leak detector (Visual Studios Plugin)
 // #include <vld.h>
 
 
 //! Cereal
-//#include <cereal/archives/xml.hpp>
-//#include <cereal/archives/binary.hpp>
-//#include "ConnGrowth.h" // hacked in. that's why its here.
+#include <cereal/archives/xml.hpp>
+#include <cereal/archives/binary.hpp>
+#include "ConnGrowth.h" // hacked in. that's why its here.
 
 #if defined(USE_GPU)
 #include "GPUSpikingModel.h"
@@ -46,8 +47,8 @@ using namespace std;
 
 // forward declarations
 bool parseCommandLine(int argc, char *argv[]);
+bool deserializeSynapses();
 
-void instantiateSimulationObjects();
 
 /*
  *  Main for Simulator. Handles command line arguments and loads parameters
@@ -59,13 +60,16 @@ void instantiateSimulationObjects();
  *  @return -1 if error, else if success.
  */
 int main(int argc, char *argv[]) {
+   // Clear logging file at the start of each simulation
+   fstream("Output/Debug/logging.txt", ios::out | ios::trunc);
+
    // Initialize log4cplus and set properties based on configure file
    ::log4cplus::initialize();
    ::log4cplus::PropertyConfigurator::doConfigure("RuntimeFiles/log4cplus_configure.ini");
 
-   // Get the instance of the rootLogger and begin tests
-   log4cplus::Logger logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("rootLogger"));
-   LOG4CPLUS_TRACE(logger, "Starting Tests");
+   // Get the instance of the programFlow logger and print status
+   log4cplus::Logger logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("main"));
+   LOG4CPLUS_INFO(logger, "Simulator Initiated");
 
    Simulator &simulator = Simulator::getInstance();
 
@@ -92,46 +96,49 @@ int main(int argc, char *argv[]) {
       return -1;
    }
 
-   // Have instantiated simulator objects load parameters from the configuration file
+   // Invoke instantiated simulator objects to load parameters from the configuration file
    OperationManager::getInstance().executeOperation(Operations::loadParameters);
 
-   // Have instantiated simulator objects print parameters, used for testing purposes only.
+   // Invoke instantiated simulator objects to print parameters, used for testing purposes only.
    OperationManager::getInstance().executeOperation(Operations::printParameters);
 
+//   // Invoke instantiated simulator objects to do any required setup before simulation
+//   OperationManager::getInstance().executeOperation(Operations::simulationSetup);
 
-//   time_t start_time, end_time;
-//   time(&start_time);
-//
-//   // in chain of responsibility. still going to exist!
-//   // setup simulation
-//   DEBUG(cerr << "Setup simulation." << endl;)
-//   simulator.setup();
-//
-//   // Deserializes internal state from a prior run of the simulation
-//   if (!simInfo->memInputFileName.empty()) {
-//      DEBUG(cerr << "Deserializing state from file." << endl;)
-//
-//      DEBUG(
-//      // Prints out internal state information before deserialization
-//            cout << "------------------------------Before Deserialization:------------------------------" << endl;
-//            printKeyStateInfo();
-//      )
-//
-//      // Deserialization
-//      if(!deserializeSynapseInfo()) {
-//         cerr << "! ERROR: failed while deserializing objects" << endl;
-//         return -1;
-//      }
-//
-//      DEBUG(
-//      // Prints out internal state information after deserialization
-//            cout << "------------------------------After Deserialization:------------------------------" << endl;
-//            printKeyStateInfo(simInfo);
-//      )
-//   }
-//
-//   // Run simulation
-//   simulator->simulate();
+
+   time_t start_time, end_time;
+   time(&start_time);
+
+   // in chain of responsibility. still going to exist!
+   // setup simulation
+   LOG4CPLUS_TRACE(logger, "Simulation Setup");
+   simulator.setup();
+
+   // Deserializes internal state from a prior run of the simulation
+   if (!simulator.getSerializationFileName().empty()) {
+      DEBUG(cerr << "Deserializing state from file." << endl;)
+
+      DEBUG(
+      // Prints out internal state information before deserialization
+            cout << "------------------------------Before Deserialization:------------------------------" << endl;
+      //printKeyStateInfo();
+      )
+
+      // Deserialization
+      if (!deserializeSynapses()) {
+         cerr << "! ERROR: failed while deserializing objects" << endl;
+         return -1;
+      }
+
+      DEBUG(
+      // Prints out internal state information after deserialization
+            cout << "------------------------------After Deserialization:------------------------------" << endl;
+      //printKeyStateInfo();
+      )
+   }
+
+   // Run simulation
+   simulator.simulate();
 //
 //   // todo:put someplace else, like chain of responsibility. doesnt have to happen here.
 //   // Terminate the stimulus input
@@ -202,19 +209,26 @@ int main(int argc, char *argv[]) {
 bool parseCommandLine(int argc, char *argv[]) {
    ParamContainer cl; // todo: note as third party class.
    cl.initOptions(false);  // don't allow unknown parameters
-   cl.setHelpString(string("The UW Bothell graph-based simulation environment, for high-performance neural network and other graph-based problems.\nUsage: ") + argv[0] + " ");
+   cl.setHelpString(string(
+         "The UW Bothell graph-based simulation environment, for high-performance neural network and other graph-based problems.\nUsage: ") +
+                    argv[0] + " ");
 
    // Set up the comment line parser.
-   if ((cl.addParam("resultfile", 'o', ParamContainer::filename, "simulation results filepath (deprecated)") != ParamContainer::errOk)
-      || (cl.addParam("configfile", 'c', ParamContainer::filename | ParamContainer::required, "parameter configuration filepath") != ParamContainer::errOk)
-#if defined(USE_GPU)
-      || (cl.addParam("device", 'd', ParamContainer::regular, "CUDA device id") != ParamContainer::errOk)
-#endif  // USE_GPU
-      || (cl.addParam( "stimulusfile", 's', ParamContainer::filename, "stimulus input filepath" ) != ParamContainer::errOk)
-      || (cl.addParam("deserializefile", 'r', ParamContainer::filename, "simulation deserialization filepath (enables deserialization)") != ParamContainer::errOk)
-      || (cl.addParam("serializefile", 'w', ParamContainer::filename, "simulation serialization filepath (enables serialization)") != ParamContainer::errOk)) {
-        cerr << "Internal error creating command line parser" << endl;
-        return false;
+   if ((cl.addParam("resultfile", 'o', ParamContainer::filename, "simulation results filepath (deprecated)") !=
+        ParamContainer::errOk)
+       || (cl.addParam("configfile", 'c', ParamContainer::filename | ParamContainer::required,
+                       "parameter configuration filepath") != ParamContainer::errOk)
+       #if defined(USE_GPU)
+       || (cl.addParam("device", 'd', ParamContainer::regular, "CUDA device id") != ParamContainer::errOk)
+       #endif  // USE_GPU
+       ||
+       (cl.addParam("stimulusfile", 's', ParamContainer::filename, "stimulus input filepath") != ParamContainer::errOk)
+       || (cl.addParam("deserializefile", 'r', ParamContainer::filename,
+                       "simulation deserialization filepath (enables deserialization)") != ParamContainer::errOk)
+       || (cl.addParam("serializefile", 'w', ParamContainer::filename,
+                       "simulation serialization filepath (enables serialization)") != ParamContainer::errOk)) {
+      cerr << "Internal error creating command line parser" << endl;
+      return false;
    }
 
    // Parse the command line
@@ -237,3 +251,82 @@ bool parseCommandLine(int argc, char *argv[]) {
 #endif  // USE_GPU
    return true;
 }
+
+/*
+ *  Deserializes synapse weights, source neurons, destination neurons,
+ *  maxSynapsesPerNeuron, totalNeurons, and
+ *  if running a connGrowth model and radii is in serialization file, deserializes radii as well
+ *
+ *  @param  simInfo   SimulationInfo class to read information from.
+ *  @param  simulator Simulator class to perform actions.
+ *  @returns    true if successful, false otherwise.
+ */
+bool deserializeSynapses() {
+   Simulator &simulator = Simulator::getInstance();
+   // We can deserialize from a variety of archive file formats. Below, comment
+   // out all but the line that is compatible with the desired format.
+   ifstream memory_in(simulator.getSerializationFileName().c_str());
+   //ifstream memory_in (simInfo->memInputFileName.c_str(), std::ios::binary);
+
+   // Checks to see if serialization file exists
+   if (!memory_in) {
+      cerr << "The serialization file doesn't exist" << endl;
+      return false;
+   }
+
+   // We can deserialize from a variety of archive file formats. Below, commentp
+   // out all but the line that corresponds to the desired format.
+   cereal::XMLInputArchive archive(memory_in);
+   //cereal::BinaryInputArchive archive(memory_in);
+
+   shared_ptr<Connections> connections = simulator.getModel()->getConnections();
+   shared_ptr<Layout> layout = simulator.getModel()->getLayout();
+
+   if (!layout || !connections) {
+      cerr << "Either connections or layout is not instantiated," << endl;
+   }
+
+
+   // Deserializes synapse weights along with each synapse's source neuron and destination neuron
+   // Uses "try catch" to catch any cereal exception
+   try {
+      archive(*(dynamic_cast<AllSynapses *>(connections->getSynapses().get())));
+   }
+   catch (cereal::Exception e) {
+      cerr << "Failed deserializing synapse weights, source neurons, and/or destination neurons." << endl;
+      return false;
+   }
+
+   // Creates synapses from weight
+   connections->createSynapsesFromWeights(simulator.getTotalNeurons(), layout.get(), (*layout->getNeurons()),
+                                          (*connections->getSynapses()));
+
+#if defined(USE_GPU)
+   // Copies CPU Synapse data to GPU after deserialization, if we're doing
+    // a GPU-based simulation.
+    simulator.copyCPUSynapseToGPU();
+#endif // USE_GPU
+
+   // Creates synapse index map (includes copy CPU index map to GPU)
+   connections->getSynapses()->createSynapseImap(connections->getSynapseIndexMap().get());
+
+#if defined(USE_GPU)
+   dynamic_cast<GPUSpikingModel *>(simInfo->model)->copySynapseIndexMapHostToDevice(*(dynamic_cast<GPUSpikingModel *>(simInfo->model)->m_synapseIndexMap), simInfo->totalNeurons);
+#endif // USE_GPU
+
+   // Deserializes radii (only when running a connGrowth model and radii is in serialization file)
+   if (dynamic_cast<ConnGrowth *>(connections.get()) != nullptr) {
+      // Uses "try catch" to catch any cereal exception
+      try {
+         archive(*(dynamic_cast<ConnGrowth *>(connections.get())));
+      }
+      catch (cereal::Exception e) {
+         cerr << "Failed deserializing radii." << endl;
+         return false;
+      }
+   }
+
+   return true;
+
+}
+

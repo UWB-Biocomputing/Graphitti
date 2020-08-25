@@ -18,13 +18,16 @@
 using namespace std;
 
 int main() {
+   // Clear logging file at the start of testing
+   fstream("Output/Debug/logging.txt", ios::out | ios::trunc);
+
    // Initialize log4cplus and set properties based on configure file
    ::log4cplus::initialize();
    ::log4cplus::PropertyConfigurator::doConfigure("RuntimeFiles/log4cplus_configure.ini");
 
-   // Get the instance of the rootLogger and begin tests
-   log4cplus::Logger logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("rootLogger"));
-   LOG4CPLUS_TRACE(logger, "Starting Tests");
+   // Get the instance of the main logger and begin tests
+   log4cplus::Logger logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("main"));
+   LOG4CPLUS_INFO(logger, "Running Tests");
 
    // Disabling cout and cerr so output and error messages won't interrupt test flow.
    std::cout.setstate(std::ios_base::failbit);

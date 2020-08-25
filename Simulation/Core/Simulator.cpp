@@ -17,13 +17,6 @@
 #include "RecorderFactory.h"
 // #include "ParseParamError.h"
 
-// Factory classes
-#include "ConnectionsFactory.h"
-#include "EdgesFactory.h"
-#include "LayoutFactory.h"
-#include "VerticiesFactory.h"
-
-
 /// Acts as constructor first time it's called, returns the instance of the singleton object
 Simulator &Simulator::getInstance() {
    static Simulator instance;
@@ -33,6 +26,7 @@ Simulator &Simulator::getInstance() {
 /// Constructor is private to keep a singleton instance of this class.
 Simulator::Simulator() {
    g_simulationStep = 0;  /// uint64_t g_simulationStep instantiated in Global
+   deltaT_ = DEFAULT_dt;
 
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&Simulator::printParameters, this);
@@ -59,6 +53,7 @@ void Simulator::setup() {
    DEBUG(cerr << "Initializing models in network... ";)
    model_->setupSim();
    DEBUG(cerr << "\ndone init models." << endl;)
+
    // init stimulus input object
    /* PInput not in project yet
    if (pInput != NULL) {
@@ -77,6 +72,8 @@ void Simulator::finish() {
 void Simulator::loadParameters() {
    ParameterManager::getInstance().getIntByXpath("//PoolSize/x/text()", width_);
    ParameterManager::getInstance().getIntByXpath("//PoolSize/y/text()", height_);
+   totalNeurons_ = width_ * height_;
+
    ParameterManager::getInstance().getBGFloatByXpath("//SimParams/epochDuration/text()", epochDuration_);
    ParameterManager::getInstance().getIntByXpath("//SimParams/numEpochs/text()", numEpochs_);
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxFiringRate/text()", maxFiringRate_);
