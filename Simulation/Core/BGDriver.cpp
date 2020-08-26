@@ -47,6 +47,7 @@ using namespace std;
 
 // forward declarations
 bool parseCommandLine(int argc, char *argv[]);
+
 bool deserializeSynapses();
 
 
@@ -74,6 +75,7 @@ int main(int argc, char *argv[]) {
    Simulator &simulator = Simulator::getInstance();
 
    // Handles parsing of the command line.
+   LOG4CPLUS_INFO(logger, "Parsing command line");
    if (!parseCommandLine(argc, argv)) {
       cerr << "ERROR: failed during command line parse" << endl;
       return -1;
@@ -102,10 +104,6 @@ int main(int argc, char *argv[]) {
    // Invoke instantiated simulator objects to print parameters, used for testing purposes only.
    OperationManager::getInstance().executeOperation(Operations::printParameters);
 
-//   // Invoke instantiated simulator objects to do any required setup before simulation
-//   OperationManager::getInstance().executeOperation(Operations::simulationSetup);
-
-
    time_t start_time, end_time;
    time(&start_time);
 
@@ -116,93 +114,56 @@ int main(int argc, char *argv[]) {
 
    // Deserializes internal state from a prior run of the simulation
    if (!simulator.getSerializationFileName().empty()) {
-      DEBUG(cerr << "Deserializing state from file." << endl;)
-
-      DEBUG(
-      // Prints out internal state information before deserialization
-            cout << "------------------------------Before Deserialization:------------------------------" << endl;
-      //printKeyStateInfo();
-      )
+      LOG4CPLUS_INFO(logger, "Deserializing state from file.");
 
       // Deserialization
       if (!deserializeSynapses()) {
          cerr << "! ERROR: failed while deserializing objects" << endl;
          return -1;
       }
-
-      DEBUG(
-      // Prints out internal state information after deserialization
-            cout << "------------------------------After Deserialization:------------------------------" << endl;
-      //printKeyStateInfo();
-      )
    }
 
    // Run simulation
    simulator.simulate();
-//
-//   // todo:put someplace else, like chain of responsibility. doesnt have to happen here.
-//   // Terminate the stimulus input
-//   if (simInfo->pInput != NULL)
+
+   // INPUT OBJECTS ARENT IN PROJECT YET
+   // Terminate the stimulus input
+//   if (pInput != NULL)
 //   {
 //      simInfo->pInput->term();
 //      delete simInfo->pInput;
 //   }
-//
-//   // todo: before this, do copy from gpu.
-//   // Writes simulation results to an output destination
-//   simulator->saveData();
-//
-//   // todo: going to be moved. with the "hack"
-//   // Serializes internal state for the current simulation
-//   if (!simInfo->memOutputFileName.empty()) {
-//
-//      // Serialization
-//      serializeSynapseInfo();
-//
-//      DEBUG(
-//      // Prints out internal state information after serialization
-//            cout << "------------------------------After Serialization:------------------------------" << endl;
-//            printKeyStateInfo();
-//      )
-//
-//   }
-//
-//   // todo: handled by chain of responsibility for termination/cleanup.
-//   // Tell simulation to clean-up and run any post-simulation logic.
-//   simulator->finish();
-//
-//   // terminates the simulation recorder
-//   if (simInfo->simRecorder != NULL) {
-//      simInfo->simRecorder->term();
-//   }
-//
-//   for(unsigned int i = 0; i < rgNormrnd.size(); ++i) {
-//      delete rgNormrnd[i];
-//   }
-//
-//   rgNormrnd.clear();
-//
-//   time(&end_time);
-//   double time_elapsed = difftime(end_time, start_time);
-//   double ssps = simInfo->epochDuration * simInfo->maxSteps / time_elapsed;
-//   cout << "time simulated: " << simInfo->epochDuration * simInfo->maxSteps << endl;
-//   cout << "time elapsed: " << time_elapsed << endl;
-//   cout << "ssps (simulation seconds / real time seconds): " << ssps << endl;
-//
-//   delete simInfo->model;
-//   simInfo->model = NULL;
-//
-//   if (simInfo->simRecorder != NULL) {
-//      delete simInfo->simRecorder;
-//      simInfo->simRecorder = NULL;
-//   }
-//
-//   delete simInfo;
-//   simInfo = NULL;
-//
-//   delete simulator;
-//   simulator = NULL;
 
+   // todo: before this, do copy from gpu.
+   // Writes simulation results to an output destination
+   simulator.saveData();
+
+   // todo: going to be moved with the "hack"
+   // Serializes internal state for the current simulation
+   if (!simulator.getSerializationFileName().empty()) {
+      //serializeSynapseInfo();
+   }
+
+   // Tell simulation to clean-up and run any post-simulation logic.
+   simulator.finish();
+
+   // terminates the simulation recorder
+   if (simulator.getModel()->getRecorder() != nullptr) {
+      simulator.getModel()->getRecorder()->term();
+   }
+
+   for (unsigned int i = 0; i < rgNormrnd.size(); ++i) {
+      delete rgNormrnd[i];
+   }
+
+   rgNormrnd.clear();
+
+   time(&end_time);
+   double time_elapsed = difftime(end_time, start_time);
+   double ssps = simulator.getEpochDuration() * simulator.getNumEpochs() / time_elapsed;
+   cout << "time simulated: " << simulator.getEpochDuration() * simulator.getNumEpochs() << endl;
+   cout << "time elapsed: " << time_elapsed << endl;
+   cout << "ssps (simulation seconds / real time seconds): " << ssps << endl;
    return 0;
 }
 
@@ -308,7 +269,7 @@ bool deserializeSynapses() {
 #endif // USE_GPU
 
    // Creates synapse index map (includes copy CPU index map to GPU)
-   connections->getSynapses()->createSynapseImap(connections->getSynapseIndexMap().get());
+   connections->createSynapseIndexMap();
 
 #if defined(USE_GPU)
    dynamic_cast<GPUSpikingModel *>(simInfo->model)->copySynapseIndexMapHostToDevice(*(dynamic_cast<GPUSpikingModel *>(simInfo->model)->m_synapseIndexMap), simInfo->totalNeurons);

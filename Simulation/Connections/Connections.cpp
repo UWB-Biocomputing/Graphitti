@@ -52,10 +52,6 @@ Connections::Connections() {
    ParameterManager::getInstance().getStringByXpath("//SynapsesParams/@class", type);
    synapses_ = EdgesFactory::getInstance()->createEdges(type);
 
-   // Create synapse index map
-   synapseIndexMap_ = shared_ptr<SynapseIndexMap>(new SynapseIndexMap());
-   synapses_->createSynapseImap(synapseIndexMap_.get());
-
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&Connections::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
@@ -74,6 +70,10 @@ shared_ptr<IAllSynapses> Connections::getSynapses() const {
 
 shared_ptr<SynapseIndexMap> Connections::getSynapseIndexMap() const {
    return synapseIndexMap_;
+}
+
+void Connections::createSynapseIndexMap() {
+   synapseIndexMap_ = shared_ptr<SynapseIndexMap>(synapses_->createSynapseIndexMap());
 }
 
 /*
@@ -140,4 +140,6 @@ void Connections::createSynapsesFromWeights(const int num_neurons, Layout *layou
       }
    }
 }
+
+
 

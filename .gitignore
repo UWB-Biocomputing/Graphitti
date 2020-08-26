@@ -65,4 +65,4 @@ Testing/lib/
 lib/
 
 # log4cplus logging file
-Output/Debug/logging.txt
+Output/Debug/

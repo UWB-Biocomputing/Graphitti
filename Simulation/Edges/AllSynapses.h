@@ -127,7 +127,7 @@ public:
     *  @param  synapseIndexMap   Reference to thw pointer to SynapseIndexMap structure.
     *  @param  sim_info          Pointer to the simulation information.
     */
-   virtual void createSynapseImap(SynapseIndexMap *synapseIndexMap);
+   virtual SynapseIndexMap *createSynapseIndexMap();
 
    /**
     *  Get the sign of the synapseType.

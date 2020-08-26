@@ -183,7 +183,7 @@ void AllSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
  *  @param  synapseIndexMap   Reference to the pointer to SynapseIndexMap structure.
  *  @param  sim_info          Pointer to the simulation information.
  */
-void AllSynapses::createSynapseImap(SynapseIndexMap *synapseIndexMap) {
+SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
    int neuron_count = Simulator::getInstance().getTotalNeurons();
    int total_synapse_counts = 0;
 
@@ -196,22 +196,17 @@ void AllSynapses::createSynapseImap(SynapseIndexMap *synapseIndexMap) {
    DEBUG (cout << "total_synapse_counts: " << total_synapse_counts << endl;)
 
    if (total_synapse_counts == 0) {
-      return;
+      return NULL;
    }
 
    // allocate memories for forward map
    vector<BGSIZE> *rgSynapseSynapseIndexMap = new vector<BGSIZE>[neuron_count];
 
-   if (synapseIndexMap != NULL) {
-      delete synapseIndexMap;
-      synapseIndexMap = NULL;
-   }
-
    BGSIZE syn_i = 0;
    int n_inUse = 0;
 
    // create synapse forward map & active synapse map
-   synapseIndexMap = new SynapseIndexMap(neuron_count, total_synapse_counts);
+   SynapseIndexMap *synapseIndexMap = new SynapseIndexMap(neuron_count, total_synapse_counts);
    for (int i = 0; i < neuron_count; i++) {
       BGSIZE synapse_count = 0;
       synapseIndexMap->incomingSynapseBegin_[i] = n_inUse;
@@ -244,6 +239,8 @@ void AllSynapses::createSynapseImap(SynapseIndexMap *synapseIndexMap) {
 
    // delete memories
    delete[] rgSynapseSynapseIndexMap;
+
+   return synapseIndexMap;
 }
 
 /*     

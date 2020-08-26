@@ -1,1 +1,5 @@
-[INFO ][2020/08/25 16:42:16:355][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:72] Simulator Initiated
+[INFO ][2020/08/25 20:14:13:462][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:73] Simulator Initiated
+[INFO ][2020/08/25 20:14:13:462][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:78] Parsing command line
+[DEBUG][2020/08/25 20:14:13:471][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/OperationManager.cpp:43] Executing operation loadParameters
+[DEBUG][2020/08/25 20:14:13:476][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/OperationManager.cpp:43] Executing operation printParameters
+[TRACE][2020/08/25 20:14:13:477][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:116] Simulation Setup

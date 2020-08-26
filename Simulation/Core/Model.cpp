@@ -92,7 +92,7 @@ void Model::setupSim() {
 #endif
 
    // create a synapse index map
-   conns_->getSynapses()->createSynapseImap(conns_->getSynapseIndexMap().get());
+   conns_->createSynapseIndexMap();
 }
 
 /// Clean up the simulation.
