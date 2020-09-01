@@ -1,5 +1,11 @@
-[INFO ][2020/08/25 20:14:13:462][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:73] Simulator Initiated
-[INFO ][2020/08/25 20:14:13:462][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:78] Parsing command line
-[DEBUG][2020/08/25 20:14:13:471][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/OperationManager.cpp:43] Executing operation loadParameters
-[DEBUG][2020/08/25 20:14:13:476][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/OperationManager.cpp:43] Executing operation printParameters
-[TRACE][2020/08/25 20:14:13:477][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:116] Simulation Setup
+[TRACE][2020/09/01 13:16:27:643][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:75] Initiating Simulator
+[TRACE][2020/09/01 13:16:27:645][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:80] Parsing command line
+[TRACE][2020/09/01 13:16:27:648][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:93] Loading Simulator parameters
+[TRACE][2020/09/01 13:16:27:676][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:97] Insantiating Simulator objects specified in configuration file
+[TRACE][2020/09/01 13:16:27:680][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:106] Loading parameters from configuration file
+[DEBUG][2020/09/01 13:16:27:680][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/OperationManager.cpp:43] Executing operation loadParameters
+[TRACE][2020/09/01 13:16:27:697][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:114] Performing Simulator setup
+[DEBUG][2020/09/01 13:16:27:698][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/OperationManager.cpp:43] Executing operation printParameters
+[TRACE][2020/09/01 13:16:27:700][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:132] Starting Simulation
+[TRACE][2020/09/01 13:16:27:720][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:145] Simulation ended, saving results
+[TRACE][2020/09/01 13:16:27:721][/mnt/c/users/chris/onedrive/desktop/summerofbrain/Simulation/Core/BGDriver.cpp:156] Simulation finished

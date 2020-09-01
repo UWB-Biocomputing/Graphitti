@@ -103,18 +103,10 @@ void AllSpikingSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
 }
 
 /*
- *  Prints out all parameters of the neurons to console.
+ *  Prints out all parameters of the synapses to console.
  */
 void AllSpikingSynapses::printParameters() const {
    AllSynapses::printParameters();
-
-   cout << "\t*AllSpikingSynapse Parameters*" << endl;
-   cout << "\tDecay: " << decay_ << endl;
-   cout << "\tTotal delay: " << totalDelay_ << endl;
-   cout << "\tDelay queue: " << delayQueue_ << endl;
-   cout << "\tDelay index: " << delayIndex_ << endl;
-   cout << "\tDelay queue length: " << delayQueueLength_ << endl;
-   cout << "\tTau: " << tau_ << endl << endl;
 }
 
 /*

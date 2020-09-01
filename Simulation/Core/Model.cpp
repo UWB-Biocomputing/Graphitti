@@ -23,6 +23,7 @@ Model::Model() {
    // Create Recorder class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
    recorder_ = RecorderFactory::getInstance()->createRecorder(type);
+   recorder_->init();
 }
 
 /// Destructor todo: this will change
