@@ -58,8 +58,43 @@
       </starter_vreset>
     </NeuronsParams>
 
-    <SynapsesParams class="AllDSSynapses" name="SynapsesParams">
+    <SynapsesParams class="AllSpikingSynapses" name="SynapsesParams">
+      <tau name="tau">
+          <ii name="II">6e-3</ii>
+          <ie name="IE">6e-3</ie>
+          <ei name="EI">3e-3</ei>
+          <ee name="EE">3e-3</ee>
+        </tau>
+        <delay name="delay">
+          <ii name="II">0.8e-3</ii>
+          <ie name="IE">0.8e-3</ie>
+          <ei name="EI">0.8e-3</ei>
+          <ee name="EE">1.5e-3</ee>
+        </delay>
     </SynapsesParams>
+
+    <DSSynapsesParams class="AllDSSynapses" name="DSSynapsesParams">
+        <U name="U">
+          <ii name="II">0.32</ii>
+          <ie name="IE">0.25</ie>
+          <ei name="EI">0.05</ei>
+          <ee name="EE">0.5</ee>
+        </U>
+        <D name="D">
+          <ii name="II">0.144</ii>
+          <ie name="IE">0.7</ie>
+          <ei name="EI">0.125</ei>
+          <ee name="EE">1.1</ee>
+        </D>
+        <F name="F">
+          <ii name="II">0.06</ii>
+          <ie name="IE">0.02</ie>
+          <ei name="EI">1.2</ei>
+          <ee name="EE">0.05</ee>
+        </F>
+    </DSSynapsesParams>
+
+    
 
     <ConnectionsParams class="ConnGrowth" name="ConnectionsParams">
       <!-- Growth parameters -->
