@@ -1,4 +1,6 @@
 #include "AllSpikingSynapses.h"
+#include "ParameterManager.h"
+#include "OperationManager.h"
 
 AllSpikingSynapses::AllSpikingSynapses() : AllSynapses() {
    decay_ = NULL;
@@ -7,6 +9,14 @@ AllSpikingSynapses::AllSpikingSynapses() : AllSynapses() {
    delayIndex_ = NULL;
    delayQueueLength_ = NULL;
    tau_ = NULL;
+   tau_II_=NULL;
+   tau_IE_=NULL;
+   tau_EI_=NULL;
+   tau_EE_=NULL;
+   delay_II_=NULL;
+   delay_IE_=NULL;
+   delay_EI_=NULL;
+   delay_EE_=NULL;
 }
 
 AllSpikingSynapses::AllSpikingSynapses(const int num_neurons, const int max_synapses) {
@@ -44,6 +54,15 @@ void AllSpikingSynapses::setupSynapses(const int num_neurons, const int max_syna
       delayIndex_ = new int[max_total_synapses];
       delayQueueLength_ = new int[max_total_synapses];
       tau_ = new BGFLOAT[max_total_synapses];
+      tau_II_=0;
+      tau_IE_=0;
+      tau_EI_=0;
+      tau_EE_=0;
+      delay_II_=0;
+      delay_IE_=0;
+      delay_EI_=0;
+      delay_EE_=0;
+     
    }
 }
 
@@ -102,11 +121,28 @@ void AllSpikingSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
    assert(updateDecay(iSyn, deltaT));
 }
 
+void AllSpikingSynapses::loadParameters() {
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/II/text()", tau_II_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/IE/text()", tau_IE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/EI/text()", tau_EI_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/EE/text()", tau_EE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/II/text()", delay_II_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/IE/text()", delay_IE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/EI/text()", delay_EI_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/EE/text()", delay_EE_);
+}
+
 /*
- *  Prints out all parameters of the neurons to console.
+ *  Prints out all parameters of the neurons to ostream.
+ * 
+ *  @param  output  ostream to send output to.
  */
 void AllSpikingSynapses::printParameters() const {
+   cout << "\tTau values: ["
+          << tau_IE_ << ", " << tau_IE_ << "]"
+          << endl;
 }
+
 
 /*
  *  Sets the data for Synapse to input's data.
@@ -163,6 +199,7 @@ void AllSpikingSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const 
 void AllSpikingSynapses::createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sum_point,
                                        const BGFLOAT deltaT, synapseType type) {
    BGFLOAT delay;
+   BGFLOAT tau;
 
    inUse_[iSyn] = true;
    summationPoint_[iSyn] = sum_point;
@@ -172,7 +209,29 @@ void AllSpikingSynapses::createSynapse(const BGSIZE iSyn, int source_index, int 
    this->type_[iSyn] = type;
    tau_[iSyn] = DEFAULT_tau;
 
-   BGFLOAT tau;
+   
+   switch (type) {
+      case II:
+         tau = tau_II_;
+         delay = delay_II_;
+         break;
+      case IE:
+         tau = tau_IE_;
+         delay = delay_IE_;
+         break;
+      case EI:
+         tau = tau_EI_;
+         delay = delay_EI_;
+         break;
+      case EE:
+         tau = tau_EE_;
+         delay = delay_EE_;
+         break;
+      default:
+         assert(false);
+         break;
+   }
+   /*
    switch (type) {
       case II:
          tau = 6e-3;
@@ -194,6 +253,7 @@ void AllSpikingSynapses::createSynapse(const BGSIZE iSyn, int source_index, int 
          assert(false);
          break;
    }
+   */
 
    this->tau_[iSyn] = tau;
    this->totalDelay_[iSyn] = static_cast<int>( delay / deltaT ) + 1;
