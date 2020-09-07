@@ -40,7 +40,7 @@ void OperationManager::registerOperation(const Operations::op &operation, functi
 
 /// Takes in a operation type and invokes all registered functions that are classified as that operation type.
 void OperationManager::executeOperation(const Operations::op &operation) const {
-   LOG4CPLUS_DEBUG(logger_, "Executing operation " + OperationToString(operation));
+   LOG4CPLUS_DEBUG(logger_, "Executing operation " + operationToString(operation));
    if (functionList_.size() > 0) {
       for (auto i = functionList_.begin(); i != functionList_.end(); ++i) {
          (*i)->invokeFunction(operation);
@@ -49,8 +49,10 @@ void OperationManager::executeOperation(const Operations::op &operation) const {
 }
 
 /// Takes in the operation enum and returns the enum as a string. Used for debugging purposes.
-string OperationManager::OperationToString(const Operations::op &operation) const {
+string OperationManager::operationToString(const Operations::op &operation) const {
    switch (operation) {
+      case Operations::op::printParameters:
+         return "printParameters";
       case Operations::op::loadParameters:
          return "loadParameters";
       case Operations::op::allocateMemory:
@@ -71,6 +73,8 @@ string OperationManager::OperationToString(const Operations::op &operation) cons
          return "copyFromGPU";
       case Operations::op::terminate:
          return "terminate";
+      default:
+         return "Operation isn't in OperationManager::operationToString()";
    }
 }
 

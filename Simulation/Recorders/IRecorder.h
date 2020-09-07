@@ -82,7 +82,4 @@ public:
 protected:
    // File path to the file that the results will be printed to.
    string resultFileName_;
-
-   // Smart pointer to model so the recorders can access layout and connections.
-   shared_ptr<Model> model_;
 };

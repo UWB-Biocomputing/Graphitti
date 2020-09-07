@@ -77,6 +77,9 @@ void AllDSSynapses::cleanupSynapses() {
  *  Prints out all parameters of the neurons to console.
  */
 void AllDSSynapses::printParameters() const {
+   AllSpikingSynapses::printParameters();
+   cout << "\t*AllDSSynapses Parameters*" << endl;
+   cout << "\tEdges type: AllDSSynapses" << endl << endl;
 }
 
 /*

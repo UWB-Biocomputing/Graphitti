@@ -27,10 +27,8 @@
 *.lib
 
 # Executables
-BrainGrid
-BrainGrid-cuda
+brainGrid-cuda
 braingrid
-Tests
 tests
 *.exe
 *.out
@@ -66,3 +64,8 @@ lib/
 
 # log4cplus logging file
 Output/Debug/logging.txt
+
+# Result files
+Output/Results/*.xml
+Output/Results/*.h5
+

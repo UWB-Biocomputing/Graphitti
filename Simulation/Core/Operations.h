@@ -13,6 +13,7 @@ class Operations {
 public:
     /// Available operations the OperationManager can register and execute.
     enum op {
+       printParameters,
        loadParameters,
        allocateMemory,
        simulationSetup,

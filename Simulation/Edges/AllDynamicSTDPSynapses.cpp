@@ -77,6 +77,10 @@ void AllDynamicSTDPSynapses::cleanupSynapses() {
  *  Prints out all parameters of the neurons to console.
  */
 void AllDynamicSTDPSynapses::printParameters() const {
+   AllSTDPSynapses::printParameters();
+
+   cout << "\t*AllDynamicSTDPSynapses Parameters*" << endl;
+   cout << "\tEdges type: AllDynamicSTDPSynapses" << endl << endl;
 }
 
 /*

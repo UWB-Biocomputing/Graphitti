@@ -60,6 +60,8 @@ public:
     */
    virtual void cleanupNeurons();
 
+   virtual void printParameters() const;
+
    /**
     *  The summation point for each neuron.
     *  Summation points are places where the synapses connected to the neuron

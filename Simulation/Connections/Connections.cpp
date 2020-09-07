@@ -37,10 +37,12 @@
 \* --------------------------------------------- */
 
 #include "Connections.h"
+
 #include "IAllSynapses.h"
 #include "IAllNeurons.h"
 #include "AllSynapses.h"
 #include "AllNeurons.h"
+#include "OperationManager.h"
 #include "ParameterManager.h"
 #include "EdgesFactory.h"
 
@@ -49,6 +51,14 @@ Connections::Connections() {
    string type;
    ParameterManager::getInstance().getStringByXpath("//SynapsesParams/@class", type);
    synapses_ = EdgesFactory::getInstance()->createEdges(type);
+
+   // Register printParameters function as a printParameters operation in the OperationManager
+   function<void()> printParametersFunc = bind(&Connections::printParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+
+   // Register loadParameters function with Operation Manager
+   function<void()> function = std::bind(&Connections::loadParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function);
 }
 
 Connections::~Connections() {
@@ -60,6 +70,10 @@ shared_ptr<IAllSynapses> Connections::getSynapses() const {
 
 shared_ptr<SynapseIndexMap> Connections::getSynapseIndexMap() const {
    return synapseIndexMap_;
+}
+
+void Connections::createSynapseIndexMap() {
+   synapseIndexMap_ = shared_ptr<SynapseIndexMap>(synapses_->createSynapseIndexMap());
 }
 
 /*
@@ -126,4 +140,6 @@ void Connections::createSynapsesFromWeights(const int num_neurons, Layout *layou
       }
    }
 }
+
+
 

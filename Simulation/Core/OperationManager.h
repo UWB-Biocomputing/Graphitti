@@ -38,7 +38,7 @@ public:
    void executeOperation(const Operations::op &operation) const;
 
    /// Takes in the operation enum and returns the enum as a string. Used for debugging purposes.
-   string OperationToString(const Operations::op &operation) const;
+   string operationToString(const Operations::op &operation) const;
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    OperationManager(OperationManager const &) = delete;

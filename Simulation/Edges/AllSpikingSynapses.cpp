@@ -53,14 +53,14 @@ void AllSpikingSynapses::setupSynapses(const int num_neurons, const int max_syna
 void AllSpikingSynapses::cleanupSynapses() {
    BGSIZE max_total_synapses = maxSynapsesPerNeuron_ * countNeurons_;
 
-   if (max_total_synapses != 0) {
-      delete[] decay_;
-      delete[] totalDelay_;
-      delete[] delayQueue_;
-      delete[] delayIndex_;
-      delete[] delayQueueLength_;
-      delete[] tau_;
-   }
+//   if (max_total_synapses != 0) {
+//      delete[] decay_;
+//      delete[] totalDelay_;
+//      delete[] delayQueue_;
+//      delete[] delayIndex_;
+//      delete[] delayQueueLength_;
+//      delete[] tau_;
+//   }
 
    decay_ = NULL;
    totalDelay_ = NULL;
@@ -103,9 +103,10 @@ void AllSpikingSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
 }
 
 /*
- *  Prints out all parameters of the neurons to console.
+ *  Prints out all parameters of the synapses to console.
  */
 void AllSpikingSynapses::printParameters() const {
+   AllSynapses::printParameters();
 }
 
 /*

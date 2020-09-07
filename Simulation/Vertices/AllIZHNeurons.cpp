@@ -71,32 +71,36 @@ void AllIZHNeurons::freeResources() {
  *  @param  output  ostream to send output to.
  */
 void AllIZHNeurons::printParameters() const {
+   AllNeurons::printParameters();
+
+   cout << "\tVertices type: AllIZHNeurons" << endl;
+
    AllIFNeurons::printParameters();
 
-   cout << "Interval of A constant for excitatory neurons: ["
+   cout << "\tInterval of A constant for excitatory neurons: ["
           << excAconst_[0] << ", " << excAconst_[1] << "]"
           << endl;
-   cout << "Interval of A constant for inhibitory neurons: ["
+   cout << "\tInterval of A constant for inhibitory neurons: ["
           << inhAconst_[0] << ", " << inhAconst_[1] << "]"
           << endl;
-   cout << "Interval of B constant for excitatory neurons: ["
+   cout << "\tInterval of B constant for excitatory neurons: ["
           << excBconst_[0] << ", " << excBconst_[1] << "]"
           << endl;
-   cout << "Interval of B constant for inhibitory neurons: ["
+   cout << "\tInterval of B constant for inhibitory neurons: ["
           << inhBconst_[0] << ", " << inhBconst_[1] << "]"
           << endl;
-   cout << "Interval of C constant for excitatory neurons: ["
+   cout << "\tInterval of C constant for excitatory neurons: ["
           << excCconst_[0] << ", " << excCconst_[1] << "]"
           << endl;
-   cout << "Interval of C constant for inhibitory neurons: ["
+   cout << "\tInterval of C constant for inhibitory neurons: ["
           << inhCconst_[0] << ", " << inhCconst_[1] << "]"
           << endl;
-   cout << "Interval of D constant for excitatory neurons: ["
+   cout << "\tInterval of D constant for excitatory neurons: ["
           << excDconst_[0] << ", " << excDconst_[1] << "]"
           << endl;
-   cout << "Interval of D constant for inhibitory neurons: ["
+   cout << "\tInterval of D constant for inhibitory neurons: ["
           << inhDconst_[0] << ", " << inhDconst_[1] << "]"
-          << endl;
+          << endl << endl;
 }
 
 /*

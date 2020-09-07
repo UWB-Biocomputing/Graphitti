@@ -23,6 +23,7 @@ Model::Model() {
    // Create Recorder class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
    recorder_ = RecorderFactory::getInstance()->createRecorder(type);
+   recorder_->init();
 }
 
 /// Destructor todo: this will change
@@ -92,7 +93,7 @@ void Model::setupSim() {
 #endif
 
    // create a synapse index map
-   conns_->getSynapses()->createSynapseImap(conns_->getSynapseIndexMap().get());
+   conns_->createSynapseIndexMap();
 }
 
 /// Clean up the simulation.
