@@ -17,7 +17,6 @@ XmlRecorder::XmlRecorder() :
       spikesHistory(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
                                                                   Simulator::getInstance().getNumEpochs() * 100), 0) {
    resultFileName_ = Simulator::getInstance().getResultFileName();
-   model_ = Simulator::getInstance().getModel();
 }
 
 XmlRecorder::~XmlRecorder() {
@@ -65,22 +64,22 @@ void XmlRecorder::term() {
  */
 void XmlRecorder::compileHistories(IAllNeurons &neurons) {
    AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(neurons);
-   int max_spikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
+   int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
    // output spikes
    for (int iNeuron = 0; iNeuron < Simulator::getInstance().getTotalNeurons(); iNeuron++) {
       uint64_t *pSpikes = spNeurons.spikeHistory_[iNeuron];
 
-      int &spike_count = spNeurons.spikeCount_[iNeuron];
+      int &spikeCount = spNeurons.spikeCount_[iNeuron];
       int &offset = spNeurons.spikeCountOffset_[iNeuron];
-      for (int i = 0, idxSp = offset; i < spike_count; i++, idxSp++) {
+      for (int i = 0, idxSp = offset; i < spikeCount; i++, idxSp++) {
          // Single precision (float) gives you 23 bits of significand, 8 bits of exponent,
          // and 1 sign bit. Double precision (double) gives you 52 bits of significand,
          // 11 bits of exponent, and 1 sign bit.
          // Therefore, single precision can only handle 2^23 = 8,388,608 simulation steps
          // or 8 epochs (1 epoch = 100s, 1 simulation step = 0.1ms).
 
-         if (idxSp >= max_spikes) idxSp = 0;
+         if (idxSp >= maxSpikes) idxSp = 0;
          // compile network wide burstiness index data in 1s bins
          int idx1 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * Simulator::getInstance().getDeltaT());
          burstinessHist[idx1] = burstinessHist[idx1] + 1.0;
@@ -128,7 +127,7 @@ void XmlRecorder::saveSimData(const IAllNeurons &neurons) {
    stateOut << "   " << layout->yloc_->toXML("yloc") << endl;
    stateOut << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
-   // create starter nuerons matrix
+   // create starter neurons matrix
    int num_starter_neurons = static_cast<int>(layout->numEndogenouslyActiveNeurons_);
    if (num_starter_neurons > 0) {
       VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
@@ -136,7 +135,7 @@ void XmlRecorder::saveSimData(const IAllNeurons &neurons) {
       stateOut << "   " << starterNeurons.toXML("starterNeurons") << endl;
    }
 
-   // Write neuron thresold
+   // Write neuron threshold
    stateOut << "   " << neuronThresh.toXML("neuronThresh") << endl;
 
    // write time between growth cycles

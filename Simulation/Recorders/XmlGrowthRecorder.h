@@ -43,7 +43,7 @@ public:
 
    ~XmlGrowthRecorder();
 
-   static IRecorder* Create() { return new XmlRecorder(); }
+   static IRecorder* Create() { return new XmlGrowthRecorder(); }
 
    /**
     * Init radii and rates history matrices with default values
