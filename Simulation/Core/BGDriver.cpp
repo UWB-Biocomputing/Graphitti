@@ -64,47 +64,48 @@ void serializeSynapses();
  *  @return -1 if error, else if success.
  */
 int main(int argc, char *argv[]) {
-   // Clear logging file at the start of each simulation
+   // Clear logging files at the start of each simulation
    fstream("Output/Debug/logging.txt", ios::out | ios::trunc);
+   fstream("Output/Debug/neurons.txt", ios::out | ios::trunc);
 
    // Initialize log4cplus and set properties based on configure file
    ::log4cplus::initialize();
    ::log4cplus::PropertyConfigurator::doConfigure("RuntimeFiles/log4cplus_configure.ini");
 
-   // Get the instance of the main logger and print status
-   log4cplus::Logger logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("main"));
-   LOG4CPLUS_TRACE(logger, "Initiating Simulator");
+   // Get the instance of the console logger and print status
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+   LOG4CPLUS_TRACE(consoleLogger, "Initiating Simulator");
 
    Simulator &simulator = Simulator::getInstance();
 
    // Handles parsing of the command line.
-   LOG4CPLUS_TRACE(logger, "Parsing command line");
+   LOG4CPLUS_TRACE(consoleLogger, "Parsing command line");
    if (!parseCommandLine(argc, argv)) {
-      LOG4CPLUS_FATAL(logger, "ERROR: failed during command line parse");
+      LOG4CPLUS_FATAL(consoleLogger, "ERROR: failed during command line parse");
       return -1;
    }
 
    // Loads the configuration file into the Parameter Manager.
    if (!ParameterManager::getInstance().loadParameterFile(simulator.getConfigFileName())) {
-      LOG4CPLUS_FATAL(logger, "ERROR: failed to load config file: " << simulator.getConfigFileName());
+      LOG4CPLUS_FATAL(consoleLogger, "ERROR: failed to load config file: " << simulator.getConfigFileName());
       return -1;
    }
 
    // Read in simulator specific parameters from configuration file.
-   LOG4CPLUS_TRACE(logger, "Loading Simulator parameters");
+   LOG4CPLUS_TRACE(consoleLogger, "Loading Simulator parameters");
    simulator.loadParameters();
 
    // Instantiate simulator objects.
-   LOG4CPLUS_TRACE(logger, "Insantiating Simulator objects specified in configuration file");
+   LOG4CPLUS_TRACE(consoleLogger, "Insantiating Simulator objects specified in configuration file");
    if (!simulator.instantiateSimulatorObjects()) {
-      LOG4CPLUS_FATAL(logger, "ERROR: Unable to instantiate all simulator classes, check configuration file: "
-                              + simulator.getConfigFileName()
-                              + " for incorrectly declared class types.");
+      LOG4CPLUS_FATAL(consoleLogger, "ERROR: Unable to instantiate all simulator classes, check configuration file: "
+                                     + simulator.getConfigFileName()
+                                     + " for incorrectly declared class types.");
       return -1;
    }
 
    // Invoke instantiated simulator objects to load parameters from the configuration file
-   LOG4CPLUS_TRACE(logger, "Loading parameters from configuration file");
+   LOG4CPLUS_TRACE(consoleLogger, "Loading parameters from configuration file");
    OperationManager::getInstance().executeOperation(Operations::loadParameters);
 
    time_t start_time, end_time;
@@ -112,7 +113,7 @@ int main(int argc, char *argv[]) {
 
    // in chain of responsibility. still going to exist!
    // setup simulation
-   LOG4CPLUS_TRACE(logger, "Performing Simulator setup");
+   LOG4CPLUS_TRACE(consoleLogger, "Performing Simulator setup");
    simulator.setup();
 
    // Invoke instantiated simulator objects to print parameters, used for testing purposes only.
@@ -120,17 +121,17 @@ int main(int argc, char *argv[]) {
 
    // Deserializes internal state from a prior run of the simulation
    if (!simulator.getSerializationFileName().empty()) {
-      LOG4CPLUS_TRACE(logger, "Deserializing state from file.");
+      LOG4CPLUS_TRACE(consoleLogger, "Deserializing state from file.");
 
       // Deserialization
       if (!deserializeSynapses()) {
-         LOG4CPLUS_FATAL(logger, "Failed while deserializing objects");
+         LOG4CPLUS_FATAL(consoleLogger, "Failed while deserializing objects");
          return -1;
       }
    }
 
    // Run simulation
-   LOG4CPLUS_TRACE(logger, "Starting Simulation");
+   LOG4CPLUS_TRACE(consoleLogger, "Starting Simulation");
    simulator.simulate();
 
    // INPUT OBJECTS ARENT IN PROJECT YET
@@ -143,18 +144,18 @@ int main(int argc, char *argv[]) {
 
    // todo: before this, do copy from gpu.
    // Writes simulation results to an output destination
-   LOG4CPLUS_TRACE(logger, "Simulation ended, saving results");
+   LOG4CPLUS_TRACE(consoleLogger, "Simulation ended, saving results");
    simulator.saveData();
 
    // todo: going to be moved with the "hack"
    // Serializes internal state for the current simulation
    if (!simulator.getSerializationFileName().empty()) {
-      LOG4CPLUS_TRACE(logger, "Serializing current state");
+      LOG4CPLUS_TRACE(consoleLogger, "Serializing current state");
       serializeSynapses();
    }
 
    // Tell simulation to clean-up and run any post-simulation logic.
-   LOG4CPLUS_TRACE(logger, "Simulation finished");
+   LOG4CPLUS_TRACE(consoleLogger, "Simulation finished");
    simulator.finish();
 
    // terminates the simulation recorder

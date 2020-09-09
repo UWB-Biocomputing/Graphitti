@@ -62,8 +62,8 @@ _deps
 Testing/lib/
 lib/
 
-# log4cplus logging file
-Output/Debug/logging.txt
+# log4cplus logging files
+Output/Debug/*.txt
 
 # Result files
 Output/Results/*.xml

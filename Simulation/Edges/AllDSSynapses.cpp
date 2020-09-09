@@ -9,9 +9,9 @@ AllDSSynapses::AllDSSynapses() : AllSpikingSynapses() {
    F_ = NULL;
 }
 
-AllDSSynapses::AllDSSynapses(const int num_neurons, const int max_synapses) :
-      AllSpikingSynapses(num_neurons, max_synapses) {
-   setupSynapses(num_neurons, max_synapses);
+AllDSSynapses::AllDSSynapses(const int numNeurons, const int maxSynapses) :
+      AllSpikingSynapses(numNeurons, maxSynapses) {
+   setupSynapses(numNeurons, maxSynapses);
 }
 
 AllDSSynapses::~AllDSSynapses() {
@@ -21,7 +21,6 @@ AllDSSynapses::~AllDSSynapses() {
 /*
  *  Setup the internal structure of the class (allocate memories and initialize them).
  *
- *  @param  sim_info  SimulationInfo class to read information from.
  */
 void AllDSSynapses::setupSynapses() {
    setupSynapses(Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
@@ -30,21 +29,21 @@ void AllDSSynapses::setupSynapses() {
 /*
  *  Setup the internal structure of the class (allocate memories and initialize them).
  *
- *  @param  num_neurons   Total number of neurons in the network.
- *  @param  max_synapses  Maximum number of synapses per neuron.
+ *  @param  numNeurons   Total number of neurons in the network.
+ *  @param  maxSynapses  Maximum number of synapses per neuron.
  */
-void AllDSSynapses::setupSynapses(const int num_neurons, const int max_synapses) {
-   AllSpikingSynapses::setupSynapses(num_neurons, max_synapses);
+void AllDSSynapses::setupSynapses(const int numNeurons, const int maxSynapses) {
+   AllSpikingSynapses::setupSynapses(numNeurons, maxSynapses);
 
-   BGSIZE max_total_synapses = max_synapses * num_neurons;
+   BGSIZE maxTotalSynapses = maxSynapses * numNeurons;
 
-   if (max_total_synapses != 0) {
-      lastSpike_ = new uint64_t[max_total_synapses];
-      r_ = new BGFLOAT[max_total_synapses];
-      u_ = new BGFLOAT[max_total_synapses];
-      D_ = new BGFLOAT[max_total_synapses];
-      U_ = new BGFLOAT[max_total_synapses];
-      F_ = new BGFLOAT[max_total_synapses];
+   if (maxTotalSynapses != 0) {
+      lastSpike_ = new uint64_t[maxTotalSynapses];
+      r_ = new BGFLOAT[maxTotalSynapses];
+      u_ = new BGFLOAT[maxTotalSynapses];
+      D_ = new BGFLOAT[maxTotalSynapses];
+      U_ = new BGFLOAT[maxTotalSynapses];
+      F_ = new BGFLOAT[maxTotalSynapses];
    }
 }
 
@@ -52,9 +51,9 @@ void AllDSSynapses::setupSynapses(const int num_neurons, const int max_synapses)
  *  Cleanup the class (deallocate memories).
  */
 void AllDSSynapses::cleanupSynapses() {
-   BGSIZE max_total_synapses = maxSynapsesPerNeuron_ * countNeurons_;
+   BGSIZE maxTotalSynapses = maxSynapsesPerNeuron_ * countNeurons_;
 
-   if (max_total_synapses != 0) {
+   if (maxTotalSynapses != 0) {
       delete[] lastSpike_;
       delete[] r_;
       delete[] u_;
@@ -73,13 +72,15 @@ void AllDSSynapses::cleanupSynapses() {
    AllSpikingSynapses::cleanupSynapses();
 }
 
-/*
- *  Prints out all parameters of the neurons to console.
+/**
+ *  Prints out all parameters to logging file.
+ *  Registered to OperationManager as Operation::printParameters
  */
 void AllDSSynapses::printParameters() const {
    AllSpikingSynapses::printParameters();
-   cout << "\t*AllDSSynapses Parameters*" << endl;
-   cout << "\tEdges type: AllDSSynapses" << endl << endl;
+
+   LOG4CPLUS_DEBUG(fileLogger_, "\n\t---AllDSSynapses Parameters---" << endl
+                                          << "\tEdges type: AllDSSynapses" << endl << endl);
 }
 
 /*
@@ -140,17 +141,16 @@ void AllDSSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
 /*
  *  Create a Synapse and connect it to the model.
  *
- *  @param  synapses    The synapse list to reference.
  *  @param  iSyn        Index of the synapse to set.
- *  @param  source      Coordinates of the source Neuron.
- *  @param  dest        Coordinates of the destination Neuron.
- *  @param  sum_point   Summation point address.
+ *  @param  srcNeuron      Coordinates of the source Neuron.
+ *  @param  destNeuron        Coordinates of the destination Neuron.
+ *  @param  sumPoint   Summation point address.
  *  @param  deltaT      Inner simulation step duration.
  *  @param  type        Type of the Synapse to create.
  */
-void AllDSSynapses::createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sum_point,
+void AllDSSynapses::createSynapse(const BGSIZE iSyn, int srcNeuron, int destNeuron, BGFLOAT *sumPoint,
                                   const BGFLOAT deltaT, synapseType type) {
-   AllSpikingSynapses::createSynapse(iSyn, source_index, dest_index, sum_point, deltaT, type);
+   AllSpikingSynapses::createSynapse(iSyn, srcNeuron, destNeuron, sumPoint, deltaT, type);
 
    U_[iSyn] = DEFAULT_U;
 
@@ -220,7 +220,7 @@ void AllDSSynapses::changePSR(const BGSIZE iSyn, const BGFLOAT deltaT) {
 #endif // !defined(USE_GPU)
 
 /*
- *  Prints SynapsesProps data.
+ *  Prints SynapsesProps data to console.
  */
 void AllDSSynapses::printSynapsesProps() const {
    AllSpikingSynapses::printSynapsesProps();

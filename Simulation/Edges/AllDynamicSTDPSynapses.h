@@ -81,7 +81,7 @@ class AllDynamicSTDPSynapses : public AllSTDPSynapses {
 public:
    AllDynamicSTDPSynapses();
 
-   AllDynamicSTDPSynapses(const int num_neurons, const int max_synapses);
+   AllDynamicSTDPSynapses(const int numNeurons, const int maxSynapses);
 
    virtual ~AllDynamicSTDPSynapses();
 
@@ -89,8 +89,6 @@ public:
 
    /**
     *  Setup the internal structure of the class (allocate memories and initialize them).
-    *
-    *  @param  sim_info  SimulationInfo class to read information from.
     */
    virtual void setupSynapses();
 
@@ -108,22 +106,22 @@ public:
    virtual void resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT);
 
    /**
-    *  Prints out all parameters of the neurons to console.
+    *  Prints out all parameters to logging file.
+    *  Registered to OperationManager as Operation::printParameters
     */
    virtual void printParameters() const;
 
    /**
     *  Create a Synapse and connect it to the model.
     *
-    *  @param  synapses    The synapse list to reference.
     *  @param  iSyn        Index of the synapse to set.
-    *  @param  source      Coordinates of the source Neuron.
-    *  @param  dest        Coordinates of the destination Neuron.
-    *  @param  sum_point   Summation point address.
+    *  @param  srcNeuron   Coordinates of the source Neuron.
+    *  @param  destNeuron  Coordinates of the destination Neuron.
+    *  @param  sumPoint    Summation point address.
     *  @param  deltaT      Inner simulation step duration.
     *  @param  type        Type of the Synapse to create.
     */
-   virtual void createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sp, const BGFLOAT deltaT,
+   virtual void createSynapse(const BGSIZE iSyn, int srcNeuron, int destNeuron, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               synapseType type);
 
    /**
@@ -135,10 +133,10 @@ protected:
    /**
     *  Setup the internal structure of the class (allocate memories and initialize them).
     *
-    *  @param  num_neurons   Total number of neurons in the network.
-    *  @param  max_synapses  Maximum number of synapses per neuron.
+    *  @param  numNeurons   Total number of neurons in the network.
+    *  @param  maxSynapses  Maximum number of synapses per neuron.
     */
-   virtual void setupSynapses(const int num_neurons, const int max_synapses);
+   virtual void setupSynapses(const int numNeurons, const int maxSynapses);
 
    /**
     *  Sets the data for Synapse to input's data.

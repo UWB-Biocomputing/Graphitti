@@ -35,26 +35,25 @@ public:
    static Layout *Create() { return new FixedLayout(); }
 
    /**
-    *  Prints out all parameters of the neurons to ostream.
-    *
-    *  @param  output  ostream to send output to.
+    *  Prints out all parameters to logging file.
+    *  Registered to OperationManager as Operation::printParameters
     */
    virtual void printParameters() const;
 
    /**
     *  Creates a neurons type map.
     *
-    *  @param  num_neurons number of the neurons to have in the type map.
+    *  @param  numNeurons number of the neurons to have in the type map.
     */
-   virtual void generateNeuronTypeMap(int num_neurons);
+   virtual void generateNeuronTypeMap(int numNeurons);
 
    /**
     *  Populates the starter map.
     *  Selects num_endogenously_active_neurons excitory neurons
     *  and converts them into starter neurons.
     *
-    *  @param  num_neurons number of neurons to have in the map.
+    *  @param  numNeurons number of neurons to have in the map.
     */
-   virtual void initStarterMap(const int num_neurons);
+   virtual void initStarterMap(const int numNeurons);
 };
 

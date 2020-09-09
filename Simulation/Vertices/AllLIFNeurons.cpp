@@ -8,10 +8,13 @@ AllLIFNeurons::AllLIFNeurons() : AllIFNeurons() {
 AllLIFNeurons::~AllLIFNeurons() {
 }
 
+/**
+ *  Prints out all parameters of the neurons to logging file.
+ *  Registered to OperationManager as Operation::printParameters
+ */
 void AllLIFNeurons::printParameters() const {
-   AllNeurons::printParameters();
-   cout << "\tVertice Type: AllLIFNeurons" << endl;
    AllIFNeurons::printParameters();
+   LOG4CPLUS_DEBUG(fileLogger_, "\n\tVertices Type: AllLIFNeurons" << endl);
 }
 
 #if !defined(USE_GPU)
@@ -20,7 +23,6 @@ void AllLIFNeurons::printParameters() const {
  *  Update internal state of the indexed Neuron (called by every simulation step).
  *
  *  @param  index       Index of the Neuron to update.
- *  @param  sim_info    SimulationInfo class to read information from.
  */
 void AllLIFNeurons::advanceNeuron(const int index) {
     BGFLOAT &Vm = this->Vm_[index];
@@ -42,30 +44,30 @@ void AllLIFNeurons::advanceNeuron(const int index) {
         summationPoint += I0; // add IO
         // add noise
         BGFLOAT noise = (*rgNormrnd[0])();
-        DEBUG_MID(cout << "ADVANCE NEURON[" << index << "] :: noise = " << noise << endl;)
+        //LOG4CPLUS_DEBUG(neuronLogger_, "ADVANCE NEURON[" << index << "] :: Noise = " << noise);
         summationPoint += noise * Inoise; // add noise
         Vm = C1 * Vm + C2 * summationPoint; // decay Vm and add inputs
     }
     // clear synaptic input for next time step
     summationPoint = 0;
 
-    DEBUG_MID(cout << index << " " << Vm << endl;)
-    DEBUG_MID(cout << "NEURON[" << index << "] {" << endl
-                   << "\tVm = " << Vm << endl
-                   << "\tVthresh = " << Vthresh << endl
-                   << "\tsummationPoint = " << summationPoint << endl
-                   << "\tI0 = " << I0 << endl
-                   << "\tInoise = " << Inoise << endl
-                   << "\tC1 = " << C1 << endl
-                   << "\tC2 = " << C2 << endl
-                   << "}" << endl;)
+    // Causes a huge slowdown since it's printed so frequently
+//    LOG4CPLUS_DEBUG(neuronLogger_, "Index: " << index << " Vm: " << Vm);
+//    LOG4CPLUS_DEBUG(neuronLogger_, "NEURON[" << index << "] {" << endl
+//                   << "\tVm = " << Vm << endl
+//                   << "\tVthresh = " << Vthresh << endl
+//                   << "\tsummationPoint = " << summationPoint << endl
+//                   << "\tI0 = " << I0 << endl
+//                   << "\tInoise = " << Inoise << endl
+//                   << "\tC1 = " << C1 << endl
+//                   << "\tC2 = " << C2 << endl
+//                   << "}" << endl);
 }
 
 /*
  *  Fire the selected Neuron and calculate the result.
  *
  *  @param  index       Index of the Neuron to update.
- *  @param  sim_info    SimulationInfo class to read information from.
  */
 void AllLIFNeurons::fire(const int index) const {
     const BGFLOAT deltaT = Simulator::getInstance().getDeltaT();

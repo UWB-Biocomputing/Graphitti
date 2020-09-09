@@ -48,7 +48,7 @@ private:
    /// Constructor is private to keep a singleton instance of this class.
    OperationManager() {
       // Set logger_ to a reference to the rootLogger
-      logger_ = (log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("rootLogger")));
+      logger_ = (log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file")));
    }
 
    /// LinkedLists of functions based on operation type.

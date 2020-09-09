@@ -13,6 +13,8 @@
 
 #include <memory>
 
+#include <log4cplus/loggingmacros.h>
+
 #include "BGTypes.h"
 #include "Global.h"
 #include "Core/Model.h"
@@ -40,7 +42,7 @@ public:
 
    void loadParameters(); /// Load member variables from configuration file
 
-   void printParameters() const; /// Prints out loaded parameters to console.
+   void printParameters() const; /// Prints loaded parameters to logging file.
 
    void copyGPUSynapseToCPU(); /// Copy GPU Synapse data to CPU.
 
@@ -171,6 +173,9 @@ private:
    string stimulusFileName_;    /// File name of the stimulus input file.
 
    shared_ptr<Model> model_;  /// Smart pointer to model class (Model is an interface class)
+
+   log4cplus::Logger consoleLogger_; /// Logger for printing to the console as well as the logging file
+   log4cplus::Logger fileLogger_; /// Logger for printing to the logging file
 
 #ifdef PERFORMANCE_METRICS
    Timer timer;   /// Timer for measuring performance of an epoch.

@@ -28,6 +28,9 @@ Simulator::Simulator() {
    g_simulationStep = 0;  /// uint64_t g_simulationStep instantiated in Global
    deltaT_ = DEFAULT_dt;
 
+   consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&Simulator::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
@@ -50,9 +53,9 @@ void Simulator::setup() {
    timer.start();
    cerr << "done." << endl;
 #endif
-   DEBUG(cerr << "Initializing models in network... ";)
+   LOG4CPLUS_INFO(fileLogger_, "Initializing models in network... ");
    model_->setupSim();
-   DEBUG(cerr << "\ndone init models." << endl;)
+   LOG4CPLUS_INFO(fileLogger_, "Model initialization finished");
 
    // init stimulus input object
    /* PInput not in project yet
@@ -60,7 +63,7 @@ void Simulator::setup() {
       cout << "Initializing input." << endl;
       pInput->init();
    }
-    */
+   */
 }
 
 /// Begin terminating the simulator
@@ -86,17 +89,18 @@ void Simulator::loadParameters() {
    }
 }
 
-/// Prints out loaded parameters to console.
+/// Prints out loaded parameters to logging file.
 void Simulator::printParameters() const {
-   cout << "SIMULATION PARAMETERS" << endl;
-   cout << "\tpoolsize x:" << width_ << " y:" << height_
-        << endl;
-   cout << "\tTime between growth updates (in seconds): " << epochDuration_ << endl;
-   cout << "\tNumber of epochs to run: " << numEpochs_ << endl;
-   cout << "\tMax firing rate: " << maxFiringRate_ << endl;
-   cout << "\tMax synapses per neuron: " << maxSynapsesPerNeuron_ << endl;
-   cout << "\tSeed: " << seed_ << endl;
-   cout << "\tResult file path: " << resultFileName_ << endl << endl;
+   LOG4CPLUS_DEBUG(fileLogger_,
+                  "\nSIMULATION PARAMETERS" << endl
+                                          << "\tpool size x:" << width_ << " y:" << height_
+                                          << endl
+                                          << "\tTime between growth updates (in seconds): " << epochDuration_ << endl
+                                          << "\tNumber of epochs to run: " << numEpochs_ << endl
+                                          << "\tMax firing rate: " << maxFiringRate_ << endl
+                                          << "\tMax synapses per neuron: " << maxSynapsesPerNeuron_ << endl
+                                          << "\tSeed: " << seed_ << endl
+                                          << "\tResult file path: " << resultFileName_ << endl << endl);
 }
 
 
@@ -114,7 +118,7 @@ void Simulator::copyCPUSynapseToGPU() {
 
 /// Resets all of the maps. Releases and re-allocates memory for each map, clearing them as necessary.
 void Simulator::reset() {
-   DEBUG(cout << "\nEntering Simulator::reset()" << endl;)
+   LOG4CPLUS_INFO(fileLogger_, "Resetting Simulator");
    // Terminate the simulator
    model_->cleanupSim();
    // Clean up objects
@@ -123,7 +127,7 @@ void Simulator::reset() {
    g_simulationStep = 0;
    // Initialize and prepare network for simulation
    model_->setupSim();
-   DEBUG(cout << "\nExiting Simulator::reset()" << endl;)
+   LOG4CPLUS_INFO(fileLogger_, "Simulator Reset Finished");
 }
 
 /// Clean up objects.
@@ -133,10 +137,8 @@ void Simulator::freeResources() {}
 void Simulator::simulate() {
    // Main simulation loop - execute maxGrowthSteps
    for (int currentEpoch = 1; currentEpoch <= numEpochs_; currentEpoch++) {
-      DEBUG(cout << endl << endl;)
-      DEBUG(cout << "Performing simulation number " << currentEpoch << endl;)
-      DEBUG(cout << "Begin network state:" << endl;)
-      // Init SimulationInfo parameters
+      LOG4CPLUS_TRACE(consoleLogger_, "Performing epoch number: " << currentEpoch);
+      LOG4CPLUS_TRACE(fileLogger_, "Begin network state:");
       currentEpoch_ = currentEpoch;
 #ifdef PERFORMANCE_METRICS
       // Start timer for advance
@@ -148,18 +150,13 @@ void Simulator::simulate() {
       // Time to advance
       t_host_advance += short_timer.lap() / 1000000.0;
 #endif
-      DEBUG(cout << endl << endl;)
-      DEBUG(
-            cout << "Done with simulation cycle, beginning growth update "
-                 << currentEpoch << endl;
-      )
-      // Update the neuron network
+      LOG4CPLUS_TRACE(consoleLogger_, "done with epoch cycle " << currentEpoch_ << ", beginning growth update");
 
 #ifdef PERFORMANCE_METRICS
       // Start timer for connection update
       short_timer.start();
 #endif
-
+      // Update the neuron network
       model_->updateConnections();
       model_->updateHistory();
 
@@ -187,16 +184,15 @@ void Simulator::advanceUntilGrowth(const int &currentEpoch) const {
                       + static_cast<uint64_t>(epochDuration_ / deltaT_);
    // DEBUG_MID(model->logSimStep();) // Generic model debug call
    while (g_simulationStep < endStep) {
-      DEBUG_LOW(
       // Output status once every 10,000 steps
       if (count % 10000 == 0) {
-         cout << currentEpoch << "/" << numEpochs_
-              << " simulating time: "
-              << g_simulationStep * deltaT_ << endl;
+         LOG4CPLUS_TRACE(consoleLogger_, "Epoch: " << currentEpoch << "/" << numEpochs_
+                                                   << " simulating time: "
+                                                   << g_simulationStep * deltaT_ << "/"
+                                                   << (epochDuration_ * numEpochs_) - 1);
          count = 0;
       }
       count++;
-      )
       // input stimulus
       /***** S_INPUT NOT IN REPO YET *******/
 //      if (pInput != NULL)
@@ -224,11 +220,11 @@ bool Simulator::instantiateSimulatorObjects() {
 
    // Perform check on all instantiated objects.
    if (!model_
-   || !model_->getConnections()
-   || !model_->getConnections()->getSynapses()
-   || !model_->getLayout()
-   || !model_->getLayout()->getNeurons()
-   || !model_->getRecorder()) {
+       || !model_->getConnections()
+       || !model_->getConnections()->getSynapses()
+       || !model_->getLayout()
+       || !model_->getLayout()->getNeurons()
+       || !model_->getRecorder()) {
       return false;
    }
    return true;

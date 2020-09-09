@@ -16,6 +16,8 @@
 
 #include <memory>
 
+#include <log4cplus/loggingmacros.h>
+
 #include "Layout.h"
 #include "IAllNeurons.h"
 #include "IRecorder.h"
@@ -93,6 +95,8 @@ protected:
    shared_ptr<IRecorder> recorder_;
 
    // shared_ptr<ISInput> input_;    /// Stimulus input object.
+
+   log4cplus::Logger fileLogger_;
 
    // ToDo: Find a good place for this method. Makes sense to put it in Layout
    void createAllNeurons(); /// Populate an instance of IAllNeurons with an initial state for each neuron.

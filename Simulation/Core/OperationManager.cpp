@@ -40,7 +40,7 @@ void OperationManager::registerOperation(const Operations::op &operation, functi
 
 /// Takes in a operation type and invokes all registered functions that are classified as that operation type.
 void OperationManager::executeOperation(const Operations::op &operation) const {
-   LOG4CPLUS_DEBUG(logger_, "Executing operation " + operationToString(operation));
+   LOG4CPLUS_INFO(logger_, "Executing operation " + operationToString(operation));
    if (functionList_.size() > 0) {
       for (auto i = functionList_.begin(); i != functionList_.end(); ++i) {
          (*i)->invokeFunction(operation);

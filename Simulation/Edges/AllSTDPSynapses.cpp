@@ -20,9 +20,9 @@ AllSTDPSynapses::AllSTDPSynapses() : AllSpikingSynapses() {
    useFroemkeDanSTDP_ = NULL;
 }
 
-AllSTDPSynapses::AllSTDPSynapses(const int num_neurons, const int max_synapses) :
-      AllSpikingSynapses(num_neurons, max_synapses) {
-   setupSynapses(num_neurons, max_synapses);
+AllSTDPSynapses::AllSTDPSynapses(const int numNeurons, const int maxSynapses) :
+      AllSpikingSynapses(numNeurons, maxSynapses) {
+   setupSynapses(numNeurons, maxSynapses);
 }
 
 AllSTDPSynapses::~AllSTDPSynapses() {
@@ -31,8 +31,6 @@ AllSTDPSynapses::~AllSTDPSynapses() {
 
 /*
  *  Setup the internal structure of the class (allocate memories and initialize them).
- *
- *  @param  sim_info  SimulationInfo class to read information from.
  */
 void AllSTDPSynapses::setupSynapses() {
    setupSynapses(Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
@@ -41,13 +39,13 @@ void AllSTDPSynapses::setupSynapses() {
 /*
  *  Setup the internal structure of the class (allocate memories and initialize them).
  *
- *  @param  num_neurons   Total number of neurons in the network.
- *  @param  max_synapses  Maximum number of synapses per neuron.
+ *  @param  numNeurons   Total number of neurons in the network.
+ *  @param  maxSynapses  Maximum number of synapses per neuron.
  */
-void AllSTDPSynapses::setupSynapses(const int num_neurons, const int max_synapses) {
-   AllSpikingSynapses::setupSynapses(num_neurons, max_synapses);
+void AllSTDPSynapses::setupSynapses(const int numNeurons, const int maxSynapses) {
+   AllSpikingSynapses::setupSynapses(numNeurons, maxSynapses);
 
-   BGSIZE max_total_synapses = max_synapses * num_neurons;
+   BGSIZE max_total_synapses = maxSynapses * numNeurons;
 
    if (max_total_synapses != 0) {
       totalDelayPost_ = new int[max_total_synapses];
@@ -131,8 +129,9 @@ void AllSTDPSynapses::initSpikeQueue(const BGSIZE iSyn) {
    ldelayQueue = LENGTH_OF_DELAYQUEUE;
 }
 
-/*
- *  Prints out all parameters of the neurons to console.
+/**
+ *  Prints out all parameters to logging file.
+ *  Registered to OperationManager as Operation::printParameters
  */
 void AllSTDPSynapses::printParameters() const {
    AllSpikingSynapses::printParameters();
@@ -221,17 +220,17 @@ void AllSTDPSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
  *
  *  @param  synapses    The synapse list to reference.
  *  @param  iSyn        Index of the synapse to set.
- *  @param  source      Coordinates of the source Neuron.
- *  @param  dest        Coordinates of the destination Neuron.
- *  @param  sum_point   Summation point address.
+ *  @param  srcNeuron   Coordinates of the source Neuron.
+ *  @param  destNeuron  Coordinates of the destination Neuron.
+ *  @param  sumPoint    Summation point address.
  *  @param  deltaT      Inner simulation step duration.
  *  @param  type        Type of the Synapse to create.
  */
-void AllSTDPSynapses::createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sum_point,
+void AllSTDPSynapses::createSynapse(const BGSIZE iSyn, int srcNeuron, int destNeuron, BGFLOAT *sumPoint,
                                     const BGFLOAT deltaT, synapseType type) {
 
    totalDelayPost_[iSyn] = 0;// Apr 12th 2020 move this line so that when AllSpikingSynapses::createSynapse() is called, inside this method the initSpikeQueue() method can be called successfully
-   AllSpikingSynapses::createSynapse(iSyn, source_index, dest_index, sum_point, deltaT, type);
+   AllSpikingSynapses::createSynapse(iSyn, srcNeuron, destNeuron, sumPoint, deltaT, type);
 
    // May 1st 2020
    // Use constants from Froemke and Dan (2002).
@@ -260,7 +259,6 @@ void AllSTDPSynapses::createSynapse(const BGSIZE iSyn, int source_index, int des
  *  Advance one specific Synapse.
  *
  *  @param  iSyn      Index of the Synapse to connect to.
- *  @param  sim_info  SimulationInfo class to read information from.
  *  @param  neurons   The Neuron list to search from.
  */
 void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
@@ -320,15 +318,13 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
             // delta is the spike interval between pre-post spikes
             // (include pre-synaptic transmission delay)
             delta = -static_cast<BGFLOAT>(g_simulationStep - spikeHistory) * deltaT;
-            DEBUG_SYNAPSE(
-                  cout << "AllSTDPSynapses::advanceSynapse: fPre" << endl;
-                  cout << "          iSyn: " << iSyn << endl;
-                  cout << "          idxPre: " << idxPre << endl;
-                  cout << "          idxPost: " << idxPost << endl;
-                  cout << "          spikeHistory: " << spikeHistory << endl;
-                  cout << "          g_simulationStep: " << g_simulationStep << endl;
-                  cout << "          delta: " << delta << endl << endl;
-            );
+            LOG4CPLUS_DEBUG(fileLogger_,"\nAllSTDPSynapses::advanceSynapse: fPre" << endl
+                   << "\tiSyn: " << iSyn << endl
+                   << "\tidxPre: " << idxPre << endl
+                   << "\tidxPost: " << idxPost << endl
+                   << "\tspikeHistory: " << spikeHistory << endl
+                   << "\tg_simulationStep: " << g_simulationStep << endl
+                   << "\tdelta: " << delta << endl << endl);
 
             if (delta <= -3.0 * tauneg)
                break;
@@ -374,15 +370,13 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
             }
             // delta is the spike interval between post-pre spikes
             delta = static_cast<BGFLOAT>(g_simulationStep - spikeHistory - total_delay) * deltaT;
-            DEBUG_SYNAPSE(
-                  cout << "AllSTDPSynapses::advanceSynapse: fPost" << endl;
-                  cout << "          iSyn: " << iSyn << endl;
-                  cout << "          idxPre: " << idxPre << endl;
-                  cout << "          idxPost: " << idxPost << endl;
-                  cout << "          spikeHistory: " << spikeHistory << endl;
-                  cout << "          g_simulationStep: " << g_simulationStep << endl;
-                  cout << "          delta: " << delta << endl << endl;
-            );
+            LOG4CPLUS_DEBUG(fileLogger_,"\nAllSTDPSynapses::advanceSynapse: fPost" << endl
+                   << "\tiSyn: " << iSyn << endl
+                   << "\tidxPre: " << idxPre << endl
+                   << "\tidxPost: " << idxPost << endl
+                   << "\tspikeHistory: " << spikeHistory << endl
+                   << "\tg_simulationStep: " << g_simulationStep << endl
+                   << "\tdelta: " << delta << endl << endl);
 
             if (delta >= 3.0 * taupos)
                break;
@@ -462,15 +456,14 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost
       W = synSign(type) * Wex;
    }
 
-   DEBUG_SYNAPSE(
-         cout << "AllSTDPSynapses::stdpLearning:" << endl;
-         cout << "          iSyn: " << iSyn << endl;
-         cout << "          delta: " << delta << endl;
-         cout << "          epre: " << epre << endl;
-         cout << "          epost: " << epost << endl;
-         cout << "          dw: " << dw << endl;
-         cout << "          W: " << W << endl << endl;
-   );
+   LOG4CPLUS_DEBUG(fileLogger_,
+         "AllSTDPSynapses::stdpLearning:" << endl
+          << "\tiSyn: " << iSyn << endl
+          << "\tdelta: " << delta << endl
+          << "\tepre: " << epre << endl
+          << "\tepost: " << epost << endl
+          << "\tdw: " << dw << endl
+          << "\tW: " << W << endl << endl);
 }
 
 /*
@@ -549,5 +542,4 @@ void AllSTDPSynapses::printSynapsesProps() const {
          cout << " useFroemkeDanSTDP: " << useFroemkeDanSTDP_[i] << endl;
       }
    }
-
 }

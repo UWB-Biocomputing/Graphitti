@@ -84,16 +84,22 @@ public:
     **/
    virtual void saveSimData(const IAllNeurons &neurons);
 
+   /**
+    *  Prints out all parameters to logging file.
+    *  Registered to OperationManager as Operation::printParameters
+    */
+   virtual void printParameters();
+
 protected:
-   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starter_map);
+   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
 
    // a file stream for xml output
-   ofstream stateOut;
+   ofstream stateOut_;
 
    // burstiness Histogram goes through the
-   VectorMatrix burstinessHist;
+   VectorMatrix burstinessHist_;
 
    // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
-   VectorMatrix spikesHistory;
+   VectorMatrix spikesHistory_;
 };
 

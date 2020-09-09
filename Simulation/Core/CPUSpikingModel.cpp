@@ -42,12 +42,12 @@ void CPUSpikingModel::updateConnections() {
 
 /// Copy GPU Synapse data to CPU. (Inheritance, no implem)
 void CPUSpikingModel::copyGPUtoCPU() {
-   cerr << "ERROR: CPUSpikingModel::copyGPUtoCPU() was called." << endl;
+   LOG4CPLUS_WARN(fileLogger_, "ERROR: CPUSpikingModel::copyGPUtoCPU() was called." << endl);
    exit(EXIT_FAILURE);
 }
 
 /// Copy CPU Synapse data to GPU. (Inheritance, no implem, GPUModel has implem)
 void CPUSpikingModel::copyCPUtoGPU() {
-   cerr << "ERROR: CPUSpikingModel::copyCPUtoGPU() was called." << endl;
+   LOG4CPLUS_WARN(fileLogger_, "ERROR: CPUSpikingModel::copyCPUtoGPU() was called." << endl);
    exit(EXIT_FAILURE);
 }
