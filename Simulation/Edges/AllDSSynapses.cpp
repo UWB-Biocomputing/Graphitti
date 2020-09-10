@@ -1,4 +1,6 @@
 #include "AllDSSynapses.h"
+#include "ParameterManager.h"
+#include "OperationManager.h"
 
 AllDSSynapses::AllDSSynapses() : AllSpikingSynapses() {
    lastSpike_ = NULL;
@@ -7,6 +9,20 @@ AllDSSynapses::AllDSSynapses() : AllSpikingSynapses() {
    D_ = NULL;
    U_ = NULL;
    F_ = NULL;
+     U_II_= 0;
+      U_IE_= 0;
+      U_EI_= 0;
+      U_EE_= 0;
+
+      D_II_= 0;
+      D_IE_= 0;
+      D_EI_= 0;
+      D_EE_= 0;
+
+      F_II_= 0;
+      F_IE_= 0;
+      F_EI_= 0;
+      F_EE_= 0;
 }
 
 AllDSSynapses::AllDSSynapses(const int num_neurons, const int max_synapses) :
@@ -45,6 +61,20 @@ void AllDSSynapses::setupSynapses(const int num_neurons, const int max_synapses)
       D_ = new BGFLOAT[max_total_synapses];
       U_ = new BGFLOAT[max_total_synapses];
       F_ = new BGFLOAT[max_total_synapses];
+      U_II_= 0;
+      U_IE_= 0;
+      U_EI_= 0;
+      U_EE_= 0;
+
+      D_II_= 0;
+      D_IE_= 0;
+      D_EI_= 0;
+      D_EE_= 0;
+
+      F_II_= 0;
+      F_IE_= 0;
+      F_EI_= 0;
+      F_EE_= 0;
    }
 }
 
@@ -73,52 +103,40 @@ void AllDSSynapses::cleanupSynapses() {
    AllSpikingSynapses::cleanupSynapses();
 }
 
+void AllDSSynapses::loadParameters() {
+   ParameterManager::getInstance().getBGFloatByXpath("//U/ii/text()", U_II_);
+   ParameterManager::getInstance().getBGFloatByXpath("//U/ie/text()", U_IE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//U/ei/text()", U_EI_);
+   ParameterManager::getInstance().getBGFloatByXpath("//U/ee/text()", U_EE_);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//D/ii/text()", D_II_);
+   ParameterManager::getInstance().getBGFloatByXpath("//D/ie/text()", D_IE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//D/ei/text()", D_EI_);
+   ParameterManager::getInstance().getBGFloatByXpath("//D/ee/text()", D_EE_);
+
+   ParameterManager::getInstance().getBGFloatByXpath("//F/ii/text()", F_II_);
+   ParameterManager::getInstance().getBGFloatByXpath("//F/ie/text()", F_IE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//F/ei/text()", F_EI_);
+   ParameterManager::getInstance().getBGFloatByXpath("//F/ee/text()", F_EE_);
+  
+}
 /*
  *  Prints out all parameters of the neurons to console.
  */
 void AllDSSynapses::printParameters() const {
+    cout << "\tU values: ["
+          << " II: " << U_II_ << ", " << " IE: " << U_IE_ << "," << "EI : " << U_EI_<< "," << " EE: " << U_EE_ << "]"
+          << endl;
+
+    cout << "\tD values: ["
+          << " II: "<< D_II_ << ", " << " IE: "<< D_IE_ << "," << "EI :" << D_EI_<< "," << " EE: "<< D_EE_ << "]"
+          << endl;
+
+   cout << "\tF values: ["
+          << " II: "<< F_II_ << ", " << " IE: "<< F_IE_ << "," << "EI :" << F_EI_<< "," << " EE: "<< F_EE_ << "]"
+          << endl;
 }
 
-/*
- *  Sets the data for Synapse to input's data.
- *
- *  @param  input  istream to read from.
- *  @param  iSyn   Index of the synapse to set.
- */
-void AllDSSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
-   AllSpikingSynapses::readSynapse(input, iSyn);
-
-   // input.ignore() so input skips over end-of-line characters.
-   input >> lastSpike_[iSyn];
-   input.ignore();
-   input >> r_[iSyn];
-   input.ignore();
-   input >> u_[iSyn];
-   input.ignore();
-   input >> D_[iSyn];
-   input.ignore();
-   input >> U_[iSyn];
-   input.ignore();
-   input >> F_[iSyn];
-   input.ignore();
-}
-
-/*
- *  Write the synapse data to the stream.
- *
- *  @param  output  stream to print out to.
- *  @param  iSyn    Index of the synapse to print out.
- */
-void AllDSSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
-   AllSpikingSynapses::writeSynapse(output, iSyn);
-
-   output << lastSpike_[iSyn] << ends;
-   output << r_[iSyn] << ends;
-   output << u_[iSyn] << ends;
-   output << D_[iSyn] << ends;
-   output << U_[iSyn] << ends;
-   output << F_[iSyn] << ends;
-}
 
 /*
  *  Reset time varying state vars and recompute decay.
@@ -156,29 +174,30 @@ void AllDSSynapses::createSynapse(const BGSIZE iSyn, int source_index, int dest_
    BGFLOAT F;
    switch (type) {
       case II:
-         U = 0.32;
-         D = 0.144;
-         F = 0.06;
+         U = U_II_;
+         D = D_II_;
+         F = F_II_;
          break;
       case IE:
-         U = 0.25;
-         D = 0.7;
-         F = 0.02;
+         U = U_IE_;
+         D = D_IE_;
+         F = F_IE_;
          break;
       case EI:
-         U = 0.05;
-         D = 0.125;
-         F = 1.2;
+         U = U_EI_;
+         D = D_EI_;
+         F = F_EI_;
          break;
       case EE:
-         U = 0.5;
-         D = 1.1;
-         F = 0.05;
+         U = U_EE_;
+         D = D_EE_;
+         F = F_EE_;
          break;
       default:
          assert(false);
          break;
    }
+   
 
    this->U_[iSyn] = U;
    this->D_[iSyn] = D;
@@ -216,20 +235,3 @@ void AllDSSynapses::changePSR(const BGSIZE iSyn, const BGFLOAT deltaT) {
 
 #endif // !defined(USE_GPU)
 
-/*
- *  Prints SynapsesProps data.
- */
-void AllDSSynapses::printSynapsesProps() const {
-   AllSpikingSynapses::printSynapsesProps();
-   for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
-      if (W_[i] != 0.0) {
-         cout << "lastSpike[" << i << "] = " << lastSpike_[i];
-         cout << " r: " << r_[i];
-         cout << " u: " << u_[i];
-         cout << " D: " << D_[i];
-         cout << " U: " << U_[i];
-         cout << " F: " << F_[i] << endl;
-      }
-   }
-   cout << endl;
-}

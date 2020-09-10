@@ -59,6 +59,9 @@
 #pragma once
 
 #include "AllSpikingSynapses.h"
+#include "ParameterManager.h"
+#include "OperationManager.h"
+
 
 struct AllDSSynapsesDeviceProperties;
 
@@ -110,12 +113,10 @@ public:
     */
    virtual void createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sp, const BGFLOAT deltaT,
                               synapseType type);
-
-   /**
-    *  Prints SynapsesProps data.
-    */
-   virtual void printSynapsesProps() const;
-
+   /// Load member variables from configuration file. Registered to OperationManager as Operation::op::loadParameters
+   virtual void loadParameters();
+  
+  
 protected:
    /**
     *  Setup the internal structure of the class (allocate memories and initialize them).
@@ -125,21 +126,7 @@ protected:
     */
    virtual void setupSynapses(const int num_neurons, const int max_synapses);
 
-   /**
-    *  Sets the data for Synapse to input's data.
-    *
-    *  @param  input  istream to read from.
-    *  @param  iSyn   Index of the synapse to set.
-    */
-   virtual void readSynapse(istream &input, const BGSIZE iSyn);
 
-   /**
-    *  Write the synapse data to the stream.
-    *
-    *  @param  output  stream to print out to.
-    *  @param  iSyn    Index of the synapse to print out.
-    */
-   virtual void writeSynapse(ostream &output, const BGSIZE iSyn) const;
 
 #if defined(USE_GPU)
    public:
@@ -295,6 +282,22 @@ public:
     *  The time constant of the facilitation of the dynamic synapse [range=(0,10); units=sec].
     */
    BGFLOAT *F_;
+
+   BGFLOAT U_II_;
+   BGFLOAT U_IE_;
+   BGFLOAT U_EI_;
+   BGFLOAT U_EE_;
+
+   BGFLOAT D_II_;
+   BGFLOAT D_IE_;
+   BGFLOAT D_EI_;
+   BGFLOAT D_EE_;
+
+   BGFLOAT F_II_;
+   BGFLOAT F_IE_;
+   BGFLOAT F_EI_;
+   BGFLOAT F_EE_;
+
 };
 
 #if defined(USE_GPU)

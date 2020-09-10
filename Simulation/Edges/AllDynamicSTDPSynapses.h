@@ -126,10 +126,7 @@ public:
    virtual void createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sp, const BGFLOAT deltaT,
                               synapseType type);
 
-   /**
-    *  Prints SynapsesProps data.
-    */
-   virtual void printSynapsesProps() const;
+
 
 protected:
    /**
@@ -146,15 +143,7 @@ protected:
     *  @param  input  istream to read from.
     *  @param  iSyn   Index of the synapse to set.
     */
-   virtual void readSynapse(istream &input, const BGSIZE iSyn);
-
-   /**
-    *  Write the synapse data to the stream.
-    *
-    *  @param  output  stream to print out to.
-    *  @param  iSyn    Index of the synapse to print out.
-    */
-   virtual void writeSynapse(ostream &output, const BGSIZE iSyn) const;
+  
 
 #if defined(USE_GPU)
    public:

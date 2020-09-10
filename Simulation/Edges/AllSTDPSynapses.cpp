@@ -137,73 +137,6 @@ void AllSTDPSynapses::initSpikeQueue(const BGSIZE iSyn) {
 void AllSTDPSynapses::printParameters() const {
 }
 
-/*
- *  Sets the data for Synapse to input's data.
- *
- *  @param  input  istream to read from.
- *  @param  iSyn   Index of the synapse to set.
- */
-void AllSTDPSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
-   AllSpikingSynapses::readSynapse(input, iSyn);
-
-   // input.ignore() so input skips over end-of-line characters.
-   input >> totalDelayPost_[iSyn];
-   input.ignore();
-   input >> delayQueuePost_[iSyn];
-   input.ignore();
-   input >> delayIndexPost_[iSyn];
-   input.ignore();
-   input >> delayQueuePostLength_[iSyn];
-   input.ignore();
-   input >> tauspost_[iSyn];
-   input.ignore();
-   input >> tauspre_[iSyn];
-   input.ignore();
-   input >> taupos_[iSyn];
-   input.ignore();
-   input >> tauneg_[iSyn];
-   input.ignore();
-   input >> STDPgap_[iSyn];
-   input.ignore();
-   input >> Wex_[iSyn];
-   input.ignore();
-   input >> Aneg_[iSyn];
-   input.ignore();
-   input >> Apos_[iSyn];
-   input.ignore();
-   input >> mupos_[iSyn];
-   input.ignore();
-   input >> muneg_[iSyn];
-   input.ignore();
-   input >> useFroemkeDanSTDP_[iSyn];
-   input.ignore();
-}
-
-/*
- *  Write the synapse data to the stream.
- *
- *  @param  output  stream to print out to.
- *  @param  iSyn    Index of the synapse to print out.
- */
-void AllSTDPSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
-   AllSpikingSynapses::writeSynapse(output, iSyn);
-
-   output << totalDelayPost_[iSyn] << ends;
-   output << delayQueuePost_[iSyn] << ends;
-   output << delayIndexPost_[iSyn] << ends;
-   output << delayQueuePostLength_[iSyn] << ends;
-   output << tauspost_[iSyn] << ends;
-   output << tauspre_[iSyn] << ends;
-   output << taupos_[iSyn] << ends;
-   output << tauneg_[iSyn] << ends;
-   output << STDPgap_[iSyn] << ends;
-   output << Wex_[iSyn] << ends;
-   output << Aneg_[iSyn] << ends;
-   output << Apos_[iSyn] << ends;
-   output << mupos_[iSyn] << ends;
-   output << muneg_[iSyn] << ends;
-   output << useFroemkeDanSTDP_[iSyn] << ends;
-}
 
 /*
  *  Reset time varying state vars and recompute decay.
@@ -527,26 +460,3 @@ bool AllSTDPSynapses::allowBackPropagation() {
    return true;
 }
 
-/*
- *  Prints SynapsesProps data.
- */
-void AllSTDPSynapses::printSynapsesProps() const {
-   AllSpikingSynapses::printSynapsesProps();
-   for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
-      if (W_[i] != 0.0) {
-         cout << "total_delayPost[" << i << "] = " << totalDelayPost_[i];
-         cout << " tauspost: " << tauspost_[i];
-         cout << " tauspre: " << tauspre_[i];
-         cout << " taupos: " << taupos_[i];
-         cout << " tauneg: " << tauneg_[i];
-         cout << " STDPgap: " << STDPgap_[i];
-         cout << " Wex: " << Wex_[i];
-         cout << " Aneg: " << Aneg_[i];
-         cout << " Apos: " << Apos_[i];
-         cout << " mupos: " << mupos_[i];
-         cout << " muneg: " << muneg_[i];
-         cout << " useFroemkeDanSTDP: " << useFroemkeDanSTDP_[i] << endl;
-      }
-   }
-
-}

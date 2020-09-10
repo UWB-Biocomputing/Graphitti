@@ -132,10 +132,7 @@ public:
     */
    int synSign(const synapseType type);
 
-   /**
-    *  Prints SynapsesProps data.
-    */
-   virtual void printSynapsesProps() const;
+   
 
    /**
     *  Cereal serialization method
@@ -159,22 +156,6 @@ protected:
     *  @param  max_synapses  Maximum number of synapses per neuron.
     */
    virtual void setupSynapses(const int num_neurons, const int max_synapses);
-
-   /**
-    *  Sets the data for Synapse to input's data.
-    *
-    *  @param  input  istream to read from.
-    *  @param  iSyn   Index of the synapse to set.
-    */
-   virtual void readSynapse(istream &input, const BGSIZE iSyn);
-
-   /**
-    *  Write the synapse data to the stream.
-    *
-    *  @param  output  stream to print out to.
-    *  @param  iSyn    Index of the synapse to print out.
-    */
-   virtual void writeSynapse(ostream &output, const BGSIZE iSyn) const;
 
    /**
     *  Returns an appropriate synapseType object for the given integer.

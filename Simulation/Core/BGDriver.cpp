@@ -108,6 +108,9 @@ int main(int argc, char *argv[]) {
    cout << "Printing Connections Params" << endl;
    simulator.getModel()->getConnections()->printParameters();
 
+    cout << "Printing Synapse Params" << endl;
+   simulator.getModel()->getConnections()->getSynapses()->printParameters();
+
 
 //   time_t start_time, end_time;
 //   time(&start_time);

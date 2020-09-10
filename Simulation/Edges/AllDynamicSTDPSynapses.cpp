@@ -79,46 +79,7 @@ void AllDynamicSTDPSynapses::cleanupSynapses() {
 void AllDynamicSTDPSynapses::printParameters() const {
 }
 
-/*
- *  Sets the data for Synapse to input's data.
- *
- *  @param  input  istream to read from.
- *  @param  iSyn   Index of the synapse to set.
- */
-void AllDynamicSTDPSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
-    AllSTDPSynapses::readSynapse(input, iSyn);
 
-    // input.ignore() so input skips over end-of-line characters.
-    input >> lastSpike_[iSyn];
-    input.ignore();
-    input >> r_[iSyn];
-    input.ignore();
-    input >> u_[iSyn];
-    input.ignore();
-    input >> D_[iSyn];
-    input.ignore();
-    input >> U_[iSyn];
-    input.ignore();
-    input >> F_[iSyn];
-    input.ignore();
-}
-
-/*
- *  Write the synapse data to the stream.
- *
- *  @param  output  stream to print out to.
- *  @param  iSyn    Index of the synapse to print out.
- */
-void AllDynamicSTDPSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
-    AllSTDPSynapses::writeSynapse(output, iSyn);
-
-    output << lastSpike_[iSyn] << ends;
-    output << r_[iSyn] << ends;
-    output << u_[iSyn] << ends;
-    output << D_[iSyn] << ends;
-    output << U_[iSyn] << ends;
-    output << F_[iSyn] << ends;
-}
 
 /*
  *  Reset time varying state vars and recompute decay.
@@ -217,20 +178,5 @@ void AllDynamicSTDPSynapses::changePSR(const BGSIZE iSyn, const BGFLOAT deltaT) 
 #endif // !defined(USE_GPU)
 
 
-/*
- *  Prints SynapsesProps data.
- */
-void AllDynamicSTDPSynapses::printSynapsesProps() const {
-    AllSTDPSynapses::printSynapsesProps();
-    for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
-        if (W_[i] != 0.0) {
-            cout << "lastSpike[" << i << "] = " << lastSpike_[i];
-            cout << " r: " << r_[i];
-            cout << " u: " << u_[i];
-            cout << " D: " << D_[i];
-            cout << " U: " << U_[i];
-            cout << " F: " << F_[i] << endl;
-        }
-    }
-}
+
 

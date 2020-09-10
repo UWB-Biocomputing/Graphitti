@@ -122,14 +122,14 @@ void AllSpikingSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
 }
 
 void AllSpikingSynapses::loadParameters() {
-   ParameterManager::getInstance().getBGFloatByXpath("//tau/II/text()", tau_II_);
-   ParameterManager::getInstance().getBGFloatByXpath("//tau/IE/text()", tau_IE_);
-   ParameterManager::getInstance().getBGFloatByXpath("//tau/EI/text()", tau_EI_);
-   ParameterManager::getInstance().getBGFloatByXpath("//tau/EE/text()", tau_EE_);
-   ParameterManager::getInstance().getBGFloatByXpath("//delay/II/text()", delay_II_);
-   ParameterManager::getInstance().getBGFloatByXpath("//delay/IE/text()", delay_IE_);
-   ParameterManager::getInstance().getBGFloatByXpath("//delay/EI/text()", delay_EI_);
-   ParameterManager::getInstance().getBGFloatByXpath("//delay/EE/text()", delay_EE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/ii/text()", tau_II_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/ie/text()", tau_IE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/ei/text()", tau_EI_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/ee/text()", tau_EE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/ii/text()", delay_II_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/ie/text()", delay_IE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/ei/text()", delay_EI_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/ee/text()", delay_EE_);
 }
 
 /*
@@ -139,51 +139,14 @@ void AllSpikingSynapses::loadParameters() {
  */
 void AllSpikingSynapses::printParameters() const {
    cout << "\tTau values: ["
-          << tau_IE_ << ", " << tau_IE_ << "]"
+          << " II: " << tau_II_ << ", " << " IE: " << tau_IE_ << "," << "EI : " << tau_EI_<< "," << " EE: " << tau_EE_ << "]"
+          << endl;
+
+    cout << "\tDelay values: ["
+          << " II: "<< delay_II_ << ", " << " IE: "<< delay_IE_ << "," << "EI :" << delay_EI_<< "," << " EE: "<< delay_EE_ << "]"
           << endl;
 }
 
-
-/*
- *  Sets the data for Synapse to input's data.
- *
- *  @param  input  istream to read from.
- *  @param  iSyn   Index of the synapse to set.
- */
-void AllSpikingSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
-   AllSynapses::readSynapse(input, iSyn);
-
-   // input.ignore() so input skips over end-of-line characters.
-   input >> decay_[iSyn];
-   input.ignore();
-   input >> totalDelay_[iSyn];
-   input.ignore();
-   input >> delayQueue_[iSyn];
-   input.ignore();
-   input >> delayIndex_[iSyn];
-   input.ignore();
-   input >> delayQueueLength_[iSyn];
-   input.ignore();
-   input >> tau_[iSyn];
-   input.ignore();
-}
-
-/*
- *  Write the synapse data to the stream.
- *
- *  @param  output  stream to print out to.
- *  @param  iSyn    Index of the synapse to print out.
- */
-void AllSpikingSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
-   AllSynapses::writeSynapse(output, iSyn);
-
-   output << decay_[iSyn] << ends;
-   output << totalDelay_[iSyn] << ends;
-   output << delayQueue_[iSyn] << ends;
-   output << delayIndex_[iSyn] << ends;
-   output << delayQueueLength_[iSyn] << ends;
-   output << tau_[iSyn] << ends;
-}
 
 /*
  *  Create a Synapse and connect it to the model.
@@ -231,29 +194,6 @@ void AllSpikingSynapses::createSynapse(const BGSIZE iSyn, int source_index, int 
          assert(false);
          break;
    }
-   /*
-   switch (type) {
-      case II:
-         tau = 6e-3;
-         delay = 0.8e-3;
-         break;
-      case IE:
-         tau = 6e-3;
-         delay = 0.8e-3;
-         break;
-      case EI:
-         tau = 3e-3;
-         delay = 0.8e-3;
-         break;
-      case EE:
-         tau = 3e-3;
-         delay = 1.5e-3;
-         break;
-      default:
-         assert(false);
-         break;
-   }
-   */
 
    this->tau_[iSyn] = tau;
    this->totalDelay_[iSyn] = static_cast<int>( delay / deltaT ) + 1;
@@ -388,18 +328,4 @@ bool AllSpikingSynapses::updateDecay(const BGSIZE iSyn, const BGFLOAT deltaT) {
  */
 bool AllSpikingSynapses::allowBackPropagation() {
    return false;
-}
-
-/*
- *  Prints SynapsesProps data.
- */
-void AllSpikingSynapses::printSynapsesProps() const {
-   AllSynapses::printSynapsesProps();
-   for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
-      if (W_[i] != 0.0) {
-         cout << "decay[" << i << "] = " << decay_[i];
-         cout << " tau: " << tau_[i];
-         cout << " total_delay: " << totalDelay_[i] << endl;
-      }
-   }
 }
