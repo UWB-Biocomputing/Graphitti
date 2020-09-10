@@ -48,6 +48,7 @@ Connections::Connections() {
    // Create Edges/Synapses class using type definition in configuration file
    string type;
    ParameterManager::getInstance().getStringByXpath("//SynapsesParams/@class", type);
+   ParameterManager::getInstance().getStringByXpath("//DSSynapsesParams/@class", type);
    synapses_ = EdgesFactory::getInstance()->createEdges(type);
 }
 

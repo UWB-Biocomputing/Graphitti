@@ -28,3 +28,7 @@
 [DEBUG][2020/09/09 23:57:07:287][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/OperationManager.cpp:43] Executing operation deallocateMemory
 [DEBUG][2020/09/09 23:57:07:291][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/OperationManager.cpp:43] Executing operation copyToGPU
 [DEBUG][2020/09/09 23:57:13:168][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/OperationManager.cpp:43] Executing operation loadParameters
+[DEBUG][2020/09/10 01:26:06:338][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/OperationManager.cpp:43] Executing operation deallocateMemory
+[DEBUG][2020/09/10 01:26:06:341][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/OperationManager.cpp:43] Executing operation copyToGPU
+[DEBUG][2020/09/10 09:40:04:685][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/OperationManager.cpp:43] Executing operation loadParameters
+[DEBUG][2020/09/10 09:44:03:178][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/OperationManager.cpp:43] Executing operation loadParameters
