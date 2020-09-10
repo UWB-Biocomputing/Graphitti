@@ -1,10 +1,19 @@
 #include "AllNeurons.h"
 #include "Core/Simulator.h"
+#include "OperationManager.h"
 
 // Default constructor
 AllNeurons::AllNeurons() :
       size_(0) {
    summationMap_ = NULL;
+
+   // Register loadParameters function as a loadParameters operation in the Operation Manager
+   auto loadParametersFunc = std::bind(&IAllNeurons::loadParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, loadParametersFunc);
+
+   // Register printParameters function as a printParameters operation in the OperationManager
+   function<void()> printParametersFunc = bind(&IAllNeurons::printParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
 }
 
 AllNeurons::~AllNeurons() {
@@ -45,4 +54,8 @@ void AllNeurons::freeResources() {
    summationMap_ = NULL;
 
    size_ = 0;
+}
+
+void AllNeurons::printParameters() const {
+   cout << "VERTICE PARAMETERS" << endl;
 }

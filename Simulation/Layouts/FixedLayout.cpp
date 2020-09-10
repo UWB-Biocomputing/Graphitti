@@ -14,28 +14,7 @@ FixedLayout::~FixedLayout() {
 void FixedLayout::printParameters() const {
    Layout::printParameters();
 
-   cout << "Layout parameters:" << endl;
-
-   cout << "\tEndogenously active neuron positions: ";
-   for (BGSIZE i = 0; i < numEndogenouslyActiveNeurons_; i++) {
-      cout << endogenouslyActiveNeuronList_[i] << " ";
-   }
-
-   cout << endl;
-
-   cout << "\tInhibitory neuron positions: ";
-   for (BGSIZE i = 0; i < inhibitoryNeuronLayout_.size(); i++) {
-      cout << inhibitoryNeuronLayout_[i] << " ";
-   }
-
-   cout << endl;
-
-   cout << "\tProbed neuron positions: ";
-   for (BGSIZE i = 0; i < probedNeuronList_.size(); i++) {
-      cout << probedNeuronList_[i] << " ";
-   }
-
-   cout << endl;
+   cout << "\tLayout type: FixedLayout" << endl << endl;
 }
 
 /*

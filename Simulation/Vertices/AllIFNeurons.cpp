@@ -24,10 +24,6 @@ AllIFNeurons::AllIFNeurons() {
    Vrest_ = NULL;
    Vthresh_ = NULL;
    numStepsInRefractoryPeriod_ = NULL;
-
-   // Register loadParameters function with Operation Manager
-   auto function = std::bind(&AllIFNeurons::loadParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function);
 }
 
 AllIFNeurons::~AllIFNeurons() {
@@ -173,7 +169,7 @@ void AllIFNeurons::printParameters() const {
           << endl;
    cout << "\tStarter reset threshold: [" << starterVresetRange_[0]
         << ", " << starterVresetRange_[1] << "]"
-          << endl;
+          << endl << endl;
 }
 
 /*

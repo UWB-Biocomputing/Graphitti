@@ -56,6 +56,8 @@ public:
 
    shared_ptr<SynapseIndexMap> getSynapseIndexMap() const;
 
+   void createSynapseIndexMap();
+
    /**
     *  Setup the internal structure of the class (allocate memories and initialize them).
     *

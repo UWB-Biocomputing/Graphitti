@@ -72,14 +72,14 @@ void AllSpikingSynapses::setupSynapses(const int num_neurons, const int max_syna
 void AllSpikingSynapses::cleanupSynapses() {
    BGSIZE max_total_synapses = maxSynapsesPerNeuron_ * countNeurons_;
 
-   if (max_total_synapses != 0) {
-      delete[] decay_;
-      delete[] totalDelay_;
-      delete[] delayQueue_;
-      delete[] delayIndex_;
-      delete[] delayQueueLength_;
-      delete[] tau_;
-   }
+//   if (max_total_synapses != 0) {
+//      delete[] decay_;
+//      delete[] totalDelay_;
+//      delete[] delayQueue_;
+//      delete[] delayIndex_;
+//      delete[] delayQueueLength_;
+//      delete[] tau_;
+//   }
 
    decay_ = NULL;
    totalDelay_ = NULL;
@@ -121,6 +121,7 @@ void AllSpikingSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
    assert(updateDecay(iSyn, deltaT));
 }
 
+<<<<<<< HEAD
 void AllSpikingSynapses::loadParameters() {
    ParameterManager::getInstance().getBGFloatByXpath("//tau/ii/text()", tau_II_);
    ParameterManager::getInstance().getBGFloatByXpath("//tau/ie/text()", tau_IE_);
@@ -130,6 +131,13 @@ void AllSpikingSynapses::loadParameters() {
    ParameterManager::getInstance().getBGFloatByXpath("//delay/ie/text()", delay_IE_);
    ParameterManager::getInstance().getBGFloatByXpath("//delay/ei/text()", delay_EI_);
    ParameterManager::getInstance().getBGFloatByXpath("//delay/ee/text()", delay_EE_);
+=======
+/*
+ *  Prints out all parameters of the synapses to console.
+ */
+void AllSpikingSynapses::printParameters() const {
+   AllSynapses::printParameters();
+>>>>>>> e311573ca2647649ee14566d3a3788b42aa1b6d0
 }
 
 /*

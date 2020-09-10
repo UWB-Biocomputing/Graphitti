@@ -22,9 +22,13 @@ Layout::Layout() :
    ParameterManager::getInstance().getStringByXpath("//NeuronsParams/@class", type);
    neurons_ = VerticesFactory::getInstance()->createVertices(type);
 
-   // Register loadParameters function with Operation Manager
-   auto function = std::bind(&Layout::loadParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function);
+   // Register loadParameters function as a loadParameters operation in the Operation Manager
+   function<void()> loadParametersFunc = std::bind(&Layout::loadParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, loadParametersFunc);
+
+   // Register printParameters function as a printParameters operation in the OperationManager
+   function<void()> printParametersFunc = bind(&Layout::printParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
 }
 
 /// Destructor
@@ -122,6 +126,19 @@ void Layout::loadParameters() {
 
 /// Prints out all parameters of the layout to console.
 void Layout::printParameters() const {
+   cout << "LAYOUT PARAMETERS" << endl;
+
+   cout << "\tEndogenously active neuron positions: ";
+   for (BGSIZE i = 0; i < numEndogenouslyActiveNeurons_; i++) {
+      cout << endogenouslyActiveNeuronList_[i] << " ";
+   }
+   cout << endl;
+
+   cout << "\tInhibitory neuron positions: ";
+   for (BGSIZE i = 0; i < inhibitoryNeuronLayout_.size(); i++) {
+      cout << inhibitoryNeuronLayout_[i] << " ";
+   }
+   cout << endl;
 }
 
 /// Creates a neurons type map.

@@ -135,6 +135,7 @@ void AllSTDPSynapses::initSpikeQueue(const BGSIZE iSyn) {
  *  Prints out all parameters of the neurons to console.
  */
 void AllSTDPSynapses::printParameters() const {
+   AllSpikingSynapses::printParameters();
 }
 
 

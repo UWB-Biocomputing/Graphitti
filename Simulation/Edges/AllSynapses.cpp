@@ -15,9 +15,13 @@ AllSynapses::AllSynapses() :
    inUse_ = NULL;
    synapseCounts_ = NULL;
 
-   // Register loadParameters function with Operation Manager
-   auto function = std::bind(&AllSynapses::loadParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function);
+   // Register loadParameters function as a loadParameters operation in the OperationManager
+   function<void()> loadParametersFunc = std::bind(&IAllSynapses::loadParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, loadParametersFunc);
+
+   // Register printParameters function as a printParameters operation in the OperationManager
+   function<void()> printParametersFunc = bind(&IAllSynapses::printParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
 }
 
 AllSynapses::AllSynapses(const int num_neurons, const int max_synapses) {
@@ -30,8 +34,6 @@ AllSynapses::~AllSynapses() {
 
 /*
  *  Setup the internal structure of the class (allocate memories and initialize them).
- *
- *  @param  sim_info  SimulationInfo class to read information from.
  */
 void AllSynapses::setupSynapses() {
    setupSynapses(Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
@@ -80,22 +82,34 @@ void AllSynapses::loadParameters() {
    // Nothing to load from configuration file besides SynapseType in the current implementation.
 }
 
+/**
+ *  Prints out all parameters of the neurons to console.
+ */
+void AllSynapses::printParameters() const {
+   cout << "EDGES PARAMETERS" << endl;
+   cout << "\t*AllSynapses Parameters*" << endl;
+   cout << "\tTotal synapse counts: " << totalSynapseCounts_ << endl;
+   cout << "\tMax synapses per neuron: " << maxSynapsesPerNeuron_ << endl;
+   cout << "\tNeuron count: " << countNeurons_ << endl << endl;
+}
+
+
 /*
  *  Cleanup the class (deallocate memories).
  */
 void AllSynapses::cleanupSynapses() {
    BGSIZE max_total_synapses = maxSynapsesPerNeuron_ * countNeurons_;
 
-   if (max_total_synapses != 0) {
-      delete[] destNeuronIndex_;
-      delete[] W_;
-      delete[] summationPoint_;
-      delete[] sourceNeuronIndex_;
-      delete[] psr_;
-      delete[] type_;
-      delete[] inUse_;
-      delete[] synapseCounts_;
-   }
+//   if (max_total_synapses != 0) {
+//      delete[] destNeuronIndex_;
+//      delete[] W_;
+//      delete[] summationPoint_;
+//      delete[] sourceNeuronIndex_;
+//      delete[] psr_;
+//      delete[] type_;
+//      delete[] inUse_;
+//      delete[] synapseCounts_;
+//   }
 
    destNeuronIndex_ = NULL;
    W_ = NULL;
@@ -128,7 +142,7 @@ void AllSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
  *  @param  synapseIndexMap   Reference to the pointer to SynapseIndexMap structure.
  *  @param  sim_info          Pointer to the simulation information.
  */
-void AllSynapses::createSynapseImap(SynapseIndexMap *synapseIndexMap) {
+SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
    int neuron_count = Simulator::getInstance().getTotalNeurons();
    int total_synapse_counts = 0;
 
@@ -141,22 +155,17 @@ void AllSynapses::createSynapseImap(SynapseIndexMap *synapseIndexMap) {
    DEBUG (cout << "total_synapse_counts: " << total_synapse_counts << endl;)
 
    if (total_synapse_counts == 0) {
-      return;
+      return NULL;
    }
 
    // allocate memories for forward map
    vector<BGSIZE> *rgSynapseSynapseIndexMap = new vector<BGSIZE>[neuron_count];
 
-   if (synapseIndexMap != NULL) {
-      delete synapseIndexMap;
-      synapseIndexMap = NULL;
-   }
-
    BGSIZE syn_i = 0;
    int n_inUse = 0;
 
    // create synapse forward map & active synapse map
-   synapseIndexMap = new SynapseIndexMap(neuron_count, total_synapse_counts);
+   SynapseIndexMap *synapseIndexMap = new SynapseIndexMap(neuron_count, total_synapse_counts);
    for (int i = 0; i < neuron_count; i++) {
       BGSIZE synapse_count = 0;
       synapseIndexMap->incomingSynapseBegin_[i] = n_inUse;
@@ -189,6 +198,8 @@ void AllSynapses::createSynapseImap(SynapseIndexMap *synapseIndexMap) {
 
    // delete memories
    delete[] rgSynapseSynapseIndexMap;
+
+   return synapseIndexMap;
 }
 
 /*     
@@ -297,5 +308,6 @@ int AllSynapses::synSign(const synapseType type) {
 
    return 0;
 }
+
 
 
