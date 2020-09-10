@@ -103,7 +103,6 @@ int main(int argc, char *argv[]) {
       return -1;
    }
 
-<<<<<<< HEAD
    // Have instantiated simulator objects load parameters from the configuration file
    OperationManager::getInstance().executeOperation(Operations::op::loadParameters);
 
@@ -159,7 +158,6 @@ int main(int argc, char *argv[]) {
 //   // todo:put someplace else, like chain of responsibility. doesnt have to happen here.
 //   // Terminate the stimulus input
 //   if (simInfo->pInput != NULL)
-=======
    // Invoke instantiated simulator objects to load parameters from the configuration file
    LOG4CPLUS_TRACE(logger, "Loading parameters from configuration file");
    OperationManager::getInstance().executeOperation(Operations::loadParameters);
@@ -193,7 +191,6 @@ int main(int argc, char *argv[]) {
    // INPUT OBJECTS ARENT IN PROJECT YET
    // Terminate the stimulus input
 //   if (pInput != NULL)
->>>>>>> e311573ca2647649ee14566d3a3788b42aa1b6d0
 //   {
 //      simInfo->pInput->term();
 //      delete simInfo->pInput;

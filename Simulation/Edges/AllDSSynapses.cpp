@@ -124,16 +124,13 @@ void AllDSSynapses::loadParameters() {
  *  Prints out all parameters of the neurons to console.
  */
 void AllDSSynapses::printParameters() const {
-<<<<<<< HEAD
-    cout << "\tU values: ["
-          << " II: " << U_II_ << ", " << " IE: " << U_IE_ << "," << "EI : " << U_EI_<< "," << " EE: " << U_EE_ << "]"
-          << endl;
-=======
+
    AllSpikingSynapses::printParameters();
    cout << "\t*AllDSSynapses Parameters*" << endl;
    cout << "\tEdges type: AllDSSynapses" << endl << endl;
-}
->>>>>>> e311573ca2647649ee14566d3a3788b42aa1b6d0
+   cout << "\tU values: ["
+          << " II: " << U_II_ << ", " << " IE: " << U_IE_ << "," << "EI : " << U_EI_<< "," << " EE: " << U_EE_ << "]"
+          << endl;
 
     cout << "\tD values: ["
           << " II: "<< D_II_ << ", " << " IE: "<< D_IE_ << "," << "EI :" << D_EI_<< "," << " EE: "<< D_EE_ << "]"
