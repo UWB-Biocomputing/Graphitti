@@ -1,5 +1,5 @@
 # Get all header and source files from current directory
-file(GLOB Vertices *.cpp *.h)
+file(GLOB Vertices *.cpp *.h *.cu)
 
 # Create a library from the list of files gathered
 add_library(Vertices ${Vertices})
