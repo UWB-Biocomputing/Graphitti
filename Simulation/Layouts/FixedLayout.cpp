@@ -46,7 +46,7 @@ void FixedLayout::generateNeuronTypeMap(int numNeurons) {
 /*
  *  Populates the starter map.
  *  Selects \e numStarter excitory neurons and converts them into starter neurons.
- *  @param  num_neurons number of neurons to have in the map.
+ *  @param  numNeurons number of neurons to have in the map.
  */
 void FixedLayout::initStarterMap(const int numNeurons) {
    Layout::initStarterMap(numNeurons);

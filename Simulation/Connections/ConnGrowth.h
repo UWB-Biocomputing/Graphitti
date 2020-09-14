@@ -162,14 +162,14 @@ public:
     *  @param  numNeurons          number of neurons to update.
     *  @param  neurons             the AllNeurons object.
     *  @param  synapses            the AllSynapses object.
-    *  @param  m_allNeuronsDevice  Reference to the allNeurons struct in device memory.
-    *  @param  m_allSynapsesDevice Reference to the allSynapses struct in device memory.
+    *  @param  allNeuronsDevice_  Reference to the allNeurons struct in device memory.
+    *  @param  allSynapseDevice_ Reference to the allSynapses struct in device memory.
     *  @param  layout              the Layout object.
     */
    virtual void updateSynapsesWeights(const int numNeurons,
          IAllNeurons &neurons, IAllSynapses &synapses,
-         AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice,
-         AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice,
+         AllSpikingNeuronsDeviceProperties* allNeuronsDevice_,
+         AllSpikingSynapsesDeviceProperties* allSynapseDevice_,
          Layout *layout);
 #else
    /**

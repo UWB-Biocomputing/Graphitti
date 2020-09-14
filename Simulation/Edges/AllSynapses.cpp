@@ -3,7 +3,7 @@
 #include "OperationManager.h"
 
 AllSynapses::AllSynapses() :
-      totalSynapseCounts_(0),
+      totalSynapseCount_(0),
       maxSynapsesPerNeuron_(0),
       countNeurons_(0) {
    destNeuronIndex_ = NULL;
@@ -44,14 +44,14 @@ void AllSynapses::setupSynapses() {
 /*
  *  Setup the internal structure of the class (allocate memories and initialize them).
  *
- *  @param  num_neurons   Total number of neurons in the network.
+ *  @param  numNeurons   Total number of neurons in the network.
  *  @param  max_synapses  Maximum number of synapses per neuron.
  */
 void AllSynapses::setupSynapses(const int numNeurons, const int maxSynapses) {
    BGSIZE maxTotalSynapses = maxSynapses * numNeurons;
 
    maxSynapsesPerNeuron_ = maxSynapses;
-   totalSynapseCounts_ = 0;
+   totalSynapseCount_ = 0;
    countNeurons_ = numNeurons;
 
    if (maxTotalSynapses != 0) {
@@ -91,7 +91,7 @@ void AllSynapses::loadParameters() {
 void AllSynapses::printParameters() const {
    LOG4CPLUS_DEBUG(fileLogger_, "\nEDGES PARAMETERS" << endl
     << "\t---AllSynapses Parameters---" << endl
-    << "\tTotal synapse counts: " << totalSynapseCounts_ << endl
+    << "\tTotal synapse counts: " << totalSynapseCount_ << endl
     << "\tMax synapses per neuron: " << maxSynapsesPerNeuron_ << endl
     << "\tNeuron count: " << countNeurons_ << endl << endl);
 }
@@ -184,17 +184,17 @@ void AllSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
  */
 SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
    int neuronCount = Simulator::getInstance().getTotalNeurons();
-   int totalSynapseCounts = 0;
+   int totalSynapseCount = 0;
 
    // count the total synapses
    for (int i = 0; i < neuronCount; i++) {
       assert(static_cast<int>(synapseCounts_[i]) < Simulator::getInstance().getMaxSynapsesPerNeuron());
-      totalSynapseCounts += synapseCounts_[i];
+      totalSynapseCount += synapseCounts_[i];
    }
 
-   DEBUG (cout << "total_synapse_counts: " << totalSynapseCounts << endl;)
+   DEBUG (cout << "totalSynapseCount: " << totalSynapseCount << endl;)
 
-   if (totalSynapseCounts == 0) {
+   if (totalSynapseCount == 0) {
       return NULL;
    }
 
@@ -205,7 +205,7 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
    int numInUse = 0;
 
    // create synapse forward map & active synapse map
-   SynapseIndexMap *synapseIndexMap = new SynapseIndexMap(neuronCount, totalSynapseCounts);
+   SynapseIndexMap *synapseIndexMap = new SynapseIndexMap(neuronCount, totalSynapseCount);
    for (int i = 0; i < neuronCount; i++) {
       BGSIZE synapse_count = 0;
       synapseIndexMap->incomingSynapseBegin_[i] = numInUse;
@@ -223,8 +223,8 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
       synapseIndexMap->incomingSynapseCount_[i] = synapse_count;
    }
 
-   assert(totalSynapseCounts == numInUse);
-   this->totalSynapseCounts_ = totalSynapseCounts;
+   assert(totalSynapseCount == numInUse);
+   this->totalSynapseCount_ = totalSynapseCount;
 
    syn_i = 0;
    for (int i = 0; i < neuronCount; i++) {
@@ -272,7 +272,7 @@ synapseType AllSynapses::synapseOrdinalToType(const int typeOrdinal) {
  *  @param  synapseIndexMap   Pointer to SynapseIndexMap structure.
  */
 void AllSynapses::advanceSynapses(IAllNeurons *neurons, SynapseIndexMap *synapseIndexMap) {
-   for (BGSIZE i = 0; i < totalSynapseCounts_; i++) {
+   for (BGSIZE i = 0; i < totalSynapseCount_; i++) {
       BGSIZE iSyn = synapseIndexMap->incomingSynapseIndexMap_[i];
       advanceSynapse(iSyn, neurons);
    }
@@ -373,7 +373,7 @@ void AllSynapses::printSynapsesProps() const {
       cout << "synapse_counts:" << "neuron[" << i << "]" << synapseCounts_[i] << endl;
    }
 
-   cout << "total_synapse_counts:" << totalSynapseCounts_ << endl;
+   cout << "totalSynapseCount:" << totalSynapseCount_ << endl;
    cout << "maxSynapsesPerNeuron:" << maxSynapsesPerNeuron_ << endl;
    cout << "count_neurons:" << countNeurons_ << endl;
 }

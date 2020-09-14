@@ -18,7 +18,7 @@ extern void getValueList(const string& valString, vector<BGFLOAT>* pList);
  */
 SInputPoisson::SInputPoisson(TiXmlElement* parms) :
     nISIs(NULL),
-    m_synapses(NULL),
+    synapses_(NULL),
     masks(NULL)
 {
     fSInput = false;
@@ -128,20 +128,20 @@ void SInputPoisson::init()
 
     // create an input synapse layer
     // TODO: do we need to support other types of synapses?
-    m_synapses = new AllDSSynapses(Simulator::getInstance().getTotalNeurons(), 1);
-    for (int neuron_index = 0; neuron_index < Simulator::getInstance().getTotalNeurons(); neuron_index++)
+    synapses_ = new AllDSSynapses(Simulator::getInstance().getTotalNeurons(), 1);
+    for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalNeurons(); neuronIndex++)
     {
         synapseType type;
-        if (Simulator::getInstance().getModel()->getLayout()->neuronTypeMap_[neuron_index] == INH)
+        if (Simulator::getInstance().getModel()->getLayout()->neuronTypeMap_[neuronIndex] == INH)
             type = EI;
         else
             type = EE;
 
-        BGFLOAT* sum_point = &(Simulator::getInstance().getPSummationMap()[neuron_index]);
-        BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * neuron_index;
+        BGFLOAT* sum_point = &(Simulator::getInstance().getPSummationMap()[neuronIndex]);
+        BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * neuronIndex;
 
-        m_synapses->createSynapse(iSyn, 0, neuron_index, sum_point, Simulator::getInstance().getDeltaT(), type);
-        dynamic_cast<AllSynapses*>(m_synapses)->W_[iSyn] = weight * AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
+        synapses_->createSynapse(iSyn, 0, neuronIndex, sum_point, Simulator::getInstance().getDeltaT(), type);
+        dynamic_cast<AllSynapses*>(synapses_)->W_[iSyn] = weight * AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
     }
 }
 
@@ -157,8 +157,8 @@ void SInputPoisson::term()
         delete[] nISIs;
 
     // clear the synapse layer, which destroy all synase objects
-    if (m_synapses != NULL)
-        delete m_synapses;
+    if (synapses_ != NULL)
+        delete synapses_;
 
     // clear memory for input masks
     if (masks != NULL)

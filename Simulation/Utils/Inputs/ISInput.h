@@ -40,7 +40,6 @@ public:
     /**
      * Initialize data
      *
-     * @param[in] psi       Pointer to the simulation information.
      */
     virtual void init() = 0;
 

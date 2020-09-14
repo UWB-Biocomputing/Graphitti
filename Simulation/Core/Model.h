@@ -88,7 +88,7 @@ protected:
    virtual void copyCPUtoGPU() = 0;
 
 protected:
-   shared_ptr<Connections> conns_;
+   shared_ptr<Connections> connections_;
 
    shared_ptr<Layout> layout_;
 

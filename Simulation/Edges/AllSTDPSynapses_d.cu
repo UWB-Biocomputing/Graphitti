@@ -265,9 +265,9 @@ void AllSTDPSynapses::advanceSynapses(void* allSynapsesDevice, void* allNeuronsD
 
     // CUDA parameters
     const int threadsPerBlock = 256;
-    int blocksPerGrid = ( total_synapse_counts + threadsPerBlock - 1 ) / threadsPerBlock;
+    int blocksPerGrid = ( totalSynapseCount + threadsPerBlock - 1 ) / threadsPerBlock;
     // Advance synapses ------------->
-    advanceSTDPSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( total_synapse_counts, (SynapseIndexMap*)synapseIndexMapDevice, g_simulationStep, sim_info->deltaT, (AllSTDPSynapsesDeviceProperties*)allSynapsesDevice, (AllSpikingNeuronsDeviceProperties*)allNeuronsDevice, max_spikes, sim_info->width );
+    advanceSTDPSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( totalSynapseCount, (SynapseIndexMap*)synapseIndexMapDevice, g_simulationStep, sim_info->deltaT, (AllSTDPSynapsesDeviceProperties*)allSynapsesDevice, (AllSpikingNeuronsDeviceProperties*)allNeuronsDevice, max_spikes, sim_info->width );
 }
 
 /**     
@@ -302,7 +302,7 @@ void AllSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) cons
     if (size != 0) {
         BGSIZE *synapse_countsPrint = new BGSIZE[count_neurons];
         BGSIZE maxSynapsesPerNeuronPrint;
-        BGSIZE total_synapse_countsPrint;
+        BGSIZE totalSynapseCountPrint;
         int count_neuronsPrint;
         int *sourceNeuronIndexPrint = new int[size];
         int *destNeuronIndexPrint = new int[size];
@@ -341,7 +341,7 @@ void AllSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) cons
         HANDLE_ERROR( cudaMemcpy ( &allSynapsesProps, allSynapsesDeviceProps, sizeof( AllSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( synapse_countsPrint, allSynapsesProps.synapse_counts, count_neurons * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
         maxSynapsesPerNeuronPrint = allSynapsesProps.maxSynapsesPerNeuron;
-        total_synapse_countsPrint = allSynapsesProps.total_synapse_counts;
+        totalSynapseCountPrint = allSynapsesProps.totalSynapseCount;
         count_neuronsPrint = allSynapsesProps.count_neurons;
 
         // Set count_neurons to 0 to avoid illegal memory deallocation
@@ -404,7 +404,7 @@ void AllSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) cons
             cout << "GPU synapse_counts:" << "neuron[" << i  << "]" << synapse_countsPrint[i] << endl;
         }
 
-        cout << "GPU total_synapse_counts:" << total_synapse_countsPrint << endl;
+        cout << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;
         cout << "GPU maxSynapsesPerNeuron:" << maxSynapsesPerNeuronPrint << endl;
         cout << "GPU count_neurons:" << count_neuronsPrint << endl;
 

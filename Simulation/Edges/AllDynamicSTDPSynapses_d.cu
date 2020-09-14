@@ -226,7 +226,7 @@ void AllDynamicSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps
     if (size != 0) {
         BGSIZE *synapse_countsPrint = new BGSIZE[count_neurons];
         BGSIZE maxSynapsesPerNeuronPrint;
-        BGSIZE total_synapse_countsPrint;
+        BGSIZE totalSynapseCountPrint;
         int count_neuronsPrint;
         int *sourceNeuronIndexPrint = new int[size];
         int *destNeuronIndexPrint = new int[size];
@@ -272,7 +272,7 @@ void AllDynamicSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps
         HANDLE_ERROR( cudaMemcpy ( &allSynapsesProps, allSynapsesDeviceProps, sizeof( AllDynamicSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( synapse_countsPrint, allSynapsesProps.synapse_counts, count_neurons * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
         maxSynapsesPerNeuronPrint = allSynapsesProps.maxSynapsesPerNeuron;
-        total_synapse_countsPrint = allSynapsesProps.total_synapse_counts;
+        totalSynapseCountPrint = allSynapsesProps.totalSynapseCount;
         count_neuronsPrint = allSynapsesProps.count_neurons;
 
         // Set count_neurons to 0 to avoid illegal memory deallocation
@@ -349,7 +349,7 @@ void AllDynamicSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps
             cout << "GPU synapse_counts:" << "neuron[" << i  << "]" << synapse_countsPrint[i] << endl;
         }
 
-        cout << "GPU total_synapse_counts:" << total_synapse_countsPrint << endl;
+        cout << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;
         cout << "GPU maxSynapsesPerNeuron:" << maxSynapsesPerNeuronPrint << endl;
         cout << "GPU count_neurons:" << count_neuronsPrint << endl;
 

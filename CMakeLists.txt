@@ -4,15 +4,24 @@ project(SummerOfBrain)
 # Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 11)
 
+# Enable the use of GPU. Only available if CUDA library is installed the GPU is CUDA capable.
+set(BRAINGRID_CUDA NO)
+
+if(BRAINGRID_CUDA)
+        enable_language(CUDA)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D USE_GPU")
+endif()
+
+
 # Setting the location of the executable to be in the top-level directory. This helps when using file paths during
 # runtime.
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 # Set extra warning flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 #define TIXML_USE_STL and TIXML_STRING_INCLUDED to use the C++ standard library with TinyXML
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTIXML_USE_STL")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D TIXML_USE_STL")
 
 # Used to define file paths for #include paths. For example you can write:
 # #include "Simulator.h"
@@ -53,7 +62,10 @@ add_executable(braingrid
 
 # ------ GPU SIMULATOR EXECUTABLE ------
 # Add all files that aren't in a library and are needed to run
-#add_executable(BrainGrid-cuda)
+if (BRAINGRID_CUDA)
+        add_executable(braingrid-cuda
+        Simulation/Core/BGDriver.cpp)
+endif()
 
 # ------ TESTS EXECUTABLE ------
 # Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
@@ -85,7 +97,7 @@ target_link_libraries(combinedLib INTERFACE
         # Utils
         Utils
         RNG
-        Inputs
+        #Inputs inputs aren't in the project 
         Matrix
 
         # ThirdParty

@@ -184,7 +184,7 @@ public:
         *
         *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
         */
-       virtual void copyNeuronDeviceToHost( void* allNeuronsDevice,);
+       virtual void copyNeuronDeviceToHost(void* allNeuronsDevice);
 
        /**
         *  Copy spike history data stored in device memory to host.

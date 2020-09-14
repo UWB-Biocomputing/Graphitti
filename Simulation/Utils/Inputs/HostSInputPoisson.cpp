@@ -69,16 +69,16 @@ int chunk_size = psi->totalNeurons / omp_get_max_threads();
 #if defined(USE_OMP)
 #pragma omp parallel for schedule(static, chunk_size)
 #endif
-    for (int neuron_index = 0; neuron_index < Simulator::getInstance().getTotalNeurons(); neuron_index++)
+    for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalNeurons(); neuronIndex++)
     {
-        if (masks[neuron_index] == false)
+        if (masks[neuronIndex] == false)
             continue;
 
-        BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * neuron_index;
-        if (--nISIs[neuron_index] <= 0)
+        BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * neuronIndex;
+        if (--nISIs[neuronIndex] <= 0)
         {
             // add a spike
-            dynamic_cast<AllSpikingSynapses*>(m_synapses)->preSpikeHit(iSyn);
+            dynamic_cast<AllSpikingSynapses*>(synapses_)->preSpikeHit(iSyn);
 
             // update interval counter (exponectially distribution ISIs, Poisson)
             BGFLOAT isi = -lambda * log(rng.inRange(0, 1));
@@ -86,9 +86,9 @@ int chunk_size = psi->totalNeurons / omp_get_max_threads();
             while (rng.inRange(0, 1) <= exp(-(isi*isi)/32))
                 isi = -lambda * log(rng.inRange(0, 1));
             // convert isi from msec to steps
-            nISIs[neuron_index] = static_cast<int>( (isi / 1000) / Simulator::getInstance().getDeltaT() + 0.5 );
+            nISIs[neuronIndex] = static_cast<int>( (isi / 1000) / Simulator::getInstance().getDeltaT() + 0.5 );
         }
         // process synapse
-        m_synapses->advanceSynapse(iSyn, NULL);
+        synapses_->advanceSynapse(iSyn, NULL);
     }
 }

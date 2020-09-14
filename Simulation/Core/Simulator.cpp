@@ -12,6 +12,7 @@
 #include <functional>
 
 #include "CPUSpikingModel.h"
+#include "GPUSpikingModel.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "RecorderFactory.h"
@@ -212,7 +213,7 @@ void Simulator::saveData() const {
 /// expected objects were created correctly and returns T/F on the success of the check.
 bool Simulator::instantiateSimulatorObjects() {
    // Model Definition
-#ifdef USE_GPU
+#if defined(USE_GPU)
    model_ = shared_ptr<Model>(new GPUSpikingModel());
 #else
    model_ = shared_ptr<Model>(new CPUSpikingModel());

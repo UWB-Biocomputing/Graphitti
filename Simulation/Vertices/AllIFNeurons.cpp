@@ -179,11 +179,11 @@ void AllIFNeurons::printParameters() const {
  */
 void AllIFNeurons::createAllNeurons(Layout *layout) {
    /* set their specific types */
-   for (int neuron_index = 0; neuron_index < Simulator::getInstance().getTotalNeurons(); neuron_index++) {
-      setNeuronDefaults(neuron_index);
+   for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalNeurons(); neuronIndex++) {
+      setNeuronDefaults(neuronIndex);
 
       // set the neuron info for neurons
-      createNeuron(neuron_index, layout);
+      createNeuron(neuronIndex, layout);
    }
 }
 

@@ -161,52 +161,47 @@ protected:
         *  and copy them from host to GPU memory.
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
         */
-       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, const SimulationInfo *sim_info );
+       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice);
 
        /**
         *  Allocate GPU memories to store all synapses' states,
         *  and copy them from host to GPU memory.
         *
         *  @param  allSynapsesDevice     Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, int num_neurons, int maxSynapsesPerNeuron );
+       virtual void allocSynapseDeviceStruct(void** allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron);
 
        /**
         *  Delete GPU memories.
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
         */
-       virtual void deleteSynapseDeviceStruct( void* allSynapsesDevice );
+       virtual void deleteSynapseDeviceStruct(void* allSynapsesDevice);
 
        /**
         *  Copy all synapses' data from host to device.
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
         */
-       virtual void copySynapseHostToDevice( void* allSynapsesDevice, const SimulationInfo *sim_info );
+       virtual void copySynapseHostToDevice(void* allSynapsesDevice);
 
        /**
         *  Copy all synapses' data from host to device.
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
+        *  @param  numNeurons           Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       virtual void copySynapseHostToDevice( void* allSynapsesDevice, int num_neurons, int maxSynapsesPerNeuron );
+       virtual void copySynapseHostToDevice( void* allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron );
 
        /**
         *  Copy all synapses' data from device to host.
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
         */
-       virtual void copySynapseDeviceToHost( void* allSynapsesDevice, const SimulationInfo *sim_info );
+       virtual void copySynapseDeviceToHost(void* allSynapsesDevice);
 
        /**
         *  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
@@ -234,10 +229,10 @@ protected:
         *  (Helper function of allocSynapseDeviceStruct)
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
+        *  @param  numNeurons           Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       void allocDeviceStruct( AllDynamicSTDPSynapsesDeviceProperties &allSynapses, int num_neurons, int maxSynapsesPerNeuron );
+       void allocDeviceStruct( AllDynamicSTDPSynapsesDeviceProperties &allSynapses, int numNeurons, int maxSynapsesPerNeuron );
 
        /**
         *  Delete GPU memories.
@@ -252,20 +247,20 @@ protected:
         *  (Helper function of copySynapseHostToDevice)
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
+        *  @param  numNeurons           Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       void copyHostToDevice( void* allSynapsesDevice, AllDynamicSTDPSynapsesDeviceProperties& allSynapses, int num_neurons, int maxSynapsesPerNeuron );
+       void copyHostToDevice( void* allSynapsesDevice, AllDynamicSTDPSynapsesDeviceProperties& allSynapses, int numNeurons, int maxSynapsesPerNeuron );
 
        /**
         *  Copy all synapses' data from device to host.
         *  (Helper function of copySynapseDeviceToHost)
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
+        *  @param  numNeurons           Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       void copyDeviceToHost( AllDynamicSTDPSynapsesDeviceProperties& allSynapses, const SimulationInfo *sim_info );
+       void copyDeviceToHost(AllDynamicSTDPSynapsesDeviceProperties& allSynapses);
 #else // !defined(USE_GPU)
 protected:
    /**

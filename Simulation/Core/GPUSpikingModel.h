@@ -89,10 +89,10 @@ public:
    virtual void updateConnections();
 
    /// Copy GPU Synapse data to CPU.
-   virtual void copyGPUSynapseToCPUModel();
+   virtual void copyGPUtoCPU();
 
    /// Copy CPU Synapse data to GPU.
-   virtual void copyCPUSynapseToGPUModel();
+   virtual void copyCPUtoGPU();
 
    /// Print out SynapseProps on the GPU.
    void printGPUSynapsesPropsModel() const;
@@ -115,7 +115,7 @@ protected:
    float *randNoise_d;
 
    /// Pointer to synapse index map in device memory.
-   SynapseIndexMap *synapseIndexMapDevice;
+   SynapseIndexMap *synapseIndexMapDevice_;
 
    /// Synapse structures in device memory.
    AllSpikingSynapsesDeviceProperties *allSynapsesDevice_;
@@ -130,21 +130,21 @@ private:
 
 public: //2020/03/14 changed to public for accessing in BGDriver
 
-   void copySynapseIndexMapHostToDevice(SynapseIndexMap &synapseIndexMapHost, int neuron_count);
+   void copySynapseIndexMapHostToDevice(SynapseIndexMap &synapseIndexMapHost, int numNeurons);
 
 private:
 
    void updateHistory();
 
    // TODO
-   void eraseSynapse(IAllSynapses &synapses, const int neuron_index, const int synapse_index);
+   void eraseSynapse(IAllSynapses &synapses, const int neuronIndex, const int synapseIndex);
 
    // TODO
    void addSynapse(IAllSynapses &synapses, synapseType type, const int src_neuron, const int dest_neuron,
                    Coordinate &source, Coordinate &dest, BGFLOAT *sum_point, BGFLOAT deltaT);
 
    // TODO
-   void createSynapse(IAllSynapses &synapses, const int neuron_index, const int synapse_index,
+   void createSynapse(IAllSynapses &synapses, const int neuronIndex, const int synapseIndex,
                       Coordinate source, Coordinate dest, BGFLOAT *sp, BGFLOAT deltaT, synapseType type);
 };
 
@@ -157,6 +157,6 @@ void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, uns
 //! Calculate summation point.
 extern __global__ void calcSummationMapDevice(int totalNeurons,
           AllSpikingNeuronsDeviceProperties* __restrict__ allNeurnsDevice,
-          const SynapseIndexMap* __restrict__ synapseIndexMapDevice,
+          const SynapseIndexMap* __restrict__ synapseIndexMapDevice_,
                     const AllSpikingSynapsesDeviceProperties* __restrict__ allSynapsesDevice );
 #endif

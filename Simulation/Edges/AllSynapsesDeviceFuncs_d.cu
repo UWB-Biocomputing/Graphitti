@@ -222,16 +222,16 @@ __device__ uint64_t getSTDPSynapseSpikeHistoryDevice(AllSpikingNeuronsDeviceProp
  *  CUDA code for advancing spiking synapses.
  *  Perform updating synapses for one time step.
  *
- *  @param[in] total_synapse_counts  Number of synapses.
+ *  @param[in] totalSynapseCount  Number of synapses.
  *  @param  synapseIndexMapDevice    Reference to the SynapseIndexMap on device memory.
  *  @param[in] simulationStep        The current simulation step.
  *  @param[in] deltaT                Inner simulation step duration.
  *  @param[in] allSynapsesDevice     Pointer to AllSpikingSynapsesDeviceProperties structures 
  *                                   on device memory.
  */
-__global__ void advanceSpikingSynapsesDevice ( int total_synapse_counts, SynapseIndexMap* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSpikingSynapsesDeviceProperties* allSynapsesDevice ) {
+__global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, SynapseIndexMap* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSpikingSynapsesDeviceProperties* allSynapsesDevice ) {
         int idx = blockIdx.x * blockDim.x + threadIdx.x;
-        if ( idx >= total_synapse_counts )
+        if ( idx >= totalSynapseCount )
                 return;
 
         BGSIZE iSyn = synapseIndexMapDevice->incomingSynapseIndexMap[idx];
@@ -263,16 +263,16 @@ __global__ void advanceSpikingSynapsesDevice ( int total_synapse_counts, Synapse
  *  CUDA code for advancing STDP synapses.
  *  Perform updating synapses for one time step.
  *
- *  @param[in] total_synapse_counts  Number of synapses.
+ *  @param[in] totalSynapseCount  Number of synapses.
  *  @param  synapseIndexMapDevice    Reference to the SynapseIndexMap on device memory.
  *  @param[in] simulationStep        The current simulation step.
  *  @param[in] deltaT                Inner simulation step duration.
  *  @param[in] allSynapsesDevice     Pointer to AllSTDPSynapsesDeviceProperties structures 
  *                                   on device memory.
  */
-__global__ void advanceSTDPSynapsesDevice ( int total_synapse_counts, SynapseIndexMap* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSTDPSynapsesDeviceProperties* allSynapsesDevice, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, int max_spikes, int width ) {
+__global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, SynapseIndexMap* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSTDPSynapsesDeviceProperties* allSynapsesDevice, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, int max_spikes, int width ) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if ( idx >= total_synapse_counts )
+    if ( idx >= totalSynapseCount )
             return;
 
     BGSIZE iSyn = synapseIndexMapDevice->incomingSynapseIndexMap[idx];

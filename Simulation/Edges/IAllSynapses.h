@@ -12,6 +12,11 @@
 
 class IAllNeurons;
 
+typedef void (*fpCreateSynapse_t)(void*, const int, const int, int, int, BGFLOAT*, const BGFLOAT, synapseType);
+
+// enumerate all non-abstract synapse classes.
+enum enumClassSynapses {classAllSpikingSynapses, classAllDSSynapses, classAllSTDPSynapses, classAllDynamicSTDPSynapses, undefClassSynapses};
+
 class IAllSynapses {
 public:
    virtual ~IAllSynapses() {};
@@ -101,7 +106,7 @@ public:
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
         */
-       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, const SimulationInfo *sim_info ) = 0;
+       virtual void allocSynapseDeviceStruct(void** allSynapsesDevice) = 0;
 
        /**
         *  Allocate GPU memories to store all synapses' states,

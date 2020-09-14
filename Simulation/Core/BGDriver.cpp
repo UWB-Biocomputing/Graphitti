@@ -288,7 +288,8 @@ bool deserializeSynapses() {
    connections->createSynapseIndexMap();
 
 #if defined(USE_GPU)
-   dynamic_cast<GPUSpikingModel *>(simInfo->model)->copySynapseIndexMapHostToDevice(*(dynamic_cast<GPUSpikingModel *>(simInfo->model)->m_synapseIndexMap), simInfo->totalNeurons);
+   GPUSpikingModel *gpuModel = static_cast<GPUSpikingModel *>(simulator.getModel().get());
+   gpuModel->copySynapseIndexMapHostToDevice(*(connections->getSynapseIndexMap().get()), simulator.getTotalNeurons());
 #endif // USE_GPU
 
    // Deserializes radii (only when running a connGrowth model and radii is in serialization file)
@@ -317,7 +318,7 @@ void serializeSynapses() {
 
 #if defined(USE_GPU)
    // Copies GPU Synapse props data to CPU for serialization
-    simulator->copyGPUSynapseToCPU();
+    simulator.copyGPUSynapseToCPU();
 #endif // USE_GPU
     shared_ptr<Model> model = simulator.getModel();
 

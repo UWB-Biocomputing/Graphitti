@@ -42,6 +42,8 @@
 
 #include "IAllNeurons.h"
 #include "IAllSynapses.h"
+#include "AllSpikingNeurons.h"
+#include "AllSpikingSynapses.h"
 #include "Layout.h"
 #include "IRecorder.h"
 #include "SynapseIndexMap.h"
@@ -56,8 +58,15 @@ public:
 
    shared_ptr<IAllSynapses> getSynapses() const;
 
+
+   /**
+    * Returns a shared pointer to the SynapseIndexMap
+    */
    shared_ptr<SynapseIndexMap> getSynapseIndexMap() const;
 
+   /**
+    * Calls Synapses to create SynapseIndexMap and stores it as a member variable
+    */
    void createSynapseIndexMap();
 
    /**
@@ -115,11 +124,11 @@ public:
         *  @param  numNeurons          number of neurons to update.
         *  @param  neurons             the Neuron list to search from.
         *  @param  synapses            the Synapse list to search from.
-        *  @param  m_allNeuronsDevice  Reference to the allNeurons struct on device memory.
-        *  @param  m_allSynapsesDevice Reference to the allSynapses struct on device memory.
+        *  @param  allNeuronsDevice_  Reference to the allNeurons struct on device memory.
+        *  @param  allSynapseDevice_ Reference to the allSynapses struct on device memory.
         *  @param  layout              Layout information of the neunal network.
         */
-       virtual void updateSynapsesWeights(const int numNeurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout);
+       virtual void updateSynapsesWeights(const int numNeurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* allNeuronsDevice_, AllSpikingSynapsesDeviceProperties* allSynapseDevice_, Layout *layout);
 #else
 public:
    /**

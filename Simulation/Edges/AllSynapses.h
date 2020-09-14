@@ -260,7 +260,7 @@ public:
    /**
     *  The total number of active synapses.
     */
-   BGSIZE totalSynapseCounts_;
+   BGSIZE totalSynapseCount_;
 
    /**
      *  The maximum number of synapses for each neurons.
@@ -318,7 +318,7 @@ struct AllSynapsesDeviceProperties
         /**
          *  The total number of active synapses.
          */
-        BGSIZE totalSynapseCounts_;
+        BGSIZE totalSynapseCount_;
 
        /**
          *  The maximum number of synapses for each neurons.

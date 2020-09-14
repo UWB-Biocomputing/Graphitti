@@ -75,16 +75,16 @@ ConnGrowth::~ConnGrowth() {
  *  @param  synapses  The Synapse list to search from.
  */
 void ConnGrowth::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses) {
-   int num_neurons = Simulator::getInstance().getTotalNeurons();
-   radiiSize_ = num_neurons;
+   int numNeurons = Simulator::getInstance().getTotalNeurons();
+   radiiSize_ = numNeurons;
 
-   W_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, num_neurons, num_neurons, 0);
-   radii_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons, growthParams_.startRadius);
-   rates_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons, 0);
-   delta_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, num_neurons, num_neurons);
-   area_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, num_neurons, num_neurons, 0);
-   outgrowth_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons);
-   deltaR_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons);
+   W_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numNeurons, numNeurons, 0);
+   radii_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons, growthParams_.startRadius);
+   rates_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons, 0);
+   delta_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numNeurons, numNeurons);
+   area_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numNeurons, numNeurons, 0);
+   outgrowth_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons);
+   deltaR_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons);
 
    // Init connection frontier distance change matrix with the current distances
    (*delta_) = (*layout->dist_);
@@ -294,7 +294,7 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllNeurons &ineuro
          BGSIZE synapse_counts = synapses.synapseCounts_[dest_neuron];
          BGSIZE synapse_adjusted = 0;
          BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * dest_neuron;
-         for (BGSIZE synapse_index = 0; synapse_adjusted < synapse_counts; synapse_index++, iSyn++) {
+         for (BGSIZE synapseIndex = 0; synapse_adjusted < synapse_counts; synapseIndex++, iSyn++) {
             if (synapses.inUse_[iSyn] == true) {
                // if there is a synapse between a and b
                if (synapses.sourceNeuronIndex_[iSyn] == src_neuron) {
@@ -313,7 +313,7 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllNeurons &ineuro
                                          synapses.synSign(type) * AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
 
                      LOG4CPLUS_DEBUG(fileLogger_, "Weight of rgSynapseMap" <<
-                                                                           "[" << synapse_index << "]: " <<
+                                                                           "[" << synapseIndex << "]: " <<
                                                                            synapses.W_[iSyn]);
                   }
                }
