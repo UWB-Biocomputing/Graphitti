@@ -22,10 +22,12 @@ AllSynapses::AllSynapses() :
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&IAllSynapses::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
-AllSynapses::AllSynapses(const int num_neurons, const int max_synapses) {
-   setupSynapses(num_neurons, max_synapses);
+AllSynapses::AllSynapses(const int numNeurons, const int maxSynapses) {
+   setupSynapses(numNeurons, maxSynapses);
 }
 
 AllSynapses::~AllSynapses() {
@@ -45,30 +47,30 @@ void AllSynapses::setupSynapses() {
  *  @param  num_neurons   Total number of neurons in the network.
  *  @param  max_synapses  Maximum number of synapses per neuron.
  */
-void AllSynapses::setupSynapses(const int num_neurons, const int max_synapses) {
-   BGSIZE max_total_synapses = max_synapses * num_neurons;
+void AllSynapses::setupSynapses(const int numNeurons, const int maxSynapses) {
+   BGSIZE maxTotalSynapses = maxSynapses * numNeurons;
 
-   maxSynapsesPerNeuron_ = max_synapses;
+   maxSynapsesPerNeuron_ = maxSynapses;
    totalSynapseCounts_ = 0;
-   countNeurons_ = num_neurons;
+   countNeurons_ = numNeurons;
 
-   if (max_total_synapses != 0) {
-      destNeuronIndex_ = new int[max_total_synapses];
-      W_ = new BGFLOAT[max_total_synapses];
-      summationPoint_ = new BGFLOAT *[max_total_synapses];
-      sourceNeuronIndex_ = new int[max_total_synapses];
-      psr_ = new BGFLOAT[max_total_synapses];
-      type_ = new synapseType[max_total_synapses];
-      inUse_ = new bool[max_total_synapses];
-      synapseCounts_ = new BGSIZE[num_neurons];
+   if (maxTotalSynapses != 0) {
+      destNeuronIndex_ = new int[maxTotalSynapses];
+      W_ = new BGFLOAT[maxTotalSynapses];
+      summationPoint_ = new BGFLOAT *[maxTotalSynapses];
+      sourceNeuronIndex_ = new int[maxTotalSynapses];
+      psr_ = new BGFLOAT[maxTotalSynapses];
+      type_ = new synapseType[maxTotalSynapses];
+      inUse_ = new bool[maxTotalSynapses];
+      synapseCounts_ = new BGSIZE[numNeurons];
 
-      for (BGSIZE i = 0; i < max_total_synapses; i++) {
+      for (BGSIZE i = 0; i < maxTotalSynapses; i++) {
          summationPoint_[i] = NULL;
          inUse_[i] = false;
          W_[i] = 0;
       }
 
-      for (int i = 0; i < num_neurons; i++) {
+      for (int i = 0; i < numNeurons; i++) {
          synapseCounts_[i] = 0;
       }
    }
@@ -83,14 +85,15 @@ void AllSynapses::loadParameters() {
 }
 
 /**
- *  Prints out all parameters of the neurons to console.
+ *  Prints out all parameters to logging file.
+ *  Registered to OperationManager as Operation::printParameters
  */
 void AllSynapses::printParameters() const {
-   cout << "EDGES PARAMETERS" << endl;
-   cout << "\t*AllSynapses Parameters*" << endl;
-   cout << "\tTotal synapse counts: " << totalSynapseCounts_ << endl;
-   cout << "\tMax synapses per neuron: " << maxSynapsesPerNeuron_ << endl;
-   cout << "\tNeuron count: " << countNeurons_ << endl << endl;
+   LOG4CPLUS_DEBUG(fileLogger_, "\nEDGES PARAMETERS" << endl
+    << "\t---AllSynapses Parameters---" << endl
+    << "\tTotal synapse counts: " << totalSynapseCounts_ << endl
+    << "\tMax synapses per neuron: " << maxSynapsesPerNeuron_ << endl
+    << "\tNeuron count: " << countNeurons_ << endl << endl);
 }
 
 
@@ -178,43 +181,41 @@ void AllSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
 /*
  *  Create a synapse index map.
  *
- *  @param  synapseIndexMap   Reference to the pointer to SynapseIndexMap structure.
- *  @param  sim_info          Pointer to the simulation information.
  */
 SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
-   int neuron_count = Simulator::getInstance().getTotalNeurons();
-   int total_synapse_counts = 0;
+   int neuronCount = Simulator::getInstance().getTotalNeurons();
+   int totalSynapseCounts = 0;
 
    // count the total synapses
-   for (int i = 0; i < neuron_count; i++) {
+   for (int i = 0; i < neuronCount; i++) {
       assert(static_cast<int>(synapseCounts_[i]) < Simulator::getInstance().getMaxSynapsesPerNeuron());
-      total_synapse_counts += synapseCounts_[i];
+      totalSynapseCounts += synapseCounts_[i];
    }
 
-   DEBUG (cout << "total_synapse_counts: " << total_synapse_counts << endl;)
+   DEBUG (cout << "total_synapse_counts: " << totalSynapseCounts << endl;)
 
-   if (total_synapse_counts == 0) {
+   if (totalSynapseCounts == 0) {
       return NULL;
    }
 
    // allocate memories for forward map
-   vector<BGSIZE> *rgSynapseSynapseIndexMap = new vector<BGSIZE>[neuron_count];
+   vector<BGSIZE> *rgSynapseSynapseIndexMap = new vector<BGSIZE>[neuronCount];
 
    BGSIZE syn_i = 0;
-   int n_inUse = 0;
+   int numInUse = 0;
 
    // create synapse forward map & active synapse map
-   SynapseIndexMap *synapseIndexMap = new SynapseIndexMap(neuron_count, total_synapse_counts);
-   for (int i = 0; i < neuron_count; i++) {
+   SynapseIndexMap *synapseIndexMap = new SynapseIndexMap(neuronCount, totalSynapseCounts);
+   for (int i = 0; i < neuronCount; i++) {
       BGSIZE synapse_count = 0;
-      synapseIndexMap->incomingSynapseBegin_[i] = n_inUse;
+      synapseIndexMap->incomingSynapseBegin_[i] = numInUse;
       for (int j = 0; j < Simulator::getInstance().getMaxSynapsesPerNeuron(); j++, syn_i++) {
          if (inUse_[syn_i] == true) {
             int idx = sourceNeuronIndex_[syn_i];
             rgSynapseSynapseIndexMap[idx].push_back(syn_i);
 
-            synapseIndexMap->incomingSynapseIndexMap_[n_inUse] = syn_i;
-            n_inUse++;
+            synapseIndexMap->incomingSynapseIndexMap_[numInUse] = syn_i;
+            numInUse++;
             synapse_count++;
          }
       }
@@ -222,11 +223,11 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
       synapseIndexMap->incomingSynapseCount_[i] = synapse_count;
    }
 
-   assert(total_synapse_counts == n_inUse);
-   this->totalSynapseCounts_ = total_synapse_counts;
+   assert(totalSynapseCounts == numInUse);
+   this->totalSynapseCounts_ = totalSynapseCounts;
 
    syn_i = 0;
-   for (int i = 0; i < neuron_count; i++) {
+   for (int i = 0; i < neuronCount; i++) {
       synapseIndexMap->outgoingSynapseBegin_[i] = syn_i;
       synapseIndexMap->outgoingSynapseCount_[i] = rgSynapseSynapseIndexMap[i].size();
 
@@ -244,11 +245,11 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
 /*     
  *  Returns an appropriate synapseType object for the given integer.
  *
- *  @param  type_ordinal    Integer that correspond with a synapseType.
+ *  @param  typeOrdinal    Integer that correspond with a synapseType.
  *  @return the SynapseType that corresponds with the given integer.
  */
-synapseType AllSynapses::synapseOrdinalToType(const int type_ordinal) {
-   switch (type_ordinal) {
+synapseType AllSynapses::synapseOrdinalToType(const int typeOrdinal) {
+   switch (typeOrdinal) {
       case 0:
          return II;
       case 1:
@@ -267,7 +268,6 @@ synapseType AllSynapses::synapseOrdinalToType(const int type_ordinal) {
 /*
  *  Advance all the Synapses in the simulation.
  *
- *  @param  sim_info          SimulationInfo class to read information from.
  *  @param  neurons           The Neuron list to search from.
  *  @param  synapseIndexMap   Pointer to SynapseIndexMap structure.
  */
@@ -281,11 +281,11 @@ void AllSynapses::advanceSynapses(IAllNeurons *neurons, SynapseIndexMap *synapse
 /*
  *  Remove a synapse from the network.
  *
- *  @param  neuron_index   Index of a neuron to remove from.
+ *  @param  neuronIndex    Index of a neuron to remove from.
  *  @param  iSyn           Index of a synapse to remove.
  */
-void AllSynapses::eraseSynapse(const int neuron_index, const BGSIZE iSyn) {
-   synapseCounts_[neuron_index]--;
+void AllSynapses::eraseSynapse(const int neuronIndex, const BGSIZE iSyn) {
+   synapseCounts_[neuronIndex]--;
    inUse_[iSyn] = false;
    summationPoint_[iSyn] = NULL;
    W_[iSyn] = 0;
@@ -298,32 +298,32 @@ void AllSynapses::eraseSynapse(const int neuron_index, const BGSIZE iSyn) {
  *
  *  @param  iSyn        Index of the synapse to be added.
  *  @param  type        The type of the Synapse to add.
- *  @param  src_neuron  The Neuron that sends to this Synapse.
- *  @param  dest_neuron The Neuron that receives from the Synapse.
- *  @param  sum_point   Summation point address.
+ *  @param  srcNeuron  The Neuron that sends to this Synapse.
+ *  @param  destNeuron The Neuron that receives from the Synapse.
+ *  @param  sumPoint   Summation point address.
  *  @param  deltaT      Inner simulation step duration
  */
 void
-AllSynapses::addSynapse(BGSIZE &iSyn, synapseType type, const int src_neuron, const int dest_neuron, BGFLOAT *sum_point,
+AllSynapses::addSynapse(BGSIZE &iSyn, synapseType type, const int srcNeuron, const int destNeuron, BGFLOAT *sumPoint,
                         const BGFLOAT deltaT) {
-   if (synapseCounts_[dest_neuron] >= maxSynapsesPerNeuron_) {
-      DEBUG (cout << "Neuron : " << dest_neuron << " ran out of space for new synapses." << endl;)
-      return; // TODO: ERROR!
+   if (synapseCounts_[destNeuron] >= maxSynapsesPerNeuron_) {
+      LOG4CPLUS_FATAL(fileLogger_, "Neuron : " << destNeuron << " ran out of space for new synapses.");
+      throw runtime_error("Neuron : " + destNeuron + string(" ran out of space for new synapses."));
    }
 
    // add it to the list
-   BGSIZE synapse_index;
-   for (synapse_index = 0; synapse_index < maxSynapsesPerNeuron_; synapse_index++) {
-      iSyn = maxSynapsesPerNeuron_ * dest_neuron + synapse_index;
+   BGSIZE synapseIndex;
+   for (synapseIndex = 0; synapseIndex < maxSynapsesPerNeuron_; synapseIndex++) {
+      iSyn = maxSynapsesPerNeuron_ * destNeuron + synapseIndex;
       if (!inUse_[iSyn]) {
          break;
       }
    }
 
-   synapseCounts_[dest_neuron]++;
+   synapseCounts_[destNeuron]++;
 
    // create a synapse
-   createSynapse(iSyn, src_neuron, dest_neuron, sum_point, deltaT, type);
+   createSynapse(iSyn, srcNeuron, destNeuron, sumPoint, deltaT, type);
 }
 
 /*
@@ -349,7 +349,7 @@ int AllSynapses::synSign(const synapseType type) {
 }
 
 /*
- *  Prints SynapsesProps data.
+ *  Prints SynapsesProps data to console.
  */
 void AllSynapses::printSynapsesProps() const {
    cout << "This is SynapsesProps data:" << endl;

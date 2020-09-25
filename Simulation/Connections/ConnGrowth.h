@@ -75,11 +75,13 @@
 
 #pragma once
 
-#include "Global.h"
-#include "Connections.h"
-#include "Simulator.h"
-#include <vector>
 #include <iostream>
+#include <vector>
+
+#include "Connections.h"
+#include "Global.h"
+#include "Simulator.h"
+
 
 /**
 * cereal
@@ -117,9 +119,8 @@ public:
    virtual void loadParameters();
 
    /**
-    *  Prints out all parameters of the connections to ostream.
-    *
-    *  @param  output  ostream to send output to.
+    *  Prints out all parameters to logging file.
+    *  Registered to OperationManager as Operation::printParameters
     */
    virtual void printParameters() const;
 
@@ -131,15 +132,6 @@ public:
     *  @return true if successful, false otherwise.
     */
    virtual bool updateConnections(IAllNeurons &neurons, Layout *layout);
-
-   /**
-    *  Creates a recorder class object for the connection.
-    *  This function tries to create either Xml recorder or
-    *  Hdf5 recorder based on the extension of the file name.
-    *
-    *  @return Pointer to the recorder class object.
-    */
-   virtual IRecorder *createRecorder();
 
    /**
     *  Cereal serialization method
@@ -167,14 +159,14 @@ public:
     *  synaptic strengths from the weight matrix.
     *  Note: Platform Dependent.
     *
-    *  @param  num_neurons         number of neurons to update.
+    *  @param  numNeurons          number of neurons to update.
     *  @param  neurons             the AllNeurons object.
     *  @param  synapses            the AllSynapses object.
     *  @param  m_allNeuronsDevice  Reference to the allNeurons struct in device memory.
     *  @param  m_allSynapsesDevice Reference to the allSynapses struct in device memory.
     *  @param  layout              the Layout object.
     */
-   virtual void updateSynapsesWeights(const int num_neurons,
+   virtual void updateSynapsesWeights(const int numNeurons,
          IAllNeurons &neurons, IAllSynapses &synapses,
          AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice,
          AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice,
@@ -186,14 +178,14 @@ public:
     *  synaptic strengths from the weight matrix.
     *  Note: Platform Dependent.
     *
-    *  @param  num_neurons Number of neurons to update.
+    *  @param  numNeurons Number of neurons to update.
     *  @param  ineurons    the AllNeurons object.
     *  @param  isynapses   the AllSynapses object.
     *  @param  layout      the Layout object.
     * 
     */
    virtual void
-   updateSynapsesWeights(const int num_neurons,
+   updateSynapsesWeights(const int numNeurons,
          IAllNeurons &neurons,
          IAllSynapses &synapses,
          Layout *layout);
@@ -210,18 +202,18 @@ private:
    /**
     *  Update the distance between frontiers of Neurons.
     *
-    *  @param  num_neurons Number of neurons to update.
+    *  @param  numNeurons Number of neurons to update.
     *  @param  layout      Layout information of the neunal network.
     */
-   void updateFrontiers(const int num_neurons, Layout *layout);
+   void updateFrontiers(const int numNeurons, Layout *layout);
 
    /**
     *  Update the areas of overlap in between Neurons.
     *
-    *  @param  num_neurons Number of Neurons to update.
+    *  @param  numNeurons Number of Neurons to update.
     *  @param  layout      Layout information of the neunal network.
     */
-   void updateOverlap(BGFLOAT num_neurons, Layout *layout);
+   void updateOverlap(BGFLOAT numNeurons, Layout *layout);
 
 public:
    struct GrowthParams {

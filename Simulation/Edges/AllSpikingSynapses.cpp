@@ -9,8 +9,8 @@ AllSpikingSynapses::AllSpikingSynapses() : AllSynapses() {
    tau_ = NULL;
 }
 
-AllSpikingSynapses::AllSpikingSynapses(const int num_neurons, const int max_synapses) {
-   setupSynapses(num_neurons, max_synapses);
+AllSpikingSynapses::AllSpikingSynapses(const int numNeurons, const int maxSynapses) {
+   setupSynapses(numNeurons, maxSynapses);
 }
 
 AllSpikingSynapses::~AllSpikingSynapses() {
@@ -20,7 +20,6 @@ AllSpikingSynapses::~AllSpikingSynapses() {
 /*
  *  Setup the internal structure of the class (allocate memories and initialize them).
  *
- *  @param  sim_info  SimulationInfo class to read information from.
  */
 void AllSpikingSynapses::setupSynapses() {
    setupSynapses(Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
@@ -29,21 +28,21 @@ void AllSpikingSynapses::setupSynapses() {
 /*
  *  Setup the internal structure of the class (allocate memories and initialize them).
  *
- *  @param  num_neurons   Total number of neurons in the network.
- *  @param  max_synapses  Maximum number of synapses per neuron.
+ *  @param  numNeurons   Total number of neurons in the network.
+ *  @param  maxSynapses  Maximum number of synapses per neuron.
  */
-void AllSpikingSynapses::setupSynapses(const int num_neurons, const int max_synapses) {
-   AllSynapses::setupSynapses(num_neurons, max_synapses);
+void AllSpikingSynapses::setupSynapses(const int numNeurons, const int maxSynapses) {
+   AllSynapses::setupSynapses(numNeurons, maxSynapses);
 
-   BGSIZE max_total_synapses = max_synapses * num_neurons;
+   BGSIZE maxTotalSynapses = maxSynapses * numNeurons;
 
-   if (max_total_synapses != 0) {
-      decay_ = new BGFLOAT[max_total_synapses];
-      totalDelay_ = new int[max_total_synapses];
-      delayQueue_ = new uint32_t[max_total_synapses];
-      delayIndex_ = new int[max_total_synapses];
-      delayQueueLength_ = new int[max_total_synapses];
-      tau_ = new BGFLOAT[max_total_synapses];
+   if (maxTotalSynapses != 0) {
+      decay_ = new BGFLOAT[maxTotalSynapses];
+      totalDelay_ = new int[maxTotalSynapses];
+      delayQueue_ = new uint32_t[maxTotalSynapses];
+      delayIndex_ = new int[maxTotalSynapses];
+      delayQueueLength_ = new int[maxTotalSynapses];
+      tau_ = new BGFLOAT[maxTotalSynapses];
    }
 }
 
@@ -53,6 +52,7 @@ void AllSpikingSynapses::setupSynapses(const int num_neurons, const int max_syna
 void AllSpikingSynapses::cleanupSynapses() {
    BGSIZE max_total_synapses = maxSynapsesPerNeuron_ * countNeurons_;
 
+   // Causes seg fault right now, probably not getting initialized before this method is called.
 //   if (max_total_synapses != 0) {
 //      delete[] decay_;
 //      delete[] totalDelay_;
@@ -78,12 +78,12 @@ void AllSpikingSynapses::cleanupSynapses() {
  *  @param  iSyn   index of the synapse to set.
  */
 void AllSpikingSynapses::initSpikeQueue(const BGSIZE iSyn) {
-   int &total_delay = this->totalDelay_[iSyn];
+   int &totalDelay = this->totalDelay_[iSyn];
    uint32_t &delayQueue = this->delayQueue_[iSyn];
    int &delayIdx = this->delayIndex_[iSyn];
    int &ldelayQueue = this->delayQueueLength_[iSyn];
 
-   uint32_t size = total_delay / (sizeof(uint8_t) * 8) + 1;
+   uint32_t size = totalDelay / (sizeof(uint8_t) * 8) + 1;
    assert(size <= BYTES_OF_DELAYQUEUE);
    delayQueue = 0;
    delayIdx = 0;
@@ -102,8 +102,9 @@ void AllSpikingSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
    assert(updateDecay(iSyn, deltaT));
 }
 
-/*
- *  Prints out all parameters of the synapses to console.
+/**
+ *  Prints out all parameters to logging file.
+ *  Registered to OperationManager as Operation::printParameters
  */
 void AllSpikingSynapses::printParameters() const {
    AllSynapses::printParameters();
@@ -153,22 +154,21 @@ void AllSpikingSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const 
 /*
  *  Create a Synapse and connect it to the model.
  *
- *  @param  synapses    The synapse list to reference.
  *  @param  iSyn        Index of the synapse to set.
- *  @param  source      Coordinates of the source Neuron.
- *  @param  dest        Coordinates of the destination Neuron.
- *  @param  sum_point   Summation point address.
+ *  @param  srcNeuron   Coordinates of the source Neuron.
+ *  @param  destNeuron  Coordinates of the destination Neuron.
+ *  @param  sumPoint    Summation point address.
  *  @param  deltaT      Inner simulation step duration.
  *  @param  type        Type of the Synapse to create.
  */
-void AllSpikingSynapses::createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sum_point,
+void AllSpikingSynapses::createSynapse(const BGSIZE iSyn, int srcNeuron, int destNeuron, BGFLOAT *sumPoint,
                                        const BGFLOAT deltaT, synapseType type) {
    BGFLOAT delay;
 
    inUse_[iSyn] = true;
-   summationPoint_[iSyn] = sum_point;
-   destNeuronIndex_[iSyn] = dest_index;
-   sourceNeuronIndex_[iSyn] = source_index;
+   summationPoint_[iSyn] = sumPoint;
+   destNeuronIndex_[iSyn] = destNeuron;
+   sourceNeuronIndex_[iSyn] = srcNeuron;
    W_[iSyn] = synSign(type) * 10.0e-9;
    this->type_[iSyn] = type;
    tau_[iSyn] = DEFAULT_tau;
@@ -232,7 +232,7 @@ bool AllSpikingSynapses::isSpikeQueue(const BGSIZE iSyn) {
  *  @param  iSyn   Index of the Synapse to update.
  */
 void AllSpikingSynapses::preSpikeHit(const BGSIZE iSyn) {
-   uint32_t &delay_queue = this->delayQueue_[iSyn];
+   uint32_t &delayQueue = this->delayQueue_[iSyn];
    int &delayIdx = this->delayIndex_[iSyn];
    int &ldelayQueue = this->delayQueueLength_[iSyn];
    int &total_delay = this->totalDelay_[iSyn];
@@ -246,8 +246,8 @@ void AllSpikingSynapses::preSpikeHit(const BGSIZE iSyn) {
    }
 
    // set a spike
-   assert(!(delay_queue & (0x1 << idx)));
-   delay_queue |= (0x1 << idx);
+   assert(!(delayQueue & (0x1 << idx)));
+   delayQueue |= (0x1 << idx);
 }
 
 /*
@@ -262,7 +262,6 @@ void AllSpikingSynapses::postSpikeHit(const BGSIZE iSyn) {
  *  Advance one specific Synapse.
  *
  *  @param  iSyn      Index of the Synapse to connect to.
- *  @param  sim_info  SimulationInfo class to read information from.
  *  @param  neurons   The Neuron list to search from.
  */
 void AllSpikingSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
@@ -325,14 +324,14 @@ bool AllSpikingSynapses::updateDecay(const BGSIZE iSyn, const BGFLOAT deltaT) {
  *  Check if the back propagation (notify a spike event to the pre neuron)
  *  is allowed in the synapse class.
  *
- *  @retrun true if the back propagation is allowed.
+ *  @return true if the back propagation is allowed.
  */
 bool AllSpikingSynapses::allowBackPropagation() {
    return false;
 }
 
 /*
- *  Prints SynapsesProps data.
+ *  Prints SynapsesProps data to console.
  */
 void AllSpikingSynapses::printSynapsesProps() const {
    AllSynapses::printSynapsesProps();

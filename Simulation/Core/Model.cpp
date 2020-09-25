@@ -24,15 +24,17 @@ Model::Model() {
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
    recorder_ = RecorderFactory::getInstance()->createRecorder(type);
    recorder_->init();
+
+   // Get a copy of the file logger to use log4cplus macros
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
-/// Destructor todo: this will change
+/// Destructor
 Model::~Model() {
 
 }
 
 /// Save simulation results to an output destination.
-// todo: recorder should be under model if not layout or connections
 void Model::saveData() {
    if (recorder_ != NULL) {
       recorder_->saveSimData(*layout_->getNeurons());
@@ -42,34 +44,27 @@ void Model::saveData() {
 /// Creates all the Neurons and generates data for them.
 // todo: this is going to go away
 void Model::createAllNeurons() {
-   DEBUG(cerr << "\nAllocating neurons..." << endl;)
+   LOG4CPLUS_INFO(fileLogger_, "Allocating Neurons..." );
 
    layout_->generateNeuronTypeMap(Simulator::getInstance().getTotalNeurons());
    layout_->initStarterMap(Simulator::getInstance().getTotalNeurons());
 
    // set their specific types
-   // todo: neurons_
    layout_->getNeurons()->createAllNeurons(layout_.get());
-
-   DEBUG(cerr << "Done initializing neurons..." << endl;)
 }
 
 /// Sets up the Simulation.
-/// ToDo: find siminfo actual things being passed through
-// todo: to be setup: tell layouts and connections to setup. will setup neurons/synapses.
-// todo: setup recorders.
 void Model::setupSim() {
-   DEBUG(cerr << "\tSetting up neurons....";)
+   LOG4CPLUS_INFO(fileLogger_, "Setting up Neurons...");
    layout_->getNeurons()->setupNeurons();
-   DEBUG(cerr << "done.\n\tSetting up synapses....";)
+   LOG4CPLUS_INFO(fileLogger_, "Setting up Synapses...");
    conns_->getSynapses()->setupSynapses();
 #ifdef PERFORMANCE_METRICS
    // Start timer for initialization
    Simulator::getInstance.short_timer.start();
 #endif
-   DEBUG(cerr << "done.\n\tSetting up layout....";)
+   LOG4CPLUS_INFO(fileLogger_, "Setting up Layout...");
    layout_->setupLayout();
-   DEBUG(cerr << "done." << endl;)
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (layout)
    t_host_initialization_layout += Simulator::getInstance().short_timer.lap() / 1000000.0;
@@ -86,6 +81,7 @@ void Model::setupSim() {
    // Start timer for initialization
    Simulator::getInstance().short_timer.start();
 #endif
+   LOG4CPLUS_INFO(fileLogger_, "Setting up Connections...");
    conns_->setupConnections(layout_.get(), layout_->getNeurons().get(), conns_->getSynapses().get());
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (connections)
@@ -93,6 +89,7 @@ void Model::setupSim() {
 #endif
 
    // create a synapse index map
+   LOG4CPLUS_INFO(fileLogger_, "Creating SynapseIndexMap...");
    conns_->createSynapseIndexMap();
 }
 

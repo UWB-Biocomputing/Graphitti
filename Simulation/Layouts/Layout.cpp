@@ -29,6 +29,9 @@ Layout::Layout() :
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&Layout::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+
+   // Get a copy of the file logger to use log4cplus macros
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
 /// Destructor
@@ -56,20 +59,20 @@ shared_ptr<IAllNeurons> Layout::getNeurons() const {
 /// Setup the internal structure of the class.
 /// Allocate memories to store all layout state, no sequential dependency in this method
 void Layout::setupLayout() {
-   int num_neurons = Simulator::getInstance().getTotalNeurons();
+   int numNeurons = Simulator::getInstance().getTotalNeurons();
 
    // Allocate memory
-   xloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons);
-   yloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons);
-   dist2_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, num_neurons, num_neurons);
-   dist_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, num_neurons, num_neurons);
+   xloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons);
+   yloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons);
+   dist2_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numNeurons, numNeurons);
+   dist_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numNeurons, numNeurons);
 
    // Initialize neuron locations memory, grab global info
    initNeuronsLocs();
 
    // computing distance between each pair of neurons given each neuron's xy location
-   for (int n = 0; n < num_neurons - 1; n++) {
-      for (int n2 = n + 1; n2 < num_neurons; n2++) {
+   for (int n = 0; n < numNeurons - 1; n++) {
+      for (int n2 = n + 1; n2 < numNeurons; n2++) {
          // distance^2 between two points in point-slope form
          (*dist2_)(n, n2) = ((*xloc_)[n] - (*xloc_)[n2]) * ((*xloc_)[n] - (*xloc_)[n2]) +
                             ((*yloc_)[n] - (*yloc_)[n2]) * ((*yloc_)[n] - (*yloc_)[n2]);
@@ -83,8 +86,8 @@ void Layout::setupLayout() {
    (*dist_) = sqrt((*dist2_));
 
    // more allocation of internal memory
-   neuronTypeMap_ = new neuronType[num_neurons]; // todo: make array into vector
-   starterMap_ = new bool[num_neurons]; // todo: make array into vector
+   neuronTypeMap_ = new neuronType[numNeurons]; // todo: make array into vector
+   starterMap_ = new bool[numNeurons]; // todo: make array into vector
 }
 
 /// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
@@ -94,68 +97,64 @@ void Layout::loadParameters() {
    string inhibitoryNListFilePath;
    if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/activeNListFileName/text()",
                                                          activeNListFilePath)) {
-      cerr << "In Layout::loadParameters() "
-           << "Endogenously active neuron list file path wasn't found and will not be initialized"
-           << endl;
-      return;
+      throw runtime_error("In Layout::loadParameters() Endogenously "
+                          "active neuron list file path wasn't found and will not be initialized");
    }
    if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/inhNListFileName/text()",
                                                          inhibitoryNListFilePath)) {
-      cerr << "In Layout::loadParameters() "
-           << "Inhibitory neuron list file path wasn't found and will not be initialized"
-           << endl;
-      return;
+      throw runtime_error("In Layout::loadParameters() "
+                          "Inhibitory neuron list file path wasn't found and will not be initialized");
    }
 
    // Initialize Neuron Lists based on the data read from the xml files
    if (!ParameterManager::getInstance().getIntVectorByXpath(activeNListFilePath, "A", endogenouslyActiveNeuronList_)) {
-      cerr << "In Layout::loadParameters() "
-           << "Endogenously active neuron list file wasn't loaded correctly"
-           << "\n\tfile path: " << activeNListFilePath << endl;
-      return;
+      throw runtime_error("In Layout::loadParameters() "
+                          "Endogenously active neuron list file wasn't loaded correctly"
+                          "\n\tfile path: " + activeNListFilePath);
    }
    numEndogenouslyActiveNeurons_ = endogenouslyActiveNeuronList_.size();
    if (!ParameterManager::getInstance().getIntVectorByXpath(inhibitoryNListFilePath, "I", inhibitoryNeuronLayout_)) {
-      cerr << "In Layout::loadParameters() "
-           << "Inhibitory neuron list file wasn't loaded correctly."
-            << "\n\tfile path: " << inhibitoryNListFilePath << endl;
-      return;
+      throw runtime_error("In Layout::loadParameters() "
+                          "Inhibitory neuron list file wasn't loaded correctly."
+                          "\n\tfile path: " + inhibitoryNListFilePath);
    }
 }
 
 
-/// Prints out all parameters of the layout to console.
+/// Prints out all parameters to logging file. Registered to OperationManager as Operation::printParameters
 void Layout::printParameters() const {
-   cout << "LAYOUT PARAMETERS" << endl;
-
-   cout << "\tEndogenously active neuron positions: ";
+   stringstream output;
+   output << "\nLAYOUT PARAMETERS" << endl;
+   output << "\tEndogenously active neuron positions: ";
    for (BGSIZE i = 0; i < numEndogenouslyActiveNeurons_; i++) {
-      cout << endogenouslyActiveNeuronList_[i] << " ";
+       output << endogenouslyActiveNeuronList_[i] << " ";
    }
-   cout << endl;
+   output << endl;
 
-   cout << "\tInhibitory neuron positions: ";
+   output << "\tInhibitory neuron positions: ";
    for (BGSIZE i = 0; i < inhibitoryNeuronLayout_.size(); i++) {
-      cout << inhibitoryNeuronLayout_[i] << " ";
+      output << inhibitoryNeuronLayout_[i] << " ";
    }
-   cout << endl;
+   output << endl;
+
+   LOG4CPLUS_DEBUG(fileLogger_, output.str());
 }
 
 /// Creates a neurons type map.
-/// @param  num_neurons number of the neurons to have in the type map.
-void Layout::generateNeuronTypeMap(int num_neurons) {
+/// @param  numNeurons number of the neurons to have in the type map.
+void Layout::generateNeuronTypeMap(int numNeurons) {
    DEBUG(cout << "\nInitializing neuron type map" << endl;);
 
-   for (int i = 0; i < num_neurons; i++) {
+   for (int i = 0; i < numNeurons; i++) {
       neuronTypeMap_[i] = EXC;
    }
 }
 
 /// Populates the starter map.
 /// Selects num_endogenously_active_neurons excitory neurons and converts them into starter neurons.
-/// @param  num_neurons number of neurons to have in the map.
-void Layout::initStarterMap(const int num_neurons) {
-   for (int i = 0; i < num_neurons; i++) {
+/// @param  numNeurons number of neurons to have in the map.
+void Layout::initStarterMap(const int numNeurons) {
+   for (int i = 0; i < numNeurons; i++) {
       starterMap_[i] = false;
    }
 }
@@ -167,14 +166,14 @@ void Layout::initStarterMap(const int num_neurons) {
  *  @param    dest_neuron integer that points to a Neuron in the type map as a destination.
  *  @return type of the synapse.
  */
-synapseType Layout::synType(const int src_neuron, const int dest_neuron) {
-   if (neuronTypeMap_[src_neuron] == INH && neuronTypeMap_[dest_neuron] == INH)
+synapseType Layout::synType(const int srcNeuron, const int destNeuron) {
+   if (neuronTypeMap_[srcNeuron] == INH && neuronTypeMap_[destNeuron] == INH)
       return II;
-   else if (neuronTypeMap_[src_neuron] == INH && neuronTypeMap_[dest_neuron] == EXC)
+   else if (neuronTypeMap_[srcNeuron] == INH && neuronTypeMap_[destNeuron] == EXC)
       return IE;
-   else if (neuronTypeMap_[src_neuron] == EXC && neuronTypeMap_[dest_neuron] == INH)
+   else if (neuronTypeMap_[srcNeuron] == EXC && neuronTypeMap_[destNeuron] == INH)
       return EI;
-   else if (neuronTypeMap_[src_neuron] == EXC && neuronTypeMap_[dest_neuron] == EXC)
+   else if (neuronTypeMap_[srcNeuron] == EXC && neuronTypeMap_[destNeuron] == EXC)
       return EE;
 
    return STYPE_UNDEF;

@@ -38,6 +38,8 @@
 
 #include <memory>
 
+#include <log4cplus/loggingmacros.h>
+
 #include "IAllNeurons.h"
 #include "IAllSynapses.h"
 #include "Layout.h"
@@ -79,10 +81,9 @@ public:
    virtual void loadParameters() = 0;
 
    /**
-    *  Prints out all parameters of the connections to ostream.
-    *
-    *  @param  output  ostream to send output to.
-    */
+   *  Prints out all parameters to logging file.
+   *  Registered to OperationManager as Operation::printParameters
+   */
    virtual void printParameters() const = 0;
 
    /**
@@ -95,24 +96,15 @@ public:
    virtual bool updateConnections(IAllNeurons &neurons, Layout *layout);
 
    /**
-    *  Creates a recorder class object for the connection.
-    *  This function tries to create either Xml recorder or
-    *  Hdf5 recorder based on the extension of the file name.
-    *
-    *  @return Pointer to the recorder class object.
-    */
-   virtual IRecorder *createRecorder() = 0;
-
-   /**
     *  Creates synapses from synapse weights saved in the serialization file.
     *
-    *  @param  num_neurons Number of neurons to update.
+    *  @param  numNeurons Number of neurons to update.
     *  @param  layout      Layout information of the neunal network.
     *  @param  ineurons    The Neuron list to search from.
     *  @param  isynapses   The Synapse list to search from.
     */
    void
-   createSynapsesFromWeights(const int num_neurons, Layout *layout, IAllNeurons &ineurons, IAllSynapses &isynapses);
+   createSynapsesFromWeights(const int numNeurons, Layout *layout, IAllNeurons &ineurons, IAllSynapses &isynapses);
 
 #if defined(USE_GPU)
    public:
@@ -120,26 +112,26 @@ public:
         *  Update the weight of the Synapses in the simulation.
         *  Note: Platform Dependent.
         *
-        *  @param  num_neurons         number of neurons to update.
+        *  @param  numNeurons          number of neurons to update.
         *  @param  neurons             the Neuron list to search from.
         *  @param  synapses            the Synapse list to search from.
         *  @param  m_allNeuronsDevice  Reference to the allNeurons struct on device memory.
         *  @param  m_allSynapsesDevice Reference to the allSynapses struct on device memory.
         *  @param  layout              Layout information of the neunal network.
         */
-       virtual void updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout);
+       virtual void updateSynapsesWeights(const int numNeurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout);
 #else
 public:
    /**
     *  Update the weight of the Synapses in the simulation.
     *  Note: Platform Dependent.
     *
-    *  @param  num_neurons Number of neurons to update.
+    *  @param  numNeurons Number of neurons to update.
     *  @param  ineurons    The Neuron list to search from.
     *  @param  isynapses   The Synapse list to search from.
     */
    virtual void
-   updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout);
+   updateSynapsesWeights(const int numNeurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout);
 
 #endif // USE_GPU
 
@@ -148,5 +140,7 @@ protected:
    shared_ptr<IAllSynapses> synapses_;
 
    shared_ptr<SynapseIndexMap> synapseIndexMap_;
+
+   log4cplus::Logger fileLogger_;
 };
 

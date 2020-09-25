@@ -3,8 +3,7 @@
 #include "OperationManager.h"
 
 // Default constructor
-AllNeurons::AllNeurons() :
-      size_(0) {
+AllNeurons::AllNeurons() : size_(0) {
    summationMap_ = NULL;
 
    // Register loadParameters function as a loadParameters operation in the Operation Manager
@@ -14,6 +13,10 @@ AllNeurons::AllNeurons() :
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&IAllNeurons::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+
+   // Get a copy of the file and neuron logger to use log4cplus macros to print to debug files
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   neuronLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("neuron"));
 }
 
 AllNeurons::~AllNeurons() {
@@ -22,8 +25,6 @@ AllNeurons::~AllNeurons() {
 
 /*
  *  Setup the internal structure of the class (allocate memories).
- *
- *  @param  sim_info  SimulationInfo class to read information from.
  */
 void AllNeurons::setupNeurons() {
    size_ = Simulator::getInstance().getTotalNeurons();
@@ -56,6 +57,10 @@ void AllNeurons::freeResources() {
    size_ = 0;
 }
 
+/**
+ *  Prints out all parameters of the neurons to logging file.
+ *  Registered to OperationManager as Operation::printParameters
+ */
 void AllNeurons::printParameters() const {
-   cout << "VERTICE PARAMETERS" << endl;
+   LOG4CPLUS_DEBUG(fileLogger_, "\nVERTICES PARAMETERS");
 }

@@ -25,9 +25,9 @@ int main() {
    ::log4cplus::initialize();
    ::log4cplus::PropertyConfigurator::doConfigure("RuntimeFiles/log4cplus_configure.ini");
 
-   // Get the instance of the main logger and begin tests
-   log4cplus::Logger logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("main"));
-   LOG4CPLUS_INFO(logger, "Running Tests");
+   // Get the instance of the console logger and begin tests
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+   LOG4CPLUS_INFO(consoleLogger, "Running Tests");
 
    // Disabling cout and cerr so output and error messages won't interrupt test flow.
    std::cout.setstate(std::ios_base::failbit);

@@ -37,7 +37,6 @@
 \* --------------------------------------------- */
 
 #include "Connections.h"
-
 #include "IAllSynapses.h"
 #include "IAllNeurons.h"
 #include "AllSynapses.h"
@@ -59,6 +58,9 @@ Connections::Connections() {
    // Register loadParameters function with Operation Manager
    function<void()> function = std::bind(&Connections::loadParameters, this);
    OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function);
+
+   // Get a copy of the file logger to use log4cplus macros
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
 Connections::~Connections() {
@@ -88,7 +90,7 @@ bool Connections::updateConnections(IAllNeurons &neurons, Layout *layout) {
 }
 
 #if defined(USE_GPU)
-void Connections::updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout)
+void Connections::updateSynapsesWeights(const int numNeurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout)
 {
 }
 #else
@@ -97,11 +99,11 @@ void Connections::updateSynapsesWeights(const int num_neurons, IAllNeurons &neur
  *  Update the weight of the Synapses in the simulation.
  *  Note: Platform Dependent.
  *
- *  @param  num_neurons Number of neurons to update.
+ *  @param  numNeurons Number of neurons to update.
  *  @param  neurons     The Neuron list to search from.
  *  @param  synapses    The Synapse list to search from.
  */
-void Connections::updateSynapsesWeights(const int num_neurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout) {
+void Connections::updateSynapsesWeights(const int numNeurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout) {
 }
 
 #endif // !USE_GPU
@@ -109,31 +111,31 @@ void Connections::updateSynapsesWeights(const int num_neurons, IAllNeurons &neur
 /*
  *  Creates synapses from synapse weights saved in the serialization file.
  *
- *  @param  num_neurons Number of neurons to update.
+ *  @param  numNeurons Number of neurons to update.
  *  @param  layout      Layout information of the neunal network.
  *  @param  ineurons    The Neuron list to search from.
  *  @param  isynapses   The Synapse list to search from.
  */
-void Connections::createSynapsesFromWeights(const int num_neurons, Layout *layout, IAllNeurons &ineurons,
+void Connections::createSynapsesFromWeights(const int numNeurons, Layout *layout, IAllNeurons &ineurons,
                                             IAllSynapses &isynapses) {
    AllNeurons &neurons = dynamic_cast<AllNeurons &>(ineurons);
    AllSynapses &synapses = dynamic_cast<AllSynapses &>(isynapses);
 
    // for each neuron
-   for (int iNeuron = 0; iNeuron < num_neurons; iNeuron++) {
+   for (int iNeuron = 0; iNeuron < numNeurons; iNeuron++) {
       // for each synapse in the neuron
-      for (BGSIZE synapse_index = 0;
-           synapse_index < Simulator::getInstance().getMaxSynapsesPerNeuron(); synapse_index++) {
-         BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * iNeuron + synapse_index;
+      for (BGSIZE synapseIndex = 0;
+           synapseIndex < Simulator::getInstance().getMaxSynapsesPerNeuron(); synapseIndex++) {
+         BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * iNeuron + synapseIndex;
          // if the synapse weight is not zero (which means there is a connection), create the synapse
          if (synapses.W_[iSyn] != 0.0) {
             BGFLOAT theW = synapses.W_[iSyn];
-            BGFLOAT *sum_point = &(neurons.summationMap_[iNeuron]);
-            int src_neuron = synapses.sourceNeuronIndex_[iSyn];
-            int dest_neuron = synapses.destNeuronIndex_[iSyn];
-            synapseType type = layout->synType(src_neuron, dest_neuron);
+            BGFLOAT *sumPoint = &(neurons.summationMap_[iNeuron]);
+            int srcNeuron = synapses.sourceNeuronIndex_[iSyn];
+            int destNeuron = synapses.destNeuronIndex_[iSyn];
+            synapseType type = layout->synType(srcNeuron, destNeuron);
             synapses.synapseCounts_[iNeuron]++;
-            synapses.createSynapse(iSyn, src_neuron, dest_neuron, sum_point, Simulator::getInstance().getDeltaT(),
+            synapses.createSynapse(iSyn, srcNeuron, destNeuron, sumPoint, Simulator::getInstance().getDeltaT(),
                                    type);
             synapses.W_[iSyn] = theW;
          }

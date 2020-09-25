@@ -34,25 +34,26 @@ public:
    static Layout *Create() { return new DynamicLayout(); }
 
    /**
-    *  Prints out all parameters of the neurons to console.
+    *  Prints out all parameters to logging file.
+    *  Registered to OperationManager as Operation::printParameters
     */
    virtual void printParameters() const;
 
    /**
     *  Creates a randomly ordered distribution with the specified numbers of neuron types.
     *
-    *  @param  num_neurons number of the neurons to have in the type map.
+    *  @param  numNeurons number of the neurons to have in the type map.
     */
-   virtual void generateNeuronTypeMap(int num_neurons);
+   virtual void generateNeuronTypeMap(int numNeurons);
 
    /**
     *  Populates the starter map.
     *  Selects num_endogenously_active_neurons excitory neurons
     *  and converts them into starter neurons.
     *
-    *  @param  num_neurons number of neurons to have in the map.
+    *  @param  numNeurons number of neurons to have in the map.
     */
-   virtual void initStarterMap(const int num_neurons);
+   virtual void initStarterMap(const int numNeurons);
 
 private:
    //! Fraction of endogenously active neurons.

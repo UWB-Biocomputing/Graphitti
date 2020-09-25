@@ -24,7 +24,6 @@ public:
     *  Setup the internal structure of the class.
     *  Allocate memories to store all neurons' state.
     *
-    *  @param  sim_info  SimulationInfo class to read information from.
     */
    virtual void setupNeurons() = 0;
 
@@ -34,20 +33,22 @@ public:
     */
    virtual void cleanupNeurons() = 0;
 
-   /// Load member variables from configuration file. Registered to OperationManager as Operation::op::loadParameters
+
+    /*
+     *  Load member variables from configuration file.
+     *  Registered to OperationManager as Operation::loadParameters
+     */
    virtual void loadParameters() = 0;
 
    /**
-    *  Prints out all parameters of the neurons to ostream.
-    *
-    *  @param  output  ostream to send output to.
+    *  Prints out all parameters of the neurons to logging file.
+    *  Registered to OperationManager as Operation::printParameters
     */
    virtual void printParameters() const = 0;
 
    /**
     *  Creates all the Neurons and assigns initial data for them.
     *
-    *  @param  sim_info    SimulationInfo class to read information from.
     *  @param  layout      Layout information of the neunal network.
     */
    virtual void createAllNeurons(Layout *layout) = 0;
@@ -121,7 +122,6 @@ public:
     *  Notify outgoing synapses if neuron has fired.
     *
     *  @param  synapses         The Synapse list to search from.
-    *  @param  sim_info         SimulationInfo class to read information from.
     *  @param  synapseIndexMap  Reference to the SynapseIndexMap.
     */
    virtual void advanceNeurons(IAllSynapses &synapses, const SynapseIndexMap *synapseIndexMap) = 0;

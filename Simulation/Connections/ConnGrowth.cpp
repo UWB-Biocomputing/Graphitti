@@ -125,20 +125,19 @@ void ConnGrowth::loadParameters() {
    ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/startRadius/text()", growthParams_.startRadius);
 }
 
-/*
- *  Prints out all parameters of the connections to ostream.
- *
- *  @param  output  ostream to send output to.
+/**
+ *  Prints out all parameters to logging file.
+ *  Registered to OperationManager as Operation::printParameters
  */
 void ConnGrowth::printParameters() const {
-   cout << "CONNECTIONS PARAMETERS" << endl;
-   cout << "\tConnections type: ConnGrowth" << endl;
-   cout << "\tepsilon: " << growthParams_.epsilon << endl;
-   cout << "\tbeta: " << growthParams_.beta << endl;
-   cout << "\trho: " << growthParams_.rho << endl;
-   cout << "\tTarget rate: " << growthParams_.targetRate << "," << endl;
-   cout << "\tMinimum radius: " << growthParams_.minRadius << endl;
-   cout << "\tStarting raduis: " << growthParams_.startRadius << endl << endl;
+   LOG4CPLUS_DEBUG(fileLogger_, "\nCONNECTIONS PARAMETERS" << endl
+    << "\tConnections type: ConnGrowth" << endl
+    << "\tepsilon: " << growthParams_.epsilon << endl
+    << "\tbeta: " << growthParams_.beta << endl
+    << "\trho: " << growthParams_.rho << endl
+    << "\tTarget rate: " << growthParams_.targetRate << "," << endl
+    << "\tMinimum radius: " << growthParams_.minRadius << endl
+    << "\tStarting raduis: " << growthParams_.startRadius << endl << endl);
 }
 
 /*
@@ -188,14 +187,14 @@ void ConnGrowth::updateConns(IAllNeurons &neurons) {
 /*
  *  Update the distance between frontiers of Neurons.
  *
- *  @param  num_neurons Number of neurons to update.
+ *  @param  numNeurons  Number of neurons to update.
  *  @param  layout      Layout information of the neunal network.
  */
-void ConnGrowth::updateFrontiers(const int num_neurons, Layout *layout) {
-   DEBUG(cout << "Updating distance between frontiers..." << endl;)
+void ConnGrowth::updateFrontiers(const int numNeurons, Layout *layout) {
+   LOG4CPLUS_INFO(fileLogger_, "Updating distance between frontiers...");
    // Update distance between frontiers
-   for (int unit = 0; unit < num_neurons - 1; unit++) {
-      for (int i = unit + 1; i < num_neurons; i++) {
+   for (int unit = 0; unit < numNeurons - 1; unit++) {
+      for (int i = unit + 1; i < numNeurons; i++) {
          (*delta_)(unit, i) = (*layout->dist_)(unit, i) - ((*radii_)[unit] + (*radii_)[i]);
          (*delta_)(i, unit) = (*delta_)(unit, i);
       }
@@ -205,15 +204,15 @@ void ConnGrowth::updateFrontiers(const int num_neurons, Layout *layout) {
 /*
  *  Update the areas of overlap in between Neurons.
  *
- *  @param  num_neurons Number of Neurons to update.
+ *  @param  numNeurons  Number of Neurons to update.
  *  @param  layout      Layout information of the neunal network.
  */
-void ConnGrowth::updateOverlap(BGFLOAT num_neurons, Layout *layout) {
-   DEBUG(cout << "computing areas of overlap" << endl;)
+void ConnGrowth::updateOverlap(BGFLOAT numNeurons, Layout *layout) {
+   LOG4CPLUS_INFO(fileLogger_, "Computing areas of overlap");
 
    // Compute areas of overlap; this is only done for overlapping units
-   for (int i = 0; i < num_neurons; i++) {
-      for (int j = 0; j < num_neurons; j++) {
+   for (int i = 0; i < numNeurons; i++) {
+      for (int j = 0; j < numNeurons; j++) {
          (*area_)(i, j) = 0.0;
 
          if ((*delta_)(i, j) < 0) {
@@ -224,10 +223,8 @@ void ConnGrowth::updateOverlap(BGFLOAT num_neurons, Layout *layout) {
             if (lenAB + min(r1, r2) <= max(r1, r2)) {
                (*area_)(i, j) = pi * min(r1, r2) * min(r1, r2); // Completely overlapping unit
 
-#ifdef LOGFILE
-               logFile << "Completely overlapping (i, j, r1, r2, area): "
-                   << i << ", " << j << ", " << r1 << ", " << r2 << ", " << *pAarea(i, j) << endl;
-#endif // LOGFILE
+               LOG4CPLUS_DEBUG(fileLogger_, "Completely overlapping (i, j, r1, r2, area): "
+                     << i << ", " << j << ", " << r1 << ", " << r2 << ", " << *area_ << endl);
             } else {
                // Partially overlapping unit
                BGFLOAT lenAB2 = (*layout->dist2_)(i, j);
@@ -263,12 +260,12 @@ void ConnGrowth::updateOverlap(BGFLOAT num_neurons, Layout *layout) {
  *  and updates their synaptic strengths from the weight matrix.
  *  Note: Platform Dependent.
  *
- *  @param  num_neurons Number of neurons to update.
+ *  @param  numNeurons  Number of neurons to update.
  *  @param  ineurons    the AllNeurons object.
  *  @param  isynapses   the AllSynapses object.
  *  @param  layout      the Layout object.
  */
-void ConnGrowth::updateSynapsesWeights(const int num_neurons, IAllNeurons &ineurons, IAllSynapses &isynapses,
+void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllNeurons &ineurons, IAllSynapses &isynapses,
                                        Layout *layout) {
    AllNeurons &neurons = dynamic_cast<AllNeurons &>(ineurons);
    AllSynapses &synapses = dynamic_cast<AllSynapses &>(isynapses);
@@ -278,17 +275,17 @@ void ConnGrowth::updateSynapsesWeights(const int num_neurons, IAllNeurons &ineur
    (*W_) = (*area_);
 
    int adjusted = 0;
-   int could_have_been_removed = 0; // TODO: use this value
+   int couldBeRemoved = 0; // TODO: use this value
    int removed = 0;
    int added = 0;
 
-   DEBUG(cout << "adjusting weights" << endl;)
+   LOG4CPLUS_INFO(fileLogger_, "Adjusting Synapse weights");
 
    // Scale and add sign to the areas
    // visit each neuron 'a'
-   for (int src_neuron = 0; src_neuron < num_neurons; src_neuron++) {
+   for (int src_neuron = 0; src_neuron < numNeurons; src_neuron++) {
       // and each destination neuron 'b'
-      for (int dest_neuron = 0; dest_neuron < num_neurons; dest_neuron++) {
+      for (int dest_neuron = 0; dest_neuron < numNeurons; dest_neuron++) {
          // visit each synapse at (xa,ya)
          bool connected = false;
          synapseType type = layout->synType(src_neuron, dest_neuron);
@@ -315,9 +312,9 @@ void ConnGrowth::updateSynapsesWeights(const int num_neurons, IAllNeurons &ineur
                      synapses.W_[iSyn] = (*W_)(src_neuron, dest_neuron) *
                                          synapses.synSign(type) * AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
 
-                     DEBUG_MID(cout << "weight of rgSynapseMap" <<
-                                    "[" << synapse_index << "]: " <<
-                                    synapses.W_[iSyn] << endl;);
+                     LOG4CPLUS_DEBUG(fileLogger_, "Weight of rgSynapseMap" <<
+                                                                           "[" << synapse_index << "]: " <<
+                                                                           synapses.W_[iSyn]);
                   }
                }
                synapse_adjusted++;
@@ -343,41 +340,14 @@ void ConnGrowth::updateSynapsesWeights(const int num_neurons, IAllNeurons &ineur
       }
    }
 
-   DEBUG (cout << "adjusted: " << adjusted << endl;)
-   DEBUG (cout << "could have been removed (TODO: calculate this): " << could_have_been_removed << endl;)
-   DEBUG (cout << "removed: " << removed << endl;)
-   DEBUG (cout << "added: " << added << endl << endl << endl;)
+   LOG4CPLUS_INFO(fileLogger_, "\nAdjusted: " << adjusted
+             << "\nCould have been removed (TODO: calculate this): " << couldBeRemoved
+             << "\nRemoved: " << removed
+             << "\nAdded: " << added);
 }
 
 #endif // !USE_GPU
 
-/*
- *  Creates a recorder class object for the connection.
- *  This function tries to create either Xml recorder or
- *  Hdf5 recorder based on the extension of the file name.
- *
- *  @return Pointer to the recorder class object.
- */
-IRecorder *ConnGrowth::createRecorder() {
-   // create & init simulation recorder
-   IRecorder *simRecorder = NULL;
-   if (Simulator::getInstance().getResultFileName().find(".xml") != string::npos) {
-      simRecorder = new XmlRecorder();
-   }
-#ifdef USE_HDF5
-      else if (simInfo->resultFileName.find(".h5") != string::npos) {
-          simRecorder = new Hdf5GrowthRecorder(simInfo);
-      }
-#endif // USE_HDF5
-   else {
-      return NULL;
-   }
-   if (simRecorder != NULL) {
-      simRecorder->init();
-   }
-
-   return simRecorder;
-}
 
 /**
  *  Prints radii 
