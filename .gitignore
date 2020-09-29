@@ -57,6 +57,7 @@ _deps
 .*.sw?
 .idea/
 .vs/
+.vscode/
 
 # Google Test
 Testing/lib/
@@ -64,6 +65,8 @@ lib/
 
 # log4cplus logging file
 Output/Debug/logging.txt
+Output/
+#ThirdParty/log4cplus-2.0.2/bin/
 
 # Result files
 Output/Results/*.xml
