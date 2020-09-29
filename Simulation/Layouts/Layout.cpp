@@ -162,8 +162,8 @@ void Layout::initStarterMap(const int numNeurons) {
 /*
  *  Returns the type of synapse at the given coordinates
  *
- *  @param    src_neuron  integer that points to a Neuron in the type map as a source.
- *  @param    dest_neuron integer that points to a Neuron in the type map as a destination.
+ *  @param    srcNeuron  integer that points to a Neuron in the type map as a source.
+ *  @param    destNeuron integer that points to a Neuron in the type map as a destination.
  *  @return type of the synapse.
  */
 synapseType Layout::synType(const int srcNeuron, const int destNeuron) {

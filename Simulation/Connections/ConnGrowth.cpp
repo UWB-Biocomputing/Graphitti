@@ -169,11 +169,11 @@ void ConnGrowth::updateConns(IAllNeurons &neurons) {
    AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(neurons);
 
    // Calculate growth cycle firing rate for previous period
-   int max_spikes = static_cast<int> (Simulator::getInstance().getEpochDuration() *
+   int maxSpikes = static_cast<int> (Simulator::getInstance().getEpochDuration() *
                                       Simulator::getInstance().getMaxFiringRate());
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
       // Calculate firing rate
-      assert(spNeurons.spikeCount_[i] < max_spikes);
+      assert(spNeurons.spikeCount_[i] < maxSpikes);
       (*rates_)[i] = spNeurons.spikeCount_[i] / Simulator::getInstance().getEpochDuration();
    }
 
@@ -283,33 +283,33 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllNeurons &ineuro
 
    // Scale and add sign to the areas
    // visit each neuron 'a'
-   for (int src_neuron = 0; src_neuron < numNeurons; src_neuron++) {
+   for (int srcNeuron = 0; srcNeuron < numNeurons; srcNeuron++) {
       // and each destination neuron 'b'
-      for (int dest_neuron = 0; dest_neuron < numNeurons; dest_neuron++) {
+      for (int destNeuron = 0; destNeuron < numNeurons; destNeuron++) {
          // visit each synapse at (xa,ya)
          bool connected = false;
-         synapseType type = layout->synType(src_neuron, dest_neuron);
+         synapseType type = layout->synType(srcNeuron, destNeuron);
 
          // for each existing synapse
-         BGSIZE synapse_counts = synapses.synapseCounts_[dest_neuron];
+         BGSIZE synapseCounts = synapses.synapseCounts_[destNeuron];
          BGSIZE synapse_adjusted = 0;
-         BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * dest_neuron;
-         for (BGSIZE synapseIndex = 0; synapse_adjusted < synapse_counts; synapseIndex++, iSyn++) {
+         BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * destNeuron;
+         for (BGSIZE synapseIndex = 0; synapse_adjusted < synapseCounts; synapseIndex++, iSyn++) {
             if (synapses.inUse_[iSyn] == true) {
                // if there is a synapse between a and b
-               if (synapses.sourceNeuronIndex_[iSyn] == src_neuron) {
+               if (synapses.sourceNeuronIndex_[iSyn] == srcNeuron) {
                   connected = true;
                   adjusted++;
                   // adjust the strength of the synapse or remove
                   // it from the synapse map if it has gone below
                   // zero.
-                  if ((*W_)(src_neuron, dest_neuron) <= 0) {
+                  if ((*W_)(srcNeuron, destNeuron) <= 0) {
                      removed++;
-                     synapses.eraseSynapse(dest_neuron, iSyn);
+                     synapses.eraseSynapse(destNeuron, iSyn);
                   } else {
                      // adjust
                      // SYNAPSE_STRENGTH_ADJUSTMENT is 1.0e-8;
-                     synapses.W_[iSyn] = (*W_)(src_neuron, dest_neuron) *
+                     synapses.W_[iSyn] = (*W_)(srcNeuron, destNeuron) *
                                          synapses.synSign(type) * AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
 
                      LOG4CPLUS_DEBUG(fileLogger_, "Weight of rgSynapseMap" <<
@@ -323,17 +323,17 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllNeurons &ineuro
          }
 
          // if not connected and weight(a,b) > 0, add a new synapse from a to b
-         if (!connected && ((*W_)(src_neuron, dest_neuron) > 0)) {
+         if (!connected && ((*W_)(srcNeuron, destNeuron) > 0)) {
 
             // locate summation point
-            BGFLOAT *sum_point = &(neurons.summationMap_[dest_neuron]);
+            BGFLOAT *sumPoint = &(neurons.summationMap_[destNeuron]);
             added++;
 
             BGSIZE iSyn;
-            synapses.addSynapse(iSyn, type, src_neuron, dest_neuron, sum_point,
+            synapses.addSynapse(iSyn, type, srcNeuron, destNeuron, sumPoint,
                                 Simulator::getInstance().getDeltaT());
             synapses.W_[iSyn] =
-                  (*W_)(src_neuron, dest_neuron) * synapses.synSign(type) *
+                  (*W_)(srcNeuron, destNeuron) * synapses.synSign(type) *
                   AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
 
          }

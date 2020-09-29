@@ -69,10 +69,10 @@ void AllSpikingNeurons::freeResources() {
  *  Clear the spike counts out of all Neurons.
  */
 void AllSpikingNeurons::clearSpikeCounts() {
-   int max_spikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
+   int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
-      spikeCountOffset_[i] = (spikeCount_[i] + spikeCountOffset_[i]) % max_spikes;
+      spikeCountOffset_[i] = (spikeCount_[i] + spikeCountOffset_[i]) % maxSpikes;
       spikeCount_[i] = 0;
    }
 }
@@ -87,7 +87,7 @@ void AllSpikingNeurons::clearSpikeCounts() {
  *  @param  synapseIndexMap  Reference to the SynapseIndexMap.
  */
 void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SynapseIndexMap *synapseIndexMap) {
-   int max_spikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
+   int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
    AllSpikingSynapses spSynapses = dynamic_cast<AllSpikingSynapses &>(synapses);
    // For each neuron in the network
@@ -100,7 +100,7 @@ void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SynapseInde
          LOG4CPLUS_DEBUG(neuronLogger_, "Neuron: " << idx << " has fired at time: "
                         << g_simulationStep * Simulator::getInstance().getDeltaT());
 
-         assert(spikeCount_[idx] < max_spikes);
+         assert(spikeCount_[idx] < maxSpikes);
 
          // notify outgoing synapses
          BGSIZE synapseCounts;

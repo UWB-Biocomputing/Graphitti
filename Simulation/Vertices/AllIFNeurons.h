@@ -121,49 +121,49 @@ public:
         *
         *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
         */
-       virtual void allocNeuronDeviceStruct( void** allNeuronsDevice);
+       virtual void allocNeuronDeviceStruct( void** allNeuronsDevice );
 
        /**
         *  Delete GPU memories.
         *
         *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
         */
-       virtual void deleteNeuronDeviceStruct( void* allNeuronsDevice);
+       virtual void deleteNeuronDeviceStruct( void* allNeuronsDevice );
 
        /**
         *  Copy all neurons' data from host to device.
         *
         *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
         */
-       virtual void copyNeuronHostToDevice( void* allNeuronsDevice);
+       virtual void copyNeuronHostToDevice( void* allNeuronsDevice );
 
        /**
         *  Copy all neurons' data from device to host.
         *
         *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
         */
-       virtual void copyNeuronDeviceToHost( void* allNeuronsDevice);
+       virtual void copyNeuronDeviceToHost( void* allNeuronsDevice );
 
        /**
         *  Copy spike history data stored in device memory to host.
         *
         *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
         */
-       virtual void copyNeuronDeviceSpikeHistoryToHost( void* allNeuronsDevice);
+       virtual void copyNeuronDeviceSpikeHistoryToHost( void* allNeuronsDevice );
 
        /**
         *  Copy spike counts data stored in device memory to host.
         *
         *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
         */
-       virtual void copyNeuronDeviceSpikeCountsToHost( void* allNeuronsDevice);
+       virtual void copyNeuronDeviceSpikeCountsToHost( void* allNeuronsDevice );
 
        /**
         *  Clear the spike counts out of all neurons.
         *
         *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
         */
-       virtual void clearNeuronSpikeCounts( void* allNeuronsDevice);
+       virtual void clearNeuronSpikeCounts( void* allNeuronsDevice );
 
    protected:
        /**
@@ -172,7 +172,7 @@ public:
         *
         *  @param  allNeurons         Reference to the AllIFNeuronsDeviceProperties struct.
         */
-       void allocDeviceStruct( AllIFNeuronsDeviceProperties &allNeurons);
+       void allocDeviceStruct( AllIFNeuronsDeviceProperties &allNeurons );
 
        /**
         *  Delete GPU memories.
@@ -180,7 +180,7 @@ public:
         *
         *  @param  allNeurons         Reference to the AllIFNeuronsDeviceProperties struct.
         */
-       void deleteDeviceStruct( AllIFNeuronsDeviceProperties& allNeurons);
+       void deleteDeviceStruct( AllIFNeuronsDeviceProperties& allNeurons );
 
        /**
         *  Copy all neurons' data from host to device.
@@ -188,7 +188,7 @@ public:
         *
         *  @param  allNeurons         Reference to the AllIFNeuronsDeviceProperties struct.
         */
-  void copyHostToDevice( AllIFNeuronsDeviceProperties& allNeurons);
+  void copyHostToDevice( AllIFNeuronsDeviceProperties& allNeurons );
 
        /**
         *  Copy all neurons' data from device to host.
@@ -196,7 +196,7 @@ public:
         *
         *  @param  allNeurons         Reference to the AllIFNeuronsDeviceProperties struct.
         */
-  void copyDeviceToHost( AllIFNeuronsDeviceProperties& allNeurons);
+  void copyDeviceToHost( AllIFNeuronsDeviceProperties& allNeurons );
 
 #endif // defined(USE_GPU)
 

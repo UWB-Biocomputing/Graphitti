@@ -101,9 +101,9 @@ void AllSynapses::printParameters() const {
  *  Cleanup the class (deallocate memories).
  */
 void AllSynapses::cleanupSynapses() {
-   BGSIZE max_total_synapses = maxSynapsesPerNeuron_ * countNeurons_;
+   BGSIZE maxTotalSynapses = maxSynapsesPerNeuron_ * countNeurons_;
 
-//   if (max_total_synapses != 0) {
+//   if (maxTotalSynapses != 0) {
 //      delete[] destNeuronIndex_;
 //      delete[] W_;
 //      delete[] summationPoint_;

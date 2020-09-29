@@ -3,9 +3,10 @@
  *
  */
 
-#include "AllDSSynapses.h"
+#include "Edges/AllDSSynapses.h"
 #include "GPUSpikingModel.h"
 #include "AllSynapsesDeviceFuncs.h"
+#include "Simulator.h"
 #include "Book.h"
 
 /*
@@ -14,10 +15,9 @@
  *
  *  @param  allSynapsesDevice  Reference to the AllDSSynapsesDeviceProperties struct 
  *                             on device memory.
- *  @param  sim_info           SimulationInfo to refer from.
  */
-void AllDSSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice, const SimulationInfo *sim_info ) {
-	allocSynapseDeviceStruct( allSynapsesDevice, sim_info->totalNeurons, sim_info->maxSynapsesPerNeuron );
+void AllDSSynapses::allocSynapseDeviceStruct ( void** allSynapsesDevice ) {
+	allocSynapseDeviceStruct(allSynapsesDevice, Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
 }
 
 /*
@@ -26,15 +26,15 @@ void AllDSSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice, const Si
  *
  *  @param  allSynapsesDevice     Reference to the AllDSSynapsesDeviceProperties struct 
  *                                on device memory.
- *  @param  num_neurons           Number of neurons.
+ *  @param  numNeurons           Number of neurons.
  *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
  */
-void AllDSSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice, int num_neurons, int maxSynapsesPerNeuron ) {
+void AllDSSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron ) {
 	AllDSSynapsesDeviceProperties allSynapses;
 
-	allocDeviceStruct( allSynapses, num_neurons, maxSynapsesPerNeuron );
+	allocDeviceStruct( allSynapses, numNeurons, maxSynapsesPerNeuron );
 
-	HANDLE_ERROR( cudaMalloc( allSynapsesDevice, sizeof( AllDSSynapsesDeviceProperties ) ) );
+	HANDLE_ERROR( cudaMalloc ( allSynapsesDevice, sizeof( AllDSSynapsesDeviceProperties ) ) );
 	HANDLE_ERROR( cudaMemcpy ( *allSynapsesDevice, &allSynapses, sizeof( AllDSSynapsesDeviceProperties ), cudaMemcpyHostToDevice ) );
 }
 
@@ -45,20 +45,20 @@ void AllDSSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice, int num_
  *
  *  @param  allSynapsesDevice     Reference to the AllDSSynapsesDeviceProperties struct 
  *                                on device memory.
- *  @param  num_neurons           Number of neurons.
+ *  @param  numNeurons           Number of neurons.
  *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
  */
-void AllDSSynapses::allocDeviceStruct( AllDSSynapsesDeviceProperties &allSynapses, int num_neurons, int maxSynapsesPerNeuron ) {
-        AllSpikingSynapses::allocDeviceStruct( allSynapses, num_neurons, maxSynapsesPerNeuron );
+void AllDSSynapses::allocDeviceStruct( AllDSSynapsesDeviceProperties &allSynapses, int numNeurons, int maxSynapsesPerNeuron ) {
+        AllSpikingSynapses::allocDeviceStruct( allSynapses, numNeurons, maxSynapsesPerNeuron );
 
-        BGSIZE max_total_synapses = maxSynapsesPerNeuron * num_neurons;
+        BGSIZE maxTotalSynapses = maxSynapsesPerNeuron * numNeurons;
 
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.lastSpike, max_total_synapses * sizeof( uint64_t ) ) );
-	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.r, max_total_synapses * sizeof( BGFLOAT ) ) );
-	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.u, max_total_synapses * sizeof( BGFLOAT ) ) );
-	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.D, max_total_synapses * sizeof( BGFLOAT ) ) );
-	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.U, max_total_synapses * sizeof( BGFLOAT ) ) );
-	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.F, max_total_synapses * sizeof( BGFLOAT ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.lastSpike_, maxTotalSynapses * sizeof( uint64_t ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.r_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.u_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.D_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.U_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.F_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
 }
 
 /*
@@ -66,7 +66,6 @@ void AllDSSynapses::allocDeviceStruct( AllDSSynapsesDeviceProperties &allSynapse
  *
  *  @param  allSynapsesDevice  Reference to the AllDSSynapsesDeviceProperties struct 
  *                             on device memory.
- *  @param  sim_info           SimulationInfo to refer from.
  */
 void AllDSSynapses::deleteSynapseDeviceStruct( void* allSynapsesDevice ) {
 	AllDSSynapsesDeviceProperties allSynapses;
@@ -86,12 +85,12 @@ void AllDSSynapses::deleteSynapseDeviceStruct( void* allSynapsesDevice ) {
  *                             on device memory.
  */
 void AllDSSynapses::deleteDeviceStruct( AllDSSynapsesDeviceProperties& allSynapses ) {
-        HANDLE_ERROR( cudaFree( allSynapses.lastSpike ) );
-	HANDLE_ERROR( cudaFree( allSynapses.r ) );
-	HANDLE_ERROR( cudaFree( allSynapses.u ) );
-	HANDLE_ERROR( cudaFree( allSynapses.D ) );
-	HANDLE_ERROR( cudaFree( allSynapses.U ) );
-	HANDLE_ERROR( cudaFree( allSynapses.F ) );
+        HANDLE_ERROR( cudaFree( allSynapses.lastSpike_ ) );
+	HANDLE_ERROR( cudaFree( allSynapses.r_ ) );
+	HANDLE_ERROR( cudaFree( allSynapses.u_ ) );
+	HANDLE_ERROR( cudaFree( allSynapses.D_ ) );
+	HANDLE_ERROR( cudaFree( allSynapses.U_ ) );
+	HANDLE_ERROR( cudaFree( allSynapses.F_ ) );
 
         AllSpikingSynapses::deleteDeviceStruct( allSynapses );
 }
@@ -101,10 +100,9 @@ void AllDSSynapses::deleteDeviceStruct( AllDSSynapsesDeviceProperties& allSynaps
  *
  *  @param  allSynapsesDevice  Reference to the AllDSSynapsesDeviceProperties struct 
  *                             on device memory.
- *  @param  sim_info           SimulationInfo to refer from.
  */
-void AllDSSynapses::copySynapseHostToDevice( void* allSynapsesDevice, const SimulationInfo *sim_info ) { // copy everything necessary
-	copySynapseHostToDevice( allSynapsesDevice, sim_info->totalNeurons, sim_info->maxSynapsesPerNeuron );	
+void AllDSSynapses::copySynapseHostToDevice( void* allSynapsesDevice) { // copy everything necessary
+	copySynapseHostToDevice(allSynapsesDevice, Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());	
 }
 
 /*
@@ -112,14 +110,14 @@ void AllDSSynapses::copySynapseHostToDevice( void* allSynapsesDevice, const Simu
  *
  *  @param  allSynapsesDevice     Reference to the AllDSSynapsesDeviceProperties struct 
  *                                on device memory.
- *  @param  num_neurons           Number of neurons.
+ *  @param  numNeurons           Number of neurons.
  *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
  */
-void AllDSSynapses::copySynapseHostToDevice( void* allSynapsesDevice, int num_neurons, int maxSynapsesPerNeuron ) { // copy everything necessary
+void AllDSSynapses::copySynapseHostToDevice( void* allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron ) { // copy everything necessary
 	AllDSSynapsesDeviceProperties allSynapses;
 
         HANDLE_ERROR( cudaMemcpy ( &allSynapses, allSynapsesDevice, sizeof( AllDSSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
-	copyHostToDevice( allSynapsesDevice, allSynapses, num_neurons, maxSynapsesPerNeuron );	
+	copyHostToDevice( allSynapsesDevice, allSynapses, numNeurons, maxSynapsesPerNeuron );	
 }
 
 /*
@@ -128,26 +126,26 @@ void AllDSSynapses::copySynapseHostToDevice( void* allSynapsesDevice, int num_ne
  *
  *  @param  allSynapsesDevice     Reference to the AllDSSynapsesDeviceProperties struct 
  *                                on device memory.
- *  @param  num_neurons           Number of neurons.
+ *  @param  numNeurons           Number of neurons.
  *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
  */
-void AllDSSynapses::copyHostToDevice( void* allSynapsesDevice, AllDSSynapsesDeviceProperties& allSynapses, int num_neurons, int maxSynapsesPerNeuron ) { // copy everything necessary 
-        AllSpikingSynapses::copyHostToDevice( allSynapsesDevice, allSynapses, num_neurons, maxSynapsesPerNeuron );
+void AllDSSynapses::copyHostToDevice( void* allSynapsesDevice, AllDSSynapsesDeviceProperties& allSynapses, int numNeurons, int maxSynapsesPerNeuron ) { // copy everything necessary 
+        AllSpikingSynapses::copyHostToDevice( allSynapsesDevice, allSynapses, numNeurons, maxSynapsesPerNeuron );
 
-        BGSIZE max_total_synapses = maxSynapsesPerNeuron * num_neurons;
+        BGSIZE maxTotalSynapses = maxSynapsesPerNeuron * numNeurons;
 
-        HANDLE_ERROR( cudaMemcpy ( allSynapses.lastSpike, lastSpike,
-                max_total_synapses * sizeof( uint64_t ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allSynapses.r, r,
-                max_total_synapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allSynapses.u, u,
-                max_total_synapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allSynapses.D, D,
-                max_total_synapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allSynapses.U, U,
-                max_total_synapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allSynapses.F, F,
-                max_total_synapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( allSynapses.lastSpike_, lastSpike_,
+                maxTotalSynapses * sizeof( uint64_t ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( allSynapses.r_, r_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( allSynapses.u_, u_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( allSynapses.D_, D_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( allSynapses.U_, U_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( allSynapses.F_, F_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
 }
 
 /*
@@ -155,15 +153,14 @@ void AllDSSynapses::copyHostToDevice( void* allSynapsesDevice, AllDSSynapsesDevi
  *
  *  @param  allSynapsesDevice  Reference to the AllDSSynapsesDeviceProperties struct 
  *                             on device memory.
- *  @param  sim_info           SimulationInfo to refer from.
  */
-void AllDSSynapses::copySynapseDeviceToHost( void* allSynapsesDevice, const SimulationInfo *sim_info ) {
+void AllDSSynapses::copySynapseDeviceToHost( void* allSynapsesDevice ) {
 	// copy everything necessary
 	AllDSSynapsesDeviceProperties allSynapses;
 
         HANDLE_ERROR( cudaMemcpy ( &allSynapses, allSynapsesDevice, sizeof( AllDSSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
 
-	copyDeviceToHost( allSynapses, sim_info );
+	copyDeviceToHost( allSynapses );
 }
 
 /*
@@ -172,27 +169,27 @@ void AllDSSynapses::copySynapseDeviceToHost( void* allSynapsesDevice, const Simu
  *
  *  @param  allSynapsesDevice     Reference to the AllDSSynapsesDeviceProperties struct 
  *                                on device memory.
- *  @param  num_neurons           Number of neurons.
+ *  @param  numNeurons           Number of neurons.
  *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
  */
-void AllDSSynapses::copyDeviceToHost( AllDSSynapsesDeviceProperties& allSynapses, const SimulationInfo *sim_info ) {
-        AllSpikingSynapses::copyDeviceToHost( allSynapses, sim_info ) ;
+void AllDSSynapses::copyDeviceToHost( AllDSSynapsesDeviceProperties& allSynapses ) {
+        AllSpikingSynapses::copyDeviceToHost( allSynapses ) ;
 
-	int num_neurons = sim_info->totalNeurons;
-	BGSIZE max_total_synapses = sim_info->maxSynapsesPerNeuron * num_neurons;
+	int numNeurons = Simulator::getInstance().getTotalNeurons();
+	BGSIZE maxTotalSynapses = Simulator::getInstance().getMaxSynapsesPerNeuron() * numNeurons;
 
-        HANDLE_ERROR( cudaMemcpy ( lastSpike, allSynapses.lastSpike,
-                max_total_synapses * sizeof( uint64_t ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( r, allSynapses.r,
-                max_total_synapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( u, allSynapses.u,
-                max_total_synapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( D, allSynapses.D,
-                max_total_synapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( U, allSynapses.U,
-                max_total_synapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( F, allSynapses.F,
-                max_total_synapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( lastSpike_, allSynapses.lastSpike_,
+                maxTotalSynapses * sizeof( uint64_t ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( r_, allSynapses.r_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( u_, allSynapses.u_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( D_, allSynapses.D_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( U_, allSynapses.U_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( F_, allSynapses.F_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
 }
 
 /**     
@@ -222,30 +219,30 @@ void AllDSSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) const
     AllDSSynapsesDeviceProperties allSynapsesProps;
 
     //allocate print out data members
-    BGSIZE size = maxSynapsesPerNeuron * count_neurons;
+    BGSIZE size = Simulator::getInstance().getMaxSynapsesPerNeuron() * countNeurons_;
     if (size != 0) {
-        BGSIZE *synapse_countsPrint = new BGSIZE[count_neurons];
+        BGSIZE *synapseCountsPrint = new BGSIZE[countNeurons_];
         BGSIZE maxSynapsesPerNeuronPrint;
         BGSIZE totalSynapseCountPrint;
-        int count_neuronsPrint;
+        int countNeuronsPrint;
         int *sourceNeuronIndexPrint = new int[size];
         int *destNeuronIndexPrint = new int[size];
         BGFLOAT *WPrint = new BGFLOAT[size];
 
         synapseType *typePrint = new synapseType[size];
         BGFLOAT *psrPrint = new BGFLOAT[size];
-        bool *in_usePrint = new bool[size];
+        bool *inUsePrint = new bool[size];
 
         for (BGSIZE i = 0; i < size; i++) {
-            in_usePrint[i] = false;
+            inUsePrint[i] = false;
         }
 
-        for (int i = 0; i < count_neurons; i++) {
-            synapse_countsPrint[i] = 0;
+        for (int i = 0; i < countNeurons_; i++) {
+            synapseCountsPrint[i] = 0;
         }
 
         BGFLOAT *decayPrint = new BGFLOAT[size];
-        int *total_delayPrint = new int[size];
+        int *totalDelayPrint = new int[size];
         BGFLOAT *tauPrint = new BGFLOAT[size];
 
         uint64_t *lastSpikePrint = new uint64_t[size];
@@ -258,48 +255,48 @@ void AllDSSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) const
 
         // copy everything
         HANDLE_ERROR( cudaMemcpy ( &allSynapsesProps, allSynapsesDeviceProps, sizeof( AllDSSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( synapse_countsPrint, allSynapsesProps.synapse_counts, count_neurons * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
-        maxSynapsesPerNeuronPrint = allSynapsesProps.maxSynapsesPerNeuron;
-        totalSynapseCountPrint = allSynapsesProps.totalSynapseCount;
-        count_neuronsPrint = allSynapsesProps.count_neurons;
+        HANDLE_ERROR( cudaMemcpy ( synapseCountsPrint, allSynapsesProps.synapseCounts_, countNeurons_ * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
+        maxSynapsesPerNeuronPrint = allSynapsesProps.maxSynapsesPerNeuron_;
+        totalSynapseCountPrint = allSynapsesProps.totalSynapseCount_;
+        countNeuronsPrint = allSynapsesProps.countNeurons_;
 
-        // Set count_neurons to 0 to avoid illegal memory deallocation
+        // Set countNeurons_ to 0 to avoid illegal memory deallocation
         // at AllSynapsesProps deconstructor.
-        allSynapsesProps.count_neurons = 0;
+        allSynapsesProps.countNeurons_ = 0;
 
-        HANDLE_ERROR( cudaMemcpy ( sourceNeuronIndexPrint, allSynapsesProps.sourceNeuronIndex, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( destNeuronIndexPrint, allSynapsesProps.destNeuronIndex, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( WPrint, allSynapsesProps.W, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( typePrint, allSynapsesProps.type, size * sizeof( synapseType ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( psrPrint, allSynapsesProps.psr, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( in_usePrint, allSynapsesProps.in_use, size * sizeof( bool ), cudaMemcpyDeviceToHost ) );
-
-
-        HANDLE_ERROR( cudaMemcpy ( decayPrint, allSynapsesProps.decay, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( tauPrint, allSynapsesProps.tau, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( total_delayPrint, allSynapsesProps.total_delay,size * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( sourceNeuronIndexPrint, allSynapsesProps.sourceNeuronIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( destNeuronIndexPrint, allSynapsesProps.destNeuronIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( WPrint, allSynapsesProps.W_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( typePrint, allSynapsesProps.type_, size * sizeof( synapseType ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( psrPrint, allSynapsesProps.psr_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( inUsePrint, allSynapsesProps.inUse_, size * sizeof( bool ), cudaMemcpyDeviceToHost ) );
 
 
-        HANDLE_ERROR( cudaMemcpy ( lastSpikePrint, allSynapsesProps.lastSpike, size * sizeof( uint64_t ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( rPrint, allSynapsesProps.r, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( uPrint, allSynapsesProps.u, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( DPrint, allSynapsesProps.D, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( UPrint, allSynapsesProps.U, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( FPrint, allSynapsesProps.F, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( decayPrint, allSynapsesProps.decay_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( tauPrint, allSynapsesProps.tau_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( totalDelayPrint, allSynapsesProps.totalDelay_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
 
 
-        for(int i = 0; i < maxSynapsesPerNeuron * count_neurons; i++) {
+        HANDLE_ERROR( cudaMemcpy ( lastSpikePrint, allSynapsesProps.lastSpike_, size * sizeof( uint64_t ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( rPrint, allSynapsesProps.r_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( uPrint, allSynapsesProps.u_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( DPrint, allSynapsesProps.D_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( UPrint, allSynapsesProps.U_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( FPrint, allSynapsesProps.F_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+
+
+        for(int i = 0; i < size; i++) {
             if (WPrint[i] != 0.0) {
                 cout << "GPU W[" << i << "] = " << WPrint[i];
                 cout << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
                 cout << " GPU desNeuron: " << destNeuronIndexPrint[i];
                 cout << " GPU type: " << typePrint[i];
                 cout << " GPU psr: " << psrPrint[i];
-                cout << " GPU in_use:" << in_usePrint[i];
+                cout << " GPU in_use:" << inUsePrint[i];
 
                 cout << " GPU decay: " << decayPrint[i];
                 cout << " GPU tau: " << tauPrint[i];
-                cout << " GPU total_delay: " << total_delayPrint[i];
+                cout << " GPU total_delay: " << totalDelayPrint[i];
 
                 cout << " GPU lastSpike: " << lastSpikePrint[i];
                 cout << " GPU r: " << rPrint[i];
@@ -310,18 +307,18 @@ void AllDSSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) const
             }
         }
 
-        for (int i = 0; i < count_neurons; i++) {
-            cout << "GPU synapse_counts:" << "neuron[" << i  << "]" << synapse_countsPrint[i] << endl;
+        for (int i = 0; i < countNeurons_; i++) {
+            cout << "GPU synapse_counts:" << "neuron[" << i  << "]" << synapseCountsPrint[i] << endl;
         }
 
         cout << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;
         cout << "GPU maxSynapsesPerNeuron:" << maxSynapsesPerNeuronPrint << endl;
-        cout << "GPU count_neurons:" << count_neuronsPrint << endl;
+        cout << "GPU countNeurons_:" << countNeuronsPrint << endl;
 
 
-        // Set count_neurons to 0 to avoid illegal memory deallocation
+        // Set countNeurons_ to 0 to avoid illegal memory deallocation
         // at AllDSSynapsesProps deconstructor.
-        allSynapsesProps.count_neurons = 0;
+        allSynapsesProps.countNeurons_ = 0;
 
 
         delete[] destNeuronIndexPrint;
@@ -329,21 +326,21 @@ void AllDSSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) const
         delete[] sourceNeuronIndexPrint;
         delete[] psrPrint;
         delete[] typePrint;
-        delete[] in_usePrint;
-        delete[] synapse_countsPrint;
+        delete[] inUsePrint;
+        delete[] synapseCountsPrint;
         destNeuronIndexPrint = NULL;
         WPrint = NULL;
         sourceNeuronIndexPrint = NULL;
         psrPrint = NULL;
         typePrint = NULL;
-        in_usePrint = NULL;
-        synapse_countsPrint = NULL;
+        inUsePrint = NULL;
+        synapseCountsPrint = NULL;
 
         delete[] decayPrint;
-        delete[] total_delayPrint;
+        delete[] totalDelayPrint;
         delete[] tauPrint;
         decayPrint = NULL;
-        total_delayPrint = NULL;
+        totalDelayPrint = NULL;
         tauPrint = NULL;
 
         delete[] lastSpikePrint;
@@ -360,5 +357,3 @@ void AllDSSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) const
         FPrint = NULL;
     }
 }
-
-

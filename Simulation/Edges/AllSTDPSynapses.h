@@ -34,20 +34,20 @@
  *  Implements the basic weight update for a time difference \f$Delta =
  *  t_{post}-t_{pre}\f$ with presynaptic spike at time \f$t_{pre}\f$ and
  *  postsynaptic spike at time \f$t_{post}\f$. Then, the weight update is given by
- *  \f$dw =  Apos * exp(-Delta/taupos)\f$ for \f$Delta > 0\f$, and \f$dw =  Aneg *
- *  exp(-Delta/tauneg)\f$ for \f$Delta < 0\f$. (set \f$useFroemkeDanSTDP=0\f$ and
- *  \f$mupos=muneg=0\f$ for this basic update rule).
+ *  \f$dw =  Apos_ * exp(-Delta/taupos_)\f$ for \f$Delta > 0\f$, and \f$dw =  Aneg_ *
+ *  exp(-Delta/tauneg_)\f$ for \f$Delta < 0\f$. (set \f$useFroemkeDanSTDP_=0\f$ and
+ *  \f$mupos_=muneg_=0\f$ for this basic update rule).
  *  
  *  It is also possible to use an
- *  extended multiplicative update by changing mupos and muneg. Then \f$dw =
- *  (Wex-W)^{mupos} * Apos * exp(-Delta/taupos)\f$ for \f$Delta > 0\f$ and \f$dw =
- *  W^{mupos} * Aneg * exp(Delta/tauneg)\f$ for \f$Delta < 0\f$. (see Guetig,
+ *  extended multiplicative update by changing mupos_ and muneg_. Then \f$dw =
+ *  (Wex_-W)^{mupos_} * Apos_ * exp(-Delta/taupos_)\f$ for \f$Delta > 0\f$ and \f$dw =
+ *  W^{mupos_} * Aneg_ * exp(Delta/tauneg_)\f$ for \f$Delta < 0\f$. (see Guetig,
  *  Aharonov, Rotter and Sompolinsky (2003). Learning input correlations through
  *  non-linear asymmetric Hebbian plasticity. Journal of Neuroscience 23.
  *  pp.3697-3714.)
  *      
- *  Set \f$useFroemkeDanSTDP=1\f$ (this is the default value) and
- *  use \f$tauspost\f$ and \f$tauspre\f$ for the rule given in Froemke and Dan
+ *  Set \f$useFroemkeDanSTDP_=1\f$ (this is the default value) and
+ *  use \f$tauspost_\f$ and \f$tauspre_\f$ for the rule given in Froemke and Dan
  *  (2002). Spike-timing-dependent synaptic modification induced by natural spike
  *  trains. Nature 416 (3/2002). 
  *
@@ -68,15 +68,15 @@
  *  Independent model:
  *  \f$Delta = t_{post}-t_{pre}\f$ with presynaptic spike at time \f$t_{pre}\f$ and
  *  postsynaptic spike at time \f$t_{post}\f$. Then, the weight update is given by
- *  \f$dw =  Apos * exp(-Delta/taupos)\f$ for \f$Delta > 0\f$, and \f$dw =  Aneg *
- *  exp(-Delta/tauneg)\f$ for \f$Delta < 0\f$. dw is the percentage change in synaptic weight.
- *  (set \f$useFroemkeDanSTDP=false\f$ and \f$mupos=muneg=0\f$ for this basic update rule).
+ *  \f$dw =  Apos_ * exp(-Delta/taupos_)\f$ for \f$Delta > 0\f$, and \f$dw =  Aneg_ *
+ *  exp(-Delta/tauneg_)\f$ for \f$Delta < 0\f$. dw is the percentage change in synaptic weight.
+ *  (set \f$useFroemkeDanSTDP_=false\f$ and \f$mupos_=muneg_=0\f$ for this basic update rule).
  *  
  *  Multiplicative model:
  *  \f$dw = 1.0 + dw * epre * epost\f$ dw is percent change, so adding 1.0 become the scale ratio
  *  \f$W = W * dw\f$ multiply dw (scale ratio) to the current weight to get the new weight
  *  
- *  Note1:This time we don't use useFroemkeDanSTDP (useFroemkeDanSTDP= false) and mupos and muneg (mupos=muneg=0)
+ *  Note1:This time we don't use useFroemkeDanSTDP_ (useFroemkeDanSTDP_= false) and mupos_ and muneg_ (mupos_=muneg_=0)
  *  Note2:Based on the FroemkeDan paper, the STDP learning rule only applies to excititory synapses, so we
  *  implement it to have only excititory neurons do STDP weight adjustment 
  */
@@ -382,7 +382,7 @@ public:
    BGFLOAT *tauneg_;
 
    /**
-    *  No learning is performed if \f$|Delta| = |t_{post}-t_{pre}| < STDPgap\f$
+    *  No learning is performed if \f$|Delta| = |t_{post}-t_{pre}| < STDPgap_\f$
     */
    BGFLOAT *STDPgap_;
 
@@ -403,7 +403,7 @@ public:
 
    /**
     *  Extended multiplicative positive update:
-    *  \f$dw = (Wex-W)^{mupos} * Apos * exp(-Delta/taupos)\f$.
+    *  \f$dw = (Wex_-W)^{mupos_} * Apos_ * exp(-Delta/taupos_)\f$.
     *  Set to 0 for basic update. See Guetig, Aharonov, Rotter and Sompolinsky (2003).
     *  Learning input correlations through non-linear asymmetric Hebbian plasticity.
     *  Journal of Neuroscience 23. pp.3697-3714.
@@ -412,7 +412,7 @@ public:
 
    /**
     *  Extended multiplicative negative update:
-    *  \f$dw = W^{mupos} * Aneg * exp(Delta/tauneg)\f$. Set to 0 for basic update.
+    *  \f$dw = W^{mupos_} * Aneg_ * exp(Delta/tauneg_)\f$. Set to 0 for basic update.
     */
    BGFLOAT *muneg_;
 
@@ -469,7 +469,7 @@ struct AllSTDPSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperti
         BGFLOAT *tauneg_;
 
         /**
-         *  No learning is performed if \f$|Delta| = |t_{post}-t_{pre}| < STDPgap\f$
+         *  No learning is performed if \f$|Delta| = |t_{post}-t_{pre}| < STDPgap_\f$
          */
         BGFLOAT *STDPgap_;
 
@@ -490,7 +490,7 @@ struct AllSTDPSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperti
 
         /**
          *  Extended multiplicative positive update: 
-         *  \f$dw = (Wex-W)^{mupos} * Apos * exp(-Delta/taupos)\f$. 
+         *  \f$dw = (Wex_-W)^{mupos_} * Apos_ * exp(-Delta/taupos_)\f$. 
          *  Set to 0 for basic update. See Guetig, Aharonov, Rotter and Sompolinsky (2003). 
          *  Learning input correlations through non-linear asymmetric Hebbian plasticity. 
          *  Journal of Neuroscience 23. pp.3697-3714.
@@ -499,7 +499,7 @@ struct AllSTDPSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperti
 
         /**
          *  Extended multiplicative negative update: 
-         *  \f$dw = W^{mupos} * Aneg * exp(Delta/tauneg)\f$. Set to 0 for basic update.
+         *  \f$dw = W^{mupos_} * Aneg_ * exp(Delta/tauneg_)\f$. Set to 0 for basic update.
          */
         BGFLOAT *muneg_;
   

@@ -58,15 +58,15 @@
  *  Independent model:
  *  \f$Delta = t_{post}-t_{pre}\f$ with presynaptic spike at time \f$t_{pre}\f$ and
  *  postsynaptic spike at time \f$t_{post}\f$. Then, the weight update is given by
- *  \f$dw =  Apos * exp(-Delta/taupos)\f$ for \f$Delta > 0\f$, and \f$dw =  Aneg *
- *  exp(-Delta/tauneg)\f$ for \f$Delta < 0\f$. dw is the percentage change in synaptic weight.
- *  (set \f$useFroemkeDanSTDP=false\f$ and \f$mupos=muneg=0\f$ for this basic update rule).
+ *  \f$dw =  Apos_ * exp(-Delta/taupos_)\f$ for \f$Delta > 0\f$, and \f$dw =  Aneg_ *
+ *  exp(-Delta/tauneg_)\f$ for \f$Delta < 0\f$. dw is the percentage change in synaptic weight.
+ *  (set \f$useFroemkeDanSTDP_=false\f$ and \f$mupos_=muneg_=0\f$ for this basic update rule).
  *  
  *  Multiplicative model:
  *  \f$dw = 1.0 + dw * epre * epost\f$ dw is percent change, so adding 1.0 become the scale ratio
  *  \f$W = W * dw\f$ multiply dw (scale ratio) to the current weight to get the new weight
  *  
- *  Note1:This time we don't use useFroemkeDanSTDP (useFroemkeDanSTDP= false) and mupos and muneg (mupos=muneg=0)
+ *  Note1:This time we don't use useFroemkeDanSTDP_ (useFroemkeDanSTDP_= false) and mupos_ and muneg_ (mupos_=muneg_=0)
  *  Note2:Based on the FroemkeDan paper, the STDP learning rule only applies to excititory synapses, so we
  *  implement it to have only excititory neurons do STDP weight adjustment 
  */

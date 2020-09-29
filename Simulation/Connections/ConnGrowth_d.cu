@@ -4,7 +4,6 @@
 #include "Simulator.h"
 #include "Book.h"
 
-#if defined(USE_GPU)
 /*
  *  Update the weights of the Synapses in the simulation. To be clear,
  *  iterates through all source and destination neurons and updates their
@@ -63,5 +62,3 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllNeurons &neuron
         // copy device synapse summation coordinate to host memory
         synapses.copyDeviceSynapseSumIdxToHost(allSynapseDevice_);
 }
-
-#endif

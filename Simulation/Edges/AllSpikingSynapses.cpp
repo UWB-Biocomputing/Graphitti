@@ -50,10 +50,10 @@ void AllSpikingSynapses::setupSynapses(const int numNeurons, const int maxSynaps
  *  Cleanup the class (deallocate memories).
  */
 void AllSpikingSynapses::cleanupSynapses() {
-   BGSIZE max_total_synapses = maxSynapsesPerNeuron_ * countNeurons_;
+   BGSIZE maxTotalSynapses = maxSynapsesPerNeuron_ * countNeurons_;
 
    // Causes seg fault right now, probably not getting initialized before this method is called.
-//   if (max_total_synapses != 0) {
+//   if (maxTotalSynapses != 0) {
 //      delete[] decay_;
 //      delete[] totalDelay_;
 //      delete[] delayQueue_;

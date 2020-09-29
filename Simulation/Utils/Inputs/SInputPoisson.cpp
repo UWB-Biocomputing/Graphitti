@@ -137,10 +137,10 @@ void SInputPoisson::init()
         else
             type = EE;
 
-        BGFLOAT* sum_point = &(Simulator::getInstance().getPSummationMap()[neuronIndex]);
+        BGFLOAT* sumPoint = &(Simulator::getInstance().getPSummationMap()[neuronIndex]);
         BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * neuronIndex;
 
-        synapses_->createSynapse(iSyn, 0, neuronIndex, sum_point, Simulator::getInstance().getDeltaT(), type);
+        synapses_->createSynapse(iSyn, 0, neuronIndex, sumPoint, Simulator::getInstance().getDeltaT(), type);
         dynamic_cast<AllSynapses*>(synapses_)->W_[iSyn] = weight * AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
     }
 }

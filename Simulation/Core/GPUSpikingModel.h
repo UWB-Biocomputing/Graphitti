@@ -35,6 +35,7 @@
 
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
+#include "IAllNeurons.h"
 
 #ifdef __CUDACC__
 #include "Book.h"
@@ -140,8 +141,8 @@ private:
    void eraseSynapse(IAllSynapses &synapses, const int neuronIndex, const int synapseIndex);
 
    // TODO
-   void addSynapse(IAllSynapses &synapses, synapseType type, const int src_neuron, const int dest_neuron,
-                   Coordinate &source, Coordinate &dest, BGFLOAT *sum_point, BGFLOAT deltaT);
+   void addSynapse(IAllSynapses &synapses, synapseType type, const int srcNeuron, const int destNeuron,
+                   Coordinate &source, Coordinate &dest, BGFLOAT *sumPoint, BGFLOAT deltaT);
 
    // TODO
    void createSynapse(IAllSynapses &synapses, const int neuronIndex, const int synapseIndex,

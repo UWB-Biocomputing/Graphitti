@@ -14,16 +14,16 @@
  *                             on device memory.
  *  @param  sim_info           SimulationInfo to refer from.
  */
-void AllSpikingNeurons::copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDeviceProperties& allNeurons, const SimulationInfo *sim_info ) 
+void AllSpikingNeurons::copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDeviceProperties& allNeurons ) 
 {
-        int numNeurons = sim_info->totalNeurons;
+        int numNeurons = Simulator::getInstance().getTotalNeurons();
         uint64_t* pSpikeHistory[numNeurons];
-        HANDLE_ERROR( cudaMemcpy ( pSpikeHistory, allNeurons.spike_history, numNeurons * sizeof( uint64_t* ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( pSpikeHistory, allNeurons.spikeHistory_, numNeurons * sizeof( uint64_t* ), cudaMemcpyDeviceToHost ) );
 
-        int max_spikes = static_cast<int> (sim_info->epochDuration * sim_info->maxFiringRate);
+        int maxSpikes = static_cast<int> (Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate());
         for (int i = 0; i < numNeurons; i++) {
-                HANDLE_ERROR( cudaMemcpy ( spike_history[i], pSpikeHistory[i],
-                        max_spikes * sizeof( uint64_t ), cudaMemcpyDeviceToHost ) );
+                HANDLE_ERROR( cudaMemcpy ( spikeHistory_[i], pSpikeHistory[i],
+                        maxSpikes * sizeof( uint64_t ), cudaMemcpyDeviceToHost ) );
         }
 }
 
@@ -32,14 +32,13 @@ void AllSpikingNeurons::copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDevicePro
  *
  *  @param  allNeuronsDevice   Reference to the AllSpikingNeuronsDeviceProperties struct 
  *                             on device memory.
- *  @param  sim_info           SimulationInfo to refer from.
  */
-void AllSpikingNeurons::copyDeviceSpikeCountsToHost( AllSpikingNeuronsDeviceProperties& allNeurons, const SimulationInfo *sim_info ) 
+void AllSpikingNeurons::copyDeviceSpikeCountsToHost( AllSpikingNeuronsDeviceProperties& allNeurons ) 
 {
-        int numNeurons = sim_info->totalNeurons;
+        int numNeurons = Simulator::getInstance().getTotalNeurons();
 
-        HANDLE_ERROR( cudaMemcpy ( spikeCount, allNeurons.spikeCount, numNeurons * sizeof( int ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( spikeCountOffset, allNeurons.spikeCountOffset, numNeurons * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( spikeCount_, allNeurons.spikeCount_, numNeurons * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( spikeCountOffset_, allNeurons.spikeCountOffset_, numNeurons * sizeof( int ), cudaMemcpyDeviceToHost ) );
 }
 
 /*
@@ -47,14 +46,13 @@ void AllSpikingNeurons::copyDeviceSpikeCountsToHost( AllSpikingNeuronsDeviceProp
  *  (helper function of clearNeuronSpikeCounts)
  *
  *  @param  allNeurons         Reference to the allNeurons struct.
- *  @param  sim_info           SimulationInfo to refer from.
  */
-void AllSpikingNeurons::clearDeviceSpikeCounts( AllSpikingNeuronsDeviceProperties& allNeurons, const SimulationInfo *sim_info ) 
+void AllSpikingNeurons::clearDeviceSpikeCounts( AllSpikingNeuronsDeviceProperties& allNeurons ) 
 {
-        int numNeurons = sim_info->totalNeurons;
+        int numNeurons = Simulator::getInstance().getTotalNeurons();
 
-        HANDLE_ERROR( cudaMemset( allNeurons.spikeCount, 0, numNeurons * sizeof( int ) ) );
-        HANDLE_ERROR( cudaMemcpy ( allNeurons.spikeCountOffset, spikeCountOffset, numNeurons * sizeof( int ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemset( allNeurons.spikeCount_, 0, numNeurons * sizeof( int ) ) );
+        HANDLE_ERROR( cudaMemcpy ( allNeurons.spikeCountOffset_, spikeCountOffset_, numNeurons * sizeof( int ), cudaMemcpyHostToDevice ) );
 }
 
 /*
@@ -70,5 +68,5 @@ void AllSpikingNeurons::clearDeviceSpikeCounts( AllSpikingNeuronsDevicePropertie
 void AllSpikingNeurons::setAdvanceNeuronsDeviceParams(IAllSynapses &synapses)
 {
     AllSpikingSynapses &spSynapses = dynamic_cast<AllSpikingSynapses&>(synapses);
-    m_fAllowBackPropagation = spSynapses.allowBackPropagation();
+    fAllowBackPropagation_ = spSynapses.allowBackPropagation();
 }
