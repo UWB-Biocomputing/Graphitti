@@ -1,3 +1,10 @@
-[INFO ][2020/09/10 11:17:23:127][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Testing/RunTests.cpp:30] Running Tests
-[DEBUG][2020/09/10 11:17:23:144][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/OperationManager.cpp:43] Executing operation deallocateMemory
-[DEBUG][2020/09/10 11:17:23:147][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/OperationManager.cpp:43] Executing operation copyToGPU
+[TRACE][2020/09/29 09:43:11:505][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/BGDriver.cpp:76] Initiating Simulator
+[TRACE][2020/09/29 09:43:11:505][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/BGDriver.cpp:81] Parsing command line
+[TRACE][2020/09/29 09:43:11:507][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/BGDriver.cpp:94] Loading Simulator parameters
+[TRACE][2020/09/29 09:43:11:534][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/BGDriver.cpp:98] Insantiating Simulator objects specified in configuration file
+[DEBUG][2020/09/29 09:43:11:539][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/OperationManager.cpp:43] Executing operation loadParameters
+[TRACE][2020/09/29 09:43:11:563][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/BGDriver.cpp:162] Loading parameters from configuration file
+[DEBUG][2020/09/29 09:43:11:563][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/OperationManager.cpp:43] Executing operation loadParameters
+[TRACE][2020/09/29 09:43:11:584][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/BGDriver.cpp:170] Performing Simulator setup
+[DEBUG][2020/09/29 09:43:11:799][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/OperationManager.cpp:43] Executing operation printParameters
+[TRACE][2020/09/29 09:43:11:800][/home/NETID/singh97/SummerOfBrain/SummerOfBrain/Simulation/Core/BGDriver.cpp:188] Starting Simulation

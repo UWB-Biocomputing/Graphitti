@@ -60,12 +60,16 @@ struct SynapseIndexMap {
     /// Indexed by a destination neuron index.
     vector<BGSIZE> incomingSynapseCount_;
 
+    //vector<BGSIZE> outgoingMapBegin_;
+
     SynapseIndexMap() : numOfNeurons_(0), numOfSynapses_(0) {};
 
     SynapseIndexMap(int neuronCount, int synapseCount) : numOfNeurons_(neuronCount), numOfSynapses_(synapseCount) {
         outgoingSynapseIndexMap_.resize(synapseCount);
         outgoingSynapseBegin_.resize(neuronCount);
         outgoingSynapseCount_.resize(neuronCount);
+
+        //outgoingMapBegin_.resize(synapseCount);
 
         incomingSynapseIndexMap_.resize(synapseCount);
         incomingSynapseBegin_.resize(neuronCount);

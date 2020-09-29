@@ -9,20 +9,20 @@ AllDSSynapses::AllDSSynapses() : AllSpikingSynapses() {
    D_ = NULL;
    U_ = NULL;
    F_ = NULL;
-     U_II_= 0;
-      U_IE_= 0;
-      U_EI_= 0;
-      U_EE_= 0;
+   U_II_= 0;
+   U_IE_= 0;
+   U_EI_= 0;
+   U_EE_= 0;
 
-      D_II_= 0;
-      D_IE_= 0;
-      D_EI_= 0;
-      D_EE_= 0;
+   D_II_= 0;
+   D_IE_= 0;
+   D_EI_= 0;
+   D_EE_= 0;
 
-      F_II_= 0;
-      F_IE_= 0;
-      F_EI_= 0;
-      F_EE_= 0;
+   F_II_= 0;
+   F_IE_= 0;
+   F_EI_= 0;
+   F_EE_= 0;
 }
 
 AllDSSynapses::AllDSSynapses(const int num_neurons, const int max_synapses) :
@@ -131,6 +131,7 @@ void AllDSSynapses::printParameters() const {
    cout << "\tU values: ["
           << " II: " << U_II_ << ", " << " IE: " << U_IE_ << "," << "EI : " << U_EI_<< "," << " EE: " << U_EE_ << "]"
           << endl;
+
 
     cout << "\tD values: ["
           << " II: "<< D_II_ << ", " << " IE: "<< D_IE_ << "," << "EI :" << D_EI_<< "," << " EE: "<< D_EE_ << "]"

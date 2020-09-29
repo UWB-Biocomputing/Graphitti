@@ -92,6 +92,7 @@ void AllSpikingNeurons::clearSpikeCounts() {
  */
 void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SynapseIndexMap *synapseIndexMap) {
    int max_spikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
+   const BGSIZE* outgoingMapBegin=(synapseIndexMap->outgoingSynapseBegin_).data();
 
    AllSpikingSynapses spSynapses = dynamic_cast<AllSpikingSynapses &>(synapses);
    // For each neuron in the network
@@ -114,8 +115,11 @@ void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SynapseInde
             if (synapse_counts != 0) {
                int beginIndex = synapseIndexMap->outgoingSynapseBegin_[idx];
                BGSIZE iSyn;
+               //check sanity
+               //const BGSIZE *outgoingMapBegin=&(synapseIndexMap->outgoingSynapseBegin_[beginIndex]);
+               //const BGSIZE outgoingMapBegin1=outgoingMapBegin[beginIndex];
                for (BGSIZE i = 0; i < synapse_counts; i++) {
-                  iSyn = synapseIndexMap->outgoingSynapseBegin_[beginIndex + i];
+                  iSyn=outgoingMapBegin[i+beginIndex];
                   spSynapses.preSpikeHit(iSyn);
                }
             }

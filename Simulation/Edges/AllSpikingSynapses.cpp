@@ -9,14 +9,14 @@ AllSpikingSynapses::AllSpikingSynapses() : AllSynapses() {
    delayIndex_ = NULL;
    delayQueueLength_ = NULL;
    tau_ = NULL;
-     tau_II_=0;
-      tau_IE_=0;
-      tau_EI_=0;
-      tau_EE_=0;
-      delay_II_=0;
-      delay_IE_=0;
-      delay_EI_=0;
-      delay_EE_=0;
+   tau_II_=0;
+   tau_IE_=0;
+   tau_EI_=0;
+   tau_EE_=0;
+   delay_II_=0;
+   delay_IE_=0;
+   delay_EI_=0;
+   delay_EE_=0;
 }
 
 AllSpikingSynapses::AllSpikingSynapses(const int num_neurons, const int max_synapses) {
