@@ -264,7 +264,7 @@ void AllSTDPSynapses::advanceSynapses( void* allSynapsesDevice, void* allNeurons
     const int threadsPerBlock = 256;
     int blocksPerGrid = ( totalSynapseCount_ + threadsPerBlock - 1 ) / threadsPerBlock;
     // Advance synapses ------------->
-    advanceSTDPSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( totalSynapseCount_, (SynapseIndexMapDevice*)synapseIndexMapDevice, g_simulationStep, Simulator::getInstance().getDeltaT(), 
+    advanceSTDPSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( totalSynapseCount_, (SynapseIndexMap*) synapseIndexMapDevice, g_simulationStep, Simulator::getInstance().getDeltaT(), 
                                 (AllSTDPSynapsesDeviceProperties*)allSynapsesDevice, (AllSpikingNeuronsDeviceProperties*)allNeuronsDevice, maxSpikes, Simulator::getInstance().getWidth() );
 }
 

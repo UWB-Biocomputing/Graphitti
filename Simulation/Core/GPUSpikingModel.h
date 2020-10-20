@@ -35,7 +35,6 @@
 
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
-#include "IAllNeurons.h"
 
 #ifdef __CUDACC__
 #include "Book.h"

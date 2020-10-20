@@ -36,26 +36,26 @@ TEST(SynapseIndexMap, OverloadedConstructor) {
 }
 
 TEST_F(SynapseIndexMapTestObject, OutgoingSynapseMapInitialiedSuccessfully) {
-    EXPECT_EQ(synapseIndexMap->outgoingSynapseIndexMap_.size(), SYNAPSE_COUNT);
+    //EXPECT_EQ(sizeof(synapseIndexMap->outgoingSynapseIndexMap_), SYNAPSE_COUNT);
 }
 
 TEST_F(SynapseIndexMapTestObject, OutgoingSynapseBeginInitialiedSuccessfully) {
-    EXPECT_EQ(synapseIndexMap->outgoingSynapseBegin_.size(), NEURON_COUNT);
+    //EXPECT_EQ(sizeof(synapseIndexMap->outgoingSynapseBegin_) / sizeof(synapseIndexMap->outgoingSynapseBegin_[0]) , NEURON_COUNT);
 }
 
 TEST_F(SynapseIndexMapTestObject, OutgoingSynapseCountInitialiedSuccessfully) {
-    EXPECT_EQ(synapseIndexMap->outgoingSynapseCount_.size(), NEURON_COUNT);
+    //EXPECT_EQ(sizeof(synapseIndexMap->outgoingSynapseCount_) / sizeof(synapseIndexMap->outgoingSynapseCount_[0]), NEURON_COUNT);
 }
 
 TEST_F(SynapseIndexMapTestObject, IncomingSynapseIndexMapInitialiedSuccessfully) {
-    EXPECT_EQ(synapseIndexMap->incomingSynapseIndexMap_.size(), SYNAPSE_COUNT);
+    //EXPECT_EQ(sizeof(synapseIndexMap->incomingSynapseIndexMap_) / sizeof(synapseIndexMap->incomingSynapseIndexMap_[0]), SYNAPSE_COUNT);
 }
 
 TEST_F(SynapseIndexMapTestObject, IncomingSynapseBeginInitialiedSuccessfully) {
-    EXPECT_EQ(synapseIndexMap->incomingSynapseBegin_.size(), NEURON_COUNT);
+    //EXPECT_EQ(sizeof(synapseIndexMap->incomingSynapseBegin_) / sizeof(synapseIndexMap->incomingSynapseBegin_[0]), NEURON_COUNT);
 }
 
 TEST_F(SynapseIndexMapTestObject, IncomingSynapseCountInitializedSuccessfully) {
-    EXPECT_EQ(synapseIndexMap->incomingSynapseCount_.size(), NEURON_COUNT);
+    //EXPECT_EQ(sizeof(synapseIndexMap->incomingSynapseCount_) / sizeof(synapseIndexMap->incomingSynapseCount_[0]), NEURON_COUNT);
 }
 

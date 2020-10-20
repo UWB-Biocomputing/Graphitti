@@ -156,7 +156,7 @@ protected:
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
         */
-       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice);
+       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice );
 
        /**
         *  Allocate GPU memories to store all synapses' states,
@@ -180,7 +180,7 @@ protected:
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
         */
-       virtual void copySynapseHostToDevice( void* allSynapsesDevice);
+       virtual void copySynapseHostToDevice( void* allSynapsesDevice );
 
        /**
         *  Copy all synapses' data from host to device.
@@ -195,21 +195,21 @@ protected:
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
         */
-       virtual void copySynapseDeviceToHost( void* allSynapsesDevice);
+       virtual void copySynapseDeviceToHost( void* allSynapsesDevice );
 
        /**
         *  Get synapse_counts in AllSynapses struct on device memory.
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
         */
-       virtual void copyDeviceSynapseCountsToHost(void* allSynapsesDevice);
+       virtual void copyDeviceSynapseCountsToHost( void* allSynapsesDevice );
 
        /**
         *  Get summationCoord and in_use in AllSynapses struct on device memory.
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
         */
-       virtual void copyDeviceSynapseSumIdxToHost(void* allSynapsesDevice);
+       virtual void copyDeviceSynapseSumIdxToHost( void* allSynapsesDevice );
 
        /**
         *  Advance all the Synapses in the simulation.
@@ -219,13 +219,13 @@ protected:
         *  @param  allNeuronsDevice       Reference to the allNeurons struct on device memory.
         *  @param  synapseIndexMapDevice  Reference to the SynapseIndexMap on device memory.
         */
-       virtual void advanceSynapses(void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice);
+       virtual void advanceSynapses( void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice );
 
        /**
         *  Set some parameters used for advanceSynapsesDevice.
         *  Currently we set a member variable: m_fpChangePSR_h.
         */
-       virtual void setAdvanceSynapsesDeviceParams();
+       virtual void setAdvanceSynapsesDeviceParams( );
 
        /**
         *  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
@@ -237,14 +237,14 @@ protected:
         *  Note: we used to use a function pointer; however, it caused the growth_cuda crash
         *  (see issue#137).
         */
-       virtual void setSynapseClassID();
+       virtual void setSynapseClassID( );
 
        /**
         *  Prints GPU SynapsesProps data.
         *
         *  @param  allSynapsesDeviceProps   Reference to the corresponding SynapsesDeviceProperties struct on device memory.
         */
-       virtual void printGPUSynapsesProps(void* allSynapsesDeviceProps) const;
+       virtual void printGPUSynapsesProps( void* allSynapsesDeviceProps ) const;
 
    protected:
        /**

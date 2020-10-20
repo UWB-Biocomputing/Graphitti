@@ -5,10 +5,6 @@
 #include "AllSTDPSynapses.h"
 #include "AllDynamicSTDPSynapses.h"
 
-
-// a device variable to store synapse class ID.
-//__device__ enumClassSynapses classSynapses_d = undefClassSynapses;
-
 /* ------------------------------------*\
 |* # Device Functions for utility
 \* ------------------------------------*/
@@ -231,7 +227,7 @@ __device__ uint64_t getSTDPSynapseSpikeHistoryDevice(AllSpikingNeuronsDeviceProp
  *  @param[in] allSynapsesDevice     Pointer to AllSpikingSynapsesDeviceProperties structures 
  *                                   on device memory.
  */
-__global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, SynapseIndexMapDevice* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSpikingSynapsesDeviceProperties* allSynapsesDevice ) {
+__global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, SynapseIndexMap* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSpikingSynapsesDeviceProperties* allSynapsesDevice ) {
         int idx = blockIdx.x * blockDim.x + threadIdx.x;
         if ( idx >= totalSynapseCount )
                 return;
@@ -273,7 +269,7 @@ __global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, SynapseInd
  *  @param[in] allSynapsesDevice     Pointer to AllSTDPSynapsesDeviceProperties structures 
  *                                   on device memory.
  */
-__global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, SynapseIndexMapDevice* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSTDPSynapsesDeviceProperties* allSynapsesDevice, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, int maxSpikes, int width ) {
+__global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, SynapseIndexMap* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSTDPSynapsesDeviceProperties* allSynapsesDevice, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, int maxSpikes, int width ) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if ( idx >= totalSynapseCount )
             return;

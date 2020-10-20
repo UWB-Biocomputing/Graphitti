@@ -2,6 +2,7 @@
 
 #include "AllIZHNeurons.h"
 #include "AllSTDPSynapses.h"
+#include "AllSynapsesDeviceFuncs.h"
 
 #if defined(__CUDACC__)
 

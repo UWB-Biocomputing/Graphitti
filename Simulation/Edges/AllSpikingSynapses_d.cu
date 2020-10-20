@@ -61,7 +61,7 @@ void AllSpikingSynapses::allocDeviceStruct( AllSpikingSynapsesDeviceProperties &
         HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.totalDelay_, maxTotalSynapses * sizeof( int ) ) );
         HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.delayQueue_, maxTotalSynapses * sizeof( uint32_t ) ) );
         HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.delayIndex_, maxTotalSynapses * sizeof( int ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.delayQueue_, maxTotalSynapses * sizeof( int ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.delayQueueLength_, maxTotalSynapses * sizeof( int ) ) );
 }
 
 /*
@@ -101,7 +101,7 @@ void AllSpikingSynapses::deleteDeviceStruct( AllSpikingSynapsesDeviceProperties&
         HANDLE_ERROR( cudaFree( allSynapses.totalDelay_ ) );
         HANDLE_ERROR( cudaFree( allSynapses.delayQueue_ ) );
         HANDLE_ERROR( cudaFree( allSynapses.delayIndex_ ) );
-        HANDLE_ERROR( cudaFree( allSynapses.delayQueue_ ) );
+        HANDLE_ERROR( cudaFree( allSynapses.delayQueueLength_ ) );
 
         // Set countNeurons_ to 0 to avoid illegal memory deallocation 
         // at AllSpikingSynapses deconstructor.
@@ -332,7 +332,7 @@ void AllSpikingSynapses::advanceSynapses(void* allSynapsesDevice, void* allNeuro
     int blocksPerGrid = ( totalSynapseCount_ + threadsPerBlock - 1 ) / threadsPerBlock;
 
     // Advance synapses ------------->
-    advanceSpikingSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( totalSynapseCount_, (SynapseIndexMapDevice*)synapseIndexMapDevice, g_simulationStep, Simulator::getInstance().getDeltaT(), (AllSpikingSynapsesDeviceProperties*)allSynapsesDevice );
+    advanceSpikingSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( totalSynapseCount_, (SynapseIndexMap*) synapseIndexMapDevice, g_simulationStep, Simulator::getInstance().getDeltaT(), (AllSpikingSynapsesDeviceProperties*)allSynapsesDevice );
 }
 
 /*

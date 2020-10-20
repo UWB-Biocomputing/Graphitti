@@ -31,12 +31,12 @@
 
  */
 
+#pragma once
+
 #include "Connections/Connections.h"
 #include "Vertices/IAllNeurons.h"
 #include "Edges/IAllSynapses.h"
 #include "Layouts/Layout.h"
-
-#pragma once
 
 class CPUSpikingModel : public Model {
 public:

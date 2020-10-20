@@ -14,6 +14,8 @@ if(BRAINGRID_CUDA)
         #SM_35 #TODO: Set each library that contains CUDA with the following line...
         
         #set_property(TARGET target PROPERTY CUDA_ARCHITECTURES 35-virtual) 
+        #NVCCFLAGS = -g -arch=sm_35 -rdc=true $(INCDIRS)
+        set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
         add_compile_definitions(USE_GPU)
 endif()
 

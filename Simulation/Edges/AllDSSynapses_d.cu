@@ -3,9 +3,9 @@
  *
  */
 
-#include "Edges/AllDSSynapses.h"
+ #include "AllSynapsesDeviceFuncs.h"
+#include "AllDSSynapses.h"
 #include "GPUSpikingModel.h"
-#include "AllSynapsesDeviceFuncs.h"
 #include "Simulator.h"
 #include "Book.h"
 
@@ -206,7 +206,7 @@ void AllDSSynapses::setSynapseClassID()
 {
     enumClassSynapses classSynapses_h = classAllDSSynapses;
 
-    HANDLE_ERROR( cudaMemcpyToSymbol(classSynapses_d, &classSynapses_h, sizeof(enumClassSynapses)) );
+    HANDLE_ERROR( cudaMemcpyToSymbol ( classSynapses_d, &classSynapses_h, sizeof(enumClassSynapses) ) );
 }
 
 /*

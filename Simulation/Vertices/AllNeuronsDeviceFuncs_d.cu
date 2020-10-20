@@ -90,7 +90,7 @@ __device__ void postSTDPSynapseSpikeHitDevice( const BGSIZE iSyn, AllSTDPSynapse
  *  @param[in] synapseIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
  *  @param[in] fAllowBackPropagation True if back propagaion is allowed.
  */
-__global__ void advanceLIFNeuronsDevice( int totalNeurons, int maxSynapses, int maxSpikes, const BGFLOAT deltaT, uint64_t simulationStep, float* randNoise, AllIFNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, SynapseIndexMapDevice* synapseIndexMapDevice, bool fAllowBackPropagation ) {
+__global__ void advanceLIFNeuronsDevice( int totalNeurons, int maxSynapses, int maxSpikes, const BGFLOAT deltaT, uint64_t simulationStep, float* randNoise, AllIFNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, SynapseIndexMap* synapseIndexMapDevice, bool fAllowBackPropagation ) {
         // determine which neuron this thread is processing
         int idx = blockIdx.x * blockDim.x + threadIdx.x;
         if ( idx >= totalNeurons )
@@ -197,7 +197,7 @@ __global__ void advanceLIFNeuronsDevice( int totalNeurons, int maxSynapses, int 
  *  @param[in] synapseIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
  *  @param[in] fAllowBackPropagation True if back propagaion is allowed.
  */
-__global__ void advanceIZHNeuronsDevice( int totalNeurons, int maxSynapses, int maxSpikes, const BGFLOAT deltaT, uint64_t simulationStep, float* randNoise, AllIZHNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, SynapseIndexMapDevice* synapseIndexMapDevice, bool fAllowBackPropagation ) {
+__global__ void advanceIZHNeuronsDevice( int totalNeurons, int maxSynapses, int maxSpikes, const BGFLOAT deltaT, uint64_t simulationStep, float* randNoise, AllIZHNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, SynapseIndexMap* synapseIndexMapDevice, bool fAllowBackPropagation ) {
         // determine which neuron this thread is processing
         int idx = blockIdx.x * blockDim.x + threadIdx.x;
         if ( idx >= totalNeurons )

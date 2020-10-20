@@ -187,7 +187,7 @@ protected:
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
         */
-       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice);
+       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice );
 
        /**
         *  Allocate GPU memories to store all synapses' states,
@@ -197,7 +197,7 @@ protected:
         *  @param  numNeurons            Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron);
+       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron );
 
        /**
         *  Delete GPU memories.
@@ -211,7 +211,7 @@ protected:
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
         */
-       virtual void copySynapseHostToDevice( void* allSynapsesDevice);
+       virtual void copySynapseHostToDevice( void* allSynapsesDevice );
 
        /**
         *  Copy all synapses' data from host to device.
@@ -227,7 +227,7 @@ protected:
         *
         *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
         */
-       virtual void copySynapseDeviceToHost( void* allSynapsesDevice);
+       virtual void copySynapseDeviceToHost( void* allSynapsesDevice );
 
        /**
         *  Advance all the Synapses in the simulation.
@@ -237,7 +237,7 @@ protected:
         *  @param  allNeuronsDevice       Reference to the allNeurons struct on device memory.
         *  @param  synapseIndexMapDevice  Reference to the SynapseIndexMap on device memory.
         */
-       virtual void advanceSynapses(void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice);
+       virtual void advanceSynapses( void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice );
 
        /**
         *  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
@@ -256,7 +256,7 @@ protected:
         *
         *  @param  allSynapsesDeviceProps   Reference to the corresponding SynapsesDeviceProperties struct on device memory.
         */
-       virtual void printGPUSynapsesProps(void* allSynapsesDeviceProps) const;
+       virtual void printGPUSynapsesProps( void* allSynapsesDeviceProps ) const;
 
    protected:
        /**
