@@ -63,11 +63,6 @@ public:
    virtual void setupSynapses();
 
    /**
-    *  Cleanup the class (deallocate memories).
-    */
-   virtual void cleanupSynapses();
-
-   /**
     *  Reset time varying state vars and recompute decay.
     *
     *  @param  iSyn     Index of the synapse to set.

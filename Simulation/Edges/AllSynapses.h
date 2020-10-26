@@ -70,11 +70,6 @@ public:
    virtual void setupSynapses();
 
    /**
-    *  Cleanup the class (deallocate memories).
-    */
-   virtual void cleanupSynapses();
-
-   /**
     * Load member variables from configuration file.
     * Registered to OperationManager as Operation::op::loadParameters
     */

@@ -10,7 +10,21 @@ AllSpikingNeurons::AllSpikingNeurons() : AllNeurons() {
 }
 
 AllSpikingNeurons::~AllSpikingNeurons() {
-   freeResources();
+   if (size_ != 0) {
+      for (int i = 0; i < size_; i++) {
+         delete[] spikeHistory_[i];
+      }
+
+      delete[] hasFired_;
+      delete[] spikeCount_;
+      delete[] spikeCountOffset_;
+      delete[] spikeHistory_;
+   }
+
+   hasFired_ = NULL;
+   spikeCount_ = NULL;
+   spikeCountOffset_ = NULL;
+   spikeHistory_ = NULL;
 }
 
 /*
@@ -34,35 +48,6 @@ void AllSpikingNeurons::setupNeurons() {
    }
 
    Simulator::getInstance().setPSummationMap(summationMap_);
-}
-
-/*
- *  Cleanup the class (deallocate memories).
- */
-void AllSpikingNeurons::cleanupNeurons() {
-   freeResources();
-   AllNeurons::cleanupNeurons();
-}
-
-/*
- *  Deallocate all resources
- */
-void AllSpikingNeurons::freeResources() {
-   if (size_ != 0) {
-      for (int i = 0; i < size_; i++) {
-         delete[] spikeHistory_[i];
-      }
-
-      delete[] hasFired_;
-      delete[] spikeCount_;
-      delete[] spikeCountOffset_;
-      delete[] spikeHistory_;
-   }
-
-   hasFired_ = NULL;
-   spikeCount_ = NULL;
-   spikeCountOffset_ = NULL;
-   spikeHistory_ = NULL;
 }
 
 /*

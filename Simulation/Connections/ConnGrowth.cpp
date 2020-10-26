@@ -64,7 +64,22 @@ ConnGrowth::ConnGrowth() : Connections() {
 }
 
 ConnGrowth::~ConnGrowth() {
-   cleanupConnections();
+      if (W_ != NULL) delete W_;
+   if (radii_ != NULL) delete radii_;
+   if (rates_ != NULL) delete rates_;
+   if (delta_ != NULL) delete delta_;
+   if (area_ != NULL) delete area_;
+   if (outgrowth_ != NULL) delete outgrowth_;
+   if (deltaR_ != NULL) delete deltaR_;
+
+   W_ = NULL;
+   radii_ = NULL;
+   rates_ = NULL;
+   delta_ = NULL;
+   area_ = NULL;
+   outgrowth_ = NULL;
+   deltaR_ = NULL;
+   radiiSize_ = 0;
 }
 
 /*
@@ -88,28 +103,6 @@ void ConnGrowth::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
 
    // Init connection frontier distance change matrix with the current distances
    (*delta_) = (*layout->dist_);
-}
-
-/*
- *  Cleanup the class (deallocate memories).
- */
-void ConnGrowth::cleanupConnections() {
-   if (W_ != NULL) delete W_;
-   if (radii_ != NULL) delete radii_;
-   if (rates_ != NULL) delete rates_;
-   if (delta_ != NULL) delete delta_;
-   if (area_ != NULL) delete area_;
-   if (outgrowth_ != NULL) delete outgrowth_;
-   if (deltaR_ != NULL) delete deltaR_;
-
-   W_ = NULL;
-   radii_ = NULL;
-   rates_ = NULL;
-   delta_ = NULL;
-   area_ = NULL;
-   outgrowth_ = NULL;
-   deltaR_ = NULL;
-   radiiSize_ = 0;
 }
 
 /**

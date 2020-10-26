@@ -35,6 +35,8 @@ TEST(SynapseIndexMap, OverloadedConstructor) {
     EXPECT_TRUE(synapseIndexMap != nullptr);
 }
 
+// Tests are unavailable until member variables are switched from arrays to vectors.
+// No way to check the size of an array that is allocated dynamically.
 TEST_F(SynapseIndexMapTestObject, OutgoingSynapseMapInitialiedSuccessfully) {
     //EXPECT_EQ(sizeof(synapseIndexMap->outgoingSynapseIndexMap_), SYNAPSE_COUNT);
 }

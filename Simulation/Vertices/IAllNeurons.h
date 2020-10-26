@@ -27,12 +27,6 @@ public:
     */
    virtual void setupNeurons() = 0;
 
-   /**
-    *  Cleanup the class.
-    *  Deallocate memories.
-    */
-   virtual void cleanupNeurons() = 0;
-
 
     /*
      *  Load member variables from configuration file.

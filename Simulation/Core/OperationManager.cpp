@@ -55,12 +55,8 @@ string OperationManager::operationToString(const Operations::op &operation) cons
          return "printParameters";
       case Operations::op::loadParameters:
          return "loadParameters";
-      case Operations::op::allocateMemory:
-         return "allocateMemory";
-      case Operations::op::deallocateMemory:
+      case Operations::op::deallocateGPUMemory:
          return "deallocateMemory";
-      case Operations::simulationSetup:
-         return "simulationSetup";
       case Operations::op::serialize:
          return "serialize";
       case Operations::op::deserialize:
@@ -71,8 +67,6 @@ string OperationManager::operationToString(const Operations::op &operation) cons
          return "copyToGPU";
       case Operations::op::copyFromGPU:
          return "copyFromGPU";
-      case Operations::op::terminate:
-         return "terminate";
       default:
          return "Operation isn't in OperationManager::operationToString()";
    }

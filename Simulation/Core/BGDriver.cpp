@@ -169,10 +169,10 @@ int main(int argc, char *argv[]) {
    rgNormrnd.clear();
 
    time(&end_time);
-   double time_elapsed = difftime(end_time, start_time);
-   double ssps = simulator.getEpochDuration() * simulator.getNumEpochs() / time_elapsed;
+   double timeElapsed = difftime(end_time, start_time);
+   double ssps = simulator.getEpochDuration() * simulator.getNumEpochs() / timeElapsed;
    cout << "time simulated: " << simulator.getEpochDuration() * simulator.getNumEpochs() << endl;
-   cout << "time elapsed: " << time_elapsed << endl;
+   cout << "time elapsed: " << timeElapsed << endl;
    cout << "ssps (simulation seconds / real time seconds): " << ssps << endl;
    return 0;
 }

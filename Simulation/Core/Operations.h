@@ -15,17 +15,11 @@ public:
     enum op {
        printParameters,
        loadParameters,
-       allocateMemory,
-       simulationSetup,
        serialize,
        deserialize,
-       deallocateMemory,
-       restoreToDefault,
+       deallocateGPUMemory, // Make sure deallocate memory isn't called until all GPU memory is copied back.
+       restoreToDefault, // Not sure what this refers to.
        copyToGPU,
-       copyFromGPU,
-       terminate
+       copyFromGPU
     };
 };
-
-
-

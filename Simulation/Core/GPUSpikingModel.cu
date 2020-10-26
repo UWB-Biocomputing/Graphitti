@@ -69,7 +69,6 @@ void GPUSpikingModel::deleteDeviceStruct(void** allNeuronsDevice, void** allSyna
   synapses->copySynapseDeviceToHost( *allSynapsesDevice);
   // Deallocate device memory
   synapses->deleteSynapseDeviceStruct( *allSynapsesDevice );
-  deleteSynapseImap();
   HANDLE_ERROR( cudaFree( randNoise_d ) );
 }
 
@@ -114,10 +113,11 @@ void GPUSpikingModel::setupSim()
 }
 
 /// Performs any finalization tasks on network following a simulation.
-void GPUSpikingModel::cleanupSim()
+void GPUSpikingModel::finish()
 {
   // deallocates memories on CUDA device
   deleteDeviceStruct((void**)&allNeuronsDevice_, (void**)&allSynapsesDevice_);
+  deleteSynapseImap();
 
 #ifdef PERFORMANCE_METRICS
   cudaEventDestroy( start );

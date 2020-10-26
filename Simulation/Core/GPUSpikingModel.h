@@ -79,7 +79,7 @@ public:
    virtual void setupSim();
 
    /// Performs any finalization tasks on network following a simulation.
-   virtual void cleanupSim();
+   virtual void finish();
 
    /// Advances network state one simulation step.
    virtual void advance();

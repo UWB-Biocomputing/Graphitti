@@ -20,7 +20,7 @@ ConnStatic::ConnStatic() {
 }
 
 ConnStatic::~ConnStatic() {
-   cleanupConnections();
+   
 }
 
 /*
@@ -87,12 +87,6 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
    LOG4CPLUS_DEBUG(fileLogger_,"Rewiring connections: " << nRewiring);
 
    LOG4CPLUS_DEBUG(fileLogger_,"Added connections: " << added);
-}
-
-/*
- *  Cleanup the class.
- */
-void ConnStatic::cleanupConnections() {
 }
 
 /*

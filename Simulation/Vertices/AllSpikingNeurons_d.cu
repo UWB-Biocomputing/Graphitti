@@ -12,7 +12,6 @@
  *
  *  @param  allNeuronsDevice   Reference to the AllSpikingNeuronsDeviceProperties struct 
  *                             on device memory.
- *  @param  sim_info           SimulationInfo to refer from.
  */
 void AllSpikingNeurons::copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDeviceProperties& allNeurons ) 
 {

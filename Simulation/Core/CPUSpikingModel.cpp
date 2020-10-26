@@ -20,6 +20,11 @@ void CPUSpikingModel::setupSim() {
    rgNormrnd.push_back(new Norm(0, 1, Simulator::getInstance().getSeed()));
 }
 
+/// Performs any finalization tasks on network following a simulation.
+void CPUSpikingModel::finish() {
+   // No GPU code to deallocate, and CPU side deallocation is handled by destructors.
+}
+
 /// Advance everything in the model one time step.
 void CPUSpikingModel::advance() {
    // ToDo: look at pointer v no pointer in params - to change

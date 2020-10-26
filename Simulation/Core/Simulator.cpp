@@ -69,7 +69,7 @@ void Simulator::setup() {
 
 /// Begin terminating the simulator
 void Simulator::finish() {
-   model_->cleanupSim(); // ToDo: Can #term be removed w/ the new model architecture?  // =>ISIMULATION
+   model_->finish(); // ToDo: Can #term be removed w/ the new model architecture?  // =>ISIMULATION
 }
 
 /// Load member variables from configuration file
@@ -121,7 +121,7 @@ void Simulator::copyCPUSynapseToGPU() {
 void Simulator::reset() {
    LOG4CPLUS_INFO(fileLogger_, "Resetting Simulator");
    // Terminate the simulator
-   model_->cleanupSim();
+   model_->finish();
    // Clean up objects
    freeResources();
    // Reset global simulation Step to 0

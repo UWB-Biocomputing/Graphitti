@@ -93,13 +93,6 @@ void Model::setupSim() {
    connections_->createSynapseIndexMap();
 }
 
-/// Clean up the simulation.
-void Model::cleanupSim() {
-   layout_->getNeurons()->cleanupNeurons();
-   connections_->getSynapses()->cleanupSynapses();
-   connections_->cleanupConnections();
-}
-
 /// Log this simulation step.
 void Model::logSimStep() const {
    ConnGrowth *pConnGrowth = dynamic_cast<ConnGrowth *>(connections_.get());

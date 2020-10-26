@@ -108,11 +108,6 @@ public:
    virtual void setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses);
 
    /**
-    *  Cleanup the class (deallocate memories).
-    */
-   virtual void cleanupConnections();
-
-   /**
     * Load member variables from configuration file.
     * Registered to OperationManager as Operations::op::loadParameters
     */

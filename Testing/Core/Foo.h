@@ -13,25 +13,23 @@ using namespace std;
 
 class IFoo {
 public:
-   virtual void allocateMemory() = 0;
+   virtual void loadParameters() = 0;
 
-   virtual void deallocateMemory() = 0;
+   virtual void printParameters() = 0;
 };
 
 
 class Foo : public IFoo {
 public:
     Foo() {
-       auto function = std::bind(&Foo::allocateMemory, this);
-       OperationManager::getInstance().registerOperation(Operations::op::allocateMemory, function);
     }
 
-    virtual void allocateMemory() {
-       cout << "Foo allocating memory" << endl;
+    virtual void loadParameters() {
+       cout << "Foo loading parameters" << endl;
     }
 
-    virtual void deallocateMemory() {
-       cout << "Foo deallocating memory" << endl;
+    virtual void printParameters() {
+       cout << "Foo printing parameters" << endl;
     }
 };
 
@@ -39,12 +37,11 @@ public:
 class Bar : public Foo {
 public:
    Bar() : Foo() {
-      auto function = std::bind(&Bar::allocateMemory, this);
-      OperationManager::getInstance().registerOperation(Operations::op::allocateMemory, function);
+
    }
 
-   virtual void allocateMemory() {
-      cout << "Bar allocating memory" << endl;
+   virtual void loadParameters() {
+      cout << "Bar loading Parameters" << endl;
    }
 };
 

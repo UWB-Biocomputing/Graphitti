@@ -31,7 +31,30 @@ AllSynapses::AllSynapses(const int numNeurons, const int maxSynapses) {
 }
 
 AllSynapses::~AllSynapses() {
-   cleanupSynapses();
+   BGSIZE maxTotalSynapses = maxSynapsesPerNeuron_ * countNeurons_;
+
+//   if (maxTotalSynapses != 0) {
+//      delete[] destNeuronIndex_;
+//      delete[] W_;
+//      delete[] summationPoint_;
+//      delete[] sourceNeuronIndex_;
+//      delete[] psr_;
+//      delete[] type_;
+//      delete[] inUse_;
+//      delete[] synapseCounts_;
+//   }
+
+   destNeuronIndex_ = NULL;
+   W_ = NULL;
+   summationPoint_ = NULL;
+   sourceNeuronIndex_ = NULL;
+   psr_ = NULL;
+   type_ = NULL;
+   inUse_ = NULL;
+   synapseCounts_ = NULL;
+
+   countNeurons_ = 0;
+   maxSynapsesPerNeuron_ = 0;
 }
 
 /*
@@ -94,37 +117,6 @@ void AllSynapses::printParameters() const {
     << "\tTotal synapse counts: " << totalSynapseCount_ << endl
     << "\tMax synapses per neuron: " << maxSynapsesPerNeuron_ << endl
     << "\tNeuron count: " << countNeurons_ << endl << endl);
-}
-
-
-/*
- *  Cleanup the class (deallocate memories).
- */
-void AllSynapses::cleanupSynapses() {
-   BGSIZE maxTotalSynapses = maxSynapsesPerNeuron_ * countNeurons_;
-
-//   if (maxTotalSynapses != 0) {
-//      delete[] destNeuronIndex_;
-//      delete[] W_;
-//      delete[] summationPoint_;
-//      delete[] sourceNeuronIndex_;
-//      delete[] psr_;
-//      delete[] type_;
-//      delete[] inUse_;
-//      delete[] synapseCounts_;
-//   }
-
-   destNeuronIndex_ = NULL;
-   W_ = NULL;
-   summationPoint_ = NULL;
-   sourceNeuronIndex_ = NULL;
-   psr_ = NULL;
-   type_ = NULL;
-   inUse_ = NULL;
-   synapseCounts_ = NULL;
-
-   countNeurons_ = 0;
-   maxSynapsesPerNeuron_ = 0;
 }
 
 /*

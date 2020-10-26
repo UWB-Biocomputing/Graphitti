@@ -49,6 +49,9 @@ public:
    /// Set up model state, if anym for a specific simulation run.
    virtual void setupSim();
 
+   /// Performs any finalization tasks on network following a simulation.
+   virtual void finish();
+
    /// Advances network state one simulation step.
    virtual void advance();
 

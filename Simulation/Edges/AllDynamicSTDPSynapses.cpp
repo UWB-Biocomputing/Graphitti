@@ -15,7 +15,23 @@ AllDynamicSTDPSynapses::AllDynamicSTDPSynapses(const int numNeurons, const int m
 }
 
 AllDynamicSTDPSynapses::~AllDynamicSTDPSynapses() {
-    cleanupSynapses();
+    BGSIZE maxTotalSynapses = maxSynapsesPerNeuron_ * countNeurons_;
+
+    if (maxTotalSynapses != 0) {
+        delete[] lastSpike_;
+        delete[] r_;
+        delete[] u_;
+        delete[] D_;
+        delete[] U_;
+        delete[] F_;
+    }
+
+    lastSpike_ = NULL;
+    r_ = NULL;
+    u_ = NULL;
+    D_ = NULL;
+    U_ = NULL;
+    F_ = NULL;
 }
 
 /*
@@ -44,31 +60,6 @@ void AllDynamicSTDPSynapses::setupSynapses(const int numNeurons, const int maxSy
         U_ = new BGFLOAT[maxTotalSynapses];
         F_ = new BGFLOAT[maxTotalSynapses];
     }
-}
-
-/*
- *  Cleanup the class (deallocate memories).
- */
-void AllDynamicSTDPSynapses::cleanupSynapses() {
-    BGSIZE maxTotalSynapses = maxSynapsesPerNeuron_ * countNeurons_;
-
-    if (maxTotalSynapses != 0) {
-        delete[] lastSpike_;
-        delete[] r_;
-        delete[] u_;
-        delete[] D_;
-        delete[] U_;
-        delete[] F_;
-    }
-
-    lastSpike_ = NULL;
-    r_ = NULL;
-    u_ = NULL;
-    D_ = NULL;
-    U_ = NULL;
-    F_ = NULL;
-
-    AllSTDPSynapses::cleanupSynapses();
 }
 
 /**

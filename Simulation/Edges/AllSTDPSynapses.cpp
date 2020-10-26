@@ -26,7 +26,41 @@ AllSTDPSynapses::AllSTDPSynapses(const int numNeurons, const int maxSynapses) :
 }
 
 AllSTDPSynapses::~AllSTDPSynapses() {
-   cleanupSynapses();
+   BGSIZE maxTotalSynapses = maxSynapsesPerNeuron_ * countNeurons_;
+
+   if (maxTotalSynapses != 0) {
+      delete[] totalDelayPost_;
+      delete[] delayQueuePost_;
+      delete[] delayIndexPost_;
+      delete[] delayQueuePostLength_;
+      delete[] tauspost_;
+      delete[] tauspre_;
+      delete[] taupos_;
+      delete[] tauneg_;
+      delete[] STDPgap_;
+      delete[] Wex_;
+      delete[] Aneg_;
+      delete[] Apos_;
+      delete[] mupos_;
+      delete[] muneg_;
+      delete[] useFroemkeDanSTDP_;
+   }
+
+   totalDelayPost_ = NULL;
+   delayQueuePost_ = NULL;
+   delayIndexPost_ = NULL;
+   delayQueuePostLength_ = NULL;
+   tauspost_ = NULL;
+   tauspre_ = NULL;
+   taupos_ = NULL;
+   tauneg_ = NULL;
+   STDPgap_ = NULL;
+   Wex_ = NULL;
+   Aneg_ = NULL;
+   Apos_ = NULL;
+   mupos_ = NULL;
+   muneg_ = NULL;
+   useFroemkeDanSTDP_ = NULL;
 }
 
 /*
@@ -64,49 +98,6 @@ void AllSTDPSynapses::setupSynapses(const int numNeurons, const int maxSynapses)
       muneg_ = new BGFLOAT[maxTotalSynapses];
       useFroemkeDanSTDP_ = new bool[maxTotalSynapses];
    }
-}
-
-/*
- *  Cleanup the class (deallocate memories).
- */
-void AllSTDPSynapses::cleanupSynapses() {
-   BGSIZE maxTotalSynapses = maxSynapsesPerNeuron_ * countNeurons_;
-
-   if (maxTotalSynapses != 0) {
-      delete[] totalDelayPost_;
-      delete[] delayQueuePost_;
-      delete[] delayIndexPost_;
-      delete[] delayQueuePostLength_;
-      delete[] tauspost_;
-      delete[] tauspre_;
-      delete[] taupos_;
-      delete[] tauneg_;
-      delete[] STDPgap_;
-      delete[] Wex_;
-      delete[] Aneg_;
-      delete[] Apos_;
-      delete[] mupos_;
-      delete[] muneg_;
-      delete[] useFroemkeDanSTDP_;
-   }
-
-   totalDelayPost_ = NULL;
-   delayQueuePost_ = NULL;
-   delayIndexPost_ = NULL;
-   delayQueuePostLength_ = NULL;
-   tauspost_ = NULL;
-   tauspre_ = NULL;
-   taupos_ = NULL;
-   tauneg_ = NULL;
-   STDPgap_ = NULL;
-   Wex_ = NULL;
-   Aneg_ = NULL;
-   Apos_ = NULL;
-   mupos_ = NULL;
-   muneg_ = NULL;
-   useFroemkeDanSTDP_ = NULL;
-
-   AllSpikingSynapses::cleanupSynapses();
 }
 
 /*

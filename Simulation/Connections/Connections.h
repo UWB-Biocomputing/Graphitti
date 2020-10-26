@@ -54,8 +54,14 @@ class Connections {
 public:
    Connections();
 
+   /**
+    *  Destructor
+    */
    virtual ~Connections();
 
+   /**
+    * Returns shared pointer to Synapses/Edges 
+    */
    shared_ptr<IAllSynapses> getSynapses() const;
 
 
@@ -77,11 +83,6 @@ public:
     *  @param  synapses  The Synapse list to search from.
     */
    virtual void setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses) = 0;
-
-   /**
-    *  Cleanup the class (deallocate memories).
-    */
-   virtual void cleanupConnections() = 0;
 
    /*
     * Load member variables from configuration file.

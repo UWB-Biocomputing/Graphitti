@@ -57,12 +57,6 @@ public:
    virtual void setupNeurons();
 
    /**
-    *  Cleanup the class.
-    *  Deallocate memories.
-    */
-   virtual void cleanupNeurons();
-
-   /**
     *  Clear the spike counts out of all Neurons.
     */
    void clearSpikeCounts();
@@ -159,12 +153,6 @@ protected:
    virtual void fire(const int index) const;
 
 #endif // defined(USE_GPU)
-
-private:
-   /**
-    *  Deallocate all resources
-    */
-   void freeResources();
 
 public:
    /**

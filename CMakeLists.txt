@@ -9,12 +9,12 @@ set(BRAINGRID_CUDA YES)
 
 # Enables the CUDA langauge and locates the NVCC compiler. 
 # Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
+#
+# BRAINGRID_CUDA also compiles each library that contains CUDA with the following line...
+# set_property(TARGET target PROPERTY CUDA_ARCHITECTURES 35-virtual) 
+# so the compiler knows the CUDA architecture being used is the SM_35
 if(BRAINGRID_CUDA)
         enable_language(CUDA)
-        #SM_35 #TODO: Set each library that contains CUDA with the following line...
-        
-        #set_property(TARGET target PROPERTY CUDA_ARCHITECTURES 35-virtual) 
-        #NVCCFLAGS = -g -arch=sm_35 -rdc=true $(INCDIRS)
         set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
         add_compile_definitions(USE_GPU)
 endif()

@@ -103,12 +103,6 @@ public:
    virtual void setupNeurons();
 
    /**
-    *  Cleanup the class.
-    *  Deallocate memories.
-    */
-   virtual void cleanupNeurons();
-
-   /**
     *  Prints out all parameters of the neurons to logging file.
     *  Registered to OperationManager as Operation::printParameters
     */
@@ -299,12 +293,6 @@ protected:
     *  @param  index           index of the neuron (in neurons).
     */
    void writeNeuron(ostream &output, int index) const;
-
-private:
-   /**
-    *  Deallocate all resources
-    */
-   void freeResources();
 
 public:
    /**
