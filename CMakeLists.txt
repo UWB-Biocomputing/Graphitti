@@ -5,7 +5,7 @@ project(SummerOfBrain)
 set(CMAKE_CXX_STANDARD 11)
 
 # Enable the use of GPU. Only available if CUDA library is installed the GPU is CUDA capable.
-set(BRAINGRID_CUDA YES)
+set(BRAINGRID_CUDA NO)
 
 # Enables the CUDA langauge and locates the NVCC compiler. 
 # Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
