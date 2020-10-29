@@ -74,7 +74,7 @@ void AllSpikingNeurons::clearSpikeCounts() {
 void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SynapseIndexMap *synapseIndexMap) {
    int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
-   AllSpikingSynapses spSynapses = dynamic_cast<AllSpikingSynapses &>(synapses);
+   AllSpikingSynapses &spSynapses = dynamic_cast<AllSpikingSynapses &>(synapses);
    // For each neuron in the network
    for (int idx = Simulator::getInstance().getTotalNeurons() - 1; idx >= 0; --idx) {
       // advance neurons

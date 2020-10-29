@@ -19,12 +19,12 @@ AllSpikingSynapses::~AllSpikingSynapses() {
   // Causes seg fault right now, probably not getting initialized before this method is called.
   
   if (maxTotalSynapses != 0) {
-      // delete[] decay_;
-      // delete[] totalDelay_;
-      // delete[] delayQueue_;
-      // delete[] delayIndex_;
-      // delete[] delayQueueLength_;
-      // delete[] tau_;
+      delete[] decay_;
+      delete[] totalDelay_;
+      delete[] delayQueue_;
+      delete[] delayIndex_;
+      delete[] delayQueueLength_;
+      delete[] tau_;
   }
 
    decay_ = NULL;
