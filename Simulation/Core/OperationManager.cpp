@@ -55,12 +55,12 @@ string OperationManager::operationToString(const Operations::op &operation) cons
          return "printParameters";
       case Operations::op::loadParameters:
          return "loadParameters";
-      case Operations::op::deallocateGPUMemory:
-         return "deallocateMemory";
       case Operations::op::serialize:
          return "serialize";
       case Operations::op::deserialize:
          return "deserialize";
+      case Operations::op::deallocateGPUMemory:
+         return "deallocateGPUMemory";
       case Operations::op::restoreToDefault:
          return "restoreToDefault";
       case Operations::op::copyToGPU:

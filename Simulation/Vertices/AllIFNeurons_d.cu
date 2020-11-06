@@ -10,7 +10,7 @@
  *  Allocate GPU memories to store all neurons' states,
  *  and copy them from host to GPU memory.
  *
- *  @param  allNeuronsDevice   Reference to the AllIFNeuronsDeviceProperties struct on device memory.
+ *  @param  allNeuronsDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
  */
 void AllIFNeurons::allocNeuronDeviceStruct( void** allNeuronsDevice ) {
 	AllIFNeuronsDeviceProperties allNeurons;
@@ -25,7 +25,7 @@ void AllIFNeurons::allocNeuronDeviceStruct( void** allNeuronsDevice ) {
  *  Allocate GPU memories to store all neurons' states.
  *  (Helper function of allocNeuronDeviceStruct)
  *
- *  @param  allNeurons         Reference to the AllIFNeuronsDeviceProperties struct.
+ *  @param  allNeurons         GPU address of the AllIFNeuronsDeviceProperties struct.
  */
 void AllIFNeurons::allocDeviceStruct( AllIFNeuronsDeviceProperties &allNeurons ) {
 	int count = Simulator::getInstance().getTotalNeurons();
@@ -67,7 +67,7 @@ void AllIFNeurons::allocDeviceStruct( AllIFNeuronsDeviceProperties &allNeurons )
 /*
  *  Delete GPU memories.
  *
- *  @param  allNeuronsDevice   Reference to the AllIFNeuronsDeviceProperties struct on device memory.
+ *  @param  allNeuronsDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
  */
 void AllIFNeurons::deleteNeuronDeviceStruct( void* allNeuronsDevice ) {
 	AllIFNeuronsDeviceProperties allNeurons;
@@ -83,7 +83,7 @@ void AllIFNeurons::deleteNeuronDeviceStruct( void* allNeuronsDevice ) {
  *  Delete GPU memories.
  *  (Helper function of deleteNeuronDeviceStruct)
  *
- *  @param  allNeurons         Reference to the AllIFNeuronsDeviceProperties struct.
+ *  @param  allNeurons         GPU address of the AllIFNeuronsDeviceProperties struct.
  */
 void AllIFNeurons::deleteDeviceStruct( AllIFNeuronsDeviceProperties& allNeurons ) {
 	int count = Simulator::getInstance().getTotalNeurons();
@@ -121,7 +121,7 @@ void AllIFNeurons::deleteDeviceStruct( AllIFNeuronsDeviceProperties& allNeurons 
 /*
  *  Copy all neurons' data from host to device.
  *
- *  @param  allNeuronsDevice   Reference to the AllIFNeuronsDeviceProperties struct on device memory.
+ *  @param  allNeuronsDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
  */
 void AllIFNeurons::copyNeuronHostToDevice( void* allNeuronsDevice ) { 
 	AllIFNeuronsDeviceProperties allNeurons;
@@ -134,7 +134,7 @@ void AllIFNeurons::copyNeuronHostToDevice( void* allNeuronsDevice ) {
  *  Copy all neurons' data from host to device.
  *  (Helper function of copyNeuronHostToDevice)
  *
- *  @param  allNeurons         Reference to the AllIFNeuronsDeviceProperties struct.
+ *  @param  allNeurons         GPU address of the AllIFNeuronsDeviceProperties struct.
  */
 void AllIFNeurons::copyHostToDevice( AllIFNeuronsDeviceProperties& allNeurons ) { 
 	int count = Simulator::getInstance().getTotalNeurons();
@@ -170,7 +170,7 @@ void AllIFNeurons::copyHostToDevice( AllIFNeuronsDeviceProperties& allNeurons ) 
 /*
  *  Copy all neurons' data from device to host.
  *
- *  @param  allNeuronsDevice   Reference to the AllIFNeuronsDeviceProperties struct on device memory.
+ *  @param  allNeuronsDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
  */
 void AllIFNeurons::copyNeuronDeviceToHost( void* allNeuronsDevice ) {
 	AllIFNeuronsDeviceProperties allNeurons;
@@ -183,7 +183,7 @@ void AllIFNeurons::copyNeuronDeviceToHost( void* allNeuronsDevice ) {
  *  Copy all neurons' data from device to host.
  *  (Helper function of copyNeuronDeviceToHost)
  *
- *  @param  allNeurons         Reference to the AllIFNeuronsDeviceProperties struct.
+ *  @param  allNeurons         GPU address of the AllIFNeuronsDeviceProperties struct.
  */
 void AllIFNeurons::copyDeviceToHost( AllIFNeuronsDeviceProperties& allNeurons ) {
 	int count = Simulator::getInstance().getTotalNeurons();
@@ -219,7 +219,7 @@ void AllIFNeurons::copyDeviceToHost( AllIFNeuronsDeviceProperties& allNeurons ) 
 /*
  *  Copy spike history data stored in device memory to host.
  *
- *  @param  allNeuronsDevice   Reference to the AllIFNeuronsDeviceProperties struct on device memory.
+ *  @param  allNeuronsDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
  */
 void AllIFNeurons::copyNeuronDeviceSpikeHistoryToHost( void* allNeuronsDevice ) 
 {        
@@ -231,7 +231,7 @@ void AllIFNeurons::copyNeuronDeviceSpikeHistoryToHost( void* allNeuronsDevice )
 /*
  *  Copy spike counts data stored in device memory to host.
  *
- *  @param  allNeuronsDevice   Reference to the AllIFNeuronsDeviceProperties struct on device memory.
+ *  @param  allNeuronsDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
  */
 void AllIFNeurons::copyNeuronDeviceSpikeCountsToHost( void* allNeuronsDevice )
 {
@@ -243,7 +243,7 @@ void AllIFNeurons::copyNeuronDeviceSpikeCountsToHost( void* allNeuronsDevice )
 /*
  *  Clear the spike counts out of all neurons.
  *
- *  @param  allNeuronsDevice   Reference to the AllIFNeuronsDeviceProperties struct on device memory.
+ *  @param  allNeuronsDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
  */
 void AllIFNeurons::clearNeuronSpikeCounts( void* allNeuronsDevice )
 {
@@ -258,12 +258,12 @@ void AllIFNeurons::clearNeuronSpikeCounts( void* allNeuronsDevice )
  *  Notify outgoing synapses if neuron has fired.
  *
  *  @param  synapses               Reference to the allSynapses struct on host memory.
- *  @param  allNeuronsDevice       Reference to the AllIFNeuronsDeviceProperties struct 
+ *  @param  allNeuronsDevice       GPU address of the AllIFNeuronsDeviceProperties struct 
  *                                 on device memory.
- *  @param  allSynapsesDevice      Reference to the allSynapsesDeviceProperties struct 
+ *  @param  allSynapsesDevice      GPU address of the allSynapsesDeviceProperties struct 
  *                                 on device memory.
  *  @param  randNoise              Reference to the random noise array.
- *  @param  synapseIndexMapDevice  Reference to the SynapseIndexMap on device memory.
+ *  @param  synapseIndexMapDevice  GPU address of the SynapseIndexMap on device memory.
  */
 void AllIFNeurons::advanceNeurons( IAllSynapses &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, SynapseIndexMap* synapseIndexMapDevice )
 {

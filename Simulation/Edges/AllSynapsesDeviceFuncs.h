@@ -17,7 +17,7 @@ extern __device__ enumClassSynapses classSynapses_d = undefClassSynapses;
  *  Perform updating synapses for one time step.
  *
  *  @param[in] totalSynapseCount  Number of synapses.
- *  @param  synapseIndexMapDevice    Reference to the SynapseIndexMap on device memory.
+ *  @param  synapseIndexMapDevice    GPU address of the SynapseIndexMap on device memory.
  *  @param[in] simulationStep        The current simulation step.
  *  @param[in] deltaT                Inner simulation step duration.
  *  @param[in] allSynapsesDevice     Pointer to Synapse structures in device memory.
@@ -29,13 +29,15 @@ extern __global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, Syn
  *  Perform updating synapses for one time step.
  *
  *  @param[in] totalSynapseCount  Number of synapses.
- *  @param  synapseIndexMapDevice    Reference to the SynapseIndexMap on device memory.
+ *  @param  synapseIndexMapDevice    GPU address of the SynapseIndexMap on device memory.
  *  @param[in] simulationStep        The current simulation step.
  *  @param[in] deltaT                Inner simulation step duration.
  *  @param[in] allSynapsesDevice     Pointer to AllSTDPSynapsesDeviceProperties structures 
  *                                   on device memory.
+ *  @param[in] allNeuronsDevice      GPU address of AllNeurons structures on device memory.
+ *  @param[in] maxSpikes             Maximum number of spikes per neuron per epoch.   
  */
-extern __global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, SynapseIndexMap* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSTDPSynapsesDeviceProperties* allSynapsesDevice, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, int maxSpikes, int width );
+extern __global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, SynapseIndexMap* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSTDPSynapsesDeviceProperties* allSynapsesDevice, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, int maxSpikes );
 
 /**
  * Adjust the strength of the synapse or remove it from the synapse map if it has gone below
@@ -56,10 +58,9 @@ extern __global__ void updateSynapsesWeightsDevice( int numNeurons, BGFLOAT delt
  *
  * @param allSynapsesDevice      Pointer to the Synapse structures in device memory.
  * @param pSummationMap          Pointer to the summation point.
- * @param width                  Width of neuron map (assumes square).
  * @param deltaT                 The simulation time step size.
  * @param weight                 Synapse weight.
  */
-extern __global__ void initSynapsesDevice( int n, AllDSSynapsesDeviceProperties* allSynapsesDevice, BGFLOAT *pSummationMap, int width, const BGFLOAT deltaT, BGFLOAT weight );
+extern __global__ void initSynapsesDevice( int n, AllDSSynapsesDeviceProperties* allSynapsesDevice, BGFLOAT *pSummationMap, const BGFLOAT deltaT, BGFLOAT weight );
 
 #endif 

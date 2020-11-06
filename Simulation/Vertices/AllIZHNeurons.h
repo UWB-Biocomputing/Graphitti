@@ -155,49 +155,49 @@ public:
         *  Allocate GPU memories to store all neurons' states,
         *  and copy them from host to GPU memory.
         *
-        *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
+        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
         */
        virtual void allocNeuronDeviceStruct( void** allNeuronsDevice);
 
        /**
         *  Delete GPU memories.
         *
-        *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
+        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
         */
        virtual void deleteNeuronDeviceStruct( void* allNeuronsDevice);
 
        /**
         *  Copy all neurons' data from host to device.
         *
-        *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
+        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
         */
        virtual void copyNeuronHostToDevice( void* allNeuronsDevice);
 
        /**
         *  Copy all neurons' data from device to host.
         *
-        *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
+        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
         */
        virtual void copyNeuronDeviceToHost(void* allNeuronsDevice);
 
        /**
         *  Copy spike history data stored in device memory to host.
         *
-        *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
+        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
         */
        virtual void copyNeuronDeviceSpikeHistoryToHost( void* allNeuronsDevice);
 
        /**
         *  Copy spike counts data stored in device memory to host.
         *
-        *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
+        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
         */
        virtual void copyNeuronDeviceSpikeCountsToHost( void* allNeuronsDevice);
 
        /**
         *  Clear the spike counts out of all neurons.
         *
-        *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
+        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
         */
        virtual void clearNeuronSpikeCounts( void* allNeuronsDevice);
 

@@ -12,7 +12,7 @@
  *  Allocate GPU memories to store all synapses' states,
  *  and copy them from host to GPU memory.
  *
- *  @param  allSynapsesDevice  Reference to the AllDynamicSTDPSynapsesDeviceProperties struct 
+ *  @param  allSynapsesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
  *                             on device memory.
  */
 void AllDynamicSTDPSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice ) {
@@ -23,9 +23,9 @@ void AllDynamicSTDPSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice 
  *  Allocate GPU memories to store all synapses' states,
  *  and copy them from host to GPU memory.
  *
- *  @param  allSynapsesDevice     Reference to the AllDynamicSTDPSynapsesDeviceProperties struct 
+ *  @param  allSynapsesDevice     GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
  *                                on device memory.
- *  @param  numNeurons           Number of neurons.
+ *  @param  numNeurons            Number of neurons.
  *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
  */
 void AllDynamicSTDPSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron ) {
@@ -42,9 +42,9 @@ void AllDynamicSTDPSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice,
  *  and copy them from host to GPU memory.
  *  (Helper function of allocSynapseDeviceStruct)
  *
- *  @param  allSynapsesDevice     Reference to the AllDynamicSTDPSynapsesDeviceProperties struct 
+ *  @param  allSynapsesDevice     GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
  *                                on device memory.
- *  @param  numNeurons           Number of neurons.
+ *  @param  numNeurons            Number of neurons.
  *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
  */
 void AllDynamicSTDPSynapses::allocDeviceStruct( AllDynamicSTDPSynapsesDeviceProperties &allSynapses, int numNeurons, int maxSynapsesPerNeuron ) {
@@ -63,7 +63,7 @@ void AllDynamicSTDPSynapses::allocDeviceStruct( AllDynamicSTDPSynapsesDeviceProp
 /*
  *  Delete GPU memories.
  *
- *  @param  allSynapsesDevice  Reference to the AllDynamicSTDPSynapsesDeviceProperties struct 
+ *  @param  allSynapsesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
  *                             on device memory.
  */
 void AllDynamicSTDPSynapses::deleteSynapseDeviceStruct( void* allSynapsesDevice ) {
@@ -80,7 +80,7 @@ void AllDynamicSTDPSynapses::deleteSynapseDeviceStruct( void* allSynapsesDevice 
  *  Delete GPU memories.
  *  (Helper function of deleteSynapseDeviceStruct)
  *
- *  @param  allSynapsesDevice  Reference to the AllDynamicSTDPSynapsesDeviceProperties struct 
+ *  @param  allSynapsesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
  *                             on device memory.
  */
 void AllDynamicSTDPSynapses::deleteDeviceStruct( AllDynamicSTDPSynapsesDeviceProperties& allSynapses ) {
@@ -97,7 +97,7 @@ void AllDynamicSTDPSynapses::deleteDeviceStruct( AllDynamicSTDPSynapsesDevicePro
 /*
  *  Copy all synapses' data from host to device.
  *
- *  @param  allSynapsesDevice  Reference to the AllDynamicSTDPSynapsesDeviceProperties struct 
+ *  @param  allSynapsesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
  *                             on device memory.
  */
 void AllDynamicSTDPSynapses::copySynapseHostToDevice( void* allSynapsesDevice ) { // copy everything necessary
@@ -107,9 +107,9 @@ void AllDynamicSTDPSynapses::copySynapseHostToDevice( void* allSynapsesDevice ) 
 /*
  *  Copy all synapses' data from host to device.
  *
- *  @param  allSynapsesDevice     Reference to the AllDynamicSTDPSynapsesDeviceProperties struct 
+ *  @param  allSynapsesDevice     GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
  *                                on device memory.
- *  @param  numNeurons           Number of neurons.
+ *  @param  numNeurons            Number of neurons.
  *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
  */
 void AllDynamicSTDPSynapses::copySynapseHostToDevice( void* allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron ) { // copy everything necessary
@@ -124,9 +124,9 @@ void AllDynamicSTDPSynapses::copySynapseHostToDevice( void* allSynapsesDevice, i
  *  Copy all synapses' data from host to device.
  *  (Helper function of copySynapseHostToDevice)
  *
- *  @param  allSynapsesDevice     Reference to the AllDynamicSTDPSynapsesDeviceProperties struct 
+ *  @param  allSynapsesDevice     GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
  *                                on device memory.
- *  @param  numNeurons           Number of neurons.
+ *  @param  numNeurons            Number of neurons.
  *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
  */
 void AllDynamicSTDPSynapses::copyHostToDevice( void* allSynapsesDevice, AllDynamicSTDPSynapsesDeviceProperties& allSynapses, int numNeurons, int maxSynapsesPerNeuron ) { // copy everything necessary 
@@ -151,7 +151,7 @@ void AllDynamicSTDPSynapses::copyHostToDevice( void* allSynapsesDevice, AllDynam
 /*
  *  Copy all synapses' data from device to host.
  *
- *  @param  allSynapsesDevice  Reference to the AllDynamicSTDPSynapsesDeviceProperties struct 
+ *  @param  allSynapsesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
  *                             on device memory.
  */
 void AllDynamicSTDPSynapses::copySynapseDeviceToHost( void* allSynapsesDevice ) {
@@ -167,9 +167,9 @@ void AllDynamicSTDPSynapses::copySynapseDeviceToHost( void* allSynapsesDevice ) 
  *  Copy all synapses' data from device to host.
  *  (Helper function of copySynapseDeviceToHost)
  *
- *  @param  allSynapsesDevice     Reference to the AllDynamicSTDPSynapsesDeviceProperties struct 
+ *  @param  allSynapsesDevice     GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
  *                                on device memory.
- *  @param  numNeurons           Number of neurons.
+ *  @param  numNeurons            Number of neurons.
  *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
  */
 void AllDynamicSTDPSynapses::copyDeviceToHost( AllDynamicSTDPSynapsesDeviceProperties& allSynapses ) {
@@ -212,7 +212,7 @@ void AllDynamicSTDPSynapses::setSynapseClassID()
 /*
  *  Prints GPU SynapsesProps data.
  *   
- *  @param  allSynapsesDeviceProps   Reference to the corresponding SynapsesDeviceProperties struct on device memory.
+ *  @param  allSynapsesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
  */
 void AllDynamicSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) const
 {
