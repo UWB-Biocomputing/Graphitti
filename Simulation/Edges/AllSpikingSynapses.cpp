@@ -81,7 +81,6 @@ void AllSpikingSynapses::initSpikeQueue(const BGSIZE iSyn) {
    delayQueue = 0;
    delayIdx = 0;
    ldelayQueue = LENGTH_OF_DELAYQUEUE;
-   //LOG4CPLUS_DEBUG(fileLogger_,"Delay Queue RESET in init ");
 }
 
 /*
@@ -153,7 +152,7 @@ void AllSpikingSynapses::createSynapse(const BGSIZE iSyn, int srcNeuron, int des
 
   totalDelay_[iSyn] = static_cast<int>( delay / deltaT ) + 1;
 
-  // LOG4CPLUS_DEBUG(fileLogger_,"totaldelay "<<totalDelay_[iSyn]<<" delay "<<delay<<" delayT "<<" iSyn "<<iSyn); 
+  LOG4CPLUS_TRACE(fileLogger_,"totaldelay "<<totalDelay_[iSyn]<<" delay "<<delay<<" delayT "<<" iSyn "<<iSyn); 
 
    // initializes the queues for the Synapses
    initSpikeQueue(iSyn);
@@ -196,16 +195,12 @@ void AllSpikingSynapses::preSpikeHit(const BGSIZE iSyn) {
    // Add to spike queue
 
    // calculate index where to insert the spike into delayQueue
-   //LOG4CPLUS_DEBUG(fileLogger_,"delayidx "<<delayIdx<<" totalDelay "<<totalDelay<<" ldelayQueue "<<ldelayQueue);
+   LOG4CPLUS_TRACE(fileLogger_,"delayidx "<<delayIdx<<" totalDelay "<<totalDelay<<" ldelayQueue "<<ldelayQueue);
    int idx = delayIdx + totalDelay;
    if (idx >= ldelayQueue) { //Note::mod operator more efficient
       idx -= ldelayQueue;
    }
-   //cout<<"Checking preSpikeHIT Delay queue " << setbase(2)<<delayQueue<< std::setbase(10);
-   //LOG4CPLUS_DEBUG(fileLogger_,"Checking preSpikeHIT Delay queue " << std::setbase(2)<<delayQueue<< std::setbase(10)<<" idx "<<idx<<" iSyn "<<iSyn);
-
-    // set a spike
-  // assert(!(delayQueue & (0x1 << idx)));
+   
   if((delayQueue & (0x1 << idx)))
    {
       LOG4CPLUS_DEBUG(fileLogger_,"Delay Queue Error "<<setbase(2)<<delayQueue<< setbase(10)<<" idx"<<idx<<" iSync "<<iSyn);
@@ -230,8 +225,6 @@ void AllSpikingSynapses::postSpikeHit(const BGSIZE iSyn) {
  *  @param  neurons   The Neuron list to search from.
  */
 void AllSpikingSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
-    //LOG4CPLUS_DEBUG(fileLogger_,"Advance synapse");
-   // LOG4CPLUS_FATAL(fileLogger_, "iSyn : " << iSyn );
    BGFLOAT &decay = this->decay_[iSyn];
    BGFLOAT &psr = this->psr_[iSyn];
    BGFLOAT &summationPoint = *(this->summationPoint_[iSyn]);
@@ -266,7 +259,6 @@ void AllSpikingSynapses::changePSR(const BGSIZE iSyn, const BGFLOAT deltaT) {
    BGFLOAT &decay = this->decay_[iSyn];
 
    psr += (W / decay);
-   //LOG4CPLUS_DEBUG(fileLogger_,"\nPSR: "<<psr);    // calculate psr
 }
 
 #endif //!defined(USE_GPU)

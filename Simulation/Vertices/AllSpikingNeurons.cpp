@@ -96,20 +96,13 @@ void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SynapseInde
 
          if (synapseIndexMap != NULL) {
             synapseCounts = synapseIndexMap->outgoingSynapseCount_[idx];
-            //LOG4CPLUS_DEBUG(fileLogger_, "Synapse count "<<synapseCounts);
             if (synapseCounts != 0) {
                int beginIndex = synapseIndexMap->outgoingSynapseBegin_[idx];
                BGSIZE iSyn;
                const BGSIZE *outgoingMapBegin=&(synapseIndexMap->outgoingSynapseIndexMap_[beginIndex]);
-               //const BGSIZE outgoingMapBegin1=outgoingMapBegin[beginIndex];
-               //for (BGSIZE i = 0; i < synapse_counts; i++) {
-                 // iSyn=outgoingMapBegin[i+beginIndex];
-                  //spSynapses.preSpikeHit(iSyn);
-               //}
+           
                for (BGSIZE i = 0; i < synapseCounts; i++) {
                   iSyn=outgoingMapBegin[i];
-                  //BGFLOAT iSyn2 = synapseIndexMap->outgoingSynapseBegin_[beginIndex + i];
-                  //LOG4CPLUS_DEBUG(fileLogger_, " iSync "<<iSyn);
                   spSynapses.preSpikeHit(iSyn);
                }
             }

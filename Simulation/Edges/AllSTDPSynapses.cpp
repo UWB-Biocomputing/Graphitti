@@ -106,7 +106,6 @@ void AllSTDPSynapses::setupSynapses(const int numNeurons, const int maxSynapses)
  *  @param  iSyn   index of the synapse to set.
  */
 void AllSTDPSynapses::initSpikeQueue(const BGSIZE iSyn) {
-   //LOG4CPLUS_DEBUG(fileLogger_,"Delay Queue RESET in init ");
    AllSpikingSynapses::initSpikeQueue(iSyn);
 
    int &total_delay = this->totalDelayPost_[iSyn];
@@ -246,13 +245,11 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
 
             if (delta <= -3.0 * tauneg_)
                break;
-
-           // LOG4CPLUS_DEBUG(fileLogger_,"\nBefore stdp learning");
           
             stdpLearning(iSyn, delta, epost, epre);
             --offIndex;
          }
-        // LOG4CPLUS_DEBUG(fileLogger_,"\nBefore changePSR");
+ 
          changePSR(iSyn, deltaT);
       }
 
@@ -260,7 +257,6 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
          // spikeCount points to the next available position of spike_history,
          // so the getSpikeHistory w/offset = -2 will return the spike time
          // just one before the last spike.
-         //LOG4CPLUS_DEBUG(fileLogger_,"\nin post");
          spikeHistory = spNeurons->getSpikeHistory(idxPost, -2);
          if (spikeHistory != ULONG_MAX && useFroemkeDanSTDP_) {
             // delta will include the transmission delay
@@ -301,8 +297,6 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
       }
    }
 
-   //LOG4CPLUS_DEBUG(fileLogger_,"\nEnding advance");
-
    // decay the post spike response
    psr *= decay;
    // and apply it to the summation point
@@ -339,8 +333,7 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost
    BGFLOAT &W = this->W_[iSyn];
    synapseType type = this->type_[iSyn];
    BGFLOAT dw;
-  LOG4CPLUS_DEBUG(fileLogger_,
-         "AllSTDPSynapses::stdpLearning:1" );
+ 
    if (delta < -STDPgap_) {
       // depression
       dw = pow(fabs(W) / Wex_, muneg_) * Aneg_ * exp(delta / tauneg_);  // normalize
@@ -353,7 +346,7 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost
    }
 
 
-   // dw is the percentage change in synaptic strength; add 1.0 to become the scaling ratio
+   // dw is the fractional change in synaptic strength; add 1.0 to become the scaling ratio
    dw = 1.0 + dw * epre * epost;
   
 
