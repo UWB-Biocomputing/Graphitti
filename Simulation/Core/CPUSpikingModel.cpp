@@ -31,6 +31,7 @@ void CPUSpikingModel::advance() {
    // dereferencing the ptr, lose late binding -- look into changing!
    layout_->getNeurons()->advanceNeurons(*(connections_->getSynapses().get()), connections_->getSynapseIndexMap().get());
    connections_->getSynapses()->advanceSynapses(layout_->getNeurons().get(), connections_->getSynapseIndexMap().get());
+   //LOG4CPLUS_DEBUG(fileLogger_, "Connection successful");
 }
 
 /// Update the connection of all the Neurons and Synapses of the simulation.

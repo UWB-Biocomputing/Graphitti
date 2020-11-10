@@ -183,7 +183,7 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
       assert(static_cast<int>(synapseCounts_[i]) < Simulator::getInstance().getMaxSynapsesPerNeuron());
       totalSynapseCount += synapseCounts_[i];
    }
-
+   //ADD the logger parameters here
    DEBUG (cout << "totalSynapseCount: " << totalSynapseCount << endl;)
 
    if (totalSynapseCount == 0) {
@@ -191,13 +191,22 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
    }
 
    // allocate memories for forward map
-   vector<BGSIZE> *rgSynapseSynapseIndexMap = new vector<BGSIZE>[neuronCount];
+   vector<BGSIZE>* rgSynapseSynapseIndexMap = new vector<BGSIZE>[neuronCount];
 
    BGSIZE syn_i = 0;
    int numInUse = 0;
+/*
+   if (synapseIndexMap != NULL)
+        {
+            delete synapseIndexMap;
+            synapseIndexMap = NULL;
+        }
+*/
 
    // create synapse forward map & active synapse map
+   //in previous code a reference to the pointer was being passed, *&synapseIndexMap
    SynapseIndexMap *synapseIndexMap = new SynapseIndexMap(neuronCount, totalSynapseCount);
+
    for (int i = 0; i < neuronCount; i++) {
       BGSIZE synapse_count = 0;
       synapseIndexMap->incomingSynapseBegin_[i] = numInUse;
@@ -216,7 +225,7 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
    }
 
    assert(totalSynapseCount == numInUse);
-   this->totalSynapseCount_ = totalSynapseCount;
+   totalSynapseCount_ = totalSynapseCount;
 
    syn_i = 0;
    for (int i = 0; i < neuronCount; i++) {
@@ -266,6 +275,7 @@ synapseType AllSynapses::synapseOrdinalToType(const int typeOrdinal) {
 void AllSynapses::advanceSynapses(IAllNeurons *neurons, SynapseIndexMap *synapseIndexMap) {
    for (BGSIZE i = 0; i < totalSynapseCount_; i++) {
       BGSIZE iSyn = synapseIndexMap->incomingSynapseIndexMap_[i];
+      //LOG4CPLUS_FATAL(fileLogger_, "iSyn : " << iSyn );
       advanceSynapse(iSyn, neurons);
    }
 }

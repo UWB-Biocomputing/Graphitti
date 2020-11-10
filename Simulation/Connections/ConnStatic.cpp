@@ -14,9 +14,9 @@
 #include <algorithm>
 
 ConnStatic::ConnStatic() {
-   threshConnsRadius_ = 0;
-   connsPerNeuron_ = 0;
-   rewiringProbability_ = 0;
+    threshConnsRadius_ = 4;
+   connsPerNeuron_ = 2;
+   rewiringProbability_ = 0.75;
 }
 
 ConnStatic::~ConnStatic() {
