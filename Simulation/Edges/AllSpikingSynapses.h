@@ -251,7 +251,7 @@ protected:
         *  @param  numNeurons            Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       void allocDeviceStruct( AllSpikingSynapsesDeviceProperties &allSynapses, int numNeurons, int maxSynapsesPerNeuron );
+       void allocDeviceStruct( AllSpikingSynapsesDeviceProperties &allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron );
 
        /**
         *  Delete GPU memories.
@@ -259,7 +259,7 @@ protected:
         *
         *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
-       void deleteDeviceStruct( AllSpikingSynapsesDeviceProperties& allSynapses );
+       void deleteDeviceStruct( AllSpikingSynapsesDeviceProperties& allSynapsesDevice );
 
        /**
         *  Copy all synapses' data from host to device.
@@ -269,7 +269,7 @@ protected:
         *  @param  numNeurons            Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       void copyHostToDevice( void* allSynapsesDevice, AllSpikingSynapsesDeviceProperties& allSynapses, int numNeurons, int maxSynapsesPerNeuron );
+       void copyHostToDevice( void* allSynapsesDevice, AllSpikingSynapsesDeviceProperties& allSynapsesDeviceProps, int numNeurons, int maxSynapsesPerNeuron );
 
        /**
         *  Copy all synapses' data from device to host.
@@ -279,7 +279,7 @@ protected:
         *  @param  numNeurons            Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       void copyDeviceToHost( AllSpikingSynapsesDeviceProperties& allSynapses);
+       void copyDeviceToHost( AllSpikingSynapsesDeviceProperties& allSynapsesDevice);
 #else  // !defined(USE_GPU)
 public:
    /**

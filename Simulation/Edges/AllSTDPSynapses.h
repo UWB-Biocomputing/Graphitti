@@ -282,7 +282,7 @@ protected:
         *  @param  numNeurons              Number of neurons.
         *  @param  maxSynapsesPerNeuron    Maximum number of synapses per neuron.
         */
-       void copyHostToDevice( void* allSynapsesDevice, AllSTDPSynapsesDeviceProperties& allSynapses, int numNeurons, int maxSynapsesPerNeuron );
+       void copyHostToDevice( void* allSynapsesDevice, AllSTDPSynapsesDeviceProperties& allSynapsesDeviceProps, int numNeurons, int maxSynapsesPerNeuron );
 
        /**
         *  Copy all synapses' data from device to host.
@@ -292,7 +292,7 @@ protected:
         *  @param  numNeurons            Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       void copyDeviceToHost( AllSTDPSynapsesDeviceProperties& allSynapses );
+       void copyDeviceToHost( AllSTDPSynapsesDeviceProperties& allSynapsesDevice );
 #else // !defined(USE_GPU)
 public:
    /**

@@ -207,33 +207,33 @@ public:
         *  Allocate GPU memories to store all neurons' states.
         *  (Helper function of allocNeuronDeviceStruct)
         *
-        *  @param  allNeurons         Reference to the AllIZHNeuronsDeviceProperties struct.
+        *  @param  allNeuronsDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
         */
-       void allocDeviceStruct( AllIZHNeuronsDeviceProperties &allNeurons);
+       void allocDeviceStruct( AllIZHNeuronsDeviceProperties &allNeuronsDevice);
 
        /**
         *  Delete GPU memories.
         *  (Helper function of deleteNeuronDeviceStruct)
         *
-        *  @param  allNeurons         Reference to the AllIZHNeuronsDeviceProperties struct.
+        *  @param  allNeuronsDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
         */
-       void deleteDeviceStruct( AllIZHNeuronsDeviceProperties& allNeurons);
+       void deleteDeviceStruct( AllIZHNeuronsDeviceProperties& allNeuronsDevice);
 
        /**
         *  Copy all neurons' data from host to device.
         *  (Helper function of copyNeuronHostToDevice)
         *
-        *  @param  allNeurons         Reference to the AllIZHNeuronsDeviceProperties struct.
+        *  @param  allNeuronsDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
         */
-       void copyHostToDevice( AllIZHNeuronsDeviceProperties& allNeurons);
+       void copyHostToDevice( AllIZHNeuronsDeviceProperties& allNeuronsDevice);
 
        /**
         *  Copy all neurons' data from device to host.
         *  (Helper function of copyNeuronDeviceToHost)
         *
-        *  @param  allNeurons         Reference to the AllIZHNeuronsDeviceProperties struct.
+        *  @param  allNeuronsDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
         */
-       void copyDeviceToHost( AllIZHNeuronsDeviceProperties& allNeurons);
+       void copyDeviceToHost( AllIZHNeuronsDeviceProperties& allNeuronsDevice);
 
 #else  // !defined(USE_GPU)
 
