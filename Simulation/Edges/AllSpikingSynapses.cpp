@@ -15,8 +15,6 @@ AllSpikingSynapses::AllSpikingSynapses(const int numNeurons, const int maxSynaps
 
 AllSpikingSynapses::~AllSpikingSynapses() {
    BGSIZE maxTotalSynapses = maxSynapsesPerNeuron_ * countNeurons_;
-
-  // Causes seg fault right now, probably not getting initialized before this method is called.
   
   if (maxTotalSynapses != 0) {
       delete[] decay_;
