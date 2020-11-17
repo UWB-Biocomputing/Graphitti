@@ -9,7 +9,7 @@
 
 #include "gtest/gtest.h"
 
-#include "Foo.h"
+#include "OperationManagerTestingClass.h"
 #include "Simulation/Core/FunctionNodes/GenericFunctionNode.h"
 
 using namespace std;
