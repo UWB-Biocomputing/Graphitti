@@ -90,7 +90,7 @@ bool Connections::updateConnections(IAllNeurons &neurons, Layout *layout) {
 }
 
 #if defined(USE_GPU)
-void Connections::updateSynapsesWeights(const int numNeurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout)
+void Connections::updateSynapsesWeights(const int numNeurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, Layout *layout)
 {
 }
 #else

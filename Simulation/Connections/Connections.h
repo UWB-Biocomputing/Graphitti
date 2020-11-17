@@ -42,6 +42,8 @@
 
 #include "IAllNeurons.h"
 #include "IAllSynapses.h"
+#include "AllSpikingNeurons.h"
+#include "AllSpikingSynapses.h"
 #include "Layout.h"
 #include "IRecorder.h"
 #include "SynapseIndexMap.h"
@@ -52,12 +54,25 @@ class Connections {
 public:
    Connections();
 
+   /**
+    *  Destructor
+    */
    virtual ~Connections();
 
+   /**
+    * Returns shared pointer to Synapses/Edges 
+    */
    shared_ptr<IAllSynapses> getSynapses() const;
 
+
+   /**
+    * Returns a shared pointer to the SynapseIndexMap
+    */
    shared_ptr<SynapseIndexMap> getSynapseIndexMap() const;
 
+   /**
+    * Calls Synapses to create SynapseIndexMap and stores it as a member variable
+    */
    void createSynapseIndexMap();
 
    /**
@@ -68,11 +83,6 @@ public:
     *  @param  synapses  The Synapse list to search from.
     */
    virtual void setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses) = 0;
-
-   /**
-    *  Cleanup the class (deallocate memories).
-    */
-   virtual void cleanupConnections() = 0;
 
    /*
     * Load member variables from configuration file.
@@ -115,11 +125,11 @@ public:
         *  @param  numNeurons          number of neurons to update.
         *  @param  neurons             the Neuron list to search from.
         *  @param  synapses            the Synapse list to search from.
-        *  @param  m_allNeuronsDevice  Reference to the allNeurons struct on device memory.
-        *  @param  m_allSynapsesDevice Reference to the allSynapses struct on device memory.
+        *  @param  allNeuronsDevice    GPU address of the allNeurons struct on device memory.
+        *  @param  allSynapsesDevice   GPU address of the allSynapses struct on device memory.
         *  @param  layout              Layout information of the neunal network.
         */
-       virtual void updateSynapsesWeights(const int numNeurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* m_allNeuronsDevice, AllSpikingSynapsesDeviceProperties* m_allSynapsesDevice, Layout *layout);
+       virtual void updateSynapsesWeights(const int numNeurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, Layout *layout);
 #else
 public:
    /**

@@ -2,6 +2,8 @@
 #include "Simulator.h"
 #include "AllDSSynapses.h"
 
+#if !defined(USE_GPU)
+
 /// Constructor
 CPUSpikingModel::CPUSpikingModel() : Model() {
 }
@@ -18,25 +20,30 @@ void CPUSpikingModel::setupSim() {
    rgNormrnd.push_back(new Norm(0, 1, Simulator::getInstance().getSeed()));
 }
 
+/// Performs any finalization tasks on network following a simulation.
+void CPUSpikingModel::finish() {
+   // No GPU code to deallocate, and CPU side deallocation is handled by destructors.
+}
+
 /// Advance everything in the model one time step.
 void CPUSpikingModel::advance() {
    // ToDo: look at pointer v no pointer in params - to change
    // dereferencing the ptr, lose late binding -- look into changing!
-   layout_->getNeurons()->advanceNeurons(*conns_->getSynapses(), conns_->getSynapseIndexMap().get());
-   conns_->getSynapses()->advanceSynapses(layout_->getNeurons().get(), conns_->getSynapseIndexMap().get());
+   layout_->getNeurons()->advanceNeurons(*(connections_->getSynapses().get()), connections_->getSynapseIndexMap().get());
+   connections_->getSynapses()->advanceSynapses(layout_->getNeurons().get(), connections_->getSynapseIndexMap().get());
 }
 
 /// Update the connection of all the Neurons and Synapses of the simulation.
 void CPUSpikingModel::updateConnections() {
    // Update Connections data
-   if (conns_->updateConnections(*layout_->getNeurons(), layout_.get())) {
-      conns_->updateSynapsesWeights(
+   if (connections_->updateConnections(*layout_->getNeurons(), layout_.get())) {
+      connections_->updateSynapsesWeights(
             Simulator::getInstance().getTotalNeurons(),
             *layout_->getNeurons(),
-            *conns_->getSynapses(),
+            *connections_->getSynapses(),
             layout_.get());
       // create synapse inverse map
-      conns_->createSynapseIndexMap();
+      connections_->createSynapseIndexMap();
    }
 }
 
@@ -51,3 +58,4 @@ void CPUSpikingModel::copyCPUtoGPU() {
    LOG4CPLUS_WARN(fileLogger_, "ERROR: CPUSpikingModel::copyCPUtoGPU() was called." << endl);
    exit(EXIT_FAILURE);
 }
+# endif // define(USE_GPU)

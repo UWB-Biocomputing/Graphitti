@@ -20,7 +20,13 @@ AllNeurons::AllNeurons() : size_(0) {
 }
 
 AllNeurons::~AllNeurons() {
-   freeResources();
+   if (size_ != 0) {
+      delete[] summationMap_;
+   }
+
+   summationMap_ = NULL;
+
+   size_ = 0;
 }
 
 /*
@@ -35,26 +41,6 @@ void AllNeurons::setupNeurons() {
    }
 
    Simulator::getInstance().setPSummationMap(summationMap_);
-}
-
-/*
- *  Cleanup the class (deallocate memories).
- */
-void AllNeurons::cleanupNeurons() {
-   freeResources();
-}
-
-/*
- *  Deallocate all resources
- */
-void AllNeurons::freeResources() {
-   if (size_ != 0) {
-      delete[] summationMap_;
-   }
-
-   summationMap_ = NULL;
-
-   size_ = 0;
 }
 
 /**

@@ -12,6 +12,11 @@
 
 class IAllNeurons;
 
+typedef void (*fpCreateSynapse_t)(void*, const int, const int, int, int, BGFLOAT*, const BGFLOAT, synapseType);
+
+// enumerate all non-abstract synapse classes.
+enum enumClassSynapses {classAllSpikingSynapses, classAllDSSynapses, classAllSTDPSynapses, classAllDynamicSTDPSynapses, undefClassSynapses};
+
 class IAllSynapses {
 public:
    virtual ~IAllSynapses() {};
@@ -21,11 +26,6 @@ public:
     *
     */
    virtual void setupSynapses() = 0;
-
-   /**
-    *  Cleanup the class (deallocate memories).
-    */
-   virtual void cleanupSynapses() = 0;
 
    /**
     *  Reset time varying state vars and recompute decay.
@@ -99,16 +99,16 @@ public:
         *  Allocate GPU memories to store all synapses' states,
         *  and copy them from host to GPU memory.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
-       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, const SimulationInfo *sim_info ) = 0;
+       virtual void allocSynapseDeviceStruct(void** allSynapsesDevice) = 0;
 
        /**
         *  Allocate GPU memories to store all synapses' states,
         *  and copy them from host to GPU memory.
         *
-        *  @param  allSynapsesDevice     Reference to the allSynapses struct on device memory.
-        *  @param  numNeurons           Number of neurons.
+        *  @param  allSynapsesDevice     GPU address of the allSynapses struct on device memory.
+        *  @param  numNeurons            Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
        virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron ) = 0;
@@ -116,21 +116,21 @@ public:
        /**
         *  Delete GPU memories.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
        virtual void deleteSynapseDeviceStruct( void* allSynapsesDevice ) = 0;
 
        /**
         *  Copy all synapses' data from host to device.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
        virtual void copySynapseHostToDevice(void* allSynapsesDevice) = 0;
 
        /**
         *  Copy all synapses' data from host to device.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         *  @param  numNeurons           Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
@@ -139,21 +139,21 @@ public:
        /**
         *  Copy all synapses' data from device to host.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
        virtual void copySynapseDeviceToHost( void* allSynapsesDevice) = 0;
 
        /**
         *  Get synapse_counts in AllSynapses struct on device memory.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
        virtual void copyDeviceSynapseCountsToHost(void* allSynapsesDevice) = 0;
 
        /**
         *  Get summationCoord and in_use in AllSynapses struct on device memory.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
        virtual void copyDeviceSynapseSumIdxToHost(void* allSynapsesDevice) = 0;
 
@@ -161,9 +161,9 @@ public:
         *  Advance all the Synapses in the simulation.
         *  Update the state of all synapses for a time step.
         *
-        *  @param  allSynapsesDevice      Reference to the allSynapses struct on device memory.
-        *  @param  allNeuronsDevice       Reference to the allNeurons struct on device memory.
-        *  @param  synapseIndexMapDevice  Reference to the SynapseIndexMap on device memory.
+        *  @param  allSynapsesDevice      GPU address of the allSynapses struct on device memory.
+        *  @param  allNeuronsDevice       GPU address of the allNeurons struct on device memory.
+        *  @param  synapseIndexMapDevice  GPU address of the SynapseIndexMap on device memory.
         */
        virtual void advanceSynapses(void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice) = 0;
 
@@ -187,7 +187,7 @@ public:
        /**
         *  Prints GPU SynapsesProps data.
         *
-        *  @param  allSynapsesDeviceProps   Reference to the corresponding SynapsesDeviceProperties struct on device memory.
+        *  @param  allSynapsesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
         */
        virtual void printGPUSynapsesProps( void* allSynapsesDeviceProps ) const = 0;
 

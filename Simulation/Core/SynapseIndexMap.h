@@ -31,46 +31,65 @@
 
 #pragma once
 
-#include <vector>
-
 #include "BGTypes.h"
 
 using namespace std;
 
 struct SynapseIndexMap {
-    /// Vector of the outgoing synapse index map.
-    vector<BGSIZE> outgoingSynapseIndexMap_;
+   /// Pointer to the outgoing synapse index map.
+   BGSIZE* outgoingSynapseIndexMap_;
 
-    /// The beginning index of the outgoing spiking synapse vector of each neuron.
-    /// Indexed by a source neuron index.
-    vector<BGSIZE> outgoingSynapseBegin_;
+   /// The beginning index of the outgoing spiking synapse of each neuron.
+   /// Indexed by a source neuron index.
+   BGSIZE *outgoingSynapseBegin_;
 
-    /// The vector of number of outgoing synapses of each neuron.
-    /// Indexed by a source neuron index.
-    vector<BGSIZE> outgoingSynapseCount_;
+   /// The number of outgoing synapses of each neuron.
+   /// Indexed by a source neuron index.
+   BGSIZE *outgoingSynapseCount_;
 
-    /// Vector of the incoming synapse index map.
-    vector<BGSIZE> incomingSynapseIndexMap_;
+   /// Pointer to the incoming synapse index map.
+   BGSIZE* incomingSynapseIndexMap_;
 
-    /// The beginning index of the incoming spiking synapse vector of each neuron.
-    /// Indexed by a destination neuron index.
-    vector<BGSIZE> incomingSynapseBegin_;
+   /// The beginning index of the incoming spiking synapse of each neuron.
+   /// Indexed by a destination neuron index.
+   BGSIZE *incomingSynapseBegin_;
 
-    /// The vector of number of incoming synapses of each neuron.
-    /// Indexed by a destination neuron index.
-    vector<BGSIZE> incomingSynapseCount_;
+   /// The number of incoming synapses of each neuron.
+   /// Indexed by a destination neuron index.
+   BGSIZE *incomingSynapseCount_;
 
-    SynapseIndexMap() : numOfNeurons_(0), numOfSynapses_(0) {};
+   SynapseIndexMap() : numOfNeurons_(0), numOfSynapses_(0) {
+      outgoingSynapseIndexMap_ = NULL;
+      outgoingSynapseBegin_ = NULL;
+      outgoingSynapseCount_ = NULL;
 
-    SynapseIndexMap(int neuronCount, int synapseCount) : numOfNeurons_(neuronCount), numOfSynapses_(synapseCount) {
-        outgoingSynapseIndexMap_.resize(synapseCount);
-        outgoingSynapseBegin_.resize(neuronCount);
-        outgoingSynapseCount_.resize(neuronCount);
+      incomingSynapseIndexMap_ = NULL;
+      incomingSynapseBegin_ = NULL;
+      incomingSynapseCount_ = NULL;
+   };
 
-        incomingSynapseIndexMap_.resize(synapseCount);
-        incomingSynapseBegin_.resize(neuronCount);
-        incomingSynapseCount_.resize(neuronCount);
-    };
+   SynapseIndexMap(int neuronCount, int synapseCount) : numOfNeurons_(neuronCount), numOfSynapses_(synapseCount) {
+      outgoingSynapseIndexMap_ = new BGSIZE[synapseCount];
+      outgoingSynapseBegin_ = new BGSIZE[neuronCount];
+      outgoingSynapseCount_ = new BGSIZE[neuronCount];
+
+      incomingSynapseIndexMap_ = new BGSIZE[synapseCount];
+      incomingSynapseBegin_ = new BGSIZE[neuronCount];
+      incomingSynapseCount_ = new BGSIZE[neuronCount];
+   };
+
+   ~SynapseIndexMap() {
+      if (numOfNeurons_ != 0) {
+         delete[] outgoingSynapseBegin_;
+         delete[] outgoingSynapseCount_;
+         delete[] incomingSynapseBegin_;
+         delete[] incomingSynapseCount_;
+      }
+      if (numOfSynapses_ != 0) {
+         delete[] outgoingSynapseIndexMap_;
+         delete[] incomingSynapseIndexMap_;
+      }
+   }
 
 private:
     /// Number of total neurons.

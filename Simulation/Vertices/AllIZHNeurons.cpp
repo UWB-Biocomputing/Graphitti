@@ -17,35 +17,6 @@ AllIZHNeurons::AllIZHNeurons() : AllIFNeurons() {
 }
 
 AllIZHNeurons::~AllIZHNeurons() {
-   freeResources();
-}
-
-/*
- *  Setup the internal structure of the class (allocate memories).
- */
-void AllIZHNeurons::setupNeurons() {
-   AllIFNeurons::setupNeurons();
-
-   Aconst_ = new BGFLOAT[size_];
-   Bconst_ = new BGFLOAT[size_];
-   Cconst_ = new BGFLOAT[size_];
-   Dconst_ = new BGFLOAT[size_];
-   u_ = new BGFLOAT[size_];
-   C3_ = new BGFLOAT[size_];
-}
-
-/*
- *  Cleanup the class (deallocate memories).
- */
-void AllIZHNeurons::cleanupNeurons() {
-   freeResources();
-   AllIFNeurons::cleanupNeurons();
-}
-
-/*
- *  Deallocate all resources
- */
-void AllIZHNeurons::freeResources() {
    if (size_ != 0) {
       delete[] Aconst_;
       delete[] Bconst_;
@@ -61,6 +32,20 @@ void AllIZHNeurons::freeResources() {
    Dconst_ = NULL;
    u_ = NULL;
    C3_ = NULL;
+}
+
+/*
+ *  Setup the internal structure of the class (allocate memories).
+ */
+void AllIZHNeurons::setupNeurons() {
+   AllIFNeurons::setupNeurons();
+
+   Aconst_ = new BGFLOAT[size_];
+   Bconst_ = new BGFLOAT[size_];
+   Cconst_ = new BGFLOAT[size_];
+   Dconst_ = new BGFLOAT[size_];
+   u_ = new BGFLOAT[size_];
+   C3_ = new BGFLOAT[size_];
 }
 
 /**

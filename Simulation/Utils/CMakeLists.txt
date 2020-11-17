@@ -1,7 +1,7 @@
 # Used to locate other CMakeLists.txt files for further copilation of the project.
 add_subdirectory(Matrix)
 add_subdirectory(RNG)
-add_subdirectory(Inputs)
+#add_subdirectory(Inputs)
 
 # Get all header and source files from current directory
 file(GLOB Utils ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h)

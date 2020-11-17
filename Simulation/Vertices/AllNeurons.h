@@ -56,12 +56,6 @@ public:
    virtual void setupNeurons();
 
    /**
-    *  Cleanup the class.
-    *  Deallocate memories.
-    */
-   virtual void cleanupNeurons();
-
-   /**
     *  Prints out all parameters of the neurons to logging file.
     *  Registered to OperationManager as Operation::printParameters
     */
@@ -85,12 +79,6 @@ protected:
    // Loggers used to print to using log4cplus logging macros
    log4cplus::Logger fileLogger_; // Logs to Output/Debug/logging.txt
    log4cplus::Logger neuronLogger_; // Logs to Output/Debug/neurons.txt
-
-private:
-   /**
-    *  Deallocate all resources
-    */
-   void freeResources();
 };
 
 #if defined(USE_GPU)

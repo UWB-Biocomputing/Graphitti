@@ -36,17 +36,17 @@ class GpuSInputRegular : public SInputRegular
 {
 public:
     //! The constructor for SInputRegular.
-    GpuSInputRegular(SimulationInfo* psi, TiXmlElement* parms);
+    GpuSInputRegular(TiXmlElement* parms);
     ~GpuSInputRegular();
 
     //! Initialize data.
-    virtual void init(SimulationInfo* psi);
+    virtual void init();
 
     //! Terminate process.
-    virtual void term(SimulationInfo* psi);
+    virtual void term();
 
     //! Process input stimulus for each time step.
-    virtual void inputStimulus(SimulationInfo* psi);
+    virtual void inputStimulus();
 };
 
 //! Device function that processes input stimulus for each time step.

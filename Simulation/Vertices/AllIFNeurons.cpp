@@ -27,50 +27,6 @@ AllIFNeurons::AllIFNeurons() {
 }
 
 AllIFNeurons::~AllIFNeurons() {
-   freeResources();
-}
-
-/*
- *  Setup the internal structure of the class (allocate memories).
- */
-void AllIFNeurons::setupNeurons() {
-   AllSpikingNeurons::setupNeurons();
-
-   // TODO: Rename variables for easier identification
-   C1_ = new BGFLOAT[size_];
-   C2_ = new BGFLOAT[size_];
-   Cm_ = new BGFLOAT[size_];
-   I0_ = new BGFLOAT[size_];
-   Iinject_ = new BGFLOAT[size_];
-   Inoise_ = new BGFLOAT[size_];
-   Isyn_ = new BGFLOAT[size_];
-   Rm_ = new BGFLOAT[size_];
-   Tau_ = new BGFLOAT[size_];
-   Trefract_ = new BGFLOAT[size_];
-   Vinit_ = new BGFLOAT[size_];
-   Vm_ = new BGFLOAT[size_];
-   Vreset_ = new BGFLOAT[size_];
-   Vrest_ = new BGFLOAT[size_];
-   Vthresh_ = new BGFLOAT[size_];
-   numStepsInRefractoryPeriod_ = new int[size_];
-
-   for (int i = 0; i < size_; ++i) {
-      numStepsInRefractoryPeriod_[i] = 0;
-   }
-}
-
-/*
- *  Cleanup the class (deallocate memories).
- */
-void AllIFNeurons::cleanupNeurons() {
-   freeResources();
-   AllSpikingNeurons::cleanupNeurons();
-}
-
-/**
- *  Deallocate all resources
- */
-void AllIFNeurons::freeResources() {
    if (size_ != 0) {
       delete[] C1_;
       delete[] C2_;
@@ -106,6 +62,36 @@ void AllIFNeurons::freeResources() {
    Vrest_ = NULL;
    Vthresh_ = NULL;
    numStepsInRefractoryPeriod_ = NULL;
+   size_ = 0;
+}
+
+/*
+ *  Setup the internal structure of the class (allocate memories).
+ */
+void AllIFNeurons::setupNeurons() {
+   AllSpikingNeurons::setupNeurons();
+
+   // TODO: Rename variables for easier identification
+   C1_ = new BGFLOAT[size_];
+   C2_ = new BGFLOAT[size_];
+   Cm_ = new BGFLOAT[size_];
+   I0_ = new BGFLOAT[size_];
+   Iinject_ = new BGFLOAT[size_];
+   Inoise_ = new BGFLOAT[size_];
+   Isyn_ = new BGFLOAT[size_];
+   Rm_ = new BGFLOAT[size_];
+   Tau_ = new BGFLOAT[size_];
+   Trefract_ = new BGFLOAT[size_];
+   Vinit_ = new BGFLOAT[size_];
+   Vm_ = new BGFLOAT[size_];
+   Vreset_ = new BGFLOAT[size_];
+   Vrest_ = new BGFLOAT[size_];
+   Vthresh_ = new BGFLOAT[size_];
+   numStepsInRefractoryPeriod_ = new int[size_];
+
+   for (int i = 0; i < size_; ++i) {
+      numStepsInRefractoryPeriod_[i] = 0;
+   }
 }
 
 /**
@@ -179,11 +165,11 @@ void AllIFNeurons::printParameters() const {
  */
 void AllIFNeurons::createAllNeurons(Layout *layout) {
    /* set their specific types */
-   for (int neuron_index = 0; neuron_index < Simulator::getInstance().getTotalNeurons(); neuron_index++) {
-      setNeuronDefaults(neuron_index);
+   for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalNeurons(); neuronIndex++) {
+      setNeuronDefaults(neuronIndex);
 
       // set the neuron info for neurons
-      createNeuron(neuron_index, layout);
+      createNeuron(neuronIndex, layout);
    }
 }
 

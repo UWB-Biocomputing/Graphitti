@@ -111,8 +111,7 @@ int main(int argc, char *argv[]) {
    time_t start_time, end_time;
    time(&start_time);
 
-   // in chain of responsibility. still going to exist!
-   // setup simulation
+   // Setup simulation
    LOG4CPLUS_TRACE(consoleLogger, "Performing Simulator setup");
    simulator.setup();
 
@@ -170,10 +169,10 @@ int main(int argc, char *argv[]) {
    rgNormrnd.clear();
 
    time(&end_time);
-   double time_elapsed = difftime(end_time, start_time);
-   double ssps = simulator.getEpochDuration() * simulator.getNumEpochs() / time_elapsed;
+   double timeElapsed = difftime(end_time, start_time);
+   double ssps = simulator.getEpochDuration() * simulator.getNumEpochs() / timeElapsed;
    cout << "time simulated: " << simulator.getEpochDuration() * simulator.getNumEpochs() << endl;
-   cout << "time elapsed: " << time_elapsed << endl;
+   cout << "time elapsed: " << timeElapsed << endl;
    cout << "ssps (simulation seconds / real time seconds): " << ssps << endl;
    return 0;
 }
@@ -288,7 +287,8 @@ bool deserializeSynapses() {
    connections->createSynapseIndexMap();
 
 #if defined(USE_GPU)
-   dynamic_cast<GPUSpikingModel *>(simInfo->model)->copySynapseIndexMapHostToDevice(*(dynamic_cast<GPUSpikingModel *>(simInfo->model)->m_synapseIndexMap), simInfo->totalNeurons);
+   GPUSpikingModel *gpuModel = static_cast<GPUSpikingModel *>(simulator.getModel().get());
+   gpuModel->copySynapseIndexMapHostToDevice(*(connections->getSynapseIndexMap().get()), simulator.getTotalNeurons());
 #endif // USE_GPU
 
    // Deserializes radii (only when running a connGrowth model and radii is in serialization file)
@@ -317,7 +317,7 @@ void serializeSynapses() {
 
 #if defined(USE_GPU)
    // Copies GPU Synapse props data to CPU for serialization
-    simulator->copyGPUSynapseToCPU();
+    simulator.copyGPUSynapseToCPU();
 #endif // USE_GPU
     shared_ptr<Model> model = simulator.getModel();
 

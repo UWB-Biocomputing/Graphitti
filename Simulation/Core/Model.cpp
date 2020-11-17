@@ -18,7 +18,7 @@ Model::Model() {
 
    // Create Connections class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//ConnectionsParams/@class", type);
-   conns_ = ConnectionsFactory::getInstance()->createConnections(type);
+   connections_ = ConnectionsFactory::getInstance()->createConnections(type);
 
    // Create Recorder class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
@@ -58,7 +58,7 @@ void Model::setupSim() {
    LOG4CPLUS_INFO(fileLogger_, "Setting up Neurons...");
    layout_->getNeurons()->setupNeurons();
    LOG4CPLUS_INFO(fileLogger_, "Setting up Synapses...");
-   conns_->getSynapses()->setupSynapses();
+   connections_->getSynapses()->setupSynapses();
 #ifdef PERFORMANCE_METRICS
    // Start timer for initialization
    Simulator::getInstance.short_timer.start();
@@ -82,7 +82,7 @@ void Model::setupSim() {
    Simulator::getInstance().short_timer.start();
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Setting up Connections...");
-   conns_->setupConnections(layout_.get(), layout_->getNeurons().get(), conns_->getSynapses().get());
+   connections_->setupConnections(layout_.get(), layout_->getNeurons().get(), connections_->getSynapses().get());
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (connections)
    t_host_initialization_connections += Simulator::getInstance().short_timer.lap() / 1000000.0;
@@ -90,19 +90,12 @@ void Model::setupSim() {
 
    // create a synapse index map
    LOG4CPLUS_INFO(fileLogger_, "Creating SynapseIndexMap...");
-   conns_->createSynapseIndexMap();
-}
-
-/// Clean up the simulation.
-void Model::cleanupSim() {
-   layout_->getNeurons()->cleanupNeurons();
-   conns_->getSynapses()->cleanupSynapses();
-   conns_->cleanupConnections();
+   connections_->createSynapseIndexMap();
 }
 
 /// Log this simulation step.
 void Model::logSimStep() const {
-   ConnGrowth *pConnGrowth = dynamic_cast<ConnGrowth *>(conns_.get());
+   ConnGrowth *pConnGrowth = dynamic_cast<ConnGrowth *>(connections_.get());
    if (pConnGrowth == NULL)
       return;
 
@@ -163,7 +156,7 @@ void Model::updateHistory() {
 
 /// Get the Connections class object.
 /// @return Pointer to the Connections class object.  ToDo: make smart ptr
-shared_ptr<Connections> Model::getConnections() const { return conns_; }
+shared_ptr<Connections> Model::getConnections() const { return connections_; }
 
 /// Get the Layout class object.
 /// @return Pointer to the Layout class object. ToDo: make smart ptr

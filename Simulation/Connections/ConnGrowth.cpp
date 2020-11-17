@@ -64,37 +64,7 @@ ConnGrowth::ConnGrowth() : Connections() {
 }
 
 ConnGrowth::~ConnGrowth() {
-   cleanupConnections();
-}
-
-/*
- *  Setup the internal structure of the class (allocate memories and initialize them).
- *
- *  @param  layout    Layout information of the neunal network.
- *  @param  neurons   The Neuron list to search from.
- *  @param  synapses  The Synapse list to search from.
- */
-void ConnGrowth::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses) {
-   int num_neurons = Simulator::getInstance().getTotalNeurons();
-   radiiSize_ = num_neurons;
-
-   W_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, num_neurons, num_neurons, 0);
-   radii_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons, growthParams_.startRadius);
-   rates_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons, 0);
-   delta_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, num_neurons, num_neurons);
-   area_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, num_neurons, num_neurons, 0);
-   outgrowth_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons);
-   deltaR_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons);
-
-   // Init connection frontier distance change matrix with the current distances
-   (*delta_) = (*layout->dist_);
-}
-
-/*
- *  Cleanup the class (deallocate memories).
- */
-void ConnGrowth::cleanupConnections() {
-   if (W_ != NULL) delete W_;
+      if (W_ != NULL) delete W_;
    if (radii_ != NULL) delete radii_;
    if (rates_ != NULL) delete rates_;
    if (delta_ != NULL) delete delta_;
@@ -110,6 +80,29 @@ void ConnGrowth::cleanupConnections() {
    outgrowth_ = NULL;
    deltaR_ = NULL;
    radiiSize_ = 0;
+}
+
+/*
+ *  Setup the internal structure of the class (allocate memories and initialize them).
+ *
+ *  @param  layout    Layout information of the neunal network.
+ *  @param  neurons   The Neuron list to search from.
+ *  @param  synapses  The Synapse list to search from.
+ */
+void ConnGrowth::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses) {
+   int numNeurons = Simulator::getInstance().getTotalNeurons();
+   radiiSize_ = numNeurons;
+
+   W_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numNeurons, numNeurons, 0);
+   radii_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons, growthParams_.startRadius);
+   rates_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons, 0);
+   delta_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numNeurons, numNeurons);
+   area_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numNeurons, numNeurons, 0);
+   outgrowth_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons);
+   deltaR_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons);
+
+   // Init connection frontier distance change matrix with the current distances
+   (*delta_) = (*layout->dist_);
 }
 
 /**
@@ -169,11 +162,11 @@ void ConnGrowth::updateConns(IAllNeurons &neurons) {
    AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(neurons);
 
    // Calculate growth cycle firing rate for previous period
-   int max_spikes = static_cast<int> (Simulator::getInstance().getEpochDuration() *
+   int maxSpikes = static_cast<int> (Simulator::getInstance().getEpochDuration() *
                                       Simulator::getInstance().getMaxFiringRate());
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
       // Calculate firing rate
-      assert(spNeurons.spikeCount_[i] < max_spikes);
+      assert(spNeurons.spikeCount_[i] < maxSpikes);
       (*rates_)[i] = spNeurons.spikeCount_[i] / Simulator::getInstance().getEpochDuration();
    }
 
@@ -283,37 +276,37 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllNeurons &ineuro
 
    // Scale and add sign to the areas
    // visit each neuron 'a'
-   for (int src_neuron = 0; src_neuron < numNeurons; src_neuron++) {
+   for (int srcNeuron = 0; srcNeuron < numNeurons; srcNeuron++) {
       // and each destination neuron 'b'
-      for (int dest_neuron = 0; dest_neuron < numNeurons; dest_neuron++) {
+      for (int destNeuron = 0; destNeuron < numNeurons; destNeuron++) {
          // visit each synapse at (xa,ya)
          bool connected = false;
-         synapseType type = layout->synType(src_neuron, dest_neuron);
+         synapseType type = layout->synType(srcNeuron, destNeuron);
 
          // for each existing synapse
-         BGSIZE synapse_counts = synapses.synapseCounts_[dest_neuron];
+         BGSIZE synapseCounts = synapses.synapseCounts_[destNeuron];
          BGSIZE synapse_adjusted = 0;
-         BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * dest_neuron;
-         for (BGSIZE synapse_index = 0; synapse_adjusted < synapse_counts; synapse_index++, iSyn++) {
+         BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * destNeuron;
+         for (BGSIZE synapseIndex = 0; synapse_adjusted < synapseCounts; synapseIndex++, iSyn++) {
             if (synapses.inUse_[iSyn] == true) {
                // if there is a synapse between a and b
-               if (synapses.sourceNeuronIndex_[iSyn] == src_neuron) {
+               if (synapses.sourceNeuronIndex_[iSyn] == srcNeuron) {
                   connected = true;
                   adjusted++;
                   // adjust the strength of the synapse or remove
                   // it from the synapse map if it has gone below
                   // zero.
-                  if ((*W_)(src_neuron, dest_neuron) <= 0) {
+                  if ((*W_)(srcNeuron, destNeuron) <= 0) {
                      removed++;
-                     synapses.eraseSynapse(dest_neuron, iSyn);
+                     synapses.eraseSynapse(destNeuron, iSyn);
                   } else {
                      // adjust
                      // SYNAPSE_STRENGTH_ADJUSTMENT is 1.0e-8;
-                     synapses.W_[iSyn] = (*W_)(src_neuron, dest_neuron) *
+                     synapses.W_[iSyn] = (*W_)(srcNeuron, destNeuron) *
                                          synapses.synSign(type) * AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
 
                      LOG4CPLUS_DEBUG(fileLogger_, "Weight of rgSynapseMap" <<
-                                                                           "[" << synapse_index << "]: " <<
+                                                                           "[" << synapseIndex << "]: " <<
                                                                            synapses.W_[iSyn]);
                   }
                }
@@ -323,17 +316,17 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllNeurons &ineuro
          }
 
          // if not connected and weight(a,b) > 0, add a new synapse from a to b
-         if (!connected && ((*W_)(src_neuron, dest_neuron) > 0)) {
+         if (!connected && ((*W_)(srcNeuron, destNeuron) > 0)) {
 
             // locate summation point
-            BGFLOAT *sum_point = &(neurons.summationMap_[dest_neuron]);
+            BGFLOAT *sumPoint = &(neurons.summationMap_[destNeuron]);
             added++;
 
             BGSIZE iSyn;
-            synapses.addSynapse(iSyn, type, src_neuron, dest_neuron, sum_point,
+            synapses.addSynapse(iSyn, type, srcNeuron, destNeuron, sumPoint,
                                 Simulator::getInstance().getDeltaT());
             synapses.W_[iSyn] =
-                  (*W_)(src_neuron, dest_neuron) * synapses.synSign(type) *
+                  (*W_)(srcNeuron, destNeuron) * synapses.synSign(type) *
                   AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
 
          }

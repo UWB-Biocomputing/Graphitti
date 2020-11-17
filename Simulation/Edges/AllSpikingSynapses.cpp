@@ -14,7 +14,25 @@ AllSpikingSynapses::AllSpikingSynapses(const int numNeurons, const int maxSynaps
 }
 
 AllSpikingSynapses::~AllSpikingSynapses() {
-   cleanupSynapses();
+   BGSIZE maxTotalSynapses = maxSynapsesPerNeuron_ * countNeurons_;
+
+  // Causes seg fault right now, probably not getting initialized before this method is called.
+  
+  if (maxTotalSynapses != 0) {
+      // delete[] decay_;
+      // delete[] totalDelay_;
+      // delete[] delayQueue_;
+      // delete[] delayIndex_;
+      // delete[] delayQueueLength_;
+      // delete[] tau_;
+  }
+
+   decay_ = NULL;
+   totalDelay_ = NULL;
+   delayQueue_ = NULL;
+   delayIndex_ = NULL;
+   delayQueueLength_ = NULL;
+   tau_ = NULL;
 }
 
 /*
@@ -44,32 +62,6 @@ void AllSpikingSynapses::setupSynapses(const int numNeurons, const int maxSynaps
       delayQueueLength_ = new int[maxTotalSynapses];
       tau_ = new BGFLOAT[maxTotalSynapses];
    }
-}
-
-/*
- *  Cleanup the class (deallocate memories).
- */
-void AllSpikingSynapses::cleanupSynapses() {
-   BGSIZE max_total_synapses = maxSynapsesPerNeuron_ * countNeurons_;
-
-   // Causes seg fault right now, probably not getting initialized before this method is called.
-//   if (max_total_synapses != 0) {
-//      delete[] decay_;
-//      delete[] totalDelay_;
-//      delete[] delayQueue_;
-//      delete[] delayIndex_;
-//      delete[] delayQueueLength_;
-//      delete[] tau_;
-//   }
-
-   decay_ = NULL;
-   totalDelay_ = NULL;
-   delayQueue_ = NULL;
-   delayIndex_ = NULL;
-   delayQueueLength_ = NULL;
-   tau_ = NULL;
-
-   AllSynapses::cleanupSynapses();
 }
 
 /*
@@ -235,12 +227,12 @@ void AllSpikingSynapses::preSpikeHit(const BGSIZE iSyn) {
    uint32_t &delayQueue = this->delayQueue_[iSyn];
    int &delayIdx = this->delayIndex_[iSyn];
    int &ldelayQueue = this->delayQueueLength_[iSyn];
-   int &total_delay = this->totalDelay_[iSyn];
+   int &totalDelay = this->totalDelay_[iSyn];
 
    // Add to spike queue
 
    // calculate index where to insert the spike into delayQueue
-   int idx = delayIdx + total_delay;
+   int idx = delayIdx + totalDelay;
    if (idx >= ldelayQueue) {
       idx -= ldelayQueue;
    }

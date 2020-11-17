@@ -58,15 +58,15 @@
  *  Independent model:
  *  \f$Delta = t_{post}-t_{pre}\f$ with presynaptic spike at time \f$t_{pre}\f$ and
  *  postsynaptic spike at time \f$t_{post}\f$. Then, the weight update is given by
- *  \f$dw =  Apos * exp(-Delta/taupos)\f$ for \f$Delta > 0\f$, and \f$dw =  Aneg *
- *  exp(-Delta/tauneg)\f$ for \f$Delta < 0\f$. dw is the percentage change in synaptic weight.
- *  (set \f$useFroemkeDanSTDP=false\f$ and \f$mupos=muneg=0\f$ for this basic update rule).
+ *  \f$dw =  Apos_ * exp(-Delta/taupos_)\f$ for \f$Delta > 0\f$, and \f$dw =  Aneg_ *
+ *  exp(-Delta/tauneg_)\f$ for \f$Delta < 0\f$. dw is the percentage change in synaptic weight.
+ *  (set \f$useFroemkeDanSTDP_=false\f$ and \f$mupos_=muneg_=0\f$ for this basic update rule).
  *  
  *  Multiplicative model:
  *  \f$dw = 1.0 + dw * epre * epost\f$ dw is percent change, so adding 1.0 become the scale ratio
  *  \f$W = W * dw\f$ multiply dw (scale ratio) to the current weight to get the new weight
  *  
- *  Note1:This time we don't use useFroemkeDanSTDP (useFroemkeDanSTDP= false) and mupos and muneg (mupos=muneg=0)
+ *  Note1:This time we don't use useFroemkeDanSTDP_ (useFroemkeDanSTDP_= false) and mupos_ and muneg_ (mupos_=muneg_=0)
  *  Note2:Based on the FroemkeDan paper, the STDP learning rule only applies to excititory synapses, so we
  *  implement it to have only excititory neurons do STDP weight adjustment 
  */
@@ -91,11 +91,6 @@ public:
     *  Setup the internal structure of the class (allocate memories and initialize them).
     */
    virtual void setupSynapses();
-
-   /**
-    *  Cleanup the class (deallocate memories).
-    */
-   virtual void cleanupSynapses();
 
    /**
     *  Reset time varying state vars and recompute decay.
@@ -160,53 +155,48 @@ protected:
         *  Allocate GPU memories to store all synapses' states,
         *  and copy them from host to GPU memory.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
-       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, const SimulationInfo *sim_info );
+       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice);
 
        /**
         *  Allocate GPU memories to store all synapses' states,
         *  and copy them from host to GPU memory.
         *
-        *  @param  allSynapsesDevice     Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
+        *  @param  allSynapsesDevice     GPU address of the allSynapses struct on device memory.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, int num_neurons, int maxSynapsesPerNeuron );
+       virtual void allocSynapseDeviceStruct(void** allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron);
 
        /**
         *  Delete GPU memories.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
-       virtual void deleteSynapseDeviceStruct( void* allSynapsesDevice );
+       virtual void deleteSynapseDeviceStruct(void* allSynapsesDevice);
 
        /**
         *  Copy all synapses' data from host to device.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
-       virtual void copySynapseHostToDevice( void* allSynapsesDevice, const SimulationInfo *sim_info );
+       virtual void copySynapseHostToDevice(void* allSynapsesDevice);
 
        /**
         *  Copy all synapses' data from host to device.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
+        *  @param  allSynapsesDevice     GPU address of the allSynapses struct on device memory.
+        *  @param  numNeurons            Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       virtual void copySynapseHostToDevice( void* allSynapsesDevice, int num_neurons, int maxSynapsesPerNeuron );
+       virtual void copySynapseHostToDevice( void* allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron );
 
        /**
         *  Copy all synapses' data from device to host.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
-       virtual void copySynapseDeviceToHost( void* allSynapsesDevice, const SimulationInfo *sim_info );
+       virtual void copySynapseDeviceToHost(void* allSynapsesDevice);
 
        /**
         *  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
@@ -223,7 +213,7 @@ protected:
        /**
         *  Prints GPU SynapsesProps data.
         *
-        *  @param  allSynapsesDeviceProps   Reference to the corresponding SynapsesDeviceProperties struct on device memory.
+        *  @param  allSynapsesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
         */
        virtual void printGPUSynapsesProps(void* allSynapsesDeviceProps) const;
 
@@ -233,39 +223,40 @@ protected:
         *  and copy them from host to GPU memory.
         *  (Helper function of allocSynapseDeviceStruct)
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
+        *  @param  allSynapsesDevice     GPU address of the allSynapses struct on device memory.
+        *  @param  numNeurons            Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       void allocDeviceStruct( AllDynamicSTDPSynapsesDeviceProperties &allSynapses, int num_neurons, int maxSynapsesPerNeuron );
+       void allocDeviceStruct( AllDynamicSTDPSynapsesDeviceProperties &allSynapses, int numNeurons, int maxSynapsesPerNeuron );
 
        /**
         *  Delete GPU memories.
         *  (Helper function of deleteSynapseDeviceStruct)
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  allSynapsesDeviceProps  GPU address of the allSynapses struct on device memory.
         */
-       void deleteDeviceStruct( AllDynamicSTDPSynapsesDeviceProperties& allSynapses );
+       void deleteDeviceStruct( AllDynamicSTDPSynapsesDeviceProperties& allSynapsesDeviceProps );
 
        /**
         *  Copy all synapses' data from host to device.
         *  (Helper function of copySynapseHostToDevice)
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
-        *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
+        *  @param  allSynapsesDevice         GPU address of the allSynapses struct on device memory.
+        *  @param  allSynapsesDeviceProps    GPU address of the allDynamicSTDPSSynapses struct on device memory.
+        *  @param  numNeurons                Number of neurons.
+        *  @param  maxSynapsesPerNeuron      Maximum number of synapses per neuron.
         */
-       void copyHostToDevice( void* allSynapsesDevice, AllDynamicSTDPSynapsesDeviceProperties& allSynapses, int num_neurons, int maxSynapsesPerNeuron );
+       void copyHostToDevice( void* allSynapsesDevice, AllDynamicSTDPSynapsesDeviceProperties& allSynapsesDeviceProps, int numNeurons, int maxSynapsesPerNeuron );
 
        /**
         *  Copy all synapses' data from device to host.
         *  (Helper function of copySynapseDeviceToHost)
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
-        *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
+        *  @param  allSynapsesDeviceProps     GPU address of the allDynamicSTDPSSynapses struct on device memory.
+        *  @param  numNeurons                 Number of neurons.
+        *  @param  maxSynapsesPerNeuron       Maximum number of synapses per neuron.
         */
-       void copyDeviceToHost( AllDynamicSTDPSynapsesDeviceProperties& allSynapses, const SimulationInfo *sim_info );
+       void copyDeviceToHost(AllDynamicSTDPSynapsesDeviceProperties& allSynapsesDeviceProps);
 #else // !defined(USE_GPU)
 protected:
    /**

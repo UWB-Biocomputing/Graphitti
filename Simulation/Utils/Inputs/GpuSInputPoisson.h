@@ -39,24 +39,24 @@ class GpuSInputPoisson : public SInputPoisson
 {
 public:
     //! The constructor for GpuSInputPoisson.
-    GpuSInputPoisson(SimulationInfo* psi, TiXmlElement* parms);
+    GpuSInputPoisson(TiXmlElement* parms);
     ~GpuSInputPoisson();
 
     //! Initialize data.
-    virtual void init(SimulationInfo* psi);
+    virtual void init();
 
     //! Terminate process.
-    virtual void term(SimulationInfo* psi);
+    virtual void term();
 
     //! Process input stimulus for each time step.
-    virtual void inputStimulus(SimulationInfo* psi);
+    virtual void inputStimulus();
 
 private:
     //! Allocate GPU device memory and copy values
-    void allocDeviceValues( IModel* model, SimulationInfo* psi, int *nISIs );
+    void allocDeviceValues(Model* model, int *deviceInteralCounter_);
 
     //! Dellocate GPU device memory
-    void deleteDeviceValues( IModel* model, SimulationInfo* psi );
+    void deleteDeviceValues(Model* model);
 
     //! Synapse structures in device memory.
     AllDSSynapsesDeviceProperties* allSynapsesDevice;
@@ -65,15 +65,15 @@ private:
     SynapseIndexMap* synapseIndexMapDevice;
 
     //! Pointer to device interval counter.
-    int* nISIs_d;
+    int* deviceInteralCounter_;
 
     //! Pointer to device masks for stimulus input
-    bool* masks_d;
+    bool* deviceMasks_;
 };
 
 #if defined(__CUDACC__)
 //! Device function that processes input stimulus for each time step.
-extern __global__ void inputStimulusDevice( int n, int* nISIs_d, bool* masks_d, BGFLOAT deltaT, BGFLOAT lambda, curandState* devStates_d, AllDSSynapsesDeviceProperties* allSynapsesDevice );
+extern __global__ void inputStimulusDevice( int n, int* deviceInteralCounter_, bool* deviceMasks_, BGFLOAT deltaT, BGFLOAT lambda, curandState* devStates_d, AllDSSynapsesDeviceProperties* allSynapsesDevice );
 extern __global__ void applyI2SummationMap( int n, BGFLOAT* summationPoint_d, AllDSSynapsesDeviceProperties* allSynapsesDevice );
 extern __global__ void setupSeeds( int n, curandState* devStates_d, unsigned long seed );
 #endif

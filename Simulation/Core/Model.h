@@ -52,8 +52,7 @@ public:
    virtual void setupSim();
 
    /// Performs any finalization tasks on network following a simulation.
-   /// Downstream from IModel cleanupSim()
-   virtual void cleanupSim();
+   virtual void finish() = 0; 
 
    /// Update the simulation history of every epoch.
    virtual void updateHistory();
@@ -88,7 +87,7 @@ protected:
    virtual void copyCPUtoGPU() = 0;
 
 protected:
-   shared_ptr<Connections> conns_;
+   shared_ptr<Connections> connections_;
 
    shared_ptr<Layout> layout_;
 

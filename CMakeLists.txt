@@ -4,21 +4,37 @@ project(SummerOfBrain)
 # Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 11)
 
+# Enable the use of GPU. Only available if CUDA library is installed the GPU is CUDA capable.
+set(BRAINGRID_CUDA NO)
+
+# Enables the CUDA langauge and locates the NVCC compiler. 
+# Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
+#
+# BRAINGRID_CUDA also compiles each library that contains CUDA with the following line...
+# set_property(TARGET target PROPERTY CUDA_ARCHITECTURES 35-virtual) 
+# so the compiler knows the CUDA architecture being used is the SM_35
+if(BRAINGRID_CUDA)
+        enable_language(CUDA)
+        set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
+        add_compile_definitions(USE_GPU)
+endif()
+
+
 # Setting the location of the executable to be in the top-level directory. This helps when using file paths during
 # runtime.
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 # Set extra warning flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wex_tra")
 
-#define TIXML_USE_STL and TIXML_STRING_INCLUDED to use the C++ standard library with TinyXML
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTIXML_USE_STL")
+#define TIXML_USE_STL as a preproccersser macro to use the C++ standard library with TinyXML
+add_compile_definitions(TIXML_USE_STL)
 
-# Used to define file paths for #include paths. For example you can write:
+# Used to define file paths for #include definitions. For example you can write:
 # #include "Simulator.h"
 # rather than:
 # #include "Simulation/Core/Simulator.h"
-# if the file path is in the following statement.
+# if the file path "Simulation/Core" is in the following statement.
 include_directories(
         ../SummerOfBrain
         Simulation
@@ -36,7 +52,7 @@ include_directories(
         ThirdParty/TinyXPath
         ThirdParty/log4cplus-2.0.2/include)
 
-# Used to locate other CMakeLists.txt files for further compilation of the project.
+# Used to locate and run other CMakeLists.txt files for further compilation of the project.
 add_subdirectory(Simulation)
 add_subdirectory(ThirdParty)
 
@@ -44,16 +60,9 @@ add_subdirectory(ThirdParty)
 add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
-#target_include_directories(TinyXLib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Utils/TinyXPath")
-
-# ------ CPU SIMULATOR EXECUTABLE -------
+# ------ SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
-add_executable(braingrid
-        Simulation/Core/BGDriver.cpp)
-
-# ------ GPU SIMULATOR EXECUTABLE ------
-# Add all files that aren't in a library and are needed to run
-#add_executable(BrainGrid-cuda)
+add_executable(braingrid Simulation/Core/BGDriver.cpp)
 
 # ------ TESTS EXECUTABLE ------
 # Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
@@ -64,7 +73,7 @@ add_executable(tests
         Testing/Core/SynapseIndexMapTests.cpp
         Testing/Core/FunctionNodeTests.cpp
         Testing/Core/SimulatorTests.cpp
-        Testing/Core/Foo.h
+        Testing/Core/OperationManagerTestingClass.h
         Testing/Utils/ParamaterManagerTests.cpp)
 
 # Links the Googletest framework with the testing executable
@@ -85,7 +94,7 @@ target_link_libraries(combinedLib INTERFACE
         # Utils
         Utils
         RNG
-        Inputs
+        #Inputs *** inputs aren't in the project ***
         Matrix
 
         # ThirdParty

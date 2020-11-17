@@ -12,6 +12,7 @@
 #include <functional>
 
 #include "CPUSpikingModel.h"
+#include "GPUSpikingModel.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "RecorderFactory.h"
@@ -68,7 +69,7 @@ void Simulator::setup() {
 
 /// Begin terminating the simulator
 void Simulator::finish() {
-   model_->cleanupSim(); // ToDo: Can #term be removed w/ the new model architecture?  // =>ISIMULATION
+   model_->finish(); // ToDo: Can #term be removed w/ the new model architecture?  // =>ISIMULATION
 }
 
 /// Load member variables from configuration file
@@ -120,7 +121,7 @@ void Simulator::copyCPUSynapseToGPU() {
 void Simulator::reset() {
    LOG4CPLUS_INFO(fileLogger_, "Resetting Simulator");
    // Terminate the simulator
-   model_->cleanupSim();
+   model_->finish();
    // Clean up objects
    freeResources();
    // Reset global simulation Step to 0
@@ -212,7 +213,7 @@ void Simulator::saveData() const {
 /// expected objects were created correctly and returns T/F on the success of the check.
 bool Simulator::instantiateSimulatorObjects() {
    // Model Definition
-#ifdef USE_GPU
+#if defined(USE_GPU)
    model_ = shared_ptr<Model>(new GPUSpikingModel());
 #else
    model_ = shared_ptr<Model>(new CPUSpikingModel());

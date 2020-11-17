@@ -229,7 +229,7 @@ void Hdf5Recorder::term()
 void Hdf5Recorder::compileHistories(IAllNeurons &neurons)
 {
    AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons&>(neurons);
-   int max_spikes = (int) ((Simulator::getInstance().epochDuration * Simulator::getInstance().maxFiringRate));
+   int maxSpikes = (int) ((Simulator::getInstance().epochDuration * Simulator::getInstance().maxFiringRate));
 
    unsigned int iProbe = 0;    // index into the probedNeuronsLayout vector
    bool fProbe = false;
@@ -254,7 +254,7 @@ void Hdf5Recorder::compileHistories(IAllNeurons &neurons)
          // Therefore, single precision can only handle 2^23 = 8,388,608 simulation steps 
          // or 8 epochs (1 epoch = 100s, 1 simulation step = 0.1ms).
 
-         if (idxSp >= max_spikes) idxSp = 0;
+         if (idxSp >= maxSpikes) idxSp = 0;
          // compile network wide burstiness index data in 1s bins
          int idx1 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) *  Simulator::getInstance().deltaT
                - ( (Simulator::getInstance().currentStep - 1) * Simulator::getInstance().epochDuration ) );
@@ -522,7 +522,7 @@ void Hdf5Recorder::saveSimData(const IAllNeurons &neurons)
 void Hdf5Recorder::getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starter_map, const SimulationInfo *sim_info)
 {
     int cur = 0;
-    for (int i = 0; i < sim_info->totalNeurons; i++) {
+    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
         if (starter_map[i]) {
             matrix[cur] = i;
             cur++;
