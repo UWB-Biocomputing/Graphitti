@@ -125,11 +125,11 @@ public:
         *  @param  numNeurons          number of neurons to update.
         *  @param  neurons             the Neuron list to search from.
         *  @param  synapses            the Synapse list to search from.
-        *  @param  allNeuronsDevice_  Reference to the allNeurons struct on device memory.
-        *  @param  allSynapseDevice_ Reference to the allSynapses struct on device memory.
+        *  @param  allNeuronsDevice    GPU address of the allNeurons struct on device memory.
+        *  @param  allSynapsesDevice   GPU address of the allSynapses struct on device memory.
         *  @param  layout              Layout information of the neunal network.
         */
-       virtual void updateSynapsesWeights(const int numNeurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* allNeuronsDevice_, AllSpikingSynapsesDeviceProperties* allSynapseDevice_, Layout *layout);
+       virtual void updateSynapsesWeights(const int numNeurons, IAllNeurons &neurons, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, Layout *layout);
 #else
 public:
    /**

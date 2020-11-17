@@ -10,14 +10,14 @@
 /*
  *  Copy spike history data stored in device memory to host.
  *
- *  @param  allNeuronsDevice   Reference to the AllSpikingNeuronsDeviceProperties struct 
+ *  @param  allNeuronsDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
  *                             on device memory.
  */
-void AllSpikingNeurons::copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDeviceProperties& allNeurons ) 
+void AllSpikingNeurons::copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDeviceProperties& allNeuronsDevice ) 
 {
         int numNeurons = Simulator::getInstance().getTotalNeurons();
         uint64_t* pSpikeHistory[numNeurons];
-        HANDLE_ERROR( cudaMemcpy ( pSpikeHistory, allNeurons.spikeHistory_, numNeurons * sizeof( uint64_t* ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( pSpikeHistory, allNeuronsDevice.spikeHistory_, numNeurons * sizeof( uint64_t* ), cudaMemcpyDeviceToHost ) );
 
         int maxSpikes = static_cast<int> (Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate());
         for (int i = 0; i < numNeurons; i++) {
@@ -29,29 +29,30 @@ void AllSpikingNeurons::copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDevicePro
 /*
  *  Copy spike counts data stored in device memory to host.
  *
- *  @param  allNeuronsDevice   Reference to the AllSpikingNeuronsDeviceProperties struct 
+ *  @param  allNeuronsDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
  *                             on device memory.
  */
-void AllSpikingNeurons::copyDeviceSpikeCountsToHost( AllSpikingNeuronsDeviceProperties& allNeurons ) 
+void AllSpikingNeurons::copyDeviceSpikeCountsToHost( AllSpikingNeuronsDeviceProperties& allNeuronsDevice ) 
 {
         int numNeurons = Simulator::getInstance().getTotalNeurons();
 
-        HANDLE_ERROR( cudaMemcpy ( spikeCount_, allNeurons.spikeCount_, numNeurons * sizeof( int ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( spikeCountOffset_, allNeurons.spikeCountOffset_, numNeurons * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( spikeCount_, allNeuronsDevice.spikeCount_, numNeurons * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( spikeCountOffset_, allNeuronsDevice.spikeCountOffset_, numNeurons * sizeof( int ), cudaMemcpyDeviceToHost ) );
 }
 
 /*
  *  Clear the spike counts out of all neurons in device memory.
  *  (helper function of clearNeuronSpikeCounts)
  *
- *  @param  allNeurons         Reference to the allNeurons struct.
+ *  @param  allNeuronsDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
+ *                             on device memory.
  */
-void AllSpikingNeurons::clearDeviceSpikeCounts( AllSpikingNeuronsDeviceProperties& allNeurons ) 
+void AllSpikingNeurons::clearDeviceSpikeCounts( AllSpikingNeuronsDeviceProperties& allNeuronsDevice ) 
 {
         int numNeurons = Simulator::getInstance().getTotalNeurons();
 
-        HANDLE_ERROR( cudaMemset( allNeurons.spikeCount_, 0, numNeurons * sizeof( int ) ) );
-        HANDLE_ERROR( cudaMemcpy ( allNeurons.spikeCountOffset_, spikeCountOffset_, numNeurons * sizeof( int ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemset( allNeuronsDevice.spikeCount_, 0, numNeurons * sizeof( int ) ) );
+        HANDLE_ERROR( cudaMemcpy ( allNeuronsDevice.spikeCountOffset_, spikeCountOffset_, numNeurons * sizeof( int ), cudaMemcpyHostToDevice ) );
 }
 
 /*
