@@ -65,8 +65,8 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
          synapseType type = layout->synType(srcNeuron, destNeuron);
          BGFLOAT *sumPoint = &(dynamic_cast<AllNeurons *>(neurons)->summationMap_[destNeuron]);
 
-         LOG4CPLUS_DEBUG(fileLogger_, "Source: " << srcNeuron << " Dest: " << destNeuron << " Dist: "
-                                                 << distDestNeurons[srcNeuron][i].dist);
+        // LOG4CPLUS_DEBUG(fileLogger_, "Source: " << srcNeuron << " Dest: " << destNeuron << " Dist: "
+         //                                        << distDestNeurons[srcNeuron][i].dist);
 
          BGSIZE iSyn;
          synapses->addSynapse(iSyn, type, srcNeuron, destNeuron, sumPoint, Simulator::getInstance().getDeltaT());

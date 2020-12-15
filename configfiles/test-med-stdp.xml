@@ -18,7 +18,7 @@
       <value name="value">1</value>
     </Seed>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">Output/Results/test-med-stdp.xml</resultFileName>
+      <resultFileName name="resultFileName">Output/Results/test-medium-stdp.h5</resultFileName>
     </OutputParams>
   </SimInfoParams>
 
@@ -143,7 +143,7 @@
       </LayoutFiles>
     </LayoutParams>
 
-    <RecorderParams class="XmlRecorder" name="RecorderParams">
+    <RecorderParams class="Hdf5Recorder" name="RecorderParams">
       <probedNListFileName name="prbNListFileName" type="InputFile">configfiles/NList/probedNList_900.xml</probedNListFileName>
     </RecorderParams>
   </ModelParams>

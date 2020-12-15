@@ -18,7 +18,7 @@
             <value name="value">1</value>
         </Seed>
         <OutputParams name="OutputParams">
-            <resultFileName name="resultFileName">Output/Results/test-tiny-out.xml</resultFileName>
+            <resultFileName name="resultFileName">Output/Results/test-tiny-out.h5</resultFileName>
         </OutputParams>
     </SimInfoParams>
 
@@ -81,7 +81,7 @@
                 </inhNListFileName>
             </LayoutFiles>
         </LayoutParams>
-        <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
+        <RecorderParams class="Hdf5Recorder" name="RecorderParams">
             <probedNListFileName name="prbNListFileName" type="InputFile">configfiles/NList/ProbedNList2x2.xml
             </probedNListFileName>
         </RecorderParams>

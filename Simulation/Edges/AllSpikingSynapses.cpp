@@ -152,7 +152,7 @@ void AllSpikingSynapses::createSynapse(const BGSIZE iSyn, int srcNeuron, int des
 
   totalDelay_[iSyn] = static_cast<int>( delay / deltaT ) + 1;
 
-  LOG4CPLUS_TRACE(fileLogger_,"totaldelay "<<totalDelay_[iSyn]<<" delay "<<delay<<" delayT "<<" iSyn "<<iSyn); 
+  //LOG4CPLUS_TRACE(fileLogger_,"totaldelay "<<totalDelay_[iSyn]<<" delay "<<delay<<" delayT "<<" iSyn "<<iSyn); 
 
    // initializes the queues for the Synapses
    initSpikeQueue(iSyn);
@@ -195,7 +195,7 @@ void AllSpikingSynapses::preSpikeHit(const BGSIZE iSyn) {
    // Add to spike queue
 
    // calculate index where to insert the spike into delayQueue
-   LOG4CPLUS_TRACE(fileLogger_,"delayidx "<<delayIdx<<" totalDelay "<<totalDelay<<" ldelayQueue "<<ldelayQueue);
+   //LOG4CPLUS_TRACE(fileLogger_,"delayidx "<<delayIdx<<" totalDelay "<<totalDelay<<" ldelayQueue "<<ldelayQueue);
    int idx = delayIdx + totalDelay;
    if (idx >= ldelayQueue) { //Note::mod operator more efficient
       idx -= ldelayQueue;

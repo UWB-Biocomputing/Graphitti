@@ -97,6 +97,13 @@ public:
     **/
    virtual void saveSimData(const IAllNeurons &neurons);
 
+
+   /**
+    *  Prints out all parameters to logging file.
+    *  Registered to OperationManager as Operation::printParameters
+    */
+   virtual void printParameters();
+
 protected:
    virtual void initDataSet();
 

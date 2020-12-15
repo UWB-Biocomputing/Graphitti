@@ -1,3 +1,4 @@
+
 #include "AllSTDPSynapses.h"
 #include "IAllNeurons.h"
 #include "AllSpikingNeurons.h"
@@ -149,12 +150,14 @@ void AllSTDPSynapses::createSynapse(const BGSIZE iSyn, int srcNeuron, int destNe
    // May 1st 2020
    // Use constants from Froemke and Dan (2002).
    // Spike-timing-dependent synaptic modification induced by natural spike trains. Nature 416 (3/2002)
-   Apos_[iSyn] = 1.01;
+   //Apos_[iSyn] = 0.005;
+   //Aneg_[iSyn] = -(1.05*0.005);
+   Apos_[iSyn] = 1.03;
    Aneg_[iSyn] = -0.52;
    STDPgap_[iSyn] = 2e-3;
 
-   tauspost_[iSyn] = 75e-3;
-   tauspre_[iSyn] = 34e-3;
+   tauspost_[iSyn] = 88e-3;
+   tauspre_[iSyn] = 28e-3;
 
    taupos_[iSyn] = 14.8e-3;
    tauneg_[iSyn] = 33.8e-3;
@@ -217,12 +220,14 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
          // so the getSpikeHistory w/offset = -2 will return the spike time
          // just one before the last spike.
          spikeHistory = spNeurons->getSpikeHistory(idxPre, -2);
-         if (spikeHistory != ULONG_MAX && useFroemkeDanSTDP_) {
+         if (spikeHistory != ULONG_MAX ) {
             // delta will include the transmission delay
             delta = static_cast<BGFLOAT>(g_simulationStep - spikeHistory) * deltaT;
             epre = 1.0 - exp(-delta / tauspre_);
+            //epost=1;
          } else {
             epre = 1.0;
+           // epost=1;
          }
 
          // call the learning function stdpLearning() for each pair of
@@ -240,6 +245,8 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
                    << "\tidxPre: " << idxPre << endl
                    << "\tidxPost: " << idxPost << endl
                    << "\tspikeHistory: " << spikeHistory << endl
+                    << "\tepre: " << epre << endl
+                   << "\tepost: " << epost << endl
                    << "\tg_simulationStep: " << g_simulationStep << endl
                    << "\tdelta: " << delta << endl << endl);
 
@@ -258,12 +265,14 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
          // so the getSpikeHistory w/offset = -2 will return the spike time
          // just one before the last spike.
          spikeHistory = spNeurons->getSpikeHistory(idxPost, -2);
-         if (spikeHistory != ULONG_MAX && useFroemkeDanSTDP_) {
+         if (spikeHistory != ULONG_MAX ) {
             // delta will include the transmission delay
             delta = static_cast<BGFLOAT>(g_simulationStep - spikeHistory) * deltaT;
             epost = 1.0 - exp(-delta / tauspost_);
+            //epre=1;
          } else {
             epost = 1.0;
+            //epre=1;
          }
 
          // call the learning function stdpLearning() for each pair of
@@ -286,6 +295,8 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
                    << "\tidxPost: " << idxPost << endl
                    << "\tspikeHistory: " << spikeHistory << endl
                    << "\tg_simulationStep: " << g_simulationStep << endl
+                    << "\tepre: " << epre << endl
+                   << "\tepost: " << epost << endl
                    << "\tdelta: " << delta << endl << endl);
 
             if (delta >= 3.0 * taupos_)
@@ -333,7 +344,15 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost
    BGFLOAT &W = this->W_[iSyn];
    synapseType type = this->type_[iSyn];
    BGFLOAT dw;
- 
+   BGFLOAT modDelta;
+    if(delta<0)
+      modDelta=delta*-1;
+   else
+   {
+      modDelta=delta;
+   }
+   
+
    if (delta < -STDPgap_) {
       // depression
       dw = pow(fabs(W) / Wex_, muneg_) * Aneg_ * exp(delta / tauneg_);  // normalize
@@ -347,16 +366,17 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost
 
 
    // dw is the fractional change in synaptic strength; add 1.0 to become the scaling ratio
-   dw = 1.0 + dw * epre * epost;
+   //dw = 1.0 + dw * epre * epost;
+   dw=1+dw;
   
 
    // if scaling ratio is less than zero, set it to zero so this synapse, its strength is always zero
-   if (dw < 0) {
-      dw = 0;
-   }
+ 
 
    // current weight multiplies dw (scaling ratio) to generate new weight
-   W *= dw;
+   if(dw!=0)
+      W *= dw;
+
 
    // if new weight is bigger than Wex_ (maximum allowed weight), then set it to Wex_
    if (fabs(W) > Wex_) {

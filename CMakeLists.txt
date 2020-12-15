@@ -7,6 +7,11 @@ set(CMAKE_CXX_STANDARD 11)
 # Enable the use of GPU. Only available if CUDA library is installed the GPU is CUDA capable.
 set(BRAINGRID_CUDA NO)
 
+#To enable printing everything 
+#set( CMAKE_VERBOSE_MAKEFILE on )
+
+find_package(HDF5 REQUIRED)
+
 # Enables the CUDA langauge and locates the NVCC compiler. 
 # Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
 #
