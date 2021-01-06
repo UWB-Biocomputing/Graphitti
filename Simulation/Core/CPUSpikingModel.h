@@ -31,12 +31,12 @@
 
  */
 
+#pragma once
+
 #include "Connections/Connections.h"
 #include "Vertices/IAllNeurons.h"
 #include "Edges/IAllSynapses.h"
 #include "Layouts/Layout.h"
-
-#pragma once
 
 class CPUSpikingModel : public Model {
 public:
@@ -48,6 +48,9 @@ public:
 
    /// Set up model state, if anym for a specific simulation run.
    virtual void setupSim();
+
+   /// Performs any finalization tasks on network following a simulation.
+   virtual void finish();
 
    /// Advances network state one simulation step.
    virtual void advance();

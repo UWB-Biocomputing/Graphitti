@@ -38,6 +38,8 @@
 
 #pragma once
 
+#include <log4cplus/loggingmacros.h>
+
 #include "Global.h"
 #include "Core/Simulator.h"
 #include "IAllSynapses.h"
@@ -58,27 +60,26 @@ class AllSynapses : public IAllSynapses {
 public:
    AllSynapses();
 
-   AllSynapses(const int num_neurons, const int max_synapses);
+   AllSynapses(const int numNeurons, const int maxSynapses);
 
    virtual ~AllSynapses();
 
    /**
     *  Setup the internal structure of the class (allocate memories and initialize them).
-    *
-    *  @param  sim_info  SimulationInfo class to read information from.
     */
    virtual void setupSynapses();
-
-   /**
-    *  Cleanup the class (deallocate memories).
-    */
-   virtual void cleanupSynapses();
 
    /**
     * Load member variables from configuration file.
     * Registered to OperationManager as Operation::op::loadParameters
     */
    virtual void loadParameters();
+
+   /**
+    *  Prints out all parameters to logging file.
+    *  Registered to OperationManager as Operation::printParameters
+    */
+   virtual void printParameters() const;
 
    /**
     *  Reset time varying state vars and recompute decay.
@@ -93,36 +94,34 @@ public:
     *
     *  @param  iSyn        Index of the synapse to be added.
     *  @param  type        The type of the Synapse to add.
-    *  @param  src_neuron  The Neuron that sends to this Synapse.
-    *  @param  dest_neuron The Neuron that receives from the Synapse.
-    *  @param  sum_point   Summation point address.
+    *  @param  srcNeuron   The Neuron that sends to this Synapse.
+    *  @param  destNeuron  The Neuron that receives from the Synapse.
+    *  @param  sumPoint    Summation point address.
     *  @param  deltaT      Inner simulation step duration
     */
    virtual void
-   addSynapse(BGSIZE &iSyn, synapseType type, const int src_neuron, const int dest_neuron, BGFLOAT *sum_point,
+   addSynapse(BGSIZE &iSyn, synapseType type, const int srcNeuron, const int destNeuron, BGFLOAT *sumPoint,
               const BGFLOAT deltaT);
 
    /**
     *  Create a Synapse and connect it to the model.
     *
-    *  @param  synapses    The synapse list to reference.
     *  @param  iSyn        Index of the synapse to set.
     *  @param  source      Coordinates of the source Neuron.
     *  @param  dest        Coordinates of the destination Neuron.
-    *  @param  sum_point   Summation point address.
+    *  @param  sumPoint    Summation point address.
     *  @param  deltaT      Inner simulation step duration.
     *  @param  type        Type of the Synapse to create.
     */
-   virtual void createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sp, const BGFLOAT deltaT,
+   virtual void createSynapse(const BGSIZE iSyn, int srcNeuron, int destNeuron, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               synapseType type) = 0;
 
    /**
-    *  Create a synapse index map.
+    *  Create a synapse index map and returns it .
     *
-    *  @param  synapseIndexMap   Reference to thw pointer to SynapseIndexMap structure.
-    *  @param  sim_info          Pointer to the simulation information.
+    * @return the created SynapseIndexMap
     */
-   virtual void createSynapseImap(SynapseIndexMap *synapseIndexMap);
+   virtual SynapseIndexMap *createSynapseIndexMap();
 
    /**
     *  Get the sign of the synapseType.
@@ -133,7 +132,7 @@ public:
    int synSign(const synapseType type);
 
    /**
-    *  Prints SynapsesProps data.
+    *  Prints SynapsesProps data to console.
     */
    virtual void printSynapsesProps() const;
 
@@ -155,10 +154,10 @@ protected:
    /**
     *  Setup the internal structure of the class (allocate memories and initialize them).
     *
-    *  @param  num_neurons   Total number of neurons in the network.
-    *  @param  max_synapses  Maximum number of synapses per neuron.
+    *  @param  numNeurons   Total number of neurons in the network.
+    *  @param  maxSynapses  Maximum number of synapses per neuron.
     */
-   virtual void setupSynapses(const int num_neurons, const int max_synapses);
+   virtual void setupSynapses(const int numNeurons, const int maxSynapses);
 
    /**
     *  Sets the data for Synapse to input's data.
@@ -179,10 +178,13 @@ protected:
    /**
     *  Returns an appropriate synapseType object for the given integer.
     *
-    *  @param  type_ordinal    Integer that correspond with a synapseType.
+    *  @param  typeOrdinal    Integer that correspond with a synapseType.
     *  @return the SynapseType that corresponds with the given integer.
     */
-   synapseType synapseOrdinalToType(const int type_ordinal);
+   synapseType synapseOrdinalToType(const int typeOrdinal);
+
+   /// Loggers used to print to using log4cplus logging macros, prints to Results/Debug/logging.txt
+   log4cplus::Logger fileLogger_;
 
 #if !defined(USE_GPU)
 public:
@@ -190,7 +192,6 @@ public:
     *  Advance all the Synapses in the simulation.
     *  Update the state of all synapses for a time step.
     *
-    *  @param  sim_info  SimulationInfo class to read information from.
     *  @param  neurons   The Neuron list to search from.
     *  @param  synapseIndexMap   Pointer to SynapseIndexMap structure.
     */
@@ -199,10 +200,10 @@ public:
    /**
     *  Remove a synapse from the network.
     *
-    *  @param  neuron_index   Index of a neuron to remove from.
+    *  @param  neuronIndex   Index of a neuron to remove from.
     *  @param  iSyn           Index of a synapse to remove.
     */
-   virtual void eraseSynapse(const int neuron_index, const BGSIZE iSyn);
+   virtual void eraseSynapse(const int neuronIndex, const BGSIZE iSyn);
 
 #endif // !defined(USE_GPU)
 public:
@@ -254,7 +255,7 @@ public:
    /**
     *  The total number of active synapses.
     */
-   BGSIZE totalSynapseCounts_;
+   BGSIZE totalSynapseCount_;
 
    /**
      *  The maximum number of synapses for each neurons.
@@ -312,7 +313,7 @@ struct AllSynapsesDeviceProperties
         /**
          *  The total number of active synapses.
          */
-        BGSIZE totalSynapseCounts_;
+        BGSIZE totalSynapseCount_;
 
        /**
          *  The maximum number of synapses for each neurons.

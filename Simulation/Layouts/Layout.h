@@ -24,6 +24,8 @@
 #include <memory>
 #include <vector>
 
+#include <log4cplus/loggingmacros.h>
+
 #include "Utils/Global.h"
 #include "IAllNeurons.h"
 
@@ -41,29 +43,28 @@ public:
    /// Allocate memories to store all layout state.
    virtual void setupLayout();
 
-   /// Load member variables from configuration file. Registered to OperationManager as Operation::op::loadParameters
+   /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters();
 
-   /// Prints out all parameters of the neurons to ostream.
-   /// @param  output  ostream to send output to.
+   /// Prints out all parameters to logging file. Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
 
    /// Creates a neurons type map.
-   /// @param  num_neurons number of the neurons to have in the type map.
-   virtual void generateNeuronTypeMap(int num_neurons);
+   /// @param  numNeurons number of the neurons to have in the type map.
+   virtual void generateNeuronTypeMap(int numNeurons);
 
    /// Populates the starter map.
    /// Selects num_endogenously_active_neurons excitory neurons
    /// and converts them into starter neurons.
-   /// @param  num_neurons number of neurons to have in the map.
-   virtual void initStarterMap(const int num_neurons);
+   /// @param  numNeurons number of neurons to have in the map.
+   virtual void initStarterMap(const int numNeurons);
 
 
    /// Returns the type of synapse at the given coordinates
-   /// @param    src_neuron  integer that points to a Neuron in the type map as a source.
-   /// @param    dest_neuron integer that points to a Neuron in the type map as a destination.
+   /// @param    srcNeuron  integer that points to a Neuron in the type map as a source.
+   /// @param    destNeuron integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
-   synapseType synType(const int src_neuron, const int dest_neuron);
+   synapseType synType(const int srcNeuron, const int destNeuron);
 
    VectorMatrix *xloc_;  ///< Store neuron i's x location.
 
@@ -73,7 +74,7 @@ public:
 
    CompleteMatrix *dist_;    ///< The true inter-neuron distance.
 
-   vector<int> probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project
+   vector<int> probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
 
    neuronType *neuronTypeMap_;    ///< The neuron type map (INH, EXC).
 
@@ -87,6 +88,8 @@ protected:
    vector<int> endogenouslyActiveNeuronList_;    ///< Endogenously active neurons list.
 
    vector<int> inhibitoryNeuronLayout_;    ///< Inhibitory neurons list.
+
+   log4cplus::Logger fileLogger_;
 
 private:
    /// initialize the location maps (xloc and yloc).

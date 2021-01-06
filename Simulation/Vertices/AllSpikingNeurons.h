@@ -53,21 +53,11 @@ public:
    /**
     *  Setup the internal structure of the class.
     *  Allocate memories to store all neurons' state.
-    *
-    *  @param  sim_info  SimulationInfo class to read information from.
     */
    virtual void setupNeurons();
 
    /**
-    *  Cleanup the class.
-    *  Deallocate memories.
-    */
-   virtual void cleanupNeurons();
-
-   /**
     *  Clear the spike counts out of all Neurons.
-    *
-    *  @param  sim_info  SimulationInfo class to read information from.
     */
    void clearSpikeCounts();
 
@@ -83,54 +73,48 @@ public:
        /**
         *  Copy spike counts data stored in device memory to host.
         *
-        *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
+        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
         */
-       virtual void copyNeuronDeviceSpikeCountsToHost( void* allNeuronsDevice, const SimulationInfo *sim_info ) = 0;
+       virtual void copyNeuronDeviceSpikeCountsToHost( void* allNeuronsDevice) = 0;
 
        /**
         *  Copy spike history data stored in device memory to host.
         *
-        *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
+        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
         */
-       virtual void copyNeuronDeviceSpikeHistoryToHost( void* allNeuronsDevice, const SimulationInfo *sim_info ) = 0;
+       virtual void copyNeuronDeviceSpikeHistoryToHost( void* allNeuronsDevice) = 0;
 
        /**
         *  Clear the spike counts out of all neurons.
         *
-        *  @param  allNeuronsDevice   Reference to the allNeurons struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
+        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
         */
-       virtual void clearNeuronSpikeCounts( void* allNeuronsDevice, const SimulationInfo *sim_info ) = 0;
+       virtual void clearNeuronSpikeCounts( void* allNeuronsDevice) = 0;
 
    protected:
        /**
         *  Copy spike history data stored in device memory to host.
         *  (Helper function of copyNeuronDeviceSpikeHistoryToHost)
         *
-        *  @param  allNeurons        Reference to the AllSpikingNeuronsDeviceProperties struct.
-        *  @param  sim_info          SimulationInfo to refer from.
+        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
         */
-       void copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDeviceProperties& allNeurons, const SimulationInfo *sim_info );
+       void copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDeviceProperties& allNeuronsDevice);
 
        /**
         *  Copy spike counts data stored in device memory to host.
         *  (Helper function of copyNeuronDeviceSpikeCountsToHost)
         *
-        *  @param  allNeurons         Reference to the AllSpikingNeuronsDeviceProperties struct.
-        *  @param  sim_info           SimulationInfo to refer from.
+        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
         */
-       void copyDeviceSpikeCountsToHost( AllSpikingNeuronsDeviceProperties& allNeurons, const SimulationInfo *sim_info );
+       void copyDeviceSpikeCountsToHost( AllSpikingNeuronsDeviceProperties& allNeuronsDevice);
 
        /**
         *  Clear the spike counts out of all neurons in device memory.
         *  (helper function of clearNeuronSpikeCounts)
         *
-        *  @param  allNeurons         Reference to the AllSpikingNeuronsDeviceProperties struct.
-        *  @param  sim_info           SimulationInfo to refer from.
+        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
         */
-       void clearDeviceSpikeCounts( AllSpikingNeuronsDeviceProperties& allNeurons, const SimulationInfo *sim_info );
+       void clearDeviceSpikeCounts( AllSpikingNeuronsDeviceProperties& allNeuronsDevice);
 #else // !defined(USE_GPU)
 
 public:
@@ -139,18 +123,18 @@ public:
     *  Notify outgoing synapses if neuron has fired.
     *
     *  @param  synapses         The Synapse list to search from.
-    *  @param  sim_info         SimulationInfo class to read information from.
     *  @param  synapseIndexMap  Reference to the SynapseIndexMap.
     */
    virtual void advanceNeurons(IAllSynapses &synapses, const SynapseIndexMap *synapseIndexMap);
 
-   /**
-    *  Get the spike history of neuron[index] at the location offIndex.
-    *
-    *  @param  index            Index of the neuron to get spike history.
-    *  @param  offIndex         Offset of the history buffer to get from.
-    *  @param  sim_info         SimulationInfo class to read information from.
-    */
+   /*
+ *  Get the spike history of neuron[index] at the location offIndex.
+ *  More specifically, retrieves the global simulation time step for the spike
+ *  in question from the spike history record.
+ *
+ *  @param  index            Index of the neuron to get spike history.
+ *  @param  offIndex         Offset of the history buffer to get from.
+ */
    uint64_t getSpikeHistory(int index, int offIndex);
 
 protected:
@@ -158,7 +142,6 @@ protected:
     *  Helper for #advanceNeuron. Updates state of a single neuron.
     *
     *  @param  index            Index of the neuron to update.
-    *  @param  sim_info         SimulationInfo class to read information from.
     */
    virtual void advanceNeuron(const int index) = 0;
 
@@ -166,17 +149,10 @@ protected:
     *  Initiates a firing of a neuron to connected neurons
     *
     *  @param  index            Index of the neuron to fire.
-    *  @param  sim_info         SimulationInfo class to read information from.
     */
    virtual void fire(const int index) const;
 
 #endif // defined(USE_GPU)
-
-private:
-   /**
-    *  Deallocate all resources
-    */
-   void freeResources();
 
 public:
    /**

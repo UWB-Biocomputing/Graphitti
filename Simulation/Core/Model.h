@@ -16,6 +16,8 @@
 
 #include <memory>
 
+#include <log4cplus/loggingmacros.h>
+
 #include "Layout.h"
 #include "IAllNeurons.h"
 #include "IRecorder.h"
@@ -50,8 +52,7 @@ public:
    virtual void setupSim();
 
    /// Performs any finalization tasks on network following a simulation.
-   /// Downstream from IModel cleanupSim()
-   virtual void cleanupSim();
+   virtual void finish() = 0; 
 
    /// Update the simulation history of every epoch.
    virtual void updateHistory();
@@ -86,13 +87,15 @@ protected:
    virtual void copyCPUtoGPU() = 0;
 
 protected:
-   shared_ptr<Connections> conns_;
+   shared_ptr<Connections> connections_;
 
    shared_ptr<Layout> layout_;
 
    shared_ptr<IRecorder> recorder_;
 
    // shared_ptr<ISInput> input_;    /// Stimulus input object.
+
+   log4cplus::Logger fileLogger_;
 
    // ToDo: Find a good place for this method. Makes sense to put it in Layout
    void createAllNeurons(); /// Populate an instance of IAllNeurons with an initial state for each neuron.

@@ -63,7 +63,7 @@ protected:
     int* nISIs;
 
     //! List of synapses
-    IAllSynapses *m_synapses;
+    IAllSynapses *synapses_;
 
     //! Masks for stimulus input
     bool* masks;

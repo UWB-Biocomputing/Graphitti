@@ -49,8 +49,8 @@ in hdf5recorder.cpp
 
 // someo of this is specific to the hdf5 recorder stuff
 // hdf5 dataset name
-const H5std_string  nameBurstHist("burstinessHist");
-const H5std_string  nameSpikesHist("spikesHistory");
+const H5std_string  nameBurstHist("burstinessHist_");
+const H5std_string  nameSpikesHist("spikesHistory_");
 
 const H5std_string  nameXloc("xloc");
 const H5std_string  nameYloc("yloc");
@@ -78,7 +78,7 @@ void Hdf5Recorder::init(const string& stateOutputFileName)
     try
     {
         // create a new file using the default property lists
-        stateOut = new H5File( stateOutputFileName, H5F_ACC_TRUNC );
+        stateOut_ = new H5File( stateOutputFileName, H5F_ACC_TRUNC );
 
         initDataSet();
     }

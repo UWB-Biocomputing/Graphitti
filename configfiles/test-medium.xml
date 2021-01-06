@@ -18,7 +18,7 @@
       <value name="value">1</value>
     </Seed>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">results/test-small-out.xml</resultFileName>
+      <resultFileName name="resultFileName">Output/Results/test-medium-out.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 

@@ -1,0 +1,54 @@
+/*
+ * Sample class used for testing purposes. Will be replaced once lower level classes are imported into the project.
+ * Delete by the end of Summer 2020.
+ */
+
+#pragma once
+
+#include <iostream>
+
+#include "OperationManager.h"
+
+using namespace std;
+
+class IFoo {
+public:
+   virtual void loadParameters() = 0;
+
+   virtual void printParameters() = 0;
+};
+
+
+class Foo : public IFoo {
+public:
+    Foo() {
+    }
+
+    virtual void loadParameters() {
+       cout << "Foo loading parameters" << endl;
+    }
+
+    virtual void printParameters() {
+       cout << "Foo printing parameters" << endl;
+    }
+};
+
+
+class Bar : public Foo {
+public:
+   Bar() : Foo() {
+
+   }
+
+   virtual void loadParameters() {
+      cout << "Bar loading Parameters" << endl;
+   }
+};
+
+
+class Car : public Bar {
+public:
+   Car() : Bar() {
+
+   }
+};

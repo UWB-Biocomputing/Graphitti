@@ -108,6 +108,12 @@ public:
     */
    static IAllNeurons *Create() { return new AllLIFNeurons(); }
 
+   /**
+    *  Prints out all parameters of the neurons to logging file.
+    *  Registered to OperationManager as Operation::printParameters
+    */
+   virtual void printParameters() const;
+
 #if defined(USE_GPU)
    public:
 
@@ -116,13 +122,12 @@ public:
         *  Notify outgoing synapses if neuron has fired.
         *
         *  @param  synapses               Reference to the allSynapses struct on host memory.
-        *  @param  allNeuronsDevice       Reference to the allNeurons struct on device memory.
-        *  @param  allSynapsesDevice      Reference to the allSynapses struct on device memory.
-        *  @param  sim_info               SimulationInfo to refer from.
+        *  @param  allNeuronsDevice       GPU address of the allNeurons struct on device memory.
+        *  @param  allSynapsesDevice      GPU address of the allSynapses struct on device memory.
         *  @param  randNoise              Reference to the random noise array.
-        *  @param  synapseIndexMapDevice  Reference to the SynapseIndexMap on device memory.
+        *  @param  synapseIndexMapDevice  GPU address of the SynapseIndexMap on device memory.
         */
-       virtual void advanceNeurons(IAllSynapses &synapses, void* allNeuronsDevice, void* allSynapsesDevice, const SimulationInfo *sim_info, float* randNoise, SynapseIndexMap* synapseIndexMapDevice);
+       virtual void advanceNeurons(IAllSynapses &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, SynapseIndexMap* synapseIndexMapDevice);
 
 #else  // !defined(USE_GPU)
 protected:
@@ -130,16 +135,14 @@ protected:
    /**
     *  Helper for #advanceNeuron. Updates state of a single neuron.
     *
-    *  @param  index            Index of the neuron to update.
-    *  @param  sim_info         SimulationInfo class to read information from.
+    *  @param  index Index of the neuron to update.
     */
    virtual void advanceNeuron(const int index);
 
    /**
     *  Initiates a firing of a neuron to connected neurons.
     *
-    *  @param  index            Index of the neuron to fire.
-    *  @param  sim_info         SimulationInfo class to read information from.
+    *  @param  index Index of the neuron to fire.
     */
    virtual void fire(const int index) const;
 

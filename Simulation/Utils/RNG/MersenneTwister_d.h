@@ -34,7 +34,7 @@ typedef struct{
 } mt_struct_stripped;
 
 
-#define MT_DATAFILE "MersenneTwister/data/MersenneTwister.dat"
+#define MT_DATAFILE "RuntimeFiles/Data/MersenneTwister.dat"
 //#define   MT_RNG_COUNT 4096
 #define   MT_RNG_COUNT 2500	//max threads 
 #define          MT_MM 9

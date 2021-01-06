@@ -37,6 +37,8 @@
 
 using namespace std;
 
+#include <log4cplus/loggingmacros.h>
+
 #include "IAllNeurons.h"
 #include "BGTypes.h"
 
@@ -50,15 +52,14 @@ public:
     *  Setup the internal structure of the class.
     *  Allocate memories to store all neurons' state.
     *
-    *  @param  sim_info  SimulationInfo class to read information from.
     */
    virtual void setupNeurons();
 
    /**
-    *  Cleanup the class.
-    *  Deallocate memories.
+    *  Prints out all parameters of the neurons to logging file.
+    *  Registered to OperationManager as Operation::printParameters
     */
-   virtual void cleanupNeurons();
+   virtual void printParameters() const;
 
    /**
     *  The summation point for each neuron.
@@ -75,11 +76,9 @@ protected:
     */
    int size_;
 
-private:
-   /**
-    *  Deallocate all resources
-    */
-   void freeResources();
+   // Loggers used to print to using log4cplus logging macros
+   log4cplus::Logger fileLogger_; // Logs to Output/Debug/logging.txt
+   log4cplus::Logger neuronLogger_; // Logs to Output/Debug/neurons.txt
 };
 
 #if defined(USE_GPU)

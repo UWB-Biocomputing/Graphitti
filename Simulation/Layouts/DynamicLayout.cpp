@@ -2,96 +2,93 @@
 #include "ParseParamError.h"
 #include "Util.h"
 
-DynamicLayout::DynamicLayout() : Layout()
-{
+DynamicLayout::DynamicLayout() : Layout() {
 }
 
-DynamicLayout::~DynamicLayout()
-{
+DynamicLayout::~DynamicLayout() {
 }
 
-/*
- *  Prints out all parameters of the layout to console.
+/**
+ *  Prints out all parameters to logging file.
+ *  Registered to OperationManager as Operation::printParameters
  */
-void DynamicLayout::printParameters() const
-{
-    Layout::printParameters();
-
-    cout << "frac_EXC:" << m_frac_excitatory_neurons
-           << " starter_neurons:" << m_frac_starter_neurons
-           << endl;
+void DynamicLayout::printParameters() const {
+   Layout::printParameters();
+   LOG4CPLUS_DEBUG(fileLogger_, "\n\tLayout type: Dynamic Layout" << endl
+                                       << "\tfrac_EXC:" << m_frac_excitatory_neurons << endl
+                                       << "\tStarter neurons:" << m_frac_starter_neurons << endl << endl);
 }
 
 /*
  *  Creates a randomly ordered distribution with the specified numbers of neuron types.
  *
- *  @param  num_neurons number of the neurons to have in the type map.
+ *  @param  numNeurons number of the neurons to have in the type map.
  */
-void DynamicLayout::generateNeuronTypeMap(int num_neurons)
-{
-    Layout::generateNeuronTypeMap(num_neurons);
+void DynamicLayout::generateNeuronTypeMap(int numNeurons) {
+   Layout::generateNeuronTypeMap(numNeurons);
 
-    int num_excititory_neurons = (int) (m_frac_excitatory_neurons * num_neurons + 0.5);
-    int num_inhibitory_neurons = num_neurons - num_excititory_neurons;
+   int numExcititoryNeurons = (int) (m_frac_excitatory_neurons * numNeurons + 0.5);
+   int numInhibitoryNeurons = numNeurons - numExcititoryNeurons;
 
-    DEBUG(cout << "Total neurons: " << num_neurons << endl;)
-    DEBUG(cout << "Inhibitory Neurons: " << num_inhibitory_neurons << endl;)
-    DEBUG(cout << "Excitatory Neurons: " << num_excititory_neurons << endl;)
+   LOG4CPLUS_DEBUG(fileLogger_, "\nNEURON TYPE MAP" << endl
+                                                    << "\tTotal neurons: " << numNeurons << endl
+                                                    << "\tInhibitory Neurons: " << numInhibitoryNeurons << endl
+                                                    << "\tExcitatory Neurons: " << numExcititoryNeurons << endl);
 
-    DEBUG(cout << endl << "Randomly selecting inhibitory neurons..." << endl;)
+   LOG4CPLUS_INFO(fileLogger_, "Randomly selecting inhibitory neurons...");
 
-    int* rg_inhibitory_layout = new int[num_inhibitory_neurons];
+   int *rgInhibitoryLayout = new int[numInhibitoryNeurons];
 
-    for (int i = 0; i < num_inhibitory_neurons; i++) {
-        rg_inhibitory_layout[i] = i;
-    }
+   for (int i = 0; i < numInhibitoryNeurons; i++) {
+      rgInhibitoryLayout[i] = i;
+   }
 
-    for (int i = num_inhibitory_neurons; i < num_neurons; i++) {
-        int j = static_cast<int>(rng() * num_neurons);
-        if (j < num_inhibitory_neurons) {
-            rg_inhibitory_layout[j] = i;
-        }
-    }
+   for (int i = numInhibitoryNeurons; i < numNeurons; i++) {
+      int j = static_cast<int>(rng() * numNeurons);
+      if (j < numInhibitoryNeurons) {
+         rgInhibitoryLayout[j] = i;
+      }
+   }
 
-    for (int i = 0; i < num_inhibitory_neurons; i++) {
-       neuronTypeMap_[rg_inhibitory_layout[i]] = INH;
-    }
-    delete[] rg_inhibitory_layout;
+   for (int i = 0; i < numInhibitoryNeurons; i++) {
+      neuronTypeMap_[rgInhibitoryLayout[i]] = INH;
+   }
+   delete[] rgInhibitoryLayout;
 
-    DEBUG(cout << "Done initializing neuron type map" << endl;);
+   LOG4CPLUS_INFO(fileLogger_, "Done initializing neuron type map");
 }
 
 /*
  *  Populates the starter map.
- *  Selects num_endogenously_active_neurons excitory neurons 
+ *  Selects numEndogenouslyActiveNeurons_ excitatory neurons
  *  and converts them into starter neurons.
  *
- *  @param  num_neurons number of neurons to have in the map.
+ *  @param  numNeurons number of neurons to have in the map.
  */
-void DynamicLayout::initStarterMap(const int num_neurons)
-{
-    Layout::initStarterMap(num_neurons);
+void DynamicLayout::initStarterMap(const int numNeurons) {
+   Layout::initStarterMap(numNeurons);
 
-   numEndogenouslyActiveNeurons_ = (BGSIZE) (m_frac_starter_neurons * num_neurons + 0.5);
-    BGSIZE starters_allocated = 0;
+   numEndogenouslyActiveNeurons_ = (BGSIZE) (m_frac_starter_neurons * numNeurons + 0.5);
+   BGSIZE startersAllocated = 0;
 
-    DEBUG(cout << "\nRandomly initializing starter map\n";);
-    DEBUG(cout << "Total neurons: " << num_neurons << endl;)
-    DEBUG(cout << "Starter neurons: " << numEndogenouslyActiveNeurons_ << endl;)
+   LOG4CPLUS_DEBUG(fileLogger_, "\nNEURON STARTER MAP" << endl
+                                                       << "\tTotal Neurons: " << numNeurons << endl
+                                                       << "\tStarter Neurons: " << numEndogenouslyActiveNeurons_
+                                                       << endl);
 
-    // randomly set neurons as starters until we've created enough
-    while (starters_allocated < numEndogenouslyActiveNeurons_) {
-        // Get a random integer
-        int i = static_cast<int>(rng.inRange(0, num_neurons));
+   // randomly set neurons as starters until we've created enough
+   while (startersAllocated < numEndogenouslyActiveNeurons_) {
+      // Get a random integer
+      int i = static_cast<int>(rng.inRange(0, numNeurons));
 
-        // If the neuron at that index is excitatory and a starter map
-        // entry does not already exist, add an entry.
-        if (neuronTypeMap_[i] == EXC && starterMap_[i] == false) {
-           starterMap_[i] = true;
-            starters_allocated++;
-            DEBUG_MID(cout << "allocated EA neuron at random index [" << i << "]" << endl;);
-        }
-    }
+      // If the neuron at that index is excitatory and a starter map
+      // entry does not already exist, add an entry.
+      if (neuronTypeMap_[i] == EXC && starterMap_[i] == false) {
+         starterMap_[i] = true;
+         startersAllocated++;
+         LOG4CPLUS_DEBUG(fileLogger_, "Allocated EA neuron at random index [" << i << "]" << endl;);
+      }
+   }
 
-    DEBUG(cout <<"Done randomly initializing starter map\n\n";)
+   LOG4CPLUS_INFO(fileLogger_, "Done randomly initializing starter map");
 }

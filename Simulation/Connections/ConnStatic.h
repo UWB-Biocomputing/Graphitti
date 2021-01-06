@@ -66,51 +66,36 @@ public:
    virtual void setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses);
 
    /**
-    *  Cleanup the class.
-    */
-   virtual void cleanupConnections();
-
-   /**
     * Load member variables from configuration file.
     * Registered to OperationManager as Operations::op::loadParameters
     */
    virtual void loadParameters();
 
    /**
-    *  Prints out all parameters of the connections to ostream.
-    *
-    *  @param  output  ostream to send output to.
+    *  Prints out all parameters to logging file.
+    *  Registered to OperationManager as Operation::printParameters
     */
    virtual void printParameters() const;
 
-   /**
-    *  Creates a recorder class object for the connection.
-    *  This function tries to create either Xml recorder or
-    *  Hdf5 recorder based on the extension of the file name.
-    *
-    *  @return Pointer to the recorder class object.
-    */
-   virtual IRecorder *createRecorder();
-
 private:
    //! number of maximum connections per neurons
-   int m_nConnsPerNeuron;
+   int connsPerNeuron_;
 
    //! Connection radius threshold
-   BGFLOAT m_threshConnsRadius;
+   BGFLOAT threshConnsRadius_;
 
    //! Small-world rewiring probability
-   BGFLOAT m_pRewiring;
+   BGFLOAT rewiringProbability_;
 
    //! Min/max values of excitatory neuron's synapse weight
-   BGFLOAT m_excWeight[2];
+   BGFLOAT excWeight_[2];
 
    //! Min/max values of inhibitory neuron's synapse weight
-   BGFLOAT m_inhWeight[2];
+   BGFLOAT inhWeight_[2];
 
    struct DistDestNeuron {
       BGFLOAT dist;     // destance to the destination neuron
-      int dest_neuron;  // index of the destination neuron
+      int destNeuron;  // index of the destination neuron
 
       bool operator<(const DistDestNeuron &other) const {
          return (dist < other.dist);

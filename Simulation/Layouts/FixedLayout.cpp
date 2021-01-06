@@ -8,69 +8,51 @@ FixedLayout::FixedLayout() : Layout() {
 FixedLayout::~FixedLayout() {
 }
 
-/*
- *  Prints out all parameters of the layout to console.
+/**
+ *  Prints out all parameters to logging file.
+ *  Registered to OperationManager as Operation::printParameters
  */
 void FixedLayout::printParameters() const {
    Layout::printParameters();
 
-   cout << "Layout parameters:" << endl;
-
-   cout << "\tEndogenously active neuron positions: ";
-   for (BGSIZE i = 0; i < numEndogenouslyActiveNeurons_; i++) {
-      cout << endogenouslyActiveNeuronList_[i] << " ";
-   }
-
-   cout << endl;
-
-   cout << "\tInhibitory neuron positions: ";
-   for (BGSIZE i = 0; i < inhibitoryNeuronLayout_.size(); i++) {
-      cout << inhibitoryNeuronLayout_[i] << " ";
-   }
-
-   cout << endl;
-
-   cout << "\tProbed neuron positions: ";
-   for (BGSIZE i = 0; i < probedNeuronList_.size(); i++) {
-      cout << probedNeuronList_[i] << " ";
-   }
-
-   cout << endl;
+   LOG4CPLUS_DEBUG(fileLogger_, "\n\tLayout type: FixedLayout" << endl << endl);
 }
 
 /*
  *  Creates a randomly ordered distribution with the specified numbers of neuron types.
- *  @param  num_neurons number of the neurons to have in the type map.
- *  @return a flat vector (to map to 2-d [x,y] = [i % m_width, i / m_width])
+ *
+ *  @param  numNeurons number of the neurons to have in the type map.
+ *
  */
-void FixedLayout::generateNeuronTypeMap(int num_neurons) {
-   Layout::generateNeuronTypeMap(num_neurons);
+void FixedLayout::generateNeuronTypeMap(int numNeurons) {
+   Layout::generateNeuronTypeMap(numNeurons);
 
-   int num_inhibitory_neurons = inhibitoryNeuronLayout_.size();
-   int num_excititory_neurons = num_neurons - num_inhibitory_neurons;
+   int numInhibitoryNeurons = inhibitoryNeuronLayout_.size();
+   int numExcititoryNeurons = numNeurons - numInhibitoryNeurons;
 
-   DEBUG(cout << "Total neurons: " << num_neurons << endl;)
-   DEBUG(cout << "Inhibitory Neurons: " << num_inhibitory_neurons << endl;)
-   DEBUG(cout << "Excitatory Neurons: " << num_excititory_neurons << endl;)
+   LOG4CPLUS_DEBUG(fileLogger_, "\nNEURON TYPE MAP" << endl
+   << "\tTotal neurons: " << numNeurons << endl
+   << "\tInhibitory Neurons: " << numInhibitoryNeurons << endl
+   << "\tExcitatory Neurons: " << numExcititoryNeurons << endl);
 
-   for (int i = 0; i < num_inhibitory_neurons; i++) {
-      assert(inhibitoryNeuronLayout_.at(i) < num_neurons);
+   for (int i = 0; i < numInhibitoryNeurons; i++) {
+      assert(inhibitoryNeuronLayout_.at(i) < numNeurons);
       neuronTypeMap_[inhibitoryNeuronLayout_.at(i)] = INH;
    }
 
-   DEBUG(cout << "Done initializing neuron type map" << endl;);
+   LOG4CPLUS_INFO(fileLogger_, "Finished initializing neuron type map");
 }
 
 /*
  *  Populates the starter map.
  *  Selects \e numStarter excitory neurons and converts them into starter neurons.
- *  @param  num_neurons number of neurons to have in the map.
+ *  @param  numNeurons number of neurons to have in the map.
  */
-void FixedLayout::initStarterMap(const int num_neurons) {
-   Layout::initStarterMap(num_neurons);
+void FixedLayout::initStarterMap(const int numNeurons) {
+   Layout::initStarterMap(numNeurons);
 
    for (BGSIZE i = 0; i < numEndogenouslyActiveNeurons_; i++) {
-      assert(endogenouslyActiveNeuronList_.at(i) < num_neurons);
+      assert(endogenouslyActiveNeuronList_.at(i) < numNeurons);
       starterMap_[endogenouslyActiveNeuronList_.at(i)] = true;
    }
 }

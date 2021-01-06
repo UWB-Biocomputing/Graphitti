@@ -57,16 +57,23 @@ public:
    /// @param  neurons the Neuron list to search from.
    virtual void saveSimData(const IAllNeurons &neurons);
 
+   /**
+    *  Prints out all parameters to logging file.
+    *  Registered to OperationManager as Operation::printParameters
+    */
+   virtual void printParameters();
+
 protected:
-   
-   /// Get starter Neuron matrix.
-   /// @param  matrix: Starter Neuron matrix.
-   /// @param  starter_map: reference neuron matrix location
-   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starter_map);
+   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
 
+   // a file stream for xml output
+   ofstream stateOut_;
 
-   ofstream stateOut;                ///< a file stream for xml output
-   VectorMatrix burstinessHist;      ///< burstiness Histogram
-   VectorMatrix spikesHistory;       ///< history of accumulated spikes count of all neurons (10 ms bin)
+   // burstiness Histogram goes through the
+   VectorMatrix burstinessHist_;
+
+   // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
+   VectorMatrix spikesHistory_;
+
 };
 

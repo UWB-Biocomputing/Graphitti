@@ -17,33 +17,58 @@
 #include <list>
 #include <string>
 
-
-#include "Simulation/Core/FunctionNodes/GenericFunctionNode.h"
+#include "Core/FunctionNodes/GenericFunctionNode.h"
 
 /// Get Instance method that returns a reference to this object.
 OperationManager &OperationManager::getInstance() {
-    static OperationManager instance;
-    return instance;
+   static OperationManager instance;
+   return instance;
 }
 
 /// Called by lower level classes constructors on creation to register their operations with their operation type
 /// This method can be overloaded to handle different function signatures.
 /// Handles function signature: void ()
 void OperationManager::registerOperation(const Operations::op &operation, function<void()> function) {
-    try {
-        functionList_.push_back(unique_ptr<IFunctionNode>(new GenericFunctionNode(operation, function)));
-    }
-    catch (exception e) {
-        throw runtime_error(string(e.what()) + " in OperationManager::registerOperation");
-    }
+   try {
+      functionList_.push_back(unique_ptr<IFunctionNode>(new GenericFunctionNode(operation, function)));
+   }
+   catch (exception e) {
+      LOG4CPLUS_FATAL(logger_, string(e.what()) + ". Push back failed in OperationManager::registerOperation");
+      throw runtime_error(string(e.what()) + " in OperationManager::registerOperation");
+   }
 }
 
 /// Takes in a operation type and invokes all registered functions that are classified as that operation type.
 void OperationManager::executeOperation(const Operations::op &operation) const {
-    if (functionList_.size() > 0) {
-        for (auto i = functionList_.begin(); i != functionList_.end(); ++i) {
-            (*i)->invokeFunction(operation);
-        }
-    }
+   LOG4CPLUS_INFO(logger_, "Executing operation " + operationToString(operation));
+   if (functionList_.size() > 0) {
+      for (auto i = functionList_.begin(); i != functionList_.end(); ++i) {
+         (*i)->invokeFunction(operation);
+      }
+   }
+}
+
+/// Takes in the operation enum and returns the enum as a string. Used for debugging purposes.
+string OperationManager::operationToString(const Operations::op &operation) const {
+   switch (operation) {
+      case Operations::op::printParameters:
+         return "printParameters";
+      case Operations::op::loadParameters:
+         return "loadParameters";
+      case Operations::op::serialize:
+         return "serialize";
+      case Operations::op::deserialize:
+         return "deserialize";
+      case Operations::op::deallocateGPUMemory:
+         return "deallocateGPUMemory";
+      case Operations::op::restoreToDefault:
+         return "restoreToDefault";
+      case Operations::op::copyToGPU:
+         return "copyToGPU";
+      case Operations::op::copyFromGPU:
+         return "copyFromGPU";
+      default:
+         return "Operation isn't in OperationManager::operationToString()";
+   }
 }
 

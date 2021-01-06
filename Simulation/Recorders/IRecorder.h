@@ -27,6 +27,8 @@
 
 #include <string>
 
+#include <log4cplus/loggingmacros.h>
+
 #include "Global.h"
 #include "Model.h"
 #include "Core/Simulator.h"
@@ -56,7 +58,7 @@ public:
    virtual void initValues() = 0;
 
    /**
-    * Get the current radii and rates vlaues
+    * Get the current radii and rates values
     */
    virtual void getValues() = 0;
 
@@ -79,10 +81,15 @@ public:
     **/
    virtual void saveSimData(const IAllNeurons &neurons) = 0;
 
+   /*
+    * Prints loaded parameters to logging file.
+    */
+   virtual void printParameters() = 0;
+
 protected:
-   // File path to the file that the results will be printed to.
+   /// File path to the file that the results will be printed to.
    string resultFileName_;
 
-   // Smart pointer to model so the recorders can access layout and connections.
-   shared_ptr<Model> model_;
+   /// Loggers used to print to using log4cplus logging macros, prints to Results/Debug/logging.txt
+   log4cplus::Logger fileLogger_;
 };

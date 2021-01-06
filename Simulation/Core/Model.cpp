@@ -18,20 +18,23 @@ Model::Model() {
 
    // Create Connections class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//ConnectionsParams/@class", type);
-   conns_ = ConnectionsFactory::getInstance()->createConnections(type);
+   connections_ = ConnectionsFactory::getInstance()->createConnections(type);
 
    // Create Recorder class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
    recorder_ = RecorderFactory::getInstance()->createRecorder(type);
+   recorder_->init();
+
+   // Get a copy of the file logger to use log4cplus macros
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
-/// Destructor todo: this will change
+/// Destructor
 Model::~Model() {
 
 }
 
 /// Save simulation results to an output destination.
-// todo: recorder should be under model if not layout or connections
 void Model::saveData() {
    if (recorder_ != NULL) {
       recorder_->saveSimData(*layout_->getNeurons());
@@ -41,34 +44,27 @@ void Model::saveData() {
 /// Creates all the Neurons and generates data for them.
 // todo: this is going to go away
 void Model::createAllNeurons() {
-   DEBUG(cerr << "\nAllocating neurons..." << endl;)
+   LOG4CPLUS_INFO(fileLogger_, "Allocating Neurons..." );
 
    layout_->generateNeuronTypeMap(Simulator::getInstance().getTotalNeurons());
    layout_->initStarterMap(Simulator::getInstance().getTotalNeurons());
 
    // set their specific types
-   // todo: neurons_
    layout_->getNeurons()->createAllNeurons(layout_.get());
-
-   DEBUG(cerr << "Done initializing neurons..." << endl;)
 }
 
 /// Sets up the Simulation.
-/// ToDo: find siminfo actual things being passed through
-// todo: to be setup: tell layouts and connections to setup. will setup neurons/synapses.
-// todo: setup recorders.
 void Model::setupSim() {
-   DEBUG(cerr << "\tSetting up neurons....";)
+   LOG4CPLUS_INFO(fileLogger_, "Setting up Neurons...");
    layout_->getNeurons()->setupNeurons();
-   DEBUG(cerr << "done.\n\tSetting up synapses....";)
-   conns_->getSynapses()->setupSynapses();
+   LOG4CPLUS_INFO(fileLogger_, "Setting up Synapses...");
+   connections_->getSynapses()->setupSynapses();
 #ifdef PERFORMANCE_METRICS
    // Start timer for initialization
    Simulator::getInstance.short_timer.start();
 #endif
-   DEBUG(cerr << "done.\n\tSetting up layout....";)
+   LOG4CPLUS_INFO(fileLogger_, "Setting up Layout...");
    layout_->setupLayout();
-   DEBUG(cerr << "done." << endl;)
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (layout)
    t_host_initialization_layout += Simulator::getInstance().short_timer.lap() / 1000000.0;
@@ -85,26 +81,21 @@ void Model::setupSim() {
    // Start timer for initialization
    Simulator::getInstance().short_timer.start();
 #endif
-   conns_->setupConnections(layout_.get(), layout_->getNeurons().get(), conns_->getSynapses().get());
+   LOG4CPLUS_INFO(fileLogger_, "Setting up Connections...");
+   connections_->setupConnections(layout_.get(), layout_->getNeurons().get(), connections_->getSynapses().get());
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (connections)
    t_host_initialization_connections += Simulator::getInstance().short_timer.lap() / 1000000.0;
 #endif
 
    // create a synapse index map
-   conns_->getSynapses()->createSynapseImap(conns_->getSynapseIndexMap().get());
-}
-
-/// Clean up the simulation.
-void Model::cleanupSim() {
-   layout_->getNeurons()->cleanupNeurons();
-   conns_->getSynapses()->cleanupSynapses();
-   conns_->cleanupConnections();
+   LOG4CPLUS_INFO(fileLogger_, "Creating SynapseIndexMap...");
+   connections_->createSynapseIndexMap();
 }
 
 /// Log this simulation step.
 void Model::logSimStep() const {
-   ConnGrowth *pConnGrowth = dynamic_cast<ConnGrowth *>(conns_.get());
+   ConnGrowth *pConnGrowth = dynamic_cast<ConnGrowth *>(connections_.get());
    if (pConnGrowth == NULL)
       return;
 
@@ -165,7 +156,7 @@ void Model::updateHistory() {
 
 /// Get the Connections class object.
 /// @return Pointer to the Connections class object.  ToDo: make smart ptr
-shared_ptr<Connections> Model::getConnections() const { return conns_; }
+shared_ptr<Connections> Model::getConnections() const { return connections_; }
 
 /// Get the Layout class object.
 /// @return Pointer to the Layout class object. ToDo: make smart ptr

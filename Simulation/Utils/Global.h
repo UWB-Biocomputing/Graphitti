@@ -40,8 +40,8 @@
 #define DEBUG_VECTOR(__x) DEBUG_LOG(DEBUG_LOG_VECTOR, __x)
 #define DEBUG_SYNAPSE(__x) DEBUG_LOG(DEBUG_LOG_SYNAPSE, __x)
 #ifdef __CUDACC__
-extern __constant__ int d_debug_mask[];
-#define DEBUG_LOG(__lvl, __x) { if(__lvl & d_debug_mask[0]) { __x } }
+// extern __constant__ int d_debug_mask[];
+// #define DEBUG_LOG(__lvl, __x) { if(__lvl & d_debug_mask[0]) { __x } }
 #else
 #define DEBUG_LOG(__lvl, __x) { if(__lvl & g_debug_mask) { __x } }
 #endif

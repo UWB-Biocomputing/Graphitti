@@ -17,37 +17,6 @@ AllIZHNeurons::AllIZHNeurons() : AllIFNeurons() {
 }
 
 AllIZHNeurons::~AllIZHNeurons() {
-   freeResources();
-}
-
-/*
- *  Setup the internal structure of the class (allocate memories).
- *
- *  @param  sim_info  SimulationInfo class to read information from.
- */
-void AllIZHNeurons::setupNeurons() {
-   AllIFNeurons::setupNeurons();
-
-   Aconst_ = new BGFLOAT[size_];
-   Bconst_ = new BGFLOAT[size_];
-   Cconst_ = new BGFLOAT[size_];
-   Dconst_ = new BGFLOAT[size_];
-   u_ = new BGFLOAT[size_];
-   C3_ = new BGFLOAT[size_];
-}
-
-/*
- *  Cleanup the class (deallocate memories).
- */
-void AllIZHNeurons::cleanupNeurons() {
-   freeResources();
-   AllIFNeurons::cleanupNeurons();
-}
-
-/*
- *  Deallocate all resources
- */
-void AllIZHNeurons::freeResources() {
    if (size_ != 0) {
       delete[] Aconst_;
       delete[] Bconst_;
@@ -66,97 +35,110 @@ void AllIZHNeurons::freeResources() {
 }
 
 /*
- *  Prints out all parameters of the neurons to ostream.
- *
- *  @param  output  ostream to send output to.
+ *  Setup the internal structure of the class (allocate memories).
+ */
+void AllIZHNeurons::setupNeurons() {
+   AllIFNeurons::setupNeurons();
+
+   Aconst_ = new BGFLOAT[size_];
+   Bconst_ = new BGFLOAT[size_];
+   Cconst_ = new BGFLOAT[size_];
+   Dconst_ = new BGFLOAT[size_];
+   u_ = new BGFLOAT[size_];
+   C3_ = new BGFLOAT[size_];
+}
+
+/**
+ *  Prints out all parameters of the neurons to logging file.
+ *  Registered to OperationManager as Operation::printParameters
  */
 void AllIZHNeurons::printParameters() const {
    AllIFNeurons::printParameters();
 
-   cout << "Interval of A constant for excitatory neurons: ["
-          << excAconst_[0] << ", " << excAconst_[1] << "]"
-          << endl;
-   cout << "Interval of A constant for inhibitory neurons: ["
-          << inhAconst_[0] << ", " << inhAconst_[1] << "]"
-          << endl;
-   cout << "Interval of B constant for excitatory neurons: ["
-          << excBconst_[0] << ", " << excBconst_[1] << "]"
-          << endl;
-   cout << "Interval of B constant for inhibitory neurons: ["
-          << inhBconst_[0] << ", " << inhBconst_[1] << "]"
-          << endl;
-   cout << "Interval of C constant for excitatory neurons: ["
-          << excCconst_[0] << ", " << excCconst_[1] << "]"
-          << endl;
-   cout << "Interval of C constant for inhibitory neurons: ["
-          << inhCconst_[0] << ", " << inhCconst_[1] << "]"
-          << endl;
-   cout << "Interval of D constant for excitatory neurons: ["
-          << excDconst_[0] << ", " << excDconst_[1] << "]"
-          << endl;
-   cout << "Interval of D constant for inhibitory neurons: ["
-          << inhDconst_[0] << ", " << inhDconst_[1] << "]"
-          << endl;
+   LOG4CPLUS_DEBUG(fileLogger_, "\n\tVertices type: AllIZHNeurons" << endl
+             << "\tInterval of A constant for excitatory neurons: ["
+             << excAconst_[0] << ", " << excAconst_[1] << "]"
+             << endl
+             << "\tInterval of A constant for inhibitory neurons: ["
+             << inhAconst_[0] << ", " << inhAconst_[1] << "]"
+             << endl
+             << "\tInterval of B constant for excitatory neurons: ["
+             << excBconst_[0] << ", " << excBconst_[1] << "]"
+             << endl
+             << "\tInterval of B constant for inhibitory neurons: ["
+             << inhBconst_[0] << ", " << inhBconst_[1] << "]"
+             << endl
+             << "\tInterval of C constant for excitatory neurons: ["
+             << excCconst_[0] << ", " << excCconst_[1] << "]"
+             << endl
+             << "\tInterval of C constant for inhibitory neurons: ["
+             << inhCconst_[0] << ", " << inhCconst_[1] << "]"
+             << endl
+             << "\tInterval of D constant for excitatory neurons: ["
+             << excDconst_[0] << ", " << excDconst_[1] << "]"
+             << endl
+             << "\tInterval of D constant for inhibitory neurons: ["
+             << inhDconst_[0] << ", " << inhDconst_[1] << "]"
+             << endl << endl);
+
 }
 
 /*
  *  Creates all the Neurons and generates data for them.
  *
- *  @param  sim_info    SimulationInfo class to read information from.
  *  @param  layout      Layout information of the neunal network.
  */
 void AllIZHNeurons::createAllNeurons(Layout *layout) {
    /* set their specific types */
-   for (int neuron_index = 0; neuron_index < Simulator::getInstance().getTotalNeurons(); neuron_index++) {
-      setNeuronDefaults(neuron_index);
+   for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalNeurons(); neuronIndex++) {
+      setNeuronDefaults(neuronIndex);
 
       // set the neuron info for neurons
-      createNeuron(neuron_index, layout);
+      createNeuron(neuronIndex, layout);
    }
 }
 
 /*
  *  Creates a single Neuron and generates data for it.
  *
- *  @param  sim_info     SimulationInfo class to read information from.
- *  @param  neuron_index Index of the neuron to create.
+ *  @param  neuronIndex Index of the neuron to create.
  *  @param  layout       Layout information of the neunal network.
  */
-void AllIZHNeurons::createNeuron(int neuron_index, Layout *layout) {
+void AllIZHNeurons::createNeuron(int neuronIndex, Layout *layout) {
    // set the neuron info for neurons
-   AllIFNeurons::createNeuron(neuron_index, layout);
+   AllIFNeurons::createNeuron(neuronIndex, layout);
 
    // TODO: we may need another distribution mode besides flat distribution
-   if (layout->neuronTypeMap_[neuron_index] == EXC) {
+   if (layout->neuronTypeMap_[neuronIndex] == EXC) {
       // excitatory neuron
-      Aconst_[neuron_index] = rng.inRange(excAconst_[0], excAconst_[1]);
-      Bconst_[neuron_index] = rng.inRange(excBconst_[0], excBconst_[1]);
-      Cconst_[neuron_index] = rng.inRange(excCconst_[0], excCconst_[1]);
-      Dconst_[neuron_index] = rng.inRange(excDconst_[0], excDconst_[1]);
+      Aconst_[neuronIndex] = rng.inRange(excAconst_[0], excAconst_[1]);
+      Bconst_[neuronIndex] = rng.inRange(excBconst_[0], excBconst_[1]);
+      Cconst_[neuronIndex] = rng.inRange(excCconst_[0], excCconst_[1]);
+      Dconst_[neuronIndex] = rng.inRange(excDconst_[0], excDconst_[1]);
    } else {
       // inhibitory neuron
-      Aconst_[neuron_index] = rng.inRange(inhAconst_[0], inhAconst_[1]);
-      Bconst_[neuron_index] = rng.inRange(inhBconst_[0], inhBconst_[1]);
-      Cconst_[neuron_index] = rng.inRange(inhCconst_[0], inhCconst_[1]);
-      Dconst_[neuron_index] = rng.inRange(inhDconst_[0], inhDconst_[1]);
+      Aconst_[neuronIndex] = rng.inRange(inhAconst_[0], inhAconst_[1]);
+      Bconst_[neuronIndex] = rng.inRange(inhBconst_[0], inhBconst_[1]);
+      Cconst_[neuronIndex] = rng.inRange(inhCconst_[0], inhCconst_[1]);
+      Dconst_[neuronIndex] = rng.inRange(inhDconst_[0], inhDconst_[1]);
    }
 
-   u_[neuron_index] = 0;
+   u_[neuronIndex] = 0;
 
-   DEBUG_HI(cout << "CREATE NEURON[" << neuron_index << "] {" << endl
-                 << "\tAconst = " << Aconst_[neuron_index] << endl
-                 << "\tBconst = " << Bconst_[neuron_index] << endl
-                 << "\tCconst = " << Cconst_[neuron_index] << endl
-                 << "\tDconst = " << Dconst_[neuron_index] << endl
-                 << "\tC3 = " << C3_[neuron_index] << endl
-                 << "}" << endl;)
+   LOG4CPLUS_DEBUG(fileLogger_, "\nCREATE NEURON[" << neuronIndex << "] {" << endl
+                 << "\tAconst = " << Aconst_[neuronIndex] << endl
+                 << "\tBconst = " << Bconst_[neuronIndex] << endl
+                 << "\tCconst = " << Cconst_[neuronIndex] << endl
+                 << "\tDconst = " << Dconst_[neuronIndex] << endl
+                 << "\tC3 = " << C3_[neuronIndex] << endl
+                 << "}" << endl);
 
 }
 
 /*
  *  Set the Neuron at the indexed location to default values.
  *
- *  @param  neuron_index    Index of the Neuron to refer.
+ *  @param  neuronIndex    Index of the Neuron to refer.
  */
 void AllIZHNeurons::setNeuronDefaults(const int index) {
    AllIFNeurons::setNeuronDefaults(index);
@@ -173,33 +155,33 @@ void AllIZHNeurons::setNeuronDefaults(const int index) {
 /*
  *  Initializes the Neuron constants at the indexed location.
  *
- *  @param  neuron_index    Index of the Neuron.
+ *  @param  neuronIndex    Index of the Neuron.
  *  @param  deltaT          Inner simulation step duration
  */
-void AllIZHNeurons::initNeuronConstsFromParamValues(int neuron_index, const BGFLOAT deltaT) {
-   AllIFNeurons::initNeuronConstsFromParamValues(neuron_index, deltaT);
+void AllIZHNeurons::initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT) {
+   AllIFNeurons::initNeuronConstsFromParamValues(neuronIndex, deltaT);
 
-   BGFLOAT &C3 = this->C3_[neuron_index];
+   BGFLOAT &C3 = this->C3_[neuronIndex];
    C3 = deltaT * 1000;
 }
 
 /*
  *  Outputs state of the neuron chosen as a string.
  *
- *  @param  i   index of the neuron (in neurons) to output info from.
+ *  @param  index index of the neuron (in neurons) to output info from.
  *  @return the complete state of the neuron.
  */
-string AllIZHNeurons::toString(const int i) const {
+string AllIZHNeurons::toString(const int index) const {
    stringstream ss;
 
-   ss << AllIFNeurons::toString(i);
+   ss << AllIFNeurons::toString(index);
 
-   ss << "Aconst: " << Aconst_[i] << " ";
-   ss << "Bconst: " << Bconst_[i] << " ";
-   ss << "Cconst: " << Cconst_[i] << " ";
-   ss << "Dconst: " << Dconst_[i] << " ";
-   ss << "u: " << u_[i] << " ";
-   ss << "C3: " << C3_[i] << " ";
+   ss << "Aconst: " << Aconst_[index] << " ";
+   ss << "Bconst: " << Bconst_[index] << " ";
+   ss << "Cconst: " << Cconst_[index] << " ";
+   ss << "Dconst: " << Dconst_[index] << " ";
+   ss << "u: " << u_[index] << " ";
+   ss << "C3: " << C3_[index] << " ";
    return ss.str();
 }
 
@@ -207,7 +189,6 @@ string AllIZHNeurons::toString(const int i) const {
  *  Sets the data for Neurons to input's data.
  *
  *  @param  input       istream to read from.
- *  @param  sim_info    used as a reference to set info for neurons.
  */
 void AllIZHNeurons::deserialize(istream &input) {
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
@@ -219,23 +200,22 @@ void AllIZHNeurons::deserialize(istream &input) {
  *  Sets the data for Neuron #index to input's data.
  *
  *  @param  input       istream to read from.
- *  @param  sim_info    used as a reference to set info for neurons.
- *  @param  i           index of the neuron (in neurons).
+ *  @param  index           index of the neuron (in neurons).
  */
-void AllIZHNeurons::readNeuron(istream &input, int i) {
-   AllIFNeurons::readNeuron(input, i);
+void AllIZHNeurons::readNeuron(istream &input, int index) {
+   AllIFNeurons::readNeuron(input, index);
 
-   input >> Aconst_[i];
+   input >> Aconst_[index];
    input.ignore();
-   input >> Bconst_[i];
+   input >> Bconst_[index];
    input.ignore();
-   input >> Cconst_[i];
+   input >> Cconst_[index];
    input.ignore();
-   input >> Dconst_[i];
+   input >> Dconst_[index];
    input.ignore();
-   input >> u_[i];
+   input >> u_[index];
    input.ignore();
-   input >> C3_[i];
+   input >> C3_[index];
    input.ignore();
 }
 
@@ -243,7 +223,6 @@ void AllIZHNeurons::readNeuron(istream &input, int i) {
  *  Writes out the data in Neurons.
  *
  *  @param  output      stream to write out to.
- *  @param  sim_info    used as a reference to set info for neuronss.
  */
 void AllIZHNeurons::serialize(ostream &output) const {
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
@@ -255,18 +234,17 @@ void AllIZHNeurons::serialize(ostream &output) const {
  *  Writes out the data in the selected Neuron.
  *
  *  @param  output      stream to write out to.
- *  @param  sim_info    used as a reference to set info for neuronss.
- *  @param  i           index of the neuron (in neurons).
+ *  @param  index       index of the neuron (in neurons).
  */
-void AllIZHNeurons::writeNeuron(ostream &output, int i) const {
-   AllIFNeurons::writeNeuron(output, i);
+void AllIZHNeurons::writeNeuron(ostream &output, int index) const {
+   AllIFNeurons::writeNeuron(output, index);
 
-   output << Aconst_[i] << ends;
-   output << Bconst_[i] << ends;
-   output << Cconst_[i] << ends;
-   output << Dconst_[i] << ends;
-   output << u_[i] << ends;
-   output << C3_[i] << ends;
+   output << Aconst_[index] << ends;
+   output << Bconst_[index] << ends;
+   output << Cconst_[index] << ends;
+   output << Dconst_[index] << ends;
+   output << u_[index] << ends;
+   output << C3_[index] << ends;
 }
 
 #if !defined(USE_GPU)
@@ -275,7 +253,6 @@ void AllIZHNeurons::writeNeuron(ostream &output, int i) const {
  *  Update internal state of the indexed Neuron (called by every simulation step).
  *
  *  @param  index       Index of the Neuron to update.
- *  @param  sim_info    SimulationInfo class to read information from.
  */
 void AllIZHNeurons::advanceNeuron(const int index) {
    BGFLOAT &Vm = this->Vm_[index];
@@ -302,7 +279,8 @@ void AllIZHNeurons::advanceNeuron(const int index) {
       summationPoint += I0; // add IO
       // add noise
       BGFLOAT noise = (*rgNormrnd[0])();
-      DEBUG_MID(cout << "ADVANCE NEURON[" << index << "] :: noise = " << noise << endl;)
+      // Happens really often, causes drastic slow down
+      // DEBUG_MID(cout << "ADVANCE NEURON[" << index << "] :: noise = " << noise << endl;)
       summationPoint += noise * Inoise; // add noise
 
       BGFLOAT Vint = Vm * 1000;
@@ -314,22 +292,23 @@ void AllIZHNeurons::advanceNeuron(const int index) {
       Vm = Vb * 0.001 + C2 * summationPoint;  // add inputs
    }
 
-   DEBUG_MID(cout << index << " " << Vm << endl;)
-   DEBUG_MID(cout << "NEURON[" << index << "] {" << endl
-                  << "\tVm = " << Vm << endl
-                  << "\ta = " << a << endl
-                  << "\tb = " << b << endl
-                  << "\tc = " << Cconst_[index] << endl
-                  << "\td = " << Dconst_[index] << endl
-                  << "\tu = " << u << endl
-                  << "\tVthresh = " << Vthresh << endl
-                  << "\tsummationPoint = " << summationPoint << endl
-                  << "\tI0 = " << I0 << endl
-                  << "\tInoise = " << Inoise << endl
-                  << "\tC1 = " << C1 << endl
-                  << "\tC2 = " << C2 << endl
-                  << "\tC3 = " << C3 << endl
-                  << "}" << endl;)
+   // Happens really often, causes drastic slow down
+//   DEBUG_MID(cout << index << " " << Vm << endl;)
+//   DEBUG_MID(cout << "NEURON[" << index << "] {" << endl
+//                  << "\tVm = " << Vm << endl
+//                  << "\ta = " << a << endl
+//                  << "\tb = " << b << endl
+//                  << "\tc = " << Cconst_[index] << endl
+//                  << "\td = " << Dconst_[index] << endl
+//                  << "\tu = " << u << endl
+//                  << "\tVthresh = " << Vthresh << endl
+//                  << "\tsummationPoint = " << summationPoint << endl
+//                  << "\tI0 = " << I0 << endl
+//                  << "\tInoise = " << Inoise << endl
+//                  << "\tC1 = " << C1 << endl
+//                  << "\tC2 = " << C2 << endl
+//                  << "\tC3 = " << C3 << endl
+//                  << "}" << endl;)
 
    // clear synaptic input for next time step
    summationPoint = 0;
@@ -339,7 +318,6 @@ void AllIZHNeurons::advanceNeuron(const int index) {
  *  Fire the selected Neuron and calculate the result.
  *
  *  @param  index       Index of the Neuron to update.
- *  @param  sim_info    SimulationInfo class to read information from.
  */
 void AllIZHNeurons::fire(const int index) const {
    const BGFLOAT deltaT = Simulator::getInstance().getDeltaT();

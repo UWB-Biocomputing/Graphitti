@@ -34,20 +34,20 @@
  *  Implements the basic weight update for a time difference \f$Delta =
  *  t_{post}-t_{pre}\f$ with presynaptic spike at time \f$t_{pre}\f$ and
  *  postsynaptic spike at time \f$t_{post}\f$. Then, the weight update is given by
- *  \f$dw =  Apos * exp(-Delta/taupos)\f$ for \f$Delta > 0\f$, and \f$dw =  Aneg *
- *  exp(-Delta/tauneg)\f$ for \f$Delta < 0\f$. (set \f$useFroemkeDanSTDP=0\f$ and
- *  \f$mupos=muneg=0\f$ for this basic update rule).
+ *  \f$dw =  Apos_ * exp(-Delta/taupos_)\f$ for \f$Delta > 0\f$, and \f$dw =  Aneg_ *
+ *  exp(-Delta/tauneg_)\f$ for \f$Delta < 0\f$. (set \f$useFroemkeDanSTDP_=0\f$ and
+ *  \f$mupos_=muneg_=0\f$ for this basic update rule).
  *  
  *  It is also possible to use an
- *  extended multiplicative update by changing mupos and muneg. Then \f$dw =
- *  (Wex-W)^{mupos} * Apos * exp(-Delta/taupos)\f$ for \f$Delta > 0\f$ and \f$dw =
- *  W^{mupos} * Aneg * exp(Delta/tauneg)\f$ for \f$Delta < 0\f$. (see Guetig,
+ *  extended multiplicative update by changing mupos_ and muneg_. Then \f$dw =
+ *  (Wex_-W)^{mupos_} * Apos_ * exp(-Delta/taupos_)\f$ for \f$Delta > 0\f$ and \f$dw =
+ *  W^{mupos_} * Aneg_ * exp(Delta/tauneg_)\f$ for \f$Delta < 0\f$. (see Guetig,
  *  Aharonov, Rotter and Sompolinsky (2003). Learning input correlations through
  *  non-linear asymmetric Hebbian plasticity. Journal of Neuroscience 23.
  *  pp.3697-3714.)
  *      
- *  Set \f$useFroemkeDanSTDP=1\f$ (this is the default value) and
- *  use \f$tauspost\f$ and \f$tauspre\f$ for the rule given in Froemke and Dan
+ *  Set \f$useFroemkeDanSTDP_=1\f$ (this is the default value) and
+ *  use \f$tauspost_\f$ and \f$tauspre_\f$ for the rule given in Froemke and Dan
  *  (2002). Spike-timing-dependent synaptic modification induced by natural spike
  *  trains. Nature 416 (3/2002). 
  *
@@ -68,15 +68,15 @@
  *  Independent model:
  *  \f$Delta = t_{post}-t_{pre}\f$ with presynaptic spike at time \f$t_{pre}\f$ and
  *  postsynaptic spike at time \f$t_{post}\f$. Then, the weight update is given by
- *  \f$dw =  Apos * exp(-Delta/taupos)\f$ for \f$Delta > 0\f$, and \f$dw =  Aneg *
- *  exp(-Delta/tauneg)\f$ for \f$Delta < 0\f$. dw is the percentage change in synaptic weight.
- *  (set \f$useFroemkeDanSTDP=false\f$ and \f$mupos=muneg=0\f$ for this basic update rule).
+ *  \f$dw =  Apos_ * exp(-Delta/taupos_)\f$ for \f$Delta > 0\f$, and \f$dw =  Aneg_ *
+ *  exp(-Delta/tauneg_)\f$ for \f$Delta < 0\f$. dw is the percentage change in synaptic weight.
+ *  (set \f$useFroemkeDanSTDP_=false\f$ and \f$mupos_=muneg_=0\f$ for this basic update rule).
  *  
  *  Multiplicative model:
  *  \f$dw = 1.0 + dw * epre * epost\f$ dw is percent change, so adding 1.0 become the scale ratio
  *  \f$W = W * dw\f$ multiply dw (scale ratio) to the current weight to get the new weight
  *  
- *  Note1:This time we don't use useFroemkeDanSTDP (useFroemkeDanSTDP= false) and mupos and muneg (mupos=muneg=0)
+ *  Note1:This time we don't use useFroemkeDanSTDP_ (useFroemkeDanSTDP_= false) and mupos_ and muneg_ (mupos_=muneg_=0)
  *  Note2:Based on the FroemkeDan paper, the STDP learning rule only applies to excititory synapses, so we
  *  implement it to have only excititory neurons do STDP weight adjustment 
  */
@@ -91,7 +91,7 @@ class AllSTDPSynapses : public AllSpikingSynapses {
 public:
    AllSTDPSynapses();
 
-   AllSTDPSynapses(const int num_neurons, const int max_synapses);
+   AllSTDPSynapses(const int numNeurons, const int maxSynapses);
 
    virtual ~AllSTDPSynapses();
 
@@ -99,15 +99,8 @@ public:
 
    /**
     *  Setup the internal structure of the class (allocate memories and initialize them).
-    *
-    *  @param  sim_info  SimulationInfo class to read information from.
     */
    virtual void setupSynapses();
-
-   /**
-    *  Cleanup the class (deallocate memories).
-    */
-   virtual void cleanupSynapses();
 
    /**
     *  Reset time varying state vars and recompute decay.
@@ -126,22 +119,22 @@ public:
    virtual bool allowBackPropagation();
 
    /**
-    *  Prints out all parameters of the neurons to console.
+    *  Prints out all parameters to logging file.
+    *  Registered to OperationManager as Operation::printParameters
     */
    virtual void printParameters() const;
 
    /**
     *  Create a Synapse and connect it to the model.
     *
-    *  @param  synapses    The synapse list to reference.
     *  @param  iSyn        Index of the synapse to set.
-    *  @param  source      Coordinates of the source Neuron.
-    *  @param  dest        Coordinates of the destination Neuron.
-    *  @param  sum_point   Summation point address.
+    *  @param  srcNeuron   Coordinates of the source Neuron.
+    *  @param  destNeuron  Coordinates of the destination Neuron.
+    *  @param  sumPoint    Summation point address.
     *  @param  deltaT      Inner simulation step duration.
     *  @param  type        Type of the Synapse to create.
     */
-   virtual void createSynapse(const BGSIZE iSyn, int source_index, int dest_index, BGFLOAT *sp, const BGFLOAT deltaT,
+   virtual void createSynapse(const BGSIZE iSyn, int srcNeuron, int destNeuron, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               synapseType type);
 
    /**
@@ -153,10 +146,10 @@ protected:
    /**
     *  Setup the internal structure of the class (allocate memories and initialize them).
     *
-    *  @param  num_neurons   Total number of neurons in the network.
-    *  @param  max_synapses  Maximum number of synapses per neuron.
+    *  @param  numNeurons   Total number of neurons in the network.
+    *  @param  maxSynapses  Maximum number of synapses per neuron.
     */
-   virtual void setupSynapses(const int num_neurons, const int max_synapses);
+   virtual void setupSynapses(const int numNeurons, const int maxSynapses);
 
    /**
     *  Sets the data for Synapse to input's data.
@@ -187,64 +180,59 @@ protected:
         *  Allocate GPU memories to store all synapses' states,
         *  and copy them from host to GPU memory.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
-       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, const SimulationInfo *sim_info );
+       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice );
 
        /**
         *  Allocate GPU memories to store all synapses' states,
         *  and copy them from host to GPU memory.
         *
-        *  @param  allSynapsesDevice     Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
+        *  @param  allSynapsesDevice     GPU address of the allSynapses struct on device memory.
+        *  @param  numNeurons            Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, int num_neurons, int maxSynapsesPerNeuron );
+       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron );
 
        /**
         *  Delete GPU memories.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
        virtual void deleteSynapseDeviceStruct( void* allSynapsesDevice );
 
        /**
         *  Copy all synapses' data from host to device.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
-       virtual void copySynapseHostToDevice( void* allSynapsesDevice, const SimulationInfo *sim_info );
+       virtual void copySynapseHostToDevice( void* allSynapsesDevice );
 
        /**
         *  Copy all synapses' data from host to device.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
+        *  @param  allSynapsesDevice     GPU address of the allSynapses struct on device memory.
+        *  @param  numNeurons            Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       virtual void copySynapseHostToDevice( void* allSynapsesDevice, int num_neurons, int maxSynapsesPerNeuron );
+       virtual void copySynapseHostToDevice( void* allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron );
 
        /**
         *  Copy all synapses' data from device to host.
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  sim_info           SimulationInfo to refer from.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
-       virtual void copySynapseDeviceToHost( void* allSynapsesDevice, const SimulationInfo *sim_info );
+       virtual void copySynapseDeviceToHost( void* allSynapsesDevice );
 
        /**
         *  Advance all the Synapses in the simulation.
         *  Update the state of all synapses for a time step.
         *
-        *  @param  allSynapsesDevice      Reference to the allSynapses struct on device memory.
-        *  @param  allNeuronsDevice       Reference to the allNeurons struct on device memory.
-        *  @param  synapseIndexMapDevice  Reference to the SynapseIndexMap on device memory.
-        *  @param  sim_info               SimulationInfo class to read information from.
+        *  @param  allSynapsesDevice      GPU address of the allSynapses struct on device memory.
+        *  @param  allNeuronsDevice       GPU address of the allNeurons struct on device memory.
+        *  @param  synapseIndexMapDevice  GPU address of the SynapseIndexMap on device memory.
         */
-       virtual void advanceSynapses(void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice, const SimulationInfo *sim_info);
+       virtual void advanceSynapses( void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice );
 
        /**
         *  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
@@ -261,9 +249,9 @@ protected:
        /**
         *  Prints GPU SynapsesProps data.
         *
-        *  @param  allSynapsesDeviceProps   Reference to the corresponding SynapsesDeviceProperties struct on device memory.
+        *  @param  allSynapsesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
         */
-       virtual void printGPUSynapsesProps(void* allSynapsesDeviceProps) const;
+       virtual void printGPUSynapsesProps( void* allSynapsesDeviceProps ) const;
 
    protected:
        /**
@@ -271,39 +259,40 @@ protected:
         *  and copy them from host to GPU memory.
         *  (Helper function of allocSynapseDeviceStruct)
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
+        *  @param  allSynapsesDevice     GPU address of the allSynapses struct on device memory.
+        *  @param  numNeurons            Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       void allocDeviceStruct( AllSTDPSynapsesDeviceProperties &allSynapses, int num_neurons, int maxSynapsesPerNeuron );
+       void allocDeviceStruct( AllSTDPSynapsesDeviceProperties &allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron );
 
        /**
         *  Delete GPU memories.
         *  (Helper function of deleteSynapseDeviceStruct)
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
+        *  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
         */
-       void deleteDeviceStruct( AllSTDPSynapsesDeviceProperties& allSynapses );
+       void deleteDeviceStruct( AllSTDPSynapsesDeviceProperties& allSynapsesDevice );
 
        /**
         *  Copy all synapses' data from host to device.
         *  (Helper function of copySynapseHostToDevice)
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
-        *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
+        *  @param  allSynapsesDevice       GPU address of the allSynapses struct on device memory.
+        *  @param  allSynapsesDeviceProps  GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
+        *  @param  numNeurons              Number of neurons.
+        *  @param  maxSynapsesPerNeuron    Maximum number of synapses per neuron.
         */
-       void copyHostToDevice( void* allSynapsesDevice, AllSTDPSynapsesDeviceProperties& allSynapses, int num_neurons, int maxSynapsesPerNeuron );
+       void copyHostToDevice( void* allSynapsesDevice, AllSTDPSynapsesDeviceProperties& allSynapsesDeviceProps, int numNeurons, int maxSynapsesPerNeuron );
 
        /**
         *  Copy all synapses' data from device to host.
         *  (Helper function of copySynapseDeviceToHost)
         *
-        *  @param  allSynapsesDevice  Reference to the allSynapses struct on device memory.
-        *  @param  num_neurons           Number of neurons.
+        *  @param  allSynapsesDevice     GPU address of the allSynapses struct on device memory.
+        *  @param  numNeurons            Number of neurons.
         *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
         */
-       void copyDeviceToHost( AllSTDPSynapsesDeviceProperties& allSynapses, const SimulationInfo *sim_info );
+       void copyDeviceToHost( AllSTDPSynapsesDeviceProperties& allSynapsesDevice );
 #else // !defined(USE_GPU)
 public:
    /**
@@ -311,7 +300,6 @@ public:
     *  Update the state of synapse for a time step
     *
     *  @param  iSyn      Index of the Synapse to connect to.
-    *  @param  sim_info  SimulationInfo class to read information from.
     *  @param  neurons   The Neuron list to search from.
     */
    virtual void advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons);
@@ -390,7 +378,7 @@ public:
    BGFLOAT *tauneg_;
 
    /**
-    *  No learning is performed if \f$|Delta| = |t_{post}-t_{pre}| < STDPgap\f$
+    *  No learning is performed if \f$|Delta| = |t_{post}-t_{pre}| < STDPgap_\f$
     */
    BGFLOAT *STDPgap_;
 
@@ -411,7 +399,7 @@ public:
 
    /**
     *  Extended multiplicative positive update:
-    *  \f$dw = (Wex-W)^{mupos} * Apos * exp(-Delta/taupos)\f$.
+    *  \f$dw = (Wex_-W)^{mupos_} * Apos_ * exp(-Delta/taupos_)\f$.
     *  Set to 0 for basic update. See Guetig, Aharonov, Rotter and Sompolinsky (2003).
     *  Learning input correlations through non-linear asymmetric Hebbian plasticity.
     *  Journal of Neuroscience 23. pp.3697-3714.
@@ -420,7 +408,7 @@ public:
 
    /**
     *  Extended multiplicative negative update:
-    *  \f$dw = W^{mupos} * Aneg * exp(Delta/tauneg)\f$. Set to 0 for basic update.
+    *  \f$dw = W^{mupos_} * Aneg_ * exp(Delta/tauneg_)\f$. Set to 0 for basic update.
     */
    BGFLOAT *muneg_;
 
@@ -477,7 +465,7 @@ struct AllSTDPSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperti
         BGFLOAT *tauneg_;
 
         /**
-         *  No learning is performed if \f$|Delta| = |t_{post}-t_{pre}| < STDPgap\f$
+         *  No learning is performed if \f$|Delta| = |t_{post}-t_{pre}| < STDPgap_\f$
          */
         BGFLOAT *STDPgap_;
 
@@ -498,7 +486,7 @@ struct AllSTDPSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperti
 
         /**
          *  Extended multiplicative positive update: 
-         *  \f$dw = (Wex-W)^{mupos} * Apos * exp(-Delta/taupos)\f$. 
+         *  \f$dw = (Wex_-W)^{mupos_} * Apos_ * exp(-Delta/taupos_)\f$. 
          *  Set to 0 for basic update. See Guetig, Aharonov, Rotter and Sompolinsky (2003). 
          *  Learning input correlations through non-linear asymmetric Hebbian plasticity. 
          *  Journal of Neuroscience 23. pp.3697-3714.
@@ -507,7 +495,7 @@ struct AllSTDPSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperti
 
         /**
          *  Extended multiplicative negative update: 
-         *  \f$dw = W^{mupos} * Aneg * exp(Delta/tauneg)\f$. Set to 0 for basic update.
+         *  \f$dw = W^{mupos_} * Aneg_ * exp(Delta/tauneg_)\f$. Set to 0 for basic update.
          */
         BGFLOAT *muneg_;
   
