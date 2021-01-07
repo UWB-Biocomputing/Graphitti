@@ -155,16 +155,16 @@ public:
     *  Note: Platform Dependent.
     *
     *  @param  numNeurons          number of neurons to update.
-    *  @param  neurons             the AllNeurons object.
-    *  @param  synapses            the AllSynapses object.
-    *  @param  allNeuronsDevice_  Reference to the allNeurons struct in device memory.
-    *  @param  allSynapseDevice_ Reference to the allSynapses struct in device memory.
-    *  @param  layout              the Layout object.
+    *  @param  neurons             The AllNeurons object.
+    *  @param  synapses            The AllSynapses object.
+    *  @param  allNeuronsDevice    GPU address of the allNeurons struct in device memory.
+    *  @param  allSynapsesDevice   GPU address of the allSynapses struct in device memory.
+    *  @param  layout              The Layout object.
     */
    virtual void updateSynapsesWeights(const int numNeurons,
          IAllNeurons &neurons, IAllSynapses &synapses,
-         AllSpikingNeuronsDeviceProperties* allNeuronsDevice_,
-         AllSpikingSynapsesDeviceProperties* allSynapseDevice_,
+         AllSpikingNeuronsDeviceProperties* allNeuronsDevice,
+         AllSpikingSynapsesDeviceProperties* allSynapsesDevice,
          Layout *layout);
 #else
    /**
@@ -173,10 +173,10 @@ public:
     *  synaptic strengths from the weight matrix.
     *  Note: Platform Dependent.
     *
-    *  @param  numNeurons Number of neurons to update.
-    *  @param  ineurons    the AllNeurons object.
-    *  @param  isynapses   the AllSynapses object.
-    *  @param  layout      the Layout object.
+    *  @param  numNeurons  Number of neurons to update.
+    *  @param  ineurons    The AllNeurons object.
+    *  @param  isynapses   The AllSynapses object.
+    *  @param  layout      The Layout object.
     * 
     */
    virtual void
@@ -197,7 +197,7 @@ private:
    /**
     *  Update the distance between frontiers of Neurons.
     *
-    *  @param  numNeurons Number of neurons to update.
+    *  @param  numNeurons  Number of neurons to update.
     *  @param  layout      Layout information of the neunal network.
     */
    void updateFrontiers(const int numNeurons, Layout *layout);
@@ -205,7 +205,7 @@ private:
    /**
     *  Update the areas of overlap in between Neurons.
     *
-    *  @param  numNeurons Number of Neurons to update.
+    *  @param  numNeurons  Number of Neurons to update.
     *  @param  layout      Layout information of the neunal network.
     */
    void updateOverlap(BGFLOAT numNeurons, Layout *layout);

@@ -33,16 +33,16 @@ AllSynapses::AllSynapses(const int numNeurons, const int maxSynapses) {
 AllSynapses::~AllSynapses() {
    BGSIZE maxTotalSynapses = maxSynapsesPerNeuron_ * countNeurons_;
 
-//   if (maxTotalSynapses != 0) {
-//      delete[] destNeuronIndex_;
-//      delete[] W_;
-//      delete[] summationPoint_;
-//      delete[] sourceNeuronIndex_;
-//      delete[] psr_;
-//      delete[] type_;
-//      delete[] inUse_;
-//      delete[] synapseCounts_;
-//   }
+  if (maxTotalSynapses != 0) {
+     delete[] destNeuronIndex_;
+     delete[] W_;
+     delete[] summationPoint_;
+     delete[] sourceNeuronIndex_;
+     delete[] psr_;
+     delete[] type_;
+     delete[] inUse_;
+     delete[] synapseCounts_;
+  }
 
    destNeuronIndex_ = NULL;
    W_ = NULL;

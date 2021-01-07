@@ -122,10 +122,10 @@ public:
         *  Notify outgoing synapses if neuron has fired.
         *
         *  @param  synapses               Reference to the allSynapses struct on host memory.
-        *  @param  allNeuronsDevice       Reference to the allNeurons struct on device memory.
-        *  @param  allSynapsesDevice      Reference to the allSynapses struct on device memory.
+        *  @param  allNeuronsDevice       GPU address of the allNeurons struct on device memory.
+        *  @param  allSynapsesDevice      GPU address of the allSynapses struct on device memory.
         *  @param  randNoise              Reference to the random noise array.
-        *  @param  synapseIndexMapDevice  Reference to the SynapseIndexMap on device memory.
+        *  @param  synapseIndexMapDevice  GPU address of the SynapseIndexMap on device memory.
         */
        virtual void advanceNeurons(IAllSynapses &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, SynapseIndexMap* synapseIndexMapDevice);
 
