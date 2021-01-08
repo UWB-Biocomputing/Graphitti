@@ -50,6 +50,8 @@ void AllDynamicSTDPSynapses::setupSynapses() {
 void AllDynamicSTDPSynapses::setupSynapses(const int numNeurons, const int maxSynapses) {
     AllSTDPSynapses::setupSynapses(numNeurons, maxSynapses);
 
+    LOG4CPLUS_DEBUG(synapseLogger_, "Checking synapse file: " );
+
     BGSIZE maxTotalSynapses = maxSynapses * numNeurons;
 
     if (maxTotalSynapses != 0) {

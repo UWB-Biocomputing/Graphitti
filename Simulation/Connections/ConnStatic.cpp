@@ -17,10 +17,16 @@ ConnStatic::ConnStatic() {
     threshConnsRadius_ = 4;
    connsPerNeuron_ = 2;
    rewiringProbability_ = 0.75;
+   WSTDP_=NULL;
+   //excWeight_[0]=0;
+   //excWeight_[1]=2.5e-7;
+   //inhWeight_[0]=0;
+   //inhWeight_[0]=2.5e-7;;
 }
 
 ConnStatic::~ConnStatic() {
-   
+   if (WSTDP_ != NULL) delete WSTDP_;
+   WSTDP_=NULL;
 }
 
 /*
@@ -36,8 +42,10 @@ ConnStatic::~ConnStatic() {
 void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses) {
    int numNeurons = Simulator::getInstance().getTotalNeurons();
    vector<DistDestNeuron> distDestNeurons[numNeurons];
-
    int added = 0;
+   BGSIZE maxTotalSynapses =  Simulator::getInstance().getMaxSynapsesPerNeuron() * Simulator::getInstance().getTotalNeurons();
+   WSTDP_ = new BGFLOAT[maxTotalSynapses];
+   
 
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
 
@@ -69,6 +77,7 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
          //                                        << distDestNeurons[srcNeuron][i].dist);
 
          BGSIZE iSyn;
+         //ADD ISYN
          synapses->addSynapse(iSyn, type, srcNeuron, destNeuron, sumPoint, Simulator::getInstance().getDeltaT());
          added++;
 
@@ -79,8 +88,23 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
          } else {
             dynamic_cast<AllSynapses *>(synapses)->W_[iSyn] = rng.inRange(inhWeight_[0], inhWeight_[1]);
          }
+
+         
       }
    }
+
+
+string weight_str="";
+   for(int i=0; i<maxTotalSynapses; i++)
+   {
+      WSTDP_[i]=dynamic_cast<AllSynapses *>(synapses)->W_[i];
+      if(WSTDP_[i]!=0)
+        // LOG4CPLUS_DEBUG(synapseLogger_,i << WSTDP_[i]);
+         weight_str+=to_string(WSTDP_[i])+" ";
+   }
+   LOG4CPLUS_DEBUG(synapseLogger_, " "<<weight_str);
+   
+
 
    int nRewiring = added * rewiringProbability_;
 

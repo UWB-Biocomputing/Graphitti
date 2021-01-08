@@ -76,8 +76,21 @@ public:
     *  Registered to OperationManager as Operation::printParameters
     */
    virtual void printParameters() const;
+  /**
+    *  The location of the synapse.
+    */
+   int *sourceNeuronIndexSTDP_;
 
-private:
+   /**
+    *  The coordinates of the summation point.
+    */
+   int *destNeuronIndexSTDP_;
+
+   /**
+    *   The weight (scaling factor, strength, maximal amplitude) of the synapse.
+    */
+   BGFLOAT *WSTDP_;
+
    //! number of maximum connections per neurons
    int connsPerNeuron_;
 
@@ -94,7 +107,7 @@ private:
    BGFLOAT inhWeight_[2];
 
    struct DistDestNeuron {
-      BGFLOAT dist;     // destance to the destination neuron
+      BGFLOAT dist;     // distance to the destination neuron
       int destNeuron;  // index of the destination neuron
 
       bool operator<(const DistDestNeuron &other) const {

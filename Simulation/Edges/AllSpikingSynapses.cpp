@@ -1,5 +1,7 @@
 #include "AllSpikingSynapses.h"
 #include <iomanip>
+#include "ParameterManager.h"
+#include "OperationManager.h"
 
 AllSpikingSynapses::AllSpikingSynapses() : AllSynapses() {
    decay_ = NULL;
@@ -8,6 +10,14 @@ AllSpikingSynapses::AllSpikingSynapses() : AllSynapses() {
    delayIndex_ = NULL;
    delayQueueLength_ = NULL;
    tau_ = NULL;
+   tau_II_=0;
+   tau_IE_=0;
+   tau_EI_=0;
+   tau_EE_=0;
+   delay_II_=0;
+   delay_IE_=0;
+   delay_EI_=0;
+   delay_EE_=0;
 }
 
 AllSpikingSynapses::AllSpikingSynapses(const int numNeurons, const int maxSynapses) {
@@ -93,12 +103,35 @@ void AllSpikingSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
    assert(updateDecay(iSyn, deltaT));
 }
 
-/**
- *  Prints out all parameters to logging file.
- *  Registered to OperationManager as Operation::printParameters
+void AllSpikingSynapses::loadParameters() {
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/ii/text()", tau_II_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/ie/text()", tau_IE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/ei/text()", tau_EI_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/ee/text()", tau_EE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/ii/text()", delay_II_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/ie/text()", delay_IE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/ei/text()", delay_EI_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/ee/text()", delay_EE_);
+}
+
+/*
+ *  Prints out all parameters of the neurons to ostream.
+ * 
+ *  @param  output  ostream to send output to.
  */
 void AllSpikingSynapses::printParameters() const {
-   AllSynapses::printParameters();
+
+    AllSynapses::printParameters();
+
+   LOG4CPLUS_DEBUG(fileLogger_, "\n\t---AllSpikingSynapses Parameters---" << endl
+                                          << "\tEdges type: AllSpikingSynapses" << endl << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\tTau values: ["
+          << " II: " << tau_II_ << ", " << " IE: " << tau_IE_ << "," << "EI : " << tau_EI_<< "," << " EE: " << tau_EE_ << "]"
+          << endl);
+
+    LOG4CPLUS_DEBUG(fileLogger_,"\tDelay values: ["
+          << " II: "<< delay_II_ << ", " << " IE: "<< delay_IE_ << "," << "EI :" << delay_EI_<< "," << " EE: "<< delay_EE_ << "]"
+          << endl);
 }
 
 /*
@@ -119,27 +152,28 @@ void AllSpikingSynapses::createSynapse(const BGSIZE iSyn, int srcNeuron, int des
    summationPoint_[iSyn] = sumPoint;
    destNeuronIndex_[iSyn] = destNeuron;
    sourceNeuronIndex_[iSyn] = srcNeuron;
+   //Setting weight value: CHECK OR CHANGE
    W_[iSyn] = synSign(type) * 10.0e-9;
    type_[iSyn] = type;
    tau_[iSyn] = DEFAULT_tau;
 
    BGFLOAT tau;
-   switch (type) {
+    switch (type) {
       case II:
-         tau = 6e-3;
-         delay = 0.8e-3;
+         tau = tau_II_;
+         delay = delay_II_;
          break;
       case IE:
-         tau = 6e-3;
-         delay = 0.8e-3;
+         tau = tau_IE_;
+         delay = delay_IE_;
          break;
       case EI:
-         tau = 3e-3;
-         delay = 0.8e-3;
+         tau = tau_EI_;
+         delay = delay_EI_;
          break;
       case EE:
-         tau = 3e-3;
-         delay = 1.5e-3;
+         tau = tau_EE_;
+         delay = delay_EE_;
          break;
       default:
          assert(false);

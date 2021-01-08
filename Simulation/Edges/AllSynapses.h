@@ -185,6 +185,7 @@ protected:
 
    /// Loggers used to print to using log4cplus logging macros, prints to Results/Debug/logging.txt
    log4cplus::Logger fileLogger_;
+   log4cplus::Logger synapseLogger_;
 
 #if !defined(USE_GPU)
 public:

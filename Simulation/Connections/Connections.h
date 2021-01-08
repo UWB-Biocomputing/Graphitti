@@ -152,5 +152,6 @@ protected:
    shared_ptr<SynapseIndexMap> synapseIndexMap_;
 
    log4cplus::Logger fileLogger_;
+   log4cplus::Logger synapseLogger_;
 };
 

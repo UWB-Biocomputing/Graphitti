@@ -24,6 +24,7 @@ AllSynapses::AllSynapses() :
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
 
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   synapseLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("synapse"));
 }
 
 AllSynapses::AllSynapses(const int numNeurons, const int maxSynapses) {

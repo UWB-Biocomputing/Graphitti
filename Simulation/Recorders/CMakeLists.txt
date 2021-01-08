@@ -7,10 +7,13 @@ file(GLOB Recorders
         IRecorder.h
         XmlRecorder.h
         XmlRecorder.cpp
+        XmlSTDPRecorder.h
+        XmlSTDPRecorder.cpp
         XmlGrowthRecorder.h
         XmlGrowthRecorder.cpp
         RecorderFactory.h
-        RecorderFactory.cpp)
+        RecorderFactory.cpp
+        )
         
 include_directories(${HDF5_INCLUDE_DIRS})
 # Create a library from the list of files gathered

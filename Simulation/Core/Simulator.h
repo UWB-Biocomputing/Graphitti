@@ -175,7 +175,8 @@ private:
    shared_ptr<Model> model_;  /// Smart pointer to model class (Model is an interface class)
 
    log4cplus::Logger consoleLogger_; /// Logger for printing to the console as well as the logging file
-   log4cplus::Logger fileLogger_; /// Logger for printing to the logging file
+   log4cplus::Logger fileLogger_;
+   log4cplus::Logger synapseLogger_; /// Logger for printing to the logging file
 
 #ifdef PERFORMANCE_METRICS
    Timer timer;   /// Timer for measuring performance of an epoch.

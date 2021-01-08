@@ -67,6 +67,7 @@ int main(int argc, char *argv[]) {
    // Clear logging files at the start of each simulation
    fstream("Output/Debug/logging.txt", ios::out | ios::trunc);
    fstream("Output/Debug/neurons.txt", ios::out | ios::trunc);
+   fstream("Output/Debug/synapses.txt", ios::out | ios::trunc);
 
    // Initialize log4cplus and set properties based on configure file
    ::log4cplus::initialize();
@@ -96,7 +97,7 @@ int main(int argc, char *argv[]) {
    simulator.loadParameters();
 
    // Instantiate simulator objects.
-   LOG4CPLUS_TRACE(consoleLogger, "Insantiating Simulator objects specified in configuration file");
+   LOG4CPLUS_TRACE(consoleLogger, "Instantiating Simulator objects specified in configuration file");
    if (!simulator.instantiateSimulatorObjects()) {
       LOG4CPLUS_FATAL(consoleLogger, "ERROR: Unable to instantiate all simulator classes, check configuration file: "
                                      + simulator.getConfigFileName()

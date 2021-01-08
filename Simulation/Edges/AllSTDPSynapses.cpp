@@ -181,6 +181,7 @@ void AllSTDPSynapses::createSynapse(const BGSIZE iSyn, int srcNeuron, int destNe
 void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
    // If the synapse is inhibitory or its weight is zero, update synapse state using AllSpikingSynapses::advanceSynapse method
   //LOG4CPLUS_FATAL(fileLogger_, "iSyn : " << iSyn );
+  
    BGFLOAT &W = this->W_[iSyn];
    if (W <= 0.0) {
       AllSpikingSynapses::advanceSynapse(iSyn, neurons);
@@ -250,10 +251,11 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
                    << "\tg_simulationStep: " << g_simulationStep << endl
                    << "\tdelta: " << delta << endl << endl);
 
+
             if (delta <= -3.0 * tauneg_)
                break;
           
-            stdpLearning(iSyn, delta, epost, epre);
+            stdpLearning(iSyn, delta, epost, epre, idxPre, idxPost);
             --offIndex;
          }
  
@@ -302,10 +304,11 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
             if (delta >= 3.0 * taupos_)
                break;
            
-            stdpLearning(iSyn, delta, epost, epre);
+            stdpLearning(iSyn, delta, epost, epre, idxPre, idxPost);
             --offIndex;
          }
       }
+
    }
 
    // decay the post spike response
@@ -331,7 +334,7 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
  *  @param  epost       Params for the rule given in Froemke and Dan (2002).
  *  @param  epre        Params for the rule given in Froemke and Dan (2002).
  */
-void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost, double epre) {
+void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost, double epre, int srcN, int destN ) {
     
    BGFLOAT STDPgap_ = this->STDPgap_[iSyn];
    BGFLOAT muneg_ = this->muneg_[iSyn];
@@ -344,6 +347,7 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost
    BGFLOAT &W = this->W_[iSyn];
    synapseType type = this->type_[iSyn];
    BGFLOAT dw;
+   BGFLOAT oldW=W;
    BGFLOAT modDelta;
     if(delta<0)
       modDelta=delta*-1;
@@ -391,7 +395,21 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost
           << "\tepost: " << epost << endl
           << "\tdw: " << dw << endl
           << "\tW: " << W << endl << endl);
+
+
+            LOG4CPLUS_DEBUG(synapseLogger_,
+                   iSyn 
+                   << ";" << srcN 
+                   << ";" << destN
+                   << ";" << delta 
+                   <<";"<<oldW
+                   << ";" << W
+                   <<","<<endl);
+
+      
 }
+
+
 
 /*
  *  Checks if there is an input spike in the queue (for back propagation).

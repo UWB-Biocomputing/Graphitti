@@ -330,7 +330,7 @@ private:
     *  @param  epost       Params for the rule given in Froemke and Dan (2002).
     *  @param  epre        Params for the rule given in Froemke and Dan (2002).
     */
-   void stdpLearning(const BGSIZE iSyn, double delta, double epost, double epre);
+   void stdpLearning(const BGSIZE iSyn, double delta, double epost, double epre, int srcN, int destN);
 
 #endif
 public:

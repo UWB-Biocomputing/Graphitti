@@ -69,7 +69,8 @@ public:
     *  @param  deltaT   Inner simulation step duration
     */
    virtual void resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT);
-
+   /// Load member variables from configuration file. Registered to OperationManager as Operation::op::loadParameters
+   virtual void loadParameters();
    /**
     *  Prints out all parameters to logging file.
     *  Registered to OperationManager as Operation::printParameters
@@ -334,6 +335,15 @@ public:
     *  The synaptic time constant \f$\tau\f$ [units=sec; range=(0,100)].
     */
    BGFLOAT *tau_;
+
+      BGFLOAT tau_II_;
+   BGFLOAT tau_IE_;
+   BGFLOAT tau_EI_;
+   BGFLOAT tau_EE_;
+   BGFLOAT delay_II_;
+   BGFLOAT delay_IE_;
+   BGFLOAT delay_EI_;
+   BGFLOAT delay_EE_;
 
 #define BYTES_OF_DELAYQUEUE         ( sizeof(uint32_t) / sizeof(uint8_t) )
 #define LENGTH_OF_DELAYQUEUE        ( BYTES_OF_DELAYQUEUE * 8 )
