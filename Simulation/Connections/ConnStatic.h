@@ -92,7 +92,7 @@ public:
    BGFLOAT *WSTDP_;
 
    //! number of maximum connections per neurons
-   int connsPerNeuron_;
+   BGFLOAT connsPerNeuron_;
 
    //! Connection radius threshold
    BGFLOAT threshConnsRadius_;

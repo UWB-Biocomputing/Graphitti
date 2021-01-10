@@ -4,7 +4,7 @@
 #include "AllNeurons.h"
 #include "AllSynapses.h"
 #include "OperationManager.h"
-
+#include "ParameterManager.h"
 #include "XmlRecorder.h"
 
 #ifdef USE_HDF5
@@ -118,7 +118,13 @@ string weight_str="";
  * Registered to OperationManager as Operations::op::loadParameters
  */
 void ConnStatic::loadParameters() {
-   // ConnStatic doesn't have any parameters to load from the configuration file.
+   ParameterManager::getInstance().getBGFloatByXpath("//threshConnsRadius/text()", threshConnsRadius_);
+   ParameterManager::getInstance().getBGFloatByXpath("//connsPerNeuron/text()", connsPerNeuron_);
+   ParameterManager::getInstance().getBGFloatByXpath("//rewiringProbability/text()", rewiringProbability_);
+   //ParameterManager::getInstance().getBGFloatByXpath("//excWeight/min/text()", excWeight_[0]);
+   //ParameterManager::getInstance().getBGFloatByXpath("//excWeight/max/text()", excWeight_[1]);
+   //ParameterManager::getInstance().getBGFloatByXpath("//inhWeight/min/text()", inhWeight_[0]);
+   //ParameterManager::getInstance().getBGFloatByXpath("//inhWeight/max/text()", inhWeight_[1]);
 }
 
 
@@ -131,6 +137,11 @@ void ConnStatic::printParameters() const {
     << "\tConnections Type: ConnStatic" << endl
     << "\tConnection radius threshold: " << threshConnsRadius_ << endl
     << "\tConnections per neuron: " << connsPerNeuron_ << endl
-    << "\tRewiring probability: " << rewiringProbability_ << endl << endl);
+    << "\tRewiring probability: " << rewiringProbability_ << endl 
+    << "\tExhitatory min weight: " << excWeight_[0] << endl 
+    << "\tExhitatory max weight: " << excWeight_[1] << endl 
+    << "\tInhibitory min weight: " << inhWeight_[0] << endl 
+    << "\tInhibitory max weight: " << inhWeight_[1] << endl 
+    << endl);
 }
 
