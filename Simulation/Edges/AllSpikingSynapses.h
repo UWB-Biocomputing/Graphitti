@@ -98,10 +98,7 @@ public:
     */
    virtual bool allowBackPropagation();
 
-   /**
-    *  Prints SynapsesProps data to console.
-    */
-   virtual void printSynapsesProps() const;
+
 
 protected:
    /**
@@ -127,22 +124,6 @@ protected:
     *  @return true is success.
     */
    bool updateDecay(const BGSIZE iSyn, const BGFLOAT deltaT);
-
-   /**
-    *  Sets the data for Synapse to input's data.
-    *
-    *  @param  input  istream to read from.
-    *  @param  iSyn   Index of the synapse to set.
-    */
-   virtual void readSynapse(istream &input, const BGSIZE iSyn);
-
-   /**
-    *  Write the synapse data to the stream.
-    *
-    *  @param  output  stream to print out to.
-    *  @param  iSyn    Index of the synapse to print out.
-    */
-   virtual void writeSynapse(ostream &output, const BGSIZE iSyn) const;
 
 #if defined(USE_GPU)
    public:
@@ -336,7 +317,7 @@ public:
     */
    BGFLOAT *tau_;
 
-      BGFLOAT tau_II_;
+   BGFLOAT tau_II_;
    BGFLOAT tau_IE_;
    BGFLOAT tau_EI_;
    BGFLOAT tau_EE_;

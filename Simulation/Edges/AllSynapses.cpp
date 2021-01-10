@@ -130,46 +130,6 @@ void AllSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
    psr_[iSyn] = 0.0;
 }
 
-/*
- *  Sets the data for Synapse to input's data.
- *
- *  @param  input  istream to read from.
- *  @param  iSyn   Index of the synapse to set.
- */
-void AllSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
-   int synapse_type(0);
-
-   // input.ignore() so input skips over end-of-line characters.
-   input >> sourceNeuronIndex_[iSyn];
-   input.ignore();
-   input >> destNeuronIndex_[iSyn];
-   input.ignore();
-   input >> W_[iSyn];
-   input.ignore();
-   input >> psr_[iSyn];
-   input.ignore();
-   input >> synapse_type;
-   input.ignore();
-   input >> inUse_[iSyn];
-   input.ignore();
-
-   type_[iSyn] = synapseOrdinalToType(synapse_type);
-}
-
-/*
- *  Write the synapse data to the stream.
- *
- *  @param  output  stream to print out to.
- *  @param  iSyn    Index of the synapse to print out.
- */
-void AllSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
-   output << sourceNeuronIndex_[iSyn] << ends;
-   output << destNeuronIndex_[iSyn] << ends;
-   output << W_[iSyn] << ends;
-   output << psr_[iSyn] << ends;
-   output << type_[iSyn] << ends;
-   output << inUse_[iSyn] << ends;
-}
 
 /*
  *  Create a synapse index map.
@@ -350,38 +310,3 @@ int AllSynapses::synSign(const synapseType type) {
 
    return 0;
 }
-
-/*
- *  Prints SynapsesProps data to console.
- */
-void AllSynapses::printSynapsesProps() const {
-   cout << "This is SynapsesProps data:" << endl;
-   for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
-      if (W_[i] != 0.0) {
-         cout << "W[" << i << "] = " << W_[i];
-         cout << " sourNeuron: " << sourceNeuronIndex_[i];
-         cout << " desNeuron: " << destNeuronIndex_[i];
-         cout << " type: " << type_[i];
-         cout << " psr: " << psr_[i];
-         cout << " in_use:" << inUse_[i];
-         if (summationPoint_[i] != nullptr) {
-            cout << " summationPoint: is created!" << endl;
-         } else {
-            cout << " summationPoint: is EMPTY!!!!!" << endl;
-         }
-      }
-   }
-
-   for (int i = 0; i < countNeurons_; i++) {
-      cout << "synapse_counts:" << "neuron[" << i << "]" << synapseCounts_[i] << endl;
-   }
-
-   cout << "totalSynapseCount:" << totalSynapseCount_ << endl;
-   cout << "maxSynapsesPerNeuron:" << maxSynapsesPerNeuron_ << endl;
-   cout << "count_neurons:" << countNeurons_ << endl;
-}
-
-
-
-
-
