@@ -125,11 +125,11 @@ void AllSpikingSynapses::printParameters() const {
 
    LOG4CPLUS_DEBUG(fileLogger_, "\n\t---AllSpikingSynapses Parameters---" << endl
                                           << "\tEdges type: AllSpikingSynapses" << endl << endl);
-   LOG4CPLUS_DEBUG(fileLogger_, "\tTau values: ["
+   LOG4CPLUS_DEBUG(fileLogger_, "\n\tTau values: ["
           << " II: " << tau_II_ << ", " << " IE: " << tau_IE_ << "," << "EI : " << tau_EI_<< "," << " EE: " << tau_EE_ << "]"
           << endl);
 
-    LOG4CPLUS_DEBUG(fileLogger_,"\tDelay values: ["
+    LOG4CPLUS_DEBUG(fileLogger_,"\n\tDelay values: ["
           << " II: "<< delay_II_ << ", " << " IE: "<< delay_IE_ << "," << "EI :" << delay_EI_<< "," << " EE: "<< delay_EE_ << "]"
           << endl);
 }
