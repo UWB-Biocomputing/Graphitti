@@ -2,6 +2,8 @@
 #include "AllSTDPSynapses.h"
 #include "IAllNeurons.h"
 #include "AllSpikingNeurons.h"
+#include "ParameterManager.h"
+#include "OperationManager.h"
 
 AllSTDPSynapses::AllSTDPSynapses() : AllSpikingSynapses() {
    totalDelayPost_ = NULL;
@@ -19,6 +21,21 @@ AllSTDPSynapses::AllSTDPSynapses() : AllSpikingSynapses() {
    mupos_ = NULL;
    muneg_ = NULL;
    useFroemkeDanSTDP_ = NULL;
+    STDPgap=0;
+   tauspost_I_=0;
+   tauspre_I_=0;
+   tauspost_E_=0;
+   tauspre_E_=0;
+   taupos_I_=0;
+   tauneg_I_=0;
+   taupos_E_=0;
+   tauneg_E_=0;
+   Wex_I_=0;
+   Wex_E_=0;
+   Aneg_I_ = 0;
+   Aneg_E_ = 0;
+   Apos_I_ = 0;
+   Apos_E_ = 0;
 }
 
 AllSTDPSynapses::AllSTDPSynapses(const int numNeurons, const int maxSynapses) :
@@ -122,13 +139,37 @@ void AllSTDPSynapses::initSpikeQueue(const BGSIZE iSyn) {
 }
 
 /**
+ *  Loads out all parameters from the config file.
+ *  Registered to OperationManager as Operation::loadParameters
+ */
+void AllSTDPSynapses::loadParameters() {
+   AllSpikingSynapses::loadParameters();
+   ParameterManager::getInstance().getBGFloatByXpath("//STDPgap/text()", STDPgap);
+   ParameterManager::getInstance().getBGFloatByXpath("//tauspost/i/text()", tauspost_I_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tauspost/e/text()", tauspost_E_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tauspre/i/text()", tauspre_I_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tauspre/e/text()", tauspre_E_);
+   ParameterManager::getInstance().getBGFloatByXpath("//taupos/i/text()", taupos_I_);
+   ParameterManager::getInstance().getBGFloatByXpath("//taupos/e/text()", taupos_E_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tauneg/i/text()", tauneg_I_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tauneg/e/text()", tauneg_E_);
+   ParameterManager::getInstance().getBGFloatByXpath("//Wex/i/text()", Wex_I_);
+   ParameterManager::getInstance().getBGFloatByXpath("//Wex/e/text()", Wex_E_);
+   ParameterManager::getInstance().getBGFloatByXpath("//Aneg/i/text()", Aneg_I_);
+   ParameterManager::getInstance().getBGFloatByXpath("//Aneg/e/text()", Aneg_E_);
+   ParameterManager::getInstance().getBGFloatByXpath("//Apos/i/text()", Apos_I_);
+   ParameterManager::getInstance().getBGFloatByXpath("//Apos/e/text()", Apos_E_);
+}
+/**
  *  Prints out all parameters to logging file.
  *  Registered to OperationManager as Operation::printParameters
  */
 void AllSTDPSynapses::printParameters() const {
    AllSpikingSynapses::printParameters();
+   cout<< "\tTauspost values: ["
+          << " I: " << tauspost_I_ << ", " << " E: " << tauspre_E_ 
+          << endl;
 }
-
 
 /*
  *  Create a Synapse and connect it to the model.

@@ -119,6 +119,10 @@ public:
    virtual bool allowBackPropagation();
 
    /**
+    *  Load member variables from configuration file. Registered to OperationManager as Operation::op::loadParameters
+   */
+  virtual void loadParameters();
+   /**
     *  Prints out all parameters to logging file.
     *  Registered to OperationManager as Operation::printParameters
     */
@@ -416,6 +420,23 @@ public:
     *  True if use the rule given in Froemke and Dan (2002).
     */
    bool *useFroemkeDanSTDP_;
+
+
+   BGFLOAT STDPgap;
+   BGFLOAT tauspost_I_;
+   BGFLOAT tauspre_I_;
+   BGFLOAT tauspost_E_;
+   BGFLOAT tauspre_E_;
+   BGFLOAT taupos_I_;
+   BGFLOAT tauneg_I_;
+   BGFLOAT taupos_E_;
+   BGFLOAT tauneg_E_;
+   BGFLOAT Wex_I_;
+   BGFLOAT Wex_E_;
+   BGFLOAT Aneg_I_;
+   BGFLOAT Aneg_E_;
+   BGFLOAT Apos_I_;
+   BGFLOAT Apos_E_;
 };
 
 #if defined(USE_GPU)
