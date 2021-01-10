@@ -20,8 +20,7 @@ AllSTDPSynapses::AllSTDPSynapses() : AllSpikingSynapses() {
    Apos_ = NULL;
    mupos_ = NULL;
    muneg_ = NULL;
-   useFroemkeDanSTDP_ = NULL;
-    STDPgap=0;
+   STDPgap=0;
    tauspost_I_=0;
    tauspre_I_=0;
    tauspost_E_=0;
@@ -61,7 +60,6 @@ AllSTDPSynapses::~AllSTDPSynapses() {
       delete[] Apos_;
       delete[] mupos_;
       delete[] muneg_;
-      delete[] useFroemkeDanSTDP_;
    }
 
    totalDelayPost_ = NULL;
@@ -78,7 +76,6 @@ AllSTDPSynapses::~AllSTDPSynapses() {
    Apos_ = NULL;
    mupos_ = NULL;
    muneg_ = NULL;
-   useFroemkeDanSTDP_ = NULL;
 }
 
 /*
@@ -114,7 +111,6 @@ void AllSTDPSynapses::setupSynapses(const int numNeurons, const int maxSynapses)
       Apos_ = new BGFLOAT[maxTotalSynapses];
       mupos_ = new BGFLOAT[maxTotalSynapses];
       muneg_ = new BGFLOAT[maxTotalSynapses];
-      useFroemkeDanSTDP_ = new bool[maxTotalSynapses];
    }
 }
 
@@ -166,9 +162,21 @@ void AllSTDPSynapses::loadParameters() {
  */
 void AllSTDPSynapses::printParameters() const {
    AllSpikingSynapses::printParameters();
-   cout<< "\tTauspost values: ["
-          << " I: " << tauspost_I_ << ", " << " E: " << tauspre_E_ 
-          << endl;
+
+   LOG4CPLUS_DEBUG(fileLogger_, "\n\t---AllSTDPSynapses Parameters---" << endl
+                                          << "\tEdges type: AllSTDPSynapses" << endl << endl
+                  
+               <<"\tSTDP gap"<<STDPgap<<endl
+               << "\n\tTauspost value: [" << " I: " << tauspost_I_ << ", " << " E: " << tauspost_E_  << "]"<< endl
+               << "\n\tTauspre value: [" << " I: " << tauspre_I_ << ", " << " E: " << tauspre_E_ << "]"<< endl
+               << "\n\tTaupos value: [" << " I: " << taupos_I_ << ", " << " E: " << taupos_E_  << "]"<< endl
+               << "\n\tTau negvalue: [" << " I: " << tauneg_I_ << ", " << " E: " << tauneg_E_  << "]"<< endl
+               << "\n\tWex value: [" << " I: " << Wex_I_ << ", " << " E: " << Wex_E_  << "]"<< endl
+               << "\n\tAneg value: [" << " I: " << Aneg_I_ << ", " << " E: " << Aneg_E_  << "]"<< endl
+               << "\n\tApos value: [" << " I: " << Apos_I_ << ", " << " E: " << Apos_E_  << "]"<< endl
+               );
+
+   //cout<< "\tTauspost values: ["  << " I: " << tauspost_I_ << ", " << " E: " << tauspre_E_ << endl;
 }
 
 /*
@@ -193,22 +201,21 @@ void AllSTDPSynapses::createSynapse(const BGSIZE iSyn, int srcNeuron, int destNe
    // Spike-timing-dependent synaptic modification induced by natural spike trains. Nature 416 (3/2002)
    //Apos_[iSyn] = 0.005;
    //Aneg_[iSyn] = -(1.05*0.005);
-   Apos_[iSyn] = 1.03;
-   Aneg_[iSyn] = -0.52;
-   STDPgap_[iSyn] = 2e-3;
+   Apos_[iSyn] = Apos_E_;
+   Aneg_[iSyn] = Aneg_E_;
+   STDPgap_[iSyn] = STDPgap;
 
-   tauspost_[iSyn] = 88e-3;
-   tauspre_[iSyn] = 28e-3;
+   tauspost_[iSyn] = tauspost_E_;
+   tauspre_[iSyn] = tauspre_E_;
 
-   taupos_[iSyn] = 14.8e-3;
-   tauneg_[iSyn] = 33.8e-3;
+   taupos_[iSyn] = taupos_E_;
+   tauneg_[iSyn] = tauneg_E_;
 
-   Wex_[iSyn] = 5.0265e-7; // this is based on overlap of 2 neurons' radii (r=4) of outgrowth, scale it by SYNAPSE_STRENGTH_ADJUSTMENT.
+   Wex_[iSyn] = Wex_E_ ;// this is based on overlap of 2 neurons' radii (r=4) of outgrowth, scale it by SYNAPSE_STRENGTH_ADJUSTMENT.
 
    mupos_[iSyn] = 0;
    muneg_[iSyn] = 0;
 
-   useFroemkeDanSTDP_[iSyn] = false;
 }
 
 #if !defined(USE_GPU)
@@ -245,7 +252,6 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
       BGFLOAT &taupos_ = this->taupos_[iSyn];
       BGFLOAT &tauneg_ = this->tauneg_[iSyn];
       int &total_delay = this->totalDelay_[iSyn];
-      bool &useFroemkeDanSTDP_ = this->useFroemkeDanSTDP_[iSyn];
 
       BGFLOAT deltaT = Simulator::getInstance().getDeltaT();
       AllSpikingNeurons *spNeurons = dynamic_cast<AllSpikingNeurons *>(neurons);
@@ -525,7 +531,6 @@ void AllSTDPSynapses::printSynapsesProps() const {
          cout << " Apos_: " << Apos_[i];
          cout << " mupos_: " << mupos_[i];
          cout << " muneg_: " << muneg_[i];
-         cout << " useFroemkeDanSTDP_: " << useFroemkeDanSTDP_[i] << endl;
       }
    }
 }
@@ -568,8 +573,6 @@ void AllSTDPSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
    input.ignore();
    input >> muneg_[iSyn];
    input.ignore();
-   input >> useFroemkeDanSTDP_[iSyn];
-   input.ignore();
 }
 
 /*
@@ -595,7 +598,6 @@ void AllSTDPSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
    output << Apos_[iSyn] << ends;
    output << mupos_[iSyn] << ends;
    output << muneg_[iSyn] << ends;
-   output << useFroemkeDanSTDP_[iSyn] << ends;
 }
 
 /*

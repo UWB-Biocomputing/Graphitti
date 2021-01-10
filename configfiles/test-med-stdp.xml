@@ -93,32 +93,32 @@
         </F>
         <STDPgap name="STDPgap">2e-3</STDPgap>
         <tauspost name="tauspost">
-          <i name="i">6e-3</i>
-          <e name="e">6e-3</e>
+          <i name="i">88e-3</i>
+          <e name="e">88e-3</e>
         </tauspost>
         <tauspre name="tauspre">
-          <i name="i">6e-3</i>
-          <e name="e">6e-3</e>
+          <i name="i">28e-3</i>
+          <e name="e">28e-3</e>
         </tauspre>
         <taupos name="taupos">
-          <i name="i">6e-3</i>
-          <e name="e">6e-3</e>
+          <i name="i">14.8e-3</i>
+          <e name="e">14.8e-3</e>
         </taupos>
         <tauneg name="tauneg">
-          <i name="i">6e-3</i>
-          <e name="e">6e-3</e>
+          <i name="i">33.8e-3</i>
+          <e name="e">33.8e-3</e>
         </tauneg>
          <Wex name="Wex">
-          <i name="i">6e-3</i>
-          <e name="e">6e-3</e>
+          <i name="i">5.0265e-7</i>
+          <e name="e">5.0265e-7</e>
         </Wex> 
         <Aneg name="Aneg">
-          <i name="i">6e-3</i>
-          <e name="e">6e-3</e>
+          <i name="i">-52e-2</i>
+          <e name="e">-0.52</e>
         </Aneg>
          <Apos name="Apos">
-          <i name="i">6e-3</i>
-          <e name="e">6e-3</e>
+          <i name="i">1.03</i>
+          <e name="e">1.03</e>
         </Apos>
         
         
