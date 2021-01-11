@@ -1,3 +1,9 @@
+/**
+ * @file ConnGrowth_d.cu
+ * 
+ * @ingroup Simulation/Connections
+ */
+
 #include "ConnGrowth.h"
 #include "AllSpikingSynapses.h"
 #include "AllSynapsesDeviceFuncs.h"

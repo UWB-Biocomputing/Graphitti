@@ -1,10 +1,9 @@
 /**
- *      @file ConnGrowth.h
+ * @file ConnGrowth.h
+ * 
+ * @ingroup Simulation/Connections
  *
- *      @brief The model of the activity dependent neurite outgrowth
- */
-
-/**
+ * @brief The model of the activity dependent neurite outgrowth
  *
  * @class ConnGrowth ConnGrowth.h "ConnGrowth.h"
  *
@@ -82,10 +81,7 @@
 #include "Global.h"
 #include "Simulator.h"
 
-
-/**
-* cereal
-*/
+// cereal
 #include <cereal/types/vector.hpp>
 
 using namespace std;
@@ -98,87 +94,68 @@ public:
 
    static Connections *Create() { return new ConnGrowth(); }
 
-   /**
-    *  Setup the internal structure of the class (allocate memories and initialize them).
-    *
-    *  @param  layout    Layout information of the neunal network.
-    *  @param  neurons   The Neuron list to search from.
-    *  @param  synapses  The Synapse list to search from.
-    */
+   ///  Setup the internal structure of the class (allocate memories and initialize them).
+   ///
+   ///  @param  layout    Layout information of the neunal network.
+   ///  @param  neurons   The Neuron list to search from.
+   ///  @param  synapses  The Synapse list to search from.
    virtual void setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses);
 
-   /**
-    * Load member variables from configuration file.
-    * Registered to OperationManager as Operations::op::loadParameters
-    */
+   /// Load member variables from configuration file.
+   /// Registered to OperationManager as Operations::op::loadParameters
    virtual void loadParameters();
 
-   /**
-    *  Prints out all parameters to logging file.
-    *  Registered to OperationManager as Operation::printParameters
-    */
+   ///  Prints out all parameters to logging file.
+   ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
 
-   /**
-    *  Update the connections status in every epoch.
-    *
-    *  @param  neurons  The Neuron list to search from.
-    *  @param  layout   Layout information of the neunal network.
-    *  @return true if successful, false otherwise.
-    */
+   ///  Update the connections status in every epoch.
+   ///
+   ///  @param  neurons  The Neuron list to search from.
+   ///  @param  layout   Layout information of the neunal network.
+   ///  @return true if successful, false otherwise.
    virtual bool updateConnections(IAllNeurons &neurons, Layout *layout);
 
-   /**
-    *  Cereal serialization method
-    *  (Serializes radii)
-    */
+   ///  Cereal serialization method
+   ///  (Serializes radii)
    template<class Archive>
    void save(Archive &archive) const;
 
-   /**
-    *  Cereal deserialization method
-    *  (Deserializes radii)
-    */
+   ///  Cereal deserialization method
+   ///  (Deserializes radii)
    template<class Archive>
    void load(Archive &archive);
 
-   /**
-    *  Prints radii
-    */
+   ///  Prints radii
    void printRadii() const;
 
 #if defined(USE_GPU)
-   /**
-    *  Update the weights of the Synapses in the simulation. To be clear,
-    *  iterates through all source and destination neurons and updates their
-    *  synaptic strengths from the weight matrix.
-    *  Note: Platform Dependent.
-    *
-    *  @param  numNeurons          number of neurons to update.
-    *  @param  neurons             The AllNeurons object.
-    *  @param  synapses            The AllSynapses object.
-    *  @param  allNeuronsDevice    GPU address of the allNeurons struct in device memory.
-    *  @param  allSynapsesDevice   GPU address of the allSynapses struct in device memory.
-    *  @param  layout              The Layout object.
-    */
+   ///  Update the weights of the Synapses in the simulation. To be clear,
+   ///  iterates through all source and destination neurons and updates their
+   ///  synaptic strengths from the weight matrix.
+   ///  Note: Platform Dependent.
+   ///
+   ///  @param  numNeurons          number of neurons to update.
+   ///  @param  neurons             The AllNeurons object.
+   ///  @param  synapses            The AllSynapses object.
+   ///  @param  allNeuronsDevice    GPU address of the allNeurons struct in device memory.
+   ///  @param  allSynapsesDevice   GPU address of the allSynapses struct in device memory.
+   ///  @param  layout              The Layout object.
    virtual void updateSynapsesWeights(const int numNeurons,
          IAllNeurons &neurons, IAllSynapses &synapses,
          AllSpikingNeuronsDeviceProperties* allNeuronsDevice,
          AllSpikingSynapsesDeviceProperties* allSynapsesDevice,
          Layout *layout);
 #else
-   /**
-    *  Update the weights of the Synapses in the simulation. To be clear,
-    *  iterates through all source and destination neurons and updates their
-    *  synaptic strengths from the weight matrix.
-    *  Note: Platform Dependent.
-    *
-    *  @param  numNeurons  Number of neurons to update.
-    *  @param  ineurons    The AllNeurons object.
-    *  @param  isynapses   The AllSynapses object.
-    *  @param  layout      The Layout object.
-    * 
-    */
+   ///  Update the weights of the Synapses in the simulation. To be clear,
+   ///  iterates through all source and destination neurons and updates their
+   ///  synaptic strengths from the weight matrix.
+   ///  Note: Platform Dependent.
+   ///
+   ///  @param  numNeurons  Number of neurons to update.
+   ///  @param  ineurons    The AllNeurons object.
+   ///  @param  isynapses   The AllSynapses object.
+   ///  @param  layout      The Layout object.
    virtual void
    updateSynapsesWeights(const int numNeurons,
          IAllNeurons &neurons,
@@ -187,77 +164,69 @@ public:
 
 #endif
 private:
-   /**
-    *  Calculates firing rates, neuron radii change and assign new values.
-    *
-    *  @param  neurons  The Neuron list to search from.
-    */
+   ///  Calculates firing rates, neuron radii change and assign new values.
+   ///
+   ///  @param  neurons  The Neuron list to search from.
    void updateConns(IAllNeurons &neurons);
 
-   /**
-    *  Update the distance between frontiers of Neurons.
-    *
-    *  @param  numNeurons  Number of neurons to update.
-    *  @param  layout      Layout information of the neunal network.
-    */
+   ///  Update the distance between frontiers of Neurons.
+   ///
+   ///  @param  numNeurons  Number of neurons to update.
+   ///  @param  layout      Layout information of the neunal network.
    void updateFrontiers(const int numNeurons, Layout *layout);
 
-   /**
-    *  Update the areas of overlap in between Neurons.
-    *
-    *  @param  numNeurons  Number of Neurons to update.
-    *  @param  layout      Layout information of the neunal network.
-    */
+   ///  Update the areas of overlap in between Neurons.
+   ///
+   ///  @param  numNeurons  Number of Neurons to update.
+   ///  @param  layout      Layout information of the neunal network.
    void updateOverlap(BGFLOAT numNeurons, Layout *layout);
 
 public:
    struct GrowthParams {
-      BGFLOAT epsilon;   //null firing rate(zero outgrowth)
-      BGFLOAT beta;      //sensitivity of outgrowth to firing rate
-      BGFLOAT rho;       //outgrowth rate constant
-      BGFLOAT targetRate; // Spikes/second
-      BGFLOAT maxRate;   // = targetRate / epsilon;
-      BGFLOAT minRadius; // To ensure that even rapidly-firing neurons will connect to
-      // other neurons, when within their RFS.
-      BGFLOAT startRadius; // No need to wait a long time before RFs start to overlap
+      BGFLOAT epsilon;   ///< null firing rate(zero outgrowth)
+      BGFLOAT beta;      ///< sensitivity of outgrowth to firing rate
+      BGFLOAT rho;       ///< outgrowth rate constant
+      BGFLOAT targetRate; ///<  Spikes/second
+      BGFLOAT maxRate;   ///<  = targetRate / epsilon;
+      BGFLOAT minRadius; ///<  To ensure that even rapidly-firing neurons will connect to
+      /// other neurons, when within their RFS.
+      BGFLOAT startRadius; ///< No need to wait a long time before RFs start to overlap
    };
 
-   //! structure to keep growth parameters
+   /// structure to keep growth parameters
    GrowthParams growthParams_;
 
-   //! spike count for each epoch
+   /// spike count for each epoch
    int *spikeCounts_;
 
-   //! radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
+   /// radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
    int radiiSize_;
 
-   //! synapse weight
+   /// synapse weight
    CompleteMatrix *W_;
 
-   //! neuron radii
+   /// neuron radii
    VectorMatrix *radii_;
 
-   //! spiking rate
+   /// spiking rate
    VectorMatrix *rates_;
 
-   //! distance between connection frontiers
+   /// distance between connection frontiers
    CompleteMatrix *delta_;
 
-   //! areas of overlap
+   /// areas of overlap
    CompleteMatrix *area_;
 
-   //! neuron's outgrowth
+   /// neuron's outgrowth
    VectorMatrix *outgrowth_;
 
-   //! displacement of neuron radii
+   /// displacement of neuron radii
    VectorMatrix *deltaR_;
 
 };
 
-/**
- *  Cereal serialization method
- *  (Serializes radii)
- */
+///  Cereal serialization method
+///  (Serializes radii)
 template<class Archive>
 void ConnGrowth::save(Archive &archive) const {
    // uses vector to save radii
@@ -269,10 +238,8 @@ void ConnGrowth::save(Archive &archive) const {
    archive(radiiVector);
 }
 
-/**
- *  Cereal deserialization method
- *  (Deserializes radii)
- */
+///  Cereal deserialization method
+///  (Deserializes radii)
 template<class Archive>
 void ConnGrowth::load(Archive &archive) {
    // uses vector to load radii

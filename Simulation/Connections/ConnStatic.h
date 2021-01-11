@@ -1,10 +1,9 @@
 /**
- *      @file ConnStatic.h
+ * @file ConnStatic.h
  *
- *      @brief The model of the small world network
- */
-
-/**
+ * @ingroup Simulation/Connections
+ * 
+ * @brief The model of the small world network
  *
  * @class ConnStatic ConnStatic.h "ConnStatic.h"
  *
@@ -53,49 +52,43 @@ public:
 
    static Connections *Create() { return new ConnStatic(); }
 
-   /**
-    *  Setup the internal structure of the class (allocate memories and initialize them).
-    *  Initialize the small world network characterized by parameters:
-    *  number of maximum connections per neurons, connection radius threshold, and
-    *  small-world rewiring probability.
-    *
-    *  @param  layout    Layout information of the neunal network.
-    *  @param  neurons   The Neuron list to search from.
-    *  @param  synapses  The Synapse list to search from.
-    */
+   ///  Setup the internal structure of the class (allocate memories and initialize them).
+   ///  Initialize the small world network characterized by parameters:
+   ///  number of maximum connections per neurons, connection radius threshold, and
+   ///  small-world rewiring probability.
+   ///
+   ///  @param  layout    Layout information of the neunal network.
+   ///  @param  neurons   The Neuron list to search from.
+   ///  @param  synapses  The Synapse list to search from.
    virtual void setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses);
 
-   /**
-    * Load member variables from configuration file.
-    * Registered to OperationManager as Operations::op::loadParameters
-    */
+   /// Load member variables from configuration file.
+   /// Registered to OperationManager as Operations::op::loadParameters
    virtual void loadParameters();
 
-   /**
-    *  Prints out all parameters to logging file.
-    *  Registered to OperationManager as Operation::printParameters
-    */
+   ///  Prints out all parameters to logging file.
+   ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
 
 private:
-   //! number of maximum connections per neurons
+   /// number of maximum connections per neurons
    int connsPerNeuron_;
 
-   //! Connection radius threshold
+   /// Connection radius threshold
    BGFLOAT threshConnsRadius_;
 
-   //! Small-world rewiring probability
+   /// Small-world rewiring probability
    BGFLOAT rewiringProbability_;
 
-   //! Min/max values of excitatory neuron's synapse weight
+   /// Min/max values of excitatory neuron's synapse weight
    BGFLOAT excWeight_[2];
 
-   //! Min/max values of inhibitory neuron's synapse weight
+   /// Min/max values of inhibitory neuron's synapse weight
    BGFLOAT inhWeight_[2];
 
    struct DistDestNeuron {
-      BGFLOAT dist;     // destance to the destination neuron
-      int destNeuron;  // index of the destination neuron
+      BGFLOAT dist;     ///< destance to the destination neuron
+      int destNeuron;  ///< index of the destination neuron
 
       bool operator<(const DistDestNeuron &other) const {
          return (dist < other.dist);

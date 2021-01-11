@@ -1,6 +1,9 @@
 /**
- *  A factory class for creating Connections objects.
+ * @file ConnectionsFactory.cpp
+ * 
+ * @ingroup Simulation/Connections
  *
+ * @brief A factory class for creating Connections objects.
  */
 
 #include "ConnectionsFactory.h"
@@ -19,12 +22,11 @@ ConnectionsFactory::~ConnectionsFactory() {
    createFunctions.clear();
 }
 
-/*
- *  Register connections class and its creation function to the factory.
- *
- *  @param  className class name.
- *  @param  Pointer to the class creation function.
- */
+
+///  Register connections class and its creation function to the factory.
+///
+///  @param  className class name.
+///  @param  Pointer to the class creation function.
 void ConnectionsFactory::registerClass(const string &className, CreateFunction function) {
    createFunctions[className] = function;
 }
@@ -36,12 +38,10 @@ shared_ptr<Connections> ConnectionsFactory::createConnections(const string &clas
    return connectionsInstance;
 }
 
-/**
- * Create an instance of the connections class using the static ::Create() method.
- *
- * The calling method uses this retrieval mechanism in
- * value assignment.
- */
+/// Create an instance of the connections class using the static ::Create() method.
+///
+/// The calling method uses this retrieval mechanism in
+/// value assignment.
 Connections *ConnectionsFactory::invokeCreateFunction(const string &className) {
    for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
       if (className == i->first)
