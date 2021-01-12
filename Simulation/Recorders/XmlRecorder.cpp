@@ -1,9 +1,17 @@
 /*
- *      @file XmlRecorder.cpp
- *
- *      @brief An implementation for recording spikes history on xml file
- */
-//! An implementation for recording spikes history on xml file
+* @file XmlRecorder.cpp
+*
+* @ingroup Core
+*
+* @brief An implementation for recording spikes history on xml file
+*
+* The XmlRecorder provides a mechanism for recording neuron's layout, spikes history,
+* and compile history information on xml file:
+*    -# neuron's locations, and type map,
+*    -# individual neuron's spike rate in epochs,
+*    -# network wide burstiness index data in 1s bins,
+*    -# network wide spike count in 10ms bins.
+*/
 
 #include <functional>
 
@@ -13,7 +21,7 @@
 #include "OperationManager.h"
 #include "ParameterManager.h"
 
-//! THe constructor and destructor
+/// constructor
 XmlRecorder::XmlRecorder() :
       burstinessHist_(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
                                                                     Simulator::getInstance().getNumEpochs()), 0),
