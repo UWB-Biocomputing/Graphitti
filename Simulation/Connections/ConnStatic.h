@@ -77,19 +77,20 @@ public:
     */
    virtual void printParameters() const;
   /**
-    *  The location of the synapse.
+    *  Stores the indices of the source neuron for each synapse
     */
-   int *sourceNeuronIndexSTDP_;
+   BGFLOAT *sourceNeuronIndexCurrentEpoch_;
 
    /**
-    *  The coordinates of the summation point.
+    *  Stores the indices of the destination neuron for each synapse
     */
-   int *destNeuronIndexSTDP_;
+   BGFLOAT *destNeuronIndexCurrentEpoch_;
 
    /**
-    *   The weight (scaling factor, strength, maximal amplitude) of the synapse.
+    *   The weight (scaling factor, strength, maximal amplitude) of each synapse for the current epoch.
     */
-   BGFLOAT *WSTDP_;
+   BGFLOAT *WCurrentEpoch_;
+  
 
    //! number of maximum connections per neurons
    BGFLOAT connsPerNeuron_;

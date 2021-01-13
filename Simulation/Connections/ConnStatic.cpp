@@ -14,10 +14,9 @@
 #include <algorithm>
 
 ConnStatic::ConnStatic() {
-    threshConnsRadius_ = 4;
-   connsPerNeuron_ = 2;
-   rewiringProbability_ = 0.75;
-   WSTDP_=NULL;
+   WCurrentEpoch_=NULL;
+   destNeuronIndexCurrentEpoch_=NULL;
+   sourceNeuronIndexCurrentEpoch_=NULL;
    //excWeight_[0]=0;
    //excWeight_[1]=2.5e-7;
    //inhWeight_[0]=0;
@@ -25,8 +24,12 @@ ConnStatic::ConnStatic() {
 }
 
 ConnStatic::~ConnStatic() {
-   if (WSTDP_ != NULL) delete WSTDP_;
-   WSTDP_=NULL;
+   if (WCurrentEpoch_ != NULL) delete WCurrentEpoch_;
+   WCurrentEpoch_=NULL;
+    if (destNeuronIndexCurrentEpoch_ != NULL) delete destNeuronIndexCurrentEpoch_;
+   destNeuronIndexCurrentEpoch_=NULL;
+    if (sourceNeuronIndexCurrentEpoch_ != NULL) delete sourceNeuronIndexCurrentEpoch_;
+   sourceNeuronIndexCurrentEpoch_=NULL;
 }
 
 /*
@@ -44,7 +47,10 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
    vector<DistDestNeuron> distDestNeurons[numNeurons];
    int added = 0;
    BGSIZE maxTotalSynapses =  Simulator::getInstance().getMaxSynapsesPerNeuron() * Simulator::getInstance().getTotalNeurons();
-   WSTDP_ = new BGFLOAT[maxTotalSynapses];
+   WCurrentEpoch_ = new BGFLOAT[maxTotalSynapses];
+   sourceNeuronIndexCurrentEpoch_ = new BGFLOAT[maxTotalSynapses];
+   destNeuronIndexCurrentEpoch_= new BGFLOAT[maxTotalSynapses];
+   
    
 
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
@@ -97,12 +103,16 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
 string weight_str="";
    for(int i=0; i<maxTotalSynapses; i++)
    {
-      WSTDP_[i]=dynamic_cast<AllSynapses *>(synapses)->W_[i];
-      if(WSTDP_[i]!=0)
-        // LOG4CPLUS_DEBUG(synapseLogger_,i << WSTDP_[i]);
-         weight_str+=to_string(WSTDP_[i])+" ";
+      WCurrentEpoch_[i]=dynamic_cast<AllSynapses *>(synapses)->W_[i];
+       sourceNeuronIndexCurrentEpoch_[i]=dynamic_cast<AllSynapses *>(synapses)->sourceNeuronIndex_[i];
+       destNeuronIndexCurrentEpoch_[i]=dynamic_cast<AllSynapses *>(synapses)->destNeuronIndex_[i];
+      /*
+      if(WCurrentEpoch_[i]!=0)
+        // LOG4CPLUS_DEBUG(synapseLogger_,i << WCurrentEpoch_[i]);
+         weight_str+=to_string(WCurrentEpoch_[i])+" ";
+         */
    }
-   LOG4CPLUS_DEBUG(synapseLogger_, " "<<weight_str);
+   //LOG4CPLUS_DEBUG(synapseLogger_, " "<<weight_str);
    
 
 

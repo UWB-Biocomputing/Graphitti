@@ -82,11 +82,14 @@ public:
 
 private:
    // track firing rate
-   CompleteMatrix ratesHistory_;
+  
 
    CompleteMatrix weightsHistory_;
+   CompleteMatrix sourceNeuronsHistory_;
+   CompleteMatrix destNeuronsHistory_;
 
    // track radii
+    CompleteMatrix ratesHistory_;
    CompleteMatrix radiiHistory_;
 };
 

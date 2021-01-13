@@ -16,6 +16,11 @@ XmlSTDPRecorder::XmlSTDPRecorder() :
       XmlRecorder(),
       weightsHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
                     Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron()),
+      sourceNeuronsHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
+                    Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron()),  
+
+      destNeuronsHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
+                    Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron()), 
       ratesHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
                     Simulator::getInstance().getTotalNeurons()),
       radiiHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
@@ -46,7 +51,9 @@ void XmlSTDPRecorder::initValues() {
    shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron(); i++) {
-      weightsHistory_(0, i) = (dynamic_cast<ConnStatic *>(conns.get())->WSTDP_)[i];
+      weightsHistory_(0, i) = (dynamic_cast<ConnStatic *>(conns.get())->WCurrentEpoch_)[i];
+      sourceNeuronsHistory_(0, i) = (dynamic_cast<ConnStatic *>(conns.get())->sourceNeuronIndexCurrentEpoch_)[i];
+      destNeuronsHistory_(0, i) = (dynamic_cast<ConnStatic *>(conns.get())->destNeuronIndexCurrentEpoch_)[i];
       
    }
 }
@@ -58,7 +65,9 @@ void XmlSTDPRecorder::getValues() {
    Connections *conns = Simulator::getInstance().getModel()->getConnections().get();
 
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
-      (dynamic_cast<ConnStatic *>(conns)->WSTDP_)[i] = weightsHistory_(Simulator::getInstance().getCurrentStep(), i);
+      (dynamic_cast<ConnStatic *>(conns)->WCurrentEpoch_)[i] = weightsHistory_(Simulator::getInstance().getCurrentStep(), i);
+      (dynamic_cast<ConnStatic *>(conns)->sourceNeuronIndexCurrentEpoch_)[i] = sourceNeuronsHistory_(Simulator::getInstance().getCurrentStep(), i);
+      (dynamic_cast<ConnStatic *>(conns)->destNeuronIndexCurrentEpoch_)[i] = destNeuronsHistory_(Simulator::getInstance().getCurrentStep(), i);
       //(*dynamic_cast<ConnGrowth *>(conns)->rates_)[i] = ratesHistory_(Simulator::getInstance().getCurrentStep(), i);
    }
 }
@@ -75,12 +84,18 @@ void XmlSTDPRecorder::compileHistories(IAllNeurons &neurons) {
    shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
 
    //VectorMatrix &rates = (*dynamic_cast<ConnGrowth *>(conns.get())->rates_);
-   BGFLOAT &weights = (*dynamic_cast<ConnStatic *>(conns.get())->WSTDP_);
+   BGFLOAT &weights = (*dynamic_cast<ConnStatic *>(conns.get())->WCurrentEpoch_);
+   BGFLOAT &sourceIndex = (*dynamic_cast<ConnStatic *>(conns.get())->sourceNeuronIndexCurrentEpoch_);
+   BGFLOAT &destIndex = (*dynamic_cast<ConnStatic *>(conns.get())->destNeuronIndexCurrentEpoch_);
+  //sourceNeuronIndexCurrentEpoch_
+
 
    for (int iNeuron = 0; iNeuron < Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron(); iNeuron++) {
       // record firing rate to history matrix
       
-      weightsHistory_(Simulator::getInstance().getCurrentStep(), iNeuron)= (dynamic_cast<ConnStatic *>(conns.get())->WSTDP_)[iNeuron];
+      weightsHistory_(Simulator::getInstance().getCurrentStep(), iNeuron)= (dynamic_cast<ConnStatic *>(conns.get())->WCurrentEpoch_)[iNeuron];
+      sourceNeuronsHistory_(Simulator::getInstance().getCurrentStep(), iNeuron)= (dynamic_cast<ConnStatic *>(conns.get())->sourceNeuronIndexCurrentEpoch_)[iNeuron];
+      destNeuronsHistory_(Simulator::getInstance().getCurrentStep(), iNeuron)= (dynamic_cast<ConnStatic *>(conns.get())->destNeuronIndexCurrentEpoch_)[iNeuron];
       //LOG4CPLUS_INFO(fileLogger_, Simulator::getInstance().getCurrentStep()<<" "<< iNeuron);
       //weightsHistory_(Simulator::getInstance().getCurrentStep(), iNeuron) = weights[iNeuron];
    }
@@ -112,6 +127,8 @@ void XmlSTDPRecorder::saveSimData(const IAllNeurons &neurons) {
 
    // Write the core state information:
    stateOut_ << "<SimState>\n";
+   stateOut_ << "   " << sourceNeuronsHistory_.toXML("sourceNeuronIndexHistory") << endl;
+   stateOut_ << "   " << destNeuronsHistory_.toXML("destNeuronIndexHistory") << endl;
    stateOut_ << "   " << weightsHistory_.toXML("weightsHistory") << endl;
    //stateOut_ << "   " << ratesHistory_.toXML("ratesHistory") << endl;
    stateOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
