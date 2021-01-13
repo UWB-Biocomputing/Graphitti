@@ -288,6 +288,7 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
             // delta is the spike interval between pre-post spikes
             // (include pre-synaptic transmission delay)
             delta = -static_cast<BGFLOAT>(g_simulationStep - spikeHistory) * deltaT;
+            /*
             LOG4CPLUS_DEBUG(fileLogger_,"\nAllSTDPSynapses::advanceSynapse: fPre" << endl
                    << "\tiSyn: " << iSyn << endl
                    << "\tidxPre: " << idxPre << endl
@@ -297,7 +298,7 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
                    << "\tepost: " << epost << endl
                    << "\tg_simulationStep: " << g_simulationStep << endl
                    << "\tdelta: " << delta << endl << endl);
-
+            */
 
             if (delta <= -3.0 * tauneg_)
                break;
@@ -338,6 +339,7 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
             }
             // delta is the spike interval between post-pre spikes
             delta = static_cast<BGFLOAT>(g_simulationStep - spikeHistory - total_delay) * deltaT;
+            /*
             LOG4CPLUS_DEBUG(fileLogger_,"\nAllSTDPSynapses::advanceSynapse: fPost" << endl
                    << "\tiSyn: " << iSyn << endl
                    << "\tidxPre: " << idxPre << endl
@@ -347,7 +349,7 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
                     << "\tepre: " << epre << endl
                    << "\tepost: " << epost << endl
                    << "\tdelta: " << delta << endl << endl);
-
+            */
             if (delta >= 3.0 * taupos_)
                break;
            
@@ -433,7 +435,7 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost
    if (fabs(W) > Wex_) {
       W = synSign(type) * Wex_;
    }
-
+/*
    LOG4CPLUS_DEBUG(fileLogger_,
          "AllSTDPSynapses::stdpLearning: Weight dumping" << endl
           << "\tiSyn: " << iSyn << endl
@@ -443,7 +445,7 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost
           << "\tdw: " << dw << endl
           << "\tW: " << W << endl << endl);
 
-
+*/
             LOG4CPLUS_DEBUG(synapseLogger_,
                    iSyn 
                    << ";" << srcN 

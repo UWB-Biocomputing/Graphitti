@@ -12,7 +12,12 @@ file(GLOB Recorders
         XmlGrowthRecorder.h
         XmlGrowthRecorder.cpp
         RecorderFactory.h
-        RecorderFactory.cpp
+        RecorderFactory.cpp 
+        #Hdf5Recorder.h
+        #Hdf5Recorder.cpp
+        #Hdf5GrowthRecorder.h
+        #Hdf5GrowthRecorder.cpp
+
         )
         
 include_directories(${HDF5_INCLUDE_DIRS})

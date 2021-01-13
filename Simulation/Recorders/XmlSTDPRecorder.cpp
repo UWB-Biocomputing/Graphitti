@@ -69,20 +69,22 @@ void XmlSTDPRecorder::getValues() {
  * @param[in] neurons 	The entire list of neurons.
  */
 void XmlSTDPRecorder::compileHistories(IAllNeurons &neurons) {
+   LOG4CPLUS_INFO(fileLogger_, "Compiling STDP HISTORY");
    XmlRecorder::compileHistories(neurons);
-
+   //LOG4CPLUS_INFO(fileLogger_, "Compiling STDP HISTORY");
    shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
 
    //VectorMatrix &rates = (*dynamic_cast<ConnGrowth *>(conns.get())->rates_);
    BGFLOAT &weights = (*dynamic_cast<ConnStatic *>(conns.get())->WSTDP_);
 
-   for (int iNeuron = 0; iNeuron < Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getTotalNeurons(); iNeuron++) {
+   for (int iNeuron = 0; iNeuron < Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron(); iNeuron++) {
       // record firing rate to history matrix
       
       weightsHistory_(Simulator::getInstance().getCurrentStep(), iNeuron)= (dynamic_cast<ConnStatic *>(conns.get())->WSTDP_)[iNeuron];
+      //LOG4CPLUS_INFO(fileLogger_, Simulator::getInstance().getCurrentStep()<<" "<< iNeuron);
       //weightsHistory_(Simulator::getInstance().getCurrentStep(), iNeuron) = weights[iNeuron];
-
    }
+   LOG4CPLUS_INFO(fileLogger_, "Finished Compiling STDP HISTORY");
 }
 
 /*
@@ -149,7 +151,7 @@ void XmlSTDPRecorder::saveSimData(const IAllNeurons &neurons) {
 void XmlSTDPRecorder::printParameters() {
    XmlRecorder::printParameters();
 
-   LOG4CPLUS_DEBUG(fileLogger_, "\n---XmlGrowthRecorder Parameters---" << endl
-                                      << "\tRecorder type: XmlGrowthRecorder" << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\n---XmlSTDPRecorder Parameters---" << endl
+                                      << "\tRecorder type: XmlSTDPRecorder" << endl);
 }
 

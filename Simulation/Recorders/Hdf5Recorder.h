@@ -35,7 +35,8 @@
 
 #include "IRecorder.h"
 #include "Model.h"
-#include "H5Cpp.h"
+#include </opt/hdf5/latest/include/hdf5.h>
+#include </opt/hdf5/latest/include/H5Cpp.h>
 
 #ifndef H5_NO_NAMESPACE
 using namespace H5;

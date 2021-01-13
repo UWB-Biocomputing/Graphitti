@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <BGSimParams>
-  <SimInfoParams name="SimInfoParams">
-    <PoolSize name="PoolSize">
-      <x name="x">30</x>
-      <y name="y">30</y>
-      <z name="z">1</z>
-    </PoolSize>
-    <SimParams name="SimParams">
-      <epochDuration name="epochDuration">10.0</epochDuration>
-      <numEpochs name="numEpochs">3</numEpochs>
-    </SimParams>
-    <SimConfig name="SimConfig">
-      <maxFiringRate name="maxFiringRate">200</maxFiringRate>
-      <maxSynapsesPerNeuron name="maxSynapsesPerNeuron">200</maxSynapsesPerNeuron>
-    </SimConfig>
-    <Seed name="Seed">
-      <value name="value">1</value>
-    </Seed>
-    <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">Output/Results/test-medium-stdp-test.xml</resultFileName>
-    </OutputParams>
-  </SimInfoParams>
+    <SimInfoParams name="SimInfoParams">
+        <PoolSize name="PoolSize">
+            <x name="x">2</x>
+            <y name="y">2</y>
+            <z name="z">1</z>
+        </PoolSize>
+        <SimParams name="SimParams">
+            <epochDuration name="epochDuration">100.0</epochDuration>
+            <numEpochs name="numEpochs">3</numEpochs>
+        </SimParams>
+        <SimConfig name="SimConfig">
+            <maxFiringRate name="maxFiringRate">200</maxFiringRate>
+            <maxSynapsesPerNeuron name="maxSynapsesPerNeuron">200</maxSynapsesPerNeuron>
+        </SimConfig>
+        <Seed name="Seed">
+            <value name="value">1</value>
+        </Seed>
+        <OutputParams name="OutputParams">
+            <resultFileName name="resultFileName">Output/Results/test-tiny-stdp-out.xml</resultFileName>
+        </OutputParams>
+    </SimInfoParams>
 
   <ModelParams>
     <NeuronsParams class="AllLIFNeurons" name="NeuronsParams">
@@ -138,16 +138,18 @@
         </inhWeight>
     </ConnectionsParams>
 
-    <LayoutParams class="FixedLayout" name="LayoutParams">
-      <LayoutFiles name="LayoutFiles">
-        <activeNListFileName name="activeNListFileName" type="InputFile">configfiles/NList/ActiveNList30x30-0.01.xml</activeNListFileName>
-        <inhNListFileName name="inhNListFileName" type="InputFile">configfiles/NList/InhibitoryNList30x30-0.02.xml</inhNListFileName>
-      </LayoutFiles>
-    </LayoutParams>
-
-    <RecorderParams class="XmlSTDPRecorder" name="RecorderParams">
-      <probedNListFileName name="prbNListFileName" type="InputFile">configfiles/NList/probedNList_900.xml</probedNListFileName>
-    </RecorderParams>
-  </ModelParams>
+        <LayoutParams class="FixedLayout" name="LayoutParams">
+            <LayoutFiles name="LayoutFiles">
+                <activeNListFileName name="activeNListFileName" type="InputFile">configfiles/NList/ActiveNList2x2.xml
+                </activeNListFileName>
+                <inhNListFileName name="inhNListFileName" type="InputFile">configfiles/NList/InhibitoryNList2x2.xml
+                </inhNListFileName>
+            </LayoutFiles>
+        </LayoutParams>
+        <RecorderParams class="XmlSTDPRecorder" name="RecorderParams">
+            <probedNListFileName name="prbNListFileName" type="InputFile">configfiles/NList/ProbedNList2x2.xml
+            </probedNListFileName>
+        </RecorderParams>
+    </ModelParams>
 </BGSimParams>
 

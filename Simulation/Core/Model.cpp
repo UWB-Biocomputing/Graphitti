@@ -12,6 +12,11 @@ Model::Model() {
    // Reference variable used to get class type from ParameterManager.
    string type;
 
+     // Get a copy of the file logger to use log4cplus macros
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+
+   //TO DO: check what was returned was null, and generate error messages and terminate the program
+
    // Create Layout class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//LayoutParams/@class", type);
    layout_ = LayoutFactory::getInstance()->createLayout(type);
@@ -25,8 +30,7 @@ Model::Model() {
    recorder_ = RecorderFactory::getInstance()->createRecorder(type);
    recorder_->init();
 
-   // Get a copy of the file logger to use log4cplus macros
-   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+ 
 }
 
 /// Destructor
@@ -145,6 +149,10 @@ void Model::logSimStep() const {
 /// Update the simulation history of every epoch.
 void Model::updateHistory() {
    // Compile history information in every epoch
+   if(recorder_ == nullptr)
+   {
+      LOG4CPLUS_INFO(fileLogger_, "ERROR: Recorder class is null.");
+   }
    if (recorder_ != nullptr) {
       recorder_->compileHistories(*layout_->getNeurons());
    }

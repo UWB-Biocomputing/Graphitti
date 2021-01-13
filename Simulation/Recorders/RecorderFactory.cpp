@@ -5,6 +5,7 @@
 #include "RecorderFactory.h"
 
 #include "XmlGrowthRecorder.h"
+#include "XmlSTDPRecorder.h"
 //#include "Hdf5GrowthRecorder.h"
 
 /// Constructor is private to keep a singleton instance of this class.
@@ -12,6 +13,7 @@ RecorderFactory::RecorderFactory() {
    // register recorder classes
    registerClass("XmlRecorder", &XmlRecorder::Create);
    registerClass("XmlGrowthRecorder", &XmlGrowthRecorder::Create);
+   registerClass("XmlSTDPRecorder", &XmlSTDPRecorder::Create);
 //   registerClass("Hdf5Recorder", &Hdf5Recorder::Create);
 //   registerClass("Hdf5GrowthRecorder", &Hdf5GrowthRecorder::Create);
 }
@@ -48,5 +50,6 @@ IRecorder *RecorderFactory::invokeCreateFunction(const string &className) {
       if (className == i->first)
          return i->second();
    }
+   //INSERT CHECKING HERE
    return NULL;
 }
