@@ -1,34 +1,33 @@
-/*
- * AllDSSynapses_d.cu
+/**
+ * @file AllDSSynapses_d.cu
  *
+ * @ingroup Simulation/Edges
+ * 
+ * @brief 
  */
 
- #include "AllSynapsesDeviceFuncs.h"
+#include "AllSynapsesDeviceFuncs.h"
 #include "AllDSSynapses.h"
 #include "GPUSpikingModel.h"
 #include "Simulator.h"
 #include "Book.h"
 
-/*
- *  Allocate GPU memories to store all synapses' states,
- *  and copy them from host to GPU memory.
- *
- *  @param  allSynapsesDevice  GPU address of the AllDSSynapsesDeviceProperties struct 
- *                             on device memory.
- */
+///  Allocate GPU memories to store all synapses' states,
+///  and copy them from host to GPU memory.
+///
+///  @param  allSynapsesDevice  GPU address of the AllDSSynapsesDeviceProperties struct 
+///                             on device memory.
 void AllDSSynapses::allocSynapseDeviceStruct ( void** allSynapsesDevice ) {
 	allocSynapseDeviceStruct(allSynapsesDevice, Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
 }
 
-/*
- *  Allocate GPU memories to store all synapses' states,
- *  and copy them from host to GPU memory.
- *
- *  @param  allSynapsesDevice     GPU address of the AllDSSynapsesDeviceProperties struct 
- *                                on device memory.
- *  @param  numNeurons            Number of neurons.
- *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
- */
+///  Allocate GPU memories to store all synapses' states,
+///  and copy them from host to GPU memory.
+///
+///  @param  allSynapsesDevice     GPU address of the AllDSSynapsesDeviceProperties struct 
+///                                on device memory.
+///  @param  numNeurons            Number of neurons.
+///  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
 void AllDSSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron ) {
 	AllDSSynapsesDeviceProperties allSynapses;
 
@@ -38,16 +37,14 @@ void AllDSSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice, int numN
 	HANDLE_ERROR( cudaMemcpy ( *allSynapsesDevice, &allSynapses, sizeof( AllDSSynapsesDeviceProperties ), cudaMemcpyHostToDevice ) );
 }
 
-/*
- *  Allocate GPU memories to store all synapses' states,
- *  and copy them from host to GPU memory.
- *  (Helper function of allocSynapseDeviceStruct)
- *
- *  @param  allSynapsesDevice     GPU address of the AllDSSynapsesDeviceProperties struct 
- *                                on device memory.
- *  @param  numNeurons            Number of neurons.
- *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
- */
+///  Allocate GPU memories to store all synapses' states,
+///  and copy them from host to GPU memory.
+///  (Helper function of allocSynapseDeviceStruct)
+///
+///  @param  allSynapsesDevice     GPU address of the AllDSSynapsesDeviceProperties struct 
+///                                on device memory.
+///  @param  numNeurons            Number of neurons.
+///  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
 void AllDSSynapses::allocDeviceStruct( AllDSSynapsesDeviceProperties &allSynapses, int numNeurons, int maxSynapsesPerNeuron ) {
         AllSpikingSynapses::allocDeviceStruct( allSynapses, numNeurons, maxSynapsesPerNeuron );
 
@@ -61,12 +58,10 @@ void AllDSSynapses::allocDeviceStruct( AllDSSynapsesDeviceProperties &allSynapse
 	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.F_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
 }
 
-/*
- *  Delete GPU memories.
- *
- *  @param  allSynapsesDevice  GPU address of the AllDSSynapsesDeviceProperties struct 
- *                             on device memory.
- */
+///  Delete GPU memories.
+///
+///  @param  allSynapsesDevice  GPU address of the AllDSSynapsesDeviceProperties struct 
+///                             on device memory.
 void AllDSSynapses::deleteSynapseDeviceStruct( void* allSynapsesDevice ) {
 	AllDSSynapsesDeviceProperties allSynapses;
 
@@ -77,13 +72,11 @@ void AllDSSynapses::deleteSynapseDeviceStruct( void* allSynapsesDevice ) {
 	HANDLE_ERROR( cudaFree( allSynapsesDevice ) );
 }
 
-/*
- *  Delete GPU memories.
- *  (Helper function of deleteSynapseDeviceStruct)
- *
- *  @param  allSynapsesDeviceProps  GPU address of the AllDSSynapsesDeviceProperties struct 
- *                                  on device memory.
- */
+///  Delete GPU memories.
+///  (Helper function of deleteSynapseDeviceStruct)
+///
+///  @param  allSynapsesDeviceProps  GPU address of the AllDSSynapsesDeviceProperties struct 
+///                                  on device memory.
 void AllDSSynapses::deleteDeviceStruct( AllDSSynapsesDeviceProperties& allSynapsesDeviceProps ) {
         HANDLE_ERROR( cudaFree( allSynapsesDeviceProps.lastSpike_ ) );
 	HANDLE_ERROR( cudaFree( allSynapsesDeviceProps.r_ ) );
@@ -95,24 +88,20 @@ void AllDSSynapses::deleteDeviceStruct( AllDSSynapsesDeviceProperties& allSynaps
         AllSpikingSynapses::deleteDeviceStruct( allSynapsesDeviceProps );
 }
 
-/*
- *  Copy all synapses' data from host to device.
- *
- *  @param  allSynapsesDevice  GPU address of the AllDSSynapsesDeviceProperties struct 
- *                             on device memory.
- */
+///  Copy all synapses' data from host to device.
+///
+///  @param  allSynapsesDevice  GPU address of the AllDSSynapsesDeviceProperties struct 
+///                            on device memory.
 void AllDSSynapses::copySynapseHostToDevice( void* allSynapsesDevice) { // copy everything necessary
 	copySynapseHostToDevice(allSynapsesDevice, Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());	
 }
 
-/*
- *  Copy all synapses' data from host to device.
- *
- *  @param  allSynapsesDevice     GPU address of the AllDSSynapsesDeviceProperties struct 
- *                                on device memory.
- *  @param  numNeurons            Number of neurons.
- *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
- */
+///  Copy all synapses' data from host to device.
+///
+///  @param  allSynapsesDevice     GPU address of the AllDSSynapsesDeviceProperties struct 
+///                                on device memory.
+///  @param  numNeurons            Number of neurons.
+///  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
 void AllDSSynapses::copySynapseHostToDevice( void* allSynapsesDevice, int numNeurons, int maxSynapsesPerNeuron ) { // copy everything necessary
 	AllDSSynapsesDeviceProperties allSynapses;
 
@@ -120,15 +109,13 @@ void AllDSSynapses::copySynapseHostToDevice( void* allSynapsesDevice, int numNeu
 	copyHostToDevice( allSynapsesDevice, allSynapses, numNeurons, maxSynapsesPerNeuron );	
 }
 
-/*
- *  Copy all synapses' data from host to device.
- *  (Helper function of copySynapseHostToDevice)
- *
- *  @param  allSynapsesDevice     GPU address of the AllDSSynapsesDeviceProperties struct 
- *                                on device memory.
- *  @param  numNeurons            Number of neurons.
- *  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
- */
+///  Copy all synapses' data from host to device.
+///  (Helper function of copySynapseHostToDevice)
+///
+///  @param  allSynapsesDevice     GPU address of the AllDSSynapsesDeviceProperties struct 
+///                                on device memory.
+///  @param  numNeurons            Number of neurons.
+///  @param  maxSynapsesPerNeuron  Maximum number of synapses per neuron.
 void AllDSSynapses::copyHostToDevice( void* allSynapsesDevice, AllDSSynapsesDeviceProperties& allSynapsesDeviceProps, int numNeurons, int maxSynapsesPerNeuron ) { // copy everything necessary 
         AllSpikingSynapses::copyHostToDevice( allSynapsesDevice, allSynapsesDeviceProps, numNeurons, maxSynapsesPerNeuron );
 
@@ -148,12 +135,10 @@ void AllDSSynapses::copyHostToDevice( void* allSynapsesDevice, AllDSSynapsesDevi
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
 }
 
-/*
- *  Copy all synapses' data from device to host.
- *
- *  @param  allSynapsesDevice  GPU address of the AllDSSynapsesDeviceProperties struct 
- *                             on device memory.
- */
+///  Copy all synapses' data from device to host.
+///
+///  @param  allSynapsesDevice  GPU address of the AllDSSynapsesDeviceProperties struct 
+///                             on device memory.
 void AllDSSynapses::copySynapseDeviceToHost( void* allSynapsesDevice ) {
 	// copy everything necessary
 	AllDSSynapsesDeviceProperties allSynapsesDeviceProps;
@@ -163,15 +148,13 @@ void AllDSSynapses::copySynapseDeviceToHost( void* allSynapsesDevice ) {
 	copyDeviceToHost( allSynapsesDeviceProps );
 }
 
-/*
- *  Copy all synapses' data from device to host.
- *  (Helper function of copySynapseDeviceToHost)
- *
- *  @param  allSynapsesDeviceProps     GPU address of the AllDSSynapsesDeviceProperties struct 
- *                                     on device memory.
- *  @param  numNeurons                 Number of neurons.
- *  @param  maxSynapsesPerNeuron       Maximum number of synapses per neuron.
- */
+///  Copy all synapses' data from device to host.
+///  (Helper function of copySynapseDeviceToHost)
+///
+///  @param  allSynapsesDeviceProps     GPU address of the AllDSSynapsesDeviceProperties struct 
+///                                     on device memory.
+///  @param  numNeurons                 Number of neurons.
+///  @param  maxSynapsesPerNeuron       Maximum number of synapses per neuron.
 void AllDSSynapses::copyDeviceToHost( AllDSSynapsesDeviceProperties& allSynapsesDeviceProps ) {
         AllSpikingSynapses::copyDeviceToHost( allSynapsesDeviceProps ) ;
 
@@ -191,17 +174,15 @@ void AllDSSynapses::copyDeviceToHost( AllDSSynapsesDeviceProperties& allSynapses
         HANDLE_ERROR( cudaMemcpy ( F_, allSynapsesDeviceProps.F_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
 }
-
-/**     
- *  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
- *  The class ID will be set to classSynapses_d in device memory,
- *  and the classSynapses_d will be referred to call a device function for the
- *  particular synapse class.
- *  Because we cannot use virtual function (Polymorphism) in device functions,
- *  we use this scheme.
- *  Note: we used to use a function pointer; however, it caused the growth_cuda crash
- *  (see issue#137).
- */
+    
+///  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
+///  The class ID will be set to classSynapses_d in device memory,
+///  and the classSynapses_d will be referred to call a device function for the
+///  particular synapse class.
+///  Because we cannot use virtual function (Polymorphism) in device functions,
+///  we use this scheme.
+///  Note: we used to use a function pointer; however, it caused the growth_cuda crash
+///  (see issue#137).
 void AllDSSynapses::setSynapseClassID()
 {
     enumClassSynapses classSynapses_h = classAllDSSynapses;
@@ -209,11 +190,9 @@ void AllDSSynapses::setSynapseClassID()
     HANDLE_ERROR( cudaMemcpyToSymbol ( classSynapses_d, &classSynapses_h, sizeof(enumClassSynapses) ) );
 }
 
-/*
- *  Prints GPU SynapsesProps data.
- * 
- *  @param  allSynapsesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
- */
+///  Prints GPU SynapsesProps data.
+/// 
+///  @param  allSynapsesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
 void AllDSSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) const
 {
     AllDSSynapsesDeviceProperties allSynapsesProps;

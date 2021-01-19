@@ -1,30 +1,15 @@
 /**
- *      @file GpuSInputPoisson.h
+ * @file GpuSInputPoisson.h
  *
- *      @brief A class that performs stimulus input (implementation Poisson on GPU).
+ * @ingroup Simulation/Utils/Inputs
+ * 
+ * @brief A class that performs stimulus input (implementation Poisson on GPU).
+ *
+ * The GpuSInputPoisson performs providing stimulus input to the network for each time step.
+ * In this version, a layer of synapses are added, which accept external spike trains.
+ * Each synapse gets an indivisual spike train (Poisson distribution) characterized
+ * by mean firing rate, and each synapse has individual weight value.
  */
-
-/**
- **
- ** \class GpuSInputPoisson GpuSInputPoisson.h "GpuSInputPoisson.h"
- **
- ** \latexonly  \subsubsection*{Implementation} \endlatexonly
- ** \htmlonly   <h3>Implementation</h3> \endhtmlonly
- **
- ** The GpuSInputPoisson performs providing stimulus input to the network for each time step.
- ** In this version, a layer of synapses are added, which accept external spike trains.
- ** Each synapse gets an indivisual spike train (Poisson distribution) characterized
- ** by mean firing rate, and each synapse has individual weight value.
- **
- ** \latexonly  \subsubsection*{Credits} \endlatexonly
- ** \htmlonly   <h3>Credits</h3> \endhtmlonly
- **
- ** Some models in this simulator is a rewrite of CSIM (2006) and other 
- ** work (Stiber and Kawasaki (2007?))
- **
- **
- **     @author Fumitaka Kawasaki
- **/
 
 #pragma once
 

@@ -1,9 +1,9 @@
-/*
- *      \file SInputPoisson.cpp
+/**
+ * @file SInputPoisson.cpp
  *
- *      \author Fumitaka Kawasaki
- *
- *      \brief A class that performs stimulus input (implementation Poisson).
+ * @ingroup Simulation/Utils/Inputs
+ * 
+ * @brief A class that performs stimulus input (implementation Poisson).
  */
 
 #include "SInputPoisson.h"
@@ -12,10 +12,8 @@
 
 extern void getValueList(const string& valString, vector<BGFLOAT>* pList);
 
-/*
- * constructor
- * @param[in] parms     Pointer to xml parms element
- */
+/// constructor
+/// @param[in] parms     Pointer to xml parms element
 SInputPoisson::SInputPoisson(TiXmlElement* parms) :
     nISIs(NULL),
     synapses_(NULL),
@@ -109,18 +107,13 @@ SInputPoisson::SInputPoisson(TiXmlElement* parms) :
     fSInput = true;
 }
 
-/*
- * destructor
- */
 SInputPoisson::~SInputPoisson()
 {
 }
 
-/*
- * Initialize data.
- *
- *  @param[in] psi       Pointer to the simulation information.
- */
+/// Initialize data.
+///
+///  @param[in] psi       Pointer to the simulation information.
 void SInputPoisson::init()
 {
     if (fSInput == false)
@@ -145,11 +138,9 @@ void SInputPoisson::init()
     }
 }
 
-/*
- * Terminate process.
- *
- *  @param[in] psi       Pointer to the simulation information.
- */
+/// Terminate process.
+///
+///  @param[in] psi       Pointer to the simulation information.
 void SInputPoisson::term()
 {
     // clear memory for interval counter

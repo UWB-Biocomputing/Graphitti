@@ -1,46 +1,37 @@
-/*
- *      \file HostSInputRegular.cpp
+/**
+ * @file HostSInputRegular.cpp
  *
- *      \author Fumitaka Kawasaki
- *
- *      \brief A class that performs stimulus input (implementation Regular).
+ * @ingroup Simulation/Utils/Inputs
+ * 
+ * @brief A class that performs stimulus input (implementation Regular).
  */
 
 #include "HostSInputRegular.h"
 
-/*
- * constructor
- *
- * @param[in] psi       Pointer to the simulation information
- * @param[in] parms     TiXmlElement to examine.
- */
+/// constructor
+///
+/// @param[in] psi       Pointer to the simulation information
+/// @param[in] parms     TiXmlElement to examine.
 HostSInputRegular::HostSInputRegular(TiXmlElement* parms) : SInputRegular(parms)
 {
     
 }
 
-/**
- * destructor
- */
 HostSInputRegular::~HostSInputRegular()
 {
 }
 
-/*
- * Initialize data.
- *
- * @param[in] psi       Pointer to the simulation information.
- */
+/// Initialize data.
+///
+/// @param[in] psi       Pointer to the simulation information.
 void HostSInputRegular::init()
 {
     SInputRegular::init();
 }
 
-/*
- * Terminate process.
- *
- * @param[in] psi       Pointer to the simulation information.
- */
+/// Terminate process.
+///
+/// @param[in] psi       Pointer to the simulation information.
 void HostSInputRegular::term()
 {
     if (values != NULL)
@@ -50,12 +41,10 @@ void HostSInputRegular::term()
         delete[] nShiftValues;
 }
 
-/*
- * Process input stimulus for each time step.
- * Apply inputs on summationPoint.
- *
- * @param[in] psi             Pointer to the simulation information.
- */
+/// Process input stimulus for each time step.
+/// Apply inputs on summationPoint.
+///
+/// @param[in] psi             Pointer to the simulation information.
 void HostSInputRegular::inputStimulus()
 {
     if (fSInput == false)

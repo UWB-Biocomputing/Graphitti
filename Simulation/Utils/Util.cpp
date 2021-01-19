@@ -1,10 +1,16 @@
+/**
+ * @file Util.cpp
+ * 
+ * @brief
+ *
+ * @ingroup Simulation/Utils
+ */
+
 #include "Util.h"
 
 #include <sstream>
 
-/**
- * Helper function that helps with parsing integers in a fixed layout
- */
+/// Helper function that helps with parsing integers in a fixed layout
 void getValueList(const char *val_string, vector<int> *value_list) {
     std::istringstream val_stream(val_string);
     int i;

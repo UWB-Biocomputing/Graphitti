@@ -1,3 +1,11 @@
+/**
+ * @file FixedLayout.cpp
+ *
+ * @ingroup Simulation/Layouts
+ * 
+ * @brief 
+ */
+
 #include "FixedLayout.h"
 #include "ParseParamError.h"
 #include "Util.h"
@@ -8,22 +16,17 @@ FixedLayout::FixedLayout() : Layout() {
 FixedLayout::~FixedLayout() {
 }
 
-/**
- *  Prints out all parameters to logging file.
- *  Registered to OperationManager as Operation::printParameters
- */
+///  Prints out all parameters to logging file.
+///  Registered to OperationManager as Operation::printParameters
 void FixedLayout::printParameters() const {
    Layout::printParameters();
 
    LOG4CPLUS_DEBUG(fileLogger_, "\n\tLayout type: FixedLayout" << endl << endl);
 }
 
-/*
- *  Creates a randomly ordered distribution with the specified numbers of neuron types.
- *
- *  @param  numNeurons number of the neurons to have in the type map.
- *
- */
+///  Creates a randomly ordered distribution with the specified numbers of neuron types.
+///
+///  @param  numNeurons number of the neurons to have in the type map.
 void FixedLayout::generateNeuronTypeMap(int numNeurons) {
    Layout::generateNeuronTypeMap(numNeurons);
 
@@ -43,11 +46,9 @@ void FixedLayout::generateNeuronTypeMap(int numNeurons) {
    LOG4CPLUS_INFO(fileLogger_, "Finished initializing neuron type map");
 }
 
-/*
- *  Populates the starter map.
- *  Selects \e numStarter excitory neurons and converts them into starter neurons.
- *  @param  numNeurons number of neurons to have in the map.
- */
+///  Populates the starter map.
+///  Selects \e numStarter excitory neurons and converts them into starter neurons.
+///  @param  numNeurons number of neurons to have in the map.
 void FixedLayout::initStarterMap(const int numNeurons) {
    Layout::initStarterMap(numNeurons);
 

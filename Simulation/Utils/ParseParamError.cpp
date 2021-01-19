@@ -1,3 +1,11 @@
+/**
+ * @file ParseParamError.cpp
+ *
+ * @brief 
+ *
+ * @ingroup Simulation/Utils
+ */
+
 #include "ParseParamError.h"
 
 ParseParamError::ParseParamError(const string paramName, const string errorMessage) :

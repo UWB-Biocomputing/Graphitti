@@ -1,40 +1,34 @@
 /*
- *      \file GpuSInputPoisson.cu
+ * @file GpuSInputPoisson.cu
  *
- *      \author Fumitaka Kawasaki
+ * @ingroup Simulation/Utils/Inputs
  *
- *      \brief A class that performs stimulus input (implementation Poisson) on GPU.
+ * @brief A class that performs stimulus input (implementation Poisson) on GPU.
  */
 
 #include "curand_kernel.h"
 #include "GpuSInputPoisson.h"
 #include "Book.h"
 
-//! Memory to save global state for curand.
+/// Memory to save global state for curand.
 curandState* devStates_d;
 
-/*
- * constructor
- *
- * @param[in] psi       Pointer to the simulation information
- * @param[in] parms     TiXmlElement to examine.
- */
+/// constructor
+///
+/// @param[in] psi       Pointer to the simulation information
+/// @param[in] parms     TiXmlElement to examine.
 GpuSInputPoisson::GpuSInputPoisson(SimulationInfo* psi, TiXmlElement* parms) : SInputPoisson(psi, parms)
 {
 }
 
-/*
- * destructor
- */
+/// destructor
 GpuSInputPoisson::~GpuSInputPoisson()
 {
 }
 
-/*
- * Initialize data.
- *
- * @param[in] psi       Pointer to the simulation information.
- */
+/// Initialize data.
+///
+/// @param[in] psi       Pointer to the simulation information.
 void GpuSInputPoisson::init(SimulationInfo* psi)
 {
     SInputPoisson::init(psi);
@@ -54,11 +48,9 @@ void GpuSInputPoisson::init(SimulationInfo* psi)
     setupSeeds <<< blocksPerGrid, threadsPerBlock >>> ( neuron_count, devStates_d, time(NULL) );
 }
 
-/*
- * Terminate process.
- *
- * @param[in] psi                Pointer to the simulation information.
- */
+/// Terminate process.
+///
+/// @param[in] psi                Pointer to the simulation information.
 void GpuSInputPoisson::term(SimulationInfo* psi)
 {
     SInputPoisson::term(psi);
@@ -67,12 +59,10 @@ void GpuSInputPoisson::term(SimulationInfo* psi)
         deleteDeviceValues(psi->model, psi);
 }
 
-/*
- * Process input stimulus for each time step.
- * Apply inputs on summationPoint.
- *
- * @param[in] psi                Pointer to the simulation information.
- */
+/// Process input stimulus for each time step.
+/// Apply inputs on summationPoint.
+///
+/// @param[in] psi                Pointer to the simulation information.
 void GpuSInputPoisson::inputStimulus(SimulationInfo* psi)
 {
     if (fSInput == false)
@@ -95,13 +85,11 @@ void GpuSInputPoisson::inputStimulus(SimulationInfo* psi)
     applyI2SummationMap <<< blocksPerGrid, threadsPerBlock >>> ( neuron_count, psi->pSummationMap, allSynapsesDevice );
 }
 
-/*
- * Allocate GPU device memory and copy values
- *
- * @param[in] model      Pointer to the Neural Network Model object.
- * @param[in] psi        Pointer to the simulation information.
- * @param[in] nISIs      Pointer to the interval counter.
- */
+/// Allocate GPU device memory and copy values
+///
+/// @param[in] model      Pointer to the Neural Network Model object.
+/// @param[in] psi        Pointer to the simulation information.
+/// @param[in] nISIs      Pointer to the interval counter.
 void GpuSInputPoisson::allocDeviceValues(IModel* model, SimulationInfo* psi, int *nISIs )
 {
     int neuron_count = psi->totalNeurons;
@@ -146,12 +134,10 @@ void GpuSInputPoisson::allocDeviceValues(IModel* model, SimulationInfo* psi, int
     HANDLE_ERROR( cudaMemcpy ( masks_d, masks, neuron_count * sizeof( bool ), cudaMemcpyHostToDevice ) ); 
 }
 
-/*
- * Dellocate GPU device memory
- *
- * @param[in] model      Pointer to the Neural Network Model object.
- * @param[in] psi        Pointer to the simulation information.
- */
+/// Dellocate GPU device memory
+///
+/// @param[in] model      Pointer to the Neural Network Model object.
+/// @param[in] psi        Pointer to the simulation information.
 void GpuSInputPoisson::deleteDeviceValues(IModel* model, SimulationInfo* psi )
 {
     HANDLE_ERROR( cudaFree( nISIs_d ) );
@@ -167,18 +153,14 @@ void GpuSInputPoisson::deleteDeviceValues(IModel* model, SimulationInfo* psi )
     HANDLE_ERROR( cudaFree( synapseIndexMapDevice ) );
 }
 
-// CUDA code for -----------------------------------------------------------------------
-
-/*
- * Device code for adding input values to the summation map.
- *
- * @param[in] nISIs_d            Pointer to the interval counter.
- * @param[in] masks_d            Pointer to the input stimulus masks.
- * @param[in] deltaT             Time step of the simulation in second.
- * @param[in] lambda             Iinverse firing rate.
- * @param[in] devStates_d        Curand global state
- * @param[in] allSynapsesDevice  Pointer to Synapse structures in device memory.
- */
+/// Device code for adding input values to the summation map.
+///
+/// @param[in] nISIs_d            Pointer to the interval counter.
+/// @param[in] masks_d            Pointer to the input stimulus masks.
+/// @param[in] deltaT             Time step of the simulation in second.
+/// @param[in] lambda             Iinverse firing rate.
+/// @param[in] devStates_d        Curand global state
+/// @param[in] allSynapsesDevice  Pointer to Synapse structures in device memory.
 __global__ void inputStimulusDevice( int n, int* nISIs_d, bool* masks_d, BGFLOAT deltaT, BGFLOAT lambda, curandState* devStates_d, AllDSSynapsesDeviceProperties* allSynapsesDevice )
 {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -225,13 +207,11 @@ __global__ void inputStimulusDevice( int n, int* nISIs_d, bool* masks_d, BGFLOAT
     nISIs_d[idx] = rnISIs;
 }
 
-/*
- * CUDA code for update summation point
- *
- * @param[in] n                  Number of neurons.
- * @param[in] summationPoint_d   SummationPoint
- * @param[in] allSynapsesDevice  Pointer to Synapse structures in device memory.
- */
+/// CUDA code for update summation point
+///
+/// @param[in] n                  Number of neurons.
+/// @param[in] summationPoint_d   SummationPoint
+/// @param[in] allSynapsesDevice  Pointer to Synapse structures in device memory.
 __global__ void applyI2SummationMap( int n, BGFLOAT* summationPoint_d, AllDSSynapsesDeviceProperties* allSynapsesDevice ) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if ( idx >= n )
@@ -240,13 +220,11 @@ __global__ void applyI2SummationMap( int n, BGFLOAT* summationPoint_d, AllDSSyna
     summationPoint_d[idx] += allSynapsesDevice->psr[idx];
 }
 
-/*
- * CUDA code for setup curand seed
- *
- * @param[in] n                  Number of neurons.
- * @param[in] devStates_d        Curand global state
- * @param[in] seed               Seed
- */
+/// CUDA code for setup curand seed
+///
+/// @param[in] n                  Number of neurons.
+/// @param[in] devStates_d        Curand global state
+/// @param[in] seed               Seed
 __global__ void setupSeeds( int n, curandState* devStates_d, unsigned long seed )
 {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;

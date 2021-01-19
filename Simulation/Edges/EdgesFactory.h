@@ -1,6 +1,9 @@
 /**
- *  A factory class for creating Edges objects.
+ * @file EdgesFactory.h
+ * 
+ * @ingroup Simulation/Edges
  *
+ * @brief A factory class for creating Edges objects.
  */
 
 #pragma once
@@ -27,7 +30,7 @@ public:
    // Invokes constructor for desired concrete class
    shared_ptr<IAllSynapses> createEdges(const string &className);
 
-   /// Delete these methods because they can cause copy instances of the singleton when using threads.
+   // Delete these methods because they can cause copy instances of the singleton when using threads.
    EdgesFactory(EdgesFactory const &) = delete;
    void operator=(EdgesFactory const &) = delete;
 
@@ -38,7 +41,6 @@ private:
    /// Pointer to edges instance
    shared_ptr<IAllSynapses> edgesInstance_;
 
-   /* Type definitions */
    /// Defines function type for usage in internal map
    typedef IAllSynapses *(*CreateFunction)(void);
 

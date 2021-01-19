@@ -1,6 +1,11 @@
-/*
- * Sample class used for testing purposes. Will be replaced once lower level classes are imported into the project.
+/**
+ * @file OperationManagerTestingClass.h
+ *
+ * @brief  Sample class used for testing purposes. 
+ * Will be replaced once lower level classes are imported into the project.
  * Delete by the end of Summer 2020.
+ *
+ * @ingroup Testing/Core
  */
 
 #pragma once

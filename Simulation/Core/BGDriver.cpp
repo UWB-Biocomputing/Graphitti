@@ -1,6 +1,10 @@
 /**
- * @file Driver
+ * @file BGDriver.cpp
+ * 
+ * @ingroup Simulation/Core
  *
+ * @brief Orchestrates most functionality in the simulation.
+ * 
  *  The driver performs the following steps:
  *  1) Instantiates Simulator object
  *  2) Parses command line to get configuration file and additional information if provided
@@ -34,7 +38,7 @@
 // Uncomment to use visual leak detector (Visual Studios Plugin)
 // #include <vld.h>
 
-//! Cereal
+// Cereal
 #include <cereal/archives/xml.hpp>
 #include <cereal/archives/binary.hpp>
 #include "ConnGrowth.h" // hacked in. that's why its here.
@@ -54,15 +58,13 @@ bool parseCommandLine(int argc, char *argv[]);
 bool deserializeSynapses();
 void serializeSynapses();
 
-/*
- *  Main for Simulator. Handles command line arguments and loads parameters
- *  from parameter file. All initial loading before running simulator in Network
- *  is here.
- *
- *  @param  argc    argument count.
- *  @param  argv    arguments.
- *  @return -1 if error, else if success.
- */
+///  Main for Simulator. Handles command line arguments and loads parameters
+///  from parameter file. All initial loading before running simulator in Network
+///  is here.
+///
+///  @param  argc    argument count.
+///  @param  argv    arguments.
+///  @return -1 if error, else if success.
 int main(int argc, char *argv[]) {
    // Clear logging files at the start of each simulation
    fstream("Output/Debug/logging.txt", ios::out | ios::trunc);
@@ -177,13 +179,11 @@ int main(int argc, char *argv[]) {
    return 0;
 }
 
-/*
- *  Handles parsing of the command line
- *
- *  @param  argc      argument count.
- *  @param  argv      arguments.
- *  @returns    true if successful, false otherwise.
- */
+///  Handles parsing of the command line
+///
+///  @param  argc      argument count.
+///  @param  argv      arguments.
+///  @returns    true if successful, false otherwise.
 bool parseCommandLine(int argc, char *argv[]) {
    ParamContainer cl; // todo: note as third party class.
    cl.initOptions(false);  // don't allow unknown parameters
@@ -230,13 +230,11 @@ bool parseCommandLine(int argc, char *argv[]) {
    return true;
 }
 
-/*
- *  Deserializes synapse weights, source neurons, destination neurons,
- *  maxSynapsesPerNeuron, totalNeurons, and
- *  if running a connGrowth model and radii is in serialization file, deserializes radii as well
- *
- *  @returns    true if successful, false otherwise.
- */
+///  Deserializes synapse weights, source neurons, destination neurons,
+///  maxSynapsesPerNeuron, totalNeurons, and
+///  if running a connGrowth model and radii is in serialization file, deserializes radii as well
+///
+///  @returns    true if successful, false otherwise.
 bool deserializeSynapses() {
    Simulator &simulator = Simulator::getInstance();
    // We can deserialize from a variety of archive file formats. Below, comment

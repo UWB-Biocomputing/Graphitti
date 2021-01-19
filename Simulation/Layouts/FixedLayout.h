@@ -1,15 +1,9 @@
 /**
- *      @file FixedLayout.h
+ * @file FixedLayout.h
+ * 
+ * @ingroup Simulation/Layouts
  *
- *      @brief The Layout class defines the layout of neurons in neunal networks
- */
-
-/**
- *
- * @class FixedLayout FixedLayout.h "FixedLayout.h"
- *
- * \latexonly  \subsubsection*{Implementation} \endlatexonly
- * \htmlonly   <h3>Implementation</h3> \endhtmlonly
+ * @brief The Layout class defines the layout of neurons in neunal networks
  *
  * The FixedLayout class maintains neurons locations (x, y coordinates), 
  * distance of every couple neurons,
@@ -17,7 +11,6 @@
  * (distribution of endogenously active neurons).  
  *
  * The FixedLayout class reads all layout information from parameter description file.
- *
  */
 
 #pragma once
@@ -34,26 +27,20 @@ public:
 
    static Layout *Create() { return new FixedLayout(); }
 
-   /**
-    *  Prints out all parameters to logging file.
-    *  Registered to OperationManager as Operation::printParameters
-    */
+   ///  Prints out all parameters to logging file.
+   ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
 
-   /**
-    *  Creates a neurons type map.
-    *
-    *  @param  numNeurons number of the neurons to have in the type map.
-    */
+   ///  Creates a neurons type map.
+   ///
+   ///  @param  numNeurons number of the neurons to have in the type map.
    virtual void generateNeuronTypeMap(int numNeurons);
 
-   /**
-    *  Populates the starter map.
-    *  Selects num_endogenously_active_neurons excitory neurons
-    *  and converts them into starter neurons.
-    *
-    *  @param  numNeurons number of neurons to have in the map.
-    */
+   ///  Populates the starter map.
+   ///  Selects num_endogenously_active_neurons excitory neurons
+   ///  and converts them into starter neurons.
+   ///
+   ///  @param  numNeurons number of neurons to have in the map.
    virtual void initStarterMap(const int numNeurons);
 };
 

@@ -1,3 +1,11 @@
+/**
+ * @file AllSynapsesDeviceFuncs_d.cu
+ * 
+ * @ingroup Simulation/Edges
+ *
+ * @brief
+ */
+
 #include <vector>
 
 #include "AllSynapsesDeviceFuncs.h"
@@ -5,16 +13,15 @@
 #include "AllSTDPSynapses.h"
 #include "AllDynamicSTDPSynapses.h"
 
-/* ------------------------------------*\
-|* # Device Functions for utility
-\* ------------------------------------*/
+/******************************************
+ * @name Device Functions for utility
+******************************************/
+///@{
 
-/*
- * Return 1 if originating neuron is excitatory, -1 otherwise.
- *
- * @param[in] t  synapseType I to I, I to E, E to I, or E to E
- * @return 1 or -1
- */
+/// Return 1 if originating neuron is excitatory, -1 otherwise.
+///
+/// @param[in] t  synapseType I to I, I to E, E to I, or E to E
+/// @return 1 or -1
 __device__ int synSign( synapseType t )
 {
         switch ( t )
@@ -29,20 +36,20 @@ __device__ int synSign( synapseType t )
 
         return 0;
 }
+///@}
 
-/* --------------------------------------*\
-|* # Device Functions for advanceSynapses
-\* --------------------------------------*/
+/******************************************
+ * @name Device Functions for advanceSynapses
+******************************************/
+///@{
 
-/*
- *  Update PSR (post synapse response)
- *
- *  @param  allSynapsesDevice  GPU address of the AllSpikingSynapsesDeviceProperties struct
- *                             on device memory.
- *  @param  iSyn               Index of the synapse to set.
- *  @param  simulationStep     The current simulation step.
- *  @param  deltaT             Inner simulation step duration.
- */
+///  Update PSR (post synapse response)
+///
+///  @param  allSynapsesDevice  GPU address of the AllSpikingSynapsesDeviceProperties struct
+///                             on device memory.
+///  @param  iSyn               Index of the synapse to set.
+///  @param  simulationStep     The current simulation step.
+///  @param  deltaT             Inner simulation step duration.
 __device__ void changeSpikingSynapsesPSRDevice(AllSpikingSynapsesDeviceProperties* allSynapsesDevice, const BGSIZE iSyn, const uint64_t simulationStep, const BGFLOAT deltaT)
 {
     BGFLOAT &psr = allSynapsesDevice->psr_[iSyn];
@@ -52,15 +59,13 @@ __device__ void changeSpikingSynapsesPSRDevice(AllSpikingSynapsesDevicePropertie
     psr += ( W / decay );    // calculate psr
 }
 
-/*
- *  Update PSR (post synapse response)
- *
- *  @param  allSynapsesDevice  GPU address of the AllDSSynapsesDeviceProperties struct
- *                             on device memory.
- *  @param  iSyn               Index of the synapse to set.
- *  @param  simulationStep     The current simulation step.
- *  @param  deltaT             Inner simulation step duration.
- */
+///  Update PSR (post synapse response)
+///
+///  @param  allSynapsesDevice  GPU address of the AllDSSynapsesDeviceProperties struct
+///                             on device memory.
+///  @param  iSyn               Index of the synapse to set.
+///  @param  simulationStep     The current simulation step.
+///  @param  deltaT             Inner simulation step duration.
 __device__ void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties* allSynapsesDevice, const BGSIZE iSyn, const uint64_t simulationStep, const BGFLOAT deltaT)
 {
     //assert( iSyn < allSynapsesDevice->maxSynapsesPerNeuron * allSynapsesDevice->countNeurons_ );
@@ -84,16 +89,14 @@ __device__ void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties* allSynap
     psr += ( ( W / decay ) * u * r );// calculate psr
     lastSpike = simulationStep; // record the time of the spike
 }
-
-/*     
- *  Checks if there is an input spike in the queue.
- *
- *  @param[in] allSynapsesDevice     GPU address of AllSpikingSynapsesDeviceProperties structures 
- *                                   on device memory.
- *  @param[in] iSyn                  Index of the Synapse to check.
- *
- *  @return true if there is an input spike event.
- */
+    
+///  Checks if there is an input spike in the queue.
+///
+///  @param[in] allSynapsesDevice     GPU address of AllSpikingSynapsesDeviceProperties structures 
+///                                   on device memory.
+///  @param[in] iSyn                  Index of the Synapse to check.
+///
+///  @return true if there is an input spike event.
 __device__ bool isSpikingSynapsesSpikeQueueDevice(AllSpikingSynapsesDeviceProperties* allSynapsesDevice, BGSIZE iSyn)
 {
     uint32_t &delayQueue = allSynapsesDevice->delayQueue_[iSyn];
@@ -109,18 +112,16 @@ __device__ bool isSpikingSynapsesSpikeQueueDevice(AllSpikingSynapsesDeviceProper
 
     return isFired;
 }
-
-/*     
- *  Adjust synapse weight according to the Spike-timing-dependent synaptic modification
- *  induced by natural spike trains
- *
- *  @param  allSynapsesDevice    GPU address of the AllSTDPSynapsesDeviceProperties structures 
- *                               on device memory.
- *  @param  iSyn                 Index of the synapse to set.
- *  @param  delta                Pre/post synaptic spike interval.
- *  @param  epost                Params for the rule given in Froemke and Dan (2002).
- *  @param  epre                 Params for the rule given in Froemke and Dan (2002).
- */
+   
+///  Adjust synapse weight according to the Spike-timing-dependent synaptic modification
+///  induced by natural spike trains
+///
+///  @param  allSynapsesDevice    GPU address of the AllSTDPSynapsesDeviceProperties structures 
+///                               on device memory.
+///  @param  iSyn                 Index of the synapse to set.
+///  @param  delta                Pre/post synaptic spike interval.
+///  @param  epost                Params for the rule given in Froemke and Dan (2002).
+///  @param  epre                 Params for the rule given in Froemke and Dan (2002).
 __device__ void stdpLearningDevice(AllSTDPSynapsesDeviceProperties* allSynapsesDevice, const BGSIZE iSyn, double delta, double epost, double epre)
 {
     BGFLOAT STDPgap = allSynapsesDevice->STDPgap_[iSyn];
@@ -172,15 +173,13 @@ __device__ void stdpLearningDevice(AllSTDPSynapsesDeviceProperties* allSynapsesD
     // );
 }
 
-/*
- *  Checks if there is an input spike in the queue.
- *
- *  @param[in] allSynapsesDevice     GPU adress of AllSTDPSynapsesDeviceProperties structures 
- *                                   on device memory.
- *  @param[in] iSyn                  Index of the Synapse to check.
- *
- *  @return true if there is an input spike event.
- */
+///  Checks if there is an input spike in the queue.
+///
+///  @param[in] allSynapsesDevice     GPU adress of AllSTDPSynapsesDeviceProperties structures 
+///                                   on device memory.
+///  @param[in] iSyn                  Index of the Synapse to check.
+///
+///  @return true if there is an input spike event.
 __device__ bool isSTDPSynapseSpikeQueuePostDevice(AllSTDPSynapsesDeviceProperties* allSynapsesDevice, BGSIZE iSyn)
 {
     uint32_t &delayQueue = allSynapsesDevice->delayQueuePost_[iSyn];
@@ -197,39 +196,37 @@ __device__ bool isSTDPSynapseSpikeQueuePostDevice(AllSTDPSynapsesDevicePropertie
     return isFired;
 }
 
-/*
- *  Gets the spike history of the neuron.
- *
- *  @param  allNeuronsDevice       GPU address of the allNeurons struct on device memory. 
- *  @param  index                  Index of the neuron to get spike history.
- *  @param  offIndex               Offset of the history beffer to get.
- *                                 -1 will return the last spike.
- *  @param  maxSpikes              Maximum number of spikes per neuron per epoch.
- *
- *  @return Spike history.
- */
+///  Gets the spike history of the neuron.
+///
+///  @param  allNeuronsDevice       GPU address of the allNeurons struct on device memory. 
+///  @param  index                  Index of the neuron to get spike history.
+///  @param  offIndex               Offset of the history beffer to get.
+///                                 -1 will return the last spike.
+///  @param  maxSpikes              Maximum number of spikes per neuron per epoch.
+///
+///  @return Spike history.
 __device__ uint64_t getSTDPSynapseSpikeHistoryDevice(AllSpikingNeuronsDeviceProperties* allNeuronsDevice, int index, int offIndex, int maxSpikes)
 {
     // offIndex is a minus offset
     int idxSp = (allNeuronsDevice->spikeCount_[index] + allNeuronsDevice->spikeCountOffset_[index] +  maxSpikes + offIndex) % maxSpikes;
     return allNeuronsDevice->spikeHistory_[index][idxSp];
 }
+///@}
 
-/* --------------------------------------*\
-|* # Global Functions for advanceSynapses
-\* --------------------------------------*/
+/******************************************
+ * @name Global Functions for advanceSynapses
+******************************************/
+///@{
 
-/*
- *  CUDA code for advancing spiking synapses.
- *  Perform updating synapses for one time step.
- *
- *  @param[in] totalSynapseCount  Number of synapses.
- *  @param  synapseIndexMapDevice    GPU address of the SynapseIndexMap on device memory.
- *  @param[in] simulationStep        The current simulation step.
- *  @param[in] deltaT                Inner simulation step duration.
- *  @param[in] allSynapsesDevice     Pointer to AllSpikingSynapsesDeviceProperties structures 
- *                                   on device memory.
- */
+///  CUDA code for advancing spiking synapses.
+///  Perform updating synapses for one time step.
+///
+///  @param[in] totalSynapseCount  Number of synapses.
+///  @param  synapseIndexMapDevice    GPU address of the SynapseIndexMap on device memory.
+///  @param[in] simulationStep        The current simulation step.
+///  @param[in] deltaT                Inner simulation step duration.
+///  @param[in] allSynapsesDevice     Pointer to AllSpikingSynapsesDeviceProperties structures 
+///                                   on device memory.
 __global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, SynapseIndexMap* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSpikingSynapsesDeviceProperties* allSynapsesDevice ) {
         int idx = blockIdx.x * blockDim.x + threadIdx.x;
         if ( idx >= totalSynapseCount )
@@ -261,19 +258,17 @@ __global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, SynapseInd
         psr *= decay;
 }
 
-/*
- *  CUDA code for advancing STDP synapses.
- *  Perform updating synapses for one time step.
- *
- *  @param[in] totalSynapseCount        Number of synapses.
- *  @param[in] synapseIndexMapDevice    GPU address of the SynapseIndexMap on device memory.
- *  @param[in] simulationStep           The current simulation step.
- *  @param[in] deltaT                   Inner simulation step duration.
- *  @param[in] allSynapsesDevice        GPU address of AllSTDPSynapsesDeviceProperties structures 
- *                                      on device memory.
- *  @param[in] allNeuronsDevice         GPU address of AllNeurons structures on device memory.
- *  @param[in] maxSpikes                Maximum number of spikes per neuron per epoch.               
- */
+///  CUDA code for advancing STDP synapses.
+///  Perform updating synapses for one time step.
+///
+///  @param[in] totalSynapseCount        Number of synapses.
+///  @param[in] synapseIndexMapDevice    GPU address of the SynapseIndexMap on device memory.
+///  @param[in] simulationStep           The current simulation step.
+///  @param[in] deltaT                   Inner simulation step duration.
+///  @param[in] allSynapsesDevice        GPU address of AllSTDPSynapsesDeviceProperties structures 
+///                                      on device memory.
+///  @param[in] allNeuronsDevice         GPU address of AllNeurons structures on device memory.
+///  @param[in] maxSpikes                Maximum number of spikes per neuron per epoch.               
 __global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, SynapseIndexMap* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSTDPSynapsesDeviceProperties* allSynapsesDevice, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, int maxSpikes ) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if ( idx >= totalSynapseCount )
@@ -432,24 +427,24 @@ __global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, SynapseIndexM
     // decay the post spike response
     psr *= decay;
 }
+///@}
 
-/* ------------------------------------*\
-|* # Device Functions for createSynapse
-\* ------------------------------------*/
+/******************************************
+ * @name Device Functions for createSynapse
+******************************************/
+///@{
 
-/*
- *  Create a Spiking Synapse and connect it to the model.
- *
- *  @param allSynapsesDevice    GPU address of the AllSpikingSynapsesDeviceProperties structures 
- *                              on device memory.
- *  @param neuronIndex          Index of the source neuron.
- *  @param synapseOffset        Offset (into neuronIndex's) of the Synapse to create.
- *  @param srcNeuron            Coordinates of the source Neuron.
- *  @param destNeuron           Coordinates of the destination Neuron.
- *  @param sumPoint             Pointer to the summation point.
- *  @param deltaT               The time step size.
- *  @param type                 Type of the Synapse to create.
- */
+///  Create a Spiking Synapse and connect it to the model.
+///
+///  @param allSynapsesDevice    GPU address of the AllSpikingSynapsesDeviceProperties structures 
+///                              on device memory.
+///  @param neuronIndex          Index of the source neuron.
+///  @param synapseOffset        Offset (into neuronIndex's) of the Synapse to create.
+///  @param srcNeuron            Coordinates of the source Neuron.
+///  @param destNeuron           Coordinates of the destination Neuron.
+///  @param sumPoint             Pointer to the summation point.
+///  @param deltaT               The time step size.
+///  @param type                 Type of the Synapse to create.
 __device__ void createSpikingSynapse(AllSpikingSynapsesDeviceProperties* allSynapsesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, synapseType type)
 {
     BGFLOAT delay;
@@ -500,19 +495,17 @@ __device__ void createSpikingSynapse(AllSpikingSynapsesDeviceProperties* allSyna
     assert( size <= BYTES_OF_DELAYQUEUE );
 }
 
-/*
- *  Create a DS Synapse and connect it to the model.
- *
- *  @param allSynapsesDevice    GPU address of the AllDSSynapsesDeviceProperties structures 
- *                              on device memory.
- *  @param neuronIndex          Index of the source neuron.
- *  @param synapseOffset        Offset (into neuronIndex's) of the Synapse to create.
- *  @param srcNeuron            Coordinates of the source Neuron.
- *  @param destNeuron           Coordinates of the destination Neuron.
- *  @param sumPoint             Pointer to the summation point.
- *  @param deltaT               The time step size.
- *  @param type                 Type of the Synapse to create.
- */
+///  Create a DS Synapse and connect it to the model.
+///
+///  @param allSynapsesDevice    GPU address of the AllDSSynapsesDeviceProperties structures 
+///                              on device memory.
+///  @param neuronIndex          Index of the source neuron.
+///  @param synapseOffset        Offset (into neuronIndex's) of the Synapse to create.
+///  @param srcNeuron            Coordinates of the source Neuron.
+///  @param destNeuron           Coordinates of the destination Neuron.
+///  @param sumPoint             Pointer to the summation point.
+///  @param deltaT               The time step size.
+///  @param type                 Type of the Synapse to create.
 __device__ void createDSSynapse(AllDSSynapsesDeviceProperties* allSynapsesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, synapseType type)
 {
     BGFLOAT delay;
@@ -586,19 +579,17 @@ __device__ void createDSSynapse(AllDSSynapsesDeviceProperties* allSynapsesDevice
     assert( size <= BYTES_OF_DELAYQUEUE );
 }
 
-/*
- *  Create a Synapse and connect it to the model.
- *
- *  @param allSynapsesDevice    GPU address of the AllSTDPSynapsesDeviceProperties structures 
- *                              on device memory.
- *  @param neuronIndex          Index of the source neuron.
- *  @param synapseOffset        Offset (into neuronIndex's) of the Synapse to create.
- *  @param srcNeuron            Coordinates of the source Neuron.
- *  @param destNeuron           Coordinates of the destination Neuron.
- *  @param sumPoint             Pointer to the summation point.
- *  @param deltaT               The time step size.
- *  @param type                 Type of the Synapse to create.
- */
+///  Create a Synapse and connect it to the model.
+///
+///  @param allSynapsesDevice    GPU address of the AllSTDPSynapsesDeviceProperties structures 
+///                              on device memory.
+///  @param neuronIndex          Index of the source neuron.
+///  @param synapseOffset        Offset (into neuronIndex's) of the Synapse to create.
+///  @param srcNeuron            Coordinates of the source Neuron.
+///  @param destNeuron           Coordinates of the destination Neuron.
+///  @param sumPoint             Pointer to the summation point.
+///  @param deltaT               The time step size.
+///  @param type                 Type of the Synapse to create.
 __device__ void createSTDPSynapse(AllSTDPSynapsesDeviceProperties* allSynapsesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, synapseType type)
 {
     BGFLOAT delay;
@@ -670,19 +661,17 @@ __device__ void createSTDPSynapse(AllSTDPSynapsesDeviceProperties* allSynapsesDe
     allSynapsesDevice->useFroemkeDanSTDP_[iSyn] = false;
 }
 
-/*
- *  Create a Synapse and connect it to the model.
- *
- *  @param allSynapsesDevice    GPU address of the AllDynamicSTDPSynapsesDeviceProperties structures 
- *                              on device memory.
- *  @param neuronIndex          Index of the source neuron.
- *  @param synapseOffset        Offset (into neuronIndex's) of the Synapse to create.
- *  @param srcNeuron            Coordinates of the source Neuron.
- *  @param destNeuron           Coordinates of the destination Neuron.
- *  @param sumPoint             Pointer to the summation point.
- *  @param deltaT               The time step size.
- *  @param type                 Type of the Synapse to create.
- */
+///  Create a Synapse and connect it to the model.
+///
+///  @param allSynapsesDevice    GPU address of the AllDynamicSTDPSynapsesDeviceProperties structures 
+///                              on device memory.
+///  @param neuronIndex          Index of the source neuron.
+///  @param synapseOffset        Offset (into neuronIndex's) of the Synapse to create.
+///  @param srcNeuron            Coordinates of the source Neuron.
+///  @param destNeuron           Coordinates of the destination Neuron.
+///  @param sumPoint             Pointer to the summation point.
+///  @param deltaT               The time step size.
+///  @param type                 Type of the Synapse to create.
 __device__ void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperties* allSynapsesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, synapseType type)
 {
     BGFLOAT delay;
@@ -777,21 +766,19 @@ __device__ void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperties*
     allSynapsesDevice->useFroemkeDanSTDP_[iSyn] = false;
 }
 
-/*
- * Adds a synapse to the network.  Requires the locations of the source and
- * destination neurons.
- *
- * @param allSynapsesDevice      Pointer to the AllSpikingSynapsesDeviceProperties structures 
- *                               on device memory.
- * @param type                   Type of the Synapse to create.
- * @param srcNeuron            Coordinates of the source Neuron.
- * @param destNeuron           Coordinates of the destination Neuron.
-
- * @param sumPoint              Pointer to the summation point.
- * @param deltaT                 The time step size.
- * @param W_d                    Array of synapse weight.
- * @param numNeurons            The number of neurons.
- */
+/// Adds a synapse to the network.  Requires the locations of the source and
+/// destination neurons.
+///
+/// @param allSynapsesDevice      Pointer to the AllSpikingSynapsesDeviceProperties structures 
+///                               on device memory.
+/// @param type                   Type of the Synapse to create.
+/// @param srcNeuron            Coordinates of the source Neuron.
+/// @param destNeuron           Coordinates of the destination Neuron.
+///
+/// @param sumPoint              Pointer to the summation point.
+/// @param deltaT                 The time step size.
+/// @param W_d                    Array of synapse weight.
+/// @param numNeurons            The number of neurons.
 __device__ void addSpikingSynapse(AllSpikingSynapsesDeviceProperties* allSynapsesDevice, synapseType type, const int srcNeuron, const int destNeuron, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, BGFLOAT* W_d, int numNeurons)
 {
     if (allSynapsesDevice->synapseCounts_[destNeuron] >= allSynapsesDevice->maxSynapsesPerNeuron_) {
@@ -830,15 +817,13 @@ __device__ void addSpikingSynapse(AllSpikingSynapsesDeviceProperties* allSynapse
     allSynapsesDevice->W_[synapseBegin + synapseIndex] = W_d[srcNeuron * numNeurons + destNeuron] * synSign(type) * AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
 }
 
-/*
- * Remove a synapse from the network.
- *
- * @param[in] allSynapsesDevice      Pointer to the AllSpikingSynapsesDeviceProperties structures 
- *                                   on device memory.
- * @param neuronIndex               Index of a neuron.
- * @param synapseOffset             Offset into neuronIndex's synapses.
- * @param[in] maxSynapses            Maximum number of synapses per neuron.
- */
+/// Remove a synapse from the network.
+///
+/// @param[in] allSynapsesDevice      Pointer to the AllSpikingSynapsesDeviceProperties structures 
+///                                   on device memory.
+/// @param neuronIndex               Index of a neuron.
+/// @param synapseOffset             Offset into neuronIndex's synapses.
+/// @param[in] maxSynapses            Maximum number of synapses per neuron.
 __device__ void eraseSpikingSynapse( AllSpikingSynapsesDeviceProperties* allSynapsesDevice, const int neuronIndex, const int synapseOffset, int maxSynapses )
 {
     BGSIZE iSync = maxSynapses * neuronIndex + synapseOffset;
@@ -847,13 +832,11 @@ __device__ void eraseSpikingSynapse( AllSpikingSynapsesDeviceProperties* allSyna
     allSynapsesDevice->W_[iSync] = 0;
 }
 
-/*
- * Returns the type of synapse at the given coordinates
- *
- * @param[in] allNeuronsDevice          Pointer to the Neuron structures in device memory.
- * @param srcNeuron             Index of the source neuron.
- * @param destNeuron            Index of the destination neuron.
- */
+/// Returns the type of synapse at the given coordinates
+///
+/// @param[in] allNeuronsDevice          Pointer to the Neuron structures in device memory.
+/// @param srcNeuron             Index of the source neuron.
+/// @param destNeuron            Index of the destination neuron.
 __device__ synapseType synType( neuronType* neuronTypeMap_d, const int srcNeuron, const int destNeuron )
 {
     if ( neuronTypeMap_d[srcNeuron] == INH && neuronTypeMap_d[destNeuron] == INH )
@@ -868,22 +851,22 @@ __device__ synapseType synType( neuronType* neuronTypeMap_d, const int srcNeuron
     return STYPE_UNDEF;
 
 }
+///@}
 
-/* -------------------------------------*\
-|* # Global Functions for updateSynapses
-\* -------------------------------------*/
+/******************************************
+ * @name Global Functions for updateSynapses
+******************************************/
+///@{
 
-/*
- * Adjust the strength of the synapse or remove it from the synapse map if it has gone below
- * zero.
- *
- * @param[in] numNeurons        Number of neurons.
- * @param[in] deltaT             The time step size.
- * @param[in] W_d                Array of synapse weight.
- * @param[in] maxSynapses        Maximum number of synapses per neuron.
- * @param[in] allNeuronsDevice   Pointer to the Neuron structures in device memory.
- * @param[in] allSynapsesDevice  Pointer to the Synapse structures in device memory.
- */
+/// Adjust the strength of the synapse or remove it from the synapse map if it has gone below
+/// zero.
+///
+/// @param[in] numNeurons        Number of neurons.
+/// @param[in] deltaT             The time step size.
+/// @param[in] W_d                Array of synapse weight.
+/// @param[in] maxSynapses        Maximum number of synapses per neuron.
+/// @param[in] allNeuronsDevice   Pointer to the Neuron structures in device memory.
+/// @param[in] allSynapsesDevice  Pointer to the Synapse structures in device memory.
 __global__ void updateSynapsesWeightsDevice( int numNeurons, BGFLOAT deltaT, BGFLOAT* W_d, int maxSynapses, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, neuronType* neuronTypeMap_d )
 {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -945,15 +928,13 @@ __global__ void updateSynapsesWeightsDevice( int numNeurons, BGFLOAT deltaT, BGF
 }
 
 
-/* 
- * Adds a synapse to the network.  Requires the locations of the source and
- * destination neurons.
- *
- * @param allSynapsesDevice      Pointer to the Synapse structures in device memory.
- * @param pSummationMap          Pointer to the summation point.
- * @param deltaT                 The simulation time step size.
- * @param weight                 Synapse weight.
- */
+/// Adds a synapse to the network.  Requires the locations of the source and
+/// destination neurons.
+///
+/// @param allSynapsesDevice      Pointer to the Synapse structures in device memory.
+/// @param pSummationMap          Pointer to the summation point.
+/// @param deltaT                 The simulation time step size.
+/// @param weight                 Synapse weight.
 __global__ void initSynapsesDevice( int n, AllDSSynapsesDeviceProperties* allSynapsesDevice, BGFLOAT *pSummationMap, const BGFLOAT deltaT, BGFLOAT weight )
 {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -967,5 +948,5 @@ __global__ void initSynapsesDevice( int n, AllDSSynapsesDeviceProperties* allSyn
     createDSSynapse(allSynapsesDevice, neuronIndex, 0, 0, neuronIndex, sumPoint, deltaT, type );
     allSynapsesDevice->W_[neuronIndex] = weight * AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
 }
-
+///@}
 

@@ -1,8 +1,9 @@
 /**
- *  Singleton class for cre
+ * @file EdgesFactory.cpp
+ * 
+ * @ingroup Simulation/Edges
  *
- *  A factory class for creating Edges objects.
- *
+ * @brief A factory class for creating Edges objects.
  */
 
 #include "EdgesFactory.h"
@@ -25,12 +26,10 @@ EdgesFactory::~EdgesFactory() {
    createFunctions.clear();
 }
 
-/*
- *  Register edges class and its creation function to the factory.
- *
- *  @param  className  neurons class name.
- *  @param  Pointer to the class creation function.
- */
+///  Register edges class and its creation function to the factory.
+///
+///  @param  className  neurons class name.
+///  @param  Pointer to the class creation function.
 void EdgesFactory::registerClass(const string &className, CreateFunction function) {
    createFunctions[className] = function;
 }
@@ -42,12 +41,10 @@ shared_ptr<IAllSynapses> EdgesFactory::createEdges(const string &className) {
    return edgesInstance_;
 }
 
-/**
- * Create an instance of the edges class using the static ::Create() method.
- *
- * The calling method uses this retrieval mechanism in
- * value assignment.
- */
+/// Create an instance of the edges class using the static ::Create() method.
+///
+/// The calling method uses this retrieval mechanism in
+/// value assignment.
 IAllSynapses *EdgesFactory::invokeCreateFunction(const string &className) {
    for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
       if (className == i->first)

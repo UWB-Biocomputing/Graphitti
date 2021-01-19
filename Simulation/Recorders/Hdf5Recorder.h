@@ -1,36 +1,20 @@
 /**
- *      @file Hdf5Recorder.h
+ * @file Hdf5Recorder.h
+ * 
+ * @ingroup Simulation/Recorders
  *
- *      @brief Header file for Hdf5Recorder.h
+ * @brief An implementation for recording spikes history on hdf5 file
+ *
+ * The Hdf5Recorder provides a mechanism for recording neuron's layout, spikes history,
+ * and compile history information on hdf5 file:
+ *     -# neuron's locations, and type map,
+ *     -# individual neuron's spike rate in epochs,
+ *     -# network wide burstiness index data in 1s bins,
+ *     -# network wide spike count in 10ms bins.
+ *
+ * Hierarchical Data Format (HDF) is a set of file formats (HDF4, HDF5) designed 
+ * to store and organize large amounts of data.
  */
-//! An implementation for recording spikes history on hdf5 file
-
-/**
- ** @class Hdf5Recorder Hdf5Recorder.h "Hdf5Recorder.h"
- **
- ** \latexonly  \subsubsection*{Implementation} \endlatexonly
- ** \htmlonly   <h3>Implementation</h3> \endhtmlonly
- **
- ** The Hdf5Recorder provides a mechanism for recording neuron's layout, spikes history,
- ** and compile history information on hdf5 file:
- **     -# neuron's locations, and type map,
- **     -# individual neuron's spike rate in epochs,
- **     -# network wide burstiness index data in 1s bins,
- **     -# network wide spike count in 10ms bins.
- **
- ** Hierarchical Data Format (HDF) is a set of file formats (HDF4, HDF5) designed 
- ** to store and organize large amounts of data.
- **
- ** \latexonly  \subsubsection*{Credits} \endlatexonly
- ** \htmlonly   <h3>Credits</h3> \endhtmlonly
- **
- ** Some models in this simulator is a rewrite of CSIM (2006) and other 
- ** work (Stiber and Kawasaki (2007?))
- **
- **
- **     @author Fumitaka Kawasaki
- **/
-
 #pragma once
 
 #include "IRecorder.h"
@@ -49,52 +33,38 @@ using namespace H5;
 
 class Hdf5Recorder : public IRecorder {
 public:
-   //! THe constructor and destructor
+   /// THe constructor and destructor
    Hdf5Recorder();
 
    ~Hdf5Recorder();
 
    static IRecorder* Create() { return new Hdf5Recorder(); }
 
-   /**
-    * Initialize data
-    *
-    * @param[in] stateOutputFileName       File name to save histories
-    */
+   /// Initialize data
+   ///
+   /// @param[in] stateOutputFileName       File name to save histories
    virtual void init();
 
-   /**
-    * Init radii and rates history matrices with default values
-    */
+   /// Init radii and rates history matrices with default values
    virtual void initDefaultValues();
 
-   /**
-    * Init radii and rates history matrices with current radii and rates
-    */
+   /// Init radii and rates history matrices with current radii and rates
    virtual void initValues();
 
-   /**
-    * Get the current radii and rates vlaues
-    */
+   /// Get the current radii and rates vlaues
    virtual void getValues();
 
-   /**
-    * Terminate process
-    */
+   /// Terminate process
    virtual void term();
 
-   /**
-    * Compile history information in every epoch
-    *
-    * @param[in] neurons   The entire list of neurons.
-    */
+   /// Compile history information in every epoch
+   ///
+   /// @param[in] neurons   The entire list of neurons.
    virtual void compileHistories(IAllNeurons &neurons);
 
-   /**
-    * Writes simulation results to an output destination.
-    *
-    * @param  neurons the Neuron list to search from.
-    **/
+   /// Writes simulation results to an output destination.
+   ///
+   /// @param  neurons the Neuron list to search from.
    virtual void saveSimData(const IAllNeurons &neurons);
 
 protected:

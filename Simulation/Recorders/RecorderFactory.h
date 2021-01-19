@@ -1,5 +1,9 @@
 /**
- *  A factory class for creating Recorder objects.
+ * @file RecorderFactory.h
+ *
+ * @ingroup Simulation/Recorders
+ * 
+ * @brief A factory class for creating Recorder objects.
  */
 
 #pragma once
@@ -37,7 +41,6 @@ private:
    /// Pointer to neurons instance
    shared_ptr<IRecorder> recorderInstance;
 
-   /* Type definitions */
    /// Defines function type for usage in internal map
    typedef IRecorder *(*CreateFunction)(void);
 

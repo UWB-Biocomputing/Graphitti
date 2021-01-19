@@ -1,15 +1,11 @@
 /**
- @file SparseMatrix.cpp
- @brief An efficient implementation of a dynamically-allocated 2D sparse array.
- @author Michael Stiber
- @date January 2016
- @version 2
+ * @file SparseMatrix.cpp
+ * 
+ * @ingroup Simulation/Utils/Matrix
+ * 
+ * @brief An efficient implementation of a dynamically-allocated 2D sparse array.
+ *          Self-allocating and de-allocating.
  */
-
-// SparseMatrix.cpp 2D Sparse Matrix
-//
-// An efficient implementation of a dynamically-allocated sparse 2D
-// array. Self-allocating and de-allocating.
 
 #include <iostream>
 #include <sstream>
@@ -20,25 +16,23 @@
 
 extern bool debugSparseMatrix;
 
-// hash table methods and static members
-/*
- @class HashTable
- @brief Specialized hash table for pointers to Elements.
- 
- Implemented using linear probing. Because of this choice, we cannot delete storage taken
- up by elements that get zeroed out. These elements can be re-used, of course. Consequently,
- a SparseMatrix never shrinks.
- */
-
-/* A special Element to mark deleted table locations */
+/// hash table methods and static members
+///
+/// @class HashTable
+/// @brief Specialized hash table for pointers to Elements.
+///
+/// Implemented using linear probing. Because of this choice, we cannot delete storage taken
+/// up by elements that get zeroed out. These elements can be re-used, of course. Consequently,
+/// a SparseMatrix never shrinks.
+///
+///
+///  A special Element to mark deleted table locations 
 SparseMatrix::Element SparseMatrix::HashTable::deleted(-1, -1, -1.0);
 
 
-/*
- @param s table capacity
- @param c number of columns in containing SparseMatrix
- @abstract resize hash table and initialize elements to NULL
- */
+/// resize hash table and initialize elements to NULL
+/// @param s table capacity
+/// @param c number of columns in containing SparseMatrix
 void SparseMatrix::HashTable::resize(int s, int c)
 {
     // If nothing has changed, just clear the table to NULL
@@ -57,25 +51,22 @@ void SparseMatrix::HashTable::resize(int s, int c)
 	DEBUG_SPARSE(cerr << "\t\t\tAllocated " << capacity << " locations for hash table" << endl;)
 }
 
-/*
- @method clear
- @abstract removes all elements from the hash table
- */
+///
+/// @method clear
+/// removes all elements from the hash table
 void SparseMatrix::HashTable::clear(void)
 {
     // Use resize to clean up the table
     resize(capacity, columns);
 }
 
-/*
- @method insert
- @discussion Inserts Element into the hash table using linear
- probing. If the Element is already in the table, an exception is
- thrown (the update method should be used to update a value).
- @param el pointer to the Element to insert
- @throws Matrix_bad_alloc
- @throws Matrix_invalid_argument
- */
+/// @method insert
+/// @discussion Inserts Element into the hash table using linear
+/// probing. If the Element is already in the table, an exception is
+/// thrown (the update method should be used to update a value).
+/// @param el pointer to the Element to insert
+/// @throws Matrix_bad_alloc
+/// @throws Matrix_invalid_argument
 void SparseMatrix::HashTable::insert(Element* el)
 {
     // Don't overfill the table
@@ -120,16 +111,14 @@ void SparseMatrix::HashTable::insert(Element* el)
 }
 
 
-/*
- @method retrieve
- @discussion retrieves Element from the hash table using linear
- probing. If Element isn't in the table, returns NULL. Any
- zero-value elements found in the hash table are deleted along
- the way.
- @param r row coordinate of Element
- @param c column coordinate of Element
- @result pointer to Element (NULL if not in table)
- */
+/// @method retrieve
+/// @discussion retrieves Element from the hash table using linear
+/// probing. If Element isn't in the table, returns NULL. Any
+/// zero-value elements found in the hash table are deleted along
+/// the way.
+/// @param r row coordinate of Element
+/// @param c column coordinate of Element
+/// @result pointer to Element (NULL if not in table)
 SparseMatrix::Element* SparseMatrix::HashTable::retrieve(int r, int c)
 {
     int loc = hash(r, c);
@@ -150,16 +139,14 @@ SparseMatrix::Element* SparseMatrix::HashTable::retrieve(int r, int c)
     return table[loc];
 }
 
-/*
- @method update
- @discussion Updates the Element already in the table using linear
- probing. If Element isn't in the table, throws an exception
- (use insert to add new Elements to the table).
- @param r row coordinate of Element
- @param c column coordinate of Element
- @param v new value for Element
- @throws Matrix_invalid_argument
- */
+/// @method update
+/// @discussion Updates the Element already in the table using linear
+/// probing. If Element isn't in the table, throws an exception
+/// (use insert to add new Elements to the table).
+/// @param r row coordinate of Element
+/// @param c column coordinate of Element
+/// @param v new value for Element
+/// @throws Matrix_invalid_argument
 void SparseMatrix::HashTable::update(int r, int c, BGFLOAT v)
 {
     Element* el = retrieve(r, c);
@@ -170,21 +157,17 @@ void SparseMatrix::HashTable::update(int r, int c, BGFLOAT v)
 }
 
 
-
-
-/*
- @method SparseMatrix
- @discussion Allocate storage and initialize attributes for a
- sparse matrix with explicit row data. The parameter e is used as a
- source of data for initializing the matrix (and must be the
- pointer to the Matrix element in the XML).
- @throws Matrix_bad_alloc
- @throws Matrix_invalid_argument
- @param r rows in Matrix
- @param c columns in Matrix
- @param m multiplier used for initialization
- @param e pointer to Matrix element in XML
- */
+/// @method SparseMatrix
+/// @discussion Allocate storage and initialize attributes for a
+/// sparse matrix with explicit row data. The parameter e is used as a
+/// source of data for initializing the matrix (and must be the
+/// pointer to the Matrix element in the XML).
+/// @throws Matrix_bad_alloc
+/// @throws Matrix_invalid_argument
+/// @param r rows in Matrix
+/// @param c columns in Matrix
+/// @param m multiplier used for initialization
+/// @param e pointer to Matrix element in XML
 SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, TiXmlElement* e)
 : Matrix("sparse", "none", r, c, m), theRows(NULL), theColumns(NULL),
 theElements(MaxElements(r,c), c, this)
@@ -216,20 +199,17 @@ theElements(MaxElements(r,c), c, this)
 	DEBUG_SPARSE(cerr << "\tInitialized " << type << " matrix" << endl;)
 }
 
-
-/*
- @method SparseMatrix
- @discussion Allocate storage and initialize attributes for a
- diagonal sparse matrix with explicit row data. The parameter v is
- used as a source of data for initializing the matrix (and must be
- a string of numbers equal to the number of rows or columns).
- @throws Matrix_bad_alloc
- @throws Matrix_invalid_argument
- @param r rows in Matrix
- @param c columns in Matrix
- @param m multiplier used for initialization
- @param v string of initialization values
- */
+/// @method SparseMatrix
+/// @discussion Allocate storage and initialize attributes for a
+/// diagonal sparse matrix with explicit row data. The parameter v is
+/// used as a source of data for initializing the matrix (and must be
+/// a string of numbers equal to the number of rows or columns).
+/// @throws Matrix_bad_alloc
+/// @throws Matrix_invalid_argument
+/// @param r rows in Matrix
+/// @param c columns in Matrix
+/// @param m multiplier used for initialization
+/// @param v string of initialization values
 SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, const char* v)
 : Matrix("sparse", "none", r, c, m), theRows(NULL), theColumns(NULL),
 theElements(MaxElements(r,c), c, this)
@@ -289,15 +269,13 @@ theElements(MaxElements(r,c), c, this)
 }
 
 
-/*
- @method SparseMatrix
- @discussion Allocate storage and initialize attributes for an
- empty sparse matrix. This is also the default constructor.
- @throws Matrix_bad_alloc
- @throws Matrix_invalid_argument
- @param r rows in Matrix
- @param c columns in Matrix
- */
+/// @method SparseMatrix
+/// @discussion Allocate storage and initialize attributes for an
+/// empty sparse matrix. This is also the default constructor.
+/// @throws Matrix_bad_alloc
+/// @throws Matrix_invalid_argument
+/// @param r rows in Matrix
+/// @param c columns in Matrix
 SparseMatrix::SparseMatrix(int r, int c)
 : Matrix("sparse", "none", r, c, 0.0), theRows(NULL), theColumns(NULL),
 theElements(MaxElements(r,c), c, this)
@@ -423,13 +401,10 @@ void SparseMatrix::clear(void)
 	DEBUG_SPARSE(cerr << "done." << endl;)
 }
 
-
-/*
- @method remove_lists
- @discussion Remove an Element from the SparseMatrix lists (but not
- the hash table). This is meant to be called from a HashTable
- method.
- */
+/// @method remove_lists
+/// @discussion Remove an Element from the SparseMatrix lists (but not
+/// the hash table). This is meant to be called from a HashTable
+/// method.
 void SparseMatrix::remove_lists(Element* el)
 {
     theRows[el->row].remove(el);
@@ -568,18 +543,15 @@ string SparseMatrix::toXML(string name) const
 }
 
 
-// Mutator
-/*
- @method operator()
- @discussion Access value of element at (row, column) -- mutator. Constant
- time as long as number of items in the N x M SparseMatrix is less
- than 4*sqrt(N*M). If there is no element at the given location,
- then a zero value one is created.
- @param r element row
- @param c element column
- @result value of element at that location
- @throws Matrix_bad_alloc
- */
+/// @method operator()
+/// @discussion Access value of element at (row, column) -- mutator. Constant
+/// time as long as number of items in the N x M SparseMatrix is less
+/// than 4*sqrt(N*M). If there is no element at the given location,
+/// then a zero value one is created.
+/// @param r element row
+/// @param c element column
+/// @result value of element at that location
+/// @throws Matrix_bad_alloc
 BGFLOAT& SparseMatrix::operator()(int r, int c)
 {
     Element* el = theElements.retrieve(r, c);
@@ -604,10 +576,8 @@ BGFLOAT& SparseMatrix::operator()(int r, int c)
     return el->value;
 }
 
-/**
- Unary minus. Negate all elements of the SparseMatrix.
- @return A new SparseMatrix, with same size as the current one.
- */
+/// Unary minus. Negate all elements of the SparseMatrix.
+/// @return A new SparseMatrix, with same size as the current one.
 const SparseMatrix SparseMatrix::operator-() const
 {
     SparseMatrix result(*this);

@@ -1,4 +1,10 @@
-/*
+/**
+ * @file Book.h
+ * 
+ * @ingroup Simulation/Utils
+ * 
+ * @brief
+ *
  * Copyright 1993-2010 NVIDIA Corporation.  All rights reserved.
  *
  * NVIDIA Corporation and its licensors retain all intellectual property and

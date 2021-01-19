@@ -1,12 +1,11 @@
 /**
- *	@file global.h
+ *	@file Global.h
  *
- *	@author Allan Ortiz & Cory Mayberry
+ *	@ingroup Simulation/Utils
  *
  *	@brief Header file for global.h
- *
  */
-//! Globally available functions and default parameter values.
+// Globally available functions and default parameter values.
 
 #ifndef _GLOBAL_H_
 #define _GLOBAL_H_
@@ -64,7 +63,7 @@ typedef unsigned long long int uint64_t;	//included in inttypes.h, which is not 
 
 using namespace std;
 
-//! If defined, a table with time and each neuron voltage will output to stdout.
+// If defined, a table with time and each neuron voltage will output to stdout.
 //#define DUMP_VOLTAGES
 
 #if defined(USE_GPU)
@@ -72,71 +71,71 @@ using namespace std;
 extern int g_deviceId;
 #endif // USE_GPU
 
-//! The constant PI.
+// The constant PI.
 extern const BGFLOAT pi;
 
-//! A random number generator.
+// A random number generator.
 extern MTRand rng;
 
-//! A normalized random number generator.
+// A normalized random number generator.
 extern vector<Norm *> rgNormrnd;
 
-//! The current simulation step.
+// The current simulation step.
 extern uint64_t g_simulationStep;
 
 const int g_nMaxChunkSize = 100;
 
 // NETWORK MODEL VARIABLES NMV-BEGIN {
-//! Neuron types.
-//!	INH - Inhibitory neuron 
-//!	EXC - Excitory neuron
+// Neuron types.
+//	INH - Inhibitory neuron 
+//	EXC - Excitory neuron
 enum neuronType { INH = 1, EXC = 2, NTYPE_UNDEF = 0 };
 
-//! Synapse types.
-//!	II - Synapse from inhibitory neuron to inhibitory neuron.
-//!	IE - Synapse from inhibitory neuron to excitory neuron.
-//!	EI - Synapse from excitory neuron to inhibitory neuron.
-//!	EE - Synapse from excitory neuron to excitory neuron.
+// Synapse types.
+//	II - Synapse from inhibitory neuron to inhibitory neuron.
+//	IE - Synapse from inhibitory neuron to excitory neuron.
+//	EI - Synapse from excitory neuron to inhibitory neuron.
+//	EE - Synapse from excitory neuron to excitory neuron.
 enum synapseType { II = 0, IE = 1, EI = 2, EE = 3, STYPE_UNDEF = -1 };
 
-//! The default membrane capacitance.
+// The default membrane capacitance.
 #define DEFAULT_Cm		(3e-8)
-//! The default membrane resistance.
+// The default membrane resistance.
 #define DEFAULT_Rm		(1e6)
-//! The default resting voltage.
+// The default resting voltage.
 #define DEFAULT_Vrest		(0.0)
-//! The default reset voltage.
+// The default reset voltage.
 #define DEFAULT_Vreset		(-0.06)
-//! The default absolute refractory period.
+// The default absolute refractory period.
 #define DEFAULT_Trefract	(3e-3)
-//! The default synaptic noise.
+// The default synaptic noise.
 #define DEFAULT_Inoise		(0.0)
-//! The default injected current.
+// The default injected current.
 #define DEFAULT_Iinject		(0.0)
-//! The default threshold voltage.  If \f$V_m >= V_{thresh}\f$ then the neuron fires.
+// The default threshold voltage.  If \f$V_m >= V_{thresh}\f$ then the neuron fires.
 #define DEFAULT_Vthresh		(-0.04)
-//! The default time step size.
+// The default time step size.
 #define DEFAULT_dt		(1e-4) // MODEL INDEPENDENT
-//! The default absolute refractory period for inhibitory neurons.
+// The default absolute refractory period for inhibitory neurons.
 #define DEFAULT_InhibTrefract	(2.0e-3)
-//! The default absolute refractory period for excitory neurons.
+// The default absolute refractory period for excitory neurons.
 #define DEFAULT_ExcitTrefract	(3.0e-3)
 
-//! The default synaptic time constant.
+// The default synaptic time constant.
 #define DEFAULT_tau		(3e-3)
-//! The default synaptic efficiency.
+// The default synaptic efficiency.
 #define DEFAULT_U		(0.4)
-//! The default synaptic efficiency.
+// The default synaptic efficiency.
 #define DEFAULT_delay_weight	(0)
 // } NMV-END
 
-//! Converts a 1-d index into a coordinate string.
+// Converts a 1-d index into a coordinate string.
 string index2dToString(int i, int width, int height);
-//! Converts a 2-d coordinate into a string.
+// Converts a 2-d coordinate into a string.
 string coordToString(int x, int y);
-//! Converts a 3-d coordinate into a string.
+// Converts a 3-d coordinate into a string.
 string coordToString(int x, int y, int z);
-//! Converts a neuronType into a string.
+// Converts a neuronType into a string.
 string neuronTypeToString(neuronType t);
 
 #ifdef PERFORMANCE_METRICS

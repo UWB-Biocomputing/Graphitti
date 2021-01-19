@@ -1,3 +1,11 @@
+/**
+ * @file ParseParamError.h
+ *
+ * @brief 
+ *
+ * @ingroup Simulation/Utils
+ */
+
 #ifndef _PARSEPARAMERROR_H_
 #define _PARSEPARAMERROR_H_
 

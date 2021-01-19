@@ -5,11 +5,6 @@
  *
  * @brief The model of the activity dependent neurite outgrowth
  *
- * @class ConnGrowth ConnGrowth.h "ConnGrowth.h"
- *
- ** \latexonly  \subsubsection*{Implementation} \endlatexonly
- ** \htmlonly   <h3>Implementation</h3> \endhtmlonly
- **
  * The activity dependent neurite outgrowth model is a phenomenological model derived by
  * a number of studies that demonstarated low level of electric activity (low firing rate)
  * stimulated neurite outgrowth, and high level of electric activity (high firing rate)
@@ -64,9 +59,6 @@
  * \f$r_1\f$ are the neurite radii of neuron A and B, C and B are locations of intersections 
  * of neurite boundaries of neuron A and B, and \f$w_{01}\f$ and \f$w_{10}\f$ are the areas of 
  * their circla's overlap. 
- *
- * \latexonly  \subsubsection*{Credits} \endlatexonly
- * \htmlonly   <h3>Credits</h3> \endhtmlonly
  *
  * Some models in this simulator is a rewrite of CSIM (2006) and other
  * work (Stiber and Kawasaki (2007?))
@@ -183,13 +175,13 @@ private:
 
 public:
    struct GrowthParams {
-      BGFLOAT epsilon;   ///< null firing rate(zero outgrowth)
-      BGFLOAT beta;      ///< sensitivity of outgrowth to firing rate
-      BGFLOAT rho;       ///< outgrowth rate constant
-      BGFLOAT targetRate; ///<  Spikes/second
-      BGFLOAT maxRate;   ///<  = targetRate / epsilon;
-      BGFLOAT minRadius; ///<  To ensure that even rapidly-firing neurons will connect to
-      /// other neurons, when within their RFS.
+      BGFLOAT epsilon;     ///< null firing rate(zero outgrowth)
+      BGFLOAT beta;        ///< sensitivity of outgrowth to firing rate
+      BGFLOAT rho;         ///< outgrowth rate constant
+      BGFLOAT targetRate;  ///<  Spikes/second
+      BGFLOAT maxRate;     ///<  = targetRate / epsilon;
+      BGFLOAT minRadius;   ///<  To ensure that even rapidly-firing neurons will connect to
+                           ///< other neurons, when within their RFS.
       BGFLOAT startRadius; ///< No need to wait a long time before RFs start to overlap
    };
 
@@ -199,7 +191,7 @@ public:
    /// spike count for each epoch
    int *spikeCounts_;
 
-   /// radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
+   /// radii size
    int radiiSize_;
 
    /// synapse weight

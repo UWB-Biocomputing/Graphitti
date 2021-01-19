@@ -3,12 +3,7 @@
  *
  *  @brief A structure maintains outgoing and active synapses list (forward map).
  *
- *  @ingroup Core
- *
- *  @struct SynapseIndexMap SynapseIndexMap.h "SynapseIndexMap.h"
- *
- *  \latexonly  \subsubsection*{Implementation} \endlatexonly
- *  \htmlonly   <h3>Implementation</h3> \endhtmlonly
+ *  @ingroup Simulation/Core
  *
  *  The structure maintains a list of outgoing synapses (forward map) and active synapses list.
  *
@@ -24,9 +19,6 @@
  *  The list is referred in advanceSynapsesDevice() device function.
  *  The list contribute to reduce the number of the device function thread to skip the inactive
  *  synapses.
- *
- *  \latexonly  \subsubsection*{Credits} \endlatexonly
- *  \htmlonly   <h3>Credits</h3> \endhtmlonly
  */
 
 #pragma once

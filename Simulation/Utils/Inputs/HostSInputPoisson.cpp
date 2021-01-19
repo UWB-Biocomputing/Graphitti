@@ -1,38 +1,31 @@
-/*
- *      \file HostSInputPoisson.cpp
+/**
+ * @file HostSInputPoisson.cpp
  *
- *      \author Fumitaka Kawasaki
- *
- *      \brief A class that performs stimulus input (implementation Poisson).
+ * @ingroup Simulation/Utils/Inputs
+ * 
+ * @brief A class that performs stimulus input (implementation Poisson).
  */
 
 #include "HostSInputPoisson.h"
 #include "Core/CPUSpikingModel.h"
 #include "tinyxml.h"
 
-/*
- * The constructor for HostSInputPoisson.
- *
- * @param[in] psi       Pointer to the simulation information
- * @param[in] parms     TiXmlElement to examine.
- */
+/// The constructor for HostSInputPoisson.
+///
+/// @param[in] psi       Pointer to the simulation information
+/// @param[in] parms     TiXmlElement to examine.
 HostSInputPoisson::HostSInputPoisson(TiXmlElement* parms) : SInputPoisson(parms)
 {
     
 }
 
-/*
- * destructor
- */
 HostSInputPoisson::~HostSInputPoisson()
 {
 }
 
-/*
- * Initialize data.
- *
- * @param[in] psi       Pointer to the simulation information.
- */
+/// Initialize data.
+///
+/// @param[in] psi       Pointer to the simulation information.
 void HostSInputPoisson::init()
 {
     SInputPoisson::init();
@@ -41,22 +34,18 @@ void HostSInputPoisson::init()
         return;
 }
 
-/*
- * Terminate process.
- *
- * @param[in] psi       Pointer to the simulation information.
- */
+/// Terminate process.
+///
+/// @param[in] psi       Pointer to the simulation information.
 void HostSInputPoisson::term()
 {
     SInputPoisson::term();
 }
 
-/*
- * Process input stimulus for each time step.
- * Apply inputs on summationPoint.
- *
- * @param[in] psi             Pointer to the simulation information.
- */
+/// Process input stimulus for each time step.
+/// Apply inputs on summationPoint.
+///
+/// @param[in] psi             Pointer to the simulation information.
 void HostSInputPoisson::inputStimulus()
 {
     if (fSInput == false)

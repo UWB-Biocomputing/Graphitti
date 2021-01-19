@@ -41,7 +41,6 @@ private:
    /// Pointer to connections instance.
    shared_ptr<Connections> connectionsInstance;
 
-   /* Type definitions */
    /// Defines function type for usage in internal map
    typedef Connections *(*CreateFunction)(void);
 

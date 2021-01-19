@@ -1,7 +1,10 @@
-// Project:      CSS432 UDP Socket Class
-// Professor:    Munehiro Fukuda
-// Organization: CSS, University of Washington, Bothell
-// Date:         March 5, 2004
+/**
+ * @file Timer.cpp
+ * 
+ * @brief CSS432 UDP Socket Class
+ *
+ * @ingroup Simulation/Utils
+ */
 
 #include "Timer.h"
 

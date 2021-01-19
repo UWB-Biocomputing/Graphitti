@@ -1,5 +1,9 @@
 /**
- * A class which contains and manages access to the XML 
+ * @file ParameterManager.cpp
+ * 
+ * @ingroup Simulation/Utils
+ * 
+ * @brief A class which contains and manages access to the XML 
  * parameter file used by a simulator instance at runtime.
  *
  * The class provides a simple interface to access parameters 
@@ -32,9 +36,10 @@
 #include "BGTypes.h"
 #include "xpath_static.h"
 
-// ----------------------------------------------------
-// ----------------- UTILITY METHODS ------------------
-// ----------------------------------------------------
+/******************************************
+* UTILITY METHODS
+******************************************/
+///@{
 
 /// Private Class constructor
 /// Initialize any heap variables to null
@@ -55,11 +60,9 @@ ParameterManager &ParameterManager::getInstance() {
    return instance;
 }
 
-/**
- * Loads the XML file into a TinyXML tree.
- * This is the starting point for all XPath retrieval calls 
- * for the client classes to use.
- */
+/// Loads the XML file into a TinyXML tree.
+/// This is the starting point for all XPath retrieval calls 
+/// for the client classes to use.
 bool ParameterManager::loadParameterFile(string path) {
    // load the XML document
    if (xmlDocument_) delete xmlDocument_;
@@ -77,28 +80,24 @@ bool ParameterManager::loadParameterFile(string path) {
    return true;
 }
 
-/**
- * A utility method to ensure the XML document objects exist.
- * If they don't exist, an XPath can't be computed and the 
- * interface methods should terminate early.
- */
+/// A utility method to ensure the XML document objects exist.
+/// If they don't exist, an XPath can't be computed and the 
+/// interface methods should terminate early.
 bool ParameterManager::checkDocumentStatus() {
    return xmlDocument_ != nullptr && root_ != nullptr;
 }
 
-// ----------------------------------------------------
-// ---------------- INTERFACE METHODS -----------------
-// ----------------------------------------------------
+/******************************************
+* INTERFACE METHODS
+******************************************/
 
-/**
- * Interface method to pull a string object from the xml 
- * schema. The calling object must know the xpath to retrieve 
- * the value.
- * 
- * @param xpath The xpath for the desired string value in the XML file
- * @param referenceVar The variable to store the string result into
- * @return bool A T/F flag indicating whether the retrieval succeeded
- */
+/// Interface method to pull a string object from the xml 
+/// schema. The calling object must know the xpath to retrieve 
+/// the value.
+/// 
+/// @param xpath The xpath for the desired string value in the XML file
+/// @param referenceVar The variable to store the string result into
+/// @return bool A T/F flag indicating whether the retrieval succeeded
 bool ParameterManager::getStringByXpath(string xpath, string &referenceVar) {
    if (!checkDocumentStatus()) return false;
    if (!TinyXPath::o_xpath_string(root_, xpath.c_str(), xpath)) {
@@ -111,15 +110,13 @@ bool ParameterManager::getStringByXpath(string xpath, string &referenceVar) {
    return true;
 }
 
-/**
- * Interface method to pull an integer value from the xml 
- * schema. The calling object must know the xpath to retrieve 
- * the value.
- *
- * @param xpath The xpath for the desired int value in the XML file
- * @param referenceVar The variable to store the int result into
- * @return bool A T/F flag indicating whether the retrieval succeeded
- */
+/// Interface method to pull an integer value from the xml 
+/// schema. The calling object must know the xpath to retrieve 
+/// the value.
+///
+/// @param xpath The xpath for the desired int value in the XML file
+/// @param referenceVar The variable to store the int result into
+/// @return bool A T/F flag indicating whether the retrieval succeeded
 bool ParameterManager::getIntByXpath(string xpath, int &referenceVar) {
    if (!checkDocumentStatus()) return false;
    string tmp;
@@ -155,15 +152,13 @@ bool ParameterManager::getIntByXpath(string xpath, int &referenceVar) {
    return true;
 }
 
-/**
- * Interface method to pull a double value from the xml 
- * schema. The calling object must know the xpath to retrieve 
- * the value.
- *
- * @param xpath The xpath for the desired double value in the XML file
- * @param referenceVar The variable to store the double result into
- * @return bool A T/F flag indicating whether the retrieval succeeded
- */
+/// Interface method to pull a double value from the xml 
+/// schema. The calling object must know the xpath to retrieve 
+/// the value.
+///
+/// @param xpath The xpath for the desired double value in the XML file
+/// @param referenceVar The variable to store the double result into
+/// @return bool A T/F flag indicating whether the retrieval succeeded
 bool ParameterManager::getDoubleByXpath(string xpath, double &referenceVar) {
    if (!checkDocumentStatus()) return false;
    string tmp;
@@ -192,16 +187,13 @@ bool ParameterManager::getDoubleByXpath(string xpath, double &referenceVar) {
    return true;
 }
 
-
-/**
- * Interface method to pull a float value from the xml 
- * schema. The calling object must know the xpath to retrieve 
- * the value.
- *
- * @param xpath The xpath for the desired float value in the XML file
- * @param referenceVariable The variable to store the float result into
- * @return bool A T/F flag indicating whether the retrieval succeeded
- */
+/// Interface method to pull a float value from the xml 
+/// schema. The calling object must know the xpath to retrieve 
+/// the value.
+///
+/// @param xpath The xpath for the desired float value in the XML file
+/// @param referenceVariable The variable to store the float result into
+/// @return bool A T/F flag indicating whether the retrieval succeeded
 bool ParameterManager::getFloatByXpath(string xpath, float &referenceVariable) {
    if (!checkDocumentStatus()) return false;
    string tmp;
@@ -230,20 +222,18 @@ bool ParameterManager::getFloatByXpath(string xpath, float &referenceVariable) {
    return true;
 }
 
-/**
- * Interface method to pull a BGFLOAT value from the xml 
- * schema. The calling object must know the xpath to retrieve 
- * the value.
- *
- * This method is a wrapper to run the correct calls based on 
- * how BGFLOAT is defined for the simulator. (For multi-threaded
- * usage, floats are used due to register size on GPUs, and 
- * double usage is available for single-threaded CPU instances.)
- *
- * @param xpath The xpath for the desired float value in the XML file
- * @param referenceVar The variable to store the float result into
- * @return bool A T/F flag indicating whether the retrieval succeeded
- */
+/// Interface method to pull a BGFLOAT value from the xml 
+/// schema. The calling object must know the xpath to retrieve 
+/// the value.
+///
+/// This method is a wrapper to run the correct calls based on 
+/// how BGFLOAT is defined for the simulator. (For multi-threaded
+/// usage, floats are used due to register size on GPUs, and 
+/// double usage is available for single-threaded CPU instances.)
+///
+/// @param xpath The xpath for the desired float value in the XML file
+/// @param referenceVar The variable to store the float result into
+/// @return bool A T/F flag indicating whether the retrieval succeeded
 bool ParameterManager::getBGFloatByXpath(string xpath, BGFLOAT &referenceVar) {
 #ifdef SINGLEPRECISION
    return getFloatByXpath(xpath, referenceVar);
@@ -256,15 +246,13 @@ bool ParameterManager::getBGFloatByXpath(string xpath, BGFLOAT &referenceVar) {
    return false;
 }
 
-/**
- * Interface method to pull a long value from the xml
- * schema. The calling object must know the xpath to retrieve
- * the value.
- *
- * @param xpath The xpath for the desired float value in the XML file
- * @param referenceVariable The variable to store the long result into
- * @return bool A T/F flag indicating whether the retrieval succeeded
- */
+/// Interface method to pull a long value from the xml
+/// schema. The calling object must know the xpath to retrieve
+/// the value.
+///
+/// @param xpath The xpath for the desired float value in the XML file
+/// @param referenceVariable The variable to store the long result into
+/// @return bool A T/F flag indicating whether the retrieval succeeded
 bool ParameterManager::getLongByXpath(string xpath, long &referenceVar) {
    if (!checkDocumentStatus()) return false;
    string tmp;
@@ -293,20 +281,18 @@ bool ParameterManager::getLongByXpath(string xpath, long &referenceVar) {
    return true;
 }
 
-/**
- * Interface method to pull a list of ints into a vector<int> from the xml
- * schema. The calling object must match the elementName that stores the list. The xml files
- * in the NLists directory name the element by which type of neuron lists is expected.
- *
- * A - Active Neuron List
- * I - Inhibitory Neuron List
- * P - Probed Neuron List
- *
- * @param path the path to the xml file to read from
- * @param elementName The name of the element that stores the list of ints
- * @param referenceVariable The reference variable to store the list of ints
- * @return bool A T/F flag indicating whether the retrieval succeeded
- */
+/// Interface method to pull a list of ints into a vector<int> from the xml
+/// schema. The calling object must match the elementName that stores the list. The xml files
+/// in the NLists directory name the element by which type of neuron lists is expected.
+///
+/// A - Active Neuron List
+/// I - Inhibitory Neuron List
+/// P - Probed Neuron List
+///
+/// @param path the path to the xml file to read from
+/// @param elementName The name of the element that stores the list of ints
+/// @param referenceVariable The reference variable to store the list of ints
+/// @return bool A T/F flag indicating whether the retrieval succeeded
 bool ParameterManager::getIntVectorByXpath(const string &path, const string &elementName, vector<int> &referenceVar) {
    // Open file using a local XmlDocument object
    TiXmlDocument xmlDocument(path.c_str());

@@ -1,15 +1,15 @@
-#pragma once
-
-#include "Simulation/Core/Operations.h"
-
 /**
  *  @file IFunctionNode.h
  *
  *  @brief Interface for storing and invoking functions. Used to support different FunctionNode classes that
  *  define different function signatures.
  *
- *  @ingroup Core/FunctionNodes
+ *  @ingroup Simulation/Core/FunctionNodes
  */
+
+#pragma once
+
+#include "Simulation/Core/Operations.h"
 
 using namespace std;
 

@@ -5,13 +5,7 @@
  *
  * @brief The base class of all connections classes
  *
- * @class Connections Connections.h "Connections.h"
- *
- * \latexonly  \subsubsection*{Implementation} \endlatexonly
- * \htmlonly   <h3>Implementation</h3> \endhtmlonly
- *
- * A placeholder to define connections of neunal networks.
- * In neunal networks, neurons are connected through synapses where messages are exchanged.
+ * In neural networks, neurons are connected through synapses where messages are exchanged.
  * The strength of connections is characterized by synapse's weight. 
  * The connections classes define topologies, the way to connect neurons,  
  * and dynamics, the way to change connections as time elapses, of the networks. 
@@ -25,12 +19,6 @@
  * This includes history and parameters that inform how new connections are made during growth.
  * Therefore, connections classes will have customized recorder classes, and provide
  * a function to craete the recorder class.
- *
- * \latexonly  \subsubsection*{Credits} \endlatexonly
- * \htmlonly   <h3>Credits</h3> \endhtmlonly
- *
- * Some models in this simulator is a rewrite of CSIM (2006) and other
- * work (Stiber and Kawasaki (2007?))
  */
 
 #pragma once

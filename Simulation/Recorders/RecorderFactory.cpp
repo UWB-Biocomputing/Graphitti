@@ -1,5 +1,9 @@
 /**
- *  A factory class for creating Recorder objects.
+ * @file RecorderFactory.cpp
+ *
+ * @ingroup Simulation/Recorders
+ * 
+ * @brief A factory class for creating Recorder objects.
  */
 
 #include "RecorderFactory.h"
@@ -20,12 +24,10 @@ RecorderFactory::~RecorderFactory() {
    createFunctions.clear();
 }
 
-/*
- *  Register recorder class and its creation function to the factory.
- *
- *  @param  neuronsClassName  neurons class name.
- *  @param  Pointer to the class creation function.
- */
+///  Register recorder class and its creation function to the factory.
+///
+///  @param  neuronsClassName  neurons class name.
+///  @param  Pointer to the class creation function.
 void RecorderFactory::registerClass(const string &className, CreateFunction function) {
    createFunctions[className] = function;
 }
@@ -37,12 +39,10 @@ shared_ptr<IRecorder> RecorderFactory::createRecorder(const string &className) {
    return recorderInstance;
 }
 
-/**
- * Create an instance of the neurons class using the static ::Create() method.
- *
- * The calling method uses this retrieval mechanism in
- * value assignment.
- */
+/// Create an instance of the neurons class using the static ::Create() method.
+///
+/// The calling method uses this retrieval mechanism in
+/// value assignment.
 IRecorder *RecorderFactory::invokeCreateFunction(const string &className) {
    for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
       if (className == i->first)

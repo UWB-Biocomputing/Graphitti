@@ -4,7 +4,7 @@
  *  @brief Stores a function to invoke. Used by operation manager to store functions to defined by an operation type.
  *  Function Signature supported : void ()
  *
- *  @ingroup FunctionNodes
+ *  @ingroup Simulation/Core/FunctionNodes
  */
 
 #pragma once
@@ -24,8 +24,7 @@ public:
     bool invokeFunction(const Operations::op &operation) const override;
 
 private:
-    /// Stored function.
-    std::function<void()> function_;
+    std::function<void()> function_; ///< Stored function.
 };
 
 

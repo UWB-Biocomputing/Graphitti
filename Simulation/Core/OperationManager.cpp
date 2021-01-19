@@ -3,7 +3,7 @@
  *
  * @brief Singleton instance method that registers and executes functions based on operation types.
  *
- * @ingroup Core
+ * @ingroup Simulation/Core
  *
  * This class allows high level classes to perform high level operations that are defined by lower level classes.
  * Implementation of chain of responsibility design pattern.

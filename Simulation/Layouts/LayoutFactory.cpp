@@ -1,5 +1,9 @@
 /**
- *  A factory class for creating Layout objects.
+ * @file LayoutFactory.cpp
+ *
+ * @ingroup Simulation/Layouts
+ * 
+ * @brief  A factory class for creating Layout objects.
  */
 
 #include "LayoutFactory.h"
@@ -18,12 +22,10 @@ LayoutFactory::~LayoutFactory() {
    createFunctions.clear();
 }
 
-/*
- *  Register layout class and its creation function to the factory.
- *
- *  @param  neuronsClassName  neurons class name.
- *  @param  Pointer to the class creation function.
- */
+///  Register layout class and its creation function to the factory.
+///
+///  @param  neuronsClassName  neurons class name.
+///  @param  Pointer to the class creation function.
 void LayoutFactory::registerClass(const string &className, CreateFunction function) {
    createFunctions[className] = function;
 }
@@ -35,12 +37,10 @@ shared_ptr<Layout> LayoutFactory::createLayout(const string &className) {
    return layoutInstance;
 }
 
-/**
- * Create an instance of the layout class using the static ::Create() method.
- *
- * The calling method uses this retrieval mechanism in
- * value assignment.
- */
+/// Create an instance of the layout class using the static ::Create() method.
+///
+/// The calling method uses this retrieval mechanism in
+/// value assignment.
 Layout *LayoutFactory::invokeCreateFunction(const string &className) {
    for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
       if (className == i->first)

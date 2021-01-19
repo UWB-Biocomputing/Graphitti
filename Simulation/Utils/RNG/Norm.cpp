@@ -1,10 +1,10 @@
-/*!
-  @file norm.cpp
-  @brief  Normally distributed random numbers
-  @author Michael Stiber
-  @date $Date: 2006/11/18 04:42:32 $
-  @version $Revision: 1.1.1.1 $
-*/
+/**
+ * @file Norm.cpp
+ * 
+ * @ingroup Simulation/Utils/RNG
+ * 
+ * @brief Normally distributed random numbers
+ */
 
 /************************************************************
    norm.cpp -- normally distibuted random numbers

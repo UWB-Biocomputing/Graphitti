@@ -3,7 +3,7 @@
  *
  * @brief This file contains the unit tests for Simulator using GTest.
  *
- * @ingroup Testing
+ * @ingroup Testing/Core
  */
 
 #include "gtest/gtest.h"

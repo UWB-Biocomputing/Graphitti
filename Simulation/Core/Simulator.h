@@ -4,7 +4,7 @@
  * @brief Platform independent base class for the Brain Grid simulator.
  * Simulator is a singleton class (a class that can only have one object)
  *
- * @ingroup Core
+ * @ingroup Simulation/Core
  */
 
 #pragma once
@@ -64,6 +64,7 @@ public:
 /************************************************
  *  Accessors
  ***********************************************/
+///@{
    int getWidth() const;   /// Width of neuron map (assumes square)
 
    int getHeight() const;  /// Height of neuron map
@@ -103,10 +104,12 @@ public:
    string getStimulusFileName() const;     /// File name of the stimulus input file.
 
    shared_ptr<Model> getModel() const;    /// Neural Network Model interface.
+///@}
 
 /************************************************
  *  Mutators
  ***********************************************/
+///@{
    void setPSummationMap(BGFLOAT *summationMap);     /// Mutator for summation map (added late)
 
    void setResultFileName(const string &fileName);
@@ -181,6 +184,7 @@ private:
    Timer timer;   /// Timer for measuring performance of an epoch.
    Timer short_timer; /// Timer for measuring performance of connection update.
 #endif
+///@}
 };
 
 

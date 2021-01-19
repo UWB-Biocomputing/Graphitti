@@ -5,11 +5,6 @@
  * 
  * @brief The model of the small world network
  *
- * @class ConnStatic ConnStatic.h "ConnStatic.h"
- *
- * \latexonly  \subsubsection*{Implementation} \endlatexonly
- * \htmlonly   <h3>Implementation</h3> \endhtmlonly
- *
  * The small-world networks are regular networks rewired to introduce increasing amounts
  * of disorder, which can be highly clustered, like regular lattices, yet have small
  * characterisic path length, like random graphs. 
@@ -26,9 +21,6 @@
  * We first create a regular network characterised by two parameters: number of maximum 
  * connections per neurons and connection radius threshold, then rewire it according 
  * to the small-world rewiring probability.
- *
- * \latexonly  \subsubsection*{Credits} \endlatexonly
- * \htmlonly   <h3>Credits</h3> \endhtmlonly
  *
  * Some models in this simulator is a rewrite of CSIM (2006) and other
  * work (Stiber and Kawasaki (2007?))

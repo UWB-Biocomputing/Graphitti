@@ -1,3 +1,11 @@
+/**
+ * @file Util.h
+ * 
+ * @brief
+ *
+ * @ingroup Simulation/Utils
+ */
+
 #pragma once
 
 #ifndef _UTIL_H_

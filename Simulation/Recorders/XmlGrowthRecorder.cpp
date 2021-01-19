@@ -1,9 +1,10 @@
 /*
- *      @file XmlGrowthRecorder.cpp
+ * @file XmlGrowthRecorder.cpp
+ * 
+ * @ingroup Simulation/Recorders
  *
- *      @brief An implementation for recording spikes history on xml file
+ * @brief An implementation for recording spikes history on xml file
  */
-//! An implementation for recording spikes history on xml file
 
 #include "XmlGrowthRecorder.h"
 #include "Simulator.h"
@@ -23,9 +24,7 @@ XmlGrowthRecorder::XmlGrowthRecorder() :
 XmlGrowthRecorder::~XmlGrowthRecorder() {
 }
 
-/*
- * Init radii and rates history matrices with default values
- */
+/// Init radii and rates history matrices with default values
 void XmlGrowthRecorder::initDefaultValues() {
    shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
    BGFLOAT startRadius = dynamic_cast<ConnGrowth *>(conns.get())->growthParams_.startRadius;
@@ -36,9 +35,7 @@ void XmlGrowthRecorder::initDefaultValues() {
    }
 }
 
-/*
- * Init radii and rates history matrices with current radii and rates
- */
+/// Init radii and rates history matrices with current radii and rates
 void XmlGrowthRecorder::initValues() {
    shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
 
@@ -48,9 +45,7 @@ void XmlGrowthRecorder::initValues() {
    }
 }
 
-/*
- * Get the current radii and rates values
- */
+/// Get the current radii and rates values
 void XmlGrowthRecorder::getValues() {
    Connections *conns = Simulator::getInstance().getModel()->getConnections().get();
 
@@ -60,11 +55,9 @@ void XmlGrowthRecorder::getValues() {
    }
 }
 
-/*
- * Compile history information in every epoch
- *
- * @param[in] neurons 	The entire list of neurons.
- */
+/// Compile history information in every epoch
+///
+/// @param[in] neurons 	The entire list of neurons.
 void XmlGrowthRecorder::compileHistories(IAllNeurons &neurons) {
    XmlRecorder::compileHistories(neurons);
 
@@ -88,11 +81,9 @@ void XmlGrowthRecorder::compileHistories(IAllNeurons &neurons) {
    }
 }
 
-/*
- * Writes simulation results to an output destination.
- *
- * @param  neurons the Neuron list to search from.
- **/
+/// Writes simulation results to an output destination.
+///
+/// @param  neurons the Neuron list to search from.
 void XmlGrowthRecorder::saveSimData(const IAllNeurons &neurons) {
    // create Neuron Types matrix
    VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalNeurons(), EXC);
@@ -145,10 +136,8 @@ void XmlGrowthRecorder::saveSimData(const IAllNeurons &neurons) {
    stateOut_ << "</SimState>" << endl;
 }
 
-/**
- *  Prints out all parameters to logging file.
- *  Registered to OperationManager as Operation::printParameters
- */
+///  Prints out all parameters to logging file.
+///  Registered to OperationManager as Operation::printParameters
 void XmlGrowthRecorder::printParameters() {
    XmlRecorder::printParameters();
 
