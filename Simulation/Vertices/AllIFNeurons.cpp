@@ -1,3 +1,11 @@
+/**
+ * @file AllIFNeurons.cpp
+ *
+ * @brief
+ *
+ * @ingroup Simulation/Vertices
+ */
+
 #include "AllIFNeurons.h"
 #include "ParseParamError.h"
 #include "Layout.h"
@@ -65,9 +73,7 @@ AllIFNeurons::~AllIFNeurons() {
    size_ = 0;
 }
 
-/*
- *  Setup the internal structure of the class (allocate memories).
- */
+///  Setup the internal structure of the class (allocate memories).
 void AllIFNeurons::setupNeurons() {
    AllSpikingNeurons::setupNeurons();
 
@@ -94,10 +100,8 @@ void AllIFNeurons::setupNeurons() {
    }
 }
 
-/**
- *  Load member variables from configuration file.
- *  Registered to OperationManager as Operation::op::loadParameters
- */
+///  Load member variables from configuration file.
+///  Registered to OperationManager as Operation::op::loadParameters
 void AllIFNeurons::loadParameters() {
    ParameterManager::getInstance().getBGFloatByXpath("//Iinject/min/text()", IinjectRange_[0]);
    ParameterManager::getInstance().getBGFloatByXpath("//Iinject/max/text()", IinjectRange_[1]);
@@ -124,10 +128,8 @@ void AllIFNeurons::loadParameters() {
    ParameterManager::getInstance().getBGFloatByXpath("//starter_vreset/max/text()", starterVresetRange_[1]);
 }
 
-/**
- *  Prints out all parameters of the neurons to logging file.
- *  Registered to OperationManager as Operation::printParameters
- */
+///  Prints out all parameters of the neurons to logging file.
+///  Registered to OperationManager as Operation::printParameters
 void AllIFNeurons::printParameters() const {
    AllNeurons::printParameters();
 
@@ -158,11 +160,9 @@ void AllIFNeurons::printParameters() const {
                          << endl << endl);
 }
 
-/*
- *  Creates all the Neurons and generates data for them.
- *
- *  @param  layout      Layout information of the neunal network.
- */
+///  Creates all the Neurons and generates data for them.
+///
+///  @param  layout      Layout information of the neunal network.
 void AllIFNeurons::createAllNeurons(Layout *layout) {
    /* set their specific types */
    for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalNeurons(); neuronIndex++) {
@@ -173,12 +173,10 @@ void AllIFNeurons::createAllNeurons(Layout *layout) {
    }
 }
 
-/*
- *  Creates a single Neuron and generates data for it.
- *
- *  @param  neuronIndex Index of the neuron to create.
- *  @param  layout       Layout information of the neunal network.
- */
+///  Creates a single Neuron and generates data for it.
+///
+///  @param  neuronIndex Index of the neuron to create.
+///  @param  layout       Layout information of the neunal network.
 void AllIFNeurons::createNeuron(int neuronIndex, Layout *layout) {
    // set the neuron info for neurons
    Iinject_[neuronIndex] = rng.inRange(IinjectRange_[0], IinjectRange_[1]);
@@ -236,11 +234,9 @@ void AllIFNeurons::createNeuron(int neuronIndex, Layout *layout) {
                  << "}" << endl);
 }
 
-/*
- *  Set the Neuron at the indexed location to default values.
- *
- *  @param  index    Index of the Neuron that the synapse belongs to.
- */
+///  Set the Neuron at the indexed location to default values.
+///
+///  @param  index    Index of the Neuron that the synapse belongs to.
 void AllIFNeurons::setNeuronDefaults(const int index) {
    Cm_[index] = DEFAULT_Cm;
    Rm_[index] = DEFAULT_Rm;
@@ -254,12 +250,10 @@ void AllIFNeurons::setNeuronDefaults(const int index) {
    Tau_[index] = DEFAULT_Cm * DEFAULT_Rm;
 }
 
-/*
- *  Initializes the Neuron constants at the indexed location.
- *
- *  @param  neuronIndex    Index of the Neuron.
- *  @param  deltaT          Inner simulation step duration
- */
+///  Initializes the Neuron constants at the indexed location.
+///
+///  @param  neuronIndex    Index of the Neuron.
+///  @param  deltaT          Inner simulation step duration
 void AllIFNeurons::initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT) {
    BGFLOAT &Tau = this->Tau_[neuronIndex];
    BGFLOAT &C1 = this->C1_[neuronIndex];
@@ -285,12 +279,10 @@ void AllIFNeurons::initNeuronConstsFromParamValues(int neuronIndex, const BGFLOA
    }
 }
 
-/*
- *  Outputs state of the neuron chosen as a string.
- *
- *  @param  index  index of the neuron (in neurons) to output info from.
- *  @return the complete state of the neuron.
- */
+///  Outputs state of the neuron chosen as a string.
+///
+///  @param  index  index of the neuron (in neurons) to output info from.
+///  @return the complete state of the neuron.
 string AllIFNeurons::toString(const int index) const {
    stringstream ss;
    ss << "Cm: " << Cm_[index] << " "; // membrane capacitance
@@ -312,23 +304,19 @@ string AllIFNeurons::toString(const int index) const {
    return ss.str();
 }
 
-/*
- *  Sets the data for Neurons to input's data.
- *
- *  @param  input       istream to read from.
- */
+///  Sets the data for Neurons to input's data.
+///
+///  @param  input       istream to read from.
 void AllIFNeurons::deserialize(istream &input) {
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
       readNeuron(input, i);
    }
 }
 
-/*
- *  Sets the data for Neuron #index to input's data.
- *
- *  @param  input       istream to read from.
- *  @param  i           index of the neuron (in neurons).
- */
+///  Sets the data for Neuron #index to input's data.
+///
+///  @param  input       istream to read from.
+///  @param  i           index of the neuron (in neurons).
 void AllIFNeurons::readNeuron(istream &input, int i) {
    // input.ignore() so input skips over end-of-line characters.
    input >> Cm_[i];
@@ -367,23 +355,19 @@ void AllIFNeurons::readNeuron(istream &input, int i) {
    input.ignore();
 }
 
-/*
- *  Writes out the data in Neurons.
- *
- *  @param  output      stream to write out to.
- */
+///  Writes out the data in Neurons.
+///
+///  @param  output      stream to write out to.
 void AllIFNeurons::serialize(ostream &output) const {
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
       writeNeuron(output, i);
    }
 }
 
-/*
- *  Writes out the data in the selected Neuron.
- *
- *  @param  output      stream to write out to.
- *  @param  i           index of the neuron (in neurons).
- */
+///  Writes out the data in the selected Neuron.
+///
+///  @param  output      stream to write out to.
+///  @param  i           index of the neuron (in neurons).
 void AllIFNeurons::writeNeuron(ostream &output, int i) const {
    output << Cm_[i] << ends;
    output << Rm_[i] << ends;

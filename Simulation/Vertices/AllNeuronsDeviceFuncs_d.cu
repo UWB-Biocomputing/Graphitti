@@ -1,22 +1,24 @@
-/*
- * AllNeuronsDeviceFuncs_d.cu
+/**
+ * @file AllNeuronsDeviceFuncs_d.cu
+ * 
+ * @ingroup Simulation/Vertices
  *
+ * @brief
  */
 
 #include "AllNeuronsDeviceFuncs.h"
 #include "AllSynapsesDeviceFuncs.h"
 
-/* -------------------------------------*\
-|* # Device Functions for advanceNeurons
-\* -------------------------------------*/
+/******************************************
+* Device Functions for advanceNeurons
+******************************************/
+///@{
 
-/*
- *  Prepares Synapse for a spike hit.
- *
- *  @param[in] iSyn                  Index of the Synapse to update.
- *  @param[in] allSynapsesDevice     Pointer to AllSpikingSynapsesDeviceProperties structures 
- *                                   on device memory.
- */
+///  Prepares Synapse for a spike hit.
+///
+///  @param[in] iSyn                  Index of the Synapse to update.
+///  @param[in] allSynapsesDevice     Pointer to AllSpikingSynapsesDeviceProperties structures 
+///                                   on device memory.
 __device__ void preSpikingSynapsesSpikeHitDevice( const BGSIZE iSyn, AllSpikingSynapsesDeviceProperties* allSynapsesDevice ) {
         uint32_t &delay_queue = allSynapsesDevice->delayQueue_[iSyn]; 
         int delayIdx = allSynapsesDevice->delayIndex_[iSyn];
@@ -36,23 +38,19 @@ __device__ void preSpikingSynapsesSpikeHitDevice( const BGSIZE iSyn, AllSpikingS
         delay_queue |= (0x1 << idx);
 }
 
-/*
- *  Prepares Synapse for a spike hit (for back propagation).
- *
- *  @param[in] iSyn                  Index of the Synapse to update.
- *  @param[in] allSynapsesDevice     Pointer to AllSpikingSynapsesDeviceProperties structures 
- *                                   on device memory.
- */
+///  Prepares Synapse for a spike hit (for back propagation).
+///
+///  @param[in] iSyn                  Index of the Synapse to update.
+///  @param[in] allSynapsesDevice     Pointer to AllSpikingSynapsesDeviceProperties structures 
+///                                   on device memory.
 __device__ void postSpikingSynapsesSpikeHitDevice( const BGSIZE iSyn, AllSpikingSynapsesDeviceProperties* allSynapsesDevice ) {
 }
 
-/*
- *  Prepares Synapse for a spike hit (for back propagation).
- *
- *  @param[in] iSyn                  Index of the Synapse to update.
- *  @param[in] allSynapsesDevice     Pointer to AllSTDPSynapsesDeviceProperties structures 
- *                                   on device memory.
- */
+///  Prepares Synapse for a spike hit (for back propagation).
+///
+///  @param[in] iSyn                  Index of the Synapse to update.
+///  @param[in] allSynapsesDevice     Pointer to AllSTDPSynapsesDeviceProperties structures 
+///                                   on device memory.
 __device__ void postSTDPSynapseSpikeHitDevice( const BGSIZE iSyn, AllSTDPSynapsesDeviceProperties* allSynapsesDevice ) {
         uint32_t &delayQueue = allSynapsesDevice->delayQueuePost_[iSyn];
         int delayIndex = allSynapsesDevice->delayIndexPost_[iSyn];
@@ -71,25 +69,25 @@ __device__ void postSTDPSynapseSpikeHitDevice( const BGSIZE iSyn, AllSTDPSynapse
         //assert( !(delay_queue[0] & (0x1 << idx)) );
         delayQueue |= (0x1 << idx);
 }
+///@}
 
-/* -------------------------------------*\
-|* # Global Functions for advanceNeurons
-\* -------------------------------------*/
+/******************************************
+* Global Functions for advanceNeurons
+******************************************/
+///@{
 
-/*
- *  CUDA code for advancing LIF neurons
- * 
- *  @param[in] totalNeurons          Number of neurons.
- *  @param[in] maxSynapses           Maximum number of synapses per neuron.
- *  @param[in] maxSpikes             Maximum number of spikes per neuron per epoch.
- *  @param[in] deltaT                Inner simulation step duration.
- *  @param[in] simulationStep        The current simulation step.
- *  @param[in] randNoise             Pointer to de/vice random noise array.
- *  @param[in] allNeuronsDevice      Pointer to Neuron structures in device memory.
- *  @param[in] allSynapsesDevice     Pointer to Synapse structures in device memory.
- *  @param[in] synapseIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
- *  @param[in] fAllowBackPropagation True if back propagaion is allowed.
- */
+///  CUDA code for advancing LIF neurons
+/// 
+///  @param[in] totalNeurons          Number of neurons.
+///  @param[in] maxSynapses           Maximum number of synapses per neuron.
+///  @param[in] maxSpikes             Maximum number of spikes per neuron per epoch.
+///  @param[in] deltaT                Inner simulation step duration.
+///  @param[in] simulationStep        The current simulation step.
+///  @param[in] randNoise             Pointer to de/vice random noise array.
+///  @param[in] allNeuronsDevice      Pointer to Neuron structures in device memory.
+///  @param[in] allSynapsesDevice     Pointer to Synapse structures in device memory.
+///  @param[in] synapseIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
+///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
 __global__ void advanceLIFNeuronsDevice( int totalNeurons, int maxSynapses, int maxSpikes, const BGFLOAT deltaT, uint64_t simulationStep, float* randNoise, AllIFNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, SynapseIndexMap* synapseIndexMapDevice, bool fAllowBackPropagation ) {
         // determine which neuron this thread is processing
         int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -183,20 +181,18 @@ __global__ void advanceLIFNeuronsDevice( int totalNeurons, int maxSynapses, int 
         sp = 0;
 }
 
-/*
- *  CUDA code for advancing izhikevich neurons
- *
- *  @param[in] totalNeurons          Number of neurons.
- *  @param[in] maxSynapses           Maximum number of synapses per neuron.
- *  @param[in] maxSpikes             Maximum number of spikes per neuron per epoch.
- *  @param[in] deltaT                Inner simulation step duration.
- *  @param[in] simulationStep        The current simulation step.
- *  @param[in] randNoise             Pointer to device random noise array.
- *  @param[in] allNeuronsDevice      Pointer to Neuron structures in device memory.
- *  @param[in] allSynapsesDevice     Pointer to Synapse structures in device memory.
- *  @param[in] synapseIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
- *  @param[in] fAllowBackPropagation True if back propagaion is allowed.
- */
+///  CUDA code for advancing izhikevich neurons
+///
+///  @param[in] totalNeurons          Number of neurons.
+///  @param[in] maxSynapses           Maximum number of synapses per neuron.
+///  @param[in] maxSpikes             Maximum number of spikes per neuron per epoch.
+///  @param[in] deltaT                Inner simulation step duration.
+///  @param[in] simulationStep        The current simulation step.
+///  @param[in] randNoise             Pointer to device random noise array.
+///  @param[in] allNeuronsDevice      Pointer to Neuron structures in device memory.
+///  @param[in] allSynapsesDevice     Pointer to Synapse structures in device memory.
+///  @param[in] synapseIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
+///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
 __global__ void advanceIZHNeuronsDevice( int totalNeurons, int maxSynapses, int maxSpikes, const BGFLOAT deltaT, uint64_t simulationStep, float* randNoise, AllIZHNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, SynapseIndexMap* synapseIndexMapDevice, bool fAllowBackPropagation ) {
         // determine which neuron this thread is processing
         int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -296,3 +292,4 @@ __global__ void advanceIZHNeuronsDevice( int totalNeurons, int maxSynapses, int 
         // clear synaptic input for next time step
         sp = 0;
 }
+///@}

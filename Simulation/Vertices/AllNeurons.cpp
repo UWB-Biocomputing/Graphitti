@@ -1,3 +1,11 @@
+/**
+ * @file AllNeurons.cpp
+ * 
+ * @ingroup Simulation/Vertices
+ *
+ * @brief
+ */
+
 #include "AllNeurons.h"
 #include "Core/Simulator.h"
 #include "OperationManager.h"
@@ -29,9 +37,7 @@ AllNeurons::~AllNeurons() {
    size_ = 0;
 }
 
-/*
- *  Setup the internal structure of the class (allocate memories).
- */
+///  Setup the internal structure of the class (allocate memories).
 void AllNeurons::setupNeurons() {
    size_ = Simulator::getInstance().getTotalNeurons();
    summationMap_ = new BGFLOAT[size_];
@@ -43,10 +49,8 @@ void AllNeurons::setupNeurons() {
    Simulator::getInstance().setPSummationMap(summationMap_);
 }
 
-/**
- *  Prints out all parameters of the neurons to logging file.
- *  Registered to OperationManager as Operation::printParameters
- */
+///  Prints out all parameters of the neurons to logging file.
+///  Registered to OperationManager as Operation::printParameters
 void AllNeurons::printParameters() const {
    LOG4CPLUS_DEBUG(fileLogger_, "\nVERTICES PARAMETERS");
 }
