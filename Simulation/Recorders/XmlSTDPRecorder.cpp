@@ -20,13 +20,9 @@ XmlSTDPRecorder::XmlSTDPRecorder() :
                     Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron()),  
 
       destNeuronsHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
-                    Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron()), 
-      ratesHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
-                    Simulator::getInstance().getTotalNeurons()),
-      radiiHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
-                    Simulator::getInstance().getTotalNeurons()) {
-}
+                    Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron()) {
 
+}
 XmlSTDPRecorder::~XmlSTDPRecorder() {
 }
 
@@ -128,9 +124,8 @@ void XmlSTDPRecorder::saveSimData(const IAllNeurons &neurons) {
    // Write the core state information:
    stateOut_ << "<SimState>\n";
    stateOut_ << "   " << sourceNeuronsHistory_.toXML("sourceNeuronIndexHistory") << endl;
-   stateOut_ << "   " << destNeuronsHistory_.toXML("destNeuronIndexHistory") << endl;
+   stateOut_ << "   " << destNeuronsHistory_.toXML("destNeuronHistory") << endl;
    stateOut_ << "   " << weightsHistory_.toXML("weightsHistory") << endl;
-   //stateOut_ << "   " << ratesHistory_.toXML("ratesHistory") << endl;
    stateOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
    stateOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
    stateOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->xloc_->toXML("xloc") << endl;

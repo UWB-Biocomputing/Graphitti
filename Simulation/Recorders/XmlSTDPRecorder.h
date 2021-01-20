@@ -88,8 +88,5 @@ private:
    CompleteMatrix sourceNeuronsHistory_;
    CompleteMatrix destNeuronsHistory_;
 
-   // track radii
-    CompleteMatrix ratesHistory_;
-   CompleteMatrix radiiHistory_;
 };
 
