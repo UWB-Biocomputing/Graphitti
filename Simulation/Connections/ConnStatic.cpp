@@ -1,5 +1,5 @@
 /**
- * @file ConnStatic.h
+ * @file ConnStatic.cpp
  *
  * @ingroup Simulation/Connections
  * 

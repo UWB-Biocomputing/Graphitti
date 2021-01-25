@@ -1,4 +1,4 @@
-/*
+/**
  * @file XmlRecorder.cpp
  *
  * @ingroup Simulation/Recorders

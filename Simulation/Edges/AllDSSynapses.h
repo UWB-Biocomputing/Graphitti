@@ -1,9 +1,9 @@
 /**
- *      @file AllDSSynapses.h
+ *  @file AllDSSynapses.h
+ * 
+ *  @ingroup Simulation/Edges
  *
- *      @brief A container of all DS synapse data
- *
- * @authors Aaron Oziel, Sean Blackbourn
+ *  @brief A container of all DS synapse data
  *
  *  The container holds synapse parameters of all synapses. 
  *  Each kind of synapse parameter is stored in a 2D array. Each item in the first 

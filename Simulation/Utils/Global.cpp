@@ -1,4 +1,4 @@
-/*
+/**
  *	@file Global.cpp
  *
  *	@ingroup Simulation/Utils

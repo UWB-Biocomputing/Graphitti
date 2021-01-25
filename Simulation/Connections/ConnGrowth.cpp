@@ -2,6 +2,8 @@
  * @file ConnGrowth.cpp
  * 
  * @ingroup Simulation/Connections
+ * 
+ * @brief
  *
  *------------- CONNECTIONS STRUCT ------------
  * Below all of the resources for the various
@@ -12,7 +14,6 @@
  * the constructor fills in known information
  * into “radii” and “rates”.
  * ---------------------------------------------
-// TODO comment
  * ------------------- ERROR ------------------- 
  * terminate called after throwing an instance of 'std::bad_alloc'
  *      what():  St9bad_alloc

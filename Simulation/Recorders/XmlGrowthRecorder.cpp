@@ -1,4 +1,4 @@
-/*
+/**
  * @file XmlGrowthRecorder.cpp
  * 
  * @ingroup Simulation/Recorders

@@ -1,4 +1,4 @@
-/*
+/**
  * @file Hdf5Recorder.cpp
  * 
  * @ingroup Simulation/Recorders

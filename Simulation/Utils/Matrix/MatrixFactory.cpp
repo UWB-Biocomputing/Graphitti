@@ -1,5 +1,5 @@
 /**
- * @file @file MatrixFactory.cpp
+ * @file MatrixFactory.cpp
  * 
  * @ingroup Simulation/Utils/Matrix
  * 
