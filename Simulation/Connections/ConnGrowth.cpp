@@ -1,4 +1,4 @@
-/*
+/**
  * @file ConnGrowth.cpp
  * 
  * @ingroup Simulation/Connections
