@@ -13,7 +13,7 @@
 
 //! THe constructor and destructor
 XmlSTDPRecorder::XmlSTDPRecorder() :
-      XmlRecorder(),
+     
       weightsHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
                     Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron()),
       sourceNeuronsHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
@@ -34,10 +34,7 @@ void XmlSTDPRecorder::initDefaultValues() {
   //IAllSynapses *synapses synapses)->W_[iSyn]
    BGFLOAT startRadius = dynamic_cast<ConnStatic *>(conns.get())->threshConnsRadius_;
 
-   for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
-      //radiiHistory_(0, i) = startRadius;
-      //ratesHistory_(0, i) = 0;
-   }
+
 }
 
 /*
@@ -81,6 +78,7 @@ void XmlSTDPRecorder::compileHistories(IAllNeurons &neurons) {
 
    //VectorMatrix &rates = (*dynamic_cast<ConnGrowth *>(conns.get())->rates_);
    BGFLOAT &weights = (*dynamic_cast<ConnStatic *>(conns.get())->WCurrentEpoch_);
+   //TO DO: change to int
    BGFLOAT &sourceIndex = (*dynamic_cast<ConnStatic *>(conns.get())->sourceNeuronIndexCurrentEpoch_);
    BGFLOAT &destIndex = (*dynamic_cast<ConnStatic *>(conns.get())->destNeuronIndexCurrentEpoch_);
   //sourceNeuronIndexCurrentEpoch_

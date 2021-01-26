@@ -53,6 +53,7 @@ using namespace std;
 bool parseCommandLine(int argc, char *argv[]);
 bool deserializeSynapses();
 void serializeSynapses();
+log4cplus::Logger fileLogger_;
 
 /*
  *  Main for Simulator. Handles command line arguments and loads parameters
@@ -75,6 +76,7 @@ int main(int argc, char *argv[]) {
 
    // Get the instance of the console logger and print status
    log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+   log4cplus::Logger fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    LOG4CPLUS_TRACE(consoleLogger, "Initiating Simulator");
 
    Simulator &simulator = Simulator::getInstance();
@@ -240,6 +242,7 @@ bool parseCommandLine(int argc, char *argv[]) {
  */
 bool deserializeSynapses() {
    Simulator &simulator = Simulator::getInstance();
+   
    // We can deserialize from a variety of archive file formats. Below, comment
    // out all but the line that is compatible with the desired format.
    ifstream memory_in(simulator.getDeserializationFileName().c_str());
@@ -257,7 +260,10 @@ bool deserializeSynapses() {
    //cereal::BinaryInputArchive archive(memory_in);
 
    shared_ptr<Connections> connections = simulator.getModel()->getConnections();
+   
+
    shared_ptr<Layout> layout = simulator.getModel()->getLayout();
+
 
    if (!layout || !connections) {
       cerr << "Either connections or layout is not instantiated," << endl;
@@ -278,6 +284,8 @@ bool deserializeSynapses() {
    connections->createSynapsesFromWeights(simulator.getTotalNeurons(), layout.get(), (*layout->getNeurons()),
                                           (*connections->getSynapses()));
 
+   cerr<< "\nDone creating synapses from weights " << endl;
+
 #if defined(USE_GPU)
    // Copies CPU Synapse data to GPU after deserialization, if we're doing
     // a GPU-based simulation.
@@ -286,6 +294,7 @@ bool deserializeSynapses() {
 
    // Creates synapse index map (includes copy CPU index map to GPU)
    connections->createSynapseIndexMap();
+   cerr<< "\nDone creating synapses index map " << endl;
 
 #if defined(USE_GPU)
    GPUSpikingModel *gpuModel = static_cast<GPUSpikingModel *>(simulator.getModel().get());
@@ -297,6 +306,7 @@ bool deserializeSynapses() {
       // Uses "try catch" to catch any cereal exception
       try {
          archive(*(dynamic_cast<ConnGrowth *>(connections.get())));
+         cerr<< "Successfully deserialized radii " << endl;
       }
       catch (cereal::Exception e) {
          cerr << "Failed deserializing radii." << endl;

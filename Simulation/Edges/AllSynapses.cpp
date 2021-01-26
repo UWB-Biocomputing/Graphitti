@@ -167,6 +167,7 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
    // create synapse forward map & active synapse map
    //in previous code a reference to the pointer was being passed, *&synapseIndexMap
    SynapseIndexMap *synapseIndexMap = new SynapseIndexMap(neuronCount, totalSynapseCount);
+   LOG4CPLUS_DEBUG(fileLogger_, "\nSize of synapse Index Map "<< neuronCount<<","<<totalSynapseCount << endl);
 
    for (int i = 0; i < neuronCount; i++) {
       BGSIZE synapse_count = 0;
@@ -181,10 +182,24 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
             synapse_count++;
          }
       }
+      //TO DO
+        if(synapse_count != this->synapseCounts_[i])
+      {
+         LOG4CPLUS_DEBUG(fileLogger_, "\nSYNAPSE COUNT "<< synapse_count << endl);
+         
+      }
       assert(synapse_count == this->synapseCounts_[i]);
+    
       synapseIndexMap->incomingSynapseCount_[i] = synapse_count;
    }
 
+   //TO DO
+   
+     if( totalSynapseCount != numInUse)
+      {
+            cout<< "checking "<<numInUse<<endl;
+           
+      }
    assert(totalSynapseCount == numInUse);
    totalSynapseCount_ = totalSynapseCount;
 

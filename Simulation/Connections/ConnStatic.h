@@ -79,6 +79,7 @@ public:
   /**
     *  Stores the indices of the source neuron for each synapse
     */
+   //TO DO: Change source index and destination index to int
    BGFLOAT *sourceNeuronIndexCurrentEpoch_;
 
    /**
@@ -93,6 +94,7 @@ public:
   
 
    //! number of maximum connections per neurons
+   //TO DO: chnage it to int 
    BGFLOAT connsPerNeuron_;
 
    //! Connection radius threshold
