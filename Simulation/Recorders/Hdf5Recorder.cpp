@@ -31,8 +31,8 @@ const H5std_string  nameProbedNeurons("probedNeurons");
 Hdf5Recorder::Hdf5Recorder() :
    offsetSpikesProbedNeurons(NULL),
    spikesProbedNeurons(NULL) {
-   // TODO: I don't think these member variables exist in the .h file
    resultFileName_ = Simulator::getInstance().getResultFileName();
+
 }
 
 Hdf5Recorder::~Hdf5Recorder()

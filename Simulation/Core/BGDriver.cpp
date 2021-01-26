@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
    OperationManager::getInstance().executeOperation(Operations::printParameters);
 
    // Deserializes internal state from a prior run of the simulation
-   if (!simulator.getSerializationFileName().empty()) {
+   if (!simulator.getDeserializationFileName().empty()) {
       LOG4CPLUS_TRACE(consoleLogger, "Deserializing state from file.");
 
       // Deserialization

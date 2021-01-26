@@ -8,7 +8,7 @@
     </PoolSize>
     <SimParams name="SimParams">
       <epochDuration name="epochDuration">100.0</epochDuration>
-      <numEpochs name="numEpochs">1</numEpochs>
+      <numEpochs name="numEpochs">5</numEpochs>
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">200</maxFiringRate>

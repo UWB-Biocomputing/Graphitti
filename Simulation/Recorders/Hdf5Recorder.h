@@ -35,8 +35,9 @@
 
 #include "IRecorder.h"
 #include "Model.h"
-#include </opt/hdf5/latest/include/hdf5.h>
-#include </opt/hdf5/latest/include/H5Cpp.h>
+//#include </opt/hdf5/latest/include/hdf5.h>
+//#include </opt/hdf5/latest/include/H5Cpp.h>
+#include "H5Cpp.h"
 
 #ifndef H5_NO_NAMESPACE
 using namespace H5;
@@ -127,6 +128,8 @@ protected:
 
    DataSet *dataSetSpikesProbedNeurons;
    DataSet *dataSetProbedNeurons;
+//TO DO: added a file name
+   //string& resultFileName_;
 
    // Keep track of where we are in incrementally writing spikes
     hsize_t* offsetSpikesProbedNeurons;

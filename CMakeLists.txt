@@ -8,13 +8,15 @@ set(CMAKE_CXX_STANDARD 11)
 set(BRAINGRID_CUDA NO)
 
 #To enable printing everything 
-#set( CMAKE_VERBOSE_MAKEFILE on )
+#mset( CMAKE_VERBOSE_MAKEFILE on )
 
 #FIND_PACKAGE(HDF5 COMPONENTS CXX NO_MODULE REQUIRED static)
 
 # find HDF5
-include_directories(${HDF5_INCLUDE_DIRS})
-find_package(HDF5 COMPONENTS C HL NO_MODULE REQUIRED shared)
+
+find_package(HDF5 COMPONENTS)
+#C HL NO_MODULE REQUIRED shared)
+#include_directories(${HDF5_INCLUDE_DIRS})
 #find_package(HDF5 COMPONENTS CXX REQUIRED)
 include_directories(${HDF5_INCLUDE_DIRS})
 #include_directories(/opt/hdf5/latest/include)
