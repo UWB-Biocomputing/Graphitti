@@ -48,8 +48,8 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
    int added = 0;
    BGSIZE maxTotalSynapses =  Simulator::getInstance().getMaxSynapsesPerNeuron() * Simulator::getInstance().getTotalNeurons();
    WCurrentEpoch_ = new BGFLOAT[maxTotalSynapses];
-   sourceNeuronIndexCurrentEpoch_ = new BGFLOAT[maxTotalSynapses];
-   destNeuronIndexCurrentEpoch_= new BGFLOAT[maxTotalSynapses];
+   sourceNeuronIndexCurrentEpoch_ = new int[maxTotalSynapses];
+   destNeuronIndexCurrentEpoch_= new int[maxTotalSynapses];
    
    
 

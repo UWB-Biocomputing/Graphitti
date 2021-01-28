@@ -5,24 +5,46 @@
  */
 //! An implementation for recording spikes history on xml file
 
+/**
+ @file XmlSTDPRecorder.cpp
+ @brief An implementation for recording weights of synapses for STDP on xml file
+ @author Snigdha Singh
+ @date January 2021
+ @version 1
+ */
+
 #include "XmlSTDPRecorder.h"
 #include "Simulator.h"
 #include "Model.h"
 #include "AllIFNeurons.h"      // TODO: remove LIF model specific code
 #include "ConnStatic.h"
+#include <vector>
 
 //! THe constructor and destructor
 XmlSTDPRecorder::XmlSTDPRecorder() :
-     
+XmlRecorder()
+     /*
       weightsHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
                     Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron()),
       sourceNeuronsHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
                     Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron()),  
 
       destNeuronsHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
-                    Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron()) {
+                    Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron()) 
+                    */
+                   
+      {
+   
+  weightsHistory_.resize( Simulator::getInstance().getNumEpochs() + 1 , 
+      vector<BGFLOAT> (Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron(),0));
+   
+    sourceNeuronIndexHistory_.resize( Simulator::getInstance().getNumEpochs() + 1 , 
+      vector<int> (Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron()));
 
+destNeuronIndexHistory_.resize( Simulator::getInstance().getNumEpochs() + 1 , 
+      vector<int> (Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron()));
 }
+
 XmlSTDPRecorder::~XmlSTDPRecorder() {
 }
 
@@ -43,12 +65,13 @@ void XmlSTDPRecorder::initDefaultValues() {
 void XmlSTDPRecorder::initValues() {
    shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
 
+/*
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron(); i++) {
       weightsHistory_(0, i) = (dynamic_cast<ConnStatic *>(conns.get())->WCurrentEpoch_)[i];
       sourceNeuronsHistory_(0, i) = (dynamic_cast<ConnStatic *>(conns.get())->sourceNeuronIndexCurrentEpoch_)[i];
       destNeuronsHistory_(0, i) = (dynamic_cast<ConnStatic *>(conns.get())->destNeuronIndexCurrentEpoch_)[i];
       
-   }
+   }*/
 }
 
 /*
@@ -58,9 +81,9 @@ void XmlSTDPRecorder::getValues() {
    Connections *conns = Simulator::getInstance().getModel()->getConnections().get();
 
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
-      (dynamic_cast<ConnStatic *>(conns)->WCurrentEpoch_)[i] = weightsHistory_(Simulator::getInstance().getCurrentStep(), i);
-      (dynamic_cast<ConnStatic *>(conns)->sourceNeuronIndexCurrentEpoch_)[i] = sourceNeuronsHistory_(Simulator::getInstance().getCurrentStep(), i);
-      (dynamic_cast<ConnStatic *>(conns)->destNeuronIndexCurrentEpoch_)[i] = destNeuronsHistory_(Simulator::getInstance().getCurrentStep(), i);
+      (dynamic_cast<ConnStatic *>(conns)->WCurrentEpoch_)[i] = weightsHistory_[Simulator::getInstance().getCurrentStep()][i];
+      (dynamic_cast<ConnStatic *>(conns)->sourceNeuronIndexCurrentEpoch_)[i] = sourceNeuronIndexHistory_[Simulator::getInstance().getCurrentStep()][i];
+      (dynamic_cast<ConnStatic *>(conns)->destNeuronIndexCurrentEpoch_)[i] = destNeuronIndexHistory_[Simulator::getInstance().getCurrentStep()][i];
       //(*dynamic_cast<ConnGrowth *>(conns)->rates_)[i] = ratesHistory_(Simulator::getInstance().getCurrentStep(), i);
    }
 }
@@ -79,21 +102,69 @@ void XmlSTDPRecorder::compileHistories(IAllNeurons &neurons) {
    //VectorMatrix &rates = (*dynamic_cast<ConnGrowth *>(conns.get())->rates_);
    BGFLOAT &weights = (*dynamic_cast<ConnStatic *>(conns.get())->WCurrentEpoch_);
    //TO DO: change to int
-   BGFLOAT &sourceIndex = (*dynamic_cast<ConnStatic *>(conns.get())->sourceNeuronIndexCurrentEpoch_);
-   BGFLOAT &destIndex = (*dynamic_cast<ConnStatic *>(conns.get())->destNeuronIndexCurrentEpoch_);
-  //sourceNeuronIndexCurrentEpoch_
-
+   int &sourceIndex = (*dynamic_cast<ConnStatic *>(conns.get())->sourceNeuronIndexCurrentEpoch_);
+   int &destIndex = (*dynamic_cast<ConnStatic *>(conns.get())->destNeuronIndexCurrentEpoch_);
+    
+      
 
    for (int iNeuron = 0; iNeuron < Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron(); iNeuron++) {
       // record firing rate to history matrix
-      
-      weightsHistory_(Simulator::getInstance().getCurrentStep(), iNeuron)= (dynamic_cast<ConnStatic *>(conns.get())->WCurrentEpoch_)[iNeuron];
-      sourceNeuronsHistory_(Simulator::getInstance().getCurrentStep(), iNeuron)= (dynamic_cast<ConnStatic *>(conns.get())->sourceNeuronIndexCurrentEpoch_)[iNeuron];
-      destNeuronsHistory_(Simulator::getInstance().getCurrentStep(), iNeuron)= (dynamic_cast<ConnStatic *>(conns.get())->destNeuronIndexCurrentEpoch_)[iNeuron];
+
+      weightsHistory_[Simulator::getInstance().getCurrentStep()][iNeuron]= (dynamic_cast<ConnStatic *>(conns.get())->WCurrentEpoch_)[iNeuron];
+      sourceNeuronIndexHistory_[Simulator::getInstance().getCurrentStep()][iNeuron]= (dynamic_cast<ConnStatic *>(conns.get())->sourceNeuronIndexCurrentEpoch_)[iNeuron];
+      destNeuronIndexHistory_[Simulator::getInstance().getCurrentStep()][iNeuron]= (dynamic_cast<ConnStatic *>(conns.get())->destNeuronIndexCurrentEpoch_)[iNeuron];
       //LOG4CPLUS_INFO(fileLogger_, Simulator::getInstance().getCurrentStep()<<" "<< iNeuron);
       //weightsHistory_(Simulator::getInstance().getCurrentStep(), iNeuron) = weights[iNeuron];
    }
    LOG4CPLUS_INFO(fileLogger_, "Finished Compiling STDP HISTORY");
+}
+
+// convert Matrix to XML string
+string XmlSTDPRecorder::toXML(string name,vector<vector<BGFLOAT>> MatrixToWrite) const
+{
+    stringstream os;
+    
+    os << "<Matrix ";
+    if (name != "")
+        os << "name=\"" << name << "\" ";
+    os << "type=\"complete\" rows=\"" << MatrixToWrite.size()
+    << "\" columns=\"" << MatrixToWrite[0].size()
+    << "\" multiplier=\"1.0\">" << endl;
+    for (int i = 0; i < MatrixToWrite.size(); i++)
+{
+    for (int j = 0; j < MatrixToWrite[i].size(); j++)
+    {
+        os << MatrixToWrite[i][j]<< " ";
+    }
+}
+os <<endl;
+    os << "</Matrix>";
+    
+    return os.str();
+}
+
+// convert Matrix to XML string
+string XmlSTDPRecorder::toXML(string name,vector<vector<int>> MatrixToWrite) const
+{
+    stringstream os;
+    
+    os << "<Matrix ";
+    if (name != "")
+        os << "name=\"" << name << "\" ";
+    os << "type=\"complete\" rows=\"" << MatrixToWrite.size()
+    << "\" columns=\"" << MatrixToWrite[0].size()
+    << "\" multiplier=\"1.0\">" << endl;
+    for (int i = 0; i < MatrixToWrite.size(); i++)
+{
+    for (int j = 0; j < MatrixToWrite[i].size(); j++)
+    {
+        os << MatrixToWrite[i][j]<<" ";
+    }
+}
+os <<endl;
+    os << "</Matrix>";
+    
+    return os.str();
 }
 
 /*
@@ -121,9 +192,9 @@ void XmlSTDPRecorder::saveSimData(const IAllNeurons &neurons) {
 
    // Write the core state information:
    stateOut_ << "<SimState>\n";
-   stateOut_ << "   " << sourceNeuronsHistory_.toXML("sourceNeuronIndexHistory") << endl;
-   stateOut_ << "   " << destNeuronsHistory_.toXML("destNeuronHistory") << endl;
-   stateOut_ << "   " << weightsHistory_.toXML("weightsHistory") << endl;
+   stateOut_ << "   " <<toXML("sourceNeuronIndexHistory",sourceNeuronIndexHistory_) << endl;
+   stateOut_ << "   " << toXML("destNeuronIndexHistory",destNeuronIndexHistory_) << endl;
+   stateOut_ << "   " <<toXML("weightsHistory",weightsHistory_) << endl;
    stateOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
    stateOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
    stateOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->xloc_->toXML("xloc") << endl;

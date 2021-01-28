@@ -80,12 +80,12 @@ public:
     *  Stores the indices of the source neuron for each synapse
     */
    //TO DO: Change source index and destination index to int
-   BGFLOAT *sourceNeuronIndexCurrentEpoch_;
+   int *sourceNeuronIndexCurrentEpoch_;
 
    /**
     *  Stores the indices of the destination neuron for each synapse
     */
-   BGFLOAT *destNeuronIndexCurrentEpoch_;
+   int *destNeuronIndexCurrentEpoch_;
 
    /**
     *   The weight (scaling factor, strength, maximal amplitude) of each synapse for the current epoch.

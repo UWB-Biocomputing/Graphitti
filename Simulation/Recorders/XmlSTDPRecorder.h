@@ -80,13 +80,13 @@ public:
     */
    virtual void printParameters();
 
-private:
-   // track firing rate
-  
+   virtual string toXML(string name,vector<vector<BGFLOAT>> MatrixToWrite ) const;
+   virtual string toXML(string name,vector<vector<int>> MatrixToWrite) const;
 
-   CompleteMatrix weightsHistory_;
-   CompleteMatrix sourceNeuronsHistory_;
-   CompleteMatrix destNeuronsHistory_;
+protected:
+   vector<vector<BGFLOAT>> weightsHistory_;
+   vector<vector<int>> sourceNeuronIndexHistory_;
+   vector<vector<int>>  destNeuronIndexHistory_;
 
 };
 
