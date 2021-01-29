@@ -1,9 +1,9 @@
-/*
- *      \file SInputRegular.cpp
+/**
+ * @file SInputRegular.cpp
  *
- *      \author Fumitaka Kawasaki
- *
- *      \brief A class that performs stimulus input (implementation Regular).
+ * @ingroup Simulation/Utils/Inputs
+ * 
+ * @brief A class that performs stimulus input (implementation Regular).
  */
 
 #include "SInputRegular.h"
@@ -13,12 +13,10 @@
 
 void getValueList(const string& valString, vector<BGFLOAT>* pList);
 
-/*
- * constructor
- *
- * @param[in] psi       Pointer to the simulation information
- * @param[in] parms     Pointer to xml parms element
- */
+/// constructor
+///
+/// @param[in] psi       Pointer to the simulation information
+/// @param[in] parms     Pointer to xml parms element
 SInputRegular::SInputRegular(TiXmlElement* parms) :
     values(NULL),
     nShiftValues(NULL)
@@ -113,34 +111,25 @@ SInputRegular::SInputRegular(TiXmlElement* parms) :
     fSInput = true;
 }
 
-/*
- * destructor
- */
 SInputRegular::~SInputRegular()
 {
 }
 
-/*
- * Initialize data.
- *
- * @param[in] psi       Pointer to the simulation information.
- */
+/// Initialize data.
+///
+/// @param[in] psi       Pointer to the simulation information.
 void SInputRegular::init()
 {
 }
 
-/*
- * Terminate process.
- *
- * @param[in] psi                Pointer to the simulation information.
- */
+/// Terminate process.
+///
+/// @param[in] psi                Pointer to the simulation information.
 void SInputRegular::term()
 {
 }
 
-/* 
- * Helper function for input vaue list (copied from BGDriver.cpp and modified for BGFLOAT)
- */
+/// Helper function for input vaue list (copied from BGDriver.cpp and modified for BGFLOAT)
 void getValueList(const string& valString, vector<BGFLOAT>* pList)
 {
     std::istringstream valStream(valString);

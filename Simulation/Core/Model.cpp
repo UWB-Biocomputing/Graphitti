@@ -1,3 +1,18 @@
+/**
+ * @file Model.cpp
+ *
+ * @ingroup Simulation/Core
+ * 
+ * @brief Implementation of Model for the spiking neural networks.
+ *
+ * The network is composed of 3 superimposed 2-d arrays: neurons, synapses, and
+ * summation points.
+ *
+ * Synapses in the synapse map are located at the coordinates of the neuron
+ * from which they receive output.  Each synapse stores a pointer into a
+ * summation point. 
+ */
+
 #include "Model.h"
 #include "IRecorder.h"
 #include "Connections.h"
@@ -150,16 +165,17 @@ void Model::updateHistory() {
    }
 }
 
-/************************************************
- *  Accessors
- ***********************************************/
-
 /// Get the Connections class object.
-/// @return Pointer to the Connections class object.  ToDo: make smart ptr
+/// @return Pointer to the Connections class object.  
+// ToDo: make smart ptr
 shared_ptr<Connections> Model::getConnections() const { return connections_; }
 
 /// Get the Layout class object.
-/// @return Pointer to the Layout class object. ToDo: make smart ptr
+/// @return Pointer to the Layout class object. 
+// ToDo: make smart ptr
 shared_ptr<Layout> Model::getLayout() const { return layout_; }
 
+/// Get the IRecorder class object.
+/// @return Pointer to the IRecorder class object. 
+// ToDo: make smart ptr
 shared_ptr<IRecorder> Model::getRecorder() const { return recorder_; }

@@ -4,7 +4,7 @@
  * @brief Platform independent base class for the Brain Grid simulator.
  * Simulator is a singleton class (a class that can only have one object)
  *
- * @ingroup Core
+ * @ingroup Simulation/Core
  */
 
 #include "Simulator.h"
@@ -235,7 +235,7 @@ bool Simulator::instantiateSimulatorObjects() {
 /************************************************
  *  Mutators
  ***********************************************/
-
+///@{
 /// List of summation points (either host or device memory)
 void Simulator::setPSummationMap(BGFLOAT *summationMap) { pSummationMap_ = summationMap; }
 
@@ -248,11 +248,12 @@ void Simulator::setSerializationFileName(const string &fileName) { serialization
 void Simulator::setDeserializationFileName(const string &fileName) { deserializationFileName_ = fileName; }
 
 void Simulator::setStimulusFileName(const string &fileName) { stimulusFileName_ = fileName; }
+///@}
 
 /************************************************
  *  Accessors
  ***********************************************/
-
+///@{
 int Simulator::getWidth() const { return width_; }
 
 int Simulator::getHeight() const { return height_; }
@@ -302,6 +303,7 @@ Timer Simulator::getTimer() const { return timer; }
 
 Timer Simulator::getShort_timer() const { return short_timer; }
 #endif
+///@}
 
 
 

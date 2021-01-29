@@ -1,10 +1,10 @@
-/*!
-  @file norm.h
-  @brief  Normally distributed random numbers
-  @author Michael Stiber
-  @date $Date: 2006/11/18 04:42:32 $
-  @version $Revision: 1.1.1.1 $
-*/
+/**
+ * @file Norm.h
+ * 
+ * @ingroup Simulation/Utils/RNG
+ * 
+ * @brief Normally distributed random numbers
+ */
 
 // $Log: norm.h,v $
 // Revision 1.1.1.1  2006/11/18 04:42:32  fumik

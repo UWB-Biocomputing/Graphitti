@@ -1,26 +1,12 @@
 /**
- *      @file ISInput.h
+ * @file ISInput.h
+ * 
+ * @ingroup Simulation/Utils/Inputs
  *
- *      @brief An interface for stimulus input classes.
+ * @brief An interface for stimulus input classes.
+ *
+ * The ISInput provides an interface for stimulus input classes.
  */
-
-/**
- ** \class ISInput ISInput.h "ISInput.h"
- **
- ** \latexonly  \subsubsection*{Implementation} \endlatexonly
- ** \htmlonly   <h3>Implementation</h3> \endhtmlonly
- **
- ** The ISInput provides an interface for stimulus input classes.
- **
- ** \latexonly  \subsubsection*{Credits} \endlatexonly
- ** \htmlonly   <h3>Credits</h3> \endhtmlonly
- **
- ** Some models in this simulator is a rewrite of CSIM (2006) and other 
- ** work (Stiber and Kawasaki (2007?))
- **
- **
- **     @author Fumitaka Kawasaki
- **/
 
 #pragma once
 
@@ -37,22 +23,15 @@ class ISInput
 public:
     virtual ~ISInput() {}
 
-    /**
-     * Initialize data
-     *
-     */
+    /// Initialize data
     virtual void init() = 0;
 
-    /**
-     * Terminate process
-     */
+    /// Terminate process
     virtual void term() = 0;
 
-    /**
-     * Process input stimulus for each time step
-     *
-     * @param[in] psi       Pointer to the simulation information.
-     */
+    /// Process input stimulus for each time step
+    ///
+    /// @param[in] psi       Pointer to the simulation information.
     virtual void inputStimulus() = 0;
 };
 

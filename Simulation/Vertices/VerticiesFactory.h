@@ -1,6 +1,9 @@
 /**
- *  A factory class for creating Vertices objects.
- *  Lizzy Presland, October 2019
+ * @file VerticesFactory.h
+ * 
+ * @ingroup Simulation/Vertices
+ *
+ * @brief A factory class for creating Vertices objects.
  */
 
 #pragma once

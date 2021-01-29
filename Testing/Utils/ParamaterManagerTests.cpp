@@ -3,8 +3,7 @@
  *
  * @brief  This class is used for unit testing the ParameterManager using GTest.
  *
- * @ingroup Testing
- *
+ * @ingroup Testing/Utils
  */
 
 #include <cassert>

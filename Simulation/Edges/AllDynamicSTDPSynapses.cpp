@@ -1,3 +1,11 @@
+/**
+ * @file AllDynamicSTDPSynapses.cpp
+ *
+ * @ingroup Simulation/Edges
+ * 
+ * @brief
+ */
+
 #include "AllDynamicSTDPSynapses.h"
 
 AllDynamicSTDPSynapses::AllDynamicSTDPSynapses() : AllSTDPSynapses() {
@@ -34,19 +42,15 @@ AllDynamicSTDPSynapses::~AllDynamicSTDPSynapses() {
     F_ = NULL;
 }
 
-/*
- *  Setup the internal structure of the class (allocate memories and initialize them).
- */
+///  Setup the internal structure of the class (allocate memories and initialize them).
 void AllDynamicSTDPSynapses::setupSynapses() {
     setupSynapses(Simulator::getInstance().getDeltaT(), Simulator::getInstance().getMaxSynapsesPerNeuron());
 }
 
-/*
- *  Setup the internal structure of the class (allocate memories and initialize them).
- * 
- *  @param  numNeurons   Total number of neurons in the network.
- *  @param  maxSynapses  Maximum number of synapses per neuron.
- */
+///  Setup the internal structure of the class (allocate memories and initialize them).
+/// 
+///  @param  numNeurons   Total number of neurons in the network.
+///  @param  maxSynapses  Maximum number of synapses per neuron.
 void AllDynamicSTDPSynapses::setupSynapses(const int numNeurons, const int maxSynapses) {
     AllSTDPSynapses::setupSynapses(numNeurons, maxSynapses);
 
@@ -62,10 +66,8 @@ void AllDynamicSTDPSynapses::setupSynapses(const int numNeurons, const int maxSy
     }
 }
 
-/**
- *  Prints out all parameters to logging file.
- *  Registered to OperationManager as Operation::printParameters
- */
+///  Prints out all parameters to logging file.
+///  Registered to OperationManager as Operation::printParameters
 void AllDynamicSTDPSynapses::printParameters() const {
    AllSTDPSynapses::printParameters();
 
@@ -73,12 +75,10 @@ void AllDynamicSTDPSynapses::printParameters() const {
    << "\tEdges type: AllDynamicSTDPSynapses" << endl << endl);
 }
 
-/*
- *  Sets the data for Synapse to input's data.
- *
- *  @param  input  istream to read from.
- *  @param  iSyn   Index of the synapse to set.
- */
+///  Sets the data for Synapse to input's data.
+///
+///  @param  input  istream to read from.
+///  @param  iSyn   Index of the synapse to set.
 void AllDynamicSTDPSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
     AllSTDPSynapses::readSynapse(input, iSyn);
 
@@ -97,12 +97,10 @@ void AllDynamicSTDPSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
     input.ignore();
 }
 
-/*
- *  Write the synapse data to the stream.
- *
- *  @param  output  stream to print out to.
- *  @param  iSyn    Index of the synapse to print out.
- */
+///  Write the synapse data to the stream.
+///
+///  @param  output  stream to print out to.
+///  @param  iSyn    Index of the synapse to print out.
 void AllDynamicSTDPSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
     AllSTDPSynapses::writeSynapse(output, iSyn);
 
@@ -114,12 +112,10 @@ void AllDynamicSTDPSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) co
     output << F_[iSyn] << ends;
 }
 
-/*
- *  Reset time varying state vars and recompute decay.
- *
- *  @param  iSyn            Index of the synapse to set.
- *  @param  deltaT          Inner simulation step duration
- */
+///  Reset time varying state vars and recompute decay.
+///
+///  @param  iSyn            Index of the synapse to set.
+///  @param  deltaT          Inner simulation step duration
 void AllDynamicSTDPSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
     AllSTDPSynapses::resetSynapse(iSyn, deltaT);
 
@@ -128,16 +124,14 @@ void AllDynamicSTDPSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT delta
     lastSpike_[iSyn] = ULONG_MAX;
 }
 
-/*
- *  Create a Synapse and connect it to the model.
- *
- *  @param  iSyn        Index of the synapse to set.
- *  @param  srcNeuron   Coordinates of the source Neuron.
- *  @param  destNeuron  Coordinates of the destination Neuron.
- *  @param  sumPoint    Summation point address.
- *  @param  deltaT      Inner simulation step duration.
- *  @param  type        Type of the Synapse to create.
- */
+///  Create a Synapse and connect it to the model.
+///
+///  @param  iSyn        Index of the synapse to set.
+///  @param  srcNeuron   Coordinates of the source Neuron.
+///  @param  destNeuron  Coordinates of the destination Neuron.
+///  @param  sumPoint    Summation point address.
+///  @param  deltaT      Inner simulation step duration.
+///  @param  type        Type of the Synapse to create.
 void AllDynamicSTDPSynapses::createSynapse(const BGSIZE iSyn, int srcNeuron, int destNeuron, BGFLOAT *sumPoint,
                                            const BGFLOAT deltaT, synapseType type) {
     AllSTDPSynapses::createSynapse(iSyn, srcNeuron, destNeuron, sumPoint, deltaT, type);
@@ -180,12 +174,10 @@ void AllDynamicSTDPSynapses::createSynapse(const BGSIZE iSyn, int srcNeuron, int
 
 #if !defined(USE_GPU)
 
-/*
- *  Calculate the post synapse response after a spike.
- *
- *  @param  iSyn        Index of the synapse to set.
- *  @param  deltaT      Inner simulation step duration.
- */
+///  Calculate the post synapse response after a spike.
+///
+///  @param  iSyn        Index of the synapse to set.
+///  @param  deltaT      Inner simulation step duration.
 void AllDynamicSTDPSynapses::changePSR(const BGSIZE iSyn, const BGFLOAT deltaT) {
     BGFLOAT &psr = this->psr_[iSyn];
     BGFLOAT &W = this->W_[iSyn];
@@ -209,10 +201,7 @@ void AllDynamicSTDPSynapses::changePSR(const BGSIZE iSyn, const BGFLOAT deltaT) 
 
 #endif // !defined(USE_GPU)
 
-
-/*
- *  Prints SynapsesProps data.
- */
+///  Prints SynapsesProps data.
 void AllDynamicSTDPSynapses::printSynapsesProps() const {
     AllSTDPSynapses::printSynapsesProps();
     for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {

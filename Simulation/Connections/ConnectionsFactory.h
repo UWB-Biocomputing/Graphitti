@@ -1,6 +1,9 @@
 /**
- *  A factory class for creating Connections objects.
+ * @file ConnectionsFactory.h
+ * 
+ * @ingroup Simulation/Connections
  *
+ * @brief A factory class for creating Connections objects.
  */
 
 #pragma once
@@ -24,7 +27,7 @@ public:
       return &instance;
    }
 
-   // Invokes constructor for desired concrete class
+   /// Invokes constructor for desired concrete class
    shared_ptr<Connections> createConnections(const string &className);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
@@ -38,7 +41,6 @@ private:
    /// Pointer to connections instance.
    shared_ptr<Connections> connectionsInstance;
 
-   /* Type definitions */
    /// Defines function type for usage in internal map
    typedef Connections *(*CreateFunction)(void);
 

@@ -1,9 +1,9 @@
 /**
- @file CompleteMatrix.cpp
- @brief An efficient implementation of a dynamically-allocated 2D array.
- @author Michael Stiber
- @date January 2016
- @version 2
+ * @file CompleteMatrix.cpp
+ * 
+ * @ingroup Simulation/Utils/Matrix
+ * 
+ * @brief An efficient implementation of a dynamically-allocated 2D array.
  */
 
 
@@ -14,27 +14,25 @@
 #include "CompleteMatrix.h"
 
 // Create a complete 2D Matrix
-/*
- Allocate storage and initialize attributes. If "v" (values) is
- not empty, it will be used as a source of data for initializing
- the matrix (and must be a list of whitespace separated textual
- numeric data with rows * columns elements, if "t" (type) is
- "complete", or number of elements in diagonal, if "t" is "diag").
- 
- If "i" (initialization) is "const", then "m" will be used to initialize either all
- elements (for a "complete" matrix) or diagonal elements (for "diag").
- 
- "random" initialization is not yet implemented.
- 
- @throws Matrix_bad_alloc
- @throws Matrix_invalid_argument
- @param t Matrix type (defaults to "complete")
- @param i Matrix initialization (defaults to "const")
- @param r rows in Matrix (defaults to 2)
- @param c columns in Matrix (defaults to 2)
- @param m multiplier used for initialization (defaults to zero)
- @param v values for initializing CompleteMatrix (this string is parsed as a list of floating point numbers)
- */
+/// Allocate storage and initialize attributes. If "v" (values) is
+/// not empty, it will be used as a source of data for initializing
+/// the matrix (and must be a list of whitespace separated textual
+/// numeric data with rows * columns elements, if "t" (type) is
+/// "complete", or number of elements in diagonal, if "t" is "diag").
+/// 
+/// If "i" (initialization) is "const", then "m" will be used to initialize either all
+/// elements (for a "complete" matrix) or diagonal elements (for "diag").
+/// 
+/// "random" initialization is not yet implemented.
+/// 
+/// @throws Matrix_bad_alloc
+/// @throws Matrix_invalid_argument
+/// @param t Matrix type (defaults to "complete")
+/// @param i Matrix initialization (defaults to "const")
+/// @param r rows in Matrix (defaults to 2)
+/// @param c columns in Matrix (defaults to 2)
+/// @param m multiplier used for initialization (defaults to zero)
+/// @param v values for initializing CompleteMatrix (this string is parsed as a list of floating point numbers)
 CompleteMatrix::CompleteMatrix(string t, string i, int r,
                                int c, BGFLOAT m, string values)
 : Matrix(t, i, r, c, m), theMatrix(NULL)
@@ -167,14 +165,14 @@ void CompleteMatrix::copy(const CompleteMatrix& source)
 }
 
 
-// Allocate internal storage
-//
-// Note: If you are getting this memory allocaiton error:
-//
-// " terminate called after throwing an instance of 'std::bad_alloc'
-//       what():  St9bad_alloc "
-//
-// Please refer to LIFModel::Connections()
+/// Allocate internal storage
+///
+/// Note: If you are getting this memory allocaiton error:
+///
+/// " terminate called after throwing an instance of 'std::bad_alloc'
+///       what():  St9bad_alloc "
+///
+/// Please refer to LIFModel::Connections()
 void CompleteMatrix::alloc(int rows, int columns)
 {
     if (theMatrix != NULL)
@@ -191,10 +189,8 @@ void CompleteMatrix::alloc(int rows, int columns)
 }
 
 
-/*
- @brief Polymorphic output. Produces text output on stream os. Used by operator<<()
- @param os stream to output to
- */
+/// @brief Polymorphic output. Produces text output on stream os. Used by operator<<()
+/// @param os stream to output to
 void CompleteMatrix::Print(ostream& os) const
 {
     for (int i=0; i<rows; i++) {

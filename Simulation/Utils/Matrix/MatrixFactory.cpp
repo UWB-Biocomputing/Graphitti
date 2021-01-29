@@ -1,10 +1,10 @@
-/*!
-  @file MatrixFactory.cpp
-  @brief Deserializes Matrices from XML
-  @author Michael Stiber
-  @date $Date: 2006/11/18 04:42:32 $
-  @version $Revision: 1.1.1.1 $
-*/
+/**
+ * @file MatrixFactory.cpp
+ * 
+ * @ingroup Simulation/Utils/Matrix
+ * 
+ * @brief Deserializes Matrices from XML
+ */
 
 
 #include <iostream>
@@ -14,21 +14,21 @@
 
 static VersionInfo version("$Id: MatrixFactory.cpp,v 1.1.1.1 2006/11/18 04:42:32 fumik Exp $");
 
-// Get Matrix attributes
-// Inputs:
-//   matElement: pointer to the Matrix TiXmlElement
-// Outputs:
-//   type:  "diag" (diagonal matrices), "complete" (all values
-//          specified), or "sparse". Required.
-//   init:  "none" (initialization data explicitly given, default), 
-//          "const" (initialized to muliplier, if present, else 1.0),
-//          "random" (random values in the range [0,1]),
-//          or "implementation" (must be initialized by caller, not
-//          creator). Optional (defaults to "none")
-//   rows:  number of matrix rows. Required.
-//   columns: number of matrix columns. Required.
-//   multiplier: constant multiplier used in initialization, default
-//               1.0. Optional (defaults to 1.0).
+/// Get Matrix attributes
+/// Inputs:
+///   matElement: pointer to the Matrix TiXmlElement
+/// Outputs:
+///   type:  "diag" (diagonal matrices), "complete" (all values
+///          specified), or "sparse". Required.
+///   init:  "none" (initialization data explicitly given, default), 
+///          "const" (initialized to muliplier, if present, else 1.0),
+///          "random" (random values in the range [0,1]),
+///          or "implementation" (must be initialized by caller, not
+///          creator). Optional (defaults to "none")
+///   rows:  number of matrix rows. Required.
+///   columns: number of matrix columns. Required.
+///   multiplier: constant multiplier used in initialization, default
+///               1.0. Optional (defaults to 1.0).
 void MatrixFactory::GetAttributes(TiXmlElement* matElement,
 				  string& type, string& init,
 				  int& rows, int& columns,
@@ -79,17 +79,17 @@ void MatrixFactory::GetAttributes(TiXmlElement* matElement,
 #endif
 }
 
-// This function creates a Matrix subclass element from the given
-// tinyxml Element and its children. The class created is determined
-// from the attributes of the Element
-//
-// Input:
-//   matElement: tinyxml DOM node containing a Matrix element
-// Postconditions"
-//   If no problems, correct Matrix subclass object created and
-//   initialized.
-// Returns:
-//   Pointer to created Matrix (NULL if failure).
+/// This function creates a Matrix subclass element from the given
+/// tinyxml Element and its children. The class created is determined
+/// from the attributes of the Element
+///
+/// Input:
+///   matElement: tinyxml DOM node containing a Matrix element
+/// Postconditions"
+///   If no problems, correct Matrix subclass object created and
+///   initialized.
+/// Returns:
+///   Pointer to created Matrix (NULL if failure).
 Matrix* MatrixFactory::CreateMatrix(TiXmlElement* matElement) 
 {
   string type;
@@ -157,16 +157,16 @@ Matrix* MatrixFactory::CreateMatrix(TiXmlElement* matElement)
   return theMatrix;
 }
 
-// This function creates a VectorMatrix from the given tinyxml Element
-// and its children.
-//
-// Input:
-//   matElement: tinyxml DOM node containing a Matrix element
-// Postconditions"
-//   If no problems, VectorMatrix object created and
-//   initialized.
-// Returns:
-//   VectorMatrix object (will be empty if some failure occurs).
+/// This function creates a VectorMatrix from the given tinyxml Element
+/// and its children.
+///
+/// Input:
+///   matElement: tinyxml DOM node containing a Matrix element
+/// Postconditions"
+///   If no problems, VectorMatrix object created and
+///   initialized.
+/// Returns:
+///   VectorMatrix object (will be empty if some failure occurs).
 VectorMatrix MatrixFactory::CreateVector(TiXmlElement* matElement)
 {
   string type;
@@ -212,16 +212,16 @@ VectorMatrix MatrixFactory::CreateVector(TiXmlElement* matElement)
   return VectorMatrix();
 }
 
-// This function creates a CompleteMatrix from the given tinyxml Element
-// and its children. 
-//
-// Input:
-//   matElement: tinyxml DOM node containing a Matrix element
-// Postconditions"
-//   If no problems, CompleteMatrix subclass object created and
-//   initialized.
-// Returns:
-//   CompleteMatrix object (will be empty if some failure occurs).
+/// This function creates a CompleteMatrix from the given tinyxml Element
+/// and its children. 
+///
+/// Input:
+///   matElement: tinyxml DOM node containing a Matrix element
+/// Postconditions"
+///   If no problems, CompleteMatrix subclass object created and
+///   initialized.
+/// Returns:
+///   CompleteMatrix object (will be empty if some failure occurs).
 CompleteMatrix MatrixFactory::CreateComplete(TiXmlElement* matElement)
 {
   string type;
@@ -264,14 +264,11 @@ CompleteMatrix MatrixFactory::CreateComplete(TiXmlElement* matElement)
   return CompleteMatrix();
 }
 
-/*
-  @method CreateSparse
-  @discussion Create a SparseMatrix, based
-  on the XML attributes. The object is returned by value.
-  @throws KII_invalid_argument
-  @param matElement pointer to Matrix XML element
-  @result The SparseMatrix object.
-*/
+///  Create a SparseMatrix, based
+///  on the XML attributes. The object is returned by value.
+///  @throws KII_invalid_argument
+///  @param matElement pointer to Matrix XML element
+///  @result The SparseMatrix object.
 SparseMatrix MatrixFactory::CreateSparse(TiXmlElement* matElement)
 {
   string type;

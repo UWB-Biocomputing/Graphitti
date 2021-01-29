@@ -1,6 +1,9 @@
 /**
- *  A factory class for creating Vertices objects.
- *  Lizzy Presland, October 2019
+ * @file VerticesFactory.cpp
+ * 
+ * @ingroup Simulation/Vertices
+ *
+ * @brief A factory class for creating Vertices objects.
  */
 
 #include "VerticiesFactory.h"
@@ -19,12 +22,10 @@ VerticesFactory::~VerticesFactory() {
    createFunctions.clear();
 }
 
-/*
- *  Register neurons class and its creation function to the factory.
- *
- *  @param  neuronsClassName  neurons class name.
- *  @param  Pointer to the class creation function.
- */
+///  Register neurons class and its creation function to the factory.
+///
+///  @param  neuronsClassName  neurons class name.
+///  @param  Pointer to the class creation function.
 void VerticesFactory::registerClass(const string &className, CreateFunction function) {
    createFunctions[className] = function;
 }
@@ -36,12 +37,10 @@ shared_ptr<IAllNeurons> VerticesFactory::createVertices(const string &className)
    return verticesInstance;
 }
 
-/**
- * Create an instance of the neurons class using the static ::Create() method.
- *
- * The calling method uses this retrieval mechanism in 
- * value assignment.
- */
+/// Create an instance of the neurons class using the static ::Create() method.
+///
+/// The calling method uses this retrieval mechanism in 
+/// value assignment.
 IAllNeurons *VerticesFactory::invokeCreateFunction(const string &className) {
    for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
       if (className == i->first)

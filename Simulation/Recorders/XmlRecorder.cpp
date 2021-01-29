@@ -1,9 +1,10 @@
-/*
- *      @file XmlRecorder.cpp
+/**
+ * @file XmlRecorder.cpp
  *
- *      @brief An implementation for recording spikes history on xml file
+ * @ingroup Simulation/Recorders
+ * 
+ * @brief An implementation for recording spikes history on xml file
  */
-//! An implementation for recording spikes history on xml file
 
 #include <functional>
 
@@ -13,7 +14,7 @@
 #include "OperationManager.h"
 #include "ParameterManager.h"
 
-//! THe constructor and destructor
+// The constructor and destructor
 XmlRecorder::XmlRecorder() :
       burstinessHist_(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
                                                                     Simulator::getInstance().getNumEpochs()), 0),
@@ -30,46 +31,34 @@ XmlRecorder::XmlRecorder() :
 XmlRecorder::~XmlRecorder() {
 }
 
-/*
- * Initialize data
- * Create a new xml file.
- *
- * @param[in] stateOutputFileName	File name to save histories
- */
+/// Initialize data
+/// Create a new xml file.
+///
+/// @param[in] stateOutputFileName	File name to save histories
 void XmlRecorder::init() {
    stateOut_.open(resultFileName_.c_str());
 }
 
-/*
- * Init radii and rates history matrices with default values
- */
+/// Init radii and rates history matrices with default values
 void XmlRecorder::initDefaultValues() {
 }
 
-/*
- * Init radii and rates history matrices with current radii and rates
- */
+/// Init radii and rates history matrices with current radii and rates
 void XmlRecorder::initValues() {
 }
 
-/*
- * Get the current radii and rates values
- */
+/// Get the current radii and rates values
 void XmlRecorder::getValues() {
 }
 
-/*
- * Terminate process
- */
+/// Terminate process
 void XmlRecorder::term() {
    stateOut_.close();
 }
 
-/*
- * Compile history information in every epoch
- *
- * @param[in] neurons 	The entire list of neurons.
- */
+/// Compile history information in every epoch
+///
+/// @param[in] neurons 	The entire list of neurons.
 void XmlRecorder::compileHistories(IAllNeurons &neurons) {
    AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(neurons);
    int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
@@ -103,11 +92,9 @@ void XmlRecorder::compileHistories(IAllNeurons &neurons) {
    spNeurons.clearSpikeCounts();
 }
 
-/*
- * Writes simulation results to an output destination.
- *
- * @param  neurons the Neuron list to search from.
- **/
+/// Writes simulation results to an output destination.
+///
+/// @param  neurons the Neuron list to search from.
 void XmlRecorder::saveSimData(const IAllNeurons &neurons) {
    // create Neuron Types matrix
    VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalNeurons(), EXC);
@@ -159,12 +146,10 @@ void XmlRecorder::saveSimData(const IAllNeurons &neurons) {
    stateOut_ << "</SimState>" << endl;
 }
 
-/*
- *  Get starter Neuron matrix.
- *
- *  @param  matrix      Starter Neuron matrix.
- *  @param  starter_map Bool map to reference neuron matrix location from.
- */
+///  Get starter Neuron matrix.
+///
+///  @param  matrix      Starter Neuron matrix.
+///  @param  starter_map Bool map to reference neuron matrix location from.
 void XmlRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap) {
    int cur = 0;
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
@@ -175,10 +160,8 @@ void XmlRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const bool *start
    }
 }
 
-/**
- *  Prints out all parameters to logging file.
- *  Registered to OperationManager as Operation::printParameters
- */
+///  Prints out all parameters to logging file.
+///  Registered to OperationManager as Operation::printParameters
 void XmlRecorder::printParameters() {
    LOG4CPLUS_DEBUG(fileLogger_, "\nXMLRECORDER PARAMETERS" << endl
                                       << "\tResult file path: " << resultFileName_ << endl

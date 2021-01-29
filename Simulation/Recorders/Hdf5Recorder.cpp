@@ -1,9 +1,10 @@
-/*
- *      @file Hdf5Recorder.cpp
+/**
+ * @file Hdf5Recorder.cpp
+ * 
+ * @ingroup Simulation/Recorders
  *
- *      @brief An implementation for recording spikes history on hdf5 file
+ * @brief An implementation for recording spikes history on hdf5 file
  */
-//! An implementation for recording spikes history on hdf5 file
 
 #include "Hdf5Recorder.h"
 #include "AllIFNeurons.h"      // TODO: remove LIF model specific code
@@ -24,7 +25,7 @@ const H5std_string  nameSpikesProbedNeurons("spikesProbedNeurons");
 const H5std_string  nameAttrPNUnit("attrPNUint");
 const H5std_string  nameProbedNeurons("probedNeurons");
 
-//! The constructor and destructor
+/// The constructor and destructor
 Hdf5Recorder::Hdf5Recorder() :
    offsetSpikesProbedNeurons(NULL),
    spikesProbedNeurons(NULL) {
@@ -36,12 +37,10 @@ Hdf5Recorder::~Hdf5Recorder()
 {
 }
 
-/*
- * Initialize data
- * Create a new hdf5 file with default properties.
- *
- * @param[in] stateOutputFileName	File name to save histories
- */
+/// Initialize data
+/// Create a new hdf5 file with default properties.
+///
+/// @param[in] stateOutputFileName	File name to save histories
 void Hdf5Recorder::init()
 {
     try
@@ -82,9 +81,7 @@ void Hdf5Recorder::init()
     }
 }
 
-/*
- *  Create data spaces and data sets of the hdf5 for recording histories.
- */
+///  Create data spaces and data sets of the hdf5 for recording histories.
 void Hdf5Recorder::initDataSet()
 {
    // create the data space & dataset for burstiness history
@@ -176,30 +173,22 @@ void Hdf5Recorder::initDataSet()
     }
 }
 
-/*
- * Init history matrices with default values
- */
+/// Init history matrices with default values
 void Hdf5Recorder::initDefaultValues()
 {
 }
 
-/*
- * Init history matrices with current radii and rates
- */
+/// Init history matrices with current radii and rates
 void Hdf5Recorder::initValues()
 {
 }
 
-/*
- * Get the current values
- */
+/// Get the current values
 void Hdf5Recorder::getValues()
 {
 }
 
-/*
- * Terminate process
- */
+/// Terminate process
 void Hdf5Recorder::term()
 {
    // deallocate all objects
@@ -221,11 +210,9 @@ void Hdf5Recorder::term()
    delete stateOut;
 }
 
-/*
- * Compile history information in every epoch.
- *
- * @param[in] neurons   The entire list of neurons.
- */
+/// Compile history information in every epoch.
+///
+/// @param[in] neurons   The entire list of neurons.
 void Hdf5Recorder::compileHistories(IAllNeurons &neurons)
 {
    AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons&>(neurons);
@@ -388,11 +375,9 @@ void Hdf5Recorder::compileHistories(IAllNeurons &neurons)
 
 }
 
-/*
- * Writes simulation results to an output destination.
- *
- * @param  neurons the AllNeurons object.
- **/
+/// Writes simulation results to an output destination.
+///
+/// @param  neurons the AllNeurons object.
 void Hdf5Recorder::saveSimData(const IAllNeurons &neurons)
 {
     try
@@ -512,13 +497,11 @@ void Hdf5Recorder::saveSimData(const IAllNeurons &neurons)
     }
 }
 
-/*
- *  Get starter Neuron matrix.
- *
- *  @param  matrix      Starter Neuron matrix.
- *  @param  starter_map Bool map to reference neuron matrix location from.
- *  @param  sim_info    SimulationInfo class to read information from.
- */
+///  Get starter Neuron matrix.
+///
+///  @param  matrix      Starter Neuron matrix.
+///  @param  starter_map Bool map to reference neuron matrix location from.
+///  @param  sim_info    SimulationInfo class to read information from.
 void Hdf5Recorder::getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starter_map, const SimulationInfo *sim_info)
 {
     int cur = 0;

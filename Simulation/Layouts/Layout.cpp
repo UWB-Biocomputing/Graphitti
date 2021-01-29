@@ -1,3 +1,11 @@
+/**
+ * @file Layout.cpp
+ *
+ * @ingroup Simulation/Layouts
+ * 
+ * @brief 
+ */
+
 #include "Layout.h"
 #include "Simulator.h"
 #include "ParseParamError.h"
@@ -159,13 +167,11 @@ void Layout::initStarterMap(const int numNeurons) {
    }
 }
 
-/*
- *  Returns the type of synapse at the given coordinates
- *
- *  @param    srcNeuron  integer that points to a Neuron in the type map as a source.
- *  @param    destNeuron integer that points to a Neuron in the type map as a destination.
- *  @return type of the synapse.
- */
+///  Returns the type of synapse at the given coordinates
+///
+///  @param    srcNeuron  integer that points to a Neuron in the type map as a source.
+///  @param    destNeuron integer that points to a Neuron in the type map as a destination.
+///  @return type of the synapse.
 synapseType Layout::synType(const int srcNeuron, const int destNeuron) {
    if (neuronTypeMap_[srcNeuron] == INH && neuronTypeMap_[destNeuron] == INH)
       return II;

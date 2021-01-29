@@ -1,6 +1,9 @@
-/*
- * AllIZHNeurons.cpp
+/**
+ * @file AllIZHNeurons.cpp
  *
+ * @brief
+ *
+ * @ingroup Simulation/Vertices
  */
 
 #include "AllIZHNeurons.h"
@@ -34,9 +37,7 @@ AllIZHNeurons::~AllIZHNeurons() {
    C3_ = NULL;
 }
 
-/*
- *  Setup the internal structure of the class (allocate memories).
- */
+///  Setup the internal structure of the class (allocate memories).
 void AllIZHNeurons::setupNeurons() {
    AllIFNeurons::setupNeurons();
 
@@ -48,10 +49,8 @@ void AllIZHNeurons::setupNeurons() {
    C3_ = new BGFLOAT[size_];
 }
 
-/**
- *  Prints out all parameters of the neurons to logging file.
- *  Registered to OperationManager as Operation::printParameters
- */
+///  Prints out all parameters of the neurons to logging file.
+///  Registered to OperationManager as Operation::printParameters
 void AllIZHNeurons::printParameters() const {
    AllIFNeurons::printParameters();
 
@@ -83,11 +82,9 @@ void AllIZHNeurons::printParameters() const {
 
 }
 
-/*
- *  Creates all the Neurons and generates data for them.
- *
- *  @param  layout      Layout information of the neunal network.
- */
+///  Creates all the Neurons and generates data for them.
+///
+///  @param  layout      Layout information of the neunal network.
 void AllIZHNeurons::createAllNeurons(Layout *layout) {
    /* set their specific types */
    for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalNeurons(); neuronIndex++) {
@@ -98,12 +95,10 @@ void AllIZHNeurons::createAllNeurons(Layout *layout) {
    }
 }
 
-/*
- *  Creates a single Neuron and generates data for it.
- *
- *  @param  neuronIndex Index of the neuron to create.
- *  @param  layout       Layout information of the neunal network.
- */
+///  Creates a single Neuron and generates data for it.
+///
+///  @param  neuronIndex Index of the neuron to create.
+///  @param  layout       Layout information of the neunal network.
 void AllIZHNeurons::createNeuron(int neuronIndex, Layout *layout) {
    // set the neuron info for neurons
    AllIFNeurons::createNeuron(neuronIndex, layout);
@@ -135,11 +130,9 @@ void AllIZHNeurons::createNeuron(int neuronIndex, Layout *layout) {
 
 }
 
-/*
- *  Set the Neuron at the indexed location to default values.
- *
- *  @param  neuronIndex    Index of the Neuron to refer.
- */
+///  Set the Neuron at the indexed location to default values.
+///
+///  @param  neuronIndex    Index of the Neuron to refer.
 void AllIZHNeurons::setNeuronDefaults(const int index) {
    AllIFNeurons::setNeuronDefaults(index);
 
@@ -152,12 +145,10 @@ void AllIZHNeurons::setNeuronDefaults(const int index) {
    Dconst_[index] = DEFAULT_d;
 }
 
-/*
- *  Initializes the Neuron constants at the indexed location.
- *
- *  @param  neuronIndex    Index of the Neuron.
- *  @param  deltaT          Inner simulation step duration
- */
+///  Initializes the Neuron constants at the indexed location.
+///
+///  @param  neuronIndex    Index of the Neuron.
+///  @param  deltaT          Inner simulation step duration
 void AllIZHNeurons::initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT) {
    AllIFNeurons::initNeuronConstsFromParamValues(neuronIndex, deltaT);
 
@@ -165,12 +156,10 @@ void AllIZHNeurons::initNeuronConstsFromParamValues(int neuronIndex, const BGFLO
    C3 = deltaT * 1000;
 }
 
-/*
- *  Outputs state of the neuron chosen as a string.
- *
- *  @param  index index of the neuron (in neurons) to output info from.
- *  @return the complete state of the neuron.
- */
+///  Outputs state of the neuron chosen as a string.
+///
+///  @param  index index of the neuron (in neurons) to output info from.
+///  @return the complete state of the neuron.
 string AllIZHNeurons::toString(const int index) const {
    stringstream ss;
 
@@ -185,23 +174,19 @@ string AllIZHNeurons::toString(const int index) const {
    return ss.str();
 }
 
-/*
- *  Sets the data for Neurons to input's data.
- *
- *  @param  input       istream to read from.
- */
+///  Sets the data for Neurons to input's data.
+///
+///  @param  input       istream to read from.
 void AllIZHNeurons::deserialize(istream &input) {
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
       readNeuron(input, i);
    }
 }
 
-/*
- *  Sets the data for Neuron #index to input's data.
- *
- *  @param  input       istream to read from.
- *  @param  index           index of the neuron (in neurons).
- */
+///  Sets the data for Neuron #index to input's data.
+///
+///  @param  input       istream to read from.
+///  @param  index           index of the neuron (in neurons).
 void AllIZHNeurons::readNeuron(istream &input, int index) {
    AllIFNeurons::readNeuron(input, index);
 
@@ -219,23 +204,19 @@ void AllIZHNeurons::readNeuron(istream &input, int index) {
    input.ignore();
 }
 
-/*
- *  Writes out the data in Neurons.
- *
- *  @param  output      stream to write out to.
- */
+///  Writes out the data in Neurons.
+///
+///  @param  output      stream to write out to.
 void AllIZHNeurons::serialize(ostream &output) const {
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
       writeNeuron(output, i);
    }
 }
 
-/*
- *  Writes out the data in the selected Neuron.
- *
- *  @param  output      stream to write out to.
- *  @param  index       index of the neuron (in neurons).
- */
+///  Writes out the data in the selected Neuron.
+///
+///  @param  output      stream to write out to.
+///  @param  index       index of the neuron (in neurons).
 void AllIZHNeurons::writeNeuron(ostream &output, int index) const {
    AllIFNeurons::writeNeuron(output, index);
 
@@ -249,11 +230,9 @@ void AllIZHNeurons::writeNeuron(ostream &output, int index) const {
 
 #if !defined(USE_GPU)
 
-/*
- *  Update internal state of the indexed Neuron (called by every simulation step).
- *
- *  @param  index       Index of the Neuron to update.
- */
+///  Update internal state of the indexed Neuron (called by every simulation step).
+///
+///  @param  index       Index of the Neuron to update.
 void AllIZHNeurons::advanceNeuron(const int index) {
    BGFLOAT &Vm = this->Vm_[index];
    BGFLOAT &Vthresh = this->Vthresh_[index];
@@ -314,11 +293,9 @@ void AllIZHNeurons::advanceNeuron(const int index) {
    summationPoint = 0;
 }
 
-/*
- *  Fire the selected Neuron and calculate the result.
- *
- *  @param  index       Index of the Neuron to update.
- */
+///  Fire the selected Neuron and calculate the result.
+///
+///  @param  index       Index of the Neuron to update.
 void AllIZHNeurons::fire(const int index) const {
    const BGFLOAT deltaT = Simulator::getInstance().getDeltaT();
    AllSpikingNeurons::fire(index);

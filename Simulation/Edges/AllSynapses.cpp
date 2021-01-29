@@ -1,3 +1,11 @@
+/**
+ * @file AllSynapses.cpp
+ * 
+ * @ingroup Simulation/Edges
+ *
+ * @brief
+ */
+
 #include "AllSynapses.h"
 #include "AllNeurons.h"
 #include "OperationManager.h"
@@ -57,19 +65,15 @@ AllSynapses::~AllSynapses() {
    maxSynapsesPerNeuron_ = 0;
 }
 
-/*
- *  Setup the internal structure of the class (allocate memories and initialize them).
- */
+///  Setup the internal structure of the class (allocate memories and initialize them).
 void AllSynapses::setupSynapses() {
    setupSynapses(Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
 }
 
-/*
- *  Setup the internal structure of the class (allocate memories and initialize them).
- *
- *  @param  numNeurons   Total number of neurons in the network.
- *  @param  max_synapses  Maximum number of synapses per neuron.
- */
+///  Setup the internal structure of the class (allocate memories and initialize them).
+///
+///  @param  numNeurons   Total number of neurons in the network.
+///  @param  max_synapses  Maximum number of synapses per neuron.
 void AllSynapses::setupSynapses(const int numNeurons, const int maxSynapses) {
    BGSIZE maxTotalSynapses = maxSynapses * numNeurons;
 
@@ -99,18 +103,14 @@ void AllSynapses::setupSynapses(const int numNeurons, const int maxSynapses) {
    }
 }
 
-/**
- * Load member variables from configuration file.
- * Registered to OperationManager as Operation::op::loadParameters
- */
+/// Load member variables from configuration file.
+/// Registered to OperationManager as Operation::op::loadParameters
 void AllSynapses::loadParameters() {
    // Nothing to load from configuration file besides SynapseType in the current implementation.
 }
 
-/**
- *  Prints out all parameters to logging file.
- *  Registered to OperationManager as Operation::printParameters
- */
+///  Prints out all parameters to logging file.
+///  Registered to OperationManager as Operation::printParameters
 void AllSynapses::printParameters() const {
    LOG4CPLUS_DEBUG(fileLogger_, "\nEDGES PARAMETERS" << endl
     << "\t---AllSynapses Parameters---" << endl
@@ -119,22 +119,18 @@ void AllSynapses::printParameters() const {
     << "\tNeuron count: " << countNeurons_ << endl << endl);
 }
 
-/*
- *  Reset time varying state vars and recompute decay.
- *
- *  @param  iSyn     Index of the synapse to set.
- *  @param  deltaT   Inner simulation step duration
- */
+///  Reset time varying state vars and recompute decay.
+///
+///  @param  iSyn     Index of the synapse to set.
+///  @param  deltaT   Inner simulation step duration
 void AllSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
    psr_[iSyn] = 0.0;
 }
 
-/*
- *  Sets the data for Synapse to input's data.
- *
- *  @param  input  istream to read from.
- *  @param  iSyn   Index of the synapse to set.
- */
+///  Sets the data for Synapse to input's data.
+///
+///  @param  input  istream to read from.
+///  @param  iSyn   Index of the synapse to set.
 void AllSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
    int synapse_type(0);
 
@@ -155,12 +151,10 @@ void AllSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
    type_[iSyn] = synapseOrdinalToType(synapse_type);
 }
 
-/*
- *  Write the synapse data to the stream.
- *
- *  @param  output  stream to print out to.
- *  @param  iSyn    Index of the synapse to print out.
- */
+///  Write the synapse data to the stream.
+///
+///  @param  output  stream to print out to.
+///  @param  iSyn    Index of the synapse to print out.
 void AllSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
    output << sourceNeuronIndex_[iSyn] << ends;
    output << destNeuronIndex_[iSyn] << ends;
@@ -170,10 +164,7 @@ void AllSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
    output << inUse_[iSyn] << ends;
 }
 
-/*
- *  Create a synapse index map.
- *
- */
+///  Create a synapse index map.
 SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
    int neuronCount = Simulator::getInstance().getTotalNeurons();
    int totalSynapseCount = 0;
@@ -233,13 +224,11 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
 
    return synapseIndexMap;
 }
-
-/*     
- *  Returns an appropriate synapseType object for the given integer.
- *
- *  @param  typeOrdinal    Integer that correspond with a synapseType.
- *  @return the SynapseType that corresponds with the given integer.
- */
+   
+///  Returns an appropriate synapseType object for the given integer.
+///
+///  @param  typeOrdinal    Integer that correspond with a synapseType.
+///  @return the SynapseType that corresponds with the given integer.
 synapseType AllSynapses::synapseOrdinalToType(const int typeOrdinal) {
    switch (typeOrdinal) {
       case 0:
@@ -257,12 +246,10 @@ synapseType AllSynapses::synapseOrdinalToType(const int typeOrdinal) {
 
 #if !defined(USE_GPU)
 
-/*
- *  Advance all the Synapses in the simulation.
- *
- *  @param  neurons           The Neuron list to search from.
- *  @param  synapseIndexMap   Pointer to SynapseIndexMap structure.
- */
+///  Advance all the Synapses in the simulation.
+///
+///  @param  neurons           The Neuron list to search from.
+///  @param  synapseIndexMap   Pointer to SynapseIndexMap structure.
 void AllSynapses::advanceSynapses(IAllNeurons *neurons, SynapseIndexMap *synapseIndexMap) {
    for (BGSIZE i = 0; i < totalSynapseCount_; i++) {
       BGSIZE iSyn = synapseIndexMap->incomingSynapseIndexMap_[i];
@@ -270,12 +257,10 @@ void AllSynapses::advanceSynapses(IAllNeurons *neurons, SynapseIndexMap *synapse
    }
 }
 
-/*
- *  Remove a synapse from the network.
- *
- *  @param  neuronIndex    Index of a neuron to remove from.
- *  @param  iSyn           Index of a synapse to remove.
- */
+///  Remove a synapse from the network.
+///
+///  @param  neuronIndex    Index of a neuron to remove from.
+///  @param  iSyn           Index of a synapse to remove.
 void AllSynapses::eraseSynapse(const int neuronIndex, const BGSIZE iSyn) {
    synapseCounts_[neuronIndex]--;
    inUse_[iSyn] = false;
@@ -285,16 +270,14 @@ void AllSynapses::eraseSynapse(const int neuronIndex, const BGSIZE iSyn) {
 
 #endif // !defined(USE_GPU)
 
-/*
- *  Adds a Synapse to the model, connecting two Neurons.
- *
- *  @param  iSyn        Index of the synapse to be added.
- *  @param  type        The type of the Synapse to add.
- *  @param  srcNeuron  The Neuron that sends to this Synapse.
- *  @param  destNeuron The Neuron that receives from the Synapse.
- *  @param  sumPoint   Summation point address.
- *  @param  deltaT      Inner simulation step duration
- */
+///  Adds a Synapse to the model, connecting two Neurons.
+///
+///  @param  iSyn        Index of the synapse to be added.
+///  @param  type        The type of the Synapse to add.
+///  @param  srcNeuron  The Neuron that sends to this Synapse.
+///  @param  destNeuron The Neuron that receives from the Synapse.
+///  @param  sumPoint   Summation point address.
+///  @param  deltaT      Inner simulation step duration
 void
 AllSynapses::addSynapse(BGSIZE &iSyn, synapseType type, const int srcNeuron, const int destNeuron, BGFLOAT *sumPoint,
                         const BGFLOAT deltaT) {
@@ -318,12 +301,10 @@ AllSynapses::addSynapse(BGSIZE &iSyn, synapseType type, const int srcNeuron, con
    createSynapse(iSyn, srcNeuron, destNeuron, sumPoint, deltaT, type);
 }
 
-/*
- *  Get the sign of the synapseType.
- *
- *  @param    type    synapseType I to I, I to E, E to I, or E to E
- *  @return   1 or -1, or 0 if error
- */
+///  Get the sign of the synapseType.
+///
+///  @param    type    synapseType I to I, I to E, E to I, or E to E
+///  @return   1 or -1, or 0 if error
 int AllSynapses::synSign(const synapseType type) {
    switch (type) {
       case II:
@@ -340,9 +321,7 @@ int AllSynapses::synSign(const synapseType type) {
    return 0;
 }
 
-/*
- *  Prints SynapsesProps data to console.
- */
+///  Prints SynapsesProps data to console.
 void AllSynapses::printSynapsesProps() const {
    cout << "This is SynapsesProps data:" << endl;
    for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {

@@ -1,9 +1,7 @@
 /**
  * @file Timer.h
  *
- * @authors Munehiro Fukuda
- *
- * @date March 5, 2004
+ * @ingroup Simulation/Utils
  *
  * @brief Timer class, from CSS432
  */
@@ -19,11 +17,11 @@ extern "C"
 {
 #ifdef _WIN32	//windows portability 
 #include <windows.h>	//includes timeval struct
-//gettimeofday sets the first parameter struct timeval with the
-//seconds and microseconds that have elapsed since the epoc time (2nd
-//struct timeval param is not used in implementation). gettimeofday is
-//part of sys/time.h which is unavailable to WIN32. A solution to this
-//is to use SYSTEMTIME to receive a high resolution time.
+/// gettimeofday sets the first parameter struct timeval with the
+/// seconds and microseconds that have elapsed since the epoc time (2nd
+/// struct timeval param is not used in implementation). gettimeofday is
+/// part of sys/time.h which is unavailable to WIN32. A solution to this
+/// is to use SYSTEMTIME to receive a high resolution time.
 static int gettimeofday(struct timeval *tval, struct timeval *alwaysNULL){
 	if(tval != NULL){
 		SYSTEMTIME systemtime;
@@ -51,19 +49,10 @@ static int gettimeofday(struct timeval *tval, struct timeval *alwaysNULL){
 #endif
 }
 
-/**
- * @class Timer
- *
- *
- * Class that encapsulates timing capability, for performance
- * measurement. Includes lap timing capability.
- *
- * \latexonly  \subsubsection*{Credits} \endlatexonly
- * \htmlonly   <h3>Credits</h3> \endhtmlonly
- *
- * Code originally developed by Prof. Munehiro Fukuda for CSS 432 at
- * the University of Washington Bothell.
- */
+/// @class Timer
+///
+/// Class that encapsulates timing capability, for performance
+/// measurement. Includes lap timing capability.
 class Timer {
  public:
   Timer( );                  // Constructor

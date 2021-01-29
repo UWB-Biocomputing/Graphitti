@@ -3,7 +3,7 @@
  *
  * @brief  This class is used for unit testing the OperationManager using GTest.
  *
- * @ingroup Testing
+ * @ingroup Testing/Core
  *
  * These tests don't act independently since the OperationManager is a singleton. Each change to the state of
  * OperationManager will be carried through onto other tests.

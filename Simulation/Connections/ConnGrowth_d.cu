@@ -1,3 +1,11 @@
+/**
+ * @file ConnGrowth_d.cu
+ * 
+ * @ingroup Simulation/Connections
+ *
+ * @brief Update the weights of the Synapses in the simulation.
+ */
+
 #include "ConnGrowth.h"
 #include "AllSpikingSynapses.h"
 #include "AllSynapsesDeviceFuncs.h"

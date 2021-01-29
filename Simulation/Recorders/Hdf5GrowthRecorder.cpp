@@ -1,9 +1,10 @@
-/*
- *      @file Hdf5GrowthRecorder.cpp
+/**
+ * @file Hdf5GrowthRecorder.cpp
+ * 
+ * @ingroup Simulation/Recorders
  *
- *      @brief An implementation for recording spikes history on hdf5 file
+ * @brief An implementation for recording spikes history on hdf5 file
  */
-//! An implementation for recording spikes history on hdf5 file
 
 #include "Hdf5GrowthRecorder.h"
 #include "AllIFNeurons.h"      // TODO: remove LIF model specific code
@@ -13,7 +14,7 @@
 const H5std_string nameRatesHist("ratesHistory");
 const H5std_string nameRadiiHist("radiiHistory");
 
-//! The constructor and destructor
+// The constructor and destructor
 Hdf5GrowthRecorder::Hdf5GrowthRecorder()
 {
 }
@@ -21,9 +22,7 @@ Hdf5GrowthRecorder::Hdf5GrowthRecorder()
 Hdf5GrowthRecorder::~Hdf5GrowthRecorder() {
 }
 
-/*
- *  Create data spaces and data sets of the hdf5 for recording histories.
- */
+///  Create data spaces and data sets of the hdf5 for recording histories.
 void Hdf5GrowthRecorder::initDataSet() {
    Hdf5Recorder::initDataSet();
 
@@ -45,9 +44,7 @@ void Hdf5GrowthRecorder::initDataSet() {
    radiiHistory = new BGFLOAT[m_Simulator::getInstance().totalNeurons];
 }
 
-/*
- * Init radii and rates history matrices with default values
- */
+/// Init radii and rates history matrices with default values
 void Hdf5GrowthRecorder::initDefaultValues() {
    Connections *pConn = m_model->getConnections();
    BGFLOAT startRadius = dynamic_cast<ConnGrowth *>(pConn)->m_growth.startRadius;
@@ -62,9 +59,7 @@ void Hdf5GrowthRecorder::initDefaultValues() {
    writeRadiiRates();
 }
 
-/*
- * Init radii and rates history matrices with current radii and rates
- */
+/// Init radii and rates history matrices with current radii and rates
 void Hdf5GrowthRecorder::initValues() {
    Connections *pConn = m_model->getConnections();
 
@@ -78,9 +73,7 @@ void Hdf5GrowthRecorder::initValues() {
    writeRadiiRates();
 }
 
-/*
- * Get the current radii and rates values
- */
+/// Get the current radii and rates values
 void Hdf5GrowthRecorder::getValues() {
    Connections *pConn = m_model->getConnections();
 
@@ -90,9 +83,7 @@ void Hdf5GrowthRecorder::getValues() {
    }
 }
 
-/*
- * Terminate process
- */
+/// Terminate process
 void Hdf5GrowthRecorder::term() {
    // deallocate all objects
    delete[] ratesHistory;
@@ -101,11 +92,9 @@ void Hdf5GrowthRecorder::term() {
    Hdf5Recorder::term();
 }
 
-/*
- * Compile history information in every epoch.
- *
- * @param[in] neurons   The entire list of neurons.
- */
+/// Compile history information in every epoch.
+///
+/// @param[in] neurons   The entire list of neurons.
 void Hdf5GrowthRecorder::compileHistories(IAllNeurons &neurons) {
    Hdf5Recorder::compileHistories(neurons);
 
@@ -134,9 +123,7 @@ void Hdf5GrowthRecorder::compileHistories(IAllNeurons &neurons) {
    writeRadiiRates();
 }
 
-/*
- * Incrementaly write radii and rates histories
- */
+/// Incrementaly write radii and rates histories
 void Hdf5GrowthRecorder::writeRadiiRates()
 {
     try

@@ -1,20 +1,26 @@
+/**
+ * @file AllLIFNeurons_d.cu
+ * 
+ * @ingroup Simulation/Vertices
+ *
+ * @brief
+ */
+
 #include "AllLIFNeurons.h"
 #include "AllNeuronsDeviceFuncs.h"
 
 #include "Book.h"
 
-/*
- *  Update the state of all neurons for a time step
- *  Notify outgoing synapses if neuron has fired.
- *
- *  @param  synapses               Reference to the allSynapses struct on host memory.
- *  @param  allNeuronsDevice       GPU address of the allNeuronsDeviceProperties struct 
- *                                 on device memory.
- *  @param  allSynapsesDevice      GPU address of the allSynapsesDeviceProperties struct 
- *                                 on device memory.
- *  @param  randNoise              Reference to the random noise array.
- *  @param  synapseIndexMapDevice  GPU address of the SynapseIndexMap on device memory.
- */
+///  Update the state of all neurons for a time step
+///  Notify outgoing synapses if neuron has fired.
+///
+///  @param  synapses               Reference to the allSynapses struct on host memory.
+///  @param  allNeuronsDevice       GPU address of the allNeuronsDeviceProperties struct 
+///                                 on device memory.
+///  @param  allSynapsesDevice      GPU address of the allSynapsesDeviceProperties struct 
+///                                 on device memory.
+///  @param  randNoise              Reference to the random noise array.
+///  @param  synapseIndexMapDevice  GPU address of the SynapseIndexMap on device memory.
 void AllLIFNeurons::advanceNeurons( IAllSynapses &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, SynapseIndexMap* synapseIndexMapDevice )
 {
     int neuron_count = Simulator::getInstance().getTotalNeurons();

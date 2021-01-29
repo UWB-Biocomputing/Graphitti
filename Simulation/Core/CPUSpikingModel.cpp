@@ -1,3 +1,11 @@
+/**
+ * @file CPUSpikingModel.cpp
+ * 
+ * @ingroup Simulation/Core
+ *
+ * @brief Implementation of Model for the spiking neural networks.
+ */
+
 #include "CPUSpikingModel.h"
 #include "Simulator.h"
 #include "AllDSSynapses.h"

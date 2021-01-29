@@ -1,4 +1,11 @@
-/* ------------- CONNECTIONS STRUCT ------------ *\
+/**
+ * @file ConnGrowth.cpp
+ * 
+ * @ingroup Simulation/Connections
+ * 
+ * @brief
+ *
+ *------------- CONNECTIONS STRUCT ------------
  * Below all of the resources for the various
  * connections are instantiated and initialized.
  * All of the allocation for memory is done in the
@@ -6,12 +13,11 @@
  * the function. Once all memory has been allocated
  * the constructor fills in known information
  * into “radii” and “rates”.
-\* --------------------------------------------- */
-// TODO comment
-/* ------------------- ERROR ------------------- *\
+ * ---------------------------------------------
+ * ------------------- ERROR ------------------- 
  * terminate called after throwing an instance of 'std::bad_alloc'
  *      what():  St9bad_alloc
- * ------------------- CAUSE ------------------- *|
+ * ------------------- CAUSE -------------------
  * As simulations expand in size the number of
  * neurons in total increases exponentially. When
  * using a MATRIX_TYPE = “complete” the amount of
@@ -25,7 +31,7 @@
  *      - rates         - dist2
  *      - delta         - dist
  *      - areai
- * ----------------- 1/25/14 ------------------- *|
+ * ----------------- 1/25/14 -------------------
  * Currently when running a simulation of sizes
  * equal to or greater than 100 * 100 the above
  * error is thrown. After some testing we have
@@ -35,7 +41,8 @@
  * "sparce". If successful it is possible the
  * problematic matricies mentioned above will use
  * only 1/250 of their current space.
-\* --------------------------------------------- */
+ * --------------------------------------------- 
+ */
 
 #include "ConnGrowth.h"
 #include "ParseParamError.h"
@@ -82,13 +89,11 @@ ConnGrowth::~ConnGrowth() {
    radiiSize_ = 0;
 }
 
-/*
- *  Setup the internal structure of the class (allocate memories and initialize them).
- *
- *  @param  layout    Layout information of the neunal network.
- *  @param  neurons   The Neuron list to search from.
- *  @param  synapses  The Synapse list to search from.
- */
+///  Setup the internal structure of the class (allocate memories and initialize them).
+///
+///  @param  layout    Layout information of the neunal network.
+///  @param  neurons   The Neuron list to search from.
+///  @param  synapses  The Synapse list to search from.
 void ConnGrowth::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses) {
    int numNeurons = Simulator::getInstance().getTotalNeurons();
    radiiSize_ = numNeurons;
@@ -105,10 +110,8 @@ void ConnGrowth::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
    (*delta_) = (*layout->dist_);
 }
 
-/**
- * Load member variables from configuration file.
- * Registered to OperationManager as Operations::op::loadParameters
- */
+/// Load member variables from configuration file.
+/// Registered to OperationManager as Operations::op::loadParameters
 void ConnGrowth::loadParameters() {
    ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/epsilon/text()", growthParams_.epsilon);
    ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/beta/text()", growthParams_.beta);
@@ -118,10 +121,8 @@ void ConnGrowth::loadParameters() {
    ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/startRadius/text()", growthParams_.startRadius);
 }
 
-/**
- *  Prints out all parameters to logging file.
- *  Registered to OperationManager as Operation::printParameters
- */
+/// Prints out all parameters to logging file.
+/// Registered to OperationManager as Operation::printParameters
 void ConnGrowth::printParameters() const {
    LOG4CPLUS_DEBUG(fileLogger_, "\nCONNECTIONS PARAMETERS" << endl
     << "\tConnections type: ConnGrowth" << endl
@@ -133,13 +134,11 @@ void ConnGrowth::printParameters() const {
     << "\tStarting raduis: " << growthParams_.startRadius << endl << endl);
 }
 
-/*
- *  Update the connections status in every epoch.
- *
- *  @param  neurons  The Neuron list to search from.
- *  @param  layout   Layout information of the neunal network.
- *  @return true if successful, false otherwise.
- */
+///  Update the connections status in every epoch.
+///
+///  @param  neurons  The Neuron list to search from.
+///  @param  layout   Layout information of the neunal network.
+///  @return true if successful, false otherwise.
 bool ConnGrowth::updateConnections(IAllNeurons &neurons, Layout *layout) {
    // Update Connections data
    updateConns(neurons);
@@ -153,11 +152,9 @@ bool ConnGrowth::updateConnections(IAllNeurons &neurons, Layout *layout) {
    return true;
 }
 
-/*
- *  Calculates firing rates, neuron radii change and assign new values.
- *
- *  @param  neurons  The Neuron list to search from.
- */
+///  Calculates firing rates, neuron radii change and assign new values.
+///
+///  @param  neurons  The Neuron list to search from.
 void ConnGrowth::updateConns(IAllNeurons &neurons) {
    AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(neurons);
 
@@ -177,12 +174,10 @@ void ConnGrowth::updateConns(IAllNeurons &neurons) {
    (*radii_) += (*deltaR_);
 }
 
-/*
- *  Update the distance between frontiers of Neurons.
- *
- *  @param  numNeurons  Number of neurons to update.
- *  @param  layout      Layout information of the neunal network.
- */
+///  Update the distance between frontiers of Neurons.
+///
+///  @param  numNeurons  Number of neurons to update.
+///  @param  layout      Layout information of the neunal network.
 void ConnGrowth::updateFrontiers(const int numNeurons, Layout *layout) {
    LOG4CPLUS_INFO(fileLogger_, "Updating distance between frontiers...");
    // Update distance between frontiers
@@ -194,12 +189,10 @@ void ConnGrowth::updateFrontiers(const int numNeurons, Layout *layout) {
    }
 }
 
-/*
- *  Update the areas of overlap in between Neurons.
- *
- *  @param  numNeurons  Number of Neurons to update.
- *  @param  layout      Layout information of the neunal network.
- */
+///  Update the areas of overlap in between Neurons.
+///
+///  @param  numNeurons  Number of Neurons to update.
+///  @param  layout      Layout information of the neunal network.
 void ConnGrowth::updateOverlap(BGFLOAT numNeurons, Layout *layout) {
    LOG4CPLUS_INFO(fileLogger_, "Computing areas of overlap");
 
@@ -247,17 +240,15 @@ void ConnGrowth::updateOverlap(BGFLOAT numNeurons, Layout *layout) {
 
 #if !defined(USE_GPU)
 
-/*
- *  Update the weight of the Synapses in the simulation.
- *  To be clear, iterates through all source and destination neurons
- *  and updates their synaptic strengths from the weight matrix.
- *  Note: Platform Dependent.
- *
- *  @param  numNeurons  Number of neurons to update.
- *  @param  ineurons    the AllNeurons object.
- *  @param  isynapses   the AllSynapses object.
- *  @param  layout      the Layout object.
- */
+///  Update the weight of the Synapses in the simulation.
+///  To be clear, iterates through all source and destination neurons
+///  and updates their synaptic strengths from the weight matrix.
+///  Note: Platform Dependent.
+///
+///  @param  numNeurons  Number of neurons to update.
+///  @param  ineurons    the AllNeurons object.
+///  @param  isynapses   the AllSynapses object.
+///  @param  layout      the Layout object.
 void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllNeurons &ineurons, IAllSynapses &isynapses,
                                        Layout *layout) {
    AllNeurons &neurons = dynamic_cast<AllNeurons &>(ineurons);
@@ -341,10 +332,7 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllNeurons &ineuro
 
 #endif // !USE_GPU
 
-
-/**
- *  Prints radii 
- */
+///  Prints radii 
 void ConnGrowth::printRadii() const {
    for (int i = 0; i < radiiSize_; i++) {
       cout << "radii[" << i << "] = " << (*radii_)[i] << endl;

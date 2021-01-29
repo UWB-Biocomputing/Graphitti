@@ -1,21 +1,15 @@
 /**
- *      @file Layout.h
+ * @file Layout.h
+ * 
+ * @ingroup Simulation/Layouts
  *
- *      @brief The Layout class defines the layout of neurons in neural networks
- */
-
-/**
- *
- * @class Layout Layout.h "Layout.h"
- *
- *
+ * @brief The Layout class defines the layout of neurons in neural networks
  * Implementation:
  * The Layout class maintains neurons locations (x, y coordinates),
  * distance of every couple neurons,
  * neurons type map (distribution of excitatory and inhibitory neurons),
  * and starter neurons map
  * (distribution of endogenously active neurons).  
- *
  */
 
 #pragma once

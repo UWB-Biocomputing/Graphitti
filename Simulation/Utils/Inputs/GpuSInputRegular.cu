@@ -1,9 +1,9 @@
-/*
- *      \file GpuSInputRegular.cu
+/**
+ * @file GpuSInputRegular.cu
  *
- *      \author Fumitaka Kawasaki
- *
- *      \brief A class that performs stimulus input (implementation Regular) on GPU.
+ * @ingroup Simulation/Edges
+ * 
+ * @brief A class that performs stimulus input (implementation Regular) on GPU.
  */
 
 #include "GpuSInputRegular.h"
@@ -17,28 +17,21 @@ void deleteDeviceValues( );
 BGFLOAT* initValues_d = NULL;
 int * nShiftValues_d = NULL;
 
-/*
- * constructor
- *
- * @param[in] psi       Pointer to the simulation information
- * @param[in] parms     TiXmlElement to examine.
- */
+/// constructor
+///
+/// @param[in] psi       Pointer to the simulation information
+/// @param[in] parms     TiXmlElement to examine.
 GpuSInputRegular::GpuSInputRegular(SimulationInfo* psi, TiXmlElement* parms) : SInputRegular(psi, parms)
 {
 }
 
-/*
- * destructor
- */
 GpuSInputRegular::~GpuSInputRegular()
 {
 }
 
-/*
- * Initialize data.
- *
- * @param[in] psi       Pointer to the simulation information.
- */
+/// Initialize data.
+///
+/// @param[in] psi       Pointer to the simulation information.
 void GpuSInputRegular::init(SimulationInfo* psi)
 {
     SInputRegular::init(psi);
@@ -53,22 +46,18 @@ void GpuSInputRegular::init(SimulationInfo* psi)
     delete[] nShiftValues;
 }
 
-/*
- * Terminate process.
- *
- * @param[in] psi       Pointer to the simulation information.
- */
+/// Terminate process.
+///
+/// @param[in] psi       Pointer to the simulation information.
 void GpuSInputRegular::term(SimulationInfo* psi)
 {
     if (fSInput)
         deleteDeviceValues( );
 }
 
-/*
- * Process input stimulus for each time step on GPU.
- *
- * @param[in] psi               Pointer to the simulation information.
- */
+/// Process input stimulus for each time step on GPU.
+///
+/// @param[in] psi               Pointer to the simulation information.
 void GpuSInputRegular::inputStimulus(SimulationInfo* psi)
 {
     if (fSInput == false)
@@ -87,13 +76,11 @@ void GpuSInputRegular::inputStimulus(SimulationInfo* psi)
     nStepsInCycle = (nStepsInCycle + 1) % nStepsCycle;
 }
 
-/*
- * Allocate GPU device memory and copy values
- *
- * @param[in] psi               Pointer to the simulation information.
- * @param[in] initValues        Pointer to the initial values.
- * @param[in] nShiftValues      Pointer to the shift values.
- */
+/// Allocate GPU device memory and copy values
+///
+/// @param[in] psi               Pointer to the simulation information.
+/// @param[in] initValues        Pointer to the initial values.
+/// @param[in] nShiftValues      Pointer to the shift values.
 void allocDeviceValues( SimulationInfo* psi, BGFLOAT* initValues, int *nShiftValues )
 {
     int neuron_count = psi->totalNeurons;
@@ -109,26 +96,21 @@ void allocDeviceValues( SimulationInfo* psi, BGFLOAT* initValues, int *nShiftVal
     HANDLE_ERROR( cudaMemcpy ( nShiftValues_d, nShiftValues, nShiftValues_d_size, cudaMemcpyHostToDevice ) );
 }
 
-/* 
- * Dellocate GPU device memory 
- */ 
+/// Dellocate GPU device memory 
 void deleteDeviceValues(  )
 {   
     HANDLE_ERROR( cudaFree( initValues_d ) );
     HANDLE_ERROR( cudaFree( nShiftValues_d ) );
 }
 
-// CUDA code for -----------------------------------------------------------------------
-/*
- * Device code for adding input values to the summation map.
- *
- * @param[in] summationPoint_d  Pointer to the summation map.
- * @param[in] initValues_d      Pointer to the input values.
- * @param[in] nShiftValues_d    Pointer to the shift values.
- * @param[in] nStepsInCycle     Current steps in cycle
- * @param[in] nStepsCycle       Number of steps in one cycle
- * @param[in] nStepsDuration    Number of steps in duration
- */
+/// Device code for adding input values to the summation map.
+///
+/// @param[in] summationPoint_d  Pointer to the summation map.
+/// @param[in] initValues_d      Pointer to the input values.
+/// @param[in] nShiftValues_d    Pointer to the shift values.
+/// @param[in] nStepsInCycle     Current steps in cycle
+/// @param[in] nStepsCycle       Number of steps in one cycle
+/// @param[in] nStepsDuration    Number of steps in duration
 __global__ void inputStimulusDevice( int n, BGFLOAT* summationPoint_d, BGFLOAT* initValues_d, int* nShiftValues_d, int nStepsInCycle, int nStepsCycle, int nStepsDuration )
 {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;

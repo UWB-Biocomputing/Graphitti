@@ -1,3 +1,11 @@
+/**
+ * @file AllSpikingNeurons.cpp
+ * 
+ * @ingroup Simulation/Vertices
+ *
+ * @brief
+ */
+
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
 
@@ -27,10 +35,7 @@ AllSpikingNeurons::~AllSpikingNeurons() {
    spikeHistory_ = NULL;
 }
 
-/*
- *  Setup the internal structure of the class (allocate memories).
- *
- */
+///  Setup the internal structure of the class (allocate memories).
 void AllSpikingNeurons::setupNeurons() {
    AllNeurons::setupNeurons();
 
@@ -50,9 +55,7 @@ void AllSpikingNeurons::setupNeurons() {
    Simulator::getInstance().setPSummationMap(summationMap_);
 }
 
-/*
- *  Clear the spike counts out of all Neurons.
- */
+///  Clear the spike counts out of all Neurons.
 void AllSpikingNeurons::clearSpikeCounts() {
    int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
@@ -64,13 +67,11 @@ void AllSpikingNeurons::clearSpikeCounts() {
 
 #if !defined(USE_GPU)
 
-/*
- *  Update internal state of the indexed Neuron (called by every simulation step).
- *  Notify outgoing synapses if neuron has fired.
- *
- *  @param  synapses         The Synapse list to search from.
- *  @param  synapseIndexMap  Reference to the SynapseIndexMap.
- */
+///  Update internal state of the indexed Neuron (called by every simulation step).
+///  Notify outgoing synapses if neuron has fired.
+///
+///  @param  synapses         The Synapse list to search from.
+///  @param  synapseIndexMap  Reference to the SynapseIndexMap.
 void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SynapseIndexMap *synapseIndexMap) {
    int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
@@ -121,11 +122,9 @@ void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SynapseInde
    }
 }
 
-/*
- *  Fire the selected Neuron and calculate the result.
- *
- *  @param  index       Index of the Neuron to update.
- */
+///  Fire the selected Neuron and calculate the result.
+///
+///  @param  index       Index of the Neuron to update.
 void AllSpikingNeurons::fire(const int index) const {
    // Note that the neuron has fired!
    hasFired_[index] = true;
@@ -139,18 +138,16 @@ void AllSpikingNeurons::fire(const int index) const {
    spikeCount_[index]++;
 }
 
-/*
- *  Get the spike history of neuron[index] at the location offIndex.
- *  More specifically, retrieves the global simulation time step for the spike
- *  in question from the spike history record.
- *  
- *  TODO: need to document clearly how spikeHistory_ is updated, when/if it gets
- *  cleared/dumped to file, and how the actual index (idxSp) computation works,
- *  as it is very unobvious.
- *
- *  @param  index            Index of the neuron to get spike history.
- *  @param  offIndex         Offset of the history buffer to get from.
- */
+///  Get the spike history of neuron[index] at the location offIndex.
+///  More specifically, retrieves the global simulation time step for the spike
+///  in question from the spike history record.
+///  
+///  TODO: need to document clearly how spikeHistory_ is updated, when/if it gets
+///  cleared/dumped to file, and how the actual index (idxSp) computation works,
+///  as it is very unobvious.
+///
+///  @param  index            Index of the neuron to get spike history.
+///  @param  offIndex         Offset of the history buffer to get from.
 uint64_t AllSpikingNeurons::getSpikeHistory(int index, int offIndex) {
    // offIndex is a minus offset
    int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));

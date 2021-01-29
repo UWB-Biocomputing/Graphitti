@@ -1,31 +1,16 @@
 /**
- *      @file SInputRegular.h
+ * @file SInputRegular.h
+ * 
+ * @ingroup Simulation/Utils/Inputs
  *
- *      @brief A class that performs stimulus input (implementation Regular).
+ * @brief A class that performs stimulus input (implementation Regular).
+ *
+ * The SInputRegular performs providing stimulus input to the network for each time step.
+ * Inputs are series of current pulses, which are characterized by a duration, an interval
+ * and input values.
+ *
+ * This class is the base class of GpuSInputRegular and HostSInputRegular.
  */
-
-/**
- **
- ** \class SInputRegular SInputRegular.h "SInputRegular.h"
- **
- ** \latexonly  \subsubsection*{Implementation} \endlatexonly
- ** \htmlonly   <h3>Implementation</h3> \endhtmlonly
- **
- ** The SInputRegular performs providing stimulus input to the network for each time step.
- ** Inputs are series of current pulses, which are characterized by a duration, an interval
- ** and input values.
- **
- ** This class is the base class of GpuSInputRegular and HostSInputRegular.
- **
- ** \latexonly  \subsubsection*{Credits} \endlatexonly
- ** \htmlonly   <h3>Credits</h3> \endhtmlonly
- **
- ** Some models in this simulator is a rewrite of CSIM (2006) and other 
- ** work (Stiber and Kawasaki (2007?))
- **
- **
- **     @author Fumitaka Kawasaki
- **/
 
 #pragma once
 

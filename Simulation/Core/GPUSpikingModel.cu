@@ -1,3 +1,12 @@
+/**
+ * @file GPUSpikingModel.cu
+ * 
+ * @ingroup Simulation/Core
+ *
+ * @brief Implementation of Model for the spiking neural networks.
+ * 
+ */
+
 #include "GPUSpikingModel.h"
 #include "AllSynapsesDeviceFuncs.h"
 #include "Connections.h"
@@ -300,24 +309,22 @@ void GPUSpikingModel::copySynapseIndexMapHostToDevice(SynapseIndexMap &synapseIn
         sizeof( SynapseIndexMap ), cudaMemcpyHostToDevice ) );
 }
 
-/**
- * Calculate the sum of synaptic input to each neuron.
- *
- * Calculate the sum of synaptic input to each neuron. One thread
- * corresponds to one neuron. Iterates sequentially through the
- * forward synapse index map (synapseIndexMapDevice_) to access only
- * existing synapses. Using this structure eliminates the need to skip
- * synapses that have undergone lazy deletion from the main
- * (allSynapsesDevice) synapse structure. The forward map is
- * re-computed during each network restructure (once per epoch) to
- * ensure that all synapse pointers for a neuron are stored
- * contiguously.
- * 
- * @param[in] totalNeurons           Number of neurons in the entire simulation.
- * @param[in,out] allNeuronsDevice   Pointer to Neuron structures in device memory.
- * @param[in] synapseIndexMapDevice_  Pointer to forward map structures in device memory.
- * @param[in] allSynapsesDevice      Pointer to Synapse structures in device memory.
- */
+/// Calculate the sum of synaptic input to each neuron.
+///
+/// Calculate the sum of synaptic input to each neuron. One thread
+/// corresponds to one neuron. Iterates sequentially through the
+/// forward synapse index map (synapseIndexMapDevice_) to access only
+/// existing synapses. Using this structure eliminates the need to skip
+/// synapses that have undergone lazy deletion from the main
+/// (allSynapsesDevice) synapse structure. The forward map is
+/// re-computed during each network restructure (once per epoch) to
+/// ensure that all synapse pointers for a neuron are stored
+/// contiguously.
+/// 
+/// @param[in] totalNeurons           Number of neurons in the entire simulation.
+/// @param[in,out] allNeuronsDevice   Pointer to Neuron structures in device memory.
+/// @param[in] synapseIndexMapDevice_  Pointer to forward map structures in device memory.
+/// @param[in] allSynapsesDevice      Pointer to Synapse structures in device memory.
 __global__ void calcSummationMapDevice(int totalNeurons, 
 				       AllSpikingNeuronsDeviceProperties* __restrict__ allNeuronsDevice, 
 				       const SynapseIndexMap* __restrict__ synapseIndexMapDevice_, 

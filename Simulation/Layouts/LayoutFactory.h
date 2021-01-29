@@ -1,5 +1,9 @@
 /**
- *  A factory class for creating Vertices objects.
+ * @file LayoutFactory.h
+ *
+ * @ingroup Simulation/Layouts
+ * 
+ * @brief A factory class for creating Vertices objects.
  */
 
 #pragma once
@@ -37,7 +41,6 @@ private:
    /// Smart pointer to layout instance
    shared_ptr<Layout> layoutInstance;
 
-   /* Type definitions */
    /// Defines function type for usage in internal map
    typedef Layout *(*CreateFunction)(void);
 

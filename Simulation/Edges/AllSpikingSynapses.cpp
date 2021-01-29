@@ -1,3 +1,11 @@
+/**
+ * @file AllSpikingSynapses.cpp
+ * 
+ * @ingroup Simulation/Edges
+ *
+ * @brief A container of all dynamic STDP synapse data
+ */
+
 #include "AllSpikingSynapses.h"
 
 AllSpikingSynapses::AllSpikingSynapses() : AllSynapses() {
@@ -33,20 +41,15 @@ AllSpikingSynapses::~AllSpikingSynapses() {
    tau_ = NULL;
 }
 
-/*
- *  Setup the internal structure of the class (allocate memories and initialize them).
- *
- */
+///  Setup the internal structure of the class (allocate memories and initialize them).
 void AllSpikingSynapses::setupSynapses() {
    setupSynapses(Simulator::getInstance().getTotalNeurons(), Simulator::getInstance().getMaxSynapsesPerNeuron());
 }
 
-/*
- *  Setup the internal structure of the class (allocate memories and initialize them).
- *
- *  @param  numNeurons   Total number of neurons in the network.
- *  @param  maxSynapses  Maximum number of synapses per neuron.
- */
+///  Setup the internal structure of the class (allocate memories and initialize them).
+///
+///  @param  numNeurons   Total number of neurons in the network.
+///  @param  maxSynapses  Maximum number of synapses per neuron.
 void AllSpikingSynapses::setupSynapses(const int numNeurons, const int maxSynapses) {
    AllSynapses::setupSynapses(numNeurons, maxSynapses);
 
@@ -62,11 +65,9 @@ void AllSpikingSynapses::setupSynapses(const int numNeurons, const int maxSynaps
    }
 }
 
-/*
- *  Initializes the queues for the Synapse.
- *
- *  @param  iSyn   index of the synapse to set.
- */
+///  Initializes the queues for the Synapse.
+///
+///  @param  iSyn   index of the synapse to set.
 void AllSpikingSynapses::initSpikeQueue(const BGSIZE iSyn) {
    int &totalDelay = this->totalDelay_[iSyn];
    uint32_t &delayQueue = this->delayQueue_[iSyn];
@@ -80,32 +81,26 @@ void AllSpikingSynapses::initSpikeQueue(const BGSIZE iSyn) {
    ldelayQueue = LENGTH_OF_DELAYQUEUE;
 }
 
-/*
- *  Reset time varying state vars and recompute decay.
- *
- *  @param  iSyn     Index of the synapse to set.
- *  @param  deltaT   Inner simulation step duration
- */
+///  Reset time varying state vars and recompute decay.
+///
+///  @param  iSyn     Index of the synapse to set.
+///  @param  deltaT   Inner simulation step duration
 void AllSpikingSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
    AllSynapses::resetSynapse(iSyn, deltaT);
 
    assert(updateDecay(iSyn, deltaT));
 }
 
-/**
- *  Prints out all parameters to logging file.
- *  Registered to OperationManager as Operation::printParameters
- */
+///  Prints out all parameters to logging file.
+///  Registered to OperationManager as Operation::printParameters
 void AllSpikingSynapses::printParameters() const {
    AllSynapses::printParameters();
 }
 
-/*
- *  Sets the data for Synapse to input's data.
- *
- *  @param  input  istream to read from.
- *  @param  iSyn   Index of the synapse to set.
- */
+///  Sets the data for Synapse to input's data.
+///
+///  @param  input  istream to read from.
+///  @param  iSyn   Index of the synapse to set.
 void AllSpikingSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
    AllSynapses::readSynapse(input, iSyn);
 
@@ -124,12 +119,10 @@ void AllSpikingSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
    input.ignore();
 }
 
-/*
- *  Write the synapse data to the stream.
- *
- *  @param  output  stream to print out to.
- *  @param  iSyn    Index of the synapse to print out.
- */
+///  Write the synapse data to the stream.
+///
+///  @param  output  stream to print out to.
+///  @param  iSyn    Index of the synapse to print out.
 void AllSpikingSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
    AllSynapses::writeSynapse(output, iSyn);
 
@@ -141,16 +134,14 @@ void AllSpikingSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const 
    output << tau_[iSyn] << ends;
 }
 
-/*
- *  Create a Synapse and connect it to the model.
- *
- *  @param  iSyn        Index of the synapse to set.
- *  @param  srcNeuron   Coordinates of the source Neuron.
- *  @param  destNeuron  Coordinates of the destination Neuron.
- *  @param  sumPoint    Summation point address.
- *  @param  deltaT      Inner simulation step duration.
- *  @param  type        Type of the Synapse to create.
- */
+///  Create a Synapse and connect it to the model.
+///
+///  @param  iSyn        Index of the synapse to set.
+///  @param  srcNeuron   Coordinates of the source Neuron.
+///  @param  destNeuron  Coordinates of the destination Neuron.
+///  @param  sumPoint    Summation point address.
+///  @param  deltaT      Inner simulation step duration.
+///  @param  type        Type of the Synapse to create.
 void AllSpikingSynapses::createSynapse(const BGSIZE iSyn, int srcNeuron, int destNeuron, BGFLOAT *sumPoint,
                                        const BGFLOAT deltaT, synapseType type) {
    BGFLOAT delay;
@@ -197,12 +188,10 @@ void AllSpikingSynapses::createSynapse(const BGSIZE iSyn, int srcNeuron, int des
 
 #if !defined(USE_GPU)
 
-/*
- *  Checks if there is an input spike in the queue.
- *
- *  @param  iSyn   Index of the Synapse to connect to.
- *  @return true if there is an input spike event.
- */
+///  Checks if there is an input spike in the queue.
+///
+///  @param  iSyn   Index of the Synapse to connect to.
+///  @return true if there is an input spike event.
 bool AllSpikingSynapses::isSpikeQueue(const BGSIZE iSyn) {
    uint32_t &delayQueue = this->delayQueue_[iSyn];
    int &delayIdx = this->delayIndex_[iSyn];
@@ -216,11 +205,9 @@ bool AllSpikingSynapses::isSpikeQueue(const BGSIZE iSyn) {
    return r;
 }
 
-/*
- *  Prepares Synapse for a spike hit.
- *
- *  @param  iSyn   Index of the Synapse to update.
- */
+///  Prepares Synapse for a spike hit.
+///
+///  @param  iSyn   Index of the Synapse to update.
 void AllSpikingSynapses::preSpikeHit(const BGSIZE iSyn) {
    uint32_t &delayQueue = this->delayQueue_[iSyn];
    int &delayIdx = this->delayIndex_[iSyn];
@@ -240,20 +227,16 @@ void AllSpikingSynapses::preSpikeHit(const BGSIZE iSyn) {
    delayQueue |= (0x1 << idx);
 }
 
-/*
- *  Prepares Synapse for a spike hit (for back propagation).
- *
- *  @param  iSyn   Index of the Synapse to update.
- */
+///  Prepares Synapse for a spike hit (for back propagation).
+///
+///  @param  iSyn   Index of the Synapse to update.
 void AllSpikingSynapses::postSpikeHit(const BGSIZE iSyn) {
 }
 
-/*
- *  Advance one specific Synapse.
- *
- *  @param  iSyn      Index of the Synapse to connect to.
- *  @param  neurons   The Neuron list to search from.
- */
+///  Advance one specific Synapse.
+///
+///  @param  iSyn      Index of the Synapse to connect to.
+///  @param  neurons   The Neuron list to search from.
 void AllSpikingSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
    BGFLOAT &decay = this->decay_[iSyn];
    BGFLOAT &psr = this->psr_[iSyn];
@@ -277,12 +260,10 @@ void AllSpikingSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons)
 #endif
 }
 
-/*
- *  Calculate the post synapse response after a spike.
- *
- *  @param  iSyn        Index of the synapse to set.
- *  @param  deltaT      Inner simulation step duration.
- */
+///  Calculate the post synapse response after a spike.
+///
+///  @param  iSyn        Index of the synapse to set.
+///  @param  deltaT      Inner simulation step duration.
 void AllSpikingSynapses::changePSR(const BGSIZE iSyn, const BGFLOAT deltaT) {
    BGFLOAT &psr = this->psr_[iSyn];
    BGFLOAT &W = this->W_[iSyn];
@@ -293,12 +274,10 @@ void AllSpikingSynapses::changePSR(const BGSIZE iSyn, const BGFLOAT deltaT) {
 
 #endif //!defined(USE_GPU)
 
-/*
- *  Updates the decay if the synapse selected.
- *
- *  @param  iSyn    Index of the synapse to set.
- *  @param  deltaT  Inner simulation step duration
- */
+///  Updates the decay if the synapse selected.
+///
+///  @param  iSyn    Index of the synapse to set.
+///  @param  deltaT  Inner simulation step duration
 bool AllSpikingSynapses::updateDecay(const BGSIZE iSyn, const BGFLOAT deltaT) {
    BGFLOAT &tau = this->tau_[iSyn];
    BGFLOAT &decay = this->decay_[iSyn];
@@ -310,19 +289,15 @@ bool AllSpikingSynapses::updateDecay(const BGSIZE iSyn, const BGFLOAT deltaT) {
    return false;
 }
 
-/*
- *  Check if the back propagation (notify a spike event to the pre neuron)
- *  is allowed in the synapse class.
- *
- *  @return true if the back propagation is allowed.
- */
+///  Check if the back propagation (notify a spike event to the pre neuron)
+///  is allowed in the synapse class.
+///
+///  @return true if the back propagation is allowed.
 bool AllSpikingSynapses::allowBackPropagation() {
    return false;
 }
 
-/*
- *  Prints SynapsesProps data to console.
- */
+///  Prints SynapsesProps data to console.
 void AllSpikingSynapses::printSynapsesProps() const {
    AllSynapses::printSynapsesProps();
    for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {

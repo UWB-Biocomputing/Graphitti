@@ -1,3 +1,12 @@
+/**
+ * @file ConnStatic.cpp
+ *
+ * @ingroup Simulation/Connections
+ * 
+ * @brief The model of the small world network
+ */
+
+
 #include "ConnStatic.h"
 #include "ParseParamError.h"
 #include "IAllSynapses.h"
@@ -23,16 +32,14 @@ ConnStatic::~ConnStatic() {
    
 }
 
-/*
- *  Setup the internal structure of the class (allocate memories and initialize them).
- *  Initialize the small world network characterized by parameters: 
- *  number of maximum connections per neurons, connection radius threshold, and
- *  small-world rewiring probability.
- *
- *  @param  layout    Layout information of the neunal network.
- *  @param  neurons   The Neuron list to search from.
- *  @param  synapses  The Synapse list to search from.
- */
+///  Setup the internal structure of the class (allocate memories and initialize them).
+///  Initialize the small world network characterized by parameters: 
+///  number of maximum connections per neurons, connection radius threshold, and
+///  small-world rewiring probability.
+///
+///  @param  layout    Layout information of the neunal network.
+///  @param  neurons   The Neuron list to search from.
+///  @param  synapses  The Synapse list to search from.
 void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses) {
    int numNeurons = Simulator::getInstance().getTotalNeurons();
    vector<DistDestNeuron> distDestNeurons[numNeurons];
@@ -89,19 +96,14 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
    LOG4CPLUS_DEBUG(fileLogger_,"Added connections: " << added);
 }
 
-/*
- * Load member variables from configuration file.
- * Registered to OperationManager as Operations::op::loadParameters
- */
+/// Load member variables from configuration file.
+/// Registered to OperationManager as Operations::op::loadParameters
 void ConnStatic::loadParameters() {
    // ConnStatic doesn't have any parameters to load from the configuration file.
 }
 
-
-/**
- *  Prints out all parameters to logging file.
- *  Registered to OperationManager as Operation::printParameters
- */
+///  Prints out all parameters to logging file.
+///  Registered to OperationManager as Operation::printParameters
 void ConnStatic::printParameters() const {
    LOG4CPLUS_DEBUG(fileLogger_, "CONNECTIONS PARAMETERS" << endl
     << "\tConnections Type: ConnStatic" << endl

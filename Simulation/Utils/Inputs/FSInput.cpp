@@ -1,9 +1,9 @@
-/*
- *      \file FSInput.cpp
- *
- *      \author Fumitaka Kawasaki
- *
- *      \brief A factoy class that creates an instance of stimulus input object.
+/**
+ * @file FSInput.cpp
+ * 
+ * @ingroup Simulation/Utils/Inputs
+ * 
+ * @brief A factoy class that creates an instance of stimulus input object.
  */
 
 #include "FSInput.h"
@@ -15,28 +15,22 @@
 #endif
 #include <tinyxml.h>
 
-/*
- * constructor
- */
+/// constructor
 FSInput::FSInput()
 {
     
 }
 
-/*
- * destructor
- */
+/// destructor
 FSInput::~FSInput()
 {
 }
 
-/*
- * Create an instance of the stimulus input class based on the method
- * specified in the stimulus input file.
- *
- * @param[in] psi                   Pointer to the simulation information
- * @return a pointer to a SInput object
- */
+/// Create an instance of the stimulus input class based on the method
+/// specified in the stimulus input file.
+///
+/// @param[in] psi                   Pointer to the simulation information
+/// @return a pointer to a SInput object
 ISInput* FSInput::CreateInstance()
 {
     if (Simulator::getInstance().getStimulusFileName().empty())

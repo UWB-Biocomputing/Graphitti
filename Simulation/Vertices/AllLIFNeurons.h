@@ -1,16 +1,9 @@
 /**
- *      @file AllLIFNeurons.h
- *
- *      @brief A container of all LIF neuron data
- */
-
-/** 
- * @authors Aaron Oziel, Sean Blackbourn
+ * @file AllLIFNeurons.h
  * 
- * @class AllIFNeurons AllIFNeurons.h "AllIFNeurons.h"
+ * @ingroup Simulation/Vertices
  *
- * \latexonly  \subsubsection*{Implementation} \endlatexonly
- * \htmlonly   <h3>Implementation</h3> \endhtmlonly
+ * @brief A container of all LIF neuron data
  *
  * A container of all spiking neuron data.
  * This is the base class of all spiking neuron classes.
@@ -77,14 +70,6 @@
  * \f]
  * where \f$C1 = \mathrm{e}^{-\frac{\Delta t}{\tau_m}}\f$ and 
  * \f$C2 = R_m \cdot (1 - \mathrm{e}^{-\frac{\Delta t}{\tau_m}})\f$.
- *
- * \latexonly  \subsubsection*{Credits} \endlatexonly
- * \htmlonly   <h3>Credits</h3> \endhtmlonly
- *
- * This model is a rewrite of work by Stiber, Kawasaki, Allan Ortiz, and Cory Mayberry
- *
- * Some models in this simulator is a rewrite of CSIM (2006) and other
- * work (Stiber and Kawasaki (2007?))
  */
 #pragma once
 
@@ -100,50 +85,40 @@ public:
 
    virtual ~AllLIFNeurons();
 
-   /**
-    *  Creates an instance of the class.
-    *  The function is called from FClassOfCategory.
-    *
-    *  @return Reference to the instance of the class.
-    */
+   ///  Creates an instance of the class.
+   ///  The function is called from FClassOfCategory.
+   ///
+   ///  @return Reference to the instance of the class.
    static IAllNeurons *Create() { return new AllLIFNeurons(); }
 
-   /**
-    *  Prints out all parameters of the neurons to logging file.
-    *  Registered to OperationManager as Operation::printParameters
-    */
+   ///  Prints out all parameters of the neurons to logging file.
+   ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
 
 #if defined(USE_GPU)
    public:
 
-       /**
-        *  Update the state of all neurons for a time step
-        *  Notify outgoing synapses if neuron has fired.
-        *
-        *  @param  synapses               Reference to the allSynapses struct on host memory.
-        *  @param  allNeuronsDevice       GPU address of the allNeurons struct on device memory.
-        *  @param  allSynapsesDevice      GPU address of the allSynapses struct on device memory.
-        *  @param  randNoise              Reference to the random noise array.
-        *  @param  synapseIndexMapDevice  GPU address of the SynapseIndexMap on device memory.
-        */
+       ///  Update the state of all neurons for a time step
+       ///  Notify outgoing synapses if neuron has fired.
+       ///
+       ///  @param  synapses               Reference to the allSynapses struct on host memory.
+       ///  @param  allNeuronsDevice       GPU address of the allNeurons struct on device memory.
+       ///  @param  allSynapsesDevice      GPU address of the allSynapses struct on device memory.
+       ///  @param  randNoise              Reference to the random noise array.
+       ///  @param  synapseIndexMapDevice  GPU address of the SynapseIndexMap on device memory.
        virtual void advanceNeurons(IAllSynapses &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, SynapseIndexMap* synapseIndexMapDevice);
 
 #else  // !defined(USE_GPU)
 protected:
 
-   /**
-    *  Helper for #advanceNeuron. Updates state of a single neuron.
-    *
-    *  @param  index Index of the neuron to update.
-    */
+   ///  Helper for #advanceNeuron. Updates state of a single neuron.
+   ///
+   ///  @param  index Index of the neuron to update.
    virtual void advanceNeuron(const int index);
 
-   /**
-    *  Initiates a firing of a neuron to connected neurons.
-    *
-    *  @param  index Index of the neuron to fire.
-    */
+   ///  Initiates a firing of a neuron to connected neurons.
+   ///
+   ///  @param  index Index of the neuron to fire.
    virtual void fire(const int index) const;
 
 #endif // defined(USE_GPU)

@@ -1,15 +1,10 @@
 /**
- *      @file AllIZHNeurons.h
- *
- *      @brief A container of all Izhikevich neuron data
- */
-
-/** 
+ * @file AllIZHNeurons.h
  * 
- * @class AllIZHNeurons AllIZHNeurons.h "AllIZHNeurons.h"
+ * @ingroup Simulation/Vertices
  *
- * \latexonly  \subsubsection*{Implementation} \endlatexonly
- * \htmlonly   <h3>Implementation</h3> \endhtmlonly
+ * @brief A container of all Izhikevich neuron data
+ * 
  * A container of all spiking neuron data.
  * This is the base class of all spiking neuron classes.
  *
@@ -73,12 +68,6 @@
  *
  * Because the time scale \f$t\f$ of the Izhikevich model is \f$ms\f$ scale, 
  *  so \f$C3\f$ is : \f$C3 = \Delta t = 1000 \cdot deltaT\f$ (\f$deltaT\f$ is the simulation time step in second) \f$ms\f$.
- *
- * \latexonly  \subsubsection*{Credits} \endlatexonly
- * \htmlonly   <h3>Credits</h3> \endhtmlonly
- *
- * This model is a rewrite of work by Stiber, Kawasaki, Allan Ortiz, and Cory Mayberry
- *
  */
 #pragma once
 
@@ -96,328 +85,230 @@ public:
 
    static IAllNeurons *Create() { return new AllIZHNeurons(); }
 
-   /**
-    *  Setup the internal structure of the class.
-    *  Allocate memories to store all neurons' state.
-    */
+   ///  Setup the internal structure of the class.
+   ///  Allocate memories to store all neurons' state.
    virtual void setupNeurons();
 
-   /**
-    *  Prints out all parameters of the neurons to logging file.
-    *  Registered to OperationManager as Operation::printParameters
-    */
+   ///  Prints out all parameters of the neurons to logging file.
+   ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
 
-   /**
-    *  Creates all the Neurons and assigns initial data for them.
-    *
-    *  @param  layout      Layout information of the neunal network.
-    */
+   ///  Creates all the Neurons and assigns initial data for them.
+   ///
+   ///  @param  layout      Layout information of the neunal network.
    virtual void createAllNeurons(Layout *layout);
 
-   /**
-    *  Outputs state of the neuron chosen as a string.
-    *
-    *  @param  index   index of the neuron (in neurons) to output info from.
-    *  @return the complete state of the neuron.
-    */
+   ///  Outputs state of the neuron chosen as a string.
+   ///
+   ///  @param  index   index of the neuron (in neurons) to output info from.
+   ///  @return the complete state of the neuron.
    virtual string toString(const int index) const;
 
-   /**
-    *  Reads and sets the data for all neurons from input stream.
-    *
-    *  @param  input       istream to read from.
-    */
+   ///  Reads and sets the data for all neurons from input stream.
+   ///
+   ///  @param  input       istream to read from.
    virtual void deserialize(istream &input);
 
-   /**
-    *  Writes out the data in all neurons to output stream.
-    *
-    *  @param  output      stream to write out to.
-    */
+   ///  Writes out the data in all neurons to output stream.
+   ///
+   ///  @param  output      stream to write out to.
    virtual void serialize(ostream &output) const;
 
 #if defined(USE_GPU)
    public:
-       /**
-        *  Update the state of all neurons for a time step
-        *  Notify outgoing synapses if neuron has fired.
-        *
-        *  @param  synapses               Reference to the allSynapses struct on host memory.
-        *  @param  allNeuronsDevice       Reference to the allNeurons struct on device memory.
-        *  @param  allSynapsesDevice      Reference to the allSynapses struct on device memory.
-        *  @param  randNoise              Reference to the random noise array.
-        *  @param  synapseIndexMapDevice  Reference to the SynapseIndexMap on device memory.
-        */
+       ///  Update the state of all neurons for a time step
+       ///  Notify outgoing synapses if neuron has fired.
+       ///
+       ///  @param  synapses               Reference to the allSynapses struct on host memory.
+       ///  @param  allNeuronsDevice       Reference to the allNeurons struct on device memory.
+       ///  @param  allSynapsesDevice      Reference to the allSynapses struct on device memory.
+       ///  @param  randNoise              Reference to the random noise array.
+       ///  @param  synapseIndexMapDevice  Reference to the SynapseIndexMap on device memory.
        virtual void advanceNeurons(IAllSynapses &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, SynapseIndexMap* synapseIndexMapDevice);
 
-       /**
-        *  Allocate GPU memories to store all neurons' states,
-        *  and copy them from host to GPU memory.
-        *
-        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
-        */
+       ///  Allocate GPU memories to store all neurons' states,
+       ///  and copy them from host to GPU memory.
+       ///
+       ///  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
        virtual void allocNeuronDeviceStruct( void** allNeuronsDevice);
 
-       /**
-        *  Delete GPU memories.
-        *
-        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
-        */
+       ///  Delete GPU memories.
+       ///
+       ///  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
        virtual void deleteNeuronDeviceStruct( void* allNeuronsDevice);
 
-       /**
-        *  Copy all neurons' data from host to device.
-        *
-        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
-        */
+       ///  Copy all neurons' data from host to device.
+       ///
+       ///  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
        virtual void copyNeuronHostToDevice( void* allNeuronsDevice);
 
-       /**
-        *  Copy all neurons' data from device to host.
-        *
-        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
-        */
+       ///  Copy all neurons' data from device to host.
+       ///
+       ///  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
        virtual void copyNeuronDeviceToHost(void* allNeuronsDevice);
 
-       /**
-        *  Copy spike history data stored in device memory to host.
-        *
-        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
-        */
+       ///  Copy spike history data stored in device memory to host.
+       ///
+       ///  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
        virtual void copyNeuronDeviceSpikeHistoryToHost( void* allNeuronsDevice);
 
-       /**
-        *  Copy spike counts data stored in device memory to host.
-        *
-        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
-        */
+       ///  Copy spike counts data stored in device memory to host.
+       ///
+       ///  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
        virtual void copyNeuronDeviceSpikeCountsToHost( void* allNeuronsDevice);
 
-       /**
-        *  Clear the spike counts out of all neurons.
-        *
-        *  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
-        */
+       ///  Clear the spike counts out of all neurons.
+       ///
+       ///  @param  allNeuronsDevice   GPU address of the allNeurons struct on device memory.
        virtual void clearNeuronSpikeCounts( void* allNeuronsDevice);
 
 
    protected:
-       /**
-        *  Allocate GPU memories to store all neurons' states.
-        *  (Helper function of allocNeuronDeviceStruct)
-        *
-        *  @param  allNeuronsDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
-        */
+       ///  Allocate GPU memories to store all neurons' states.
+       ///  (Helper function of allocNeuronDeviceStruct)
+       ///
+       ///  @param  allNeuronsDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
        void allocDeviceStruct( AllIZHNeuronsDeviceProperties &allNeuronsDevice);
 
-       /**
-        *  Delete GPU memories.
-        *  (Helper function of deleteNeuronDeviceStruct)
-        *
-        *  @param  allNeuronsDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
-        */
+       ///  Delete GPU memories.
+       ///  (Helper function of deleteNeuronDeviceStruct)
+       ///
+       ///  @param  allNeuronsDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
        void deleteDeviceStruct( AllIZHNeuronsDeviceProperties& allNeuronsDevice);
 
-       /**
-        *  Copy all neurons' data from host to device.
-        *  (Helper function of copyNeuronHostToDevice)
-        *
-        *  @param  allNeuronsDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
-        */
+       ///  Copy all neurons' data from host to device.
+       ///  (Helper function of copyNeuronHostToDevice)
+       ///
+       ///  @param  allNeuronsDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
        void copyHostToDevice( AllIZHNeuronsDeviceProperties& allNeuronsDevice);
 
-       /**
-        *  Copy all neurons' data from device to host.
-        *  (Helper function of copyNeuronDeviceToHost)
-        *
-        *  @param  allNeuronsDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
-        */
+       ///  Copy all neurons' data from device to host.
+       ///  (Helper function of copyNeuronDeviceToHost)
+       ///
+       ///  @param  allNeuronsDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
        void copyDeviceToHost( AllIZHNeuronsDeviceProperties& allNeuronsDevice);
 
 #else  // !defined(USE_GPU)
 
 protected:
-   /**
-    *  Helper for #advanceNeuron. Updates state of a single neuron.
-    *
-    *  @param  index            Index of the neuron to update.
-    */
+   ///  Helper for #advanceNeuron. Updates state of a single neuron.
+   ///
+   ///  @param  index            Index of the neuron to update.
    virtual void advanceNeuron(const int index);
 
-   /**
-    *  Initiates a firing of a neuron to connected neurons.
-    *
-    *  @param  index            Index of the neuron to fire.
-    */
+   ///  Initiates a firing of a neuron to connected neurons.
+   ///
+   ///  @param  index            Index of the neuron to fire.
    virtual void fire(const int index) const;
 
 #endif  // defined(USE_GPU)
 
 protected:
-   /**
-    *  Creates a single Neuron and generates data for it.
-    *
-    *  @param  neuronIndex Index of the neuron to create.
-    *  @param  layout       Layout information of the neunal network.
-    */
+   ///  Creates a single Neuron and generates data for it.
+   ///
+   ///  @param  neuronIndex Index of the neuron to create.
+   ///  @param  layout       Layout information of the neunal network.
    void createNeuron(int neuronIndex, Layout *layout);
 
-   /**
-    *  Set the Neuron at the indexed location to default values.
-    *
-    *  @param  index    Index of the Neuron that the synapse belongs to.
-    */
+   ///  Set the Neuron at the indexed location to default values.
+   ///
+   ///  @param  index    Index of the Neuron that the synapse belongs to.
    void setNeuronDefaults(const int index);
 
-   /**
-    *  Initializes the Neuron constants at the indexed location.
-    *
-    *  @param  neuronIndex    Index of the Neuron.
-    *  @param  deltaT          Inner simulation step duration
-    */
+   ///  Initializes the Neuron constants at the indexed location.
+   ///
+   ///  @param  neuronIndex    Index of the Neuron.
+   ///  @param  deltaT          Inner simulation step duration
    virtual void initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT);
 
-   /**
-    *  Sets the data for Neuron #index to input's data.
-    *
-    *  @param  input       istream to read from.
-    *  @param  index           index of the neuron (in neurons).
-    */
+   ///  Sets the data for Neuron #index to input's data.
+   ///
+   ///  @param  input       istream to read from.
+   ///  @param  index           index of the neuron (in neurons).
    void readNeuron(istream &input, int index);
 
-   /**
-    *  Writes out the data in the selected Neuron.
-    *
-    *  @param  output      stream to write out to.
-    *  @param  index           index of the neuron (in neurons).
-    */
+   ///  Writes out the data in the selected Neuron.
+   ///
+   ///  @param  output      stream to write out to.
+   ///  @param  index           index of the neuron (in neurons).
    void writeNeuron(ostream &output, int index) const;
 
 public:
-   /**
-    *  A constant (0.02, 01) describing the coupling of variable u to Vm.
-    */
+   ///  A constant (0.02, 01) describing the coupling of variable u to Vm.
    BGFLOAT *Aconst_;
 
-   /**
-    *  A constant controlling sensitivity of u.
-    */
+   ///  A constant controlling sensitivity of u.
    BGFLOAT *Bconst_;
 
-   /**
-    *  A constant controlling reset of Vm.
-    */
+   ///  A constant controlling reset of Vm.
    BGFLOAT *Cconst_;
 
-   /**
-    *  A constant controlling reset of u.
-    */
+   ///  A constant controlling reset of u.
    BGFLOAT *Dconst_;
 
-   /**
-    *  internal variable.
-    */
+   ///  internal variable.
    BGFLOAT *u_;
 
-   /**
-    *  Internal constant for the exponential Euler integration.
-    */
+   ///  Internal constant for the exponential Euler integration.
    BGFLOAT *C3_;
 
 private:
-   /**
-    *  Default value of Aconst.
-    */
+   ///  Default value of Aconst.
    static constexpr BGFLOAT DEFAULT_a = 0.0035;
 
-   /**
-    *  Default value of Bconst.
-    */
+   ///  Default value of Bconst.
    static constexpr BGFLOAT DEFAULT_b = 0.2;
 
-   /**
-    *  Default value of Cconst.
-    */
+   ///  Default value of Cconst.
    static constexpr BGFLOAT DEFAULT_c = -50;
 
-   /**
-    *  Default value of Dconst.
-    */
+   ///  Default value of Dconst.
    static constexpr BGFLOAT DEFAULT_d = 2;
 
-   /**
-    *  Min/max values of Aconst for excitatory neurons.
-    */
+   ///  Min/max values of Aconst for excitatory neurons.
    BGFLOAT excAconst_[2];
 
-   /**
-    *  Min/max values of Aconst for inhibitory neurons.
-    */
+   ///  Min/max values of Aconst for inhibitory neurons.
    BGFLOAT inhAconst_[2];
 
-   /**
-    *  Min/max values of Bconst for excitatory neurons.
-    */
+   ///  Min/max values of Bconst for excitatory neurons.
    BGFLOAT excBconst_[2];
 
-   /**
-    *  Min/max values of Bconst for inhibitory neurons.
-    */
+   ///  Min/max values of Bconst for inhibitory neurons.
    BGFLOAT inhBconst_[2];
 
-   /**
-    *  Min/max values of Cconst for excitatory neurons.
-    */
+   ///  Min/max values of Cconst for excitatory neurons.
    BGFLOAT excCconst_[2];
 
-   /**
-    *  Min/max values of Cconst for inhibitory neurons.
-    */
+   ///  Min/max values of Cconst for inhibitory neurons.
    BGFLOAT inhCconst_[2];
 
-   /**
-    *  Min/max values of Dconst for excitatory neurons.
-    */
+   ///  Min/max values of Dconst for excitatory neurons.
    BGFLOAT excDconst_[2];
 
-   /**
-    *  Min/max values of Dconst for inhibitory neurons.
-    */
+   ///  Min/max values of Dconst for inhibitory neurons.
    BGFLOAT inhDconst_[2];
 };
 
 #if defined(USE_GPU)
 struct AllIZHNeuronsDeviceProperties : public AllIFNeuronsDeviceProperties
 {
-        /**
-         *  A constant (0.02, 01) describing the coupling of variable u to Vm.
-         */
+        ///  A constant (0.02, 01) describing the coupling of variable u to Vm.
         BGFLOAT *Aconst_;
 
-        /**
-         *  A constant controlling sensitivity of u.
-         */
+        ///  A constant controlling sensitivity of u.
         BGFLOAT *Bconst_;
 
-        /**
-         *  A constant controlling reset of Vm. 
-         */
+        ///  A constant controlling reset of Vm. 
         BGFLOAT *Cconst_;
 
-        /**
-         *  A constant controlling reset of u.
-         */
+        ///  A constant controlling reset of u.
         BGFLOAT *Dconst_;
 
-        /**
-         *  internal variable.
-         */
+        ///  internal variable.
         BGFLOAT *u_;
 
-        /**
-         *  Internal constant for the exponential Euler integration.
-         */ 
+        ///  Internal constant for the exponential Euler integration.
         BGFLOAT *C3_;
 };
 #endif // defined(USE_GPU)

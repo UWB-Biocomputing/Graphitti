@@ -1,9 +1,9 @@
 /**
- @file VectorMatrix.cpp
- @brief  An efficient implementation of a dynamically-allocated 1D array
- @author Michael Stiber
- @date January 2016
- @version 2
+ * @file VectorMatrix.cpp
+ * 
+ * @ingroup Simulation/Utils/Matrix
+ * 
+ * @brief An efficient implementation of a dynamically-allocated 1D array
  */
 
 
@@ -16,21 +16,19 @@
 // Classwide normal RNG
 Norm VectorMatrix::nRng;
 
-/*
- Allocate storage and initialize attributes. Either
- "rows" or "columns" must be equal to 1. If "v" is not empty, it
- will be used as a source of data for initializing the vector (and
- must be a list of whitespace separated textual numeric data with the
- same number of elements as this VectorMatrix).
- @throws Matrix_bad_alloc
- @throws Matrix_invalid_argument
- @param t Matrix type
- @param i Matrix initialization
- @param r rows in Matrix
- @param c columns in Matrix
- @param m multiplier used for initialization
- @param v values for initializing VectorMatrix
- */
+/// Allocate storage and initialize attributes. Either
+/// "rows" or "columns" must be equal to 1. If "v" is not empty, it
+/// will be used as a source of data for initializing the vector (and
+/// must be a list of whitespace separated textual numeric data with the
+/// same number of elements as this VectorMatrix).
+/// @throws Matrix_bad_alloc
+/// @throws Matrix_invalid_argument
+/// @param t Matrix type
+/// @param i Matrix initialization
+/// @param r rows in Matrix
+/// @param c columns in Matrix
+/// @param m multiplier used for initialization
+/// @param v values for initializing VectorMatrix
 VectorMatrix::VectorMatrix(string t, string i, int r, int c, BGFLOAT m, string values) :
 	Matrix(t, i, r, c, m), theVector(NULL) {
 	DEBUG_VECTOR(cerr << "Creating VectorMatrix, size: ";)

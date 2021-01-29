@@ -1,6 +1,8 @@
 /**
- * @file Model
+ * @file Model.h
  *
+ * @ingroup Simulation/Core
+ * 
  * @brief Implementation of Model for the spiking neural networks.
  *
  * The network is composed of 3 superimposed 2-d arrays: neurons, synapses, and
@@ -9,7 +11,6 @@
  * Synapses in the synapse map are located at the coordinates of the neuron
  * from which they receive output.  Each synapse stores a pointer into a
  * summation point. 
- *
  */
 
 #pragma once

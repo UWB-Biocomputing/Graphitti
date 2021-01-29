@@ -1,11 +1,9 @@
-/*
+/**
+ *	@file Global.cpp
  *
- *	@file global.cpp
- *
- *	@author Allan Ortiz and Cory Mayberry
+ *	@ingroup Simulation/Utils
  *
  *  @brief Globally available functions/variables and default parameter values.
- *
  */
 #include "Global.h"
 #include "RNG/MersenneTwister.h"
@@ -20,38 +18,32 @@ int g_debug_mask
 		= 0;
 #endif
 
-/*
- *  Converts the given index to a string with the indexes of a two-dimensional array.
- *  @param  i   index to be converted.
- *  @param  width   width of the two-dimensional array
- *  @param  height  height of the two-dimensional array
- *  @return string with the converted indexes and square brackets surrounding them.
- */
+///  Converts the given index to a string with the indexes of a two-dimensional array.
+///  @param  i   index to be converted.
+///  @param  width   width of the two-dimensional array
+///  @param  height  height of the two-dimensional array
+///  @return string with the converted indexes and square brackets surrounding them.
 string index2dToString(int i, int width, int height) {
 	stringstream ss;
 	ss << "[" << i % width << "][" << i / height << "]";
 	return ss.str();
 }
 
-/*
- *  Takes the two given coordinates and outputs them with brackets.
- *  @param  x   x coordinate.
- *  @param  y   y coordinate.
- *  @return returns the given coordinates surrounded by square brackets.
- */
+///  Takes the two given coordinates and outputs them with brackets.
+///  @param  x   x coordinate.
+///  @param  y   y coordinate.
+///  @return returns the given coordinates surrounded by square brackets.
 string coordToString(int x, int y) {
 	stringstream ss;
 	ss << "[" << x << "][" << y << "]";
 	return ss.str();
 }
 
-/*
- *  Takes the three given coordinates and outputs them with brackets.
- *  @param  x   x coordinate.
- *  @param  y   y coordinate.
- *  @param  z   z coordinate.
- *  @return returns the given coordinates surrounded by square brackets.
- */
+///  Takes the three given coordinates and outputs them with brackets.
+///  @param  x   x coordinate.
+///  @param  y   y coordinate.
+///  @param  z   z coordinate.
+///  @return returns the given coordinates surrounded by square brackets.
 string coordToString(int x, int y, int z) {
 	stringstream ss;
 	ss << "[" << x << "][" << y << "][" << z << "]";
@@ -77,18 +69,18 @@ string neuronTypeToString(neuronType t) {
 int g_deviceId = 0;
 #endif // USE_GPU
 
-//! A random number generator.
+// A random number generator.
 MTRand rng(1);
 
-//! A normalized random number generator.
+// A normalized random number generator.
 vector<Norm *> rgNormrnd;
 
-/*		simulation vars		*/
+//		simulation vars
 uint64_t g_simulationStep = 0;
 
 //const BGFLOAT g_synapseStrengthAdjustmentConstant = 1.0e-8;
 
-/* 		misc constants		*/
+// 		misc constants
 const BGFLOAT pi = 3.1415926536;
 
 #ifdef PERFORMANCE_METRICS

@@ -1,18 +1,19 @@
 /*
- * AllSpikingNeurons_d.cu
+ * @file AllSpikingNeurons_d.cu
+ * 
+ * @ingroup Simulation/Vertices
  *
+ * @brief
  */
 
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
 #include "Book.h"
 
-/*
- *  Copy spike history data stored in device memory to host.
- *
- *  @param  allNeuronsDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
- *                             on device memory.
- */
+///  Copy spike history data stored in device memory to host.
+///
+///  @param  allNeuronsDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
+///                             on device memory.
 void AllSpikingNeurons::copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDeviceProperties& allNeuronsDevice ) 
 {
         int numNeurons = Simulator::getInstance().getTotalNeurons();
@@ -26,12 +27,10 @@ void AllSpikingNeurons::copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDevicePro
         }
 }
 
-/*
- *  Copy spike counts data stored in device memory to host.
- *
- *  @param  allNeuronsDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
- *                             on device memory.
- */
+///  Copy spike counts data stored in device memory to host.
+///
+///  @param  allNeuronsDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
+///                             on device memory.
 void AllSpikingNeurons::copyDeviceSpikeCountsToHost( AllSpikingNeuronsDeviceProperties& allNeuronsDevice ) 
 {
         int numNeurons = Simulator::getInstance().getTotalNeurons();
@@ -40,13 +39,11 @@ void AllSpikingNeurons::copyDeviceSpikeCountsToHost( AllSpikingNeuronsDeviceProp
         HANDLE_ERROR( cudaMemcpy ( spikeCountOffset_, allNeuronsDevice.spikeCountOffset_, numNeurons * sizeof( int ), cudaMemcpyDeviceToHost ) );
 }
 
-/*
- *  Clear the spike counts out of all neurons in device memory.
- *  (helper function of clearNeuronSpikeCounts)
- *
- *  @param  allNeuronsDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
- *                             on device memory.
- */
+///  Clear the spike counts out of all neurons in device memory.
+///  (helper function of clearNeuronSpikeCounts)
+///
+///  @param  allNeuronsDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
+///                             on device memory.
 void AllSpikingNeurons::clearDeviceSpikeCounts( AllSpikingNeuronsDeviceProperties& allNeuronsDevice ) 
 {
         int numNeurons = Simulator::getInstance().getTotalNeurons();
@@ -55,16 +52,14 @@ void AllSpikingNeurons::clearDeviceSpikeCounts( AllSpikingNeuronsDevicePropertie
         HANDLE_ERROR( cudaMemcpy ( allNeuronsDevice.spikeCountOffset_, spikeCountOffset_, numNeurons * sizeof( int ), cudaMemcpyHostToDevice ) );
 }
 
-/*
- *  Set some parameters used for advanceNeuronsDevice.
- *  Currently we set the two member variables: m_fpPreSpikeHit_h and m_fpPostSpikeHit_h.
- *  These are function pointers for PreSpikeHit and PostSpikeHit device functions
- *  respectively, and these functions are called from advanceNeuronsDevice device
- *  function. We use this scheme because we cannot not use virtual function (Polymorphism)
- *  in device functions.
- *
- *  @param  synapses               Reference to the allSynapses struct on host memory.
- */
+///  Set some parameters used for advanceNeuronsDevice.
+///  Currently we set the two member variables: m_fpPreSpikeHit_h and m_fpPostSpikeHit_h.
+///  These are function pointers for PreSpikeHit and PostSpikeHit device functions
+///  respectively, and these functions are called from advanceNeuronsDevice device
+///  function. We use this scheme because we cannot not use virtual function (Polymorphism)
+///  in device functions.
+///
+///  @param  synapses               Reference to the allSynapses struct on host memory.
 void AllSpikingNeurons::setAdvanceNeuronsDeviceParams(IAllSynapses &synapses)
 {
     AllSpikingSynapses &spSynapses = dynamic_cast<AllSpikingSynapses&>(synapses);

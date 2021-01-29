@@ -1,4 +1,10 @@
-/* ------------- CONNECTIONS STRUCT ------------ *\
+/**
+ * @file Connections.cpp
+ * 
+ * @ingroup Simulation/Connections
+ * 
+ * @brief Methods for creating and updating connections
+ *  ------------- CONNECTIONS STRUCT ------------ 
  * Below all of the resources for the various
  * connections are instantiated and initialized.
  * All of the allocation for memory is done in the
@@ -6,35 +12,8 @@
  * the function. Once all memory has been allocated
  * the constructor fills in known information
  * into “radii” and “rates”.
-\* --------------------------------------------- */
-/* ------------------- ERROR ------------------- *\
- * terminate called after throwing an instance of 'std::bad_alloc'
- *      what():  St9bad_alloc
- * ------------------- CAUSE ------------------- *|
- * As simulations expand in size the number of
- * neurons in total increases exponentially. When
- * using a MATRIX_TYPE = “complete” the amount of
- * used memory increases by another order of magnitude.
- * Once enough memory is used no more memory can be
- * allocated and a “bsd_alloc” will be thrown.
- * The following members of the connection constructor
- * consume equally vast amounts of memory as the
- * simulation sizes grow:
- *      - W             - radii
- *      - rates         - dist2
- *      - delta         - dist
- *      - areai
- * ----------------- 1/25/14 ------------------- *|
- * Currently when running a simulation of sizes
- * equal to or greater than 100 * 100 the above
- * error is thrown. After some testing we have
- * determined that this is a hardware dependent
- * issue, not software. We are also looking into
- * switching matrix types from "complete" to
- * "sparce". If successful it is possible the
- * problematic matricies mentioned above will use
- * only 1/250 of their current space.
-\* --------------------------------------------- */
+ * --------------------------------------------- 
+ */
 
 #include "Connections.h"
 #include "IAllSynapses.h"
@@ -78,13 +57,11 @@ void Connections::createSynapseIndexMap() {
    synapseIndexMap_ = shared_ptr<SynapseIndexMap>(synapses_->createSynapseIndexMap());
 }
 
-/*
- *  Update the connections status in every epoch.
- *
- *  @param  neurons  The Neuron list to search from.
- *  @param  layout   Layout information of the neunal network.
- *  @return true if successful, false otherwise.
- */
+///  Update the connections status in every epoch.
+///
+///  @param  neurons  The Neuron list to search from.
+///  @param  layout   Layout information of the neunal network.
+///  @return true if successful, false otherwise.
 bool Connections::updateConnections(IAllNeurons &neurons, Layout *layout) {
    return false;
 }
@@ -95,27 +72,23 @@ void Connections::updateSynapsesWeights(const int numNeurons, IAllNeurons &neuro
 }
 #else
 
-/*
- *  Update the weight of the Synapses in the simulation.
- *  Note: Platform Dependent.
- *
- *  @param  numNeurons Number of neurons to update.
- *  @param  neurons     The Neuron list to search from.
- *  @param  synapses    The Synapse list to search from.
- */
+///  Update the weight of the Synapses in the simulation.
+///  Note: Platform Dependent.
+///
+///  @param  numNeurons  Number of neurons to update.
+///  @param  neurons     The Neuron list to search from.
+///  @param  synapses    The Synapse list to search from.
 void Connections::updateSynapsesWeights(const int numNeurons, IAllNeurons &neurons, IAllSynapses &synapses, Layout *layout) {
 }
 
 #endif // !USE_GPU
 
-/*
- *  Creates synapses from synapse weights saved in the serialization file.
- *
- *  @param  numNeurons Number of neurons to update.
- *  @param  layout      Layout information of the neunal network.
- *  @param  ineurons    The Neuron list to search from.
- *  @param  isynapses   The Synapse list to search from.
- */
+///  Creates synapses from synapse weights saved in the serialization file.
+///
+///  @param  numNeurons  Number of neurons to update.
+///  @param  layout      Layout information of the neunal network.
+///  @param  ineurons    The Neuron list to search from.
+///  @param  isynapses   The Synapse list to search from.
 void Connections::createSynapsesFromWeights(const int numNeurons, Layout *layout, IAllNeurons &ineurons,
                                             IAllSynapses &isynapses) {
    AllNeurons &neurons = dynamic_cast<AllNeurons &>(ineurons);
