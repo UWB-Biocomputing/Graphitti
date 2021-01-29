@@ -69,3 +69,5 @@ Output/Debug/*.txt
 Output/Results/*.xml
 Output/Results/*.h5
 
+ThirdParty/log4cplus-2.0.2/bin/*
+ThirdParty/log4cplus-2.0.2/src/liblog4cplus.so.2.0.2

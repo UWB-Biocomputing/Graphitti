@@ -42,6 +42,7 @@ include_directories(
         Simulation/Core
         Simulation/Core/FunctionNodes
         Simulation/Edges
+        # include subdirectories
         Simulation/Layouts
         Simulation/Recorders
         Simulation/Vertices
