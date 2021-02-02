@@ -86,18 +86,18 @@ protected:
    virtual void initDataSet();
 
    /**
-    * Incrementaly write radii and rates histories
+    * Incrementally write radii and rates histories
     */
    void writeRadiiRates();
 
    // hdf5 file dataset
-   DataSet *dataSetRatesHist;
-   DataSet *dataSetRadiiHist;
+   DataSet *dataSetRatesHist_;
+   DataSet *dataSetRadiiHist_;
 
    // track radii
-   BGFLOAT *radiiHistory;
+   BGFLOAT *radiiHistory_;
 
    // track firing rate
-   BGFLOAT *ratesHistory;
+   BGFLOAT *ratesHistory_;
 };
 

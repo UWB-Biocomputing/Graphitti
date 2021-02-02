@@ -19,13 +19,17 @@ if(BRAINGRID_CUDA)
         add_compile_definitions(USE_GPU)
 endif()
 
+# HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libaries to the executable later in the file.
+find_package(HDF5 REQUIRED COMPONENTS C CXX)
+link_directories( ${HDF5_LIBRARY_DIRS} )
+include_directories( ${HDF5_INCLUDE_DIRS} )
 
 # Setting the location of the executable to be in the top-level directory. This helps when using file paths during
 # runtime.
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 # Set extra warning flags
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wex_tra")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 #define TIXML_USE_STL as a preproccersser macro to use the C++ standard library with TinyXML
 add_compile_definitions(TIXML_USE_STL)
@@ -100,7 +104,10 @@ target_link_libraries(combinedLib INTERFACE
         # ThirdParty
         TinyXPath
         log4cplus
-        paramcontainer)
+        paramcontainer
+
+        # HDF5 package libaries
+        ${HDF5_LIBRARIES})
 
 # Link the combined library into the 'braingrid' executable.
 target_link_libraries(braingrid combinedLib)

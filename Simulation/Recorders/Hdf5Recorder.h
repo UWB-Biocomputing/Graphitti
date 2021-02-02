@@ -97,39 +97,45 @@ public:
     **/
    virtual void saveSimData(const IAllNeurons &neurons);
 
+   /**
+    *  Prints out all parameters to logging file.
+    *  Registered to OperationManager as Operation::printParameters
+    */
+   virtual void printParameters();
+
 protected:
    virtual void initDataSet();
 
-   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starter_map);
+   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
 
    // hdf5 file identifier
-   H5File *stateOut;
+   H5File *stateOut_;
 
    // hdf5 file dataset
-   DataSet *dataSetBurstHist;
-   DataSet *dataSetSpikesHist;
+   DataSet *dataSetBurstHist_;
+   DataSet *dataSetSpikesHist_;
 
-   DataSet *dataSetXloc;
-   DataSet *dataSetYloc;
-   DataSet *dataSetNeuronTypes;
-   DataSet *dataSetNeuronThresh;
-   DataSet *dataSetStarterNeurons;
-   DataSet *dataSetTsim;
-   DataSet *dataSetSimulationEndTime;
+   DataSet *dataSetXloc_;
+   DataSet *dataSetYloc_;
+   DataSet *dataSetNeuronTypes_;
+   DataSet *dataSetNeuronThresh_;
+   DataSet *dataSetStarterNeurons_;
+   DataSet *dataSetTsim_;
+   DataSet *dataSetSimulationEndTime_;
 
-   DataSet *dataSetSpikesProbedNeurons;
-   DataSet *dataSetProbedNeurons;
+   DataSet *dataSetSpikesProbedNeurons_;
+   DataSet *dataSetProbedNeurons_;
 
    // Keep track of where we are in incrementally writing spikes
-    hsize_t* offsetSpikesProbedNeurons;
+   hsize_t* offsetSpikesProbedNeurons_;
 
-    // burstiness Histogram goes through the
-    int* burstinessHist;
+   // burstiness Histogram goes through the
+   int* burstinessHist_;
 
    // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
-   int *spikesHistory;
+   int *spikesHistory_;
 
    // track spikes count of probed neurons
-   vector<uint64_t> *spikesProbedNeurons;
+   vector<uint64_t> *spikesProbedNeurons_;
 };
 

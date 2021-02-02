@@ -10,7 +10,7 @@ CPUSpikingModel::CPUSpikingModel() : Model() {
 
 /// Destructor
 CPUSpikingModel::~CPUSpikingModel() {
-   //Let Model base class handle de-allocation
+   // Let Model base class handle de-allocation
 }
 
 /// Sets up the Simulation.
