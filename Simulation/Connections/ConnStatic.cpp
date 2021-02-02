@@ -17,10 +17,7 @@ ConnStatic::ConnStatic() {
    WCurrentEpoch_=NULL;
    destNeuronIndexCurrentEpoch_=NULL;
    sourceNeuronIndexCurrentEpoch_=NULL;
-   //excWeight_[0]=0;
-   //excWeight_[1]=2.5e-7;
-   //inhWeight_[0]=0;
-   //inhWeight_[0]=2.5e-7;;
+   radiiSize_ = 0;
 }
 
 ConnStatic::~ConnStatic() {
@@ -44,6 +41,7 @@ ConnStatic::~ConnStatic() {
  */
 void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses) {
    int numNeurons = Simulator::getInstance().getTotalNeurons();
+   radiiSize_ = numNeurons;
    vector<DistDestNeuron> distDestNeurons[numNeurons];
    int added = 0;
    BGSIZE maxTotalSynapses =  Simulator::getInstance().getMaxSynapsesPerNeuron() * Simulator::getInstance().getTotalNeurons();
@@ -89,11 +87,13 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
 
          // set synapse weight
          // TODO: we need another synaptic weight distibution mode (normal distribution)
+         
          if (synapses->synSign(type) > 0) {
             dynamic_cast<AllSynapses *>(synapses)->W_[iSyn] = rng.inRange(excWeight_[0], excWeight_[1]);
          } else {
             dynamic_cast<AllSynapses *>(synapses)->W_[iSyn] = rng.inRange(inhWeight_[0], inhWeight_[1]);
          }
+         
 
          
       }
@@ -106,13 +106,13 @@ string weight_str="";
       WCurrentEpoch_[i]=dynamic_cast<AllSynapses *>(synapses)->W_[i];
        sourceNeuronIndexCurrentEpoch_[i]=dynamic_cast<AllSynapses *>(synapses)->sourceNeuronIndex_[i];
        destNeuronIndexCurrentEpoch_[i]=dynamic_cast<AllSynapses *>(synapses)->destNeuronIndex_[i];
-      /*
+     
       if(WCurrentEpoch_[i]!=0)
         // LOG4CPLUS_DEBUG(synapseLogger_,i << WCurrentEpoch_[i]);
          weight_str+=to_string(WCurrentEpoch_[i])+" ";
-         */
+         
    }
-   //LOG4CPLUS_DEBUG(synapseLogger_, " "<<weight_str);
+  LOG4CPLUS_DEBUG(synapseLogger_, "Weighhts are "<<weight_str);
    
 
 

@@ -144,8 +144,8 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
       assert(static_cast<int>(synapseCounts_[i]) < Simulator::getInstance().getMaxSynapsesPerNeuron());
       totalSynapseCount += synapseCounts_[i];
    }
-   //ADD the logger parameters here
-   DEBUG (cout << "totalSynapseCount: " << totalSynapseCount << endl;)
+   
+   LOG4CPLUS_FATAL(fileLogger_,"totalSynapseCount: " << totalSynapseCount << endl);
 
    if (totalSynapseCount == 0) {
       return NULL;
@@ -156,18 +156,11 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
 
    BGSIZE syn_i = 0;
    int numInUse = 0;
-/*
-   if (synapseIndexMap != NULL)
-        {
-            delete synapseIndexMap;
-            synapseIndexMap = NULL;
-        }
-*/
 
-   // create synapse forward map & active synapse map
+// create synapse forward map & active synapse map
    //in previous code a reference to the pointer was being passed, *&synapseIndexMap
    SynapseIndexMap *synapseIndexMap = new SynapseIndexMap(neuronCount, totalSynapseCount);
-   LOG4CPLUS_DEBUG(fileLogger_, "\nSize of synapse Index Map "<< neuronCount<<","<<totalSynapseCount << endl);
+   LOG4CPLUS_TRACE(fileLogger_, "\nSize of synapse Index Map "<< neuronCount<<","<<totalSynapseCount << endl);
 
    for (int i = 0; i < neuronCount; i++) {
       BGSIZE synapse_count = 0;
@@ -182,10 +175,12 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
             synapse_count++;
          }
       }
-      //TO DO
-        if(synapse_count != this->synapseCounts_[i])
+
+      LOG4CPLUS_DEBUG(synapseLogger_,"Weights for synapse index map "<<W_[i]);
+   
+      if(synapse_count != this->synapseCounts_[i])
       {
-         LOG4CPLUS_DEBUG(fileLogger_, "\nSYNAPSE COUNT "<< synapse_count << endl);
+         LOG4CPLUS_DEBUG(fileLogger_, "\nSynapse_count does not match synapseCounts"<< synapse_count << endl);
          
       }
       assert(synapse_count == this->synapseCounts_[i]);
@@ -193,11 +188,10 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
       synapseIndexMap->incomingSynapseCount_[i] = synapse_count;
    }
 
-   //TO DO
    
      if( totalSynapseCount != numInUse)
       {
-            cout<< "checking "<<numInUse<<endl;
+         LOG4CPLUS_DEBUG(synapseLogger_,"NumInUse does not match the totalSynapseCount. NumInUse are "<<numInUse<<endl);
            
       }
    assert(totalSynapseCount == numInUse);

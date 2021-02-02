@@ -42,7 +42,10 @@
 #include "Simulator.h"
 #include <vector>
 #include <iostream>
-
+/**
+* cereal
+*/
+#include <cereal/types/vector.hpp>
 using namespace std;
 
 class ConnStatic : public Connections {
@@ -79,7 +82,21 @@ public:
   /**
     *  Stores the indices of the source neuron for each synapse
     */
-   //TO DO: Change source index and destination index to int
+
+   /**
+    *  Cereal serialization method
+    *  (Serializes radii)
+    */
+   template<class Archive>
+   void save(Archive &archive) const;
+
+   /**
+    *  Cereal deserialization method
+    *  (Deserializes radii)
+    */
+   template<class Archive>
+   void load(Archive &archive);
+
    int *sourceNeuronIndexCurrentEpoch_;
 
    /**
@@ -91,7 +108,8 @@ public:
     *   The weight (scaling factor, strength, maximal amplitude) of each synapse for the current epoch.
     */
    BGFLOAT *WCurrentEpoch_;
-  
+    //! radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
+   int radiiSize_;
 
    //! number of maximum connections per neurons
    //TO DO: chnage it to int 
@@ -118,3 +136,4 @@ public:
       }
    };
 };
+

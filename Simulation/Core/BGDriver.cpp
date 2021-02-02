@@ -37,7 +37,8 @@
 //! Cereal
 #include <cereal/archives/xml.hpp>
 #include <cereal/archives/binary.hpp>
-#include "ConnGrowth.h" // hacked in. that's why its here.
+#include "ConnGrowth.h" 
+#include "ConnStatic.h" // hacked in. that's why its here.
 
 #if defined(USE_GPU)
 #include "GPUSpikingModel.h"
@@ -254,7 +255,7 @@ bool deserializeSynapses() {
       return false;
    }
 
-   // We can deserialize from a variety of archive file formats. Below, commentp
+   // We can deserialize from a variety of archive file formats. Below, comment
    // out all but the line that corresponds to the desired format.
    cereal::XMLInputArchive archive(memory_in);
    //cereal::BinaryInputArchive archive(memory_in);
