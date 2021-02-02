@@ -30,7 +30,6 @@ class Model;
 #include "Timer.h"
 #endif
 
-// ToDo: siminfo had TiXmlVisitor. Wondering if still needed?
 class Simulator {
 public:
    static Simulator &getInstance(); /// Acts as constructor, returns the instance of singleton object

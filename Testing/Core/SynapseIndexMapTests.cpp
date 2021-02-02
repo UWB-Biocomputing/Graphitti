@@ -22,17 +22,29 @@ struct SynapseIndexMapTestObject : public testing::Test {
         synapseIndexMap = new SynapseIndexMap(NEURON_COUNT, SYNAPSE_COUNT);
     }
 
+    ~SynapseIndexMapTestObject() {
+       delete synapseIndexMap;
+    }
+
     SynapseIndexMap *synapseIndexMap;
 };
 
 TEST(SynapseIndexMap, DefaultConstructor) {
     SynapseIndexMap *synapseIndexMap = new SynapseIndexMap();
     EXPECT_TRUE(synapseIndexMap != nullptr);
+    delete synapseIndexMap;
 }
 
 TEST(SynapseIndexMap, OverloadedConstructor) {
-    SynapseIndexMap *synapseIndexMap = new SynapseIndexMap(0, 0);
+    SynapseIndexMap *synapseIndexMap = new SynapseIndexMap(NEURON_COUNT, SYNAPSE_COUNT);
     EXPECT_TRUE(synapseIndexMap != nullptr);
+    delete synapseIndexMap;
+}
+
+TEST(SynapseIndexMap, ZeroValueConstructor) {
+   SynapseIndexMap *synapseIndexMap = new SynapseIndexMap(0, 0);
+   EXPECT_TRUE(synapseIndexMap != nullptr);
+   delete synapseIndexMap;
 }
 
 // Tests are unavailable until member variables are switched from arrays to vectors.
