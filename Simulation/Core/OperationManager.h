@@ -29,7 +29,10 @@ public:
    /// Get Instance method that returns a reference to this object.
    static OperationManager &getInstance();
 
-   /// Called by lower level classes constructors on creation to register their operations with their operation type
+   /// Destructor
+   ~OperationManager();
+
+   /// Called by lower level classes constructors on creation to register their operations with their operation type.
    /// This method can be overloaded to handle different function signatures.
    /// Handles function signature: void ()
    void registerOperation(const Operations::op &operation, const function<void()> &function);
@@ -51,7 +54,7 @@ private:
       logger_ = (log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file")));
    }
 
-   /// LinkedLists of functions based on operation type.
+   /// List of functions based containing a function and it's operation type.
    list<unique_ptr<IFunctionNode>> functionList_;
 
    /// Logger for log4plus
