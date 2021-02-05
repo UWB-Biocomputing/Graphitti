@@ -62,7 +62,6 @@ AllIFNeurons::~AllIFNeurons() {
    Vrest_ = NULL;
    Vthresh_ = NULL;
    numStepsInRefractoryPeriod_ = NULL;
-   size_ = 0;
 }
 
 /*
