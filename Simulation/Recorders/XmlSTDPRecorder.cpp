@@ -62,21 +62,16 @@ void XmlSTDPRecorder::initValues() {
  * Get the current radii and rates values
  */
 void XmlSTDPRecorder::getValues() {
-   Connections *conns = Simulator::getInstance().getModel()->getConnections().get();
-   
+   Connections *conns = Simulator::getInstance().getModel()->getConnections().get(); 
    Simulator &simulator = Simulator::getInstance();
    shared_ptr<Connections> connections = simulator.getModel()->getConnections();
-   //IAllSynapses *isynapses = Simulator::getInstance().getModel()->getConnections()->getSynapses().get();
    IAllSynapses &isynapses =(*connections->getSynapses());
    AllSynapses &synapses = dynamic_cast<AllSynapses &>(isynapses);
-   //AllSynapses &synapses = dynamic_cast<AllSynapses &>(isynapses);
 
    for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
       (synapses.W_[i]) = weightsHistory_[Simulator::getInstance().getCurrentStep()][i];
-      (dynamic_cast<ConnStatic*>(conns)->WCurrentEpoch_)[i] = weightsHistory_[Simulator::getInstance().getCurrentStep()][i];
-      (dynamic_cast<ConnStatic *>(conns)->sourceNeuronIndexCurrentEpoch_)[i] = sourceNeuronIndexHistory_[Simulator::getInstance().getCurrentStep()][i];
-      (dynamic_cast<ConnStatic *>(conns)->destNeuronIndexCurrentEpoch_)[i] = destNeuronIndexHistory_[Simulator::getInstance().getCurrentStep()][i];
-
+      synapses.sourceNeuronIndex_[i] = sourceNeuronIndexHistory_[Simulator::getInstance().getCurrentStep()][i];
+      synapses.destNeuronIndex_[i] = destNeuronIndexHistory_[Simulator::getInstance().getCurrentStep()][i];
    }
 }
 
@@ -89,17 +84,14 @@ void XmlSTDPRecorder::compileHistories(IAllNeurons &neurons) {
    LOG4CPLUS_INFO(fileLogger_, "Compiling STDP HISTORY");
    XmlRecorder::compileHistories(neurons);
    shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
-   LOG4CPLUS_INFO(fileLogger_,((dynamic_cast<ConnStatic *>(conns.get())->WCurrentEpoch_)[0]));
-   
    Simulator &simulator = Simulator::getInstance();
-    shared_ptr<Connections> connections = simulator.getModel()->getConnections();
+   shared_ptr<Connections> connections = simulator.getModel()->getConnections();
    IAllSynapses &isynapses =(*connections->getSynapses());
    AllSynapses &synapses = dynamic_cast<AllSynapses &>(isynapses);
 
    for (int iNeuron = 0; iNeuron < Simulator::getInstance().getTotalNeurons()*Simulator::getInstance().getMaxSynapsesPerNeuron(); iNeuron++) {
       // record firing rate to history matrix
       weightsHistory_[Simulator::getInstance().getCurrentStep()][iNeuron]= synapses.W_[iNeuron];
-      //weightsHistory_[Simulator::getInstance().getCurrentStep()][iNeuron]= (dynamic_cast<ConnStatic *>(conns.get())->WCurrentEpoch_)[iNeuron];
       sourceNeuronIndexHistory_[Simulator::getInstance().getCurrentStep()][iNeuron]= synapses.sourceNeuronIndex_[iNeuron];
       destNeuronIndexHistory_[Simulator::getInstance().getCurrentStep()][iNeuron]= synapses.destNeuronIndex_[iNeuron];
    }
