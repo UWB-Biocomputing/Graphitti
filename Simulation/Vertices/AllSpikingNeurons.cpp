@@ -1,5 +1,6 @@
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
+#include <vector>
 
 // Default constructor
 AllSpikingNeurons::AllSpikingNeurons() : AllNeurons() {
@@ -73,6 +74,8 @@ void AllSpikingNeurons::clearSpikeCounts() {
  */
 void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SynapseIndexMap *synapseIndexMap) {
    int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
+   //const BGSIZE *outgoingMapBegin=(synapseIndexMap->outgoingSynapseBegin_);
+   //uint32_t *outgoingMapBegin1=(synapseIndexMap->outgoingSynapseBegin_).data();
 
    AllSpikingSynapses &spSynapses = dynamic_cast<AllSpikingSynapses &>(synapses);
    // For each neuron in the network
@@ -90,13 +93,16 @@ void AllSpikingNeurons::advanceNeurons(IAllSynapses &synapses, const SynapseInde
          // notify outgoing synapses
          BGSIZE synapseCounts;
 
+
          if (synapseIndexMap != NULL) {
             synapseCounts = synapseIndexMap->outgoingSynapseCount_[idx];
             if (synapseCounts != 0) {
                int beginIndex = synapseIndexMap->outgoingSynapseBegin_[idx];
                BGSIZE iSyn;
+               const BGSIZE *outgoingMapBegin=&(synapseIndexMap->outgoingSynapseIndexMap_[beginIndex]);
+           
                for (BGSIZE i = 0; i < synapseCounts; i++) {
-                  iSyn = synapseIndexMap->outgoingSynapseBegin_[beginIndex + i];
+                  iSyn=outgoingMapBegin[i];
                   spSynapses.preSpikeHit(iSyn);
                }
             }

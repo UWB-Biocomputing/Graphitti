@@ -24,6 +24,7 @@ AllSynapses::AllSynapses() :
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
 
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   synapseLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("synapse"));
 }
 
 AllSynapses::AllSynapses(const int numNeurons, const int maxSynapses) {
@@ -129,46 +130,6 @@ void AllSynapses::resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT) {
    psr_[iSyn] = 0.0;
 }
 
-/*
- *  Sets the data for Synapse to input's data.
- *
- *  @param  input  istream to read from.
- *  @param  iSyn   Index of the synapse to set.
- */
-void AllSynapses::readSynapse(istream &input, const BGSIZE iSyn) {
-   int synapse_type(0);
-
-   // input.ignore() so input skips over end-of-line characters.
-   input >> sourceNeuronIndex_[iSyn];
-   input.ignore();
-   input >> destNeuronIndex_[iSyn];
-   input.ignore();
-   input >> W_[iSyn];
-   input.ignore();
-   input >> psr_[iSyn];
-   input.ignore();
-   input >> synapse_type;
-   input.ignore();
-   input >> inUse_[iSyn];
-   input.ignore();
-
-   type_[iSyn] = synapseOrdinalToType(synapse_type);
-}
-
-/*
- *  Write the synapse data to the stream.
- *
- *  @param  output  stream to print out to.
- *  @param  iSyn    Index of the synapse to print out.
- */
-void AllSynapses::writeSynapse(ostream &output, const BGSIZE iSyn) const {
-   output << sourceNeuronIndex_[iSyn] << ends;
-   output << destNeuronIndex_[iSyn] << ends;
-   output << W_[iSyn] << ends;
-   output << psr_[iSyn] << ends;
-   output << type_[iSyn] << ends;
-   output << inUse_[iSyn] << ends;
-}
 
 /*
  *  Create a synapse index map.
@@ -183,21 +144,24 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
       assert(static_cast<int>(synapseCounts_[i]) < Simulator::getInstance().getMaxSynapsesPerNeuron());
       totalSynapseCount += synapseCounts_[i];
    }
-
-   DEBUG (cout << "totalSynapseCount: " << totalSynapseCount << endl;)
+   
+   LOG4CPLUS_FATAL(fileLogger_,"totalSynapseCount: " << totalSynapseCount << endl);
 
    if (totalSynapseCount == 0) {
       return NULL;
    }
 
    // allocate memories for forward map
-   vector<BGSIZE> *rgSynapseSynapseIndexMap = new vector<BGSIZE>[neuronCount];
+   vector<BGSIZE>* rgSynapseSynapseIndexMap = new vector<BGSIZE>[neuronCount];
 
    BGSIZE syn_i = 0;
    int numInUse = 0;
 
-   // create synapse forward map & active synapse map
+// create synapse forward map & active synapse map
+   //in previous code a reference to the pointer was being passed, *&synapseIndexMap
    SynapseIndexMap *synapseIndexMap = new SynapseIndexMap(neuronCount, totalSynapseCount);
+   LOG4CPLUS_TRACE(fileLogger_, "\nSize of synapse Index Map "<< neuronCount<<","<<totalSynapseCount << endl);
+
    for (int i = 0; i < neuronCount; i++) {
       BGSIZE synapse_count = 0;
       synapseIndexMap->incomingSynapseBegin_[i] = numInUse;
@@ -211,12 +175,27 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
             synapse_count++;
          }
       }
+
+      LOG4CPLUS_DEBUG(synapseLogger_,"Weights for synapse index map "<<W_[i]);
+   
+      if(synapse_count != this->synapseCounts_[i])
+      {
+         LOG4CPLUS_DEBUG(fileLogger_, "\nSynapse_count does not match synapseCounts"<< synapse_count << endl);
+         
+      }
       assert(synapse_count == this->synapseCounts_[i]);
+    
       synapseIndexMap->incomingSynapseCount_[i] = synapse_count;
    }
 
+   
+     if( totalSynapseCount != numInUse)
+      {
+         LOG4CPLUS_DEBUG(synapseLogger_,"NumInUse does not match the totalSynapseCount. NumInUse are "<<numInUse<<endl);
+           
+      }
    assert(totalSynapseCount == numInUse);
-   this->totalSynapseCount_ = totalSynapseCount;
+   totalSynapseCount_ = totalSynapseCount;
 
    syn_i = 0;
    for (int i = 0; i < neuronCount; i++) {
@@ -266,6 +245,7 @@ synapseType AllSynapses::synapseOrdinalToType(const int typeOrdinal) {
 void AllSynapses::advanceSynapses(IAllNeurons *neurons, SynapseIndexMap *synapseIndexMap) {
    for (BGSIZE i = 0; i < totalSynapseCount_; i++) {
       BGSIZE iSyn = synapseIndexMap->incomingSynapseIndexMap_[i];
+      //LOG4CPLUS_FATAL(fileLogger_, "iSyn : " << iSyn );
       advanceSynapse(iSyn, neurons);
    }
 }
@@ -339,38 +319,3 @@ int AllSynapses::synSign(const synapseType type) {
 
    return 0;
 }
-
-/*
- *  Prints SynapsesProps data to console.
- */
-void AllSynapses::printSynapsesProps() const {
-   cout << "This is SynapsesProps data:" << endl;
-   for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
-      if (W_[i] != 0.0) {
-         cout << "W[" << i << "] = " << W_[i];
-         cout << " sourNeuron: " << sourceNeuronIndex_[i];
-         cout << " desNeuron: " << destNeuronIndex_[i];
-         cout << " type: " << type_[i];
-         cout << " psr: " << psr_[i];
-         cout << " in_use:" << inUse_[i];
-         if (summationPoint_[i] != nullptr) {
-            cout << " summationPoint: is created!" << endl;
-         } else {
-            cout << " summationPoint: is EMPTY!!!!!" << endl;
-         }
-      }
-   }
-
-   for (int i = 0; i < countNeurons_; i++) {
-      cout << "synapse_counts:" << "neuron[" << i << "]" << synapseCounts_[i] << endl;
-   }
-
-   cout << "totalSynapseCount:" << totalSynapseCount_ << endl;
-   cout << "maxSynapsesPerNeuron:" << maxSynapsesPerNeuron_ << endl;
-   cout << "count_neurons:" << countNeurons_ << endl;
-}
-
-
-
-
-

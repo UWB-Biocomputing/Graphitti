@@ -35,6 +35,8 @@
 
 #include "IRecorder.h"
 #include "Model.h"
+//#include </opt/hdf5/latest/include/hdf5.h>
+//#include </opt/hdf5/latest/include/H5Cpp.h>
 #include "H5Cpp.h"
 
 #ifndef H5_NO_NAMESPACE
@@ -97,6 +99,13 @@ public:
     **/
    virtual void saveSimData(const IAllNeurons &neurons);
 
+
+   /**
+    *  Prints out all parameters to logging file.
+    *  Registered to OperationManager as Operation::printParameters
+    */
+   virtual void printParameters();
+
 protected:
    virtual void initDataSet();
 
@@ -119,6 +128,8 @@ protected:
 
    DataSet *dataSetSpikesProbedNeurons;
    DataSet *dataSetProbedNeurons;
+//TO DO: added a file name
+   //string& resultFileName_;
 
    // Keep track of where we are in incrementally writing spikes
     hsize_t* offsetSpikesProbedNeurons;

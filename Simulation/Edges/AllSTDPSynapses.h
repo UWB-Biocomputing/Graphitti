@@ -119,6 +119,10 @@ public:
    virtual bool allowBackPropagation();
 
    /**
+    *  Load member variables from configuration file. Registered to OperationManager as Operation::op::loadParameters
+   */
+  virtual void loadParameters();
+   /**
     *  Prints out all parameters to logging file.
     *  Registered to OperationManager as Operation::printParameters
     */
@@ -137,11 +141,6 @@ public:
    virtual void createSynapse(const BGSIZE iSyn, int srcNeuron, int destNeuron, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               synapseType type);
 
-   /**
-    *  Prints SynapsesProps data.
-    */
-   virtual void printSynapsesProps() const;
-
 protected:
    /**
     *  Setup the internal structure of the class (allocate memories and initialize them).
@@ -151,22 +150,7 @@ protected:
     */
    virtual void setupSynapses(const int numNeurons, const int maxSynapses);
 
-   /**
-    *  Sets the data for Synapse to input's data.
-    *
-    *  @param  input  istream to read from.
-    *  @param  iSyn   Index of the synapse to set.
-    */
-   virtual void readSynapse(istream &input, const BGSIZE iSyn);
-
-   /**
-    *  Write the synapse data to the stream.
-    *
-    *  @param  output  stream to print out to.
-    *  @param  iSyn    Index of the synapse to print out.
-    */
-   virtual void writeSynapse(ostream &output, const BGSIZE iSyn) const;
-
+  
    /**
     *  Initializes the queues for the Synapse.
     *
@@ -330,7 +314,7 @@ private:
     *  @param  epost       Params for the rule given in Froemke and Dan (2002).
     *  @param  epre        Params for the rule given in Froemke and Dan (2002).
     */
-   void stdpLearning(const BGSIZE iSyn, double delta, double epost, double epre);
+   void stdpLearning(const BGSIZE iSyn, double delta, double epost, double epre, int srcN, int destN);
 
 #endif
 public:
@@ -412,10 +396,23 @@ public:
     */
    BGFLOAT *muneg_;
 
-   /**
-    *  True if use the rule given in Froemke and Dan (2002).
-    */
-   bool *useFroemkeDanSTDP_;
+
+
+   BGFLOAT STDPgap;
+   BGFLOAT tauspost_I_;
+   BGFLOAT tauspre_I_;
+   BGFLOAT tauspost_E_;
+   BGFLOAT tauspre_E_;
+   BGFLOAT taupos_I_;
+   BGFLOAT tauneg_I_;
+   BGFLOAT taupos_E_;
+   BGFLOAT tauneg_E_;
+   BGFLOAT Wex_I_;
+   BGFLOAT Wex_E_;
+   BGFLOAT Aneg_I_;
+   BGFLOAT Aneg_E_;
+   BGFLOAT Apos_I_;
+   BGFLOAT Apos_E_;
 };
 
 #if defined(USE_GPU)

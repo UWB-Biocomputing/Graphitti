@@ -88,10 +88,7 @@ public:
     */
    virtual int synSign(const synapseType type) = 0;
 
-   /**
-    *  Prints SynapsesProps data to console.
-    */
-   virtual void printSynapsesProps() const = 0;
+ 
 
 #if defined(USE_GPU)
    public:

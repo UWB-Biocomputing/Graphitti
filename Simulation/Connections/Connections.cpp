@@ -61,6 +61,7 @@ Connections::Connections() {
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   synapseLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("synapse"));
 }
 
 Connections::~Connections() {
@@ -130,6 +131,7 @@ void Connections::createSynapsesFromWeights(const int numNeurons, Layout *layout
          // if the synapse weight is not zero (which means there is a connection), create the synapse
          if (synapses.W_[iSyn] != 0.0) {
             BGFLOAT theW = synapses.W_[iSyn];
+            LOG4CPLUS_FATAL(fileLogger_,theW);
             BGFLOAT *sumPoint = &(neurons.summationMap_[iNeuron]);
             int srcNeuron = synapses.sourceNeuronIndex_[iSyn];
             int destNeuron = synapses.destNeuronIndex_[iSyn];
@@ -138,6 +140,7 @@ void Connections::createSynapsesFromWeights(const int numNeurons, Layout *layout
             synapses.createSynapse(iSyn, srcNeuron, destNeuron, sumPoint, Simulator::getInstance().getDeltaT(),
                                    type);
             synapses.W_[iSyn] = theW;
+            LOG4CPLUS_FATAL(fileLogger_,"final values of the weights "<<synapses.W_[iSyn]);
          }
       }
    }

@@ -7,6 +7,31 @@ set(CMAKE_CXX_STANDARD 11)
 # Enable the use of GPU. Only available if CUDA library is installed the GPU is CUDA capable.
 set(BRAINGRID_CUDA NO)
 
+#To enable printing everything 
+#mset( CMAKE_VERBOSE_MAKEFILE on )
+
+#FIND_PACKAGE(HDF5 COMPONENTS CXX NO_MODULE REQUIRED static)
+
+# find HDF5
+
+find_package(HDF5 COMPONENTS)
+#C HL NO_MODULE REQUIRED shared)
+#include_directories(${HDF5_INCLUDE_DIRS})
+#find_package(HDF5 COMPONENTS CXX REQUIRED)
+include_directories(${HDF5_INCLUDE_DIRS})
+#include_directories(/opt/hdf5/latest/include)
+set(PROJECT_LIBS ${HDF5_LIBS} ${HDF5_LIBRARIES})
+
+# find HDF5pp
+#pkg_check_modules(HDF5PP REQUIRED HDF5pp)
+include_directories(${HDF5PP_INCLUDE_DIRS})
+
+message(STATUS "INCLUDE LOCATION" ${HDF5_INCLUDE_DIRS})
+message(STATUS "version" ${HDF5_VERSION})
+message(STATUS "DEFINITIONS" ${HDF5_DEFINITIONS})
+message(STATUS "LIBRARIES" ${HDF5_LIBRARIES})
+message(STATUS "HL_LIBRARIES" ${HDF5_HL_LIBRARIES})
+
 # Enables the CUDA langauge and locates the NVCC compiler. 
 # Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
 #

@@ -14,7 +14,6 @@
 */
 
 #include <functional>
-
 #include "XmlRecorder.h"
 #include "AllIFNeurons.h"      // TODO: remove LIF model specific code
 #include "ConnGrowth.h"

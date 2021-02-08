@@ -4,7 +4,7 @@
 #include "AllNeurons.h"
 #include "AllSynapses.h"
 #include "OperationManager.h"
-
+#include "ParameterManager.h"
 #include "XmlRecorder.h"
 
 #ifdef USE_HDF5
@@ -14,13 +14,19 @@
 #include <algorithm>
 
 ConnStatic::ConnStatic() {
-   threshConnsRadius_ = 0;
-   connsPerNeuron_ = 0;
-   rewiringProbability_ = 0;
+   WCurrentEpoch_=NULL;
+   destNeuronIndexCurrentEpoch_=NULL;
+   sourceNeuronIndexCurrentEpoch_=NULL;
+   radiiSize_ = 0;
 }
 
 ConnStatic::~ConnStatic() {
-   
+   if (WCurrentEpoch_ != NULL) delete WCurrentEpoch_;
+   WCurrentEpoch_=NULL;
+    if (destNeuronIndexCurrentEpoch_ != NULL) delete destNeuronIndexCurrentEpoch_;
+   destNeuronIndexCurrentEpoch_=NULL;
+    if (sourceNeuronIndexCurrentEpoch_ != NULL) delete sourceNeuronIndexCurrentEpoch_;
+   sourceNeuronIndexCurrentEpoch_=NULL;
 }
 
 /*
@@ -35,9 +41,15 @@ ConnStatic::~ConnStatic() {
  */
 void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSynapses *synapses) {
    int numNeurons = Simulator::getInstance().getTotalNeurons();
+   radiiSize_ = numNeurons;
    vector<DistDestNeuron> distDestNeurons[numNeurons];
-
    int added = 0;
+   BGSIZE maxTotalSynapses =  Simulator::getInstance().getMaxSynapsesPerNeuron() * Simulator::getInstance().getTotalNeurons();
+   WCurrentEpoch_ = new BGFLOAT[maxTotalSynapses];
+   sourceNeuronIndexCurrentEpoch_ = new int[maxTotalSynapses];
+   destNeuronIndexCurrentEpoch_= new int[maxTotalSynapses];
+   
+   
 
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
 
@@ -65,22 +77,44 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
          synapseType type = layout->synType(srcNeuron, destNeuron);
          BGFLOAT *sumPoint = &(dynamic_cast<AllNeurons *>(neurons)->summationMap_[destNeuron]);
 
-         LOG4CPLUS_DEBUG(fileLogger_, "Source: " << srcNeuron << " Dest: " << destNeuron << " Dist: "
-                                                 << distDestNeurons[srcNeuron][i].dist);
+        // LOG4CPLUS_DEBUG(fileLogger_, "Source: " << srcNeuron << " Dest: " << destNeuron << " Dist: "
+         //                                        << distDestNeurons[srcNeuron][i].dist);
 
          BGSIZE iSyn;
+         //ADD ISYN
          synapses->addSynapse(iSyn, type, srcNeuron, destNeuron, sumPoint, Simulator::getInstance().getDeltaT());
          added++;
 
          // set synapse weight
          // TODO: we need another synaptic weight distibution mode (normal distribution)
+         
          if (synapses->synSign(type) > 0) {
             dynamic_cast<AllSynapses *>(synapses)->W_[iSyn] = rng.inRange(excWeight_[0], excWeight_[1]);
          } else {
             dynamic_cast<AllSynapses *>(synapses)->W_[iSyn] = rng.inRange(inhWeight_[0], inhWeight_[1]);
          }
+         
+
+         
       }
    }
+
+
+string weight_str="";
+   for(int i=0; i<maxTotalSynapses; i++)
+   {
+      WCurrentEpoch_[i]=dynamic_cast<AllSynapses *>(synapses)->W_[i];
+       sourceNeuronIndexCurrentEpoch_[i]=dynamic_cast<AllSynapses *>(synapses)->sourceNeuronIndex_[i];
+       destNeuronIndexCurrentEpoch_[i]=dynamic_cast<AllSynapses *>(synapses)->destNeuronIndex_[i];
+     
+      if(WCurrentEpoch_[i]!=0)
+        // LOG4CPLUS_DEBUG(synapseLogger_,i << WCurrentEpoch_[i]);
+         weight_str+=to_string(WCurrentEpoch_[i])+" ";
+         
+   }
+  LOG4CPLUS_DEBUG(synapseLogger_, "Weighhts are "<<weight_str);
+   
+
 
    int nRewiring = added * rewiringProbability_;
 
@@ -94,7 +128,13 @@ void ConnStatic::setupConnections(Layout *layout, IAllNeurons *neurons, IAllSyna
  * Registered to OperationManager as Operations::op::loadParameters
  */
 void ConnStatic::loadParameters() {
-   // ConnStatic doesn't have any parameters to load from the configuration file.
+   ParameterManager::getInstance().getBGFloatByXpath("//threshConnsRadius/text()", threshConnsRadius_);
+   ParameterManager::getInstance().getBGFloatByXpath("//connsPerNeuron/text()", connsPerNeuron_);
+   ParameterManager::getInstance().getBGFloatByXpath("//rewiringProbability/text()", rewiringProbability_);
+   //ParameterManager::getInstance().getBGFloatByXpath("//excWeight/min/text()", excWeight_[0]);
+   //ParameterManager::getInstance().getBGFloatByXpath("//excWeight/max/text()", excWeight_[1]);
+   //ParameterManager::getInstance().getBGFloatByXpath("//inhWeight/min/text()", inhWeight_[0]);
+   //ParameterManager::getInstance().getBGFloatByXpath("//inhWeight/max/text()", inhWeight_[1]);
 }
 
 
@@ -107,6 +147,11 @@ void ConnStatic::printParameters() const {
     << "\tConnections Type: ConnStatic" << endl
     << "\tConnection radius threshold: " << threshConnsRadius_ << endl
     << "\tConnections per neuron: " << connsPerNeuron_ << endl
-    << "\tRewiring probability: " << rewiringProbability_ << endl << endl);
+    << "\tRewiring probability: " << rewiringProbability_ << endl 
+    << "\tExhitatory min weight: " << excWeight_[0] << endl 
+    << "\tExhitatory max weight: " << excWeight_[1] << endl 
+    << "\tInhibitory min weight: " << inhWeight_[0] << endl 
+    << "\tInhibitory max weight: " << inhWeight_[1] << endl 
+    << endl);
 }
 

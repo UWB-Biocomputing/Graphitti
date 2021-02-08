@@ -42,7 +42,10 @@
 #include "Simulator.h"
 #include <vector>
 #include <iostream>
-
+/**
+* cereal
+*/
+#include <cereal/types/vector.hpp>
 using namespace std;
 
 class ConnStatic : public Connections {
@@ -76,10 +79,41 @@ public:
     *  Registered to OperationManager as Operation::printParameters
     */
    virtual void printParameters() const;
+  /**
+    *  Stores the indices of the source neuron for each synapse
+    */
 
-private:
+   /**
+    *  Cereal serialization method
+    *  (Serializes radii)
+    */
+   template<class Archive>
+   void save(Archive &archive) const;
+
+   /**
+    *  Cereal deserialization method
+    *  (Deserializes radii)
+    */
+   template<class Archive>
+   void load(Archive &archive);
+
+   int *sourceNeuronIndexCurrentEpoch_;
+
+   /**
+    *  Stores the indices of the destination neuron for each synapse
+    */
+   int *destNeuronIndexCurrentEpoch_;
+
+   /**
+    *   The weight (scaling factor, strength, maximal amplitude) of each synapse for the current epoch.
+    */
+   BGFLOAT *WCurrentEpoch_;
+    //! radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
+   int radiiSize_;
+
    //! number of maximum connections per neurons
-   int connsPerNeuron_;
+   //TO DO: chnage it to int 
+   BGFLOAT connsPerNeuron_;
 
    //! Connection radius threshold
    BGFLOAT threshConnsRadius_;
@@ -94,7 +128,7 @@ private:
    BGFLOAT inhWeight_[2];
 
    struct DistDestNeuron {
-      BGFLOAT dist;     // destance to the destination neuron
+      BGFLOAT dist;     // distance to the destination neuron
       int destNeuron;  // index of the destination neuron
 
       bool operator<(const DistDestNeuron &other) const {
@@ -102,3 +136,4 @@ private:
       }
    };
 };
+

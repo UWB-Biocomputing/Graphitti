@@ -82,6 +82,12 @@ public:
     */
    virtual void compileHistories(IAllNeurons &neurons);
 
+      /**
+    *  Prints out all parameters to logging file.
+    *  Registered to OperationManager as Operation::printParameters
+    */
+   virtual void printParameters();
+
 protected:
    virtual void initDataSet();
 
@@ -99,5 +105,12 @@ protected:
 
    // track firing rate
    BGFLOAT *ratesHistory;
+
+   private:
+   // track firing rate
+   CompleteMatrix ratesHistory_;
+
+   // track radii
+  CompleteMatrix radiiHistory_;
 };
 

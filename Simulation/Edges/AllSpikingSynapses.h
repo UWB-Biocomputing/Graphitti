@@ -69,7 +69,8 @@ public:
     *  @param  deltaT   Inner simulation step duration
     */
    virtual void resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT);
-
+   /// Load member variables from configuration file. Registered to OperationManager as Operation::op::loadParameters
+   virtual void loadParameters();
    /**
     *  Prints out all parameters to logging file.
     *  Registered to OperationManager as Operation::printParameters
@@ -97,10 +98,7 @@ public:
     */
    virtual bool allowBackPropagation();
 
-   /**
-    *  Prints SynapsesProps data to console.
-    */
-   virtual void printSynapsesProps() const;
+
 
 protected:
    /**
@@ -126,22 +124,6 @@ protected:
     *  @return true is success.
     */
    bool updateDecay(const BGSIZE iSyn, const BGFLOAT deltaT);
-
-   /**
-    *  Sets the data for Synapse to input's data.
-    *
-    *  @param  input  istream to read from.
-    *  @param  iSyn   Index of the synapse to set.
-    */
-   virtual void readSynapse(istream &input, const BGSIZE iSyn);
-
-   /**
-    *  Write the synapse data to the stream.
-    *
-    *  @param  output  stream to print out to.
-    *  @param  iSyn    Index of the synapse to print out.
-    */
-   virtual void writeSynapse(ostream &output, const BGSIZE iSyn) const;
 
 #if defined(USE_GPU)
    public:
@@ -334,6 +316,15 @@ public:
     *  The synaptic time constant \f$\tau\f$ [units=sec; range=(0,100)].
     */
    BGFLOAT *tau_;
+
+   BGFLOAT tau_II_;
+   BGFLOAT tau_IE_;
+   BGFLOAT tau_EI_;
+   BGFLOAT tau_EE_;
+   BGFLOAT delay_II_;
+   BGFLOAT delay_IE_;
+   BGFLOAT delay_EI_;
+   BGFLOAT delay_EE_;
 
 #define BYTES_OF_DELAYQUEUE         ( sizeof(uint32_t) / sizeof(uint8_t) )
 #define LENGTH_OF_DELAYQUEUE        ( BYTES_OF_DELAYQUEUE * 8 )

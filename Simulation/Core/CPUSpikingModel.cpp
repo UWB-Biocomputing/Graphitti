@@ -31,18 +31,22 @@ void CPUSpikingModel::advance() {
    // dereferencing the ptr, lose late binding -- look into changing!
    layout_->getNeurons()->advanceNeurons(*(connections_->getSynapses().get()), connections_->getSynapseIndexMap().get());
    connections_->getSynapses()->advanceSynapses(layout_->getNeurons().get(), connections_->getSynapseIndexMap().get());
+   
 }
 
 /// Update the connection of all the Neurons and Synapses of the simulation.
 void CPUSpikingModel::updateConnections() {
    // Update Connections data
+   LOG4CPLUS_WARN(fileLogger_, "test" << endl);
    if (connections_->updateConnections(*layout_->getNeurons(), layout_.get())) {
+      LOG4CPLUS_WARN(fileLogger_, "test" << endl);
       connections_->updateSynapsesWeights(
             Simulator::getInstance().getTotalNeurons(),
             *layout_->getNeurons(),
             *connections_->getSynapses(),
             layout_.get());
       // create synapse inverse map
+      LOG4CPLUS_WARN(fileLogger_, "Creating synapse index map" << endl);
       connections_->createSynapseIndexMap();
    }
 }

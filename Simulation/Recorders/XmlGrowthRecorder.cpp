@@ -11,7 +11,7 @@
 #include "AllIFNeurons.h"      // TODO: remove LIF model specific code
 #include "ConnGrowth.h"
 
-//! THe constructor and destructor
+//! THe constructor and destructord
 XmlGrowthRecorder::XmlGrowthRecorder() :
       XmlRecorder(),
       ratesHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),

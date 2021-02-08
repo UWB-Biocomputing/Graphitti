@@ -119,10 +119,6 @@ public:
    virtual void createSynapse(const BGSIZE iSyn, int srcNeuron, int destNeuron, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               synapseType type);
 
-   /**
-    *  Prints SynapsesProps data.
-    */
-   virtual void printSynapsesProps() const;
 
 protected:
    /**
@@ -132,22 +128,6 @@ protected:
     *  @param  maxSynapses  Maximum number of synapses per neuron.
     */
    virtual void setupSynapses(const int numNeurons, const int maxSynapses);
-
-   /**
-    *  Sets the data for Synapse to input's data.
-    *
-    *  @param  input  istream to read from.
-    *  @param  iSyn   Index of the synapse to set.
-    */
-   virtual void readSynapse(istream &input, const BGSIZE iSyn);
-
-   /**
-    *  Write the synapse data to the stream.
-    *
-    *  @param  output  stream to print out to.
-    *  @param  iSyn    Index of the synapse to print out.
-    */
-   virtual void writeSynapse(ostream &output, const BGSIZE iSyn) const;
 
 #if defined(USE_GPU)
    public:
