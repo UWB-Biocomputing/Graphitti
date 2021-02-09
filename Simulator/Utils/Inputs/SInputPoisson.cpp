@@ -1,7 +1,7 @@
 /**
  * @file SInputPoisson.cpp
  *
- * @ingroup Simulation/Utils/Inputs
+ * @ingroup Simulator/Utils/Inputs
  * 
  * @brief A class that performs stimulus input (implementation Poisson).
  */
@@ -131,10 +131,10 @@ void SInputPoisson::init()
             type = EE;
 
         BGFLOAT* sumPoint = &(Simulator::getInstance().getPSummationMap()[neuronIndex]);
-        BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * neuronIndex;
+        BGSIZE iEdg = Simulator::getInstance().getMaxSynapsesPerNeuron() * neuronIndex;
 
-        synapses_->createSynapse(iSyn, 0, neuronIndex, sumPoint, Simulator::getInstance().getDeltaT(), type);
-        dynamic_cast<AllSynapses*>(synapses_)->W_[iSyn] = weight * AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
+        synapses_->createEdge(iEdg, 0, neuronIndex, sumPoint, Simulator::getInstance().getDeltaT(), type);
+        dynamic_cast<AllEdges*>(synapses_)->W_[iEdg] = weight * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
     }
 }
 

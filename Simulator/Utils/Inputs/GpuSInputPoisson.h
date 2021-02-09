@@ -1,7 +1,7 @@
 /**
  * @file GpuSInputPoisson.h
  *
- * @ingroup Simulation/Utils/Inputs
+ * @ingroup Simulator/Utils/Inputs
  * 
  * @brief A class that performs stimulus input (implementation Poisson on GPU).
  *
@@ -47,7 +47,7 @@ private:
     AllDSSynapsesDeviceProperties* allSynapsesDevice;
  
     //! Pointer to synapse index map in device memory.
-    SynapseIndexMap* synapseIndexMapDevice;
+    EdgeIndexMap* synapseIndexMapDevice;
 
     //! Pointer to device interval counter.
     int* deviceInteralCounter_;

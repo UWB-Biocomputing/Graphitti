@@ -1,7 +1,7 @@
 /**
  * @file Timer.h
  *
- * @ingroup Simulation/Utils
+ * @ingroup Simulator/Utils
  *
  * @brief Timer class, from CSS432
  */

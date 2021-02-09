@@ -1,7 +1,7 @@
 /**
  * @file LayoutFactory.h
  *
- * @ingroup Simulation/Layouts
+ * @ingroup Simulator/Layouts
  * 
  * @brief A factory class for creating Vertices objects.
  */

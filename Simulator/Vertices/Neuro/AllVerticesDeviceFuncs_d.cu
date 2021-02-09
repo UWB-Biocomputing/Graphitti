@@ -1,7 +1,7 @@
 /**
  * @file AllVerticesDeviceFuncs_d.cu
  * 
- * @ingroup Simulation/Vertices
+ * @ingroup Simulator/Vertices
  *
  * @brief
  */
@@ -16,14 +16,14 @@
 
 ///  Prepares Synapse for a spike hit.
 ///
-///  @param[in] iSyn                  Index of the Synapse to update.
+///  @param[in] iEdg                  Index of the Synapse to update.
 ///  @param[in] allSynapsesDevice     Pointer to AllSpikingSynapsesDeviceProperties structures 
 ///                                   on device memory.
-__device__ void preSpikingSynapsesSpikeHitDevice( const BGSIZE iSyn, AllSpikingSynapsesDeviceProperties* allSynapsesDevice ) {
-        uint32_t &delay_queue = allSynapsesDevice->delayQueue_[iSyn]; 
-        int delayIdx = allSynapsesDevice->delayIndex_[iSyn];
-        int ldelayQueue = allSynapsesDevice->delayQueueLength_[iSyn];
-        int total_delay = allSynapsesDevice->totalDelay_[iSyn];
+__device__ void preSpikingSynapsesSpikeHitDevice( const BGSIZE iEdg, AllSpikingSynapsesDeviceProperties* allSynapsesDevice ) {
+        uint32_t &delay_queue = allSynapsesDevice->delayQueue_[iEdg]; 
+        int delayIdx = allSynapsesDevice->delayIndex_[iEdg];
+        int ldelayQueue = allSynapsesDevice->delayQueueLength_[iEdg];
+        int total_delay = allSynapsesDevice->totalDelay_[iEdg];
 
         // Add to spike queue
 
@@ -40,22 +40,22 @@ __device__ void preSpikingSynapsesSpikeHitDevice( const BGSIZE iSyn, AllSpikingS
 
 ///  Prepares Synapse for a spike hit (for back propagation).
 ///
-///  @param[in] iSyn                  Index of the Synapse to update.
+///  @param[in] iEdg                  Index of the Synapse to update.
 ///  @param[in] allSynapsesDevice     Pointer to AllSpikingSynapsesDeviceProperties structures 
 ///                                   on device memory.
-__device__ void postSpikingSynapsesSpikeHitDevice( const BGSIZE iSyn, AllSpikingSynapsesDeviceProperties* allSynapsesDevice ) {
+__device__ void postSpikingSynapsesSpikeHitDevice( const BGSIZE iEdg, AllSpikingSynapsesDeviceProperties* allSynapsesDevice ) {
 }
 
 ///  Prepares Synapse for a spike hit (for back propagation).
 ///
-///  @param[in] iSyn                  Index of the Synapse to update.
+///  @param[in] iEdg                  Index of the Synapse to update.
 ///  @param[in] allSynapsesDevice     Pointer to AllSTDPSynapsesDeviceProperties structures 
 ///                                   on device memory.
-__device__ void postSTDPSynapseSpikeHitDevice( const BGSIZE iSyn, AllSTDPSynapsesDeviceProperties* allSynapsesDevice ) {
-        uint32_t &delayQueue = allSynapsesDevice->delayQueuePost_[iSyn];
-        int delayIndex = allSynapsesDevice->delayIndexPost_[iSyn];
-        int delayQueueLength = allSynapsesDevice->delayQueuePostLength_[iSyn];
-        int totalDelay = allSynapsesDevice->totalDelayPost_[iSyn];
+__device__ void postSTDPSynapseSpikeHitDevice( const BGSIZE iEdg, AllSTDPSynapsesDeviceProperties* allSynapsesDevice ) {
+        uint32_t &delayQueue = allSynapsesDevice->delayQueuePost_[iEdg];
+        int delayIndex = allSynapsesDevice->delayIndexPost_[iEdg];
+        int delayQueueLength = allSynapsesDevice->delayQueuePostLength_[iEdg];
+        int totalDelay = allSynapsesDevice->totalDelayPost_[iEdg];
 
         // Add to spike queue
 
@@ -86,9 +86,9 @@ __device__ void postSTDPSynapseSpikeHitDevice( const BGSIZE iSyn, AllSTDPSynapse
 ///  @param[in] randNoise             Pointer to de/vice random noise array.
 ///  @param[in] allNeuronsDevice      Pointer to Neuron structures in device memory.
 ///  @param[in] allSynapsesDevice     Pointer to Synapse structures in device memory.
-///  @param[in] synapseIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
+///  @param[in] edgeIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
-__global__ void advanceLIFNeuronsDevice( int totalVertices, int maxSynapses, int maxSpikes, const BGFLOAT deltaT, uint64_t simulationStep, float* randNoise, AllIFNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, SynapseIndexMap* synapseIndexMapDevice, bool fAllowBackPropagation ) {
+__global__ void advanceLIFNeuronsDevice( int totalVertices, int maxSynapses, int maxSpikes, const BGFLOAT deltaT, uint64_t simulationStep, float* randNoise, AllIFNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, EdgeIndexMap* synapseIndexMapDevice, bool fAllowBackPropagation ) {
         // determine which neuron this thread is processing
         int idx = blockIdx.x * blockDim.x + threadIdx.x;
         if ( idx >= totalVertices )
@@ -191,9 +191,9 @@ __global__ void advanceLIFNeuronsDevice( int totalVertices, int maxSynapses, int
 ///  @param[in] randNoise             Pointer to device random noise array.
 ///  @param[in] allNeuronsDevice      Pointer to Neuron structures in device memory.
 ///  @param[in] allSynapsesDevice     Pointer to Synapse structures in device memory.
-///  @param[in] synapseIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
+///  @param[in] edgeIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
-__global__ void advanceIZHNeuronsDevice( int totalVertices, int maxSynapses, int maxSpikes, const BGFLOAT deltaT, uint64_t simulationStep, float* randNoise, AllIZHNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, SynapseIndexMap* synapseIndexMapDevice, bool fAllowBackPropagation ) {
+__global__ void advanceIZHNeuronsDevice( int totalVertices, int maxSynapses, int maxSpikes, const BGFLOAT deltaT, uint64_t simulationStep, float* randNoise, AllIZHNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, EdgeIndexMap* synapseIndexMapDevice, bool fAllowBackPropagation ) {
         // determine which neuron this thread is processing
         int idx = blockIdx.x * blockDim.x + threadIdx.x;
         if ( idx >= totalVertices )

@@ -1,9 +1,9 @@
 /**
- *  @file SynapseIndexMap.h
+ *  @file EdgeIndexMap.h
  *
  *  @brief A structure maintains outgoing and active synapses list (forward map).
  *
- *  @ingroup Simulation/Core
+ *  @ingroup Simulator/Core
  *
  *  The structure maintains a list of outgoing synapses (forward map) and active synapses list.
  *
@@ -27,7 +27,7 @@
 
 using namespace std;
 
-struct SynapseIndexMap {
+struct EdgeIndexMap {
    /// Pointer to the outgoing synapse index map.
    BGSIZE* outgoingSynapseIndexMap_;
 
@@ -50,7 +50,7 @@ struct SynapseIndexMap {
    /// Indexed by a destination neuron index.
    BGSIZE *incomingSynapseCount_;
 
-   SynapseIndexMap() : numOfNeurons_(0), numOfSynapses_(0) {
+   EdgeIndexMap() : numOfNeurons_(0), numOfSynapses_(0) {
       outgoingSynapseIndexMap_ = NULL;
       outgoingSynapseBegin_ = NULL;
       outgoingSynapseCount_ = NULL;
@@ -60,7 +60,7 @@ struct SynapseIndexMap {
       incomingSynapseCount_ = NULL;
    };
 
-   SynapseIndexMap(int neuronCount, int synapseCount) : numOfNeurons_(neuronCount), numOfSynapses_(synapseCount) {
+   EdgeIndexMap(int neuronCount, int synapseCount) : numOfNeurons_(neuronCount), numOfSynapses_(synapseCount) {
       outgoingSynapseIndexMap_ = new BGSIZE[synapseCount];
       outgoingSynapseBegin_ = new BGSIZE[neuronCount];
       outgoingSynapseCount_ = new BGSIZE[neuronCount];
@@ -70,7 +70,7 @@ struct SynapseIndexMap {
       incomingSynapseCount_ = new BGSIZE[neuronCount];
    };
 
-   ~SynapseIndexMap() {
+   ~EdgeIndexMap() {
       if (numOfNeurons_ != 0) {
          delete[] outgoingSynapseBegin_;
          delete[] outgoingSynapseCount_;

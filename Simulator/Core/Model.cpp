@@ -1,7 +1,7 @@
 /**
  * @file Model.cpp
  *
- * @ingroup Simulation/Core
+ * @ingroup Simulator/Core
  * 
  * @brief Implementation of Model for the spiking neural networks.
  *
@@ -73,7 +73,7 @@ void Model::setupSim() {
    LOG4CPLUS_INFO(fileLogger_, "Setting up Neurons...");
    layout_->getVertices()->setupVertices();
    LOG4CPLUS_INFO(fileLogger_, "Setting up Synapses...");
-   connections_->getSynapses()->setupSynapses();
+   connections_->getEdges()->setupEdges();
 #ifdef PERFORMANCE_METRICS
    // Start timer for initialization
    Simulator::getInstance.short_timer.start();
@@ -97,14 +97,14 @@ void Model::setupSim() {
    Simulator::getInstance().short_timer.start();
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Setting up Connections...");
-   connections_->setupConnections(layout_.get(), layout_->getVertices().get(), connections_->getSynapses().get());
+   connections_->setupConnections(layout_.get(), layout_->getVertices().get(), connections_->getEdges().get());
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (connections)
    t_host_initialization_connections += Simulator::getInstance().short_timer.lap() / 1000000.0;
 #endif
 
    // create a synapse index map
-   LOG4CPLUS_INFO(fileLogger_, "Creating SynapseIndexMap...");
+   LOG4CPLUS_INFO(fileLogger_, "Creating EdgeIndexMap...");
    connections_->createSynapseIndexMap();
 }
 

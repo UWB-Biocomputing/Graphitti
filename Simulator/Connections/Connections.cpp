@@ -16,9 +16,9 @@
  */
 
 #include "Connections.h"
-#include "IAllSynapses.h"
+#include "IAllEdges.h"
 #include "IAllVertices.h"
-#include "AllSynapses.h"
+#include "AllEdges.h"
 #include "AllVertices.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
@@ -45,16 +45,16 @@ Connections::Connections() {
 Connections::~Connections() {
 }
 
-shared_ptr<IAllSynapses> Connections::getSynapses() const {
+shared_ptr<IAllEdges> Connections::getEdges() const {
    return synapses_;
 }
 
-shared_ptr<SynapseIndexMap> Connections::getSynapseIndexMap() const {
+shared_ptr<EdgeIndexMap> Connections::getSynapseIndexMap() const {
    return synapseIndexMap_;
 }
 
 void Connections::createSynapseIndexMap() {
-   synapseIndexMap_ = shared_ptr<SynapseIndexMap>(synapses_->createSynapseIndexMap());
+   synapseIndexMap_ = shared_ptr<EdgeIndexMap>(synapses_->createSynapseIndexMap());
 }
 
 ///  Update the connections status in every epoch.
@@ -67,7 +67,7 @@ bool Connections::updateConnections(IAllVertices &vertices, Layout *layout) {
 }
 
 #if defined(USE_GPU)
-void Connections::updateSynapsesWeights(const int numNeurons, IAllVertices &vertices, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, Layout *layout)
+void Connections::updateSynapsesWeights(const int numNeurons, IAllVertices &vertices, IAllEdges &synapses, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, Layout *layout)
 {
 }
 #else
@@ -78,7 +78,7 @@ void Connections::updateSynapsesWeights(const int numNeurons, IAllVertices &vert
 ///  @param  numNeurons  Number of neurons to update.
 ///  @param  vertices     The vertex list to search from.
 ///  @param  synapses    The Synapse list to search from.
-void Connections::updateSynapsesWeights(const int numNeurons, IAllVertices &vertices, IAllSynapses &synapses, Layout *layout) {
+void Connections::updateSynapsesWeights(const int numNeurons, IAllVertices &vertices, IAllEdges &synapses, Layout *layout) {
 }
 
 #endif // !USE_GPU
@@ -90,27 +90,27 @@ void Connections::updateSynapsesWeights(const int numNeurons, IAllVertices &vert
 ///  @param  ivertices    The vertex list to search from.
 ///  @param  isynapses   The Synapse list to search from.
 void Connections::createSynapsesFromWeights(const int numNeurons, Layout *layout, IAllVertices &ivertices,
-                                            IAllSynapses &isynapses) {
+                                            IAllEdges &isynapses) {
    AllVertices &vertices = dynamic_cast<AllVertices &>(ivertices);
-   AllSynapses &synapses = dynamic_cast<AllSynapses &>(isynapses);
+   AllEdges &synapses = dynamic_cast<AllEdges &>(isynapses);
 
    // for each neuron
    for (int iNeuron = 0; iNeuron < numNeurons; iNeuron++) {
       // for each synapse in the vertex
       for (BGSIZE synapseIndex = 0;
            synapseIndex < Simulator::getInstance().getMaxSynapsesPerNeuron(); synapseIndex++) {
-         BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * iNeuron + synapseIndex;
+         BGSIZE iEdg = Simulator::getInstance().getMaxSynapsesPerNeuron() * iNeuron + synapseIndex;
          // if the synapse weight is not zero (which means there is a connection), create the synapse
-         if (synapses.W_[iSyn] != 0.0) {
-            BGFLOAT theW = synapses.W_[iSyn];
+         if (synapses.W_[iEdg] != 0.0) {
+            BGFLOAT theW = synapses.W_[iEdg];
             BGFLOAT *sumPoint = &(vertices.summationMap_[iNeuron]);
-            int srcNeuron = synapses.sourceNeuronIndex_[iSyn];
-            int destNeuron = synapses.destNeuronIndex_[iSyn];
+            int srcNeuron = synapses.sourceNeuronIndex_[iEdg];
+            int destNeuron = synapses.destNeuronIndex_[iEdg];
             synapseType type = layout->synType(srcNeuron, destNeuron);
             synapses.synapseCounts_[iNeuron]++;
-            synapses.createSynapse(iSyn, srcNeuron, destNeuron, sumPoint, Simulator::getInstance().getDeltaT(),
+            synapses.createEdge(iEdg, srcNeuron, destNeuron, sumPoint, Simulator::getInstance().getDeltaT(),
                                    type);
-            synapses.W_[iSyn] = theW;
+            synapses.W_[iEdg] = theW;
          }
       }
    }

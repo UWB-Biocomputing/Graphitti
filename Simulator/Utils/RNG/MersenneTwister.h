@@ -1,7 +1,7 @@
 /** 
 * @file MersenneTwister.h
 *
-* @ingroup Simulation/Utils/RNG
+* @ingroup Simulator/Utils/RNG
 *
 * @brief
 *

@@ -3,7 +3,7 @@
  *
  * @brief
  *
- * @ingroup Simulation/Vertices
+ * @ingroup Simulator/Vertices
  */
 
 #include "AllIFNeurons.h"

@@ -4,7 +4,7 @@
  * @brief A singleton class which contains and manages access to the XML
  * parameter file used by a simulator instance at runtime.
  *
- * @ingroup Simulation/Utils
+ * @ingroup Simulator/Utils
  *
  * The class provides a simple interface to access 
  * parameters with the following assumptions:

@@ -1,7 +1,7 @@
 /**
  * @file Book.h
  * 
- * @ingroup Simulation/Utils
+ * @ingroup Simulator/Utils
  * 
  * @brief
  *

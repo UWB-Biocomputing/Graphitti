@@ -9,7 +9,6 @@
 #include "gtest/gtest.h"
 
 #include "ParameterManager.h"
-//#include "Simulation/Core/Simulator.h"
 #include "Simulator.h"
 #include <iostream>
 

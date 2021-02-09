@@ -1,7 +1,7 @@
 /**
  * @file GpuSInputRegular.h
  * 
- * @ingroup Simulation/Utils/Inputs
+ * @ingroup Simulator/Utils/Inputs
  *
  * @brief A class that performs stimulus input (implementation Regular on GPU).
  * 

@@ -1,14 +1,14 @@
 /**
  * @file GPUSpikingModel.h
  *
- * @ingroup Simulation/Core
+ * @ingroup Simulator/Core
  * 
  * @brief Implementation of Model for the spiking neural networks.
  *
  * The Model class maintains and manages classes of objects that make up
  * essential components of the spiking neural networks.
  *    -# IAllVertices: A class to define a list of particular type of neurons.
- *    -# IAllSynapses: A class to define a list of particular type of synapses.
+ *    -# IAllEdges: A class to define a list of particular type of synapses.
  *    -# Connections: A class to define connections of the neural network.
  *    -# Layout: A class to define neurons' layout information in the network.
  *
@@ -117,7 +117,7 @@ protected:
    float *randNoise_d;
 
    /// Pointer to synapse index map in device memory.
-   SynapseIndexMap *synapseIndexMapDevice_;
+   EdgeIndexMap *synapseIndexMapDevice_;
 
    /// Synapse structures in device memory.
    AllSpikingSynapsesDeviceProperties *allSynapsesDevice_;
@@ -132,21 +132,21 @@ private:
 
 public: //2020/03/14 changed to public for accessing in BGDriver
 
-   void copySynapseIndexMapHostToDevice(SynapseIndexMap &synapseIndexMapHost, int numNeurons);
+   void copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numNeurons);
 
 private:
 
    void updateHistory();
 
    // TODO
-   void eraseSynapse(IAllSynapses &synapses, const int neuronIndex, const int synapseIndex);
+   void eraseEdge(IAllEdges &synapses, const int neuronIndex, const int synapseIndex);
 
    // TODO
-   void addSynapse(IAllSynapses &synapses, synapseType type, const int srcNeuron, const int destNeuron,
+   void addEdge(IAllEdges &synapses, synapseType type, const int srcNeuron, const int destNeuron,
                    Coordinate &source, Coordinate &dest, BGFLOAT *sumPoint, BGFLOAT deltaT);
 
    // TODO
-   void createSynapse(IAllSynapses &synapses, const int neuronIndex, const int synapseIndex,
+   void createEdge(IAllEdges &synapses, const int neuronIndex, const int synapseIndex,
                       Coordinate source, Coordinate dest, BGFLOAT *sp, BGFLOAT deltaT, synapseType type);
 };
 
@@ -159,6 +159,6 @@ void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, uns
 //! Calculate summation point.
 extern __global__ void calcSummationMapDevice(int totalVertices,
           AllSpikingNeuronsDeviceProperties* __restrict__ allNeurnsDevice,
-          const SynapseIndexMap* __restrict__ synapseIndexMapDevice_,
+          const EdgeIndexMap* __restrict__ synapseIndexMapDevice_,
                     const AllSpikingSynapsesDeviceProperties* __restrict__ allSynapsesDevice );
 #endif

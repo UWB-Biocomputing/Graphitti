@@ -1,7 +1,7 @@
 /**
  * @file ConnStatic.h
  *
- * @ingroup Simulation/Connections
+ * @ingroup Simulator/Connections
  * 
  * @brief The model of the small world network
  *
@@ -52,7 +52,7 @@ public:
    ///  @param  layout    Layout information of the neural network.
    ///  @param  neurons   The Neuron list to search from.
    ///  @param  synapses  The Synapse list to search from.
-   virtual void setupConnections(Layout *layout, IAllVertices *neurons, IAllSynapses *synapses);
+   virtual void setupConnections(Layout *layout, IAllVertices *neurons, IAllEdges *synapses);
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operations::op::loadParameters

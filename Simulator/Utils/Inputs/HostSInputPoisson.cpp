@@ -1,7 +1,7 @@
 /**
  * @file HostSInputPoisson.cpp
  *
- * @ingroup Simulation/Utils/Inputs
+ * @ingroup Simulator/Utils/Inputs
  * 
  * @brief A class that performs stimulus input (implementation Poisson).
  */
@@ -63,11 +63,11 @@ int chunk_size = psi->totalVertices / omp_get_max_threads();
         if (masks[neuronIndex] == false)
             continue;
 
-        BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * neuronIndex;
+        BGSIZE iEdg = Simulator::getInstance().getMaxSynapsesPerNeuron() * neuronIndex;
         if (--nISIs[neuronIndex] <= 0)
         {
             // add a spike
-            dynamic_cast<AllSpikingSynapses*>(synapses_)->preSpikeHit(iSyn);
+            dynamic_cast<AllSpikingSynapses*>(synapses_)->preSpikeHit(iEdg);
 
             // update interval counter (exponectially distribution ISIs, Poisson)
             BGFLOAT isi = -lambda * log(rng.inRange(0, 1));
@@ -78,6 +78,6 @@ int chunk_size = psi->totalVertices / omp_get_max_threads();
             nISIs[neuronIndex] = static_cast<int>( (isi / 1000) / Simulator::getInstance().getDeltaT() + 0.5 );
         }
         // process synapse
-        synapses_->advanceSynapse(iSyn, NULL);
+        synapses_->advanceEdge(iEdg, NULL);
     }
 }

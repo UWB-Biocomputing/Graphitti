@@ -1,7 +1,7 @@
 /**
  * @file Model.h
  *
- * @ingroup Simulation/Core
+ * @ingroup Simulator/Core
  * 
  * @brief Implementation of Model for the spiking neural networks.
  *

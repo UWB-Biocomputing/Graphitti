@@ -3,7 +3,7 @@
  *
  * @brief
  *
- * @ingroup Simulation/Vertices
+ * @ingroup Simulator/Vertices
  */
 
 #include "AllSpikingSynapses.h"
@@ -161,7 +161,7 @@ void AllIZHNeurons::clearNeuronSpikeCounts( void* allNeuronsDevice )
 }
 
 ///  Notify outgoing synapses if neuron has fired.
-void AllIZHNeurons::advanceVertices( IAllSynapses &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, SynapseIndexMap* synapseIndexMapDevice)
+void AllIZHNeurons::advanceVertices( IAllEdges &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice)
 {
     int neuron_count = Simulator::getInstance().getTotalVertices();
     int maxSpikes = (int)((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));

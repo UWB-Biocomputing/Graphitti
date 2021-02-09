@@ -1,7 +1,7 @@
 /**
  * @file AllDynamicSTDPSynapses.h
  * 
- * @ingroup Simulation/Edges
+ * @ingroup Simulator/Edges
  *
  * @brief A container of all dynamic STDP synapse data
  *
@@ -28,7 +28,7 @@
  *  inheritance, which causes the problem of ambibuous hierarchy compositon. To solve the
  *  problem, we can use the virtual inheritance. 
  *  However, the virtual inheritance will bring another problem. That is, we cannot static cast
- *  from a pointer to the AllSynapses class to a pointer to the AllDSSynapses or the AllSTDPSynapses 
+ *  from a pointer to the AllEdges class to a pointer to the AllDSSynapses or the AllSTDPSynapses 
  *  classes. Compiler requires dynamic casting because vtable mechanism is involed in solving the 
  *  casting. But the dynamic casting cannot be used for the pointers to device (CUDA) memories. 
  *  Considering these issues, I decided that making the AllDynamicSTDPSynapses class the subclass
@@ -64,16 +64,16 @@ public:
 
    virtual ~AllDynamicSTDPSynapses();
 
-   static IAllSynapses *Create() { return new AllDynamicSTDPSynapses(); }
+   static IAllEdges *Create() { return new AllDynamicSTDPSynapses(); }
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
-   virtual void setupSynapses();
+   virtual void setupEdges();
 
    ///  Reset time varying state vars and recompute decay.
    ///
-   ///  @param  iSyn     Index of the synapse to set.
+   ///  @param  iEdg     Index of the synapse to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT);
+   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT);
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
@@ -81,13 +81,13 @@ public:
 
    ///  Create a Synapse and connect it to the model.
    ///
-   ///  @param  iSyn        Index of the synapse to set.
+   ///  @param  iEdg        Index of the synapse to set.
    ///  @param  srcNeuron   Coordinates of the source Neuron.
    ///  @param  destNeuron  Coordinates of the destination Neuron.
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
-   virtual void createSynapse(const BGSIZE iSyn, int srcNeuron, int destNeuron, BGFLOAT *sumPoint, const BGFLOAT deltaT,
+   virtual void createEdge(const BGSIZE iEdg, int srcNeuron, int destNeuron, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               synapseType type);
 
    ///  Prints SynapsesProps data.
@@ -98,19 +98,19 @@ protected:
    ///
    ///  @param  numNeurons   Total number of neurons in the network.
    ///  @param  maxSynapses  Maximum number of synapses per neuron.
-   virtual void setupSynapses(const int numNeurons, const int maxSynapses);
+   virtual void setupEdges(const int numNeurons, const int maxSynapses);
 
    ///  Sets the data for Synapse to input's data.
    ///
    ///  @param  input  istream to read from.
-   ///  @param  iSyn   Index of the synapse to set.
-   virtual void readSynapse(istream &input, const BGSIZE iSyn);
+   ///  @param  iEdg   Index of the synapse to set.
+   virtual void readSynapse(istream &input, const BGSIZE iEdg);
 
    ///  Write the synapse data to the stream.
    ///
    ///  @param  output  stream to print out to.
-   ///  @param  iSyn    Index of the synapse to print out.
-   virtual void writeSynapse(ostream &output, const BGSIZE iSyn) const;
+   ///  @param  iEdg    Index of the synapse to print out.
+   virtual void writeSynapse(ostream &output, const BGSIZE iEdg) const;
 
 #if defined(USE_GPU)
    public:
@@ -200,9 +200,9 @@ protected:
 protected:
    ///  Calculate the post synapse response after a spike.
    ///
-   ///  @param  iSyn        Index of the synapse to set.
+   ///  @param  iEdg        Index of the synapse to set.
    ///  @param  deltaT      Inner simulation step duration.
-   virtual void changePSR(const BGSIZE iSyn, const BGFLOAT deltaT);
+   virtual void changePSR(const BGSIZE iEdg, const BGFLOAT deltaT);
 
 #endif // defined(USE_GPU)
 public:

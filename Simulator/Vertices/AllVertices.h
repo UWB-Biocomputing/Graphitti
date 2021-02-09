@@ -1,7 +1,7 @@
 /**
  * @file AllVertices.h
  * 
- * @ingroup Simulation/Vertices
+ * @ingroup Simulator/Vertices
  *
  * @brief A container of the base class of all vertex data
  *

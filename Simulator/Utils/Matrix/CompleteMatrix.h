@@ -1,7 +1,7 @@
 /**
  * @file CompleteMatrix.h
  * 
- * @ingroup Simulation/Utils/Matrix
+ * @ingroup Simulator/Utils/Matrix
  * 
  * @brief An efficient implementation of a dynamically-allocated 2D array.
  */

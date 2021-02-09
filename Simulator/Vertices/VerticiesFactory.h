@@ -1,7 +1,7 @@
 /**
  * @file VerticesFactory.h
  * 
- * @ingroup Simulation/Vertices
+ * @ingroup Simulator/Vertices
  *
  * @brief A factory class for creating Vertices objects.
  */

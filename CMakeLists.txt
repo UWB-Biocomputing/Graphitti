@@ -39,6 +39,8 @@ include_directories(
         ../SummerOfBrain
         Simulator
         Simulator/Connections
+        Simulator/Connections/Neuro
+        Simulator/Connections/NG911
         Simulator/Core
         Simulator/Core/FunctionNodes
         Simulator/Edges
@@ -46,6 +48,8 @@ include_directories(
         Simulator/Edges/NG911
         # include subdirectories
         Simulator/Layouts
+        Simulator/Layouts/Neuro
+        Simulator/Layouts/NG911
         Simulator/Recorders
         Simulator/Vertices
         Simulator/Vertices/Neuro
@@ -75,7 +79,7 @@ add_executable(braingrid Simulator/Core/BGDriver.cpp)
 add_executable(tests
         Testing/RunTests.cpp
         Testing/Core/OperationManagerTests.cpp
-        Testing/Core/SynapseIndexMapTests.cpp
+        Testing/Core/EdgeIndexMapTests.cpp
         Testing/Core/FunctionNodeTests.cpp
         Testing/Core/SimulatorTests.cpp
         Testing/Core/OperationManagerTestingClass.h

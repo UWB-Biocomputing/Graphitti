@@ -1,7 +1,7 @@
 /**
  * @file RecorderFactory.cpp
  *
- * @ingroup Simulation/Recorders
+ * @ingroup Simulator/Recorders
  * 
  * @brief A factory class for creating Recorder objects.
  */

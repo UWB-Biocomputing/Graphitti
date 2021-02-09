@@ -1,7 +1,7 @@
 /**
  * @file AllSpikingNeurons.cpp
  * 
- * @ingroup Simulation/Vertices
+ * @ingroup Simulator/Vertices
  *
  * @brief
  */
@@ -71,8 +71,8 @@ void AllSpikingNeurons::clearSpikeCounts() {
 ///  Notify outgoing synapses if neuron has fired.
 ///
 ///  @param  synapses         The Synapse list to search from.
-///  @param  synapseIndexMap  Reference to the SynapseIndexMap.
-void AllSpikingNeurons::advanceVertices(IAllSynapses &synapses, const SynapseIndexMap *synapseIndexMap) {
+///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+void AllSpikingNeurons::advanceVertices(IAllEdges &synapses, const EdgeIndexMap *edgeIndexMap) {
    int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
    AllSpikingSynapses &spSynapses = dynamic_cast<AllSpikingSynapses &>(synapses);
@@ -91,14 +91,14 @@ void AllSpikingNeurons::advanceVertices(IAllSynapses &synapses, const SynapseInd
          // notify outgoing synapses
          BGSIZE synapseCounts;
 
-         if (synapseIndexMap != NULL) {
-            synapseCounts = synapseIndexMap->outgoingSynapseCount_[idx];
+         if (edgeIndexMap != NULL) {
+            synapseCounts = edgeIndexMap->outgoingSynapseCount_[idx];
             if (synapseCounts != 0) {
-               int beginIndex = synapseIndexMap->outgoingSynapseBegin_[idx];
-               BGSIZE iSyn;
+               int beginIndex = edgeIndexMap->outgoingSynapseBegin_[idx];
+               BGSIZE iEdg;
                for (BGSIZE i = 0; i < synapseCounts; i++) {
-                  iSyn = synapseIndexMap->outgoingSynapseBegin_[beginIndex + i];
-                  spSynapses.preSpikeHit(iSyn);
+                  iEdg = edgeIndexMap->outgoingSynapseBegin_[beginIndex + i];
+                  spSynapses.preSpikeHit(iEdg);
                }
             }
          }
@@ -109,9 +109,9 @@ void AllSpikingNeurons::advanceVertices(IAllSynapses &synapses, const SynapseInd
 
          if (spSynapses.allowBackPropagation()) {
             for (int z = 0; synapse_notified < synapseCounts; z++) {
-               BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * idx + z;
-               if (spSynapses.inUse_[iSyn] == true) {
-                  spSynapses.postSpikeHit(iSyn);
+               BGSIZE iEdg = Simulator::getInstance().getMaxSynapsesPerNeuron() * idx + z;
+               if (spSynapses.inUse_[iEdg] == true) {
+                  spSynapses.postSpikeHit(iEdg);
                   synapse_notified++;
                }
             }

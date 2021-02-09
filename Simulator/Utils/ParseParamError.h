@@ -3,7 +3,7 @@
  *
  * @brief 
  *
- * @ingroup Simulation/Utils
+ * @ingroup Simulator/Utils
  */
 
 #ifndef _PARSEPARAMERROR_H_

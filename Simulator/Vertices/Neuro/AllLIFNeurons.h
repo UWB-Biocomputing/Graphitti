@@ -1,7 +1,7 @@
 /**
  * @file AllLIFNeurons.h
  * 
- * @ingroup Simulation/Vertices
+ * @ingroup Simulator/Vertices
  *
  * @brief A container of all LIF neuron data
  *
@@ -105,8 +105,8 @@ public:
        ///  @param  allNeuronsDevice       GPU address of the allNeurons struct on device memory.
        ///  @param  allSynapsesDevice      GPU address of the allSynapses struct on device memory.
        ///  @param  randNoise              Reference to the random noise array.
-       ///  @param  synapseIndexMapDevice  GPU address of the SynapseIndexMap on device memory.
-       virtual void advanceVertices(IAllSynapses &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, SynapseIndexMap* synapseIndexMapDevice);
+       ///  @param  synapseIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
+       virtual void advanceVertices(IAllEdges &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice);
 
 #else  // !defined(USE_GPU)
 protected:

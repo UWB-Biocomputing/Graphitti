@@ -1,7 +1,7 @@
 /**
  * @file VectorMatrix.cpp
  * 
- * @ingroup Simulation/Utils/Matrix
+ * @ingroup Simulator/Utils/Matrix
  * 
  * @brief An efficient implementation of a dynamically-allocated 1D array
  */

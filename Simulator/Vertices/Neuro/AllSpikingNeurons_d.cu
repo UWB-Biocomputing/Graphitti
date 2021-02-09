@@ -1,7 +1,7 @@
 /*
  * @file AllSpikingNeurons_d.cu
  * 
- * @ingroup Simulation/Vertices
+ * @ingroup Simulator/Vertices
  *
  * @brief
  */
@@ -60,7 +60,7 @@ void AllSpikingNeurons::clearDeviceSpikeCounts( AllSpikingNeuronsDevicePropertie
 ///  in device functions.
 ///
 ///  @param  synapses               Reference to the allSynapses struct on host memory.
-void AllSpikingNeurons::setAdvanceVerticesDeviceParams(IAllSynapses &synapses)
+void AllSpikingNeurons::setAdvanceVerticesDeviceParams(IAllEdges &synapses)
 {
     AllSpikingSynapses &spSynapses = dynamic_cast<AllSpikingSynapses&>(synapses);
     fAllowBackPropagation_ = spSynapses.allowBackPropagation();

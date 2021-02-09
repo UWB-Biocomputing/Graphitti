@@ -1,7 +1,7 @@
 /**
  *	@file Global.cpp
  *
- *	@ingroup Simulation/Utils
+ *	@ingroup Simulator/Utils
  *
  *  @brief Globally available functions/variables and default parameter values.
  */

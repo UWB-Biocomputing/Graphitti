@@ -1,14 +1,14 @@
 /**
  * @file CPUSpikingModel.h
  * 
- * @ingroup Simulation/Core
+ * @ingroup Simulator/Core
  *
  * @brief Implementation of Model for the spiking neural networks.
  * 
  * The Model class maintains and manages classes of objects that make up
  * essential components of the spiking neural network.
  *    -# IAllVertices: A class to define a list of particular type of neurons.
- *    -# IAllSynapses: A class to define a list of particular type of synapses.
+ *    -# IAllEdges: A class to define a list of particular type of synapses.
  *    -# Connections: A class to define connections of the neural network.
  *    -# Layout: A class to define neurons' layout information in the network.
  *
@@ -37,7 +37,7 @@
 
 #include "Connections/Connections.h"
 #include "IAllVertices.h"
-#include "IAllSynapses.h"
+#include "IAllEdges.h"
 #include "Layouts/Layout.h"
 
 class CPUSpikingModel : public Model {

@@ -1,7 +1,7 @@
 /**
  * @file Layout.h
  * 
- * @ingroup Simulation/Layouts
+ * @ingroup Simulator/Layouts
  *
  * @brief The Layout class defines the layout of neurons in neural networks
  * Implementation:

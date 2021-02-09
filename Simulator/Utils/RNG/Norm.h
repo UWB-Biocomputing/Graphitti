@@ -1,7 +1,7 @@
 /**
  * @file Norm.h
  * 
- * @ingroup Simulation/Utils/RNG
+ * @ingroup Simulator/Utils/RNG
  * 
  * @brief Normally distributed random numbers
  */

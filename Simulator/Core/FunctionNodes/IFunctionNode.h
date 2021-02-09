@@ -4,7 +4,7 @@
  *  @brief Interface for storing and invoking functions. Used to support different FunctionNode classes that
  *  define different function signatures.
  *
- *  @ingroup Simulation/Core/FunctionNodes
+ *  @ingroup Simulator/Core/FunctionNodes
  */
 
 #pragma once

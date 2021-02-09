@@ -1,7 +1,7 @@
 /**
  *	@file Global.h
  *
- *	@ingroup Simulation/Utils
+ *	@ingroup Simulator/Utils
  *
  *	@brief Header file for global.h
  */

@@ -1,7 +1,7 @@
 /**
  * @file FixedLayout.cpp
  *
- * @ingroup Simulation/Layouts
+ * @ingroup Simulator/Layouts
  * 
  * @brief 
  */

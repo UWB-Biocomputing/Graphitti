@@ -1,7 +1,7 @@
 /**
  * @file FSInput.cpp
  * 
- * @ingroup Simulation/Utils/Inputs
+ * @ingroup Simulator/Utils/Inputs
  * 
  * @brief A factoy class that creates an instance of stimulus input object.
  */

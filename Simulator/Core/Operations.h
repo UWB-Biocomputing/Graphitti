@@ -4,7 +4,7 @@
  * @brief This class is public reference to the operation types that the OperationManager can register and execute.
  * Stores operation types as an enum.
  *
- * @ingroup Simulation/Core
+ * @ingroup Simulator/Core
  */
 
 #pragma once

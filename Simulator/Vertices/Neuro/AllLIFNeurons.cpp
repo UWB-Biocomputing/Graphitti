@@ -1,7 +1,7 @@
 /**
  * @file AllLIFNeurons.cpp
  * 
- * @ingroup Simulation/Vertices
+ * @ingroup Simulator/Vertices
  *
  * @brief
  */

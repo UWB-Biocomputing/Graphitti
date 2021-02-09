@@ -1,7 +1,7 @@
 /**
  * @file AllDSSynapses_d.cu
  *
- * @ingroup Simulation/Edges
+ * @ingroup Simulator/Edges
  * 
  * @brief 
  */
@@ -198,9 +198,9 @@ void AllDSSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) const
     AllDSSynapsesDeviceProperties allSynapsesProps;
 
     //allocate print out data members
-    BGSIZE size = Simulator::getInstance().getMaxSynapsesPerNeuron() * countNeurons_;
+    BGSIZE size = Simulator::getInstance().getMaxSynapsesPerNeuron() * countVertices_;
     if (size != 0) {
-        BGSIZE *synapseCountsPrint = new BGSIZE[countNeurons_];
+        BGSIZE *synapseCountsPrint = new BGSIZE[countVertices_];
         BGSIZE maxSynapsesPerNeuronPrint;
         BGSIZE totalSynapseCountPrint;
         int countNeuronsPrint;
@@ -216,7 +216,7 @@ void AllDSSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) const
             inUsePrint[i] = false;
         }
 
-        for (int i = 0; i < countNeurons_; i++) {
+        for (int i = 0; i < countVertices_; i++) {
             synapseCountsPrint[i] = 0;
         }
 
@@ -234,14 +234,14 @@ void AllDSSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) const
 
         // copy everything
         HANDLE_ERROR( cudaMemcpy ( &allSynapsesProps, allSynapsesDeviceProps, sizeof( AllDSSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( synapseCountsPrint, allSynapsesProps.synapseCounts_, countNeurons_ * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
-        maxSynapsesPerNeuronPrint = allSynapsesProps.maxSynapsesPerNeuron_;
-        totalSynapseCountPrint = allSynapsesProps.totalSynapseCount_;
-        countNeuronsPrint = allSynapsesProps.countNeurons_;
+        HANDLE_ERROR( cudaMemcpy ( synapseCountsPrint, allSynapsesProps.synapseCounts_, countVertices_ * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
+        maxSynapsesPerNeuronPrint = allSynapsesProps.maxEdgesPerVertex_;
+        totalSynapseCountPrint = allSynapsesProps.totalEdgeCount_;
+        countNeuronsPrint = allSynapsesProps.countVertices_;
 
-        // Set countNeurons_ to 0 to avoid illegal memory deallocation
+        // Set countVertices_ to 0 to avoid illegal memory deallocation
         // at AllSynapsesProps deconstructor.
-        allSynapsesProps.countNeurons_ = 0;
+        allSynapsesProps.countVertices_ = 0;
 
         HANDLE_ERROR( cudaMemcpy ( sourceNeuronIndexPrint, allSynapsesProps.sourceNeuronIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( destNeuronIndexPrint, allSynapsesProps.destNeuronIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
@@ -286,18 +286,18 @@ void AllDSSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) const
             }
         }
 
-        for (int i = 0; i < countNeurons_; i++) {
+        for (int i = 0; i < countVertices_; i++) {
             cout << "GPU synapse_counts:" << "neuron[" << i  << "]" << synapseCountsPrint[i] << endl;
         }
 
         cout << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;
         cout << "GPU maxEdgesPerVertex:" << maxSynapsesPerNeuronPrint << endl;
-        cout << "GPU countNeurons_:" << countNeuronsPrint << endl;
+        cout << "GPU countVertices_:" << countNeuronsPrint << endl;
 
 
-        // Set countNeurons_ to 0 to avoid illegal memory deallocation
+        // Set countVertices_ to 0 to avoid illegal memory deallocation
         // at AllDSSynapsesProps deconstructor.
-        allSynapsesProps.countNeurons_ = 0;
+        allSynapsesProps.countVertices_ = 0;
 
 
         delete[] destNeuronIndexPrint;

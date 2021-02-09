@@ -1,7 +1,7 @@
 /**
  * @file Hdf5GrowthRecorder.cpp
  * 
- * @ingroup Simulation/Recorders
+ * @ingroup Simulator/Recorders
  *
  * @brief An implementation for recording spikes history on hdf5 file
  */

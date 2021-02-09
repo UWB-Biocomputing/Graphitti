@@ -3,7 +3,7 @@
  *
  * @brief 
  *
- * @ingroup Simulation/Utils
+ * @ingroup Simulator/Utils
  */
 
 #include "ParseParamError.h"

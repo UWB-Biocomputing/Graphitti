@@ -4,7 +4,7 @@
  *  @brief Stores a function to invoke. Used by operation manager to store functions to defined by an operation type.
  *  Function Signature supported : void ()
  *
- *  @ingroup Simulation/Core/FunctionNodes
+ *  @ingroup Simulator/Core/FunctionNodes
  */
 
 #include "GenericFunctionNode.h"

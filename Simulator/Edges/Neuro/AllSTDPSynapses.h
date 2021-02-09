@@ -1,7 +1,7 @@
 /**
  *  @file AllSTDPSynapses.h
  * 
- *  @ingroup Simulation/Edges
+ *  @ingroup Simulator/Edges
  *
  *  @brief A container of all STDP synapse data
  *
@@ -78,16 +78,16 @@ public:
 
    virtual ~AllSTDPSynapses();
 
-   static IAllSynapses *Create() { return new AllSTDPSynapses(); }
+   static IAllEdges *Create() { return new AllSTDPSynapses(); }
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
-   virtual void setupSynapses();
+   virtual void setupEdges();
 
    ///  Reset time varying state vars and recompute decay.
    ///
-   ///  @param  iSyn     Index of the synapse to set.
+   ///  @param  iEdg     Index of the synapse to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT);
+   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT);
 
    ///  Check if the back propagation (notify a spike event to the pre neuron)
    ///  is allowed in the synapse class.
@@ -101,13 +101,13 @@ public:
 
    ///  Create a Synapse and connect it to the model.
    ///
-   ///  @param  iSyn        Index of the synapse to set.
+   ///  @param  iEdg        Index of the synapse to set.
    ///  @param  srcNeuron   Coordinates of the source Neuron.
    ///  @param  destNeuron  Coordinates of the destination Neuron.
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
-   virtual void createSynapse(const BGSIZE iSyn, int srcNeuron, int destNeuron, BGFLOAT *sumPoint, const BGFLOAT deltaT,
+   virtual void createEdge(const BGSIZE iEdg, int srcNeuron, int destNeuron, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               synapseType type);
 
    ///  Prints SynapsesProps data.
@@ -118,24 +118,24 @@ protected:
    ///
    ///  @param  numNeurons   Total number of neurons in the network.
    ///  @param  maxSynapses  Maximum number of synapses per neuron.
-   virtual void setupSynapses(const int numNeurons, const int maxSynapses);
+   virtual void setupEdges(const int numNeurons, const int maxSynapses);
 
    ///  Sets the data for Synapse to input's data.
    ///
    ///  @param  input  istream to read from.
-   ///  @param  iSyn   Index of the synapse to set.
-   virtual void readSynapse(istream &input, const BGSIZE iSyn);
+   ///  @param  iEdg   Index of the synapse to set.
+   virtual void readSynapse(istream &input, const BGSIZE iEdg);
 
    ///  Write the synapse data to the stream.
    ///
    ///  @param  output  stream to print out to.
-   ///  @param  iSyn    Index of the synapse to print out.
-   virtual void writeSynapse(ostream &output, const BGSIZE iSyn) const;
+   ///  @param  iEdg    Index of the synapse to print out.
+   virtual void writeSynapse(ostream &output, const BGSIZE iEdg) const;
 
    ///  Initializes the queues for the Synapse.
    ///
-   ///  @param  iSyn   index of the synapse to set.
-   virtual void initSpikeQueue(const BGSIZE iSyn);
+   ///  @param  iEdg   index of the synapse to set.
+   virtual void initSpikeQueue(const BGSIZE iEdg);
 
 #if defined(USE_GPU)
    public:
@@ -180,8 +180,8 @@ protected:
        ///
        ///  @param  allSynapsesDevice      GPU address of the allSynapses struct on device memory.
        ///  @param  allNeuronsDevice       GPU address of the allNeurons struct on device memory.
-       ///  @param  synapseIndexMapDevice  GPU address of the SynapseIndexMap on device memory.
-       virtual void advanceSynapses( void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice );
+       ///  @param  synapseIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
+       virtual void advanceEdges( void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice );
 
        ///  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
        ///  The class ID will be set to classSynapses_d in device memory,
@@ -235,31 +235,31 @@ public:
    ///  Advance one specific Synapse.
    ///  Update the state of synapse for a time step
    ///
-   ///  @param  iSyn      Index of the Synapse to connect to.
+   ///  @param  iEdg      Index of the Synapse to connect to.
    ///  @param  neurons   The Neuron list to search from.
-   virtual void advanceSynapse(const BGSIZE iSyn, IAllVertices *neurons);
+   virtual void advanceEdge(const BGSIZE iEdg, IAllVertices *neurons);
 
    ///  Prepares Synapse for a spike hit (for back propagation).
    ///
-   ///  @param  iSyn   Index of the Synapse to connect to.
-   virtual void postSpikeHit(const BGSIZE iSyn);
+   ///  @param  iEdg   Index of the Synapse to connect to.
+   virtual void postSpikeHit(const BGSIZE iEdg);
 
 protected:
    ///  Checks if there is an input spike in the queue (for back propagation).
    ///
-   ///  @param  iSyn   Index of the Synapse to connect to.
+   ///  @param  iEdg   Index of the Synapse to connect to.
    ///  @return true if there is an input spike event.
-   bool isSpikeQueuePost(const BGSIZE iSyn);
+   bool isSpikeQueuePost(const BGSIZE iEdg);
 
 private:
    ///  Adjust synapse weight according to the Spike-timing-dependent synaptic modification
    ///  induced by natural spike trains
    ///
-   ///  @param  iSyn        Index of the synapse to set.
+   ///  @param  iEdg        Index of the synapse to set.
    ///  @param  delta       Pre/post synaptic spike interval.
    ///  @param  epost       Params for the rule given in Froemke and Dan (2002).
    ///  @param  epre        Params for the rule given in Froemke and Dan (2002).
-   void stdpLearning(const BGSIZE iSyn, double delta, double epost, double epre);
+   void stdpLearning(const BGSIZE iEdg, double delta, double epost, double epre);
 
 #endif
 public:

@@ -4,7 +4,7 @@
  * @brief Used to define uniform data type sizes based for all operating systems. Also used to test the speed of
  * simulation based on the data types.
  *
- * @ingroup Simulation/Utils
+ * @ingroup Simulator/Utils
  *
  *
  * This type is used to measure the difference between

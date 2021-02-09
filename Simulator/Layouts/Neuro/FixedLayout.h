@@ -1,16 +1,16 @@
 /**
- * @file DynamicLayout.h
+ * @file FixedLayout.h
  * 
- * @ingroup Simulation/Layouts
+ * @ingroup Simulator/Layouts
  *
- * @brief The DynamicLayout class defines the layout of neurons in neural networks
+ * @brief The Layout class defines the layout of neurons in neural networks
  *
- * The DynamicLayout class maintains neurons locations (x, y coordinates), 
+ * The FixedLayout class maintains neurons locations (x, y coordinates), 
  * distance of every couple neurons,
  * neurons type map (distribution of excitatory and inhibitory neurons), and starter neurons map
  * (distribution of endogenously active neurons).  
  *
- * The DynamicLayout class generates layout information dynamically.
+ * The FixedLayout class reads all layout information from parameter description file.
  */
 
 #pragma once
@@ -19,19 +19,19 @@
 
 using namespace std;
 
-class DynamicLayout : public Layout {
+class FixedLayout : public Layout {
 public:
-   DynamicLayout();
+   FixedLayout();
 
-   virtual ~DynamicLayout();
+   virtual ~FixedLayout();
 
-   static Layout *Create() { return new DynamicLayout(); }
+   static Layout *Create() { return new FixedLayout(); }
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
 
-   ///  Creates a randomly ordered distribution with the specified numbers of neuron types.
+   ///  Creates a neurons type map.
    ///
    ///  @param  numNeurons number of the neurons to have in the type map.
    virtual void generateNeuronTypeMap(int numNeurons);
@@ -42,12 +42,5 @@ public:
    ///
    ///  @param  numNeurons number of neurons to have in the map.
    virtual void initStarterMap(const int numNeurons);
-
-private:
-   /// Fraction of endogenously active neurons.
-   BGFLOAT m_frac_starter_neurons;
-
-   /// Fraction of exitatory neurons.
-   BGFLOAT m_frac_excitatory_neurons;
 };
 

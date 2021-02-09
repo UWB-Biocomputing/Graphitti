@@ -1,7 +1,7 @@
 /**
  * @file MatrixExceptions.h
  * 
- * @ingroup Simulation/Utils/Matrix
+ * @ingroup Simulator/Utils/Matrix
  * 
  * @brief Exception class hierarchy for Matrix classes
  */

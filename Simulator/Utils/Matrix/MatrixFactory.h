@@ -1,7 +1,7 @@
 /**
  * @file MatrixFactory.h
  * 
- * @ingroup Simulation/Utils/Matrix
+ * @ingroup Simulator/Utils/Matrix
  * 
  * @brief Deserializes Matrices from XML
  */

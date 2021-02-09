@@ -1,7 +1,7 @@
 /**
  * @file GPUSpikingModel.cu
  * 
- * @ingroup Simulation/Core
+ * @ingroup Simulator/Core
  *
  * @brief Implementation of Model for the spiking neural networks.
  * 
@@ -12,7 +12,7 @@
 #include "Connections.h"
 #include "Global.h"
 #include "IAllVertices.h"
-#include "IAllSynapses.h"
+#include "IAllEdges.h"
 
 #ifdef PERFORMANCE_METRICS
 float g_time;
@@ -42,7 +42,7 @@ void GPUSpikingModel::allocDeviceStruct(void** allNeuronsDevice, void** allSynap
 {
   // Get neurons and synapses
   shared_ptr<IAllVertices> neurons = layout_->getVertices();
-  shared_ptr<IAllSynapses> synapses = connections_->getSynapses();
+  shared_ptr<IAllEdges> synapses = connections_->getEdges();
 
   // Allocate Neurons and Synapses structs on GPU device memory
   neurons->allocNeuronDeviceStruct(allNeuronsDevice);
@@ -68,7 +68,7 @@ void GPUSpikingModel::deleteDeviceStruct(void** allNeuronsDevice, void** allSyna
 {  
   // Get neurons and synapses
   shared_ptr<IAllVertices> neurons = layout_->getVertices();
-  shared_ptr<IAllSynapses> synapses = connections_->getSynapses();
+  shared_ptr<IAllEdges> synapses = connections_->getEdges();
 
   // Copy device synapse and neuron structs to host memory
   neurons->copyNeuronDeviceToHost( *allNeuronsDevice);
@@ -115,10 +115,10 @@ void GPUSpikingModel::setupSim()
   copySynapseIndexMapHostToDevice(*(connections_->getSynapseIndexMap().get()), Simulator::getInstance().getTotalVertices());
 
   // set some parameters used for advanceVerticesDevice
-  layout_->getVertices()->setAdvanceVerticesDeviceParams(*(connections_->getSynapses().get()));
+  layout_->getVertices()->setAdvanceVerticesDeviceParams(*(connections_->getEdges().get()));
 
   // set some parameters used for advanceSynapsesDevice
-  connections_->getSynapses()->setAdvanceSynapsesDeviceParams();
+  connections_->getEdges()->setAdvanceSynapsesDeviceParams();
 }
 
 /// Performs any finalization tasks on network following a simulation.
@@ -146,7 +146,7 @@ void GPUSpikingModel::advance()
 
   // Get neurons and synapses
   shared_ptr<IAllVertices> neurons = layout_->getVertices();
-  shared_ptr<IAllSynapses> synapses = connections_->getSynapses();
+  shared_ptr<IAllEdges> synapses = connections_->getEdges();
 
   normalMTGPU(randNoise_d);
 
@@ -157,7 +157,7 @@ void GPUSpikingModel::advance()
 
   // display running info to console
   // Advance neurons ------------->
-   dynamic_cast<AllSpikingNeurons *>(neurons.get())->advanceVertices(*(connections_->getSynapses().get()), allNeuronsDevice_, allSynapsesDevice_, randNoise_d, synapseIndexMapDevice_);
+   dynamic_cast<AllSpikingNeurons *>(neurons.get())->advanceVertices(*(connections_->getEdges().get()), allNeuronsDevice_, allSynapsesDevice_, randNoise_d, synapseIndexMapDevice_);
 
 #ifdef PERFORMANCE_METRICS
   cudaLapTime(t_gpu_advanceNeurons);
@@ -165,7 +165,7 @@ void GPUSpikingModel::advance()
 #endif // PERFORMANCE_METRICS
 
   // Advance synapses ------------->
-  synapses->advanceSynapses(allSynapsesDevice_, allNeuronsDevice_, synapseIndexMapDevice_);
+  synapses->advanceEdges(allSynapsesDevice_, allNeuronsDevice_, synapseIndexMapDevice_);
 
 #ifdef PERFORMANCE_METRICS
   cudaLapTime(t_gpu_advanceSynapses);
@@ -196,7 +196,7 @@ void GPUSpikingModel::updateConnections()
 {
   // Get neurons and synapses
   shared_ptr<IAllVertices> neurons = layout_->getVertices();
-  shared_ptr<IAllSynapses> synapses = connections_->getSynapses();
+  shared_ptr<IAllEdges> synapses = connections_->getEdges();
 
   dynamic_cast<AllSpikingNeurons*>(neurons.get())->copyNeuronDeviceSpikeCountsToHost(allNeuronsDevice_);
   dynamic_cast<AllSpikingNeurons*>(neurons.get())->copyNeuronDeviceSpikeHistoryToHost(allNeuronsDevice_);
@@ -225,7 +225,7 @@ void GPUSpikingModel::updateHistory()
 /// @param  count	The number of neurons.
 void GPUSpikingModel::allocSynapseImap( int count )
 {
-  SynapseIndexMap synapseIMapDevice;
+  EdgeIndexMap synapseIMapDevice;
 
   HANDLE_ERROR( cudaMalloc( ( void ** ) &synapseIMapDevice.outgoingSynapseBegin_, count * sizeof( BGSIZE ) ) );
   HANDLE_ERROR( cudaMalloc( ( void ** ) &synapseIMapDevice.outgoingSynapseCount_, count * sizeof( BGSIZE ) ) );
@@ -237,18 +237,18 @@ void GPUSpikingModel::allocSynapseImap( int count )
   HANDLE_ERROR( cudaMemset(synapseIMapDevice.incomingSynapseBegin_, 0, count * sizeof( BGSIZE ) ) );
   HANDLE_ERROR( cudaMemset(synapseIMapDevice.incomingSynapseCount_, 0, count * sizeof( BGSIZE ) ) );
 
-  HANDLE_ERROR( cudaMalloc( ( void ** ) &synapseIndexMapDevice_, sizeof( SynapseIndexMap ) ) );
-  HANDLE_ERROR( cudaMemcpy( synapseIndexMapDevice_, &synapseIMapDevice, sizeof( SynapseIndexMap ), 
+  HANDLE_ERROR( cudaMalloc( ( void ** ) &synapseIndexMapDevice_, sizeof( EdgeIndexMap ) ) );
+  HANDLE_ERROR( cudaMemcpy( synapseIndexMapDevice_, &synapseIMapDevice, sizeof( EdgeIndexMap ), 
         cudaMemcpyHostToDevice ) );
 }
 
 /// Deallocate device memory for synapse inverse map.
 void GPUSpikingModel::deleteSynapseImap(  )
 {
-  SynapseIndexMap synapseIMapDevice;
+  EdgeIndexMap synapseIMapDevice;
 
   HANDLE_ERROR( cudaMemcpy ( &synapseIMapDevice, synapseIndexMapDevice_, 
-        sizeof( SynapseIndexMap ), cudaMemcpyDeviceToHost ) );
+        sizeof( EdgeIndexMap ), cudaMemcpyDeviceToHost ) );
 
   HANDLE_ERROR( cudaFree( synapseIMapDevice.outgoingSynapseBegin_ ) );
   HANDLE_ERROR( cudaFree( synapseIMapDevice.outgoingSynapseCount_ ) );
@@ -261,21 +261,21 @@ void GPUSpikingModel::deleteSynapseImap(  )
   HANDLE_ERROR( cudaFree( synapseIndexMapDevice_ ) );
 }
 
-/// Copy SynapseIndexMap in host memory to SynapseIndexMap in device memory.
-/// @param  synapseIndexMapHost		Reference to the SynapseIndexMap in host memory.
-void GPUSpikingModel::copySynapseIndexMapHostToDevice(SynapseIndexMap &synapseIndexMapHost, int numNeurons)
+/// Copy EdgeIndexMap in host memory to EdgeIndexMap in device memory.
+/// @param  synapseIndexMapHost		Reference to the EdgeIndexMap in host memory.
+void GPUSpikingModel::copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numNeurons)
 {
-  shared_ptr<IAllSynapses> synapses = connections_->getSynapses();
-  int totalSynapseCount = dynamic_cast<AllSynapses*>(synapses.get())->totalSynapseCount_;
+  shared_ptr<IAllEdges> synapses = connections_->getEdges();
+  int totalSynapseCount = dynamic_cast<AllEdges*>(synapses.get())->totalEdgeCount_;
 
   if (totalSynapseCount == 0)
     return;
 
   // TODO: rename variable, DevicePointer
-  SynapseIndexMap synapseIMapDevice;
+  EdgeIndexMap synapseIMapDevice;
 
   HANDLE_ERROR( cudaMemcpy ( &synapseIMapDevice, synapseIndexMapDevice_, 
-        sizeof( SynapseIndexMap ), cudaMemcpyDeviceToHost ) );
+        sizeof( EdgeIndexMap ), cudaMemcpyDeviceToHost ) );
 
   // forward map
   HANDLE_ERROR( cudaMemcpy ( synapseIMapDevice.outgoingSynapseBegin_, 
@@ -306,7 +306,7 @@ void GPUSpikingModel::copySynapseIndexMapHostToDevice(SynapseIndexMap &synapseIn
         totalSynapseCount * sizeof( BGSIZE ), cudaMemcpyHostToDevice ) );
 
   HANDLE_ERROR( cudaMemcpy ( synapseIndexMapDevice_, &synapseIMapDevice, 
-        sizeof( SynapseIndexMap ), cudaMemcpyHostToDevice ) );
+        sizeof( EdgeIndexMap ), cudaMemcpyHostToDevice ) );
 }
 
 /// Calculate the sum of synaptic input to each neuron.
@@ -327,7 +327,7 @@ void GPUSpikingModel::copySynapseIndexMapHostToDevice(SynapseIndexMap &synapseIn
 /// @param[in] allSynapsesDevice      Pointer to Synapse structures in device memory.
 __global__ void calcSummationMapDevice(int totalVertices, 
 				       AllSpikingNeuronsDeviceProperties* __restrict__ allNeuronsDevice, 
-				       const SynapseIndexMap* __restrict__ synapseIndexMapDevice_, 
+				       const EdgeIndexMap* __restrict__ synapseIndexMapDevice_, 
 				       const AllSpikingSynapsesDeviceProperties* __restrict__ allSynapsesDevice)
 {
   // The usual thread ID calculation and guard against excess threads
@@ -365,19 +365,19 @@ __global__ void calcSummationMapDevice(int totalVertices,
 void GPUSpikingModel::copyGPUtoCPU()
 {
   // copy device synapse structs to host memory
-  connections_->getSynapses()->copySynapseDeviceToHost(allSynapsesDevice_);
+  connections_->getEdges()->copySynapseDeviceToHost(allSynapsesDevice_);
 }
 
 /// Copy CPU Synapse data to GPU.
 void GPUSpikingModel::copyCPUtoGPU()
 {
   // copy host synapse structs to device memory
-  connections_->getSynapses()->copySynapseHostToDevice(allSynapsesDevice_);
+  connections_->getEdges()->copySynapseHostToDevice(allSynapsesDevice_);
 }
 
 /// Print out SynapseProps on the GPU.
 void GPUSpikingModel::printGPUSynapsesPropsModel() const
 {  
-  connections_->getSynapses()->printGPUSynapsesProps(allSynapsesDevice_);
+  connections_->getEdges()->printGPUSynapsesProps(allSynapsesDevice_);
 }
 

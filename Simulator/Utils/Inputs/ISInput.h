@@ -1,7 +1,7 @@
 /**
  * @file ISInput.h
  * 
- * @ingroup Simulation/Utils/Inputs
+ * @ingroup Simulator/Utils/Inputs
  *
  * @brief An interface for stimulus input classes.
  *

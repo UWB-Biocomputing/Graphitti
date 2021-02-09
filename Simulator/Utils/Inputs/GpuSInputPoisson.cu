@@ -1,7 +1,7 @@
 /*
  * @file GpuSInputPoisson.cu
  *
- * @ingroup Simulation/Utils/Inputs
+ * @ingroup Simulator/Utils/Inputs
  *
  * @brief A class that performs stimulus input (implementation Poisson) on GPU.
  */
@@ -114,7 +114,7 @@ void GpuSInputPoisson::allocDeviceValues(IModel* model, SimulationInfo* psi, int
     HANDLE_ERROR( cudaMalloc ( &devStates_d, neuron_count * sizeof( curandState ) ) );
 
     // allocate memory for synapse index map and initialize it
-    SynapseIndexMap synapseIndexMap;
+    EdgeIndexMap edgeIndexMap;
     BGSIZE* incomingSynapseIndexMap = new BGSIZE[neuron_count];
 
     BGSIZE syn_i = 0;
@@ -122,10 +122,10 @@ void GpuSInputPoisson::allocDeviceValues(IModel* model, SimulationInfo* psi, int
     {
         incomingSynapseIndexMap[i] = syn_i;
     }
-    HANDLE_ERROR( cudaMalloc( ( void ** ) &synapseIndexMap.incomingSynapseIndexMap, neuron_count * sizeof( BGSIZE ) ) );
-    HANDLE_ERROR( cudaMemcpy ( synapseIndexMap.incomingSynapseIndexMap, incomingSynapseIndexMap, neuron_count * sizeof( BGSIZE ), cudaMemcpyHostToDevice ) ); 
-    HANDLE_ERROR( cudaMalloc( ( void ** ) &synapseIndexMapDevice, sizeof( SynapseIndexMap ) ) );
-    HANDLE_ERROR( cudaMemcpy ( synapseIndexMapDevice, &synapseIndexMap, sizeof( SynapseIndexMap ), cudaMemcpyHostToDevice ) );
+    HANDLE_ERROR( cudaMalloc( ( void ** ) &edgeIndexMap.incomingSynapseIndexMap, neuron_count * sizeof( BGSIZE ) ) );
+    HANDLE_ERROR( cudaMemcpy ( edgeIndexMap.incomingSynapseIndexMap, incomingSynapseIndexMap, neuron_count * sizeof( BGSIZE ), cudaMemcpyHostToDevice ) ); 
+    HANDLE_ERROR( cudaMalloc( ( void ** ) &synapseIndexMapDevice, sizeof( EdgeIndexMap ) ) );
+    HANDLE_ERROR( cudaMemcpy ( synapseIndexMapDevice, &edgeIndexMap, sizeof( EdgeIndexMap ), cudaMemcpyHostToDevice ) );
 
     delete[] incomingSynapseIndexMap;
 
@@ -147,9 +147,9 @@ void GpuSInputPoisson::deleteDeviceValues(IModel* model, SimulationInfo* psi )
     m_synapses->deleteSynapseDeviceStruct( allSynapsesDevice );
 
     // deallocate memory for synapse index map
-    SynapseIndexMap synapseIndexMap;
-    HANDLE_ERROR( cudaMemcpy ( &synapseIndexMap, synapseIndexMapDevice, sizeof( SynapseIndexMap ), cudaMemcpyDeviceToHost ) );
-    HANDLE_ERROR( cudaFree( synapseIndexMap.incomingSynapseIndexMap ) );
+    EdgeIndexMap edgeIndexMap;
+    HANDLE_ERROR( cudaMemcpy ( &edgeIndexMap, synapseIndexMapDevice, sizeof( EdgeIndexMap ), cudaMemcpyDeviceToHost ) );
+    HANDLE_ERROR( cudaFree( edgeIndexMap.incomingSynapseIndexMap ) );
     HANDLE_ERROR( cudaFree( synapseIndexMapDevice ) );
 }
 
@@ -170,16 +170,16 @@ __global__ void inputStimulusDevice( int n, int* nISIs_d, bool* masks_d, BGFLOAT
     if (masks_d[idx] == false)
         return;
 
-    BGSIZE iSyn = idx;
+    BGSIZE iEdg = idx;
 
     int rnISIs = nISIs_d[idx];    // load the value to a register
     if (--rnISIs <= 0)
     {
         // add a spike
-        uint32_t &delay_queue = allSynapsesDevice->delayQueue[iSyn];
-        int delayIdx = allSynapsesDevice->delayIdx[iSyn];
-        int ldelayQueue = allSynapsesDevice->ldelayQueue[iSyn];
-        int total_delay = allSynapsesDevice->total_delay[iSyn];
+        uint32_t &delay_queue = allSynapsesDevice->delayQueue[iEdg];
+        int delayIdx = allSynapsesDevice->delayIdx[iEdg];
+        int ldelayQueue = allSynapsesDevice->ldelayQueue[iEdg];
+        int total_delay = allSynapsesDevice->total_delay[iEdg];
 
         // Add to spike queue
 

@@ -1,25 +1,25 @@
 /**
- *  @file AllSynapses.h
+ *  @file AllEdges.h
  *
- *  @ingroup Simulation/Edges
+ *  @ingroup Simulator/Edges
  * 
- *  @brief A container of all synapse data
+ *  @brief A container of all edge data
  *
- *  The container holds synapse parameters of all synapses. 
- *  Each kind of synapse parameter is stored in a 2D array. Each item in the first 
- *  dimention of the array corresponds with each neuron, and each item in the second
- *  dimension of the array corresponds with a synapse parameter of each synapse of the neuron. 
- *  Bacause each neuron owns different number of synapses, the number of synapses 
- *  for each neuron is stored in a 1D array, synapse_counts.
+ *  The container holds edge parameters of all edges. 
+ *  Each kind of edge parameter is stored in a 2D array. Each item in the first 
+ *  dimention of the array corresponds with each vertex, and each item in the second
+ *  dimension of the array corresponds with a edge parameter of each edge of the vertex. 
+ *  Bacause each vertex owns different number of edges, the number of edges 
+ *  for each vertex is stored in a 1D array, synapse_counts.
  *
- *  For CUDA implementation, we used another structure, AllSynapsesDevice, where synapse
+ *  For CUDA implementation, we used another structure, AllSynapsesDevice, where edge
  *  parameters are stored in 1D arrays instead of 2D arrays, so that device functions
- *  can access these data less latency. When copying a synapse parameter, P[i][j],
+ *  can access these data less latency. When copying a edge parameter, P[i][j],
  *  from host to device, it is stored in P[i * max_synapses_per_neuron + j] in 
  *  AllSynapsesDevice structure.
  *
  *  The latest implementation uses the identical data struture between host and CUDA;
- *  that is, synapse parameters are stored in a 1D array, so we don't need conversion 
+ *  that is, edge parameters are stored in a 1D array, so we don't need conversion 
  *  when copying data between host and device memory.
  */
 
@@ -29,7 +29,7 @@
 
 #include "Global.h"
 #include "Core/Simulator.h"
-#include "IAllSynapses.h"
+#include "IAllEdges.h"
 
 // cereal
 #include <ThirdParty/cereal/types/vector.hpp>
@@ -41,16 +41,16 @@ typedef unsigned _int8 uint8_t;
 
 class IAllVertices;
 
-class AllSynapses : public IAllSynapses {
+class AllEdges : public IAllEdges {
 public:
-   AllSynapses();
+   AllEdges();
 
-   AllSynapses(const int numNeurons, const int maxSynapses);
+   AllEdges(const int numNeurons, const int maxSynapses);
 
-   virtual ~AllSynapses();
+   virtual ~AllEdges();
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
-   virtual void setupSynapses();
+   virtual void setupEdges();
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operation::op::loadParameters
@@ -62,37 +62,37 @@ public:
 
    ///  Reset time varying state vars and recompute decay.
    ///
-   ///  @param  iSyn     Index of the synapse to set.
+   ///  @param  iEdg     Index of the edge to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetSynapse(const BGSIZE iSyn, const BGFLOAT deltaT);
+   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT);
 
    ///  Adds a Synapse to the model, connecting two Neurons.
    ///
-   ///  @param  iSyn        Index of the synapse to be added.
+   ///  @param  iEdg        Index of the edge to be added.
    ///  @param  type        The type of the Synapse to add.
    ///  @param  srcNeuron   The Neuron that sends to this Synapse.
    ///  @param  destNeuron  The Neuron that receives from the Synapse.
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration
    virtual void
-   addSynapse(BGSIZE &iSyn, synapseType type, const int srcNeuron, const int destNeuron, BGFLOAT *sumPoint,
+   addEdge(BGSIZE &iEdg, synapseType type, const int srcNeuron, const int destNeuron, BGFLOAT *sumPoint,
               const BGFLOAT deltaT);
 
    ///  Create a Synapse and connect it to the model.
    ///
-   ///  @param  iSyn        Index of the synapse to set.
+   ///  @param  iEdg        Index of the edge to set.
    ///  @param  source      Coordinates of the source Neuron.
    ///  @param  dest        Coordinates of the destination Neuron.
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
-   virtual void createSynapse(const BGSIZE iSyn, int srcNeuron, int destNeuron, BGFLOAT *sumPoint, const BGFLOAT deltaT,
+   virtual void createEdge(const BGSIZE iEdg, int srcNeuron, int destNeuron, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               synapseType type) = 0;
 
-   ///  Create a synapse index map and returns it .
+   ///  Create a edge index map and returns it .
    ///
-   /// @return the created SynapseIndexMap
-   virtual SynapseIndexMap *createSynapseIndexMap();
+   /// @return the created EdgeIndexMap
+   virtual EdgeIndexMap *createSynapseIndexMap();
 
    ///  Get the sign of the synapseType.
    ///
@@ -104,33 +104,33 @@ public:
    virtual void printSynapsesProps() const;
 
    ///  Cereal serialization method
-   ///  (Serializes synapse weights, source neurons, and destination neurons)
+   ///  (Serializes edge weights, source vertices, and destination vertices)
    template<class Archive>
    void save(Archive &archive) const;
 
    ///  Cereal deserialization method
-   ///  (Deserializes synapse weights, source neurons, and destination neurons)
+   ///  (Deserializes edge weights, source vertices, and destination vertices)
    template<class Archive>
    void load(Archive &archive);
 
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///
-   ///  @param  numNeurons   Total number of neurons in the network.
-   ///  @param  maxSynapses  Maximum number of synapses per neuron.
-   virtual void setupSynapses(const int numNeurons, const int maxSynapses);
+   ///  @param  numNeurons   Total number of vertices in the network.
+   ///  @param  maxSynapses  Maximum number of edges per vertex.
+   virtual void setupEdges(const int numNeurons, const int maxSynapses);
 
    ///  Sets the data for Synapse to input's data.
    ///
    ///  @param  input  istream to read from.
-   ///  @param  iSyn   Index of the synapse to set.
-   virtual void readSynapse(istream &input, const BGSIZE iSyn);
+   ///  @param  iEdg   Index of the edge to set.
+   virtual void readSynapse(istream &input, const BGSIZE iEdg);
 
-   ///  Write the synapse data to the stream.
+   ///  Write the edge data to the stream.
    ///
    ///  @param  output  stream to print out to.
-   ///  @param  iSyn    Index of the synapse to print out.
-   virtual void writeSynapse(ostream &output, const BGSIZE iSyn) const;
+   ///  @param  iEdg    Index of the edge to print out.
+   virtual void writeSynapse(ostream &output, const BGSIZE iEdg) const;
 
    ///  Returns an appropriate synapseType object for the given integer.
    ///
@@ -144,110 +144,110 @@ protected:
 #if !defined(USE_GPU)
 public:
    ///  Advance all the Synapses in the simulation.
-   ///  Update the state of all synapses for a time step.
+   ///  Update the state of all edges for a time step.
    ///
    ///  @param  vertices   The Neuron list to search from.
-   ///  @param  synapseIndexMap   Pointer to SynapseIndexMap structure.
-   virtual void advanceSynapses(IAllVertices *vertices, SynapseIndexMap *synapseIndexMap);
+   ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
+   virtual void advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap);
 
-   ///  Remove a synapse from the network.
+   ///  Remove a edge from the network.
    ///
-   ///  @param  neuronIndex   Index of a neuron to remove from.
-   ///  @param  iSyn           Index of a synapse to remove.
-   virtual void eraseSynapse(const int neuronIndex, const BGSIZE iSyn);
+   ///  @param  neuronIndex   Index of a vertex to remove from.
+   ///  @param  iEdg           Index of a edge to remove.
+   virtual void eraseEdge(const int neuronIndex, const BGSIZE iEdg);
 
 #endif // !defined(USE_GPU)
 public:
-   /// The factor to adjust overlapping area to synapse weight.
+   /// The factor to adjust overlapping area to edge weight.
    static constexpr BGFLOAT SYNAPSE_STRENGTH_ADJUSTMENT = 1.0e-8;
 
-   ///  The location of the synapse.
+   ///  The location of the edge.
    int *sourceNeuronIndex_;
 
    ///  The coordinates of the summation point.
    int *destNeuronIndex_;
 
-   ///   The weight (scaling factor, strength, maximal amplitude) of the synapse.
+   ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
    BGFLOAT *W_;
 
-   ///  This synapse's summation point's address.
+   ///  This edge's summation point's address.
    BGFLOAT **summationPoint_;
 
    ///   Synapse type
    synapseType *type_;
 
    ///  The post-synaptic response is the result of whatever computation
-   ///  is going on in the synapse.
+   ///  is going on in the edge.
    BGFLOAT *psr_;
 
    ///  The boolean value indicating the entry in the array is in use.
    bool *inUse_;
 
-   ///  The number of (incoming) synapses for each neuron.
+   ///  The number of (incoming) edges for each vertex.
    ///  Note: Likely under a different name in GpuSim_struct, see synapse_count. -Aaron
    BGSIZE *synapseCounts_;
 
-   ///  The total number of active synapses.
-   BGSIZE totalSynapseCount_;
+   ///  The total number of active edges.
+   BGSIZE totalEdgeCount_;
 
-   ///  The maximum number of synapses for each neurons.
-   BGSIZE maxSynapsesPerNeuron_;
+   ///  The maximum number of edges for each vertex.
+   BGSIZE maxEdgesPerVertex_;
 
-   ///  The number of neurons
+   ///  The number of vertices
    ///  Aaron: Is this even supposed to be here?!
    ///  Usage: Used by destructor
-   int countNeurons_;
+   int countVertices_;
 };
 
 #if defined(USE_GPU)
 struct AllSynapsesDeviceProperties
 {
-        ///  The location of the synapse.
+        ///  The location of the edge.
         int *sourceNeuronIndex_;
 
         ///  The coordinates of the summation point.
         int *destNeuronIndex_;
 
-        ///   The weight (scaling factor, strength, maximal amplitude) of the synapse.
+        ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
          BGFLOAT *W_;
 
         ///  Synapse type
         synapseType *type_;
 
         ///  The post-synaptic response is the result of whatever computation
-        ///  is going on in the synapse.
+        ///  is going on in the edge.
         BGFLOAT *psr_;
 
         ///  The boolean value indicating the entry in the array is in use.
         bool *inUse_;
 
-        ///  The number of synapses for each neuron.
+        ///  The number of edges for each vertex.
         ///  Note: Likely under a different name in GpuSim_struct, see synapse_count. -Aaron
         BGSIZE *synapseCounts_;
 
-        ///  The total number of active synapses.
-        BGSIZE totalSynapseCount_;
+        ///  The total number of active edges.
+        BGSIZE totalEdgeCount_;
 
-        ///  The maximum number of synapses for each neurons.
-        BGSIZE maxSynapsesPerNeuron_;
+        ///  The maximum number of edges for each vertex.
+        BGSIZE maxEdgesPerVertex_;
 
-        ///  The number of neurons
+        ///  The number of vertices
         ///  Aaron: Is this even supposed to be here?!
         ///  Usage: Used by destructor
-        int countNeurons_;
+        int countVertices_;
 };
 #endif // defined(USE_GPU)
 
 ///  Cereal serialization method
-///  (Serializes synapse weights, source neurons, and destination neurons)
+///  (Serializes edge weights, source vertices, and destination vertices)
 template<class Archive>
-void AllSynapses::save(Archive &archive) const {
-   // uses vector to save synapse weights, source neurons, and destination neurons
+void AllEdges::save(Archive &archive) const {
+   // uses vector to save edge weights, source vertices, and destination vertices
    vector<BGFLOAT> WVector;
    vector<int> sourceNeuronLayoutIndexVector;
    vector<int> destNeuronLayoutIndexVector;
 
-   for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
+   for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       WVector.push_back(W_[i]);
       sourceNeuronLayoutIndexVector.push_back(sourceNeuronIndex_[i]);
       destNeuronLayoutIndexVector.push_back(destNeuronIndex_[i]);
@@ -258,10 +258,10 @@ void AllSynapses::save(Archive &archive) const {
 }
 
 ///  Cereal deserialization method
-///  (Deserializes synapse weights, source neurons, and destination neurons)
+///  (Deserializes edge weights, source vertices, and destination vertices)
 template<class Archive>
-void AllSynapses::load(Archive &archive) {
-   // uses vectors to load synapse weights, source neurons, and destination neurons
+void AllEdges::load(Archive &archive) {
+   // uses vectors to load edge weights, source vertices, and destination vertices
    vector<BGFLOAT> WVector;
    vector<int> sourceNeuronLayoutIndexVector;
    vector<int> destNeuronLayoutIndexVector;
@@ -270,15 +270,15 @@ void AllSynapses::load(Archive &archive) {
    archive(WVector, sourceNeuronLayoutIndexVector, destNeuronLayoutIndexVector);
 
    // check to see if serialized data sizes matches object sizes
-   if (WVector.size() != maxSynapsesPerNeuron_ * countNeurons_) {
+   if (WVector.size() != maxEdgesPerVertex_ * countVertices_) {
       cerr
-            << "Failed deserializing synapse weights, source neurons, and/or destination neurons. Please verify maxEdgesPerVertex and count_neurons data members in AllSynapses class."
+            << "Failed deserializing edge weights, source vertices, and/or destination vertices. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
             << endl;
       throw cereal::Exception("Deserialization Error");
    }
 
    // assigns serialized data to objects
-   for (int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
+   for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       W_[i] = WVector[i];
       sourceNeuronIndex_[i] = sourceNeuronLayoutIndexVector[i];
       destNeuronIndex_[i] = destNeuronLayoutIndexVector[i];

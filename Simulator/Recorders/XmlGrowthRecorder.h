@@ -1,7 +1,7 @@
 /**
  * @file XmlGrowthRecorder.h
  * 
- * @ingroup Simulation/Recorders
+ * @ingroup Simulator/Recorders
  *
  * @brief Header file for XmlGrowthRecorder.h
  *

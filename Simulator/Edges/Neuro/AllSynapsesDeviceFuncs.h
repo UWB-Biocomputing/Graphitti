@@ -1,7 +1,7 @@
 /**
  * @file AllSynapsesDeviceFuncs.h
  * 
- * @ingroup Simulation/Edges
+ * @ingroup Simulator/Edges
  *
  * @brief 
  */
@@ -24,24 +24,24 @@ extern __device__ enumClassSynapses classSynapses_d = undefClassSynapses;
 ///  Perform updating synapses for one time step.
 ///
 ///  @param[in] totalSynapseCount  Number of synapses.
-///  @param  synapseIndexMapDevice    GPU address of the SynapseIndexMap on device memory.
+///  @param  synapseIndexMapDevice    GPU address of the EdgeIndexMap on device memory.
 ///  @param[in] simulationStep        The current simulation step.
 ///  @param[in] deltaT                Inner simulation step duration.
 ///  @param[in] allSynapsesDevice     Pointer to Synapse structures in device memory.
-extern __global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, SynapseIndexMap* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSpikingSynapsesDeviceProperties* allSynapsesDevice );
+extern __global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, EdgeIndexMap* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSpikingSynapsesDeviceProperties* allSynapsesDevice );
 
 ///  CUDA code for advancing STDP synapses.
 ///  Perform updating synapses for one time step.
 ///
 ///  @param[in] totalSynapseCount  Number of synapses.
-///  @param  synapseIndexMapDevice    GPU address of the SynapseIndexMap on device memory.
+///  @param  synapseIndexMapDevice    GPU address of the EdgeIndexMap on device memory.
 ///  @param[in] simulationStep        The current simulation step.
 ///  @param[in] deltaT                Inner simulation step duration.
 ///  @param[in] allSynapsesDevice     Pointer to AllSTDPSynapsesDeviceProperties structures 
 ///                                   on device memory.
 ///  @param[in] allNeuronsDevice      GPU address of AllNeurons structures on device memory.
 ///  @param[in] maxSpikes             Maximum number of spikes per neuron per epoch.   
-extern __global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, SynapseIndexMap* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSTDPSynapsesDeviceProperties* allSynapsesDevice, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, int maxSpikes );
+extern __global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, EdgeIndexMap* synapseIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSTDPSynapsesDeviceProperties* allSynapsesDevice, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, int maxSpikes );
 
 /// Adjust the strength of the synapse or remove it from the synapse map if it has gone below
 /// zero.

@@ -1,7 +1,7 @@
 /**
  * @file ConnectionsFactory.cpp
  * 
- * @ingroup Simulation/Connections
+ * @ingroup Simulator/Connections
  *
  * @brief A factory class for creating Connections objects.
  */

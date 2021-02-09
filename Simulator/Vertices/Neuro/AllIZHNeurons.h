@@ -1,7 +1,7 @@
 /**
  * @file AllIZHNeurons.h
  * 
- * @ingroup Simulation/Vertices
+ * @ingroup Simulator/Vertices
  *
  * @brief A container of all Izhikevich neuron data
  * 
@@ -123,8 +123,8 @@ public:
        ///  @param  allNeuronsDevice       Reference to the allNeurons struct on device memory.
        ///  @param  allSynapsesDevice      Reference to the allSynapses struct on device memory.
        ///  @param  randNoise              Reference to the random noise array.
-       ///  @param  synapseIndexMapDevice  Reference to the SynapseIndexMap on device memory.
-       virtual void advanceVertices(IAllSynapses &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, SynapseIndexMap* synapseIndexMapDevice);
+       ///  @param  synapseIndexMapDevice  Reference to the EdgeIndexMap on device memory.
+       virtual void advanceVertices(IAllEdges &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice);
 
        ///  Allocate GPU memories to store all neurons' states,
        ///  and copy them from host to GPU memory.

@@ -1,7 +1,7 @@
 /**
  * @file Coordinate.h
  * 
- * @ingroup Simulation/Utils
+ * @ingroup Simulator/Utils
  * 
  * @brief A container for 2-dimensional coordinates.
  */

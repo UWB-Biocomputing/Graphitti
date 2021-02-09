@@ -1,7 +1,7 @@
 /**
  * @file ParameterManager.cpp
  * 
- * @ingroup Simulation/Utils
+ * @ingroup Simulator/Utils
  * 
  * @brief A class which contains and manages access to the XML 
  * parameter file used by a simulator instance at runtime.

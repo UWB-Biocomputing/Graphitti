@@ -1,7 +1,7 @@
 /**
  * @file AllSTDPSynapses_d.cu
  * 
- * @ingroup Simulation/Edges
+ * @ingroup Simulator/Edges
  *
  * @brief
  */
@@ -235,16 +235,16 @@ void AllSTDPSynapses::copyDeviceToHost( AllSTDPSynapsesDeviceProperties& allSyna
 ///  @param  allSynapsesDevice      GPU address of the AllSynapsesDeviceProperties struct 
 ///                                 on device memory.
 ///  @param  allNeuronsDevice       GPU address of the allNeurons struct on device memory.
-///  @param  synapseIndexMapDevice  GPU address of the SynapseIndexMap on device memory.
-void AllSTDPSynapses::advanceSynapses( void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice )
+///  @param  synapseIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
+void AllSTDPSynapses::advanceEdges( void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice )
 {
     int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
     // CUDA parameters
     const int threadsPerBlock = 256;
-    int blocksPerGrid = ( totalSynapseCount_ + threadsPerBlock - 1 ) / threadsPerBlock;
+    int blocksPerGrid = ( totalEdgeCount_ + threadsPerBlock - 1 ) / threadsPerBlock;
     // Advance synapses ------------->
-    advanceSTDPSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( totalSynapseCount_, (SynapseIndexMap*) synapseIndexMapDevice, g_simulationStep, Simulator::getInstance().getDeltaT(), 
+    advanceSTDPSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( totalEdgeCount_, (EdgeIndexMap*) synapseIndexMapDevice, g_simulationStep, Simulator::getInstance().getDeltaT(), 
                                 (AllSTDPSynapsesDeviceProperties*)allSynapsesDevice, (AllSpikingNeuronsDeviceProperties*)allNeuronsDevice, maxSpikes );
 }
     
@@ -271,9 +271,9 @@ void AllSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) cons
     AllSTDPSynapsesDeviceProperties allSynapsesProps;
 
     //allocate print out data members
-    BGSIZE size = maxSynapsesPerNeuron_ * countNeurons_;
+    BGSIZE size = maxEdgesPerVertex_ * countVertices_;
     if (size != 0) {
-        BGSIZE *synapseCountsPrint = new BGSIZE[countNeurons_];
+        BGSIZE *synapseCountsPrint = new BGSIZE[countVertices_];
         BGSIZE maxSynapsesPerNeuronPrint;
         BGSIZE totalSynapseCountPrint;
         int countNeuronsPrint;
@@ -289,7 +289,7 @@ void AllSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) cons
             inUsePrint[i] = false;
         }
 
-        for (int i = 0; i < countNeurons_; i++) {
+        for (int i = 0; i < countVertices_; i++) {
             synapseCountsPrint[i] = 0;
         }
 
@@ -312,14 +312,14 @@ void AllSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) cons
 
         // copy everything
         HANDLE_ERROR( cudaMemcpy ( &allSynapsesProps, allSynapsesDeviceProps, sizeof( AllSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( synapseCountsPrint, allSynapsesProps.synapseCounts_, countNeurons_ * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
-        maxSynapsesPerNeuronPrint = allSynapsesProps.maxSynapsesPerNeuron_;
-        totalSynapseCountPrint = allSynapsesProps.totalSynapseCount_;
-        countNeuronsPrint = allSynapsesProps.countNeurons_;
+        HANDLE_ERROR( cudaMemcpy ( synapseCountsPrint, allSynapsesProps.synapseCounts_, countVertices_ * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
+        maxSynapsesPerNeuronPrint = allSynapsesProps.maxEdgesPerVertex_;
+        totalSynapseCountPrint = allSynapsesProps.totalEdgeCount_;
+        countNeuronsPrint = allSynapsesProps.countVertices_;
 
-        // Set countNeurons_ to 0 to avoid illegal memory deallocation
+        // Set countVertices_ to 0 to avoid illegal memory deallocation
         // at AllSynapsesProps deconstructor.
-        allSynapsesProps.countNeurons_ = 0;
+        allSynapsesProps.countVertices_ = 0;
 
         HANDLE_ERROR( cudaMemcpy ( sourceNeuronIndexPrint, allSynapsesProps.sourceNeuronIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( destNeuronIndexPrint, allSynapsesProps.destNeuronIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
@@ -345,7 +345,7 @@ void AllSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) cons
         HANDLE_ERROR( cudaMemcpy ( munegPrint, allSynapsesProps.muneg_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( useFroemkeDanSTDPPrint, allSynapsesProps.useFroemkeDanSTDP_, size * sizeof( bool ), cudaMemcpyDeviceToHost ) );
 
-        for(int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
+        for(int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
             if (WPrint[i] != 0.0) {
                 cout << "GPU W[" << i << "] = " << WPrint[i];
                 cout << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
@@ -373,17 +373,17 @@ void AllSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) cons
             }
         }
 
-        for (int i = 0; i < countNeurons_; i++) {
+        for (int i = 0; i < countVertices_; i++) {
             cout << "GPU synapse_counts:" << "neuron[" << i  << "]" << synapseCountsPrint[i] << endl;
         }
 
         cout << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;
         cout << "GPU maxEdgesPerVertex:" << maxSynapsesPerNeuronPrint << endl;
-        cout << "GPU countNeurons_:" << countNeuronsPrint << endl;
+        cout << "GPU countVertices_:" << countNeuronsPrint << endl;
 
-        // Set countNeurons_ to 0 to avoid illegal memory deallocation
+        // Set countVertices_ to 0 to avoid illegal memory deallocation
         // at AllDSSynapsesProps deconstructor.
-        allSynapsesProps.countNeurons_ = 0;
+        allSynapsesProps.countVertices_ = 0;
 
         delete[] destNeuronIndexPrint;
         delete[] WPrint;

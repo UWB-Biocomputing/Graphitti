@@ -1,7 +1,7 @@
 /**
  * @file FSInput.h
  * 
- * @ingroup Simulation/Utils/Inputs
+ * @ingroup Simulator/Utils/Inputs
  *
  * @brief A factoy class for stimulus input classes.
  * 

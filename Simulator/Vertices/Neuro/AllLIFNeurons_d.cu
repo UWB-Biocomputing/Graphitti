@@ -1,7 +1,7 @@
 /**
  * @file AllLIFNeurons_d.cu
  * 
- * @ingroup Simulation/Vertices
+ * @ingroup Simulator/Vertices
  *
  * @brief
  */
@@ -20,8 +20,8 @@
 ///  @param  allSynapsesDevice      GPU address of the allSynapsesDeviceProperties struct 
 ///                                 on device memory.
 ///  @param  randNoise              Reference to the random noise array.
-///  @param  synapseIndexMapDevice  GPU address of the SynapseIndexMap on device memory.
-void AllLIFNeurons::advanceVertices( IAllSynapses &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, SynapseIndexMap* synapseIndexMapDevice )
+///  @param  synapseIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
+void AllLIFNeurons::advanceVertices( IAllEdges &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice )
 {
     int neuron_count = Simulator::getInstance().getTotalVertices();
     int maxSpikes = (int)((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));

@@ -1,7 +1,7 @@
 /**
  * @file Matrix.cpp
  * 
- * @ingroup Simulation/Utils/Matrix
+ * @ingroup Simulator/Utils/Matrix
  *
  * @brief Abstract base class for Matrices
  *

@@ -1,7 +1,7 @@
 /**
  * @file IAllVertices.h
  * 
- * @ingroup Simulation/Vertices
+ * @ingroup Simulator/Vertices
  *
  * @brief An interface for vertices classes.
  */
@@ -12,9 +12,9 @@ using namespace std;
 
 #include <iostream>
 
-#include "Core/SynapseIndexMap.h"
+#include "Core/EdgeIndexMap.h"
 
-class IAllSynapses;
+class IAllEdges;
 
 class Layout;
 
@@ -75,21 +75,21 @@ public:
        ///  @param  allNeuronsDevice       GPU address of the allVertices struct on device memory.
        ///  @param  allSynapsesDevice      GPU address of the allSynapses struct on device memory.
        ///  @param  randNoise              Reference to the random noise array.
-       ///  @param  synapseIndexMapDevice  GPU address of the SynapseIndexMap on device memory.
-       virtual void advanceVertices(IAllSynapses &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, SynapseIndexMap* synapseIndexMapDevice) = 0;
+       ///  @param  synapseIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
+       virtual void advanceVertices(IAllEdges &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice) = 0;
 
        ///  Set some parameters used for advanceVerticesDevice.
        ///
        ///  @param  synapses               Reference to the allSynapses struct on host memory.
-       virtual void setAdvanceVerticesDeviceParams(IAllSynapses &synapses) = 0;
+       virtual void setAdvanceVerticesDeviceParams(IAllEdges &synapses) = 0;
 #else // !defined(USE_GPU)
 public:
    ///  Update internal state of the indexed Neuron (called by every simulation step).
    ///  Notify outgoing synapses if vertex has fired.
    ///
    ///  @param  synapses         The Synapse list to search from.
-   ///  @param  synapseIndexMap  Reference to the SynapseIndexMap.
-   virtual void advanceVertices(IAllSynapses &synapses, const SynapseIndexMap *synapseIndexMap) = 0;
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   virtual void advanceVertices(IAllEdges &synapses, const EdgeIndexMap *edgeIndexMap) = 0;
 
 #endif // defined(USE_GPU)
 };

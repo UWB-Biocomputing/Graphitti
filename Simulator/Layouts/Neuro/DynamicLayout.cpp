@@ -1,7 +1,7 @@
 /**
  * @file DynamicLayout.cpp
  *
- * @ingroup Simulation/Layouts
+ * @ingroup Simulator/Layouts
  * 
  * @brief 
  */

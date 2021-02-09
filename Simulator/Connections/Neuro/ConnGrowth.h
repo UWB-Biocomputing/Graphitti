@@ -1,7 +1,7 @@
 /**
  * @file ConnGrowth.h
  * 
- * @ingroup Simulation/Connections
+ * @ingroup Simulator/Connections
  *
  * @brief The model of the activity dependent neurite outgrowth
  *
@@ -91,7 +91,7 @@ public:
    ///  @param  layout    Layout information of the neural network.
    ///  @param  neurons   The Neuron list to search from.
    ///  @param  synapses  The Synapse list to search from.
-   virtual void setupConnections(Layout *layout, IAllVertices *neurons, IAllSynapses *synapses);
+   virtual void setupConnections(Layout *layout, IAllVertices *neurons, IAllEdges *synapses);
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operations::op::loadParameters
@@ -129,12 +129,12 @@ public:
    ///
    ///  @param  numNeurons          number of neurons to update.
    ///  @param  vertoces             The AllVertices object.
-   ///  @param  synapses            The AllSynapses object.
+   ///  @param  synapses            The AllEdges object.
    ///  @param  allNeuronsDevice    GPU address of the allVertices struct in device memory.
    ///  @param  allSynapsesDevice   GPU address of the allSynapses struct in device memory.
    ///  @param  layout              The Layout object.
    virtual void updateSynapsesWeights(const int numNeurons,
-         IAllVertices &neurons, IAllSynapses &synapses,
+         IAllVertices &neurons, IAllEdges &synapses,
          AllSpikingNeuronsDeviceProperties* allNeuronsDevice,
          AllSpikingSynapsesDeviceProperties* allSynapsesDevice,
          Layout *layout);
@@ -146,12 +146,12 @@ public:
    ///
    ///  @param  numNeurons  Number of neurons to update.
    ///  @param  ineurons    The AllVertoces object.
-   ///  @param  isynapses   The AllSynapses object.
+   ///  @param  isynapses   The AllEdges object.
    ///  @param  layout      The Layout object.
    virtual void
    updateSynapsesWeights(const int numNeurons,
          IAllVertices &vertices,
-         IAllSynapses &synapses,
+         IAllEdges &synapses,
          Layout *layout);
 
 #endif

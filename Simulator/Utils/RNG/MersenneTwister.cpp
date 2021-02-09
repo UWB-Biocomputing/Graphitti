@@ -1,7 +1,7 @@
 /** 
 * @file MersenneTwister.cpp
 * 
-* @ingroup Simulation/Utils/RNG
+* @ingroup Simulator/Utils/RNG
 *
 * @brief 
 *

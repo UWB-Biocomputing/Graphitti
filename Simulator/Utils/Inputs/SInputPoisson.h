@@ -48,7 +48,7 @@ protected:
     int* nISIs;
 
     //! List of synapses
-    IAllSynapses *synapses_;
+    IAllEdges *synapses_;
 
     //! Masks for stimulus input
     bool* masks;

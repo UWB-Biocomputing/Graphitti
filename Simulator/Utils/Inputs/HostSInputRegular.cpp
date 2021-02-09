@@ -1,7 +1,7 @@
 /**
  * @file HostSInputRegular.cpp
  *
- * @ingroup Simulation/Utils/Inputs
+ * @ingroup Simulator/Utils/Inputs
  * 
  * @brief A class that performs stimulus input (implementation Regular).
  */

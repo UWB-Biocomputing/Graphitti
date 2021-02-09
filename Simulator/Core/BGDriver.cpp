@@ -1,7 +1,7 @@
 /**
  * @file BGDriver.cpp
  * 
- * @ingroup Simulation/Core
+ * @ingroup Simulator/Core
  *
  * @brief Orchestrates most functionality in the simulation.
  * 
@@ -25,7 +25,7 @@
 #include "log4cplus/configurator.h"
 #include "log4cplus/loggingmacros.h"
 
-#include "AllSynapses.h"
+#include "AllEdges.h"
 #include "CPUSpikingModel.h"
 #include "Inputs/FSInput.h"
 #include "IRecorder.h"
@@ -264,7 +264,7 @@ bool deserializeSynapses() {
    // Deserializes synapse weights along with each synapse's source vertex and destination vertex
    // Uses "try catch" to catch any cereal exception
    try {
-      archive(*(dynamic_cast<AllSynapses *>(connections->getSynapses().get())));
+      archive(*(dynamic_cast<AllEdges *>(connections->getEdges().get())));
    }
    catch (cereal::Exception e) {
       cerr << "Failed deserializing synapse weights, source vertices, and/or destination vertices." << endl;
@@ -273,12 +273,12 @@ bool deserializeSynapses() {
 
    // Creates synapses from weight
    connections->createSynapsesFromWeights(simulator.getTotalVertices(), layout.get(), (*layout->getVertices()),
-                                          (*connections->getSynapses()));
+                                          (*connections->getEdges()));
 
 #if defined(USE_GPU)
    // Copies CPU Synapse data to GPU after deserialization, if we're doing
     // a GPU-based simulation.
-    simulator.copyCPUSynapseToGPU();
+    simulator.copyCPUEdgeToGPU();
 #endif // USE_GPU
 
    // Creates synapse index map (includes copy CPU index map to GPU)
@@ -320,7 +320,7 @@ void serializeSynapses() {
     shared_ptr<Model> model = simulator.getModel();
 
    // Serializes synapse weights along with each synapse's source vertex and destination vertex
-   archive(*(dynamic_cast<AllSynapses *>(model->getConnections()->getSynapses().get())));
+   archive(*(dynamic_cast<AllEdges *>(model->getConnections()->getEdges().get())));
 
    // Serializes radii (only if it is a connGrowth model)
    if (dynamic_cast<ConnGrowth *>(model->getConnections().get()) != nullptr) {

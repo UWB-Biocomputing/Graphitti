@@ -20,12 +20,12 @@
  *
  *  @param  numNeurons         number of neurons to update.
  *  @param  vertices            The AllVertices object.
- *  @param  synapses           The AllSynapses object.
+ *  @param  synapses           The AllEdges object.
  *  @param  allNeuronsDevice   GPU address to the AllVertices struct in device memory.
  *  @param  allSynapsesDevice  GPU address to the allSynapses struct in device memory.
  *  @param  layout             The Layout object.
  */
-void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllVertices &vertices, IAllSynapses &synapses, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, Layout *layout)
+void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllVertices &vertices, IAllEdges &synapses, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, Layout *layout)
 {
         Simulator &simulator = Simulator::getInstance();
         // For now, we just set the weights to equal the areas. We will later

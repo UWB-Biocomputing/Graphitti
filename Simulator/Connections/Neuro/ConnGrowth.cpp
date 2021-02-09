@@ -1,7 +1,7 @@
 /**
  * @file ConnGrowth.cpp
  * 
- * @ingroup Simulation/Connections
+ * @ingroup Simulator/Connections
  * 
  * @brief
  *
@@ -46,7 +46,7 @@
 
 #include "ConnGrowth.h"
 #include "ParseParamError.h"
-#include "IAllSynapses.h"
+#include "IAllEdges.h"
 #include "XmlGrowthRecorder.h"
 #include "AllSpikingNeurons.h"
 #include "Matrix/CompleteMatrix.h"
@@ -94,7 +94,7 @@ ConnGrowth::~ConnGrowth() {
 ///  @param  layout    Layout information of the neural network.
 ///  @param  vertices   The vertex list to search from.
 ///  @param  synapses  The Synapse list to search from.
-void ConnGrowth::setupConnections(Layout *layout, IAllVertices *vertices, IAllSynapses *synapses) {
+void ConnGrowth::setupConnections(Layout *layout, IAllVertices *vertices, IAllEdges *synapses) {
    int numNeurons = Simulator::getInstance().getTotalVertices();
    radiiSize_ = numNeurons;
 
@@ -247,12 +247,12 @@ void ConnGrowth::updateOverlap(BGFLOAT numNeurons, Layout *layout) {
 ///
 ///  @param  numNeurons  Number of neurons to update.
 ///  @param  ivertices    the AllVertices object.
-///  @param  isynapses   the AllSynapses object.
+///  @param  isynapses   the AllEdges object.
 ///  @param  layout      the Layout object.
-void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllVertices &ivertices, IAllSynapses &isynapses,
+void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllVertices &ivertices, IAllEdges &isynapses,
                                        Layout *layout) {
    AllVertices &vertices = dynamic_cast<AllVertices &>(ivertices);
-   AllSynapses &synapses = dynamic_cast<AllSynapses &>(isynapses);
+   AllEdges &synapses = dynamic_cast<AllEdges &>(isynapses);
 
    // For now, we just set the weights to equal the areas. We will later
    // scale it and set its sign (when we index and get its sign).
@@ -277,11 +277,11 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllVertices &ivert
          // for each existing synapse
          BGSIZE synapseCounts = synapses.synapseCounts_[destNeuron];
          BGSIZE synapse_adjusted = 0;
-         BGSIZE iSyn = Simulator::getInstance().getMaxSynapsesPerNeuron() * destNeuron;
-         for (BGSIZE synapseIndex = 0; synapse_adjusted < synapseCounts; synapseIndex++, iSyn++) {
-            if (synapses.inUse_[iSyn] == true) {
+         BGSIZE iEdg = Simulator::getInstance().getMaxSynapsesPerNeuron() * destNeuron;
+         for (BGSIZE synapseIndex = 0; synapse_adjusted < synapseCounts; synapseIndex++, iEdg++) {
+            if (synapses.inUse_[iEdg] == true) {
                // if there is a synapse between a and b
-               if (synapses.sourceNeuronIndex_[iSyn] == srcNeuron) {
+               if (synapses.sourceNeuronIndex_[iEdg] == srcNeuron) {
                   connected = true;
                   adjusted++;
                   // adjust the strength of the synapse or remove
@@ -289,16 +289,16 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllVertices &ivert
                   // zero.
                   if ((*W_)(srcNeuron, destNeuron) <= 0) {
                      removed++;
-                     synapses.eraseSynapse(destNeuron, iSyn);
+                     synapses.eraseEdge(destNeuron, iEdg);
                   } else {
                      // adjust
                      // SYNAPSE_STRENGTH_ADJUSTMENT is 1.0e-8;
-                     synapses.W_[iSyn] = (*W_)(srcNeuron, destNeuron) *
-                                         synapses.synSign(type) * AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
+                     synapses.W_[iEdg] = (*W_)(srcNeuron, destNeuron) *
+                                         synapses.synSign(type) * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 
                      LOG4CPLUS_DEBUG(fileLogger_, "Weight of rgSynapseMap" <<
                                                                            "[" << synapseIndex << "]: " <<
-                                                                           synapses.W_[iSyn]);
+                                                                           synapses.W_[iEdg]);
                   }
                }
                synapse_adjusted++;
@@ -313,12 +313,12 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllVertices &ivert
             BGFLOAT *sumPoint = &(vertices.summationMap_[destNeuron]);
             added++;
 
-            BGSIZE iSyn;
-            synapses.addSynapse(iSyn, type, srcNeuron, destNeuron, sumPoint,
+            BGSIZE iEdg;
+            synapses.addEdge(iEdg, type, srcNeuron, destNeuron, sumPoint,
                                 Simulator::getInstance().getDeltaT());
-            synapses.W_[iSyn] =
+            synapses.W_[iEdg] =
                   (*W_)(srcNeuron, destNeuron) * synapses.synSign(type) *
-                  AllSynapses::SYNAPSE_STRENGTH_ADJUSTMENT;
+                  AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 
          }
       }

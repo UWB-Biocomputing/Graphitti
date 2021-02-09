@@ -3,7 +3,7 @@
  * 
  * @brief CSS432 UDP Socket Class
  *
- * @ingroup Simulation/Utils
+ * @ingroup Simulator/Utils
  */
 
 #include "Timer.h"

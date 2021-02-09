@@ -1,7 +1,7 @@
 /**
  * @file IRecorder.h
  *
- * @ingroup Simulation/Recorders
+ * @ingroup Simulator/Recorders
  *
  * @brief An interface for recording spikes history
  */

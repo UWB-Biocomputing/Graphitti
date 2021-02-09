@@ -1,7 +1,7 @@
 /**
  * @file GpuSInputRegular.cu
  *
- * @ingroup Simulation/Edges
+ * @ingroup Simulator/Edges
  * 
  * @brief A class that performs stimulus input (implementation Regular) on GPU.
  */

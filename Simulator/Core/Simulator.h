@@ -4,7 +4,7 @@
  * @brief Platform independent base class for the Brain Grid simulator.
  * Simulator is a singleton class (a class that can only have one object)
  *
- * @ingroup Simulation/Core
+ * @ingroup Simulator/Core
  */
 
 #pragma once
@@ -44,9 +44,9 @@ public:
 
    void printParameters() const; /// Prints loaded parameters to logging file.
 
-   void copyGPUSynapseToCPU(); /// Copy GPU Synapse data to CPU.
+   void copyGPUSynapseToCPU(); /// Copy GPU Edge data to CPU.
 
-   void copyCPUSynapseToGPU(); /// Copy CPU Synapse data to GPU.
+   void copyCPUEdgeToGPU(); /// Copy CPU Edge data to GPU.
 
    void reset(); /// Reset simulation objects.
 
@@ -151,7 +151,7 @@ private:
 
    int maxFiringRate_;  /// Maximum firing rate. **GPU Only**
 
-   int maxSynapsesPerNeuron_;  /// Maximum number of synapses per neuron. **GPU Only**
+   int maxEdgesPerVertex_;  /// Maximum number of synapses per neuron. **GPU Only**
 
    BGFLOAT deltaT_;   /// Inner Simulation Step Duration, purely investigative.
 

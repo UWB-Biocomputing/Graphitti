@@ -1,7 +1,7 @@
 /**
  * @file ConnStatic.cpp
  *
- * @ingroup Simulation/Connections
+ * @ingroup Simulator/Connections
  * 
  * @brief The model of the small world network
  */
@@ -9,9 +9,9 @@
 
 #include "ConnStatic.h"
 #include "ParseParamError.h"
-#include "IAllSynapses.h"
+#include "IAllEdges.h"
 #include "AllVertices.h"
-#include "AllSynapses.h"
+#include "AllEdges.h"
 #include "OperationManager.h"
 
 #include "XmlRecorder.h"
@@ -40,7 +40,7 @@ ConnStatic::~ConnStatic() {
 ///  @param  layout    Layout information of the neural network.
 ///  @param  vertices   The Vertex list to search from.
 ///  @param  synapses  The Synapse list to search from.
-void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, IAllSynapses *synapses) {
+void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, IAllEdges *synapses) {
    int numNeurons = Simulator::getInstance().getTotalVertices();
    vector<DistDestVertex> distDestNeurons[numNeurons];
 
@@ -75,16 +75,16 @@ void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, IAllSy
          LOG4CPLUS_DEBUG(fileLogger_, "Source: " << srcNeuron << " Dest: " << destNeuron << " Dist: "
                                                  << distDestNeurons[srcNeuron][i].dist);
 
-         BGSIZE iSyn;
-         synapses->addSynapse(iSyn, type, srcNeuron, destNeuron, sumPoint, Simulator::getInstance().getDeltaT());
+         BGSIZE iEdg;
+         synapses->addEdge(iEdg, type, srcNeuron, destNeuron, sumPoint, Simulator::getInstance().getDeltaT());
          added++;
 
          // set synapse weight
          // TODO: we need another synaptic weight distibution mode (normal distribution)
          if (synapses->synSign(type) > 0) {
-            dynamic_cast<AllSynapses *>(synapses)->W_[iSyn] = rng.inRange(excWeight_[0], excWeight_[1]);
+            dynamic_cast<AllEdges *>(synapses)->W_[iEdg] = rng.inRange(excWeight_[0], excWeight_[1]);
          } else {
-            dynamic_cast<AllSynapses *>(synapses)->W_[iSyn] = rng.inRange(inhWeight_[0], inhWeight_[1]);
+            dynamic_cast<AllEdges *>(synapses)->W_[iEdg] = rng.inRange(inhWeight_[0], inhWeight_[1]);
          }
       }
    }

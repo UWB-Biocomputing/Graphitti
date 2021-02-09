@@ -1,7 +1,7 @@
 /**
  * @file LayoutFactory.cpp
  *
- * @ingroup Simulation/Layouts
+ * @ingroup Simulator/Layouts
  * 
  * @brief  A factory class for creating Layout objects.
  */

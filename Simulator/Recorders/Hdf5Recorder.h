@@ -1,7 +1,7 @@
 /**
  * @file Hdf5Recorder.h
  * 
- * @ingroup Simulation/Recorders
+ * @ingroup Simulator/Recorders
  *
  * @brief An implementation for recording spikes history on hdf5 file
  *

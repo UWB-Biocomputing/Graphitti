@@ -1,7 +1,7 @@
 /**
  * @file EdgesFactory.h
  * 
- * @ingroup Simulation/Edges
+ * @ingroup Simulator/Edges
  *
  * @brief A factory class for creating Edges objects.
  */
@@ -13,7 +13,7 @@
 #include <string>
 
 #include "Global.h"
-#include "IAllSynapses.h"
+#include "IAllEdges.h"
 
 using namespace std;
 
@@ -28,7 +28,7 @@ public:
    }
 
    // Invokes constructor for desired concrete class
-   shared_ptr<IAllSynapses> createEdges(const string &className);
+   shared_ptr<IAllEdges> createEdges(const string &className);
 
    // Delete these methods because they can cause copy instances of the singleton when using threads.
    EdgesFactory(EdgesFactory const &) = delete;
@@ -39,10 +39,10 @@ private:
    EdgesFactory();
 
    /// Pointer to edges instance
-   shared_ptr<IAllSynapses> edgesInstance_;
+   shared_ptr<IAllEdges> edgesInstance_;
 
    /// Defines function type for usage in internal map
-   typedef IAllSynapses *(*CreateFunction)(void);
+   typedef IAllEdges *(*CreateFunction)(void);
 
    /// Defines map between class name and corresponding ::Create() function.
    typedef map<string, CreateFunction> EdgesFunctionMap;
@@ -51,7 +51,7 @@ private:
    EdgesFunctionMap createFunctions;
 
    /// Retrieves and invokes correct ::Create() function.
-   IAllSynapses *invokeCreateFunction(const string &className);
+   IAllEdges *invokeCreateFunction(const string &className);
 
    /// Register edges class and it's create function to the factory.
    void registerClass(const string &className, CreateFunction function);

@@ -4,7 +4,7 @@
  * @brief Platform independent base class for the Brain Grid simulator.
  * Simulator is a singleton class (a class that can only have one object)
  *
- * @ingroup Simulation/Core
+ * @ingroup Simulator/Core
  */
 
 #include "Simulator.h"
@@ -81,7 +81,7 @@ void Simulator::loadParameters() {
    ParameterManager::getInstance().getBGFloatByXpath("//SimParams/epochDuration/text()", epochDuration_);
    ParameterManager::getInstance().getIntByXpath("//SimParams/numEpochs/text()", numEpochs_);
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxFiringRate/text()", maxFiringRate_);
-   ParameterManager::getInstance().getIntByXpath("//SimConfig/maxEdgesPerVertex/text()", maxSynapsesPerNeuron_);
+   ParameterManager::getInstance().getIntByXpath("//SimConfig/maxEdgesPerVertex/text()", maxEdgesPerVertex_);
    ParameterManager::getInstance().getLongByXpath("//Seed/value/text()", seed_);
 
    // Result file name can be set by the command line arguments so check for default string value as to not overwrite it
@@ -99,7 +99,7 @@ void Simulator::printParameters() const {
                                           << "\tTime between growth updates (in seconds): " << epochDuration_ << endl
                                           << "\tNumber of epochs to run: " << numEpochs_ << endl
                                           << "\tMax firing rate: " << maxFiringRate_ << endl
-                                          << "\tMax synapses per neuron: " << maxSynapsesPerNeuron_ << endl
+                                          << "\tMax edges per vertex: " << maxEdgesPerVertex_ << endl
                                           << "\tSeed: " << seed_ << endl
                                           << "\tResult file path: " << resultFileName_ << endl << endl);
 }
@@ -112,7 +112,7 @@ void Simulator::copyGPUSynapseToCPU() {
 }
 
 /// Copy CPU Synapse data to GPU.
-void Simulator::copyCPUSynapseToGPU() {
+void Simulator::copyCPUEdgeToGPU() {
    // ToDo: Delete this method and implement using OperationManager
    // model->copyCPUSynapseToGPUModel();
 }
@@ -222,7 +222,7 @@ bool Simulator::instantiateSimulatorObjects() {
    // Perform check on all instantiated objects.
    if (!model_
        || !model_->getConnections()
-       || !model_->getConnections()->getSynapses()
+       || !model_->getConnections()->getEdges()
        || !model_->getLayout()
        || !model_->getLayout()->getVertices()
        || !model_->getRecorder()) {
@@ -268,7 +268,7 @@ BGFLOAT Simulator::getEpochDuration() const { return epochDuration_; }
 
 int Simulator::getMaxFiringRate() const { return maxFiringRate_; } /// **GPU Only**
 
-int Simulator::getMaxSynapsesPerNeuron() const { return maxSynapsesPerNeuron_; } ///  **GPU Only.**
+int Simulator::getMaxSynapsesPerNeuron() const { return maxEdgesPerVertex_; } ///  **GPU Only.**
 
 BGFLOAT Simulator::getDeltaT() const { return deltaT_; }
 
