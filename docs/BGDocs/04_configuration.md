@@ -39,7 +39,7 @@ Take a look at **test-tiny.xml** file that is under  `BrainGrid/validation`  dir
    <!-- Simulation Parameters -->
    <SimParams Tsim="1.0" numSims="1"/>
    <!-- Simulation Configuration Parameters -->
-   <SimConfig maxFiringRate="200" maxSynapsesPerNeuron="200"/>
+   <SimConfig maxFiringRate="200" maxEdgesPerVertex="200"/>
    <!-- Random seed - set to zero to use /dev/random -->
    <!-- TODO: implement support for this -->
    <Seed value="1"/>
@@ -118,7 +118,7 @@ The first set of parameters that BrainGrid expects out of this file is stored in
 
 * **PoolSize**: the three dimensional grid of neurons' parameters - expects an x (how many neurons are on the x axis), a y (how many neurons are on the y axis) and a z (not currently used). These three numbers together form a network of neurons that is x by y by z neurons (though in reality, the z dimension is not currently implemented).
 * **SimParams**: the time configurations - expects a Tsim, which is how much time the simulation is simulating (in seconds) and a numSims, which is how many times to run the simulation (each simulation cycle picks up where the previous one left off)
-* **SimConfig**: the maxFiringRate of a neuron and the maxSynapsesPerNeuron (the limitations of the simulation). Note the rate is in Hz.
+* **SimConfig**: the maxFiringRate of a neuron and the maxEdgesPerVertex (the limitations of the simulation). Note the rate is in Hz.
 * **Seed**: a random seed for the random generator.
 * **OutputParams**: requires stateOutputFileName, which is where the simulator will store the output file.
 

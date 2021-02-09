@@ -6,7 +6,7 @@
  */
 void Layout::setupLayout(const SimulationInfo *sim_info)
 {
-    int num_neurons = sim_info->totalNeurons;
+    int num_neurons = sim_info->totalVertices;
 
 // alloc memory
     xloc = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, num_neurons);

@@ -11,11 +11,11 @@
 
  new design has globals that the neurons need to grab (local copies)
  we could debate if local copies or val from simulator when needed. not issue because constant. doesnt change.
-void AllNeurons::setupNeurons(SimulationInfo *sim_info)
+void AllVertices::setupVertices(SimulationInfo *sim_info)
 {
     // dont create object for separate neurons. object needs to know number of neurons
     //
-    size = sim_info->totalNeurons;
+    size = sim_info->totalVertices;
     // TODO: Rename variables for easier identification
 
     // summation map - summation points for neuron. allocated here. setup methods are also allocating internal storage.
@@ -45,9 +45,9 @@ neurons in crustaceans control motor activity of stomachs, etc.
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllSpikingNeurons::setupNeurons(SimulationInfo *sim_info)
+void AllSpikingNeurons::setupVertices(SimulationInfo *sim_info)
 {
-    AllNeurons::setupNeurons(sim_info);
+    AllVertices::setupVertices(sim_info);
 
     // TODO: Rename variables for easier identification
     hasFired = new bool[size];
@@ -61,7 +61,7 @@ void AllSpikingNeurons::setupNeurons(SimulationInfo *sim_info)
         spikeCount[i] = 0;
         spikeCountOffset[i] = 0;
     }
-    // seems to be duplicate of what is in allneurons::setup
+    // seems to be duplicate of what is in allvertices::setup
     sim_info->pSummationMap = summation_map;
 }
 
@@ -77,9 +77,9 @@ Captures characteristics of spiking neurons. All IF Neurons .cpp is implem.
  *
  *  @param  sim_info  SimulationInfo class to read information from.
  */
-void AllIFNeurons::setupNeurons(SimulationInfo *sim_info)
+void AllIFNeurons::setupVertices(SimulationInfo *sim_info)
 {
-    AllSpikingNeurons::setupNeurons(sim_info);
+    AllSpikingNeurons::setupVertices(sim_info);
 
     // TODO: Rename variables for easier identification
     C1 = new BGFLOAT[size];

@@ -8,10 +8,11 @@
 
 #include "gtest/gtest.h"
 
-#include "Simulation/Core/SynapseIndexMap.h"
+//#include "Simulation/Core/SynapseIndexMap.h"
+#include "SynapseIndexMap.h"
 
-/// Static variable used for neuron count initialization of the SynapseIndexMap in the tests
-static int NEURON_COUNT = 50;
+/// Static variable used for vertex count initialization of the SynapseIndexMap in the tests
+static int VERTEX_COUNT = 50;
 
 /// Static variable used for synapse count initialization of the SynapseIndexMap in the tests
 static int SYNAPSE_COUNT = 100;
@@ -19,7 +20,7 @@ static int SYNAPSE_COUNT = 100;
 /// Testing object with initialized SynapseIndexMap. Used to reduce reused code.
 struct SynapseIndexMapTestObject : public testing::Test {
     SynapseIndexMapTestObject() {
-        synapseIndexMap = new SynapseIndexMap(NEURON_COUNT, SYNAPSE_COUNT);
+        synapseIndexMap = new SynapseIndexMap(VERTEX_COUNT, SYNAPSE_COUNT);
     }
 
     SynapseIndexMap *synapseIndexMap;
@@ -42,11 +43,11 @@ TEST_F(SynapseIndexMapTestObject, OutgoingSynapseMapInitialiedSuccessfully) {
 }
 
 TEST_F(SynapseIndexMapTestObject, OutgoingSynapseBeginInitialiedSuccessfully) {
-    //EXPECT_EQ(sizeof(synapseIndexMap->outgoingSynapseBegin_) / sizeof(synapseIndexMap->outgoingSynapseBegin_[0]) , NEURON_COUNT);
+    //EXPECT_EQ(sizeof(synapseIndexMap->outgoingSynapseBegin_) / sizeof(synapseIndexMap->outgoingSynapseBegin_[0]) , VERTEX_COUNT);
 }
 
 TEST_F(SynapseIndexMapTestObject, OutgoingSynapseCountInitialiedSuccessfully) {
-    //EXPECT_EQ(sizeof(synapseIndexMap->outgoingSynapseCount_) / sizeof(synapseIndexMap->outgoingSynapseCount_[0]), NEURON_COUNT);
+    //EXPECT_EQ(sizeof(synapseIndexMap->outgoingSynapseCount_) / sizeof(synapseIndexMap->outgoingSynapseCount_[0]), VERTEX_COUNT);
 }
 
 TEST_F(SynapseIndexMapTestObject, IncomingSynapseIndexMapInitialiedSuccessfully) {
@@ -54,10 +55,10 @@ TEST_F(SynapseIndexMapTestObject, IncomingSynapseIndexMapInitialiedSuccessfully)
 }
 
 TEST_F(SynapseIndexMapTestObject, IncomingSynapseBeginInitialiedSuccessfully) {
-    //EXPECT_EQ(sizeof(synapseIndexMap->incomingSynapseBegin_) / sizeof(synapseIndexMap->incomingSynapseBegin_[0]), NEURON_COUNT);
+    //EXPECT_EQ(sizeof(synapseIndexMap->incomingSynapseBegin_) / sizeof(synapseIndexMap->incomingSynapseBegin_[0]), VERTEX_COUNT);
 }
 
 TEST_F(SynapseIndexMapTestObject, IncomingSynapseCountInitializedSuccessfully) {
-    //EXPECT_EQ(sizeof(synapseIndexMap->incomingSynapseCount_) / sizeof(synapseIndexMap->incomingSynapseCount_[0]), NEURON_COUNT);
+    //EXPECT_EQ(sizeof(synapseIndexMap->incomingSynapseCount_) / sizeof(synapseIndexMap->incomingSynapseCount_[0]), VERTEX_COUNT);
 }
 

@@ -12,8 +12,10 @@
 #include "gtest/gtest.h"
 
 #include "OperationManagerTestingClass.h"
-#include "Simulation/Core/OperationManager.h"
-#include "Simulation/Core/Operations.h"
+//#include "Simulation/Core/OperationManager.h"
+//#include "Simulation/Core/Operations.h"
+#include "OperationManager.h"
+#include "Operations.h"
 #include "Layout.h"
 
 TEST(OperationManager, GetInstanceReturnsInstance) {

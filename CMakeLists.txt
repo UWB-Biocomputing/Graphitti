@@ -33,20 +33,24 @@ add_compile_definitions(TIXML_USE_STL)
 # Used to define file paths for #include definitions. For example you can write:
 # #include "Simulator.h"
 # rather than:
-# #include "Simulation/Core/Simulator.h"
-# if the file path "Simulation/Core" is in the following statement.
+# #include "Simulator/Core/Simulator.h"
+# if the file path "Simulator/Core" is in the following statement.
 include_directories(
         ../SummerOfBrain
-        Simulation
-        Simulation/Connections
-        Simulation/Core
-        Simulation/Core/FunctionNodes
-        Simulation/Edges
+        Simulator
+        Simulator/Connections
+        Simulator/Core
+        Simulator/Core/FunctionNodes
+        Simulator/Edges
+        Simulator/Edges/Neuro
+        Simulator/Edges/NG911
         # include subdirectories
-        Simulation/Layouts
-        Simulation/Recorders
-        Simulation/Vertices
-        Simulation/Utils
+        Simulator/Layouts
+        Simulator/Recorders
+        Simulator/Vertices
+        Simulator/Vertices/Neuro
+        Simulator/Vertices/NG911
+        Simulator/Utils
         Testing
         ThirdParty
         ThirdParty/cereal
@@ -54,7 +58,7 @@ include_directories(
         ThirdParty/log4cplus-2.0.2/include)
 
 # Used to locate and run other CMakeLists.txt files for further compilation of the project.
-add_subdirectory(Simulation)
+add_subdirectory(Simulator)
 add_subdirectory(ThirdParty)
 
 # Googletest subdirectories support
@@ -63,7 +67,7 @@ include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
 # ------ SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
-add_executable(braingrid Simulation/Core/BGDriver.cpp)
+add_executable(braingrid Simulator/Core/BGDriver.cpp)
 
 # ------ TESTS EXECUTABLE ------
 # Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
