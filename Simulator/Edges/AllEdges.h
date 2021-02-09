@@ -12,11 +12,11 @@
  *  Bacause each vertex owns different number of edges, the number of edges 
  *  for each vertex is stored in a 1D array, synapse_counts.
  *
- *  For CUDA implementation, we used another structure, AllSynapsesDevice, where edge
+ *  For CUDA implementation, we used another structure, AllEdgesDevice, where edge
  *  parameters are stored in 1D arrays instead of 2D arrays, so that device functions
  *  can access these data less latency. When copying a edge parameter, P[i][j],
  *  from host to device, it is stored in P[i * max_synapses_per_neuron + j] in 
- *  AllSynapsesDevice structure.
+ *  AllEdgesDevice structure.
  *
  *  The latest implementation uses the identical data struture between host and CUDA;
  *  that is, edge parameters are stored in a 1D array, so we don't need conversion 
@@ -45,7 +45,7 @@ class AllEdges : public IAllEdges {
 public:
    AllEdges();
 
-   AllEdges(const int numNeurons, const int maxSynapses);
+   AllEdges(const int numVertices, const int maxSynapses);
 
    virtual ~AllEdges();
 
@@ -70,12 +70,12 @@ public:
    ///
    ///  @param  iEdg        Index of the edge to be added.
    ///  @param  type        The type of the Synapse to add.
-   ///  @param  srcNeuron   The Neuron that sends to this Synapse.
-   ///  @param  destNeuron  The Neuron that receives from the Synapse.
+   ///  @param  srcVertex   The Neuron that sends to this Synapse.
+   ///  @param  destVertex  The Neuron that receives from the Synapse.
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration
    virtual void
-   addEdge(BGSIZE &iEdg, synapseType type, const int srcNeuron, const int destNeuron, BGFLOAT *sumPoint,
+   addEdge(BGSIZE &iEdg, synapseType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
               const BGFLOAT deltaT);
 
    ///  Create a Synapse and connect it to the model.
@@ -86,19 +86,19 @@ public:
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcNeuron, int destNeuron, BGFLOAT *sumPoint, const BGFLOAT deltaT,
+   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               synapseType type) = 0;
 
    ///  Create a edge index map and returns it .
    ///
    /// @return the created EdgeIndexMap
-   virtual EdgeIndexMap *createSynapseIndexMap();
+   virtual EdgeIndexMap *createEdgeIndexMap();
 
    ///  Get the sign of the synapseType.
    ///
    ///  @param    type    synapseType I to I, I to E, E to I, or E to E
    ///  @return   1 or -1, or 0 if error
-   int synSign(const synapseType type);
+   int edgSign(const synapseType type);
 
    ///  Prints SynapsesProps data to console.
    virtual void printSynapsesProps() const;
@@ -116,15 +116,15 @@ public:
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///
-   ///  @param  numNeurons   Total number of vertices in the network.
+   ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxSynapses  Maximum number of edges per vertex.
-   virtual void setupEdges(const int numNeurons, const int maxSynapses);
+   virtual void setupEdges(const int numVertices, const int maxSynapses);
 
    ///  Sets the data for Synapse to input's data.
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the edge to set.
-   virtual void readSynapse(istream &input, const BGSIZE iEdg);
+   virtual void readEdge(istream &input, const BGSIZE iEdg);
 
    ///  Write the edge data to the stream.
    ///
@@ -184,7 +184,7 @@ public:
    bool *inUse_;
 
    ///  The number of (incoming) edges for each vertex.
-   ///  Note: Likely under a different name in GpuSim_struct, see synapse_count. -Aaron
+   ///  Note: Likely under a different name in GpuSim_struct, see edge_count. -Aaron
    BGSIZE *synapseCounts_;
 
    ///  The total number of active edges.
@@ -222,7 +222,7 @@ struct AllSynapsesDeviceProperties
         bool *inUse_;
 
         ///  The number of edges for each vertex.
-        ///  Note: Likely under a different name in GpuSim_struct, see synapse_count. -Aaron
+        ///  Note: Likely under a different name in GpuSim_struct, see edge_count. -Aaron
         BGSIZE *synapseCounts_;
 
         ///  The total number of active edges.

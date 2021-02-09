@@ -31,17 +31,6 @@
  *      - rates         - dist2
  *      - delta         - dist
  *      - areai
- * ----------------- 1/25/14 -------------------
- * Currently when running a simulation of sizes
- * equal to or greater than 100 * 100 the above
- * error is thrown. After some testing we have
- * determined that this is a hardware dependent
- * issue, not software. We are also looking into
- * switching matrix types from "complete" to
- * "sparce". If successful it is possible the
- * problematic matricies mentioned above will use
- * only 1/250 of their current space.
- * --------------------------------------------- 
  */
 
 #include "ConnGrowth.h"
@@ -95,16 +84,16 @@ ConnGrowth::~ConnGrowth() {
 ///  @param  vertices   The vertex list to search from.
 ///  @param  synapses  The Synapse list to search from.
 void ConnGrowth::setupConnections(Layout *layout, IAllVertices *vertices, IAllEdges *synapses) {
-   int numNeurons = Simulator::getInstance().getTotalVertices();
-   radiiSize_ = numNeurons;
+   int numVertices = Simulator::getInstance().getTotalVertices();
+   radiiSize_ = numVertices;
 
-   W_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numNeurons, numNeurons, 0);
-   radii_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons, growthParams_.startRadius);
-   rates_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons, 0);
-   delta_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numNeurons, numNeurons);
-   area_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numNeurons, numNeurons, 0);
-   outgrowth_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons);
-   deltaR_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons);
+   W_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices, 0);
+   radii_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices, growthParams_.startRadius);
+   rates_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices, 0);
+   delta_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices);
+   area_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices, 0);
+   outgrowth_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
+   deltaR_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
 
    // Init connection frontier distance change matrix with the current distances
    (*delta_) = (*layout->dist_);
@@ -176,13 +165,13 @@ void ConnGrowth::updateConns(IAllVertices &vertices) {
 
 ///  Update the distance between frontiers of vertices.
 ///
-///  @param  numNeurons  Number of neurons to update.
+///  @param  numVertices  Number of vertices to update.
 ///  @param  layout      Layout information of the neural network.
-void ConnGrowth::updateFrontiers(const int numNeurons, Layout *layout) {
+void ConnGrowth::updateFrontiers(const int numVertices, Layout *layout) {
    LOG4CPLUS_INFO(fileLogger_, "Updating distance between frontiers...");
    // Update distance between frontiers
-   for (int unit = 0; unit < numNeurons - 1; unit++) {
-      for (int i = unit + 1; i < numNeurons; i++) {
+   for (int unit = 0; unit < numVertices - 1; unit++) {
+      for (int i = unit + 1; i < numVertices; i++) {
          (*delta_)(unit, i) = (*layout->dist_)(unit, i) - ((*radii_)[unit] + (*radii_)[i]);
          (*delta_)(i, unit) = (*delta_)(unit, i);
       }
@@ -191,14 +180,14 @@ void ConnGrowth::updateFrontiers(const int numNeurons, Layout *layout) {
 
 ///  Update the areas of overlap in between Neurons.
 ///
-///  @param  numNeurons  Number of Neurons to update.
+///  @param  numVertices  Number of vertices to update.
 ///  @param  layout      Layout information of the neural network.
-void ConnGrowth::updateOverlap(BGFLOAT numNeurons, Layout *layout) {
+void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout) {
    LOG4CPLUS_INFO(fileLogger_, "Computing areas of overlap");
 
    // Compute areas of overlap; this is only done for overlapping units
-   for (int i = 0; i < numNeurons; i++) {
-      for (int j = 0; j < numNeurons; j++) {
+   for (int i = 0; i < numVertices; i++) {
+      for (int j = 0; j < numVertices; j++) {
          (*area_)(i, j) = 0.0;
 
          if ((*delta_)(i, j) < 0) {
@@ -245,11 +234,11 @@ void ConnGrowth::updateOverlap(BGFLOAT numNeurons, Layout *layout) {
 ///  and updates their synaptic strengths from the weight matrix.
 ///  Note: Platform Dependent.
 ///
-///  @param  numNeurons  Number of neurons to update.
+///  @param  numVertices  Number of vertices to update.
 ///  @param  ivertices    the AllVertices object.
 ///  @param  isynapses   the AllEdges object.
 ///  @param  layout      the Layout object.
-void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllVertices &ivertices, IAllEdges &isynapses,
+void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &ivertices, IAllEdges &isynapses,
                                        Layout *layout) {
    AllVertices &vertices = dynamic_cast<AllVertices &>(ivertices);
    AllEdges &synapses = dynamic_cast<AllEdges &>(isynapses);
@@ -267,34 +256,34 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllVertices &ivert
 
    // Scale and add sign to the areas
    // visit each neuron 'a'
-   for (int srcNeuron = 0; srcNeuron < numNeurons; srcNeuron++) {
+   for (int srcVertex = 0; srcVertex < numVertices; srcVertex++) {
       // and each destination neuron 'b'
-      for (int destNeuron = 0; destNeuron < numNeurons; destNeuron++) {
+      for (int destVertex = 0; destVertex < numVertices; destVertex++) {
          // visit each synapse at (xa,ya)
          bool connected = false;
-         synapseType type = layout->synType(srcNeuron, destNeuron);
+         synapseType type = layout->synType(srcVertex, destVertex);
 
          // for each existing synapse
-         BGSIZE synapseCounts = synapses.synapseCounts_[destNeuron];
+         BGSIZE synapseCounts = synapses.synapseCounts_[destVertex];
          BGSIZE synapse_adjusted = 0;
-         BGSIZE iEdg = Simulator::getInstance().getMaxSynapsesPerNeuron() * destNeuron;
+         BGSIZE iEdg = Simulator::getInstance().getMaxSynapsesPerNeuron() * destVertex;
          for (BGSIZE synapseIndex = 0; synapse_adjusted < synapseCounts; synapseIndex++, iEdg++) {
             if (synapses.inUse_[iEdg] == true) {
                // if there is a synapse between a and b
-               if (synapses.sourceNeuronIndex_[iEdg] == srcNeuron) {
+               if (synapses.sourceNeuronIndex_[iEdg] == srcVertex) {
                   connected = true;
                   adjusted++;
                   // adjust the strength of the synapse or remove
                   // it from the synapse map if it has gone below
                   // zero.
-                  if ((*W_)(srcNeuron, destNeuron) <= 0) {
+                  if ((*W_)(srcVertex, destVertex) <= 0) {
                      removed++;
-                     synapses.eraseEdge(destNeuron, iEdg);
+                     synapses.eraseEdge(destVertex, iEdg);
                   } else {
                      // adjust
                      // SYNAPSE_STRENGTH_ADJUSTMENT is 1.0e-8;
-                     synapses.W_[iEdg] = (*W_)(srcNeuron, destNeuron) *
-                                         synapses.synSign(type) * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+                     synapses.W_[iEdg] = (*W_)(srcVertex, destVertex) *
+                                         synapses.edgSign(type) * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 
                      LOG4CPLUS_DEBUG(fileLogger_, "Weight of rgSynapseMap" <<
                                                                            "[" << synapseIndex << "]: " <<
@@ -307,17 +296,17 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllVertices &ivert
          }
 
          // if not connected and weight(a,b) > 0, add a new synapse from a to b
-         if (!connected && ((*W_)(srcNeuron, destNeuron) > 0)) {
+         if (!connected && ((*W_)(srcVertex, destVertex) > 0)) {
 
             // locate summation point
-            BGFLOAT *sumPoint = &(vertices.summationMap_[destNeuron]);
+            BGFLOAT *sumPoint = &(vertices.summationMap_[destVertex]);
             added++;
 
             BGSIZE iEdg;
-            synapses.addEdge(iEdg, type, srcNeuron, destNeuron, sumPoint,
+            synapses.addEdge(iEdg, type, srcVertex, destVertex, sumPoint,
                                 Simulator::getInstance().getDeltaT());
             synapses.W_[iEdg] =
-                  (*W_)(srcNeuron, destNeuron) * synapses.synSign(type) *
+                  (*W_)(srcVertex, destVertex) * synapses.edgSign(type) *
                   AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 
          }

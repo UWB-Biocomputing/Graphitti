@@ -22,13 +22,13 @@ Layout::Layout() :
    yloc_ = NULL;
    dist2_ = NULL;
    dist_ = NULL;
-   neuronTypeMap_ = NULL;
+   vertexTypeMap_ = NULL;
    starterMap_ = NULL;
 
    // Create Vertices/Neurons class using type definition in configuration file
    string type;
    ParameterManager::getInstance().getStringByXpath("//NeuronsParams/@class", type);
-   neurons_ = VerticesFactory::getInstance()->createVertices(type);
+   vertices_ = VerticesFactory::getInstance()->createVertices(type);
 
    // Register loadParameters function as a loadParameters operation in the Operation Manager
    function<void()> loadParametersFunc = std::bind(&Layout::loadParameters, this);
@@ -48,39 +48,39 @@ Layout::~Layout() {
    if (yloc_ != NULL) delete yloc_;
    if (dist2_ != NULL) delete dist2_;
    if (dist_ != NULL) delete dist_;
-   if (neuronTypeMap_ != NULL) delete[] neuronTypeMap_;  //todo: is delete[] changing once array becomes vector?
+   if (vertexTypeMap_ != NULL) delete[] vertexTypeMap_;  //todo: is delete[] changing once array becomes vector?
    if (starterMap_ != NULL) delete[] starterMap_; //todo: is delete[] changing once array becomes vector?
 
    xloc_ = NULL;
    yloc_ = NULL;
    dist2_ = NULL;
    dist_ = NULL;
-   neuronTypeMap_ = NULL;
+   vertexTypeMap_ = NULL;
    starterMap_ = NULL;
 }
 
 shared_ptr<IAllVertices> Layout::getVertices() const {
-   return neurons_;
+   return vertices_;
 }
 
 
 /// Setup the internal structure of the class.
 /// Allocate memories to store all layout state, no sequential dependency in this method
 void Layout::setupLayout() {
-   int numNeurons = Simulator::getInstance().getTotalVertices();
+   int numVertices = Simulator::getInstance().getTotalVertices();
 
    // Allocate memory
-   xloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons);
-   yloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numNeurons);
-   dist2_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numNeurons, numNeurons);
-   dist_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numNeurons, numNeurons);
+   xloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
+   yloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
+   dist2_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices);
+   dist_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices);
 
    // Initialize neuron locations memory, grab global info
-   initNeuronsLocs();
+   initVerticesLocs();
 
    // computing distance between each pair of neurons given each neuron's xy location
-   for (int n = 0; n < numNeurons - 1; n++) {
-      for (int n2 = n + 1; n2 < numNeurons; n2++) {
+   for (int n = 0; n < numVertices - 1; n++) {
+      for (int n2 = n + 1; n2 < numVertices; n2++) {
          // distance^2 between two points in point-slope form
          (*dist2_)(n, n2) = ((*xloc_)[n] - (*xloc_)[n2]) * ((*xloc_)[n] - (*xloc_)[n2]) +
                             ((*yloc_)[n] - (*yloc_)[n2]) * ((*yloc_)[n] - (*yloc_)[n2]);
@@ -94,8 +94,8 @@ void Layout::setupLayout() {
    (*dist_) = sqrt((*dist2_));
 
    // more allocation of internal memory
-   neuronTypeMap_ = new neuronType[numNeurons]; // todo: make array into vector
-   starterMap_ = new bool[numNeurons]; // todo: make array into vector
+   vertexTypeMap_ = new neuronType[numVertices]; // todo: make array into vector
+   starterMap_ = new bool[numVertices]; // todo: make array into vector
 }
 
 /// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
@@ -148,57 +148,57 @@ void Layout::printParameters() const {
    LOG4CPLUS_DEBUG(fileLogger_, output.str());
 }
 
-/// Creates a neurons type map.
-/// @param  numNeurons number of the neurons to have in the type map.
-void Layout::generateNeuronTypeMap(int numNeurons) {
-   DEBUG(cout << "\nInitializing neuron type map" << endl;);
+/// Creates a vertex type map.
+/// @param  numVertices number of the vertices to have in the type map.
+void Layout::generateVertexTypeMap(int numVertices) {
+   DEBUG(cout << "\nInitializing vertex type map" << endl;);
 
-   for (int i = 0; i < numNeurons; i++) {
-      neuronTypeMap_[i] = EXC;
+   for (int i = 0; i < numVertices; i++) {
+      vertexTypeMap_[i] = EXC;
    }
 }
 
 /// Populates the starter map.
 /// Selects num_endogenously_active_neurons excitory neurons and converts them into starter neurons.
-/// @param  numNeurons number of neurons to have in the map.
-void Layout::initStarterMap(const int numNeurons) {
-   for (int i = 0; i < numNeurons; i++) {
+/// @param  numVertices number of vertices to have in the map.
+void Layout::initStarterMap(const int numVertices) {
+   for (int i = 0; i < numVertices; i++) {
       starterMap_[i] = false;
    }
 }
 
 ///  Returns the type of synapse at the given coordinates
 ///
-///  @param    srcNeuron  integer that points to a Neuron in the type map as a source.
-///  @param    destNeuron integer that points to a Neuron in the type map as a destination.
+///  @param    srcVertex  integer that points to a Neuron in the type map as a source.
+///  @param    destVertex integer that points to a Neuron in the type map as a destination.
 ///  @return type of the synapse.
-synapseType Layout::synType(const int srcNeuron, const int destNeuron) {
-   if (neuronTypeMap_[srcNeuron] == INH && neuronTypeMap_[destNeuron] == INH)
+synapseType Layout::synType(const int srcVertex, const int destVertex) {
+   if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == INH)
       return II;
-   else if (neuronTypeMap_[srcNeuron] == INH && neuronTypeMap_[destNeuron] == EXC)
+   else if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == EXC)
       return IE;
-   else if (neuronTypeMap_[srcNeuron] == EXC && neuronTypeMap_[destNeuron] == INH)
+   else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == INH)
       return EI;
-   else if (neuronTypeMap_[srcNeuron] == EXC && neuronTypeMap_[destNeuron] == EXC)
+   else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == EXC)
       return EE;
 
    return STYPE_UNDEF;
 }
 
 /// Initialize the location maps (xloc and yloc).
-void Layout::initNeuronsLocs() {
-   int numNeurons = Simulator::getInstance().getTotalVertices();
+void Layout::initVerticesLocs() {
+   int numVertices = Simulator::getInstance().getTotalVertices();
 
    // Initialize neuron locations
    if (gridLayout_) {
       // grid layout
-      for (int i = 0; i < numNeurons; i++) {
+      for (int i = 0; i < numVertices; i++) {
          (*xloc_)[i] = i % Simulator::getInstance().getHeight();
          (*yloc_)[i] = i / Simulator::getInstance().getHeight();
       }
    } else {
       // random layout
-      for (int i = 0; i < numNeurons; i++) {
+      for (int i = 0; i < numVertices; i++) {
          (*xloc_)[i] = rng.inRange(0, Simulator::getInstance().getWidth());
          (*yloc_)[i] = rng.inRange(0, Simulator::getInstance().getHeight());
       }

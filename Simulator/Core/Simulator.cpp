@@ -104,19 +104,6 @@ void Simulator::printParameters() const {
                                           << "\tResult file path: " << resultFileName_ << endl << endl);
 }
 
-
-/// Copy GPU Synapse data to CPU.
-void Simulator::copyGPUSynapseToCPU() {
-   // ToDo: Delete this method and implement using OperationManager
-   // model->copyGPUSynapseToCPUModel();
-}
-
-/// Copy CPU Synapse data to GPU.
-void Simulator::copyCPUEdgeToGPU() {
-   // ToDo: Delete this method and implement using OperationManager
-   // model->copyCPUSynapseToGPUModel();
-}
-
 /// Resets all of the maps. Releases and re-allocates memory for each map, clearing them as necessary.
 void Simulator::reset() {
    LOG4CPLUS_INFO(fileLogger_, "Resetting Simulator");

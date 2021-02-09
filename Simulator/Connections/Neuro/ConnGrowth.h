@@ -127,16 +127,16 @@ public:
    ///  synaptic strengths from the weight matrix.
    ///  Note: Platform Dependent.
    ///
-   ///  @param  numNeurons          number of neurons to update.
+   ///  @param  numVertices          number of vertices to update.
    ///  @param  vertoces             The AllVertices object.
    ///  @param  synapses            The AllEdges object.
-   ///  @param  allNeuronsDevice    GPU address of the allVertices struct in device memory.
-   ///  @param  allSynapsesDevice   GPU address of the allSynapses struct in device memory.
+   ///  @param  allVerticesDevice    GPU address of the allVertices struct in device memory.
+   ///  @param  allEdgesDevice   GPU address of the allSynapses struct in device memory.
    ///  @param  layout              The Layout object.
-   virtual void updateSynapsesWeights(const int numNeurons,
+   virtual void updateSynapsesWeights(const int numVertices,
          IAllVertices &neurons, IAllEdges &synapses,
-         AllSpikingNeuronsDeviceProperties* allNeuronsDevice,
-         AllSpikingSynapsesDeviceProperties* allSynapsesDevice,
+         AllSpikingNeuronsDeviceProperties* allVerticesDevice,
+         AllSpikingSynapsesDeviceProperties* allEdgesDevice,
          Layout *layout);
 #else
    ///  Update the weights of the Synapses in the simulation. To be clear,
@@ -144,12 +144,12 @@ public:
    ///  synaptic strengths from the weight matrix.
    ///  Note: Platform Dependent.
    ///
-   ///  @param  numNeurons  Number of neurons to update.
+   ///  @param  numVertices  Number of vertices to update.
    ///  @param  ineurons    The AllVertoces object.
    ///  @param  isynapses   The AllEdges object.
    ///  @param  layout      The Layout object.
    virtual void
-   updateSynapsesWeights(const int numNeurons,
+   updateSynapsesWeights(const int numVertices,
          IAllVertices &vertices,
          IAllEdges &synapses,
          Layout *layout);
@@ -163,15 +163,15 @@ private:
 
    ///  Update the distance between frontiers of Neurons.
    ///
-   ///  @param  numNeurons  Number of neurons to update.
+   ///  @param  numVertices  Number of vertices to update.
    ///  @param  layout      Layout information of the neural network.
-   void updateFrontiers(const int numNeurons, Layout *layout);
+   void updateFrontiers(const int numVertices, Layout *layout);
 
    ///  Update the areas of overlap in between Neurons.
    ///
-   ///  @param  numNeurons  Number of Neurons to update.
+   ///  @param  numVertices  Number of vertices to update.
    ///  @param  layout      Layout information of the neural network.
-   void updateOverlap(BGFLOAT numNeurons, Layout *layout);
+   void updateOverlap(BGFLOAT numVertices, Layout *layout);
 
 public:
    struct GrowthParams {

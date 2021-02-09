@@ -51,7 +51,7 @@ void CPUSpikingModel::updateConnections() {
             *connections_->getEdges(),
             layout_.get());
       // create synapse inverse map
-      connections_->createSynapseIndexMap();
+      connections_->createEdgeIndexMap();
    }
 }
 

@@ -50,46 +50,46 @@ public:
        ///  Allocate GPU memories to store all vertices' states,
        ///  and copy them from host to GPU memory.
        ///
-       ///  @param  allNeuronsDevice   GPU address of the allVertices struct on device memory.
-       virtual void allocNeuronDeviceStruct(void** allNeuronsDevice) = 0;
+       ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+       virtual void allocNeuronDeviceStruct(void** allVerticesDevice) = 0;
 
        ///  Delete GPU memories.
        ///
-       ///  @param  allNeuronsDevice   GPU address of the allVertices struct on device memory.
-       virtual void deleteNeuronDeviceStruct(void* allNeuronsDevice) = 0;
+       ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+       virtual void deleteNeuronDeviceStruct(void* allVerticesDevice) = 0;
 
        ///  Copy all vertices' data from host to device.
        ///
-       ///  @param  allNeuronsDevice   GPU address of the allVertices struct on device memory.
-       virtual void copyNeuronHostToDevice(void* allNeuronsDevice) = 0;
+       ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+       virtual void copyNeuronHostToDevice(void* allVerticesDevice) = 0;
 
        ///  Copy all vertices' data from device to host.
        ///
-       ///  @param  allNeuronsDevice   GPU address of the allVertices struct on device memory.
-       virtual void copyNeuronDeviceToHost(void* allNeuronsDevice) = 0;
+       ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+       virtual void copyNeuronDeviceToHost(void* allVerticesDevice) = 0;
 
        ///  Update the state of all vertices for a time step
        ///  Notify outgoing synapses if vertex has fired.
        ///
-       ///  @param  synapses               Reference to the allSynapses struct on host memory.
-       ///  @param  allNeuronsDevice       GPU address of the allVertices struct on device memory.
-       ///  @param  allSynapsesDevice      GPU address of the allSynapses struct on device memory.
+       ///  @param  edges               Reference to the allEdges struct on host memory.
+       ///  @param  allVerticesDevice       GPU address of the allVertices struct on device memory.
+       ///  @param  allEdgesDevice      GPU address of the allEdges struct on device memory.
        ///  @param  randNoise              Reference to the random noise array.
        ///  @param  synapseIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
-       virtual void advanceVertices(IAllEdges &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice) = 0;
+       virtual void advanceVertices(IAllEdges &edges, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice) = 0;
 
        ///  Set some parameters used for advanceVerticesDevice.
        ///
-       ///  @param  synapses               Reference to the allSynapses struct on host memory.
-       virtual void setAdvanceVerticesDeviceParams(IAllEdges &synapses) = 0;
+       ///  @param  edges               Reference to the allSynapses struct on host memory.
+       virtual void setAdvanceVerticesDeviceParams(IAllEdges &edges) = 0;
 #else // !defined(USE_GPU)
 public:
    ///  Update internal state of the indexed Neuron (called by every simulation step).
    ///  Notify outgoing synapses if vertex has fired.
    ///
-   ///  @param  synapses         The Synapse list to search from.
+   ///  @param  edges         The Synapse list to search from.
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-   virtual void advanceVertices(IAllEdges &synapses, const EdgeIndexMap *edgeIndexMap) = 0;
+   virtual void advanceVertices(IAllEdges &edges, const EdgeIndexMap *edgeIndexMap) = 0;
 
 #endif // defined(USE_GPU)
 };

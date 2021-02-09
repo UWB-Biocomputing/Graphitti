@@ -21,9 +21,6 @@
  * We first create a regular network characterised by two parameters: number of maximum 
  * connections per neurons and connection radius threshold, then rewire it according 
  * to the small-world rewiring probability.
- *
- * Some models in this simulator is a rewrite of CSIM (2006) and other
- * work (Stiber and Kawasaki (2007?))
  */
 
 #pragma once
@@ -46,13 +43,13 @@ public:
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///  Initialize the small world network characterized by parameters:
-   ///  number of maximum connections per neurons, connection radius threshold, and
+   ///  number of maximum connections per vertex, connection radius threshold, and
    ///  small-world rewiring probability.
    ///
    ///  @param  layout    Layout information of the neural network.
-   ///  @param  neurons   The Neuron list to search from.
-   ///  @param  synapses  The Synapse list to search from.
-   virtual void setupConnections(Layout *layout, IAllVertices *neurons, IAllEdges *synapses);
+   ///  @param  vertices   The Neuron list to search from.
+   ///  @param  edges  The Synapse list to search from.
+   virtual void setupConnections(Layout *layout, IAllVertices *vertices, IAllEdges *edges);
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operations::op::loadParameters
@@ -80,7 +77,7 @@ private:
 
    struct DistDestVertex {
       BGFLOAT dist;     ///< destance to the destination vertex
-      int destNeuron;  ///< index of the destination vertex
+      int destVertex;  ///< index of the destination vertex
 
       bool operator<(const DistDestVertex &other) const {
          return (dist < other.dist);

@@ -12,11 +12,11 @@
  *  Bacause each neuron owns different number of synapses, the number of synapses 
  *  for each neuron is stored in a 1D array, synapse_counts.
  *
- *  For CUDA implementation, we used another structure, AllSynapsesDevice, where synapse
+ *  For CUDA implementation, we used another structure, AllEdgesDevice, where synapse
  *  parameters are stored in 1D arrays instead of 2D arrays, so that device functions
  *  can access these data less latency. When copying a synapse parameter, P[i][j],
  *  from host to device, it is stored in P[i * max_synapses_per_neuron + j] in 
- *  AllSynapsesDevice structure.
+ *  AllEdgesDevice structure.
  *
  *  The latest implementation uses the identical data struture between host and CUDA;
  *  that is, synapse parameters are stored in a 1D array, so we don't need conversion
@@ -36,7 +36,7 @@ class AllSpikingSynapses : public AllEdges {
 public:
    AllSpikingSynapses();
 
-   AllSpikingSynapses(const int numNeurons, const int maxSynapses);
+   AllSpikingSynapses(const int numVertices, const int maxSynapses);
 
    virtual ~AllSpikingSynapses();
 
@@ -60,12 +60,12 @@ public:
    ///  Create a Synapse and connect it to the model.
    ///
    ///  @param  iEdg        Index of the synapse to set.
-   ///  @param  srcNeuron   Coordinates of the source Neuron.
-   ///  @param  destNeuron  Coordinates of the destination Neuron.
+   ///  @param  srcVertex   Coordinates of the source Neuron.
+   ///  @param  destVertex  Coordinates of the destination Neuron.
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcNeuron, int destNeuron, BGFLOAT *sumPoint, const BGFLOAT deltaT,
+   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               synapseType type);
 
    ///  Check if the back propagation (notify a spike event to the pre neuron)
@@ -80,9 +80,9 @@ public:
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///
-   ///  @param  numNeurons   Total number of neurons in the network.
+   ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxSynapses  Maximum number of synapses per neuron.
-   virtual void setupEdges(const int numNeurons, const int maxSynapses);
+   virtual void setupEdges(const int numVertices, const int maxSynapses);
 
    ///  Initializes the queues for the Synapse.
    ///
@@ -100,7 +100,7 @@ protected:
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the synapse to set.
-   virtual void readSynapse(istream &input, const BGSIZE iEdg);
+   virtual void readEdge(istream &input, const BGSIZE iEdg);
 
    ///  Write the synapse data to the stream.
    ///
@@ -113,56 +113,56 @@ protected:
        ///  Allocate GPU memories to store all synapses' states,
        ///  and copy them from host to GPU memory.
        ///
-       ///  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
-       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice );
+       ///  @param  allEdgesDevice  GPU address of the allSynapses struct on device memory.
+       virtual void allocSynapseDeviceStruct( void** allEdgesDevice );
 
        ///  Allocate GPU memories to store all synapses' states,
        ///  and copy them from host to GPU memory.
        ///
-       ///  @param  allSynapsesDevice     GPU address of the allSynapses struct on device memory.
-       ///  @param  numNeurons            Number of neurons.
+       ///  @param  allEdgesDevice     GPU address of the allSynapses struct on device memory.
+       ///  @param  numVertices            Number of vertices.
        ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-       virtual void allocSynapseDeviceStruct( void** allSynapsesDevice, int numNeurons, int maxEdgesPerVertex );
+       virtual void allocSynapseDeviceStruct( void** allEdgesDevice, int numVertices, int maxEdgesPerVertex );
 
        ///  Delete GPU memories.
        ///
-       ///  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
-       virtual void deleteSynapseDeviceStruct( void* allSynapsesDevice );
+       ///  @param  allEdgesDevice  GPU address of the allSynapses struct on device memory.
+       virtual void deleteSynapseDeviceStruct( void* allEdgesDevice );
 
        ///  Copy all synapses' data from host to device.
        ///
-       ///  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
-       virtual void copySynapseHostToDevice( void* allSynapsesDevice );
+       ///  @param  allEdgesDevice  GPU address of the allSynapses struct on device memory.
+       virtual void copySynapseHostToDevice( void* allEdgesDevice );
 
        ///  Copy all synapses' data from host to device.
        ///
-       ///  @param  allSynapsesDevice     GPU address of the allSynapses struct on device memory.
-       ///  @param  numNeurons            Number of neurons.
+       ///  @param  allEdgesDevice     GPU address of the allSynapses struct on device memory.
+       ///  @param  numVertices            Number of vertices.
        ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-       virtual void copySynapseHostToDevice( void* allSynapsesDevice, int numNeurons, int maxEdgesPerVertex );
+       virtual void copySynapseHostToDevice( void* allEdgesDevice, int numVertices, int maxEdgesPerVertex );
        
        /// Copy all synapses' data from device to host.
        ///
-       ///  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
-       virtual void copySynapseDeviceToHost( void* allSynapsesDevice );
+       ///  @param  allEdgesDevice  GPU address of the allSynapses struct on device memory.
+       virtual void copySynapseDeviceToHost( void* allEdgesDevice );
 
        ///  Get synapse_counts in AllEdges struct on device memory.
        ///
-       ///  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
-       virtual void copyDeviceSynapseCountsToHost( void* allSynapsesDevice );
+       ///  @param  allEdgesDevice  GPU address of the allSynapses struct on device memory.
+       virtual void copyDeviceSynapseCountsToHost( void* allEdgesDevice );
 
        ///  Get summationCoord and in_use in AllEdges struct on device memory.
        ///
-       ///  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
-       virtual void copyDeviceSynapseSumIdxToHost( void* allSynapsesDevice );
+       ///  @param  allEdgesDevice  GPU address of the allSynapses struct on device memory.
+       virtual void copyDeviceSynapseSumIdxToHost( void* allEdgesDevice );
 
        ///  Advance all the Synapses in the simulation.
        ///  Update the state of all synapses for a time step.
        ///
-       ///  @param  allSynapsesDevice      GPU address of the allSynapses struct on device memory.
-       ///  @param  allNeuronsDevice       GPU address of the allNeurons struct on device memory.
+       ///  @param  allEdgesDevice      GPU address of the allSynapses struct on device memory.
+       ///  @param  allVerticesDevice       GPU address of the allNeurons struct on device memory.
        ///  @param  synapseIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
-       virtual void advanceEdges( void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice );
+       virtual void advanceEdges( void* allEdgesDevice, void* allVerticesDevice, void* synapseIndexMapDevice );
 
        ///  Set some parameters used for advanceSynapsesDevice.
        ///  Currently we set a member variable: m_fpChangePSR_h.
@@ -176,44 +176,44 @@ protected:
        ///  we use this scheme.
        ///  Note: we used to use a function pointer; however, it caused the growth_cuda crash
        ///  (see issue#137).
-       virtual void setSynapseClassID( );
+       virtual void setEdgeClassID( );
 
        ///  Prints GPU SynapsesProps data.
        ///
-       ///  @param  allSynapsesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
-       virtual void printGPUSynapsesProps( void* allSynapsesDeviceProps ) const;
+       ///  @param  allEdgesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
+       virtual void printGPUEdgesProps( void* allEdgesDeviceProps ) const;
 
    protected:
        ///  Allocate GPU memories to store all synapses' states,
        ///  and copy them from host to GPU memory.
        ///  (Helper function of allocSynapseDeviceStruct)
        ///
-       ///  @param  allSynapsesDevice     GPU address of the allSynapses struct on device memory.
-       ///  @param  numNeurons            Number of neurons.
+       ///  @param  allEdgesDevice     GPU address of the allSynapses struct on device memory.
+       ///  @param  numVertices            Number of vertices.
        ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-       void allocDeviceStruct( AllSpikingSynapsesDeviceProperties &allSynapsesDevice, int numNeurons, int maxEdgesPerVertex );
+       void allocDeviceStruct( AllSpikingSynapsesDeviceProperties &allEdgesDevice, int numVertices, int maxEdgesPerVertex );
 
        ///  Delete GPU memories.
        ///  (Helper function of deleteSynapseDeviceStruct)
        ///
-       ///  @param  allSynapsesDevice  GPU address of the allSynapses struct on device memory.
-       void deleteDeviceStruct( AllSpikingSynapsesDeviceProperties& allSynapsesDevice );
+       ///  @param  allEdgesDevice  GPU address of the allSynapses struct on device memory.
+       void deleteDeviceStruct( AllSpikingSynapsesDeviceProperties& allEdgesDevice );
 
        ///  Copy all synapses' data from host to device.
        ///  (Helper function of copySynapseHostToDevice)
        ///
-       ///  @param  allSynapsesDevice     GPU address of the allSynapses struct on device memory.
-       ///  @param  numNeurons            Number of neurons.
+       ///  @param  allEdgesDevice     GPU address of the allSynapses struct on device memory.
+       ///  @param  numVertices            Number of vertices.
        ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-       void copyHostToDevice( void* allSynapsesDevice, AllSpikingSynapsesDeviceProperties& allSynapsesDeviceProps, int numNeurons, int maxEdgesPerVertex );
+       void copyHostToDevice( void* allEdgesDevice, AllSpikingSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex );
 
        ///  Copy all synapses' data from device to host.
        ///  (Helper function of copySynapseDeviceToHost)
        ///
-       ///  @param  allSynapsesDevice     GPU address of the allSynapses struct on device memory.
-       ///  @param  numNeurons            Number of neurons.
+       ///  @param  allEdgesDevice     GPU address of the allSynapses struct on device memory.
+       ///  @param  numVertices            Number of vertices.
        ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-       void copyDeviceToHost( AllSpikingSynapsesDeviceProperties& allSynapsesDevice);
+       void copyDeviceToHost( AllSpikingSynapsesDeviceProperties& allEdgesDevice);
 #else  // !defined(USE_GPU)
 public:
    ///  Advance one specific Synapse.

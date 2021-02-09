@@ -34,8 +34,8 @@ AllEdges::AllEdges() :
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
-AllEdges::AllEdges(const int numNeurons, const int maxSynapses) {
-   setupEdges(numNeurons, maxSynapses);
+AllEdges::AllEdges(const int numVertices, const int maxSynapses) {
+   setupEdges(numVertices, maxSynapses);
 }
 
 AllEdges::~AllEdges() {
@@ -72,14 +72,14 @@ void AllEdges::setupEdges() {
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 ///
-///  @param  numNeurons   Total number of vertices in the network.
+///  @param  numVertices   Total number of vertices in the network.
 ///  @param  max_synapses  Maximum number of edges per vertex.
-void AllEdges::setupEdges(const int numNeurons, const int maxSynapses) {
-   BGSIZE maxTotalSynapses = maxSynapses * numNeurons;
+void AllEdges::setupEdges(const int numVertices, const int maxSynapses) {
+   BGSIZE maxTotalSynapses = maxSynapses * numVertices;
 
    maxEdgesPerVertex_ = maxSynapses;
    totalEdgeCount_ = 0;
-   countVertices_ = numNeurons;
+   countVertices_ = numVertices;
 
    if (maxTotalSynapses != 0) {
       destNeuronIndex_ = new int[maxTotalSynapses];
@@ -89,7 +89,7 @@ void AllEdges::setupEdges(const int numNeurons, const int maxSynapses) {
       psr_ = new BGFLOAT[maxTotalSynapses];
       type_ = new synapseType[maxTotalSynapses];
       inUse_ = new bool[maxTotalSynapses];
-      synapseCounts_ = new BGSIZE[numNeurons];
+      synapseCounts_ = new BGSIZE[numVertices];
 
       for (BGSIZE i = 0; i < maxTotalSynapses; i++) {
          summationPoint_[i] = NULL;
@@ -97,7 +97,7 @@ void AllEdges::setupEdges(const int numNeurons, const int maxSynapses) {
          W_[i] = 0;
       }
 
-      for (int i = 0; i < numNeurons; i++) {
+      for (int i = 0; i < numVertices; i++) {
          synapseCounts_[i] = 0;
       }
    }
@@ -131,7 +131,7 @@ void AllEdges::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the synapse to set.
-void AllEdges::readSynapse(istream &input, const BGSIZE iEdg) {
+void AllEdges::readEdge(istream &input, const BGSIZE iEdg) {
    int synapse_type(0);
 
    // input.ignore() so input skips over end-of-line characters.
@@ -165,7 +165,7 @@ void AllEdges::writeSynapse(ostream &output, const BGSIZE iEdg) const {
 }
 
 ///  Create a synapse index map.
-EdgeIndexMap *AllEdges::createSynapseIndexMap() {
+EdgeIndexMap *AllEdges::createEdgeIndexMap() {
    int neuronCount = Simulator::getInstance().getTotalVertices();
    int totalSynapseCount = 0;
 
@@ -190,7 +190,7 @@ EdgeIndexMap *AllEdges::createSynapseIndexMap() {
    // create synapse forward map & active synapse map
    EdgeIndexMap *edgeIndexMap = new EdgeIndexMap(neuronCount, totalSynapseCount);
    for (int i = 0; i < neuronCount; i++) {
-      BGSIZE synapse_count = 0;
+      BGSIZE edge_count = 0;
       edgeIndexMap->incomingSynapseBegin_[i] = numInUse;
       for (int j = 0; j < Simulator::getInstance().getMaxSynapsesPerNeuron(); j++, syn_i++) {
          if (inUse_[syn_i] == true) {
@@ -199,11 +199,11 @@ EdgeIndexMap *AllEdges::createSynapseIndexMap() {
 
             edgeIndexMap->incomingSynapseIndexMap_[numInUse] = syn_i;
             numInUse++;
-            synapse_count++;
+            edge_count++;
          }
       }
-      assert(synapse_count == this->synapseCounts_[i]);
-      edgeIndexMap->incomingSynapseCount_[i] = synapse_count;
+      assert(edge_count == this->synapseCounts_[i]);
+      edgeIndexMap->incomingSynapseCount_[i] = edge_count;
    }
 
    assert(totalSynapseCount == numInUse);
@@ -274,38 +274,38 @@ void AllEdges::eraseEdge(const int neuronIndex, const BGSIZE iEdg) {
 ///
 ///  @param  iEdg        Index of the synapse to be added.
 ///  @param  type        The type of the Synapse to add.
-///  @param  srcNeuron  The Neuron that sends to this Synapse.
-///  @param  destNeuron The Neuron that receives from the Synapse.
+///  @param  srcVertex  The Neuron that sends to this Synapse.
+///  @param  destVertex The Neuron that receives from the Synapse.
 ///  @param  sumPoint   Summation point address.
 ///  @param  deltaT      Inner simulation step duration
 void
-AllEdges::addEdge(BGSIZE &iEdg, synapseType type, const int srcNeuron, const int destNeuron, BGFLOAT *sumPoint,
+AllEdges::addEdge(BGSIZE &iEdg, synapseType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
                         const BGFLOAT deltaT) {
-   if (synapseCounts_[destNeuron] >= maxEdgesPerVertex_) {
-      LOG4CPLUS_FATAL(fileLogger_, "Neuron : " << destNeuron << " ran out of space for new edges.");
-      throw runtime_error("Neuron : " + destNeuron + string(" ran out of space for new edges."));
+   if (synapseCounts_[destVertex] >= maxEdgesPerVertex_) {
+      LOG4CPLUS_FATAL(fileLogger_, "Neuron : " << destVertex << " ran out of space for new edges.");
+      throw runtime_error("Neuron : " + destVertex + string(" ran out of space for new edges."));
    }
 
    // add it to the list
    BGSIZE synapseIndex;
    for (synapseIndex = 0; synapseIndex < maxEdgesPerVertex_; synapseIndex++) {
-      iEdg = maxEdgesPerVertex_ * destNeuron + synapseIndex;
+      iEdg = maxEdgesPerVertex_ * destVertex + synapseIndex;
       if (!inUse_[iEdg]) {
          break;
       }
    }
 
-   synapseCounts_[destNeuron]++;
+   synapseCounts_[destVertex]++;
 
    // create a synapse
-   createEdge(iEdg, srcNeuron, destNeuron, sumPoint, deltaT, type);
+   createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
 }
 
 ///  Get the sign of the synapseType.
 ///
 ///  @param    type    synapseType I to I, I to E, E to I, or E to E
 ///  @return   1 or -1, or 0 if error
-int AllEdges::synSign(const synapseType type) {
+int AllEdges::edgSign(const synapseType type) {
    switch (type) {
       case II:
       case IE:

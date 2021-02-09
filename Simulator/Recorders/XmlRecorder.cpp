@@ -99,7 +99,7 @@ void XmlRecorder::saveSimData(const IAllVertices &neurons) {
    // create Neuron Types matrix
    VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalVertices(), EXC);
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      neuronTypes[i] = Simulator::getInstance().getModel()->getLayout()->neuronTypeMap_[i];
+      neuronTypes[i] = Simulator::getInstance().getModel()->getLayout()->vertexTypeMap_[i];
    }
 
    // create neuron threshold matrix

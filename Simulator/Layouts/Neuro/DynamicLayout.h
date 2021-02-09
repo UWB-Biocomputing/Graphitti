@@ -33,15 +33,15 @@ public:
 
    ///  Creates a randomly ordered distribution with the specified numbers of neuron types.
    ///
-   ///  @param  numNeurons number of the neurons to have in the type map.
-   virtual void generateNeuronTypeMap(int numNeurons);
+   ///  @param  numVertices number of the neurons to have in the type map.
+   virtual void generateVertexTypeMap(int numVertices);
 
    ///  Populates the starter map.
    ///  Selects num_endogenously_active_neurons excitory neurons
    ///  and converts them into starter neurons.
    ///
-   ///  @param  numNeurons number of neurons to have in the map.
-   virtual void initStarterMap(const int numNeurons);
+   ///  @param  numVertices number of vertices to have in the map.
+   virtual void initStarterMap(const int numVertices);
 
 private:
    /// Fraction of endogenously active neurons.

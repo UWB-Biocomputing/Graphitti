@@ -14,136 +14,136 @@
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
 ///
-///  @param  allSynapsesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
 ///                             on device memory.
-void AllDynamicSTDPSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice ) {
-	allocSynapseDeviceStruct( allSynapsesDevice, Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxSynapsesPerNeuron() );
+void AllDynamicSTDPSynapses::allocSynapseDeviceStruct( void** allEdgesDevice ) {
+	allocSynapseDeviceStruct( allEdgesDevice, Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxSynapsesPerNeuron() );
 }
 
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
 ///
-///  @param  allSynapsesDevice     GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice     GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
 ///                                on device memory.
-///  @param  numNeurons            Number of neurons.
+///  @param  numVertices            Number of vertices.
 ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-void AllDynamicSTDPSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice, int numNeurons, int maxEdgesPerVertex ) {
+void AllDynamicSTDPSynapses::allocSynapseDeviceStruct( void** allEdgesDevice, int numVertices, int maxEdgesPerVertex ) {
 	AllDynamicSTDPSynapsesDeviceProperties allSynapses;
 
-	allocDeviceStruct( allSynapses, numNeurons, maxEdgesPerVertex );
+	allocDeviceStruct( allSynapses, numVertices, maxEdgesPerVertex );
 
-	HANDLE_ERROR( cudaMalloc( allSynapsesDevice, sizeof( AllDynamicSTDPSynapsesDeviceProperties ) ) );
-	HANDLE_ERROR( cudaMemcpy ( *allSynapsesDevice, &allSynapses, sizeof( AllDynamicSTDPSynapsesDeviceProperties ), cudaMemcpyHostToDevice ) );
+	HANDLE_ERROR( cudaMalloc( allEdgesDevice, sizeof( AllDynamicSTDPSynapsesDeviceProperties ) ) );
+	HANDLE_ERROR( cudaMemcpy ( *allEdgesDevice, &allSynapses, sizeof( AllDynamicSTDPSynapsesDeviceProperties ), cudaMemcpyHostToDevice ) );
 }
 
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
 ///  (Helper function of allocSynapseDeviceStruct)
 ///
-///  @param  allSynapsesDeviceProps      GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDeviceProps      GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
 ///                                      on device memory.
-///  @param  numNeurons                  Number of neurons.
+///  @param  numVertices                  Number of vertices.
 ///  @param  maxEdgesPerVertex        Maximum number of synapses per neuron.
-void AllDynamicSTDPSynapses::allocDeviceStruct( AllDynamicSTDPSynapsesDeviceProperties &allSynapsesDeviceProps, int numNeurons, int maxEdgesPerVertex ) {
-        AllSTDPSynapses::allocDeviceStruct( allSynapsesDeviceProps, numNeurons, maxEdgesPerVertex );
+void AllDynamicSTDPSynapses::allocDeviceStruct( AllDynamicSTDPSynapsesDeviceProperties &allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex ) {
+        AllSTDPSynapses::allocDeviceStruct( allEdgesDeviceProps, numVertices, maxEdgesPerVertex );
 
-        BGSIZE maxTotalSynapses = maxEdgesPerVertex * numNeurons;
+        BGSIZE maxTotalSynapses = maxEdgesPerVertex * numVertices;
 
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDeviceProps.lastSpike_, maxTotalSynapses * sizeof( uint64_t ) ) );
-	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDeviceProps.r_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDeviceProps.u_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDeviceProps.D_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDeviceProps.U_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDeviceProps.F_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDeviceProps.lastSpike_, maxTotalSynapses * sizeof( uint64_t ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDeviceProps.r_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDeviceProps.u_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDeviceProps.D_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDeviceProps.U_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDeviceProps.F_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
 }
 
 ///  Delete GPU memories.
 ///
-///  @param  allSynapsesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
 ///                             on device memory.
-void AllDynamicSTDPSynapses::deleteSynapseDeviceStruct( void* allSynapsesDevice ) {
+void AllDynamicSTDPSynapses::deleteSynapseDeviceStruct( void* allEdgesDevice ) {
 	AllDynamicSTDPSynapsesDeviceProperties allSynapses;
 
-	HANDLE_ERROR( cudaMemcpy ( &allSynapses, allSynapsesDevice, sizeof( AllDynamicSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
+	HANDLE_ERROR( cudaMemcpy ( &allSynapses, allEdgesDevice, sizeof( AllDynamicSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
 
 	deleteDeviceStruct( allSynapses );
 
-	HANDLE_ERROR( cudaFree( allSynapsesDevice ) );
+	HANDLE_ERROR( cudaFree( allEdgesDevice ) );
 }
 
 ///  Delete GPU memories.
 ///  (Helper function of deleteSynapseDeviceStruct)
 ///
-///  @param  allSynapsesDeviceProps  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDeviceProps  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
 ///                                  on device memory.
-void AllDynamicSTDPSynapses::deleteDeviceStruct( AllDynamicSTDPSynapsesDeviceProperties& allSynapsesDeviceProps ) {
-        HANDLE_ERROR( cudaFree( allSynapsesDeviceProps.lastSpike_ ) );
-	HANDLE_ERROR( cudaFree( allSynapsesDeviceProps.r_ ) );
-	HANDLE_ERROR( cudaFree( allSynapsesDeviceProps.u_ ) );
-	HANDLE_ERROR( cudaFree( allSynapsesDeviceProps.D_ ) );
-	HANDLE_ERROR( cudaFree( allSynapsesDeviceProps.U_ ) );
-	HANDLE_ERROR( cudaFree( allSynapsesDeviceProps.F_ ) );
+void AllDynamicSTDPSynapses::deleteDeviceStruct( AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps ) {
+        HANDLE_ERROR( cudaFree( allEdgesDeviceProps.lastSpike_ ) );
+	HANDLE_ERROR( cudaFree( allEdgesDeviceProps.r_ ) );
+	HANDLE_ERROR( cudaFree( allEdgesDeviceProps.u_ ) );
+	HANDLE_ERROR( cudaFree( allEdgesDeviceProps.D_ ) );
+	HANDLE_ERROR( cudaFree( allEdgesDeviceProps.U_ ) );
+	HANDLE_ERROR( cudaFree( allEdgesDeviceProps.F_ ) );
 
-        AllSTDPSynapses::deleteDeviceStruct( allSynapsesDeviceProps );
+        AllSTDPSynapses::deleteDeviceStruct( allEdgesDeviceProps );
 }
 
 ///  Copy all synapses' data from host to device.
 ///
-///  @param  allSynapsesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
 ///                             on device memory.
-void AllDynamicSTDPSynapses::copySynapseHostToDevice( void* allSynapsesDevice ) { // copy everything necessary
-	copySynapseHostToDevice( allSynapsesDevice, Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxSynapsesPerNeuron() );	
+void AllDynamicSTDPSynapses::copySynapseHostToDevice( void* allEdgesDevice ) { // copy everything necessary
+	copySynapseHostToDevice( allEdgesDevice, Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxSynapsesPerNeuron() );	
 }
 
 ///  Copy all synapses' data from host to device.
 ///
-///  @param  allSynapsesDevice     GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice     GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
 ///                                on device memory.
-///  @param  numNeurons            Number of neurons.
+///  @param  numVertices            Number of vertices.
 ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-void AllDynamicSTDPSynapses::copySynapseHostToDevice( void* allSynapsesDevice, int numNeurons, int maxEdgesPerVertex ) { // copy everything necessary
+void AllDynamicSTDPSynapses::copySynapseHostToDevice( void* allEdgesDevice, int numVertices, int maxEdgesPerVertex ) { // copy everything necessary
 	AllDynamicSTDPSynapsesDeviceProperties allSynapses;
 
-        HANDLE_ERROR( cudaMemcpy ( &allSynapses, allSynapsesDevice, sizeof( AllDynamicSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( &allSynapses, allEdgesDevice, sizeof( AllDynamicSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
 
-	copyHostToDevice( allSynapsesDevice, allSynapses, numNeurons, maxEdgesPerVertex );	
+	copyHostToDevice( allEdgesDevice, allSynapses, numVertices, maxEdgesPerVertex );	
 }
 
 ///  Copy all synapses' data from host to device.
 ///  (Helper function of copySynapseHostToDevice)
 ///
-///  @param  allSynapsesDevice           GPU address of the allSynapses struct on device memory.
-///  @param  allSynapsesDeviceProps      GPU address of the allDynamicSTDPSSynapses struct on device memory.
-///  @param  numNeurons                  Number of neurons.
+///  @param  allEdgesDevice           GPU address of the allSynapses struct on device memory.
+///  @param  allEdgesDeviceProps      GPU address of the allDynamicSTDPSSynapses struct on device memory.
+///  @param  numVertices                  Number of vertices.
 ///  @param  maxEdgesPerVertex        Maximum number of synapses per neuron.
-void AllDynamicSTDPSynapses::copyHostToDevice( void* allSynapsesDevice, AllDynamicSTDPSynapsesDeviceProperties& allSynapsesDeviceProps, int numNeurons, int maxEdgesPerVertex ) { // copy everything necessary 
-        AllSTDPSynapses::copyHostToDevice( allSynapsesDevice, allSynapsesDeviceProps, numNeurons, maxEdgesPerVertex );
+void AllDynamicSTDPSynapses::copyHostToDevice( void* allEdgesDevice, AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex ) { // copy everything necessary 
+        AllSTDPSynapses::copyHostToDevice( allEdgesDevice, allEdgesDeviceProps, numVertices, maxEdgesPerVertex );
 
-        BGSIZE maxTotalSynapses = maxEdgesPerVertex * numNeurons;
+        BGSIZE maxTotalSynapses = maxEdgesPerVertex * numVertices;
         
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.lastSpike_, lastSpike_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.lastSpike_, lastSpike_,
                 maxTotalSynapses * sizeof( uint64_t ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.r_, r_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.r_, r_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.u_, u_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.u_, u_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.D_, D_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.D_, D_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.U_, U_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.U_, U_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.F_, F_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.F_, F_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
 }
 
 ///  Copy all synapses' data from device to host.
 ///
-///  @param  allSynapsesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct 
 ///                             on device memory.
-void AllDynamicSTDPSynapses::copySynapseDeviceToHost( void* allSynapsesDevice ) {
+void AllDynamicSTDPSynapses::copySynapseDeviceToHost( void* allEdgesDevice ) {
 	// copy everything necessary
 	AllDynamicSTDPSynapsesDeviceProperties allSynapses;
 
-        HANDLE_ERROR( cudaMemcpy ( &allSynapses, allSynapsesDevice, sizeof( AllDynamicSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( &allSynapses, allEdgesDevice, sizeof( AllDynamicSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
 
 	copyDeviceToHost( allSynapses );
 }
@@ -151,27 +151,27 @@ void AllDynamicSTDPSynapses::copySynapseDeviceToHost( void* allSynapsesDevice ) 
 ///  Copy all synapses' data from device to host.
 ///  (Helper function of copySynapseDeviceToHost)
 ///
-///  @param  allSynapsesDevice           GPU address of the allSynapses struct on device memory.
-///  @param  allSynapsesDeviceProps      GPU address of the allDynamicSTDPSSynapses struct on device memory.
-///  @param  numNeurons                  Number of neurons.
+///  @param  allEdgesDevice           GPU address of the allSynapses struct on device memory.
+///  @param  allEdgesDeviceProps      GPU address of the allDynamicSTDPSSynapses struct on device memory.
+///  @param  numVertices                  Number of vertices.
 ///  @param  maxEdgesPerVertex        Maximum number of synapses per neuron.
-void AllDynamicSTDPSynapses::copyDeviceToHost( AllDynamicSTDPSynapsesDeviceProperties& allSynapsesDeviceProps ) {
-        AllSTDPSynapses::copyDeviceToHost( allSynapsesDeviceProps ) ;
+void AllDynamicSTDPSynapses::copyDeviceToHost( AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps ) {
+        AllSTDPSynapses::copyDeviceToHost( allEdgesDeviceProps ) ;
 
-	int numNeurons = Simulator::getInstance().getTotalVertices();
-	BGSIZE maxTotalSynapses = Simulator::getInstance().getMaxSynapsesPerNeuron() * numNeurons;
+	int numVertices = Simulator::getInstance().getTotalVertices();
+	BGSIZE maxTotalSynapses = Simulator::getInstance().getMaxSynapsesPerNeuron() * numVertices;
 
-        HANDLE_ERROR( cudaMemcpy ( lastSpike_, allSynapsesDeviceProps.lastSpike_,
+        HANDLE_ERROR( cudaMemcpy ( lastSpike_, allEdgesDeviceProps.lastSpike_,
                 maxTotalSynapses * sizeof( uint64_t ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( r_, allSynapsesDeviceProps.r_,
+        HANDLE_ERROR( cudaMemcpy ( r_, allEdgesDeviceProps.r_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( u_, allSynapsesDeviceProps.u_,
+        HANDLE_ERROR( cudaMemcpy ( u_, allEdgesDeviceProps.u_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( D_, allSynapsesDeviceProps.D_,
+        HANDLE_ERROR( cudaMemcpy ( D_, allEdgesDeviceProps.D_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( U_, allSynapsesDeviceProps.U_,
+        HANDLE_ERROR( cudaMemcpy ( U_, allEdgesDeviceProps.U_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( F_, allSynapsesDeviceProps.F_,
+        HANDLE_ERROR( cudaMemcpy ( F_, allEdgesDeviceProps.F_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
 }
 
@@ -183,7 +183,7 @@ void AllDynamicSTDPSynapses::copyDeviceToHost( AllDynamicSTDPSynapsesDevicePrope
 ///  we use this scheme.
 ///  Note: we used to use a function pointer; however, it caused the growth_cuda crash
 ///  (see issue#137).
-void AllDynamicSTDPSynapses::setSynapseClassID()
+void AllDynamicSTDPSynapses::setEdgeClassID()
 {
     enumClassSynapses classSynapses_h = classAllDynamicSTDPSynapses;
 
@@ -192,8 +192,8 @@ void AllDynamicSTDPSynapses::setSynapseClassID()
 
 ///  Prints GPU SynapsesProps data.
 ///   
-///  @param  allSynapsesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
-void AllDynamicSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) const
+///  @param  allEdgesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
+void AllDynamicSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
 {
     AllDynamicSTDPSynapsesDeviceProperties allSynapsesProps;
 
@@ -245,7 +245,7 @@ void AllDynamicSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps
         BGFLOAT *FPrint = new BGFLOAT[size];
 
         // copy everything
-        HANDLE_ERROR( cudaMemcpy ( &allSynapsesProps, allSynapsesDeviceProps, sizeof( AllDynamicSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( &allSynapsesProps, allEdgesDeviceProps, sizeof( AllDynamicSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( synapseCountsPrint, allSynapsesProps.synapseCounts_, countVertices_ * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
         maxSynapsesPerNeuronPrint = allSynapsesProps.maxEdgesPerVertex_;
         totalSynapseCountPrint = allSynapsesProps.totalEdgeCount_;

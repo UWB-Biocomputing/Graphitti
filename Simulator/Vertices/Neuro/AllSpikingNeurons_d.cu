@@ -12,16 +12,16 @@
 
 ///  Copy spike history data stored in device memory to host.
 ///
-///  @param  allNeuronsDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
+///  @param  allVerticesDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
 ///                             on device memory.
-void AllSpikingNeurons::copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDeviceProperties& allNeuronsDevice ) 
+void AllSpikingNeurons::copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDeviceProperties& allVerticesDevice ) 
 {
-        int numNeurons = Simulator::getInstance().getTotalVertices();
-        uint64_t* pSpikeHistory[numNeurons];
-        HANDLE_ERROR( cudaMemcpy ( pSpikeHistory, allNeuronsDevice.spikeHistory_, numNeurons * sizeof( uint64_t* ), cudaMemcpyDeviceToHost ) );
+        int numVertices = Simulator::getInstance().getTotalVertices();
+        uint64_t* pSpikeHistory[numVertices];
+        HANDLE_ERROR( cudaMemcpy ( pSpikeHistory, allVerticesDevice.spikeHistory_, numVertices * sizeof( uint64_t* ), cudaMemcpyDeviceToHost ) );
 
         int maxSpikes = static_cast<int> (Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate());
-        for (int i = 0; i < numNeurons; i++) {
+        for (int i = 0; i < numVertices; i++) {
                 HANDLE_ERROR( cudaMemcpy ( spikeHistory_[i], pSpikeHistory[i],
                         maxSpikes * sizeof( uint64_t ), cudaMemcpyDeviceToHost ) );
         }
@@ -29,27 +29,27 @@ void AllSpikingNeurons::copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDevicePro
 
 ///  Copy spike counts data stored in device memory to host.
 ///
-///  @param  allNeuronsDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
+///  @param  allVerticesDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
 ///                             on device memory.
-void AllSpikingNeurons::copyDeviceSpikeCountsToHost( AllSpikingNeuronsDeviceProperties& allNeuronsDevice ) 
+void AllSpikingNeurons::copyDeviceSpikeCountsToHost( AllSpikingNeuronsDeviceProperties& allVerticesDevice ) 
 {
-        int numNeurons = Simulator::getInstance().getTotalVertices();
+        int numVertices = Simulator::getInstance().getTotalVertices();
 
-        HANDLE_ERROR( cudaMemcpy ( spikeCount_, allNeuronsDevice.spikeCount_, numNeurons * sizeof( int ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( spikeCountOffset_, allNeuronsDevice.spikeCountOffset_, numNeurons * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( spikeCount_, allVerticesDevice.spikeCount_, numVertices * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( spikeCountOffset_, allVerticesDevice.spikeCountOffset_, numVertices * sizeof( int ), cudaMemcpyDeviceToHost ) );
 }
 
 ///  Clear the spike counts out of all neurons in device memory.
 ///  (helper function of clearNeuronSpikeCounts)
 ///
-///  @param  allNeuronsDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
+///  @param  allVerticesDevice   GPU address of the AllSpikingNeuronsDeviceProperties struct 
 ///                             on device memory.
-void AllSpikingNeurons::clearDeviceSpikeCounts( AllSpikingNeuronsDeviceProperties& allNeuronsDevice ) 
+void AllSpikingNeurons::clearDeviceSpikeCounts( AllSpikingNeuronsDeviceProperties& allVerticesDevice ) 
 {
-        int numNeurons = Simulator::getInstance().getTotalVertices();
+        int numVertices = Simulator::getInstance().getTotalVertices();
 
-        HANDLE_ERROR( cudaMemset( allNeuronsDevice.spikeCount_, 0, numNeurons * sizeof( int ) ) );
-        HANDLE_ERROR( cudaMemcpy ( allNeuronsDevice.spikeCountOffset_, spikeCountOffset_, numNeurons * sizeof( int ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemset( allVerticesDevice.spikeCount_, 0, numVertices * sizeof( int ) ) );
+        HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.spikeCountOffset_, spikeCountOffset_, numVertices * sizeof( int ), cudaMemcpyHostToDevice ) );
 }
 
 ///  Set some parameters used for advanceVerticesDevice.

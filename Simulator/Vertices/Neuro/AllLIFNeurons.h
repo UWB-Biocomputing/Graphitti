@@ -102,11 +102,11 @@ public:
        ///  Notify outgoing synapses if neuron has fired.
        ///
        ///  @param  synapses               Reference to the allSynapses struct on host memory.
-       ///  @param  allNeuronsDevice       GPU address of the allNeurons struct on device memory.
-       ///  @param  allSynapsesDevice      GPU address of the allSynapses struct on device memory.
+       ///  @param  allVerticesDevice       GPU address of the allNeurons struct on device memory.
+       ///  @param  allEdgesDevice      GPU address of the allSynapses struct on device memory.
        ///  @param  randNoise              Reference to the random noise array.
        ///  @param  synapseIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
-       virtual void advanceVertices(IAllEdges &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice);
+       virtual void advanceVertices(IAllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice);
 
 #else  // !defined(USE_GPU)
 protected:

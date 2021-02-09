@@ -53,37 +53,37 @@ public:
 
        ///  Copy spike counts data stored in device memory to host.
        ///
-       ///  @param  allNeuronsDevice   GPU address of the allVertices struct on device memory.
-       virtual void copyNeuronDeviceSpikeCountsToHost( void* allNeuronsDevice) = 0;
+       ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+       virtual void copyNeuronDeviceSpikeCountsToHost( void* allVerticesDevice) = 0;
 
        ///  Copy spike history data stored in device memory to host.
        ///
-       ///  @param  allNeuronsDevice   GPU address of the allVertices struct on device memory.
-       virtual void copyNeuronDeviceSpikeHistoryToHost( void* allNeuronsDevice) = 0;
+       ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+       virtual void copyNeuronDeviceSpikeHistoryToHost( void* allVerticesDevice) = 0;
 
        ///  Clear the spike counts out of all neurons.
        ///
-       ///  @param  allNeuronsDevice   GPU address of the allVertices struct on device memory.
-       virtual void clearNeuronSpikeCounts( void* allNeuronsDevice) = 0;
+       ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+       virtual void clearNeuronSpikeCounts( void* allVerticesDevice) = 0;
 
    protected:
        ///  Copy spike history data stored in device memory to host.
        ///  (Helper function of copyNeuronDeviceSpikeHistoryToHost)
        ///
-       ///  @param  allNeuronsDevice   GPU address of the allVertices struct on device memory.
-       void copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDeviceProperties& allNeuronsDevice);
+       ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+       void copyDeviceSpikeHistoryToHost( AllSpikingNeuronsDeviceProperties& allVerticesDevice);
 
        ///  Copy spike counts data stored in device memory to host.
        ///  (Helper function of copyNeuronDeviceSpikeCountsToHost)
        ///
-       ///  @param  allNeuronsDevice   GPU address of the allVertices struct on device memory.
-       void copyDeviceSpikeCountsToHost( AllSpikingNeuronsDeviceProperties& allNeuronsDevice);
+       ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+       void copyDeviceSpikeCountsToHost( AllSpikingNeuronsDeviceProperties& allVerticesDevice);
 
        ///  Clear the spike counts out of all neurons in device memory.
        ///  (helper function of clearNeuronSpikeCounts)
        ///
-       ///  @param  allNeuronsDevice   GPU address of the allVertices struct on device memory.
-       void clearDeviceSpikeCounts( AllSpikingNeuronsDeviceProperties& allNeuronsDevice);
+       ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+       void clearDeviceSpikeCounts( AllSpikingNeuronsDeviceProperties& allVerticesDevice);
 #else // !defined(USE_GPU)
 
 public:

@@ -39,52 +39,52 @@ ConnStatic::~ConnStatic() {
 ///
 ///  @param  layout    Layout information of the neural network.
 ///  @param  vertices   The Vertex list to search from.
-///  @param  synapses  The Synapse list to search from.
-void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, IAllEdges *synapses) {
-   int numNeurons = Simulator::getInstance().getTotalVertices();
-   vector<DistDestVertex> distDestNeurons[numNeurons];
+///  @param  edges  The Synapse list to search from.
+void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, IAllEdges *edges) {
+   int numVertices = Simulator::getInstance().getTotalVertices();
+   vector<DistDestVertex> distDestVertices[numVertices];
 
    int added = 0;
 
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
 
-   for (int srcNeuron = 0; srcNeuron < numNeurons; srcNeuron++) {
-      distDestNeurons[srcNeuron].clear();
+   for (int srcVertex = 0; srcVertex < numVertices; srcVertex++) {
+      distDestVertices[srcVertex].clear();
 
       // pick the connections shorter than threshConnsRadius
-      for (int destNeuron = 0; destNeuron < numNeurons; destNeuron++) {
-         if (srcNeuron != destNeuron) {
-            BGFLOAT dist = (*layout->dist_)(srcNeuron, destNeuron);
+      for (int destVertex = 0; destVertex < numVertices; destVertex++) {
+         if (srcVertex != destVertex) {
+            BGFLOAT dist = (*layout->dist_)(srcVertex, destVertex);
             if (dist <= threshConnsRadius_) {
                DistDestVertex distDestVertex;
                distDestVertex.dist = dist;
-               distDestVertex.destNeuron = destNeuron;
-               distDestNeurons[srcNeuron].push_back(distDestVertex);
+               distDestVertex.destVertex = destVertex;
+               distDestVertices[srcVertex].push_back(distDestVertex);
             }
          }
       }
 
       // sort ascendant
-      sort(distDestNeurons[srcNeuron].begin(), distDestNeurons[srcNeuron].end());
+      sort(distDestVertices[srcVertex].begin(), distDestVertices[srcVertex].end());
       // pick the shortest m_nConnsPerNeuron connections
-      for (BGSIZE i = 0; i < distDestNeurons[srcNeuron].size() && (int) i < connsPerVertex_; i++) {
-         int destNeuron = distDestNeurons[srcNeuron][i].destNeuron;
-         synapseType type = layout->synType(srcNeuron, destNeuron);
-         BGFLOAT *sumPoint = &(dynamic_cast<AllVertices *>(vertices)->summationMap_[destNeuron]);
+      for (BGSIZE i = 0; i < distDestVertices[srcVertex].size() && (int) i < connsPerVertex_; i++) {
+         int destVertex = distDestVertices[srcVertex][i].destVertex;
+         synapseType type = layout->synType(srcVertex, destVertex);
+         BGFLOAT *sumPoint = &(dynamic_cast<AllVertices *>(vertices)->summationMap_[destVertex]);
 
-         LOG4CPLUS_DEBUG(fileLogger_, "Source: " << srcNeuron << " Dest: " << destNeuron << " Dist: "
-                                                 << distDestNeurons[srcNeuron][i].dist);
+         LOG4CPLUS_DEBUG(fileLogger_, "Source: " << srcVertex << " Dest: " << destVertex << " Dist: "
+                                                 << distDestVertices[srcVertex][i].dist);
 
          BGSIZE iEdg;
-         synapses->addEdge(iEdg, type, srcNeuron, destNeuron, sumPoint, Simulator::getInstance().getDeltaT());
+         edges->addEdge(iEdg, type, srcVertex, destVertex, sumPoint, Simulator::getInstance().getDeltaT());
          added++;
 
-         // set synapse weight
+         // set edge weight
          // TODO: we need another synaptic weight distibution mode (normal distribution)
-         if (synapses->synSign(type) > 0) {
-            dynamic_cast<AllEdges *>(synapses)->W_[iEdg] = rng.inRange(excWeight_[0], excWeight_[1]);
+         if (edges->edgSign(type) > 0) {
+            dynamic_cast<AllEdges *>(edges)->W_[iEdg] = rng.inRange(excWeight_[0], excWeight_[1]);
          } else {
-            dynamic_cast<AllEdges *>(synapses)->W_[iEdg] = rng.inRange(inhWeight_[0], inhWeight_[1]);
+            dynamic_cast<AllEdges *>(edges)->W_[iEdg] = rng.inRange(inhWeight_[0], inhWeight_[1]);
          }
       }
    }

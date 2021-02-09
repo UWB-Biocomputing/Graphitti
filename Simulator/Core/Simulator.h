@@ -44,10 +44,6 @@ public:
 
    void printParameters() const; /// Prints loaded parameters to logging file.
 
-   void copyGPUSynapseToCPU(); /// Copy GPU Edge data to CPU.
-
-   void copyCPUEdgeToGPU(); /// Copy CPU Edge data to GPU.
-
    void reset(); /// Reset simulation objects.
 
    void simulate();
@@ -83,7 +79,7 @@ public:
 
    BGFLOAT getDeltaT() const;    /// Time elapsed between the beginning and end of the simulation step
 
-   neuronType *getRgNeuronTypeMap() const;    /// The neuron type map (INH, EXC).
+   neuronType *getRgNeuronTypeMap() const;    /// The vertex type map (INH, EXC).
 
    bool *getRgEndogenouslyActiveNeuronMap() const;  /// The starter existence map (T/F).
 
@@ -155,7 +151,7 @@ private:
 
    BGFLOAT deltaT_;   /// Inner Simulation Step Duration, purely investigative.
 
-   neuronType *rgNeuronTypeMap_; /// The neuron type map (INH, EXC). ToDo: become a vector
+   neuronType *rgNeuronTypeMap_; /// The vertex type map (INH, EXC). ToDo: become a vector
 
    bool *rgEndogenouslyActiveNeuronMap_;   /// The starter existence map (T/F). ToDo: become a vector
 

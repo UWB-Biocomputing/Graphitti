@@ -13,7 +13,7 @@
  we could debate if local copies or val from simulator when needed. not issue because constant. doesnt change.
 void AllVertices::setupVertices(SimulationInfo *sim_info)
 {
-    // dont create object for separate neurons. object needs to know number of neurons
+    // dont create object for separate neurons. object needs to know number of vertices
     //
     size = sim_info->totalVertices;
     // TODO: Rename variables for easier identification

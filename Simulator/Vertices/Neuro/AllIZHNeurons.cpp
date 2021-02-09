@@ -104,7 +104,7 @@ void AllIZHNeurons::createNeuron(int neuronIndex, Layout *layout) {
    AllIFNeurons::createNeuron(neuronIndex, layout);
 
    // TODO: we may need another distribution mode besides flat distribution
-   if (layout->neuronTypeMap_[neuronIndex] == EXC) {
+   if (layout->vertexTypeMap_[neuronIndex] == EXC) {
       // excitatory neuron
       Aconst_[neuronIndex] = rng.inRange(excAconst_[0], excAconst_[1]);
       Bconst_[neuronIndex] = rng.inRange(excBconst_[0], excBconst_[1]);

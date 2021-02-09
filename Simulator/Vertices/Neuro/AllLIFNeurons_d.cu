@@ -15,22 +15,22 @@
 ///  Notify outgoing synapses if neuron has fired.
 ///
 ///  @param  synapses               Reference to the allSynapses struct on host memory.
-///  @param  allNeuronsDevice       GPU address of the allNeuronsDeviceProperties struct 
+///  @param  allVerticesDevice       GPU address of the allVerticesDeviceProperties struct 
 ///                                 on device memory.
-///  @param  allSynapsesDevice      GPU address of the allSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice      GPU address of the allEdgesDeviceProperties struct 
 ///                                 on device memory.
 ///  @param  randNoise              Reference to the random noise array.
 ///  @param  synapseIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
-void AllLIFNeurons::advanceVertices( IAllEdges &synapses, void* allNeuronsDevice, void* allSynapsesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice )
+void AllLIFNeurons::advanceVertices( IAllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice )
 {
-    int neuron_count = Simulator::getInstance().getTotalVertices();
+    int vertex_count = Simulator::getInstance().getTotalVertices();
     int maxSpikes = (int)((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
     // CUDA parameters
     const int threadsPerBlock = 256;
-    int blocksPerGrid = ( neuron_count + threadsPerBlock - 1 ) / threadsPerBlock;
+    int blocksPerGrid = ( vertex_count + threadsPerBlock - 1 ) / threadsPerBlock;
 
     // Advance neurons ------------->
-    advanceLIFNeuronsDevice <<< blocksPerGrid, threadsPerBlock >>> ( neuron_count, Simulator::getInstance().getMaxSynapsesPerNeuron(), maxSpikes, Simulator::getInstance().getDeltaT(), g_simulationStep, randNoise, (AllIFNeuronsDeviceProperties *)allNeuronsDevice, (AllSpikingSynapsesDeviceProperties*)allSynapsesDevice, synapseIndexMapDevice, fAllowBackPropagation_ );
+    advanceLIFNeuronsDevice <<< blocksPerGrid, threadsPerBlock >>> ( vertex_count, Simulator::getInstance().getMaxSynapsesPerNeuron(), maxSpikes, Simulator::getInstance().getDeltaT(), g_simulationStep, randNoise, (AllIFNeuronsDeviceProperties *)allVerticesDevice, (AllSpikingSynapsesDeviceProperties*)allEdgesDevice, synapseIndexMapDevice, fAllowBackPropagation_ );
 }
 

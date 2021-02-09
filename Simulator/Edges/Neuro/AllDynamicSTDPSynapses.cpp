@@ -17,9 +17,9 @@ AllDynamicSTDPSynapses::AllDynamicSTDPSynapses() : AllSTDPSynapses() {
     F_ = NULL;
 }
 
-AllDynamicSTDPSynapses::AllDynamicSTDPSynapses(const int numNeurons, const int maxSynapses) :
-      AllSTDPSynapses(numNeurons, maxSynapses) {
-    setupEdges(numNeurons, maxSynapses);
+AllDynamicSTDPSynapses::AllDynamicSTDPSynapses(const int numVertices, const int maxSynapses) :
+      AllSTDPSynapses(numVertices, maxSynapses) {
+    setupEdges(numVertices, maxSynapses);
 }
 
 AllDynamicSTDPSynapses::~AllDynamicSTDPSynapses() {
@@ -49,12 +49,12 @@ void AllDynamicSTDPSynapses::setupEdges() {
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 /// 
-///  @param  numNeurons   Total number of neurons in the network.
+///  @param  numVertices   Total number of vertices in the network.
 ///  @param  maxSynapses  Maximum number of synapses per neuron.
-void AllDynamicSTDPSynapses::setupEdges(const int numNeurons, const int maxSynapses) {
-    AllSTDPSynapses::setupEdges(numNeurons, maxSynapses);
+void AllDynamicSTDPSynapses::setupEdges(const int numVertices, const int maxSynapses) {
+    AllSTDPSynapses::setupEdges(numVertices, maxSynapses);
 
-    BGSIZE maxTotalSynapses = maxSynapses * numNeurons;
+    BGSIZE maxTotalSynapses = maxSynapses * numVertices;
 
     if (maxTotalSynapses != 0) {
         lastSpike_ = new uint64_t[maxTotalSynapses];
@@ -79,8 +79,8 @@ void AllDynamicSTDPSynapses::printParameters() const {
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the synapse to set.
-void AllDynamicSTDPSynapses::readSynapse(istream &input, const BGSIZE iEdg) {
-    AllSTDPSynapses::readSynapse(input, iEdg);
+void AllDynamicSTDPSynapses::readEdge(istream &input, const BGSIZE iEdg) {
+    AllSTDPSynapses::readEdge(input, iEdg);
 
     // input.ignore() so input skips over end-of-line characters.
     input >> lastSpike_[iEdg];
@@ -127,14 +127,14 @@ void AllDynamicSTDPSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) 
 ///  Create a Synapse and connect it to the model.
 ///
 ///  @param  iEdg        Index of the synapse to set.
-///  @param  srcNeuron   Coordinates of the source Neuron.
-///  @param  destNeuron  Coordinates of the destination Neuron.
+///  @param  srcVertex   Coordinates of the source Neuron.
+///  @param  destVertex  Coordinates of the destination Neuron.
 ///  @param  sumPoint    Summation point address.
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
-void AllDynamicSTDPSynapses::createEdge(const BGSIZE iEdg, int srcNeuron, int destNeuron, BGFLOAT *sumPoint,
+void AllDynamicSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
                                            const BGFLOAT deltaT, synapseType type) {
-    AllSTDPSynapses::createEdge(iEdg, srcNeuron, destNeuron, sumPoint, deltaT, type);
+    AllSTDPSynapses::createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
 
     U_[iEdg] = DEFAULT_U;
 

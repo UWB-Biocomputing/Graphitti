@@ -28,9 +28,9 @@ AllSTDPSynapses::AllSTDPSynapses() : AllSpikingSynapses() {
    useFroemkeDanSTDP_ = NULL;
 }
 
-AllSTDPSynapses::AllSTDPSynapses(const int numNeurons, const int maxSynapses) :
-      AllSpikingSynapses(numNeurons, maxSynapses) {
-   setupEdges(numNeurons, maxSynapses);
+AllSTDPSynapses::AllSTDPSynapses(const int numVertices, const int maxSynapses) :
+      AllSpikingSynapses(numVertices, maxSynapses) {
+   setupEdges(numVertices, maxSynapses);
 }
 
 AllSTDPSynapses::~AllSTDPSynapses() {
@@ -78,12 +78,12 @@ void AllSTDPSynapses::setupEdges() {
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 ///
-///  @param  numNeurons   Total number of neurons in the network.
+///  @param  numVertices   Total number of vertices in the network.
 ///  @param  maxSynapses  Maximum number of synapses per neuron.
-void AllSTDPSynapses::setupEdges(const int numNeurons, const int maxSynapses) {
-   AllSpikingSynapses::setupEdges(numNeurons, maxSynapses);
+void AllSTDPSynapses::setupEdges(const int numVertices, const int maxSynapses) {
+   AllSpikingSynapses::setupEdges(numVertices, maxSynapses);
 
-   BGSIZE maxTotalSynapses = maxSynapses * numNeurons;
+   BGSIZE maxTotalSynapses = maxSynapses * numVertices;
 
    if (maxTotalSynapses != 0) {
       totalDelayPost_ = new int[maxTotalSynapses];
@@ -132,8 +132,8 @@ void AllSTDPSynapses::printParameters() const {
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the synapse to set.
-void AllSTDPSynapses::readSynapse(istream &input, const BGSIZE iEdg) {
-   AllSpikingSynapses::readSynapse(input, iEdg);
+void AllSTDPSynapses::readEdge(istream &input, const BGSIZE iEdg) {
+   AllSpikingSynapses::readEdge(input, iEdg);
 
    // input.ignore() so input skips over end-of-line characters.
    input >> totalDelayPost_[iEdg];
@@ -204,16 +204,16 @@ void AllSTDPSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
 ///
 ///  @param  synapses    The synapse list to reference.
 ///  @param  iEdg        Index of the synapse to set.
-///  @param  srcNeuron   Coordinates of the source Neuron.
-///  @param  destNeuron  Coordinates of the destination Neuron.
+///  @param  srcVertex   Coordinates of the source Neuron.
+///  @param  destVertex  Coordinates of the destination Neuron.
 ///  @param  sumPoint    Summation point address.
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
-void AllSTDPSynapses::createEdge(const BGSIZE iEdg, int srcNeuron, int destNeuron, BGFLOAT *sumPoint,
+void AllSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
                                     const BGFLOAT deltaT, synapseType type) {
 
    totalDelayPost_[iEdg] = 0;// Apr 12th 2020 move this line so that when AllSpikingSynapses::createEdge() is called, inside this method the initSpikeQueue() method can be called successfully
-   AllSpikingSynapses::createEdge(iEdg, srcNeuron, destNeuron, sumPoint, deltaT, type);
+   AllSpikingSynapses::createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
 
    // May 1st 2020
    // Use constants from Froemke and Dan (2002).
@@ -432,7 +432,7 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iEdg, double delta, double epost
 
    // if new weight is bigger than Wex_ (maximum allowed weight), then set it to Wex_
    if (fabs(W) > Wex_) {
-      W = synSign(type) * Wex_;
+      W = edgSign(type) * Wex_;
    }
 
    LOG4CPLUS_DEBUG(fileLogger_,

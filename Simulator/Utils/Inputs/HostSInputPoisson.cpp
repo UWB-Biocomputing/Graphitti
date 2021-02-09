@@ -67,7 +67,7 @@ int chunk_size = psi->totalVertices / omp_get_max_threads();
         if (--nISIs[neuronIndex] <= 0)
         {
             // add a spike
-            dynamic_cast<AllSpikingSynapses*>(synapses_)->preSpikeHit(iEdg);
+            dynamic_cast<AllSpikingSynapses*>(edges_)->preSpikeHit(iEdg);
 
             // update interval counter (exponectially distribution ISIs, Poisson)
             BGFLOAT isi = -lambda * log(rng.inRange(0, 1));
@@ -78,6 +78,6 @@ int chunk_size = psi->totalVertices / omp_get_max_threads();
             nISIs[neuronIndex] = static_cast<int>( (isi / 1000) / Simulator::getInstance().getDeltaT() + 0.5 );
         }
         // process synapse
-        synapses_->advanceEdge(iEdg, NULL);
+        edges_->advanceEdge(iEdg, NULL);
     }
 }

@@ -63,15 +63,15 @@ void GpuSInputRegular::inputStimulus(SimulationInfo* psi)
     if (fSInput == false)
         return;
 
-    int neuron_count = psi->totalVertices;
+    int vertex_count = psi->totalVertices;
 
     // CUDA parameters
     const int threadsPerBlock = 256;
     int blocksPerGrid; 
 
     // add input to each summation point
-    blocksPerGrid = ( neuron_count + threadsPerBlock - 1 ) / threadsPerBlock;
-    inputStimulusDevice <<< blocksPerGrid, threadsPerBlock >>> ( neuron_count, psi->pSummationMap, initValues_d, nShiftValues_d, nStepsInCycle, nStepsCycle, nStepsDuration );
+    blocksPerGrid = ( vertex_count + threadsPerBlock - 1 ) / threadsPerBlock;
+    inputStimulusDevice <<< blocksPerGrid, threadsPerBlock >>> ( vertex_count, psi->pSummationMap, initValues_d, nShiftValues_d, nStepsInCycle, nStepsCycle, nStepsDuration );
     // update cycle count
     nStepsInCycle = (nStepsInCycle + 1) % nStepsCycle;
 }
@@ -83,9 +83,9 @@ void GpuSInputRegular::inputStimulus(SimulationInfo* psi)
 /// @param[in] nShiftValues      Pointer to the shift values.
 void allocDeviceValues( SimulationInfo* psi, BGFLOAT* initValues, int *nShiftValues )
 {
-    int neuron_count = psi->totalVertices;
-    BGSIZE initValues_d_size = neuron_count * sizeof (BGFLOAT);   // size of initial values
-    BGSIZE nShiftValues_d_size = neuron_count * sizeof (int);   // size of shift values
+    int vertex_count = psi->totalVertices;
+    BGSIZE initValues_d_size = vertex_count * sizeof (BGFLOAT);   // size of initial values
+    BGSIZE nShiftValues_d_size = vertex_count * sizeof (int);   // size of shift values
 
     // Allocate GPU device memory
     HANDLE_ERROR( cudaMalloc ( ( void ** ) &initValues_d, initValues_d_size ) );

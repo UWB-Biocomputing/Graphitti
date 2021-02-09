@@ -282,7 +282,7 @@ bool deserializeSynapses() {
 #endif // USE_GPU
 
    // Creates synapse index map (includes copy CPU index map to GPU)
-   connections->createSynapseIndexMap();
+   connections->createEdgeIndexMap();
 
 #if defined(USE_GPU)
    GPUSpikingModel *gpuModel = static_cast<GPUSpikingModel *>(simulator.getModel().get());
@@ -315,6 +315,7 @@ void serializeSynapses() {
 
 #if defined(USE_GPU)
    // Copies GPU Synapse props data to CPU for serialization
+   // todo: is this getting done in operations manager? 
     simulator.copyGPUSynapseToCPU();
 #endif // USE_GPU
     shared_ptr<Model> model = simulator.getModel();

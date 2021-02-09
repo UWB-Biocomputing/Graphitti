@@ -14,18 +14,18 @@
 
 /*
  *  Update the weights of the Synapses in the simulation. To be clear,
- *  iterates through all source and destination neurons and updates their
- *  synaptic strengths from the weight matrix.
+ *  iterates through all source and destination vertices and updates their
+ *  edge strengths from the weight matrix.
  *  Note: Platform Dependent.
  *
- *  @param  numNeurons         number of neurons to update.
+ *  @param  numVertices         number of vertices to update.
  *  @param  vertices            The AllVertices object.
  *  @param  synapses           The AllEdges object.
- *  @param  allNeuronsDevice   GPU address to the AllVertices struct in device memory.
- *  @param  allSynapsesDevice  GPU address to the allSynapses struct in device memory.
+ *  @param  allVerticesDevice   GPU address to the AllVertices struct in device memory.
+ *  @param  allEdgesDevice  GPU address to the allSynapses struct in device memory.
  *  @param  layout             The Layout object.
  */
-void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllVertices &vertices, IAllEdges &synapses, AllSpikingNeuronsDeviceProperties* allNeuronsDevice, AllSpikingSynapsesDeviceProperties* allSynapsesDevice, Layout *layout)
+void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, IAllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout)
 {
         Simulator &simulator = Simulator::getInstance();
         // For now, we just set the weights to equal the areas. We will later
@@ -54,10 +54,10 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllVertices &verti
 
         HANDLE_ERROR( cudaMemcpy ( W_d, W_h, W_d_size, cudaMemcpyHostToDevice ) );
 
-        HANDLE_ERROR( cudaMemcpy ( neuronTypeMapD, layout->neuronTypeMap_, simulator.getTotalVertices() * sizeof( neuronType ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( neuronTypeMapD, layout->vertexTypeMap_, simulator.getTotalVertices() * sizeof( neuronType ), cudaMemcpyHostToDevice ) );
 
         blocksPerGrid = ( simulator.getTotalVertices() + threadsPerBlock - 1 ) / threadsPerBlock;
-        updateSynapsesWeightsDevice <<< blocksPerGrid, threadsPerBlock >>> ( simulator.getTotalVertices(), deltaT, W_d, simulator.getMaxSynapsesPerNeuron(), allNeuronsDevice, allSynapsesDevice, neuronTypeMapD );
+        updateSynapsesWeightsDevice <<< blocksPerGrid, threadsPerBlock >>> ( simulator.getTotalVertices(), deltaT, W_d, simulator.getMaxSynapsesPerNeuron(), allVerticesDevice, allEdgesDevice, neuronTypeMapD );
 
         // free memories
         HANDLE_ERROR( cudaFree( W_d ) );
@@ -66,7 +66,7 @@ void ConnGrowth::updateSynapsesWeights(const int numNeurons, IAllVertices &verti
         HANDLE_ERROR( cudaFree( neuronTypeMapD ) );
 
         // copy device synapse count to host memory
-        synapses.copyDeviceSynapseCountsToHost(allSynapsesDevice);
+        synapses.copyDeviceSynapseCountsToHost(allEdgesDevice);
         // copy device synapse summation coordinate to host memory
-        synapses.copyDeviceSynapseSumIdxToHost(allSynapsesDevice);
+        synapses.copyDeviceSynapseSumIdxToHost(allEdgesDevice);
 }

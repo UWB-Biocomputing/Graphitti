@@ -5,11 +5,11 @@
  * 
  * @brief Implementation of Model for the spiking neural networks.
  *
- * The network is composed of 3 superimposed 2-d arrays: neurons, synapses, and
+ * The network is composed of 3 superimposed 2-d arrays: vertices, edges, and
  * summation points.
  *
- * Synapses in the synapse map are located at the coordinates of the neuron
- * from which they receive output.  Each synapse stores a pointer into a
+ * Edges in the edge map are located at the coordinates of the vertex
+ * from which they receive output.  Each edge stores a pointer into a
  * summation point. 
  */
 
@@ -56,12 +56,12 @@ void Model::saveData() {
    }
 }
 
-/// Creates all the Neurons and generates data for them.
+/// Creates all the vertices and generates data for them.
 // todo: this is going to go away
 void Model::createAllVertices() {
-   LOG4CPLUS_INFO(fileLogger_, "Allocating Neurons..." );
+   LOG4CPLUS_INFO(fileLogger_, "Allocating Vertices..." );
 
-   layout_->generateNeuronTypeMap(Simulator::getInstance().getTotalVertices());
+   layout_->generateVertexTypeMap(Simulator::getInstance().getTotalVertices());
    layout_->initStarterMap(Simulator::getInstance().getTotalVertices());
 
    // set their specific types
@@ -70,9 +70,9 @@ void Model::createAllVertices() {
 
 /// Sets up the Simulation.
 void Model::setupSim() {
-   LOG4CPLUS_INFO(fileLogger_, "Setting up Neurons...");
+   LOG4CPLUS_INFO(fileLogger_, "Setting up Vertices...");
    layout_->getVertices()->setupVertices();
-   LOG4CPLUS_INFO(fileLogger_, "Setting up Synapses...");
+   LOG4CPLUS_INFO(fileLogger_, "Setting up Edges...");
    connections_->getEdges()->setupEdges();
 #ifdef PERFORMANCE_METRICS
    // Start timer for initialization
@@ -89,7 +89,7 @@ void Model::setupSim() {
       recorder_->initDefaultValues();
    }
 
-   // Creates all the Neurons and generates data for them.
+   // Creates all the vertices and generates data for them.
    createAllVertices();
 
 #ifdef PERFORMANCE_METRICS
@@ -103,9 +103,9 @@ void Model::setupSim() {
    t_host_initialization_connections += Simulator::getInstance().short_timer.lap() / 1000000.0;
 #endif
 
-   // create a synapse index map
+   // create an edge index map
    LOG4CPLUS_INFO(fileLogger_, "Creating EdgeIndexMap...");
-   connections_->createSynapseIndexMap();
+   connections_->createEdgeIndexMap();
 }
 
 /// Log this simulation step.
@@ -122,7 +122,7 @@ void Model::logSimStep() const {
       ss.precision(1);
 
       for (int x = 0; x < Simulator::getInstance().getWidth(); x++) {
-         switch (layout_->neuronTypeMap_[x + y * Simulator::getInstance().getWidth()]) {
+         switch (layout_->vertexTypeMap_[x + y * Simulator::getInstance().getWidth()]) {
             case EXC:
                if (layout_->starterMap_[x + y * Simulator::getInstance().getWidth()])
                   ss << "s";

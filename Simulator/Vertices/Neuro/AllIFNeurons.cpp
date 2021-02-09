@@ -195,7 +195,7 @@ void AllIFNeurons::createNeuron(int neuronIndex, Layout *layout) {
       spikeHistory_[neuronIndex][j] = ULONG_MAX;
    }
 
-   switch (layout->neuronTypeMap_[neuronIndex]) {
+   switch (layout->vertexTypeMap_[neuronIndex]) {
       case INH:
          LOG4CPLUS_DEBUG(vertexLogger_, "Setting inhibitory neuron: " << neuronIndex);
          // set inhibitory absolute refractory period
@@ -210,7 +210,7 @@ void AllIFNeurons::createNeuron(int neuronIndex, Layout *layout) {
 
       default:
          LOG4CPLUS_DEBUG(vertexLogger_, "ERROR: unknown neuron type: "
-               << layout->neuronTypeMap_[neuronIndex] << "@" << neuronIndex);
+               << layout->vertexTypeMap_[neuronIndex] << "@" << neuronIndex);
          assert(false);
          break;
    }

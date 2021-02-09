@@ -15,228 +15,228 @@
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
 ///
-///  @param  allSynapsesDevice  GPU address of the AllSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice  GPU address of the AllSTDPSynapsesDeviceProperties struct 
 ///                             on device memory.
-void AllSTDPSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice ) {
-	allocSynapseDeviceStruct( allSynapsesDevice, Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxSynapsesPerNeuron() );
+void AllSTDPSynapses::allocSynapseDeviceStruct( void** allEdgesDevice ) {
+	allocSynapseDeviceStruct( allEdgesDevice, Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxSynapsesPerNeuron() );
 }
 
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
 ///
-///  @param  allSynapsesDevice     GPU address of the AllSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice     GPU address of the AllSTDPSynapsesDeviceProperties struct 
 ///                                on device memory.
-///  @param  numNeurons            Number of neurons.
+///  @param  numVertices            Number of vertices.
 ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-void AllSTDPSynapses::allocSynapseDeviceStruct( void** allSynapsesDevice, int numNeurons, int maxEdgesPerVertex ) {
-	AllSTDPSynapsesDeviceProperties allSynapsesDeviceProps;
+void AllSTDPSynapses::allocSynapseDeviceStruct( void** allEdgesDevice, int numVertices, int maxEdgesPerVertex ) {
+	AllSTDPSynapsesDeviceProperties allEdgesDeviceProps;
 
-	allocDeviceStruct( allSynapsesDeviceProps, numNeurons, maxEdgesPerVertex );
+	allocDeviceStruct( allEdgesDeviceProps, numVertices, maxEdgesPerVertex );
 
-	HANDLE_ERROR( cudaMalloc( allSynapsesDevice, sizeof( AllSTDPSynapsesDeviceProperties ) ) );
-	HANDLE_ERROR( cudaMemcpy ( *allSynapsesDevice, &allSynapsesDeviceProps, sizeof( AllSTDPSynapsesDeviceProperties ), cudaMemcpyHostToDevice ) );
+	HANDLE_ERROR( cudaMalloc( allEdgesDevice, sizeof( AllSTDPSynapsesDeviceProperties ) ) );
+	HANDLE_ERROR( cudaMemcpy ( *allEdgesDevice, &allEdgesDeviceProps, sizeof( AllSTDPSynapsesDeviceProperties ), cudaMemcpyHostToDevice ) );
 }
 
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
 ///  (Helper function of allocSynapseDeviceStruct)
 ///
-///  @param  allSynapsesDevice     GPU address of the AllSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice     GPU address of the AllSTDPSynapsesDeviceProperties struct 
 ///                                on device memory.
-///  @param  numNeurons            Number of neurons.
+///  @param  numVertices            Number of vertices.
 ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-void AllSTDPSynapses::allocDeviceStruct( AllSTDPSynapsesDeviceProperties &allSynapsesDevice, int numNeurons, int maxEdgesPerVertex ) {
-        AllSpikingSynapses::allocDeviceStruct( allSynapsesDevice, numNeurons, maxEdgesPerVertex );
+void AllSTDPSynapses::allocDeviceStruct( AllSTDPSynapsesDeviceProperties &allEdgesDevice, int numVertices, int maxEdgesPerVertex ) {
+        AllSpikingSynapses::allocDeviceStruct( allEdgesDevice, numVertices, maxEdgesPerVertex );
 
-        BGSIZE maxTotalSynapses = maxEdgesPerVertex * numNeurons;
+        BGSIZE maxTotalSynapses = maxEdgesPerVertex * numVertices;
 
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.totalDelayPost_, maxTotalSynapses * sizeof( int ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.delayQueuePost_, maxTotalSynapses * sizeof( BGSIZE ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.delayIndexPost_, maxTotalSynapses * sizeof( int ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.delayQueuePost_, maxTotalSynapses * sizeof( int ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.tauspost_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.tauspre_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.taupos_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.tauneg_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.STDPgap_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.Wex_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.Aneg_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.Apos_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.mupos_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.muneg_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.useFroemkeDanSTDP_, maxTotalSynapses * sizeof( bool ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.totalDelayPost_, maxTotalSynapses * sizeof( int ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.delayQueuePost_, maxTotalSynapses * sizeof( BGSIZE ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.delayIndexPost_, maxTotalSynapses * sizeof( int ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.delayQueuePost_, maxTotalSynapses * sizeof( int ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.tauspost_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.tauspre_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.taupos_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.tauneg_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.STDPgap_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.Wex_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.Aneg_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.Apos_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.mupos_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.muneg_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.useFroemkeDanSTDP_, maxTotalSynapses * sizeof( bool ) ) );
 }
 
 ///  Delete GPU memories.
 ///
-///  @param  allSynapsesDevice  GPU address of the AllSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice  GPU address of the AllSTDPSynapsesDeviceProperties struct 
 ///                             on device memory.
-void AllSTDPSynapses::deleteSynapseDeviceStruct( void* allSynapsesDevice ) {
-	AllSTDPSynapsesDeviceProperties allSynapsesDeviceProps;
+void AllSTDPSynapses::deleteSynapseDeviceStruct( void* allEdgesDevice ) {
+	AllSTDPSynapsesDeviceProperties allEdgesDeviceProps;
 
-	HANDLE_ERROR( cudaMemcpy ( &allSynapsesDeviceProps, allSynapsesDevice, sizeof( AllSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
+	HANDLE_ERROR( cudaMemcpy ( &allEdgesDeviceProps, allEdgesDevice, sizeof( AllSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
 
-	deleteDeviceStruct( allSynapsesDeviceProps );
+	deleteDeviceStruct( allEdgesDeviceProps );
 
-	HANDLE_ERROR( cudaFree( allSynapsesDevice ) );
+	HANDLE_ERROR( cudaFree( allEdgesDevice ) );
 }
 
 ///  Delete GPU memories.
 ///  (Helper function of deleteSynapseDeviceStruct)
 ///
-///  @param  allSynapsesDevice  GPU address of the AllSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice  GPU address of the AllSTDPSynapsesDeviceProperties struct 
 ///                             on device memory.
-void AllSTDPSynapses::deleteDeviceStruct( AllSTDPSynapsesDeviceProperties& allSynapsesDevice ) {
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.totalDelayPost_ ) );
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.delayQueuePost_ ) );
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.delayIndexPost_ ) );
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.tauspost_ ) );
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.tauspre_ ) );
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.taupos_ ) );
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.tauneg_ ) );
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.STDPgap_ ) );
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.Wex_ ) );
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.Aneg_ ) );
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.Apos_ ) );
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.mupos_ ) );
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.muneg_) );
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.useFroemkeDanSTDP_ ) );
+void AllSTDPSynapses::deleteDeviceStruct( AllSTDPSynapsesDeviceProperties& allEdgesDevice ) {
+        HANDLE_ERROR( cudaFree( allEdgesDevice.totalDelayPost_ ) );
+        HANDLE_ERROR( cudaFree( allEdgesDevice.delayQueuePost_ ) );
+        HANDLE_ERROR( cudaFree( allEdgesDevice.delayIndexPost_ ) );
+        HANDLE_ERROR( cudaFree( allEdgesDevice.tauspost_ ) );
+        HANDLE_ERROR( cudaFree( allEdgesDevice.tauspre_ ) );
+        HANDLE_ERROR( cudaFree( allEdgesDevice.taupos_ ) );
+        HANDLE_ERROR( cudaFree( allEdgesDevice.tauneg_ ) );
+        HANDLE_ERROR( cudaFree( allEdgesDevice.STDPgap_ ) );
+        HANDLE_ERROR( cudaFree( allEdgesDevice.Wex_ ) );
+        HANDLE_ERROR( cudaFree( allEdgesDevice.Aneg_ ) );
+        HANDLE_ERROR( cudaFree( allEdgesDevice.Apos_ ) );
+        HANDLE_ERROR( cudaFree( allEdgesDevice.mupos_ ) );
+        HANDLE_ERROR( cudaFree( allEdgesDevice.muneg_) );
+        HANDLE_ERROR( cudaFree( allEdgesDevice.useFroemkeDanSTDP_ ) );
 
-        AllSpikingSynapses::deleteDeviceStruct( allSynapsesDevice );
+        AllSpikingSynapses::deleteDeviceStruct( allEdgesDevice );
 }
 
 ///  Copy all synapses' data from host to device.
 ///
-///  @param  allSynapsesDevice     GPU address of the AllSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice     GPU address of the AllSTDPSynapsesDeviceProperties struct 
 ///                                on device memory.
-///  @param  numNeurons            Number of neurons.
+///  @param  numVertices            Number of vertices.
 ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-void AllSTDPSynapses::copySynapseHostToDevice( void* allSynapsesDevice ) { // copy everything necessary
-	copySynapseHostToDevice( allSynapsesDevice, Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxSynapsesPerNeuron() );	
+void AllSTDPSynapses::copySynapseHostToDevice( void* allEdgesDevice ) { // copy everything necessary
+	copySynapseHostToDevice( allEdgesDevice, Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxSynapsesPerNeuron() );	
 }
 
 ///  Copy all synapses' data from host to device.
 ///
-///  @param  allSynapsesDevice     GPU address of the AllSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice     GPU address of the AllSTDPSynapsesDeviceProperties struct 
 ///                                on device memory.
-///  @param  numNeurons            Number of neurons.
+///  @param  numVertices            Number of vertices.
 ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-void AllSTDPSynapses::copySynapseHostToDevice( void* allSynapsesDevice, int numNeurons, int maxEdgesPerVertex ) { // copy everything necessary
-	AllSTDPSynapsesDeviceProperties allSynapsesDeviceProps;
+void AllSTDPSynapses::copySynapseHostToDevice( void* allEdgesDevice, int numVertices, int maxEdgesPerVertex ) { // copy everything necessary
+	AllSTDPSynapsesDeviceProperties allEdgesDeviceProps;
 
-        HANDLE_ERROR( cudaMemcpy ( &allSynapsesDeviceProps, allSynapsesDevice, sizeof( AllSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( &allEdgesDeviceProps, allEdgesDevice, sizeof( AllSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
 
-	copyHostToDevice( allSynapsesDevice, allSynapsesDeviceProps, numNeurons, maxEdgesPerVertex );	
+	copyHostToDevice( allEdgesDevice, allEdgesDeviceProps, numVertices, maxEdgesPerVertex );	
 }
 
 ///  Copy all synapses' data from host to device.
 ///  (Helper function of copySynapseHostToDevice)
 ///
-///  @param  allSynapsesDevice     GPU address of the AllSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice     GPU address of the AllSTDPSynapsesDeviceProperties struct 
 ///                                on device memory.
-///  @param  numNeurons            Number of neurons.
+///  @param  numVertices            Number of vertices.
 ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-void AllSTDPSynapses::copyHostToDevice( void* allSynapsesDevice, AllSTDPSynapsesDeviceProperties& allSynapsesDeviceProps, int numNeurons, int maxEdgesPerVertex ) { // copy everything necessary 
-        AllSpikingSynapses::copyHostToDevice( allSynapsesDevice, allSynapsesDeviceProps, numNeurons, maxEdgesPerVertex );
+void AllSTDPSynapses::copyHostToDevice( void* allEdgesDevice, AllSTDPSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex ) { // copy everything necessary 
+        AllSpikingSynapses::copyHostToDevice( allEdgesDevice, allEdgesDeviceProps, numVertices, maxEdgesPerVertex );
 
-        BGSIZE maxTotalSynapses = maxEdgesPerVertex * numNeurons;
+        BGSIZE maxTotalSynapses = maxEdgesPerVertex * numVertices;
         
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.totalDelayPost_, totalDelayPost_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.totalDelayPost_, totalDelayPost_,
                 maxTotalSynapses * sizeof( int ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.delayQueuePost_, delayQueuePost_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.delayQueuePost_, delayQueuePost_,
                 maxTotalSynapses * sizeof( uint32_t ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.delayIndexPost_, delayIndexPost_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.delayIndexPost_, delayIndexPost_,
                 maxTotalSynapses * sizeof( int ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.delayQueuePost_, delayQueuePost_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.delayQueuePost_, delayQueuePost_,
                 maxTotalSynapses * sizeof( int ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.tauspost_, tauspost_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.tauspost_, tauspost_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.tauspre_, tauspre_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.tauspre_, tauspre_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.taupos_, taupos_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.taupos_, taupos_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.tauneg_, tauneg_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.tauneg_, tauneg_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.STDPgap_, STDPgap_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.STDPgap_, STDPgap_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.Wex_, Wex_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.Wex_, Wex_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.Aneg_, Aneg_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.Aneg_, Aneg_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.Apos_, Apos_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.Apos_, Apos_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.mupos_, mupos_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.mupos_, mupos_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.muneg_, muneg_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.muneg_, muneg_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.useFroemkeDanSTDP_, useFroemkeDanSTDP_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.useFroemkeDanSTDP_, useFroemkeDanSTDP_,
                 maxTotalSynapses * sizeof( bool ), cudaMemcpyHostToDevice ) ); 
 }
 
 ///  Copy all synapses' data from device to host.
 ///
-///  @param  allSynapsesDevice  GPU address of the AllSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice  GPU address of the AllSTDPSynapsesDeviceProperties struct 
 ///                             on device memory.
-void AllSTDPSynapses::copySynapseDeviceToHost( void* allSynapsesDevice ) {
+void AllSTDPSynapses::copySynapseDeviceToHost( void* allEdgesDevice ) {
 	// copy everything necessary
-	AllSTDPSynapsesDeviceProperties allSynapsesDeviceProps;
+	AllSTDPSynapsesDeviceProperties allEdgesDeviceProps;
 
-        HANDLE_ERROR( cudaMemcpy ( &allSynapsesDeviceProps, allSynapsesDevice, sizeof( AllSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( &allEdgesDeviceProps, allEdgesDevice, sizeof( AllSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
 
-	copyDeviceToHost( allSynapsesDeviceProps );
+	copyDeviceToHost( allEdgesDeviceProps );
 }
 
 ///  Copy all synapses' data from device to host.
 ///  (Helper function of copySynapseDeviceToHost)
 ///
-///  @param  allSynapsesDevice     GPU address of the AllSTDPSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice     GPU address of the AllSTDPSynapsesDeviceProperties struct 
 ///                                on device memory.
-///  @param  numNeurons            Number of neurons.
+///  @param  numVertices            Number of vertices.
 ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-void AllSTDPSynapses::copyDeviceToHost( AllSTDPSynapsesDeviceProperties& allSynapsesDevice ) {
-        AllSpikingSynapses::copyDeviceToHost( allSynapsesDevice ) ;
+void AllSTDPSynapses::copyDeviceToHost( AllSTDPSynapsesDeviceProperties& allEdgesDevice ) {
+        AllSpikingSynapses::copyDeviceToHost( allEdgesDevice ) ;
 
-	int numNeurons = Simulator::getInstance().getTotalVertices();
-	BGSIZE maxTotalSynapses = Simulator::getInstance().getMaxSynapsesPerNeuron() * numNeurons;
+	int numVertices = Simulator::getInstance().getTotalVertices();
+	BGSIZE maxTotalSynapses = Simulator::getInstance().getMaxSynapsesPerNeuron() * numVertices;
 
-        HANDLE_ERROR( cudaMemcpy ( delayQueuePost_, allSynapsesDevice.delayQueuePost_,
+        HANDLE_ERROR( cudaMemcpy ( delayQueuePost_, allEdgesDevice.delayQueuePost_,
                 maxTotalSynapses * sizeof( uint32_t ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( delayIndexPost_, allSynapsesDevice.delayIndexPost_,
+        HANDLE_ERROR( cudaMemcpy ( delayIndexPost_, allEdgesDevice.delayIndexPost_,
                 maxTotalSynapses * sizeof( int ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( delayQueuePost_, allSynapsesDevice.delayQueuePost_,
+        HANDLE_ERROR( cudaMemcpy ( delayQueuePost_, allEdgesDevice.delayQueuePost_,
                 maxTotalSynapses * sizeof( int ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( tauspost_, allSynapsesDevice.tauspost_,
+        HANDLE_ERROR( cudaMemcpy ( tauspost_, allEdgesDevice.tauspost_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( tauspre_, allSynapsesDevice.tauspre_,
+        HANDLE_ERROR( cudaMemcpy ( tauspre_, allEdgesDevice.tauspre_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( taupos_, allSynapsesDevice.taupos_,
+        HANDLE_ERROR( cudaMemcpy ( taupos_, allEdgesDevice.taupos_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( tauneg_, allSynapsesDevice.tauneg_,
+        HANDLE_ERROR( cudaMemcpy ( tauneg_, allEdgesDevice.tauneg_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( STDPgap_, allSynapsesDevice.STDPgap_,
+        HANDLE_ERROR( cudaMemcpy ( STDPgap_, allEdgesDevice.STDPgap_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( Wex_, allSynapsesDevice.Wex_,
+        HANDLE_ERROR( cudaMemcpy ( Wex_, allEdgesDevice.Wex_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( Aneg_, allSynapsesDevice.Aneg_,
+        HANDLE_ERROR( cudaMemcpy ( Aneg_, allEdgesDevice.Aneg_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( Apos_, allSynapsesDevice.Apos_,
+        HANDLE_ERROR( cudaMemcpy ( Apos_, allEdgesDevice.Apos_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( mupos_, allSynapsesDevice.mupos_,
+        HANDLE_ERROR( cudaMemcpy ( mupos_, allEdgesDevice.mupos_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( muneg_, allSynapsesDevice.muneg_,
+        HANDLE_ERROR( cudaMemcpy ( muneg_, allEdgesDevice.muneg_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( useFroemkeDanSTDP_, allSynapsesDevice.useFroemkeDanSTDP_,
+        HANDLE_ERROR( cudaMemcpy ( useFroemkeDanSTDP_, allEdgesDevice.useFroemkeDanSTDP_,
                 maxTotalSynapses * sizeof( bool ), cudaMemcpyDeviceToHost ) );
 }
 
 ///  Advance all the Synapses in the simulation.
 ///  Update the state of all synapses for a time step.
 ///
-///  @param  allSynapsesDevice      GPU address of the AllSynapsesDeviceProperties struct 
+///  @param  allEdgesDevice      GPU address of the AllSynapsesDeviceProperties struct 
 ///                                 on device memory.
-///  @param  allNeuronsDevice       GPU address of the allNeurons struct on device memory.
+///  @param  allVerticesDevice       GPU address of the allNeurons struct on device memory.
 ///  @param  synapseIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
-void AllSTDPSynapses::advanceEdges( void* allSynapsesDevice, void* allNeuronsDevice, void* synapseIndexMapDevice )
+void AllSTDPSynapses::advanceEdges( void* allEdgesDevice, void* allVerticesDevice, void* synapseIndexMapDevice )
 {
     int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
@@ -245,7 +245,7 @@ void AllSTDPSynapses::advanceEdges( void* allSynapsesDevice, void* allNeuronsDev
     int blocksPerGrid = ( totalEdgeCount_ + threadsPerBlock - 1 ) / threadsPerBlock;
     // Advance synapses ------------->
     advanceSTDPSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( totalEdgeCount_, (EdgeIndexMap*) synapseIndexMapDevice, g_simulationStep, Simulator::getInstance().getDeltaT(), 
-                                (AllSTDPSynapsesDeviceProperties*)allSynapsesDevice, (AllSpikingNeuronsDeviceProperties*)allNeuronsDevice, maxSpikes );
+                                (AllSTDPSynapsesDeviceProperties*)allEdgesDevice, (AllSpikingNeuronsDeviceProperties*)allVerticesDevice, maxSpikes );
 }
     
 ///  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
@@ -256,7 +256,7 @@ void AllSTDPSynapses::advanceEdges( void* allSynapsesDevice, void* allNeuronsDev
 ///  we use this scheme.
 ///  Note: we used to use a function pointer; however, it caused the growth_cuda crash
 ///  (see issue#137).
-void AllSTDPSynapses::setSynapseClassID()
+void AllSTDPSynapses::setEdgeClassID()
 {
     enumClassSynapses classSynapses_h = classAllSTDPSynapses;
 
@@ -265,8 +265,8 @@ void AllSTDPSynapses::setSynapseClassID()
 
 ///  Prints GPU SynapsesProps data.
 ///   
-///  @param  allSynapsesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
-void AllSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) const
+///  @param  allEdgesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
+void AllSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
 {
     AllSTDPSynapsesDeviceProperties allSynapsesProps;
 
@@ -311,7 +311,7 @@ void AllSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) cons
         bool *useFroemkeDanSTDPPrint = new bool[size];
 
         // copy everything
-        HANDLE_ERROR( cudaMemcpy ( &allSynapsesProps, allSynapsesDeviceProps, sizeof( AllSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( &allSynapsesProps, allEdgesDeviceProps, sizeof( AllSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( synapseCountsPrint, allSynapsesProps.synapseCounts_, countVertices_ * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
         maxSynapsesPerNeuronPrint = allSynapsesProps.maxEdgesPerVertex_;
         totalSynapseCountPrint = allSynapsesProps.totalEdgeCount_;

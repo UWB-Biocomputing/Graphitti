@@ -101,14 +101,14 @@ public:
 
 protected:
    /// Allocates  and initializes memories on CUDA device.
-   /// @param[out] allNeuronsDevice          Memory location of the pointer to the neurons list on device memory.
-   /// @param[out] allSynapsesDevice         Memory location of the pointer to the synapses list on device memory.
-   void allocDeviceStruct(void **allNeuronsDevice, void **allSynapsesDevice);
+   /// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
+   /// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
+   void allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice);
 
    /// Copies device memories to host memories and deallocates them.
-   /// @param[out] allNeuronsDevice          Memory location of the pointer to the neurons list on device memory.
-   /// @param[out] allSynapsesDevice         Memory location of the pointer to the synapses list on device memory.
-   virtual void deleteDeviceStruct(void **allNeuronsDevice, void **allSynapsesDevice);
+   /// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
+   /// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
+   virtual void deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevice);
 
    /// Add psr of all incoming synapses to summation points.
    virtual void calcSummationMap();
@@ -120,10 +120,10 @@ protected:
    EdgeIndexMap *synapseIndexMapDevice_;
 
    /// Synapse structures in device memory.
-   AllSpikingSynapsesDeviceProperties *allSynapsesDevice_;
+   AllSpikingSynapsesDeviceProperties *allEdgesDevice_;
 
    /// Neuron structure in device memory.
-   AllSpikingNeuronsDeviceProperties *allNeuronsDevice_;
+   AllSpikingNeuronsDeviceProperties *allVerticesDevice_;
 
 private:
    void allocSynapseImap(int count);
@@ -132,7 +132,7 @@ private:
 
 public: //2020/03/14 changed to public for accessing in BGDriver
 
-   void copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numNeurons);
+   void copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices);
 
 private:
 
@@ -142,7 +142,7 @@ private:
    void eraseEdge(IAllEdges &synapses, const int neuronIndex, const int synapseIndex);
 
    // TODO
-   void addEdge(IAllEdges &synapses, synapseType type, const int srcNeuron, const int destNeuron,
+   void addEdge(IAllEdges &synapses, synapseType type, const int srcVertex, const int destVertex,
                    Coordinate &source, Coordinate &dest, BGFLOAT *sumPoint, BGFLOAT deltaT);
 
    // TODO
@@ -160,5 +160,5 @@ void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, uns
 extern __global__ void calcSummationMapDevice(int totalVertices,
           AllSpikingNeuronsDeviceProperties* __restrict__ allNeurnsDevice,
           const EdgeIndexMap* __restrict__ synapseIndexMapDevice_,
-                    const AllSpikingSynapsesDeviceProperties* __restrict__ allSynapsesDevice );
+                    const AllSpikingSynapsesDeviceProperties* __restrict__ allEdgesDevice );
 #endif

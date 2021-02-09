@@ -16,7 +16,7 @@ extern void getValueList(const string& valString, vector<BGFLOAT>* pList);
 /// @param[in] parms     Pointer to xml parms element
 SInputPoisson::SInputPoisson(TiXmlElement* parms) :
     nISIs(NULL),
-    synapses_(NULL),
+    edges_(NULL),
     masks(NULL)
 {
     fSInput = false;
@@ -121,11 +121,11 @@ void SInputPoisson::init()
 
     // create an input synapse layer
     // TODO: do we need to support other types of synapses?
-    synapses_ = new AllDSSynapses(Simulator::getInstance().getTotalVertices(), 1);
+    edges_ = new AllDSSynapses(Simulator::getInstance().getTotalVertices(), 1);
     for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalVertices(); neuronIndex++)
     {
         synapseType type;
-        if (Simulator::getInstance().getModel()->getLayout()->neuronTypeMap_[neuronIndex] == INH)
+        if (Simulator::getInstance().getModel()->getLayout()->vertexTypeMap_[neuronIndex] == INH)
             type = EI;
         else
             type = EE;
@@ -133,8 +133,8 @@ void SInputPoisson::init()
         BGFLOAT* sumPoint = &(Simulator::getInstance().getPSummationMap()[neuronIndex]);
         BGSIZE iEdg = Simulator::getInstance().getMaxSynapsesPerNeuron() * neuronIndex;
 
-        synapses_->createEdge(iEdg, 0, neuronIndex, sumPoint, Simulator::getInstance().getDeltaT(), type);
-        dynamic_cast<AllEdges*>(synapses_)->W_[iEdg] = weight * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+        edges_->createEdge(iEdg, 0, neuronIndex, sumPoint, Simulator::getInstance().getDeltaT(), type);
+        dynamic_cast<AllEdges*>(edges_)->W_[iEdg] = weight * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
     }
 }
 
@@ -148,8 +148,8 @@ void SInputPoisson::term()
         delete[] nISIs;
 
     // clear the synapse layer, which destroy all synase objects
-    if (synapses_ != NULL)
-        delete synapses_;
+    if (edges_ != NULL)
+        delete edges_;
 
     // clear memory for input masks
     if (masks != NULL)

@@ -15,7 +15,7 @@ void Layout::setupLayout(const SimulationInfo *sim_info)
     dist = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, num_neurons, num_neurons);
 
     // Initialize neuron locations memory, grab global info
-    initNeuronsLocs(sim_info);
+    initVerticesLocs(sim_info);
 
     // calculate the distance between neurons
     // precomputing. also initialization
@@ -55,14 +55,14 @@ has data structure to track type of each neuron. in generateneurontypemap
 todo: why is init separate from alloc? setup does alloc/init. but some things are init separately.
 no reason why there needs to be
 
-/* todo: this method should not be separate from FixedLayout::generateNeuronTypeMap
+/* todo: this method should not be separate from FixedLayout::generateVertexTypeMap
  *  Creates a neurons type map.
  *
  *  @param  num_neurons number of the neurons to have in the type map.
  */
-void Layout::generateNeuronTypeMap(int num_neurons)
+void Layout::generateVertexTypeMap(int num_neurons)
 {
-    DEBUG(cout << "\nInitializing neuron type map"<< endl;);
+    DEBUG(cout << "\nInitializing vertex type map"<< endl;);
 
     for (int i = 0; i < num_neurons; i++) {
         neuron_type_map[i] = EXC;
@@ -76,9 +76,9 @@ todo: this couldve been done in setupSim.
  *  @param  num_neurons number of the neurons to have in the type map.
  *  @return a flat vector (to map to 2-d [x,y] = [i % m_width, i / m_width])
  */
-void FixedLayout::generateNeuronTypeMap(int num_neurons)
+void FixedLayout::generateVertexTypeMap(int num_neurons)
 {
-    Layout::generateNeuronTypeMap(num_neurons);
+    Layout::generateVertexTypeMap(num_neurons);
 
     int num_inhibitory_neurons = m_inhibitory_neuron_layout.size();
     int num_excititory_neurons = num_neurons - num_inhibitory_neurons;
@@ -92,7 +92,7 @@ void FixedLayout::generateNeuronTypeMap(int num_neurons)
         neuron_type_map[m_inhibitory_neuron_layout.at(i)] = INH;
     }
 
-    DEBUG(cout << "Done initializing neuron type map" << endl;);
+    DEBUG(cout << "Done initializing vertex type map" << endl;);
 }
 
 all setup is doing: allocating and initializing it.
@@ -100,12 +100,12 @@ todo: is there anything tyhat needs to be done in particular order? so far, no.
 
 there is no reason why setupSim cant do all of these things.
 
-// this method is like neuron type map but identifies which are endogenously active.
+// this method is like vertex type map but identifies which are endogenously active.
 /*
  *  Populates the starter map.
  *  Selects num_endogenously_active_neurons excitory neurons and converts them into starter neurons.
  *
- *  @param  num_neurons number of neurons to have in the map.
+ *  @param  num_neurons number of vertices to have in the map.
  */
 void Layout::initStarterMap(const int num_neurons)
 {

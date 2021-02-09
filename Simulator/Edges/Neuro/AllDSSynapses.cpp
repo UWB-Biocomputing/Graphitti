@@ -17,9 +17,9 @@ AllDSSynapses::AllDSSynapses() : AllSpikingSynapses() {
    F_ = NULL;
 }
 
-AllDSSynapses::AllDSSynapses(const int numNeurons, const int maxSynapses) :
-      AllSpikingSynapses(numNeurons, maxSynapses) {
-   setupEdges(numNeurons, maxSynapses);
+AllDSSynapses::AllDSSynapses(const int numVertices, const int maxSynapses) :
+      AllSpikingSynapses(numVertices, maxSynapses) {
+   setupEdges(numVertices, maxSynapses);
 }
 
 AllDSSynapses::~AllDSSynapses() {
@@ -49,12 +49,12 @@ void AllDSSynapses::setupEdges() {
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 ///
-///  @param  numNeurons   Total number of neurons in the network.
+///  @param  numVertices   Total number of vertices in the network.
 ///  @param  maxSynapses  Maximum number of synapses per neuron.
-void AllDSSynapses::setupEdges(const int numNeurons, const int maxSynapses) {
-   AllSpikingSynapses::setupEdges(numNeurons, maxSynapses);
+void AllDSSynapses::setupEdges(const int numVertices, const int maxSynapses) {
+   AllSpikingSynapses::setupEdges(numVertices, maxSynapses);
 
-   BGSIZE maxTotalSynapses = maxSynapses * numNeurons;
+   BGSIZE maxTotalSynapses = maxSynapses * numVertices;
 
    if (maxTotalSynapses != 0) {
       lastSpike_ = new uint64_t[maxTotalSynapses];
@@ -79,8 +79,8 @@ void AllDSSynapses::printParameters() const {
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the synapse to set.
-void AllDSSynapses::readSynapse(istream &input, const BGSIZE iEdg) {
-   AllSpikingSynapses::readSynapse(input, iEdg);
+void AllDSSynapses::readEdge(istream &input, const BGSIZE iEdg) {
+   AllSpikingSynapses::readEdge(input, iEdg);
 
    // input.ignore() so input skips over end-of-line characters.
    input >> lastSpike_[iEdg];
@@ -127,14 +127,14 @@ void AllDSSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
 ///  Create a Synapse and connect it to the model.
 ///
 ///  @param  iEdg        Index of the synapse to set.
-///  @param  srcNeuron      Coordinates of the source Neuron.
-///  @param  destNeuron        Coordinates of the destination Neuron.
+///  @param  srcVertex      Coordinates of the source Neuron.
+///  @param  destVertex        Coordinates of the destination Neuron.
 ///  @param  sumPoint   Summation point address.
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
-void AllDSSynapses::createEdge(const BGSIZE iEdg, int srcNeuron, int destNeuron, BGFLOAT *sumPoint,
+void AllDSSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
                                   const BGFLOAT deltaT, synapseType type) {
-   AllSpikingSynapses::createEdge(iEdg, srcNeuron, destNeuron, sumPoint, deltaT, type);
+   AllSpikingSynapses::createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
 
    U_[iEdg] = DEFAULT_U;
 
