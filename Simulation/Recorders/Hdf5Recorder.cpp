@@ -242,8 +242,7 @@ void Hdf5Recorder::compileHistories(IAllNeurons &neurons)
 {
    AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons&>(neurons);
 
-   // ToDo: See if the getNumEpochs is the correct solution. Previously maxSteps was used but it was removed.
-   int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getNumEpochs()));
+   int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
    unsigned int iProbe = 0;    // index into the probedNeuronsLayout vector
    bool fProbe = false;
@@ -272,15 +271,12 @@ void Hdf5Recorder::compileHistories(IAllNeurons &neurons)
 
          if (idxSp >= maxSpikes) idxSp = 0;
          // compile network wide burstiness index data in 1s bins
-         int idx1 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) *  Simulator::getInstance().getDeltaT()
-               - ( (Simulator::getInstance().getCurrentStep() - 1) * Simulator::getInstance().getEpochDuration() ) );
+         int idx1 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * Simulator::getInstance().getDeltaT());
          assert(idx1 >= 0 && idx1 < Simulator::getInstance().getEpochDuration());
          burstinessHist_[idx1]++;
 
          // compile network wide spike count in 10ms bins
-         int idx2 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * Simulator::getInstance().getDeltaT() * 100
-               - ( (Simulator::getInstance().getCurrentStep() - 1) * Simulator::getInstance().getEpochDuration() * 100 ) );
-         assert(idx2 >= 0 && idx2 < Simulator::getInstance().getEpochDuration() * 100);
+         int idx2 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * Simulator::getInstance().getDeltaT() * 100);
          spikesHistory_[idx2]++;
 
          // compile spikes time of the probed neuron (append spikes time)
