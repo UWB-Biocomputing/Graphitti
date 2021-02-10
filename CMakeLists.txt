@@ -20,9 +20,12 @@ if(BRAINGRID_CUDA)
 endif()
 
 # HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libaries to the executable later in the file.
-find_package(HDF5 REQUIRED COMPONENTS C CXX)
-link_directories( ${HDF5_LIBRARY_DIRS} )
-include_directories( ${HDF5_INCLUDE_DIRS} )
+find_package(HDF5 COMPONENTS C CXX)
+if (HDF5_FOUND)
+        link_directories( ${HDF5_LIBRARY_DIRS} )
+        include_directories( ${HDF5_INCLUDE_DIRS} )
+        add_compile_definitions(HDF5)
+endif()
 
 # Setting the location of the executable to be in the top-level directory. This helps when using file paths during
 # runtime.
@@ -104,10 +107,12 @@ target_link_libraries(combinedLib INTERFACE
         # ThirdParty
         TinyXPath
         log4cplus
-        paramcontainer
+        paramcontainer)
 
-        # HDF5 package libaries
-        ${HDF5_LIBRARIES})
+# Link HDF5 package libaries if to the combined library.
+if (HDF5_FOUND)
+        target_link_libraries(combinedLib INTERFACE ${HDF5_LIBRARIES})
+endif()
 
 # Link the combined library into the 'braingrid' executable.
 target_link_libraries(braingrid combinedLib)

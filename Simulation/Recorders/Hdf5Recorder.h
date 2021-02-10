@@ -33,6 +33,8 @@
 
 #pragma once
 
+#if defined(HDF5)
+
 #include "IRecorder.h"
 #include "Model.h"
 #include "H5Cpp.h"
@@ -139,3 +141,4 @@ protected:
    vector<uint64_t> *spikesProbedNeurons_;
 };
 
+#endif

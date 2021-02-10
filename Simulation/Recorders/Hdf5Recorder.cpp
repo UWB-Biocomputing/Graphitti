@@ -10,6 +10,8 @@
 #include "AllIFNeurons.h"      // TODO: remove LIF model specific code
 #include "OperationManager.h"
 
+#if defined(HDF5)
+
 // hdf5 dataset name
 const H5std_string  nameBurstHist("burstinessHist");
 const H5std_string  nameSpikesHist("spikesHistory");
@@ -553,3 +555,5 @@ void Hdf5Recorder::printParameters() {
    LOG4CPLUS_DEBUG(fileLogger_, "\nHDF5 PARAMETERS" << endl
                                                            << "\tResult file path: " << resultFileName_ << endl);
 }
+
+#endif // HDF5

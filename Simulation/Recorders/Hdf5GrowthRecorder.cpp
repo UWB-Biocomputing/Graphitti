@@ -5,6 +5,8 @@
  */
 //! An implementation for recording spikes history on hdf5 file
 
+#if defined(HDF5)
+
 #include "Hdf5GrowthRecorder.h"
 #include "AllIFNeurons.h"      // TODO: remove LIF model specific code
 #include "ConnGrowth.h"
@@ -214,3 +216,4 @@ void Hdf5GrowthRecorder::writeRadiiRates()
     }
 }
 
+#endif // HDF5

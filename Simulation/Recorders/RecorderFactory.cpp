@@ -12,8 +12,11 @@ RecorderFactory::RecorderFactory() {
    // register recorder classes
    registerClass("XmlRecorder", &XmlRecorder::Create);
    registerClass("XmlGrowthRecorder", &XmlGrowthRecorder::Create);
+
+#if defined(HDF5)
    registerClass("Hdf5Recorder", &Hdf5Recorder::Create);
    registerClass("Hdf5GrowthRecorder", &Hdf5GrowthRecorder::Create);
+#endif
 }
 
 RecorderFactory::~RecorderFactory() {

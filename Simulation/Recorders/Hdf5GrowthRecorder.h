@@ -33,6 +33,8 @@
 
 #pragma once
 
+#if defined(HDF5)
+
 #include "Hdf5Recorder.h"
 #include "Model.h"
 #include "H5Cpp.h"
@@ -101,3 +103,4 @@ protected:
    BGFLOAT *ratesHistory_;
 };
 
+#endif // HDF5
