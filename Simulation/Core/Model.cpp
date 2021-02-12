@@ -23,7 +23,6 @@ Model::Model() {
    // Create Recorder class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
    recorder_ = RecorderFactory::getInstance()->createRecorder(type);
-   recorder_->init();
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
@@ -71,6 +70,7 @@ void Model::setupSim() {
 #endif
    // Init radii and rates history matrices with default values
    if (recorder_ != NULL) {
+      recorder_->init();
       recorder_->initDefaultValues();
    }
 

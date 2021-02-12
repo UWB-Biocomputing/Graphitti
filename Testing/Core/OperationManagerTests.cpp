@@ -31,7 +31,7 @@ TEST(OperationManager, AddingOneOperation) {
 TEST(OperationManager, AddingManyOperations) {
    Foo foo;
    function<void()> function = std::bind(&Foo::loadParameters, foo);
-   for (int i = 0; i < 10000; i++) {
+   for (int i = 0; i < 1000; i++) {
       EXPECT_NO_FATAL_FAILURE(
             OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function));
    }

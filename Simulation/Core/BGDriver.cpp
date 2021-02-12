@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
    simulator.loadParameters();
 
    // Instantiate simulator objects.
-   LOG4CPLUS_TRACE(consoleLogger, "Insantiating Simulator objects specified in configuration file");
+   LOG4CPLUS_TRACE(consoleLogger, "Instantiating Simulator objects specified in configuration file");
    if (!simulator.instantiateSimulatorObjects()) {
       LOG4CPLUS_FATAL(consoleLogger, "ERROR: Unable to instantiate all simulator classes, check configuration file: "
                                      + simulator.getConfigFileName()
