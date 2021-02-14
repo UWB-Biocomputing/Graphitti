@@ -18,7 +18,7 @@
       <value name="value">1</value>
     </Seed>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">results/SB-out-10x10-10e-100s-cpu.xml</resultFileName>
+      <resultFileName name="resultFileName">Output/Results/SB-out-10x10-10e-100s-cpu.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 

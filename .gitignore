@@ -68,6 +68,5 @@ Output/Debug/*.txt
 # Result files
 Output/Results/*.xml
 Output/Results/*.h5
-results/*.xml
-results/*.xml
+
 
