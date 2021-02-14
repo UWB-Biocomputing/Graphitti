@@ -115,6 +115,7 @@ string XmlSTDPRecorder::toXML(string name,vector<vector<BGFLOAT>> MatrixToWrite)
     {
         os << MatrixToWrite[i][j]<< " ";
     }
+     os<<endl;
 }
 os <<endl;
     os << "</Matrix>";

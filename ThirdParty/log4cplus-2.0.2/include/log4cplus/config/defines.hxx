@@ -163,7 +163,7 @@
 #define LOG4CPLUS_HAVE_TLS_SUPPORT 1
 
 /* */
-#define LOG4CPLUS_THREAD_LOCAL_VAR __thread
+#define LOG4CPLUS_THREAD_LOCAL_VAR thread_local
 
 /* Defined if the host OS provides ENAMETOOLONG errno value. */
 #define LOG4CPLUS_HAVE_ENAMETOOLONG 1

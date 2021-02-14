@@ -158,6 +158,8 @@ protected:
     */
    virtual void initSpikeQueue(const BGSIZE iSyn);
 
+   virtual BGFLOAT synapticWeightModification(const BGSIZE iSyn, BGFLOAT synapticWeight, double delta);
+
 #if defined(USE_GPU)
    public:
        /**

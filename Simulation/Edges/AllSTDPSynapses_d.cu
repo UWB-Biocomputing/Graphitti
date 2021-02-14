@@ -67,7 +67,7 @@ void AllSTDPSynapses::allocDeviceStruct( AllSTDPSynapsesDeviceProperties &allSyn
         HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.Apos_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
         HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.mupos_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
         HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.muneg_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.useFroemkeDanSTDP_, maxTotalSynapses * sizeof( bool ) ) );
+        //HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapsesDevice.useFroemkeDanSTDP_, maxTotalSynapses * sizeof( bool ) ) );
 }
 
 /*
@@ -107,7 +107,7 @@ void AllSTDPSynapses::deleteDeviceStruct( AllSTDPSynapsesDeviceProperties& allSy
         HANDLE_ERROR( cudaFree( allSynapsesDevice.Apos_ ) );
         HANDLE_ERROR( cudaFree( allSynapsesDevice.mupos_ ) );
         HANDLE_ERROR( cudaFree( allSynapsesDevice.muneg_) );
-        HANDLE_ERROR( cudaFree( allSynapsesDevice.useFroemkeDanSTDP_ ) );
+        //HANDLE_ERROR( cudaFree( allSynapsesDevice.useFroemkeDanSTDP_ ) );
 
         AllSpikingSynapses::deleteDeviceStruct( allSynapsesDevice );
 }
@@ -182,8 +182,8 @@ void AllSTDPSynapses::copyHostToDevice( void* allSynapsesDevice, AllSTDPSynapses
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) ); 
         HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.muneg_, muneg_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.useFroemkeDanSTDP_, useFroemkeDanSTDP_,
-                maxTotalSynapses * sizeof( bool ), cudaMemcpyHostToDevice ) ); 
+        //HANDLE_ERROR( cudaMemcpy ( allSynapsesDeviceProps.useFroemkeDanSTDP_, useFroemkeDanSTDP_,
+                //maxTotalSynapses * sizeof( bool ), cudaMemcpyHostToDevice ) ); 
 }
 
 /*
@@ -242,8 +242,8 @@ void AllSTDPSynapses::copyDeviceToHost( AllSTDPSynapsesDeviceProperties& allSyna
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( muneg_, allSynapsesDevice.muneg_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( useFroemkeDanSTDP_, allSynapsesDevice.useFroemkeDanSTDP_,
-                maxTotalSynapses * sizeof( bool ), cudaMemcpyDeviceToHost ) );
+       // HANDLE_ERROR( cudaMemcpy ( useFroemkeDanSTDP_, allSynapsesDevice.useFroemkeDanSTDP_,
+                //maxTotalSynapses * sizeof( bool ), cudaMemcpyDeviceToHost ) );
 }
 
 /*
@@ -367,7 +367,7 @@ void AllSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) cons
         HANDLE_ERROR( cudaMemcpy ( AposPrint, allSynapsesProps.Apos_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( muposPrint, allSynapsesProps.mupos_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( munegPrint, allSynapsesProps.muneg_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( useFroemkeDanSTDPPrint, allSynapsesProps.useFroemkeDanSTDP_, size * sizeof( bool ), cudaMemcpyDeviceToHost ) );
+        //HANDLE_ERROR( cudaMemcpy ( useFroemkeDanSTDPPrint, allSynapsesProps.useFroemkeDanSTDP_, size * sizeof( bool ), cudaMemcpyDeviceToHost ) );
 
         for(int i = 0; i < maxSynapsesPerNeuron_ * countNeurons_; i++) {
             if (WPrint[i] != 0.0) {
@@ -393,7 +393,7 @@ void AllSTDPSynapses::printGPUSynapsesProps( void* allSynapsesDeviceProps ) cons
                 cout << " GPU Apos_: " << AposPrint[i];
                 cout << " GPU mupos_: " << muposPrint[i];
                 cout << " GPU muneg_: " << munegPrint[i];
-                cout << " GPU useFroemkeDanSTDP_: " << useFroemkeDanSTDPPrint[i] << endl;
+               // cout << " GPU useFroemkeDanSTDP_: " << useFroemkeDanSTDPPrint[i] << endl;
             }
         }
 

@@ -204,15 +204,11 @@ void AllSTDPSynapses::createSynapse(const BGSIZE iSyn, int srcNeuron, int destNe
    Apos_[iSyn] = Apos_E_;
    Aneg_[iSyn] = Aneg_E_;
    STDPgap_[iSyn] = STDPgap;
-
    tauspost_[iSyn] = tauspost_E_;
    tauspre_[iSyn] = tauspre_E_;
-
    taupos_[iSyn] = taupos_E_;
    tauneg_[iSyn] = tauneg_E_;
-
    Wex_[iSyn] = Wex_E_ ;// this is based on overlap of 2 neurons' radii (r=4) of outgrowth, scale it by SYNAPSE_STRENGTH_ADJUSTMENT.
-
    mupos_[iSyn] = 0;
    muneg_[iSyn] = 0;
 
@@ -374,6 +370,41 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
 
 }
 
+BGFLOAT AllSTDPSynapses::synapticWeightModification(const BGSIZE iSyn, BGFLOAT synapticWeight, double delta)
+{
+   BGFLOAT STDPgap_ = this->STDPgap_[iSyn];
+   BGFLOAT muneg_ = this->muneg_[iSyn];
+   BGFLOAT mupos_ = this->mupos_[iSyn];
+   BGFLOAT tauneg_ = this->tauneg_[iSyn];
+   BGFLOAT taupos_ = this->taupos_[iSyn];
+   BGFLOAT Aneg_ = this->Aneg_[iSyn];
+   BGFLOAT Apos_ = this->Apos_[iSyn];
+   BGFLOAT Wex_ = this->Wex_[iSyn];
+   BGFLOAT &W = this->W_[iSyn];
+   synapseType type = this->type_[iSyn];
+   BGFLOAT dw;
+   BGFLOAT oldW=W;
+
+   BGFLOAT modDelta;
+    if(delta<0)
+      modDelta=delta*-1;
+   else
+   {
+      modDelta=delta;
+   }
+   
+
+   if (delta < -STDPgap_) {
+      // depression
+      
+      dw = synapticWeightModification(iSyn, W, delta);// normalize
+   } else if (delta > STDPgap_) {
+      // potentiation
+      dw = synapticWeightModification(iSyn, W, delta); // normalize
+   } 
+   return dw;
+}
+
 /*
  *  Adjust synapse weight according to the Spike-timing-dependent synaptic modification 
  *  induced by natural spike trains
@@ -408,6 +439,7 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost
 
    if (delta < -STDPgap_) {
       // depression
+      
       dw = pow(fabs(W) / Wex_, muneg_) * Aneg_ * exp(delta / tauneg_);  // normalize
    } else if (delta > STDPgap_) {
       // potentiation
