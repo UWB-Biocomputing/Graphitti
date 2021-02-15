@@ -227,7 +227,7 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
   //LOG4CPLUS_FATAL(fileLogger_, "iSyn : " << iSyn );
   
    BGFLOAT &W = this->W_[iSyn];
-   if (W <= 0.0) {
+   if (W = 0.0) {
       AllSpikingSynapses::advanceSynapse(iSyn, neurons);
       return;
    }
@@ -264,16 +264,9 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
          // so the getSpikeHistory w/offset = -2 will return the spike time
          // just one before the last spike.
          spikeHistory = spNeurons->getSpikeHistory(idxPre, -2);
-         if (spikeHistory != ULONG_MAX ) {
-            // delta will include the transmission delay
-            delta = static_cast<BGFLOAT>(g_simulationStep - spikeHistory) * deltaT;
-            epre = 1.0 - exp(-delta / tauspre_);
-            //epost=1;
-         } else {
-            epre = 1.0;
-           // epost=1;
-         }
-
+   
+         epre = 1.0;
+         epost=1;
          // call the learning function stdpLearning() for each pair of
          // pre-post spikes
          int offIndex = -1;   // last spike
@@ -311,15 +304,9 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
          // so the getSpikeHistory w/offset = -2 will return the spike time
          // just one before the last spike.
          spikeHistory = spNeurons->getSpikeHistory(idxPost, -2);
-         if (spikeHistory != ULONG_MAX ) {
-            // delta will include the transmission delay
-            delta = static_cast<BGFLOAT>(g_simulationStep - spikeHistory) * deltaT;
-            epost = 1.0 - exp(-delta / tauspost_);
-            //epre=1;
-         } else {
-            epost = 1.0;
-            //epre=1;
-         }
+         epost = 1.0;
+         epre=1;
+       
 
          // call the learning function stdpLearning() for each pair of
          // post-pre spikes
@@ -468,16 +455,6 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost
       W = synSign(type) * Wex_;
    }
 /*
-   LOG4CPLUS_DEBUG(fileLogger_,
-         "AllSTDPSynapses::stdpLearning: Weight dumping" << endl
-          << "\tiSyn: " << iSyn << endl
-          << "\tdelta: " << delta << endl
-          << "\tepre: " << epre << endl
-          << "\tepost: " << epost << endl
-          << "\tdw: " << dw << endl
-          << "\tW: " << W << endl << endl);
-
-*/
             LOG4CPLUS_DEBUG(synapseLogger_,
                    iSyn 
                    << ";" << srcN 
@@ -487,7 +464,7 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost
                    << ";" << W
                    <<","<<endl);
 
-      
+     */ 
 }
 
 
@@ -532,7 +509,7 @@ void AllSTDPSynapses::postSpikeHit(const BGSIZE iSyn) {
 
    // set a spike
    assert(!(delay_queue & (0x1 << idx)));
-   delay_queue |= (0x1 << idx);
+      delay_queue |= (0x1 << idx);
 }
 
 #endif // !defined(USE_GPU)

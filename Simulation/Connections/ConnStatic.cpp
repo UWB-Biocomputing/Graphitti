@@ -112,7 +112,7 @@ string weight_str="";
          weight_str+=to_string(WCurrentEpoch_[i])+" ";
          
    }
-  LOG4CPLUS_DEBUG(synapseLogger_, "Weighhts are "<<weight_str);
+  //LOG4CPLUS_DEBUG(synapseLogger_, "Weighhts are "<<weight_str);
    
 
 

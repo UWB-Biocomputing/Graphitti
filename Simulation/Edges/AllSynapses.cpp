@@ -145,7 +145,7 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
       totalSynapseCount += synapseCounts_[i];
    }
    
-   LOG4CPLUS_FATAL(fileLogger_,"totalSynapseCount: " << totalSynapseCount << endl);
+   LOG4CPLUS_FATAL(fileLogger_,endl<<"totalSynapseCount: in synapseIndexMap " << totalSynapseCount << endl);
 
    if (totalSynapseCount == 0) {
       return NULL;
@@ -176,7 +176,7 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
          }
       }
 
-      LOG4CPLUS_DEBUG(synapseLogger_,"Weights for synapse index map "<<W_[i]);
+     // LOG4CPLUS_DEBUG(synapseLogger_,"Weights for synapse index map "<<W_[i]);
    
       if(synapse_count != this->synapseCounts_[i])
       {
@@ -194,8 +194,10 @@ SynapseIndexMap *AllSynapses::createSynapseIndexMap() {
          LOG4CPLUS_DEBUG(synapseLogger_,"NumInUse does not match the totalSynapseCount. NumInUse are "<<numInUse<<endl);
            
       }
+
    assert(totalSynapseCount == numInUse);
    totalSynapseCount_ = totalSynapseCount;
+   LOG4CPLUS_DEBUG(synapseLogger_,endl<<"totalSynapseCount: "<<totalSynapseCount_<<endl);
 
    syn_i = 0;
    for (int i = 0; i < neuronCount; i++) {
