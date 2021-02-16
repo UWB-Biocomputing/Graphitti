@@ -8,7 +8,7 @@
       </PoolSize>
       <SimParams name="SimParams">
          <epochDuration name="epochDuration">100.0</epochDuration>
-         <numEpochs name="numEpochs">1</numEpochs>
+         <numEpochs name="numEpochs">3</numEpochs>
       </SimParams>
       <SimConfig name="SimConfig">
          <maxFiringRate name="maxFiringRate">200</maxFiringRate>
@@ -18,7 +18,7 @@
          <value name="value">777</value>
       </Seed>
       <OutputParams name="OutputParams">
-         <resultFileName name="resultFileName">Output/Results/SB-stdp-100x100.xml</resultFileName>
+         <resultFileName name="resultFileName">Output/Results/test-SB-stdp-100x100.xml</resultFileName>
       </OutputParams>
    </SimInfoParams>
 

@@ -227,10 +227,12 @@ void AllSTDPSynapses::advanceSynapse(const BGSIZE iSyn, IAllNeurons *neurons) {
   //LOG4CPLUS_FATAL(fileLogger_, "iSyn : " << iSyn );
   
    BGFLOAT &W = this->W_[iSyn];
-   if (W = 0.0) {
+   /*
+   if (W <0.0) {
       AllSpikingSynapses::advanceSynapse(iSyn, neurons);
       return;
    }
+   */
 
    BGFLOAT &decay = this->decay_[iSyn];
    BGFLOAT &psr = this->psr_[iSyn];
@@ -379,16 +381,18 @@ BGFLOAT AllSTDPSynapses::synapticWeightModification(const BGSIZE iSyn, BGFLOAT s
    {
       modDelta=delta;
    }
-   
 
    if (delta < -STDPgap_) {
       // depression
       
-      dw = synapticWeightModification(iSyn, W, delta);// normalize
+      dw = pow(fabs(W) / Wex_, muneg_) * Aneg_ * exp(delta / tauneg_);  // normalize
    } else if (delta > STDPgap_) {
       // potentiation
-      dw = synapticWeightModification(iSyn, W, delta); // normalize
+      dw = pow(fabs(Wex_ - fabs(W)) / Wex_, mupos_) * Apos_ * exp(-delta / taupos_); // normalize
    } 
+   
+
+ 
    return dw;
 }
 
@@ -427,11 +431,12 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost
    if (delta < -STDPgap_) {
       // depression
       
-      dw = pow(fabs(W) / Wex_, muneg_) * Aneg_ * exp(delta / tauneg_);  // normalize
+      dw = synapticWeightModification(iSyn, W, delta);// normalize
    } else if (delta > STDPgap_) {
       // potentiation
-      dw = pow(fabs(Wex_ - fabs(W)) / Wex_, mupos_) * Apos_ * exp(-delta / taupos_); // normalize
-   } else {  
+      dw = synapticWeightModification(iSyn, W, delta); // normalize
+   } 
+   else {  
 
       return;
    }
@@ -454,17 +459,17 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iSyn, double delta, double epost
    if (fabs(W) > Wex_) {
       W = synSign(type) * Wex_;
    }
-/*
-            LOG4CPLUS_DEBUG(synapseLogger_,
-                   iSyn 
-                   << ";" << srcN 
-                   << ";" << destN
-                   << ";" << delta 
-                   <<";"<<oldW
-                   << ";" << W
-                   <<","<<endl);
+      /*
+            LOG4CPLUS_DEBUG(synapseLogger_,endl<<
+                   "iSyn value "<<iSyn 
+                   << "; source:" << srcN 
+                   << "; dest:" << destN
+                   << "; delta:" << delta 
+                   <<"; oldW:"<<oldW
+                   << " ;W:" << W
+                   <<endl);
 
-     */ 
+      */
 }
 
 
