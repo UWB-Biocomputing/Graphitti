@@ -93,7 +93,7 @@ public:
        ///  @param  numVertices          number of vertices to update.
        ///  @param  neurons             the Neuron list to search from.
        ///  @param  synapses            the Synapse list to search from.
-       ///  @param  allVerticesDevice    GPU address of the AllVertices struct on device memory.
+       ///  @param  allVerticesDevice    GPU address of the allVertices struct on device memory.
        ///  @param  allEdgesDevice   GPU address of the allSynapses struct on device memory.
        ///  @param  layout              Layout information of the neural network.
        virtual void updateSynapsesWeights(const int numVertices, IAllVertices &vertices, IAllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout);

@@ -128,7 +128,7 @@ public:
    ///  Note: Platform Dependent.
    ///
    ///  @param  numVertices          number of vertices to update.
-   ///  @param  vertoces             The AllVertices object.
+   ///  @param  vertices             The AllVertices object.
    ///  @param  synapses            The AllEdges object.
    ///  @param  allVerticesDevice    GPU address of the allVertices struct in device memory.
    ///  @param  allEdgesDevice   GPU address of the allSynapses struct in device memory.
@@ -145,7 +145,7 @@ public:
    ///  Note: Platform Dependent.
    ///
    ///  @param  numVertices  Number of vertices to update.
-   ///  @param  ineurons    The AllVertoces object.
+   ///  @param  ineurons    The AllVertices object.
    ///  @param  isynapses   The AllEdges object.
    ///  @param  layout      The Layout object.
    virtual void
