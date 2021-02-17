@@ -14,7 +14,7 @@
 #include "OperationManager.h"
 #include "ParameterManager.h"
 
-// The constructor and destructor
+/// constructor
 XmlRecorder::XmlRecorder() :
       burstinessHist_(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
                                                                     Simulator::getInstance().getNumEpochs()), 0),
@@ -28,6 +28,7 @@ XmlRecorder::XmlRecorder() :
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
+/// destructor
 XmlRecorder::~XmlRecorder() {
 }
 

@@ -9,15 +9,18 @@
 #include "RecorderFactory.h"
 
 #include "XmlGrowthRecorder.h"
-//#include "Hdf5GrowthRecorder.h"
+#include "Hdf5GrowthRecorder.h"
 
 /// Constructor is private to keep a singleton instance of this class.
 RecorderFactory::RecorderFactory() {
    // register recorder classes
    registerClass("XmlRecorder", &XmlRecorder::Create);
    registerClass("XmlGrowthRecorder", &XmlGrowthRecorder::Create);
-//   registerClass("Hdf5Recorder", &Hdf5Recorder::Create);
-//   registerClass("Hdf5GrowthRecorder", &Hdf5GrowthRecorder::Create);
+
+#if defined(HDF5)
+   registerClass("Hdf5Recorder", &Hdf5Recorder::Create);
+   registerClass("Hdf5GrowthRecorder", &Hdf5GrowthRecorder::Create);
+#endif
 }
 
 RecorderFactory::~RecorderFactory() {

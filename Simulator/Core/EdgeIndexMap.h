@@ -51,33 +51,37 @@ struct EdgeIndexMap {
    BGSIZE *incomingSynapseCount_;
 
    EdgeIndexMap() : numOfNeurons_(0), numOfSynapses_(0) {
-      outgoingSynapseIndexMap_ = NULL;
       outgoingSynapseBegin_ = NULL;
       outgoingSynapseCount_ = NULL;
-
-      incomingSynapseIndexMap_ = NULL;
       incomingSynapseBegin_ = NULL;
       incomingSynapseCount_ = NULL;
+
+      outgoingSynapseIndexMap_ = NULL;
+      incomingSynapseIndexMap_ = NULL;
    };
 
    EdgeIndexMap(int neuronCount, int synapseCount) : numOfNeurons_(neuronCount), numOfSynapses_(synapseCount) {
-      outgoingSynapseIndexMap_ = new BGSIZE[synapseCount];
-      outgoingSynapseBegin_ = new BGSIZE[neuronCount];
-      outgoingSynapseCount_ = new BGSIZE[neuronCount];
+      if (numOfNeurons_ > 0) {
+         outgoingSynapseBegin_ = new BGSIZE[numOfNeurons_];
+         outgoingSynapseCount_ = new BGSIZE[numOfNeurons_];
+         incomingSynapseBegin_ = new BGSIZE[numOfNeurons_];
+         incomingSynapseCount_ = new BGSIZE[numOfNeurons_];
+      }
 
-      incomingSynapseIndexMap_ = new BGSIZE[synapseCount];
-      incomingSynapseBegin_ = new BGSIZE[neuronCount];
-      incomingSynapseCount_ = new BGSIZE[neuronCount];
+      if (numOfSynapses_ > 0) {
+         outgoingSynapseIndexMap_ = new BGSIZE[numOfSynapses_];
+         incomingSynapseIndexMap_ = new BGSIZE[numOfSynapses_];
+      }
    };
 
    ~EdgeIndexMap() {
-      if (numOfNeurons_ != 0) {
+      if (numOfNeurons_ > 0) {
          delete[] outgoingSynapseBegin_;
          delete[] outgoingSynapseCount_;
          delete[] incomingSynapseBegin_;
          delete[] incomingSynapseCount_;
       }
-      if (numOfSynapses_ != 0) {
+      if (numOfSynapses_ > 0) {
          delete[] outgoingSynapseIndexMap_;
          delete[] incomingSynapseIndexMap_;
       }

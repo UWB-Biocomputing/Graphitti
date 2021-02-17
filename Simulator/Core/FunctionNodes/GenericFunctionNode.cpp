@@ -11,12 +11,16 @@
 
 #include <functional>
 
-#include "Simulator/Core/Operations.h"
+#include "Operations.h"
 
 /// Constructor, Function Signature: void ()
 GenericFunctionNode::GenericFunctionNode(const Operations::op &operation, const std::function<void()> &func) {
     operationType_ = operation;
     function_ = func;
+}
+
+/// Destructor
+GenericFunctionNode::~GenericFunctionNode() {
 }
 
 /// Invokes the stored function if the sent operation type matches the operation type the function is stored as.
@@ -27,3 +31,5 @@ bool GenericFunctionNode::invokeFunction(const Operations::op &operation) const 
     }
     return false;
 }
+
+

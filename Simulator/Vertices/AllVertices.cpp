@@ -15,7 +15,7 @@ AllVertices::AllVertices() : size_(0) {
    summationMap_ = NULL;
 
    // Register loadParameters function as a loadParameters operation in the Operation Manager
-   auto loadParametersFunc = std::bind(&IAllVertices::loadParameters, this);
+   function<void()> loadParametersFunc = std::bind(&IAllVertices::loadParameters, this);
    OperationManager::getInstance().registerOperation(Operations::op::loadParameters, loadParametersFunc);
 
    // Register printParameters function as a printParameters operation in the OperationManager

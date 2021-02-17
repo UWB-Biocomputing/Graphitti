@@ -17,7 +17,7 @@
 #include <list>
 #include <string>
 
-#include "Core/FunctionNodes/GenericFunctionNode.h"
+#include "GenericFunctionNode.h"
 
 /// Get Instance method that returns a reference to this object.
 OperationManager &OperationManager::getInstance() {
@@ -25,10 +25,13 @@ OperationManager &OperationManager::getInstance() {
    return instance;
 }
 
-/// Called by lower level classes constructors on creation to register their operations with their operation type
+/// Destructor.
+OperationManager::~OperationManager() {}
+
+/// Called by lower level classes constructors on creation to register their operations with their operation type.
 /// This method can be overloaded to handle different function signatures.
 /// Handles function signature: void ()
-void OperationManager::registerOperation(const Operations::op &operation, function<void()> function) {
+void OperationManager::registerOperation(const Operations::op &operation, const function<void()> &function) {
    try {
       functionList_.push_back(unique_ptr<IFunctionNode>(new GenericFunctionNode(operation, function)));
    }
@@ -71,4 +74,3 @@ string OperationManager::operationToString(const Operations::op &operation) cons
          return "Operation isn't in OperationManager::operationToString()";
    }
 }
-
