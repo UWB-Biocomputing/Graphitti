@@ -19,6 +19,8 @@
 
 #pragma once
 
+#if defined(HDF5)
+
 #include "Hdf5Recorder.h"
 #include "Model.h"
 #include "H5Cpp.h"
@@ -65,13 +67,15 @@ protected:
    void writeRadiiRates();
 
    /// hdf5 file dataset
-   DataSet *dataSetRatesHist;
-   DataSet *dataSetRadiiHist;
+   DataSet *dataSetRatesHist_;
+   DataSet *dataSetRadiiHist_;
 
    /// track radii
-   BGFLOAT *radiiHistory;
+   BGFLOAT *radiiHistory_;
 
    /// track firing rate
-   BGFLOAT *ratesHistory;
+   BGFLOAT *ratesHistory_;
 };
+
+#endif // HDF5
 
