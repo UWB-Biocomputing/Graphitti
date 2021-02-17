@@ -22,15 +22,17 @@
 
 class XmlRecorder : public IRecorder {
 public:
-   //! THe constructor and destructor
+   /// constructor
    XmlRecorder();
 
+   /// destructor
    ~XmlRecorder();
-
+   
+   /// return pointer to new instance of this class
    static IRecorder* Create() { return new XmlRecorder(); }
 
    /// Initialize data
-   /// @param[in] stateOutputFileName       File name to save histories
+   /// Create a new xml file.
    virtual void init();
 
    /// Init radii and rates history matrices with default values
@@ -46,12 +48,10 @@ public:
    virtual void term();
 
    /// Compile history information in every epoch
-   ///
    /// @param[in] neurons   The entire list of neurons.
    virtual void compileHistories(IAllVertices &neurons);
 
    /// Writes simulation results to an output destination.
-   ///
    /// @param  neurons the Neuron list to search from.
    virtual void saveSimData(const IAllVertices &neurons);
 
