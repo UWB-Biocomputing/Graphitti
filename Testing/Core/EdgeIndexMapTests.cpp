@@ -1,7 +1,7 @@
 /**
- * @file SynapseIndexMapTests.cpp
+ * @file EdgeIndexMapTests.cpp
  *
- * @brief This file contains the unit tests for SynpaseIndexMap using GTest.
+ * @brief This file contains the unit tests for EdgeIndexMap using GTest.
  *
  * @ingroup Testing/Core
  */
@@ -21,6 +21,11 @@ struct SynapseIndexMapTestObject : public testing::Test {
     SynapseIndexMapTestObject() {
         edgeIndexMap = new EdgeIndexMap(VERTEX_COUNT, SYNAPSE_COUNT);
     }
+    
+    ~EdgeIndexMapTestObject() {
+       delete edgeIndexMap;
+    }
+
 
     EdgeIndexMap *edgeIndexMap;
 };
@@ -28,11 +33,19 @@ struct SynapseIndexMapTestObject : public testing::Test {
 TEST(EdgeIndexMap, DefaultConstructor) {
     EdgeIndexMap *edgeIndexMap = new EdgeIndexMap();
     EXPECT_TRUE(edgeIndexMap != nullptr);
+    delete edgeIndexMap;
 }
 
 TEST(EdgeIndexMap, OverloadedConstructor) {
-    EdgeIndexMap *edgeIndexMap = new EdgeIndexMap(0, 0);
+    EdgeIndexMap *edgeIndexMap = new EdgeIndexMap(VERTEX_COUNT, SYNAPSE_COUNT);
     EXPECT_TRUE(edgeIndexMap != nullptr);
+    delete edgeIndexMap;
+}
+
+TEST(EdgeIndexMap, ZeroValueConstructor) {
+   EdgeIndexMap *edgeIndexMap = new EdgeIndexMap(0, 0);
+   EXPECT_TRUE(edgeIndexMap != nullptr);
+   delete edgeIndexMap;
 }
 
 // Tests are unavailable until member variables are switched from arrays to vectors.
