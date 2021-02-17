@@ -22,7 +22,7 @@ struct SynapseIndexMapTestObject : public testing::Test {
         edgeIndexMap = new EdgeIndexMap(VERTEX_COUNT, SYNAPSE_COUNT);
     }
     
-    ~EdgeIndexMapTestObject() {
+    ~SynapseIndexMapTestObject() {
        delete edgeIndexMap;
     }
 

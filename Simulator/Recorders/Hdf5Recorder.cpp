@@ -401,7 +401,7 @@ void Hdf5Recorder::saveSimData(const IAllVertices &vertices)
         // create Neuron Types matrix
         VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalVertices(), EXC);
         for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-            neuronTypes[i] = model->getLayout()->neuronTypeMap_[i];
+            neuronTypes[i] = model->getLayout()->vertexTypeMap_[i];
         }
 
         // create neuron threshold matrix
