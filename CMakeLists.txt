@@ -4,8 +4,16 @@ project(SummerOfBrain)
 # Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 11)
 
-# Enable the use of GPU. Only available if CUDA library is installed the GPU is CUDA capable.
-set(BRAINGRID_CUDA NO)
+
+############################################################################################
+# CONDITIONAL FLAG (to run simulation on CPU or GPU)
+# 
+# For GPU:                      For CPU:
+# set(BRAINGRID_CUDA YES)       set(BRAINGRID_CUDA NO)                       
+#
+# "Yes"/GPU choice only available if CUDA library is installed the GPU is CUDA capable.
+############################################################################################
+set(BRAINGRID_CUDA YES)
 
 # Enables the CUDA langauge and locates the NVCC compiler. 
 # Sets the USE_GPU preproccesser macro so that GPU code will be compiled.

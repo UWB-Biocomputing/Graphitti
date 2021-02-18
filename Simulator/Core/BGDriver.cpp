@@ -275,11 +275,6 @@ bool deserializeSynapses() {
    connections->createSynapsesFromWeights(simulator.getTotalVertices(), layout.get(), (*layout->getVertices()),
                                           (*connections->getEdges()));
 
-#if defined(USE_GPU)
-   // Copies CPU Synapse data to GPU after deserialization, if we're doing
-    // a GPU-based simulation.
-    simulator.copyCPUEdgeToGPU();
-#endif // USE_GPU
 
    // Creates synapse index map (includes copy CPU index map to GPU)
    connections->createEdgeIndexMap();
@@ -313,11 +308,6 @@ void serializeSynapses() {
    //ofstream memory_out (simInfo->memOutputFileName.c_str(), std::ios::binary);
    //cereal::BinaryOutputArchive archive(memory_out);
 
-#if defined(USE_GPU)
-   // Copies GPU Synapse props data to CPU for serialization
-   // todo: is this getting done in operations manager? 
-    simulator.copyGPUSynapseToCPU();
-#endif // USE_GPU
     shared_ptr<Model> model = simulator.getModel();
 
    // Serializes synapse weights along with each synapse's source vertex and destination vertex
