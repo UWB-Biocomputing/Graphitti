@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD 11)
 # For GPU:                      For CPU:
 # set(BRAINGRID_CUDA YES)       set(BRAINGRID_CUDA NO)                       
 #
-# "Yes"/GPU choice only available if CUDA library is installed the GPU is CUDA capable.
+# "YES"/GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
 set(BRAINGRID_CUDA YES)
 
@@ -22,9 +22,12 @@ set(BRAINGRID_CUDA YES)
 # set_property(TARGET target PROPERTY CUDA_ARCHITECTURES 35-virtual) 
 # so the compiler knows the CUDA architecture being used is the SM_35
 if(BRAINGRID_CUDA)
-        enable_language(CUDA)
-        set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
-        add_compile_definitions(USE_GPU)
+        find_package(CUDA)
+        if (CUDA_FOUND)
+                enable_language(CUDA)
+                set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
+                add_compile_definitions(USE_GPU)
+        endif()
 endif()
 
 # HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libaries to the executable later in the file.
