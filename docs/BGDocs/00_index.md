@@ -12,7 +12,7 @@
    
    1.4 Who is the BrainGrid Audience?
 
-2. [Installation](02_installation)
+2. [Installation](02_installation.md)
 
    2.1 Necessary Hardware/Software
    
@@ -20,13 +20,13 @@
    
    2.3 Install BrainGrid
 
-3. [Quickstart](03_quickstart)
+3. [Quickstart](03_quickstart.md)
 
    3.1 Quick Sanity Test
    
    3.2 Use of Screen
 
-4. [Configuration](04_configuration)
+4. [Configuration](04_configuration.md)
 
    4.1 Use built-in models
    

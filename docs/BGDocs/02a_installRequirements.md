@@ -2,7 +2,7 @@
 C++ 14
 
 ## Third Party Libraries
-Cmake $ install cmake
+Cmake `$ install cmake`
 Boost
 Doxygen 
 

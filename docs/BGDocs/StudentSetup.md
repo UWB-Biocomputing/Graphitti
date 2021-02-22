@@ -1,3 +1,4 @@
+TODO: Make sure this is password or uwnet id protected. 
 # Student Quickstart
 Ensure you have husky onnet
 https://www.lib.washington.edu/help/connect/husky-onnet
