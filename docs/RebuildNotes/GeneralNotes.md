@@ -1,3 +1,18 @@
+## Object Notes
+### summationMap
+summation points for a vertex. setup() methods are allocating internal storage for summationMap
+
+## Methood Notes
+
+### setup()
+ setup is copying global variables relevant to a specific class.
+ parameters specific to a class are not being grabbed by setup; the method only requires the object to be setup.
+
+### setupVertices()
+
+
+
+
 ## New Architecture notes
 
 #### Smart pointers 
@@ -80,8 +95,8 @@ void CPUSpikingModel::advance()
    // ToDo: look at pointer v no pointer in params
    // ToDo: look at pointer v no pointer in params - to change
    // dereferencing the ptr, lose late binding -- look into changing!
-    vertices_->advanceVertices(*edges_, synapseIndexMap_);
-    edges_->advanceEdges(vertices_, synapseIndexMap_);
+    neurons_->advanceNeurons(*synapses_, synapseIndexMap_);
+    synapses_->advanceSynapses(neurons_, synapseIndexMap_);
 }
 
 *******************************************************

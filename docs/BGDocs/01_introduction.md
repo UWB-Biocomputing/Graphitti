@@ -36,7 +36,7 @@ The initial principles that we are basing BrainGrid on are as follows:
 - Researchers, Neuroscientists
 
 -------------
-[&gt;&gt; Next: 2. Installation](braingrid_installation)
+[&gt;&gt; Next: 2. Installation](02_installation)
 
 -------------
 [&lt;&lt; Go back to BrainGrid Home page](http://uwb-biocomputing.github.io/BrainGrid/)
