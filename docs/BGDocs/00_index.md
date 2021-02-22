@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-1. [Introduction](01_introduction)
+1. [Introduction](01_introduction.md)
 
    1.1 What is BrainGrid?
    
