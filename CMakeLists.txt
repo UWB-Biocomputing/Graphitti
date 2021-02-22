@@ -4,8 +4,16 @@ project(SummerOfBrain)
 # Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 11)
 
-# Enable the use of GPU. Only available if CUDA library is installed the GPU is CUDA capable.
-set(BRAINGRID_CUDA NO)
+
+############################################################################################
+# CONDITIONAL FLAG (to run simulation on CPU or GPU)
+# 
+# For GPU:                      For CPU:
+# set(BRAINGRID_CUDA YES)       set(BRAINGRID_CUDA NO)                       
+#
+# "YES"/GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
+############################################################################################
+set(BRAINGRID_CUDA YES)
 
 # Enables the CUDA langauge and locates the NVCC compiler. 
 # Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
@@ -14,9 +22,12 @@ set(BRAINGRID_CUDA NO)
 # set_property(TARGET target PROPERTY CUDA_ARCHITECTURES 35-virtual) 
 # so the compiler knows the CUDA architecture being used is the SM_35
 if(BRAINGRID_CUDA)
-        enable_language(CUDA)
-        set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
-        add_compile_definitions(USE_GPU)
+        find_package(CUDA)
+        if (CUDA_FOUND)
+                enable_language(CUDA)
+                set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
+                add_compile_definitions(USE_GPU)
+        endif()
 endif()
 
 # HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libaries to the executable later in the file.
@@ -40,19 +51,28 @@ add_compile_definitions(TIXML_USE_STL)
 # Used to define file paths for #include definitions. For example you can write:
 # #include "Simulator.h"
 # rather than:
-# #include "Simulation/Core/Simulator.h"
-# if the file path "Simulation/Core" is in the following statement.
+# #include "Simulator/Core/Simulator.h"
+# if the file path "Simulator/Core" is in the following statement.
 include_directories(
         ../SummerOfBrain
-        Simulation
-        Simulation/Connections
-        Simulation/Core
-        Simulation/Core/FunctionNodes
-        Simulation/Edges
-        Simulation/Layouts
-        Simulation/Recorders
-        Simulation/Vertices
-        Simulation/Utils
+        Simulator
+        Simulator/Connections
+        Simulator/Connections/Neuro
+        Simulator/Connections/NG911
+        Simulator/Core
+        Simulator/Core/FunctionNodes
+        Simulator/Edges
+        Simulator/Edges/Neuro
+        Simulator/Edges/NG911
+        # include subdirectories
+        Simulator/Layouts
+        Simulator/Layouts/Neuro
+        Simulator/Layouts/NG911
+        Simulator/Recorders
+        Simulator/Vertices
+        Simulator/Vertices/Neuro
+        Simulator/Vertices/NG911
+        Simulator/Utils
         Testing
         ThirdParty
         ThirdParty/cereal
@@ -60,7 +80,7 @@ include_directories(
         ThirdParty/log4cplus-2.0.2/include)
 
 # Used to locate and run other CMakeLists.txt files for further compilation of the project.
-add_subdirectory(Simulation)
+add_subdirectory(Simulator)
 add_subdirectory(ThirdParty)
 
 # Googletest subdirectories support
@@ -69,7 +89,7 @@ include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
 # ------ SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
-add_executable(braingrid Simulation/Core/BGDriver.cpp)
+add_executable(braingrid Simulator/Core/BGDriver.cpp)
 
 # ------ TESTS EXECUTABLE ------
 # Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
@@ -77,7 +97,7 @@ add_executable(braingrid Simulation/Core/BGDriver.cpp)
 add_executable(tests
         Testing/RunTests.cpp
         Testing/Core/OperationManagerTests.cpp
-        Testing/Core/SynapseIndexMapTests.cpp
+        Testing/Core/EdgeIndexMapTests.cpp
         Testing/Core/FunctionNodeTests.cpp
         Testing/Core/SimulatorTests.cpp
         Testing/Core/OperationManagerTestingClass.h

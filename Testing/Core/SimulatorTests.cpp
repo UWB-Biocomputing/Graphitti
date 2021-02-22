@@ -3,13 +3,13 @@
  *
  * @brief This file contains the unit tests for Simulator using GTest.
  *
- * @ingroup Testing
+ * @ingroup Testing/Core
  */
 
 #include "gtest/gtest.h"
 
 #include "ParameterManager.h"
-#include "Simulation/Core/Simulator.h"
+#include "Simulator.h"
 #include <iostream>
 
 using namespace std;

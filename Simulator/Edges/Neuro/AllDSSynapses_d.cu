@@ -1,0 +1,338 @@
+/**
+ * @file AllDSSynapses_d.cu
+ *
+ * @ingroup Simulator/Edges
+ * 
+ * @brief 
+ */
+
+#include "AllSynapsesDeviceFuncs.h"
+#include "AllDSSynapses.h"
+#include "GPUSpikingModel.h"
+#include "Simulator.h"
+#include "Book.h"
+
+///  Allocate GPU memories to store all synapses' states,
+///  and copy them from host to GPU memory.
+///
+///  @param  allEdgesDevice  GPU address of the AllDSSynapsesDeviceProperties struct 
+///                             on device memory.
+void AllDSSynapses::allocSynapseDeviceStruct ( void** allEdgesDevice ) {
+	allocSynapseDeviceStruct(allEdgesDevice, Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxSynapsesPerNeuron());
+}
+
+///  Allocate GPU memories to store all synapses' states,
+///  and copy them from host to GPU memory.
+///
+///  @param  allEdgesDevice     GPU address of the AllDSSynapsesDeviceProperties struct 
+///                                on device memory.
+///  @param  numVertices            Number of vertices.
+///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
+void AllDSSynapses::allocSynapseDeviceStruct( void** allEdgesDevice, int numVertices, int maxEdgesPerVertex ) {
+	AllDSSynapsesDeviceProperties allSynapses;
+
+	allocDeviceStruct( allSynapses, numVertices, maxEdgesPerVertex );
+
+	HANDLE_ERROR( cudaMalloc ( allEdgesDevice, sizeof( AllDSSynapsesDeviceProperties ) ) );
+	HANDLE_ERROR( cudaMemcpy ( *allEdgesDevice, &allSynapses, sizeof( AllDSSynapsesDeviceProperties ), cudaMemcpyHostToDevice ) );
+}
+
+///  Allocate GPU memories to store all synapses' states,
+///  and copy them from host to GPU memory.
+///  (Helper function of allocSynapseDeviceStruct)
+///
+///  @param  allEdgesDevice     GPU address of the AllDSSynapsesDeviceProperties struct 
+///                                on device memory.
+///  @param  numVertices            Number of vertices.
+///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
+void AllDSSynapses::allocDeviceStruct( AllDSSynapsesDeviceProperties &allSynapses, int numVertices, int maxEdgesPerVertex ) {
+        AllSpikingSynapses::allocDeviceStruct( allSynapses, numVertices, maxEdgesPerVertex );
+
+        BGSIZE maxTotalSynapses = maxEdgesPerVertex * numVertices;
+
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.lastSpike_, maxTotalSynapses * sizeof( uint64_t ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.r_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.u_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.D_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.U_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+	HANDLE_ERROR( cudaMalloc( ( void ** ) &allSynapses.F_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
+}
+
+///  Delete GPU memories.
+///
+///  @param  allEdgesDevice  GPU address of the AllDSSynapsesDeviceProperties struct 
+///                             on device memory.
+void AllDSSynapses::deleteSynapseDeviceStruct( void* allEdgesDevice ) {
+	AllDSSynapsesDeviceProperties allSynapses;
+
+	HANDLE_ERROR( cudaMemcpy ( &allSynapses, allEdgesDevice, sizeof( AllDSSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
+
+	deleteDeviceStruct( allSynapses );
+
+	HANDLE_ERROR( cudaFree( allEdgesDevice ) );
+}
+
+///  Delete GPU memories.
+///  (Helper function of deleteSynapseDeviceStruct)
+///
+///  @param  allEdgesDeviceProps  GPU address of the AllDSSynapsesDeviceProperties struct 
+///                                  on device memory.
+void AllDSSynapses::deleteDeviceStruct( AllDSSynapsesDeviceProperties& allEdgesDeviceProps ) {
+        HANDLE_ERROR( cudaFree( allEdgesDeviceProps.lastSpike_ ) );
+	HANDLE_ERROR( cudaFree( allEdgesDeviceProps.r_ ) );
+	HANDLE_ERROR( cudaFree( allEdgesDeviceProps.u_ ) );
+	HANDLE_ERROR( cudaFree( allEdgesDeviceProps.D_ ) );
+	HANDLE_ERROR( cudaFree( allEdgesDeviceProps.U_ ) );
+	HANDLE_ERROR( cudaFree( allEdgesDeviceProps.F_ ) );
+
+        AllSpikingSynapses::deleteDeviceStruct( allEdgesDeviceProps );
+}
+
+///  Copy all synapses' data from host to device.
+///
+///  @param  allEdgesDevice  GPU address of the AllDSSynapsesDeviceProperties struct 
+///                            on device memory.
+void AllDSSynapses::copySynapseHostToDevice( void* allEdgesDevice) { // copy everything necessary
+	copySynapseHostToDevice(allEdgesDevice, Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxSynapsesPerNeuron());	
+}
+
+///  Copy all synapses' data from host to device.
+///
+///  @param  allEdgesDevice     GPU address of the AllDSSynapsesDeviceProperties struct 
+///                                on device memory.
+///  @param  numVertices            Number of vertices.
+///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
+void AllDSSynapses::copySynapseHostToDevice( void* allEdgesDevice, int numVertices, int maxEdgesPerVertex ) { // copy everything necessary
+	AllDSSynapsesDeviceProperties allSynapses;
+
+        HANDLE_ERROR( cudaMemcpy ( &allSynapses, allEdgesDevice, sizeof( AllDSSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
+	copyHostToDevice( allEdgesDevice, allSynapses, numVertices, maxEdgesPerVertex );	
+}
+
+///  Copy all synapses' data from host to device.
+///  (Helper function of copySynapseHostToDevice)
+///
+///  @param  allEdgesDevice     GPU address of the AllDSSynapsesDeviceProperties struct 
+///                                on device memory.
+///  @param  numVertices            Number of vertices.
+///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
+void AllDSSynapses::copyHostToDevice( void* allEdgesDevice, AllDSSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex ) { // copy everything necessary 
+        AllSpikingSynapses::copyHostToDevice( allEdgesDevice, allEdgesDeviceProps, numVertices, maxEdgesPerVertex );
+
+        BGSIZE maxTotalSynapses = maxEdgesPerVertex * numVertices;
+
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.lastSpike_, lastSpike_,
+                maxTotalSynapses * sizeof( uint64_t ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.r_, r_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.u_, u_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.D_, D_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.U_, U_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.F_, F_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+}
+
+///  Copy all synapses' data from device to host.
+///
+///  @param  allEdgesDevice  GPU address of the AllDSSynapsesDeviceProperties struct 
+///                             on device memory.
+void AllDSSynapses::copySynapseDeviceToHost( void* allEdgesDevice ) {
+	// copy everything necessary
+	AllDSSynapsesDeviceProperties allEdgesDeviceProps;
+
+        HANDLE_ERROR( cudaMemcpy ( &allEdgesDeviceProps, allEdgesDevice, sizeof( AllDSSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
+
+	copyDeviceToHost( allEdgesDeviceProps );
+}
+
+///  Copy all synapses' data from device to host.
+///  (Helper function of copySynapseDeviceToHost)
+///
+///  @param  allEdgesDeviceProps     GPU address of the AllDSSynapsesDeviceProperties struct 
+///                                     on device memory.
+///  @param  numVertices                 Number of vertices.
+///  @param  maxEdgesPerVertex       Maximum number of synapses per neuron.
+void AllDSSynapses::copyDeviceToHost( AllDSSynapsesDeviceProperties& allEdgesDeviceProps ) {
+        AllSpikingSynapses::copyDeviceToHost( allEdgesDeviceProps ) ;
+
+	int numVertices = Simulator::getInstance().getTotalVertices();
+	BGSIZE maxTotalSynapses = Simulator::getInstance().getMaxSynapsesPerNeuron() * numVertices;
+
+        HANDLE_ERROR( cudaMemcpy ( lastSpike_, allEdgesDeviceProps.lastSpike_,
+                maxTotalSynapses * sizeof( uint64_t ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( r_, allEdgesDeviceProps.r_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( u_, allEdgesDeviceProps.u_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( D_, allEdgesDeviceProps.D_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( U_, allEdgesDeviceProps.U_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( F_, allEdgesDeviceProps.F_,
+                maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+}
+    
+///  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
+///  The class ID will be set to classSynapses_d in device memory,
+///  and the classSynapses_d will be referred to call a device function for the
+///  particular synapse class.
+///  Because we cannot use virtual function (Polymorphism) in device functions,
+///  we use this scheme.
+///  Note: we used to use a function pointer; however, it caused the growth_cuda crash
+///  (see issue#137).
+void AllDSSynapses::setEdgeClassID()
+{
+    enumClassSynapses classSynapses_h = classAllDSSynapses;
+
+    HANDLE_ERROR( cudaMemcpyToSymbol ( classSynapses_d, &classSynapses_h, sizeof(enumClassSynapses) ) );
+}
+
+///  Prints GPU SynapsesProps data.
+/// 
+///  @param  allEdgesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
+void AllDSSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
+{
+    AllDSSynapsesDeviceProperties allSynapsesProps;
+
+    //allocate print out data members
+    BGSIZE size = Simulator::getInstance().getMaxSynapsesPerNeuron() * countVertices_;
+    if (size != 0) {
+        BGSIZE *synapseCountsPrint = new BGSIZE[countVertices_];
+        BGSIZE maxSynapsesPerNeuronPrint;
+        BGSIZE totalSynapseCountPrint;
+        int countNeuronsPrint;
+        int *sourceNeuronIndexPrint = new int[size];
+        int *destNeuronIndexPrint = new int[size];
+        BGFLOAT *WPrint = new BGFLOAT[size];
+
+        synapseType *typePrint = new synapseType[size];
+        BGFLOAT *psrPrint = new BGFLOAT[size];
+        bool *inUsePrint = new bool[size];
+
+        for (BGSIZE i = 0; i < size; i++) {
+            inUsePrint[i] = false;
+        }
+
+        for (int i = 0; i < countVertices_; i++) {
+            synapseCountsPrint[i] = 0;
+        }
+
+        BGFLOAT *decayPrint = new BGFLOAT[size];
+        int *totalDelayPrint = new int[size];
+        BGFLOAT *tauPrint = new BGFLOAT[size];
+
+        uint64_t *lastSpikePrint = new uint64_t[size];
+        BGFLOAT *rPrint = new BGFLOAT[size];
+        BGFLOAT *uPrint = new BGFLOAT[size];
+        BGFLOAT *DPrint = new BGFLOAT[size];
+        BGFLOAT *UPrint = new BGFLOAT[size];
+        BGFLOAT *FPrint = new BGFLOAT[size];
+
+
+        // copy everything
+        HANDLE_ERROR( cudaMemcpy ( &allSynapsesProps, allEdgesDeviceProps, sizeof( AllDSSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( synapseCountsPrint, allSynapsesProps.synapseCounts_, countVertices_ * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
+        maxSynapsesPerNeuronPrint = allSynapsesProps.maxEdgesPerVertex_;
+        totalSynapseCountPrint = allSynapsesProps.totalEdgeCount_;
+        countNeuronsPrint = allSynapsesProps.countVertices_;
+
+        // Set countVertices_ to 0 to avoid illegal memory deallocation
+        // at AllSynapsesProps deconstructor.
+        allSynapsesProps.countVertices_ = 0;
+
+        HANDLE_ERROR( cudaMemcpy ( sourceNeuronIndexPrint, allSynapsesProps.sourceNeuronIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( destNeuronIndexPrint, allSynapsesProps.destNeuronIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( WPrint, allSynapsesProps.W_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( typePrint, allSynapsesProps.type_, size * sizeof( synapseType ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( psrPrint, allSynapsesProps.psr_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( inUsePrint, allSynapsesProps.inUse_, size * sizeof( bool ), cudaMemcpyDeviceToHost ) );
+
+
+        HANDLE_ERROR( cudaMemcpy ( decayPrint, allSynapsesProps.decay_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( tauPrint, allSynapsesProps.tau_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( totalDelayPrint, allSynapsesProps.totalDelay_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
+
+
+        HANDLE_ERROR( cudaMemcpy ( lastSpikePrint, allSynapsesProps.lastSpike_, size * sizeof( uint64_t ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( rPrint, allSynapsesProps.r_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( uPrint, allSynapsesProps.u_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( DPrint, allSynapsesProps.D_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( UPrint, allSynapsesProps.U_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( FPrint, allSynapsesProps.F_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+
+
+        for(int i = 0; i < size; i++) {
+            if (WPrint[i] != 0.0) {
+                cout << "GPU W[" << i << "] = " << WPrint[i];
+                cout << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
+                cout << " GPU desNeuron: " << destNeuronIndexPrint[i];
+                cout << " GPU type: " << typePrint[i];
+                cout << " GPU psr: " << psrPrint[i];
+                cout << " GPU in_use:" << inUsePrint[i];
+
+                cout << " GPU decay: " << decayPrint[i];
+                cout << " GPU tau: " << tauPrint[i];
+                cout << " GPU total_delay: " << totalDelayPrint[i];
+
+                cout << " GPU lastSpike: " << lastSpikePrint[i];
+                cout << " GPU r: " << rPrint[i];
+                cout << " GPU u: " << uPrint[i];
+                cout << " GPU D: " << DPrint[i];
+                cout << " GPU U: " << UPrint[i];
+                cout << " GPU F: " << FPrint[i] << endl;
+            }
+        }
+
+        for (int i = 0; i < countVertices_; i++) {
+            cout << "GPU synapse_counts:" << "neuron[" << i  << "]" << synapseCountsPrint[i] << endl;
+        }
+
+        cout << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;
+        cout << "GPU maxEdgesPerVertex:" << maxSynapsesPerNeuronPrint << endl;
+        cout << "GPU countVertices_:" << countNeuronsPrint << endl;
+
+
+        // Set countVertices_ to 0 to avoid illegal memory deallocation
+        // at AllDSSynapsesProps deconstructor.
+        allSynapsesProps.countVertices_ = 0;
+
+
+        delete[] destNeuronIndexPrint;
+        delete[] WPrint;
+        delete[] sourceNeuronIndexPrint;
+        delete[] psrPrint;
+        delete[] typePrint;
+        delete[] inUsePrint;
+        delete[] synapseCountsPrint;
+        destNeuronIndexPrint = NULL;
+        WPrint = NULL;
+        sourceNeuronIndexPrint = NULL;
+        psrPrint = NULL;
+        typePrint = NULL;
+        inUsePrint = NULL;
+        synapseCountsPrint = NULL;
+
+        delete[] decayPrint;
+        delete[] totalDelayPrint;
+        delete[] tauPrint;
+        decayPrint = NULL;
+        totalDelayPrint = NULL;
+        tauPrint = NULL;
+
+        delete[] lastSpikePrint;
+        delete[] rPrint;
+        delete[] uPrint;
+        delete[] DPrint;
+        delete[] UPrint;
+        delete[] FPrint;
+        lastSpikePrint = NULL;
+        rPrint = NULL;
+        uPrint = NULL;
+        DPrint = NULL;
+        UPrint = NULL;
+        FPrint = NULL;
+    }
+}

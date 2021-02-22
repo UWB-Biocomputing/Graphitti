@@ -3,14 +3,13 @@
  *
  * @brief This class is used for unit testing the all FunctionNodes that inherit from IFunctionNode using GTest.
  *
- * @ingroup Testing
- *
+ * @ingroup Testing/Core
  */
 
 #include "gtest/gtest.h"
 
 #include "OperationManagerTestingClass.h"
-#include "Simulation/Core/FunctionNodes/GenericFunctionNode.h"
+#include "GenericFunctionNode.h"
 
 using namespace std;
 

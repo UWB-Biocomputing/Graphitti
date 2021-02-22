@@ -3,7 +3,7 @@
  *
  * @brief  This class is used for unit testing the OperationManager using GTest.
  *
- * @ingroup Testing
+ * @ingroup Testing/Core
  *
  * These tests don't act independently since the OperationManager is a singleton. Each change to the state of
  * OperationManager will be carried through onto other tests.
@@ -12,8 +12,8 @@
 #include "gtest/gtest.h"
 
 #include "OperationManagerTestingClass.h"
-#include "Simulation/Core/OperationManager.h"
-#include "Simulation/Core/Operations.h"
+#include "OperationManager.h"
+#include "Operations.h"
 #include "Layout.h"
 
 TEST(OperationManager, GetInstanceReturnsInstance) {

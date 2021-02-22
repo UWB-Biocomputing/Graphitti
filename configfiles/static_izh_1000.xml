@@ -12,7 +12,7 @@
         </SimParams>
         <SimConfig name="SimConfig">
             <maxFiringRate name="maxFiringRate">1000</maxFiringRate>
-            <maxSynapsesPerNeuron name="maxSynapsesPerNeuron">1000</maxSynapsesPerNeuron>
+            <maxEdgesPerVertex name="maxEdgesPerVertex">1000</maxEdgesPerVertex>
         </SimConfig>
         <Seed name="Seed">
             <value name="value">777</value>

@@ -1,0 +1,38 @@
+/**
+ * @file ISInput.h
+ * 
+ * @ingroup Simulator/Utils/Inputs
+ *
+ * @brief An interface for stimulus input classes.
+ *
+ * The ISInput provides an interface for stimulus input classes.
+ */
+
+#pragma once
+
+#ifndef _ISINPUT_H_
+#define _ISINPUT_H_
+
+#include "Global.h"
+#include "Core/Simulator.h"
+#include "Core/Model.h"
+#include "tinyxml.h"
+
+class ISInput
+{
+public:
+    virtual ~ISInput() {}
+
+    /// Initialize data
+    virtual void init() = 0;
+
+    /// Terminate process
+    virtual void term() = 0;
+
+    /// Process input stimulus for each time step
+    ///
+    /// @param[in] psi       Pointer to the simulation information.
+    virtual void inputStimulus() = 0;
+};
+
+#endif // _ISINPUT_H_
