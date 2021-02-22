@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-1. [Introduction](braingrid_introduction)
+1. [Introduction](01_introduction)
 
    1.1 What is BrainGrid?
    
@@ -12,7 +12,7 @@
    
    1.4 Who is the BrainGrid Audience?
 
-2. [Installation](braingrid_installation)
+2. [Installation](02_installation)
 
    2.1 Necessary Hardware/Software
    
@@ -20,13 +20,13 @@
    
    2.3 Install BrainGrid
 
-3. [Quickstart](braingrid_quickstart)
+3. [Quickstart](03_quickstart)
 
    3.1 Quick Sanity Test
    
    3.2 Use of Screen
 
-4. [Configuration](braingrid_configuration)
+4. [Configuration](04_configuration)
 
    4.1 Use built-in models
    

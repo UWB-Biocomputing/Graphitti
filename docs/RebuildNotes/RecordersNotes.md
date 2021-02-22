@@ -1,14 +1,8 @@
 
-
-// RECORDERS
-// todo: NEXXT: look at getsimrecorder. accessor of simulator. returns pointer to recorder.
-// look at HDF5 recorder.
+# Recorders
+There are two different types of recorders: XML and HDF5 file types
 
 
-
-Class heirarchy: two different types ofr ecorders.
-
-HDF5 or XML file type.
 
 Heirarchical data format (HDF5) standard data file type for standard data.
 

@@ -8,13 +8,29 @@ The BrainGrid project has been designed, coded and refactored by multiple indivi
 - Chris Burgess
 - Derek McLean
 - Hugo Ribeiro
-
-2020
+- Vivek Gandhi
+- Kyle Dukart
 - Chris O'Keefe
 - Lizzy Presland
 - Emily Hsu
 - Snigdha Singh
 - Tori Salvatore 
-
-new list 
-Prof. Hazel Asuncion Joseph Conquest Del Davis Emily Hsu Fumitaka Kawasaki Jewel YunShuan Lee Tori Salvatore Smriti Singh Snigdha Singh Maxfield Strange Tom Wong Destiny Boyer Ethan Crawford Cory Mayberry Sean McCallum Derek McLean Nicholas Lewis Mariia Lundvall Allan Ortiz Hugo Ribeiro Warner Smidt Kate Sprague Xinyu Wang Andrew Watson Max Wright
+- Hazel Asuncion
+- Joseph Conquest
+- Del Davis
+- Jewel Yun
+- Shuan Lee
+- Smriti Singh
+- Maxfield Strange
+- Tom Wong
+- Destiny Boyer
+- Ethan Crawford
+- Cory Mayberry
+- Sean McCallum
+- Nicholas Lewis
+- Mariia Lundvall
+- Allan Ortiz
+- Warner Smidt
+- Kate Sprague
+- Xinyu Wang
+- Andrew Watson
