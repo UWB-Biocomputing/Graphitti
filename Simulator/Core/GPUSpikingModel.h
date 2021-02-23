@@ -3,10 +3,10 @@
  *
  * @ingroup Simulator/Core
  * 
- * @brief Implementation of Model for the spiking neural networks.
+ * @brief Implementation of Model for the graph-based networks.
  *
  * The Model class maintains and manages classes of objects that make up
- * essential components of the spiking neural networks.
+ * essential components of graph-based networks.
  *    -# IAllVertices: A class to define a list of particular type of neurons.
  *    -# IAllEdges: A class to define a list of particular type of synapses.
  *    -# Connections: A class to define connections of the neural network.

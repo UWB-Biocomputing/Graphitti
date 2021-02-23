@@ -1,24 +1,24 @@
 # 1. Introduction
 
-## 1.1 What is BrainGrid?
+## 1.1 What is DEBS?
 
-[BrainGrid](https://github.com/UWB-Biocomputing/BrainGrid) is an **open-source high-performance neural network simulator** that is intended to aid scientists and researchers by providing pre-built code that can be easily modified to fit different models. 
+[DEBS](https://github.com/UWB-Biocomputing/BrainGrid) <!-- to change link  --> is an **open-source high-performance graph-based event simulator** that is intended to aid scientists and researchers by providing pre-built code that can easily be modified to fit different models. 
 
-BrainGrid runs on both a CPU & GPU. The multi-threaded (GPU) uses NVIDIA's CUDA libraries and can provide a potential speedup of up to a twentieth of the original runtime. The single-threaded (CPU) simulator compiles on a machine without CUDA libraries. 
+DEBS runs on both a CPU & GPU. The multi-threaded (GPU) version uses NVIDIA's CUDA libraries and can provide a potential speedup of up to a twentieth of the original runtime. The single-threaded (CPU) simulator compiles on a machine without CUDA libraries. 
  
-## 1.2 What is BrainGrid for?
+## 1.2 What is DEBS for?
 
-BrainGrid is a framework for quickly implementing GPU-speed-up spiking neural networks. If you have a mathematical model for a spiking neural network, or if you have an idea for one, BrainGrid will provide you with a quick way of getting that network implemented in code and running on CPUs or GPUs.
+DEBS is a framework for quickly implementing GPU-speed-up graph-based networks. If you have a mathematical model for real world events, DEBS will provide you with a way of getting that network implemented in code and running on CPUs or GPUs.
 
-In sum, BrainGrid is designed to do the following:
+In sum, DEBS is designed to do the following:
 
-1. Simulate spiking neural networks with built-in models (such as leaky-integrate-and-fire neuron, izhikevich neuron)
-2. Provide a framework to make it easier to code models of your own
+1. Simulate graph-based networks with built-in models. For example, the neuroscience simulator can do this with the leaky-integrate-and-fire neuron and izhikevich neuron.
+2. Provide a framework to make it easier to code models of your own.
 3. Make these models FAST - provide code to make it easy to migrate models to single or multiple GPUs, providing a huge speedup from single or multi-threaded host-side models.
 
-## 1.3 Why do we need BrainGrid?
+## 1.3 Why do we need DEBS?
 
-The initial principles that we are basing BrainGrid on are as follows:
+The initial principles that we are basing DEBS on are as follows:
 
 - Provide support for common algorithms and data structures needed for biological neural simulation. This includes concepts such as:
   - *neurons* and *synapses*, which can be dynamical and have internal state that must be initialized, can be updated, and can be serialized and deserialized,
@@ -36,7 +36,7 @@ The initial principles that we are basing BrainGrid on are as follows:
 - Researchers, Neuroscientists
 
 -------------
-[&gt;&gt; Next: 2. Installation](02_installation)
+[>> Next: 2. Installation](02_installation.md)
 
 -------------
-[&lt;&lt; Go back to BrainGrid Home page](http://uwb-biocomputing.github.io/BrainGrid/)
+[<< Go back to BrainGrid Home page](http://uwb-biocomputing.github.io/BrainGrid/)

@@ -3,7 +3,7 @@
  *
  * @ingroup Simulator/Core
  * 
- * @brief Implementation of Model for the spiking neural networks.
+ * @brief Implementation of Model for graph-based networks.
  *
  * The network is composed of 3 superimposed 2-d arrays: vertices, edges, and
  * summation points.

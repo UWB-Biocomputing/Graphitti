@@ -10,7 +10,8 @@ The following link points to the documentation of Googletest which includes valu
 The following link is a helpful video describing how to write tests and test structs using Googletest.
 [https://www.youtube.com/watch?v=16FI1-d2P4E&amp;](https://www.youtube.com/watch?v=16FI1-d2P4E&amp;)
 
-Watch here:
+#### Watch here:
+
 [![video of unit testing](http://img.youtube.com/vi/16FI1-d2P4E/0.jpg)](http://www.youtube.com/watch?v=16FI1-d2P4E "C++ Unit Testing With Google Test Tutorial")
 
 ### Test Format

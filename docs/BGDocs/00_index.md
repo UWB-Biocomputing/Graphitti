@@ -1,24 +1,26 @@
-# BrainGrid
+# DEBS
 
 ## Table of Contents
 
 1. [Introduction](01_introduction.md)
 
-   1.1 What is BrainGrid?
+   1.1 What is DEBS?
    
-   1.2 What is BrainGrid for?
+   1.2 What is DEBS for?
    
-   1.3 Why do we need BrainGrid?
+   1.3 Why do we need DEBS?
    
-   1.4 Who is the BrainGrid Audience?
+   1.4 Who is the DEBS Audience?
 
 2. [Installation](02_installation.md)
 
    2.1 Necessary Hardware/Software
    
-   2.2 Download BrainGrid
+   See [Install Requirements](02a_installRequirements.md)
    
-   2.3 Install BrainGrid
+   2.2 Download DEBS
+   
+   2.3 Install DEBS
 
 3. [Quickstart](03_quickstart.md)
 

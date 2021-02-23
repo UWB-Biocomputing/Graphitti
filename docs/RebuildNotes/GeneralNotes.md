@@ -16,7 +16,7 @@ summation points for a vertex. setup() methods are allocating internal storage f
 ## New Architecture notes
 
 #### Smart pointers 
-Wherever possible, Braingrid is written using smart pointers. There are three  
+Wherever possible, DEBS is written using smart pointers. There are three  
 
 #### testing
 google tests use cmake 
