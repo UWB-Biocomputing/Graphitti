@@ -21,7 +21,7 @@ The original idea behind the BrainGrid Project is to develop a toolkit/software 
 
 ### [Lab Publication](lab-publication) 
 
-### [Acknowledgements](acknowledgements)
+### [Acknowledgements](docs/_Info/acknowledgements.md)
 
 ---------
 ### Multiple simulation architectures:
