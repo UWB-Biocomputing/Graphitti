@@ -4,7 +4,6 @@ project(SummerOfBrain)
 # Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 11)
 
-
 ############################################################################################
 # CONDITIONAL FLAG (to run simulation on CPU or GPU)
 # 
@@ -13,7 +12,7 @@ set(CMAKE_CXX_STANDARD 11)
 #
 # "YES"/GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
-set(BRAINGRID_CUDA YES)
+set(BRAINGRID_CUDA NO)
 
 # Enables the CUDA langauge and locates the NVCC compiler. 
 # Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
@@ -22,28 +21,33 @@ set(BRAINGRID_CUDA YES)
 # set_property(TARGET target PROPERTY CUDA_ARCHITECTURES 35-virtual) 
 # so the compiler knows the CUDA architecture being used is the SM_35
 if(BRAINGRID_CUDA)
-        find_package(CUDA)
-        if (CUDA_FOUND)
-                enable_language(CUDA)
-                set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
-                add_compile_definitions(USE_GPU)
-        endif()
+        message("----Building BrainGrid GPU version----")
+        enable_language(CUDA)
+        set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
+        add_compile_definitions(USE_GPU)
+else()
+        message("----Building BrainGrid CPU version----")
 endif()
 
 # HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libaries to the executable later in the file.
 find_package(HDF5 COMPONENTS C CXX)
 if (HDF5_FOUND)
+        message("-- HDF5 library located. HDF5 recorders are available")
         link_directories( ${HDF5_LIBRARY_DIRS} )
         include_directories( ${HDF5_INCLUDE_DIRS} )
         add_compile_definitions(HDF5)
+else()
+        message("-- HDF5 library was not located. Please only use XML recorders")
 endif()
 
 # Setting the location of the executable to be in the top-level directory. This helps when using file paths during
 # runtime.
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 # Set extra warning flags
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 #define TIXML_USE_STL as a preproccersser macro to use the C++ standard library with TinyXML
 add_compile_definitions(TIXML_USE_STL)

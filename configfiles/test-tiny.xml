@@ -18,7 +18,7 @@
             <value name="value">1</value>
         </Seed>
         <OutputParams name="OutputParams">
-            <resultFileName name="resultFileName">Output/Results/test-tiny-out.xml</resultFileName>
+            <resultFileName name="resultFileName">../Output/Results/test-tiny-out.xml</resultFileName>
         </OutputParams>
     </SimInfoParams>
 
@@ -75,14 +75,14 @@
 
         <LayoutParams class="FixedLayout" name="LayoutParams">
             <LayoutFiles name="LayoutFiles">
-                <activeNListFileName name="activeNListFileName" type="InputFile">configfiles/NList/ActiveNList2x2.xml
+                <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList2x2.xml
                 </activeNListFileName>
-                <inhNListFileName name="inhNListFileName" type="InputFile">configfiles/NList/InhibitoryNList2x2.xml
+                <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList2x2.xml
                 </inhNListFileName>
             </LayoutFiles>
         </LayoutParams>
         <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
-            <probedNListFileName name="prbNListFileName" type="InputFile">configfiles/NList/ProbedNList2x2.xml
+            <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/ProbedNList2x2.xml
             </probedNListFileName>
         </RecorderParams>
     </ModelParams>
