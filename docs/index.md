@@ -41,3 +41,8 @@ The original idea behind the BrainGrid Project is to develop a toolkit/software 
 - [BrainGrid Forum]([https://groups.google.com/forum/#!forum/uwb-braingrid](https://groups.google.com/forum/#!forum/uwb-braingrid)): A place where BrainGridders can communicate and collaborate. Click the button "Apply to join this group" to be a BrainGridder.
 - [Git Crash Course](https://github.com/UWB-Biocomputing/BrainGrid/wiki/Git-Crash-Course)
 - [Linux Crash Course](https://github.com/UWB-Biocomputing/BrainGrid/wiki/Linux-Crash-Course)
+
+
+### Doxygen 
+
+[Visit Doxygen Generated Documentation](docs/Doxygen/html/index.html)
