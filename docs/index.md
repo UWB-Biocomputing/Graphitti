@@ -45,4 +45,4 @@ The original idea behind the BrainGrid Project is to develop a toolkit/software 
 
 ### Doxygen 
 
-[Visit Doxygen Generated Documentation](docs/Doxygen/html/index.html)
+[Visit Doxygen Generated Documentation](Doxygen/html/index.html)
