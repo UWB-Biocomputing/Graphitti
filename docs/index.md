@@ -12,7 +12,7 @@ The original idea behind the BrainGrid Project is to develop a toolkit/software 
 - It provides a programming interface to minimize code changes needed to port the simulation to single or multiple GPUs. In effect, we've already optimized the simulator for GPUs (this addresses the "high performance" aspect).
 - We provide a (Java based) Workbench that allows the investigator to download, build, and run the simulator; the Workbench captures all software and data provenance information, so that later the investigator can compare different results generated at different times and see how they differ in terms of not only their input parameters but also their simulator versions. This helps one to determine whether two simulations are comparable, whether one or more are invalid due to simulator bugs, etc. (This also connects to the idea of "high quality".)
 
-### [BrainGrid](braingrid_index)
+### [BrainGrid](00_index.md)
 
 ### [Workbench](workbench_index)
 
