@@ -21,24 +21,26 @@ set(BRAINGRID_CUDA NO)
 # set_property(TARGET target PROPERTY CUDA_ARCHITECTURES 35-virtual) 
 # so the compiler knows the CUDA architecture being used is the SM_35
 if(BRAINGRID_CUDA)
-        message("----Building BrainGrid GPU version----")
+        message("\n----Generating Makefile for BrainGrid GPU version----")
         enable_language(CUDA)
         set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
         add_compile_definitions(USE_GPU)
 else()
-        message("----Building BrainGrid CPU version----")
+        message("\n----Generating Makefile for BrainGrid CPU version----")
 endif()
 
 # HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libaries to the executable later in the file.
 find_package(HDF5 COMPONENTS C CXX)
 if (HDF5_FOUND)
-        message("-- HDF5 library located. HDF5 recorders are available")
+        message("-- HDF5 library located. HDF5 recorders are available.")
         link_directories( ${HDF5_LIBRARY_DIRS} )
         include_directories( ${HDF5_INCLUDE_DIRS} )
         add_compile_definitions(HDF5)
 else()
-        message("-- HDF5 library was not located. Please only use XML recorders")
+        message("-- HDF5 library was not located. Please only use XML recorders.")
 endif()
+
+#set(CMAKE_VERBOSE_MAKEFILE TRUE)
 
 # Setting the location of the executable to be in the top-level directory. This helps when using file paths during
 # runtime.
@@ -47,10 +49,11 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 # Set extra warning flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 #define TIXML_USE_STL as a preproccersser macro to use the C++ standard library with TinyXML
 add_compile_definitions(TIXML_USE_STL)
+message("-- Setting Compile Definition: TIMXL_USE_STL")
 
 # Used to define file paths for #include definitions. For example you can write:
 # #include "Simulator.h"
@@ -68,7 +71,6 @@ include_directories(
         Simulator/Edges
         Simulator/Edges/Neuro
         Simulator/Edges/NG911
-        # include subdirectories
         Simulator/Layouts
         Simulator/Layouts/Neuro
         Simulator/Layouts/NG911
@@ -77,6 +79,7 @@ include_directories(
         Simulator/Vertices/Neuro
         Simulator/Vertices/NG911
         Simulator/Utils
+        Simultaor/Utils/Matrix
         Testing
         ThirdParty
         ThirdParty/cereal
@@ -90,25 +93,6 @@ add_subdirectory(ThirdParty)
 # Googletest subdirectories support
 add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
-
-# ------ SIMULATOR EXECUTABLE -------
-# Add all files that aren't in a library and are needed to run
-add_executable(braingrid Simulator/Core/BGDriver.cpp)
-
-# ------ TESTS EXECUTABLE ------
-# Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
-# included in the executable.
-add_executable(tests
-        Testing/RunTests.cpp
-        Testing/Core/OperationManagerTests.cpp
-        Testing/Core/EdgeIndexMapTests.cpp
-        Testing/Core/FunctionNodeTests.cpp
-        Testing/Core/SimulatorTests.cpp
-        Testing/Core/OperationManagerTestingClass.h
-        Testing/Utils/ParamaterManagerTests.cpp)
-
-# Links the Googletest framework with the testing executable
-target_link_libraries(tests gtest gtest_main)
 
 # Link all libraries created in the project's subdirectories into a combined library.
 add_library(combinedLib INTERFACE)
@@ -137,6 +121,25 @@ target_link_libraries(combinedLib INTERFACE
 if (HDF5_FOUND)
         target_link_libraries(combinedLib INTERFACE ${HDF5_LIBRARIES})
 endif()
+
+# ------ SIMULATOR EXECUTABLE -------
+# Add all files that aren't in a library and are needed to run
+add_executable(braingrid Simulator/Core/BGDriver.cpp)
+
+# ------ TESTS EXECUTABLE ------
+# Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
+# included in the executable.
+add_executable(tests
+        Testing/RunTests.cpp
+        Testing/Core/OperationManagerTests.cpp
+        Testing/Core/EdgeIndexMapTests.cpp
+        Testing/Core/FunctionNodeTests.cpp
+        Testing/Core/SimulatorTests.cpp
+        Testing/Core/OperationManagerTestingClass.h
+        Testing/Utils/ParamaterManagerTests.cpp)
+
+# Links the Googletest framework with the testing executable
+target_link_libraries(tests gtest gtest_main)
 
 # Link the combined library into the 'braingrid' executable.
 target_link_libraries(braingrid combinedLib)
