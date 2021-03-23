@@ -27,7 +27,7 @@ Layout::Layout() :
 
    // Create Vertices/Neurons class using type definition in configuration file
    string type;
-   ParameterManager::getInstance().getStringByXpath("//NeuronsParams/@class", type);
+   ParameterManager::getInstance().getStringByXpath("//VerticesParams/@class", type);
    vertices_ = VerticesFactory::getInstance()->createVertices(type);
 
    // Register loadParameters function as a loadParameters operation in the Operation Manager

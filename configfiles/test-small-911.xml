@@ -2,28 +2,28 @@
 <BGSimParams>
   <SimInfoParams name="SimInfoParams">
     <PoolSize name="PoolSize">
-      <x name="x">30</x>
-      <y name="y">30</y>
+      <x name="x">10</x>
+      <y name="y">10</y>
       <z name="z">1</z>
     </PoolSize>
     <SimParams name="SimParams">
       <epochDuration name="epochDuration">100.0</epochDuration>
-      <numEpochs name="numEpochs">100</numEpochs>
+      <numEpochs name="numEpochs">5</numEpochs>
     </SimParams>
     <SimConfig name="SimConfig">
-      <maxFiringRate name="maxFiringRate">200</maxFiringRate>
-      <maxEdgesPerVertex name="maxEdgesPerVertex">200</maxEdgesPerVertex>
+      <maxFiringRate name="maxFiringRate">100</maxFiringRate>
+      <maxEdgesPerVertex name="maxEdgesPerVertex">10</maxEdgesPerVertex>
     </SimConfig>
     <Seed name="Seed">
       <value name="value">1</value>
     </Seed>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">results/test-medium-100-out.xml</resultFileName>
+      <resultFileName name="resultFileName">Output/Results/test-small-out-911.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 
   <ModelParams>
-    <VerticesParams class="AllLIFNeurons" name="VerticesParams">
+    <VerticesParams class="All911Vertices" name="VerticesParams">
       <Iinject name="Iinject">
         <min name="min">13.5e-09</min>
         <max name="max">13.5e-09</max>
@@ -58,27 +58,19 @@
       </starter_vreset>
     </VerticesParams>
 
-    <EdgesParams class="AllDSSynapses" name="EdgesParams">
+    <EdgesParams class="All911Edges" name="EdgesParams">
     </EdgesParams>
-
-    <ConnectionsParams class="ConnGrowth" name="ConnectionsParams">
-      <!-- Growth parameters -->
-      <GrowthParams name="GrowthParams">
-        <epsilon name="epsilon">0.60</epsilon>
-        <beta name="beta">0.10</beta>
-        <rho name="rho">0.0001</rho>
-        <targetRate name="targetRate">1.9</targetRate>
-        <minRadius name="minRadius">0.1</minRadius>
-        <startRadius name="startRadius">0.4</startRadius>
-      </GrowthParams>
-    </ConnectionsParams>
 
     <LayoutParams class="FixedLayout" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">
-        <activeNListFileName name="activeNListFileName" type="InputFile">configfiles/NList/ActiveNList30x30-0.01.xml</activeNListFileName>
-        <inhNListFileName name="inhNListFileName" type="InputFile">configfiles/NList/InhibitoryNList30x30-0.02.xml</inhNListFileName>
-        <probedNListFileName name="prbNListFileName" type="InputFile"/>
+        <PSAPsListFileName name="PSAPsListFileName" type="InputFile">configfiles/NList/NG911_psaps_10x10.xml</PSAPsListFileName>
+        <callersListFileName name="callersListFileName" type="InputFile">configfiles/NList/NG911_callers_10x10.xml</callersListFileName>
+        <respondersListFileName name="respondersListFileName" type="InputFile">configfiles/NList/NG911_responders_10x10.xml</respondersListFileName>
       </LayoutFiles>
     </LayoutParams>
+    <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
+      <probedListFileName name="prbListFileName" type="InputFile">configfiles/NList/NG911_probed_10x10.xml</probedListFileName>
+    </RecorderParams>
   </ModelParams>
 </BGSimParams>
+

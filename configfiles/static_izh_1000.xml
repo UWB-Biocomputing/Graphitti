@@ -22,7 +22,7 @@
         </OutputParams>
     </SimInfoParams>
     <ModelParams>
-        <NeuronsParams class="AllIZHNeurons" name="NeuronsParams">
+        <VerticesParams class="AllIZHNeurons" name="VerticesParams">
             <Iinject name="Iinject">
                 <min name="min">13.5e-09</min>
                 <max name="max">13.5e-09</max>
@@ -81,10 +81,10 @@
                 <minInh name="minInh">2</minInh>
                 <maxInh name="maxInh">2</maxInh>
             </Dconst>
-        </NeuronsParams>
+        </VerticesParams>
 
-        <SynapsesParams class="AllSpikingSynapses" name="SynapsesParams">
-        </SynapsesParams>
+        <EdgesParams class="AllSpikingSynapses" name="EdgesParams">
+        </EdgesParams>
 
         <ConnectionsParams class="ConnStatic" name="ConnectionsParams">
             <StaticConnectionsParams name="StaticConnectionsParams">

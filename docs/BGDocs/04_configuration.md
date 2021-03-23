@@ -48,7 +48,7 @@ Take a look at **test-tiny.xml** file that is under  `BrainGrid/validation`  dir
 </SimInfoParams>
 
 <ModelParams>
-   <NeuronsParams class="AllLIFNeurons">
+   <VerticesParams class="AllLIFNeurons">
       <!-- Interval of constant injected current -->
       <Iinject min="13.5e-09" max="13.5e-09"/>
       <!-- Interval of STD of (gaussian) noise current -->
@@ -65,10 +65,10 @@ Take a look at **test-tiny.xml** file that is under  `BrainGrid/validation`  dir
       <starter_vthresh min="13.565e-3" max="13.655e-3"/>
       <!-- Starter reset voltage -->
       <starter_vreset min="13.0e-3" max="13.0e-3"/>
-   </NeuronsParams>
+   </VerticesParams>
    
-   <SynapsesParams class="AllDSSynapses">
-   </SynapsesParams>
+   <EdgesParams class="AllDSSynapses">
+   </EdgesParams>
    
    <ConnectionsParams class="ConnGrowth">
       <!-- Growth parameters -->
@@ -126,7 +126,7 @@ The first set of parameters that BrainGrid expects out of this file is stored in
 
 The next set of parameters is the ModelParams. These parameters are specific to your model. Later, when we go through the "from scratch" example (where you will code up your own model using C++ to provide utmost flexibility), you will specify what goes here. But for now, we are using a built in model - specifically LIF (leaky integrate and fire), just to see what's expected. You must specify the:
 
-* **NeuronsParams**: This is an XML node in and of itself, which requires several items. Each of these items is presented as a range, with the idea that each neuron will be chosen with random values from each of these intervals.
+* **VerticesParams**: This is an XML node in and of itself, which requires several items. Each of these items is presented as a range, with the idea that each neuron will be chosen with random values from each of these intervals.
     + **Iinject**: The interval of constant injected current. Each neuron will be randomly assigned a value from this interval on start (with a uniform distribution).
     + **Inoise**: Describes the background (noise) current, if you want some in your experiment (simulates realistic settings). Each neuron will have a background noise current chosen from this range.
     + **Vthresh**: The threshold membrane voltage that must be reached before a neuron fires; again, specified as a range of values from which each neuron will be chosen randomly.
@@ -136,7 +136,7 @@ The next set of parameters is the ModelParams. These parameters are specific to 
     + **starter_vthresh**: In this particular model, there are endogenously active neurons called 'starter neurons', whose threshold voltage is drawn from this range. This range is set low enough that their noise can actually drive them to fire, so that there need not be any input into the neural net. You can of course, configure these neurons to be exactly the same as the other ones, but without then coding an input to the net, your net won't do anything.
     + **starter_vreset**: The voltage to which a starter neuron gets reset after firing.
 
-* **SynapsesParams**: Another node that should be populated - though you'll note in this particular example, we aren't specifying anything about the synapses.
+* **EdgesParams**: Another node that should be populated - though you'll note in this particular example, we aren't specifying anything about the synapses.
 
 * **ConnectionsParams**: Another node to populate. Its parameters are as follows:
     + **GrowthParams**: The growth parameters for this simulation. The mathematics behind epsilon, beta, and rho can be found [TODO]. The targetRate is TODO, and the minRadius, and startRadius should be self-explanatory.
