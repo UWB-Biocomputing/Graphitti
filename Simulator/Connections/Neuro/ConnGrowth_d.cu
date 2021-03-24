@@ -22,7 +22,7 @@
  *  @param  vertices            The AllVertices object.
  *  @param  synapses           The AllEdges object.
  *  @param  allVerticesDevice   GPU address to the AllVertices struct in device memory.
- *  @param  allEdgesDevice  GPU address to the allSynapses struct in device memory.
+ *  @param  allEdgesDevice  GPU address to the allEdges struct in device memory.
  *  @param  layout             The Layout object.
  */
 void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, IAllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout)
@@ -57,7 +57,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &vert
         HANDLE_ERROR( cudaMemcpy ( neuronTypeMapD, layout->vertexTypeMap_, simulator.getTotalVertices() * sizeof( neuronType ), cudaMemcpyHostToDevice ) );
 
         blocksPerGrid = ( simulator.getTotalVertices() + threadsPerBlock - 1 ) / threadsPerBlock;
-        updateSynapsesWeightsDevice <<< blocksPerGrid, threadsPerBlock >>> ( simulator.getTotalVertices(), deltaT, W_d, simulator.getMaxSynapsesPerNeuron(), allVerticesDevice, allEdgesDevice, neuronTypeMapD );
+        updateSynapsesWeightsDevice <<< blocksPerGrid, threadsPerBlock >>> ( simulator.getTotalVertices(), deltaT, W_d, simulator.getMaxEdgesPerVertex(), allVerticesDevice, allEdgesDevice, neuronTypeMapD );
 
         // free memories
         HANDLE_ERROR( cudaFree( W_d ) );
@@ -66,7 +66,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &vert
         HANDLE_ERROR( cudaFree( neuronTypeMapD ) );
 
         // copy device synapse count to host memory
-        synapses.copyDeviceSynapseCountsToHost(allEdgesDevice);
+        synapses.copyDeviceEdgeCountsToHost(allEdgesDevice);
         // copy device synapse summation coordinate to host memory
-        synapses.copyDeviceSynapseSumIdxToHost(allEdgesDevice);
+        synapses.copyDeviceEdgeSumIdxToHost(allEdgesDevice);
 }

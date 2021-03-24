@@ -46,7 +46,7 @@ void GPUSpikingModel::allocDeviceStruct(void** allVerticesDevice, void** allEdge
 
   // Allocate Neurons and Synapses structs on GPU device memory
   neurons->allocNeuronDeviceStruct(allVerticesDevice);
-  synapses->allocSynapseDeviceStruct(allEdgesDevice);
+  synapses->allocEdgeDeviceStruct(allEdgesDevice);
 
   // Allocate memory for random noise array
   int numVertices = Simulator::getInstance().getTotalVertices();
@@ -55,7 +55,7 @@ void GPUSpikingModel::allocDeviceStruct(void** allVerticesDevice, void** allEdge
 
   // Copy host neuron and synapse arrays into GPU device
   neurons->copyNeuronHostToDevice( *allVerticesDevice );
-  synapses->copySynapseHostToDevice( *allEdgesDevice );
+  synapses->copyEdgeHostToDevice( *allEdgesDevice );
 
   // Allocate synapse inverse map in device memory
   allocSynapseImap( numVertices );
@@ -75,9 +75,9 @@ void GPUSpikingModel::deleteDeviceStruct(void** allVerticesDevice, void** allEdg
   // Deallocate device memory
   neurons->deleteNeuronDeviceStruct( *allVerticesDevice);
   // Copy device synapse and neuron structs to host memory
-  synapses->copySynapseDeviceToHost( *allEdgesDevice);
+  synapses->copyEdgeDeviceToHost( *allEdgesDevice);
   // Deallocate device memory
-  synapses->deleteSynapseDeviceStruct( *allEdgesDevice );
+  synapses->deleteEdgeDeviceStruct( *allEdgesDevice );
   HANDLE_ERROR( cudaFree( randNoise_d ) );
 }
 
@@ -118,7 +118,7 @@ void GPUSpikingModel::setupSim()
   layout_->getVertices()->setAdvanceVerticesDeviceParams(*(connections_->getEdges().get()));
 
   // set some parameters used for advanceSynapsesDevice
-  connections_->getEdges()->setAdvanceSynapsesDeviceParams();
+  connections_->getEdges()->setAdvanceEdgesDeviceParams();
 }
 
 /// Performs any finalization tasks on network following a simulation.
@@ -365,14 +365,14 @@ __global__ void calcSummationMapDevice(int totalVertices,
 void GPUSpikingModel::copyGPUtoCPU()
 {
   // copy device synapse structs to host memory
-  connections_->getEdges()->copySynapseDeviceToHost(allEdgesDevice_);
+  connections_->getEdges()->copyEdgeDeviceToHost(allEdgesDevice_);
 }
 
 /// Copy CPU Synapse data to GPU.
 void GPUSpikingModel::copyCPUtoGPU()
 {
   // copy host synapse structs to device memory
-  connections_->getEdges()->copySynapseHostToDevice(allEdgesDevice_);
+  connections_->getEdges()->copyEdgeHostToDevice(allEdgesDevice_);
 }
 
 /// Print out SynapseProps on the GPU.

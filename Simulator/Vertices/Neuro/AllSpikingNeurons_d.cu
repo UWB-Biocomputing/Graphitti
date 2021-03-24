@@ -59,7 +59,7 @@ void AllSpikingNeurons::clearDeviceSpikeCounts( AllSpikingNeuronsDevicePropertie
 ///  function. We use this scheme because we cannot not use virtual function (Polymorphism)
 ///  in device functions.
 ///
-///  @param  synapses               Reference to the allSynapses struct on host memory.
+///  @param  synapses               Reference to the allEdges struct on host memory.
 void AllSpikingNeurons::setAdvanceVerticesDeviceParams(IAllEdges &synapses)
 {
     AllSpikingSynapses &spSynapses = dynamic_cast<AllSpikingSynapses&>(synapses);

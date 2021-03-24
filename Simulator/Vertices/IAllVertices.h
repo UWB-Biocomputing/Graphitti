@@ -75,12 +75,12 @@ public:
        ///  @param  allVerticesDevice       GPU address of the allVertices struct on device memory.
        ///  @param  allEdgesDevice      GPU address of the allEdges struct on device memory.
        ///  @param  randNoise              Reference to the random noise array.
-       ///  @param  synapseIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
-       virtual void advanceVertices(IAllEdges &edges, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice) = 0;
+       ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
+       virtual void advanceVertices(IAllEdges &edges, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice) = 0;
 
        ///  Set some parameters used for advanceVerticesDevice.
        ///
-       ///  @param  edges               Reference to the allSynapses struct on host memory.
+       ///  @param  edges               Reference to the allEdges struct on host memory.
        virtual void setAdvanceVerticesDeviceParams(IAllEdges &edges) = 0;
 #else // !defined(USE_GPU)
 public:

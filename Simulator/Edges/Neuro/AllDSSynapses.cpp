@@ -17,9 +17,9 @@ AllDSSynapses::AllDSSynapses() : AllSpikingSynapses() {
    F_ = NULL;
 }
 
-AllDSSynapses::AllDSSynapses(const int numVertices, const int maxSynapses) :
-      AllSpikingSynapses(numVertices, maxSynapses) {
-   setupEdges(numVertices, maxSynapses);
+AllDSSynapses::AllDSSynapses(const int numVertices, const int maxEdges) :
+      AllSpikingSynapses(numVertices, maxEdges) {
+   setupEdges(numVertices, maxEdges);
 }
 
 AllDSSynapses::~AllDSSynapses() {
@@ -44,17 +44,17 @@ AllDSSynapses::~AllDSSynapses() {
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 void AllDSSynapses::setupEdges() {
-   setupEdges(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxSynapsesPerNeuron());
+   setupEdges(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxEdgesPerVertex());
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 ///
 ///  @param  numVertices   Total number of vertices in the network.
-///  @param  maxSynapses  Maximum number of synapses per neuron.
-void AllDSSynapses::setupEdges(const int numVertices, const int maxSynapses) {
-   AllSpikingSynapses::setupEdges(numVertices, maxSynapses);
+///  @param  maxEdges  Maximum number of synapses per neuron.
+void AllDSSynapses::setupEdges(const int numVertices, const int maxEdges) {
+   AllSpikingSynapses::setupEdges(numVertices, maxEdges);
 
-   BGSIZE maxTotalSynapses = maxSynapses * numVertices;
+   BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
    if (maxTotalSynapses != 0) {
       lastSpike_ = new uint64_t[maxTotalSynapses];
@@ -101,8 +101,8 @@ void AllDSSynapses::readEdge(istream &input, const BGSIZE iEdg) {
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the synapse to print out.
-void AllDSSynapses::writeSynapse(ostream &output, const BGSIZE iEdg) const {
-   AllSpikingSynapses::writeSynapse(output, iEdg);
+void AllDSSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const {
+   AllSpikingSynapses::writeEdge(output, iEdg);
 
    output << lastSpike_[iEdg] << ends;
    output << r_[iEdg] << ends;

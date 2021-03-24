@@ -10,12 +10,12 @@
  *  dimention of the array corresponds with each vertex, and each item in the second
  *  dimension of the array corresponds with a edge parameter of each edge of the vertex. 
  *  Bacause each vertex owns different number of edges, the number of edges 
- *  for each vertex is stored in a 1D array, synapse_counts.
+ *  for each vertex is stored in a 1D array, edge_counts.
  *
  *  For CUDA implementation, we used another structure, AllEdgesDevice, where edge
  *  parameters are stored in 1D arrays instead of 2D arrays, so that device functions
  *  can access these data less latency. When copying a edge parameter, P[i][j],
- *  from host to device, it is stored in P[i * max_synapses_per_neuron + j] in 
+ *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in 
  *  AllEdgesDevice structure.
  *
  *  The latest implementation uses the identical data struture between host and CUDA;
@@ -45,7 +45,7 @@ class AllEdges : public IAllEdges {
 public:
    AllEdges();
 
-   AllEdges(const int numVertices, const int maxSynapses);
+   AllEdges(const int numVertices, const int maxEdges);
 
    virtual ~AllEdges();
 
@@ -117,8 +117,8 @@ protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///
    ///  @param  numVertices   Total number of vertices in the network.
-   ///  @param  maxSynapses  Maximum number of edges per vertex.
-   virtual void setupEdges(const int numVertices, const int maxSynapses);
+   ///  @param  maxEdges  Maximum number of edges per vertex.
+   virtual void setupEdges(const int numVertices, const int maxEdges);
 
    ///  Sets the data for Synapse to input's data.
    ///
@@ -130,7 +130,7 @@ protected:
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the edge to print out.
-   virtual void writeSynapse(ostream &output, const BGSIZE iEdg) const;
+   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const;
 
    ///  Returns an appropriate synapseType object for the given integer.
    ///
@@ -200,7 +200,7 @@ public:
 };
 
 #if defined(USE_GPU)
-struct AllSynapsesDeviceProperties
+struct AllEdgesDeviceProperties
 {
         ///  The location of the edge.
         int *sourceNeuronIndex_;

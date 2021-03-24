@@ -48,7 +48,7 @@ public:
    public:
        ///  Set some parameters used for advanceVerticesDevice.
        ///
-       ///  @param  synapses               Reference to the allSynapses struct on host memory.
+       ///  @param  synapses               Reference to the allEdges struct on host memory.
        virtual void setAdvanceVerticesDeviceParams(IAllEdges &synapses);
 
        ///  Copy spike counts data stored in device memory to host.

@@ -237,13 +237,13 @@ void AllIFNeurons::clearNeuronSpikeCounts( void* allVerticesDevice )
 ///  Update the state of all neurons for a time step
 ///  Notify outgoing synapses if neuron has fired.
 ///
-///  @param  synapses               Reference to the allSynapses struct on host memory.
+///  @param  synapses               Reference to the allEdges struct on host memory.
 ///  @param  allVerticesDevice       GPU address of the AllIFNeuronsDeviceProperties struct 
 ///                                 on device memory.
 ///  @param  allEdgesDevice      GPU address of the allEdgesDeviceProperties struct 
 ///                                 on device memory.
 ///  @param  randNoise              Reference to the random noise array.
-///  @param  synapseIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
-void AllIFNeurons::advanceVertices( IAllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice )
+///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
+void AllIFNeurons::advanceVertices( IAllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice )
 {
 }

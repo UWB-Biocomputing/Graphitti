@@ -32,7 +32,7 @@ TEST(Simulator, ParametersInitializedSuccessfully) {
    EXPECT_EQ(BGFLOAT(100), Simulator::getInstance().getEpochDuration());
    EXPECT_EQ(500, Simulator::getInstance().getNumEpochs());
    EXPECT_EQ(200, Simulator::getInstance().getMaxFiringRate());
-   EXPECT_EQ(200, Simulator::getInstance().getMaxSynapsesPerNeuron());
+   EXPECT_EQ(200, Simulator::getInstance().getMaxEdgesPerVertex());
    EXPECT_EQ(1, Simulator::getInstance().getSeed());
    EXPECT_EQ("results/test-medium-500-out.xml", Simulator::getInstance().getResultFileName());
 }

@@ -255,7 +255,7 @@ BGFLOAT Simulator::getEpochDuration() const { return epochDuration_; }
 
 int Simulator::getMaxFiringRate() const { return maxFiringRate_; } /// **GPU Only**
 
-int Simulator::getMaxSynapsesPerNeuron() const { return maxEdgesPerVertex_; } ///  **GPU Only.**
+int Simulator::getMaxEdgesPerVertex() const { return maxEdgesPerVertex_; } ///  **GPU Only.**
 
 BGFLOAT Simulator::getDeltaT() const { return deltaT_; }
 

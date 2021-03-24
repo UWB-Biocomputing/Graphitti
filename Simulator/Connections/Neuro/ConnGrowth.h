@@ -131,7 +131,7 @@ public:
    ///  @param  vertices             The AllVertices object.
    ///  @param  synapses            The AllEdges object.
    ///  @param  allVerticesDevice    GPU address of the allVertices struct in device memory.
-   ///  @param  allEdgesDevice   GPU address of the allSynapses struct in device memory.
+   ///  @param  allEdgesDevice   GPU address of the allEdges struct in device memory.
    ///  @param  layout              The Layout object.
    virtual void updateSynapsesWeights(const int numVertices,
          IAllVertices &neurons, IAllEdges &synapses,

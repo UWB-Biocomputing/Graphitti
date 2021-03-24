@@ -266,7 +266,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &iver
          // for each existing synapse
          BGSIZE synapseCounts = synapses.synapseCounts_[destVertex];
          BGSIZE synapse_adjusted = 0;
-         BGSIZE iEdg = Simulator::getInstance().getMaxSynapsesPerNeuron() * destVertex;
+         BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * destVertex;
          for (BGSIZE synapseIndex = 0; synapse_adjusted < synapseCounts; synapseIndex++, iEdg++) {
             if (synapses.inUse_[iEdg] == true) {
                // if there is a synapse between a and b

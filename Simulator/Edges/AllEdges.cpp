@@ -34,8 +34,8 @@ AllEdges::AllEdges() :
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
-AllEdges::AllEdges(const int numVertices, const int maxSynapses) {
-   setupEdges(numVertices, maxSynapses);
+AllEdges::AllEdges(const int numVertices, const int maxEdges) {
+   setupEdges(numVertices, maxEdges);
 }
 
 AllEdges::~AllEdges() {
@@ -67,17 +67,17 @@ AllEdges::~AllEdges() {
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 void AllEdges::setupEdges() {
-   setupEdges(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxSynapsesPerNeuron());
+   setupEdges(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxEdgesPerVertex());
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 ///
 ///  @param  numVertices   Total number of vertices in the network.
 ///  @param  max_synapses  Maximum number of edges per vertex.
-void AllEdges::setupEdges(const int numVertices, const int maxSynapses) {
-   BGSIZE maxTotalSynapses = maxSynapses * numVertices;
+void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
+   BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
-   maxEdgesPerVertex_ = maxSynapses;
+   maxEdgesPerVertex_ = maxEdges;
    totalEdgeCount_ = 0;
    countVertices_ = numVertices;
 
@@ -155,7 +155,7 @@ void AllEdges::readEdge(istream &input, const BGSIZE iEdg) {
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the synapse to print out.
-void AllEdges::writeSynapse(ostream &output, const BGSIZE iEdg) const {
+void AllEdges::writeEdge(ostream &output, const BGSIZE iEdg) const {
    output << sourceNeuronIndex_[iEdg] << ends;
    output << destNeuronIndex_[iEdg] << ends;
    output << W_[iEdg] << ends;
@@ -171,7 +171,7 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
 
    // count the total edges
    for (int i = 0; i < neuronCount; i++) {
-      assert(static_cast<int>(synapseCounts_[i]) < Simulator::getInstance().getMaxSynapsesPerNeuron());
+      assert(static_cast<int>(synapseCounts_[i]) < Simulator::getInstance().getMaxEdgesPerVertex());
       totalSynapseCount += synapseCounts_[i];
    }
 
@@ -192,7 +192,7 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
    for (int i = 0; i < neuronCount; i++) {
       BGSIZE edge_count = 0;
       edgeIndexMap->incomingSynapseBegin_[i] = numInUse;
-      for (int j = 0; j < Simulator::getInstance().getMaxSynapsesPerNeuron(); j++, syn_i++) {
+      for (int j = 0; j < Simulator::getInstance().getMaxEdgesPerVertex(); j++, syn_i++) {
          if (inUse_[syn_i] == true) {
             int idx = sourceNeuronIndex_[syn_i];
             rgSynapseSynapseIndexMap[idx].push_back(syn_i);
@@ -341,7 +341,7 @@ void AllEdges::printSynapsesProps() const {
    }
 
    for (int i = 0; i < countVertices_; i++) {
-      cout << "synapse_counts:" << "vertex[" << i << "]" << synapseCounts_[i] << endl;
+      cout << "edge_counts:" << "vertex[" << i << "]" << synapseCounts_[i] << endl;
    }
 
    cout << "totalSynapseCount:" << totalEdgeCount_ << endl;

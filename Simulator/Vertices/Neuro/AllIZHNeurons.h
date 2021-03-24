@@ -119,12 +119,12 @@ public:
        ///  Update the state of all neurons for a time step
        ///  Notify outgoing synapses if neuron has fired.
        ///
-       ///  @param  synapses               Reference to the allSynapses struct on host memory.
+       ///  @param  synapses               Reference to the allEdges struct on host memory.
        ///  @param  allVerticesDevice       Reference to the allNeurons struct on device memory.
-       ///  @param  allEdgesDevice      Reference to the allSynapses struct on device memory.
+       ///  @param  allEdgesDevice      Reference to the allEdges struct on device memory.
        ///  @param  randNoise              Reference to the random noise array.
-       ///  @param  synapseIndexMapDevice  Reference to the EdgeIndexMap on device memory.
-       virtual void advanceVertices(IAllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice);
+       ///  @param  edgeIndexMapDevice  Reference to the EdgeIndexMap on device memory.
+       virtual void advanceVertices(IAllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice);
 
        ///  Allocate GPU memories to store all neurons' states,
        ///  and copy them from host to GPU memory.

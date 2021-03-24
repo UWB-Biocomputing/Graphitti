@@ -74,7 +74,7 @@ public:
 
    int getMaxFiringRate() const;   /// Maximum firing rate. **GPU Only**
 
-   int getMaxSynapsesPerNeuron() const;   /// Maximum number of synapses per neuron. **GPU Only**
+   int getMaxEdgesPerVertex() const;   /// Maximum number of synapses per neuron. **GPU Only**
 
    BGFLOAT getDeltaT() const;    /// Time elapsed between the beginning and end of the simulation step
 

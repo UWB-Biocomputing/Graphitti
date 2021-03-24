@@ -28,9 +28,9 @@ AllSTDPSynapses::AllSTDPSynapses() : AllSpikingSynapses() {
    useFroemkeDanSTDP_ = NULL;
 }
 
-AllSTDPSynapses::AllSTDPSynapses(const int numVertices, const int maxSynapses) :
-      AllSpikingSynapses(numVertices, maxSynapses) {
-   setupEdges(numVertices, maxSynapses);
+AllSTDPSynapses::AllSTDPSynapses(const int numVertices, const int maxEdges) :
+      AllSpikingSynapses(numVertices, maxEdges) {
+   setupEdges(numVertices, maxEdges);
 }
 
 AllSTDPSynapses::~AllSTDPSynapses() {
@@ -73,17 +73,17 @@ AllSTDPSynapses::~AllSTDPSynapses() {
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 void AllSTDPSynapses::setupEdges() {
-   setupEdges(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxSynapsesPerNeuron());
+   setupEdges(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxEdgesPerVertex());
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 ///
 ///  @param  numVertices   Total number of vertices in the network.
-///  @param  maxSynapses  Maximum number of synapses per neuron.
-void AllSTDPSynapses::setupEdges(const int numVertices, const int maxSynapses) {
-   AllSpikingSynapses::setupEdges(numVertices, maxSynapses);
+///  @param  maxEdges  Maximum number of synapses per neuron.
+void AllSTDPSynapses::setupEdges(const int numVertices, const int maxEdges) {
+   AllSpikingSynapses::setupEdges(numVertices, maxEdges);
 
-   BGSIZE maxTotalSynapses = maxSynapses * numVertices;
+   BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
    if (maxTotalSynapses != 0) {
       totalDelayPost_ = new int[maxTotalSynapses];
@@ -172,8 +172,8 @@ void AllSTDPSynapses::readEdge(istream &input, const BGSIZE iEdg) {
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the synapse to print out.
-void AllSTDPSynapses::writeSynapse(ostream &output, const BGSIZE iEdg) const {
-   AllSpikingSynapses::writeSynapse(output, iEdg);
+void AllSTDPSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const {
+   AllSpikingSynapses::writeEdge(output, iEdg);
 
    output << totalDelayPost_[iEdg] << ends;
    output << delayQueuePost_[iEdg] << ends;
