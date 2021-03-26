@@ -1,6 +1,6 @@
-![Unit test workflow](https://github.com/UWB-Biocomputing/SummerOfBrain/workflows/Unit%20Tests/badge.svg)
+![Unit test workflow](https://github.com/UWB-Biocomputing/Graphitti/workflows/Unit%20Tests/badge.svg)
 
-# SummerOfBrain
+# Graphitti
 
 ## About
 

@@ -35,10 +35,10 @@ put it under C:\Windows\System32\OpenSSH
 
 continuing ... 
 ```
-$ git clone https://github.com/UWB-Biocomputing/SummerOfBrain
+$ git clone https://github.com/UWB-Biocomputing/Graphitti
   ```
 
-click Open folder and click summerofbrain
+click Open folder and click Graphitti
 
 you should now have the directory on vs code
 
