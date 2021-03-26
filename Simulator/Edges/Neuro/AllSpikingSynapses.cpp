@@ -17,8 +17,8 @@ AllSpikingSynapses::AllSpikingSynapses() : AllEdges() {
    tau_ = NULL;
 }
 
-AllSpikingSynapses::AllSpikingSynapses(const int numVertices, const int maxSynapses) {
-   setupEdges(numVertices, maxSynapses);
+AllSpikingSynapses::AllSpikingSynapses(const int numVertices, const int maxEdges) {
+   setupEdges(numVertices, maxEdges);
 }
 
 AllSpikingSynapses::~AllSpikingSynapses() {
@@ -43,17 +43,17 @@ AllSpikingSynapses::~AllSpikingSynapses() {
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 void AllSpikingSynapses::setupEdges() {
-   setupEdges(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxSynapsesPerNeuron());
+   setupEdges(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxEdgesPerVertex());
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 ///
 ///  @param  numVertices   Total number of vertices in the network.
-///  @param  maxSynapses  Maximum number of synapses per neuron.
-void AllSpikingSynapses::setupEdges(const int numVertices, const int maxSynapses) {
-   AllEdges::setupEdges(numVertices, maxSynapses);
+///  @param  maxEdges  Maximum number of synapses per neuron.
+void AllSpikingSynapses::setupEdges(const int numVertices, const int maxEdges) {
+   AllEdges::setupEdges(numVertices, maxEdges);
 
-   BGSIZE maxTotalSynapses = maxSynapses * numVertices;
+   BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
    if (maxTotalSynapses != 0) {
       decay_ = new BGFLOAT[maxTotalSynapses];
@@ -123,8 +123,8 @@ void AllSpikingSynapses::readEdge(istream &input, const BGSIZE iEdg) {
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the synapse to print out.
-void AllSpikingSynapses::writeSynapse(ostream &output, const BGSIZE iEdg) const {
-   AllEdges::writeSynapse(output, iEdg);
+void AllSpikingSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const {
+   AllEdges::writeEdge(output, iEdg);
 
    output << decay_[iEdg] << ends;
    output << totalDelay_[iEdg] << ends;

@@ -17,9 +17,9 @@ AllDynamicSTDPSynapses::AllDynamicSTDPSynapses() : AllSTDPSynapses() {
     F_ = NULL;
 }
 
-AllDynamicSTDPSynapses::AllDynamicSTDPSynapses(const int numVertices, const int maxSynapses) :
-      AllSTDPSynapses(numVertices, maxSynapses) {
-    setupEdges(numVertices, maxSynapses);
+AllDynamicSTDPSynapses::AllDynamicSTDPSynapses(const int numVertices, const int maxEdges) :
+      AllSTDPSynapses(numVertices, maxEdges) {
+    setupEdges(numVertices, maxEdges);
 }
 
 AllDynamicSTDPSynapses::~AllDynamicSTDPSynapses() {
@@ -44,17 +44,17 @@ AllDynamicSTDPSynapses::~AllDynamicSTDPSynapses() {
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 void AllDynamicSTDPSynapses::setupEdges() {
-    setupEdges(Simulator::getInstance().getDeltaT(), Simulator::getInstance().getMaxSynapsesPerNeuron());
+    setupEdges(Simulator::getInstance().getDeltaT(), Simulator::getInstance().getMaxEdgesPerVertex());
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 /// 
 ///  @param  numVertices   Total number of vertices in the network.
-///  @param  maxSynapses  Maximum number of synapses per neuron.
-void AllDynamicSTDPSynapses::setupEdges(const int numVertices, const int maxSynapses) {
-    AllSTDPSynapses::setupEdges(numVertices, maxSynapses);
+///  @param  maxEdges  Maximum number of synapses per neuron.
+void AllDynamicSTDPSynapses::setupEdges(const int numVertices, const int maxEdges) {
+    AllSTDPSynapses::setupEdges(numVertices, maxEdges);
 
-    BGSIZE maxTotalSynapses = maxSynapses * numVertices;
+    BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
     if (maxTotalSynapses != 0) {
         lastSpike_ = new uint64_t[maxTotalSynapses];
@@ -101,8 +101,8 @@ void AllDynamicSTDPSynapses::readEdge(istream &input, const BGSIZE iEdg) {
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the synapse to print out.
-void AllDynamicSTDPSynapses::writeSynapse(ostream &output, const BGSIZE iEdg) const {
-    AllSTDPSynapses::writeSynapse(output, iEdg);
+void AllDynamicSTDPSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const {
+    AllSTDPSynapses::writeEdge(output, iEdg);
 
     output << lastSpike_[iEdg] << ends;
     output << r_[iEdg] << ends;

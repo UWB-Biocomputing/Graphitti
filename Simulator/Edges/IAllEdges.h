@@ -80,59 +80,59 @@ public:
        ///  Allocate GPU memories to store all edges' states,
        ///  and copy them from host to GPU memory.
        ///
-       ///  @param  allEdgesDevice  GPU address of the allSynapses struct on device memory.
-       virtual void allocSynapseDeviceStruct(void** allEdgesDevice) = 0;
+       ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
+       virtual void allocEdgeDeviceStruct(void** allEdgesDevice) = 0;
 
        ///  Allocate GPU memories to store all edges' states,
        ///  and copy them from host to GPU memory.
        ///
-       ///  @param  allEdgesDevice     GPU address of the allSynapses struct on device memory.
+       ///  @param  allEdgesDevice     GPU address of the allEdges struct on device memory.
        ///  @param  numVertices            Number of vertices.
        ///  @param  maxEdgesPerVertex  Maximum number of edges per vertex.
-       virtual void allocSynapseDeviceStruct( void** allEdgesDevice, int numVertices, int maxEdgesPerVertex ) = 0;
+       virtual void allocEdgeDeviceStruct( void** allEdgesDevice, int numVertices, int maxEdgesPerVertex ) = 0;
 
        ///  Delete GPU memories.
        ///
-       ///  @param  allEdgesDevice  GPU address of the allSynapses struct on device memory.
-       virtual void deleteSynapseDeviceStruct( void* allEdgesDevice ) = 0;
+       ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
+       virtual void deleteEdgeDeviceStruct( void* allEdgesDevice ) = 0;
 
        ///  Copy all edges' data from host to device.
        ///
-       ///  @param  allEdgesDevice  GPU address of the allSynapses struct on device memory.
-       virtual void copySynapseHostToDevice(void* allEdgesDevice) = 0;
+       ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
+       virtual void copyEdgeHostToDevice(void* allEdgesDevice) = 0;
 
        ///  Copy all edges' data from host to device.
        ///
-       ///  @param  allEdgesDevice  GPU address of the allSynapses struct on device memory.
+       ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
        ///  @param  numVertices           Number of vertices.
        ///  @param  maxEdgesPerVertex  Maximum number of edges per vertex.
-       virtual void copySynapseHostToDevice( void* allEdgesDevice, int numVertices, int maxEdgesPerVertex ) = 0;
+       virtual void copyEdgeHostToDevice( void* allEdgesDevice, int numVertices, int maxEdgesPerVertex ) = 0;
 
        ///  Copy all edges' data from device to host.
        ///
-       ///  @param  allEdgesDevice  GPU address of the allSynapses struct on device memory.
-       virtual void copySynapseDeviceToHost( void* allEdgesDevice) = 0;
+       ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
+       virtual void copyEdgeDeviceToHost( void* allEdgesDevice) = 0;
 
-       ///  Get synapse_counts in AllEdges struct on device memory.
+       ///  Get edge_counts in AllEdges struct on device memory.
        ///
-       ///  @param  allEdgesDevice  GPU address of the allSynapses struct on device memory.
-       virtual void copyDeviceSynapseCountsToHost(void* allEdgesDevice) = 0;
+       ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
+       virtual void copyDeviceEdgeCountsToHost(void* allEdgesDevice) = 0;
 
        ///  Get summationCoord and in_use in AllEdges struct on device memory.
        ///
-       ///  @param  allEdgesDevice  GPU address of the allSynapses struct on device memory.
-       virtual void copyDeviceSynapseSumIdxToHost(void* allEdgesDevice) = 0;
+       ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
+       virtual void copyDeviceEdgeSumIdxToHost(void* allEdgesDevice) = 0;
 
        ///  Advance all the Synapses in the simulation.
        ///  Update the state of all edges for a time step.
        ///
-       ///  @param  allEdgesDevice      GPU address of the allSynapses struct on device memory.
+       ///  @param  allEdgesDevice      GPU address of the allEdges struct on device memory.
        ///  @param  allVerticesDevice       GPU address of the allNeurons struct on device memory.
-       ///  @param  synapseIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
-       virtual void advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* synapseIndexMapDevice) = 0;
+       ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
+       virtual void advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) = 0;
 
        ///  Set some parameters used for advanceSynapsesDevice.
-       virtual void setAdvanceSynapsesDeviceParams() = 0;
+       virtual void setAdvanceEdgesDeviceParams() = 0;
 
        ///  Set edge class ID defined by enumClassSynapses for the caller's Edge class.
        ///  The class ID will be set to classSynapses_d in device memory,

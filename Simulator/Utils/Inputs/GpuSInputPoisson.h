@@ -47,7 +47,7 @@ private:
     AllDSSynapsesDeviceProperties* allEdgesDevice;
  
     //! Pointer to synapse index map in device memory.
-    EdgeIndexMap* synapseIndexMapDevice;
+    EdgeIndexMap* edgeIndexMapDevice;
 
     //! Pointer to device interval counter.
     int* deviceInteralCounter_;

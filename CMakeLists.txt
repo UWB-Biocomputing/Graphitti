@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(SummerOfBrain)
+project(Graphitti)
 
 # Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 11)
@@ -54,7 +54,7 @@ add_compile_definitions(TIXML_USE_STL)
 # #include "Simulator/Core/Simulator.h"
 # if the file path "Simulator/Core" is in the following statement.
 include_directories(
-        ../SummerOfBrain
+        ../Graphitti
         Simulator
         Simulator/Connections
         Simulator/Connections/Neuro

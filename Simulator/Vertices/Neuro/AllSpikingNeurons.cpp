@@ -109,7 +109,7 @@ void AllSpikingNeurons::advanceVertices(IAllEdges &synapses, const EdgeIndexMap 
 
          if (spSynapses.allowBackPropagation()) {
             for (int z = 0; synapse_notified < synapseCounts; z++) {
-               BGSIZE iEdg = Simulator::getInstance().getMaxSynapsesPerNeuron() * idx + z;
+               BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * idx + z;
                if (spSynapses.inUse_[iEdg] == true) {
                   spSynapses.postSpikeHit(iEdg);
                   synapse_notified++;

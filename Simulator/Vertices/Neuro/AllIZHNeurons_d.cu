@@ -161,7 +161,7 @@ void AllIZHNeurons::clearNeuronSpikeCounts( void* allVerticesDevice )
 }
 
 ///  Notify outgoing synapses if neuron has fired.
-void AllIZHNeurons::advanceVertices( IAllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* synapseIndexMapDevice)
+void AllIZHNeurons::advanceVertices( IAllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice)
 {
     int vertex_count = Simulator::getInstance().getTotalVertices();
     int maxSpikes = (int)((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
@@ -171,5 +171,5 @@ void AllIZHNeurons::advanceVertices( IAllEdges &synapses, void* allVerticesDevic
     int blocksPerGrid = ( vertex_count + threadsPerBlock - 1 ) / threadsPerBlock;
 
     // Advance neurons ------------->
-    advanceIZHNeuronsDevice <<< blocksPerGrid, threadsPerBlock >>> ( vertex_count, Simulator::getInstance().getMaxSynapsesPerNeuron(), maxSpikes, Simulator::getInstance().getDeltaT(), g_simulationStep, randNoise, (AllIZHNeuronsDeviceProperties *)allVerticesDevice, (AllSpikingSynapsesDeviceProperties*)allEdgesDevice, synapseIndexMapDevice, fAllowBackPropagation_ );
+    advanceIZHNeuronsDevice <<< blocksPerGrid, threadsPerBlock >>> ( vertex_count, Simulator::getInstance().getMaxEdgesPerVertex(), maxSpikes, Simulator::getInstance().getDeltaT(), g_simulationStep, randNoise, (AllIZHNeuronsDeviceProperties *)allVerticesDevice, (AllSpikingSynapsesDeviceProperties*)allEdgesDevice, edgeIndexMapDevice, fAllowBackPropagation_ );
 }

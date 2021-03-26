@@ -27,7 +27,7 @@
 Connections::Connections() {
    // Create Edges/Synapses class using type definition in configuration file
    string type;
-   ParameterManager::getInstance().getStringByXpath("//SynapsesParams/@class", type);
+   ParameterManager::getInstance().getStringByXpath("//EdgesParams/@class", type);
    edges_ = EdgesFactory::getInstance()->createEdges(type);
 
    // Register printParameters function as a printParameters operation in the OperationManager
@@ -98,8 +98,8 @@ void Connections::createSynapsesFromWeights(const int numVertices, Layout *layou
    for (int iNeuron = 0; iNeuron < numVertices; iNeuron++) {
       // for each synapse in the vertex
       for (BGSIZE synapseIndex = 0;
-           synapseIndex < Simulator::getInstance().getMaxSynapsesPerNeuron(); synapseIndex++) {
-         BGSIZE iEdg = Simulator::getInstance().getMaxSynapsesPerNeuron() * iNeuron + synapseIndex;
+           synapseIndex < Simulator::getInstance().getMaxEdgesPerVertex(); synapseIndex++) {
+         BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * iNeuron + synapseIndex;
          // if the synapse weight is not zero (which means there is a connection), create the synapse
          if (synapses.W_[iEdg] != 0.0) {
             BGFLOAT theW = synapses.W_[iEdg];

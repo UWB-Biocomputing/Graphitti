@@ -63,7 +63,7 @@ int chunk_size = psi->totalVertices / omp_get_max_threads();
         if (masks[neuronIndex] == false)
             continue;
 
-        BGSIZE iEdg = Simulator::getInstance().getMaxSynapsesPerNeuron() * neuronIndex;
+        BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * neuronIndex;
         if (--nISIs[neuronIndex] <= 0)
         {
             // add a spike

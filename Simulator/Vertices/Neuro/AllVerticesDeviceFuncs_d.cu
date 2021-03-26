@@ -79,7 +79,7 @@ __device__ void postSTDPSynapseSpikeHitDevice( const BGSIZE iEdg, AllSTDPSynapse
 ///  CUDA code for advancing LIF neurons
 /// 
 ///  @param[in] totalVertices          Number of vertices.
-///  @param[in] maxSynapses           Maximum number of synapses per neuron.
+///  @param[in] maxEdges           Maximum number of synapses per neuron.
 ///  @param[in] maxSpikes             Maximum number of spikes per neuron per epoch.
 ///  @param[in] deltaT                Inner simulation step duration.
 ///  @param[in] simulationStep        The current simulation step.
@@ -88,7 +88,7 @@ __device__ void postSTDPSynapseSpikeHitDevice( const BGSIZE iEdg, AllSTDPSynapse
 ///  @param[in] allEdgesDevice     Pointer to Synapse structures in device memory.
 ///  @param[in] edgeIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
-__global__ void advanceLIFNeuronsDevice( int totalVertices, int maxSynapses, int maxSpikes, const BGFLOAT deltaT, uint64_t simulationStep, float* randNoise, AllIFNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, EdgeIndexMap* synapseIndexMapDevice, bool fAllowBackPropagation ) {
+__global__ void advanceLIFNeuronsDevice( int totalVertices, int maxEdges, int maxSpikes, const BGFLOAT deltaT, uint64_t simulationStep, float* randNoise, AllIFNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, EdgeIndexMap* edgeIndexMapDevice, bool fAllowBackPropagation ) {
         // determine which neuron this thread is processing
         int idx = blockIdx.x * blockDim.x + threadIdx.x;
         if ( idx >= totalVertices )
@@ -128,12 +128,12 @@ __global__ void advanceLIFNeuronsDevice( int totalVertices, int maxSynapses, int
                 vm = allVerticesDevice->Vreset_[idx];
 
                 // notify outgoing synapses of spike
-                BGSIZE synapseCounts = synapseIndexMapDevice->outgoingSynapseCount_[idx];
+                BGSIZE synapseCounts = edgeIndexMapDevice->outgoingSynapseCount_[idx];
                 if (synapseCounts != 0) {
                     // get the index of where this neuron's list of synapses are
-                    BGSIZE beginIndex = synapseIndexMapDevice->outgoingSynapseBegin_[idx];
+                    BGSIZE beginIndex = edgeIndexMapDevice->outgoingSynapseBegin_[idx];
                     // get the memory location of where that list begins
-                    BGSIZE* outgoingMapBegin = &(synapseIndexMapDevice->outgoingSynapseIndexMap_[beginIndex]);
+                    BGSIZE* outgoingMapBegin = &(edgeIndexMapDevice->outgoingSynapseIndexMap_[beginIndex]);
 
                     // for each synapse, let them know we have fired
                     for (BGSIZE i = 0; i < synapseCounts; i++) {
@@ -142,12 +142,12 @@ __global__ void advanceLIFNeuronsDevice( int totalVertices, int maxSynapses, int
                 }
 
                 // notify incomming synapses of spike
-                synapseCounts = synapseIndexMapDevice->incomingSynapseCount_[idx];
+                synapseCounts = edgeIndexMapDevice->incomingSynapseCount_[idx];
                 if (fAllowBackPropagation && synapseCounts != 0) {
                     // get the index of where this neuron's list of synapses are
-                    BGSIZE beginIndex = synapseIndexMapDevice->incomingSynapseBegin_[idx];
+                    BGSIZE beginIndex = edgeIndexMapDevice->incomingSynapseBegin_[idx];
                     // get the memory location of where that list begins
-                    BGSIZE* incomingMapBegin = &(synapseIndexMapDevice->incomingSynapseIndexMap_[beginIndex]);
+                    BGSIZE* incomingMapBegin = &(edgeIndexMapDevice->incomingSynapseIndexMap_[beginIndex]);
 
                     // for each synapse, let them know we have fired
                     switch (classSynapses_d) {
@@ -184,7 +184,7 @@ __global__ void advanceLIFNeuronsDevice( int totalVertices, int maxSynapses, int
 ///  CUDA code for advancing izhikevich neurons
 ///
 ///  @param[in] totalVertices          Number of vertices.
-///  @param[in] maxSynapses           Maximum number of synapses per neuron.
+///  @param[in] maxEdges           Maximum number of synapses per neuron.
 ///  @param[in] maxSpikes             Maximum number of spikes per neuron per epoch.
 ///  @param[in] deltaT                Inner simulation step duration.
 ///  @param[in] simulationStep        The current simulation step.
@@ -193,7 +193,7 @@ __global__ void advanceLIFNeuronsDevice( int totalVertices, int maxSynapses, int
 ///  @param[in] allEdgesDevice     Pointer to Synapse structures in device memory.
 ///  @param[in] edgeIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
-__global__ void advanceIZHNeuronsDevice( int totalVertices, int maxSynapses, int maxSpikes, const BGFLOAT deltaT, uint64_t simulationStep, float* randNoise, AllIZHNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, EdgeIndexMap* synapseIndexMapDevice, bool fAllowBackPropagation ) {
+__global__ void advanceIZHNeuronsDevice( int totalVertices, int maxEdges, int maxSpikes, const BGFLOAT deltaT, uint64_t simulationStep, float* randNoise, AllIZHNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, EdgeIndexMap* edgeIndexMapDevice, bool fAllowBackPropagation ) {
         // determine which neuron this thread is processing
         int idx = blockIdx.x * blockDim.x + threadIdx.x;
         if ( idx >= totalVertices )
@@ -233,12 +233,12 @@ __global__ void advanceIZHNeuronsDevice( int totalVertices, int maxSynapses, int
                 u = r_u + allVerticesDevice->Dconst_[idx];
 
                 // notify outgoing synapses of spike
-                BGSIZE synapseCounts = synapseIndexMapDevice->outgoingSynapseCount_[idx];
+                BGSIZE synapseCounts = edgeIndexMapDevice->outgoingSynapseCount_[idx];
                 if (synapseCounts != 0) {
                     // get the index of where this neuron's list of synapses are
-                    BGSIZE beginIndex = synapseIndexMapDevice->outgoingSynapseBegin_[idx]; 
+                    BGSIZE beginIndex = edgeIndexMapDevice->outgoingSynapseBegin_[idx]; 
                     // get the memory location of where that list begins
-                    BGSIZE* outgoingMapBegin = &(synapseIndexMapDevice->outgoingSynapseIndexMap_[beginIndex]);
+                    BGSIZE* outgoingMapBegin = &(edgeIndexMapDevice->outgoingSynapseIndexMap_[beginIndex]);
                    
                     // for each synapse, let them know we have fired
                     for (BGSIZE i = 0; i < synapseCounts; i++) {
@@ -247,12 +247,12 @@ __global__ void advanceIZHNeuronsDevice( int totalVertices, int maxSynapses, int
                 }
 
                 // notify incomming synapses of spike
-                synapseCounts = synapseIndexMapDevice->incomingSynapseCount_[idx];
+                synapseCounts = edgeIndexMapDevice->incomingSynapseCount_[idx];
                 if (fAllowBackPropagation && synapseCounts != 0) {
                     // get the index of where this neuron's list of synapses are
-                    BGSIZE beginIndex = synapseIndexMapDevice->incomingSynapseBegin_[idx];
+                    BGSIZE beginIndex = edgeIndexMapDevice->incomingSynapseBegin_[idx];
                     // get the memory location of where that list begins
-                    BGSIZE* incomingMapBegin = &(synapseIndexMapDevice->incomingSynapseIndexMap_[beginIndex]);
+                    BGSIZE* incomingMapBegin = &(edgeIndexMapDevice->incomingSynapseIndexMap_[beginIndex]);
 
                     // for each synapse, let them know we have fired
                     switch (classSynapses_d) {

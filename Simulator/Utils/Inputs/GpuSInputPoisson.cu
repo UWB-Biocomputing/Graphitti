@@ -79,7 +79,7 @@ void GpuSInputPoisson::inputStimulus(SimulationInfo* psi)
     inputStimulusDevice <<< blocksPerGrid, threadsPerBlock >>> ( vertex_count, nISIs_d, masks_d, psi->deltaT, lambda, devStates_d, allEdgesDevice );
 
     // advance synapses
-    advanceSpikingSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( edge_count, synapseIndexMapDevice, g_simulationStep, psi->deltaT, (AllSpikingSynapsesDeviceProperties*)allEdgesDevice );
+    advanceSpikingSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( edge_count, edgeIndexMapDevice, g_simulationStep, psi->deltaT, (AllSpikingSynapsesDeviceProperties*)allEdgesDevice );
 
     // update summation point
     applyI2SummationMap <<< blocksPerGrid, threadsPerBlock >>> ( vertex_count, psi->pSummationMap, allEdgesDevice );
@@ -102,8 +102,8 @@ void GpuSInputPoisson::allocDeviceValues(IModel* model, SimulationInfo* psi, int
     HANDLE_ERROR( cudaMemcpy ( nISIs_d, nISIs, nISIs_d_size, cudaMemcpyHostToDevice ) );
 
     // create an input synapse layer
-    m_synapses->allocSynapseDeviceStruct( (void **)&allEdgesDevice, vertex_count, 1 ); 
-    m_synapses->copySynapseHostToDevice( allEdgesDevice, vertex_count, 1 );
+    m_synapses->allocEdgeDeviceStruct( (void **)&allEdgesDevice, vertex_count, 1 ); 
+    m_synapses->copyEdgeHostToDevice( allEdgesDevice, vertex_count, 1 );
 
     const int threadsPerBlock = 256;
     int blocksPerGrid = ( vertex_count + threadsPerBlock - 1 ) / threadsPerBlock;
@@ -124,8 +124,8 @@ void GpuSInputPoisson::allocDeviceValues(IModel* model, SimulationInfo* psi, int
     }
     HANDLE_ERROR( cudaMalloc( ( void ** ) &edgeIndexMap.incomingSynapseIndexMap, vertex_count * sizeof( BGSIZE ) ) );
     HANDLE_ERROR( cudaMemcpy ( edgeIndexMap.incomingSynapseIndexMap, incomingSynapseIndexMap, vertex_count * sizeof( BGSIZE ), cudaMemcpyHostToDevice ) ); 
-    HANDLE_ERROR( cudaMalloc( ( void ** ) &synapseIndexMapDevice, sizeof( EdgeIndexMap ) ) );
-    HANDLE_ERROR( cudaMemcpy ( synapseIndexMapDevice, &edgeIndexMap, sizeof( EdgeIndexMap ), cudaMemcpyHostToDevice ) );
+    HANDLE_ERROR( cudaMalloc( ( void ** ) &edgeIndexMapDevice, sizeof( EdgeIndexMap ) ) );
+    HANDLE_ERROR( cudaMemcpy ( edgeIndexMapDevice, &edgeIndexMap, sizeof( EdgeIndexMap ), cudaMemcpyHostToDevice ) );
 
     delete[] incomingSynapseIndexMap;
 
@@ -144,13 +144,13 @@ void GpuSInputPoisson::deleteDeviceValues(IModel* model, SimulationInfo* psi )
     HANDLE_ERROR( cudaFree( devStates_d ) );
     HANDLE_ERROR( cudaFree( masks_d ) );
 
-    m_synapses->deleteSynapseDeviceStruct( allEdgesDevice );
+    m_synapses->deleteEdgeDeviceStruct( allEdgesDevice );
 
     // deallocate memory for synapse index map
     EdgeIndexMap edgeIndexMap;
-    HANDLE_ERROR( cudaMemcpy ( &edgeIndexMap, synapseIndexMapDevice, sizeof( EdgeIndexMap ), cudaMemcpyDeviceToHost ) );
+    HANDLE_ERROR( cudaMemcpy ( &edgeIndexMap, edgeIndexMapDevice, sizeof( EdgeIndexMap ), cudaMemcpyDeviceToHost ) );
     HANDLE_ERROR( cudaFree( edgeIndexMap.incomingSynapseIndexMap ) );
-    HANDLE_ERROR( cudaFree( synapseIndexMapDevice ) );
+    HANDLE_ERROR( cudaFree( edgeIndexMapDevice ) );
 }
 
 /// Device code for adding input values to the summation map.
