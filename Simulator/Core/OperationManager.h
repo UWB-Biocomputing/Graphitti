@@ -19,7 +19,7 @@
 
 #include <log4cplus/loggingmacros.h>
 
-#include "Simulator/Core/FunctionNodes/IFunctionNode.h"
+#include "IFunctionNode.h"
 #include "Operations.h"
 
 using namespace std;

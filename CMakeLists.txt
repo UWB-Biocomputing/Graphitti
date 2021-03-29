@@ -79,7 +79,7 @@ include_directories(
         Simulator/Vertices/Neuro
         Simulator/Vertices/NG911
         Simulator/Utils
-        Simultaor/Utils/Matrix
+        Simulator/Utils/Matrix
         Testing
         ThirdParty
         ThirdParty/cereal

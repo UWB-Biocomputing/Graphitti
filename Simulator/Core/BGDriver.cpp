@@ -20,7 +20,7 @@
 #include <fstream>
 
 #include "Global.h"
-#include "ThirdParty/paramcontainer/ParamContainer.h"
+#include "../ThirdParty/paramcontainer/ParamContainer.h"
 #include "log4cplus/logger.h"
 #include "log4cplus/configurator.h"
 #include "log4cplus/loggingmacros.h"

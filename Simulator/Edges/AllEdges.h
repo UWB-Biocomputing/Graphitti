@@ -32,7 +32,7 @@
 #include "IAllEdges.h"
 
 // cereal
-#include <ThirdParty/cereal/types/vector.hpp>
+#include <../ThirdParty/cereal/types/vector.hpp>
 #include <vector>
 
 #ifdef _WIN32
