@@ -30,7 +30,6 @@
 build/ThirdParty
 
 # Executables
-brainGrid-cuda
 braingrid
 tests
 *.exe
