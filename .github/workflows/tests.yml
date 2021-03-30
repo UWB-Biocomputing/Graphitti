@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ master ]
 
+defaults: 
+  run:
+    working-directory: build
+
 jobs:
   build:
 
@@ -14,7 +18,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: configure
-      run: cmake .
+      run: cmake ..
     - name: build
       run: make
     - name: run tests

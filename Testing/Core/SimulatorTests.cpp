@@ -24,7 +24,7 @@ TEST(Simulator, PrintParameters) {
 }
 
 TEST(Simulator, ParametersInitializedSuccessfully) {
-   ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml");
+   ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml");
    Simulator::getInstance().loadParameters();
 
    EXPECT_EQ(30, Simulator::getInstance().getWidth());

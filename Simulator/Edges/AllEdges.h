@@ -25,15 +25,14 @@
 
 #pragma once
 
-#include <log4cplus/loggingmacros.h>
-
-#include "Global.h"
-#include "Core/Simulator.h"
 #include "IAllEdges.h"
 
-// cereal
-#include <ThirdParty/cereal/types/vector.hpp>
 #include <vector>
+
+#include "Global.h"
+#include "Simulator.h"
+#include "log4cplus/loggingmacros.h"
+#include "cereal/types/vector.hpp"
 
 #ifdef _WIN32
 typedef unsigned _int8 uint8_t;

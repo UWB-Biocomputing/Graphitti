@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "Simulator/Core/Operations.h"
+#include "Operations.h"
 
 using namespace std;
 

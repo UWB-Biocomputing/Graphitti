@@ -33,12 +33,12 @@ TEST(ParameterManager, GetInstanceReturnsInstance) {
 }
 
 TEST(ParameterManager, LoadingXMLFile) {
-   string filepath = "ThirdParty/TinyXPath/test.xml";
+   string filepath = "../ThirdParty/TinyXPath/test.xml";
    ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile(filepath));
 }
 
 TEST(ParameterManager, LoadingMultipleValidXMLFiles) {
-   string valid[]{"configfiles/test-medium-100.xml", "configfiles/test-small.xml", "configfiles/test-tiny.xml"};
+   string valid[]{"../configfiles/test-medium-100.xml", "../configfiles/test-small.xml", "../configfiles/test-tiny.xml"};
    for (int i = 0; i < 3; i++) {
       ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile(valid[i]));
    }
@@ -52,7 +52,7 @@ TEST(ParameterManager, LoadingMultipleInvalidFiles) {
 }
 
 TEST(ParameterManager, ValidStringTargeting) {
-   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string validXPaths[]{"/BGSimParams/SimInfoParams/OutputParams/resultFileName/text()",
                         "//resultFileName/text()", "//VerticesParams/@class"};
    string result[] = {"results/test-medium-500-out.xml", "results/test-medium-500-out.xml", "AllLIFNeurons"};
@@ -64,7 +64,7 @@ TEST(ParameterManager, ValidStringTargeting) {
 }
 
 TEST(ParameterManager, ValidIntTargeting) {
-   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string valid_xpath[] = {"//maxFiringRate/text()", "//PoolSize/x/text()", "//PoolSize/y/text()",
                            "//PoolSize/z/text()", "//Seed/value/text()", "//numEpochs/text()"};
    int result[] = {200, 30, 30, 1, 1, 500};
@@ -76,7 +76,7 @@ TEST(ParameterManager, ValidIntTargeting) {
 }
 
 TEST(ParameterManager, InvalidIntTargeting) {
-   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string invalidXPath[] = {"//Iinject", "//activeNListFileName/text()",
                             "//beta/text()", "//Iinject/min/text()",
                             "//LayoutFiles/@name", "//NoSuchPath", ""};
@@ -87,7 +87,7 @@ TEST(ParameterManager, InvalidIntTargeting) {
 }
 
 TEST(ParameterManager, ValidFloatTargeting) {
-   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string validXPaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//epochDuration/text()", "//z/text()"};
    float vals[] = {15.0e-03f, 0.0f, 100.0f, 1};
    float referenceVar;
@@ -98,7 +98,7 @@ TEST(ParameterManager, ValidFloatTargeting) {
 }
 
 TEST(ParameterManager, InvalidFloatTargeting) {
-   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string invalidXPaths[] = {"//starter_vthresh", "//nonexistent", ""};
    float referenceVar;
    for (int i = 0; i < 3; i++) {
@@ -107,7 +107,7 @@ TEST(ParameterManager, InvalidFloatTargeting) {
 }
 
 TEST(ParameterManager, ValidDoubleTargeting) {
-   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string validXPaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//epochDuration/text()", "//z/text()"};
    double vals[] = {15.0e-03, 0.0, 100.0, 1};
    double referenceVar;
@@ -119,7 +119,7 @@ TEST(ParameterManager, ValidDoubleTargeting) {
 }
 
 TEST(ParameterManager, InvalidDoubleTargeting) {
-   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string invalidXPaths[] = {"//stateOutputFileName/text()", "//starter_vthresh", "//nonexistent", ""};
    double referenceVar;
    for (int i = 0; i < 4; i++) {
@@ -128,7 +128,7 @@ TEST(ParameterManager, InvalidDoubleTargeting) {
 }
 
 TEST(ParameterManager, ValidBGFloatTargeting) {
-   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string validXPaths[] = {"//Vthresh/min/text()", "//Vresting/min/text()", "//epochDuration/text()", "//z/text()"};
    BGFLOAT vals[] = {15.0e-03, 0.0, 100.0, 1};
    BGFLOAT referenceVar;
@@ -139,7 +139,7 @@ TEST(ParameterManager, ValidBGFloatTargeting) {
 }
 
 TEST(ParameterManager, InvalidBGFloatTargeting) {
-   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string invalidXPaths[] = {"//stateOutputFileName/text()", "//starter_vthresh", "//nonexistent", ""};
    BGFLOAT referenceVar;
    for (int i = 0; i < 4; i++) {
@@ -148,7 +148,7 @@ TEST(ParameterManager, InvalidBGFloatTargeting) {
 }
 
 TEST(ParameterManager, ValidLongTargeting) {
-   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string valid_xpath[] = {"//maxFiringRate/text()", "//PoolSize/x/text()", "//PoolSize/y/text()",
                            "//PoolSize/z/text()", "//Seed/value/text()", "//numEpochs/text()"};
    long result[] = {200, 30, 30, 1, 1, 500};
@@ -160,7 +160,7 @@ TEST(ParameterManager, ValidLongTargeting) {
 }
 
 TEST(ParameterManager, InvalidLongTargeting) {
-   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("configfiles/test-medium-500.xml"));
+   ASSERT_TRUE (ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string invalid_xpath[] = {"//Iinject", "//activeNListFileName/text()",
                              "//beta/text()", "//Iinject/min/text()",
                              "//LayoutFiles/@name", "//NoSuchPath", ""};
@@ -172,7 +172,7 @@ TEST(ParameterManager, InvalidLongTargeting) {
 
 TEST(ParameterManager, ValidIntVectorTargeting) {
    vector<int> referenceVar;
-   ASSERT_TRUE(ParameterManager::getInstance().getIntVectorByXpath("configfiles/NList/ActiveNList10x10-0.1.xml", "A", referenceVar));
+   ASSERT_TRUE(ParameterManager::getInstance().getIntVectorByXpath("../configfiles/NList/ActiveNList10x10-0.1.xml", "A", referenceVar));
 
    vector<int> result{7, 11, 14, 37, 41, 44, 67, 71, 74, 97};
    for (int i = 0; i < 10; i++) {
@@ -182,7 +182,7 @@ TEST(ParameterManager, ValidIntVectorTargeting) {
 
 TEST(ParameterManager, InvalidIntVectorTargeting) {
    vector<int> referenceVar;
-   ASSERT_FALSE(ParameterManager::getInstance().getIntVectorByXpath("configfiles/NList/ActiveNList10x10-0.1.xml", "P", referenceVar));
+   ASSERT_FALSE(ParameterManager::getInstance().getIntVectorByXpath("../configfiles/NList/ActiveNList10x10-0.1.xml", "P", referenceVar));
 
    ASSERT_FALSE(ParameterManager::getInstance().getIntVectorByXpath("notfound.xml", "A", referenceVar));
 }
