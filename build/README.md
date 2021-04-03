@@ -17,14 +17,14 @@ This will generate a Makefile using the instructions in the CMakeLists.txt. Once
 
 `make`
 
-This will create the executables `braingrid` and `tests`. `braingrid` is the simulator and `tests` are the unit tests.
+This will create the executables `graphitti` and `tests`. `graphitti` is the simulator and `tests` are the unit tests.
 To run the simulation input the following command with a path to a configuration file.
 
-`./braingrid -c <configfilepath>` 
+`./graphitti -c <configfilepath>` 
 
 such as 
 
-`./braingrid -c ../configfiles/test-tiny.xml`
+`./graphitti -c ../configfiles/test-tiny.xml`
 
 To run tests input the following command.
 

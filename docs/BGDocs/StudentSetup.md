@@ -70,7 +70,7 @@ $ make
 
 $ ./tests
 
-$ ./braingrid -c configfiles/test-small.xml
+$ ./graphitti -c ../configfiles/test-small.xml
   ```
 
 
@@ -80,7 +80,7 @@ $ ./braingrid -c configfiles/test-small.xml
 
 
 
-## Using BrainGrid Servers
+## Using Graphitti Servers
 
 1. Must contact Dr. Michael Stiber at [stiber@uw.edu](mailto:stiber@uw.edu) and express reason for gaining access to servers.
    
@@ -88,7 +88,7 @@ $ ./braingrid -c configfiles/test-small.xml
 
 3. Login with UW NetID
    
-4. The UW servers have a computational NVIDIA GPU optimized for floating point value computations. If the user preference is to run BrainGrid locally, the CUDA libraries are not necessary; the CPU version of the simulator is user-friendly on local machines.
+4. The UW servers have a computational NVIDIA GPU optimized for floating point value computations. If the user preference is to run Graphitti locally, the CUDA libraries are not necessary; the CPU version of the simulator is user-friendly on local machines.
 
 ## Using Visual Studio Code
 1.  Visual Studio Code can be used to open and edit files on a remote Linux machine. This includes opening a terminal inside VSC to compile and run. Go to [https://code.visualstudio.com/](https://code.visualstudio.com/)  to download VSC, and to [https://code.visualstudio.com/docs/remote/ssh](https://code.visualstudio.com/docs/remote/ssh)  to get the instructions for the "Visual Studio Code Remote Development Extension Pack". If you run into problems, see [https://code.visualstudio.com/docs/remote/troubleshooting](https://code.visualstudio.com/docs/remote/troubleshooting). In particular, you may need to set "remote.SSH.useLocalServer": false  in VSC's settings.json  file if you run into connection problems.

@@ -4,6 +4,6 @@ file(GLOB_RECURSE Connections *.cpp *.h *.cu)
 # Create a library from all the header and source files and in the current directory
 add_library(Connections ${Connections})
 
-if (BRAINGRID_CUDA)
+if (ENABLE_CUDA)
    set_property(TARGET Connections PROPERTY CUDA_ARCHITECTURES 35-virtual) 
 endif()

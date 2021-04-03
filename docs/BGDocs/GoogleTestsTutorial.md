@@ -40,7 +40,7 @@ For each test make sure that you have an `EXPECT` so that we know whether or not
 
 ### Creating Test Files and Writing Unit Tests
 
-In Braingrid we use this framework to write unit tests for each object class. Follow these steps when making a new object class in the project.
+In Graphitti we use this framework to write unit tests for each object class. Follow these steps when making a new object class in the project.
 
  1. Create a new .cpp file in a directory inside the testing folder named identically as the directory where the class is located. For example if you we’re writing tests for a class  located in Core, you would save the .cpp file in Testing/Core. 
  2. Name the .cpp file `Tests.cpp` 

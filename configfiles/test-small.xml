@@ -23,7 +23,7 @@
   </SimInfoParams>
 
   <ModelParams>
-    <NeuronsParams class="AllLIFNeurons" name="NeuronsParams">
+    <VerticesParams class="AllLIFNeurons" name="VerticesParams">
       <Iinject name="Iinject">
         <min name="min">13.5e-09</min>
         <max name="max">13.5e-09</max>
@@ -56,7 +56,7 @@
         <min name="min">13.0e-3</min>
         <max name="max">13.0e-3</max>
       </starter_vreset>
-    </NeuronsParams>
+    </VerticesParams>
 
     <SynapsesParams class="AllDSSynapses" name="SynapsesParams">
     </SynapsesParams>

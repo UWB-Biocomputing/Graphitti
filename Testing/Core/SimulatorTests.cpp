@@ -34,7 +34,7 @@ TEST(Simulator, ParametersInitializedSuccessfully) {
    EXPECT_EQ(200, Simulator::getInstance().getMaxFiringRate());
    EXPECT_EQ(200, Simulator::getInstance().getMaxEdgesPerVertex());
    EXPECT_EQ(1, Simulator::getInstance().getSeed());
-   EXPECT_EQ("results/test-medium-500-out.xml", Simulator::getInstance().getResultFileName());
+   EXPECT_EQ("../Output/Results/test-medium-500-out.xml", Simulator::getInstance().getResultFileName());
 }
 
 

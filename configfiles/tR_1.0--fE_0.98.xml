@@ -18,7 +18,7 @@
          <value name="value">777</value>
       </Seed>
       <OutputParams name="OutputParams">
-         <resultFileName name="resultFileName">results/tR_1.0--fE_0.98_historyDump.h5</resultFileName>
+         <resultFileName name="resultFileName">../Output/Results/tR_1.0--fE_0.98_historyDump.h5</resultFileName>
       </OutputParams>
    </SimInfoParams>
 
@@ -75,8 +75,8 @@
 
         <LayoutParams class="FixedLayout" name="LayoutParams">
     <LayoutFiles name="LayoutFiles">
-        <activeNListFileName name="activeNListFileName" type="InputFile">configfiles/NList/activeNList_0.10.xml</activeNListFileName>
-        <inhNListFileName name="inhNListFileName" type="InputFile">configfiles/NList/inhNList_0.98.xml</inhNListFileName>
+        <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/activeNList_0.10.xml</activeNListFileName>
+        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/inhNList_0.98.xml</inhNListFileName>
         <probedNListFileName name="prbNListFileName" type="InputFile"/>
     </LayoutFiles>
 </LayoutParams>

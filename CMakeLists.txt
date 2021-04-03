@@ -8,25 +8,25 @@ set(CMAKE_CXX_STANDARD 11)
 # CONDITIONAL FLAG (to run simulation on CPU or GPU)
 # 
 # For GPU:                      For CPU:
-# set(BRAINGRID_CUDA YES)       set(BRAINGRID_CUDA NO)                       
+# set(ENABLE_CUDA YES)       set(ENABLE_CUDA NO)                       
 #
 # "YES"/GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
-set(BRAINGRID_CUDA NO)
+set(ENABLE_CUDA NO)
 
 # Enables the CUDA langauge and locates the NVCC compiler. 
 # Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
 #
-# BRAINGRID_CUDA also compiles each library that contains CUDA with the following line...
+# ENABLE_CUDA also compiles each library that contains CUDA with the following line...
 # set_property(TARGET target PROPERTY CUDA_ARCHITECTURES 35-virtual) 
 # so the compiler knows the CUDA architecture being used is the SM_35
-if(BRAINGRID_CUDA)
-        message("\n----Generating Makefile for BrainGrid GPU version----")
+if(ENABLE_CUDA)
+        message("\n----Generating Makefile for Graphitti GPU version----")
         enable_language(CUDA)
         set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
         add_compile_definitions(USE_GPU)
 else()
-        message("\n----Generating Makefile for BrainGrid CPU version----")
+        message("\n----Generating Makefile for Graphitti CPU version----")
 endif()
 
 # HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libaries to the executable later in the file.
@@ -124,7 +124,7 @@ endif()
 
 # ------ SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
-add_executable(braingrid Simulator/Core/BGDriver.cpp)
+add_executable(graphitti Simulator/Core/BGDriver.cpp)
 
 # ------ TESTS EXECUTABLE ------
 # Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
@@ -136,13 +136,13 @@ add_executable(tests
         Testing/Core/FunctionNodeTests.cpp
         Testing/Core/SimulatorTests.cpp
         Testing/Core/OperationManagerTestingClass.h
-        Testing/Utils/ParamaterManagerTests.cpp)
+        Testing/Utils/ParameterManagerTests.cpp)
 
 # Links the Googletest framework with the testing executable
 target_link_libraries(tests gtest gtest_main)
 
-# Link the combined library into the 'braingrid' executable.
-target_link_libraries(braingrid combinedLib)
+# Link the combined library into the 'graphitti' executable.
+target_link_libraries(graphitti combinedLib)
 
 # Link the combined library into the 'tests' executable.
 target_link_libraries(tests combinedLib)
