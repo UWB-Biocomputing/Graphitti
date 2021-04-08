@@ -18,7 +18,7 @@
       <value name="value">1</value>
     </Seed>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">Output/Results/test-medium-out.xml</resultFileName>
+      <resultFileName name="resultFileName">../Output/Results/test-medium-out.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 
@@ -58,8 +58,8 @@
       </starter_vreset>
     </VerticesParams>
 
-    <SynapsesParams class="AllDSSynapses" name="SynapsesParams">
-    </SynapsesParams>
+    <EdgesParams class="AllDSSynapses" name="EdgesParams">
+    </EdgesParams>
 
     <ConnectionsParams class="ConnGrowth" name="ConnectionsParams">
       <!-- Growth parameters -->

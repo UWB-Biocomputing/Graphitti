@@ -58,8 +58,8 @@
       </starter_vreset>
     </VerticesParams>
 
-    <SynapsesParams class="AllDSSynapses" name="SynapsesParams">
-    </SynapsesParams>
+    <EdgesParams class="AllDSSynapses" name="EdgesParams">
+    </EdgesParams>
 
     <ConnectionsParams class="ConnGrowth" name="ConnectionsParams">
       <!-- Growth parameters -->
