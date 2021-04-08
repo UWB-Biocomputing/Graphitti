@@ -131,7 +131,7 @@ public:
        ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
        virtual void advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) = 0;
 
-       ///  Set some parameters used for advanceSynapsesDevice.
+       ///  Set some parameters used for advanceEdgesDevice.
        virtual void setAdvanceEdgesDeviceParams() = 0;
 
        ///  Set edge class ID defined by enumClassSynapses for the caller's Edge class.

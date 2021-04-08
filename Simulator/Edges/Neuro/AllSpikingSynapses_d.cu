@@ -236,10 +236,10 @@ void AllSpikingSynapses::copyDeviceToHost( AllSpikingSynapsesDeviceProperties& a
 void AllSpikingSynapses::copyDeviceEdgeCountsToHost( void* allEdgesDevice )
 {
         AllSpikingSynapsesDeviceProperties allEdgesDeviceProps;
-        int neuronCount = Simulator::getInstance().getTotalVertices();
+        int vertexCount = Simulator::getInstance().getTotalVertices();
 
         HANDLE_ERROR( cudaMemcpy ( &allEdgesDeviceProps, allEdgesDevice, sizeof( AllSpikingSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( synapseCounts_, allEdgesDeviceProps.synapseCounts_, neuronCount * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( synapseCounts_, allEdgesDeviceProps.synapseCounts_, vertexCount * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
 
         // Set countVertices_ to 0 to avoid illegal memory deallocation 
         // at AllSpikingSynapses deconstructor.
@@ -266,7 +266,7 @@ void AllSpikingSynapses::copyDeviceEdgeSumIdxToHost(void* allEdgesDevice )
         //allEdges.countVertices_ = 0;
 }
 
-///  Set some parameters used for advanceSynapsesDevice.
+///  Set some parameters used for advanceEdgesDevice.
 void AllSpikingSynapses::setAdvanceEdgesDeviceParams()
 {
     setEdgeClassID();

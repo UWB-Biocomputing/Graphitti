@@ -49,7 +49,7 @@ shared_ptr<IAllEdges> Connections::getEdges() const {
    return edges_;
 }
 
-shared_ptr<EdgeIndexMap> Connections::getSynapseIndexMap() const {
+shared_ptr<EdgeIndexMap> Connections::getEdgeIndexMap() const {
    return synapseIndexMap_;
 }
 

@@ -233,7 +233,7 @@ __global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, EdgeIndexM
                 return;
 
                 
-        BGSIZE iEdg = edgeIndexMapDevice->incomingSynapseIndexMap_[idx];
+        BGSIZE iEdg = edgeIndexMapDevice->incomingEdgeIndexMap_[idx];
 
         BGFLOAT &psr = allEdgesDevice->psr_[iEdg];
         BGFLOAT decay = allEdgesDevice->decay_[iEdg];
@@ -274,7 +274,7 @@ __global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, EdgeIndexMap*
     if ( idx >= totalSynapseCount )
             return;
 
-    BGSIZE iEdg = edgeIndexMapDevice->incomingSynapseIndexMap_[idx];
+    BGSIZE iEdg = edgeIndexMapDevice->incomingEdgeIndexMap_[idx];
 
     // If the synapse is inhibitory or its weight is zero, update synapse state using AllSpikingSynapses::advanceEdge method
     BGFLOAT &W = allEdgesDevice->W_[iEdg];

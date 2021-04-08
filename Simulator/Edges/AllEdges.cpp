@@ -166,11 +166,11 @@ void AllEdges::writeEdge(ostream &output, const BGSIZE iEdg) const {
 
 ///  Create a synapse index map.
 EdgeIndexMap *AllEdges::createEdgeIndexMap() {
-   int neuronCount = Simulator::getInstance().getTotalVertices();
+   int vertexCount = Simulator::getInstance().getTotalVertices();
    int totalSynapseCount = 0;
 
    // count the total edges
-   for (int i = 0; i < neuronCount; i++) {
+   for (int i = 0; i < vertexCount; i++) {
       assert(static_cast<int>(synapseCounts_[i]) < Simulator::getInstance().getMaxEdgesPerVertex());
       totalSynapseCount += synapseCounts_[i];
    }
@@ -182,40 +182,40 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
    }
 
    // allocate memories for forward map
-   vector<BGSIZE> *rgSynapseSynapseIndexMap = new vector<BGSIZE>[neuronCount];
+   vector<BGSIZE> *rgSynapseSynapseIndexMap = new vector<BGSIZE>[vertexCount];
 
    BGSIZE syn_i = 0;
    int numInUse = 0;
 
    // create synapse forward map & active synapse map
-   EdgeIndexMap *edgeIndexMap = new EdgeIndexMap(neuronCount, totalSynapseCount);
-   for (int i = 0; i < neuronCount; i++) {
+   EdgeIndexMap *edgeIndexMap = new EdgeIndexMap(vertexCount, totalSynapseCount);
+   for (int i = 0; i < vertexCount; i++) {
       BGSIZE edge_count = 0;
-      edgeIndexMap->incomingSynapseBegin_[i] = numInUse;
+      edgeIndexMap->incomingEdgeBegin_[i] = numInUse;
       for (int j = 0; j < Simulator::getInstance().getMaxEdgesPerVertex(); j++, syn_i++) {
          if (inUse_[syn_i] == true) {
             int idx = sourceNeuronIndex_[syn_i];
             rgSynapseSynapseIndexMap[idx].push_back(syn_i);
 
-            edgeIndexMap->incomingSynapseIndexMap_[numInUse] = syn_i;
+            edgeIndexMap->incomingEdgeIndexMap_[numInUse] = syn_i;
             numInUse++;
             edge_count++;
          }
       }
       assert(edge_count == this->synapseCounts_[i]);
-      edgeIndexMap->incomingSynapseCount_[i] = edge_count;
+      edgeIndexMap->incomingEdgeCount_[i] = edge_count;
    }
 
    assert(totalSynapseCount == numInUse);
    this->totalEdgeCount_ = totalSynapseCount;
 
    syn_i = 0;
-   for (int i = 0; i < neuronCount; i++) {
-      edgeIndexMap->outgoingSynapseBegin_[i] = syn_i;
-      edgeIndexMap->outgoingSynapseCount_[i] = rgSynapseSynapseIndexMap[i].size();
+   for (int i = 0; i < vertexCount; i++) {
+      edgeIndexMap->outgoingEdgeBegin_[i] = syn_i;
+      edgeIndexMap->outgoingEdgeCount_[i] = rgSynapseSynapseIndexMap[i].size();
 
       for (BGSIZE j = 0; j < rgSynapseSynapseIndexMap[i].size(); j++, syn_i++) {
-         edgeIndexMap->outgoingSynapseIndexMap_[syn_i] = rgSynapseSynapseIndexMap[i][j];
+         edgeIndexMap->outgoingEdgeIndexMap_[syn_i] = rgSynapseSynapseIndexMap[i][j];
       }
    }
 
@@ -252,7 +252,7 @@ synapseType AllEdges::synapseOrdinalToType(const int typeOrdinal) {
 ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
 void AllEdges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap) {
    for (BGSIZE i = 0; i < totalEdgeCount_; i++) {
-      BGSIZE iEdg = edgeIndexMap->incomingSynapseIndexMap_[i];
+      BGSIZE iEdg = edgeIndexMap->incomingEdgeIndexMap_[i];
       advanceEdge(iEdg, vertices);
    }
 }

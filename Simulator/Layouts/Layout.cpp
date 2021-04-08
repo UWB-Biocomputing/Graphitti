@@ -189,7 +189,7 @@ synapseType Layout::synType(const int srcVertex, const int destVertex) {
 void Layout::initVerticesLocs() {
    int numVertices = Simulator::getInstance().getTotalVertices();
 
-   // Initialize neuron locations
+   // Initialize vertex locations
    if (gridLayout_) {
       // grid layout
       for (int i = 0; i < numVertices; i++) {

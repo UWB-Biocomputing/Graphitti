@@ -92,12 +92,12 @@ void AllSpikingNeurons::advanceVertices(IAllEdges &synapses, const EdgeIndexMap 
          BGSIZE synapseCounts;
 
          if (edgeIndexMap != NULL) {
-            synapseCounts = edgeIndexMap->outgoingSynapseCount_[idx];
+            synapseCounts = edgeIndexMap->outgoingEdgeCount_[idx];
             if (synapseCounts != 0) {
-               int beginIndex = edgeIndexMap->outgoingSynapseBegin_[idx];
+               int beginIndex = edgeIndexMap->outgoingEdgeBegin_[idx];
                BGSIZE iEdg;
                for (BGSIZE i = 0; i < synapseCounts; i++) {
-                  iEdg = edgeIndexMap->outgoingSynapseBegin_[beginIndex + i];
+                  iEdg = edgeIndexMap->outgoingEdgeBegin_[beginIndex + i];
                   spSynapses.preSpikeHit(iEdg);
                }
             }

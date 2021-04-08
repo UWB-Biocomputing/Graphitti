@@ -49,7 +49,7 @@ public:
 
 
    /// Returns a shared pointer to the EdgeIndexMap
-   shared_ptr<EdgeIndexMap> getSynapseIndexMap() const;
+   shared_ptr<EdgeIndexMap> getEdgeIndexMap() const;
 
    /// Calls Synapses to create EdgeIndexMap and stores it as a member variable
    void createEdgeIndexMap();

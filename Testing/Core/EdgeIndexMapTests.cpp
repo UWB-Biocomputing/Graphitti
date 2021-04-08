@@ -51,26 +51,26 @@ TEST(EdgeIndexMap, ZeroValueConstructor) {
 // Tests are unavailable until member variables are switched from arrays to vectors.
 // No way to check the size of an array that is allocated dynamically.
 TEST_F(SynapseIndexMapTestObject, OutgoingSynapseMapInitialiedSuccessfully) {
-    //EXPECT_EQ(sizeof(edgeIndexMap->outgoingSynapseIndexMap_), SYNAPSE_COUNT);
+    //EXPECT_EQ(sizeof(edgeIndexMap->outgoingEdgeIndexMap_), SYNAPSE_COUNT);
 }
 
 TEST_F(SynapseIndexMapTestObject, OutgoingSynapseBeginInitialiedSuccessfully) {
-    //EXPECT_EQ(sizeof(edgeIndexMap->outgoingSynapseBegin_) / sizeof(edgeIndexMap->outgoingSynapseBegin_[0]) , VERTEX_COUNT);
+    //EXPECT_EQ(sizeof(edgeIndexMap->outgoingEdgeBegin_) / sizeof(edgeIndexMap->outgoingEdgeBegin_[0]) , VERTEX_COUNT);
 }
 
 TEST_F(SynapseIndexMapTestObject, OutgoingSynapseCountInitialiedSuccessfully) {
-    //EXPECT_EQ(sizeof(edgeIndexMap->outgoingSynapseCount_) / sizeof(edgeIndexMap->outgoingSynapseCount_[0]), VERTEX_COUNT);
+    //EXPECT_EQ(sizeof(edgeIndexMap->outgoingEdgeCount_) / sizeof(edgeIndexMap->outgoingEdgeCount_[0]), VERTEX_COUNT);
 }
 
 TEST_F(SynapseIndexMapTestObject, IncomingSynapseIndexMapInitialiedSuccessfully) {
-    //EXPECT_EQ(sizeof(edgeIndexMap->incomingSynapseIndexMap_) / sizeof(edgeIndexMap->incomingSynapseIndexMap_[0]), SYNAPSE_COUNT);
+    //EXPECT_EQ(sizeof(edgeIndexMap->incomingEdgeIndexMap_) / sizeof(edgeIndexMap->incomingEdgeIndexMap_[0]), SYNAPSE_COUNT);
 }
 
 TEST_F(SynapseIndexMapTestObject, IncomingSynapseBeginInitialiedSuccessfully) {
-    //EXPECT_EQ(sizeof(edgeIndexMap->incomingSynapseBegin_) / sizeof(edgeIndexMap->incomingSynapseBegin_[0]), VERTEX_COUNT);
+    //EXPECT_EQ(sizeof(edgeIndexMap->incomingEdgeBegin_) / sizeof(edgeIndexMap->incomingEdgeBegin_[0]), VERTEX_COUNT);
 }
 
 TEST_F(SynapseIndexMapTestObject, IncomingSynapseCountInitializedSuccessfully) {
-    //EXPECT_EQ(sizeof(edgeIndexMap->incomingSynapseCount_) / sizeof(edgeIndexMap->incomingSynapseCount_[0]), VERTEX_COUNT);
+    //EXPECT_EQ(sizeof(edgeIndexMap->incomingEdgeCount_) / sizeof(edgeIndexMap->incomingEdgeCount_[0]), VERTEX_COUNT);
 }
 

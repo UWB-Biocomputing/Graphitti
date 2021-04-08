@@ -118,7 +118,7 @@ protected:
        ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
        virtual void advanceEdges( void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice );
 
-       ///  Set some parameters used for advanceSynapsesDevice.
+       ///  Set some parameters used for advanceEdgesDevice.
        ///  Currently we set a member variable: m_fpChangePSR_h.
        virtual void setAdvanceEdgesDeviceParams( );
 
