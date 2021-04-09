@@ -114,14 +114,14 @@ void AllEdges::loadParameters() {
 void AllEdges::printParameters() const {
    LOG4CPLUS_DEBUG(fileLogger_, "\nEDGES PARAMETERS" << endl
     << "\t---AllEdges Parameters---" << endl
-    << "\tTotal synapse counts: " << totalEdgeCount_ << endl
+    << "\tTotal edge counts: " << totalEdgeCount_ << endl
     << "\tMax edges per vertex: " << maxEdgesPerVertex_ << endl
     << "\tNeuron count: " << countVertices_ << endl << endl);
 }
 
 ///  Reset time varying state vars and recompute decay.
 ///
-///  @param  iEdg     Index of the synapse to set.
+///  @param  iEdg     Index of the edge to set.
 ///  @param  deltaT   Inner simulation step duration
 void AllEdges::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
    psr_[iEdg] = 0.0;
@@ -130,7 +130,7 @@ void AllEdges::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
 ///  Sets the data for Synapse to input's data.
 ///
 ///  @param  input  istream to read from.
-///  @param  iEdg   Index of the synapse to set.
+///  @param  iEdg   Index of the edge to set.
 void AllEdges::readEdge(istream &input, const BGSIZE iEdg) {
    int synapse_type(0);
 
@@ -151,10 +151,10 @@ void AllEdges::readEdge(istream &input, const BGSIZE iEdg) {
    type_[iEdg] = synapseOrdinalToType(synapse_type);
 }
 
-///  Write the synapse data to the stream.
+///  Write the edge data to the stream.
 ///
 ///  @param  output  stream to print out to.
-///  @param  iEdg    Index of the synapse to print out.
+///  @param  iEdg    Index of the edge to print out.
 void AllEdges::writeEdge(ostream &output, const BGSIZE iEdg) const {
    output << sourceNeuronIndex_[iEdg] << ends;
    output << destNeuronIndex_[iEdg] << ends;
@@ -164,7 +164,7 @@ void AllEdges::writeEdge(ostream &output, const BGSIZE iEdg) const {
    output << inUse_[iEdg] << ends;
 }
 
-///  Create a synapse index map.
+///  Create a edge index map.
 EdgeIndexMap *AllEdges::createEdgeIndexMap() {
    int vertexCount = Simulator::getInstance().getTotalVertices();
    int totalSynapseCount = 0;
@@ -187,7 +187,7 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
    BGSIZE syn_i = 0;
    int numInUse = 0;
 
-   // create synapse forward map & active synapse map
+   // create edge forward map & active edge map
    EdgeIndexMap *edgeIndexMap = new EdgeIndexMap(vertexCount, totalSynapseCount);
    for (int i = 0; i < vertexCount; i++) {
       BGSIZE edge_count = 0;
@@ -257,10 +257,10 @@ void AllEdges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap) 
    }
 }
 
-///  Remove a synapse from the network.
+///  Remove a edge from the network.
 ///
 ///  @param  neuronIndex    Index of a vertex to remove from.
-///  @param  iEdg           Index of a synapse to remove.
+///  @param  iEdg           Index of a edge to remove.
 void AllEdges::eraseEdge(const int neuronIndex, const BGSIZE iEdg) {
    synapseCounts_[neuronIndex]--;
    inUse_[iEdg] = false;
@@ -272,7 +272,7 @@ void AllEdges::eraseEdge(const int neuronIndex, const BGSIZE iEdg) {
 
 ///  Adds a Synapse to the model, connecting two Neurons.
 ///
-///  @param  iEdg        Index of the synapse to be added.
+///  @param  iEdg        Index of the edge to be added.
 ///  @param  type        The type of the Synapse to add.
 ///  @param  srcVertex  The Neuron that sends to this Synapse.
 ///  @param  destVertex The Neuron that receives from the Synapse.
@@ -297,7 +297,7 @@ AllEdges::addEdge(BGSIZE &iEdg, synapseType type, const int srcVertex, const int
 
    synapseCounts_[destVertex]++;
 
-   // create a synapse
+   // create a edge
    createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
 }
 

@@ -89,7 +89,7 @@ private:
     /// Number of total vertices.
     BGSIZE numOfVertices_;
 
-    /// Number of total active edges.
+    /// Number of total edges.
     BGSIZE numOfEdges_;
 };
 
