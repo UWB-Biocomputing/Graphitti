@@ -16,6 +16,7 @@ ConnectionsFactory::ConnectionsFactory() {
    // register neurons classes
    registerClass("ConnStatic", &ConnStatic::Create);
    registerClass("ConnGrowth", &ConnGrowth::Create);
+   //registerClass("Connections911", &Connections911::Create);
 }
 
 ConnectionsFactory::~ConnectionsFactory() {
