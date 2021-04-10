@@ -392,20 +392,20 @@ void AllSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
         delete[] typePrint;
         delete[] inUsePrint;
         delete[] synapseCountsPrint;
-        destNeuronIndexPrint = NULL;
-        WPrint = NULL;
-        sourceNeuronIndexPrint = NULL;
-        psrPrint = NULL;
-        typePrint = NULL;
-        inUsePrint = NULL;
-        synapseCountsPrint = NULL;
+        destNeuronIndexPrint = nullptr;
+        WPrint = nullptr;
+        sourceNeuronIndexPrint = nullptr;
+        psrPrint = nullptr;
+        typePrint = nullptr;
+        inUsePrint = nullptr;
+        synapseCountsPrint = nullptr;
 
         delete[] decayPrint;
         delete[] totalDelayPrint;
         delete[] tauPrint;
-        decayPrint = NULL;
-        totalDelayPrint = NULL;
-        tauPrint = NULL;
+        decayPrint = nullptr;
+        totalDelayPrint = nullptr;
+        tauPrint = nullptr;
 
         delete[] totalDelayPostPrint;
         delete[] tauspostPrint;
@@ -419,18 +419,18 @@ void AllSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
         delete[] muposPrint;
         delete[] munegPrint;
         delete[] useFroemkeDanSTDPPrint;
-        totalDelayPostPrint = NULL;
-        tauspostPrint = NULL;
-        tausprePrint = NULL;
-        tauposPrint = NULL;
-        taunegPrint = NULL;
-        STDPgapPrint = NULL;
-        WexPrint = NULL;
-        AnegPrint = NULL;
-        AposPrint = NULL;
-        muposPrint = NULL;
-        munegPrint = NULL;
-        useFroemkeDanSTDPPrint = NULL;
+        totalDelayPostPrint = nullptr;
+        tauspostPrint = nullptr;
+        tausprePrint = nullptr;
+        tauposPrint = nullptr;
+        taunegPrint = nullptr;
+        STDPgapPrint = nullptr;
+        WexPrint = nullptr;
+        AnegPrint = nullptr;
+        AposPrint = nullptr;
+        muposPrint = nullptr;
+        munegPrint = nullptr;
+        useFroemkeDanSTDPPrint = nullptr;
     }
 
 }

@@ -45,7 +45,7 @@ void GpuSInputPoisson::init(SimulationInfo* psi)
     int blocksPerGrid = ( vertex_count + threadsPerBlock - 1 ) / threadsPerBlock;
 
     // setup seeds
-    setupSeeds <<< blocksPerGrid, threadsPerBlock >>> ( vertex_count, devStates_d, time(NULL) );
+    setupSeeds <<< blocksPerGrid, threadsPerBlock >>> ( vertex_count, devStates_d, time(nullptr) );
 }
 
 /// Terminate process.
