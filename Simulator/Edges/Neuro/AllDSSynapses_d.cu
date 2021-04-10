@@ -307,20 +307,20 @@ void AllDSSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
         delete[] typePrint;
         delete[] inUsePrint;
         delete[] synapseCountsPrint;
-        destNeuronIndexPrint = NULL;
-        WPrint = NULL;
-        sourceNeuronIndexPrint = NULL;
-        psrPrint = NULL;
-        typePrint = NULL;
-        inUsePrint = NULL;
-        synapseCountsPrint = NULL;
+        destNeuronIndexPrint = nullptr;
+        WPrint = nullptr;
+        sourceNeuronIndexPrint = nullptr;
+        psrPrint = nullptr;
+        typePrint = nullptr;
+        inUsePrint = nullptr;
+        synapseCountsPrint = nullptr;
 
         delete[] decayPrint;
         delete[] totalDelayPrint;
         delete[] tauPrint;
-        decayPrint = NULL;
-        totalDelayPrint = NULL;
-        tauPrint = NULL;
+        decayPrint = nullptr;
+        totalDelayPrint = nullptr;
+        tauPrint = nullptr;
 
         delete[] lastSpikePrint;
         delete[] rPrint;
@@ -328,11 +328,11 @@ void AllDSSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
         delete[] DPrint;
         delete[] UPrint;
         delete[] FPrint;
-        lastSpikePrint = NULL;
-        rPrint = NULL;
-        uPrint = NULL;
-        DPrint = NULL;
-        UPrint = NULL;
-        FPrint = NULL;
+        lastSpikePrint = nullptr;
+        rPrint = nullptr;
+        uPrint = nullptr;
+        DPrint = nullptr;
+        UPrint = nullptr;
+        FPrint = nullptr;
     }
 }

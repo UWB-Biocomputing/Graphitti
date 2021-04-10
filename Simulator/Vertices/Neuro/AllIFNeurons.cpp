@@ -16,22 +16,22 @@
 
 // Default constructor
 AllIFNeurons::AllIFNeurons() {
-   C1_ = NULL;
-   C2_ = NULL;
-   Cm_ = NULL;
-   I0_ = NULL;
-   Iinject_ = NULL;
-   Inoise_ = NULL;
-   Isyn_ = NULL;
-   Rm_ = NULL;
-   Tau_ = NULL;
-   Trefract_ = NULL;
-   Vinit_ = NULL;
-   Vm_ = NULL;
-   Vreset_ = NULL;
-   Vrest_ = NULL;
-   Vthresh_ = NULL;
-   numStepsInRefractoryPeriod_ = NULL;
+   C1_ = nullptr;
+   C2_ = nullptr;
+   Cm_ = nullptr;
+   I0_ = nullptr;
+   Iinject_ = nullptr;
+   Inoise_ = nullptr;
+   Isyn_ = nullptr;
+   Rm_ = nullptr;
+   Tau_ = nullptr;
+   Trefract_ = nullptr;
+   Vinit_ = nullptr;
+   Vm_ = nullptr;
+   Vreset_ = nullptr;
+   Vrest_ = nullptr;
+   Vthresh_ = nullptr;
+   numStepsInRefractoryPeriod_ = nullptr;
 }
 
 AllIFNeurons::~AllIFNeurons() {
@@ -54,22 +54,22 @@ AllIFNeurons::~AllIFNeurons() {
       delete[] numStepsInRefractoryPeriod_;
    }
 
-   C1_ = NULL;
-   C2_ = NULL;
-   Cm_ = NULL;
-   I0_ = NULL;
-   Iinject_ = NULL;
-   Inoise_ = NULL;
-   Isyn_ = NULL;
-   Rm_ = NULL;
-   Tau_ = NULL;
-   Trefract_ = NULL;
-   Vinit_ = NULL;
-   Vm_ = NULL;
-   Vreset_ = NULL;
-   Vrest_ = NULL;
-   Vthresh_ = NULL;
-   numStepsInRefractoryPeriod_ = NULL;
+   C1_ = nullptr;
+   C2_ = nullptr;
+   Cm_ = nullptr;
+   I0_ = nullptr;
+   Iinject_ = nullptr;
+   Inoise_ = nullptr;
+   Isyn_ = nullptr;
+   Rm_ = nullptr;
+   Tau_ = nullptr;
+   Trefract_ = nullptr;
+   Vinit_ = nullptr;
+   Vm_ = nullptr;
+   Vreset_ = nullptr;
+   Vrest_ = nullptr;
+   Vthresh_ = nullptr;
+   numStepsInRefractoryPeriod_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories).

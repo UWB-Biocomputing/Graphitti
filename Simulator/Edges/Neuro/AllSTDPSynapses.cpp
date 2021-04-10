@@ -11,21 +11,21 @@
 #include "AllSpikingNeurons.h"
 
 AllSTDPSynapses::AllSTDPSynapses() : AllSpikingSynapses() {
-   totalDelayPost_ = NULL;
-   delayQueuePost_ = NULL;
-   delayIndexPost_ = NULL;
-   delayQueuePostLength_ = NULL;
-   tauspost_ = NULL;
-   tauspre_ = NULL;
-   taupos_ = NULL;
-   tauneg_ = NULL;
-   STDPgap_ = NULL;
-   Wex_ = NULL;
-   Aneg_ = NULL;
-   Apos_ = NULL;
-   mupos_ = NULL;
-   muneg_ = NULL;
-   useFroemkeDanSTDP_ = NULL;
+   totalDelayPost_ = nullptr;
+   delayQueuePost_ = nullptr;
+   delayIndexPost_ = nullptr;
+   delayQueuePostLength_ = nullptr;
+   tauspost_ = nullptr;
+   tauspre_ = nullptr;
+   taupos_ = nullptr;
+   tauneg_ = nullptr;
+   STDPgap_ = nullptr;
+   Wex_ = nullptr;
+   Aneg_ = nullptr;
+   Apos_ = nullptr;
+   mupos_ = nullptr;
+   muneg_ = nullptr;
+   useFroemkeDanSTDP_ = nullptr;
 }
 
 AllSTDPSynapses::AllSTDPSynapses(const int numVertices, const int maxEdges) :
@@ -54,21 +54,21 @@ AllSTDPSynapses::~AllSTDPSynapses() {
       delete[] useFroemkeDanSTDP_;
    }
 
-   totalDelayPost_ = NULL;
-   delayQueuePost_ = NULL;
-   delayIndexPost_ = NULL;
-   delayQueuePostLength_ = NULL;
-   tauspost_ = NULL;
-   tauspre_ = NULL;
-   taupos_ = NULL;
-   tauneg_ = NULL;
-   STDPgap_ = NULL;
-   Wex_ = NULL;
-   Aneg_ = NULL;
-   Apos_ = NULL;
-   mupos_ = NULL;
-   muneg_ = NULL;
-   useFroemkeDanSTDP_ = NULL;
+   totalDelayPost_ = nullptr;
+   delayQueuePost_ = nullptr;
+   delayIndexPost_ = nullptr;
+   delayQueuePostLength_ = nullptr;
+   tauspost_ = nullptr;
+   tauspre_ = nullptr;
+   taupos_ = nullptr;
+   tauneg_ = nullptr;
+   STDPgap_ = nullptr;
+   Wex_ = nullptr;
+   Aneg_ = nullptr;
+   Apos_ = nullptr;
+   mupos_ = nullptr;
+   muneg_ = nullptr;
+   useFroemkeDanSTDP_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).

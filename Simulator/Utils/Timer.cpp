@@ -18,12 +18,12 @@ Timer::Timer( ) {
 
 // Memorize the current time in startTime -------------------------------------
 void Timer::start( ) {
-  gettimeofday( &startTime, NULL );
+  gettimeofday( &startTime, nullptr );
 }
 
 // Get the diff between the start and the current time (in microseconds)
 long Timer::lap( ) {
-  gettimeofday( &endTime, NULL );
+  gettimeofday( &endTime, nullptr );
   long interval =
     ( endTime.tv_sec - startTime.tv_sec ) * 1000000 +
     ( endTime.tv_usec - startTime.tv_usec );
@@ -32,7 +32,7 @@ long Timer::lap( ) {
 
 // Get the diff between the old and the specified time (in microseconds)
 long Timer::lap( long oldTv_sec, long oldTv_usec ) {
-  gettimeofday( &endTime, NULL );
+  gettimeofday( &endTime, nullptr );
   long interval =
     ( endTime.tv_sec - oldTv_sec ) * 1000000 +
     ( endTime.tv_usec - oldTv_usec );

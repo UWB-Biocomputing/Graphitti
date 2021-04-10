@@ -9,12 +9,12 @@
 #include "AllDynamicSTDPSynapses.h"
 
 AllDynamicSTDPSynapses::AllDynamicSTDPSynapses() : AllSTDPSynapses() {
-    lastSpike_ = NULL;
-    r_ = NULL;
-    u_ = NULL;
-    D_ = NULL;
-    U_ = NULL;
-    F_ = NULL;
+    lastSpike_ = nullptr;
+    r_ = nullptr;
+    u_ = nullptr;
+    D_ = nullptr;
+    U_ = nullptr;
+    F_ = nullptr;
 }
 
 AllDynamicSTDPSynapses::AllDynamicSTDPSynapses(const int numVertices, const int maxEdges) :
@@ -34,12 +34,12 @@ AllDynamicSTDPSynapses::~AllDynamicSTDPSynapses() {
         delete[] F_;
     }
 
-    lastSpike_ = NULL;
-    r_ = NULL;
-    u_ = NULL;
-    D_ = NULL;
-    U_ = NULL;
-    F_ = NULL;
+    lastSpike_ = nullptr;
+    r_ = nullptr;
+    u_ = nullptr;
+    D_ = nullptr;
+    U_ = nullptr;
+    F_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
