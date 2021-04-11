@@ -10,12 +10,14 @@
 
 #include "AllLIFNeurons.h"
 #include "AllIZHNeurons.h"
+#include "All911Vertices.h"
 
 /// Constructor is private to keep a singleton instance of this class.
 VerticesFactory::VerticesFactory() {
    // register vertices classes
    registerClass("AllLIFNeurons", &AllLIFNeurons::Create);
    registerClass("AllIZHNeurons", &AllIZHNeurons::Create);
+   registerClass("All911Vertices", &All911Vertices::Create);
 }
 
 VerticesFactory::~VerticesFactory() {

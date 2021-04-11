@@ -33,9 +33,10 @@ public:
 
    virtual ~All911Edges();
 
-   static IAllEdges *Create() {
-      return new All911Edges();
-   }
+   ///  Creates an instance of the class.
+   ///
+   ///  @return Reference to the instance of the class.
+   static IAllEdges *Create() { return new All911Edges(); }
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    virtual void setupEdges();

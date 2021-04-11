@@ -18,7 +18,7 @@
       <value name="value">1</value>
     </Seed>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">Output/Results/test-small-out-911.xml</resultFileName>
+      <resultFileName name="resultFileName">../Output/Results/test-small-out-911.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 
@@ -32,6 +32,10 @@
 
     <EdgesParams class="All911Edges" name="EdgesParams">
     </EdgesParams>
+
+    <ConnectionsParams class="Connections911" name="ConnectionsParams">
+    </ConnectionsParams>
+
 
     <LayoutParams class="Layout911" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">

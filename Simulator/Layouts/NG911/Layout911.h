@@ -24,6 +24,9 @@ public:
 
    virtual ~Layout911();
 
+   ///  Creates an instance of the class.
+   ///
+   ///  @return Reference to the instance of the class.
    static Layout *Create() { return new Layout911(); }
 
    ///  Prints out all parameters to logging file.
@@ -39,5 +42,7 @@ public:
    ///
    ///  @param  numVertices number of vertices to have in the map.
    virtual void initStarterMap(const int numVertices);
+
+   virtual void loadParameters();
 };
 

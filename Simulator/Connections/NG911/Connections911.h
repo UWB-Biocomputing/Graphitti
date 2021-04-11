@@ -22,6 +22,9 @@ public:
 
    virtual ~Connections911();
 
+   ///  Creates an instance of the class.
+   ///
+   ///  @return Reference to the instance of the class.
    static Connections *Create() { return new Connections911(); }
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).

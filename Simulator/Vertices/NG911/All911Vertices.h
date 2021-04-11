@@ -28,6 +28,11 @@ public:
 
    virtual ~All911Vertices();
 
+   ///  Creates an instance of the class.
+   ///
+   ///  @return Reference to the instance of the class.
+   static IAllVertices *Create() { return new All911Vertices(); }
+
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all vertices' states.
    virtual void setupVertices();
@@ -45,6 +50,13 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
 
+   ///  Outputs state of the vertex chosen as a string.
+   ///
+   ///  @param  index   index of the vertex (in vertices) to output info from.
+   ///  @return the complete state of the vertex.
+   virtual string toString(const int index) const;
+
+
 protected: 
    ///  Creates a single vertex and generates data for it.
    ///
@@ -55,6 +67,15 @@ protected:
 #if defined(USE_GPU)
 
 #else  // !defined(USE_GPU)
+public:
+ 
+   ///  Update internal state of the indexed Vertex (called by every simulation step).
+   ///  Notify outgoing edges if vertex has fired.
+   ///
+   ///  @param  edges         The Edge list to search from.
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   virtual void advanceVertices(IAllEdges &edges, const EdgeIndexMap *edgeIndexMap);
+
 protected:
 
 #endif // defined(USE_GPU)

@@ -27,3 +27,7 @@ void Layout911::generateVertexTypeMap(int numVertices) {
 void Layout911::initStarterMap(const int numVertices) {
 
 }
+
+void Layout911::loadParameters() {
+    
+}

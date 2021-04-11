@@ -9,6 +9,7 @@
 #include "ConnectionsFactory.h"
 #include "ConnStatic.h"
 #include "ConnGrowth.h"
+#include "Connections911.h"
 
 
 /// Constructor is private to keep a singleton instance of this class.
@@ -16,7 +17,7 @@ ConnectionsFactory::ConnectionsFactory() {
    // register neurons classes
    registerClass("ConnStatic", &ConnStatic::Create);
    registerClass("ConnGrowth", &ConnGrowth::Create);
-   //registerClass("Connections911", &Connections911::Create);
+   registerClass("Connections911", &Connections911::Create);
 }
 
 ConnectionsFactory::~ConnectionsFactory() {

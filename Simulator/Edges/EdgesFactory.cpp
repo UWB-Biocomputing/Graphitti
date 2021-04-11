@@ -12,6 +12,7 @@
 #include "AllSTDPSynapses.h"
 #include "AllDSSynapses.h"
 #include "AllDynamicSTDPSynapses.h"
+#include "All911Edges.h"
 
 /// Constructor is private to keep a singleton instance of this class.
 EdgesFactory::EdgesFactory() {
@@ -20,6 +21,7 @@ EdgesFactory::EdgesFactory() {
    registerClass("AllSTDPSynapses", &AllSTDPSynapses::Create);
    registerClass("AllDSSynapses", &AllDSSynapses::Create);
    registerClass("AllDynamicSTDPSynapses", &AllDynamicSTDPSynapses::Create);
+   registerClass("All911Edges", &All911Edges::Create);
 }
 
 EdgesFactory::~EdgesFactory() {
