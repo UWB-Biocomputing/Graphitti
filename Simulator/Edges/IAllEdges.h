@@ -14,7 +14,7 @@
 
 class IAllVertices;
 
-typedef void (*fpCreateSynapse_t)(void*, const int, const int, int, int, BGFLOAT*, const BGFLOAT, synapseType);
+typedef void (*fpCreateSynapse_t)(void*, const int, const int, int, int, BGFLOAT*, const BGFLOAT, edgeType);
 
 // enumerate all non-abstract edge classes.
 enum enumClassSynapses {classAllSpikingSynapses, classAllDSSynapses, classAllSTDPSynapses, classAllDynamicSTDPSynapses, undefClassSynapses};
@@ -49,7 +49,7 @@ public:
    ///  @param  sumPoint   Summation point address.
    ///  @param  deltaT      Inner simulation step duration
    virtual void
-   addEdge(BGSIZE &iEdg, synapseType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
+   addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
               const BGFLOAT deltaT) = 0;
 
    ///  Create a Edge and connect it to the model.
@@ -61,16 +61,16 @@ public:
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Edge to create.
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-                              synapseType type) = 0;
+                              edgeType type) = 0;
 
    ///  Create a edge index map.
    virtual EdgeIndexMap *createEdgeIndexMap() = 0;
 
-   ///  Get the sign of the synapseType.
+   ///  Get the sign of the edgeType.
    ///
-   ///  @param    type    synapseType I to I, I to E, E to I, or E to E
+   ///  @param    type    edgeType I to I, I to E, E to I, or E to E
    ///  @return   1 or -1, or 0 if error
-   virtual int edgSign(const synapseType type) = 0;
+   virtual int edgSign(const edgeType type) = 0;
 
    ///  Prints SynapsesProps data to console.
    virtual void printSynapsesProps() const = 0;

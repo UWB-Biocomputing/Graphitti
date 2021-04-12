@@ -67,17 +67,17 @@ void XmlGrowthRecorder::compileHistories(IAllVertices &neurons) {
    VectorMatrix &rates = (*dynamic_cast<ConnGrowth *>(conns.get())->rates_);
    VectorMatrix &radii = (*dynamic_cast<ConnGrowth *>(conns.get())->radii_);
 
-   for (int iNeuron = 0; iNeuron < Simulator::getInstance().getTotalVertices(); iNeuron++) {
+   for (int iVertex = 0; iVertex < Simulator::getInstance().getTotalVertices(); iVertex++) {
       // record firing rate to history matrix
-      ratesHistory_(Simulator::getInstance().getCurrentStep(), iNeuron) = rates[iNeuron];
+      ratesHistory_(Simulator::getInstance().getCurrentStep(), iVertex) = rates[iVertex];
 
       // Cap minimum radius size and record radii to history matrix
       // TODO: find out why we cap this here.
-      if (radii[iNeuron] < minRadius)
-         radii[iNeuron] = minRadius;
+      if (radii[iVertex] < minRadius)
+         radii[iVertex] = minRadius;
 
       // record radius to history matrix
-      radiiHistory_(Simulator::getInstance().getCurrentStep(), iNeuron) = radii[iNeuron];
+      radiiHistory_(Simulator::getInstance().getCurrentStep(), iVertex) = radii[iVertex];
    }
 }
 

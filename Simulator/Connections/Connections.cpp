@@ -95,19 +95,19 @@ void Connections::createSynapsesFromWeights(const int numVertices, Layout *layou
    AllEdges &synapses = dynamic_cast<AllEdges &>(isynapses);
 
    // for each neuron
-   for (int iNeuron = 0; iNeuron < numVertices; iNeuron++) {
+   for (int iVertex = 0; iVertex < numVertices; iVertex++) {
       // for each synapse in the vertex
       for (BGSIZE synapseIndex = 0;
            synapseIndex < Simulator::getInstance().getMaxEdgesPerVertex(); synapseIndex++) {
-         BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * iNeuron + synapseIndex;
+         BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * iVertex + synapseIndex;
          // if the synapse weight is not zero (which means there is a connection), create the synapse
          if (synapses.W_[iEdg] != 0.0) {
             BGFLOAT theW = synapses.W_[iEdg];
-            BGFLOAT *sumPoint = &(vertices.summationMap_[iNeuron]);
-            int srcVertex = synapses.sourceNeuronIndex_[iEdg];
-            int destVertex = synapses.destNeuronIndex_[iEdg];
-            synapseType type = layout->synType(srcVertex, destVertex);
-            synapses.synapseCounts_[iNeuron]++;
+            BGFLOAT *sumPoint = &(vertices.summationMap_[iVertex]);
+            int srcVertex = synapses.sourceVertexIndex_[iEdg];
+            int destVertex = synapses.destVertexIndex_[iEdg];
+            edgeType type = layout->edgType(srcVertex, destVertex);
+            synapses.synapseCounts_[iVertex]++;
             synapses.createEdge(iEdg, srcVertex, destVertex, sumPoint, Simulator::getInstance().getDeltaT(),
                                    type);
             synapses.W_[iEdg] = theW;

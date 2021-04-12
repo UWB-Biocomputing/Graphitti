@@ -57,3 +57,33 @@ void FixedLayout::initStarterMap(const int numVertices) {
       starterMap_[endogenouslyActiveNeuronList_.at(i)] = true;
    }
 }
+
+/// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
+void FixedLayout::loadParameters() {
+   // Get the file paths for the Neuron lists from the configuration file
+   string activeNListFilePath;
+   string inhibitoryNListFilePath;
+   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/activeNListFileName/text()",
+                                                         activeNListFilePath)) {
+      throw runtime_error("In Layout::loadParameters() Endogenously "
+                          "active neuron list file path wasn't found and will not be initialized");
+   }
+   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/inhNListFileName/text()",
+                                                         inhibitoryNListFilePath)) {
+      throw runtime_error("In Layout::loadParameters() "
+                          "Inhibitory neuron list file path wasn't found and will not be initialized");
+   }
+
+   // Initialize Neuron Lists based on the data read from the xml files
+   if (!ParameterManager::getInstance().getIntVectorByXpath(activeNListFilePath, "A", endogenouslyActiveNeuronList_)) {
+      throw runtime_error("In Layout::loadParameters() "
+                          "Endogenously active neuron list file wasn't loaded correctly"
+                          "\n\tfile path: " + activeNListFilePath);
+   }
+   numEndogenouslyActiveNeurons_ = endogenouslyActiveNeuronList_.size();
+   if (!ParameterManager::getInstance().getIntVectorByXpath(inhibitoryNListFilePath, "I", inhibitoryNeuronLayout_)) {
+      throw runtime_error("In Layout::loadParameters() "
+                          "Inhibitory neuron list file wasn't loaded correctly."
+                          "\n\tfile path: " + inhibitoryNListFilePath);
+   }
+}

@@ -51,7 +51,7 @@ string coordToString(int x, int y, int z) {
 }
 
 // MODEL INDEPENDENT FUNCTION NMV-BEGIN {
-string neuronTypeToString(neuronType t) {
+string neuronTypeToString(vertexType t) {
 	switch (t) {
 	case INH:
 		return "INH";

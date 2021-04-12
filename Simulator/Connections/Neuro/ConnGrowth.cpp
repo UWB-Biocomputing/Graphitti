@@ -261,7 +261,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &iver
       for (int destVertex = 0; destVertex < numVertices; destVertex++) {
          // visit each synapse at (xa,ya)
          bool connected = false;
-         synapseType type = layout->synType(srcVertex, destVertex);
+         edgeType type = layout->edgType(srcVertex, destVertex);
 
          // for each existing synapse
          BGSIZE synapseCounts = synapses.synapseCounts_[destVertex];
@@ -270,7 +270,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &iver
          for (BGSIZE synapseIndex = 0; synapse_adjusted < synapseCounts; synapseIndex++, iEdg++) {
             if (synapses.inUse_[iEdg] == true) {
                // if there is a synapse between a and b
-               if (synapses.sourceNeuronIndex_[iEdg] == srcVertex) {
+               if (synapses.sourceVertexIndex_[iEdg] == srcVertex) {
                   connected = true;
                   adjusted++;
                   // adjust the strength of the synapse or remove

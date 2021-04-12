@@ -52,7 +52,7 @@ private:
    BGFLOAT threshConnsRadius_;
 
    struct DistDestVertex {
-      BGFLOAT dist;     ///< destance to the destination vertex
+      BGFLOAT dist;     ///< distance to the destination vertex
       int destVertex;  ///< index of the destination vertex
 
       bool operator<(const DistDestVertex &other) const {

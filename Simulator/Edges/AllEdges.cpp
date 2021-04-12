@@ -14,10 +14,10 @@ AllEdges::AllEdges() :
       totalEdgeCount_(0),
       maxEdgesPerVertex_(0),
       countVertices_(0) {
-   destNeuronIndex_ = NULL;
+   destVertexIndex_ = NULL;
    W_ = NULL;
    summationPoint_ = NULL;
-   sourceNeuronIndex_ = NULL;
+   sourceVertexIndex_ = NULL;
    psr_ = NULL;
    type_ = NULL;
    inUse_ = NULL;
@@ -42,20 +42,20 @@ AllEdges::~AllEdges() {
    BGSIZE maxTotalSynapses = maxEdgesPerVertex_ * countVertices_;
 
   if (maxTotalSynapses != 0) {
-     delete[] destNeuronIndex_;
+     delete[] destVertexIndex_;
      delete[] W_;
      delete[] summationPoint_;
-     delete[] sourceNeuronIndex_;
+     delete[] sourceVertexIndex_;
      delete[] psr_;
      delete[] type_;
      delete[] inUse_;
      delete[] synapseCounts_;
   }
 
-   destNeuronIndex_ = NULL;
+   destVertexIndex_ = NULL;
    W_ = NULL;
    summationPoint_ = NULL;
-   sourceNeuronIndex_ = NULL;
+   sourceVertexIndex_ = NULL;
    psr_ = NULL;
    type_ = NULL;
    inUse_ = NULL;
@@ -82,12 +82,12 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
    countVertices_ = numVertices;
 
    if (maxTotalSynapses != 0) {
-      destNeuronIndex_ = new int[maxTotalSynapses];
+      destVertexIndex_ = new int[maxTotalSynapses];
       W_ = new BGFLOAT[maxTotalSynapses];
       summationPoint_ = new BGFLOAT *[maxTotalSynapses];
-      sourceNeuronIndex_ = new int[maxTotalSynapses];
+      sourceVertexIndex_ = new int[maxTotalSynapses];
       psr_ = new BGFLOAT[maxTotalSynapses];
-      type_ = new synapseType[maxTotalSynapses];
+      type_ = new edgeType[maxTotalSynapses];
       inUse_ = new bool[maxTotalSynapses];
       synapseCounts_ = new BGSIZE[numVertices];
 
@@ -135,9 +135,9 @@ void AllEdges::readEdge(istream &input, const BGSIZE iEdg) {
    int synapse_type(0);
 
    // input.ignore() so input skips over end-of-line characters.
-   input >> sourceNeuronIndex_[iEdg];
+   input >> sourceVertexIndex_[iEdg];
    input.ignore();
-   input >> destNeuronIndex_[iEdg];
+   input >> destVertexIndex_[iEdg];
    input.ignore();
    input >> W_[iEdg];
    input.ignore();
@@ -156,8 +156,8 @@ void AllEdges::readEdge(istream &input, const BGSIZE iEdg) {
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the edge to print out.
 void AllEdges::writeEdge(ostream &output, const BGSIZE iEdg) const {
-   output << sourceNeuronIndex_[iEdg] << ends;
-   output << destNeuronIndex_[iEdg] << ends;
+   output << sourceVertexIndex_[iEdg] << ends;
+   output << destVertexIndex_[iEdg] << ends;
    output << W_[iEdg] << ends;
    output << psr_[iEdg] << ends;
    output << type_[iEdg] << ends;
@@ -194,7 +194,7 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
       edgeIndexMap->incomingEdgeBegin_[i] = numInUse;
       for (int j = 0; j < Simulator::getInstance().getMaxEdgesPerVertex(); j++, syn_i++) {
          if (inUse_[syn_i] == true) {
-            int idx = sourceNeuronIndex_[syn_i];
+            int idx = sourceVertexIndex_[syn_i];
             rgSynapseSynapseIndexMap[idx].push_back(syn_i);
 
             edgeIndexMap->incomingEdgeIndexMap_[numInUse] = syn_i;
@@ -225,11 +225,11 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
    return edgeIndexMap;
 }
    
-///  Returns an appropriate synapseType object for the given integer.
+///  Returns an appropriate edgeType object for the given integer.
 ///
-///  @param  typeOrdinal    Integer that correspond with a synapseType.
+///  @param  typeOrdinal    Integer that correspond with a edgeType.
 ///  @return the SynapseType that corresponds with the given integer.
-synapseType AllEdges::synapseOrdinalToType(const int typeOrdinal) {
+edgeType AllEdges::synapseOrdinalToType(const int typeOrdinal) {
    switch (typeOrdinal) {
       case 0:
          return II;
@@ -240,7 +240,7 @@ synapseType AllEdges::synapseOrdinalToType(const int typeOrdinal) {
       case 3:
          return EE;
       default:
-         return STYPE_UNDEF;
+         return ETYPE_UNDEF;
    }
 }
 
@@ -279,7 +279,7 @@ void AllEdges::eraseEdge(const int neuronIndex, const BGSIZE iEdg) {
 ///  @param  sumPoint   Summation point address.
 ///  @param  deltaT      Inner simulation step duration
 void
-AllEdges::addEdge(BGSIZE &iEdg, synapseType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
+AllEdges::addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
                         const BGFLOAT deltaT) {
    if (synapseCounts_[destVertex] >= maxEdgesPerVertex_) {
       LOG4CPLUS_FATAL(fileLogger_, "Neuron : " << destVertex << " ran out of space for new edges.");
@@ -301,11 +301,11 @@ AllEdges::addEdge(BGSIZE &iEdg, synapseType type, const int srcVertex, const int
    createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
 }
 
-///  Get the sign of the synapseType.
+///  Get the sign of the edgeType.
 ///
-///  @param    type    synapseType I to I, I to E, E to I, or E to E
+///  @param    type    edgeType I to I, I to E, E to I, or E to E
 ///  @return   1 or -1, or 0 if error
-int AllEdges::edgSign(const synapseType type) {
+int AllEdges::edgSign(const edgeType type) {
    switch (type) {
       case II:
       case IE:
@@ -313,7 +313,7 @@ int AllEdges::edgSign(const synapseType type) {
       case EI:
       case EE:
          return 1;
-      case STYPE_UNDEF:
+      case ETYPE_UNDEF:
          // TODO error.
          return 0;
    }
@@ -327,8 +327,8 @@ void AllEdges::printSynapsesProps() const {
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
          cout << "W[" << i << "] = " << W_[i];
-         cout << " sourNeuron: " << sourceNeuronIndex_[i];
-         cout << " desNeuron: " << destNeuronIndex_[i];
+         cout << " sourNeuron: " << sourceVertexIndex_[i];
+         cout << " desNeuron: " << destVertexIndex_[i];
          cout << " type: " << type_[i];
          cout << " psr: " << psr_[i];
          cout << " in_use:" << inUse_[i];

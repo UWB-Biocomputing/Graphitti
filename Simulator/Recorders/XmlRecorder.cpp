@@ -65,11 +65,11 @@ void XmlRecorder::compileHistories(IAllVertices &neurons) {
    int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
    // output spikes
-   for (int iNeuron = 0; iNeuron < Simulator::getInstance().getTotalVertices(); iNeuron++) {
-      uint64_t *pSpikes = spNeurons.spikeHistory_[iNeuron];
+   for (int iVertex = 0; iVertex < Simulator::getInstance().getTotalVertices(); iVertex++) {
+      uint64_t *pSpikes = spNeurons.spikeHistory_[iVertex];
 
-      int &spikeCount = spNeurons.spikeCount_[iNeuron];
-      int &offset = spNeurons.spikeCountOffset_[iNeuron];
+      int &spikeCount = spNeurons.spikeCount_[iVertex];
+      int &offset = spNeurons.spikeCountOffset_[iVertex];
       for (int i = 0, idxSp = offset; i < spikeCount; i++, idxSp++) {
          // Single precision (float) gives you 23 bits of significand, 8 bits of exponent,
          // and 1 sign bit. Double precision (double) gives you 52 bits of significand,

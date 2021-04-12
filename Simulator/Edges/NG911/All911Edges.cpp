@@ -25,7 +25,7 @@ void All911Edges::setupEdges() {
 }
 
 void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-                              synapseType type) {
+                              edgeType type) {
 
                               }
 
@@ -38,5 +38,5 @@ void All911Edges::setupEdges(const int numVertices, const int maxEdges) {
 }
 
 void All911Edges::advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) {
-    
+
 }

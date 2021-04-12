@@ -143,13 +143,13 @@ void AllSpikingSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const {
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
 void AllSpikingSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
-                                       const BGFLOAT deltaT, synapseType type) {
+                                       const BGFLOAT deltaT, edgeType type) {
    BGFLOAT delay;
 
    inUse_[iEdg] = true;
    summationPoint_[iEdg] = sumPoint;
-   destNeuronIndex_[iEdg] = destVertex;
-   sourceNeuronIndex_[iEdg] = srcVertex;
+   destVertexIndex_[iEdg] = destVertex;
+   sourceVertexIndex_[iEdg] = srcVertex;
    W_[iEdg] = edgSign(type) * 10.0e-9;
    this->type_[iEdg] = type;
    tau_[iEdg] = DEFAULT_tau;

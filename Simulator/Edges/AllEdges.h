@@ -74,7 +74,7 @@ public:
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration
    virtual void
-   addEdge(BGSIZE &iEdg, synapseType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
+   addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
               const BGFLOAT deltaT);
 
    ///  Create a Synapse and connect it to the model.
@@ -86,18 +86,18 @@ public:
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-                              synapseType type) = 0;
+                              edgeType type) = 0;
 
    ///  Create a edge index map and returns it .
    ///
    /// @return the created EdgeIndexMap
    virtual EdgeIndexMap *createEdgeIndexMap();
 
-   ///  Get the sign of the synapseType.
+   ///  Get the sign of the edgeType.
    ///
-   ///  @param    type    synapseType I to I, I to E, E to I, or E to E
+   ///  @param    type    edgeType I to I, I to E, E to I, or E to E
    ///  @return   1 or -1, or 0 if error
-   int edgSign(const synapseType type);
+   int edgSign(const edgeType type);
 
    ///  Prints SynapsesProps data to console.
    virtual void printSynapsesProps() const;
@@ -131,11 +131,11 @@ protected:
    ///  @param  iEdg    Index of the edge to print out.
    virtual void writeEdge(ostream &output, const BGSIZE iEdg) const;
 
-   ///  Returns an appropriate synapseType object for the given integer.
+   ///  Returns an appropriate edgeType object for the given integer.
    ///
-   ///  @param  typeOrdinal    Integer that correspond with a synapseType.
+   ///  @param  typeOrdinal    Integer that correspond with a edgeType.
    ///  @return the SynapseType that corresponds with the given integer.
-   synapseType synapseOrdinalToType(const int typeOrdinal);
+   edgeType synapseOrdinalToType(const int typeOrdinal);
 
    /// Loggers used to print to using log4cplus logging macros, prints to Results/Debug/logging.txt
    log4cplus::Logger fileLogger_;
@@ -161,10 +161,10 @@ public:
    static constexpr BGFLOAT SYNAPSE_STRENGTH_ADJUSTMENT = 1.0e-8;
 
    ///  The location of the edge.
-   int *sourceNeuronIndex_;
+   int *sourceVertexIndex_;
 
    ///  The coordinates of the summation point.
-   int *destNeuronIndex_;
+   int *destVertexIndex_;
 
    ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
    BGFLOAT *W_;
@@ -173,7 +173,7 @@ public:
    BGFLOAT **summationPoint_;
 
    ///   Synapse type
-   synapseType *type_;
+   edgeType *type_;
 
    ///  The post-synaptic response is the result of whatever computation
    ///  is going on in the edge.
@@ -202,16 +202,16 @@ public:
 struct AllEdgesDeviceProperties
 {
         ///  The location of the edge.
-        int *sourceNeuronIndex_;
+        int *sourceVertexIndex_;
 
         ///  The coordinates of the summation point.
-        int *destNeuronIndex_;
+        int *destVertexIndex_;
 
         ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
          BGFLOAT *W_;
 
         ///  Synapse type
-        synapseType *type_;
+        edgeType *type_;
 
         ///  The post-synaptic response is the result of whatever computation
         ///  is going on in the edge.
@@ -248,8 +248,8 @@ void AllEdges::save(Archive &archive) const {
 
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       WVector.push_back(W_[i]);
-      sourceNeuronLayoutIndexVector.push_back(sourceNeuronIndex_[i]);
-      destNeuronLayoutIndexVector.push_back(destNeuronIndex_[i]);
+      sourceNeuronLayoutIndexVector.push_back(sourceVertexIndex_[i]);
+      destNeuronLayoutIndexVector.push_back(destVertexIndex_[i]);
    }
 
    // serialization
@@ -279,7 +279,7 @@ void AllEdges::load(Archive &archive) {
    // assigns serialized data to objects
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       W_[i] = WVector[i];
-      sourceNeuronIndex_[i] = sourceNeuronLayoutIndexVector[i];
-      destNeuronIndex_[i] = destNeuronLayoutIndexVector[i];
+      sourceVertexIndex_[i] = sourceNeuronLayoutIndexVector[i];
+      destVertexIndex_[i] = destNeuronLayoutIndexVector[i];
    }
 }

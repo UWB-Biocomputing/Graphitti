@@ -94,38 +94,8 @@ void Layout::setupLayout() {
    (*dist_) = sqrt((*dist2_));
 
    // more allocation of internal memory
-   vertexTypeMap_ = new neuronType[numVertices]; // todo: make array into vector
+   vertexTypeMap_ = new vertexType[numVertices]; // todo: make array into vector
    starterMap_ = new bool[numVertices]; // todo: make array into vector
-}
-
-/// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
-void Layout::loadParameters() {
-   // Get the file paths for the Neuron lists from the configuration file
-   string activeNListFilePath;
-   string inhibitoryNListFilePath;
-   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/activeNListFileName/text()",
-                                                         activeNListFilePath)) {
-      throw runtime_error("In Layout::loadParameters() Endogenously "
-                          "active neuron list file path wasn't found and will not be initialized");
-   }
-   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/inhNListFileName/text()",
-                                                         inhibitoryNListFilePath)) {
-      throw runtime_error("In Layout::loadParameters() "
-                          "Inhibitory neuron list file path wasn't found and will not be initialized");
-   }
-
-   // Initialize Neuron Lists based on the data read from the xml files
-   if (!ParameterManager::getInstance().getIntVectorByXpath(activeNListFilePath, "A", endogenouslyActiveNeuronList_)) {
-      throw runtime_error("In Layout::loadParameters() "
-                          "Endogenously active neuron list file wasn't loaded correctly"
-                          "\n\tfile path: " + activeNListFilePath);
-   }
-   numEndogenouslyActiveNeurons_ = endogenouslyActiveNeuronList_.size();
-   if (!ParameterManager::getInstance().getIntVectorByXpath(inhibitoryNListFilePath, "I", inhibitoryNeuronLayout_)) {
-      throw runtime_error("In Layout::loadParameters() "
-                          "Inhibitory neuron list file wasn't loaded correctly."
-                          "\n\tfile path: " + inhibitoryNListFilePath);
-   }
 }
 
 
@@ -172,7 +142,7 @@ void Layout::initStarterMap(const int numVertices) {
 ///  @param    srcVertex  integer that points to a Neuron in the type map as a source.
 ///  @param    destVertex integer that points to a Neuron in the type map as a destination.
 ///  @return type of the synapse.
-synapseType Layout::synType(const int srcVertex, const int destVertex) {
+edgeType Layout::edgType(const int srcVertex, const int destVertex) {
    if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == INH)
       return II;
    else if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == EXC)
@@ -182,7 +152,7 @@ synapseType Layout::synType(const int srcVertex, const int destVertex) {
    else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == EXC)
       return EE;
 
-   return STYPE_UNDEF;
+   return ETYPE_UNDEF;
 }
 
 /// Initialize the location maps (xloc and yloc).

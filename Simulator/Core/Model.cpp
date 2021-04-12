@@ -132,7 +132,7 @@ void Model::logSimStep() const {
             case INH:
                ss << "i";
                break;
-            case NTYPE_UNDEF:
+            case VTYPE_UNDEF:
                assert(false);
                break;
          }

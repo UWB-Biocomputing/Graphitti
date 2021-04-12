@@ -86,17 +86,51 @@ extern uint64_t g_simulationStep;
 const int g_nMaxChunkSize = 100;
 
 // NETWORK MODEL VARIABLES NMV-BEGIN {
-// Neuron types.
+// Vertex types.
+// NEURO:
 //	INH - Inhibitory neuron 
 //	EXC - Excitory neuron
-enum neuronType { INH = 1, EXC = 2, NTYPE_UNDEF = 0 };
+// NG911:
+// CALR: Caller radii
+// PSAP: PSAP nodes
+// RESP: Responder nodes
+enum vertexType { 
+    // Neuro
+    INH = 1, 
+    EXC = 2, 
+    // NG911
+    CALR = 3,
+    PSAP = 4,
+    RESP = 5, 
+    // UNDEF
+    VTYPE_UNDEF = 0 
+    };
 
-// Synapse types.
+// Edge types.
+// NEURO:
 //	II - Synapse from inhibitory neuron to inhibitory neuron.
 //	IE - Synapse from inhibitory neuron to excitory neuron.
 //	EI - Synapse from excitory neuron to inhibitory neuron.
 //	EE - Synapse from excitory neuron to excitory neuron.
-enum synapseType { II = 0, IE = 1, EI = 2, EE = 3, STYPE_UNDEF = -1 };
+// NG911:
+//  CP - Caller to PSAP
+//  PR - PSAP to Responder
+//  RC - Responder to Caller
+//  PP - PSAP to PSAP 
+
+enum edgeType { 
+    // NEURO
+    II = 0, 
+    IE = 1, 
+    EI = 2, 
+    EE = 3, 
+    // NG911
+    CP = 4,
+    PR = 5,
+    RC = 6,
+    PP = 7,
+    // UNDEF
+    ETYPE_UNDEF = -1 };
 
 // The default membrane capacitance.
 #define DEFAULT_Cm		(3e-8)
@@ -135,8 +169,8 @@ string index2dToString(int i, int width, int height);
 string coordToString(int x, int y);
 // Converts a 3-d coordinate into a string.
 string coordToString(int x, int y, int z);
-// Converts a neuronType into a string.
-string neuronTypeToString(neuronType t);
+// Converts a vertexType into a string.
+string neuronTypeToString(vertexType t);
 
 #ifdef PERFORMANCE_METRICS
 // All times in seconds

@@ -124,7 +124,7 @@ void SInputPoisson::init()
     edges_ = new AllDSSynapses(Simulator::getInstance().getTotalVertices(), 1);
     for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalVertices(); neuronIndex++)
     {
-        synapseType type;
+        edgeType type;
         if (Simulator::getInstance().getModel()->getLayout()->vertexTypeMap_[neuronIndex] == INH)
             type = EI;
         else

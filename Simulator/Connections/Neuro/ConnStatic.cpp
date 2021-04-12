@@ -69,7 +69,7 @@ void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, IAllEd
       // pick the shortest m_nConnsPerNeuron connections
       for (BGSIZE i = 0; i < distDestVertices[srcVertex].size() && (int) i < connsPerVertex_; i++) {
          int destVertex = distDestVertices[srcVertex][i].destVertex;
-         synapseType type = layout->synType(srcVertex, destVertex);
+         edgeType type = layout->edgType(srcVertex, destVertex);
          BGFLOAT *sumPoint = &(dynamic_cast<AllVertices *>(vertices)->summationMap_[destVertex]);
 
          LOG4CPLUS_DEBUG(fileLogger_, "Source: " << srcVertex << " Dest: " << destVertex << " Dist: "

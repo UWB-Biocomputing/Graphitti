@@ -42,5 +42,8 @@ public:
    ///
    ///  @param  numVertices number of vertices to have in the map.
    virtual void initStarterMap(const int numVertices);
+
+   /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
+   virtual void loadParameters(); 
 };
 

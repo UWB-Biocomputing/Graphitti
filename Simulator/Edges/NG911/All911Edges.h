@@ -50,7 +50,7 @@ public:
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Edge to create.
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-                              synapseType type);
+                              edgeType type);
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
