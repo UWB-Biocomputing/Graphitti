@@ -1,5 +1,5 @@
 /**
- * @file ParamaterManagerTests.cpp
+ * @file ParameterManagerTests.cpp
  *
  * @brief  This class is used for unit testing the ParameterManager using GTest.
  *
