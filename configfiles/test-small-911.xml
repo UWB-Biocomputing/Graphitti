@@ -44,7 +44,7 @@
         <respondersListFileName name="respondersListFileName" type="InputFile">../configfiles/NList/NG911_responders_10x10.xml</respondersListFileName>
       </LayoutFiles>
     </LayoutParams>
-    <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
+    <RecorderParams class="Xml911Recorder" name="RecorderParams">
       <probedListFileName name="prbListFileName" type="InputFile">../configfiles/NList/NG911_probed_10x10.xml</probedListFileName>
     </RecorderParams>
   </ModelParams>
