@@ -136,7 +136,7 @@ add_executable(tests
         Testing/Core/FunctionNodeTests.cpp
         Testing/Core/SimulatorTests.cpp
         Testing/Core/OperationManagerTestingClass.h
-        Testing/Utils/ParamaterManagerTests.cpp)
+        Testing/Utils/ParameterManagerTests.cpp)
 
 # Links the Googletest framework with the testing executable
 target_link_libraries(tests gtest gtest_main)
