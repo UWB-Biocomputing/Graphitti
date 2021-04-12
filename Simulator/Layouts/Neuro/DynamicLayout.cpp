@@ -9,6 +9,8 @@
 #include "DynamicLayout.h"
 #include "ParseParamError.h"
 #include "Util.h"
+#include "ParameterManager.h"
+
 
 DynamicLayout::DynamicLayout() : Layout() {
 }

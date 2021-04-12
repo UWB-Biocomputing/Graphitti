@@ -38,7 +38,7 @@ public:
    virtual void setupLayout();
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters();
+   virtual void loadParameters() = 0;
 
    /// Prints out all parameters to logging file. Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;

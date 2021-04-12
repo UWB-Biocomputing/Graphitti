@@ -9,6 +9,7 @@
 #include "FixedLayout.h"
 #include "ParseParamError.h"
 #include "Util.h"
+#include "ParameterManager.h"
 
 FixedLayout::FixedLayout() : Layout() {
 }
