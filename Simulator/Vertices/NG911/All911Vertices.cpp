@@ -7,6 +7,7 @@
  */
 
 #include "All911Vertices.h"
+#include "ParameterManager.h"
 
 
 All911Vertices::All911Vertices() {
@@ -40,9 +41,8 @@ void All911Vertices:: createVertex(int index, Layout *layout) {
 }
 
 void All911Vertices::loadParameters() {
-//    ParameterManager::getInstance().getBGFloatByXpath("//CallNum/min/text()", CallNumRange_[0]);
-//    ParameterManager::getInstance().getBGFloatByXpath("//CallNum/max/text()", CallNumRange_[1]);
-
+    ParameterManager::getInstance().getBGFloatByXpath("//CallNum/min/text()", CallNumRange_[0]);
+    ParameterManager::getInstance().getBGFloatByXpath("//CallNum/max/text()", CallNumRange_[1]);
 }
 
 

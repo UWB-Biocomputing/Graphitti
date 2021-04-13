@@ -64,6 +64,10 @@ protected:
    ///  @param  layout  Layout information of the network.
    void createVertex(int index, Layout *layout);
 
+private: 
+   /// Min/max values of CallNum.
+   BGFLOAT CallNumRange_[2];
+
 #if defined(USE_GPU)
 
 #else  // !defined(USE_GPU)

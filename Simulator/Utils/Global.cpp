@@ -88,7 +88,7 @@ const BGFLOAT pi = 3.1415926536;
 double t_host_initialization_layout;
 double t_host_initialization_connections;
 double t_host_advance;
-double t_host_adjustSynapses;
+double t_host_adjustEdges;
 
 double t_gpu_rndGeneration;
 double t_gpu_advanceNeurons;
@@ -111,8 +111,8 @@ void printPerformanceMetrics(const float total_time, int steps)
     cout << "\nHost advance: " << t_host_advance << " seconds ("
        << t_host_advance / total_time * 100 << "%)" << endl;
 
-    cout << "\nHost adjustSynapses: " << t_host_adjustSynapses << " seconds ("
-       << t_host_adjustSynapses / total_time * 100 << "%)" << endl;
+    cout << "\nHost adjustEdges: " << t_host_adjustEdges << " seconds ("
+       << t_host_adjustEdges / total_time * 100 << "%)" << endl;
 
     cout << "\nAverage time per simulation epoch:" << endl;
 

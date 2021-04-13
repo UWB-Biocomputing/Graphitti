@@ -76,12 +76,21 @@ public:
 
    BGSIZE numEndogenouslyActiveNeurons_;    ///< Number of endogenously active neurons.
 
+   BGSIZE numCallerVertices_;    ///< Number of caller vertices.
+
+
 protected:
    shared_ptr<IAllVertices> vertices_;
 
    vector<int> endogenouslyActiveNeuronList_;    ///< Endogenously active neurons list.
 
    vector<int> inhibitoryNeuronLayout_;    ///< Inhibitory neurons list.
+
+   vector<int> callerVertexList_;    ///< Caller vertex list.
+
+   vector<int> psapVertexList_;    ///< PSAP vertex list.
+   
+   vector<int> responderVertexList_;    ///< Responder vertex list.
 
    log4cplus::Logger fileLogger_;
 

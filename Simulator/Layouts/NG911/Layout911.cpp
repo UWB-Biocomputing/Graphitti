@@ -30,31 +30,41 @@ void Layout911::initStarterMap(const int numVertices) {
 }
 
 void Layout911::loadParameters() {
-//     // Get the file paths for the Neuron lists from the configuration file
-//    string callerFilePath;
-//    string psapFilePath;
-//    string responderFilePath;
-//    if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/activeNListFileName/text()",
-//                                                          callerFilePath)) {
-//       throw runtime_error("In Layout::loadParameters() Endogenously "
-//                           "active neuron list file path wasn't found and will not be initialized");
-//    }
-//    if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/inhNListFileName/text()",
-//                                                          psapFilePath)) {
-//       throw runtime_error("In Layout::loadParameters() "
-//                           "Inhibitory neuron list file path wasn't found and will not be initialized");
-//    }
+    // Get the file paths for the vertex lists from the configuration file
+   string callerFilePath;
+   string psapFilePath;
+   string responderFilePath;
+   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/callersListFileName/text()",
+                                                         callerFilePath)) {
+      throw runtime_error("In Layout::loadParameters() caller "
+                          "vertex list file path wasn't found and will not be initialized");
+   }
+   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/PSAPsListFileName/text()",
+                                                         psapFilePath)) {
+      throw runtime_error("In Layout::loadParameters() psap "
+                          "vertex list file path wasn't found and will not be initialized");
+   }
+   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/respondersListFileName/text()",
+                                                         responderFilePath)) {
+      throw runtime_error("In Layout::loadParameters() responder"
+                          "vertex list file path wasn't found and will not be initialized");
+   }
 
-//    // Initialize Neuron Lists based on the data read from the xml files
-//    if (!ParameterManager::getInstance().getIntVectorByXpath(callerFilePath, "A", endogenouslyActiveNeuronList_)) {
-//       throw runtime_error("In Layout::loadParameters() "
-//                           "Endogenously active neuron list file wasn't loaded correctly"
-//                           "\n\tfile path: " + callerFilePath);
-//    }
-//    numEndogenouslyActiveNeurons_ = endogenouslyActiveNeuronList_.size();
-//    if (!ParameterManager::getInstance().getIntVectorByXpath(psapFilePath, "I", inhibitoryNeuronLayout_)) {
-//       throw runtime_error("In Layout::loadParameters() "
-//                           "Inhibitory neuron list file wasn't loaded correctly."
-//                           "\n\tfile path: " + psapFilePath);
-//    }
+   // Initialize Vertex Lists based on the data read from the xml files
+   if (!ParameterManager::getInstance().getIntVectorByXpath(callerFilePath, "C", callerVertexList_)) {
+      throw runtime_error("In Layout::loadParameters() "
+                          "caller vertex list list file wasn't loaded correctly"
+                          "\n\tfile path: " + callerFilePath);
+   }
+   numCallerVertices_ = callerVertexList_.size();
+   if (!ParameterManager::getInstance().getIntVectorByXpath(psapFilePath, "P", psapVertexList_)) {
+      throw runtime_error("In Layout::loadParameters() "
+                          "psap vertex list file wasn't loaded correctly."
+                          "\n\tfile path: " + psapFilePath);
+   }
+   if (!ParameterManager::getInstance().getIntVectorByXpath(responderFilePath, "R", responderVertexList_)) {
+      throw runtime_error("In Layout::loadParameters() "
+                          "responder vertex list file wasn't loaded correctly."
+                          "\n\tfile path: " + responderFilePath);
+   }
 }

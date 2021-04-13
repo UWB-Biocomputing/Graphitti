@@ -177,7 +177,7 @@ string neuronTypeToString(vertexType t);
 extern double t_host_initialization_layout;
 extern double t_host_initialization_connections;
 extern double t_host_advance;
-extern double t_host_adjustSynapses;
+extern double t_host_adjustEdges;
 
 extern double t_gpu_rndGeneration;
 extern double t_gpu_advanceNeurons;
