@@ -18,12 +18,12 @@
 Layout::Layout() :
       numEndogenouslyActiveNeurons_(0),
       gridLayout_(true) {
-   xloc_ = nullptr;
-   yloc_ = nullptr;
-   dist2_ = nullptr;
-   dist_ = nullptr;
-   vertexTypeMap_ = nullptr;
-   starterMap_ = nullptr;
+   xloc_ = NULL;
+   yloc_ = NULL;
+   dist2_ = NULL;
+   dist_ = NULL;
+   vertexTypeMap_ = NULL;
+   starterMap_ = NULL;
 
    // Create Vertices/Neurons class using type definition in configuration file
    string type;
@@ -44,19 +44,19 @@ Layout::Layout() :
 
 /// Destructor
 Layout::~Layout() {
-   if (xloc_ != nullptr) delete xloc_;
-   if (yloc_ != nullptr) delete yloc_;
-   if (dist2_ != nullptr) delete dist2_;
-   if (dist_ != nullptr) delete dist_;
-   if (vertexTypeMap_ != nullptr) delete[] vertexTypeMap_;  //todo: is delete[] changing once array becomes vector?
-   if (starterMap_ != nullptr) delete[] starterMap_; //todo: is delete[] changing once array becomes vector?
+   if (xloc_ != NULL) delete xloc_;
+   if (yloc_ != NULL) delete yloc_;
+   if (dist2_ != NULL) delete dist2_;
+   if (dist_ != NULL) delete dist_;
+   if (vertexTypeMap_ != NULL) delete[] vertexTypeMap_;  //todo: is delete[] changing once array becomes vector?
+   if (starterMap_ != NULL) delete[] starterMap_; //todo: is delete[] changing once array becomes vector?
 
-   xloc_ = nullptr;
-   yloc_ = nullptr;
-   dist2_ = nullptr;
-   dist_ = nullptr;
-   vertexTypeMap_ = nullptr;
-   starterMap_ = nullptr;
+   xloc_ = NULL;
+   yloc_ = NULL;
+   dist2_ = NULL;
+   dist_ = NULL;
+   vertexTypeMap_ = NULL;
+   starterMap_ = NULL;
 }
 
 shared_ptr<IAllVertices> Layout::getVertices() const {

@@ -152,7 +152,7 @@ void Hdf5GrowthRecorder::writeRadiiRates()
         count[1] = Simulator::getInstance().getTotalVertices();
         dimsm[0] = 1;
         dimsm[1] = Simulator::getInstance().getTotalVertices();
-        memspace = new DataSpace(2, dimsm, nullptr);
+        memspace = new DataSpace(2, dimsm, NULL);
         dataspace = new DataSpace(dataSetRadiiHist_->getSpace());
         dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
         dataSetRadiiHist_->write(radiiHistory_, H5_FLOAT, *memspace, *dataspace);
@@ -166,7 +166,7 @@ void Hdf5GrowthRecorder::writeRadiiRates()
         count[1] = Simulator::getInstance().getTotalVertices();
         dimsm[0] = 1;
         dimsm[1] = Simulator::getInstance().getTotalVertices();
-        memspace = new DataSpace(2, dimsm, nullptr);
+        memspace = new DataSpace(2, dimsm, NULL);
         dataspace = new DataSpace(dataSetRadiiHist_->getSpace());
         dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
         dataSetRatesHist_->write(ratesHistory_, H5_FLOAT, *memspace, *dataspace);

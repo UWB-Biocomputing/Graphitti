@@ -35,7 +35,7 @@ ISInput* FSInput::CreateInstance()
 {
     if (Simulator::getInstance().getStimulusFileName().empty())
     {
-        return nullptr;
+        return NULL;
     }
 
     // load stimulus input file
@@ -45,34 +45,34 @@ ISInput* FSInput::CreateInstance()
         cerr << "Failed loading stimulus input file " << Simulator::getInstance().getStimulusFileName() << ":" << "\n\t"
                 << siDoc.ErrorDesc( ) << endl;
         cerr << " error: " << siDoc.ErrorRow( ) << ", " << siDoc.ErrorCol( ) << endl;
-        return nullptr;
+        return NULL;
     }
 
     // load input parameters
-    TiXmlElement* parms = nullptr;
-    if (( parms = siDoc.FirstChildElement( "InputParams" ) ) == nullptr) 
+    TiXmlElement* parms = NULL;
+    if (( parms = siDoc.FirstChildElement( "InputParams" ) ) == NULL) 
     {
         cerr << "Could not find <InputParms> in stimulus input file " << Simulator::getInstance().getStimulusFileName() << endl;
-        return nullptr;
+        return NULL;
     }
 
     // read input method
-   TiXmlElement* temp = nullptr;
+   TiXmlElement* temp = NULL;
     string name;
-    if (( temp = parms->FirstChildElement( "IMethod" ) ) != nullptr) {
+    if (( temp = parms->FirstChildElement( "IMethod" ) ) != NULL) {
         if (temp->QueryValueAttribute("name", &name ) != TIXML_SUCCESS) {
             cerr << "error IMethod:name" << endl;
-            return nullptr;
+            return NULL;
         }
     }
     else
     {
         cerr << "missing IMethod" << endl;
-        return nullptr;
+        return NULL;
     }
 
     // create an instance
-    ISInput* pInput = nullptr;     // pointer to a stimulus input object
+    ISInput* pInput = NULL;     // pointer to a stimulus input object
 
     if (name == "SInputRegular")
     {

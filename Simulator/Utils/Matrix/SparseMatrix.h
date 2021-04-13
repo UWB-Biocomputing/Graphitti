@@ -103,8 +103,8 @@ class SparseMatrix: public Matrix {
 		/// @param s table capacity
 		/// @param c number of columns in enclosing SparseMatrix
 		/// @param m pointer to enclosing SparseMatrix
-		HashTable(int s = 0, int c = 0, SparseMatrix* m = nullptr) :
-        capacity( s ), size( 0 ), columns( c ), table( s, static_cast<Element*> ( nullptr ) ), theMatrix( m ) {
+		HashTable(int s = 0, int c = 0, SparseMatrix* m = NULL) :
+        capacity( s ), size( 0 ), columns( c ), table( s, static_cast<Element*> ( NULL ) ), theMatrix( m ) {
 		}
 		/// @brief resize hash table and initialize elements
 		/// @param s the new table capacity
@@ -123,12 +123,12 @@ class SparseMatrix: public Matrix {
 		void insert(Element* el);
         
 		/// Retrieves Element from the hash table using linear
-		/// probing. If Element isn't in the table, returns nullptr. Any
+		/// probing. If Element isn't in the table, returns NULL. Any
 		/// zero-value elements found in the hash table are deleted along
 		/// the way.
 		/// @param r row coordinate of Element
 		/// @param c column coordinate of Element
-		/// @return pointer to Element (nullptr if not in table)
+		/// @return pointer to Element (NULL if not in table)
 		Element* retrieve(int r, int c);
         
 		/// Updates the Element already in the table using linear
@@ -195,7 +195,7 @@ public:
 	/// diagonal sparse matrix with explicit row data. The parameter v is
 	/// used as a source of data for initializing the matrix (and must be
 	/// a string of numbers equal to the number of rows or columns). If v
-	/// is nullptr, then the multiplier is used to initialize the diagonal
+	/// is NULL, then the multiplier is used to initialize the diagonal
 	/// elements.
 	/// @throws Matrix_bad_alloc
 	/// @throws Matrix_invalid_argument
@@ -203,7 +203,7 @@ public:
 	/// @param c columns in Matrix
 	/// @param m multiplier used for initialization (and must be non-zero)
 	/// @param v string of initialization values
-	SparseMatrix(int r, int c, BGFLOAT m, const char* v = nullptr);
+	SparseMatrix(int r, int c, BGFLOAT m, const char* v = NULL);
     
 	/// Allocate storage and initialize attributes for an
 	/// empty sparse matrix. This is also the default constructor.

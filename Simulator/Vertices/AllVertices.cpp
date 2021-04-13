@@ -12,7 +12,7 @@
 
 // Default constructor
 AllVertices::AllVertices() : size_(0) {
-   summationMap_ = nullptr;
+   summationMap_ = NULL;
 
    // Register loadParameters function as a loadParameters operation in the Operation Manager
    function<void()> loadParametersFunc = std::bind(&IAllVertices::loadParameters, this);
@@ -32,7 +32,7 @@ AllVertices::~AllVertices() {
       delete[] summationMap_;
    }
 
-   summationMap_ = nullptr;
+   summationMap_ = NULL;
 
    size_ = 0;
 }

@@ -35,7 +35,7 @@
 /// @param v values for initializing CompleteMatrix (this string is parsed as a list of floating point numbers)
 CompleteMatrix::CompleteMatrix(string t, string i, int r,
                                int c, BGFLOAT m, string values)
-: Matrix(t, i, r, c, m), theMatrix(nullptr)
+: Matrix(t, i, r, c, m), theMatrix(NULL)
 {
     DEBUG_MATRIX(cerr << "Creating CompleteMatrix, size: ";)
     
@@ -100,7 +100,7 @@ CompleteMatrix::CompleteMatrix(string t, string i, int r,
 
 
 // "Copy Constructor"
-CompleteMatrix::CompleteMatrix(const CompleteMatrix& oldM) : theMatrix(nullptr)
+CompleteMatrix::CompleteMatrix(const CompleteMatrix& oldM) : theMatrix(NULL)
 {
     DEBUG_MATRIX(cerr << "CompleteMatrix copy constructor:" << endl;)
     copy(oldM);
@@ -134,14 +134,14 @@ void CompleteMatrix::clear(void)
 {
     DEBUG_MATRIX(cerr << "\tclearing " << rows << "X" << columns << " CompleteMatrix...";)
     
-    if (theMatrix != nullptr) {
+    if (theMatrix != NULL) {
         for (int i=0; i<rows; i++)
-            if (theMatrix[i] != nullptr) {
+            if (theMatrix[i] != NULL) {
                 delete [] theMatrix[i];
-                theMatrix[i] = nullptr;
+                theMatrix[i] = NULL;
             }
         delete [] theMatrix;
-        theMatrix = nullptr;
+        theMatrix = NULL;
     }
     DEBUG_MATRIX(cerr << "done." << endl;)
 }
@@ -175,14 +175,14 @@ void CompleteMatrix::copy(const CompleteMatrix& source)
 /// Please refer to LIFModel::Connections()
 void CompleteMatrix::alloc(int rows, int columns)
 {
-    if (theMatrix != nullptr)
+    if (theMatrix != NULL)
         throw MatrixException("Attempt to allocate storage for non-cleared Matrix");
     
-    if ((theMatrix = new BGFLOAT*[rows]) == nullptr)
+    if ((theMatrix = new BGFLOAT*[rows]) == NULL)
         throw Matrix_bad_alloc("Failed allocating storage to copy Matrix.");
     
     for (int i=0; i<rows; i++)
-        if ((theMatrix[i] = new BGFLOAT[columns]) == nullptr)
+        if ((theMatrix[i] = new BGFLOAT[columns]) == NULL)
             throw Matrix_bad_alloc("Failed allocating storage to copy Matrix.");
     DEBUG_MATRIX(cerr << "\tStorage allocated for "<< rows << "X" << columns << " Matrix." << endl;)
     

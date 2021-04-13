@@ -14,8 +14,8 @@ void allocDeviceValues( SimulationInfo* psi, BGFLOAT* initValues, int *nShiftVal
 void deleteDeviceValues( );
 
 //! Pointer to device input values.
-BGFLOAT* initValues_d = nullptr;
-int * nShiftValues_d = nullptr;
+BGFLOAT* initValues_d = NULL;
+int * nShiftValues_d = NULL;
 
 /// constructor
 ///
