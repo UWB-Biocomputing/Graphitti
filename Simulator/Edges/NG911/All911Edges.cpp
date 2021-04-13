@@ -62,10 +62,6 @@ void All911Edges::printParameters() const {
 
 }
 
-void All911Edges::setupEdges(const int numVertices, const int maxEdges) {
-
-}
-
 void All911Edges::advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) {
 
 }

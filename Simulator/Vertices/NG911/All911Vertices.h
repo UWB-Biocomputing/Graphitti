@@ -65,8 +65,12 @@ protected:
    void createVertex(int index, Layout *layout);
 
 private: 
+
+   /// number of callers
+   int *CallNum_; 
+
    /// Min/max values of CallNum.
-   BGFLOAT CallNumRange_[2];
+   int CallNumRange_[2];
 
 #if defined(USE_GPU)
 

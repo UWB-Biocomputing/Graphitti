@@ -259,10 +259,10 @@ void AllEdges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap) 
 
 ///  Remove a edge from the network.
 ///
-///  @param  neuronIndex    Index of a vertex to remove from.
+///  @param  i    Index of a vertex to remove from.
 ///  @param  iEdg           Index of a edge to remove.
-void AllEdges::eraseEdge(const int neuronIndex, const BGSIZE iEdg) {
-   edgeCounts_[neuronIndex]--;
+void AllEdges::eraseEdge(const int i, const BGSIZE iEdg) {
+   edgeCounts_[i]--;
    inUse_[iEdg] = false;
    summationPoint_[iEdg] = NULL;
    W_[iEdg] = 0;

@@ -151,9 +151,9 @@ public:
 
    ///  Remove a edge from the network.
    ///
-   ///  @param  neuronIndex   Index of a vertex to remove from.
+   ///  @param  i   Index of a vertex to remove from.
    ///  @param  iEdg           Index of a edge to remove.
-   virtual void eraseEdge(const int neuronIndex, const BGSIZE iEdg);
+   virtual void eraseEdge(const int i, const BGSIZE iEdg);
 
 #endif // !defined(USE_GPU)
 public:

@@ -14,7 +14,7 @@
 
 #include "Global.h"
 #include "Model.h"
-#include "Core/Simulator.h"
+#include "Simulator.h"
 #include "IAllVertices.h"
 
 class Model;

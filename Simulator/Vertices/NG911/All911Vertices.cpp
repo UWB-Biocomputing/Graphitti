@@ -11,38 +11,43 @@
 
 
 All911Vertices::All911Vertices() {
-    // CallNum_ = NULL; 
+    CallNum_ = NULL; 
 }
 
 All911Vertices::~All911Vertices() {
-    // if (size_ != 0) {
-    //     delete[] CallNum_; 
-    // }
-    // CallNum_ = NULL; 
+    if (size_ != 0) {
+        delete[] CallNum_; 
+    }
+    CallNum_ = NULL; 
 }
 
 void All911Vertices::setupVertices() {
     AllVertices::setupVertices();
 
-    // CallNum_ = new BGFLOAT[size_];
+    CallNum_ = new int[size_];
+    fill_n(CallNum_, size_, 0);    
+
+
 
 }
 
 void All911Vertices::createAllVertices(Layout *layout) {
     /* set their specific types */
-    // for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {  
-    //     // set the vertex info for vertices
-    //     createVertex(i, layout);
-    // }
+    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {  
+        // set the vertex info for vertices
+        createVertex(i, layout);
+    }
 }
 
 void All911Vertices:: createVertex(int index, Layout *layout) {
-//    CallNum_[index] = rng.inRange(CallNumRange_[0], CallNumRange_[1]);
+   // CallNum_[index] = static_cast<int>(rng.inRange(CallNumRange_[0], CallNumRange_[1]));
+   CallNum_[index] = rng.inRange(CallNumRange_[0], CallNumRange_[1]);
+
 }
 
 void All911Vertices::loadParameters() {
-    ParameterManager::getInstance().getBGFloatByXpath("//CallNum/min/text()", CallNumRange_[0]);
-    ParameterManager::getInstance().getBGFloatByXpath("//CallNum/max/text()", CallNumRange_[1]);
+    ParameterManager::getInstance().getIntByXpath("//CallNum/min/text()", CallNumRange_[0]);
+    ParameterManager::getInstance().getIntByXpath("//CallNum/max/text()", CallNumRange_[1]);
 }
 
 

@@ -57,11 +57,6 @@ public:
    virtual void printParameters() const;
 
 protected:
-   ///  Setup the internal structure of the class (allocate memories and initialize them).
-   ///
-   ///  @param  numVertices   Total number of vertices in the network.
-   ///  @param  maxEdges  Maximum number of edges per vertex.
-   virtual void setupEdges(const int numVertices, const int maxEdges);
 
 #if defined(USE_GPU)
 

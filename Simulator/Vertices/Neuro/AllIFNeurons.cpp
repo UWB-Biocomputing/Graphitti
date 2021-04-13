@@ -164,72 +164,72 @@ void AllIFNeurons::printParameters() const {
 ///  @param  layout      Layout information of the neural network.
 void AllIFNeurons::createAllVertices(Layout *layout) {
    /* set their specific types */
-   for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalVertices(); neuronIndex++) {
-      setNeuronDefaults(neuronIndex);
+   for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
+      setNeuronDefaults(i);
 
       // set the neuron info for neurons
-      createNeuron(neuronIndex, layout);
+      createNeuron(i, layout);
    }
 }
 
 ///  Creates a single Neuron and generates data for it.
 ///
-///  @param  neuronIndex Index of the neuron to create.
+///  @param  i Index of the neuron to create.
 ///  @param  layout       Layout information of the neural network.
-void AllIFNeurons::createNeuron(int neuronIndex, Layout *layout) {
+void AllIFNeurons::createNeuron(int i, Layout *layout) {
    // set the neuron info for neurons
-   Iinject_[neuronIndex] = rng.inRange(IinjectRange_[0], IinjectRange_[1]);
-   Inoise_[neuronIndex] = rng.inRange(InoiseRange_[0], InoiseRange_[1]);
-   Vthresh_[neuronIndex] = rng.inRange(VthreshRange_[0], VthreshRange_[1]);
-   Vrest_[neuronIndex] = rng.inRange(VrestingRange_[0], VrestingRange_[1]);
-   Vreset_[neuronIndex] = rng.inRange(VresetRange_[0], VresetRange_[1]);
-   Vinit_[neuronIndex] = rng.inRange(VinitRange_[0], VinitRange_[1]);
-   Vm_[neuronIndex] = Vinit_[neuronIndex];
+   Iinject_[i] = rng.inRange(IinjectRange_[0], IinjectRange_[1]);
+   Inoise_[i] = rng.inRange(InoiseRange_[0], InoiseRange_[1]);
+   Vthresh_[i] = rng.inRange(VthreshRange_[0], VthreshRange_[1]);
+   Vrest_[i] = rng.inRange(VrestingRange_[0], VrestingRange_[1]);
+   Vreset_[i] = rng.inRange(VresetRange_[0], VresetRange_[1]);
+   Vinit_[i] = rng.inRange(VinitRange_[0], VinitRange_[1]);
+   Vm_[i] = Vinit_[i];
 
-   initNeuronConstsFromParamValues(neuronIndex, Simulator::getInstance().getDeltaT());
+   initNeuronConstsFromParamValues(i, Simulator::getInstance().getDeltaT());
 
    int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
-   spikeHistory_[neuronIndex] = new uint64_t[maxSpikes];
+   spikeHistory_[i] = new uint64_t[maxSpikes];
    for (int j = 0; j < maxSpikes; ++j) {
-      spikeHistory_[neuronIndex][j] = ULONG_MAX;
+      spikeHistory_[i][j] = ULONG_MAX;
    }
 
-   switch (layout->vertexTypeMap_[neuronIndex]) {
+   switch (layout->vertexTypeMap_[i]) {
       case INH:
-         LOG4CPLUS_DEBUG(vertexLogger_, "Setting inhibitory neuron: " << neuronIndex);
+         LOG4CPLUS_DEBUG(vertexLogger_, "Setting inhibitory neuron: " << i);
          // set inhibitory absolute refractory period
-         Trefract_[neuronIndex] = DEFAULT_InhibTrefract;// TODO(derek): move defaults inside model.
+         Trefract_[i] = DEFAULT_InhibTrefract;// TODO(derek): move defaults inside model.
          break;
 
       case EXC:
-         LOG4CPLUS_DEBUG(vertexLogger_, "Setting excitatory neuron: " << neuronIndex);
+         LOG4CPLUS_DEBUG(vertexLogger_, "Setting excitatory neuron: " << i);
          // set excitatory absolute refractory period
-         Trefract_[neuronIndex] = DEFAULT_ExcitTrefract;
+         Trefract_[i] = DEFAULT_ExcitTrefract;
          break;
 
       default:
          LOG4CPLUS_DEBUG(vertexLogger_, "ERROR: unknown neuron type: "
-               << layout->vertexTypeMap_[neuronIndex] << "@" << neuronIndex);
+               << layout->vertexTypeMap_[i] << "@" << i);
          assert(false);
          break;
    }
    // endogenously_active_neuron_map -> Model State
-   if (layout->starterMap_[neuronIndex]) {
+   if (layout->starterMap_[i]) {
       // set endogenously active threshold voltage, reset voltage, and refractory period
-      Vthresh_[neuronIndex] = rng.inRange(starterVthreshRange_[0], starterVthreshRange_[1]);
-      Vreset_[neuronIndex] = rng.inRange(starterVresetRange_[0], starterVresetRange_[1]);
-      Trefract_[neuronIndex] = DEFAULT_ExcitTrefract; // TODO(derek): move defaults inside model.
+      Vthresh_[i] = rng.inRange(starterVthreshRange_[0], starterVthreshRange_[1]);
+      Vreset_[i] = rng.inRange(starterVresetRange_[0], starterVresetRange_[1]);
+      Trefract_[i] = DEFAULT_ExcitTrefract; // TODO(derek): move defaults inside model.
    }
 
-   LOG4CPLUS_DEBUG(vertexLogger_, "\nCREATE NEURON[" << neuronIndex << "] {" << endl
-                 << "\tVm = " << Vm_[neuronIndex] << endl
-                 << "\tVthresh = " << Vthresh_[neuronIndex] << endl
-                 << "\tI0 = " << I0_[neuronIndex] << endl
-                 << "\tInoise = " << Inoise_[neuronIndex] << " from : (" << InoiseRange_[0] << "," << InoiseRange_[1]
+   LOG4CPLUS_DEBUG(vertexLogger_, "\nCREATE NEURON[" << i << "] {" << endl
+                 << "\tVm = " << Vm_[i] << endl
+                 << "\tVthresh = " << Vthresh_[i] << endl
+                 << "\tI0 = " << I0_[i] << endl
+                 << "\tInoise = " << Inoise_[i] << " from : (" << InoiseRange_[0] << "," << InoiseRange_[1]
                  << ")"
                  << endl
-                 << "\tC1 = " << C1_[neuronIndex] << endl
-                 << "\tC2 = " << C2_[neuronIndex] << endl
+                 << "\tC1 = " << C1_[i] << endl
+                 << "\tC2 = " << C2_[i] << endl
                  << "}" << endl);
 }
 
@@ -251,16 +251,16 @@ void AllIFNeurons::setNeuronDefaults(const int index) {
 
 ///  Initializes the Neuron constants at the indexed location.
 ///
-///  @param  neuronIndex    Index of the Neuron.
+///  @param  i    Index of the Neuron.
 ///  @param  deltaT          Inner simulation step duration
-void AllIFNeurons::initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT) {
-   BGFLOAT &Tau = this->Tau_[neuronIndex];
-   BGFLOAT &C1 = this->C1_[neuronIndex];
-   BGFLOAT &C2 = this->C2_[neuronIndex];
-   BGFLOAT &Rm = this->Rm_[neuronIndex];
-   BGFLOAT &I0 = this->I0_[neuronIndex];
-   BGFLOAT &Iinject = this->Iinject_[neuronIndex];
-   BGFLOAT &Vrest = this->Vrest_[neuronIndex];
+void AllIFNeurons::initNeuronConstsFromParamValues(int i, const BGFLOAT deltaT) {
+   BGFLOAT &Tau = this->Tau_[i];
+   BGFLOAT &C1 = this->C1_[i];
+   BGFLOAT &C2 = this->C2_[i];
+   BGFLOAT &Rm = this->Rm_[i];
+   BGFLOAT &I0 = this->I0_[i];
+   BGFLOAT &Iinject = this->Iinject_[i];
+   BGFLOAT &Vrest = this->Vrest_[i];
 
    /* init consts C1,C2 for exponential Euler integration */
    if (Tau > 0) {
