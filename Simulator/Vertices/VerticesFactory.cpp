@@ -46,5 +46,5 @@ IAllVertices *VerticesFactory::invokeCreateFunction(const string &className) {
       if (className == i->first)
          return i->second();
    }
-   return NULL;
+   return nullptr;
 }

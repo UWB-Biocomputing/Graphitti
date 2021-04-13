@@ -14,14 +14,14 @@ AllEdges::AllEdges() :
       totalEdgeCount_(0),
       maxEdgesPerVertex_(0),
       countVertices_(0) {
-   destNeuronIndex_ = NULL;
-   W_ = NULL;
-   summationPoint_ = NULL;
-   sourceNeuronIndex_ = NULL;
-   psr_ = NULL;
-   type_ = NULL;
-   inUse_ = NULL;
-   synapseCounts_ = NULL;
+   destNeuronIndex_ = nullptr;
+   W_ = nullptr;
+   summationPoint_ = nullptr;
+   sourceNeuronIndex_ = nullptr;
+   psr_ = nullptr;
+   type_ = nullptr;
+   inUse_ = nullptr;
+   synapseCounts_ = nullptr;
 
    // Register loadParameters function as a loadParameters operation in the OperationManager
    function<void()> loadParametersFunc = std::bind(&IAllEdges::loadParameters, this);
@@ -52,14 +52,14 @@ AllEdges::~AllEdges() {
      delete[] synapseCounts_;
   }
 
-   destNeuronIndex_ = NULL;
-   W_ = NULL;
-   summationPoint_ = NULL;
-   sourceNeuronIndex_ = NULL;
-   psr_ = NULL;
-   type_ = NULL;
-   inUse_ = NULL;
-   synapseCounts_ = NULL;
+   destNeuronIndex_ = nullptr;
+   W_ = nullptr;
+   summationPoint_ = nullptr;
+   sourceNeuronIndex_ = nullptr;
+   psr_ = nullptr;
+   type_ = nullptr;
+   inUse_ = nullptr;
+   synapseCounts_ = nullptr;
 
    countVertices_ = 0;
    maxEdgesPerVertex_ = 0;
@@ -92,7 +92,7 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
       synapseCounts_ = new BGSIZE[numVertices];
 
       for (BGSIZE i = 0; i < maxTotalSynapses; i++) {
-         summationPoint_[i] = NULL;
+         summationPoint_[i] = nullptr;
          inUse_[i] = false;
          W_[i] = 0;
       }
@@ -178,7 +178,7 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
    DEBUG (cout << "totalSynapseCount: " << totalSynapseCount << endl;)
 
    if (totalSynapseCount == 0) {
-      return NULL;
+      return nullptr;
    }
 
    // allocate memories for forward map
@@ -264,7 +264,7 @@ void AllEdges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap) 
 void AllEdges::eraseEdge(const int neuronIndex, const BGSIZE iEdg) {
    synapseCounts_[neuronIndex]--;
    inUse_[iEdg] = false;
-   summationPoint_[iEdg] = NULL;
+   summationPoint_[iEdg] = nullptr;
    W_[iEdg] = 0;
 }
 

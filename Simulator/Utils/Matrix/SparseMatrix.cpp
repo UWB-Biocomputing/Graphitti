@@ -30,21 +30,21 @@ extern bool debugSparseMatrix;
 SparseMatrix::Element SparseMatrix::HashTable::deleted(-1, -1, -1.0);
 
 
-/// resize hash table and initialize elements to NULL
+/// resize hash table and initialize elements to nullptr
 /// @param s table capacity
 /// @param c number of columns in containing SparseMatrix
 void SparseMatrix::HashTable::resize(int s, int c)
 {
-    // If nothing has changed, just clear the table to NULL
+    // If nothing has changed, just clear the table to nullptr
     if ((s == capacity) && (c == columns)) {
-        DEBUG_SPARSE(cerr << "\t\t\tSM::HT::resize(): table capacity unchanged; filling with NULL." << endl;)
-        fill(table.begin(), table.end(), static_cast<Element*>(NULL));
+        DEBUG_SPARSE(cerr << "\t\t\tSM::HT::resize(): table capacity unchanged; filling with nullptr." << endl;)
+        fill(table.begin(), table.end(), static_cast<Element*>(nullptr));
         size = 0;
     } else {
         DEBUG_SPARSE(cerr << "\t\t\tSM::HT::resize(): table capacity changed." << endl;)
         capacity = s;
         columns = c;
-        table.resize(capacity, static_cast<Element*>(NULL));
+        table.resize(capacity, static_cast<Element*>(nullptr));
         size = 0;
     }
     
@@ -80,7 +80,7 @@ void SparseMatrix::HashTable::insert(Element* el)
                  << el->row << ", " << el->column << ")" << endl;)
     
     // Find first location to insert (if Element isn't in the table)
-    while ((table[loc] != &deleted) && (table[loc] != NULL)) {
+    while ((table[loc] != &deleted) && (table[loc] != nullptr)) {
         if (*table[loc] == *el)
             throw Matrix_invalid_argument("Attempt to insert duplicate Element into SparseMatrix hash table [1]");
         loc = (loc+1)%capacity;
@@ -92,7 +92,7 @@ void SparseMatrix::HashTable::insert(Element* el)
     // continue searching to ensure the Element isn't in the table
     if (table[loc] == &deleted) {
         int loc2 = (loc+1)%capacity;
-        while (table[loc2] != NULL) {
+        while (table[loc2] != nullptr) {
             if (loc2 == start)
                 throw Matrix_invalid_argument("Hashtable insert wraparound: unable to insert Element [2]");
             loc2 = (loc2+1)%capacity;
@@ -101,7 +101,7 @@ void SparseMatrix::HashTable::insert(Element* el)
         }
     }
     
-    // At this point, either table[loc] is deleted or NULL. Note that
+    // At this point, either table[loc] is deleted or nullptr. Note that
     // loc2 was only used to ensure we aren't inserting duplicates;
     // table[loc] is the first available storage location.
     table[loc] = el;
@@ -113,19 +113,19 @@ void SparseMatrix::HashTable::insert(Element* el)
 
 /// @method retrieve
 /// @discussion retrieves Element from the hash table using linear
-/// probing. If Element isn't in the table, returns NULL. Any
+/// probing. If Element isn't in the table, returns nullptr. Any
 /// zero-value elements found in the hash table are deleted along
 /// the way.
 /// @param r row coordinate of Element
 /// @param c column coordinate of Element
-/// @result pointer to Element (NULL if not in table)
+/// @result pointer to Element (nullptr if not in table)
 SparseMatrix::Element* SparseMatrix::HashTable::retrieve(int r, int c)
 {
     int loc = hash(r, c);
     
     // Keep probing while we haven't found the Element (or finished the
     // probing). Also, eliminate any Elements found with zero value.
-    while ((table[loc] != NULL) && (!table[loc]->is_at(r, c))) {
+    while ((table[loc] != nullptr) && (!table[loc]->is_at(r, c))) {
         if (table[loc]->value == 0.0) {
             theMatrix->remove_lists(table[loc]);
             table[loc] = &deleted;
@@ -135,7 +135,7 @@ SparseMatrix::Element* SparseMatrix::HashTable::retrieve(int r, int c)
     }
     
     // At this point, we either have the pointer to the Element or the
-    // NULL pointer
+    // nullptr pointer
     return table[loc];
 }
 
@@ -151,7 +151,7 @@ void SparseMatrix::HashTable::update(int r, int c, BGFLOAT v)
 {
     Element* el = retrieve(r, c);
     
-    if (el == NULL)
+    if (el == nullptr)
         throw Matrix_invalid_argument("Attempt to update Element not in SparseMatrix hash table");
     el->value = v;
 }
@@ -169,7 +169,7 @@ void SparseMatrix::HashTable::update(int r, int c, BGFLOAT v)
 /// @param m multiplier used for initialization
 /// @param e pointer to Matrix element in XML
 SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, TiXmlElement* e)
-: Matrix("sparse", "none", r, c, m), theRows(NULL), theColumns(NULL),
+: Matrix("sparse", "none", r, c, m), theRows(nullptr), theColumns(nullptr),
 theElements(MaxElements(r,c), c, this)
 {
 	DEBUG_SPARSE(cerr << "Creating SparseMatrix, size: ";)
@@ -185,14 +185,14 @@ theElements(MaxElements(r,c), c, this)
     
     // Allocate storage for row and column lists (hash table already
     // allocated at initialization time; see initializer list, above).
-    if ((theRows = new list<Element*>[rows]) == NULL)
+    if ((theRows = new list<Element*>[rows]) == nullptr)
         throw Matrix_bad_alloc("Failed allocating storage for SparseMatrix.");
-    if ((theColumns = new list<Element*>[columns]) == NULL)
+    if ((theColumns = new list<Element*>[columns]) == nullptr)
         throw Matrix_bad_alloc("Failed allocating storage for SparseMatrix.");
     
     // Initialize from the XML
     for (TiXmlElement* rowElement = e->FirstChildElement("Row");
-         rowElement != NULL;
+         rowElement != nullptr;
          rowElement = rowElement->NextSiblingElement("Row"))
         rowFromXML(rowElement);
     
@@ -211,7 +211,7 @@ theElements(MaxElements(r,c), c, this)
 /// @param m multiplier used for initialization
 /// @param v string of initialization values
 SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, const char* v)
-: Matrix("sparse", "none", r, c, m), theRows(NULL), theColumns(NULL),
+: Matrix("sparse", "none", r, c, m), theRows(nullptr), theColumns(nullptr),
 theElements(MaxElements(r,c), c, this)
 {
 	DEBUG_SPARSE(cerr << "\tCreating diagonal sparse matrix" << endl;)
@@ -226,21 +226,21 @@ theElements(MaxElements(r,c), c, this)
     
     // Allocate storage for row and column lists (hash table already
     // allocated at initialization time; see initializer list, above).
-    if ((theRows = new list<Element*>[rows]) == NULL)
+    if ((theRows = new list<Element*>[rows]) == nullptr)
         throw Matrix_bad_alloc("Failed allocating storage for SparseMatrix.");
-    if ((theColumns = new list<Element*>[columns]) == NULL)
+    if ((theColumns = new list<Element*>[columns]) == nullptr)
         throw Matrix_bad_alloc("Failed allocating storage for SparseMatrix.");
     
     if (multiplier == 0.0)  // If we're empty, then we're done.
         return;
     
-    if (v != NULL) {     // Initialize from string of numeric data
+    if (v != nullptr) {     // Initialize from string of numeric data
         istringstream valStream(v);
         for (int i=0; i<rows; i++) {
             Element* el;
             BGFLOAT val;
             valStream >> val;
-            if ((el = new Element(i, i, val*multiplier)) == NULL)
+            if ((el = new Element(i, i, val*multiplier)) == nullptr)
                 throw Matrix_bad_alloc("Failed allocating storage for SparseMatrix.");
             theRows[i].push_back(el);
             theColumns[i].push_back(el);
@@ -254,7 +254,7 @@ theElements(MaxElements(r,c), c, this)
     } else {             // No string of data; initialize from multipler only
         for (int i=0; i<rows; i++) {
             Element* el;
-            if ((el = new Element(i, i, multiplier)) == NULL)
+            if ((el = new Element(i, i, multiplier)) == nullptr)
                 throw Matrix_bad_alloc("Failed allocating storage for SparseMatrix.");
             theRows[i].push_back(el);
             theColumns[i].push_back(el);
@@ -277,7 +277,7 @@ theElements(MaxElements(r,c), c, this)
 /// @param r rows in Matrix
 /// @param c columns in Matrix
 SparseMatrix::SparseMatrix(int r, int c)
-: Matrix("sparse", "none", r, c, 0.0), theRows(NULL), theColumns(NULL),
+: Matrix("sparse", "none", r, c, 0.0), theRows(nullptr), theColumns(nullptr),
 theElements(MaxElements(r,c), c, this)
 {
 	DEBUG_SPARSE(cerr << "\tCreating empty sparse matrix: ";)
@@ -292,9 +292,9 @@ theElements(MaxElements(r,c), c, this)
     
     // Allocate storage for row and column lists (hash table already
     // allocated at initialization time; see initializer list, above).
-    if ((theRows = new list<Element*>[rows]) == NULL)
+    if ((theRows = new list<Element*>[rows]) == nullptr)
         throw Matrix_bad_alloc("Failed allocating storage for SparseMatrix.");
-    if ((theColumns = new list<Element*>[columns]) == NULL)
+    if ((theColumns = new list<Element*>[columns]) == nullptr)
         throw Matrix_bad_alloc("Failed allocating storage for SparseMatrix.");
     
     // And that's all, folks!
@@ -306,7 +306,7 @@ theElements(MaxElements(r,c), c, this)
 // Copy Constructor
 SparseMatrix::SparseMatrix(const SparseMatrix& oldM)
 : Matrix("sparse", "none", oldM.rows, oldM.columns, oldM.multiplier),
-theRows(NULL), theColumns(NULL),
+theRows(nullptr), theColumns(nullptr),
 theElements(MaxElements(oldM.rows,oldM.columns), oldM.columns, this)
 {
 	DEBUG_SPARSE(cerr << "SparseMatrix copy constructor:" << endl;)
@@ -318,9 +318,9 @@ theElements(MaxElements(oldM.rows,oldM.columns), oldM.columns, this)
     
     // Allocate storage for row and column lists (hash table already
     // allocated at initialization time; see initializer list, above).
-    if ((theRows = new list<Element*>[rows]) == NULL)
+    if ((theRows = new list<Element*>[rows]) == nullptr)
         throw Matrix_bad_alloc("Failed allocating storage for SparseMatrix.");
-    if ((theColumns = new list<Element*>[columns]) == NULL)
+    if ((theColumns = new list<Element*>[columns]) == nullptr)
         throw Matrix_bad_alloc("Failed allocating storage for SparseMatrix.");
     
     try {
@@ -382,7 +382,7 @@ void SparseMatrix::clear(void)
     // those lists will go away when the column list destructors are
     // called in response to us deleting the column array and when
     // the hash table is cleared.
-    if (theRows != NULL) {
+    if (theRows != nullptr) {
         for (int i = 0; i < rows; i++)
             for (list<Element*>::iterator it = theRows[i].begin();
                  it != theRows[i].end(); it++)
@@ -390,13 +390,13 @@ void SparseMatrix::clear(void)
         delete [] theRows;
     }
     
-    if (theColumns != NULL)
+    if (theColumns != nullptr)
         delete [] theColumns;
     
     theElements.clear();
     
-    theRows = NULL;
-    theColumns = NULL;
+    theRows = nullptr;
+    theColumns = nullptr;
     
 	DEBUG_SPARSE(cerr << "done." << endl;)
 }
@@ -454,7 +454,7 @@ void SparseMatrix::rowFromXML(TiXmlElement* rowElement)
     // Iterate through the entries, inserting them into the row, column,
     // and hash table
     for (TiXmlElement* child = rowElement->FirstChildElement("Entry");
-         child != NULL; child=child->NextSiblingElement("Entry")) {
+         child != nullptr; child=child->NextSiblingElement("Entry")) {
         int colNum;
         BGFLOAT val;
         if (child->QueryIntAttribute("number", &colNum)!=TIXML_SUCCESS)
@@ -477,18 +477,18 @@ void SparseMatrix::rowFromXML(TiXmlElement* rowElement)
 // Allocate internal storage
 void SparseMatrix::alloc(void)
 {
-    if (theRows != NULL)
+    if (theRows != nullptr)
         throw MatrixException("Attempt to allocate storage for non-cleared SparseMatrix");
     
     // Allocate the 1D array
-    if ((theRows = new list<Element*>[rows]) == NULL)
+    if ((theRows = new list<Element*>[rows]) == nullptr)
         throw Matrix_bad_alloc("Failed allocating storage for SparseMatrix.");
     
-    if (theColumns != NULL)
+    if (theColumns != nullptr)
         throw MatrixException("Attempt to allocate storage for non-cleared SparseMatrix");
     
     // Allocate the 1D array
-    if ((theColumns = new list<Element*>[columns]) == NULL)
+    if ((theColumns = new list<Element*>[columns]) == nullptr)
         throw Matrix_bad_alloc("Failed allocating storage for SparseMatrix.");
     
     // Set the hash table capacity
@@ -559,8 +559,8 @@ BGFLOAT& SparseMatrix::operator()(int r, int c)
     // Because we're a mutator, we need to insert a zero-value element
     // if the element wasn't found. We will rely on other methods to
     // eliminate zero elements "on the fly".
-    if (el == NULL) {
-        if ((el = new  Element(r, c, 0.0)) == NULL)
+    if (el == nullptr) {
+        if ((el = new  Element(r, c, 0.0)) == nullptr)
             throw Matrix_bad_alloc("Failed allocating storage for SparseMatrix.");
         theRows[r].push_back(el);
         theColumns[c].push_back(el);
