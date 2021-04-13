@@ -184,7 +184,7 @@ public:
 
    ///  The number of (incoming) edges for each vertex.
    ///  Note: Likely under a different name in GpuSim_struct, see edge_count. -Aaron
-   BGSIZE *synapseCounts_;
+   BGSIZE *edgeCounts_;
 
    ///  The total number of active edges.
    BGSIZE totalEdgeCount_;
@@ -222,7 +222,7 @@ struct AllEdgesDeviceProperties
 
         ///  The number of edges for each vertex.
         ///  Note: Likely under a different name in GpuSim_struct, see edge_count. -Aaron
-        BGSIZE *synapseCounts_;
+        BGSIZE *edgeCounts_;
 
         ///  The total number of active edges.
         BGSIZE totalEdgeCount_;

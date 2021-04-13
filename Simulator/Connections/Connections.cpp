@@ -107,7 +107,7 @@ void Connections::createSynapsesFromWeights(const int numVertices, Layout *layou
             int srcVertex = synapses.sourceVertexIndex_[iEdg];
             int destVertex = synapses.destVertexIndex_[iEdg];
             edgeType type = layout->edgType(srcVertex, destVertex);
-            synapses.synapseCounts_[iVertex]++;
+            synapses.edgeCounts_[iVertex]++;
             synapses.createEdge(iEdg, srcVertex, destVertex, sumPoint, Simulator::getInstance().getDeltaT(),
                                    type);
             synapses.W_[iEdg] = theW;

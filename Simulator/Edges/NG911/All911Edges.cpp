@@ -1,6 +1,6 @@
 /**
  *  @file All911Edges.cpp
- * 
+ *
  *  @ingroup Simulator/Edges/NG911
  *
  *  @brief A container of all 911 edge data
@@ -21,7 +21,36 @@ All911Edges::~All911Edges() {
 }
 
 void All911Edges::setupEdges() {
+   int numVertices = Simulator::getInstance().getTotalVertices();
+   int maxEdges = Simulator::getInstance().getMaxEdgesPerVertex();
 
+   BGSIZE maxTotalEdges = maxEdges * numVertices;
+
+   maxEdgesPerVertex_ = maxEdges;
+   totalEdgeCount_ = 0;
+   countVertices_ = numVertices;
+
+   // To do: Figure out whether we need all of these
+   if (maxTotalEdges != 0) {
+      destVertexIndex_ = new int[maxTotalEdges];
+      W_ = new BGFLOAT[maxTotalEdges];
+      summationPoint_ = new BGFLOAT *[maxTotalEdges];
+      sourceVertexIndex_ = new int[maxTotalEdges];
+      // psr_ = new BGFLOAT[maxTotalEdges];
+      type_ = new edgeType[maxTotalEdges];
+      inUse_ = new bool[maxTotalEdges];
+      edgeCounts_ = new BGSIZE[numVertices];
+
+      for (BGSIZE i = 0; i < maxTotalEdges; i++) {
+         summationPoint_[i] = NULL;
+         inUse_[i] = false;
+         W_[i] = 0;
+      }
+
+      for (int i = 0; i < numVertices; i++) {
+         edgeCounts_[i] = 0;
+      }
+   }
 }
 
 void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,

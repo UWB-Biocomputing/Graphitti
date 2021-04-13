@@ -104,7 +104,7 @@ void AllSpikingNeurons::advanceVertices(IAllEdges &synapses, const EdgeIndexMap 
          }
 
          // notify incoming synapses
-         synapseCounts = spSynapses.synapseCounts_[idx];
+         synapseCounts = spSynapses.edgeCounts_[idx];
          BGSIZE synapse_notified = 0;
 
          if (spSynapses.allowBackPropagation()) {

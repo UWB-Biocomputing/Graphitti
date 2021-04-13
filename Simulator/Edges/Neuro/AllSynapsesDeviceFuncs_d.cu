@@ -781,7 +781,7 @@ __device__ void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperties*
 /// @param numVertices            The number of vertices.
 __device__ void addSpikingSynapse(AllSpikingSynapsesDeviceProperties* allEdgesDevice, edgeType type, const int srcVertex, const int destVertex, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, BGFLOAT* W_d, int numVertices)
 {
-    if (allEdgesDevice->synapseCounts_[destVertex] >= allEdgesDevice->maxEdgesPerVertex_) {
+    if (allEdgesDevice->edgeCounts_[destVertex] >= allEdgesDevice->maxEdgesPerVertex_) {
         return; // TODO: ERROR!
     }
 
@@ -795,7 +795,7 @@ __device__ void addSpikingSynapse(AllSpikingSynapsesDeviceProperties* allEdgesDe
         }
     }
 
-    allEdgesDevice->synapseCounts_[destVertex]++;
+    allEdgesDevice->edgeCounts_[destVertex]++;
 
     // create a synapse
     switch (classSynapses_d) {
@@ -827,7 +827,7 @@ __device__ void addSpikingSynapse(AllSpikingSynapsesDeviceProperties* allEdgesDe
 __device__ void eraseSpikingSynapse( AllSpikingSynapsesDeviceProperties* allEdgesDevice, const int neuronIndex, const int synapseOffset, int maxEdges )
 {
     BGSIZE iSync = maxEdges * neuronIndex + synapseOffset;
-    allEdgesDevice->synapseCounts_[neuronIndex]--;
+    allEdgesDevice->edgeCounts_[neuronIndex]--;
     allEdgesDevice->inUse_[iSync] = false;
     allEdgesDevice->W_[iSync] = 0;
 }
@@ -889,7 +889,7 @@ __global__ void updateSynapsesWeightsDevice( int numVertices, BGFLOAT deltaT, BG
         edgeType type = edgType(neuronTypeMap_d, srcVertex, destVertex);
 
         // for each existing synapse
-        BGSIZE existing_synapses = allEdgesDevice->synapseCounts_[destVertex];
+        BGSIZE existing_synapses = allEdgesDevice->edgeCounts_[destVertex];
         int existingSynapsesChecked = 0;
         for (BGSIZE synapseIndex = 0; (existingSynapsesChecked < existing_synapses) && !connected; synapseIndex++) {
             BGSIZE iEdg = maxEdges * destVertex + synapseIndex;

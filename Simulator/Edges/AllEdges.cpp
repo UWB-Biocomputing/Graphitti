@@ -21,7 +21,7 @@ AllEdges::AllEdges() :
    psr_ = NULL;
    type_ = NULL;
    inUse_ = NULL;
-   synapseCounts_ = NULL;
+   edgeCounts_ = NULL;
 
    // Register loadParameters function as a loadParameters operation in the OperationManager
    function<void()> loadParametersFunc = std::bind(&IAllEdges::loadParameters, this);
@@ -49,7 +49,7 @@ AllEdges::~AllEdges() {
      delete[] psr_;
      delete[] type_;
      delete[] inUse_;
-     delete[] synapseCounts_;
+     delete[] edgeCounts_;
   }
 
    destVertexIndex_ = NULL;
@@ -59,7 +59,7 @@ AllEdges::~AllEdges() {
    psr_ = NULL;
    type_ = NULL;
    inUse_ = NULL;
-   synapseCounts_ = NULL;
+   edgeCounts_ = NULL;
 
    countVertices_ = 0;
    maxEdgesPerVertex_ = 0;
@@ -89,7 +89,7 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
       psr_ = new BGFLOAT[maxTotalSynapses];
       type_ = new edgeType[maxTotalSynapses];
       inUse_ = new bool[maxTotalSynapses];
-      synapseCounts_ = new BGSIZE[numVertices];
+      edgeCounts_ = new BGSIZE[numVertices];
 
       for (BGSIZE i = 0; i < maxTotalSynapses; i++) {
          summationPoint_[i] = NULL;
@@ -98,7 +98,7 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
       }
 
       for (int i = 0; i < numVertices; i++) {
-         synapseCounts_[i] = 0;
+         edgeCounts_[i] = 0;
       }
    }
 }
@@ -171,8 +171,8 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
 
    // count the total edges
    for (int i = 0; i < vertexCount; i++) {
-      assert(static_cast<int>(synapseCounts_[i]) < Simulator::getInstance().getMaxEdgesPerVertex());
-      totalSynapseCount += synapseCounts_[i];
+      assert(static_cast<int>(edgeCounts_[i]) < Simulator::getInstance().getMaxEdgesPerVertex());
+      totalSynapseCount += edgeCounts_[i];
    }
 
    DEBUG (cout << "totalSynapseCount: " << totalSynapseCount << endl;)
@@ -202,7 +202,7 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
             edge_count++;
          }
       }
-      assert(edge_count == this->synapseCounts_[i]);
+      assert(edge_count == this->edgeCounts_[i]);
       edgeIndexMap->incomingEdgeCount_[i] = edge_count;
    }
 
@@ -262,7 +262,7 @@ void AllEdges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap) 
 ///  @param  neuronIndex    Index of a vertex to remove from.
 ///  @param  iEdg           Index of a edge to remove.
 void AllEdges::eraseEdge(const int neuronIndex, const BGSIZE iEdg) {
-   synapseCounts_[neuronIndex]--;
+   edgeCounts_[neuronIndex]--;
    inUse_[iEdg] = false;
    summationPoint_[iEdg] = NULL;
    W_[iEdg] = 0;
@@ -281,7 +281,7 @@ void AllEdges::eraseEdge(const int neuronIndex, const BGSIZE iEdg) {
 void
 AllEdges::addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
                         const BGFLOAT deltaT) {
-   if (synapseCounts_[destVertex] >= maxEdgesPerVertex_) {
+   if (edgeCounts_[destVertex] >= maxEdgesPerVertex_) {
       LOG4CPLUS_FATAL(fileLogger_, "Neuron : " << destVertex << " ran out of space for new edges.");
       throw runtime_error("Neuron : " + destVertex + string(" ran out of space for new edges."));
    }
@@ -295,7 +295,7 @@ AllEdges::addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int de
       }
    }
 
-   synapseCounts_[destVertex]++;
+   edgeCounts_[destVertex]++;
 
    // create a edge
    createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
@@ -341,7 +341,7 @@ void AllEdges::printSynapsesProps() const {
    }
 
    for (int i = 0; i < countVertices_; i++) {
-      cout << "edge_counts:" << "vertex[" << i << "]" << synapseCounts_[i] << endl;
+      cout << "edge_counts:" << "vertex[" << i << "]" << edgeCounts_[i] << endl;
    }
 
    cout << "totalSynapseCount:" << totalEdgeCount_ << endl;

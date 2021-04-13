@@ -264,7 +264,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &iver
          edgeType type = layout->edgType(srcVertex, destVertex);
 
          // for each existing synapse
-         BGSIZE synapseCounts = synapses.synapseCounts_[destVertex];
+         BGSIZE synapseCounts = synapses.edgeCounts_[destVertex];
          BGSIZE synapse_adjusted = 0;
          BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * destVertex;
          for (BGSIZE synapseIndex = 0; synapse_adjusted < synapseCounts; synapseIndex++, iEdg++) {
