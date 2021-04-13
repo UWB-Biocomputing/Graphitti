@@ -11,12 +11,12 @@
 
 // Default constructor
 AllIZHNeurons::AllIZHNeurons() : AllIFNeurons() {
-   Aconst_ = NULL;
-   Bconst_ = NULL;
-   Cconst_ = NULL;
-   Dconst_ = NULL;
-   u_ = NULL;
-   C3_ = NULL;
+   Aconst_ = nullptr;
+   Bconst_ = nullptr;
+   Cconst_ = nullptr;
+   Dconst_ = nullptr;
+   u_ = nullptr;
+   C3_ = nullptr;
 }
 
 AllIZHNeurons::~AllIZHNeurons() {
@@ -29,12 +29,12 @@ AllIZHNeurons::~AllIZHNeurons() {
       delete[] C3_;
    }
 
-   Aconst_ = NULL;
-   Bconst_ = NULL;
-   Cconst_ = NULL;
-   Dconst_ = NULL;
-   u_ = NULL;
-   C3_ = NULL;
+   Aconst_ = nullptr;
+   Bconst_ = nullptr;
+   Cconst_ = nullptr;
+   Dconst_ = nullptr;
+   u_ = nullptr;
+   C3_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories).

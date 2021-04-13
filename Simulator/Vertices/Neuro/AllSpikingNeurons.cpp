@@ -11,10 +11,10 @@
 
 // Default constructor
 AllSpikingNeurons::AllSpikingNeurons() : AllVertices() {
-   hasFired_ = NULL;
-   spikeCount_ = NULL;
-   spikeCountOffset_ = NULL;
-   spikeHistory_ = NULL;
+   hasFired_ = nullptr;
+   spikeCount_ = nullptr;
+   spikeCountOffset_ = nullptr;
+   spikeHistory_ = nullptr;
 }
 
 AllSpikingNeurons::~AllSpikingNeurons() {
@@ -29,10 +29,10 @@ AllSpikingNeurons::~AllSpikingNeurons() {
       delete[] spikeHistory_;
    }
 
-   hasFired_ = NULL;
-   spikeCount_ = NULL;
-   spikeCountOffset_ = NULL;
-   spikeHistory_ = NULL;
+   hasFired_ = nullptr;
+   spikeCount_ = nullptr;
+   spikeCountOffset_ = nullptr;
+   spikeHistory_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories).
@@ -46,7 +46,7 @@ void AllSpikingNeurons::setupVertices() {
    spikeHistory_ = new uint64_t *[size_];
 
    for (int i = 0; i < size_; ++i) {
-      spikeHistory_[i] = NULL;
+      spikeHistory_[i] = nullptr;
       hasFired_[i] = false;
       spikeCount_[i] = 0;
       spikeCountOffset_[i] = 0;
@@ -91,7 +91,7 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap *
          // notify outgoing synapses
          BGSIZE synapseCounts;
 
-         if (edgeIndexMap != NULL) {
+         if (edgeIndexMap != nullptr) {
             synapseCounts = edgeIndexMap->outgoingEdgeCount_[idx];
             if (synapseCounts != 0) {
                int beginIndex = edgeIndexMap->outgoingEdgeBegin_[idx];

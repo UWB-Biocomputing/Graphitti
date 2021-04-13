@@ -137,7 +137,7 @@ int main(int argc, char *argv[]) {
 
    // INPUT OBJECTS ARENT IN PROJECT YET
    // Terminate the stimulus input
-//   if (pInput != NULL)
+//   if (pInput != nullptr)
 //   {
 //      simInfo->pInput->term();
 //      delete simInfo->pInput;

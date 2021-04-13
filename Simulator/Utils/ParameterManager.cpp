@@ -303,8 +303,8 @@ bool ParameterManager::getIntVectorByXpath(const string &path, const string &ele
    }
 
    // Check file for matching element
-   TiXmlNode *xmlNode = NULL;
-   if ((xmlNode = xmlDocument.FirstChildElement(elementName)) == NULL) {
+   TiXmlNode *xmlNode = nullptr;
+   if ((xmlNode = xmlDocument.FirstChildElement(elementName)) == nullptr) {
       cerr << "Could not find <" << elementName << "> in vertex list file " << path << endl;
       return false;
    }

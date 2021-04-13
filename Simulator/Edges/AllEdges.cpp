@@ -6,13 +6,13 @@ AllEdges::AllEdges() :
       totalEdgeCount_(0),
       maxEdgesPerVertex_(0),
       countVertices_(0) {
-   destVertexIndex_ = NULL;
-   W_ = NULL;
-   summationPoint_ = NULL;
-   sourceVertexIndex_ = NULL;
-   type_ = NULL;
-   inUse_ = NULL;
-   edgeCounts_ = NULL;
+   destVertexIndex_ = nullptr;
+   W_ = nullptr;
+   summationPoint_ = nullptr;
+   sourceVertexIndex_ = nullptr;
+   type_ = nullptr;
+   inUse_ = nullptr;
+   edgeCounts_ = nullptr;
 
    // Register loadParameters function as a loadParameters operation in the OperationManager
    function<void()> loadParametersFunc = std::bind(&AllEdges::loadParameters, this);
@@ -42,13 +42,13 @@ AllEdges::~AllEdges() {
      delete[] edgeCounts_;
   }
 
-   destVertexIndex_ = NULL;
-   W_ = NULL;
-   summationPoint_ = NULL;
-   sourceVertexIndex_ = NULL;
-   type_ = NULL;
-   inUse_ = NULL;
-   edgeCounts_ = NULL;
+   destVertexIndex_ = nullptr;
+   W_ = nullptr;
+   summationPoint_ = nullptr;
+   sourceVertexIndex_ = nullptr;
+   type_ = nullptr;
+   inUse_ = nullptr;
+   edgeCounts_ = nullptr;
 
    countVertices_ = 0;
    maxEdgesPerVertex_ = 0;
@@ -86,6 +86,7 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
    totalEdgeCount_ = 0;
    countVertices_ = numVertices;
 
+<<<<<<< HEAD
    if (maxTotalEdges != 0) {
       destVertexIndex_ = new int[maxTotalEdges];
       W_ = new BGFLOAT[maxTotalEdges];
@@ -97,6 +98,20 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
 
       for (BGSIZE i = 0; i < maxTotalEdges; i++) {
          summationPoint_[i] = NULL;
+=======
+   if (maxTotalSynapses != 0) {
+      destNeuronIndex_ = new int[maxTotalSynapses];
+      W_ = new BGFLOAT[maxTotalSynapses];
+      summationPoint_ = new BGFLOAT *[maxTotalSynapses];
+      sourceNeuronIndex_ = new int[maxTotalSynapses];
+      psr_ = new BGFLOAT[maxTotalSynapses];
+      type_ = new synapseType[maxTotalSynapses];
+      inUse_ = new bool[maxTotalSynapses];
+      synapseCounts_ = new BGSIZE[numVertices];
+
+      for (BGSIZE i = 0; i < maxTotalSynapses; i++) {
+         summationPoint_[i] = nullptr;
+>>>>>>> 7c9a125 (Changed all occurences of NULL to nullptr)
          inUse_[i] = false;
          W_[i] = 0;
       }
@@ -190,8 +205,13 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
 
    DEBUG (cout << "totalEdgeCount: " << totalEdgeCount << endl;)
 
+<<<<<<< HEAD
    if (totalEdgeCount == 0) {
       return NULL;
+=======
+   if (totalSynapseCount == 0) {
+      return nullptr;
+>>>>>>> 7c9a125 (Changed all occurences of NULL to nullptr)
    }
 
    // allocate memories for forward map
@@ -259,7 +279,7 @@ void AllEdges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap) 
 void AllEdges::eraseEdge(const int i, const BGSIZE iEdg) {
    edgeCounts_[i]--;
    inUse_[iEdg] = false;
-   summationPoint_[iEdg] = NULL;
+   summationPoint_[iEdg] = nullptr;
    W_[iEdg] = 0;
 }
 

@@ -60,7 +60,7 @@ void Simulator::setup() {
 
    // init stimulus input object
    /* PInput not in project yet
-   if (pInput != NULL) {
+   if (pInput != nullptr) {
       cout << "Initializing input." << endl;
       pInput->init();
    }
@@ -183,7 +183,7 @@ void Simulator::advanceUntilGrowth(const int &currentEpoch) const {
       count++;
       // input stimulus
       /***** S_INPUT NOT IN REPO YET *******/
-//      if (pInput != NULL)
+//      if (pInput != nullptr)
 //         pInput->inputStimulus();
       // Advance the Network one time step
       model_->advance();

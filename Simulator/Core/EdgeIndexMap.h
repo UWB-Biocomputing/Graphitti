@@ -49,13 +49,13 @@ struct EdgeIndexMap {
    BGSIZE *incomingEdgeCount_;
 
    EdgeIndexMap() : numOfVertices_(0), numOfEdges_(0) {
-      outgoingEdgeBegin_ = NULL;
-      outgoingEdgeCount_ = NULL;
-      incomingEdgeBegin_ = NULL;
-      incomingEdgeCount_ = NULL;
+      outgoingEdgeBegin_ = nullptr;
+      outgoingEdgeCount_ = nullptr;
+      incomingEdgeBegin_ = nullptr;
+      incomingEdgeCount_ = nullptr;
 
-      outgoingEdgeIndexMap_ = NULL;
-      incomingEdgeIndexMap_ = NULL;
+      outgoingEdgeIndexMap_ = nullptr;
+      incomingEdgeIndexMap_ = nullptr;
    };
 
    EdgeIndexMap(int vertexCount, int edgeCount) : numOfVertices_(vertexCount), numOfEdges_(edgeCount) {

@@ -49,32 +49,32 @@
 #endif
 
 ConnGrowth::ConnGrowth() : Connections() {
-   W_ = NULL;
-   radii_ = NULL;
-   rates_ = NULL;
-   delta_ = NULL;
-   area_ = NULL;
-   outgrowth_ = NULL;
-   deltaR_ = NULL;
+   W_ = nullptr;
+   radii_ = nullptr;
+   rates_ = nullptr;
+   delta_ = nullptr;
+   area_ = nullptr;
+   outgrowth_ = nullptr;
+   deltaR_ = nullptr;
    radiiSize_ = 0;
 }
 
 ConnGrowth::~ConnGrowth() {
-      if (W_ != NULL) delete W_;
-   if (radii_ != NULL) delete radii_;
-   if (rates_ != NULL) delete rates_;
-   if (delta_ != NULL) delete delta_;
-   if (area_ != NULL) delete area_;
-   if (outgrowth_ != NULL) delete outgrowth_;
-   if (deltaR_ != NULL) delete deltaR_;
+      if (W_ != nullptr) delete W_;
+   if (radii_ != nullptr) delete radii_;
+   if (rates_ != nullptr) delete rates_;
+   if (delta_ != nullptr) delete delta_;
+   if (area_ != nullptr) delete area_;
+   if (outgrowth_ != nullptr) delete outgrowth_;
+   if (deltaR_ != nullptr) delete deltaR_;
 
-   W_ = NULL;
-   radii_ = NULL;
-   rates_ = NULL;
-   delta_ = NULL;
-   area_ = NULL;
-   outgrowth_ = NULL;
-   deltaR_ = NULL;
+   W_ = nullptr;
+   radii_ = nullptr;
+   rates_ = nullptr;
+   delta_ = nullptr;
+   area_ = nullptr;
+   outgrowth_ = nullptr;
+   deltaR_ = nullptr;
    radiiSize_ = 0;
 }
 

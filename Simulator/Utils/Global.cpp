@@ -60,7 +60,7 @@ string neuronTypeToString(vertexType t) {
 	default:
 		cerr << "ERROR->neuronTypeToString() failed, unknown type: " << t << endl;
 		assert(false);
-		return NULL; // Must return a value -- this will probably cascade to another failure
+		return nullptr; // Must return a value -- this will probably cascade to another failure
 	}
 }
 // } NMV-END
