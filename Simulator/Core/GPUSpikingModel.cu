@@ -23,10 +23,10 @@ __constant__ int d_debug_mask[1];
 
 GPUSpikingModel::GPUSpikingModel() :
   Model::Model(),
-  synapseIndexMapDevice_(nullptr),
-  randNoise_d(nullptr),
-  allVerticesDevice_(nullptr),
-  allEdgesDevice_(nullptr)
+  synapseIndexMapDevice_(NULL),
+  randNoise_d(NULL),
+  allVerticesDevice_(NULL),
+  allEdgesDevice_(NULL)
 {
 }
 
@@ -283,7 +283,7 @@ void GPUSpikingModel::copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndex
   HANDLE_ERROR( cudaMemcpy ( synapseIMapDevice.outgoingSynapseCount_, 
         synapseIndexMapHost.outgoingSynapseCount_, numVertices * sizeof( BGSIZE ), cudaMemcpyHostToDevice ) );
   // the number of synapses may change, so we reallocate the memory
-  if (synapseIMapDevice.outgoingSynapseIndexMap_ != nullptr) {
+  if (synapseIMapDevice.outgoingSynapseIndexMap_ != NULL) {
     HANDLE_ERROR( cudaFree( synapseIMapDevice.outgoingSynapseIndexMap_ ) );
   }
   HANDLE_ERROR( cudaMalloc( ( void ** ) &synapseIMapDevice.outgoingSynapseIndexMap_, 
@@ -297,7 +297,7 @@ void GPUSpikingModel::copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndex
   HANDLE_ERROR( cudaMemcpy ( synapseIMapDevice.incomingSynapseCount_, 
         synapseIndexMapHost.incomingSynapseCount_, numVertices * sizeof( BGSIZE ), cudaMemcpyHostToDevice ) );
   // the number of synapses may change, so we reallocate the memory
-  if (synapseIMapDevice.incomingSynapseIndexMap_ != nullptr) {
+  if (synapseIMapDevice.incomingSynapseIndexMap_ != NULL) {
     HANDLE_ERROR( cudaFree( synapseIMapDevice.incomingSynapseIndexMap_ ) );
   }
   HANDLE_ERROR( cudaMalloc( ( void ** ) &synapseIMapDevice.incomingSynapseIndexMap_, 

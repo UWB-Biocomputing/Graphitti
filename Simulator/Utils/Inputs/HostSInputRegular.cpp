@@ -34,10 +34,10 @@ void HostSInputRegular::init()
 /// @param[in] psi       Pointer to the simulation information.
 void HostSInputRegular::term()
 {
-    if (values != nullptr)
+    if (values != NULL)
         delete[] values;
 
-    if (nShiftValues != nullptr)
+    if (nShiftValues != NULL)
         delete[] nShiftValues;
 }
 

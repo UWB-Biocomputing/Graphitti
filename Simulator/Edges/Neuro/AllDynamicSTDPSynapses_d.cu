@@ -341,20 +341,20 @@ void AllDynamicSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) con
         delete[] typePrint;
         delete[] inUsePrint;
         delete[] synapseCountsPrint;
-        destNeuronIndexPrint = nullptr;
-        WPrint = nullptr;
-        sourceNeuronIndexPrint = nullptr;
-        psrPrint = nullptr;
-        typePrint = nullptr;
-        inUsePrint = nullptr;
-        synapseCountsPrint = nullptr;
+        destNeuronIndexPrint = NULL;
+        WPrint = NULL;
+        sourceNeuronIndexPrint = NULL;
+        psrPrint = NULL;
+        typePrint = NULL;
+        inUsePrint = NULL;
+        synapseCountsPrint = NULL;
 
         delete[] decayPrint;
         delete[] totalDelayPrint;
         delete[] tauPrint;
-        decayPrint = nullptr;
-        totalDelayPrint = nullptr;
-        tauPrint = nullptr;
+        decayPrint = NULL;
+        totalDelayPrint = NULL;
+        tauPrint = NULL;
 
         delete[] totalDelayPostPrint;
         delete[] tauspost_Print;
@@ -368,18 +368,18 @@ void AllDynamicSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) con
         delete[] mupos_Print;
         delete[] muneg_Print;
         delete[] useFroemkeDanSTDP_Print;
-        totalDelayPostPrint = nullptr;
-        tauspost_Print = nullptr;
-        tauspre_Print = nullptr;
-        taupos_Print = nullptr;
-        tauneg_Print = nullptr;
-        STDPgap_Print = nullptr;
-        Wex_Print = nullptr;
-        Aneg_Print = nullptr;
-        Apos_Print = nullptr;
-        mupos_Print = nullptr;
-        muneg_Print = nullptr;
-        useFroemkeDanSTDP_Print = nullptr;
+        totalDelayPostPrint = NULL;
+        tauspost_Print = NULL;
+        tauspre_Print = NULL;
+        taupos_Print = NULL;
+        tauneg_Print = NULL;
+        STDPgap_Print = NULL;
+        Wex_Print = NULL;
+        Aneg_Print = NULL;
+        Apos_Print = NULL;
+        mupos_Print = NULL;
+        muneg_Print = NULL;
+        useFroemkeDanSTDP_Print = NULL;
 
         delete[] lastSpikePrint;
         delete[] rPrint;
@@ -387,12 +387,12 @@ void AllDynamicSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) con
         delete[] DPrint;
         delete[] UPrint;
         delete[] FPrint;
-        lastSpikePrint = nullptr;
-        rPrint = nullptr;
-        uPrint = nullptr;
-        DPrint = nullptr;
-        UPrint = nullptr;
-        FPrint = nullptr;
+        lastSpikePrint = NULL;
+        rPrint = NULL;
+        uPrint = NULL;
+        DPrint = NULL;
+        UPrint = NULL;
+        FPrint = NULL;
     }
 }
 

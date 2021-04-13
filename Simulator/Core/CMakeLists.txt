@@ -9,6 +9,6 @@ list(REMOVE_ITEM Core "${CMAKE_CURRENT_SOURCE_DIR}/BGDriver.cpp")
 # Create a library from the list of files gathered
 add_library(Core ${Core})
 
-if (BRAINGRID_CUDA)
+if (ENABLE_CUDA)
    set_property(TARGET Core PROPERTY CUDA_ARCHITECTURES 35-virtual) 
 endif()

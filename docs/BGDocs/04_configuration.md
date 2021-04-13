@@ -1,20 +1,20 @@
 # 4.  Configuring the model
 
-Now that you have run through a quick test and made sure you have a working BrainGrid repository, it is time to learn how to use it!
+Now that you have run through a quick test and made sure you have a working Graphitti repository, it is time to learn how to use it!
 
 We will be going through this in a few steps:
 
-1. First, we will look at how to implement a quick and dirty model and simulation parameters, which will involve putting together all the files that BrainGrid uses as inputs.
+1. First, we will look at how to implement a quick and dirty model and simulation parameters, which will involve putting together all the files that Graphitti uses as inputs.
 
-2. Second, we will configure BrainGrid to use a GPU (you've already seen how to do it with a single thread). And then we will run the simulation.
+2. Second, we will configure Graphitti to use a GPU (you've already seen how to do it with a single thread). And then we will run the simulation.
 
-3. Lastly, we will collect BrainGrid's output and examine a few ways one might actually visualize the data.
+3. Lastly, we will collect Graphitti's output and examine a few ways one might actually visualize the data.
 
 Ready? Okay.
 
 ## 4.1 Inside the Config files
 
-There are two config files needed to run a simulation on BrainGrid:
+There are two config files needed to run a simulation on Graphitti:
 
 1. The input (or "stimulation") file - **SimInfoParams**
 2. The model configuration - **ModelParams**
@@ -27,7 +27,7 @@ If on the other hand, you have a more complicated model in mind - such as using 
 
 Let's go through the steps required to use a built-in model.
 
-Take a look at **test-tiny.xml** file that is under  `BrainGrid/validation`  directory: 
+Take a look at **test-tiny.xml** file that is under  `Graphitti/configfiles`  directory: 
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -37,7 +37,7 @@ Take a look at **test-tiny.xml** file that is under  `BrainGrid/validation`  dir
    <!-- size of pool of neurons [x y z] -->
    <PoolSize x="2" y="2" z="1"/>
    <!-- Simulation Parameters -->
-   <SimParams Tsim="1.0" numSims="1"/>
+   <SimParams epochDuration="1.0" numEpochs="1"/>
    <!-- Simulation Configuration Parameters -->
    <SimConfig maxFiringRate="200" maxEdgesPerVertex="200"/>
    <!-- Random seed - set to zero to use /dev/random -->
@@ -104,7 +104,7 @@ Take a look at **test-tiny.xml** file that is under  `BrainGrid/validation`  dir
 </ModelParams>
 ```
 
-This is a typical example of a model configuration file that you must give to use BrainGrid. This type of file is mandatory - BrainGrid won't run without specifying model parameters. Even if you plan on writing your own model from "scratch", you may want to read this section anyway.
+This is a typical example of a model configuration file that you must give to use Graphitti. This type of file is mandatory - Graphitti won't run without specifying model parameters. Even if you plan on writing your own model from "scratch", you may want to read this section anyway.
 
 You can see that this file is a pretty standard XML file. It has tags that specify what each section is, like `<SimInfoParams>` and end tags that end said section, like `</SimInfoParams>`. Within each section, you can have sub-sections ad infinitum (in fact, XML files follow a tree structure, with a root node which branches into a top level of nodes, which branch into their own nodes, which branch, etc.)
 
@@ -114,10 +114,10 @@ On to the actual parameters.
 
 #### SimInfoParams
 
-The first set of parameters that BrainGrid expects out of this file is stored in the SimInfoParams node. These parameters are required no matter what your model is. Here you must specify the:
+The first set of parameters that Graphitti expects out of this file is stored in the SimInfoParams node. These parameters are required no matter what your model is. Here you must specify the:
 
 * **PoolSize**: the three dimensional grid of neurons' parameters - expects an x (how many neurons are on the x axis), a y (how many neurons are on the y axis) and a z (not currently used). These three numbers together form a network of neurons that is x by y by z neurons (though in reality, the z dimension is not currently implemented).
-* **SimParams**: the time configurations - expects a Tsim, which is how much time the simulation is simulating (in seconds) and a numSims, which is how many times to run the simulation (each simulation cycle picks up where the previous one left off)
+* **SimParams**: the time configurations - expects a epochDuration, which is how much time the simulation is simulating (in seconds) and a numEpochs, which is how many times to run the simulation (each simulation cycle picks up where the previous one left off)
 * **SimConfig**: the maxFiringRate of a neuron and the maxEdgesPerVertex (the limitations of the simulation). Note the rate is in Hz.
 * **Seed**: a random seed for the random generator.
 * **OutputParams**: requires stateOutputFileName, which is where the simulator will store the output file.
@@ -148,4 +148,4 @@ The next set of parameters is the ModelParams. These parameters are specific to 
 [>> Next: 5. Examples]()
 
 ---------
-[<< Go back to BrainGrid Home page](http://uwb-biocomputing.github.io/BrainGrid/)
+[<< Go back to Graphitti Home page](http://uwb-biocomputing.github.io/Graphitti/)

@@ -26,7 +26,6 @@
 class Model;
 
 #ifdef PERFORMANCE_METRICS
-// Home-brewed performance measurement  *doesnt affect runtime itself. *also collects performance on GPU *warner smidt paper with details "profiling braingrid"
 #include "Timer.h"
 #endif
 

@@ -27,10 +27,13 @@
 *.lib
 
 # Generated Files
+build/bin
+build/Simulator
+build/Testing
 build/ThirdParty
 
 # Executables
-braingrid
+graphitti
 tests
 *.exe
 *.out

@@ -4,6 +4,6 @@ file(GLOB_RECURSE Layouts *.cpp *.h)
 # Create a library from the list of files gathered
 add_library(Layouts ${Layouts})
 
-if (BRAINGRID_CUDA)
+if (ENABLE_CUDA)
    set_property(TARGET Layouts PROPERTY CUDA_ARCHITECTURES 35-virtual) 
 endif()

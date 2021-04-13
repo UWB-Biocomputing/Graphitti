@@ -22,8 +22,8 @@ extern "C"
 /// struct timeval param is not used in implementation). gettimeofday is
 /// part of sys/time.h which is unavailable to WIN32. A solution to this
 /// is to use SYSTEMTIME to receive a high resolution time.
-static int gettimeofday(struct timeval *tval, struct timeval *alwaysnullptr){
-	if(tval != nullptr){
+static int gettimeofday(struct timeval *tval, struct timeval *alwaysNULL){
+	if(tval != NULL){
 		SYSTEMTIME systemtime;
 		FILETIME filetime;
 		ULARGE_INTEGER ulargeint;

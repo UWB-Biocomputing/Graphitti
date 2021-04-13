@@ -18,15 +18,15 @@ void getValueList(const string& valString, vector<BGFLOAT>* pList);
 /// @param[in] psi       Pointer to the simulation information
 /// @param[in] parms     Pointer to xml parms element
 SInputRegular::SInputRegular(TiXmlElement* parms) :
-    values(nullptr),
-    nShiftValues(nullptr)
+    values(NULL),
+    nShiftValues(NULL)
 {
     fSInput = false;
 
     // read duration, interval and sync
-    TiXmlElement* temp = nullptr;
+    TiXmlElement* temp = NULL;
     string sync;
-    if (( temp = parms->FirstChildElement( "IntParams" ) ) != nullptr) { if (temp->QueryFLOATAttribute("duration", &duration ) != TIXML_SUCCESS) {
+    if (( temp = parms->FirstChildElement( "IntParams" ) ) != NULL) { if (temp->QueryFLOATAttribute("duration", &duration ) != TIXML_SUCCESS) {
             cerr << "error IntParams:duration" << endl;
             return;
         }
@@ -52,10 +52,10 @@ SInputRegular::SInputRegular(TiXmlElement* parms) :
     nStepsInCycle = 0;
 
     // read initial values
-    if ((temp = parms->FirstChildElement( "Values")) != nullptr)
+    if ((temp = parms->FirstChildElement( "Values")) != NULL)
     {
-        TiXmlNode* pNode = nullptr;
-        while ((pNode = temp->IterateChildren(pNode)) != nullptr)
+        TiXmlNode* pNode = NULL;
+        while ((pNode = temp->IterateChildren(pNode)) != NULL)
         {
             if (strcmp(pNode->Value(), "I") == 0)
             {

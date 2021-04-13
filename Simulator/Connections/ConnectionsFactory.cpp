@@ -47,5 +47,5 @@ Connections *ConnectionsFactory::invokeCreateFunction(const string &className) {
       if (className == i->first)
          return i->second();
    }
-   return nullptr;
+   return NULL;
 }

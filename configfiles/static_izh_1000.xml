@@ -18,7 +18,7 @@
             <value name="value">777</value>
         </Seed>
         <OutputParams name="OutputParams">
-            <resultFileName name="resultFileName">results/static_izh_historyDump.h5</resultFileName>
+            <resultFileName name="resultFileName">../Output/Results/static_izh_historyDump.h5</resultFileName>
         </OutputParams>
     </SimInfoParams>
     <ModelParams>
@@ -103,8 +103,8 @@
         <LayoutParams class="FixedLayout" name="LayoutParams">
             <LayoutFiles name="LayoutFiles">
                 <activeNListFileName name="activeNListFileName" type="InputFile"/>
-                <inhNListFileName name="inhNListFileName" type="InputFile">configfiles/NList/inhNList__1000.xml</inhNListFileName>
-                <probedNListFileName name="prbNListFileName" type="InputFile">configfiles/NList/probedNList_1000.xml</probedNListFileName>
+                <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/inhNList__1000.xml</inhNListFileName>
+                <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_1000.xml</probedNListFileName>
             </LayoutFiles>
         </LayoutParams>
     </ModelParams>

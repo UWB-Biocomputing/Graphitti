@@ -399,20 +399,20 @@ void AllSpikingSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
         delete[] typePrint;
         delete[] inUsePrint;
         delete[] synapseCountsPrint;
-        destNeuronIndexPrint = nullptr;
-        WPrint = nullptr;
-        sourceNeuronIndexPrint = nullptr;
-        psrPrint = nullptr;
-        typePrint = nullptr;
-        inUsePrint = nullptr;
-        synapseCountsPrint = nullptr;
+        destNeuronIndexPrint = NULL;
+        WPrint = NULL;
+        sourceNeuronIndexPrint = NULL;
+        psrPrint = NULL;
+        typePrint = NULL;
+        inUsePrint = NULL;
+        synapseCountsPrint = NULL;
 
         delete[] decayPrint;
         delete[] totalDelayPrint;
         delete[] tauPrint;
-        decayPrint = nullptr;
-        totalDelayPrint = nullptr;
-        tauPrint = nullptr;
+        decayPrint = NULL;
+        totalDelayPrint = NULL;
+        tauPrint = NULL;
     }
 }
 

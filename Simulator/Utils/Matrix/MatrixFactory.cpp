@@ -34,13 +34,13 @@ void MatrixFactory::GetAttributes(TiXmlElement* matElement,
 				  int& rows, int& columns,
 				  FLOAT& multiplier)
 {
-  const char* temp = nullptr;
+  const char* temp = NULL;
 
 #ifdef MDEBUG
   cerr << "Getting attributes:" << endl;
 #endif
   temp = matElement->Attribute("type");
-  if (temp != nullptr)
+  if (temp != NULL)
     type = temp;
   else
     type = "undefined";
@@ -70,7 +70,7 @@ void MatrixFactory::GetAttributes(TiXmlElement* matElement,
 #endif
 
   temp = matElement->Attribute("init");
-  if (temp != nullptr)
+  if (temp != NULL)
     init = temp;
   else
     init = "none";
@@ -89,14 +89,14 @@ void MatrixFactory::GetAttributes(TiXmlElement* matElement,
 ///   If no problems, correct Matrix subclass object created and
 ///   initialized.
 /// Returns:
-///   Pointer to created Matrix (nullptr if failure).
+///   Pointer to created Matrix (NULL if failure).
 Matrix* MatrixFactory::CreateMatrix(TiXmlElement* matElement) 
 {
   string type;
   string init;
   int rows, columns;
   FLOAT multiplier;
-  Matrix* theMatrix = nullptr;
+  Matrix* theMatrix = NULL;
   TiXmlHandle matHandle(matElement);
 
   GetAttributes(matElement, type, init, rows, columns, multiplier);
@@ -114,7 +114,7 @@ Matrix* MatrixFactory::CreateMatrix(TiXmlElement* matElement)
     // Get the Text node that contains the matrix values, if needed
     if (init == "none") {
       TiXmlText* valuesNode = matHandle.FirstChild().Text();
-      if (valuesNode == nullptr)
+      if (valuesNode == NULL)
 	throw KII_invalid_argument("Contents not specified for Matrix with init='none'.");
       values = valuesNode->Value();
 #ifdef MDEBUG
@@ -130,7 +130,7 @@ Matrix* MatrixFactory::CreateMatrix(TiXmlElement* matElement)
   } else if (type == "diag") {   // Implement diagonal matrices as sparse
     if (init == "none") {          // a string of values is present & passed
       TiXmlText* valuesNode = matHandle.FirstChild().Text();
-      if (valuesNode == nullptr)
+      if (valuesNode == NULL)
 	throw KII_invalid_argument("Contents not specified for Sparse Matrix with init='none'.");
       const char* values = valuesNode->Value();
 #ifdef MDEBUG
@@ -186,7 +186,7 @@ VectorMatrix MatrixFactory::CreateVector(TiXmlElement* matElement)
   // Get the Text node that contains the matrix values, if needed
   if (init == "none") {
     TiXmlText* valuesNode = matHandle.FirstChild().Text();
-    if (valuesNode == nullptr)
+    if (valuesNode == NULL)
       throw KII_invalid_argument("Contents not specified for Vector with init='none'.");
 
     values = valuesNode->Value();
@@ -241,7 +241,7 @@ CompleteMatrix MatrixFactory::CreateComplete(TiXmlElement* matElement)
   // Get the Text node that contains the matrix values, if needed
   if (init == "none") {
     TiXmlText* valuesNode = matHandle.FirstChild().Text();
-    if (valuesNode == nullptr)
+    if (valuesNode == NULL)
       throw KII_invalid_argument("Contents not specified for Matrix with init='none'.");
 
     values = valuesNode->Value();
@@ -287,7 +287,7 @@ SparseMatrix MatrixFactory::CreateSparse(TiXmlElement* matElement)
   if (type == "diag") {
     if (init == "none") {          // a string of values is present & passed
       TiXmlText* valuesNode = matHandle.FirstChild().Text();
-      if (valuesNode == nullptr)
+      if (valuesNode == NULL)
 	throw KII_invalid_argument("Contents not specified for Sparese Matrix with init='none'.");
       const char* values = valuesNode->Value();
 #ifdef MDEBUG
