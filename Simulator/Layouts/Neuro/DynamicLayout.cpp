@@ -31,7 +31,14 @@ void DynamicLayout::printParameters() const {
 ///
 ///  @param  numVertices number of the vertices to have in the type map.
 void DynamicLayout::generateVertexTypeMap(int numVertices) {
-   Layout::generateVertexTypeMap(numVertices);
+   DEBUG(cout << "\nInitializing vertex type map" << endl;);
+
+   // Populate vertexTypeMap_ with EXC
+   fill_n(vertexTypeMap_, numVertices, EXC);
+
+   // for (int i = 0; i < numVertices; i++) {
+   //    vertexTypeMap_[i] = EXC;
+   // }
 
    int numExcititoryNeurons = (int) (m_frac_excitatory_neurons * numVertices + 0.5);
    int numInhibitoryNeurons = numVertices - numExcititoryNeurons;

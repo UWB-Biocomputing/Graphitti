@@ -121,10 +121,10 @@ void Layout::printParameters() const {
 /// Creates a vertex type map.
 /// @param  numVertices number of the vertices to have in the type map.
 void Layout::generateVertexTypeMap(int numVertices) {
-   DEBUG(cout << "\nInitializing vertex type map" << endl;);
+   DEBUG(cout << "\nInitializing vertex type map: VTYPE_UNDEF" << endl;);
 
    for (int i = 0; i < numVertices; i++) {
-      vertexTypeMap_[i] = EXC;
+      vertexTypeMap_[i] = VTYPE_UNDEF;
    }
 }
 
