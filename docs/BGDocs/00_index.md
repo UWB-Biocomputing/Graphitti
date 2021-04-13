@@ -1,16 +1,16 @@
-# DEBS
+# Graphitti
 
 ## Table of Contents
 
 1. [Introduction](01_introduction.md)
 
-   1.1 What is DEBS?
+   1.1 What is Graphitti?
    
-   1.2 What is DEBS for?
+   1.2 What is Graphitti for?
    
-   1.3 Why do we need DEBS?
+   1.3 Why do we need Graphitti?
    
-   1.4 Who is the DEBS Audience?
+   1.4 Who is the Graphitti Audience?
 
 2. [Installation](02_installation.md)
 
@@ -18,9 +18,9 @@
    
    See [Install Requirements](02a_installRequirements.md)
    
-   2.2 Download DEBS
+   2.2 Download Graphitti
    
-   2.3 Install DEBS
+   2.3 Install Graphitti
 
 3. [Quickstart](03_quickstart.md)
 
