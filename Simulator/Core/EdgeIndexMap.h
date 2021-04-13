@@ -51,13 +51,13 @@ struct EdgeIndexMap {
    BGSIZE *incomingSynapseCount_;
 
    EdgeIndexMap() : numOfNeurons_(0), numOfSynapses_(0) {
-      outgoingSynapseBegin_ = nullptr;
-      outgoingSynapseCount_ = nullptr;
-      incomingSynapseBegin_ = nullptr;
-      incomingSynapseCount_ = nullptr;
+      outgoingSynapseBegin_ = NULL;
+      outgoingSynapseCount_ = NULL;
+      incomingSynapseBegin_ = NULL;
+      incomingSynapseCount_ = NULL;
 
-      outgoingSynapseIndexMap_ = nullptr;
-      incomingSynapseIndexMap_ = nullptr;
+      outgoingSynapseIndexMap_ = NULL;
+      incomingSynapseIndexMap_ = NULL;
    };
 
    EdgeIndexMap(int neuronCount, int synapseCount) : numOfNeurons_(neuronCount), numOfSynapses_(synapseCount) {

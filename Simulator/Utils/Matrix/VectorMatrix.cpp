@@ -30,7 +30,7 @@ Norm VectorMatrix::nRng;
 /// @param m multiplier used for initialization
 /// @param v values for initializing VectorMatrix
 VectorMatrix::VectorMatrix(string t, string i, int r, int c, BGFLOAT m, string values) :
-	Matrix(t, i, r, c, m), theVector(nullptr) {
+	Matrix(t, i, r, c, m), theVector(NULL) {
 	DEBUG_VECTOR(cerr << "Creating VectorMatrix, size: ";)
 
 	// Bail out if we're being asked to create nonsense
@@ -79,7 +79,7 @@ VectorMatrix::VectorMatrix(string t, string i, int r, int c, BGFLOAT m, string v
 
 // Copy constructor
 VectorMatrix::VectorMatrix(const VectorMatrix& oldV) :
-	theVector(nullptr) {
+	theVector(NULL) {
 	copy(oldV);
 }
 
@@ -108,9 +108,9 @@ VectorMatrix::~VectorMatrix() {
 
 // Clear out storage
 void VectorMatrix::clear(void) {
-	if (theVector != nullptr) {
+	if (theVector != NULL) {
 		delete[] theVector;
-		theVector = nullptr;
+		theVector = NULL;
 	}
 }
 
@@ -128,10 +128,10 @@ void VectorMatrix::copy(const VectorMatrix& source) {
 
 // Allocate internal storage
 void VectorMatrix::alloc(int size) {
-	if (theVector != nullptr)
+	if (theVector != NULL)
 		throw MatrixException("Attempt to allocate storage for non-cleared Vector.");
 
-	if ((theVector = new BGFLOAT[size]) == nullptr) {
+	if ((theVector = new BGFLOAT[size]) == NULL) {
 		throw Matrix_bad_alloc("Failed allocating storage of Vector copy.");
 	}
 
