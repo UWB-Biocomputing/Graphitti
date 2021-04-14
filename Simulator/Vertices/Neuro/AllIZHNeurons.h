@@ -124,7 +124,7 @@ public:
        ///  @param  allEdgesDevice      Reference to the allEdges struct on device memory.
        ///  @param  randNoise              Reference to the random noise array.
        ///  @param  edgeIndexMapDevice  Reference to the EdgeIndexMap on device memory.
-       virtual void advanceVertices(IAllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice);
+       virtual void advanceVertices(AllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice);
 
        ///  Allocate GPU memories to store all neurons' states,
        ///  and copy them from host to GPU memory.

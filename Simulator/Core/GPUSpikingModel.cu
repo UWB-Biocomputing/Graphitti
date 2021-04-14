@@ -12,7 +12,7 @@
 #include "Connections.h"
 #include "Global.h"
 #include "IAllVertices.h"
-#include "IAllEdges.h"
+#include "AllEdges.h"
 
 #ifdef PERFORMANCE_METRICS
 float g_time;
@@ -42,7 +42,7 @@ void GPUSpikingModel::allocDeviceStruct(void** allVerticesDevice, void** allEdge
 {
   // Get neurons and synapses
   shared_ptr<IAllVertices> neurons = layout_->getVertices();
-  shared_ptr<IAllEdges> synapses = connections_->getEdges();
+  shared_ptr<AllEdges> synapses = connections_->getEdges();
 
   // Allocate Neurons and Synapses structs on GPU device memory
   neurons->allocNeuronDeviceStruct(allVerticesDevice);
@@ -68,7 +68,7 @@ void GPUSpikingModel::deleteDeviceStruct(void** allVerticesDevice, void** allEdg
 {  
   // Get neurons and synapses
   shared_ptr<IAllVertices> neurons = layout_->getVertices();
-  shared_ptr<IAllEdges> synapses = connections_->getEdges();
+  shared_ptr<AllEdges> synapses = connections_->getEdges();
 
   // Copy device synapse and neuron structs to host memory
   neurons->copyNeuronDeviceToHost( *allVerticesDevice);
@@ -146,7 +146,7 @@ void GPUSpikingModel::advance()
 
   // Get neurons and synapses
   shared_ptr<IAllVertices> neurons = layout_->getVertices();
-  shared_ptr<IAllEdges> synapses = connections_->getEdges();
+  shared_ptr<AllEdges> synapses = connections_->getEdges();
 
   normalMTGPU(randNoise_d);
 
@@ -196,7 +196,7 @@ void GPUSpikingModel::updateConnections()
 {
   // Get neurons and synapses
   shared_ptr<IAllVertices> neurons = layout_->getVertices();
-  shared_ptr<IAllEdges> synapses = connections_->getEdges();
+  shared_ptr<AllEdges> synapses = connections_->getEdges();
 
   dynamic_cast<AllSpikingNeurons*>(neurons.get())->copyNeuronDeviceSpikeCountsToHost(allVerticesDevice_);
   dynamic_cast<AllSpikingNeurons*>(neurons.get())->copyNeuronDeviceSpikeHistoryToHost(allVerticesDevice_);
@@ -265,7 +265,7 @@ void GPUSpikingModel::deleteSynapseImap(  )
 /// @param  synapseIndexMapHost		Reference to the EdgeIndexMap in host memory.
 void GPUSpikingModel::copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices)
 {
-  shared_ptr<IAllEdges> synapses = connections_->getEdges();
+  shared_ptr<AllEdges> synapses = connections_->getEdges();
   int totalSynapseCount = dynamic_cast<AllEdges*>(synapses.get())->totalEdgeCount_;
 
   if (totalSynapseCount == 0)

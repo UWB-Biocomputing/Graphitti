@@ -82,7 +82,7 @@ public:
    ///
    ///  @param  edges         The Edge list to search from.
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-   virtual void advanceVertices(IAllEdges &edges, const EdgeIndexMap *edgeIndexMap);
+   virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap);
 
 protected:
 

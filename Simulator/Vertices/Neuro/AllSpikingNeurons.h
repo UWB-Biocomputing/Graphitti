@@ -49,7 +49,7 @@ public:
        ///  Set some parameters used for advanceVerticesDevice.
        ///
        ///  @param  synapses               Reference to the allEdges struct on host memory.
-       virtual void setAdvanceVerticesDeviceParams(IAllEdges &synapses);
+       virtual void setAdvanceVerticesDeviceParams(AllEdges &synapses);
 
        ///  Copy spike counts data stored in device memory to host.
        ///
@@ -92,7 +92,7 @@ public:
    ///
    ///  @param  synapses         The Synapse list to search from.
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-   virtual void advanceVertices(IAllEdges &synapses, const EdgeIndexMap *edgeIndexMap);
+   virtual void advanceVertices(AllEdges &synapses, const EdgeIndexMap *edgeIndexMap);
 
    /// Get the spike history of neuron[index] at the location offIndex.
    /// More specifically, retrieves the global simulation time step for the spike

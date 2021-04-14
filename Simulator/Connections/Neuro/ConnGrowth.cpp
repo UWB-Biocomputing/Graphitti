@@ -35,7 +35,7 @@
 
 #include "ConnGrowth.h"
 #include "ParseParamError.h"
-#include "IAllEdges.h"
+#include "AllEdges.h"
 #include "XmlGrowthRecorder.h"
 #include "AllSpikingNeurons.h"
 #include "Matrix/CompleteMatrix.h"
@@ -83,7 +83,7 @@ ConnGrowth::~ConnGrowth() {
 ///  @param  layout    Layout information of the neural network.
 ///  @param  vertices   The vertex list to search from.
 ///  @param  synapses  The Synapse list to search from.
-void ConnGrowth::setupConnections(Layout *layout, IAllVertices *vertices, IAllEdges *synapses) {
+void ConnGrowth::setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *synapses) {
    int numVertices = Simulator::getInstance().getTotalVertices();
    radiiSize_ = numVertices;
 
@@ -236,12 +236,12 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout) {
 ///
 ///  @param  numVertices  Number of vertices to update.
 ///  @param  ivertices    the AllVertices object.
-///  @param  isynapses   the AllEdges object.
+///  @param  iedges   the AllEdges object.
 ///  @param  layout      the Layout object.
-void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &ivertices, IAllEdges &isynapses,
+void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &ivertices, AllEdges &iedges,
                                        Layout *layout) {
    AllVertices &vertices = dynamic_cast<AllVertices &>(ivertices);
-   AllEdges &synapses = dynamic_cast<AllEdges &>(isynapses);
+   AllEdges &synapses = dynamic_cast<AllEdges &>(iedges);
 
    // For now, we just set the weights to equal the areas. We will later
    // scale it and set its sign (when we index and get its sign).
@@ -283,7 +283,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &iver
                      // adjust
                      // SYNAPSE_STRENGTH_ADJUSTMENT is 1.0e-8;
                      synapses.W_[iEdg] = (*W_)(srcVertex, destVertex) *
-                                         synapses.edgSign(type) * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+                                         synapses.edgSign(type) * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 
                      LOG4CPLUS_DEBUG(fileLogger_, "Weight of rgSynapseMap" <<
                                                                            "[" << synapseIndex << "]: " <<
@@ -307,7 +307,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &iver
                                 Simulator::getInstance().getDeltaT());
             synapses.W_[iEdg] =
                   (*W_)(srcVertex, destVertex) * synapses.edgSign(type) *
-                  AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+                  AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 
          }
       }

@@ -1,51 +1,27 @@
 /**
- *  @file AllEdges.h
- *
- *  @ingroup Simulator/Edges
+ * @file AllEdges.h
  * 
- *  @brief A container of all edge data
+ * @ingroup Simulator/Edges
  *
- *  The container holds edge parameters of all edges. 
- *  Each kind of edge parameter is stored in a 2D array. Each item in the first 
- *  dimention of the array corresponds with each vertex, and each item in the second
- *  dimension of the array corresponds with a edge parameter of each edge of the vertex. 
- *  Bacause each vertex owns different number of edges, the number of edges 
- *  for each vertex is stored in a 1D array, edge_counts.
- *
- *  For CUDA implementation, we used another structure, AllEdgesDevice, where edge
- *  parameters are stored in 1D arrays instead of 2D arrays, so that device functions
- *  can access these data less latency. When copying a edge parameter, P[i][j],
- *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in 
- *  AllEdgesDevice structure.
- *
- *  The latest implementation uses the identical data struture between host and CUDA;
- *  that is, edge parameters are stored in a 1D array, so we don't need conversion 
- *  when copying data between host and device memory.
+ * @brief An interface and top level implementation for edge classes.
  */
 
 #pragma once
-
-#include "IAllEdges.h"
 
 #include <vector>
 
 #include "Global.h"
 #include "Simulator.h"
+#include "EdgeIndexMap.h"
 #include "log4cplus/loggingmacros.h"
 #include "cereal/types/vector.hpp"
 
-#ifdef _WIN32
-typedef unsigned _int8 uint8_t;
-#endif
-
 class IAllVertices;
 
-class AllEdges : public IAllEdges {
+class AllEdges {
 public:
    AllEdges();
-
    AllEdges(const int numVertices, const int maxEdges);
-
    virtual ~AllEdges();
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -59,50 +35,39 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
 
-   ///  Reset time varying state vars and recompute decay.
-   ///
-   ///  @param  iEdg     Index of the edge to set.
-   ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT);
-
-   ///  Adds a Synapse to the model, connecting two Neurons.
+   ///  Adds a Edge to the model, connecting two Vertices.
    ///
    ///  @param  iEdg        Index of the edge to be added.
-   ///  @param  type        The type of the Synapse to add.
-   ///  @param  srcVertex   The Neuron that sends to this Synapse.
-   ///  @param  destVertex  The Neuron that receives from the Synapse.
-   ///  @param  sumPoint    Summation point address.
+   ///  @param  type        The type of the Edge to add.
+   ///  @param  srcVertex  The Vertex that sends to this Edge.
+   ///  @param  destVertex The Vertex that receives from the Edge.
+   ///  @param  sumPoint   Summation point address.
    ///  @param  deltaT      Inner simulation step duration
    virtual void
    addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
               const BGFLOAT deltaT);
 
-   ///  Create a Synapse and connect it to the model.
+   ///  Create a Edge and connect it to the model.
    ///
    ///  @param  iEdg        Index of the edge to set.
-   ///  @param  source      Coordinates of the source Neuron.
-   ///  @param  dest        Coordinates of the destination Neuron.
-   ///  @param  sumPoint    Summation point address.
+   ///  @param  srcVertex      Coordinates of the source Vertex.
+   ///  @param  destVertex        Coordinates of the destination Vertex.
+   ///  @param  sumPoint   Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
-   ///  @param  type        Type of the Synapse to create.
+   ///  @param  type        Type of the Edge to create.
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               edgeType type) = 0;
 
-   ///  Create a edge index map and returns it .
-   ///
-   /// @return the created EdgeIndexMap
+   ///  Create a edge index map.
    virtual EdgeIndexMap *createEdgeIndexMap();
 
    ///  Get the sign of the edgeType.
    ///
-   ///  @param    type    edgeType I to I, I to E, E to I, or E to E
+   ///  @param    type    edgeType 
    ///  @return   1 or -1, or 0 if error
    int edgSign(const edgeType type);
 
-   ///  Prints SynapsesProps data to console.
-   virtual void printSynapsesProps() const;
-
-   ///  Cereal serialization method
+      ///  Cereal serialization method
    ///  (Serializes edge weights, source vertices, and destination vertices)
    template<class Archive>
    void save(Archive &archive) const;
@@ -119,7 +84,7 @@ protected:
    ///  @param  maxEdges  Maximum number of edges per vertex.
    virtual void setupEdges(const int numVertices, const int maxEdges);
 
-   ///  Sets the data for Synapse to input's data.
+   ///  Sets the data for Edge to input's data.
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the edge to set.
@@ -130,35 +95,111 @@ protected:
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the edge to print out.
    virtual void writeEdge(ostream &output, const BGSIZE iEdg) const;
-
+   
    ///  Returns an appropriate edgeType object for the given integer.
    ///
    ///  @param  typeOrdinal    Integer that correspond with a edgeType.
    ///  @return the SynapseType that corresponds with the given integer.
-   edgeType synapseOrdinalToType(const int typeOrdinal);
+   edgeType edgeOrdinalToType(const int typeOrdinal);
 
    /// Loggers used to print to using log4cplus logging macros, prints to Results/Debug/logging.txt
    log4cplus::Logger fileLogger_;
+ 
+#if defined(USE_GPU)
+   public:
+       ///  Allocate GPU memories to store all edges' states,
+       ///  and copy them from host to GPU memory.
+       ///
+       ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
+       virtual void allocEdgeDeviceStruct(void** allEdgesDevice) = 0;
 
-#if !defined(USE_GPU)
+       ///  Allocate GPU memories to store all edges' states,
+       ///  and copy them from host to GPU memory.
+       ///
+       ///  @param  allEdgesDevice     GPU address of the allEdges struct on device memory.
+       ///  @param  numVertices            Number of vertices.
+       ///  @param  maxEdgesPerVertex  Maximum number of edges per vertex.
+       virtual void allocEdgeDeviceStruct( void** allEdgesDevice, int numVertices, int maxEdgesPerVertex ) = 0;
+
+       ///  Delete GPU memories.
+       ///
+       ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
+       virtual void deleteEdgeDeviceStruct( void* allEdgesDevice ) = 0;
+
+       ///  Copy all edges' data from host to device.
+       ///
+       ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
+       virtual void copyEdgeHostToDevice(void* allEdgesDevice) = 0;
+
+       ///  Copy all edges' data from host to device.
+       ///
+       ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
+       ///  @param  numVertices           Number of vertices.
+       ///  @param  maxEdgesPerVertex  Maximum number of edges per vertex.
+       virtual void copyEdgeHostToDevice( void* allEdgesDevice, int numVertices, int maxEdgesPerVertex ) = 0;
+
+       ///  Copy all edges' data from device to host.
+       ///
+       ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
+       virtual void copyEdgeDeviceToHost( void* allEdgesDevice) = 0;
+
+       ///  Get edge_counts in AllEdges struct on device memory.
+       ///
+       ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
+       virtual void copyDeviceEdgeCountsToHost(void* allEdgesDevice) = 0;
+
+       ///  Get summationCoord and in_use in AllEdges struct on device memory.
+       ///
+       ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
+       virtual void copyDeviceEdgeSumIdxToHost(void* allEdgesDevice) = 0;
+
+       ///  Advance all the Synapses in the simulation.
+       ///  Update the state of all edges for a time step.
+       ///
+       ///  @param  allEdgesDevice      GPU address of the allEdges struct on device memory.
+       ///  @param  allVerticesDevice       GPU address of the allNeurons struct on device memory.
+       ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
+       virtual void advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) = 0;
+
+       ///  Set some parameters used for advanceEdgesDevice.
+       virtual void setAdvanceEdgesDeviceParams() = 0;
+
+       ///  Set edge class ID defined by enumClassSynapses for the caller's Edge class.
+       ///  The class ID will be set to classSynapses_d in device memory,
+       ///  and the classSynapses_d will be referred to call a device function for the
+       ///  particular edge class.
+       ///  Because we cannot use virtual function (Polymorphism) in device functions,
+       ///  we use this scheme.
+       ///  Note: we used to use a function pointer; however, it caused the growth_cuda crash
+       ///  (see issue#137).
+       virtual void setEdgeClassID() = 0;
+
+       ///  Prints GPU SynapsesProps data.
+       ///
+       ///  @param  allEdgesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
+       virtual void printGPUEdgesProps( void* allEdgesDeviceProps ) const = 0;
+
+#else // !defined(USE_GPU)
+#endif // defined(USE_GPU)
 public:
-   ///  Advance all the Synapses in the simulation.
+   ///  Advance all the edges in the simulation.
    ///  Update the state of all edges for a time step.
    ///
-   ///  @param  vertices   The Neuron list to search from.
+   ///  @param  vertices   The Vertex list to search from.
    ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
    virtual void advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap);
 
+   ///  Advance one specific Edge.
+   ///
+   ///  @param  iEdg      Index of the Edge to connect to.
+   ///  @param  vertices   The Vertex list to search from.
+   virtual void advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) = 0;
+
    ///  Remove a edge from the network.
    ///
-   ///  @param  i   Index of a vertex to remove from.
-   ///  @param  iEdg           Index of a edge to remove.
-   virtual void eraseEdge(const int i, const BGSIZE iEdg);
-
-#endif // !defined(USE_GPU)
-public:
-   /// The factor to adjust overlapping area to edge weight.
-   static constexpr BGFLOAT SYNAPSE_STRENGTH_ADJUSTMENT = 1.0e-8;
+   ///  @param  neuronIndex   Index of a vertex to remove from.
+   ///  @param  iEdg          Index of a edge to remove.
+   virtual void eraseEdge(const int neuronIndex, const BGSIZE iEdg);
 
    ///  The location of the edge.
    int *sourceVertexIndex_;
@@ -174,10 +215,6 @@ public:
 
    ///   Synapse type
    edgeType *type_;
-
-   ///  The post-synaptic response is the result of whatever computation
-   ///  is going on in the edge.
-   BGFLOAT *psr_;
 
    ///  The boolean value indicating the entry in the array is in use.
    bool *inUse_;
@@ -196,46 +233,8 @@ public:
    ///  Aaron: Is this even supposed to be here?!
    ///  Usage: Used by destructor
    int countVertices_;
+
 };
-
-#if defined(USE_GPU)
-struct AllEdgesDeviceProperties
-{
-        ///  The location of the edge.
-        int *sourceVertexIndex_;
-
-        ///  The coordinates of the summation point.
-        int *destVertexIndex_;
-
-        ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
-         BGFLOAT *W_;
-
-        ///  Synapse type
-        edgeType *type_;
-
-        ///  The post-synaptic response is the result of whatever computation
-        ///  is going on in the edge.
-        BGFLOAT *psr_;
-
-        ///  The boolean value indicating the entry in the array is in use.
-        bool *inUse_;
-
-        ///  The number of edges for each vertex.
-        ///  Note: Likely under a different name in GpuSim_struct, see edge_count. -Aaron
-        BGSIZE *edgeCounts_;
-
-        ///  The total number of active edges.
-        BGSIZE totalEdgeCount_;
-
-        ///  The maximum number of edges for each vertex.
-        BGSIZE maxEdgesPerVertex_;
-
-        ///  The number of vertices
-        ///  Aaron: Is this even supposed to be here?!
-        ///  Usage: Used by destructor
-        int countVertices_;
-};
-#endif // defined(USE_GPU)
 
 ///  Cereal serialization method
 ///  (Serializes edge weights, source vertices, and destination vertices)
@@ -243,17 +242,17 @@ template<class Archive>
 void AllEdges::save(Archive &archive) const {
    // uses vector to save edge weights, source vertices, and destination vertices
    vector<BGFLOAT> WVector;
-   vector<int> sourceNeuronLayoutIndexVector;
-   vector<int> destNeuronLayoutIndexVector;
+   vector<int> sourceVertexLayoutIndexVector;
+   vector<int> destVertexLayoutIndexVector;
 
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       WVector.push_back(W_[i]);
-      sourceNeuronLayoutIndexVector.push_back(sourceVertexIndex_[i]);
-      destNeuronLayoutIndexVector.push_back(destVertexIndex_[i]);
+      sourceVertexLayoutIndexVector.push_back(sourceVertexIndex_[i]);
+      destVertexLayoutIndexVector.push_back(destVertexIndex_[i]);
    }
 
    // serialization
-   archive(WVector, sourceNeuronLayoutIndexVector, destNeuronLayoutIndexVector);
+   archive(WVector, sourceVertexLayoutIndexVector, destVertexLayoutIndexVector);
 }
 
 ///  Cereal deserialization method
@@ -262,11 +261,11 @@ template<class Archive>
 void AllEdges::load(Archive &archive) {
    // uses vectors to load edge weights, source vertices, and destination vertices
    vector<BGFLOAT> WVector;
-   vector<int> sourceNeuronLayoutIndexVector;
-   vector<int> destNeuronLayoutIndexVector;
+   vector<int> sourceVertexLayoutIndexVector;
+   vector<int> destVertexLayoutIndexVector;
 
    // deserializing data to these vectors
-   archive(WVector, sourceNeuronLayoutIndexVector, destNeuronLayoutIndexVector);
+   archive(WVector, sourceVertexLayoutIndexVector, destVertexLayoutIndexVector);
 
    // check to see if serialized data sizes matches object sizes
    if (WVector.size() != maxEdgesPerVertex_ * countVertices_) {
@@ -279,7 +278,7 @@ void AllEdges::load(Archive &archive) {
    // assigns serialized data to objects
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       W_[i] = WVector[i];
-      sourceVertexIndex_[i] = sourceNeuronLayoutIndexVector[i];
-      destVertexIndex_[i] = destNeuronLayoutIndexVector[i];
+      sourceVertexIndex_[i] = sourceVertexLayoutIndexVector[i];
+      destVertexIndex_[i] = destVertexLayoutIndexVector[i];
    }
 }

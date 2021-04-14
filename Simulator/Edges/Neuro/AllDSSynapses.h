@@ -58,7 +58,7 @@ public:
 
    virtual ~AllDSSynapses();
 
-   static IAllEdges *Create() { return new AllDSSynapses(); }
+   static AllEdges *Create() { return new AllDSSynapses(); }
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    virtual void setupEdges();

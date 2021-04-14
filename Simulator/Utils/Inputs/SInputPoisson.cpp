@@ -134,7 +134,7 @@ void SInputPoisson::init()
         BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * neuronIndex;
 
         edges_->createEdge(iEdg, 0, neuronIndex, sumPoint, Simulator::getInstance().getDeltaT(), type);
-        dynamic_cast<AllEdges*>(edges_)->W_[iEdg] = weight * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+        dynamic_cast<AllNeuroEdges*>(edges_)->W_[iEdg] = weight * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
     }
 }
 

@@ -161,7 +161,7 @@ void AllIZHNeurons::clearNeuronSpikeCounts( void* allVerticesDevice )
 }
 
 ///  Notify outgoing synapses if neuron has fired.
-void AllIZHNeurons::advanceVertices( IAllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice)
+void AllIZHNeurons::advanceVertices( AllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice)
 {
     int vertex_count = Simulator::getInstance().getTotalVertices();
     int maxSpikes = (int)((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));

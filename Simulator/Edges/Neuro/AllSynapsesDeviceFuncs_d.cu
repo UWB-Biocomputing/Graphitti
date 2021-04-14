@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "AllSynapsesDeviceFuncs.h"
-#include "AllEdges.h"
+#include "AllNeuroEdges.h"
 #include "AllSTDPSynapses.h"
 #include "AllDynamicSTDPSynapses.h"
 
@@ -814,7 +814,7 @@ __device__ void addSpikingSynapse(AllSpikingSynapsesDeviceProperties* allEdgesDe
     default:
         assert(false);
     }
-    allEdgesDevice->W_[synapseBegin + synapseIndex] = W_d[srcVertex * numVertices + destVertex] * edgSign(type) * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+    allEdgesDevice->W_[synapseBegin + synapseIndex] = W_d[srcVertex * numVertices + destVertex] * edgSign(type) * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 }
 
 /// Remove a synapse from the network.
@@ -909,7 +909,7 @@ __global__ void updateSynapsesWeightsDevice( int numVertices, BGFLOAT deltaT, BG
                         // adjust
                         // g_synapseStrengthAdjustmentConstant is 1.0e-8;
                         allEdgesDevice->W_[iEdg] = W_d[srcVertex * numVertices
-                            + destVertex] * edgSign(type) * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+                            + destVertex] * edgSign(type) * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
                     }
                 }
                 existingSynapsesChecked++;
@@ -946,7 +946,7 @@ __global__ void initSynapsesDevice( int n, AllDSSynapsesDeviceProperties* allEdg
     BGFLOAT* sumPoint = &( pSummationMap[neuronIndex] );
     edgeType type = allEdgesDevice->type_[neuronIndex];
     createDSSynapse(allEdgesDevice, neuronIndex, 0, 0, neuronIndex, sumPoint, deltaT, type );
-    allEdgesDevice->W_[neuronIndex] = weight * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+    allEdgesDevice->W_[neuronIndex] = weight * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 }
 ///@}
 

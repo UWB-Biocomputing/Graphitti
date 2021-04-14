@@ -17,7 +17,7 @@ Connections911::~Connections911() {
 
 }
 
-void Connections911::setupConnections(Layout *layout, IAllVertices *vertices, IAllEdges *edges) {
+void Connections911::setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *edges) {
 
 }
 

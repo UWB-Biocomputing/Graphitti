@@ -59,6 +59,6 @@ string All911Vertices::toString(const int index) const {
     return nullptr; // Change this
 }
 
-void All911Vertices::advanceVertices(IAllEdges &edges, const EdgeIndexMap *edgeIndexMap) {
+void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap) {
 
 }

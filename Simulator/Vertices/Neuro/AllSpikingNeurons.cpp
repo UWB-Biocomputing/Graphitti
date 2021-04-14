@@ -72,7 +72,7 @@ void AllSpikingNeurons::clearSpikeCounts() {
 ///
 ///  @param  synapses         The Synapse list to search from.
 ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-void AllSpikingNeurons::advanceVertices(IAllEdges &synapses, const EdgeIndexMap *edgeIndexMap) {
+void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap *edgeIndexMap) {
    int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
    AllSpikingSynapses &spSynapses = dynamic_cast<AllSpikingSynapses &>(synapses);

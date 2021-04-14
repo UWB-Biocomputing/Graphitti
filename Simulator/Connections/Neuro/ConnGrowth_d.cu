@@ -25,7 +25,7 @@
  *  @param  allEdgesDevice  GPU address to the allEdges struct in device memory.
  *  @param  layout             The Layout object.
  */
-void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, IAllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout)
+void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, AllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout)
 {
         Simulator &simulator = Simulator::getInstance();
         // For now, we just set the weights to equal the areas. We will later

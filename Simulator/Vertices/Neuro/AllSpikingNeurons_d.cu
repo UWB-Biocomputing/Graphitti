@@ -60,7 +60,7 @@ void AllSpikingNeurons::clearDeviceSpikeCounts( AllSpikingNeuronsDevicePropertie
 ///  in device functions.
 ///
 ///  @param  synapses               Reference to the allEdges struct on host memory.
-void AllSpikingNeurons::setAdvanceVerticesDeviceParams(IAllEdges &synapses)
+void AllSpikingNeurons::setAdvanceVerticesDeviceParams(AllEdges &synapses)
 {
     AllSpikingSynapses &spSynapses = dynamic_cast<AllSpikingSynapses&>(synapses);
     fAllowBackPropagation_ = spSynapses.allowBackPropagation();

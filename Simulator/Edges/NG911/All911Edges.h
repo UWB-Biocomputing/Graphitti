@@ -36,7 +36,7 @@ public:
    ///  Creates an instance of the class.
    ///
    ///  @return Reference to the instance of the class.
-   static IAllEdges *Create() { return new All911Edges(); }
+   static AllEdges *Create() { return new All911Edges(); }
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    virtual void setupEdges();
@@ -51,6 +51,11 @@ public:
    ///  @param  type        Type of the Edge to create.
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               edgeType type);
+
+   ///  Get the sign of the edgeType.
+   ///
+   ///  @param    type    edgeType 
+   virtual int edgSign(const edgeType type);
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters

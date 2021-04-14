@@ -16,7 +16,6 @@
  */
 
 #include "Connections.h"
-#include "IAllEdges.h"
 #include "IAllVertices.h"
 #include "AllEdges.h"
 #include "AllVertices.h"
@@ -45,7 +44,7 @@ Connections::Connections() {
 Connections::~Connections() {
 }
 
-shared_ptr<IAllEdges> Connections::getEdges() const {
+shared_ptr<AllEdges> Connections::getEdges() const {
    return edges_;
 }
 
@@ -67,7 +66,7 @@ bool Connections::updateConnections(IAllVertices &vertices, Layout *layout) {
 }
 
 #if defined(USE_GPU)
-void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, IAllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout)
+void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, AllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout)
 {
 }
 #else
@@ -78,7 +77,7 @@ void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &ver
 ///  @param  numVertices  Number of vertices to update.
 ///  @param  vertices     The vertex list to search from.
 ///  @param  synapses    The Synapse list to search from.
-void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, IAllEdges &synapses, Layout *layout) {
+void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, AllEdges &synapses, Layout *layout) {
 }
 
 #endif // !USE_GPU
@@ -90,7 +89,7 @@ void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &ver
 ///  @param  ivertices    The vertex list to search from.
 ///  @param  isynapses   The Synapse list to search from.
 void Connections::createSynapsesFromWeights(const int numVertices, Layout *layout, IAllVertices &ivertices,
-                                            IAllEdges &isynapses) {
+                                            AllEdges &isynapses) {
    AllVertices &vertices = dynamic_cast<AllVertices &>(ivertices);
    AllEdges &synapses = dynamic_cast<AllEdges &>(isynapses);
 

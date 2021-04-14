@@ -38,8 +38,8 @@ void EdgesFactory::registerClass(const string &className, CreateFunction functio
 
 
 /// Creates concrete instance of the desired neurons class.
-shared_ptr<IAllEdges> EdgesFactory::createEdges(const string &className) {
-   edgesInstance_ = shared_ptr<IAllEdges>(invokeCreateFunction(className));
+shared_ptr<AllEdges> EdgesFactory::createEdges(const string &className) {
+   edgesInstance_ = shared_ptr<AllEdges>(invokeCreateFunction(className));
    return edgesInstance_;
 }
 
@@ -47,7 +47,7 @@ shared_ptr<IAllEdges> EdgesFactory::createEdges(const string &className) {
 ///
 /// The calling method uses this retrieval mechanism in
 /// value assignment.
-IAllEdges *EdgesFactory::invokeCreateFunction(const string &className) {
+AllEdges *EdgesFactory::invokeCreateFunction(const string &className) {
    for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
       if (className == i->first)
          return i->second();
