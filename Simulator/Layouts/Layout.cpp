@@ -137,24 +137,6 @@ void Layout::initStarterMap(const int numVertices) {
    }
 }
 
-///  Returns the type of synapse at the given coordinates
-///
-///  @param    srcVertex  integer that points to a Neuron in the type map as a source.
-///  @param    destVertex integer that points to a Neuron in the type map as a destination.
-///  @return type of the synapse.
-edgeType Layout::edgType(const int srcVertex, const int destVertex) {
-   if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == INH)
-      return II;
-   else if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == EXC)
-      return IE;
-   else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == INH)
-      return EI;
-   else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == EXC)
-      return EE;
-
-   return ETYPE_UNDEF;
-}
-
 /// Initialize the location maps (xloc and yloc).
 void Layout::initVerticesLocs() {
    int numVertices = Simulator::getInstance().getTotalVertices();

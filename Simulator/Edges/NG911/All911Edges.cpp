@@ -55,8 +55,13 @@ void All911Edges::setupEdges() {
 
 void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               edgeType type) {
-
-                              }
+   inUse_[iEdg] = true;
+   summationPoint_[iEdg] = sumPoint;
+   destVertexIndex_[iEdg] = destVertex;
+   sourceVertexIndex_[iEdg] = srcVertex;
+   W_[iEdg] = 10; // Figure this out
+   this->type_[iEdg] = type;
+}
 
 void All911Edges::printParameters() const {
 

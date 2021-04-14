@@ -58,7 +58,7 @@ public:
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
-   edgeType edgType(const int srcVertex, const int destVertex);
+   virtual edgeType edgType(const int srcVertex, const int destVertex) = 0;
 
    VectorMatrix *xloc_;  ///< Store neuron i's x location.
 

@@ -44,6 +44,12 @@ public:
    virtual void initStarterMap(const int numVertices);
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters(); 
+   virtual void loadParameters();
+
+   /// Returns the type of synapse at the given coordinates
+   /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
+   /// @param    destVertex integer that points to a Neuron in the type map as a destination.
+   /// @return type of the synapse.
+   virtual edgeType edgType(const int srcVertex, const int destVertex);
 };
 

@@ -101,3 +101,21 @@ void Layout911::loadParameters() {
                           "\n\tfile path: " + responderFilePath);
    }
 }
+
+///  Returns the type of synapse at the given coordinates
+///
+///  @param    srcVertex  integer that points to a Neuron in the type map as a source.
+///  @param    destVertex integer that points to a Neuron in the type map as a destination.
+///  @return type of the synapse.
+edgeType Layout911::edgType(const int srcVertex, const int destVertex) {
+   if (vertexTypeMap_[srcVertex] == CALR && vertexTypeMap_[destVertex] == PSAP)
+      return CP;
+   else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == RESP)
+      return PR;
+   else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == CALR)
+      return RC;
+   else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == PSAP)
+      return PP;
+
+   return ETYPE_UNDEF;
+}
