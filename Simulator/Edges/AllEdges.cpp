@@ -42,7 +42,6 @@ AllEdges::~AllEdges() {
      delete[] edgeCounts_;
   }
 
-<<<<<<< HEAD
    destVertexIndex_ = nullptr;
    W_ = nullptr;
    summationPoint_ = nullptr;
@@ -50,16 +49,6 @@ AllEdges::~AllEdges() {
    type_ = nullptr;
    inUse_ = nullptr;
    edgeCounts_ = nullptr;
-=======
-   destNeuronIndex_ = nullptr;
-   W_ = nullptr;
-   summationPoint_ = nullptr;
-   sourceNeuronIndex_ = nullptr;
-   psr_ = nullptr;
-   type_ = nullptr;
-   inUse_ = nullptr;
-   synapseCounts_ = nullptr;
->>>>>>> 7c9a12538208bea9ef0dfaa4065dfb433aa689c2
 
    countVertices_ = 0;
    maxEdgesPerVertex_ = 0;
@@ -97,7 +86,6 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
    totalEdgeCount_ = 0;
    countVertices_ = numVertices;
 
-<<<<<<< HEAD
    if (maxTotalEdges != 0) {
       destVertexIndex_ = new int[maxTotalEdges];
       W_ = new BGFLOAT[maxTotalEdges];
@@ -108,24 +96,7 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
       edgeCounts_ = new BGSIZE[numVertices];
 
       for (BGSIZE i = 0; i < maxTotalEdges; i++) {
-         summationPoint_[i] = NULL;
-=======
-   if (maxTotalSynapses != 0) {
-      destNeuronIndex_ = new int[maxTotalSynapses];
-      W_ = new BGFLOAT[maxTotalSynapses];
-      summationPoint_ = new BGFLOAT *[maxTotalSynapses];
-      sourceNeuronIndex_ = new int[maxTotalSynapses];
-      psr_ = new BGFLOAT[maxTotalSynapses];
-      type_ = new synapseType[maxTotalSynapses];
-      inUse_ = new bool[maxTotalSynapses];
-      synapseCounts_ = new BGSIZE[numVertices];
-
-      for (BGSIZE i = 0; i < maxTotalSynapses; i++) {
          summationPoint_[i] = nullptr;
-<<<<<<< HEAD
->>>>>>> 7c9a125 (Changed all occurences of NULL to nullptr)
-=======
->>>>>>> 7c9a12538208bea9ef0dfaa4065dfb433aa689c2
          inUse_[i] = false;
          W_[i] = 0;
       }
@@ -219,18 +190,8 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
 
    DEBUG (cout << "totalEdgeCount: " << totalEdgeCount << endl;)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
    if (totalEdgeCount == 0) {
       return NULL;
-=======
-   if (totalSynapseCount == 0) {
-      return nullptr;
->>>>>>> 7c9a125 (Changed all occurences of NULL to nullptr)
-=======
-   if (totalSynapseCount == 0) {
-      return nullptr;
->>>>>>> 7c9a12538208bea9ef0dfaa4065dfb433aa689c2
    }
 
    // allocate memories for forward map

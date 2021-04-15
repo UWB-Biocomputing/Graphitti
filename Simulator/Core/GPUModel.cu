@@ -297,13 +297,8 @@ void GPUModel::copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost
   HANDLE_ERROR( cudaMemcpy ( synapseIMapDevice.incomingEdgeCount_, 
         synapseIndexMapHost.incomingEdgeCount_, numVertices * sizeof( BGSIZE ), cudaMemcpyHostToDevice ) );
   // the number of synapses may change, so we reallocate the memory
-<<<<<<< HEAD:Simulator/Core/GPUModel.cu
   if (synapseIMapDevice.incomingEdgeIndexMap_ != nullptr) {
     HANDLE_ERROR( cudaFree( synapseIMapDevice.incomingEdgeIndexMap_ ) );
-=======
-  if (synapseIMapDevice.incomingSynapseIndexMap_ != nullptr) {
-    HANDLE_ERROR( cudaFree( synapseIMapDevice.incomingSynapseIndexMap_ ) );
->>>>>>> 7c9a12538208bea9ef0dfaa4065dfb433aa689c2:Simulator/Core/GPUSpikingModel.cu
   }
   HANDLE_ERROR( cudaMalloc( ( void ** ) &synapseIMapDevice.incomingEdgeIndexMap_, 
         totalSynapseCount * sizeof( BGSIZE ) ) );
