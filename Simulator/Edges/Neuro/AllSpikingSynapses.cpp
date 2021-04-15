@@ -8,7 +8,7 @@
 
 #include "AllSpikingSynapses.h"
 
-AllSpikingSynapses::AllSpikingSynapses() : AllEdges() {
+AllSpikingSynapses::AllSpikingSynapses() : AllNeuroEdges() {
    decay_ = NULL;
    totalDelay_ = NULL;
    delayQueue_ = NULL;
@@ -51,7 +51,7 @@ void AllSpikingSynapses::setupEdges() {
 ///  @param  numVertices   Total number of vertices in the network.
 ///  @param  maxEdges  Maximum number of synapses per neuron.
 void AllSpikingSynapses::setupEdges(const int numVertices, const int maxEdges) {
-   AllEdges::setupEdges(numVertices, maxEdges);
+   AllNeuroEdges::setupEdges(numVertices, maxEdges);
 
    BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
@@ -86,7 +86,7 @@ void AllSpikingSynapses::initSpikeQueue(const BGSIZE iEdg) {
 ///  @param  iEdg     Index of the synapse to set.
 ///  @param  deltaT   Inner simulation step duration
 void AllSpikingSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
-   AllEdges::resetEdge(iEdg, deltaT);
+   AllNeuroEdges::resetEdge(iEdg, deltaT);
 
    assert(updateDecay(iEdg, deltaT));
 }
@@ -94,7 +94,7 @@ void AllSpikingSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
 ///  Prints out all parameters to logging file.
 ///  Registered to OperationManager as Operation::printParameters
 void AllSpikingSynapses::printParameters() const {
-   AllEdges::printParameters();
+   AllNeuroEdges::printParameters();
 }
 
 ///  Sets the data for Synapse to input's data.
@@ -102,7 +102,7 @@ void AllSpikingSynapses::printParameters() const {
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the synapse to set.
 void AllSpikingSynapses::readEdge(istream &input, const BGSIZE iEdg) {
-   AllEdges::readEdge(input, iEdg);
+   AllNeuroEdges::readEdge(input, iEdg);
 
    // input.ignore() so input skips over end-of-line characters.
    input >> decay_[iEdg];
@@ -124,7 +124,7 @@ void AllSpikingSynapses::readEdge(istream &input, const BGSIZE iEdg) {
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the synapse to print out.
 void AllSpikingSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const {
-   AllEdges::writeEdge(output, iEdg);
+   AllNeuroEdges::writeEdge(output, iEdg);
 
    output << decay_[iEdg] << ends;
    output << totalDelay_[iEdg] << ends;
@@ -143,13 +143,13 @@ void AllSpikingSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const {
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
 void AllSpikingSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
-                                       const BGFLOAT deltaT, synapseType type) {
+                                       const BGFLOAT deltaT, edgeType type) {
    BGFLOAT delay;
 
    inUse_[iEdg] = true;
    summationPoint_[iEdg] = sumPoint;
-   destNeuronIndex_[iEdg] = destVertex;
-   sourceNeuronIndex_[iEdg] = srcVertex;
+   destVertexIndex_[iEdg] = destVertex;
+   sourceVertexIndex_[iEdg] = srcVertex;
    W_[iEdg] = edgSign(type) * 10.0e-9;
    this->type_[iEdg] = type;
    tau_[iEdg] = DEFAULT_tau;
@@ -299,7 +299,7 @@ bool AllSpikingSynapses::allowBackPropagation() {
 
 ///  Prints SynapsesProps data to console.
 void AllSpikingSynapses::printSynapsesProps() const {
-   AllEdges::printSynapsesProps();
+   AllNeuroEdges::printSynapsesProps();
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
          cout << "decay[" << i << "] = " << decay_[i];

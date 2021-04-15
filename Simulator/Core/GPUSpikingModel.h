@@ -8,7 +8,7 @@
  * The Model class maintains and manages classes of objects that make up
  * essential components of graph-based networks.
  *    -# IAllVertices: A class to define a list of particular type of neurons.
- *    -# IAllEdges: A class to define a list of particular type of synapses.
+ *    -# AllEdges: A class to define a list of particular type of synapses.
  *    -# Connections: A class to define connections of the neural network.
  *    -# Layout: A class to define neurons' layout information in the network.
  *
@@ -139,15 +139,15 @@ private:
    void updateHistory();
 
    // TODO
-   void eraseEdge(IAllEdges &synapses, const int neuronIndex, const int synapseIndex);
+   void eraseEdge(AllEdges &synapses, const int neuronIndex, const int synapseIndex);
 
    // TODO
-   void addEdge(IAllEdges &synapses, synapseType type, const int srcVertex, const int destVertex,
+   void addEdge(AllEdges &synapses, edgeType type, const int srcVertex, const int destVertex,
                    Coordinate &source, Coordinate &dest, BGFLOAT *sumPoint, BGFLOAT deltaT);
 
    // TODO
-   void createEdge(IAllEdges &synapses, const int neuronIndex, const int synapseIndex,
-                      Coordinate source, Coordinate dest, BGFLOAT *sp, BGFLOAT deltaT, synapseType type);
+   void createEdge(AllEdges &synapses, const int neuronIndex, const int synapseIndex,
+                      Coordinate source, Coordinate dest, BGFLOAT *sp, BGFLOAT deltaT, edgeType type);
 };
 
 #if defined(__CUDACC__)

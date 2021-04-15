@@ -37,8 +37,8 @@ void CPUSpikingModel::finish() {
 void CPUSpikingModel::advance() {
    // ToDo: look at pointer v no pointer in params - to change
    // dereferencing the ptr, lose late binding -- look into changing!
-   layout_->getVertices()->advanceVertices(*(connections_->getEdges().get()), connections_->getSynapseIndexMap().get());
-   connections_->getEdges()->advanceEdges(layout_->getVertices().get(), connections_->getSynapseIndexMap().get());
+   layout_->getVertices()->advanceVertices(*(connections_->getEdges().get()), connections_->getEdgeIndexMap().get());
+   connections_->getEdges()->advanceEdges(layout_->getVertices().get(), connections_->getEdgeIndexMap().get());
 }
 
 /// Update the connection of all the Neurons and Synapses of the simulation.

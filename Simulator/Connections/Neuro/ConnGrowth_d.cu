@@ -25,7 +25,7 @@
  *  @param  allEdgesDevice  GPU address to the allEdges struct in device memory.
  *  @param  layout             The Layout object.
  */
-void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, IAllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout)
+void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, AllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout)
 {
         Simulator &simulator = Simulator::getInstance();
         // For now, we just set the weights to equal the areas. We will later
@@ -44,8 +44,8 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &vert
         BGFLOAT* W_d;
         HANDLE_ERROR( cudaMalloc ( ( void ** ) &W_d, W_d_size ) );
 
-        neuronType* neuronTypeMapD;
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &neuronTypeMapD, simulator.getTotalVertices() * sizeof( neuronType ) ) );
+        vertexType* neuronTypeMapD;
+        HANDLE_ERROR( cudaMalloc( ( void ** ) &neuronTypeMapD, simulator.getTotalVertices() * sizeof( vertexType ) ) );
 
         // copy weight data to the device memory
         for ( int i = 0 ; i < simulator.getTotalVertices(); i++ )
@@ -54,7 +54,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &vert
 
         HANDLE_ERROR( cudaMemcpy ( W_d, W_h, W_d_size, cudaMemcpyHostToDevice ) );
 
-        HANDLE_ERROR( cudaMemcpy ( neuronTypeMapD, layout->vertexTypeMap_, simulator.getTotalVertices() * sizeof( neuronType ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( neuronTypeMapD, layout->vertexTypeMap_, simulator.getTotalVertices() * sizeof( vertexType ), cudaMemcpyHostToDevice ) );
 
         blocksPerGrid = ( simulator.getTotalVertices() + threadsPerBlock - 1 ) / threadsPerBlock;
         updateSynapsesWeightsDevice <<< blocksPerGrid, threadsPerBlock >>> ( simulator.getTotalVertices(), deltaT, W_d, simulator.getMaxEdgesPerVertex(), allVerticesDevice, allEdgesDevice, neuronTypeMapD );

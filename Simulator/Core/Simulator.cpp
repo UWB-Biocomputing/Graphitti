@@ -50,7 +50,7 @@ void Simulator::setup() {
    t_host_initialization_layout = 0.0;
    t_host_initialization_connections = 0.0;
    t_host_advance = 0.0;
-   t_host_adjustSynapses = 0.0;
+   t_host_adjustEdges = 0.0;
    timer.start();
    cerr << "done." << endl;
 #endif
@@ -151,7 +151,7 @@ void Simulator::simulate() {
 #ifdef PERFORMANCE_METRICS
       // Times converted from microseconds to seconds
       // Time to update synapses
-      t_host_adjustSynapses += short_timer.lap() / 1000000.0;
+      t_host_adjustEdges += short_timer.lap() / 1000000.0;
       // Time since start of simulation
       double total_time = timer.lap() / 1000000.0;
 
@@ -261,7 +261,7 @@ BGFLOAT Simulator::getDeltaT() const { return deltaT_; }
 
 // ToDo: should be a vector of neuron type
 // ToDo: vector should be contiguous array, resize is used.
-neuronType *Simulator::getRgNeuronTypeMap() const { return rgNeuronTypeMap_; }
+vertexType *Simulator::getRgNeuronTypeMap() const { return rgNeuronTypeMap_; }
 
 // ToDo: make smart ptr
 /// Starter existence map (T/F).

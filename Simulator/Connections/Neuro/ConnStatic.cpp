@@ -9,9 +9,10 @@
 
 #include "ConnStatic.h"
 #include "ParseParamError.h"
-#include "IAllEdges.h"
 #include "AllVertices.h"
 #include "AllEdges.h"
+#include "AllNeuroEdges.h"
+
 #include "OperationManager.h"
 
 #include "XmlRecorder.h"
@@ -40,7 +41,7 @@ ConnStatic::~ConnStatic() {
 ///  @param  layout    Layout information of the neural network.
 ///  @param  vertices   The Vertex list to search from.
 ///  @param  edges  The Synapse list to search from.
-void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, IAllEdges *edges) {
+void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *edges) {
    int numVertices = Simulator::getInstance().getTotalVertices();
    vector<DistDestVertex> distDestVertices[numVertices];
 
@@ -69,7 +70,7 @@ void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, IAllEd
       // pick the shortest m_nConnsPerNeuron connections
       for (BGSIZE i = 0; i < distDestVertices[srcVertex].size() && (int) i < connsPerVertex_; i++) {
          int destVertex = distDestVertices[srcVertex][i].destVertex;
-         synapseType type = layout->synType(srcVertex, destVertex);
+         edgeType type = layout->edgType(srcVertex, destVertex);
          BGFLOAT *sumPoint = &(dynamic_cast<AllVertices *>(vertices)->summationMap_[destVertex]);
 
          LOG4CPLUS_DEBUG(fileLogger_, "Source: " << srcVertex << " Dest: " << destVertex << " Dist: "
@@ -82,9 +83,9 @@ void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, IAllEd
          // set edge weight
          // TODO: we need another synaptic weight distibution mode (normal distribution)
          if (edges->edgSign(type) > 0) {
-            dynamic_cast<AllEdges *>(edges)->W_[iEdg] = rng.inRange(excWeight_[0], excWeight_[1]);
+            dynamic_cast<AllNeuroEdges *>(edges)->W_[iEdg] = rng.inRange(excWeight_[0], excWeight_[1]);
          } else {
-            dynamic_cast<AllEdges *>(edges)->W_[iEdg] = rng.inRange(inhWeight_[0], inhWeight_[1]);
+            dynamic_cast<AllNeuroEdges *>(edges)->W_[iEdg] = rng.inRange(inhWeight_[0], inhWeight_[1]);
          }
       }
    }

@@ -7,7 +7,6 @@
  */
 
 #include "AllVertices.h"
-#include "Simulator.h"
 #include "OperationManager.h"
 
 // Default constructor

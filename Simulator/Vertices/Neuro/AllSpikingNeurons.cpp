@@ -72,7 +72,7 @@ void AllSpikingNeurons::clearSpikeCounts() {
 ///
 ///  @param  synapses         The Synapse list to search from.
 ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-void AllSpikingNeurons::advanceVertices(IAllEdges &synapses, const EdgeIndexMap *edgeIndexMap) {
+void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap *edgeIndexMap) {
    int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
 
    AllSpikingSynapses &spSynapses = dynamic_cast<AllSpikingSynapses &>(synapses);
@@ -92,19 +92,19 @@ void AllSpikingNeurons::advanceVertices(IAllEdges &synapses, const EdgeIndexMap 
          BGSIZE synapseCounts;
 
          if (edgeIndexMap != NULL) {
-            synapseCounts = edgeIndexMap->outgoingSynapseCount_[idx];
+            synapseCounts = edgeIndexMap->outgoingEdgeCount_[idx];
             if (synapseCounts != 0) {
-               int beginIndex = edgeIndexMap->outgoingSynapseBegin_[idx];
+               int beginIndex = edgeIndexMap->outgoingEdgeBegin_[idx];
                BGSIZE iEdg;
                for (BGSIZE i = 0; i < synapseCounts; i++) {
-                  iEdg = edgeIndexMap->outgoingSynapseBegin_[beginIndex + i];
+                  iEdg = edgeIndexMap->outgoingEdgeBegin_[beginIndex + i];
                   spSynapses.preSpikeHit(iEdg);
                }
             }
          }
 
          // notify incoming synapses
-         synapseCounts = spSynapses.synapseCounts_[idx];
+         synapseCounts = spSynapses.edgeCounts_[idx];
          BGSIZE synapse_notified = 0;
 
          if (spSynapses.allowBackPropagation()) {

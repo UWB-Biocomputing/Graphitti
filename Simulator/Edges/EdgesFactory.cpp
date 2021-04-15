@@ -12,6 +12,7 @@
 #include "AllSTDPSynapses.h"
 #include "AllDSSynapses.h"
 #include "AllDynamicSTDPSynapses.h"
+#include "All911Edges.h"
 
 /// Constructor is private to keep a singleton instance of this class.
 EdgesFactory::EdgesFactory() {
@@ -20,6 +21,7 @@ EdgesFactory::EdgesFactory() {
    registerClass("AllSTDPSynapses", &AllSTDPSynapses::Create);
    registerClass("AllDSSynapses", &AllDSSynapses::Create);
    registerClass("AllDynamicSTDPSynapses", &AllDynamicSTDPSynapses::Create);
+   registerClass("All911Edges", &All911Edges::Create);
 }
 
 EdgesFactory::~EdgesFactory() {
@@ -36,8 +38,8 @@ void EdgesFactory::registerClass(const string &className, CreateFunction functio
 
 
 /// Creates concrete instance of the desired neurons class.
-shared_ptr<IAllEdges> EdgesFactory::createEdges(const string &className) {
-   edgesInstance_ = shared_ptr<IAllEdges>(invokeCreateFunction(className));
+shared_ptr<AllEdges> EdgesFactory::createEdges(const string &className) {
+   edgesInstance_ = shared_ptr<AllEdges>(invokeCreateFunction(className));
    return edgesInstance_;
 }
 
@@ -45,7 +47,7 @@ shared_ptr<IAllEdges> EdgesFactory::createEdges(const string &className) {
 ///
 /// The calling method uses this retrieval mechanism in
 /// value assignment.
-IAllEdges *EdgesFactory::invokeCreateFunction(const string &className) {
+AllEdges *EdgesFactory::invokeCreateFunction(const string &className) {
    for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
       if (className == i->first)
          return i->second();

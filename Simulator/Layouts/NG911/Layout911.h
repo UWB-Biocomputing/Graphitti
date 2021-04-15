@@ -1,16 +1,15 @@
 /**
- * @file FixedLayout.h
+ * @file Layout911.h
  * 
- * @ingroup Simulator/Layouts
+ * @ingroup Simulator/Layouts/NG911
  *
- * @brief The Layout class defines the layout of vertices in neural networks
+ * @brief The Layout class defines the layout of vertices in networks
  *
- * The FixedLayout class maintains vertices locations (x, y coordinates), 
+ * The Layout911 class maintains vertices locations (x, y coordinates), 
  * distance of every couple vertices,
- * vertices type map (distribution of excitatory and inhibitory neurons), and starter vertices map
- * (distribution of endogenously active neurons).  
+ * vertices type map (distribution of vertex types), and starter vertices map
  *
- * The FixedLayout class reads all layout information from parameter description file.
+ * The Layout911 class reads all layout information from parameter description file.
  */
 
 #pragma once
@@ -19,13 +18,16 @@
 
 using namespace std;
 
-class FixedLayout : public Layout {
+class Layout911 : public Layout {
 public:
-   FixedLayout();
+   Layout911();
 
-   virtual ~FixedLayout();
+   virtual ~Layout911();
 
-   static Layout *Create() { return new FixedLayout(); }
+   ///  Creates an instance of the class.
+   ///
+   ///  @return Reference to the instance of the class.
+   static Layout *Create() { return new Layout911(); }
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
@@ -37,19 +39,17 @@ public:
    virtual void generateVertexTypeMap(int numVertices);
 
    ///  Populates the starter map.
-   ///  Selects num_endogenously_active_neurons excitory neurons
-   ///  and converts them into starter vertices.
    ///
    ///  @param  numVertices number of vertices to have in the map.
    virtual void initStarterMap(const int numVertices);
-
-   /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters();
 
    /// Returns the type of synapse at the given coordinates
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
    virtual edgeType edgType(const int srcVertex, const int destVertex);
+
+   /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
+   virtual void loadParameters(); 
 };
 

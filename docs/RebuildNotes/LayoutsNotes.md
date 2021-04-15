@@ -40,7 +40,7 @@ for (int n = 0; n < num_neurons - 1; n++)
     (*dist) = sqrt((*dist2));
 
 // more alloc of internal mem.
-    neuron_type_map = new neuronType[num_neurons];
+    neuron_type_map = new vertexType[num_neurons];
     starter_map = new bool[num_neurons];
 
     // todo: takeaway: no sequential dependency here

@@ -87,52 +87,52 @@ void AllIZHNeurons::printParameters() const {
 ///  @param  layout      Layout information of the neural network.
 void AllIZHNeurons::createAllVertices(Layout *layout) {
    /* set their specific types */
-   for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalVertices(); neuronIndex++) {
-      setNeuronDefaults(neuronIndex);
+   for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
+      setNeuronDefaults(i);
 
       // set the neuron info for neurons
-      createNeuron(neuronIndex, layout);
+      createNeuron(i, layout);
    }
 }
 
 ///  Creates a single Neuron and generates data for it.
 ///
-///  @param  neuronIndex Index of the neuron to create.
+///  @param  i Index of the neuron to create.
 ///  @param  layout       Layout information of the neural network.
-void AllIZHNeurons::createNeuron(int neuronIndex, Layout *layout) {
+void AllIZHNeurons::createNeuron(int i, Layout *layout) {
    // set the neuron info for neurons
-   AllIFNeurons::createNeuron(neuronIndex, layout);
+   AllIFNeurons::createNeuron(i, layout);
 
    // TODO: we may need another distribution mode besides flat distribution
-   if (layout->vertexTypeMap_[neuronIndex] == EXC) {
+   if (layout->vertexTypeMap_[i] == EXC) {
       // excitatory neuron
-      Aconst_[neuronIndex] = rng.inRange(excAconst_[0], excAconst_[1]);
-      Bconst_[neuronIndex] = rng.inRange(excBconst_[0], excBconst_[1]);
-      Cconst_[neuronIndex] = rng.inRange(excCconst_[0], excCconst_[1]);
-      Dconst_[neuronIndex] = rng.inRange(excDconst_[0], excDconst_[1]);
+      Aconst_[i] = rng.inRange(excAconst_[0], excAconst_[1]);
+      Bconst_[i] = rng.inRange(excBconst_[0], excBconst_[1]);
+      Cconst_[i] = rng.inRange(excCconst_[0], excCconst_[1]);
+      Dconst_[i] = rng.inRange(excDconst_[0], excDconst_[1]);
    } else {
       // inhibitory neuron
-      Aconst_[neuronIndex] = rng.inRange(inhAconst_[0], inhAconst_[1]);
-      Bconst_[neuronIndex] = rng.inRange(inhBconst_[0], inhBconst_[1]);
-      Cconst_[neuronIndex] = rng.inRange(inhCconst_[0], inhCconst_[1]);
-      Dconst_[neuronIndex] = rng.inRange(inhDconst_[0], inhDconst_[1]);
+      Aconst_[i] = rng.inRange(inhAconst_[0], inhAconst_[1]);
+      Bconst_[i] = rng.inRange(inhBconst_[0], inhBconst_[1]);
+      Cconst_[i] = rng.inRange(inhCconst_[0], inhCconst_[1]);
+      Dconst_[i] = rng.inRange(inhDconst_[0], inhDconst_[1]);
    }
 
-   u_[neuronIndex] = 0;
+   u_[i] = 0;
 
-   LOG4CPLUS_DEBUG(fileLogger_, "\nCREATE NEURON[" << neuronIndex << "] {" << endl
-                 << "\tAconst = " << Aconst_[neuronIndex] << endl
-                 << "\tBconst = " << Bconst_[neuronIndex] << endl
-                 << "\tCconst = " << Cconst_[neuronIndex] << endl
-                 << "\tDconst = " << Dconst_[neuronIndex] << endl
-                 << "\tC3 = " << C3_[neuronIndex] << endl
+   LOG4CPLUS_DEBUG(fileLogger_, "\nCREATE NEURON[" << i << "] {" << endl
+                 << "\tAconst = " << Aconst_[i] << endl
+                 << "\tBconst = " << Bconst_[i] << endl
+                 << "\tCconst = " << Cconst_[i] << endl
+                 << "\tDconst = " << Dconst_[i] << endl
+                 << "\tC3 = " << C3_[i] << endl
                  << "}" << endl);
 
 }
 
 ///  Set the Neuron at the indexed location to default values.
 ///
-///  @param  neuronIndex    Index of the Neuron to refer.
+///  @param  i    Index of the Neuron to refer.
 void AllIZHNeurons::setNeuronDefaults(const int index) {
    AllIFNeurons::setNeuronDefaults(index);
 
@@ -147,12 +147,12 @@ void AllIZHNeurons::setNeuronDefaults(const int index) {
 
 ///  Initializes the Neuron constants at the indexed location.
 ///
-///  @param  neuronIndex    Index of the Neuron.
+///  @param  i    Index of the Neuron.
 ///  @param  deltaT          Inner simulation step duration
-void AllIZHNeurons::initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT) {
-   AllIFNeurons::initNeuronConstsFromParamValues(neuronIndex, deltaT);
+void AllIZHNeurons::initNeuronConstsFromParamValues(int i, const BGFLOAT deltaT) {
+   AllIFNeurons::initNeuronConstsFromParamValues(i, deltaT);
 
-   BGFLOAT &C3 = this->C3_[neuronIndex];
+   BGFLOAT &C3 = this->C3_[i];
    C3 = deltaT * 1000;
 }
 

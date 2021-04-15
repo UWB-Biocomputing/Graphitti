@@ -128,12 +128,12 @@ __global__ void advanceLIFNeuronsDevice( int totalVertices, int maxEdges, int ma
                 vm = allVerticesDevice->Vreset_[idx];
 
                 // notify outgoing synapses of spike
-                BGSIZE synapseCounts = edgeIndexMapDevice->outgoingSynapseCount_[idx];
+                BGSIZE synapseCounts = edgeIndexMapDevice->outgoingEdgeCount_[idx];
                 if (synapseCounts != 0) {
                     // get the index of where this neuron's list of synapses are
-                    BGSIZE beginIndex = edgeIndexMapDevice->outgoingSynapseBegin_[idx];
+                    BGSIZE beginIndex = edgeIndexMapDevice->outgoingEdgeBegin_[idx];
                     // get the memory location of where that list begins
-                    BGSIZE* outgoingMapBegin = &(edgeIndexMapDevice->outgoingSynapseIndexMap_[beginIndex]);
+                    BGSIZE* outgoingMapBegin = &(edgeIndexMapDevice->outgoingEdgeIndexMap_[beginIndex]);
 
                     // for each synapse, let them know we have fired
                     for (BGSIZE i = 0; i < synapseCounts; i++) {
@@ -142,12 +142,12 @@ __global__ void advanceLIFNeuronsDevice( int totalVertices, int maxEdges, int ma
                 }
 
                 // notify incomming synapses of spike
-                synapseCounts = edgeIndexMapDevice->incomingSynapseCount_[idx];
+                synapseCounts = edgeIndexMapDevice->incomingEdgeCount_[idx];
                 if (fAllowBackPropagation && synapseCounts != 0) {
                     // get the index of where this neuron's list of synapses are
-                    BGSIZE beginIndex = edgeIndexMapDevice->incomingSynapseBegin_[idx];
+                    BGSIZE beginIndex = edgeIndexMapDevice->incomingEdgeBegin_[idx];
                     // get the memory location of where that list begins
-                    BGSIZE* incomingMapBegin = &(edgeIndexMapDevice->incomingSynapseIndexMap_[beginIndex]);
+                    BGSIZE* incomingMapBegin = &(edgeIndexMapDevice->incomingEdgeIndexMap_[beginIndex]);
 
                     // for each synapse, let them know we have fired
                     switch (classSynapses_d) {
@@ -233,12 +233,12 @@ __global__ void advanceIZHNeuronsDevice( int totalVertices, int maxEdges, int ma
                 u = r_u + allVerticesDevice->Dconst_[idx];
 
                 // notify outgoing synapses of spike
-                BGSIZE synapseCounts = edgeIndexMapDevice->outgoingSynapseCount_[idx];
+                BGSIZE synapseCounts = edgeIndexMapDevice->outgoingEdgeCount_[idx];
                 if (synapseCounts != 0) {
                     // get the index of where this neuron's list of synapses are
-                    BGSIZE beginIndex = edgeIndexMapDevice->outgoingSynapseBegin_[idx]; 
+                    BGSIZE beginIndex = edgeIndexMapDevice->outgoingEdgeBegin_[idx]; 
                     // get the memory location of where that list begins
-                    BGSIZE* outgoingMapBegin = &(edgeIndexMapDevice->outgoingSynapseIndexMap_[beginIndex]);
+                    BGSIZE* outgoingMapBegin = &(edgeIndexMapDevice->outgoingEdgeIndexMap_[beginIndex]);
                    
                     // for each synapse, let them know we have fired
                     for (BGSIZE i = 0; i < synapseCounts; i++) {
@@ -247,12 +247,12 @@ __global__ void advanceIZHNeuronsDevice( int totalVertices, int maxEdges, int ma
                 }
 
                 // notify incomming synapses of spike
-                synapseCounts = edgeIndexMapDevice->incomingSynapseCount_[idx];
+                synapseCounts = edgeIndexMapDevice->incomingEdgeCount_[idx];
                 if (fAllowBackPropagation && synapseCounts != 0) {
                     // get the index of where this neuron's list of synapses are
-                    BGSIZE beginIndex = edgeIndexMapDevice->incomingSynapseBegin_[idx];
+                    BGSIZE beginIndex = edgeIndexMapDevice->incomingEdgeBegin_[idx];
                     // get the memory location of where that list begins
-                    BGSIZE* incomingMapBegin = &(edgeIndexMapDevice->incomingSynapseIndexMap_[beginIndex]);
+                    BGSIZE* incomingMapBegin = &(edgeIndexMapDevice->incomingEdgeIndexMap_[beginIndex]);
 
                     // for each synapse, let them know we have fired
                     switch (classSynapses_d) {

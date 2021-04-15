@@ -16,7 +16,6 @@
  */
 
 #include "Connections.h"
-#include "IAllEdges.h"
 #include "IAllVertices.h"
 #include "AllEdges.h"
 #include "AllVertices.h"
@@ -45,11 +44,11 @@ Connections::Connections() {
 Connections::~Connections() {
 }
 
-shared_ptr<IAllEdges> Connections::getEdges() const {
+shared_ptr<AllEdges> Connections::getEdges() const {
    return edges_;
 }
 
-shared_ptr<EdgeIndexMap> Connections::getSynapseIndexMap() const {
+shared_ptr<EdgeIndexMap> Connections::getEdgeIndexMap() const {
    return synapseIndexMap_;
 }
 
@@ -67,7 +66,7 @@ bool Connections::updateConnections(IAllVertices &vertices, Layout *layout) {
 }
 
 #if defined(USE_GPU)
-void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, IAllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout)
+void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, AllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout)
 {
 }
 #else
@@ -78,7 +77,7 @@ void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &ver
 ///  @param  numVertices  Number of vertices to update.
 ///  @param  vertices     The vertex list to search from.
 ///  @param  synapses    The Synapse list to search from.
-void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, IAllEdges &synapses, Layout *layout) {
+void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, AllEdges &synapses, Layout *layout) {
 }
 
 #endif // !USE_GPU
@@ -90,24 +89,24 @@ void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &ver
 ///  @param  ivertices    The vertex list to search from.
 ///  @param  isynapses   The Synapse list to search from.
 void Connections::createSynapsesFromWeights(const int numVertices, Layout *layout, IAllVertices &ivertices,
-                                            IAllEdges &isynapses) {
+                                            AllEdges &isynapses) {
    AllVertices &vertices = dynamic_cast<AllVertices &>(ivertices);
    AllEdges &synapses = dynamic_cast<AllEdges &>(isynapses);
 
    // for each neuron
-   for (int iNeuron = 0; iNeuron < numVertices; iNeuron++) {
+   for (int i = 0; i < numVertices; i++) {
       // for each synapse in the vertex
       for (BGSIZE synapseIndex = 0;
            synapseIndex < Simulator::getInstance().getMaxEdgesPerVertex(); synapseIndex++) {
-         BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * iNeuron + synapseIndex;
+         BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * i + synapseIndex;
          // if the synapse weight is not zero (which means there is a connection), create the synapse
          if (synapses.W_[iEdg] != 0.0) {
             BGFLOAT theW = synapses.W_[iEdg];
-            BGFLOAT *sumPoint = &(vertices.summationMap_[iNeuron]);
-            int srcVertex = synapses.sourceNeuronIndex_[iEdg];
-            int destVertex = synapses.destNeuronIndex_[iEdg];
-            synapseType type = layout->synType(srcVertex, destVertex);
-            synapses.synapseCounts_[iNeuron]++;
+            BGFLOAT *sumPoint = &(vertices.summationMap_[i]);
+            int srcVertex = synapses.sourceVertexIndex_[iEdg];
+            int destVertex = synapses.destVertexIndex_[iEdg];
+            edgeType type = layout->edgType(srcVertex, destVertex);
+            synapses.edgeCounts_[i]++;
             synapses.createEdge(iEdg, srcVertex, destVertex, sumPoint, Simulator::getInstance().getDeltaT(),
                                    type);
             synapses.W_[iEdg] = theW;

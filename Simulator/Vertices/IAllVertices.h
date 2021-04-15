@@ -14,7 +14,7 @@ using namespace std;
 
 #include "Core/EdgeIndexMap.h"
 
-class IAllEdges;
+class AllEdges;
 
 class Layout;
 
@@ -76,12 +76,12 @@ public:
        ///  @param  allEdgesDevice      GPU address of the allEdges struct on device memory.
        ///  @param  randNoise              Reference to the random noise array.
        ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
-       virtual void advanceVertices(IAllEdges &edges, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice) = 0;
+       virtual void advanceVertices(AllEdges &edges, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice) = 0;
 
        ///  Set some parameters used for advanceVerticesDevice.
        ///
        ///  @param  edges               Reference to the allEdges struct on host memory.
-       virtual void setAdvanceVerticesDeviceParams(IAllEdges &edges) = 0;
+       virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) = 0;
 #else // !defined(USE_GPU)
 public:
    ///  Update internal state of the indexed Neuron (called by every simulation step).
@@ -89,7 +89,7 @@ public:
    ///
    ///  @param  edges         The Synapse list to search from.
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-   virtual void advanceVertices(IAllEdges &edges, const EdgeIndexMap *edgeIndexMap) = 0;
+   virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap) = 0;
 
 #endif // defined(USE_GPU)
 };

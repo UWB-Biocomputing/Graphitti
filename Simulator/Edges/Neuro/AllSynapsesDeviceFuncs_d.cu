@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "AllSynapsesDeviceFuncs.h"
-#include "AllEdges.h"
+#include "AllNeuroEdges.h"
 #include "AllSTDPSynapses.h"
 #include "AllDynamicSTDPSynapses.h"
 
@@ -20,9 +20,9 @@
 
 /// Return 1 if originating neuron is excitatory, -1 otherwise.
 ///
-/// @param[in] t  synapseType I to I, I to E, E to I, or E to E
+/// @param[in] t  edgeType I to I, I to E, E to I, or E to E
 /// @return 1 or -1
-__device__ int edgSign( synapseType t )
+__device__ int edgSign( edgeType t )
 {
         switch ( t )
         {
@@ -133,7 +133,7 @@ __device__ void stdpLearningDevice(AllSTDPSynapsesDeviceProperties* allEdgesDevi
     BGFLOAT Apos = allEdgesDevice->Apos_[iEdg];
     BGFLOAT Wex = allEdgesDevice->Wex_[iEdg];
     BGFLOAT &W = allEdgesDevice->W_[iEdg];
-    synapseType type = allEdgesDevice->type_[iEdg];
+    edgeType type = allEdgesDevice->type_[iEdg];
     BGFLOAT dw;
 
     if (delta < -STDPgap) {
@@ -233,7 +233,7 @@ __global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, EdgeIndexM
                 return;
 
                 
-        BGSIZE iEdg = edgeIndexMapDevice->incomingSynapseIndexMap_[idx];
+        BGSIZE iEdg = edgeIndexMapDevice->incomingEdgeIndexMap_[idx];
 
         BGFLOAT &psr = allEdgesDevice->psr_[iEdg];
         BGFLOAT decay = allEdgesDevice->decay_[iEdg];
@@ -274,7 +274,7 @@ __global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, EdgeIndexMap*
     if ( idx >= totalSynapseCount )
             return;
 
-    BGSIZE iEdg = edgeIndexMapDevice->incomingSynapseIndexMap_[idx];
+    BGSIZE iEdg = edgeIndexMapDevice->incomingEdgeIndexMap_[idx];
 
     // If the synapse is inhibitory or its weight is zero, update synapse state using AllSpikingSynapses::advanceEdge method
     BGFLOAT &W = allEdgesDevice->W_[iEdg];
@@ -321,8 +321,8 @@ __global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, EdgeIndexMap*
         bool &useFroemkeDanSTDP = allEdgesDevice->useFroemkeDanSTDP_[iEdg];
 
         // pre and post neurons index
-        int idxPre = allEdgesDevice->sourceNeuronIndex_[iEdg];
-        int idxPost = allEdgesDevice->destNeuronIndex_[iEdg];
+        int idxPre = allEdgesDevice->sourceVertexIndex_[iEdg];
+        int idxPost = allEdgesDevice->destVertexIndex_[iEdg];
         int64_t spikeHistory, spikeHistory2;
         BGFLOAT delta;
         BGFLOAT epre, epost;
@@ -445,15 +445,15 @@ __global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, EdgeIndexMap*
 ///  @param sumPoint             Pointer to the summation point.
 ///  @param deltaT               The time step size.
 ///  @param type                 Type of the Synapse to create.
-__device__ void createSpikingSynapse(AllSpikingSynapsesDeviceProperties* allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, synapseType type)
+__device__ void createSpikingSynapse(AllSpikingSynapsesDeviceProperties* allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, edgeType type)
 {
     BGFLOAT delay;
     BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
     BGSIZE iEdg = maxEdges * neuronIndex + synapseOffset;
 
     allEdgesDevice->inUse_[iEdg] = true;
-    allEdgesDevice->destNeuronIndex_[iEdg] = destIndex;
-    allEdgesDevice->sourceNeuronIndex_[iEdg] = sourceIndex;
+    allEdgesDevice->destVertexIndex_[iEdg] = destIndex;
+    allEdgesDevice->sourceVertexIndex_[iEdg] = sourceIndex;
     allEdgesDevice->W_[iEdg] = edgSign(type) * 10.0e-9;
     
     allEdgesDevice->delayQueue_[iEdg] = 0;
@@ -506,15 +506,15 @@ __device__ void createSpikingSynapse(AllSpikingSynapsesDeviceProperties* allEdge
 ///  @param sumPoint             Pointer to the summation point.
 ///  @param deltaT               The time step size.
 ///  @param type                 Type of the Synapse to create.
-__device__ void createDSSynapse(AllDSSynapsesDeviceProperties* allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, synapseType type)
+__device__ void createDSSynapse(AllDSSynapsesDeviceProperties* allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, edgeType type)
 {
     BGFLOAT delay;
     BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
     BGSIZE iEdg = maxEdges * neuronIndex + synapseOffset;
 
     allEdgesDevice->inUse_[iEdg] = true;
-    allEdgesDevice->destNeuronIndex_[iEdg] = destIndex;
-    allEdgesDevice->sourceNeuronIndex_[iEdg] = sourceIndex;
+    allEdgesDevice->destVertexIndex_[iEdg] = destIndex;
+    allEdgesDevice->sourceVertexIndex_[iEdg] = sourceIndex;
     allEdgesDevice->W_[iEdg] = edgSign(type) * 10.0e-9;
 
     allEdgesDevice->delayQueue_[iEdg] = 0;
@@ -590,15 +590,15 @@ __device__ void createDSSynapse(AllDSSynapsesDeviceProperties* allEdgesDevice, c
 ///  @param sumPoint             Pointer to the summation point.
 ///  @param deltaT               The time step size.
 ///  @param type                 Type of the Synapse to create.
-__device__ void createSTDPSynapse(AllSTDPSynapsesDeviceProperties* allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, synapseType type)
+__device__ void createSTDPSynapse(AllSTDPSynapsesDeviceProperties* allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, edgeType type)
 {
     BGFLOAT delay;
     BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
     BGSIZE iEdg = maxEdges * neuronIndex + synapseOffset;
 
     allEdgesDevice->inUse_[iEdg] = true;
-    allEdgesDevice->destNeuronIndex_[iEdg] = destIndex;
-    allEdgesDevice->sourceNeuronIndex_[iEdg] = sourceIndex;
+    allEdgesDevice->destVertexIndex_[iEdg] = destIndex;
+    allEdgesDevice->sourceVertexIndex_[iEdg] = sourceIndex;
     allEdgesDevice->W_[iEdg] = edgSign(type) * 10.0e-9;
 
     allEdgesDevice->delayQueue_[iEdg] = 0;
@@ -672,15 +672,15 @@ __device__ void createSTDPSynapse(AllSTDPSynapsesDeviceProperties* allEdgesDevic
 ///  @param sumPoint             Pointer to the summation point.
 ///  @param deltaT               The time step size.
 ///  @param type                 Type of the Synapse to create.
-__device__ void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperties* allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, synapseType type)
+__device__ void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperties* allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, edgeType type)
 {
     BGFLOAT delay;
     BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
     BGSIZE iEdg = maxEdges * neuronIndex + synapseOffset;
 
     allEdgesDevice->inUse_[iEdg] = true;
-    allEdgesDevice->destNeuronIndex_[iEdg] = destIndex;
-    allEdgesDevice->sourceNeuronIndex_[iEdg] = sourceIndex;
+    allEdgesDevice->destVertexIndex_[iEdg] = destIndex;
+    allEdgesDevice->sourceVertexIndex_[iEdg] = sourceIndex;
     allEdgesDevice->W_[iEdg] = edgSign(type) * 10.0e-9;
 
     allEdgesDevice->delayQueue_[iEdg] = 0;
@@ -779,9 +779,9 @@ __device__ void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperties*
 /// @param deltaT                 The time step size.
 /// @param W_d                    Array of synapse weight.
 /// @param numVertices            The number of vertices.
-__device__ void addSpikingSynapse(AllSpikingSynapsesDeviceProperties* allEdgesDevice, synapseType type, const int srcVertex, const int destVertex, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, BGFLOAT* W_d, int numVertices)
+__device__ void addSpikingSynapse(AllSpikingSynapsesDeviceProperties* allEdgesDevice, edgeType type, const int srcVertex, const int destVertex, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, BGFLOAT* W_d, int numVertices)
 {
-    if (allEdgesDevice->synapseCounts_[destVertex] >= allEdgesDevice->maxEdgesPerVertex_) {
+    if (allEdgesDevice->edgeCounts_[destVertex] >= allEdgesDevice->maxEdgesPerVertex_) {
         return; // TODO: ERROR!
     }
 
@@ -795,7 +795,7 @@ __device__ void addSpikingSynapse(AllSpikingSynapsesDeviceProperties* allEdgesDe
         }
     }
 
-    allEdgesDevice->synapseCounts_[destVertex]++;
+    allEdgesDevice->edgeCounts_[destVertex]++;
 
     // create a synapse
     switch (classSynapses_d) {
@@ -814,7 +814,7 @@ __device__ void addSpikingSynapse(AllSpikingSynapsesDeviceProperties* allEdgesDe
     default:
         assert(false);
     }
-    allEdgesDevice->W_[synapseBegin + synapseIndex] = W_d[srcVertex * numVertices + destVertex] * edgSign(type) * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+    allEdgesDevice->W_[synapseBegin + synapseIndex] = W_d[srcVertex * numVertices + destVertex] * edgSign(type) * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 }
 
 /// Remove a synapse from the network.
@@ -827,7 +827,7 @@ __device__ void addSpikingSynapse(AllSpikingSynapsesDeviceProperties* allEdgesDe
 __device__ void eraseSpikingSynapse( AllSpikingSynapsesDeviceProperties* allEdgesDevice, const int neuronIndex, const int synapseOffset, int maxEdges )
 {
     BGSIZE iSync = maxEdges * neuronIndex + synapseOffset;
-    allEdgesDevice->synapseCounts_[neuronIndex]--;
+    allEdgesDevice->edgeCounts_[neuronIndex]--;
     allEdgesDevice->inUse_[iSync] = false;
     allEdgesDevice->W_[iSync] = 0;
 }
@@ -837,7 +837,7 @@ __device__ void eraseSpikingSynapse( AllSpikingSynapsesDeviceProperties* allEdge
 /// @param[in] allVerticesDevice          Pointer to the Neuron structures in device memory.
 /// @param srcVertex             Index of the source neuron.
 /// @param destVertex            Index of the destination neuron.
-__device__ synapseType synType( neuronType* neuronTypeMap_d, const int srcVertex, const int destVertex )
+__device__ edgeType edgType( vertexType* neuronTypeMap_d, const int srcVertex, const int destVertex )
 {
     if ( neuronTypeMap_d[srcVertex] == INH && neuronTypeMap_d[destVertex] == INH )
         return II;
@@ -848,7 +848,7 @@ __device__ synapseType synType( neuronType* neuronTypeMap_d, const int srcVertex
     else if ( neuronTypeMap_d[srcVertex] == EXC && neuronTypeMap_d[destVertex] == EXC )
         return EE;
 
-    return STYPE_UNDEF;
+    return ETYPE_UNDEF;
 
 }
 ///@}
@@ -867,7 +867,7 @@ __device__ synapseType synType( neuronType* neuronTypeMap_d, const int srcVertex
 /// @param[in] maxEdges        Maximum number of synapses per neuron.
 /// @param[in] allVerticesDevice   Pointer to the Neuron structures in device memory.
 /// @param[in] allEdgesDevice  Pointer to the Synapse structures in device memory.
-__global__ void updateSynapsesWeightsDevice( int numVertices, BGFLOAT deltaT, BGFLOAT* W_d, int maxEdges, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, neuronType* neuronTypeMap_d )
+__global__ void updateSynapsesWeightsDevice( int numVertices, BGFLOAT deltaT, BGFLOAT* W_d, int maxEdges, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, vertexType* neuronTypeMap_d )
 {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if ( idx >= numVertices )
@@ -886,16 +886,16 @@ __global__ void updateSynapsesWeightsDevice( int numVertices, BGFLOAT deltaT, BG
     for (int srcVertex = 0; srcVertex < numVertices; srcVertex++) {
         // visit each synapse at (xa,ya)
         bool connected = false;
-        synapseType type = synType(neuronTypeMap_d, srcVertex, destVertex);
+        edgeType type = edgType(neuronTypeMap_d, srcVertex, destVertex);
 
         // for each existing synapse
-        BGSIZE existing_synapses = allEdgesDevice->synapseCounts_[destVertex];
+        BGSIZE existing_synapses = allEdgesDevice->edgeCounts_[destVertex];
         int existingSynapsesChecked = 0;
         for (BGSIZE synapseIndex = 0; (existingSynapsesChecked < existing_synapses) && !connected; synapseIndex++) {
             BGSIZE iEdg = maxEdges * destVertex + synapseIndex;
             if (allEdgesDevice->inUse_[iEdg] == true) {
                 // if there is a synapse between a and b
-                if (allEdgesDevice->sourceNeuronIndex_[iEdg] == srcVertex) {
+                if (allEdgesDevice->sourceVertexIndex_[iEdg] == srcVertex) {
                     connected = true;
                     adjusted++;
 
@@ -909,7 +909,7 @@ __global__ void updateSynapsesWeightsDevice( int numVertices, BGFLOAT deltaT, BG
                         // adjust
                         // g_synapseStrengthAdjustmentConstant is 1.0e-8;
                         allEdgesDevice->W_[iEdg] = W_d[srcVertex * numVertices
-                            + destVertex] * edgSign(type) * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+                            + destVertex] * edgSign(type) * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
                     }
                 }
                 existingSynapsesChecked++;
@@ -944,9 +944,9 @@ __global__ void initSynapsesDevice( int n, AllDSSynapsesDeviceProperties* allEdg
     // create a synapse
     int neuronIndex = idx;
     BGFLOAT* sumPoint = &( pSummationMap[neuronIndex] );
-    synapseType type = allEdgesDevice->type_[neuronIndex];
+    edgeType type = allEdgesDevice->type_[neuronIndex];
     createDSSynapse(allEdgesDevice, neuronIndex, 0, 0, neuronIndex, sumPoint, deltaT, type );
-    allEdgesDevice->W_[neuronIndex] = weight * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+    allEdgesDevice->W_[neuronIndex] = weight * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 }
 ///@}
 

@@ -44,6 +44,11 @@ public:
    /// @param[in] neurons   The entire list of neurons.
    virtual void compileHistories(IAllVertices &neurons);
 
+   /// Compile history information in every epoch
+   ///
+   /// @param[in] neurons   The entire list of neurons.
+   void compileGrowthHistories(IAllVertices &neurons);
+
    /// Writes simulation results to an output destination.
    ///
    /// @param  neurons the Neuron list to search from.
@@ -54,10 +59,18 @@ public:
    virtual void printParameters();
 
 private:
+   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
+
    // track firing rate
    CompleteMatrix ratesHistory_;
 
    // track radii
    CompleteMatrix radiiHistory_;
+
+   // burstiness Histogram goes through the
+   VectorMatrix burstinessHist_;
+
+   // spikes history - history of accumulated spikes count of all vertices (10 ms bin)
+   VectorMatrix spikesHistory_;
 };
 

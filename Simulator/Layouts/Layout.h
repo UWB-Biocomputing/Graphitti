@@ -38,7 +38,7 @@ public:
    virtual void setupLayout();
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters();
+   virtual void loadParameters() = 0;
 
    /// Prints out all parameters to logging file. Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
@@ -58,7 +58,7 @@ public:
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
-   synapseType synType(const int srcVertex, const int destVertex);
+   virtual edgeType edgType(const int srcVertex, const int destVertex) = 0;
 
    VectorMatrix *xloc_;  ///< Store neuron i's x location.
 
@@ -70,11 +70,14 @@ public:
 
    vector<int> probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
 
-   neuronType *vertexTypeMap_;    ///< The vertex type map (INH, EXC).
+   vertexType *vertexTypeMap_;    ///< The vertex type map (INH, EXC).
 
    bool *starterMap_; ///< The starter existence map (T/F).
 
    BGSIZE numEndogenouslyActiveNeurons_;    ///< Number of endogenously active neurons.
+
+   BGSIZE numCallerVertices_;    ///< Number of caller vertices.
+
 
 protected:
    shared_ptr<IAllVertices> vertices_;
@@ -82,6 +85,12 @@ protected:
    vector<int> endogenouslyActiveNeuronList_;    ///< Endogenously active neurons list.
 
    vector<int> inhibitoryNeuronLayout_;    ///< Inhibitory neurons list.
+
+   vector<int> callerVertexList_;    ///< Caller vertex list.
+
+   vector<int> psapVertexList_;    ///< PSAP vertex list.
+   
+   vector<int> responderVertexList_;    ///< Responder vertex list.
 
    log4cplus::Logger fileLogger_;
 

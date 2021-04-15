@@ -239,16 +239,16 @@ void Hdf5Recorder::compileHistories(IAllVertices &neurons)
    shared_ptr<Model> model = Simulator::getInstance().getModel();
 
    // output spikes: iterate over each neuron
-   for (int iNeuron = 0; iNeuron < Simulator::getInstance().getTotalVertices(); iNeuron++)
+   for (int iVertex = 0; iVertex < Simulator::getInstance().getTotalVertices(); iVertex++)
    {
       // true if this is a probed neuron
-      fProbe = ((iProbe < model->getLayout()->probedNeuronList_.size()) && (iNeuron == model->getLayout()->probedNeuronList_[iProbe]));
+      fProbe = ((iProbe < model->getLayout()->probedNeuronList_.size()) && (iVertex == model->getLayout()->probedNeuronList_[iProbe]));
 
       // Point to the current neuron's spike history
-      uint64_t* pSpikes = spNeurons.spikeHistory_[iNeuron];
+      uint64_t* pSpikes = spNeurons.spikeHistory_[iVertex];
 
-      int& spike_count = spNeurons.spikeCount_[iNeuron];
-      int& offset = spNeurons.spikeCountOffset_[iNeuron];
+      int& spike_count = spNeurons.spikeCount_[iVertex];
+      int& offset = spNeurons.spikeCountOffset_[iVertex];
       // iterate over each spike that neuron produced
       for (int i = 0, idxSp = offset; i < spike_count; i++, idxSp++)
       {

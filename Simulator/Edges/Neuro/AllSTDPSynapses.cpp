@@ -210,7 +210,7 @@ void AllSTDPSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
 void AllSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
-                                    const BGFLOAT deltaT, synapseType type) {
+                                    const BGFLOAT deltaT, edgeType type) {
 
    totalDelayPost_[iEdg] = 0;// Apr 12th 2020 move this line so that when AllSpikingSynapses::createEdge() is called, inside this method the initSpikeQueue() method can be called successfully
    AllSpikingSynapses::createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
@@ -270,8 +270,8 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, IAllVertices *neurons) {
       AllSpikingNeurons *spNeurons = dynamic_cast<AllSpikingNeurons *>(neurons);
 
       // pre and post neurons index
-      int idxPre = sourceNeuronIndex_[iEdg];
-      int idxPost = destNeuronIndex_[iEdg];
+      int idxPre = sourceVertexIndex_[iEdg];
+      int idxPost = destVertexIndex_[iEdg];
       uint64_t spikeHistory, spikeHistory2;
       BGFLOAT delta;
       BGFLOAT epre, epost;
@@ -406,7 +406,7 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iEdg, double delta, double epost
    BGFLOAT Apos_ = this->Apos_[iEdg];
    BGFLOAT Wex_ = this->Wex_[iEdg];
    BGFLOAT &W = this->W_[iEdg];
-   synapseType type = this->type_[iEdg];
+   edgeType type = this->type_[iEdg];
    BGFLOAT dw;
 
    if (delta < -STDPgap_) {

@@ -24,7 +24,7 @@
  */
 #pragma once
 
-#include "AllEdges.h"
+#include "AllNeuroEdges.h"
 
 struct AllSpikingSynapsesDeviceProperties;
 
@@ -32,7 +32,7 @@ typedef void (*fpPreSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDevicePr
 
 typedef void (*fpPostSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
 
-class AllSpikingSynapses : public AllEdges {
+class AllSpikingSynapses : public AllNeuroEdges {
 public:
    AllSpikingSynapses();
 
@@ -40,7 +40,7 @@ public:
 
    virtual ~AllSpikingSynapses();
 
-   static IAllEdges *Create() {
+   static AllEdges *Create() {
       return new AllSpikingSynapses();
    }
 
@@ -66,7 +66,7 @@ public:
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-                              synapseType type);
+                              edgeType type);
 
    ///  Check if the back propagation (notify a spike event to the pre neuron)
    ///  is allowed in the synapse class.
@@ -146,12 +146,12 @@ protected:
        ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
        virtual void copyEdgeDeviceToHost( void* allEdgesDevice );
 
-       ///  Get edge_counts in AllEdges struct on device memory.
+       ///  Get edge_counts in AllNeuroEdges struct on device memory.
        ///
        ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
        virtual void copyDeviceEdgeCountsToHost( void* allEdgesDevice );
 
-       ///  Get summationCoord and in_use in AllEdges struct on device memory.
+       ///  Get summationCoord and in_use in AllNeuroEdges struct on device memory.
        ///
        ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
        virtual void copyDeviceEdgeSumIdxToHost( void* allEdgesDevice );
@@ -164,7 +164,7 @@ protected:
        ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
        virtual void advanceEdges( void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice );
 
-       ///  Set some parameters used for advanceSynapsesDevice.
+       ///  Set some parameters used for advanceEdgesDevice.
        ///  Currently we set a member variable: m_fpChangePSR_h.
        virtual void setAdvanceEdgesDeviceParams( );
 

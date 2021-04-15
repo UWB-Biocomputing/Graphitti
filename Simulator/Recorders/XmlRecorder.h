@@ -27,9 +27,6 @@ public:
 
    /// destructor
    ~XmlRecorder();
-   
-   /// return pointer to new instance of this class
-   static IRecorder* Create() { return new XmlRecorder(); }
 
    /// Initialize data
    /// Create a new xml file.
@@ -48,27 +45,19 @@ public:
    virtual void term();
 
    /// Compile history information in every epoch
-   /// @param[in] neurons   The entire list of neurons.
-   virtual void compileHistories(IAllVertices &neurons);
+   /// @param[in] vertices   The entire list of vertices.
+   virtual void compileHistories(IAllVertices &vertices) = 0;
 
    /// Writes simulation results to an output destination.
-   /// @param  neurons the Neuron list to search from.
-   virtual void saveSimData(const IAllVertices &neurons);
+   /// @param  vertices the Vertex list to search from.
+   virtual void saveSimData(const IAllVertices &vertices) = 0;
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters();
+   virtual void printParameters() = 0;
 
 protected:
-   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
-
    // a file stream for xml output
    ofstream stateOut_;
-
-   // burstiness Histogram goes through the
-   VectorMatrix burstinessHist_;
-
-   // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
-   VectorMatrix spikesHistory_;
 };
 

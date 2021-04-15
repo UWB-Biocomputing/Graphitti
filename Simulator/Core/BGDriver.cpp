@@ -281,7 +281,7 @@ bool deserializeSynapses() {
 
 #if defined(USE_GPU)
    GPUSpikingModel *gpuModel = static_cast<GPUSpikingModel *>(simulator.getModel().get());
-   gpuModel->copySynapseIndexMapHostToDevice(*(connections->getSynapseIndexMap().get()), simulator.getTotalVertices());
+   gpuModel->copySynapseIndexMapHostToDevice(*(connections->getEdgeIndexMap().get()), simulator.getTotalVertices());
 #endif // USE_GPU
 
    // Deserializes radii (only when running a connGrowth model and radii is in serialization file)

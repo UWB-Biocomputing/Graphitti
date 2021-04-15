@@ -9,13 +9,14 @@
 #include "LayoutFactory.h"
 #include "FixedLayout.h"
 #include "DynamicLayout.h"
-
+#include "Layout911.h"
 
 /// Constructor is private to keep a singleton instance of this class.
 LayoutFactory::LayoutFactory() {
    // register layout classes
    registerClass("FixedLayout", &FixedLayout::Create);
    registerClass("DynamicLayout", &DynamicLayout::Create);
+   registerClass("Layout911", &Layout911::Create);
 }
 
 LayoutFactory::~LayoutFactory() {

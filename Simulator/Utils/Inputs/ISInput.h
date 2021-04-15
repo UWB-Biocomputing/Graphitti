@@ -14,7 +14,7 @@
 #define _ISINPUT_H_
 
 #include "Global.h"
-#include "Core/Simulator.h"
+#include "Simulator.h"
 #include "Core/Model.h"
 #include "tinyxml.h"
 
