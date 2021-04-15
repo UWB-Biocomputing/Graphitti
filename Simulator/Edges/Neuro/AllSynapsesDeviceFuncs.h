@@ -3,7 +3,7 @@
  * 
  * @ingroup Simulator/Edges
  *
- * @brief 
+ * @brief Device functions for synapse data
  */
 
 #pragma once

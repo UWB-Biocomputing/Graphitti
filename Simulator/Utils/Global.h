@@ -3,7 +3,7 @@
  *
  *	@ingroup Simulator/Utils
  *
- *	@brief Header file for global.h
+ *	@brief Globally available functions/variables and default parameter values
  */
 // Globally available functions and default parameter values.
 

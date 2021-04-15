@@ -1,7 +1,7 @@
 /**
  * @file AllIZHNeurons.cpp
  *
- * @brief
+ * @brief A container of all Izhikevich neuron data
  *
  * @ingroup Simulator/Vertices
  */

@@ -1,4 +1,4 @@
-/*
+/**
  * @file GpuSInputPoisson.cu
  *
  * @ingroup Simulator/Utils/Inputs

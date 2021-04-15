@@ -1,7 +1,7 @@
 /**
  * @file AllIFNeurons.cpp
  *
- * @brief
+ * @brief A container of all Integate and Fire (IF) neuron data
  *
  * @ingroup Simulator/Vertices
  */

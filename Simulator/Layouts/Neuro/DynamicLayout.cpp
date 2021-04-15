@@ -3,7 +3,7 @@
  *
  * @ingroup Simulator/Layouts
  * 
- * @brief 
+ * @brief The DynamicLayout class defines the layout of neurons in neural networks
  */
 
 #include "DynamicLayout.h"

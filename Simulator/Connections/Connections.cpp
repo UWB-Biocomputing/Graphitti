@@ -4,7 +4,7 @@
  * @ingroup Simulator/Connections
  * 
  * @brief Methods for creating and updating connections
- *  ------------- CONNECTIONS STRUCT ------------ 
+ * 
  * Below all of the resources for the various
  * connections are instantiated and initialized.
  * All of the allocation for memory is done in the
@@ -12,7 +12,7 @@
  * the function. Once all memory has been allocated
  * the constructor fills in known information
  * into “radii” and “rates”.
- * --------------------------------------------- 
+ *  
  */
 
 #include "Connections.h"

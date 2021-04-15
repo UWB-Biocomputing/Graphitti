@@ -3,7 +3,7 @@
  * 
  * @ingroup Simulator/Vertices
  *
- * @brief
+ * @brief A container of all spiking neuron data
  */
 
 #include "AllSpikingNeurons.h"

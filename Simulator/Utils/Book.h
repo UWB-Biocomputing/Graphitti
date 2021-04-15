@@ -3,7 +3,7 @@
  * 
  * @ingroup Simulator/Utils
  * 
- * @brief
+ * @brief Handles CUDA exceptions
  *
  * Copyright 1993-2010 NVIDIA Corporation.  All rights reserved.
  *

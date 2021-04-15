@@ -3,7 +3,7 @@
  * 
  * @ingroup Simulator/Vertices
  *
- * @brief
+ * @brief A container of all LIF neuron data
  */
 
 #include "AllLIFNeurons.h"

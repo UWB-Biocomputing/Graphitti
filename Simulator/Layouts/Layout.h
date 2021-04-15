@@ -4,6 +4,7 @@
  * @ingroup Simulator/Layouts
  *
  * @brief The Layout class defines the layout of neurons in neural networks
+ * 
  * Implementation:
  * The Layout class maintains neurons locations (x, y coordinates),
  * distance of every couple neurons,

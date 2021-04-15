@@ -3,7 +3,7 @@
  * 
  * @ingroup Simulator/Utils/RNG
  * 
- * @brief 
+ * @brief MersenneTwister logic from Nvidia
  * 
  * Copyright 1993-2010 NVIDIA Corporation.  All rights reserved.
  *

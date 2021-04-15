@@ -3,7 +3,7 @@
  * 
  * @ingroup Simulator/Edges
  *
- * @brief
+ * @brief A container of all STDP synapse data
  */
 
 #include "AllSTDPSynapses.h"
