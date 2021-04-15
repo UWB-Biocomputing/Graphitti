@@ -18,8 +18,8 @@
 #include "BGTypes.h"
 #include "Global.h"
 #include "Core/Model.h"
-//#include "GPUSpikingModel.h"
-//#include "CPUSpikingModel.h"
+//#include "GPUModel.h"
+//#include "CPUModel.h"
 //#include "ISInput.h"
 #include "Timer.h"
 

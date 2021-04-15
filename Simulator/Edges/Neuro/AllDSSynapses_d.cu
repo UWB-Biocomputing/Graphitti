@@ -8,7 +8,7 @@
 
 #include "AllSynapsesDeviceFuncs.h"
 #include "AllDSSynapses.h"
-#include "GPUSpikingModel.h"
+#include "GPUModel.h"
 #include "Simulator.h"
 #include "Book.h"
 

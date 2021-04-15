@@ -11,8 +11,8 @@
 
 #include <functional>
 
-#include "CPUSpikingModel.h"
-#include "GPUSpikingModel.h"
+#include "CPUModel.h"
+#include "GPUModel.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "RecorderFactory.h"
@@ -201,9 +201,9 @@ void Simulator::saveData() const {
 bool Simulator::instantiateSimulatorObjects() {
    // Model Definition
 #if defined(USE_GPU)
-   model_ = shared_ptr<Model>(new GPUSpikingModel());
+   model_ = shared_ptr<Model>(new GPUModel());
 #else
-   model_ = shared_ptr<Model>(new CPUSpikingModel());
+   model_ = shared_ptr<Model>(new CPUModel());
 #endif
 
    // Perform check on all instantiated objects.

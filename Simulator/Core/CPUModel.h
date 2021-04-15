@@ -1,5 +1,5 @@
 /**
- * @file CPUSpikingModel.h
+ * @file CPUModel.h
  * 
  * @ingroup Simulator/Core
  *
@@ -40,13 +40,13 @@
 #include "AllEdges.h"
 #include "Layouts/Layout.h"
 
-class CPUSpikingModel : public Model {
+class CPUModel : public Model {
 public:
    /// Constructor
-   CPUSpikingModel();
+   CPUModel();
 
    /// Destructor
-   virtual ~CPUSpikingModel();
+   virtual ~CPUModel();
 
    /// Set up model state, if anym for a specific simulation run.
    virtual void setupSim();

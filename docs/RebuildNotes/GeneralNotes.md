@@ -90,7 +90,7 @@ RNG/MersenneTwister/MersenneTwister.dat
 cpuspikingmodel.cpp
 
 /// Advance everything in the model one time step.
-void CPUSpikingModel::advance()
+void CPUModel::advance()
 {
    // ToDo: look at pointer v no pointer in params
    // ToDo: look at pointer v no pointer in params - to change
