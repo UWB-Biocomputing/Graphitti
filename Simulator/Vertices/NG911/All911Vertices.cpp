@@ -11,14 +11,14 @@
 
 
 All911Vertices::All911Vertices() {
-    CallNum_ = NULL; 
+    CallNum_ = nullptr; 
 }
 
 All911Vertices::~All911Vertices() {
     if (size_ != 0) {
         delete[] CallNum_; 
     }
-    CallNum_ = NULL; 
+    CallNum_ = nullptr; 
 }
 
 void All911Vertices::setupVertices() {

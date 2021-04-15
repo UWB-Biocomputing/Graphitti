@@ -191,7 +191,7 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
    DEBUG (cout << "totalEdgeCount: " << totalEdgeCount << endl;)
 
    if (totalEdgeCount == 0) {
-      return NULL;
+      return nullptr;
    }
 
    // allocate memories for forward map

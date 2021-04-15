@@ -42,7 +42,7 @@ void All911Edges::setupEdges() {
       edgeCounts_ = new BGSIZE[numVertices];
 
       for (BGSIZE i = 0; i < maxTotalEdges; i++) {
-         summationPoint_[i] = NULL;
+         summationPoint_[i] = nullptr;
          inUse_[i] = false;
          W_[i] = 0;
       }
