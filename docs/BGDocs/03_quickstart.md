@@ -11,14 +11,10 @@ As a quick start and sanity test, let's run a small, prepackaged simulation to m
    ```
 
 2. Compile the executable.
-
    ```shell
    $ cmake ..
-   ```
-   followed by
-
-   ```shell
    $ make
+   $ ./tests
    ```
    To compile the GPU version set the variable `ENABLE_CUDA` to `YES` in the `CMakeLists.txt`
    ```shell
@@ -62,7 +58,7 @@ If you want to run a real test, you could use test-small-connected.xml, but be n
 
 ## 3.2 Use of Screen 
 
-When you run a simulation with Graphitti, you may not want to wait around for it to run to completion. This is especially true if running it remotely. To help with this, you can use the built in ```screen``` command in Linux.
+When you run a simulation with Graphitti, you may not want to wait around for it to run to completion. This is especially true if running it remotely. To help with this, you can use the built in `screen` command in Linux.
 
 The `screen` command will essentially allow you to start a simulation and then detach it so that it runs in the background.  This has the huge advantage of allowing you to log out of the server you are remotely connected to.  Here is how:
 
@@ -93,7 +89,7 @@ The `screen` command will essentially allow you to start a simulation and then d
 
 
 -------------
-[>> Next: 4. Configuration](http://uwb-biocomputing.github.io/Graphitti/4_configuration)
+[>> Next: 4. Configuration](BGDocs/04_configuration.md)
 
 -------------
 [<< Go back to Graphitti Home page](http://uwb-biocomputing.github.io/Graphitti/)

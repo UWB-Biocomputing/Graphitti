@@ -3,6 +3,8 @@ TODO: Make sure this is password or uwnet id protected.
 Ensure you have husky onnet
 https://www.lib.washington.edu/help/connect/husky-onnet
 
+Connect to the server "UW Campus Network Traffic Only"  
+
 Connecting VS Code to UW Servers: in depth
 http://depts.washington.edu/cssuwb/wiki/write_high_quality_c_code
 
