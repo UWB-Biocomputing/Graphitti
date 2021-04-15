@@ -130,7 +130,7 @@ private:
 
    void deleteSynapseImap();
 
-public: //2020/03/14 changed to public for accessing in BGDriver
+public: //2020/03/14 changed to public for accessing in Driver
 
    void copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices);
 

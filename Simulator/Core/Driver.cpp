@@ -1,5 +1,5 @@
 /**
- * @file BGDriver.cpp
+ * @file Driver.cpp
  * 
  * @ingroup Simulator/Core
  *
