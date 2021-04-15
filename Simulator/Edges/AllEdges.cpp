@@ -42,6 +42,7 @@ AllEdges::~AllEdges() {
      delete[] edgeCounts_;
   }
 
+<<<<<<< HEAD
    destVertexIndex_ = nullptr;
    W_ = nullptr;
    summationPoint_ = nullptr;
@@ -49,6 +50,16 @@ AllEdges::~AllEdges() {
    type_ = nullptr;
    inUse_ = nullptr;
    edgeCounts_ = nullptr;
+=======
+   destNeuronIndex_ = nullptr;
+   W_ = nullptr;
+   summationPoint_ = nullptr;
+   sourceNeuronIndex_ = nullptr;
+   psr_ = nullptr;
+   type_ = nullptr;
+   inUse_ = nullptr;
+   synapseCounts_ = nullptr;
+>>>>>>> 7c9a12538208bea9ef0dfaa4065dfb433aa689c2
 
    countVertices_ = 0;
    maxEdgesPerVertex_ = 0;
@@ -111,7 +122,10 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
 
       for (BGSIZE i = 0; i < maxTotalSynapses; i++) {
          summationPoint_[i] = nullptr;
+<<<<<<< HEAD
 >>>>>>> 7c9a125 (Changed all occurences of NULL to nullptr)
+=======
+>>>>>>> 7c9a12538208bea9ef0dfaa4065dfb433aa689c2
          inUse_[i] = false;
          W_[i] = 0;
       }
@@ -206,12 +220,17 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
    DEBUG (cout << "totalEdgeCount: " << totalEdgeCount << endl;)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
    if (totalEdgeCount == 0) {
       return NULL;
 =======
    if (totalSynapseCount == 0) {
       return nullptr;
 >>>>>>> 7c9a125 (Changed all occurences of NULL to nullptr)
+=======
+   if (totalSynapseCount == 0) {
+      return nullptr;
+>>>>>>> 7c9a12538208bea9ef0dfaa4065dfb433aa689c2
    }
 
    // allocate memories for forward map
