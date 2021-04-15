@@ -15,7 +15,6 @@
 /// Constructor is private to keep a singleton instance of this class.
 RecorderFactory::RecorderFactory() {
    // register recorder classes
-   registerClass("XmlRecorder", &XmlRecorder::Create);
    registerClass("XmlGrowthRecorder", &XmlGrowthRecorder::Create);
    registerClass("Xml911Recorder", &Xml911Recorder::Create);
 

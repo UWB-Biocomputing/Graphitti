@@ -15,6 +15,10 @@
 //! THe constructor and destructor
 XmlGrowthRecorder::XmlGrowthRecorder() :
       XmlRecorder(),
+      burstinessHist_(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
+                                                                    Simulator::getInstance().getNumEpochs()), 0),
+      spikesHistory_(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
+                                                                   Simulator::getInstance().getNumEpochs() * 100), 0),
       ratesHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
                     Simulator::getInstance().getTotalVertices()),
       radiiHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
@@ -55,12 +59,10 @@ void XmlGrowthRecorder::getValues() {
    }
 }
 
-/// Compile history information in every epoch
+/// Compile growth information in every epoch
 ///
 /// @param[in] neurons 	The entire list of neurons.
-void XmlGrowthRecorder::compileHistories(IAllVertices &neurons) {
-   XmlRecorder::compileHistories(neurons);
-
+void XmlGrowthRecorder::compileGrowthHistories(IAllVertices &neurons) {
    shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
 
    BGFLOAT minRadius = dynamic_cast<ConnGrowth *>(conns.get())->growthParams_.minRadius;
@@ -79,6 +81,44 @@ void XmlGrowthRecorder::compileHistories(IAllVertices &neurons) {
       // record radius to history matrix
       radiiHistory_(Simulator::getInstance().getCurrentStep(), iVertex) = radii[iVertex];
    }
+}
+
+/// Compile history information in every epoch
+///
+/// @param[in] neurons 	The entire list of neurons.
+void XmlGrowthRecorder::compileHistories(IAllVertices &neurons) {
+   AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(neurons);
+   int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
+
+   // output spikes
+   for (int iVertex = 0; iVertex < Simulator::getInstance().getTotalVertices(); iVertex++) {
+      uint64_t *pSpikes = spNeurons.spikeHistory_[iVertex];
+
+      int &spikeCount = spNeurons.spikeCount_[iVertex];
+      int &offset = spNeurons.spikeCountOffset_[iVertex];
+      for (int i = 0, idxSp = offset; i < spikeCount; i++, idxSp++) {
+         // Single precision (float) gives you 23 bits of significand, 8 bits of exponent,
+         // and 1 sign bit. Double precision (double) gives you 52 bits of significand,
+         // 11 bits of exponent, and 1 sign bit.
+         // Therefore, single precision can only handle 2^23 = 8,388,608 simulation steps
+         // or 8 epochs (1 epoch = 100s, 1 simulation step = 0.1ms).
+
+         if (idxSp >= maxSpikes) idxSp = 0;
+         // compile network wide burstiness index data in 1s bins
+         int idx1 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * Simulator::getInstance().getDeltaT());
+         burstinessHist_[idx1] = burstinessHist_[idx1] + 1.0;
+
+         // compile network wide spike count in 10ms bins
+         int idx2 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * Simulator::getInstance().getDeltaT() *
+                                      100);
+         spikesHistory_[idx2] = spikesHistory_[idx2] + 1.0;
+      }
+   }
+
+   // clear spike count
+   spNeurons.clearSpikeCounts();
+
+   compileGrowthHistories(neurons);
 }
 
 /// Writes simulation results to an output destination.
@@ -139,9 +179,24 @@ void XmlGrowthRecorder::saveSimData(const IAllVertices &neurons) {
 ///  Prints out all parameters to logging file.
 ///  Registered to OperationManager as Operation::printParameters
 void XmlGrowthRecorder::printParameters() {
-   XmlRecorder::printParameters();
-
-   LOG4CPLUS_DEBUG(fileLogger_, "\n---XmlGrowthRecorder Parameters---" << endl
+   LOG4CPLUS_DEBUG(fileLogger_, "\nXMLRECORDER PARAMETERS" << endl
+                                      << "\tResult file path: " << resultFileName_ << endl
+                                      << "\tBurstiness History Size: " << burstinessHist_.Size() << endl
+                                      << "\tSpikes History Size: " << spikesHistory_.Size() << endl
+                                      << "\n---XmlGrowthRecorder Parameters---" << endl
                                       << "\tRecorder type: XmlGrowthRecorder" << endl);
 }
 
+///  Get starter Neuron matrix.
+///
+///  @param  matrix      Starter Neuron matrix.
+///  @param  starterMap Bool map to reference neuron matrix location from.
+void XmlGrowthRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap) {
+   int cur = 0;
+   for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
+      if (starterMap[i]) {
+         matrix[cur] = i;
+         cur++;
+      }
+   }
+}

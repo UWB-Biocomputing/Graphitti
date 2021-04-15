@@ -42,7 +42,7 @@ public:
 
    /// Writes simulation results to an output destination.
    ///
-   /// @param  vertices the Neuron list to search from.
+   /// @param  vertices the Vertex list to search from.
    virtual void saveSimData(const IAllVertices &vertices);
 
    ///  Prints out all parameters to logging file.
