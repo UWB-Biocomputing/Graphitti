@@ -7,7 +7,7 @@
  */
 
 #include "HostSInputPoisson.h"
-#include "Core/CPUSpikingModel.h"
+#include "Core/CPUModel.h"
 #include "tinyxml.h"
 
 /// The constructor for HostSInputPoisson.

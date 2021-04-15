@@ -1,5 +1,5 @@
 /**
- * @file GPUSpikingModel.cu
+ * @file GPUModel.cu
  * 
  * @ingroup Simulator/Core
  *
@@ -7,7 +7,7 @@
  * 
  */
 
-#include "GPUSpikingModel.h"
+#include "GPUModel.h"
 #include "AllSynapsesDeviceFuncs.h"
 #include "Connections.h"
 #include "Global.h"
@@ -21,7 +21,7 @@ cudaEvent_t start, stop;
 
 __constant__ int d_debug_mask[1];
 
-GPUSpikingModel::GPUSpikingModel() :
+GPUModel::GPUModel() :
   Model::Model(),
   synapseIndexMapDevice_(NULL),
   randNoise_d(NULL),
@@ -30,7 +30,7 @@ GPUSpikingModel::GPUSpikingModel() :
 {
 }
 
-GPUSpikingModel::~GPUSpikingModel() 
+GPUModel::~GPUModel() 
 {
   //Let Model base class handle de-allocation
 }
@@ -38,7 +38,7 @@ GPUSpikingModel::~GPUSpikingModel()
 /// Allocates  and initializes memories on CUDA device.
 /// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
 /// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
-void GPUSpikingModel::allocDeviceStruct(void** allVerticesDevice, void** allEdgesDevice)
+void GPUModel::allocDeviceStruct(void** allVerticesDevice, void** allEdgesDevice)
 {
   // Get neurons and synapses
   shared_ptr<IAllVertices> neurons = layout_->getVertices();
@@ -64,7 +64,7 @@ void GPUSpikingModel::allocDeviceStruct(void** allVerticesDevice, void** allEdge
 /// Copies device memories to host memories and deallocates them.
 /// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
 /// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
-void GPUSpikingModel::deleteDeviceStruct(void** allVerticesDevice, void** allEdgesDevice)
+void GPUModel::deleteDeviceStruct(void** allVerticesDevice, void** allEdgesDevice)
 {  
   // Get neurons and synapses
   shared_ptr<IAllVertices> neurons = layout_->getVertices();
@@ -82,7 +82,7 @@ void GPUSpikingModel::deleteDeviceStruct(void** allVerticesDevice, void** allEdg
 }
 
 /// Sets up the Simulation.
-void GPUSpikingModel::setupSim()
+void GPUModel::setupSim()
 {
   // Set device ID
   HANDLE_ERROR( cudaSetDevice( g_deviceId ) );
@@ -122,7 +122,7 @@ void GPUSpikingModel::setupSim()
 }
 
 /// Performs any finalization tasks on network following a simulation.
-void GPUSpikingModel::finish()
+void GPUModel::finish()
 {
   // deallocates memories on CUDA device
   deleteDeviceStruct((void**)&allVerticesDevice_, (void**)&allEdgesDevice_);
@@ -137,7 +137,7 @@ void GPUSpikingModel::finish()
 /// Advance everything in the model one time step. In this case, that
 /// means calling all of the kernels that do the "micro step" updating
 /// (i.e., NOT the stuff associated with growth).
-void GPUSpikingModel::advance()
+void GPUModel::advance()
 {
 #ifdef PERFORMANCE_METRICS
   // Reset CUDA timer to start measurement of GPU operations
@@ -181,7 +181,7 @@ void GPUSpikingModel::advance()
 }
 
 /// Add psr of all incoming synapses to summation points.
-void GPUSpikingModel::calcSummationMap()
+void GPUModel::calcSummationMap()
 {
   // CUDA parameters
   const int threadsPerBlock = 256;
@@ -192,7 +192,7 @@ void GPUSpikingModel::calcSummationMap()
 }
 
 /// Update the connection of all the Neurons and Synapses of the simulation.
-void GPUSpikingModel::updateConnections()
+void GPUModel::updateConnections()
 {
   // Get neurons and synapses
   shared_ptr<IAllVertices> neurons = layout_->getVertices();
@@ -212,7 +212,7 @@ void GPUSpikingModel::updateConnections()
 }
 
 /// Update the Neuron's history.
-void GPUSpikingModel::updateHistory()
+void GPUModel::updateHistory()
 {
   Model::updateHistory();
   // clear spike count
@@ -223,7 +223,7 @@ void GPUSpikingModel::updateHistory()
 
 /// Allocate device memory for synapse inverse map.
 /// @param  count	The number of vertices.
-void GPUSpikingModel::allocSynapseImap( int count )
+void GPUModel::allocSynapseImap( int count )
 {
   EdgeIndexMap synapseIMapDevice;
 
@@ -243,7 +243,7 @@ void GPUSpikingModel::allocSynapseImap( int count )
 }
 
 /// Deallocate device memory for synapse inverse map.
-void GPUSpikingModel::deleteSynapseImap(  )
+void GPUModel::deleteSynapseImap(  )
 {
   EdgeIndexMap synapseIMapDevice;
 
@@ -263,7 +263,7 @@ void GPUSpikingModel::deleteSynapseImap(  )
 
 /// Copy EdgeIndexMap in host memory to EdgeIndexMap in device memory.
 /// @param  synapseIndexMapHost		Reference to the EdgeIndexMap in host memory.
-void GPUSpikingModel::copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices)
+void GPUModel::copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices)
 {
   shared_ptr<AllEdges> synapses = connections_->getEdges();
   int totalSynapseCount = dynamic_cast<AllEdges*>(synapses.get())->totalEdgeCount_;
@@ -362,21 +362,21 @@ __global__ void calcSummationMapDevice(int totalVertices,
 }
 
 /// Copy GPU Synapse data to CPU.
-void GPUSpikingModel::copyGPUtoCPU()
+void GPUModel::copyGPUtoCPU()
 {
   // copy device synapse structs to host memory
   connections_->getEdges()->copyEdgeDeviceToHost(allEdgesDevice_);
 }
 
 /// Copy CPU Synapse data to GPU.
-void GPUSpikingModel::copyCPUtoGPU()
+void GPUModel::copyCPUtoGPU()
 {
   // copy host synapse structs to device memory
   connections_->getEdges()->copyEdgeHostToDevice(allEdgesDevice_);
 }
 
 /// Print out SynapseProps on the GPU.
-void GPUSpikingModel::printGPUSynapsesPropsModel() const
+void GPUModel::printGPUSynapsesPropsModel() const
 {  
   connections_->getEdges()->printGPUEdgesProps(allEdgesDevice_);
 }

@@ -8,7 +8,7 @@
 
 #include "AllSTDPSynapses.h"
 #include "AllSpikingSynapses.h"
-#include "GPUSpikingModel.h"
+#include "GPUModel.h"
 #include "AllSynapsesDeviceFuncs.h"
 #include "Book.h"
 

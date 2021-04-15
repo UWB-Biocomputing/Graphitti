@@ -124,7 +124,7 @@ endif()
 
 # ------ SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
-add_executable(graphitti Simulator/Core/BGDriver.cpp)
+add_executable(graphitti Simulator/Core/Driver.cpp)
 
 # ------ TESTS EXECUTABLE ------
 # Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are

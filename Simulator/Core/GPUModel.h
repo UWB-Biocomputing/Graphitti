@@ -1,5 +1,5 @@
 /**
- * @file GPUSpikingModel.h
+ * @file GPUModel.h
  *
  * @ingroup Simulator/Core
  * 
@@ -69,13 +69,13 @@ inline void cudaLapTime(double& t_event) {
 
 class AllSpikingSynapses;
 
-class GPUSpikingModel : public Model {
+class GPUModel : public Model {
    friend class GpuSInputPoisson;
 
 public:
-   GPUSpikingModel();
+   GPUModel();
 
-   virtual ~GPUSpikingModel();
+   virtual ~GPUModel();
 
    /// Set up model state, if anym for a specific simulation run.
    virtual void setupSim();
@@ -130,7 +130,7 @@ private:
 
    void deleteSynapseImap();
 
-public: //2020/03/14 changed to public for accessing in BGDriver
+public: //2020/03/14 changed to public for accessing in Driver
 
    void copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices);
 
