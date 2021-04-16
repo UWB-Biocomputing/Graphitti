@@ -49,8 +49,8 @@ public:
    virtual void saveData();
 
    /// Set up model state, for a specific simulation run.
-   /// Downstream from IModel setupSim()
-   virtual void setupSim();
+   /// Downstream from IModel allocateMemory()
+   virtual void allocateMemory();
 
    /// Performs any finalization tasks on network following a simulation.
    virtual void finish() = 0; 

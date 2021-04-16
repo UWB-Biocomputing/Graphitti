@@ -37,7 +37,7 @@ AllVertices::~AllVertices() {
 }
 
 ///  Setup the internal structure of the class (allocate memories).
-void AllVertices::setupVertices() {
+void AllVertices::allocateMemory() {
    size_ = Simulator::getInstance().getTotalVertices();
    summationMap_ = new BGFLOAT[size_];
 

@@ -66,7 +66,7 @@ shared_ptr<IAllVertices> Layout::getVertices() const {
 
 /// Setup the internal structure of the class.
 /// Allocate memories to store all layout state, no sequential dependency in this method
-void Layout::setupLayout() {
+void Layout::allocateMemory() {
    int numVertices = Simulator::getInstance().getTotalVertices();
 
    // Allocate memory

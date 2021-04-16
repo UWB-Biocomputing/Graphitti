@@ -55,7 +55,7 @@ void Simulator::setup() {
    cerr << "done." << endl;
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Initializing models in network... ");
-   model_->setupSim();
+   model_->allocateMemory();
    LOG4CPLUS_INFO(fileLogger_, "Model initialization finished");
 
    // init stimulus input object
@@ -114,7 +114,7 @@ void Simulator::reset() {
    // Reset global simulation Step to 0
    g_simulationStep = 0;
    // Initialize and prepare network for simulation
-   model_->setupSim();
+   model_->allocateMemory();
    LOG4CPLUS_INFO(fileLogger_, "Simulator Reset Finished");
 }
 

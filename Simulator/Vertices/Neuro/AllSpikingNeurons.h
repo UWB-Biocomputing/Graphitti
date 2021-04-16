@@ -39,7 +39,7 @@ public:
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all neurons' state.
-   virtual void setupVertices();
+   virtual void allocateMemory();
 
    ///  Clear the spike counts out of all Neurons.
    void clearSpikeCounts();

@@ -47,7 +47,7 @@ public:
    virtual ~AllNeuroEdges();
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
-   virtual void setupEdges();
+   virtual void allocateMemory();
 
    ///  Reset time varying state vars and recompute decay.
    ///
@@ -80,7 +80,7 @@ protected:
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of edges per vertex.
-   virtual void setupEdges(const int numVertices, const int maxEdges);
+   virtual void allocateMemory(const int numVertices, const int maxEdges);
 
    ///  Sets the data for Synapse to input's data.
    ///

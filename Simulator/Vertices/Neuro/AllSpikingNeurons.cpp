@@ -36,8 +36,8 @@ AllSpikingNeurons::~AllSpikingNeurons() {
 }
 
 ///  Setup the internal structure of the class (allocate memories).
-void AllSpikingNeurons::setupVertices() {
-   AllVertices::setupVertices();
+void AllSpikingNeurons::allocateMemory() {
+   AllVertices::allocateMemory();
 
    // TODO: Rename variables for easier identification
    hasFired_ = new bool[size_];

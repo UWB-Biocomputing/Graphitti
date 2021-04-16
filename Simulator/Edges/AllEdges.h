@@ -25,7 +25,7 @@ public:
    virtual ~AllEdges();
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
-   virtual void setupEdges();
+   virtual void allocateMemory();
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operation::op::loadParameters
@@ -82,7 +82,7 @@ protected:
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of edges per vertex.
-   virtual void setupEdges(const int numVertices, const int maxEdges);
+   virtual void allocateMemory(const int numVertices, const int maxEdges);
 
    ///  Sets the data for Edge to input's data.
    ///

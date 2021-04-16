@@ -68,17 +68,17 @@ void Model::createAllVertices() {
 }
 
 /// Sets up the Simulation.
-void Model::setupSim() {
+void Model::allocateMemory() {
    LOG4CPLUS_INFO(fileLogger_, "Setting up Vertices...");
-   layout_->getVertices()->setupVertices();
+   layout_->getVertices()->allocateMemory();
    LOG4CPLUS_INFO(fileLogger_, "Setting up Edges...");
-   connections_->getEdges()->setupEdges();
+   connections_->getEdges()->allocateMemory();
 #ifdef PERFORMANCE_METRICS
    // Start timer for initialization
    Simulator::getInstance.short_timer.start();
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Setting up Layout...");
-   layout_->setupLayout();
+   layout_->allocateMemory();
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (layout)
    t_host_initialization_layout += Simulator::getInstance().short_timer.lap() / 1000000.0;
@@ -97,7 +97,7 @@ void Model::setupSim() {
    Simulator::getInstance().short_timer.start();
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Setting up Connections...");
-   connections_->setupConnections(layout_.get(), layout_->getVertices().get(), connections_->getEdges().get());
+   connections_->allocateMemory(layout_.get(), layout_->getVertices().get(), connections_->getEdges().get());
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (connections)
    t_host_initialization_connections += Simulator::getInstance().short_timer.lap() / 1000000.0;

@@ -20,7 +20,7 @@ All911Edges::~All911Edges() {
 
 }
 
-void All911Edges::setupEdges() {
+void All911Edges::allocateMemory() {
    int numVertices = Simulator::getInstance().getTotalVertices();
    int maxEdges = Simulator::getInstance().getMaxEdgesPerVertex();
 

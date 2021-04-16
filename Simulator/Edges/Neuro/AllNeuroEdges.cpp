@@ -13,7 +13,7 @@ AllNeuroEdges::AllNeuroEdges() : AllEdges() {
 }
 
 AllNeuroEdges::AllNeuroEdges(const int numVertices, const int maxEdges) {
-   setupEdges(numVertices, maxEdges);
+   allocateMemory(numVertices, maxEdges);
 }
 
 AllNeuroEdges::~AllNeuroEdges() {
@@ -24,15 +24,15 @@ AllNeuroEdges::~AllNeuroEdges() {
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
-void AllNeuroEdges::setupEdges() {
+void AllNeuroEdges::allocateMemory() {
    int maxEdges = Simulator::getInstance().getMaxEdgesPerVertex();
    int numVertices = Simulator::getInstance().getTotalVertices();
-   setupEdges(numVertices, maxEdges);
+   allocateMemory(numVertices, maxEdges);
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
-void AllNeuroEdges::setupEdges(const int numVertices, const int maxEdges) {
-   AllEdges::setupEdges(numVertices, maxEdges);
+void AllNeuroEdges::allocateMemory(const int numVertices, const int maxEdges) {
+   AllEdges::allocateMemory(numVertices, maxEdges);
 
    BGSIZE maxTotalEdges = maxEdges * numVertices;
    

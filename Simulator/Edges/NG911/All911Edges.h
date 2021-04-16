@@ -39,7 +39,7 @@ public:
    static AllEdges *Create() { return new All911Edges(); }
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
-   virtual void setupEdges();
+   virtual void allocateMemory();
 
    ///  Create a Edge and connect it to the model.
    ///

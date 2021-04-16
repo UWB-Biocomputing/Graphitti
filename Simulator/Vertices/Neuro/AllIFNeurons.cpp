@@ -73,8 +73,8 @@ AllIFNeurons::~AllIFNeurons() {
 }
 
 ///  Setup the internal structure of the class (allocate memories).
-void AllIFNeurons::setupVertices() {
-   AllSpikingNeurons::setupVertices();
+void AllIFNeurons::allocateMemory() {
+   AllSpikingNeurons::allocateMemory();
 
    // TODO: Rename variables for easier identification
    C1_ = new BGFLOAT[size_];

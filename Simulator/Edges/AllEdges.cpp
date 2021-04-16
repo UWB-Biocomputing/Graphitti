@@ -26,7 +26,7 @@ AllEdges::AllEdges() :
 }
 
 AllEdges::AllEdges(const int numVertices, const int maxEdges) {
-   setupEdges(numVertices, maxEdges);
+   allocateMemory(numVertices, maxEdges);
 }
 
 AllEdges::~AllEdges() {
@@ -71,15 +71,15 @@ void AllEdges::printParameters() const {
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
-void AllEdges::setupEdges() {
-   setupEdges(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxEdgesPerVertex());
+void AllEdges::allocateMemory() {
+   allocateMemory(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxEdgesPerVertex());
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 ///
 ///  @param  numVertices   Total number of vertices in the network.
 ///  @param  maxEdges  Maximum number of edges per vertex.
-void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
+void AllEdges::allocateMemory(const int numVertices, const int maxEdges) {
    BGSIZE maxTotalEdges = maxEdges * numVertices;
 
    maxEdgesPerVertex_ = maxEdges;

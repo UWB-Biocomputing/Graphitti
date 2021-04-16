@@ -18,7 +18,7 @@ Connections911::~Connections911() {
 
 }
 
-void Connections911::setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *edges) {
+void Connections911::allocateMemory(Layout *layout, IAllVertices *vertices, AllEdges *edges) {
    int numVertices = Simulator::getInstance().getTotalVertices();
    vector<DistDestVertex> distDestVertices;
 

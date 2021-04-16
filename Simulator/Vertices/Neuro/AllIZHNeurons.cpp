@@ -38,8 +38,8 @@ AllIZHNeurons::~AllIZHNeurons() {
 }
 
 ///  Setup the internal structure of the class (allocate memories).
-void AllIZHNeurons::setupVertices() {
-   AllIFNeurons::setupVertices();
+void AllIZHNeurons::allocateMemory() {
+   AllIFNeurons::allocateMemory();
 
    Aconst_ = new BGFLOAT[size_];
    Bconst_ = new BGFLOAT[size_];

@@ -37,7 +37,7 @@ public:
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all neurons' state.
-   virtual void setupVertices();
+   virtual void allocateMemory();
 
    ///  Prints out all parameters of the neurons to logging file.
    ///  Registered to OperationManager as Operation::printParameters

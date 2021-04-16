@@ -35,7 +35,7 @@ public:
 
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.
-   virtual void setupLayout();
+   virtual void allocateMemory();
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters() = 0;

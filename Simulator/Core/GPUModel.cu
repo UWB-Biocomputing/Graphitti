@@ -82,13 +82,13 @@ void GPUModel::deleteDeviceStruct(void** allVerticesDevice, void** allEdgesDevic
 }
 
 /// Sets up the Simulation.
-void GPUModel::setupSim()
+void GPUModel::allocateMemory()
 {
   // Set device ID
   HANDLE_ERROR( cudaSetDevice( g_deviceId ) );
   // Set DEBUG flag
   HANDLE_ERROR( cudaMemcpyToSymbol (d_debug_mask, &g_debug_mask, sizeof(int) ) );
-  Model::setupSim();
+  Model::allocateMemory();
 
   //initialize Mersenne Twister
   //assuming numVertices >= 100 and is a multiple of 100. Note rng_mt_rng_count must be <= MT_RNG_COUNT

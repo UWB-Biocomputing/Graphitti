@@ -35,7 +35,7 @@ public:
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all vertices' states.
-   virtual void setupVertices();
+   virtual void allocateMemory();
 
    ///  Creates all the Vertices and assigns initial data for them.
    ///

@@ -19,7 +19,7 @@ AllDSSynapses::AllDSSynapses() : AllSpikingSynapses() {
 
 AllDSSynapses::AllDSSynapses(const int numVertices, const int maxEdges) :
       AllSpikingSynapses(numVertices, maxEdges) {
-   setupEdges(numVertices, maxEdges);
+   allocateMemory(numVertices, maxEdges);
 }
 
 AllDSSynapses::~AllDSSynapses() {
@@ -43,16 +43,16 @@ AllDSSynapses::~AllDSSynapses() {
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
-void AllDSSynapses::setupEdges() {
-   setupEdges(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxEdgesPerVertex());
+void AllDSSynapses::allocateMemory() {
+   allocateMemory(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxEdgesPerVertex());
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 ///
 ///  @param  numVertices   Total number of vertices in the network.
 ///  @param  maxEdges  Maximum number of synapses per neuron.
-void AllDSSynapses::setupEdges(const int numVertices, const int maxEdges) {
-   AllSpikingSynapses::setupEdges(numVertices, maxEdges);
+void AllDSSynapses::allocateMemory(const int numVertices, const int maxEdges) {
+   AllSpikingSynapses::allocateMemory(numVertices, maxEdges);
 
    BGSIZE maxTotalSynapses = maxEdges * numVertices;
 

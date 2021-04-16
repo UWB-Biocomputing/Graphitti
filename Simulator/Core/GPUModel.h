@@ -78,7 +78,7 @@ public:
    virtual ~GPUModel();
 
    /// Set up model state, if anym for a specific simulation run.
-   virtual void setupSim();
+   virtual void allocateMemory();
 
    /// Performs any finalization tasks on network following a simulation.
    virtual void finish();

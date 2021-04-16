@@ -24,7 +24,7 @@ public:
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all vertices' state.
-   virtual void setupVertices() = 0;
+   virtual void allocateMemory() = 0;
 
    ///  Load member variables from configuration file.
    ///  Registered to OperationManager as Operation::loadParameters

@@ -21,8 +21,8 @@ All911Vertices::~All911Vertices() {
     CallNum_ = NULL; 
 }
 
-void All911Vertices::setupVertices() {
-    AllVertices::setupVertices();
+void All911Vertices::allocateMemory() {
+    AllVertices::allocateMemory();
 
     CallNum_ = new int[size_];
     fill_n(CallNum_, size_, 0);    
