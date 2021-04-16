@@ -82,10 +82,13 @@ void ConnStatic::allocateMemory(Layout *layout, IAllVertices *vertices, AllEdges
 
          // set edge weight
          // TODO: we need another synaptic weight distibution mode (normal distribution)
-         if (edges->edgSign(type) > 0) {
-            dynamic_cast<AllNeuroEdges *>(edges)->W_[iEdg] = rng.inRange(excWeight_[0], excWeight_[1]);
+
+         AllNeuroEdges *neuroEdges = dynamic_cast<AllNeuroEdges *>(edges);
+
+         if (neuroEdges->edgSign(type) > 0) {
+            neuroEdges->W_[iEdg] = rng.inRange(excWeight_[0], excWeight_[1]);
          } else {
-            dynamic_cast<AllNeuroEdges *>(edges)->W_[iEdg] = rng.inRange(inhWeight_[0], inhWeight_[1]);
+            neuroEdges->W_[iEdg] = rng.inRange(inhWeight_[0], inhWeight_[1]);
          }
       }
    }

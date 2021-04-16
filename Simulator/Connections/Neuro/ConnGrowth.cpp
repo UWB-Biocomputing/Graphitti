@@ -36,6 +36,7 @@
 #include "ConnGrowth.h"
 #include "ParseParamError.h"
 #include "AllEdges.h"
+#include "AllNeuroEdges.h"
 #include "XmlGrowthRecorder.h"
 #include "AllSpikingNeurons.h"
 #include "Matrix/CompleteMatrix.h"
@@ -241,7 +242,7 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout) {
 void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &ivertices, AllEdges &iedges,
                                        Layout *layout) {
    AllVertices &vertices = dynamic_cast<AllVertices &>(ivertices);
-   AllEdges &synapses = dynamic_cast<AllEdges &>(iedges);
+   AllNeuroEdges &synapses = dynamic_cast<AllNeuroEdges &>(iedges);
 
    // For now, we just set the weights to equal the areas. We will later
    // scale it and set its sign (when we index and get its sign).

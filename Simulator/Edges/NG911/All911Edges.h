@@ -52,11 +52,6 @@ public:
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               edgeType type);
 
-   ///  Get the sign of the edgeType.
-   ///
-   ///  @param    type    edgeType 
-   virtual int edgSign(const edgeType type);
-
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
