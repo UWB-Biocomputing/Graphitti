@@ -9,7 +9,7 @@
 #include "AllNeuroEdges.h"
 
 AllNeuroEdges::AllNeuroEdges() : AllEdges() {
-   psr_ = NULL;
+   psr_ = nullptr;
 }
 
 AllNeuroEdges::AllNeuroEdges(const int numVertices, const int maxEdges) {

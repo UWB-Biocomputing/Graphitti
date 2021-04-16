@@ -15,18 +15,18 @@ extern void getValueList(const string& valString, vector<BGFLOAT>* pList);
 /// constructor
 /// @param[in] parms     Pointer to xml parms element
 SInputPoisson::SInputPoisson(TiXmlElement* parms) :
-    nISIs(NULL),
-    edges_(NULL),
-    masks(NULL)
+    nISIs(nullptr),
+    edges_(nullptr),
+    masks(nullptr)
 {
     fSInput = false;
 
     // read fr_mean and weight
-    TiXmlElement* temp = NULL;
+    TiXmlElement* temp = nullptr;
     string sync;
     BGFLOAT fr_mean;	// firing rate (per sec)
 
-    if (( temp = parms->FirstChildElement( "IntParams" ) ) != NULL) 
+    if (( temp = parms->FirstChildElement( "IntParams" ) ) != nullptr) 
     { 
         if (temp->QueryFLOATAttribute("fr_mean", &fr_mean ) != TIXML_SUCCESS) {
             cerr << "error IntParams:fr_mean" << endl;
@@ -56,10 +56,10 @@ SInputPoisson::SInputPoisson(TiXmlElement* parms) :
 
     // read mask values and set it to masks
     vector<BGFLOAT> maskIndex;
-    if ((temp = parms->FirstChildElement( "Masks")) != NULL)
+    if ((temp = parms->FirstChildElement( "Masks")) != nullptr)
     {
-       TiXmlNode* pNode = NULL;
-        while ((pNode = temp->IterateChildren(pNode)) != NULL)
+       TiXmlNode* pNode = nullptr;
+        while ((pNode = temp->IterateChildren(pNode)) != nullptr)
         {
             if (strcmp(pNode->Value(), "M") == 0)
             {
@@ -83,8 +83,8 @@ SInputPoisson::SInputPoisson(TiXmlElement* parms) :
                         cerr << " error: " << simDoc.ErrorRow( ) << ", " << simDoc.ErrorCol( ) << endl;
                         break;
                     }
-                    TiXmlNode* temp2 = NULL;
-                    if (( temp2 = simDoc.FirstChildElement( "M" ) ) == NULL)
+                    TiXmlNode* temp2 = nullptr;
+                    if (( temp2 = simDoc.FirstChildElement( "M" ) ) == nullptr)
                     {
                         cerr << "Could not find <M> in positons of stimulus input mask neurons list file " << maskNListFileName << endl;
                         break;
@@ -144,14 +144,14 @@ void SInputPoisson::init()
 void SInputPoisson::term()
 {
     // clear memory for interval counter
-    if (nISIs != NULL)
+    if (nISIs != nullptr)
         delete[] nISIs;
 
     // clear the synapse layer, which destroy all synase objects
-    if (edges_ != NULL)
+    if (edges_ != nullptr)
         delete edges_;
 
     // clear memory for input masks
-    if (masks != NULL)
+    if (masks != nullptr)
         delete[] masks;
 }

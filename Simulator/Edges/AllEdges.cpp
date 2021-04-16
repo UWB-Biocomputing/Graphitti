@@ -6,13 +6,13 @@ AllEdges::AllEdges() :
       totalEdgeCount_(0),
       maxEdgesPerVertex_(0),
       countVertices_(0) {
-   destVertexIndex_ = NULL;
-   W_ = NULL;
-   summationPoint_ = NULL;
-   sourceVertexIndex_ = NULL;
-   type_ = NULL;
-   inUse_ = NULL;
-   edgeCounts_ = NULL;
+   destVertexIndex_ = nullptr;
+   W_ = nullptr;
+   summationPoint_ = nullptr;
+   sourceVertexIndex_ = nullptr;
+   type_ = nullptr;
+   inUse_ = nullptr;
+   edgeCounts_ = nullptr;
 
    // Register loadParameters function as a loadParameters operation in the OperationManager
    function<void()> loadParametersFunc = std::bind(&AllEdges::loadParameters, this);
@@ -42,13 +42,13 @@ AllEdges::~AllEdges() {
      delete[] edgeCounts_;
   }
 
-   destVertexIndex_ = NULL;
-   W_ = NULL;
-   summationPoint_ = NULL;
-   sourceVertexIndex_ = NULL;
-   type_ = NULL;
-   inUse_ = NULL;
-   edgeCounts_ = NULL;
+   destVertexIndex_ = nullptr;
+   W_ = nullptr;
+   summationPoint_ = nullptr;
+   sourceVertexIndex_ = nullptr;
+   type_ = nullptr;
+   inUse_ = nullptr;
+   edgeCounts_ = nullptr;
 
    countVertices_ = 0;
    maxEdgesPerVertex_ = 0;
@@ -96,7 +96,7 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
       edgeCounts_ = new BGSIZE[numVertices];
 
       for (BGSIZE i = 0; i < maxTotalEdges; i++) {
-         summationPoint_[i] = NULL;
+         summationPoint_[i] = nullptr;
          inUse_[i] = false;
          W_[i] = 0;
       }
@@ -191,7 +191,7 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
    DEBUG (cout << "totalEdgeCount: " << totalEdgeCount << endl;)
 
    if (totalEdgeCount == 0) {
-      return NULL;
+      return nullptr;
    }
 
    // allocate memories for forward map
@@ -259,7 +259,7 @@ void AllEdges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap) 
 void AllEdges::eraseEdge(const int i, const BGSIZE iEdg) {
    edgeCounts_[i]--;
    inUse_[iEdg] = false;
-   summationPoint_[iEdg] = NULL;
+   summationPoint_[iEdg] = nullptr;
    W_[iEdg] = 0;
 }
 

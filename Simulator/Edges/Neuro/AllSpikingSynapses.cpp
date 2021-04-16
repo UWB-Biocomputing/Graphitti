@@ -9,12 +9,12 @@
 #include "AllSpikingSynapses.h"
 
 AllSpikingSynapses::AllSpikingSynapses() : AllNeuroEdges() {
-   decay_ = NULL;
-   totalDelay_ = NULL;
-   delayQueue_ = NULL;
-   delayIndex_ = NULL;
-   delayQueueLength_ = NULL;
-   tau_ = NULL;
+   decay_ = nullptr;
+   totalDelay_ = nullptr;
+   delayQueue_ = nullptr;
+   delayIndex_ = nullptr;
+   delayQueueLength_ = nullptr;
+   tau_ = nullptr;
 }
 
 AllSpikingSynapses::AllSpikingSynapses(const int numVertices, const int maxEdges) {
@@ -33,12 +33,12 @@ AllSpikingSynapses::~AllSpikingSynapses() {
       delete[] tau_;
   }
 
-   decay_ = NULL;
-   totalDelay_ = NULL;
-   delayQueue_ = NULL;
-   delayIndex_ = NULL;
-   delayQueueLength_ = NULL;
-   tau_ = NULL;
+   decay_ = nullptr;
+   totalDelay_ = nullptr;
+   delayQueue_ = nullptr;
+   delayIndex_ = nullptr;
+   delayQueueLength_ = nullptr;
+   tau_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
