@@ -87,32 +87,32 @@ public:
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all neurons' state.
-   virtual void setupVertices();
+   virtual void setupVertices() override;
 
    ///  Prints out all parameters of the neurons to logging file.
    ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const;
+   virtual void printParameters() const override;
 
    ///  Creates all the Neurons and assigns initial data for them.
    ///
    ///  @param  layout      Layout information of the neural network.
-   virtual void createAllVertices(Layout *layout);
+   virtual void createAllVertices(Layout *layout) override;
 
    ///  Outputs state of the neuron chosen as a string.
    ///
    ///  @param  index   index of the neuron (in neurons) to output info from.
    ///  @return the complete state of the neuron.
-   virtual string toString(const int index) const;
+   virtual string toString(const int index) const override;
 
    ///  Reads and sets the data for all neurons from input stream.
    ///
    ///  @param  input       istream to read from.
-   virtual void deserialize(istream &input);
+   virtual void deserialize(istream &input) override;
 
    ///  Writes out the data in all neurons to output stream.
    ///
    ///  @param  output      stream to write out to.
-   virtual void serialize(ostream &output) const;
+   virtual void serialize(ostream &output) const override;
 
 #if defined(USE_GPU)
    public:
@@ -124,43 +124,43 @@ public:
        ///  @param  allEdgesDevice      Reference to the allEdges struct on device memory.
        ///  @param  randNoise              Reference to the random noise array.
        ///  @param  edgeIndexMapDevice  Reference to the EdgeIndexMap on device memory.
-       virtual void advanceVertices(AllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice);
+       virtual void advanceVertices(AllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice) override;
 
        ///  Allocate GPU memories to store all neurons' states,
        ///  and copy them from host to GPU memory.
        ///
        ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void allocNeuronDeviceStruct( void** allVerticesDevice);
+       virtual void allocNeuronDeviceStruct( void** allVerticesDevice) override;
 
        ///  Delete GPU memories.
        ///
        ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void deleteNeuronDeviceStruct( void* allVerticesDevice);
+       virtual void deleteNeuronDeviceStruct( void* allVerticesDevice) override;
 
        ///  Copy all neurons' data from host to device.
        ///
        ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void copyNeuronHostToDevice( void* allVerticesDevice);
+       virtual void copyNeuronHostToDevice( void* allVerticesDevice) override;
 
        ///  Copy all neurons' data from device to host.
        ///
        ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void copyNeuronDeviceToHost(void* allVerticesDevice);
+       virtual void copyNeuronDeviceToHost(void* allVerticesDevice) override;
 
        ///  Copy spike history data stored in device memory to host.
        ///
        ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void copyNeuronDeviceSpikeHistoryToHost( void* allVerticesDevice);
+       virtual void copyNeuronDeviceSpikeHistoryToHost( void* allVerticesDevice) override;
 
        ///  Copy spike counts data stored in device memory to host.
        ///
        ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void copyNeuronDeviceSpikeCountsToHost( void* allVerticesDevice);
+       virtual void copyNeuronDeviceSpikeCountsToHost( void* allVerticesDevice) override;
 
        ///  Clear the spike counts out of all neurons.
        ///
        ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void clearNeuronSpikeCounts( void* allVerticesDevice);
+       virtual void clearNeuronSpikeCounts( void* allVerticesDevice) override;
 
 
    protected:
@@ -219,7 +219,7 @@ protected:
    ///
    ///  @param  neuronIndex    Index of the Neuron.
    ///  @param  deltaT          Inner simulation step duration
-   virtual void initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT);
+   virtual void initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT) override;
 
    ///  Sets the data for Neuron #index to input's data.
    ///

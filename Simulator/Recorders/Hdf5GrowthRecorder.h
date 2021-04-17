@@ -45,23 +45,23 @@ public:
    static IRecorder* Create() { return new Hdf5GrowthRecorder(); }
 
    /// Init radii and rates history matrices with default values
-   virtual void initDefaultValues();
+   virtual void initDefaultValues() override;
 
    /// Init radii and rates history matrices with current radii and rates
-   virtual void initValues();
+   virtual void initValues() override;
 
    /// Get the current radii and rates vlaues
-   virtual void getValues();
+   virtual void getValues() override;
 
    /// Terminate process
-   virtual void term();
+   virtual void term() override;
 
    /// Compile history information in every epoch
    /// @param[in] neurons   The entire list of neurons.
-   virtual void compileHistories(IAllVertices &neurons);
+   virtual void compileHistories(IAllVertices &neurons) override;
 
 protected:
-   virtual void initDataSet();
+   virtual void initDataSet() override;
 
    /// Incrementaly write radii and rates histories
    void writeRadiiRates();

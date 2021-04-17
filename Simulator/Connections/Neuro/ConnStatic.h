@@ -49,15 +49,15 @@ public:
    ///  @param  layout    Layout information of the neural network.
    ///  @param  vertices   The Neuron list to search from.
    ///  @param  edges  The Synapse list to search from.
-   virtual void setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *edges);
+   virtual void setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *edges) override;
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operations::op::loadParameters
-   virtual void loadParameters();
+   virtual void loadParameters() override;
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const;
+   virtual void printParameters() const override;
 
 private:
    /// number of maximum connections per vertex

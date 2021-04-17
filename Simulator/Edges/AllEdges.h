@@ -39,9 +39,9 @@ public:
    ///
    ///  @param  iEdg        Index of the edge to be added.
    ///  @param  type        The type of the Edge to add.
-   ///  @param  srcVertex  The Vertex that sends to this Edge.
-   ///  @param  destVertex The Vertex that receives from the Edge.
-   ///  @param  sumPoint   Summation point address.
+   ///  @param  srcVertex   The Vertex that sends to this Edge.
+   ///  @param  destVertex  The Vertex that receives from the Edge.
+   ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration
    virtual void
    addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
@@ -50,9 +50,9 @@ public:
    ///  Create a Edge and connect it to the model.
    ///
    ///  @param  iEdg        Index of the edge to set.
-   ///  @param  srcVertex      Coordinates of the source Vertex.
-   ///  @param  destVertex        Coordinates of the destination Vertex.
-   ///  @param  sumPoint   Summation point address.
+   ///  @param  srcVertex   Coordinates of the source Vertex.
+   ///  @param  destVertex  Coordinates of the destination Vertex.
+   ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Edge to create.
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
@@ -157,7 +157,7 @@ protected:
        ///  Update the state of all edges for a time step.
        ///
        ///  @param  allEdgesDevice      GPU address of the allEdges struct on device memory.
-       ///  @param  allVerticesDevice       GPU address of the allNeurons struct on device memory.
+       ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
        ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
        virtual void advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) = 0;
 
@@ -185,14 +185,14 @@ public:
    ///  Advance all the edges in the simulation.
    ///  Update the state of all edges for a time step.
    ///
-   ///  @param  vertices   The Vertex list to search from.
+   ///  @param  vertices       The Vertex list to search from.
    ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
    virtual void advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap);
 
    ///  Advance one specific Edge.
    ///
    ///  @param  iEdg      Index of the Edge to connect to.
-   ///  @param  vertices   The Vertex list to search from.
+   ///  @param  vertices  The Vertex list to search from.
    virtual void advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) = 0;
 
    ///  Remove a edge from the network.
