@@ -18,15 +18,14 @@
 #include "BGTypes.h"
 #include "Global.h"
 #include "Core/Model.h"
-//#include "GPUSpikingModel.h"
-//#include "CPUSpikingModel.h"
+//#include "GPUModel.h"
+//#include "CPUModel.h"
 //#include "ISInput.h"
 #include "Timer.h"
 
 class Model;
 
 #ifdef PERFORMANCE_METRICS
-// Home-brewed performance measurement  *doesnt affect runtime itself. *also collects performance on GPU *warner smidt paper with details "profiling braingrid"
 #include "Timer.h"
 #endif
 
@@ -78,7 +77,7 @@ public:
 
    BGFLOAT getDeltaT() const;    /// Time elapsed between the beginning and end of the simulation step
 
-   neuronType *getRgNeuronTypeMap() const;    /// The vertex type map (INH, EXC).
+   vertexType *getRgNeuronTypeMap() const;    /// The vertex type map (INH, EXC).
 
    bool *getRgEndogenouslyActiveNeuronMap() const;  /// The starter existence map (T/F).
 
@@ -150,7 +149,7 @@ private:
 
    BGFLOAT deltaT_;   /// Inner Simulation Step Duration, purely investigative.
 
-   neuronType *rgNeuronTypeMap_; /// The vertex type map (INH, EXC). ToDo: become a vector
+   vertexType *rgNeuronTypeMap_; /// The vertex type map (INH, EXC). ToDo: become a vector
 
    bool *rgEndogenouslyActiveNeuronMap_;   /// The starter existence map (T/F). ToDo: become a vector
 

@@ -18,58 +18,38 @@
       <value name="value">1</value>
     </Seed>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">Output/Results/test-small-out-911.xml</resultFileName>
+      <resultFileName name="resultFileName">../Output/Results/test-small-out-911.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 
   <ModelParams>
     <VerticesParams class="All911Vertices" name="VerticesParams">
-      <Iinject name="Iinject">
-        <min name="min">13.5e-09</min>
-        <max name="max">13.5e-09</max>
-      </Iinject>
-      <Inoise name="Inoise">
-        <min name="min">1.0e-09</min>
-        <max name="max">1.5e-09</max>
-      </Inoise>
-      <Vthresh name="Vthresh">
-        <min name="min">15.0e-03</min>
-        <max name="max">15.0e-03</max>
-      </Vthresh>
-      <Vresting name="Vresting">
-        <min name="min">0.0</min>
-        <max name="max">0.0</max>
-      </Vresting>
-      <Vreset name="Vreset">
-        <min name="min">13.5e-03</min>
-        <max name="max">13.5e-03</max>
-      </Vreset>
-      <Vinit name="Vinit">
-        <min name="min">13.0e-03</min>
-        <max name="max">13.0e-03</max>
-      </Vinit>
-      <starter_vthresh name="starter_vthresh">
-        <min name="min">13.565e-3</min>
-        <max name="max">13.655e-3</max>
-      </starter_vthresh>
-      <starter_vreset name="starter_vreset">
-        <min name="min">13.0e-3</min>
-        <max name="max">13.0e-3</max>
-      </starter_vreset>
+        <CallNum name="CallNum">
+        <min name="min">3</min>
+        <max name="max">7</max>
+      </CallNum>
     </VerticesParams>
 
     <EdgesParams class="All911Edges" name="EdgesParams">
     </EdgesParams>
 
-    <LayoutParams class="FixedLayout" name="LayoutParams">
+    <ConnectionsParams class="Connections911" name="ConnectionsParams">
+      <Connections911Params name="Connections911Params">
+        <connsPerVertex name="connsPerVertex">33</connsPerVertex>
+        <threshConnsRadius name="threshConnsRadius">1.5</threshConnsRadius>
+      </Connections911Params>
+    </ConnectionsParams>
+
+
+    <LayoutParams class="Layout911" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">
-        <PSAPsListFileName name="PSAPsListFileName" type="InputFile">configfiles/NList/NG911_psaps_10x10.xml</PSAPsListFileName>
-        <callersListFileName name="callersListFileName" type="InputFile">configfiles/NList/NG911_callers_10x10.xml</callersListFileName>
-        <respondersListFileName name="respondersListFileName" type="InputFile">configfiles/NList/NG911_responders_10x10.xml</respondersListFileName>
+        <PSAPsListFileName name="PSAPsListFileName" type="InputFile">../configfiles/NList/NG911_psaps_10x10.xml</PSAPsListFileName>
+        <callersListFileName name="callersListFileName" type="InputFile">../configfiles/NList/NG911_callers_10x10.xml</callersListFileName>
+        <respondersListFileName name="respondersListFileName" type="InputFile">../configfiles/NList/NG911_responders_10x10.xml</respondersListFileName>
       </LayoutFiles>
     </LayoutParams>
-    <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
-      <probedListFileName name="prbListFileName" type="InputFile">configfiles/NList/NG911_probed_10x10.xml</probedListFileName>
+    <RecorderParams class="Xml911Recorder" name="RecorderParams">
+      <probedListFileName name="prbListFileName" type="InputFile">../configfiles/NList/NG911_probed_10x10.xml</probedListFileName>
     </RecorderParams>
   </ModelParams>
 </BGSimParams>

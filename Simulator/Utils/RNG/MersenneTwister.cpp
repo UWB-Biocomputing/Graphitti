@@ -5,7 +5,7 @@
 *
 * @brief Mersenne Twister logic from Nvidia
 *
-* This file has been modified by the UW Bothell BrainGrid group,
+* This file has been modified by the UW Bothell Graphitti group,
 * mostly to reorganize it and make it look more like typical C++
 * code. This includes splitting it into a .h and .cpp (instead of
 * having everything in a .h file), and replacing enums previously
@@ -218,7 +218,7 @@ void MTRand::seed()
     }
 
   // Was not successful, so use time() and clock() instead
-  seed( hash( time(NULL), clock() ) );
+  seed( hash( time(nullptr), clock() ) );
 }
 
 

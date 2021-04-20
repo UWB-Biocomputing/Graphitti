@@ -11,8 +11,8 @@
 
 #include <functional>
 
-#include "CPUSpikingModel.h"
-#include "GPUSpikingModel.h"
+#include "CPUModel.h"
+#include "GPUModel.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "RecorderFactory.h"
@@ -50,7 +50,7 @@ void Simulator::setup() {
    t_host_initialization_layout = 0.0;
    t_host_initialization_connections = 0.0;
    t_host_advance = 0.0;
-   t_host_adjustSynapses = 0.0;
+   t_host_adjustEdges = 0.0;
    timer.start();
    cerr << "done." << endl;
 #endif
@@ -60,7 +60,7 @@ void Simulator::setup() {
 
    // init stimulus input object
    /* PInput not in project yet
-   if (pInput != NULL) {
+   if (pInput != nullptr) {
       cout << "Initializing input." << endl;
       pInput->init();
    }
@@ -151,7 +151,7 @@ void Simulator::simulate() {
 #ifdef PERFORMANCE_METRICS
       // Times converted from microseconds to seconds
       // Time to update synapses
-      t_host_adjustSynapses += short_timer.lap() / 1000000.0;
+      t_host_adjustEdges += short_timer.lap() / 1000000.0;
       // Time since start of simulation
       double total_time = timer.lap() / 1000000.0;
 
@@ -183,7 +183,7 @@ void Simulator::advanceUntilGrowth(const int &currentEpoch) const {
       count++;
       // input stimulus
       /***** S_INPUT NOT IN REPO YET *******/
-//      if (pInput != NULL)
+//      if (pInput != nullptr)
 //         pInput->inputStimulus();
       // Advance the Network one time step
       model_->advance();
@@ -201,9 +201,9 @@ void Simulator::saveData() const {
 bool Simulator::instantiateSimulatorObjects() {
    // Model Definition
 #if defined(USE_GPU)
-   model_ = shared_ptr<Model>(new GPUSpikingModel());
+   model_ = shared_ptr<Model>(new GPUModel());
 #else
-   model_ = shared_ptr<Model>(new CPUSpikingModel());
+   model_ = shared_ptr<Model>(new CPUModel());
 #endif
 
    // Perform check on all instantiated objects.
@@ -261,7 +261,7 @@ BGFLOAT Simulator::getDeltaT() const { return deltaT_; }
 
 // ToDo: should be a vector of neuron type
 // ToDo: vector should be contiguous array, resize is used.
-neuronType *Simulator::getRgNeuronTypeMap() const { return rgNeuronTypeMap_; }
+vertexType *Simulator::getRgNeuronTypeMap() const { return rgNeuronTypeMap_; }
 
 // ToDo: make smart ptr
 /// Starter existence map (T/F).

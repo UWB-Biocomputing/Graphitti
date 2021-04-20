@@ -91,7 +91,7 @@ public:
    ///  @param  layout    Layout information of the neural network.
    ///  @param  neurons   The Neuron list to search from.
    ///  @param  synapses  The Synapse list to search from.
-   virtual void setupConnections(Layout *layout, IAllVertices *neurons, IAllEdges *synapses);
+   virtual void setupConnections(Layout *layout, IAllVertices *neurons, AllEdges *synapses);
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operations::op::loadParameters
@@ -134,7 +134,7 @@ public:
    ///  @param  allEdgesDevice   GPU address of the allEdges struct in device memory.
    ///  @param  layout              The Layout object.
    virtual void updateSynapsesWeights(const int numVertices,
-         IAllVertices &neurons, IAllEdges &synapses,
+         IAllVertices &neurons, AllEdges &synapses,
          AllSpikingNeuronsDeviceProperties* allVerticesDevice,
          AllSpikingSynapsesDeviceProperties* allEdgesDevice,
          Layout *layout);
@@ -151,7 +151,7 @@ public:
    virtual void
    updateSynapsesWeights(const int numVertices,
          IAllVertices &vertices,
-         IAllEdges &synapses,
+         AllEdges &synapses,
          Layout *layout);
 
 #endif

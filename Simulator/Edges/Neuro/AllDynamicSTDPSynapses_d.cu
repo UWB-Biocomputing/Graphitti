@@ -208,7 +208,7 @@ void AllDynamicSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) con
         int *destNeuronIndexPrint = new int[size];
         BGFLOAT *WPrint = new BGFLOAT[size];
 
-        synapseType *typePrint = new synapseType[size];
+        edgeType *typePrint = new edgeType[size];
         BGFLOAT *psrPrint = new BGFLOAT[size];
         bool *inUsePrint = new bool[size];
 
@@ -246,7 +246,7 @@ void AllDynamicSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) con
 
         // copy everything
         HANDLE_ERROR( cudaMemcpy ( &allSynapsesProps, allEdgesDeviceProps, sizeof( AllDynamicSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( synapseCountsPrint, allSynapsesProps.synapseCounts_, countVertices_ * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( synapseCountsPrint, allSynapsesProps.edgeCounts_, countVertices_ * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
         maxEdgesPerVertexPrint = allSynapsesProps.maxEdgesPerVertex_;
         totalSynapseCountPrint = allSynapsesProps.totalEdgeCount_;
         countNeuronsPrint = allSynapsesProps.countVertices_;
@@ -255,10 +255,10 @@ void AllDynamicSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) con
         // at AllSynapsesProps deconstructor.
         allSynapsesProps.countVertices_ = 0;
 
-        HANDLE_ERROR( cudaMemcpy ( sourceNeuronIndexPrint, allSynapsesProps.sourceNeuronIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( destNeuronIndexPrint, allSynapsesProps.destNeuronIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( sourceNeuronIndexPrint, allSynapsesProps.sourceVertexIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( destNeuronIndexPrint, allSynapsesProps.destVertexIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( WPrint, allSynapsesProps.W_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( typePrint, allSynapsesProps.type_, size * sizeof( synapseType ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( typePrint, allSynapsesProps.type_, size * sizeof( edgeType ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( psrPrint, allSynapsesProps.psr_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( inUsePrint, allSynapsesProps.inUse_, size * sizeof( bool ), cudaMemcpyDeviceToHost ) );
 
@@ -341,20 +341,20 @@ void AllDynamicSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) con
         delete[] typePrint;
         delete[] inUsePrint;
         delete[] synapseCountsPrint;
-        destNeuronIndexPrint = NULL;
-        WPrint = NULL;
-        sourceNeuronIndexPrint = NULL;
-        psrPrint = NULL;
-        typePrint = NULL;
-        inUsePrint = NULL;
-        synapseCountsPrint = NULL;
+        destNeuronIndexPrint = nullptr;
+        WPrint = nullptr;
+        sourceNeuronIndexPrint = nullptr;
+        psrPrint = nullptr;
+        typePrint = nullptr;
+        inUsePrint = nullptr;
+        synapseCountsPrint = nullptr;
 
         delete[] decayPrint;
         delete[] totalDelayPrint;
         delete[] tauPrint;
-        decayPrint = NULL;
-        totalDelayPrint = NULL;
-        tauPrint = NULL;
+        decayPrint = nullptr;
+        totalDelayPrint = nullptr;
+        tauPrint = nullptr;
 
         delete[] totalDelayPostPrint;
         delete[] tauspost_Print;
@@ -368,18 +368,18 @@ void AllDynamicSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) con
         delete[] mupos_Print;
         delete[] muneg_Print;
         delete[] useFroemkeDanSTDP_Print;
-        totalDelayPostPrint = NULL;
-        tauspost_Print = NULL;
-        tauspre_Print = NULL;
-        taupos_Print = NULL;
-        tauneg_Print = NULL;
-        STDPgap_Print = NULL;
-        Wex_Print = NULL;
-        Aneg_Print = NULL;
-        Apos_Print = NULL;
-        mupos_Print = NULL;
-        muneg_Print = NULL;
-        useFroemkeDanSTDP_Print = NULL;
+        totalDelayPostPrint = nullptr;
+        tauspost_Print = nullptr;
+        tauspre_Print = nullptr;
+        taupos_Print = nullptr;
+        tauneg_Print = nullptr;
+        STDPgap_Print = nullptr;
+        Wex_Print = nullptr;
+        Aneg_Print = nullptr;
+        Apos_Print = nullptr;
+        mupos_Print = nullptr;
+        muneg_Print = nullptr;
+        useFroemkeDanSTDP_Print = nullptr;
 
         delete[] lastSpikePrint;
         delete[] rPrint;
@@ -387,12 +387,12 @@ void AllDynamicSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) con
         delete[] DPrint;
         delete[] UPrint;
         delete[] FPrint;
-        lastSpikePrint = NULL;
-        rPrint = NULL;
-        uPrint = NULL;
-        DPrint = NULL;
-        UPrint = NULL;
-        FPrint = NULL;
+        lastSpikePrint = nullptr;
+        rPrint = nullptr;
+        uPrint = nullptr;
+        DPrint = nullptr;
+        UPrint = nullptr;
+        FPrint = nullptr;
     }
 }
 

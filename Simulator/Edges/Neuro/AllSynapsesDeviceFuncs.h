@@ -52,7 +52,7 @@ extern __global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, EdgeIn
 /// @param[in] maxEdges        Maximum number of synapses per neuron.
 /// @param[in] allVerticesDevice   Pointer to the Neuron structures in device memory.
 /// @param[in] allEdgesDevice  Pointer to the Synapse structures in device memory.
-extern __global__ void updateSynapsesWeightsDevice( int numVertices, BGFLOAT deltaT, BGFLOAT* W_d, int maxEdges, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, neuronType* neuronTypeMapD );
+extern __global__ void updateSynapsesWeightsDevice( int numVertices, BGFLOAT deltaT, BGFLOAT* W_d, int maxEdges, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, vertexType* neuronTypeMapD );
 
 /// Adds a synapse to the network.  Requires the locations of the source and
 /// destination neurons.

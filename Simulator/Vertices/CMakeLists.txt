@@ -7,6 +7,6 @@ add_library(Vertices ${Vertices})
 # The Vertices library has a dependency on the Edges library
 target_link_libraries(Vertices Edges)
 
-if (BRAINGRID_CUDA)
+if (ENABLE_CUDA)
    set_property(TARGET Vertices PROPERTY CUDA_ARCHITECTURES 35-virtual) 
 endif()

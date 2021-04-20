@@ -1,5 +1,5 @@
 /**
- * @file BGDriver.cpp
+ * @file Driver.cpp
  * 
  * @ingroup Simulator/Core
  *
@@ -26,7 +26,7 @@
 #include "log4cplus/loggingmacros.h"
 
 #include "AllEdges.h"
-#include "CPUSpikingModel.h"
+#include "CPUModel.h"
 #include "Inputs/FSInput.h"
 #include "IRecorder.h"
 #include "Model.h"
@@ -44,7 +44,7 @@
 #include "ConnGrowth.h" // hacked in. that's why its here.
 
 #if defined(USE_GPU)
-#include "GPUSpikingModel.h"
+#include "GPUModel.h"
 #elif defined(USE_OMP)
 // #include "MultiThreadedSim.h"
 #else
@@ -137,7 +137,7 @@ int main(int argc, char *argv[]) {
 
    // INPUT OBJECTS ARENT IN PROJECT YET
    // Terminate the stimulus input
-//   if (pInput != NULL)
+//   if (pInput != nullptr)
 //   {
 //      simInfo->pInput->term();
 //      delete simInfo->pInput;
@@ -280,8 +280,8 @@ bool deserializeSynapses() {
    connections->createEdgeIndexMap();
 
 #if defined(USE_GPU)
-   GPUSpikingModel *gpuModel = static_cast<GPUSpikingModel *>(simulator.getModel().get());
-   gpuModel->copySynapseIndexMapHostToDevice(*(connections->getSynapseIndexMap().get()), simulator.getTotalVertices());
+   GPUModel *gpuModel = static_cast<GPUModel *>(simulator.getModel().get());
+   gpuModel->copySynapseIndexMapHostToDevice(*(connections->getEdgeIndexMap().get()), simulator.getTotalVertices());
 #endif // USE_GPU
 
    // Deserializes radii (only when running a connGrowth model and radii is in serialization file)

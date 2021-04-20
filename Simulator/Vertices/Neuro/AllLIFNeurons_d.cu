@@ -21,7 +21,7 @@
 ///                                 on device memory.
 ///  @param  randNoise              Reference to the random noise array.
 ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
-void AllLIFNeurons::advanceVertices( IAllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice )
+void AllLIFNeurons::advanceVertices( AllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice )
 {
     int vertex_count = Simulator::getInstance().getTotalVertices();
     int maxSpikes = (int)((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));

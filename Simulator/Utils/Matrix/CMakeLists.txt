@@ -8,6 +8,6 @@ list(REMOVE_ITEM Matrix "${CMAKE_CURRENT_SOURCE_DIR}/MatrixFactory.cpp")
 # Create a library from the list of files gathered
 add_library(Matrix ${Matrix})
 
-if (BRAINGRID_CUDA)
+if (ENABLE_CUDA)
    set_property(TARGET Matrix PROPERTY CUDA_ARCHITECTURES 35-virtual) 
 endif()

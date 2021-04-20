@@ -31,8 +31,8 @@ const H5std_string  nameProbedNeurons("probedNeurons");
 
 /// The constructor and destructor
 Hdf5Recorder::Hdf5Recorder() :
-      offsetSpikesProbedNeurons_(NULL),
-      spikesProbedNeurons_(NULL) {
+      offsetSpikesProbedNeurons_(nullptr),
+      spikesProbedNeurons_(nullptr) {
 
    resultFileName_ = Simulator::getInstance().getResultFileName();
 
@@ -239,16 +239,16 @@ void Hdf5Recorder::compileHistories(IAllVertices &neurons)
    shared_ptr<Model> model = Simulator::getInstance().getModel();
 
    // output spikes: iterate over each neuron
-   for (int iNeuron = 0; iNeuron < Simulator::getInstance().getTotalVertices(); iNeuron++)
+   for (int iVertex = 0; iVertex < Simulator::getInstance().getTotalVertices(); iVertex++)
    {
       // true if this is a probed neuron
-      fProbe = ((iProbe < model->getLayout()->probedNeuronList_.size()) && (iNeuron == model->getLayout()->probedNeuronList_[iProbe]));
+      fProbe = ((iProbe < model->getLayout()->probedNeuronList_.size()) && (iVertex == model->getLayout()->probedNeuronList_[iProbe]));
 
       // Point to the current neuron's spike history
-      uint64_t* pSpikes = spNeurons.spikeHistory_[iNeuron];
+      uint64_t* pSpikes = spNeurons.spikeHistory_[iVertex];
 
-      int& spike_count = spNeurons.spikeCount_[iNeuron];
-      int& offset = spNeurons.spikeCountOffset_[iNeuron];
+      int& spike_count = spNeurons.spikeCount_[iVertex];
+      int& offset = spNeurons.spikeCountOffset_[iVertex];
       // iterate over each spike that neuron produced
       for (int i = 0, idxSp = offset; i < spike_count; i++, idxSp++)
       {
@@ -295,7 +295,7 @@ void Hdf5Recorder::compileHistories(IAllVertices &neurons)
       offset[0] = (Simulator::getInstance().getCurrentStep() - 1) * Simulator::getInstance().getEpochDuration();
       count[0] = Simulator::getInstance().getEpochDuration();
       dimsm[0] = Simulator::getInstance().getEpochDuration();
-      memspace = new DataSpace(1, dimsm, NULL);
+      memspace = new DataSpace(1, dimsm, nullptr);
       dataspace = new DataSpace(dataSetBurstHist_->getSpace());
       dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
       dataSetBurstHist_->write(burstinessHist_, PredType::NATIVE_INT, *memspace, *dataspace);
@@ -307,7 +307,7 @@ void Hdf5Recorder::compileHistories(IAllVertices &neurons)
       offset[0] = (Simulator::getInstance().getCurrentStep() - 1) * Simulator::getInstance().getEpochDuration() * 100;
       count[0] = Simulator::getInstance().getEpochDuration() * 100;
       dimsm[0] = Simulator::getInstance().getEpochDuration() * 100;
-      memspace = new DataSpace(1, dimsm, NULL);
+      memspace = new DataSpace(1, dimsm, nullptr);
       dataspace = new DataSpace(dataSetSpikesHist_->getSpace());
       dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
       dataSetSpikesHist_->write(spikesHistory_, PredType::NATIVE_INT, *memspace, *dataspace);
@@ -339,7 +339,7 @@ void Hdf5Recorder::compileHistories(IAllVertices &neurons)
          {
             dimsm[0] = spikesProbedNeurons_[i].size();
             dimsm[1] = 1;
-            memspace = new DataSpace(2, dimsm, NULL);
+            memspace = new DataSpace(2, dimsm, nullptr);
 
             offset[0] = offsetSpikesProbedNeurons_[i];
             offset[1] = i;

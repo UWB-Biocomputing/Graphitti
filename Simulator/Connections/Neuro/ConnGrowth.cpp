@@ -34,7 +34,7 @@
 
 #include "ConnGrowth.h"
 #include "ParseParamError.h"
-#include "IAllEdges.h"
+#include "AllEdges.h"
 #include "XmlGrowthRecorder.h"
 #include "AllSpikingNeurons.h"
 #include "Matrix/CompleteMatrix.h"
@@ -48,32 +48,32 @@
 #endif
 
 ConnGrowth::ConnGrowth() : Connections() {
-   W_ = NULL;
-   radii_ = NULL;
-   rates_ = NULL;
-   delta_ = NULL;
-   area_ = NULL;
-   outgrowth_ = NULL;
-   deltaR_ = NULL;
+   W_ = nullptr;
+   radii_ = nullptr;
+   rates_ = nullptr;
+   delta_ = nullptr;
+   area_ = nullptr;
+   outgrowth_ = nullptr;
+   deltaR_ = nullptr;
    radiiSize_ = 0;
 }
 
 ConnGrowth::~ConnGrowth() {
-      if (W_ != NULL) delete W_;
-   if (radii_ != NULL) delete radii_;
-   if (rates_ != NULL) delete rates_;
-   if (delta_ != NULL) delete delta_;
-   if (area_ != NULL) delete area_;
-   if (outgrowth_ != NULL) delete outgrowth_;
-   if (deltaR_ != NULL) delete deltaR_;
+      if (W_ != nullptr) delete W_;
+   if (radii_ != nullptr) delete radii_;
+   if (rates_ != nullptr) delete rates_;
+   if (delta_ != nullptr) delete delta_;
+   if (area_ != nullptr) delete area_;
+   if (outgrowth_ != nullptr) delete outgrowth_;
+   if (deltaR_ != nullptr) delete deltaR_;
 
-   W_ = NULL;
-   radii_ = NULL;
-   rates_ = NULL;
-   delta_ = NULL;
-   area_ = NULL;
-   outgrowth_ = NULL;
-   deltaR_ = NULL;
+   W_ = nullptr;
+   radii_ = nullptr;
+   rates_ = nullptr;
+   delta_ = nullptr;
+   area_ = nullptr;
+   outgrowth_ = nullptr;
+   deltaR_ = nullptr;
    radiiSize_ = 0;
 }
 
@@ -82,7 +82,7 @@ ConnGrowth::~ConnGrowth() {
 ///  @param  layout    Layout information of the neural network.
 ///  @param  vertices   The vertex list to search from.
 ///  @param  synapses  The Synapse list to search from.
-void ConnGrowth::setupConnections(Layout *layout, IAllVertices *vertices, IAllEdges *synapses) {
+void ConnGrowth::setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *synapses) {
    int numVertices = Simulator::getInstance().getTotalVertices();
    radiiSize_ = numVertices;
 
@@ -235,12 +235,12 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout) {
 ///
 ///  @param  numVertices  Number of vertices to update.
 ///  @param  ivertices    the AllVertices object.
-///  @param  isynapses   the AllEdges object.
+///  @param  iedges   the AllEdges object.
 ///  @param  layout      the Layout object.
-void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &ivertices, IAllEdges &isynapses,
+void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &ivertices, AllEdges &iedges,
                                        Layout *layout) {
    AllVertices &vertices = dynamic_cast<AllVertices &>(ivertices);
-   AllEdges &synapses = dynamic_cast<AllEdges &>(isynapses);
+   AllEdges &synapses = dynamic_cast<AllEdges &>(iedges);
 
    // For now, we just set the weights to equal the areas. We will later
    // scale it and set its sign (when we index and get its sign).
@@ -260,16 +260,16 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &iver
       for (int destVertex = 0; destVertex < numVertices; destVertex++) {
          // visit each synapse at (xa,ya)
          bool connected = false;
-         synapseType type = layout->synType(srcVertex, destVertex);
+         edgeType type = layout->edgType(srcVertex, destVertex);
 
          // for each existing synapse
-         BGSIZE synapseCounts = synapses.synapseCounts_[destVertex];
+         BGSIZE synapseCounts = synapses.edgeCounts_[destVertex];
          BGSIZE synapse_adjusted = 0;
          BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * destVertex;
          for (BGSIZE synapseIndex = 0; synapse_adjusted < synapseCounts; synapseIndex++, iEdg++) {
             if (synapses.inUse_[iEdg] == true) {
                // if there is a synapse between a and b
-               if (synapses.sourceNeuronIndex_[iEdg] == srcVertex) {
+               if (synapses.sourceVertexIndex_[iEdg] == srcVertex) {
                   connected = true;
                   adjusted++;
                   // adjust the strength of the synapse or remove
@@ -282,7 +282,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &iver
                      // adjust
                      // SYNAPSE_STRENGTH_ADJUSTMENT is 1.0e-8;
                      synapses.W_[iEdg] = (*W_)(srcVertex, destVertex) *
-                                         synapses.edgSign(type) * AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+                                         synapses.edgSign(type) * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 
                      LOG4CPLUS_DEBUG(fileLogger_, "Weight of rgSynapseMap" <<
                                                                            "[" << synapseIndex << "]: " <<
@@ -306,7 +306,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &iver
                                 Simulator::getInstance().getDeltaT());
             synapses.W_[iEdg] =
                   (*W_)(srcVertex, destVertex) * synapses.edgSign(type) *
-                  AllEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+                  AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 
          }
       }

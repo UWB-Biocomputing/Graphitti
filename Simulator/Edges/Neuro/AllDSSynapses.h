@@ -58,7 +58,7 @@ public:
 
    virtual ~AllDSSynapses();
 
-   static IAllEdges *Create() { return new AllDSSynapses(); }
+   static AllEdges *Create() { return new AllDSSynapses(); }
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    virtual void setupEdges();
@@ -82,7 +82,7 @@ public:
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-                              synapseType type);
+                              edgeType type);
 
    ///  Prints SynapsesProps data to console.
    virtual void printSynapsesProps() const;

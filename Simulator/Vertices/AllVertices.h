@@ -27,6 +27,7 @@ using namespace std;
 
 #include "IAllVertices.h"
 #include "BGTypes.h"
+#include "Simulator.h"
 
 class AllVertices : public IAllVertices {
 public:

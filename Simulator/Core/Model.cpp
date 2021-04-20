@@ -50,7 +50,7 @@ Model::~Model() {
 
 /// Save simulation results to an output destination.
 void Model::saveData() {
-   if (recorder_ != NULL) {
+   if (recorder_ != nullptr) {
       recorder_->saveSimData(*layout_->getVertices());
    }
 }
@@ -84,7 +84,7 @@ void Model::setupSim() {
    t_host_initialization_layout += Simulator::getInstance().short_timer.lap() / 1000000.0;
 #endif
    // Init radii and rates history matrices with default values
-   if (recorder_ != NULL) {
+   if (recorder_ != nullptr) {
       recorder_->init();
       recorder_->initDefaultValues();
    }
@@ -111,7 +111,7 @@ void Model::setupSim() {
 /// Log this simulation step.
 void Model::logSimStep() const {
    ConnGrowth *pConnGrowth = dynamic_cast<ConnGrowth *>(connections_.get());
-   if (pConnGrowth == NULL)
+   if (pConnGrowth == nullptr)
       return;
 
    cout << "format:\ntype,radius,firing rate" << endl;
@@ -132,7 +132,7 @@ void Model::logSimStep() const {
             case INH:
                ss << "i";
                break;
-            case NTYPE_UNDEF:
+            case VTYPE_UNDEF:
                assert(false);
                break;
          }

@@ -18,15 +18,15 @@ void getValueList(const string& valString, vector<BGFLOAT>* pList);
 /// @param[in] psi       Pointer to the simulation information
 /// @param[in] parms     Pointer to xml parms element
 SInputRegular::SInputRegular(TiXmlElement* parms) :
-    values(NULL),
-    nShiftValues(NULL)
+    values(nullptr),
+    nShiftValues(nullptr)
 {
     fSInput = false;
 
     // read duration, interval and sync
-    TiXmlElement* temp = NULL;
+    TiXmlElement* temp = nullptr;
     string sync;
-    if (( temp = parms->FirstChildElement( "IntParams" ) ) != NULL) { if (temp->QueryFLOATAttribute("duration", &duration ) != TIXML_SUCCESS) {
+    if (( temp = parms->FirstChildElement( "IntParams" ) ) != nullptr) { if (temp->QueryFLOATAttribute("duration", &duration ) != TIXML_SUCCESS) {
             cerr << "error IntParams:duration" << endl;
             return;
         }
@@ -52,10 +52,10 @@ SInputRegular::SInputRegular(TiXmlElement* parms) :
     nStepsInCycle = 0;
 
     // read initial values
-    if ((temp = parms->FirstChildElement( "Values")) != NULL)
+    if ((temp = parms->FirstChildElement( "Values")) != nullptr)
     {
-        TiXmlNode* pNode = NULL;
-        while ((pNode = temp->IterateChildren(pNode)) != NULL)
+        TiXmlNode* pNode = nullptr;
+        while ((pNode = temp->IterateChildren(pNode)) != nullptr)
         {
             if (strcmp(pNode->Value(), "I") == 0)
             {
@@ -129,7 +129,7 @@ void SInputRegular::term()
 {
 }
 
-/// Helper function for input vaue list (copied from BGDriver.cpp and modified for BGFLOAT)
+/// Helper function for input vaue list (copied from Driver.cpp and modified for BGFLOAT)
 void getValueList(const string& valString, vector<BGFLOAT>* pList)
 {
     std::istringstream valStream(valString);

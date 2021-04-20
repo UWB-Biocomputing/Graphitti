@@ -1,5 +1,5 @@
 /**
- * @file ParamaterManagerTests.cpp
+ * @file ParameterManagerTests.cpp
  *
  * @brief  This class is used for unit testing the ParameterManager using GTest.
  *
@@ -45,7 +45,7 @@ TEST(ParameterManager, LoadingMultipleValidXMLFiles) {
 }
 
 TEST(ParameterManager, LoadingMultipleInvalidFiles) {
-   string invalid[] = {"../Core/BGDriver.cpp", "/.this"};
+   string invalid[] = {"../Core/Driver.cpp", "/.this"};
    for (int i = 0; i < 2; i++) {
       ASSERT_FALSE(ParameterManager::getInstance().loadParameterFile(invalid[i]));
    }
@@ -55,7 +55,7 @@ TEST(ParameterManager, ValidStringTargeting) {
    ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string validXPaths[]{"/BGSimParams/SimInfoParams/OutputParams/resultFileName/text()",
                         "//resultFileName/text()", "//VerticesParams/@class"};
-   string result[] = {"results/test-medium-500-out.xml", "results/test-medium-500-out.xml", "AllLIFNeurons"};
+   string result[] = {"../Output/Results/test-medium-500-out.xml", "../Output/Results/test-medium-500-out.xml", "AllLIFNeurons"};
    string referenceVar;
    for (int i = 0; i < 3; i++) {
       ASSERT_TRUE(ParameterManager::getInstance().getStringByXpath(validXPaths[i], referenceVar));

@@ -115,20 +115,20 @@ void Hdf5GrowthRecorder::compileHistories(IAllVertices &neurons) {
    VectorMatrix &radii = (*dynamic_pointer_cast<ConnGrowth>(connections)->radii_);
 
    // output spikes
-   for (int iNeuron = 0; iNeuron < Simulator::getInstance().getTotalVertices(); iNeuron++) {
+   for (int iVertex = 0; iVertex < Simulator::getInstance().getTotalVertices(); iVertex++) {
       // record firing rate to history matrix
-      ratesHistory_[iNeuron] = rates[iNeuron];
+      ratesHistory_[iVertex] = rates[iVertex];
 
       // Cap minimum radius size and record radii to history matrix
       // TODO: find out why we cap this here.
-      if (radii[iNeuron] < minRadius)
-         radii[iNeuron] = minRadius;
+      if (radii[iVertex] < minRadius)
+         radii[iVertex] = minRadius;
 
       // record radius to history matrix
-      radiiHistory_[iNeuron] = radii[iNeuron];
+      radiiHistory_[iVertex] = radii[iVertex];
 
       // ToDo: change this to
-      DEBUG_MID(cout << "radii[" << iNeuron << ":" << radii[iNeuron] << "]" << endl;)
+      DEBUG_MID(cout << "radii[" << iVertex << ":" << radii[iVertex] << "]" << endl;)
    }
 
    writeRadiiRates();
@@ -152,7 +152,7 @@ void Hdf5GrowthRecorder::writeRadiiRates()
         count[1] = Simulator::getInstance().getTotalVertices();
         dimsm[0] = 1;
         dimsm[1] = Simulator::getInstance().getTotalVertices();
-        memspace = new DataSpace(2, dimsm, NULL);
+        memspace = new DataSpace(2, dimsm, nullptr);
         dataspace = new DataSpace(dataSetRadiiHist_->getSpace());
         dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
         dataSetRadiiHist_->write(radiiHistory_, H5_FLOAT, *memspace, *dataspace);
@@ -166,7 +166,7 @@ void Hdf5GrowthRecorder::writeRadiiRates()
         count[1] = Simulator::getInstance().getTotalVertices();
         dimsm[0] = 1;
         dimsm[1] = Simulator::getInstance().getTotalVertices();
-        memspace = new DataSpace(2, dimsm, NULL);
+        memspace = new DataSpace(2, dimsm, nullptr);
         dataspace = new DataSpace(dataSetRadiiHist_->getSpace());
         dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
         dataSetRatesHist_->write(ratesHistory_, H5_FLOAT, *memspace, *dataspace);

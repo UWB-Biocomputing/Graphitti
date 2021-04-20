@@ -8,7 +8,7 @@
 
 #include "AllSTDPSynapses.h"
 #include "AllSpikingSynapses.h"
-#include "GPUSpikingModel.h"
+#include "GPUModel.h"
 #include "AllSynapsesDeviceFuncs.h"
 #include "Book.h"
 
@@ -281,7 +281,7 @@ void AllSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
         int *destNeuronIndexPrint = new int[size];
         BGFLOAT *WPrint = new BGFLOAT[size];
 
-        synapseType *typePrint = new synapseType[size];
+        edgeType *typePrint = new edgeType[size];
         BGFLOAT *psrPrint = new BGFLOAT[size];
         bool *inUsePrint = new bool[size];
 
@@ -312,7 +312,7 @@ void AllSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
 
         // copy everything
         HANDLE_ERROR( cudaMemcpy ( &allSynapsesProps, allEdgesDeviceProps, sizeof( AllSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( synapseCountsPrint, allSynapsesProps.synapseCounts_, countVertices_ * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( synapseCountsPrint, allSynapsesProps.edgeCounts_, countVertices_ * sizeof( BGSIZE ), cudaMemcpyDeviceToHost ) );
         maxEdgesPerVertexPrint = allSynapsesProps.maxEdgesPerVertex_;
         totalSynapseCountPrint = allSynapsesProps.totalEdgeCount_;
         countNeuronsPrint = allSynapsesProps.countVertices_;
@@ -321,10 +321,10 @@ void AllSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
         // at AllSynapsesProps deconstructor.
         allSynapsesProps.countVertices_ = 0;
 
-        HANDLE_ERROR( cudaMemcpy ( sourceNeuronIndexPrint, allSynapsesProps.sourceNeuronIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( destNeuronIndexPrint, allSynapsesProps.destNeuronIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( sourceNeuronIndexPrint, allSynapsesProps.sourceVertexIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( destNeuronIndexPrint, allSynapsesProps.destVertexIndex_, size * sizeof( int ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( WPrint, allSynapsesProps.W_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( typePrint, allSynapsesProps.type_, size * sizeof( synapseType ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( typePrint, allSynapsesProps.type_, size * sizeof( edgeType ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( psrPrint, allSynapsesProps.psr_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( inUsePrint, allSynapsesProps.inUse_, size * sizeof( bool ), cudaMemcpyDeviceToHost ) );
 
@@ -392,20 +392,20 @@ void AllSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
         delete[] typePrint;
         delete[] inUsePrint;
         delete[] synapseCountsPrint;
-        destNeuronIndexPrint = NULL;
-        WPrint = NULL;
-        sourceNeuronIndexPrint = NULL;
-        psrPrint = NULL;
-        typePrint = NULL;
-        inUsePrint = NULL;
-        synapseCountsPrint = NULL;
+        destNeuronIndexPrint = nullptr;
+        WPrint = nullptr;
+        sourceNeuronIndexPrint = nullptr;
+        psrPrint = nullptr;
+        typePrint = nullptr;
+        inUsePrint = nullptr;
+        synapseCountsPrint = nullptr;
 
         delete[] decayPrint;
         delete[] totalDelayPrint;
         delete[] tauPrint;
-        decayPrint = NULL;
-        totalDelayPrint = NULL;
-        tauPrint = NULL;
+        decayPrint = nullptr;
+        totalDelayPrint = nullptr;
+        tauPrint = nullptr;
 
         delete[] totalDelayPostPrint;
         delete[] tauspostPrint;
@@ -419,18 +419,18 @@ void AllSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
         delete[] muposPrint;
         delete[] munegPrint;
         delete[] useFroemkeDanSTDPPrint;
-        totalDelayPostPrint = NULL;
-        tauspostPrint = NULL;
-        tausprePrint = NULL;
-        tauposPrint = NULL;
-        taunegPrint = NULL;
-        STDPgapPrint = NULL;
-        WexPrint = NULL;
-        AnegPrint = NULL;
-        AposPrint = NULL;
-        muposPrint = NULL;
-        munegPrint = NULL;
-        useFroemkeDanSTDPPrint = NULL;
+        totalDelayPostPrint = nullptr;
+        tauspostPrint = nullptr;
+        tausprePrint = nullptr;
+        tauposPrint = nullptr;
+        taunegPrint = nullptr;
+        STDPgapPrint = nullptr;
+        WexPrint = nullptr;
+        AnegPrint = nullptr;
+        AposPrint = nullptr;
+        muposPrint = nullptr;
+        munegPrint = nullptr;
+        useFroemkeDanSTDPPrint = nullptr;
     }
 
 }

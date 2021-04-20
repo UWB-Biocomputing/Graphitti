@@ -18,12 +18,12 @@
 Layout::Layout() :
       numEndogenouslyActiveNeurons_(0),
       gridLayout_(true) {
-   xloc_ = NULL;
-   yloc_ = NULL;
-   dist2_ = NULL;
-   dist_ = NULL;
-   vertexTypeMap_ = NULL;
-   starterMap_ = NULL;
+   xloc_ = nullptr;
+   yloc_ = nullptr;
+   dist2_ = nullptr;
+   dist_ = nullptr;
+   vertexTypeMap_ = nullptr;
+   starterMap_ = nullptr;
 
    // Create Vertices/Neurons class using type definition in configuration file
    string type;
@@ -44,19 +44,19 @@ Layout::Layout() :
 
 /// Destructor
 Layout::~Layout() {
-   if (xloc_ != NULL) delete xloc_;
-   if (yloc_ != NULL) delete yloc_;
-   if (dist2_ != NULL) delete dist2_;
-   if (dist_ != NULL) delete dist_;
-   if (vertexTypeMap_ != NULL) delete[] vertexTypeMap_;  //todo: is delete[] changing once array becomes vector?
-   if (starterMap_ != NULL) delete[] starterMap_; //todo: is delete[] changing once array becomes vector?
+   if (xloc_ != nullptr) delete xloc_;
+   if (yloc_ != nullptr) delete yloc_;
+   if (dist2_ != nullptr) delete dist2_;
+   if (dist_ != nullptr) delete dist_;
+   if (vertexTypeMap_ != nullptr) delete[] vertexTypeMap_;  //todo: is delete[] changing once array becomes vector?
+   if (starterMap_ != nullptr) delete[] starterMap_; //todo: is delete[] changing once array becomes vector?
 
-   xloc_ = NULL;
-   yloc_ = NULL;
-   dist2_ = NULL;
-   dist_ = NULL;
-   vertexTypeMap_ = NULL;
-   starterMap_ = NULL;
+   xloc_ = nullptr;
+   yloc_ = nullptr;
+   dist2_ = nullptr;
+   dist_ = nullptr;
+   vertexTypeMap_ = nullptr;
+   starterMap_ = nullptr;
 }
 
 shared_ptr<IAllVertices> Layout::getVertices() const {
@@ -94,38 +94,8 @@ void Layout::setupLayout() {
    (*dist_) = sqrt((*dist2_));
 
    // more allocation of internal memory
-   vertexTypeMap_ = new neuronType[numVertices]; // todo: make array into vector
+   vertexTypeMap_ = new vertexType[numVertices]; // todo: make array into vector
    starterMap_ = new bool[numVertices]; // todo: make array into vector
-}
-
-/// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
-void Layout::loadParameters() {
-   // Get the file paths for the Neuron lists from the configuration file
-   string activeNListFilePath;
-   string inhibitoryNListFilePath;
-   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/activeNListFileName/text()",
-                                                         activeNListFilePath)) {
-      throw runtime_error("In Layout::loadParameters() Endogenously "
-                          "active neuron list file path wasn't found and will not be initialized");
-   }
-   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/inhNListFileName/text()",
-                                                         inhibitoryNListFilePath)) {
-      throw runtime_error("In Layout::loadParameters() "
-                          "Inhibitory neuron list file path wasn't found and will not be initialized");
-   }
-
-   // Initialize Neuron Lists based on the data read from the xml files
-   if (!ParameterManager::getInstance().getIntVectorByXpath(activeNListFilePath, "A", endogenouslyActiveNeuronList_)) {
-      throw runtime_error("In Layout::loadParameters() "
-                          "Endogenously active neuron list file wasn't loaded correctly"
-                          "\n\tfile path: " + activeNListFilePath);
-   }
-   numEndogenouslyActiveNeurons_ = endogenouslyActiveNeuronList_.size();
-   if (!ParameterManager::getInstance().getIntVectorByXpath(inhibitoryNListFilePath, "I", inhibitoryNeuronLayout_)) {
-      throw runtime_error("In Layout::loadParameters() "
-                          "Inhibitory neuron list file wasn't loaded correctly."
-                          "\n\tfile path: " + inhibitoryNListFilePath);
-   }
 }
 
 
@@ -151,10 +121,10 @@ void Layout::printParameters() const {
 /// Creates a vertex type map.
 /// @param  numVertices number of the vertices to have in the type map.
 void Layout::generateVertexTypeMap(int numVertices) {
-   DEBUG(cout << "\nInitializing vertex type map" << endl;);
+   DEBUG(cout << "\nInitializing vertex type map: VTYPE_UNDEF" << endl;);
 
    for (int i = 0; i < numVertices; i++) {
-      vertexTypeMap_[i] = EXC;
+      vertexTypeMap_[i] = VTYPE_UNDEF;
    }
 }
 
@@ -167,29 +137,11 @@ void Layout::initStarterMap(const int numVertices) {
    }
 }
 
-///  Returns the type of synapse at the given coordinates
-///
-///  @param    srcVertex  integer that points to a Neuron in the type map as a source.
-///  @param    destVertex integer that points to a Neuron in the type map as a destination.
-///  @return type of the synapse.
-synapseType Layout::synType(const int srcVertex, const int destVertex) {
-   if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == INH)
-      return II;
-   else if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == EXC)
-      return IE;
-   else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == INH)
-      return EI;
-   else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == EXC)
-      return EE;
-
-   return STYPE_UNDEF;
-}
-
 /// Initialize the location maps (xloc and yloc).
 void Layout::initVerticesLocs() {
    int numVertices = Simulator::getInstance().getTotalVertices();
 
-   // Initialize neuron locations
+   // Initialize vertex locations
    if (gridLayout_) {
       // grid layout
       for (int i = 0; i < numVertices; i++) {

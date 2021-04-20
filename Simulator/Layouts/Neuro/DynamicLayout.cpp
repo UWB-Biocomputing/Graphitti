@@ -9,6 +9,8 @@
 #include "DynamicLayout.h"
 #include "ParseParamError.h"
 #include "Util.h"
+#include "ParameterManager.h"
+
 
 DynamicLayout::DynamicLayout() : Layout() {
 }
@@ -29,7 +31,14 @@ void DynamicLayout::printParameters() const {
 ///
 ///  @param  numVertices number of the vertices to have in the type map.
 void DynamicLayout::generateVertexTypeMap(int numVertices) {
-   Layout::generateVertexTypeMap(numVertices);
+   DEBUG(cout << "\nInitializing vertex type map" << endl;);
+
+   // Populate vertexTypeMap_ with EXC
+   fill_n(vertexTypeMap_, numVertices, EXC);
+
+   // for (int i = 0; i < numVertices; i++) {
+   //    vertexTypeMap_[i] = EXC;
+   // }
 
    int numExcititoryNeurons = (int) (m_frac_excitatory_neurons * numVertices + 0.5);
    int numInhibitoryNeurons = numVertices - numExcititoryNeurons;
@@ -93,4 +102,52 @@ void DynamicLayout::initStarterMap(const int numVertices) {
    }
 
    LOG4CPLUS_INFO(fileLogger_, "Done randomly initializing starter map");
+}
+
+/// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
+void DynamicLayout::loadParameters() {
+   // Get the file paths for the Neuron lists from the configuration file
+   string activeNListFilePath;
+   string inhibitoryNListFilePath;
+   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/activeNListFileName/text()",
+                                                         activeNListFilePath)) {
+      throw runtime_error("In Layout::loadParameters() Endogenously "
+                          "active neuron list file path wasn't found and will not be initialized");
+   }
+   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/inhNListFileName/text()",
+                                                         inhibitoryNListFilePath)) {
+      throw runtime_error("In Layout::loadParameters() "
+                          "Inhibitory neuron list file path wasn't found and will not be initialized");
+   }
+
+   // Initialize Neuron Lists based on the data read from the xml files
+   if (!ParameterManager::getInstance().getIntVectorByXpath(activeNListFilePath, "A", endogenouslyActiveNeuronList_)) {
+      throw runtime_error("In Layout::loadParameters() "
+                          "Endogenously active neuron list file wasn't loaded correctly"
+                          "\n\tfile path: " + activeNListFilePath);
+   }
+   numEndogenouslyActiveNeurons_ = endogenouslyActiveNeuronList_.size();
+   if (!ParameterManager::getInstance().getIntVectorByXpath(inhibitoryNListFilePath, "I", inhibitoryNeuronLayout_)) {
+      throw runtime_error("In Layout::loadParameters() "
+                          "Inhibitory neuron list file wasn't loaded correctly."
+                          "\n\tfile path: " + inhibitoryNListFilePath);
+   }
+}
+
+///  Returns the type of synapse at the given coordinates
+///
+///  @param    srcVertex  integer that points to a Neuron in the type map as a source.
+///  @param    destVertex integer that points to a Neuron in the type map as a destination.
+///  @return type of the synapse.
+edgeType DynamicLayout::edgType(const int srcVertex, const int destVertex) {
+   if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == INH)
+      return II;
+   else if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == EXC)
+      return IE;
+   else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == INH)
+      return EI;
+   else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == EXC)
+      return EE;
+
+   return ETYPE_UNDEF;
 }

@@ -1,5 +1,5 @@
 /**
- * @file GPUSpikingModel.h
+ * @file GPUModel.h
  *
  * @ingroup Simulator/Core
  * 
@@ -8,7 +8,7 @@
  * The Model class maintains and manages classes of objects that make up
  * essential components of graph-based networks.
  *    -# IAllVertices: A class to define a list of particular type of neurons.
- *    -# IAllEdges: A class to define a list of particular type of synapses.
+ *    -# AllEdges: A class to define a list of particular type of synapses.
  *    -# Connections: A class to define connections of the neural network.
  *    -# Layout: A class to define neurons' layout information in the network.
  *
@@ -69,13 +69,13 @@ inline void cudaLapTime(double& t_event) {
 
 class AllSpikingSynapses;
 
-class GPUSpikingModel : public Model {
+class GPUModel : public Model {
    friend class GpuSInputPoisson;
 
 public:
-   GPUSpikingModel();
+   GPUModel();
 
-   virtual ~GPUSpikingModel();
+   virtual ~GPUModel();
 
    /// Set up model state, if anym for a specific simulation run.
    virtual void setupSim();
@@ -130,7 +130,7 @@ private:
 
    void deleteSynapseImap();
 
-public: //2020/03/14 changed to public for accessing in BGDriver
+public: //2020/03/14 changed to public for accessing in Driver
 
    void copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices);
 
@@ -139,15 +139,15 @@ private:
    void updateHistory();
 
    // TODO
-   void eraseEdge(IAllEdges &synapses, const int neuronIndex, const int synapseIndex);
+   void eraseEdge(AllEdges &synapses, const int neuronIndex, const int synapseIndex);
 
    // TODO
-   void addEdge(IAllEdges &synapses, synapseType type, const int srcVertex, const int destVertex,
+   void addEdge(AllEdges &synapses, edgeType type, const int srcVertex, const int destVertex,
                    Coordinate &source, Coordinate &dest, BGFLOAT *sumPoint, BGFLOAT deltaT);
 
    // TODO
-   void createEdge(IAllEdges &synapses, const int neuronIndex, const int synapseIndex,
-                      Coordinate source, Coordinate dest, BGFLOAT *sp, BGFLOAT deltaT, synapseType type);
+   void createEdge(AllEdges &synapses, const int neuronIndex, const int synapseIndex,
+                      Coordinate source, Coordinate dest, BGFLOAT *sp, BGFLOAT deltaT, edgeType type);
 };
 
 #if defined(__CUDACC__)

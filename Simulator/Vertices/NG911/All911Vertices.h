@@ -33,24 +33,57 @@ public:
    ///  @return Reference to the instance of the class.
    static IAllVertices *Create() { return new All911Vertices(); }
 
+   ///  Setup the internal structure of the class.
+   ///  Allocate memories to store all vertices' states.
+   virtual void setupVertices();
+
+   ///  Creates all the Vertices and assigns initial data for them.
+   ///
+   ///  @param  layout      Layout information of the network.
+   virtual void createAllVertices(Layout *layout);
+
+   ///  Load member variables from configuration file.
+   ///  Registered to OperationManager as Operation::loadParameters
+   virtual void loadParameters();
+
    ///  Prints out all parameters of the vertices to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
 
-#if defined(USE_GPU)
-   public:
+   ///  Outputs state of the vertex chosen as a string.
+   ///
+   ///  @param  index   index of the vertex (in vertices) to output info from.
+   ///  @return the complete state of the vertex.
+   virtual string toString(const int index) const;
 
-       ///  Update the state of all vertices for a time step
-       ///  Notify outgoing edges if vertex has fired.
-       ///
-       ///  @param  edges               Reference to the allEdges struct on host memory.
-       ///  @param  allVerticesDevice       GPU address of the allNeurons struct on device memory.
-       ///  @param  allEdgesDevice      GPU address of the allEdges struct on device memory.
-       ///  @param  randNoise              Reference to the random noise array.
-       ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
-       virtual void advanceVertices(IAllEdges &edges, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice);
+
+protected: 
+   ///  Creates a single vertex and generates data for it.
+   ///
+   ///  @param  index   Index of the vertex to create.
+   ///  @param  layout  Layout information of the network.
+   void createVertex(int index, Layout *layout);
+
+private: 
+
+   /// number of callers
+   int *CallNum_; 
+
+   /// Min/max values of CallNum.
+   int CallNumRange_[2];
+
+#if defined(USE_GPU)
 
 #else  // !defined(USE_GPU)
+public:
+ 
+   ///  Update internal state of the indexed Vertex (called by every simulation step).
+   ///  Notify outgoing edges if vertex has fired.
+   ///
+   ///  @param  edges         The Edge list to search from.
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap);
+
 protected:
 
 #endif // defined(USE_GPU)

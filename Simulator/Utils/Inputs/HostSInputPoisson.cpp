@@ -7,7 +7,7 @@
  */
 
 #include "HostSInputPoisson.h"
-#include "Core/CPUSpikingModel.h"
+#include "Core/CPUModel.h"
 #include "tinyxml.h"
 
 /// The constructor for HostSInputPoisson.
@@ -78,6 +78,6 @@ int chunk_size = psi->totalVertices / omp_get_max_threads();
             nISIs[neuronIndex] = static_cast<int>( (isi / 1000) / Simulator::getInstance().getDeltaT() + 0.5 );
         }
         // process synapse
-        edges_->advanceEdge(iEdg, NULL);
+        edges_->advanceEdge(iEdg, nullptr);
     }
 }

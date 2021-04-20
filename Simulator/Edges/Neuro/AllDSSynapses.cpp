@@ -9,12 +9,12 @@
 #include "AllDSSynapses.h"
 
 AllDSSynapses::AllDSSynapses() : AllSpikingSynapses() {
-   lastSpike_ = NULL;
-   r_ = NULL;
-   u_ = NULL;
-   D_ = NULL;
-   U_ = NULL;
-   F_ = NULL;
+   lastSpike_ = nullptr;
+   r_ = nullptr;
+   u_ = nullptr;
+   D_ = nullptr;
+   U_ = nullptr;
+   F_ = nullptr;
 }
 
 AllDSSynapses::AllDSSynapses(const int numVertices, const int maxEdges) :
@@ -34,12 +34,12 @@ AllDSSynapses::~AllDSSynapses() {
       delete[] F_;
    }
 
-   lastSpike_ = NULL;
-   r_ = NULL;
-   u_ = NULL;
-   D_ = NULL;
-   U_ = NULL;
-   F_ = NULL;
+   lastSpike_ = nullptr;
+   r_ = nullptr;
+   u_ = nullptr;
+   D_ = nullptr;
+   U_ = nullptr;
+   F_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -133,7 +133,7 @@ void AllDSSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
 void AllDSSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
-                                  const BGFLOAT deltaT, synapseType type) {
+                                  const BGFLOAT deltaT, edgeType type) {
    AllSpikingSynapses::createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
 
    U_[iEdg] = DEFAULT_U;

@@ -16,7 +16,7 @@ summation points for a vertex. setup() methods are allocating internal storage f
 ## New Architecture notes
 
 #### Smart pointers 
-Wherever possible, DEBS is written using smart pointers. There are three  
+Wherever possible, Graphitti is written using smart pointers. There are three  
 
 #### testing
 google tests use cmake 
@@ -90,7 +90,7 @@ RNG/MersenneTwister/MersenneTwister.dat
 cpuspikingmodel.cpp
 
 /// Advance everything in the model one time step.
-void CPUSpikingModel::advance()
+void CPUModel::advance()
 {
    // ToDo: look at pointer v no pointer in params
    // ToDo: look at pointer v no pointer in params - to change

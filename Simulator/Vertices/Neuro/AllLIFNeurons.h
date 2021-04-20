@@ -105,7 +105,7 @@ public:
        ///  @param  allEdgesDevice      GPU address of the allEdges struct on device memory.
        ///  @param  randNoise              Reference to the random noise array.
        ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
-       virtual void advanceVertices(IAllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice);
+       virtual void advanceVertices(AllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice);
 
 #else  // !defined(USE_GPU)
 protected:
