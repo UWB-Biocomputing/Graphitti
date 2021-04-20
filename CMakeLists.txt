@@ -12,7 +12,7 @@ set(CMAKE_CXX_STANDARD 11)
 #
 # "YES"/GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
-set(ENABLE_CUDA NO)
+set(ENABLE_CUDA YES)
 
 # Enables the CUDA langauge and locates the NVCC compiler. 
 # Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
@@ -22,9 +22,9 @@ set(ENABLE_CUDA NO)
 # so the compiler knows the CUDA architecture being used is the SM_35
 if(ENABLE_CUDA)
         message("\n----Generating Makefile for Graphitti GPU version----")
-        enable_language(CUDA)
-        set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
-        add_compile_definitions(USE_GPU)
+		enable_language(CUDA)
+		set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
+		add_compile_definitions(USE_GPU)
 else()
         message("\n----Generating Makefile for Graphitti CPU version----")
 endif()
@@ -124,8 +124,15 @@ endif()
 
 # ------ SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
-add_executable(graphitti Simulator/Core/Driver.cpp)
-
+if(ENABLE_CUDA)
+	add_executable(ggraphitti Simulator/Core/Driver.cpp)
+	# Link the combined library into the 'graphitti' executable.
+	target_link_libraries(ggraphitti combinedLib)
+else()
+	add_executable(cgraphitti Simulator/Core/Driver.cpp)
+	# Link the combined library into the 'graphitti' executable.
+	target_link_libraries(cgraphitti combinedLib)
+endif()
 # ------ TESTS EXECUTABLE ------
 # Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
 # included in the executable.
@@ -140,9 +147,6 @@ add_executable(tests
 
 # Links the Googletest framework with the testing executable
 target_link_libraries(tests gtest gtest_main)
-
-# Link the combined library into the 'graphitti' executable.
-target_link_libraries(graphitti combinedLib)
 
 # Link the combined library into the 'tests' executable.
 target_link_libraries(tests combinedLib)
