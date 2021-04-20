@@ -30,31 +30,31 @@ public:
 
    /// Initialize data
    /// Create a new xml file.
-   virtual void init();
+   virtual void init() override;
 
    /// Init radii and rates history matrices with default values
-   virtual void initDefaultValues();
+   virtual void initDefaultValues() override;
 
    /// Init radii and rates history matrices with current radii and rates
-   virtual void initValues();
+   virtual void initValues() override;
 
    /// Get the current radii and rates vlaues
-   virtual void getValues();
+   virtual void getValues() override;
 
    /// Terminate process
-   virtual void term();
+   virtual void term() override;
 
    /// Compile history information in every epoch
    /// @param[in] vertices   The entire list of vertices.
-   virtual void compileHistories(IAllVertices &vertices) = 0;
+   virtual void compileHistories(IAllVertices &vertices) override = 0;
 
    /// Writes simulation results to an output destination.
    /// @param  vertices the Vertex list to search from.
-   virtual void saveSimData(const IAllVertices &vertices) = 0;
+   virtual void saveSimData(const IAllVertices &vertices) override = 0;
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() = 0;
+   virtual void printParameters() override = 0;
 
 protected:
    // a file stream for xml output

@@ -45,33 +45,33 @@ public:
    /// Initialize data
    ///
    /// @param[in] stateOutputFileName       File name to save histories
-   virtual void init();
+   virtual void init() override;
 
    /// Init radii and rates history matrices with default values
-   virtual void initDefaultValues();
+   virtual void initDefaultValues() override;
 
    /// Init radii and rates history matrices with current radii and rates
-   virtual void initValues();
+   virtual void initValues() override;
 
    /// Get the current radii and rates vlaues
-   virtual void getValues();
+   virtual void getValues() override;
 
    /// Terminate process
-   virtual void term();
+   virtual void term() override;
 
    /// Compile history information in every epoch
    ///
    /// @param[in] neurons   The entire list of neurons.
-   virtual void compileHistories(IAllVertices &neurons);
+   virtual void compileHistories(IAllVertices &neurons) override;
 
    /// Writes simulation results to an output destination.
    ///
    /// @param  neurons the Neuron list to search from.
-   virtual void saveSimData(const IAllVertices &neurons);
+   virtual void saveSimData(const IAllVertices &neurons) override;
    
    /// Prints out all parameters to logging file.
    /// Registered to OperationManager as Operation::printParameters
-   virtual void printParameters();
+   virtual void printParameters() override;
 
 protected:
    virtual void initDataSet();

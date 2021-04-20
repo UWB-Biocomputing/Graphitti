@@ -47,7 +47,7 @@ public:
    virtual ~AllNeuroEdges();
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
-   virtual void setupEdges();
+   virtual void setupEdges() override;
 
    ///  Reset time varying state vars and recompute decay.
    ///
@@ -64,7 +64,7 @@ public:
    // ///  @param  deltaT      Inner simulation step duration.
    // ///  @param  type        Type of the Synapse to create.
    // virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-   //                            edgeType type);
+   //                            edgeType type) override;
 
    ///  Get the sign of the edgeType.
    ///
@@ -80,19 +80,19 @@ protected:
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of edges per vertex.
-   virtual void setupEdges(const int numVertices, const int maxEdges);
+   virtual void setupEdges(const int numVertices, const int maxEdges) override;
 
    ///  Sets the data for Synapse to input's data.
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the edge to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg);
+   virtual void readEdge(istream &input, const BGSIZE iEdg) override;
 
    ///  Write the edge data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the edge to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const;
+   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const override;
 
 
 #if !defined(USE_GPU)

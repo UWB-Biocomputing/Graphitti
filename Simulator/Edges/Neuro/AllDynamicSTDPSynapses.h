@@ -67,17 +67,17 @@ public:
    static AllEdges *Create() { return new AllDynamicSTDPSynapses(); }
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
-   virtual void setupEdges();
+   virtual void setupEdges() override;
 
    ///  Reset time varying state vars and recompute decay.
    ///
    ///  @param  iEdg     Index of the synapse to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT);
+   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const;
+   virtual void printParameters() const override;
 
    ///  Create a Synapse and connect it to the model.
    ///
@@ -88,29 +88,29 @@ public:
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-                              edgeType type);
+                              edgeType type) override;
 
    ///  Prints SynapsesProps data.
-   virtual void printSynapsesProps() const;
+   virtual void printSynapsesProps() const override;
 
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of synapses per neuron.
-   virtual void setupEdges(const int numVertices, const int maxEdges);
+   virtual void setupEdges(const int numVertices, const int maxEdges) override;
 
    ///  Sets the data for Synapse to input's data.
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the synapse to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg);
+   virtual void readEdge(istream &input, const BGSIZE iEdg) override;
 
    ///  Write the synapse data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the synapse to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const;
+   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const override;
 
 #if defined(USE_GPU)
    public:
@@ -118,36 +118,36 @@ protected:
        ///  and copy them from host to GPU memory.
        ///
        ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-       virtual void allocEdgeDeviceStruct( void** allEdgesDevice);
+       virtual void allocEdgeDeviceStruct( void** allEdgesDevice) override;
 
        ///  Allocate GPU memories to store all synapses' states,
        ///  and copy them from host to GPU memory.
        ///
        ///  @param  allEdgesDevice     GPU address of the allEdges struct on device memory.
        ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-       virtual void allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex);
+       virtual void allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) override;
 
        ///  Delete GPU memories.
        ///
        ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-       virtual void deleteEdgeDeviceStruct(void* allEdgesDevice);
+       virtual void deleteEdgeDeviceStruct(void* allEdgesDevice) override;
 
        ///  Copy all synapses' data from host to device.
        ///
        ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-       virtual void copyEdgeHostToDevice(void* allEdgesDevice);
+       virtual void copyEdgeHostToDevice(void* allEdgesDevice) override;
 
        ///  Copy all synapses' data from host to device.
        ///
        ///  @param  allEdgesDevice     GPU address of the allEdges struct on device memory.
        ///  @param  numVertices            Number of vertices.
        ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-       virtual void copyEdgeHostToDevice( void* allEdgesDevice, int numVertices, int maxEdgesPerVertex );
+       virtual void copyEdgeHostToDevice( void* allEdgesDevice, int numVertices, int maxEdgesPerVertex ) override;
 
        ///  Copy all synapses' data from device to host.
        ///
        ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-       virtual void copyEdgeDeviceToHost(void* allEdgesDevice);
+       virtual void copyEdgeDeviceToHost(void* allEdgesDevice) override;
 
        ///  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
        ///  The class ID will be set to classSynapses_d in device memory,
@@ -157,12 +157,12 @@ protected:
        ///  we use this scheme.
        ///  Note: we used to use a function pointer; however, it caused the growth_cuda crash
        ///  (see issue#137).
-       virtual void setEdgeClassID();
+       virtual void setEdgeClassID() override;
 
        ///  Prints GPU SynapsesProps data.
        ///
        ///  @param  allEdgesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
-       virtual void printGPUEdgesProps(void* allEdgesDeviceProps) const;
+       virtual void printGPUEdgesProps(void* allEdgesDeviceProps) const override;
 
    protected:
        ///  Allocate GPU memories to store all synapses' states,

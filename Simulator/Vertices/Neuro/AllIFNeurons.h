@@ -36,7 +36,7 @@ public:
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all neurons' state.
-   virtual void setupVertices();
+   virtual void setupVertices() override;
 
    ///  Load member variables from configuration file.
    ///  Registered to OperationManager as Operation::loadParameters
@@ -103,17 +103,17 @@ public:
        ///  Copy spike history data stored in device memory to host.
        ///
        ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void copyNeuronDeviceSpikeHistoryToHost( void* allVerticesDevice );
+       virtual void copyNeuronDeviceSpikeHistoryToHost( void* allVerticesDevice ) override;
 
        ///  Copy spike counts data stored in device memory to host.
        ///
        ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void copyNeuronDeviceSpikeCountsToHost( void* allVerticesDevice );
+       virtual void copyNeuronDeviceSpikeCountsToHost( void* allVerticesDevice ) override;
 
        ///  Clear the spike counts out of all neurons.
        ///
        ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void clearNeuronSpikeCounts( void* allVerticesDevice );
+       virtual void clearNeuronSpikeCounts( void* allVerticesDevice ) override;
 
    protected:
        ///  Allocate GPU memories to store all neurons' states.
