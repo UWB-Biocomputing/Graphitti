@@ -12,7 +12,7 @@ set(CMAKE_CXX_STANDARD 11)
 #
 # "YES"/GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
-set(ENABLE_CUDA YES)
+set(ENABLE_CUDA NO)
 
 # Enables the CUDA langauge and locates the NVCC compiler. 
 # Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
@@ -22,9 +22,9 @@ set(ENABLE_CUDA YES)
 # so the compiler knows the CUDA architecture being used is the SM_35
 if(ENABLE_CUDA)
         message("\n----Generating Makefile for Graphitti GPU version----")
-		enable_language(CUDA)
-		set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
-		add_compile_definitions(USE_GPU)
+        enable_language(CUDA)
+        set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
+        add_compile_definitions(USE_GPU)
 else()
         message("\n----Generating Makefile for Graphitti CPU version----")
 endif()
