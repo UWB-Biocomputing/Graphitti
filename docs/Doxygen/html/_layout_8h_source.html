@@ -72,86 +72,86 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <a href="_layout_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;log4cplus/loggingmacros.h&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_global_8h.html">Utils/Global.h</a>&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_i_all_vertices_8h.html">IAllVertices.h</a>&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">using namespace </span>std;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="class_layout.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_layout.html">Layout</a> {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;   <a class="code" href="class_layout.html">Layout</a>();</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;   <span class="keyword">virtual</span> ~<a class="code" href="class_layout.html">Layout</a>();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;   shared_ptr&lt;IAllVertices&gt; getVertices() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> setupLayout();</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> loadParameters();</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> printParameters() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> generateVertexTypeMap(<span class="keywordtype">int</span> numVertices);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> initStarterMap(<span class="keyword">const</span> <span class="keywordtype">int</span> numVertices);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;log4cplus/loggingmacros.h&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_global_8h.html">Utils/Global.h</a>&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_i_all_vertices_8h.html">IAllVertices.h</a>&quot;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">using namespace </span>std;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="class_layout.html">   29</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_layout.html">Layout</a> {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;   <a class="code" href="class_layout.html">Layout</a>();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;   <span class="keyword">virtual</span> ~<a class="code" href="class_layout.html">Layout</a>();</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;   shared_ptr&lt;IAllVertices&gt; getVertices() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> setupLayout();</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> loadParameters();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> printParameters() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> generateVertexTypeMap(<span class="keywordtype">int</span> numVertices);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> initStarterMap(<span class="keyword">const</span> <span class="keywordtype">int</span> numVertices);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;   synapseType <a class="code" href="_all_synapses_device_funcs__d_8cu.html#aaffe7d923f7dd87f9675a16c59816601">synType</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> srcVertex, <span class="keyword">const</span> <span class="keywordtype">int</span> destVertex);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="class_layout.html#a7473fabe75540e540409a377a603cf1c">   63</a></span>&#160;   <a class="code" href="class_vector_matrix.html">VectorMatrix</a> *<a class="code" href="class_layout.html#a7473fabe75540e540409a377a603cf1c">xloc_</a>;  </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="class_layout.html#a264eebecde031dbd353f22f4a40fffb2">   65</a></span>&#160;   <a class="code" href="class_vector_matrix.html">VectorMatrix</a> *<a class="code" href="class_layout.html#a264eebecde031dbd353f22f4a40fffb2">yloc_</a>;   </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="class_layout.html#a717dec41fd60d8e08da320509124bbbb">   67</a></span>&#160;   <a class="code" href="class_complete_matrix.html">CompleteMatrix</a> *<a class="code" href="class_layout.html#a717dec41fd60d8e08da320509124bbbb">dist2_</a>;  </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="class_layout.html#afa1584a4a61a852958eabcb399a87426">   69</a></span>&#160;   <a class="code" href="class_complete_matrix.html">CompleteMatrix</a> *<a class="code" href="class_layout.html#afa1584a4a61a852958eabcb399a87426">dist_</a>;    </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="class_layout.html#ae4d0ab47c52114585643692771f51613">   71</a></span>&#160;   vector&lt;int&gt; <a class="code" href="class_layout.html#ae4d0ab47c52114585643692771f51613">probedNeuronList_</a>;   </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="class_layout.html#ad2e8aa3d789e66a652e7c40e186a91ef">   73</a></span>&#160;   neuronType *<a class="code" href="class_layout.html#ad2e8aa3d789e66a652e7c40e186a91ef">vertexTypeMap_</a>;    </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="class_layout.html#aa3bd92b8e7790178dde51a7ddfdecb4a">   75</a></span>&#160;   <span class="keywordtype">bool</span> *<a class="code" href="class_layout.html#aa3bd92b8e7790178dde51a7ddfdecb4a">starterMap_</a>; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="class_layout.html#a20a3c994f93d3832077eadce9c482202">   77</a></span>&#160;   BGSIZE numEndogenouslyActiveNeurons_;    </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;   shared_ptr&lt;IAllVertices&gt; vertices_;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">   82</a></span>&#160;   vector&lt;int&gt; <a class="code" href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">endogenouslyActiveNeuronList_</a>;    </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">   84</a></span>&#160;   vector&lt;int&gt; <a class="code" href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">inhibitoryNeuronLayout_</a>;    </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;   log4cplus::Logger fileLogger_;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;   <span class="keywordtype">void</span> initVerticesLocs();</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;   <span class="keywordtype">bool</span> gridLayout_;    </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;   synapseType <a class="code" href="_all_synapses_device_funcs__d_8cu.html#aaffe7d923f7dd87f9675a16c59816601">synType</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> srcVertex, <span class="keyword">const</span> <span class="keywordtype">int</span> destVertex);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="class_layout.html#a7473fabe75540e540409a377a603cf1c">   64</a></span>&#160;   <a class="code" href="class_vector_matrix.html">VectorMatrix</a> *<a class="code" href="class_layout.html#a7473fabe75540e540409a377a603cf1c">xloc_</a>;  </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="class_layout.html#a264eebecde031dbd353f22f4a40fffb2">   66</a></span>&#160;   <a class="code" href="class_vector_matrix.html">VectorMatrix</a> *<a class="code" href="class_layout.html#a264eebecde031dbd353f22f4a40fffb2">yloc_</a>;   </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="class_layout.html#a717dec41fd60d8e08da320509124bbbb">   68</a></span>&#160;   <a class="code" href="class_complete_matrix.html">CompleteMatrix</a> *<a class="code" href="class_layout.html#a717dec41fd60d8e08da320509124bbbb">dist2_</a>;  </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="class_layout.html#afa1584a4a61a852958eabcb399a87426">   70</a></span>&#160;   <a class="code" href="class_complete_matrix.html">CompleteMatrix</a> *<a class="code" href="class_layout.html#afa1584a4a61a852958eabcb399a87426">dist_</a>;    </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="class_layout.html#ae4d0ab47c52114585643692771f51613">   72</a></span>&#160;   vector&lt;int&gt; <a class="code" href="class_layout.html#ae4d0ab47c52114585643692771f51613">probedNeuronList_</a>;   </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="class_layout.html#ad2e8aa3d789e66a652e7c40e186a91ef">   74</a></span>&#160;   neuronType *<a class="code" href="class_layout.html#ad2e8aa3d789e66a652e7c40e186a91ef">vertexTypeMap_</a>;    </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="class_layout.html#aa3bd92b8e7790178dde51a7ddfdecb4a">   76</a></span>&#160;   <span class="keywordtype">bool</span> *<a class="code" href="class_layout.html#aa3bd92b8e7790178dde51a7ddfdecb4a">starterMap_</a>; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="class_layout.html#a20a3c994f93d3832077eadce9c482202">   78</a></span>&#160;   BGSIZE numEndogenouslyActiveNeurons_;    </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;   shared_ptr&lt;IAllVertices&gt; vertices_;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">   83</a></span>&#160;   vector&lt;int&gt; <a class="code" href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">endogenouslyActiveNeuronList_</a>;    </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">   85</a></span>&#160;   vector&lt;int&gt; <a class="code" href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">inhibitoryNeuronLayout_</a>;    </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;   log4cplus::Logger fileLogger_;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;   <span class="keywordtype">void</span> initVerticesLocs();</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;   <span class="keywordtype">bool</span> gridLayout_;    </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;};</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
 <div class="ttc" id="a_all_synapses_device_funcs__d_8cu_html_aaffe7d923f7dd87f9675a16c59816601"><div class="ttname"><a href="_all_synapses_device_funcs__d_8cu.html#aaffe7d923f7dd87f9675a16c59816601">synType</a></div><div class="ttdeci">__device__ synapseType synType(neuronType *neuronTypeMap_d, const int srcVertex, const int destVertex)</div><div class="ttdef"><b>Definition:</b> <a href="_all_synapses_device_funcs__d_8cu_source.html#l00840">AllSynapsesDeviceFuncs_d.cu:840</a></div></div>
-<div class="ttc" id="a_global_8h_html"><div class="ttname"><a href="_global_8h.html">Global.h</a></div><div class="ttdoc">Header file for global.h.</div></div>
+<div class="ttc" id="a_global_8h_html"><div class="ttname"><a href="_global_8h.html">Global.h</a></div><div class="ttdoc">Globally available functions/variables and default parameter values.</div></div>
 <div class="ttc" id="a_i_all_vertices_8h_html"><div class="ttname"><a href="_i_all_vertices_8h.html">IAllVertices.h</a></div><div class="ttdoc">An interface for vertices classes.</div></div>
 <div class="ttc" id="aclass_complete_matrix_html"><div class="ttname"><a href="class_complete_matrix.html">CompleteMatrix</a></div><div class="ttdoc">An efficient implementation of a dynamically-allocated 2D array.</div><div class="ttdef"><b>Definition:</b> <a href="_complete_matrix_8h_source.html#l00036">CompleteMatrix.h:37</a></div></div>
-<div class="ttc" id="aclass_layout_html"><div class="ttname"><a href="class_layout.html">Layout</a></div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00028">Layout.h:28</a></div></div>
-<div class="ttc" id="aclass_layout_html_a264eebecde031dbd353f22f4a40fffb2"><div class="ttname"><a href="class_layout.html#a264eebecde031dbd353f22f4a40fffb2">Layout::yloc_</a></div><div class="ttdeci">VectorMatrix * yloc_</div><div class="ttdoc">Store neuron i's y location.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00065">Layout.h:65</a></div></div>
-<div class="ttc" id="aclass_layout_html_a717dec41fd60d8e08da320509124bbbb"><div class="ttname"><a href="class_layout.html#a717dec41fd60d8e08da320509124bbbb">Layout::dist2_</a></div><div class="ttdeci">CompleteMatrix * dist2_</div><div class="ttdoc">Inter-neuron distance squared.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00067">Layout.h:67</a></div></div>
-<div class="ttc" id="aclass_layout_html_a7473fabe75540e540409a377a603cf1c"><div class="ttname"><a href="class_layout.html#a7473fabe75540e540409a377a603cf1c">Layout::xloc_</a></div><div class="ttdeci">VectorMatrix * xloc_</div><div class="ttdoc">Store neuron i's x location.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00063">Layout.h:63</a></div></div>
-<div class="ttc" id="aclass_layout_html_a7e15da4c25c7e208c8f709df0c3b6065"><div class="ttname"><a href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">Layout::inhibitoryNeuronLayout_</a></div><div class="ttdeci">vector&lt; int &gt; inhibitoryNeuronLayout_</div><div class="ttdoc">Inhibitory neurons list.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00084">Layout.h:84</a></div></div>
-<div class="ttc" id="aclass_layout_html_aa3bd92b8e7790178dde51a7ddfdecb4a"><div class="ttname"><a href="class_layout.html#aa3bd92b8e7790178dde51a7ddfdecb4a">Layout::starterMap_</a></div><div class="ttdeci">bool * starterMap_</div><div class="ttdoc">The starter existence map (T/F).</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00075">Layout.h:75</a></div></div>
-<div class="ttc" id="aclass_layout_html_aaacb14aa10e95d4906bd033d327a32db"><div class="ttname"><a href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">Layout::endogenouslyActiveNeuronList_</a></div><div class="ttdeci">vector&lt; int &gt; endogenouslyActiveNeuronList_</div><div class="ttdoc">Endogenously active neurons list.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00082">Layout.h:82</a></div></div>
-<div class="ttc" id="aclass_layout_html_ad2e8aa3d789e66a652e7c40e186a91ef"><div class="ttname"><a href="class_layout.html#ad2e8aa3d789e66a652e7c40e186a91ef">Layout::vertexTypeMap_</a></div><div class="ttdeci">neuronType * vertexTypeMap_</div><div class="ttdoc">The vertex type map (INH, EXC).</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00073">Layout.h:73</a></div></div>
-<div class="ttc" id="aclass_layout_html_ae4d0ab47c52114585643692771f51613"><div class="ttname"><a href="class_layout.html#ae4d0ab47c52114585643692771f51613">Layout::probedNeuronList_</a></div><div class="ttdeci">vector&lt; int &gt; probedNeuronList_</div><div class="ttdoc">Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00071">Layout.h:71</a></div></div>
-<div class="ttc" id="aclass_layout_html_afa1584a4a61a852958eabcb399a87426"><div class="ttname"><a href="class_layout.html#afa1584a4a61a852958eabcb399a87426">Layout::dist_</a></div><div class="ttdeci">CompleteMatrix * dist_</div><div class="ttdoc">The true inter-neuron distance.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00069">Layout.h:69</a></div></div>
+<div class="ttc" id="aclass_layout_html"><div class="ttname"><a href="class_layout.html">Layout</a></div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00029">Layout.h:29</a></div></div>
+<div class="ttc" id="aclass_layout_html_a264eebecde031dbd353f22f4a40fffb2"><div class="ttname"><a href="class_layout.html#a264eebecde031dbd353f22f4a40fffb2">Layout::yloc_</a></div><div class="ttdeci">VectorMatrix * yloc_</div><div class="ttdoc">Store neuron i's y location.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00066">Layout.h:66</a></div></div>
+<div class="ttc" id="aclass_layout_html_a717dec41fd60d8e08da320509124bbbb"><div class="ttname"><a href="class_layout.html#a717dec41fd60d8e08da320509124bbbb">Layout::dist2_</a></div><div class="ttdeci">CompleteMatrix * dist2_</div><div class="ttdoc">Inter-neuron distance squared.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00068">Layout.h:68</a></div></div>
+<div class="ttc" id="aclass_layout_html_a7473fabe75540e540409a377a603cf1c"><div class="ttname"><a href="class_layout.html#a7473fabe75540e540409a377a603cf1c">Layout::xloc_</a></div><div class="ttdeci">VectorMatrix * xloc_</div><div class="ttdoc">Store neuron i's x location.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00064">Layout.h:64</a></div></div>
+<div class="ttc" id="aclass_layout_html_a7e15da4c25c7e208c8f709df0c3b6065"><div class="ttname"><a href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">Layout::inhibitoryNeuronLayout_</a></div><div class="ttdeci">vector&lt; int &gt; inhibitoryNeuronLayout_</div><div class="ttdoc">Inhibitory neurons list.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00085">Layout.h:85</a></div></div>
+<div class="ttc" id="aclass_layout_html_aa3bd92b8e7790178dde51a7ddfdecb4a"><div class="ttname"><a href="class_layout.html#aa3bd92b8e7790178dde51a7ddfdecb4a">Layout::starterMap_</a></div><div class="ttdeci">bool * starterMap_</div><div class="ttdoc">The starter existence map (T/F).</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00076">Layout.h:76</a></div></div>
+<div class="ttc" id="aclass_layout_html_aaacb14aa10e95d4906bd033d327a32db"><div class="ttname"><a href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">Layout::endogenouslyActiveNeuronList_</a></div><div class="ttdeci">vector&lt; int &gt; endogenouslyActiveNeuronList_</div><div class="ttdoc">Endogenously active neurons list.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00083">Layout.h:83</a></div></div>
+<div class="ttc" id="aclass_layout_html_ad2e8aa3d789e66a652e7c40e186a91ef"><div class="ttname"><a href="class_layout.html#ad2e8aa3d789e66a652e7c40e186a91ef">Layout::vertexTypeMap_</a></div><div class="ttdeci">neuronType * vertexTypeMap_</div><div class="ttdoc">The vertex type map (INH, EXC).</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00074">Layout.h:74</a></div></div>
+<div class="ttc" id="aclass_layout_html_ae4d0ab47c52114585643692771f51613"><div class="ttname"><a href="class_layout.html#ae4d0ab47c52114585643692771f51613">Layout::probedNeuronList_</a></div><div class="ttdeci">vector&lt; int &gt; probedNeuronList_</div><div class="ttdoc">Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00072">Layout.h:72</a></div></div>
+<div class="ttc" id="aclass_layout_html_afa1584a4a61a852958eabcb399a87426"><div class="ttname"><a href="class_layout.html#afa1584a4a61a852958eabcb399a87426">Layout::dist_</a></div><div class="ttdeci">CompleteMatrix * dist_</div><div class="ttdoc">The true inter-neuron distance.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00070">Layout.h:70</a></div></div>
 <div class="ttc" id="aclass_vector_matrix_html"><div class="ttname"><a href="class_vector_matrix.html">VectorMatrix</a></div><div class="ttdoc">An efficient implementation of a dynamically-allocated 1D array.</div><div class="ttdef"><b>Definition:</b> <a href="_vector_matrix_8h_source.html#l00054">VectorMatrix.h:55</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

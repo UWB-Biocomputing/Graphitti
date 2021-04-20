@@ -6,8 +6,8 @@
 <area shape="rect" id="node3" title=" " alt="" coords="881,169,928,196"/>
 <area shape="rect" id="node4" title=" " alt="" coords="910,244,979,271"/>
 <area shape="rect" id="node5" title=" " alt="" coords="656,543,711,569"/>
-<area shape="rect" id="node6" href="$_global_8h.html" title="Header file for global.h." alt="" coords="1004,244,1075,271"/>
-<area shape="rect" id="node29" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks Implementation: The Layout class ma..." alt="" coords="1177,169,1249,196"/>
+<area shape="rect" id="node6" href="$_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="1004,244,1075,271"/>
+<area shape="rect" id="node29" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="1177,169,1249,196"/>
 <area shape="rect" id="node7" title=" " alt="" coords="1005,319,1074,345"/>
 <area shape="rect" id="node8" title=" " alt="" coords="915,319,980,345"/>
 <area shape="rect" id="node9" title=" " alt="" coords="1005,468,1063,495"/>
@@ -24,7 +24,7 @@
 <area shape="rect" id="node19" title=" " alt="" coords="339,543,398,569"/>
 <area shape="rect" id="node20" title=" " alt="" coords="607,468,645,495"/>
 <area shape="rect" id="node21" title=" " alt="" coords="457,468,531,495"/>
-<area shape="rect" id="node23" href="$_mersenne_twister_8h.html" title="This file has been modified by the UW Bothell BrainGrid group, mostly to reorganize it and make it lo..." alt="" coords="147,468,281,495"/>
+<area shape="rect" id="node23" href="$_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="147,468,281,495"/>
 <area shape="rect" id="node24" title=" " alt="" coords="1291,543,1363,569"/>
 <area shape="rect" id="node25" title=" " alt="" coords="255,543,315,569"/>
 <area shape="rect" id="node26" title=" " alt="" coords="5,543,63,569"/>

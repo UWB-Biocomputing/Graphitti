@@ -1,5 +1,5 @@
 <map id="Simulator/Utils/Global.h" name="Simulator/Utils/Global.h">
-<area shape="rect" id="node1" title="Header file for global.h." alt="" coords="439,5,599,32"/>
+<area shape="rect" id="node1" title="Globally available functions/variables and default parameter values." alt="" coords="439,5,599,32"/>
 <area shape="rect" id="node2" title=" " alt="" coords="271,80,341,107"/>
 <area shape="rect" id="node3" title=" " alt="" coords="365,80,431,107"/>
 <area shape="rect" id="node4" title=" " alt="" coords="423,229,482,256"/>
@@ -17,7 +17,7 @@
 <area shape="rect" id="node15" title=" " alt="" coords="435,304,494,331"/>
 <area shape="rect" id="node16" title=" " alt="" coords="608,229,647,256"/>
 <area shape="rect" id="node17" title=" " alt="" coords="671,229,746,256"/>
-<area shape="rect" id="node19" href="$_mersenne_twister_8h.html" title="This file has been modified by the UW Bothell BrainGrid group, mostly to reorganize it and make it lo..." alt="" coords="215,229,349,256"/>
+<area shape="rect" id="node19" href="$_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="215,229,349,256"/>
 <area shape="rect" id="node20" title=" " alt="" coords="339,304,411,331"/>
 <area shape="rect" id="node21" title=" " alt="" coords="5,304,65,331"/>
 <area shape="rect" id="node22" title=" " alt="" coords="89,304,147,331"/>

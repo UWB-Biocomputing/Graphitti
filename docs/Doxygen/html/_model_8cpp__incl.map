@@ -10,11 +10,11 @@
 <area shape="rect" id="node48" href="$_recorder_factory_8h.html" title="A factory class for creating Recorder objects." alt="" coords="1779,379,1909,405"/>
 <area shape="rect" id="node3" title=" " alt="" coords="1468,603,1537,629"/>
 <area shape="rect" id="node4" title=" " alt="" coords="313,603,489,629"/>
-<area shape="rect" id="node5" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks Implementation: The Layout class ma..." alt="" coords="1277,528,1349,555"/>
+<area shape="rect" id="node5" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="1277,528,1349,555"/>
 <area shape="rect" id="node30" href="$_i_all_vertices_8h.html" title="An interface for vertices classes." alt="" coords="514,603,614,629"/>
 <area shape="rect" id="node6" title=" " alt="" coords="1040,901,1112,928"/>
 <area shape="rect" id="node7" title=" " alt="" coords="1765,827,1824,853"/>
-<area shape="rect" id="node8" href="$_global_8h.html" title="Header file for global.h." alt="" coords="1088,603,1189,629"/>
+<area shape="rect" id="node8" href="$_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="1088,603,1189,629"/>
 <area shape="rect" id="node9" title=" " alt="" coords="1165,677,1235,704"/>
 <area shape="rect" id="node10" title=" " alt="" coords="1259,677,1325,704"/>
 <area shape="rect" id="node11" title=" " alt="" coords="911,677,990,704"/>
@@ -31,7 +31,7 @@
 <area shape="rect" id="node21" title=" " alt="" coords="957,901,1016,928"/>
 <area shape="rect" id="node22" title=" " alt="" coords="1397,827,1435,853"/>
 <area shape="rect" id="node23" title=" " alt="" coords="1247,827,1321,853"/>
-<area shape="rect" id="node25" href="$_mersenne_twister_8h.html" title="This file has been modified by the UW Bothell BrainGrid group, mostly to reorganize it and make it lo..." alt="" coords="753,827,887,853"/>
+<area shape="rect" id="node25" href="$_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="753,827,887,853"/>
 <area shape="rect" id="node26" title=" " alt="" coords="791,901,851,928"/>
 <area shape="rect" id="node27" title=" " alt="" coords="875,901,933,928"/>
 <area shape="rect" id="node28" title=" " alt="" coords="623,901,678,928"/>

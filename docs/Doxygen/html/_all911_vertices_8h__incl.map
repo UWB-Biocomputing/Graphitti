@@ -1,6 +1,6 @@
 <map id="Simulator/Vertices/NG911/All911Vertices.h" name="Simulator/Vertices/NG911/All911Vertices.h">
 <area shape="rect" id="node1" title="A container of all 911 vertex data." alt="" coords="447,5,614,47"/>
-<area shape="rect" id="node2" href="$_global_8h.html" title="Header file for global.h." alt="" coords="459,95,530,121"/>
+<area shape="rect" id="node2" href="$_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="459,95,530,121"/>
 <area shape="rect" id="node26" href="$_all_vertices_8h.html" title="A container of the base class of all vertex data." alt="" coords="816,169,912,196"/>
 <area shape="rect" id="node3" title=" " alt="" coords="521,169,590,196"/>
 <area shape="rect" id="node4" title=" " alt="" coords="615,169,680,196"/>
@@ -19,7 +19,7 @@
 <area shape="rect" id="node16" title=" " alt="" coords="366,393,425,420"/>
 <area shape="rect" id="node17" title=" " alt="" coords="448,319,487,345"/>
 <area shape="rect" id="node18" title=" " alt="" coords="298,319,373,345"/>
-<area shape="rect" id="node20" href="$_mersenne_twister_8h.html" title="This file has been modified by the UW Bothell BrainGrid group, mostly to reorganize it and make it lo..." alt="" coords="562,319,696,345"/>
+<area shape="rect" id="node20" href="$_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="562,319,696,345"/>
 <area shape="rect" id="node21" title=" " alt="" coords="988,393,1060,420"/>
 <area shape="rect" id="node22" title=" " alt="" coords="450,393,510,420"/>
 <area shape="rect" id="node23" title=" " alt="" coords="534,393,591,420"/>

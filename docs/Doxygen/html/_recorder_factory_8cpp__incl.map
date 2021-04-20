@@ -6,7 +6,7 @@
 <area shape="rect" id="node3" title=" " alt="" coords="5,244,52,271"/>
 <area shape="rect" id="node4" title=" " alt="" coords="987,543,1057,569"/>
 <area shape="rect" id="node5" title=" " alt="" coords="167,841,221,868"/>
-<area shape="rect" id="node6" href="$_global_8h.html" title="Header file for global.h." alt="" coords="731,543,801,569"/>
+<area shape="rect" id="node6" href="$_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="731,543,801,569"/>
 <area shape="rect" id="node29" href="$_i_recorder_8h.html" title="An interface for recording spikes history." alt="" coords="1165,244,1255,271"/>
 <area shape="rect" id="node7" title=" " alt="" coords="693,617,762,644"/>
 <area shape="rect" id="node8" title=" " alt="" coords="837,617,903,644"/>
@@ -24,7 +24,7 @@
 <area shape="rect" id="node19" title=" " alt="" coords="510,841,569,868"/>
 <area shape="rect" id="node20" title=" " alt="" coords="573,767,612,793"/>
 <area shape="rect" id="node21" title=" " alt="" coords="423,767,498,793"/>
-<area shape="rect" id="node23" href="$_mersenne_twister_8h.html" title="This file has been modified by the UW Bothell BrainGrid group, mostly to reorganize it and make it lo..." alt="" coords="687,767,821,793"/>
+<area shape="rect" id="node23" href="$_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="687,767,821,793"/>
 <area shape="rect" id="node24" title=" " alt="" coords="1207,841,1279,868"/>
 <area shape="rect" id="node25" title=" " alt="" coords="593,841,653,868"/>
 <area shape="rect" id="node26" title=" " alt="" coords="677,841,735,868"/>
@@ -34,7 +34,7 @@
 <area shape="rect" id="node31" href="$_model_8h.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="1241,393,1309,420"/>
 <area shape="rect" id="node33" href="$_i_all_vertices_8h.html" title="An interface for vertices classes." alt="" coords="1281,543,1381,569"/>
 <area shape="rect" id="node35" href="$_simulator_8h.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="970,319,1090,345"/>
-<area shape="rect" id="node32" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks Implementation: The Layout class ma..." alt="" coords="1214,468,1286,495"/>
+<area shape="rect" id="node32" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="1214,468,1286,495"/>
 <area shape="rect" id="node34" href="$_edge_index_map_8h.html" title="A structure maintains outgoing and active synapses list (forward map)." alt="" coords="1029,692,1181,719"/>
 <area shape="rect" id="node36" href="$_timer_8h.html" title="Timer class, from CSS432." alt="" coords="1014,393,1081,420"/>
 <area shape="rect" id="node37" title=" " alt="" coords="1006,468,1089,495"/>

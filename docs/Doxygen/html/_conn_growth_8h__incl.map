@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" title=" " alt="" coords="247,991,319,1017"/>
 <area shape="rect" id="node3" title=" " alt="" coords="1475,916,1533,943"/>
 <area shape="rect" id="node4" href="$_connections_8h.html" title="The base class of all connections classes." alt="" coords="893,95,1000,121"/>
-<area shape="rect" id="node11" href="$_global_8h.html" title="Header file for global.h." alt="" coords="1091,692,1162,719"/>
+<area shape="rect" id="node11" href="$_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="1091,692,1162,719"/>
 <area shape="rect" id="node32" href="$_simulator_8h.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="737,468,825,495"/>
 <area shape="rect" id="node42" title=" " alt="" coords="1363,393,1522,420"/>
 <area shape="rect" id="node5" title=" " alt="" coords="1341,692,1411,719"/>
@@ -11,7 +11,7 @@
 <area shape="rect" id="node7" href="$_i_all_vertices_8h.html" title="An interface for vertices classes." alt="" coords="182,692,282,719"/>
 <area shape="rect" id="node8" href="$_edge_index_map_8h.html" title="A structure maintains outgoing and active synapses list (forward map)." alt="" coords="43,767,195,793"/>
 <area shape="rect" id="node10" href="$_i_all_edges_8h.html" title="An interface for edge classes." alt="" coords="737,393,826,420"/>
-<area shape="rect" id="node34" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks Implementation: The Layout class ma..." alt="" coords="896,617,968,644"/>
+<area shape="rect" id="node34" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="896,617,968,644"/>
 <area shape="rect" id="node35" href="$_i_recorder_8h.html" title="An interface for recording spikes history." alt="" coords="781,617,872,644"/>
 <area shape="rect" id="node38" href="$_all_spiking_neurons_8h.html" title="A container of all spiking neuron data." alt="" coords="931,169,1071,196"/>
 <area shape="rect" id="node40" href="$_all_spiking_synapses_8h.html" title="A container of all spiking synapse data." alt="" coords="1037,244,1187,271"/>
@@ -31,7 +31,7 @@
 <area shape="rect" id="node23" title=" " alt="" coords="837,991,896,1017"/>
 <area shape="rect" id="node24" title=" " alt="" coords="883,916,922,943"/>
 <area shape="rect" id="node25" title=" " alt="" coords="947,916,1021,943"/>
-<area shape="rect" id="node27" href="$_mersenne_twister_8h.html" title="This file has been modified by the UW Bothell BrainGrid group, mostly to reorganize it and make it lo..." alt="" coords="573,916,707,943"/>
+<area shape="rect" id="node27" href="$_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="573,916,707,943"/>
 <area shape="rect" id="node28" title=" " alt="" coords="753,991,813,1017"/>
 <area shape="rect" id="node29" title=" " alt="" coords="503,991,561,1017"/>
 <area shape="rect" id="node30" title=" " alt="" coords="585,991,639,1017"/>

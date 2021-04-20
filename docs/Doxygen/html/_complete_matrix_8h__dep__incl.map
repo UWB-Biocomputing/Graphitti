@@ -1,11 +1,11 @@
 <map id="Simulator/Utils/Matrix/CompleteMatrix.h" name="Simulator/Utils/Matrix/CompleteMatrix.h">
 <area shape="rect" id="node1" title="An efficient implementation of a dynamically&#45;allocated 2D array." alt="" coords="246,5,394,47"/>
-<area shape="rect" id="node2" href="$_conn_growth_8cpp.html" title="&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;— CONNECTIONS STRUCT &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;— Below all of the resources for the various connections are ..." alt="" coords="309,899,472,940"/>
+<area shape="rect" id="node2" href="$_conn_growth_8cpp.html" title="The model of the activity dependent neurite outgrowth." alt="" coords="309,899,472,940"/>
 <area shape="rect" id="node3" href="$_complete_matrix_8cpp.html" title="An efficient implementation of a dynamically&#45;allocated 2D array." alt="" coords="215,273,363,315"/>
 <area shape="rect" id="node4" href="$_matrix_factory_8h.html" title="Deserializes Matrices from XML." alt="" coords="134,184,282,225"/>
 <area shape="rect" id="node6" href="$_vector_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 1D array." alt="" coords="358,95,506,136"/>
 <area shape="rect" id="node5" href="$_matrix_factory_8cpp.html" title="Deserializes Matrices from XML." alt="" coords="43,273,191,315"/>
-<area shape="rect" id="node7" href="$_global_8h.html" title="Header file for global.h." alt="" coords="2097,191,2257,218"/>
+<area shape="rect" id="node7" href="$_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="2097,191,2257,218"/>
 <area shape="rect" id="node47" href="$_vector_matrix_8cpp.html" title="An efficient implementation of a dynamically&#45;allocated 1D array." alt="" coords="3674,273,3822,315"/>
 <area shape="rect" id="node50" href="$_sparse_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 2D sparse array." alt="" coords="2282,184,2430,225"/>
 <area shape="rect" id="node8" href="$_connections_factory_8h.html" title="A factory class for creating Connections objects." alt="" coords="2669,809,2824,851"/>
@@ -24,7 +24,7 @@
 <area shape="rect" id="node39" href="$_i_recorder_8h.html" title="An interface for recording spikes history." alt="" coords="2475,363,2616,404"/>
 <area shape="rect" id="node40" href="$_recorder_factory_8h.html" title="A factory class for creating Recorder objects." alt="" coords="2693,452,2835,493"/>
 <area shape="rect" id="node41" href="$_i_s_input_8h.html" title="An interface for stimulus input classes." alt="" coords="2251,363,2399,404"/>
-<area shape="rect" id="node43" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks Implementation: The Layout class ma..." alt="" coords="2755,281,2936,307"/>
+<area shape="rect" id="node43" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="2755,281,2936,307"/>
 <area shape="rect" id="node44" href="$_layout_factory_8h.html" title="A factory class for creating Vertices objects." alt="" coords="3061,363,3232,404"/>
 <area shape="rect" id="node45" href="$_global_8cpp.html" title="Globally available functions/variables and default parameter values." alt="" coords="3113,281,3287,307"/>
 <area shape="rect" id="node46" href="$_sparse_matrix_8cpp.html" title="An efficient implementation of a dynamically&#45;allocated 2D sparse array. Self&#45;allocating and de&#45;alloca..." alt="" coords="3502,273,3650,315"/>
@@ -38,14 +38,14 @@
 <area shape="rect" id="node17" href="$_xml_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="1035,899,1176,940"/>
 <area shape="rect" id="node20" href="$_c_p_u_spiking_model_8cpp.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="1291,363,1477,404"/>
 <area shape="rect" id="node21" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="2519,549,2713,575"/>
-<area shape="rect" id="node36" href="$_all_d_s_synapses__d_8cu.html" title=" " alt="" coords="1552,363,1709,404"/>
-<area shape="rect" id="node37" href="$_all_dynamic_s_t_d_p_synapses__d_8cu.html" title=" " alt="" coords="895,363,1113,404"/>
-<area shape="rect" id="node38" href="$_layout_8cpp.html" title=" " alt="" coords="2640,370,2835,397"/>
-<area shape="rect" id="node42" href="$_all_vertices_8cpp.html" title=" " alt="" coords="1138,363,1267,404"/>
-<area shape="rect" id="node23" href="$_connections_8cpp.html" title="Methods for creating and updating connections &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;— CONNECTIONS STRUCT &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;— Below all of ..." alt="" coords="1945,809,2100,851"/>
-<area shape="rect" id="node24" href="$_all_edges_8cpp.html" title=" " alt="" coords="1031,549,1230,575"/>
+<area shape="rect" id="node36" href="$_all_d_s_synapses__d_8cu.html" title="A container of all DS synapse data." alt="" coords="1552,363,1709,404"/>
+<area shape="rect" id="node37" href="$_all_dynamic_s_t_d_p_synapses__d_8cu.html" title="A container of all dynamic STDP synapse data." alt="" coords="895,363,1113,404"/>
+<area shape="rect" id="node38" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="2640,370,2835,397"/>
+<area shape="rect" id="node42" href="$_all_vertices_8cpp.html" title="A container of the base class of all vertex data." alt="" coords="1138,363,1267,404"/>
+<area shape="rect" id="node23" href="$_connections_8cpp.html" title="Methods for creating and updating connections." alt="" coords="1945,809,2100,851"/>
+<area shape="rect" id="node24" href="$_all_edges_8cpp.html" title="A container of all edge data." alt="" coords="1031,549,1230,575"/>
 <area shape="rect" id="node25" href="$_all_spiking_synapses_8h.html" title="A container of all spiking synapse data." alt="" coords="1487,541,1644,583"/>
-<area shape="rect" id="node32" href="$_all_synapses_device_funcs__d_8cu.html" title=" " alt="" coords="1255,541,1463,583"/>
+<area shape="rect" id="node32" href="$_all_synapses_device_funcs__d_8cu.html" title="Device functions for synapse data." alt="" coords="1255,541,1463,583"/>
 <area shape="rect" id="node33" href="$_all911_edges_8h.html" title="A container of all 911 edge data." alt="" coords="844,541,1007,583"/>
 <area shape="rect" id="node26" href="$_connections_8h.html" title="The base class of all connections classes." alt="" coords="2175,720,2329,761"/>
 <area shape="rect" id="node27" href="$_edges_factory_8cpp.html" title="A factory class for creating Edges objects." alt="" coords="1415,638,1643,665"/>

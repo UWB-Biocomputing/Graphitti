@@ -1,6 +1,6 @@
 <map id="Simulator/Edges/IAllEdges.h" name="Simulator/Edges/IAllEdges.h">
 <area shape="rect" id="node1" title="An interface for edge classes." alt="" coords="555,5,744,32"/>
-<area shape="rect" id="node2" href="$_global_8h.html" title="Header file for global.h." alt="" coords="593,304,663,331"/>
+<area shape="rect" id="node2" href="$_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="593,304,663,331"/>
 <area shape="rect" id="node26" href="$_simulator_8h.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="515,80,603,107"/>
 <area shape="rect" id="node32" href="$_edge_index_map_8h.html" title="A structure maintains outgoing and active synapses list (forward map)." alt="" coords="1352,379,1504,405"/>
 <area shape="rect" id="node3" title=" " alt="" coords="501,379,571,405"/>
@@ -20,7 +20,7 @@
 <area shape="rect" id="node16" title=" " alt="" coords="792,603,851,629"/>
 <area shape="rect" id="node17" title=" " alt="" coords="843,528,882,555"/>
 <area shape="rect" id="node18" title=" " alt="" coords="907,528,981,555"/>
-<area shape="rect" id="node20" href="$_mersenne_twister_8h.html" title="This file has been modified by the UW Bothell BrainGrid group, mostly to reorganize it and make it lo..." alt="" coords="584,528,717,555"/>
+<area shape="rect" id="node20" href="$_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="584,528,717,555"/>
 <area shape="rect" id="node21" title=" " alt="" coords="361,603,433,629"/>
 <area shape="rect" id="node22" title=" " alt="" coords="458,603,518,629"/>
 <area shape="rect" id="node23" title=" " alt="" coords="542,603,599,629"/>
@@ -30,7 +30,7 @@
 <area shape="rect" id="node28" title=" " alt="" coords="99,304,275,331"/>
 <area shape="rect" id="node29" href="$_model_8h.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="383,155,483,181"/>
 <area shape="rect" id="node34" href="$_timer_8h.html" title="Timer class, from CSS432." alt="" coords="769,155,836,181"/>
-<area shape="rect" id="node30" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks Implementation: The Layout class ma..." alt="" coords="324,229,396,256"/>
+<area shape="rect" id="node30" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="324,229,396,256"/>
 <area shape="rect" id="node31" href="$_i_all_vertices_8h.html" title="An interface for vertices classes." alt="" coords="401,304,501,331"/>
 <area shape="rect" id="node33" href="$_i_recorder_8h.html" title="An interface for recording spikes history." alt="" coords="471,229,561,256"/>
 <area shape="rect" id="node35" title=" " alt="" coords="761,229,844,256"/>

@@ -1,14 +1,14 @@
 <map id="Simulator/Layouts/Neuro/FixedLayout.cpp" name="Simulator/Layouts/Neuro/FixedLayout.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="1077,5,1244,47"/>
+<area shape="rect" id="node1" title="The Layout class defines the layout of vertices in neural networks." alt="" coords="1077,5,1244,47"/>
 <area shape="rect" id="node2" href="$_fixed_layout_8h.html" title="The Layout class defines the layout of vertices in neural networks." alt="" coords="1019,95,1123,121"/>
-<area shape="rect" id="node32" href="$_parse_param_error_8h.html" title="/" alt="" coords="1234,468,1367,495"/>
-<area shape="rect" id="node33" href="$_util_8h.html" title="/" alt="" coords="1133,169,1186,196"/>
-<area shape="rect" id="node3" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks Implementation: The Layout class ma..." alt="" coords="1035,169,1107,196"/>
+<area shape="rect" id="node32" href="$_parse_param_error_8h.html" title="Handles parameter error messaging." alt="" coords="1234,468,1367,495"/>
+<area shape="rect" id="node33" href="$_util_8h.html" title="Helper function to parse integers in fixed layout." alt="" coords="1133,169,1186,196"/>
+<area shape="rect" id="node3" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="1035,169,1107,196"/>
 <area shape="rect" id="node4" title=" " alt="" coords="1317,543,1389,569"/>
 <area shape="rect" id="node5" title=" " alt="" coords="783,244,853,271"/>
 <area shape="rect" id="node6" title=" " alt="" coords="975,468,1034,495"/>
 <area shape="rect" id="node7" title=" " alt="" coords="877,244,1053,271"/>
-<area shape="rect" id="node8" href="$_global_8h.html" title="Header file for global.h." alt="" coords="635,244,737,271"/>
+<area shape="rect" id="node8" href="$_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="635,244,737,271"/>
 <area shape="rect" id="node30" href="$_i_all_vertices_8h.html" title="An interface for vertices classes." alt="" coords="1179,393,1279,420"/>
 <area shape="rect" id="node9" title=" " alt="" coords="535,319,605,345"/>
 <area shape="rect" id="node10" title=" " alt="" coords="629,319,695,345"/>
@@ -26,7 +26,7 @@
 <area shape="rect" id="node21" title=" " alt="" coords="339,543,398,569"/>
 <area shape="rect" id="node22" title=" " alt="" coords="811,468,849,495"/>
 <area shape="rect" id="node23" title=" " alt="" coords="711,468,786,495"/>
-<area shape="rect" id="node25" href="$_mersenne_twister_8h.html" title="This file has been modified by the UW Bothell BrainGrid group, mostly to reorganize it and make it lo..." alt="" coords="169,468,302,495"/>
+<area shape="rect" id="node25" href="$_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="169,468,302,495"/>
 <area shape="rect" id="node26" title=" " alt="" coords="95,543,155,569"/>
 <area shape="rect" id="node27" title=" " alt="" coords="179,543,236,569"/>
 <area shape="rect" id="node28" title=" " alt="" coords="260,543,315,569"/>

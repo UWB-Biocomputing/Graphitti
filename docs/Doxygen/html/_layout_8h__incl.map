@@ -1,10 +1,10 @@
 <map id="Simulator/Layouts/Layout.h" name="Simulator/Layouts/Layout.h">
-<area shape="rect" id="node1" title="The Layout class defines the layout of neurons in neural networks Implementation: The Layout class ma..." alt="" coords="122,5,303,32"/>
+<area shape="rect" id="node1" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="122,5,303,32"/>
 <area shape="rect" id="node2" title=" " alt="" coords="129,379,201,405"/>
 <area shape="rect" id="node3" title=" " alt="" coords="43,80,113,107"/>
 <area shape="rect" id="node4" title=" " alt="" coords="422,304,481,331"/>
 <area shape="rect" id="node5" title=" " alt="" coords="187,80,363,107"/>
-<area shape="rect" id="node6" href="$_global_8h.html" title="Header file for global.h." alt="" coords="601,80,702,107"/>
+<area shape="rect" id="node6" href="$_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="601,80,702,107"/>
 <area shape="rect" id="node28" href="$_i_all_vertices_8h.html" title="An interface for vertices classes." alt="" coords="115,229,215,256"/>
 <area shape="rect" id="node7" title=" " alt="" coords="489,155,558,181"/>
 <area shape="rect" id="node8" title=" " alt="" coords="583,155,648,181"/>
@@ -22,7 +22,7 @@
 <area shape="rect" id="node19" title=" " alt="" coords="787,379,846,405"/>
 <area shape="rect" id="node20" title=" " alt="" coords="937,304,976,331"/>
 <area shape="rect" id="node21" title=" " alt="" coords="838,304,913,331"/>
-<area shape="rect" id="node23" href="$_mersenne_twister_8h.html" title="This file has been modified by the UW Bothell BrainGrid group, mostly to reorganize it and make it lo..." alt="" coords="579,304,713,331"/>
+<area shape="rect" id="node23" href="$_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="579,304,713,331"/>
 <area shape="rect" id="node24" title=" " alt="" coords="453,379,513,405"/>
 <area shape="rect" id="node25" title=" " alt="" coords="537,379,595,405"/>
 <area shape="rect" id="node26" title=" " alt="" coords="619,379,673,405"/>

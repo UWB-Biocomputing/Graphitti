@@ -2,7 +2,7 @@
 <area shape="rect" id="node1" title="An efficient implementation of a dynamically&#45;allocated 1D array." alt="" coords="265,5,413,47"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,393,77,420"/>
 <area shape="rect" id="node3" title=" " alt="" coords="192,169,261,196"/>
-<area shape="rect" id="node4" href="$_global_8h.html" title="Header file for global.h." alt="" coords="403,95,474,121"/>
+<area shape="rect" id="node4" href="$_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="403,95,474,121"/>
 <area shape="rect" id="node10" href="$_vector_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 1D array." alt="" coords="731,169,909,196"/>
 <area shape="rect" id="node5" title=" " alt="" coords="590,169,655,196"/>
 <area shape="rect" id="node6" title=" " alt="" coords="644,319,703,345"/>
@@ -19,7 +19,7 @@
 <area shape="rect" id="node17" title=" " alt="" coords="436,393,495,420"/>
 <area shape="rect" id="node18" title=" " alt="" coords="877,319,915,345"/>
 <area shape="rect" id="node19" title=" " alt="" coords="777,319,852,345"/>
-<area shape="rect" id="node21" href="$_mersenne_twister_8h.html" title="This file has been modified by the UW Bothell BrainGrid group, mostly to reorganize it and make it lo..." alt="" coords="196,319,329,345"/>
+<area shape="rect" id="node21" href="$_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="196,319,329,345"/>
 <area shape="rect" id="node22" title=" " alt="" coords="191,393,251,420"/>
 <area shape="rect" id="node23" title=" " alt="" coords="275,393,333,420"/>
 <area shape="rect" id="node24" title=" " alt="" coords="357,393,411,420"/>

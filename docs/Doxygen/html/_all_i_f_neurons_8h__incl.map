@@ -1,6 +1,6 @@
 <map id="Simulator/Vertices/Neuro/AllIFNeurons.h" name="Simulator/Vertices/Neuro/AllIFNeurons.h">
 <area shape="rect" id="node1" title="A container of all Integate and Fire (IF) neuron data." alt="" coords="896,5,1048,47"/>
-<area shape="rect" id="node2" href="$_global_8h.html" title="Header file for global.h." alt="" coords="901,617,971,644"/>
+<area shape="rect" id="node2" href="$_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="901,617,971,644"/>
 <area shape="rect" id="node26" href="$_all_spiking_neurons_8h.html" title="A container of all spiking neuron data." alt="" coords="849,95,989,121"/>
 <area shape="rect" id="node3" title=" " alt="" coords="1233,692,1303,719"/>
 <area shape="rect" id="node4" title=" " alt="" coords="890,692,955,719"/>
@@ -19,7 +19,7 @@
 <area shape="rect" id="node16" title=" " alt="" coords="787,916,845,943"/>
 <area shape="rect" id="node17" title=" " alt="" coords="767,841,806,868"/>
 <area shape="rect" id="node18" title=" " alt="" coords="831,841,905,868"/>
-<area shape="rect" id="node20" href="$_mersenne_twister_8h.html" title="This file has been modified by the UW Bothell BrainGrid group, mostly to reorganize it and make it lo..." alt="" coords="508,841,641,868"/>
+<area shape="rect" id="node20" href="$_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="508,841,641,868"/>
 <area shape="rect" id="node21" title=" " alt="" coords="197,916,269,943"/>
 <area shape="rect" id="node22" title=" " alt="" coords="542,916,602,943"/>
 <area shape="rect" id="node23" title=" " alt="" coords="626,916,683,943"/>
@@ -37,7 +37,7 @@
 <area shape="rect" id="node35" title=" " alt="" coords="640,617,709,644"/>
 <area shape="rect" id="node36" href="$_model_8h.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="505,468,605,495"/>
 <area shape="rect" id="node39" href="$_timer_8h.html" title="Timer class, from CSS432." alt="" coords="51,468,117,495"/>
-<area shape="rect" id="node37" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks Implementation: The Layout class ma..." alt="" coords="536,543,608,569"/>
+<area shape="rect" id="node37" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="536,543,608,569"/>
 <area shape="rect" id="node38" href="$_i_recorder_8h.html" title="An interface for recording spikes history." alt="" coords="421,543,512,569"/>
 <area shape="rect" id="node40" title=" " alt="" coords="43,543,125,569"/>
 </map>

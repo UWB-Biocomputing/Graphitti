@@ -1,6 +1,6 @@
 <map id="Simulator/Vertices/Neuro/AllLIFNeurons.h" name="Simulator/Vertices/Neuro/AllLIFNeurons.h">
 <area shape="rect" id="node1" title="A container of all LIF neuron data." alt="" coords="214,5,373,47"/>
-<area shape="rect" id="node2" href="$_all_l_i_f_neurons_8cpp.html" title=" " alt="" coords="5,95,179,136"/>
-<area shape="rect" id="node3" href="$_all_l_i_f_neurons__d_8cu.html" title=" " alt="" coords="203,95,383,136"/>
+<area shape="rect" id="node2" href="$_all_l_i_f_neurons_8cpp.html" title="A container of all LIF neuron data." alt="" coords="5,95,179,136"/>
+<area shape="rect" id="node3" href="$_all_l_i_f_neurons__d_8cu.html" title="A container of all LIF neuron data." alt="" coords="203,95,383,136"/>
 <area shape="rect" id="node4" href="$_vertices_factory_8cpp.html" title="A factory class for creating Vertices objects." alt="" coords="407,95,550,136"/>
 </map>

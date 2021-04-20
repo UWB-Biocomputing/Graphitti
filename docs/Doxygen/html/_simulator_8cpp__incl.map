@@ -10,7 +10,7 @@
 <area shape="rect" id="node3" title=" " alt="" coords="1216,752,1285,779"/>
 <area shape="rect" id="node4" title=" " alt="" coords="520,752,696,779"/>
 <area shape="rect" id="node5" href="$_b_g_types_8h.html" title="Used to define uniform data type sizes based for all operating systems. Also used to test the speed o..." alt="" coords="591,1051,679,1077"/>
-<area shape="rect" id="node6" href="$_global_8h.html" title="Header file for global.h." alt="" coords="938,752,1009,779"/>
+<area shape="rect" id="node6" href="$_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="938,752,1009,779"/>
 <area shape="rect" id="node28" href="$_model_8h.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="707,603,807,629"/>
 <area shape="rect" id="node33" href="$_timer_8h.html" title="Timer class, from CSS432." alt="" coords="464,603,531,629"/>
 <area shape="rect" id="node7" title=" " alt="" coords="824,827,893,853"/>
@@ -29,12 +29,12 @@
 <area shape="rect" id="node19" title=" " alt="" coords="975,1051,1033,1077"/>
 <area shape="rect" id="node20" title=" " alt="" coords="1855,976,1894,1003"/>
 <area shape="rect" id="node21" title=" " alt="" coords="1652,976,1727,1003"/>
-<area shape="rect" id="node23" href="$_mersenne_twister_8h.html" title="This file has been modified by the UW Bothell BrainGrid group, mostly to reorganize it and make it lo..." alt="" coords="803,976,936,1003"/>
+<area shape="rect" id="node23" href="$_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="803,976,936,1003"/>
 <area shape="rect" id="node24" title=" " alt="" coords="395,1051,467,1077"/>
 <area shape="rect" id="node25" title=" " alt="" coords="730,1051,790,1077"/>
 <area shape="rect" id="node26" title=" " alt="" coords="814,1051,871,1077"/>
 <area shape="rect" id="node27" title=" " alt="" coords="895,1051,950,1077"/>
-<area shape="rect" id="node29" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks Implementation: The Layout class ma..." alt="" coords="837,677,909,704"/>
+<area shape="rect" id="node29" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="837,677,909,704"/>
 <area shape="rect" id="node30" href="$_i_all_vertices_8h.html" title="An interface for vertices classes." alt="" coords="110,752,210,779"/>
 <area shape="rect" id="node32" href="$_i_recorder_8h.html" title="An interface for recording spikes history." alt="" coords="723,677,813,704"/>
 <area shape="rect" id="node31" href="$_edge_index_map_8h.html" title="A structure maintains outgoing and active synapses list (forward map)." alt="" coords="5,827,157,853"/>

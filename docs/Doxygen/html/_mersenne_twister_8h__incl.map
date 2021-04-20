@@ -1,5 +1,5 @@
 <map id="Simulator/Utils/RNG/MersenneTwister.h" name="Simulator/Utils/RNG/MersenneTwister.h">
-<area shape="rect" id="node1" title="This file has been modified by the UW Bothell BrainGrid group, mostly to reorganize it and make it lo..." alt="" coords="223,5,366,47"/>
+<area shape="rect" id="node1" title="Mersenne Twister logic from Nvidia." alt="" coords="223,5,366,47"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,95,77,121"/>
 <area shape="rect" id="node3" title=" " alt="" coords="102,95,162,121"/>
 <area shape="rect" id="node4" title=" " alt="" coords="186,95,243,121"/>
