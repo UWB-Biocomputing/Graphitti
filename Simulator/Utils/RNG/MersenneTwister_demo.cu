@@ -1,4 +1,10 @@
-/*
+/**
+ * @file MersenneTwister_d.h
+ * 
+ * @ingroup Simulator/Utils/RNG
+ * 
+ * @brief MersenneTwister logic from Nvidia
+ * 
  * Copyright 1993-2010 NVIDIA Corporation.  All rights reserved.
  *
  * Please refer to the NVIDIA end user license agreement (EULA) associated
@@ -7,9 +13,6 @@
  * this software and related documentation outside the terms of the EULA
  * is strictly prohibited.
  *
- */
-
-/*
  * This sample implements Mersenne Twister random number generator 
  * and Cartesian Box-Muller transformation on the GPU.
  * See supplied whitepaper for more explanations.

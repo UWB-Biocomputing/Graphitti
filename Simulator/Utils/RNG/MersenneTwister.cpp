@@ -3,7 +3,7 @@
 * 
 * @ingroup Simulator/Utils/RNG
 *
-* @brief 
+* @brief Mersenne Twister logic from Nvidia
 *
 * This file has been modified by the UW Bothell Graphitti group,
 * mostly to reorganize it and make it look more like typical C++

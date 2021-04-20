@@ -1,0 +1,10 @@
+<map id="Simulator/Connections/Neuro/ConnGrowth.h" name="Simulator/Connections/Neuro/ConnGrowth.h">
+<area shape="rect" id="node1" title="The model of the activity dependent neurite outgrowth." alt="" coords="597,5,752,47"/>
+<area shape="rect" id="node2" href="$_connections_factory_8cpp.html" title="A factory class for creating Connections objects." alt="" coords="5,95,173,136"/>
+<area shape="rect" id="node3" href="$_conn_growth_8cpp.html" title="The model of the activity dependent neurite outgrowth." alt="" coords="197,95,360,136"/>
+<area shape="rect" id="node4" href="$_conn_growth__d_8cu.html" title="Update the weights of the Synapses in the simulation." alt="" coords="384,95,555,136"/>
+<area shape="rect" id="node5" href="$_b_g_driver_8cpp.html" title="Orchestrates most functionality in the simulation." alt="" coords="579,102,771,129"/>
+<area shape="rect" id="node6" href="$_model_8cpp.html" title="Implementation of Model for the graph&#45;based networks." alt="" coords="795,102,968,129"/>
+<area shape="rect" id="node7" href="$_xml_growth_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="993,95,1162,136"/>
+<area shape="rect" id="node8" href="$_xml_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="1187,95,1328,136"/>
+</map>

@@ -3,7 +3,7 @@
  * 
  * @ingroup Simulator/Vertices
  *
- * @brief
+ * @brief A container of the base class of all vertex data
  */
 
 #include "AllVertices.h"

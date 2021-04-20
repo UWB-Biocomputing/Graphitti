@@ -3,7 +3,7 @@
  * 
  * @ingroup Simulator/Vertices
  *
- * @brief
+ * @brief Device functions for vertices
  */
 
 #pragma once

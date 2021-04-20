@@ -1,0 +1,4 @@
+<map id="Simulator/Core/FunctionNodes/IFunctionNode.h" name="Simulator/Core/FunctionNodes/IFunctionNode.h">
+<area shape="rect" id="node1" title="Interface for storing and invoking functions. Used to support different FunctionNode classes that def..." alt="" coords="5,5,207,47"/>
+<area shape="rect" id="node2" href="$_operations_8h.html" title="This class is public reference to the operation types that the OperationManager can register and exec..." alt="" coords="58,95,154,121"/>
+</map>

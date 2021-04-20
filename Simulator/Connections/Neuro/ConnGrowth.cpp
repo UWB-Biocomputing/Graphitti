@@ -3,9 +3,8 @@
  * 
  * @ingroup Simulator/Connections
  * 
- * @brief
+ * @brief The model of the activity dependent neurite outgrowth
  *
- *------------- CONNECTIONS STRUCT ------------
  * Below all of the resources for the various
  * connections are instantiated and initialized.
  * All of the allocation for memory is done in the
@@ -13,11 +12,11 @@
  * the function. Once all memory has been allocated
  * the constructor fills in known information
  * into “radii” and “rates”.
- * ---------------------------------------------
- * ------------------- ERROR ------------------- 
+ * 
+ * ERROR
  * terminate called after throwing an instance of 'std::bad_alloc'
  *      what():  St9bad_alloc
- * ------------------- CAUSE -------------------
+ * CAUSE
  * As simulations expand in size the number of
  * neurons in total increases exponentially. When
  * using a MATRIX_TYPE = “complete” the amount of

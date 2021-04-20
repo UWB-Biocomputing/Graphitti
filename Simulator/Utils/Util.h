@@ -1,9 +1,9 @@
 /**
  * @file Util.h
  * 
- * @brief
- *
  * @ingroup Simulator/Utils
+ * 
+ * @brief Helper function to parse integers in fixed layout
  */
 
 #pragma once

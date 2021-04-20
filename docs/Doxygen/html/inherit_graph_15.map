@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_matrix.html" title=" " alt="" coords="5,56,64,83"/>
+<area shape="rect" id="node2" href="$class_complete_matrix.html" title="An efficient implementation of a dynamically&#45;allocated 2D array." alt="" coords="112,5,227,32"/>
+<area shape="rect" id="node3" href="$class_sparse_matrix.html" title="An efficient implementation of a dynamically&#45;allocated sparse 2D array." alt="" coords="120,56,219,83"/>
+<area shape="rect" id="node4" href="$class_vector_matrix.html" title="An efficient implementation of a dynamically&#45;allocated 1D array." alt="" coords="121,107,217,133"/>
+</map>

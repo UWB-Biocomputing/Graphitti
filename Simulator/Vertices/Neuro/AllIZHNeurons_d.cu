@@ -1,7 +1,7 @@
 /**
  * @file AllIZHNeurons_d.cu
  *
- * @brief
+ * @brief A container of all Izhikevich neuron data
  *
  * @ingroup Simulator/Vertices
  */
