@@ -43,14 +43,14 @@ ConnStatic::~ConnStatic() {
 ///  @param  edges  The Synapse list to search from.
 void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *edges) {
    int numVertices = Simulator::getInstance().getTotalVertices();
-   vector<DistDestVertex> distDestVertices[numVertices];
+   vector<DistDestVertex> distDestVertices;
 
    int added = 0;
 
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
 
    for (int srcVertex = 0; srcVertex < numVertices; srcVertex++) {
-      distDestVertices[srcVertex].clear();
+      distDestVertices.clear();
 
       // pick the connections shorter than threshConnsRadius
       for (int destVertex = 0; destVertex < numVertices; destVertex++) {
@@ -60,32 +60,34 @@ void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, AllEdg
                DistDestVertex distDestVertex;
                distDestVertex.dist = dist;
                distDestVertex.destVertex = destVertex;
-               distDestVertices[srcVertex].push_back(distDestVertex);
+               distDestVertices.push_back(distDestVertex);
             }
          }
       }
 
       // sort ascendant
-      sort(distDestVertices[srcVertex].begin(), distDestVertices[srcVertex].end());
+      sort(distDestVertices.begin(), distDestVertices.end());
       // pick the shortest m_nConnsPerNeuron connections
-      for (BGSIZE i = 0; i < distDestVertices[srcVertex].size() && (int) i < connsPerVertex_; i++) {
-         int destVertex = distDestVertices[srcVertex][i].destVertex;
+      for (BGSIZE i = 0; i < distDestVertices.size() && (int) i < connsPerVertex_; i++) {
+         int destVertex = distDestVertices[i].destVertex;
          edgeType type = layout->edgType(srcVertex, destVertex);
          BGFLOAT *sumPoint = &(dynamic_cast<AllVertices *>(vertices)->summationMap_[destVertex]);
 
          LOG4CPLUS_DEBUG(fileLogger_, "Source: " << srcVertex << " Dest: " << destVertex << " Dist: "
-                                                 << distDestVertices[srcVertex][i].dist);
+                                                 << distDestVertices[i].dist);
 
          BGSIZE iEdg;
          edges->addEdge(iEdg, type, srcVertex, destVertex, sumPoint, Simulator::getInstance().getDeltaT());
          added++;
 
+         AllNeuroEdges *neuroEdges = dynamic_cast<AllNeuroEdges *>(edges);
+
          // set edge weight
          // TODO: we need another synaptic weight distibution mode (normal distribution)
-         if (edges->edgSign(type) > 0) {
-            dynamic_cast<AllNeuroEdges *>(edges)->W_[iEdg] = rng.inRange(excWeight_[0], excWeight_[1]);
+         if (neuroEdges->edgSign(type) > 0) {
+            neuroEdges->W_[iEdg] = rng.inRange(excWeight_[0], excWeight_[1]);
          } else {
-            dynamic_cast<AllNeuroEdges *>(edges)->W_[iEdg] = rng.inRange(inhWeight_[0], inhWeight_[1]);
+            neuroEdges->W_[iEdg] = rng.inRange(inhWeight_[0], inhWeight_[1]);
          }
       }
    }

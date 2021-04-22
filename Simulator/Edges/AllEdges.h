@@ -61,13 +61,7 @@ public:
    ///  Create a edge index map.
    virtual EdgeIndexMap *createEdgeIndexMap();
 
-   ///  Get the sign of the edgeType.
-   ///
-   ///  @param    type    edgeType 
-   ///  @return   1 or -1, or 0 if error
-   int edgSign(const edgeType type);
-
-      ///  Cereal serialization method
+   ///  Cereal serialization method
    ///  (Serializes edge weights, source vertices, and destination vertices)
    template<class Archive>
    void save(Archive &archive) const;
