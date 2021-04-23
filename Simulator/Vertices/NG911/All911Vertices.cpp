@@ -26,6 +26,9 @@ void All911Vertices::setupVertices() {
 
     CallNum_ = new int[size_];
     fill_n(CallNum_, size_, 0);    
+    // take call num
+    // assign random # of dispatchers depending on zone (minimum = 1) 
+    // 
 
 
 

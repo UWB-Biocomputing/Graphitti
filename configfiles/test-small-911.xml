@@ -12,7 +12,7 @@
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">100</maxFiringRate>
-      <maxEdgesPerVertex name="maxEdgesPerVertex">10</maxEdgesPerVertex>
+      <maxEdgesPerVertex name="maxEdgesPerVertex">54</maxEdgesPerVertex>
     </SimConfig>
     <Seed name="Seed">
       <value name="value">1</value>
@@ -26,7 +26,7 @@
     <VerticesParams class="All911Vertices" name="VerticesParams">
         <CallNum name="CallNum">
         <min name="min">3</min>
-        <max name="max">7</max>
+        <max name="max">37</max>
       </CallNum>
     </VerticesParams>
 
@@ -35,8 +35,9 @@
 
     <ConnectionsParams class="Connections911" name="ConnectionsParams">
       <Connections911Params name="Connections911Params">
-        <connsPerVertex name="connsPerVertex">33</connsPerVertex>
-        <threshConnsRadius name="threshConnsRadius">1.5</threshConnsRadius>
+            <!-- ConnsPerVertex = 5x5 quadrants = 25, minus 1 (itself) plus 3 (other psaps)) -->
+        <connsPerVertex name="connsPerVertex">54</connsPerVertex>
+        <threshConnsRadius name="threshConnsRadius">2.9</threshConnsRadius>
       </Connections911Params>
     </ConnectionsParams>
 
