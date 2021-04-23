@@ -52,11 +52,6 @@ public:
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               edgeType type) override;
 
-   ///  Get the sign of the edgeType.
-   ///
-   ///  @param    type    edgeType 
-   virtual int edgSign(const edgeType type);
-
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
@@ -64,20 +59,29 @@ public:
 protected:
 
 #if defined(USE_GPU)
+   // GPU functionality for 911 simulation is unimplemented.
+   // These signatures are required to make the class non-abstract
+   public:
+       virtual void allocEdgeDeviceStruct(void** allEdgesDevice) {};
+       virtual void allocEdgeDeviceStruct( void** allEdgesDevice, int numVertices, int maxEdgesPerVertex ) {};
+       virtual void deleteEdgeDeviceStruct( void* allEdgesDevice ) {};
+       virtual void copyEdgeHostToDevice(void* allEdgesDevice) {};
+       virtual void copyEdgeHostToDevice( void* allEdgesDevice, int numVertices, int maxEdgesPerVertex ) {};
+       virtual void copyEdgeDeviceToHost( void* allEdgesDevice) {};
+       virtual void copyDeviceEdgeCountsToHost(void* allEdgesDevice) {};
+       virtual void copyDeviceEdgeSumIdxToHost(void* allEdgesDevice) {};
+       virtual void advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) {};
+       virtual void setAdvanceEdgesDeviceParams() {};
+       virtual void setEdgeClassID() {};
+       virtual void printGPUEdgesProps( void* allEdgesDeviceProps ) const {};
 
-#else  // !defined(USE_GPU)
-
+#else // !defined(USE_GPU)
 public:
    ///  Advance one specific Edge.
    ///
    ///  @param  iEdg      Index of the Edge to connect to.
    ///  @param  vertices  The Neuron list to search from.
-   virtual void advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) override;
+   virtual void advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) override {};
 
 #endif
 };
-
-#if defined(USE_GPU)
-
-#endif // defined(USE_GPU)
-

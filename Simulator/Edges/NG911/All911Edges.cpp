@@ -66,23 +66,3 @@ void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, B
 void All911Edges::printParameters() const {
 
 }
-
-void All911Edges::advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) {
-
-}
-
-///  Get the sign of the edgeType.
-///
-///  @param    type    edgeType 
-///  @return   1 or -1, or 0 if error
-int All911Edges::edgSign(const edgeType type) {
-   // switch (type) {
-   //    case CP:
-   //    case PR:
-   //       return -1;
-   //    case ETYPE_UNDEF:
-   //       // TODO error.
-   //       return 0;
-   // }
-   return 0;
-}
