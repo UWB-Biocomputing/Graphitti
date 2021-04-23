@@ -59,6 +59,10 @@ string All911Vertices::toString(const int index) const {
     return nullptr; // Change this
 }
 
+#if !defined(USE_GPU)
+
 void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap) {
 
 }
+
+#endif

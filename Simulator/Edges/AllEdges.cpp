@@ -176,15 +176,6 @@ edgeType AllEdges::edgeOrdinalToType(const int typeOrdinal) {
    }
 }
 
-///  Get the sign of the edgeType.
-///
-///  @param    type    edgeType 
-///  @return   1 or -1, or 0 if error
-int AllEdges::edgSign(const edgeType type) {
-   return ETYPE_UNDEF;
-}
-
-
 ///  Create a edge index map.
 EdgeIndexMap *AllEdges::createEdgeIndexMap() {
    int vertexCount = Simulator::getInstance().getTotalVertices();
