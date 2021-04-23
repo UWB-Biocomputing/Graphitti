@@ -75,7 +75,7 @@ void AllEdges::printParameters() const {
     << "\t---AllEdges Parameters---" << endl
     << "\tTotal edge counts: " << totalEdgeCount_ << endl
     << "\tMax edges per vertex: " << maxEdgesPerVertex_ << endl
-    << "\tNeuron count: " << countVertices_ << endl << endl);
+    << "\tVertex count: " << countVertices_ << endl << endl);
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -265,20 +265,20 @@ void AllEdges::eraseEdge(const int i, const BGSIZE iEdg) {
 #endif // !defined(USE_GPU)
 
 
-///  Adds an edge to the model, connecting two Neurons.
+///  Adds an edge to the model, connecting two Vertices.
 ///
 ///  @param  iEdg        Index of the edge to be added.
 ///  @param  type        The type of the edge to add.
-///  @param  srcVertex  The Neuron that sends to this edge.
-///  @param  destVertex The Neuron that receives from the edge.
+///  @param  srcVertex  The Vertex that sends to this edge.
+///  @param  destVertex The Vertex that receives from the edge.
 ///  @param  sumPoint   Summation point address.
 ///  @param  deltaT      Inner simulation step duration
 void
 AllEdges::addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
                         const BGFLOAT deltaT) {
    if (edgeCounts_[destVertex] >= maxEdgesPerVertex_) {
-      LOG4CPLUS_FATAL(fileLogger_, "Neuron : " << destVertex << " ran out of space for new edges.");
-      throw runtime_error("Neuron : " + destVertex + string(" ran out of space for new edges."));
+      LOG4CPLUS_FATAL(fileLogger_, "Vertex : " << destVertex << " ran out of space for new edges.");
+      throw runtime_error("Vertex : " + destVertex + string(" ran out of space for new edges."));
    }
 
    // add it to the list

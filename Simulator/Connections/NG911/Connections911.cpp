@@ -21,6 +21,7 @@ Connections911::~Connections911() {
 void Connections911::setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *edges) {
    int numVertices = Simulator::getInstance().getTotalVertices();
    vector<DistDestVertex> distDestVertices;
+   vector<DistDestVertex> psapVertices;
 
    int added = 0;
 
@@ -29,6 +30,7 @@ void Connections911::setupConnections(Layout *layout, IAllVertices *vertices, Al
    // For each source vertex
    for (int srcVertex = 0; srcVertex < numVertices; srcVertex++) {
       distDestVertices.clear();
+      psapVertices.clear();
 
       // For each destination verex
       for (int destVertex = 0; destVertex < numVertices; destVertex++) {
@@ -37,18 +39,27 @@ void Connections911::setupConnections(Layout *layout, IAllVertices *vertices, Al
             edgeType type = layout->edgType(srcVertex, destVertex);
 
             // If they are close enough and the edge type is defined
-            if (dist <= threshConnsRadius_ && type != ETYPE_UNDEF) {
+            if ((dist <= threshConnsRadius_ && type != ETYPE_UNDEF) || type == PP) {
                DistDestVertex distDestVertex;
                distDestVertex.dist = dist;
                distDestVertex.destVertex = destVertex;
-               distDestVertices.push_back(distDestVertex);
+               if (type != PP) {
+                  distDestVertices.push_back(distDestVertex);
+               }
+               else {
+                  psapVertices.push_back(distDestVertex);
+               }
             }
          }
       }
 
       // Sort by distance to create the shortest ones first
       sort(distDestVertices.begin(), distDestVertices.end());
-      for (BGSIZE i = 0; i < distDestVertices.size() && (int) i < connsPerVertex_; i++) {
+      distDestVertices.insert(distDestVertices.begin(), psapVertices.begin(), psapVertices.end());
+
+      int uLimit = (connsPerVertex_ < distDestVertices.size()) ? connsPerVertex_ : distDestVertices.size();
+
+      for (BGSIZE i = 0; i < distDestVertices.size() && (int) i < uLimit; i++) {
          int destVertex = distDestVertices[i].destVertex;
          edgeType type = layout->edgType(srcVertex, destVertex);
          BGFLOAT *sumPoint = &(dynamic_cast<AllVertices *>(vertices)->summationMap_[destVertex]);
