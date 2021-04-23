@@ -174,7 +174,6 @@ protected:
        virtual void printGPUEdgesProps( void* allEdgesDeviceProps ) const = 0;
 
 #else // !defined(USE_GPU)
-#endif // defined(USE_GPU)
 public:
    ///  Advance all the edges in the simulation.
    ///  Update the state of all edges for a time step.
@@ -194,6 +193,7 @@ public:
    ///  @param  neuronIndex   Index of a vertex to remove from.
    ///  @param  iEdg          Index of a edge to remove.
    virtual void eraseEdge(const int neuronIndex, const BGSIZE iEdg);
+#endif // defined(USE_GPU)
 
    ///  The location of the edge.
    int *sourceVertexIndex_;

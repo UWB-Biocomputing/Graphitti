@@ -94,11 +94,6 @@ protected:
    ///  @param  iEdg    Index of the edge to print out.
    virtual void writeEdge(ostream &output, const BGSIZE iEdg) const;
 
-
-#if !defined(USE_GPU)
-public:
-
-#endif // !defined(USE_GPU)
 public:
    /// The factor to adjust overlapping area to edge weight.
    static constexpr BGFLOAT SYNAPSE_STRENGTH_ADJUSTMENT = 1.0e-8;

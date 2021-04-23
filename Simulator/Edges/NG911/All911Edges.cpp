@@ -66,7 +66,3 @@ void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, B
 void All911Edges::printParameters() const {
 
 }
-
-void All911Edges::advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) {
-
-}
