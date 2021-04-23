@@ -85,9 +85,3 @@ public:
 
 #endif
 };
-
-#if defined(USE_GPU)
-
-#endif // defined(USE_GPU)
-
-};
