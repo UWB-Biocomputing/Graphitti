@@ -11,26 +11,21 @@
 
 
 All911Vertices::All911Vertices() {
-    CallNum_ = nullptr; 
+    callNum_ = nullptr; 
 }
 
 All911Vertices::~All911Vertices() {
     if (size_ != 0) {
-        delete[] CallNum_; 
+        delete[] callNum_; 
     }
-    CallNum_ = nullptr; 
+    callNum_ = nullptr; 
 }
 
 void All911Vertices::setupVertices() {
     AllVertices::setupVertices();
 
-    CallNum_ = new int[size_];
-    fill_n(CallNum_, size_, 0);    
-    // take call num
-    // assign random # of dispatchers depending on zone (minimum = 1) 
-    // 
-
-
+    callNum_ = new int[size_];
+    fill_n(callNum_, size_, 0);    
 
 }
 
@@ -43,14 +38,21 @@ void All911Vertices::createAllVertices(Layout *layout) {
 }
 
 void All911Vertices:: createVertex(int index, Layout *layout) {
-   // CallNum_[index] = static_cast<int>(rng.inRange(CallNumRange_[0], CallNumRange_[1]));
-   CallNum_[index] = rng.inRange(CallNumRange_[0], CallNumRange_[1]);
+    callNum_[index] = rng.inRange(callNumRange_[0], callNumRange_[1]);
+    
+    // ******WORKING*****
+    // if this is a psap node, 
+        // then populate me with a random num based on my pop. 
+    if(layout->vertexTypeMap_[index] == PSAP) {
+
+    }
+
 
 }
 
 void All911Vertices::loadParameters() {
-    ParameterManager::getInstance().getIntByXpath("//CallNum/min/text()", CallNumRange_[0]);
-    ParameterManager::getInstance().getIntByXpath("//CallNum/max/text()", CallNumRange_[1]);
+    ParameterManager::getInstance().getIntByXpath("//CallNum/min/text()", callNumRange_[0]);
+    ParameterManager::getInstance().getIntByXpath("//CallNum/max/text()", callNumRange_[1]);
 }
 
 

@@ -67,10 +67,21 @@ protected:
 private: 
 
    /// number of callers
-   int *CallNum_; 
+   int *callNum_; 
 
    /// Min/max values of CallNum.
-   int CallNumRange_[2];
+   int callNumRange_[2];
+
+   // ******WORKING*****
+   /// Number of dispatchers per PSAP calculated (with randomness) based on population
+   int dispNum_;
+   
+   ///  Creates a random value for number of dispatchers per PSAP.
+   ///
+   ///  @param  callNum_   number of callers.
+   ///  @param  layout  Layout information of the network.
+   int generateDispatcherCount() {};
+   // ******************
 
 #if defined(USE_GPU)
    // GPU functionality for 911 simulation is unimplemented.

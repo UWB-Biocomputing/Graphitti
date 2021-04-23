@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
    time_t start_time, end_time;
    time(&start_time);
 
-   // Setup simulation
+   // Setup simulation (calls model->setupSim)
    LOG4CPLUS_TRACE(consoleLogger, "Performing Simulator setup");
    simulator.setup();
 
