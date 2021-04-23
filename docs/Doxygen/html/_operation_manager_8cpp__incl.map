@@ -1,0 +1,12 @@
+<map id="Simulator/Core/OperationManager.cpp" name="Simulator/Core/OperationManager.cpp">
+<area shape="rect" id="node1" title="Singleton instance method that registers and executes functions based on operation types." alt="" coords="424,5,593,47"/>
+<area shape="rect" id="node2" href="$_operation_manager_8h.html" title="Singleton instance method that registers and executes functions based on operation types." alt="" coords="321,95,459,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="503,169,541,196"/>
+<area shape="rect" id="node5" title=" " alt="" coords="566,169,635,196"/>
+<area shape="rect" id="node9" title=" " alt="" coords="597,95,652,121"/>
+<area shape="rect" id="node10" href="$_generic_function_node_8h.html" title="Stores a function to invoke. Used by operation manager to store functions to defined by an operation ..." alt="" coords="88,95,247,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,169,84,196"/>
+<area shape="rect" id="node6" title=" " alt="" coords="302,169,478,196"/>
+<area shape="rect" id="node7" href="$_i_function_node_8h.html" title="Interface for storing and invoking functions. Used to support different FunctionNode classes that def..." alt="" coords="108,169,227,196"/>
+<area shape="rect" id="node8" href="$_operations_8h.html" title="This class is public reference to the operation types that the OperationManager can register and exec..." alt="" coords="167,244,263,271"/>
+</map>

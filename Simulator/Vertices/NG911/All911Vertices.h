@@ -48,7 +48,7 @@ public:
 
    ///  Prints out all parameters of the vertices to logging file.
    ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const;
+   virtual void printParameters() const override;
 
    ///  Outputs state of the vertex chosen as a string.
    ///

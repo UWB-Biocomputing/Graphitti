@@ -78,23 +78,23 @@ public:
    virtual ~GPUModel();
 
    /// Set up model state, if anym for a specific simulation run.
-   virtual void setupSim();
+   virtual void setupSim() override;
 
    /// Performs any finalization tasks on network following a simulation.
-   virtual void finish();
+   virtual void finish() override;
 
    /// Advances network state one simulation step.
-   virtual void advance();
+   virtual void advance() override;
 
    /// Modifies connections between neurons based on current state of the network and behavior
    /// over the past epoch. Should be called once every epoch.
-   virtual void updateConnections();
+   virtual void updateConnections() override;
 
    /// Copy GPU Synapse data to CPU.
-   virtual void copyGPUtoCPU();
+   virtual void copyGPUtoCPU() override;
 
    /// Copy CPU Synapse data to GPU.
-   virtual void copyCPUtoGPU();
+   virtual void copyCPUtoGPU() override;
 
    /// Print out SynapseProps on the GPU.
    void printGPUSynapsesPropsModel() const;

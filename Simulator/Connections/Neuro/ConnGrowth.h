@@ -91,22 +91,22 @@ public:
    ///  @param  layout    Layout information of the neural network.
    ///  @param  neurons   The Neuron list to search from.
    ///  @param  synapses  The Synapse list to search from.
-   virtual void setupConnections(Layout *layout, IAllVertices *neurons, AllEdges *synapses);
+   virtual void setupConnections(Layout *layout, IAllVertices *neurons, AllEdges *synapses) override;
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operations::op::loadParameters
-   virtual void loadParameters();
+   virtual void loadParameters() override;
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const;
+   virtual void printParameters() const override;
 
    ///  Update the connections status in every epoch.
    ///
    ///  @param  neurons  The Neuron list to search from.
    ///  @param  layout   Layout information of the neural network.
    ///  @return true if successful, false otherwise.
-   virtual bool updateConnections(IAllVertices &neurons, Layout *layout);
+   virtual bool updateConnections(IAllVertices &neurons, Layout *layout) override;
 
    ///  Cereal serialization method
    ///  (Serializes radii)
@@ -137,7 +137,7 @@ public:
          IAllVertices &neurons, AllEdges &synapses,
          AllSpikingNeuronsDeviceProperties* allVerticesDevice,
          AllSpikingSynapsesDeviceProperties* allEdgesDevice,
-         Layout *layout);
+         Layout *layout) override`;
 #else
    ///  Update the weights of the Synapses in the simulation. To be clear,
    ///  iterates through all source and destination neurons and updates their
@@ -152,7 +152,7 @@ public:
    updateSynapsesWeights(const int numVertices,
          IAllVertices &vertices,
          AllEdges &synapses,
-         Layout *layout);
+         Layout *layout) override;
 
 #endif
 private:

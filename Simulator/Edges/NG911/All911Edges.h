@@ -39,7 +39,7 @@ public:
    static AllEdges *Create() { return new All911Edges(); }
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
-   virtual void setupEdges();
+   virtual void setupEdges() override;
 
    ///  Create a Edge and connect it to the model.
    ///
@@ -50,11 +50,11 @@ public:
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Edge to create.
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-                              edgeType type);
+                              edgeType type) override;
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const;
+   virtual void printParameters() const override;
 
 protected:
 
@@ -80,8 +80,14 @@ public:
    ///  Advance one specific Edge.
    ///
    ///  @param  iEdg      Index of the Edge to connect to.
-   ///  @param  vertices   The Vertex list to search from.
-   virtual void advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) {};
+   ///  @param  vertices  The Neuron list to search from.
+   virtual void advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) override {};
+
+#endif
+};
+
+#if defined(USE_GPU)
+
 #endif // defined(USE_GPU)
 
 };

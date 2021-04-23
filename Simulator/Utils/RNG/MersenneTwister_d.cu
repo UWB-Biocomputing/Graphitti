@@ -1,4 +1,10 @@
-/*
+/**
+ * @file MersenneTwister_d.cu
+ * 
+ * @ingroup Simulator/Utils/RNG
+ * 
+ * @brief MersenneTwister logic from Nvidia
+ * 
  * Copyright 1993-2010 NVIDIA Corporation.  All rights reserved.
  *
  * Please refer to the NVIDIA end user license agreement (EULA) associated
@@ -7,8 +13,8 @@
  * this software and related documentation outside the terms of the EULA
  * is strictly prohibited.
  *
- */
-/*
+ *
+ *
  * Edited by Warner Smidt Sep 4th 2011
  * ds_MT now stores the seed state after each call to the random number generator. 
  * Each consecutive call to the random number generator will not produce the same 

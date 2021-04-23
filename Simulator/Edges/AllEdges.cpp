@@ -1,3 +1,11 @@
+/**
+ * @file AllEdges.cpp
+ * 
+ * @ingroup Simulator/Edges
+ *
+ * @brief A container of all edge data
+ */
+
 #include "AllEdges.h"
 #include "AllVertices.h"
 #include "OperationManager.h"

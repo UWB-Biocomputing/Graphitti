@@ -1,9 +1,9 @@
 /**
  * @file Util.cpp
- * 
- * @brief
  *
  * @ingroup Simulator/Utils
+ * 
+ * @brief Helper function to parse integers in fixed layout
  */
 
 #include "Util.h"

@@ -248,7 +248,7 @@ public:
     
 	/// @brief Polymorphic output. Produces text output on stream "os". Output is by row.
 	/// @param os stream to output to
-	virtual void Print(ostream& os) const;
+	virtual void Print(ostream& os) const override;
     
 	/// @brief Produce XML representation of Matrix in string return value.
 	virtual string toXML(string name = "") const;

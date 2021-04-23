@@ -37,11 +37,11 @@ public:
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all neurons' state.
-   virtual void setupVertices();
+   virtual void setupVertices() override;
 
    ///  Prints out all parameters of the neurons to logging file.
    ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const;
+   virtual void printParameters() const override;
 
    ///  The summation point for each vertex.
    ///  Summation points are places where the synapses connected to the vertex

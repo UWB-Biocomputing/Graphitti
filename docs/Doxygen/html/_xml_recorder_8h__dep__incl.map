@@ -1,0 +1,9 @@
+<map id="Simulator/Recorders/XmlRecorder.h" name="Simulator/Recorders/XmlRecorder.h">
+<area shape="rect" id="node1" title="An implementation for recording spikes history on xml file." alt="" coords="196,5,337,47"/>
+<area shape="rect" id="node2" href="$_conn_static_8cpp.html" title="The model of the small world network." alt="" coords="11,95,165,136"/>
+<area shape="rect" id="node3" href="$_xml_growth_recorder_8h.html" title="Header file for XmlGrowthRecorder.h." alt="" coords="189,95,344,136"/>
+<area shape="rect" id="node7" href="$_xml_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="368,95,509,136"/>
+<area shape="rect" id="node4" href="$_conn_growth_8cpp.html" title="The model of the activity dependent neurite outgrowth." alt="" coords="5,184,168,225"/>
+<area shape="rect" id="node5" href="$_recorder_factory_8cpp.html" title="A factory class for creating Recorder objects." alt="" coords="193,184,341,225"/>
+<area shape="rect" id="node6" href="$_xml_growth_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="365,184,534,225"/>
+</map>

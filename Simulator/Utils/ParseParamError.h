@@ -1,9 +1,10 @@
 /**
  * @file ParseParamError.h
- *
- * @brief 
- *
+ * 
  * @ingroup Simulator/Utils
+ *
+ * @brief Handles parameter error messaging
+ * 
  */
 
 #ifndef _PARSEPARAMERROR_H_

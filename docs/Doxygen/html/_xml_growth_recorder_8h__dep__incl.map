@@ -1,0 +1,6 @@
+<map id="Simulator/Recorders/XmlGrowthRecorder.h" name="Simulator/Recorders/XmlGrowthRecorder.h">
+<area shape="rect" id="node1" title="Header file for XmlGrowthRecorder.h." alt="" coords="189,5,344,47"/>
+<area shape="rect" id="node2" href="$_conn_growth_8cpp.html" title="The model of the activity dependent neurite outgrowth." alt="" coords="5,95,168,136"/>
+<area shape="rect" id="node3" href="$_recorder_factory_8cpp.html" title="A factory class for creating Recorder objects." alt="" coords="193,95,341,136"/>
+<area shape="rect" id="node4" href="$_xml_growth_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="365,95,534,136"/>
+</map>

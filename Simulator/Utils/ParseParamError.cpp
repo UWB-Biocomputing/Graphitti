@@ -1,9 +1,10 @@
 /**
  * @file ParseParamError.cpp
- *
- * @brief 
- *
+ * 
  * @ingroup Simulator/Utils
+ *
+ * @brief Handles parameter error messaging
+ *
  */
 
 #include "ParseParamError.h"

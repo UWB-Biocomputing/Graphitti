@@ -1,10 +1,10 @@
 /**
  *  @file GenericFunctionNode.h
+ * 
+ *  @ingroup Simulator/Core/FunctionNodes
  *
  *  @brief Stores a function to invoke. Used by operation manager to store functions to defined by an operation type.
- *  Function Signature supported : void ()
  *
- *  @ingroup Simulator/Core/FunctionNodes
  */
 
 #pragma once

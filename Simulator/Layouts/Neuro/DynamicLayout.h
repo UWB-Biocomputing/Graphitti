@@ -29,19 +29,19 @@ public:
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const;
+   virtual void printParameters() const override;
 
    ///  Creates a randomly ordered distribution with the specified numbers of neuron types.
    ///
    ///  @param  numVertices number of the neurons to have in the type map.
-   virtual void generateVertexTypeMap(int numVertices);
+   virtual void generateVertexTypeMap(int numVertices) override;
 
    ///  Populates the starter map.
    ///  Selects num_endogenously_active_neurons excitory neurons
    ///  and converts them into starter neurons.
    ///
    ///  @param  numVertices number of vertices to have in the map.
-   virtual void initStarterMap(const int numVertices);
+   virtual void initStarterMap(const int numVertices) override;
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters(); 
