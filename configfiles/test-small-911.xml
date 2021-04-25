@@ -24,10 +24,11 @@
 
   <ModelParams>
     <VerticesParams class="All911Vertices" name="VerticesParams">
-        <CallNum name="CallNum">
+      <CallNum name="CallNum">
         <min name="min">3</min>
         <max name="max">37</max>
       </CallNum>
+      <DispNumScale name="DispNumScale">0.3</DispNumScale>
     </VerticesParams>
 
     <EdgesParams class="All911Edges" name="EdgesParams">
