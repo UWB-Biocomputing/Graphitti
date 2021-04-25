@@ -50,13 +50,4 @@ private:
 
    /// Connection radius threshold
    BGFLOAT threshConnsRadius_;
-
-   struct DistDestVertex {
-      BGFLOAT dist;     ///< distance to the destination vertex
-      int destVertex;  ///< index of the destination vertex
-
-      bool operator<(const DistDestVertex &other) const {
-         return (dist < other.dist);
-      }
-   };
 };
