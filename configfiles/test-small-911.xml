@@ -29,6 +29,7 @@
         <max name="max">37</max>
       </CallNum>
       <DispNumScale name="DispNumScale">0.3</DispNumScale>
+      <RespNumScale name="RespNumScale">0.3</RespNumScale>
     </VerticesParams>
 
     <EdgesParams class="All911Edges" name="EdgesParams">

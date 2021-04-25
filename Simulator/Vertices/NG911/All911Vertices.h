@@ -64,18 +64,17 @@ private:
    /// Min/max values of CallNum.
    int callNumRange_[2];
 
-   // ******WORKING*****
    /// Number of dispatchers per PSAP calculated (with randomness) based on population
    int *dispNum_;
 
    /// Scaling factor for number of dispatchers in a PSAP
    BGFLOAT dispNumScale_;
 
-   ///  Creates a random value for number of dispatchers per PSAP.
-   ///
-   ///  @param  callNum_   number of callers.
-   ///  @param  layout  Layout information of the network.
-   int generateDispatcherCount(int index, Layout *layout);
+   /// Number of responders per Responder node calculated (with randomness) based on population
+   int *respNum_;
+
+   /// Scaling factor for number of responders in a Responder node
+   BGFLOAT respNumScale_;
 
    /// Get the quadrant of the vertex
    /// Only built for 10x10 grid
