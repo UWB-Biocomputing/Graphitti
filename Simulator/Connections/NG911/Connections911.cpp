@@ -43,8 +43,6 @@ void Connections911::setupConnections(Layout *layout, IAllVertices *vertices, Al
          // Zone each vertex belongs to
          int srcZone = layout->zone(srcVertex);
          int destZone = layout->zone(destVertex);
-         // int srcZone = (srcVertex%10 >= 5) + 2*(srcVertex < 50);
-         // int destZone = (destVertex%10 >= 5) + 2*(destVertex < 50);
 
          // CP and PR where they aren't in the same zone
          // All PP and RC are defined
