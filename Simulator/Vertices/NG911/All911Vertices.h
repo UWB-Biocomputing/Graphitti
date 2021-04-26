@@ -56,6 +56,12 @@ public:
    ///  @return the complete state of the vertex.
    virtual string toString(const int index) const;
 
+   struct vertexProps {
+      // to access the type (CALR, RESP, PSAP), then access vertex type map
+      // int availability; 
+
+   };
+
 private: 
 
    /// number of callers
@@ -75,12 +81,6 @@ private:
 
    /// Scaling factor for number of responders in a Responder node
    BGFLOAT respNumScale_;
-
-   /// Get the quadrant of the vertex
-   /// Only built for 10x10 grid
-   /// See: https://docs.google.com/spreadsheets/d/1DqP8sjkfJ_pkxtETzuEdoVZbWOGu633EMQAeShe5k68/edit?usp=sharing
-   /// @param  index    the index of the vertex
-   int quadrant(int index);
 
 #if defined(USE_GPU)
    // GPU functionality for 911 simulation is unimplemented.

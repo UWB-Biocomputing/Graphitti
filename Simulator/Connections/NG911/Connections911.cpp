@@ -40,14 +40,16 @@ void Connections911::setupConnections(Layout *layout, IAllVertices *vertices, Al
          // Undefined edge types
          if (type == ETYPE_UNDEF) { continue; }
 
-         // Quadrant each vertex belongs to
-         int srcQuadrant = (srcVertex%10 >= 5) + 2*(srcVertex < 50);
-         int destQuadrant = (destVertex%10 >= 5) + 2*(destVertex < 50);
+         // Zone each vertex belongs to
+         int srcZone = layout->zone(srcVertex);
+         int destZone = layout->zone(destVertex);
+         // int srcZone = (srcVertex%10 >= 5) + 2*(srcVertex < 50);
+         // int destZone = (destVertex%10 >= 5) + 2*(destVertex < 50);
 
-         // CP and PR where they aren't in the same quadrant
+         // CP and PR where they aren't in the same zone
          // All PP and RC are defined
          if (type == CP || type == PR) {
-            if (srcQuadrant != destQuadrant) { continue; }
+            if (srcZone != destZone) { continue; }
          }
 
          BGFLOAT *sumPoint = &(dynamic_cast<AllVertices *>(vertices)->summationMap_[destVertex]);
@@ -66,7 +68,6 @@ void Connections911::setupConnections(Layout *layout, IAllVertices *vertices, Al
 }
 
 void Connections911::loadParameters() {
-   ParameterManager::getInstance().getBGFloatByXpath("//threshConnsRadius/text()", threshConnsRadius_);
    ParameterManager::getInstance().getIntByXpath("//connsPerVertex/text()", connsPerVertex_);
 }
 

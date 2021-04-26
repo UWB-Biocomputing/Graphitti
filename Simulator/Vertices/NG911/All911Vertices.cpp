@@ -49,14 +49,14 @@ void All911Vertices::createAllVertices(Layout *layout) {
     psapList.clear();
     respList.clear();
 
-    int callersPerQuadrant[] = {0, 0, 0, 0};
-    int respPerQuadrant[] = {0, 0, 0, 0};
+    int callersPerZone[] = {0, 0, 0, 0};
+    int respPerZone[] = {0, 0, 0, 0};
 
     for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {  
         // Create all callers
         if (layout->vertexTypeMap_[i] == CALR) {
             callNum_[i] = rng.inRange(callNumRange_[0], callNumRange_[1]);
-            callersPerQuadrant[quadrant(i)] += callNum_[i];
+            callersPerZone[layout->zone(i)] += callNum_[i];
         }
 
         // Find all PSAPs
@@ -67,34 +67,27 @@ void All911Vertices::createAllVertices(Layout *layout) {
         // Find all resps
         if(layout->vertexTypeMap_[i] == RESP) {
             respList.push_back(i);
-            respPerQuadrant[quadrant(i)] += 1;
+            respPerZone[layout->zone(i)] += 1;
         }
     }
 
     // Create all psaps
-    // Dispatchers in a psap = [callers in the quadrant * k] + some randomness
+    // Dispatchers in a psap = [callers in the zone * k] + some randomness
     for (int i = 0; i < psapList.size(); i++) {
-        int psapQ = quadrant(i);
-        int dispCount = (callersPerQuadrant[psapQ] * dispNumScale_) + rng.inRange(-5, 5);
+        int psapQ = layout->zone(i);
+        int dispCount = (callersPerZone[psapQ] * dispNumScale_) + rng.inRange(-5, 5);
         if (dispCount < 1) { dispCount = 1; }
         dispNum_[psapList[i]] = dispCount;
     }
 
     // Create all responders
-    // Responders in a node = [callers in the quadrant * k]/[number of responder nodes] + some randomness
+    // Responders in a node = [callers in the zone * k]/[number of responder nodes] + some randomness
     for (int i = 0; i < respList.size(); i++) {
-        int respQ = quadrant(respList[i]);
-        int respCount = (callersPerQuadrant[respQ] * respNumScale_)/respPerQuadrant[respQ] + rng.inRange(-5, 5);
+        int respQ = layout->zone(respList[i]);
+        int respCount = (callersPerZone[respQ] * respNumScale_)/respPerZone[respQ] + rng.inRange(-5, 5);
         if (respCount < 1) { respCount = 1; }
         respNum_[respList[i]] = respCount;
     }
-}
-
-// Get the quadrant of the vertex
-// Only built for 10x10 grid
-// See: https://docs.google.com/spreadsheets/d/1DqP8sjkfJ_pkxtETzuEdoVZbWOGu633EMQAeShe5k68/edit?usp=sharing
-int All911Vertices::quadrant(int index) {
-    return (index%10 >= 5) + 2*(index < 50);
 }
 
 void All911Vertices::loadParameters() {

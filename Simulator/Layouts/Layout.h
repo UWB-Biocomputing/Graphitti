@@ -54,6 +54,11 @@ public:
    /// @param  numVertices number of vertices to have in the map.
    virtual void initStarterMap(const int numVertices);
 
+   /// Get the zone of the vertex
+   /// Only built for 10x10 grid (todo: refactor later)
+   /// See: https://docs.google.com/spreadsheets/d/1DqP8sjkfJ_pkxtETzuEdoVZbWOGu633EMQAeShe5k68/edit?usp=sharing
+   /// @param  index    the index of the vertex
+   virtual int zone(int index) {return 0;};
 
    /// Returns the type of synapse at the given coordinates
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
