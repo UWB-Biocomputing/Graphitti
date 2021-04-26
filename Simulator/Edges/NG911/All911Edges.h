@@ -81,7 +81,7 @@ public:
    ///
    ///  @param  iEdg      Index of the Edge to connect to.
    ///  @param  vertices  The Neuron list to search from.
-   virtual void advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) override {};
+   virtual void advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) override;
 
 #endif
 };

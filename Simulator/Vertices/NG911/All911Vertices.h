@@ -103,6 +103,8 @@ public:
    virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap);
 
 protected:
+   void advanceVertex(const int index);
+
 
 #endif // defined(USE_GPU)
 };
