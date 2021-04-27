@@ -82,8 +82,7 @@ public:
    ///  @param  layout      Layout information of the neural network.
    ///  @param  ineurons    The Neuron list to search from.
    ///  @param  isynapses   The Synapse list to search from.
-   void
-   createSynapsesFromWeights(const int numVertices, Layout *layout, IAllVertices &ivertices, AllEdges &isynapses);
+   void createSynapsesFromWeights(const int numVertices, Layout *layout, IAllVertices &ivertices, AllEdges &isynapses);
 
 #if defined(USE_GPU)
    public:

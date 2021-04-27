@@ -44,10 +44,17 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
+   ///  Update the connections status in every epoch.
+   ///
+   ///  @param  neurons  The Neuron list to search from.
+   ///  @param  layout   Layout information of the neural network.
+   ///  @return true if successful, false otherwise.
+   virtual bool updateConnections(IAllVertices &vertices, Layout *layout) override;
+
 private:
    /// number of maximum connections per vertex
    int connsPerVertex_;
 
-   /// Connection radius threshold
-   BGFLOAT threshConnsRadius_;
+   bool deletePSAP(IAllVertices &vertices, Layout *layout);
+
 };

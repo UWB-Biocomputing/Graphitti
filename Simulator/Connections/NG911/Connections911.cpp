@@ -9,6 +9,7 @@
 
 #include "Connections911.h"
 #include "ParameterManager.h"
+#include "All911Vertices.h"
 
 Connections911::Connections911() {
 
@@ -73,3 +74,114 @@ void Connections911::printParameters() const {
 
 }
 
+///  Update the connections status in every epoch.
+///
+///  @param  vertices  The Vertex list to search from.
+///  @param  layout   Layout information of the vertex network.
+///  @return true if successful, false otherwise.
+bool Connections911::updateConnections(IAllVertices &vertices, Layout *layout) {
+   // Called twice, once after each epoch
+   deletePSAP(vertices, layout);
+   return true;
+}
+
+bool Connections911::deletePSAP(IAllVertices &vertices, Layout *layout) {
+   int numVertices = Simulator::getInstance().getTotalVertices();
+
+   vector<int> psaps;
+   psaps.clear();
+
+   // Find all psaps
+   for (int i = 0; i < numVertices; i++) {
+      if (layout->vertexTypeMap_[i] == PSAP) {
+         psaps.push_back(i);
+      }
+   }
+
+   // Only 1 psap, do not delete :(
+   if (psaps.size() < 2) { return false; }
+
+   // Pick random PSAP
+   int randVal = rng.inRange(0, psaps.size());
+   int randPSAP = psaps[randVal];
+   psaps.erase(psaps.begin() + randVal);
+
+   BGSIZE maxTotalEdges = edges_->maxEdgesPerVertex_ * numVertices;
+   bool changesMade = false;
+   vector<int> callersToReroute;
+   vector<int> respsToReroute;
+
+   // Iterate through all edges
+   for (int iEdg = 0; iEdg < maxTotalEdges; iEdg++) {
+      if (edges_->inUse_[iEdg]) {
+         int srcVertex = edges_->sourceVertexIndex_[iEdg];
+         int dstVertex = edges_->destVertexIndex_[iEdg];
+
+         // Find PSAP edge
+         if (srcVertex == randPSAP || srcVertex == randPSAP) {
+            changesMade = true;
+            edges_->eraseEdge(dstVertex, iEdg);
+            layout->vertexTypeMap_[randPSAP] = VTYPE_UNDEF;
+
+            // Identify all psap-less callers
+            if (layout->vertexTypeMap_[srcVertex] == CALR) {
+               callersToReroute.push_back(srcVertex);
+            }
+
+            // Identify all psap-less responders
+            if (layout->vertexTypeMap_[dstVertex] == RESP) {
+               respsToReroute.push_back(dstVertex);
+            }
+         }
+      }
+   }
+
+   // Failsafe
+   if (psaps.size() < 1) { return false; }
+
+   // For each psap-less caller, find closest match
+   for (int i = 0; i < callersToReroute.size(); i++) {
+      int srcVertex = callersToReroute[i];
+
+      int closestPSAP = psaps[0];
+      BGFLOAT smallestDist = (*layout->dist_)(srcVertex, closestPSAP);
+
+      // Find closest PSAP
+      for (int i = 0; i < psaps.size(); i++) {
+         BGFLOAT dist = (*layout->dist_)(srcVertex, psaps[i]);
+         if (dist < smallestDist) {
+            smallestDist = dist;
+            closestPSAP = psaps[i];
+         }
+      }
+
+      // Insert Caller to PSAP edge
+      BGFLOAT *sumPoint = &(dynamic_cast<AllVertices *>(&vertices)->summationMap_[closestPSAP]);
+      BGSIZE iEdg;
+      edges_->addEdge(iEdg, CP, srcVertex, closestPSAP, sumPoint, Simulator::getInstance().getDeltaT());
+   }
+
+   // For each psap-less responder, find closest match
+   for (int i = 0; i < respsToReroute.size(); i++) {
+      int dstVertex = respsToReroute[i];
+
+      int closestPSAP = psaps[0];
+      BGFLOAT smallestDist = (*layout->dist_)(closestPSAP, dstVertex);
+
+      // Find closest PSAP
+      for (int i = 0; i < psaps.size(); i++) {
+         BGFLOAT dist = (*layout->dist_)(psaps[i], dstVertex);
+         if (dist < smallestDist) {
+            smallestDist = dist;
+            closestPSAP = psaps[i];
+         }
+      }
+
+      // Insert PSAP to Responder edge
+      BGFLOAT *sumPoint = &(dynamic_cast<AllVertices *>(&vertices)->summationMap_[dstVertex]);
+      BGSIZE iEdg;
+      edges_->addEdge(iEdg, PR, closestPSAP, dstVertex, sumPoint, Simulator::getInstance().getDeltaT());
+   }
+
+   return changesMade;
+}
