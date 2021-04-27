@@ -46,8 +46,8 @@ public:
 
    ///  Update the connections status in every epoch.
    ///
-   ///  @param  neurons  The Neuron list to search from.
-   ///  @param  layout   Layout information of the neural network.
+   ///  @param  vertices The Vertex list to search from.
+   ///  @param  layout   Layout information of the vertex network.
    ///  @return true if successful, false otherwise.
    virtual bool updateConnections(IAllVertices &vertices, Layout *layout) override;
 
@@ -55,6 +55,23 @@ private:
    /// number of maximum connections per vertex
    int connsPerVertex_;
 
-   bool deletePSAP(IAllVertices &vertices, Layout *layout);
+   /// number of psaps to erase at the end of 1 epoch
+   int psapsToErase_;
 
+   /// number of responder nodes to erase at the end of 1 epoch
+   int respsToErase_;
+
+   ///  Randomly delete 1 PSAP and rewire all the edges around it.
+   ///
+   ///  @param  vertices  The Vertex list to search from.
+   ///  @param  layout   Layout information of the vertex network.
+   ///  @return true if successful, false otherwise.
+   bool erasePSAP(IAllVertices &vertices, Layout *layout);
+
+   ///  Randomly delete 1 RESP.
+   ///
+   ///  @param  vertices  The Vertex list to search from.
+   ///  @param  layout   Layout information of the vertex network.
+   ///  @return true if successful, false otherwise.
+   bool eraseRESP(IAllVertices &vertices, Layout *layout);
 };

@@ -68,6 +68,8 @@ void Connections911::setupConnections(Layout *layout, IAllVertices *vertices, Al
 
 void Connections911::loadParameters() {
    ParameterManager::getInstance().getIntByXpath("//connsPerVertex/text()", connsPerVertex_);
+   ParameterManager::getInstance().getIntByXpath("//psapsToErase/text()", psapsToErase_);
+   ParameterManager::getInstance().getIntByXpath("//respsToErase/text()", respsToErase_);
 }
 
 void Connections911::printParameters() const {
@@ -80,12 +82,26 @@ void Connections911::printParameters() const {
 ///  @param  layout   Layout information of the vertex network.
 ///  @return true if successful, false otherwise.
 bool Connections911::updateConnections(IAllVertices &vertices, Layout *layout) {
-   // Called twice, once after each epoch
-   deletePSAP(vertices, layout);
+   // Only run on the first epoch
+   if (Simulator::getInstance().getCurrentStep() != 1) { return false; }
+
+   for (int i = 0; i < psapsToErase_; i++) {
+      erasePSAP(vertices, layout);
+   }
+
+   for (int i = 0; i < respsToErase_; i++) {
+      eraseRESP(vertices, layout);
+   }
+
    return true;
 }
 
-bool Connections911::deletePSAP(IAllVertices &vertices, Layout *layout) {
+///  Randomly delete 1 PSAP and rewire all the edges around it.
+///
+///  @param  vertices  The Vertex list to search from.
+///  @param  layout   Layout information of the vertex network.
+///  @return true if successful, false otherwise.
+bool Connections911::erasePSAP(IAllVertices &vertices, Layout *layout) {
    int numVertices = Simulator::getInstance().getTotalVertices();
 
    vector<int> psaps;
@@ -98,7 +114,7 @@ bool Connections911::deletePSAP(IAllVertices &vertices, Layout *layout) {
       }
    }
 
-   // Only 1 psap, do not delete :(
+   // Only 1 psap, do not delete me :(
    if (psaps.size() < 2) { return false; }
 
    // Pick random PSAP
@@ -113,25 +129,26 @@ bool Connections911::deletePSAP(IAllVertices &vertices, Layout *layout) {
 
    // Iterate through all edges
    for (int iEdg = 0; iEdg < maxTotalEdges; iEdg++) {
-      if (edges_->inUse_[iEdg]) {
-         int srcVertex = edges_->sourceVertexIndex_[iEdg];
-         int dstVertex = edges_->destVertexIndex_[iEdg];
+      if (!edges_->inUse_[iEdg]) { continue; }
+      int srcVertex = edges_->sourceVertexIndex_[iEdg];
+      int dstVertex = edges_->destVertexIndex_[iEdg];
 
-         // Find PSAP edge
-         if (srcVertex == randPSAP || srcVertex == randPSAP) {
-            changesMade = true;
-            edges_->eraseEdge(dstVertex, iEdg);
-            layout->vertexTypeMap_[randPSAP] = VTYPE_UNDEF;
+      // Find PSAP edge
+      if (srcVertex == randPSAP || dstVertex == randPSAP) {
+         changesMade = true;
+         edges_->eraseEdge(dstVertex, iEdg);
 
-            // Identify all psap-less callers
-            if (layout->vertexTypeMap_[srcVertex] == CALR) {
-               callersToReroute.push_back(srcVertex);
-            }
+         // This is here so that we don't delete the vertex if we can't find any edges
+         layout->vertexTypeMap_[randPSAP] = VTYPE_UNDEF;
 
-            // Identify all psap-less responders
-            if (layout->vertexTypeMap_[dstVertex] == RESP) {
-               respsToReroute.push_back(dstVertex);
-            }
+         // Identify all psap-less callers
+         if (layout->vertexTypeMap_[srcVertex] == CALR) {
+            callersToReroute.push_back(srcVertex);
+         }
+
+         // Identify all psap-less responders
+         if (layout->vertexTypeMap_[dstVertex] == RESP) {
+            respsToReroute.push_back(dstVertex);
          }
       }
    }
@@ -181,6 +198,54 @@ bool Connections911::deletePSAP(IAllVertices &vertices, Layout *layout) {
       BGFLOAT *sumPoint = &(dynamic_cast<AllVertices *>(&vertices)->summationMap_[dstVertex]);
       BGSIZE iEdg;
       edges_->addEdge(iEdg, PR, closestPSAP, dstVertex, sumPoint, Simulator::getInstance().getDeltaT());
+   }
+
+   return changesMade;
+}
+
+///  Randomly delete 1 RESP.
+///
+///  @param  vertices  The Vertex list to search from.
+///  @param  layout   Layout information of the vertex network.
+///  @return true if successful, false otherwise.
+bool Connections911::eraseRESP(IAllVertices &vertices, Layout *layout) {
+   int numVertices = Simulator::getInstance().getTotalVertices();
+
+   vector<int> resps;
+   resps.clear();
+
+   // Find all resps
+   for (int i = 0; i < numVertices; i++) {
+      if (layout->vertexTypeMap_[i] == RESP) {
+         resps.push_back(i);
+      }
+   }
+
+   // Only 1 resp, do not delete me :(
+   if (resps.size() < 2) { return false; }
+
+   // Pick random RESP
+   int randVal = rng.inRange(0, resps.size());
+   int randRESP = resps[randVal];
+   resps.erase(resps.begin() + randVal);
+
+   BGSIZE maxTotalEdges = edges_->maxEdgesPerVertex_ * numVertices;
+   bool changesMade = false;
+
+   // Iterate through all edges
+   for (int iEdg = 0; iEdg < maxTotalEdges; iEdg++) {
+      if (!edges_->inUse_[iEdg]) { continue; }
+      int srcVertex = edges_->sourceVertexIndex_[iEdg];
+      int dstVertex = edges_->destVertexIndex_[iEdg];
+
+      // Find RESP edge
+      if (srcVertex == randRESP || dstVertex == randRESP) {
+         changesMade = true;
+         edges_->eraseEdge(dstVertex, iEdg);
+
+         // This is here so that we don't delete the vertex if we can't find any edges
+         layout->vertexTypeMap_[randRESP] = VTYPE_UNDEF;
+      }
    }
 
    return changesMade;

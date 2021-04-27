@@ -39,6 +39,8 @@
       <Connections911Params name="Connections911Params">
             <!-- ConnsPerVertex = 5x5 zones = 25, minus 1 (itself) plus 3 (other psaps)) -->
         <connsPerVertex name="connsPerVertex">87</connsPerVertex>
+        <psapsToDelete name="psapsToDelete">1</psapsToDelete>
+        <respsToDelete name="respsToDelete">2</respsToDelete>
       </Connections911Params>
     </ConnectionsParams>
 
