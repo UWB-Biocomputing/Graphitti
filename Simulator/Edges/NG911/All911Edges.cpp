@@ -63,11 +63,30 @@ void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, B
    this->type_[iEdg] = type;
 }
 
+
+///  Advance all the edges in the simulation.
+///
+///  @param  vertices           The vertex list to search from.
+///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
+void All911Edges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap) {
+   All911Vertices *allVertices = dynamic_cast<All911Vertices *>(vertices);
+   for (BGSIZE i = 0; i < totalEdgeCount_; i++) {
+      if(!inUse_[i]) {continue;}
+      // if the edge is in use...
+      BGSIZE iEdg = edgeIndexMap->incomingEdgeIndexMap_[i];
+      advance911Edge(iEdg, allVertices);
+
+   }
+}
+
 ///  Advance one specific edge.
 ///
 ///  @param  iEdg      Index of the edge to connect to.
 ///  @param  vertices   The vertex list to search from.
-void All911Edges::advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) {
+void All911Edges::advance911Edge(const BGSIZE iEdg, All911Vertices *vertices) {
+   
+  // edge
+  // source node   -->   destination node 
 
    // // is an input in the queue?
    // bool fPre = isSpikeQueue(iEdg);
@@ -76,7 +95,6 @@ void All911Edges::advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) {
    // if (fPre || fPost) {
 
    //    BGFLOAT deltaT = Simulator::getInstance().getDeltaT();
-   //    All911Vertices *allVertices = dynamic_cast<All911Vertices *>(vertices);
 
    //    // pre and post vertices index
    //    int idxPre = sourceVertexIndex_[iEdg];

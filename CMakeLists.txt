@@ -12,7 +12,7 @@ set(CMAKE_CXX_STANDARD 11)
 #
 # "YES"/GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
-set(ENABLE_CUDA NO)
+set(ENABLE_CUDA YES)
 
 # Enables the CUDA langauge and locates the NVCC compiler. 
 # Sets the USE_GPU preproccesser macro so that GPU code will be compiled.

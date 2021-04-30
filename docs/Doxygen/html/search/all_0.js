@@ -11,7 +11,7 @@ var searchData=
   ['advanceneuron_8',['advanceNeuron',['../class_all_i_z_h_neurons.html#a2ae8bc7ff6a669b18faecea4dfadb102',1,'AllIZHNeurons::advanceNeuron()'],['../class_all_l_i_f_neurons.html#ac6bd1da0362a5c1baf5f5a8de6c768bb',1,'AllLIFNeurons::advanceNeuron()'],['../class_all_spiking_neurons.html#ae40df139fbb88dd03bea5421f3c3b967',1,'AllSpikingNeurons::advanceNeuron()']]],
   ['advancespikingsynapsesdevice_9',['advanceSpikingSynapsesDevice',['../_all_synapses_device_funcs__d_8cu.html#a4c30e68e8683d45ce4b1c812f1a51824',1,'AllSynapsesDeviceFuncs_d.cu']]],
   ['advancestdpsynapsesdevice_10',['advanceSTDPSynapsesDevice',['../_all_synapses_device_funcs__d_8cu.html#ab50e7ea65626cca8b96cb62df0a3a767',1,'AllSynapsesDeviceFuncs_d.cu']]],
-  ['advanceuntilgrowth_11',['advanceUntilGrowth',['../class_simulator.html#a1c2c72ff19d6c2fe5c31c7057ca31585',1,'Simulator']]],
+  ['advanceuntilgrowth_11',['advanceEpoch',['../class_simulator.html#a1c2c72ff19d6c2fe5c31c7057ca31585',1,'Simulator']]],
   ['advancevertices_12',['advanceVertices',['../class_i_all_vertices.html#a137915f85227c9c512e4682fa944c311',1,'IAllVertices::advanceVertices()'],['../class_all_spiking_neurons.html#add5cbc21f3b35eab734931ddbecdc69c',1,'AllSpikingNeurons::advanceVertices()']]],
   ['all911edges_13',['All911Edges',['../class_all911_edges.html',1,'']]],
   ['all911edges_2eh_14',['All911Edges.h',['../_all911_edges_8h.html',1,'']]],
