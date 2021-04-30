@@ -44,7 +44,34 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
+   vertexType *oldTypeMap_;
+
+private:
+   /// number of maximum connections per vertex
+   int connsPerVertex_;
+
+   /// number of psaps to erase at the end of 1 epoch
+   int psapsToErase_;
+
+   /// number of responder nodes to erase at the end of 1 epoch
+   int respsToErase_;
+
+   struct EdgeStr;
+
+   // Edges that were added but later removed are still here
+   vector<EdgeStr> edgesAdded;
+
+   // New edges = (old edges + edgesAdded) - edgesErased  <-- works
+   // New edges = (old edges - edgesErased) + edgesAdded  <-- does not work
+   vector<EdgeStr> edgesErased;
+
+   vector<int> verticesErased;
+
+#if !defined(USE_GPU)
+
+public:
    ///  Update the connections status in every epoch.
+   ///  Uses the parent definition for USE_GPU
    ///
    ///  @param  vertices The Vertex list to search from.
    ///  @param  layout   Layout information of the vertex network.
@@ -59,18 +86,7 @@ public:
    ///  @return xml representation of all deleted vertices
    string erasedVsToXML();
 
-   vertexType *oldTypeMap_;
-
 private:
-   /// number of maximum connections per vertex
-   int connsPerVertex_;
-
-   /// number of psaps to erase at the end of 1 epoch
-   int psapsToErase_;
-
-   /// number of responder nodes to erase at the end of 1 epoch
-   int respsToErase_;
-
    ///  Randomly delete 1 PSAP and rewire all the edges around it.
    ///
    ///  @param  vertices  The Vertex list to search from.
@@ -92,12 +108,15 @@ private:
       string toString();
    };
 
-   // Edges that were added but later removed are still here
-   vector<EdgeStr> edgesAdded;
+#else
+public:
+   // Placeholder for GPU build
+   string erasedVsToXML() { return ""; };
+   string changedEdgesToXML(bool added) { return ""; };
 
-   // New edges = (old edges + edgesAdded) - edgesErased  <-- works
-   // New edges = (old edges - edgesErased) + edgesAdded  <-- does not work
-   vector<EdgeStr> edgesErased;
+private:
+   struct EdgeStr {};
 
-   vector<int> verticesErased;
+#endif
+
 };

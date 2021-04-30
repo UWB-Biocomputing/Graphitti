@@ -82,6 +82,7 @@ void Connections911::printParameters() const {
     << "\tRESPs to erase: " << respsToErase_ << endl << endl);
 }
 
+#if !defined(USE_GPU)
 ///  Update the connections status in every epoch.
 ///
 ///  @param  vertices  The Vertex list to search from.
@@ -361,3 +362,5 @@ string Connections911::erasedVsToXML() {
    os << endl << "</Matrix>";
    return os.str();
 }
+
+#endif
