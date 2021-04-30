@@ -100,7 +100,7 @@ public:
    ///
    ///  @param  edges         The Edge list to search from.
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-   virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap);
+   virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap) override;
 
 protected:
    void advanceVertex(const int index);

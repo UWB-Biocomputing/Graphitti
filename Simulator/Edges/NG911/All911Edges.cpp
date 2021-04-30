@@ -8,7 +8,7 @@
 
 #include "All911Edges.h"
 
-All911Edges::All911Edges() {
+All911Edges::All911Edges() : AllEdges() {
 
 }
 
@@ -118,9 +118,5 @@ void All911Edges::advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) {
    //       int offIndex = -1;   // last spike
    //    }
    // }
-
-}
-
-void All911Edges::printParameters() const {
 
 }

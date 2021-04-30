@@ -51,6 +51,16 @@ public:
    ///  @return true if successful, false otherwise.
    virtual bool updateConnections(IAllVertices &vertices, Layout *layout) override;
 
+   ///  Returns the complete list of all deleted or added edges as a string.
+   ///  @return xml representation of all deleted or added edges
+   string changedEdgesToXML(bool added);
+
+   ///  Returns the complete list of deleted vertices as a string.
+   ///  @return xml representation of all deleted vertices
+   string erasedVsToXML();
+
+   vertexType *oldTypeMap_;
+
 private:
    /// number of maximum connections per vertex
    int connsPerVertex_;
@@ -74,4 +84,20 @@ private:
    ///  @param  layout   Layout information of the vertex network.
    ///  @return true if successful, false otherwise.
    bool eraseRESP(IAllVertices &vertices, Layout *layout);
+
+   struct EdgeStr {
+      int srcV;
+      int destV;
+      edgeType eType;
+      string toString();
+   };
+
+   // Edges that were added but later removed are still here
+   vector<EdgeStr> edgesAdded;
+
+   // New edges = (old edges + edgesAdded) - edgesErased  <-- works
+   // New edges = (old edges - edgesErased) + edgesAdded  <-- does not work
+   vector<EdgeStr> edgesErased;
+
+   vector<int> verticesErased;
 };
