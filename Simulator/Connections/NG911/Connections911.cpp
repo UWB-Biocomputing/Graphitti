@@ -308,21 +308,8 @@ bool Connections911::eraseRESP(IAllVertices &vertices, Layout *layout) {
 ///  @return xml representation of a single edge
 string Connections911::ChangedEdge::toString() {
    stringstream os;
-   string type_s;
-
-   switch (eType){
-      case CP: type_s = "CP"; break;
-      case PR: type_s = "PR"; break;
-      case PP: type_s = "PP"; break;
-      case RC: type_s = "RC"; break;
-      default: type_s = "ETYPE_UNDEF";
-   }
-
-   os << "<item>";
-   os << srcV << " " << destV << " " << type_s;
-   os << "</item>" << endl;
-
-   return os.str();
+   os << srcV << " " << destV << " " << eType << endl;
+    return os.str();
 }
 
 ///  Returns the complete list of all deleted or added edges as a string.
