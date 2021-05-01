@@ -56,12 +56,6 @@ public:
    ///  @return the complete state of the vertex.
    virtual string toString(const int index) const;
 
-   struct vertexProps {
-      // to access the type (CALR, RESP, PSAP), then access vertex type map
-      // int availability; 
-
-   };
-
 private: 
 
    /// number of callers

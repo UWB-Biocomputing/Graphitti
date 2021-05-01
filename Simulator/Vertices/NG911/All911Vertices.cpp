@@ -9,7 +9,7 @@
 #include "All911Vertices.h"
 #include "All911Edges.h"
 #include "ParameterManager.h"
-
+#include "Layout911.h"
 
 All911Vertices::All911Vertices() {
     callNum_ = nullptr; 
@@ -52,12 +52,14 @@ void All911Vertices::createAllVertices(Layout *layout) {
 
     int callersPerZone[] = {0, 0, 0, 0};
     int respPerZone[] = {0, 0, 0, 0};
+    
+    Layout911 *layout911 = dynamic_cast<Layout911 *>(layout); 
 
     for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {  
         // Create all callers
         if (layout->vertexTypeMap_[i] == CALR) {
             callNum_[i] = rng.inRange(callNumRange_[0], callNumRange_[1]);
-            callersPerZone[layout->zone(i)] += callNum_[i];
+            callersPerZone[layout911->zone(i)] += callNum_[i];
         }
 
         // Find all PSAPs
@@ -68,14 +70,14 @@ void All911Vertices::createAllVertices(Layout *layout) {
         // Find all resps
         if(layout->vertexTypeMap_[i] == RESP) {
             respList.push_back(i);
-            respPerZone[layout->zone(i)] += 1;
+            respPerZone[layout911->zone(i)] += 1;
         }
     }
 
     // Create all psaps
     // Dispatchers in a psap = [callers in the zone * k] + some randomness
     for (int i = 0; i < psapList.size(); i++) {
-        int psapQ = layout->zone(i);
+        int psapQ = layout911->zone(i);
         int dispCount = (callersPerZone[psapQ] * dispNumScale_) + rng.inRange(-5, 5);
         if (dispCount < 1) { dispCount = 1; }
         dispNum_[psapList[i]] = dispCount;
@@ -84,7 +86,7 @@ void All911Vertices::createAllVertices(Layout *layout) {
     // Create all responders
     // Responders in a node = [callers in the zone * k]/[number of responder nodes] + some randomness
     for (int i = 0; i < respList.size(); i++) {
-        int respQ = layout->zone(respList[i]);
+        int respQ = layout911->zone(respList[i]);
         int respCount = (callersPerZone[respQ] * respNumScale_)/respPerZone[respQ] + rng.inRange(-5, 5);
         if (respCount < 1) { respCount = 1; }
         respNum_[respList[i]] = respCount;

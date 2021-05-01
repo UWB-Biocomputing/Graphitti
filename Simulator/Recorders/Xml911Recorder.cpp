@@ -73,7 +73,7 @@ void Xml911Recorder::saveSimData(const IAllVertices &vertices) {
    stateOut_ << "   " << vertexTypes.toXML("vertexTypesPostEvent") << endl;
 
    // Print out deleted edges and vertices:
-   stateOut_ << "   " << conns911.erasedVsToXML() << endl;
+   stateOut_ << "   " << conns911.erasedVerticesToXML() << endl;
    stateOut_ << "   " << conns911.changedEdgesToXML(false) << endl;
    stateOut_ << "   " << conns911.changedEdgesToXML(true) << endl;
 

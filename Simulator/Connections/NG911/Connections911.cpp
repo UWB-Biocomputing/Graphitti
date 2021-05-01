@@ -10,6 +10,7 @@
 #include "Connections911.h"
 #include "ParameterManager.h"
 #include "All911Vertices.h"
+#include "Layout911.h"
 
 Connections911::Connections911() {
 
@@ -25,6 +26,8 @@ void Connections911::setupConnections(Layout *layout, IAllVertices *vertices, Al
    int added = 0;
 
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
+
+   Layout911 *layout911 = dynamic_cast<Layout911 *>(layout); 
 
    // For each source vertex
    for (int srcVertex = 0; srcVertex < numVertices; srcVertex++) {
@@ -42,8 +45,8 @@ void Connections911::setupConnections(Layout *layout, IAllVertices *vertices, Al
          if (type == ETYPE_UNDEF) { continue; }
 
          // Zone each vertex belongs to
-         int srcZone = layout->zone(srcVertex);
-         int destZone = layout->zone(destVertex);
+         int srcZone = layout911->zone(srcVertex);
+         int destZone = layout911->zone(destVertex);
 
          // CP and PR where they aren't in the same zone
          // All PP and RC are defined
@@ -153,7 +156,7 @@ bool Connections911::erasePSAP(IAllVertices &vertices, Layout *layout) {
       // Find PSAP edge
       if (srcVertex == randPSAP || destVertex == randPSAP) {
          // Record erased edge
-         EdgeStr erasedEdge;
+         ChangedEdge erasedEdge;
          erasedEdge.srcV = srcVertex;
          erasedEdge.destV = destVertex;
          erasedEdge.eType = layout->edgType(srcVertex, destVertex);
@@ -205,7 +208,7 @@ bool Connections911::erasePSAP(IAllVertices &vertices, Layout *layout) {
       edges_->addEdge(iEdg, CP, srcVertex, closestPSAP, sumPoint, Simulator::getInstance().getDeltaT());
 
       // Record added edge
-      EdgeStr addedEdge;
+      ChangedEdge addedEdge;
       addedEdge.srcV = srcVertex;
       addedEdge.destV = closestPSAP;
       addedEdge.eType = CP;
@@ -234,7 +237,7 @@ bool Connections911::erasePSAP(IAllVertices &vertices, Layout *layout) {
       edges_->addEdge(iEdg, PR, closestPSAP, destVertex, sumPoint, Simulator::getInstance().getDeltaT());
 
       // Record added edge
-      EdgeStr addedEdge;
+      ChangedEdge addedEdge;
       addedEdge.srcV = closestPSAP;
       addedEdge.destV = destVertex;
       addedEdge.eType = PR;
@@ -282,7 +285,7 @@ bool Connections911::eraseRESP(IAllVertices &vertices, Layout *layout) {
       // Find RESP edge
       if (srcVertex == randRESP || destVertex == randRESP) {
          // Record erased edge
-         EdgeStr erasedEdge;
+         ChangedEdge erasedEdge;
          erasedEdge.srcV = srcVertex;
          erasedEdge.destV = destVertex;
          erasedEdge.eType = layout->edgType(srcVertex, destVertex);
@@ -303,7 +306,7 @@ bool Connections911::eraseRESP(IAllVertices &vertices, Layout *layout) {
 }
 
 ///  @return xml representation of a single edge
-string Connections911::EdgeStr::toString() {
+string Connections911::ChangedEdge::toString() {
    stringstream os;
    string type_s;
 
@@ -328,7 +331,7 @@ string Connections911::EdgeStr::toString() {
 string Connections911::changedEdgesToXML(bool added) {
    stringstream os;
 
-   vector<EdgeStr> changed = edgesErased;
+   vector<ChangedEdge> changed = edgesErased;
    string name = "edgesDeleted";
 
    if (added) {
@@ -348,7 +351,7 @@ string Connections911::changedEdgesToXML(bool added) {
 
 ///  Returns the complete list of deleted vertices as a string.
 ///  @return xml representation of all deleted vertices
-string Connections911::erasedVsToXML() {
+string Connections911::erasedVerticesToXML() {
    stringstream os;
 
    os << "<Matrix name=\"verticesDeleted\" type=\"complete\" rows=\"1\" columns=\"" << verticesErased.size() << "\" multiplier=\"1.0\">" << endl;

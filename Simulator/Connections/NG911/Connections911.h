@@ -44,6 +44,7 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
+   /// Records typeMap history for recorders
    vertexType *oldTypeMap_;
 
 private:
@@ -56,14 +57,14 @@ private:
    /// number of responder nodes to erase at the end of 1 epoch
    int respsToErase_;
 
-   struct EdgeStr;
+   struct ChangedEdge;
 
    // Edges that were added but later removed are still here
-   vector<EdgeStr> edgesAdded;
+   vector<ChangedEdge> edgesAdded;
 
    // New edges = (old edges + edgesAdded) - edgesErased  <-- works
    // New edges = (old edges - edgesErased) + edgesAdded  <-- does not work
-   vector<EdgeStr> edgesErased;
+   vector<ChangedEdge> edgesErased;
 
    vector<int> verticesErased;
 
@@ -84,7 +85,7 @@ public:
 
    ///  Returns the complete list of deleted vertices as a string.
    ///  @return xml representation of all deleted vertices
-   string erasedVsToXML();
+   string erasedVerticesToXML();
 
 private:
    ///  Randomly delete 1 PSAP and rewire all the edges around it.
@@ -101,7 +102,7 @@ private:
    ///  @return true if successful, false otherwise.
    bool eraseRESP(IAllVertices &vertices, Layout *layout);
 
-   struct EdgeStr {
+   struct ChangedEdge {
       int srcV;
       int destV;
       edgeType eType;
@@ -110,12 +111,13 @@ private:
 
 #else
 public:
-   // Placeholder for GPU build
-   string erasedVsToXML() { return ""; };
+   // Not Implemented; Placeholder for GPU build
+   string erasedVerticesToXML() { return ""; };
    string changedEdgesToXML(bool added) { return ""; };
 
 private:
-   struct EdgeStr {};
+   // Not Implemented; Placeholder for GPU build
+   struct ChangedEdge {};
 
 #endif
 
