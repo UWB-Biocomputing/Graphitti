@@ -161,14 +161,23 @@ void All911Vertices::advanceVertex(const int index) {
     vertexType type = Simulator::getInstance().getModel()->getLayout()->vertexTypeMap_[index]; 
 
     if (type == CALR) {
-        // make "noise" of random calls
+        // generate random number between minimum and maximum number of calls
+        BGSIZE noise = rng.inRange(callNumRange_[0], callNumRange_[1]);
+
+        // todo: apply distribution to this that is "bottom heavy"
     }
     // Find all PSAPs
     if(type == PSAP) {
         // direct caller to resp or other psap
+        // queue of receiving calls (CALR->PSAP)
+        // queue of placing calls (PSAP->RESP)
+        // timer placed on each call (random timestep amt.)
     }
     // Find all resps
     if(type == RESP) {
+        // receive calls from PSAP (PSAP->RESP)
+        // queue of availability (timer of response)
+        // distance between caller and responder (RESP->CALR)
 
     }
 
@@ -191,6 +200,6 @@ void All911Vertices::advanceVertex(const int index) {
     // // clear synaptic input for next time step
     // summationPoint = 0;
 
-}
+} 
 
 #endif
