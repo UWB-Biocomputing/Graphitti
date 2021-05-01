@@ -46,8 +46,8 @@ public:
    ///  Create a Edge and connect it to the model.
    ///
    ///  @param  iEdg        Index of the edge to set.
-   ///  @param  srcVertex   Coordinates of the source Neuron.
-   ///  @param  destVertex  Coordinates of the destination Neuron.
+   ///  @param  srcVertex   Coordinates of the source vertex.
+   ///  @param  destVertex  Coordinates of the destination vertex.
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Edge to create.

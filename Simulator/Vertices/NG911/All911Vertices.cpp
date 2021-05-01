@@ -117,22 +117,21 @@ string All911Vertices::toString(const int index) const {
 ///  @param  edges         The edge list to search from.
 ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
 void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap) {
-//    // casting all911Edges for this method to use & modify
-//    All911Edges &allEdges = dynamic_cast<All911Edges &>(edges);
-//    // For each vertex in the network
-//    for (int idx = Simulator::getInstance().getTotalVertices() - 1; idx >= 0; --idx) {
-//       // advance vertices
-//       advanceVertex(idx);
+   // casting all911Edges for this method to use & modify
+   All911Edges &allEdges = dynamic_cast<All911Edges &>(edges);
+
+   // For each vertex in the network
+   for (int idx = Simulator::getInstance().getTotalVertices() - 1; idx >= 0; --idx) {
+      // advance vertices
+      advanceVertex(idx);
+   }
 
 //       // notify the source and destination edges if anything has happened to the vertex
 //       if (hasFired_[idx]) {
 //          LOG4CPLUS_DEBUG(vertexLogger_, "Vertex: " << idx << " has fired at time: "
 //                         << g_simulationStep * Simulator::getInstance().getDeltaT());
-
-
 //          // notify outgoing edges
 //          BGSIZE edgeCounts;
-
 //          if (edgeIndexMap != nullptr) {
 //             edgeCounts = edgeIndexMap->outgoingEdgeCount_[idx];
 //             if (edgeCounts != 0) {
@@ -144,29 +143,37 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
 //                }
 //             }
 //          }
-
 //          // notify incoming edges
 //          edgeCounts = allEdges.edgeCounts_[idx];
 //          BGSIZE synapse_notified = 0;
-
 //          hasFired_[idx] = false;
 //       }
 //    }
 }
 
-///  Update internal state of the indexed Neuron (called by every simulation step).
+///  Update internal state of the indexed vertex (called by every simulation timestep).
 ///
-///  @param  index       Index of the Neuron to update.
-void All911Vertices::advanceVertex(const int index) {
-    // BGFLOAT &Vm = this->Vm_[index];
-    // BGFLOAT &Vthresh = this->Vthresh_[index];
-    // BGFLOAT &summationPoint = this->summationMap_[index];
-    // BGFLOAT &I0 = this->I0_[index];
-    // BGFLOAT &Inoise = this->Inoise_[index];
-    // BGFLOAT &C1 = this->C1_[index];
-    // BGFLOAT &C2 = this->C2_[index];
-    // int &nStepsInRefr = this->numStepsInRefractoryPeriod_[index];
+///  @param  index       Index of the vertex to update.
+void All911Vertices::advanceVertex(const int index) {   
+    
+    // BGFLOAT &C2 = this->C2_[index]; // <-- blueprint for when we have BGFLOAT vars
+    
+    vertexType type = Simulator::getInstance().getModel()->getLayout()->vertexTypeMap_[index]; 
 
+    if (type == CALR) {
+        // make "noise" of random calls
+    }
+    // Find all PSAPs
+    if(type == PSAP) {
+        // direct caller to resp or other psap
+    }
+    // Find all resps
+    if(type == RESP) {
+
+    }
+
+    
+    // int &nStepsInRefr = this->numStepsInRefractoryPeriod_[index];
     // if (nStepsInRefr > 0) {
     //     // is neuron refractory?
     //     --nStepsInRefr;
