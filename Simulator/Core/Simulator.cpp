@@ -133,7 +133,7 @@ void Simulator::simulate() {
       short_timer.start();
 #endif
       // Advance simulation to next growth cycle
-      advanceUntilGrowth(currentEpoch);
+      advanceEpoch(currentEpoch);
 #ifdef PERFORMANCE_METRICS
       // Time to advance
       t_host_advance += short_timer.lap() / 1000000.0;
@@ -165,7 +165,7 @@ void Simulator::simulate() {
 /// Helper for #simulate(). Advance simulation until ready for next growth cycle.
 /// This should simulate all neuron and synapse activity for one epoch.
 /// @param currentStep the current epoch in which the network is being simulated.
-void Simulator::advanceUntilGrowth(const int &currentEpoch) const {
+void Simulator::advanceEpoch(const int &currentEpoch) const {
    uint64_t count = 0;
    // Compute step number at end of this simulation epoch
    uint64_t endStep = g_simulationStep

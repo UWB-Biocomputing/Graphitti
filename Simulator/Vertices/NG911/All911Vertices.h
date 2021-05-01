@@ -56,21 +56,25 @@ public:
    ///  @return the complete state of the vertex.
    virtual string toString(const int index) const;
 
-
-protected: 
-   ///  Creates a single vertex and generates data for it.
-   ///
-   ///  @param  index   Index of the vertex to create.
-   ///  @param  layout  Layout information of the network.
-   void createVertex(int index, Layout *layout);
-
 private: 
 
    /// number of callers
-   int *CallNum_; 
+   int *callNum_; 
 
    /// Min/max values of CallNum.
-   int CallNumRange_[2];
+   int callNumRange_[2];
+
+   /// Number of dispatchers per PSAP calculated (with randomness) based on population
+   int *dispNum_;
+
+   /// Scaling factor for number of dispatchers in a PSAP
+   BGFLOAT dispNumScale_;
+
+   /// Number of responders per Responder node calculated (with randomness) based on population
+   int *respNum_;
+
+   /// Scaling factor for number of responders in a Responder node
+   BGFLOAT respNumScale_;
 
 #if defined(USE_GPU)
    // GPU functionality for 911 simulation is unimplemented.
@@ -90,9 +94,11 @@ public:
    ///
    ///  @param  edges         The Edge list to search from.
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-   virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap);
+   virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap) override;
 
 protected:
+   void advanceVertex(const int index);
+
 
 #endif // defined(USE_GPU)
 };

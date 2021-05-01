@@ -8,11 +8,11 @@
     </PoolSize>
     <SimParams name="SimParams">
       <epochDuration name="epochDuration">100.0</epochDuration>
-      <numEpochs name="numEpochs">5</numEpochs>
+      <numEpochs name="numEpochs">2</numEpochs>
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">100</maxFiringRate>
-      <maxEdgesPerVertex name="maxEdgesPerVertex">10</maxEdgesPerVertex>
+      <maxEdgesPerVertex name="maxEdgesPerVertex">88</maxEdgesPerVertex>
     </SimConfig>
     <Seed name="Seed">
       <value name="value">1</value>
@@ -24,10 +24,12 @@
 
   <ModelParams>
     <VerticesParams class="All911Vertices" name="VerticesParams">
-        <CallNum name="CallNum">
+      <CallNum name="CallNum">
         <min name="min">3</min>
-        <max name="max">7</max>
+        <max name="max">37</max>
       </CallNum>
+      <DispNumScale name="DispNumScale">0.3</DispNumScale>
+      <RespNumScale name="RespNumScale">0.3</RespNumScale>
     </VerticesParams>
 
     <EdgesParams class="All911Edges" name="EdgesParams">
@@ -35,8 +37,10 @@
 
     <ConnectionsParams class="Connections911" name="ConnectionsParams">
       <Connections911Params name="Connections911Params">
-        <connsPerVertex name="connsPerVertex">33</connsPerVertex>
-        <threshConnsRadius name="threshConnsRadius">1.5</threshConnsRadius>
+            <!-- Max ConnsPerVertex = 87 RC + 1 PR -->
+        <connsPerVertex name="connsPerVertex">88</connsPerVertex>
+        <psapsToErase name="psapsToErase">1</psapsToErase>
+        <respsToErase name="respsToErase">2</respsToErase>
       </Connections911Params>
     </ConnectionsParams>
 

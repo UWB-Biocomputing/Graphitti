@@ -22,6 +22,8 @@
 #pragma once
 
 #include "AllEdges.h"
+#include "All911Vertices.h"
+
 
 struct All911EdgeDeviceProperties;
 
@@ -52,10 +54,6 @@ public:
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               edgeType type) override;
 
-   ///  Prints out all parameters to logging file.
-   ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const override;
-
 protected:
 
 #if defined(USE_GPU)
@@ -77,10 +75,20 @@ protected:
 
 #else // !defined(USE_GPU)
 public:
+
+   ///  Advance all the edges in the simulation.
+   ///
+   ///  @param  vertices           The vertex list to search from.
+   ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
+   virtual void advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap);
+
    ///  Advance one specific Edge.
    ///
    ///  @param  iEdg      Index of the Edge to connect to.
    ///  @param  vertices  The Neuron list to search from.
+   void advance911Edge(const BGSIZE iEdg, All911Vertices *vertices);
+
+   /// unused virtual function placeholder
    virtual void advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) override {};
 
 #endif

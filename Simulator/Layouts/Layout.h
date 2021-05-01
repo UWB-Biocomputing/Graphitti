@@ -54,7 +54,6 @@ public:
    /// @param  numVertices number of vertices to have in the map.
    virtual void initStarterMap(const int numVertices);
 
-
    /// Returns the type of synapse at the given coordinates
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
