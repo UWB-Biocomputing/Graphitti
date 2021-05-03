@@ -44,19 +44,81 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
+   /// Records typeMap history for recorders
+   vertexType *oldTypeMap_;
+
 private:
    /// number of maximum connections per vertex
    int connsPerVertex_;
 
-   /// Connection radius threshold
-   BGFLOAT threshConnsRadius_;
+   /// number of psaps to erase at the end of 1 epoch
+   int psapsToErase_;
 
-   struct DistDestVertex {
-      BGFLOAT dist;     ///< distance to the destination vertex
-      int destVertex;  ///< index of the destination vertex
+   /// number of responder nodes to erase at the end of 1 epoch
+   int respsToErase_;
 
-      bool operator<(const DistDestVertex &other) const {
-         return (dist < other.dist);
-      }
+   struct ChangedEdge;
+
+   // Edges that were added but later removed are still here
+   vector<ChangedEdge> edgesAdded;
+
+   // New edges = (old edges + edgesAdded) - edgesErased  <-- works
+   // New edges = (old edges - edgesErased) + edgesAdded  <-- does not work
+   vector<ChangedEdge> edgesErased;
+
+   vector<int> verticesErased;
+
+#if !defined(USE_GPU)
+
+public:
+   ///  Update the connections status in every epoch.
+   ///  Uses the parent definition for USE_GPU
+   ///
+   ///  @param  vertices The Vertex list to search from.
+   ///  @param  layout   Layout information of the vertex network.
+   ///  @return true if successful, false otherwise.
+   virtual bool updateConnections(IAllVertices &vertices, Layout *layout) override;
+
+   ///  Returns the complete list of all deleted or added edges as a string.
+   ///  @return xml representation of all deleted or added edges
+   string changedEdgesToXML(bool added);
+
+   ///  Returns the complete list of deleted vertices as a string.
+   ///  @return xml representation of all deleted vertices
+   string erasedVerticesToXML();
+
+private:
+   ///  Randomly delete 1 PSAP and rewire all the edges around it.
+   ///
+   ///  @param  vertices  The Vertex list to search from.
+   ///  @param  layout   Layout information of the vertex network.
+   ///  @return true if successful, false otherwise.
+   bool erasePSAP(IAllVertices &vertices, Layout *layout);
+
+   ///  Randomly delete 1 RESP.
+   ///
+   ///  @param  vertices  The Vertex list to search from.
+   ///  @param  layout   Layout information of the vertex network.
+   ///  @return true if successful, false otherwise.
+   bool eraseRESP(IAllVertices &vertices, Layout *layout);
+
+   struct ChangedEdge {
+      int srcV;
+      int destV;
+      edgeType eType;
+      string toString();
    };
+
+#else
+public:
+   // Not Implemented; Placeholder for GPU build
+   string erasedVerticesToXML() { return ""; };
+   string changedEdgesToXML(bool added) { return ""; };
+
+private:
+   // Not Implemented; Placeholder for GPU build
+   struct ChangedEdge {};
+
+#endif
+
 };

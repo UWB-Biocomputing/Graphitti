@@ -137,7 +137,7 @@ public:
          IAllVertices &neurons, AllEdges &synapses,
          AllSpikingNeuronsDeviceProperties* allVerticesDevice,
          AllSpikingSynapsesDeviceProperties* allEdgesDevice,
-         Layout *layout) override`;
+         Layout *layout) override;
 #else
    ///  Update the weights of the Synapses in the simulation. To be clear,
    ///  iterates through all source and destination neurons and updates their

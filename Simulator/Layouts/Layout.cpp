@@ -78,7 +78,7 @@ void Layout::setupLayout() {
    // Initialize neuron locations memory, grab global info
    initVerticesLocs();
 
-   // computing distance between each pair of neurons given each neuron's xy location
+   // computing distance between each pair of vertices given each vertex's xy location
    for (int n = 0; n < numVertices - 1; n++) {
       for (int n2 = n + 1; n2 < numVertices; n2++) {
          // distance^2 between two points in point-slope form
