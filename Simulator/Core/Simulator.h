@@ -42,6 +42,12 @@ public:
 
    void printParameters() const; /// Prints loaded parameters to logging file.
 
+   // Copied over from STDPFix
+   void copyGPUSynapseToCPU(); /// Copy GPU Synapse data to CPU.
+
+   // Copied over from STDPFix
+   void copyCPUSynapseToGPU(); /// Copy CPU Synapse data to GPU.
+
    void reset(); /// Reset simulation objects.
 
    void simulate();
@@ -173,6 +179,7 @@ private:
 
    log4cplus::Logger consoleLogger_; /// Logger for printing to the console as well as the logging file
    log4cplus::Logger fileLogger_; /// Logger for printing to the logging file
+   log4cplus::Logger edgeLogger_; /// Logger for printing to the logging file
 
 #ifdef PERFORMANCE_METRICS
    Timer timer;   /// Timer for measuring performance of an epoch.

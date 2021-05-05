@@ -31,6 +31,7 @@ Simulator::Simulator() {
 
    consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
 
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&Simulator::printParameters, this);
@@ -104,6 +105,19 @@ void Simulator::printParameters() const {
                                           << "\tResult file path: " << resultFileName_ << endl << endl);
 }
 
+// Code from STDPFix branch, doesn't do anything
+/// Copy GPU Synapse data to CPU.
+void Simulator::copyGPUSynapseToCPU() {
+   // ToDo: Delete this method and implement using OperationManager
+   // model->copyGPUSynapseToCPUModel();
+}
+
+/// Copy CPU Synapse data to GPU.
+void Simulator::copyCPUSynapseToGPU() {
+   // ToDo: Delete this method and implement using OperationManager
+   // model->copyCPUSynapseToGPUModel();
+}
+
 /// Resets all of the maps. Releases and re-allocates memory for each map, clearing them as necessary.
 void Simulator::reset() {
    LOG4CPLUS_INFO(fileLogger_, "Resetting Simulator");
@@ -139,6 +153,7 @@ void Simulator::simulate() {
       t_host_advance += short_timer.lap() / 1000000.0;
 #endif
       LOG4CPLUS_TRACE(consoleLogger_, "done with epoch cycle " << currentEpoch_ << ", beginning growth update");
+      LOG4CPLUS_TRACE(edgeLogger_, "Epoch: " << currentEpoch_);
 
 #ifdef PERFORMANCE_METRICS
       // Start timer for connection update

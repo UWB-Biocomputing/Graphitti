@@ -160,6 +160,10 @@ void Model::logSimStep() const {
 /// Update the simulation history of every epoch.
 void Model::updateHistory() {
    // Compile history information in every epoch
+      if(recorder_ == nullptr)
+   {
+      LOG4CPLUS_INFO(fileLogger_, "ERROR: Recorder class is null.");
+   }
    if (recorder_ != nullptr) {
       recorder_->compileHistories(*layout_->getVertices());
    }
