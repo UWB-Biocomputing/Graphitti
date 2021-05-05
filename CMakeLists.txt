@@ -32,7 +32,7 @@ endif()
 # HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libaries to the executable later in the file.
 find_package(HDF5 COMPONENTS C CXX)
 if (HDF5_FOUND)
-        message("-- HDF5 library located. HDF5 recorders are available.")
+        message("-- HDF5 version ${HDF5_VERSION} located. HDF5 recorders are available.")
         link_directories( ${HDF5_LIBRARY_DIRS} )
         include_directories( ${HDF5_INCLUDE_DIRS} )
         add_compile_definitions(HDF5)
