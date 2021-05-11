@@ -1,9 +1,9 @@
 /**
  * @file XmlGrowthRecorder.cpp
- * 
+ *
  * @ingroup Simulator/Recorders
  *
- * @brief An implementation for recording spikes history on xml file
+ * @brief An implementation for recording spikes history in an XML file for growth simulations
  */
 
 #include "XmlGrowthRecorder.h"
@@ -12,7 +12,7 @@
 #include "AllIFNeurons.h"      // TODO: remove LIF model specific code
 #include "ConnGrowth.h"
 
-//! THe constructor and destructor
+//! The constructor and destructor
 XmlGrowthRecorder::XmlGrowthRecorder() :
       XmlRecorder(),
       burstinessHist_(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
@@ -152,7 +152,7 @@ void XmlGrowthRecorder::saveSimData(const IAllVertices &neurons) {
    stateOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->yloc_->toXML("yloc") << endl;
    stateOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
-   // create starter nuerons matrix
+   // create starter neuron matrix
    int num_starter_neurons = static_cast<int>(Simulator::getInstance().getModel()->getLayout()->numEndogenouslyActiveNeurons_);
    if (num_starter_neurons > 0) {
       VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);

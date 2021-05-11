@@ -12,6 +12,7 @@
  *     -# network wide burstiness index data in 1s bins,
  *     -# network wide spike count in 10ms bins,
  *     -# individual neuron's radius history of every epoch.
+ *
  */
 
 #pragma once
