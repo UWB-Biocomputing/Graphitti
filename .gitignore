@@ -62,6 +62,7 @@ _deps
 .*.sw?
 .idea/
 .vs/
+.vscode/
 
 # Google Test
 Testing/lib/
