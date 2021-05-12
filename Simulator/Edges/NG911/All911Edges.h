@@ -54,6 +54,11 @@ public:
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               edgeType type) override;
 
+   ///  Create a edge index map.
+   ///  Sorts edges by absolute distance
+   ///  @return   Returns pointer to a new EdgeIndexMap
+   virtual EdgeIndexMap *createEdgeIndexMap();
+
 protected:
 
 #if defined(USE_GPU)

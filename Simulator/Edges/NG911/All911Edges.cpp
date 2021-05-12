@@ -63,6 +63,105 @@ void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, B
    this->type_[iEdg] = type;
 }
 
+///  Create a edge index map.
+EdgeIndexMap *All911Edges::createEdgeIndexMap() {
+   int vertexCount = Simulator::getInstance().getTotalVertices();
+   int totalEdgeCount = 0;
+
+   // count the total edges
+   for (int i = 0; i < vertexCount; i++) {
+      assert(static_cast<int>(edgeCounts_[i]) < Simulator::getInstance().getMaxEdgesPerVertex());
+      totalEdgeCount += edgeCounts_[i];
+   }
+
+   DEBUG (cout << "totalEdgeCount: " << totalEdgeCount << endl;)
+
+   if (totalEdgeCount == 0) {
+      return nullptr;
+   }
+
+   // FoundEdge allows us to sort a vector of edges based on distance so that
+   // shorter distances are recorded first in the EdgeIndexMap. By doing this,
+   // we don't have to traverse the entire list to find the nearest vertex
+   struct FoundEdge {
+      BGSIZE srcVertex;
+      BGSIZE dstVertex;
+      BGSIZE edg_i;
+      BGFLOAT dist_;
+      void findDist() {
+         auto layout = Simulator::getInstance().getModel()->getLayout();
+         dist_ = (*layout->dist_)(srcVertex, dstVertex); };
+      bool operator<(const FoundEdge &other) const { return (this->dist_ < other.dist_); };
+   };
+
+   vector<FoundEdge> outgoingEdgeMap[vertexCount];
+   vector<FoundEdge> incomingEdgeMap[vertexCount];
+
+   BGSIZE edg_i = 0;
+   int curr = 0;
+
+   EdgeIndexMap *edgeIndexMap = new EdgeIndexMap(vertexCount, totalEdgeCount);
+
+   // Find all edges for EdgeIndexMap
+   for (int dstV = 0; dstV < vertexCount; dstV++) {
+      BGSIZE edge_count = 0;
+      for (int j = 0; j < Simulator::getInstance().getMaxEdgesPerVertex(); j++, edg_i++) {
+         if (inUse_[edg_i] == true) {
+            int srcV = sourceVertexIndex_[edg_i];
+            assert(destVertexIndex_[edg_i] == dstV);
+
+            FoundEdge temp;
+            temp.srcVertex = srcV;
+            temp.dstVertex = dstV;
+            temp.edg_i = edg_i;
+            temp.findDist();
+
+            // incomingEdgeIndexMap_ isn't populated here as that
+            // does not allow us to place them sorted
+            outgoingEdgeMap[srcV].push_back(temp);
+            incomingEdgeMap[dstV].push_back(temp);
+
+            curr++;
+            edge_count++;
+         }
+      }
+      assert(edge_count == this->edgeCounts_[dstV]);
+   }
+
+   assert(totalEdgeCount == curr);
+   this->totalEdgeCount_ = totalEdgeCount;
+
+   // Sort edge lists based on distances
+   for(int i = 0; i < vertexCount; i++) {
+      sort(incomingEdgeMap[i].begin(), incomingEdgeMap[i].end());
+      sort(outgoingEdgeMap[i].begin(), outgoingEdgeMap[i].end());
+   }
+
+   // Fill outgoing edge data into edgeMap
+   curr = 0;
+   for (int i = 0; i < vertexCount; i++) {
+      edgeIndexMap->outgoingEdgeBegin_[i] = curr;
+      edgeIndexMap->outgoingEdgeCount_[i] = outgoingEdgeMap[i].size();
+
+      for (BGSIZE j = 0; j < outgoingEdgeMap[i].size(); j++, curr++) {
+         edgeIndexMap->outgoingEdgeIndexMap_[curr] = outgoingEdgeMap[i][j].edg_i;
+      }
+   }
+
+   // Fill incoming edge data into edgeMap
+   curr = 0;
+   for (int i = 0; i < vertexCount; i++) {
+      edgeIndexMap->incomingEdgeBegin_[i] = curr;
+      edgeIndexMap->incomingEdgeCount_[i] = incomingEdgeMap[i].size();
+
+      for (BGSIZE j = 0; j < incomingEdgeMap[i].size(); j++, curr++) {
+         edgeIndexMap->incomingEdgeIndexMap_[curr] = incomingEdgeMap[i][j].edg_i;
+      }
+   }
+
+   return edgeIndexMap;
+}
+
 #if !defined(USE_GPU)
 
 ///  Advance all the edges in the simulation.
