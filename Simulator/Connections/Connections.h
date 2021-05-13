@@ -116,6 +116,6 @@ protected:
    shared_ptr<EdgeIndexMap> synapseIndexMap_;
 
    log4cplus::Logger fileLogger_;
-   log4cplus::Logger synapseLogger_;
+   log4cplus::Logger edgeLogger_;
 };
 
