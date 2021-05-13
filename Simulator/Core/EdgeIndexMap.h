@@ -29,7 +29,7 @@ struct EdgeIndexMap {
    /// Pointer to the outgoing edge index map.
    BGSIZE* outgoingEdgeIndexMap_;
 
-   /// The beginning index of the outgoing spiking edge of each vertex.
+   /// The beginning index of the outgoing edge for each vertex.
    /// Indexed by a source vertex index.
    BGSIZE *outgoingEdgeBegin_;
 
@@ -40,11 +40,11 @@ struct EdgeIndexMap {
    /// Pointer to the incoming edge index map.
    BGSIZE* incomingEdgeIndexMap_;
 
-   /// The beginning index of the incoming spiking edge of each vertex.
+   /// The beginning index of the incoming edge for each vertex.
    /// Indexed by a destination vertex index.
    BGSIZE *incomingEdgeBegin_;
 
-   /// The number of incoming edges of each vertex.
+   /// The number of incoming edges for each vertex.
    /// Indexed by a destination vertex index.
    BGSIZE *incomingEdgeCount_;
 
