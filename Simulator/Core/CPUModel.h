@@ -3,7 +3,7 @@
  * 
  * @ingroup Simulator/Core
  *
- * @brief Implementation of Model for graph-based networks.
+ * @brief Implementation of Model for execution on CPU (single core).
  * 
  * The Model class maintains and manages classes of objects that make up
  * essential components of the spiking neural network.
