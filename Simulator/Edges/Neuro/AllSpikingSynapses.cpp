@@ -15,6 +15,14 @@ AllSpikingSynapses::AllSpikingSynapses() : AllNeuroEdges() {
    delayIndex_ = nullptr;
    delayQueueLength_ = nullptr;
    tau_ = nullptr;
+   tau_II_=0;
+   tau_IE_=0;
+   tau_EI_=0;
+   tau_EE_=0;
+   delay_II_=0;
+   delay_IE_=0;
+   delay_EI_=0;
+   delay_EE_=0;
 }
 
 AllSpikingSynapses::AllSpikingSynapses(const int numVertices, const int maxEdges) {
@@ -69,10 +77,10 @@ void AllSpikingSynapses::setupEdges(const int numVertices, const int maxEdges) {
 ///
 ///  @param  iEdg   index of the synapse to set.
 void AllSpikingSynapses::initSpikeQueue(const BGSIZE iEdg) {
-   int &totalDelay = this->totalDelay_[iEdg];
-   uint32_t &delayQueue = this->delayQueue_[iEdg];
-   int &delayIdx = this->delayIndex_[iEdg];
-   int &ldelayQueue = this->delayQueueLength_[iEdg];
+   int &totalDelay = totalDelay_[iEdg];
+   uint32_t &delayQueue = delayQueue_[iEdg];
+   int &delayIdx = delayIndex_[iEdg];
+   int &ldelayQueue = delayQueueLength_[iEdg];
 
    uint32_t size = totalDelay / (sizeof(uint8_t) * 8) + 1;
    assert(size <= BYTES_OF_DELAYQUEUE);
@@ -91,10 +99,32 @@ void AllSpikingSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
    assert(updateDecay(iEdg, deltaT));
 }
 
+
+void AllSpikingSynapses::loadParameters() {
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/ii/text()", tau_II_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/ie/text()", tau_IE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/ei/text()", tau_EI_);
+   ParameterManager::getInstance().getBGFloatByXpath("//tau/ee/text()", tau_EE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/ii/text()", delay_II_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/ie/text()", delay_IE_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/ei/text()", delay_EI_);
+   ParameterManager::getInstance().getBGFloatByXpath("//delay/ee/text()", delay_EE_);
+}
+
 ///  Prints out all parameters to logging file.
 ///  Registered to OperationManager as Operation::printParameters
 void AllSpikingSynapses::printParameters() const {
    AllNeuroEdges::printParameters();
+   
+   LOG4CPLUS_DEBUG(edgeLogger_, "\n\t---AllSpikingSynapses Parameters---" << endl
+                   << "\tEdges type: AllSpikingSynapses" << endl << endl);
+   LOG4CPLUS_DEBUG(edgeLogger_, "\n\tTau values: ["
+                   << " II: " << tau_II_ << ", " << " IE: " << tau_IE_ << "," << "EI : " << tau_EI_<< "," << " EE: " << tau_EE_ << "]"
+                   << endl);
+   
+   LOG4CPLUS_DEBUG(edgeLogger_,"\n\tDelay values: ["
+                   << " II: "<< delay_II_ << ", " << " IE: "<< delay_IE_ << "," << "EI :" << delay_EI_<< "," << " EE: "<< delay_EE_ << "]"
+                   << endl);
 }
 
 ///  Sets the data for Synapse to input's data.
@@ -151,7 +181,7 @@ void AllSpikingSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVe
    destVertexIndex_[iEdg] = destVertex;
    sourceVertexIndex_[iEdg] = srcVertex;
    W_[iEdg] = edgSign(type) * 10.0e-9;
-   this->type_[iEdg] = type;
+   type_[iEdg] = type;
    tau_[iEdg] = DEFAULT_tau;
 
    BGFLOAT tau;
@@ -177,8 +207,8 @@ void AllSpikingSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVe
          break;
    }
 
-   this->tau_[iEdg] = tau;
-   this->totalDelay_[iEdg] = static_cast<int>( delay / deltaT ) + 1;
+   tau_[iEdg] = tau;
+   totalDelay_[iEdg] = static_cast<int>( delay / deltaT ) + 1;
 
    // initializes the queues for the Synapses
    initSpikeQueue(iEdg);
@@ -193,9 +223,9 @@ void AllSpikingSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVe
 ///  @param  iEdg   Index of the Synapse to connect to.
 ///  @return true if there is an input spike event.
 bool AllSpikingSynapses::isSpikeQueue(const BGSIZE iEdg) {
-   uint32_t &delayQueue = this->delayQueue_[iEdg];
-   int &delayIdx = this->delayIndex_[iEdg];
-   int &ldelayQueue = this->delayQueueLength_[iEdg];
+   uint32_t &delayQueue = delayQueue_[iEdg];
+   int &delayIdx = delayIndex_[iEdg];
+   int &ldelayQueue = delayQueueLength_[iEdg];
 
    bool r = delayQueue & (0x1 << delayIdx);
    delayQueue &= ~(0x1 << delayIdx);
@@ -209,21 +239,26 @@ bool AllSpikingSynapses::isSpikeQueue(const BGSIZE iEdg) {
 ///
 ///  @param  iEdg   Index of the Synapse to update.
 void AllSpikingSynapses::preSpikeHit(const BGSIZE iEdg) {
-   uint32_t &delayQueue = this->delayQueue_[iEdg];
-   int &delayIdx = this->delayIndex_[iEdg];
-   int &ldelayQueue = this->delayQueueLength_[iEdg];
-   int &totalDelay = this->totalDelay_[iEdg];
+   uint32_t &delayQueue = delayQueue_[iEdg];
+   int &delayIdx = delayIndex_[iEdg];
+   int &ldelayQueue = delayQueueLength_[iEdg];
+   int &totalDelay = totalDelay_[iEdg];
 
    // Add to spike queue
 
    // calculate index where to insert the spike into delayQueue
+   //LOG4CPLUS_TRACE(edgeLogger_,"delayidx "<<delayIdx<<" totalDelay "<<totalDelay<<" ldelayQueue "<<ldelayQueue);
    int idx = delayIdx + totalDelay;
-   if (idx >= ldelayQueue) {
+   if (idx >= ldelayQueue) {  //TODO: mod operator more efficient?
       idx -= ldelayQueue;
    }
-
+   if((delayQueue & (0x1 << idx)) == 0)
+   {
+      LOG4CPLUS_DEBUG(edgeLogger_,"Delay Queue Error " << setbase(2) << delayQueue << setbase(10) << " idx" << idx << " iSync " << iSyn);
+      exit(1);
+   }
+   
    // set a spike
-   assert(!(delayQueue & (0x1 << idx)));
    delayQueue |= (0x1 << idx);
 }
 
@@ -238,9 +273,9 @@ void AllSpikingSynapses::postSpikeHit(const BGSIZE iEdg) {
 ///  @param  iEdg      Index of the Synapse to connect to.
 ///  @param  neurons   The Neuron list to search from.
 void AllSpikingSynapses::advanceEdge(const BGSIZE iEdg, IAllVertices *neurons) {
-   BGFLOAT &decay = this->decay_[iEdg];
-   BGFLOAT &psr = this->psr_[iEdg];
-   BGFLOAT &summationPoint = *(this->summationPoint_[iEdg]);
+   BGFLOAT &decay = decay_[iEdg];
+   BGFLOAT &psr = psr_[iEdg];
+   BGFLOAT &summationPoint = *(summationPoint_[iEdg]);
 
    // is an input in the queue?
    if (isSpikeQueue(iEdg)) {
@@ -265,9 +300,9 @@ void AllSpikingSynapses::advanceEdge(const BGSIZE iEdg, IAllVertices *neurons) {
 ///  @param  iEdg        Index of the synapse to set.
 ///  @param  deltaT      Inner simulation step duration.
 void AllSpikingSynapses::changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) {
-   BGFLOAT &psr = this->psr_[iEdg];
-   BGFLOAT &W = this->W_[iEdg];
-   BGFLOAT &decay = this->decay_[iEdg];
+   BGFLOAT &psr = psr_[iEdg];
+   BGFLOAT &W = W_[iEdg];
+   BGFLOAT &decay = decay_[iEdg];
 
    psr += (W / decay);    // calculate psr
 }
@@ -279,8 +314,8 @@ void AllSpikingSynapses::changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) {
 ///  @param  iEdg    Index of the synapse to set.
 ///  @param  deltaT  Inner simulation step duration
 bool AllSpikingSynapses::updateDecay(const BGSIZE iEdg, const BGFLOAT deltaT) {
-   BGFLOAT &tau = this->tau_[iEdg];
-   BGFLOAT &decay = this->decay_[iEdg];
+   BGFLOAT &tau = tau_[iEdg];
+   BGFLOAT &decay = decay_[iEdg];
 
    if (tau > 0) {
       decay = exp(-deltaT / tau);
