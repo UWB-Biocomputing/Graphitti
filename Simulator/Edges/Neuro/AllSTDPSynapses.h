@@ -95,6 +95,10 @@ public:
    ///  @return true if the back propagation is allowed.
    virtual bool allowBackPropagation() override;
 
+   /// Load member variables from configuration file. Registered to OperationManager as
+   /// Operation::op::loadParameters
+   virtual void loadParameters() override;
+   
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
@@ -136,6 +140,9 @@ protected:
    ///
    ///  @param  iEdg   index of the synapse to set.
    virtual void initSpikeQueue(const BGSIZE iEdg) override;
+   
+   
+   virtual BGFLOAT synapticWeightModification(const BGSIZE iEdg, BGFLOAT edgeWeight, double delta);
 
 #if defined(USE_GPU)
    public:
@@ -259,7 +266,10 @@ private:
    ///  @param  delta       Pre/post synaptic spike interval.
    ///  @param  epost       Params for the rule given in Froemke and Dan (2002).
    ///  @param  epre        Params for the rule given in Froemke and Dan (2002).
-   void stdpLearning(const BGSIZE iEdg, double delta, double epost, double epre);
+   ///  @param srcVertex Index of source neuron
+   ///  @param destVertex Index of destination neuron
+   void stdpLearning(const BGSIZE iEdg, double delta, double epost, double epre,
+                     int srcVertex, int destVertex));
 
 #endif
 public:
@@ -313,8 +323,22 @@ public:
    ///  \f$dw = W^{mupos_} * Aneg_ * exp(Delta/tauneg_)\f$. Set to 0 for basic update.
    BGFLOAT *muneg_;
 
-   ///  True if use the rule given in Froemke and Dan (2002).
-   bool *useFroemkeDanSTDP_;
+
+   BGFLOAT defaultSTDPgap_;
+   BGFLOAT tauspost_I_;
+   BGFLOAT tauspre_I_;
+   BGFLOAT tauspost_E_;
+   BGFLOAT tauspre_E_;
+   BGFLOAT taupos_I_;
+   BGFLOAT tauneg_I_;
+   BGFLOAT taupos_E_;
+   BGFLOAT tauneg_E_;
+   BGFLOAT Wex_I_;
+   BGFLOAT Wex_E_;
+   BGFLOAT Aneg_I_;
+   BGFLOAT Aneg_E_;
+   BGFLOAT Apos_I_;
+   BGFLOAT Apos_E_;
 };
 
 #if defined(USE_GPU)
