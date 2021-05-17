@@ -210,8 +210,6 @@ void AllSTDPSynapses::readEdge(istream &input, const BGSIZE iEdg) {
    input.ignore();
    input >> muneg_[iEdg];
    input.ignore();
-   input >> useFroemkeDanSTDP_[iEdg];
-   input.ignore();
 }
 
 ///  Write the synapse data to the stream.
@@ -235,7 +233,6 @@ void AllSTDPSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const {
    output << Apos_[iEdg] << ends;
    output << mupos_[iEdg] << ends;
    output << muneg_[iEdg] << ends;
-   output << useFroemkeDanSTDP_[iEdg] << ends;
 }
 
 ///  Reset time varying state vars and recompute decay.
@@ -305,11 +302,9 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, IAllVertices *neurons) {
    bool fPost = isSpikeQueuePost(iEdg);
 
    if (fPre || fPost) {
-      BGFLOAT &tauspre_ = tauspre_[iEdg];
-      BGFLOAT &tauspost_ = tauspost_[iEdg];
-      BGFLOAT &taupos_ = taupos_[iEdg];
-      BGFLOAT &tauneg_ = tauneg_[iEdg];
-      int &total_delay = totalDelay_[iEdg];
+      const BGFLOAT taupos = taupos_[iEdg];
+      const BGFLOAT tauneg = tauneg_[iEdg];
+      const int total_delay = totalDelay_[iEdg];
 
       BGFLOAT deltaT = Simulator::getInstance().getDeltaT();
       AllSpikingNeurons *spNeurons = dynamic_cast<AllSpikingNeurons *>(neurons);
@@ -351,7 +346,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, IAllVertices *neurons) {
              << "\tdelta: " << delta << endl << endl);
              */
             
-            if (delta <= -3.0 * tauneg_)
+            if (delta <= -3.0 * tauneg)
                break;
             
             stdpLearning(iEdg, delta, epost, epre, idxPre, idxPost);
@@ -395,7 +390,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, IAllVertices *neurons) {
              << "\tepost: " << epost << endl
              << "\tdelta: " << delta << endl << endl);
              */
-            if (delta >= 3.0 * taupos_)
+            if (delta >= 3.0 * taupos)
                break;
             
             stdpLearning(iEdg, delta, epost, epre, idxPre, idxPost);
@@ -594,8 +589,7 @@ void AllSTDPSynapses::printSynapsesProps() const {
          cout << " Aneg_: " << Aneg_[i];
          cout << " Apos_: " << Apos_[i];
          cout << " mupos_: " << mupos_[i];
-         cout << " muneg_: " << muneg_[i];
-         cout << " useFroemkeDanSTDP_: " << useFroemkeDanSTDP_[i] << endl;
+         cout << " muneg_: " << muneg_[i] << endl;
       }
    }
 }

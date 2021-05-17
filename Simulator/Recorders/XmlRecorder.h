@@ -67,5 +67,9 @@ protected:
    
    // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
    VectorMatrix spikesHistory_;
+
+   // TODO: There seems to be multiple copies of this in different classes...
+   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
+
 };
 

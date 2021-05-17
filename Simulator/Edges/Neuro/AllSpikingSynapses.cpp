@@ -6,7 +6,12 @@
  * @brief A container of all dynamic STDP synapse data
  */
 
+#include <iomanip>
+
 #include "AllSpikingSynapses.h"
+#include "ParameterManager.h"
+
+using namespace std;
 
 AllSpikingSynapses::AllSpikingSynapses() : AllNeuroEdges() {
    decay_ = nullptr;
@@ -254,7 +259,7 @@ void AllSpikingSynapses::preSpikeHit(const BGSIZE iEdg) {
    }
    if((delayQueue & (0x1 << idx)) == 0)
    {
-      LOG4CPLUS_DEBUG(edgeLogger_,"Delay Queue Error " << setbase(2) << delayQueue << setbase(10) << " idx" << idx << " iSync " << iSyn);
+      LOG4CPLUS_DEBUG(edgeLogger_,"Delay Queue Error " << setbase(2) << delayQueue << setbase(10) << " idx" << idx << " iSync " << iEdg);
       exit(1);
    }
    

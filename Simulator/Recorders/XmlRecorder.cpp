@@ -13,13 +13,15 @@
 #include "ConnGrowth.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
+#include "VectorMatrix.h"
 
 /// constructor
-XmlRecorder::XmlRecorder() {
+// TODO: I believe the initializer for spikesHistory_ assumes a particular deltaT
+XmlRecorder::XmlRecorder() :
    burstinessHist_(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
-                                                                 Simulator::getInstance().getNumEpochs()), 0),
+    Simulator::getInstance().getNumEpochs()), static_cast<BGFLOAT>(0.0)),
    spikesHistory_(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
-                                                                Simulator::getInstance().getNumEpochs() * 100), 0) {
+    Simulator::getInstance().getNumEpochs() * 100), static_cast<BGFLOAT>(0.0)) {
 
    resultFileName_ = Simulator::getInstance().getResultFileName();
 
@@ -69,7 +71,7 @@ void XmlRecorder::compileHistories(IAllVertices &vertices) {
    int maxSpikes = static_cast<int>(simulator.getEpochDuration() * simulator.getMaxFiringRate());
    
    // output spikes
-   for (int iNeuron = 0; iNeuron < simulator.getTotalNeurons(); iNeuron++) {
+   for (int iNeuron = 0; iNeuron < simulator.getTotalVertices(); iNeuron++) {
       uint64_t *pSpikes = spNeurons.spikeHistory_[iNeuron];
       
       const int spikeCount = spNeurons.spikeCount_[iNeuron];
@@ -103,14 +105,14 @@ void XmlRecorder::compileHistories(IAllVertices &vertices) {
 void XmlRecorder::saveSimData(const IAllVertices &vertices) {
    Simulator& simulator = Simulator::getInstance();
    // create Neuron Types matrix
-   VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalNeurons(), EXC);
-   for (int i = 0; i < simulator.getTotalNeurons(); i++) {
-      neuronTypes[i] = simulator.getModel()->getLayout()->neuronTypeMap_[i];
+   VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), EXC);
+   for (int i = 0; i < simulator.getTotalVertices(); i++) {
+      neuronTypes[i] = simulator.getModel()->getLayout()->vertexTypeMap_[i];
    }
    
    // create neuron threshold matrix
-   VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalNeurons(), 0);
-   for (int i = 0; i < simulator.getTotalNeurons(); i++) {
+   VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), 0);
+   for (int i = 0; i < simulator.getTotalVertices(); i++) {
       neuronThresh[i] = dynamic_cast<const AllIFNeurons &>(vertices).Vthresh_[i];
    }
    
@@ -160,7 +162,7 @@ void XmlRecorder::saveSimData(const IAllVertices &vertices) {
  */
 void XmlRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap) {
    int cur = 0;
-   for (int i = 0; i < Simulator::getInstance().getTotalNeurons(); i++) {
+   for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       if (starterMap[i]) {
          matrix[cur] = i;
          cur++;

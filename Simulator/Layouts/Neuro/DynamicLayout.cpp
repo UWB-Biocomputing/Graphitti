@@ -46,7 +46,7 @@ void DynamicLayout::generateVertexTypeMap(int numVertices) {
    LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP" << endl
                                  << "\tTotal vertices: " << numVertices << endl
                                  << "\tInhibitory Neurons: " << numInhibitory << endl
-                                 << "\tExcitatory Neurons: " << numExcititory << endl);
+                                 << "\tExcitatory Neurons: " << numExcitatory << endl);
 
    LOG4CPLUS_INFO(fileLogger_, "Randomly selecting inhibitory neurons...");
 

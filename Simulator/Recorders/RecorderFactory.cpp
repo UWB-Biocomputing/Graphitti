@@ -8,6 +8,7 @@
 
 #include "RecorderFactory.h"
 
+#include "XmlSTDPRecorder.h"
 #include "XmlGrowthRecorder.h"
 #include "Xml911Recorder.h"
 #include "Hdf5GrowthRecorder.h"

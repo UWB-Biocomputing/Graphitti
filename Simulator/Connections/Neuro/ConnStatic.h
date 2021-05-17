@@ -60,17 +60,26 @@ public:
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
-   /**
-    *  Cereal serialization method
-    *  (Serializes radii)
-    */
+
+   ///  Get connection radius threshold
+   BGFLOAT getConnsRadiusThresh() const { return threshConnsRadius_; }
+
+   /// Get array of vertex weights
+   BGFLOAT* getWCurrentEpoch() const { return WCurrentEpoch_; }
+
+   /// Get all edge source vertex indices
+   int* getSourceVertexIndexCurrentEpoch() const { return sourceVertexIndexCurrentEpoch_; }
+
+      /// Get all edge destination vertex indices
+   int* getDestVertexIndexCurrentEpoch() const { return destVertexIndexCurrentEpoch_; }
+
+  ///  Cereal serialization method
+  ///  (Serializes radii)
    template<class Archive>
    void save(Archive &archive) const;
    
-   /**
-    *  Cereal deserialization method
-    *  (Deserializes radii)
-    */
+   ///  Cereal deserialization method
+   ///  (Deserializes radii)
    template<class Archive>
    void load(Archive &archive);
    

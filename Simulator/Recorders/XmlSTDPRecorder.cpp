@@ -39,7 +39,7 @@ XmlSTDPRecorder::~XmlSTDPRecorder() {
 void XmlSTDPRecorder::initDefaultValues() {
    shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
   //AllNeuroEdges *synapses synapses)->W_[iSyn]
-   BGFLOAT startRadius = dynamic_cast<ConnStatic *>(conns.get())->threshConnsRadius_;
+   BGFLOAT startRadius = dynamic_cast<ConnStatic *>(conns.get())->getConnsRadiusThresh();
 
 
 }
@@ -50,9 +50,9 @@ void XmlSTDPRecorder::initValues() {
 
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices()*Simulator::getInstance().getMaxEdgesPerVertex(); i++) {
-      weightsHistory_[0][i] = (*dynamic_cast<ConnStatic *>(conns)->WCurrentEpoch_)[i];
-      sourceNeuronIndexHistory_[0][i] = (*dynamic_cast<ConnStatic *>(conns)->sourceNeuronIndexCurrentEpoch_)[i];
-      destNeuronIndexHistory_[0][i] = (*dynamic_cast<ConnStatic *>(conns)->destNeuronIndexCurrentEpoch_)[i];
+      weightsHistory_[0][i] = (dynamic_cast<ConnStatic *>(conns)->getWCurrentEpoch())[i];
+      sourceNeuronIndexHistory_[0][i] = (dynamic_cast<ConnStatic *>(conns)->getSourceVertexIndexCurrentEpoch())[i];
+      destNeuronIndexHistory_[0][i] = (dynamic_cast<ConnStatic *>(conns)->getDestVertexIndexCurrentEpoch())[i];
       
    }
 }
