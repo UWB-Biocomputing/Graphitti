@@ -15,7 +15,9 @@
 /// Constructor is private to keep a singleton instance of this class.
 RecorderFactory::RecorderFactory() {
    // register recorder classes
+   registerClass("XmlRecorder", &XmlRecorder::Create);
    registerClass("XmlGrowthRecorder", &XmlGrowthRecorder::Create);
+   registerClass("XmlSTDPRecorder", &XmlSTDPRecorder::Create);
    registerClass("Xml911Recorder", &Xml911Recorder::Create);
 
 #if defined(HDF5)
