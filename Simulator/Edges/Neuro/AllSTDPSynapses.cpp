@@ -9,6 +9,7 @@
 #include "AllSTDPSynapses.h"
 #include "IAllVertices.h"
 #include "AllSpikingNeurons.h"
+#include "ParameterManager.h"
 
 AllSTDPSynapses::AllSTDPSynapses() : AllSpikingSynapses() {
    totalDelayPost_ = nullptr;
@@ -263,18 +264,18 @@ void AllSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVerte
    // May 1st 2020
    // Use constants from Froemke and Dan (2002).
    // Spike-timing-dependent synaptic modification induced by natural spike trains. Nature 416 (3/2002)
-   //Apos_[iSyn] = 0.005;
-   //Aneg_[iSyn] = -(1.05*0.005);
-   Apos_[iSyn] = Apos_E_;
-   Aneg_[iSyn] = Aneg_E_;
-   STDPgap_[iSyn] = defaultSTDPgap_;
-   tauspost_[iSyn] = tauspost_E_;
-   tauspre_[iSyn] = tauspre_E_;
-   taupos_[iSyn] = taupos_E_;
-   tauneg_[iSyn] = tauneg_E_;
-   Wex_[iSyn] = Wex_E_ ;// this is based on overlap of 2 neurons' radii (r=4) of outgrowth, scale it by SYNAPSE_STRENGTH_ADJUSTMENT.
-   mupos_[iSyn] = 0;
-   muneg_[iSyn] = 0;
+   //Apos_[iEdg] = 0.005;
+   //Aneg_[iEdg] = -(1.05*0.005);
+   Apos_[iEdg] = Apos_E_;
+   Aneg_[iEdg] = Aneg_E_;
+   STDPgap_[iEdg] = defaultSTDPgap_;
+   tauspost_[iEdg] = tauspost_E_;
+   tauspre_[iEdg] = tauspre_E_;
+   taupos_[iEdg] = taupos_E_;
+   tauneg_[iEdg] = tauneg_E_;
+   Wex_[iEdg] = Wex_E_ ;// this is based on overlap of 2 neurons' radii (r=4) of outgrowth, scale it by SYNAPSE_STRENGTH_ADJUSTMENT.
+   mupos_[iEdg] = 0;
+   muneg_[iEdg] = 0;
 }
 
 #if !defined(USE_GPU)
@@ -340,7 +341,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, IAllVertices *neurons) {
             delta = -static_cast<BGFLOAT>(g_simulationStep - spikeHistory) * deltaT;
             /*
              LOG4CPLUS_DEBUG(fileLogger_,"\nAllSTDPSynapses::advanceSynapse: fPre" << endl
-             << "\tiSyn: " << iSyn << endl
+             << "\tiEdg: " << iEdg << endl
              << "\tidxPre: " << idxPre << endl
              << "\tidxPost: " << idxPost << endl
              << "\tspikeHistory: " << spikeHistory << endl
@@ -353,7 +354,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, IAllVertices *neurons) {
             if (delta <= -3.0 * tauneg_)
                break;
             
-            stdpLearning(iSyn, delta, epost, epre, idxPre, idxPost);
+            stdpLearning(iEdg, delta, epost, epre, idxPre, idxPost);
             --offIndex;
          }
 
@@ -385,7 +386,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, IAllVertices *neurons) {
             delta = static_cast<BGFLOAT>(g_simulationStep - spikeHistory - total_delay) * deltaT;
             /*
              LOG4CPLUS_DEBUG(fileLogger_,"\nAllSTDPSynapses::advanceSynapse: fPost" << endl
-             << "\tiSyn: " << iSyn << endl
+             << "\tiEdg: " << iEdg << endl
              << "\tidxPre: " << idxPre << endl
              << "\tidxPost: " << idxPost << endl
              << "\tspikeHistory: " << spikeHistory << endl
@@ -397,7 +398,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, IAllVertices *neurons) {
             if (delta >= 3.0 * taupos_)
                break;
             
-            stdpLearning(iSyn, delta, epost, epre, idxPre, idxPost);
+            stdpLearning(iEdg, delta, epost, epre, idxPre, idxPost);
             --offIndex;
          }
       }
@@ -429,7 +430,7 @@ BGFLOAT AllSTDPSynapses::synapticWeightModification(const BGSIZE iEdg, BGFLOAT s
    BGFLOAT Apos = Apos_[iEdg];
    BGFLOAT Wex = Wex_[iEdg];
    BGFLOAT& W = W_[iEdg];
-   synapseType type = type_[iEdg];
+   edgeType type = type_[iEdg];
    BGFLOAT dw;
    BGFLOAT oldW=W;
    
@@ -514,11 +515,11 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iEdg, double delta, double epost
    
    // if new weight is bigger than Wex (maximum allowed weight), then set it to Wex
    if (fabs(W) > Wex) {
-      W = synSign(type) * Wex;
+      W = edgSign(type) * Wex;
    }
    /*
     LOG4CPLUS_DEBUG(edgeLogger_, endl <<
-    "iSyn value " << iEdg
+    "iEdg value " << iEdg
     << "; source:" << srcVertex
     << "; dest:" << destVertex
     << "; delta:" << delta
