@@ -120,7 +120,7 @@
           <e name="e">1.03</e>
         </Apos>
    
-    </EdgessParams>
+    </EdgesParams>
 
   <ConnectionsParams class="ConnStatic" name="ConnectionsParams">
         <threshConnsRadius name="threshConnsRadius">0</threshConnsRadius>
