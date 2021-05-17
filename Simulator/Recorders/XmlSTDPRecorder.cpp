@@ -13,6 +13,7 @@
 #include "ConnStatic.h"
 #include <vector>
 
+// TODO: We don't need to explicitly call the superclass constructor, right?
 //! The constructor and destructor
 XmlSTDPRecorder::XmlSTDPRecorder() :
 XmlRecorder()
