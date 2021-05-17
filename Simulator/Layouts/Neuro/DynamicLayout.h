@@ -54,9 +54,9 @@ public:
 
 private:
    /// Fraction of endogenously active neurons.
-   BGFLOAT m_frac_starter_neurons;
+   BGFLOAT fractionEndogenouslyActive_;
 
    /// Fraction of exitatory neurons.
-   BGFLOAT m_frac_excitatory_neurons;
+   BGFLOAT fractionExcitatory_;
 };
 
