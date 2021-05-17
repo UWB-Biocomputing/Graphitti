@@ -269,7 +269,7 @@ private:
    ///  @param srcVertex Index of source neuron
    ///  @param destVertex Index of destination neuron
    void stdpLearning(const BGSIZE iEdg, double delta, double epost, double epre,
-                     int srcVertex, int destVertex));
+                     int srcVertex, int destVertex);
 
 #endif
 public:

@@ -57,6 +57,7 @@ void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, AllEdg
    WCurrentEpoch_ = new BGFLOAT[maxTotalEdges];
    sourceVertexIndexCurrentEpoch_ = new int[maxTotalEdges];
    destVertexIndexCurrentEpoch_ = new int[maxTotalEdges];
+   AllNeuroEdges *neuroEdges = dynamic_cast<AllNeuroEdges *>(edges);
    
    radiiSize_ = numVertices;
    int added = 0;
@@ -92,7 +93,6 @@ void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, AllEdg
          edges->addEdge(iEdg, type, srcVertex, destVertex, sumPoint, simulator.getDeltaT());
          added++;
 
-         AllNeuroEdges *neuroEdges = dynamic_cast<AllNeuroEdges *>(edges);
 
          // set edge weight
          // TODO: we need another synaptic weight distibution mode (normal distribution)
@@ -130,7 +130,7 @@ void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, AllEdg
 /// Registered to OperationManager as Operations::op::loadParameters
 void ConnStatic::loadParameters() {
    ParameterManager::getInstance().getBGFloatByXpath("//threshConnsRadius/text()", threshConnsRadius_);
-   ParameterManager::getInstance().getBGFloatByXpath("//connsPerNeuron/text()", connsPerNeuron_);
+   ParameterManager::getInstance().getIntByXpath("//connsPerNeuron/text()", connsPerVertex_);
    ParameterManager::getInstance().getBGFloatByXpath("//rewiringProbability/text()", rewiringProbability_);
    //ParameterManager::getInstance().getBGFloatByXpath("//excWeight/min/text()", excWeight_[0]);
    //ParameterManager::getInstance().getBGFloatByXpath("//excWeight/max/text()", excWeight_[1]);
