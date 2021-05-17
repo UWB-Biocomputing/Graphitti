@@ -43,12 +43,12 @@ public:
    /// Compile history information in every epoch
    ///
    /// @param[in] neurons   The entire list of neurons.
-   virtual void compileHistories(IAllVertices &neurons) = 0;
+   virtual void compileHistories(IAllVertices &vertices) = 0;
 
    /// Writes simulation results to an output destination.
    ///
    /// @param[in] neurons   The entire list of neurons.
-   virtual void saveSimData(const IAllVertices &neurons) = 0;
+   virtual void saveSimData(const IAllVertices &vertices) = 0;
 
    /// Prints loaded parameters to logging file.
    virtual void printParameters() = 0;
