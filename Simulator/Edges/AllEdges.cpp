@@ -22,16 +22,22 @@ AllEdges::AllEdges() :
    inUse_ = nullptr;
    edgeCounts_ = nullptr;
 
-   // Register loadParameters function as a loadParameters operation in the OperationManager
+   // Register loadParameters function as a loadParameters operation in the
+   // OperationManager. This will register the appropriate overridden method
+   // for the actual (sub)class of the object being created.
    function<void()> loadParametersFunc = std::bind(&AllEdges::loadParameters, this);
    OperationManager::getInstance().registerOperation(Operations::op::loadParameters, loadParametersFunc);
 
-   // Register printParameters function as a printParameters operation in the OperationManager
+   // Register printParameters function as a printParameters operation in the
+   // OperationManager. This will register the appropriate overridden method
+   // for the actual (sub)class of the object being created.
    function<void()> printParametersFunc = bind(&AllEdges::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
 
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
-}
+   edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
+
+      }
 
 AllEdges::AllEdges(const int numVertices, const int maxEdges) {
    setupEdges(numVertices, maxEdges);
@@ -178,16 +184,17 @@ edgeType AllEdges::edgeOrdinalToType(const int typeOrdinal) {
 
 ///  Create a edge index map.
 EdgeIndexMap *AllEdges::createEdgeIndexMap() {
-   int vertexCount = Simulator::getInstance().getTotalVertices();
+   Simulator& simulator = Simulator::getInstance();
+   int vertexCount = simulator.getTotalVertices();
    int totalEdgeCount = 0;
 
    // count the total edges
    for (int i = 0; i < vertexCount; i++) {
-      assert(static_cast<int>(edgeCounts_[i]) < Simulator::getInstance().getMaxEdgesPerVertex());
+      assert(static_cast<int>(edgeCounts_[i]) < simulator.getMaxEdgesPerVertex());
       totalEdgeCount += edgeCounts_[i];
    }
 
-   DEBUG (cout << "totalEdgeCount: " << totalEdgeCount << endl;)
+   LOG4CPLUS_TRACE(fileLogger_,endl<<"totalEdgeCount: in edgeIndexMap " << totalEdgeCount << endl);
 
    if (totalEdgeCount == 0) {
       return nullptr;
@@ -201,11 +208,13 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
 
    // create edge forward map & active edge map
    EdgeIndexMap *edgeIndexMap = new EdgeIndexMap(vertexCount, totalEdgeCount);
+   LOG4CPLUS_TRACE(edgeLogger_, "\nSize of edge Index Map "<< vertexCount << "," << totalEdgeCount << endl);
+   
    for (int i = 0; i < vertexCount; i++) {
       BGSIZE edge_count = 0;
       edgeIndexMap->incomingEdgeBegin_[i] = curr;
-      for (int j = 0; j < Simulator::getInstance().getMaxEdgesPerVertex(); j++, edg_i++) {
-         if (inUse_[edg_i] == true) {
+      for (int j = 0; j < simulator.getMaxEdgesPerVertex(); j++, edg_i++) {
+         if (inUse_[edg_i]) {
             int idx = sourceVertexIndex_[edg_i];
             rgEdgeEdgeIndexMap[idx].push_back(edg_i);
 
@@ -214,13 +223,24 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
             edge_count++;
          }
       }
-      assert(edge_count == this->edgeCounts_[i]);
+      
+      if(edge_count != edgeCounts_[i])
+      {
+         LOG4CPLUS_FATAL(edgeLogger_, "\nedge_count does not match edgeCounts_" << edge_count << endl);
+         throw runtime_error("createEdgeIndexMap: edge_count does not match edgeCounts_.");
+      }
+
       edgeIndexMap->incomingEdgeCount_[i] = edge_count;
    }
-
-   assert(totalEdgeCount == curr);
-   this->totalEdgeCount_ = totalEdgeCount;
-
+   
+   if(totalEdgeCount != curr)
+   {
+      LOG4CPLUS_FATAL(edgeLogger_,"Curr does not match the totalEdgeCount. curr are " << curr << endl);
+      throw runtime_error("createEdgeIndexMap: Curr does not match the totalEdgeCount.");
+   }
+   totalEdgeCount_ = totalEdgeCount;
+   LOG4CPLUS_DEBUG(edgeLogger_,endl<<"totalEdgeCount: " << totalEdgeCount_ << endl);
+   
    edg_i = 0;
    for (int i = 0; i < vertexCount; i++) {
       edgeIndexMap->outgoingEdgeBegin_[i] = edg_i;
@@ -242,7 +262,7 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
 
 ///  Advance all the edges in the simulation.
 ///
-///  @param  vertices           The vertex list to search from.
+///  @param  vertices           The vertices.
 ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
 void AllEdges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap) {
    for (BGSIZE i = 0; i < totalEdgeCount_; i++) {
@@ -253,10 +273,10 @@ void AllEdges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap) 
 
 ///  Remove a edge from the network.
 ///
-///  @param  i    Index of a vertex to remove from.
+///  @param  iVert    Index of a vertex to remove from.
 ///  @param  iEdg           Index of a edge to remove.
-void AllEdges::eraseEdge(const int i, const BGSIZE iEdg) {
-   edgeCounts_[i]--;
+void AllEdges::eraseEdge(const int iVert, const BGSIZE iEdg) {
+   edgeCounts_[iVert]--;
    inUse_[iEdg] = false;
    summationPoint_[iEdg] = nullptr;
    W_[iEdg] = 0;
@@ -277,13 +297,13 @@ void
 AllEdges::addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
                         const BGFLOAT deltaT) {
    if (edgeCounts_[destVertex] >= maxEdgesPerVertex_) {
-      LOG4CPLUS_FATAL(fileLogger_, "Vertex : " << destVertex << " ran out of space for new edges.");
+      LOG4CPLUS_FATAL(edgeLogger_, "Vertex : " << destVertex << " ran out of space for new edges.");
       throw runtime_error("Vertex : " + destVertex + string(" ran out of space for new edges."));
    }
 
-   // add it to the list
-   BGSIZE i;
-   for (i = 0; i < maxEdgesPerVertex_; i++) {
+   // add it to the list: find first edge location for vertex destVertex
+   // that isn't in use.
+   for (BGSIZE i = 0; i < maxEdgesPerVertex_; i++) {
       iEdg = maxEdgesPerVertex_ * destVertex + i;
       if (!inUse_[iEdg]) {
          break;
@@ -292,6 +312,6 @@ AllEdges::addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int de
 
    edgeCounts_[destVertex]++;
 
-   // create a edge
+   // create an edge
    createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
 }

@@ -12,6 +12,7 @@
  *     -# network wide burstiness index data in 1s bins,
  *     -# network wide spike count in 10ms bins,
  *     -# individual neuron's radius history of every epoch.
+ *
  */
 
 #pragma once
@@ -44,11 +45,6 @@ public:
    /// @param[in] neurons   The entire list of neurons.
    virtual void compileHistories(IAllVertices &neurons) override;
 
-   /// Compile history information in every epoch
-   ///
-   /// @param[in] neurons   The entire list of neurons.
-   void compileGrowthHistories(IAllVertices &neurons);
-
    /// Writes simulation results to an output destination.
    ///
    /// @param  neurons the Neuron list to search from.
@@ -59,6 +55,8 @@ public:
    virtual void printParameters() override;
 
 private:
+   
+   // TODO: There seems to be multiple copies of this in different classes...
    void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
 
    // track firing rate
@@ -67,10 +65,5 @@ private:
    // track radii
    CompleteMatrix radiiHistory_;
 
-   // burstiness Histogram goes through the
-   VectorMatrix burstinessHist_;
-
-   // spikes history - history of accumulated spikes count of all vertices (10 ms bin)
-   VectorMatrix spikesHistory_;
 };
 

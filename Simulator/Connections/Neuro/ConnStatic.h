@@ -30,6 +30,8 @@
 #include "Simulator.h"
 #include <vector>
 #include <iostream>
+// cereal
+#include <cereal/types/vector.hpp>
 
 using namespace std;
 
@@ -59,7 +61,41 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
+   ///  Get connection radius threshold
+   BGFLOAT getConnsRadiusThresh() const { return threshConnsRadius_; }
+
+   /// Get array of vertex weights
+   BGFLOAT* getWCurrentEpoch() const { return WCurrentEpoch_; }
+
+   /// Get all edge source vertex indices
+   int* getSourceVertexIndexCurrentEpoch() const { return sourceVertexIndexCurrentEpoch_; }
+
+      /// Get all edge destination vertex indices
+   int* getDestVertexIndexCurrentEpoch() const { return destVertexIndexCurrentEpoch_; }
+
+  ///  Cereal serialization method
+  ///  (Serializes radii)
+   template<class Archive>
+   void save(Archive &archive) const;
+   
+   ///  Cereal deserialization method
+   ///  (Deserializes radii)
+   template<class Archive>
+   void load(Archive &archive);
+   
 private:
+   /// Indices of the source vertex for each edge
+   int *sourceVertexIndexCurrentEpoch_;
+   
+    /// Indices of the destination vertex for each edge
+   int *destVertexIndexCurrentEpoch_;
+   
+    /// The weight (scaling factor, strength, maximal amplitude) of each vertex for the current epoch.
+   BGFLOAT *WCurrentEpoch_;
+   
+   /// radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
+   int radiiSize_;
+
    /// number of maximum connections per vertex
    int connsPerVertex_;
 

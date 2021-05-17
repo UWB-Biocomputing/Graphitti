@@ -2,8 +2,8 @@
 <BGSimParams>
   <SimInfoParams name="SimInfoParams">
     <PoolSize name="PoolSize">
-      <x name="x">10</x>
-      <y name="y">10</y>
+      <x name="x">30</x>
+      <y name="y">30</y>
       <z name="z">1</z>
     </PoolSize>
     <SimParams name="SimParams">
@@ -105,14 +105,14 @@
 
     <LayoutParams class="FixedLayout" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">
-        <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList10x10-0.1.xml</activeNListFileName>
-        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList10x10-0.02.xml</inhNListFileName>
+        <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList30x30-0.1.xml</activeNListFileName>
+        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList30x30-0.02.xml</inhNListFileName>
         <probedNListFileName name="prbNListFileName" type="InputFile"/>
       </LayoutFiles>
     </LayoutParams>
 
-       <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
-      <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_2-100.xml</probedNListFileName>
+    <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
+      <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_900.xml</probedNListFileName>
     </RecorderParams>
   </ModelParams>
 </BGSimParams>

@@ -1,9 +1,9 @@
 /**
  * @file XmlGrowthRecorder.cpp
- * 
+ *
  * @ingroup Simulator/Recorders
  *
- * @brief An implementation for recording spikes history on xml file
+ * @brief An implementation for recording spikes history in an XML file for growth simulations
  */
 
 #include "XmlGrowthRecorder.h"
@@ -12,19 +12,17 @@
 #include "AllIFNeurons.h"      // TODO: remove LIF model specific code
 #include "ConnGrowth.h"
 
-//! THe constructor and destructor
+// TODO: We don't need the explicit call to the superclass constructor, right?
+//! The constructor and destructor
 XmlGrowthRecorder::XmlGrowthRecorder() :
       XmlRecorder(),
-      burstinessHist_(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
-                                                                    Simulator::getInstance().getNumEpochs()), 0),
-      spikesHistory_(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
-                                                                   Simulator::getInstance().getNumEpochs() * 100), 0),
       ratesHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
                     Simulator::getInstance().getTotalVertices()),
       radiiHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
                     Simulator::getInstance().getTotalVertices()) {
 }
 
+// TODO: Is this needed?
 XmlGrowthRecorder::~XmlGrowthRecorder() {
 }
 
@@ -59,10 +57,12 @@ void XmlGrowthRecorder::getValues() {
    }
 }
 
-/// Compile growth information in every epoch
+/// Compile history information in every epoch
 ///
 /// @param[in] neurons 	The entire list of neurons.
-void XmlGrowthRecorder::compileGrowthHistories(IAllVertices &neurons) {
+void XmlGrowthRecorder::compileHistories(IAllVertices &neurons) {
+   XmlRecorder::compileHistories(neurons);
+
    shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
 
    BGFLOAT minRadius = dynamic_cast<ConnGrowth *>(conns.get())->growthParams_.minRadius;
@@ -75,6 +75,7 @@ void XmlGrowthRecorder::compileGrowthHistories(IAllVertices &neurons) {
 
       // Cap minimum radius size and record radii to history matrix
       // TODO: find out why we cap this here.
+      // TODO: agreed; seems like this should be capped elsewhere.
       if (radii[iVertex] < minRadius)
          radii[iVertex] = minRadius;
 
@@ -83,43 +84,6 @@ void XmlGrowthRecorder::compileGrowthHistories(IAllVertices &neurons) {
    }
 }
 
-/// Compile history information in every epoch
-///
-/// @param[in] neurons 	The entire list of neurons.
-void XmlGrowthRecorder::compileHistories(IAllVertices &neurons) {
-   AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(neurons);
-   int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
-
-   // output spikes
-   for (int iVertex = 0; iVertex < Simulator::getInstance().getTotalVertices(); iVertex++) {
-      uint64_t *pSpikes = spNeurons.spikeHistory_[iVertex];
-
-      int &spikeCount = spNeurons.spikeCount_[iVertex];
-      int &offset = spNeurons.spikeCountOffset_[iVertex];
-      for (int i = 0, idxSp = offset; i < spikeCount; i++, idxSp++) {
-         // Single precision (float) gives you 23 bits of significand, 8 bits of exponent,
-         // and 1 sign bit. Double precision (double) gives you 52 bits of significand,
-         // 11 bits of exponent, and 1 sign bit.
-         // Therefore, single precision can only handle 2^23 = 8,388,608 simulation steps
-         // or 8 epochs (1 epoch = 100s, 1 simulation step = 0.1ms).
-
-         if (idxSp >= maxSpikes) idxSp = 0;
-         // compile network wide burstiness index data in 1s bins
-         int idx1 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * Simulator::getInstance().getDeltaT());
-         burstinessHist_[idx1] = burstinessHist_[idx1] + 1.0;
-
-         // compile network wide spike count in 10ms bins
-         int idx2 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * Simulator::getInstance().getDeltaT() *
-                                      100);
-         spikesHistory_[idx2] = spikesHistory_[idx2] + 1.0;
-      }
-   }
-
-   // clear spike count
-   spNeurons.clearSpikeCounts();
-
-   compileGrowthHistories(neurons);
-}
 
 /// Writes simulation results to an output destination.
 ///
@@ -152,7 +116,7 @@ void XmlGrowthRecorder::saveSimData(const IAllVertices &neurons) {
    stateOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->yloc_->toXML("yloc") << endl;
    stateOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
-   // create starter nuerons matrix
+   // create starter neuron matrix
    int num_starter_neurons = static_cast<int>(Simulator::getInstance().getModel()->getLayout()->numEndogenouslyActiveNeurons_);
    if (num_starter_neurons > 0) {
       VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);

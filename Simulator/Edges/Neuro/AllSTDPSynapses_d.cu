@@ -64,7 +64,6 @@ void AllSTDPSynapses::allocDeviceStruct( AllSTDPSynapsesDeviceProperties &allEdg
         HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.Apos_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
         HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.mupos_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
         HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.muneg_, maxTotalSynapses * sizeof( BGFLOAT ) ) );
-        HANDLE_ERROR( cudaMalloc( ( void ** ) &allEdgesDevice.useFroemkeDanSTDP_, maxTotalSynapses * sizeof( bool ) ) );
 }
 
 ///  Delete GPU memories.
@@ -100,7 +99,6 @@ void AllSTDPSynapses::deleteDeviceStruct( AllSTDPSynapsesDeviceProperties& allEd
         HANDLE_ERROR( cudaFree( allEdgesDevice.Apos_ ) );
         HANDLE_ERROR( cudaFree( allEdgesDevice.mupos_ ) );
         HANDLE_ERROR( cudaFree( allEdgesDevice.muneg_) );
-        HANDLE_ERROR( cudaFree( allEdgesDevice.useFroemkeDanSTDP_ ) );
 
         AllSpikingSynapses::deleteDeviceStruct( allEdgesDevice );
 }
@@ -169,8 +167,6 @@ void AllSTDPSynapses::copyHostToDevice( void* allEdgesDevice, AllSTDPSynapsesDev
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) ); 
         HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.muneg_, muneg_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) ); 
-        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.useFroemkeDanSTDP_, useFroemkeDanSTDP_,
-                maxTotalSynapses * sizeof( bool ), cudaMemcpyHostToDevice ) ); 
 }
 
 ///  Copy all synapses' data from device to host.
@@ -225,8 +221,6 @@ void AllSTDPSynapses::copyDeviceToHost( AllSTDPSynapsesDeviceProperties& allEdge
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( muneg_, allEdgesDevice.muneg_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( useFroemkeDanSTDP_, allEdgesDevice.useFroemkeDanSTDP_,
-                maxTotalSynapses * sizeof( bool ), cudaMemcpyDeviceToHost ) );
 }
 
 ///  Advance all the Synapses in the simulation.
@@ -308,7 +302,6 @@ void AllSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
         BGFLOAT *AposPrint = new BGFLOAT[size];
         BGFLOAT *muposPrint = new BGFLOAT[size];
         BGFLOAT *munegPrint = new BGFLOAT[size];
-        bool *useFroemkeDanSTDPPrint = new bool[size];
 
         // copy everything
         HANDLE_ERROR( cudaMemcpy ( &allSynapsesProps, allEdgesDeviceProps, sizeof( AllSTDPSynapsesDeviceProperties ), cudaMemcpyDeviceToHost ) );
@@ -343,7 +336,6 @@ void AllSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
         HANDLE_ERROR( cudaMemcpy ( AposPrint, allSynapsesProps.Apos_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( muposPrint, allSynapsesProps.mupos_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( munegPrint, allSynapsesProps.muneg_, size * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( useFroemkeDanSTDPPrint, allSynapsesProps.useFroemkeDanSTDP_, size * sizeof( bool ), cudaMemcpyDeviceToHost ) );
 
         for(int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
             if (WPrint[i] != 0.0) {
@@ -368,8 +360,7 @@ void AllSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
                 cout << " GPU Aneg_: " << AnegPrint[i];
                 cout << " GPU Apos_: " << AposPrint[i];
                 cout << " GPU mupos_: " << muposPrint[i];
-                cout << " GPU muneg_: " << munegPrint[i];
-                cout << " GPU useFroemkeDanSTDP_: " << useFroemkeDanSTDPPrint[i] << endl;
+                cout << " GPU muneg_: " << munegPrint[i] << endl;
             }
         }
 
@@ -418,7 +409,6 @@ void AllSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
         delete[] AposPrint;
         delete[] muposPrint;
         delete[] munegPrint;
-        delete[] useFroemkeDanSTDPPrint;
         totalDelayPostPrint = nullptr;
         tauspostPrint = nullptr;
         tausprePrint = nullptr;
@@ -430,7 +420,6 @@ void AllSTDPSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
         AposPrint = nullptr;
         muposPrint = nullptr;
         munegPrint = nullptr;
-        useFroemkeDanSTDPPrint = nullptr;
     }
 
 }

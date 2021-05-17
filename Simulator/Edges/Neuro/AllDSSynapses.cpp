@@ -71,7 +71,7 @@ void AllDSSynapses::setupEdges(const int numVertices, const int maxEdges) {
 void AllDSSynapses::printParameters() const {
    AllSpikingSynapses::printParameters();
 
-   LOG4CPLUS_DEBUG(fileLogger_, "\n\t---AllDSSynapses Parameters---" << endl
+   LOG4CPLUS_DEBUG(edgeLogger_, "\n\t---AllDSSynapses Parameters---" << endl
                                           << "\tEdges type: AllDSSynapses" << endl << endl);
 }
 
@@ -167,9 +167,9 @@ void AllDSSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
          break;
    }
 
-   this->U_[iEdg] = U;
-   this->D_[iEdg] = D;
-   this->F_[iEdg] = F;
+   U_[iEdg] = U;
+   D_[iEdg] = D;
+   F_[iEdg] = F;
 }
 
 #if !defined(USE_GPU)
@@ -179,15 +179,15 @@ void AllDSSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
 ///  @param  iEdg        Index of the synapse to set.
 ///  @param  deltaT      Inner simulation step duration.
 void AllDSSynapses::changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) {
-   BGFLOAT &psr = this->psr_[iEdg];
-   BGFLOAT &W = this->W_[iEdg];
-   BGFLOAT &decay = this->decay_[iEdg];
-   uint64_t &lastSpike = this->lastSpike_[iEdg];
-   BGFLOAT &r = this->r_[iEdg];
-   BGFLOAT &u = this->u_[iEdg];
-   BGFLOAT &D = this->D_[iEdg];
-   BGFLOAT &F = this->F_[iEdg];
-   BGFLOAT &U = this->U_[iEdg];
+   BGFLOAT &psr = psr_[iEdg];
+   BGFLOAT &W = W_[iEdg];
+   BGFLOAT &decay = decay_[iEdg];
+   uint64_t &lastSpike = lastSpike_[iEdg];
+   BGFLOAT &r = r_[iEdg];
+   BGFLOAT &u = u_[iEdg];
+   BGFLOAT &D = D_[iEdg];
+   BGFLOAT &F = F_[iEdg];
+   BGFLOAT &U = U_[iEdg];
 
    // adjust synapse parameters
    if (lastSpike != ULONG_MAX) {

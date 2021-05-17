@@ -11,6 +11,7 @@
 #include "Util.h"
 #include "ParameterManager.h"
 
+// TODO: I don't think that either of the constructor or destructor is needed here
 FixedLayout::FixedLayout() : Layout() {
 }
 
@@ -29,7 +30,7 @@ void FixedLayout::printParameters() const {
 ///
 ///  @param  numVertices number of the vertices to have in the type map.
 void FixedLayout::generateVertexTypeMap(int numVertices) {
-   DEBUG(cout << "\nInitializing vertex type map" << endl;);
+   LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing vertex type map" << endl);
 
    // Populate vertexTypeMap_ with EXC
    fill_n(vertexTypeMap_, numVertices, EXC);

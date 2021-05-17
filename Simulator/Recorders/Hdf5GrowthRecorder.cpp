@@ -16,6 +16,8 @@
 const H5std_string nameRatesHist("ratesHistory");
 const H5std_string nameRadiiHist("radiiHistory");
 
+
+// TODO: Do we need the empty constructor and destructor?
 // The constructor and destructor
 Hdf5GrowthRecorder::Hdf5GrowthRecorder()
 {
@@ -27,33 +29,35 @@ Hdf5GrowthRecorder::~Hdf5GrowthRecorder() {
 ///  Create data spaces and data sets of the hdf5 for recording histories.
 void Hdf5GrowthRecorder::initDataSet() {
    Hdf5Recorder::initDataSet();
+   Simulator& simulator = Simulator::getInstance();
 
    // create the data space & dataset for rates history
    hsize_t dims[2];
-   dims[0] = static_cast<hsize_t>(Simulator::getInstance().getNumEpochs() * Simulator::getInstance().getEpochDuration() + 1);
-   dims[1] = static_cast<hsize_t>(Simulator::getInstance().getTotalVertices());
+   dims[0] = static_cast<hsize_t>(simulator.getNumEpochs() * simulator.getEpochDuration() + 1);
+   dims[1] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsRatesHist(2, dims);
    dataSetRatesHist_ = new DataSet(stateOut_->createDataSet(nameRatesHist, H5_FLOAT, dsRatesHist));
 
    // create the data space & dataset for radii history
-   dims[0] = static_cast<hsize_t>(Simulator::getInstance().getNumEpochs() * Simulator::getInstance().getEpochDuration() + 1);
-   dims[1] = static_cast<hsize_t>(Simulator::getInstance().getTotalVertices());
+   dims[0] = static_cast<hsize_t>(simulator.getNumEpochs() * simulator.getEpochDuration() + 1);
+   dims[1] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsRadiiHist(2, dims);
    dataSetRadiiHist_ = new DataSet(stateOut_->createDataSet(nameRadiiHist, H5_FLOAT, dsRadiiHist));
 
    // allocate data memories
-   ratesHistory_ = new BGFLOAT[Simulator::getInstance().getTotalVertices()];
-   radiiHistory_ = new BGFLOAT[Simulator::getInstance().getTotalVertices()];
+   ratesHistory_ = new BGFLOAT[simulator.getTotalVertices()];
+   radiiHistory_ = new BGFLOAT[simulator.getTotalVertices()];
 }
 
 /// Init radii and rates history matrices with default values
 void Hdf5GrowthRecorder::initDefaultValues() {
-   shared_ptr<Model> model = Simulator::getInstance().getModel();
+   Simulator& simulator = Simulator::getInstance();
+   shared_ptr<Model> model = simulator.getModel();
 
    shared_ptr<Connections> connections = model->getConnections();
    BGFLOAT startRadius = dynamic_pointer_cast<ConnGrowth>(connections)->growthParams_.startRadius;
 
-   for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
+   for (int i = 0; i < simulator.getTotalVertices(); i++) {
       radiiHistory_[i] = startRadius;
       ratesHistory_[i] = 0;
    }
@@ -65,11 +69,12 @@ void Hdf5GrowthRecorder::initDefaultValues() {
 
 /// Init radii and rates history matrices with current radii and rates
 void Hdf5GrowthRecorder::initValues() {
-   shared_ptr<Model> model = Simulator::getInstance().getModel();
+   Simulator& simulator = Simulator::getInstance();
+   shared_ptr<Model> model = simulator.getModel();
 
    shared_ptr<Connections> connections = model->getConnections();
 
-   for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
+   for (int i = 0; i < simulator.getTotalVertices(); i++) {
       radiiHistory_[i] = (*dynamic_pointer_cast<ConnGrowth>(connections)->radii_)[i];
       ratesHistory_[i] = (*dynamic_pointer_cast<ConnGrowth>(connections)->rates_)[i];
    }
@@ -82,7 +87,6 @@ void Hdf5GrowthRecorder::initValues() {
 /// Get the current radii and rates values
 void Hdf5GrowthRecorder::getValues() {
    shared_ptr<Model> model = Simulator::getInstance().getModel();
-
    shared_ptr<Connections> connections = model->getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
@@ -107,7 +111,6 @@ void Hdf5GrowthRecorder::compileHistories(IAllVertices &neurons) {
    Hdf5Recorder::compileHistories(neurons);
 
    shared_ptr<Model> model = Simulator::getInstance().getModel();
-
    shared_ptr<Connections> connections = model->getConnections();
 
    BGFLOAT minRadius = dynamic_pointer_cast<ConnGrowth>(connections)->growthParams_.minRadius;
@@ -202,5 +205,14 @@ void Hdf5GrowthRecorder::writeRadiiRates()
         return;
     }
 }
+
+///  Prints out all parameters to logging file.
+///  Registered to OperationManager as Operation::printParameters
+void Hdf5GrowthRecorder::printParameters() {
+   
+   LOG4CPLUS_DEBUG(fileLogger_, "\n---Hdf5GrowthRecorder Parameters---" << endl
+                   << "\tRecorder type: Hdf5GrowthRecorder" << endl);
+}
+
 
 #endif // HDF5

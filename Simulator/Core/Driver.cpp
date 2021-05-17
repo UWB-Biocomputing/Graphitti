@@ -41,7 +41,9 @@
 // Cereal
 #include <cereal/archives/xml.hpp>
 #include <cereal/archives/binary.hpp>
+// TODO: fix this stuff
 #include "ConnGrowth.h" // hacked in. that's why its here.
+#include "ConnStatic.h" // hacked in. that's why its here.
 
 #if defined(USE_GPU)
 #include "GPUModel.h"
@@ -69,6 +71,7 @@ int main(int argc, char *argv[]) {
    // Clear logging files at the start of each simulation
    fstream("../Output/Debug/logging.txt", ios::out | ios::trunc);
    fstream("../Output/Debug/vertices.txt", ios::out | ios::trunc);
+   fstream("../Output/Debug/edges.txt", ios::out | ios::trunc);
 
    // Initialize log4cplus and set properties based on configure file
    ::log4cplus::initialize();
@@ -76,8 +79,8 @@ int main(int argc, char *argv[]) {
 
    // Get the instance of the console logger and print status
    log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
-   LOG4CPLUS_TRACE(consoleLogger, "Initiating Simulator");
-
+   
+   LOG4CPLUS_TRACE(consoleLogger, "Instantiating Simulator");
    Simulator &simulator = Simulator::getInstance();
 
    // Handles parsing of the command line.
@@ -121,7 +124,7 @@ int main(int argc, char *argv[]) {
    OperationManager::getInstance().executeOperation(Operations::printParameters);
 
    // Deserializes internal state from a prior run of the simulation
-   if (!simulator.getSerializationFileName().empty()) {
+   if (!simulator.getDeserializationFileName().empty()) {
       LOG4CPLUS_TRACE(consoleLogger, "Deserializing state from file.");
 
       // Deserialization
@@ -237,6 +240,7 @@ bool parseCommandLine(int argc, char *argv[]) {
 ///  @returns    true if successful, false otherwise.
 bool deserializeSynapses() {
    Simulator &simulator = Simulator::getInstance();
+   
    // We can deserialize from a variety of archive file formats. Below, comment
    // out all but the line that is compatible with the desired format.
    ifstream memory_in(simulator.getDeserializationFileName().c_str());
@@ -248,7 +252,7 @@ bool deserializeSynapses() {
       return false;
    }
 
-   // We can deserialize from a variety of archive file formats. Below, commentp
+   // We can deserialize from a variety of archive file formats. Below, comment
    // out all but the line that corresponds to the desired format.
    cereal::XMLInputArchive archive(memory_in);
    //cereal::BinaryInputArchive archive(memory_in);
@@ -272,9 +276,17 @@ bool deserializeSynapses() {
    }
 
    // Creates synapses from weight
-   connections->createSynapsesFromWeights(simulator.getTotalVertices(), layout.get(), (*layout->getVertices()),
+   connections->createSynapsesFromWeights(simulator.getTotalVertices(),
+                                          layout.get(),
+                                          (*layout->getVertices()),
                                           (*connections->getEdges()));
 
+
+#if defined(USE_GPU)
+   // Copies CPU Synapse data to GPU after deserialization, if we're doing
+   // a GPU-based simulation.
+   simulator.copyCPUSynapseToGPU();
+#endif // USE_GPU
 
    // Creates synapse index map (includes copy CPU index map to GPU)
    connections->createEdgeIndexMap();
@@ -307,7 +319,12 @@ void serializeSynapses() {
    cereal::XMLOutputArchive archive(memory_out);
    //ofstream memory_out (simInfo->memOutputFileName.c_str(), std::ios::binary);
    //cereal::BinaryOutputArchive archive(memory_out);
-
+   
+#if defined(USE_GPU)
+   // Copies GPU Synapse props data to CPU for serialization
+   simulator.copyGPUSynapseToCPU();
+#endif // USE_GPU
+   
     shared_ptr<Model> model = simulator.getModel();
 
    // Serializes synapse weights along with each synapse's source vertex and destination vertex
