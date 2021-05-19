@@ -36,8 +36,7 @@ AllEdges::AllEdges() :
 
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
-
-      }
+}
 
 AllEdges::AllEdges(const int numVertices, const int maxEdges) {
    setupEdges(numVertices, maxEdges);
@@ -46,15 +45,15 @@ AllEdges::AllEdges(const int numVertices, const int maxEdges) {
 AllEdges::~AllEdges() {
    BGSIZE maxTotalEdges = maxEdgesPerVertex_ * countVertices_;
 
-  if (maxTotalEdges != 0) {
-     delete[] destVertexIndex_;
-     delete[] W_;
-     delete[] summationPoint_;
-     delete[] sourceVertexIndex_;
-     delete[] type_;
-     delete[] inUse_;
-     delete[] edgeCounts_;
-  }
+   if (maxTotalEdges != 0) {
+      delete[] destVertexIndex_;
+      delete[] W_;
+      delete[] summationPoint_;
+      delete[] sourceVertexIndex_;
+      delete[] type_;
+      delete[] inUse_;
+      delete[] edgeCounts_;
+   }
 
    destVertexIndex_ = nullptr;
    W_ = nullptr;
@@ -183,7 +182,7 @@ edgeType AllEdges::edgeOrdinalToType(const int typeOrdinal) {
 }
 
 ///  Create a edge index map.
-EdgeIndexMap *AllEdges::createEdgeIndexMap() {
+void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap) {
    Simulator& simulator = Simulator::getInstance();
    int vertexCount = simulator.getTotalVertices();
    int totalEdgeCount = 0;
@@ -197,17 +196,15 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
    LOG4CPLUS_TRACE(fileLogger_,endl<<"totalEdgeCount: in edgeIndexMap " << totalEdgeCount << endl);
 
    if (totalEdgeCount == 0) {
-      return nullptr;
+      return;
    }
 
-   // allocate memories for forward map
-   vector<BGSIZE> *rgEdgeEdgeIndexMap = new vector<BGSIZE>[vertexCount];
+   // Create vector for edge forwarding map
+   vector<BGSIZE> rgEdgeEdgeIndexMap[vertexCount];
 
    BGSIZE edg_i = 0;
    int curr = 0;
 
-   // create edge forward map & active edge map
-   EdgeIndexMap *edgeIndexMap = new EdgeIndexMap(vertexCount, totalEdgeCount);
    LOG4CPLUS_TRACE(edgeLogger_, "\nSize of edge Index Map "<< vertexCount << "," << totalEdgeCount << endl);
    
    for (int i = 0; i < vertexCount; i++) {
@@ -250,11 +247,6 @@ EdgeIndexMap *AllEdges::createEdgeIndexMap() {
          edgeIndexMap->outgoingEdgeIndexMap_[edg_i] = rgEdgeEdgeIndexMap[i][j];
       }
    }
-
-   // delete memories
-   delete[] rgEdgeEdgeIndexMap;
-
-   return edgeIndexMap;
 }
 
 
@@ -293,8 +285,7 @@ void AllEdges::eraseEdge(const int iVert, const BGSIZE iEdg) {
 ///  @param  destVertex The Vertex that receives from the edge.
 ///  @param  sumPoint   Summation point address.
 ///  @param  deltaT      Inner simulation step duration
-void
-AllEdges::addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
+void AllEdges::addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
                         const BGFLOAT deltaT) {
    if (edgeCounts_[destVertex] >= maxEdgesPerVertex_) {
       LOG4CPLUS_FATAL(edgeLogger_, "Vertex : " << destVertex << " ran out of space for new edges.");
