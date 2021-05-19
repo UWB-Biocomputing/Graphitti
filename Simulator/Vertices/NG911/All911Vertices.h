@@ -96,9 +96,12 @@ public:
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap) override;
 
-protected:
-   void advanceVertex(const int index);
+private:
+   void advancePSAP(const int index);
+   void advanceCALR(const int index);
+   void advanceRESP(const int index, shared_ptr<Layout> layout);
 
+   shared_ptr<EdgeIndexMap> edgeMap_;
 
 #endif // defined(USE_GPU)
 };
