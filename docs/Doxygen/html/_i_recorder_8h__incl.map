@@ -5,7 +5,7 @@
 <area shape="rect" id="node4" href="$_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="932,319,1003,345"/>
 <area shape="rect" id="node27" href="$_model_8h.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="1464,169,1532,196"/>
 <area shape="rect" id="node30" href="$_i_all_vertices_8h.html" title="An interface for vertices classes." alt="" coords="1569,319,1669,345"/>
-<area shape="rect" id="node32" href="$_simulator_8h.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="1134,95,1254,121"/>
+<area shape="rect" id="node32" href="$_simulator_8h.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="1150,95,1238,121"/>
 <area shape="rect" id="node5" title=" " alt="" coords="659,393,729,420"/>
 <area shape="rect" id="node6" title=" " alt="" coords="753,393,819,420"/>
 <area shape="rect" id="node7" title=" " alt="" coords="1081,543,1139,569"/>
@@ -30,7 +30,7 @@
 <area shape="rect" id="node26" title=" " alt="" coords="249,617,315,644"/>
 <area shape="rect" id="node28" title=" " alt="" coords="1475,319,1545,345"/>
 <area shape="rect" id="node29" href="$_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="1401,244,1473,271"/>
-<area shape="rect" id="node31" href="$_edge_index_map_8h.html" title="A structure maintains outgoing and active synapses list (forward map)." alt="" coords="1350,468,1502,495"/>
+<area shape="rect" id="node31" href="$_edge_index_map_8h.html" title="A structure maintains outgoing and edges list (forward map)." alt="" coords="1350,468,1502,495"/>
 <area shape="rect" id="node33" href="$_timer_8h.html" title="Timer class, from CSS432." alt="" coords="1201,169,1267,196"/>
 <area shape="rect" id="node34" title=" " alt="" coords="1193,244,1275,271"/>
 </map>

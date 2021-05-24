@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: AllSpikingNeurons Class Reference</title>
+<title>Graphitti: AllSpikingNeurons Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -99,20 +98,20 @@ Collaboration diagram for AllSpikingNeurons:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a438606d5c6606ea692090ce0f7e568a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_all_spiking_neurons.html#a438606d5c6606ea692090ce0f7e568a5">setupVertices</a> ()</td></tr>
-<tr class="memdesc:a438606d5c6606ea692090ce0f7e568a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup the internal structure of the class (allocate memories).  <a href="class_all_spiking_neurons.html#a438606d5c6606ea692090ce0f7e568a5">More...</a><br /></td></tr>
-<tr class="separator:a438606d5c6606ea692090ce0f7e568a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2372b040780002fb8e2e7ae4022cba14"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_all_spiking_neurons.html#a2372b040780002fb8e2e7ae4022cba14">setupVertices</a> () override</td></tr>
+<tr class="memdesc:a2372b040780002fb8e2e7ae4022cba14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup the internal structure of the class (allocate memories).  <a href="class_all_spiking_neurons.html#a2372b040780002fb8e2e7ae4022cba14">More...</a><br /></td></tr>
+<tr class="separator:a2372b040780002fb8e2e7ae4022cba14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41c0ada97ea06673688a9b92cb310bde"><td class="memItemLeft" align="right" valign="top"><a id="a41c0ada97ea06673688a9b92cb310bde"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_all_spiking_neurons.html#a41c0ada97ea06673688a9b92cb310bde">clearSpikeCounts</a> ()</td></tr>
 <tr class="memdesc:a41c0ada97ea06673688a9b92cb310bde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the spike counts out of all Neurons. <br /></td></tr>
 <tr class="separator:a41c0ada97ea06673688a9b92cb310bde"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add5cbc21f3b35eab734931ddbecdc69c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_all_spiking_neurons.html#add5cbc21f3b35eab734931ddbecdc69c">advanceVertices</a> (<a class="el" href="class_i_all_edges.html">IAllEdges</a> &amp;synapses, const <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a> *edgeIndexMap)</td></tr>
-<tr class="separator:add5cbc21f3b35eab734931ddbecdc69c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41982690e37c71f067f4dc3f9dbb0f86"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_all_spiking_neurons.html#a41982690e37c71f067f4dc3f9dbb0f86">advanceVertices</a> (<a class="el" href="class_all_edges.html">AllEdges</a> &amp;synapses, const <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a> *edgeIndexMap)</td></tr>
+<tr class="separator:a41982690e37c71f067f4dc3f9dbb0f86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b18d420ffee9062496b2300082cf3dc"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_all_spiking_neurons.html#a7b18d420ffee9062496b2300082cf3dc">getSpikeHistory</a> (int index, int offIndex)</td></tr>
 <tr class="separator:a7b18d420ffee9062496b2300082cf3dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_all_vertices"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_all_vertices')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_all_vertices.html">AllVertices</a></td></tr>
-<tr class="memitem:a53aaf9bd6edb4bd5b0821c90eab63192 inherit pub_methods_class_all_vertices"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_all_vertices.html#a53aaf9bd6edb4bd5b0821c90eab63192">printParameters</a> () const</td></tr>
-<tr class="separator:a53aaf9bd6edb4bd5b0821c90eab63192 inherit pub_methods_class_all_vertices"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30c515dad5245087e4701c743245cec2 inherit pub_methods_class_all_vertices"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_all_vertices.html#a30c515dad5245087e4701c743245cec2">printParameters</a> () const override</td></tr>
+<tr class="separator:a30c515dad5245087e4701c743245cec2 inherit pub_methods_class_all_vertices"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_i_all_vertices"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_i_all_vertices')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_i_all_vertices.html">IAllVertices</a></td></tr>
 <tr class="memitem:a877ce75f2804af3bb4a443c9183d8eff inherit pub_methods_class_i_all_vertices"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_all_vertices.html#a877ce75f2804af3bb4a443c9183d8eff">loadParameters</a> ()=0</td></tr>
 <tr class="separator:a877ce75f2804af3bb4a443c9183d8eff inherit pub_methods_class_i_all_vertices"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,8 +202,8 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>vertexLo
 
 </div>
 </div>
-<a id="add5cbc21f3b35eab734931ddbecdc69c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add5cbc21f3b35eab734931ddbecdc69c">&#9670;&nbsp;</a></span>advanceVertices()</h2>
+<a id="a41982690e37c71f067f4dc3f9dbb0f86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41982690e37c71f067f4dc3f9dbb0f86">&#9670;&nbsp;</a></span>advanceVertices()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -215,7 +214,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>vertexLo
         <tr>
           <td class="memname">void AllSpikingNeurons::advanceVertices </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_i_all_edges.html">IAllEdges</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_all_edges.html">AllEdges</a> &amp;&#160;</td>
           <td class="paramname"><em>synapses</em>, </td>
         </tr>
         <tr>
@@ -245,7 +244,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>vertexLo
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="class_i_all_vertices.html#a137915f85227c9c512e4682fa944c311">IAllVertices</a>.</p>
+<p>Implements <a class="el" href="class_i_all_vertices.html#a216180e3125e018e8b72c43c52e622ff">IAllVertices</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_all_spiking_neurons_8cpp_source.html#l00075">75</a> of file <a class="el" href="_all_spiking_neurons_8cpp_source.html">AllSpikingNeurons.cpp</a>.</p>
 
@@ -342,8 +341,8 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>vertexLo
 
 </div>
 </div>
-<a id="a438606d5c6606ea692090ce0f7e568a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a438606d5c6606ea692090ce0f7e568a5">&#9670;&nbsp;</a></span>setupVertices()</h2>
+<a id="a2372b040780002fb8e2e7ae4022cba14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2372b040780002fb8e2e7ae4022cba14">&#9670;&nbsp;</a></span>setupVertices()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -360,7 +359,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>vertexLo
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -368,9 +367,9 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>vertexLo
 <p>Setup the internal structure of the class (allocate memories). </p>
 <p>Setup the internal structure of the class. Allocate memories to store all neurons' state. </p>
 
-<p>Reimplemented from <a class="el" href="class_all_vertices.html#ae5aebf9d98bc8f51e9e5b499f8d5e0ee">AllVertices</a>.</p>
+<p>Reimplemented from <a class="el" href="class_all_vertices.html#ae8a78ef21ee8f07227f5ee130dcf7d9c">AllVertices</a>.</p>
 
-<p>Reimplemented in <a class="el" href="class_all_i_z_h_neurons.html#a47fc3474a2d55e1d47ae7c853fa7f38d">AllIZHNeurons</a>, and <a class="el" href="class_all_i_f_neurons.html#a5fac10a12930985e012a46717c7eab16">AllIFNeurons</a>.</p>
+<p>Reimplemented in <a class="el" href="class_all_i_z_h_neurons.html#aeda3ce93aa6e2e64d976dbc73ec3eb91">AllIZHNeurons</a>, and <a class="el" href="class_all_i_f_neurons.html#a38a8c9d05d39de5b74df3096bdb39154">AllIFNeurons</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_all_spiking_neurons_8cpp_source.html#l00039">39</a> of file <a class="el" href="_all_spiking_neurons_8cpp_source.html">AllSpikingNeurons.cpp</a>.</p>
 

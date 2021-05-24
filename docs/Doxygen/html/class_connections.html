@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Connections Class Reference</title>
+<title>Graphitti: Connections Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -76,9 +75,10 @@ Inheritance diagram for Connections:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_connections__inherit__graph.png" border="0" usemap="#a_connections_inherit__map" alt="Inheritance graph"/></div>
 <map name="a_connections_inherit__map" id="a_connections_inherit__map">
-<area shape="rect" title=" " alt="" coords="63,5,157,32"/>
+<area shape="rect" title=" " alt="" coords="120,5,215,32"/>
 <area shape="rect" href="class_conn_growth.html" title=" " alt="" coords="5,80,100,107"/>
 <area shape="rect" href="class_conn_static.html" title=" " alt="" coords="124,80,211,107"/>
+<area shape="rect" href="class_connections911.html" title=" " alt="" coords="235,80,351,107"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -88,49 +88,52 @@ Public Member Functions</h2></td></tr>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a1da0f8035c29027d63f7648e24474a73">~Connections</a> ()</td></tr>
 <tr class="memdesc:a1da0f8035c29027d63f7648e24474a73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
 <tr class="separator:a1da0f8035c29027d63f7648e24474a73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeef17410d6e48223f92150cee9e6cd9c"><td class="memItemLeft" align="right" valign="top"><a id="aeef17410d6e48223f92150cee9e6cd9c"></a>
-shared_ptr&lt; <a class="el" href="class_i_all_edges.html">IAllEdges</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#aeef17410d6e48223f92150cee9e6cd9c">getEdges</a> () const</td></tr>
-<tr class="memdesc:aeef17410d6e48223f92150cee9e6cd9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns shared pointer to Synapses/Edges. <br /></td></tr>
-<tr class="separator:aeef17410d6e48223f92150cee9e6cd9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28a3f18897f7d17466886ccd2f536fa4"><td class="memItemLeft" align="right" valign="top"><a id="a28a3f18897f7d17466886ccd2f536fa4"></a>
-shared_ptr&lt; <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a28a3f18897f7d17466886ccd2f536fa4">getSynapseIndexMap</a> () const</td></tr>
-<tr class="memdesc:a28a3f18897f7d17466886ccd2f536fa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a shared pointer to the <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a>. <br /></td></tr>
-<tr class="separator:a28a3f18897f7d17466886ccd2f536fa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca4d91437efa49ec80b21fce4f1dd45d"><td class="memItemLeft" align="right" valign="top"><a id="aca4d91437efa49ec80b21fce4f1dd45d"></a>
+shared_ptr&lt; <a class="el" href="class_all_edges.html">AllEdges</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#aca4d91437efa49ec80b21fce4f1dd45d">getEdges</a> () const</td></tr>
+<tr class="memdesc:aca4d91437efa49ec80b21fce4f1dd45d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns shared pointer to Synapses/Edges. <br /></td></tr>
+<tr class="separator:aca4d91437efa49ec80b21fce4f1dd45d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a155f122d1e21184a2a52823809c233b9"><td class="memItemLeft" align="right" valign="top"><a id="a155f122d1e21184a2a52823809c233b9"></a>
+shared_ptr&lt; <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a155f122d1e21184a2a52823809c233b9">getEdgeIndexMap</a> () const</td></tr>
+<tr class="memdesc:a155f122d1e21184a2a52823809c233b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a shared pointer to the <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a>. <br /></td></tr>
+<tr class="separator:a155f122d1e21184a2a52823809c233b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83ee103acc7aa8c1cb8d30fdfa036b84"><td class="memItemLeft" align="right" valign="top"><a id="a83ee103acc7aa8c1cb8d30fdfa036b84"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a83ee103acc7aa8c1cb8d30fdfa036b84">createEdgeIndexMap</a> ()</td></tr>
 <tr class="memdesc:a83ee103acc7aa8c1cb8d30fdfa036b84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls Synapses to create <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a> and stores it as a member variable. <br /></td></tr>
 <tr class="separator:a83ee103acc7aa8c1cb8d30fdfa036b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa36a03d4c7a309748a42917ff2300ced"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#aa36a03d4c7a309748a42917ff2300ced">setupConnections</a> (<a class="el" href="class_layout.html">Layout</a> *layout, <a class="el" href="class_i_all_vertices.html">IAllVertices</a> *vertices, <a class="el" href="class_i_all_edges.html">IAllEdges</a> *synapses)=0</td></tr>
-<tr class="separator:aa36a03d4c7a309748a42917ff2300ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a357bb3448cee8a44a50015c455298c40"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a357bb3448cee8a44a50015c455298c40">setupConnections</a> (<a class="el" href="class_layout.html">Layout</a> *layout, <a class="el" href="class_i_all_vertices.html">IAllVertices</a> *vertices, <a class="el" href="class_all_edges.html">AllEdges</a> *synapses)=0</td></tr>
+<tr class="separator:a357bb3448cee8a44a50015c455298c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99589780600516272a2cf789f5c97cb6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a99589780600516272a2cf789f5c97cb6">loadParameters</a> ()=0</td></tr>
 <tr class="separator:a99589780600516272a2cf789f5c97cb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e3dbcf7e4bc48a89271dd09d78da220"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a9e3dbcf7e4bc48a89271dd09d78da220">printParameters</a> () const =0</td></tr>
 <tr class="separator:a9e3dbcf7e4bc48a89271dd09d78da220"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fb9bbfc3aa02adb0d76a6cf7510a669"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a4fb9bbfc3aa02adb0d76a6cf7510a669">updateConnections</a> (<a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;vertices, <a class="el" href="class_layout.html">Layout</a> *layout)</td></tr>
 <tr class="separator:a4fb9bbfc3aa02adb0d76a6cf7510a669"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a951efe96bc2fb9397bf335d79912a044"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a951efe96bc2fb9397bf335d79912a044">createSynapsesFromWeights</a> (const int numVertices, <a class="el" href="class_layout.html">Layout</a> *layout, <a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;ivertices, <a class="el" href="class_i_all_edges.html">IAllEdges</a> &amp;isynapses)</td></tr>
-<tr class="separator:a951efe96bc2fb9397bf335d79912a044"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5849d0cf3d7acd97ad606747c9f7cbdb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a5849d0cf3d7acd97ad606747c9f7cbdb">updateSynapsesWeights</a> (const int numVertices, <a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;vertices, <a class="el" href="class_i_all_edges.html">IAllEdges</a> &amp;synapses, <a class="el" href="class_layout.html">Layout</a> *layout)</td></tr>
-<tr class="separator:a5849d0cf3d7acd97ad606747c9f7cbdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0843fea4738c6657a8147c10d9afdae6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a0843fea4738c6657a8147c10d9afdae6">createSynapsesFromWeights</a> (const int numVertices, <a class="el" href="class_layout.html">Layout</a> *layout, <a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;ivertices, <a class="el" href="class_all_edges.html">AllEdges</a> &amp;isynapses)</td></tr>
+<tr class="separator:a0843fea4738c6657a8147c10d9afdae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a498c2274c67c32d1bc0b31bb8c8cc3fc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a498c2274c67c32d1bc0b31bb8c8cc3fc">updateSynapsesWeights</a> (const int numVertices, <a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;vertices, <a class="el" href="class_all_edges.html">AllEdges</a> &amp;synapses, <a class="el" href="class_layout.html">Layout</a> *layout)</td></tr>
+<tr class="separator:a498c2274c67c32d1bc0b31bb8c8cc3fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:ac9b5c8fd2697ad9a40a61a110b646476"><td class="memItemLeft" align="right" valign="top"><a id="ac9b5c8fd2697ad9a40a61a110b646476"></a>
-shared_ptr&lt; <a class="el" href="class_i_all_edges.html">IAllEdges</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>edges_</b></td></tr>
-<tr class="separator:ac9b5c8fd2697ad9a40a61a110b646476"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5151be84fc4ac403b8237a440d009ad0"><td class="memItemLeft" align="right" valign="top"><a id="a5151be84fc4ac403b8237a440d009ad0"></a>
+shared_ptr&lt; <a class="el" href="class_all_edges.html">AllEdges</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>edges_</b></td></tr>
+<tr class="separator:a5151be84fc4ac403b8237a440d009ad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48f03c3a78cd379cd40938933b6b2503"><td class="memItemLeft" align="right" valign="top"><a id="a48f03c3a78cd379cd40938933b6b2503"></a>
 shared_ptr&lt; <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>synapseIndexMap_</b></td></tr>
 <tr class="separator:a48f03c3a78cd379cd40938933b6b2503"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d9e580aa5030c86a3f284de14f599fc"><td class="memItemLeft" align="right" valign="top"><a id="a8d9e580aa5030c86a3f284de14f599fc"></a>
 log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogger_</b></td></tr>
 <tr class="separator:a8d9e580aa5030c86a3f284de14f599fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bd8b1a7056a88f44a2817305a782edf"><td class="memItemLeft" align="right" valign="top"><a id="a2bd8b1a7056a88f44a2817305a782edf"></a>
+log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>edgeLogger_</b></td></tr>
+<tr class="separator:a2bd8b1a7056a88f44a2817305a782edf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_connections_8h_source.html#l00040">40</a> of file <a class="el" href="_connections_8h_source.html">Connections.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a951efe96bc2fb9397bf335d79912a044"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a951efe96bc2fb9397bf335d79912a044">&#9670;&nbsp;</a></span>createSynapsesFromWeights()</h2>
+<a id="a0843fea4738c6657a8147c10d9afdae6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0843fea4738c6657a8147c10d9afdae6">&#9670;&nbsp;</a></span>createSynapsesFromWeights()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -156,7 +159,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="class_i_all_edges.html">IAllEdges</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_all_edges.html">AllEdges</a> &amp;&#160;</td>
           <td class="paramname"><em>isynapses</em>&#160;</td>
         </tr>
         <tr>
@@ -215,7 +218,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 </div><div class="memdoc">
 <p>Load member variables from configuration file. Registered to <a class="el" href="class_operation_manager.html">OperationManager</a> as Operations::op::loadParameters </p>
 
-<p>Implemented in <a class="el" href="class_conn_growth.html#a08cdb977566265605735199551f4b17c">ConnGrowth</a>, and <a class="el" href="class_conn_static.html#a8a727c2932d6c5c26eb33971f8390dc0">ConnStatic</a>.</p>
+<p>Implemented in <a class="el" href="class_connections911.html#a1732bd657cef3e18c910d7946dbe46f3">Connections911</a>, <a class="el" href="class_conn_static.html#a760b73a50c025949b38a22be158dcb67">ConnStatic</a>, and <a class="el" href="class_conn_growth.html#ac845f0e5c49ea2a7cc365bc4786b00da">ConnGrowth</a>.</p>
 
 </div>
 </div>
@@ -243,12 +246,12 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 </div><div class="memdoc">
 <p>Prints out all parameters to logging file. Registered to <a class="el" href="class_operation_manager.html">OperationManager</a> as Operation::printParameters </p>
 
-<p>Implemented in <a class="el" href="class_conn_growth.html#aefc21fe51d1ad119522ea70f92bb3801">ConnGrowth</a>, and <a class="el" href="class_conn_static.html#a37a4d5ea2bd9a5eb830ea4275b662c11">ConnStatic</a>.</p>
+<p>Implemented in <a class="el" href="class_connections911.html#a96dea25bc4c126291b141bf5dd9fbb93">Connections911</a>, <a class="el" href="class_conn_static.html#a91526c744ef243096a0cdb8de9a7c877">ConnStatic</a>, and <a class="el" href="class_conn_growth.html#a758fe286f9f8c438d07c5d8a0d8f7c53">ConnGrowth</a>.</p>
 
 </div>
 </div>
-<a id="aa36a03d4c7a309748a42917ff2300ced"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa36a03d4c7a309748a42917ff2300ced">&#9670;&nbsp;</a></span>setupConnections()</h2>
+<a id="a357bb3448cee8a44a50015c455298c40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a357bb3448cee8a44a50015c455298c40">&#9670;&nbsp;</a></span>setupConnections()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,7 +274,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="class_i_all_edges.html">IAllEdges</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="class_all_edges.html">AllEdges</a> *&#160;</td>
           <td class="paramname"><em>synapses</em>&#160;</td>
         </tr>
         <tr>
@@ -296,7 +299,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="class_conn_static.html#a0efee263b67fd08c7936bc9ae4f0859c">ConnStatic</a>, and <a class="el" href="class_conn_growth.html#afff9d62d053c8559766d6101159bb52b">ConnGrowth</a>.</p>
+<p>Implemented in <a class="el" href="class_connections911.html#ab8ad8275e5ed12cefbb18e4062fbcb46">Connections911</a>, <a class="el" href="class_conn_static.html#a583441c7482e4de349153e6cf78044d1">ConnStatic</a>, and <a class="el" href="class_conn_growth.html#a6bbf66b84cd023336332fb3cd7c9687c">ConnGrowth</a>.</p>
 
 </div>
 </div>
@@ -352,14 +355,14 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if successful, false otherwise. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_conn_growth.html#a101afc2c3e44aabfca31033d19073933">ConnGrowth</a>.</p>
+<p>Reimplemented in <a class="el" href="class_connections911.html#a64955b6ea0706763a1f951a35d273755">Connections911</a>, and <a class="el" href="class_conn_growth.html#a096e7610e73fbac53a2abea7a9bc97bf">ConnGrowth</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_connections_8cpp_source.html#l00065">65</a> of file <a class="el" href="_connections_8cpp_source.html">Connections.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a5849d0cf3d7acd97ad606747c9f7cbdb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5849d0cf3d7acd97ad606747c9f7cbdb">&#9670;&nbsp;</a></span>updateSynapsesWeights()</h2>
+<a id="a498c2274c67c32d1bc0b31bb8c8cc3fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a498c2274c67c32d1bc0b31bb8c8cc3fc">&#9670;&nbsp;</a></span>updateSynapsesWeights()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -382,7 +385,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="class_i_all_edges.html">IAllEdges</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_all_edges.html">AllEdges</a> &amp;&#160;</td>
           <td class="paramname"><em>synapses</em>, </td>
         </tr>
         <tr>
@@ -422,7 +425,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="class_conn_growth.html#a3c43d816d94449b47ff02a0d5dac1007">ConnGrowth</a>.</p>
+<p>Reimplemented in <a class="el" href="class_conn_growth.html#aed75cddd5736eb9fff3a19c99a0ee995">ConnGrowth</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_connections_8cpp_source.html#l00081">81</a> of file <a class="el" href="_connections_8cpp_source.html">Connections.cpp</a>.</p>
 

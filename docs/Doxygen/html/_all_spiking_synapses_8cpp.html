@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Simulator/Edges/Neuro/AllSpikingSynapses.cpp File Reference</title>
+<title>Graphitti: Simulator/Edges/Neuro/AllSpikingSynapses.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -74,51 +73,55 @@ $(function() {
 
 <p>A container of all dynamic STDP synapse data.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="_all_spiking_synapses_8h_source.html">AllSpikingSynapses.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;iomanip&gt;</code><br />
+<code>#include &quot;<a class="el" href="_all_spiking_synapses_8h_source.html">AllSpikingSynapses.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_parameter_manager_8h_source.html">ParameterManager.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for AllSpikingSynapses.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="_all_spiking_synapses_8cpp__incl.png" border="0" usemap="#a_simulator_2_edges_2_neuro_2_all_spiking_synapses_8cpp" alt=""/></div>
 <map name="a_simulator_2_edges_2_neuro_2_all_spiking_synapses_8cpp" id="a_simulator_2_edges_2_neuro_2_all_spiking_synapses_8cpp">
-<area shape="rect" title="A container of all dynamic STDP synapse data." alt="" coords="397,5,563,47"/>
-<area shape="rect" href="_all_spiking_synapses_8h.html" title="A container of all spiking synapse data." alt="" coords="405,95,555,121"/>
-<area shape="rect" href="_all_edges_8h.html" title="A container of all edge data." alt="" coords="437,169,523,196"/>
-<area shape="rect" href="_i_all_edges_8h.html" title="An interface for edge classes." alt="" coords="477,244,566,271"/>
-<area shape="rect" href="_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="443,543,514,569"/>
-<area shape="rect" title=" " alt="" coords="135,767,193,793"/>
-<area shape="rect" href="_simulator_8h.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="728,319,816,345"/>
-<area shape="rect" title=" " alt="" coords="679,543,855,569"/>
-<area shape="rect" title=" " alt="" coords="642,244,801,271"/>
-<area shape="rect" href="_edge_index_map_8h.html" title="A structure maintains outgoing and active synapses list (forward map)." alt="" coords="972,617,1124,644"/>
-<area shape="rect" title=" " alt="" coords="245,617,315,644"/>
-<area shape="rect" title=" " alt="" coords="339,617,405,644"/>
-<area shape="rect" title=" " alt="" coords="429,617,507,644"/>
-<area shape="rect" href="_b_g_types_8h.html" title="Used to define uniform data type sizes based for all operating systems. Also used to test the speed o..." alt="" coords="1083,841,1202,868"/>
-<area shape="rect" href="_coordinate_8h.html" title="A container for 2&#45;dimensional coordinates." alt="" coords="94,617,221,644"/>
-<area shape="rect" href="_vector_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 1D array." alt="" coords="583,617,761,644"/>
-<area shape="rect" title=" " alt="" coords="429,841,483,868"/>
-<area shape="rect" href="_matrix_8h.html" title="Abstract base class for Matrices." alt="" coords="692,767,761,793"/>
-<area shape="rect" href="_complete_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 2D array." alt="" coords="585,692,711,719"/>
-<area shape="rect" href="_sparse_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 2D sparse array." alt="" coords="450,692,561,719"/>
-<area shape="rect" href="_norm_8h.html" title="Normally distributed random numbers." alt="" coords="836,692,935,719"/>
-<area shape="rect" href="_matrix_exceptions_8h.html" title="Exception class hierarchy for Matrix classes." alt="" coords="507,841,642,868"/>
-<area shape="rect" title=" " alt="" coords="535,916,614,943"/>
-<area shape="rect" title=" " alt="" coords="667,841,725,868"/>
-<area shape="rect" title=" " alt="" coords="429,767,467,793"/>
-<area shape="rect" title=" " alt="" coords="492,767,567,793"/>
-<area shape="rect" href="_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="887,767,1020,793"/>
-<area shape="rect" title=" " alt="" coords="1227,841,1299,868"/>
-<area shape="rect" title=" " alt="" coords="839,841,899,868"/>
-<area shape="rect" title=" " alt="" coords="923,841,981,868"/>
-<area shape="rect" title=" " alt="" coords="1005,841,1059,868"/>
-<area shape="rect" title=" " alt="" coords="750,841,815,868"/>
-<area shape="rect" title=" " alt="" coords="1105,543,1175,569"/>
-<area shape="rect" href="_model_8h.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="810,393,910,420"/>
-<area shape="rect" href="_timer_8h.html" title="Timer class, from CSS432." alt="" coords="1257,393,1324,420"/>
-<area shape="rect" href="_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="895,468,967,495"/>
-<area shape="rect" href="_i_all_vertices_8h.html" title="An interface for vertices classes." alt="" coords="930,543,1030,569"/>
-<area shape="rect" href="_i_recorder_8h.html" title="An interface for recording spikes history." alt="" coords="729,468,820,495"/>
-<area shape="rect" title=" " alt="" coords="1249,468,1332,495"/>
+<area shape="rect" title="A container of all dynamic STDP synapse data." alt="" coords="1029,5,1195,47"/>
+<area shape="rect" title=" " alt="" coords="947,95,1013,121"/>
+<area shape="rect" href="_all_spiking_synapses_8h.html" title="A container of all spiking synapse data." alt="" coords="1037,95,1187,121"/>
+<area shape="rect" href="_parameter_manager_8h.html" title="A singleton class which contains and manages access to the XML parameter file used by a simulator ins..." alt="" coords="1335,468,1478,495"/>
+<area shape="rect" href="_all_neuro_edges_8h.html" title="A container of all edge data." alt="" coords="988,169,1108,196"/>
+<area shape="rect" href="_all_edges_8h.html" title="An interface and top level implementation for edge classes." alt="" coords="940,244,1025,271"/>
+<area shape="rect" title=" " alt="" coords="1153,767,1212,793"/>
+<area shape="rect" href="_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="747,543,818,569"/>
+<area shape="rect" href="_simulator_8h.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="615,319,703,345"/>
+<area shape="rect" title=" " alt="" coords="189,543,365,569"/>
+<area shape="rect" href="_edge_index_map_8h.html" title="A structure maintains outgoing and edges list (forward map)." alt="" coords="163,617,315,644"/>
+<area shape="rect" title=" " alt="" coords="1021,319,1179,345"/>
+<area shape="rect" title=" " alt="" coords="896,617,965,644"/>
+<area shape="rect" title=" " alt="" coords="990,617,1055,644"/>
+<area shape="rect" title=" " alt="" coords="1079,617,1158,644"/>
+<area shape="rect" href="_b_g_types_8h.html" title="Used to define uniform data type sizes based for all operating systems. Also used to test the speed o..." alt="" coords="519,841,638,868"/>
+<area shape="rect" href="_coordinate_8h.html" title="A container for 2&#45;dimensional coordinates." alt="" coords="542,617,669,644"/>
+<area shape="rect" href="_vector_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 1D array." alt="" coords="693,617,872,644"/>
+<area shape="rect" title=" " alt="" coords="821,841,875,868"/>
+<area shape="rect" href="_matrix_8h.html" title="Abstract base class for Matrices." alt="" coords="625,767,695,793"/>
+<area shape="rect" href="_complete_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 2D array." alt="" coords="599,692,724,719"/>
+<area shape="rect" href="_sparse_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 2D sparse array." alt="" coords="749,692,859,719"/>
+<area shape="rect" href="_norm_8h.html" title="Normally distributed random numbers." alt="" coords="244,692,343,719"/>
+<area shape="rect" href="_matrix_exceptions_8h.html" title="Exception class hierarchy for Matrix classes." alt="" coords="662,841,797,868"/>
+<area shape="rect" title=" " alt="" coords="690,916,769,943"/>
+<area shape="rect" title=" " alt="" coords="436,841,495,868"/>
+<area shape="rect" title=" " alt="" coords="770,767,809,793"/>
+<area shape="rect" title=" " alt="" coords="1236,767,1311,793"/>
+<area shape="rect" href="_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="209,767,343,793"/>
+<area shape="rect" title=" " alt="" coords="5,841,77,868"/>
+<area shape="rect" title=" " alt="" coords="351,841,411,868"/>
+<area shape="rect" title=" " alt="" coords="102,841,159,868"/>
+<area shape="rect" title=" " alt="" coords="183,841,238,868"/>
+<area shape="rect" title=" " alt="" coords="262,841,327,868"/>
+<area shape="rect" title=" " alt="" coords="844,543,913,569"/>
+<area shape="rect" href="_model_8h.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="538,393,638,420"/>
+<area shape="rect" href="_timer_8h.html" title="Timer class, from CSS432." alt="" coords="255,393,321,420"/>
+<area shape="rect" href="_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="620,468,692,495"/>
+<area shape="rect" href="_i_all_vertices_8h.html" title="An interface for vertices classes." alt="" coords="441,543,541,569"/>
+<area shape="rect" href="_i_recorder_8h.html" title="An interface for recording spikes history." alt="" coords="455,468,545,495"/>
+<area shape="rect" title=" " alt="" coords="247,468,329,495"/>
 </map>
 </div>
 </div>

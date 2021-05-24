@@ -1,7 +1,0 @@
-<map id="Simulator/Core/CPUSpikingModel.h" name="Simulator/Core/CPUSpikingModel.h">
-<area shape="rect" id="node1" title="Implementation of Model for graph&#45;based networks." alt="" coords="329,5,514,47"/>
-<area shape="rect" id="node2" href="$_b_g_driver_8cpp.html" title="Orchestrates most functionality in the simulation." alt="" coords="5,102,197,129"/>
-<area shape="rect" id="node3" href="$_c_p_u_spiking_model_8cpp.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="222,95,407,136"/>
-<area shape="rect" id="node4" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="431,102,625,129"/>
-<area shape="rect" id="node5" href="$_host_s_input_poisson_8cpp.html" title="A class that performs stimulus input (implementation Poisson)." alt="" coords="649,95,813,136"/>
-</map>

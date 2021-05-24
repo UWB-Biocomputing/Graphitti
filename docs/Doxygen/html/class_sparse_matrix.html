@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: SparseMatrix Class Reference</title>
+<title>Graphitti: SparseMatrix Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -102,8 +101,8 @@ Collaboration diagram for SparseMatrix:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a94f9c030ff699c5886bab1511d9a5cfd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sparse_matrix.html#a94f9c030ff699c5886bab1511d9a5cfd">SparseMatrix</a> (int r, int c, BGFLOAT m, TiXmlElement *e)</td></tr>
 <tr class="separator:a94f9c030ff699c5886bab1511d9a5cfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d5afde4ebda7cf8851448ad0ff905dd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sparse_matrix.html#a0d5afde4ebda7cf8851448ad0ff905dd">SparseMatrix</a> (int r, int c, BGFLOAT m, const char *v=NULL)</td></tr>
-<tr class="separator:a0d5afde4ebda7cf8851448ad0ff905dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb2c92ef761c0abba2d0ac13cc2c66d4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sparse_matrix.html#adb2c92ef761c0abba2d0ac13cc2c66d4">SparseMatrix</a> (int r, int c, BGFLOAT m, const char *v=nullptr)</td></tr>
+<tr class="separator:adb2c92ef761c0abba2d0ac13cc2c66d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8f4e979f62fc5d11e0206b40977e5e8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sparse_matrix.html#aa8f4e979f62fc5d11e0206b40977e5e8">SparseMatrix</a> (int r=1, int c=1)</td></tr>
 <tr class="separator:aa8f4e979f62fc5d11e0206b40977e5e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a97e8c35b189d60edc430578309ba9f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sparse_matrix.html#a2a97e8c35b189d60edc430578309ba9f">SparseMatrix</a> (const <a class="el" href="class_sparse_matrix.html">SparseMatrix</a> &amp;oldM)</td></tr>
@@ -122,9 +121,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:a11130236443c1f6c703ab39da7c473d8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sparse_matrix.html#a11130236443c1f6c703ab39da7c473d8">size</a> (void) const</td></tr>
 <tr class="memdesc:a11130236443c1f6c703ab39da7c473d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of elements in the sparse matrix.  <a href="class_sparse_matrix.html#a11130236443c1f6c703ab39da7c473d8">More...</a><br /></td></tr>
 <tr class="separator:a11130236443c1f6c703ab39da7c473d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d582dd88bd19946a00c4733f346cb8f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sparse_matrix.html#a0d582dd88bd19946a00c4733f346cb8f">Print</a> (ostream &amp;os) const</td></tr>
-<tr class="memdesc:a0d582dd88bd19946a00c4733f346cb8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polymorphic output. Produces text output on stream "os". Output is by row.  <a href="class_sparse_matrix.html#a0d582dd88bd19946a00c4733f346cb8f">More...</a><br /></td></tr>
-<tr class="separator:a0d582dd88bd19946a00c4733f346cb8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adeb6ef0e45d4c8d7060039f69e47f296"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sparse_matrix.html#adeb6ef0e45d4c8d7060039f69e47f296">Print</a> (ostream &amp;os) const override</td></tr>
+<tr class="memdesc:adeb6ef0e45d4c8d7060039f69e47f296"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polymorphic output. Produces text output on stream "os". Output is by row.  <a href="class_sparse_matrix.html#adeb6ef0e45d4c8d7060039f69e47f296">More...</a><br /></td></tr>
+<tr class="separator:adeb6ef0e45d4c8d7060039f69e47f296"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab258c60935780b20a436ffde326c0153"><td class="memItemLeft" align="right" valign="top"><a id="ab258c60935780b20a436ffde326c0153"></a>
 virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sparse_matrix.html#ab258c60935780b20a436ffde326c0153">toXML</a> (string name=&quot;&quot;) const</td></tr>
 <tr class="memdesc:ab258c60935780b20a436ffde326c0153"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produce XML representation of <a class="el" href="class_matrix.html">Matrix</a> in string return value. <br /></td></tr>
@@ -281,8 +280,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a0d5afde4ebda7cf8851448ad0ff905dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d5afde4ebda7cf8851448ad0ff905dd">&#9670;&nbsp;</a></span>SparseMatrix() <span class="overload">[2/4]</span></h2>
+<a id="adb2c92ef761c0abba2d0ac13cc2c66d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb2c92ef761c0abba2d0ac13cc2c66d4">&#9670;&nbsp;</a></span>SparseMatrix() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -309,7 +308,7 @@ Friends</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>v</em> = <code>NULL</code>&#160;</td>
+          <td class="paramname"><em>v</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -318,7 +317,7 @@ Friends</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Allocate storage and initialize attributes for a diagonal sparse matrix with explicit row data. The parameter v is used as a source of data for initializing the matrix (and must be a string of numbers equal to the number of rows or columns). If v is NULL, then the multiplier is used to initialize the diagonal elements. </p><dl class="exception"><dt>Exceptions</dt><dd>
+<p>Allocate storage and initialize attributes for a diagonal sparse matrix with explicit row data. The parameter v is used as a source of data for initializing the matrix (and must be a string of numbers equal to the number of rows or columns). If v is nullptr, then the multiplier is used to initialize the diagonal elements. </p><dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="class_matrix__bad__alloc.html" title="Signals memory allocation error for Matrix classes.">Matrix_bad_alloc</a></td><td></td></tr>
     <tr><td class="paramname"><a class="el" href="class_matrix__invalid__argument.html" title="Signals bad function argument for Matrix classes.">Matrix_invalid_argument</a></td><td></td></tr>
@@ -704,8 +703,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a0d582dd88bd19946a00c4733f346cb8f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d582dd88bd19946a00c4733f346cb8f">&#9670;&nbsp;</a></span>Print()</h2>
+<a id="adeb6ef0e45d4c8d7060039f69e47f296"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adeb6ef0e45d4c8d7060039f69e47f296">&#9670;&nbsp;</a></span>Print()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -723,7 +722,7 @@ Friends</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

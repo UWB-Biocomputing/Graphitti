@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: IRecorder Class Reference</title>
+<title>Graphitti: IRecorder Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -76,9 +75,11 @@ Inheritance diagram for IRecorder:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_i_recorder__inherit__graph.png" border="0" usemap="#a_i_recorder_inherit__map" alt="Inheritance graph"/></div>
 <map name="a_i_recorder_inherit__map" id="a_i_recorder_inherit__map">
-<area shape="rect" title=" " alt="" coords="36,5,115,32"/>
-<area shape="rect" href="class_xml_recorder.html" title=" " alt="" coords="26,80,125,107"/>
-<area shape="rect" href="class_xml_growth_recorder.html" title=" " alt="" coords="5,155,145,181"/>
+<area shape="rect" title=" " alt="" coords="179,5,257,32"/>
+<area shape="rect" href="class_xml_recorder.html" title=" " alt="" coords="169,80,267,107"/>
+<area shape="rect" href="class_xml911_recorder.html" title=" " alt="" coords="5,155,124,181"/>
+<area shape="rect" href="class_xml_growth_recorder.html" title=" " alt="" coords="148,155,288,181"/>
+<area shape="rect" href="class_xml_s_t_d_p_recorder.html" title=" " alt="" coords="312,155,447,181"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -102,10 +103,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_recorder.html#a3d05371a053232a2024231b5dcedc9e9">term</a> ()=0</td></tr>
 <tr class="memdesc:a3d05371a053232a2024231b5dcedc9e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminate process. <br /></td></tr>
 <tr class="separator:a3d05371a053232a2024231b5dcedc9e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7099f08a00ec9a59af6c2d9b6a3cf5a2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_recorder.html#a7099f08a00ec9a59af6c2d9b6a3cf5a2">compileHistories</a> (<a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;neurons)=0</td></tr>
-<tr class="separator:a7099f08a00ec9a59af6c2d9b6a3cf5a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa942e3334bd2cf365150a7057d0e923e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_recorder.html#aa942e3334bd2cf365150a7057d0e923e">saveSimData</a> (const <a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;neurons)=0</td></tr>
-<tr class="separator:aa942e3334bd2cf365150a7057d0e923e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11fd8b8ee54a25fd79d117d02cd6c81a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_recorder.html#a11fd8b8ee54a25fd79d117d02cd6c81a">compileHistories</a> (<a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;vertices)=0</td></tr>
+<tr class="separator:a11fd8b8ee54a25fd79d117d02cd6c81a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60c1d30fff5e9c0e2ed3bec0daa1b6e1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_recorder.html#a60c1d30fff5e9c0e2ed3bec0daa1b6e1">saveSimData</a> (const <a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;vertices)=0</td></tr>
+<tr class="separator:a60c1d30fff5e9c0e2ed3bec0daa1b6e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af53d24d81eeb15f93c4eb6198a3f66e6"><td class="memItemLeft" align="right" valign="top"><a id="af53d24d81eeb15f93c4eb6198a3f66e6"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_recorder.html#af53d24d81eeb15f93c4eb6198a3f66e6">printParameters</a> ()=0</td></tr>
 <tr class="memdesc:af53d24d81eeb15f93c4eb6198a3f66e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints loaded parameters to logging file. <br /></td></tr>
@@ -126,8 +127,8 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_i_recorder_8h_source.html#l00022">22</a> of file <a class="el" href="_i_recorder_8h_source.html">IRecorder.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7099f08a00ec9a59af6c2d9b6a3cf5a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7099f08a00ec9a59af6c2d9b6a3cf5a2">&#9670;&nbsp;</a></span>compileHistories()</h2>
+<a id="a11fd8b8ee54a25fd79d117d02cd6c81a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11fd8b8ee54a25fd79d117d02cd6c81a">&#9670;&nbsp;</a></span>compileHistories()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -139,7 +140,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><a class="e
           <td class="memname">virtual void IRecorder::compileHistories </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;&#160;</td>
-          <td class="paramname"><em>neurons</em></td><td>)</td>
+          <td class="paramname"><em>vertices</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -157,7 +158,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><a class="e
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="class_xml_recorder.html#a006c0551ff66403a56eeb1b269464f91">XmlRecorder</a>, and <a class="el" href="class_xml_growth_recorder.html#ab2181aa9292c75dddb26c5e97c6991b0">XmlGrowthRecorder</a>.</p>
+<p>Implemented in <a class="el" href="class_xml_recorder.html#a09eab95623d5224a66c1dcf82c6c9b51">XmlRecorder</a>, <a class="el" href="class_xml911_recorder.html#a5c9bfd5a1491b5837eaba2120caa6bf9">Xml911Recorder</a>, <a class="el" href="class_xml_growth_recorder.html#a1552635ed139c35e84db80180b6cdc2c">XmlGrowthRecorder</a>, and <a class="el" href="class_xml_s_t_d_p_recorder.html#a9a4f5be4b0d73728b71e7691ae78df26">XmlSTDPRecorder</a>.</p>
 
 </div>
 </div>
@@ -191,12 +192,12 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><a class="e
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="class_xml_recorder.html#aba589dba10f45127785ec7b3bb2583d8">XmlRecorder</a>.</p>
+<p>Implemented in <a class="el" href="class_xml_recorder.html#a6da389569424efb4255ef3004e436136">XmlRecorder</a>.</p>
 
 </div>
 </div>
-<a id="aa942e3334bd2cf365150a7057d0e923e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa942e3334bd2cf365150a7057d0e923e">&#9670;&nbsp;</a></span>saveSimData()</h2>
+<a id="a60c1d30fff5e9c0e2ed3bec0daa1b6e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60c1d30fff5e9c0e2ed3bec0daa1b6e1">&#9670;&nbsp;</a></span>saveSimData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -208,7 +209,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><a class="e
           <td class="memname">virtual void IRecorder::saveSimData </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;&#160;</td>
-          <td class="paramname"><em>neurons</em></td><td>)</td>
+          <td class="paramname"><em>vertices</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -226,7 +227,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><a class="e
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="class_xml_recorder.html#aef6785b484e30586362e525f629da233">XmlRecorder</a>, and <a class="el" href="class_xml_growth_recorder.html#a8343e42c1977609c1fa06291b3cce38b">XmlGrowthRecorder</a>.</p>
+<p>Implemented in <a class="el" href="class_xml_recorder.html#ad3cb69dff8a42ca43ee6efe8cd5bdd98">XmlRecorder</a>, <a class="el" href="class_xml911_recorder.html#a0781aae4af1ebb9817bffa92dc669687">Xml911Recorder</a>, <a class="el" href="class_xml_growth_recorder.html#ad9bc25cc3709720731df1211aa75a851">XmlGrowthRecorder</a>, and <a class="el" href="class_xml_s_t_d_p_recorder.html#a05751c8e212f6577961e359e41015308">XmlSTDPRecorder</a>.</p>
 
 </div>
 </div>

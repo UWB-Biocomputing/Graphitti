@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Simulator/Utils/Inputs/GpuSInputRegular.cu Source File</title>
+<title>Graphitti: Simulator/Utils/Inputs/GpuSInputRegular.cu Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -79,8 +78,8 @@ $(function() {
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_gpu_s_input_regular_8cu.html#a868039d1c24d3f9ed4ffeccd43298ea7">allocDeviceValues</a>( SimulationInfo* psi, BGFLOAT* initValues, <span class="keywordtype">int</span> *nShiftValues );</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_gpu_s_input_regular_8cu.html#a405ba31f2c13df3041517cff8f98b445">deleteDeviceValues</a>( );</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="_gpu_s_input_regular_8cu.html#a87e78072eac0a17ae10cd554eee0cd2e">   17</a></span>&#160;BGFLOAT* <a class="code" href="_gpu_s_input_regular_8cu.html#a87e78072eac0a17ae10cd554eee0cd2e">initValues_d</a> = NULL;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">int</span> * nShiftValues_d = NULL;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="_gpu_s_input_regular_8cu.html#a87e78072eac0a17ae10cd554eee0cd2e">   17</a></span>&#160;BGFLOAT* <a class="code" href="_gpu_s_input_regular_8cu.html#a87e78072eac0a17ae10cd554eee0cd2e">initValues_d</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">int</span> * nShiftValues_d = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="class_gpu_s_input_regular.html#a949259a6c0313c856170b28bc1269f6f">   24</a></span>&#160;<a class="code" href="class_gpu_s_input_regular.html#a949259a6c0313c856170b28bc1269f6f">GpuSInputRegular::GpuSInputRegular</a>(SimulationInfo* psi, TiXmlElement* parms) : <a class="code" href="class_s_input_regular.html">SInputRegular</a>(psi, parms)</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>

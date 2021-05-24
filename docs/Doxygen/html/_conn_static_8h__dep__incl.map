@@ -1,5 +1,7 @@
-<map id="Simulator/Connections/ConnStatic.h" name="Simulator/Connections/ConnStatic.h">
-<area shape="rect" id="node1" title="The model of the small world network." alt="" coords="104,5,259,47"/>
+<map id="Simulator/Connections/Neuro/ConnStatic.h" name="Simulator/Connections/Neuro/ConnStatic.h">
+<area shape="rect" id="node1" title="The model of the small world network." alt="" coords="291,5,445,47"/>
 <area shape="rect" id="node2" href="$_connections_factory_8cpp.html" title="A factory class for creating Connections objects." alt="" coords="5,95,173,136"/>
 <area shape="rect" id="node3" href="$_conn_static_8cpp.html" title="The model of the small world network." alt="" coords="197,95,352,136"/>
+<area shape="rect" id="node4" href="$_driver_8cpp.html" title="Orchestrates most functionality in the simulation." alt="" coords="376,102,549,129"/>
+<area shape="rect" id="node5" href="$_xml_s_t_d_p_recorder_8cpp_source.html" title=" " alt="" coords="573,95,736,136"/>
 </map>

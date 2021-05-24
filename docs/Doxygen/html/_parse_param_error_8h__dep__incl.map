@@ -1,7 +1,7 @@
 <map id="Simulator/Utils/ParseParamError.h" name="Simulator/Utils/ParseParamError.h">
 <area shape="rect" id="node1" title="Handles parameter error messaging." alt="" coords="772,5,956,47"/>
-<area shape="rect" id="node2" href="$_conn_static_8cpp.html" title="The model of the small world network." alt="" coords="5,95,160,136"/>
-<area shape="rect" id="node3" href="$_conn_growth_8cpp.html" title="The model of the activity dependent neurite outgrowth." alt="" coords="184,95,347,136"/>
+<area shape="rect" id="node2" href="$_conn_growth_8cpp.html" title="The model of the activity dependent neurite outgrowth." alt="" coords="5,95,168,136"/>
+<area shape="rect" id="node3" href="$_conn_static_8cpp.html" title="The model of the small world network." alt="" coords="192,95,347,136"/>
 <area shape="rect" id="node4" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="371,102,565,129"/>
 <area shape="rect" id="node5" href="$_dynamic_layout_8cpp.html" title="The DynamicLayout class defines the layout of neurons in neural networks." alt="" coords="590,95,757,136"/>
 <area shape="rect" id="node6" href="$_fixed_layout_8cpp.html" title="The Layout class defines the layout of vertices in neural networks." alt="" coords="781,95,947,136"/>

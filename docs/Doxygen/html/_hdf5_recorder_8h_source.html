@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Simulator/Recorders/Hdf5Recorder.h Source File</title>
+<title>Graphitti: Simulator/Recorders/Hdf5Recorder.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -98,21 +97,21 @@ $(function() {
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;   <span class="keyword">static</span> <a class="code" href="class_i_recorder.html">IRecorder</a>* Create() { <span class="keywordflow">return</span> <span class="keyword">new</span> Hdf5Recorder(); }</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> init();</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> init() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> initDefaultValues();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> initDefaultValues() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> initValues();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> initValues() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> getValues();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> getValues() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> term();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> term() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> compileHistories(<a class="code" href="class_i_all_vertices.html">IAllVertices</a> &amp;neurons);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> compileHistories(<a class="code" href="class_i_all_vertices.html">IAllVertices</a> &amp;neurons) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> saveSimData(<span class="keyword">const</span> <a class="code" href="class_i_all_vertices.html">IAllVertices</a> &amp;neurons);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> saveSimData(<span class="keyword">const</span> <a class="code" href="class_i_all_vertices.html">IAllVertices</a> &amp;neurons) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;   </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> printParameters();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> printParameters() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> initDataSet();</div>

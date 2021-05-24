@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: DynamicLayout Class Reference</title>
+<title>Graphitti: DynamicLayout Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -95,12 +94,17 @@ Collaboration diagram for DynamicLayout:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a62aeafbbaeb218547a0d215d2ec6e0ce"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dynamic_layout.html#a62aeafbbaeb218547a0d215d2ec6e0ce">printParameters</a> () const</td></tr>
-<tr class="separator:a62aeafbbaeb218547a0d215d2ec6e0ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1472ec867c4ef07691216b1b1e752736"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dynamic_layout.html#a1472ec867c4ef07691216b1b1e752736">generateVertexTypeMap</a> (int numVertices)</td></tr>
-<tr class="separator:a1472ec867c4ef07691216b1b1e752736"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd25f1599e728430e840eea23443013c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dynamic_layout.html#acd25f1599e728430e840eea23443013c">initStarterMap</a> (const int numVertices)</td></tr>
-<tr class="separator:acd25f1599e728430e840eea23443013c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97fb5e87feeb25ecbe03323ea8f91216"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dynamic_layout.html#a97fb5e87feeb25ecbe03323ea8f91216">printParameters</a> () const override</td></tr>
+<tr class="separator:a97fb5e87feeb25ecbe03323ea8f91216"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d0854c63f4ee7c809229b6b037a8fcd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dynamic_layout.html#a1d0854c63f4ee7c809229b6b037a8fcd">generateVertexTypeMap</a> (int numVertices) override</td></tr>
+<tr class="separator:a1d0854c63f4ee7c809229b6b037a8fcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92645d4fd2c36998b07187fbc53a0cb1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dynamic_layout.html#a92645d4fd2c36998b07187fbc53a0cb1">initStarterMap</a> (const int numVertices) override</td></tr>
+<tr class="separator:a92645d4fd2c36998b07187fbc53a0cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2dce38787560767955cbdf238eefe46"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dynamic_layout.html#ac2dce38787560767955cbdf238eefe46">loadParameters</a> ()</td></tr>
+<tr class="memdesc:ac2dce38787560767955cbdf238eefe46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load member variables from configuration file. Registered to <a class="el" href="class_operation_manager.html">OperationManager</a> as Operation::loadParameters.  <a href="class_dynamic_layout.html#ac2dce38787560767955cbdf238eefe46">More...</a><br /></td></tr>
+<tr class="separator:ac2dce38787560767955cbdf238eefe46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7102c294ad9c62723b2a5dc1fb0fd296"><td class="memItemLeft" align="right" valign="top">virtual edgeType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dynamic_layout.html#a7102c294ad9c62723b2a5dc1fb0fd296">edgType</a> (const int srcVertex, const int destVertex)</td></tr>
+<tr class="separator:a7102c294ad9c62723b2a5dc1fb0fd296"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_layout"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_layout')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_layout.html">Layout</a></td></tr>
 <tr class="memitem:a6664f721daa75463ded6548182b191c5 inherit pub_methods_class_layout"><td class="memItemLeft" align="right" valign="top"><a id="a6664f721daa75463ded6548182b191c5"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layout.html#a6664f721daa75463ded6548182b191c5">Layout</a> ()</td></tr>
@@ -115,11 +119,6 @@ shared_ptr&lt; <a class="el" href="class_i_all_vertices.html">IAllVertices</a> &
 <tr class="separator:a1981b508cce11c3c9ea5bf23c1f594b5 inherit pub_methods_class_layout"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01e02030f462c295ac7e20c18277d306 inherit pub_methods_class_layout"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layout.html#a01e02030f462c295ac7e20c18277d306">setupLayout</a> ()</td></tr>
 <tr class="separator:a01e02030f462c295ac7e20c18277d306 inherit pub_methods_class_layout"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1b3c8827ebf5abc4fcc20fd1f2956c4 inherit pub_methods_class_layout"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layout.html#ad1b3c8827ebf5abc4fcc20fd1f2956c4">loadParameters</a> ()</td></tr>
-<tr class="memdesc:ad1b3c8827ebf5abc4fcc20fd1f2956c4 inherit pub_methods_class_layout"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load member variables from configuration file. Registered to <a class="el" href="class_operation_manager.html">OperationManager</a> as Operation::loadParameters.  <a href="class_layout.html#ad1b3c8827ebf5abc4fcc20fd1f2956c4">More...</a><br /></td></tr>
-<tr class="separator:ad1b3c8827ebf5abc4fcc20fd1f2956c4 inherit pub_methods_class_layout"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a173e34b8851cba8f878141e3f5555a9d inherit pub_methods_class_layout"><td class="memItemLeft" align="right" valign="top">synapseType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layout.html#a173e34b8851cba8f878141e3f5555a9d">synType</a> (const int srcVertex, const int destVertex)</td></tr>
-<tr class="separator:a173e34b8851cba8f878141e3f5555a9d inherit pub_methods_class_layout"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -150,10 +149,10 @@ Additional Inherited Members</h2></td></tr>
 vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layout.html#ae4d0ab47c52114585643692771f51613">probedNeuronList_</a></td></tr>
 <tr class="memdesc:ae4d0ab47c52114585643692771f51613 inherit pub_attribs_class_layout"><td class="mdescLeft">&#160;</td><td class="mdescRight">Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris. <br /></td></tr>
 <tr class="separator:ae4d0ab47c52114585643692771f51613 inherit pub_attribs_class_layout"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2e8aa3d789e66a652e7c40e186a91ef inherit pub_attribs_class_layout"><td class="memItemLeft" align="right" valign="top"><a id="ad2e8aa3d789e66a652e7c40e186a91ef"></a>
-neuronType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layout.html#ad2e8aa3d789e66a652e7c40e186a91ef">vertexTypeMap_</a></td></tr>
-<tr class="memdesc:ad2e8aa3d789e66a652e7c40e186a91ef inherit pub_attribs_class_layout"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vertex type map (INH, EXC). <br /></td></tr>
-<tr class="separator:ad2e8aa3d789e66a652e7c40e186a91ef inherit pub_attribs_class_layout"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa35e09bcc0efd7bd4d543b96e3fcff66 inherit pub_attribs_class_layout"><td class="memItemLeft" align="right" valign="top"><a id="aa35e09bcc0efd7bd4d543b96e3fcff66"></a>
+vertexType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layout.html#aa35e09bcc0efd7bd4d543b96e3fcff66">vertexTypeMap_</a></td></tr>
+<tr class="memdesc:aa35e09bcc0efd7bd4d543b96e3fcff66 inherit pub_attribs_class_layout"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vertex type map (INH, EXC). <br /></td></tr>
+<tr class="separator:aa35e09bcc0efd7bd4d543b96e3fcff66 inherit pub_attribs_class_layout"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3bd92b8e7790178dde51a7ddfdecb4a inherit pub_attribs_class_layout"><td class="memItemLeft" align="right" valign="top"><a id="aa3bd92b8e7790178dde51a7ddfdecb4a"></a>
 bool *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layout.html#aa3bd92b8e7790178dde51a7ddfdecb4a">starterMap_</a></td></tr>
 <tr class="memdesc:aa3bd92b8e7790178dde51a7ddfdecb4a inherit pub_attribs_class_layout"><td class="mdescLeft">&#160;</td><td class="mdescRight">The starter existence map (T/F). <br /></td></tr>
@@ -162,6 +161,10 @@ bool *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 BGSIZE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layout.html#a20a3c994f93d3832077eadce9c482202">numEndogenouslyActiveNeurons_</a></td></tr>
 <tr class="memdesc:a20a3c994f93d3832077eadce9c482202 inherit pub_attribs_class_layout"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of endogenously active neurons. <br /></td></tr>
 <tr class="separator:a20a3c994f93d3832077eadce9c482202 inherit pub_attribs_class_layout"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbd370b86dcc5429d96e75a98f933076 inherit pub_attribs_class_layout"><td class="memItemLeft" align="right" valign="top"><a id="acbd370b86dcc5429d96e75a98f933076"></a>
+BGSIZE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layout.html#acbd370b86dcc5429d96e75a98f933076">numCallerVertices_</a></td></tr>
+<tr class="memdesc:acbd370b86dcc5429d96e75a98f933076 inherit pub_attribs_class_layout"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of caller vertices. <br /></td></tr>
+<tr class="separator:acbd370b86dcc5429d96e75a98f933076 inherit pub_attribs_class_layout"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_layout"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_layout')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_layout.html">Layout</a></td></tr>
 <tr class="memitem:ab52373ec67f1790df31a27c0b04a6421 inherit pro_attribs_class_layout"><td class="memItemLeft" align="right" valign="top"><a id="ab52373ec67f1790df31a27c0b04a6421"></a>
 shared_ptr&lt; <a class="el" href="class_i_all_vertices.html">IAllVertices</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>vertices_</b></td></tr>
@@ -174,6 +177,18 @@ vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class=
 vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">inhibitoryNeuronLayout_</a></td></tr>
 <tr class="memdesc:a7e15da4c25c7e208c8f709df0c3b6065 inherit pro_attribs_class_layout"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inhibitory neurons list. <br /></td></tr>
 <tr class="separator:a7e15da4c25c7e208c8f709df0c3b6065 inherit pro_attribs_class_layout"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b3e50064bede52aaf2a12e22b785abe inherit pro_attribs_class_layout"><td class="memItemLeft" align="right" valign="top"><a id="a0b3e50064bede52aaf2a12e22b785abe"></a>
+vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layout.html#a0b3e50064bede52aaf2a12e22b785abe">callerVertexList_</a></td></tr>
+<tr class="memdesc:a0b3e50064bede52aaf2a12e22b785abe inherit pro_attribs_class_layout"><td class="mdescLeft">&#160;</td><td class="mdescRight">Caller vertex list. <br /></td></tr>
+<tr class="separator:a0b3e50064bede52aaf2a12e22b785abe inherit pro_attribs_class_layout"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8089d79719d7be52bf082a14e9555982 inherit pro_attribs_class_layout"><td class="memItemLeft" align="right" valign="top"><a id="a8089d79719d7be52bf082a14e9555982"></a>
+vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layout.html#a8089d79719d7be52bf082a14e9555982">psapVertexList_</a></td></tr>
+<tr class="memdesc:a8089d79719d7be52bf082a14e9555982 inherit pro_attribs_class_layout"><td class="mdescLeft">&#160;</td><td class="mdescRight">PSAP vertex list. <br /></td></tr>
+<tr class="separator:a8089d79719d7be52bf082a14e9555982 inherit pro_attribs_class_layout"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a637ea895cd62aedd795b53b0fe39d1a4 inherit pro_attribs_class_layout"><td class="memItemLeft" align="right" valign="top"><a id="a637ea895cd62aedd795b53b0fe39d1a4"></a>
+vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_layout.html#a637ea895cd62aedd795b53b0fe39d1a4">responderVertexList_</a></td></tr>
+<tr class="memdesc:a637ea895cd62aedd795b53b0fe39d1a4 inherit pro_attribs_class_layout"><td class="mdescLeft">&#160;</td><td class="mdescRight">Responder vertex list. <br /></td></tr>
+<tr class="separator:a637ea895cd62aedd795b53b0fe39d1a4 inherit pro_attribs_class_layout"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf0129ec29defc9f28867207d12cba03 inherit pro_attribs_class_layout"><td class="memItemLeft" align="right" valign="top"><a id="aaf0129ec29defc9f28867207d12cba03"></a>
 log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogger_</b></td></tr>
 <tr class="separator:aaf0129ec29defc9f28867207d12cba03 inherit pro_attribs_class_layout"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,8 +197,56 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_dynamic_layout_8h_source.html#l00022">22</a> of file <a class="el" href="_dynamic_layout_8h_source.html">DynamicLayout.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1472ec867c4ef07691216b1b1e752736"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1472ec867c4ef07691216b1b1e752736">&#9670;&nbsp;</a></span>generateVertexTypeMap()</h2>
+<a id="a7102c294ad9c62723b2a5dc1fb0fd296"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7102c294ad9c62723b2a5dc1fb0fd296">&#9670;&nbsp;</a></span>edgType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">edgeType DynamicLayout::edgType </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>srcVertex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>destVertex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the type of synapse at the given coordinates </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">srcVertex</td><td>integer that points to a Neuron in the type map as a source. </td></tr>
+    <tr><td class="paramname">destVertex</td><td>integer that points to a Neuron in the type map as a destination. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>type of the synapse. </dd></dl>
+
+<p>Implements <a class="el" href="class_layout.html#a8092c4bcc9b5e9743b0c5db65e959066">Layout</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_dynamic_layout_8cpp_source.html#l00142">142</a> of file <a class="el" href="_dynamic_layout_8cpp_source.html">DynamicLayout.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a1d0854c63f4ee7c809229b6b037a8fcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d0854c63f4ee7c809229b6b037a8fcd">&#9670;&nbsp;</a></span>generateVertexTypeMap()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,7 +264,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -222,12 +285,12 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 
 <p>Reimplemented from <a class="el" href="class_layout.html#a587f6427885aebd1829b9dda43fe19df">Layout</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_dynamic_layout_8cpp_source.html#l00031">31</a> of file <a class="el" href="_dynamic_layout_8cpp_source.html">DynamicLayout.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_dynamic_layout_8cpp_source.html#l00033">33</a> of file <a class="el" href="_dynamic_layout_8cpp_source.html">DynamicLayout.cpp</a>.</p>
 
 </div>
 </div>
-<a id="acd25f1599e728430e840eea23443013c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd25f1599e728430e840eea23443013c">&#9670;&nbsp;</a></span>initStarterMap()</h2>
+<a id="a92645d4fd2c36998b07187fbc53a0cb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92645d4fd2c36998b07187fbc53a0cb1">&#9670;&nbsp;</a></span>initStarterMap()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -245,7 +308,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -266,12 +329,44 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 
 <p>Reimplemented from <a class="el" href="class_layout.html#a5255d9a8d4c145900ae859952458e1db">Layout</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_dynamic_layout_8cpp_source.html#l00070">70</a> of file <a class="el" href="_dynamic_layout_8cpp_source.html">DynamicLayout.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_dynamic_layout_8cpp_source.html#l00079">79</a> of file <a class="el" href="_dynamic_layout_8cpp_source.html">DynamicLayout.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a62aeafbbaeb218547a0d215d2ec6e0ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62aeafbbaeb218547a0d215d2ec6e0ce">&#9670;&nbsp;</a></span>printParameters()</h2>
+<a id="ac2dce38787560767955cbdf238eefe46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2dce38787560767955cbdf238eefe46">&#9670;&nbsp;</a></span>loadParameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DynamicLayout::loadParameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Load member variables from configuration file. Registered to <a class="el" href="class_operation_manager.html">OperationManager</a> as Operation::loadParameters. </p>
+<p>Load member variables from configuration file. Registered to <a class="el" href="class_operation_manager.html">OperationManager</a> as Operations::op::loadParameters. </p>
+
+<p>Implements <a class="el" href="class_layout.html#a5ef69e71f43a51d29c9a1553d35a194f">Layout</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_dynamic_layout_8cpp_source.html#l00108">108</a> of file <a class="el" href="_dynamic_layout_8cpp_source.html">DynamicLayout.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a97fb5e87feeb25ecbe03323ea8f91216"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97fb5e87feeb25ecbe03323ea8f91216">&#9670;&nbsp;</a></span>printParameters()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -288,7 +383,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -296,7 +391,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 
 <p>Reimplemented from <a class="el" href="class_layout.html#aab0630bde0f30d0ab8a39f11c36eac9e">Layout</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_dynamic_layout_8cpp_source.html#l00021">21</a> of file <a class="el" href="_dynamic_layout_8cpp_source.html">DynamicLayout.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_dynamic_layout_8cpp_source.html#l00023">23</a> of file <a class="el" href="_dynamic_layout_8cpp_source.html">DynamicLayout.cpp</a>.</p>
 
 </div>
 </div>

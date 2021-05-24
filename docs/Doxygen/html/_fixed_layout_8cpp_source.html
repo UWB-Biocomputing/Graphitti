@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Simulator/Layouts/Neuro/FixedLayout.cpp Source File</title>
+<title>Graphitti: Simulator/Layouts/Neuro/FixedLayout.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -75,61 +74,115 @@ $(function() {
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_fixed_layout_8h.html">FixedLayout.h</a>&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_parse_param_error_8h.html">ParseParamError.h</a>&quot;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_util_8h.html">Util.h</a>&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;FixedLayout::FixedLayout() : <a class="code" href="class_layout.html">Layout</a>() {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;}</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;FixedLayout::~FixedLayout() {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;}</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="class_fixed_layout.html#a13a7278f7e19b1bc9dbd3d453e70a35b">   21</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_fixed_layout.html#a13a7278f7e19b1bc9dbd3d453e70a35b">FixedLayout::printParameters</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;   <a class="code" href="class_layout.html#aab0630bde0f30d0ab8a39f11c36eac9e">Layout::printParameters</a>();</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;   LOG4CPLUS_DEBUG(fileLogger_, <span class="stringliteral">&quot;\n\tLayout type: FixedLayout&quot;</span> &lt;&lt; endl &lt;&lt; endl);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="class_fixed_layout.html#a8d0191b48270732ba6dc1254e8f64c48">   30</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_fixed_layout.html#a8d0191b48270732ba6dc1254e8f64c48">FixedLayout::generateVertexTypeMap</a>(<span class="keywordtype">int</span> numVertices) {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;   <a class="code" href="class_layout.html#a587f6427885aebd1829b9dda43fe19df">Layout::generateVertexTypeMap</a>(numVertices);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;   <span class="keywordtype">int</span> numInhibitoryNeurons = <a class="code" href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">inhibitoryNeuronLayout_</a>.size();</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;   <span class="keywordtype">int</span> numExcititoryNeurons = numVertices - numInhibitoryNeurons;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;   LOG4CPLUS_DEBUG(fileLogger_, <span class="stringliteral">&quot;\nVERTEX TYPE MAP&quot;</span> &lt;&lt; endl</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;   &lt;&lt; <span class="stringliteral">&quot;\tTotal vertices: &quot;</span> &lt;&lt; numVertices &lt;&lt; endl</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;   &lt;&lt; <span class="stringliteral">&quot;\tInhibitory Neurons: &quot;</span> &lt;&lt; numInhibitoryNeurons &lt;&lt; endl</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;   &lt;&lt; <span class="stringliteral">&quot;\tExcitatory Neurons: &quot;</span> &lt;&lt; numExcititoryNeurons &lt;&lt; endl);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;   <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; numInhibitoryNeurons; i++) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      assert(<a class="code" href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">inhibitoryNeuronLayout_</a>.at(i) &lt; numVertices);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      <a class="code" href="class_layout.html#ad2e8aa3d789e66a652e7c40e186a91ef">vertexTypeMap_</a>[<a class="code" href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">inhibitoryNeuronLayout_</a>.at(i)] = INH;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;   }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;   LOG4CPLUS_INFO(fileLogger_, <span class="stringliteral">&quot;Finished initializing vertex type map&quot;</span>);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="class_fixed_layout.html#a8c799e56a7ebb5ca5f091e91716a9136">   52</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_fixed_layout.html#a8c799e56a7ebb5ca5f091e91716a9136">FixedLayout::initStarterMap</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> numVertices) {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;   <a class="code" href="class_layout.html#a5255d9a8d4c145900ae859952458e1db">Layout::initStarterMap</a>(numVertices);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_parameter_manager_8h.html">ParameterManager.h</a>&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// TODO: I don&#39;t think that either of the constructor or destructor is needed here</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;FixedLayout::FixedLayout() : <a class="code" href="class_layout.html">Layout</a>() {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;}</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;FixedLayout::~FixedLayout() {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="class_fixed_layout.html#a3c4ff324085c4f4c4455a3c2de115305">   23</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_fixed_layout.html#a3c4ff324085c4f4c4455a3c2de115305">FixedLayout::printParameters</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;   <a class="code" href="class_layout.html#aab0630bde0f30d0ab8a39f11c36eac9e">Layout::printParameters</a>();</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;   LOG4CPLUS_DEBUG(fileLogger_, <span class="stringliteral">&quot;\n\tLayout type: FixedLayout&quot;</span> &lt;&lt; endl &lt;&lt; endl);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="class_fixed_layout.html#a94107aa582978d0236f50440b0306849">   32</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_fixed_layout.html#a94107aa582978d0236f50440b0306849">FixedLayout::generateVertexTypeMap</a>(<span class="keywordtype">int</span> numVertices) {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;   LOG4CPLUS_DEBUG(fileLogger_, <span class="stringliteral">&quot;\nInitializing vertex type map&quot;</span> &lt;&lt; endl);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;   <span class="comment">// Populate vertexTypeMap_ with EXC</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;   fill_n(<a class="code" href="class_layout.html#aa35e09bcc0efd7bd4d543b96e3fcff66">vertexTypeMap_</a>, numVertices, EXC);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;   <span class="comment">// for (int i = 0; i &lt; numVertices; i++) {</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;   <span class="comment">//    vertexTypeMap_[i] = EXC;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;   <span class="comment">// }</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;   <span class="keywordtype">int</span> numInhibitoryNeurons = <a class="code" href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">inhibitoryNeuronLayout_</a>.size();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;   <span class="keywordtype">int</span> numExcititoryNeurons = numVertices - numInhibitoryNeurons;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;   LOG4CPLUS_DEBUG(fileLogger_, <span class="stringliteral">&quot;\nVERTEX TYPE MAP&quot;</span> &lt;&lt; endl</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;   &lt;&lt; <span class="stringliteral">&quot;\tTotal vertices: &quot;</span> &lt;&lt; numVertices &lt;&lt; endl</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;   &lt;&lt; <span class="stringliteral">&quot;\tInhibitory Neurons: &quot;</span> &lt;&lt; numInhibitoryNeurons &lt;&lt; endl</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;   &lt;&lt; <span class="stringliteral">&quot;\tExcitatory Neurons: &quot;</span> &lt;&lt; numExcititoryNeurons &lt;&lt; endl);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;   <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; numInhibitoryNeurons; i++) {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      assert(<a class="code" href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">inhibitoryNeuronLayout_</a>.at(i) &lt; numVertices);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      <a class="code" href="class_layout.html#aa35e09bcc0efd7bd4d543b96e3fcff66">vertexTypeMap_</a>[<a class="code" href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">inhibitoryNeuronLayout_</a>.at(i)] = INH;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;   }</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;   <span class="keywordflow">for</span> (BGSIZE i = 0; i &lt; <a class="code" href="class_layout.html#a20a3c994f93d3832077eadce9c482202">numEndogenouslyActiveNeurons_</a>; i++) {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      assert(<a class="code" href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">endogenouslyActiveNeuronList_</a>.at(i) &lt; numVertices);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      <a class="code" href="class_layout.html#aa3bd92b8e7790178dde51a7ddfdecb4a">starterMap_</a>[<a class="code" href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">endogenouslyActiveNeuronList_</a>.at(i)] = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;   }</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;   LOG4CPLUS_INFO(fileLogger_, <span class="stringliteral">&quot;Finished initializing vertex type map&quot;</span>);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="class_fixed_layout.html#a95c8081b54902b2c49b524ad01c87d9e">   61</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_fixed_layout.html#a95c8081b54902b2c49b524ad01c87d9e">FixedLayout::initStarterMap</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> numVertices) {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;   <a class="code" href="class_layout.html#a5255d9a8d4c145900ae859952458e1db">Layout::initStarterMap</a>(numVertices);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;   <span class="keywordflow">for</span> (BGSIZE i = 0; i &lt; <a class="code" href="class_layout.html#a20a3c994f93d3832077eadce9c482202">numEndogenouslyActiveNeurons_</a>; i++) {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      assert(<a class="code" href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">endogenouslyActiveNeuronList_</a>.at(i) &lt; numVertices);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      <a class="code" href="class_layout.html#aa3bd92b8e7790178dde51a7ddfdecb4a">starterMap_</a>[<a class="code" href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">endogenouslyActiveNeuronList_</a>.at(i)] = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;   }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="class_fixed_layout.html#a03932cb837f1872248e54679dfed4542">   71</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_fixed_layout.html#a03932cb837f1872248e54679dfed4542">FixedLayout::loadParameters</a>() {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;   <span class="comment">// Get the file paths for the Neuron lists from the configuration file</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;   <span class="keywordtype">string</span> activeNListFilePath;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;   <span class="keywordtype">string</span> inhibitoryNListFilePath;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;   <span class="keywordflow">if</span> (!<a class="code" href="class_parameter_manager.html#a4803e8d86d406ed0dc1c4acb238753e9">ParameterManager::getInstance</a>().getStringByXpath(<span class="stringliteral">&quot;//LayoutFiles/activeNListFileName/text()&quot;</span>,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                                                         activeNListFilePath)) {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      <span class="keywordflow">throw</span> runtime_error(<span class="stringliteral">&quot;In Layout::loadParameters() Endogenously &quot;</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                          <span class="stringliteral">&quot;active neuron list file path wasn&#39;t found and will not be initialized&quot;</span>);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;   }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;   <span class="keywordflow">if</span> (!<a class="code" href="class_parameter_manager.html#a4803e8d86d406ed0dc1c4acb238753e9">ParameterManager::getInstance</a>().getStringByXpath(<span class="stringliteral">&quot;//LayoutFiles/inhNListFileName/text()&quot;</span>,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                                                         inhibitoryNListFilePath)) {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      <span class="keywordflow">throw</span> runtime_error(<span class="stringliteral">&quot;In Layout::loadParameters() &quot;</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                          <span class="stringliteral">&quot;Inhibitory neuron list file path wasn&#39;t found and will not be initialized&quot;</span>);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;   }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;   <span class="comment">// Initialize Neuron Lists based on the data read from the xml files</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;   <span class="keywordflow">if</span> (!<a class="code" href="class_parameter_manager.html#a4803e8d86d406ed0dc1c4acb238753e9">ParameterManager::getInstance</a>().getIntVectorByXpath(activeNListFilePath, <span class="stringliteral">&quot;A&quot;</span>, <a class="code" href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">endogenouslyActiveNeuronList_</a>)) {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="keywordflow">throw</span> runtime_error(<span class="stringliteral">&quot;In Layout::loadParameters() &quot;</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                          <span class="stringliteral">&quot;Endogenously active neuron list file wasn&#39;t loaded correctly&quot;</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                          <span class="stringliteral">&quot;\n\tfile path: &quot;</span> + activeNListFilePath);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;   }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;   <a class="code" href="class_layout.html#a20a3c994f93d3832077eadce9c482202">numEndogenouslyActiveNeurons_</a> = <a class="code" href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">endogenouslyActiveNeuronList_</a>.size();</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;   <span class="keywordflow">if</span> (!<a class="code" href="class_parameter_manager.html#a4803e8d86d406ed0dc1c4acb238753e9">ParameterManager::getInstance</a>().getIntVectorByXpath(inhibitoryNListFilePath, <span class="stringliteral">&quot;I&quot;</span>, <a class="code" href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">inhibitoryNeuronLayout_</a>)) {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      <span class="keywordflow">throw</span> runtime_error(<span class="stringliteral">&quot;In Layout::loadParameters() &quot;</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                          <span class="stringliteral">&quot;Inhibitory neuron list file wasn&#39;t loaded correctly.&quot;</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                          <span class="stringliteral">&quot;\n\tfile path: &quot;</span> + inhibitoryNListFilePath);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;   }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="class_fixed_layout.html#ab4a5487de5e5bf64eb748446bfa4ed6e">  105</a></span>&#160;edgeType <a class="code" href="class_fixed_layout.html#ab4a5487de5e5bf64eb748446bfa4ed6e">FixedLayout::edgType</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> srcVertex, <span class="keyword">const</span> <span class="keywordtype">int</span> destVertex) {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;   <span class="keywordflow">if</span> (<a class="code" href="class_layout.html#aa35e09bcc0efd7bd4d543b96e3fcff66">vertexTypeMap_</a>[srcVertex] == INH &amp;&amp; <a class="code" href="class_layout.html#aa35e09bcc0efd7bd4d543b96e3fcff66">vertexTypeMap_</a>[destVertex] == INH)</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      <span class="keywordflow">return</span> II;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;   <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="class_layout.html#aa35e09bcc0efd7bd4d543b96e3fcff66">vertexTypeMap_</a>[srcVertex] == INH &amp;&amp; <a class="code" href="class_layout.html#aa35e09bcc0efd7bd4d543b96e3fcff66">vertexTypeMap_</a>[destVertex] == EXC)</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      <span class="keywordflow">return</span> IE;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;   <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="class_layout.html#aa35e09bcc0efd7bd4d543b96e3fcff66">vertexTypeMap_</a>[srcVertex] == EXC &amp;&amp; <a class="code" href="class_layout.html#aa35e09bcc0efd7bd4d543b96e3fcff66">vertexTypeMap_</a>[destVertex] == INH)</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      <span class="keywordflow">return</span> EI;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;   <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="class_layout.html#aa35e09bcc0efd7bd4d543b96e3fcff66">vertexTypeMap_</a>[srcVertex] == EXC &amp;&amp; <a class="code" href="class_layout.html#aa35e09bcc0efd7bd4d543b96e3fcff66">vertexTypeMap_</a>[destVertex] == EXC)</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;      <span class="keywordflow">return</span> EE;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;   <span class="keywordflow">return</span> ETYPE_UNDEF;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;}</div>
 <div class="ttc" id="a_fixed_layout_8h_html"><div class="ttname"><a href="_fixed_layout_8h.html">FixedLayout.h</a></div><div class="ttdoc">The Layout class defines the layout of vertices in neural networks.</div></div>
+<div class="ttc" id="a_parameter_manager_8h_html"><div class="ttname"><a href="_parameter_manager_8h.html">ParameterManager.h</a></div><div class="ttdoc">A singleton class which contains and manages access to the XML parameter file used by a simulator ins...</div></div>
 <div class="ttc" id="a_parse_param_error_8h_html"><div class="ttname"><a href="_parse_param_error_8h.html">ParseParamError.h</a></div><div class="ttdoc">Handles parameter error messaging.</div></div>
 <div class="ttc" id="a_util_8h_html"><div class="ttname"><a href="_util_8h.html">Util.h</a></div><div class="ttdoc">Helper function to parse integers in fixed layout.</div></div>
-<div class="ttc" id="aclass_fixed_layout_html_a13a7278f7e19b1bc9dbd3d453e70a35b"><div class="ttname"><a href="class_fixed_layout.html#a13a7278f7e19b1bc9dbd3d453e70a35b">FixedLayout::printParameters</a></div><div class="ttdeci">virtual void printParameters() const</div><div class="ttdef"><b>Definition:</b> <a href="_fixed_layout_8cpp_source.html#l00021">FixedLayout.cpp:21</a></div></div>
-<div class="ttc" id="aclass_fixed_layout_html_a8c799e56a7ebb5ca5f091e91716a9136"><div class="ttname"><a href="class_fixed_layout.html#a8c799e56a7ebb5ca5f091e91716a9136">FixedLayout::initStarterMap</a></div><div class="ttdeci">virtual void initStarterMap(const int numVertices)</div><div class="ttdef"><b>Definition:</b> <a href="_fixed_layout_8cpp_source.html#l00052">FixedLayout.cpp:52</a></div></div>
-<div class="ttc" id="aclass_fixed_layout_html_a8d0191b48270732ba6dc1254e8f64c48"><div class="ttname"><a href="class_fixed_layout.html#a8d0191b48270732ba6dc1254e8f64c48">FixedLayout::generateVertexTypeMap</a></div><div class="ttdeci">virtual void generateVertexTypeMap(int numVertices)</div><div class="ttdef"><b>Definition:</b> <a href="_fixed_layout_8cpp_source.html#l00030">FixedLayout.cpp:30</a></div></div>
+<div class="ttc" id="aclass_fixed_layout_html_a03932cb837f1872248e54679dfed4542"><div class="ttname"><a href="class_fixed_layout.html#a03932cb837f1872248e54679dfed4542">FixedLayout::loadParameters</a></div><div class="ttdeci">virtual void loadParameters() override</div><div class="ttdoc">Load member variables from configuration file. Registered to OperationManager as Operation::loadParam...</div><div class="ttdef"><b>Definition:</b> <a href="_fixed_layout_8cpp_source.html#l00071">FixedLayout.cpp:71</a></div></div>
+<div class="ttc" id="aclass_fixed_layout_html_a3c4ff324085c4f4c4455a3c2de115305"><div class="ttname"><a href="class_fixed_layout.html#a3c4ff324085c4f4c4455a3c2de115305">FixedLayout::printParameters</a></div><div class="ttdeci">virtual void printParameters() const override</div><div class="ttdef"><b>Definition:</b> <a href="_fixed_layout_8cpp_source.html#l00023">FixedLayout.cpp:23</a></div></div>
+<div class="ttc" id="aclass_fixed_layout_html_a94107aa582978d0236f50440b0306849"><div class="ttname"><a href="class_fixed_layout.html#a94107aa582978d0236f50440b0306849">FixedLayout::generateVertexTypeMap</a></div><div class="ttdeci">virtual void generateVertexTypeMap(int numVertices) override</div><div class="ttdef"><b>Definition:</b> <a href="_fixed_layout_8cpp_source.html#l00032">FixedLayout.cpp:32</a></div></div>
+<div class="ttc" id="aclass_fixed_layout_html_a95c8081b54902b2c49b524ad01c87d9e"><div class="ttname"><a href="class_fixed_layout.html#a95c8081b54902b2c49b524ad01c87d9e">FixedLayout::initStarterMap</a></div><div class="ttdeci">virtual void initStarterMap(const int numVertices) override</div><div class="ttdef"><b>Definition:</b> <a href="_fixed_layout_8cpp_source.html#l00061">FixedLayout.cpp:61</a></div></div>
+<div class="ttc" id="aclass_fixed_layout_html_ab4a5487de5e5bf64eb748446bfa4ed6e"><div class="ttname"><a href="class_fixed_layout.html#ab4a5487de5e5bf64eb748446bfa4ed6e">FixedLayout::edgType</a></div><div class="ttdeci">virtual edgeType edgType(const int srcVertex, const int destVertex) override</div><div class="ttdef"><b>Definition:</b> <a href="_fixed_layout_8cpp_source.html#l00105">FixedLayout.cpp:105</a></div></div>
 <div class="ttc" id="aclass_layout_html"><div class="ttname"><a href="class_layout.html">Layout</a></div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00029">Layout.h:29</a></div></div>
-<div class="ttc" id="aclass_layout_html_a20a3c994f93d3832077eadce9c482202"><div class="ttname"><a href="class_layout.html#a20a3c994f93d3832077eadce9c482202">Layout::numEndogenouslyActiveNeurons_</a></div><div class="ttdeci">BGSIZE numEndogenouslyActiveNeurons_</div><div class="ttdoc">Number of endogenously active neurons.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00078">Layout.h:78</a></div></div>
-<div class="ttc" id="aclass_layout_html_a5255d9a8d4c145900ae859952458e1db"><div class="ttname"><a href="class_layout.html#a5255d9a8d4c145900ae859952458e1db">Layout::initStarterMap</a></div><div class="ttdeci">virtual void initStarterMap(const int numVertices)</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8cpp_source.html#l00164">Layout.cpp:164</a></div></div>
-<div class="ttc" id="aclass_layout_html_a587f6427885aebd1829b9dda43fe19df"><div class="ttname"><a href="class_layout.html#a587f6427885aebd1829b9dda43fe19df">Layout::generateVertexTypeMap</a></div><div class="ttdeci">virtual void generateVertexTypeMap(int numVertices)</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8cpp_source.html#l00153">Layout.cpp:153</a></div></div>
-<div class="ttc" id="aclass_layout_html_a7e15da4c25c7e208c8f709df0c3b6065"><div class="ttname"><a href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">Layout::inhibitoryNeuronLayout_</a></div><div class="ttdeci">vector&lt; int &gt; inhibitoryNeuronLayout_</div><div class="ttdoc">Inhibitory neurons list.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00085">Layout.h:85</a></div></div>
-<div class="ttc" id="aclass_layout_html_aa3bd92b8e7790178dde51a7ddfdecb4a"><div class="ttname"><a href="class_layout.html#aa3bd92b8e7790178dde51a7ddfdecb4a">Layout::starterMap_</a></div><div class="ttdeci">bool * starterMap_</div><div class="ttdoc">The starter existence map (T/F).</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00076">Layout.h:76</a></div></div>
-<div class="ttc" id="aclass_layout_html_aaacb14aa10e95d4906bd033d327a32db"><div class="ttname"><a href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">Layout::endogenouslyActiveNeuronList_</a></div><div class="ttdeci">vector&lt; int &gt; endogenouslyActiveNeuronList_</div><div class="ttdoc">Endogenously active neurons list.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00083">Layout.h:83</a></div></div>
-<div class="ttc" id="aclass_layout_html_aab0630bde0f30d0ab8a39f11c36eac9e"><div class="ttname"><a href="class_layout.html#aab0630bde0f30d0ab8a39f11c36eac9e">Layout::printParameters</a></div><div class="ttdeci">virtual void printParameters() const</div><div class="ttdoc">Prints out all parameters to logging file. Registered to OperationManager as Operation::printParamete...</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8cpp_source.html#l00133">Layout.cpp:133</a></div></div>
-<div class="ttc" id="aclass_layout_html_ad2e8aa3d789e66a652e7c40e186a91ef"><div class="ttname"><a href="class_layout.html#ad2e8aa3d789e66a652e7c40e186a91ef">Layout::vertexTypeMap_</a></div><div class="ttdeci">neuronType * vertexTypeMap_</div><div class="ttdoc">The vertex type map (INH, EXC).</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00074">Layout.h:74</a></div></div>
+<div class="ttc" id="aclass_layout_html_a20a3c994f93d3832077eadce9c482202"><div class="ttname"><a href="class_layout.html#a20a3c994f93d3832077eadce9c482202">Layout::numEndogenouslyActiveNeurons_</a></div><div class="ttdeci">BGSIZE numEndogenouslyActiveNeurons_</div><div class="ttdoc">Number of endogenously active neurons.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00077">Layout.h:77</a></div></div>
+<div class="ttc" id="aclass_layout_html_a5255d9a8d4c145900ae859952458e1db"><div class="ttname"><a href="class_layout.html#a5255d9a8d4c145900ae859952458e1db">Layout::initStarterMap</a></div><div class="ttdeci">virtual void initStarterMap(const int numVertices)</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8cpp_source.html#l00134">Layout.cpp:134</a></div></div>
+<div class="ttc" id="aclass_layout_html_a7e15da4c25c7e208c8f709df0c3b6065"><div class="ttname"><a href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">Layout::inhibitoryNeuronLayout_</a></div><div class="ttdeci">vector&lt; int &gt; inhibitoryNeuronLayout_</div><div class="ttdoc">Inhibitory neurons list.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00087">Layout.h:87</a></div></div>
+<div class="ttc" id="aclass_layout_html_aa35e09bcc0efd7bd4d543b96e3fcff66"><div class="ttname"><a href="class_layout.html#aa35e09bcc0efd7bd4d543b96e3fcff66">Layout::vertexTypeMap_</a></div><div class="ttdeci">vertexType * vertexTypeMap_</div><div class="ttdoc">The vertex type map (INH, EXC).</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00073">Layout.h:73</a></div></div>
+<div class="ttc" id="aclass_layout_html_aa3bd92b8e7790178dde51a7ddfdecb4a"><div class="ttname"><a href="class_layout.html#aa3bd92b8e7790178dde51a7ddfdecb4a">Layout::starterMap_</a></div><div class="ttdeci">bool * starterMap_</div><div class="ttdoc">The starter existence map (T/F).</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00075">Layout.h:75</a></div></div>
+<div class="ttc" id="aclass_layout_html_aaacb14aa10e95d4906bd033d327a32db"><div class="ttname"><a href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">Layout::endogenouslyActiveNeuronList_</a></div><div class="ttdeci">vector&lt; int &gt; endogenouslyActiveNeuronList_</div><div class="ttdoc">Endogenously active neurons list.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00085">Layout.h:85</a></div></div>
+<div class="ttc" id="aclass_layout_html_aab0630bde0f30d0ab8a39f11c36eac9e"><div class="ttname"><a href="class_layout.html#aab0630bde0f30d0ab8a39f11c36eac9e">Layout::printParameters</a></div><div class="ttdeci">virtual void printParameters() const</div><div class="ttdoc">Prints out all parameters to logging file. Registered to OperationManager as Operation::printParamete...</div><div class="ttdef"><b>Definition:</b> <a href="_layout_8cpp_source.html#l00103">Layout.cpp:103</a></div></div>
+<div class="ttc" id="aclass_parameter_manager_html_a4803e8d86d406ed0dc1c4acb238753e9"><div class="ttname"><a href="class_parameter_manager.html#a4803e8d86d406ed0dc1c4acb238753e9">ParameterManager::getInstance</a></div><div class="ttdeci">static ParameterManager &amp; getInstance()</div><div class="ttdoc">Get Instance method that returns a reference to this object.</div><div class="ttdef"><b>Definition:</b> <a href="_parameter_manager_8cpp_source.html#l00058">ParameterManager.cpp:58</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

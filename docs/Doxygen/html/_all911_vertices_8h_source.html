@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Simulator/Vertices/NG911/All911Vertices.h Source File</title>
+<title>Graphitti: Simulator/Vertices/NG911/All911Vertices.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -87,29 +86,68 @@ $(function() {
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="class_all911_vertices.html#afe3ecea562018e46c7ab93d59835ba39">   34</a></span>&#160;   <span class="keyword">static</span> <a class="code" href="class_i_all_vertices.html">IAllVertices</a> *<a class="code" href="class_all911_vertices.html#afe3ecea562018e46c7ab93d59835ba39">Create</a>() { <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="class_all911_vertices.html">All911Vertices</a>(); }</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="class_all911_vertices.html#a18fbe7e2b8264d917dc0c00b35b79788">   38</a></span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_all911_vertices.html#a18fbe7e2b8264d917dc0c00b35b79788">printParameters</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_all911_vertices.html#a008e4a041982946a3bc998be8c6a9122">setupVertices</a>();</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#if defined(USE_GPU)</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;   <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;       <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_i_all_vertices.html#a137915f85227c9c512e4682fa944c311">advanceVertices</a>(<a class="code" href="class_i_all_edges.html">IAllEdges</a> &amp;edges, <span class="keywordtype">void</span>* allVerticesDevice, <span class="keywordtype">void</span>* allEdgesDevice, <span class="keywordtype">float</span>* randNoise, <a class="code" href="struct_edge_index_map.html">EdgeIndexMap</a>* edgeIndexMapDevice);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_all911_vertices.html#a803ce99b090c16867b9ffd257cb6c766">createAllVertices</a>(<a class="code" href="class_layout.html">Layout</a> *layout);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_all911_vertices.html#a3e42812eb98dc2cef6ba804136933272">loadParameters</a>();</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_all911_vertices.html#ab4b335fe26133eb484511f7606d50ce9">printParameters</a>() <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#else  </span><span class="comment">// !defined(USE_GPU)</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// defined(USE_GPU)</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;};</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">string</span> <a class="code" href="class_all911_vertices.html#aecc49cf69e5d542e5164967419f3513b">toString</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> index) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">private</span>: </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;   <span class="keywordtype">int</span> *callNum_; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;   <span class="keywordtype">int</span> callNumRange_[2];</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;   <span class="keywordtype">int</span> *dispNum_;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;   BGFLOAT dispNumScale_;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;   <span class="keywordtype">int</span> *respNum_;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;   BGFLOAT respNumScale_;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#if defined(USE_GPU)</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;   <span class="comment">// GPU functionality for 911 simulation is unimplemented.</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;   <span class="comment">// These signatures are required to make the class non-abstract</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;   <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;       <span class="keyword">virtual</span> <span class="keywordtype">void</span> allocNeuronDeviceStruct(<span class="keywordtype">void</span>** allVerticesDevice) {};</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;       <span class="keyword">virtual</span> <span class="keywordtype">void</span> deleteNeuronDeviceStruct(<span class="keywordtype">void</span>* allVerticesDevice) {};</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;       <span class="keyword">virtual</span> <span class="keywordtype">void</span> copyNeuronHostToDevice(<span class="keywordtype">void</span>* allVerticesDevice) {};</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;       <span class="keyword">virtual</span> <span class="keywordtype">void</span> copyNeuronDeviceToHost(<span class="keywordtype">void</span>* allVerticesDevice) {};</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;       <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_all911_vertices.html#a6fedfa234ec87c499d9d64cf2fcb1f70">advanceVertices</a>(<a class="code" href="class_all_edges.html">AllEdges</a> &amp;edges, <span class="keywordtype">void</span>* allVerticesDevice, <span class="keywordtype">void</span>* allEdgesDevice, <span class="keywordtype">float</span>* randNoise, <a class="code" href="struct_edge_index_map.html">EdgeIndexMap</a>* edgeIndexMapDevice) {};</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;       <span class="keyword">virtual</span> <span class="keywordtype">void</span> setAdvanceVerticesDeviceParams(<a class="code" href="class_all_edges.html">AllEdges</a> &amp;edges) {};</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#else  </span><span class="comment">// !defined(USE_GPU)</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_all911_vertices.html#a6fedfa234ec87c499d9d64cf2fcb1f70">advanceVertices</a>(<a class="code" href="class_all_edges.html">AllEdges</a> &amp;edges, <span class="keyword">const</span> <a class="code" href="struct_edge_index_map.html">EdgeIndexMap</a> *edgeIndexMap) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;   <span class="keywordtype">void</span> <a class="code" href="class_all911_vertices.html#a9513d0b98b1123e95f65b5f789c67303">advanceVertex</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> index);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// defined(USE_GPU)</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;};</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
 <div class="ttc" id="a_all_vertices_8h_html"><div class="ttname"><a href="_all_vertices_8h.html">AllVertices.h</a></div><div class="ttdoc">A container of the base class of all vertex data.</div></div>
 <div class="ttc" id="a_global_8h_html"><div class="ttname"><a href="_global_8h.html">Global.h</a></div><div class="ttdoc">Globally available functions/variables and default parameter values.</div></div>
 <div class="ttc" id="aclass_all911_vertices_html"><div class="ttname"><a href="class_all911_vertices.html">All911Vertices</a></div><div class="ttdef"><b>Definition:</b> <a href="_all911_vertices_8h_source.html#l00024">All911Vertices.h:24</a></div></div>
-<div class="ttc" id="aclass_all911_vertices_html_a18fbe7e2b8264d917dc0c00b35b79788"><div class="ttname"><a href="class_all911_vertices.html#a18fbe7e2b8264d917dc0c00b35b79788">All911Vertices::printParameters</a></div><div class="ttdeci">virtual void printParameters() const</div></div>
+<div class="ttc" id="aclass_all911_vertices_html_a008e4a041982946a3bc998be8c6a9122"><div class="ttname"><a href="class_all911_vertices.html#a008e4a041982946a3bc998be8c6a9122">All911Vertices::setupVertices</a></div><div class="ttdeci">virtual void setupVertices()</div><div class="ttdef"><b>Definition:</b> <a href="_all911_vertices_8cpp_source.html#l00033">All911Vertices.cpp:33</a></div></div>
+<div class="ttc" id="aclass_all911_vertices_html_a3e42812eb98dc2cef6ba804136933272"><div class="ttname"><a href="class_all911_vertices.html#a3e42812eb98dc2cef6ba804136933272">All911Vertices::loadParameters</a></div><div class="ttdeci">virtual void loadParameters()</div><div class="ttdef"><b>Definition:</b> <a href="_all911_vertices_8cpp_source.html#l00096">All911Vertices.cpp:96</a></div></div>
+<div class="ttc" id="aclass_all911_vertices_html_a6fedfa234ec87c499d9d64cf2fcb1f70"><div class="ttname"><a href="class_all911_vertices.html#a6fedfa234ec87c499d9d64cf2fcb1f70">All911Vertices::advanceVertices</a></div><div class="ttdeci">virtual void advanceVertices(AllEdges &amp;edges, const EdgeIndexMap *edgeIndexMap) override</div><div class="ttdef"><b>Definition:</b> <a href="_all911_vertices_8cpp_source.html#l00119">All911Vertices.cpp:119</a></div></div>
+<div class="ttc" id="aclass_all911_vertices_html_a803ce99b090c16867b9ffd257cb6c766"><div class="ttname"><a href="class_all911_vertices.html#a803ce99b090c16867b9ffd257cb6c766">All911Vertices::createAllVertices</a></div><div class="ttdeci">virtual void createAllVertices(Layout *layout)</div><div class="ttdef"><b>Definition:</b> <a href="_all911_vertices_8cpp_source.html#l00047">All911Vertices.cpp:47</a></div></div>
+<div class="ttc" id="aclass_all911_vertices_html_a9513d0b98b1123e95f65b5f789c67303"><div class="ttname"><a href="class_all911_vertices.html#a9513d0b98b1123e95f65b5f789c67303">All911Vertices::advanceVertex</a></div><div class="ttdeci">void advanceVertex(const int index)</div><div class="ttdef"><b>Definition:</b> <a href="_all911_vertices_8cpp_source.html#l00160">All911Vertices.cpp:160</a></div></div>
+<div class="ttc" id="aclass_all911_vertices_html_ab4b335fe26133eb484511f7606d50ce9"><div class="ttname"><a href="class_all911_vertices.html#ab4b335fe26133eb484511f7606d50ce9">All911Vertices::printParameters</a></div><div class="ttdeci">virtual void printParameters() const override</div><div class="ttdef"><b>Definition:</b> <a href="_all911_vertices_8cpp_source.html#l00104">All911Vertices.cpp:104</a></div></div>
+<div class="ttc" id="aclass_all911_vertices_html_aecc49cf69e5d542e5164967419f3513b"><div class="ttname"><a href="class_all911_vertices.html#aecc49cf69e5d542e5164967419f3513b">All911Vertices::toString</a></div><div class="ttdeci">virtual string toString(const int index) const</div><div class="ttdef"><b>Definition:</b> <a href="_all911_vertices_8cpp_source.html#l00108">All911Vertices.cpp:108</a></div></div>
 <div class="ttc" id="aclass_all911_vertices_html_afe3ecea562018e46c7ab93d59835ba39"><div class="ttname"><a href="class_all911_vertices.html#afe3ecea562018e46c7ab93d59835ba39">All911Vertices::Create</a></div><div class="ttdeci">static IAllVertices * Create()</div><div class="ttdef"><b>Definition:</b> <a href="_all911_vertices_8h_source.html#l00034">All911Vertices.h:34</a></div></div>
-<div class="ttc" id="aclass_all_vertices_html"><div class="ttname"><a href="class_all_vertices.html">AllVertices</a></div><div class="ttdef"><b>Definition:</b> <a href="_all_vertices_8h_source.html#l00031">AllVertices.h:31</a></div></div>
-<div class="ttc" id="aclass_i_all_edges_html"><div class="ttname"><a href="class_i_all_edges.html">IAllEdges</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_all_edges_8h_source.html#l00022">IAllEdges.h:22</a></div></div>
+<div class="ttc" id="aclass_all_edges_html"><div class="ttname"><a href="class_all_edges.html">AllEdges</a></div><div class="ttdef"><b>Definition:</b> <a href="_all_edges_8h_source.html#l00021">AllEdges.h:21</a></div></div>
+<div class="ttc" id="aclass_all_vertices_html"><div class="ttname"><a href="class_all_vertices.html">AllVertices</a></div><div class="ttdef"><b>Definition:</b> <a href="_all_vertices_8h_source.html#l00032">AllVertices.h:32</a></div></div>
 <div class="ttc" id="aclass_i_all_vertices_html"><div class="ttname"><a href="class_i_all_vertices.html">IAllVertices</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_all_vertices_8h_source.html#l00021">IAllVertices.h:21</a></div></div>
-<div class="ttc" id="aclass_i_all_vertices_html_a137915f85227c9c512e4682fa944c311"><div class="ttname"><a href="class_i_all_vertices.html#a137915f85227c9c512e4682fa944c311">IAllVertices::advanceVertices</a></div><div class="ttdeci">virtual void advanceVertices(IAllEdges &amp;edges, const EdgeIndexMap *edgeIndexMap)=0</div></div>
-<div class="ttc" id="astruct_edge_index_map_html"><div class="ttname"><a href="struct_edge_index_map.html">EdgeIndexMap</a></div><div class="ttdef"><b>Definition:</b> <a href="_edge_index_map_8h_source.html#l00030">EdgeIndexMap.h:30</a></div></div>
+<div class="ttc" id="aclass_layout_html"><div class="ttname"><a href="class_layout.html">Layout</a></div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00029">Layout.h:29</a></div></div>
+<div class="ttc" id="astruct_edge_index_map_html"><div class="ttname"><a href="struct_edge_index_map.html">EdgeIndexMap</a></div><div class="ttdef"><b>Definition:</b> <a href="_edge_index_map_8h_source.html#l00028">EdgeIndexMap.h:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
