@@ -1,9 +1,13 @@
 <map id="Simulator/Recorders/XmlRecorder.h" name="Simulator/Recorders/XmlRecorder.h">
-<area shape="rect" id="node1" title="An implementation for recording spikes history on xml file." alt="" coords="196,5,337,47"/>
-<area shape="rect" id="node2" href="$_conn_static_8cpp.html" title="The model of the small world network." alt="" coords="11,95,165,136"/>
-<area shape="rect" id="node3" href="$_xml_growth_recorder_8h.html" title="Header file for XmlGrowthRecorder.h." alt="" coords="189,95,344,136"/>
-<area shape="rect" id="node7" href="$_xml_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="368,95,509,136"/>
-<area shape="rect" id="node4" href="$_conn_growth_8cpp.html" title="The model of the activity dependent neurite outgrowth." alt="" coords="5,184,168,225"/>
-<area shape="rect" id="node5" href="$_recorder_factory_8cpp.html" title="A factory class for creating Recorder objects." alt="" coords="193,184,341,225"/>
-<area shape="rect" id="node6" href="$_xml_growth_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="365,184,534,225"/>
+<area shape="rect" id="node1" title="An implementation for recording spikes history on xml file." alt="" coords="407,5,549,47"/>
+<area shape="rect" id="node2" href="$_conn_static_8cpp.html" title="The model of the small world network." alt="" coords="46,95,201,136"/>
+<area shape="rect" id="node3" href="$_xml911_recorder_8h.html" title="Header file for Xml911Recorder.h." alt="" coords="577,95,718,136"/>
+<area shape="rect" id="node6" href="$_xml_growth_recorder_8h.html" title="Header file for XmlGrowthRecorder.h." alt="" coords="225,95,379,136"/>
+<area shape="rect" id="node9" href="$_xml_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="742,95,883,136"/>
+<area shape="rect" id="node10" href="$_xml_s_t_d_p_recorder_8h.html" title="An implementation for recording spikes history in an XML file for spike timining dependent plasticity..." alt="" coords="403,95,553,136"/>
+<area shape="rect" id="node4" href="$_recorder_factory_8cpp.html" title="A factory class for creating Recorder objects." alt="" coords="573,184,721,225"/>
+<area shape="rect" id="node5" href="$_xml911_recorder_8cpp.html" title="Header file for Xml911Recorder.h." alt="" coords="745,184,893,225"/>
+<area shape="rect" id="node7" href="$_conn_growth_8cpp.html" title="The model of the activity dependent neurite outgrowth." alt="" coords="199,184,362,225"/>
+<area shape="rect" id="node8" href="$_xml_growth_recorder_8cpp.html" title="An implementation for recording spikes history in an XML file for growth simulations." alt="" coords="5,184,175,225"/>
+<area shape="rect" id="node11" href="$_xml_s_t_d_p_recorder_8cpp_source.html" title=" " alt="" coords="386,184,549,225"/>
 </map>

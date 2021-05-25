@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Model Class Reference</title>
+<title>Graphitti: Model Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -77,9 +76,9 @@ Inheritance diagram for Model:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_model__inherit__graph.png" border="0" usemap="#a_model_inherit__map" alt="Inheritance graph"/></div>
 <map name="a_model_inherit__map" id="a_model_inherit__map">
-<area shape="rect" title=" " alt="" coords="117,5,175,32"/>
-<area shape="rect" href="class_c_p_u_spiking_model.html" title=" " alt="" coords="5,80,135,107"/>
-<area shape="rect" href="class_g_p_u_spiking_model.html" title=" " alt="" coords="159,80,288,107"/>
+<area shape="rect" title=" " alt="" coords="75,5,132,32"/>
+<area shape="rect" href="class_c_p_u_model.html" title=" " alt="" coords="5,80,92,107"/>
+<area shape="rect" href="class_g_p_u_model.html" title=" " alt="" coords="116,80,203,107"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -179,7 +178,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 </div><div class="memdoc">
 <p>Advances network state one simulation step. accessors (getVertices, etc. owned by advance.) advance has detailed control over what does what when. detailed, low level control. clear onn what is happening when, how much time it is taking. If, during an advance cycle, a vertex <img class="formulaInl" alt="$A$" src="form_33.png"/> at coordinates <img class="formulaInl" alt="$x,y$" src="form_34.png"/> fires, every edge which receives output is notified of the spike. Those edges then hold the spike until their delay period is completed. At a later advance cycle, once the delay period has been completed, the synapses apply their PSRs (Post-Synaptic-Response) to the summation points. Finally, on the next advance cycle, each vertex <img class="formulaInl" alt="$B$" src="form_35.png"/> adds the value stored in their corresponding summation points to their <img class="formulaInl" alt="$V_m$" src="form_36.png"/> and resets the summation points to zero. </p>
 
-<p>Implemented in <a class="el" href="class_g_p_u_spiking_model.html#a3d668bf17d888a99e16a63a05791f494">GPUSpikingModel</a>, and <a class="el" href="class_c_p_u_spiking_model.html#a72df84b891f2f4f51c1e45fa37a6f6fa">CPUSpikingModel</a>.</p>
+<p>Implemented in <a class="el" href="class_g_p_u_model.html#ad0b9d5c0fc812221e231efd1f4522afb">GPUModel</a>, and <a class="el" href="class_c_p_u_model.html#ad5fc6851d19e5f6ec40832823c11b89a">CPUModel</a>.</p>
 
 </div>
 </div>
@@ -200,7 +199,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 <p>Get the <a class="el" href="class_connections.html">Connections</a> class object. </p><dl class="section return"><dt>Returns</dt><dd>Pointer to the <a class="el" href="class_connections.html">Connections</a> class object. <br  />
  </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00171">171</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00175">175</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
 
 </div>
 </div>
@@ -221,7 +220,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 <p>Get the <a class="el" href="class_layout.html">Layout</a> class object. </p><dl class="section return"><dt>Returns</dt><dd>Pointer to the <a class="el" href="class_layout.html">Layout</a> class object. <br  />
  </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00176">176</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00180">180</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
 
 </div>
 </div>
@@ -242,7 +241,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 <p>Get the <a class="el" href="class_i_recorder.html">IRecorder</a> class object. </p><dl class="section return"><dt>Returns</dt><dd>Pointer to the <a class="el" href="class_i_recorder.html">IRecorder</a> class object. <br  />
  </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00181">181</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00185">185</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
 
 </div>
 </div>
@@ -332,7 +331,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 <p>Sets up the Simulation. </p>
 <p>Set up model state, for a specific simulation run. Downstream from IModel <a class="el" href="class_model.html#a0118fc1d572def34977213c285466ec6" title="Sets up the Simulation.">setupSim()</a> </p>
 
-<p>Reimplemented in <a class="el" href="class_g_p_u_spiking_model.html#a9c82b4be5a83774e21c39500bf458a19">GPUSpikingModel</a>, and <a class="el" href="class_c_p_u_spiking_model.html#a97bac0cf8d9e4798045428aa0eccd779">CPUSpikingModel</a>.</p>
+<p>Reimplemented in <a class="el" href="class_g_p_u_model.html#ae0b464539ce561e0cef88bc549b0353c">GPUModel</a>, and <a class="el" href="class_c_p_u_model.html#a34695bf27ad56038ba06f8c3a63695a8">CPUModel</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00071">71</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
 
@@ -362,7 +361,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 </div><div class="memdoc">
 <p>Modifies connections between vertices based on current state of the network and behavior over the past epoch. Should be called once every epoch. might be similar to advance. </p>
 
-<p>Implemented in <a class="el" href="class_g_p_u_spiking_model.html#a187164937dcaef943049ed462ee415f4">GPUSpikingModel</a>, and <a class="el" href="class_c_p_u_spiking_model.html#a9c0aa96b2b6f9f671f371f08f5540bfe">CPUSpikingModel</a>.</p>
+<p>Implemented in <a class="el" href="class_g_p_u_model.html#aae669815fa12df84124c78f79d55cab4">GPUModel</a>, and <a class="el" href="class_c_p_u_model.html#af566b690bd4e92f1e87d82b1d8fe0178">CPUModel</a>.</p>
 
 </div>
 </div>

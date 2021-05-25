@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Simulator/Utils/Matrix/SparseMatrix.h Source File</title>
+<title>Graphitti: Simulator/Utils/Matrix/SparseMatrix.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -122,8 +121,8 @@ $(function() {
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_sparse_matrix.html">SparseMatrix</a>;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        HashTable(<span class="keywordtype">int</span> s = 0, <span class="keywordtype">int</span> c = 0, <a class="code" href="class_sparse_matrix.html">SparseMatrix</a>* m = NULL) :</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        capacity( s ), <a class="code" href="class_sparse_matrix.html#a11130236443c1f6c703ab39da7c473d8">size</a>( 0 ), <a class="code" href="class_matrix.html#ad5b7453adb93a62eb3a63a2fc8761ef2">columns</a>( c ), table( s, <span class="keyword">static_cast&lt;</span>Element*<span class="keyword">&gt;</span> ( NULL ) ), theMatrix( m ) {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        HashTable(<span class="keywordtype">int</span> s = 0, <span class="keywordtype">int</span> c = 0, <a class="code" href="class_sparse_matrix.html">SparseMatrix</a>* m = <span class="keyword">nullptr</span>) :</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        capacity( s ), <a class="code" href="class_sparse_matrix.html#a11130236443c1f6c703ab39da7c473d8">size</a>( 0 ), <a class="code" href="class_matrix.html#ad5b7453adb93a62eb3a63a2fc8761ef2">columns</a>( c ), table( s, <span class="keyword">static_cast&lt;</span>Element*<span class="keyword">&gt;</span> ( <span class="keyword">nullptr</span> ) ), theMatrix( m ) {</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        }</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordtype">void</span> resize(<span class="keywordtype">int</span> s, <span class="keywordtype">int</span> c);</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        </div>
@@ -166,7 +165,7 @@ $(function() {
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    </div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <a class="code" href="class_sparse_matrix.html#a94f9c030ff699c5886bab1511d9a5cfd">SparseMatrix</a>(<span class="keywordtype">int</span> r, <span class="keywordtype">int</span> c, BGFLOAT m, TiXmlElement* e);</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    </div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <a class="code" href="class_sparse_matrix.html#a94f9c030ff699c5886bab1511d9a5cfd">SparseMatrix</a>(<span class="keywordtype">int</span> r, <span class="keywordtype">int</span> c, BGFLOAT m, <span class="keyword">const</span> <span class="keywordtype">char</span>* v = NULL);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <a class="code" href="class_sparse_matrix.html#a94f9c030ff699c5886bab1511d9a5cfd">SparseMatrix</a>(<span class="keywordtype">int</span> r, <span class="keywordtype">int</span> c, BGFLOAT m, <span class="keyword">const</span> <span class="keywordtype">char</span>* v = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    </div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <a class="code" href="class_sparse_matrix.html#a94f9c030ff699c5886bab1511d9a5cfd">SparseMatrix</a>(<span class="keywordtype">int</span> r = 1, <span class="keywordtype">int</span> c = 1);</div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    </div>
@@ -182,7 +181,7 @@ $(function() {
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <span class="keywordflow">return</span> theElements.getSize( );</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    }</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    </div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_sparse_matrix.html#a0d582dd88bd19946a00c4733f346cb8f">Print</a>(ostream&amp; os) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_sparse_matrix.html#adeb6ef0e45d4c8d7060039f69e47f296">Print</a>(ostream&amp; os) <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    </div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">string</span> <a class="code" href="class_sparse_matrix.html#ab258c60935780b20a436ffde326c0153">toXML</a>(<span class="keywordtype">string</span> name = <span class="stringliteral">&quot;&quot;</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    </div>
@@ -247,7 +246,6 @@ $(function() {
 <div class="ttc" id="aclass_matrix_html_ad5b7453adb93a62eb3a63a2fc8761ef2"><div class="ttname"><a href="class_matrix.html#ad5b7453adb93a62eb3a63a2fc8761ef2">Matrix::columns</a></div><div class="ttdeci">int columns</div><div class="ttdoc">Number of columns in Matrix (&gt;0)</div><div class="ttdef"><b>Definition:</b> <a href="_matrix_8h_source.html#l00074">Matrix.h:74</a></div></div>
 <div class="ttc" id="aclass_sparse_matrix_html"><div class="ttname"><a href="class_sparse_matrix.html">SparseMatrix</a></div><div class="ttdoc">An efficient implementation of a dynamically-allocated sparse 2D array.</div><div class="ttdef"><b>Definition:</b> <a href="_sparse_matrix_8h_source.html#l00051">SparseMatrix.h:51</a></div></div>
 <div class="ttc" id="aclass_sparse_matrix_html_a0cfffe46aecee2fb2d84aab675f6de6e"><div class="ttname"><a href="class_sparse_matrix.html#a0cfffe46aecee2fb2d84aab675f6de6e">SparseMatrix::rowFromXML</a></div><div class="ttdeci">void rowFromXML(TiXmlElement *rowElement)</div><div class="ttdoc">Reads a row of the sparse Matrix from XML.</div><div class="ttdef"><b>Definition:</b> <a href="_sparse_matrix_8cpp_source.html#l00448">SparseMatrix.cpp:448</a></div></div>
-<div class="ttc" id="aclass_sparse_matrix_html_a0d582dd88bd19946a00c4733f346cb8f"><div class="ttname"><a href="class_sparse_matrix.html#a0d582dd88bd19946a00c4733f346cb8f">SparseMatrix::Print</a></div><div class="ttdeci">virtual void Print(ostream &amp;os) const</div><div class="ttdoc">Polymorphic output. Produces text output on stream &quot;os&quot;. Output is by row.</div><div class="ttdef"><b>Definition:</b> <a href="_sparse_matrix_8cpp_source.html#l00504">SparseMatrix.cpp:504</a></div></div>
 <div class="ttc" id="aclass_sparse_matrix_html_a11130236443c1f6c703ab39da7c473d8"><div class="ttname"><a href="class_sparse_matrix.html#a11130236443c1f6c703ab39da7c473d8">SparseMatrix::size</a></div><div class="ttdeci">int size(void) const</div><div class="ttdoc">Returns the number of elements in the sparse matrix.</div><div class="ttdef"><b>Definition:</b> <a href="_sparse_matrix_8h_source.html#l00245">SparseMatrix.h:245</a></div></div>
 <div class="ttc" id="aclass_sparse_matrix_html_a13eeac8d6b4ea0fdab9f21786625ad80"><div class="ttname"><a href="class_sparse_matrix.html#a13eeac8d6b4ea0fdab9f21786625ad80">SparseMatrix::clear</a></div><div class="ttdeci">void clear(void)</div><div class="ttdoc">Frees up all dynamically allocated storage.</div><div class="ttdef"><b>Definition:</b> <a href="_sparse_matrix_8cpp_source.html#l00374">SparseMatrix.cpp:374</a></div></div>
 <div class="ttc" id="aclass_sparse_matrix_html_a331179bf82aacc19408d40eeef32984a"><div class="ttname"><a href="class_sparse_matrix.html#a331179bf82aacc19408d40eeef32984a">SparseMatrix::operator=</a></div><div class="ttdeci">SparseMatrix &amp; operator=(const SparseMatrix &amp;rhs)</div><div class="ttdoc">Assignment operator.</div><div class="ttdef"><b>Definition:</b> <a href="_sparse_matrix_8cpp_source.html#l00343">SparseMatrix.cpp:343</a></div></div>
@@ -258,6 +256,7 @@ $(function() {
 <div class="ttc" id="aclass_sparse_matrix_html_ab258c60935780b20a436ffde326c0153"><div class="ttname"><a href="class_sparse_matrix.html#ab258c60935780b20a436ffde326c0153">SparseMatrix::toXML</a></div><div class="ttdeci">virtual string toXML(string name=&quot;&quot;) const</div><div class="ttdoc">Produce XML representation of Matrix in string return value.</div><div class="ttdef"><b>Definition:</b> <a href="_sparse_matrix_8cpp_source.html#l00525">SparseMatrix.cpp:525</a></div></div>
 <div class="ttc" id="aclass_sparse_matrix_html_ac9992603499883269cb2d33767a63869"><div class="ttname"><a href="class_sparse_matrix.html#ac9992603499883269cb2d33767a63869">SparseMatrix::copy</a></div><div class="ttdeci">void copy(const SparseMatrix &amp;source)</div><div class="ttdef"><b>Definition:</b> <a href="_sparse_matrix_8cpp_source.html#l00417">SparseMatrix.cpp:417</a></div></div>
 <div class="ttc" id="aclass_sparse_matrix_html_add4d98ed4c7ed6744160ab0244cd5c04"><div class="ttname"><a href="class_sparse_matrix.html#add4d98ed4c7ed6744160ab0244cd5c04">SparseMatrix::operator()</a></div><div class="ttdeci">BGFLOAT &amp; operator()(int r, int c)</div><div class="ttdoc">Access value of element at (row, column) – mutator.</div><div class="ttdef"><b>Definition:</b> <a href="_sparse_matrix_8cpp_source.html#l00555">SparseMatrix.cpp:555</a></div></div>
+<div class="ttc" id="aclass_sparse_matrix_html_adeb6ef0e45d4c8d7060039f69e47f296"><div class="ttname"><a href="class_sparse_matrix.html#adeb6ef0e45d4c8d7060039f69e47f296">SparseMatrix::Print</a></div><div class="ttdeci">virtual void Print(ostream &amp;os) const override</div><div class="ttdoc">Polymorphic output. Produces text output on stream &quot;os&quot;. Output is by row.</div><div class="ttdef"><b>Definition:</b> <a href="_sparse_matrix_8cpp_source.html#l00504">SparseMatrix.cpp:504</a></div></div>
 <div class="ttc" id="aclass_sparse_matrix_html_aed5c431b91eb26b66b576011887f0cb2"><div class="ttname"><a href="class_sparse_matrix.html#aed5c431b91eb26b66b576011887f0cb2">SparseMatrix::operator+</a></div><div class="ttdeci">virtual const SparseMatrix operator+(const SparseMatrix &amp;rhs) const</div><div class="ttdef"><b>Definition:</b> <a href="_sparse_matrix_8cpp_source.html#l00601">SparseMatrix.cpp:601</a></div></div>
 <div class="ttc" id="aclass_vector_matrix_html"><div class="ttname"><a href="class_vector_matrix.html">VectorMatrix</a></div><div class="ttdoc">An efficient implementation of a dynamically-allocated 1D array.</div><div class="ttdef"><b>Definition:</b> <a href="_vector_matrix_8h_source.html#l00054">VectorMatrix.h:55</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

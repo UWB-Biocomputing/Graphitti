@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Simulator/Utils/RNG/MersenneTwister.cpp File Reference</title>
+<title>Graphitti: Simulator/Utils/RNG/MersenneTwister.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -108,7 +107,7 @@ std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Mersenne Twister logic from Nvidia. </p>
 <p>//</p>
-<p>This file has been modified by the UW Bothell BrainGrid group, mostly to reorganize it and make it look more like typical C++ code. This includes splitting it into a .h and .cpp (instead of having everything in a .h file), and replacing enums previously used to define constants with consts.</p>
+<p>This file has been modified by the UW Bothell Graphitti group, mostly to reorganize it and make it look more like typical C++ code. This includes splitting it into a .h and .cpp (instead of having everything in a .h file), and replacing enums previously used to define constants with consts.</p>
 <p>Mersenne Twister random number generator &ndash; a C++ class <a class="el" href="class_m_t_rand.html">MTRand</a> Based on code by Makoto Matsumoto, Takuji Nishimura, and Shawn Cokus Richard J. Wagner v1.0 15 May 2003 <a href="#" onclick="location.href='mai'+'lto:'+'rjw'+'ag'+'ner'+'@w'+'rit'+'em'+'e.c'+'om'; return false;">rjwag<span style="display: none;">.nosp@m.</span>ner@<span style="display: none;">.nosp@m.</span>write<span style="display: none;">.nosp@m.</span>me.c<span style="display: none;">.nosp@m.</span>om</a></p>
 <p>The Mersenne Twister is an algorithm for generating random numbers. It was designed with consideration of the flaws in various other generators. The period, 2^19937-1, and the order of equidistribution, 623 dimensions, are far greater. The generator is also fast; it avoids multiplication and division, and it benefits from caches and pipelines. For more information see the inventors' web page at <a href="http://www.math.keio.ac.jp/~matumoto/emt.html">http://www.math.keio.ac.jp/~matumoto/emt.html</a></p>
 <p>Reference M. Matsumoto and T. Nishimura, "Mersenne Twister: A 623-Dimensionally

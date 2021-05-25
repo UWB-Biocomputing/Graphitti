@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cu File Reference</title>
+<title>Graphitti: Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cu File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -76,7 +75,7 @@ $(function() {
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;<a class="el" href="_all_synapses_device_funcs_8h_source.html">AllSynapsesDeviceFuncs.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_all_edges_8h_source.html">AllEdges.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_all_neuro_edges_8h_source.html">AllNeuroEdges.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_all_s_t_d_p_synapses_8h_source.html">AllSTDPSynapses.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_all_dynamic_s_t_d_p_synapses_8h_source.html">AllDynamicSTDPSynapses.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -84,51 +83,51 @@ Include dependency graph for AllSynapsesDeviceFuncs_d.cu:</div>
 <div class="dyncontent">
 <div class="center"><img src="_all_synapses_device_funcs__d_8cu__incl.png" border="0" usemap="#a_simulator_2_edges_2_neuro_2_all_synapses_device_funcs__d_8cu" alt=""/></div>
 <map name="a_simulator_2_edges_2_neuro_2_all_synapses_device_funcs__d_8cu" id="a_simulator_2_edges_2_neuro_2_all_synapses_device_funcs__d_8cu">
-<area shape="rect" title="Device functions for synapse data." alt="" coords="87,5,295,47"/>
-<area shape="rect" title=" " alt="" coords="77,916,136,943"/>
-<area shape="rect" href="_all_synapses_device_funcs_8h.html" title="Device functions for synapse data." alt="" coords="313,95,495,121"/>
-<area shape="rect" href="_all_edges_8h.html" title="A container of all edge data." alt="" coords="573,319,659,345"/>
-<area shape="rect" href="_all_s_t_d_p_synapses_8h.html" title="A container of all STDP synapse data." alt="" coords="73,169,215,196"/>
-<area shape="rect" href="_all_dynamic_s_t_d_p_synapses_8h.html" title="A container of all dynamic STDP synapse data." alt="" coords="93,95,288,121"/>
-<area shape="rect" href="_all_spiking_synapses_8h.html" title="A container of all spiking synapse data." alt="" coords="229,244,379,271"/>
-<area shape="rect" href="_b_g_types_8h.html" title="Used to define uniform data type sizes based for all operating systems. Also used to test the speed o..." alt="" coords="1182,991,1301,1017"/>
-<area shape="rect" href="_all_spiking_neurons_8h.html" title="A container of all spiking neuron data." alt="" coords="441,169,581,196"/>
-<area shape="rect" href="_all_d_s_synapses_8h.html" title="A container of all DS synapse data." alt="" coords="240,169,365,196"/>
-<area shape="rect" href="_i_all_edges_8h.html" title="An interface for edge classes." alt="" coords="835,393,925,420"/>
-<area shape="rect" href="_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="486,692,557,719"/>
-<area shape="rect" href="_simulator_8h.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="836,468,924,495"/>
-<area shape="rect" title=" " alt="" coords="1219,692,1395,719"/>
-<area shape="rect" title=" " alt="" coords="653,393,811,420"/>
-<area shape="rect" href="_edge_index_map_8h.html" title="A structure maintains outgoing and active synapses list (forward map)." alt="" coords="1165,767,1317,793"/>
-<area shape="rect" title=" " alt="" coords="488,767,557,793"/>
-<area shape="rect" title=" " alt="" coords="145,767,210,793"/>
-<area shape="rect" title=" " alt="" coords="234,767,313,793"/>
-<area shape="rect" href="_coordinate_8h.html" title="A container for 2&#45;dimensional coordinates." alt="" coords="337,767,463,793"/>
-<area shape="rect" href="_vector_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 1D array." alt="" coords="632,767,811,793"/>
-<area shape="rect" title=" " alt="" coords="691,991,746,1017"/>
-<area shape="rect" href="_matrix_8h.html" title="Abstract base class for Matrices." alt="" coords="792,916,861,943"/>
-<area shape="rect" href="_complete_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 2D array." alt="" coords="635,841,760,868"/>
-<area shape="rect" href="_sparse_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 2D sparse array." alt="" coords="499,841,610,868"/>
-<area shape="rect" href="_norm_8h.html" title="Normally distributed random numbers." alt="" coords="325,841,424,868"/>
-<area shape="rect" href="_matrix_exceptions_8h.html" title="Exception class hierarchy for Matrix classes." alt="" coords="770,991,905,1017"/>
-<area shape="rect" title=" " alt="" coords="798,1065,877,1092"/>
-<area shape="rect" title=" " alt="" coords="427,991,485,1017"/>
-<area shape="rect" title=" " alt="" coords="678,916,717,943"/>
-<area shape="rect" title=" " alt="" coords="528,916,603,943"/>
-<area shape="rect" href="_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="219,916,352,943"/>
-<area shape="rect" title=" " alt="" coords="941,991,1013,1017"/>
-<area shape="rect" title=" " alt="" coords="342,991,402,1017"/>
-<area shape="rect" title=" " alt="" coords="93,991,150,1017"/>
-<area shape="rect" title=" " alt="" coords="174,991,229,1017"/>
-<area shape="rect" title=" " alt="" coords="253,991,318,1017"/>
-<area shape="rect" title=" " alt="" coords="1125,692,1195,719"/>
-<area shape="rect" href="_model_8h.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="935,543,1035,569"/>
-<area shape="rect" href="_timer_8h.html" title="Timer class, from CSS432." alt="" coords="764,543,831,569"/>
-<area shape="rect" href="_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="949,617,1021,644"/>
-<area shape="rect" href="_i_all_vertices_8h.html" title="An interface for vertices classes." alt="" coords="1001,692,1101,719"/>
-<area shape="rect" href="_i_recorder_8h.html" title="An interface for recording spikes history." alt="" coords="835,617,925,644"/>
-<area shape="rect" title=" " alt="" coords="677,617,760,644"/>
-<area shape="rect" href="_all_vertices_8h.html" title="A container of the base class of all vertex data." alt="" coords="1349,617,1445,644"/>
+<area shape="rect" title="Device functions for synapse data." alt="" coords="302,5,510,47"/>
+<area shape="rect" title=" " alt="" coords="1697,916,1755,943"/>
+<area shape="rect" href="_all_synapses_device_funcs_8h.html" title="Device functions for synapse data." alt="" coords="315,95,497,121"/>
+<area shape="rect" href="_all_neuro_edges_8h.html" title="A container of all edge data." alt="" coords="918,319,1038,345"/>
+<area shape="rect" href="_all_s_t_d_p_synapses_8h.html" title="A container of all STDP synapse data." alt="" coords="5,169,148,196"/>
+<area shape="rect" href="_all_dynamic_s_t_d_p_synapses_8h.html" title="A container of all dynamic STDP synapse data." alt="" coords="95,95,290,121"/>
+<area shape="rect" href="_all_spiking_synapses_8h.html" title="A container of all spiking synapse data." alt="" coords="327,244,477,271"/>
+<area shape="rect" href="_b_g_types_8h.html" title="Used to define uniform data type sizes based for all operating systems. Also used to test the speed o..." alt="" coords="449,991,568,1017"/>
+<area shape="rect" href="_all_spiking_neurons_8h.html" title="A container of all spiking neuron data." alt="" coords="444,169,584,196"/>
+<area shape="rect" href="_all_d_s_synapses_8h.html" title="A container of all DS synapse data." alt="" coords="243,169,369,196"/>
+<area shape="rect" href="_all_edges_8h.html" title="An interface and top level implementation for edge classes." alt="" coords="935,393,1021,420"/>
+<area shape="rect" href="_global_8h.html" title="Globally available functions/variables and default parameter values." alt="" coords="1277,692,1348,719"/>
+<area shape="rect" href="_simulator_8h.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="722,468,810,495"/>
+<area shape="rect" title=" " alt="" coords="493,692,669,719"/>
+<area shape="rect" href="_edge_index_map_8h.html" title="A structure maintains outgoing and edges list (forward map)." alt="" coords="433,767,585,793"/>
+<area shape="rect" title=" " alt="" coords="1251,468,1409,495"/>
+<area shape="rect" title=" " alt="" coords="1529,767,1598,793"/>
+<area shape="rect" title=" " alt="" coords="1623,767,1688,793"/>
+<area shape="rect" title=" " alt="" coords="1275,767,1353,793"/>
+<area shape="rect" href="_coordinate_8h.html" title="A container for 2&#45;dimensional coordinates." alt="" coords="1377,767,1504,793"/>
+<area shape="rect" href="_vector_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 1D array." alt="" coords="1021,767,1199,793"/>
+<area shape="rect" title=" " alt="" coords="1085,991,1140,1017"/>
+<area shape="rect" href="_matrix_8h.html" title="Abstract base class for Matrices." alt="" coords="970,916,1039,943"/>
+<area shape="rect" href="_complete_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 2D array." alt="" coords="1031,841,1157,868"/>
+<area shape="rect" href="_sparse_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 2D sparse array." alt="" coords="1181,841,1292,868"/>
+<area shape="rect" href="_norm_8h.html" title="Normally distributed random numbers." alt="" coords="1378,841,1477,868"/>
+<area shape="rect" href="_matrix_exceptions_8h.html" title="Exception class hierarchy for Matrix classes." alt="" coords="927,991,1061,1017"/>
+<area shape="rect" title=" " alt="" coords="955,1065,1033,1092"/>
+<area shape="rect" title=" " alt="" coords="1570,991,1629,1017"/>
+<area shape="rect" title=" " alt="" coords="1115,916,1153,943"/>
+<area shape="rect" title=" " alt="" coords="1178,916,1253,943"/>
+<area shape="rect" href="_mersenne_twister_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="1378,916,1511,943"/>
+<area shape="rect" title=" " alt="" coords="818,991,890,1017"/>
+<area shape="rect" title=" " alt="" coords="1325,991,1385,1017"/>
+<area shape="rect" title=" " alt="" coords="1409,991,1467,1017"/>
+<area shape="rect" title=" " alt="" coords="1491,991,1545,1017"/>
+<area shape="rect" title=" " alt="" coords="1236,991,1301,1017"/>
+<area shape="rect" title=" " alt="" coords="399,692,469,719"/>
+<area shape="rect" href="_model_8h.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="716,543,816,569"/>
+<area shape="rect" href="_timer_8h.html" title="Timer class, from CSS432." alt="" coords="999,543,1066,569"/>
+<area shape="rect" href="_layout_8h.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="781,617,853,644"/>
+<area shape="rect" href="_i_all_vertices_8h.html" title="An interface for vertices classes." alt="" coords="693,692,793,719"/>
+<area shape="rect" href="_i_recorder_8h.html" title="An interface for recording spikes history." alt="" coords="877,617,967,644"/>
+<area shape="rect" title=" " alt="" coords="991,617,1074,644"/>
+<area shape="rect" href="_all_vertices_8h.html" title="A container of the base class of all vertex data." alt="" coords="341,393,437,420"/>
 </map>
 </div>
 </div>
@@ -137,8 +136,8 @@ Include dependency graph for AllSynapsesDeviceFuncs_d.cu:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:a776a09613646973ca5174040435816f8"><td class="memItemLeft" align="right" valign="top">__device__ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#a776a09613646973ca5174040435816f8">edgSign</a> (synapseType t)</td></tr>
-<tr class="separator:a776a09613646973ca5174040435816f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ad2ba77abd90719f23c9ec434d30f7d"><td class="memItemLeft" align="right" valign="top">__device__ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#a4ad2ba77abd90719f23c9ec434d30f7d">edgSign</a> (edgeType t)</td></tr>
+<tr class="separator:a4ad2ba77abd90719f23c9ec434d30f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ae797c6c2364003b65ebf7af25577513f"><td class="memItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#ae797c6c2364003b65ebf7af25577513f">changeSpikingSynapsesPSRDevice</a> (AllSpikingSynapsesDeviceProperties *allEdgesDevice, const BGSIZE iEdg, const uint64_t simulationStep, const BGFLOAT deltaT)</td></tr>
 <tr class="separator:ae797c6c2364003b65ebf7af25577513f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,23 +157,23 @@ Functions</h2></td></tr>
 <tr class="memitem:ab50e7ea65626cca8b96cb62df0a3a767"><td class="memItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#ab50e7ea65626cca8b96cb62df0a3a767">advanceSTDPSynapsesDevice</a> (int totalSynapseCount, <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a> *edgeIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSTDPSynapsesDeviceProperties *allEdgesDevice, AllSpikingNeuronsDeviceProperties *allVerticesDevice, int maxSpikes)</td></tr>
 <tr class="separator:ab50e7ea65626cca8b96cb62df0a3a767"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:acd4f1eb59b2c99decd841fda67c3fe9f"><td class="memItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#acd4f1eb59b2c99decd841fda67c3fe9f">createSpikingSynapse</a> (AllSpikingSynapsesDeviceProperties *allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, synapseType type)</td></tr>
-<tr class="separator:acd4f1eb59b2c99decd841fda67c3fe9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a294fa6f180c94bb01c7c549700d09f95"><td class="memItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#a294fa6f180c94bb01c7c549700d09f95">createDSSynapse</a> (AllDSSynapsesDeviceProperties *allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, synapseType type)</td></tr>
-<tr class="separator:a294fa6f180c94bb01c7c549700d09f95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6026c4574d77ab892cfcb2276750a90e"><td class="memItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#a6026c4574d77ab892cfcb2276750a90e">createSTDPSynapse</a> (AllSTDPSynapsesDeviceProperties *allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, synapseType type)</td></tr>
-<tr class="separator:a6026c4574d77ab892cfcb2276750a90e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a45b0cbc2715ebf425e8c294215d4e4"><td class="memItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#a6a45b0cbc2715ebf425e8c294215d4e4">createDynamicSTDPSynapse</a> (AllDynamicSTDPSynapsesDeviceProperties *allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, synapseType type)</td></tr>
-<tr class="separator:a6a45b0cbc2715ebf425e8c294215d4e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7362016721e34ea39b2a7ba42266db1"><td class="memItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#ae7362016721e34ea39b2a7ba42266db1">addSpikingSynapse</a> (AllSpikingSynapsesDeviceProperties *allEdgesDevice, synapseType type, const int srcVertex, const int destVertex, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, BGFLOAT *W_d, int numVertices)</td></tr>
-<tr class="separator:ae7362016721e34ea39b2a7ba42266db1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3707ff01ff6e76f5186c20b4bd1e3c97"><td class="memItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#a3707ff01ff6e76f5186c20b4bd1e3c97">createSpikingSynapse</a> (AllSpikingSynapsesDeviceProperties *allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, edgeType type)</td></tr>
+<tr class="separator:a3707ff01ff6e76f5186c20b4bd1e3c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c2df59d6923e493c043b0a1f12c2dc3"><td class="memItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#a7c2df59d6923e493c043b0a1f12c2dc3">createDSSynapse</a> (AllDSSynapsesDeviceProperties *allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, edgeType type)</td></tr>
+<tr class="separator:a7c2df59d6923e493c043b0a1f12c2dc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0b3ba2fae29f22f085cab673af749b9"><td class="memItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#ac0b3ba2fae29f22f085cab673af749b9">createSTDPSynapse</a> (AllSTDPSynapsesDeviceProperties *allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, edgeType type)</td></tr>
+<tr class="separator:ac0b3ba2fae29f22f085cab673af749b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af35dcd8ad1a6a45f1bff8b394c650d29"><td class="memItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#af35dcd8ad1a6a45f1bff8b394c650d29">createDynamicSTDPSynapse</a> (AllDynamicSTDPSynapsesDeviceProperties *allEdgesDevice, const int neuronIndex, const int synapseOffset, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, edgeType type)</td></tr>
+<tr class="separator:af35dcd8ad1a6a45f1bff8b394c650d29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2bdc909c336417d3d69406684b15d3b"><td class="memItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#ac2bdc909c336417d3d69406684b15d3b">addSpikingSynapse</a> (AllSpikingSynapsesDeviceProperties *allEdgesDevice, edgeType type, const int srcVertex, const int destVertex, int sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT, BGFLOAT *W_d, int numVertices)</td></tr>
+<tr class="separator:ac2bdc909c336417d3d69406684b15d3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a810b8839a8df43aa237ea11c1397e133"><td class="memItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#a810b8839a8df43aa237ea11c1397e133">eraseSpikingSynapse</a> (AllSpikingSynapsesDeviceProperties *allEdgesDevice, const int neuronIndex, const int synapseOffset, int maxEdges)</td></tr>
 <tr class="separator:a810b8839a8df43aa237ea11c1397e133"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaffe7d923f7dd87f9675a16c59816601"><td class="memItemLeft" align="right" valign="top">__device__ synapseType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#aaffe7d923f7dd87f9675a16c59816601">synType</a> (neuronType *neuronTypeMap_d, const int srcVertex, const int destVertex)</td></tr>
-<tr class="separator:aaffe7d923f7dd87f9675a16c59816601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d712ca26bb5aed0abdf969405aae99d"><td class="memItemLeft" align="right" valign="top">__device__ edgeType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#a6d712ca26bb5aed0abdf969405aae99d">edgType</a> (vertexType *neuronTypeMap_d, const int srcVertex, const int destVertex)</td></tr>
+<tr class="separator:a6d712ca26bb5aed0abdf969405aae99d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:a22efde5493445ed82e011d1c3e446871"><td class="memItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#a22efde5493445ed82e011d1c3e446871">updateSynapsesWeightsDevice</a> (int numVertices, BGFLOAT deltaT, BGFLOAT *W_d, int maxEdges, AllSpikingNeuronsDeviceProperties *allVerticesDevice, AllSpikingSynapsesDeviceProperties *allEdgesDevice, neuronType *neuronTypeMap_d)</td></tr>
-<tr class="separator:a22efde5493445ed82e011d1c3e446871"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91e4c44814bb24b80f50e1bca08c6279"><td class="memItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#a91e4c44814bb24b80f50e1bca08c6279">updateSynapsesWeightsDevice</a> (int numVertices, BGFLOAT deltaT, BGFLOAT *W_d, int maxEdges, AllSpikingNeuronsDeviceProperties *allVerticesDevice, AllSpikingSynapsesDeviceProperties *allEdgesDevice, vertexType *neuronTypeMap_d)</td></tr>
+<tr class="separator:a91e4c44814bb24b80f50e1bca08c6279"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9d68bc4f91e8013a2a863966e5b85e1"><td class="memItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_all_synapses_device_funcs__d_8cu.html#aa9d68bc4f91e8013a2a863966e5b85e1">initSynapsesDevice</a> (int n, AllDSSynapsesDeviceProperties *allEdgesDevice, BGFLOAT *pSummationMap, const BGFLOAT deltaT, BGFLOAT weight)</td></tr>
 <tr class="separator:aa9d68bc4f91e8013a2a863966e5b85e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -184,8 +183,8 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition in file <a class="el" href="_all_synapses_device_funcs__d_8cu_source.html">AllSynapsesDeviceFuncs_d.cu</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="ae7362016721e34ea39b2a7ba42266db1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae7362016721e34ea39b2a7ba42266db1">&#9670;&nbsp;</a></span>addSpikingSynapse()</h2>
+<a id="ac2bdc909c336417d3d69406684b15d3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2bdc909c336417d3d69406684b15d3b">&#9670;&nbsp;</a></span>addSpikingSynapse()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -199,7 +198,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">synapseType&#160;</td>
+          <td class="paramtype">edgeType&#160;</td>
           <td class="paramname"><em>type</em>, </td>
         </tr>
         <tr>
@@ -513,8 +512,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a294fa6f180c94bb01c7c549700d09f95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a294fa6f180c94bb01c7c549700d09f95">&#9670;&nbsp;</a></span>createDSSynapse()</h2>
+<a id="a7c2df59d6923e493c043b0a1f12c2dc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c2df59d6923e493c043b0a1f12c2dc3">&#9670;&nbsp;</a></span>createDSSynapse()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -564,7 +563,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">synapseType&#160;</td>
+          <td class="paramtype">edgeType&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
@@ -593,8 +592,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6a45b0cbc2715ebf425e8c294215d4e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a45b0cbc2715ebf425e8c294215d4e4">&#9670;&nbsp;</a></span>createDynamicSTDPSynapse()</h2>
+<a id="af35dcd8ad1a6a45f1bff8b394c650d29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af35dcd8ad1a6a45f1bff8b394c650d29">&#9670;&nbsp;</a></span>createDynamicSTDPSynapse()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -644,7 +643,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">synapseType&#160;</td>
+          <td class="paramtype">edgeType&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
@@ -673,8 +672,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="acd4f1eb59b2c99decd841fda67c3fe9f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd4f1eb59b2c99decd841fda67c3fe9f">&#9670;&nbsp;</a></span>createSpikingSynapse()</h2>
+<a id="a3707ff01ff6e76f5186c20b4bd1e3c97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3707ff01ff6e76f5186c20b4bd1e3c97">&#9670;&nbsp;</a></span>createSpikingSynapse()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -724,7 +723,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">synapseType&#160;</td>
+          <td class="paramtype">edgeType&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
@@ -753,8 +752,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6026c4574d77ab892cfcb2276750a90e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6026c4574d77ab892cfcb2276750a90e">&#9670;&nbsp;</a></span>createSTDPSynapse()</h2>
+<a id="ac0b3ba2fae29f22f085cab673af749b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0b3ba2fae29f22f085cab673af749b9">&#9670;&nbsp;</a></span>createSTDPSynapse()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -804,7 +803,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">synapseType&#160;</td>
+          <td class="paramtype">edgeType&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
@@ -833,8 +832,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a776a09613646973ca5174040435816f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a776a09613646973ca5174040435816f8">&#9670;&nbsp;</a></span>edgSign()</h2>
+<a id="a4ad2ba77abd90719f23c9ec434d30f7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ad2ba77abd90719f23c9ec434d30f7d">&#9670;&nbsp;</a></span>edgSign()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -842,7 +841,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">__device__ int edgSign </td>
           <td>(</td>
-          <td class="paramtype">synapseType&#160;</td>
+          <td class="paramtype">edgeType&#160;</td>
           <td class="paramname"><em>t</em></td><td>)</td>
           <td></td>
         </tr>
@@ -851,13 +850,58 @@ Functions</h2></td></tr>
 <p>Return 1 if originating neuron is excitatory, -1 otherwise.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>synapseType I to I, I to E, E to I, or E to E </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>edgeType I to I, I to E, E to I, or E to E </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 or -1 </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="_all_synapses_device_funcs__d_8cu_source.html#l00025">25</a> of file <a class="el" href="_all_synapses_device_funcs__d_8cu_source.html">AllSynapsesDeviceFuncs_d.cu</a>.</p>
+
+</div>
+</div>
+<a id="a6d712ca26bb5aed0abdf969405aae99d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d712ca26bb5aed0abdf969405aae99d">&#9670;&nbsp;</a></span>edgType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__device__ edgeType edgType </td>
+          <td>(</td>
+          <td class="paramtype">vertexType *&#160;</td>
+          <td class="paramname"><em>neuronTypeMap_d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>srcVertex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>destVertex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the type of synapse at the given coordinates</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">allVerticesDevice</td><td>Pointer to the Neuron structures in device memory. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">srcVertex</td><td>Index of the source neuron. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">destVertex</td><td>Index of the destination neuron. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_all_synapses_device_funcs__d_8cu_source.html#l00840">840</a> of file <a class="el" href="_all_synapses_device_funcs__d_8cu_source.html">AllSynapsesDeviceFuncs_d.cu</a>.</p>
 
 </div>
 </div>
@@ -1161,53 +1205,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aaffe7d923f7dd87f9675a16c59816601"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaffe7d923f7dd87f9675a16c59816601">&#9670;&nbsp;</a></span>synType()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">__device__ synapseType synType </td>
-          <td>(</td>
-          <td class="paramtype">neuronType *&#160;</td>
-          <td class="paramname"><em>neuronTypeMap_d</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>srcVertex</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>destVertex</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Returns the type of synapse at the given coordinates</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">allVerticesDevice</td><td>Pointer to the Neuron structures in device memory. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">srcVertex</td><td>Index of the source neuron. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">destVertex</td><td>Index of the destination neuron. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="_all_synapses_device_funcs__d_8cu_source.html#l00840">840</a> of file <a class="el" href="_all_synapses_device_funcs__d_8cu_source.html">AllSynapsesDeviceFuncs_d.cu</a>.</p>
-
-</div>
-</div>
-<a id="a22efde5493445ed82e011d1c3e446871"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22efde5493445ed82e011d1c3e446871">&#9670;&nbsp;</a></span>updateSynapsesWeightsDevice()</h2>
+<a id="a91e4c44814bb24b80f50e1bca08c6279"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91e4c44814bb24b80f50e1bca08c6279">&#9670;&nbsp;</a></span>updateSynapsesWeightsDevice()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1251,7 +1250,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">neuronType *&#160;</td>
+          <td class="paramtype">vertexType *&#160;</td>
           <td class="paramname"><em>neuronTypeMap_d</em>&#160;</td>
         </tr>
         <tr>

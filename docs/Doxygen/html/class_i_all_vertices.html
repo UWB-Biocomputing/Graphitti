@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: IAllVertices Class Reference</title>
+<title>Graphitti: IAllVertices Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -97,15 +96,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab7f37272a1bc6ab4250c41a5dc1fd4d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2ae27016fe38eb8dc6335c0f29b2f0a"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_all_vertices.html#ad2ae27016fe38eb8dc6335c0f29b2f0a">toString</a> (const int i) const =0</td></tr>
 <tr class="separator:ad2ae27016fe38eb8dc6335c0f29b2f0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a137915f85227c9c512e4682fa944c311"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_all_vertices.html#a137915f85227c9c512e4682fa944c311">advanceVertices</a> (<a class="el" href="class_i_all_edges.html">IAllEdges</a> &amp;edges, const <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a> *edgeIndexMap)=0</td></tr>
-<tr class="separator:a137915f85227c9c512e4682fa944c311"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a216180e3125e018e8b72c43c52e622ff"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_all_vertices.html#a216180e3125e018e8b72c43c52e622ff">advanceVertices</a> (<a class="el" href="class_all_edges.html">AllEdges</a> &amp;edges, const <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a> *edgeIndexMap)=0</td></tr>
+<tr class="separator:a216180e3125e018e8b72c43c52e622ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_i_all_vertices_8h_source.html#l00021">21</a> of file <a class="el" href="_i_all_vertices_8h_source.html">IAllVertices.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a137915f85227c9c512e4682fa944c311"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a137915f85227c9c512e4682fa944c311">&#9670;&nbsp;</a></span>advanceVertices()</h2>
+<a id="a216180e3125e018e8b72c43c52e622ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a216180e3125e018e8b72c43c52e622ff">&#9670;&nbsp;</a></span>advanceVertices()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -116,7 +115,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">virtual void IAllVertices::advanceVertices </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_i_all_edges.html">IAllEdges</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_all_edges.html">AllEdges</a> &amp;&#160;</td>
           <td class="paramname"><em>edges</em>, </td>
         </tr>
         <tr>
@@ -146,7 +145,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="class_all_spiking_neurons.html#add5cbc21f3b35eab734931ddbecdc69c">AllSpikingNeurons</a>.</p>
+<p>Implemented in <a class="el" href="class_all_spiking_neurons.html#a41982690e37c71f067f4dc3f9dbb0f86">AllSpikingNeurons</a>, and <a class="el" href="class_all911_vertices.html#a6fedfa234ec87c499d9d64cf2fcb1f70">All911Vertices</a>.</p>
 
 </div>
 </div>
@@ -181,7 +180,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="class_all_i_z_h_neurons.html#a9ec43b9fb063f61b83dcc94c9ebb1f68">AllIZHNeurons</a>, and <a class="el" href="class_all_i_f_neurons.html#a149694ab6e7d4e6acd46be6e8a5da2e1">AllIFNeurons</a>.</p>
+<p>Implemented in <a class="el" href="class_all_i_z_h_neurons.html#a56fc469f019dbc1fb5d0357737bfa993">AllIZHNeurons</a>, <a class="el" href="class_all911_vertices.html#a803ce99b090c16867b9ffd257cb6c766">All911Vertices</a>, and <a class="el" href="class_all_i_f_neurons.html#a149694ab6e7d4e6acd46be6e8a5da2e1">AllIFNeurons</a>.</p>
 
 </div>
 </div>
@@ -209,7 +208,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Load member variables from configuration file. Registered to <a class="el" href="class_operation_manager.html">OperationManager</a> as Operation::loadParameters </p>
 
-<p>Implemented in <a class="el" href="class_all_i_f_neurons.html#a4fef54d14a661377c5dcadb0e86e1b1e">AllIFNeurons</a>.</p>
+<p>Implemented in <a class="el" href="class_all911_vertices.html#a3e42812eb98dc2cef6ba804136933272">All911Vertices</a>, and <a class="el" href="class_all_i_f_neurons.html#a4fef54d14a661377c5dcadb0e86e1b1e">AllIFNeurons</a>.</p>
 
 </div>
 </div>
@@ -237,7 +236,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Prints out all parameters of the vertices to logging file. Registered to <a class="el" href="class_operation_manager.html">OperationManager</a> as Operation::printParameters </p>
 
-<p>Implemented in <a class="el" href="class_all911_vertices.html#a18fbe7e2b8264d917dc0c00b35b79788">All911Vertices</a>, <a class="el" href="class_all_l_i_f_neurons.html#a5bea239f9774fdf0695e8cbedc761d37">AllLIFNeurons</a>, <a class="el" href="class_all_i_z_h_neurons.html#a898902125facd5742432d4ca3c970ae0">AllIZHNeurons</a>, <a class="el" href="class_all_i_f_neurons.html#af79852a6a45fa44e5c70e39323254df3">AllIFNeurons</a>, and <a class="el" href="class_all_vertices.html#a53aaf9bd6edb4bd5b0821c90eab63192">AllVertices</a>.</p>
+<p>Implemented in <a class="el" href="class_all911_vertices.html#ab4b335fe26133eb484511f7606d50ce9">All911Vertices</a>, <a class="el" href="class_all_l_i_f_neurons.html#aceac12f95f781473bc51eb98a5937cba">AllLIFNeurons</a>, <a class="el" href="class_all_i_z_h_neurons.html#a2d4cf538fb78f1bb581f047d0103716a">AllIZHNeurons</a>, <a class="el" href="class_all_vertices.html#a30c515dad5245087e4701c743245cec2">AllVertices</a>, and <a class="el" href="class_all_i_f_neurons.html#af79852a6a45fa44e5c70e39323254df3">AllIFNeurons</a>.</p>
 
 </div>
 </div>
@@ -265,7 +264,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Setup the internal structure of the class. Allocate memories to store all vertices' state. </p>
 
-<p>Implemented in <a class="el" href="class_all_spiking_neurons.html#a438606d5c6606ea692090ce0f7e568a5">AllSpikingNeurons</a>, <a class="el" href="class_all_i_z_h_neurons.html#a47fc3474a2d55e1d47ae7c853fa7f38d">AllIZHNeurons</a>, <a class="el" href="class_all_i_f_neurons.html#a5fac10a12930985e012a46717c7eab16">AllIFNeurons</a>, and <a class="el" href="class_all_vertices.html#ae5aebf9d98bc8f51e9e5b499f8d5e0ee">AllVertices</a>.</p>
+<p>Implemented in <a class="el" href="class_all_spiking_neurons.html#a2372b040780002fb8e2e7ae4022cba14">AllSpikingNeurons</a>, <a class="el" href="class_all_i_z_h_neurons.html#aeda3ce93aa6e2e64d976dbc73ec3eb91">AllIZHNeurons</a>, <a class="el" href="class_all_i_f_neurons.html#a38a8c9d05d39de5b74df3096bdb39154">AllIFNeurons</a>, <a class="el" href="class_all_vertices.html#ae8a78ef21ee8f07227f5ee130dcf7d9c">AllVertices</a>, and <a class="el" href="class_all911_vertices.html#a008e4a041982946a3bc998be8c6a9122">All911Vertices</a>.</p>
 
 </div>
 </div>
@@ -301,7 +300,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the complete state of the vertex. </dd></dl>
 
-<p>Implemented in <a class="el" href="class_all_i_z_h_neurons.html#a2ad154119de67069dd7a944e922cf74b">AllIZHNeurons</a>, and <a class="el" href="class_all_i_f_neurons.html#a06537ed3a13d00739c948a42d6172a6d">AllIFNeurons</a>.</p>
+<p>Implemented in <a class="el" href="class_all_i_z_h_neurons.html#ad337b26ccfbb635a1318c6f9d1a97f29">AllIZHNeurons</a>, <a class="el" href="class_all911_vertices.html#aecc49cf69e5d542e5164967419f3513b">All911Vertices</a>, and <a class="el" href="class_all_i_f_neurons.html#a06537ed3a13d00739c948a42d6172a6d">AllIFNeurons</a>.</p>
 
 </div>
 </div>

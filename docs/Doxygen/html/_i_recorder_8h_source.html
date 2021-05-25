@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Simulator/Recorders/IRecorder.h Source File</title>
+<title>Graphitti: Simulator/Recorders/IRecorder.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -80,7 +79,7 @@ $(function() {
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_global_8h.html">Global.h</a>&quot;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_model_8h.html">Model.h</a>&quot;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_simulator_8h.html">Core/Simulator.h</a>&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_simulator_8h.html">Simulator.h</a>&quot;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_i_all_vertices_8h.html">IAllVertices.h</a>&quot;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">class </span><a class="code" href="class_model.html">Model</a>;</div>
@@ -99,9 +98,9 @@ $(function() {
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
 <div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="class_i_recorder.html#a3d05371a053232a2024231b5dcedc9e9">   41</a></span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_i_recorder.html#a3d05371a053232a2024231b5dcedc9e9">term</a>() = 0;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="class_i_recorder.html#a7099f08a00ec9a59af6c2d9b6a3cf5a2">   46</a></span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_i_recorder.html#a7099f08a00ec9a59af6c2d9b6a3cf5a2">compileHistories</a>(<a class="code" href="class_i_all_vertices.html">IAllVertices</a> &amp;neurons) = 0;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="class_i_recorder.html#a11fd8b8ee54a25fd79d117d02cd6c81a">   46</a></span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_i_recorder.html#a11fd8b8ee54a25fd79d117d02cd6c81a">compileHistories</a>(<a class="code" href="class_i_all_vertices.html">IAllVertices</a> &amp;vertices) = 0;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="class_i_recorder.html#aa942e3334bd2cf365150a7057d0e923e">   51</a></span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_i_recorder.html#aa942e3334bd2cf365150a7057d0e923e">saveSimData</a>(<span class="keyword">const</span> <a class="code" href="class_i_all_vertices.html">IAllVertices</a> &amp;neurons) = 0;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="class_i_recorder.html#a60c1d30fff5e9c0e2ed3bec0daa1b6e1">   51</a></span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_i_recorder.html#a60c1d30fff5e9c0e2ed3bec0daa1b6e1">saveSimData</a>(<span class="keyword">const</span> <a class="code" href="class_i_all_vertices.html">IAllVertices</a> &amp;vertices) = 0;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="class_i_recorder.html#af53d24d81eeb15f93c4eb6198a3f66e6">   54</a></span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_i_recorder.html#af53d24d81eeb15f93c4eb6198a3f66e6">printParameters</a>() = 0;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
@@ -118,11 +117,11 @@ $(function() {
 <div class="ttc" id="aclass_i_recorder_html"><div class="ttname"><a href="class_i_recorder.html">IRecorder</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_recorder_8h_source.html#l00022">IRecorder.h:22</a></div></div>
 <div class="ttc" id="aclass_i_recorder_html_a09ce3dcaa94214bcf69bf3c45cbfef41"><div class="ttname"><a href="class_i_recorder.html#a09ce3dcaa94214bcf69bf3c45cbfef41">IRecorder::fileLogger_</a></div><div class="ttdeci">log4cplus::Logger fileLogger_</div><div class="ttdoc">Loggers used to print to using log4cplus logging macros, prints to Results/Debug/logging....</div><div class="ttdef"><b>Definition:</b> <a href="_i_recorder_8h_source.html#l00061">IRecorder.h:61</a></div></div>
 <div class="ttc" id="aclass_i_recorder_html_a0fe3aca7b9dade9de23ef9f2d44ba521"><div class="ttname"><a href="class_i_recorder.html#a0fe3aca7b9dade9de23ef9f2d44ba521">IRecorder::resultFileName_</a></div><div class="ttdeci">string resultFileName_</div><div class="ttdoc">File path to the file that the results will be printed to.</div><div class="ttdef"><b>Definition:</b> <a href="_i_recorder_8h_source.html#l00058">IRecorder.h:58</a></div></div>
+<div class="ttc" id="aclass_i_recorder_html_a11fd8b8ee54a25fd79d117d02cd6c81a"><div class="ttname"><a href="class_i_recorder.html#a11fd8b8ee54a25fd79d117d02cd6c81a">IRecorder::compileHistories</a></div><div class="ttdeci">virtual void compileHistories(IAllVertices &amp;vertices)=0</div></div>
 <div class="ttc" id="aclass_i_recorder_html_a30ac315b5d806dae811adabd1dcd1fad"><div class="ttname"><a href="class_i_recorder.html#a30ac315b5d806dae811adabd1dcd1fad">IRecorder::init</a></div><div class="ttdeci">virtual void init()=0</div></div>
 <div class="ttc" id="aclass_i_recorder_html_a34341e916b4f055c0bdf67cec4e0cd72"><div class="ttname"><a href="class_i_recorder.html#a34341e916b4f055c0bdf67cec4e0cd72">IRecorder::getValues</a></div><div class="ttdeci">virtual void getValues()=0</div><div class="ttdoc">Get the current radii and rates values.</div></div>
 <div class="ttc" id="aclass_i_recorder_html_a3d05371a053232a2024231b5dcedc9e9"><div class="ttname"><a href="class_i_recorder.html#a3d05371a053232a2024231b5dcedc9e9">IRecorder::term</a></div><div class="ttdeci">virtual void term()=0</div><div class="ttdoc">Terminate process.</div></div>
-<div class="ttc" id="aclass_i_recorder_html_a7099f08a00ec9a59af6c2d9b6a3cf5a2"><div class="ttname"><a href="class_i_recorder.html#a7099f08a00ec9a59af6c2d9b6a3cf5a2">IRecorder::compileHistories</a></div><div class="ttdeci">virtual void compileHistories(IAllVertices &amp;neurons)=0</div></div>
-<div class="ttc" id="aclass_i_recorder_html_aa942e3334bd2cf365150a7057d0e923e"><div class="ttname"><a href="class_i_recorder.html#aa942e3334bd2cf365150a7057d0e923e">IRecorder::saveSimData</a></div><div class="ttdeci">virtual void saveSimData(const IAllVertices &amp;neurons)=0</div></div>
+<div class="ttc" id="aclass_i_recorder_html_a60c1d30fff5e9c0e2ed3bec0daa1b6e1"><div class="ttname"><a href="class_i_recorder.html#a60c1d30fff5e9c0e2ed3bec0daa1b6e1">IRecorder::saveSimData</a></div><div class="ttdeci">virtual void saveSimData(const IAllVertices &amp;vertices)=0</div></div>
 <div class="ttc" id="aclass_i_recorder_html_ac47dd5e4c4e3bc6aa6949490af04de2b"><div class="ttname"><a href="class_i_recorder.html#ac47dd5e4c4e3bc6aa6949490af04de2b">IRecorder::initValues</a></div><div class="ttdeci">virtual void initValues()=0</div><div class="ttdoc">Init radii and rates history matrices with current radii and rates.</div></div>
 <div class="ttc" id="aclass_i_recorder_html_acd4dc8e8399f512b357641497f558f9c"><div class="ttname"><a href="class_i_recorder.html#acd4dc8e8399f512b357641497f558f9c">IRecorder::initDefaultValues</a></div><div class="ttdeci">virtual void initDefaultValues()=0</div><div class="ttdoc">Init radii and rates history matrices with default values.</div></div>
 <div class="ttc" id="aclass_i_recorder_html_af53d24d81eeb15f93c4eb6198a3f66e6"><div class="ttname"><a href="class_i_recorder.html#af53d24d81eeb15f93c4eb6198a3f66e6">IRecorder::printParameters</a></div><div class="ttdeci">virtual void printParameters()=0</div><div class="ttdoc">Prints loaded parameters to logging file.</div></div>

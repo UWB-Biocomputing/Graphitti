@@ -1,52 +1,52 @@
 <map id="Simulator/Core/Simulator.h" name="Simulator/Core/Simulator.h">
-<area shape="rect" id="node1" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="1737,5,1916,32"/>
-<area shape="rect" id="node2" href="$_conn_static_8h.html" title="The model of the small world network." alt="" coords="1515,512,1669,553"/>
-<area shape="rect" id="node5" href="$_conn_growth_8h.html" title="The model of the activity dependent neurite outgrowth." alt="" coords="845,512,1000,553"/>
-<area shape="rect" id="node7" href="$_conn_growth__d_8cu.html" title="Update the weights of the Synapses in the simulation." alt="" coords="3245,601,3416,643"/>
-<area shape="rect" id="node8" href="$_b_g_driver_8cpp.html" title="Orchestrates most functionality in the simulation." alt="" coords="61,609,253,635"/>
-<area shape="rect" id="node10" href="$_xml_growth_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="278,601,447,643"/>
-<area shape="rect" id="node12" href="$_c_p_u_spiking_model_8cpp.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="3745,601,3930,643"/>
-<area shape="rect" id="node13" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="2645,609,2838,635"/>
-<area shape="rect" id="node14" href="$_all_edges_8h.html" title="A container of all edge data." alt="" coords="1911,169,2097,196"/>
-<area shape="rect" id="node23" href="$_all_d_s_synapses__d_8cu.html" title="A container of all DS synapse data." alt="" coords="3099,512,3256,553"/>
-<area shape="rect" id="node28" href="$_all_dynamic_s_t_d_p_synapses__d_8cu.html" title="A container of all dynamic STDP synapse data." alt="" coords="3480,512,3699,553"/>
-<area shape="rect" id="node40" href="$_i_all_edges_8h.html" title="An interface for edge classes." alt="" coords="1496,87,1685,114"/>
-<area shape="rect" id="node42" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="3976,87,4171,114"/>
-<area shape="rect" id="node43" href="$_i_recorder_8h.html" title="An interface for recording spikes history." alt="" coords="515,244,656,285"/>
-<area shape="rect" id="node46" href="$_i_s_input_8h.html" title="An interface for stimulus input classes." alt="" coords="673,423,821,464"/>
-<area shape="rect" id="node50" href="$_all_vertices_8cpp.html" title="A container of the base class of all vertex data." alt="" coords="4195,80,4325,121"/>
-<area shape="rect" id="node3" href="$_connections_factory_8cpp.html" title="A factory class for creating Connections objects." alt="" coords="1508,601,1676,643"/>
-<area shape="rect" id="node4" href="$_conn_static_8cpp.html" title="The model of the small world network." alt="" coords="1151,601,1305,643"/>
-<area shape="rect" id="node6" href="$_conn_growth_8cpp.html" title="The model of the activity dependent neurite outgrowth." alt="" coords="1804,601,1967,643"/>
-<area shape="rect" id="node9" href="$_model_8cpp.html" title="Implementation of Model for the graph&#45;based networks." alt="" coords="908,609,1081,635"/>
-<area shape="rect" id="node11" href="$_xml_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="597,601,739,643"/>
-<area shape="rect" id="node15" href="$_connections_8cpp.html" title="Methods for creating and updating connections." alt="" coords="2133,512,2288,553"/>
-<area shape="rect" id="node16" href="$_all_edges_8cpp.html" title="A container of all edge data." alt="" coords="2198,251,2397,278"/>
-<area shape="rect" id="node17" href="$_all_spiking_synapses_8h.html" title="A container of all spiking synapse data." alt="" coords="2616,244,2773,285"/>
-<area shape="rect" id="node30" href="$_all_synapses_device_funcs__d_8cu.html" title="Device functions for synapse data." alt="" coords="2573,512,2781,553"/>
-<area shape="rect" id="node39" href="$_all911_edges_8h.html" title="A container of all 911 edge data." alt="" coords="1961,244,2124,285"/>
-<area shape="rect" id="node18" href="$_connections_8h.html" title="The base class of all connections classes." alt="" coords="1297,423,1452,464"/>
-<area shape="rect" id="node22" href="$_g_p_u_spiking_model_8h.html" title="Implementation of Model for the graph&#45;based networks." alt="" coords="2978,423,3163,464"/>
-<area shape="rect" id="node24" href="$_all_s_t_d_p_synapses__d_8cu.html" title="A container of all STDP synapse data." alt="" coords="2806,512,2973,553"/>
-<area shape="rect" id="node25" href="$_edges_factory_8cpp.html" title="A factory class for creating Edges objects." alt="" coords="2573,430,2801,457"/>
-<area shape="rect" id="node26" href="$_all_d_s_synapses_8h.html" title="A container of all DS synapse data." alt="" coords="3387,333,3544,375"/>
-<area shape="rect" id="node27" href="$_all_synapses_device_funcs_8h.html" title="Device functions for synapse data." alt="" coords="3188,423,3375,464"/>
-<area shape="rect" id="node29" href="$_all_spiking_synapses__d_8cu.html" title="A container of all dynamic STDP synapse data." alt="" coords="3281,512,3455,553"/>
-<area shape="rect" id="node32" href="$_all_spiking_synapses_8cpp.html" title="A container of all dynamic STDP synapse data." alt="" coords="2705,333,2871,375"/>
-<area shape="rect" id="node33" href="$_all_s_t_d_p_synapses_8h.html" title="A container of all STDP synapse data." alt="" coords="2523,333,2680,375"/>
-<area shape="rect" id="node34" href="$_all_i_z_h_neurons__d_8cu.html" title="A container of all Izhikevich neuron data." alt="" coords="2895,333,3078,375"/>
-<area shape="rect" id="node35" href="$_all_l_i_f_neurons_8h.html" title="A container of all LIF neuron data." alt="" coords="3102,333,3261,375"/>
-<area shape="rect" id="node36" href="$_all_spiking_neurons_8cpp.html" title="A container of all spiking neuron data." alt="" coords="2020,423,2217,464"/>
-<area shape="rect" id="node37" href="$_all_spiking_neurons_8h.html" title="A container of all spiking neuron data." alt="" coords="2163,333,2346,375"/>
-<area shape="rect" id="node38" href="$_all_spiking_neurons__d_8cu_source.html" title=" " alt="" coords="2293,423,2497,464"/>
-<area shape="rect" id="node19" href="$_connections_factory_8h.html" title="A factory class for creating Connections objects." alt="" coords="1693,512,1848,553"/>
-<area shape="rect" id="node20" href="$_c_p_u_spiking_model_8h.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="1923,512,2109,553"/>
-<area shape="rect" id="node21" href="$_g_p_u_spiking_model_8cu.html" title="Implementation of Model for the spiking neural networks." alt="" coords="2313,512,2498,553"/>
-<area shape="rect" id="node31" href="$_s_input_poisson_8h.html" title="A class that performs stimulus input (implementation Poisson)." alt="" coords="1342,512,1490,553"/>
-<area shape="rect" id="node41" href="$_edges_factory_8h.html" title="A factory class for creating Edges objects." alt="" coords="1679,341,1894,367"/>
-<area shape="rect" id="node44" href="$_model_8h.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="291,341,450,367"/>
-<area shape="rect" id="node45" href="$_xml_recorder_8h.html" title="An implementation for recording spikes history on xml file." alt="" coords="347,423,488,464"/>
-<area shape="rect" id="node49" href="$_recorder_factory_8h.html" title="A factory class for creating Recorder objects." alt="" coords="1024,512,1165,553"/>
-<area shape="rect" id="node47" href="$_f_s_input_8h.html" title="A factoy class for stimulus input classes." alt="" coords="449,512,597,553"/>
-<area shape="rect" id="node48" href="$_s_input_regular_8h.html" title="A class that performs stimulus input (implementation Regular)." alt="" coords="673,512,821,553"/>
+<area shape="rect" id="node1" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="1918,5,2097,32"/>
+<area shape="rect" id="node2" href="$_conn_growth_8h.html" title="The model of the activity dependent neurite outgrowth." alt="" coords="1446,527,1601,568"/>
+<area shape="rect" id="node5" href="$_conn_growth__d_8cu.html" title="Update the weights of the Synapses in the simulation." alt="" coords="3013,616,3183,657"/>
+<area shape="rect" id="node6" href="$_driver_8cpp.html" title="Orchestrates most functionality in the simulation." alt="" coords="826,623,999,650"/>
+<area shape="rect" id="node8" href="$_xml_growth_recorder_8cpp.html" title="An implementation for recording spikes history in an XML file for growth simulations." alt="" coords="5,616,175,657"/>
+<area shape="rect" id="node10" href="$_conn_static_8h.html" title="The model of the small world network." alt="" coords="1267,527,1422,568"/>
+<area shape="rect" id="node12" href="$_xml_s_t_d_p_recorder_8cpp_source.html" title=" " alt="" coords="639,616,802,657"/>
+<area shape="rect" id="node13" href="$_connections911_8h.html" title="The model of the static network." alt="" coords="2121,527,2297,568"/>
+<area shape="rect" id="node16" href="$_c_p_u_model_8cpp.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="3786,623,3989,650"/>
+<area shape="rect" id="node17" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="2000,623,2193,650"/>
+<area shape="rect" id="node18" href="$_all_edges_8h.html" title="An interface and top level implementation for edge classes." alt="" coords="2433,87,2619,114"/>
+<area shape="rect" id="node36" href="$_all_d_s_synapses__d_8cu.html" title="A container of all DS synapse data." alt="" coords="4006,80,4163,121"/>
+<area shape="rect" id="node37" href="$_all_dynamic_s_t_d_p_synapses__d_8cu.html" title="A container of all dynamic STDP synapse data." alt="" coords="4187,80,4406,121"/>
+<area shape="rect" id="node38" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="4430,87,4625,114"/>
+<area shape="rect" id="node39" href="$_i_recorder_8h.html" title="An interface for recording spikes history." alt="" coords="1102,259,1243,300"/>
+<area shape="rect" id="node43" href="$_i_s_input_8h.html" title="An interface for stimulus input classes." alt="" coords="300,437,448,479"/>
+<area shape="rect" id="node48" href="$_all_vertices_8h.html" title="A container of the base class of all vertex data." alt="" coords="3405,80,3535,121"/>
+<area shape="rect" id="node3" href="$_connections_factory_8cpp.html" title="A factory class for creating Connections objects." alt="" coords="1807,616,1975,657"/>
+<area shape="rect" id="node4" href="$_conn_growth_8cpp.html" title="The model of the activity dependent neurite outgrowth." alt="" coords="2826,616,2989,657"/>
+<area shape="rect" id="node7" href="$_model_8cpp.html" title="Implementation of Model for the graph&#45;based networks." alt="" coords="1437,623,1610,650"/>
+<area shape="rect" id="node9" href="$_xml_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="1147,616,1289,657"/>
+<area shape="rect" id="node11" href="$_conn_static_8cpp.html" title="The model of the small world network." alt="" coords="2647,616,2802,657"/>
+<area shape="rect" id="node14" href="$_connections911_8cpp.html" title="The model of the static network." alt="" coords="3449,616,3640,657"/>
+<area shape="rect" id="node15" href="$_xml911_recorder_8cpp.html" title="Header file for Xml911Recorder.h." alt="" coords="1635,616,1783,657"/>
+<area shape="rect" id="node19" href="$_connections_8cpp.html" title="Methods for creating and updating connections." alt="" coords="3221,527,3375,568"/>
+<area shape="rect" id="node20" href="$_connections_8h.html" title="The base class of all connections classes." alt="" coords="2095,437,2250,479"/>
+<area shape="rect" id="node22" href="$_c_p_u_model_8h.html" title="Implementation of Model for execution on CPU (single core)." alt="" coords="2540,534,2728,561"/>
+<area shape="rect" id="node24" href="$_g_p_u_model_8cu.html" title="Implementation of Model for the spiking neural networks." alt="" coords="2321,534,2515,561"/>
+<area shape="rect" id="node25" href="$_all_edges_8cpp.html" title="A container of all edge data." alt="" coords="3235,177,3433,203"/>
+<area shape="rect" id="node26" href="$_edges_factory_8h.html" title="A factory class for creating Edges objects." alt="" coords="3111,266,3325,293"/>
+<area shape="rect" id="node28" href="$_all_neuro_edges_8h.html" title="A container of all edge data." alt="" coords="2646,169,2803,211"/>
+<area shape="rect" id="node33" href="$_all911_edges_8h.html" title="A container of all 911 edge data." alt="" coords="3401,259,3563,300"/>
+<area shape="rect" id="node21" href="$_connections_factory_8h.html" title="A factory class for creating Connections objects." alt="" coords="1841,527,1995,568"/>
+<area shape="rect" id="node23" href="$_host_s_input_poisson_8cpp.html" title="A class that performs stimulus input (implementation Poisson)." alt="" coords="2459,616,2623,657"/>
+<area shape="rect" id="node27" href="$_edges_factory_8cpp.html" title="A factory class for creating Edges objects." alt="" coords="3007,355,3235,382"/>
+<area shape="rect" id="node29" href="$_all_neuro_edges_8cpp.html" title=" " alt="" coords="2646,259,2803,300"/>
+<area shape="rect" id="node30" href="$_all_spiking_synapses_8h.html" title="A container of all spiking synapse data." alt="" coords="2827,259,2985,300"/>
+<area shape="rect" id="node32" href="$_all_synapses_device_funcs__d_8cu.html" title="Device functions for synapse data." alt="" coords="2414,259,2622,300"/>
+<area shape="rect" id="node31" href="$_all_spiking_neurons_8h.html" title="A container of all spiking neuron data." alt="" coords="2575,348,2757,389"/>
+<area shape="rect" id="node34" href="$_all911_edges_8cpp.html" title="A container of all 911 edge data." alt="" coords="3361,348,3523,389"/>
+<area shape="rect" id="node35" href="$_all911_vertices_8cpp.html" title="A container of all 911 vertex data." alt="" coords="3548,348,3728,389"/>
+<area shape="rect" id="node40" href="$_model_8h.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="748,355,907,382"/>
+<area shape="rect" id="node42" href="$_xml_recorder_8h.html" title="An implementation for recording spikes history on xml file." alt="" coords="1051,437,1193,479"/>
+<area shape="rect" id="node47" href="$_recorder_factory_8h.html" title="A factory class for creating Recorder objects." alt="" coords="1675,527,1817,568"/>
+<area shape="rect" id="node41" href="$_xml911_recorder_8h.html" title="Header file for Xml911Recorder.h." alt="" coords="1051,527,1193,568"/>
+<area shape="rect" id="node44" href="$_f_s_input_8h.html" title="A factoy class for stimulus input classes." alt="" coords="524,527,672,568"/>
+<area shape="rect" id="node45" href="$_s_input_poisson_8h.html" title="A class that performs stimulus input (implementation Poisson)." alt="" coords="300,527,448,568"/>
+<area shape="rect" id="node46" href="$_s_input_regular_8h.html" title="A class that performs stimulus input (implementation Regular)." alt="" coords="128,527,276,568"/>
+<area shape="rect" id="node49" href="$_all_vertices_8cpp.html" title="A container of the base class of all vertex data." alt="" coords="3751,169,3880,211"/>
+<area shape="rect" id="node50" href="$_all911_vertices_8h.html" title="A container of all 911 vertex data." alt="" coords="3508,169,3675,211"/>
 </map>

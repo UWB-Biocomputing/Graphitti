@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Simulator/Layouts/Neuro/DynamicLayout.h Source File</title>
+<title>Graphitti: Simulator/Layouts/Neuro/DynamicLayout.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -86,18 +85,23 @@ $(function() {
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;   <span class="keyword">static</span> <a class="code" href="class_layout.html">Layout</a> *Create() { <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="class_dynamic_layout.html">DynamicLayout</a>(); }</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> printParameters() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> printParameters() <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> generateVertexTypeMap(<span class="keywordtype">int</span> numVertices);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> generateVertexTypeMap(<span class="keywordtype">int</span> numVertices) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> initStarterMap(<span class="keyword">const</span> <span class="keywordtype">int</span> numVertices);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> initStarterMap(<span class="keyword">const</span> <span class="keywordtype">int</span> numVertices) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;   BGFLOAT m_frac_starter_neurons;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;   BGFLOAT m_frac_excitatory_neurons;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;};</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> loadParameters(); </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;   <span class="keyword">virtual</span> edgeType <a class="code" href="_all_synapses_device_funcs__d_8cu.html#a6d712ca26bb5aed0abdf969405aae99d">edgType</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> srcVertex, <span class="keyword">const</span> <span class="keywordtype">int</span> destVertex);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;   BGFLOAT fractionEndogenouslyActive_;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;   BGFLOAT fractionExcitatory_;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="ttc" id="a_all_synapses_device_funcs__d_8cu_html_a6d712ca26bb5aed0abdf969405aae99d"><div class="ttname"><a href="_all_synapses_device_funcs__d_8cu.html#a6d712ca26bb5aed0abdf969405aae99d">edgType</a></div><div class="ttdeci">__device__ edgeType edgType(vertexType *neuronTypeMap_d, const int srcVertex, const int destVertex)</div><div class="ttdef"><b>Definition:</b> <a href="_all_synapses_device_funcs__d_8cu_source.html#l00840">AllSynapsesDeviceFuncs_d.cu:840</a></div></div>
 <div class="ttc" id="a_layout_8h_html"><div class="ttname"><a href="_layout_8h.html">Layout.h</a></div><div class="ttdoc">The Layout class defines the layout of neurons in neural networks.</div></div>
 <div class="ttc" id="aclass_dynamic_layout_html"><div class="ttname"><a href="class_dynamic_layout.html">DynamicLayout</a></div><div class="ttdef"><b>Definition:</b> <a href="_dynamic_layout_8h_source.html#l00022">DynamicLayout.h:22</a></div></div>
 <div class="ttc" id="aclass_layout_html"><div class="ttname"><a href="class_layout.html">Layout</a></div><div class="ttdef"><b>Definition:</b> <a href="_layout_8h_source.html#l00029">Layout.h:29</a></div></div>

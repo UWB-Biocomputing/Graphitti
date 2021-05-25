@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Class Members - Variables</title>
+<title>Graphitti: Class Members - Variables</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -70,10 +69,10 @@ $(function() {
 : <a class="el" href="class_all_i_z_h_neurons.html#a41f0503d4e2e3c24b12061f56555c9c3">AllIZHNeurons</a>
 </li>
 <li>allEdgesDevice_
-: <a class="el" href="class_g_p_u_spiking_model.html#a5ceab1015ea9d406df18a58a26ff2d1f">GPUSpikingModel</a>
+: <a class="el" href="class_g_p_u_model.html#a92eb8c4a4b37a2614a59eb3894eaa048">GPUModel</a>
 </li>
 <li>allVerticesDevice_
-: <a class="el" href="class_g_p_u_spiking_model.html#a1dde64a63f8302975ec10831599efad4">GPUSpikingModel</a>
+: <a class="el" href="class_g_p_u_model.html#a9a9dd06cca262ad45a51329739e3da23">GPUModel</a>
 </li>
 <li>Aneg_
 : <a class="el" href="class_all_s_t_d_p_synapses.html#aad506a6fec64d873711bda69521b98f8">AllSTDPSynapses</a>
@@ -103,6 +102,9 @@ $(function() {
 </li>
 <li>C3_
 : <a class="el" href="class_all_i_z_h_neurons.html#a5425cf3bb7ce47b10d639d63133c79cf">AllIZHNeurons</a>
+</li>
+<li>callerVertexList_
+: <a class="el" href="class_layout.html#a0b3e50064bede52aaf2a12e22b785abe">Layout</a>
 </li>
 <li>Cconst_
 : <a class="el" href="class_all_i_z_h_neurons.html#ac670e7fc6c40a9eda2970159720f99aa">AllIZHNeurons</a>
@@ -156,8 +158,8 @@ $(function() {
 <li>deltaR_
 : <a class="el" href="class_conn_growth.html#a410a320ac1428862863c07da1908b93b">ConnGrowth</a>
 </li>
-<li>destNeuronIndex_
-: <a class="el" href="class_all_edges.html#a3fbefde89bf7d024c480a24ddc26609c">AllEdges</a>
+<li>destVertexIndex_
+: <a class="el" href="class_all_edges.html#af2c6230e9bce8d579ced9e325ebca69a">AllEdges</a>
 </li>
 <li>dimensions
 : <a class="el" href="class_complete_matrix.html#a60deecf7c96fab7c3bd548674d2834ac">CompleteMatrix</a>
@@ -178,8 +180,11 @@ $(function() {
 
 
 <h3><a id="index_e"></a>- e -</h3><ul>
+<li>edgeCounts_
+: <a class="el" href="class_all_edges.html#a38a9613a6bb49393fbeefa12de083774">AllEdges</a>
+</li>
 <li>edges_
-: <a class="el" href="class_s_input_poisson.html#a6fd8b16bfdbabcaaf1c5541128a5de6a">SInputPoisson</a>
+: <a class="el" href="class_s_input_poisson.html#a09efdd7a5e35b4a49a29c23c5c09acc4">SInputPoisson</a>
 </li>
 <li>endogenouslyActiveNeuronList_
 : <a class="el" href="class_layout.html#aaacb14aa10e95d4906bd033d327a32db">Layout</a>
@@ -227,14 +232,14 @@ $(function() {
 <li>Iinject_
 : <a class="el" href="class_all_i_f_neurons.html#a2e0f76313364fac35c30c0288dd1afb0">AllIFNeurons</a>
 </li>
-<li>incomingSynapseBegin_
-: <a class="el" href="struct_edge_index_map.html#a0b3ed1ecccc337736ca554b37e9abe1d">EdgeIndexMap</a>
+<li>incomingEdgeBegin_
+: <a class="el" href="struct_edge_index_map.html#a9be48e8014e1efd5275b4cc821c6e651">EdgeIndexMap</a>
 </li>
-<li>incomingSynapseCount_
-: <a class="el" href="struct_edge_index_map.html#a9b5566cfa12d05392f622da546873273">EdgeIndexMap</a>
+<li>incomingEdgeCount_
+: <a class="el" href="struct_edge_index_map.html#aad0065e4f6ddf04fe8ea026dd1bc3a2d">EdgeIndexMap</a>
 </li>
-<li>incomingSynapseIndexMap_
-: <a class="el" href="struct_edge_index_map.html#a8ac0fc29f9d28e05479c0f62a2de280d">EdgeIndexMap</a>
+<li>incomingEdgeIndexMap_
+: <a class="el" href="struct_edge_index_map.html#a72107efd14981b63a6295d51afd78a4e">EdgeIndexMap</a>
 </li>
 <li>inhibitoryNeuronLayout_
 : <a class="el" href="class_layout.html#a7e15da4c25c7e208c8f709df0c3b6065">Layout</a>
@@ -315,6 +320,9 @@ $(function() {
 <li>nStepsInterval
 : <a class="el" href="class_s_input_regular.html#a36e306215d18923e5c14e19f2349814d">SInputRegular</a>
 </li>
+<li>numCallerVertices_
+: <a class="el" href="class_layout.html#acbd370b86dcc5429d96e75a98f933076">Layout</a>
+</li>
 <li>numEndogenouslyActiveNeurons_
 : <a class="el" href="class_layout.html#a20a3c994f93d3832077eadce9c482202">Layout</a>
 </li>
@@ -325,17 +333,20 @@ $(function() {
 
 
 <h3><a id="index_o"></a>- o -</h3><ul>
+<li>oldTypeMap_
+: <a class="el" href="class_connections911.html#a08fa763eb323ffd548b19accf9198ef9">Connections911</a>
+</li>
 <li>operationType_
 : <a class="el" href="class_i_function_node.html#ac23b362c6f96918f635981cf50cc8859">IFunctionNode</a>
 </li>
-<li>outgoingSynapseBegin_
-: <a class="el" href="struct_edge_index_map.html#a60beb4cb00db3d049e4754b68fea05e5">EdgeIndexMap</a>
+<li>outgoingEdgeBegin_
+: <a class="el" href="struct_edge_index_map.html#aae8340d3aad4e39162e9608a1d01615c">EdgeIndexMap</a>
 </li>
-<li>outgoingSynapseCount_
-: <a class="el" href="struct_edge_index_map.html#a14c052d19dd3a812b11d871677d9e505">EdgeIndexMap</a>
+<li>outgoingEdgeCount_
+: <a class="el" href="struct_edge_index_map.html#af5f42af134efa509292cae660206247e">EdgeIndexMap</a>
 </li>
-<li>outgoingSynapseIndexMap_
-: <a class="el" href="struct_edge_index_map.html#a8ee2b38135af42b8b99b9a5490e1ec43">EdgeIndexMap</a>
+<li>outgoingEdgeIndexMap_
+: <a class="el" href="struct_edge_index_map.html#a81473941c136c830bb152e690704e2b8">EdgeIndexMap</a>
 </li>
 <li>outgrowth_
 : <a class="el" href="class_conn_growth.html#a6131c258bfe362ca0aee9de13393a6a5">ConnGrowth</a>
@@ -347,8 +358,11 @@ $(function() {
 <li>probedNeuronList_
 : <a class="el" href="class_layout.html#ae4d0ab47c52114585643692771f51613">Layout</a>
 </li>
+<li>psapVertexList_
+: <a class="el" href="class_layout.html#a8089d79719d7be52bf082a14e9555982">Layout</a>
+</li>
 <li>psr_
-: <a class="el" href="class_all_edges.html#a0a2155e42cdb8dabbe6046b5cb3d3adb">AllEdges</a>
+: <a class="el" href="class_all_neuro_edges.html#a9ab815c218a6ba0280b06913322afdcd">AllNeuroEdges</a>
 </li>
 </ul>
 
@@ -365,10 +379,13 @@ $(function() {
 : <a class="el" href="class_conn_growth.html#ab10299e24ae541a154a0073dc7cc5763">ConnGrowth</a>
 </li>
 <li>randNoise_d
-: <a class="el" href="class_g_p_u_spiking_model.html#aa0e2d200a0407c3043bfeafcc7106f3b">GPUSpikingModel</a>
+: <a class="el" href="class_g_p_u_model.html#ae49fef48f97bb4d833a35c482dd432f1">GPUModel</a>
 </li>
 <li>rates_
 : <a class="el" href="class_conn_growth.html#a24a402d76975ffeb61abed8058ecfa24">ConnGrowth</a>
+</li>
+<li>responderVertexList_
+: <a class="el" href="class_layout.html#a637ea895cd62aedd795b53b0fe39d1a4">Layout</a>
 </li>
 <li>resultFileName_
 : <a class="el" href="class_i_recorder.html#a0fe3aca7b9dade9de23ef9f2d44ba521">IRecorder</a>
@@ -391,8 +408,8 @@ $(function() {
 <li>size_
 : <a class="el" href="class_all_vertices.html#a68d4a9caea38291a636c452abde32c97">AllVertices</a>
 </li>
-<li>sourceNeuronIndex_
-: <a class="el" href="class_all_edges.html#ab2d1b0e53796a186d96e0890bff07cbd">AllEdges</a>
+<li>sourceVertexIndex_
+: <a class="el" href="class_all_edges.html#acddefa0dc0c700d9dd3d034c92e2d257">AllEdges</a>
 </li>
 <li>spikeCount_
 : <a class="el" href="class_all_spiking_neurons.html#a0f9e222e41f6fcac781e289061553388">AllSpikingNeurons</a>
@@ -422,13 +439,10 @@ $(function() {
 : <a class="el" href="class_all_edges.html#ab2b48dd87dee562b6a52c163f6ece59d">AllEdges</a>
 </li>
 <li>SYNAPSE_STRENGTH_ADJUSTMENT
-: <a class="el" href="class_all_edges.html#a1a1595cd15abe0a7d9483a7562380c3c">AllEdges</a>
-</li>
-<li>synapseCounts_
-: <a class="el" href="class_all_edges.html#aefcd7539fb5627436049732d1d266a35">AllEdges</a>
+: <a class="el" href="class_all_neuro_edges.html#a3722d0660608ec6638106377a42f3fac">AllNeuroEdges</a>
 </li>
 <li>synapseIndexMapDevice_
-: <a class="el" href="class_g_p_u_spiking_model.html#a447ab1cc13e126ada2466b275dbfd679">GPUSpikingModel</a>
+: <a class="el" href="class_g_p_u_model.html#abb30f68385f22cadcbf5bfbda5af1b7e">GPUModel</a>
 </li>
 </ul>
 
@@ -468,27 +482,26 @@ $(function() {
 : <a class="el" href="class_matrix.html#a6bd021ee7f54f1e32b9d4b63635edfc7">Matrix</a>
 </li>
 <li>type_
-: <a class="el" href="class_all_edges.html#a69c484e36703d404a946d5910d910f98">AllEdges</a>
+: <a class="el" href="class_all_edges.html#afe0e69f1514831caa2a9dc0866eb23d9">AllEdges</a>
 </li>
 </ul>
 
 
 <h3><a id="index_u"></a>- u -</h3><ul>
+<li>u_
+: <a class="el" href="class_all_d_s_synapses.html#aa17fe34461c84f3b5ca3d8b6ce577799">AllDSSynapses</a>
+</li>
 <li>U_
 : <a class="el" href="class_all_d_s_synapses.html#a135109a1895309f60204ef9c02091268">AllDSSynapses</a>
 </li>
 <li>u_
-: <a class="el" href="class_all_d_s_synapses.html#aa17fe34461c84f3b5ca3d8b6ce577799">AllDSSynapses</a>
+: <a class="el" href="class_all_dynamic_s_t_d_p_synapses.html#ae2e2e83c296f98b4a2c5f18556b44b84">AllDynamicSTDPSynapses</a>
 </li>
 <li>U_
 : <a class="el" href="class_all_dynamic_s_t_d_p_synapses.html#a2cef68715c0c616a0d7a3622154e648c">AllDynamicSTDPSynapses</a>
 </li>
 <li>u_
-: <a class="el" href="class_all_dynamic_s_t_d_p_synapses.html#ae2e2e83c296f98b4a2c5f18556b44b84">AllDynamicSTDPSynapses</a>
-, <a class="el" href="class_all_i_z_h_neurons.html#aa1d7a64a62dc3d876acd0bb0babd3085">AllIZHNeurons</a>
-</li>
-<li>useFroemkeDanSTDP_
-: <a class="el" href="class_all_s_t_d_p_synapses.html#a3b221eea0aa2bd982c6001ad9db78905">AllSTDPSynapses</a>
+: <a class="el" href="class_all_i_z_h_neurons.html#aa1d7a64a62dc3d876acd0bb0babd3085">AllIZHNeurons</a>
 </li>
 </ul>
 
@@ -498,7 +511,7 @@ $(function() {
 : <a class="el" href="class_s_input_regular.html#a4f05da05defdb652a95076f7d63eeaa9">SInputRegular</a>
 </li>
 <li>vertexTypeMap_
-: <a class="el" href="class_layout.html#ad2e8aa3d789e66a652e7c40e186a91ef">Layout</a>
+: <a class="el" href="class_layout.html#aa35e09bcc0efd7bd4d543b96e3fcff66">Layout</a>
 </li>
 <li>Vinit_
 : <a class="el" href="class_all_i_f_neurons.html#a94dbb643a33cde6f388c163b72a3c017">AllIFNeurons</a>

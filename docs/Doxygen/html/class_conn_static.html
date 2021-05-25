@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: ConnStatic Class Reference</title>
+<title>Graphitti: ConnStatic Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -93,35 +92,57 @@ Collaboration diagram for ConnStatic:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0efee263b67fd08c7936bc9ae4f0859c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_conn_static.html#a0efee263b67fd08c7936bc9ae4f0859c">setupConnections</a> (<a class="el" href="class_layout.html">Layout</a> *layout, <a class="el" href="class_i_all_vertices.html">IAllVertices</a> *vertices, <a class="el" href="class_i_all_edges.html">IAllEdges</a> *edges)</td></tr>
-<tr class="separator:a0efee263b67fd08c7936bc9ae4f0859c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a727c2932d6c5c26eb33971f8390dc0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_conn_static.html#a8a727c2932d6c5c26eb33971f8390dc0">loadParameters</a> ()</td></tr>
-<tr class="separator:a8a727c2932d6c5c26eb33971f8390dc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37a4d5ea2bd9a5eb830ea4275b662c11"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_conn_static.html#a37a4d5ea2bd9a5eb830ea4275b662c11">printParameters</a> () const</td></tr>
-<tr class="separator:a37a4d5ea2bd9a5eb830ea4275b662c11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a583441c7482e4de349153e6cf78044d1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_conn_static.html#a583441c7482e4de349153e6cf78044d1">setupConnections</a> (<a class="el" href="class_layout.html">Layout</a> *layout, <a class="el" href="class_i_all_vertices.html">IAllVertices</a> *vertices, <a class="el" href="class_all_edges.html">AllEdges</a> *edges) override</td></tr>
+<tr class="separator:a583441c7482e4de349153e6cf78044d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a760b73a50c025949b38a22be158dcb67"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_conn_static.html#a760b73a50c025949b38a22be158dcb67">loadParameters</a> () override</td></tr>
+<tr class="separator:a760b73a50c025949b38a22be158dcb67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91526c744ef243096a0cdb8de9a7c877"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_conn_static.html#a91526c744ef243096a0cdb8de9a7c877">printParameters</a> () const override</td></tr>
+<tr class="separator:a91526c744ef243096a0cdb8de9a7c877"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee564b038ac3175aac1b43979d1f400c"><td class="memItemLeft" align="right" valign="top"><a id="aee564b038ac3175aac1b43979d1f400c"></a>
+BGFLOAT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_conn_static.html#aee564b038ac3175aac1b43979d1f400c">getConnsRadiusThresh</a> () const</td></tr>
+<tr class="memdesc:aee564b038ac3175aac1b43979d1f400c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get connection radius threshold. <br /></td></tr>
+<tr class="separator:aee564b038ac3175aac1b43979d1f400c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a716bf07b0f5b909f4f4d331b6ad32a7a"><td class="memItemLeft" align="right" valign="top"><a id="a716bf07b0f5b909f4f4d331b6ad32a7a"></a>
+BGFLOAT *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_conn_static.html#a716bf07b0f5b909f4f4d331b6ad32a7a">getWCurrentEpoch</a> () const</td></tr>
+<tr class="memdesc:a716bf07b0f5b909f4f4d331b6ad32a7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get array of vertex weights. <br /></td></tr>
+<tr class="separator:a716bf07b0f5b909f4f4d331b6ad32a7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81298c7b5281e2d666f4408ac7a4d68c"><td class="memItemLeft" align="right" valign="top"><a id="a81298c7b5281e2d666f4408ac7a4d68c"></a>
+int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_conn_static.html#a81298c7b5281e2d666f4408ac7a4d68c">getSourceVertexIndexCurrentEpoch</a> () const</td></tr>
+<tr class="memdesc:a81298c7b5281e2d666f4408ac7a4d68c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all edge source vertex indices. <br /></td></tr>
+<tr class="separator:a81298c7b5281e2d666f4408ac7a4d68c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ea2bb952c5bd492490d04e5756df89f"><td class="memItemLeft" align="right" valign="top"><a id="a8ea2bb952c5bd492490d04e5756df89f"></a>
+int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_conn_static.html#a8ea2bb952c5bd492490d04e5756df89f">getDestVertexIndexCurrentEpoch</a> () const</td></tr>
+<tr class="memdesc:a8ea2bb952c5bd492490d04e5756df89f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all edge destination vertex indices. <br /></td></tr>
+<tr class="separator:a8ea2bb952c5bd492490d04e5756df89f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14468db195aa0f4a63d035cfb2830075"><td class="memTemplParams" colspan="2">template&lt;class Archive &gt; </td></tr>
+<tr class="memitem:a14468db195aa0f4a63d035cfb2830075"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_conn_static.html#a14468db195aa0f4a63d035cfb2830075">save</a> (Archive &amp;archive) const</td></tr>
+<tr class="separator:a14468db195aa0f4a63d035cfb2830075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaec39310ded97a2ad806aeb65150e8aa"><td class="memTemplParams" colspan="2">template&lt;class Archive &gt; </td></tr>
+<tr class="memitem:aaec39310ded97a2ad806aeb65150e8aa"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_conn_static.html#aaec39310ded97a2ad806aeb65150e8aa">load</a> (Archive &amp;archive)</td></tr>
+<tr class="separator:aaec39310ded97a2ad806aeb65150e8aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_connections"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_connections')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_connections.html">Connections</a></td></tr>
 <tr class="memitem:a1da0f8035c29027d63f7648e24474a73 inherit pub_methods_class_connections"><td class="memItemLeft" align="right" valign="top"><a id="a1da0f8035c29027d63f7648e24474a73"></a>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a1da0f8035c29027d63f7648e24474a73">~Connections</a> ()</td></tr>
 <tr class="memdesc:a1da0f8035c29027d63f7648e24474a73 inherit pub_methods_class_connections"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
 <tr class="separator:a1da0f8035c29027d63f7648e24474a73 inherit pub_methods_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeef17410d6e48223f92150cee9e6cd9c inherit pub_methods_class_connections"><td class="memItemLeft" align="right" valign="top"><a id="aeef17410d6e48223f92150cee9e6cd9c"></a>
-shared_ptr&lt; <a class="el" href="class_i_all_edges.html">IAllEdges</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#aeef17410d6e48223f92150cee9e6cd9c">getEdges</a> () const</td></tr>
-<tr class="memdesc:aeef17410d6e48223f92150cee9e6cd9c inherit pub_methods_class_connections"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns shared pointer to Synapses/Edges. <br /></td></tr>
-<tr class="separator:aeef17410d6e48223f92150cee9e6cd9c inherit pub_methods_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28a3f18897f7d17466886ccd2f536fa4 inherit pub_methods_class_connections"><td class="memItemLeft" align="right" valign="top"><a id="a28a3f18897f7d17466886ccd2f536fa4"></a>
-shared_ptr&lt; <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a28a3f18897f7d17466886ccd2f536fa4">getSynapseIndexMap</a> () const</td></tr>
-<tr class="memdesc:a28a3f18897f7d17466886ccd2f536fa4 inherit pub_methods_class_connections"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a shared pointer to the <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a>. <br /></td></tr>
-<tr class="separator:a28a3f18897f7d17466886ccd2f536fa4 inherit pub_methods_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca4d91437efa49ec80b21fce4f1dd45d inherit pub_methods_class_connections"><td class="memItemLeft" align="right" valign="top"><a id="aca4d91437efa49ec80b21fce4f1dd45d"></a>
+shared_ptr&lt; <a class="el" href="class_all_edges.html">AllEdges</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#aca4d91437efa49ec80b21fce4f1dd45d">getEdges</a> () const</td></tr>
+<tr class="memdesc:aca4d91437efa49ec80b21fce4f1dd45d inherit pub_methods_class_connections"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns shared pointer to Synapses/Edges. <br /></td></tr>
+<tr class="separator:aca4d91437efa49ec80b21fce4f1dd45d inherit pub_methods_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a155f122d1e21184a2a52823809c233b9 inherit pub_methods_class_connections"><td class="memItemLeft" align="right" valign="top"><a id="a155f122d1e21184a2a52823809c233b9"></a>
+shared_ptr&lt; <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a155f122d1e21184a2a52823809c233b9">getEdgeIndexMap</a> () const</td></tr>
+<tr class="memdesc:a155f122d1e21184a2a52823809c233b9 inherit pub_methods_class_connections"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a shared pointer to the <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a>. <br /></td></tr>
+<tr class="separator:a155f122d1e21184a2a52823809c233b9 inherit pub_methods_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83ee103acc7aa8c1cb8d30fdfa036b84 inherit pub_methods_class_connections"><td class="memItemLeft" align="right" valign="top"><a id="a83ee103acc7aa8c1cb8d30fdfa036b84"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a83ee103acc7aa8c1cb8d30fdfa036b84">createEdgeIndexMap</a> ()</td></tr>
 <tr class="memdesc:a83ee103acc7aa8c1cb8d30fdfa036b84 inherit pub_methods_class_connections"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls Synapses to create <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a> and stores it as a member variable. <br /></td></tr>
 <tr class="separator:a83ee103acc7aa8c1cb8d30fdfa036b84 inherit pub_methods_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fb9bbfc3aa02adb0d76a6cf7510a669 inherit pub_methods_class_connections"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a4fb9bbfc3aa02adb0d76a6cf7510a669">updateConnections</a> (<a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;vertices, <a class="el" href="class_layout.html">Layout</a> *layout)</td></tr>
 <tr class="separator:a4fb9bbfc3aa02adb0d76a6cf7510a669 inherit pub_methods_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a951efe96bc2fb9397bf335d79912a044 inherit pub_methods_class_connections"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a951efe96bc2fb9397bf335d79912a044">createSynapsesFromWeights</a> (const int numVertices, <a class="el" href="class_layout.html">Layout</a> *layout, <a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;ivertices, <a class="el" href="class_i_all_edges.html">IAllEdges</a> &amp;isynapses)</td></tr>
-<tr class="separator:a951efe96bc2fb9397bf335d79912a044 inherit pub_methods_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5849d0cf3d7acd97ad606747c9f7cbdb inherit pub_methods_class_connections"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a5849d0cf3d7acd97ad606747c9f7cbdb">updateSynapsesWeights</a> (const int numVertices, <a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;vertices, <a class="el" href="class_i_all_edges.html">IAllEdges</a> &amp;synapses, <a class="el" href="class_layout.html">Layout</a> *layout)</td></tr>
-<tr class="separator:a5849d0cf3d7acd97ad606747c9f7cbdb inherit pub_methods_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0843fea4738c6657a8147c10d9afdae6 inherit pub_methods_class_connections"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a0843fea4738c6657a8147c10d9afdae6">createSynapsesFromWeights</a> (const int numVertices, <a class="el" href="class_layout.html">Layout</a> *layout, <a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;ivertices, <a class="el" href="class_all_edges.html">AllEdges</a> &amp;isynapses)</td></tr>
+<tr class="separator:a0843fea4738c6657a8147c10d9afdae6 inherit pub_methods_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a498c2274c67c32d1bc0b31bb8c8cc3fc inherit pub_methods_class_connections"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connections.html#a498c2274c67c32d1bc0b31bb8c8cc3fc">updateSynapsesWeights</a> (const int numVertices, <a class="el" href="class_i_all_vertices.html">IAllVertices</a> &amp;vertices, <a class="el" href="class_all_edges.html">AllEdges</a> &amp;synapses, <a class="el" href="class_layout.html">Layout</a> *layout)</td></tr>
+<tr class="separator:a498c2274c67c32d1bc0b31bb8c8cc3fc inherit pub_methods_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -132,22 +153,46 @@ static <a class="el" href="class_connections.html">Connections</a> *&#160;</td><
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_class_connections"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_connections')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_connections.html">Connections</a></td></tr>
-<tr class="memitem:ac9b5c8fd2697ad9a40a61a110b646476 inherit pro_attribs_class_connections"><td class="memItemLeft" align="right" valign="top"><a id="ac9b5c8fd2697ad9a40a61a110b646476"></a>
-shared_ptr&lt; <a class="el" href="class_i_all_edges.html">IAllEdges</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>edges_</b></td></tr>
-<tr class="separator:ac9b5c8fd2697ad9a40a61a110b646476 inherit pro_attribs_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5151be84fc4ac403b8237a440d009ad0 inherit pro_attribs_class_connections"><td class="memItemLeft" align="right" valign="top"><a id="a5151be84fc4ac403b8237a440d009ad0"></a>
+shared_ptr&lt; <a class="el" href="class_all_edges.html">AllEdges</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>edges_</b></td></tr>
+<tr class="separator:a5151be84fc4ac403b8237a440d009ad0 inherit pro_attribs_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48f03c3a78cd379cd40938933b6b2503 inherit pro_attribs_class_connections"><td class="memItemLeft" align="right" valign="top"><a id="a48f03c3a78cd379cd40938933b6b2503"></a>
 shared_ptr&lt; <a class="el" href="struct_edge_index_map.html">EdgeIndexMap</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>synapseIndexMap_</b></td></tr>
 <tr class="separator:a48f03c3a78cd379cd40938933b6b2503 inherit pro_attribs_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d9e580aa5030c86a3f284de14f599fc inherit pro_attribs_class_connections"><td class="memItemLeft" align="right" valign="top"><a id="a8d9e580aa5030c86a3f284de14f599fc"></a>
 log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogger_</b></td></tr>
 <tr class="separator:a8d9e580aa5030c86a3f284de14f599fc inherit pro_attribs_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bd8b1a7056a88f44a2817305a782edf inherit pro_attribs_class_connections"><td class="memItemLeft" align="right" valign="top"><a id="a2bd8b1a7056a88f44a2817305a782edf"></a>
+log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>edgeLogger_</b></td></tr>
+<tr class="separator:a2bd8b1a7056a88f44a2817305a782edf inherit pro_attribs_class_connections"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_conn_static_8h_source.html#l00036">36</a> of file <a class="el" href="_conn_static_8h_source.html">ConnStatic.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_conn_static_8h_source.html#l00038">38</a> of file <a class="el" href="_conn_static_8h_source.html">ConnStatic.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8a727c2932d6c5c26eb33971f8390dc0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a727c2932d6c5c26eb33971f8390dc0">&#9670;&nbsp;</a></span>loadParameters()</h2>
+<a id="aaec39310ded97a2ad806aeb65150e8aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaec39310ded97a2ad806aeb65150e8aa">&#9670;&nbsp;</a></span>load()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Archive &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void ConnStatic::load </td>
+          <td>(</td>
+          <td class="paramtype">Archive &amp;&#160;</td>
+          <td class="paramname"><em>archive</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Cereal deserialization method (Deserializes radii) </p>
+
+</div>
+</div>
+<a id="a760b73a50c025949b38a22be158dcb67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a760b73a50c025949b38a22be158dcb67">&#9670;&nbsp;</a></span>loadParameters()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -164,7 +209,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -172,12 +217,12 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 
 <p>Implements <a class="el" href="class_connections.html#a99589780600516272a2cf789f5c97cb6">Connections</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_conn_static_8cpp_source.html#l00101">101</a> of file <a class="el" href="_conn_static_8cpp_source.html">ConnStatic.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_conn_static_8cpp_source.html#l00131">131</a> of file <a class="el" href="_conn_static_8cpp_source.html">ConnStatic.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a37a4d5ea2bd9a5eb830ea4275b662c11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37a4d5ea2bd9a5eb830ea4275b662c11">&#9670;&nbsp;</a></span>printParameters()</h2>
+<a id="a91526c744ef243096a0cdb8de9a7c877"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91526c744ef243096a0cdb8de9a7c877">&#9670;&nbsp;</a></span>printParameters()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -194,7 +239,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -202,12 +247,33 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
 
 <p>Implements <a class="el" href="class_connections.html#a9e3dbcf7e4bc48a89271dd09d78da220">Connections</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_conn_static_8cpp_source.html#l00107">107</a> of file <a class="el" href="_conn_static_8cpp_source.html">ConnStatic.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_conn_static_8cpp_source.html#l00143">143</a> of file <a class="el" href="_conn_static_8cpp_source.html">ConnStatic.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a0efee263b67fd08c7936bc9ae4f0859c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0efee263b67fd08c7936bc9ae4f0859c">&#9670;&nbsp;</a></span>setupConnections()</h2>
+<a id="a14468db195aa0f4a63d035cfb2830075"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14468db195aa0f4a63d035cfb2830075">&#9670;&nbsp;</a></span>save()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Archive &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void ConnStatic::save </td>
+          <td>(</td>
+          <td class="paramtype">Archive &amp;&#160;</td>
+          <td class="paramname"><em>archive</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Cereal serialization method (Serializes radii) </p>
+
+</div>
+</div>
+<a id="a583441c7482e4de349153e6cf78044d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a583441c7482e4de349153e6cf78044d1">&#9670;&nbsp;</a></span>setupConnections()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -230,7 +296,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="class_i_all_edges.html">IAllEdges</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="class_all_edges.html">AllEdges</a> *&#160;</td>
           <td class="paramname"><em>edges</em>&#160;</td>
         </tr>
         <tr>
@@ -241,7 +307,7 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -264,15 +330,15 @@ log4cplus::Logger&#160;</td><td class="memItemRight" valign="bottom"><b>fileLogg
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="class_connections.html#aa36a03d4c7a309748a42917ff2300ced">Connections</a>.</p>
+<p>Implements <a class="el" href="class_connections.html#a357bb3448cee8a44a50015c455298c40">Connections</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_conn_static_8cpp_source.html#l00043">43</a> of file <a class="el" href="_conn_static_8cpp_source.html">ConnStatic.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_conn_static_8cpp_source.html#l00052">52</a> of file <a class="el" href="_conn_static_8cpp_source.html">ConnStatic.cpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>Simulator/Connections/<a class="el" href="_conn_static_8h_source.html">ConnStatic.h</a></li>
-<li>Simulator/Connections/<a class="el" href="_conn_static_8cpp_source.html">ConnStatic.cpp</a></li>
+<li>Simulator/Connections/Neuro/<a class="el" href="_conn_static_8h_source.html">ConnStatic.h</a></li>
+<li>Simulator/Connections/Neuro/<a class="el" href="_conn_static_8cpp_source.html">ConnStatic.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

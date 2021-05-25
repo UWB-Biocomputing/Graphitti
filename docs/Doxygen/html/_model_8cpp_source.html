@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Simulator/Core/Model.cpp Source File</title>
+<title>Graphitti: Simulator/Core/Model.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -106,7 +105,7 @@ $(function() {
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
 <div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="class_model.html#a8b3ab837330de4062f32d3febac45e9a">   52</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_model.html#a8b3ab837330de4062f32d3febac45e9a">Model::saveData</a>() {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;   <span class="keywordflow">if</span> (recorder_ != NULL) {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;   <span class="keywordflow">if</span> (recorder_ != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      recorder_-&gt;saveSimData(*layout_-&gt;getVertices());</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;   }</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
@@ -138,7 +137,7 @@ $(function() {
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;   t_host_initialization_layout += <a class="code" href="class_simulator.html#a2226c52b173ec865138b2bfac22c40f6">Simulator::getInstance</a>().short_timer.lap() / 1000000.0;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;   <span class="comment">// Init radii and rates history matrices with default values</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;   <span class="keywordflow">if</span> (recorder_ != NULL) {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;   <span class="keywordflow">if</span> (recorder_ != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      recorder_-&gt;init();</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      recorder_-&gt;initDefaultValues();</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;   }</div>
@@ -164,7 +163,7 @@ $(function() {
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
 <div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="class_model.html#a49592222500f60c18133c053151e1703">  112</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_model.html#a49592222500f60c18133c053151e1703">Model::logSimStep</a>()<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;   <a class="code" href="class_conn_growth.html">ConnGrowth</a> *pConnGrowth = <span class="keyword">dynamic_cast&lt;</span><a class="code" href="class_conn_growth.html">ConnGrowth</a> *<span class="keyword">&gt;</span>(connections_.get());</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;   <span class="keywordflow">if</span> (pConnGrowth == NULL)</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;   <span class="keywordflow">if</span> (pConnGrowth == <span class="keyword">nullptr</span>)</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;   cout &lt;&lt; <span class="stringliteral">&quot;format:\ntype,radius,firing rate&quot;</span> &lt;&lt; endl;</div>
@@ -185,7 +184,7 @@ $(function() {
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            <span class="keywordflow">case</span> INH:</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;               ss &lt;&lt; <span class="stringliteral">&quot;i&quot;</span>;</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;               <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            <span class="keywordflow">case</span> NTYPE_UNDEF:</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            <span class="keywordflow">case</span> VTYPE_UNDEF:</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;               assert(<span class="keyword">false</span>);</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;               <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;         }</div>
@@ -212,19 +211,23 @@ $(function() {
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
 <div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="class_model.html#a1160af8ac11815a14b6bb8c884b507df">  161</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_model.html#a1160af8ac11815a14b6bb8c884b507df">Model::updateHistory</a>() {</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;   <span class="comment">// Compile history information in every epoch</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;   <span class="keywordflow">if</span> (recorder_ != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      recorder_-&gt;compileHistories(*layout_-&gt;getVertices());</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;   }</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;}</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">// ToDo: make smart ptr</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno"><a class="line" href="class_model.html#a6389b6c9af00fcc97a84a2115672ba61">  171</a></span>&#160;shared_ptr&lt;Connections&gt; <a class="code" href="class_model.html#a6389b6c9af00fcc97a84a2115672ba61">Model::getConnections</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> connections_; }</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">// ToDo: make smart ptr</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno"><a class="line" href="class_model.html#ab613697710e70796277750ed697ec758">  176</a></span>&#160;shared_ptr&lt;Layout&gt; <a class="code" href="class_model.html#ab613697710e70796277750ed697ec758">Model::getLayout</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> layout_; }</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment">// ToDo: make smart ptr</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno"><a class="line" href="class_model.html#a4132a9b3c65f8ec96aea89f06c51e8fb">  181</a></span>&#160;shared_ptr&lt;IRecorder&gt; <a class="code" href="class_model.html#a4132a9b3c65f8ec96aea89f06c51e8fb">Model::getRecorder</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> recorder_; }</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      <span class="keywordflow">if</span>(recorder_ == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;   {</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;      LOG4CPLUS_INFO(fileLogger_, <span class="stringliteral">&quot;ERROR: Recorder class is null.&quot;</span>);</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;   }</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;   <span class="keywordflow">if</span> (recorder_ != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      recorder_-&gt;compileHistories(*layout_-&gt;getVertices());</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;   }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;}</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">// ToDo: make smart ptr</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="class_model.html#a6389b6c9af00fcc97a84a2115672ba61">  175</a></span>&#160;shared_ptr&lt;Connections&gt; <a class="code" href="class_model.html#a6389b6c9af00fcc97a84a2115672ba61">Model::getConnections</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> connections_; }</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="comment">// ToDo: make smart ptr</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno"><a class="line" href="class_model.html#ab613697710e70796277750ed697ec758">  180</a></span>&#160;shared_ptr&lt;Layout&gt; <a class="code" href="class_model.html#ab613697710e70796277750ed697ec758">Model::getLayout</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> layout_; }</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">// ToDo: make smart ptr</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno"><a class="line" href="class_model.html#a4132a9b3c65f8ec96aea89f06c51e8fb">  185</a></span>&#160;shared_ptr&lt;IRecorder&gt; <a class="code" href="class_model.html#a4132a9b3c65f8ec96aea89f06c51e8fb">Model::getRecorder</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> recorder_; }</div>
 <div class="ttc" id="a_conn_growth_8h_html"><div class="ttname"><a href="_conn_growth_8h.html">ConnGrowth.h</a></div><div class="ttdoc">The model of the activity dependent neurite outgrowth.</div></div>
 <div class="ttc" id="a_connections_8h_html"><div class="ttname"><a href="_connections_8h.html">Connections.h</a></div><div class="ttdoc">The base class of all connections classes.</div></div>
 <div class="ttc" id="a_connections_factory_8h_html"><div class="ttname"><a href="_connections_factory_8h.html">ConnectionsFactory.h</a></div><div class="ttdoc">A factory class for creating Connections objects.</div></div>
@@ -235,23 +238,23 @@ $(function() {
 <div class="ttc" id="a_recorder_factory_8h_html"><div class="ttname"><a href="_recorder_factory_8h.html">RecorderFactory.h</a></div><div class="ttdoc">A factory class for creating Recorder objects.</div></div>
 <div class="ttc" id="aclass_conn_growth_html"><div class="ttname"><a href="class_conn_growth.html">ConnGrowth</a></div><div class="ttdef"><b>Definition:</b> <a href="_conn_growth_8h_source.html#l00081">ConnGrowth.h:81</a></div></div>
 <div class="ttc" id="aclass_conn_growth_html_a2a7c84599af840b7a416ecf38f228206"><div class="ttname"><a href="class_conn_growth.html#a2a7c84599af840b7a416ecf38f228206">ConnGrowth::radii_</a></div><div class="ttdeci">VectorMatrix * radii_</div><div class="ttdoc">neuron radii</div><div class="ttdef"><b>Definition:</b> <a href="_conn_growth_8h_source.html#l00201">ConnGrowth.h:201</a></div></div>
-<div class="ttc" id="aclass_connections_factory_html_a1547910692cbcaa14f2a7f697d2bba68"><div class="ttname"><a href="class_connections_factory.html#a1547910692cbcaa14f2a7f697d2bba68">ConnectionsFactory::createConnections</a></div><div class="ttdeci">shared_ptr&lt; Connections &gt; createConnections(const string &amp;className)</div><div class="ttdoc">Invokes constructor for desired concrete class.</div><div class="ttdef"><b>Definition:</b> <a href="_connections_factory_8cpp_source.html#l00036">ConnectionsFactory.cpp:36</a></div></div>
-<div class="ttc" id="aclass_layout_factory_html_a8e145e23c6fd9da23a0dde483a594118"><div class="ttname"><a href="class_layout_factory.html#a8e145e23c6fd9da23a0dde483a594118">LayoutFactory::createLayout</a></div><div class="ttdeci">shared_ptr&lt; Layout &gt; createLayout(const string &amp;className)</div><div class="ttdoc">Creates concrete instance of the desired layout class.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_factory_8cpp_source.html#l00035">LayoutFactory.cpp:35</a></div></div>
+<div class="ttc" id="aclass_connections_factory_html_a1547910692cbcaa14f2a7f697d2bba68"><div class="ttname"><a href="class_connections_factory.html#a1547910692cbcaa14f2a7f697d2bba68">ConnectionsFactory::createConnections</a></div><div class="ttdeci">shared_ptr&lt; Connections &gt; createConnections(const string &amp;className)</div><div class="ttdoc">Invokes constructor for desired concrete class.</div><div class="ttdef"><b>Definition:</b> <a href="_connections_factory_8cpp_source.html#l00038">ConnectionsFactory.cpp:38</a></div></div>
+<div class="ttc" id="aclass_layout_factory_html_a8e145e23c6fd9da23a0dde483a594118"><div class="ttname"><a href="class_layout_factory.html#a8e145e23c6fd9da23a0dde483a594118">LayoutFactory::createLayout</a></div><div class="ttdeci">shared_ptr&lt; Layout &gt; createLayout(const string &amp;className)</div><div class="ttdoc">Creates concrete instance of the desired layout class.</div><div class="ttdef"><b>Definition:</b> <a href="_layout_factory_8cpp_source.html#l00036">LayoutFactory.cpp:36</a></div></div>
 <div class="ttc" id="aclass_model_html_a0118fc1d572def34977213c285466ec6"><div class="ttname"><a href="class_model.html#a0118fc1d572def34977213c285466ec6">Model::setupSim</a></div><div class="ttdeci">virtual void setupSim()</div><div class="ttdoc">Sets up the Simulation.</div><div class="ttdef"><b>Definition:</b> <a href="_model_8cpp_source.html#l00071">Model.cpp:71</a></div></div>
 <div class="ttc" id="aclass_model_html_a1160af8ac11815a14b6bb8c884b507df"><div class="ttname"><a href="class_model.html#a1160af8ac11815a14b6bb8c884b507df">Model::updateHistory</a></div><div class="ttdeci">virtual void updateHistory()</div><div class="ttdoc">Update the simulation history of every epoch.</div><div class="ttdef"><b>Definition:</b> <a href="_model_8cpp_source.html#l00161">Model.cpp:161</a></div></div>
-<div class="ttc" id="aclass_model_html_a4132a9b3c65f8ec96aea89f06c51e8fb"><div class="ttname"><a href="class_model.html#a4132a9b3c65f8ec96aea89f06c51e8fb">Model::getRecorder</a></div><div class="ttdeci">shared_ptr&lt; IRecorder &gt; getRecorder() const</div><div class="ttdef"><b>Definition:</b> <a href="_model_8cpp_source.html#l00181">Model.cpp:181</a></div></div>
+<div class="ttc" id="aclass_model_html_a4132a9b3c65f8ec96aea89f06c51e8fb"><div class="ttname"><a href="class_model.html#a4132a9b3c65f8ec96aea89f06c51e8fb">Model::getRecorder</a></div><div class="ttdeci">shared_ptr&lt; IRecorder &gt; getRecorder() const</div><div class="ttdef"><b>Definition:</b> <a href="_model_8cpp_source.html#l00185">Model.cpp:185</a></div></div>
 <div class="ttc" id="aclass_model_html_a49592222500f60c18133c053151e1703"><div class="ttname"><a href="class_model.html#a49592222500f60c18133c053151e1703">Model::logSimStep</a></div><div class="ttdeci">void logSimStep() const</div><div class="ttdoc">Prints debug information about the current state of the network.</div><div class="ttdef"><b>Definition:</b> <a href="_model_8cpp_source.html#l00112">Model.cpp:112</a></div></div>
-<div class="ttc" id="aclass_model_html_a6389b6c9af00fcc97a84a2115672ba61"><div class="ttname"><a href="class_model.html#a6389b6c9af00fcc97a84a2115672ba61">Model::getConnections</a></div><div class="ttdeci">shared_ptr&lt; Connections &gt; getConnections() const</div><div class="ttdef"><b>Definition:</b> <a href="_model_8cpp_source.html#l00171">Model.cpp:171</a></div></div>
+<div class="ttc" id="aclass_model_html_a6389b6c9af00fcc97a84a2115672ba61"><div class="ttname"><a href="class_model.html#a6389b6c9af00fcc97a84a2115672ba61">Model::getConnections</a></div><div class="ttdeci">shared_ptr&lt; Connections &gt; getConnections() const</div><div class="ttdef"><b>Definition:</b> <a href="_model_8cpp_source.html#l00175">Model.cpp:175</a></div></div>
 <div class="ttc" id="aclass_model_html_a8b3ab837330de4062f32d3febac45e9a"><div class="ttname"><a href="class_model.html#a8b3ab837330de4062f32d3febac45e9a">Model::saveData</a></div><div class="ttdeci">virtual void saveData()</div><div class="ttdoc">Save simulation results to an output destination.</div><div class="ttdef"><b>Definition:</b> <a href="_model_8cpp_source.html#l00052">Model.cpp:52</a></div></div>
-<div class="ttc" id="aclass_model_html_ab613697710e70796277750ed697ec758"><div class="ttname"><a href="class_model.html#ab613697710e70796277750ed697ec758">Model::getLayout</a></div><div class="ttdeci">shared_ptr&lt; Layout &gt; getLayout() const</div><div class="ttdef"><b>Definition:</b> <a href="_model_8cpp_source.html#l00176">Model.cpp:176</a></div></div>
+<div class="ttc" id="aclass_model_html_ab613697710e70796277750ed697ec758"><div class="ttname"><a href="class_model.html#ab613697710e70796277750ed697ec758">Model::getLayout</a></div><div class="ttdeci">shared_ptr&lt; Layout &gt; getLayout() const</div><div class="ttdef"><b>Definition:</b> <a href="_model_8cpp_source.html#l00180">Model.cpp:180</a></div></div>
 <div class="ttc" id="aclass_model_html_acfa027de89a0988cd1acd975e22a9ea3"><div class="ttname"><a href="class_model.html#acfa027de89a0988cd1acd975e22a9ea3">Model::createAllVertices</a></div><div class="ttdeci">void createAllVertices()</div><div class="ttdoc">Creates all the vertices and generates data for them.</div><div class="ttdef"><b>Definition:</b> <a href="_model_8cpp_source.html#l00060">Model.cpp:60</a></div></div>
 <div class="ttc" id="aclass_model_html_ad6ebd2062a0b823db841a0b88baac4c0"><div class="ttname"><a href="class_model.html#ad6ebd2062a0b823db841a0b88baac4c0">Model::~Model</a></div><div class="ttdeci">virtual ~Model()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="_model_8cpp_source.html#l00047">Model.cpp:47</a></div></div>
 <div class="ttc" id="aclass_model_html_ae3b375de5f6df4faf74a95d64748e048"><div class="ttname"><a href="class_model.html#ae3b375de5f6df4faf74a95d64748e048">Model::Model</a></div><div class="ttdeci">Model()</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="_model_8cpp_source.html#l00026">Model.cpp:26</a></div></div>
 <div class="ttc" id="aclass_parameter_manager_html_a15d0ae3360ae2ce7ccc6f29b9e4d9a1b"><div class="ttname"><a href="class_parameter_manager.html#a15d0ae3360ae2ce7ccc6f29b9e4d9a1b">ParameterManager::getStringByXpath</a></div><div class="ttdeci">bool getStringByXpath(string xpath, string &amp;referenceVar)</div><div class="ttdoc">Interface methods for simulator objects.</div><div class="ttdef"><b>Definition:</b> <a href="_parameter_manager_8cpp_source.html#l00101">ParameterManager.cpp:101</a></div></div>
 <div class="ttc" id="aclass_parameter_manager_html_a4803e8d86d406ed0dc1c4acb238753e9"><div class="ttname"><a href="class_parameter_manager.html#a4803e8d86d406ed0dc1c4acb238753e9">ParameterManager::getInstance</a></div><div class="ttdeci">static ParameterManager &amp; getInstance()</div><div class="ttdoc">Get Instance method that returns a reference to this object.</div><div class="ttdef"><b>Definition:</b> <a href="_parameter_manager_8cpp_source.html#l00058">ParameterManager.cpp:58</a></div></div>
-<div class="ttc" id="aclass_recorder_factory_html_ae9bd36bc330a1e9e19e4d599979a44f5"><div class="ttname"><a href="class_recorder_factory.html#ae9bd36bc330a1e9e19e4d599979a44f5">RecorderFactory::createRecorder</a></div><div class="ttdeci">shared_ptr&lt; IRecorder &gt; createRecorder(const string &amp;className)</div><div class="ttdoc">Creates concrete instance of the desired recorder class.</div><div class="ttdef"><b>Definition:</b> <a href="_recorder_factory_8cpp_source.html#l00040">RecorderFactory.cpp:40</a></div></div>
+<div class="ttc" id="aclass_recorder_factory_html_ae9bd36bc330a1e9e19e4d599979a44f5"><div class="ttname"><a href="class_recorder_factory.html#ae9bd36bc330a1e9e19e4d599979a44f5">RecorderFactory::createRecorder</a></div><div class="ttdeci">shared_ptr&lt; IRecorder &gt; createRecorder(const string &amp;className)</div><div class="ttdoc">Creates concrete instance of the desired recorder class.</div><div class="ttdef"><b>Definition:</b> <a href="_recorder_factory_8cpp_source.html#l00044">RecorderFactory.cpp:44</a></div></div>
 <div class="ttc" id="aclass_simulator_html_a2226c52b173ec865138b2bfac22c40f6"><div class="ttname"><a href="class_simulator.html#a2226c52b173ec865138b2bfac22c40f6">Simulator::getInstance</a></div><div class="ttdeci">static Simulator &amp; getInstance()</div><div class="ttdoc">Acts as constructor first time it's called, returns the instance of the singleton object.</div><div class="ttdef"><b>Definition:</b> <a href="_simulator_8cpp_source.html#l00022">Simulator.cpp:22</a></div></div>
-<div class="ttc" id="aclass_simulator_html_af3635ad49de5e2841e72e5d469f089f9"><div class="ttname"><a href="class_simulator.html#af3635ad49de5e2841e72e5d469f089f9">Simulator::getHeight</a></div><div class="ttdeci">int getHeight() const</div><div class="ttdoc">Width of neuron map (assumes square)</div><div class="ttdef"><b>Definition:</b> <a href="_simulator_8cpp_source.html#l00246">Simulator.cpp:246</a></div></div>
+<div class="ttc" id="aclass_simulator_html_af3635ad49de5e2841e72e5d469f089f9"><div class="ttname"><a href="class_simulator.html#af3635ad49de5e2841e72e5d469f089f9">Simulator::getHeight</a></div><div class="ttdeci">int getHeight() const</div><div class="ttdoc">Width of neuron map (assumes square)</div><div class="ttdef"><b>Definition:</b> <a href="_simulator_8cpp_source.html#l00261">Simulator.cpp:261</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

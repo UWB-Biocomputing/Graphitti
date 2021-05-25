@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BrainGrid: Simulator Class Reference</title>
+<title>Graphitti: Simulator Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,11 +20,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">BrainGrid
+   <div id="projectname">Graphitti
    </div>
-   <div id="projectbrief">The idea behind the BrainGrid Project is to develop a toolkit/software architecture to ease creating high-performance neural network simulators</div>
+   <div id="projectbrief">A toolkit/software architecture to ease creating high-performance neural network simulators</div>
   </td>
  </tr>
  </tbody>
@@ -89,14 +88,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7178e3d4ca788191272c20558bf82aea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulator.html#a7178e3d4ca788191272c20558bf82aea">printParameters</a> () const</td></tr>
 <tr class="memdesc:a7178e3d4ca788191272c20558bf82aea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load member variables from configuration file.  <a href="class_simulator.html#a7178e3d4ca788191272c20558bf82aea">More...</a><br /></td></tr>
 <tr class="separator:a7178e3d4ca788191272c20558bf82aea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14eb6efdd993643f55a49ba0802ecfa2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulator.html#a14eb6efdd993643f55a49ba0802ecfa2">copyGPUSynapseToCPU</a> ()</td></tr>
+<tr class="memdesc:a14eb6efdd993643f55a49ba0802ecfa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints loaded parameters to logging file.  <a href="class_simulator.html#a14eb6efdd993643f55a49ba0802ecfa2">More...</a><br /></td></tr>
+<tr class="separator:a14eb6efdd993643f55a49ba0802ecfa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dd20b82f980a7b03fa6dbdc3c88c328"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulator.html#a5dd20b82f980a7b03fa6dbdc3c88c328">copyCPUSynapseToGPU</a> ()</td></tr>
+<tr class="memdesc:a5dd20b82f980a7b03fa6dbdc3c88c328"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy GPU Synapse data to CPU.  <a href="class_simulator.html#a5dd20b82f980a7b03fa6dbdc3c88c328">More...</a><br /></td></tr>
+<tr class="separator:a5dd20b82f980a7b03fa6dbdc3c88c328"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad68e1807b14ca5bfd11cb7ebba25645"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulator.html#aad68e1807b14ca5bfd11cb7ebba25645">reset</a> ()</td></tr>
-<tr class="memdesc:aad68e1807b14ca5bfd11cb7ebba25645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints loaded parameters to logging file.  <a href="class_simulator.html#aad68e1807b14ca5bfd11cb7ebba25645">More...</a><br /></td></tr>
+<tr class="memdesc:aad68e1807b14ca5bfd11cb7ebba25645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy CPU Synapse data to GPU.  <a href="class_simulator.html#aad68e1807b14ca5bfd11cb7ebba25645">More...</a><br /></td></tr>
 <tr class="separator:aad68e1807b14ca5bfd11cb7ebba25645"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d7bbf2803b741b05d3950bdfb4955dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulator.html#a6d7bbf2803b741b05d3950bdfb4955dd">simulate</a> ()</td></tr>
 <tr class="memdesc:a6d7bbf2803b741b05d3950bdfb4955dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset simulation objects.  <a href="class_simulator.html#a6d7bbf2803b741b05d3950bdfb4955dd">More...</a><br /></td></tr>
 <tr class="separator:a6d7bbf2803b741b05d3950bdfb4955dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c2c72ff19d6c2fe5c31c7057ca31585"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulator.html#a1c2c72ff19d6c2fe5c31c7057ca31585">advanceEpoch</a> (const int &amp;currentEpoch) const</td></tr>
-<tr class="separator:a1c2c72ff19d6c2fe5c31c7057ca31585"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe858484cf5d7b572770ccfb5e338080"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulator.html#abe858484cf5d7b572770ccfb5e338080">advanceEpoch</a> (const int &amp;currentEpoch) const</td></tr>
+<tr class="separator:abe858484cf5d7b572770ccfb5e338080"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a120143230a6f048cd95b2ed25a2ea63b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulator.html#a120143230a6f048cd95b2ed25a2ea63b">saveData</a> () const</td></tr>
 <tr class="memdesc:a120143230a6f048cd95b2ed25a2ea63b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advance simulation to next growth cycle. Helper for <a class="el" href="class_simulator.html#a6d7bbf2803b741b05d3950bdfb4955dd" title="Reset simulation objects.">simulate()</a>.  <a href="class_simulator.html#a120143230a6f048cd95b2ed25a2ea63b">More...</a><br /></td></tr>
 <tr class="separator:a120143230a6f048cd95b2ed25a2ea63b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,10 +142,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <tr class="memitem:abedbdde5d9e21e4dbc1e178368c2f8ea"><td class="memItemLeft" align="right" valign="top">BGFLOAT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulator.html#abedbdde5d9e21e4dbc1e178368c2f8ea">getDeltaT</a> () const</td></tr>
 <tr class="memdesc:abedbdde5d9e21e4dbc1e178368c2f8ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of synapses per neuron. <b>GPU Only</b>  <a href="class_simulator.html#abedbdde5d9e21e4dbc1e178368c2f8ea">More...</a><br /></td></tr>
 <tr class="separator:abedbdde5d9e21e4dbc1e178368c2f8ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4dfad006f0de966722063a889f4c76e9"><td class="memItemLeft" align="right" valign="top"><a id="a4dfad006f0de966722063a889f4c76e9"></a>
-neuronType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulator.html#a4dfad006f0de966722063a889f4c76e9">getRgNeuronTypeMap</a> () const</td></tr>
-<tr class="memdesc:a4dfad006f0de966722063a889f4c76e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time elapsed between the beginning and end of the simulation step. <br /></td></tr>
-<tr class="separator:a4dfad006f0de966722063a889f4c76e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a406c81c0a2c9e53c3acb3fa6d80b3e8e"><td class="memItemLeft" align="right" valign="top"><a id="a406c81c0a2c9e53c3acb3fa6d80b3e8e"></a>
+vertexType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulator.html#a406c81c0a2c9e53c3acb3fa6d80b3e8e">getRgNeuronTypeMap</a> () const</td></tr>
+<tr class="memdesc:a406c81c0a2c9e53c3acb3fa6d80b3e8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time elapsed between the beginning and end of the simulation step. <br /></td></tr>
+<tr class="separator:a406c81c0a2c9e53c3acb3fa6d80b3e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef4e7868a20d999881a76fc040c03c6d"><td class="memItemLeft" align="right" valign="top">bool *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulator.html#aef4e7868a20d999881a76fc040c03c6d">getRgEndogenouslyActiveNeuronMap</a> () const</td></tr>
 <tr class="memdesc:aef4e7868a20d999881a76fc040c03c6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vertex type map (INH, EXC).  <a href="class_simulator.html#aef4e7868a20d999881a76fc040c03c6d">More...</a><br /></td></tr>
 <tr class="separator:aef4e7868a20d999881a76fc040c03c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -216,7 +221,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_simulator_8h_source.html#l00033">33</a> of file <a class="el" href="_simulator_8h_source.html">Simulator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8h_source.html#l00032">32</a> of file <a class="el" href="_simulator_8h_source.html">Simulator.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0f49aa04f42060a785adf77346b9de9f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0f49aa04f42060a785adf77346b9de9f">&#9670;&nbsp;</a></span>~Simulator()</h2>
@@ -244,13 +249,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
 <p>Acts as constructor, returns the instance of singleton object. </p>
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00041">41</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00042">42</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1c2c72ff19d6c2fe5c31c7057ca31585"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c2c72ff19d6c2fe5c31c7057ca31585">&#9670;&nbsp;</a></span>advanceEpoch()</h2>
+<a id="abe858484cf5d7b572770ccfb5e338080"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe858484cf5d7b572770ccfb5e338080">&#9670;&nbsp;</a></span>advanceEpoch()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,7 +276,51 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00168">168</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00183">183</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a5dd20b82f980a7b03fa6dbdc3c88c328"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dd20b82f980a7b03fa6dbdc3c88c328">&#9670;&nbsp;</a></span>copyCPUSynapseToGPU()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Simulator::copyCPUSynapseToGPU </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copy GPU Synapse data to CPU. </p>
+<p>Copy CPU Synapse data to GPU. </p>
+
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00116">116</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a14eb6efdd993643f55a49ba0802ecfa2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14eb6efdd993643f55a49ba0802ecfa2">&#9670;&nbsp;</a></span>copyGPUSynapseToCPU()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Simulator::copyGPUSynapseToCPU </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints loaded parameters to logging file. </p>
+<p>Copy GPU Synapse data to CPU. </p>
+
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00110">110</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
 
 </div>
 </div>
@@ -293,7 +342,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
 <p>Setup simulation. </p>
 <p>Begin terminating the simulator. </p>
 
-<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00071">71</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00072">72</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
 
 </div>
 </div>
@@ -315,7 +364,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
 <p>Maximum number of synapses per neuron. <b>GPU Only</b> </p>
 <p><b>GPU Only.</b> </p>
 
-<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00260">260</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00275">275</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
 
 </div>
 </div>
@@ -337,7 +386,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
 <p>Maximum firing rate. <b>GPU Only</b> </p>
 <p><b>GPU Only</b> </p>
 
-<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00258">258</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00273">273</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
 
 </div>
 </div>
@@ -359,7 +408,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
 <p>The vertex type map (INH, EXC). </p>
 <p>Starter existence map (T/F). </p>
 
-<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00268">268</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00283">283</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
 
 </div>
 </div>
@@ -381,7 +430,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
 <p>Writes simulation results to an output destination. </p>
 <p>Instantiates <a class="el" href="class_model.html">Model</a> which causes all other lower level simulator objects to be instantiated. Checks if all expected objects were created correctly and returns T/F on the success of the check. </p>
 
-<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00201">201</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00216">216</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
 
 </div>
 </div>
@@ -403,7 +452,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
 <p>Cleanup after simulation. </p>
 <p>Load member variables from configuration file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00076">76</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00077">77</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
 
 </div>
 </div>
@@ -425,7 +474,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
 <p>Load member variables from configuration file. </p>
 <p>Prints out loaded parameters to logging file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00094">94</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00095">95</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
 
 </div>
 </div>
@@ -444,10 +493,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
       </table>
 </div><div class="memdoc">
 
-<p>Prints loaded parameters to logging file. </p>
+<p>Copy CPU Synapse data to GPU. </p>
 <p>Resets all of the maps. Releases and re-allocates memory for each map, clearing them as necessary. </p>
 
-<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00108">108</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00122">122</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
 
 </div>
 </div>
@@ -469,7 +518,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
 <p>Advance simulation to next growth cycle. Helper for <a class="el" href="class_simulator.html#a6d7bbf2803b741b05d3950bdfb4955dd" title="Reset simulation objects.">simulate()</a>. </p>
 <p>Writes simulation results to an output destination. </p>
 
-<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00195">195</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00210">210</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
 
 </div>
 </div>
@@ -492,7 +541,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
 <p>Neural Network <a class="el" href="class_model.html">Model</a> interface. </p>
 <p>List of summation points (either host or device memory) </p>
 
-<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00227">227</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00242">242</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
 
 </div>
 </div>
@@ -514,7 +563,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
 <p>Destructor. </p>
 <p>Initialize and prepare network for simulation. </p>
 
-<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00046">46</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00047">47</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
 
 </div>
 </div>
@@ -536,7 +585,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a cla
 <p>Reset simulation objects. </p>
 <p>Run simulation. </p>
 
-<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00125">125</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_simulator_8cpp_source.html#l00139">139</a> of file <a class="el" href="_simulator_8cpp_source.html">Simulator.cpp</a>.</p>
 
 </div>
 </div>

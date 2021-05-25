@@ -1,0 +1,9 @@
+<map id="Simulator/Core/GPUModel.h" name="Simulator/Core/GPUModel.h">
+<area shape="rect" id="node1" title="Implementation of Model for the graph&#45;based networks." alt="" coords="427,5,615,32"/>
+<area shape="rect" id="node2" href="$_g_p_u_model_8cu.html" title="Implementation of Model for the spiking neural networks." alt="" coords="5,87,200,114"/>
+<area shape="rect" id="node3" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="225,87,418,114"/>
+<area shape="rect" id="node4" href="$_all_d_s_synapses__d_8cu.html" title="A container of all DS synapse data." alt="" coords="443,80,600,121"/>
+<area shape="rect" id="node5" href="$_all_s_t_d_p_synapses__d_8cu.html" title="A container of all STDP synapse data." alt="" coords="625,80,791,121"/>
+<area shape="rect" id="node6" href="$_gpu_s_input_poisson_8h.html" title="A class that performs stimulus input (implementation Poisson on GPU)." alt="" coords="815,80,963,121"/>
+<area shape="rect" id="node7" href="$_gpu_s_input_poisson_8cu.html" title="A class that performs stimulus input (implementation Poisson) on GPU." alt="" coords="813,169,966,211"/>
+</map>
