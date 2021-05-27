@@ -1,0 +1,4 @@
+<map id="Simulator/Recorders/Hdf5GrowthRecorder.h" name="Simulator/Recorders/Hdf5GrowthRecorder.h">
+<area shape="rect" id="node1" title="An implementation for recording spikes history on hdf5 file." alt="" coords="5,5,165,47"/>
+<area shape="rect" id="node2" href="$_recorder_factory_8cpp.html" title="A factory class for creating Recorder objects." alt="" coords="11,95,159,136"/>
+</map>
