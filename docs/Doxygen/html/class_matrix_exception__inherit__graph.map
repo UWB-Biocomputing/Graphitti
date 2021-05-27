@@ -1,0 +1,8 @@
+<map id="MatrixException" name="MatrixException">
+<area shape="rect" id="node1" title="Master base class for Matrix exceptions." alt="" coords="227,80,343,107"/>
+<area shape="rect" id="node3" href="$class_matrix__bad__alloc.html" title="Signals memory allocation error for Matrix classes." alt="" coords="5,155,125,181"/>
+<area shape="rect" id="node4" href="$class_matrix__bad__cast.html" title="Signals bad cast among Matrices for Matrix classes." alt="" coords="150,155,269,181"/>
+<area shape="rect" id="node5" href="$class_matrix__domain__error.html" title="Signals value bad for domain for Matrix classes." alt="" coords="293,155,433,181"/>
+<area shape="rect" id="node6" href="$class_matrix__invalid__argument.html" title="Signals bad function argument for Matrix classes." alt="" coords="457,155,620,181"/>
+<area shape="rect" id="node2" title=" " alt="" coords="236,5,335,32"/>
+</map>

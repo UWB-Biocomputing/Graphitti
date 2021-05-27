@@ -1,0 +1,8 @@
+<map id="Simulator/Utils/ParameterManager.h" name="Simulator/Utils/ParameterManager.h">
+<area shape="rect" id="node1" title="A singleton class which contains and manages access to the XML parameter file used by a simulator ins..." alt="" coords="122,5,294,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,95,75,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="99,95,154,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="179,95,237,121"/>
+<area shape="rect" id="node5" href="$_b_g_types_8h.html" title="Used to define uniform data type sizes based for all operating systems. Also used to test the speed o..." alt="" coords="261,95,349,121"/>
+<area shape="rect" id="node6" title=" " alt="" coords="373,95,448,121"/>
+</map>
