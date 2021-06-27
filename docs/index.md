@@ -35,17 +35,15 @@
    4.2 Configuring the model
    
 
-### [Acknowledgements](BGDocs/acknowledgements.md)
+## [Acknowledgements](BGDocs/acknowledgements.md)
 
 
-### Graphitti Resources:
-
-- [Graphitti Forum]([https://groups.google.com/forum/#!forum/uwb-graphitti](https://groups.google.com/forum/#!forum/uwb-braingrid)): A place where Graphitti artists can communicate and collaborate. Click the button "Apply to join this group" to join!
-- [Git Crash Course](https://github.com/UWB-Biocomputing/BrainGrid/wiki/Git-Crash-Course)
-- [Linux Crash Course](https://github.com/UWB-Biocomputing/BrainGrid/wiki/Linux-Crash-Course)
 
 
 ### Doxygen 
 
 [Visit Doxygen Generated Documentation](docs/Doxygen/html/index.html)
 [Visit Doxygen Generated Documentation w/o docs root](Doxygen/html/index.html)
+
+---------
+[<< Go back to UWB Intelligent Networks Lab home page](http://uwb-biocomputing.github.io/)
