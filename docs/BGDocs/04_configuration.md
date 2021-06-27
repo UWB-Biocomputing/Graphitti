@@ -148,4 +148,4 @@ The next set of parameters is the ModelParams. These parameters are specific to 
 [>> Next: 5. Examples]()
 
 ---------
-[<< Go back to Graphitti Home page](http://uwb-biocomputing.github.io/Graphitti/)
+[<< Go back to Graphitti home page](http://uwb-biocomputing.github.io/Graphitti/)

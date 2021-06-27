@@ -92,4 +92,4 @@ The `screen` command will essentially allow you to start a simulation and then d
 [>> Next: 4. Configuration](04_configuration.md)
 
 -------------
-[<< Go back to Graphitti Home page](http://uwb-biocomputing.github.io/Graphitti/)
+[<< Go back to Graphitti home page](http://uwb-biocomputing.github.io/Graphitti/)

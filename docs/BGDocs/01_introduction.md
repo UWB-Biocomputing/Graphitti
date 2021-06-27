@@ -39,4 +39,4 @@ The initial principles that we are basing Graphitti on are as follows:
 [>> Next: 2. Installation](02_installation.md)
 
 -------------
-[<< Go back to Graphitti Home page](http://uwb-biocomputing.github.io/Graphitti/)
+[<< Go back to Graphitti home page](http://uwb-biocomputing.github.io/Graphitti/)

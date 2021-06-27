@@ -57,4 +57,4 @@ In order to compile and run Graphitti, you will need to set up a couple things i
 [>> Next: 3. Quickstart](03_quickstart.md)
 
 ---------
-[<< Go back to Graphitti Home page](http://uwb-biocomputing.github.io/Graphitti/)
+[<< Go back to Graphitti home page](http://uwb-biocomputing.github.io/Graphitti/)
