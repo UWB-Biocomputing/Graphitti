@@ -1,5 +1,3 @@
-# Graphitti
-
 ## Table of Contents
 
 1. [Introduction](BGDocs/01_introduction.md)
