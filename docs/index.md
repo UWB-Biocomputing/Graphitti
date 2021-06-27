@@ -1,3 +1,5 @@
+# Graphitti
+
 ## Table of Contents
 
 1. [Introduction](BGDocs/01_introduction.md)
@@ -31,3 +33,19 @@
    4.1 Use built-in models
    
    4.2 Configuring the model
+   
+
+### [Acknowledgements](BGDocs/acknowledgements.md)
+
+
+### Graphitti Resources:
+
+- [Graphitti Forum]([https://groups.google.com/forum/#!forum/uwb-graphitti](https://groups.google.com/forum/#!forum/uwb-braingrid)): A place where Graphitti artists can communicate and collaborate. Click the button "Apply to join this group" to join!
+- [Git Crash Course](https://github.com/UWB-Biocomputing/BrainGrid/wiki/Git-Crash-Course)
+- [Linux Crash Course](https://github.com/UWB-Biocomputing/BrainGrid/wiki/Linux-Crash-Course)
+
+
+### Doxygen 
+
+[Visit Doxygen Generated Documentation](docs/Doxygen/html/index.html)
+[Visit Doxygen Generated Documentation w/o docs root](Doxygen/html/index.html)
