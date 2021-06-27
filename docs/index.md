@@ -35,15 +35,19 @@
    4.2 Configuring the model
    
 
-## [Acknowledgements](BGDocs/acknowledgements.md)
+   
+## Doxygen 
 
-
-
-
-### Doxygen 
 
 [Visit Doxygen Generated Documentation](docs/Doxygen/html/index.html)
 [Visit Doxygen Generated Documentation w/o docs root](Doxygen/html/index.html)
+
+## [Acknowledgements](BGDocs/acknowledgements.md)
+Those who have helped make Graphitti what it is and shaping what it will be.
+
+
+
+
 
 ---------
 [<< Go back to UWB Intelligent Networks Lab home page](http://uwb-biocomputing.github.io/)
