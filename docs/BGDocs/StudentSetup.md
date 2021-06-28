@@ -38,7 +38,7 @@ put it under C:\Windows\System32\OpenSSH
 continuing ... 
 ```
 $ git clone https://github.com/UWB-Biocomputing/Graphitti
-  ```
+```
 
 click Open folder and click Graphitti
 
@@ -52,16 +52,22 @@ $ git status
 To run:
 
 ```
+$ cd build
 
-$ cmake . 
+$ cmake .. 
+```
 
-  ```
-
-this will generate a makefile. then type:
+this will generate a makefile. Then type:
 
 ```
 $ make
-  ```
+```
+
+You can then run a selection of sample tests to ensure the simulator is able to run:
+
+```
+$ ./tests
+```
 
 if ` $ ./tests` fails, start with this command instead of the cmake command: 
 
@@ -73,7 +79,7 @@ $ make
 $ ./tests
 
 $ ./graphitti -c ../configfiles/test-small.xml
-  ```
+```
 
 
 
