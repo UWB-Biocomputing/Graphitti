@@ -171,10 +171,24 @@ EdgeIndexMap *All911Edges::createEdgeIndexMap() {
 void All911Edges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap) {
    All911Vertices *allVertices = dynamic_cast<All911Vertices *>(vertices);
    for (BGSIZE i = 0; i < totalEdgeCount_; i++) {
-      if(!inUse_[i]) {continue;}
+      if(!inUse_[i]) { continue; }
       // if the edge is in use...
       BGSIZE iEdg = edgeIndexMap->incomingEdgeIndexMap_[i];
       advance911Edge(iEdg, allVertices);
+
+      // layout->edgType(srcVertex, destVertex);
+
+
+      // switch(layout->vertexTypeMap_[i]) {
+      // case PSAP:   advancePSAP(i);
+      //    break;
+      // case RESP:   advanceRESP(i, layout);
+      //    break;
+      // case CALR:   advanceCALR(i, edgeIndexMap, allEdges);
+      //    break;
+      // default:
+      //    break;
+      // }
 
    }
 }
@@ -183,60 +197,6 @@ void All911Edges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMa
 ///
 ///  @param  iEdg      Index of the edge to connect to.
 ///  @param  vertices   The vertex list to search from.
-void All911Edges::advance911Edge(const BGSIZE iEdg, All911Vertices *vertices) {
-   
-  // edge
-  // source node   -->   destination node 
-
-   // // is an input in the queue?
-   // bool fPre = isSpikeQueue(iEdg);
-   // bool fPost = isSpikeQueuePost(iEdg);
-
-   // if (fPre || fPost) {
-
-   //    BGFLOAT deltaT = Simulator::getInstance().getDeltaT();
-
-   //    // pre and post vertices index
-   //    int idxPre = sourceVertexIndex_[iEdg];
-   //    int idxPost = destVertexIndex_[iEdg];
-   //    uint64_t spikeHistory, spikeHistory2;
-   //    BGFLOAT delta;
-   //    BGFLOAT epre, epost;
-
-   //    if (fPre) {   // preSpikeHit
-   //       // spikeCount points to the next available position of spike_history,
-   //       // so the getSpikeHistory w/offset = -2 will return the spike time
-   //       // just one before the last spike.
-   //       spikeHistory = allVertices->getSpikeHistory(idxPre, -2);
-   //       if (spikeHistory != ULONG_MAX && useFroemkeDanSTDP_) {
-   //          // delta will include the transmission delay
-   //          delta = static_cast<BGFLOAT>(g_simulationStep - spikeHistory) * deltaT;
-   //          epre = 1.0 - exp(-delta / tauspre_);
-   //       } else {
-   //          epre = 1.0;
-   //       }
-
-   //    }
-
-   //    if (fPost) {   // postSpikeHit
-   //       // spikeCount points to the next available position of spike_history,
-   //       // so the getSpikeHistory w/offset = -2 will return the spike time
-   //       // just one before the last spike.
-   //       spikeHistory = allVertices->getSpikeHistory(idxPost, -2);
-   //       if (spikeHistory != ULONG_MAX && useFroemkeDanSTDP_) {
-   //          // delta will include the transmission delay
-   //          delta = static_cast<BGFLOAT>(g_simulationStep - spikeHistory) * deltaT;
-   //          epost = 1.0 - exp(-delta / tauspost_);
-   //       } else {
-   //          epost = 1.0;
-   //       }
-
-   //       // call the learning function stdpLearning() for each pair of
-   //       // post-pre spikes
-   //       int offIndex = -1;   // last spike
-   //    }
-   // }
-
-}
+void All911Edges::advance911Edge(const BGSIZE iEdg, All911Vertices *vertices) { }
 
 #endif

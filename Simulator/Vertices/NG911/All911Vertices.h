@@ -20,6 +20,8 @@
 #include "Global.h"
 #include "AllVertices.h"
 
+class All911Edges;
+
 // Class to hold all data necessary for all the Vertices.
 class All911Vertices : public AllVertices {
 public:
@@ -64,14 +66,8 @@ private:
    /// Min/max values of CallNum.
    int callNumRange_[2];
 
-   /// Number of dispatchers per PSAP calculated (with randomness) based on population
-   int *dispNum_;
-
    /// Scaling factor for number of dispatchers in a PSAP
    BGFLOAT dispNumScale_;
-
-   /// Number of responders per Responder node calculated (with randomness) based on population
-   int *respNum_;
 
    /// Scaling factor for number of responders in a Responder node
    BGFLOAT respNumScale_;
@@ -98,10 +94,8 @@ public:
 
 private:
    void advancePSAP(const int index);
-   void advanceCALR(const int index);
+   void advanceCALR(const int index, const EdgeIndexMap *edgeIndexMap, All911Edges &allEdges);
    void advanceRESP(const int index, shared_ptr<Layout> layout);
-
-   shared_ptr<EdgeIndexMap> edgeMap_;
 
 #endif // defined(USE_GPU)
 };
