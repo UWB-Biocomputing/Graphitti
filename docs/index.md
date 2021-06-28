@@ -14,15 +14,17 @@
 
 2. [Installation](BGDocs/02_installation.md)
 
-   2.1 Necessary Hardware/Software
-   
    See [Install Requirements](BGDocs/02a_installRequirements.md)
+   
+   2.1 Necessary Hardware/Software
    
    2.2 Download Graphitti
    
    2.3 Install Graphitti
 
 3. [Quickstart](BGDocs/03_quickstart.md)
+
+   See [Student Quickstart](BGDocs/StudentSetup.md)
 
    3.1 Quick Sanity Test
    
@@ -35,7 +37,10 @@
    4.2 Configuring the model
    
 
-   
+## Other resources
+
+
+
 ## Doxygen 
 
 Documentation generated from source code. Doxygen provides web-based indices and hierarchical views of Graphitti's class and file structures.
