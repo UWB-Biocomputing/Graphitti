@@ -24,8 +24,6 @@
 
 3. [Quickstart](BGDocs/03_quickstart.md)
 
-   See [Student Quickstart](BGDocs/StudentSetup.md)
-
    3.1 Quick Sanity Test
    
    3.2 Use of Screen
@@ -38,8 +36,13 @@
    
 
 ## Other resources
-
-
+- [Student Quickstart](BGDocs/StudentSetup.md)
+- [Coding Conventions](BGDocs/codingConventions.md)
+- [Glossary](BGDocs/Glossary.md)
+- [Googletest Tutorial](BGDocs/GoogleTestsTutorial.md)
+- [Performing Analyses](BGDocs/PerformingAnalyses.md)
+- [CMake](BGDocs/CMake.md)
+- [Recommended Resources](BGDocs/Resources.md)
 
 ## Doxygen 
 
@@ -49,13 +52,8 @@ Documentation generated from source code. Doxygen provides web-based indices and
 - [Doxygen Update Guide](Doxygen/DoxygenStyleGuide.md)
 
 
-
 ## [Acknowledgements](BGDocs/acknowledgements.md)
 Those who have helped make Graphitti what it is and shaping what it will be.
-
-
-
-
 
 ---------
 [<< Go back to UWB Intelligent Networks Lab home page](http://uwb-biocomputing.github.io/)
