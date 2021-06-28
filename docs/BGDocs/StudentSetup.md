@@ -27,24 +27,13 @@ Host raiju.uwb.edu
 
 4. At this point you should be connected to big ip. 
 
-/// Just for windows troubleshooting ///
-if you have trouble connecting to the server through vs code, your ssh exe file might not be properly fetched from vs code. If you have trouble with this step, refer to these links: https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse
-https://fred151.net/site/2018/09/23/how-to-install-openssh-on-windows-7-10/#:~:text
-
-You can download the files here: https://github.com/PowerShell/Win32-OpenSSH/releases
-
-put it under C:\Windows\System32\OpenSSH
-
-continuing ... 
+[See Windows Troubleshooting if you have trouble connecting here.](#windows-troubleshooting)
 ```
 $ git clone https://github.com/UWB-Biocomputing/Graphitti
 ```
 
-click Open folder and click Graphitti
+Click Open folder and click Graphitti. You should now have the directory on VS Code. To see what version you're on, use: 
 
-you should now have the directory on vs code
-
-to see what version you're on, use: 
 ```
 $ git status
 ```
@@ -57,7 +46,7 @@ $ cd build
 $ cmake .. 
 ```
 
-this will generate a makefile. Then type:
+This will generate a makefile. Then type:
 
 ```
 $ make
@@ -69,7 +58,7 @@ You can then run a selection of sample tests to ensure the simulator is able to 
 $ ./tests
 ```
 
-if ` $ ./tests` fails, start with this command instead of the cmake command: 
+If ` $ ./tests` fails, start with this command instead of the cmake command: 
 
 ```
 $ cmake -D CMAKE_CXX_COMPILER=/opt/rh/devtoolset-8/root/usr/bin/g++ .
@@ -80,13 +69,6 @@ $ ./tests
 
 $ ./graphitti -c ../configfiles/test-small.xml
 ```
-
-
-
-
-
-
-
 
 ## Using Graphitti Servers
 
@@ -104,8 +86,18 @@ $ ./graphitti -c ../configfiles/test-small.xml
 2.  To eliminate the need to type your password in to log in to the CSS Linux machines, consider using public/private key authentication. The  ssh-keygen  program on Mac/Linux can be used to generate a public/private key pair. If you put the public key in  ~/.ssh/authorized_keys  on the Linux machine, and both keys in  ~/.ssh  on your local machine, then this type of authentication should work. Make sure to guard your private key!
 
 
+## Windows Troubleshooting
+If you have trouble connecting to the server through VS Code, your ssh exe file might not be properly fetched from VS Code. If you have trouble with this step, refer to these links: 
+
+- https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse
+
+- https://fred151.net/site/2018/09/23/how-to-install-openssh-on-windows-7-10/#:~:text
+
+You can download the files here: https://github.com/PowerShell/Win32-OpenSSH/releases
+
+Put it under C:\Windows\System32\OpenSSH
+
 
 ## Connect Server to Git
 1. use git clone 
-
 
