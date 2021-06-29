@@ -1,5 +1,7 @@
 # Graphitti
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4678633.svg)](https://doi.org/10.5281/zenodo.4678633)
+
 ## Table of Contents
 
 1. [Introduction](BGDocs/01_introduction.md)
