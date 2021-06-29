@@ -9,7 +9,9 @@
 #include "All911Edges.h"
 
 All911Edges::All911Edges() : AllEdges() {
-
+   available = nullptr;
+   callTime_ = nullptr;
+   callSrc_ = nullptr;
 }
 
 All911Edges::All911Edges(const int numVertices, const int maxEdges) {
@@ -17,40 +19,30 @@ All911Edges::All911Edges(const int numVertices, const int maxEdges) {
 }
 
 All911Edges::~All911Edges() {
+   BGSIZE maxTotalEdges = maxEdgesPerVertex_ * countVertices_;
 
+   if (maxTotalEdges != 0) {
+      delete available;
+      delete callTime_;
+      delete callSrc_;
+   }
 }
 
-void All911Edges::setupEdges() {
-   int numVertices = Simulator::getInstance().getTotalVertices();
-   int maxEdges = Simulator::getInstance().getMaxEdgesPerVertex();
+void All911Edges::setupEdges(const int numVertices, const int maxEdges) {
+   AllEdges::setupEdges(numVertices, maxEdges);
+   // Move summationPoint_ and W_ to AllNeuroEdges
 
    BGSIZE maxTotalEdges = maxEdges * numVertices;
 
-   maxEdgesPerVertex_ = maxEdges;
-   totalEdgeCount_ = 0;
-   countVertices_ = numVertices;
-
-   // To do: Figure out whether we need all of these
    if (maxTotalEdges != 0) {
-      destVertexIndex_ = new int[maxTotalEdges];
-      W_ = new BGFLOAT[maxTotalEdges];
-      summationPoint_ = new BGFLOAT *[maxTotalEdges];
-      sourceVertexIndex_ = new int[maxTotalEdges];
-      // psr_ = new BGFLOAT[maxTotalEdges];
-      type_ = new edgeType[maxTotalEdges];
-      inUse_ = new bool[maxTotalEdges];
-      edgeCounts_ = new BGSIZE[numVertices];
+      available = new bool[maxTotalEdges];
+      callTime_ = new BGSIZE[maxTotalEdges];
+      callSrc_ = new BGSIZE[maxTotalEdges];
 
-      for (BGSIZE i = 0; i < maxTotalEdges; i++) {
-         summationPoint_[i] = nullptr;
-         inUse_[i] = false;
-         W_[i] = 0;
-      }
-
-      for (int i = 0; i < numVertices; i++) {
-         edgeCounts_[i] = 0;
-      }
-   }
+      fill_n(available, maxTotalEdges, true);
+      fill_n(callTime_, maxTotalEdges, 0);
+      fill_n(callSrc_, maxTotalEdges, 0);
+   }   
 }
 
 void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,

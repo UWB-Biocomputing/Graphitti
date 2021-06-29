@@ -14,14 +14,31 @@
 
 All911Vertices::All911Vertices() {
    callNum_ = nullptr;
+   callSrc_ = nullptr;
+   callTime_ = nullptr;
+   count = nullptr;
 }
 
 All911Vertices::~All911Vertices() {
    if (size_ != 0) {
+      for (int i = 0; i < size_; i++) {
+         delete[] callSrc_[i];
+         delete[] callTime_[i];
+
+         callSrc_[i] = nullptr;
+         callTime_[i] = nullptr;
+      }
+
+      delete[] callSrc_;
+      delete[] callTime_;
       delete[] callNum_;
+      delete[] count;
    }
 
+   callSrc_ = nullptr;
    callNum_ = nullptr;
+   callNum_ = nullptr;
+   count = nullptr;
 }
 
 // Allocate memory for all class properties
@@ -29,9 +46,15 @@ void All911Vertices::setupVertices() {
    AllVertices::setupVertices();
 
    callNum_ = new int[size_];
+   count = new int[size_];
+   callSrc_ = new int*[size_];
+   callTime_ = new int*[size_];
 
    // Populate arrays with 0
    fill_n(callNum_, size_, 0);
+   fill_n(count, size_, 0);
+   fill_n(callSrc_, size_, nullptr);
+   fill_n(callTime_, size_, nullptr);
 }
 
 // Generate callNum_ and dispNum_ for all caller and psap nodes
@@ -44,9 +67,9 @@ void All911Vertices::createAllVertices(Layout *layout) {
    int callersPerZone[] = {0, 0, 0, 0};
    int respPerZone[] = {0, 0, 0, 0};
     
-   Layout911 *layout911 = dynamic_cast<Layout911 *>(layout); 
+   Layout911 *layout911 = dynamic_cast<Layout911 *>(layout);
 
-   for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {  
+   for (int i = 0; i < size_; i++) {  
       // Create all callers
       if (layout->vertexTypeMap_[i] == CALR) {
          callNum_[i] = rng.inRange(callNumRange_[0], callNumRange_[1]);
@@ -74,6 +97,7 @@ void All911Vertices::createAllVertices(Layout *layout) {
       int dispCount = (callersPerZone[psapQ] * dispNumScale_) + rng.inRange(-5, 5);
       if (dispCount < 1) { dispCount = 1; }
       callNum_[psapList[i]] = dispCount;
+      count[psapList[i]] = dispCount;
 
       if (dispCount > resource_count) { resource_count = dispCount; }
    }
@@ -85,14 +109,21 @@ void All911Vertices::createAllVertices(Layout *layout) {
       int respCount = (callersPerZone[respQ] * respNumScale_)/respPerZone[respQ] + rng.inRange(-5, 5);
       if (respCount < 1) { respCount = 1; }
       callNum_[respList[i]] = respCount;
+      count[respList[i]] = respCount;
 
       if (respCount > resource_count) { resource_count = respCount; }
    }
 
-   // 911TODO
-   // Split these into two arrays please
-   // respNum_ = new int[numVertices][resource_count][2];
-   // fill( &respNum_[0][0][0], &respNum_[0][0][0] + sizeof(respNum_) * sizeof(respNum_[0][0][0]), 0 );
+   // Create and populate callSrc and callTime.
+   // Done over here because we need to know how many spots to allocate
+
+   for(int i = 0; i < size_; i++) {
+      callSrc_[i] = new int[resource_count];
+      callTime_[i] = new int[resource_count];
+
+      fill_n(callSrc_[i], size_, 0);
+      fill_n(callTime_[i], size_, 0);
+   }
 }
 
 void All911Vertices::loadParameters() {

@@ -72,6 +72,15 @@ private:
    /// Scaling factor for number of responders in a Responder node
    BGFLOAT respNumScale_;
 
+   /// To maintain a list of calls, this keeps track of the source vertex
+   int **callSrc_;
+
+   /// To maintain a list of calls, this keeps track of the call time
+   int **callTime_;
+
+   /// To index available resources, use count
+   int *count;
+
 #if defined(USE_GPU)
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract

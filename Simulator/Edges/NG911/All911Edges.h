@@ -40,9 +40,6 @@ public:
    ///  @return Reference to the instance of the class.
    static AllEdges *Create() { return new All911Edges(); }
 
-   ///  Setup the internal structure of the class (allocate memories and initialize them).
-   virtual void setupEdges() override;
-
    ///  Create a Edge and connect it to the model.
    ///
    ///  @param  iEdg        Index of the edge to set.
@@ -60,6 +57,12 @@ public:
    virtual EdgeIndexMap *createEdgeIndexMap();
 
 protected:
+
+   ///  Setup the internal structure of the class (allocate memories and initialize them).
+   ///
+   ///  @param  numVertices   Total number of vertices in the network.
+   ///  @param  maxEdges  Maximum number of edges per vertex.
+   virtual void setupEdges(const int numVertices, const int maxEdges) override;
 
 #if defined(USE_GPU)
    // GPU functionality for 911 simulation is unimplemented.
@@ -97,4 +100,14 @@ public:
    virtual void advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) override {};
 
 #endif
+
+   /// Availability of each edge
+   bool *available;
+
+   /// The time at which a call was initiated
+   BGSIZE *callTime_;
+
+   /// The source vertex number of any call
+   BGSIZE *callSrc_;
+
 };
