@@ -58,8 +58,6 @@ public:
    ///  @return the complete state of the vertex.
    virtual string toString(const int index) const;
 
-private: 
-
    /// number of callers
    int *callNum_; 
 
@@ -102,9 +100,27 @@ public:
    virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap) override;
 
 private:
+
+   ///  Advance a PSAP node. Controls the redirection and handling of calls
+   ///
+   ///  @param  index         Index of the PSAP node
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   ///  @param  allEdges      Reference to an instance of All911Edges
    void advancePSAP(const int index);
+
+   ///  Advance a CALR node. Generates calls and records received responses
+   ///
+   ///  @param  index         Index of the CALR node
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   ///  @param  allEdges      Reference to an instance of All911Edges
    void advanceCALR(const int index, const EdgeIndexMap *edgeIndexMap, All911Edges &allEdges);
-   void advanceRESP(const int index, shared_ptr<Layout> layout);
+
+   ///  Advance a RESP node. Receives calls and sends response back to the source
+   ///
+   ///  @param  index         Index of the RESP node
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   ///  @param  allEdges      Reference to an instance of All911Edges
+   void advanceRESP(const int index, const EdgeIndexMap *edgeIndexMap, All911Edges &allEdges);
 
 #endif // defined(USE_GPU)
 };

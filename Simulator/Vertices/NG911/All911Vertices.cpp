@@ -97,7 +97,6 @@ void All911Vertices::createAllVertices(Layout *layout) {
       int dispCount = (callersPerZone[psapQ] * dispNumScale_) + rng.inRange(-5, 5);
       if (dispCount < 1) { dispCount = 1; }
       callNum_[psapList[i]] = dispCount;
-      count[psapList[i]] = dispCount;
 
       if (dispCount > resource_count) { resource_count = dispCount; }
    }
@@ -109,7 +108,6 @@ void All911Vertices::createAllVertices(Layout *layout) {
       int respCount = (callersPerZone[respQ] * respNumScale_)/respPerZone[respQ] + rng.inRange(-5, 5);
       if (respCount < 1) { respCount = 1; }
       callNum_[respList[i]] = respCount;
-      count[respList[i]] = respCount;
 
       if (respCount > resource_count) { resource_count = respCount; }
    }
@@ -159,7 +157,7 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
       switch(layout->vertexTypeMap_[i]) {
          case PSAP:   advancePSAP(i);
             break;
-         case RESP:   advanceRESP(i, layout);
+         case RESP:   advanceRESP(i, edgeIndexMap, allEdges);
             break;
          case CALR:   advanceCALR(i, edgeIndexMap, allEdges);
             break;
@@ -169,13 +167,20 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
    }
 }
 
+///  Advance a PSAP node. Controls the redirection and handling of calls
+///
+///  @param  index         Index of the PSAP node
+///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+///  @param  allEdges      Reference to an instance of All911Edges
 void All911Vertices::advancePSAP(const int index) {
-   /*
    // 911TODO
-   // Checks list
-   */
 }
 
+///  Advance a CALR node. Generates calls and records received responses
+///
+///  @param  index         Index of the CALR node
+///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+///  @param  allEdges      Reference to an instance of All911Edges
 void All911Vertices::advanceCALR(const int index, const EdgeIndexMap *edgeIndexMap, All911Edges &allEdges) {
    BGFLOAT probability = rng();
 
@@ -190,17 +195,56 @@ void All911Vertices::advanceCALR(const int index, const EdgeIndexMap *edgeIndexM
    BGSIZE start = edgeIndexMap->outgoingEdgeBegin_[index];
    BGSIZE iEdg = edgeIndexMap->outgoingEdgeIndexMap_[start];
 
+   // Inform Edge of new call
+   if (allEdges.available[iEdg]) {
+      allEdges.callSrc_[iEdg] = index;
+      allEdges.callTime_[iEdg] = Simulator::getInstance().getCurrentStep();
+      allEdges.available[iEdg] = false;
+   } else {
+      // 911TODO
+      // Record a missed call
+   }
+
    // 911TODO
-   // Tell edge iEdg about output, and current time
+   // Record received response
+   count[index] = 0;
 }
 
-void All911Vertices::advanceRESP(const int index, shared_ptr<Layout> layout) {
-   /*
-   // 911TODO
-   // if it's got a hit
-      // reduce RESP resource
-      int penalty = round((*layout->dist_)(index, 4));
-      // Notify edges
-   */
+///  Advance a RESP node. Receives calls and sends response back to the source
+///
+///  @param  index         Index of the RESP node
+///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+///  @param  allEdges      Reference to an instance of All911Edges
+void All911Vertices::advanceRESP(const int index, const EdgeIndexMap *edgeIndexMap, All911Edges &allEdges) {
+   for (int i = 0; i < count[index]; i++) {
+      int dst = callSrc_[index][i];
+      int iEdgeStart = dst*allEdges.maxEdgesPerVertex_;
+      int iEdg = 0;
+
+      // If edges are indexed so that [iEdg = (allEdges.maxEdgesPerVertex_*dst) + index], this would be a lot
+      //    fast, but would be bad for neuro simulations.
+
+      // Find the relevant edge
+      for (int e = iEdgeStart; e < iEdgeStart + allEdges.maxEdgesPerVertex_; e++) {
+         if (allEdges.sourceVertexIndex_[e] == index) {
+            iEdg = e;
+            break;
+         }
+      }
+
+      if (!allEdges.available[iEdg]) {
+         // 911TODO
+         // Record dropped call
+         // Highly unlikely
+         continue;
+      }
+
+      // Inform outgoing edge
+      allEdges.callSrc_[iEdg] = dst;
+      allEdges.callTime_[iEdg] = callTime_[index][i];
+      allEdges.available[iEdg] = false;
+   }
+
+   count[index] = 0;
 }
 #endif

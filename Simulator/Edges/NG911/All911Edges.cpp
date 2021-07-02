@@ -162,33 +162,28 @@ EdgeIndexMap *All911Edges::createEdgeIndexMap() {
 ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
 void All911Edges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap) {
    All911Vertices *allVertices = dynamic_cast<All911Vertices *>(vertices);
-   for (BGSIZE i = 0; i < totalEdgeCount_; i++) {
-      if(!inUse_[i]) { continue; }
-      // if the edge is in use...
-      BGSIZE iEdg = edgeIndexMap->incomingEdgeIndexMap_[i];
-      advance911Edge(iEdg, allVertices);
 
-      // layout->edgType(srcVertex, destVertex);
+   for (int vertex = 0; vertex < countVertices_ ; vertex++) {
+      int start = edgeIndexMap->incomingEdgeBegin_[vertex];
+      int count = edgeIndexMap->incomingEdgeCount_[vertex];
 
+      // For each edge
+      for (int mapIndex = start; mapIndex < start + count; mapIndex++) {
+         int iEdg = edgeIndexMap->incomingEdgeIndexMap_[mapIndex];
 
-      // switch(layout->vertexTypeMap_[i]) {
-      // case PSAP:   advancePSAP(i);
-      //    break;
-      // case RESP:   advanceRESP(i, layout);
-      //    break;
-      // case CALR:   advanceCALR(i, edgeIndexMap, allEdges);
-      //    break;
-      // default:
-      //    break;
-      // }
+         if (!inUse_[iEdg]) { continue; }    // Edge isn't in use
+         if (available[iEdg]) { continue; }  // Edge has no data to transfer
 
+         int dst = destVertexIndex_[iEdg];
+         int index = allVertices->count[dst];
+         if (index >= allVertices->callNum_[dst]) { continue; }   // Destination is busy
+
+         allVertices->callTime_[dst][index] = callTime_[iEdg];    // Transfer data to destination
+         allVertices->callSrc_[dst][index] = callSrc_[iEdg];
+         allVertices->count[dst] += 1;
+         available[iEdg] = true;                                  // Declare self as available
+      }
    }
 }
-
-///  Advance one specific edge.
-///
-///  @param  iEdg      Index of the edge to connect to.
-///  @param  vertices   The vertex list to search from.
-void All911Edges::advance911Edge(const BGSIZE iEdg, All911Vertices *vertices) { }
 
 #endif
