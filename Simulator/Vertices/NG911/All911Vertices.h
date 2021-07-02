@@ -91,7 +91,7 @@ public:
        virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};
 #else  // !defined(USE_GPU)
 public:
- 
+
    ///  Update internal state of the indexed Vertex (called by every simulation step).
    ///  Notify outgoing edges if vertex has fired.
    ///
@@ -106,7 +106,7 @@ private:
    ///  @param  index         Index of the PSAP node
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    ///  @param  allEdges      Reference to an instance of All911Edges
-   void advancePSAP(const int index);
+   void advancePSAP(const int index, const EdgeIndexMap *edgeIndexMap, All911Edges &allEdges, shared_ptr<Layout> layout);
 
    ///  Advance a CALR node. Generates calls and records received responses
    ///

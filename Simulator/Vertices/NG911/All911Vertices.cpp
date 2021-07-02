@@ -148,14 +148,15 @@ string All911Vertices::toString(const int index) const {
 ///  @param  edges         The edge list to search from.
 ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
 void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap) {
-   // casting all911Edges for this method to use & modify
+   // casting all911Edges for this method to use & modify.
+   // Perhaps maintain instances of both?
    All911Edges &allEdges = dynamic_cast<All911Edges &>(edges);
    shared_ptr<Layout> layout = Simulator::getInstance().getModel()->getLayout();
 
    // For each vertex in the network
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       switch(layout->vertexTypeMap_[i]) {
-         case PSAP:   advancePSAP(i);
+         case PSAP:   advancePSAP(i, edgeIndexMap, allEdges, layout);
             break;
          case RESP:   advanceRESP(i, edgeIndexMap, allEdges);
             break;
@@ -172,8 +173,64 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
 ///  @param  index         Index of the PSAP node
 ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
 ///  @param  allEdges      Reference to an instance of All911Edges
-void All911Vertices::advancePSAP(const int index) {
-   // 911TODO
+void All911Vertices::advancePSAP(const int index, const EdgeIndexMap *edgeIndexMap, All911Edges &allEdges, shared_ptr<Layout> layout) {
+   // For each incoming call
+   for (int i = 0; i < count[index]; i++) {
+      // Call that is being handled
+      int source = callSrc_[index][i];
+      int time = callTime_[index][i];
+
+      // To iterate through edgeIndexMap
+      int startI = edgeIndexMap->incomingEdgeBegin_[source];
+      int countI = edgeIndexMap->incomingEdgeCount_[source];
+
+      // -1 indicates that it hasn't been found
+      int respV = -1;
+      int psapV = -1;
+      int PSAP_iEdg = -1;
+
+      // Find nearest Responder
+      for (int e = startI; e < startI + countI; e++) {
+         int iEdg = edgeIndexMap->incomingEdgeIndexMap_[e];
+         int edgeSource = allEdges.sourceVertexIndex_[iEdg];
+
+         // This does not take into account zones. Maybe need to rework it to do that
+         if (layout->vertexTypeMap_[edgeSource] == RESP) {
+            // The RESP is busy, full queue of requests
+            if (count[edgeSource] >= callNum_[edgeSource]) { continue; }
+
+            // Found an adequate responder
+            respV = edgeSource;
+            break;
+         }
+         else if (layout->vertexTypeMap_[edgeSource] == PSAP && psapV != -1) {
+            // Find closest PSAP, in case
+            psapV = edgeSource;
+            PSAP_iEdg = iEdg;
+         }
+      }
+
+      // Handle call
+      if (respV != -1) {                              // Transfer call to responder
+         // This bypasses the edge, as multiple calls may need to be sent to the same RESP
+         // Might want to fix this at some point
+         int respCallIndex = count[respV];
+         callSrc_[respV][respCallIndex] = source;
+         callTime_[respV][respCallIndex] = time;
+         count[respV] += 1;
+      }                                               // Transfer call to next PSAP
+      else if (allEdges.available[PSAP_iEdg]) {
+         allEdges.callSrc_[PSAP_iEdg] = source;
+         allEdges.callTime_[PSAP_iEdg] = time;
+         allEdges.available[PSAP_iEdg] = false;
+      } else {                                        // Dropped call
+         // 911TODO
+         // Record dropped call
+      }
+   }
+
+   // ALl calls have been cleared
+   count[index] = 0;
 }
 
 ///  Advance a CALR node. Generates calls and records received responses
@@ -245,6 +302,7 @@ void All911Vertices::advanceRESP(const int index, const EdgeIndexMap *edgeIndexM
       allEdges.available[iEdg] = false;
    }
 
+   // ALl calls have been cleared
    count[index] = 0;
 }
 #endif
