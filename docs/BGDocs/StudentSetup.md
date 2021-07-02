@@ -66,7 +66,7 @@ $ make
 
 $ ./tests
 
-$ ./graphitti -c ../configfiles/test-small.xml
+$ ./cgraphitti -c ../configfiles/test-small.xml
 ```
 
 ## Using Graphitti Servers
