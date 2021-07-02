@@ -8,7 +8,7 @@
  *
  * The class provides a simple interface to access 
  * parameters with the following assumptions:
- *   - The class' ::ReadParameters() method names the 
+ *   - The class' ::loadParameters() method names the 
  *     expected Xpath for its own parameters.
  *   - The class makes all its own schema calls as needed.
  *   - The class will validate its own parameters unless 

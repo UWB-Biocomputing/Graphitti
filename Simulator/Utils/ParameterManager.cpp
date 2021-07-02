@@ -9,7 +9,7 @@
  * The class provides a simple interface to access parameters 
  * in an XML file.
  * It operates with the following assumptions:
- *   - The client's ::readParameters method knows the XML 
+ *   - The client's ::loadParameters method knows the XML 
  *     layout of the parameter file.
  *   - The client makes all its own schema calls as needed.
  *   - The client will validate its own parameters unless 
