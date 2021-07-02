@@ -71,7 +71,7 @@ bool ParameterManager::loadParameterFile(string path) {
       cerr << "Failed loading simulation parameter file "
            << path << ":" << "\n\t" << xmlDocument_->ErrorDesc()
            << endl;
-      cerr << " error: " << xmlDocument_->ErrorRow() << ", " << xmlDocument_->ErrorCol()
+      cerr << " error row: " << xmlDocument_->ErrorRow() << ", error col: " << xmlDocument_->ErrorCol()
            << endl;
       return false;
    }
