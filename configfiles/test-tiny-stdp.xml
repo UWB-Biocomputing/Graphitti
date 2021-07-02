@@ -12,7 +12,7 @@
         </SimParams>
         <SimConfig name="SimConfig">
             <maxFiringRate name="maxFiringRate">200</maxFiringRate>
-            <maxEdgesPerVertex name="maxEdgesPerVertex">200</maxEdgsPerVertex>
+            <maxEdgesPerVertex name="maxEdgesPerVertex">200</maxEdgesPerVertex>
         </SimConfig>
         <Seed name="Seed">
             <value name="value">1</value>
@@ -58,7 +58,7 @@
             </starter_vreset>
         </VerticesParams>
 
-        <EdgsParams class="AllSTDPSynapses" name="EdgesParams">
+        <EdgesParams class="AllSTDPSynapses" name="EdgesParams">
         <tau name="tau">
           <ii name="ii">6e-3</ii>
           <ie name="ie">6e-3</ie>
