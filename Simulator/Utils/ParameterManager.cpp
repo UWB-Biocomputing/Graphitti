@@ -125,8 +125,6 @@ bool ParameterManager::getIntByXpath(string xpath, int &referenceVar) {
    if (!checkDocumentStatus()) return false;
    string tmp;
    if (!getStringByXpath(xpath, tmp)) {
-      cerr << "Failed loading simulation parameter for xpath "
-           << xpath << endl;
       return false;
    }
    // Workaround for standard value conversion functions.
@@ -167,8 +165,6 @@ bool ParameterManager::getDoubleByXpath(string xpath, double &referenceVar) {
    if (!checkDocumentStatus()) return false;
    string tmp;
    if (!getStringByXpath(xpath, tmp)) {
-      cerr << "Failed loading simulation parameter for xpath "
-           << xpath << endl;
       return false;
    }
    if (regex_match(tmp, regex(".*[^\\def.+-]+.*"))) {
@@ -202,8 +198,6 @@ bool ParameterManager::getFloatByXpath(string xpath, float &referenceVariable) {
    if (!checkDocumentStatus()) return false;
    string tmp;
    if (!getStringByXpath(xpath, tmp)) {
-      cerr << "Failed loading simulation parameter for xpath "
-           << xpath << endl;
       return false;
    }
    if (regex_match(tmp, regex(".*[^\\def.+-]+.*"))) {
@@ -261,8 +255,6 @@ bool ParameterManager::getLongByXpath(string xpath, long &referenceVar) {
    if (!checkDocumentStatus()) return false;
    string tmp;
    if (!getStringByXpath(xpath, tmp)) {
-      cerr << "Failed loading simulation parameter for xpath "
-           << xpath << endl;
       return false;
    }
    if (!regex_match(tmp, regex("[\\d]+l?"))) {
