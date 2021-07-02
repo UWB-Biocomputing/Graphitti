@@ -27,6 +27,7 @@
 *.lib
 
 # Generated Files
+build/.cmake
 build/bin
 build/Simulator
 build/Testing
