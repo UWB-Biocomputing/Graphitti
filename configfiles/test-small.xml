@@ -59,6 +59,18 @@
     </VerticesParams>
 
     <EdgesParams class="AllDSSynapses" name="EdgesParams">
+      <tau name="tau">
+        <ii name="ii">6e-3</ii>
+        <ie name="ie">6e-3</ie>
+        <ei name="ei">3e-3</ei>
+        <ee name="ee">3e-3</ee>
+      </tau>
+      <delay name="delay">
+        <ii name="ii">0.8e-3</ii>
+        <ie name="ie">0.8e-3</ie>
+        <ei name="ei">0.8e-3</ei>
+        <ee name="ee">1.5e-3</ee>
+      </delay>
     </EdgesParams>
 
     <ConnectionsParams class="ConnGrowth" name="ConnectionsParams">
