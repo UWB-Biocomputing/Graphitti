@@ -101,16 +101,16 @@ bool ParameterManager::checkDocumentStatus() {
 bool ParameterManager::getStringByXpath(string xpath, string &referenceVar) {
    if (!checkDocumentStatus()) return false;
 
-   // save a copy of xpath in case it gets overwritten to empty string
-   string xpathOriginal = xpath;
+   // temp string holds evaluation of value at xpath
+   string temp;
    // raise error if tinyxml cannot compute the xpath's value or returns empty
-   if (!TinyXPath::o_xpath_string(root_, xpath.c_str(), xpath) || xpath == "") {
+   if (!TinyXPath::o_xpath_string(root_, xpath.c_str(), temp) || temp == "") {
       cerr << "Failed loading simulation parameter for xpath "
-           << xpathOriginal << endl;
+           << xpath << endl;
       // TODO: possibly get better error information?
       return false;
    }
-   referenceVar = xpath;
+   referenceVar = temp;
    return true;
 }
 
