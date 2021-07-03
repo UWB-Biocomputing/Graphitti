@@ -144,8 +144,6 @@ The next set of parameters is the ModelParams. These parameters are specific to 
 * **Layout Params**: Another node to populate. Its only parameter is:
     + **FixedLayoutParams**: As you can see from the helpful comment, the simulator will use this if specified, rather than randomly placing the neurons.
 
----------
-[>> Next: 5. Examples]()
 
 ---------
-[<< Go back to Graphitti Home page](http://uwb-biocomputing.github.io/Graphitti/)
+[<< Go back to Graphitti home page](http://uwb-biocomputing.github.io/Graphitti/)
