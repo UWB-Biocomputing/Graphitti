@@ -80,10 +80,19 @@ $ ./cgraphitti -c ../configfiles/test-small.xml
 4. The UW servers have a computational NVIDIA GPU optimized for floating point value computations. If the user preference is to run Graphitti locally, the CUDA libraries are not necessary; the CPU version of the simulator is user-friendly on local machines.
 
 ## Using Visual Studio Code
-1.  Visual Studio Code can be used to open and edit files on a remote Linux machine. This includes opening a terminal inside VSC to compile and run. Go to [https://code.visualstudio.com/](https://code.visualstudio.com/)  to download VSC, and to [https://code.visualstudio.com/docs/remote/ssh](https://code.visualstudio.com/docs/remote/ssh)  to get the instructions for the "Visual Studio Code Remote Development Extension Pack". If you run into problems, see [https://code.visualstudio.com/docs/remote/troubleshooting](https://code.visualstudio.com/docs/remote/troubleshooting). In particular, you may need to set "remote.SSH.useLocalServer": false  in VSC's settings.json  file if you run into connection problems.
+- Visual Studio Code can be used to open and edit files on a remote Linux machine. This includes opening a terminal inside VSC to compile and run. Go to [https://code.visualstudio.com/](https://code.visualstudio.com/)  to download VSC, and to [https://code.visualstudio.com/docs/remote/ssh](https://code.visualstudio.com/docs/remote/ssh)  to get the instructions for the "Visual Studio Code Remote Development Extension Pack". If you run into problems, see [https://code.visualstudio.com/docs/remote/troubleshooting](https://code.visualstudio.com/docs/remote/troubleshooting). In particular, you may need to set "remote.SSH.useLocalServer": false  in VSC's settings.json  file if you run into connection problems.
 
-2.  To eliminate the need to type your password in to log in to the CSS Linux machines, consider using public/private key authentication. The  ssh-keygen  program on Mac/Linux can be used to generate a public/private key pair. If you put the public key in  ~/.ssh/authorized_keys  on the Linux machine, and both keys in  ~/.ssh  on your local machine, then this type of authentication should work. Make sure to guard your private key!
+- To eliminate the need to type your password in to log in to the CSS Linux machines, consider using public/private key authentication. The  ssh-keygen  program on Mac/Linux can be used to generate a public/private key pair. If you put the public key in  ~/.ssh/authorized_keys  on the Linux machine, and both keys in  ~/.ssh  on your local machine, then this type of authentication should work. Make sure to guard your private key!
 
+- VSC can be configured to compile from CMake so that you don't have to type build and launch commands into the terminal every time you want to run. See [https://code.visualstudio.com/docs/cpp/cmake-linux](https://code.visualstudio.com/docs/cpp/cmake-linux) and follow along to use the existing CMakeLists.txt in the project's root to make life easier.
+
+  - In your launch.json file, you'll want to configure the program, args, and cwd options as such:
+    ```json
+    "program": "${workspaceFolder}/build/cgraphitti",
+    "args": ["-c ../configfiles/test-tiny.xml"],
+    "cwd": "${workspaceFolder}/build",
+    ```
+    with the args changing depending on the arguments you actually want to pass.
 
 ## Windows Troubleshooting
 If you have trouble connecting to the server through VS Code, your ssh exe file might not be properly fetched from VS Code. If you have trouble with this step, refer to these links: 
