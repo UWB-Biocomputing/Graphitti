@@ -18,7 +18,7 @@
       <value name="value">1</value>
     </Seed>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">../Output/Results/test-medium-stdp-test.xml</resultFileName>
+      <resultFileName name="resultFileName">../Output/Results/test-medium-stdp-out.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 
@@ -150,4 +150,3 @@
     </RecorderParams>
   </ModelParams>
 </BGSimParams>
-
