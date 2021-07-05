@@ -5,7 +5,7 @@
 Googletest is a C++ testing framework that supports system, integration and unit testing. It allows users to make independent and repeatable tests to assure that changes don’t alter the functionality of the system. 
 	
 The following link points to the documentation of Googletest which includes valuable information on what features it offers and a basic tutorial on how to write tests.
-[https://github.com/google/googletest/blob/master/googletest/docs/primer.md](https://github.com/google/googletest/blob/master/googletest/docs/primer.md)
+[http://google.github.io/googletest/primer.html](http://google.github.io/googletest/primer.html)
 
 The following link is a helpful video describing how to write tests and test structs using Googletest.
 [https://www.youtube.com/watch?v=16FI1-d2P4E&amp;](https://www.youtube.com/watch?v=16FI1-d2P4E&amp;)
@@ -52,4 +52,4 @@ In Graphitti we use this framework to write unit tests for each object class. Fo
 * Add all new class paths to the `CMakeLists.txt` in the `add_executable(Tests...)` parameters. The testing files only needed to be included in the ‘Tests’ executable. 
 * Add all new directories to the `CMakeLists.txt` in the `include_directories(...)` parameters. This will add  Build and run the Tests executable to run all tests.
 
-[https://github.com/google/googletest/blob/master/googletest/docs/primer.md](https://github.com/google/googletest/blob/master/googletest/docs/primer.md)
+[http://google.github.io/googletest/primer.html](http://google.github.io/googletest/primer.html)

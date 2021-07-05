@@ -97,7 +97,7 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap *
                int beginIndex = edgeIndexMap->outgoingEdgeBegin_[idx];
                BGSIZE iEdg;
                for (BGSIZE i = 0; i < synapseCounts; i++) {
-                  iEdg = edgeIndexMap->outgoingEdgeBegin_[beginIndex + i];
+                  iEdg = edgeIndexMap->outgoingEdgeIndexMap_[beginIndex + i];
                   spSynapses.preSpikeHit(iEdg);
                }
             }

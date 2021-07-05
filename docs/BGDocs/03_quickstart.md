@@ -43,11 +43,11 @@ As a quick start and sanity test, let's run a small, prepackaged simulation to m
 4. Run it with one of our numerous test files 
 
    ```shell
-   $ ./graphitti -c <path to config file>
+   $ ./cgraphitti -c <path to config file>
    ```
 
    ```shell
-   $ ./graphitti -c ../configfiles/test-small.xml
+   $ ./cgraphitti -c ../configfiles/test-small.xml
    ```
 
 5. The program will then run and display the current step and epoch of the simulation. The output of the simulation (after the end of the simulation) will be saved in the ```Output/Results``` folder.
@@ -71,7 +71,7 @@ The `screen` command will essentially allow you to start a simulation and then d
 2. Start the Simulation
 
    ```shell
-   $ ./graphitti -c ../configfiles/test-small.xml
+   $ ./cgraphitti -c ../configfiles/test-small.xml
    ```
 
 3. Detach the screen by pressing the following key combinations:
@@ -89,7 +89,7 @@ The `screen` command will essentially allow you to start a simulation and then d
 
 
 -------------
-[>> Next: 4. Configuration](BGDocs/04_configuration.md)
+[>> Next: 4. Configuration](04_configuration.md)
 
 -------------
-[<< Go back to Graphitti Home page](http://uwb-biocomputing.github.io/Graphitti/)
+[<< Go back to Graphitti home page](http://uwb-biocomputing.github.io/Graphitti/)

@@ -257,7 +257,7 @@ void AllSpikingSynapses::preSpikeHit(const BGSIZE iEdg) {
    if (idx >= ldelayQueue) {  //TODO: mod operator more efficient?
       idx -= ldelayQueue;
    }
-   if((delayQueue & (0x1 << idx)) == 0)
+   if((delayQueue & (0x1 << idx)) != 0)
    {
       LOG4CPLUS_DEBUG(edgeLogger_,"Delay Queue Error " << setbase(2) << delayQueue << setbase(10) << " idx" << idx << " iSync " << iEdg);
       exit(1);
