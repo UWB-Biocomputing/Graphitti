@@ -93,7 +93,6 @@ VSC can be configured to compile from CMake so that you don't have to type build
     with the args changing depending on the arguments you actually want to pass.
 
 ### Other Visual Studio Code Resources
-- The CSS wiki page: http://depts.washington.edu/cssuwb/wiki/vsc_and_remote_development
 - Prof. Pisan has a video in which he sets up VSC: https://youtu.be/CrLpiV-KMbM
 - Here's an intro video on using VSC: https://youtu.be/fnPhJHN0jTE
 
