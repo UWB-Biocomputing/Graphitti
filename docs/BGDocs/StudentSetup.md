@@ -8,8 +8,7 @@ Use Husky OnNet to connect to the server "UW Campus Network Traffic Only."
 
 Other external guides for remote VS Code development:
 - [Connecting VS Code to UW Servers](http://depts.washington.edu/cssuwb/wiki/write_high_quality_c_code#visual_studio_code)
-- [Visual Studio Code: Remote (C++) Development on Linux Lab Machines
-](http://depts.washington.edu/cssuwb/wiki/vsc_and_remote_development)
+- [Visual Studio Code: Remote (C++) Development on Linux Lab Machines](http://depts.washington.edu/cssuwb/wiki/vsc_and_remote_development)
 - [Remote Development using SSH](https://code.visualstudio.com/docs/remote/ssh). 
 
 ## Connecting VS Code to UW Server
