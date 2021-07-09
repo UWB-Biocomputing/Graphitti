@@ -9,7 +9,7 @@
  * The class provides a simple interface to access parameters 
  * in an XML file.
  * It operates with the following assumptions:
- *   - The client's ::readParameters method knows the XML 
+ *   - The client's ::loadParameters method knows the XML 
  *     layout of the parameter file.
  *   - The client makes all its own schema calls as needed.
  *   - The client will validate its own parameters unless 
@@ -71,7 +71,7 @@ bool ParameterManager::loadParameterFile(string path) {
       cerr << "Failed loading simulation parameter file "
            << path << ":" << "\n\t" << xmlDocument_->ErrorDesc()
            << endl;
-      cerr << " error: " << xmlDocument_->ErrorRow() << ", " << xmlDocument_->ErrorCol()
+      cerr << " error row: " << xmlDocument_->ErrorRow() << ", error col: " << xmlDocument_->ErrorCol()
            << endl;
       return false;
    }
@@ -100,13 +100,17 @@ bool ParameterManager::checkDocumentStatus() {
 /// @return bool A T/F flag indicating whether the retrieval succeeded
 bool ParameterManager::getStringByXpath(string xpath, string &referenceVar) {
    if (!checkDocumentStatus()) return false;
-   if (!TinyXPath::o_xpath_string(root_, xpath.c_str(), xpath)) {
+
+   // temp string holds evaluation of value at xpath
+   string temp;
+   // raise error if tinyxml cannot compute the xpath's value or returns empty
+   if (!TinyXPath::o_xpath_string(root_, xpath.c_str(), temp) || temp == "") {
       cerr << "Failed loading simulation parameter for xpath "
            << xpath << endl;
       // TODO: possibly get better error information?
       return false;
    }
-   referenceVar = xpath;
+   referenceVar = temp;
    return true;
 }
 
@@ -121,8 +125,6 @@ bool ParameterManager::getIntByXpath(string xpath, int &referenceVar) {
    if (!checkDocumentStatus()) return false;
    string tmp;
    if (!getStringByXpath(xpath, tmp)) {
-      cerr << "Failed loading simulation parameter for xpath "
-           << xpath << endl;
       return false;
    }
    // Workaround for standard value conversion functions.
@@ -163,8 +165,6 @@ bool ParameterManager::getDoubleByXpath(string xpath, double &referenceVar) {
    if (!checkDocumentStatus()) return false;
    string tmp;
    if (!getStringByXpath(xpath, tmp)) {
-      cerr << "Failed loading simulation parameter for xpath "
-           << xpath << endl;
       return false;
    }
    if (regex_match(tmp, regex(".*[^\\def.+-]+.*"))) {
@@ -198,8 +198,6 @@ bool ParameterManager::getFloatByXpath(string xpath, float &referenceVariable) {
    if (!checkDocumentStatus()) return false;
    string tmp;
    if (!getStringByXpath(xpath, tmp)) {
-      cerr << "Failed loading simulation parameter for xpath "
-           << xpath << endl;
       return false;
    }
    if (regex_match(tmp, regex(".*[^\\def.+-]+.*"))) {
@@ -257,8 +255,6 @@ bool ParameterManager::getLongByXpath(string xpath, long &referenceVar) {
    if (!checkDocumentStatus()) return false;
    string tmp;
    if (!getStringByXpath(xpath, tmp)) {
-      cerr << "Failed loading simulation parameter for xpath "
-           << xpath << endl;
       return false;
    }
    if (!regex_match(tmp, regex("[\\d]+l?"))) {

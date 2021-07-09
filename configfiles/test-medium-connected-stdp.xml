@@ -18,7 +18,7 @@
       <value name="value">1</value>
     </Seed>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">../data/singh97/test-medium-stdp.xml</resultFileName>
+      <resultFileName name="resultFileName">../Output/Results/test-medium-connected-stdp-out.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 
@@ -122,9 +122,9 @@
     </EdgesParams>
 
   <ConnectionsParams class="ConnStatic" name="ConnectionsParams">
-        <threshConnsRadius name="threshConnsRadius">0</threshConnsRadius>
-        <connsPerNeuron name="connsPerNeuron">0</connsPerNeuron>
-        <rewiringProbability name="rewiringProbability">0</rewiringProbability>
+        <threshConnsRadius name="threshConnsRadius">4</threshConnsRadius>
+        <connsPerNeuron name="connsPerNeuron">2</connsPerNeuron>
+        <rewiringProbability name="rewiringProbability">0.75</rewiringProbability>
         <excWeight name=" excWeight">
           <min name="min">2.36936e-38</min>
           <max name="max">2.35106e-38</max>
