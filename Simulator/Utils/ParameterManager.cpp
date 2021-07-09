@@ -107,7 +107,6 @@ bool ParameterManager::getStringByXpath(string xpath, string &referenceVar) {
    if (!TinyXPath::o_xpath_string(root_, xpath.c_str(), temp) || temp == "") {
       cerr << "Failed loading simulation parameter for xpath "
            << xpath << endl;
-      // TODO: possibly get better error information?
       return false;
    }
    referenceVar = temp;
