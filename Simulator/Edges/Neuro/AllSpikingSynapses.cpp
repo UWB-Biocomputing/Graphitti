@@ -254,13 +254,13 @@ void AllSpikingSynapses::preSpikeHit(const BGSIZE iEdg) {
    // calculate index where to insert the spike into delayQueue
    //LOG4CPLUS_TRACE(edgeLogger_,"delayidx "<<delayIdx<<" totalDelay "<<totalDelay<<" ldelayQueue "<<ldelayQueue);
    int idx = delayIdx + totalDelay;
-   if (idx >= ldelayQueue) {  //TODO: mod operator more efficient?
+   if (idx >= ldelayQueue) {
       idx -= ldelayQueue;
    }
    if((delayQueue & (0x1 << idx)) != 0)
    {
-      LOG4CPLUS_DEBUG(edgeLogger_,"Delay Queue Error " << setbase(2) << delayQueue << setbase(10) << " idx" << idx << " iSync " << iEdg);
-      exit(1);
+      LOG4CPLUS_ERROR(edgeLogger_,"Delay Queue Error " << setbase(2) << delayQueue << setbase(10) << " index " << idx << " edge ID " << iEdg);
+      assert(false);
    }
    
    // set a spike

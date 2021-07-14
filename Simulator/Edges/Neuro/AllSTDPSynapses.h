@@ -140,9 +140,6 @@ protected:
    ///
    ///  @param  iEdg   index of the synapse to set.
    virtual void initSpikeQueue(const BGSIZE iEdg) override;
-   
-   
-   virtual BGFLOAT synapticWeightModification(const BGSIZE iEdg, BGFLOAT edgeWeight, double delta);
 
 #if defined(USE_GPU)
    public:
@@ -257,6 +254,8 @@ protected:
    ///  @param  iEdg   Index of the Synapse to connect to.
    ///  @return true if there is an input spike event.
    bool isSpikeQueuePost(const BGSIZE iEdg);
+
+   virtual BGFLOAT synapticWeightModification(const BGSIZE iEdg, BGFLOAT edgeWeight, double delta);
 
 private:
    ///  Adjust synapse weight according to the Spike-timing-dependent synaptic modification

@@ -58,8 +58,8 @@ public:
    virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
                               edgeType type) = 0;
 
-   ///  Create a edge index map.
-   virtual EdgeIndexMap *createEdgeIndexMap();
+   ///  Populate a edge index map.
+   virtual void createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap);
 
    ///  Cereal serialization method
    ///  (Serializes edge weights, source vertices, and destination vertices)
