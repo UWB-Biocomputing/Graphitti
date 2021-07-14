@@ -34,8 +34,8 @@
 
 #include <fstream>
 
-#include "Recorders/XmlRecorder.h"
-#include "Core/Model.h"
+#include "XmlRecorder.h"
+#include "Model.h"
 
 class XmlSTDPRecorder : public XmlRecorder {
 public:
