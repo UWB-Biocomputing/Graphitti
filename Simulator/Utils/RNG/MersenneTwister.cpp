@@ -321,4 +321,21 @@ uint32_t MTRand::hash( time_t t, clock_t c )
   return ( h1 + differ++ ) ^ h2;
 }
 
+MTRand::~MTRand() {}
 
+// same as rand()
+BGFLOAT MTRand::operator()() {
+  return rand();
+}
+
+uint32_t MTRand::hiBit( uint32_t u ) const { return u & 0x80000000UL; }
+
+uint32_t MTRand::loBit( uint32_t u ) const { return u & 0x00000001UL; }
+
+uint32_t MTRand::loBits( uint32_t u ) const { return u & 0x7fffffffUL; }
+
+uint32_t MTRand::mixBits( uint32_t u, uint32_t v ) const
+  { return hiBit(u) | loBits(v); }
+
+uint32_t MTRand::twist( uint32_t m, uint32_t s0, uint32_t s1 ) const
+  { return m ^ (mixBits(s0,s1)>>1) ^ (-loBit(s1) & 0x9908b0dfUL); }
