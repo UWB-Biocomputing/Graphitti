@@ -256,7 +256,7 @@ void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap) {
 ///
 ///  @param  vertices           The vertices.
 ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
-void AllEdges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap) {
+void AllEdges::advanceEdges(AllVertices *vertices, EdgeIndexMap *edgeIndexMap) {
    for (BGSIZE i = 0; i < totalEdgeCount_; i++) {
       BGSIZE iEdg = edgeIndexMap->incomingEdgeIndexMap_[i];
       advanceEdge(iEdg, vertices);

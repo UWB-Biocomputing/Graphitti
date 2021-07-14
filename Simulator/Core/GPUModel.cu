@@ -11,7 +11,7 @@
 #include "AllSynapsesDeviceFuncs.h"
 #include "Connections.h"
 #include "Global.h"
-#include "IAllVertices.h"
+#include "AllVertices.h"
 #include "AllEdges.h"
 
 #ifdef PERFORMANCE_METRICS
@@ -41,7 +41,7 @@ GPUModel::~GPUModel()
 void GPUModel::allocDeviceStruct(void** allVerticesDevice, void** allEdgesDevice)
 {
   // Get neurons and synapses
-  shared_ptr<IAllVertices> neurons = layout_->getVertices();
+  shared_ptr<AllVertices> neurons = layout_->getVertices();
   shared_ptr<AllEdges> synapses = connections_->getEdges();
 
   // Allocate Neurons and Synapses structs on GPU device memory
@@ -67,7 +67,7 @@ void GPUModel::allocDeviceStruct(void** allVerticesDevice, void** allEdgesDevice
 void GPUModel::deleteDeviceStruct(void** allVerticesDevice, void** allEdgesDevice)
 {  
   // Get neurons and synapses
-  shared_ptr<IAllVertices> neurons = layout_->getVertices();
+  shared_ptr<AllVertices> neurons = layout_->getVertices();
   shared_ptr<AllEdges> synapses = connections_->getEdges();
 
   // Copy device synapse and neuron structs to host memory
@@ -145,7 +145,7 @@ void GPUModel::advance()
 #endif // PERFORMANCE_METRICS
 
   // Get neurons and synapses
-  shared_ptr<IAllVertices> neurons = layout_->getVertices();
+  shared_ptr<AllVertices> neurons = layout_->getVertices();
   shared_ptr<AllEdges> synapses = connections_->getEdges();
 
   normalMTGPU(randNoise_d);
@@ -195,7 +195,7 @@ void GPUModel::calcSummationMap()
 void GPUModel::updateConnections()
 {
   // Get neurons and synapses
-  shared_ptr<IAllVertices> neurons = layout_->getVertices();
+  shared_ptr<AllVertices> neurons = layout_->getVertices();
   shared_ptr<AllEdges> synapses = connections_->getEdges();
 
   dynamic_cast<AllSpikingNeurons*>(neurons.get())->copyNeuronDeviceSpikeCountsToHost(allVerticesDevice_);
@@ -217,7 +217,7 @@ void GPUModel::updateHistory()
   Model::updateHistory();
   // clear spike count
   
-  shared_ptr<IAllVertices> neurons = layout_->getVertices();
+  shared_ptr<AllVertices> neurons = layout_->getVertices();
   dynamic_cast<AllSpikingNeurons*>(neurons.get())->clearNeuronSpikeCounts(allVerticesDevice_);
 }
 

@@ -31,7 +31,7 @@ public:
    ///  Creates an instance of the class.
    ///
    ///  @return Reference to the instance of the class.
-   static IAllVertices *Create() { return new All911Vertices(); }
+   static AllVertices *Create() { return new All911Vertices(); }
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all vertices' states.

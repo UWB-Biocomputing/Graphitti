@@ -66,14 +66,14 @@ public:
     *
     * @param[in] neurons   The entire list of neurons.
     */
-   virtual void compileHistories(IAllVertices &neurons);
+   virtual void compileHistories(AllVertices &neurons);
 
    /**
     * Writes simulation results to an output destination.
     *
     * @param  neurons the Neuron list to search from.
     **/
-   virtual void saveSimData(const IAllVertices &neurons);
+   virtual void saveSimData(const AllVertices &neurons);
 
    /**
     *  Prints out all parameters to logging file.

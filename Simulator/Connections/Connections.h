@@ -27,7 +27,7 @@
 
 #include <log4cplus/loggingmacros.h>
 
-#include "IAllVertices.h"
+#include "AllVertices.h"
 #include "AllEdges.h"
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
@@ -59,7 +59,7 @@ public:
    ///  @param  layout    Layout information of the neural network.
    ///  @param  neurons   The Neuron list to search from.
    ///  @param  synapses  The Synapse list to search from.
-   virtual void setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *synapses) = 0;
+   virtual void setupConnections(Layout *layout, AllVertices *vertices, AllEdges *synapses) = 0;
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operations::op::loadParameters
@@ -74,7 +74,7 @@ public:
    ///  @param  neurons  The Neuron list to search from.
    ///  @param  layout   Layout information of the neural network.
    ///  @return true if successful, false otherwise.
-   virtual bool updateConnections(IAllVertices &vertices, Layout *layout);
+   virtual bool updateConnections(AllVertices &vertices, Layout *layout);
 
    ///  Creates synapses from synapse weights saved in the serialization file.
    ///
@@ -82,7 +82,7 @@ public:
    ///  @param  layout      Layout information of the neural network.
    ///  @param  ineurons    The Neuron list to search from.
    ///  @param  isynapses   The Synapse list to search from.
-   void createSynapsesFromWeights(const int numVertices, Layout *layout, IAllVertices &ivertices, AllEdges &isynapses);
+   void createSynapsesFromWeights(const int numVertices, Layout *layout, AllVertices &vertices, AllEdges &synapses);
 
 #if defined(USE_GPU)
    public:
@@ -95,7 +95,7 @@ public:
        ///  @param  allVerticesDevice    GPU address of the allVertices struct on device memory.
        ///  @param  allEdgesDevice   GPU address of the allEdges struct on device memory.
        ///  @param  layout              Layout information of the neural network.
-       virtual void updateSynapsesWeights(const int numVertices, IAllVertices &vertices, AllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout);
+       virtual void updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout);
 #else
 public:
    ///  Update the weight of the Synapses in the simulation.
@@ -105,7 +105,7 @@ public:
    ///  @param  ineurons    The Neuron list to search from.
    ///  @param  isynapses   The Synapse list to search from.
    virtual void
-   updateSynapsesWeights(const int numVertices, IAllVertices &vertices, AllEdges &synapses, Layout *layout);
+   updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &synapses, Layout *layout);
 
 #endif // USE_GPU
 

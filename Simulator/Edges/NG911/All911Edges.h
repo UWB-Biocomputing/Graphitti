@@ -80,7 +80,7 @@ public:
    ///
    ///  @param  vertices           The vertex list to search from.
    ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
-   virtual void advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap);
+   virtual void advanceEdges(AllVertices *vertices, EdgeIndexMap *edgeIndexMap);
 
    ///  Advance one specific Edge.
    ///
@@ -89,7 +89,7 @@ public:
    void advance911Edge(const BGSIZE iEdg, All911Vertices *vertices);
 
    /// unused virtual function placeholder
-   virtual void advanceEdge(const BGSIZE iEdg, IAllVertices *vertices) override {};
+   virtual void advanceEdge(const BGSIZE iEdg, AllVertices *vertices) override {};
 
 #endif
 };

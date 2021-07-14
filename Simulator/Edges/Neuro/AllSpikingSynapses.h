@@ -223,7 +223,7 @@ public:
    ///
    ///  @param  iEdg      Index of the Synapse to connect to.
    ///  @param  neurons   The Neuron list to search from.
-   virtual void advanceEdge(const BGSIZE iEdg, IAllVertices *neurons) override;
+   virtual void advanceEdge(const BGSIZE iEdg, AllVertices *neurons) override;
 
    ///  Prepares Synapse for a spike hit.
    ///
