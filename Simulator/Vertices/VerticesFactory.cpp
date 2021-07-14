@@ -6,7 +6,7 @@
  * @brief A factory class for creating Vertices objects.
  */
 
-#include "VerticiesFactory.h"
+#include "VerticesFactory.h"
 
 #include "AllLIFNeurons.h"
 #include "AllIZHNeurons.h"

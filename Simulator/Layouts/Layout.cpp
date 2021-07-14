@@ -12,7 +12,7 @@
 #include "Util.h"
 #include "ParameterManager.h"
 #include "OperationManager.h"
-#include "VerticiesFactory.h"
+#include "VerticesFactory.h"
 
 /// Constructor
 Layout::Layout() :

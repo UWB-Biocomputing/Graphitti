@@ -89,6 +89,11 @@ class MTRand {
   static const int N = 624;       // length of state vector
   static const int SAVE = N + 1;  // length of array for save()
 
+  ///  Creates an instance of the class.
+  ///
+  ///  @return Reference to the instance of the class.
+  static MTRand *Create() { return new MTRand(); }
+
  protected:
   static const int M = 397;  // period parameter
 

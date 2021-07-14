@@ -57,6 +57,11 @@ class Norm : public MTRand {
 public:
     inline virtual ~Norm() {}
 
+  ///  Creates an instance of the class.
+  ///
+  ///  @return Reference to the instance of the class.
+  static MTRand *Create() { return new Norm(); }
+
   /*!
     The constructor allows specification of the mean,
     variance (default zero and one, respectively), and initial seed
