@@ -74,7 +74,7 @@ void XmlSTDPRecorder::getValues() {
 /// Compile history information in every epoch
 ///
 /// @param[in] neurons 	The entire list of neurons.
-void XmlSTDPRecorder::compileHistories(IAllVertices &neurons) {
+void XmlSTDPRecorder::compileHistories(AllVertices &neurons) {
    LOG4CPLUS_INFO(fileLogger_, "Compiling STDP HISTORY");
    XmlRecorder::compileHistories(neurons);
    Simulator &simulator = Simulator::getInstance();
@@ -144,7 +144,7 @@ string XmlSTDPRecorder::toXML(string name, vector<vector<int>> MatrixToWrite) co
 /// Writes simulation results to an output destination.
 ///
 /// @param  neurons the Neuron list to search from.
-void XmlSTDPRecorder::saveSimData(const IAllVertices &neurons)
+void XmlSTDPRecorder::saveSimData(const AllVertices &neurons)
 {
    Simulator &simulator = Simulator::getInstance();
    

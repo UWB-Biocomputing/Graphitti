@@ -82,7 +82,7 @@ ConnGrowth::~ConnGrowth() {
 ///  @param  layout    Layout information of the neural network.
 ///  @param  vertices   The vertex list to search from.
 ///  @param  synapses  The Synapse list to search from.
-void ConnGrowth::setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *synapses) {
+void ConnGrowth::setupConnections(Layout *layout, AllVertices *vertices, AllEdges *synapses) {
    int numVertices = Simulator::getInstance().getTotalVertices();
    radiiSize_ = numVertices;
 
@@ -127,7 +127,7 @@ void ConnGrowth::printParameters() const {
 ///  @param  vertices  The vertex list to search from.
 ///  @param  layout   Layout information of the neural network.
 ///  @return true if successful, false otherwise.
-bool ConnGrowth::updateConnections(IAllVertices &vertices, Layout *layout) {
+bool ConnGrowth::updateConnections(AllVertices &vertices, Layout *layout) {
    // Update Connections data
    updateConns(vertices);
 
@@ -143,7 +143,7 @@ bool ConnGrowth::updateConnections(IAllVertices &vertices, Layout *layout) {
 ///  Calculates firing rates, vertex radii change and assign new values.
 ///
 ///  @param  vertices  The vertex list to search from.
-void ConnGrowth::updateConns(IAllVertices &vertices) {
+void ConnGrowth::updateConns(AllVertices &vertices) {
    AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(vertices);
 
    // Calculate growth cycle firing rate for previous period
@@ -237,9 +237,8 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout) {
 ///  @param  ivertices    the AllVertices object.
 ///  @param  iedges   the AllEdges object.
 ///  @param  layout      the Layout object.
-void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &ivertices, AllEdges &iedges,
+void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &iedges,
                                        Layout *layout) {
-   AllVertices &vertices = dynamic_cast<AllVertices &>(ivertices);
    AllNeuroEdges &synapses = dynamic_cast<AllNeuroEdges &>(iedges);
 
    // For now, we just set the weights to equal the areas. We will later

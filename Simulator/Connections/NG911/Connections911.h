@@ -34,7 +34,7 @@ public:
    ///  @param  layout    Layout information of the network.
    ///  @param  vertices  The Vertex list to search from.
    ///  @param  edges     The edge list to search from.
-   virtual void setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *edges) override;
+   virtual void setupConnections(Layout *layout, AllVertices *vertices, AllEdges *edges) override;
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operations::op::loadParameters
@@ -77,7 +77,7 @@ public:
    ///  @param  vertices The Vertex list to search from.
    ///  @param  layout   Layout information of the vertex network.
    ///  @return true if successful, false otherwise.
-   virtual bool updateConnections(IAllVertices &vertices, Layout *layout) override;
+   virtual bool updateConnections(AllVertices &vertices, Layout *layout) override;
 
    ///  Returns the complete list of all deleted or added edges as a string.
    ///  @return xml representation of all deleted or added edges
@@ -93,14 +93,14 @@ private:
    ///  @param  vertices  The Vertex list to search from.
    ///  @param  layout   Layout information of the vertex network.
    ///  @return true if successful, false otherwise.
-   bool erasePSAP(IAllVertices &vertices, Layout *layout);
+   bool erasePSAP(AllVertices &vertices, Layout *layout);
 
    ///  Randomly delete 1 RESP.
    ///
    ///  @param  vertices  The Vertex list to search from.
    ///  @param  layout   Layout information of the vertex network.
    ///  @return true if successful, false otherwise.
-   bool eraseRESP(IAllVertices &vertices, Layout *layout);
+   bool eraseRESP(AllVertices &vertices, Layout *layout);
 
    struct ChangedEdge {
       int srcV;

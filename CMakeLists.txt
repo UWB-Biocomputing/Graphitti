@@ -75,6 +75,8 @@ include_directories(
         Simulator/Layouts/Neuro
         Simulator/Layouts/NG911
         Simulator/Recorders
+        Simulator/Recorders/Neuro
+        Simulator/Recorders/NG911
         Simulator/Vertices
         Simulator/Vertices/Neuro
         Simulator/Vertices/NG911

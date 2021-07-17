@@ -230,7 +230,7 @@ void Hdf5Recorder::term()
 /// Compile history information in every epoch.
 ///
 /// @param[in] neurons   The entire list of neurons.
-void Hdf5Recorder::compileHistories(IAllVertices &vertices)
+void Hdf5Recorder::compileHistories(AllVertices &vertices)
 {
    AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons&>(vertices);
    Simulator& simulator = Simulator::getInstance();
@@ -396,7 +396,7 @@ void Hdf5Recorder::compileHistories(IAllVertices &vertices)
 /// Writes simulation results to an output destination.
 ///
 /// @param  vertices the AllVertices object.
-void Hdf5Recorder::saveSimData(const IAllVertices &vertices)
+void Hdf5Recorder::saveSimData(const AllVertices &vertices)
 {
    Simulator& simulator = Simulator::getInstance();
    shared_ptr<Model> model = simulator.getModel();

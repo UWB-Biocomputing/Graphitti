@@ -69,7 +69,7 @@ void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, B
 ///
 ///  @param  vertices           The vertex list to search from.
 ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
-void All911Edges::advanceEdges(IAllVertices *vertices, EdgeIndexMap *edgeIndexMap) {
+void All911Edges::advanceEdges(AllVertices *vertices, EdgeIndexMap *edgeIndexMap) {
    All911Vertices *allVertices = dynamic_cast<All911Vertices *>(vertices);
    for (BGSIZE i = 0; i < totalEdgeCount_; i++) {
       if(!inUse_[i]) {continue;}

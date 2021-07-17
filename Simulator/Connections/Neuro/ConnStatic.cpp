@@ -49,7 +49,7 @@ ConnStatic::~ConnStatic() {
 ///  @param  layout    Layout information of the neural network.
 ///  @param  vertices   The Vertex list to search from.
 ///  @param  edges  The Synapse list to search from.
-void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *edges) {
+void ConnStatic::setupConnections(Layout *layout, AllVertices *vertices, AllEdges *edges) {
    Simulator& simulator = Simulator::getInstance();
    int numVertices = simulator.getTotalVertices();
    vector<DistDestVertex> distDestVertices[numVertices];
@@ -84,7 +84,7 @@ void ConnStatic::setupConnections(Layout *layout, IAllVertices *vertices, AllEdg
       for (BGSIZE i = 0; i < distDestVertices[srcVertex].size() && (int) i < connsPerVertex_; i++) {
          int destVertex = distDestVertices[srcVertex][i].destVertex;
          edgeType type = layout->edgType(srcVertex, destVertex);
-         BGFLOAT *sumPoint = &(dynamic_cast<AllVertices *>(vertices)->summationMap_[destVertex]);
+         BGFLOAT *sumPoint = &vertices->summationMap_[destVertex];
 
          LOG4CPLUS_DEBUG(fileLogger_, "Source: " << srcVertex << " Dest: " << destVertex << " Dist: "
                          << distDestVertices[srcVertex][i].dist);

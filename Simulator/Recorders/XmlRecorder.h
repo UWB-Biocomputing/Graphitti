@@ -17,8 +17,8 @@
 
 #include <fstream>
 
-#include "Recorders/IRecorder.h"
-#include "Core/Model.h"
+#include "IRecorder.h"
+#include "Model.h"
 
 class XmlRecorder : public IRecorder {
 public:
@@ -48,11 +48,11 @@ public:
 
    /// Compile history information in every epoch
    /// @param[in] vertices   The entire list of vertices.
-   virtual void compileHistories(IAllVertices &vertices) override;
+   virtual void compileHistories(AllVertices &vertices) override;
 
    /// Writes simulation results to an output destination.
    /// @param  vertices the Vertex list to search from.
-   virtual void saveSimData(const IAllVertices &vertices) override;
+   virtual void saveSimData(const AllVertices &vertices) override;
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters

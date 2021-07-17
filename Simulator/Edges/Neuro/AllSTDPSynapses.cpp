@@ -7,7 +7,7 @@
  */
 
 #include "AllSTDPSynapses.h"
-#include "IAllVertices.h"
+#include "AllVertices.h"
 #include "AllSpikingNeurons.h"
 #include "ParameterManager.h"
 
@@ -281,7 +281,7 @@ void AllSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVerte
 ///
 ///  @param  iEdg      Index of the Synapse to connect to.
 ///  @param  neurons   The Neuron list to search from.
-void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, IAllVertices *neurons) {
+void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices *neurons) {
    // If the synapse is inhibitory or its weight is zero, update synapse state using AllSpikingSynapses::advanceEdge method
    //LOG4CPLUS_DEBUG(edgeLogger_, "iEdg : " << iEdg );
    

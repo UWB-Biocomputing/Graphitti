@@ -60,7 +60,7 @@ void XmlGrowthRecorder::getValues() {
 /// Compile history information in every epoch
 ///
 /// @param[in] neurons 	The entire list of neurons.
-void XmlGrowthRecorder::compileHistories(IAllVertices &neurons) {
+void XmlGrowthRecorder::compileHistories(AllVertices &neurons) {
    XmlRecorder::compileHistories(neurons);
 
    shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
@@ -88,7 +88,7 @@ void XmlGrowthRecorder::compileHistories(IAllVertices &neurons) {
 /// Writes simulation results to an output destination.
 ///
 /// @param  neurons the Neuron list to search from.
-void XmlGrowthRecorder::saveSimData(const IAllVertices &neurons) {
+void XmlGrowthRecorder::saveSimData(const AllVertices &neurons) {
    // create Neuron Types matrix
    VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalVertices(), EXC);
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {

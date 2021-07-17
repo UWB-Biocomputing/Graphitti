@@ -31,7 +31,7 @@
 typedef unsigned _int8 uint8_t;
 #endif
 
-class IAllVertices;
+class AllVertices;
 
 // typedef void (*fpCreateSynapse_t)(void*, const int, const int, int, int, BGFLOAT*, const BGFLOAT, edgeType);
 
