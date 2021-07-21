@@ -112,7 +112,8 @@ void ConnGrowth::loadParameters() {
    if (growthParams_.epsilon != 0) {
       growthParams_.maxRate = growthParams_.targetRate / growthParams_.epsilon;
 	} else {
-      LOG4CPLUS_WARN(fileLogger_, "Parameter GrowthParams/epsilon/ has a value of 0" << endl);
+      LOG4CPLUS_FATAL(fileLogger_, "Parameter GrowthParams/epsilon/ has a value of 0" << endl);
+      exit(EXIT_FAILURE);
    }
 }
 
