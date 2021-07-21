@@ -92,7 +92,7 @@
       </LayoutFiles>
     </LayoutParams>
     <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
+      <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_2-100.xml</probedNListFileName>
     </RecorderParams>
   </ModelParams>
 </BGSimParams>
-
