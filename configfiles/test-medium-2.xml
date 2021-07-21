@@ -89,13 +89,11 @@
       <LayoutFiles name="LayoutFiles">
         <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList30x30-0.1.xml</activeNListFileName>
         <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList30x30-0.02.xml</inhNListFileName>
-        <probedNListFileName name="prbNListFileName" type="InputFile"/>
       </LayoutFiles>
     </LayoutParams>
 
     <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
       <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_900.xml</probedNListFileName>
     </RecorderParams>
-
   </ModelParams>
 </BGSimParams>

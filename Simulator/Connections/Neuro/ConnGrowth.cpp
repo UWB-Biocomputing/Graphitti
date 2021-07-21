@@ -59,7 +59,7 @@ ConnGrowth::ConnGrowth() : Connections() {
 }
 
 ConnGrowth::~ConnGrowth() {
-      if (W_ != nullptr) delete W_;
+   if (W_ != nullptr) delete W_;
    if (radii_ != nullptr) delete radii_;
    if (rates_ != nullptr) delete rates_;
    if (delta_ != nullptr) delete delta_;
@@ -107,6 +107,14 @@ void ConnGrowth::loadParameters() {
    ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/targetRate/text()", growthParams_.targetRate);
    ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/minRadius/text()", growthParams_.minRadius);
    ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/startRadius/text()", growthParams_.startRadius);
+
+   // initial maximum firing rate
+   if (growthParams_.epsilon != 0) {
+      growthParams_.maxRate = growthParams_.targetRate / growthParams_.epsilon;
+	} else {
+      LOG4CPLUS_FATAL(fileLogger_, "Parameter GrowthParams/epsilon/ has a value of 0" << endl);
+      exit(EXIT_FAILURE);
+   }
 }
 
 /// Prints out all parameters to logging file.
@@ -119,7 +127,7 @@ void ConnGrowth::printParameters() const {
     << "\trho: " << growthParams_.rho << endl
     << "\tTarget rate: " << growthParams_.targetRate << "," << endl
     << "\tMinimum radius: " << growthParams_.minRadius << endl
-    << "\tStarting raduis: " << growthParams_.startRadius << endl << endl);
+    << "\tStarting radius: " << growthParams_.startRadius << endl << endl);
 }
 
 ///  Update the connections status in every epoch.
@@ -154,7 +162,7 @@ void ConnGrowth::updateConns(AllVertices &vertices) {
       assert(spNeurons.spikeCount_[i] < maxSpikes);
       (*rates_)[i] = spNeurons.spikeCount_[i] / Simulator::getInstance().getEpochDuration();
    }
-
+   
    // compute vertex radii change and assign new values
    (*outgrowth_) =
          1.0 - 2.0 / (1.0 + exp((growthParams_.epsilon - *rates_ / growthParams_.maxRate) / growthParams_.beta));

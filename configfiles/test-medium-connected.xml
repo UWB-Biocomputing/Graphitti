@@ -99,7 +99,7 @@
         <rho name="rho">0.0001</rho>
         <targetRate name="targetRate">1.9</targetRate>
         <minRadius name="minRadius">0.1</minRadius>
-        <startRadius name="startRadius">0.4</startRadius>
+        <startRadius name="startRadius">0.49</startRadius>
       </GrowthParams>
     </ConnectionsParams>
 
@@ -107,7 +107,6 @@
       <LayoutFiles name="LayoutFiles">
         <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList30x30-0.1.xml</activeNListFileName>
         <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList30x30-0.02.xml</inhNListFileName>
-        <probedNListFileName name="prbNListFileName" type="InputFile"/>
       </LayoutFiles>
     </LayoutParams>
 
