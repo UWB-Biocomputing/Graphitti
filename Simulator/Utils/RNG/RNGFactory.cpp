@@ -12,7 +12,7 @@
 
 /// Constructor is private to keep a singleton instance of this class.
 RNGFactory::RNGFactory() {
-   // register vertices classes
+   // register rng classes
    registerClass("MTRand", &MTRand::Create);
    registerClass("Norm", &Norm::Create);
 }
@@ -21,22 +21,22 @@ RNGFactory::~RNGFactory() {
    createFunctions.clear();
 }
 
-///  Register vertices class and its creation function to the factory.
+///  Register rng class and its creation function to the factory.
 ///
-///  @param  className  vertices class name.
+///  @param  className  rng class name.
 ///  @param  Pointer to the class creation function.
 void RNGFactory::registerClass(const string &className, CreateFunction function) {
    createFunctions[className] = function;
 }
 
 
-/// Creates concrete instance of the desired vertices class.
-shared_ptr<MTRand> RNGFactory::createVertices(const string &className) {
-   verticesInstance = shared_ptr<MTRand>(invokeCreateFunction(className));
-   return verticesInstance;
+/// Creates concrete instance of the desired rng class.
+shared_ptr<MTRand> RNGFactory::createRNG(const string &className) {
+   rngInstance = shared_ptr<MTRand>(invokeCreateFunction(className));
+   return rngInstance;
 }
 
-/// Create an instance of the vertices class using the static ::Create() method.
+/// Create an instance of the rng class using the static ::Create() method.
 ///
 /// The calling method uses this retrieval mechanism in 
 /// value assignment.

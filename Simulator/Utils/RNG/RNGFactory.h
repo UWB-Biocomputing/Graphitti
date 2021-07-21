@@ -28,7 +28,7 @@ public:
    }
 
    // Invokes constructor for desired concrete class
-   shared_ptr<MTRand> createVertices(const string &className);
+   shared_ptr<MTRand> createRNG(const string &className);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    RNGFactory(RNGFactory const &) = delete;
@@ -38,22 +38,22 @@ private:
    /// Constructor is private to keep a singleton instance of this class.
    RNGFactory();
 
-   /// Pointer to vertices instance
-   shared_ptr<MTRand> verticesInstance;
+   /// Pointer to rng instance
+   shared_ptr<MTRand> rngInstance;
 
    /* Type definitions */
    /// Defines function type for usage in internal map
    typedef MTRand *(*CreateFunction)(void);
 
    /// Defines map between class name and corresponding ::Create() function.
-   typedef map<string, CreateFunction> VerticesFunctionMap;
+   typedef map<string, CreateFunction> RNGFunctionMap;
 
    /// Makes class-to-function map an internal factory member.
-   VerticesFunctionMap createFunctions;
+   RNGFunctionMap createFunctions;
 
    /// Retrieves and invokes correct ::Create() function.
    MTRand *invokeCreateFunction(const string &className);
 
-   /// Register vertex class and it's create function to the factory.
+   /// Register rng class and it's create function to the factory.
    void registerClass(const string &className, CreateFunction function);
 };
