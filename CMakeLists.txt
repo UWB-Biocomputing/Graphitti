@@ -14,11 +14,11 @@ set(CMAKE_CXX_STANDARD 11)
 ############################################################################################
 set(ENABLE_CUDA NO)
 
-# set(DEBUG_MODE YES) for debugging, no optimizaiton
+# set(DEBUG_MODE YES) for debugging, no optimization
 # set(DEBUG_MODE NO) for production code, -O3 optimization enabled
 set(DEBUG_MODE NO)
 
-# Enables the CUDA langauge and locates the NVCC compiler. 
+# Enables the CUDA language and locates the NVCC compiler. 
 # Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
 #
 # ENABLE_CUDA also compiles each library that contains CUDA with the following line...
