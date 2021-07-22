@@ -40,6 +40,23 @@ else()
         message("-- HDF5 library was not located. Please only use XML recorders.")
 endif()
 
+# Get short git commit ID
+# Change to "git rev-parse HEAD" for full commit ID
+execute_process(
+        COMMAND
+        git rev-parse --short HEAD
+        OUTPUT_VARIABLE        GIT_COMMIT_ID )
+
+# GIT_COMMIT_ID has trailing whitespaces
+string(REGEX REPLACE "\n$" "" GIT_COMMIT_ID "${GIT_COMMIT_ID}")
+
+# Save GIT_COMMIT_ID to config.h, which is included in Driver.cpp
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
+                ${CMAKE_BINARY_DIR}/config.h
+                @ONLY )
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 #set(CMAKE_VERBOSE_MAKEFILE TRUE)
 
 # Setting the location of the executable to be in the top-level directory. This helps when using file paths during

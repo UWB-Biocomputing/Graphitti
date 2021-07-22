@@ -45,6 +45,9 @@
 #include "ConnGrowth.h" // hacked in. that's why its here.
 #include "ConnStatic.h" // hacked in. that's why its here.
 
+// build/config.h contains the git commit id
+#include "config.h"
+
 #if defined(USE_GPU)
 #include "GPUModel.h"
 #elif defined(USE_OMP)
@@ -68,6 +71,16 @@ void serializeSynapses();
 ///  @param  argv    arguments.
 ///  @return -1 if error, else if success.
 int main(int argc, char *argv[]) {
+
+   // Doesn't work if placed in parseCommandLine because -c is a required flag,
+   // and ParamContainer throws an error
+   if (argc == 2) {
+      if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "--version") == 0){
+         cout << "Git commit ID: " << GIT_COMMIT_ID << endl;
+         exit(0);
+      }
+   }
+
    // Clear logging files at the start of each simulation
    fstream("../Output/Debug/logging.txt", ios::out | ios::trunc);
    fstream("../Output/Debug/vertices.txt", ios::out | ios::trunc);
@@ -207,7 +220,10 @@ bool parseCommandLine(int argc, char *argv[]) {
        || (cl.addParam("deserializefile", 'r', ParamContainer::filename,
                        "simulation deserialization filepath (enables deserialization)") != ParamContainer::errOk)
        || (cl.addParam("serializefile", 'w', ParamContainer::filename,
-                       "simulation serialization filepath (enables serialization)") != ParamContainer::errOk)) {
+                       "simulation serialization filepath (enables serialization)") != ParamContainer::errOk)
+       || (cl.addParam("version", 'v', ParamContainer::novalue,
+                       "current git commit ID") != ParamContainer::errOk)) {
+
       cerr << "Internal error creating command line parser" << endl;
       return false;
    }
