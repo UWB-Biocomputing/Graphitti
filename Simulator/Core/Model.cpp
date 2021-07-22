@@ -49,7 +49,7 @@ Model::~Model() {
 }
 
 /// Save simulation results to an output destination.
-void Model::saveData() {
+void Model::saveResults() {
    if (recorder_ != nullptr) {
       recorder_->saveSimData(*layout_->getVertices());
    }

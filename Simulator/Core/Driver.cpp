@@ -162,7 +162,7 @@ int main(int argc, char *argv[]) {
    // todo: before this, do copy from gpu.
    // Writes simulation results to an output destination
    LOG4CPLUS_TRACE(consoleLogger, "Simulation ended, saving results");
-   simulator.saveData();
+   simulator.saveResults();
 
    // todo: going to be moved with the "hack"
    // Serializes internal state for the current simulation
