@@ -14,6 +14,10 @@ set(CMAKE_CXX_STANDARD 11)
 ############################################################################################
 set(ENABLE_CUDA NO)
 
+# set(DEBUG_MODE YES) for debugging, no optimizaiton
+# set(DEBUG_MODE NO) for production code, -O3 optimization enabled
+set(DEBUG_MODE NO)
+
 # Enables the CUDA langauge and locates the NVCC compiler. 
 # Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
 #
@@ -67,6 +71,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 # Set extra warning flags
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+
+if (NOT DEBUG_MODE)
+        message("-- Setting Optimization flag: O3")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+endif()
 
 #define TIXML_USE_STL as a preproccersser macro to use the C++ standard library with TinyXML
 add_compile_definitions(TIXML_USE_STL)
