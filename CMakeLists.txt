@@ -44,11 +44,11 @@ else()
         message("-- HDF5 library was not located. Please only use XML recorders.")
 endif()
 
-# Get short git commit ID
-# Change to "git rev-parse HEAD" for full commit ID
+# Get git commit ID
+# Change to "git rev-parse --short HEAD" for short commit ID
 execute_process(
         COMMAND
-        git rev-parse --short HEAD
+        git rev-parse HEAD
         OUTPUT_VARIABLE        GIT_COMMIT_ID )
 
 # GIT_COMMIT_ID has trailing whitespaces
