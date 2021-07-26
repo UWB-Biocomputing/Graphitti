@@ -1,0 +1,6 @@
+#ifndef HAVE_CONFIG_H
+#define HAVE_CONFIG_H
+
+#cmakedefine GIT_COMMIT_ID "@GIT_COMMIT_ID@"
+
+#endif
