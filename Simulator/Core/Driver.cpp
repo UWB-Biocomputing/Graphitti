@@ -214,7 +214,7 @@ bool parseCommandLine(int argc, char *argv[]) {
        || (cl.addParam("serializefile", 'w', ParamContainer::filename,
                        "simulation serialization filepath (enables serialization)") != ParamContainer::errOk)
        || (cl.addParam("version", 'v', ParamContainer::novalue,
-                       "current git commit ID") != ParamContainer::errOk)) {
+                       "output current git commit ID and exit") != ParamContainer::errOk)) {
 
       cerr << "Internal error creating command line parser" << endl;
       return false;
