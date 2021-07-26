@@ -134,9 +134,9 @@ class MTRand {
   BGFLOAT randNorm( BGFLOAT mean = 0.0, BGFLOAT variance = 0.0 );
 
   // Re-seeding functions with same behavior as initializers
-  void seed( uint32_t oneSeed );
+  virtual void seed( uint32_t oneSeed );
   void seed( uint32_t *const bigSeed, uint32_t seedLength = N );
-  void seed();
+  virtual void seed();
 
   // Saving and loading generator state
   void save( uint32_t* saveArray ) const;  // to array of size SAVE

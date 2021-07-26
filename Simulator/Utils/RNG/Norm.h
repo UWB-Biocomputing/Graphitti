@@ -79,6 +79,12 @@ public:
       @return pseudorandom number drawn from a normal distribution.
    */
    virtual BGFLOAT operator() (void) override;
+
+   /// Allow Norm re-seeding (with same behavior as initializers)
+   virtual void seed(BGFLOAT m, BGFLOAT s, uint32_t seed);
+   virtual void seed(uint32_t seed) override;
+   virtual void seed() override;
+
 private:
    // Additional state information
 

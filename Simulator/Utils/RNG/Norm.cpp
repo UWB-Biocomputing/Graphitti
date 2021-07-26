@@ -94,3 +94,18 @@ Norm::~Norm() {}
 
 Norm::Norm(BGFLOAT m, BGFLOAT s, uint32_t seed)
    : MTRand(seed), odd(true), mu(m), sigma(s) {}
+
+void Norm::seed(BGFLOAT m, BGFLOAT s, uint32_t seed) {
+   MTRand::seed(seed);
+   odd = true;
+   mu = m;
+   sigma = s;
+}
+
+void Norm::seed(uint32_t seed) {
+   Norm::seed(0.0, 1.0, seed);
+}
+
+void Norm::seed() {
+   Norm::seed(0.0, 1.0, 0);
+}
