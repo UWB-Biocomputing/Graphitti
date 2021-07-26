@@ -13,7 +13,7 @@
 #include <string>
 
 #include "Global.h"
-#include "MersenneTwister.h"
+#include "MTRand.h"
 
 using namespace std;
 

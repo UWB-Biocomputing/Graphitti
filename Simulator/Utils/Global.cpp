@@ -6,7 +6,7 @@
  *  @brief Globally available functions/variables and default parameter values.
  */
 #include "Global.h"
-#include "RNG/MersenneTwister.h"
+#include "RNG/MTRand.h"
 #include "RNG/Norm.h"
 
 // Debugging log data and routines

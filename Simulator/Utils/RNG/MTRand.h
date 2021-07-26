@@ -1,5 +1,5 @@
 /** 
-* @file MersenneTwister.h
+* @file MTRand.h
 *
 * @ingroup Simulator/Utils/RNG
 *

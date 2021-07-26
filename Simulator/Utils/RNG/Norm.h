@@ -21,7 +21,7 @@
 #ifndef _NORM_H_
 #define _NORM_H_
 
-#include "MersenneTwister.h"
+#include "MTRand.h"
 #include <cmath>
 
 /*!

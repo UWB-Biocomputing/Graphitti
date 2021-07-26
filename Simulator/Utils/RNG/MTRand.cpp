@@ -1,5 +1,5 @@
 /** 
-* @file MersenneTwister.cpp
+* @file MTRand.cpp
 * 
 * @ingroup Simulator/Utils/RNG
 *
@@ -66,7 +66,7 @@
 * It would be nice to CC: rjwagner@writeme.com and Cokus@math.washington.edu
 * when you write.
 */
-#include "MersenneTwister.h"
+#include "MTRand.h"
 
 MTRand::MTRand( uint32_t oneSeed )
 { seed(oneSeed); }

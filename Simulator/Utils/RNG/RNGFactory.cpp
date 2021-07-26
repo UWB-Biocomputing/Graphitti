@@ -7,7 +7,7 @@
  */
 
 #include "RNGFactory.h"
-#include "MersenneTwister.h"
+#include "MTRand.h"
 #include "Norm.h"
 
 /// Constructor is private to keep a singleton instance of this class.
