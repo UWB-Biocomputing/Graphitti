@@ -68,10 +68,6 @@ EdgeIndexMap *All911Edges::createEdgeIndexMap() {
 
    DEBUG (cout << "totalEdgeCount: " << totalEdgeCount << endl;)
 
-   if (totalEdgeCount == 0) {
-      return nullptr;
-   }
-
    // FoundEdge allows us to sort a vector of edges based on distance so that
    // shorter distances are recorded first in the EdgeIndexMap. By doing this,
    // we don't have to traverse the entire list to find the nearest vertex
