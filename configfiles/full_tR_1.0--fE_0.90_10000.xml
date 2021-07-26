@@ -14,9 +14,12 @@
          <maxFiringRate name="maxFiringRate">200</maxFiringRate>
          <maxEdgesPerVertex name="maxEdgesPerVertex">200</maxEdgesPerVertex>
       </SimConfig>
-      <Seed name="Seed">
-         <value name="value">777</value>
-      </Seed>
+      <RNGConfig name="RNGConfig">
+         <Seed name="Seed">1</Seed>
+         <RNGParams class="Norm" name="RNGParams">
+            <Seed name="Seed">777</Seed>
+         </RNGParams>
+      </RNGConfig>
       <OutputParams name="OutputParams">
          <resultFileName name="resultFileName">../tmp/0429_tR_1.0--fE_0.90_raiju.h5</resultFileName>
       </OutputParams>
