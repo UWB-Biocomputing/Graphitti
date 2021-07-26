@@ -80,6 +80,7 @@ include_directories(
         Simulator/Vertices/NG911
         Simulator/Utils
         Simulator/Utils/Matrix
+        Simulator/Utils/RNG
         Testing
         ThirdParty
         ThirdParty/cereal

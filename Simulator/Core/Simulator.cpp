@@ -16,7 +16,7 @@
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "RecorderFactory.h"
-#include "Utils/RNG/RNGFactory.h"
+#include "RNGFactory.h"
 // #include "ParseParamError.h"
 
 /// Acts as constructor first time it's called, returns the instance of the singleton object

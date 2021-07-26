@@ -56,10 +56,10 @@ typedef unsigned long long int uint64_t;	//included in inttypes.h, which is not 
 #else
 #include <inttypes.h>	//used for uint64_t, unavailable in WIN32
 #endif
-#include "Utils/BGTypes.h"
+#include "BGTypes.h"
 //#include "Norm.h"
-#include "Utils/Coordinate.h"
-#include "Utils/Matrix/VectorMatrix.h"
+#include "Coordinate.h"
+#include "VectorMatrix.h"
 
 using namespace std;
 

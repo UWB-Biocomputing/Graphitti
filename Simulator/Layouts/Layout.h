@@ -21,7 +21,7 @@
 
 #include <log4cplus/loggingmacros.h>
 
-#include "Utils/Global.h"
+#include "Global.h"
 #include "IAllVertices.h"
 
 using namespace std;
