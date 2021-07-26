@@ -15,10 +15,12 @@
          <maxEdgesPerVertex name="maxEdgesPerVertex">200</maxEdgesPerVertex>
       </SimConfig>
       <RNGConfig name="RNGConfig">
-         <Seed name="Seed">1</Seed>
-         <RNGParams class="Norm" name="RNGParams">
+         <InitRNGParams name="InitRNGParams">
+            <Seed name="Seed">1</Seed>
+         </InitRNGParams>
+         <NoiseRNGParams class="Norm" name="NoiseRNGParams">
             <Seed name="Seed">777</Seed>
-         </RNGParams>
+         </NoiseRNGParams>
       </RNGConfig>
       <OutputParams name="OutputParams">
          <resultFileName name="resultFileName">../Output/Results/tR_1.0--fE_0.98_10000_historyDump.h5</resultFileName>

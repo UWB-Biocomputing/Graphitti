@@ -84,12 +84,16 @@ void Simulator::loadParameters() {
    ParameterManager::getInstance().getIntByXpath("//SimParams/numEpochs/text()", numEpochs_);
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxFiringRate/text()", maxFiringRate_);
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxEdgesPerVertex/text()", maxEdgesPerVertex_);
-   ParameterManager::getInstance().getLongByXpath("//RNGConfig/Seed/text()", rngSeed_);
 
+   // Instantiate rng object 
    string type;
-   ParameterManager::getInstance().getStringByXpath("//RNGConfig/RNGParams/@class", type);
-   ParameterManager::getInstance().getLongByXpath("//RNGConfig/RNGParams/Seed/text()", seed_);
+   ParameterManager::getInstance().getStringByXpath("//RNGConfig/NoiseRNGParams/@class", type);
    rgNormrnd = RNGFactory::getInstance()->createRNG(type);
+
+   ParameterManager::getInstance().getLongByXpath("//RNGConfig/InitRNGParams/Seed/text()", rngSeed_);
+   ParameterManager::getInstance().getLongByXpath("//RNGConfig/NoiseRNGParams/Seed/text()", seed_);
+   rgNormrnd->seed(seed_);
+   rng.seed(rngSeed_);
 
    // Result file name can be set by the command line arguments so check for default string value as to not overwrite it
    if (resultFileName_ == "") {
