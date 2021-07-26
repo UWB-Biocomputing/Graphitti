@@ -34,6 +34,7 @@
 #include "ParameterManager.h"
 #include "Simulator.h"
 
+#include <string>
 
 // Uncomment to use visual leak detector (Visual Studios Plugin)
 // #include <vld.h>
@@ -71,15 +72,6 @@ void serializeSynapses();
 ///  @param  argv    arguments.
 ///  @return -1 if error, else if success.
 int main(int argc, char *argv[]) {
-
-   // Doesn't work if placed in parseCommandLine because -c is a required flag,
-   // and ParamContainer throws an error
-   if (argc == 2) {
-      if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "--version") == 0){
-         cout << "Git commit ID: " << GIT_COMMIT_ID << endl;
-         exit(0);
-      }
-   }
 
    // Clear logging files at the start of each simulation
    fstream("../Output/Debug/logging.txt", ios::out | ios::trunc);
@@ -210,7 +202,7 @@ bool parseCommandLine(int argc, char *argv[]) {
    // Set up the comment line parser.
    if ((cl.addParam("resultfile", 'o', ParamContainer::filename, "simulation results filepath (deprecated)") !=
         ParamContainer::errOk)
-       || (cl.addParam("configfile", 'c', ParamContainer::filename | ParamContainer::required,
+       || (cl.addParam("configfile", 'c', ParamContainer::filename,
                        "parameter configuration filepath") != ParamContainer::errOk)
        #if defined(USE_GPU)
        || (cl.addParam("device", 'd', ParamContainer::regular, "CUDA device id") != ParamContainer::errOk)
@@ -232,6 +224,11 @@ bool parseCommandLine(int argc, char *argv[]) {
    if (cl.parseCommandLine(argc, argv) != ParamContainer::errOk) {
       cl.dumpHelp(stderr, true, 78);
       return false;
+   }
+
+   if (cl["version"].compare("") != 0) {
+      cout << "Git commit ID: " << GIT_COMMIT_ID << endl;
+      exit(0);
    }
 
    // Get the command line values
