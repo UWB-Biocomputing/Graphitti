@@ -176,7 +176,7 @@ void All911Vertices::advanceVertex(const int index) {
     // } else {
     //     summationPoint += I0; // add IO
     //     // add noise
-    //     BGFLOAT noise = rgNormrnd();
+    //     BGFLOAT noise = (*rgNormrnd)();
     //     //LOG4CPLUS_DEBUG(vertexLogger_, "ADVANCE NEURON[" << index << "] :: Noise = " << noise);
     //     summationPoint += noise * Inoise; // add noise
     //     Vm = C1 * Vm + C2 * summationPoint; // decay Vm and add inputs

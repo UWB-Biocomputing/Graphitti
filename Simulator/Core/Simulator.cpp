@@ -16,6 +16,7 @@
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "RecorderFactory.h"
+#include "Utils/RNG/RNGFactory.h"
 // #include "ParseParamError.h"
 
 /// Acts as constructor first time it's called, returns the instance of the singleton object
@@ -84,6 +85,8 @@ void Simulator::loadParameters() {
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxFiringRate/text()", maxFiringRate_);
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxEdgesPerVertex/text()", maxEdgesPerVertex_);
    ParameterManager::getInstance().getLongByXpath("//Seed/value/text()", seed_);
+
+   rgNormrnd = RNGFactory::getInstance()->createRNG("Norm");
 
    // Result file name can be set by the command line arguments so check for default string value as to not overwrite it
    if (resultFileName_ == "") {

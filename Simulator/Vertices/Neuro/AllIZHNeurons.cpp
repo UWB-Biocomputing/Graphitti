@@ -257,7 +257,7 @@ void AllIZHNeurons::advanceNeuron(const int index) {
    } else {
       summationPoint += I0; // add IO
       // add noise
-      BGFLOAT noise = rgNormrnd();
+      BGFLOAT noise = (*rgNormrnd)();
       // Happens really often, causes drastic slow down
       // DEBUG_MID(cout << "ADVANCE NEURON[" << index << "] :: noise = " << noise << endl;)
       summationPoint += noise * Inoise; // add noise

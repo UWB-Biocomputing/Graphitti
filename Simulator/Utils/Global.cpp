@@ -73,7 +73,7 @@ int g_deviceId = 0;
 MTRand rng;
 
 // A normalized random number generator.
-Norm rgNormrnd;
+MTRand *rgNormrnd;
 
 //		simulation vars
 uint64_t g_simulationStep = 0;

@@ -28,7 +28,7 @@ public:
    }
 
    // Invokes constructor for desired concrete class
-   shared_ptr<MTRand> createRNG(const string &className);
+   MTRand* createRNG(const string &className);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    RNGFactory(RNGFactory const &) = delete;
