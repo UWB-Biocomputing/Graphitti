@@ -25,7 +25,8 @@ CPUModel::~CPUModel() {
 void CPUModel::setupSim() {
    Model::setupSim();
    // Create a normalized random number generator
-   rgNormrnd.push_back(new Norm(0, 1, Simulator::getInstance().getSeed()));
+   rgNormrnd.seed(0.0, 1.0, Simulator::getInstance().getSeed());
+   rng.seed(1);
 }
 
 /// Performs any finalization tasks on network following a simulation.

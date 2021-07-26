@@ -70,10 +70,10 @@ int g_deviceId = 0;
 #endif // USE_GPU
 
 // A random number generator.
-MTRand rng(1);
+MTRand rng;
 
 // A normalized random number generator.
-vector<Norm *> rgNormrnd;
+Norm rgNormrnd;
 
 //		simulation vars
 uint64_t g_simulationStep = 0;
