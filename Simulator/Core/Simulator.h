@@ -93,6 +93,8 @@ public:
 
    long getSeed() const;    /// Seed used for the simulation random **SingleThreaded Only**
 
+   long getRNGSeed() const;    /// Seed used to initialize parameters
+
    string getResultFileName() const;    /// File name of the simulation results.
 
    string getConfigFileName() const;    /// File name of the parameter configuration file.
@@ -164,6 +166,8 @@ private:
    BGFLOAT *pSummationMap_;    /// List of summation points (either host or device memory) ToDo: make smart ptr
 
    long seed_;   /// Seed used for the simulation random SINGLE THREADED
+
+   long rngSeed_;   /// Seed used to initialize parameters
 
    string resultFileName_;    /// File name of the simulation results.
 

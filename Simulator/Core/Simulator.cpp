@@ -84,9 +84,12 @@ void Simulator::loadParameters() {
    ParameterManager::getInstance().getIntByXpath("//SimParams/numEpochs/text()", numEpochs_);
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxFiringRate/text()", maxFiringRate_);
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxEdgesPerVertex/text()", maxEdgesPerVertex_);
-   ParameterManager::getInstance().getLongByXpath("//Seed/value/text()", seed_);
+   ParameterManager::getInstance().getLongByXpath("//RNGConfig/Seed/text()", rngSeed_);
 
-   rgNormrnd = RNGFactory::getInstance()->createRNG("Norm");
+   string type;
+   ParameterManager::getInstance().getStringByXpath("//RNGConfig/RNGParams/@class", type);
+   ParameterManager::getInstance().getLongByXpath("//RNGConfig/RNGParams/Seed/text()", seed_);
+   rgNormrnd = RNGFactory::getInstance()->createRNG(type);
 
    // Result file name can be set by the command line arguments so check for default string value as to not overwrite it
    if (resultFileName_ == "") {
@@ -105,6 +108,7 @@ void Simulator::printParameters() const {
                                           << "\tMax firing rate: " << maxFiringRate_ << endl
                                           << "\tMax edges per vertex: " << maxEdgesPerVertex_ << endl
                                           << "\tSeed: " << seed_ << endl
+                                          << "\trngSeed: " << rngSeed_ << endl
                                           << "\tResult file path: " << resultFileName_ << endl << endl);
 }
 
@@ -290,6 +294,8 @@ BGFLOAT Simulator::getMaxRate() const { return maxRate_; }
 BGFLOAT *Simulator::getPSummationMap() const { return pSummationMap_; }
 
 long Simulator::getSeed() const { return seed_; }
+
+long Simulator::getRNGSeed() const { return rngSeed_; }
 
 string Simulator::getResultFileName() const { return resultFileName_; }
 

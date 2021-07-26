@@ -6,7 +6,6 @@ list(REMOVE_ITEM RNG "${CMAKE_CURRENT_SOURCE_DIR}/MersenneTwister_demo.cu")
 
 # Create a library from the list of files gathered
 add_library(RNG SHARED ${RNG})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -finline-functions")
 
 if (ENABLE_CUDA)
    set_property(TARGET RNG PROPERTY CUDA_ARCHITECTURES 35-virtual) 
