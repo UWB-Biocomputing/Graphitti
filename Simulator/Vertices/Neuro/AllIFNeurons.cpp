@@ -9,8 +9,8 @@
 #include "AllIFNeurons.h"
 #include "ParseParamError.h"
 #include "Layout.h"
-#include "RNG/MTRand.h"
-#include "RNG/Norm.h"
+#include "MTRand.h"
+#include "Norm.h"
 #include "ParameterManager.h"
 #include "OperationManager.h"
 

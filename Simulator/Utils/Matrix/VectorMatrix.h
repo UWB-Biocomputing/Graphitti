@@ -15,7 +15,7 @@
 #include "Matrix.h"
 #include "CompleteMatrix.h"
 #include "SparseMatrix.h"
-#include "RNG/Norm.h"
+#include "Norm.h"
 
 using namespace std;
 
