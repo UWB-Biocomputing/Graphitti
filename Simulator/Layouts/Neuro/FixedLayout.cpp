@@ -33,11 +33,7 @@ void FixedLayout::generateVertexTypeMap(int numVertices) {
    LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing vertex type map" << endl);
 
    // Populate vertexTypeMap_ with EXC
-   fill_n(vertexTypeMap_, numVertices, EXC);
-
-   // for (int i = 0; i < numVertices; i++) {
-   //    vertexTypeMap_[i] = EXC;
-   // }
+   vertexTypeMap_ = EXC;
 
    int numInhibitoryNeurons = inhibitoryNeuronLayout_.size();
    int numExcititoryNeurons = numVertices - numInhibitoryNeurons;

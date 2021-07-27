@@ -160,7 +160,7 @@ void XmlRecorder::saveSimData(const AllVertices &vertices) {
  *  @param  matrix      Starter Neuron matrix.
  *  @param  starter_map Bool map to reference neuron matrix location from.
  */
-void XmlRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap) {
+void XmlRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const valarray<bool> &starterMap) {
    int cur = 0;
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       if (starterMap[i]) {

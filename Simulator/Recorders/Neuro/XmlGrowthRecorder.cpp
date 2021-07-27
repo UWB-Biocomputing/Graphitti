@@ -155,7 +155,7 @@ void XmlGrowthRecorder::printParameters() {
 ///
 ///  @param  matrix      Starter Neuron matrix.
 ///  @param  starterMap Bool map to reference neuron matrix location from.
-void XmlGrowthRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap) {
+void XmlGrowthRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const valarray<bool> &starterMap) {
    int cur = 0;
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       if (starterMap[i]) {

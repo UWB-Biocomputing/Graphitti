@@ -76,7 +76,7 @@ public:
 protected:
    virtual void initDataSet();
 
-   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
+   void getStarterNeuronMatrix(VectorMatrix &matrix, const valarray<bool> &starterMap);
 
    /// hdf5 file identifier
    H5File *stateOut_;

@@ -18,6 +18,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <valarray>
 
 #include <log4cplus/loggingmacros.h>
 
@@ -72,9 +73,9 @@ public:
 
    vector<int> probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
 
-   vertexType *vertexTypeMap_;    ///< The vertex type map (INH, EXC).
+   valarray<vertexType> vertexTypeMap_;   ///< The vertex type map (INH, EXC).
 
-   bool *starterMap_; ///< The starter existence map (T/F).
+   valarray<bool> starterMap_;   ///< The starter existence map (T/F).
 
    BGSIZE numEndogenouslyActiveNeurons_;    ///< Number of endogenously active neurons.
 

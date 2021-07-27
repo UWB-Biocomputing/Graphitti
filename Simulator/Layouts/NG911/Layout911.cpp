@@ -67,11 +67,7 @@ void Layout911::generateVertexTypeMap(int numVertices) {
    DEBUG(cout << "\nInitializing vertex type map" << endl;);
 
    // Populate vertexTypeMap_ with base layer of CALR
-   fill_n(vertexTypeMap_, numVertices, CALR);
-
-   // for (int i = 0; i < numVertices; i++) {
-   //    vertexTypeMap_[i] = CALR;
-   // }
+   vertexTypeMap_ = CALR;
 
    int numPSAPs = psapVertexList_.size();
    int numResps = responderVertexList_.size();

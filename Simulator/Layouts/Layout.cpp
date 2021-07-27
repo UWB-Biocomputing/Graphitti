@@ -22,8 +22,6 @@ Layout::Layout() :
    yloc_ = nullptr;
    dist2_ = nullptr;
    dist_ = nullptr;
-   vertexTypeMap_ = nullptr;
-   starterMap_ = nullptr;
 
    // Create Vertices/Neurons class using type definition in configuration file
    string type;
@@ -48,15 +46,11 @@ Layout::~Layout() {
    if (yloc_ != nullptr) delete yloc_;
    if (dist2_ != nullptr) delete dist2_;
    if (dist_ != nullptr) delete dist_;
-   if (vertexTypeMap_ != nullptr) delete[] vertexTypeMap_;  //todo: is delete[] changing once array becomes vector?
-   if (starterMap_ != nullptr) delete[] starterMap_; //todo: is delete[] changing once array becomes vector?
 
    xloc_ = nullptr;
    yloc_ = nullptr;
    dist2_ = nullptr;
    dist_ = nullptr;
-   vertexTypeMap_ = nullptr;
-   starterMap_ = nullptr;
 }
 
 shared_ptr<AllVertices> Layout::getVertices() const {
@@ -94,8 +88,8 @@ void Layout::setupLayout() {
    (*dist_) = sqrt((*dist2_));
 
    // more allocation of internal memory
-   vertexTypeMap_ = new vertexType[numVertices]; // todo: make array into vector
-   starterMap_ = new bool[numVertices]; // todo: make array into vector
+   vertexTypeMap_ = valarray<vertexType>(numVertices);
+   starterMap_ = valarray<bool>(numVertices);
 }
 
 
@@ -122,19 +116,14 @@ void Layout::printParameters() const {
 /// @param  numVertices number of the vertices to have in the type map.
 void Layout::generateVertexTypeMap(int numVertices) {
    DEBUG(cout << "\nInitializing vertex type map: VTYPE_UNDEF" << endl;);
-
-   for (int i = 0; i < numVertices; i++) {
-      vertexTypeMap_[i] = VTYPE_UNDEF;
-   }
+   vertexTypeMap_ = VTYPE_UNDEF;
 }
 
 /// Populates the starter map.
 /// Selects num_endogenously_active_neurons excitory neurons and converts them into starter neurons.
 /// @param  numVertices number of vertices to have in the map.
 void Layout::initStarterMap(const int numVertices) {
-   for (int i = 0; i < numVertices; i++) {
-      starterMap_[i] = false;
-   }
+   starterMap_ = false;
 }
 
 /// Initialize the location maps (xloc and yloc).

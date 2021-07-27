@@ -54,7 +54,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &verti
 
         HANDLE_ERROR( cudaMemcpy ( W_d, W_h, W_d_size, cudaMemcpyHostToDevice ) );
 
-        HANDLE_ERROR( cudaMemcpy ( neuronTypeMapD, layout->vertexTypeMap_, simulator.getTotalVertices() * sizeof( vertexType ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( neuronTypeMapD, &layout->vertexTypeMap_[0], simulator.getTotalVertices() * sizeof( vertexType ), cudaMemcpyHostToDevice ) );
 
         blocksPerGrid = ( simulator.getTotalVertices() + threadsPerBlock - 1 ) / threadsPerBlock;
         updateSynapsesWeightsDevice <<< blocksPerGrid, threadsPerBlock >>> ( simulator.getTotalVertices(), deltaT, W_d, simulator.getMaxEdgesPerVertex(), allVerticesDevice, allEdgesDevice, neuronTypeMapD );

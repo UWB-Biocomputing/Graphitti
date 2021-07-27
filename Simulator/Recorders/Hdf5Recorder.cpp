@@ -525,7 +525,7 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
 ///
 ///  @param  matrix      Starter Neuron matrix.
 ///  @param  startermap Bool map to reference neuron matrix location from.
-void Hdf5Recorder::getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap)
+void Hdf5Recorder::getStarterNeuronMatrix(VectorMatrix& matrix, const valarray<bool> &starterMap)
 {
     int cur = 0;
     for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
