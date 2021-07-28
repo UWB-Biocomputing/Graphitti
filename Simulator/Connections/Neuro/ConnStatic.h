@@ -65,13 +65,13 @@ public:
    BGFLOAT getConnsRadiusThresh() const { return threshConnsRadius_; }
 
    /// Get array of vertex weights
-   BGFLOAT* getWCurrentEpoch() const { return WCurrentEpoch_; }
+   valarray<BGFLOAT>& getWCurrentEpoch() { return WCurrentEpoch_; }
 
    /// Get all edge source vertex indices
-   int* getSourceVertexIndexCurrentEpoch() const { return sourceVertexIndexCurrentEpoch_; }
+   valarray<int>& getSourceVertexIndexCurrentEpoch() { return sourceVertexIndexCurrentEpoch_; }
 
       /// Get all edge destination vertex indices
-   int* getDestVertexIndexCurrentEpoch() const { return destVertexIndexCurrentEpoch_; }
+   valarray<int>& getDestVertexIndexCurrentEpoch() { return destVertexIndexCurrentEpoch_; }
 
   ///  Cereal serialization method
   ///  (Serializes radii)
@@ -85,13 +85,13 @@ public:
    
 private:
    /// Indices of the source vertex for each edge
-   int *sourceVertexIndexCurrentEpoch_;
+   valarray<int> sourceVertexIndexCurrentEpoch_;
    
     /// Indices of the destination vertex for each edge
-   int *destVertexIndexCurrentEpoch_;
+   valarray<int> destVertexIndexCurrentEpoch_;
    
     /// The weight (scaling factor, strength, maximal amplitude) of each vertex for the current epoch.
-   BGFLOAT *WCurrentEpoch_;
+   valarray<BGFLOAT> WCurrentEpoch_;
    
    /// radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
    int radiiSize_;

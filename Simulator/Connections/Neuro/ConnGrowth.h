@@ -188,9 +188,6 @@ public:
    /// structure to keep growth parameters
    GrowthParams growthParams_;
 
-   /// spike count for each epoch
-   int *spikeCounts_;
-
    /// radii size
    int radiiSize_;
 

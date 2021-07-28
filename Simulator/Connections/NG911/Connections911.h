@@ -13,6 +13,7 @@
 #include "Connections.h"
 #include "Simulator.h"
 #include <vector>
+#include <valarray>
 
 using namespace std;
 
@@ -45,7 +46,7 @@ public:
    virtual void printParameters() const override;
 
    /// Records typeMap history for recorders
-   vertexType *oldTypeMap_;
+   valarray<vertexType> oldTypeMap_;
 
 private:
    /// number of maximum connections per vertex

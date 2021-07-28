@@ -17,7 +17,6 @@ Connections911::Connections911() {
 }
 
 Connections911::~Connections911() {
-   if (oldTypeMap_ != nullptr) delete[] oldTypeMap_;
 }
 
 void Connections911::setupConnections(Layout *layout, AllVertices *vertices, AllEdges *edges) {
@@ -97,8 +96,7 @@ bool Connections911::updateConnections(AllVertices &vertices, Layout *layout) {
 
    // Record old type map
    int numVertices = Simulator::getInstance().getTotalVertices();
-   oldTypeMap_ = new vertexType[numVertices];
-   memcpy(oldTypeMap_, &layout->vertexTypeMap_[0], numVertices*sizeof(vertexType));
+   oldTypeMap_ = layout->vertexTypeMap_;
 
    // Erase PSAPs
    for (int i = 0; i < psapsToErase_; i++) {
