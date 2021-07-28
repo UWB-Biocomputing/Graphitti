@@ -24,6 +24,7 @@
 using namespace std;
 
 #include <iostream>
+#include <valarray>
 #include <log4cplus/loggingmacros.h>
 
 #include "BGTypes.h"

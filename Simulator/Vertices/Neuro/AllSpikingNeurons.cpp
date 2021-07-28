@@ -11,9 +11,6 @@
 
 // Default constructor
 AllSpikingNeurons::AllSpikingNeurons() : AllVertices() {
-   hasFired_ = nullptr;
-   spikeCount_ = nullptr;
-   spikeCountOffset_ = nullptr;
    spikeHistory_ = nullptr;
 }
 
@@ -23,15 +20,9 @@ AllSpikingNeurons::~AllSpikingNeurons() {
          delete[] spikeHistory_[i];
       }
 
-      delete[] hasFired_;
-      delete[] spikeCount_;
-      delete[] spikeCountOffset_;
       delete[] spikeHistory_;
    }
 
-   hasFired_ = nullptr;
-   spikeCount_ = nullptr;
-   spikeCountOffset_ = nullptr;
    spikeHistory_ = nullptr;
 }
 
@@ -40,16 +31,17 @@ void AllSpikingNeurons::setupVertices() {
    AllVertices::setupVertices();
 
    // TODO: Rename variables for easier identification
-   hasFired_ = new bool[size_];
-   spikeCount_ = new int[size_];
-   spikeCountOffset_ = new int[size_];
+   hasFired_ = valarray<bool>(size_);
+   spikeCount_ = valarray<int>(size_);
+   spikeCountOffset_ = valarray<int>(size_);
    spikeHistory_ = new uint64_t *[size_];
+
+   hasFired_ = false;
+   spikeCount_ = 0;
+   spikeCountOffset_ = 0;
 
    for (int i = 0; i < size_; ++i) {
       spikeHistory_[i] = nullptr;
-      hasFired_[i] = false;
-      spikeCount_[i] = 0;
-      spikeCountOffset_[i] = 0;
    }
 
    Simulator::getInstance().setPSummationMap(summationMap_);
@@ -125,7 +117,7 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap *
 ///  Fire the selected Neuron and calculate the result.
 ///
 ///  @param  index       Index of the Neuron to update.
-void AllSpikingNeurons::fire(const int index) const {
+void AllSpikingNeurons::fire(const int index) {
    // Note that the neuron has fired!
    hasFired_[index] = true;
 

@@ -111,19 +111,19 @@ protected:
    ///  Initiates a firing of a neuron to connected neurons
    ///
    ///  @param  index            Index of the neuron to fire.
-   virtual void fire(const int index) const;
+   virtual void fire(const int index);
 
 #endif // defined(USE_GPU)
 
 public:
    ///  The booleans which track whether the neuron has fired.
-   bool *hasFired_;
+   valarray<bool> hasFired_;
 
    ///  The number of spikes since the last growth cycle.
-   int *spikeCount_;
+   valarray<int> spikeCount_;
 
    ///  Offset of the spike_history buffer.
-   int *spikeCountOffset_;
+   valarray<int> spikeCountOffset_;
 
    ///  Step count (history) for each spike fired by each neuron.
    ///  The step counts are stored in a buffer for each neuron, and the pointers

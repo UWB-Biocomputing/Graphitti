@@ -92,12 +92,12 @@ void AllIZHNeurons::copyHostToDevice( AllIZHNeuronsDeviceProperties& allVertices
 
 	AllIFNeurons::copyHostToDevice( allVerticesDevice );
 
-	HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.Aconst_, Aconst_, count * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-	HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.Bconst_, Bconst_, count * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-	HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.Cconst_, Cconst_, count * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-	HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.Dconst_, Dconst_, count * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-	HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.u_, u_, count * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-	HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.C3_, C3_, count * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+	HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.Aconst_, &Aconst_[0], count * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+	HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.Bconst_, &Bconst_[0], count * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+	HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.Cconst_, &Cconst_[0], count * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+	HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.Dconst_, &Dconst_[0], count * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+	HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.u_, &u_[0], count * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
+	HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.C3_, &C3_[0], count * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
 }
 
 ///  Copy all neurons' data from device to host.
@@ -120,12 +120,12 @@ void AllIZHNeurons::copyDeviceToHost( AllIZHNeuronsDeviceProperties& allVertices
 
 	AllIFNeurons::copyDeviceToHost( allVerticesDevice );
 
-	HANDLE_ERROR( cudaMemcpy ( Aconst_, allVerticesDevice.Aconst_, count * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-	HANDLE_ERROR( cudaMemcpy ( Bconst_, allVerticesDevice.Bconst_, count * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-	HANDLE_ERROR( cudaMemcpy ( Cconst_, allVerticesDevice.Cconst_, count * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-	HANDLE_ERROR( cudaMemcpy ( Dconst_, allVerticesDevice.Dconst_, count * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-	HANDLE_ERROR( cudaMemcpy ( u_, allVerticesDevice.u_, count * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-	HANDLE_ERROR( cudaMemcpy ( C3_, allVerticesDevice.C3_, count * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+	HANDLE_ERROR( cudaMemcpy ( &Aconst_[0], allVerticesDevice.Aconst_, count * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+	HANDLE_ERROR( cudaMemcpy ( &Bconst_[0], allVerticesDevice.Bconst_, count * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+	HANDLE_ERROR( cudaMemcpy ( &Cconst_[0], allVerticesDevice.Cconst_, count * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+	HANDLE_ERROR( cudaMemcpy ( &Dconst_[0], allVerticesDevice.Dconst_, count * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+	HANDLE_ERROR( cudaMemcpy ( &u_[0], allVerticesDevice.u_, count * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
+	HANDLE_ERROR( cudaMemcpy ( &C3_[0], allVerticesDevice.C3_, count * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
 }
 
 ///  Copy spike history data stored in device memory to host.

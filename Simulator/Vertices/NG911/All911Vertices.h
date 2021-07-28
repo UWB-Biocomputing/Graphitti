@@ -59,19 +59,19 @@ public:
 private: 
 
    /// number of callers
-   int *callNum_; 
+   valarray<int> callNum_;
 
    /// Min/max values of CallNum.
    int callNumRange_[2];
 
    /// Number of dispatchers per PSAP calculated (with randomness) based on population
-   int *dispNum_;
+   valarray<int> dispNum_;
 
    /// Scaling factor for number of dispatchers in a PSAP
    BGFLOAT dispNumScale_;
 
    /// Number of responders per Responder node calculated (with randomness) based on population
-   int *respNum_;
+   valarray<int> respNum_;
 
    /// Scaling factor for number of responders in a Responder node
    BGFLOAT respNumScale_;

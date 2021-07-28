@@ -11,42 +11,21 @@
 
 // Default constructor
 AllIZHNeurons::AllIZHNeurons() : AllIFNeurons() {
-   Aconst_ = nullptr;
-   Bconst_ = nullptr;
-   Cconst_ = nullptr;
-   Dconst_ = nullptr;
-   u_ = nullptr;
-   C3_ = nullptr;
 }
 
 AllIZHNeurons::~AllIZHNeurons() {
-   if (size_ != 0) {
-      delete[] Aconst_;
-      delete[] Bconst_;
-      delete[] Cconst_;
-      delete[] Dconst_;
-      delete[] u_;
-      delete[] C3_;
-   }
-
-   Aconst_ = nullptr;
-   Bconst_ = nullptr;
-   Cconst_ = nullptr;
-   Dconst_ = nullptr;
-   u_ = nullptr;
-   C3_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories).
 void AllIZHNeurons::setupVertices() {
    AllIFNeurons::setupVertices();
 
-   Aconst_ = new BGFLOAT[size_];
-   Bconst_ = new BGFLOAT[size_];
-   Cconst_ = new BGFLOAT[size_];
-   Dconst_ = new BGFLOAT[size_];
-   u_ = new BGFLOAT[size_];
-   C3_ = new BGFLOAT[size_];
+   Aconst_ = valarray<BGFLOAT>(size_);
+   Bconst_ = valarray<BGFLOAT>(size_);
+   Cconst_ = valarray<BGFLOAT>(size_);
+   Dconst_ = valarray<BGFLOAT>(size_);
+   u_ = valarray<BGFLOAT>(size_);
+   C3_ = valarray<BGFLOAT>(size_);
 }
 
 ///  Prints out all parameters of the neurons to logging file.
@@ -296,7 +275,7 @@ void AllIZHNeurons::advanceNeuron(const int index) {
 ///  Fire the selected Neuron and calculate the result.
 ///
 ///  @param  index       Index of the Neuron to update.
-void AllIZHNeurons::fire(const int index) const {
+void AllIZHNeurons::fire(const int index) {
    const BGFLOAT deltaT = Simulator::getInstance().getDeltaT();
    AllSpikingNeurons::fire(index);
 

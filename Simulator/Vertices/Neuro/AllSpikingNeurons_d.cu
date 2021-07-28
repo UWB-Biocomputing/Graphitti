@@ -35,8 +35,8 @@ void AllSpikingNeurons::copyDeviceSpikeCountsToHost( AllSpikingNeuronsDeviceProp
 {
         int numVertices = Simulator::getInstance().getTotalVertices();
 
-        HANDLE_ERROR( cudaMemcpy ( spikeCount_, allVerticesDevice.spikeCount_, numVertices * sizeof( int ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( spikeCountOffset_, allVerticesDevice.spikeCountOffset_, numVertices * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( &spikeCount_[0], allVerticesDevice.spikeCount_, numVertices * sizeof( int ), cudaMemcpyDeviceToHost ) );
+        HANDLE_ERROR( cudaMemcpy ( &spikeCountOffset_[0], allVerticesDevice.spikeCountOffset_, numVertices * sizeof( int ), cudaMemcpyDeviceToHost ) );
 }
 
 ///  Clear the spike counts out of all neurons in device memory.
@@ -49,7 +49,7 @@ void AllSpikingNeurons::clearDeviceSpikeCounts( AllSpikingNeuronsDevicePropertie
         int numVertices = Simulator::getInstance().getTotalVertices();
 
         HANDLE_ERROR( cudaMemset( allVerticesDevice.spikeCount_, 0, numVertices * sizeof( int ) ) );
-        HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.spikeCountOffset_, spikeCountOffset_, numVertices * sizeof( int ), cudaMemcpyHostToDevice ) );
+        HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.spikeCountOffset_, &spikeCountOffset_[0], numVertices * sizeof( int ), cudaMemcpyHostToDevice ) );
 }
 
 ///  Set some parameters used for advanceVerticesDevice.

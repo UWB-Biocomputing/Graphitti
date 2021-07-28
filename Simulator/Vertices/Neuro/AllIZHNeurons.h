@@ -199,7 +199,7 @@ protected:
    ///  Initiates a firing of a neuron to connected neurons.
    ///
    ///  @param  index            Index of the neuron to fire.
-   virtual void fire(const int index) const;
+   virtual void fire(const int index);
 
 #endif  // defined(USE_GPU)
 
@@ -235,22 +235,22 @@ protected:
 
 public:
    ///  A constant (0.02, 01) describing the coupling of variable u to Vm.
-   BGFLOAT *Aconst_;
+   valarray<BGFLOAT> Aconst_;
 
    ///  A constant controlling sensitivity of u.
-   BGFLOAT *Bconst_;
+   valarray<BGFLOAT> Bconst_;
 
    ///  A constant controlling reset of Vm.
-   BGFLOAT *Cconst_;
+   valarray<BGFLOAT> Cconst_;
 
    ///  A constant controlling reset of u.
-   BGFLOAT *Dconst_;
+   valarray<BGFLOAT> Dconst_;
 
    ///  internal variable.
-   BGFLOAT *u_;
+   valarray<BGFLOAT> u_;
 
    ///  Internal constant for the exponential Euler integration.
-   BGFLOAT *C3_;
+   valarray<BGFLOAT> C3_;
 
 private:
    ///  Default value of Aconst.

@@ -16,60 +16,9 @@
 
 // Default constructor
 AllIFNeurons::AllIFNeurons() {
-   C1_ = nullptr;
-   C2_ = nullptr;
-   Cm_ = nullptr;
-   I0_ = nullptr;
-   Iinject_ = nullptr;
-   Inoise_ = nullptr;
-   Isyn_ = nullptr;
-   Rm_ = nullptr;
-   Tau_ = nullptr;
-   Trefract_ = nullptr;
-   Vinit_ = nullptr;
-   Vm_ = nullptr;
-   Vreset_ = nullptr;
-   Vrest_ = nullptr;
-   Vthresh_ = nullptr;
-   numStepsInRefractoryPeriod_ = nullptr;
 }
 
 AllIFNeurons::~AllIFNeurons() {
-   if (size_ != 0) {
-      delete[] C1_;
-      delete[] C2_;
-      delete[] Cm_;
-      delete[] I0_;
-      delete[] Iinject_;
-      delete[] Inoise_;
-      delete[] Isyn_;
-      delete[] Rm_;
-      delete[] Tau_;
-      delete[] Trefract_;
-      delete[] Vinit_;
-      delete[] Vm_;
-      delete[] Vreset_;
-      delete[] Vrest_;
-      delete[] Vthresh_;
-      delete[] numStepsInRefractoryPeriod_;
-   }
-
-   C1_ = nullptr;
-   C2_ = nullptr;
-   Cm_ = nullptr;
-   I0_ = nullptr;
-   Iinject_ = nullptr;
-   Inoise_ = nullptr;
-   Isyn_ = nullptr;
-   Rm_ = nullptr;
-   Tau_ = nullptr;
-   Trefract_ = nullptr;
-   Vinit_ = nullptr;
-   Vm_ = nullptr;
-   Vreset_ = nullptr;
-   Vrest_ = nullptr;
-   Vthresh_ = nullptr;
-   numStepsInRefractoryPeriod_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories).
@@ -77,22 +26,22 @@ void AllIFNeurons::setupVertices() {
    AllSpikingNeurons::setupVertices();
 
    // TODO: Rename variables for easier identification
-   C1_ = new BGFLOAT[size_];
-   C2_ = new BGFLOAT[size_];
-   Cm_ = new BGFLOAT[size_];
-   I0_ = new BGFLOAT[size_];
-   Iinject_ = new BGFLOAT[size_];
-   Inoise_ = new BGFLOAT[size_];
-   Isyn_ = new BGFLOAT[size_];
-   Rm_ = new BGFLOAT[size_];
-   Tau_ = new BGFLOAT[size_];
-   Trefract_ = new BGFLOAT[size_];
-   Vinit_ = new BGFLOAT[size_];
-   Vm_ = new BGFLOAT[size_];
-   Vreset_ = new BGFLOAT[size_];
-   Vrest_ = new BGFLOAT[size_];
-   Vthresh_ = new BGFLOAT[size_];
-   numStepsInRefractoryPeriod_ = new int[size_];
+   C1_ = valarray<BGFLOAT>(size_);
+   C2_ = valarray<BGFLOAT>(size_);
+   Cm_ = valarray<BGFLOAT>(size_);
+   I0_ = valarray<BGFLOAT>(size_);
+   Iinject_ = valarray<BGFLOAT>(size_);
+   Inoise_ = valarray<BGFLOAT>(size_);
+   Isyn_ = valarray<BGFLOAT>(size_);
+   Rm_ = valarray<BGFLOAT>(size_);
+   Tau_ = valarray<BGFLOAT>(size_);
+   Trefract_ = valarray<BGFLOAT>(size_);
+   Vinit_ = valarray<BGFLOAT>(size_);
+   Vm_ = valarray<BGFLOAT>(size_);
+   Vreset_ = valarray<BGFLOAT>(size_);
+   Vrest_ = valarray<BGFLOAT>(size_);
+   Vthresh_ = valarray<BGFLOAT>(size_);
+   numStepsInRefractoryPeriod_ = valarray<int>(size_);
 
    for (int i = 0; i < size_; ++i) {
       numStepsInRefractoryPeriod_[i] = 0;
