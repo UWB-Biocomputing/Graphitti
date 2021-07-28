@@ -83,10 +83,6 @@ public:
 
    BGFLOAT getDeltaT() const;    /// Time elapsed between the beginning and end of the simulation step
 
-   vertexType *getRgNeuronTypeMap() const;    /// The vertex type map (INH, EXC).
-
-   bool *getRgEndogenouslyActiveNeuronMap() const;  /// The starter existence map (T/F).
-
    BGFLOAT getMaxRate() const;   /// growth variable (m_targetRate / m_epsilon) TODO: more detail here
 
    BGFLOAT *getPSummationMap() const;   /// List of summation points (either host or device memory)
@@ -154,10 +150,6 @@ private:
    int maxEdgesPerVertex_;  /// Maximum number of synapses per neuron. **GPU Only**
 
    BGFLOAT deltaT_;   /// Inner Simulation Step Duration, purely investigative.
-
-   vertexType *rgNeuronTypeMap_; /// The vertex type map (INH, EXC). ToDo: become a vector
-
-   bool *rgEndogenouslyActiveNeuronMap_;   /// The starter existence map (T/F). ToDo: become a vector
 
    BGFLOAT maxRate_;   /// growth variable (m_targetRate / m_epsilon) TODO: more detail here
 

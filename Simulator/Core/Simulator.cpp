@@ -274,14 +274,6 @@ int Simulator::getMaxEdgesPerVertex() const { return maxEdgesPerVertex_; } ///  
 
 BGFLOAT Simulator::getDeltaT() const { return deltaT_; }
 
-// ToDo: should be a vector of neuron type
-// ToDo: vector should be contiguous array, resize is used.
-vertexType *Simulator::getRgNeuronTypeMap() const { return rgNeuronTypeMap_; }
-
-// ToDo: make smart ptr
-/// Starter existence map (T/F).
-bool *Simulator::getRgEndogenouslyActiveNeuronMap() const { return rgEndogenouslyActiveNeuronMap_; }
-
 BGFLOAT Simulator::getMaxRate() const { return maxRate_; }
 
 BGFLOAT *Simulator::getPSummationMap() const { return pSummationMap_; }
