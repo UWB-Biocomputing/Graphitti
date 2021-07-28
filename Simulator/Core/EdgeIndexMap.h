@@ -22,67 +22,58 @@
 #pragma once
 
 #include "BGTypes.h"
+#include <valarray>
 
 using namespace std;
 
 struct EdgeIndexMap {
    /// Pointer to the outgoing edge index map.
-   BGSIZE* outgoingEdgeIndexMap_;
+   valarray<BGSIZE> outgoingEdgeIndexMap_;
 
    /// The beginning index of the outgoing edge for each vertex.
    /// Indexed by a source vertex index.
-   BGSIZE *outgoingEdgeBegin_;
+   valarray<BGSIZE> outgoingEdgeBegin_;
 
    /// The number of outgoing edges of each vertex.
    /// Indexed by a source vertex index.
-   BGSIZE *outgoingEdgeCount_;
+   valarray<BGSIZE> outgoingEdgeCount_;
 
    /// Pointer to the incoming edge index map.
-   BGSIZE* incomingEdgeIndexMap_;
+   valarray<BGSIZE> incomingEdgeIndexMap_;
 
    /// The beginning index of the incoming edge for each vertex.
    /// Indexed by a destination vertex index.
-   BGSIZE *incomingEdgeBegin_;
+   valarray<BGSIZE> incomingEdgeBegin_;
 
    /// The number of incoming edges for each vertex.
    /// Indexed by a destination vertex index.
-   BGSIZE *incomingEdgeCount_;
+   valarray<BGSIZE> incomingEdgeCount_;
 
    EdgeIndexMap() : numOfVertices_(0), numOfEdges_(0) {
-      outgoingEdgeBegin_ = nullptr;
-      outgoingEdgeCount_ = nullptr;
-      incomingEdgeBegin_ = nullptr;
-      incomingEdgeCount_ = nullptr;
-
-      outgoingEdgeIndexMap_ = nullptr;
-      incomingEdgeIndexMap_ = nullptr;
    };
 
    EdgeIndexMap(int vertexCount, int edgeCount) : numOfVertices_(vertexCount), numOfEdges_(edgeCount) {
       if (numOfVertices_ > 0) {
-         outgoingEdgeBegin_ = new BGSIZE[numOfVertices_];
-         outgoingEdgeCount_ = new BGSIZE[numOfVertices_];
-         incomingEdgeBegin_ = new BGSIZE[numOfVertices_];
-         incomingEdgeCount_ = new BGSIZE[numOfVertices_];
+         outgoingEdgeBegin_ = valarray<BGSIZE>(numOfVertices_);
+         outgoingEdgeCount_ = valarray<BGSIZE>(numOfVertices_);
+         incomingEdgeBegin_ = valarray<BGSIZE>(numOfVertices_);
+         incomingEdgeCount_ = valarray<BGSIZE>(numOfVertices_);
       }
 
       if (numOfEdges_ > 0) {
-         outgoingEdgeIndexMap_ = new BGSIZE[numOfEdges_];
-         incomingEdgeIndexMap_ = new BGSIZE[numOfEdges_];
+         outgoingEdgeIndexMap_ = valarray<BGSIZE>(numOfEdges_);
+         incomingEdgeIndexMap_ = valarray<BGSIZE>(numOfEdges_);
       }
+
+      outgoingEdgeBegin_ = 0;
+      outgoingEdgeCount_ = 0;
+      outgoingEdgeIndexMap_ = 0;
+      incomingEdgeBegin_ = 0;
+      incomingEdgeCount_ = 0;
+      incomingEdgeIndexMap_ = 0;
    };
 
    ~EdgeIndexMap() {
-      if (numOfVertices_ > 0) {
-         delete[] outgoingEdgeBegin_;
-         delete[] outgoingEdgeCount_;
-         delete[] incomingEdgeBegin_;
-         delete[] incomingEdgeCount_;
-      }
-      if (numOfEdges_ > 0) {
-         delete[] outgoingEdgeIndexMap_;
-         delete[] incomingEdgeIndexMap_;
-      }
    }
 
 private:
