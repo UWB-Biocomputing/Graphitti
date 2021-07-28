@@ -14,12 +14,6 @@
 using namespace std;
 
 AllSpikingSynapses::AllSpikingSynapses() : AllNeuroEdges() {
-   decay_ = nullptr;
-   totalDelay_ = nullptr;
-   delayQueue_ = nullptr;
-   delayIndex_ = nullptr;
-   delayQueueLength_ = nullptr;
-   tau_ = nullptr;
    tau_II_=0;
    tau_IE_=0;
    tau_EI_=0;
@@ -35,23 +29,6 @@ AllSpikingSynapses::AllSpikingSynapses(const int numVertices, const int maxEdges
 }
 
 AllSpikingSynapses::~AllSpikingSynapses() {
-   BGSIZE maxTotalSynapses = maxEdgesPerVertex_ * countVertices_;
-  
-  if (maxTotalSynapses != 0) {
-      delete[] decay_;
-      delete[] totalDelay_;
-      delete[] delayQueue_;
-      delete[] delayIndex_;
-      delete[] delayQueueLength_;
-      delete[] tau_;
-  }
-
-   decay_ = nullptr;
-   totalDelay_ = nullptr;
-   delayQueue_ = nullptr;
-   delayIndex_ = nullptr;
-   delayQueueLength_ = nullptr;
-   tau_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -69,12 +46,12 @@ void AllSpikingSynapses::setupEdges(const int numVertices, const int maxEdges) {
    BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
    if (maxTotalSynapses != 0) {
-      decay_ = new BGFLOAT[maxTotalSynapses];
-      totalDelay_ = new int[maxTotalSynapses];
-      delayQueue_ = new uint32_t[maxTotalSynapses];
-      delayIndex_ = new int[maxTotalSynapses];
-      delayQueueLength_ = new int[maxTotalSynapses];
-      tau_ = new BGFLOAT[maxTotalSynapses];
+      decay_ = valarray<BGFLOAT>(maxTotalSynapses);
+      totalDelay_ = valarray<int>(maxTotalSynapses);
+      delayQueue_ = valarray<uint32_t>(maxTotalSynapses);
+      delayIndex_ = valarray<int>(maxTotalSynapses);
+      delayQueueLength_ = valarray<int>(maxTotalSynapses);
+      tau_ = valarray<BGFLOAT>(maxTotalSynapses);
    }
 }
 

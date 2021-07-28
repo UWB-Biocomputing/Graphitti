@@ -274,53 +274,53 @@ private:
 public:
    ///  The synaptic transmission delay (delay of dendritic backpropagating spike),
    ///  descretized into time steps.
-   int *totalDelayPost_;
+   valarray<int> totalDelayPost_;
 
    ///  Pointer to the delayed queue
-   uint32_t *delayQueuePost_;
+   valarray<uint32_t> delayQueuePost_;
 
    ///  The index indicating the current time slot in the delayed queue.
-   int *delayIndexPost_;
+   valarray<int> delayIndexPost_;
 
    ///  Length of the delayed queue.
-   int *delayQueuePostLength_;
+   valarray<int> delayQueuePostLength_;
 
    ///  Used for extended rule by Froemke and Dan. See Froemke and Dan (2002).
    ///  Spike-timing-dependent synaptic modification induced by natural spike trains.
    ///  Nature 416 (3/2002).
-   BGFLOAT *tauspost_;
+   valarray<BGFLOAT> tauspost_;
 
    ///  sed for extended rule by Froemke and Dan.
-   BGFLOAT *tauspre_;
+   valarray<BGFLOAT> tauspre_;
 
    ///  Timeconstant of exponential decay of positive learning window for STDP.
-   BGFLOAT *taupos_;
+   valarray<BGFLOAT> taupos_;
 
    ///  Timeconstant of exponential decay of negative learning window for STDP.
-   BGFLOAT *tauneg_;
+   valarray<BGFLOAT> tauneg_;
 
    ///  No learning is performed if \f$|Delta| = |t_{post}-t_{pre}| < STDPgap_\f$
-   BGFLOAT *STDPgap_;
+   valarray<BGFLOAT> STDPgap_;
 
    ///  The maximal/minimal weight of the synapse [readwrite; units=;]
-   BGFLOAT *Wex_;
+   valarray<BGFLOAT> Wex_;
 
    ///  Defines the peak of the negative exponential learning window.
-   BGFLOAT *Aneg_;
+   valarray<BGFLOAT> Aneg_;
 
    ///  Defines the peak of the positive exponential learning window.
-   BGFLOAT *Apos_;
+   valarray<BGFLOAT> Apos_;
 
    ///  Extended multiplicative positive update:
    ///  \f$dw = (Wex_-W)^{mupos_} * Apos_ * exp(-Delta/taupos_)\f$.
    ///  Set to 0 for basic update. See Guetig, Aharonov, Rotter and Sompolinsky (2003).
    ///  Learning input correlations through non-linear asymmetric Hebbian plasticity.
    ///  Journal of Neuroscience 23. pp.3697-3714.
-   BGFLOAT *mupos_;
+   valarray<BGFLOAT> mupos_;
 
    ///  Extended multiplicative negative update:
    ///  \f$dw = W^{mupos_} * Aneg_ * exp(Delta/tauneg_)\f$. Set to 0 for basic update.
-   BGFLOAT *muneg_;
+   valarray<BGFLOAT> muneg_;
 
 
    BGFLOAT defaultSTDPgap_;

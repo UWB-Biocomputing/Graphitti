@@ -9,12 +9,6 @@
 #include "AllDynamicSTDPSynapses.h"
 
 AllDynamicSTDPSynapses::AllDynamicSTDPSynapses() : AllSTDPSynapses() {
-    lastSpike_ = nullptr;
-    r_ = nullptr;
-    u_ = nullptr;
-    D_ = nullptr;
-    U_ = nullptr;
-    F_ = nullptr;
 }
 
 AllDynamicSTDPSynapses::AllDynamicSTDPSynapses(const int numVertices, const int maxEdges) :
@@ -23,23 +17,6 @@ AllDynamicSTDPSynapses::AllDynamicSTDPSynapses(const int numVertices, const int 
 }
 
 AllDynamicSTDPSynapses::~AllDynamicSTDPSynapses() {
-    BGSIZE maxTotalSynapses = maxEdgesPerVertex_ * countVertices_;
-
-    if (maxTotalSynapses != 0) {
-        delete[] lastSpike_;
-        delete[] r_;
-        delete[] u_;
-        delete[] D_;
-        delete[] U_;
-        delete[] F_;
-    }
-
-    lastSpike_ = nullptr;
-    r_ = nullptr;
-    u_ = nullptr;
-    D_ = nullptr;
-    U_ = nullptr;
-    F_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -57,12 +34,12 @@ void AllDynamicSTDPSynapses::setupEdges(const int numVertices, const int maxEdge
     BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
     if (maxTotalSynapses != 0) {
-        lastSpike_ = new uint64_t[maxTotalSynapses];
-        r_ = new BGFLOAT[maxTotalSynapses];
-        u_ = new BGFLOAT[maxTotalSynapses];
-        D_ = new BGFLOAT[maxTotalSynapses];
-        U_ = new BGFLOAT[maxTotalSynapses];
-        F_ = new BGFLOAT[maxTotalSynapses];
+        lastSpike_ = valarray<uint64_t>(maxTotalSynapses);
+        r_ = valarray<BGFLOAT>(maxTotalSynapses);
+        u_ = valarray<BGFLOAT>(maxTotalSynapses);
+        D_ = valarray<BGFLOAT>(maxTotalSynapses);
+        U_ = valarray<BGFLOAT>(maxTotalSynapses);
+        F_ = valarray<BGFLOAT>(maxTotalSynapses);
     }
 }
 

@@ -121,17 +121,17 @@ void AllDSSynapses::copyHostToDevice( void* allEdgesDevice, AllDSSynapsesDeviceP
 
         BGSIZE maxTotalSynapses = maxEdgesPerVertex * numVertices;
 
-        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.lastSpike_, lastSpike_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.lastSpike_, &lastSpike_[0],
                 maxTotalSynapses * sizeof( uint64_t ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.r_, r_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.r_, &r_[0],
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.u_, u_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.u_, &u_[0],
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.D_, D_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.D_, &D_[0],
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.U_, U_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.U_, &U_[0],
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
-        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.F_, F_,
+        HANDLE_ERROR( cudaMemcpy ( allEdgesDeviceProps.F_, &F_[0],
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyHostToDevice ) );
 }
 
@@ -161,17 +161,17 @@ void AllDSSynapses::copyDeviceToHost( AllDSSynapsesDeviceProperties& allEdgesDev
 	int numVertices = Simulator::getInstance().getTotalVertices();
 	BGSIZE maxTotalSynapses = Simulator::getInstance().getMaxEdgesPerVertex() * numVertices;
 
-        HANDLE_ERROR( cudaMemcpy ( lastSpike_, allEdgesDeviceProps.lastSpike_,
+        HANDLE_ERROR( cudaMemcpy ( &lastSpike_[0], allEdgesDeviceProps.lastSpike_,
                 maxTotalSynapses * sizeof( uint64_t ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( r_, allEdgesDeviceProps.r_,
+        HANDLE_ERROR( cudaMemcpy ( &r_[0], allEdgesDeviceProps.r_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( u_, allEdgesDeviceProps.u_,
+        HANDLE_ERROR( cudaMemcpy ( &u_[0], allEdgesDeviceProps.u_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( D_, allEdgesDeviceProps.D_,
+        HANDLE_ERROR( cudaMemcpy ( &D_[0], allEdgesDeviceProps.D_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( U_, allEdgesDeviceProps.U_,
+        HANDLE_ERROR( cudaMemcpy ( &U_[0], allEdgesDeviceProps.U_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
-        HANDLE_ERROR( cudaMemcpy ( F_, allEdgesDeviceProps.F_,
+        HANDLE_ERROR( cudaMemcpy ( &F_[0], allEdgesDeviceProps.F_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
 }
     

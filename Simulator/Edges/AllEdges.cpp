@@ -14,13 +14,7 @@ AllEdges::AllEdges() :
       totalEdgeCount_(0),
       maxEdgesPerVertex_(0),
       countVertices_(0) {
-   destVertexIndex_ = nullptr;
-   W_ = nullptr;
    summationPoint_ = nullptr;
-   sourceVertexIndex_ = nullptr;
-   type_ = nullptr;
-   inUse_ = nullptr;
-   edgeCounts_ = nullptr;
 
    // Register loadParameters function as a loadParameters operation in the
    // OperationManager. This will register the appropriate overridden method
@@ -46,22 +40,10 @@ AllEdges::~AllEdges() {
    BGSIZE maxTotalEdges = maxEdgesPerVertex_ * countVertices_;
 
    if (maxTotalEdges != 0) {
-      delete[] destVertexIndex_;
-      delete[] W_;
       delete[] summationPoint_;
-      delete[] sourceVertexIndex_;
-      delete[] type_;
-      delete[] inUse_;
-      delete[] edgeCounts_;
    }
 
-   destVertexIndex_ = nullptr;
-   W_ = nullptr;
    summationPoint_ = nullptr;
-   sourceVertexIndex_ = nullptr;
-   type_ = nullptr;
-   inUse_ = nullptr;
-   edgeCounts_ = nullptr;
 
    countVertices_ = 0;
    maxEdgesPerVertex_ = 0;
@@ -100,22 +82,20 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
    countVertices_ = numVertices;
 
    if (maxTotalEdges != 0) {
-      destVertexIndex_ = new int[maxTotalEdges];
-      W_ = new BGFLOAT[maxTotalEdges];
+      destVertexIndex_ = valarray<int>(maxTotalEdges);
+      sourceVertexIndex_ = valarray<int>(maxTotalEdges);
+      W_ = valarray<BGFLOAT>(maxTotalEdges);
       summationPoint_ = new BGFLOAT *[maxTotalEdges];
-      sourceVertexIndex_ = new int[maxTotalEdges];
-      type_ = new edgeType[maxTotalEdges];
-      inUse_ = new bool[maxTotalEdges];
-      edgeCounts_ = new BGSIZE[numVertices];
+      type_ = valarray<edgeType>(maxTotalEdges);
+      inUse_ = valarray<bool>(maxTotalEdges);
+      edgeCounts_ = valarray<BGSIZE>(numVertices);
+
+      inUse_ = false;
+      W_ = 0;
+      edgeCounts_ = 0;
 
       for (BGSIZE i = 0; i < maxTotalEdges; i++) {
          summationPoint_[i] = nullptr;
-         inUse_[i] = false;
-         W_[i] = 0;
-      }
-
-      for (int i = 0; i < numVertices; i++) {
-         edgeCounts_[i] = 0;
       }
    }
 }

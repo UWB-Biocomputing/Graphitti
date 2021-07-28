@@ -97,7 +97,7 @@ public:
    static constexpr BGFLOAT SYNAPSE_STRENGTH_ADJUSTMENT = 1.0e-8;
       ///  The post-synaptic response is the result of whatever computation
    ///  is going on in the edge.
-   BGFLOAT *psr_;
+   valarray<BGFLOAT> psr_;
 };
 
 #if defined(USE_GPU)

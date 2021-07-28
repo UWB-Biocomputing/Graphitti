@@ -9,6 +9,7 @@
 #pragma once
 
 #include <vector>
+#include <valarray>
 
 #include "Global.h"
 #include "Simulator.h"
@@ -197,26 +198,26 @@ public:
 #endif // defined(USE_GPU)
 
    ///  The location of the edge.
-   int *sourceVertexIndex_;
+   valarray<int> sourceVertexIndex_;
 
    ///  The coordinates of the summation point.
-   int *destVertexIndex_;
+   valarray<int> destVertexIndex_;
 
    ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
-   BGFLOAT *W_;
+   valarray<BGFLOAT> W_;
 
    ///  This edge's summation point's address.
    BGFLOAT **summationPoint_;
 
    ///   Synapse type
-   edgeType *type_;
+   valarray<edgeType> type_;
 
    ///  The boolean value indicating the entry in the array is in use.
-   bool *inUse_;
+   valarray<bool> inUse_;
 
    ///  The number of (incoming) edges for each vertex.
    ///  Note: Likely under a different name in GpuSim_struct, see edge_count. -Aaron
-   BGSIZE *edgeCounts_;
+   valarray<BGSIZE> edgeCounts_;
 
    ///  The total number of active edges.
    BGSIZE totalEdgeCount_;
