@@ -31,8 +31,8 @@ const H5std_string  nameProbedNeurons("probedNeurons");
 
 /// The constructor and destructor
 Hdf5Recorder::Hdf5Recorder() :
-      offsetSpikesProbedNeurons_(nullptr),
-      spikesProbedNeurons_(nullptr) {
+   offsetSpikesProbedNeurons_(nullptr),
+   spikesProbedNeurons_(nullptr) {
 
    resultFileName_ = Simulator::getInstance().getResultFileName();
 
@@ -94,30 +94,32 @@ void Hdf5Recorder::init()
 ///  Create data spaces and data sets of the hdf5 for recording histories.
 void Hdf5Recorder::initDataSet()
 {
+   Simulator& simulator = Simulator::getInstance();
+
    // create the data space & dataset for burstiness history
    hsize_t dims[2];
-   dims[0] = static_cast<hsize_t>(Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getNumEpochs());
+   dims[0] = static_cast<hsize_t>(simulator.getEpochDuration() * simulator.getNumEpochs());
    DataSpace dsBurstHist(1, dims);
    dataSetBurstHist_ = new DataSet(stateOut_->createDataSet(nameBurstHist, PredType::NATIVE_INT, dsBurstHist));
 
    // create the data space & dataset for spikes history
-   dims[0] = static_cast<hsize_t>(Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getNumEpochs() * 100);
+   dims[0] = static_cast<hsize_t>(simulator.getEpochDuration() * simulator.getNumEpochs() * 100);
    DataSpace dsSpikesHist(1, dims);
    dataSetSpikesHist_ = new DataSet(stateOut_->createDataSet(nameSpikesHist, PredType::NATIVE_INT, dsSpikesHist));
 
    // create the data space & dataset for xloc & yloc
-   dims[0] = static_cast<hsize_t>(Simulator::getInstance().getTotalVertices());
+   dims[0] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsXYloc(1, dims);
    dataSetXloc_ = new DataSet(stateOut_->createDataSet(nameXloc, PredType::NATIVE_INT, dsXYloc));
    dataSetYloc_ = new DataSet(stateOut_->createDataSet(nameYloc, PredType::NATIVE_INT, dsXYloc));
 
    // create the data space & dataset for neuron types
-   dims[0] = static_cast<hsize_t>(Simulator::getInstance().getTotalVertices());
+   dims[0] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsNeuronTypes(1, dims);
    dataSetNeuronTypes_ = new DataSet(stateOut_->createDataSet(nameNeuronTypes, PredType::NATIVE_INT, dsNeuronTypes));
 
    // create the data space & dataset for neuron threshold
-   dims[0] = static_cast<hsize_t>(Simulator::getInstance().getTotalVertices());
+   dims[0] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsNeuronThresh(1, dims);
    dataSetNeuronThresh_ = new DataSet(stateOut_->createDataSet(nameNeuronThresh, H5_FLOAT, dsNeuronThresh));
 
@@ -132,7 +134,7 @@ void Hdf5Recorder::initDataSet()
    dataSetSimulationEndTime_ = new DataSet(stateOut_->createDataSet(nameSimulationEndTime, H5_FLOAT, dsSimulationEndTime));
 
    // Get model instance
-   shared_ptr<Model> model = Simulator::getInstance().getModel();
+   shared_ptr<Model> model = simulator.getModel();
 
    // Set up probed neurons so that they can be written incrementally
    if (model->getLayout()->probedNeuronList_.size() > 0)
@@ -169,10 +171,10 @@ void Hdf5Recorder::initDataSet()
    }
 
     // allocate and initialize data memories
-    burstinessHist_ = new int[static_cast<int>(Simulator::getInstance().getEpochDuration())];
-   spikesHistory_ = new int[static_cast<int>(Simulator::getInstance().getEpochDuration() * 100)];
-    memset(burstinessHist_, 0, static_cast<int>(Simulator::getInstance().getEpochDuration() * sizeof(int)));
-    memset(spikesHistory_, 0, static_cast<int>(Simulator::getInstance().getEpochDuration() * 100 * sizeof(int)));
+    burstinessHist_ = new int[static_cast<int>(simulator.getEpochDuration() * simulator.getNumEpochs())];
+    spikesHistory_ = new int[static_cast<int>(simulator.getEpochDuration() * simulator.getNumEpochs() * 100)];
+    memset(burstinessHist_, 0, static_cast<int>(simulator.getEpochDuration() * simulator.getNumEpochs() * sizeof(int)));
+    memset(spikesHistory_, 0, static_cast<int>(simulator.getEpochDuration() * simulator.getNumEpochs() * 100 * sizeof(int)));
 
     // create the data space & dataset for spikes history of probed neurons
     if (model->getLayout()->probedNeuronList_.size() > 0)
@@ -180,9 +182,9 @@ void Hdf5Recorder::initDataSet()
         // allocate data for spikesProbedNeurons
         spikesProbedNeurons_ = new vector<uint64_t>[model->getLayout()->probedNeuronList_.size()];
 
-   // allocate and initialize memory to save offsets of what's been written
-   offsetSpikesProbedNeurons_ = new hsize_t[model->getLayout()->probedNeuronList_.size()];
-   memset(offsetSpikesProbedNeurons_, 0, static_cast<int>(model->getLayout()->probedNeuronList_.size() * sizeof(hsize_t)));
+        // allocate and initialize memory to save offsets of what's been written
+        offsetSpikesProbedNeurons_ = new hsize_t[model->getLayout()->probedNeuronList_.size()];
+        memset(offsetSpikesProbedNeurons_, 0, static_cast<int>(model->getLayout()->probedNeuronList_.size() * sizeof(hsize_t)));
     }
 }
 
@@ -265,11 +267,14 @@ void Hdf5Recorder::compileHistories(AllVertices &vertices)
          if (idxSp >= maxSpikes) idxSp = 0;
          // compile network wide burstiness index data in 1s bins
          int idx1 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * simulator.getDeltaT());
-         assert(idx1 >= 0 && idx1 < simulator.getEpochDuration());
+         // make sure idx1 is a valid index of burstinessHist_ 
+         assert(idx1 >= 0 && idx1 < (simulator.getEpochDuration() * simulator.getNumEpochs()));
          burstinessHist_[idx1]++;
 
          // compile network wide spike count in 10ms bins
          int idx2 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * simulator.getDeltaT() * 100);
+         // make sure idx2 is a valid index of spikesHistory_ 
+         assert(idx2 >= 0 && idx2 < (simulator.getEpochDuration() * simulator.getNumEpochs() * 100));
          spikesHistory_[idx2]++;
 
          // compile spikes time of the probed neuron (append spikes time)
