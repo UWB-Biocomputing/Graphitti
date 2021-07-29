@@ -42,8 +42,6 @@ class AllNeuroEdges : public AllEdges {
 public:
    AllNeuroEdges();
 
-   AllNeuroEdges(const int numVertices, const int maxEdges);
-
    virtual ~AllNeuroEdges();
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).

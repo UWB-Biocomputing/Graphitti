@@ -195,10 +195,6 @@ void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap) {
 
    LOG4CPLUS_TRACE(fileLogger_,endl<<"totalEdgeCount: in edgeIndexMap " << totalEdgeCount << endl);
 
-   if (totalEdgeCount == 0) {
-      return;
-   }
-
    // Create vector for edge forwarding map
    vector<BGSIZE> rgEdgeEdgeIndexMap[vertexCount];
 

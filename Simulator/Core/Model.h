@@ -48,7 +48,7 @@ public:
    /// Writes simulation results to an output destination.
    /// Downstream from IModel saveData()
    // todo: put in chain of responsibility.
-   virtual void saveData();
+   virtual void saveResults();
 
    /// Set up model state, for a specific simulation run.
    /// Downstream from IModel setupSim()

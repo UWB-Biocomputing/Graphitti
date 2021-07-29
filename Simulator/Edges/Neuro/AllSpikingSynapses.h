@@ -51,7 +51,7 @@ public:
    ///
    ///  @param  iEdg     Index of the synapse to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT);
+   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::op::loadParameters
    virtual void loadParameters() override;
