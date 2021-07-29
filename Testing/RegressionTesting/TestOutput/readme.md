@@ -1,0 +1,1 @@
+Empty directories are not included in the repository. This file is here so that this directory is included in the repository, as the file path is needed for output files.

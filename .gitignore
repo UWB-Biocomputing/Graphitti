@@ -79,3 +79,5 @@ Output/Debug/*.txt
 # Result files
 Output/Results/*.xml
 Output/Results/*.h5
+Testing/RegressionTesting/TestOutput/*.xml
+Testing/RegressionTesting/TestOutput/*.h5
