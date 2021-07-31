@@ -21,6 +21,10 @@
 #ifndef _NORM_H_
 #define _NORM_H_
 
+#define  DEFAULT_M      0.0
+#define  DEFAULT_S      1.0
+#define  DEFAULT_SEED   0
+
 #include "MTRand.h"
 #include <cmath>
 
@@ -71,7 +75,7 @@ public:
       @param s variance
       @param seed seed for random number generator
    */
-   Norm(BGFLOAT m = 0.0, BGFLOAT s = 1.0, uint32_t seed = 0);
+   Norm(BGFLOAT m = DEFAULT_M, BGFLOAT s = DEFAULT_S, uint32_t seed = DEFAULT_SEED);
 
    /*!
       This method makes instances functors; it returns normally
@@ -81,7 +85,7 @@ public:
    virtual BGFLOAT operator() (void) override;
 
    /// Allow Norm re-seeding (with same behavior as initializers)
-   virtual void seed(BGFLOAT m, BGFLOAT s, uint32_t seed);
+   void seed(BGFLOAT m, BGFLOAT s, uint32_t seed);
    virtual void seed(uint32_t seed) override;
    virtual void seed() override;
 
@@ -90,16 +94,16 @@ private:
 
    /*! Which of the pair of pseudorandom numbers was last
       returned. Says whether we should calculate this time  */
-   bool odd;
+   bool odd_;
 
    /*! The second of the pair of pseudorandom numbers generated (last call) */
-   BGFLOAT X2;
+   BGFLOAT X2_;
 
    /*! Distribution mean */
-   BGFLOAT mu;
+   BGFLOAT mu_;
 
    /*! Distribution variance */
-   BGFLOAT sigma;
+   BGFLOAT sigma_;
 };
 
 #endif

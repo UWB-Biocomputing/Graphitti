@@ -68,8 +68,8 @@ BGFLOAT Norm::operator() ()
       X1;                      // First value computed (returned immediately)
 
    // Check to see if we need to compute anything, complement indicator.
-   if ((odd = !odd))
-      return(mu + sigma * X2);
+   if ((odd_ = !odd_))
+      return(mu_ + sigma_ * X2_);
 
    // Do the computation step 1 (until W <= 1)
    do {
@@ -84,28 +84,28 @@ BGFLOAT Norm::operator() ()
    // Do the computation step 2
    Y = sqrt(-2 * log(W) / W);
    X1 = V1 * Y;
-   X2 = V2 * Y;
+   X2_ = V2 * Y;
 
    // Return X1 this time, X2 next time
-   return(mu + sigma * X1);
+   return(mu_ + sigma_ * X1);
 }
 
 Norm::~Norm() {}
 
 Norm::Norm(BGFLOAT m, BGFLOAT s, uint32_t seed)
-   : MTRand(seed), odd(true), mu(m), sigma(s) {}
+   : MTRand(seed), odd_(true), mu_(m), sigma_(s) {}
 
 void Norm::seed(BGFLOAT m, BGFLOAT s, uint32_t seed) {
    MTRand::seed(seed);
-   odd = true;
-   mu = m;
-   sigma = s;
+   odd_ = true;
+   mu_ = m;
+   sigma_ = s;
 }
 
 void Norm::seed(uint32_t seed) {
-   Norm::seed(0.0, 1.0, seed);
+   Norm::seed(DEFAULT_M, DEFAULT_S, seed);
 }
 
 void Norm::seed() {
-   Norm::seed(0.0, 1.0, 0);
+   Norm::seed(DEFAULT_M, DEFAULT_S, DEFAULT_SEED);
 }
