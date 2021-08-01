@@ -21,10 +21,6 @@
 #ifndef _NORM_H_
 #define _NORM_H_
 
-#define  DEFAULT_M      0.0
-#define  DEFAULT_S      1.0
-#define  DEFAULT_SEED   0
-
 #include "MTRand.h"
 #include <cmath>
 
@@ -75,7 +71,7 @@ public:
       @param s variance
       @param seed seed for random number generator
    */
-   Norm(BGFLOAT m = DEFAULT_M, BGFLOAT s = DEFAULT_S, uint32_t seed = DEFAULT_SEED);
+   Norm(BGFLOAT m = DEFAULT_m, BGFLOAT s = DEFAULT_s, uint32_t seed = DEFAULT_seed);
 
    /*!
       This method makes instances functors; it returns normally
@@ -104,6 +100,15 @@ private:
 
    /*! Distribution variance */
    BGFLOAT sigma_;
+
+   /// Default seeding parameter: mean
+   static constexpr BGFLOAT DEFAULT_m = 0.0;
+
+   /// Default seeding parameter: variance
+   static constexpr BGFLOAT DEFAULT_s = 1.0;
+
+   /// Default seeding parameter: seed
+   static constexpr uint32_t DEFAULT_seed = 0;
 };
 
 #endif
