@@ -106,16 +106,16 @@ void AllIZHNeurons::createNeuron(int i, Layout *layout) {
    // TODO: we may need another distribution mode besides flat distribution
    if (layout->vertexTypeMap_[i] == EXC) {
       // excitatory neuron
-      Aconst_[i] = rng.inRange(excAconst_[0], excAconst_[1]);
-      Bconst_[i] = rng.inRange(excBconst_[0], excBconst_[1]);
-      Cconst_[i] = rng.inRange(excCconst_[0], excCconst_[1]);
-      Dconst_[i] = rng.inRange(excDconst_[0], excDconst_[1]);
+      Aconst_[i] = initRNG.inRange(excAconst_[0], excAconst_[1]);
+      Bconst_[i] = initRNG.inRange(excBconst_[0], excBconst_[1]);
+      Cconst_[i] = initRNG.inRange(excCconst_[0], excCconst_[1]);
+      Dconst_[i] = initRNG.inRange(excDconst_[0], excDconst_[1]);
    } else {
       // inhibitory neuron
-      Aconst_[i] = rng.inRange(inhAconst_[0], inhAconst_[1]);
-      Bconst_[i] = rng.inRange(inhBconst_[0], inhBconst_[1]);
-      Cconst_[i] = rng.inRange(inhCconst_[0], inhCconst_[1]);
-      Dconst_[i] = rng.inRange(inhDconst_[0], inhDconst_[1]);
+      Aconst_[i] = initRNG.inRange(inhAconst_[0], inhAconst_[1]);
+      Bconst_[i] = initRNG.inRange(inhBconst_[0], inhBconst_[1]);
+      Cconst_[i] = initRNG.inRange(inhCconst_[0], inhCconst_[1]);
+      Dconst_[i] = initRNG.inRange(inhDconst_[0], inhDconst_[1]);
    }
 
    u_[i] = 0;
@@ -257,7 +257,7 @@ void AllIZHNeurons::advanceNeuron(const int index) {
    } else {
       summationPoint += I0; // add IO
       // add noise
-      BGFLOAT noise = (*rgNormrnd)();
+      BGFLOAT noise = (*noiseRNG)();
       // Happens really often, causes drastic slow down
       // DEBUG_MID(cout << "ADVANCE NEURON[" << index << "] :: noise = " << noise << endl;)
       summationPoint += noise * Inoise; // add noise

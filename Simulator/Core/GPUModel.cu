@@ -96,7 +96,7 @@ void GPUModel::setupSim()
   int rng_nPerRng = 4; //# of iterations per thread (thread granularity, # of rands generated per thread)
   int rng_mt_rng_count = Simulator::getInstance().getTotalVertices() / rng_nPerRng; //# of threads to generate for numVertices rand #s
   int rng_threads = rng_mt_rng_count/rng_blocks; //# threads per block needed
-  initMTGPU(Simulator::getInstance().getSeed(), rng_blocks, rng_threads, rng_nPerRng, rng_mt_rng_count);
+  initMTGPU(Simulator::getInstance().getNoiseRngSeed(), rng_blocks, rng_threads, rng_nPerRng, rng_mt_rng_count);
 
 #ifdef PERFORMANCE_METRICS
   cudaEventCreate( &start );

@@ -98,7 +98,7 @@ SInputRegular::SInputRegular(TiXmlElement* parms) :
        // asynchronous stimuli - fill nShiftValues array with values between 0 - nStepsCycle
         for (int i = 0; i < Simulator::getInstance().getHeight(); i++)
             for (int j = 0; j < Simulator::getInstance().getWidth(); j++)
-                nShiftValues[i * Simulator::getInstance().getWidth() + j] = static_cast<int>(rng.inRange(0, nStepsCycle - 1));
+                nShiftValues[i * Simulator::getInstance().getWidth() + j] = static_cast<int>(initRNG.inRange(0, nStepsCycle - 1));
     }
     else if (sync == "wave")
     {

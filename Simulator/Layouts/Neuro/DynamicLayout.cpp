@@ -57,7 +57,7 @@ void DynamicLayout::generateVertexTypeMap(int numVertices) {
    }
 
    for (int i = numInhibitory; i < numVertices; i++) {
-      int j = static_cast<int>(rng() * numVertices);
+      int j = static_cast<int>(initRNG() * numVertices);
       if (j < numInhibitory) {
          rgInhibitoryLayout[j] = i;
       }
@@ -90,7 +90,7 @@ void DynamicLayout::initStarterMap(const int numVertices) {
    // randomly set neurons as starters until we've created enough
    while (startersAllocated < numEndogenouslyActiveNeurons_) {
       // Get a random neuron ID
-      int i = static_cast<int>(rng.inRange(0, numVertices));
+      int i = static_cast<int>(initRNG.inRange(0, numVertices));
 
       // If the neuron at that index is excitatory and not already in the
       // starter map, add an entry.

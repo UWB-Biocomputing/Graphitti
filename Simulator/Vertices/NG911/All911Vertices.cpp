@@ -58,7 +58,7 @@ void All911Vertices::createAllVertices(Layout *layout) {
     for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {  
         // Create all callers
         if (layout->vertexTypeMap_[i] == CALR) {
-            callNum_[i] = rng.inRange(callNumRange_[0], callNumRange_[1]);
+            callNum_[i] = initRNG.inRange(callNumRange_[0], callNumRange_[1]);
             callersPerZone[layout911->zone(i)] += callNum_[i];
         }
 
@@ -78,7 +78,7 @@ void All911Vertices::createAllVertices(Layout *layout) {
     // Dispatchers in a psap = [callers in the zone * k] + some randomness
     for (int i = 0; i < psapList.size(); i++) {
         int psapQ = layout911->zone(i);
-        int dispCount = (callersPerZone[psapQ] * dispNumScale_) + rng.inRange(-5, 5);
+        int dispCount = (callersPerZone[psapQ] * dispNumScale_) + initRNG.inRange(-5, 5);
         if (dispCount < 1) { dispCount = 1; }
         dispNum_[psapList[i]] = dispCount;
     }
@@ -87,7 +87,7 @@ void All911Vertices::createAllVertices(Layout *layout) {
     // Responders in a node = [callers in the zone * k]/[number of responder nodes] + some randomness
     for (int i = 0; i < respList.size(); i++) {
         int respQ = layout911->zone(respList[i]);
-        int respCount = (callersPerZone[respQ] * respNumScale_)/respPerZone[respQ] + rng.inRange(-5, 5);
+        int respCount = (callersPerZone[respQ] * respNumScale_)/respPerZone[respQ] + initRNG.inRange(-5, 5);
         if (respCount < 1) { respCount = 1; }
         respNum_[respList[i]] = respCount;
     }

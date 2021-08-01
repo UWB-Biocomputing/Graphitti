@@ -70,10 +70,10 @@ int chunk_size = psi->totalVertices / omp_get_max_threads();
             dynamic_cast<AllSpikingSynapses*>(edges_)->preSpikeHit(iEdg);
 
             // update interval counter (exponectially distribution ISIs, Poisson)
-            BGFLOAT isi = -lambda * log(rng.inRange(0, 1));
+            BGFLOAT isi = -lambda * log(initRNG.inRange(0, 1));
             // delete isi within refractoriness
-            while (rng.inRange(0, 1) <= exp(-(isi*isi)/32))
-                isi = -lambda * log(rng.inRange(0, 1));
+            while (initRNG.inRange(0, 1) <= exp(-(isi*isi)/32))
+                isi = -lambda * log(initRNG.inRange(0, 1));
             // convert isi from msec to steps
             nISIs[neuronIndex] = static_cast<int>( (isi / 1000) / Simulator::getInstance().getDeltaT() + 0.5 );
         }

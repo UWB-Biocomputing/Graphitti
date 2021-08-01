@@ -151,8 +151,8 @@ void Layout::initVerticesLocs() {
    } else {
       // random layout
       for (int i = 0; i < numVertices; i++) {
-         (*xloc_)[i] = rng.inRange(0, Simulator::getInstance().getWidth());
-         (*yloc_)[i] = rng.inRange(0, Simulator::getInstance().getHeight());
+         (*xloc_)[i] = initRNG.inRange(0, Simulator::getInstance().getWidth());
+         (*yloc_)[i] = initRNG.inRange(0, Simulator::getInstance().getHeight());
       }
    }
 }

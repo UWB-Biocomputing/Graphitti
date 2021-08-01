@@ -91,9 +91,9 @@ public:
 
    BGFLOAT *getPSummationMap() const;   /// List of summation points (either host or device memory)
 
-   long getSeed() const;    /// Seed used for the simulation random **SingleThreaded Only**
+   long getNoiseRngSeed() const;    /// Seed used for the simulation random **SingleThreaded Only**
 
-   long getRNGSeed() const;    /// Seed used to initialize parameters
+   long getInitRngSeed() const;    /// Seed used to initialize parameters
 
    string getResultFileName() const;    /// File name of the simulation results.
 
@@ -165,9 +165,9 @@ private:
 
    BGFLOAT *pSummationMap_;    /// List of summation points (either host or device memory) ToDo: make smart ptr
 
-   long seed_;   /// Seed used for the simulation random SINGLE THREADED
+   long noiseRngSeed_;   /// Seed used for the simulation random SINGLE THREADED
 
-   long rngSeed_;   /// Seed used to initialize parameters
+   long initRngSeed_;   /// Seed used to initialize parameters
 
    string resultFileName_;    /// File name of the simulation results.
 

@@ -75,10 +75,10 @@ extern int g_deviceId;
 extern const BGFLOAT pi;
 
 // A random number generator.
-extern MTRand rng;
+extern MTRand initRNG;
 
 // A normalized random number generator.
-extern MTRand *rgNormrnd;
+extern MTRand *noiseRNG;
 
 // The current simulation step.
 extern uint64_t g_simulationStep;
