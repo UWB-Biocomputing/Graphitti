@@ -171,10 +171,10 @@ void Hdf5Recorder::initDataSet()
    }
 
     // allocate and initialize data memories
-    burstinessHist_ = new int[static_cast<int>(simulator.getEpochDuration() * simulator.getNumEpochs())];
-    spikesHistory_ = new int[static_cast<int>(simulator.getEpochDuration() * simulator.getNumEpochs() * 100)];
-    memset(burstinessHist_, 0, static_cast<int>(simulator.getEpochDuration() * simulator.getNumEpochs() * sizeof(int)));
-    memset(spikesHistory_, 0, static_cast<int>(simulator.getEpochDuration() * simulator.getNumEpochs() * 100 * sizeof(int)));
+    burstinessHist_ = new int[static_cast<int>(simulator.getEpochDuration())];
+    spikesHistory_ = new int[static_cast<int>(simulator.getEpochDuration() * 100)];
+    memset(burstinessHist_, 0, static_cast<int>(simulator.getEpochDuration() * sizeof(int)));
+    memset(spikesHistory_, 0, static_cast<int>(simulator.getEpochDuration() * 100 * sizeof(int)));
 
     // create the data space & dataset for spikes history of probed neurons
     if (model->getLayout()->probedNeuronList_.size() > 0)
@@ -266,15 +266,17 @@ void Hdf5Recorder::compileHistories(AllVertices &vertices)
 
          if (idxSp >= maxSpikes) idxSp = 0;
          // compile network wide burstiness index data in 1s bins
-         int idx1 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * simulator.getDeltaT());
+         int idx1 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) *  simulator.getDeltaT()
+            - ( (simulator.getCurrentStep() - 1) * simulator.getEpochDuration() ) );
          // make sure idx1 is a valid index of burstinessHist_ 
-         assert(idx1 >= 0 && idx1 < (simulator.getEpochDuration() * simulator.getNumEpochs()));
+         assert(idx1 >= 0 && idx1 < simulator.getEpochDuration());
          burstinessHist_[idx1]++;
 
          // compile network wide spike count in 10ms bins
-         int idx2 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * simulator.getDeltaT() * 100);
+         int idx2 = static_cast<int>( static_cast<double>( pSpikes[idxSp] ) * simulator.getDeltaT() * 100
+            - ( (simulator.getCurrentStep() - 1) * simulator.getEpochDuration() * 100 ) );
          // make sure idx2 is a valid index of spikesHistory_ 
-         assert(idx2 >= 0 && idx2 < (simulator.getEpochDuration() * simulator.getNumEpochs() * 100));
+         assert(idx2 >= 0 && idx2 < (simulator.getEpochDuration() * 100));
          spikesHistory_[idx2]++;
 
          // compile spikes time of the probed neuron (append spikes time)
@@ -451,7 +453,7 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
             hsize_t dims[2];
             dims[0] = static_cast<hsize_t>(starterNeurons.Size());
             DataSpace dsStarterNeurons(1, dims);
-           dataSetStarterNeurons_ = new DataSet(stateOut_->createDataSet(nameStarterNeurons, PredType::NATIVE_INT, dsStarterNeurons));
+            dataSetStarterNeurons_ = new DataSet(stateOut_->createDataSet(nameStarterNeurons, PredType::NATIVE_INT, dsStarterNeurons));
 
             int* iStarterNeurons = new int[starterNeurons.Size()];
             for (int i = 0; i < starterNeurons.Size(); i++)

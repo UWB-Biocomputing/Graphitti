@@ -33,13 +33,13 @@ void Hdf5GrowthRecorder::initDataSet() {
 
    // create the data space & dataset for rates history
    hsize_t dims[2];
-   dims[0] = static_cast<hsize_t>(simulator.getNumEpochs() * simulator.getEpochDuration() + 1);
+   dims[0] = static_cast<hsize_t>(simulator.getNumEpochs() + 1);
    dims[1] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsRatesHist(2, dims);
    dataSetRatesHist_ = new DataSet(stateOut_->createDataSet(nameRatesHist, H5_FLOAT, dsRatesHist));
 
    // create the data space & dataset for radii history
-   dims[0] = static_cast<hsize_t>(simulator.getNumEpochs() * simulator.getEpochDuration() + 1);
+   dims[0] = static_cast<hsize_t>(simulator.getNumEpochs() + 1);
    dims[1] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsRadiiHist(2, dims);
    dataSetRadiiHist_ = new DataSet(stateOut_->createDataSet(nameRadiiHist, H5_FLOAT, dsRadiiHist));
