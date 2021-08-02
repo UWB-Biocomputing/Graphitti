@@ -14,11 +14,16 @@
             <maxFiringRate name="maxFiringRate">200</maxFiringRate>
             <maxEdgesPerVertex name="maxEdgesPerVertex">200</maxEdgesPerVertex>
         </SimConfig>
-        <Seed name="Seed">
-            <value name="value">1</value>
-        </Seed>
+        <RNGConfig name="RNGConfig">
+            <InitRNGParams name="InitRNGParams">
+                <Seed name="Seed">1</Seed>
+            </InitRNGParams>
+            <NoiseRNGParams class="Norm" name="NoiseRNGParams">
+                <Seed name="Seed">1</Seed>
+            </NoiseRNGParams>
+        </RNGConfig>
         <OutputParams name="OutputParams">
-            <resultFileName name="resultFileName">../Output/Results/test-tiny-out.h5</resultFileName>
+            <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-tiny-out.xml</resultFileName>
         </OutputParams>
     </SimInfoParams>
 
@@ -111,7 +116,7 @@
                 </inhNListFileName>
             </LayoutFiles>
         </LayoutParams>
-        <RecorderParams class="Hdf5GrowthRecorder" name="RecorderParams">
+        <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
             <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList2x2.xml
             </probedNListFileName>
         </RecorderParams>
