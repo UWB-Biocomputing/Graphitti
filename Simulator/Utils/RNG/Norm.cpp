@@ -56,31 +56,56 @@
 
 using namespace std;
 
+/*!
+   This method makes instances functors; it returns normally
+   distributed random numbers. Just a cute way of doing things.
+   @return pseudorandom number drawn from a normal distribution.
+*/
 BGFLOAT Norm::operator() ()
 {
-  BGFLOAT U1, U2,             // Uniformly distributed.
-    V1, V2, W, Y,            //Work variables (see above).
-    X1;                      // First value computed (returned immediately)
+   BGFLOAT U1, U2,             // Uniformly distributed.
+      V1, V2, W, Y,            //Work variables (see above).
+      X1;                      // First value computed (returned immediately)
 
-  // Check to see if we need to compute anything, complement indicator.
-  if ((odd = !odd))
-    return(mu + sigma * X2);
+   // Check to see if we need to compute anything, complement indicator.
+   if ((odd_ = !odd_))
+      return(mu_ + sigma_ * X2_);
 
-  // Do the computation step 1 (until W <= 1)
-  do {
+   // Do the computation step 1 (until W <= 1)
+   do {
 
-    U1 = MTRand::operator()();  /* Generate U(0,1) */
-    U2 = MTRand::operator()();
-    V1 = 2 * U1 - 1;
-    V2 = 2 * U2 - 1;
-    W = V1 * V1 + V2 * V2;
-  } while (W > 1);
+      U1 = MTRand::operator()();  /* Generate U(0,1) */
+      U2 = MTRand::operator()();
+      V1 = 2 * U1 - 1;
+      V2 = 2 * U2 - 1;
+      W = V1 * V1 + V2 * V2;
+   } while (W > 1);
 
-  // Do the computation step 2
-  Y = sqrt(-2 * log(W) / W);
-  X1 = V1 * Y;
-  X2 = V2 * Y;
+   // Do the computation step 2
+   Y = sqrt(-2 * log(W) / W);
+   X1 = V1 * Y;
+   X2_ = V2 * Y;
 
-  // Return X1 this time, X2 next time
-  return(mu + sigma * X1);
+   // Return X1 this time, X2 next time
+   return(mu_ + sigma_ * X1);
+}
+
+Norm::~Norm() {}
+
+Norm::Norm(BGFLOAT m, BGFLOAT s, uint32_t seed)
+   : MTRand(seed), odd_(true), mu_(m), sigma_(s) {}
+
+void Norm::seed(BGFLOAT m, BGFLOAT s, uint32_t seed) {
+   MTRand::seed(seed);
+   odd_ = true;
+   mu_ = m;
+   sigma_ = s;
+}
+
+void Norm::seed(uint32_t seed) {
+   Norm::seed(DEFAULT_m, DEFAULT_s, seed);
+}
+
+void Norm::seed() {
+   Norm::seed(DEFAULT_m, DEFAULT_s, DEFAULT_seed);
 }

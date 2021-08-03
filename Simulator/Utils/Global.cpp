@@ -6,8 +6,8 @@
  *  @brief Globally available functions/variables and default parameter values.
  */
 #include "Global.h"
-#include "RNG/MersenneTwister.h"
-#include "RNG/Norm.h"
+#include "MTRand.h"
+#include "Norm.h"
 
 // Debugging log data and routines
 // see "global.h" for bitmask usage of debug outputs
@@ -70,10 +70,10 @@ int g_deviceId = 0;
 #endif // USE_GPU
 
 // A random number generator.
-MTRand rng(1);
+MTRand initRNG;
 
 // A normalized random number generator.
-vector<Norm *> rgNormrnd;
+MTRand *noiseRNG;
 
 //		simulation vars
 uint64_t g_simulationStep = 0;

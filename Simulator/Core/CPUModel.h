@@ -48,9 +48,6 @@ public:
    /// Destructor
    virtual ~CPUModel();
 
-   /// Set up model state, if anym for a specific simulation run.
-   virtual void setupSim() override;
-
    /// Performs any finalization tasks on network following a simulation.
    virtual void finish() override;
 

@@ -16,6 +16,7 @@
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "RecorderFactory.h"
+#include "RNGFactory.h"
 // #include "ParseParamError.h"
 
 /// Acts as constructor first time it's called, returns the instance of the singleton object
@@ -83,7 +84,16 @@ void Simulator::loadParameters() {
    ParameterManager::getInstance().getIntByXpath("//SimParams/numEpochs/text()", numEpochs_);
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxFiringRate/text()", maxFiringRate_);
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxEdgesPerVertex/text()", maxEdgesPerVertex_);
-   ParameterManager::getInstance().getLongByXpath("//Seed/value/text()", seed_);
+
+   // Instantiate rng object 
+   string type;
+   ParameterManager::getInstance().getStringByXpath("//RNGConfig/NoiseRNGParams/@class", type);
+   noiseRNG = RNGFactory::getInstance()->createRNG(type);
+
+   ParameterManager::getInstance().getLongByXpath("//RNGConfig/InitRNGParams/Seed/text()", initRngSeed_);
+   ParameterManager::getInstance().getLongByXpath("//RNGConfig/NoiseRNGParams/Seed/text()", noiseRngSeed_);
+   noiseRNG->seed(noiseRngSeed_);
+   initRNG.seed(initRngSeed_);
 
    // Result file name can be set by the command line arguments so check for default string value as to not overwrite it
    if (resultFileName_ == "") {
@@ -101,7 +111,8 @@ void Simulator::printParameters() const {
                                           << "\tNumber of epochs to run: " << numEpochs_ << endl
                                           << "\tMax firing rate: " << maxFiringRate_ << endl
                                           << "\tMax edges per vertex: " << maxEdgesPerVertex_ << endl
-                                          << "\tSeed: " << seed_ << endl
+                                          << "\tNoise RNG Seed: " << noiseRngSeed_ << endl
+                                          << "\tInitializer RNG Seed: " << initRngSeed_ << endl
                                           << "\tResult file path: " << resultFileName_ << endl << endl);
 }
 
@@ -286,7 +297,9 @@ BGFLOAT Simulator::getMaxRate() const { return maxRate_; }
 
 BGFLOAT *Simulator::getPSummationMap() const { return pSummationMap_; }
 
-long Simulator::getSeed() const { return seed_; }
+long Simulator::getNoiseRngSeed() const { return noiseRngSeed_; }
+
+long Simulator::getInitRngSeed() const { return initRngSeed_; }
 
 string Simulator::getResultFileName() const { return resultFileName_; }
 

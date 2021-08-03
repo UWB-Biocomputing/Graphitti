@@ -56,10 +56,10 @@ typedef unsigned long long int uint64_t;	//included in inttypes.h, which is not 
 #else
 #include <inttypes.h>	//used for uint64_t, unavailable in WIN32
 #endif
-#include "Utils/BGTypes.h"
+#include "BGTypes.h"
 //#include "Norm.h"
-#include "Utils/Coordinate.h"
-#include "Utils/Matrix/VectorMatrix.h"
+#include "Coordinate.h"
+#include "VectorMatrix.h"
 
 using namespace std;
 
@@ -75,10 +75,10 @@ extern int g_deviceId;
 extern const BGFLOAT pi;
 
 // A random number generator.
-extern MTRand rng;
+extern MTRand initRNG;
 
 // A normalized random number generator.
-extern vector<Norm *> rgNormrnd;
+extern MTRand *noiseRNG;
 
 // The current simulation step.
 extern uint64_t g_simulationStep;

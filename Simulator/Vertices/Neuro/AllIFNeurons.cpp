@@ -9,8 +9,8 @@
 #include "AllIFNeurons.h"
 #include "ParseParamError.h"
 #include "Layout.h"
-#include "RNG/MersenneTwister.h"
-#include "RNG/Norm.h"
+#include "MTRand.h"
+#include "Norm.h"
 #include "ParameterManager.h"
 #include "OperationManager.h"
 
@@ -178,12 +178,12 @@ void AllIFNeurons::createAllVertices(Layout *layout) {
 ///  @param  layout       Layout information of the neural network.
 void AllIFNeurons::createNeuron(int i, Layout *layout) {
    // set the neuron info for neurons
-   Iinject_[i] = rng.inRange(IinjectRange_[0], IinjectRange_[1]);
-   Inoise_[i] = rng.inRange(InoiseRange_[0], InoiseRange_[1]);
-   Vthresh_[i] = rng.inRange(VthreshRange_[0], VthreshRange_[1]);
-   Vrest_[i] = rng.inRange(VrestingRange_[0], VrestingRange_[1]);
-   Vreset_[i] = rng.inRange(VresetRange_[0], VresetRange_[1]);
-   Vinit_[i] = rng.inRange(VinitRange_[0], VinitRange_[1]);
+   Iinject_[i] = initRNG.inRange(IinjectRange_[0], IinjectRange_[1]);
+   Inoise_[i] = initRNG.inRange(InoiseRange_[0], InoiseRange_[1]);
+   Vthresh_[i] = initRNG.inRange(VthreshRange_[0], VthreshRange_[1]);
+   Vrest_[i] = initRNG.inRange(VrestingRange_[0], VrestingRange_[1]);
+   Vreset_[i] = initRNG.inRange(VresetRange_[0], VresetRange_[1]);
+   Vinit_[i] = initRNG.inRange(VinitRange_[0], VinitRange_[1]);
    Vm_[i] = Vinit_[i];
 
    initNeuronConstsFromParamValues(i, Simulator::getInstance().getDeltaT());
@@ -216,8 +216,8 @@ void AllIFNeurons::createNeuron(int i, Layout *layout) {
    // endogenously_active_neuron_map -> Model State
    if (layout->starterMap_[i]) {
       // set endogenously active threshold voltage, reset voltage, and refractory period
-      Vthresh_[i] = rng.inRange(starterVthreshRange_[0], starterVthreshRange_[1]);
-      Vreset_[i] = rng.inRange(starterVresetRange_[0], starterVresetRange_[1]);
+      Vthresh_[i] = initRNG.inRange(starterVthreshRange_[0], starterVthreshRange_[1]);
+      Vreset_[i] = initRNG.inRange(starterVresetRange_[0], starterVresetRange_[1]);
       Trefract_[i] = DEFAULT_ExcitTrefract; // TODO(derek): move defaults inside model.
    }
 

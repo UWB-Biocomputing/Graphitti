@@ -135,7 +135,7 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout *layout) {
    if (psaps.size() < 2) { return false; }
 
    // Pick random PSAP
-   int randVal = rng.inRange(0, psaps.size());
+   int randVal = initRNG.inRange(0, psaps.size());
    int randPSAP = psaps[randVal];
    psaps.erase(psaps.begin() + randVal);
 
@@ -269,7 +269,7 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout *layout) {
    if (resps.size() < 2) { return false; }
 
    // Pick random RESP
-   int randVal = rng.inRange(0, resps.size());
+   int randVal = initRNG.inRange(0, resps.size());
    int randRESP = resps[randVal];
    resps.erase(resps.begin() + randVal);
 

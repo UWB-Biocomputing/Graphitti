@@ -21,30 +21,30 @@
 #ifndef _NORM_H_
 #define _NORM_H_
 
-#include "MersenneTwister.h"
+#include "MTRand.h"
 #include <cmath>
 
 /*!
-  @class Norm
-  @brief Generate normally distributed random numbers
+   @class Norm
+   @brief Generate normally distributed random numbers
 
    This class allows you to create RNG objects that are
    independently seeded upon construction and return normally
    distributed random numbers.
 
-       This function generates normally distributed random numbers
+      This function generates normally distributed random numbers
    with mean of mu and standard deviation of sigma, using the
    polar method of Marsaglia and Bray, "A Convenient Method for
    Generating Normal Variables", _SIAM Rev._, 6: 260-264 (1964).
 
-       The algorithm is as follows:
-   -# Generate two uniformly distributed numbers, U1 and U2.
+      The algorithm is as follows:
+   # Generate two uniformly distributed numbers, U1 and U2.
       Let Vi = 2*Ui-1 for i=1,2, and let W = V1*V1 + V2*V2.
-   -# If W > 1, go back to step 1.  Otherwise, let
+   # If W > 1, go back to step 1.  Otherwise, let
       Y = sqrt(-2*ln(W)/W), X1 = V1*Y, and X2 = V2*Y.  Then
       X1 and X2 are normally distributed with mean of 0 and
       variance of 1.
-   -# Random numbers with mean of mu and standard deviation of sigma
+   # Random numbers with mean of mu and standard deviation of sigma
       are calculated by: X_prime = mu + sigma   X.
 
    Note that numbers are generated in pairs.  On odd-numbered calls
@@ -55,41 +55,60 @@
 */
 class Norm : public MTRand {
 public:
-    inline virtual ~Norm() {}
+   virtual ~Norm();
 
-  /*!
-    The constructor allows specification of the mean,
-    variance (default zero and one, respectively), and initial seed
-    for the random number generator. Once created, a Norm object
-    cannot have its mean or variance changed.
-    @param m mean
-    @param s variance
-    @param seed seed for random number generator
-  */
-  Norm(BGFLOAT m = 0.0, BGFLOAT s = 1.0, uint32_t seed = 0)
-    : MTRand(seed), odd(true), mu(m), sigma(s) {}
+   ///  Creates an instance of the class.
+   ///
+   ///  @return Reference to the instance of the class.
+   static MTRand *Create() { return new Norm(); }
 
-  /*!
-    This method makes instances functors; it returns normally
-    distributed random numbers. Just a cute way of doing things.
-    @return pseudorandom number drawn from a normal distribution.
-  */
-  virtual BGFLOAT operator() (void);
+   /*!
+      The constructor allows specification of the mean,
+      variance (default zero and one, respectively), and initial seed
+      for the random number generator. Once created, a Norm object
+      cannot have its mean or variance changed.
+      @param m mean
+      @param s variance
+      @param seed seed for random number generator
+   */
+   Norm(BGFLOAT m = DEFAULT_m, BGFLOAT s = DEFAULT_s, uint32_t seed = DEFAULT_seed);
+
+   /*!
+      This method makes instances functors; it returns normally
+      distributed random numbers. Just a cute way of doing things.
+      @return pseudorandom number drawn from a normal distribution.
+   */
+   virtual BGFLOAT operator() (void) override;
+
+   /// Allow Norm re-seeding (with same behavior as initializers)
+   void seed(BGFLOAT m, BGFLOAT s, uint32_t seed);
+   virtual void seed(uint32_t seed) override;
+   virtual void seed() override;
+
 private:
-  // Additional state information
+   // Additional state information
 
-  /*! Which of the pair of pseudorandom numbers was last
-    returned. Says whether we should calculate this time  */
-  bool odd;
+   /*! Which of the pair of pseudorandom numbers was last
+      returned. Says whether we should calculate this time  */
+   bool odd_;
 
-  /*! The second of the pair of pseudorandom numbers generated (last call) */
-  BGFLOAT X2;
+   /*! The second of the pair of pseudorandom numbers generated (last call) */
+   BGFLOAT X2_;
 
-  /*! Distribution mean */
-  BGFLOAT mu;
+   /*! Distribution mean */
+   BGFLOAT mu_;
 
-  /*! Distribution variance */
-  BGFLOAT sigma;
+   /*! Distribution variance */
+   BGFLOAT sigma_;
+
+   /// Default seeding parameter: mean
+   static constexpr BGFLOAT DEFAULT_m = 0.0;
+
+   /// Default seeding parameter: variance
+   static constexpr BGFLOAT DEFAULT_s = 1.0;
+
+   /// Default seeding parameter: seed
+   static constexpr uint32_t DEFAULT_seed = 0;
 };
 
 #endif

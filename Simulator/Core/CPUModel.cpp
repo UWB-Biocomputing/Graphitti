@@ -21,13 +21,6 @@ CPUModel::~CPUModel() {
    // Let Model base class handle de-allocation
 }
 
-/// Sets up the Simulation.
-void CPUModel::setupSim() {
-   Model::setupSim();
-   // Create a normalized random number generator
-   rgNormrnd.push_back(new Norm(0, 1, Simulator::getInstance().getSeed()));
-}
-
 /// Performs any finalization tasks on network following a simulation.
 void CPUModel::finish() {
    // No GPU code to deallocate, and CPU side deallocation is handled by destructors.

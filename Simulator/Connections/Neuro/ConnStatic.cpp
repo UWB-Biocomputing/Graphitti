@@ -97,9 +97,9 @@ void ConnStatic::setupConnections(Layout *layout, AllVertices *vertices, AllEdge
          // set edge weight
          // TODO: we need another synaptic weight distibution mode (normal distribution)
          if (neuroEdges->edgSign(type) > 0) {
-            neuroEdges->W_[iEdg] = rng.inRange(excWeight_[0], excWeight_[1]);
+            neuroEdges->W_[iEdg] = initRNG.inRange(excWeight_[0], excWeight_[1]);
          } else {
-            neuroEdges->W_[iEdg] = rng.inRange(inhWeight_[0], inhWeight_[1]);
+            neuroEdges->W_[iEdg] = initRNG.inRange(inhWeight_[0], inhWeight_[1]);
          }
       }
    }

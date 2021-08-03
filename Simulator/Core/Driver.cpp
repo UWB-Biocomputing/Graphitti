@@ -172,11 +172,7 @@ int main(int argc, char *argv[]) {
       simulator.getModel()->getRecorder()->term();
    }
 
-   for (unsigned int i = 0; i < rgNormrnd.size(); ++i) {
-      delete rgNormrnd[i];
-   }
-
-   rgNormrnd.clear();
+   delete noiseRNG;
 
    time(&end_time);
    double timeElapsed = difftime(end_time, start_time);

@@ -14,9 +14,14 @@
       <maxFiringRate name="maxFiringRate">200</maxFiringRate>
       <maxEdgesPerVertex name="maxEdgesPerVertex">200</maxEdgesPerVertex>
     </SimConfig>
-    <Seed name="Seed">
-      <value name="value">1</value>
-    </Seed>
+    <RNGConfig name="RNGConfig">
+      <InitRNGParams name="InitRNGParams">
+        <Seed name="Seed">1</Seed>
+      </InitRNGParams>
+      <NoiseRNGParams class="Norm" name="NoiseRNGParams">
+        <Seed name="Seed">1</Seed>
+      </NoiseRNGParams>
+    </RNGConfig>
     <OutputParams name="OutputParams">
       <resultFileName name="resultFileName">../Output/Results/test-small-connected-out.xml</resultFileName>
     </OutputParams>
