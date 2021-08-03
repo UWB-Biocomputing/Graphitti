@@ -14,7 +14,11 @@ set(CMAKE_CXX_STANDARD 11)
 ############################################################################################
 set(ENABLE_CUDA NO)
 
-# Enables the CUDA langauge and locates the NVCC compiler. 
+# set(DEBUG_MODE YES) for debugging, no optimization
+# set(DEBUG_MODE NO) for production code, -O3 optimization enabled
+set(DEBUG_MODE NO)
+
+# Enables the CUDA language and locates the NVCC compiler. 
 # Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
 #
 # ENABLE_CUDA also compiles each library that contains CUDA with the following line...
@@ -40,6 +44,23 @@ else()
         message("-- HDF5 library was not located. Please only use XML recorders.")
 endif()
 
+# Get git commit ID
+# Change to "git rev-parse --short HEAD" for short commit ID
+execute_process(
+        COMMAND
+        git rev-parse HEAD
+        OUTPUT_VARIABLE        GIT_COMMIT_ID )
+
+# GIT_COMMIT_ID has trailing whitespaces
+string(REGEX REPLACE "\n$" "" GIT_COMMIT_ID "${GIT_COMMIT_ID}")
+
+# Save GIT_COMMIT_ID to config.h, which is included in Driver.cpp
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
+                ${CMAKE_BINARY_DIR}/config.h
+                @ONLY )
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 #set(CMAKE_VERBOSE_MAKEFILE TRUE)
 
 # Setting the location of the executable to be in the top-level directory. This helps when using file paths during
@@ -50,6 +71,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 # Set extra warning flags
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+
+if (NOT DEBUG_MODE)
+        message("-- Setting Optimization flag: O3")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+endif()
 
 #define TIXML_USE_STL as a preproccersser macro to use the C++ standard library with TinyXML
 add_compile_definitions(TIXML_USE_STL)
@@ -75,6 +101,8 @@ include_directories(
         Simulator/Layouts/Neuro
         Simulator/Layouts/NG911
         Simulator/Recorders
+        Simulator/Recorders/Neuro
+        Simulator/Recorders/NG911
         Simulator/Vertices
         Simulator/Vertices/Neuro
         Simulator/Vertices/NG911

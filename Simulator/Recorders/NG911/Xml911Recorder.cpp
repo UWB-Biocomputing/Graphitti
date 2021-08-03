@@ -40,14 +40,14 @@ void Xml911Recorder::getValues() {
 /// Compile history information in every epoch
 ///
 /// @param[in] vertices   The entire list of vertices.
-void Xml911Recorder::compileHistories(IAllVertices &vertices) {
+void Xml911Recorder::compileHistories(AllVertices &vertices) {
    
 }
 
 /// Writes simulation results to an output destination.
 ///
 /// @param  vertices the Vertex list to search from.
-void Xml911Recorder::saveSimData(const IAllVertices &vertices) {
+void Xml911Recorder::saveSimData(const AllVertices &vertices) {
    auto conns = Simulator::getInstance().getModel()->getConnections();
    Connections911 &conns911 = dynamic_cast<Connections911 &>(*conns);
 

@@ -149,7 +149,7 @@
             </LayoutFiles>
         </LayoutParams>
         <RecorderParams class="XmlRecorder" name="RecorderParams">
-            <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/ProbedNList2x2.xml
+            <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList2x2.xml
             </probedNListFileName>
         </RecorderParams>
     </ModelParams>

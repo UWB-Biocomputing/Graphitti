@@ -59,7 +59,7 @@ ConnGrowth::ConnGrowth() : Connections() {
 }
 
 ConnGrowth::~ConnGrowth() {
-      if (W_ != nullptr) delete W_;
+   if (W_ != nullptr) delete W_;
    if (radii_ != nullptr) delete radii_;
    if (rates_ != nullptr) delete rates_;
    if (delta_ != nullptr) delete delta_;
@@ -82,7 +82,7 @@ ConnGrowth::~ConnGrowth() {
 ///  @param  layout    Layout information of the neural network.
 ///  @param  vertices   The vertex list to search from.
 ///  @param  synapses  The Synapse list to search from.
-void ConnGrowth::setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *synapses) {
+void ConnGrowth::setupConnections(Layout *layout, AllVertices *vertices, AllEdges *synapses) {
    int numVertices = Simulator::getInstance().getTotalVertices();
    radiiSize_ = numVertices;
 
@@ -107,6 +107,14 @@ void ConnGrowth::loadParameters() {
    ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/targetRate/text()", growthParams_.targetRate);
    ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/minRadius/text()", growthParams_.minRadius);
    ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/startRadius/text()", growthParams_.startRadius);
+
+   // initial maximum firing rate
+   if (growthParams_.epsilon != 0) {
+      growthParams_.maxRate = growthParams_.targetRate / growthParams_.epsilon;
+	} else {
+      LOG4CPLUS_FATAL(fileLogger_, "Parameter GrowthParams/epsilon/ has a value of 0" << endl);
+      exit(EXIT_FAILURE);
+   }
 }
 
 /// Prints out all parameters to logging file.
@@ -119,7 +127,7 @@ void ConnGrowth::printParameters() const {
     << "\trho: " << growthParams_.rho << endl
     << "\tTarget rate: " << growthParams_.targetRate << "," << endl
     << "\tMinimum radius: " << growthParams_.minRadius << endl
-    << "\tStarting raduis: " << growthParams_.startRadius << endl << endl);
+    << "\tStarting radius: " << growthParams_.startRadius << endl << endl);
 }
 
 ///  Update the connections status in every epoch.
@@ -127,7 +135,7 @@ void ConnGrowth::printParameters() const {
 ///  @param  vertices  The vertex list to search from.
 ///  @param  layout   Layout information of the neural network.
 ///  @return true if successful, false otherwise.
-bool ConnGrowth::updateConnections(IAllVertices &vertices, Layout *layout) {
+bool ConnGrowth::updateConnections(AllVertices &vertices, Layout *layout) {
    // Update Connections data
    updateConns(vertices);
 
@@ -143,7 +151,7 @@ bool ConnGrowth::updateConnections(IAllVertices &vertices, Layout *layout) {
 ///  Calculates firing rates, vertex radii change and assign new values.
 ///
 ///  @param  vertices  The vertex list to search from.
-void ConnGrowth::updateConns(IAllVertices &vertices) {
+void ConnGrowth::updateConns(AllVertices &vertices) {
    AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(vertices);
 
    // Calculate growth cycle firing rate for previous period
@@ -154,7 +162,7 @@ void ConnGrowth::updateConns(IAllVertices &vertices) {
       assert(spNeurons.spikeCount_[i] < maxSpikes);
       (*rates_)[i] = spNeurons.spikeCount_[i] / Simulator::getInstance().getEpochDuration();
    }
-
+   
    // compute vertex radii change and assign new values
    (*outgrowth_) =
          1.0 - 2.0 / (1.0 + exp((growthParams_.epsilon - *rates_ / growthParams_.maxRate) / growthParams_.beta));
@@ -237,9 +245,8 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout) {
 ///  @param  ivertices    the AllVertices object.
 ///  @param  iedges   the AllEdges object.
 ///  @param  layout      the Layout object.
-void ConnGrowth::updateSynapsesWeights(const int numVertices, IAllVertices &ivertices, AllEdges &iedges,
+void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &iedges,
                                        Layout *layout) {
-   AllVertices &vertices = dynamic_cast<AllVertices &>(ivertices);
    AllNeuroEdges &synapses = dynamic_cast<AllNeuroEdges &>(iedges);
 
    // For now, we just set the weights to equal the areas. We will later

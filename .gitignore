@@ -32,6 +32,7 @@ build/bin
 build/Simulator
 build/Testing
 build/ThirdParty
+build/config.h
 ThirdParty/log4cplus-2.0.2/bin/*
 ThirdParty/log4cplus-2.0.2/src/liblog4cplus.so.2.0.2
 
@@ -79,3 +80,5 @@ Output/Debug/*.txt
 # Result files
 Output/Results/*.xml
 Output/Results/*.h5
+Testing/RegressionTesting/TestOutput/*.xml
+Testing/RegressionTesting/TestOutput/*.h5

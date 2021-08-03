@@ -65,7 +65,7 @@ void XmlRecorder::term() {
 /// Compile history information in every epoch
 ///
 /// @param[in] neurons    The entire list of neurons.
-void XmlRecorder::compileHistories(IAllVertices &vertices) {
+void XmlRecorder::compileHistories(AllVertices &vertices) {
    AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(vertices);
    Simulator& simulator = Simulator::getInstance();
    int maxSpikes = static_cast<int>(simulator.getEpochDuration() * simulator.getMaxFiringRate());
@@ -102,7 +102,7 @@ void XmlRecorder::compileHistories(IAllVertices &vertices) {
 /// Writes simulation results to an output destination.
 ///
 /// @param  neurons the Neuron list to search from.
-void XmlRecorder::saveSimData(const IAllVertices &vertices) {
+void XmlRecorder::saveSimData(const AllVertices &vertices) {
    Simulator& simulator = Simulator::getInstance();
    // create Neuron Types matrix
    VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), EXC);

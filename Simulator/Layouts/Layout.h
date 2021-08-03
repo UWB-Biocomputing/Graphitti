@@ -21,10 +21,12 @@
 
 #include <log4cplus/loggingmacros.h>
 
-#include "Global.h"
-#include "IAllVertices.h"
+#include "Utils/Global.h"
+#include "AllVertices.h"
 
 using namespace std;
+
+class AllVertices;
 
 class Layout {
 public:
@@ -32,7 +34,7 @@ public:
 
    virtual ~Layout();
 
-   shared_ptr<IAllVertices> getVertices() const;
+   shared_ptr<AllVertices> getVertices() const;
 
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.
@@ -80,7 +82,7 @@ public:
 
 
 protected:
-   shared_ptr<IAllVertices> vertices_;
+   shared_ptr<AllVertices> vertices_;
 
    vector<int> endogenouslyActiveNeuronList_;    ///< Endogenously active neurons list.
 

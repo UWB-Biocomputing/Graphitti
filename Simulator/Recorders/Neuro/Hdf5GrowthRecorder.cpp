@@ -107,7 +107,7 @@ void Hdf5GrowthRecorder::term() {
 /// Compile history information in every epoch.
 ///
 /// @param[in] neurons   The entire list of neurons.
-void Hdf5GrowthRecorder::compileHistories(IAllVertices &neurons) {
+void Hdf5GrowthRecorder::compileHistories(AllVertices &neurons) {
    Hdf5Recorder::compileHistories(neurons);
 
    shared_ptr<Model> model = Simulator::getInstance().getModel();

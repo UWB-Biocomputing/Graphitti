@@ -34,8 +34,8 @@ void VerticesFactory::registerClass(const string &className, CreateFunction func
 
 
 /// Creates concrete instance of the desired vertices class.
-shared_ptr<IAllVertices> VerticesFactory::createVertices(const string &className) {
-   verticesInstance = shared_ptr<IAllVertices>(invokeCreateFunction(className));
+shared_ptr<AllVertices> VerticesFactory::createVertices(const string &className) {
+   verticesInstance = shared_ptr<AllVertices>(invokeCreateFunction(className));
    return verticesInstance;
 }
 
@@ -43,7 +43,7 @@ shared_ptr<IAllVertices> VerticesFactory::createVertices(const string &className
 ///
 /// The calling method uses this retrieval mechanism in 
 /// value assignment.
-IAllVertices *VerticesFactory::invokeCreateFunction(const string &className) {
+AllVertices *VerticesFactory::invokeCreateFunction(const string &className) {
    for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
       if (className == i->first)
          return i->second();

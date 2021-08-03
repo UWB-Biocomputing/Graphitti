@@ -83,7 +83,7 @@ public:
 
    virtual ~AllIZHNeurons();
 
-   static IAllVertices *Create() { return new AllIZHNeurons(); }
+   static AllVertices *Create() { return new AllIZHNeurons(); }
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all neurons' state.

@@ -16,7 +16,6 @@
  */
 
 #include "Connections.h"
-#include "IAllVertices.h"
 #include "AllEdges.h"
 #include "AllVertices.h"
 #include "OperationManager.h"
@@ -62,13 +61,12 @@ void Connections::createEdgeIndexMap() {
       synapseIndexMap_ = shared_ptr<EdgeIndexMap>(new EdgeIndexMap(vertexCount, maxEdges));
    }
 
-   // Unsure if required
-   // fill_n(synapseIndexMap_->incomingEdgeBegin_, vertexCount, 0);
-   // fill_n(synapseIndexMap_->incomingEdgeCount_, vertexCount, 0);
-   // fill_n(synapseIndexMap_->incomingEdgeIndexMap_, maxEdges, 0);
-   // fill_n(synapseIndexMap_->outgoingEdgeBegin_, vertexCount, 0);
-   // fill_n(synapseIndexMap_->outgoingEdgeCount_, vertexCount, 0);
-   // fill_n(synapseIndexMap_->outgoingEdgeIndexMap_, maxEdges, 0);
+   fill_n(synapseIndexMap_->incomingEdgeBegin_, vertexCount, 0);
+   fill_n(synapseIndexMap_->incomingEdgeCount_, vertexCount, 0);
+   fill_n(synapseIndexMap_->incomingEdgeIndexMap_, maxEdges, 0);
+   fill_n(synapseIndexMap_->outgoingEdgeBegin_, vertexCount, 0);
+   fill_n(synapseIndexMap_->outgoingEdgeCount_, vertexCount, 0);
+   fill_n(synapseIndexMap_->outgoingEdgeIndexMap_, maxEdges, 0);
 
    edges_->createEdgeIndexMap(synapseIndexMap_);
 }
@@ -78,12 +76,12 @@ void Connections::createEdgeIndexMap() {
 ///  @param  vertices  The vertex list to search from.
 ///  @param  layout   Layout information of the neural network.
 ///  @return true if successful, false otherwise.
-bool Connections::updateConnections(IAllVertices &vertices, Layout *layout) {
+bool Connections::updateConnections(AllVertices &vertices, Layout *layout) {
    return false;
 }
 
 #if defined(USE_GPU)
-void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, AllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout)
+void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout)
 {
 }
 #else
@@ -94,7 +92,7 @@ void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &ver
 ///  @param  numVertices  Number of vertices to update.
 ///  @param  vertices     The vertex list to search from.
 ///  @param  synapses    The Synapse list to search from.
-void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &vertices, AllEdges &synapses, Layout *layout) {
+void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &synapses, Layout *layout) {
 }
 
 #endif // !USE_GPU
@@ -105,11 +103,8 @@ void Connections::updateSynapsesWeights(const int numVertices, IAllVertices &ver
 ///  @param  layout      Layout information of the neural network.
 ///  @param  ivertices    The vertex list to search from.
 ///  @param  isynapses   The Synapse list to search from.
-void Connections::createSynapsesFromWeights(const int numVertices, Layout *layout, IAllVertices &ivertices,
-                                            AllEdges &isynapses) {
-   AllVertices &vertices = dynamic_cast<AllVertices &>(ivertices);
-   AllEdges &synapses = dynamic_cast<AllEdges &>(isynapses);
-
+void Connections::createSynapsesFromWeights(const int numVertices, Layout *layout, AllVertices &vertices,
+                                            AllEdges &synapses) {
    // for each neuron
    for (int i = 0; i < numVertices; i++) {
       // for each synapse in the vertex

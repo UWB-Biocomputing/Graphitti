@@ -59,7 +59,7 @@ Layout::~Layout() {
    starterMap_ = nullptr;
 }
 
-shared_ptr<IAllVertices> Layout::getVertices() const {
+shared_ptr<AllVertices> Layout::getVertices() const {
    return vertices_;
 }
 

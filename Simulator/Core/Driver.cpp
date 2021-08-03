@@ -34,6 +34,7 @@
 #include "ParameterManager.h"
 #include "Simulator.h"
 
+#include <string>
 
 // Uncomment to use visual leak detector (Visual Studios Plugin)
 // #include <vld.h>
@@ -44,6 +45,9 @@
 // TODO: fix this stuff
 #include "ConnGrowth.h" // hacked in. that's why its here.
 #include "ConnStatic.h" // hacked in. that's why its here.
+
+// build/config.h contains the git commit id
+#include "config.h"
 
 #if defined(USE_GPU)
 #include "GPUModel.h"
@@ -68,6 +72,7 @@ void serializeSynapses();
 ///  @param  argv    arguments.
 ///  @return -1 if error, else if success.
 int main(int argc, char *argv[]) {
+
    // Clear logging files at the start of each simulation
    fstream("../Output/Debug/logging.txt", ios::out | ios::trunc);
    fstream("../Output/Debug/vertices.txt", ios::out | ios::trunc);
@@ -149,7 +154,7 @@ int main(int argc, char *argv[]) {
    // todo: before this, do copy from gpu.
    // Writes simulation results to an output destination
    LOG4CPLUS_TRACE(consoleLogger, "Simulation ended, saving results");
-   simulator.saveData();
+   simulator.saveResults();
 
    // todo: going to be moved with the "hack"
    // Serializes internal state for the current simulation
@@ -193,7 +198,7 @@ bool parseCommandLine(int argc, char *argv[]) {
    // Set up the comment line parser.
    if ((cl.addParam("resultfile", 'o', ParamContainer::filename, "simulation results filepath (deprecated)") !=
         ParamContainer::errOk)
-       || (cl.addParam("configfile", 'c', ParamContainer::filename | ParamContainer::required,
+       || (cl.addParam("configfile", 'c', ParamContainer::filename,
                        "parameter configuration filepath") != ParamContainer::errOk)
        #if defined(USE_GPU)
        || (cl.addParam("device", 'd', ParamContainer::regular, "CUDA device id") != ParamContainer::errOk)
@@ -203,7 +208,10 @@ bool parseCommandLine(int argc, char *argv[]) {
        || (cl.addParam("deserializefile", 'r', ParamContainer::filename,
                        "simulation deserialization filepath (enables deserialization)") != ParamContainer::errOk)
        || (cl.addParam("serializefile", 'w', ParamContainer::filename,
-                       "simulation serialization filepath (enables serialization)") != ParamContainer::errOk)) {
+                       "simulation serialization filepath (enables serialization)") != ParamContainer::errOk)
+       || (cl.addParam("version", 'v', ParamContainer::novalue,
+                       "output current git commit ID and exit") != ParamContainer::errOk)) {
+
       cerr << "Internal error creating command line parser" << endl;
       return false;
    }
@@ -212,6 +220,11 @@ bool parseCommandLine(int argc, char *argv[]) {
    if (cl.parseCommandLine(argc, argv) != ParamContainer::errOk) {
       cl.dumpHelp(stderr, true, 78);
       return false;
+   }
+
+   if (cl["version"].compare("") != 0) {
+      cout << "Git commit ID: " << GIT_COMMIT_ID << endl;
+      exit(0);
    }
 
    // Get the command line values

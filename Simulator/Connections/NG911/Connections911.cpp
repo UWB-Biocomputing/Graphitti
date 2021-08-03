@@ -20,7 +20,7 @@ Connections911::~Connections911() {
    if (oldTypeMap_ != nullptr) delete[] oldTypeMap_;
 }
 
-void Connections911::setupConnections(Layout *layout, IAllVertices *vertices, AllEdges *edges) {
+void Connections911::setupConnections(Layout *layout, AllVertices *vertices, AllEdges *edges) {
    int numVertices = Simulator::getInstance().getTotalVertices();
 
    int added = 0;
@@ -54,7 +54,7 @@ void Connections911::setupConnections(Layout *layout, IAllVertices *vertices, Al
             if (srcZone != destZone) { continue; }
          }
 
-         BGFLOAT *sumPoint = &(dynamic_cast<AllVertices *>(vertices)->summationMap_[destVertex]);
+         BGFLOAT *sumPoint = &vertices->summationMap_[destVertex];
 
          LOG4CPLUS_DEBUG(fileLogger_, "Source: " << srcVertex << " Dest: " << destVertex << " Dist: "
                                        << dist);
@@ -91,7 +91,7 @@ void Connections911::printParameters() const {
 ///  @param  vertices  The Vertex list to search from.
 ///  @param  layout   Layout information of the vertex network.
 ///  @return true if successful, false otherwise.
-bool Connections911::updateConnections(IAllVertices &vertices, Layout *layout) {
+bool Connections911::updateConnections(AllVertices &vertices, Layout *layout) {
    // Only run on the first epoch
    if (Simulator::getInstance().getCurrentStep() != 1) { return false; }
 
@@ -118,7 +118,7 @@ bool Connections911::updateConnections(IAllVertices &vertices, Layout *layout) {
 ///  @param  vertices  The Vertex list to search from.
 ///  @param  layout   Layout information of the vertex network.
 ///  @return true if successful, false otherwise.
-bool Connections911::erasePSAP(IAllVertices &vertices, Layout *layout) {
+bool Connections911::erasePSAP(AllVertices &vertices, Layout *layout) {
    int numVertices = Simulator::getInstance().getTotalVertices();
 
    vector<int> psaps;
@@ -203,7 +203,7 @@ bool Connections911::erasePSAP(IAllVertices &vertices, Layout *layout) {
       }
 
       // Insert Caller to PSAP edge
-      BGFLOAT *sumPoint = &(dynamic_cast<AllVertices *>(&vertices)->summationMap_[closestPSAP]);
+      BGFLOAT *sumPoint = &vertices.summationMap_[closestPSAP];
       BGSIZE iEdg;
       edges_->addEdge(iEdg, CP, srcVertex, closestPSAP, sumPoint, Simulator::getInstance().getDeltaT());
 
@@ -232,7 +232,7 @@ bool Connections911::erasePSAP(IAllVertices &vertices, Layout *layout) {
       }
 
       // Insert PSAP to Responder edge
-      BGFLOAT *sumPoint = &(dynamic_cast<AllVertices *>(&vertices)->summationMap_[destVertex]);
+      BGFLOAT *sumPoint = &vertices.summationMap_[destVertex];
       BGSIZE iEdg;
       edges_->addEdge(iEdg, PR, closestPSAP, destVertex, sumPoint, Simulator::getInstance().getDeltaT());
 
@@ -252,7 +252,7 @@ bool Connections911::erasePSAP(IAllVertices &vertices, Layout *layout) {
 ///  @param  vertices  The Vertex list to search from.
 ///  @param  layout   Layout information of the vertex network.
 ///  @return true if successful, false otherwise.
-bool Connections911::eraseRESP(IAllVertices &vertices, Layout *layout) {
+bool Connections911::eraseRESP(AllVertices &vertices, Layout *layout) {
    int numVertices = Simulator::getInstance().getTotalVertices();
 
    vector<int> resps;

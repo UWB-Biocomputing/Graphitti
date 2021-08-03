@@ -55,7 +55,7 @@ public:
    void advanceEpoch(
          const int &currentEpoch) const; /// Advance simulation to next growth cycle. Helper for #simulate().
 
-   void saveData() const; /// Writes simulation results to an output destination.
+   void saveResults() const; /// Writes simulation results to an output destination.
 
    /// Instantiates Model which causes all other lower level simulator objects to be instantiated. Checks if all
    /// expected objects were created correctly and returns T/F on the success of the check.

@@ -1,4 +1,4 @@
-name: Unit Tests
+name: Unit and Regression Tests
 
 on:
   push:
@@ -21,6 +21,22 @@ jobs:
       run: cmake ..
     - name: build
       run: make
-    - name: run tests
-      run: ./tests
+    - name: run unit tests
+      run: ./tests    
+
+    # simulator runs
+    - name: run test-tiny
+      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
+    - name: verify test-tiny
+      run: diff ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml ../Testing/RegressionTesting/GoodOutput/test-tiny-out.xml
+
+    - name: run test-small
+      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small.xml
+    - name: verify test-small
+      run: diff ../Testing/RegressionTesting/TestOutput/test-small-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-out.xml
+
+    - name: run test-small-connected
+      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected.xml
+    - name: verify test-small-connected
+      run: diff ../Testing/RegressionTesting/TestOutput/test-small-connected-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-connected-out.xml
 

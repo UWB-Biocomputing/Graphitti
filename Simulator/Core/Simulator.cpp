@@ -218,8 +218,8 @@ void Simulator::advanceEpoch(const int &currentEpoch) const {
 }
 
 /// Writes simulation results to an output destination.
-void Simulator::saveData() const {
-   model_->saveData();
+void Simulator::saveResults() const {
+   model_->saveResults();
 }
 
 /// Instantiates Model which causes all other lower level simulator objects to be instantiated. Checks if all

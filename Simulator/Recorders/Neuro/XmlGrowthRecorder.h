@@ -19,8 +19,8 @@
 
 #include <fstream>
 
-#include "Recorders/XmlRecorder.h"
-#include "Core/Model.h"
+#include "XmlRecorder.h"
+#include "Model.h"
 
 class XmlGrowthRecorder : public XmlRecorder {
 public:
@@ -43,12 +43,12 @@ public:
    /// Compile history information in every epoch
    ///
    /// @param[in] neurons   The entire list of neurons.
-   virtual void compileHistories(IAllVertices &neurons) override;
+   virtual void compileHistories(AllVertices &neurons) override;
 
    /// Writes simulation results to an output destination.
    ///
    /// @param  neurons the Neuron list to search from.
-   virtual void saveSimData(const IAllVertices &neurons) override;
+   virtual void saveSimData(const AllVertices &neurons) override;
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters

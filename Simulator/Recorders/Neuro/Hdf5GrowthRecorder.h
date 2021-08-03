@@ -58,7 +58,7 @@ public:
 
    /// Compile history information in every epoch
    /// @param[in] neurons   The entire list of neurons.
-   virtual void compileHistories(IAllVertices &neurons) override;
+   virtual void compileHistories(AllVertices &neurons) override;
    
    
    ///  Prints out all parameters to logging file.

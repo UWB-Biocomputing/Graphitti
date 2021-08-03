@@ -20,7 +20,7 @@
 #include <log4cplus/loggingmacros.h>
 
 #include "Layout.h"
-#include "IAllVertices.h"
+#include "AllVertices.h"
 #include "IRecorder.h"
 
 using namespace std;
@@ -28,6 +28,8 @@ using namespace std;
 class Connections;
 
 class IRecorder;
+
+class Layout;
 
 class Model {
 public:
@@ -46,7 +48,7 @@ public:
    /// Writes simulation results to an output destination.
    /// Downstream from IModel saveData()
    // todo: put in chain of responsibility.
-   virtual void saveData();
+   virtual void saveResults();
 
    /// Set up model state, for a specific simulation run.
    /// Downstream from IModel setupSim()
@@ -99,5 +101,5 @@ protected:
    log4cplus::Logger fileLogger_;
 
    // ToDo: Find a good place for this method. Makes sense to put it in Layout
-   void createAllVertices(); /// Populate an instance of IAllVertices with an initial state for each vertex.
+   void createAllVertices(); /// Populate an instance of AllVertices with an initial state for each vertex.
 };

@@ -88,7 +88,7 @@ public:
    ///  Creates an instance of the class.
    ///
    ///  @return Reference to the instance of the class.
-   static IAllVertices *Create() { return new AllLIFNeurons(); }
+   static AllVertices *Create() { return new AllLIFNeurons(); }
 
    ///  Prints out all parameters of the neurons to logging file.
    ///  Registered to OperationManager as Operation::printParameters

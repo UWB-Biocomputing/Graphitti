@@ -91,7 +91,7 @@ public:
    ///  @param  layout    Layout information of the neural network.
    ///  @param  neurons   The Neuron list to search from.
    ///  @param  synapses  The Synapse list to search from.
-   virtual void setupConnections(Layout *layout, IAllVertices *neurons, AllEdges *synapses) override;
+   virtual void setupConnections(Layout *layout, AllVertices *neurons, AllEdges *synapses) override;
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operations::op::loadParameters
@@ -106,7 +106,7 @@ public:
    ///  @param  neurons  The Neuron list to search from.
    ///  @param  layout   Layout information of the neural network.
    ///  @return true if successful, false otherwise.
-   virtual bool updateConnections(IAllVertices &neurons, Layout *layout) override;
+   virtual bool updateConnections(AllVertices &neurons, Layout *layout) override;
 
    ///  Cereal serialization method
    ///  (Serializes radii)
@@ -134,7 +134,7 @@ public:
    ///  @param  allEdgesDevice   GPU address of the allEdges struct in device memory.
    ///  @param  layout              The Layout object.
    virtual void updateSynapsesWeights(const int numVertices,
-         IAllVertices &neurons, AllEdges &synapses,
+         AllVertices &neurons, AllEdges &synapses,
          AllSpikingNeuronsDeviceProperties* allVerticesDevice,
          AllSpikingSynapsesDeviceProperties* allEdgesDevice,
          Layout *layout) override;
@@ -150,7 +150,7 @@ public:
    ///  @param  layout      The Layout object.
    virtual void
    updateSynapsesWeights(const int numVertices,
-         IAllVertices &vertices,
+         AllVertices &vertices,
          AllEdges &synapses,
          Layout *layout) override;
 
@@ -159,7 +159,7 @@ private:
    ///  Calculates firing rates, neuron radii change and assign new values.
    ///
    ///  @param  neurons  The Neuron list to search from.
-   void updateConns(IAllVertices &neurons);
+   void updateConns(AllVertices &neurons);
 
    ///  Update the distance between frontiers of Neurons.
    ///

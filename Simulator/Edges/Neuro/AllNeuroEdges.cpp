@@ -12,10 +12,6 @@ AllNeuroEdges::AllNeuroEdges() : AllEdges() {
    psr_ = nullptr;
 }
 
-AllNeuroEdges::AllNeuroEdges(const int numVertices, const int maxEdges) {
-   setupEdges(numVertices, maxEdges);
-}
-
 AllNeuroEdges::~AllNeuroEdges() {
    BGSIZE maxTotalEdges = maxEdgesPerVertex_ * countVertices_;
    if (maxTotalEdges != 0) {

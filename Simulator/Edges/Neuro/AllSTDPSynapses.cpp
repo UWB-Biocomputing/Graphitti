@@ -7,7 +7,7 @@
  */
 
 #include "AllSTDPSynapses.h"
-#include "IAllVertices.h"
+#include "AllVertices.h"
 #include "AllSpikingNeurons.h"
 #include "ParameterManager.h"
 
@@ -281,7 +281,7 @@ void AllSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVerte
 ///
 ///  @param  iEdg      Index of the Synapse to connect to.
 ///  @param  neurons   The Neuron list to search from.
-void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, IAllVertices *neurons) {
+void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices *neurons) {
    // If the synapse is inhibitory or its weight is zero, update synapse state using AllSpikingSynapses::advanceEdge method
    //LOG4CPLUS_DEBUG(edgeLogger_, "iEdg : " << iEdg );
    
@@ -426,16 +426,10 @@ BGFLOAT AllSTDPSynapses::synapticWeightModification(const BGSIZE iEdg, BGFLOAT s
    BGFLOAT Wex = Wex_[iEdg];
    BGFLOAT& W = W_[iEdg];
    edgeType type = type_[iEdg];
-   BGFLOAT dw;
-   BGFLOAT oldW=W;
+   BGFLOAT dw = 0;
+   BGFLOAT oldW = W;
    
-   BGFLOAT modDelta;
-   if(delta < 0.0)
-      modDelta = delta * -1.0;
-   else
-   {
-      modDelta = delta;
-   }
+   // BGFLOAT modDelta = fabs(delta);
    
    if (delta < -STDPgap) {
       // depression
@@ -471,34 +465,16 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iEdg, double delta, double epost
    BGFLOAT Wex = Wex_[iEdg];
    BGFLOAT& W = W_[iEdg];
    edgeType type = type_[iEdg];
-   BGFLOAT dw;
    BGFLOAT oldW=W;
-   BGFLOAT modDelta;
-   if(delta < 0.0)
-      modDelta = delta * -1.0;
-   else
-   {
-      modDelta = delta;
-   }
-   
-   
-   if (delta < -STDPgap) {
-      // depression
-      
-      dw = synapticWeightModification(iEdg, W, delta);// normalize
-   } else if (delta > STDPgap) {
-      // potentiation
-      dw = synapticWeightModification(iEdg, W, delta); // normalize
-   }
-   else {
-      
+   // BGFLOAT modDelta = fabs(delta);
+
+   if (delta <= fabs(STDPgap)) {
       return;
    }
-   
-   
+
    // dw is the fractional change in synaptic strength; add 1.0 to become the scaling ratio
    //dw = 1.0 + dw * epre * epost;
-   dw = 1.0 + dw;
+   BGFLOAT dw = 1.0 + synapticWeightModification(iEdg, W, delta);   
    
    // if scaling ratio is less than zero, set it to zero so this synapse, its
    // strength is always zero
