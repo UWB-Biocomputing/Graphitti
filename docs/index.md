@@ -43,6 +43,7 @@
 - [Performing Analyses](BGDocs/PerformingAnalyses.md)
 - [CMake](BGDocs/CMake.md)
 - [Recommended Resources](BGDocs/Resources.md)
+- [Neuro Implementation](BGDocs/NeuroImplementation.md) 
 - [Internal Testing](InternalTesting/index.md)
 
 ## Doxygen 
