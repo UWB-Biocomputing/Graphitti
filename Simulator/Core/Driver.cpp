@@ -1,30 +1,7 @@
-/**
- * @file Driver.cpp
- * 
- * @ingroup Simulator/Core
- *
- * @brief Orchestrates most functionality in the simulation.
- * 
- *  The driver performs the following steps:
- *  1) Instantiates Simulator object
- *  2) Parses command line to get configuration file and additional information if provided
- *  3) Loads global Simulator parameters from configuration file
- *  4) Instantiates all simulator objects (Layout, Connections, Synapases, Vertices)
- *  5) Reads simulator objects' parameters from configuration file
- *  6) Simulation setup (Deseralization, Initailizing values, etc.)
- *  7) Run Simulation
- *  8) Simulation shutdown (Save results, serialize)
- *
- */
 
 #include <fstream>
-
 #include "Global.h"
 #include "../ThirdParty/paramcontainer/ParamContainer.h"
-//#include "log4cplus/logger.h"
-//#include "log4cplus/configurator.h"
-//#include "log4cplus/loggingmacros.h"
-
 #include "AllEdges.h"
 #include "CPUModel.h"
 #include "Inputs/FSInput.h"
@@ -36,41 +13,21 @@
 
 #include <string>
 
-// Uncomment to use visual leak detector (Visual Studios Plugin)
-// #include <vld.h>
-
-// Cereal
 #include <cereal/archives/xml.hpp>
 #include <cereal/archives/binary.hpp>
-// TODO: fix this stuff
 #include "ConnGrowth.h" // hacked in. that's why its here.
 #include "ConnStatic.h" // hacked in. that's why its here.
-
-// build/config.h contains the git commit id
 #include "config.h"
-
 #if defined(USE_GPU)
 #include "GPUModel.h"
 #elif defined(USE_OMP)
-// #include "MultiThreadedSim.h"
-#else
-
-#endif
 
 using namespace std;
 
-// forward declarations
 bool parseCommandLine(int argc, char *argv[]);
 bool deserializeSynapses();
 void serializeSynapses();
 
-///  Main for Simulator. Handles command line arguments and loads parameters
-///  from parameter file. All initial loading before running simulator in Network
-///  is here.
-///
-///  @param  argc    argument count.
-///  @param  argv    arguments.
-///  @return -1 if error, else if success.
 int main(int argc, char *argv[]) {
 
    // Clear logging files at the start of each simulation
@@ -82,14 +39,10 @@ int main(int argc, char *argv[]) {
    //::log4cplus::initialize();
    //::log4cplus::PropertyConfigurator::doConfigure("../RuntimeFiles/log4cplus_configure.ini");
 
-   // Get the instance of the console logger and print status
-   //log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    
-   //LOG4CPLUS_TRACE(consoleLogger, "Instantiating Simulator");
    Simulator &simulator = Simulator::getInstance();
 
    // Handles parsing of the command line.
-   //LOG4CPLUS_TRACE(consoleLogger, "Parsing command line");
    if (!parseCommandLine(argc, argv)) {
       //LOG4CPLUS_FATAL(consoleLogger, "ERROR: failed during command line parse");
       return -1;
