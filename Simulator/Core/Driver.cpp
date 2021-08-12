@@ -141,7 +141,7 @@ int main(int argc, char *argv[]) {
 
    // Run simulation
    //LOG4CPLUS_TRACE(consoleLogger, "Starting Simulation");
-   simulator.simulate();
+   //simulator.simulate();
 
    // INPUT OBJECTS ARENT IN PROJECT YET
    // Terminate the stimulus input
