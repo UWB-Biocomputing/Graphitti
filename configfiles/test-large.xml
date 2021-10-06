@@ -23,7 +23,7 @@
       </NoiseRNGParams>
     </RNGConfig>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">../Output/Results/test-large-connected-out.xml</resultFileName>
+      <resultFileName name="resultFileName">../Output/Results/test-large-out.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 
@@ -104,7 +104,7 @@
         <rho name="rho">0.0001</rho>
         <targetRate name="targetRate">1.0</targetRate>
         <minRadius name="minRadius">0.1</minRadius>
-        <startRadius name="startRadius">0.49</startRadius>
+        <startRadius name="startRadius">0.4</startRadius>
       </GrowthParams>
     </ConnectionsParams>
 

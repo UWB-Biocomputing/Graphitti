@@ -2,13 +2,13 @@
 <BGSimParams>
   <SimInfoParams name="SimInfoParams">
     <PoolSize name="PoolSize">
-      <x name="x">100</x>
-      <y name="y">100</y>
+      <x name="x">10</x>
+      <y name="y">10</y>
       <z name="z">1</z>
     </PoolSize>
     <SimParams name="SimParams">
       <epochDuration name="epochDuration">100.0</epochDuration>
-      <numEpochs name="numEpochs">2</numEpochs>
+      <numEpochs name="numEpochs">10</numEpochs>
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">200</maxFiringRate>
@@ -23,7 +23,7 @@
       </NoiseRNGParams>
     </RNGConfig>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">../Output/Results/test-large-short-out.xml</resultFileName>
+      <resultFileName name="resultFileName">../Output/Results/test-small-long-out.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 
@@ -102,7 +102,7 @@
         <epsilon name="epsilon">0.60</epsilon>
         <beta name="beta">0.10</beta>
         <rho name="rho">0.0001</rho>
-        <targetRate name="targetRate">1.0</targetRate>
+        <targetRate name="targetRate">1.9</targetRate>
         <minRadius name="minRadius">0.1</minRadius>
         <startRadius name="startRadius">0.4</startRadius>
       </GrowthParams>
@@ -110,13 +110,12 @@
 
     <LayoutParams class="FixedLayout" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">
-        <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList100x100-0.1.xml</activeNListFileName>
-        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList100x100-0.1.xml</inhNListFileName>
+        <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList10x10-0.1.xml</activeNListFileName>
+        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList10x10-0.02.xml</inhNListFileName>
       </LayoutFiles>
     </LayoutParams>
-
     <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
-      <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_10000.xml</probedNListFileName>
+      <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_2-100.xml</probedNListFileName>
     </RecorderParams>
   </ModelParams>
 </BGSimParams>
