@@ -8,7 +8,7 @@
     </PoolSize>
     <SimParams name="SimParams">
       <epochDuration name="epochDuration">100.0</epochDuration>
-      <numEpochs name="numEpochs">20</numEpochs>
+      <numEpochs name="numEpochs">2</numEpochs>
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">200</maxFiringRate>
@@ -110,8 +110,8 @@
 
     <LayoutParams class="FixedLayout" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">
-        <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList30x30-0.01.xml</activeNListFileName>
-        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList30x30-0.02.xml</inhNListFileName>
+        <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList30x30-0.1.xml</activeNListFileName>
+        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList30x30-0.1.xml</inhNListFileName>
       </LayoutFiles>
     </LayoutParams>
 

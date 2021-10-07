@@ -7,8 +7,8 @@
       <z name="z">1</z>
     </PoolSize>
     <SimParams name="SimParams">
-      <epochDuration name="epochDuration">10.0</epochDuration>
-      <numEpochs name="numEpochs">2</numEpochs>
+      <epochDuration name="epochDuration">100.0</epochDuration>
+      <numEpochs name="numEpochs">600</numEpochs>
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">200</maxFiringRate>
@@ -23,7 +23,7 @@
       </NoiseRNGParams>
     </RNGConfig>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">../Output/Results/test-large-short-out.xml</resultFileName>
+      <resultFileName name="resultFileName">../Output/Results/test-large-very-long-out.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 

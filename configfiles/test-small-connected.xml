@@ -111,7 +111,7 @@
     <LayoutParams class="FixedLayout" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">
         <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList10x10-0.1.xml</activeNListFileName>
-        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList10x10-0.02.xml</inhNListFileName>
+        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList10x10-0.1.xml</inhNListFileName>
       </LayoutFiles>
     </LayoutParams>
 
