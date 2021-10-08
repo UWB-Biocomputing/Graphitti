@@ -9,6 +9,7 @@ Parameters that vary between the test config files are limited to the pool size,
 starting radius, and number of epochs. These values vary according to Table 1.
 
 ### Table 1
+
 |               Config File Name | Pool Size | startRadius | numEpochs |
 |-------------------------------:|----------:|------------:|----------:|
 |                 test-small.xml |     10x10 |         0.4 |         2 |
@@ -32,6 +33,7 @@ listed in Table 2 below. All other parameters not listed also remain constant
 between these test config files.
 
 ### Table 2
+
 |              Parameter |             Value |
 |-----------------------:|------------------:|
 |          epochDuration |               100 |
