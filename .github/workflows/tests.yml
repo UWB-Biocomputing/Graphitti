@@ -25,24 +25,24 @@ jobs:
       run: ./tests    
 
     # simulator runs
-    if: ${{ always() }}
     - name: run test-tiny
+      if: always()
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
-    if: ${{ always() }}
     - name: verify test-tiny
+      if: always()
       run: diff ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-out.xml
 
-    if: ${{ always() }}
     - name: run test-small
+      if: always()
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small.xml
-    if: ${{ always() }}
     - name: verify test-small
+      if: always()
       run: diff ../Testing/RegressionTesting/TestOutput/test-small-out.xml ../Testing/RegressionTesting/GoodOutput/test-tiny-out.xml
 
-    if: ${{ always() }}
     - name: run test-small-connected
+      if: always()
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected.xml
-    if: ${{ always() }}
     - name: verify test-small-connected
+      if: always()
       run: diff ../Testing/RegressionTesting/TestOutput/test-small-connected-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-connected-out.xml
 
