@@ -5,21 +5,37 @@ Thank you for your interest in the Graphitti Project, which includes the Workben
 ## External from the BioComputing Lab
 For people outside of the [UW Bothell Biocomputing laboratory](http://depts.washington.edu/biocomp/) (BCL), we use a [fork and pull development model](https://help.github.com/articles/about-collaborative-development-models/). If you're interested in adapting this project for your own use, then please feel free to make your own copy of this repository and adapt it to your work. We would be greatly interested to learn about what you do, potentially incorporating your work back into this main repository. *Please cite us in your work*; the repository [README](../../Desktop/Graphitti/BG-reorg/README.md) has a DOI for that purpose.
 
+If you're making modifications that you'd like to be merged into our code base, then please see the Workflow section, below. When unsure, contact us ahead of time.
+
 ## For the BioComputing Lab
 For UW Bothell students interested in working in the BCL, we use a [shared repository development model](https://help.github.com/articles/about-collaborative-development-models/). If you're interested in contributing directly to this project, then please contact [Prof. Michael Stiber](mailto:stiber@uw.edu) and read the information below.
 
-## GitHub Workflow
+## Workflow
 
 - Please read up on Github basics (including [Managing your work on GitHub](https://help.github.com/categories/managing-your-work-on-github/)).
 - Seek the guidance of more senior lab members regarding how to get started. 
 - Please ***DO NOT WORK DIRECTLY ON THE MASTER BRANCH*** (yes, there are exceptions, but they are few and far between). 
-- Instead, create a branch, do what you intend, *check that your haven't broken anything*, and then merge your branch into master. If you're unsure about doing such a merge, then discuss what you've done at a lab meeting or open a pull request (read more about [pull requests](http://help.github.com/pull-requests/)).
+- Instead, please follow the lab workflow that follows.
 
-If you're creating a branch that is in response to an issue, then name the branch accordingly, i.e., "issue-3141". This implies a one-to-one correspondence between issues and branches. If you want to work on an issue and it seems pretty clear that it's a big undertaking, then talk with the group. Possibly, it will be a branch that exists for a while, and you may need to merge the master branch back into it multiple times as you work on it. But, it's also possible that the issue in question should really be broken into sub-issues that can be worked on separately. You can use [the GitHub syntax](https://help.github.com/articles/closing-issues-using-keywords/) to close issues directly from commits or pull requests upon merge into the master branch.
+0. Review our [Coding Conventions](https://uwb-biocomputing.github.io/Graphitti/BGDocs/codingConventions.html). Your work will be rejected if it doesn't conform.
 
-We are working on developing a Jenkins server to help validate changes, so that you'll more easily know whether what you've done passes all of our tests for correctly working (or, more pedantically, behaving in a manner consistent with the current release version). More on this to come later.
+1. Your work should be in response to one or more issues. If you are planning to work on something that is a small part of an existing issue, then likely that issue is a placeholder "umbrella" that was generated in lieu of thinking through all related details. In that case, now is the time for you to think it through and break that issue down into actionable items —— new issues that partially or completely replace the umbrella.
 
-*Please document what you've done*, not only in your commit messages but also with useful comments in code and via changes to the github pages content in the docs directory.
+2. The issue(s) you are working on should be part of a project for the current quarter. If not, make it so. Assign yourself to those issue(s) and move them from "To do" to "In progress".
 
-todo: link to codingConventions.md
+3. Create a new feature branch for your work. If the branch is in response to a single issue, then you can name the branch accordingly, i.e., "issue-3141"; otherwise, just give it a logical name. Add a comment to the issue(s) including a link to the feature branch.
+
+4. Make changes to the feature branch (commit/push).
+
+5. Create a pull request for your branch (read more about [pull requests](http://help.github.com/pull-requests/)). You may choose to do this early in your work on the branch or later. Link the issue(s) you're working on to this pull request.
+
+6. Before requesting a review of your pull request, *check that your haven't broken anything*. This means checking that all of our automated GitHub actions have passed their tests (this will show directly in the pull request) and that any required manual tests have passed (some of our tests take a while to run, so rather than do them for every commit to a pull request, we just run them manually when such requests are close to done).
+
+7. Request a review of your pull request. If you have a designated reviewer, ask that person; otherwise, ask Prof. Stiber or ask during a lab meeting who should review your pull request. You should see the linked issue(s) automatically move to "Review in progress" in the project when you request the review, and to "Reviewer approved" when approved.
+
+8. When your pull request is approved, you can merge it. You should see that the relevant issues automatically move to "Done" in the project.
+
+9. Once you've verified that the merge is done, you can delete your feature branch.
+
+***Please document what you've done***, not only in your commit messages but also with useful comments in code and via changes to the github pages content in the docs directory.
 
