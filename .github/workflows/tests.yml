@@ -21,24 +21,28 @@ jobs:
       run: cmake ..
     - name: build
       run: make
+      continue-on-error: false
     - name: run unit tests
       run: ./tests    
 
     # simulator runs
     - name: run test-tiny
+      if: always()
       run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
     - name: verify test-tiny
+      if: always()
       run: diff ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-out.xml
-      continue-on-error: true
 
     - name: run test-small
+      if: always()
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small.xml
     - name: verify test-small
+      if: always()
       run: diff ../Testing/RegressionTesting/TestOutput/test-small-out.xml ../Testing/RegressionTesting/GoodOutput/test-tiny-out.xml
-      continue-on-error: true
 
     - name: run test-small-connected
+      if: always()
       run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected.xml
     - name: verify test-small-connected
+      if: always()
       run: diff ../Testing/RegressionTesting/TestOutput/test-small-connected-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-connected-out.xml
-      continue-on-error: true
