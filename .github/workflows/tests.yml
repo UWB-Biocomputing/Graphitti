@@ -81,3 +81,19 @@ jobs:
     - name: verify test-medium-connected
       if: always() && steps.tmc.conclusion == 'success'
       run: diff ../Testing/RegressionTesting/TestOutput/test-medium-connected-out.xml ../Testing/RegressionTesting/GoodOutput/test-medium-connected-out.xml
+
+    - id: tml
+      name: run test-medium-long
+      if: always() && steps.build.conclusion == 'success'
+      run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-long.xml
+    - name: verify test-medium-long
+      if: always() && steps.tml.conclusion == 'success'
+      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-long-out.xml ../Testing/RegressionTesting/GoodOutput/test-medium-long-out.xml
+
+    - id: tmcl
+      name: run test-medium-connected-long
+      if: always() && steps.build.conclusion == 'success'
+      run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-connected-long.xml
+    - name: verify test-medium-connected-long
+      if: always() && steps.tmcl.conclusion == 'success'
+      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-connected-long-out.xml ../Testing/RegressionTesting/GoodOutput/test-medium-connected-long-out.xml
