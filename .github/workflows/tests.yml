@@ -32,7 +32,7 @@ jobs:
       run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
     - name: verify test-tiny
       if: steps.tt.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-out.xml
+      run: diff ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml ../Testing/RegressionTesting/GoodOutput/test-tiny-out.xml
 
     - id: ts
       name: run test-small
@@ -40,7 +40,7 @@ jobs:
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small.xml
     - name: verify test-small
       if: steps.ts.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-small-out.xml ../Testing/RegressionTesting/GoodOutput/test-tiny-out.xml
+      run: diff ../Testing/RegressionTesting/TestOutput/test-small-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-out.xml
 
     - id: tsc
       name: run test-small-connected
