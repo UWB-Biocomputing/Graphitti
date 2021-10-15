@@ -90,8 +90,8 @@ void Simulator::loadParameters() {
    ParameterManager::getInstance().getStringByXpath("//RNGConfig/NoiseRNGParams/@class", type);
    noiseRNG = RNGFactory::getInstance()->createRNG(type);
 
-   ParameterManager::getInstance().getLongByXpath("//RNGConfig/InitRNGParams/Seed/text()", initRngSeed_);
-   ParameterManager::getInstance().getLongByXpath("//RNGConfig/NoiseRNGParams/Seed/text()", noiseRngSeed_);
+   ParameterManager::getInstance().getLongByXpath("//RNGConfig/InitRNGParams/text()", initRngSeed_);
+   ParameterManager::getInstance().getLongByXpath("//RNGConfig/NoiseRNGParams/text()", noiseRngSeed_);
    noiseRNG->seed(noiseRngSeed_);
    initRNG.seed(initRngSeed_);
 
