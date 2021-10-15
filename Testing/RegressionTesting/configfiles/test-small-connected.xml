@@ -102,7 +102,7 @@
         <epsilon name="epsilon">0.60</epsilon>
         <beta name="beta">0.10</beta>
         <rho name="rho">0.0001</rho>
-        <targetRate name="targetRate">1.9</targetRate>
+        <targetRate name="targetRate">1.0</targetRate>
         <minRadius name="minRadius">0.1</minRadius>
         <startRadius name="startRadius">0.49</startRadius>
       </GrowthParams>
@@ -111,7 +111,7 @@
     <LayoutParams class="FixedLayout" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">
         <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList10x10-0.1.xml</activeNListFileName>
-        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList10x10-0.02.xml</inhNListFileName>
+        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList10x10-0.1.xml</inhNListFileName>
       </LayoutFiles>
     </LayoutParams>
 

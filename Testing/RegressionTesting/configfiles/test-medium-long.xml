@@ -2,13 +2,13 @@
 <BGSimParams>
   <SimInfoParams name="SimInfoParams">
     <PoolSize name="PoolSize">
-      <x name="x">10</x>
-      <y name="y">10</y>
+      <x name="x">30</x>
+      <y name="y">30</y>
       <z name="z">1</z>
     </PoolSize>
     <SimParams name="SimParams">
       <epochDuration name="epochDuration">100.0</epochDuration>
-      <numEpochs name="numEpochs">2</numEpochs>
+      <numEpochs name="numEpochs">10</numEpochs>
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">200</maxFiringRate>
@@ -23,7 +23,7 @@
       </NoiseRNGParams>
     </RNGConfig>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-small-out.xml</resultFileName>
+      <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-medium-long-out.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 
@@ -110,12 +110,13 @@
 
     <LayoutParams class="FixedLayout" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">
-        <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList10x10-0.1.xml</activeNListFileName>
-        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList10x10-0.1.xml</inhNListFileName>
+        <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList30x30-0.1.xml</activeNListFileName>
+        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList30x30-0.1.xml</inhNListFileName>
       </LayoutFiles>
     </LayoutParams>
+
     <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
-      <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_2-100.xml</probedNListFileName>
+      <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_900.xml</probedNListFileName>
     </RecorderParams>
   </ModelParams>
 </BGSimParams>
