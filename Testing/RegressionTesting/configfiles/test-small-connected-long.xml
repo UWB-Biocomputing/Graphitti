@@ -8,7 +8,7 @@
     </PoolSize>
     <SimParams name="SimParams">
       <epochDuration name="epochDuration">100.0</epochDuration>
-      <numEpochs name="numEpochs">2</numEpochs>
+      <numEpochs name="numEpochs">10</numEpochs>
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">200</maxFiringRate>
@@ -23,7 +23,7 @@
       </NoiseRNGParams>
     </RNGConfig>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-small-out.xml</resultFileName>
+      <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-small-connected-long-out.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 
@@ -104,7 +104,7 @@
         <rho name="rho">0.0001</rho>
         <targetRate name="targetRate">1.0</targetRate>
         <minRadius name="minRadius">0.1</minRadius>
-        <startRadius name="startRadius">0.4</startRadius>
+        <startRadius name="startRadius">0.49</startRadius>
       </GrowthParams>
     </ConnectionsParams>
 
@@ -114,6 +114,7 @@
         <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList10x10-0.1.xml</inhNListFileName>
       </LayoutFiles>
     </LayoutParams>
+
     <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
       <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_2-100.xml</probedNListFileName>
     </RecorderParams>

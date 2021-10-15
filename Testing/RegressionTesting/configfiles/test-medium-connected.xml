@@ -2,8 +2,8 @@
 <BGSimParams>
   <SimInfoParams name="SimInfoParams">
     <PoolSize name="PoolSize">
-      <x name="x">10</x>
-      <y name="y">10</y>
+      <x name="x">30</x>
+      <y name="y">30</y>
       <z name="z">1</z>
     </PoolSize>
     <SimParams name="SimParams">
@@ -23,7 +23,7 @@
       </NoiseRNGParams>
     </RNGConfig>
     <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-small-out.xml</resultFileName>
+      <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-medium-connected-out.xml</resultFileName>
     </OutputParams>
   </SimInfoParams>
 
@@ -64,37 +64,37 @@
     </VerticesParams>
 
     <EdgesParams class="AllDSSynapses" name="EdgesParams">
-      <tau name="tau">
-        <ii name="ii">6e-3</ii>
-        <ie name="ie">6e-3</ie>
-        <ei name="ei">3e-3</ei>
-        <ee name="ee">3e-3</ee>
-      </tau>
-      <delay name="delay">
-        <ii name="ii">0.8e-3</ii>
-        <ie name="ie">0.8e-3</ie>
-        <ei name="ei">0.8e-3</ei>
-        <ee name="ee">1.5e-3</ee>
-      </delay>
-      <U name="U">
-        <ii name="ii">0.32</ii>
-        <ie name="ie">0.25</ie>
-        <ei name="ei">0.05</ei>
-        <ee name="ee">0.5</ee>
-      </U>
-      <D name="D">
-        <ii name="ii">0.144</ii>
-        <ie name="ie">0.7</ie>
-        <ei name="ei">0.125</ei>
-        <ee name="ee">1.1</ee>
-      </D>
-      <F name="F">
-        <ii name="ii">0.06</ii>
-        <ie name="ie">0.02</ie>
-        <ei name="ei">1.2</ei>
-        <ee name="ee">0.05</ee>
-      </F>
-    </EdgesParams>
+    <tau name="tau">
+          <ii name="ii">6e-3</ii>
+          <ie name="ie">6e-3</ie>
+          <ei name="ei">3e-3</ei>
+          <ee name="ee">3e-3</ee>
+        </tau>
+        <delay name="delay">
+          <ii name="ii">0.8e-3</ii>
+          <ie name="ie">0.8e-3</ie>
+          <ei name="ei">0.8e-3</ei>
+          <ee name="ee">1.5e-3</ee>
+        </delay>
+        <U name="U">
+          <ii name="ii">0.32</ii>
+          <ie name="ie">0.25</ie>
+          <ei name="ei">0.05</ei>
+          <ee name="ee">0.5</ee>
+        </U>
+        <D name="D">
+          <ii name="ii">0.144</ii>
+          <ie name="ie">0.7</ie>
+          <ei name="ei">0.125</ei>
+          <ee name="ee">1.1</ee>
+        </D>
+        <F name="F">
+          <ii name="ii">0.06</ii>
+          <ie name="ie">0.02</ie>
+          <ei name="ei">1.2</ei>
+          <ee name="ee">0.05</ee>
+        </F>
+        </EdgesParams>
 
     <ConnectionsParams class="ConnGrowth" name="ConnectionsParams">
       <!-- Growth parameters -->
@@ -104,18 +104,19 @@
         <rho name="rho">0.0001</rho>
         <targetRate name="targetRate">1.0</targetRate>
         <minRadius name="minRadius">0.1</minRadius>
-        <startRadius name="startRadius">0.4</startRadius>
+        <startRadius name="startRadius">0.49</startRadius>
       </GrowthParams>
     </ConnectionsParams>
 
     <LayoutParams class="FixedLayout" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">
-        <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList10x10-0.1.xml</activeNListFileName>
-        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList10x10-0.1.xml</inhNListFileName>
+        <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList30x30-0.1.xml</activeNListFileName>
+        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList30x30-0.1.xml</inhNListFileName>
       </LayoutFiles>
     </LayoutParams>
+
     <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
-      <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_2-100.xml</probedNListFileName>
+      <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_900.xml</probedNListFileName>
     </RecorderParams>
   </ModelParams>
 </BGSimParams>
