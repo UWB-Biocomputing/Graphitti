@@ -2,7 +2,7 @@ name: Unit and Regression Tests
 
 on:
   push:
-    branches: [ master, github-actions-testing ]
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -32,7 +32,7 @@ jobs:
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
     - name: verify test-tiny
       if: always() && steps.tt.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-out.xml
+      run: diff ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml ../Testing/RegressionTesting/GoodOutput/test-tiny-out.xml
 
     - id: ts
       name: run test-small
@@ -40,7 +40,7 @@ jobs:
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small.xml
     - name: verify test-small
       if: always() && steps.ts.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-small-out.xml ../Testing/RegressionTesting/GoodOutput/test-tiny-out.xml
+      run: diff ../Testing/RegressionTesting/TestOutput/test-small-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-out.xml
 
     - id: tsc
       name: run test-small-connected
