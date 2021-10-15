@@ -72,7 +72,7 @@ void serializeSynapses();
 ///  @param  argv    arguments.
 ///  @return -1 if error, else if success.
 int main(int argc, char *argv[]) {
-
+   exit(-1);
    // Clear logging files at the start of each simulation
    fstream("../Output/Debug/logging.txt", ios::out | ios::trunc);
    fstream("../Output/Debug/vertices.txt", ios::out | ios::trunc);
