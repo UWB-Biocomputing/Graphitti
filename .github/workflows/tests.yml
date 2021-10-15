@@ -29,9 +29,9 @@ jobs:
     - id: tt
       name: run test-tiny
       if: always() && steps.build.conclusion == 'success'
-      run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
+      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
     - name: verify test-tiny
-      if: steps.tt.conclusion == 'success'
+      if: always() && steps.tt.conclusion == 'success'
       run: diff ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml ../Testing/RegressionTesting/GoodOutput/test-tiny-out.xml
 
     - id: ts
@@ -39,7 +39,7 @@ jobs:
       if: always() && steps.build.conclusion == 'success'
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small.xml
     - name: verify test-small
-      if: steps.ts.conclusion == 'success'
+      if: always() && steps.ts.conclusion == 'success'
       run: diff ../Testing/RegressionTesting/TestOutput/test-small-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-out.xml
 
     - id: tsc
@@ -47,5 +47,5 @@ jobs:
       if: always() && steps.build.conclusion == 'success'
       run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected.xml
     - name: verify test-small-connected
-      if: steps.tsc == 'success'
+      if: always() && steps.tsc.conclusion == 'success'
       run: diff ../Testing/RegressionTesting/TestOutput/test-small-connected-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-connected-out.xml
