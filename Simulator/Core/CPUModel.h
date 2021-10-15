@@ -56,8 +56,8 @@ public:
 
    /// Modifies connections between neurons based on current state of the network and behavior
    /// over the past epoch. Should be called once every epoch.
-   virtual void updateConnections() override;
-
+   virtual void updateConnections() overrid
+wae
    /// Copy GPU Synapse data to CPU.
    virtual void copyGPUtoCPU() override;
 
