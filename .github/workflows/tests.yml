@@ -49,3 +49,35 @@ jobs:
     - name: verify test-small-connected
       if: always() && steps.tsc.conclusion == 'success'
       run: diff ../Testing/RegressionTesting/TestOutput/test-small-connected-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-connected-out.xml
+
+    - id: tsl
+      name: run test-small-long
+      if: always() && steps.build.conclusion == 'success'
+      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-long.xml
+    - name: verify test-small-long
+      if: always() && steps.tsl.conclusion == 'success'
+      run: diff ../Testing/RegressionTesting/TestOutput/test-small-long-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-long-out.xml
+    
+    - id: tscl
+      name: run test-small-connected-long
+      if: always() && steps.build.conclusion == 'success'
+      run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected-long.xml
+    - name: verify test-small-connected-long
+      if: always() && steps.tscl.conclusion == 'success'
+      run: diff ../Testing/RegressionTesting/TestOutput/test-small-connected-long-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-connected-long-out.xml
+
+    - id: tm
+      name: run test-medium
+      if: always() && steps.build.conclusion == 'success'
+      run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium.xml
+    - name: verify test-medium
+      if: always() && steps.tm.conclusion == 'success'
+      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-out.xml ../Testing/RegressionTesting/GoodOutput/test-medium-out.xml
+
+    - id: tmc
+      name: run test-medium-connected
+      if: always() && steps.build.conclusion == 'success'
+      run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-connected.xml
+    - name: verify test-medium-connected
+      if: always() && steps.tmc.conclusion == 'success'
+      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-connected-out.xml ../Testing/RegressionTesting/GoodOutput/test-medium-connected-out.xml
