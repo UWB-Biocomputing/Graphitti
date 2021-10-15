@@ -26,7 +26,7 @@ jobs:
 
     # simulator runs
     - name: run test-tiny
-      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
+      run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
     - name: verify test-tiny
       run: diff ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-out.xml
       continue-on-error: true
@@ -38,7 +38,7 @@ jobs:
       continue-on-error: true
 
     - name: run test-small-connected
-      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected.xml
+      run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected.xml
     - name: verify test-small-connected
       run: diff ../Testing/RegressionTesting/TestOutput/test-small-connected-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-connected-out.xml
       continue-on-error: true
