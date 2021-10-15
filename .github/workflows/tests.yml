@@ -97,11 +97,3 @@ jobs:
     - name: verify test-medium-connected-long
       if: always() && steps.tmcl.conclusion == 'success'
       run: diff ../Testing/RegressionTesting/TestOutput/test-medium-connected-long-out.xml ../Testing/RegressionTesting/GoodOutput/test-medium-connected-long-out.xml
-
-    - id: tl
-      name: run test-large
-      if: always() && steps.build.conclusion == 'success'
-      run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-large.xml
-    - name: verify test-large
-      if: always() && steps.tl.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-large-out.xml ../Testing/RegressionTesting/GoodOutput/test-large-out.xml
