@@ -19,34 +19,33 @@ jobs:
     - uses: actions/checkout@v2
     - name: configure
       run: cmake ..
-    - name: build
+    - id: build
+      name: build
       run: make
     - name: run unit tests
       run: ./tests    
 
   # simulator runs
-  regression-tests:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: run test-tiny
-      if: always()
+    - id: tt
+      name: run test-tiny
+      if: always() && steps.build.conclusion == 'success'
       run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
     - name: verify test-tiny
-      if: success()
+      if: steps.tt.conclusion == 'success'
       run: diff ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-out.xml
 
-    - name: run test-small
-      if: always()
+    - id: ts
+      name: run test-small
+      if: always() && steps.build.conclusion == 'success'
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small.xml
     - name: verify test-small
-      if: success()
+      if: steps.ts.conclusion == 'success'
       run: diff ../Testing/RegressionTesting/TestOutput/test-small-out.xml ../Testing/RegressionTesting/GoodOutput/test-tiny-out.xml
 
-    - name: run test-small-connected
-      if: always()
+    - id: tsc
+      name: run test-small-connected
+      if: always() && steps.build.conclusion == 'success'
       run: time ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected.xml
     - name: verify test-small-connected
-      if: success()
+      if: steps.tsc == 'success'
       run: diff ../Testing/RegressionTesting/TestOutput/test-small-connected-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-connected-out.xml
