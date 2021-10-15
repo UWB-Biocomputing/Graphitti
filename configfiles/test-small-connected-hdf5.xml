@@ -15,8 +15,8 @@
       <maxEdgesPerVertex name="maxEdgesPerVertex">200</maxEdgesPerVertex>
     </SimConfig>
     <RNGConfig name="RNGConfig">
-      <InitRNGParams name="InitRNGParams">1</InitRNGParams>
-      <NoiseRNGParams class="Norm" name="NoiseRNGParams">1</NoiseRNGParams>
+      <InitRNGSeed name="InitRNGSeed">1</InitRNGSeed>
+      <NoiseRNGSeed class="Norm" name="NoiseRNGSeed">1</NoiseRNGSeed>
     </RNGConfig>
     <OutputParams name="OutputParams">
       <resultFileName name="resultFileName">../Output/Results/test-small-connected-out.h5</resultFileName>
