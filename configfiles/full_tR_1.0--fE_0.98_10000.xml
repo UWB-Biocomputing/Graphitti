@@ -15,12 +15,8 @@
          <maxEdgesPerVertex name="maxEdgesPerVertex">200</maxEdgesPerVertex>
       </SimConfig>
       <RNGConfig name="RNGConfig">
-         <InitRNGParams name="InitRNGParams">
-            <Seed name="Seed">1</Seed>
-         </InitRNGParams>
-         <NoiseRNGParams class="Norm" name="NoiseRNGParams">
-            <Seed name="Seed">777</Seed>
-         </NoiseRNGParams>
+         <InitRNGParams name="InitRNGParams">1</InitRNGParams>
+         <NoiseRNGParams class="Norm" name="NoiseRNGParams">777</NoiseRNGParams>
       </RNGConfig>
       <OutputParams name="OutputParams">
          <resultFileName name="resultFileName">/tmp/0510_tR_1.0--fE_0.98_raiju.h5</resultFileName>
