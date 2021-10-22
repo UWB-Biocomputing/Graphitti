@@ -22,9 +22,6 @@
             <Seed name="Seed">777</Seed>
          </NoiseRNGParams>
       </RNGConfig>
-      <OutputParams name="OutputParams">
-         <resultFileName name="resultFileName">../Output/Results/test-SB-stdp-100x100.xml</resultFileName>
-      </OutputParams>
    </SimInfoParams>
 
     <ModelParams>
@@ -152,6 +149,7 @@
 
     <RecorderParams class="XmlSTDPRecorder" name="RecorderParams">
       <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_10000.xml</probedNListFileName>
-    </RecorderParams>
+      <resultFileName name="resultFileName">../Output/Results/test-SB-stdp-100x100.xml</resultFileName>
+   </RecorderParams>
   </ModelParams>
 </BGSimParams>

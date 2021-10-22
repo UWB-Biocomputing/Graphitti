@@ -22,9 +22,6 @@
         <Seed name="Seed">1</Seed>
       </NoiseRNGParams>
     </RNGConfig>
-    <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">../Output/Results/test-medium-long-out.xml</resultFileName>
-    </OutputParams>
   </SimInfoParams>
 
   <ModelParams>
@@ -117,6 +114,7 @@
 
     <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
       <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_900.xml</probedNListFileName>
+      <resultFileName name="resultFileName">../Output/Results/test-medium-long-out.xml</resultFileName>
     </RecorderParams>
   </ModelParams>
 </BGSimParams>

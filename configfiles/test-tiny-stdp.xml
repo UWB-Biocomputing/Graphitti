@@ -22,9 +22,6 @@
                 <Seed name="Seed">1</Seed>
             </NoiseRNGParams>
         </RNGConfig>
-        <OutputParams name="OutputParams">
-            <resultFileName name="resultFileName">../Output/Results/test-tiny-stdp-out.xml</resultFileName>
-        </OutputParams>
     </SimInfoParams>
 
     <ModelParams>
@@ -148,9 +145,11 @@
                 </inhNListFileName>
             </LayoutFiles>
         </LayoutParams>
+        
         <RecorderParams class="XmlRecorder" name="RecorderParams">
             <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList2x2.xml
             </probedNListFileName>
+            <resultFileName name="resultFileName">../Output/Results/test-tiny-stdp-out.xml</resultFileName>
         </RecorderParams>
     </ModelParams>
 </BGSimParams>
