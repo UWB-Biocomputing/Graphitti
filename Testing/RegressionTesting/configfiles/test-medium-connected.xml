@@ -114,7 +114,7 @@
 
     <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
       <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_900.xml</probedNListFileName>
-      <resultFileName name="resultFileName">../Output/Results/test-medium-connected-out.xml</resultFileName>
+      <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-medium-connected-out.xml</resultFileName>
     </RecorderParams>
   </ModelParams>
 </BGSimParams>

@@ -117,7 +117,7 @@
         <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
             <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList2x2.xml
             </probedNListFileName>
-            <resultFileName name="resultFileName">../Output/Results/test-tiny-out.xml</resultFileName>
+            <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-tiny-out.xml</resultFileName>
         </RecorderParams>
     </ModelParams>
 </BGSimParams>
