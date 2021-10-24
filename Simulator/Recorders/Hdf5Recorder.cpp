@@ -53,6 +53,17 @@ Hdf5Recorder::~Hdf5Recorder()
 /// @param[in] stateOutputFileName	File name to save histories
 void Hdf5Recorder::init()
 {
+   // Before trying to create H5File, use ofstream to confirm ability to create and write file.
+   // TODO: Log error using LOG4CPLUS for workbench
+   //       For the time being, we are terminating the program when we can't open a file for writing.
+   ofstream testFileWrite;
+   testFileWrite.open(resultFileName_.c_str());
+   if (!testFileWrite.is_open()) {
+      cerr << "Error opening output file for writing." << endl;
+      exit(0);
+   }
+   testFileWrite.close();
+
     try
     {
        
