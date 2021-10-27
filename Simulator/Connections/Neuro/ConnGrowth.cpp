@@ -206,7 +206,7 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout) {
                (*area_)(i, j) = pi * min(r1, r2) * min(r1, r2); // Completely overlapping unit
 
                LOG4CPLUS_DEBUG(fileLogger_, "Completely overlapping (i, j, r1, r2, area): "
-                     << i << ", " << j << ", " << r1 << ", " << r2 << ", " << *area_ << endl);
+                     << i << ", " << j << ", " << r1 << ", " << r2 << ", " << (*area_)(i, j) << endl);
             } else {
                // Partially overlapping unit
                BGFLOAT lenAB2 = (*layout->dist2_)(i, j);
