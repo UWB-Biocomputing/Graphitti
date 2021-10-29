@@ -46,10 +46,11 @@ void XmlRecorder::init() {
    // TODO: Log error using LOG4CPLUS for workbench
    //       For the time being, we are terminating the program when we can't open a file for writing.
    if (!stateOut_.is_open()) {
-      cerr << "Error opening output file for writing." << endl;
-      exit(0);
+      perror("Error opening output file for writing ");
+      exit(EXIT_FAILURE);
    }
 }
+
 // TODO: for the empty functions below, what should happen? Should they ever
 // TODO: be called? Is it an error if they're called?
 /// Init radii and rates history matrices with default values

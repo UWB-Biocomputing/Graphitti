@@ -59,8 +59,8 @@ void Hdf5Recorder::init()
    ofstream testFileWrite;
    testFileWrite.open(resultFileName_.c_str());
    if (!testFileWrite.is_open()) {
-      cerr << "Error opening output file for writing." << endl;
-      exit(0);
+      perror("Error opening output file for writing ");
+      exit(EXIT_FAILURE);
    }
    testFileWrite.close();
 
