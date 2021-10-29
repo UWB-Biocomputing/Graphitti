@@ -19,6 +19,7 @@
 
 #if defined(HDF5)
 
+#include <fstream>
 #include "IRecorder.h"
 #include "Model.h"
 #include "H5Cpp.h"
