@@ -22,9 +22,6 @@
         <Seed name="Seed">1</Seed>
       </NoiseRNGParams>
     </RNGConfig>
-    <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">../Output/Results/test-small-911-out.xml</resultFileName>
-    </OutputParams>
   </SimInfoParams>
 
   <ModelParams>
@@ -57,8 +54,10 @@
         <respondersListFileName name="respondersListFileName" type="InputFile">../configfiles/NList/NG911_responders_10x10.xml</respondersListFileName>
       </LayoutFiles>
     </LayoutParams>
+    
     <RecorderParams class="Xml911Recorder" name="RecorderParams">
       <probedListFileName name="prbListFileName" type="InputFile">../configfiles/NList/NG911_probed_10x10.xml</probedListFileName>
+      <resultFileName name="resultFileName">../Output/Results/test-small-911-out.xml</resultFileName>
     </RecorderParams>
   </ModelParams>
 </BGSimParams>

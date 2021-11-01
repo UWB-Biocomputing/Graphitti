@@ -22,9 +22,6 @@
         <Seed name="Seed">1</Seed>
       </NoiseRNGParams>
     </RNGConfig>
-    <OutputParams name="OutputParams">
-      <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-small-out.xml</resultFileName>
-    </OutputParams>
   </SimInfoParams>
 
   <ModelParams>
@@ -114,8 +111,10 @@
         <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList10x10-0.1.xml</inhNListFileName>
       </LayoutFiles>
     </LayoutParams>
+    
     <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
       <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_2-100.xml</probedNListFileName>
+      <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-small-out.xml</resultFileName>
     </RecorderParams>
   </ModelParams>
 </BGSimParams>

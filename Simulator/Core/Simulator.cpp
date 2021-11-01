@@ -97,7 +97,7 @@ void Simulator::loadParameters() {
 
    // Result file name can be set by the command line arguments so check for default string value as to not overwrite it
    if (resultFileName_ == "") {
-      ParameterManager::getInstance().getStringByXpath("//OutputParams/resultFileName/text()", resultFileName_);
+      ParameterManager::getInstance().getStringByXpath("//RecorderParams/resultFileName/text()", resultFileName_);
    }
 }
 
