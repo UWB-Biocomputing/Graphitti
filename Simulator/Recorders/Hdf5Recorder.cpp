@@ -10,6 +10,7 @@
 
 #include "AllIFNeurons.h"      // TODO: remove LIF model specific code
 #include "OperationManager.h"
+#include "ParameterManager.h"
 
 #if defined(HDF5)
 
@@ -34,7 +35,7 @@ Hdf5Recorder::Hdf5Recorder() :
    offsetSpikesProbedNeurons_(nullptr),
    spikesProbedNeurons_(nullptr) {
 
-   resultFileName_ = Simulator::getInstance().getResultFileName();
+   ParameterManager::getInstance().getStringByXpath("//RecorderParams/resultFileName/text()", resultFileName_);
 
    function<void()> printParametersFunc = std::bind(&Hdf5Recorder::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);

@@ -60,34 +60,34 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices) {
    }
 
    // Write XML header information:
-   stateOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
+   resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
              << "<!-- State output file for the 911 systems modeling-->\n";
    //stateOut << version; TODO: version
    auto layout = Simulator::getInstance().getModel()->getLayout();
 
    // Write the core state information:
-   stateOut_ << "<SimState>\n";
-   stateOut_ << "   " << layout->xloc_->toXML("xloc") << endl;
-   stateOut_ << "   " << layout->yloc_->toXML("yloc") << endl;
-   stateOut_ << "   " << oldTypes.toXML("vertexTypesPreEvent") << endl;
-   stateOut_ << "   " << vertexTypes.toXML("vertexTypesPostEvent") << endl;
+   resultOut_ << "<SimState>\n";
+   resultOut_ << "   " << layout->xloc_->toXML("xloc") << endl;
+   resultOut_ << "   " << layout->yloc_->toXML("yloc") << endl;
+   resultOut_ << "   " << oldTypes.toXML("vertexTypesPreEvent") << endl;
+   resultOut_ << "   " << vertexTypes.toXML("vertexTypesPostEvent") << endl;
 
    // Print out deleted edges and vertices:
-   stateOut_ << "   " << conns911.erasedVerticesToXML() << endl;
-   stateOut_ << "   " << conns911.changedEdgesToXML(false) << endl;
-   stateOut_ << "   " << conns911.changedEdgesToXML(true) << endl;
+   resultOut_ << "   " << conns911.erasedVerticesToXML() << endl;
+   resultOut_ << "   " << conns911.changedEdgesToXML(false) << endl;
+   resultOut_ << "   " << conns911.changedEdgesToXML(true) << endl;
 
    // write time between growth cycles
-   stateOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << endl;
-   stateOut_ << "   " << Simulator::getInstance().getEpochDuration() << endl;
-   stateOut_ << "</Matrix>" << endl;
+   resultOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << endl;
+   resultOut_ << "   " << Simulator::getInstance().getEpochDuration() << endl;
+   resultOut_ << "</Matrix>" << endl;
 
    // write simulation end time
-   stateOut_ << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
+   resultOut_ << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
              << endl;
-   stateOut_ << "   " << g_simulationStep * Simulator::getInstance().getDeltaT() << endl;
-   stateOut_ << "</Matrix>" << endl;
-   stateOut_ << "</SimState>" << endl;
+   resultOut_ << "   " << g_simulationStep * Simulator::getInstance().getDeltaT() << endl;
+   resultOut_ << "</Matrix>" << endl;
+   resultOut_ << "</SimState>" << endl;
 
 }
 

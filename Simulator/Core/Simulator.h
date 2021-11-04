@@ -95,8 +95,6 @@ public:
 
    long getInitRngSeed() const;    /// Seed used to initialize parameters
 
-   string getResultFileName() const;    /// File name of the simulation results.
-
    string getConfigFileName() const;    /// File name of the parameter configuration file.
 
    string getSerializationFileName() const;    /// File name of the serialization file.
@@ -113,8 +111,6 @@ public:
  ***********************************************/
 ///@{
    void setPSummationMap(BGFLOAT *summationMap);     /// Mutator for summation map (added late)
-
-   void setResultFileName(const string &fileName);
 
    void setConfigFileName(const string &fileName);
 
@@ -168,8 +164,6 @@ private:
    long noiseRngSeed_;   /// Seed used for the simulation random SINGLE THREADED
 
    long initRngSeed_;   /// Seed used to initialize parameters
-
-   string resultFileName_;    /// File name of the simulation results.
 
    string configFileName_;    /// File name of the parameter configuration file.
 

@@ -15,7 +15,6 @@
 // TODO: We don't need the explicit call to the superclass constructor, right?
 //! The constructor and destructor
 XmlGrowthRecorder::XmlGrowthRecorder() :
-      XmlRecorder(),
       ratesHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
                     Simulator::getInstance().getTotalVertices()),
       radiiHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
@@ -102,42 +101,42 @@ void XmlGrowthRecorder::saveSimData(const AllVertices &neurons) {
    }
 
    // Write XML header information:
-   stateOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
+   resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
              << "<!-- State output file for the DCT growth modeling-->\n";
    //stateOut << version; TODO: version
 
    // Write the core state information:
-   stateOut_ << "<SimState>\n";
-   stateOut_ << "   " << radiiHistory_.toXML("radiiHistory") << endl;
-   stateOut_ << "   " << ratesHistory_.toXML("ratesHistory") << endl;
-   stateOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
-   stateOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   stateOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->xloc_->toXML("xloc") << endl;
-   stateOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->yloc_->toXML("yloc") << endl;
-   stateOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
+   resultOut_ << "<SimState>\n";
+   resultOut_ << "   " << radiiHistory_.toXML("radiiHistory") << endl;
+   resultOut_ << "   " << ratesHistory_.toXML("ratesHistory") << endl;
+   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
+   resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
+   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->xloc_->toXML("xloc") << endl;
+   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->yloc_->toXML("yloc") << endl;
+   resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
    // create starter neuron matrix
    int num_starter_neurons = static_cast<int>(Simulator::getInstance().getModel()->getLayout()->numEndogenouslyActiveNeurons_);
    if (num_starter_neurons > 0) {
       VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
       getStarterNeuronMatrix(starterNeurons, Simulator::getInstance().getModel()->getLayout()->starterMap_);
-      stateOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
+      resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
    }
 
    // Write neuron thresold
-   stateOut_ << "   " << neuronThresh.toXML("neuronThresh") << endl;
+   resultOut_ << "   " << neuronThresh.toXML("neuronThresh") << endl;
 
    // write time between growth cycles
-   stateOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << endl;
-   stateOut_ << "   " << Simulator::getInstance().getEpochDuration() << endl;
-   stateOut_ << "</Matrix>" << endl;
+   resultOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << endl;
+   resultOut_ << "   " << Simulator::getInstance().getEpochDuration() << endl;
+   resultOut_ << "</Matrix>" << endl;
 
    // write simulation end time
-   stateOut_ << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
+   resultOut_ << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
              << endl;
-   stateOut_ << "   " << g_simulationStep * Simulator::getInstance().getDeltaT() << endl;
-   stateOut_ << "</Matrix>" << endl;
-   stateOut_ << "</SimState>" << endl;
+   resultOut_ << "   " << g_simulationStep * Simulator::getInstance().getDeltaT() << endl;
+   resultOut_ << "</Matrix>" << endl;
+   resultOut_ << "</SimState>" << endl;
 }
 
 ///  Prints out all parameters to logging file.
