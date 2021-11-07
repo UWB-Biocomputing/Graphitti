@@ -15,12 +15,8 @@
       <maxEdgesPerVertex name="maxEdgesPerVertex">200</maxEdgesPerVertex>
     </SimConfig>
     <RNGConfig name="RNGConfig">
-      <InitRNGParams name="InitRNGParams">
-        <Seed name="Seed">1</Seed>
-      </InitRNGParams>
-      <NoiseRNGParams class="Norm" name="NoiseRNGParams">
-        <Seed name="Seed">1</Seed>
-      </NoiseRNGParams>
+      <InitRNGSeed name="InitRNGSeed">1</InitRNGSeed>
+      <NoiseRNGSeed class="Norm" name="NoiseRNGSeed">1</NoiseRNGSeed>
     </RNGConfig>
   </SimInfoParams>
 

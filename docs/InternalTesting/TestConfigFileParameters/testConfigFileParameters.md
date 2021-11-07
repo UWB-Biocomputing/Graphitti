@@ -38,8 +38,8 @@ between these test config files.
 |-----------------------:|------------------:|
 |          epochDuration |               100 |
 |          maxFiringRate |               200 |
-|     InitRNGParams Seed |                 1 |
-|    NoiseRNGParams Seed |                 1 |
+|            InitRNGSeed |                 1 |
+|           NoiseRNGSeed |                 1 |
 |     Active NList Ratio |               0.1 |
 | Inhibitory NList Ratio |               0.1 |
 |         Vertices Class |     AllLIFNeurons |
