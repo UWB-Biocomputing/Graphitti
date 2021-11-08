@@ -196,10 +196,7 @@ bool parseCommandLine(int argc, char *argv[]) {
                     argv[0] + " ");
 
    // Set up the comment line parser.
-   if (
-      //(cl.addParam("resultfile", 'o', ParamContainer::filename, "simulation results filepath (deprecated)") !=
-      //  ParamContainer::errOk) || 
-        (cl.addParam("configfile", 'c', ParamContainer::filename,
+   if ((cl.addParam("configfile", 'c', ParamContainer::filename,
                        "parameter configuration filepath") != ParamContainer::errOk)
        #if defined(USE_GPU)
        || (cl.addParam("device", 'd', ParamContainer::regular, "CUDA device id") != ParamContainer::errOk)
