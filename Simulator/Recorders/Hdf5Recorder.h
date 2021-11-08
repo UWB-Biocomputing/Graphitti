@@ -80,7 +80,7 @@ protected:
    void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
 
    /// hdf5 file identifier
-   H5File *stateOut_;
+   H5File *resultOut_;
 
    /// hdf5 file dataset
    DataSet *dataSetBurstHist_;
