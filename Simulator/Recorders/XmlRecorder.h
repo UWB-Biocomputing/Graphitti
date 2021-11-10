@@ -60,7 +60,7 @@ public:
 
 protected:
    // a file stream for xml output
-   ofstream stateOut_;
+   ofstream resultOut_;
    
    // burstiness Histogram goes through the
    VectorMatrix burstinessHist_;

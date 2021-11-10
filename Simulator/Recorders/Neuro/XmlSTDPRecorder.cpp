@@ -161,43 +161,43 @@ void XmlSTDPRecorder::saveSimData(const AllVertices &neurons)
    }
 
    // Write XML header information:
-   stateOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
+   resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
              << "<!-- State output file for the DCT growth modeling-->\n";
    //stateOut << version; TODO: version
 
    // Write the core state information:
-   stateOut_ << "<SimState>\n";
-   stateOut_ << "   " <<toXML("sourceNeuronIndexHistory",sourceNeuronIndexHistory_) << endl;
-   stateOut_ << "   " << toXML("destNeuronIndexHistory",destNeuronIndexHistory_) << endl;
-   stateOut_ << "   " <<toXML("weightsHistory",weightsHistory_) << endl;
-   stateOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
-   stateOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   stateOut_ << "   " << simulator.getModel()->getLayout()->xloc_->toXML("xloc") << endl;
-   stateOut_ << "   " << simulator.getModel()->getLayout()->yloc_->toXML("yloc") << endl;
-   stateOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
+   resultOut_ << "<SimState>\n";
+   resultOut_ << "   " <<toXML("sourceNeuronIndexHistory",sourceNeuronIndexHistory_) << endl;
+   resultOut_ << "   " << toXML("destNeuronIndexHistory",destNeuronIndexHistory_) << endl;
+   resultOut_ << "   " <<toXML("weightsHistory",weightsHistory_) << endl;
+   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
+   resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
+   resultOut_ << "   " << simulator.getModel()->getLayout()->xloc_->toXML("xloc") << endl;
+   resultOut_ << "   " << simulator.getModel()->getLayout()->yloc_->toXML("yloc") << endl;
+   resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
    // create starter neuron matrix
    int num_starter_neurons = static_cast<int>(simulator.getModel()->getLayout()->numEndogenouslyActiveNeurons_);
    if (num_starter_neurons > 0) {
       VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
       getStarterNeuronMatrix(starterNeurons, simulator.getModel()->getLayout()->starterMap_);
-      stateOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
+      resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
    }
 
    // Write neuron thresold
-   stateOut_ << "   " << neuronThresh.toXML("neuronThresh") << endl;
+   resultOut_ << "   " << neuronThresh.toXML("neuronThresh") << endl;
 
    // write time between growth cycles
-   stateOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << endl;
-   stateOut_ << "   " << simulator.getEpochDuration() << endl;
-   stateOut_ << "</Matrix>" << endl;
+   resultOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << endl;
+   resultOut_ << "   " << simulator.getEpochDuration() << endl;
+   resultOut_ << "</Matrix>" << endl;
 
    // write simulation end time
-   stateOut_ << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
+   resultOut_ << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
              << endl;
-   stateOut_ << "   " << g_simulationStep * simulator.getDeltaT() << endl;
-   stateOut_ << "</Matrix>" << endl;
-   stateOut_ << "</SimState>" << endl;
+   resultOut_ << "   " << g_simulationStep * simulator.getDeltaT() << endl;
+   resultOut_ << "</Matrix>" << endl;
+   resultOut_ << "</SimState>" << endl;
 }
 
 /**

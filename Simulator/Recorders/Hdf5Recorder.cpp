@@ -10,6 +10,7 @@
 
 #include "AllIFNeurons.h"      // TODO: remove LIF model specific code
 #include "OperationManager.h"
+#include "ParameterManager.h"
 
 #if defined(HDF5)
 
@@ -34,7 +35,7 @@ Hdf5Recorder::Hdf5Recorder() :
    offsetSpikesProbedNeurons_(nullptr),
    spikesProbedNeurons_(nullptr) {
 
-   resultFileName_ = Simulator::getInstance().getResultFileName();
+   ParameterManager::getInstance().getStringByXpath("//RecorderParams/resultFileName/text()", resultFileName_);
 
    function<void()> printParametersFunc = std::bind(&Hdf5Recorder::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
@@ -68,7 +69,7 @@ void Hdf5Recorder::init()
     {
        
         // create a new file using the default property lists
-        stateOut_ = new H5File(resultFileName_, H5F_ACC_TRUNC );
+        resultOut_ = new H5File(resultFileName_, H5F_ACC_TRUNC );
 
         initDataSet();
     }
@@ -111,38 +112,38 @@ void Hdf5Recorder::initDataSet()
    hsize_t dims[2];
    dims[0] = static_cast<hsize_t>(simulator.getEpochDuration() * simulator.getNumEpochs());
    DataSpace dsBurstHist(1, dims);
-   dataSetBurstHist_ = new DataSet(stateOut_->createDataSet(nameBurstHist, PredType::NATIVE_INT, dsBurstHist));
+   dataSetBurstHist_ = new DataSet(resultOut_->createDataSet(nameBurstHist, PredType::NATIVE_INT, dsBurstHist));
 
    // create the data space & dataset for spikes history
    dims[0] = static_cast<hsize_t>(simulator.getEpochDuration() * simulator.getNumEpochs() * 100);
    DataSpace dsSpikesHist(1, dims);
-   dataSetSpikesHist_ = new DataSet(stateOut_->createDataSet(nameSpikesHist, PredType::NATIVE_INT, dsSpikesHist));
+   dataSetSpikesHist_ = new DataSet(resultOut_->createDataSet(nameSpikesHist, PredType::NATIVE_INT, dsSpikesHist));
 
    // create the data space & dataset for xloc & yloc
    dims[0] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsXYloc(1, dims);
-   dataSetXloc_ = new DataSet(stateOut_->createDataSet(nameXloc, PredType::NATIVE_INT, dsXYloc));
-   dataSetYloc_ = new DataSet(stateOut_->createDataSet(nameYloc, PredType::NATIVE_INT, dsXYloc));
+   dataSetXloc_ = new DataSet(resultOut_->createDataSet(nameXloc, PredType::NATIVE_INT, dsXYloc));
+   dataSetYloc_ = new DataSet(resultOut_->createDataSet(nameYloc, PredType::NATIVE_INT, dsXYloc));
 
    // create the data space & dataset for neuron types
    dims[0] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsNeuronTypes(1, dims);
-   dataSetNeuronTypes_ = new DataSet(stateOut_->createDataSet(nameNeuronTypes, PredType::NATIVE_INT, dsNeuronTypes));
+   dataSetNeuronTypes_ = new DataSet(resultOut_->createDataSet(nameNeuronTypes, PredType::NATIVE_INT, dsNeuronTypes));
 
    // create the data space & dataset for neuron threshold
    dims[0] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsNeuronThresh(1, dims);
-   dataSetNeuronThresh_ = new DataSet(stateOut_->createDataSet(nameNeuronThresh, H5_FLOAT, dsNeuronThresh));
+   dataSetNeuronThresh_ = new DataSet(resultOut_->createDataSet(nameNeuronThresh, H5_FLOAT, dsNeuronThresh));
 
    // create the data space & dataset for simulation step duration
    dims[0] = static_cast<hsize_t>(1);
    DataSpace dsTsim(1, dims);
-   dataSetTsim_ = new DataSet(stateOut_->createDataSet(nameTsim, H5_FLOAT, dsTsim));
+   dataSetTsim_ = new DataSet(resultOut_->createDataSet(nameTsim, H5_FLOAT, dsTsim));
 
    // create the data space & dataset for simulation end time
    dims[0] = static_cast<hsize_t>(1);
    DataSpace dsSimulationEndTime(1, dims);
-   dataSetSimulationEndTime_ = new DataSet(stateOut_->createDataSet(nameSimulationEndTime, H5_FLOAT, dsSimulationEndTime));
+   dataSetSimulationEndTime_ = new DataSet(resultOut_->createDataSet(nameSimulationEndTime, H5_FLOAT, dsSimulationEndTime));
 
    // Get model instance
    shared_ptr<Model> model = simulator.getModel();
@@ -153,7 +154,7 @@ void Hdf5Recorder::initDataSet()
       // create the data space & dataset for probed neurons
       dims[0] = static_cast<hsize_t>(model->getLayout()->probedNeuronList_.size());
       DataSpace dsProbedNeurons(1, dims);
-      dataSetProbedNeurons_ = new DataSet(stateOut_->createDataSet(nameProbedNeurons, PredType::NATIVE_INT, dsProbedNeurons));
+      dataSetProbedNeurons_ = new DataSet(resultOut_->createDataSet(nameProbedNeurons, PredType::NATIVE_INT, dsProbedNeurons));
 
       // create the data space & dataset for spikes of probed neurons
 
@@ -178,7 +179,7 @@ void Hdf5Recorder::initDataSet()
       chunk_dims[1] = static_cast<hsize_t>(model->getLayout()->probedNeuronList_.size());
       cparms.setChunk( 2, chunk_dims );
 
-      dataSetSpikesProbedNeurons_ = new DataSet(stateOut_->createDataSet(nameSpikesProbedNeurons, PredType::NATIVE_UINT64, dsSpikesProbedNeurons, cparms));
+      dataSetSpikesProbedNeurons_ = new DataSet(resultOut_->createDataSet(nameSpikesProbedNeurons, PredType::NATIVE_UINT64, dsSpikesProbedNeurons, cparms));
    }
 
     // allocate and initialize data memories
@@ -237,7 +238,7 @@ void Hdf5Recorder::term()
       delete[] offsetSpikesProbedNeurons_;
    }
 
-   delete stateOut_;
+   delete resultOut_;
 }
 
 /// Compile history information in every epoch.
@@ -464,7 +465,7 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
             hsize_t dims[2];
             dims[0] = static_cast<hsize_t>(starterNeurons.Size());
             DataSpace dsStarterNeurons(1, dims);
-            dataSetStarterNeurons_ = new DataSet(stateOut_->createDataSet(nameStarterNeurons, PredType::NATIVE_INT, dsStarterNeurons));
+            dataSetStarterNeurons_ = new DataSet(resultOut_->createDataSet(nameStarterNeurons, PredType::NATIVE_INT, dsStarterNeurons));
 
             int* iStarterNeurons = new int[starterNeurons.Size()];
             for (int i = 0; i < starterNeurons.Size(); i++)

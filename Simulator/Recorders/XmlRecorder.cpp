@@ -23,7 +23,7 @@ XmlRecorder::XmlRecorder() :
    spikesHistory_(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
     Simulator::getInstance().getNumEpochs() * 100), static_cast<BGFLOAT>(0.0)) {
 
-   resultFileName_ = Simulator::getInstance().getResultFileName();
+   ParameterManager::getInstance().getStringByXpath("//RecorderParams/resultFileName/text()", resultFileName_);
 
    function<void()> printParametersFunc = std::bind(&XmlRecorder::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
@@ -41,14 +41,15 @@ XmlRecorder::~XmlRecorder() {
 ///
 /// @param[in] stateOutputFileName	File name to save histories
 void XmlRecorder::init() {
-   stateOut_.open(resultFileName_.c_str());
+   resultOut_.open(resultFileName_.c_str());
 
    // TODO: Log error using LOG4CPLUS for workbench
    //       For the time being, we are terminating the program when we can't open a file for writing.
-   if (!stateOut_.is_open()) {
+   if (!resultOut_.is_open()) {
       perror("Error opening output file for writing ");
       exit(EXIT_FAILURE);
    }
+
 }
 
 // TODO: for the empty functions below, what should happen? Should they ever
@@ -67,7 +68,7 @@ void XmlRecorder::getValues() {
 
 /// Terminate process
 void XmlRecorder::term() {
-   stateOut_.close();
+   resultOut_.close();
 }
 
 /// Compile history information in every epoch
@@ -125,41 +126,41 @@ void XmlRecorder::saveSimData(const AllVertices &vertices) {
    }
    
    // Write XML header information:
-   stateOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
+   resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
    << "<!-- State output file for the DCT growth modeling-->\n";
    //stateOut << version; TODO: version
    auto layout = simulator.getModel()->getLayout();
    
    // Write the core state information:
-   stateOut_ << "<SimState>\n";
-   stateOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
-   stateOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   stateOut_ << "   " << layout->xloc_->toXML("xloc") << endl;
-   stateOut_ << "   " << layout->yloc_->toXML("yloc") << endl;
-   stateOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
+   resultOut_ << "<SimState>\n";
+   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
+   resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
+   resultOut_ << "   " << layout->xloc_->toXML("xloc") << endl;
+   resultOut_ << "   " << layout->yloc_->toXML("yloc") << endl;
+   resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
    
    // create starter neurons matrix
    int num_starter_neurons = static_cast<int>(layout->numEndogenouslyActiveNeurons_);
    if (num_starter_neurons > 0) {
       VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
       getStarterNeuronMatrix(starterNeurons, layout->starterMap_);
-      stateOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
+      resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
    }
    
    // Write neuron threshold
-   stateOut_ << "   " << neuronThresh.toXML("neuronThresh") << endl;
+   resultOut_ << "   " << neuronThresh.toXML("neuronThresh") << endl;
    
    // write epoch duration
-   stateOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << endl;
-   stateOut_ << "   " << simulator.getEpochDuration() << endl;
-   stateOut_ << "</Matrix>" << endl;
+   resultOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << endl;
+   resultOut_ << "   " << simulator.getEpochDuration() << endl;
+   resultOut_ << "</Matrix>" << endl;
    
    // write simulation end time
-   stateOut_ << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
+   resultOut_ << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
    << endl;
-   stateOut_ << "   " << g_simulationStep * simulator.getDeltaT() << endl;
-   stateOut_ << "</Matrix>" << endl;
-   stateOut_ << "</SimState>" << endl;
+   resultOut_ << "   " << g_simulationStep * simulator.getDeltaT() << endl;
+   resultOut_ << "</Matrix>" << endl;
+   resultOut_ << "</SimState>" << endl;
 }
 
 /*

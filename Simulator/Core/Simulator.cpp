@@ -95,10 +95,6 @@ void Simulator::loadParameters() {
    noiseRNG->seed(noiseRngSeed_);
    initRNG.seed(initRngSeed_);
 
-   // Result file name can be set by the command line arguments so check for default string value as to not overwrite it
-   if (resultFileName_ == "") {
-      ParameterManager::getInstance().getStringByXpath("//RecorderParams/resultFileName/text()", resultFileName_);
-   }
 }
 
 /// Prints out loaded parameters to logging file.
@@ -112,8 +108,7 @@ void Simulator::printParameters() const {
                                           << "\tMax firing rate: " << maxFiringRate_ << endl
                                           << "\tMax edges per vertex: " << maxEdgesPerVertex_ << endl
                                           << "\tNoise RNG Seed: " << noiseRngSeed_ << endl
-                                          << "\tInitializer RNG Seed: " << initRngSeed_ << endl
-                                          << "\tResult file path: " << resultFileName_ << endl << endl);
+                                          << "\tInitializer RNG Seed: " << initRngSeed_ << endl);
 }
 
 // Code from STDPFix branch, doesn't do anything
@@ -252,8 +247,6 @@ bool Simulator::instantiateSimulatorObjects() {
 /// List of summation points (either host or device memory)
 void Simulator::setPSummationMap(BGFLOAT *summationMap) { pSummationMap_ = summationMap; }
 
-void Simulator::setResultFileName(const string &fileName) { resultFileName_ = fileName; }
-
 void Simulator::setConfigFileName(const string &fileName) { configFileName_ = fileName; }
 
 void Simulator::setSerializationFileName(const string &fileName) { serializationFileName_ = fileName; }
@@ -300,8 +293,6 @@ BGFLOAT *Simulator::getPSummationMap() const { return pSummationMap_; }
 long Simulator::getNoiseRngSeed() const { return noiseRngSeed_; }
 
 long Simulator::getInitRngSeed() const { return initRngSeed_; }
-
-string Simulator::getResultFileName() const { return resultFileName_; }
 
 string Simulator::getConfigFileName() const { return configFileName_; }
 
