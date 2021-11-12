@@ -143,9 +143,10 @@
         </LayoutParams>
         
         <RecorderParams class="XmlRecorder" name="RecorderParams">
-            <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList2x2.xml
-            </probedNListFileName>
+          <RecorderFiles name="RecorderFiles">
+            <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList2x2.xml</probedNListFileName>
             <resultFileName name="resultFileName">../Output/Results/test-tiny-stdp-out.xml</resultFileName>
+          </RecorderFiles>
         </RecorderParams>
     </ModelParams>
 </BGSimParams>

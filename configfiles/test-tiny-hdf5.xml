@@ -111,9 +111,10 @@
         </LayoutParams>
         
         <RecorderParams class="Hdf5GrowthRecorder" name="RecorderParams">
-            <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList2x2.xml
-            </probedNListFileName>
-            <resultFileName name="resultFileName">../Output/Results/test-tiny-out.h5</resultFileName>
+            <RecorderFiles name="RecorderFiles">
+                <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList2x2.xml</probedNListFileName>
+                <resultFileName name="resultFileName">../Output/Results/test-tiny-out.h5</resultFileName>
+            </RecorderFiles>
         </RecorderParams>
     </ModelParams>
 </BGSimParams>
