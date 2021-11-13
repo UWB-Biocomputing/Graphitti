@@ -23,7 +23,7 @@ XmlRecorder::XmlRecorder() :
    spikesHistory_(MATRIX_TYPE, MATRIX_INIT, 1, static_cast<int>(Simulator::getInstance().getEpochDuration() *
     Simulator::getInstance().getNumEpochs() * 100), static_cast<BGFLOAT>(0.0)) {
 
-   ParameterManager::getInstance().getStringByXpath("//RecorderParams/resultFileName/text()", resultFileName_);
+   ParameterManager::getInstance().getStringByXpath("//RecorderParams/RecorderFiles/resultFileName/text()", resultFileName_);
 
    function<void()> printParametersFunc = std::bind(&XmlRecorder::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);

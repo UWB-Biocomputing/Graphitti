@@ -53,7 +53,7 @@ TEST(ParameterManager, LoadingMultipleInvalidFiles) {
 
 TEST(ParameterManager, ValidStringTargeting) {
    ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
-   string validXPaths[]{"/BGSimParams/ModelParams/RecorderParams/resultFileName/text()",
+   string validXPaths[]{"/BGSimParams/ModelParams/RecorderParams/RecorderFiles/resultFileName/text()",
                         "//resultFileName/text()", "//VerticesParams/@class"};
    string result[] = {"../Output/Results/test-medium-500-out.xml", "../Output/Results/test-medium-500-out.xml", "AllLIFNeurons"};
    string referenceVar;

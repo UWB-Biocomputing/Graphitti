@@ -35,7 +35,7 @@ Hdf5Recorder::Hdf5Recorder() :
    offsetSpikesProbedNeurons_(nullptr),
    spikesProbedNeurons_(nullptr) {
 
-   ParameterManager::getInstance().getStringByXpath("//RecorderParams/resultFileName/text()", resultFileName_);
+   ParameterManager::getInstance().getStringByXpath("//RecorderParams/RecorderFiles/resultFileName/text()", resultFileName_);
 
    function<void()> printParametersFunc = std::bind(&Hdf5Recorder::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
