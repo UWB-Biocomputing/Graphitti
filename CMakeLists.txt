@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
-project(Graphitti)
+
+project(Graphitti LANGUAGES CXX CUDA)
 
 # Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 11)
@@ -12,7 +13,7 @@ set(CMAKE_CXX_STANDARD 11)
 #
 # "YES"/GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
-set(ENABLE_CUDA NO)
+set(ENABLE_CUDA YES)
 
 # set(DEBUG_MODE YES) for debugging, no optimization
 # set(DEBUG_MODE NO) for production code, -O3 optimization enabled
@@ -27,7 +28,7 @@ set(DEBUG_MODE NO)
 if(ENABLE_CUDA)
         message("\n----Generating Makefile for Graphitti GPU version----")
         enable_language(CUDA)
-        set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
+        #set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
         add_compile_definitions(USE_GPU)
 else()
         message("\n----Generating Makefile for Graphitti CPU version----")
@@ -154,9 +155,21 @@ endif()
 # ------ SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
 if(ENABLE_CUDA)
+        #set_property(CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Edges PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Vertices PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Core PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Connections PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Utils PROPERTY CUDA_SEPARABLE_COMPILATION ON)
 	add_executable(ggraphitti Simulator/Core/Driver.cpp)
 	# Link the combined library into the 'graphitti' executable.
 	target_link_libraries(ggraphitti combinedLib)
+        #set_property(TARGET ggraphitti PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        target_compile_options(Edges PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
+        target_compile_options(Vertices PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
+        target_compile_options(Core PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
+        target_compile_options(Connections PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
+        target_compile_options(Utils PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
 else()
 	add_executable(cgraphitti Simulator/Core/Driver.cpp)
 	# Link the combined library into the 'graphitti' executable.
