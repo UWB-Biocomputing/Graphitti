@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(Graphitti LANGUAGES CXX CUDA)
+project(Graphitti LANGUAGES CXX CUDA C)
 
 # Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 11)
@@ -170,6 +170,7 @@ if(ENABLE_CUDA)
         target_compile_options(Core PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
         target_compile_options(Connections PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
         target_compile_options(Utils PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
+        
 else()
 	add_executable(cgraphitti Simulator/Core/Driver.cpp)
 	# Link the combined library into the 'graphitti' executable.
