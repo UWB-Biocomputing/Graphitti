@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(Graphitti LANGUAGES CXX CUDA C)
+project(Graphitti LANGUAGES CUDA CXX C)
 
 # Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 11)
@@ -25,7 +25,7 @@ set(DEBUG_MODE NO)
 # ENABLE_CUDA also compiles each library that contains CUDA with the following line...
 # set_property(TARGET target PROPERTY CUDA_ARCHITECTURES 35-virtual) 
 # so the compiler knows the CUDA architecture being used is the SM_35
-if(ENABLE_CUDA)
+if(ENABLE_CUDA)	
         message("\n----Generating Makefile for Graphitti GPU version----")
         enable_language(CUDA)
         #set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
@@ -132,12 +132,12 @@ if(ENABLE_CUDA)
         set_property(TARGET Connections PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Utils PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         #set_property(TARGET RNG PROPERTY CUDA_SEPARABLE_COMPILATION ON)
-        target_compile_options(Edges PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_70; -rdc=true;>)
-        target_compile_options(Vertices PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_70; -rdc=true;>)
-        target_compile_options(Core PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_70; -rdc=true;>)
-        target_compile_options(Connections PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_70; -rdc=true;>)
-        target_compile_options(Utils PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_70; -rdc=true;>)
-        #target_compile_options(RNG PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_70; -rdc=true;>)
+        target_compile_options(Edges PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
+        target_compile_options(Vertices PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
+        target_compile_options(Core PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
+        target_compile_options(Connections PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
+        target_compile_options(Utils PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
+        #target_compile_options(RNG PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
 
         #set_target_properties(TARGET Edges PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS ON)
         #set_target_properties(TARGET Vertices PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS ON)
@@ -177,10 +177,18 @@ endif()
 # ------ SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
 if(ENABLE_CUDA)
-        set(CMAKE_CXX_LINK_EXECUTABLE "<CMAKE_CUDA_COMPILER>  <FLAGS> <CMAKE_CUDA_LINK_FLAGS> <LINK_FLAGS> <OBJECTS>  -o <TARGET> <LINK_LIBRARIES>")
+        set_target_properties(combinedLib PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+        add_executable(ggraphitti Simulator/Core/Driver.cpp)
+        
+        set_property(TARGET combinedLib PROPERTY LINKER_LANGUAGE CUDA)
+        set_property(TARGET combinedLib PROPERTY CUDA_ARCHITECTURES 35)
         #set_property(CUDA_SEPARABLE_COMPILATION ON)
-	add_executable(ggraphitti Simulator/Core/Driver.cpp)
+        #set_property(TARGET ggraphitti PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        #target_compile_options(ggraphitti PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
+        set_property(TARGET ggraphitti PROPERTY CUDA_ARCHITECTURES 35)
 	# Link the combined library into the 'graphitti' executable.
+        set_property(TARGET ggraphitti PROPERTY LINKER_LANGUAGE CUDA)
+        
 	target_link_libraries(ggraphitti combinedLib)
         #set_property(TARGET ggraphitti PROPERTY CUDA_SEPARABLE_COMPILATION ON)
 else()
