@@ -124,6 +124,28 @@ add_subdirectory(ThirdParty)
 add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
+if(ENABLE_CUDA)
+        #set_property(CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Edges PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Vertices PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Core PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Connections PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Utils PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        #set_property(TARGET RNG PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        target_compile_options(Edges PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_70; -rdc=true;>)
+        target_compile_options(Vertices PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_70; -rdc=true;>)
+        target_compile_options(Core PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_70; -rdc=true;>)
+        target_compile_options(Connections PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_70; -rdc=true;>)
+        target_compile_options(Utils PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_70; -rdc=true;>)
+        #target_compile_options(RNG PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_70; -rdc=true;>)
+
+        #set_target_properties(TARGET Edges PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS ON)
+        #set_target_properties(TARGET Vertices PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS ON)
+        #set_target_properties(TARGET Core PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS ON)
+        #set_target_properties(TARGET Connections PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS ON)
+        #set_target_properties(TARGET Utils PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS ON)
+endif()
+
 # Link all libraries created in the project's subdirectories into a combined library.
 add_library(combinedLib INTERFACE)
 target_link_libraries(combinedLib INTERFACE
@@ -155,22 +177,12 @@ endif()
 # ------ SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
 if(ENABLE_CUDA)
+        set(CMAKE_CXX_LINK_EXECUTABLE "<CMAKE_CUDA_COMPILER>  <FLAGS> <CMAKE_CUDA_LINK_FLAGS> <LINK_FLAGS> <OBJECTS>  -o <TARGET> <LINK_LIBRARIES>")
         #set_property(CUDA_SEPARABLE_COMPILATION ON)
-        set_property(TARGET Edges PROPERTY CUDA_SEPARABLE_COMPILATION ON)
-        set_property(TARGET Vertices PROPERTY CUDA_SEPARABLE_COMPILATION ON)
-        set_property(TARGET Core PROPERTY CUDA_SEPARABLE_COMPILATION ON)
-        set_property(TARGET Connections PROPERTY CUDA_SEPARABLE_COMPILATION ON)
-        set_property(TARGET Utils PROPERTY CUDA_SEPARABLE_COMPILATION ON)
 	add_executable(ggraphitti Simulator/Core/Driver.cpp)
 	# Link the combined library into the 'graphitti' executable.
 	target_link_libraries(ggraphitti combinedLib)
         #set_property(TARGET ggraphitti PROPERTY CUDA_SEPARABLE_COMPILATION ON)
-        target_compile_options(Edges PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
-        target_compile_options(Vertices PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
-        target_compile_options(Core PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
-        target_compile_options(Connections PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
-        target_compile_options(Utils PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
-        
 else()
 	add_executable(cgraphitti Simulator/Core/Driver.cpp)
 	# Link the combined library into the 'graphitti' executable.
