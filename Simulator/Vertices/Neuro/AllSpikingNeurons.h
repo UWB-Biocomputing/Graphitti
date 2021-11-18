@@ -119,7 +119,7 @@ public:
    ///  The booleans which track whether the neuron has fired.
    bool *hasFired_;
 
-   ///  The number of spikes since the last growth cycle.
+   ///  The number of spikes during this epoch.
    int *spikeCount_;
 
    ///  Offset of the spike_history buffer.

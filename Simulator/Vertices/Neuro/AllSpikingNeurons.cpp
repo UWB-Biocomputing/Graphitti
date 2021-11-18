@@ -141,16 +141,25 @@ void AllSpikingNeurons::fire(const int index) const {
 ///  Get the spike history of neuron[index] at the location offIndex.
 ///  More specifically, retrieves the global simulation time step for the spike
 ///  in question from the spike history record.
-///  
-///  TODO: need to document clearly how spikeHistory_ is updated, when/if it gets
-///  cleared/dumped to file, and how the actual index (idxSp) computation works,
-///  as it is very unobvious.
 ///
 ///  @param  index            Index of the neuron to get spike history.
-///  @param  offIndex         Offset of the history buffer to get from.
+///  @param  offIndex     Offset of the history buffer to get from. This indicates how many spikes
+///                    in the past we are looking, so it must be a negative number (i.e., it is relative
+///                    to the "current time", i.e., one location past the most recent spike). So, the
+///                    most recent spike is offIndex = -1
 uint64_t AllSpikingNeurons::getSpikeHistory(int index, int offIndex) {
    // offIndex is a minus offset
    int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
+   
+   // This computes the index of a spike in the past (i.e., the most recent spike,
+   // two spikes ago, etc). It starts with `spikeCountOffset_ + spikeCount_`,
+   // which I believe at the end of an epoch should be one past the end of that
+   // neuron's spikes in `spikeHistory_`. Then, the maximum number of spikes per
+   // epoch is added. Then, the `offIndex` parameter is added. The expectation
+   // is that `offIndex` will be a negative number (i.e., a spike in the past);
+   // the reason that the max spikes value is added is to prevent this from
+   // producing a negative total, so that finally taking mod max spikes will
+   // "wrap around backwards" if needed.
    int idxSp = (spikeCount_[index] + spikeCountOffset_[index] + maxSpikes + offIndex) % maxSpikes;
    return spikeHistory_[index][idxSp];
 }
