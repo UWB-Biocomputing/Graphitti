@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-1. [Introduction](BGDocs/01_introduction.md)
+1. [Introduction](01_introduction.md)
 
    1.1 What is Graphitti?
    
@@ -12,9 +12,9 @@
    
    1.4 Who is the Graphitti Audience?
 
-2. [Installation](BGDocs/02_installation.md)
+2. [Installation](02_installation.md)
 
-   See [Install Requirements](BGDocs/02a_installRequirements.md)
+   See [Install Requirements](02a_installRequirements.md)
    
    2.1 Necessary Hardware/Software
    
@@ -22,30 +22,32 @@
    
    2.3 Install Graphitti
 
-3. [Quickstart](BGDocs/03_quickstart.md)
+3. [Quickstart](03_quickstart.md)
 
    3.1 Quick Sanity Test
    
    3.2 Use of Screen
 
-4. [Configuration](BGDocs/04_configuration.md)
+4. [Configuration](04_configuration.md)
 
    4.1 Use built-in models
    
    4.2 Configuring the model
+
+5. [Developer Documentation](Developer/index.md)
    
 
 ## Other resources
-- [Student Quickstart](BGDocs/StudentSetup.md)
-- [Coding Conventions](BGDocs/codingConventions.md)
-- [Glossary](BGDocs/Glossary.md)
-- [Googletest Tutorial](BGDocs/GoogleTestsTutorial.md)
-- [Performing Analyses](BGDocs/PerformingAnalyses.md)
-- [CMake](BGDocs/CMake.md)
+- [Student Quickstart](StudentSetup.md)
+- [Coding Conventions](Developer/codingConventions.md)
+- [Glossary](Glossary.md)
+- [Googletest Tutorial](Testing/GoogleTestsTutorial.md)
+- [Performing Analyses](PerformingAnalyses.md)
+- [CMake](CMake.md)
 - [CMakeLists and CUDA](Developer/CMakeListsCuda.md)
-- [Recommended Resources](BGDocs/Resources.md)
-- [Neuro Implementation](BGDocs/NeuroImplementation.md) 
-- [Internal Testing](InternalTesting/index.md)
+- [Recommended Resources](Resources.md)
+- [Neuro Implementation](NeuroImplementation.md) 
+- [Testing](Testing/index.md)
 
 ## Doxygen 
 
@@ -55,7 +57,7 @@ Documentation generated from source code. Doxygen provides web-based indices and
 - [Doxygen Update Guide](Doxygen/DoxygenStyleGuide.md)
 
 
-## [Acknowledgements](BGDocs/acknowledgements.md)
+## [Acknowledgements](acknowledgements.md)
 Those who have helped make Graphitti what it is and shaping what it will be.
 
 ---------
