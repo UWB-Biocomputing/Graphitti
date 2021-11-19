@@ -7,8 +7,10 @@ file(GLOB Core *.cpp *.h *.cu)
 list(REMOVE_ITEM Core "${CMAKE_CURRENT_SOURCE_DIR}/Driver.cpp")
 
 # Create a library from the list of files gathered
-add_library(Core ${Core})
+add_library(Core STATIC ${Core})
 
 if (ENABLE_CUDA)
+   set_property(TARGET Core PROPERTY LANGUAGE CUDA)
    set_property(TARGET Core PROPERTY CUDA_ARCHITECTURES 35-virtual) 
+   set_property(TARGET Core PROPERTY LINKER_LANGUAGE CUDA)
 endif()

@@ -2,8 +2,10 @@
 file(GLOB_RECURSE Layouts *.cpp *.h)
 
 # Create a library from the list of files gathered
-add_library(Layouts ${Layouts})
+add_library(Layouts STATIC ${Layouts})
 
 if (ENABLE_CUDA)
+   set_property(TARGET Layouts PROPERTY LANGUAGE CUDA)
    set_property(TARGET Layouts PROPERTY CUDA_ARCHITECTURES 35-virtual) 
+   set_property(TARGET Layouts PROPERTY LINKER_LANGUAGE CUDA)
 endif()
