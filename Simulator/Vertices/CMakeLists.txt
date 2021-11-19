@@ -6,11 +6,3 @@ add_library(Vertices STATIC ${Vertices})
 
 # The Vertices library has a dependency on the Edges library
 target_link_libraries(Vertices Edges)
-
-if (ENABLE_CUDA)
-   set_property(TARGET Vertices PROPERTY LANGUAGE CUDA)
-   
-   set_property(TARGET Vertices PROPERTY CUDA_ARCHITECTURES 35-virtual) 
-   
-   set_property(TARGET Vertices PROPERTY LINKER_LANGUAGE CUDA)
-endif()

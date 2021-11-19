@@ -30,8 +30,8 @@ if(ENABLE_CUDA)
         # Verify CUDA package and set gencode. 
         # Gencode will need to be set to the correct value for the specific NVIDIA hardware you are running on
         find_Package(CUDA REQUIRED)
-        set(CMAKE_CUDA_ARCHITECTURES 35)        
-        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_35,code=sm_35)    
+        set(CMAKE_CUDA_ARCHITECTURES 37)        
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_37,code=sm_37)    
         add_compile_definitions(USE_GPU)
 else()
         message("\n----Generating Makefile for Graphitti CPU version----")
@@ -128,7 +128,8 @@ add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
 if(ENABLE_CUDA)
-        # These 4 lines of setting CUDA_SEPERABLE_COMPILATION *ARE* necessary. Removing them will break the build, even if they are also present in 
+        # These 4 lines of setting CUDA_SEPERABLE_COMPILATION *ARE* necessary. Removing them will break the build, 
+        # even if they are also present in the seperate cmakelists files
         set_property(TARGET Edges PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Vertices PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Core PROPERTY CUDA_SEPARABLE_COMPILATION ON)
@@ -168,9 +169,6 @@ endif()
 if(ENABLE_CUDA)
         # Add the Graphitti GPU Executable
         add_executable(ggraphitti Simulator/Core/Driver.cpp)
-        set_property(TARGET ggraphitti PROPERTY LANGUAGE CUDA)
-        #set_property(TARGET ggraphitti PROPERTY CUDA_ARCHITECTURES 35)
-        set_property(TARGET ggraphitti PROPERTY LINKER_LANGUAGE CUDA)
         # Link the combined library into the 'graphitti' executable.
 	target_link_libraries(ggraphitti combinedLib)
 else()
