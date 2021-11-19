@@ -128,15 +128,11 @@ add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
 if(ENABLE_CUDA)
+        # These 4 lines of setting CUDA_SEPERABLE_COMPILATION *ARE* necessary. Removing them will break the build, even if they are also present in 
         set_property(TARGET Edges PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Vertices PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Core PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Connections PROPERTY CUDA_SEPARABLE_COMPILATION ON)
-        target_compile_options(Edges PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
-        target_compile_options(Vertices PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
-        target_compile_options(Core PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
-        target_compile_options(Connections PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
-        target_compile_options(Utils PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:  -g; -arch=sm_35; -rdc=true;>)
 endif()
 
 # Link all libraries created in the project's subdirectories into a combined library.
@@ -171,7 +167,7 @@ endif()
 # Add all files that aren't in a library and are needed to run
 if(ENABLE_CUDA)
         # Set CUDA and linker properties for combinedLib
-        set_target_properties(combinedLib PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+        
         set_property(TARGET combinedLib PROPERTY LINKER_LANGUAGE CUDA)
 
         # Add the Graphitti GPU Executable
@@ -179,7 +175,7 @@ if(ENABLE_CUDA)
         
         # Link CUDA Libraries to executable and set CUDA Properties
         target_link_libraries(ggraphitti ${CUDA_LIBRARIES})
-        set_target_properties(ggraphitti PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+        
         set_property(TARGET ggraphitti PROPERTY LANGUAGE CUDA)
         #set_property(TARGET ggraphitti PROPERTY CUDA_ARCHITECTURES 35)
         set_property(TARGET ggraphitti PROPERTY LINKER_LANGUAGE CUDA)
