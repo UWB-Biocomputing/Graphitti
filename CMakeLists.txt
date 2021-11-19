@@ -26,13 +26,12 @@ set(DEBUG_MODE NO)
 # set_property(TARGET target PROPERTY CUDA_ARCHITECTURES 35-virtual) 
 # so the compiler knows the CUDA architecture being used is the SM_35
 if(ENABLE_CUDA)	
-        find_Package(CUDA REQUIRED)        
-        SET(CMAKE_LINKER CUDA)
         message("\n----Generating Makefile for Graphitti GPU version----")
-        include_directories("${CUDA_INCLUDE_DIRS}")
-        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}; -lineinfo; -std=c++11; -expt-extended-lambda; -O3; -use_fast_math; -rdc=true;)
-        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_35,code=sm_35)
-        string(APPEND CMAKE_CUDA_FLAGS " -gencode arch=compute_35,code=sm_35")
+        # Verify CUDA package and set gencode. 
+        # Gencode will need to be set to the correct value for the specific NVIDIA hardware you are running on
+        find_Package(CUDA REQUIRED)
+        set(CMAKE_CUDA_ARCHITECTURES 35)        
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_35,code=sm_35)    
         add_compile_definitions(USE_GPU)
 else()
         message("\n----Generating Makefile for Graphitti CPU version----")
@@ -174,7 +173,6 @@ if(ENABLE_CUDA)
         # Set CUDA and linker properties for combinedLib
         set_target_properties(combinedLib PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET combinedLib PROPERTY LINKER_LANGUAGE CUDA)
-        set_property(TARGET combinedLib PROPERTY CUDA_ARCHITECTURES 35)
 
         # Add the Graphitti GPU Executable
         add_executable(ggraphitti Simulator/Core/Driver.cpp)
@@ -183,7 +181,7 @@ if(ENABLE_CUDA)
         target_link_libraries(ggraphitti ${CUDA_LIBRARIES})
         set_target_properties(ggraphitti PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET ggraphitti PROPERTY LANGUAGE CUDA)
-        set_property(TARGET ggraphitti PROPERTY CUDA_ARCHITECTURES 35)
+        #set_property(TARGET ggraphitti PROPERTY CUDA_ARCHITECTURES 35)
         set_property(TARGET ggraphitti PROPERTY LINKER_LANGUAGE CUDA)
 
         # Link the combined library into the 'graphitti' executable.
