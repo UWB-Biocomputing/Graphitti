@@ -166,20 +166,11 @@ endif()
 # ------ SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
 if(ENABLE_CUDA)
-        # Set CUDA and linker properties for combinedLib
-        
-        set_property(TARGET combinedLib PROPERTY LINKER_LANGUAGE CUDA)
-
         # Add the Graphitti GPU Executable
         add_executable(ggraphitti Simulator/Core/Driver.cpp)
-        
-        # Link CUDA Libraries to executable and set CUDA Properties
-        target_link_libraries(ggraphitti ${CUDA_LIBRARIES})
-        
         set_property(TARGET ggraphitti PROPERTY LANGUAGE CUDA)
         #set_property(TARGET ggraphitti PROPERTY CUDA_ARCHITECTURES 35)
         set_property(TARGET ggraphitti PROPERTY LINKER_LANGUAGE CUDA)
-
         # Link the combined library into the 'graphitti' executable.
 	target_link_libraries(ggraphitti combinedLib)
 else()
