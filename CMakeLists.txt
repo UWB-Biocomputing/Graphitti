@@ -118,7 +118,48 @@ include_directories(
         ThirdParty/log4cplus-2.0.2/include)
 
 # Used to locate and run other CMakeLists.txt files for further compilation of the project.
-add_subdirectory(Simulator)
+# add_subdirectory(Simulator)
+file(GLOB_RECURSE Connections_Source Simulator/Connections/*.cpp Simulator/Connections/*.h Simulator/Connections/*.cu)
+add_library(Connections STATIC ${Connections_Source})
+
+file(GLOB_RECURSE Edges_Source Simulator/Edges/*.cpp Simulator/Edges/*.h Simulator/Edges/*.cu)
+add_library(Edges STATIC ${Edges_Source})
+
+file(GLOB_RECURSE Layouts_Source Simulator/Layouts/*.cpp Simulator/Layouts/*.h)
+add_library(Layouts STATIC ${Layouts_Source})
+
+file(GLOB_RECURSE Vertices_Source Simulator/Vertices/*.cpp Simulator/Vertices/*.h Simulator/Vertices/*.cu)
+add_library(Vertices STATIC ${Vertices_Source})
+# The Vertices library has a dependency on the Edges library
+target_link_libraries(Vertices Edges)
+
+file(GLOB FunctionNodes_Source Simulator/Core/FunctionNodes/*.cpp Simulator/Core/FunctionNodes/*.h)
+add_library(FunctionNodes ${FunctionNodes_Source})
+
+file(GLOB Core_Source Simulator/Core/*.cpp Simulator/Core/*.h Simulator/Core/*.cu)
+# Remove Driver from the list of files, don't want 'main' in the library
+list(REMOVE_ITEM Core_Source "${CMAKE_CURRENT_SOURCE_DIR}/Driver.cpp")
+add_library(Core STATIC ${Core_Source})
+
+file(GLOB_RECURSE Recorders_Source Simulator/Recorders/*.cpp Simulator/Recorders/*.h)
+add_library(Recorders ${Recorders_Source})
+
+file(GLOB Matrix_Source Simulator/Utils/Matrix/*.cpp Simulator/Utils/*.h)
+# Remove these files from the library as they won't compile
+list(REMOVE_ITEM Matrix_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/Matrix/MatrixFactory.h")
+list(REMOVE_ITEM Matrix_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/Matrix/MatrixFactory.cpp")
+add_library(Matrix ${Matrix_Source})
+
+file(GLOB RNG_Source Simulator/Utils/RNG/*.cpp Simulator/Utils/RNG/*.h Simulator/Utils/RNG/*.cu)
+# Remove demo from file list as it contains a main and it will cause compilation errors
+list(REMOVE_ITEM RNG_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/RNG/MersenneTwister_demo.cu")
+add_library(RNG SHARED ${RNG_Source})
+
+file(GLOB Utils_Source  Simulator/Utils/*.cpp Simulator/Utils/*.h)
+add_library(Utils STATIC ${Utils_Source})
+
+
+
 add_subdirectory(ThirdParty)
 
 # Googletest subdirectories support
