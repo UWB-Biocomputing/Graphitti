@@ -1,10 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(Graphitti LANGUAGES CUDA CXX C)
-
-# Setting the base version to C++ 11
-set(CMAKE_CXX_STANDARD 11)
-
 ############################################################################################
 # CONDITIONAL FLAG (to run simulation on CPU or GPU)
 # 
@@ -15,27 +10,30 @@ set(CMAKE_CXX_STANDARD 11)
 ############################################################################################
 set(ENABLE_CUDA YES)
 
+# Creates the Graphitti project with the correct languages, depending on if using GPU or not
+# If using CUDA, also verify the CUDA package and set required CUDA variables
+if(ENABLE_CUDA)	
+        message("\n----Generating Makefile for Graphitti GPU version----")
+        project(Graphitti LANGUAGES CXX CUDA C)
+        # Verify CUDA package is present
+        find_Package(CUDA REQUIRED)
+        # Set the USE_GPU preproccesser macro so that GPU code will be compiled.
+        add_compile_definitions(USE_GPU)
+        # Specify the CUDA architecture/gencode that will be targeted
+        ### Set gencode and architechture variables to the correct values for your specific NVIDIA hardware
+        set(CMAKE_CUDA_ARCHITECTURES 37)        
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_37,code=sm_37)    
+else()
+        message("\n----Generating Makefile for Graphitti CPU version----")
+        project(Graphitti LANGUAGES CXX C)
+endif()
+
+# Setting the base version to C++ 11
+set(CMAKE_CXX_STANDARD 11)
+
 # set(DEBUG_MODE YES) for debugging, no optimization
 # set(DEBUG_MODE NO) for production code, -O3 optimization enabled
 set(DEBUG_MODE NO)
-
-# Enables the CUDA language and locates the NVCC compiler. 
-# Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
-#
-# ENABLE_CUDA also compiles each library that contains CUDA with the following line...
-# set_property(TARGET target PROPERTY CUDA_ARCHITECTURES 35-virtual) 
-# so the compiler knows the CUDA architecture being used is the SM_35
-if(ENABLE_CUDA)	
-        message("\n----Generating Makefile for Graphitti GPU version----")
-        # Verify CUDA package and set gencode. 
-        # Gencode will need to be set to the correct value for the specific NVIDIA hardware you are running on
-        find_Package(CUDA REQUIRED)
-        set(CMAKE_CUDA_ARCHITECTURES 37)        
-        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_37,code=sm_37)    
-        add_compile_definitions(USE_GPU)
-else()
-        message("\n----Generating Makefile for Graphitti CPU version----")
-endif()
 
 # HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libaries to the executable later in the file.
 find_package(HDF5 COMPONENTS C CXX)
@@ -128,8 +126,7 @@ add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
 if(ENABLE_CUDA)
-        # These 4 lines of setting CUDA_SEPERABLE_COMPILATION *ARE* necessary. Removing them will break the build, 
-        # even if they are also present in the seperate cmakelists files
+        # Enables CUDA code in these libraries to be compiled into seperate object files and then linked together
         set_property(TARGET Edges PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Vertices PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Core PROPERTY CUDA_SEPARABLE_COMPILATION ON)
