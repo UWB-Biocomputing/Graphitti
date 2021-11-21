@@ -873,7 +873,6 @@ __device__ edgeType edgType( vertexType* neuronTypeMap_d, const int srcVertex, c
 /// @param[in] allEdgesDevice  Pointer to the Synapse structures in device memory.
 __global__ void updateSynapsesWeightsDevice( int numVertices, BGFLOAT deltaT, BGFLOAT* W_d, int maxEdges, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, vertexType* neuronTypeMap_d )
 {
-    printf("*");
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if ( idx >= numVertices )
         return;
