@@ -117,61 +117,73 @@ include_directories(
         ThirdParty/TinyXPath
         ThirdParty/log4cplus-2.0.2/include)
 
-# Used to locate and run other CMakeLists.txt files for further compilation of the project.
-# add_subdirectory(Simulator)
+# Collect source files and create libraries
+# Libraries containing CUDA .cu files should be created as STATIC to ensure proper linking
+
+# Create Connections library
 file(GLOB_RECURSE Connections_Source Simulator/Connections/*.cpp Simulator/Connections/*.h Simulator/Connections/*.cu)
 add_library(Connections STATIC ${Connections_Source})
 
+# Create Edges library
 file(GLOB_RECURSE Edges_Source Simulator/Edges/*.cpp Simulator/Edges/*.h Simulator/Edges/*.cu)
 add_library(Edges STATIC ${Edges_Source})
 
+# Create Layouts Library
 file(GLOB_RECURSE Layouts_Source Simulator/Layouts/*.cpp Simulator/Layouts/*.h)
-add_library(Layouts STATIC ${Layouts_Source})
+add_library(Layouts ${Layouts_Source})
 
+# Create Vertices library
 file(GLOB_RECURSE Vertices_Source Simulator/Vertices/*.cpp Simulator/Vertices/*.h Simulator/Vertices/*.cu)
 add_library(Vertices STATIC ${Vertices_Source})
 # The Vertices library has a dependency on the Edges library
 target_link_libraries(Vertices Edges)
 
+# Create FunctionNodes library
 file(GLOB FunctionNodes_Source Simulator/Core/FunctionNodes/*.cpp Simulator/Core/FunctionNodes/*.h)
 add_library(FunctionNodes ${FunctionNodes_Source})
 
+# Create Core library
 file(GLOB Core_Source Simulator/Core/*.cpp Simulator/Core/*.h Simulator/Core/*.cu)
 # Remove Driver from the list of files, don't want 'main' in the library
 list(REMOVE_ITEM Core_Source "${CMAKE_CURRENT_SOURCE_DIR}/Driver.cpp")
 add_library(Core STATIC ${Core_Source})
 
+# Create Recorders library
 file(GLOB_RECURSE Recorders_Source Simulator/Recorders/*.cpp Simulator/Recorders/*.h)
 add_library(Recorders ${Recorders_Source})
 
+# Create Matrix library
 file(GLOB Matrix_Source Simulator/Utils/Matrix/*.cpp Simulator/Utils/*.h)
 # Remove these files from the library as they won't compile
 list(REMOVE_ITEM Matrix_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/Matrix/MatrixFactory.h")
 list(REMOVE_ITEM Matrix_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/Matrix/MatrixFactory.cpp")
 add_library(Matrix ${Matrix_Source})
 
+# Create RNG library
 file(GLOB RNG_Source Simulator/Utils/RNG/*.cpp Simulator/Utils/RNG/*.h Simulator/Utils/RNG/*.cu)
 # Remove demo from file list as it contains a main and it will cause compilation errors
 list(REMOVE_ITEM RNG_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/RNG/MersenneTwister_demo.cu")
-add_library(RNG SHARED ${RNG_Source})
+add_library(RNG STATIC ${RNG_Source})
 
+# Create Utils library
 file(GLOB Utils_Source  Simulator/Utils/*.cpp Simulator/Utils/*.h)
-add_library(Utils STATIC ${Utils_Source})
+add_library(Utils ${Utils_Source})
 
-
-
+# Used to locate and run other CMakeLists.txt files from Third Party resources for further compilation of the project.
 add_subdirectory(ThirdParty)
 
 # Googletest subdirectories support
 add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
+# Set CUDA_SEPERABLE_COMPILATION to ON for all libraries that contain .cu CUDA files
 if(ENABLE_CUDA)
         # Enables CUDA code in these libraries to be compiled into seperate object files and then linked together
         set_property(TARGET Edges PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Vertices PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Core PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Connections PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET RNG PROPERTY CUDA_SEPARABLE_COMPILATION ON)
 endif()
 
 # Link all libraries created in the project's subdirectories into a combined library.
@@ -189,7 +201,6 @@ target_link_libraries(combinedLib INTERFACE
         # Utils
         Utils
         RNG
-        #Inputs *** inputs aren't in the project ***
         Matrix
 
         # ThirdParty
@@ -205,15 +216,17 @@ endif()
 # ------ SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
 if(ENABLE_CUDA)
-        # Add the Graphitti GPU Executable
+        # Add the ggraphitti GPU executable
         add_executable(ggraphitti Simulator/Core/Driver.cpp)
         # Link the combined library into the 'graphitti' executable.
 	target_link_libraries(ggraphitti combinedLib)
 else()
+        # Add the cgraphitti CPU executable
 	add_executable(cgraphitti Simulator/Core/Driver.cpp)
 	# Link the combined library into the 'graphitti' executable.
 	target_link_libraries(cgraphitti combinedLib)
 endif()
+
 # ------ TESTS EXECUTABLE ------
 # Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
 # included in the executable.
