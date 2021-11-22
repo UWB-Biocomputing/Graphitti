@@ -18,7 +18,7 @@ using namespace std;
 
 #if defined(__CUDACC__)
 
-extern __device__ enumClassSynapses classSynapses_d = undefClassSynapses;
+extern __device__ enumClassSynapses classSynapses_d;
 
 ///  CUDA code for advancing spiking synapses.
 ///  Perform updating synapses for one time step.

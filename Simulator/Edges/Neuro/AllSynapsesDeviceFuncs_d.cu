@@ -13,6 +13,10 @@
 #include "AllSTDPSynapses.h"
 #include "AllDynamicSTDPSynapses.h"
 
+
+// a device variable to store synapse class ID.
+__device__ enumClassSynapses classSynapses_d = undefClassSynapses; 
+
 /******************************************
  * @name Device Functions for utility
 ******************************************/

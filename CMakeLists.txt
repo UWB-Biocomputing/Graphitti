@@ -1,8 +1,4 @@
 cmake_minimum_required(VERSION 3.12)
-project(Graphitti)
-
-# Setting the base version to C++ 11
-set(CMAKE_CXX_STANDARD 11)
 
 ############################################################################################
 # CONDITIONAL FLAG (to run simulation on CPU or GPU)
@@ -14,24 +10,30 @@ set(CMAKE_CXX_STANDARD 11)
 ############################################################################################
 set(ENABLE_CUDA NO)
 
+# Creates the Graphitti project with the correct languages, depending on if using GPU or not
+# If using CUDA, also verify the CUDA package and set required CUDA variables
+if(ENABLE_CUDA)	
+        message("\n----Generating Makefile for Graphitti GPU version----")
+        project(Graphitti LANGUAGES CXX CUDA C)
+        # Verify CUDA package is present
+        find_Package(CUDA REQUIRED)
+        # Set the USE_GPU preproccesser macro so that GPU code will be compiled.
+        add_compile_definitions(USE_GPU)
+        # Specify the CUDA architecture/gencode that will be targeted
+        ### Set gencode and architechture variables to the correct values for your specific NVIDIA hardware
+        set(CMAKE_CUDA_ARCHITECTURES 37)        
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_37,code=sm_37)    
+else()
+        message("\n----Generating Makefile for Graphitti CPU version----")
+        project(Graphitti LANGUAGES CXX C)
+endif()
+
+# Setting the base version to C++ 11
+set(CMAKE_CXX_STANDARD 11)
+
 # set(DEBUG_MODE YES) for debugging, no optimization
 # set(DEBUG_MODE NO) for production code, -O3 optimization enabled
 set(DEBUG_MODE NO)
-
-# Enables the CUDA language and locates the NVCC compiler. 
-# Sets the USE_GPU preproccesser macro so that GPU code will be compiled.
-#
-# ENABLE_CUDA also compiles each library that contains CUDA with the following line...
-# set_property(TARGET target PROPERTY CUDA_ARCHITECTURES 35-virtual) 
-# so the compiler knows the CUDA architecture being used is the SM_35
-if(ENABLE_CUDA)
-        message("\n----Generating Makefile for Graphitti GPU version----")
-        enable_language(CUDA)
-        set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-g;-arch=sm_35;-rdc=true")
-        add_compile_definitions(USE_GPU)
-else()
-        message("\n----Generating Makefile for Graphitti CPU version----")
-endif()
 
 # HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libaries to the executable later in the file.
 find_package(HDF5 COMPONENTS C CXX)
@@ -115,13 +117,74 @@ include_directories(
         ThirdParty/TinyXPath
         ThirdParty/log4cplus-2.0.2/include)
 
-# Used to locate and run other CMakeLists.txt files for further compilation of the project.
-add_subdirectory(Simulator)
+# Collect source files and create libraries
+# Libraries containing CUDA .cu files should be created as STATIC to ensure proper linking
+
+# Create Connections library
+file(GLOB_RECURSE Connections_Source Simulator/Connections/*.cpp Simulator/Connections/*.h Simulator/Connections/*.cu)
+add_library(Connections STATIC ${Connections_Source})
+
+# Create Edges library
+file(GLOB_RECURSE Edges_Source Simulator/Edges/*.cpp Simulator/Edges/*.h Simulator/Edges/*.cu)
+add_library(Edges STATIC ${Edges_Source})
+
+# Create Layouts Library
+file(GLOB_RECURSE Layouts_Source Simulator/Layouts/*.cpp Simulator/Layouts/*.h)
+add_library(Layouts ${Layouts_Source})
+
+# Create Vertices library
+file(GLOB_RECURSE Vertices_Source Simulator/Vertices/*.cpp Simulator/Vertices/*.h Simulator/Vertices/*.cu)
+add_library(Vertices STATIC ${Vertices_Source})
+# The Vertices library has a dependency on the Edges library
+target_link_libraries(Vertices Edges)
+
+# Create FunctionNodes library
+file(GLOB FunctionNodes_Source Simulator/Core/FunctionNodes/*.cpp Simulator/Core/FunctionNodes/*.h)
+add_library(FunctionNodes ${FunctionNodes_Source})
+
+# Create Core library
+file(GLOB Core_Source Simulator/Core/*.cpp Simulator/Core/*.h Simulator/Core/*.cu)
+# Remove Driver from the list of files, don't want 'main' in the library
+list(REMOVE_ITEM Core_Source "${CMAKE_CURRENT_SOURCE_DIR}/Driver.cpp")
+add_library(Core STATIC ${Core_Source})
+
+# Create Recorders library
+file(GLOB_RECURSE Recorders_Source Simulator/Recorders/*.cpp Simulator/Recorders/*.h)
+add_library(Recorders ${Recorders_Source})
+
+# Create Matrix library
+file(GLOB Matrix_Source Simulator/Utils/Matrix/*.cpp Simulator/Utils/*.h)
+# Remove these files from the library as they won't compile
+list(REMOVE_ITEM Matrix_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/Matrix/MatrixFactory.h")
+list(REMOVE_ITEM Matrix_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/Matrix/MatrixFactory.cpp")
+add_library(Matrix ${Matrix_Source})
+
+# Create RNG library
+file(GLOB RNG_Source Simulator/Utils/RNG/*.cpp Simulator/Utils/RNG/*.h Simulator/Utils/RNG/*.cu)
+# Remove demo from file list as it contains a main and it will cause compilation errors
+list(REMOVE_ITEM RNG_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/RNG/MersenneTwister_demo.cu")
+add_library(RNG STATIC ${RNG_Source})
+
+# Create Utils library
+file(GLOB Utils_Source  Simulator/Utils/*.cpp Simulator/Utils/*.h)
+add_library(Utils ${Utils_Source})
+
+# Used to locate and run other CMakeLists.txt files from Third Party resources for further compilation of the project.
 add_subdirectory(ThirdParty)
 
 # Googletest subdirectories support
 add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
+
+# Set CUDA_SEPERABLE_COMPILATION to ON for all libraries that contain .cu CUDA files
+if(ENABLE_CUDA)
+        # Enables CUDA code in these libraries to be compiled into seperate object files and then linked together
+        set_property(TARGET Edges PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Vertices PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Core PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Connections PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET RNG PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+endif()
 
 # Link all libraries created in the project's subdirectories into a combined library.
 add_library(combinedLib INTERFACE)
@@ -138,7 +201,6 @@ target_link_libraries(combinedLib INTERFACE
         # Utils
         Utils
         RNG
-        #Inputs *** inputs aren't in the project ***
         Matrix
 
         # ThirdParty
@@ -154,14 +216,17 @@ endif()
 # ------ SIMULATOR EXECUTABLE -------
 # Add all files that aren't in a library and are needed to run
 if(ENABLE_CUDA)
-	add_executable(ggraphitti Simulator/Core/Driver.cpp)
-	# Link the combined library into the 'graphitti' executable.
+        # Add the ggraphitti GPU executable
+        add_executable(ggraphitti Simulator/Core/Driver.cpp)
+        # Link the combined library into the 'graphitti' executable.
 	target_link_libraries(ggraphitti combinedLib)
 else()
+        # Add the cgraphitti CPU executable
 	add_executable(cgraphitti Simulator/Core/Driver.cpp)
 	# Link the combined library into the 'graphitti' executable.
 	target_link_libraries(cgraphitti combinedLib)
 endif()
+
 # ------ TESTS EXECUTABLE ------
 # Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
 # included in the executable.
