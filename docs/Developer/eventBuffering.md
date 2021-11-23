@@ -7,8 +7,8 @@ The `AllSpikingNeurons` class is a subclass of the top-level `AllVertices` class
 
 - `hasFired_`: dynamically allocated `bool` array indicating that a neuron has produced a spike during this time step.
 - `spikeCount_`: dynamically allocated `int` array; number of spikes neuron has produced during this epoch.
-- `spikeCountOffset_`: dynamically allocated `int` array; **need to figure this out**
-- `spikeHistory_`: dynamically allocated; type is `uint64_t**`; **need to figure this out**; this seems to be an array of buffers holding the time step for each spike (one buffer per neuron)
+- `spikeCountOffset_`: dynamically allocated `int` array
+- `spikeHistory_`: dynamically allocated; type is `uint64_t**`; this seems to be an array of buffers holding the time step for each spike (one buffer per neuron)
 
 Each of these variables are also present in the `AllSpikingNeuronsDeviceProperties` struct, an extension of the `AllVerticesDeviceProperties` struct, which gets allocated on the GPU.
 
@@ -26,7 +26,7 @@ Each of these variables are also present in the `AllSpikingNeuronsDeviceProperti
   * Set to true by `AllSpikingNeurons::fire()`, which is called by a subclass implementation of `advanceNeuron()` (via a subclass implementation of `fire()`)
 
 ##### `spikeCount_`
-This seems to be the number of spikes produced by a neuron during an epoch. It is also the offset within the `spikeHistory_` of a neuron corresponding to one past the end of the circular buffer.
+This is the number of spikes produced by a neuron during an epoch. It is also the offset within the `spikeHistory_` of a neuron corresponding to one past the end of the circular buffer (i.e., one past the end of the queue; where the next spike will be enqueued).
 - Nulled out by `AllSpikingNeurons::AllSpikingNeurons()`
 - deleted and nulled out by `AllSpikingNeurons::~AllSpikingNeurons()`
 - Storage allocated (dimension: `size_`) and initialized to 0 by `AllSpikingNeurons::setupVertices()`
@@ -40,7 +40,7 @@ This seems to be the number of spikes produced by a neuron during an epoch. It i
   * This method is called by the 911 and STDP edge/synapse classes `advanceEdge()` methods to retrieve spikes from preceding time steps.
 
 ##### `spikeCountOffset_`
-This seems to be the start of the circular buffer in `spikeHistory_` associated with a neuron.
+This is the start of the circular buffer (front of the queue) in `spikeHistory_` associated with a neuron.
 - Nulled out by `AllSpikingNeurons::AllSpikingNeurons()`
 - deleted and nulled out by `AllSpikingNeurons::~AllSpikingNeurons()`
 - Storage allocated (dimension: `size_`) and initialized to 0 by `AllSpikingNeurons::setupVertices()`
@@ -63,14 +63,14 @@ These are the circular spike buffers for each neuron. It is an array of pointers
 ### Refactor/Redesign Ideas
 
 It seems like we need to retain a circular buffer for a neuron's spikes, so that it will be possible to "look backwards" across an epoch boundary to retrieve spikes from the preceding epoch(s). We should refactor this out as a separate class, `EventBuffer`:
-- `EventBuffer::operator[]`: retrieve an event time step at an offset relative to the start of the current epoch (i.e., `0..numEvents_-1`).
-- `EventBuffer::getNumEvents()`: return the number of events in the current epoch.
-- `EventBuffer::getPastEvent(offset: int)`: return event `offset` in the past, where `offset == -1` means the most recent event, `offset == -2` is two events ago, etc.
-- Methods to copy an `EventBuffer` to and from the GPU (need to work through this; at least, it seems like this mechanism will mean that there is no need to modify the GPU code).
+- Two methods for use by the Recorder classes:
+  * `EventBuffer::operator[]`: retrieve an event time step at an offset relative to the start of the current epoch (i.e., `0..numEvents_-1`).
+  * `EventBuffer::getNumEventsInEpoch()`: return the number of events in the current epoch.
+- Methods for use by the Vertex and Edge classes:
+  * `EventBuffer::getPastEvent(offset: int)`: return event `offset` in the past, where `offset == -1` means the most recent event, `offset == -2` is two events ago, etc.
+  * Methods to copy an `EventBuffer` to and from the GPU (need to work through this; at least, it seems like this mechanism will mean that there is no need to modify the GPU code).
 
-Actually, it might be desirable to subclass `EventBuffer` from either `vector` or valarray`. This would provide it with the full interface provided by the parent class.
-
-Then, the set of spike buffers can be allocated as a `valarray` of `EventBuffer`. In the recorder classes, we can use the [valarray indirect selection mechanism](https://www.cplusplus.com/reference/valarray/indirect_array/) to select the elements of this `valarray` based on the probed neuron list. This will then be one of the standard variables registrations with the recorder classes: a call to register the vertex event buffers, which expects a `const valarray<EventBuffer>&`. The recorders create an `indirect_array` from the probed vertex list (when loaded by `loadParameters()`). Each epoch, the use that `indirect_array` to walk through the `valarray`, in turn using `EventBuffer::operator[]` to pull out the spike time steps.
+Then, the set of spike buffers can be allocated as a `vector` of `EventBuffer`. In the recorder classes, we can just iterate through the list (`vector`) of probed vertices to get the vertex IDs (indices) of the `EventBuffer`s to record. This will then be one of the standard variables registrations with the recorder classes: a call to register the vertex event buffers, which expects a `const vector<EventBuffer>&`. The recorders create a `vector` from the probed vertex list (when loaded by `loadParameters()`). Each epoch, the use the probed vertex `vector` to walk through the `vector` of `EventBuffer`s, in turn using `EventBuffer::operator[]` to pull out the spike time steps.
 
 This valarray should be a data member of `AllSpikingNeurons` and its constructor should create and initialize everything. This would move the allocation and initialization out of `AllIFNeurons`.
 

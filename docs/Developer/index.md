@@ -11,7 +11,7 @@ We have an [overview UML diagram](UML/hand-drawn.pdf).
 ### Detailed documentation
 Documentation of subsystems and details of data structures and algorithms are listed below.
 
-1. [Spike recording](spikeRecording.md) in neuro vertex classes.
+1. [Event buffering](eventBuffering.md) in vertex classes.
 
 
 ---------
