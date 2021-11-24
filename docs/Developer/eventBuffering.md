@@ -67,10 +67,13 @@ It seems like we need to retain a circular buffer for a neuron's spikes, so that
   * `EventBuffer::operator[]`: retrieve an event time step at an offset relative to the start of the current epoch (i.e., `0..numEvents_-1`).
   * `EventBuffer::getNumEventsInEpoch()`: return the number of events in the current epoch.
 - Methods for use by the Vertex and Edge classes:
+  * `EventBuffer::clear()`: resets everything (may not be useful after start of simulation)
+  * `EventBuffer::startNewEpoch()`: resets variables that track where the current buffer starts and how many spikes there are in the current epoch
+  * `EventBuffer::insertEvent(uint64_t timeStep)`: record (enqueue) an event at the indicated time step
   * `EventBuffer::getPastEvent(offset: int)`: return event `offset` in the past, where `offset == -1` means the most recent event, `offset == -2` is two events ago, etc.
   * Methods to copy an `EventBuffer` to and from the GPU (need to work through this; at least, it seems like this mechanism will mean that there is no need to modify the GPU code).
 
-Then, the set of spike buffers can be allocated as a `vector` of `EventBuffer`. In the recorder classes, we can just iterate through the list (`vector`) of probed vertices to get the vertex IDs (indices) of the `EventBuffer`s to record. This will then be one of the standard variables registrations with the recorder classes: a call to register the vertex event buffers, which expects a `const vector<EventBuffer>&`. The recorders create a `vector` from the probed vertex list (when loaded by `loadParameters()`). Each epoch, the use the probed vertex `vector` to walk through the `vector` of `EventBuffer`s, in turn using `EventBuffer::operator[]` to pull out the spike time steps.
+Then, the set of spike buffers can be allocated as a `vector` of `EventBuffer` (note that the `vector` constructor with size and initialization should still work with the `EventBuffer` constructor; later resizing will require iterating through the `vector` and calling each element's `EventBuffer::resize()` method). In the recorder classes, we can just iterate through the list (`vector`) of probed vertices to get the vertex IDs (indices) of the `EventBuffer`s to record. This will then be one of the standard variables registrations with the recorder classes: a call to register the vertex event buffers, which expects a `const vector<EventBuffer>&`. The recorders create a `vector` from the probed vertex list (when loaded by `loadParameters()`). Each epoch, the use the probed vertex `vector` to walk through the `vector` of `EventBuffer`s, in turn using `EventBuffer::operator[]` to pull out the spike time steps.
 
 This valarray should be a data member of `AllSpikingNeurons` and its constructor should create and initialize everything. This would move the allocation and initialization out of `AllIFNeurons`.
 
