@@ -42,6 +42,7 @@
 - [Googletest Tutorial](BGDocs/GoogleTestsTutorial.md)
 - [Performing Analyses](BGDocs/PerformingAnalyses.md)
 - [CMake](BGDocs/CMake.md)
+- [CMakeLists and CUDA](Developer/CMakeListsCuda.md)
 - [Recommended Resources](BGDocs/Resources.md)
 - [Neuro Implementation](BGDocs/NeuroImplementation.md) 
 - [Internal Testing](InternalTesting/index.md)
