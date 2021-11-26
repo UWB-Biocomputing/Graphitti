@@ -16,7 +16,7 @@ listed in the documentation, but in the case of our simulator they can be observ
 as being SHARED if no type is specified.   
 
 If a library containing CUDA source files is created as SHARED, the linking of  
-the corrosponding CUDA device code will be done individually just before the  
+the corresponding CUDA device code will be done individually just before the  
 step of linking the SHARED library it is a part of. Explicitly declaring libraries  
 containing CUDA code as STATIC instead allows the linking of CUDA device code to  
 be put off and done all together just before the final executable is linked and  
@@ -27,13 +27,13 @@ Example of creating a STATIC library:
     ```add_library(Edges STATIC ${Edges_Source})```  
     Where `${Edges_Source}` is a collection of source files
  
-## Seperable Compilation  
+## Separable Compilation  
 
-CUDA seperable compilation allows different pieces of CUDA code to be compiled  
-into seperate objects and then linked together later. More information can be  
-found about Seperate Compilation and Linking of CUDA code in this [NVIDIA developer  
+CUDA separable compilation allows different pieces of CUDA code to be compiled  
+into separate objects and then linked together later. More information can be  
+found about Separate Compilation and Linking of CUDA code in this [NVIDIA developer  
 blog post](https://developer.nvidia.com/blog/separate-compilation-linking-cuda-device-code/). This must be enabled in the CMakeLists.txt file individually for each  
-library containing CUDA source code by setting the CUDA_SEPERABLE_COMPILATION  
+library containing CUDA source code by setting the CUDA_SEPARABLE_COMPILATION  
 property to ON. Information on this property can be found [here](https://cmake.org/cmake/help/latest/prop_tgt/CUDA_SEPARABLE_COMPILATION.html) in the CMake  
 documentation.  
 
