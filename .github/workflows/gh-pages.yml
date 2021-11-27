@@ -1,12 +1,9 @@
 name: Github Pages
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+  schedule:
+    # Triggers at the end of the day on the 1st of every month
+    - cron: '0 0 1 * *'
 
 jobs:
   deploy:
