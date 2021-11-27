@@ -11,46 +11,19 @@
 
 // Default constructor
 AllSpikingNeurons::AllSpikingNeurons() : AllVertices() {
-   hasFired_ = nullptr;
-   spikeCount_ = nullptr;
-   spikeCountOffset_ = nullptr;
-   spikeHistory_ = nullptr;
 }
 
 AllSpikingNeurons::~AllSpikingNeurons() {
-   if (size_ != 0) {
-      for (int i = 0; i < size_; i++) {
-         delete[] spikeHistory_[i];
-      }
-
-      delete[] hasFired_;
-      delete[] spikeCount_;
-      delete[] spikeCountOffset_;
-      delete[] spikeHistory_;
-   }
-
-   hasFired_ = nullptr;
-   spikeCount_ = nullptr;
-   spikeCountOffset_ = nullptr;
-   spikeHistory_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories).
 void AllSpikingNeurons::setupVertices() {
    AllVertices::setupVertices();
 
-   // TODO: Rename variables for easier identification
-   hasFired_ = new bool[size_];
-   spikeCount_ = new int[size_];
-   spikeCountOffset_ = new int[size_];
-   spikeHistory_ = new uint64_t *[size_];
-
-   for (int i = 0; i < size_; ++i) {
-      spikeHistory_[i] = nullptr;
-      hasFired_[i] = false;
-      spikeCount_[i] = 0;
-      spikeCountOffset_[i] = 0;
-   }
+   int maxSpikes = static_cast<int>(Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate());
+   // Resize members correctly
+   hasFired_.resize(size_, false);
+   vertexEvents_.resize(size_, maxSpikes);
 
    Simulator::getInstance().setPSummationMap(summationMap_);
 }

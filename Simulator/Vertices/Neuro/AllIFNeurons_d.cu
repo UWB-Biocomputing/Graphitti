@@ -206,6 +206,7 @@ void AllIFNeurons::copyDeviceToHost( AllIFNeuronsDeviceProperties& allVerticesDe
 ///  Copy spike history data stored in device memory to host.
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
+// TODO: Move this into EventBuffer somehow
 void AllIFNeurons::copyNeuronDeviceSpikeHistoryToHost( void* allVerticesDevice ) 
 {        
         AllIFNeuronsDeviceProperties allVerticesDeviceProps;
@@ -216,6 +217,7 @@ void AllIFNeurons::copyNeuronDeviceSpikeHistoryToHost( void* allVerticesDevice )
 ///  Copy spike counts data stored in device memory to host.
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
+// TODO: Move this into EventBuffer somehow
 void AllIFNeurons::copyNeuronDeviceSpikeCountsToHost( void* allVerticesDevice )
 {
         AllIFNeuronsDeviceProperties allVerticesDeviceProps;
@@ -226,6 +228,7 @@ void AllIFNeurons::copyNeuronDeviceSpikeCountsToHost( void* allVerticesDevice )
 ///  Clear the spike counts out of all neurons.
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
+// TODO: Move this into EventBuffer somehow
 void AllIFNeurons::clearNeuronSpikeCounts( void* allVerticesDevice )
 {
         AllIFNeuronsDeviceProperties allVerticesDeviceProps;

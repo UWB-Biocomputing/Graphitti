@@ -13,7 +13,8 @@
 #include <cassert>
 #include <limits>
 
-EventBuffer::EventBuffer(int maxEvents = 0) : eventTimeSteps_(maxEvents+1, 0)
+EventBuffer::EventBuffer(int maxEvents = 0)
+   : eventTimeSteps_(maxEvents+1, numeric_limits<unsigned long>::max())
 {
    clear();
 }
