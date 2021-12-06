@@ -148,7 +148,7 @@
         <RecorderParams class="XmlSTDPRecorder" name="RecorderParams">
           <RecorderFiles name="RecorderFiles">
             <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList2x2.xml</probedNListFileName>
-            <resultFileName name="resultFileName">../Output/Results/test-tiny-xml-stdp-out.xml</resultFileName>
+            <resultFileName name="resultFileName">Output/Results/test-tiny-xml-stdp-out.xml</resultFileName>
           </RecorderFiles>
         </RecorderParams>
     </ModelParams>

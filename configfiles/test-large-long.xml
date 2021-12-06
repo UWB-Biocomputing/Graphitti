@@ -111,7 +111,7 @@
     <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
         <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_10000.xml</probedNListFileName>
-        <resultFileName name="resultFileName">../Output/Results/test-large-long-out.xml</resultFileName>
+        <resultFileName name="resultFileName">Output/Results/test-large-long-out.xml</resultFileName>
       </RecorderFiles>
     </RecorderParams>
   </ModelParams>

@@ -19,7 +19,7 @@
          <NoiseRNGSeed class="Norm" name="NoiseRNGSeed">777</NoiseRNGSeed>
       </RNGConfig>
       <OutputParams name="OutputParams">
-         <resultFileName name="resultFileName">../Output/Results/tR_1.9--fE_0.98_historyDump.h5</resultFileName>
+         <resultFileName name="resultFileName">Output/Results/tR_1.9--fE_0.98_historyDump.h5</resultFileName>
       </OutputParams>
    </SimInfoParams>
 

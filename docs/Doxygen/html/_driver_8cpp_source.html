@@ -116,13 +116,13 @@ $(function() {
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
 <div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="_driver_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">   70</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="_driver_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[]) {</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;   <span class="comment">// Clear logging files at the start of each simulation</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;   fstream(<span class="stringliteral">&quot;../Output/Debug/logging.txt&quot;</span>, ios::out | ios::trunc);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;   fstream(<span class="stringliteral">&quot;../Output/Debug/vertices.txt&quot;</span>, ios::out | ios::trunc);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;   fstream(<span class="stringliteral">&quot;../Output/Debug/edges.txt&quot;</span>, ios::out | ios::trunc);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;   fstream(<span class="stringliteral">&quot;Output/Debug/logging.txt&quot;</span>, ios::out | ios::trunc);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;   fstream(<span class="stringliteral">&quot;Output/Debug/vertices.txt&quot;</span>, ios::out | ios::trunc);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;   fstream(<span class="stringliteral">&quot;Output/Debug/edges.txt&quot;</span>, ios::out | ios::trunc);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;   <span class="comment">// Initialize log4cplus and set properties based on configure file</span></div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;   ::log4cplus::initialize();</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;   ::log4cplus::PropertyConfigurator::doConfigure(<span class="stringliteral">&quot;../RuntimeFiles/log4cplus_configure.ini&quot;</span>);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;   ::log4cplus::PropertyConfigurator::doConfigure(<span class="stringliteral">&quot;RuntimeFiles/log4cplus_configure.ini&quot;</span>);</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;   <span class="comment">// Get the instance of the console logger and print status</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT(<span class="stringliteral">&quot;console&quot;</span>));</div>
