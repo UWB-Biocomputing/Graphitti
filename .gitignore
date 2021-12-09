@@ -75,10 +75,10 @@ Testing/lib/
 lib/
 
 # log4cplus logging files
-Output/Debug/*.txt
+build/Output/Debug/*.txt
 
 # Result files
-Output/Results/*.xml
-Output/Results/*.h5
+build/Output/Results/*.xml
+build/Output/Results/*.h5
 Testing/RegressionTesting/TestOutput/*.xml
 Testing/RegressionTesting/TestOutput/*.h5
