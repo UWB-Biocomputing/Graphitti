@@ -145,7 +145,7 @@
 
     <RecorderParams class="XmlSTDPRecorder" name="RecorderParams">
       <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_10000.xml</probedNListFileName>
-      <resultFileName name="resultFileName">../Output/Results/test-SB-stdp-100x100.xml</resultFileName>
+      <resultFileName name="resultFileName">Output/Results/test-SB-stdp-100x100.xml</resultFileName>
    </RecorderParams>
   </ModelParams>
 </BGSimParams>
