@@ -17,7 +17,7 @@ For UW Bothell students interested in working in the BCL, we use a [shared repos
 - Please ***DO NOT WORK DIRECTLY ON THE MASTER BRANCH*** (yes, there are exceptions, but they are few and far between). 
 - Instead, please follow the lab workflow that follows.
 
-0. Review our [Coding Conventions](docs/Developer/codingConventions.html). Your work will be rejected if it doesn't conform.
+0. Review our [Coding Conventions](https://uwb-biocomputing.github.io/Graphitti/Developer/codingConventions.html). Your work will be rejected if it doesn't conform.
 
 1. Your work should be in response to one or more issues. If you are planning to work on something that is a small part of an existing issue, then likely that issue is a placeholder "umbrella" that was generated in lieu of thinking through all related details. In that case, now is the time for you to think it through and break that issue down into actionable items —— new issues that partially or completely replace the umbrella.
 
