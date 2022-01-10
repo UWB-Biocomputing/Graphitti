@@ -12,7 +12,7 @@ For UW Bothell students interested in working in the BCL, we use a [shared repos
 
 ## Workflow
 
-- Please read up on Github basics (including [Managing your work on GitHub](https://help.github.com/categories/managing-your-work-on-github/)).
+- Please read up on Github basics (including [GitHub Issues](https://help.github.com/categories/managing-your-work-on-github/)).
 - Seek the guidance of more senior lab members regarding how to get started. 
 - Please ***DO NOT WORK DIRECTLY ON THE MASTER BRANCH*** (yes, there are exceptions, but they are few and far between). 
 - Instead, please follow the lab workflow that follows.
