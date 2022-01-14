@@ -54,7 +54,7 @@
 Documentation generated from source code. Doxygen provides web-based indices and hierarchical views of Graphitti's class and file structures.
 - [Visit Doxygen Generated Documentation](Doxygen/html/index.html)
 - [Doxygen Style Guide](Doxygen/DoxygenStyleGuide.md)
-- [Doxygen Update Guide](Doxygen/DoxygenStyleGuide.md)
+- [Doxygen Update Guide](Doxygen/DoxygenUpdateGuide.md)
 
 
 ## [Acknowledgements](acknowledgements.md)
