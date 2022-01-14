@@ -1,23 +1,23 @@
-# Contributing to The GRAPHITTI Project
+# Contributing to The Graphitti Project
 
-Thank you for your interest in the Graphitti Project, which includes the Workbench software and data provenance system. This project operates with an [Apache 2.0 license](../../LICENSE) which provides wide reusability and adaptability, under the proviso of citing the originators and maintaining provenance information.
+Thank you for your interest in the Graphitti Project, which includes the Workbench software and data provenance system. This project operates with an [Apache 2.0 license](LICENSE) which provides wide reusability and adaptability, under the proviso of citing the originators and maintaining provenance information.
 
-## External from the BioComputing Lab
-For people outside of the [UW Bothell Biocomputing laboratory](http://depts.washington.edu/biocomp/) (BCL), we use a [fork and pull development model](https://help.github.com/articles/about-collaborative-development-models/). If you're interested in adapting this project for your own use, then please feel free to make your own copy of this repository and adapt it to your work. We would be greatly interested to learn about what you do, potentially incorporating your work back into this main repository. *Please cite us in your work*; the repository [README](../../Desktop/Graphitti/BG-reorg/README.md) has a DOI for that purpose.
+## External from the Intelligent Networks Lab
+For people outside of the [UW Bothell Intelligent Networks laboratory](http://depts.washington.edu/biocomp/) (INL), we use a [fork and pull development model](https://help.github.com/articles/about-collaborative-development-models/). If you're interested in adapting this project for your own use, then please feel free to make your own copy of this repository and adapt it to your work. We would be greatly interested to learn about what you do, potentially incorporating your work back into this main repository. *Please cite us in your work*; the repository [README](README.md) has a DOI for that purpose.
 
 If you're making modifications that you'd like to be merged into our code base, then please see the Workflow section, below. When unsure, contact us ahead of time.
 
-## For the BioComputing Lab
+## For the Intelligent Networks Lab
 For UW Bothell students interested in working in the BCL, we use a [shared repository development model](https://help.github.com/articles/about-collaborative-development-models/). If you're interested in contributing directly to this project, then please contact [Prof. Michael Stiber](mailto:stiber@uw.edu) and read the information below.
 
 ## Workflow
 
-- Please read up on Github basics (including [Managing your work on GitHub](https://help.github.com/categories/managing-your-work-on-github/)).
+- Please read up on Github basics (including [GitHub Issues](https://help.github.com/categories/managing-your-work-on-github/)).
 - Seek the guidance of more senior lab members regarding how to get started. 
 - Please ***DO NOT WORK DIRECTLY ON THE MASTER BRANCH*** (yes, there are exceptions, but they are few and far between). 
 - Instead, please follow the lab workflow that follows.
 
-0. Review our [Coding Conventions](https://uwb-biocomputing.github.io/Graphitti/BGDocs/codingConventions.html). Your work will be rejected if it doesn't conform.
+0. Review our [Coding Conventions](https://uwb-biocomputing.github.io/Graphitti/Developer/codingConventions.html). Your work will be rejected if it doesn't conform.
 
 1. Your work should be in response to one or more issues. If you are planning to work on something that is a small part of an existing issue, then likely that issue is a placeholder "umbrella" that was generated in lieu of thinking through all related details. In that case, now is the time for you to think it through and break that issue down into actionable items —— new issues that partially or completely replace the umbrella.
 
