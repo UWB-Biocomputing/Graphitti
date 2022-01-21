@@ -19,51 +19,49 @@
 
 #include <fstream>
 
-#include "XmlRecorder.h"
 #include "Model.h"
+#include "XmlRecorder.h"
 
 class XmlGrowthRecorder : public XmlRecorder {
-public:
-   /// THe constructor and destructor
-   XmlGrowthRecorder();
+	public:
+		/// THe constructor and destructor
+		XmlGrowthRecorder();
 
-   ~XmlGrowthRecorder();
+		~XmlGrowthRecorder() override;
 
-   static IRecorder* Create() { return new XmlGrowthRecorder(); }
+		static IRecorder* Create() { return new XmlGrowthRecorder(); }
 
-   /// Init radii and rates history matrices with default values
-   virtual void initDefaultValues() override;
+		/// Init radii and rates history matrices with default values
+		void initDefaultValues() override;
 
-   /// Init radii and rates history matrices with current radii and rates
-   virtual void initValues() override;
+		/// Init radii and rates history matrices with current radii and rates
+		void initValues() override;
 
-   /// Get the current radii and rates vlaues
-   virtual void getValues() override;
+		/// Get the current radii and rates vlaues
+		void getValues() override;
 
-   /// Compile history information in every epoch
-   ///
-   /// @param[in] neurons   The entire list of neurons.
-   virtual void compileHistories(AllVertices &neurons) override;
+		/// Compile history information in every epoch
+		///
+		/// @param[in] neurons   The entire list of neurons.
+		void compileHistories(AllVertices& neurons) override;
 
-   /// Writes simulation results to an output destination.
-   ///
-   /// @param  neurons the Neuron list to search from.
-   virtual void saveSimData(const AllVertices &neurons) override;
+		/// Writes simulation results to an output destination.
+		///
+		/// @param  neurons the Neuron list to search from.
+		void saveSimData(const AllVertices& neurons) override;
 
-   ///  Prints out all parameters to logging file.
-   ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() override;
+		///  Prints out all parameters to logging file.
+		///  Registered to OperationManager as Operation::printParameters
+		void printParameters() override;
 
-private:
-   
-   // TODO: There seems to be multiple copies of this in different classes...
-   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
+	private:
+		// TODO: There seems to be multiple copies of this in different classes...
+		void getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap);
 
-   // track firing rate
-   CompleteMatrix ratesHistory_;
+		// track firing rate
+		CompleteMatrix ratesHistory_;
 
-   // track radii
-   CompleteMatrix radiiHistory_;
+		// track radii
+		CompleteMatrix radiiHistory_;
 
 };
-

@@ -57,60 +57,60 @@
 struct AllDynamicSTDPSynapsesDeviceProperties;
 
 class AllDynamicSTDPSynapses : public AllSTDPSynapses {
-public:
-   AllDynamicSTDPSynapses();
+	public:
+		AllDynamicSTDPSynapses();
 
-   AllDynamicSTDPSynapses(const int numVertices, const int maxEdges);
+		AllDynamicSTDPSynapses(const int numVertices, const int maxEdges);
 
-   virtual ~AllDynamicSTDPSynapses();
+		~AllDynamicSTDPSynapses() override;
 
-   static AllEdges *Create() { return new AllDynamicSTDPSynapses(); }
+		static AllEdges* Create() { return new AllDynamicSTDPSynapses(); }
 
-   ///  Setup the internal structure of the class (allocate memories and initialize them).
-   virtual void setupEdges() override;
+		///  Setup the internal structure of the class (allocate memories and initialize them).
+		void setupEdges() override;
 
-   ///  Reset time varying state vars and recompute decay.
-   ///
-   ///  @param  iEdg     Index of the synapse to set.
-   ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
+		///  Reset time varying state vars and recompute decay.
+		///
+		///  @param  iEdg     Index of the synapse to set.
+		///  @param  deltaT   Inner simulation step duration
+		void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
 
-   ///  Prints out all parameters to logging file.
-   ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const override;
+		///  Prints out all parameters to logging file.
+		///  Registered to OperationManager as Operation::printParameters
+		void printParameters() const override;
 
-   ///  Create a Synapse and connect it to the model.
-   ///
-   ///  @param  iEdg        Index of the synapse to set.
-   ///  @param  srcVertex   Coordinates of the source Neuron.
-   ///  @param  destVertex  Coordinates of the destination Neuron.
-   ///  @param  sumPoint    Summation point address.
-   ///  @param  deltaT      Inner simulation step duration.
-   ///  @param  type        Type of the Synapse to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-                              edgeType type) override;
+		///  Create a Synapse and connect it to the model.
+		///
+		///  @param  iEdg        Index of the synapse to set.
+		///  @param  srcVertex   Coordinates of the source Neuron.
+		///  @param  destVertex  Coordinates of the destination Neuron.
+		///  @param  sumPoint    Summation point address.
+		///  @param  deltaT      Inner simulation step duration.
+		///  @param  type        Type of the Synapse to create.
+		void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT,
+		                edgeType type) override;
 
-   ///  Prints SynapsesProps data.
-   virtual void printSynapsesProps() const override;
+		///  Prints SynapsesProps data.
+		void printSynapsesProps() const override;
 
-protected:
-   ///  Setup the internal structure of the class (allocate memories and initialize them).
-   ///
-   ///  @param  numVertices   Total number of vertices in the network.
-   ///  @param  maxEdges  Maximum number of synapses per neuron.
-   virtual void setupEdges(const int numVertices, const int maxEdges) override;
+	protected:
+		///  Setup the internal structure of the class (allocate memories and initialize them).
+		///
+		///  @param  numVertices   Total number of vertices in the network.
+		///  @param  maxEdges  Maximum number of synapses per neuron.
+		void setupEdges(const int numVertices, const int maxEdges) override;
 
-   ///  Sets the data for Synapse to input's data.
-   ///
-   ///  @param  input  istream to read from.
-   ///  @param  iEdg   Index of the synapse to set.
-   virtual void readEdge(std::istream &input, const BGSIZE iEdg) override;
+		///  Sets the data for Synapse to input's data.
+		///
+		///  @param  input  istream to read from.
+		///  @param  iEdg   Index of the synapse to set.
+		void readEdge(std::istream& input, const BGSIZE iEdg) override;
 
-   ///  Write the synapse data to the stream.
-   ///
-   ///  @param  output  stream to print out to.
-   ///  @param  iEdg    Index of the synapse to print out.
-   virtual void writeEdge(std::ostream &output, const BGSIZE iEdg) const override;
+		///  Write the synapse data to the stream.
+		///
+		///  @param  output  stream to print out to.
+		///  @param  iEdg    Index of the synapse to print out.
+		void writeEdge(std::ostream& output, const BGSIZE iEdg) const override;
 
 #ifdef __CUDACC__
    public:
@@ -197,32 +197,32 @@ protected:
        ///  @param  maxEdgesPerVertex       Maximum number of synapses per neuron.
        void copyDeviceToHost(AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps);
 #else
-protected:
-   ///  Calculate the post synapse response after a spike.
-   ///
-   ///  @param  iEdg        Index of the synapse to set.
-   ///  @param  deltaT      Inner simulation step duration.
-   virtual void changePSR(const BGSIZE iEdg, const BGFLOAT deltaT);
+	protected:
+		///  Calculate the post synapse response after a spike.
+		///
+		///  @param  iEdg        Index of the synapse to set.
+		///  @param  deltaT      Inner simulation step duration.
+		void changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) override;
 
-#endif // defined(USE_GPU)
-public:
-   ///  The time of the last spike.
-   uint64_t *lastSpike_;
+#endif // defined(__CUDACC__)
+	public:
+		///  The time of the last spike.
+		uint64_t* lastSpike_;
 
-   ///  The time varying state variable \f$r\f$ for depression.
-   BGFLOAT *r_;
+		///  The time varying state variable \f$r\f$ for depression.
+		BGFLOAT* r_;
 
-   ///  The time varying state variable \f$u\f$ for facilitation.
-   BGFLOAT *u_;
+		///  The time varying state variable \f$u\f$ for facilitation.
+		BGFLOAT* u_;
 
-   ///  The time constant of the depression of the dynamic synapse [range=(0,10); units=sec].
-   BGFLOAT *D_;
+		///  The time constant of the depression of the dynamic synapse [range=(0,10); units=sec].
+		BGFLOAT* D_;
 
-   ///  The use parameter of the dynamic synapse [range=(1e-5,1)].
-   BGFLOAT *U_;
+		///  The use parameter of the dynamic synapse [range=(1e-5,1)].
+		BGFLOAT* U_;
 
-   ///  The time constant of the facilitation of the dynamic synapse [range=(0,10); units=sec].
-   BGFLOAT *F_;
+		///  The time constant of the facilitation of the dynamic synapse [range=(0,10); units=sec].
+		BGFLOAT* F_;
 };
 
 #ifdef __CUDACC__
@@ -247,4 +247,3 @@ struct AllDynamicSTDPSynapsesDeviceProperties : public AllSTDPSynapsesDeviceProp
         BGFLOAT *F_;
 };
 #endif
-

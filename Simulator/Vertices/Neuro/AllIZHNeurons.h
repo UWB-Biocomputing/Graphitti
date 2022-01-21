@@ -71,48 +71,48 @@
  */
 #pragma once
 
-#include "Global.h"
 #include "AllIFNeurons.h"
+#include "Global.h"
 
 struct AllIZHNeuronsDeviceProperties;
 
 // Class to hold all data necessary for all the Neurons.
 class AllIZHNeurons : public AllIFNeurons {
-public:
-   AllIZHNeurons();
+	public:
+		AllIZHNeurons();
 
-   virtual ~AllIZHNeurons();
+		~AllIZHNeurons() override;
 
-   static AllVertices *Create() { return new AllIZHNeurons(); }
+		static AllVertices* Create() { return new AllIZHNeurons(); }
 
-   ///  Setup the internal structure of the class.
-   ///  Allocate memories to store all neurons' state.
-   virtual void setupVertices() override;
+		///  Setup the internal structure of the class.
+		///  Allocate memories to store all neurons' state.
+		void setupVertices() override;
 
-   ///  Prints out all parameters of the neurons to logging file.
-   ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const override;
+		///  Prints out all parameters of the neurons to logging file.
+		///  Registered to OperationManager as Operation::printParameters
+		void printParameters() const override;
 
-   ///  Creates all the Neurons and assigns initial data for them.
-   ///
-   ///  @param  layout      Layout information of the neural network.
-   virtual void createAllVertices(Layout *layout) override;
+		///  Creates all the Neurons and assigns initial data for them.
+		///
+		///  @param  layout      Layout information of the neural network.
+		void createAllVertices(Layout* layout) override;
 
-   ///  Outputs state of the neuron chosen as a string.
-   ///
-   ///  @param  index   index of the neuron (in neurons) to output info from.
-   ///  @return the complete state of the neuron.
-   virtual std::string toString(const int index) const override;
+		///  Outputs state of the neuron chosen as a string.
+		///
+		///  @param  index   index of the neuron (in neurons) to output info from.
+		///  @return the complete state of the neuron.
+		std::string toString(const int index) const override;
 
-   ///  Reads and sets the data for all neurons from input stream.
-   ///
-   ///  @param  input       istream to read from.
-   virtual void deserialize(std::istream &input) override;
+		///  Reads and sets the data for all neurons from input stream.
+		///
+		///  @param  input       istream to read from.
+		void deserialize(std::istream& input) override;
 
-   ///  Writes out the data in all neurons to output stream.
-   ///
-   ///  @param  output      stream to write out to.
-   virtual void serialize(std::ostream &output) const override;
+		///  Writes out the data in all neurons to output stream.
+		///
+		///  @param  output      stream to write out to.
+		void serialize(std::ostream& output) const override;
 
 #ifdef __CUDACC__
    public:
@@ -188,106 +188,106 @@ public:
        ///  @param  allVerticesDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
        void copyDeviceToHost( AllIZHNeuronsDeviceProperties& allVerticesDevice);
 
-#else  // !defined(USE_GPU)
+#else  // !defined(__CUDACC__)
 
-protected:
-   ///  Helper for #advanceNeuron. Updates state of a single neuron.
-   ///
-   ///  @param  index            Index of the neuron to update.
-   virtual void advanceNeuron(const int index);
+	protected:
+		///  Helper for #advanceNeuron. Updates state of a single neuron.
+		///
+		///  @param  index            Index of the neuron to update.
+		void advanceNeuron(const int index) override;
 
-   ///  Initiates a firing of a neuron to connected neurons.
-   ///
-   ///  @param  index            Index of the neuron to fire.
-   virtual void fire(const int index) const;
+		///  Initiates a firing of a neuron to connected neurons.
+		///
+		///  @param  index            Index of the neuron to fire.
+		void fire(const int index) const override;
 
-#endif  // defined(USE_GPU)
+#endif  // defined(__CUDACC__)
 
-protected:
-   ///  Creates a single Neuron and generates data for it.
-   ///
-   ///  @param  neuronIndex Index of the neuron to create.
-   ///  @param  layout       Layout information of the neural network.
-   void createNeuron(int neuronIndex, Layout *layout);
+	protected:
+		///  Creates a single Neuron and generates data for it.
+		///
+		///  @param  neuronIndex Index of the neuron to create.
+		///  @param  layout       Layout information of the neural network.
+		void createNeuron(int neuronIndex, Layout* layout);
 
-   ///  Set the Neuron at the indexed location to default values.
-   ///
-   ///  @param  index    Index of the Neuron that the synapse belongs to.
-   void setNeuronDefaults(const int index);
+		///  Set the Neuron at the indexed location to default values.
+		///
+		///  @param  index    Index of the Neuron that the synapse belongs to.
+		void setNeuronDefaults(const int index);
 
-   ///  Initializes the Neuron constants at the indexed location.
-   ///
-   ///  @param  neuronIndex    Index of the Neuron.
-   ///  @param  deltaT          Inner simulation step duration
-   virtual void initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT) override;
+		///  Initializes the Neuron constants at the indexed location.
+		///
+		///  @param  neuronIndex    Index of the Neuron.
+		///  @param  deltaT          Inner simulation step duration
+		void initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT) override;
 
-   ///  Sets the data for Neuron #index to input's data.
-   ///
-   ///  @param  input       istream to read from.
-   ///  @param  index           index of the neuron (in neurons).
-   void readNeuron(std::istream &input, int index);
+		///  Sets the data for Neuron #index to input's data.
+		///
+		///  @param  input       istream to read from.
+		///  @param  index           index of the neuron (in neurons).
+		void readNeuron(std::istream& input, int index);
 
-   ///  Writes out the data in the selected Neuron.
-   ///
-   ///  @param  output      stream to write out to.
-   ///  @param  index           index of the neuron (in neurons).
-   void writeNeuron(std::ostream &output, int index) const;
+		///  Writes out the data in the selected Neuron.
+		///
+		///  @param  output      stream to write out to.
+		///  @param  index           index of the neuron (in neurons).
+		void writeNeuron(std::ostream& output, int index) const;
 
-public:
-   ///  A constant (0.02, 01) describing the coupling of variable u to Vm.
-   BGFLOAT *Aconst_;
+	public:
+		///  A constant (0.02, 01) describing the coupling of variable u to Vm.
+		BGFLOAT* Aconst_;
 
-   ///  A constant controlling sensitivity of u.
-   BGFLOAT *Bconst_;
+		///  A constant controlling sensitivity of u.
+		BGFLOAT* Bconst_;
 
-   ///  A constant controlling reset of Vm.
-   BGFLOAT *Cconst_;
+		///  A constant controlling reset of Vm.
+		BGFLOAT* Cconst_;
 
-   ///  A constant controlling reset of u.
-   BGFLOAT *Dconst_;
+		///  A constant controlling reset of u.
+		BGFLOAT* Dconst_;
 
-   ///  internal variable.
-   BGFLOAT *u_;
+		///  internal variable.
+		BGFLOAT* u_;
 
-   ///  Internal constant for the exponential Euler integration.
-   BGFLOAT *C3_;
+		///  Internal constant for the exponential Euler integration.
+		BGFLOAT* C3_;
 
-private:
-   ///  Default value of Aconst.
-   static constexpr BGFLOAT DEFAULT_a = 0.0035;
+	private:
+		///  Default value of Aconst.
+		static constexpr BGFLOAT DEFAULT_a = 0.0035;
 
-   ///  Default value of Bconst.
-   static constexpr BGFLOAT DEFAULT_b = 0.2;
+		///  Default value of Bconst.
+		static constexpr BGFLOAT DEFAULT_b = 0.2;
 
-   ///  Default value of Cconst.
-   static constexpr BGFLOAT DEFAULT_c = -50;
+		///  Default value of Cconst.
+		static constexpr BGFLOAT DEFAULT_c = -50;
 
-   ///  Default value of Dconst.
-   static constexpr BGFLOAT DEFAULT_d = 2;
+		///  Default value of Dconst.
+		static constexpr BGFLOAT DEFAULT_d = 2;
 
-   ///  Min/max values of Aconst for excitatory neurons.
-   BGFLOAT excAconst_[2];
+		///  Min/max values of Aconst for excitatory neurons.
+		BGFLOAT excAconst_[2];
 
-   ///  Min/max values of Aconst for inhibitory neurons.
-   BGFLOAT inhAconst_[2];
+		///  Min/max values of Aconst for inhibitory neurons.
+		BGFLOAT inhAconst_[2];
 
-   ///  Min/max values of Bconst for excitatory neurons.
-   BGFLOAT excBconst_[2];
+		///  Min/max values of Bconst for excitatory neurons.
+		BGFLOAT excBconst_[2];
 
-   ///  Min/max values of Bconst for inhibitory neurons.
-   BGFLOAT inhBconst_[2];
+		///  Min/max values of Bconst for inhibitory neurons.
+		BGFLOAT inhBconst_[2];
 
-   ///  Min/max values of Cconst for excitatory neurons.
-   BGFLOAT excCconst_[2];
+		///  Min/max values of Cconst for excitatory neurons.
+		BGFLOAT excCconst_[2];
 
-   ///  Min/max values of Cconst for inhibitory neurons.
-   BGFLOAT inhCconst_[2];
+		///  Min/max values of Cconst for inhibitory neurons.
+		BGFLOAT inhCconst_[2];
 
-   ///  Min/max values of Dconst for excitatory neurons.
-   BGFLOAT excDconst_[2];
+		///  Min/max values of Dconst for excitatory neurons.
+		BGFLOAT excDconst_[2];
 
-   ///  Min/max values of Dconst for inhibitory neurons.
-   BGFLOAT inhDconst_[2];
+		///  Min/max values of Dconst for inhibitory neurons.
+		BGFLOAT inhDconst_[2];
 };
 
 #ifdef __CUDACC__
@@ -311,4 +311,4 @@ struct AllIZHNeuronsDeviceProperties : public AllIFNeuronsDeviceProperties
         ///  Internal constant for the exponential Euler integration.
         BGFLOAT *C3_;
 };
-#endif // defined(USE_GPU)
+#endif // defined(__CUDACC__)

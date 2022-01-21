@@ -11,10 +11,8 @@
 
 #include <iostream>
 
- 
 
-extern "C"
-{
+extern "C" {
 #ifdef _WIN32	//windows portability 
 #include <windows.h>	//includes timeval struct
 /// gettimeofday sets the first parameter struct timeval with the
@@ -54,16 +52,16 @@ static int gettimeofday(struct timeval *tval, struct timeval *alwaysnullptr){
 /// Class that encapsulates timing capability, for performance
 /// measurement. Includes lap timing capability.
 class Timer {
- public:
-  Timer( );                  // Constructor
-  void start( );             // Memorize the current time in startTime
-  long lap( );               // endTime - startTime (in microseconds)
-  long lap(long oldTv_sec, long oldTv_usec); // endTime - oldTime (in microseconds)
-  long getSec( );            // get startTime.tv_sec
-  long getUsec( );           // get startTime.tv_usec
- private:
-  struct timeval startTime;  // Memorize the time to have started an evaluation
-  struct timeval endTime;    // Memorize the time to have stopped an evaluation
+	public:
+		Timer(); // Constructor
+		void start(); // Memorize the current time in startTime
+		long lap(); // endTime - startTime (in microseconds)
+		long lap(long oldTv_sec, long oldTv_usec); // endTime - oldTime (in microseconds)
+		long getSec(); // get startTime.tv_sec
+		long getUsec(); // get startTime.tv_usec
+	private:
+		struct timeval startTime; // Memorize the time to have started an evaluation
+		struct timeval endTime; // Memorize the time to have stopped an evaluation
 };
 
 #endif

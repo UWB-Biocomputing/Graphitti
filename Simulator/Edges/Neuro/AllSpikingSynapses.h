@@ -28,88 +28,86 @@
 
 struct AllSpikingSynapsesDeviceProperties;
 
-using fpPreSynapsesSpikeHit_t =  void (*)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
+using fpPreSynapsesSpikeHit_t = void (*)(const BGSIZE, AllSpikingSynapsesDeviceProperties*);
 
-using fpPostSynapsesSpikeHit_t = void (*)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
+using fpPostSynapsesSpikeHit_t = void (*)(const BGSIZE, AllSpikingSynapsesDeviceProperties*);
 
 class AllSpikingSynapses : public AllNeuroEdges {
-public:
-   AllSpikingSynapses();
+	public:
+		AllSpikingSynapses();
 
-   AllSpikingSynapses(const int numVertices, const int maxEdges);
+		AllSpikingSynapses(const int numVertices, const int maxEdges);
 
-   virtual ~AllSpikingSynapses();
+		~AllSpikingSynapses() override;
 
-   static AllEdges *Create() {
-      return new AllSpikingSynapses();
-   }
+		static AllEdges* Create() { return new AllSpikingSynapses(); }
 
-   ///  Setup the internal structure of the class (allocate memories and initialize them).
-   virtual void setupEdges() override;
+		///  Setup the internal structure of the class (allocate memories and initialize them).
+		void setupEdges() override;
 
-   ///  Reset time varying state vars and recompute decay.
-   ///
-   ///  @param  iEdg     Index of the synapse to set.
-   ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
+		///  Reset time varying state vars and recompute decay.
+		///
+		///  @param  iEdg     Index of the synapse to set.
+		///  @param  deltaT   Inner simulation step duration
+		void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
 
-   /// Load member variables from configuration file. Registered to OperationManager as Operation::op::loadParameters
-   virtual void loadParameters() override;
-   
-   ///  Prints out all parameters to logging file.
-   ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const override;
+		/// Load member variables from configuration file. Registered to OperationManager as Operation::op::loadParameters
+		void loadParameters() override;
 
-   ///  Create a Synapse and connect it to the model.
-   ///
-   ///  @param  iEdg        Index of the synapse to set.
-   ///  @param  srcVertex   Coordinates of the source Neuron.
-   ///  @param  destVertex  Coordinates of the destination Neuron.
-   ///  @param  sumPoint    Summation point address.
-   ///  @param  deltaT      Inner simulation step duration.
-   ///  @param  type        Type of the Synapse to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-                              edgeType type) override;
+		///  Prints out all parameters to logging file.
+		///  Registered to OperationManager as Operation::printParameters
+		void printParameters() const override;
 
-   ///  Check if the back propagation (notify a spike event to the pre neuron)
-   ///  is allowed in the synapse class.
-   ///
-   ///  @return true if the back propagation is allowed.
-   virtual bool allowBackPropagation();
+		///  Create a Synapse and connect it to the model.
+		///
+		///  @param  iEdg        Index of the synapse to set.
+		///  @param  srcVertex   Coordinates of the source Neuron.
+		///  @param  destVertex  Coordinates of the destination Neuron.
+		///  @param  sumPoint    Summation point address.
+		///  @param  deltaT      Inner simulation step duration.
+		///  @param  type        Type of the Synapse to create.
+		void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT,
+		                edgeType type) override;
 
-   ///  Prints SynapsesProps data to console.
-   virtual void printSynapsesProps() const;
+		///  Check if the back propagation (notify a spike event to the pre neuron)
+		///  is allowed in the synapse class.
+		///
+		///  @return true if the back propagation is allowed.
+		virtual bool allowBackPropagation();
 
-protected:
-   ///  Setup the internal structure of the class (allocate memories and initialize them).
-   ///
-   ///  @param  numVertices   Total number of vertices in the network.
-   ///  @param  maxEdges  Maximum number of synapses per neuron.
-   virtual void setupEdges(const int numVertices, const int maxEdges);
+		///  Prints SynapsesProps data to console.
+		void printSynapsesProps() const override;
 
-   ///  Initializes the queues for the Synapse.
-   ///
-   ///  @param  iEdg   index of the synapse to set.
-   virtual void initSpikeQueue(const BGSIZE iEdg);
+	protected:
+		///  Setup the internal structure of the class (allocate memories and initialize them).
+		///
+		///  @param  numVertices   Total number of vertices in the network.
+		///  @param  maxEdges  Maximum number of synapses per neuron.
+		void setupEdges(const int numVertices, const int maxEdges) override;
 
-   ///  Updates the decay if the synapse selected.
-   ///
-   ///  @param  iEdg    Index of the synapse to set.
-   ///  @param  deltaT  Inner simulation step duration
-   ///  @return true is success.
-   bool updateDecay(const BGSIZE iEdg, const BGFLOAT deltaT);
+		///  Initializes the queues for the Synapse.
+		///
+		///  @param  iEdg   index of the synapse to set.
+		virtual void initSpikeQueue(const BGSIZE iEdg);
 
-   ///  Sets the data for Synapse to input's data.
-   ///
-   ///  @param  input  istream to read from.
-   ///  @param  iEdg   Index of the synapse to set.
-   virtual void readEdge(std::istream &input, const BGSIZE iEdg) override;
+		///  Updates the decay if the synapse selected.
+		///
+		///  @param  iEdg    Index of the synapse to set.
+		///  @param  deltaT  Inner simulation step duration
+		///  @return true is success.
+		bool updateDecay(const BGSIZE iEdg, const BGFLOAT deltaT);
 
-   ///  Write the synapse data to the stream.
-   ///
-   ///  @param  output  stream to print out to.
-   ///  @param  iEdg    Index of the synapse to print out.
-   virtual void writeEdge(std::ostream &output, const BGSIZE iEdg) const override;
+		///  Sets the data for Synapse to input's data.
+		///
+		///  @param  input  istream to read from.
+		///  @param  iEdg   Index of the synapse to set.
+		void readEdge(std::istream& input, const BGSIZE iEdg) override;
+
+		///  Write the synapse data to the stream.
+		///
+		///  @param  output  stream to print out to.
+		///  @param  iEdg    Index of the synapse to print out.
+		void writeEdge(std::ostream& output, const BGSIZE iEdg) const override;
 
 #ifdef __CUDACC__
    public:
@@ -218,74 +216,73 @@ protected:
        ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
        void copyDeviceToHost( AllSpikingSynapsesDeviceProperties& allEdgesDevice);
 #else
-public:
-   ///  Advance one specific Synapse.
-   ///
-   ///  @param  iEdg      Index of the Synapse to connect to.
-   ///  @param  neurons   The Neuron list to search from.
-   virtual void advanceEdge(const BGSIZE iEdg, AllVertices *neurons) override;
+	public:
+		///  Advance one specific Synapse.
+		///
+		///  @param  iEdg      Index of the Synapse to connect to.
+		///  @param  neurons   The Neuron list to search from.
+		void advanceEdge(const BGSIZE iEdg, AllVertices* neurons) override;
 
-   ///  Prepares Synapse for a spike hit.
-   ///
-   ///  @param  iEdg   Index of the Synapse to update.
-   virtual void preSpikeHit(const BGSIZE iEdg);
+		///  Prepares Synapse for a spike hit.
+		///
+		///  @param  iEdg   Index of the Synapse to update.
+		virtual void preSpikeHit(const BGSIZE iEdg);
 
-   ///  Prepares Synapse for a spike hit (for back propagation).
-   ///
-   ///  @param  iEdg   Index of the Synapse to update.
-   virtual void postSpikeHit(const BGSIZE iEdg);
+		///  Prepares Synapse for a spike hit (for back propagation).
+		///
+		///  @param  iEdg   Index of the Synapse to update.
+		virtual void postSpikeHit(const BGSIZE iEdg);
 
-protected:
-   ///  Checks if there is an input spike in the queue.
-   ///
-   ///  @param  iEdg   Index of the Synapse to connect to.
-   ///  @return true if there is an input spike event.
-   bool isSpikeQueue(const BGSIZE iEdg);
+	protected:
+		///  Checks if there is an input spike in the queue.
+		///
+		///  @param  iEdg   Index of the Synapse to connect to.
+		///  @return true if there is an input spike event.
+		bool isSpikeQueue(const BGSIZE iEdg);
 
-   ///  Calculate the post synapse response after a spike.
-   ///
-   ///  @param  iEdg        Index of the synapse to set.
-   ///  @param  deltaT      Inner simulation step duration.
-   virtual void changePSR(const BGSIZE iEdg, const BGFLOAT deltaT);
+		///  Calculate the post synapse response after a spike.
+		///
+		///  @param  iEdg        Index of the synapse to set.
+		///  @param  deltaT      Inner simulation step duration.
+		virtual void changePSR(const BGSIZE iEdg, const BGFLOAT deltaT);
 
 #endif
 
-public:
+	public:
+		///  The decay for the psr.
+		BGFLOAT* decay_;
 
-   ///  The decay for the psr.
-   BGFLOAT *decay_;
+		///  The synaptic time constant \f$\tau\f$ [units=sec; range=(0,100)].
+		BGFLOAT* tau_;
 
-   ///  The synaptic time constant \f$\tau\f$ [units=sec; range=(0,100)].
-   BGFLOAT *tau_;
+		BGFLOAT tau_II_;
+		BGFLOAT tau_IE_;
+		BGFLOAT tau_EI_;
+		BGFLOAT tau_EE_;
+		BGFLOAT delay_II_;
+		BGFLOAT delay_IE_;
+		BGFLOAT delay_EI_;
+		BGFLOAT delay_EE_;
 
-   BGFLOAT tau_II_;
-   BGFLOAT tau_IE_;
-   BGFLOAT tau_EI_;
-   BGFLOAT tau_EE_;
-   BGFLOAT delay_II_;
-   BGFLOAT delay_IE_;
-   BGFLOAT delay_EI_;
-   BGFLOAT delay_EE_;
-   
 #define BYTES_OF_DELAYQUEUE         ( sizeof(uint32_t) / sizeof(uint8_t) )
 #define LENGTH_OF_DELAYQUEUE        ( BYTES_OF_DELAYQUEUE * 8 )
 
-   ///  The synaptic transmission delay, descretized into time steps.
-   int *totalDelay_;
+		///  The synaptic transmission delay, descretized into time steps.
+		int* totalDelay_;
 
-   ///  Pointer to the delayed queue.
-   uint32_t *delayQueue_;
+		///  Pointer to the delayed queue.
+		uint32_t* delayQueue_;
 
-   ///  The index indicating the current time slot in the delayed queue
-   ///  Note: This variable is used in GpuSim_struct.cu but I am not sure
-   ///  if it is actually from a synapse. Will need a little help here. -Aaron
-   ///  Note: This variable can be GLOBAL VARIABLE, but need to modify the code.
-   int *delayIndex_;
+		///  The index indicating the current time slot in the delayed queue
+		///  Note: This variable is used in GpuSim_struct.cu but I am not sure
+		///  if it is actually from a synapse. Will need a little help here. -Aaron
+		///  Note: This variable can be GLOBAL VARIABLE, but need to modify the code.
+		int* delayIndex_;
 
-   ///  Length of the delayed queue.
-   int *delayQueueLength_;
+		///  Length of the delayed queue.
+		int* delayQueueLength_;
 
-protected:
+	protected:
 };
 
 #ifdef __CUDACC__
@@ -313,4 +310,3 @@ struct AllSpikingSynapsesDeviceProperties : public AllEdgesDeviceProperties
         int *delayQueueLength_;
 };
 #endif
-

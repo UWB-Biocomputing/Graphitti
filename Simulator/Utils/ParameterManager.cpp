@@ -26,10 +26,10 @@
 #include "ParameterManager.h"
 #include <iostream>
 #include <regex>
-#include <string>
 #include <stdexcept>
-#include <tinyxml.h>
+#include <string>
 #include <tinystr.h>
+#include <tinyxml.h>
 #include <vector>
 
 #include "BGTypes.h"
@@ -118,7 +118,7 @@ bool ParameterManager::getStringByXpath(std::string xpath, std::string& referenc
 bool ParameterManager::getIntByXpath(std::string xpath, int& referenceVar) {
 	if (!checkDocumentStatus()) return false;
 	std::string tmp;
-	if (!getStringByXpath(xpath, tmp)) { return false; }
+	if (!getStringByXpath(xpath, tmp)) return false;
 	// Workaround for standard value conversion functions.
 	// stoi() will cast floats to ints.
 	if (regex_match(tmp, std::regex("\\d+[.]\\d+(e[+-]?\\d+)?f?|\\d+[.]?\\d+(e[+-]?\\d+)?f"))) {
@@ -156,7 +156,7 @@ bool ParameterManager::getIntByXpath(std::string xpath, int& referenceVar) {
 bool ParameterManager::getDoubleByXpath(std::string xpath, double& referenceVar) {
 	if (!checkDocumentStatus()) return false;
 	std::string tmp;
-	if (!getStringByXpath(xpath, tmp)) { return false; }
+	if (!getStringByXpath(xpath, tmp)) return false;
 	if (regex_match(tmp, std::regex(".*[^\\def.+-]+.*"))) {
 		std::cerr << "Parsed parameter is likely a std::string. "
 			<< "Terminating double conversion. Value: "
@@ -186,7 +186,7 @@ bool ParameterManager::getDoubleByXpath(std::string xpath, double& referenceVar)
 bool ParameterManager::getFloatByXpath(std::string xpath, float& referenceVariable) {
 	if (!checkDocumentStatus()) return false;
 	std::string tmp;
-	if (!getStringByXpath(xpath, tmp)) { return false; }
+	if (!getStringByXpath(xpath, tmp)) return false;
 	if (regex_match(tmp, std::regex(".*[^\\def.+-]+.*"))) {
 		std::cerr << "Parsed parameter is likely a std::string. "
 			<< "Terminating double conversion. Value: "
@@ -240,7 +240,7 @@ bool ParameterManager::getBGFloatByXpath(std::string xpath, BGFLOAT& referenceVa
 bool ParameterManager::getLongByXpath(std::string xpath, long& referenceVar) {
 	if (!checkDocumentStatus()) return false;
 	std::string tmp;
-	if (!getStringByXpath(xpath, tmp)) { return false; }
+	if (!getStringByXpath(xpath, tmp)) return false;
 	if (!regex_match(tmp, std::regex("[\\d]+l?"))) {
 		std::cerr << "Parsed parameter is not a valid long format. "
 			<< "Terminating long conversion. Value: "

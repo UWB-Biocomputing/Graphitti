@@ -174,7 +174,7 @@ void AllDSSynapses::copyDeviceToHost( AllDSSynapsesDeviceProperties& allEdgesDev
         HANDLE_ERROR( cudaMemcpy ( F_, allEdgesDeviceProps.F_,
                 maxTotalSynapses * sizeof( BGFLOAT ), cudaMemcpyDeviceToHost ) );
 }
-    
+
 ///  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
 ///  The class ID will be set to classSynapses_d in device memory,
 ///  and the classSynapses_d will be referred to call a device function for the

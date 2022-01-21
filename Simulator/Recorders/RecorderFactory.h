@@ -29,8 +29,8 @@ class RecorderFactory {
 		std::shared_ptr<IRecorder> createRecorder(const std::string& className);
 
 		/// Delete these methods because they can cause copy instances of the singleton when using threads.
-		RecorderFactory(RecorderFactory const&) = delete;
-		void operator=(RecorderFactory const&) = delete;
+		RecorderFactory(const RecorderFactory&) = delete;
+		void operator=(const RecorderFactory&) = delete;
 
 	private:
 		/// Constructor is private to keep a singleton instance of this class.

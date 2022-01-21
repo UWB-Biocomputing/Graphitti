@@ -25,13 +25,14 @@
  */
 
 #pragma once
+#include <cstdint>
 
 #define SINGLEPRECISION
 #define BGFLOAT float
 //#define DOUBLEPRECISION
 //#define BGFLOAT double
 
-using PBGFloat =  BGFLOAT *;
+using PBGFloat = BGFLOAT*;
 
 // TIMEFLOAT is used by the GPU code and needs to be a double
 #define TIMEFLOAT double
@@ -46,5 +47,3 @@ using PBGFloat =  BGFLOAT *;
 // The type for using array indexes (issue #142).
 #define BGSIZE uint32_t
 //#define BGSIZE uint64_t
-
-

@@ -241,7 +241,7 @@ void AllSTDPSynapses::advanceEdges( void* allEdgesDevice, void* allVerticesDevic
     advanceSTDPSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( totalEdgeCount_, (EdgeIndexMap*) edgeIndexMapDevice, g_simulationStep, Simulator::getInstance().getDeltaT(), 
                                 (AllSTDPSynapsesDeviceProperties*)allEdgesDevice, (AllSpikingNeuronsDeviceProperties*)allVerticesDevice, maxSpikes );
 }
-    
+
 ///  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
 ///  The class ID will be set to classSynapses_d in device memory,
 ///  and the classSynapses_d will be referred to call a device function for the

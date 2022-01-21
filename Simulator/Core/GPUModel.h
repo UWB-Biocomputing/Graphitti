@@ -70,84 +70,83 @@ inline void cudaLapTime(double& t_event) {
 class AllSpikingSynapses;
 
 class GPUModel : public Model {
-   friend class GpuSInputPoisson;
+	friend class GpuSInputPoisson;
 
-public:
-   GPUModel();
+	public:
+		GPUModel();
 
-   virtual ~GPUModel();
+		~GPUModel() override;
 
-   /// Set up model state, if anym for a specific simulation run.
-   virtual void setupSim() override;
+		/// Set up model state, if anym for a specific simulation run.
+		void setupSim() override;
 
-   /// Performs any finalization tasks on network following a simulation.
-   virtual void finish() override;
+		/// Performs any finalization tasks on network following a simulation.
+		void finish() override;
 
-   /// Advances network state one simulation step.
-   virtual void advance() override;
+		/// Advances network state one simulation step.
+		void advance() override;
 
-   /// Modifies connections between neurons based on current state of the network and behavior
-   /// over the past epoch. Should be called once every epoch.
-   virtual void updateConnections() override;
+		/// Modifies connections between neurons based on current state of the network and behavior
+		/// over the past epoch. Should be called once every epoch.
+		void updateConnections() override;
 
-   /// Copy GPU Synapse data to CPU.
-   virtual void copyGPUtoCPU() override;
+		/// Copy GPU Synapse data to CPU.
+		void copyGPUtoCPU() override;
 
-   /// Copy CPU Synapse data to GPU.
-   virtual void copyCPUtoGPU() override;
+		/// Copy CPU Synapse data to GPU.
+		void copyCPUtoGPU() override;
 
-   /// Print out SynapseProps on the GPU.
-   void printGPUSynapsesPropsModel() const;
+		/// Print out SynapseProps on the GPU.
+		void printGPUSynapsesPropsModel() const;
 
-protected:
-   /// Allocates  and initializes memories on CUDA device.
-   /// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
-   /// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
-   void allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice);
+	protected:
+		/// Allocates  and initializes memories on CUDA device.
+		/// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
+		/// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
+		void allocDeviceStruct(void** allVerticesDevice, void** allEdgesDevice);
 
-   /// Copies device memories to host memories and deallocates them.
-   /// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
-   /// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
-   virtual void deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevice);
+		/// Copies device memories to host memories and deallocates them.
+		/// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
+		/// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
+		virtual void deleteDeviceStruct(void** allVerticesDevice, void** allEdgesDevice);
 
-   /// Add psr of all incoming synapses to summation points.
-   virtual void calcSummationMap();
+		/// Add psr of all incoming synapses to summation points.
+		virtual void calcSummationMap();
 
-   /// Pointer to device random noise array.
-   float *randNoise_d;
+		/// Pointer to device random noise array.
+		float* randNoise_d;
 
-   /// Pointer to synapse index map in device memory.
-   EdgeIndexMap *synapseIndexMapDevice_;
+		/// Pointer to synapse index map in device memory.
+		EdgeIndexMap* synapseIndexMapDevice_;
 
-   /// Synapse structures in device memory.
-   AllSpikingSynapsesDeviceProperties *allEdgesDevice_;
+		/// Synapse structures in device memory.
+		AllSpikingSynapsesDeviceProperties* allEdgesDevice_;
 
-   /// Neuron structure in device memory.
-   AllSpikingNeuronsDeviceProperties *allVerticesDevice_;
+		/// Neuron structure in device memory.
+		AllSpikingNeuronsDeviceProperties* allVerticesDevice_;
 
-private:
-   void allocSynapseImap(int count);
+	private:
+		void allocSynapseImap(int count);
 
-   void deleteSynapseImap();
+		void deleteSynapseImap();
 
-public: //2020/03/14 changed to public for accessing in Driver
+	public: //2020/03/14 changed to public for accessing in Driver
 
-   void copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices);
+		void copySynapseIndexMapHostToDevice(EdgeIndexMap& synapseIndexMapHost, int numVertices);
 
-private:
+	private:
+		void updateHistory() override;
 
-   void updateHistory();
+		// TODO
+		void eraseEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex);
 
-   // TODO
-   void eraseEdge(AllEdges &synapses, const int neuronIndex, const int synapseIndex);
+		// TODO
+		void addEdge(AllEdges& synapses, edgeType type, const int srcVertex, const int destVertex,
+		             Coordinate& source, Coordinate& dest, BGFLOAT* sumPoint, BGFLOAT deltaT);
 
-   // TODO
-   void addEdge(AllEdges &synapses, edgeType type, const int srcVertex, const int destVertex,
-                   Coordinate &source, Coordinate &dest, BGFLOAT *sumPoint, BGFLOAT deltaT);
-
-   // TODO
-   void createEdge(AllEdges &synapses, const int neuronIndex, const int synapseIndex,
-                      Coordinate source, Coordinate dest, BGFLOAT *sp, BGFLOAT deltaT, edgeType type);
+		// TODO
+		void createEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex,
+		                Coordinate source, Coordinate dest, BGFLOAT* sp, BGFLOAT deltaT, edgeType type);
 };
 
 #if defined(__CUDACC__)

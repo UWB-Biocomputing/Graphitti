@@ -9,106 +9,95 @@
 #include "Layout911.h"
 #include "ParameterManager.h"
 
-Layout911::Layout911() {
+Layout911::Layout911() {}
 
-}
-
-Layout911::~Layout911() {
-
-}
+Layout911::~Layout911() {}
 
 void Layout911::loadParameters() {
-    // Get the file paths for the vertex lists from the configuration file
-   std::string callerFilePath;
-   std::string psapFilePath;
-   std::string responderFilePath;
-   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/callersListFileName/text()",
-                                                         callerFilePath)) {
-      throw std::runtime_error("In Layout::loadParameters() caller "
-                          "vertex list file path wasn't found and will not be initialized");
-   }
-   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/PSAPsListFileName/text()",
-                                                         psapFilePath)) {
-      throw std::runtime_error("In Layout::loadParameters() psap "
-                          "vertex list file path wasn't found and will not be initialized");
-   }
-   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/respondersListFileName/text()",
-                                                         responderFilePath)) {
-      throw std::runtime_error("In Layout::loadParameters() responder"
-                          "vertex list file path wasn't found and will not be initialized");
-   }
+	// Get the file paths for the vertex lists from the configuration file
+	std::string callerFilePath;
+	std::string psapFilePath;
+	std::string responderFilePath;
+	if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/callersListFileName/text()",
+	                                                      callerFilePath)) {
+		throw std::runtime_error("In Layout::loadParameters() caller "
+			"vertex list file path wasn't found and will not be initialized");
+	}
+	if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/PSAPsListFileName/text()",
+	                                                      psapFilePath)) {
+		throw std::runtime_error("In Layout::loadParameters() psap "
+			"vertex list file path wasn't found and will not be initialized");
+	}
+	if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/respondersListFileName/text()",
+	                                                      responderFilePath)) {
+		throw std::runtime_error("In Layout::loadParameters() responder"
+			"vertex list file path wasn't found and will not be initialized");
+	}
 
-   // Initialize Vertex Lists based on the data read from the xml files
-   if (!ParameterManager::getInstance().getIntVectorByXpath(callerFilePath, "C", callerVertexList_)) {
-      throw std::runtime_error("In Layout::loadParameters() "
-                          "caller vertex list list file wasn't loaded correctly"
-                          "\n\tfile path: " + callerFilePath);
-   }
-   numCallerVertices_ = callerVertexList_.size();
-   if (!ParameterManager::getInstance().getIntVectorByXpath(psapFilePath, "P", psapVertexList_)) {
-      throw std::runtime_error("In Layout::loadParameters() "
-                          "psap vertex list file wasn't loaded correctly."
-                          "\n\tfile path: " + psapFilePath);
-   }
-   if (!ParameterManager::getInstance().getIntVectorByXpath(responderFilePath, "R", responderVertexList_)) {
-      throw std::runtime_error("In Layout::loadParameters() "
-                          "responder vertex list file wasn't loaded correctly."
-                          "\n\tfile path: " + responderFilePath);
-   }
+	// Initialize Vertex Lists based on the data read from the xml files
+	if (!ParameterManager::getInstance().getIntVectorByXpath(callerFilePath, "C", callerVertexList_)) {
+		throw std::runtime_error("In Layout::loadParameters() "
+			"caller vertex list list file wasn't loaded correctly"
+			"\n\tfile path: " + callerFilePath);
+	}
+	numCallerVertices_ = callerVertexList_.size();
+	if (!ParameterManager::getInstance().getIntVectorByXpath(psapFilePath, "P", psapVertexList_)) {
+		throw std::runtime_error("In Layout::loadParameters() "
+			"psap vertex list file wasn't loaded correctly."
+			"\n\tfile path: " + psapFilePath);
+	}
+	if (!ParameterManager::getInstance().getIntVectorByXpath(responderFilePath, "R", responderVertexList_)) {
+		throw std::runtime_error("In Layout::loadParameters() "
+			"responder vertex list file wasn't loaded correctly."
+			"\n\tfile path: " + responderFilePath);
+	}
 }
 
-void Layout911::printParameters() const {
-
-}
+void Layout911::printParameters() const {}
 
 /// Creates a vertex type map.
 /// @param  numVertices number of the vertices to have in the type map.
 void Layout911::generateVertexTypeMap(int numVertices) {
-   DEBUG(std::cout << "\nInitializing vertex type map" << std::endl;);
+	DEBUG(std::cout << "\nInitializing vertex type map" << std::endl;);
 
-   // Populate vertexTypeMap_ with base layer of CALR
-   std::fill_n(vertexTypeMap_, numVertices, CALR);
+	// Populate vertexTypeMap_ with base layer of CALR
+	std::fill_n(vertexTypeMap_, numVertices, CALR);
 
-   // for (int i = 0; i < numVertices; i++) {
-   //    vertexTypeMap_[i] = CALR;
-   // }
+	// for (int i = 0; i < numVertices; i++) {
+	//    vertexTypeMap_[i] = CALR;
+	// }
 
-   int numPSAPs = psapVertexList_.size();
-   int numResps = responderVertexList_.size();
-   int numCalrs = numVertices - numPSAPs - numResps;
+	int numPSAPs = psapVertexList_.size();
+	int numResps = responderVertexList_.size();
+	int numCalrs = numVertices - numPSAPs - numResps;
 
-   LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP" << std::endl
-   << "\tTotal vertices: " << numVertices << std::endl
-   << "\tCaller vertices: " << numCalrs << std::endl
-   << "\tPSAP vertices: " << numPSAPs << std::endl
-   << "\tResponder vertices: " << numResps << std::endl);
+	LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP" << std::endl
+	                << "\tTotal vertices: " << numVertices << std::endl
+	                << "\tCaller vertices: " << numCalrs << std::endl
+	                << "\tPSAP vertices: " << numPSAPs << std::endl
+	                << "\tResponder vertices: " << numResps << std::endl);
 
-   // Insert PSAPs
-   for (int i = 0; i < numPSAPs; i++) {
-      assert(psapVertexList_.at(i) < numVertices);
-      vertexTypeMap_[psapVertexList_.at(i)] = PSAP;
-   }
+	// Insert PSAPs
+	for (int i = 0; i < numPSAPs; i++) {
+		assert(psapVertexList_.at(i) < numVertices);
+		vertexTypeMap_[psapVertexList_.at(i)] = PSAP;
+	}
 
-   // Insert Responders
-   for (int i = 0; i < responderVertexList_.size(); i++) {
-      assert(responderVertexList_.at(i) < numVertices);
-      vertexTypeMap_[responderVertexList_.at(i)] = RESP;
-   }
+	// Insert Responders
+	for (int i = 0; i < responderVertexList_.size(); i++) {
+		assert(responderVertexList_.at(i) < numVertices);
+		vertexTypeMap_[responderVertexList_.at(i)] = RESP;
+	}
 
-   LOG4CPLUS_INFO(fileLogger_, "Finished initializing vertex type map");
+	LOG4CPLUS_INFO(fileLogger_, "Finished initializing vertex type map");
 }
 
-void Layout911::initStarterMap(const int numVertices) {
-   Layout::initStarterMap(numVertices);
-}
+void Layout911::initStarterMap(const int numVertices) { Layout::initStarterMap(numVertices); }
 
 // Get the zone of the vertex
 // Only built for 10x10 grid
 // See: https://docs.google.com/spreadsheets/d/1DqP8sjkfJ_pkxtETzuEdoVZbWOGu633EMQAeShe5k68/edit?usp=sharing
-int Layout911::zone(int index) {
-   
-    return (index%10 >= 5) + 2*(index < 50);
-}
+int Layout911::zone(int index) { return (index % 10 >= 5) + 2 * (index < 50); }
 
 ///  Returns the type of synapse at the given coordinates
 ///
@@ -116,14 +105,10 @@ int Layout911::zone(int index) {
 ///  @param    destVertex integer that points to a Neuron in the type map as a destination.
 ///  @return type of the synapse.
 edgeType Layout911::edgType(const int srcVertex, const int destVertex) {
-   if (vertexTypeMap_[srcVertex] == CALR && vertexTypeMap_[destVertex] == PSAP)
-      return CP;
-   else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == RESP)
-      return PR;
-   else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == CALR)
-      return RC;
-   else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == PSAP)
-      return PP;
+	if (vertexTypeMap_[srcVertex] == CALR && vertexTypeMap_[destVertex] == PSAP) return CP;
+	else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == RESP) return PR;
+	else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == CALR) return RC;
+	else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == PSAP) return PP;
 
-   return ETYPE_UNDEF;
+	return ETYPE_UNDEF;
 }

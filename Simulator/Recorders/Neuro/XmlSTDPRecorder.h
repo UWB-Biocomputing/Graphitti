@@ -34,60 +34,59 @@
 
 #include <fstream>
 
-#include "XmlRecorder.h"
 #include "Model.h"
+#include "XmlRecorder.h"
 
 class XmlSTDPRecorder : public XmlRecorder {
-public:
-   //! THe constructor and destructor
-   XmlSTDPRecorder();
+	public:
+		//! THe constructor and destructor
+		XmlSTDPRecorder();
 
-   ~XmlSTDPRecorder();
+		~XmlSTDPRecorder() override;
 
-   static IRecorder* Create() { return new XmlSTDPRecorder(); }
+		static IRecorder* Create() { return new XmlSTDPRecorder(); }
 
-   /**
-    * Init radii and rates history matrices with default values
-    */
-   virtual void initDefaultValues();
+		/**
+		 * Init radii and rates history matrices with default values
+		 */
+		void initDefaultValues() override;
 
-   /**
-    * Init radii and rates history matrices with current radii and rates
-    */
-   virtual void initValues();
+		/**
+		 * Init radii and rates history matrices with current radii and rates
+		 */
+		void initValues() override;
 
-   /**
-    * Get the current radii and rates vlaues
-    */
-   virtual void getValues();
+		/**
+		 * Get the current radii and rates vlaues
+		 */
+		void getValues() override;
 
-   /**
-    * Compile history information in every epoch
-    *
-    * @param[in] neurons   The entire list of neurons.
-    */
-   virtual void compileHistories(AllVertices &neurons);
+		/**
+		 * Compile history information in every epoch
+		 *
+		 * @param[in] neurons   The entire list of neurons.
+		 */
+		void compileHistories(AllVertices& neurons) override;
 
-   /**
-    * Writes simulation results to an output destination.
-    *
-    * @param  neurons the Neuron list to search from.
-    **/
-   virtual void saveSimData(const AllVertices &neurons);
+		/**
+		 * Writes simulation results to an output destination.
+		 *
+		 * @param  neurons the Neuron list to search from.
+		 **/
+		void saveSimData(const AllVertices& neurons) override;
 
-   /**
-    *  Prints out all parameters to logging file.
-    *  Registered to OperationManager as Operation::printParameters
-    */
-   virtual void printParameters();
+		/**
+		 *  Prints out all parameters to logging file.
+		 *  Registered to OperationManager as Operation::printParameters
+		 */
+		void printParameters() override;
 
-   virtual std::string toXML(std::string name,std::vector<std::vector<BGFLOAT>> MatrixToWrite ) const;
-   virtual std::string toXML(std::string name,std::vector<std::vector<int>> MatrixToWrite) const;
+		virtual std::string toXML(std::string name, std::vector<std::vector<BGFLOAT>> MatrixToWrite) const;
+		virtual std::string toXML(std::string name, std::vector<std::vector<int>> MatrixToWrite) const;
 
-protected:
-   std::vector<std::vector<BGFLOAT>> weightsHistory_;
-   std::vector<std::vector<int>> sourceNeuronIndexHistory_;
-   std::vector<std::vector<int>>  destNeuronIndexHistory_;
+	protected:
+		std::vector<std::vector<BGFLOAT>> weightsHistory_;
+		std::vector<std::vector<int>> sourceNeuronIndexHistory_;
+		std::vector<std::vector<int>> destNeuronIndexHistory_;
 
 };
-

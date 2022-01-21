@@ -25,96 +25,94 @@
 
 #pragma once
 
-#include "Global.h"
-#include "Connections.h"
-#include "Simulator.h"
-#include <vector>
 #include <iostream>
+#include <vector>
+#include "Connections.h"
+#include "Global.h"
+#include "Simulator.h"
 // cereal
 #include <cereal/types/vector.hpp>
 
 class ConnStatic : public Connections {
-public:
-   ConnStatic();
+	public:
+		ConnStatic();
 
-   virtual ~ConnStatic();
+		~ConnStatic() override;
 
-   static Connections *Create() { return new ConnStatic(); }
+		static Connections* Create() { return new ConnStatic(); }
 
-   ///  Setup the internal structure of the class (allocate memories and initialize them).
-   ///  Initialize the small world network characterized by parameters:
-   ///  number of maximum connections per vertex, connection radius threshold, and
-   ///  small-world rewiring probability.
-   ///
-   ///  @param  layout    Layout information of the neural network.
-   ///  @param  vertices   The Neuron list to search from.
-   ///  @param  edges  The Synapse list to search from.
-   virtual void setupConnections(Layout *layout, AllVertices *vertices, AllEdges *edges) override;
+		///  Setup the internal structure of the class (allocate memories and initialize them).
+		///  Initialize the small world network characterized by parameters:
+		///  number of maximum connections per vertex, connection radius threshold, and
+		///  small-world rewiring probability.
+		///
+		///  @param  layout    Layout information of the neural network.
+		///  @param  vertices   The Neuron list to search from.
+		///  @param  edges  The Synapse list to search from.
+		void setupConnections(Layout* layout, AllVertices* vertices, AllEdges* edges) override;
 
-   /// Load member variables from configuration file.
-   /// Registered to OperationManager as Operations::op::loadParameters
-   virtual void loadParameters() override;
+		/// Load member variables from configuration file.
+		/// Registered to OperationManager as Operations::op::loadParameters
+		void loadParameters() override;
 
-   ///  Prints out all parameters to logging file.
-   ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const override;
+		///  Prints out all parameters to logging file.
+		///  Registered to OperationManager as Operation::printParameters
+		void printParameters() const override;
 
-   ///  Get connection radius threshold
-   BGFLOAT getConnsRadiusThresh() const { return threshConnsRadius_; }
+		///  Get connection radius threshold
+		BGFLOAT getConnsRadiusThresh() const { return threshConnsRadius_; }
 
-   /// Get array of vertex weights
-   BGFLOAT* getWCurrentEpoch() const { return WCurrentEpoch_; }
+		/// Get array of vertex weights
+		BGFLOAT* getWCurrentEpoch() const { return WCurrentEpoch_; }
 
-   /// Get all edge source vertex indices
-   int* getSourceVertexIndexCurrentEpoch() const { return sourceVertexIndexCurrentEpoch_; }
+		/// Get all edge source vertex indices
+		int* getSourceVertexIndexCurrentEpoch() const { return sourceVertexIndexCurrentEpoch_; }
 
-      /// Get all edge destination vertex indices
-   int* getDestVertexIndexCurrentEpoch() const { return destVertexIndexCurrentEpoch_; }
+		/// Get all edge destination vertex indices
+		int* getDestVertexIndexCurrentEpoch() const { return destVertexIndexCurrentEpoch_; }
 
-  ///  Cereal serialization method
-  ///  (Serializes radii)
-   template<class Archive>
-   void save(Archive &archive) const;
-   
-   ///  Cereal deserialization method
-   ///  (Deserializes radii)
-   template<class Archive>
-   void load(Archive &archive);
-   
-private:
-   /// Indices of the source vertex for each edge
-   int *sourceVertexIndexCurrentEpoch_;
-   
-    /// Indices of the destination vertex for each edge
-   int *destVertexIndexCurrentEpoch_;
-   
-    /// The weight (scaling factor, strength, maximal amplitude) of each vertex for the current epoch.
-   BGFLOAT *WCurrentEpoch_;
-   
-   /// radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
-   int radiiSize_;
+		///  Cereal serialization method
+		///  (Serializes radii)
+		template <class Archive>
+		void save(Archive& archive) const;
 
-   /// number of maximum connections per vertex
-   int connsPerVertex_;
+		///  Cereal deserialization method
+		///  (Deserializes radii)
+		template <class Archive>
+		void load(Archive& archive);
 
-   /// Connection radius threshold
-   BGFLOAT threshConnsRadius_;
+	private:
+		/// Indices of the source vertex for each edge
+		int* sourceVertexIndexCurrentEpoch_;
 
-   /// Small-world rewiring probability
-   BGFLOAT rewiringProbability_;
+		/// Indices of the destination vertex for each edge
+		int* destVertexIndexCurrentEpoch_;
 
-   /// Min/max values of excitatory neuron's synapse weight
-   BGFLOAT excWeight_[2];
+		/// The weight (scaling factor, strength, maximal amplitude) of each vertex for the current epoch.
+		BGFLOAT* WCurrentEpoch_;
 
-   /// Min/max values of inhibitory neuron's synapse weight
-   BGFLOAT inhWeight_[2];
+		/// radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
+		int radiiSize_;
 
-   struct DistDestVertex {
-      BGFLOAT dist;     ///< destance to the destination vertex
-      int destVertex;  ///< index of the destination vertex
+		/// number of maximum connections per vertex
+		int connsPerVertex_;
 
-      bool operator<(const DistDestVertex &other) const {
-         return (dist < other.dist);
-      }
-   };
+		/// Connection radius threshold
+		BGFLOAT threshConnsRadius_;
+
+		/// Small-world rewiring probability
+		BGFLOAT rewiringProbability_;
+
+		/// Min/max values of excitatory neuron's synapse weight
+		BGFLOAT excWeight_[2];
+
+		/// Min/max values of inhibitory neuron's synapse weight
+		BGFLOAT inhWeight_[2];
+
+		struct DistDestVertex {
+			BGFLOAT dist; ///< destance to the destination vertex
+			int destVertex; ///< index of the destination vertex
+
+			bool operator<(const DistDestVertex& other) const { return (dist < other.dist); }
+		};
 };

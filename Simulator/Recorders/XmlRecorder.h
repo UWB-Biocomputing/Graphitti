@@ -21,55 +21,54 @@
 #include "Model.h"
 
 class XmlRecorder : public IRecorder {
-public:
-   /// constructor
-   XmlRecorder();
+	public:
+		/// constructor
+		XmlRecorder();
 
-   /// destructor
-   ~XmlRecorder();
-   
-   static IRecorder* Create() { return new XmlRecorder(); }
+		/// destructor
+		~XmlRecorder() override;
 
-   /// Initialize data
-   /// Create a new xml file.
-   virtual void init() override;
+		static IRecorder* Create() { return new XmlRecorder(); }
 
-   /// Init radii and rates history matrices with default values
-   virtual void initDefaultValues() override;
+		/// Initialize data
+		/// Create a new xml file.
+		void init() override;
 
-   /// Init radii and rates history matrices with current radii and rates
-   virtual void initValues() override;
+		/// Init radii and rates history matrices with default values
+		void initDefaultValues() override;
 
-   /// Get the current radii and rates vlaues
-   virtual void getValues() override;
+		/// Init radii and rates history matrices with current radii and rates
+		void initValues() override;
 
-   /// Terminate process
-   virtual void term() override;
+		/// Get the current radii and rates vlaues
+		void getValues() override;
 
-   /// Compile history information in every epoch
-   /// @param[in] vertices   The entire list of vertices.
-   virtual void compileHistories(AllVertices &vertices) override;
+		/// Terminate process
+		void term() override;
 
-   /// Writes simulation results to an output destination.
-   /// @param  vertices the Vertex list to search from.
-   virtual void saveSimData(const AllVertices &vertices) override;
+		/// Compile history information in every epoch
+		/// @param[in] vertices   The entire list of vertices.
+		void compileHistories(AllVertices& vertices) override;
 
-   ///  Prints out all parameters to logging file.
-   ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() override;
+		/// Writes simulation results to an output destination.
+		/// @param  vertices the Vertex list to search from.
+		void saveSimData(const AllVertices& vertices) override;
 
-protected:
-   // a file stream for xml output
-   std::ofstream resultOut_;
-   
-   // burstiness Histogram goes through the
-   VectorMatrix burstinessHist_;
-   
-   // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
-   VectorMatrix spikesHistory_;
+		///  Prints out all parameters to logging file.
+		///  Registered to OperationManager as Operation::printParameters
+		void printParameters() override;
 
-   // TODO: There seems to be multiple copies of this in different classes...
-   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
+	protected:
+		// a file stream for xml output
+		std::ofstream resultOut_;
+
+		// burstiness Histogram goes through the
+		VectorMatrix burstinessHist_;
+
+		// spikes history - history of accumulated spikes count of all neurons (10 ms bin)
+		VectorMatrix spikesHistory_;
+
+		// TODO: There seems to be multiple copies of this in different classes...
+		void getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap);
 
 };
-

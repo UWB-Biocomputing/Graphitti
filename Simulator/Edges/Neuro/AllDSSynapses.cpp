@@ -9,42 +9,40 @@
 #include "AllDSSynapses.h"
 
 AllDSSynapses::AllDSSynapses() : AllSpikingSynapses() {
-   lastSpike_ = nullptr;
-   r_ = nullptr;
-   u_ = nullptr;
-   D_ = nullptr;
-   U_ = nullptr;
-   F_ = nullptr;
+	lastSpike_ = nullptr;
+	r_ = nullptr;
+	u_ = nullptr;
+	D_ = nullptr;
+	U_ = nullptr;
+	F_ = nullptr;
 }
 
 AllDSSynapses::AllDSSynapses(const int numVertices, const int maxEdges) :
-      AllSpikingSynapses(numVertices, maxEdges) {
-   setupEdges(numVertices, maxEdges);
-}
+	AllSpikingSynapses(numVertices, maxEdges) { setupEdges(numVertices, maxEdges); }
 
 AllDSSynapses::~AllDSSynapses() {
-   BGSIZE maxTotalSynapses = maxEdgesPerVertex_ * countVertices_;
+	BGSIZE maxTotalSynapses = maxEdgesPerVertex_ * countVertices_;
 
-   if (maxTotalSynapses != 0) {
-      delete[] lastSpike_;
-      delete[] r_;
-      delete[] u_;
-      delete[] D_;
-      delete[] U_;
-      delete[] F_;
-   }
+	if (maxTotalSynapses != 0) {
+		delete[] lastSpike_;
+		delete[] r_;
+		delete[] u_;
+		delete[] D_;
+		delete[] U_;
+		delete[] F_;
+	}
 
-   lastSpike_ = nullptr;
-   r_ = nullptr;
-   u_ = nullptr;
-   D_ = nullptr;
-   U_ = nullptr;
-   F_ = nullptr;
+	lastSpike_ = nullptr;
+	r_ = nullptr;
+	u_ = nullptr;
+	D_ = nullptr;
+	U_ = nullptr;
+	F_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 void AllDSSynapses::setupEdges() {
-   setupEdges(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxEdgesPerVertex());
+	setupEdges(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxEdgesPerVertex());
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -52,64 +50,64 @@ void AllDSSynapses::setupEdges() {
 ///  @param  numVertices   Total number of vertices in the network.
 ///  @param  maxEdges  Maximum number of synapses per neuron.
 void AllDSSynapses::setupEdges(const int numVertices, const int maxEdges) {
-   AllSpikingSynapses::setupEdges(numVertices, maxEdges);
+	AllSpikingSynapses::setupEdges(numVertices, maxEdges);
 
-   BGSIZE maxTotalSynapses = maxEdges * numVertices;
+	BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
-   if (maxTotalSynapses != 0) {
-      lastSpike_ = new uint64_t[maxTotalSynapses];
-      r_ = new BGFLOAT[maxTotalSynapses];
-      u_ = new BGFLOAT[maxTotalSynapses];
-      D_ = new BGFLOAT[maxTotalSynapses];
-      U_ = new BGFLOAT[maxTotalSynapses];
-      F_ = new BGFLOAT[maxTotalSynapses];
-   }
+	if (maxTotalSynapses != 0) {
+		lastSpike_ = new uint64_t[maxTotalSynapses];
+		r_ = new BGFLOAT[maxTotalSynapses];
+		u_ = new BGFLOAT[maxTotalSynapses];
+		D_ = new BGFLOAT[maxTotalSynapses];
+		U_ = new BGFLOAT[maxTotalSynapses];
+		F_ = new BGFLOAT[maxTotalSynapses];
+	}
 }
 
 ///  Prints out all parameters to logging file.
 ///  Registered to OperationManager as Operation::printParameters
 void AllDSSynapses::printParameters() const {
-   AllSpikingSynapses::printParameters();
+	AllSpikingSynapses::printParameters();
 
-   LOG4CPLUS_DEBUG(edgeLogger_, "\n\t---AllDSSynapses Parameters---" << std::endl
-                                          << "\tEdges type: AllDSSynapses" << std::endl << std::endl);
+	LOG4CPLUS_DEBUG(edgeLogger_, "\n\t---AllDSSynapses Parameters---" << std::endl
+	                << "\tEdges type: AllDSSynapses" << std::endl << std::endl);
 }
 
 ///  Sets the data for Synapse to input's data.
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the synapse to set.
-void AllDSSynapses::readEdge(std::istream &input, const BGSIZE iEdg) {
-   AllSpikingSynapses::readEdge(input, iEdg);
+void AllDSSynapses::readEdge(std::istream& input, const BGSIZE iEdg) {
+	AllSpikingSynapses::readEdge(input, iEdg);
 
-   // input.ignore() so input skips over end-of-line characters.
-   input >> lastSpike_[iEdg];
-   input.ignore();
-   input >> r_[iEdg];
-   input.ignore();
-   input >> u_[iEdg];
-   input.ignore();
-   input >> D_[iEdg];
-   input.ignore();
-   input >> U_[iEdg];
-   input.ignore();
-   input >> F_[iEdg];
-   input.ignore();
+	// input.ignore() so input skips over end-of-line characters.
+	input >> lastSpike_[iEdg];
+	input.ignore();
+	input >> r_[iEdg];
+	input.ignore();
+	input >> u_[iEdg];
+	input.ignore();
+	input >> D_[iEdg];
+	input.ignore();
+	input >> U_[iEdg];
+	input.ignore();
+	input >> F_[iEdg];
+	input.ignore();
 }
 
 ///  Write the synapse data to the stream.
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the synapse to print out.
-void AllDSSynapses::writeEdge(std::ostream &output, const BGSIZE iEdg) const {
-   AllSpikingSynapses::writeEdge(output, iEdg);
+void AllDSSynapses::writeEdge(std::ostream& output, const BGSIZE iEdg) const {
+	AllSpikingSynapses::writeEdge(output, iEdg);
 
-   output << lastSpike_[iEdg] << std::ends;
-   output << r_[iEdg] << std::ends;
-   output << u_[iEdg] << std::ends;
-   output << D_[iEdg] << std::ends;
-   output << U_[iEdg] << std::ends;
-   output << F_[iEdg] << std::ends;
+	output << lastSpike_[iEdg] << std::ends;
+	output << r_[iEdg] << std::ends;
+	output << u_[iEdg] << std::ends;
+	output << D_[iEdg] << std::ends;
+	output << U_[iEdg] << std::ends;
+	output << F_[iEdg] << std::ends;
 }
 
 ///  Reset time varying state vars and recompute decay.
@@ -117,11 +115,11 @@ void AllDSSynapses::writeEdge(std::ostream &output, const BGSIZE iEdg) const {
 ///  @param  iEdg            Index of the synapse to set.
 ///  @param  deltaT          Inner simulation step duration
 void AllDSSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
-   AllSpikingSynapses::resetEdge(iEdg, deltaT);
+	AllSpikingSynapses::resetEdge(iEdg, deltaT);
 
-   u_[iEdg] = DEFAULT_U;
-   r_[iEdg] = 1.0;
-   lastSpike_[iEdg] = ULONG_MAX;
+	u_[iEdg] = DEFAULT_U;
+	r_[iEdg] = 1.0;
+	lastSpike_[iEdg] = ULONG_MAX;
 }
 
 ///  Create a Synapse and connect it to the model.
@@ -132,47 +130,43 @@ void AllDSSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
 ///  @param  sumPoint   Summation point address.
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
-void AllDSSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
-                                  const BGFLOAT deltaT, edgeType type) {
-   AllSpikingSynapses::createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
+void AllDSSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint,
+                               const BGFLOAT deltaT, edgeType type) {
+	AllSpikingSynapses::createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
 
-   U_[iEdg] = DEFAULT_U;
+	U_[iEdg] = DEFAULT_U;
 
-   BGFLOAT U;
-   BGFLOAT D;
-   BGFLOAT F;
-   switch (type) {
-      case II:
-         U = 0.32;
-         D = 0.144;
-         F = 0.06;
-         break;
-      case IE:
-         U = 0.25;
-         D = 0.7;
-         F = 0.02;
-         break;
-      case EI:
-         U = 0.05;
-         D = 0.125;
-         F = 1.2;
-         break;
-      case EE:
-         U = 0.5;
-         D = 1.1;
-         F = 0.05;
-         break;
-      default:
-         assert(false);
-         break;
-   }
+	BGFLOAT U;
+	BGFLOAT D;
+	BGFLOAT F;
+	switch (type) {
+		case II: U = 0.32;
+			D = 0.144;
+			F = 0.06;
+			break;
+		case IE: U = 0.25;
+			D = 0.7;
+			F = 0.02;
+			break;
+		case EI: U = 0.05;
+			D = 0.125;
+			F = 1.2;
+			break;
+		case EE: U = 0.5;
+			D = 1.1;
+			F = 0.05;
+			break;
+		default:
+			assert(false);
+			break;
+	}
 
-   U_[iEdg] = U;
-   D_[iEdg] = D;
-   F_[iEdg] = F;
+	U_[iEdg] = U;
+	D_[iEdg] = D;
+	F_[iEdg] = F;
 }
 
-#ifdef __CUDACC__
+#ifndef __CUDACC__
 
 ///  Calculate the post synapse response after a spike.
 ///
@@ -203,16 +197,16 @@ void AllDSSynapses::changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) {
 
 ///  Prints SynapsesProps data to console.
 void AllDSSynapses::printSynapsesProps() const {
-   AllSpikingSynapses::printSynapsesProps();
-   for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
-      if (W_[i] != 0.0) {
-         std::cout << "lastSpike[" << i << "] = " << lastSpike_[i];
-         std::cout << " r: " << r_[i];
-         std::cout << " u: " << u_[i];
-         std::cout << " D: " << D_[i];
-         std::cout << " U: " << U_[i];
-         std::cout << " F: " << F_[i] << std::endl;
-      }
-   }
-   std::cout << std::endl;
+	AllSpikingSynapses::printSynapsesProps();
+	for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
+		if (W_[i] != 0.0) {
+			std::cout << "lastSpike[" << i << "] = " << lastSpike_[i];
+			std::cout << " r: " << r_[i];
+			std::cout << " u: " << u_[i];
+			std::cout << " D: " << D_[i];
+			std::cout << " U: " << U_[i];
+			std::cout << " F: " << F_[i] << std::endl;
+		}
+	}
+	std::cout << std::endl;
 }

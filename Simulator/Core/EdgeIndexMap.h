@@ -24,70 +24,69 @@
 #include "BGTypes.h"
 
 struct EdgeIndexMap {
-   /// Pointer to the outgoing edge index map.
-   BGSIZE* outgoingEdgeIndexMap_;
+	/// Pointer to the outgoing edge index map.
+	BGSIZE* outgoingEdgeIndexMap_;
 
-   /// The beginning index of the outgoing edge for each vertex.
-   /// Indexed by a source vertex index.
-   BGSIZE *outgoingEdgeBegin_;
+	/// The beginning index of the outgoing edge for each vertex.
+	/// Indexed by a source vertex index.
+	BGSIZE* outgoingEdgeBegin_;
 
-   /// The number of outgoing edges of each vertex.
-   /// Indexed by a source vertex index.
-   BGSIZE *outgoingEdgeCount_;
+	/// The number of outgoing edges of each vertex.
+	/// Indexed by a source vertex index.
+	BGSIZE* outgoingEdgeCount_;
 
-   /// Pointer to the incoming edge index map.
-   BGSIZE* incomingEdgeIndexMap_;
+	/// Pointer to the incoming edge index map.
+	BGSIZE* incomingEdgeIndexMap_;
 
-   /// The beginning index of the incoming edge for each vertex.
-   /// Indexed by a destination vertex index.
-   BGSIZE *incomingEdgeBegin_;
+	/// The beginning index of the incoming edge for each vertex.
+	/// Indexed by a destination vertex index.
+	BGSIZE* incomingEdgeBegin_;
 
-   /// The number of incoming edges for each vertex.
-   /// Indexed by a destination vertex index.
-   BGSIZE *incomingEdgeCount_;
+	/// The number of incoming edges for each vertex.
+	/// Indexed by a destination vertex index.
+	BGSIZE* incomingEdgeCount_;
 
-   EdgeIndexMap() : numOfVertices_(0), numOfEdges_(0) {
-      outgoingEdgeBegin_ = nullptr;
-      outgoingEdgeCount_ = nullptr;
-      incomingEdgeBegin_ = nullptr;
-      incomingEdgeCount_ = nullptr;
+	EdgeIndexMap() : numOfVertices_(0), numOfEdges_(0) {
+		outgoingEdgeBegin_ = nullptr;
+		outgoingEdgeCount_ = nullptr;
+		incomingEdgeBegin_ = nullptr;
+		incomingEdgeCount_ = nullptr;
 
-      outgoingEdgeIndexMap_ = nullptr;
-      incomingEdgeIndexMap_ = nullptr;
-   };
+		outgoingEdgeIndexMap_ = nullptr;
+		incomingEdgeIndexMap_ = nullptr;
+	};
 
-   EdgeIndexMap(int vertexCount, int edgeCount) : numOfVertices_(vertexCount), numOfEdges_(edgeCount) {
-      if (numOfVertices_ > 0) {
-         outgoingEdgeBegin_ = new BGSIZE[numOfVertices_];
-         outgoingEdgeCount_ = new BGSIZE[numOfVertices_];
-         incomingEdgeBegin_ = new BGSIZE[numOfVertices_];
-         incomingEdgeCount_ = new BGSIZE[numOfVertices_];
-      }
+	EdgeIndexMap(int vertexCount, int edgeCount) : numOfVertices_(vertexCount), numOfEdges_(edgeCount) {
+		if (numOfVertices_ > 0) {
+			outgoingEdgeBegin_ = new BGSIZE[numOfVertices_];
+			outgoingEdgeCount_ = new BGSIZE[numOfVertices_];
+			incomingEdgeBegin_ = new BGSIZE[numOfVertices_];
+			incomingEdgeCount_ = new BGSIZE[numOfVertices_];
+		}
 
-      if (numOfEdges_ > 0) {
-         outgoingEdgeIndexMap_ = new BGSIZE[numOfEdges_];
-         incomingEdgeIndexMap_ = new BGSIZE[numOfEdges_];
-      }
-   };
+		if (numOfEdges_ > 0) {
+			outgoingEdgeIndexMap_ = new BGSIZE[numOfEdges_];
+			incomingEdgeIndexMap_ = new BGSIZE[numOfEdges_];
+		}
+	};
 
-   ~EdgeIndexMap() {
-      if (numOfVertices_ > 0) {
-         delete[] outgoingEdgeBegin_;
-         delete[] outgoingEdgeCount_;
-         delete[] incomingEdgeBegin_;
-         delete[] incomingEdgeCount_;
-      }
-      if (numOfEdges_ > 0) {
-         delete[] outgoingEdgeIndexMap_;
-         delete[] incomingEdgeIndexMap_;
-      }
-   }
+	~EdgeIndexMap() {
+		if (numOfVertices_ > 0) {
+			delete[] outgoingEdgeBegin_;
+			delete[] outgoingEdgeCount_;
+			delete[] incomingEdgeBegin_;
+			delete[] incomingEdgeCount_;
+		}
+		if (numOfEdges_ > 0) {
+			delete[] outgoingEdgeIndexMap_;
+			delete[] incomingEdgeIndexMap_;
+		}
+	}
 
-private:
-    /// Number of total vertices.
-    BGSIZE numOfVertices_;
+	private:
+		/// Number of total vertices.
+		BGSIZE numOfVertices_;
 
-    /// Number of total edges.
-    BGSIZE numOfEdges_;
+		/// Number of total edges.
+		BGSIZE numOfEdges_;
 };
-

@@ -14,7 +14,7 @@
  * is strictly prohibited.
  *
  */
- 
+
 // #ifndef MERSENNETWISTER_H
 //#define MERSENNETWISTER_H
 #ifndef mersennetwister_h

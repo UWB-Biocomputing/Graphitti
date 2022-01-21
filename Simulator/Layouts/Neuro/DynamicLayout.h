@@ -18,43 +18,42 @@
 #include "Layout.h"
 
 class DynamicLayout : public Layout {
-public:
-   DynamicLayout();
+	public:
+		DynamicLayout();
 
-   virtual ~DynamicLayout();
+		~DynamicLayout() override;
 
-   static Layout *Create() { return new DynamicLayout(); }
+		static Layout* Create() { return new DynamicLayout(); }
 
-   ///  Prints out all parameters to logging file.
-   ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const override;
+		///  Prints out all parameters to logging file.
+		///  Registered to OperationManager as Operation::printParameters
+		void printParameters() const override;
 
-   ///  Creates a randomly ordered distribution with the specified numbers of neuron types.
-   ///
-   ///  @param  numVertices number of the neurons to have in the type map.
-   virtual void generateVertexTypeMap(int numVertices) override;
+		///  Creates a randomly ordered distribution with the specified numbers of neuron types.
+		///
+		///  @param  numVertices number of the neurons to have in the type map.
+		void generateVertexTypeMap(int numVertices) override;
 
-   ///  Populates the starter map.
-   ///  Selects num_endogenously_active_neurons excitory neurons
-   ///  and converts them into starter neurons.
-   ///
-   ///  @param  numVertices number of vertices to have in the map.
-   virtual void initStarterMap(const int numVertices) override;
+		///  Populates the starter map.
+		///  Selects num_endogenously_active_neurons excitory neurons
+		///  and converts them into starter neurons.
+		///
+		///  @param  numVertices number of vertices to have in the map.
+		void initStarterMap(const int numVertices) override;
 
-   /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters(); 
+		/// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
+		void loadParameters() override;
 
-   /// Returns the type of synapse at the given coordinates
-   /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
-   /// @param    destVertex integer that points to a Neuron in the type map as a destination.
-   /// @return type of the synapse.
-   virtual edgeType edgType(const int srcVertex, const int destVertex);
+		/// Returns the type of synapse at the given coordinates
+		/// @param    srcVertex  integer that points to a Neuron in the type map as a source.
+		/// @param    destVertex integer that points to a Neuron in the type map as a destination.
+		/// @return type of the synapse.
+		edgeType edgType(const int srcVertex, const int destVertex) override;
 
-private:
-   /// Fraction of endogenously active neurons.
-   BGFLOAT fractionEndogenouslyActive_;
+	private:
+		/// Fraction of endogenously active neurons.
+		BGFLOAT fractionEndogenouslyActive_;
 
-   /// Fraction of exitatory neurons.
-   BGFLOAT fractionExcitatory_;
+		/// Fraction of exitatory neurons.
+		BGFLOAT fractionExcitatory_;
 };
-

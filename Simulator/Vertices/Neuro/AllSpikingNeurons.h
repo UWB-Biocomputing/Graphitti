@@ -23,26 +23,25 @@
 
 #pragma once
 
- 
 
-#include "Global.h"
-#include "AllVertices.h"
 #include "AllSpikingSynapses.h"
+#include "AllVertices.h"
+#include "Global.h"
 
 struct AllSpikingNeuronsDeviceProperties;
 
 class AllSpikingNeurons : public AllVertices {
-public:
-   AllSpikingNeurons();
+	public:
+		AllSpikingNeurons();
 
-   virtual ~AllSpikingNeurons();
+		~AllSpikingNeurons() override;
 
-   ///  Setup the internal structure of the class.
-   ///  Allocate memories to store all neurons' state.
-   virtual void setupVertices() override;
+		///  Setup the internal structure of the class.
+		///  Allocate memories to store all neurons' state.
+		void setupVertices() override;
 
-   ///  Clear the spike counts out of all Neurons.
-   void clearSpikeCounts();
+		///  Clear the spike counts out of all Neurons.
+		void clearSpikeCounts();
 
 #ifdef __CUDACC__
    public:
@@ -84,58 +83,58 @@ public:
        ///
        ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
        void clearDeviceSpikeCounts( AllSpikingNeuronsDeviceProperties& allVerticesDevice);
-#else // !defined(USE_GPU)
+#else // !defined(__CUDACC__)
 
-public:
-   ///  Update internal state of the indexed Neuron (called by every simulation step).
-   ///  Notify outgoing synapses if neuron has fired.
-   ///
-   ///  @param  synapses         The Synapse list to search from.
-   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-   virtual void advanceVertices(AllEdges &synapses, const EdgeIndexMap *edgeIndexMap);
+	public:
+		///  Update internal state of the indexed Neuron (called by every simulation step).
+		///  Notify outgoing synapses if neuron has fired.
+		///
+		///  @param  synapses         The Synapse list to search from.
+		///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+		void advanceVertices(AllEdges& synapses, const EdgeIndexMap* edgeIndexMap) override;
 
-   /// Get the spike history of neuron[index] at the location offIndex.
-   /// More specifically, retrieves the global simulation time step for the spike
-   /// in question from the spike history record.
-   ///
-   /// @param  index            Index of the neuron to get spike history.
-   /// @param  offIndex         Offset of the history buffer to get from.
-   uint64_t getSpikeHistory(int index, int offIndex);
+		/// Get the spike history of neuron[index] at the location offIndex.
+		/// More specifically, retrieves the global simulation time step for the spike
+		/// in question from the spike history record.
+		///
+		/// @param  index            Index of the neuron to get spike history.
+		/// @param  offIndex         Offset of the history buffer to get from.
+		uint64_t getSpikeHistory(int index, int offIndex);
 
-protected:
-   ///  Helper for #advanceNeuron. Updates state of a single neuron.
-   ///
-   ///  @param  index            Index of the neuron to update.
-   virtual void advanceNeuron(const int index) = 0;
+	protected:
+		///  Helper for #advanceNeuron. Updates state of a single neuron.
+		///
+		///  @param  index            Index of the neuron to update.
+		virtual void advanceNeuron(const int index) = 0;
 
-   ///  Initiates a firing of a neuron to connected neurons
-   ///
-   ///  @param  index            Index of the neuron to fire.
-   virtual void fire(const int index) const;
+		///  Initiates a firing of a neuron to connected neurons
+		///
+		///  @param  index            Index of the neuron to fire.
+		virtual void fire(const int index) const;
 
-#endif // defined(USE_GPU)
+#endif // defined(__CUDACC__)
 
-public:
-   ///  The booleans which track whether the neuron has fired.
-   bool *hasFired_;
+	public:
+		///  The booleans which track whether the neuron has fired.
+		bool* hasFired_;
 
-   ///  The number of spikes since the last growth cycle.
-   int *spikeCount_;
+		///  The number of spikes since the last growth cycle.
+		int* spikeCount_;
 
-   ///  Offset of the spike_history buffer.
-   int *spikeCountOffset_;
+		///  Offset of the spike_history buffer.
+		int* spikeCountOffset_;
 
-   ///  Step count (history) for each spike fired by each neuron.
-   ///  The step counts are stored in a buffer for each neuron, and the pointers
-   ///  to the buffer are stored in a list pointed by spike_history.
-   ///  Each buffer is a circular, and offset of top location of the buffer i is
-   ///  specified by spikeCountOffset[i].
-   uint64_t **spikeHistory_;
+		///  Step count (history) for each spike fired by each neuron.
+		///  The step counts are stored in a buffer for each neuron, and the pointers
+		///  to the buffer are stored in a list pointed by spike_history.
+		///  Each buffer is a circular, and offset of top location of the buffer i is
+		///  specified by spikeCountOffset[i].
+		uint64_t** spikeHistory_;
 
-protected:
-   ///  True if back propagaion is allowed.
-   ///  (parameters used for advanceVerticesDevice.)
-   bool fAllowBackPropagation_;
+	protected:
+		///  True if back propagaion is allowed.
+		///  (parameters used for advanceVerticesDevice.)
+		bool fAllowBackPropagation_;
 
 };
 
@@ -158,4 +157,4 @@ struct AllSpikingNeuronsDeviceProperties : public AllVerticesDeviceProperties
         ///  specified by spikeCountOffset[i].
         uint64_t **spikeHistory_;
 };
-#endif // defined(USE_GPU)
+#endif // defined(__CUDACC__)

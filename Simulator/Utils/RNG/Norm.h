@@ -21,8 +21,8 @@
 #ifndef _NORM_H_
 #define _NORM_H_
 
-#include "MTRand.h"
 #include <cmath>
+#include "MTRand.h"
 
 /*!
    @class Norm
@@ -54,61 +54,61 @@
    Modified from norm.c, from xneuron3
 */
 class Norm : public MTRand {
-public:
-   virtual ~Norm();
+	public:
+		~Norm() override;
 
-   ///  Creates an instance of the class.
-   ///
-   ///  @return Reference to the instance of the class.
-   static MTRand *Create() { return new Norm(); }
+		///  Creates an instance of the class.
+		///
+		///  @return Reference to the instance of the class.
+		static MTRand* Create() { return new Norm(); }
 
-   /*!
-      The constructor allows specification of the mean,
-      variance (default zero and one, respectively), and initial seed
-      for the random number generator. Once created, a Norm object
-      cannot have its mean or variance changed.
-      @param m mean
-      @param s variance
-      @param seed seed for random number generator
-   */
-   Norm(BGFLOAT m = DEFAULT_m, BGFLOAT s = DEFAULT_s, uint32_t seed = DEFAULT_seed);
+		/*!
+		   The constructor allows specification of the mean,
+		   variance (default zero and one, respectively), and initial seed
+		   for the random number generator. Once created, a Norm object
+		   cannot have its mean or variance changed.
+		   @param m mean
+		   @param s variance
+		   @param seed seed for random number generator
+		*/
+		Norm(BGFLOAT m = DEFAULT_m, BGFLOAT s = DEFAULT_s, uint32_t seed = DEFAULT_seed);
 
-   /*!
-      This method makes instances functors; it returns normally
-      distributed random numbers. Just a cute way of doing things.
-      @return pseudorandom number drawn from a normal distribution.
-   */
-   virtual BGFLOAT operator() (void) override;
+		/*!
+		   This method makes instances functors; it returns normally
+		   distributed random numbers. Just a cute way of doing things.
+		   @return pseudorandom number drawn from a normal distribution.
+		*/
+		BGFLOAT operator()(void) override;
 
-   /// Allow Norm re-seeding (with same behavior as initializers)
-   void seed(BGFLOAT m, BGFLOAT s, uint32_t seed);
-   virtual void seed(uint32_t seed) override;
-   virtual void seed() override;
+		/// Allow Norm re-seeding (with same behavior as initializers)
+		void seed(BGFLOAT m, BGFLOAT s, uint32_t seed);
+		void seed(uint32_t seed) override;
+		void seed() override;
 
-private:
-   // Additional state information
+	private:
+		// Additional state information
 
-   /*! Which of the pair of pseudorandom numbers was last
-      returned. Says whether we should calculate this time  */
-   bool odd_;
+		/*! Which of the pair of pseudorandom numbers was last
+		   returned. Says whether we should calculate this time  */
+		bool odd_;
 
-   /*! The second of the pair of pseudorandom numbers generated (last call) */
-   BGFLOAT X2_;
+		/*! The second of the pair of pseudorandom numbers generated (last call) */
+		BGFLOAT X2_;
 
-   /*! Distribution mean */
-   BGFLOAT mu_;
+		/*! Distribution mean */
+		BGFLOAT mu_;
 
-   /*! Distribution variance */
-   BGFLOAT sigma_;
+		/*! Distribution variance */
+		BGFLOAT sigma_;
 
-   /// Default seeding parameter: mean
-   static constexpr BGFLOAT DEFAULT_m = 0.0;
+		/// Default seeding parameter: mean
+		static constexpr BGFLOAT DEFAULT_m = 0.0;
 
-   /// Default seeding parameter: variance
-   static constexpr BGFLOAT DEFAULT_s = 1.0;
+		/// Default seeding parameter: variance
+		static constexpr BGFLOAT DEFAULT_s = 1.0;
 
-   /// Default seeding parameter: seed
-   static constexpr uint32_t DEFAULT_seed = 0;
+		/// Default seeding parameter: seed
+		static constexpr uint32_t DEFAULT_seed = 0;
 };
 
 #endif

@@ -15,7 +15,7 @@
 
 
 // a device variable to store synapse class ID.
-__device__ enumClassSynapses classSynapses_d = undefClassSynapses; 
+__device__ enumClassSynapses classSynapses_d = undefClassSynapses;
 
 /******************************************
  * @name Device Functions for utility
@@ -93,7 +93,7 @@ __device__ void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties* allEdges
     psr += ( ( W / decay ) * u * r );// calculate psr
     lastSpike = simulationStep; // record the time of the spike
 }
-    
+
 ///  Checks if there is an input spike in the queue.
 ///
 ///  @param[in] allEdgesDevice     GPU address of AllSpikingSynapsesDeviceProperties structures 
@@ -116,7 +116,7 @@ __device__ bool isSpikingSynapsesSpikeQueueDevice(AllSpikingSynapsesDeviceProper
 
     return isFired;
 }
-   
+
 ///  Adjust synapse weight according to the Spike-timing-dependent synaptic modification
 ///  induced by natural spike trains
 ///

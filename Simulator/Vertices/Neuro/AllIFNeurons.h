@@ -23,49 +23,49 @@
  */
 #pragma once
 
-#include "Global.h"
 #include "AllSpikingNeurons.h"
+#include "Global.h"
 
 struct AllIFNeuronsDeviceProperties;
 
 class AllIFNeurons : public AllSpikingNeurons {
-public:
-   AllIFNeurons();
+	public:
+		AllIFNeurons();
 
-   virtual ~AllIFNeurons();
+		~AllIFNeurons() override;
 
-   ///  Setup the internal structure of the class.
-   ///  Allocate memories to store all neurons' state.
-   virtual void setupVertices() override;
+		///  Setup the internal structure of the class.
+		///  Allocate memories to store all neurons' state.
+		void setupVertices() override;
 
-   ///  Load member variables from configuration file.
-   ///  Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters();
+		///  Load member variables from configuration file.
+		///  Registered to OperationManager as Operation::loadParameters
+		void loadParameters() override;
 
-   ///  Prints out all parameters of the neurons to logging file.
-   ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const;
+		///  Prints out all parameters of the neurons to logging file.
+		///  Registered to OperationManager as Operation::printParameters
+		void printParameters() const override;
 
-   ///  Creates all the Neurons and assigns initial data for them.
-   ///
-   ///  @param  layout      Layout information of the neural network.
-   virtual void createAllVertices(Layout *layout);
+		///  Creates all the Neurons and assigns initial data for them.
+		///
+		///  @param  layout      Layout information of the neural network.
+		void createAllVertices(Layout* layout) override;
 
-   ///  Outputs state of the neuron chosen as a string.
-   ///
-   ///  @param  index   index of the neuron (in neurons) to output info from.
-   ///  @return the complete state of the neuron.
-   virtual std::string toString(const int index) const;
+		///  Outputs state of the neuron chosen as a string.
+		///
+		///  @param  index   index of the neuron (in neurons) to output info from.
+		///  @return the complete state of the neuron.
+		std::string toString(const int index) const override;
 
-   /// Reads and sets the data for all neurons from input stream.
-   ///
-   /// @param  input       istream to read from.
-   virtual void deserialize(std::istream &input);
+		/// Reads and sets the data for all neurons from input stream.
+		///
+		/// @param  input       istream to read from.
+		virtual void deserialize(std::istream& input);
 
-   ///  Writes out the data in all neurons to output stream.
-   ///
-   ///  @param  output      stream to write out to.ss.
-   virtual void serialize(std::ostream &output) const;
+		///  Writes out the data in all neurons to output stream.
+		///
+		///  @param  output      stream to write out to.ss.
+		virtual void serialize(std::ostream& output) const;
 
 #ifdef __CUDACC__
    public:
@@ -140,115 +140,115 @@ public:
        ///  @param  allVerticesDevice         Reference to the AllIFNeuronsDeviceProperties struct.
   void copyDeviceToHost( AllIFNeuronsDeviceProperties& allVerticesDevice );
 
-#endif // defined(USE_GPU)
+#endif // defined(__CUDACC__)
 
-protected:
-   ///  Creates a single Neuron and generates data for it.
-   ///
-   ///  @param  neuronIndex Index of the neuron to create.
-   ///  @param  layout       Layout information of the neural network.
-   void createNeuron(int neuronIndex, Layout *layout);
+	protected:
+		///  Creates a single Neuron and generates data for it.
+		///
+		///  @param  neuronIndex Index of the neuron to create.
+		///  @param  layout       Layout information of the neural network.
+		void createNeuron(int neuronIndex, Layout* layout);
 
-   ///  Set the Neuron at the indexed location to default values.
-   ///
-   ///  @param  index    Index of the Neuron that the synapse belongs to.
-   void setNeuronDefaults(const int index);
+		///  Set the Neuron at the indexed location to default values.
+		///
+		///  @param  index    Index of the Neuron that the synapse belongs to.
+		void setNeuronDefaults(const int index);
 
-   ///  Initializes the Neuron constants at the indexed location.
-   ///
-   ///  @param  neuronIndex    Index of the Neuron.
-   ///  @param  deltaT          Inner simulation step duration
-   virtual void initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT);
+		///  Initializes the Neuron constants at the indexed location.
+		///
+		///  @param  neuronIndex    Index of the Neuron.
+		///  @param  deltaT          Inner simulation step duration
+		virtual void initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT);
 
-   ///  Sets the data for Neuron #index to input's data.
-   ///
-   ///  @param  input       istream to read from.
-   ///  @param  i           index of the neuron (in neurons).
-   void readNeuron(std::istream &input, int i);
+		///  Sets the data for Neuron #index to input's data.
+		///
+		///  @param  input       istream to read from.
+		///  @param  i           index of the neuron (in neurons).
+		void readNeuron(std::istream& input, int i);
 
-   ///  Writes out the data in the selected Neuron.
-   ///
-   ///  @param  output      stream to write out to.
-   ///  @param  i           index of the neuron (in neurons).
-   void writeNeuron(std::ostream &output, int i) const;
+		///  Writes out the data in the selected Neuron.
+		///
+		///  @param  output      stream to write out to.
+		///  @param  i           index of the neuron (in neurons).
+		void writeNeuron(std::ostream& output, int i) const;
 
-public:
-   ///  The length of the absolute refractory period. [units=sec; range=(0,1);]
-   BGFLOAT *Trefract_;
+	public:
+		///  The length of the absolute refractory period. [units=sec; range=(0,1);]
+		BGFLOAT* Trefract_;
 
-   ///  If \f$V_m\f$ exceeds \f$V_{thresh}\f$ a spike is emmited. [units=V; range=(-10,100);]
-   BGFLOAT *Vthresh_;
+		///  If \f$V_m\f$ exceeds \f$V_{thresh}\f$ a spike is emmited. [units=V; range=(-10,100);]
+		BGFLOAT* Vthresh_;
 
-   ///  The resting membrane voltage. [units=V; range=(-1,1);]
-   BGFLOAT *Vrest_;
+		///  The resting membrane voltage. [units=V; range=(-1,1);]
+		BGFLOAT* Vrest_;
 
-   ///  The voltage to reset \f$V_m\f$ to after a spike. [units=V; range=(-1,1);]
-   BGFLOAT *Vreset_;
+		///  The voltage to reset \f$V_m\f$ to after a spike. [units=V; range=(-1,1);]
+		BGFLOAT* Vreset_;
 
-   ///  The initial condition for \f$V_m\f$ at time \f$t=0\f$. [units=V; range=(-1,1);]
-   BGFLOAT *Vinit_;
+		///  The initial condition for \f$V_m\f$ at time \f$t=0\f$. [units=V; range=(-1,1);]
+		BGFLOAT* Vinit_;
 
-   ///  The membrane capacitance \f$C_m\f$ [range=(0,1); units=F;]
-   ///  Used to initialize Tau (no use after that)
-   BGFLOAT *Cm_;
+		///  The membrane capacitance \f$C_m\f$ [range=(0,1); units=F;]
+		///  Used to initialize Tau (no use after that)
+		BGFLOAT* Cm_;
 
-   ///  The membrane resistance \f$R_m\f$ [units=Ohm; range=(0,1e30)]
-   BGFLOAT *Rm_;
+		///  The membrane resistance \f$R_m\f$ [units=Ohm; range=(0,1e30)]
+		BGFLOAT* Rm_;
 
-   /// The standard deviation of the noise to be added each integration time constant. [range=(0,1); units=A;]
-   BGFLOAT *Inoise_;
+		/// The standard deviation of the noise to be added each integration time constant. [range=(0,1); units=A;]
+		BGFLOAT* Inoise_;
 
-   ///  A constant current to be injected into the LIF neuron. [units=A; range=(-1,1);]
-   BGFLOAT *Iinject_;
+		///  A constant current to be injected into the LIF neuron. [units=A; range=(-1,1);]
+		BGFLOAT* Iinject_;
 
-   /// What the hell is this used for???
-   ///  It does not seem to be used; seems to be a candidate for deletion.
-   ///  Possibly from the old code before using a separate summation point
-   ///  The synaptic input current.
-   BGFLOAT *Isyn_;
+		/// What the hell is this used for???
+		///  It does not seem to be used; seems to be a candidate for deletion.
+		///  Possibly from the old code before using a separate summation point
+		///  The synaptic input current.
+		BGFLOAT* Isyn_;
 
-   /// The remaining number of time steps for the absolute refractory period.
-   int *numStepsInRefractoryPeriod_;
+		/// The remaining number of time steps for the absolute refractory period.
+		int* numStepsInRefractoryPeriod_;
 
-   /// Internal constant for the exponential Euler integration of f$V_m\f$.
-   BGFLOAT *C1_;
+		/// Internal constant for the exponential Euler integration of f$V_m\f$.
+		BGFLOAT* C1_;
 
-   /// Internal constant for the exponential Euler integration of \f$V_m\f$.
-   BGFLOAT *C2_;
+		/// Internal constant for the exponential Euler integration of \f$V_m\f$.
+		BGFLOAT* C2_;
 
-   /// Internal constant for the exponential Euler integration of \f$V_m\f$.
-   BGFLOAT *I0_;
+		/// Internal constant for the exponential Euler integration of \f$V_m\f$.
+		BGFLOAT* I0_;
 
-   /// The membrane voltage \f$V_m\f$ [readonly; units=V;]
-   BGFLOAT *Vm_;
+		/// The membrane voltage \f$V_m\f$ [readonly; units=V;]
+		BGFLOAT* Vm_;
 
-   /// The membrane time constant \f$(R_m \cdot C_m)\f$
-   BGFLOAT *Tau_;
+		/// The membrane time constant \f$(R_m \cdot C_m)\f$
+		BGFLOAT* Tau_;
 
-private:
-   /// Min/max values of Iinject.
-   BGFLOAT IinjectRange_[2];
+	private:
+		/// Min/max values of Iinject.
+		BGFLOAT IinjectRange_[2];
 
-   /// Min/max values of Inoise.
-   BGFLOAT InoiseRange_[2];
+		/// Min/max values of Inoise.
+		BGFLOAT InoiseRange_[2];
 
-   /// Min/max values of Vthresh.
-   BGFLOAT VthreshRange_[2];
+		/// Min/max values of Vthresh.
+		BGFLOAT VthreshRange_[2];
 
-   /// Min/max values of Vresting.
-   BGFLOAT VrestingRange_[2];
+		/// Min/max values of Vresting.
+		BGFLOAT VrestingRange_[2];
 
-   /// Min/max values of Vreset.
-   BGFLOAT VresetRange_[2];
+		/// Min/max values of Vreset.
+		BGFLOAT VresetRange_[2];
 
-   /// Min/max values of Vinit.
-   BGFLOAT VinitRange_[2];
+		/// Min/max values of Vinit.
+		BGFLOAT VinitRange_[2];
 
-   /// Min/max values of Vthresh.
-   BGFLOAT starterVthreshRange_[2];
+		/// Min/max values of Vthresh.
+		BGFLOAT starterVthreshRange_[2];
 
-   /// Min/max values of Vreset.
-   BGFLOAT starterVresetRange_[2];
+		/// Min/max values of Vreset.
+		BGFLOAT starterVresetRange_[2];
 };
 
 #ifdef __CUDACC__
@@ -306,4 +306,4 @@ struct AllIFNeuronsDeviceProperties : public AllSpikingNeuronsDeviceProperties
         /// The membrane time constant \f$(R_m \cdot C_m)\f$
         BGFLOAT *Tau_;
 };
-#endif // defined(USE_GPU)
+#endif // defined(__CUDACC__)

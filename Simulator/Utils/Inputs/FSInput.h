@@ -35,7 +35,7 @@ public:
         static FSInput instance;
         return &instance;
     }
- 
+
     //! Create an instance.
     ISInput* CreateInstance();
 

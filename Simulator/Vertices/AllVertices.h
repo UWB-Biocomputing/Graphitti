@@ -21,63 +21,62 @@
 
 #pragma once
 
- 
 
 #include <iostream>
 #include <log4cplus/loggingmacros.h>
 
+#include "AllEdges.h"
 #include "BGTypes.h"
+#include "Layout.h"
 #include "Simulator.h"
 #include "Core/EdgeIndexMap.h"
-#include "AllEdges.h"
-#include "Layout.h"
 
 class Layout;
 class AllEdges;
 
 class AllVertices {
-public:
-   AllVertices();
+	public:
+		AllVertices();
 
-   virtual ~AllVertices();
+		virtual ~AllVertices();
 
-   ///  Setup the internal structure of the class.
-   ///  Allocate memories to store all neurons' state.
-   virtual void setupVertices();
+		///  Setup the internal structure of the class.
+		///  Allocate memories to store all neurons' state.
+		virtual void setupVertices();
 
-   ///  Prints out all parameters of the neurons to logging file.
-   ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const;
+		///  Prints out all parameters of the neurons to logging file.
+		///  Registered to OperationManager as Operation::printParameters
+		virtual void printParameters() const;
 
-   ///  Load member variables from configuration file.
-   ///  Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters() = 0;
+		///  Load member variables from configuration file.
+		///  Registered to OperationManager as Operation::loadParameters
+		virtual void loadParameters() = 0;
 
-   ///  Creates all the Vertices and assigns initial data for them.
-   ///
-   ///  @param  layout      Layout information of the neural network.
-   virtual void createAllVertices(Layout *layout) = 0;
+		///  Creates all the Vertices and assigns initial data for them.
+		///
+		///  @param  layout      Layout information of the neural network.
+		virtual void createAllVertices(Layout* layout) = 0;
 
-   ///  Outputs state of the vertex chosen as a string.
-   ///
-   ///  @param  i   index of the vertex (in vertices) to output info from.
-   ///  @return the complete state of the vertex.
-   virtual std::string toString(const int i) const = 0;
+		///  Outputs state of the vertex chosen as a string.
+		///
+		///  @param  i   index of the vertex (in vertices) to output info from.
+		///  @return the complete state of the vertex.
+		virtual std::string toString(const int i) const = 0;
 
-   ///  The summation point for each vertex.
-   ///  Summation points are places where the synapses connected to the vertex
-   ///  apply (summed up) their PSRs (Post-Synaptic-Response).
-   ///  On the next advance cycle, vertices add the values stored in their corresponding
-   ///  summation points to their Vm and resets the summation points to zero
-   BGFLOAT *summationMap_;
+		///  The summation point for each vertex.
+		///  Summation points are places where the synapses connected to the vertex
+		///  apply (summed up) their PSRs (Post-Synaptic-Response).
+		///  On the next advance cycle, vertices add the values stored in their corresponding
+		///  summation points to their Vm and resets the summation points to zero
+		BGFLOAT* summationMap_;
 
-protected:
-   ///  Total number of vertices.
-   int size_;
+	protected:
+		///  Total number of vertices.
+		int size_;
 
-   // Loggers used to print to using log4cplus logging macros
-   log4cplus::Logger fileLogger_; // Logs to Output/Debug/logging.txt
-   log4cplus::Logger vertexLogger_; // Logs to Output/Debug/neurons.txt
+		// Loggers used to print to using log4cplus logging macros
+		log4cplus::Logger fileLogger_; // Logs to Output/Debug/logging.txt
+		log4cplus::Logger vertexLogger_; // Logs to Output/Debug/neurons.txt
 
 #ifdef __CUDACC__
    public:
@@ -117,13 +116,13 @@ protected:
        ///  @param  edges               Reference to the allEdges struct on host memory.
        virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) = 0;
 #else
-public:
-   ///  Update internal state of the indexed Neuron (called by every simulation step).
-   ///  Notify outgoing synapses if vertex has fired.
-   ///
-   ///  @param  edges         The Synapse list to search from.
-   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-   virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap) = 0;
+	public:
+		///  Update internal state of the indexed Neuron (called by every simulation step).
+		///  Notify outgoing synapses if vertex has fired.
+		///
+		///  @param  edges         The Synapse list to search from.
+		///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+		virtual void advanceVertices(AllEdges& edges, const EdgeIndexMap* edgeIndexMap) = 0;
 
 #endif
 };

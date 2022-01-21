@@ -260,7 +260,7 @@ void AllSpikingSynapses::copyDeviceEdgeSumIdxToHost(void* allEdgesDevice )
                 maxTotalSynapses * sizeof( int ), cudaMemcpyDeviceToHost ) );
         HANDLE_ERROR( cudaMemcpy ( inUse_, allEdgesDeviceProps.inUse_,
                 maxTotalSynapses * sizeof( bool ), cudaMemcpyDeviceToHost ) );
-       
+
         // Set countVertices_ to 0 to avoid illegal memory deallocation 
         // at AllSpikingSynapses deconstructor.
         //allEdges.countVertices_ = 0;

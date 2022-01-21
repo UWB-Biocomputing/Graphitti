@@ -21,41 +21,40 @@
  */
 #pragma once
 
-#include "AllEdges.h"
 #include "All911Vertices.h"
+#include "AllEdges.h"
 
 
 struct All911EdgeDeviceProperties;
 
 class All911Edges : public AllEdges {
-public:
-   All911Edges();
+	public:
+		All911Edges();
 
-   All911Edges(const int numVertices, const int maxEdges);
+		All911Edges(const int numVertices, const int maxEdges);
 
-   virtual ~All911Edges();
+		~All911Edges() override;
 
-   ///  Creates an instance of the class.
-   ///
-   ///  @return Reference to the instance of the class.
-   static AllEdges *Create() { return new All911Edges(); }
+		///  Creates an instance of the class.
+		///
+		///  @return Reference to the instance of the class.
+		static AllEdges* Create() { return new All911Edges(); }
 
-   ///  Setup the internal structure of the class (allocate memories and initialize them).
-   virtual void setupEdges() override;
+		///  Setup the internal structure of the class (allocate memories and initialize them).
+		void setupEdges() override;
 
-   ///  Create a Edge and connect it to the model.
-   ///
-   ///  @param  iEdg        Index of the edge to set.
-   ///  @param  srcVertex   Coordinates of the source Neuron.
-   ///  @param  destVertex  Coordinates of the destination Neuron.
-   ///  @param  sumPoint    Summation point address.
-   ///  @param  deltaT      Inner simulation step duration.
-   ///  @param  type        Type of the Edge to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-                              edgeType type) override;
+		///  Create a Edge and connect it to the model.
+		///
+		///  @param  iEdg        Index of the edge to set.
+		///  @param  srcVertex   Coordinates of the source Neuron.
+		///  @param  destVertex  Coordinates of the destination Neuron.
+		///  @param  sumPoint    Summation point address.
+		///  @param  deltaT      Inner simulation step duration.
+		///  @param  type        Type of the Edge to create.
+		void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT,
+		                edgeType type) override;
 
-protected:
-
+	protected:
 #ifdef __CUDACC__
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract
@@ -74,22 +73,21 @@ protected:
        virtual void printGPUEdgesProps( void* allEdgesDeviceProps ) const {};
 
 #else
-public:
+	public:
+		///  Advance all the edges in the simulation.
+		///
+		///  @param  vertices           The vertex list to search from.
+		///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
+		void advanceEdges(AllVertices* vertices, EdgeIndexMap* edgeIndexMap) override;
 
-   ///  Advance all the edges in the simulation.
-   ///
-   ///  @param  vertices           The vertex list to search from.
-   ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
-   virtual void advanceEdges(AllVertices *vertices, EdgeIndexMap *edgeIndexMap);
+		///  Advance one specific Edge.
+		///
+		///  @param  iEdg      Index of the Edge to connect to.
+		///  @param  vertices  The Neuron list to search from.
+		void advance911Edge(const BGSIZE iEdg, All911Vertices* vertices);
 
-   ///  Advance one specific Edge.
-   ///
-   ///  @param  iEdg      Index of the Edge to connect to.
-   ///  @param  vertices  The Neuron list to search from.
-   void advance911Edge(const BGSIZE iEdg, All911Vertices *vertices);
-
-   /// unused virtual function placeholder
-   virtual void advanceEdge(const BGSIZE iEdg, AllVertices *vertices) override {};
+		/// unused virtual function placeholder
+		void advanceEdge(const BGSIZE iEdg, AllVertices* vertices) override {};
 
 #endif
 };

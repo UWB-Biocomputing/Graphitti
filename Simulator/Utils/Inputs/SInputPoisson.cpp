@@ -50,7 +50,7 @@ SInputPoisson::SInputPoisson(TiXmlElement* parms) :
     // allocate memory for interval counter
     nISIs = new int[Simulator::getInstance().getTotalVertices()];
     memset(nISIs, 0, sizeof(int) * Simulator::getInstance().getTotalVertices());
-    
+
     // allocate memory for input masks
     masks = new bool[Simulator::getInstance().getTotalVertices()];
 

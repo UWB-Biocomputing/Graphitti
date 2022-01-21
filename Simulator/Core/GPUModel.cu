@@ -65,7 +65,7 @@ void GPUModel::allocDeviceStruct(void** allVerticesDevice, void** allEdgesDevice
 /// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
 /// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
 void GPUModel::deleteDeviceStruct(void** allVerticesDevice, void** allEdgesDevice)
-{  
+{
   // Get neurons and synapses
   shared_ptr<AllVertices> neurons = layout_->getVertices();
   shared_ptr<AllEdges> synapses = connections_->getEdges();
@@ -216,7 +216,7 @@ void GPUModel::updateHistory()
 {
   Model::updateHistory();
   // clear spike count
-  
+
   shared_ptr<AllVertices> neurons = layout_->getVertices();
   dynamic_cast<AllSpikingNeurons*>(neurons.get())->clearNeuronSpikeCounts(allVerticesDevice_);
 }

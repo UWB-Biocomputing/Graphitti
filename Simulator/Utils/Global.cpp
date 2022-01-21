@@ -15,7 +15,7 @@ int g_debug_mask
 #if DEBUG_OUT
 		= DEBUG_LOG_LOW;
 #else
-		= 0;
+	= 0;
 #endif
 
 ///  Converts the given index to a std::string with the indexes of a two-dimensional array.
@@ -53,27 +53,25 @@ std::string coordToString(int x, int y, int z) {
 // MODEL INDEPENDENT FUNCTION NMV-BEGIN {
 std::string neuronTypeToString(vertexType t) {
 	switch (t) {
-	case INH:
-		return "INH";
-	case EXC:
-		return "EXC";
-	default:
-		std::cerr << "ERROR->neuronTypeToString() failed, unknown type: " << t << std::endl;
-		assert(false);
-		return nullptr; // Must return a value -- this will probably cascade to another failure
+		case INH: return "INH";
+		case EXC: return "EXC";
+		default: std::cerr << "ERROR->neuronTypeToString() failed, unknown type: " << t << std::endl;
+			assert(false);
+			return nullptr; // Must return a value -- this will probably cascade to another failure
 	}
 }
+
 // } NMV-END
 #ifdef __CUDACC__
 //! CUDA device ID
 int g_deviceId = 0;
-#endif // USE_GPU
+#endif // __CUDACC__
 
 // A random number generator.
 MTRand initRNG;
 
 // A normalized random number generator.
-MTRand *noiseRNG;
+MTRand* noiseRNG;
 
 //		simulation vars
 uint64_t g_simulationStep = 0;

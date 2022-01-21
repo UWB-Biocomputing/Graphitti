@@ -27,60 +27,61 @@
 
 #include <log4cplus/loggingmacros.h>
 
-#include "AllVertices.h"
 #include "AllEdges.h"
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
-#include "Layout.h"
-#include "IRecorder.h"
+#include "AllVertices.h"
 #include "EdgeIndexMap.h"
+#include "IRecorder.h"
+#include "Layout.h"
 
 class Connections {
-public:
-   Connections();
+	public:
+		Connections();
 
-   ///  Destructor
-   virtual ~Connections();
+		///  Destructor
+		virtual ~Connections();
 
-   /// Returns shared pointer to Synapses/Edges 
-   std::shared_ptr<AllEdges> getEdges() const;
+		/// Returns shared pointer to Synapses/Edges 
+		std::shared_ptr<AllEdges> getEdges() const;
 
 
-   /// Returns a shared pointer to the EdgeIndexMap
-   std::shared_ptr<EdgeIndexMap> getEdgeIndexMap() const;
+		/// Returns a shared pointer to the EdgeIndexMap
+		std::shared_ptr<EdgeIndexMap> getEdgeIndexMap() const;
 
-   /// Calls Synapses to create EdgeIndexMap and stores it as a member variable
-   void createEdgeIndexMap();
+		/// Calls Synapses to create EdgeIndexMap and stores it as a member variable
+		void createEdgeIndexMap();
 
-   ///  Setup the internal structure of the class (allocate memories and initialize them).
-   ///
-   ///  @param  layout    Layout information of the neural network.
-   ///  @param  neurons   The Neuron list to search from.
-   ///  @param  synapses  The Synapse list to search from.
-   virtual void setupConnections(Layout *layout, AllVertices *vertices, AllEdges *synapses) = 0;
+		///  Setup the internal structure of the class (allocate memories and initialize them).
+		///
+		///  @param  layout    Layout information of the neural network.
+		///  @param  neurons   The Neuron list to search from.
+		///  @param  synapses  The Synapse list to search from.
+		virtual void setupConnections(Layout* layout, AllVertices* vertices, AllEdges* synapses) = 0;
 
-   /// Load member variables from configuration file.
-   /// Registered to OperationManager as Operations::op::loadParameters
-   virtual void loadParameters() = 0;
+		/// Load member variables from configuration file.
+		/// Registered to OperationManager as Operations::op::loadParameters
+		virtual void loadParameters() = 0;
 
-   ///  Prints out all parameters to logging file.
-   ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const = 0;
-   
-   ///  Update the connections status in every epoch.
-   ///
-   ///  @param  neurons  The Neuron list to search from.
-   ///  @param  layout   Layout information of the neural network.
-   ///  @return true if successful, false otherwise.
-   virtual bool updateConnections(AllVertices &vertices, Layout *layout);
+		///  Prints out all parameters to logging file.
+		///  Registered to OperationManager as Operation::printParameters
+		virtual void printParameters() const = 0;
 
-   ///  Creates synapses from synapse weights saved in the serialization file.
-   ///
-   ///  @param  numVertices Number of vertices to update.
-   ///  @param  layout      Layout information of the neural network.
-   ///  @param  ineurons    The Neuron list to search from.
-   ///  @param  isynapses   The Synapse list to search from.
-   void createSynapsesFromWeights(const int numVertices, Layout *layout, AllVertices &vertices, AllEdges &synapses);
+		///  Update the connections status in every epoch.
+		///
+		///  @param  neurons  The Neuron list to search from.
+		///  @param  layout   Layout information of the neural network.
+		///  @return true if successful, false otherwise.
+		virtual bool updateConnections(AllVertices& vertices, Layout* layout);
+
+		///  Creates synapses from synapse weights saved in the serialization file.
+		///
+		///  @param  numVertices Number of vertices to update.
+		///  @param  layout      Layout information of the neural network.
+		///  @param  ineurons    The Neuron list to search from.
+		///  @param  isynapses   The Synapse list to search from.
+		void createSynapsesFromWeights(const int numVertices, Layout* layout, AllVertices& vertices,
+		                               AllEdges& synapses);
 
 #ifdef __CUDACC__
    public:
@@ -95,25 +96,23 @@ public:
        ///  @param  layout              Layout information of the neural network.
        virtual void updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout);
 #else
-public:
-   ///  Update the weight of the Synapses in the simulation.
-   ///  Note: Platform Dependent.
-   ///
-   ///  @param  numVertices Number of vertices to update.
-   ///  @param  ineurons    The Neuron list to search from.
-   ///  @param  isynapses   The Synapse list to search from.
-   virtual void
-   updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &synapses, Layout *layout);
+	public:
+		///  Update the weight of the Synapses in the simulation.
+		///  Note: Platform Dependent.
+		///
+		///  @param  numVertices Number of vertices to update.
+		///  @param  ineurons    The Neuron list to search from.
+		///  @param  isynapses   The Synapse list to search from.
+		virtual void
+			updateSynapsesWeights(const int numVertices, AllVertices& vertices, AllEdges& synapses, Layout* layout);
 
 #endif
 
-protected:
+	protected:
+		std::shared_ptr<AllEdges> edges_;
 
-   std::shared_ptr<AllEdges> edges_;
+		std::shared_ptr<EdgeIndexMap> synapseIndexMap_;
 
-   std::shared_ptr<EdgeIndexMap> synapseIndexMap_;
-
-   log4cplus::Logger fileLogger_;
-   log4cplus::Logger edgeLogger_;
+		log4cplus::Logger fileLogger_;
+		log4cplus::Logger edgeLogger_;
 };
-

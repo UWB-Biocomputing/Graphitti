@@ -13,8 +13,7 @@
 
 #include <vector>
 
- 
 
-void getValueList(const char *val_string, std::vector<int> *value_list);
+void getValueList(const char* val_string, std::vector<int>* value_list);
 
 #endif

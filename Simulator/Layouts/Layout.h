@@ -21,84 +21,84 @@
 
 #include <log4cplus/loggingmacros.h>
 
-#include "Utils/Global.h"
 #include "AllVertices.h"
+#include "Utils/Global.h"
 
 class AllVertices;
 
 class Layout {
-public:
-   Layout();
+	public:
+		Layout();
 
-   virtual ~Layout();
+		virtual ~Layout();
 
-   std::shared_ptr<AllVertices> getVertices() const;
+		std::shared_ptr<AllVertices> getVertices() const;
 
-   /// Setup the internal structure of the class.
-   /// Allocate memories to store all layout state.
-   virtual void setupLayout();
+		/// Setup the internal structure of the class.
+		/// Allocate memories to store all layout state.
+		virtual void setupLayout();
 
-   /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters() = 0;
+		/// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
+		virtual void loadParameters() = 0;
 
-   /// Prints out all parameters to logging file. Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const;
+		/// Prints out all parameters to logging file. Registered to OperationManager as Operation::printParameters
+		virtual void printParameters() const;
 
-   /// Creates a neurons type map.
-   /// @param  numVertices number of the neurons to have in the type map.
-   virtual void generateVertexTypeMap(int numVertices);
+		/// Creates a neurons type map.
+		/// @param  numVertices number of the neurons to have in the type map.
+		virtual void generateVertexTypeMap(int numVertices);
 
-   /// Populates the starter map.
-   /// Selects num_endogenously_active_neurons excitory neurons
-   /// and converts them into starter neurons.
-   /// @param  numVertices number of vertices to have in the map.
-   virtual void initStarterMap(const int numVertices);
+		/// Populates the starter map.
+		/// Selects num_endogenously_active_neurons excitory neurons
+		/// and converts them into starter neurons.
+		/// @param  numVertices number of vertices to have in the map.
+		virtual void initStarterMap(const int numVertices);
 
-   /// Returns the type of synapse at the given coordinates
-   /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
-   /// @param    destVertex integer that points to a Neuron in the type map as a destination.
-   /// @return type of the synapse.
-   virtual edgeType edgType(const int srcVertex, const int destVertex) = 0;
+		/// Returns the type of synapse at the given coordinates
+		/// @param    srcVertex  integer that points to a Neuron in the type map as a source.
+		/// @param    destVertex integer that points to a Neuron in the type map as a destination.
+		/// @return type of the synapse.
+		virtual edgeType edgType(const int srcVertex, const int destVertex) = 0;
 
-   VectorMatrix *xloc_;  ///< Store neuron i's x location.
+		VectorMatrix* xloc_; ///< Store neuron i's x location.
 
-   VectorMatrix *yloc_;   ///< Store neuron i's y location.
+		VectorMatrix* yloc_; ///< Store neuron i's y location.
 
-   CompleteMatrix *dist2_;  ///< Inter-neuron distance squared.
+		CompleteMatrix* dist2_; ///< Inter-neuron distance squared.
 
-   CompleteMatrix *dist_;    ///< The true inter-neuron distance.
+		CompleteMatrix* dist_; ///< The true inter-neuron distance.
 
-   std::vector<int> probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
+		std::vector<int> probedNeuronList_;
+		///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
 
-   vertexType *vertexTypeMap_;    ///< The vertex type map (INH, EXC).
+		vertexType* vertexTypeMap_; ///< The vertex type map (INH, EXC).
 
-   bool *starterMap_; ///< The starter existence map (T/F).
+		bool* starterMap_; ///< The starter existence map (T/F).
 
-   BGSIZE numEndogenouslyActiveNeurons_;    ///< Number of endogenously active neurons.
+		BGSIZE numEndogenouslyActiveNeurons_; ///< Number of endogenously active neurons.
 
-   BGSIZE numCallerVertices_;    ///< Number of caller vertices.
+		BGSIZE numCallerVertices_; ///< Number of caller vertices.
 
 
-protected:
-   std::shared_ptr<AllVertices> vertices_;
+	protected:
+		std::shared_ptr<AllVertices> vertices_;
 
-   std::vector<int> endogenouslyActiveNeuronList_;    ///< Endogenously active neurons list.
+		std::vector<int> endogenouslyActiveNeuronList_; ///< Endogenously active neurons list.
 
-   std::vector<int> inhibitoryNeuronLayout_;    ///< Inhibitory neurons list.
+		std::vector<int> inhibitoryNeuronLayout_; ///< Inhibitory neurons list.
 
-   std::vector<int> callerVertexList_;    ///< Caller vertex list.
+		std::vector<int> callerVertexList_; ///< Caller vertex list.
 
-   std::vector<int> psapVertexList_;    ///< PSAP vertex list.
-   
-   std::vector<int> responderVertexList_;    ///< Responder vertex list.
+		std::vector<int> psapVertexList_; ///< PSAP vertex list.
 
-   log4cplus::Logger fileLogger_;
+		std::vector<int> responderVertexList_; ///< Responder vertex list.
 
-private:
-   /// initialize the location maps (xloc and yloc).
-   void initVerticesLocs();
+		log4cplus::Logger fileLogger_;
 
-   bool gridLayout_;    ///< True if grid layout.
+	private:
+		/// initialize the location maps (xloc and yloc).
+		void initVerticesLocs();
+
+		bool gridLayout_; ///< True if grid layout.
 
 };
-

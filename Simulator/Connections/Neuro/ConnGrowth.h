@@ -77,47 +77,47 @@
 #include <cereal/types/vector.hpp>
 
 class ConnGrowth : public Connections {
-public:
-   ConnGrowth();
+	public:
+		ConnGrowth();
 
-   virtual ~ConnGrowth();
+		~ConnGrowth() override;
 
-   static Connections *Create() { return new ConnGrowth(); }
+		static Connections* Create() { return new ConnGrowth(); }
 
-   ///  Setup the internal structure of the class (allocate memories and initialize them).
-   ///
-   ///  @param  layout    Layout information of the neural network.
-   ///  @param  neurons   The Neuron list to search from.
-   ///  @param  synapses  The Synapse list to search from.
-   virtual void setupConnections(Layout *layout, AllVertices *neurons, AllEdges *synapses) override;
+		///  Setup the internal structure of the class (allocate memories and initialize them).
+		///
+		///  @param  layout    Layout information of the neural network.
+		///  @param  neurons   The Neuron list to search from.
+		///  @param  synapses  The Synapse list to search from.
+		void setupConnections(Layout* layout, AllVertices* neurons, AllEdges* synapses) override;
 
-   /// Load member variables from configuration file.
-   /// Registered to OperationManager as Operations::op::loadParameters
-   virtual void loadParameters() override;
+		/// Load member variables from configuration file.
+		/// Registered to OperationManager as Operations::op::loadParameters
+		void loadParameters() override;
 
-   ///  Prints out all parameters to logging file.
-   ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const override;
+		///  Prints out all parameters to logging file.
+		///  Registered to OperationManager as Operation::printParameters
+		void printParameters() const override;
 
-   ///  Update the connections status in every epoch.
-   ///
-   ///  @param  neurons  The Neuron list to search from.
-   ///  @param  layout   Layout information of the neural network.
-   ///  @return true if successful, false otherwise.
-   virtual bool updateConnections(AllVertices &neurons, Layout *layout) override;
+		///  Update the connections status in every epoch.
+		///
+		///  @param  neurons  The Neuron list to search from.
+		///  @param  layout   Layout information of the neural network.
+		///  @return true if successful, false otherwise.
+		bool updateConnections(AllVertices& neurons, Layout* layout) override;
 
-   ///  Cereal serialization method
-   ///  (Serializes radii)
-   template<class Archive>
-   void save(Archive &archive) const;
+		///  Cereal serialization method
+		///  (Serializes radii)
+		template <class Archive>
+		void save(Archive& archive) const;
 
-   ///  Cereal deserialization method
-   ///  (Deserializes radii)
-   template<class Archive>
-   void load(Archive &archive);
+		///  Cereal deserialization method
+		///  (Deserializes radii)
+		template <class Archive>
+		void load(Archive& archive);
 
-   ///  Prints radii
-   void printRadii() const;
+		///  Prints radii
+		void printRadii() const;
 
 #ifdef __CUDACC__
    ///  Update the weights of the Synapses in the simulation. To be clear,
@@ -137,115 +137,112 @@ public:
          AllSpikingSynapsesDeviceProperties* allEdgesDevice,
          Layout *layout) override;
 #else
-   ///  Update the weights of the Synapses in the simulation. To be clear,
-   ///  iterates through all source and destination neurons and updates their
-   ///  synaptic strengths from the weight matrix.
-   ///  Note: Platform Dependent.
-   ///
-   ///  @param  numVertices  Number of vertices to update.
-   ///  @param  ineurons    The AllVertices object.
-   ///  @param  isynapses   The AllEdges object.
-   ///  @param  layout      The Layout object.
-   virtual void
-   updateSynapsesWeights(const int numVertices,
-         AllVertices &vertices,
-         AllEdges &synapses,
-         Layout *layout) override;
+		///  Update the weights of the Synapses in the simulation. To be clear,
+		///  iterates through all source and destination neurons and updates their
+		///  synaptic strengths from the weight matrix.
+		///  Note: Platform Dependent.
+		///
+		///  @param  numVertices  Number of vertices to update.
+		///  @param  ineurons    The AllVertices object.
+		///  @param  isynapses   The AllEdges object.
+		///  @param  layout      The Layout object.
+		void
+			updateSynapsesWeights(const int numVertices,
+			                      AllVertices& vertices,
+			                      AllEdges& synapses,
+			                      Layout* layout) override;
 
 #endif
-private:
-   ///  Calculates firing rates, neuron radii change and assign new values.
-   ///
-   ///  @param  neurons  The Neuron list to search from.
-   void updateConns(AllVertices &neurons);
+	private:
+		///  Calculates firing rates, neuron radii change and assign new values.
+		///
+		///  @param  neurons  The Neuron list to search from.
+		void updateConns(AllVertices& neurons);
 
-   ///  Update the distance between frontiers of Neurons.
-   ///
-   ///  @param  numVertices  Number of vertices to update.
-   ///  @param  layout      Layout information of the neural network.
-   void updateFrontiers(const int numVertices, Layout *layout);
+		///  Update the distance between frontiers of Neurons.
+		///
+		///  @param  numVertices  Number of vertices to update.
+		///  @param  layout      Layout information of the neural network.
+		void updateFrontiers(const int numVertices, Layout* layout);
 
-   ///  Update the areas of overlap in between Neurons.
-   ///
-   ///  @param  numVertices  Number of vertices to update.
-   ///  @param  layout      Layout information of the neural network.
-   void updateOverlap(BGFLOAT numVertices, Layout *layout);
+		///  Update the areas of overlap in between Neurons.
+		///
+		///  @param  numVertices  Number of vertices to update.
+		///  @param  layout      Layout information of the neural network.
+		void updateOverlap(BGFLOAT numVertices, Layout* layout);
 
-public:
-   struct GrowthParams {
-      BGFLOAT epsilon;     ///< null firing rate(zero outgrowth)
-      BGFLOAT beta;        ///< sensitivity of outgrowth to firing rate
-      BGFLOAT rho;         ///< outgrowth rate constant
-      BGFLOAT targetRate;  ///<  Spikes/second
-      BGFLOAT maxRate;     ///<  = targetRate / epsilon;
-      BGFLOAT minRadius;   ///<  To ensure that even rapidly-firing neurons will connect to
-                           ///< other neurons, when within their RFS.
-      BGFLOAT startRadius; ///< No need to wait a long time before RFs start to overlap
-   };
+	public:
+		struct GrowthParams {
+			BGFLOAT epsilon; ///< null firing rate(zero outgrowth)
+			BGFLOAT beta; ///< sensitivity of outgrowth to firing rate
+			BGFLOAT rho; ///< outgrowth rate constant
+			BGFLOAT targetRate; ///<  Spikes/second
+			BGFLOAT maxRate; ///<  = targetRate / epsilon;
+			BGFLOAT minRadius;
+			///<  To ensure that even rapidly-firing neurons will connect to
+			                          ///< other neurons, when within their RFS.
+			BGFLOAT startRadius; ///< No need to wait a long time before RFs start to overlap
+		};
 
-   /// structure to keep growth parameters
-   GrowthParams growthParams_;
+		/// structure to keep growth parameters
+		GrowthParams growthParams_;
 
-   /// spike count for each epoch
-   int *spikeCounts_;
+		/// spike count for each epoch
+		int* spikeCounts_;
 
-   /// radii size
-   int radiiSize_;
+		/// radii size
+		int radiiSize_;
 
-   /// synapse weight
-   CompleteMatrix *W_;
+		/// synapse weight
+		CompleteMatrix* W_;
 
-   /// neuron radii
-   VectorMatrix *radii_;
+		/// neuron radii
+		VectorMatrix* radii_;
 
-   /// spiking rate
-   VectorMatrix *rates_;
+		/// spiking rate
+		VectorMatrix* rates_;
 
-   /// distance between connection frontiers
-   CompleteMatrix *delta_;
+		/// distance between connection frontiers
+		CompleteMatrix* delta_;
 
-   /// areas of overlap
-   CompleteMatrix *area_;
+		/// areas of overlap
+		CompleteMatrix* area_;
 
-   /// neuron's outgrowth
-   VectorMatrix *outgrowth_;
+		/// neuron's outgrowth
+		VectorMatrix* outgrowth_;
 
-   /// displacement of neuron radii
-   VectorMatrix *deltaR_;
+		/// displacement of neuron radii
+		VectorMatrix* deltaR_;
 
 };
 
 ///  Cereal serialization method
 ///  (Serializes radii)
-template<class Archive>
-void ConnGrowth::save(Archive &archive) const {
-   // uses vector to save radii
-   std::vector<BGFLOAT> radiiVector;
-   for (int i = 0; i < radiiSize_; i++) {
-      radiiVector.push_back((*radii_)[i]);
-   }
-   // serialization
-   archive(radiiVector);
+template <class Archive>
+void ConnGrowth::save(Archive& archive) const {
+	// uses vector to save radii
+	std::vector<BGFLOAT> radiiVector;
+	for (int i = 0; i < radiiSize_; i++) radiiVector.push_back((*radii_)[i]);
+	// serialization
+	archive(radiiVector);
 }
 
 ///  Cereal deserialization method
 ///  (Deserializes radii)
-template<class Archive>
-void ConnGrowth::load(Archive &archive) {
-   // uses vector to load radii
-   std::vector<BGFLOAT> radiiVector;
+template <class Archive>
+void ConnGrowth::load(Archive& archive) {
+	// uses vector to load radii
+	std::vector<BGFLOAT> radiiVector;
 
-   // deserializing data to this vector
-   archive(radiiVector);
+	// deserializing data to this vector
+	archive(radiiVector);
 
-   // check to see if serialized data size matches object size
-   if (radiiVector.size() != radiiSize_) {
-      std::cerr << "Failed deserializing radii. Please verify totalVertices data member." << std::endl;
-      throw cereal::Exception("Deserialization Error");
-   }
+	// check to see if serialized data size matches object size
+	if (radiiVector.size() != radiiSize_) {
+		std::cerr << "Failed deserializing radii. Please verify totalVertices data member." << std::endl;
+		throw cereal::Exception("Deserialization Error");
+	}
 
-   // assigns serialized data to objects
-   for (int i = 0; i < radiiSize_; i++) {
-      (*radii_)[i] = radiiVector[i];
-   }
+	// assigns serialized data to objects
+	for (int i = 0; i < radiiSize_; i++) (*radii_)[i] = radiiVector[i];
 }

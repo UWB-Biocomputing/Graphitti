@@ -140,10 +140,10 @@ int main(int argc, char **argv)
         shrLog(" ...generating random numbers on CPU using reference generator\n");
         RandomRef(h_RandCPU, N_PER_RNG, SEED);
 
-        #ifdef DO_BOXMULLER
+#ifdef DO_BOXMULLER
             shrLog(" ...applying Box-Muller transformation on CPU\n");
             BoxMullerRef(h_RandCPU, N_PER_RNG);
-        #endif
+#endif
 
         shrLog(" ...comparing the results\n\n");
         max_delta = 0;

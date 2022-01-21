@@ -73,26 +73,25 @@
  */
 #pragma once
 
-#include "Global.h"
 #include "AllIFNeurons.h"
 #include "AllSpikingSynapses.h"
+#include "Global.h"
 
 // Class to hold all data necessary for all the Neurons.
 class AllLIFNeurons : public AllIFNeurons {
-public:
+	public:
+		AllLIFNeurons();
 
-   AllLIFNeurons();
+		~AllLIFNeurons() override;
 
-   virtual ~AllLIFNeurons();
+		///  Creates an instance of the class.
+		///
+		///  @return Reference to the instance of the class.
+		static AllVertices* Create() { return new AllLIFNeurons(); }
 
-   ///  Creates an instance of the class.
-   ///
-   ///  @return Reference to the instance of the class.
-   static AllVertices *Create() { return new AllLIFNeurons(); }
-
-   ///  Prints out all parameters of the neurons to logging file.
-   ///  Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const override;
+		///  Prints out all parameters of the neurons to logging file.
+		///  Registered to OperationManager as Operation::printParameters
+		void printParameters() const override;
 
 #ifdef __CUDACC__
    public:
@@ -107,19 +106,17 @@ public:
        ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
        virtual void advanceVertices(AllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice) override;
 
-#else  // !defined(USE_GPU)
-protected:
+#else  // !defined(__CUDACC__)
+	protected:
+		///  Helper for #advanceNeuron. Updates state of a single neuron.
+		///
+		///  @param  index Index of the neuron to update.
+		void advanceNeuron(const int index) override;
 
-   ///  Helper for #advanceNeuron. Updates state of a single neuron.
-   ///
-   ///  @param  index Index of the neuron to update.
-   virtual void advanceNeuron(const int index);
+		///  Initiates a firing of a neuron to connected neurons.
+		///
+		///  @param  index Index of the neuron to fire.
+		void fire(const int index) const override;
 
-   ///  Initiates a firing of a neuron to connected neurons.
-   ///
-   ///  @param  index Index of the neuron to fire.
-   virtual void fire(const int index) const;
-
-#endif // defined(USE_GPU)
+#endif // defined(__CUDACC__)
 };
-

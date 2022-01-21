@@ -47,8 +47,8 @@
 
 extern int g_debug_mask;
 
-#include <sstream>
 #include <cassert>
+#include <sstream>
 #include <vector>
 #ifdef _WIN32	//needs to be before #include "bgtypes.h" or the #define BGFLOAT will cause problems
 #include <windows.h>	//warning! windows.h also defines BGFLOAT
@@ -76,7 +76,7 @@ extern const BGFLOAT pi;
 extern MTRand initRNG;
 
 // A normalized random number generator.
-extern MTRand *noiseRNG;
+extern MTRand* noiseRNG;
 
 // The current simulation step.
 extern uint64_t g_simulationStep;
@@ -92,17 +92,17 @@ const int g_nMaxChunkSize = 100;
 // CALR: Caller radii
 // PSAP: PSAP nodes
 // RESP: Responder nodes
-enum vertexType { 
-    // Neuro
-    INH = 1, 
-    EXC = 2, 
-    // NG911
-    CALR = 3,
-    PSAP = 4,
-    RESP = 5, 
-    // UNDEF
-    VTYPE_UNDEF = 0 
-    };
+enum vertexType {
+	// Neuro
+	INH = 1,
+	EXC = 2,
+	// NG911
+	CALR = 3,
+	PSAP = 4,
+	RESP = 5,
+	// UNDEF
+	VTYPE_UNDEF = 0
+};
 
 // Edge types.
 // NEURO:
@@ -116,19 +116,20 @@ enum vertexType {
 //  RC - Responder to Caller
 //  PP - PSAP to PSAP 
 
-enum edgeType { 
-    // NEURO
-    II = 0, 
-    IE = 1, 
-    EI = 2, 
-    EE = 3, 
-    // NG911
-    CP = 4,
-    PR = 5,
-    RC = 6,
-    PP = 7,
-    // UNDEF
-    ETYPE_UNDEF = -1 };
+enum edgeType {
+	// NEURO
+	II = 0,
+	IE = 1,
+	EI = 2,
+	EE = 3,
+	// NG911
+	CP = 4,
+	PR = 5,
+	RC = 6,
+	PP = 7,
+	// UNDEF
+	ETYPE_UNDEF = -1
+};
 
 // The default membrane capacitance.
 #define DEFAULT_Cm		(3e-8)

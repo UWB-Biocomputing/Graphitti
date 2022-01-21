@@ -7,12 +7,12 @@
  *          Self-allocating and de-allocating.
  */
 
+#include <algorithm>
 #include <iostream>
 #include <sstream>
-#include <algorithm>
 
-#include "Global.h"
 #include "SparseMatrix.h"
+#include "Global.h"
 
 extern bool debugSparseMatrix;
 
@@ -79,8 +79,10 @@ void SparseMatrix::HashTable::insert(Element* el) {
 
 	// Find first location to insert (if Element isn't in the table)
 	while ((table[loc] != &deleted) && (table[loc] != nullptr)) {
-		if (*table[loc] == *el) throw Matrix_invalid_argument(
-			"Attempt to insert duplicate Element into SparseMatrix hash table [1]");
+		if (*table[loc] == *el) {
+			throw Matrix_invalid_argument(
+				"Attempt to insert duplicate Element into SparseMatrix hash table [1]");
+		}
 		loc = (loc + 1) % capacity;
 		if (loc == start) throw Matrix_invalid_argument("Hashtable insert wraparound: unable to insert Element [1]");
 	}
@@ -90,11 +92,15 @@ void SparseMatrix::HashTable::insert(Element* el) {
 	if (table[loc] == &deleted) {
 		int loc2 = (loc + 1) % capacity;
 		while (table[loc2] != nullptr) {
-			if (loc2 == start) throw Matrix_invalid_argument(
-				"Hashtable insert wraparound: unable to insert Element [2]");
+			if (loc2 == start) {
+				throw Matrix_invalid_argument(
+					"Hashtable insert wraparound: unable to insert Element [2]");
+			}
 			loc2 = (loc2 + 1) % capacity;
-			if (*table[loc2] == *el) throw Matrix_invalid_argument(
-				"Attempt to insert duplicate Element into SparseMatrix hash table [2]");
+			if (*table[loc2] == *el) {
+				throw Matrix_invalid_argument(
+					"Attempt to insert duplicate Element into SparseMatrix hash table [2]");
+			}
 		}
 	}
 
@@ -168,8 +174,10 @@ SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, TiXmlElement* e)
 	DEBUG_SPARSE(std::cerr << "Creating SparseMatrix, size: ";)
 
 	// Bail out if we're being asked to create nonsense
-	if (!((rows > 0) && (columns > 0))) throw Matrix_invalid_argument(
-		"SparseMatrix::SparseMatrix(): Asked to create zero-size");
+	if (!((rows > 0) && (columns > 0))) {
+		throw Matrix_invalid_argument(
+			"SparseMatrix::SparseMatrix(): Asked to create zero-size");
+	}
 
 	// We're a 2D Matrix, even if only one row or column
 	dimensions = 2;
@@ -178,10 +186,14 @@ SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, TiXmlElement* e)
 
 	// Allocate storage for row and column lists (hash table already
 	// allocated at initialization time; see initializer std::list, above).
-	if ((theRows = new std::list<Element*>[rows]) == nullptr) throw Matrix_bad_alloc(
-		"Failed allocating storage for SparseMatrix.");
-	if ((theColumns = new std::list<Element*>[columns]) == nullptr) throw Matrix_bad_alloc(
-		"Failed allocating storage for SparseMatrix.");
+	if ((theRows = new std::list<Element*>[rows]) == nullptr) {
+		throw Matrix_bad_alloc(
+			"Failed allocating storage for SparseMatrix.");
+	}
+	if ((theColumns = new std::list<Element*>[columns]) == nullptr) {
+		throw Matrix_bad_alloc(
+			"Failed allocating storage for SparseMatrix.");
+	}
 
 	// Initialize from the XML
 	for (TiXmlElement* rowElement = e->FirstChildElement("Row");
@@ -208,8 +220,10 @@ SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, const char* v)
 	  theElements(MaxElements(r, c), c, this) {
 	DEBUG_SPARSE(std::cerr << "\tCreating diagonal sparse matrix" << std::endl;)
 	// Bail out if we're being asked to create nonsense
-	if (!((rows > 0) && (columns > 0))) throw Matrix_invalid_argument(
-		"SparseMatrix::SparseMatrix(): Asked to create zero-size");
+	if (!((rows > 0) && (columns > 0))) {
+		throw Matrix_invalid_argument(
+			"SparseMatrix::SparseMatrix(): Asked to create zero-size");
+	}
 
 	// We're a 2D Matrix, even if only one row or column
 	dimensions = 2;
@@ -218,10 +232,14 @@ SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, const char* v)
 
 	// Allocate storage for row and column lists (hash table already
 	// allocated at initialization time; see initializer std::list, above).
-	if ((theRows = new std::list<Element*>[rows]) == nullptr) throw Matrix_bad_alloc(
-		"Failed allocating storage for SparseMatrix.");
-	if ((theColumns = new std::list<Element*>[columns]) == nullptr) throw Matrix_bad_alloc(
-		"Failed allocating storage for SparseMatrix.");
+	if ((theRows = new std::list<Element*>[rows]) == nullptr) {
+		throw Matrix_bad_alloc(
+			"Failed allocating storage for SparseMatrix.");
+	}
+	if ((theColumns = new std::list<Element*>[columns]) == nullptr) {
+		throw Matrix_bad_alloc(
+			"Failed allocating storage for SparseMatrix.");
+	}
 
 	if (multiplier == 0.0) // If we're empty, then we're done.
 		return;
@@ -233,8 +251,10 @@ SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, const char* v)
 			Element* el;
 			BGFLOAT val;
 			valStream >> val;
-			if ((el = new Element(i, i, val * multiplier)) == nullptr) throw Matrix_bad_alloc(
-				"Failed allocating storage for SparseMatrix.");
+			if ((el = new Element(i, i, val * multiplier)) == nullptr) {
+				throw Matrix_bad_alloc(
+					"Failed allocating storage for SparseMatrix.");
+			}
 			theRows[i].push_back(el);
 			theColumns[i].push_back(el);
 			try { theElements.insert(el); }
@@ -248,8 +268,10 @@ SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, const char* v)
 		// No string of data; initialize from multipler only
 		for (int i = 0; i < rows; i++) {
 			Element* el;
-			if ((el = new Element(i, i, multiplier)) == nullptr) throw Matrix_bad_alloc(
-				"Failed allocating storage for SparseMatrix.");
+			if ((el = new Element(i, i, multiplier)) == nullptr) {
+				throw Matrix_bad_alloc(
+					"Failed allocating storage for SparseMatrix.");
+			}
 			theRows[i].push_back(el);
 			theColumns[i].push_back(el);
 			try { theElements.insert(el); }
@@ -274,8 +296,10 @@ SparseMatrix::SparseMatrix(int r, int c)
 	  theElements(MaxElements(r, c), c, this) {
 	DEBUG_SPARSE(std::cerr << "\tCreating empty sparse matrix: ";)
 	// Bail out if we're being asked to create nonsense
-	if (!((rows > 0) && (columns > 0))) throw Matrix_invalid_argument(
-		"SparseMatrix::SparseMatrix(): Asked to create zero-size");
+	if (!((rows > 0) && (columns > 0))) {
+		throw Matrix_invalid_argument(
+			"SparseMatrix::SparseMatrix(): Asked to create zero-size");
+	}
 
 	// We're a 2D Matrix, even if only one row or column
 	dimensions = 2;
@@ -284,10 +308,14 @@ SparseMatrix::SparseMatrix(int r, int c)
 
 	// Allocate storage for row and column lists (hash table already
 	// allocated at initialization time; see initializer std::list, above).
-	if ((theRows = new std::list<Element*>[rows]) == nullptr) throw Matrix_bad_alloc(
-		"Failed allocating storage for SparseMatrix.");
-	if ((theColumns = new std::list<Element*>[columns]) == nullptr) throw Matrix_bad_alloc(
-		"Failed allocating storage for SparseMatrix.");
+	if ((theRows = new std::list<Element*>[rows]) == nullptr) {
+		throw Matrix_bad_alloc(
+			"Failed allocating storage for SparseMatrix.");
+	}
+	if ((theColumns = new std::list<Element*>[columns]) == nullptr) {
+		throw Matrix_bad_alloc(
+			"Failed allocating storage for SparseMatrix.");
+	}
 
 	// And that's all, folks!
 }
@@ -307,10 +335,14 @@ SparseMatrix::SparseMatrix(const SparseMatrix& oldM)
 
 	// Allocate storage for row and column lists (hash table already
 	// allocated at initialization time; see initializer std::list, above).
-	if ((theRows = new std::list<Element*>[rows]) == nullptr) throw Matrix_bad_alloc(
-		"Failed allocating storage for SparseMatrix.");
-	if ((theColumns = new std::list<Element*>[columns]) == nullptr) throw Matrix_bad_alloc(
-		"Failed allocating storage for SparseMatrix.");
+	if ((theRows = new std::list<Element*>[rows]) == nullptr) {
+		throw Matrix_bad_alloc(
+			"Failed allocating storage for SparseMatrix.");
+	}
+	if ((theColumns = new std::list<Element*>[columns]) == nullptr) {
+		throw Matrix_bad_alloc(
+			"Failed allocating storage for SparseMatrix.");
+	}
 
 	try { copy(oldM); }
 	catch (Matrix_invalid_argument e) {
@@ -366,10 +398,11 @@ void SparseMatrix::clear(void) {
 	// called in response to us deleting the column array and when
 	// the hash table is cleared.
 	if (theRows != nullptr) {
-		for (int i = 0; i < rows; i++)
-			for (std::list<Element*>::iterator it = theRows[i].begin();
+		for (int i = 0; i < rows; i++) {
+			for (auto it = theRows[i].begin();
 			     it != theRows[i].end(); it++)
 				delete *it;
+		}
 		delete [] theRows;
 	}
 
@@ -402,9 +435,9 @@ void SparseMatrix::copy(const SparseMatrix& source) {
 	// We will access the source row-wise, inserting new Elements into
 	// the current SparseMatrix's row and column lists.
 	for (int i = 0; i < rows; i++) {
-		for (std::list<Element*>::iterator it = source.theRows[i].begin();
+		for (auto it = source.theRows[i].begin();
 		     it != source.theRows[i].end(); it++) {
-			Element* el = new Element(i, (*it)->column, (*it)->value);
+			auto el = new Element(i, (*it)->column, (*it)->value);
 			theRows[i].push_back(el);
 			theColumns[el->column].push_back(el);
 			try { theElements.insert(el); }
@@ -426,8 +459,10 @@ void SparseMatrix::copy(const SparseMatrix& source) {
 // Read row from XML and add items to SparseMatrix
 void SparseMatrix::rowFromXML(TiXmlElement* rowElement) {
 	int rowNum;
-	if (rowElement->QueryIntAttribute("number", &rowNum) != TIXML_SUCCESS) throw Matrix_invalid_argument(
-		"Attempt to read SparseMatrix row without a number");
+	if (rowElement->QueryIntAttribute("number", &rowNum) != TIXML_SUCCESS) {
+		throw Matrix_invalid_argument(
+			"Attempt to read SparseMatrix row without a number");
+	}
 
 	// Iterate through the entries, inserting them into the row, column,
 	// and hash table
@@ -435,11 +470,15 @@ void SparseMatrix::rowFromXML(TiXmlElement* rowElement) {
 	     child != nullptr; child = child->NextSiblingElement("Entry")) {
 		int colNum;
 		BGFLOAT val;
-		if (child->QueryIntAttribute("number", &colNum) != TIXML_SUCCESS) throw Matrix_invalid_argument(
-			"Attempt to read SparseMatrix Entry without a number");
-		if (child->QueryFLOATAttribute("value", &val) != TIXML_SUCCESS) throw Matrix_invalid_argument(
-			"Attempt to read SparseMatrix Entry without a value");
-		Element* el = new Element(rowNum, colNum, val);
+		if (child->QueryIntAttribute("number", &colNum) != TIXML_SUCCESS) {
+			throw Matrix_invalid_argument(
+				"Attempt to read SparseMatrix Entry without a number");
+		}
+		if (child->QueryFLOATAttribute("value", &val) != TIXML_SUCCESS) {
+			throw Matrix_invalid_argument(
+				"Attempt to read SparseMatrix Entry without a value");
+		}
+		auto el = new Element(rowNum, colNum, val);
 		theRows[rowNum].push_back(el);
 		theColumns[colNum].push_back(el);
 		try { theElements.insert(el); }
@@ -456,14 +495,18 @@ void SparseMatrix::alloc(void) {
 	if (theRows != nullptr) throw MatrixException("Attempt to allocate storage for non-cleared SparseMatrix");
 
 	// Allocate the 1D array
-	if ((theRows = new std::list<Element*>[rows]) == nullptr) throw Matrix_bad_alloc(
-		"Failed allocating storage for SparseMatrix.");
+	if ((theRows = new std::list<Element*>[rows]) == nullptr) {
+		throw Matrix_bad_alloc(
+			"Failed allocating storage for SparseMatrix.");
+	}
 
 	if (theColumns != nullptr) throw MatrixException("Attempt to allocate storage for non-cleared SparseMatrix");
 
 	// Allocate the 1D array
-	if ((theColumns = new std::list<Element*>[columns]) == nullptr) throw Matrix_bad_alloc(
-		"Failed allocating storage for SparseMatrix.");
+	if ((theColumns = new std::list<Element*>[columns]) == nullptr) {
+		throw Matrix_bad_alloc(
+			"Failed allocating storage for SparseMatrix.");
+	}
 
 	// Set the hash table capacity
 	theElements.resize(MaxElements(rows, columns), columns);
@@ -482,12 +525,13 @@ void SparseMatrix::Print(std::ostream& os) const {
 	for (int i = 0; i < rows; i++) {
 		if (theRows[i].begin() == theRows[i].end()) continue;
 		os << "   <Row number=\"" << i << "\">" << std::endl;
-		for (std::list<Element*>::iterator it = theRows[i].begin();
+		for (auto it = theRows[i].begin();
 		     it != theRows[i].end(); it++) {
 			// Prune out any left over zero elements
-			if ((*it)->value != 0.0)
+			if ((*it)->value != 0.0) {
 				os << "      <Entry number=\"" << (*it)->column
 					<< "\" value=\"" << (*it)->value << "\"/>" << std::endl;
+			}
 		}
 		os << "   </Row>" << std::endl;
 	}
@@ -532,8 +576,10 @@ BGFLOAT& SparseMatrix::operator()(int r, int c) {
 	// if the element wasn't found. We will rely on other methods to
 	// eliminate zero elements "on the fly".
 	if (el == nullptr) {
-		if ((el = new Element(r, c, 0.0)) == nullptr) throw Matrix_bad_alloc(
-			"Failed allocating storage for SparseMatrix.");
+		if ((el = new Element(r, c, 0.0)) == nullptr) {
+			throw Matrix_bad_alloc(
+				"Failed allocating storage for SparseMatrix.");
+		}
 		theRows[r].push_back(el);
 		theColumns[c].push_back(el);
 		try { theElements.insert(el); }
@@ -553,10 +599,11 @@ const SparseMatrix SparseMatrix::operator-() const {
 	SparseMatrix result(*this);
 
 	// Iterate over all elements, negating their values
-	for (int i = 0; i < result.rows; i++)
-		for (std::list<Element*>::iterator it = result.theRows[i].begin();
+	for (int i = 0; i < result.rows; i++) {
+		for (auto it = result.theRows[i].begin();
 		     it != result.theRows[i].end(); it++)
 			(*it)->value = - (*it)->value;
+	}
 
 	return result;
 }
@@ -580,9 +627,8 @@ const SparseMatrix SparseMatrix::operator*(const SparseMatrix& rhs) const {
 
 // Vector times a Sparse matrix
 const VectorMatrix operator*(const VectorMatrix& v, const SparseMatrix& m) {
-	if (m.rows != v.size) {
-		throw Matrix_domain_error("Illegal vector/matrix product. Rows of matrix must equal vector size.");
-	}
+	if (m.rows != v.size) throw Matrix_domain_error(
+		"Illegal vector/matrix product. Rows of matrix must equal vector size.");
 
 	// the result is a vector the same size as m columns
 	VectorMatrix result("complete", "const", 1, m.columns, 0.0, "");
@@ -593,7 +639,7 @@ const VectorMatrix operator*(const VectorMatrix& v, const SparseMatrix& m) {
 	// of those products.
 	for (int col = 0; col < m.columns; col++) {
 		BGFLOAT sum = 0.0;
-		for (std::list<SparseMatrix::Element*>::iterator el = m.theColumns[col].begin();
+		for (auto el = m.theColumns[col].begin();
 		     el != m.theColumns[col].end(); el++)
 			sum += (*el)->value * v[(*el)->row];
 		result[col] = sum;

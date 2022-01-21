@@ -7,8 +7,8 @@
  */
 
 #include "LayoutFactory.h"
-#include "FixedLayout.h"
 #include "DynamicLayout.h"
+#include "FixedLayout.h"
 #include "Layout911.h"
 
 /// Constructor is private to keep a singleton instance of this class.
@@ -41,8 +41,7 @@ std::shared_ptr<Layout> LayoutFactory::createLayout(const std::string& className
 /// The calling method uses this retrieval mechanism in
 /// value assignment.
 Layout* LayoutFactory::invokeCreateFunction(const std::string& className) {
-	for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
-		if (className == i->first) return i->second();
-	}
+	for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) if (className == i->first) return i->
+		second();
 	return nullptr;
 }

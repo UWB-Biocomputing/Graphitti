@@ -32,68 +32,74 @@ class AllVertices;
 // typedef void (*fpCreateSynapse_t)(void*, const int, const int, int, int, BGFLOAT*, const BGFLOAT, edgeType);
 
 // enumerate all non-abstract edge classes.
-enum enumClassSynapses {classAllSpikingSynapses, classAllDSSynapses, classAllSTDPSynapses, classAllDynamicSTDPSynapses, undefClassSynapses};
+enum enumClassSynapses {
+	classAllSpikingSynapses,
+	classAllDSSynapses,
+	classAllSTDPSynapses,
+	classAllDynamicSTDPSynapses,
+	undefClassSynapses
+};
 
 class AllNeuroEdges : public AllEdges {
-public:
-   AllNeuroEdges();
+	public:
+		AllNeuroEdges();
 
-   virtual ~AllNeuroEdges();
+		~AllNeuroEdges() override;
 
-   ///  Setup the internal structure of the class (allocate memories and initialize them).
-   virtual void setupEdges() override;
+		///  Setup the internal structure of the class (allocate memories and initialize them).
+		void setupEdges() override;
 
-   ///  Reset time varying state vars and recompute decay.
-   ///
-   ///  @param  iEdg     Index of the edge to set.
-   ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT);
+		///  Reset time varying state vars and recompute decay.
+		///
+		///  @param  iEdg     Index of the edge to set.
+		///  @param  deltaT   Inner simulation step duration
+		virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT);
 
-   // ///  Create a Synapse and connect it to the model.
-   // ///
-   // ///  @param  iEdg        Index of the edge to set.
-   // ///  @param  source      Coordinates of the source Neuron.
-   // ///  @param  dest        Coordinates of the destination Neuron.
-   // ///  @param  sumPoint    Summation point address.
-   // ///  @param  deltaT      Inner simulation step duration.
-   // ///  @param  type        Type of the Synapse to create.
-   // virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-   //                            edgeType type) override;
+		// ///  Create a Synapse and connect it to the model.
+		// ///
+		// ///  @param  iEdg        Index of the edge to set.
+		// ///  @param  source      Coordinates of the source Neuron.
+		// ///  @param  dest        Coordinates of the destination Neuron.
+		// ///  @param  sumPoint    Summation point address.
+		// ///  @param  deltaT      Inner simulation step duration.
+		// ///  @param  type        Type of the Synapse to create.
+		// virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
+		//                            edgeType type) override;
 
-   ///  Get the sign of the edgeType.
-   ///
-   ///  @param    type    edgeType I to I, I to E, E to I, or E to E
-   ///  @return   1 or -1, or 0 if error
-   int edgSign(const edgeType type);
+		///  Get the sign of the edgeType.
+		///
+		///  @param    type    edgeType I to I, I to E, E to I, or E to E
+		///  @return   1 or -1, or 0 if error
+		int edgSign(const edgeType type);
 
-   ///  Prints SynapsesProps data to console.
-   virtual void printSynapsesProps() const;
+		///  Prints SynapsesProps data to console.
+		virtual void printSynapsesProps() const;
 
-protected:
-   ///  Setup the internal structure of the class (allocate memories and initialize them).
-   ///
-   ///  @param  numVertices   Total number of vertices in the network.
-   ///  @param  maxEdges  Maximum number of edges per vertex.
-   virtual void setupEdges(const int numVertices, const int maxEdges) override;
+	protected:
+		///  Setup the internal structure of the class (allocate memories and initialize them).
+		///
+		///  @param  numVertices   Total number of vertices in the network.
+		///  @param  maxEdges  Maximum number of edges per vertex.
+		void setupEdges(const int numVertices, const int maxEdges) override;
 
-   ///  Sets the data for Synapse to input's data.
-   ///
-   ///  @param  input  istream to read from.
-   ///  @param  iEdg   Index of the edge to set.
-   virtual void readEdge(std::istream &input, const BGSIZE iEdg) override;
+		///  Sets the data for Synapse to input's data.
+		///
+		///  @param  input  istream to read from.
+		///  @param  iEdg   Index of the edge to set.
+		void readEdge(std::istream& input, const BGSIZE iEdg) override;
 
-   ///  Write the edge data to the stream.
-   ///
-   ///  @param  output  stream to print out to.
-   ///  @param  iEdg    Index of the edge to print out.
-   virtual void writeEdge(std::ostream &output, const BGSIZE iEdg) const override;
+		///  Write the edge data to the stream.
+		///
+		///  @param  output  stream to print out to.
+		///  @param  iEdg    Index of the edge to print out.
+		void writeEdge(std::ostream& output, const BGSIZE iEdg) const override;
 
-public:
-   /// The factor to adjust overlapping area to edge weight.
-   static constexpr BGFLOAT SYNAPSE_STRENGTH_ADJUSTMENT = 1.0e-8;
-      ///  The post-synaptic response is the result of whatever computation
-   ///  is going on in the edge.
-   BGFLOAT *psr_;
+	public:
+		/// The factor to adjust overlapping area to edge weight.
+		static constexpr BGFLOAT SYNAPSE_STRENGTH_ADJUSTMENT = 1.0e-8;
+		///  The post-synaptic response is the result of whatever computation
+	 ///  is going on in the edge.
+		BGFLOAT* psr_;
 };
 
 #if __CUDACC__
@@ -133,5 +139,4 @@ struct AllEdgesDeviceProperties
         ///  Usage: Used by destructor
         int countVertices_;
 };
-#endif 
-
+#endif

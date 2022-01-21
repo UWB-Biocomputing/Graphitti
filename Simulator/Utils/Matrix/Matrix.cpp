@@ -15,8 +15,8 @@
  * using only Matrix objects.
  */
 
-#include <iostream>
 #include "Matrix.h"
+#include <iostream>
 #include "BGTypes.h"
 
 // Initialize attributes at construction time

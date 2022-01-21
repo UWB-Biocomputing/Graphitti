@@ -121,7 +121,7 @@ __global__ void RandomGPU(
 	const int      tid = blockDim.x * blockIdx.x + threadIdx.x;
 	int iState, iState1, iStateM, iOut;
 	unsigned int mti, mti1, mtiM, x;
-	unsigned int matrix_a, mask_b, mask_c; 
+	unsigned int matrix_a, mask_b, mask_c;
 
     //Load bit-vector Mersenne Twister parameters
 	matrix_a = ds_MT[tid].matrix_a;
