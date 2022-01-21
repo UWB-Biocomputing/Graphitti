@@ -63,7 +63,7 @@ void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, B
    this->type_[iEdg] = type;
 }
 
-#if !defined(USE_GPU)
+#ifndef __CUDACC__
 
 ///  Advance all the edges in the simulation.
 ///

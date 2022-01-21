@@ -23,8 +23,6 @@
 #include "AllVertices.h"
 #include "IRecorder.h"
 
-using namespace std;
-
 class Connections;
 
 class IRecorder;
@@ -39,11 +37,11 @@ public:
    /// Destructor
    virtual ~Model();
 
-   shared_ptr<Connections> getConnections() const;
+   std::shared_ptr<Connections> getConnections() const;
 
-   shared_ptr<Layout> getLayout() const;
+   std::shared_ptr<Layout> getLayout() const;
 
-   shared_ptr<IRecorder> getRecorder() const;
+   std::shared_ptr<IRecorder> getRecorder() const;
 
    /// Writes simulation results to an output destination.
    /// Downstream from IModel saveData()
@@ -90,11 +88,11 @@ protected:
    virtual void copyCPUtoGPU() = 0;
 
 protected:
-   shared_ptr<Connections> connections_;
+   std::shared_ptr<Connections> connections_;
 
-   shared_ptr<Layout> layout_;
+   std::shared_ptr<Layout> layout_;
 
-   shared_ptr<IRecorder> recorder_;
+   std::shared_ptr<IRecorder> recorder_;
 
    // shared_ptr<ISInput> input_;    /// Stimulus input object.
 

@@ -32,12 +32,12 @@
 /// @param r rows in Matrix (defaults to 2)
 /// @param c columns in Matrix (defaults to 2)
 /// @param m multiplier used for initialization (defaults to zero)
-/// @param v values for initializing CompleteMatrix (this string is parsed as a list of floating point numbers)
-CompleteMatrix::CompleteMatrix(string t, string i, int r,
-                               int c, BGFLOAT m, string values)
+/// @param v values for initializing CompleteMatrix (this std::string is parsed as a list of floating point numbers)
+CompleteMatrix::CompleteMatrix(std::string t, std::string i, int r,
+                               int c, BGFLOAT m, std::string values)
 : Matrix(t, i, r, c, m), theMatrix(nullptr)
 {
-    DEBUG_MATRIX(cerr << "Creating CompleteMatrix, size: ";)
+    DEBUG_MATRIX(std::cerr << "Creating CompleteMatrix, size: ";)
     
     // Bail out if we're being asked to create nonsense
     if (!((rows > 0) && (columns > 0)))
@@ -46,13 +46,13 @@ CompleteMatrix::CompleteMatrix(string t, string i, int r,
     // We're a 2D Matrix, even if only one row or column
     dimensions = 2;
     
-    DEBUG_MATRIX( cerr << rows << "X" << columns << ":" << endl;)
+    DEBUG_MATRIX( std::cerr << rows << "X" << columns << ":" << std::endl;)
     
     // Allocate storage
     alloc(rows, columns);
     
-    if (values != "") {     // Initialize from the text string
-        istringstream valStream(values);
+    if (values != "") {     // Initialize from the text std::string
+        std::istringstream valStream(values);
         if (type == "diag") {       // diagonal matrix with values given
             for (int i=0; i<rows; i++) {
                 for (int j=0; j<columns; j++) {
@@ -95,21 +95,21 @@ CompleteMatrix::CompleteMatrix(string t, string i, int r,
         }
     }
     //  else if (init == "random")
-    DEBUG_MATRIX(cerr << "\tInitialized " << type << " matrix" << endl;)
+    DEBUG_MATRIX(std::cerr << "\tInitialized " << type << " matrix" << std::endl;)
 }
 
 
 // "Copy Constructor"
 CompleteMatrix::CompleteMatrix(const CompleteMatrix& oldM) : theMatrix(nullptr)
 {
-    DEBUG_MATRIX(cerr << "CompleteMatrix copy constructor:" << endl;)
+    DEBUG_MATRIX(std::cerr << "CompleteMatrix copy constructor:" << std::endl;)
     copy(oldM);
 }
 
 // Destructor
 CompleteMatrix::~CompleteMatrix()
 {
-    DEBUG_MATRIX(cerr << "Destroying CompleteMatrix" << endl;)
+    DEBUG_MATRIX(std::cerr << "Destroying CompleteMatrix" << std::endl;)
     clear();
 }
 
@@ -120,19 +120,19 @@ CompleteMatrix& CompleteMatrix::operator=(const CompleteMatrix& rhs)
     if (&rhs == this)
         return *this;
     
-    DEBUG_MATRIX(cerr << "CompleteMatrix::operator=" << endl;)
+    DEBUG_MATRIX(std::cerr << "CompleteMatrix::operator=" << std::endl;)
     
     clear();
-    DEBUG_MATRIX(cerr << "\t\tclear() complete, ready to copy." << endl;)
+    DEBUG_MATRIX(std::cerr << "\t\tclear() complete, ready to copy." << std::endl;)
     copy(rhs);
-    DEBUG_MATRIX(cerr << "\t\tcopy() complete; returning by reference." << endl;)
+    DEBUG_MATRIX(std::cerr << "\t\tcopy() complete; returning by reference." << std::endl;)
     return *this;
 }
 
 // Clear out storage
 void CompleteMatrix::clear(void)
 {
-    DEBUG_MATRIX(cerr << "\tclearing " << rows << "X" << columns << " CompleteMatrix...";)
+    DEBUG_MATRIX(std::cerr << "\tclearing " << rows << "X" << columns << " CompleteMatrix...";)
     
     if (theMatrix != nullptr) {
         for (int i=0; i<rows; i++)
@@ -143,14 +143,14 @@ void CompleteMatrix::clear(void)
         delete [] theMatrix;
         theMatrix = nullptr;
     }
-    DEBUG_MATRIX(cerr << "done." << endl;)
+    DEBUG_MATRIX(std::cerr << "done." << std::endl;)
 }
 
 
 // Copy matrix to this one
 void CompleteMatrix::copy(const CompleteMatrix& source)
 {
-    DEBUG_MATRIX(cerr << "\tcopying " << source.rows << "X" << source.columns
+    DEBUG_MATRIX(std::cerr << "\tcopying " << source.rows << "X" << source.columns
                  << " CompleteMatrix...";)
     
     SetAttributes(source.type, source.init, source.rows,
@@ -161,7 +161,7 @@ void CompleteMatrix::copy(const CompleteMatrix& source)
     for (int i=0; i<rows; i++)
         for (int j=0; j<columns; j++)
             theMatrix[i][j] = source.theMatrix[i][j];
-    DEBUG_MATRIX(cerr << "\t\tdone." << endl;)
+    DEBUG_MATRIX(std::cerr << "\t\tdone." << std::endl;)
 }
 
 
@@ -184,34 +184,34 @@ void CompleteMatrix::alloc(int rows, int columns)
     for (int i=0; i<rows; i++)
         if ((theMatrix[i] = new BGFLOAT[columns]) == nullptr)
             throw Matrix_bad_alloc("Failed allocating storage to copy Matrix.");
-    DEBUG_MATRIX(cerr << "\tStorage allocated for "<< rows << "X" << columns << " Matrix." << endl;)
+    DEBUG_MATRIX(std::cerr << "\tStorage allocated for "<< rows << "X" << columns << " Matrix." << std::endl;)
     
 }
 
 
 /// @brief Polymorphic output. Produces text output on stream os. Used by operator<<()
 /// @param os stream to output to
-void CompleteMatrix::Print(ostream& os) const
+void CompleteMatrix::Print(std::ostream& os) const
 {
     for (int i=0; i<rows; i++) {
         for (int j=0; j<columns; j++)
             os << theMatrix[i][j] << " ";
-        os << endl;
+        os << std::endl;
     }
 }
 
-// convert Matrix to XML string
-string CompleteMatrix::toXML(string name) const
+// convert Matrix to XML std::string
+std::string CompleteMatrix::toXML(std::string name) const
 {
-    stringstream os;
+    std::stringstream os;
     
     os << "<Matrix ";
     if (name != "")
         os << "name=\"" << name << "\" ";
     os << "type=\"complete\" rows=\"" << rows
     << "\" columns=\"" << columns
-    << "\" multiplier=\"1.0\">" << endl;
-    os << "   " << *this << endl;
+    << "\" multiplier=\"1.0\">" << std::endl;
+    os << "   " << *this << std::endl;
     os << "</Matrix>";
     
     return os.str();

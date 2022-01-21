@@ -81,13 +81,13 @@ public:
     */
    virtual void printParameters();
 
-   virtual string toXML(string name,vector<vector<BGFLOAT>> MatrixToWrite ) const;
-   virtual string toXML(string name,vector<vector<int>> MatrixToWrite) const;
+   virtual std::string toXML(std::string name,std::vector<std::vector<BGFLOAT>> MatrixToWrite ) const;
+   virtual std::string toXML(std::string name,std::vector<std::vector<int>> MatrixToWrite) const;
 
 protected:
-   vector<vector<BGFLOAT>> weightsHistory_;
-   vector<vector<int>> sourceNeuronIndexHistory_;
-   vector<vector<int>>  destNeuronIndexHistory_;
+   std::vector<std::vector<BGFLOAT>> weightsHistory_;
+   std::vector<std::vector<int>> sourceNeuronIndexHistory_;
+   std::vector<std::vector<int>>  destNeuronIndexHistory_;
 
 };
 

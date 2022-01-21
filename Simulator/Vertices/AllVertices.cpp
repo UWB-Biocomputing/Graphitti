@@ -14,12 +14,12 @@ AllVertices::AllVertices() : size_(0) {
    summationMap_ = nullptr;
 
    // Register loadParameters function as a loadParameters operation in the Operation Manager
-   function<void()> loadParametersFunc = std::bind(&AllVertices::loadParameters, this);
+   std::function<void()> loadParametersFunc = std::bind(&AllVertices::loadParameters, this);
    OperationManager::getInstance().registerOperation(Operations::op::loadParameters, loadParametersFunc);
 
    // Register printParameters function as a printParameters operation in the OperationManager
-   function<void()> printParametersFunc = bind(&AllVertices::printParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+   std::function<void()> printParametersFunc = std::bind(&AllVertices::printParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::op::printParameters, printParametersFunc);
 
    // Get a copy of the file and vertex logger to use log4cplus macros to print to debug files
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));

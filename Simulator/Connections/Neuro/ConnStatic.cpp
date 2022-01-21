@@ -51,8 +51,8 @@ ConnStatic::~ConnStatic() {
 ///  @param  edges  The Synapse list to search from.
 void ConnStatic::setupConnections(Layout *layout, AllVertices *vertices, AllEdges *edges) {
    Simulator& simulator = Simulator::getInstance();
-   int numVertices = simulator.getTotalVertices();
-   vector<DistDestVertex> distDestVertices[numVertices];
+   const int numVertices = simulator.getTotalVertices();
+   std::vector<std::vector<DistDestVertex>> distDestVertices(numVertices);
    BGSIZE maxTotalEdges =  simulator.getMaxEdgesPerVertex() * simulator.getTotalVertices();
    WCurrentEpoch_ = new BGFLOAT[maxTotalEdges];
    sourceVertexIndexCurrentEpoch_ = new int[maxTotalEdges];
@@ -104,7 +104,7 @@ void ConnStatic::setupConnections(Layout *layout, AllVertices *vertices, AllEdge
       }
    }
    
-   string weight_str="";
+   std::string weight_str="";
    for(int i=0; i<maxTotalEdges; i++)
    {
       WCurrentEpoch_[i] = neuroEdges->W_[i];
@@ -113,7 +113,7 @@ void ConnStatic::setupConnections(Layout *layout, AllVertices *vertices, AllEdge
       
       if(WCurrentEpoch_[i]!=0) {
          // LOG4CPLUS_DEBUG(edgeLogger_,i << WCurrentEpoch_[i]);
-         weight_str += to_string(WCurrentEpoch_[i]) + " ";
+         weight_str += std::to_string(WCurrentEpoch_[i]) + " ";
       }
       
    }
@@ -141,15 +141,15 @@ void ConnStatic::loadParameters() {
 ///  Prints out all parameters to logging file.
 ///  Registered to OperationManager as Operation::printParameters
 void ConnStatic::printParameters() const {
-   LOG4CPLUS_DEBUG(fileLogger_, "CONNECTIONS PARAMETERS" << endl
-                   << "\tConnections Type: ConnStatic" << endl
-                   << "\tConnection radius threshold: " << threshConnsRadius_ << endl
-                   << "\tConnections per neuron: " << connsPerVertex_ << endl
-                   << "\tRewiring probability: " << rewiringProbability_ << endl
-                   << "\tExhitatory min weight: " << excWeight_[0] << endl
-                   << "\tExhitatory max weight: " << excWeight_[1] << endl
-                   << "\tInhibitory min weight: " << inhWeight_[0] << endl
-                   << "\tInhibitory max weight: " << inhWeight_[1] << endl
-                   << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "CONNECTIONS PARAMETERS" << std::endl
+                   << "\tConnections Type: ConnStatic" << std::endl
+                   << "\tConnection radius threshold: " << threshConnsRadius_ << std::endl
+                   << "\tConnections per neuron: " << connsPerVertex_ << std::endl
+                   << "\tRewiring probability: " << rewiringProbability_ << std::endl
+                   << "\tExhitatory min weight: " << excWeight_[0] << std::endl
+                   << "\tExhitatory max weight: " << excWeight_[1] << std::endl
+                   << "\tInhibitory min weight: " << inhWeight_[0] << std::endl
+                   << "\tInhibitory max weight: " << inhWeight_[1] << std::endl
+                   << std::endl);
 }
 

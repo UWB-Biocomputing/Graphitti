@@ -23,17 +23,17 @@ FixedLayout::~FixedLayout() {
 void FixedLayout::printParameters() const {
    Layout::printParameters();
 
-   LOG4CPLUS_DEBUG(fileLogger_, "\n\tLayout type: FixedLayout" << endl << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\n\tLayout type: FixedLayout" << std::endl << std::endl);
 }
 
 ///  Creates a randomly ordered distribution with the specified numbers of vertex types.
 ///
 ///  @param  numVertices number of the vertices to have in the type map.
 void FixedLayout::generateVertexTypeMap(int numVertices) {
-   LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing vertex type map" << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing vertex type map" << std::endl);
 
    // Populate vertexTypeMap_ with EXC
-   fill_n(vertexTypeMap_, numVertices, EXC);
+   std::fill_n(vertexTypeMap_, numVertices, EXC);
 
    // for (int i = 0; i < numVertices; i++) {
    //    vertexTypeMap_[i] = EXC;
@@ -42,10 +42,10 @@ void FixedLayout::generateVertexTypeMap(int numVertices) {
    int numInhibitoryNeurons = inhibitoryNeuronLayout_.size();
    int numExcititoryNeurons = numVertices - numInhibitoryNeurons;
 
-   LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP" << endl
-   << "\tTotal vertices: " << numVertices << endl
-   << "\tInhibitory Neurons: " << numInhibitoryNeurons << endl
-   << "\tExcitatory Neurons: " << numExcititoryNeurons << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP" << std::endl
+   << "\tTotal vertices: " << numVertices << std::endl
+   << "\tInhibitory Neurons: " << numInhibitoryNeurons << std::endl
+   << "\tExcitatory Neurons: " << numExcititoryNeurons << std::endl);
 
    for (int i = 0; i < numInhibitoryNeurons; i++) {
       assert(inhibitoryNeuronLayout_.at(i) < numVertices);
@@ -70,28 +70,28 @@ void FixedLayout::initStarterMap(const int numVertices) {
 /// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
 void FixedLayout::loadParameters() {
    // Get the file paths for the Neuron lists from the configuration file
-   string activeNListFilePath;
-   string inhibitoryNListFilePath;
+   std::string activeNListFilePath;
+   std::string inhibitoryNListFilePath;
    if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/activeNListFileName/text()",
                                                          activeNListFilePath)) {
-      throw runtime_error("In Layout::loadParameters() Endogenously "
+      throw std::runtime_error("In Layout::loadParameters() Endogenously "
                           "active neuron list file path wasn't found and will not be initialized");
    }
    if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/inhNListFileName/text()",
                                                          inhibitoryNListFilePath)) {
-      throw runtime_error("In Layout::loadParameters() "
+      throw std::runtime_error("In Layout::loadParameters() "
                           "Inhibitory neuron list file path wasn't found and will not be initialized");
    }
 
    // Initialize Neuron Lists based on the data read from the xml files
    if (!ParameterManager::getInstance().getIntVectorByXpath(activeNListFilePath, "A", endogenouslyActiveNeuronList_)) {
-      throw runtime_error("In Layout::loadParameters() "
+      throw std::runtime_error("In Layout::loadParameters() "
                           "Endogenously active neuron list file wasn't loaded correctly"
                           "\n\tfile path: " + activeNListFilePath);
    }
    numEndogenouslyActiveNeurons_ = endogenouslyActiveNeuronList_.size();
    if (!ParameterManager::getInstance().getIntVectorByXpath(inhibitoryNListFilePath, "I", inhibitoryNeuronLayout_)) {
-      throw runtime_error("In Layout::loadParameters() "
+      throw std::runtime_error("In Layout::loadParameters() "
                           "Inhibitory neuron list file wasn't loaded correctly."
                           "\n\tfile path: " + inhibitoryNListFilePath);
    }

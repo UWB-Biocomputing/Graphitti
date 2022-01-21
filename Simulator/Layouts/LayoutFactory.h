@@ -15,8 +15,6 @@
 #include "Global.h"
 #include "Layout.h"
 
-using namespace std;
-
 class LayoutFactory {
 
 public:
@@ -28,7 +26,7 @@ public:
    }
 
    // Invokes constructor for desired concrete class
-   shared_ptr<Layout> createLayout(const string &className);
+   std::shared_ptr<Layout> createLayout(const std::string &className);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    LayoutFactory(LayoutFactory const &) = delete;
@@ -39,20 +37,20 @@ private:
    LayoutFactory();
 
    /// Smart pointer to layout instance
-   shared_ptr<Layout> layoutInstance;
+   std::shared_ptr<Layout> layoutInstance;
 
    /// Defines function type for usage in internal map
-   typedef Layout *(*CreateFunction)(void);
+   using CreateFunction =  Layout *(*)(void);
 
    /// Defines map between class name and corresponding ::Create() function.
-   typedef map<string, CreateFunction> LayoutFunctionMap;
+   using LayoutFunctionMap =  std::map<std::string, CreateFunction>;
 
    /// Makes class-to-function map an internal factory member.
    LayoutFunctionMap createFunctions;
 
    /// Retrieves and invokes correct ::Create() function.
-   Layout *invokeCreateFunction(const string &className);
+   Layout *invokeCreateFunction(const std::string &className);
 
    /// Register neuron class and it's create function to the factory.
-   void registerClass(const string &className, CreateFunction function);
+   void registerClass(const std::string &className, CreateFunction function);
 };

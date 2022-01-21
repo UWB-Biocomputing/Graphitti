@@ -27,7 +27,7 @@ XmlGrowthRecorder::~XmlGrowthRecorder() {
 
 /// Init radii and rates history matrices with default values
 void XmlGrowthRecorder::initDefaultValues() {
-   shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
+   std::shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
    BGFLOAT startRadius = dynamic_cast<ConnGrowth *>(conns.get())->growthParams_.startRadius;
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
@@ -38,7 +38,7 @@ void XmlGrowthRecorder::initDefaultValues() {
 
 /// Init radii and rates history matrices with current radii and rates
 void XmlGrowthRecorder::initValues() {
-   shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
+   std::shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       radiiHistory_(0, i) = (*dynamic_cast<ConnGrowth *>(conns.get())->radii_)[i];
@@ -62,7 +62,7 @@ void XmlGrowthRecorder::getValues() {
 void XmlGrowthRecorder::compileHistories(AllVertices &neurons) {
    XmlRecorder::compileHistories(neurons);
 
-   shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
+   std::shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
 
    BGFLOAT minRadius = dynamic_cast<ConnGrowth *>(conns.get())->growthParams_.minRadius;
    VectorMatrix &rates = (*dynamic_cast<ConnGrowth *>(conns.get())->rates_);
@@ -107,47 +107,47 @@ void XmlGrowthRecorder::saveSimData(const AllVertices &neurons) {
 
    // Write the core state information:
    resultOut_ << "<SimState>\n";
-   resultOut_ << "   " << radiiHistory_.toXML("radiiHistory") << endl;
-   resultOut_ << "   " << ratesHistory_.toXML("ratesHistory") << endl;
-   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
-   resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->xloc_->toXML("xloc") << endl;
-   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->yloc_->toXML("yloc") << endl;
-   resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
+   resultOut_ << "   " << radiiHistory_.toXML("radiiHistory") << std::endl;
+   resultOut_ << "   " << ratesHistory_.toXML("ratesHistory") << std::endl;
+   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << std::endl;
+   resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << std::endl;
+   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->xloc_->toXML("xloc") << std::endl;
+   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->yloc_->toXML("yloc") << std::endl;
+   resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << std::endl;
 
    // create starter neuron matrix
    int num_starter_neurons = static_cast<int>(Simulator::getInstance().getModel()->getLayout()->numEndogenouslyActiveNeurons_);
    if (num_starter_neurons > 0) {
       VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
       getStarterNeuronMatrix(starterNeurons, Simulator::getInstance().getModel()->getLayout()->starterMap_);
-      resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
+      resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << std::endl;
    }
 
    // Write neuron thresold
-   resultOut_ << "   " << neuronThresh.toXML("neuronThresh") << endl;
+   resultOut_ << "   " << neuronThresh.toXML("neuronThresh") << std::endl;
 
    // write time between growth cycles
-   resultOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << endl;
-   resultOut_ << "   " << Simulator::getInstance().getEpochDuration() << endl;
-   resultOut_ << "</Matrix>" << endl;
+   resultOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << std::endl;
+   resultOut_ << "   " << Simulator::getInstance().getEpochDuration() << std::endl;
+   resultOut_ << "</Matrix>" << std::endl;
 
    // write simulation end time
    resultOut_ << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
-             << endl;
-   resultOut_ << "   " << g_simulationStep * Simulator::getInstance().getDeltaT() << endl;
-   resultOut_ << "</Matrix>" << endl;
-   resultOut_ << "</SimState>" << endl;
+             << std::endl;
+   resultOut_ << "   " << g_simulationStep * Simulator::getInstance().getDeltaT() << std::endl;
+   resultOut_ << "</Matrix>" << std::endl;
+   resultOut_ << "</SimState>" << std::endl;
 }
 
 ///  Prints out all parameters to logging file.
 ///  Registered to OperationManager as Operation::printParameters
 void XmlGrowthRecorder::printParameters() {
-   LOG4CPLUS_DEBUG(fileLogger_, "\nXMLRECORDER PARAMETERS" << endl
-                                      << "\tResult file path: " << resultFileName_ << endl
-                                      << "\tBurstiness History Size: " << burstinessHist_.Size() << endl
-                                      << "\tSpikes History Size: " << spikesHistory_.Size() << endl
-                                      << "\n---XmlGrowthRecorder Parameters---" << endl
-                                      << "\tRecorder type: XmlGrowthRecorder" << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\nXMLRECORDER PARAMETERS" << std::endl
+                                      << "\tResult file path: " << resultFileName_ << std::endl
+                                      << "\tBurstiness History Size: " << burstinessHist_.Size() << std::endl
+                                      << "\tSpikes History Size: " << spikesHistory_.Size() << std::endl
+                                      << "\n---XmlGrowthRecorder Parameters---" << std::endl
+                                      << "\tRecorder type: XmlGrowthRecorder" << std::endl);
 }
 
 ///  Get starter Neuron matrix.

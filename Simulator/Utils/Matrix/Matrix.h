@@ -22,8 +22,6 @@
 #include "MatrixExceptions.h"
 #include "BGTypes.h"
 
-using namespace std;
-
 class Matrix
       {
       public:
@@ -31,7 +29,7 @@ class Matrix
          virtual ~Matrix() { }
 
          /// @brief Generate text representation of the Matrix to a stream
-         virtual void Print(ostream& os) const = 0;
+         virtual void Print(std::ostream& os) const = 0;
 
       protected:
          ///   Initialize attributes at construction time. This is protected to
@@ -44,7 +42,7 @@ class Matrix
          ///   @param r rows in Matrix
          ///   @param c columns in Matrix
          ///   @param m multiplier used for initialization
-         Matrix(string t = "", string i = "", int r = 0, int c = 0, BGFLOAT m = 0.0);
+         Matrix(std::string t = "", std::string i = "", int r = 0, int c = 0, BGFLOAT m = 0.0);
 
          ///  @brief Convenience mutator
          ///  @param t Matrix type (subclasses add legal values; basically, cheapo reflection)
@@ -53,7 +51,7 @@ class Matrix
          ///  @param c columns in Matrix
          ///  @param m multiplier used for initialization
          ///  @param d indicates one or two dimensional
-         void SetAttributes(string t, string i, int r, int c, BGFLOAT m, int d);
+         void SetAttributes(std::string t, std::string i, int r, int c, BGFLOAT m, int d);
 
          /******************************************
           * @name Attributes from XML files 
@@ -63,12 +61,12 @@ class Matrix
          /// "complete" == all locations nonzero,
          /// "diag" == only diagonal elements nonzero,
          /// or "sparse" == nonzero values may be anywhere
-         string type;
+         std::string type;
 
          /// "const" == nonzero values with a fixed constant,
          /// "random" == nonzero values with random numbers,
          /// or "implementation" == uses a built-in function of the specific subclass
-         string init;
+         std::string init;
 
          int rows;                  ///< Number of rows in Matrix (>0)
          int columns;               ///< Number of columns in Matrix (>0)
@@ -82,7 +80,7 @@ class Matrix
 ///  to take advantage of this.
 ///  @param os the output stream
 ///  @param obj the Matrix object to send to the output stream
-ostream& operator<<(ostream& os, const Matrix& obj);
+std::ostream& operator<<(std::ostream& os, const Matrix& obj);
 
 #endif
 

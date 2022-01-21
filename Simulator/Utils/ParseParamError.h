@@ -13,16 +13,14 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
-
 class ParseParamError {
-    public:
-        ParseParamError(const string paramName, const string errorMessage);
-        void print(ostream &output) const;
-    
-    private:
-        const string m_paramName;
-        const string m_errorMessage;
+	public:
+		ParseParamError(const std::string paramName, const std::string errorMessage);
+		void print(std::ostream& output) const;
+
+	private:
+		const std::string m_paramName;
+		const std::string m_errorMessage;
 };
 
 #endif

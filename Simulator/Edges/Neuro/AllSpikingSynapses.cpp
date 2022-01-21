@@ -11,8 +11,6 @@
 #include "AllSpikingSynapses.h"
 #include "ParameterManager.h"
 
-using namespace std;
-
 AllSpikingSynapses::AllSpikingSynapses() : AllNeuroEdges() {
    decay_ = nullptr;
    totalDelay_ = nullptr;
@@ -121,22 +119,22 @@ void AllSpikingSynapses::loadParameters() {
 void AllSpikingSynapses::printParameters() const {
    AllNeuroEdges::printParameters();
    
-   LOG4CPLUS_DEBUG(edgeLogger_, "\n\t---AllSpikingSynapses Parameters---" << endl
-                   << "\tEdges type: AllSpikingSynapses" << endl << endl);
+   LOG4CPLUS_DEBUG(edgeLogger_, "\n\t---AllSpikingSynapses Parameters---" << std::endl
+                   << "\tEdges type: AllSpikingSynapses" << std::endl << std::endl);
    LOG4CPLUS_DEBUG(edgeLogger_, "\n\tTau values: ["
                    << " II: " << tau_II_ << ", " << " IE: " << tau_IE_ << "," << "EI : " << tau_EI_<< "," << " EE: " << tau_EE_ << "]"
-                   << endl);
+                   << std::endl);
    
    LOG4CPLUS_DEBUG(edgeLogger_,"\n\tDelay values: ["
                    << " II: "<< delay_II_ << ", " << " IE: "<< delay_IE_ << "," << "EI :" << delay_EI_<< "," << " EE: "<< delay_EE_ << "]"
-                   << endl);
+                   << std::endl);
 }
 
 ///  Sets the data for Synapse to input's data.
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the synapse to set.
-void AllSpikingSynapses::readEdge(istream &input, const BGSIZE iEdg) {
+void AllSpikingSynapses::readEdge(std::istream &input, const BGSIZE iEdg) {
    AllNeuroEdges::readEdge(input, iEdg);
 
    // input.ignore() so input skips over end-of-line characters.
@@ -158,15 +156,15 @@ void AllSpikingSynapses::readEdge(istream &input, const BGSIZE iEdg) {
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the synapse to print out.
-void AllSpikingSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const {
+void AllSpikingSynapses::writeEdge(std::ostream &output, const BGSIZE iEdg) const {
    AllNeuroEdges::writeEdge(output, iEdg);
 
-   output << decay_[iEdg] << ends;
-   output << totalDelay_[iEdg] << ends;
-   output << delayQueue_[iEdg] << ends;
-   output << delayIndex_[iEdg] << ends;
-   output << delayQueueLength_[iEdg] << ends;
-   output << tau_[iEdg] << ends;
+   output << decay_[iEdg] << std::ends;
+   output << totalDelay_[iEdg] << std::ends;
+   output << delayQueue_[iEdg] << std::ends;
+   output << delayIndex_[iEdg] << std::ends;
+   output << delayQueueLength_[iEdg] << std::ends;
+   output << tau_[iEdg] << std::ends;
 }
 
 ///  Create a Synapse and connect it to the model.
@@ -221,7 +219,7 @@ void AllSpikingSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVe
    resetEdge(iEdg, deltaT);
 }
 
-#if !defined(USE_GPU)
+#ifndef __CUDACC__
 
 ///  Checks if there is an input spike in the queue.
 ///
@@ -259,7 +257,7 @@ void AllSpikingSynapses::preSpikeHit(const BGSIZE iEdg) {
    }
    if((delayQueue & (0x1 << idx)) != 0)
    {
-      LOG4CPLUS_ERROR(edgeLogger_,"Delay Queue Error " << setbase(2) << delayQueue << setbase(10) << " index " << idx << " edge ID " << iEdg);
+      LOG4CPLUS_ERROR(edgeLogger_,"Delay Queue Error " << std::setbase(2) << delayQueue << std::setbase(10) << " index " << idx << " edge ID " << iEdg);
       assert(false);
    }
    
@@ -312,7 +310,7 @@ void AllSpikingSynapses::changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) {
    psr += (W / decay);    // calculate psr
 }
 
-#endif //!defined(USE_GPU)
+#endif
 
 ///  Updates the decay if the synapse selected.
 ///
@@ -342,9 +340,9 @@ void AllSpikingSynapses::printSynapsesProps() const {
    AllNeuroEdges::printSynapsesProps();
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
-         cout << "decay[" << i << "] = " << decay_[i];
-         cout << " tau: " << tau_[i];
-         cout << " total_delay: " << totalDelay_[i] << endl;
+         std::cout << "decay[" << i << "] = " << decay_[i];
+         std::cout << " tau: " << tau_[i];
+         std::cout << " total_delay: " << totalDelay_[i] << std::endl;
       }
    }
 }

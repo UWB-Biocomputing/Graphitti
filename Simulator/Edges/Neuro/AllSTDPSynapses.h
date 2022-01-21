@@ -128,20 +128,20 @@ protected:
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the synapse to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg) override;
+   virtual void readEdge(std::istream &input, const BGSIZE iEdg) override;
 
    ///  Write the synapse data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the synapse to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const override;
+   virtual void writeEdge(std::ostream &output, const BGSIZE iEdg) const override;
 
    ///  Initializes the queues for the Synapse.
    ///
    ///  @param  iEdg   index of the synapse to set.
    virtual void initSpikeQueue(const BGSIZE iEdg) override;
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    public:
        ///  Allocate GPU memories to store all synapses' states,
        ///  and copy them from host to GPU memory.
@@ -234,7 +234,7 @@ protected:
        ///  @param  numVertices            Number of vertices.
        ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
        void copyDeviceToHost( AllSTDPSynapsesDeviceProperties& allEdgesDevice );
-#else // !defined(USE_GPU)
+#else
 public:
    ///  Advance one specific Synapse.
    ///  Update the state of synapse for a time step
@@ -340,7 +340,7 @@ public:
    BGFLOAT Apos_E_;
 };
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
 struct AllSTDPSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperties
 {
         ///  The synaptic transmission delay (delay of dendritic backpropagating spike), 
@@ -396,4 +396,4 @@ struct AllSTDPSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperti
         ///  True if use the rule given in Froemke and Dan (2002).
         bool *useFroemkeDanSTDP_;
 };
-#endif // defined(USE_GPU)
+#endif 

@@ -38,15 +38,15 @@ void All911Vertices::setupVertices() {
     respNum_ = new int[size_];
 
     // Populate arrays with 0
-    fill_n(callNum_, size_, 0);
-    fill_n(dispNum_, size_, 0);
-    fill_n(respNum_, size_, 0);
+    std::fill_n(callNum_, size_, 0);
+    std::fill_n(dispNum_, size_, 0);
+    std::fill_n(respNum_, size_, 0);
 }
 
 // Generate callNum_ and dispNum_ for all caller and psap nodes
 void All911Vertices::createAllVertices(Layout *layout) {
-    vector<int> psapList;
-    vector<int> respList;
+    std::vector<int> psapList;
+    std::vector<int> respList;
     psapList.clear();
     respList.clear();
 
@@ -105,11 +105,11 @@ void All911Vertices::printParameters() const {
 
 }
 
-string All911Vertices::toString(const int index) const {
+std::string All911Vertices::toString(const int index) const {
     return nullptr; // Change this
 }
 
-#if !defined(USE_GPU)
+#ifndef __CUDACC__
 
 ///  Update internal state of the indexed vertex (called by every simulation step).
 ///  Notify outgoing edges if vertex has fired.

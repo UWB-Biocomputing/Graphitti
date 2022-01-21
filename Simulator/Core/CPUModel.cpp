@@ -10,7 +10,7 @@
 #include "Simulator.h"
 #include "AllDSSynapses.h"
 
-#if !defined(USE_GPU)
+#ifndef __CUDACC__
 
 /// Constructor
 CPUModel::CPUModel() : Model() {
@@ -50,13 +50,13 @@ void CPUModel::updateConnections() {
 
 /// Copy GPU Synapse data to CPU. (Inheritance, no implem)
 void CPUModel::copyGPUtoCPU() {
-   LOG4CPLUS_WARN(fileLogger_, "ERROR: CPUModel::copyGPUtoCPU() was called." << endl);
+   LOG4CPLUS_WARN(fileLogger_, "ERROR: CPUModel::copyGPUtoCPU() was called." << std::endl);
    exit(EXIT_FAILURE);
 }
 
 /// Copy CPU Synapse data to GPU. (Inheritance, no implem, GPUModel has implem)
 void CPUModel::copyCPUtoGPU() {
-   LOG4CPLUS_WARN(fileLogger_, "ERROR: CPUModel::copyCPUtoGPU() was called." << endl);
+   LOG4CPLUS_WARN(fileLogger_, "ERROR: CPUModel::copyCPUtoGPU() was called." << std::endl);
    exit(EXIT_FAILURE);
 }
-# endif // define(USE_GPU)
+# endif 

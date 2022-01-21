@@ -11,8 +11,6 @@
 
 #include "Operations.h"
 
-using namespace std;
-
 class IFunctionNode {
 public:
     /// Destructor.

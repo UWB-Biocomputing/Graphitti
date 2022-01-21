@@ -76,8 +76,6 @@
 // cereal
 #include <cereal/types/vector.hpp>
 
-using namespace std;
-
 class ConnGrowth : public Connections {
 public:
    ConnGrowth();
@@ -121,7 +119,7 @@ public:
    ///  Prints radii
    void printRadii() const;
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    ///  Update the weights of the Synapses in the simulation. To be clear,
    ///  iterates through all source and destination neurons and updates their
    ///  synaptic strengths from the weight matrix.
@@ -222,7 +220,7 @@ public:
 template<class Archive>
 void ConnGrowth::save(Archive &archive) const {
    // uses vector to save radii
-   vector<BGFLOAT> radiiVector;
+   std::vector<BGFLOAT> radiiVector;
    for (int i = 0; i < radiiSize_; i++) {
       radiiVector.push_back((*radii_)[i]);
    }
@@ -235,14 +233,14 @@ void ConnGrowth::save(Archive &archive) const {
 template<class Archive>
 void ConnGrowth::load(Archive &archive) {
    // uses vector to load radii
-   vector<BGFLOAT> radiiVector;
+   std::vector<BGFLOAT> radiiVector;
 
    // deserializing data to this vector
    archive(radiiVector);
 
    // check to see if serialized data size matches object size
    if (radiiVector.size() != radiiSize_) {
-      cerr << "Failed deserializing radii. Please verify totalVertices data member." << endl;
+      std::cerr << "Failed deserializing radii. Please verify totalVertices data member." << std::endl;
       throw cereal::Exception("Deserialization Error");
    }
 

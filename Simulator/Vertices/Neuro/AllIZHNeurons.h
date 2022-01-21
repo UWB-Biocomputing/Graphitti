@@ -102,19 +102,19 @@ public:
    ///
    ///  @param  index   index of the neuron (in neurons) to output info from.
    ///  @return the complete state of the neuron.
-   virtual string toString(const int index) const override;
+   virtual std::string toString(const int index) const override;
 
    ///  Reads and sets the data for all neurons from input stream.
    ///
    ///  @param  input       istream to read from.
-   virtual void deserialize(istream &input) override;
+   virtual void deserialize(std::istream &input) override;
 
    ///  Writes out the data in all neurons to output stream.
    ///
    ///  @param  output      stream to write out to.
-   virtual void serialize(ostream &output) const override;
+   virtual void serialize(std::ostream &output) const override;
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    public:
        ///  Update the state of all neurons for a time step
        ///  Notify outgoing synapses if neuron has fired.
@@ -225,13 +225,13 @@ protected:
    ///
    ///  @param  input       istream to read from.
    ///  @param  index           index of the neuron (in neurons).
-   void readNeuron(istream &input, int index);
+   void readNeuron(std::istream &input, int index);
 
    ///  Writes out the data in the selected Neuron.
    ///
    ///  @param  output      stream to write out to.
    ///  @param  index           index of the neuron (in neurons).
-   void writeNeuron(ostream &output, int index) const;
+   void writeNeuron(std::ostream &output, int index) const;
 
 public:
    ///  A constant (0.02, 01) describing the coupling of variable u to Vm.
@@ -290,7 +290,7 @@ private:
    BGFLOAT inhDconst_[2];
 };
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
 struct AllIZHNeuronsDeviceProperties : public AllIFNeuronsDeviceProperties
 {
         ///  A constant (0.02, 01) describing the coupling of variable u to Vm.

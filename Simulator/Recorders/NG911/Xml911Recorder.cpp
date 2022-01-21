@@ -67,27 +67,27 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices) {
 
    // Write the core state information:
    resultOut_ << "<SimState>\n";
-   resultOut_ << "   " << layout->xloc_->toXML("xloc") << endl;
-   resultOut_ << "   " << layout->yloc_->toXML("yloc") << endl;
-   resultOut_ << "   " << oldTypes.toXML("vertexTypesPreEvent") << endl;
-   resultOut_ << "   " << vertexTypes.toXML("vertexTypesPostEvent") << endl;
+   resultOut_ << "   " << layout->xloc_->toXML("xloc") << std::endl;
+   resultOut_ << "   " << layout->yloc_->toXML("yloc") << std::endl;
+   resultOut_ << "   " << oldTypes.toXML("vertexTypesPreEvent") << std::endl;
+   resultOut_ << "   " << vertexTypes.toXML("vertexTypesPostEvent") << std::endl;
 
    // Print out deleted edges and vertices:
-   resultOut_ << "   " << conns911.erasedVerticesToXML() << endl;
-   resultOut_ << "   " << conns911.changedEdgesToXML(false) << endl;
-   resultOut_ << "   " << conns911.changedEdgesToXML(true) << endl;
+   resultOut_ << "   " << conns911.erasedVerticesToXML() << std::endl;
+   resultOut_ << "   " << conns911.changedEdgesToXML(false) << std::endl;
+   resultOut_ << "   " << conns911.changedEdgesToXML(true) << std::endl;
 
    // write time between growth cycles
-   resultOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << endl;
-   resultOut_ << "   " << Simulator::getInstance().getEpochDuration() << endl;
-   resultOut_ << "</Matrix>" << endl;
+   resultOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << std::endl;
+   resultOut_ << "   " << Simulator::getInstance().getEpochDuration() << std::endl;
+   resultOut_ << "</Matrix>" << std::endl;
 
    // write simulation end time
    resultOut_ << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
-             << endl;
-   resultOut_ << "   " << g_simulationStep * Simulator::getInstance().getDeltaT() << endl;
-   resultOut_ << "</Matrix>" << endl;
-   resultOut_ << "</SimState>" << endl;
+             << std::endl;
+   resultOut_ << "   " << g_simulationStep * Simulator::getInstance().getDeltaT() << std::endl;
+   resultOut_ << "</Matrix>" << std::endl;
+   resultOut_ << "</SimState>" << std::endl;
 
 }
 

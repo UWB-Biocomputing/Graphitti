@@ -17,8 +17,6 @@
 
 #include "Layout.h"
 
-using namespace std;
-
 class FixedLayout : public Layout {
 public:
    FixedLayout();

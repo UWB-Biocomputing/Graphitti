@@ -54,7 +54,7 @@
 
 #include "Norm.h"
 
-using namespace std;
+ 
 
 /*!
    This method makes instances functors; it returns normally

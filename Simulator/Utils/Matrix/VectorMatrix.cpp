@@ -29,9 +29,9 @@ Norm VectorMatrix::nRng;
 /// @param c columns in Matrix
 /// @param m multiplier used for initialization
 /// @param v values for initializing VectorMatrix
-VectorMatrix::VectorMatrix(string t, string i, int r, int c, BGFLOAT m, string values) :
+VectorMatrix::VectorMatrix(std::string t, std::string i, int r, int c, BGFLOAT m, std::string values) :
 	Matrix(t, i, r, c, m), theVector(nullptr) {
-	DEBUG_VECTOR(cerr << "Creating VectorMatrix, size: ";)
+	DEBUG_VECTOR(std::cerr << "Creating VectorMatrix, size: ";)
 
 	// Bail out if we're being asked to create nonsense
 	if (!((rows == 1) || (columns == 1)) || (rows == 0) || (columns == 0))
@@ -41,12 +41,12 @@ VectorMatrix::VectorMatrix(string t, string i, int r, int c, BGFLOAT m, string v
 	dimensions = 1;
 	size = (rows > columns) ? rows : columns;
 
-	DEBUG_VECTOR(cerr << rows << "X" << columns << ":" << endl;)
+	DEBUG_VECTOR(std::cerr << rows << "X" << columns << ":" << std::endl;)
 
 	alloc(size);
 
 	if (values != "") { // Initialize from the text string
-		istringstream valStream(values);
+		std::istringstream valStream(values);
 		if (type == "complete") { // complete matrix with values given
 			for (int i = 0; i < size; i++) {
 				valStream >> theVector[i];
@@ -74,7 +74,7 @@ VectorMatrix::VectorMatrix(string t, string i, int r, int c, BGFLOAT m, string v
 		clear();
 		throw Matrix_invalid_argument("Illegal initialization for VectorMatrix: " + init);
 	}
-	DEBUG_VECTOR(cerr << "\tInitialized " << type << " vector to " << *this << endl;)
+	DEBUG_VECTOR(std::cerr << "\tInitialized " << type << " vector to " << *this << std::endl;)
 }
 
 // Copy constructor
@@ -135,25 +135,25 @@ void VectorMatrix::alloc(int size) {
 		throw Matrix_bad_alloc("Failed allocating storage of Vector copy.");
 	}
 
-	DEBUG_VECTOR(cerr << "\tStorage allocated for "<< size << " element Vector." << endl;)
+	DEBUG_VECTOR(std::cerr << "\tStorage allocated for "<< size << " element Vector." << std::endl;)
 
 }
 
 // Polymorphic output
-void VectorMatrix::Print(ostream& os) const {
+void VectorMatrix::Print(std::ostream& os) const {
 	for (int i = 0; i < size; i++)
 		os << theVector[i] << " ";
 }
 
 // convert vector to XML string
-string VectorMatrix::toXML(string name) const {
-	stringstream os;
+std::string VectorMatrix::toXML(std::string name) const {
+	std::stringstream os;
 
 	os << "<Matrix ";
 	if (name != "")
 		os << "name=\"" << name << "\" ";
-	os << "type=\"complete\" rows=\"1\" columns=\"" << size << "\" multiplier=\"1.0\">" << endl;
-	os << "   " << *this << endl;
+	os << "type=\"complete\" rows=\"1\" columns=\"" << size << "\" multiplier=\"1.0\">" << std::endl;
+	os << "   " << *this << std::endl;
 	os << "</Matrix>";
 
 	return os.str();

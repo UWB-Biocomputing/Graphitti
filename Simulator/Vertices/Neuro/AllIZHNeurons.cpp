@@ -54,31 +54,31 @@ void AllIZHNeurons::setupVertices() {
 void AllIZHNeurons::printParameters() const {
    AllIFNeurons::printParameters();
 
-   LOG4CPLUS_DEBUG(fileLogger_, "\n\tVertices type: AllIZHNeurons" << endl
+   LOG4CPLUS_DEBUG(fileLogger_, "\n\tVertices type: AllIZHNeurons" << std::endl
              << "\tInterval of A constant for excitatory neurons: ["
              << excAconst_[0] << ", " << excAconst_[1] << "]"
-             << endl
+             << std::endl
              << "\tInterval of A constant for inhibitory neurons: ["
              << inhAconst_[0] << ", " << inhAconst_[1] << "]"
-             << endl
+             << std::endl
              << "\tInterval of B constant for excitatory neurons: ["
              << excBconst_[0] << ", " << excBconst_[1] << "]"
-             << endl
+             << std::endl
              << "\tInterval of B constant for inhibitory neurons: ["
              << inhBconst_[0] << ", " << inhBconst_[1] << "]"
-             << endl
+             << std::endl
              << "\tInterval of C constant for excitatory neurons: ["
              << excCconst_[0] << ", " << excCconst_[1] << "]"
-             << endl
+             << std::endl
              << "\tInterval of C constant for inhibitory neurons: ["
              << inhCconst_[0] << ", " << inhCconst_[1] << "]"
-             << endl
+             << std::endl
              << "\tInterval of D constant for excitatory neurons: ["
              << excDconst_[0] << ", " << excDconst_[1] << "]"
-             << endl
+             << std::endl
              << "\tInterval of D constant for inhibitory neurons: ["
              << inhDconst_[0] << ", " << inhDconst_[1] << "]"
-             << endl << endl);
+             << std::endl << std::endl);
 
 }
 
@@ -120,13 +120,13 @@ void AllIZHNeurons::createNeuron(int i, Layout *layout) {
 
    u_[i] = 0;
 
-   LOG4CPLUS_DEBUG(fileLogger_, "\nCREATE NEURON[" << i << "] {" << endl
-                 << "\tAconst = " << Aconst_[i] << endl
-                 << "\tBconst = " << Bconst_[i] << endl
-                 << "\tCconst = " << Cconst_[i] << endl
-                 << "\tDconst = " << Dconst_[i] << endl
-                 << "\tC3 = " << C3_[i] << endl
-                 << "}" << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\nCREATE NEURON[" << i << "] {" << std::endl
+                 << "\tAconst = " << Aconst_[i] << std::endl
+                 << "\tBconst = " << Bconst_[i] << std::endl
+                 << "\tCconst = " << Cconst_[i] << std::endl
+                 << "\tDconst = " << Dconst_[i] << std::endl
+                 << "\tC3 = " << C3_[i] << std::endl
+                 << "}" << std::endl);
 
 }
 
@@ -160,8 +160,8 @@ void AllIZHNeurons::initNeuronConstsFromParamValues(int i, const BGFLOAT deltaT)
 ///
 ///  @param  index index of the neuron (in neurons) to output info from.
 ///  @return the complete state of the neuron.
-string AllIZHNeurons::toString(const int index) const {
-   stringstream ss;
+std::string AllIZHNeurons::toString(const int index) const {
+   std::stringstream ss;
 
    ss << AllIFNeurons::toString(index);
 
@@ -177,7 +177,7 @@ string AllIZHNeurons::toString(const int index) const {
 ///  Sets the data for Neurons to input's data.
 ///
 ///  @param  input       istream to read from.
-void AllIZHNeurons::deserialize(istream &input) {
+void AllIZHNeurons::deserialize(std::istream &input) {
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       readNeuron(input, i);
    }
@@ -187,7 +187,7 @@ void AllIZHNeurons::deserialize(istream &input) {
 ///
 ///  @param  input       istream to read from.
 ///  @param  index           index of the neuron (in neurons).
-void AllIZHNeurons::readNeuron(istream &input, int index) {
+void AllIZHNeurons::readNeuron(std::istream &input, int index) {
    AllIFNeurons::readNeuron(input, index);
 
    input >> Aconst_[index];
@@ -207,7 +207,7 @@ void AllIZHNeurons::readNeuron(istream &input, int index) {
 ///  Writes out the data in Neurons.
 ///
 ///  @param  output      stream to write out to.
-void AllIZHNeurons::serialize(ostream &output) const {
+void AllIZHNeurons::serialize(std::ostream &output) const {
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       writeNeuron(output, i);
    }
@@ -217,18 +217,18 @@ void AllIZHNeurons::serialize(ostream &output) const {
 ///
 ///  @param  output      stream to write out to.
 ///  @param  index       index of the neuron (in neurons).
-void AllIZHNeurons::writeNeuron(ostream &output, int index) const {
+void AllIZHNeurons::writeNeuron(std::ostream &output, int index) const {
    AllIFNeurons::writeNeuron(output, index);
 
-   output << Aconst_[index] << ends;
-   output << Bconst_[index] << ends;
-   output << Cconst_[index] << ends;
-   output << Dconst_[index] << ends;
-   output << u_[index] << ends;
-   output << C3_[index] << ends;
+   output << Aconst_[index] << std::ends;
+   output << Bconst_[index] << std::ends;
+   output << Cconst_[index] << std::ends;
+   output << Dconst_[index] << std::ends;
+   output << u_[index] << std::ends;
+   output << C3_[index] << std::ends;
 }
 
-#if !defined(USE_GPU)
+#ifndef __CUDACC__
 
 ///  Update internal state of the indexed Neuron (called by every simulation step).
 ///
@@ -259,7 +259,7 @@ void AllIZHNeurons::advanceNeuron(const int index) {
       // add noise
       BGFLOAT noise = (*noiseRNG)();
       // Happens really often, causes drastic slow down
-      // DEBUG_MID(cout << "ADVANCE NEURON[" << index << "] :: noise = " << noise << endl;)
+      // DEBUG_MID(cout << "ADVANCE NEURON[" << index << "] :: noise = " << noise << std::endl;)
       summationPoint += noise * Inoise; // add noise
 
       BGFLOAT Vint = Vm * 1000;
@@ -272,22 +272,22 @@ void AllIZHNeurons::advanceNeuron(const int index) {
    }
 
    // Happens really often, causes drastic slow down
-//   DEBUG_MID(cout << index << " " << Vm << endl;)
-//   DEBUG_MID(cout << "NEURON[" << index << "] {" << endl
-//                  << "\tVm = " << Vm << endl
-//                  << "\ta = " << a << endl
-//                  << "\tb = " << b << endl
-//                  << "\tc = " << Cconst_[index] << endl
-//                  << "\td = " << Dconst_[index] << endl
-//                  << "\tu = " << u << endl
-//                  << "\tVthresh = " << Vthresh << endl
-//                  << "\tsummationPoint = " << summationPoint << endl
-//                  << "\tI0 = " << I0 << endl
-//                  << "\tInoise = " << Inoise << endl
-//                  << "\tC1 = " << C1 << endl
-//                  << "\tC2 = " << C2 << endl
-//                  << "\tC3 = " << C3 << endl
-//                  << "}" << endl;)
+//   DEBUG_MID(cout << index << " " << Vm << std::endl;)
+//   DEBUG_MID(cout << "NEURON[" << index << "] {" << std::endl
+//                  << "\tVm = " << Vm << std::endl
+//                  << "\ta = " << a << std::endl
+//                  << "\tb = " << b << std::endl
+//                  << "\tc = " << Cconst_[index] << std::endl
+//                  << "\td = " << Dconst_[index] << std::endl
+//                  << "\tu = " << u << std::endl
+//                  << "\tVthresh = " << Vthresh << std::endl
+//                  << "\tsummationPoint = " << summationPoint << std::endl
+//                  << "\tI0 = " << I0 << std::endl
+//                  << "\tInoise = " << Inoise << std::endl
+//                  << "\tC1 = " << C1 << std::endl
+//                  << "\tC2 = " << C2 << std::endl
+//                  << "\tC3 = " << C3 << std::endl
+//                  << "}" << std::endl;)
 
    // clear synaptic input for next time step
    summationPoint = 0;

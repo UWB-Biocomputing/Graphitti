@@ -31,13 +31,13 @@ OperationManager::~OperationManager() {}
 /// Called by lower level classes constructors on creation to register their operations with their operation type.
 /// This method can be overloaded to handle different function signatures.
 /// Handles function signature: void ()
-void OperationManager::registerOperation(const Operations::op &operation, const function<void()> &function) {
+void OperationManager::registerOperation(const Operations::op &operation, const std::function<void()> &function) {
    try {
-      functionList_.push_back(unique_ptr<IFunctionNode>(new GenericFunctionNode(operation, function)));
+      functionList_.push_back(std::unique_ptr<IFunctionNode>(new GenericFunctionNode(operation, function)));
    }
-   catch (exception e) {
-      LOG4CPLUS_FATAL(logger_, string(e.what()) + ". Push back failed in OperationManager::registerOperation");
-      throw runtime_error(string(e.what()) + " in OperationManager::registerOperation");
+   catch (std::exception e) {
+      LOG4CPLUS_FATAL(logger_, std::string(e.what()) + ". Push back failed in OperationManager::registerOperation");
+      throw std::runtime_error(std::string(e.what()) + " in OperationManager::registerOperation");
    }
 }
 
@@ -52,7 +52,7 @@ void OperationManager::executeOperation(const Operations::op &operation) const {
 }
 
 /// Takes in the operation enum and returns the enum as a string. Used for debugging purposes.
-string OperationManager::operationToString(const Operations::op &operation) const {
+std::string OperationManager::operationToString(const Operations::op &operation) const {
    switch (operation) {
       case Operations::op::printParameters:
          return "printParameters";

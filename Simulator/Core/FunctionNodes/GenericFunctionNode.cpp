@@ -28,7 +28,7 @@ GenericFunctionNode::~GenericFunctionNode() {
 /// Invokes the stored function if the sent operation type matches the operation type the function is stored as.
 bool GenericFunctionNode::invokeFunction(const Operations::op &operation) const {
     if (operation == operationType_) {
-        __invoke(function_);
+        std::invoke(function_);
         return true;
     }
     return false;

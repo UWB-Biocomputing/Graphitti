@@ -112,7 +112,7 @@ void ConnGrowth::loadParameters() {
    if (growthParams_.epsilon != 0) {
       growthParams_.maxRate = growthParams_.targetRate / growthParams_.epsilon;
 	} else {
-      LOG4CPLUS_FATAL(fileLogger_, "Parameter GrowthParams/epsilon/ has a value of 0" << endl);
+      LOG4CPLUS_FATAL(fileLogger_, "Parameter GrowthParams/epsilon/ has a value of 0" << std::endl);
       exit(EXIT_FAILURE);
    }
 }
@@ -120,14 +120,14 @@ void ConnGrowth::loadParameters() {
 /// Prints out all parameters to logging file.
 /// Registered to OperationManager as Operation::printParameters
 void ConnGrowth::printParameters() const {
-   LOG4CPLUS_DEBUG(fileLogger_, "\nCONNECTIONS PARAMETERS" << endl
-    << "\tConnections type: ConnGrowth" << endl
-    << "\tepsilon: " << growthParams_.epsilon << endl
-    << "\tbeta: " << growthParams_.beta << endl
-    << "\trho: " << growthParams_.rho << endl
-    << "\tTarget rate: " << growthParams_.targetRate << "," << endl
-    << "\tMinimum radius: " << growthParams_.minRadius << endl
-    << "\tStarting radius: " << growthParams_.startRadius << endl << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\nCONNECTIONS PARAMETERS" << std::endl
+    << "\tConnections type: ConnGrowth" << std::endl
+    << "\tepsilon: " << growthParams_.epsilon << std::endl
+    << "\tbeta: " << growthParams_.beta << std::endl
+    << "\trho: " << growthParams_.rho << std::endl
+    << "\tTarget rate: " << growthParams_.targetRate << "," << std::endl
+    << "\tMinimum radius: " << growthParams_.minRadius << std::endl
+    << "\tStarting radius: " << growthParams_.startRadius << std::endl << std::endl);
 }
 
 ///  Update the connections status in every epoch.
@@ -202,11 +202,11 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout) {
             BGFLOAT r1 = (*radii_)[i];
             BGFLOAT r2 = (*radii_)[j];
 
-            if (lenAB + min(r1, r2) <= max(r1, r2)) {
-               (*area_)(i, j) = pi * min(r1, r2) * min(r1, r2); // Completely overlapping unit
+            if (lenAB + std::min(r1, r2) <= std::max(r1, r2)) {
+               (*area_)(i, j) = pi * std::min(r1, r2) * std::min(r1, r2); // Completely overlapping unit
 
                LOG4CPLUS_DEBUG(fileLogger_, "Completely overlapping (i, j, r1, r2, area): "
-                     << i << ", " << j << ", " << r1 << ", " << r2 << ", " << (*area_)(i, j) << endl);
+                     << i << ", " << j << ", " << r1 << ", " << r2 << ", " << (*area_)(i, j) << std::endl);
             } else {
                // Partially overlapping unit
                BGFLOAT lenAB2 = (*layout->dist2_)(i, j);
@@ -234,7 +234,7 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout) {
    }
 }
 
-#if !defined(USE_GPU)
+#ifndef __CUDACC__
 
 ///  Update the weight of the Synapses in the simulation.
 ///  To be clear, iterates through all source and destination neurons
@@ -325,12 +325,12 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &verti
              << "\nAdded: " << added);
 }
 
-#endif // !USE_GPU
+#endif
 
 ///  Prints radii 
 void ConnGrowth::printRadii() const {
    for (int i = 0; i < radiiSize_; i++) {
-      cout << "radii[" << i << "] = " << (*radii_)[i] << endl;
+      std::cout << "radii[" << i << "] = " << (*radii_)[i] << std::endl;
    }
 }
 

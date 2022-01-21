@@ -25,7 +25,7 @@ XmlRecorder::XmlRecorder() :
 
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/RecorderFiles/resultFileName/text()", resultFileName_);
 
-   function<void()> printParametersFunc = std::bind(&XmlRecorder::printParameters, this);
+   std::function<void()> printParametersFunc = std::bind(&XmlRecorder::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
 
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
@@ -133,34 +133,34 @@ void XmlRecorder::saveSimData(const AllVertices &vertices) {
    
    // Write the core state information:
    resultOut_ << "<SimState>\n";
-   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
-   resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   resultOut_ << "   " << layout->xloc_->toXML("xloc") << endl;
-   resultOut_ << "   " << layout->yloc_->toXML("yloc") << endl;
-   resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
+   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << std::endl;
+   resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << std::endl;
+   resultOut_ << "   " << layout->xloc_->toXML("xloc") << std::endl;
+   resultOut_ << "   " << layout->yloc_->toXML("yloc") << std::endl;
+   resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << std::endl;
    
    // create starter neurons matrix
    int num_starter_neurons = static_cast<int>(layout->numEndogenouslyActiveNeurons_);
    if (num_starter_neurons > 0) {
       VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
       getStarterNeuronMatrix(starterNeurons, layout->starterMap_);
-      resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
+      resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << std::endl;
    }
    
    // Write neuron threshold
-   resultOut_ << "   " << neuronThresh.toXML("neuronThresh") << endl;
+   resultOut_ << "   " << neuronThresh.toXML("neuronThresh") << std::endl;
    
    // write epoch duration
-   resultOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << endl;
-   resultOut_ << "   " << simulator.getEpochDuration() << endl;
-   resultOut_ << "</Matrix>" << endl;
+   resultOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << std::endl;
+   resultOut_ << "   " << simulator.getEpochDuration() << std::endl;
+   resultOut_ << "</Matrix>" << std::endl;
    
    // write simulation end time
    resultOut_ << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
-   << endl;
-   resultOut_ << "   " << g_simulationStep * simulator.getDeltaT() << endl;
-   resultOut_ << "</Matrix>" << endl;
-   resultOut_ << "</SimState>" << endl;
+   << std::endl;
+   resultOut_ << "   " << g_simulationStep * simulator.getDeltaT() << std::endl;
+   resultOut_ << "</Matrix>" << std::endl;
+   resultOut_ << "</SimState>" << std::endl;
 }
 
 /*
@@ -184,8 +184,8 @@ void XmlRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const bool *start
  *  Registered to OperationManager as Operation::printParameters
  */
 void XmlRecorder::printParameters() {
-   LOG4CPLUS_DEBUG(fileLogger_, "\nXMLRECORDER PARAMETERS" << endl
-                   << "\tResult file path: " << resultFileName_ << endl
-                   << "\tBurstiness History Size: " << burstinessHist_.Size() << endl
-                   << "\tSpikes History Size: " << spikesHistory_.Size() << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\nXMLRECORDER PARAMETERS" << std::endl
+                   << "\tResult file path: " << resultFileName_ << std::endl
+                   << "\tBurstiness History Size: " << burstinessHist_.Size() << std::endl
+                   << "\tSpikes History Size: " << spikesHistory_.Size() << std::endl);
 }

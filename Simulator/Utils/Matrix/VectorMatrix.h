@@ -17,8 +17,6 @@
 #include "SparseMatrix.h"
 #include "Norm.h"
 
-using namespace std;
-
 // Forward declarations
 class VectorMatrix;
 class CompleteMatrix;
@@ -68,8 +66,8 @@ public:
   ///  @param c columns in Matrix
   ///  @param m multiplier used for initialization
   ///  @param v values for initializing VectorMatrix
-  VectorMatrix(string t = "complete", string i = "const", int r = 1,
-	       int c = 1, BGFLOAT m = 0.0, string v = "");
+  VectorMatrix(std::string t = "complete", std::string i = "const", int r = 1,
+	       int c = 1, BGFLOAT m = 0.0, std::string v = "");
 
   ///  @brief Copy constructor. Performs a deep copy.
   ///  @param oldV The source VectorMatrix
@@ -89,10 +87,10 @@ public:
 
   ///  @brief Polymorphic output. Produces text output on stream "os"
   ///  @param os stream to output to
-  virtual void Print(ostream& os) const;
+  virtual void Print(std::ostream& os) const;
 
-  ///  @brief Produce XML representation of vector in string return value.
-  virtual string toXML(string name="") const;
+  ///  @brief Produce XML representation of vector in std::string return value.
+  virtual std::string toXML(std::string name="") const;
 
   /******************************************
   *  @name Accessors

@@ -135,28 +135,28 @@ void AllIFNeurons::printParameters() const {
    LOG4CPLUS_DEBUG(fileLogger_,
                    "\n\tInterval of constant injected current: ["
                          << IinjectRange_[0] << ", " << IinjectRange_[1] << "]"
-                         << endl
+                         << std::endl
                          << "\tInterval of STD of (gaussian) noise current: ["
                          << InoiseRange_[0] << ", " << InoiseRange_[1] << "]"
-                         << endl
+                         << std::endl
                          << "\tInterval of firing threshold: ["
                          << VthreshRange_[0] << ", " << VthreshRange_[1] << "]"
-                         << endl
+                         << std::endl
                          << "\tInterval of asymptotic voltage (Vresting): [" << VrestingRange_[0]
                          << ", " << VrestingRange_[1] << "]"
-                         << endl
+                         << std::endl
                          << "\tInterval of reset voltage: [" << VresetRange_[0]
                          << ", " << VresetRange_[1] << "]"
-                         << endl
+                         << std::endl
                          << "\tInterval of initial membrance voltage: [" << VinitRange_[0]
                          << ", " << VinitRange_[1] << "]"
-                         << endl
+                         << std::endl
                          << "\tStarter firing threshold: [" << starterVthreshRange_[0]
                          << ", " << starterVthreshRange_[1] << "]"
-                         << endl
+                         << std::endl
                          << "\tStarter reset threshold: [" << starterVresetRange_[0]
                          << ", " << starterVresetRange_[1] << "]"
-                         << endl << endl);
+                         << std::endl << std::endl);
 }
 
 ///  Creates all the Neurons and generates data for them.
@@ -221,16 +221,16 @@ void AllIFNeurons::createNeuron(int i, Layout *layout) {
       Trefract_[i] = DEFAULT_ExcitTrefract; // TODO(derek): move defaults inside model.
    }
 
-   LOG4CPLUS_DEBUG(vertexLogger_, "\nCREATE NEURON[" << i << "] {" << endl
-                 << "\tVm = " << Vm_[i] << endl
-                 << "\tVthresh = " << Vthresh_[i] << endl
-                 << "\tI0 = " << I0_[i] << endl
+   LOG4CPLUS_DEBUG(vertexLogger_, "\nCREATE NEURON[" << i << "] {" << std::endl
+                 << "\tVm = " << Vm_[i] << std::endl
+                 << "\tVthresh = " << Vthresh_[i] << std::endl
+                 << "\tI0 = " << I0_[i] << std::endl
                  << "\tInoise = " << Inoise_[i] << " from : (" << InoiseRange_[0] << "," << InoiseRange_[1]
                  << ")"
-                 << endl
-                 << "\tC1 = " << C1_[i] << endl
-                 << "\tC2 = " << C2_[i] << endl
-                 << "}" << endl);
+                 << std::endl
+                 << "\tC1 = " << C1_[i] << std::endl
+                 << "\tC2 = " << C2_[i] << std::endl
+                 << "}" << std::endl);
 }
 
 ///  Set the Neuron at the indexed location to default values.
@@ -282,19 +282,19 @@ void AllIFNeurons::initNeuronConstsFromParamValues(int i, const BGFLOAT deltaT) 
 ///
 ///  @param  index  index of the neuron (in neurons) to output info from.
 ///  @return the complete state of the neuron.
-string AllIFNeurons::toString(const int index) const {
-   stringstream ss;
+std::string AllIFNeurons::toString(const int index) const {
+   std::stringstream ss;
    ss << "Cm: " << Cm_[index] << " "; // membrane capacitance
    ss << "Rm: " << Rm_[index] << " "; // membrane resistance
    ss << "Vthresh: " << Vthresh_[index] << " "; // if Vm exceeds, Vthresh, a spike is emitted
    ss << "Vrest: " << Vrest_[index] << " "; // the resting membrane voltage
    ss << "Vreset: " << Vreset_[index] << " "; // The voltage to reset Vm to after a spike
-   ss << "Vinit: " << Vinit_[index] << endl; // The initial condition for V_m at t=0
+   ss << "Vinit: " << Vinit_[index] << std::endl; // The initial condition for V_m at t=0
    ss << "Trefract: " << Trefract_[index] << " "; // the number of steps in the refractory period
    ss << "Inoise: " << Inoise_[index] << " "; // the stdev of the noise to be added each delta_t
    ss << "Iinject: " << Iinject_[index] << " "; // A constant current to be injected into the LIF neuron
    ss << "nStepsInRefr: " << numStepsInRefractoryPeriod_[index]
-      << endl; // the number of steps left in the refractory period
+      << std::endl; // the number of steps left in the refractory period
    ss << "Vm: " << Vm_[index] << " "; // the membrane voltage
    ss << "hasFired: " << hasFired_[index] << " "; // it done fired?
    ss << "C1: " << C1_[index] << " ";
@@ -306,7 +306,7 @@ string AllIFNeurons::toString(const int index) const {
 ///  Sets the data for Neurons to input's data.
 ///
 ///  @param  input       istream to read from.
-void AllIFNeurons::deserialize(istream &input) {
+void AllIFNeurons::deserialize(std::istream &input) {
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       readNeuron(input, i);
    }
@@ -316,7 +316,7 @@ void AllIFNeurons::deserialize(istream &input) {
 ///
 ///  @param  input       istream to read from.
 ///  @param  i           index of the neuron (in neurons).
-void AllIFNeurons::readNeuron(istream &input, int i) {
+void AllIFNeurons::readNeuron(std::istream &input, int i) {
    // input.ignore() so input skips over end-of-line characters.
    input >> Cm_[i];
    input.ignore();
@@ -357,7 +357,7 @@ void AllIFNeurons::readNeuron(istream &input, int i) {
 ///  Writes out the data in Neurons.
 ///
 ///  @param  output      stream to write out to.
-void AllIFNeurons::serialize(ostream &output) const {
+void AllIFNeurons::serialize(std::ostream &output) const {
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       writeNeuron(output, i);
    }
@@ -367,24 +367,24 @@ void AllIFNeurons::serialize(ostream &output) const {
 ///
 ///  @param  output      stream to write out to.
 ///  @param  i           index of the neuron (in neurons).
-void AllIFNeurons::writeNeuron(ostream &output, int i) const {
-   output << Cm_[i] << ends;
-   output << Rm_[i] << ends;
-   output << Vthresh_[i] << ends;
-   output << Vrest_[i] << ends;
-   output << Vreset_[i] << ends;
-   output << Vinit_[i] << ends;
-   output << Trefract_[i] << ends;
-   output << Inoise_[i] << ends;
-   output << Iinject_[i] << ends;
-   output << Isyn_[i] << ends;
-   output << numStepsInRefractoryPeriod_[i] << ends;
-   output << C1_[i] << ends;
-   output << C2_[i] << ends;
-   output << I0_[i] << ends;
-   output << Vm_[i] << ends;
-   output << hasFired_[i] << ends;
-   output << Tau_[i] << ends;
+void AllIFNeurons::writeNeuron(std::ostream &output, int i) const {
+   output << Cm_[i] << std::ends;
+   output << Rm_[i] << std::ends;
+   output << Vthresh_[i] << std::ends;
+   output << Vrest_[i] << std::ends;
+   output << Vreset_[i] << std::ends;
+   output << Vinit_[i] << std::ends;
+   output << Trefract_[i] << std::ends;
+   output << Inoise_[i] << std::ends;
+   output << Iinject_[i] << std::ends;
+   output << Isyn_[i] << std::ends;
+   output << numStepsInRefractoryPeriod_[i] << std::ends;
+   output << C1_[i] << std::ends;
+   output << C2_[i] << std::ends;
+   output << I0_[i] << std::ends;
+   output << Vm_[i] << std::ends;
+   output << hasFired_[i] << std::ends;
+   output << Tau_[i] << std::ends;
 }
 
 

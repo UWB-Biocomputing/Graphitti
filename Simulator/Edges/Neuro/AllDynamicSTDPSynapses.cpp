@@ -71,15 +71,15 @@ void AllDynamicSTDPSynapses::setupEdges(const int numVertices, const int maxEdge
 void AllDynamicSTDPSynapses::printParameters() const {
    AllSTDPSynapses::printParameters();
 
-   LOG4CPLUS_DEBUG(fileLogger_, "\n\t---AllDynamicSTDPSynapses Parameters---" << endl
-   << "\tEdges type: AllDynamicSTDPSynapses" << endl << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\n\t---AllDynamicSTDPSynapses Parameters---" << std::endl
+   << "\tEdges type: AllDynamicSTDPSynapses" << std::endl << std::endl);
 }
 
 ///  Sets the data for Synapse to input's data.
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the synapse to set.
-void AllDynamicSTDPSynapses::readEdge(istream &input, const BGSIZE iEdg) {
+void AllDynamicSTDPSynapses::readEdge(std::istream &input, const BGSIZE iEdg) {
     AllSTDPSynapses::readEdge(input, iEdg);
 
     // input.ignore() so input skips over end-of-line characters.
@@ -101,15 +101,15 @@ void AllDynamicSTDPSynapses::readEdge(istream &input, const BGSIZE iEdg) {
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the synapse to print out.
-void AllDynamicSTDPSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const {
+void AllDynamicSTDPSynapses::writeEdge(std::ostream &output, const BGSIZE iEdg) const {
     AllSTDPSynapses::writeEdge(output, iEdg);
 
-    output << lastSpike_[iEdg] << ends;
-    output << r_[iEdg] << ends;
-    output << u_[iEdg] << ends;
-    output << D_[iEdg] << ends;
-    output << U_[iEdg] << ends;
-    output << F_[iEdg] << ends;
+    output << lastSpike_[iEdg] << std::ends;
+    output << r_[iEdg] << std::ends;
+    output << u_[iEdg] << std::ends;
+    output << D_[iEdg] << std::ends;
+    output << U_[iEdg] << std::ends;
+    output << F_[iEdg] << std::ends;
 }
 
 ///  Reset time varying state vars and recompute decay.
@@ -172,7 +172,7 @@ void AllDynamicSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int de
     this->F_[iEdg] = F;
 }
 
-#if !defined(USE_GPU)
+#ifndef __CUDACC__
 
 ///  Calculate the post synapse response after a spike.
 ///
@@ -206,12 +206,12 @@ void AllDynamicSTDPSynapses::printSynapsesProps() const {
     AllSTDPSynapses::printSynapsesProps();
     for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
         if (W_[i] != 0.0) {
-            cout << "lastSpike[" << i << "] = " << lastSpike_[i];
-            cout << " r: " << r_[i];
-            cout << " u: " << u_[i];
-            cout << " D: " << D_[i];
-            cout << " U: " << U_[i];
-            cout << " F: " << F_[i] << endl;
+            std::cout << "lastSpike[" << i << "] = " << lastSpike_[i];
+            std::cout << " r: " << r_[i];
+            std::cout << " u: " << u_[i];
+            std::cout << " D: " << D_[i];
+            std::cout << " U: " << U_[i];
+            std::cout << " F: " << F_[i] << std::endl;
         }
     }
 }

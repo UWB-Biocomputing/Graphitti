@@ -160,17 +160,17 @@ void AllSTDPSynapses::loadParameters() {
 void AllSTDPSynapses::printParameters() const {
    AllSpikingSynapses::printParameters();
    
-   LOG4CPLUS_DEBUG(edgeLogger_, "\n\t---AllSTDPSynapses Parameters---" << endl
-                   << "\tEdges type: AllSTDPSynapses" << endl << endl
+   LOG4CPLUS_DEBUG(edgeLogger_, "\n\t---AllSTDPSynapses Parameters---" << std::endl
+                   << "\tEdges type: AllSTDPSynapses" << std::endl << std::endl
                    
-                   <<"\tSTDP gap" << defaultSTDPgap_ << endl
-                   << "\n\tTauspost value: [" << " I: " << tauspost_I_ << ", " << " E: " << tauspost_E_  << "]"<< endl
-                   << "\n\tTauspre value: [" << " I: " << tauspre_I_ << ", " << " E: " << tauspre_E_ << "]"<< endl
-                   << "\n\tTaupos value: [" << " I: " << taupos_I_ << ", " << " E: " << taupos_E_  << "]"<< endl
-                   << "\n\tTau negvalue: [" << " I: " << tauneg_I_ << ", " << " E: " << tauneg_E_  << "]"<< endl
-                   << "\n\tWex value: [" << " I: " << Wex_I_ << ", " << " E: " << Wex_E_  << "]"<< endl
-                   << "\n\tAneg value: [" << " I: " << Aneg_I_ << ", " << " E: " << Aneg_E_  << "]"<< endl
-                   << "\n\tApos value: [" << " I: " << Apos_I_ << ", " << " E: " << Apos_E_  << "]"<< endl
+                   <<"\tSTDP gap" << defaultSTDPgap_ << std::endl
+                   << "\n\tTauspost value: [" << " I: " << tauspost_I_ << ", " << " E: " << tauspost_E_  << "]"<< std::endl
+                   << "\n\tTauspre value: [" << " I: " << tauspre_I_ << ", " << " E: " << tauspre_E_ << "]"<< std::endl
+                   << "\n\tTaupos value: [" << " I: " << taupos_I_ << ", " << " E: " << taupos_E_  << "]"<< std::endl
+                   << "\n\tTau negvalue: [" << " I: " << tauneg_I_ << ", " << " E: " << tauneg_E_  << "]"<< std::endl
+                   << "\n\tWex value: [" << " I: " << Wex_I_ << ", " << " E: " << Wex_E_  << "]"<< std::endl
+                   << "\n\tAneg value: [" << " I: " << Aneg_I_ << ", " << " E: " << Aneg_E_  << "]"<< std::endl
+                   << "\n\tApos value: [" << " I: " << Apos_I_ << ", " << " E: " << Apos_E_  << "]"<< std::endl
                    );
 }
 
@@ -178,7 +178,7 @@ void AllSTDPSynapses::printParameters() const {
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the synapse to set.
-void AllSTDPSynapses::readEdge(istream &input, const BGSIZE iEdg) {
+void AllSTDPSynapses::readEdge(std::istream &input, const BGSIZE iEdg) {
    AllSpikingSynapses::readEdge(input, iEdg);
 
    // input.ignore() so input skips over end-of-line characters.
@@ -216,23 +216,23 @@ void AllSTDPSynapses::readEdge(istream &input, const BGSIZE iEdg) {
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the synapse to print out.
-void AllSTDPSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const {
+void AllSTDPSynapses::writeEdge(std::ostream &output, const BGSIZE iEdg) const {
    AllSpikingSynapses::writeEdge(output, iEdg);
 
-   output << totalDelayPost_[iEdg] << ends;
-   output << delayQueuePost_[iEdg] << ends;
-   output << delayIndexPost_[iEdg] << ends;
-   output << delayQueuePostLength_[iEdg] << ends;
-   output << tauspost_[iEdg] << ends;
-   output << tauspre_[iEdg] << ends;
-   output << taupos_[iEdg] << ends;
-   output << tauneg_[iEdg] << ends;
-   output << STDPgap_[iEdg] << ends;
-   output << Wex_[iEdg] << ends;
-   output << Aneg_[iEdg] << ends;
-   output << Apos_[iEdg] << ends;
-   output << mupos_[iEdg] << ends;
-   output << muneg_[iEdg] << ends;
+   output << totalDelayPost_[iEdg] << std::ends;
+   output << delayQueuePost_[iEdg] << std::ends;
+   output << delayIndexPost_[iEdg] << std::ends;
+   output << delayQueuePostLength_[iEdg] << std::ends;
+   output << tauspost_[iEdg] << std::ends;
+   output << tauspre_[iEdg] << std::ends;
+   output << taupos_[iEdg] << std::ends;
+   output << tauneg_[iEdg] << std::ends;
+   output << STDPgap_[iEdg] << std::ends;
+   output << Wex_[iEdg] << std::ends;
+   output << Aneg_[iEdg] << std::ends;
+   output << Apos_[iEdg] << std::ends;
+   output << mupos_[iEdg] << std::ends;
+   output << muneg_[iEdg] << std::ends;
 }
 
 ///  Reset time varying state vars and recompute decay.
@@ -275,7 +275,7 @@ void AllSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVerte
    muneg_[iEdg] = 0;
 }
 
-#if !defined(USE_GPU)
+#ifndef __CUDACC__
 
 ///  Advance one specific Synapse.
 ///
@@ -335,15 +335,15 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices *neurons) {
             // (include pre-synaptic transmission delay)
             delta = -static_cast<BGFLOAT>(g_simulationStep - spikeHistory) * deltaT;
             /*
-             LOG4CPLUS_DEBUG(fileLogger_,"\nAllSTDPSynapses::advanceSynapse: fPre" << endl
-             << "\tiEdg: " << iEdg << endl
-             << "\tidxPre: " << idxPre << endl
-             << "\tidxPost: " << idxPost << endl
-             << "\tspikeHistory: " << spikeHistory << endl
-             << "\tepre: " << epre << endl
-             << "\tepost: " << epost << endl
-             << "\tg_simulationStep: " << g_simulationStep << endl
-             << "\tdelta: " << delta << endl << endl);
+             LOG4CPLUS_DEBUG(fileLogger_,"\nAllSTDPSynapses::advanceSynapse: fPre" << std::endl
+             << "\tiEdg: " << iEdg << std::endl
+             << "\tidxPre: " << idxPre << std::endl
+             << "\tidxPost: " << idxPost << std::endl
+             << "\tspikeHistory: " << spikeHistory << std::endl
+             << "\tepre: " << epre << std::endl
+             << "\tepost: " << epost << std::endl
+             << "\tg_simulationStep: " << g_simulationStep << std::endl
+             << "\tdelta: " << delta << std::endl << std::endl);
              */
             
             if (delta <= -3.0 * tauneg)
@@ -380,15 +380,15 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices *neurons) {
             // delta is the spike interval between post-pre spikes
             delta = static_cast<BGFLOAT>(g_simulationStep - spikeHistory - total_delay) * deltaT;
             /*
-             LOG4CPLUS_DEBUG(fileLogger_,"\nAllSTDPSynapses::advanceSynapse: fPost" << endl
-             << "\tiEdg: " << iEdg << endl
-             << "\tidxPre: " << idxPre << endl
-             << "\tidxPost: " << idxPost << endl
-             << "\tspikeHistory: " << spikeHistory << endl
-             << "\tg_simulationStep: " << g_simulationStep << endl
-             << "\tepre: " << epre << endl
-             << "\tepost: " << epost << endl
-             << "\tdelta: " << delta << endl << endl);
+             LOG4CPLUS_DEBUG(fileLogger_,"\nAllSTDPSynapses::advanceSynapse: fPost" << std::endl
+             << "\tiEdg: " << iEdg << std::endl
+             << "\tidxPre: " << idxPre << std::endl
+             << "\tidxPost: " << idxPost << std::endl
+             << "\tspikeHistory: " << spikeHistory << std::endl
+             << "\tg_simulationStep: " << g_simulationStep << std::endl
+             << "\tepre: " << epre << std::endl
+             << "\tepost: " << epost << std::endl
+             << "\tdelta: " << delta << std::endl << std::endl);
              */
             if (delta >= 3.0 * taupos)
                break;
@@ -489,14 +489,14 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iEdg, double delta, double epost
       W = edgSign(type) * Wex;
    }
    /*
-    LOG4CPLUS_DEBUG(edgeLogger_, endl <<
+    LOG4CPLUS_DEBUG(edgeLogger_, std::endl <<
     "iEdg value " << iEdg
     << "; source:" << srcVertex
     << "; dest:" << destVertex
     << "; delta:" << delta
     << "; oldW:" << oldW
     << " ;W:" << W
-    << endl);
+    << std::endl);
     
     */
 }
@@ -540,7 +540,7 @@ void AllSTDPSynapses::postSpikeHit(const BGSIZE iEdg) {
    delay_queue |= (0x1 << idx);
 }
 
-#endif // !defined(USE_GPU)
+#endif
 
 ///  Check if the back propagation (notify a spike event to the pre neuron)
 ///  is allowed in the synapse class.
@@ -555,17 +555,17 @@ void AllSTDPSynapses::printSynapsesProps() const {
    AllSpikingSynapses::printSynapsesProps();
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
-         cout << "total_delayPost[" << i << "] = " << totalDelayPost_[i];
-         cout << " tauspost_: " << tauspost_[i];
-         cout << " tauspre_: " << tauspre_[i];
-         cout << " taupos_: " << taupos_[i];
-         cout << " tauneg_: " << tauneg_[i];
-         cout << " STDPgap_: " << STDPgap_[i];
-         cout << " Wex_: " << Wex_[i];
-         cout << " Aneg_: " << Aneg_[i];
-         cout << " Apos_: " << Apos_[i];
-         cout << " mupos_: " << mupos_[i];
-         cout << " muneg_: " << muneg_[i] << endl;
+         std::cout << "total_delayPost[" << i << "] = " << totalDelayPost_[i];
+         std::cout << " tauspost_: " << tauspost_[i];
+         std::cout << " tauspre_: " << tauspre_[i];
+         std::cout << " taupos_: " << taupos_[i];
+         std::cout << " tauneg_: " << tauneg_[i];
+         std::cout << " STDPgap_: " << STDPgap_[i];
+         std::cout << " Wex_: " << Wex_[i];
+         std::cout << " Aneg_: " << Aneg_[i];
+         std::cout << " Apos_: " << Apos_[i];
+         std::cout << " mupos_: " << mupos_[i];
+         std::cout << " muneg_: " << muneg_[i] << std::endl;
       }
    }
 }

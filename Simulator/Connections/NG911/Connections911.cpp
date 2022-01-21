@@ -78,14 +78,14 @@ void Connections911::loadParameters() {
 ///  Prints out all parameters to logging file.
 ///  Registered to OperationManager as Operation::printParameters
 void Connections911::printParameters() const {
-   LOG4CPLUS_DEBUG(fileLogger_, "CONNECTIONS PARAMETERS" << endl
-    << "\tConnections Type: Connections911" << endl
-    << "\tConnections per vertex: " << connsPerVertex_ << endl
-    << "\tPSAPs to erase: " << psapsToErase_ << endl
-    << "\tRESPs to erase: " << respsToErase_ << endl << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "CONNECTIONS PARAMETERS" << std::endl
+    << "\tConnections Type: Connections911" << std::endl
+    << "\tConnections per vertex: " << connsPerVertex_ << std::endl
+    << "\tPSAPs to erase: " << psapsToErase_ << std::endl
+    << "\tRESPs to erase: " << respsToErase_ << std::endl << std::endl);
 }
 
-#if !defined(USE_GPU)
+#ifndef __CUDACC__
 ///  Update the connections status in every epoch.
 ///
 ///  @param  vertices  The Vertex list to search from.
@@ -121,7 +121,7 @@ bool Connections911::updateConnections(AllVertices &vertices, Layout *layout) {
 bool Connections911::erasePSAP(AllVertices &vertices, Layout *layout) {
    int numVertices = Simulator::getInstance().getTotalVertices();
 
-   vector<int> psaps;
+   std::vector<int> psaps;
    psaps.clear();
 
    // Find all psaps
@@ -141,8 +141,8 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout *layout) {
 
    BGSIZE maxTotalEdges = edges_->maxEdgesPerVertex_ * numVertices;
    bool changesMade = false;
-   vector<int> callersToReroute;
-   vector<int> respsToReroute;
+   std::vector<int> callersToReroute;
+   std::vector<int> respsToReroute;
 
    callersToReroute.clear();
    respsToReroute.clear();
@@ -255,7 +255,7 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout *layout) {
 bool Connections911::eraseRESP(AllVertices &vertices, Layout *layout) {
    int numVertices = Simulator::getInstance().getTotalVertices();
 
-   vector<int> resps;
+   std::vector<int> resps;
    resps.clear();
 
    // Find all resps
@@ -306,9 +306,9 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout *layout) {
 }
 
 ///  @return xml representation of a single edge
-string Connections911::ChangedEdge::toString() {
-   stringstream os;
-   string type_s;
+std::string Connections911::ChangedEdge::toString() {
+   std::stringstream os;
+   std::string type_s;
 
    switch (eType){
       case CP: type_s = "CP"; break;
@@ -320,26 +320,26 @@ string Connections911::ChangedEdge::toString() {
 
    os << "<item>";
    os << srcV << " " << destV << " " << type_s;
-   os << "</item>" << endl;
+   os << "</item>" << std::endl;
 
    return os.str();
 }
 
-///  Returns the complete list of all deleted or added edges as a string.
+///  Returns the complete list of all deleted or added edges as a std::string.
 ///  @param added    true returns the list of added edges, false = erased
 ///  @return xml representation of all deleted or added edges
-string Connections911::changedEdgesToXML(bool added) {
-   stringstream os;
+std::string Connections911::changedEdgesToXML(bool added) {
+   std::stringstream os;
 
-   vector<ChangedEdge> changed = edgesErased;
-   string name = "edgesDeleted";
+   std::vector<ChangedEdge> changed = edgesErased;
+   std::string name = "edgesDeleted";
 
    if (added) {
       changed = edgesAdded;
       name = "edgesAdded";
    }
 
-   os << "<Matrix name=\"" << name << "\" type=\"complete\" rows=\"" << changed.size() << "\" columns=\"3\" multiplier=\"1.0\">" << endl;
+   os << "<Matrix name=\"" << name << "\" type=\"complete\" rows=\"" << changed.size() << "\" columns=\"3\" multiplier=\"1.0\">" << std::endl;
 
    for (int i = 0; i < changed.size(); i++) {
       os << "   " << changed[i].toString();
@@ -349,12 +349,12 @@ string Connections911::changedEdgesToXML(bool added) {
    return os.str();
 }
 
-///  Returns the complete list of deleted vertices as a string.
+///  Returns the complete list of deleted vertices as a std::string.
 ///  @return xml representation of all deleted vertices
-string Connections911::erasedVerticesToXML() {
-   stringstream os;
+std::string Connections911::erasedVerticesToXML() {
+   std::stringstream os;
 
-   os << "<Matrix name=\"verticesDeleted\" type=\"complete\" rows=\"1\" columns=\"" << verticesErased.size() << "\" multiplier=\"1.0\">" << endl;
+   os << "<Matrix name=\"verticesDeleted\" type=\"complete\" rows=\"1\" columns=\"" << verticesErased.size() << "\" multiplier=\"1.0\">" << std::endl;
    os << "   ";
 
    sort(verticesErased.begin(), verticesErased.end());
@@ -362,7 +362,7 @@ string Connections911::erasedVerticesToXML() {
       os << verticesErased[i] << " ";
    }
 
-   os << endl << "</Matrix>";
+   os << std::endl << "</Matrix>";
    return os.str();
 }
 

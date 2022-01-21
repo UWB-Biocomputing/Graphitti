@@ -56,7 +56,7 @@ public:
 
 protected:
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract
    public:
@@ -73,7 +73,7 @@ protected:
        virtual void setEdgeClassID() {};
        virtual void printGPUEdgesProps( void* allEdgesDeviceProps ) const {};
 
-#else // !defined(USE_GPU)
+#else
 public:
 
    ///  Advance all the edges in the simulation.

@@ -49,7 +49,7 @@ void AllNeuroEdges::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the edge to set.
-void AllNeuroEdges::readEdge(istream &input, const BGSIZE iEdg) {
+void AllNeuroEdges::readEdge(std::istream &input, const BGSIZE iEdg) {
    int synapse_type(0);
 
    // input.ignore() so input skips over end-of-line characters.
@@ -73,13 +73,13 @@ void AllNeuroEdges::readEdge(istream &input, const BGSIZE iEdg) {
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the edge to print out.
-void AllNeuroEdges::writeEdge(ostream &output, const BGSIZE iEdg) const {
-   output << sourceVertexIndex_[iEdg] << ends;
-   output << destVertexIndex_[iEdg] << ends;
-   output << W_[iEdg] << ends;
-   output << psr_[iEdg] << ends;
-   output << type_[iEdg] << ends;
-   output << inUse_[iEdg] << ends;
+void AllNeuroEdges::writeEdge(std::ostream &output, const BGSIZE iEdg) const {
+   output << sourceVertexIndex_[iEdg] << std::ends;
+   output << destVertexIndex_[iEdg] << std::ends;
+   output << W_[iEdg] << std::ends;
+   output << psr_[iEdg] << std::ends;
+   output << type_[iEdg] << std::ends;
+   output << inUse_[iEdg] << std::ends;
 }
 
 ///  Get the sign of the edgeType.
@@ -104,30 +104,30 @@ int AllNeuroEdges::edgSign(const edgeType type) {
 
 ///  Prints SynapsesProps data to console.
 void AllNeuroEdges::printSynapsesProps() const {
-   cout << "This is SynapsesProps data:" << endl;
+   std::cout << "This is SynapsesProps data:" << std::endl;
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
-         cout << "W[" << i << "] = " << W_[i];
-         cout << " sourNeuron: " << sourceVertexIndex_[i];
-         cout << " desNeuron: " << destVertexIndex_[i];
-         cout << " type: " << type_[i];
-         cout << " psr: " << psr_[i];
-         cout << " in_use:" << inUse_[i];
+         std::cout << "W[" << i << "] = " << W_[i];
+         std::cout << " sourNeuron: " << sourceVertexIndex_[i];
+         std::cout << " desNeuron: " << destVertexIndex_[i];
+         std::cout << " type: " << type_[i];
+         std::cout << " psr: " << psr_[i];
+         std::cout << " in_use:" << inUse_[i];
          if (summationPoint_[i] != nullptr) {
-            cout << " summationPoint: is created!" << endl;
+            std::cout << " summationPoint: is created!" << std::endl;
          } else {
-            cout << " summationPoint: is EMPTY!!!!!" << endl;
+            std::cout << " summationPoint: is EMPTY!!!!!" << std::endl;
          }
       }
    }
 
    for (int i = 0; i < countVertices_; i++) {
-      cout << "edge_counts:" << "vertex[" << i << "]" << edgeCounts_[i] << endl;
+      std::cout << "edge_counts:" << "vertex[" << i << "]" << edgeCounts_[i] << std::endl;
    }
 
-   cout << "totalEdgeCount:" << totalEdgeCount_ << endl;
-   cout << "maxEdgesPerVertex:" << maxEdgesPerVertex_ << endl;
-   cout << "count_neurons:" << countVertices_ << endl;
+   std::cout << "totalEdgeCount:" << totalEdgeCount_ << std::endl;
+   std::cout << "maxEdgesPerVertex:" << maxEdgesPerVertex_ << std::endl;
+   std::cout << "count_neurons:" << countVertices_ << std::endl;
 }
 
 

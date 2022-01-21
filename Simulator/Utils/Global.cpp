@@ -18,13 +18,13 @@ int g_debug_mask
 		= 0;
 #endif
 
-///  Converts the given index to a string with the indexes of a two-dimensional array.
+///  Converts the given index to a std::string with the indexes of a two-dimensional array.
 ///  @param  i   index to be converted.
 ///  @param  width   width of the two-dimensional array
 ///  @param  height  height of the two-dimensional array
-///  @return string with the converted indexes and square brackets surrounding them.
-string index2dToString(int i, int width, int height) {
-	stringstream ss;
+///  @return std::string with the converted indexes and square brackets surrounding them.
+std::string index2dToString(int i, int width, int height) {
+	std::stringstream ss;
 	ss << "[" << i % width << "][" << i / height << "]";
 	return ss.str();
 }
@@ -33,8 +33,8 @@ string index2dToString(int i, int width, int height) {
 ///  @param  x   x coordinate.
 ///  @param  y   y coordinate.
 ///  @return returns the given coordinates surrounded by square brackets.
-string coordToString(int x, int y) {
-	stringstream ss;
+std::string coordToString(int x, int y) {
+	std::stringstream ss;
 	ss << "[" << x << "][" << y << "]";
 	return ss.str();
 }
@@ -44,27 +44,27 @@ string coordToString(int x, int y) {
 ///  @param  y   y coordinate.
 ///  @param  z   z coordinate.
 ///  @return returns the given coordinates surrounded by square brackets.
-string coordToString(int x, int y, int z) {
-	stringstream ss;
+std::string coordToString(int x, int y, int z) {
+	std::stringstream ss;
 	ss << "[" << x << "][" << y << "][" << z << "]";
 	return ss.str();
 }
 
 // MODEL INDEPENDENT FUNCTION NMV-BEGIN {
-string neuronTypeToString(vertexType t) {
+std::string neuronTypeToString(vertexType t) {
 	switch (t) {
 	case INH:
 		return "INH";
 	case EXC:
 		return "EXC";
 	default:
-		cerr << "ERROR->neuronTypeToString() failed, unknown type: " << t << endl;
+		std::cerr << "ERROR->neuronTypeToString() failed, unknown type: " << t << std::endl;
 		assert(false);
 		return nullptr; // Must return a value -- this will probably cascade to another failure
 	}
 }
 // } NMV-END
-#if defined(USE_GPU)
+#ifdef __CUDACC__
 //! CUDA device ID
 int g_deviceId = 0;
 #endif // USE_GPU
@@ -124,6 +124,6 @@ void printPerformanceMetrics(const float total_time, int steps)
 #endif // PERFORMANCE_METRICS
 
 // TODO comment
-const string MATRIX_TYPE = "complete";
+const std::string MATRIX_TYPE = "complete";
 // TODO comment
-const string MATRIX_INIT = "const";
+const std::string MATRIX_INIT = "const";

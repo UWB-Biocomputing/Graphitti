@@ -21,8 +21,8 @@
 
 // Initialize attributes at construction time
 // The subclass constructor must set dimensions
-Matrix::Matrix(string t, string i, int r, int c, BGFLOAT m)
-  : type(t), init(i), rows(r), columns(c), multiplier(m), dimensions(0) {}
+Matrix::Matrix(std::string t, std::string i, int r, int c, BGFLOAT m)
+	: type(t), init(i), rows(r), columns(c), multiplier(m), dimensions(0) {}
 
 
 /// @brief Convenience mutator
@@ -32,15 +32,14 @@ Matrix::Matrix(string t, string i, int r, int c, BGFLOAT m)
 /// @param c columns in Matrix
 /// @param m multiplier used for initialization
 /// @param d indicates one or two dimensional
-void Matrix::SetAttributes(string t, string i, int r, int c,
-			   BGFLOAT m, int d)
-{
-  type = t;
-  init = i;
-  rows = r;
-  columns = c;
-  multiplier = m;
-  dimensions = d;
+void Matrix::SetAttributes(std::string t, std::string i, int r, int c,
+                           BGFLOAT m, int d) {
+	type = t;
+	init = i;
+	rows = r;
+	columns = c;
+	multiplier = m;
+	dimensions = d;
 }
 
 
@@ -49,8 +48,7 @@ void Matrix::SetAttributes(string t, string i, int r, int c,
 /// to take advantage of this.
 /// @param os the output stream
 /// @param obj the Matrix object to send to the output stream
-ostream& operator<<(ostream& os, const Matrix& obj)
-{
-  obj.Print(os);
-  return os;
+std::ostream& operator<<(std::ostream& os, const Matrix& obj) {
+	obj.Print(os);
+	return os;
 }

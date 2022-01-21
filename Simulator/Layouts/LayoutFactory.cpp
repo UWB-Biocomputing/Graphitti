@@ -13,39 +13,36 @@
 
 /// Constructor is private to keep a singleton instance of this class.
 LayoutFactory::LayoutFactory() {
-   // register layout classes
-   registerClass("FixedLayout", &FixedLayout::Create);
-   registerClass("DynamicLayout", &DynamicLayout::Create);
-   registerClass("Layout911", &Layout911::Create);
+	// register layout classes
+	registerClass("FixedLayout", &FixedLayout::Create);
+	registerClass("DynamicLayout", &DynamicLayout::Create);
+	registerClass("Layout911", &Layout911::Create);
 }
 
-LayoutFactory::~LayoutFactory() {
-   createFunctions.clear();
-}
+LayoutFactory::~LayoutFactory() { createFunctions.clear(); }
 
 ///  Register layout class and its creation function to the factory.
 ///
 ///  @param  className  vertices class name.
 ///  @param  Pointer to the class creation function.
-void LayoutFactory::registerClass(const string &className, CreateFunction function) {
-   createFunctions[className] = function;
+void LayoutFactory::registerClass(const std::string& className, CreateFunction function) {
+	createFunctions[className] = function;
 }
 
 
 /// Creates concrete instance of the desired layout class.
-shared_ptr<Layout> LayoutFactory::createLayout(const string &className) {
-   layoutInstance = shared_ptr<Layout>(invokeCreateFunction(className));
-   return layoutInstance;
+std::shared_ptr<Layout> LayoutFactory::createLayout(const std::string& className) {
+	layoutInstance = std::shared_ptr<Layout>(invokeCreateFunction(className));
+	return layoutInstance;
 }
 
 /// Create an instance of the layout class using the static ::Create() method.
 ///
 /// The calling method uses this retrieval mechanism in
 /// value assignment.
-Layout *LayoutFactory::invokeCreateFunction(const string &className) {
-   for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
-      if (className == i->first)
-         return i->second();
-   }
-   return nullptr;
+Layout* LayoutFactory::invokeCreateFunction(const std::string& className) {
+	for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
+		if (className == i->first) return i->second();
+	}
+	return nullptr;
 }

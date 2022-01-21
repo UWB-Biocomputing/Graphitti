@@ -23,8 +23,6 @@
 
 #include "BGTypes.h"
 
-using namespace std;
-
 struct EdgeIndexMap {
    /// Pointer to the outgoing edge index map.
    BGSIZE* outgoingEdgeIndexMap_;

@@ -33,8 +33,6 @@
 #include "BGTypes.h"
 #include "tinyxml.h"
 
-using namespace std;
-
 class ParameterManager {
 public:
 
@@ -44,22 +42,22 @@ public:
    /// Utility Methods
    ~ParameterManager();
 
-   bool loadParameterFile(string path);
+   bool loadParameterFile(std::string path);
 
    /// Interface methods for simulator objects
-   bool getStringByXpath(string xpath, string &referenceVar);
+   bool getStringByXpath(std::string xpath, std::string &referenceVar);
 
-   bool getIntByXpath(string xpath, int &referenceVar);
+   bool getIntByXpath(std::string xpath, int &referenceVar);
 
-   bool getDoubleByXpath(string xpath, double &referenceVar);
+   bool getDoubleByXpath(std::string xpath, double &referenceVar);
 
-   bool getFloatByXpath(string xpath, float &referenceVariable);
+   bool getFloatByXpath(std::string xpath, float &referenceVariable);
 
-   bool getBGFloatByXpath(string xpath, BGFLOAT &referenceVar);
+   bool getBGFloatByXpath(std::string xpath, BGFLOAT &referenceVar);
 
-   bool getLongByXpath(string xpath, long &referenceVar);
+   bool getLongByXpath(std::string xpath, long &referenceVar);
 
-   bool getIntVectorByXpath(const string &path, const string &elementName, vector<int> &referenceVar);
+   bool getIntVectorByXpath(const std::string &path, const std::string &elementName, std::vector<int> &referenceVar);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    ParameterManager(ParameterManager const &) = delete;

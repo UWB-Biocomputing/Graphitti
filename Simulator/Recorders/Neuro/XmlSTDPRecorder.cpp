@@ -23,13 +23,13 @@ XmlRecorder()
    const int maxSynapsesPerNeuron = Simulator::getInstance().getMaxEdgesPerVertex();
    
    weightsHistory_.resize(numEpochs + 1,
-      vector<BGFLOAT> (totalNeurons*maxSynapsesPerNeuron,0));
+      std::vector<BGFLOAT> (totalNeurons*maxSynapsesPerNeuron,0));
    
    sourceNeuronIndexHistory_.resize(numEpochs + 1,
-      vector<int> (totalNeurons*maxSynapsesPerNeuron));
+      std::vector<int> (totalNeurons*maxSynapsesPerNeuron));
 
    destNeuronIndexHistory_.resize(numEpochs + 1 ,
-      vector<int> (totalNeurons*maxSynapsesPerNeuron));
+      std::vector<int> (totalNeurons*maxSynapsesPerNeuron));
 }
 
 XmlSTDPRecorder::~XmlSTDPRecorder() {
@@ -37,7 +37,7 @@ XmlSTDPRecorder::~XmlSTDPRecorder() {
 
 ///Init radii and rates history matrices with default values
 void XmlSTDPRecorder::initDefaultValues() {
-   shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
+   std::shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
   //AllNeuroEdges *synapses synapses)->W_[iSyn]
    BGFLOAT startRadius = dynamic_cast<ConnStatic *>(conns.get())->getConnsRadiusThresh();
 
@@ -60,7 +60,7 @@ void XmlSTDPRecorder::initValues() {
 /// Get the current synapse weight information
 void XmlSTDPRecorder::getValues() {
    Simulator &simulator = Simulator::getInstance();
-   shared_ptr<Connections> connections = simulator.getModel()->getConnections();
+   std::shared_ptr<Connections> connections = simulator.getModel()->getConnections();
    AllEdges &synapses =(*connections->getEdges());
    const int currentStep = simulator.getCurrentStep();
 
@@ -78,7 +78,7 @@ void XmlSTDPRecorder::compileHistories(AllVertices &neurons) {
    LOG4CPLUS_INFO(fileLogger_, "Compiling STDP HISTORY");
    XmlRecorder::compileHistories(neurons);
    Simulator &simulator = Simulator::getInstance();
-   shared_ptr<Connections> connections = simulator.getModel()->getConnections();
+   std::shared_ptr<Connections> connections = simulator.getModel()->getConnections();
    AllEdges &synapses =(*connections->getEdges());
    const int currentStep = simulator.getCurrentStep();
 
@@ -91,51 +91,51 @@ void XmlSTDPRecorder::compileHistories(AllVertices &neurons) {
    LOG4CPLUS_INFO(fileLogger_, "Finished Compiling STDP HISTORY");
 }
 
-/// convert Matrix to XML string
-string XmlSTDPRecorder::toXML(string name, vector<vector<BGFLOAT>> MatrixToWrite) const
+/// convert Matrix to XML std::string
+std::string XmlSTDPRecorder::toXML(std::string name, std::vector<std::vector<BGFLOAT>> MatrixToWrite) const
 {
-    stringstream os;
+    std::stringstream os;
     
     os << "<Matrix ";
     if (name != "")
         os << "name=\"" << name << "\" ";
     os << "type=\"complete\" rows=\"" << MatrixToWrite.size()
     << "\" columns=\"" << MatrixToWrite[0].size()
-    << "\" multiplier=\"1.0\">" << endl;
+    << "\" multiplier=\"1.0\">" << std::endl;
     for (int i = 0; i < MatrixToWrite.size(); i++)
 {
     for (int j = 0; j < MatrixToWrite[i].size(); j++)
     {
         os << MatrixToWrite[i][j]<< " ";
     }
-     os<<endl;
+     os<<std::endl;
 }
-os <<endl;
+os <<std::endl;
     os << "</Matrix>";
     
     return os.str();
 }
 
-/// convert Matrix to XML string
-string XmlSTDPRecorder::toXML(string name, vector<vector<int>> MatrixToWrite) const
+/// convert Matrix to XML std::string
+std::string XmlSTDPRecorder::toXML(std::string name, std::vector<std::vector<int>> MatrixToWrite) const
 {
-    stringstream os;
+    std::stringstream os;
     
     os << "<Matrix ";
     if (name != "")
         os << "name=\"" << name << "\" ";
     os << "type=\"complete\" rows=\"" << MatrixToWrite.size()
     << "\" columns=\"" << MatrixToWrite[0].size()
-    << "\" multiplier=\"1.0\">" << endl;
+    << "\" multiplier=\"1.0\">" << std::endl;
     for (int i = 0; i < MatrixToWrite.size(); i++)
 {
     for (int j = 0; j < MatrixToWrite[i].size(); j++)
     {
         os << MatrixToWrite[i][j]<<" ";
     }
-    os<<endl;
+    os<<std::endl;
 }
-   os <<endl;
+   os <<std::endl;
     os << "</Matrix>";
     
     return os.str();
@@ -167,37 +167,37 @@ void XmlSTDPRecorder::saveSimData(const AllVertices &neurons)
 
    // Write the core state information:
    resultOut_ << "<SimState>\n";
-   resultOut_ << "   " <<toXML("sourceNeuronIndexHistory",sourceNeuronIndexHistory_) << endl;
-   resultOut_ << "   " << toXML("destNeuronIndexHistory",destNeuronIndexHistory_) << endl;
-   resultOut_ << "   " <<toXML("weightsHistory",weightsHistory_) << endl;
-   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
-   resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   resultOut_ << "   " << simulator.getModel()->getLayout()->xloc_->toXML("xloc") << endl;
-   resultOut_ << "   " << simulator.getModel()->getLayout()->yloc_->toXML("yloc") << endl;
-   resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
+   resultOut_ << "   " <<toXML("sourceNeuronIndexHistory",sourceNeuronIndexHistory_) << std::endl;
+   resultOut_ << "   " << toXML("destNeuronIndexHistory",destNeuronIndexHistory_) << std::endl;
+   resultOut_ << "   " <<toXML("weightsHistory",weightsHistory_) << std::endl;
+   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << std::endl;
+   resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << std::endl;
+   resultOut_ << "   " << simulator.getModel()->getLayout()->xloc_->toXML("xloc") << std::endl;
+   resultOut_ << "   " << simulator.getModel()->getLayout()->yloc_->toXML("yloc") << std::endl;
+   resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << std::endl;
 
    // create starter neuron matrix
    int num_starter_neurons = static_cast<int>(simulator.getModel()->getLayout()->numEndogenouslyActiveNeurons_);
    if (num_starter_neurons > 0) {
       VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
       getStarterNeuronMatrix(starterNeurons, simulator.getModel()->getLayout()->starterMap_);
-      resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
+      resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << std::endl;
    }
 
    // Write neuron thresold
-   resultOut_ << "   " << neuronThresh.toXML("neuronThresh") << endl;
+   resultOut_ << "   " << neuronThresh.toXML("neuronThresh") << std::endl;
 
    // write time between growth cycles
-   resultOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << endl;
-   resultOut_ << "   " << simulator.getEpochDuration() << endl;
-   resultOut_ << "</Matrix>" << endl;
+   resultOut_ << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">" << std::endl;
+   resultOut_ << "   " << simulator.getEpochDuration() << std::endl;
+   resultOut_ << "</Matrix>" << std::endl;
 
    // write simulation end time
    resultOut_ << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
-             << endl;
-   resultOut_ << "   " << g_simulationStep * simulator.getDeltaT() << endl;
-   resultOut_ << "</Matrix>" << endl;
-   resultOut_ << "</SimState>" << endl;
+             << std::endl;
+   resultOut_ << "   " << g_simulationStep * simulator.getDeltaT() << std::endl;
+   resultOut_ << "</Matrix>" << std::endl;
+   resultOut_ << "</SimState>" << std::endl;
 }
 
 /**
@@ -207,7 +207,7 @@ void XmlSTDPRecorder::saveSimData(const AllVertices &neurons)
 void XmlSTDPRecorder::printParameters() {
    XmlRecorder::printParameters();
 
-   LOG4CPLUS_DEBUG(fileLogger_, "\n---XmlSTDPRecorder Parameters---" << endl
-                                      << "\tRecorder type: XmlSTDPRecorder" << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\n---XmlSTDPRecorder Parameters---" << std::endl
+                                      << "\tRecorder type: XmlSTDPRecorder" << std::endl);
 }
 

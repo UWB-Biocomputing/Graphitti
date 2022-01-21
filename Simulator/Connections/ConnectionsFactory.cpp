@@ -29,14 +29,14 @@ ConnectionsFactory::~ConnectionsFactory() {
 ///
 ///  @param  className class name.
 ///  @param  Pointer to the class creation function.
-void ConnectionsFactory::registerClass(const string &className, CreateFunction function) {
+void ConnectionsFactory::registerClass(const std::string &className, CreateFunction function) {
    createFunctions[className] = function;
 }
 
 
 /// Creates concrete instance of the desired connections class.
-shared_ptr<Connections> ConnectionsFactory::createConnections(const string &className) {
-   connectionsInstance = shared_ptr<Connections>(invokeCreateFunction(className));
+std::shared_ptr<Connections> ConnectionsFactory::createConnections(const std::string &className) {
+   connectionsInstance = std::shared_ptr<Connections>(invokeCreateFunction(className));
    return connectionsInstance;
 }
 
@@ -44,7 +44,7 @@ shared_ptr<Connections> ConnectionsFactory::createConnections(const string &clas
 ///
 /// The calling method uses this retrieval mechanism in
 /// value assignment.
-Connections *ConnectionsFactory::invokeCreateFunction(const string &className) {
+Connections *ConnectionsFactory::invokeCreateFunction(const std::string &className) {
    for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
       if (className == i->first)
          return i->second();

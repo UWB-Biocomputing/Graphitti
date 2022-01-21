@@ -15,7 +15,7 @@
 #include "Global.h"
 #include "AllVertices.h"
 
-using namespace std;
+ 
 
 class VerticesFactory {
 
@@ -28,7 +28,7 @@ public:
    }
 
    // Invokes constructor for desired concrete class
-   shared_ptr<AllVertices> createVertices(const string &className);
+   std::shared_ptr<AllVertices> createVertices(const std::string &className);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    VerticesFactory(VerticesFactory const &) = delete;
@@ -39,21 +39,21 @@ private:
    VerticesFactory();
 
    /// Pointer to vertices instance
-   shared_ptr<AllVertices> verticesInstance;
+   std::shared_ptr<AllVertices> verticesInstance;
 
    /* Type definitions */
    /// Defines function type for usage in internal map
-   typedef AllVertices *(*CreateFunction)(void);
+   using CreateFunction =  AllVertices *(*)();
 
    /// Defines map between class name and corresponding ::Create() function.
-   typedef map<string, CreateFunction> VerticesFunctionMap;
+   using VerticesFunctionMap =  std::map<std::string, CreateFunction>;
 
    /// Makes class-to-function map an internal factory member.
    VerticesFunctionMap createFunctions;
 
    /// Retrieves and invokes correct ::Create() function.
-   AllVertices *invokeCreateFunction(const string &className);
+   AllVertices *invokeCreateFunction(const std::string &className);
 
    /// Register vertex class and it's create function to the factory.
-   void registerClass(const string &className, CreateFunction function);
+   void registerClass(const std::string &className, CreateFunction function);
 };

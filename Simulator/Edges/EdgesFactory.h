@@ -15,8 +15,6 @@
 #include "Global.h"
 #include "AllEdges.h"
 
-using namespace std;
-
 class EdgesFactory {
 
 public:
@@ -28,7 +26,7 @@ public:
    }
 
    // Invokes constructor for desired concrete class
-   shared_ptr<AllEdges> createEdges(const string &className);
+   std::shared_ptr<AllEdges> createEdges(const std::string &className);
 
    // Delete these methods because they can cause copy instances of the singleton when using threads.
    EdgesFactory(EdgesFactory const &) = delete;
@@ -39,20 +37,20 @@ private:
    EdgesFactory();
 
    /// Pointer to edges instance
-   shared_ptr<AllEdges> edgesInstance_;
+   std::shared_ptr<AllEdges> edgesInstance_;
 
    /// Defines function type for usage in internal map
-   typedef AllEdges *(*CreateFunction)(void);
+   using CreateFunction =  AllEdges *(*)(void);
 
    /// Defines map between class name and corresponding ::Create() function.
-   typedef map<string, CreateFunction> EdgesFunctionMap;
+   using EdgesFunctionMap =  std::map<std::string, CreateFunction>;
 
    /// Makes class-to-function map an internal factory member.
    EdgesFunctionMap createFunctions;
 
    /// Retrieves and invokes correct ::Create() function.
-   AllEdges *invokeCreateFunction(const string &className);
+   AllEdges *invokeCreateFunction(const std::string &className);
 
    /// Register edges class and it's create function to the factory.
-   void registerClass(const string &className, CreateFunction function);
+   void registerClass(const std::string &className, CreateFunction function);
 };

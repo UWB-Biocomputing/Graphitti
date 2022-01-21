@@ -22,8 +22,6 @@
 #include "IFunctionNode.h"
 #include "Operations.h"
 
-using namespace std;
-
 class OperationManager {
 public:
    /// Get Instance method that returns a reference to this object.
@@ -35,13 +33,13 @@ public:
    /// Called by lower level classes constructors on creation to register their operations with their operation type.
    /// This method can be overloaded to handle different function signatures.
    /// Handles function signature: void ()
-   void registerOperation(const Operations::op &operation, const function<void()> &function);
+   void registerOperation(const Operations::op &operation, const std::function<void()> &function);
 
    /// Takes in a operation type and invokes all registered functions that are classified as that operation type.
    void executeOperation(const Operations::op &operation) const;
 
    /// Takes in the operation enum and returns the enum as a string. Used for debugging purposes.
-   string operationToString(const Operations::op &operation) const;
+   std::string operationToString(const Operations::op &operation) const;
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    OperationManager(OperationManager const &) = delete;
@@ -55,7 +53,7 @@ private:
    }
 
    /// List of functions based containing a function and it's operation type.
-   list<unique_ptr<IFunctionNode>> functionList_;
+   std::list<std::unique_ptr<IFunctionNode>> functionList_;
 
    /// Logger for log4plus
    log4cplus::Logger logger_;

@@ -28,9 +28,9 @@
 
 struct AllSpikingSynapsesDeviceProperties;
 
-typedef void (*fpPreSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
+using fpPreSynapsesSpikeHit_t =  void (*)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
 
-typedef void (*fpPostSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
+using fpPostSynapsesSpikeHit_t = void (*)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
 
 class AllSpikingSynapses : public AllNeuroEdges {
 public:
@@ -103,15 +103,15 @@ protected:
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the synapse to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg) override;
+   virtual void readEdge(std::istream &input, const BGSIZE iEdg) override;
 
    ///  Write the synapse data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the synapse to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const override;
+   virtual void writeEdge(std::ostream &output, const BGSIZE iEdg) const override;
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    public:
        ///  Allocate GPU memories to store all synapses' states,
        ///  and copy them from host to GPU memory.
@@ -217,7 +217,7 @@ protected:
        ///  @param  numVertices            Number of vertices.
        ///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
        void copyDeviceToHost( AllSpikingSynapsesDeviceProperties& allEdgesDevice);
-#else  // !defined(USE_GPU)
+#else
 public:
    ///  Advance one specific Synapse.
    ///
@@ -288,7 +288,7 @@ public:
 protected:
 };
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
 struct AllSpikingSynapsesDeviceProperties : public AllEdgesDeviceProperties
 {
         ///  The decay for the psr.
@@ -312,5 +312,5 @@ struct AllSpikingSynapsesDeviceProperties : public AllEdgesDeviceProperties
         ///  Length of the delayed queue.
         int *delayQueueLength_;
 };
-#endif // defined(USE_GPU)
+#endif
 

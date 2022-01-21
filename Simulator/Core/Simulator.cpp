@@ -35,7 +35,7 @@ Simulator::Simulator() {
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
 
    // Register printParameters function as a printParameters operation in the OperationManager
-   function<void()> printParametersFunc = bind(&Simulator::printParameters, this);
+   std::function<void()> printParametersFunc = std::bind(&Simulator::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
 }
 
@@ -54,7 +54,7 @@ void Simulator::setup() {
    t_host_advance = 0.0;
    t_host_adjustEdges = 0.0;
    timer.start();
-   cerr << "done." << endl;
+   cerr << "done." << std::endl;
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Initializing models in network... ");
    model_->setupSim();
@@ -63,7 +63,7 @@ void Simulator::setup() {
    // init stimulus input object
    /* PInput not in project yet
    if (pInput != nullptr) {
-      cout << "Initializing input." << endl;
+      cout << "Initializing input." << std::endl;
       pInput->init();
    }
    */
@@ -86,7 +86,7 @@ void Simulator::loadParameters() {
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxEdgesPerVertex/text()", maxEdgesPerVertex_);
 
    // Instantiate rng object 
-   string type;
+   std::string type;
    ParameterManager::getInstance().getStringByXpath("//RNGConfig/NoiseRNGSeed/@class", type);
    noiseRNG = RNGFactory::getInstance()->createRNG(type);
 
@@ -100,15 +100,15 @@ void Simulator::loadParameters() {
 /// Prints out loaded parameters to logging file.
 void Simulator::printParameters() const {
    LOG4CPLUS_DEBUG(fileLogger_,
-                  "\nSIMULATION PARAMETERS" << endl
+                  "\nSIMULATION PARAMETERS" << std::endl
                                           << "\tpool size x:" << width_ << " y:" << height_
-                                          << endl
-                                          << "\tTime between growth updates (in seconds): " << epochDuration_ << endl
-                                          << "\tNumber of epochs to run: " << numEpochs_ << endl
-                                          << "\tMax firing rate: " << maxFiringRate_ << endl
-                                          << "\tMax edges per vertex: " << maxEdgesPerVertex_ << endl
-                                          << "\tNoise RNG Seed: " << noiseRngSeed_ << endl
-                                          << "\tInitializer RNG Seed: " << initRngSeed_ << endl);
+                                          << std::endl
+                                          << "\tTime between growth updates (in seconds): " << epochDuration_ << std::endl
+                                          << "\tNumber of epochs to run: " << numEpochs_ << std::endl
+                                          << "\tMax firing rate: " << maxFiringRate_ << std::endl
+                                          << "\tMax edges per vertex: " << maxEdgesPerVertex_ << std::endl
+                                          << "\tNoise RNG Seed: " << noiseRngSeed_ << std::endl
+                                          << "\tInitializer RNG Seed: " << initRngSeed_ << std::endl);
 }
 
 // Code from STDPFix branch, doesn't do anything
@@ -176,9 +176,9 @@ void Simulator::simulate() {
       // Time since start of simulation
       double total_time = timer.lap() / 1000000.0;
 
-      cout << "\ntotal_time: " << total_time << " seconds" << endl;
+      cout << "\ntotal_time: " << total_time << " seconds" << std::endl;
       printPerformanceMetrics(total_time, currentEpoch);
-      cout << endl;
+      cout << std::endl;
 #endif
    }
 }
@@ -221,10 +221,10 @@ void Simulator::saveResults() const {
 /// expected objects were created correctly and returns T/F on the success of the check.
 bool Simulator::instantiateSimulatorObjects() {
    // Model Definition
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    model_ = shared_ptr<Model>(new GPUModel());
 #else
-   model_ = shared_ptr<Model>(new CPUModel());
+   model_ = std::shared_ptr<Model>(new CPUModel());
 #endif
 
    // Perform check on all instantiated objects.
@@ -247,13 +247,13 @@ bool Simulator::instantiateSimulatorObjects() {
 /// List of summation points (either host or device memory)
 void Simulator::setPSummationMap(BGFLOAT *summationMap) { pSummationMap_ = summationMap; }
 
-void Simulator::setConfigFileName(const string &fileName) { configFileName_ = fileName; }
+void Simulator::setConfigFileName(const std::string &fileName) { configFileName_ = fileName; }
 
-void Simulator::setSerializationFileName(const string &fileName) { serializationFileName_ = fileName; }
+void Simulator::setSerializationFileName(const std::string &fileName) { serializationFileName_ = fileName; }
 
-void Simulator::setDeserializationFileName(const string &fileName) { deserializationFileName_ = fileName; }
+void Simulator::setDeserializationFileName(const std::string &fileName) { deserializationFileName_ = fileName; }
 
-void Simulator::setStimulusFileName(const string &fileName) { stimulusFileName_ = fileName; }
+void Simulator::setStimulusFileName(const std::string &fileName) { stimulusFileName_ = fileName; }
 ///@}
 
 /************************************************
@@ -294,15 +294,15 @@ long Simulator::getNoiseRngSeed() const { return noiseRngSeed_; }
 
 long Simulator::getInitRngSeed() const { return initRngSeed_; }
 
-string Simulator::getConfigFileName() const { return configFileName_; }
+std::string Simulator::getConfigFileName() const { return configFileName_; }
 
-string Simulator::getSerializationFileName() const { return serializationFileName_; }
+std::string Simulator::getSerializationFileName() const { return serializationFileName_; }
 
-string Simulator::getDeserializationFileName() const { return deserializationFileName_; }
+std::string Simulator::getDeserializationFileName() const { return deserializationFileName_; }
 
-string Simulator::getStimulusFileName() const { return stimulusFileName_; }
+std::string Simulator::getStimulusFileName() const { return stimulusFileName_; }
 
-shared_ptr<Model> Simulator::getModel() const { return model_; }
+std::shared_ptr<Model> Simulator::getModel() const { return model_; }
 
 #ifdef PERFOMANCE_METRICS
 Timer Simulator::getTimer() const { return timer; }

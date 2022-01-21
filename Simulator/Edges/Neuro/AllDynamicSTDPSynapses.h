@@ -104,15 +104,15 @@ protected:
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the synapse to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg) override;
+   virtual void readEdge(std::istream &input, const BGSIZE iEdg) override;
 
    ///  Write the synapse data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the synapse to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const override;
+   virtual void writeEdge(std::ostream &output, const BGSIZE iEdg) const override;
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    public:
        ///  Allocate GPU memories to store all synapses' states,
        ///  and copy them from host to GPU memory.
@@ -196,7 +196,7 @@ protected:
        ///  @param  numVertices                 Number of vertices.
        ///  @param  maxEdgesPerVertex       Maximum number of synapses per neuron.
        void copyDeviceToHost(AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps);
-#else // !defined(USE_GPU)
+#else
 protected:
    ///  Calculate the post synapse response after a spike.
    ///
@@ -225,7 +225,7 @@ public:
    BGFLOAT *F_;
 };
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
 struct AllDynamicSTDPSynapsesDeviceProperties : public AllSTDPSynapsesDeviceProperties
 {
         ///  The time of the last spike.
@@ -246,5 +246,5 @@ struct AllDynamicSTDPSynapsesDeviceProperties : public AllSTDPSynapsesDeviceProp
         ///  The time constant of the facilitation of the dynamic synapse [range=(0,10); units=sec].
         BGFLOAT *F_;
 };
-#endif // defined(USE_GPU)
+#endif
 

@@ -94,7 +94,7 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    public:
 
        ///  Update the state of all neurons for a time step

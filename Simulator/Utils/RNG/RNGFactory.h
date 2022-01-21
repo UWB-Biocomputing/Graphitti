@@ -15,7 +15,7 @@
 #include "Global.h"
 #include "MTRand.h"
 
-using namespace std;
+ 
 
 class RNGFactory {
 
@@ -28,7 +28,7 @@ public:
    }
 
    // Invokes constructor for desired concrete class
-   MTRand* createRNG(const string &className);
+   MTRand* createRNG(const std::string &className);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    RNGFactory(RNGFactory const &) = delete;
@@ -39,21 +39,21 @@ private:
    RNGFactory();
 
    /// Pointer to rng instance
-   shared_ptr<MTRand> rngInstance;
+   std::shared_ptr<MTRand> rngInstance;
 
    /* Type definitions */
    /// Defines function type for usage in internal map
-   typedef MTRand *(*CreateFunction)(void);
+   using CreateFunction =  MTRand *(*)(void);
 
    /// Defines map between class name and corresponding ::Create() function.
-   typedef map<string, CreateFunction> RNGFunctionMap;
+   using RNGFunctionMap = std::map<std::string, CreateFunction>;
 
    /// Makes class-to-function map an internal factory member.
    RNGFunctionMap createFunctions;
 
    /// Retrieves and invokes correct ::Create() function.
-   MTRand *invokeCreateFunction(const string &className);
+   MTRand *invokeCreateFunction(const std::string &className);
 
    /// Register rng class and it's create function to the factory.
-   void registerClass(const string &className, CreateFunction function);
+   void registerClass(const std::string &className, CreateFunction function);
 };

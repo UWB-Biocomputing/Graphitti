@@ -17,8 +17,6 @@
 
 #include "Layout.h"
 
-using namespace std;
-
 class DynamicLayout : public Layout {
 public:
    DynamicLayout();

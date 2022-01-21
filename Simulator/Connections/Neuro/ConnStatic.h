@@ -33,8 +33,6 @@
 // cereal
 #include <cereal/types/vector.hpp>
 
-using namespace std;
-
 class ConnStatic : public Connections {
 public:
    ConnStatic();

@@ -35,8 +35,6 @@
 #include "IRecorder.h"
 #include "EdgeIndexMap.h"
 
-using namespace std;
-
 class Connections {
 public:
    Connections();
@@ -45,11 +43,11 @@ public:
    virtual ~Connections();
 
    /// Returns shared pointer to Synapses/Edges 
-   shared_ptr<AllEdges> getEdges() const;
+   std::shared_ptr<AllEdges> getEdges() const;
 
 
    /// Returns a shared pointer to the EdgeIndexMap
-   shared_ptr<EdgeIndexMap> getEdgeIndexMap() const;
+   std::shared_ptr<EdgeIndexMap> getEdgeIndexMap() const;
 
    /// Calls Synapses to create EdgeIndexMap and stores it as a member variable
    void createEdgeIndexMap();
@@ -84,7 +82,7 @@ public:
    ///  @param  isynapses   The Synapse list to search from.
    void createSynapsesFromWeights(const int numVertices, Layout *layout, AllVertices &vertices, AllEdges &synapses);
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    public:
        ///  Update the weight of the Synapses in the simulation.
        ///  Note: Platform Dependent.
@@ -107,13 +105,13 @@ public:
    virtual void
    updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &synapses, Layout *layout);
 
-#endif // USE_GPU
+#endif
 
 protected:
 
-   shared_ptr<AllEdges> edges_;
+   std::shared_ptr<AllEdges> edges_;
 
-   shared_ptr<EdgeIndexMap> synapseIndexMap_;
+   std::shared_ptr<EdgeIndexMap> synapseIndexMap_;
 
    log4cplus::Logger fileLogger_;
    log4cplus::Logger edgeLogger_;

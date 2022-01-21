@@ -24,16 +24,16 @@
 
 Connections::Connections() {
    // Create Edges/Synapses class using type definition in configuration file
-   string type;
+   std::string type;
    ParameterManager::getInstance().getStringByXpath("//EdgesParams/@class", type);
    edges_ = EdgesFactory::getInstance()->createEdges(type);
 
    // Register printParameters function as a printParameters operation in the OperationManager
-   function<void()> printParametersFunc = bind(&Connections::printParameters, this);
+   std::function<void()> printParametersFunc = std::bind(&Connections::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
 
    // Register loadParameters function with Operation Manager
-   function<void()> function = std::bind(&Connections::loadParameters, this);
+   std::function<void()> function = std::bind(&Connections::loadParameters, this);
    OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function);
 
    // Get a copy of the file logger to use log4cplus macros
@@ -44,11 +44,11 @@ Connections::Connections() {
 Connections::~Connections() {
 }
 
-shared_ptr<AllEdges> Connections::getEdges() const {
+std::shared_ptr<AllEdges> Connections::getEdges() const {
    return edges_;
 }
 
-shared_ptr<EdgeIndexMap> Connections::getEdgeIndexMap() const {
+std::shared_ptr<EdgeIndexMap> Connections::getEdgeIndexMap() const {
    return synapseIndexMap_;
 }
 
@@ -58,15 +58,15 @@ void Connections::createEdgeIndexMap() {
    int maxEdges = vertexCount * edges_->maxEdgesPerVertex_;
 
    if (synapseIndexMap_ == nullptr) {
-      synapseIndexMap_ = shared_ptr<EdgeIndexMap>(new EdgeIndexMap(vertexCount, maxEdges));
+      synapseIndexMap_ = std::shared_ptr<EdgeIndexMap>(new EdgeIndexMap(vertexCount, maxEdges));
    }
 
-   fill_n(synapseIndexMap_->incomingEdgeBegin_, vertexCount, 0);
-   fill_n(synapseIndexMap_->incomingEdgeCount_, vertexCount, 0);
-   fill_n(synapseIndexMap_->incomingEdgeIndexMap_, maxEdges, 0);
-   fill_n(synapseIndexMap_->outgoingEdgeBegin_, vertexCount, 0);
-   fill_n(synapseIndexMap_->outgoingEdgeCount_, vertexCount, 0);
-   fill_n(synapseIndexMap_->outgoingEdgeIndexMap_, maxEdges, 0);
+   std::fill_n(synapseIndexMap_->incomingEdgeBegin_, vertexCount, 0);
+   std::fill_n(synapseIndexMap_->incomingEdgeCount_, vertexCount, 0);
+   std::fill_n(synapseIndexMap_->incomingEdgeIndexMap_, maxEdges, 0);
+   std::fill_n(synapseIndexMap_->outgoingEdgeBegin_, vertexCount, 0);
+   std::fill_n(synapseIndexMap_->outgoingEdgeCount_, vertexCount, 0);
+   std::fill_n(synapseIndexMap_->outgoingEdgeIndexMap_, maxEdges, 0);
 
    edges_->createEdgeIndexMap(synapseIndexMap_);
 }
@@ -80,7 +80,7 @@ bool Connections::updateConnections(AllVertices &vertices, Layout *layout) {
    return false;
 }
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
 void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout)
 {
 }
@@ -95,7 +95,7 @@ void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vert
 void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &synapses, Layout *layout) {
 }
 
-#endif // !USE_GPU
+#endif
 
 ///  Creates synapses from synapse weights saved in the serialization file.
 ///

@@ -15,44 +15,42 @@
 #include "Global.h"
 #include "IRecorder.h"
 
-using namespace std;
-
 class RecorderFactory {
 
-public:
-   ~RecorderFactory();
+	public:
+		~RecorderFactory();
 
-   static RecorderFactory *getInstance() {
-      static RecorderFactory instance;
-      return &instance;
-   }
+		static RecorderFactory* getInstance() {
+			static RecorderFactory instance;
+			return &instance;
+		}
 
-   // Invokes constructor for desired concrete class
-   shared_ptr<IRecorder> createRecorder(const string &className);
+		// Invokes constructor for desired concrete class
+		std::shared_ptr<IRecorder> createRecorder(const std::string& className);
 
-   /// Delete these methods because they can cause copy instances of the singleton when using threads.
-   RecorderFactory(RecorderFactory const &) = delete;
-   void operator=(RecorderFactory const &) = delete;
+		/// Delete these methods because they can cause copy instances of the singleton when using threads.
+		RecorderFactory(RecorderFactory const&) = delete;
+		void operator=(RecorderFactory const&) = delete;
 
-private:
-   /// Constructor is private to keep a singleton instance of this class.
-   RecorderFactory();
+	private:
+		/// Constructor is private to keep a singleton instance of this class.
+		RecorderFactory();
 
-   /// Pointer to neurons instance
-   shared_ptr<IRecorder> recorderInstance;
+		/// Pointer to neurons instance
+		std::shared_ptr<IRecorder> recorderInstance;
 
-   /// Defines function type for usage in internal map
-   typedef IRecorder *(*CreateFunction)(void);
+		/// Defines function type for usage in internal map
+		using CreateFunction = IRecorder *(*)(void);
 
-   /// Defines map between class name and corresponding ::Create() function.
-   typedef map<string, CreateFunction> RecorderFunctionMap;
+		/// Defines map between class name and corresponding ::Create() function.
+		using RecorderFunctionMap = std::map<std::string, CreateFunction>;
 
-   /// Makes class-to-function map an internal factory member.
-   RecorderFunctionMap createFunctions;
+		/// Makes class-to-function map an internal factory member.
+		RecorderFunctionMap createFunctions;
 
-   /// Retrieves and invokes correct ::Create() function.
-   IRecorder *invokeCreateFunction(const string &className);
+		/// Retrieves and invokes correct ::Create() function.
+		IRecorder* invokeCreateFunction(const std::string& className);
 
-   /// Register neuron class and it's create function to the factory.
-   void registerClass(const string &className, CreateFunction function);
+		/// Register neuron class and it's create function to the factory.
+		void registerClass(const std::string& className, CreateFunction function);
 };

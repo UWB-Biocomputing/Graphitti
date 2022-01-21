@@ -21,7 +21,7 @@
 
 #pragma once
 
-using namespace std;
+ 
 
 #include <iostream>
 #include <log4cplus/loggingmacros.h>
@@ -62,7 +62,7 @@ public:
    ///
    ///  @param  i   index of the vertex (in vertices) to output info from.
    ///  @return the complete state of the vertex.
-   virtual string toString(const int i) const = 0;
+   virtual std::string toString(const int i) const = 0;
 
    ///  The summation point for each vertex.
    ///  Summation points are places where the synapses connected to the vertex
@@ -79,7 +79,7 @@ protected:
    log4cplus::Logger fileLogger_; // Logs to Output/Debug/logging.txt
    log4cplus::Logger vertexLogger_; // Logs to Output/Debug/neurons.txt
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    public:
        ///  Allocate GPU memories to store all vertices' states,
        ///  and copy them from host to GPU memory.
@@ -116,7 +116,7 @@ protected:
        ///
        ///  @param  edges               Reference to the allEdges struct on host memory.
        virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) = 0;
-#else // !defined(USE_GPU)
+#else
 public:
    ///  Update internal state of the indexed Neuron (called by every simulation step).
    ///  Notify outgoing synapses if vertex has fired.
@@ -125,10 +125,10 @@ public:
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap) = 0;
 
-#endif // defined(USE_GPU)
+#endif
 };
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
 struct AllVerticesDeviceProperties
 {
         ///  The summation point for each vertex.
@@ -138,4 +138,4 @@ struct AllVerticesDeviceProperties
         ///  summation points to their Vm and resets the summation points to zero
         BGFLOAT *summationMap_;
 };
-#endif // defined(USE_GPU)
+#endif

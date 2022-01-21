@@ -1,0 +1,117 @@
+﻿{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "base",
+      "description": "Common inherited configuration; unused on its own.",
+      "hidden": true,
+      "generator": "Ninja",
+      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_CXX_STANDARD": "17",
+        "CMAKE_CXX_STANDARD_REQUIRED": true
+      }
+    },
+    {
+      "name": "windows-base",
+      "description": "common inherited configuration for Windows projects; unused on its own.",
+      "hidden": true,
+      "inherits": "base",
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x64-windows",
+        "VCPKG_HOST_TARGET": "x64-windows"
+      },
+      "environment": {
+        "VCPKG_ROOT": "C:/Users/$env{username}/Documents/vcpkg"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows" 
+      } 
+    },
+    {
+      "name": "windows-msvc-base",
+      "description": "common inherited configuration for enabling MSVC toolsets; unused on its own.",
+      "hidden": true,
+      "inherits": "windows-base",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "vendor": { "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": [ "Windows" ] } }
+    },
+    {
+      "name": "linux-base",
+      "description": "common inherited configuration for Linux projects; unused on its own. ",
+      "hidden": true,
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x64-linux",
+        "VCPKG_HOST_TARGET": "x64-linux"
+      },
+      "environment": {
+        "VCPKG_ROOT": "$env{HOME}/vcpkg"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": [ "Linux" ] },
+        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": { "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}" }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "debug-base",
+      "description": "common inherited configuration for debug projects; unused on its own.",
+      "hidden": true,
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release-base",
+      "description": "common inherited configuration for release projects; unused on its own.",
+      "hidden": true,
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "cuda-base",
+      "description": "common inherited configuration for CUDA projects; unused on its own.",
+      "hidden": true,
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_CUDA_STANDARD": "17",
+        "CMAKE_CUDA_STANDARD_REQUIRED": true
+      }
+    },
+    {
+      "name": "windows-debug",
+      "displayName": "Windows Debug",
+      "description": "Windows x64 Debug build (no CUDA).",
+      "inherits": [ "windows-base", "debug-base" ]
+    },
+    {
+      "name": "windows-cuda-debug",
+      "displayName": "Windows Debug",
+      "description": "Windows x64 Debug build (CUDA).",
+      "inherits": [ "windows-base", "cuda-base", "debug-base" ]
+    },
+    {
+      "name": "windows-vs22-debug",
+      "description": "Windows x64 Debug build with VS22",
+      "inherits": [ "windows-msvc-base", "debug-base" ]
+    },
+    {
+      "name": "linux-debug",
+      "description": "Linux x64 Debug build (no CUDA).",
+      "inherits": [ "linux-base", "debug-base" ]
+    }
+  ]
+}

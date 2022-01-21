@@ -15,8 +15,6 @@
 #include "Global.h"
 #include "Connections.h"
 
-using namespace std;
-
 class ConnectionsFactory {
 
 public:
@@ -28,7 +26,7 @@ public:
    }
 
    /// Invokes constructor for desired concrete class
-   shared_ptr<Connections> createConnections(const string &className);
+   std::shared_ptr<Connections> createConnections(const std::string &className);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    ConnectionsFactory(ConnectionsFactory const &) = delete;
@@ -39,20 +37,20 @@ private:
    ConnectionsFactory();
 
    /// Pointer to connections instance.
-   shared_ptr<Connections> connectionsInstance;
+   std::shared_ptr<Connections> connectionsInstance;
 
    /// Defines function type for usage in internal map
-   typedef Connections *(*CreateFunction)(void);
+   using CreateFunction = Connections *(*)(void);
 
    /// Defines map between class name and corresponding ::Create() function.
-   typedef map<string, CreateFunction> ConnectionsFunctionMap;
+   using ConnectionsFunctionMap =  std::map<std::string, CreateFunction>;
 
    /// Makes class-to-function map an internal factory member.
    ConnectionsFunctionMap createFunctions;
 
    /// Retrieves and invokes correct ::Create() function.
-   Connections *invokeCreateFunction(const string &className);
+   Connections *invokeCreateFunction(const std::string &className);
 
    /// Register connection class and it's create function to the factory.
-   void registerClass(const string &className, CreateFunction function);
+   void registerClass(const std::string &className, CreateFunction function);
 };

@@ -35,8 +35,6 @@
 
 #include <iostream>
 #include <stdio.h>
-
-using namespace std;
 #include "MersenneTwister_d.h"
 
 __device__ static mt_struct_stripped ds_MT[MT_RNG_COUNT];

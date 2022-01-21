@@ -59,7 +59,7 @@ public:
                               edgeType type) = 0;
 
    ///  Populate a edge index map.
-   virtual void createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap);
+   virtual void createEdgeIndexMap(std::shared_ptr<EdgeIndexMap> edgeIndexMap);
 
    ///  Cereal serialization method
    ///  (Serializes edge weights, source vertices, and destination vertices)
@@ -82,13 +82,13 @@ protected:
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the edge to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg);
+   virtual void readEdge(std::istream &input, const BGSIZE iEdg);
 
    ///  Write the edge data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the edge to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const;
+   virtual void writeEdge(std::ostream &output, const BGSIZE iEdg) const;
    
    ///  Returns an appropriate edgeType object for the given integer.
    ///
@@ -100,7 +100,7 @@ protected:
    log4cplus::Logger fileLogger_;
    log4cplus::Logger edgeLogger_;
  
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    public:
        ///  Allocate GPU memories to store all edges' states,
        ///  and copy them from host to GPU memory.
@@ -174,7 +174,7 @@ protected:
        ///  @param  allEdgesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
        virtual void printGPUEdgesProps( void* allEdgesDeviceProps ) const = 0;
 
-#else // !defined(USE_GPU)
+#else
 public:
    ///  Advance all the edges in the simulation.
    ///  Update the state of all edges for a time step.
@@ -194,7 +194,7 @@ public:
    ///  @param  neuronIndex   Index of a vertex to remove from.
    ///  @param  iEdg          Index of a edge to remove.
    virtual void eraseEdge(const int neuronIndex, const BGSIZE iEdg);
-#endif // defined(USE_GPU)
+#endif 
 
    ///  The location of the edge.
    int *sourceVertexIndex_;
@@ -236,9 +236,9 @@ public:
 template<class Archive>
 void AllEdges::save(Archive &archive) const {
    // uses vector to save edge weights, source vertices, and destination vertices
-   vector<BGFLOAT> WVector;
-   vector<int> sourceVertexLayoutIndexVector;
-   vector<int> destVertexLayoutIndexVector;
+   std::vector<BGFLOAT> WVector;
+   std::vector<int> sourceVertexLayoutIndexVector;
+   std::vector<int> destVertexLayoutIndexVector;
 
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       WVector.push_back(W_[i]);
@@ -255,18 +255,18 @@ void AllEdges::save(Archive &archive) const {
 template<class Archive>
 void AllEdges::load(Archive &archive) {
    // uses vectors to load edge weights, source vertices, and destination vertices
-   vector<BGFLOAT> WVector;
-   vector<int> sourceVertexLayoutIndexVector;
-   vector<int> destVertexLayoutIndexVector;
+   std::vector<BGFLOAT> WVector;
+   std::vector<int> sourceVertexLayoutIndexVector;
+   std::vector<int> destVertexLayoutIndexVector;
 
    // deserializing data to these vectors
    archive(WVector, sourceVertexLayoutIndexVector, destVertexLayoutIndexVector);
 
    // check to see if serialized data sizes matches object sizes
    if (WVector.size() != maxEdgesPerVertex_ * countVertices_) {
-      cerr
+      std::cerr
             << "Failed deserializing edge weights, source vertices, and/or destination vertices. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
-            << endl;
+            << std::endl;
       throw cereal::Exception("Deserialization Error");
    }
 

@@ -35,6 +35,8 @@
 
 #include <string>
 
+#define GIT_COMMIT_ID 123123
+
 // Uncomment to use visual leak detector (Visual Studios Plugin)
 // #include <vld.h>
 
@@ -48,7 +50,7 @@
 // build/config.h contains the git commit id
 #include "config.h"
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
 #include "GPUModel.h"
 #elif defined(USE_OMP)
 // #include "MultiThreadedSim.h"
@@ -56,7 +58,6 @@
 
 #endif
 
-using namespace std;
 
 // forward declarations
 bool parseCommandLine(int argc, char *argv[]);
@@ -73,9 +74,9 @@ void serializeSynapses();
 int main(int argc, char *argv[]) {
 
    // Clear logging files at the start of each simulation
-   fstream("Output/Debug/logging.txt", ios::out | ios::trunc);
-   fstream("Output/Debug/vertices.txt", ios::out | ios::trunc);
-   fstream("Output/Debug/edges.txt", ios::out | ios::trunc);
+   std::fstream("Output/Debug/logging.txt", std::ios::out | std::ios::trunc);
+   std::fstream("Output/Debug/vertices.txt", std::ios::out | std::ios::trunc);
+   std::fstream("Output/Debug/edges.txt", std::ios::out | std::ios::trunc);
 
    // Initialize log4cplus and set properties based on configure file
    ::log4cplus::initialize();
@@ -176,9 +177,9 @@ int main(int argc, char *argv[]) {
    time(&end_time);
    double timeElapsed = difftime(end_time, start_time);
    double ssps = simulator.getEpochDuration() * simulator.getNumEpochs() / timeElapsed;
-   cout << "time simulated: " << simulator.getEpochDuration() * simulator.getNumEpochs() << endl;
-   cout << "time elapsed: " << timeElapsed << endl;
-   cout << "ssps (simulation seconds / real time seconds): " << ssps << endl;
+   std::cout << "time simulated: " << simulator.getEpochDuration() * simulator.getNumEpochs() << std::endl;
+   std::cout << "time elapsed: " << timeElapsed << std::endl;
+   std::cout << "ssps (simulation seconds / real time seconds): " << ssps << std::endl;
    return 0;
 }
 
@@ -190,16 +191,16 @@ int main(int argc, char *argv[]) {
 bool parseCommandLine(int argc, char *argv[]) {
    ParamContainer cl; // todo: note as third party class.
    cl.initOptions(false);  // don't allow unknown parameters
-   cl.setHelpString(string(
+   cl.setHelpString(std::string(
          "The UW Bothell graph-based simulation environment, for high-performance neural network and other graph-based problems.\nUsage: ") +
                     argv[0] + " ");
 
    // Set up the comment line parser.
    if ((cl.addParam("configfile", 'c', ParamContainer::filename,
                        "parameter configuration filepath") != ParamContainer::errOk)
-       #if defined(USE_GPU)
+       #ifdef __CUDACC__
        || (cl.addParam("device", 'd', ParamContainer::regular, "CUDA device id") != ParamContainer::errOk)
-       #endif  // USE_GPU
+       #endif 
        ||
        (cl.addParam("stimulusfile", 's', ParamContainer::filename, "stimulus input filepath") != ParamContainer::errOk)
        || (cl.addParam("deserializefile", 'r', ParamContainer::filename,
@@ -209,7 +210,7 @@ bool parseCommandLine(int argc, char *argv[]) {
        || (cl.addParam("version", 'v', ParamContainer::novalue,
                        "output current git commit ID and exit") != ParamContainer::errOk)) {
 
-      cerr << "Internal error creating command line parser" << endl;
+      std::cerr << "Internal error creating command line parser" << std::endl;
       return false;
    }
 
@@ -220,7 +221,7 @@ bool parseCommandLine(int argc, char *argv[]) {
    }
 
    if (cl["version"].compare("") != 0) {
-      cout << "Git commit ID: " << GIT_COMMIT_ID << endl;
+      std::cout << "Git commit ID: " << GIT_COMMIT_ID << std::endl;
       exit(0);
    }
 
@@ -230,7 +231,7 @@ bool parseCommandLine(int argc, char *argv[]) {
    Simulator::getInstance().setSerializationFileName(cl["serializefile"]);
    Simulator::getInstance().setStimulusFileName(cl["stimulusfile"]);
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    if (EOF == sscanf(cl["device"].c_str(), "%d", &g_deviceId)) {
        g_deviceId = 0;
    }
@@ -248,12 +249,12 @@ bool deserializeSynapses() {
    
    // We can deserialize from a variety of archive file formats. Below, comment
    // out all but the line that is compatible with the desired format.
-   ifstream memory_in(simulator.getDeserializationFileName().c_str());
-   //ifstream memory_in (simInfo->memInputFileName.c_str(), std::ios::binary);
+   std::ifstream memory_in(simulator.getDeserializationFileName().c_str());
+   //ifstream memory_in (simInfo->memInputFileName.c_str(), std::std::ios::binary);
 
    // Checks to see if serialization file exists
    if (!memory_in) {
-      cerr << "The serialization file doesn't exist" << endl;
+      std::cerr << "The serialization file doesn't exist" << std::endl;
       return false;
    }
 
@@ -262,11 +263,11 @@ bool deserializeSynapses() {
    cereal::XMLInputArchive archive(memory_in);
    //cereal::BinaryInputArchive archive(memory_in);
 
-   shared_ptr<Connections> connections = simulator.getModel()->getConnections();
-   shared_ptr<Layout> layout = simulator.getModel()->getLayout();
+   std::shared_ptr<Connections> connections = simulator.getModel()->getConnections();
+   std::shared_ptr<Layout> layout = simulator.getModel()->getLayout();
 
    if (!layout || !connections) {
-      cerr << "Either connections or layout is not instantiated," << endl;
+      std::cerr << "Either connections or layout is not instantiated," << std::endl;
    }
 
 
@@ -276,7 +277,7 @@ bool deserializeSynapses() {
       archive(*(dynamic_cast<AllEdges *>(connections->getEdges().get())));
    }
    catch (cereal::Exception e) {
-      cerr << "Failed deserializing synapse weights, source vertices, and/or destination vertices." << endl;
+      std::cerr << "Failed deserializing synapse weights, source vertices, and/or destination vertices." << std::endl;
       return false;
    }
 
@@ -287,19 +288,19 @@ bool deserializeSynapses() {
                                           (*connections->getEdges()));
 
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    // Copies CPU Synapse data to GPU after deserialization, if we're doing
    // a GPU-based simulation.
    simulator.copyCPUSynapseToGPU();
-#endif // USE_GPU
+#endif
 
    // Creates synapse index map (includes copy CPU index map to GPU)
    connections->createEdgeIndexMap();
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    GPUModel *gpuModel = static_cast<GPUModel *>(simulator.getModel().get());
    gpuModel->copySynapseIndexMapHostToDevice(*(connections->getEdgeIndexMap().get()), simulator.getTotalVertices());
-#endif // USE_GPU
+#endif
 
    // Deserializes radii (only when running a connGrowth model and radii is in serialization file)
    if (dynamic_cast<ConnGrowth *>(connections.get()) != nullptr) {
@@ -308,7 +309,7 @@ bool deserializeSynapses() {
          archive(*(dynamic_cast<ConnGrowth *>(connections.get())));
       }
       catch (cereal::Exception e) {
-         cerr << "Failed deserializing radii." << endl;
+         std::cerr << "Failed deserializing radii." << std::endl;
          return false;
       }
    }
@@ -320,17 +321,17 @@ void serializeSynapses() {
 
    // We can serialize to a variety of archive file formats. Below, comment out
    // all but the two lines that correspond to the desired format.
-   ofstream memory_out(simulator.getSerializationFileName().c_str());
+   std::ofstream memory_out(simulator.getSerializationFileName().c_str());
    cereal::XMLOutputArchive archive(memory_out);
-   //ofstream memory_out (simInfo->memOutputFileName.c_str(), std::ios::binary);
+   //ofstream memory_out (simInfo->memOutputFileName.c_str(), std::std::ios::binary);
    //cereal::BinaryOutputArchive archive(memory_out);
    
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    // Copies GPU Synapse props data to CPU for serialization
    simulator.copyGPUSynapseToCPU();
 #endif // USE_GPU
    
-    shared_ptr<Model> model = simulator.getModel();
+    std::shared_ptr<Model> model = simulator.getModel();
 
    // Serializes synapse weights along with each synapse's source vertex and destination vertex
    archive(*(dynamic_cast<AllEdges *>(model->getConnections()->getEdges().get())));

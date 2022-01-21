@@ -13,8 +13,6 @@
 #include "Matrix.h"
 #include "VectorMatrix.h"
 
-using namespace std;
-
 // Forward declarations
 class CompleteMatrix;
 
@@ -57,9 +55,9 @@ public:
   ///  @param r rows in Matrix (defaults to 2)
   ///  @param c columns in Matrix (defaults to 2)
   ///  @param m multiplier used for initialization (defaults to zero)
-  ///  @param v values for initializing CompleteMatrix (this string is parsed as a list of floating point numbers)
-  CompleteMatrix(string t = "complete", string i = "const", int r = 2,
-		 int c = 2, BGFLOAT m = 0.0, string v = "");
+  ///  @param v values for initializing CompleteMatrix (this std::string is parsed as a list of floating point numbers)
+  CompleteMatrix(std::string t = "complete", std::string i = "const", int r = 2,
+		 int c = 2, BGFLOAT m = 0.0, std::string v = "");
 
   ///  @brief Copy constructor. Performs a deep copy.
   ///  @param oldM The source CompleteMatrix
@@ -82,11 +80,11 @@ public:
 
   ///  @brief Polymorphic output. Produces text output on stream os. Used by operator<<()
   ///  @param os stream to output to
-  virtual void Print(ostream& os) const;
+  virtual void Print(std::ostream& os) const;
 
-  ///  @brief Produce XML representation of Matrix in string return value.
+  ///  @brief Produce XML representation of Matrix in std::string return value.
   ///  @param name name attribute for XML
-  virtual string toXML(string name="") const;
+  virtual std::string toXML(std::string name="") const;
 
   /******************************************
    * @name Math operations

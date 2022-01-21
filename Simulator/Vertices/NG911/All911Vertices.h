@@ -54,7 +54,7 @@ public:
    ///
    ///  @param  index   index of the vertex (in vertices) to output info from.
    ///  @return the complete state of the vertex.
-   virtual string toString(const int index) const;
+   virtual std::string toString(const int index) const;
 
 private: 
 
@@ -76,7 +76,7 @@ private:
    /// Scaling factor for number of responders in a Responder node
    BGFLOAT respNumScale_;
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract
    public:

@@ -13,8 +13,6 @@
 
 #include "IFunctionNode.h"
 
-using namespace std;
-
 class GenericFunctionNode : public IFunctionNode {
 public:
     /// Constructor, Function Signature: void ()

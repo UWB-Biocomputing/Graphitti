@@ -18,8 +18,6 @@
 #include "Matrix.h"
 #include "VectorMatrix.h"
 
-using namespace std;
-
 // Forward declarations
 class SparseMatrix;
 class VectorMatrix;
@@ -171,7 +169,7 @@ class SparseMatrix: public Matrix {
 		int columns;
         
 		/// The hash table itself
-		vector<Element*> table;
+		std::vector<Element*> table;
         
 		/// Pointer to container object, for calling its methods
 		SparseMatrix* theMatrix;
@@ -248,10 +246,10 @@ public:
     
 	/// @brief Polymorphic output. Produces text output on stream "os". Output is by row.
 	/// @param os stream to output to
-	virtual void Print(ostream& os) const override;
+	virtual void Print(std::ostream& os) const override;
     
 	/// @brief Produce XML representation of Matrix in string return value.
-	virtual string toXML(string name = "") const;
+	virtual std::string toXML(std::string name = "") const;
     
 	/******************************************
 	* @name Math Operations
@@ -342,10 +340,10 @@ private:
 	{	return r * c;}
     
 	/// 1D array of lists of elements in a row
-	list<Element*> *theRows;
+	std::list<Element*> *theRows;
     
 	/// 1D array of lists of elements in a column
-	list<Element*> *theColumns;
+	std::list<Element*> *theColumns;
     
 	/// Hash table used to access elements by coordinates
 	HashTable theElements;

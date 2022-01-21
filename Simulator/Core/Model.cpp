@@ -25,7 +25,7 @@
 /// Constructor
 Model::Model() {
    // Reference variable used to get class type from ParameterManager.
-   string type;
+   std::string type;
 
    // Create Layout class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//LayoutParams/@class", type);
@@ -114,11 +114,11 @@ void Model::logSimStep() const {
    if (pConnGrowth == nullptr)
       return;
 
-   cout << "format:\ntype,radius,firing rate" << endl;
+   std::cout << "format:\ntype,radius,firing rate" << std::endl;
 
    for (int y = 0; y < Simulator::getInstance().getHeight(); y++) {
-      stringstream ss;
-      ss << fixed;
+      std::stringstream ss;
+      ss << std::fixed;
       ss.precision(1);
 
       for (int x = 0; x < Simulator::getInstance().getWidth(); x++) {
@@ -146,14 +146,14 @@ void Model::logSimStep() const {
          }
       }
 
-      ss << endl;
+      ss << std::endl;
 
       for (int i = ss.str().length() - 1; i >= 0; i--) {
          ss << "_";
       }
 
-      ss << endl;
-      cout << ss.str();
+      ss << std::endl;
+      std::cout << ss.str();
    }
 }
 
@@ -171,15 +171,12 @@ void Model::updateHistory() {
 
 /// Get the Connections class object.
 /// @return Pointer to the Connections class object.  
-// ToDo: make smart ptr
-shared_ptr<Connections> Model::getConnections() const { return connections_; }
+std::shared_ptr<Connections> Model::getConnections() const { return connections_; }
 
 /// Get the Layout class object.
 /// @return Pointer to the Layout class object. 
-// ToDo: make smart ptr
-shared_ptr<Layout> Model::getLayout() const { return layout_; }
+std::shared_ptr<Layout> Model::getLayout() const { return layout_; }
 
 /// Get the IRecorder class object.
 /// @return Pointer to the IRecorder class object. 
-// ToDo: make smart ptr
-shared_ptr<IRecorder> Model::getRecorder() const { return recorder_; }
+std::shared_ptr<IRecorder> Model::getRecorder() const { return recorder_; }

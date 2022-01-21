@@ -14,8 +14,6 @@
 #include "Simulator.h"
 #include <vector>
 
-using namespace std;
-
 class Connections911 : public Connections {
 public:
    Connections911();
@@ -60,19 +58,19 @@ private:
    struct ChangedEdge;
 
    // Edges that were added but later removed are still here
-   vector<ChangedEdge> edgesAdded;
+   std::vector<ChangedEdge> edgesAdded;
 
    // New edges = (old edges + edgesAdded) - edgesErased  <-- works
    // New edges = (old edges - edgesErased) + edgesAdded  <-- does not work
-   vector<ChangedEdge> edgesErased;
+   std::vector<ChangedEdge> edgesErased;
 
-   vector<int> verticesErased;
+   std::vector<int> verticesErased;
 
-#if !defined(USE_GPU)
+#ifndef __CUDACC__
 
 public:
    ///  Update the connections status in every epoch.
-   ///  Uses the parent definition for USE_GPU
+   ///  Uses the parent definition for __CUDACC__
    ///
    ///  @param  vertices The Vertex list to search from.
    ///  @param  layout   Layout information of the vertex network.
@@ -81,11 +79,11 @@ public:
 
    ///  Returns the complete list of all deleted or added edges as a string.
    ///  @return xml representation of all deleted or added edges
-   string changedEdgesToXML(bool added);
+   std::string changedEdgesToXML(bool added);
 
    ///  Returns the complete list of deleted vertices as a string.
    ///  @return xml representation of all deleted vertices
-   string erasedVerticesToXML();
+   std::string erasedVerticesToXML();
 
 private:
    ///  Randomly delete 1 PSAP and rewire all the edges around it.
@@ -106,7 +104,7 @@ private:
       int srcV;
       int destV;
       edgeType eType;
-      string toString();
+      std::string toString();
    };
 
 #else

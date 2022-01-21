@@ -98,15 +98,15 @@ protected:
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the synapse to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg) override;
+   virtual void readEdge(std::istream &input, const BGSIZE iEdg) override;
 
    ///  Write the synapse data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the synapse to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const override;
+   virtual void writeEdge(std::ostream &output, const BGSIZE iEdg) const override;
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    public:
        ///  Allocate GPU memories to store all synapses' states,
        ///  and copy them from host to GPU memory.
@@ -189,7 +189,7 @@ protected:
        ///
        ///  @param  allEdgesDeviceProps  GPU address of the allEdges struct on device memory.
        void copyDeviceToHost( AllDSSynapsesDeviceProperties& allEdgesDeviceProps);
-#else // !defined(USE_GPU)
+#else
 protected:
    ///  Calculate the post synapse response after a spike.
    ///
@@ -197,7 +197,7 @@ protected:
    ///  @param  deltaT      Inner simulation step duration.
    virtual void changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) override;
 
-#endif // defined(USE_GPU)
+#endif
 public:
 
    ///  The time of the last spike.
@@ -219,7 +219,7 @@ public:
    BGFLOAT *F_;
 };
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
 struct AllDSSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperties
 {
         ///  The time of the last spike.
@@ -240,5 +240,5 @@ struct AllDSSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperties
         ///  The time constant of the facilitation of the dynamic synapse [range=(0,10); units=sec].
         BGFLOAT *F_;
 };
-#endif // defined(USE_GPU)
+#endif
 

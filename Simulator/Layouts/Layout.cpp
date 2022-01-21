@@ -26,17 +26,17 @@ Layout::Layout() :
    starterMap_ = nullptr;
 
    // Create Vertices/Neurons class using type definition in configuration file
-   string type;
+   std::string type;
    ParameterManager::getInstance().getStringByXpath("//VerticesParams/@class", type);
    vertices_ = VerticesFactory::getInstance()->createVertices(type);
 
    // Register loadParameters function as a loadParameters operation in the Operation Manager
-   function<void()> loadParametersFunc = std::bind(&Layout::loadParameters, this);
+   std::function<void()> loadParametersFunc = std::bind(&Layout::loadParameters, this);
    OperationManager::getInstance().registerOperation(Operations::op::loadParameters, loadParametersFunc);
 
    // Register printParameters function as a printParameters operation in the OperationManager
-   function<void()> printParametersFunc = bind(&Layout::printParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+   std::function<void()> printParametersFunc = std::bind(&Layout::printParameters, this);
+   OperationManager::getInstance().registerOperation(Operations::op::printParameters, printParametersFunc);
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
@@ -59,7 +59,7 @@ Layout::~Layout() {
    starterMap_ = nullptr;
 }
 
-shared_ptr<AllVertices> Layout::getVertices() const {
+std::shared_ptr<AllVertices> Layout::getVertices() const {
    return vertices_;
 }
 
@@ -101,19 +101,19 @@ void Layout::setupLayout() {
 
 /// Prints out all parameters to logging file. Registered to OperationManager as Operation::printParameters
 void Layout::printParameters() const {
-   stringstream output;
-   output << "\nLAYOUT PARAMETERS" << endl;
+   std::stringstream output;
+   output << "\nLAYOUT PARAMETERS" << std::endl;
    output << "\tEndogenously active neuron positions: ";
    for (BGSIZE i = 0; i < numEndogenouslyActiveNeurons_; i++) {
        output << endogenouslyActiveNeuronList_[i] << " ";
    }
-   output << endl;
+   output << std::endl;
 
    output << "\tInhibitory neuron positions: ";
    for (BGSIZE i = 0; i < inhibitoryNeuronLayout_.size(); i++) {
       output << inhibitoryNeuronLayout_[i] << " ";
    }
-   output << endl;
+   output << std::endl;
 
    LOG4CPLUS_DEBUG(fileLogger_, output.str());
 }
@@ -121,7 +121,7 @@ void Layout::printParameters() const {
 /// Creates a vertex type map.
 /// @param  numVertices number of the vertices to have in the type map.
 void Layout::generateVertexTypeMap(int numVertices) {
-   DEBUG(cout << "\nInitializing vertex type map: VTYPE_UNDEF" << endl;);
+   DEBUG(std::cout << "\nInitializing vertex type map: VTYPE_UNDEF" << std::endl;);
 
    for (int i = 0; i < numVertices; i++) {
       vertexTypeMap_[i] = VTYPE_UNDEF;

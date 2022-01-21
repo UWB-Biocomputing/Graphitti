@@ -23,7 +23,7 @@
 
 #pragma once
 
-using namespace std;
+ 
 
 #include "Global.h"
 #include "AllVertices.h"
@@ -44,7 +44,7 @@ public:
    ///  Clear the spike counts out of all Neurons.
    void clearSpikeCounts();
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    public:
        ///  Set some parameters used for advanceVerticesDevice.
        ///
@@ -139,7 +139,7 @@ protected:
 
 };
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
 struct AllSpikingNeuronsDeviceProperties : public AllVerticesDeviceProperties
 {
         ///  The booleans which track whether the neuron has fired.

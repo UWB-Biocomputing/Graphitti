@@ -19,10 +19,10 @@ AllLIFNeurons::~AllLIFNeurons() {
 ///  Registered to OperationManager as Operation::printParameters
 void AllLIFNeurons::printParameters() const {
    AllIFNeurons::printParameters();
-   LOG4CPLUS_DEBUG(fileLogger_, "\n\tVertices Type: AllLIFNeurons" << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\n\tVertices Type: AllLIFNeurons" << std::endl);
 }
 
-#if !defined(USE_GPU)
+#ifndef __CUDACC__
 
 ///  Update internal state of the indexed Neuron (called by every simulation step).
 ///

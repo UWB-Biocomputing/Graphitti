@@ -16,8 +16,6 @@
 
 #include "Layout.h"
 
-using namespace std;
-
 class Layout911 : public Layout {
 public:
    Layout911();

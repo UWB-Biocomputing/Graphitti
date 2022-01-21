@@ -24,8 +24,6 @@
 #include "Utils/Global.h"
 #include "AllVertices.h"
 
-using namespace std;
-
 class AllVertices;
 
 class Layout {
@@ -34,7 +32,7 @@ public:
 
    virtual ~Layout();
 
-   shared_ptr<AllVertices> getVertices() const;
+   std::shared_ptr<AllVertices> getVertices() const;
 
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.
@@ -70,7 +68,7 @@ public:
 
    CompleteMatrix *dist_;    ///< The true inter-neuron distance.
 
-   vector<int> probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
+   std::vector<int> probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
 
    vertexType *vertexTypeMap_;    ///< The vertex type map (INH, EXC).
 
@@ -82,17 +80,17 @@ public:
 
 
 protected:
-   shared_ptr<AllVertices> vertices_;
+   std::shared_ptr<AllVertices> vertices_;
 
-   vector<int> endogenouslyActiveNeuronList_;    ///< Endogenously active neurons list.
+   std::vector<int> endogenouslyActiveNeuronList_;    ///< Endogenously active neurons list.
 
-   vector<int> inhibitoryNeuronLayout_;    ///< Inhibitory neurons list.
+   std::vector<int> inhibitoryNeuronLayout_;    ///< Inhibitory neurons list.
 
-   vector<int> callerVertexList_;    ///< Caller vertex list.
+   std::vector<int> callerVertexList_;    ///< Caller vertex list.
 
-   vector<int> psapVertexList_;    ///< PSAP vertex list.
+   std::vector<int> psapVertexList_;    ///< PSAP vertex list.
    
-   vector<int> responderVertexList_;    ///< Responder vertex list.
+   std::vector<int> responderVertexList_;    ///< Responder vertex list.
 
    log4cplus::Logger fileLogger_;
 

@@ -55,19 +55,19 @@ public:
    ///
    ///  @param  index   index of the neuron (in neurons) to output info from.
    ///  @return the complete state of the neuron.
-   virtual string toString(const int index) const;
+   virtual std::string toString(const int index) const;
 
    /// Reads and sets the data for all neurons from input stream.
    ///
    /// @param  input       istream to read from.
-   virtual void deserialize(istream &input);
+   virtual void deserialize(std::istream &input);
 
    ///  Writes out the data in all neurons to output stream.
    ///
    ///  @param  output      stream to write out to.ss.
-   virtual void serialize(ostream &output) const;
+   virtual void serialize(std::ostream &output) const;
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
    public:
        ///  Update the state of all neurons for a time step
        ///  Notify outgoing synapses if neuron has fired.
@@ -164,13 +164,13 @@ protected:
    ///
    ///  @param  input       istream to read from.
    ///  @param  i           index of the neuron (in neurons).
-   void readNeuron(istream &input, int i);
+   void readNeuron(std::istream &input, int i);
 
    ///  Writes out the data in the selected Neuron.
    ///
    ///  @param  output      stream to write out to.
    ///  @param  i           index of the neuron (in neurons).
-   void writeNeuron(ostream &output, int i) const;
+   void writeNeuron(std::ostream &output, int i) const;
 
 public:
    ///  The length of the absolute refractory period. [units=sec; range=(0,1);]
@@ -251,7 +251,7 @@ private:
    BGFLOAT starterVresetRange_[2];
 };
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
 struct AllIFNeuronsDeviceProperties : public AllSpikingNeuronsDeviceProperties
 {
         ///  The length of the absolute refractory period. [units=sec; range=(0,1);]

@@ -27,10 +27,6 @@
 
 #include "AllEdges.h"
 
-#ifdef _WIN32
-typedef unsigned _int8 uint8_t;
-#endif
-
 class AllVertices;
 
 // typedef void (*fpCreateSynapse_t)(void*, const int, const int, int, int, BGFLOAT*, const BGFLOAT, edgeType);
@@ -84,13 +80,13 @@ protected:
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the edge to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg) override;
+   virtual void readEdge(std::istream &input, const BGSIZE iEdg) override;
 
    ///  Write the edge data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the edge to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const override;
+   virtual void writeEdge(std::ostream &output, const BGSIZE iEdg) const override;
 
 public:
    /// The factor to adjust overlapping area to edge weight.
@@ -100,7 +96,7 @@ public:
    BGFLOAT *psr_;
 };
 
-#if defined(USE_GPU)
+#if __CUDACC__
 struct AllEdgesDeviceProperties
 {
         ///  The location of the edge.
@@ -137,5 +133,5 @@ struct AllEdgesDeviceProperties
         ///  Usage: Used by destructor
         int countVertices_;
 };
-#endif // defined(USE_GPU)
+#endif 
 

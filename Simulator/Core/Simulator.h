@@ -95,15 +95,15 @@ public:
 
    long getInitRngSeed() const;    /// Seed used to initialize parameters
 
-   string getConfigFileName() const;    /// File name of the parameter configuration file.
+   std::string getConfigFileName() const;    /// File name of the parameter configuration file.
 
-   string getSerializationFileName() const;    /// File name of the serialization file.
+   std::string getSerializationFileName() const;    /// File name of the serialization file.
 
-   string getDeserializationFileName() const; /// File name of the deserialization file.
+   std::string getDeserializationFileName() const; /// File name of the deserialization file.
 
-   string getStimulusFileName() const;     /// File name of the stimulus input file.
+   std::string getStimulusFileName() const;     /// File name of the stimulus input file.
 
-   shared_ptr<Model> getModel() const;    /// Neural Network Model interface.
+   std::shared_ptr<Model> getModel() const;    /// Neural Network Model interface.
 ///@}
 
 /************************************************
@@ -112,13 +112,13 @@ public:
 ///@{
    void setPSummationMap(BGFLOAT *summationMap);     /// Mutator for summation map (added late)
 
-   void setConfigFileName(const string &fileName);
+   void setConfigFileName(const std::string &fileName);
 
-   void setSerializationFileName(const string &fileName);
+   void setSerializationFileName(const std::string &fileName);
 
-   void setDeserializationFileName(const string &fileName);
+   void setDeserializationFileName(const std::string &fileName);
 
-   void setStimulusFileName(const string &fileName);
+   void setStimulusFileName(const std::string &fileName);
 
 #ifdef PERFORMANCE_METRICS
    Timer getTimer();  /// Timer measures performance of epoch. returns copy of internal timer owned by simulator.
@@ -165,15 +165,15 @@ private:
 
    long initRngSeed_;   /// Seed used to initialize parameters
 
-   string configFileName_;    /// File name of the parameter configuration file.
+   std::string configFileName_;    /// File name of the parameter configuration file.
 
-   string serializationFileName_;    /// File name of the serialization file.
+   std::string serializationFileName_;    /// File name of the serialization file.
 
-   string deserializationFileName_;    /// File name of the deserialization file.
+   std::string deserializationFileName_;    /// File name of the deserialization file.
 
-   string stimulusFileName_;    /// File name of the stimulus input file.
+   std::string stimulusFileName_;    /// File name of the stimulus input file.
 
-   shared_ptr<Model> model_;  /// Smart pointer to model class (Model is an interface class)
+   std::shared_ptr<Model> model_;  /// Smart pointer to model class (Model is an interface class)
 
    log4cplus::Logger consoleLogger_; /// Logger for printing to the console as well as the logging file
    log4cplus::Logger fileLogger_; /// Logger for printing to the logging file

@@ -25,13 +25,13 @@ RNGFactory::~RNGFactory() {
 ///
 ///  @param  className  rng class name.
 ///  @param  Pointer to the class creation function.
-void RNGFactory::registerClass(const string &className, CreateFunction function) {
+void RNGFactory::registerClass(const std::string &className, CreateFunction function) {
    createFunctions[className] = function;
 }
 
 
 /// Creates concrete instance of the desired rng class.
-MTRand* RNGFactory::createRNG(const string &className) {
+MTRand* RNGFactory::createRNG(const std::string &className) {
    return invokeCreateFunction(className);
 }
 
@@ -39,7 +39,7 @@ MTRand* RNGFactory::createRNG(const string &className) {
 ///
 /// The calling method uses this retrieval mechanism in 
 /// value assignment.
-MTRand *RNGFactory::invokeCreateFunction(const string &className) {
+MTRand *RNGFactory::invokeCreateFunction(const std::string &className) {
    for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
       if (className == i->first)
          return i->second();
