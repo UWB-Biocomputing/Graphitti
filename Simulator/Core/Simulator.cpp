@@ -26,9 +26,9 @@ Simulator& Simulator::getInstance() {
 };
 
 /// Constructor is private to keep a singleton instance of this class.
-Simulator::Simulator() {
+Simulator::Simulator() : deltaT_() {
 	g_simulationStep = 0; /// uint64_t g_simulationStep instantiated in Global
-	deltaT_ = DEFAULT_dt;
+
 
 	consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 	fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));

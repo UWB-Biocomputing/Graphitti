@@ -16,9 +16,9 @@
 #include "Operations.h"
 
 /// Constructor, Function Signature: void ()
-GenericFunctionNode::GenericFunctionNode(const Operations::op& operation, const std::function<void()>& func) {
+GenericFunctionNode::GenericFunctionNode(const Operations::op& operation, const std::function<void()>& func) :
+	function_(func) {
 	operationType_ = operation;
-	function_ = func;
 }
 
 /// Destructor

@@ -18,9 +18,7 @@ static int SYNAPSE_COUNT = 100;
 
 /// Testing object with initialized EdgeIndexMap. Used to reduce reused code.
 struct SynapseIndexMapTestObject : public testing::Test {
-    SynapseIndexMapTestObject() {
-        edgeIndexMap = new EdgeIndexMap(VERTEX_COUNT, SYNAPSE_COUNT);
-    }
+    SynapseIndexMapTestObject() : edgeIndexMap(new EdgeIndexMap(VERTEX_COUNT, SYNAPSE_COUNT)) { }
     
     ~SynapseIndexMapTestObject() {
        delete edgeIndexMap;

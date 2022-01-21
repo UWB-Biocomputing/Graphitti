@@ -42,10 +42,7 @@
 
 /// Private Class constructor
 /// Initialize any heap variables to null
-ParameterManager::ParameterManager() {
-	xmlDocument_ = nullptr;
-	root_ = nullptr;
-}
+ParameterManager::ParameterManager(): root_(nullptr), xmlDocument_(nullptr) { }
 
 /// Class destructor
 /// Deallocate all heap memory managed by the class

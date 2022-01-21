@@ -10,13 +10,7 @@
 #include "ParseParamError.h"
 
 // Default constructor
-AllIZHNeurons::AllIZHNeurons() : AllIFNeurons() {
-	Aconst_ = nullptr;
-	Bconst_ = nullptr;
-	Cconst_ = nullptr;
-	Dconst_ = nullptr;
-	u_ = nullptr;
-	C3_ = nullptr;
+AllIZHNeurons::AllIZHNeurons() : AllIFNeurons(), C3_(nullptr), u_(nullptr), Dconst_(nullptr), Cconst_(nullptr), Bconst_(nullptr), Aconst_(nullptr) {
 }
 
 AllIZHNeurons::~AllIZHNeurons() {

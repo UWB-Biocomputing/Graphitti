@@ -8,7 +8,7 @@
 
 #include "AllNeuroEdges.h"
 
-AllNeuroEdges::AllNeuroEdges() : AllEdges() { psr_ = nullptr; }
+AllNeuroEdges::AllNeuroEdges() : AllEdges(), psr_(nullptr) { }
 
 AllNeuroEdges::~AllNeuroEdges() {
 	BGSIZE maxTotalEdges = maxEdgesPerVertex_ * countVertices_;

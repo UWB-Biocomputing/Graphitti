@@ -11,36 +11,7 @@
 #include "AllVertices.h"
 #include "ParameterManager.h"
 
-AllSTDPSynapses::AllSTDPSynapses() : AllSpikingSynapses() {
-	totalDelayPost_ = nullptr;
-	delayQueuePost_ = nullptr;
-	delayIndexPost_ = nullptr;
-	delayQueuePostLength_ = nullptr;
-	tauspost_ = nullptr;
-	tauspre_ = nullptr;
-	taupos_ = nullptr;
-	tauneg_ = nullptr;
-	STDPgap_ = nullptr;
-	Wex_ = nullptr;
-	Aneg_ = nullptr;
-	Apos_ = nullptr;
-	mupos_ = nullptr;
-	muneg_ = nullptr;
-	defaultSTDPgap_ = 0;
-	tauspost_I_ = 0;
-	tauspre_I_ = 0;
-	tauspost_E_ = 0;
-	tauspre_E_ = 0;
-	taupos_I_ = 0;
-	tauneg_I_ = 0;
-	taupos_E_ = 0;
-	tauneg_E_ = 0;
-	Wex_I_ = 0;
-	Wex_E_ = 0;
-	Aneg_I_ = 0;
-	Aneg_E_ = 0;
-	Apos_I_ = 0;
-	Apos_E_ = 0;
+AllSTDPSynapses::AllSTDPSynapses() : AllSpikingSynapses(), Apos_E_(0), Apos_I_(0), Aneg_E_(0), Aneg_I_(0), Wex_E_(0), Wex_I_(0), tauneg_E_(0), taupos_E_(0), tauneg_I_(0), taupos_I_(0), tauspre_E_(0), tauspost_E_(0), tauspre_I_(0), tauspost_I_(0), defaultSTDPgap_(0), muneg_(nullptr), mupos_(nullptr), Apos_(nullptr), Aneg_(nullptr), Wex_(nullptr), STDPgap_(nullptr), tauneg_(nullptr), taupos_(nullptr), tauspre_(nullptr), tauspost_(nullptr), delayQueuePostLength_(nullptr), delayIndexPost_(nullptr), delayQueuePost_(nullptr), totalDelayPost_(nullptr) {
 }
 
 AllSTDPSynapses::AllSTDPSynapses(const int numVertices, const int maxEdges) :

@@ -8,13 +8,7 @@
 
 #include "AllDSSynapses.h"
 
-AllDSSynapses::AllDSSynapses() : AllSpikingSynapses() {
-	lastSpike_ = nullptr;
-	r_ = nullptr;
-	u_ = nullptr;
-	D_ = nullptr;
-	U_ = nullptr;
-	F_ = nullptr;
+AllDSSynapses::AllDSSynapses() : AllSpikingSynapses(), F_(nullptr), U_(nullptr), D_(nullptr), u_(nullptr), r_(nullptr), lastSpike_(nullptr) {
 }
 
 AllDSSynapses::AllDSSynapses(const int numVertices, const int maxEdges) :

@@ -10,11 +10,7 @@
 #include "AllSpikingSynapses.h"
 
 // Default constructor
-AllSpikingNeurons::AllSpikingNeurons() : AllVertices() {
-	hasFired_ = nullptr;
-	spikeCount_ = nullptr;
-	spikeCountOffset_ = nullptr;
-	spikeHistory_ = nullptr;
+AllSpikingNeurons::AllSpikingNeurons() : AllVertices(), spikeHistory_(nullptr), spikeCountOffset_(nullptr), spikeCount_(nullptr), hasFired_(nullptr) {
 }
 
 AllSpikingNeurons::~AllSpikingNeurons() {

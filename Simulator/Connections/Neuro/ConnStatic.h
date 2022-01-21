@@ -104,10 +104,10 @@ class ConnStatic : public Connections {
 		BGFLOAT rewiringProbability_;
 
 		/// Min/max values of excitatory neuron's synapse weight
-		BGFLOAT excWeight_[2];
+		BGFLOAT excWeight_[2]{};
 
 		/// Min/max values of inhibitory neuron's synapse weight
-		BGFLOAT inhWeight_[2];
+		BGFLOAT inhWeight_[2]{};
 
 		struct DistDestVertex {
 			BGFLOAT dist; ///< destance to the destination vertex

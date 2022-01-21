@@ -10,8 +10,8 @@
 #include "OperationManager.h"
 
 // Default constructor
-AllVertices::AllVertices() : size_(0) {
-	summationMap_ = nullptr;
+AllVertices::AllVertices() : summationMap_(nullptr), size_(0) {
+
 
 	// Register loadParameters function as a loadParameters operation in the Operation Manager
 	std::function<void()> loadParametersFunc = std::bind(&AllVertices::loadParameters, this);

@@ -16,14 +16,9 @@
 
 /// Constructor
 Layout::Layout() :
-	numEndogenouslyActiveNeurons_(0),
+	xloc_(nullptr), starterMap_(nullptr), vertexTypeMap_(nullptr), dist_(nullptr), dist2_(nullptr), yloc_(nullptr), numEndogenouslyActiveNeurons_(0),
 	gridLayout_(true) {
-	xloc_ = nullptr;
-	yloc_ = nullptr;
-	dist2_ = nullptr;
-	dist_ = nullptr;
-	vertexTypeMap_ = nullptr;
-	starterMap_ = nullptr;
+
 
 	// Create Vertices/Neurons class using type definition in configuration file
 	std::string type;
@@ -31,11 +26,11 @@ Layout::Layout() :
 	vertices_ = VerticesFactory::getInstance()->createVertices(type);
 
 	// Register loadParameters function as a loadParameters operation in the Operation Manager
-	std::function<void()> loadParametersFunc = std::bind(&Layout::loadParameters, this);
+	const std::function loadParametersFunc = [this] { loadParameters(); };
 	OperationManager::getInstance().registerOperation(Operations::op::loadParameters, loadParametersFunc);
 
 	// Register printParameters function as a printParameters operation in the OperationManager
-	std::function<void()> printParametersFunc = std::bind(&Layout::printParameters, this);
+	const std::function printParametersFunc = [this] { printParameters(); };
 	OperationManager::getInstance().registerOperation(Operations::op::printParameters, printParametersFunc);
 
 	// Get a copy of the file logger to use log4cplus macros

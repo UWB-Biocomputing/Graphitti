@@ -11,16 +11,10 @@
 #include "OperationManager.h"
 
 AllEdges::AllEdges() :
-	totalEdgeCount_(0),
+	edgeCounts_(nullptr), inUse_(nullptr), type_(nullptr), sourceVertexIndex_(nullptr), summationPoint_(nullptr), W_(nullptr), destVertexIndex_(nullptr), totalEdgeCount_(0),
 	maxEdgesPerVertex_(0),
 	countVertices_(0) {
-	destVertexIndex_ = nullptr;
-	W_ = nullptr;
-	summationPoint_ = nullptr;
-	sourceVertexIndex_ = nullptr;
-	type_ = nullptr;
-	inUse_ = nullptr;
-	edgeCounts_ = nullptr;
+
 
 	// Register loadParameters function as a loadParameters operation in the
 	// OperationManager. This will register the appropriate overridden method

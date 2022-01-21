@@ -11,11 +11,7 @@
 #include "Layout911.h"
 #include "ParameterManager.h"
 
-All911Vertices::All911Vertices() {
-	callNum_ = nullptr;
-	dispNum_ = nullptr;
-	respNum_ = nullptr;
-}
+All911Vertices::All911Vertices(): respNum_(nullptr), dispNum_(nullptr), callNum_(nullptr) { }
 
 All911Vertices::~All911Vertices() {
 	if (size_ != 0) {

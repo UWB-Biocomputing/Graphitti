@@ -46,14 +46,7 @@ struct EdgeIndexMap {
 	/// Indexed by a destination vertex index.
 	BGSIZE* incomingEdgeCount_;
 
-	EdgeIndexMap() : numOfVertices_(0), numOfEdges_(0) {
-		outgoingEdgeBegin_ = nullptr;
-		outgoingEdgeCount_ = nullptr;
-		incomingEdgeBegin_ = nullptr;
-		incomingEdgeCount_ = nullptr;
-
-		outgoingEdgeIndexMap_ = nullptr;
-		incomingEdgeIndexMap_ = nullptr;
+	EdgeIndexMap() : incomingEdgeIndexMap_(nullptr), outgoingEdgeIndexMap_(nullptr), incomingEdgeCount_(nullptr), incomingEdgeBegin_(nullptr), outgoingEdgeCount_(nullptr), outgoingEdgeBegin_(nullptr), numOfVertices_(0), numOfEdges_(0) {
 	};
 
 	EdgeIndexMap(int vertexCount, int edgeCount) : numOfVertices_(vertexCount), numOfEdges_(edgeCount) {

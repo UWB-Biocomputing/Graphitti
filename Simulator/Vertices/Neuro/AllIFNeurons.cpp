@@ -15,23 +15,7 @@
 #include "ParseParamError.h"
 
 // Default constructor
-AllIFNeurons::AllIFNeurons() {
-	C1_ = nullptr;
-	C2_ = nullptr;
-	Cm_ = nullptr;
-	I0_ = nullptr;
-	Iinject_ = nullptr;
-	Inoise_ = nullptr;
-	Isyn_ = nullptr;
-	Rm_ = nullptr;
-	Tau_ = nullptr;
-	Trefract_ = nullptr;
-	Vinit_ = nullptr;
-	Vm_ = nullptr;
-	Vreset_ = nullptr;
-	Vrest_ = nullptr;
-	Vthresh_ = nullptr;
-	numStepsInRefractoryPeriod_ = nullptr;
+AllIFNeurons::AllIFNeurons(): numStepsInRefractoryPeriod_(nullptr), Vthresh_(nullptr), Vrest_(nullptr), Vreset_(nullptr), Vm_(nullptr), Vinit_(nullptr), Trefract_(nullptr), Tau_(nullptr), Rm_(nullptr), Isyn_(nullptr), Inoise_(nullptr), Iinject_(nullptr), I0_(nullptr), Cm_(nullptr), C2_(nullptr), C1_(nullptr) {
 }
 
 AllIFNeurons::~AllIFNeurons() {

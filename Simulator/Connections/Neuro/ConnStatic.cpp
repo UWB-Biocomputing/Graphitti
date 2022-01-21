@@ -22,15 +22,9 @@
 
 #include <algorithm>
 
-ConnStatic::ConnStatic() {
-	threshConnsRadius_ = 0;
-	connsPerVertex_ = 0;
-	rewiringProbability_ = 0;
-	WCurrentEpoch_ = nullptr;
-	destVertexIndexCurrentEpoch_ = nullptr;
-	sourceVertexIndexCurrentEpoch_ = nullptr;
-	radiiSize_ = 0;
-}
+ConnStatic::ConnStatic(): sourceVertexIndexCurrentEpoch_(nullptr), destVertexIndexCurrentEpoch_(nullptr),
+                          WCurrentEpoch_(nullptr),
+                          radiiSize_(0), connsPerVertex_(0), threshConnsRadius_(0), rewiringProbability_(0) {}
 
 ConnStatic::~ConnStatic() {
 	if (WCurrentEpoch_ != nullptr) delete [] WCurrentEpoch_;

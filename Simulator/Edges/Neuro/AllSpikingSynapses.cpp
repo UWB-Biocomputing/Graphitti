@@ -11,21 +11,7 @@
 #include "AllSpikingSynapses.h"
 #include "ParameterManager.h"
 
-AllSpikingSynapses::AllSpikingSynapses() : AllNeuroEdges() {
-	decay_ = nullptr;
-	totalDelay_ = nullptr;
-	delayQueue_ = nullptr;
-	delayIndex_ = nullptr;
-	delayQueueLength_ = nullptr;
-	tau_ = nullptr;
-	tau_II_ = 0;
-	tau_IE_ = 0;
-	tau_EI_ = 0;
-	tau_EE_ = 0;
-	delay_II_ = 0;
-	delay_IE_ = 0;
-	delay_EI_ = 0;
-	delay_EE_ = 0;
+AllSpikingSynapses::AllSpikingSynapses() : AllNeuroEdges(), delay_EE_(0), delay_EI_(0), delay_IE_(0), delay_II_(0), tau_EE_(0), tau_EI_(0), tau_IE_(0), tau_II_(0), tau_(nullptr), delayQueueLength_(nullptr), delayIndex_(nullptr), delayQueue_(nullptr), totalDelay_(nullptr), decay_(nullptr) {
 }
 
 AllSpikingSynapses::AllSpikingSynapses(const int numVertices, const int maxEdges) { setupEdges(numVertices, maxEdges); }

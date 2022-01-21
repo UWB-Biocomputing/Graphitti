@@ -47,15 +47,7 @@
 #include "Hdf5GrowthRecorder.h"
 #endif
 
-ConnGrowth::ConnGrowth() : Connections() {
-	W_ = nullptr;
-	radii_ = nullptr;
-	rates_ = nullptr;
-	delta_ = nullptr;
-	area_ = nullptr;
-	outgrowth_ = nullptr;
-	deltaR_ = nullptr;
-	radiiSize_ = 0;
+ConnGrowth::ConnGrowth() : Connections(), radiiSize_(0), deltaR_(nullptr), outgrowth_(nullptr), area_(nullptr), delta_(nullptr), rates_(nullptr), radii_(nullptr), W_(nullptr) {
 }
 
 ConnGrowth::~ConnGrowth() {
