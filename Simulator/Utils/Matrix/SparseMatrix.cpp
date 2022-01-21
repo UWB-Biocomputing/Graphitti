@@ -45,7 +45,7 @@ void SparseMatrix::HashTable::resize(int s, int c) {
 		DEBUG_SPARSE(std::cerr << "\t\t\tSM::HT::resize(): table capacity changed." << std::endl;)
 		capacity = s;
 		columns = c;
-		table.resize(capacity, static_cast<Element*>(nullptr));
+		table.resize(capacity, nullptr);
 		size = 0;
 	}
 
@@ -400,7 +400,7 @@ void SparseMatrix::clear(void) {
 	if (theRows != nullptr) {
 		for (int i = 0; i < rows; i++) {
 			for (auto it = theRows[i].begin();
-			     it != theRows[i].end(); it++)
+			     it != theRows[i].end(); ++it)
 				delete *it;
 		}
 		delete [] theRows;
@@ -436,7 +436,7 @@ void SparseMatrix::copy(const SparseMatrix& source) {
 	// the current SparseMatrix's row and column lists.
 	for (int i = 0; i < rows; i++) {
 		for (auto it = source.theRows[i].begin();
-		     it != source.theRows[i].end(); it++) {
+		     it != source.theRows[i].end(); ++it) {
 			auto el = new Element(i, (*it)->column, (*it)->value);
 			theRows[i].push_back(el);
 			theColumns[el->column].push_back(el);
@@ -448,7 +448,7 @@ void SparseMatrix::copy(const SparseMatrix& source) {
 					<< i << ", hashed to " << theElements.hash(el) << " in table with capacity "
 					<< theElements.capacity << std::endl;
 				std::cerr << "\tSource was: " << source << std::endl << std::endl;
-				throw e;
+				throw;
 			}
 		}
 	}
@@ -526,7 +526,7 @@ void SparseMatrix::Print(std::ostream& os) const {
 		if (theRows[i].begin() == theRows[i].end()) continue;
 		os << "   <Row number=\"" << i << "\">" << std::endl;
 		for (auto it = theRows[i].begin();
-		     it != theRows[i].end(); it++) {
+		     it != theRows[i].end(); ++it) {
 			// Prune out any left over zero elements
 			if ((*it)->value != 0.0) {
 				os << "      <Entry number=\"" << (*it)->column
@@ -601,7 +601,7 @@ const SparseMatrix SparseMatrix::operator-() const {
 	// Iterate over all elements, negating their values
 	for (int i = 0; i < result.rows; i++) {
 		for (auto it = result.theRows[i].begin();
-		     it != result.theRows[i].end(); it++)
+		     it != result.theRows[i].end(); ++it)
 			(*it)->value = - (*it)->value;
 	}
 
@@ -627,8 +627,10 @@ const SparseMatrix SparseMatrix::operator*(const SparseMatrix& rhs) const {
 
 // Vector times a Sparse matrix
 const VectorMatrix operator*(const VectorMatrix& v, const SparseMatrix& m) {
-	if (m.rows != v.size) throw Matrix_domain_error(
-		"Illegal vector/matrix product. Rows of matrix must equal vector size.");
+	if (m.rows != v.size) {
+		throw Matrix_domain_error(
+			"Illegal vector/matrix product. Rows of matrix must equal vector size.");
+	}
 
 	// the result is a vector the same size as m columns
 	VectorMatrix result("complete", "const", 1, m.columns, 0.0, "");
@@ -640,7 +642,7 @@ const VectorMatrix operator*(const VectorMatrix& v, const SparseMatrix& m) {
 	for (int col = 0; col < m.columns; col++) {
 		BGFLOAT sum = 0.0;
 		for (auto el = m.theColumns[col].begin();
-		     el != m.theColumns[col].end(); el++)
+		     el != m.theColumns[col].end(); ++el)
 			sum += (*el)->value * v[(*el)->row];
 		result[col] = sum;
 	}

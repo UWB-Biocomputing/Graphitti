@@ -105,12 +105,12 @@ class AllSpikingNeurons : public AllVertices {
 		///  Helper for #advanceNeuron. Updates state of a single neuron.
 		///
 		///  @param  index            Index of the neuron to update.
-		virtual void advanceNeuron(const int index) = 0;
+		virtual void advanceNeuron(int index) = 0;
 
 		///  Initiates a firing of a neuron to connected neurons
 		///
 		///  @param  index            Index of the neuron to fire.
-		virtual void fire(const int index) const;
+		virtual void fire(int index) const;
 
 #endif // defined(__CUDACC__)
 

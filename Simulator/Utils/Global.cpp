@@ -53,9 +53,9 @@ std::string coordToString(int x, int y, int z) {
 // MODEL INDEPENDENT FUNCTION NMV-BEGIN {
 std::string neuronTypeToString(vertexType t) {
 	switch (t) {
-		case INH: return "INH";
-		case EXC: return "EXC";
-		default: std::cerr << "ERROR->neuronTypeToString() failed, unknown type: " << t << std::endl;
+		case vertexType::INH: return "INH";
+		case vertexType::EXC: return "EXC";
+		default: std::cerr << "ERROR->neuronTypeToString() failed, unknown type: " << static_cast<int>(t) << std::endl;
 			assert(false);
 			return nullptr; // Must return a value -- this will probably cascade to another failure
 	}

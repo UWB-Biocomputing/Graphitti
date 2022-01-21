@@ -42,8 +42,7 @@ std::shared_ptr<AllVertices> VerticesFactory::createVertices(const std::string& 
 /// The calling method uses this retrieval mechanism in 
 /// value assignment.
 AllVertices* VerticesFactory::invokeCreateFunction(const std::string& className) {
-	for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
-		if (className == i->first) return i->second();
-	}
+	for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) if (className == i->first) return i->
+		second();
 	return nullptr;
 }

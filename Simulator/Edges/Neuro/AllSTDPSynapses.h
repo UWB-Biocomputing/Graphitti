@@ -74,7 +74,7 @@ class AllSTDPSynapses : public AllSpikingSynapses {
 	public:
 		AllSTDPSynapses();
 
-		AllSTDPSynapses(const int numVertices, const int maxEdges);
+		AllSTDPSynapses(int numVertices, int maxEdges);
 
 		~AllSTDPSynapses() override;
 
@@ -87,7 +87,7 @@ class AllSTDPSynapses : public AllSpikingSynapses {
 		///
 		///  @param  iEdg     Index of the synapse to set.
 		///  @param  deltaT   Inner simulation step duration
-		void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
+		void resetEdge(BGSIZE iEdg, BGFLOAT deltaT) override;
 
 		///  Check if the back propagation (notify a spike event to the pre neuron)
 		///  is allowed in the synapse class.
@@ -111,7 +111,7 @@ class AllSTDPSynapses : public AllSpikingSynapses {
 		///  @param  sumPoint    Summation point address.
 		///  @param  deltaT      Inner simulation step duration.
 		///  @param  type        Type of the Synapse to create.
-		void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT,
+		void createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, BGFLOAT deltaT,
 		                edgeType type) override;
 
 		///  Prints SynapsesProps data.
@@ -122,24 +122,24 @@ class AllSTDPSynapses : public AllSpikingSynapses {
 		///
 		///  @param  numVertices   Total number of vertices in the network.
 		///  @param  maxEdges  Maximum number of synapses per neuron.
-		void setupEdges(const int numVertices, const int maxEdges) override;
+		void setupEdges(int numVertices, int maxEdges) override;
 
 		///  Sets the data for Synapse to input's data.
 		///
 		///  @param  input  istream to read from.
 		///  @param  iEdg   Index of the synapse to set.
-		void readEdge(std::istream& input, const BGSIZE iEdg) override;
+		void readEdge(std::istream& input, BGSIZE iEdg) override;
 
 		///  Write the synapse data to the stream.
 		///
 		///  @param  output  stream to print out to.
 		///  @param  iEdg    Index of the synapse to print out.
-		void writeEdge(std::ostream& output, const BGSIZE iEdg) const override;
+		void writeEdge(std::ostream& output, BGSIZE iEdg) const override;
 
 		///  Initializes the queues for the Synapse.
 		///
 		///  @param  iEdg   index of the synapse to set.
-		void initSpikeQueue(const BGSIZE iEdg) override;
+		void initSpikeQueue(BGSIZE iEdg) override;
 
 #ifdef __CUDACC__
    public:
@@ -241,21 +241,21 @@ class AllSTDPSynapses : public AllSpikingSynapses {
 		///
 		///  @param  iEdg      Index of the Synapse to connect to.
 		///  @param  neurons   The Neuron list to search from.
-		void advanceEdge(const BGSIZE iEdg, AllVertices* neurons) override;
+		void advanceEdge(BGSIZE iEdg, AllVertices* neurons) override;
 
 		///  Prepares Synapse for a spike hit (for back propagation).
 		///
 		///  @param  iEdg   Index of the Synapse to connect to.
-		void postSpikeHit(const BGSIZE iEdg) override;
+		void postSpikeHit(BGSIZE iEdg) override;
 
 	protected:
 		///  Checks if there is an input spike in the queue (for back propagation).
 		///
 		///  @param  iEdg   Index of the Synapse to connect to.
 		///  @return true if there is an input spike event.
-		bool isSpikeQueuePost(const BGSIZE iEdg);
+		bool isSpikeQueuePost(BGSIZE iEdg);
 
-		virtual BGFLOAT synapticWeightModification(const BGSIZE iEdg, BGFLOAT edgeWeight, double delta);
+		virtual BGFLOAT synapticWeightModification(BGSIZE iEdg, BGFLOAT edgeWeight, double delta);
 
 	private:
 		///  Adjust synapse weight according to the Spike-timing-dependent synaptic modification
@@ -267,7 +267,7 @@ class AllSTDPSynapses : public AllSpikingSynapses {
 		///  @param  epre        Params for the rule given in Froemke and Dan (2002).
 		///  @param srcVertex Index of source neuron
 		///  @param destVertex Index of destination neuron
-		void stdpLearning(const BGSIZE iEdg, double delta, double epost, double epre,
+		void stdpLearning(BGSIZE iEdg, double delta, double epost, double epre,
 		                  int srcVertex, int destVertex);
 
 #endif

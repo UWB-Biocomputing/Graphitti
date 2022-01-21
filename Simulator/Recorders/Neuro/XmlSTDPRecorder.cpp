@@ -134,14 +134,19 @@ void XmlSTDPRecorder::saveSimData(const AllVertices& neurons) {
 	Simulator& simulator = Simulator::getInstance();
 
 	// create Neuron Types matrix
-	VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), EXC);
-	for (int i = 0; i < simulator.getTotalVertices(); i++) neuronTypes[i] = simulator.getModel()->getLayout()->
-		vertexTypeMap_[i];
+	VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(),
+	                         static_cast<float>(vertexType::EXC));
+	for (int i = 0; i < simulator.getTotalVertices(); i++) {
+		neuronTypes[i] = static_cast<float>(simulator.getModel()->getLayout()->
+		                                              vertexTypeMap_[i]);
+	}
 
 	// create neuron threshold matrix
 	VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), 0);
-	for (int i = 0; i < simulator.getTotalVertices(); i++) neuronThresh[i] = dynamic_cast<const AllIFNeurons&>(neurons).
-		Vthresh_[i];
+	for (int i = 0; i < simulator.getTotalVertices(); i++) {
+		neuronThresh[i] = dynamic_cast<const AllIFNeurons&>(neurons).
+			Vthresh_[i];
+	}
 
 	// Write XML header information:
 	resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"

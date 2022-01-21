@@ -61,7 +61,7 @@ void Layout911::generateVertexTypeMap(int numVertices) {
 	DEBUG(std::cout << "\nInitializing vertex type map" << std::endl;);
 
 	// Populate vertexTypeMap_ with base layer of CALR
-	std::fill_n(vertexTypeMap_, numVertices, CALR);
+	std::fill_n(vertexTypeMap_, numVertices, vertexType::CALR);
 
 	// for (int i = 0; i < numVertices; i++) {
 	//    vertexTypeMap_[i] = CALR;
@@ -80,13 +80,13 @@ void Layout911::generateVertexTypeMap(int numVertices) {
 	// Insert PSAPs
 	for (int i = 0; i < numPSAPs; i++) {
 		assert(psapVertexList_.at(i) < numVertices);
-		vertexTypeMap_[psapVertexList_.at(i)] = PSAP;
+		vertexTypeMap_[psapVertexList_.at(i)] = vertexType::PSAP;
 	}
 
 	// Insert Responders
 	for (int i = 0; i < responderVertexList_.size(); i++) {
 		assert(responderVertexList_.at(i) < numVertices);
-		vertexTypeMap_[responderVertexList_.at(i)] = RESP;
+		vertexTypeMap_[responderVertexList_.at(i)] = vertexType::RESP;
 	}
 
 	LOG4CPLUS_INFO(fileLogger_, "Finished initializing vertex type map");
@@ -105,10 +105,14 @@ int Layout911::zone(int index) { return (index % 10 >= 5) + 2 * (index < 50); }
 ///  @param    destVertex integer that points to a Neuron in the type map as a destination.
 ///  @return type of the synapse.
 edgeType Layout911::edgType(const int srcVertex, const int destVertex) {
-	if (vertexTypeMap_[srcVertex] == CALR && vertexTypeMap_[destVertex] == PSAP) return CP;
-	else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == RESP) return PR;
-	else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == CALR) return RC;
-	else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == PSAP) return PP;
+	if (vertexTypeMap_[srcVertex] == vertexType::CALR && vertexTypeMap_[destVertex] == vertexType::PSAP) return
+		edgeType::CP;
+	if (vertexTypeMap_[srcVertex] == vertexType::PSAP && vertexTypeMap_[destVertex] == vertexType::RESP) return
+		edgeType::PR;
+	if (vertexTypeMap_[srcVertex] == vertexType::RESP && vertexTypeMap_[destVertex] == vertexType::CALR) return
+		edgeType::RC;
+	if (vertexTypeMap_[srcVertex] == vertexType::PSAP && vertexTypeMap_[destVertex] == vertexType::PSAP) return
+		edgeType::PP;
 
-	return ETYPE_UNDEF;
+	return edgeType::ETYPE_UNDEF;
 }

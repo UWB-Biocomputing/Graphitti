@@ -138,14 +138,14 @@ class GPUModel : public Model {
 		void updateHistory() override;
 
 		// TODO
-		void eraseEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex);
+		void eraseEdge(AllEdges& synapses, int neuronIndex, int synapseIndex);
 
 		// TODO
-		void addEdge(AllEdges& synapses, edgeType type, const int srcVertex, const int destVertex,
+		void addEdge(AllEdges& synapses, edgeType type, int srcVertex, int destVertex,
 		             Coordinate& source, Coordinate& dest, BGFLOAT* sumPoint, BGFLOAT deltaT);
 
 		// TODO
-		void createEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex,
+		void createEdge(AllEdges& synapses, int neuronIndex, int synapseIndex,
 		                Coordinate source, Coordinate dest, BGFLOAT* sp, BGFLOAT deltaT, edgeType type);
 };
 

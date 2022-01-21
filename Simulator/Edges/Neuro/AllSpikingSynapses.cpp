@@ -189,16 +189,16 @@ void AllSpikingSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVe
 
 	BGFLOAT tau;
 	switch (type) {
-		case II: tau = 6e-3;
+		case edgeType::II: tau = 6e-3;
 			delay = 0.8e-3;
 			break;
-		case IE: tau = 6e-3;
+		case edgeType::IE: tau = 6e-3;
 			delay = 0.8e-3;
 			break;
-		case EI: tau = 3e-3;
+		case edgeType::EI: tau = 3e-3;
 			delay = 0.8e-3;
 			break;
-		case EE: tau = 3e-3;
+		case edgeType::EE: tau = 3e-3;
 			delay = 1.5e-3;
 			break;
 		default:

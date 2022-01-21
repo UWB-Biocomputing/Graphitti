@@ -32,13 +32,13 @@ void DynamicLayout::generateVertexTypeMap(int numVertices) {
 	LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing vertex type map..." << std::endl);
 
 	// Populate vertexTypeMap_ with EXC
-	std::fill_n(vertexTypeMap_, numVertices, EXC);
+	std::fill_n(vertexTypeMap_, numVertices, vertexType::EXC);
 
 	// for (int i = 0; i < numVertices; i++) {
 	//    vertexTypeMap_[i] = EXC;
 	// }
 
-	int numExcitatory = (int)(fractionExcitatory_ * numVertices + 0.5);
+	int numExcitatory = static_cast<int>(fractionExcitatory_ * numVertices + 0.5);
 	int numInhibitory = numVertices - numExcitatory;
 
 	LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP" << std::endl
@@ -57,7 +57,7 @@ void DynamicLayout::generateVertexTypeMap(int numVertices) {
 		if (j < numInhibitory) rgInhibitoryLayout[j] = i;
 	}
 
-	for (int i = 0; i < numInhibitory; i++) vertexTypeMap_[rgInhibitoryLayout[i]] = INH;
+	for (int i = 0; i < numInhibitory; i++) vertexTypeMap_[rgInhibitoryLayout[i]] = vertexType::INH;
 	delete[] rgInhibitoryLayout;
 
 	LOG4CPLUS_INFO(fileLogger_, "Done initializing vertex type map");
@@ -71,7 +71,7 @@ void DynamicLayout::generateVertexTypeMap(int numVertices) {
 void DynamicLayout::initStarterMap(const int numVertices) {
 	Layout::initStarterMap(numVertices);
 
-	numEndogenouslyActiveNeurons_ = (BGSIZE)(fractionEndogenouslyActive_ * numVertices + 0.5);
+	numEndogenouslyActiveNeurons_ = static_cast<uint32_t>(fractionEndogenouslyActive_ * numVertices + 0.5);
 	BGSIZE startersAllocated = 0;
 
 	LOG4CPLUS_DEBUG(fileLogger_, "\nNEURON STARTER MAP" << std::endl
@@ -86,7 +86,7 @@ void DynamicLayout::initStarterMap(const int numVertices) {
 
 		// If the neuron at that index is excitatory and not already in the
 		// starter map, add an entry.
-		if (vertexTypeMap_[i] == EXC && !starterMap_[i]) {
+		if (vertexTypeMap_[i] == vertexType::EXC && !starterMap_[i]) {
 			starterMap_[i] = true;
 			startersAllocated++;
 			LOG4CPLUS_DEBUG(fileLogger_, "Allocated EA neuron at random index [" << i << "]" << std::endl;);
@@ -132,10 +132,14 @@ void DynamicLayout::loadParameters() {
 ///  @param    destVertex integer that points to a Neuron in the type map as a destination.
 ///  @return type of the synapse.
 edgeType DynamicLayout::edgType(const int srcVertex, const int destVertex) {
-	if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == INH) return II;
-	else if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == EXC) return IE;
-	else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == INH) return EI;
-	else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == EXC) return EE;
+	if (vertexTypeMap_[srcVertex] == vertexType::INH && vertexTypeMap_[destVertex] == vertexType::INH) return
+		edgeType::II;
+	if (vertexTypeMap_[srcVertex] == vertexType::INH && vertexTypeMap_[destVertex] == vertexType::EXC) return
+		edgeType::IE;
+	if (vertexTypeMap_[srcVertex] == vertexType::EXC && vertexTypeMap_[destVertex] == vertexType::INH) return
+		edgeType::EI;
+	if (vertexTypeMap_[srcVertex] == vertexType::EXC && vertexTypeMap_[destVertex] == vertexType::EXC) return
+		edgeType::EE;
 
-	return ETYPE_UNDEF;
+	return edgeType::ETYPE_UNDEF;
 }

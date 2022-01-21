@@ -42,7 +42,7 @@ class Layout911 : public Layout {
 		///  Populates the starter map.
 		///
 		///  @param  numVertices number of vertices to have in the map.
-		void initStarterMap(const int numVertices) override;
+		void initStarterMap(int numVertices) override;
 
 		/// Get the zone of the vertex
 		/// Only built for 10x10 grid
@@ -54,7 +54,7 @@ class Layout911 : public Layout {
 		/// @param    srcVertex  integer that points to a Neuron in the type map as a source.
 		/// @param    destVertex integer that points to a Neuron in the type map as a destination.
 		/// @return type of the synapse.
-		edgeType edgType(const int srcVertex, const int destVertex) override;
+		edgeType edgType(int srcVertex, int destVertex) override;
 
 
 };

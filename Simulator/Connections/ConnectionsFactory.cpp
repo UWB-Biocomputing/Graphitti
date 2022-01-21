@@ -43,8 +43,7 @@ std::shared_ptr<Connections> ConnectionsFactory::createConnections(const std::st
 /// The calling method uses this retrieval mechanism in
 /// value assignment.
 Connections* ConnectionsFactory::invokeCreateFunction(const std::string& className) {
-	for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
-		if (className == i->first) return i->second();
-	}
+	for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) if (className == i->first) return i->
+		second();
 	return nullptr;
 }

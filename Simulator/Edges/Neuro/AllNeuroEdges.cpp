@@ -70,7 +70,7 @@ void AllNeuroEdges::writeEdge(std::ostream& output, const BGSIZE iEdg) const {
 	output << destVertexIndex_[iEdg] << std::ends;
 	output << W_[iEdg] << std::ends;
 	output << psr_[iEdg] << std::ends;
-	output << type_[iEdg] << std::ends;
+	output << static_cast<int>(type_[iEdg]) << std::ends;
 	output << inUse_[iEdg] << std::ends;
 }
 
@@ -80,11 +80,11 @@ void AllNeuroEdges::writeEdge(std::ostream& output, const BGSIZE iEdg) const {
 ///  @return   1 or -1, or 0 if error
 int AllNeuroEdges::edgSign(const edgeType type) {
 	switch (type) {
-		case II:
-		case IE: return -1;
-		case EI:
-		case EE: return 1;
-		case ETYPE_UNDEF:
+		case edgeType::II:
+		case edgeType::IE: return -1;
+		case edgeType::EI:
+		case edgeType::EE: return 1;
+		case edgeType::ETYPE_UNDEF:
 			// TODO error.
 			return 0;
 	}
@@ -100,7 +100,7 @@ void AllNeuroEdges::printSynapsesProps() const {
 			std::cout << "W[" << i << "] = " << W_[i];
 			std::cout << " sourNeuron: " << sourceVertexIndex_[i];
 			std::cout << " desNeuron: " << destVertexIndex_[i];
-			std::cout << " type: " << type_[i];
+			std::cout << " type: " << static_cast<int>(type_[i]);
 			std::cout << " psr: " << psr_[i];
 			std::cout << " in_use:" << inUse_[i];
 			if (summationPoint_[i] != nullptr) std::cout << " summationPoint: is created!" << std::endl;
@@ -108,8 +108,10 @@ void AllNeuroEdges::printSynapsesProps() const {
 		}
 	}
 
-	for (int i = 0; i < countVertices_; i++) std::cout << "edge_counts:" << "vertex[" << i << "]" << edgeCounts_[i] <<
-		std::endl;
+	for (int i = 0; i < countVertices_; i++) {
+		std::cout << "edge_counts:" << "vertex[" << i << "]" << edgeCounts_[i] <<
+			std::endl;
+	}
 
 	std::cout << "totalEdgeCount:" << totalEdgeCount_ << std::endl;
 	std::cout << "maxEdgesPerVertex:" << maxEdgesPerVertex_ << std::endl;

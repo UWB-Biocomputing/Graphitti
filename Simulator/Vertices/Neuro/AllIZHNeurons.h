@@ -102,7 +102,7 @@ class AllIZHNeurons : public AllIFNeurons {
 		///
 		///  @param  index   index of the neuron (in neurons) to output info from.
 		///  @return the complete state of the neuron.
-		std::string toString(const int index) const override;
+		std::string toString(int index) const override;
 
 		///  Reads and sets the data for all neurons from input stream.
 		///
@@ -194,12 +194,12 @@ class AllIZHNeurons : public AllIFNeurons {
 		///  Helper for #advanceNeuron. Updates state of a single neuron.
 		///
 		///  @param  index            Index of the neuron to update.
-		void advanceNeuron(const int index) override;
+		void advanceNeuron(int index) override;
 
 		///  Initiates a firing of a neuron to connected neurons.
 		///
 		///  @param  index            Index of the neuron to fire.
-		void fire(const int index) const override;
+		void fire(int index) const override;
 
 #endif  // defined(__CUDACC__)
 
@@ -213,13 +213,13 @@ class AllIZHNeurons : public AllIFNeurons {
 		///  Set the Neuron at the indexed location to default values.
 		///
 		///  @param  index    Index of the Neuron that the synapse belongs to.
-		void setNeuronDefaults(const int index);
+		void setNeuronDefaults(int index);
 
 		///  Initializes the Neuron constants at the indexed location.
 		///
 		///  @param  neuronIndex    Index of the Neuron.
 		///  @param  deltaT          Inner simulation step duration
-		void initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT) override;
+		void initNeuronConstsFromParamValues(int neuronIndex, BGFLOAT deltaT) override;
 
 		///  Sets the data for Neuron #index to input's data.
 		///

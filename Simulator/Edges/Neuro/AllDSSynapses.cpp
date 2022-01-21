@@ -140,19 +140,19 @@ void AllDSSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
 	BGFLOAT D;
 	BGFLOAT F;
 	switch (type) {
-		case II: U = 0.32;
+		case edgeType::II: U = 0.32;
 			D = 0.144;
 			F = 0.06;
 			break;
-		case IE: U = 0.25;
+		case edgeType::IE: U = 0.25;
 			D = 0.7;
 			F = 0.02;
 			break;
-		case EI: U = 0.05;
+		case edgeType::EI: U = 0.05;
 			D = 0.125;
 			F = 1.2;
 			break;
-		case EE: U = 0.5;
+		case edgeType::EE: U = 0.5;
 			D = 1.1;
 			F = 0.05;
 			break;
@@ -173,24 +173,24 @@ void AllDSSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
 ///  @param  iEdg        Index of the synapse to set.
 ///  @param  deltaT      Inner simulation step duration.
 void AllDSSynapses::changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) {
-   BGFLOAT &psr = psr_[iEdg];
-   BGFLOAT &W = W_[iEdg];
-   BGFLOAT &decay = decay_[iEdg];
-   uint64_t &lastSpike = lastSpike_[iEdg];
-   BGFLOAT &r = r_[iEdg];
-   BGFLOAT &u = u_[iEdg];
-   BGFLOAT &D = D_[iEdg];
-   BGFLOAT &F = F_[iEdg];
-   BGFLOAT &U = U_[iEdg];
+	BGFLOAT& psr = psr_[iEdg];
+	BGFLOAT& W = W_[iEdg];
+	BGFLOAT& decay = decay_[iEdg];
+	uint64_t& lastSpike = lastSpike_[iEdg];
+	BGFLOAT& r = r_[iEdg];
+	BGFLOAT& u = u_[iEdg];
+	BGFLOAT& D = D_[iEdg];
+	BGFLOAT& F = F_[iEdg];
+	BGFLOAT& U = U_[iEdg];
 
-   // adjust synapse parameters
-   if (lastSpike != ULONG_MAX) {
-      BGFLOAT isi = (g_simulationStep - lastSpike) * deltaT;
-      r = 1 + (r * (1 - u) - 1) * exp(-isi / D);
-      u = U + u * (1 - U) * exp(-isi / F);
-   }
-   psr += ((W / decay) * u * r);    // calculate psr
-   lastSpike = g_simulationStep;        // record the time of the spike
+	// adjust synapse parameters
+	if (lastSpike != ULONG_MAX) {
+		BGFLOAT isi = (g_simulationStep - lastSpike) * deltaT;
+		r = 1 + (r * (1 - u) - 1) * exp(-isi / D);
+		u = U + u * (1 - U) * exp(-isi / F);
+	}
+	psr += ((W / decay) * u * r); // calculate psr
+	lastSpike = g_simulationStep; // record the time of the spike
 }
 
 #endif

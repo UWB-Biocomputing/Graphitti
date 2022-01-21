@@ -30,7 +30,7 @@ Connections::Connections() {
 
 	// Register printParameters function as a printParameters operation in the OperationManager
 	std::function<void()> printParametersFunc = std::bind(&Connections::printParameters, this);
-	OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+	OperationManager::getInstance().registerOperation(Operations::op::printParameters, printParametersFunc);
 
 	// Register loadParameters function with Operation Manager
 	std::function<void()> function = std::bind(&Connections::loadParameters, this);
@@ -52,8 +52,7 @@ void Connections::createEdgeIndexMap() {
 	int vertexCount = simulator.getTotalVertices();
 	int maxEdges = vertexCount * edges_->maxEdgesPerVertex_;
 
-	if (synapseIndexMap_ == nullptr) synapseIndexMap_ = std::shared_ptr<EdgeIndexMap>(
-		new EdgeIndexMap(vertexCount, maxEdges));
+	if (synapseIndexMap_ == nullptr) { synapseIndexMap_ = std::make_shared<EdgeIndexMap>(vertexCount, maxEdges); }
 
 	std::fill_n(synapseIndexMap_->incomingEdgeBegin_, vertexCount, 0);
 	std::fill_n(synapseIndexMap_->incomingEdgeCount_, vertexCount, 0);

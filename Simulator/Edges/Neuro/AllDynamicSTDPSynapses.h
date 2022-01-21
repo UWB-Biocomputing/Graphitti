@@ -60,7 +60,7 @@ class AllDynamicSTDPSynapses : public AllSTDPSynapses {
 	public:
 		AllDynamicSTDPSynapses();
 
-		AllDynamicSTDPSynapses(const int numVertices, const int maxEdges);
+		AllDynamicSTDPSynapses(int numVertices, int maxEdges);
 
 		~AllDynamicSTDPSynapses() override;
 
@@ -73,7 +73,7 @@ class AllDynamicSTDPSynapses : public AllSTDPSynapses {
 		///
 		///  @param  iEdg     Index of the synapse to set.
 		///  @param  deltaT   Inner simulation step duration
-		void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
+		void resetEdge(BGSIZE iEdg, BGFLOAT deltaT) override;
 
 		///  Prints out all parameters to logging file.
 		///  Registered to OperationManager as Operation::printParameters
@@ -87,7 +87,7 @@ class AllDynamicSTDPSynapses : public AllSTDPSynapses {
 		///  @param  sumPoint    Summation point address.
 		///  @param  deltaT      Inner simulation step duration.
 		///  @param  type        Type of the Synapse to create.
-		void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT,
+		void createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, BGFLOAT deltaT,
 		                edgeType type) override;
 
 		///  Prints SynapsesProps data.
@@ -98,19 +98,19 @@ class AllDynamicSTDPSynapses : public AllSTDPSynapses {
 		///
 		///  @param  numVertices   Total number of vertices in the network.
 		///  @param  maxEdges  Maximum number of synapses per neuron.
-		void setupEdges(const int numVertices, const int maxEdges) override;
+		void setupEdges(int numVertices, int maxEdges) override;
 
 		///  Sets the data for Synapse to input's data.
 		///
 		///  @param  input  istream to read from.
 		///  @param  iEdg   Index of the synapse to set.
-		void readEdge(std::istream& input, const BGSIZE iEdg) override;
+		void readEdge(std::istream& input, BGSIZE iEdg) override;
 
 		///  Write the synapse data to the stream.
 		///
 		///  @param  output  stream to print out to.
 		///  @param  iEdg    Index of the synapse to print out.
-		void writeEdge(std::ostream& output, const BGSIZE iEdg) const override;
+		void writeEdge(std::ostream& output, BGSIZE iEdg) const override;
 
 #ifdef __CUDACC__
    public:
@@ -202,7 +202,7 @@ class AllDynamicSTDPSynapses : public AllSTDPSynapses {
 		///
 		///  @param  iEdg        Index of the synapse to set.
 		///  @param  deltaT      Inner simulation step duration.
-		void changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) override;
+		void changePSR(BGSIZE iEdg, BGFLOAT deltaT) override;
 
 #endif // defined(__CUDACC__)
 	public:

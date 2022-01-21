@@ -38,7 +38,7 @@ void Connections911::setupConnections(Layout* layout, AllVertices* vertices, All
 			edgeType type = layout->edgType(srcVertex, destVertex);
 
 			// Undefined edge types
-			if (type == ETYPE_UNDEF) continue;
+			if (type == edgeType::ETYPE_UNDEF) continue;
 
 			// Zone each vertex belongs to
 			int srcZone = layout911->zone(srcVertex);
@@ -46,7 +46,7 @@ void Connections911::setupConnections(Layout* layout, AllVertices* vertices, All
 
 			// CP and PR where they aren't in the same zone
 			// All PP and RC are defined
-			if (type == CP || type == PR) if (srcZone != destZone) continue;
+			if (type == edgeType::CP || type == edgeType::PR) if (srcZone != destZone) continue;
 
 			BGFLOAT* sumPoint = &vertices->summationMap_[destVertex];
 
@@ -115,7 +115,7 @@ bool Connections911::erasePSAP(AllVertices& vertices, Layout* layout) {
 	psaps.clear();
 
 	// Find all psaps
-	for (int i = 0; i < numVertices; i++) { if (layout->vertexTypeMap_[i] == PSAP) psaps.push_back(i); }
+	for (int i = 0; i < numVertices; i++) if (layout->vertexTypeMap_[i] == vertexType::PSAP) psaps.push_back(i);
 
 	// Only 1 psap, do not delete me :(
 	if (psaps.size() < 2) return false;
@@ -152,17 +152,17 @@ bool Connections911::erasePSAP(AllVertices& vertices, Layout* layout) {
 			edges_->eraseEdge(destVertex, iEdg);
 
 			// Identify all psap-less callers
-			if (layout->vertexTypeMap_[srcVertex] == CALR) callersToReroute.push_back(srcVertex);
+			if (layout->vertexTypeMap_[srcVertex] == vertexType::CALR) callersToReroute.push_back(srcVertex);
 
 			// Identify all psap-less responders
-			if (layout->vertexTypeMap_[destVertex] == RESP) respsToReroute.push_back(destVertex);
+			if (layout->vertexTypeMap_[destVertex] == vertexType::RESP) respsToReroute.push_back(destVertex);
 		}
 	}
 
 	if (changesMade) {
 		// This is here so that we don't delete the vertex if we can't find any edges
 		verticesErased.push_back(randPSAP);
-		layout->vertexTypeMap_[randPSAP] = VTYPE_UNDEF;
+		layout->vertexTypeMap_[randPSAP] = vertexType::VTYPE_UNDEF;
 	}
 
 	// Failsafe
@@ -187,13 +187,13 @@ bool Connections911::erasePSAP(AllVertices& vertices, Layout* layout) {
 		// Insert Caller to PSAP edge
 		BGFLOAT* sumPoint = &vertices.summationMap_[closestPSAP];
 		BGSIZE iEdg;
-		edges_->addEdge(iEdg, CP, srcVertex, closestPSAP, sumPoint, Simulator::getInstance().getDeltaT());
+		edges_->addEdge(iEdg, edgeType::CP, srcVertex, closestPSAP, sumPoint, Simulator::getInstance().getDeltaT());
 
 		// Record added edge
 		ChangedEdge addedEdge;
 		addedEdge.srcV = srcVertex;
 		addedEdge.destV = closestPSAP;
-		addedEdge.eType = CP;
+		addedEdge.eType = edgeType::CP;
 		edgesAdded.push_back(addedEdge);
 	}
 
@@ -216,13 +216,13 @@ bool Connections911::erasePSAP(AllVertices& vertices, Layout* layout) {
 		// Insert PSAP to Responder edge
 		BGFLOAT* sumPoint = &vertices.summationMap_[destVertex];
 		BGSIZE iEdg;
-		edges_->addEdge(iEdg, PR, closestPSAP, destVertex, sumPoint, Simulator::getInstance().getDeltaT());
+		edges_->addEdge(iEdg, edgeType::PR, closestPSAP, destVertex, sumPoint, Simulator::getInstance().getDeltaT());
 
 		// Record added edge
 		ChangedEdge addedEdge;
 		addedEdge.srcV = closestPSAP;
 		addedEdge.destV = destVertex;
-		addedEdge.eType = PR;
+		addedEdge.eType = edgeType::PR;
 		edgesAdded.push_back(addedEdge);
 	}
 
@@ -241,7 +241,7 @@ bool Connections911::eraseRESP(AllVertices& vertices, Layout* layout) {
 	resps.clear();
 
 	// Find all resps
-	for (int i = 0; i < numVertices; i++) { if (layout->vertexTypeMap_[i] == RESP) resps.push_back(i); }
+	for (int i = 0; i < numVertices; i++) if (layout->vertexTypeMap_[i] == vertexType::RESP) resps.push_back(i);
 
 	// Only 1 resp, do not delete me :(
 	if (resps.size() < 2) return false;
@@ -277,7 +277,7 @@ bool Connections911::eraseRESP(AllVertices& vertices, Layout* layout) {
 	if (changesMade) {
 		// This is here so that we don't delete the vertex if we can't find any edges
 		verticesErased.push_back(randRESP);
-		layout->vertexTypeMap_[randRESP] = VTYPE_UNDEF;
+		layout->vertexTypeMap_[randRESP] = vertexType::VTYPE_UNDEF;
 	}
 
 	return changesMade;
@@ -289,13 +289,13 @@ std::string Connections911::ChangedEdge::toString() {
 	std::string type_s;
 
 	switch (eType) {
-		case CP: type_s = "CP";
+		case edgeType::CP: type_s = "CP";
 			break;
-		case PR: type_s = "PR";
+		case edgeType::PR: type_s = "PR";
 			break;
-		case PP: type_s = "PP";
+		case edgeType::PP: type_s = "PP";
 			break;
-		case RC: type_s = "RC";
+		case edgeType::RC: type_s = "RC";
 			break;
 		default: type_s = "ETYPE_UNDEF";
 	}

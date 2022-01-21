@@ -81,7 +81,7 @@ void ConnStatic::setupConnections(Layout* layout, AllVertices* vertices, AllEdge
 		// sort ascendant
 		sort(distDestVertices[srcVertex].begin(), distDestVertices[srcVertex].end());
 		// pick the shortest connsPerVertex_ connections
-		for (BGSIZE i = 0; i < distDestVertices[srcVertex].size() && (int)i < connsPerVertex_; i++) {
+		for (BGSIZE i = 0; i < distDestVertices[srcVertex].size() && static_cast<int>(i) < connsPerVertex_; i++) {
 			int destVertex = distDestVertices[srcVertex][i].destVertex;
 			edgeType type = layout->edgType(srcVertex, destVertex);
 			BGFLOAT* sumPoint = &vertices->summationMap_[destVertex];

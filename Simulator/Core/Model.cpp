@@ -116,12 +116,12 @@ void Model::logSimStep() const {
 
 		for (int x = 0; x < Simulator::getInstance().getWidth(); x++) {
 			switch (layout_->vertexTypeMap_[x + y * Simulator::getInstance().getWidth()]) {
-				case EXC: if (layout_->starterMap_[x + y * Simulator::getInstance().getWidth()]) ss << "s";
+				case vertexType::EXC: if (layout_->starterMap_[x + y * Simulator::getInstance().getWidth()]) ss << "s";
 					else ss << "e";
 					break;
-				case INH: ss << "i";
+				case vertexType::INH: ss << "i";
 					break;
-				case VTYPE_UNDEF:
+				case vertexType::VTYPE_UNDEF:
 					assert(false);
 					break;
 			}

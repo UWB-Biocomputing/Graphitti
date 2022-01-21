@@ -55,7 +55,8 @@ void AllSpikingNeurons::setupVertices() {
 
 ///  Clear the spike counts out of all Neurons.
 void AllSpikingNeurons::clearSpikeCounts() {
-	int maxSpikes = (int)((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
+	int maxSpikes = static_cast<int>((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().
+		getMaxFiringRate()));
 
 	for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
 		spikeCountOffset_[i] = (spikeCount_[i] + spikeCountOffset_[i]) % maxSpikes;
@@ -71,7 +72,8 @@ void AllSpikingNeurons::clearSpikeCounts() {
 ///  @param  synapses         The Synapse list to search from.
 ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
 void AllSpikingNeurons::advanceVertices(AllEdges& synapses, const EdgeIndexMap* edgeIndexMap) {
-	int maxSpikes = (int)((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
+	int maxSpikes = static_cast<int>((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().
+		getMaxFiringRate()));
 
 	auto& spSynapses = dynamic_cast<AllSpikingSynapses&>(synapses);
 	// For each neuron in the network
@@ -128,7 +130,8 @@ void AllSpikingNeurons::fire(const int index) const {
 	hasFired_[index] = true;
 
 	// record spike time
-	int maxSpikes = (int)((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
+	int maxSpikes = static_cast<int>((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().
+		getMaxFiringRate()));
 	int idxSp = (spikeCount_[index] + spikeCountOffset_[index]) % maxSpikes;
 	spikeHistory_[index][idxSp] = g_simulationStep;
 
@@ -148,7 +151,8 @@ void AllSpikingNeurons::fire(const int index) const {
 ///  @param  offIndex         Offset of the history buffer to get from.
 uint64_t AllSpikingNeurons::getSpikeHistory(int index, int offIndex) {
 	// offIndex is a minus offset
-	int maxSpikes = (int)((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
+	int maxSpikes = static_cast<int>((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().
+		getMaxFiringRate()));
 	int idxSp = (spikeCount_[index] + spikeCountOffset_[index] + maxSpikes + offIndex) % maxSpikes;
 	return spikeHistory_[index][idxSp];
 }

@@ -117,7 +117,7 @@ void Layout::printParameters() const {
 void Layout::generateVertexTypeMap(int numVertices) {
 	DEBUG(std::cout << "\nInitializing vertex type map: VTYPE_UNDEF" << std::endl;);
 
-	for (int i = 0; i < numVertices; i++) vertexTypeMap_[i] = VTYPE_UNDEF;
+	for (int i = 0; i < numVertices; i++) vertexTypeMap_[i] = vertexType::VTYPE_UNDEF;
 }
 
 /// Populates the starter map.

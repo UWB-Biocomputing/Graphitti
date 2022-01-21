@@ -104,7 +104,7 @@ class MTRand {
 		//Methods
 	public:
 		MTRand(uint32_t oneSeed); // initialize with a simple uint32_t
-		MTRand(uint32_t* const bigSeed, uint32_t seedLength = N); // or an array
+		MTRand(uint32_t* bigSeed, uint32_t seedLength = N); // or an array
 		MTRand(); // auto-initialize with /dev/urandom or time() and clock()
 		virtual ~MTRand();
 
@@ -135,12 +135,12 @@ class MTRand {
 
 		// Re-seeding functions with same behavior as initializers
 		virtual void seed(uint32_t oneSeed);
-		void seed(uint32_t* const bigSeed, uint32_t seedLength = N);
+		void seed(uint32_t* bigSeed, uint32_t seedLength = N);
 		virtual void seed();
 
 		// Saving and loading generator state
 		void save(uint32_t* saveArray) const; // to array of size SAVE
-		void load(uint32_t* const loadArray); // from such array
+		void load(uint32_t* loadArray); // from such array
 		friend std::ostream& operator<<(std::ostream& os, const MTRand& mtrand);
 		friend std::istream& operator>>(std::istream& is, MTRand& mtrand);
 

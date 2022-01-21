@@ -55,7 +55,7 @@ class AllIFNeurons : public AllSpikingNeurons {
 		///
 		///  @param  index   index of the neuron (in neurons) to output info from.
 		///  @return the complete state of the neuron.
-		std::string toString(const int index) const override;
+		std::string toString(int index) const override;
 
 		/// Reads and sets the data for all neurons from input stream.
 		///
@@ -152,13 +152,13 @@ class AllIFNeurons : public AllSpikingNeurons {
 		///  Set the Neuron at the indexed location to default values.
 		///
 		///  @param  index    Index of the Neuron that the synapse belongs to.
-		void setNeuronDefaults(const int index);
+		void setNeuronDefaults(int index);
 
 		///  Initializes the Neuron constants at the indexed location.
 		///
 		///  @param  neuronIndex    Index of the Neuron.
 		///  @param  deltaT          Inner simulation step duration
-		virtual void initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT);
+		virtual void initNeuronConstsFromParamValues(int neuronIndex, BGFLOAT deltaT);
 
 		///  Sets the data for Neuron #index to input's data.
 		///

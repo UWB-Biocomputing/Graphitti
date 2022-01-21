@@ -101,4 +101,4 @@ void Norm::seed(BGFLOAT m, BGFLOAT s, uint32_t seed) {
 
 void Norm::seed(uint32_t seed) { Norm::seed(DEFAULT_m, DEFAULT_s, seed); }
 
-void Norm::seed() { Norm::seed(DEFAULT_m, DEFAULT_s, DEFAULT_seed); }
+void Norm::seed() { seed(DEFAULT_m, DEFAULT_s, DEFAULT_seed); }

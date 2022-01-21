@@ -79,8 +79,8 @@ int main(int argc, char* argv[]) {
 	std::fstream("Output/Debug/edges.txt", std::ios::out | std::ios::trunc);
 
 	// Initialize log4cplus and set properties based on configure file
-	::log4cplus::initialize();
-	::log4cplus::PropertyConfigurator::doConfigure("RuntimeFiles/log4cplus_configure.ini");
+	log4cplus::initialize();
+	log4cplus::PropertyConfigurator::doConfigure("RuntimeFiles/log4cplus_configure.ini");
 
 	// Get the instance of the console logger and print status
 	log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
@@ -116,7 +116,7 @@ int main(int argc, char* argv[]) {
 
 	// Invoke instantiated simulator objects to load parameters from the configuration file
 	LOG4CPLUS_TRACE(consoleLogger, "Loading parameters from configuration file");
-	OperationManager::getInstance().executeOperation(Operations::loadParameters);
+	OperationManager::getInstance().executeOperation(Operations::op::loadParameters);
 
 	time_t start_time, end_time;
 	time(&start_time);
@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
 	simulator.setup();
 
 	// Invoke instantiated simulator objects to print parameters, used for testing purposes only.
-	OperationManager::getInstance().executeOperation(Operations::printParameters);
+	OperationManager::getInstance().executeOperation(Operations::op::printParameters);
 
 	// Deserializes internal state from a prior run of the simulation
 	if (!simulator.getDeserializationFileName().empty()) {
@@ -269,7 +269,7 @@ bool deserializeSynapses() {
 
 	// Deserializes synapse weights along with each synapse's source vertex and destination vertex
 	// Uses "try catch" to catch any cereal exception
-	try { archive(*(dynamic_cast<AllEdges*>(connections->getEdges().get()))); }
+	try { archive(*connections->getEdges().get()); }
 	catch (cereal::Exception e) {
 		std::cerr << "Failed deserializing synapse weights, source vertices, and/or destination vertices." << std::endl;
 		return false;
@@ -326,9 +326,11 @@ void serializeSynapses() {
 	std::shared_ptr<Model> model = simulator.getModel();
 
 	// Serializes synapse weights along with each synapse's source vertex and destination vertex
-	archive(*(dynamic_cast<AllEdges*>(model->getConnections()->getEdges().get())));
+	archive(*model->getConnections()->getEdges().get());
 
 	// Serializes radii (only if it is a connGrowth model)
-	if (dynamic_cast<ConnGrowth*>(model->getConnections().get()) != nullptr) archive(
-		*(dynamic_cast<ConnGrowth*>(model->getConnections().get())));
+	if (dynamic_cast<ConnGrowth*>(model->getConnections().get()) != nullptr) {
+		archive(
+			*(dynamic_cast<ConnGrowth*>(model->getConnections().get())));
+	}
 }

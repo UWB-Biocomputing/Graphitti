@@ -36,8 +36,7 @@ MTRand* RNGFactory::createRNG(const std::string& className) { return invokeCreat
 /// The calling method uses this retrieval mechanism in 
 /// value assignment.
 MTRand* RNGFactory::invokeCreateFunction(const std::string& className) {
-	for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
-		if (className == i->first) return i->second();
-	}
+	for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) if (className == i->first) return i->
+		second();
 	return nullptr;
 }

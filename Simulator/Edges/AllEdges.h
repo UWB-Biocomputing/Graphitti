@@ -21,7 +21,7 @@ class AllVertices;
 class AllEdges {
 	public:
 		AllEdges();
-		AllEdges(const int numVertices, const int maxEdges);
+		AllEdges(int numVertices, int maxEdges);
 		virtual ~AllEdges();
 
 		///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -44,8 +44,8 @@ class AllEdges {
 		///  @param  sumPoint    Summation point address.
 		///  @param  deltaT      Inner simulation step duration
 		virtual void
-			addEdge(BGSIZE& iEdg, edgeType type, const int srcVertex, const int destVertex, BGFLOAT* sumPoint,
-			        const BGFLOAT deltaT);
+			addEdge(BGSIZE& iEdg, edgeType type, int srcVertex, int destVertex, BGFLOAT* sumPoint,
+			        BGFLOAT deltaT);
 
 		///  Create a Edge and connect it to the model.
 		///
@@ -55,8 +55,8 @@ class AllEdges {
 		///  @param  sumPoint    Summation point address.
 		///  @param  deltaT      Inner simulation step duration.
 		///  @param  type        Type of the Edge to create.
-		virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint,
-		                        const BGFLOAT deltaT,
+		virtual void createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint,
+		                        BGFLOAT deltaT,
 		                        edgeType type) = 0;
 
 		///  Populate a edge index map.
@@ -77,25 +77,25 @@ class AllEdges {
 		///
 		///  @param  numVertices   Total number of vertices in the network.
 		///  @param  maxEdges  Maximum number of edges per vertex.
-		virtual void setupEdges(const int numVertices, const int maxEdges);
+		virtual void setupEdges(int numVertices, int maxEdges);
 
 		///  Sets the data for Edge to input's data.
 		///
 		///  @param  input  istream to read from.
 		///  @param  iEdg   Index of the edge to set.
-		virtual void readEdge(std::istream& input, const BGSIZE iEdg);
+		virtual void readEdge(std::istream& input, BGSIZE iEdg);
 
 		///  Write the edge data to the stream.
 		///
 		///  @param  output  stream to print out to.
 		///  @param  iEdg    Index of the edge to print out.
-		virtual void writeEdge(std::ostream& output, const BGSIZE iEdg) const;
+		virtual void writeEdge(std::ostream& output, BGSIZE iEdg) const;
 
 		///  Returns an appropriate edgeType object for the given integer.
 		///
 		///  @param  typeOrdinal    Integer that correspond with a edgeType.
 		///  @return the SynapseType that corresponds with the given integer.
-		edgeType edgeOrdinalToType(const int typeOrdinal);
+		edgeType edgeOrdinalToType(int typeOrdinal);
 
 		/// Loggers used to print to using log4cplus logging macros, prints to Results/Debug/logging.txt
 		log4cplus::Logger fileLogger_;
@@ -188,13 +188,13 @@ class AllEdges {
 		///
 		///  @param  iEdg      Index of the Edge to connect to.
 		///  @param  vertices  The Vertex list to search from.
-		virtual void advanceEdge(const BGSIZE iEdg, AllVertices* vertices) = 0;
+		virtual void advanceEdge(BGSIZE iEdg, AllVertices* vertices) = 0;
 
 		///  Remove a edge from the network.
 		///
 		///  @param  neuronIndex   Index of a vertex to remove from.
 		///  @param  iEdg          Index of a edge to remove.
-		virtual void eraseEdge(const int neuronIndex, const BGSIZE iEdg);
+		virtual void eraseEdge(int neuronIndex, BGSIZE iEdg);
 #endif
 
 		///  The location of the edge.

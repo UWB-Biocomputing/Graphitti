@@ -12,7 +12,7 @@
 class Operations {
 	public:
 		/// Available operations the OperationManager can register and execute.
-		enum op {
+		enum class op {
 			printParameters,
 			loadParameters,
 			serialize,

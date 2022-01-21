@@ -32,7 +32,7 @@ AllEdges::AllEdges() :
 	// OperationManager. This will register the appropriate overridden method
 	// for the actual (sub)class of the object being created.
 	std::function<void()> printParametersFunc = std::bind(&AllEdges::printParameters, this);
-	OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+	OperationManager::getInstance().registerOperation(Operations::op::printParameters, printParametersFunc);
 
 	fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 	edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
@@ -146,7 +146,7 @@ void AllEdges::writeEdge(std::ostream& output, const BGSIZE iEdg) const {
 	output << sourceVertexIndex_[iEdg] << std::ends;
 	output << destVertexIndex_[iEdg] << std::ends;
 	output << W_[iEdg] << std::ends;
-	output << type_[iEdg] << std::ends;
+	output << static_cast<int>(type_[iEdg]) << std::ends;
 	output << inUse_[iEdg] << std::ends;
 }
 
@@ -156,15 +156,15 @@ void AllEdges::writeEdge(std::ostream& output, const BGSIZE iEdg) const {
 ///  @return the SynapseType that corresponds with the given integer.
 edgeType AllEdges::edgeOrdinalToType(const int typeOrdinal) {
 	switch (typeOrdinal) {
-		case 0: return II;
-		case 1: return IE;
-		case 2: return EI;
-		case 3: return EE;
-		case 4: return CP;
-		case 5: return PR;
-		case 6: return RC;
-		case 7: return PP;
-		default: return ETYPE_UNDEF;
+		case 0: return edgeType::II;
+		case 1: return edgeType::IE;
+		case 2: return edgeType::EI;
+		case 3: return edgeType::EE;
+		case 4: return edgeType::CP;
+		case 5: return edgeType::PR;
+		case 6: return edgeType::RC;
+		case 7: return edgeType::PP;
+		default: return edgeType::ETYPE_UNDEF;
 	}
 }
 
@@ -223,8 +223,10 @@ void AllEdges::createEdgeIndexMap(std::shared_ptr<EdgeIndexMap> edgeIndexMap) {
 		edgeIndexMap->outgoingEdgeBegin_[i] = edg_i;
 		edgeIndexMap->outgoingEdgeCount_[i] = rgEdgeEdgeIndexMap[i].size();
 
-		for (BGSIZE j = 0; j < rgEdgeEdgeIndexMap[i].size(); j++, edg_i++) edgeIndexMap->outgoingEdgeIndexMap_[edg_i] =
-			rgEdgeEdgeIndexMap[i][j];
+		for (BGSIZE j = 0; j < rgEdgeEdgeIndexMap[i].size(); j++, edg_i++) {
+			edgeIndexMap->outgoingEdgeIndexMap_[edg_i] =
+				rgEdgeEdgeIndexMap[i][j];
+		}
 	}
 }
 

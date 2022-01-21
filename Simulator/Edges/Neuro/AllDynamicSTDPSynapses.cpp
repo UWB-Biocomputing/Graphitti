@@ -140,19 +140,19 @@ void AllDynamicSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int de
 	BGFLOAT D;
 	BGFLOAT F;
 	switch (type) {
-		case II: U = 0.32;
+		case edgeType::II: U = 0.32;
 			D = 0.144;
 			F = 0.06;
 			break;
-		case IE: U = 0.25;
+		case edgeType::IE: U = 0.25;
 			D = 0.7;
 			F = 0.02;
 			break;
-		case EI: U = 0.05;
+		case edgeType::EI: U = 0.05;
 			D = 0.125;
 			F = 1.2;
 			break;
-		case EE: U = 0.5;
+		case edgeType::EE: U = 0.5;
 			D = 1.1;
 			F = 0.05;
 			break;

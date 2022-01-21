@@ -53,7 +53,7 @@ class All911Vertices : public AllVertices {
 		///
 		///  @param  index   index of the vertex (in vertices) to output info from.
 		///  @return the complete state of the vertex.
-		std::string toString(const int index) const override;
+		std::string toString(int index) const override;
 
 	private:
 		/// number of callers
@@ -94,7 +94,7 @@ class All911Vertices : public AllVertices {
 		void advanceVertices(AllEdges& edges, const EdgeIndexMap* edgeIndexMap) override;
 
 	protected:
-		void advanceVertex(const int index);
+		void advanceVertex(int index);
 
 
 #endif // defined(__CUDACC__)

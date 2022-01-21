@@ -39,8 +39,10 @@ CompleteMatrix::CompleteMatrix(std::string t, std::string i, int r,
 	DEBUG_MATRIX(std::cerr << "Creating CompleteMatrix, size: ";)
 
 	// Bail out if we're being asked to create nonsense
-	if (!((rows > 0) && (columns > 0))) throw Matrix_invalid_argument(
-		"CompleteMatrix::CompleteMatrix(): Asked to create zero-size");
+	if (!((rows > 0) && (columns > 0))) {
+		throw Matrix_invalid_argument(
+			"CompleteMatrix::CompleteMatrix(): Asked to create zero-size");
+	}
 
 	// We're a 2D Matrix, even if only one row or column
 	dimensions = 2;
@@ -91,7 +93,7 @@ CompleteMatrix::CompleteMatrix(std::string t, std::string i, int r,
 		}
 		else if (type == "complete") {
 			// complete matrix with constant values
-			for (int i = 0; i < rows; i++) { for (int j = 0; j < columns; j++) theMatrix[i][j] = multiplier; }
+			for (int i = 0; i < rows; i++) for (int j = 0; j < columns; j++) theMatrix[i][j] = multiplier;
 		}
 		else {
 			clear();
@@ -157,7 +159,7 @@ void CompleteMatrix::copy(const CompleteMatrix& source) {
 
 	alloc(rows, columns);
 
-	for (int i = 0; i < rows; i++) { for (int j = 0; j < columns; j++) theMatrix[i][j] = source.theMatrix[i][j]; }
+	for (int i = 0; i < rows; i++) for (int j = 0; j < columns; j++) theMatrix[i][j] = source.theMatrix[i][j];
 	DEBUG_MATRIX(std::cerr << "\t\tdone." << std::endl;)
 }
 
@@ -173,12 +175,16 @@ void CompleteMatrix::copy(const CompleteMatrix& source) {
 void CompleteMatrix::alloc(int rows, int columns) {
 	if (theMatrix != nullptr) throw MatrixException("Attempt to allocate storage for non-cleared Matrix");
 
-	if ((theMatrix = new BGFLOAT*[rows]) == nullptr) throw
-		Matrix_bad_alloc("Failed allocating storage to copy Matrix.");
+	if ((theMatrix = new BGFLOAT*[rows]) == nullptr) {
+		throw
+			Matrix_bad_alloc("Failed allocating storage to copy Matrix.");
+	}
 
 	for (int i = 0; i < rows; i++) {
-		if ((theMatrix[i] = new BGFLOAT[columns]) == nullptr) throw Matrix_bad_alloc(
-			"Failed allocating storage to copy Matrix.");
+		if ((theMatrix[i] = new BGFLOAT[columns]) == nullptr) {
+			throw Matrix_bad_alloc(
+				"Failed allocating storage to copy Matrix.");
+		}
 	}
 	DEBUG_MATRIX(std::cerr << "\tStorage allocated for "<< rows << "X" << columns << " Matrix." << std::endl;)
 
@@ -215,12 +221,14 @@ std::string CompleteMatrix::toXML(std::string name) const {
 // and including the other subclasses' headers).
 
 const CompleteMatrix CompleteMatrix::operator+(const CompleteMatrix& rhs) const {
-	if ((rhs.rows != rows) || (rhs.columns != columns)) throw Matrix_domain_error(
-		"Illegal matrix addition: dimension mismatch");
+	if ((rhs.rows != rows) || (rhs.columns != columns)) {
+		throw Matrix_domain_error(
+			"Illegal matrix addition: dimension mismatch");
+	}
 	// Start with this
 	CompleteMatrix result(*this);
 	// Add in rhs
-	for (int i = 0; i < rows; i++) { for (int j = 0; j < columns; j++) result.theMatrix[i][j] += rhs.theMatrix[i][j]; }
+	for (int i = 0; i < rows; i++) for (int j = 0; j < columns; j++) result.theMatrix[i][j] += rhs.theMatrix[i][j];
 
 	return result;
 }
@@ -236,9 +244,8 @@ const CompleteMatrix sqrt(const CompleteMatrix& m) {
 	// Start with vector
 	CompleteMatrix result(m);
 
-	for (int i = 0; i < result.rows; i++) {
-		for (int j = 0; j < result.columns; j++) result.theMatrix[i][j] = sqrt(result.theMatrix[i][j]);
-	}
+	for (int i = 0; i < result.rows; i++) for (int j = 0; j < result.columns; j++) result.theMatrix[i][j] = sqrt(
+		result.theMatrix[i][j]);
 
 	return result;
 }

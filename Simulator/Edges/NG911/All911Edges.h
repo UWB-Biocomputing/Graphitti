@@ -31,7 +31,7 @@ class All911Edges : public AllEdges {
 	public:
 		All911Edges();
 
-		All911Edges(const int numVertices, const int maxEdges);
+		All911Edges(int numVertices, int maxEdges);
 
 		~All911Edges() override;
 
@@ -51,7 +51,7 @@ class All911Edges : public AllEdges {
 		///  @param  sumPoint    Summation point address.
 		///  @param  deltaT      Inner simulation step duration.
 		///  @param  type        Type of the Edge to create.
-		void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT,
+		void createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, BGFLOAT deltaT,
 		                edgeType type) override;
 
 	protected:
@@ -84,7 +84,7 @@ class All911Edges : public AllEdges {
 		///
 		///  @param  iEdg      Index of the Edge to connect to.
 		///  @param  vertices  The Neuron list to search from.
-		void advance911Edge(const BGSIZE iEdg, All911Vertices* vertices);
+		void advance911Edge(BGSIZE iEdg, All911Vertices* vertices);
 
 		/// unused virtual function placeholder
 		void advanceEdge(const BGSIZE iEdg, AllVertices* vertices) override {};

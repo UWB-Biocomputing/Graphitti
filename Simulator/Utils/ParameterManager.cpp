@@ -127,7 +127,7 @@ bool ParameterManager::getIntByXpath(std::string xpath, int& referenceVar) {
 			<< tmp << std::endl;
 		return false;
 	}
-	else if (regex_match(tmp, std::regex(".*[^\\def.]+.*"))) {
+	if (regex_match(tmp, std::regex(".*[^\\def.]+.*"))) {
 		std::cerr << "Parsed parameter is likely a std::string. "
 			<< "Terminating integer cast. Value: "
 			<< tmp << std::endl;

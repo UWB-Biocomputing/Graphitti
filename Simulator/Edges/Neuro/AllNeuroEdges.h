@@ -32,7 +32,7 @@ class AllVertices;
 // typedef void (*fpCreateSynapse_t)(void*, const int, const int, int, int, BGFLOAT*, const BGFLOAT, edgeType);
 
 // enumerate all non-abstract edge classes.
-enum enumClassSynapses {
+enum class enumClassSynapses {
 	classAllSpikingSynapses,
 	classAllDSSynapses,
 	classAllSTDPSynapses,
@@ -53,7 +53,7 @@ class AllNeuroEdges : public AllEdges {
 		///
 		///  @param  iEdg     Index of the edge to set.
 		///  @param  deltaT   Inner simulation step duration
-		virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT);
+		virtual void resetEdge(BGSIZE iEdg, BGFLOAT deltaT);
 
 		// ///  Create a Synapse and connect it to the model.
 		// ///
@@ -70,7 +70,7 @@ class AllNeuroEdges : public AllEdges {
 		///
 		///  @param    type    edgeType I to I, I to E, E to I, or E to E
 		///  @return   1 or -1, or 0 if error
-		int edgSign(const edgeType type);
+		int edgSign(edgeType type);
 
 		///  Prints SynapsesProps data to console.
 		virtual void printSynapsesProps() const;
@@ -80,19 +80,19 @@ class AllNeuroEdges : public AllEdges {
 		///
 		///  @param  numVertices   Total number of vertices in the network.
 		///  @param  maxEdges  Maximum number of edges per vertex.
-		void setupEdges(const int numVertices, const int maxEdges) override;
+		void setupEdges(int numVertices, int maxEdges) override;
 
 		///  Sets the data for Synapse to input's data.
 		///
 		///  @param  input  istream to read from.
 		///  @param  iEdg   Index of the edge to set.
-		void readEdge(std::istream& input, const BGSIZE iEdg) override;
+		void readEdge(std::istream& input, BGSIZE iEdg) override;
 
 		///  Write the edge data to the stream.
 		///
 		///  @param  output  stream to print out to.
 		///  @param  iEdg    Index of the edge to print out.
-		void writeEdge(std::ostream& output, const BGSIZE iEdg) const override;
+		void writeEdge(std::ostream& output, BGSIZE iEdg) const override;
 
 	public:
 		/// The factor to adjust overlapping area to edge weight.

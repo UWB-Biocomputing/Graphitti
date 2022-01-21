@@ -98,12 +98,12 @@ class VectorMatrix : public Matrix {
 		///  @brief Access element of a VectorMatrix. Zero-based index; constant-time.
 		///  @param i index
 		///  @return item within this VectorMatrix
-		inline const BGFLOAT& operator[](int i) const { return theVector[i]; }
+		const BGFLOAT& operator[](int i) const { return theVector[i]; }
 
 		///  @brief access element of a VectorMatrix. Zero-based index; constant-time.
 		///  @param i index
 		///  @return item within this VectorMatrix
-		inline const BGFLOAT& at(int i) const { return theVector[i]; }
+		const BGFLOAT& at(int i) const { return theVector[i]; }
 
 		///  @brief The length of a VectorMatrix elements.
 		///  @return The number of elements in the VectorMatrix
@@ -119,12 +119,12 @@ class VectorMatrix : public Matrix {
 		///  @brief mutate element of a VectorMatrix. Zero-based index; constant time.
 		///  @param i index
 		///  @return Reference to item within this VectorMatrix
-		inline BGFLOAT& operator[](int i) { return theVector[i]; }
+		BGFLOAT& operator[](int i) { return theVector[i]; }
 
 		///  @brief mutate element of a VectorMatrix. Zero-based index.
 		///  @param i index
 		///  @return reference to item within this VectorMatrix
-		inline BGFLOAT& at(int i) { return theVector[i]; }
+		BGFLOAT& at(int i) { return theVector[i]; }
 		//@}
 
 		/******************************************
@@ -211,7 +211,7 @@ class VectorMatrix : public Matrix {
 		///  @param rhs The vector
 		///  @return A vector the same size as the rhs
 		friend
-		inline const VectorMatrix operator*(BGFLOAT c, const VectorMatrix& rhs) { return rhs * c; }
+		const VectorMatrix operator*(BGFLOAT c, const VectorMatrix& rhs) { return rhs * c; }
 
 		///  @brief Vector times sparse matrix.
 		///
@@ -240,7 +240,7 @@ class VectorMatrix : public Matrix {
 		///  @param rhs The vector
 		///  @return A vector the same size as the rhs
 		friend
-		inline const VectorMatrix operator+(BGFLOAT c, const VectorMatrix& rhs) { return rhs + c; }
+		const VectorMatrix operator+(BGFLOAT c, const VectorMatrix& rhs) { return rhs + c; }
 
 		///  @brief Element-wise square root of vector. Computes square root of each element of vector.
 		///  @param v The vector

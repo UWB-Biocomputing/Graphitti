@@ -46,8 +46,7 @@ std::shared_ptr<AllEdges> EdgesFactory::createEdges(const std::string& className
 /// The calling method uses this retrieval mechanism in
 /// value assignment.
 AllEdges* EdgesFactory::invokeCreateFunction(const std::string& className) {
-	for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
-		if (className == i->first) return i->second();
-	}
+	for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) if (className == i->first) return i->
+		second();
 	return nullptr;
 }

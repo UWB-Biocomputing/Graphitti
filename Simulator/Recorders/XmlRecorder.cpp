@@ -26,8 +26,8 @@ XmlRecorder::XmlRecorder() :
 	ParameterManager::getInstance().getStringByXpath("//RecorderParams/RecorderFiles/resultFileName/text()",
 	                                                 resultFileName_);
 
-	std::function<void()> printParametersFunc = std::bind(&XmlRecorder::printParameters, this);
-	OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+	std::function<void()> printParametersFunc = [this] { printParameters(); };
+	OperationManager::getInstance().registerOperation(Operations::op::printParameters, printParametersFunc);
 
 	fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
@@ -109,14 +109,18 @@ void XmlRecorder::compileHistories(AllVertices& vertices) {
 void XmlRecorder::saveSimData(const AllVertices& vertices) {
 	Simulator& simulator = Simulator::getInstance();
 	// create Neuron Types matrix
-	VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), EXC);
-	for (int i = 0; i < simulator.getTotalVertices(); i++) neuronTypes[i] = simulator.getModel()->getLayout()->
-		vertexTypeMap_[i];
+	VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), static_cast<float>(vertexType::EXC));
+	for (int i = 0; i < simulator.getTotalVertices(); i++) {
+		neuronTypes[i] = static_cast<float>(simulator.getModel()->getLayout()->
+		                                              vertexTypeMap_[i]);
+	}
 
 	// create neuron threshold matrix
 	VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), 0);
-	for (int i = 0; i < simulator.getTotalVertices(); i++) neuronThresh[i] = dynamic_cast<const AllIFNeurons&>(vertices)
-		.Vthresh_[i];
+	for (int i = 0; i < simulator.getTotalVertices(); i++) {
+		neuronThresh[i] = dynamic_cast<const AllIFNeurons&>(vertices)
+			.Vthresh_[i];
+	}
 
 	// Write XML header information:
 	resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"

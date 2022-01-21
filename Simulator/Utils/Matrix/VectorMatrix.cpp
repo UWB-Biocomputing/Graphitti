@@ -34,8 +34,10 @@ VectorMatrix::VectorMatrix(std::string t, std::string i, int r, int c, BGFLOAT m
 	DEBUG_VECTOR(std::cerr << "Creating VectorMatrix, size: ";)
 
 	// Bail out if we're being asked to create nonsense
-	if (!((rows == 1) || (columns == 1)) || (rows == 0) || (columns == 0)) throw Matrix_invalid_argument(
-		"VectorMatrix: Asked to create 2D or zero-size");
+	if (!((rows == 1) || (columns == 1)) || (rows == 0) || (columns == 0)) {
+		throw Matrix_invalid_argument(
+			"VectorMatrix: Asked to create 2D or zero-size");
+	}
 
 	// We're a 1D Matrix
 	dimensions = 1;
@@ -275,7 +277,7 @@ const VectorMatrix VectorMatrix::Limit(BGFLOAT low, BGFLOAT high) const {
 BGFLOAT VectorMatrix::Min(void) const {
 	BGFLOAT min = theVector[0];
 
-	for (int i = 1; i < size; i++) { if (theVector[i] < min) min = theVector[i]; }
+	for (int i = 1; i < size; i++) if (theVector[i] < min) min = theVector[i];
 
 	return min;
 }
@@ -284,7 +286,7 @@ BGFLOAT VectorMatrix::Min(void) const {
 BGFLOAT VectorMatrix::Max(void) const {
 	BGFLOAT max = theVector[0];
 
-	for (int i = 1; i < size; i++) { if (theVector[i] > max) max = theVector[i]; }
+	for (int i = 1; i < size; i++) if (theVector[i] > max) max = theVector[i];
 
 	return max;
 }

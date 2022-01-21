@@ -57,16 +57,16 @@ void All911Vertices::createAllVertices(Layout* layout) {
 
 	for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
 		// Create all callers
-		if (layout->vertexTypeMap_[i] == CALR) {
+		if (layout->vertexTypeMap_[i] == vertexType::CALR) {
 			callNum_[i] = initRNG.inRange(callNumRange_[0], callNumRange_[1]);
 			callersPerZone[layout911->zone(i)] += callNum_[i];
 		}
 
 		// Find all PSAPs
-		if (layout->vertexTypeMap_[i] == PSAP) psapList.push_back(i);
+		if (layout->vertexTypeMap_[i] == vertexType::PSAP) psapList.push_back(i);
 
 		// Find all resps
-		if (layout->vertexTypeMap_[i] == RESP) {
+		if (layout->vertexTypeMap_[i] == vertexType::RESP) {
 			respList.push_back(i);
 			respPerZone[layout911->zone(i)] += 1;
 		}

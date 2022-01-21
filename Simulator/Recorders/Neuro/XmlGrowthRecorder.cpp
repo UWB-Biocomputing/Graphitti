@@ -15,9 +15,9 @@
 // TODO: We don't need the explicit call to the superclass constructor, right?
 //! The constructor and destructor
 XmlGrowthRecorder::XmlGrowthRecorder() :
-	ratesHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
+	ratesHistory_(MATRIX_TYPE, MATRIX_INIT, Simulator::getInstance().getNumEpochs() + 1,
 	              Simulator::getInstance().getTotalVertices()),
-	radiiHistory_(MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
+	radiiHistory_(MATRIX_TYPE, MATRIX_INIT, Simulator::getInstance().getNumEpochs() + 1,
 	              Simulator::getInstance().getTotalVertices()) {}
 
 // TODO: Is this needed?
@@ -86,14 +86,19 @@ void XmlGrowthRecorder::compileHistories(AllVertices& neurons) {
 /// @param  neurons the Neuron list to search from.
 void XmlGrowthRecorder::saveSimData(const AllVertices& neurons) {
 	// create Neuron Types matrix
-	VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalVertices(), EXC);
-	for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) neuronTypes[i] = Simulator::getInstance().
-		getModel()->getLayout()->vertexTypeMap_[i];
+	VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalVertices(),
+	                         static_cast<float>(vertexType::EXC));
+	for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
+		neuronTypes[i] = static_cast<float>(Simulator::getInstance().
+		                                    getModel()->getLayout()->vertexTypeMap_[i]);
+	}
 
 	// create neuron threshold matrix
 	VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalVertices(), 0);
-	for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) neuronThresh[i] = dynamic_cast<const
-		AllIFNeurons&>(neurons).Vthresh_[i];
+	for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
+		neuronThresh[i] = dynamic_cast<const
+			AllIFNeurons&>(neurons).Vthresh_[i];
+	}
 
 	// Write XML header information:
 	resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"

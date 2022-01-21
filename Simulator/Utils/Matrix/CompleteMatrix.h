@@ -73,7 +73,7 @@ class CompleteMatrix : public Matrix {
 		///  @param row element row
 		///  @param column element column
 		///  @return reference to element (lvalue)
-		inline BGFLOAT& operator()(int row, int column) { return theMatrix[row][column]; }
+		BGFLOAT& operator()(int row, int column) { return theMatrix[row][column]; }
 
 		///  @brief Polymorphic output. Produces text output on stream os. Used by operator<<()
 		///  @param os stream to output to

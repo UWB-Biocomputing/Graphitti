@@ -111,12 +111,12 @@ class AllLIFNeurons : public AllIFNeurons {
 		///  Helper for #advanceNeuron. Updates state of a single neuron.
 		///
 		///  @param  index Index of the neuron to update.
-		void advanceNeuron(const int index) override;
+		void advanceNeuron(int index) override;
 
 		///  Initiates a firing of a neuron to connected neurons.
 		///
 		///  @param  index Index of the neuron to fire.
-		void fire(const int index) const override;
+		void fire(int index) const override;
 
 #endif // defined(__CUDACC__)
 };

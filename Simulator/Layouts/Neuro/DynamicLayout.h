@@ -39,7 +39,7 @@ class DynamicLayout : public Layout {
 		///  and converts them into starter neurons.
 		///
 		///  @param  numVertices number of vertices to have in the map.
-		void initStarterMap(const int numVertices) override;
+		void initStarterMap(int numVertices) override;
 
 		/// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
 		void loadParameters() override;
@@ -48,7 +48,7 @@ class DynamicLayout : public Layout {
 		/// @param    srcVertex  integer that points to a Neuron in the type map as a source.
 		/// @param    destVertex integer that points to a Neuron in the type map as a destination.
 		/// @return type of the synapse.
-		edgeType edgType(const int srcVertex, const int destVertex) override;
+		edgeType edgType(int srcVertex, int destVertex) override;
 
 	private:
 		/// Fraction of endogenously active neurons.

@@ -31,7 +31,7 @@ void FixedLayout::generateVertexTypeMap(int numVertices) {
 	LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing vertex type map" << std::endl);
 
 	// Populate vertexTypeMap_ with EXC
-	std::fill_n(vertexTypeMap_, numVertices, EXC);
+	std::fill_n(vertexTypeMap_, numVertices, vertexType::EXC);
 
 	// for (int i = 0; i < numVertices; i++) {
 	//    vertexTypeMap_[i] = EXC;
@@ -47,7 +47,7 @@ void FixedLayout::generateVertexTypeMap(int numVertices) {
 
 	for (int i = 0; i < numInhibitoryNeurons; i++) {
 		assert(inhibitoryNeuronLayout_.at(i) < numVertices);
-		vertexTypeMap_[inhibitoryNeuronLayout_.at(i)] = INH;
+		vertexTypeMap_[inhibitoryNeuronLayout_.at(i)] = vertexType::INH;
 	}
 
 	LOG4CPLUS_INFO(fileLogger_, "Finished initializing vertex type map");
@@ -101,10 +101,14 @@ void FixedLayout::loadParameters() {
 ///  @param    destVertex integer that points to a Neuron in the type map as a destination.
 ///  @return type of the synapse.
 edgeType FixedLayout::edgType(const int srcVertex, const int destVertex) {
-	if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == INH) return II;
-	else if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == EXC) return IE;
-	else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == INH) return EI;
-	else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == EXC) return EE;
+	if (vertexTypeMap_[srcVertex] == vertexType::INH && vertexTypeMap_[destVertex] != vertexType::INH) return
+		edgeType::II;
+	if (vertexTypeMap_[srcVertex] == vertexType::INH && vertexTypeMap_[destVertex] == vertexType::EXC) return
+		edgeType::IE;
+	if (vertexTypeMap_[srcVertex] == vertexType::EXC && vertexTypeMap_[destVertex] == vertexType::INH) return
+		edgeType::EI;
+	if (vertexTypeMap_[srcVertex] == vertexType::EXC && vertexTypeMap_[destVertex] == vertexType::EXC) return
+		edgeType::EE;
 
-	return ETYPE_UNDEF;
+	return edgeType::ETYPE_UNDEF;
 }

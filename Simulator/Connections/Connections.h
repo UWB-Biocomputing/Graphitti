@@ -80,7 +80,7 @@ class Connections {
 		///  @param  layout      Layout information of the neural network.
 		///  @param  ineurons    The Neuron list to search from.
 		///  @param  isynapses   The Synapse list to search from.
-		void createSynapsesFromWeights(const int numVertices, Layout* layout, AllVertices& vertices,
+		void createSynapsesFromWeights(int numVertices, Layout* layout, AllVertices& vertices,
 		                               AllEdges& synapses);
 
 #ifdef __CUDACC__
@@ -104,7 +104,7 @@ class Connections {
 		///  @param  ineurons    The Neuron list to search from.
 		///  @param  isynapses   The Synapse list to search from.
 		virtual void
-			updateSynapsesWeights(const int numVertices, AllVertices& vertices, AllEdges& synapses, Layout* layout);
+			updateSynapsesWeights(int numVertices, AllVertices& vertices, AllEdges& synapses, Layout* layout);
 
 #endif
 

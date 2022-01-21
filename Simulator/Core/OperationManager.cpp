@@ -32,7 +32,7 @@ OperationManager::~OperationManager() {}
 /// This method can be overloaded to handle different function signatures.
 /// Handles function signature: void ()
 void OperationManager::registerOperation(const Operations::op& operation, const std::function<void()>& function) {
-	try { functionList_.push_back(std::unique_ptr<IFunctionNode>(new GenericFunctionNode(operation, function))); }
+	try { functionList_.push_back(std::make_unique<GenericFunctionNode>(operation, function)); }
 	catch (std::exception e) {
 		LOG4CPLUS_FATAL(logger_, std::string(e.what()) + ". Push back failed in OperationManager::registerOperation");
 		throw std::runtime_error(std::string(e.what()) + " in OperationManager::registerOperation");
@@ -42,9 +42,8 @@ void OperationManager::registerOperation(const Operations::op& operation, const 
 /// Takes in a operation type and invokes all registered functions that are classified as that operation type.
 void OperationManager::executeOperation(const Operations::op& operation) const {
 	LOG4CPLUS_INFO(logger_, "Executing operation " + operationToString(operation));
-	if (functionList_.size() > 0) {
-		for (auto i = functionList_.begin(); i != functionList_.end(); ++i) (*i)->invokeFunction(operation);
-	}
+	if (functionList_.size() > 0) for (auto i = functionList_.begin(); i != functionList_.end(); ++i) (*i)->
+		invokeFunction(operation);
 }
 
 /// Takes in the operation enum and returns the enum as a string. Used for debugging purposes.

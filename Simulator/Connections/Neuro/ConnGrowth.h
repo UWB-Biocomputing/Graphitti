@@ -147,7 +147,7 @@ class ConnGrowth : public Connections {
 		///  @param  isynapses   The AllEdges object.
 		///  @param  layout      The Layout object.
 		void
-			updateSynapsesWeights(const int numVertices,
+			updateSynapsesWeights(int numVertices,
 			                      AllVertices& vertices,
 			                      AllEdges& synapses,
 			                      Layout* layout) override;
@@ -163,7 +163,7 @@ class ConnGrowth : public Connections {
 		///
 		///  @param  numVertices  Number of vertices to update.
 		///  @param  layout      Layout information of the neural network.
-		void updateFrontiers(const int numVertices, Layout* layout);
+		void updateFrontiers(int numVertices, Layout* layout);
 
 		///  Update the areas of overlap in between Neurons.
 		///

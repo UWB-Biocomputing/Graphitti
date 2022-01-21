@@ -15,7 +15,7 @@
 
 class ParseParamError {
 	public:
-		ParseParamError(const std::string paramName, const std::string errorMessage);
+		ParseParamError(std::string paramName, std::string errorMessage);
 		void print(std::ostream& output) const;
 
 	private:

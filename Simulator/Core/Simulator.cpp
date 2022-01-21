@@ -35,8 +35,8 @@ Simulator::Simulator() {
 	edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
 
 	// Register printParameters function as a printParameters operation in the OperationManager
-	std::function<void()> printParametersFunc = std::bind(&Simulator::printParameters, this);
-	OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+	std::function<void()> printParametersFunc = [this] { printParameters(); };
+	OperationManager::getInstance().registerOperation(Operations::op::printParameters, printParametersFunc);
 }
 
 /// Destructor
@@ -220,7 +220,7 @@ bool Simulator::instantiateSimulatorObjects() {
 #ifdef __CUDACC__
    model_ = shared_ptr<Model>(new GPUModel());
 #else
-	model_ = std::shared_ptr<Model>(new CPUModel());
+	model_ = std::make_shared<CPUModel>();
 #endif
 
 	// Perform check on all instantiated objects.
