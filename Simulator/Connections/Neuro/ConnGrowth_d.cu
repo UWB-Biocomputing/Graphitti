@@ -58,7 +58,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &verti
 
         blocksPerGrid = ( simulator.getTotalVertices() + threadsPerBlock - 1 ) / threadsPerBlock;
         updateSynapsesWeightsDevice <<< blocksPerGrid, threadsPerBlock >>> ( simulator.getTotalVertices(), deltaT, W_d, simulator.getMaxEdgesPerVertex(), allVerticesDevice, allEdgesDevice, neuronTypeMapD );
-        
+
         // free memories
         HANDLE_ERROR( cudaFree( W_d ) );
         delete[] W_h;

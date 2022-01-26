@@ -14,8 +14,6 @@
 #include "CompleteMatrix.h"
 #include "VectorMatrix.h"
 
-using namespace std;
-
 ///  @class MatrixFactory
 ///  @brief Deserializes Matrix objects from XML
 ///

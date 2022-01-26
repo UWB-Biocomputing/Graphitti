@@ -47,8 +47,8 @@
 
 extern int g_debug_mask;
 
-#include <sstream>
 #include <cassert>
+#include <sstream>
 #include <vector>
 #ifdef _WIN32	//needs to be before #include "bgtypes.h" or the #define BGFLOAT will cause problems
 #include <windows.h>	//warning! windows.h also defines BGFLOAT
@@ -61,15 +61,13 @@ typedef unsigned long long int uint64_t;	//included in inttypes.h, which is not 
 #include "Coordinate.h"
 #include "VectorMatrix.h"
 
-using namespace std;
-
 // If defined, a table with time and each neuron voltage will output to stdout.
 //#define DUMP_VOLTAGES
 
-#if defined(USE_GPU)
+#ifdef __CUDACC__
 //! CUDA device ID
 extern int g_deviceId;
-#endif // USE_GPU
+#endif
 
 // The constant PI.
 extern const BGFLOAT pi;
@@ -78,7 +76,7 @@ extern const BGFLOAT pi;
 extern MTRand initRNG;
 
 // A normalized random number generator.
-extern MTRand *noiseRNG;
+extern MTRand* noiseRNG;
 
 // The current simulation step.
 extern uint64_t g_simulationStep;
@@ -94,17 +92,17 @@ const int g_nMaxChunkSize = 100;
 // CALR: Caller radii
 // PSAP: PSAP nodes
 // RESP: Responder nodes
-enum vertexType { 
-    // Neuro
-    INH = 1, 
-    EXC = 2, 
-    // NG911
-    CALR = 3,
-    PSAP = 4,
-    RESP = 5, 
-    // UNDEF
-    VTYPE_UNDEF = 0 
-    };
+enum class vertexType {
+	// Neuro
+	INH = 1,
+	EXC = 2,
+	// NG911
+	CALR = 3,
+	PSAP = 4,
+	RESP = 5,
+	// UNDEF
+	VTYPE_UNDEF = 0
+};
 
 // Edge types.
 // NEURO:
@@ -118,19 +116,20 @@ enum vertexType {
 //  RC - Responder to Caller
 //  PP - PSAP to PSAP 
 
-enum edgeType { 
-    // NEURO
-    II = 0, 
-    IE = 1, 
-    EI = 2, 
-    EE = 3, 
-    // NG911
-    CP = 4,
-    PR = 5,
-    RC = 6,
-    PP = 7,
-    // UNDEF
-    ETYPE_UNDEF = -1 };
+enum class edgeType {
+	// NEURO
+	II = 0,
+	IE = 1,
+	EI = 2,
+	EE = 3,
+	// NG911
+	CP = 4,
+	PR = 5,
+	RC = 6,
+	PP = 7,
+	// UNDEF
+	ETYPE_UNDEF = -1
+};
 
 // The default membrane capacitance.
 #define DEFAULT_Cm		(3e-8)
@@ -163,14 +162,14 @@ enum edgeType {
 #define DEFAULT_delay_weight	(0)
 // } NMV-END
 
-// Converts a 1-d index into a coordinate string.
-string index2dToString(int i, int width, int height);
-// Converts a 2-d coordinate into a string.
-string coordToString(int x, int y);
-// Converts a 3-d coordinate into a string.
-string coordToString(int x, int y, int z);
-// Converts a vertexType into a string.
-string neuronTypeToString(vertexType t);
+// Converts a 1-d index into a coordinate std::string.
+std::string index2dToString(int i, int width, int height);
+// Converts a 2-d coordinate into a std::string.
+std::string coordToString(int x, int y);
+// Converts a 3-d coordinate into a std::string.
+std::string coordToString(int x, int y, int z);
+// Converts a vertexType into a std::string.
+std::string neuronTypeToString(vertexType t);
 
 #ifdef PERFORMANCE_METRICS
 // All times in seconds
@@ -190,6 +189,6 @@ void printPerformanceMetrics(const float total_time, int steps);
 #endif
 
 // TODO comment
-extern const string MATRIX_TYPE;
+extern const std::string MATRIX_TYPE;
 // TODO comment
-extern const string MATRIX_INIT;
+extern const std::string MATRIX_INIT;

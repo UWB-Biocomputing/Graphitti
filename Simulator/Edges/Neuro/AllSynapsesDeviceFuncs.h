@@ -14,8 +14,6 @@
 #include "AllSTDPSynapses.h"
 #include "BGTypes.h"
 
-using namespace std;
-
 #if defined(__CUDACC__)
 
 extern __device__ enumClassSynapses classSynapses_d;

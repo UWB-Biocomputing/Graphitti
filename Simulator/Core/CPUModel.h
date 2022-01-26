@@ -35,37 +35,33 @@
 
 #pragma once
 
-#include "Connections/Connections.h"
-#include "AllVertices.h"
 #include "AllEdges.h"
+#include "AllVertices.h"
+#include "Connections/Connections.h"
 #include "Layouts/Layout.h"
 
 class CPUModel : public Model {
-public:
-   /// Constructor
-   CPUModel();
+	public:
+		/// Constructor
+		CPUModel();
 
-   /// Destructor
-   virtual ~CPUModel();
+		/// Destructor
+		~CPUModel() override;
 
-   /// Performs any finalization tasks on network following a simulation.
-   virtual void finish() override;
+		/// Performs any finalization tasks on network following a simulation.
+		void finish() override;
 
-   /// Advances network state one simulation step.
-   virtual void advance() override;
+		/// Advances network state one simulation step.
+		void advance() override;
 
-   /// Modifies connections between neurons based on current state of the network and behavior
-   /// over the past epoch. Should be called once every epoch.
-   virtual void updateConnections() override;
+		/// Modifies connections between neurons based on current state of the network and behavior
+		/// over the past epoch. Should be called once every epoch.
+		void updateConnections() override;
 
-   /// Copy GPU Synapse data to CPU.
-   virtual void copyGPUtoCPU() override;
+		/// Copy GPU Synapse data to CPU.
+		void copyGPUtoCPU() override;
 
-   /// Copy CPU Synapse data to GPU.
-   virtual void copyCPUtoGPU() override;
+		/// Copy CPU Synapse data to GPU.
+		void copyCPUtoGPU() override;
 
 };
-
-
-
-

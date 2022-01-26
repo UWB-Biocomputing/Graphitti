@@ -45,7 +45,7 @@ private:
 
     //! Synapse structures in device memory.
     AllDSSynapsesDeviceProperties* allEdgesDevice;
- 
+
     //! Pointer to synapse index map in device memory.
     EdgeIndexMap* edgeIndexMapDevice;
 

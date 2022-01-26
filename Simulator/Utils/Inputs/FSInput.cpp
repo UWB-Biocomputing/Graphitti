@@ -9,7 +9,7 @@
 #include "FSInput.h"
 #include "HostSInputRegular.h"
 #include "HostSInputPoisson.h"
-#if defined(USE_GPU)
+#ifdef __CUDACC__
 #include "GpuSInputRegular.h"
 #include "GpuSInputPoisson.h"
 #endif
@@ -76,7 +76,7 @@ ISInput* FSInput::CreateInstance()
 
     if (name == "SInputRegular")
     {
-#if defined(USE_GPU)
+#ifdef __CUDACC__
         pInput = new GpuSInputRegular(parms);
 #else
         pInput = new HostSInputRegular(parms);
@@ -84,7 +84,7 @@ ISInput* FSInput::CreateInstance()
     }
     else if (name == "SInputPoisson")
     {
-#if defined(USE_GPU)
+#ifdef __CUDACC__
         pInput = new GpuSInputPoisson(parms);
 #else
         pInput = new HostSInputPoisson(parms);

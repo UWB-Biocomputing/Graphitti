@@ -33,44 +33,42 @@
 #include "BGTypes.h"
 #include "tinyxml.h"
 
-using namespace std;
-
 class ParameterManager {
-public:
+	public:
+		/// Get Instance method that returns a reference to this object.
+		static ParameterManager& getInstance();
 
-   /// Get Instance method that returns a reference to this object.
-   static ParameterManager &getInstance();
+		/// Utility Methods
+		~ParameterManager();
 
-   /// Utility Methods
-   ~ParameterManager();
+		bool loadParameterFile(std::string path);
 
-   bool loadParameterFile(string path);
+		/// Interface methods for simulator objects
+		bool getStringByXpath(std::string xpath, std::string& referenceVar);
 
-   /// Interface methods for simulator objects
-   bool getStringByXpath(string xpath, string &referenceVar);
+		bool getIntByXpath(std::string xpath, int& referenceVar);
 
-   bool getIntByXpath(string xpath, int &referenceVar);
+		bool getDoubleByXpath(std::string xpath, double& referenceVar);
 
-   bool getDoubleByXpath(string xpath, double &referenceVar);
+		bool getFloatByXpath(std::string xpath, float& referenceVariable);
 
-   bool getFloatByXpath(string xpath, float &referenceVariable);
+		bool getBGFloatByXpath(std::string xpath, BGFLOAT& referenceVar);
 
-   bool getBGFloatByXpath(string xpath, BGFLOAT &referenceVar);
+		bool getLongByXpath(std::string xpath, long& referenceVar);
 
-   bool getLongByXpath(string xpath, long &referenceVar);
+		bool getIntVectorByXpath(const std::string& path, const std::string& elementName,
+		                         std::vector<int>& referenceVar);
 
-   bool getIntVectorByXpath(const string &path, const string &elementName, vector<int> &referenceVar);
+		/// Delete these methods because they can cause copy instances of the singleton when using threads.
+		ParameterManager(const ParameterManager&) = delete;
+		void operator=(const ParameterManager&) = delete;
 
-   /// Delete these methods because they can cause copy instances of the singleton when using threads.
-   ParameterManager(ParameterManager const &) = delete;
-   void operator=(ParameterManager const &) = delete;
+	private:
+		TiXmlDocument* xmlDocument_;
+		TiXmlElement* root_;
 
-private:
-   TiXmlDocument *xmlDocument_;
-   TiXmlElement *root_;
+		/// Constructor is private to keep a singleton instance of this class.
+		ParameterManager();
 
-   /// Constructor is private to keep a singleton instance of this class.
-   ParameterManager();
-
-   bool checkDocumentStatus();
+		bool checkDocumentStatus();
 };

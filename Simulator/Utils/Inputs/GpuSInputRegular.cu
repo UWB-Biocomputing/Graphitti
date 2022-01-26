@@ -67,7 +67,7 @@ void GpuSInputRegular::inputStimulus(SimulationInfo* psi)
 
     // CUDA parameters
     const int threadsPerBlock = 256;
-    int blocksPerGrid; 
+    int blocksPerGrid;
 
     // add input to each summation point
     blocksPerGrid = ( vertex_count + threadsPerBlock - 1 ) / threadsPerBlock;

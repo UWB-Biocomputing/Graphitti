@@ -236,10 +236,10 @@ __global__ void advanceIZHNeuronsDevice( int totalVertices, int maxEdges, int ma
                 BGSIZE synapseCounts = edgeIndexMapDevice->outgoingEdgeCount_[idx];
                 if (synapseCounts != 0) {
                     // get the index of where this neuron's list of synapses are
-                    BGSIZE beginIndex = edgeIndexMapDevice->outgoingEdgeBegin_[idx]; 
+                    BGSIZE beginIndex = edgeIndexMapDevice->outgoingEdgeBegin_[idx];
                     // get the memory location of where that list begins
                     BGSIZE* outgoingMapBegin = &(edgeIndexMapDevice->outgoingEdgeIndexMap_[beginIndex]);
-                   
+
                     // for each synapse, let them know we have fired
                     for (BGSIZE i = 0; i < synapseCounts; i++) {
                         preSpikingSynapsesSpikeHitDevice(outgoingMapBegin[i], allEdgesDevice);
