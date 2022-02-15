@@ -1,0 +1,48 @@
+@startuml graphitti sequence diagram
+
+title Graphitti General Program Flow
+
+Driver -> ParamContainer **: Parse Command Line
+activate ParamContainer
+note right
+    Config File
+    Deserialize File
+    Serealize File
+    Stimulus File
+end note
+ParamContainer -> Driver: Parsed File Names
+deactivate ParamContainer
+Driver -> Simulator: Set File Names
+Driver -> ParameterManager: Load Parameter File
+ParameterManager -> Simulator: Get Config File Name
+Driver -> Simulator: Load Parameters
+Simulator -> ParameterManager: Get parameters from XML
+
+Driver -> Simulator: Instantiate Simulator Objects
+
+' Expand in a separate diagram
+Driver -> OperationManager: Load Parameters
+note right
+    Runs loadParameters method for
+    each instantiated object.
+    Methods are registered to
+    OperationManager on instantiation.
+end note
+
+Driver -> Simulator: Setup
+
+opt if serialized file name available
+    Driver -> Driver: Deserialize file
+end
+
+Driver -> Simulator: Simulate
+
+Driver -> Simulator: Save Results
+
+Driver -> Simulator: Finish Signal 
+Simulator -> Model: Clean up model resources
+Driver -> Recorder: Terminate Recording
+Driver -> Driver: Exit program
+
+
+@enduml
