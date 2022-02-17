@@ -13,6 +13,7 @@ end note
 
 Driver -> Simulator: Set File Names
 Simulator -> ParamContainer: Get File Names
+ParamContainer -> Simulator: File Names
 deactivate ParamContainer
 
 Driver -> ParameterManager: Load Parameter File
