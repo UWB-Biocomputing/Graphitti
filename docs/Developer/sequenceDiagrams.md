@@ -10,4 +10,4 @@
 
 # Simulator Simulate Flow Diagram
 
-![Simulator Simulate](http://www.plantuml.com/plantuml/proxy?cache=no&src=/../../raw/master/docs/Developer/UML/simulator_simulate.puml)
+![Simulator Simulate](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/jardiamj/Graphitti/master/docs/Developer/UML/simulator_simulate.puml)
