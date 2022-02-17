@@ -10,9 +10,11 @@ note right
     Serealize File
     Stimulus File
 end note
-ParamContainer -> Driver: Parsed File Names
-deactivate ParamContainer
+
 Driver -> Simulator: Set File Names
+Simulator -> ParamContainer: Get File Names
+deactivate ParamContainer
+
 Driver -> ParameterManager: Load Parameter File
 ParameterManager -> Simulator: Get Config File Name
 Driver -> Simulator: Load Parameters
