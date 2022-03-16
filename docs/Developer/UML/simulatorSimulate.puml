@@ -1,4 +1,4 @@
-@startuml Simulator Simulate
+@startuml simulatorSimulate
 
 title Simulator::simulate Sequence Diagram
 

@@ -1,4 +1,4 @@
-@startuml top level sequence diagram
+@startuml topLevelFlow
 
 title Graphitti General Program Flow
 
