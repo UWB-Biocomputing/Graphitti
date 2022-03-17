@@ -19,14 +19,15 @@ jobs:
         id: getfile
         run: |
           git diff-tree -r --no-commit-id --name-status ${{ github.sha }} \
-          | awk -F' ' '{
+          | awk -F' ' 'BEGIN { printf "::set-output name=files::" }
+          {
             # ensure we are not trying to process deleted files
             # only process puml files
             # do not try to process our theme or custom config
             if ( $1 !~ /^D$/ && $2 ~ /\.puml$/ && $2 !~ /(theme|config)\.puml$/ )
             {
               # only print the file name and strip newlines for spaces
-              printf "::set-output name=files::" "%s ", $2
+              printf "%s ", $2
             }
           }
           END { print "" } # ensure we do print a newline at the end

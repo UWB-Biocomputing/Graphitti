@@ -4,7 +4,6 @@
 title Simulator Object Creation Sequence Diagram
 
 Simulator -> Model ** : New CPU/GPU Model
-
 activate Model
 Model -> LayoutFactory: Create Layout
 LayoutFactory -> Layout **: Instantiate

@@ -20,7 +20,7 @@ loop for i=0 to currentEpoch-1
 end
 
 Simulator -> Model: Save Results 
-Model -> Recorder: Save Simulation Data 
+Model -> Recorder: Save Simulation Data
 opt if serialization file name available 
     Driver -> Driver: Serialize Synapses
 end
