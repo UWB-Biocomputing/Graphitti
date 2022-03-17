@@ -5,6 +5,11 @@ on:
       - '**.puml'
     branches:
       - master
+  pull_request:
+    paths:
+      - '**.puml'
+    branches:
+      - master
 jobs:
   ci:
     runs-on: ubuntu-latest

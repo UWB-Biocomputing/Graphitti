@@ -1,13 +1,12 @@
-# Graphitti Top-level Flow Diagram
+# Graphitti Top-level Sequence Diagram
 
-![Top-level Flow Diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/jardiamj/Graphitti/master/docs/Developer/UML/top-level_flow.puml)
+![Top-level Flow Diagram](UML/topLevelFlow.png?raw=true "Graphiti Top-level Diagram")
+
+# Simulator Objects Creating Sequence Diagram
+
+![Simulator Object Creation](UML/simObjectsCreation.png?raw=true "Simulator Objetc Creation")
 
 
-# Simulator Objects Creating Flow Diagram
+# Simulation Sequence Diagram
 
-![Simulator Object Creation](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/jardiamj/Graphitti/master/docs/Developer/UML/sim_objects_creation.puml)
-
-
-# Simulator Simulate Flow Diagram
-
-![Simulator Simulate](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/jardiamj/Graphitti/master/docs/Developer/UML/simulator_simulate.puml)
+![Simulation Sequence Diagram](UML/simulatorSimulate.png?raw=true "Simulator Simulate")
