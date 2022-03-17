@@ -1,6 +1,6 @@
 @startuml topLevelFlow
 
-title Graphitti Top Level Sequence Diagram
+title Graphitti Sequence Diagram
 
 Driver -> ParamContainer **: Parse Command Line
 activate ParamContainer
