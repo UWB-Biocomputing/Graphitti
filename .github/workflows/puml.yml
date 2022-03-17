@@ -23,7 +23,7 @@ jobs:
       - name: Get changed UML files
         id: getfile
         run: |
-          git log -m -1 --name-status --pretty="format:" ${{ github.sha }} \
+          git log -m -1 --name-status --pretty="format:" master \
           | awk -F' ' 'BEGIN { printf "::set-output name=files::" }
           {
             # ensure we are not trying to process deleted files
