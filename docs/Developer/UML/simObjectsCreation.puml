@@ -1,11 +1,11 @@
 
 @startuml simObjectsCreation
 
-title Simulator::instantiateSimulatorObjects Sequence Diagram
+title Simulator Object Creation Sequence Diagram
 
 Simulator -> Model ** : New CPU/GPU Model
 activate Model
-Model -> LayoutFactory: Create Layout 
+Model -> LayoutFactory: Create Layout
 LayoutFactory -> Layout **: Instantiate
 Layout -> VerticesFactory: Create Vertices
 VerticesFactory -> AllVertices **: Instantiate

@@ -1,6 +1,6 @@
 @startuml simulatorSimulate
 
-title Simulator::simulate Sequence Diagram
+title Simulation Sequence Diagram
 
 loop for i=0 to currentEpoch-1
     Simulator -> Simulator: Advance Epoch
