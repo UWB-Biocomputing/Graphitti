@@ -9,4 +9,4 @@
 
 # Simulation Sequence Diagram
 
-![Simulation Sequence Diagram](UML/simulatorSimulate.png?raw=true "Simulator Simulate")
+![Simulation Sequence Diagram](UML/simulatorSimulate.png?raw=true "Simulation Sequence Diagram")
