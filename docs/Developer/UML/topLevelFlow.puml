@@ -65,7 +65,7 @@ Model -> Recorder: Compile Histories
 note right
     Only vertices are compiled
     and saved. Implementation
-    depends on simulation purposes.
+    is simulation dependent.
 end note
 
 Driver -> Simulator: Save Results

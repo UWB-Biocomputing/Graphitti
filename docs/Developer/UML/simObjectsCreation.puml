@@ -18,5 +18,4 @@ EdgesFactory -> AllEdges **: Instantiate
 Model -> RecordersFactory: Create Recorders
 RecordersFactory -> Recorder **: Instantiate
 
-
 @enduml
