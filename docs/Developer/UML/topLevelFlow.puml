@@ -1,0 +1,84 @@
+@startuml topLevelFlow
+
+title Graphitti General Program Flow
+
+Driver -> ParamContainer **: Parse Command Line
+activate ParamContainer
+note right
+    Config File
+    Deserialize File
+    Serealize File
+    Stimulus File
+end note
+
+Driver -> Simulator: Set File Names
+Simulator -> ParamContainer: Get File Names
+ParamContainer -> Simulator: File Names
+deactivate ParamContainer
+
+Driver -> ParameterManager: Load Parameter File
+ParameterManager -> Simulator: Get Config File Name
+Simulator -> ParameterManager: Config File Name
+Driver -> Simulator: Load Parameters
+Simulator -> ParameterManager: Get parameters from XML
+ParameterManager -> Simulator: Parameters
+note right
+    width_, height_, epochDuration_,
+    numEpochs_, maxFiringRate_,
+    maxEdgesPerVertex_, RNG, etc.
+end note
+
+Driver -> Simulator: Instantiate Simulator Objects
+note right
+    Details are in a separate
+    sequence diagram.
+end note
+
+' Expand in a separate diagram
+Driver -> OperationManager: Load Parameters
+note right
+    Runs loadParameters method for
+    each instantiated object.
+    Methods are registered to
+    OperationManager on instantiation.
+end note
+
+Driver -> Simulator: Setup
+Simulator -> Model: Setup Simulation
+note right
+    Sets up vertices, edges, layout
+    Initializes recorder
+    Creates all vertices
+    Sets up connections and
+    Creates EdgeIndexMap
+end note
+
+opt if serialized file name available
+    Driver -> Driver: Deserialize file
+end
+
+Driver -> Simulator: Simulate
+Simulator -> Simulator: Advance Epoch
+Simulator -> Model: Update Connections
+Simulator -> Model: Update History
+Model -> Recorder: Compile Histories
+note right
+    Only vertices are compiled
+    and saved. Implementation
+    is simulation dependent.
+end note
+
+Driver -> Simulator: Save Results
+Simulator -> Model: Save Results
+Model -> Recorder: Save Simulation Data
+
+opt if serializtion file available
+    Driver -> Driver: Serialize Synapses
+end
+
+Driver -> Simulator: Finish
+Simulator -> Model: Clean up model resources
+Driver -> Recorder: Terminate Recording
+Driver -> Driver: Exit program
+
+@enduml
