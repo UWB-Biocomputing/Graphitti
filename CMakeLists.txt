@@ -115,7 +115,7 @@ include_directories(
         ThirdParty
         ThirdParty/cereal
         ThirdParty/TinyXPath
-        ThirdParty/log4cplus-2.0.2/include)
+        ThirdParty/log4cplus-2.0.7/include)
 
 # Collect source files and create libraries
 # Libraries containing CUDA .cu files should be created as STATIC to ensure proper linking
