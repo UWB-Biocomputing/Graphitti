@@ -1,0 +1,10 @@
+CPPFLAGS="-I$abs_top_builddir/include -I$abs_top_srcdir/include  -DLOG4CPLUS_ENABLE_THREAD_POOL=1 -D_GNU_SOURCE=1 -D_REENTRANT"
+
+: ${CC='gcc'}
+: ${CXX='g++'}
+: ${CXXFLAGS='-std=c++11 -Wall -fdiagnostics-show-caret -ftrack-macro-expansion -fdiagnostics-color=auto -Wextra -pedantic -Wstrict-aliasing -Wstrict-overflow -Woverloaded-virtual -Wold-style-cast -Wc++14-compat -Wundef -Wshadow -Wformat -Wnoexcept -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wno-variadic-macros -O2 -fvisibility=hidden '}
+: ${GREP='/usr/bin/grep'}
+: ${AWK='gawk'}
+: ${SED='/usr/bin/sed'}
+: ${ENABLE_THREADS='yes'}
+: ${BUILD_WITH_WCHAR_T_SUPPORT='yes'}

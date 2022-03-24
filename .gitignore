@@ -33,8 +33,8 @@ build/Simulator
 build/Testing
 build/ThirdParty
 build/config.h
-ThirdParty/log4cplus-2.0.2/bin/*
-ThirdParty/log4cplus-2.0.2/src/liblog4cplus.so.2.0.2
+ThirdParty/log4cplus-2.0.7/bin/*
+ThirdParty/log4cplus-2.0.7/src/liblog4cplus.so.2.0.7
 
 # Executables
 graphitti
@@ -44,6 +44,9 @@ tests
 *.exe
 *.out
 *.app
+
+# Include log4cplus tests directory
+!ThirdParty/log4cplus-2.0.7/tests
 
 # CMake Directories
 CMakeFiles
