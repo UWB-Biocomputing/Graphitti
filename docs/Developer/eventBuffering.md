@@ -63,6 +63,7 @@ These are the circular spike buffers for each neuron. It is an array of pointers
 ### Refactor/Redesign Ideas
 
 It seems like we need to retain a circular buffer for a neuron's spikes, so that it will be possible to "look backwards" across an epoch boundary to retrieve spikes from the preceding epoch(s). We should refactor this out as a separate class, `EventBuffer`:
+
 - Two methods for use by the Recorder classes:
   * `EventBuffer::operator[]`: retrieve an event time step at an offset relative to the start of the current epoch (i.e., `0..numEvents_-1`).
   * `EventBuffer::getNumEventsInEpoch()`: return the number of events in the current epoch.
