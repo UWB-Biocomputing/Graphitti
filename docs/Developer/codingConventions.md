@@ -24,7 +24,7 @@
   ```
   * We use braces even when a code block is a single line, to prevent bugs when it (inevitably) later expands to multiple lines.
 
-  * We limit code to 100 character line lengths. You never know when someone will want to print something out on an [ASR-33 teletype](https://en.wikipedia.org/wiki/Teletype_Model_33).
+  * We limit code to 80 character line lengths. You never know when someone will want to print something out on an [ASR-33 teletype](https://en.wikipedia.org/wiki/Teletype_Model_33).
   * We help keep code clear to human readers. So:
   
   `if (aPointerVar == nullptr)`, not `if (aPointerVar == 0)`; 

@@ -1,0 +1,19 @@
+<map id="Simulator/Core/Operations.h" name="Simulator/Core/Operations.h">
+<area shape="rect" id="node1" title="This class is public reference to the operation types that the OperationManager can register and exec..." alt="" coords="373,5,559,32"/>
+<area shape="rect" id="node2" href="$_generic_function_node_8cpp.html" title="Stores a function to invoke. Used by operation manager to store functions to defined by an operation ..." alt="" coords="5,259,207,300"/>
+<area shape="rect" id="node3" href="$_i_function_node_8h.html" title="Interface for storing and invoking functions. Used to support different FunctionNode classes that def..." alt="" coords="365,80,567,121"/>
+<area shape="rect" id="node6" href="$_operation_manager_8h.html" title="Singleton instance method that registers and executes functions based on operation types." alt="" coords="1075,169,1244,211"/>
+<area shape="rect" id="node4" href="$_generic_function_node_8h.html" title="Stores a function to invoke. Used by operation manager to store functions to defined by an operation ..." alt="" coords="215,169,416,211"/>
+<area shape="rect" id="node5" href="$_operation_manager_8cpp.html" title="Singleton instance method that registers and executes functions based on operation types." alt="" coords="231,259,400,300"/>
+<area shape="rect" id="node7" href="$_connections_8cpp.html" title="Methods for creating and updating connections." alt="" coords="425,259,579,300"/>
+<area shape="rect" id="node8" href="$_conn_growth_8cpp.html" title="The model of the activity dependent neurite outgrowth." alt="" coords="603,259,766,300"/>
+<area shape="rect" id="node9" href="$_conn_static_8cpp.html" title="The model of the small world network." alt="" coords="790,259,945,300"/>
+<area shape="rect" id="node10" href="$_driver_8cpp.html" title="Orchestrates most functionality in the simulation." alt="" coords="969,266,1142,293"/>
+<area shape="rect" id="node11" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="1167,266,1360,293"/>
+<area shape="rect" id="node12" href="$_all_edges_8cpp.html" title="A container of all edge data." alt="" coords="1384,266,1583,293"/>
+<area shape="rect" id="node13" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="1607,266,1802,293"/>
+<area shape="rect" id="node14" href="$_hdf5_recorder_8cpp.html" title="An implementation for recording spikes history on hdf5 file." alt="" coords="1826,259,1967,300"/>
+<area shape="rect" id="node15" href="$_xml_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="1991,259,2133,300"/>
+<area shape="rect" id="node16" href="$_all_vertices_8cpp.html" title="A container of the base class of all vertex data." alt="" coords="2157,259,2287,300"/>
+<area shape="rect" id="node17" href="$_all_i_f_neurons_8cpp.html" title="A container of all Integate and Fire (IF) neuron data." alt="" coords="2311,259,2477,300"/>
+</map>

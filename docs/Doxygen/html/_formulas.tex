@@ -1,0 +1,330 @@
+\documentclass{article}
+\usepackage{ifthen}
+\usepackage{epsfig}
+\usepackage[utf8]{inputenc}
+\usepackage{newunicodechar}
+  \newunicodechar{⁻}{${}^{-}$}% Superscript minus
+  \newunicodechar{²}{${}^{2}$}% Superscript two
+  \newunicodechar{³}{${}^{3}$}% Superscript three
+
+\pagestyle{empty}
+\begin{document}
+$W$
+\pagebreak
+
+\[ \frac{d R_{i}}{dt} = \rho G(F_{i}) \]
+\pagebreak
+
+\[ G(F_{i}) = 1 - \frac{2}{1 + exp((\epsilon - F_{i}) / \beta)} \]
+\pagebreak
+
+$R_{i}$
+\pagebreak
+
+$i$
+\pagebreak
+
+$F_{i}$
+\pagebreak
+
+$[0,1]$
+\pagebreak
+
+$\rho$
+\pagebreak
+
+$\epsilon$
+\pagebreak
+
+$\beta$
+\pagebreak
+
+$G(\cdot)$
+\pagebreak
+
+$(\rho=0.0001)$
+\pagebreak
+
+$10^{-2}$
+\pagebreak
+
+$10^{-3}sec$
+\pagebreak
+
+\[ r_0^2 = r_1^2 + |AB|^2 - 2 r_1 |AB| cos(\angle CBA) \]
+\pagebreak
+
+\[ cos(\angle CBA) = \frac{r_1^2 + |AB|^2 - r_0^2}{2 r_1 |AB|} \]
+\pagebreak
+
+\[ \angle CBD = 2 \angle CBA \]
+\pagebreak
+
+\[ cos(\angle CAB) = \frac{r_0^2 + |AB|^2 - r_1^2}{2 r_0 |AB|} \]
+\pagebreak
+
+\[ \angle CAD = 2 \angle CAB \]
+\pagebreak
+
+\[ w_{01} = \frac{1}{2} \angle CBD r_1^2 - \frac{1}{2} r_1^2 sin(\angle CBD) + \frac{1}{2} \angle CAD r_0^2 - \frac{1}{2} r_0^2 sin(\angle CAD) \]
+\pagebreak
+
+\[ w_{01} = w_{10} \]
+\pagebreak
+
+$r_0$
+\pagebreak
+
+$r_1$
+\pagebreak
+
+$w_{01}$
+\pagebreak
+
+$w_{10}$
+\pagebreak
+
+$L(p)$
+\pagebreak
+
+$C(p)$
+\pagebreak
+
+$L$
+\pagebreak
+
+$v$
+\pagebreak
+
+$k_v$
+\pagebreak
+
+$k_v (k_v - 1) / 2$
+\pagebreak
+
+$C_v$
+\pagebreak
+
+$C$
+\pagebreak
+
+$A$
+\pagebreak
+
+$x,y$
+\pagebreak
+
+$B$
+\pagebreak
+
+$V_m$
+\pagebreak
+
+$r$
+\pagebreak
+
+$u$
+\pagebreak
+
+\[ r_{n+1} = r_n \cdot (1-u_{n+1}) \cdot \mathrm{e}^{-\frac{\Delta t}{\tau_{rec}}} + 1 - \mathrm{e}^{-\frac{\Delta t}{\tau_{rec}}} \]
+\pagebreak
+
+\[ \]
+\pagebreak
+
+$\Delta t$
+\pagebreak
+
+$\tau_{rec}$
+\pagebreak
+
+$\tau_{facil}$
+\pagebreak
+
+$U$
+\pagebreak
+
+\[ EPSP_n = A \cdot r_n \cdot u_n \]
+\pagebreak
+
+$Delta = t_{post}-t_{pre}$
+\pagebreak
+
+$t_{pre}$
+\pagebreak
+
+$t_{post}$
+\pagebreak
+
+$dw = Apos_ * exp(-Delta/taupos_)$
+\pagebreak
+
+$Delta > 0$
+\pagebreak
+
+$dw = Aneg_ * exp(-Delta/tauneg_)$
+\pagebreak
+
+$Delta < 0$
+\pagebreak
+
+$useFroemkeDanSTDP_=false$
+\pagebreak
+
+$mupos_=muneg_=0$
+\pagebreak
+
+$dw = 1.0 + dw * epre * epost$
+\pagebreak
+
+$W = W * dw$
+\pagebreak
+
+$\tau$
+\pagebreak
+
+$useFroemkeDanSTDP_=0$
+\pagebreak
+
+$dw = (Wex_-W)^{mupos_} * Apos_ * exp(-Delta/taupos_)$
+\pagebreak
+
+$dw = W^{mupos_} * Aneg_ * exp(Delta/tauneg_)$
+\pagebreak
+
+$useFroemkeDanSTDP_=1$
+\pagebreak
+
+$tauspost_$
+\pagebreak
+
+$tauspre_$
+\pagebreak
+
+$|Delta| = |t_{post}-t_{pre}| < STDPgap_$
+\pagebreak
+
+$V_{thresh}$
+\pagebreak
+
+$t=0$
+\pagebreak
+
+$C_m$
+\pagebreak
+
+$R_m$
+\pagebreak
+
+\[ \frac{d v}{dt} = 0.04v^2 + 5v + 140 - u + (I_{syn}(t) + I_{inject} + I_{noise}) \]
+\pagebreak
+
+\[ \frac{d u}{dt} = a \cdot (bv - u) \]
+\pagebreak
+
+$v\ge30$
+\pagebreak
+
+$v=c,u=u+d$
+\pagebreak
+
+$a,b,c$
+\pagebreak
+
+$d$
+\pagebreak
+
+$K^+$
+\pagebreak
+
+$Na^+$
+\pagebreak
+
+$I_{syn}(t)$
+\pagebreak
+
+$I_{inject}$
+\pagebreak
+
+$y(t)$
+\pagebreak
+
+$y(t + \Delta t)$
+\pagebreak
+
+$y(t + \Delta t) = y(t) + \Delta t \cdot y(t)$
+\pagebreak
+
+\[ \frac{d y}{dt} = A - By \]
+\pagebreak
+
+\[ y(t+\Delta t) = y(t) \cdot \mathrm{e}^{-B \Delta t} + \frac{A}{B} \cdot (1 - \mathrm{e}^{-B \Delta t}) \]
+\pagebreak
+
+\[ v(t+\Delta t)=v(t)+ C3 \cdot (0.04v(t)^2+5v(t)+140-u(t))+C2 \cdot (I_{syn}(t)+I_{inject}+I_{noise}+\frac{V_{resting}}{R_{m}}) \]
+\pagebreak
+
+\[ u(t+ \Delta t)=u(t) + C3 \cdot a \cdot (bv(t)-u(t)) \]
+\pagebreak
+
+$\tau_{m}=C_{m} \cdot R_{m}$
+\pagebreak
+
+$R_{m}$
+\pagebreak
+
+$C2 = R_m \cdot (1 - \mathrm{e}^{-\frac{\Delta t}{\tau_m}})$
+\pagebreak
+
+$C3 = \Delta t$
+\pagebreak
+
+$t$
+\pagebreak
+
+$ms$
+\pagebreak
+
+$C3$
+\pagebreak
+
+$C3 = \Delta t = 1000 \cdot deltaT$
+\pagebreak
+
+$deltaT$
+\pagebreak
+
+\[ \tau_m \frac{d V_m}{dt} = -(V_m-V_{resting}) + R_m \cdot (I_{syn}(t)+I_{inject}+I_{noise}) \]
+\pagebreak
+
+$\tau_m=C_m\cdot R_m$
+\pagebreak
+
+$I_{noise}$
+\pagebreak
+
+$V_{init}$
+\pagebreak
+
+$V_{reset}$
+\pagebreak
+
+$T_{refract}$
+\pagebreak
+
+\[ y(t) = V_m(t) \]
+\pagebreak
+
+\[ A = \frac{1}{\tau_m} \cdot (R_m \cdot (I_{syn}(t)+I_{inject}+I_{noise}) + V_{resting}) \]
+\pagebreak
+
+\[ B = \frac{1}{\tau_m} \]
+\pagebreak
+
+\[ V_m(t+\Delta t) = C1 \cdot V_m(t) + C2 \cdot (I_{syn}(t)+I_{inject}+I_{noise}+\frac{V_{resting}}{R_m}) \]
+\pagebreak
+
+$C1 = \mathrm{e}^{-\frac{\Delta t}{\tau_m}}$
+\pagebreak
+
+\end{document}
