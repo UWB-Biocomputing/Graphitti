@@ -20,19 +20,19 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Get changed UML files
+      - name: Get all UML files
         id: getfile
         run: |
-          git log -m -1 --name-status --pretty="format:" ${{ github.sha }} \
-          | awk -F' ' 'BEGIN { printf "::set-output name=files::" }
+          #Recursively list the files in the master branch
+          git ls-tree -r master \
+          | awk  'BEGIN { printf "::set-output name=files::" }
           {
-            # ensure we are not trying to process deleted files
             # only process puml files
             # do not try to process our theme or custom config
-            if ( $1 !~ /^D$/ && $2 ~ /\.puml$/ && $2 !~ /(theme|config)\.puml$/ )
+            if ( $4 ~ /\.puml$/ && $4 !~ /(theme|config)\.puml$/ )
             {
               # only print the file name and strip newlines for spaces
-              printf "%s ", $2
+              printf "%s ", $4
             }
           }
           END { print "" } # ensure we do print a newline at the end
