@@ -5,11 +5,13 @@ on:
       - '**.puml'
     branches:
       - master
+      - plantUML-Diagrams
   pull_request:
     paths:
       - '**.puml'
     branches:
       - master
+      - plantUML-Diagrams
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -23,8 +25,8 @@ jobs:
       - name: Get all UML files
         id: getfile
         run: |
-          #Recursively list the files in the master branch
-          git ls-tree -r master \
+          #Recursively list the files in the current branch
+          git ls-tree -r `git branch --show-current` \
           | awk  'BEGIN { printf "::set-output name=files::" }
           {
             # only process puml files
