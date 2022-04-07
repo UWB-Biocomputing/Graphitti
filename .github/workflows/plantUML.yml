@@ -22,29 +22,19 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Get branch name (merge/push)
-        if: github.event_name != 'pull_request'
-        shell: bash
-        run: echo "branchName=$(echo ${GITHUB_REF#refs/heads/} | tr / -)" >> $GITHUB_ENV
-      - name: Get branch name (pull request)
-        if: github.event_name == 'pull_request'
-        shell: bash
-        run: echo "branchName=$(echo ${GITHUB_HEAD_REF} | tr / -)" >> $GITHUB_ENV
-      - name: echo extracted branch name
-        run: echo 'The branch name is ' ${{ env.branchName }}
       - name: Get all UML files
         id: getfile
         run: |
-          #Recursively list the files in the current branch
-          git ls-tree -r $branchName \
+          #List the .puml files in the working directory
+          find . -name '*.puml' \
           | awk  'BEGIN { printf "::set-output name=files::" }
           {
             # only process puml files
             # do not try to process our theme or custom config
-            if ( $4 ~ /\.puml$/ && $4 !~ /(theme|config)\.puml$/ )
+            if ( $1 ~ /\.puml$/ && $1 !~ /(theme|config)\.puml$/ )
             {
               # only print the file name and strip newlines for spaces
-              printf "%s ", $4
+              printf "%s ", $1
             }
           }
           END { print "" } # ensure we do print a newline at the end
