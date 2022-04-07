@@ -44,7 +44,6 @@
 - [Googletest Tutorial](Testing/GoogleTestsTutorial.md)
 - [Performing Analyses](PerformingAnalyses.md)
 - [CMake](CMake.md)
-- [CMakeLists and CUDA](Developer/CMakeListsCuda.md)
 - [Recommended Resources](Resources.md)
 - [Neuro Implementation](NeuroImplementation.md) 
 - [Testing](Testing/index.md)
@@ -54,7 +53,7 @@
 Documentation generated from source code. Doxygen provides web-based indices and hierarchical views of Graphitti's class and file structures.
 - [Visit Doxygen Generated Documentation](Doxygen/html/index.html)
 - [Doxygen Style Guide](Doxygen/DoxygenStyleGuide.md)
-- [Doxygen Update Guide](Doxygen/DoxygenUpdateGuide.md)
+- [Doxygen Update Guide](Doxygen/DoxygenStyleGuide.md)
 
 
 ## [Acknowledgements](acknowledgements.md)
