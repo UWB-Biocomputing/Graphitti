@@ -6,7 +6,7 @@ If you're developing Graphitti code, then here are your reference documents. Wri
 Please adhere to our [coding conventions](codingConventions.md). Your pull requests will not be approved if you don't.
 
 ### UML Diagrams
-We have an [overview UML diagram](UML/hand-drawn.pdf).
+Here is a overview [block UML diagram](UML/hand-drawn.pdf) along with the [sequence UML diagrams](sequenceDiagrams.md) for the Graphitti system.
 
 ### Detailed documentation
 Documentation of subsystems and details of data structures and algorithms are listed below.
