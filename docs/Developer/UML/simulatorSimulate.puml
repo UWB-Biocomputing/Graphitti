@@ -1,0 +1,28 @@
+@startuml simulatorSimulate
+
+title Simulation Sequence Diagram
+
+loop for i=0 to currentEpoch-1
+    Simulator -> Simulator: Advance Epoch
+    loop for i=0 to epochDuration-1
+        Simulator -> Model: Advance
+        Model -> Layout: Get Vertices 
+        Layout -> "All Vertices": Advance Vertices
+        Model -> Connections: Get Edges
+        Connections -> "All Edges": Advance Edges
+    end
+    Model -> Connections: Update Connections
+    opt if updateConnections returns true
+        Model -> Connections: Update Synapses Weights
+        Model -> Connections: Create Edge Index Map
+    end
+    Model->Recorder: Update (Compile) History
+end
+
+Simulator -> Model: Save Results
+Model -> Recorder: Save Simulation Data
+opt if serialization file name available 
+    Driver -> Driver: Serialize Synapses
+end
+
+@enduml

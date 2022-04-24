@@ -1,0 +1,72 @@
+@startuml graphitti program flow
+
+title Graphitti General Program Flow
+
+== Initialization ==
+Driver -> Simulator: Load Simulator Parameters
+Driver -> Simulator: Instatiate Simulator Objects
+Simulator -> Model: Instantiate (CPU/GPU) Model
+Model -> "Layout Factory": Invoke Layout Create 
+"Layout Factory" -> Layout: Instantiate
+Layout -> "Vertices Factory": Invoke All Vertices Create 
+"Vertices Factory" -> "All Vertices": Instantiate
+
+Model -> "Connections Factory": Invoke Connections Create 
+"Connections Factory" -> Connections: Instantiate 
+Connections -> "Edges Factory": Invoke All Edges Create 
+"Edges Factory" -> "All Edges": Instantiate
+
+Model -> "Recorders Factory": Invoke Recorders Create
+"Recorders Factory" -> Recorder: Instantiate*
+
+Driver -> Simulator: Setup 
+Simulator -> Model: Model Setup
+Model -> Layout: Get Vertices 
+Layout -> "All Vertices": Setup Vertices
+Model -> Connections: Get Edges
+Connections -> "All Edges": Setup Edges
+Model -> Layout: Setup Layout
+Layout -> Layout: Initialize Vertices Locations
+Model -> Recorder: Initialize Recorder 
+Model -> Model: Create All Vertices*
+Model -> Layout: Generate Vertex Map 
+Model -> Layout: Initialize Starter Map 
+Model -> Layout: Create All Vertices
+opt if serialized file name available
+    Driver -> Driver: Deserialize file
+    Driver -> Connections: Create Synapses from Weights
+end
+
+== Simulation ==
+
+Driver -> Simulator: Simulate
+loop for i=0 to currentEpoch-1
+    Simulator -> Simulator: Advance Epoch
+    loop for i=0 to epochDuration-1
+        Simulator->Model: Advance
+        Model -> Layout: Get Vertices 
+        Layout -> "All Vertices": Advance Vertices
+        Model -> Connections: Get Edges
+        Connections -> "All Edges": Advance Edges
+    end
+    Model -> Connections: Update Connections
+    opt if updateConnections returns true
+        Model -> Connections: Update Synapses Weights
+        Model -> Connections: Create Edge Index Map
+    end
+    Model->Recorder: Update (Compile) History
+end
+Simulator -> Model: Save Results 
+Model -> Recorder: Save Simulation Data 
+opt if serialization file name available 
+    Driver -> Driver: Serialize Synapses
+end
+
+== Termination ==
+
+Driver -> Simulator: Finish Signal 
+Simulator -> Model: Clean up model resources
+Driver -> Recorder: Terminate Recording
+Driver -> Driver: Exit program
+
+@enduml
