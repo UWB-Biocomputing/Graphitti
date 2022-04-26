@@ -2,61 +2,67 @@
 
 ## Table of Contents
 
-1. [Introduction](01_introduction.md)
+1. [User Documentation](User/index.md)
 
-   1.1 What is Graphitti?
+   1.1 [Introduction](User/introduction.md)
+
+   1.2 [Installation](User/installation.md)
+
+   1.3 [Quickstart](User/quickstart.md)
+
+   1.4 [Configuration](User/configuration.md)
+
+2. [Developer Documentation](Developer/index.md)
    
-   1.2 What is Graphitti for?
+   2.1 Student Quick Start
    
-   1.3 Why do we need Graphitti?
+   2.2 Coding Conventions
+
+   2.3 Graphitti Repository Tools and Workflows
+
+   2.4 Graphitti System Documentation
+
+3. [Testing](Testing/index.md)
+
+   3.1 Unit Tests
+
+   3.2 Array Performance Testing
+
+   3.3 Dynamic Cast Performance Testing
+
+   3.4 Test Config Files
+
+4. Notes
+
+   4.1 [General Notes](RebuildNotes/GeneralNotes.md)
+
+   4.2 [Layout Notes](RebuildNotes/LayoutsNotes.md)
+
+   4.3 [Connections Notes](RebuildNotes/ConnectionsNotes.md)
+
+   4.4 [Neuron Notes](RebuildNotes/NeuronsNotes.md)
+
+   4.5 [Synapses Notes](RebuildNotes/SynapsesNotes.md)
+
+   4.6 [Recorder Notes](RebuildNotes/RecordersNotes.md)
+
+5. [Glossary](Glossary.md)
+
+   5.1 Graph Vocabulary
+
+   5.2 Neuroscience Vocabulary
    
-   1.4 Who is the Graphitti Audience?
 
-2. [Installation](02_installation.md)
+## Extra Resources
 
-   See [Install Requirements](02a_installRequirements.md)
-   
-   2.1 Necessary Hardware/Software
-   
-   2.2 Download Graphitti
-   
-   2.3 Install Graphitti
+Here are some [recommended resources](Resources.md) to browse
 
-3. [Quickstart](03_quickstart.md)
+## Code of Conduct
 
-   3.1 Quick Sanity Test
-   
-   3.2 Use of Screen
-
-4. [Configuration](04_configuration.md)
-
-   4.1 Use built-in models
-   
-   4.2 Configuring the model
-
-5. [Developer Documentation](Developer/index.md)
-   
-
-## Other resources
-- [Student Quickstart](StudentSetup.md)
-- [Coding Conventions](Developer/codingConventions.md)
-- [Glossary](Glossary.md)
-- [Googletest Tutorial](Testing/GoogleTestsTutorial.md)
-- [Performing Analyses](PerformingAnalyses.md)
-- [CMake](CMake.md)
-- [Recommended Resources](Resources.md)
-- [Neuro Implementation](NeuroImplementation.md) 
-- [Testing](Testing/index.md)
-
-## Doxygen 
-
-Documentation generated from source code. Doxygen provides web-based indices and hierarchical views of Graphitti's class and file structures.
-- [Visit Doxygen Generated Documentation](Doxygen/html/index.html)
-- [Doxygen Style Guide](Doxygen/DoxygenStyleGuide.md)
-- [Doxygen Update Guide](Doxygen/DoxygenStyleGuide.md)
-
+Our [code of conduct](../CODE_OF_CONDUCT.md)
 
 ## [Acknowledgements](acknowledgements.md)
+
 Those who have helped make Graphitti what it is and shaping what it will be.
 
 ---------

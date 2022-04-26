@@ -1,6 +1,6 @@
-# 2. Installation
+# 1.2 Installation
 
-## 2.1 Necessary Hardware/Software
+## 1.2.1 Necessary Hardware/Software
 
 Graphitti is designed to be easy to use and fast to simulate with, but given its scope and flexibility, there are some tradeoffs. 
 
@@ -18,19 +18,19 @@ To become a Graphitti user or collaborator, you might also need:
 
 Of course, Graphitti is totally open source. If you wanted, you could modify Graphitti and make an OpenCL version. 
 
-## 2.2 Download Graphitti
+## 1.2.2 Download Graphitti
 
-In order to get started with Graphitti, you will need to build it from scratch, which means getting its source codes. You can either download Graphitti source codes as a zip file of a stable release (See [2.2.1 Download a release](#221-download-a-release)) or fork the development version from Graphitti GitHub repository (See [2.2.2 Fork and clone Graphitti](#222-fork-and-clone-graphitti)).  
+In order to get started with Graphitti, you will need to build it from scratch, which means getting its source codes. You can either download Graphitti source codes as a zip file of a stable release (See [Download a release](#1.2.2.1-Download-a-release)) or fork the development version from Graphitti GitHub repository (See [Fork and clone Graphitti](#1.2.2.2-fork-and-clone-graphitti)).  
 
-### 2.2.1 Download a release
+### 1.2.2.1 Download a release
 
 Graphitti releases to be determined.
 
-### 2.2.2 Fork and clone Graphitti
+### 1.2.2.2 Fork and clone Graphitti
 
 If you are a Github user, you can simply fork and clone Graphitti. If you are new to Github, follow our Wiki page on [Contribute to Graphitti open source project](https://github.com/UWB-Biocomputing/BrainGrid/wiki/Contribute-to-BrainGrid-open-source-project). You can also go over our [Git Crash Course](https://github.com/UWB-Biocomputing/BrainGrid/wiki/Git-Crash-Course) for some useful tips.
 
-## 2.3 Install Graphitti
+## 1.2.3 Install Graphitti
 
 In order to compile and run Graphitti, you will need to set up a couple things in the **CMakeLists.txt** first. 
 
@@ -54,7 +54,10 @@ In order to compile and run Graphitti, you will need to set up a couple things i
    - [nvcc](http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/#axzz4ftSRZe00): if you are using GPU for high performance, nvcc is the compiler by Nvidia for use with CUDA
 
 ---------
-[>> Next: 3. Quickstart](03_quickstart.md)
+[>> Next: 1.3 Quickstart](quickstart.md)
+
+-------------
+[<< Go back to User Documentation page](index.md)
 
 ---------
 [<< Go back to Graphitti home page](http://uwb-biocomputing.github.io/Graphitti/)

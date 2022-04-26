@@ -1,4 +1,4 @@
-# 4.  Configuring the model
+# 1.4  Configuring the model
 
 Now that you have run through a quick test and made sure you have a working Graphitti repository, it is time to learn how to use it!
 
@@ -12,7 +12,7 @@ We will be going through this in a few steps:
 
 Ready? Okay.
 
-## 4.1 Inside the Config files
+## 1.4.1 Inside the Config files
 
 There are two config files needed to run a simulation on Graphitti:
 
@@ -23,7 +23,7 @@ First, we are going to go through using a built-in model. This is by far the eas
 
 If on the other hand, you have a more complicated model in mind - such as using different types of neurotransmitters, then you will have to get your hands dirty writing some C++ code. Don't worry though, I'll walk you through that too.
 
-## 4.2.2 Use built-in models
+## 1.4.2 Use built-in models
 
 Let's go through the steps required to use a built-in model.
 
@@ -144,6 +144,8 @@ The next set of parameters is the ModelParams. These parameters are specific to 
 * **Layout Params**: Another node to populate. Its only parameter is:
     + **FixedLayoutParams**: As you can see from the helpful comment, the simulator will use this if specified, rather than randomly placing the neurons.
 
+-------------
+[<< Go back to User Documentation page](index.md)
 
 ---------
 [<< Go back to Graphitti home page](http://uwb-biocomputing.github.io/Graphitti/)

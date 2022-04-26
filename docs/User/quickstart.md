@@ -1,6 +1,6 @@
-# 3. Quickstart
+# 1.3 Quickstart
 
-## 3.1 Quick Sanity Test
+## 1.3.1 Quick Sanity Test
 
 As a quick start and sanity test, let's run a small, prepackaged simulation to make sure everything is good to go. 
 
@@ -37,7 +37,7 @@ As a quick start and sanity test, let's run a small, prepackaged simulation to m
    </OutputParams>
    ```
 
-   The details of configuration file will be discussed in the next section [4. Configuration](04_configuration.md).
+   The details of configuration file will be discussed in the next section [1.4 Configuration](configuration.md).
 
 
 4. Run it with one of our numerous test files 
@@ -56,7 +56,7 @@ The run time of this test is small-ish on a fast computer (maybe a couple minute
 
 If you want to run a real test, you could use test-small-connected.xml, but be noted that using the single threaded version of this (or any larger test) will result in hours of waiting, but the output will be much more interesting. You can take a look at the next section on **Screen** for how to deal with these wait times.
 
-## 3.2 Use of Screen 
+## 1.3.2 Use of Screen 
 
 When you run a simulation with Graphitti, you may not want to wait around for it to run to completion. This is especially true if running it remotely. To help with this, you can use the built in `screen` command in Linux.
 
@@ -89,7 +89,10 @@ The `screen` command will essentially allow you to start a simulation and then d
 
 
 -------------
-[>> Next: 4. Configuration](04_configuration.md)
+[>> Next: 1.4 Configuration](configuration.md)
+
+-------------
+[<< Go back to User Documentation page](index.md)
 
 -------------
 [<< Go back to Graphitti home page](http://uwb-biocomputing.github.io/Graphitti/)
