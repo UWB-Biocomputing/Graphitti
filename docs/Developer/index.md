@@ -33,7 +33,7 @@ Please adhere to our [coding conventions](codingConventions.md). Your pull reque
 - Doxygen
     - Documentation generated from source code
     - Doxygen provides web-based indices and hierarchical views of Graphitti's class and file structures
-    - [Visit Doxygen Generated Documentation](../Doxygen/html/index.html)
+    - [Visit Doxygen Generated Documentation](https://uwb-biocomputing.github.io/Graphitti/Doxygen/html/index.html)
     - Document code in the `.h` file using the [Doxygen Style Guide](../Doxygen/DoxygenStyleGuide.md) format
     - [Doxygen Update Guide](../Doxygen/DoxygenUpdateGuide.md)
 - [Event buffering](eventBuffering.md) in vertex classes.

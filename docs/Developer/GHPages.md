@@ -6,11 +6,11 @@ The Graphitti team uses GitHub pages as a way to publish documentation of the sy
 
 As with all other development on the Graphitti repository, please follow our [contributing guide](../../CONTRIBUTING.md). Do not edit the gh-pages or master branch directly.
 
-When making edits and changes to the GitHub Pages, you'll create a new feature branch for a specified issue within the repository's [issue tab](https://github.com/UWB-Biocomputing/Graphitti/issues). Once the issue and branch have been created, you are ready to start making your edits to the pages.
+When making edits and changes to the GitHub Pages, you'll create a new feature branch from the master branch, for a specified issue within the repository's [issue tab](https://github.com/UWB-Biocomputing/Graphitti/issues). Once the issue and branch have been created, you are ready to start making your edits to the pages.
 
 We use markdown files in order to render our documentation in a web browser. These files follow a relatively simple syntax of which a guide can be found [here](https://www.markdownguide.org/basic-syntax/) for.
 
-Once you've completed your edits and changes, commit them to the branch and obtain approval for merger. The changes will not be seen until the first of the month as per our automation script that publishes the updatede pages. 
+Once you've completed your edits and changes, commit them to the branch and obtain approval for merger. The changes will not be visible from the gh-pages branch until the first of the month as per our automation script that publishes the updated pages. Once merged though, the changes should be seen in the master branch.
 
 ## What is the gh-pages Branch?
 
@@ -46,6 +46,7 @@ The User folder is used for documentation that general Graphitti users. Anyone w
 - Make sure to have a way to preview the markdown files you are making changes to
     - VSCode has some markdown preview enhancements provided as extensions
     - There should also be a built in preview functionality in the upper right hand corner of your VSCode window
+- VSCode has a plantUML plug-in to help view plantUML files as images 
 
 
 
