@@ -5,10 +5,11 @@
 # It contains the same tests as the tests.yml workflow that is executed by a
 # GitHub action on Pull Requests:
 #
-#   1. Runs our unit tests
-#   2. Runs simulations, in parallel, for the test config files defined in the
+#   1. Build Graphitti
+#   2. Runs our unit tests
+#   3. Runs simulations, in parallel, for the test config files defined in the
 #      TEST_FILES array.
-#   3. Verifies that the simulation output files match the known-good output files
+#   4. Verifies that the simulation output files match the known-good output files
 
 BLUE='\033[4;34m'
 RED='\033[0;31m'
@@ -48,6 +49,12 @@ function verify_outputs() {
 }
 
 echo -e "${BLUE}==========================================================${NC}"
+echo -e "${BLUE}|                     GRAPHITTI BUILD                    |${NC}"
+echo -e "${BLUE}==========================================================${NC}"
+cmake ..
+make
+
+echo -e "${BLUE}==========================================================${NC}"
 echo -e "${BLUE}|                        UNIT TESTS                      |${NC}"
 echo -e "${BLUE}==========================================================${NC}"
 ./tests
@@ -62,6 +69,7 @@ run_simulations
 # Wait until simulations finish execution and verify outputs
 echo -e "${BLUE}[ RUN TEST ]${NC} Waiting for simulations to finish..."
 wait
+
 echo
 echo -e "${BLUE}[========]${NC} Start verification"
 verify_outputs
