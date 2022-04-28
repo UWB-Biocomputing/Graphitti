@@ -6,8 +6,8 @@
 # GitHub action on Pull Requests:
 #
 #   1. Runs our unit tests
-#   2. Runs simulations for the test config files defined in the TEST_FILES
-#      array, in parallel.
+#   2. Runs simulations, in parallel, for the test config files defined in the
+#      TEST_FILES array.
 #   3. Verifies that the simulation output files match the known-good output files
 
 BLUE='\033[4;34m'
