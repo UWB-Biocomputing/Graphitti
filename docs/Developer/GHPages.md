@@ -14,7 +14,7 @@ Once you've completed your edits and changes, commit them to the branch and obta
 
 ## What is the gh-pages Branch?
 
-This has to do with how the documents for the GitHub Pages are published. When you make changes and merge them into the master branch, you'll notice those changes don't immediately show up. This is due to the fact that the GitHub action that takes care of the publication is only activated at the first of every month.
+This has to do with how the documents for the GitHub Pages are published. When you make changes and merge them into the master branch, you'll notice those changes don't immediately show up. This is due to the fact that the GitHub action that takes care of the publication is only activated at the first of every month. Or, you can manually activate it by using the publish-gh-pages.yml workflow in the actions tab.
 
 When this publication occurs, all the files within the docs folder are pushed into the gh-pages branch. This branch then becomes the documentation published to the GitHub Pages site. We do this for 2 reasons:
 
