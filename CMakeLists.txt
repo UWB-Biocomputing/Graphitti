@@ -6,9 +6,15 @@ cmake_minimum_required(VERSION 3.12)
 # For GPU:                      For CPU:
 # set(ENABLE_CUDA YES)       set(ENABLE_CUDA NO)                       
 #
+# You can also pass this flag when running cmake from the command line like this:
+#
+#       cmake .. -D ENABLE_CUDA=YES
+#
 # "YES"/GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
-set(ENABLE_CUDA NO)
+if(NOT ENABLE_CUDA)
+        set(ENABLE_CUDA NO)
+endif()
 
 # Creates the Graphitti project with the correct languages, depending on if using GPU or not
 # If using CUDA, also verify the CUDA package and set required CUDA variables
@@ -244,3 +250,6 @@ target_link_libraries(tests gtest gtest_main)
 
 # Link the combined library into the 'tests' executable.
 target_link_libraries(tests combinedLib)
+
+# Clear ENABLE_CUDA from cache so it's reset for subsequent builds
+unset(ENABLE_CUDA CACHE)
