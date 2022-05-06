@@ -19,7 +19,7 @@
 #
 ############################################################################################
 
-# Bash scrip usage message
+# Bash script usage message
 usage="$(basename "$0") [-g] -- Script to Build and Test Graphitti
 
     Defaults to the CPU implementation unless the [-g] flag is specified
@@ -28,7 +28,7 @@ where:
     -g  Builds and tests the GPU implementation (defaults to CPU)
     -h  Prints this help message"
 
-# Check for passed uptions [-g] or [-h]
+# Check for passed options [-g] or [-h]
 BUILD_GPU=false
 GRAPHITTI=./cgraphitti
 while getopts "gh" option
