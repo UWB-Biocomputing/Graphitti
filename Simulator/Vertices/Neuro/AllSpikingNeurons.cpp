@@ -11,57 +11,28 @@
 
 // Default constructor
 AllSpikingNeurons::AllSpikingNeurons() : AllVertices() {
-   hasFired_ = nullptr;
-   spikeCount_ = nullptr;
-   spikeCountOffset_ = nullptr;
-   spikeHistory_ = nullptr;
+
 }
 
 AllSpikingNeurons::~AllSpikingNeurons() {
-   if (size_ != 0) {
-      for (int i = 0; i < size_; i++) {
-         delete[] spikeHistory_[i];
-      }
-
-      delete[] hasFired_;
-      delete[] spikeCount_;
-      delete[] spikeCountOffset_;
-      delete[] spikeHistory_;
-   }
-
-   hasFired_ = nullptr;
-   spikeCount_ = nullptr;
-   spikeCountOffset_ = nullptr;
-   spikeHistory_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories).
 void AllSpikingNeurons::setupVertices() {
    AllVertices::setupVertices();
 
-   // TODO: Rename variables for easier identification
-   hasFired_ = new bool[size_];
-   spikeCount_ = new int[size_];
-   spikeCountOffset_ = new int[size_];
-   spikeHistory_ = new uint64_t *[size_];
+   int maxSpikes = static_cast<int>(Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate());
+   
+   hasFired_.resize(size_, false);
+   vertexEvents_.resize(size_, maxSpikes);
 
-   for (int i = 0; i < size_; ++i) {
-      spikeHistory_[i] = nullptr;
-      hasFired_[i] = false;
-      spikeCount_[i] = 0;
-      spikeCountOffset_[i] = 0;
-   }
-
-   Simulator::getInstance().setPSummationMap(summationMap_);
+   Simulator::getInstance().setPSummationMap(summationMap_); //redundant 
 }
 
 ///  Clear the spike counts out of all Neurons.
 void AllSpikingNeurons::clearSpikeCounts() {
-   int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
-
-   for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      spikeCountOffset_[i] = (spikeCount_[i] + spikeCountOffset_[i]) % maxSpikes;
-      spikeCount_[i] = 0;
+   for (int i = 0; i < vertexEvents_.size(); i++) {
+      vertexEvents_[i].clear();
    }
 }
 
@@ -86,7 +57,7 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap *
          LOG4CPLUS_DEBUG(vertexLogger_, "Neuron: " << idx << " has fired at time: "
                         << g_simulationStep * Simulator::getInstance().getDeltaT());
 
-         assert(spikeCount_[idx] < maxSpikes);
+         assert(vertexEvents_[idx].getNumEventsInEpoch() < maxSpikes);
 
          // notify outgoing synapses
          BGSIZE synapseCounts;
@@ -125,34 +96,34 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap *
 ///  Fire the selected Neuron and calculate the result.
 ///
 ///  @param  index       Index of the Neuron to update.
-void AllSpikingNeurons::fire(const int index) const {
+void AllSpikingNeurons::fire(const int index){
    // Note that the neuron has fired!
    hasFired_[index] = true;
-
-   // record spike time
-   int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
-   int idxSp = (spikeCount_[index] + spikeCountOffset_[index]) % maxSpikes;
-   spikeHistory_[index][idxSp] = g_simulationStep;
-
-   // increment spike count and total spike count
-   spikeCount_[index]++;
+   vertexEvents_[index].insertEvent(g_simulationStep);
 }
 
 ///  Get the spike history of neuron[index] at the location offIndex.
 ///  More specifically, retrieves the global simulation time step for the spike
 ///  in question from the spike history record.
-///  
-///  TODO: need to document clearly how spikeHistory_ is updated, when/if it gets
-///  cleared/dumped to file, and how the actual index (idxSp) computation works,
-///  as it is very unobvious.
 ///
 ///  @param  index            Index of the neuron to get spike history.
-///  @param  offIndex         Offset of the history buffer to get from.
+///  @param  offIndex     Offset of the history buffer to get from. This indicates how many spikes
+///                    in the past we are looking, so it must be a negative number (i.e., it is relative
+///                    to the "current time", i.e., one location past the most recent spike). So, the
+///                    most recent spike is offIndex = -1
 uint64_t AllSpikingNeurons::getSpikeHistory(int index, int offIndex) {
    // offIndex is a minus offset
-   int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
-   int idxSp = (spikeCount_[index] + spikeCountOffset_[index] + maxSpikes + offIndex) % maxSpikes;
-   return spikeHistory_[index][idxSp];
+   // This computes the index of a spike in the past (i.e., the most recent spike,
+   // two spikes ago, etc). It starts with `spikeCountOffset_ + spikeCount_`,
+   // which I believe at the end of an epoch should be one past the end of that
+   // neuron's spikes in `spikeHistory_`. Then, the maximum number of spikes per
+   // epoch is added. Then, the `offIndex` parameter is added. The expectation
+   // is that `offIndex` will be a negative number (i.e., a spike in the past);
+   // the reason that the max spikes value is added is to prevent this from
+   // producing a negative total, so that finally taking mod max spikes will
+   // "wrap around backwards" if needed.
+   
+   return vertexEvents_[index].getPastEvent(offIndex);
 }
 
 #endif
