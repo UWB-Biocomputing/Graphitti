@@ -70,7 +70,7 @@ void AllLIFNeurons::advanceNeuron(const int index) {
 ///  Fire the selected Neuron and calculate the result.
 ///
 ///  @param  index       Index of the Neuron to update.
-void AllLIFNeurons::fire(const int index) const {
+void AllLIFNeurons::fire(const int index){
     const BGFLOAT deltaT = Simulator::getInstance().getDeltaT();
     AllSpikingNeurons::fire(index);
 
