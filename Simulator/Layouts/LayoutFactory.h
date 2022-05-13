@@ -8,21 +8,20 @@
 
 #pragma once
 
+#include "Global.h"
+#include "Layout.h"
 #include <map>
 #include <memory>
 #include <string>
 
-#include "Global.h"
-#include "Layout.h"
-
 using namespace std;
 
 class LayoutFactory {
-
 public:
    ~LayoutFactory();
 
-   static LayoutFactory *getInstance() {
+   static LayoutFactory *getInstance()
+   {
       static LayoutFactory instance;
       return &instance;
    }

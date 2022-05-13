@@ -14,27 +14,26 @@
 #pragma once
 
 #ifndef _HOSTSINPUTPOISSON_H_
-#define _HOSTSINPUTPOISSON_H_
+   #define _HOSTSINPUTPOISSON_H_
 
-#include "SInputPoisson.h"
+   #include "SInputPoisson.h"
 
-class HostSInputPoisson : public SInputPoisson
-{
+class HostSInputPoisson : public SInputPoisson {
 public:
-    // The constructor for HostSInputPoisson.
-    HostSInputPoisson(TiXmlElement* parms);
-    ~HostSInputPoisson();
+   // The constructor for HostSInputPoisson.
+   HostSInputPoisson(TiXmlElement *parms);
+   ~HostSInputPoisson();
 
-    // Initialize data.
-    virtual void init();
+   // Initialize data.
+   virtual void init();
 
-    // Terminate process.
-    virtual void term();
+   // Terminate process.
+   virtual void term();
 
-    // Process input stimulus for each time step.
-    virtual void inputStimulus();
+   // Process input stimulus for each time step.
+   virtual void inputStimulus();
 
 private:
 };
 
-#endif // _HOSTSINPUTPOISSON_H_
+#endif   // _HOSTSINPUTPOISSON_H_

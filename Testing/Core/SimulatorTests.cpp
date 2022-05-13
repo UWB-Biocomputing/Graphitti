@@ -6,24 +6,26 @@
  * @ingroup Testing/Core
  */
 
-#include "gtest/gtest.h"
-
 #include "ParameterManager.h"
 #include "Simulator.h"
+#include "gtest/gtest.h"
 #include <iostream>
 
 using namespace std;
 
-TEST(Simulator, GetInstanceSuccess) {
+TEST(Simulator, GetInstanceSuccess)
+{
    Simulator *simulator = &Simulator::getInstance();
    ASSERT_TRUE(simulator != nullptr);
 }
 
-TEST(Simulator, PrintParameters) {
+TEST(Simulator, PrintParameters)
+{
    EXPECT_NO_FATAL_FAILURE(Simulator::getInstance().printParameters());
 }
 
-TEST(Simulator, ParametersInitializedSuccessfully) {
+TEST(Simulator, ParametersInitializedSuccessfully)
+{
    ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml");
    Simulator::getInstance().loadParameters();
 

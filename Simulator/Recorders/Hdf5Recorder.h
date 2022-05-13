@@ -19,20 +19,20 @@
 
 #if defined(HDF5)
 
-#include <fstream>
-#include "IRecorder.h"
-#include "Model.h"
-#include "H5Cpp.h"
+   #include "H5Cpp.h"
+   #include "IRecorder.h"
+   #include "Model.h"
+   #include <fstream>
 
-#ifndef H5_NO_NAMESPACE
+   #ifndef H5_NO_NAMESPACE
 using namespace H5;
-#endif
+   #endif
 
-#ifdef SINGLEPRECISION
-#define H5_FLOAT PredType::NATIVE_FLOAT
-#else
-#define H5_FLOAT PredType::NATIVE_DOUBLE
-#endif
+   #ifdef SINGLEPRECISION
+      #define H5_FLOAT PredType::NATIVE_FLOAT
+   #else
+      #define H5_FLOAT PredType::NATIVE_DOUBLE
+   #endif
 
 class Hdf5Recorder : public IRecorder {
 public:
@@ -41,7 +41,10 @@ public:
 
    ~Hdf5Recorder();
 
-   static IRecorder* Create() { return new Hdf5Recorder(); }
+   static IRecorder *Create()
+   {
+      return new Hdf5Recorder();
+   }
 
    /// Initialize data
    ///
@@ -69,7 +72,7 @@ public:
    ///
    /// @param  neurons the Neuron list to search from.
    virtual void saveSimData(const AllVertices &neurons) override;
-   
+
    /// Prints out all parameters to logging file.
    /// Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
@@ -98,10 +101,10 @@ protected:
    DataSet *dataSetProbedNeurons_;
 
    /// Keep track of where we are in incrementally writing spikes
-   hsize_t* offsetSpikesProbedNeurons_;
+   hsize_t *offsetSpikesProbedNeurons_;
 
    /// burstiness Histogram goes through the
-   int* burstinessHist_;
+   int *burstinessHist_;
 
    /// spikes history - history of accumulated spikes count of all neurons (10 ms bin)
    int *spikesHistory_;
@@ -110,4 +113,4 @@ protected:
    vector<uint64_t> *spikesProbedNeurons_;
 };
 
-#endif //HDF5
+#endif   //HDF5

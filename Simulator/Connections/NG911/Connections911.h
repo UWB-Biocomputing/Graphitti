@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "Global.h"
 #include "Connections.h"
+#include "Global.h"
 #include "Simulator.h"
 #include <vector>
 
@@ -25,7 +25,10 @@ public:
    ///  Creates an instance of the class.
    ///
    ///  @return Reference to the instance of the class.
-   static Connections *Create() { return new Connections911(); }
+   static Connections *Create()
+   {
+      return new Connections911();
+   }
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///  Initialize the network characterized by parameters:
@@ -112,13 +115,19 @@ private:
 #else
 public:
    // Not Implemented; Placeholder for GPU build
-   string erasedVerticesToXML() { return ""; };
-   string changedEdgesToXML(bool added) { return ""; };
+   string erasedVerticesToXML()
+   {
+      return "";
+   };
+   string changedEdgesToXML(bool added)
+   {
+      return "";
+   };
 
 private:
    // Not Implemented; Placeholder for GPU build
-   struct ChangedEdge {};
+   struct ChangedEdge {
+   };
 
 #endif
-
 };

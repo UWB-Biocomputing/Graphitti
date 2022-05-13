@@ -27,7 +27,10 @@ public:
    ///  Creates an instance of the class.
    ///
    ///  @return Reference to the instance of the class.
-   static Layout *Create() { return new Layout911(); }
+   static Layout *Create()
+   {
+      return new Layout911();
+   }
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters() override;
@@ -57,9 +60,4 @@ public:
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
    virtual edgeType edgType(const int srcVertex, const int destVertex) override;
-
-
-
-
 };
-

@@ -60,7 +60,10 @@ public:
    ///  Creates an instance of the class.
    ///
    ///  @return Reference to the instance of the class.
-   static MTRand *Create() { return new Norm(); }
+   static MTRand *Create()
+   {
+      return new Norm();
+   }
 
    /*!
       The constructor allows specification of the mean,
@@ -78,7 +81,7 @@ public:
       distributed random numbers. Just a cute way of doing things.
       @return pseudorandom number drawn from a normal distribution.
    */
-   virtual BGFLOAT operator() (void) override;
+   virtual BGFLOAT operator()(void) override;
 
    /// Allow Norm re-seeding (with same behavior as initializers)
    void seed(BGFLOAT m, BGFLOAT s, uint32_t seed);

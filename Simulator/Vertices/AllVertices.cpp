@@ -10,23 +10,27 @@
 #include "OperationManager.h"
 
 // Default constructor
-AllVertices::AllVertices() : size_(0) {
+AllVertices::AllVertices() : size_(0)
+{
    summationMap_ = nullptr;
 
    // Register loadParameters function as a loadParameters operation in the Operation Manager
    function<void()> loadParametersFunc = std::bind(&AllVertices::loadParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, loadParametersFunc);
+   OperationManager::getInstance().registerOperation(Operations::op::loadParameters,
+                                                     loadParametersFunc);
 
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&AllVertices::printParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+   OperationManager::getInstance().registerOperation(Operations::printParameters,
+                                                     printParametersFunc);
 
    // Get a copy of the file and vertex logger to use log4cplus macros to print to debug files
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    vertexLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));
 }
 
-AllVertices::~AllVertices() {
+AllVertices::~AllVertices()
+{
    if (size_ != 0) {
       delete[] summationMap_;
    }
@@ -37,7 +41,8 @@ AllVertices::~AllVertices() {
 }
 
 ///  Setup the internal structure of the class (allocate memories).
-void AllVertices::setupVertices() {
+void AllVertices::setupVertices()
+{
    size_ = Simulator::getInstance().getTotalVertices();
    summationMap_ = new BGFLOAT[size_];
 
@@ -50,6 +55,7 @@ void AllVertices::setupVertices() {
 
 ///  Prints out all parameters of the vertices to logging file.
 ///  Registered to OperationManager as Operation::printParameters
-void AllVertices::printParameters() const {
+void AllVertices::printParameters() const
+{
    LOG4CPLUS_DEBUG(fileLogger_, "\nVERTICES PARAMETERS");
 }

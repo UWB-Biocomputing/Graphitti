@@ -21,8 +21,8 @@
  */
 #pragma once
 
-#include "AllEdges.h"
 #include "All911Vertices.h"
+#include "AllEdges.h"
 
 
 struct All911EdgeDeviceProperties;
@@ -38,7 +38,10 @@ public:
    ///  Creates an instance of the class.
    ///
    ///  @return Reference to the instance of the class.
-   static AllEdges *Create() { return new All911Edges(); }
+   static AllEdges *Create()
+   {
+      return new All911Edges();
+   }
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    virtual void setupEdges() override;
@@ -51,31 +54,32 @@ public:
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Edge to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-                              edgeType type) override;
+   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
+                           const BGFLOAT deltaT, edgeType type) override;
 
 protected:
-
 #if defined(USE_GPU)
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract
-   public:
-       virtual void allocEdgeDeviceStruct(void** allEdgesDevice) {};
-       virtual void allocEdgeDeviceStruct( void** allEdgesDevice, int numVertices, int maxEdgesPerVertex ) {};
-       virtual void deleteEdgeDeviceStruct( void* allEdgesDevice ) {};
-       virtual void copyEdgeHostToDevice(void* allEdgesDevice) {};
-       virtual void copyEdgeHostToDevice( void* allEdgesDevice, int numVertices, int maxEdgesPerVertex ) {};
-       virtual void copyEdgeDeviceToHost( void* allEdgesDevice) {};
-       virtual void copyDeviceEdgeCountsToHost(void* allEdgesDevice) {};
-       virtual void copyDeviceEdgeSumIdxToHost(void* allEdgesDevice) {};
-       virtual void advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) {};
-       virtual void setAdvanceEdgesDeviceParams() {};
-       virtual void setEdgeClassID() {};
-       virtual void printGPUEdgesProps( void* allEdgesDeviceProps ) const {};
-
-#else // !defined(USE_GPU)
 public:
+   virtual void allocEdgeDeviceStruct(void **allEdgesDevice) {};
+   virtual void allocEdgeDeviceStruct(void **allEdgesDevice, int numVertices,
+                                      int maxEdgesPerVertex) {};
+   virtual void deleteEdgeDeviceStruct(void *allEdgesDevice) {};
+   virtual void copyEdgeHostToDevice(void *allEdgesDevice) {};
+   virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices,
+                                     int maxEdgesPerVertex) {};
+   virtual void copyEdgeDeviceToHost(void *allEdgesDevice) {};
+   virtual void copyDeviceEdgeCountsToHost(void *allEdgesDevice) {};
+   virtual void copyDeviceEdgeSumIdxToHost(void *allEdgesDevice) {};
+   virtual void advanceEdges(void *allEdgesDevice, void *allVerticesDevice,
+                             void *edgeIndexMapDevice) {};
+   virtual void setAdvanceEdgesDeviceParams() {};
+   virtual void setEdgeClassID() {};
+   virtual void printGPUEdgesProps(void *allEdgesDeviceProps) const {};
 
+#else   // !defined(USE_GPU)
+public:
    ///  Advance all the edges in the simulation.
    ///
    ///  @param  vertices           The vertex list to search from.

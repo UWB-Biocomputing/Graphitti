@@ -8,19 +8,20 @@
 
 #include "All911Edges.h"
 
-All911Edges::All911Edges() : AllEdges() {
-
+All911Edges::All911Edges() : AllEdges()
+{
 }
 
-All911Edges::All911Edges(const int numVertices, const int maxEdges) {
-
+All911Edges::All911Edges(const int numVertices, const int maxEdges)
+{
 }
 
-All911Edges::~All911Edges() {
-
+All911Edges::~All911Edges()
+{
 }
 
-void All911Edges::setupEdges() {
+void All911Edges::setupEdges()
+{
    int numVertices = Simulator::getInstance().getTotalVertices();
    int maxEdges = Simulator::getInstance().getMaxEdgesPerVertex();
 
@@ -53,13 +54,14 @@ void All911Edges::setupEdges() {
    }
 }
 
-void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-                              edgeType type) {
+void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
+                             const BGFLOAT deltaT, edgeType type)
+{
    inUse_[iEdg] = true;
    summationPoint_[iEdg] = sumPoint;
    destVertexIndex_[iEdg] = destVertex;
    sourceVertexIndex_[iEdg] = srcVertex;
-   W_[iEdg] = 10; // Figure this out
+   W_[iEdg] = 10;   // Figure this out
    this->type_[iEdg] = type;
 }
 
@@ -69,14 +71,16 @@ void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, B
 ///
 ///  @param  vertices           The vertex list to search from.
 ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
-void All911Edges::advanceEdges(AllVertices *vertices, EdgeIndexMap *edgeIndexMap) {
+void All911Edges::advanceEdges(AllVertices *vertices, EdgeIndexMap *edgeIndexMap)
+{
    All911Vertices *allVertices = dynamic_cast<All911Vertices *>(vertices);
    for (BGSIZE i = 0; i < totalEdgeCount_; i++) {
-      if(!inUse_[i]) {continue;}
+      if (!inUse_[i]) {
+         continue;
+      }
       // if the edge is in use...
       BGSIZE iEdg = edgeIndexMap->incomingEdgeIndexMap_[i];
       advance911Edge(iEdg, allVertices);
-
    }
 }
 
@@ -84,10 +88,10 @@ void All911Edges::advanceEdges(AllVertices *vertices, EdgeIndexMap *edgeIndexMap
 ///
 ///  @param  iEdg      Index of the edge to connect to.
 ///  @param  vertices   The vertex list to search from.
-void All911Edges::advance911Edge(const BGSIZE iEdg, All911Vertices *vertices) {
-   
-  // edge
-  // source node   -->   destination node 
+void All911Edges::advance911Edge(const BGSIZE iEdg, All911Vertices *vertices)
+{
+   // edge
+   // source node   -->   destination node
 
    // // is an input in the queue?
    // bool fPre = isSpikeQueue(iEdg);
@@ -137,7 +141,6 @@ void All911Edges::advance911Edge(const BGSIZE iEdg, All911Vertices *vertices) {
    //       int offIndex = -1;   // last spike
    //    }
    // }
-
 }
 
 #endif

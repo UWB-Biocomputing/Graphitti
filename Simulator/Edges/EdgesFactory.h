@@ -8,21 +8,20 @@
 
 #pragma once
 
+#include "AllEdges.h"
+#include "Global.h"
 #include <map>
 #include <memory>
 #include <string>
 
-#include "Global.h"
-#include "AllEdges.h"
-
 using namespace std;
 
 class EdgesFactory {
-
 public:
    ~EdgesFactory();
 
-   static EdgesFactory *getInstance() {
+   static EdgesFactory *getInstance()
+   {
       static EdgesFactory instance;
       return &instance;
    }

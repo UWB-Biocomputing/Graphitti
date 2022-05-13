@@ -8,9 +8,9 @@
 
 #if defined(HDF5)
 
-#include "Hdf5GrowthRecorder.h"
-#include "AllIFNeurons.h"      // TODO: remove LIF model specific code
-#include "ConnGrowth.h"
+   #include "Hdf5GrowthRecorder.h"
+   #include "AllIFNeurons.h"   // TODO: remove LIF model specific code
+   #include "ConnGrowth.h"
 
 // hdf5 dataset name
 const H5std_string nameRatesHist("ratesHistory");
@@ -23,13 +23,15 @@ Hdf5GrowthRecorder::Hdf5GrowthRecorder()
 {
 }
 
-Hdf5GrowthRecorder::~Hdf5GrowthRecorder() {
+Hdf5GrowthRecorder::~Hdf5GrowthRecorder()
+{
 }
 
 ///  Create data spaces and data sets of the hdf5 for recording histories.
-void Hdf5GrowthRecorder::initDataSet() {
+void Hdf5GrowthRecorder::initDataSet()
+{
    Hdf5Recorder::initDataSet();
-   Simulator& simulator = Simulator::getInstance();
+   Simulator &simulator = Simulator::getInstance();
 
    // create the data space & dataset for rates history
    hsize_t dims[2];
@@ -50,8 +52,9 @@ void Hdf5GrowthRecorder::initDataSet() {
 }
 
 /// Init radii and rates history matrices with default values
-void Hdf5GrowthRecorder::initDefaultValues() {
-   Simulator& simulator = Simulator::getInstance();
+void Hdf5GrowthRecorder::initDefaultValues()
+{
+   Simulator &simulator = Simulator::getInstance();
    shared_ptr<Model> model = simulator.getModel();
 
    shared_ptr<Connections> connections = model->getConnections();
@@ -68,8 +71,9 @@ void Hdf5GrowthRecorder::initDefaultValues() {
 }
 
 /// Init radii and rates history matrices with current radii and rates
-void Hdf5GrowthRecorder::initValues() {
-   Simulator& simulator = Simulator::getInstance();
+void Hdf5GrowthRecorder::initValues()
+{
+   Simulator &simulator = Simulator::getInstance();
    shared_ptr<Model> model = simulator.getModel();
 
    shared_ptr<Connections> connections = model->getConnections();
@@ -85,7 +89,8 @@ void Hdf5GrowthRecorder::initValues() {
 }
 
 /// Get the current radii and rates values
-void Hdf5GrowthRecorder::getValues() {
+void Hdf5GrowthRecorder::getValues()
+{
    shared_ptr<Model> model = Simulator::getInstance().getModel();
    shared_ptr<Connections> connections = model->getConnections();
 
@@ -96,7 +101,8 @@ void Hdf5GrowthRecorder::getValues() {
 }
 
 /// Terminate process
-void Hdf5GrowthRecorder::term() {
+void Hdf5GrowthRecorder::term()
+{
    // deallocate all objects
    delete[] ratesHistory_;
    delete[] radiiHistory_;
@@ -107,7 +113,8 @@ void Hdf5GrowthRecorder::term() {
 /// Compile history information in every epoch.
 ///
 /// @param[in] neurons   The entire list of neurons.
-void Hdf5GrowthRecorder::compileHistories(AllVertices &neurons) {
+void Hdf5GrowthRecorder::compileHistories(AllVertices &neurons)
+{
    Hdf5Recorder::compileHistories(neurons);
 
    shared_ptr<Model> model = Simulator::getInstance().getModel();
@@ -140,79 +147,75 @@ void Hdf5GrowthRecorder::compileHistories(AllVertices &neurons) {
 /// Incrementaly write radii and rates histories
 void Hdf5GrowthRecorder::writeRadiiRates()
 {
-    try
-    {
-        // Write radii and rates histories information:
-        hsize_t offset[2], count[2];
-        hsize_t dimsm[2];
-        DataSpace* dataspace;
-        DataSpace* memspace;
+   try {
+      // Write radii and rates histories information:
+      hsize_t offset[2], count[2];
+      hsize_t dimsm[2];
+      DataSpace *dataspace;
+      DataSpace *memspace;
 
-        // write radii history
-        offset[0] = Simulator::getInstance().getCurrentStep();
-        offset[1] = 0;
-        count[0] = 1;
-        count[1] = Simulator::getInstance().getTotalVertices();
-        dimsm[0] = 1;
-        dimsm[1] = Simulator::getInstance().getTotalVertices();
-        memspace = new DataSpace(2, dimsm, nullptr);
-        dataspace = new DataSpace(dataSetRadiiHist_->getSpace());
-        dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
-        dataSetRadiiHist_->write(radiiHistory_, H5_FLOAT, *memspace, *dataspace);
-        delete dataspace;
-        delete memspace;
+      // write radii history
+      offset[0] = Simulator::getInstance().getCurrentStep();
+      offset[1] = 0;
+      count[0] = 1;
+      count[1] = Simulator::getInstance().getTotalVertices();
+      dimsm[0] = 1;
+      dimsm[1] = Simulator::getInstance().getTotalVertices();
+      memspace = new DataSpace(2, dimsm, nullptr);
+      dataspace = new DataSpace(dataSetRadiiHist_->getSpace());
+      dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
+      dataSetRadiiHist_->write(radiiHistory_, H5_FLOAT, *memspace, *dataspace);
+      delete dataspace;
+      delete memspace;
 
-        // write rates history
-        offset[0] = Simulator::getInstance().getCurrentStep();
-        offset[1] = 0;
-        count[0] = 1;
-        count[1] = Simulator::getInstance().getTotalVertices();
-        dimsm[0] = 1;
-        dimsm[1] = Simulator::getInstance().getTotalVertices();
-        memspace = new DataSpace(2, dimsm, nullptr);
-        dataspace = new DataSpace(dataSetRadiiHist_->getSpace());
-        dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
-        dataSetRatesHist_->write(ratesHistory_, H5_FLOAT, *memspace, *dataspace);
-        delete dataspace;
-        delete memspace;
-    }
-    
-    // catch failure caused by the H5File operations
-    catch( FileIException error )
-    {
-        error.printErrorStack();
-        return;
-    }
+      // write rates history
+      offset[0] = Simulator::getInstance().getCurrentStep();
+      offset[1] = 0;
+      count[0] = 1;
+      count[1] = Simulator::getInstance().getTotalVertices();
+      dimsm[0] = 1;
+      dimsm[1] = Simulator::getInstance().getTotalVertices();
+      memspace = new DataSpace(2, dimsm, nullptr);
+      dataspace = new DataSpace(dataSetRadiiHist_->getSpace());
+      dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
+      dataSetRatesHist_->write(ratesHistory_, H5_FLOAT, *memspace, *dataspace);
+      delete dataspace;
+      delete memspace;
+   }
 
-    // catch failure caused by the DataSet operations
-    catch( DataSetIException error )
-    {
-        error.printErrorStack();
-        return;
-    }
+   // catch failure caused by the H5File operations
+   catch (FileIException error) {
+      error.printErrorStack();
+      return;
+   }
 
-    // catch failure caused by the DataSpace operations
-    catch( DataSpaceIException error )
-    {
-        error.printErrorStack();
-        return;
-    }
+   // catch failure caused by the DataSet operations
+   catch (DataSetIException error) {
+      error.printErrorStack();
+      return;
+   }
 
-    // catch failure caused by the DataType operations
-    catch( DataTypeIException error )
-    {
-        error.printErrorStack();
-        return;
-    }
+   // catch failure caused by the DataSpace operations
+   catch (DataSpaceIException error) {
+      error.printErrorStack();
+      return;
+   }
+
+   // catch failure caused by the DataType operations
+   catch (DataTypeIException error) {
+      error.printErrorStack();
+      return;
+   }
 }
 
 ///  Prints out all parameters to logging file.
 ///  Registered to OperationManager as Operation::printParameters
-void Hdf5GrowthRecorder::printParameters() {
-   
-   LOG4CPLUS_DEBUG(fileLogger_, "\n---Hdf5GrowthRecorder Parameters---" << endl
-                   << "\tRecorder type: Hdf5GrowthRecorder" << endl);
+void Hdf5GrowthRecorder::printParameters()
+{
+   LOG4CPLUS_DEBUG(fileLogger_, "\n---Hdf5GrowthRecorder Parameters---"
+                                   << endl
+                                   << "\tRecorder type: Hdf5GrowthRecorder" << endl);
 }
 
 
-#endif // HDF5
+#endif   // HDF5

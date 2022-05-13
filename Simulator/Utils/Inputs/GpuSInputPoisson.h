@@ -14,53 +14,55 @@
 #pragma once
 
 #ifndef _GPUSINPUTPOISSON_H_
-#define _GPUSINPUTPOISSON_H_
+   #define _GPUSINPUTPOISSON_H_
 
-#include "SInputPoisson.h"
-#include "GPUModel.h"
-#include "AllSynapsesDeviceFuncs.h"
+   #include "AllSynapsesDeviceFuncs.h"
+   #include "GPUModel.h"
+   #include "SInputPoisson.h"
 
-class GpuSInputPoisson : public SInputPoisson
-{
+class GpuSInputPoisson : public SInputPoisson {
 public:
-    //! The constructor for GpuSInputPoisson.
-    GpuSInputPoisson(TiXmlElement* parms);
-    ~GpuSInputPoisson();
+   //! The constructor for GpuSInputPoisson.
+   GpuSInputPoisson(TiXmlElement *parms);
+   ~GpuSInputPoisson();
 
-    //! Initialize data.
-    virtual void init();
+   //! Initialize data.
+   virtual void init();
 
-    //! Terminate process.
-    virtual void term();
+   //! Terminate process.
+   virtual void term();
 
-    //! Process input stimulus for each time step.
-    virtual void inputStimulus();
+   //! Process input stimulus for each time step.
+   virtual void inputStimulus();
 
 private:
-    //! Allocate GPU device memory and copy values
-    void allocDeviceValues(Model* model, int *deviceInteralCounter_);
+   //! Allocate GPU device memory and copy values
+   void allocDeviceValues(Model *model, int *deviceInteralCounter_);
 
-    //! Dellocate GPU device memory
-    void deleteDeviceValues(Model* model);
+   //! Dellocate GPU device memory
+   void deleteDeviceValues(Model *model);
 
-    //! Synapse structures in device memory.
-    AllDSSynapsesDeviceProperties* allEdgesDevice;
- 
-    //! Pointer to synapse index map in device memory.
-    EdgeIndexMap* edgeIndexMapDevice;
+   //! Synapse structures in device memory.
+   AllDSSynapsesDeviceProperties *allEdgesDevice;
 
-    //! Pointer to device interval counter.
-    int* deviceInteralCounter_;
+   //! Pointer to synapse index map in device memory.
+   EdgeIndexMap *edgeIndexMapDevice;
 
-    //! Pointer to device masks for stimulus input
-    bool* deviceMasks_;
+   //! Pointer to device interval counter.
+   int *deviceInteralCounter_;
+
+   //! Pointer to device masks for stimulus input
+   bool *deviceMasks_;
 };
 
-#if defined(__CUDACC__)
+   #if defined(__CUDACC__)
 //! Device function that processes input stimulus for each time step.
-extern __global__ void inputStimulusDevice( int n, int* deviceInteralCounter_, bool* deviceMasks_, BGFLOAT deltaT, BGFLOAT lambda, curandState* devStates_d, AllDSSynapsesDeviceProperties* allEdgesDevice );
-extern __global__ void applyI2SummationMap( int n, BGFLOAT* summationPoint_d, AllDSSynapsesDeviceProperties* allEdgesDevice );
-extern __global__ void setupSeeds( int n, curandState* devStates_d, unsigned long seed );
-#endif
+extern __global__ void inputStimulusDevice(int n, int *deviceInteralCounter_, bool *deviceMasks_,
+                                           BGFLOAT deltaT, BGFLOAT lambda, curandState *devStates_d,
+                                           AllDSSynapsesDeviceProperties *allEdgesDevice);
+extern __global__ void applyI2SummationMap(int n, BGFLOAT *summationPoint_d,
+                                           AllDSSynapsesDeviceProperties *allEdgesDevice);
+extern __global__ void setupSeeds(int n, curandState *devStates_d, unsigned long seed);
+   #endif
 
-#endif // _GPUSINPUTPOISSON_H_
+#endif   // _GPUSINPUTPOISSON_H_

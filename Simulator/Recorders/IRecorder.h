@@ -8,21 +8,21 @@
 
 #pragma once
 
-#include <string>
-
-#include <log4cplus/loggingmacros.h>
-
+#include "AllVertices.h"
 #include "Global.h"
 #include "Model.h"
 #include "Simulator.h"
-#include "AllVertices.h"
+#include <log4cplus/loggingmacros.h>
+#include <string>
 
 class Model;
 class AllVertices;
 
 class IRecorder {
 public:
-   virtual ~IRecorder() {}
+   virtual ~IRecorder()
+   {
+   }
 
    /// Initialize data
    ///

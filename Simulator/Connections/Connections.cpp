@@ -18,11 +18,12 @@
 #include "Connections.h"
 #include "AllEdges.h"
 #include "AllVertices.h"
+#include "EdgesFactory.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
-#include "EdgesFactory.h"
 
-Connections::Connections() {
+Connections::Connections()
+{
    // Create Edges/Synapses class using type definition in configuration file
    string type;
    ParameterManager::getInstance().getStringByXpath("//EdgesParams/@class", type);
@@ -30,7 +31,8 @@ Connections::Connections() {
 
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&Connections::printParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+   OperationManager::getInstance().registerOperation(Operations::printParameters,
+                                                     printParametersFunc);
 
    // Register loadParameters function with Operation Manager
    function<void()> function = std::bind(&Connections::loadParameters, this);
@@ -41,19 +43,23 @@ Connections::Connections() {
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
 }
 
-Connections::~Connections() {
+Connections::~Connections()
+{
 }
 
-shared_ptr<AllEdges> Connections::getEdges() const {
+shared_ptr<AllEdges> Connections::getEdges() const
+{
    return edges_;
 }
 
-shared_ptr<EdgeIndexMap> Connections::getEdgeIndexMap() const {
+shared_ptr<EdgeIndexMap> Connections::getEdgeIndexMap() const
+{
    return synapseIndexMap_;
 }
 
-void Connections::createEdgeIndexMap() {
-   Simulator& simulator = Simulator::getInstance();
+void Connections::createEdgeIndexMap()
+{
+   Simulator &simulator = Simulator::getInstance();
    int vertexCount = simulator.getTotalVertices();
    int maxEdges = vertexCount * edges_->maxEdgesPerVertex_;
 
@@ -76,12 +82,17 @@ void Connections::createEdgeIndexMap() {
 ///  @param  vertices  The vertex list to search from.
 ///  @param  layout   Layout information of the neural network.
 ///  @return true if successful, false otherwise.
-bool Connections::updateConnections(AllVertices &vertices, Layout *layout) {
+bool Connections::updateConnections(AllVertices &vertices, Layout *layout)
+{
    return false;
 }
 
 #if defined(USE_GPU)
-void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout)
+void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vertices,
+                                        AllEdges &synapses,
+                                        AllSpikingNeuronsDeviceProperties *allVerticesDevice,
+                                        AllSpikingSynapsesDeviceProperties *allEdgesDevice,
+                                        Layout *layout)
 {
 }
 #else
@@ -92,10 +103,12 @@ void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vert
 ///  @param  numVertices  Number of vertices to update.
 ///  @param  vertices     The vertex list to search from.
 ///  @param  synapses    The Synapse list to search from.
-void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &synapses, Layout *layout) {
+void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vertices,
+                                        AllEdges &synapses, Layout *layout)
+{
 }
 
-#endif // !USE_GPU
+#endif   // !USE_GPU
 
 ///  Creates synapses from synapse weights saved in the serialization file.
 ///
@@ -103,13 +116,14 @@ void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vert
 ///  @param  layout      Layout information of the neural network.
 ///  @param  ivertices    The vertex list to search from.
 ///  @param  isynapses   The Synapse list to search from.
-void Connections::createSynapsesFromWeights(const int numVertices, Layout *layout, AllVertices &vertices,
-                                            AllEdges &synapses) {
+void Connections::createSynapsesFromWeights(const int numVertices, Layout *layout,
+                                            AllVertices &vertices, AllEdges &synapses)
+{
    // for each neuron
    for (int i = 0; i < numVertices; i++) {
       // for each synapse in the vertex
-      for (BGSIZE synapseIndex = 0;
-           synapseIndex < Simulator::getInstance().getMaxEdgesPerVertex(); synapseIndex++) {
+      for (BGSIZE synapseIndex = 0; synapseIndex < Simulator::getInstance().getMaxEdgesPerVertex();
+           synapseIndex++) {
          BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * i + synapseIndex;
          // if the synapse weight is not zero (which means there is a connection), create the synapse
          if (synapses.W_[iEdg] != 0.0) {
@@ -119,13 +133,10 @@ void Connections::createSynapsesFromWeights(const int numVertices, Layout *layou
             int destVertex = synapses.destVertexIndex_[iEdg];
             edgeType type = layout->edgType(srcVertex, destVertex);
             synapses.edgeCounts_[i]++;
-            synapses.createEdge(iEdg, srcVertex, destVertex, sumPoint, Simulator::getInstance().getDeltaT(),
-                                   type);
+            synapses.createEdge(iEdg, srcVertex, destVertex, sumPoint,
+                                Simulator::getInstance().getDeltaT(), type);
             synapses.W_[iEdg] = theW;
          }
       }
    }
 }
-
-
-

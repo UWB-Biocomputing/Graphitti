@@ -27,7 +27,7 @@ using namespace std;
 
 struct EdgeIndexMap {
    /// Pointer to the outgoing edge index map.
-   BGSIZE* outgoingEdgeIndexMap_;
+   BGSIZE *outgoingEdgeIndexMap_;
 
    /// The beginning index of the outgoing edge for each vertex.
    /// Indexed by a source vertex index.
@@ -38,7 +38,7 @@ struct EdgeIndexMap {
    BGSIZE *outgoingEdgeCount_;
 
    /// Pointer to the incoming edge index map.
-   BGSIZE* incomingEdgeIndexMap_;
+   BGSIZE *incomingEdgeIndexMap_;
 
    /// The beginning index of the incoming edge for each vertex.
    /// Indexed by a destination vertex index.
@@ -48,7 +48,8 @@ struct EdgeIndexMap {
    /// Indexed by a destination vertex index.
    BGSIZE *incomingEdgeCount_;
 
-   EdgeIndexMap() : numOfVertices_(0), numOfEdges_(0) {
+   EdgeIndexMap() : numOfVertices_(0), numOfEdges_(0)
+   {
       outgoingEdgeBegin_ = nullptr;
       outgoingEdgeCount_ = nullptr;
       incomingEdgeBegin_ = nullptr;
@@ -58,7 +59,9 @@ struct EdgeIndexMap {
       incomingEdgeIndexMap_ = nullptr;
    };
 
-   EdgeIndexMap(int vertexCount, int edgeCount) : numOfVertices_(vertexCount), numOfEdges_(edgeCount) {
+   EdgeIndexMap(int vertexCount, int edgeCount) :
+      numOfVertices_(vertexCount), numOfEdges_(edgeCount)
+   {
       if (numOfVertices_ > 0) {
          outgoingEdgeBegin_ = new BGSIZE[numOfVertices_];
          outgoingEdgeCount_ = new BGSIZE[numOfVertices_];
@@ -72,7 +75,8 @@ struct EdgeIndexMap {
       }
    };
 
-   ~EdgeIndexMap() {
+   ~EdgeIndexMap()
+   {
       if (numOfVertices_ > 0) {
          delete[] outgoingEdgeBegin_;
          delete[] outgoingEdgeCount_;
@@ -86,10 +90,9 @@ struct EdgeIndexMap {
    }
 
 private:
-    /// Number of total vertices.
-    BGSIZE numOfVertices_;
+   /// Number of total vertices.
+   BGSIZE numOfVertices_;
 
-    /// Number of total edges.
-    BGSIZE numOfEdges_;
+   /// Number of total edges.
+   BGSIZE numOfEdges_;
 };
-

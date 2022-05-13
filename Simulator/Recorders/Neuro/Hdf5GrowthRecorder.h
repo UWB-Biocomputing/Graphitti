@@ -21,19 +21,19 @@
 
 #if defined(HDF5)
 
-#include "Hdf5Recorder.h"
-#include "Model.h"
-#include "H5Cpp.h"
+   #include "H5Cpp.h"
+   #include "Hdf5Recorder.h"
+   #include "Model.h"
 
-#ifndef H5_NO_NAMESPACE
+   #ifndef H5_NO_NAMESPACE
 using namespace H5;
-#endif
+   #endif
 
-#ifdef SINGLEPRECISION
-#define H5_FLOAT PredType::NATIVE_FLOAT
-#else
-#define H5_FLOAT PredType::NATIVE_DOUBLE
-#endif
+   #ifdef SINGLEPRECISION
+      #define H5_FLOAT PredType::NATIVE_FLOAT
+   #else
+      #define H5_FLOAT PredType::NATIVE_DOUBLE
+   #endif
 
 class Hdf5GrowthRecorder : public Hdf5Recorder {
 public:
@@ -42,7 +42,10 @@ public:
 
    ~Hdf5GrowthRecorder();
 
-   static IRecorder* Create() { return new Hdf5GrowthRecorder(); }
+   static IRecorder *Create()
+   {
+      return new Hdf5GrowthRecorder();
+   }
 
    /// Init radii and rates history matrices with default values
    virtual void initDefaultValues() override;
@@ -59,8 +62,8 @@ public:
    /// Compile history information in every epoch
    /// @param[in] neurons   The entire list of neurons.
    virtual void compileHistories(AllVertices &neurons) override;
-   
-   
+
+
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
@@ -82,5 +85,4 @@ protected:
    BGFLOAT *ratesHistory_;
 };
 
-#endif // HDF5
-
+#endif   // HDF5

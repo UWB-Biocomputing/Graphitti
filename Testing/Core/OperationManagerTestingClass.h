@@ -9,9 +9,8 @@
 
 #pragma once
 
-#include <iostream>
-
 #include "OperationManager.h"
+#include <iostream>
 
 using namespace std;
 
@@ -25,26 +24,30 @@ public:
 
 class Foo : public IFoo {
 public:
-    Foo() {
-    }
+   Foo()
+   {
+   }
 
-    virtual void loadParameters() {
-       cout << "Foo loading parameters" << endl;
-    }
+   virtual void loadParameters()
+   {
+      cout << "Foo loading parameters" << endl;
+   }
 
-    virtual void printParameters() {
-       cout << "Foo printing parameters" << endl;
-    }
+   virtual void printParameters()
+   {
+      cout << "Foo printing parameters" << endl;
+   }
 };
 
 
 class Bar : public Foo {
 public:
-   Bar() : Foo() {
-
+   Bar() : Foo()
+   {
    }
 
-   virtual void loadParameters() {
+   virtual void loadParameters()
+   {
       cout << "Bar loading Parameters" << endl;
    }
 };
@@ -52,7 +55,7 @@ public:
 
 class Car : public Bar {
 public:
-   Car() : Bar() {
-
+   Car() : Bar()
+   {
    }
 };

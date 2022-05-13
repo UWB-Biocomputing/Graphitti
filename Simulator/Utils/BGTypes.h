@@ -46,24 +46,22 @@ typedef unsigned int uint32_t;
 typedef signed int int32_t;
 
 #elif defined _WIN32 || defined _WIN64
-typedef unsigned __int32 uint32_t;		// included in inttypes.h, which is not 
-                                        // available in WIN32
+typedef unsigned __int32 uint32_t;   // included in inttypes.h, which is not
+                                     // available in WIN32
 typedef signed __int32 int32_t;
 typedef unsigned long long int uint64_t;
 
 #else
-#error "unknown platform"
-#endif // Platform Specific
+   #error "unknown platform"
+#endif   // Platform Specific
 
 // AMP
 #ifdef USE_AMP
-#define GPU_COMPAT_BOOL uint32_t
+   #define GPU_COMPAT_BOOL uint32_t
 #else
-#define GPU_COMPAT_BOOL bool
-#endif // AMP
+   #define GPU_COMPAT_BOOL bool
+#endif   // AMP
 
 // The type for using array indexes (issue #142).
 #define BGSIZE uint32_t
 //#define BGSIZE uint64_t
-
-

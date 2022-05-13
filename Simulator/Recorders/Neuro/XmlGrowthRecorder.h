@@ -17,10 +17,9 @@
 
 #pragma once
 
-#include <fstream>
-
-#include "XmlRecorder.h"
 #include "Model.h"
+#include "XmlRecorder.h"
+#include <fstream>
 
 class XmlGrowthRecorder : public XmlRecorder {
 public:
@@ -29,7 +28,10 @@ public:
 
    ~XmlGrowthRecorder();
 
-   static IRecorder* Create() { return new XmlGrowthRecorder(); }
+   static IRecorder *Create()
+   {
+      return new XmlGrowthRecorder();
+   }
 
    /// Init radii and rates history matrices with default values
    virtual void initDefaultValues() override;
@@ -55,7 +57,6 @@ public:
    virtual void printParameters() override;
 
 private:
-   
    // TODO: There seems to be multiple copies of this in different classes...
    void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
 
@@ -64,6 +65,4 @@ private:
 
    // track radii
    CompleteMatrix radiiHistory_;
-
 };
-

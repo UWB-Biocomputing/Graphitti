@@ -15,10 +15,9 @@
 
 #pragma once
 
-#include <fstream>
-
 #include "IRecorder.h"
 #include "Model.h"
+#include <fstream>
 
 class XmlRecorder : public IRecorder {
 public:
@@ -27,8 +26,11 @@ public:
 
    /// destructor
    ~XmlRecorder();
-   
-   static IRecorder* Create() { return new XmlRecorder(); }
+
+   static IRecorder *Create()
+   {
+      return new XmlRecorder();
+   }
 
    /// Initialize data
    /// Create a new xml file.
@@ -61,15 +63,13 @@ public:
 protected:
    // a file stream for xml output
    ofstream resultOut_;
-   
+
    // burstiness Histogram goes through the
    VectorMatrix burstinessHist_;
-   
+
    // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
    VectorMatrix spikesHistory_;
 
    // TODO: There seems to be multiple copies of this in different classes...
    void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
-
 };
-

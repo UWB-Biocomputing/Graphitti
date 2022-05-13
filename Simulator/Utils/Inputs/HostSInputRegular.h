@@ -13,27 +13,26 @@
 #pragma once
 
 #ifndef _HOSTSINPUTREGULAR_H_
-#define _HOSTSINPUTREGULAR_H_
+   #define _HOSTSINPUTREGULAR_H_
 
-#include "SInputRegular.h"
+   #include "SInputRegular.h"
 
-class HostSInputRegular : public SInputRegular
-{
+class HostSInputRegular : public SInputRegular {
 public:
-    //! The constructor for HostSInputRegular.
-    HostSInputRegular(TiXmlElement* parms);
-    ~HostSInputRegular();
+   //! The constructor for HostSInputRegular.
+   HostSInputRegular(TiXmlElement *parms);
+   ~HostSInputRegular();
 
-    //! Initialize data.
-    virtual void init();
+   //! Initialize data.
+   virtual void init();
 
-    //! Terminate process.
-    virtual void term();
+   //! Terminate process.
+   virtual void term();
 
-    //! Process input stimulus for each time step.
-    virtual void inputStimulus();
+   //! Process input stimulus for each time step.
+   virtual void inputStimulus();
 
 private:
 };
 
-#endif // _HOSTSINPUTREGULAR_H_
+#endif   // _HOSTSINPUTREGULAR_H_

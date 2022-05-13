@@ -25,11 +25,11 @@
 
 #pragma once
 
-#include "Global.h"
 #include "Connections.h"
+#include "Global.h"
 #include "Simulator.h"
-#include <vector>
 #include <iostream>
+#include <vector>
 // cereal
 #include <cereal/types/vector.hpp>
 
@@ -41,7 +41,10 @@ public:
 
    virtual ~ConnStatic();
 
-   static Connections *Create() { return new ConnStatic(); }
+   static Connections *Create()
+   {
+      return new ConnStatic();
+   }
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///  Initialize the small world network characterized by parameters:
@@ -62,37 +65,47 @@ public:
    virtual void printParameters() const override;
 
    ///  Get connection radius threshold
-   BGFLOAT getConnsRadiusThresh() const { return threshConnsRadius_; }
+   BGFLOAT getConnsRadiusThresh() const
+   {
+      return threshConnsRadius_;
+   }
 
    /// Get array of vertex weights
-   BGFLOAT* getWCurrentEpoch() const { return WCurrentEpoch_; }
+   BGFLOAT *getWCurrentEpoch() const
+   {
+      return WCurrentEpoch_;
+   }
 
    /// Get all edge source vertex indices
-   int* getSourceVertexIndexCurrentEpoch() const { return sourceVertexIndexCurrentEpoch_; }
+   int *getSourceVertexIndexCurrentEpoch() const
+   {
+      return sourceVertexIndexCurrentEpoch_;
+   }
 
-      /// Get all edge destination vertex indices
-   int* getDestVertexIndexCurrentEpoch() const { return destVertexIndexCurrentEpoch_; }
+   /// Get all edge destination vertex indices
+   int *getDestVertexIndexCurrentEpoch() const
+   {
+      return destVertexIndexCurrentEpoch_;
+   }
 
-  ///  Cereal serialization method
-  ///  (Serializes radii)
-   template<class Archive>
-   void save(Archive &archive) const;
-   
+   ///  Cereal serialization method
+   ///  (Serializes radii)
+   template <class Archive> void save(Archive &archive) const;
+
    ///  Cereal deserialization method
    ///  (Deserializes radii)
-   template<class Archive>
-   void load(Archive &archive);
-   
+   template <class Archive> void load(Archive &archive);
+
 private:
    /// Indices of the source vertex for each edge
    int *sourceVertexIndexCurrentEpoch_;
-   
-    /// Indices of the destination vertex for each edge
+
+   /// Indices of the destination vertex for each edge
    int *destVertexIndexCurrentEpoch_;
-   
-    /// The weight (scaling factor, strength, maximal amplitude) of each vertex for the current epoch.
+
+   /// The weight (scaling factor, strength, maximal amplitude) of each vertex for the current epoch.
    BGFLOAT *WCurrentEpoch_;
-   
+
    /// radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
    int radiiSize_;
 
@@ -113,9 +126,10 @@ private:
 
    struct DistDestVertex {
       BGFLOAT dist;     ///< destance to the destination vertex
-      int destVertex;  ///< index of the destination vertex
+      int destVertex;   ///< index of the destination vertex
 
-      bool operator<(const DistDestVertex &other) const {
+      bool operator<(const DistDestVertex &other) const
+      {
          return (dist < other.dist);
       }
    };

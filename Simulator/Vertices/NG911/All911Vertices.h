@@ -17,13 +17,12 @@
  */
 #pragma once
 
-#include "Global.h"
 #include "AllVertices.h"
+#include "Global.h"
 
 // Class to hold all data necessary for all the Vertices.
 class All911Vertices : public AllVertices {
 public:
-
    All911Vertices();
 
    virtual ~All911Vertices();
@@ -31,7 +30,10 @@ public:
    ///  Creates an instance of the class.
    ///
    ///  @return Reference to the instance of the class.
-   static AllVertices *Create() { return new All911Vertices(); }
+   static AllVertices *Create()
+   {
+      return new All911Vertices();
+   }
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all vertices' states.
@@ -56,10 +58,9 @@ public:
    ///  @return the complete state of the vertex.
    virtual string toString(const int index) const;
 
-private: 
-
+private:
    /// number of callers
-   int *callNum_; 
+   int *callNum_;
 
    /// Min/max values of CallNum.
    int callNumRange_[2];
@@ -79,16 +80,16 @@ private:
 #if defined(USE_GPU)
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract
-   public:
-       virtual void allocNeuronDeviceStruct(void** allVerticesDevice) {};
-       virtual void deleteNeuronDeviceStruct(void* allVerticesDevice) {};
-       virtual void copyNeuronHostToDevice(void* allVerticesDevice) {};
-       virtual void copyNeuronDeviceToHost(void* allVerticesDevice) {};
-       virtual void advanceVertices(AllEdges &edges, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice) {};
-       virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};
-#else  // !defined(USE_GPU)
 public:
- 
+   virtual void allocNeuronDeviceStruct(void **allVerticesDevice) {};
+   virtual void deleteNeuronDeviceStruct(void *allVerticesDevice) {};
+   virtual void copyNeuronHostToDevice(void *allVerticesDevice) {};
+   virtual void copyNeuronDeviceToHost(void *allVerticesDevice) {};
+   virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
+                                float *randNoise, EdgeIndexMap *edgeIndexMapDevice) {};
+   virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};
+#else   // !defined(USE_GPU)
+public:
    ///  Update internal state of the indexed Vertex (called by every simulation step).
    ///  Notify outgoing edges if vertex has fired.
    ///
@@ -100,6 +101,5 @@ protected:
    void advanceVertex(const int index);
 
 
-#endif // defined(USE_GPU)
+#endif   // defined(USE_GPU)
 };
-

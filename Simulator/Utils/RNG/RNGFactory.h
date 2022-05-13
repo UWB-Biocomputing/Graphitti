@@ -8,27 +8,26 @@
 
 #pragma once
 
+#include "Global.h"
+#include "MTRand.h"
 #include <map>
 #include <memory>
 #include <string>
 
-#include "Global.h"
-#include "MTRand.h"
-
 using namespace std;
 
 class RNGFactory {
-
 public:
    ~RNGFactory();
 
-   static RNGFactory *getInstance() {
+   static RNGFactory *getInstance()
+   {
       static RNGFactory instance;
       return &instance;
    }
 
    // Invokes constructor for desired concrete class
-   MTRand* createRNG(const string &className);
+   MTRand *createRNG(const string &className);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    RNGFactory(RNGFactory const &) = delete;

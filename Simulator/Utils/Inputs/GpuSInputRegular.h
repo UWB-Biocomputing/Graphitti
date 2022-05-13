@@ -13,30 +13,31 @@
 #pragma once
 
 #ifndef _GPUSINPUTREGULAR_H_
-#define _GPUSINPUTREGULAR_H_
+   #define _GPUSINPUTREGULAR_H_
 
-#include "SInputRegular.h"
+   #include "SInputRegular.h"
 
-class GpuSInputRegular : public SInputRegular
-{
+class GpuSInputRegular : public SInputRegular {
 public:
-    //! The constructor for SInputRegular.
-    GpuSInputRegular(TiXmlElement* parms);
-    ~GpuSInputRegular();
+   //! The constructor for SInputRegular.
+   GpuSInputRegular(TiXmlElement *parms);
+   ~GpuSInputRegular();
 
-    //! Initialize data.
-    virtual void init();
+   //! Initialize data.
+   virtual void init();
 
-    //! Terminate process.
-    virtual void term();
+   //! Terminate process.
+   virtual void term();
 
-    //! Process input stimulus for each time step.
-    virtual void inputStimulus();
+   //! Process input stimulus for each time step.
+   virtual void inputStimulus();
 };
 
-//! Device function that processes input stimulus for each time step.
-#if defined(__CUDACC__)
-extern __global__ void inputStimulusDevice( int n, BGFLOAT* summationPoint_d, BGFLOAT* initValues_d, int* nShiftValues_d, int nStepsInCycle, int nStepsCycle, int nStepsDuration );
-#endif
+   //! Device function that processes input stimulus for each time step.
+   #if defined(__CUDACC__)
+extern __global__ void inputStimulusDevice(int n, BGFLOAT *summationPoint_d, BGFLOAT *initValues_d,
+                                           int *nShiftValues_d, int nStepsInCycle, int nStepsCycle,
+                                           int nStepsDuration);
+   #endif
 
-#endif // _GPUSINPUTREGULAR_H_
+#endif   // _GPUSINPUTREGULAR_H_

@@ -8,21 +8,20 @@
 
 #pragma once
 
+#include "Connections.h"
+#include "Global.h"
 #include <map>
 #include <memory>
 #include <string>
 
-#include "Global.h"
-#include "Connections.h"
-
 using namespace std;
 
 class ConnectionsFactory {
-
 public:
    ~ConnectionsFactory();
 
-   static ConnectionsFactory *getInstance() {
+   static ConnectionsFactory *getInstance()
+   {
       static ConnectionsFactory instance;
       return &instance;
    }

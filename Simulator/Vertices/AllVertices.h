@@ -23,14 +23,13 @@
 
 using namespace std;
 
+#include "AllEdges.h"
+#include "BGTypes.h"
+#include "Core/EdgeIndexMap.h"
+#include "Layout.h"
+#include "Simulator.h"
 #include <iostream>
 #include <log4cplus/loggingmacros.h>
-
-#include "BGTypes.h"
-#include "Simulator.h"
-#include "Core/EdgeIndexMap.h"
-#include "AllEdges.h"
-#include "Layout.h"
 
 class Layout;
 class AllEdges;
@@ -76,47 +75,49 @@ protected:
    int size_;
 
    // Loggers used to print to using log4cplus logging macros
-   log4cplus::Logger fileLogger_; // Logs to Output/Debug/logging.txt
-   log4cplus::Logger vertexLogger_; // Logs to Output/Debug/neurons.txt
+   log4cplus::Logger fileLogger_;     // Logs to Output/Debug/logging.txt
+   log4cplus::Logger vertexLogger_;   // Logs to Output/Debug/neurons.txt
 
 #if defined(USE_GPU)
-   public:
-       ///  Allocate GPU memories to store all vertices' states,
-       ///  and copy them from host to GPU memory.
-       ///
-       ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-       virtual void allocNeuronDeviceStruct(void** allVerticesDevice) = 0;
+public:
+   ///  Allocate GPU memories to store all vertices' states,
+   ///  and copy them from host to GPU memory.
+   ///
+   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+   virtual void allocNeuronDeviceStruct(void **allVerticesDevice) = 0;
 
-       ///  Delete GPU memories.
-       ///
-       ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-       virtual void deleteNeuronDeviceStruct(void* allVerticesDevice) = 0;
+   ///  Delete GPU memories.
+   ///
+   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+   virtual void deleteNeuronDeviceStruct(void *allVerticesDevice) = 0;
 
-       ///  Copy all vertices' data from host to device.
-       ///
-       ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-       virtual void copyNeuronHostToDevice(void* allVerticesDevice) = 0;
+   ///  Copy all vertices' data from host to device.
+   ///
+   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+   virtual void copyNeuronHostToDevice(void *allVerticesDevice) = 0;
 
-       ///  Copy all vertices' data from device to host.
-       ///
-       ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-       virtual void copyNeuronDeviceToHost(void* allVerticesDevice) = 0;
+   ///  Copy all vertices' data from device to host.
+   ///
+   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+   virtual void copyNeuronDeviceToHost(void *allVerticesDevice) = 0;
 
-       ///  Update the state of all vertices for a time step
-       ///  Notify outgoing synapses if vertex has fired.
-       ///
-       ///  @param  edges               Reference to the allEdges struct on host memory.
-       ///  @param  allVerticesDevice       GPU address of the allVertices struct on device memory.
-       ///  @param  allEdgesDevice      GPU address of the allEdges struct on device memory.
-       ///  @param  randNoise              Reference to the random noise array.
-       ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
-       virtual void advanceVertices(AllEdges &edges, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice) = 0;
+   ///  Update the state of all vertices for a time step
+   ///  Notify outgoing synapses if vertex has fired.
+   ///
+   ///  @param  edges               Reference to the allEdges struct on host memory.
+   ///  @param  allVerticesDevice       GPU address of the allVertices struct on device memory.
+   ///  @param  allEdgesDevice      GPU address of the allEdges struct on device memory.
+   ///  @param  randNoise              Reference to the random noise array.
+   ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
+   virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
+                                float *randNoise, EdgeIndexMap *edgeIndexMapDevice)
+      = 0;
 
-       ///  Set some parameters used for advanceVerticesDevice.
-       ///
-       ///  @param  edges               Reference to the allEdges struct on host memory.
-       virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) = 0;
-#else // !defined(USE_GPU)
+   ///  Set some parameters used for advanceVerticesDevice.
+   ///
+   ///  @param  edges               Reference to the allEdges struct on host memory.
+   virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) = 0;
+#else   // !defined(USE_GPU)
 public:
    ///  Update internal state of the indexed Neuron (called by every simulation step).
    ///  Notify outgoing synapses if vertex has fired.
@@ -125,17 +126,16 @@ public:
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap) = 0;
 
-#endif // defined(USE_GPU)
+#endif   // defined(USE_GPU)
 };
 
 #if defined(USE_GPU)
-struct AllVerticesDeviceProperties
-{
-        ///  The summation point for each vertex.
-        ///  Summation points are places where the synapses connected to the vertex 
-        ///  apply (summed up) their PSRs (Post-Synaptic-Response). 
-        ///  On the next advance cycle, vertices add the values stored in their corresponding 
-        ///  summation points to their Vm and resets the summation points to zero
-        BGFLOAT *summationMap_;
+struct AllVerticesDeviceProperties {
+   ///  The summation point for each vertex.
+   ///  Summation points are places where the synapses connected to the vertex
+   ///  apply (summed up) their PSRs (Post-Synaptic-Response).
+   ///  On the next advance cycle, vertices add the values stored in their corresponding
+   ///  summation points to their Vm and resets the summation points to zero
+   BGFLOAT *summationMap_;
 };
-#endif // defined(USE_GPU)
+#endif   // defined(USE_GPU)

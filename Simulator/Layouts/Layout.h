@@ -15,14 +15,12 @@
 
 #pragma once
 
+#include "AllVertices.h"
+#include "Utils/Global.h"
 #include <iostream>
+#include <log4cplus/loggingmacros.h>
 #include <memory>
 #include <vector>
-
-#include <log4cplus/loggingmacros.h>
-
-#include "Utils/Global.h"
-#include "AllVertices.h"
 
 using namespace std;
 
@@ -62,37 +60,38 @@ public:
    /// @return type of the synapse.
    virtual edgeType edgType(const int srcVertex, const int destVertex) = 0;
 
-   VectorMatrix *xloc_;  ///< Store neuron i's x location.
+   VectorMatrix *xloc_;   ///< Store neuron i's x location.
 
    VectorMatrix *yloc_;   ///< Store neuron i's y location.
 
-   CompleteMatrix *dist2_;  ///< Inter-neuron distance squared.
+   CompleteMatrix *dist2_;   ///< Inter-neuron distance squared.
 
-   CompleteMatrix *dist_;    ///< The true inter-neuron distance.
+   CompleteMatrix *dist_;   ///< The true inter-neuron distance.
 
-   vector<int> probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
+   vector<int>
+      probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
 
-   vertexType *vertexTypeMap_;    ///< The vertex type map (INH, EXC).
+   vertexType *vertexTypeMap_;   ///< The vertex type map (INH, EXC).
 
-   bool *starterMap_; ///< The starter existence map (T/F).
+   bool *starterMap_;   ///< The starter existence map (T/F).
 
-   BGSIZE numEndogenouslyActiveNeurons_;    ///< Number of endogenously active neurons.
+   BGSIZE numEndogenouslyActiveNeurons_;   ///< Number of endogenously active neurons.
 
-   BGSIZE numCallerVertices_;    ///< Number of caller vertices.
+   BGSIZE numCallerVertices_;   ///< Number of caller vertices.
 
 
 protected:
    shared_ptr<AllVertices> vertices_;
 
-   vector<int> endogenouslyActiveNeuronList_;    ///< Endogenously active neurons list.
+   vector<int> endogenouslyActiveNeuronList_;   ///< Endogenously active neurons list.
 
-   vector<int> inhibitoryNeuronLayout_;    ///< Inhibitory neurons list.
+   vector<int> inhibitoryNeuronLayout_;   ///< Inhibitory neurons list.
 
-   vector<int> callerVertexList_;    ///< Caller vertex list.
+   vector<int> callerVertexList_;   ///< Caller vertex list.
 
-   vector<int> psapVertexList_;    ///< PSAP vertex list.
-   
-   vector<int> responderVertexList_;    ///< Responder vertex list.
+   vector<int> psapVertexList_;   ///< PSAP vertex list.
+
+   vector<int> responderVertexList_;   ///< Responder vertex list.
 
    log4cplus::Logger fileLogger_;
 
@@ -100,7 +99,5 @@ private:
    /// initialize the location maps (xloc and yloc).
    void initVerticesLocs();
 
-   bool gridLayout_;    ///< True if grid layout.
-
+   bool gridLayout_;   ///< True if grid layout.
 };
-

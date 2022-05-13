@@ -25,7 +25,10 @@ public:
 
    virtual ~FixedLayout();
 
-   static Layout *Create() { return new FixedLayout(); }
+   static Layout *Create()
+   {
+      return new FixedLayout();
+   }
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
@@ -52,4 +55,3 @@ public:
    /// @return type of the synapse.
    virtual edgeType edgType(const int srcVertex, const int destVertex) override;
 };
-

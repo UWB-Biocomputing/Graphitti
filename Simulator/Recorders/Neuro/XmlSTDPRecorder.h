@@ -32,10 +32,9 @@
 
 #pragma once
 
-#include <fstream>
-
-#include "XmlRecorder.h"
 #include "Model.h"
+#include "XmlRecorder.h"
+#include <fstream>
 
 class XmlSTDPRecorder : public XmlRecorder {
 public:
@@ -44,7 +43,10 @@ public:
 
    ~XmlSTDPRecorder();
 
-   static IRecorder* Create() { return new XmlSTDPRecorder(); }
+   static IRecorder *Create()
+   {
+      return new XmlSTDPRecorder();
+   }
 
    /**
     * Init radii and rates history matrices with default values
@@ -81,13 +83,11 @@ public:
     */
    virtual void printParameters();
 
-   virtual string toXML(string name,vector<vector<BGFLOAT>> MatrixToWrite ) const;
-   virtual string toXML(string name,vector<vector<int>> MatrixToWrite) const;
+   virtual string toXML(string name, vector<vector<BGFLOAT>> MatrixToWrite) const;
+   virtual string toXML(string name, vector<vector<int>> MatrixToWrite) const;
 
 protected:
    vector<vector<BGFLOAT>> weightsHistory_;
    vector<vector<int>> sourceNeuronIndexHistory_;
-   vector<vector<int>>  destNeuronIndexHistory_;
-
+   vector<vector<int>> destNeuronIndexHistory_;
 };
-
