@@ -74,9 +74,10 @@ void AllLIFNeurons::advanceNeuron(const int index)
 ///  Fire the selected Neuron and calculate the result.
 ///
 ///  @param  index       Index of the Neuron to update.
-void AllLIFNeurons::fire(const int index){
-    const BGFLOAT deltaT = Simulator::getInstance().getDeltaT();
-    AllSpikingNeurons::fire(index);
+void AllLIFNeurons::fire(const int index)
+{
+   const BGFLOAT deltaT = Simulator::getInstance().getDeltaT();
+   AllSpikingNeurons::fire(index);
 
    // calculate the number of steps in the absolute refractory period
    numStepsInRefractoryPeriod_[index] = static_cast<int>(Trefract_[index] / deltaT + 0.5);

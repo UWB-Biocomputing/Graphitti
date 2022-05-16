@@ -25,8 +25,8 @@
 
 using namespace std;
 
-#include "AllVertices.h"
 #include "AllSpikingSynapses.h"
+#include "AllVertices.h"
 #include "EventBuffer.h"
 #include "Global.h"
 #include <vector>

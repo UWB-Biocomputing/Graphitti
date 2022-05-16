@@ -14,20 +14,22 @@
  */
 
 #pragma once
-#include <fstream>
-#include "IRecorder.h"
-#include "Model.h"
 #include "EventBuffer.h"
 #include "Global.h"
+#include "IRecorder.h"
+#include "Model.h"
+#include <fstream>
 #include <vector>
 
-class XmlRecorder : public IRecorder
-{
+class XmlRecorder : public IRecorder {
 public:
    // constructor which opens the xml file to store results
    XmlRecorder();
 
-   static IRecorder *Create() { return new XmlRecorder(); }
+   static IRecorder *Create()
+   {
+      return new XmlRecorder();
+   }
 
    /// Initialize data in the newly loadeded xml file
    virtual void init() override;

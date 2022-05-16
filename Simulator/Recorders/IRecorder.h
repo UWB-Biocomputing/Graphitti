@@ -11,8 +11,7 @@
 #include "AllVertices.h"
 
 class AllVertices;
-class IRecorder
-{
+class IRecorder {
 public:
    virtual ~IRecorder()
    {
@@ -48,7 +47,7 @@ public:
 protected:
    // File path to the file that the results will be printed to.
    string resultFileName_;
-   
+
    // Loggers used to print to using log4cplus logging macros, prints to Results/Debug/logging.txt
    log4cplus::Logger fileLogger_;
 
