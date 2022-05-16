@@ -191,13 +191,6 @@ void AllIFNeurons::createNeuron(int i, Layout *layout)
 
    initNeuronConstsFromParamValues(i, Simulator::getInstance().getDeltaT());
 
-   int maxSpikes = (int)((Simulator::getInstance().getEpochDuration()
-                          * Simulator::getInstance().getMaxFiringRate()));
-   spikeHistory_[i] = new uint64_t[maxSpikes];
-   for (int j = 0; j < maxSpikes; ++j) {
-      spikeHistory_[i][j] = ULONG_MAX;
-   }
-
    switch (layout->vertexTypeMap_[i]) {
       case INH:
          LOG4CPLUS_DEBUG(vertexLogger_, "Setting inhibitory neuron: " << i);
@@ -358,7 +351,9 @@ void AllIFNeurons::readNeuron(istream &input, int i)
    input.ignore();
    input >> Vm_[i];
    input.ignore();
-   input >> hasFired_[i];
+   bool hasNueronFired;
+   input >> hasNueronFired;
+   hasFired_[i] = hasNueronFired;
    input.ignore();
    input >> Tau_[i];
    input.ignore();

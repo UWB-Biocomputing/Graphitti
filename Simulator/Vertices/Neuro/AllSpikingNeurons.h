@@ -25,9 +25,11 @@
 
 using namespace std;
 
-#include "AllSpikingSynapses.h"
 #include "AllVertices.h"
+#include "AllSpikingSynapses.h"
+#include "EventBuffer.h"
 #include "Global.h"
+#include <vector>
 
 struct AllSpikingNeuronsDeviceProperties;
 
@@ -111,26 +113,16 @@ protected:
    ///  Initiates a firing of a neuron to connected neurons
    ///
    ///  @param  index            Index of the neuron to fire.
-   virtual void fire(const int index) const;
+   virtual void fire(const int index);
 
 #endif   // defined(USE_GPU)
 
 public:
    ///  The booleans which track whether the neuron has fired.
-   bool *hasFired_;
+   vector<bool> hasFired_;
 
-   ///  The number of spikes since the last growth cycle.
-   int *spikeCount_;
-
-   ///  Offset of the spike_history buffer.
-   int *spikeCountOffset_;
-
-   ///  Step count (history) for each spike fired by each neuron.
-   ///  The step counts are stored in a buffer for each neuron, and the pointers
-   ///  to the buffer are stored in a list pointed by spike_history.
-   ///  Each buffer is a circular, and offset of top location of the buffer i is
-   ///  specified by spikeCountOffset[i].
-   uint64_t **spikeHistory_;
+   /// Holds at least one epoch's worth of event times for every vertex
+   vector<EventBuffer> vertexEvents_;
 
 protected:
    ///  True if back propagaion is allowed.
@@ -138,6 +130,7 @@ protected:
    bool fAllowBackPropagation_;
 };
 
+// TODO: move this into EventBuffer.h. Well, hasFired_ and inherited members have to stay somehow.
 #if defined(USE_GPU)
 struct AllSpikingNeuronsDeviceProperties : public AllVerticesDeviceProperties {
    ///  The booleans which track whether the neuron has fired.

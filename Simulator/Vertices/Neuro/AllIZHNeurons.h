@@ -203,7 +203,7 @@ protected:
    ///  Initiates a firing of a neuron to connected neurons.
    ///
    ///  @param  index            Index of the neuron to fire.
-   virtual void fire(const int index) const;
+   virtual void fire(const int index);
 
 #endif   // defined(USE_GPU)
 
