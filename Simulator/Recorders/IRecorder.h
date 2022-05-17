@@ -9,6 +9,7 @@
 
 #pragma once
 #include "AllVertices.h"
+#include <log4cplus/loggingmacros.h>
 
 class AllVertices;
 class IRecorder {
