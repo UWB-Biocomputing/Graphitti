@@ -6,18 +6,17 @@
  * @ingroup Testing
  */
 
-#include <iostream>
-#include <fstream>
-
-#include "gtest/gtest.h"
-
-#include <log4cplus/logger.h>
-#include <log4cplus/configurator.h>
 #include "log4cplus/loggingmacros.h"
+#include "gtest/gtest.h"
+#include <fstream>
+#include <iostream>
+#include <log4cplus/configurator.h>
+#include <log4cplus/logger.h>
 
 using namespace std;
 
-int main() {
+int main()
+{
    // Clear logging file at the start of testing
    fstream("Output/Debug/logging.txt", ios::out | ios::trunc);
 

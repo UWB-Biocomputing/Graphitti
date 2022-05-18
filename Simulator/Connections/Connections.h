@@ -23,17 +23,15 @@
 
 #pragma once
 
-#include <memory>
-
-#include <log4cplus/loggingmacros.h>
-
-#include "AllVertices.h"
 #include "AllEdges.h"
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
-#include "Layout.h"
-#include "IRecorder.h"
+#include "AllVertices.h"
 #include "EdgeIndexMap.h"
+#include "IRecorder.h"
+#include "Layout.h"
+#include <log4cplus/loggingmacros.h>
+#include <memory>
 
 using namespace std;
 
@@ -44,7 +42,7 @@ public:
    ///  Destructor
    virtual ~Connections();
 
-   /// Returns shared pointer to Synapses/Edges 
+   /// Returns shared pointer to Synapses/Edges
    shared_ptr<AllEdges> getEdges() const;
 
 
@@ -68,7 +66,7 @@ public:
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const = 0;
-   
+
    ///  Update the connections status in every epoch.
    ///
    ///  @param  neurons  The Neuron list to search from.
@@ -82,20 +80,25 @@ public:
    ///  @param  layout      Layout information of the neural network.
    ///  @param  ineurons    The Neuron list to search from.
    ///  @param  isynapses   The Synapse list to search from.
-   void createSynapsesFromWeights(const int numVertices, Layout *layout, AllVertices &vertices, AllEdges &synapses);
+   void createSynapsesFromWeights(const int numVertices, Layout *layout, AllVertices &vertices,
+                                  AllEdges &synapses);
 
 #if defined(USE_GPU)
-   public:
-       ///  Update the weight of the Synapses in the simulation.
-       ///  Note: Platform Dependent.
-       ///
-       ///  @param  numVertices          number of vertices to update.
-       ///  @param  neurons             the Neuron list to search from.
-       ///  @param  synapses            the Synapse list to search from.
-       ///  @param  allVerticesDevice    GPU address of the allVertices struct on device memory.
-       ///  @param  allEdgesDevice   GPU address of the allEdges struct on device memory.
-       ///  @param  layout              Layout information of the neural network.
-       virtual void updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout *layout);
+public:
+   ///  Update the weight of the Synapses in the simulation.
+   ///  Note: Platform Dependent.
+   ///
+   ///  @param  numVertices          number of vertices to update.
+   ///  @param  neurons             the Neuron list to search from.
+   ///  @param  synapses            the Synapse list to search from.
+   ///  @param  allVerticesDevice    GPU address of the allVertices struct on device memory.
+   ///  @param  allEdgesDevice   GPU address of the allEdges struct on device memory.
+   ///  @param  layout              Layout information of the neural network.
+   virtual void updateSynapsesWeights(const int numVertices, AllVertices &vertices,
+                                      AllEdges &synapses,
+                                      AllSpikingNeuronsDeviceProperties *allVerticesDevice,
+                                      AllSpikingSynapsesDeviceProperties *allEdgesDevice,
+                                      Layout *layout);
 #else
 public:
    ///  Update the weight of the Synapses in the simulation.
@@ -104,13 +107,12 @@ public:
    ///  @param  numVertices Number of vertices to update.
    ///  @param  ineurons    The Neuron list to search from.
    ///  @param  isynapses   The Synapse list to search from.
-   virtual void
-   updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &synapses, Layout *layout);
+   virtual void updateSynapsesWeights(const int numVertices, AllVertices &vertices,
+                                      AllEdges &synapses, Layout *layout);
 
-#endif // USE_GPU
+#endif   // USE_GPU
 
 protected:
-
    shared_ptr<AllEdges> edges_;
 
    shared_ptr<EdgeIndexMap> synapseIndexMap_;
@@ -118,4 +120,3 @@ protected:
    log4cplus::Logger fileLogger_;
    log4cplus::Logger edgeLogger_;
 };
-

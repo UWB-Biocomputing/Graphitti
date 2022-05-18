@@ -73,14 +73,13 @@
  */
 #pragma once
 
-#include "Global.h"
 #include "AllIFNeurons.h"
 #include "AllSpikingSynapses.h"
+#include "Global.h"
 
 // Class to hold all data necessary for all the Neurons.
 class AllLIFNeurons : public AllIFNeurons {
 public:
-
    AllLIFNeurons();
 
    virtual ~AllLIFNeurons();
@@ -88,28 +87,30 @@ public:
    ///  Creates an instance of the class.
    ///
    ///  @return Reference to the instance of the class.
-   static AllVertices *Create() { return new AllLIFNeurons(); }
+   static AllVertices *Create()
+   {
+      return new AllLIFNeurons();
+   }
 
    ///  Prints out all parameters of the neurons to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
 #if defined(USE_GPU)
-   public:
+public:
+   ///  Update the state of all neurons for a time step
+   ///  Notify outgoing synapses if neuron has fired.
+   ///
+   ///  @param  synapses               Reference to the allEdges struct on host memory.
+   ///  @param  allVerticesDevice       GPU address of the allNeurons struct on device memory.
+   ///  @param  allEdgesDevice      GPU address of the allEdges struct on device memory.
+   ///  @param  randNoise              Reference to the random noise array.
+   ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
+   virtual void advanceVertices(AllEdges &synapses, void *allVerticesDevice, void *allEdgesDevice,
+                                float *randNoise, EdgeIndexMap *edgeIndexMapDevice) override;
 
-       ///  Update the state of all neurons for a time step
-       ///  Notify outgoing synapses if neuron has fired.
-       ///
-       ///  @param  synapses               Reference to the allEdges struct on host memory.
-       ///  @param  allVerticesDevice       GPU address of the allNeurons struct on device memory.
-       ///  @param  allEdgesDevice      GPU address of the allEdges struct on device memory.
-       ///  @param  randNoise              Reference to the random noise array.
-       ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
-       virtual void advanceVertices(AllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice) override;
-
-#else  // !defined(USE_GPU)
+#else   // !defined(USE_GPU)
 protected:
-
    ///  Helper for #advanceNeuron. Updates state of a single neuron.
    ///
    ///  @param  index Index of the neuron to update.
@@ -120,6 +121,5 @@ protected:
    ///  @param  index Index of the neuron to fire.
    virtual void fire(const int index);
 
-#endif // defined(USE_GPU)
+#endif   // defined(USE_GPU)
 };
-

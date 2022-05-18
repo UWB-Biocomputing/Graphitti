@@ -15,53 +15,52 @@
 #pragma once
 
 #ifndef _SINPUTREGULAR_H_
-#define _SINPUTREGULAR_H_
+   #define _SINPUTREGULAR_H_
 
-#include "ISInput.h"
+   #include "ISInput.h"
 
-class SInputRegular : public ISInput
-{
+class SInputRegular : public ISInput {
 public:
-    //! The constructor for SInputRegular.
-    SInputRegular(TiXmlElement* parms);
-    ~SInputRegular();
+   //! The constructor for SInputRegular.
+   SInputRegular(TiXmlElement *parms);
+   ~SInputRegular();
 
-    //! Initialize data.
-    virtual void init();
+   //! Initialize data.
+   virtual void init();
 
-    //! Terminate process.
-    virtual void term();
+   //! Terminate process.
+   virtual void term();
 
 protected:
-    //! True if stimuls input is on.
-    bool fSInput;
+   //! True if stimuls input is on.
+   bool fSInput;
 
-    //! Duration of a pulse in second.
-    BGFLOAT duration;
+   //! Duration of a pulse in second.
+   BGFLOAT duration;
 
-    //! Interval between pulses in second.
-    BGFLOAT interval;
+   //! Interval between pulses in second.
+   BGFLOAT interval;
 
-    //! The number of time steps for one cycle of a stimulation
-    int nStepsCycle;
+   //! The number of time steps for one cycle of a stimulation
+   int nStepsCycle;
 
-    //! The time step within a cycle of stimulation
-    int nStepsInCycle;
+   //! The time step within a cycle of stimulation
+   int nStepsInCycle;
 
-    //! The number of time steps for duration of a pulse.
-    int nStepsDuration;
+   //! The number of time steps for duration of a pulse.
+   int nStepsDuration;
 
-    //! The number of time steps for interval between pulses. 
-    int nStepsInterval;
+   //! The number of time steps for interval between pulses.
+   int nStepsInterval;
 
-    //! Initial input values
-    vector<BGFLOAT> initValues;
+   //! Initial input values
+   vector<BGFLOAT> initValues;
 
-    //! Input values, where each entry corresponds with a summationPoint.
-    BGFLOAT *values;
+   //! Input values, where each entry corresponds with a summationPoint.
+   BGFLOAT *values;
 
-    //! Shift values, which determin the synch of stimuli (all 0 when synchronous)
-    int *nShiftValues;
+   //! Shift values, which determin the synch of stimuli (all 0 when synchronous)
+   int *nShiftValues;
 };
 
-#endif // _SINPUTREGULAR_H_
+#endif   // _SINPUTREGULAR_H_

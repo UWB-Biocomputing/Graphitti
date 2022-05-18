@@ -71,8 +71,8 @@
  */
 #pragma once
 
-#include "Global.h"
 #include "AllIFNeurons.h"
+#include "Global.h"
 
 struct AllIZHNeuronsDeviceProperties;
 
@@ -83,7 +83,10 @@ public:
 
    virtual ~AllIZHNeurons();
 
-   static AllVertices *Create() { return new AllIZHNeurons(); }
+   static AllVertices *Create()
+   {
+      return new AllIZHNeurons();
+   }
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all neurons' state.
@@ -115,80 +118,81 @@ public:
    virtual void serialize(ostream &output) const override;
 
 #if defined(USE_GPU)
-   public:
-       ///  Update the state of all neurons for a time step
-       ///  Notify outgoing synapses if neuron has fired.
-       ///
-       ///  @param  synapses               Reference to the allEdges struct on host memory.
-       ///  @param  allVerticesDevice       Reference to the allNeurons struct on device memory.
-       ///  @param  allEdgesDevice      Reference to the allEdges struct on device memory.
-       ///  @param  randNoise              Reference to the random noise array.
-       ///  @param  edgeIndexMapDevice  Reference to the EdgeIndexMap on device memory.
-       virtual void advanceVertices(AllEdges &synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice) override;
+public:
+   ///  Update the state of all neurons for a time step
+   ///  Notify outgoing synapses if neuron has fired.
+   ///
+   ///  @param  synapses               Reference to the allEdges struct on host memory.
+   ///  @param  allVerticesDevice       Reference to the allNeurons struct on device memory.
+   ///  @param  allEdgesDevice      Reference to the allEdges struct on device memory.
+   ///  @param  randNoise              Reference to the random noise array.
+   ///  @param  edgeIndexMapDevice  Reference to the EdgeIndexMap on device memory.
+   virtual void advanceVertices(AllEdges &synapses, void *allVerticesDevice, void *allEdgesDevice,
+                                float *randNoise, EdgeIndexMap *edgeIndexMapDevice) override;
 
-       ///  Allocate GPU memories to store all neurons' states,
-       ///  and copy them from host to GPU memory.
-       ///
-       ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void allocNeuronDeviceStruct( void** allVerticesDevice) override;
+   ///  Allocate GPU memories to store all neurons' states,
+   ///  and copy them from host to GPU memory.
+   ///
+   ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
+   virtual void allocNeuronDeviceStruct(void **allVerticesDevice) override;
 
-       ///  Delete GPU memories.
-       ///
-       ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void deleteNeuronDeviceStruct( void* allVerticesDevice) override;
+   ///  Delete GPU memories.
+   ///
+   ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
+   virtual void deleteNeuronDeviceStruct(void *allVerticesDevice) override;
 
-       ///  Copy all neurons' data from host to device.
-       ///
-       ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void copyNeuronHostToDevice( void* allVerticesDevice) override;
+   ///  Copy all neurons' data from host to device.
+   ///
+   ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
+   virtual void copyNeuronHostToDevice(void *allVerticesDevice) override;
 
-       ///  Copy all neurons' data from device to host.
-       ///
-       ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void copyNeuronDeviceToHost(void* allVerticesDevice) override;
+   ///  Copy all neurons' data from device to host.
+   ///
+   ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
+   virtual void copyNeuronDeviceToHost(void *allVerticesDevice) override;
 
-       ///  Copy spike history data stored in device memory to host.
-       ///
-       ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void copyNeuronDeviceSpikeHistoryToHost( void* allVerticesDevice) override;
+   ///  Copy spike history data stored in device memory to host.
+   ///
+   ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
+   virtual void copyNeuronDeviceSpikeHistoryToHost(void *allVerticesDevice) override;
 
-       ///  Copy spike counts data stored in device memory to host.
-       ///
-       ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void copyNeuronDeviceSpikeCountsToHost( void* allVerticesDevice) override;
+   ///  Copy spike counts data stored in device memory to host.
+   ///
+   ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
+   virtual void copyNeuronDeviceSpikeCountsToHost(void *allVerticesDevice) override;
 
-       ///  Clear the spike counts out of all neurons.
-       ///
-       ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-       virtual void clearNeuronSpikeCounts( void* allVerticesDevice) override;
+   ///  Clear the spike counts out of all neurons.
+   ///
+   ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
+   virtual void clearNeuronSpikeCounts(void *allVerticesDevice) override;
 
 
-   protected:
-       ///  Allocate GPU memories to store all neurons' states.
-       ///  (Helper function of allocNeuronDeviceStruct)
-       ///
-       ///  @param  allVerticesDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
-       void allocDeviceStruct( AllIZHNeuronsDeviceProperties &allVerticesDevice);
+protected:
+   ///  Allocate GPU memories to store all neurons' states.
+   ///  (Helper function of allocNeuronDeviceStruct)
+   ///
+   ///  @param  allVerticesDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
+   void allocDeviceStruct(AllIZHNeuronsDeviceProperties &allVerticesDevice);
 
-       ///  Delete GPU memories.
-       ///  (Helper function of deleteNeuronDeviceStruct)
-       ///
-       ///  @param  allVerticesDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
-       void deleteDeviceStruct( AllIZHNeuronsDeviceProperties& allVerticesDevice);
+   ///  Delete GPU memories.
+   ///  (Helper function of deleteNeuronDeviceStruct)
+   ///
+   ///  @param  allVerticesDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
+   void deleteDeviceStruct(AllIZHNeuronsDeviceProperties &allVerticesDevice);
 
-       ///  Copy all neurons' data from host to device.
-       ///  (Helper function of copyNeuronHostToDevice)
-       ///
-       ///  @param  allVerticesDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
-       void copyHostToDevice( AllIZHNeuronsDeviceProperties& allVerticesDevice);
+   ///  Copy all neurons' data from host to device.
+   ///  (Helper function of copyNeuronHostToDevice)
+   ///
+   ///  @param  allVerticesDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
+   void copyHostToDevice(AllIZHNeuronsDeviceProperties &allVerticesDevice);
 
-       ///  Copy all neurons' data from device to host.
-       ///  (Helper function of copyNeuronDeviceToHost)
-       ///
-       ///  @param  allVerticesDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
-       void copyDeviceToHost( AllIZHNeuronsDeviceProperties& allVerticesDevice);
+   ///  Copy all neurons' data from device to host.
+   ///  (Helper function of copyNeuronDeviceToHost)
+   ///
+   ///  @param  allVerticesDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
+   void copyDeviceToHost(AllIZHNeuronsDeviceProperties &allVerticesDevice);
 
-#else  // !defined(USE_GPU)
+#else   // !defined(USE_GPU)
 
 protected:
    ///  Helper for #advanceNeuron. Updates state of a single neuron.
@@ -201,7 +205,7 @@ protected:
    ///  @param  index            Index of the neuron to fire.
    virtual void fire(const int index);
 
-#endif  // defined(USE_GPU)
+#endif   // defined(USE_GPU)
 
 protected:
    ///  Creates a single Neuron and generates data for it.
@@ -291,24 +295,23 @@ private:
 };
 
 #if defined(USE_GPU)
-struct AllIZHNeuronsDeviceProperties : public AllIFNeuronsDeviceProperties
-{
-        ///  A constant (0.02, 01) describing the coupling of variable u to Vm.
-        BGFLOAT *Aconst_;
+struct AllIZHNeuronsDeviceProperties : public AllIFNeuronsDeviceProperties {
+   ///  A constant (0.02, 01) describing the coupling of variable u to Vm.
+   BGFLOAT *Aconst_;
 
-        ///  A constant controlling sensitivity of u.
-        BGFLOAT *Bconst_;
+   ///  A constant controlling sensitivity of u.
+   BGFLOAT *Bconst_;
 
-        ///  A constant controlling reset of Vm. 
-        BGFLOAT *Cconst_;
+   ///  A constant controlling reset of Vm.
+   BGFLOAT *Cconst_;
 
-        ///  A constant controlling reset of u.
-        BGFLOAT *Dconst_;
+   ///  A constant controlling reset of u.
+   BGFLOAT *Dconst_;
 
-        ///  internal variable.
-        BGFLOAT *u_;
+   ///  internal variable.
+   BGFLOAT *u_;
 
-        ///  Internal constant for the exponential Euler integration.
-        BGFLOAT *C3_;
+   ///  Internal constant for the exponential Euler integration.
+   BGFLOAT *C3_;
 };
-#endif // defined(USE_GPU)
+#endif   // defined(USE_GPU)

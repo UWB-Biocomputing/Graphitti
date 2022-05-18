@@ -7,19 +7,21 @@
  */
 
 #include "LayoutFactory.h"
-#include "FixedLayout.h"
 #include "DynamicLayout.h"
+#include "FixedLayout.h"
 #include "Layout911.h"
 
 /// Constructor is private to keep a singleton instance of this class.
-LayoutFactory::LayoutFactory() {
+LayoutFactory::LayoutFactory()
+{
    // register layout classes
    registerClass("FixedLayout", &FixedLayout::Create);
    registerClass("DynamicLayout", &DynamicLayout::Create);
    registerClass("Layout911", &Layout911::Create);
 }
 
-LayoutFactory::~LayoutFactory() {
+LayoutFactory::~LayoutFactory()
+{
    createFunctions.clear();
 }
 
@@ -27,13 +29,15 @@ LayoutFactory::~LayoutFactory() {
 ///
 ///  @param  className  vertices class name.
 ///  @param  Pointer to the class creation function.
-void LayoutFactory::registerClass(const string &className, CreateFunction function) {
+void LayoutFactory::registerClass(const string &className, CreateFunction function)
+{
    createFunctions[className] = function;
 }
 
 
 /// Creates concrete instance of the desired layout class.
-shared_ptr<Layout> LayoutFactory::createLayout(const string &className) {
+shared_ptr<Layout> LayoutFactory::createLayout(const string &className)
+{
    layoutInstance = shared_ptr<Layout>(invokeCreateFunction(className));
    return layoutInstance;
 }
@@ -42,7 +46,8 @@ shared_ptr<Layout> LayoutFactory::createLayout(const string &className) {
 ///
 /// The calling method uses this retrieval mechanism in
 /// value assignment.
-Layout *LayoutFactory::invokeCreateFunction(const string &className) {
+Layout *LayoutFactory::invokeCreateFunction(const string &className)
+{
    for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
       if (className == i->first)
          return i->second();

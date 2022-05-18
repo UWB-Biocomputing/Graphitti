@@ -14,16 +14,17 @@
  */
 
 #include "Model.h"
-#include "IRecorder.h"
-#include "Connections.h"
 #include "ConnGrowth.h"
-#include "ParameterManager.h"
-#include "LayoutFactory.h"
+#include "Connections.h"
 #include "ConnectionsFactory.h"
+#include "IRecorder.h"
+#include "LayoutFactory.h"
+#include "ParameterManager.h"
 #include "RecorderFactory.h"
 
 /// Constructor
-Model::Model() {
+Model::Model()
+{
    // Reference variable used to get class type from ParameterManager.
    string type;
 
@@ -44,12 +45,13 @@ Model::Model() {
 }
 
 /// Destructor
-Model::~Model() {
-
+Model::~Model()
+{
 }
 
 /// Save simulation results to an output destination.
-void Model::saveResults() {
+void Model::saveResults()
+{
    if (recorder_ != nullptr) {
       recorder_->saveSimData(*layout_->getVertices());
    }
@@ -57,8 +59,9 @@ void Model::saveResults() {
 
 /// Creates all the vertices and generates data for them.
 // todo: this is going to go away
-void Model::createAllVertices() {
-   LOG4CPLUS_INFO(fileLogger_, "Allocating Vertices..." );
+void Model::createAllVertices()
+{
+   LOG4CPLUS_INFO(fileLogger_, "Allocating Vertices...");
 
    layout_->generateVertexTypeMap(Simulator::getInstance().getTotalVertices());
    layout_->initStarterMap(Simulator::getInstance().getTotalVertices());
@@ -68,7 +71,8 @@ void Model::createAllVertices() {
 }
 
 /// Sets up the Simulation.
-void Model::setupSim() {
+void Model::setupSim()
+{
    LOG4CPLUS_INFO(fileLogger_, "Setting up Vertices...");
    layout_->getVertices()->setupVertices();
    LOG4CPLUS_INFO(fileLogger_, "Setting up Edges...");
@@ -97,7 +101,8 @@ void Model::setupSim() {
    Simulator::getInstance().short_timer.start();
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Setting up Connections...");
-   connections_->setupConnections(layout_.get(), layout_->getVertices().get(), connections_->getEdges().get());
+   connections_->setupConnections(layout_.get(), layout_->getVertices().get(),
+                                  connections_->getEdges().get());
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (connections)
    t_host_initialization_connections += Simulator::getInstance().short_timer.lap() / 1000000.0;
@@ -109,7 +114,8 @@ void Model::setupSim() {
 }
 
 /// Log this simulation step.
-void Model::logSimStep() const {
+void Model::logSimStep() const
+{
    ConnGrowth *pConnGrowth = dynamic_cast<ConnGrowth *>(connections_.get());
    if (pConnGrowth == nullptr)
       return;
@@ -158,10 +164,10 @@ void Model::logSimStep() const {
 }
 
 /// Update the simulation history of every epoch.
-void Model::updateHistory() {
+void Model::updateHistory()
+{
    // Compile history information in every epoch
-      if(recorder_ == nullptr)
-   {
+   if (recorder_ == nullptr) {
       LOG4CPLUS_INFO(fileLogger_, "ERROR: Recorder class is null.");
    }
    if (recorder_ != nullptr) {
@@ -170,16 +176,25 @@ void Model::updateHistory() {
 }
 
 /// Get the Connections class object.
-/// @return Pointer to the Connections class object.  
+/// @return Pointer to the Connections class object.
 // ToDo: make smart ptr
-shared_ptr<Connections> Model::getConnections() const { return connections_; }
+shared_ptr<Connections> Model::getConnections() const
+{
+   return connections_;
+}
 
 /// Get the Layout class object.
-/// @return Pointer to the Layout class object. 
+/// @return Pointer to the Layout class object.
 // ToDo: make smart ptr
-shared_ptr<Layout> Model::getLayout() const { return layout_; }
+shared_ptr<Layout> Model::getLayout() const
+{
+   return layout_;
+}
 
 /// Get the IRecorder class object.
-/// @return Pointer to the IRecorder class object. 
+/// @return Pointer to the IRecorder class object.
 // ToDo: make smart ptr
-shared_ptr<IRecorder> Model::getRecorder() const { return recorder_; }
+shared_ptr<IRecorder> Model::getRecorder() const
+{
+   return recorder_;
+}

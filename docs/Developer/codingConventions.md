@@ -24,7 +24,7 @@
   ```
   * We use braces even when a code block is a single line, to prevent bugs when it (inevitably) later expands to multiple lines.
 
-  * We limit code to 80 character line lengths. You never know when someone will want to print something out on an [ASR-33 teletype](https://en.wikipedia.org/wiki/Teletype_Model_33).
+  * We limit code to 100 character line lengths. You never know when someone will want to print something out on an [ASR-33 teletype](https://en.wikipedia.org/wiki/Teletype_Model_33).
   * We help keep code clear to human readers. So:
   
   `if (aPointerVar == nullptr)`, not `if (aPointerVar == 0)`; 
@@ -37,3 +37,33 @@
   * We use an empty line between methods.
   * We use empty lines around multi-line blocks.
   * We use Unix end-of-line characters (`\n`).
+
+
+## clang-format
+
+To help with adhering to our style guide, we developed a clang-format file to assit in this process.
+
+Future development will include creating an automated workflow to do this for all .cpp and .h files on push or pull requests to master.
+
+### running clang-format through command line
+
+* If you just want to see what the changes will look like without actually overwriting the file then run this command (prints to console)
+
+```sh
+clang-format fileName
+```
+
+* If you want to run the format file and have it make the changes directly to the file then run this command
+
+```sh
+clang-format -i fileName
+```
+
+* If you want to make changes to the clang-format file options themselves, then visit the [clang-format options online documentation](https://clang.llvm.org/docs/ClangFormatStyleOptions.html)
+
+
+---------
+[<< Go back to the Developer Documentation page](index.md)
+
+---------
+[<< Go back to the Graphitti home page](../index.md)

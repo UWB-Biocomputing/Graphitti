@@ -10,27 +10,31 @@
 #include "AllSpikingSynapses.h"
 
 // Default constructor
-AllSpikingNeurons::AllSpikingNeurons() : AllVertices() {
-
+AllSpikingNeurons::AllSpikingNeurons() : AllVertices()
+{
 }
 
-AllSpikingNeurons::~AllSpikingNeurons() {
+AllSpikingNeurons::~AllSpikingNeurons()
+{
 }
 
 ///  Setup the internal structure of the class (allocate memories).
-void AllSpikingNeurons::setupVertices() {
+void AllSpikingNeurons::setupVertices()
+{
    AllVertices::setupVertices();
 
-   int maxSpikes = static_cast<int>(Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate());
-   
+   int maxSpikes = static_cast<int>(Simulator::getInstance().getEpochDuration()
+                                    * Simulator::getInstance().getMaxFiringRate());
+
    hasFired_.resize(size_, false);
    vertexEvents_.resize(size_, maxSpikes);
 
-   Simulator::getInstance().setPSummationMap(summationMap_); //redundant 
+   Simulator::getInstance().setPSummationMap(summationMap_);   //redundant
 }
 
 ///  Clear the spike counts out of all Neurons.
-void AllSpikingNeurons::clearSpikeCounts() {
+void AllSpikingNeurons::clearSpikeCounts()
+{
    for (int i = 0; i < vertexEvents_.size(); i++) {
       vertexEvents_[i].clear();
    }
@@ -43,8 +47,10 @@ void AllSpikingNeurons::clearSpikeCounts() {
 ///
 ///  @param  synapses         The Synapse list to search from.
 ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap *edgeIndexMap) {
-   int maxSpikes = (int) ((Simulator::getInstance().getEpochDuration() * Simulator::getInstance().getMaxFiringRate()));
+void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap *edgeIndexMap)
+{
+   int maxSpikes = (int)((Simulator::getInstance().getEpochDuration()
+                          * Simulator::getInstance().getMaxFiringRate()));
 
    AllSpikingSynapses &spSynapses = dynamic_cast<AllSpikingSynapses &>(synapses);
    // For each neuron in the network
@@ -54,8 +60,9 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap *
 
       // notify outgoing/incoming synapses if neuron has fired
       if (hasFired_[idx]) {
-         LOG4CPLUS_DEBUG(vertexLogger_, "Neuron: " << idx << " has fired at time: "
-                        << g_simulationStep * Simulator::getInstance().getDeltaT());
+         LOG4CPLUS_DEBUG(vertexLogger_,
+                         "Neuron: " << idx << " has fired at time: "
+                                    << g_simulationStep * Simulator::getInstance().getDeltaT());
 
          assert(vertexEvents_[idx].getNumEventsInEpoch() < maxSpikes);
 
@@ -96,7 +103,8 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap *
 ///  Fire the selected Neuron and calculate the result.
 ///
 ///  @param  index       Index of the Neuron to update.
-void AllSpikingNeurons::fire(const int index){
+void AllSpikingNeurons::fire(const int index)
+{
    // Note that the neuron has fired!
    hasFired_[index] = true;
    vertexEvents_[index].insertEvent(g_simulationStep);
@@ -111,7 +119,8 @@ void AllSpikingNeurons::fire(const int index){
 ///                    in the past we are looking, so it must be a negative number (i.e., it is relative
 ///                    to the "current time", i.e., one location past the most recent spike). So, the
 ///                    most recent spike is offIndex = -1
-uint64_t AllSpikingNeurons::getSpikeHistory(int index, int offIndex) {
+uint64_t AllSpikingNeurons::getSpikeHistory(int index, int offIndex)
+{
    // offIndex is a minus offset
    // This computes the index of a spike in the past (i.e., the most recent spike,
    // two spikes ago, etc). It starts with `spikeCountOffset_ + spikeCount_`,
@@ -122,7 +131,7 @@ uint64_t AllSpikingNeurons::getSpikeHistory(int index, int offIndex) {
    // the reason that the max spikes value is added is to prevent this from
    // producing a negative total, so that finally taking mod max spikes will
    // "wrap around backwards" if needed.
-   
+
    return vertexEvents_[index].getPastEvent(offIndex);
 }
 

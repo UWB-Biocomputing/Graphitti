@@ -12,37 +12,42 @@
  */
 
 #include "OperationManager.h"
-
-#include <memory>
+#include "GenericFunctionNode.h"
 #include <list>
+#include <memory>
 #include <string>
 
-#include "GenericFunctionNode.h"
-
 /// Get Instance method that returns a reference to this object.
-OperationManager &OperationManager::getInstance() {
+OperationManager &OperationManager::getInstance()
+{
    static OperationManager instance;
    return instance;
 }
 
 /// Destructor.
-OperationManager::~OperationManager() {}
+OperationManager::~OperationManager()
+{
+}
 
 /// Called by lower level classes constructors on creation to register their operations with their operation type.
 /// This method can be overloaded to handle different function signatures.
 /// Handles function signature: void ()
-void OperationManager::registerOperation(const Operations::op &operation, const function<void()> &function) {
+void OperationManager::registerOperation(const Operations::op &operation,
+                                         const function<void()> &function)
+{
    try {
-      functionList_.push_back(unique_ptr<IFunctionNode>(new GenericFunctionNode(operation, function)));
-   }
-   catch (exception e) {
-      LOG4CPLUS_FATAL(logger_, string(e.what()) + ". Push back failed in OperationManager::registerOperation");
+      functionList_.push_back(
+         unique_ptr<IFunctionNode>(new GenericFunctionNode(operation, function)));
+   } catch (exception e) {
+      LOG4CPLUS_FATAL(logger_, string(e.what())
+                                  + ". Push back failed in OperationManager::registerOperation");
       throw runtime_error(string(e.what()) + " in OperationManager::registerOperation");
    }
 }
 
 /// Takes in a operation type and invokes all registered functions that are classified as that operation type.
-void OperationManager::executeOperation(const Operations::op &operation) const {
+void OperationManager::executeOperation(const Operations::op &operation) const
+{
    LOG4CPLUS_INFO(logger_, "Executing operation " + operationToString(operation));
    if (functionList_.size() > 0) {
       for (auto i = functionList_.begin(); i != functionList_.end(); ++i) {
@@ -52,7 +57,8 @@ void OperationManager::executeOperation(const Operations::op &operation) const {
 }
 
 /// Takes in the operation enum and returns the enum as a string. Used for debugging purposes.
-string OperationManager::operationToString(const Operations::op &operation) const {
+string OperationManager::operationToString(const Operations::op &operation) const
+{
    switch (operation) {
       case Operations::op::printParameters:
          return "printParameters";

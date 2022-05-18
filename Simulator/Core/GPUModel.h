@@ -39,7 +39,7 @@
 #include "AllSpikingSynapses.h"
 
 #ifdef __CUDACC__
-#include "Book.h"
+   #include "Book.h"
 #endif
 
 const BGFLOAT SYNAPSE_STRENGTH_ADJUSTMENT = 1.0e-8;
@@ -52,19 +52,21 @@ const BGFLOAT SYNAPSE_STRENGTH_ADJUSTMENT = 1.0e-8;
 extern float g_time;
 extern cudaEvent_t start, stop;
 
-inline void cudaStartTimer() {
-          cudaEventRecord( start, 0 );
+inline void cudaStartTimer()
+{
+   cudaEventRecord(start, 0);
 };
 
 //*! Increment elapsed time in seconds
-inline void cudaLapTime(double& t_event) {
-          cudaEventRecord( stop, 0 );
-          cudaEventSynchronize( stop );
-          cudaEventElapsedTime( &g_time, start, stop );
+inline void cudaLapTime(double &t_event)
+{
+   cudaEventRecord(stop, 0);
+   cudaEventSynchronize(stop);
+   cudaEventElapsedTime(&g_time, start, stop);
    // The CUDA functions return time in milliseconds
-          t_event += g_time/1000.0;
+   t_event += g_time / 1000.0;
 };
-#endif // PERFORMANCE_METRICS
+#endif   // PERFORMANCE_METRICS
 ///@}
 
 class AllSpikingSynapses;
@@ -130,12 +132,10 @@ private:
 
    void deleteSynapseImap();
 
-public: //2020/03/14 changed to public for accessing in Driver
-
+public:   //2020/03/14 changed to public for accessing in Driver
    void copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices);
 
 private:
-
    void updateHistory();
 
    // TODO
@@ -143,22 +143,24 @@ private:
 
    // TODO
    void addEdge(AllEdges &synapses, edgeType type, const int srcVertex, const int destVertex,
-                   Coordinate &source, Coordinate &dest, BGFLOAT *sumPoint, BGFLOAT deltaT);
+                Coordinate &source, Coordinate &dest, BGFLOAT *sumPoint, BGFLOAT deltaT);
 
    // TODO
    void createEdge(AllEdges &synapses, const int neuronIndex, const int synapseIndex,
-                      Coordinate source, Coordinate dest, BGFLOAT *sp, BGFLOAT deltaT, edgeType type);
+                   Coordinate source, Coordinate dest, BGFLOAT *sp, BGFLOAT deltaT, edgeType type);
 };
 
 #if defined(__CUDACC__)
 extern "C" {
-void normalMTGPU(float * randNoise_d);
-void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, unsigned int nPerRng, unsigned int mt_rng_count); 
-}       
-        
+void normalMTGPU(float *randNoise_d);
+void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, unsigned int nPerRng,
+               unsigned int mt_rng_count);
+}
+
 //! Calculate summation point.
-extern __global__ void calcSummationMapDevice(int totalVertices,
-          AllSpikingNeuronsDeviceProperties* __restrict__ allNeurnsDevice,
-          const EdgeIndexMap* __restrict__ synapseIndexMapDevice_,
-                    const AllSpikingSynapsesDeviceProperties* __restrict__ allEdgesDevice );
+extern __global__ void
+   calcSummationMapDevice(int totalVertices,
+                          AllSpikingNeuronsDeviceProperties *__restrict__ allNeurnsDevice,
+                          const EdgeIndexMap *__restrict__ synapseIndexMapDevice_,
+                          const AllSpikingSynapsesDeviceProperties *__restrict__ allEdgesDevice);
 #endif

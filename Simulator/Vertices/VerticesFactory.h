@@ -8,21 +8,20 @@
 
 #pragma once
 
+#include "AllVertices.h"
+#include "Global.h"
 #include <map>
 #include <memory>
 #include <string>
 
-#include "Global.h"
-#include "AllVertices.h"
-
 using namespace std;
 
 class VerticesFactory {
-
 public:
    ~VerticesFactory();
 
-   static VerticesFactory *getInstance() {
+   static VerticesFactory *getInstance()
+   {
       static VerticesFactory instance;
       return &instance;
    }

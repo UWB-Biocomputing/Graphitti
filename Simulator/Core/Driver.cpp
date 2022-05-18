@@ -17,39 +17,36 @@
  *
  */
 
-#include <fstream>
-
-#include "Global.h"
 #include "../ThirdParty/paramcontainer/ParamContainer.h"
-#include "log4cplus/logger.h"
-#include "log4cplus/configurator.h"
-#include "log4cplus/loggingmacros.h"
-
 #include "AllEdges.h"
 #include "CPUModel.h"
+#include "Global.h"
 #include "IRecorder.h"
 #include "Model.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "Simulator.h"
-
+#include "log4cplus/configurator.h"
+#include "log4cplus/logger.h"
+#include "log4cplus/loggingmacros.h"
+#include <fstream>
 #include <string>
 
 // Uncomment to use visual leak detector (Visual Studios Plugin)
 // #include <vld.h>
 
 // Cereal
-#include <cereal/archives/xml.hpp>
 #include <cereal/archives/binary.hpp>
+#include <cereal/archives/xml.hpp>
 // TODO: fix this stuff
-#include "ConnGrowth.h" // hacked in. that's why its here.
-#include "ConnStatic.h" // hacked in. that's why its here.
+#include "ConnGrowth.h"   // hacked in. that's why its here.
+#include "ConnStatic.h"   // hacked in. that's why its here.
 
 // build/config.h contains the git commit id
 #include "config.h"
 
 #if defined(USE_GPU)
-#include "GPUModel.h"
+   #include "GPUModel.h"
 #elif defined(USE_OMP)
 // #include "MultiThreadedSim.h"
 #else
@@ -70,8 +67,8 @@ void serializeSynapses();
 ///  @param  argc    argument count.
 ///  @param  argv    arguments.
 ///  @return -1 if error, else if success.
-int main(int argc, char *argv[]) {
-
+int main(int argc, char *argv[])
+{
    // Clear logging files at the start of each simulation
    fstream("Output/Debug/logging.txt", ios::out | ios::trunc);
    fstream("Output/Debug/vertices.txt", ios::out | ios::trunc);
@@ -83,7 +80,7 @@ int main(int argc, char *argv[]) {
 
    // Get the instance of the console logger and print status
    log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
-   
+
    LOG4CPLUS_TRACE(consoleLogger, "Instantiating Simulator");
    Simulator &simulator = Simulator::getInstance();
 
@@ -96,7 +93,8 @@ int main(int argc, char *argv[]) {
 
    // Loads the configuration file into the Parameter Manager.
    if (!ParameterManager::getInstance().loadParameterFile(simulator.getConfigFileName())) {
-      LOG4CPLUS_FATAL(consoleLogger, "ERROR: failed to load config file: " << simulator.getConfigFileName());
+      LOG4CPLUS_FATAL(consoleLogger,
+                      "ERROR: failed to load config file: " << simulator.getConfigFileName());
       return -1;
    }
 
@@ -105,11 +103,13 @@ int main(int argc, char *argv[]) {
    simulator.loadParameters();
 
    // Instantiate simulator objects.
-   LOG4CPLUS_TRACE(consoleLogger, "Instantiating Simulator objects specified in configuration file");
+   LOG4CPLUS_TRACE(consoleLogger,
+                   "Instantiating Simulator objects specified in configuration file");
    if (!simulator.instantiateSimulatorObjects()) {
-      LOG4CPLUS_FATAL(consoleLogger, "ERROR: Unable to instantiate all simulator classes, check configuration file: "
-                                     + simulator.getConfigFileName()
-                                     + " for incorrectly declared class types.");
+      LOG4CPLUS_FATAL(
+         consoleLogger,
+         "ERROR: Unable to instantiate all simulator classes, check configuration file: "
+            + simulator.getConfigFileName() + " for incorrectly declared class types.");
       return -1;
    }
 
@@ -144,11 +144,11 @@ int main(int argc, char *argv[]) {
 
    // INPUT OBJECTS ARENT IN PROJECT YET
    // Terminate the stimulus input
-//   if (pInput != nullptr)
-//   {
-//      simInfo->pInput->term();
-//      delete simInfo->pInput;
-//   }
+   //   if (pInput != nullptr)
+   //   {
+   //      simInfo->pInput->term();
+   //      delete simInfo->pInput;
+   //   }
 
    // todo: before this, do copy from gpu.
    // Writes simulation results to an output destination
@@ -187,27 +187,33 @@ int main(int argc, char *argv[]) {
 ///  @param  argc      argument count.
 ///  @param  argv      arguments.
 ///  @returns    true if successful, false otherwise.
-bool parseCommandLine(int argc, char *argv[]) {
-   ParamContainer cl; // todo: note as third party class.
-   cl.initOptions(false);  // don't allow unknown parameters
-   cl.setHelpString(string(
-         "The UW Bothell graph-based simulation environment, for high-performance neural network and other graph-based problems.\nUsage: ") +
-                    argv[0] + " ");
+bool parseCommandLine(int argc, char *argv[])
+{
+   ParamContainer cl;       // todo: note as third party class.
+   cl.initOptions(false);   // don't allow unknown parameters
+   cl.setHelpString(
+      string(
+         "The UW Bothell graph-based simulation environment, for high-performance neural network and other graph-based problems.\nUsage: ")
+      + argv[0] + " ");
 
    // Set up the comment line parser.
-   if ((cl.addParam("configfile", 'c', ParamContainer::filename,
-                       "parameter configuration filepath") != ParamContainer::errOk)
-       #if defined(USE_GPU)
-       || (cl.addParam("device", 'd', ParamContainer::regular, "CUDA device id") != ParamContainer::errOk)
-       #endif  // USE_GPU
-       ||
-       (cl.addParam("stimulusfile", 's', ParamContainer::filename, "stimulus input filepath") != ParamContainer::errOk)
+   if ((cl.addParam("configfile", 'c', ParamContainer::filename, "parameter configuration filepath")
+        != ParamContainer::errOk)
+#if defined(USE_GPU)
+       || (cl.addParam("device", 'd', ParamContainer::regular, "CUDA device id")
+           != ParamContainer::errOk)
+#endif   // USE_GPU
+       || (cl.addParam("stimulusfile", 's', ParamContainer::filename, "stimulus input filepath")
+           != ParamContainer::errOk)
        || (cl.addParam("deserializefile", 'r', ParamContainer::filename,
-                       "simulation deserialization filepath (enables deserialization)") != ParamContainer::errOk)
+                       "simulation deserialization filepath (enables deserialization)")
+           != ParamContainer::errOk)
        || (cl.addParam("serializefile", 'w', ParamContainer::filename,
-                       "simulation serialization filepath (enables serialization)") != ParamContainer::errOk)
+                       "simulation serialization filepath (enables serialization)")
+           != ParamContainer::errOk)
        || (cl.addParam("version", 'v', ParamContainer::novalue,
-                       "output current git commit ID and exit") != ParamContainer::errOk)) {
+                       "output current git commit ID and exit")
+           != ParamContainer::errOk)) {
 
       cerr << "Internal error creating command line parser" << endl;
       return false;
@@ -232,9 +238,9 @@ bool parseCommandLine(int argc, char *argv[]) {
 
 #if defined(USE_GPU)
    if (EOF == sscanf(cl["device"].c_str(), "%d", &g_deviceId)) {
-       g_deviceId = 0;
+      g_deviceId = 0;
    }
-#endif  // USE_GPU
+#endif   // USE_GPU
    return true;
 }
 
@@ -243,9 +249,10 @@ bool parseCommandLine(int argc, char *argv[]) {
 ///  if running a connGrowth model and radii is in serialization file, deserializes radii as well
 ///
 ///  @returns    true if successful, false otherwise.
-bool deserializeSynapses() {
+bool deserializeSynapses()
+{
    Simulator &simulator = Simulator::getInstance();
-   
+
    // We can deserialize from a variety of archive file formats. Below, comment
    // out all but the line that is compatible with the desired format.
    ifstream memory_in(simulator.getDeserializationFileName().c_str());
@@ -274,40 +281,38 @@ bool deserializeSynapses() {
    // Uses "try catch" to catch any cereal exception
    try {
       archive(*(dynamic_cast<AllEdges *>(connections->getEdges().get())));
-   }
-   catch (cereal::Exception e) {
-      cerr << "Failed deserializing synapse weights, source vertices, and/or destination vertices." << endl;
+   } catch (cereal::Exception e) {
+      cerr << "Failed deserializing synapse weights, source vertices, and/or destination vertices."
+           << endl;
       return false;
    }
 
    // Creates synapses from weight
-   connections->createSynapsesFromWeights(simulator.getTotalVertices(),
-                                          layout.get(),
-                                          (*layout->getVertices()),
-                                          (*connections->getEdges()));
+   connections->createSynapsesFromWeights(simulator.getTotalVertices(), layout.get(),
+                                          (*layout->getVertices()), (*connections->getEdges()));
 
 
 #if defined(USE_GPU)
    // Copies CPU Synapse data to GPU after deserialization, if we're doing
    // a GPU-based simulation.
    simulator.copyCPUSynapseToGPU();
-#endif // USE_GPU
+#endif   // USE_GPU
 
    // Creates synapse index map (includes copy CPU index map to GPU)
    connections->createEdgeIndexMap();
 
 #if defined(USE_GPU)
    GPUModel *gpuModel = static_cast<GPUModel *>(simulator.getModel().get());
-   gpuModel->copySynapseIndexMapHostToDevice(*(connections->getEdgeIndexMap().get()), simulator.getTotalVertices());
-#endif // USE_GPU
+   gpuModel->copySynapseIndexMapHostToDevice(*(connections->getEdgeIndexMap().get()),
+                                             simulator.getTotalVertices());
+#endif   // USE_GPU
 
    // Deserializes radii (only when running a connGrowth model and radii is in serialization file)
    if (dynamic_cast<ConnGrowth *>(connections.get()) != nullptr) {
       // Uses "try catch" to catch any cereal exception
       try {
          archive(*(dynamic_cast<ConnGrowth *>(connections.get())));
-      }
-      catch (cereal::Exception e) {
+      } catch (cereal::Exception e) {
          cerr << "Failed deserializing radii." << endl;
          return false;
       }
@@ -315,7 +320,8 @@ bool deserializeSynapses() {
    return true;
 }
 
-void serializeSynapses() {
+void serializeSynapses()
+{
    Simulator &simulator = Simulator::getInstance();
 
    // We can serialize to a variety of archive file formats. Below, comment out
@@ -324,13 +330,13 @@ void serializeSynapses() {
    cereal::XMLOutputArchive archive(memory_out);
    //ofstream memory_out (simInfo->memOutputFileName.c_str(), std::ios::binary);
    //cereal::BinaryOutputArchive archive(memory_out);
-   
+
 #if defined(USE_GPU)
    // Copies GPU Synapse props data to CPU for serialization
    simulator.copyGPUSynapseToCPU();
-#endif // USE_GPU
-   
-    shared_ptr<Model> model = simulator.getModel();
+#endif   // USE_GPU
+
+   shared_ptr<Model> model = simulator.getModel();
 
    // Serializes synapse weights along with each synapse's source vertex and destination vertex
    archive(*(dynamic_cast<AllEdges *>(model->getConnections()->getEdges().get())));

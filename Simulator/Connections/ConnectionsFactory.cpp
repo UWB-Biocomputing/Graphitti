@@ -7,20 +7,22 @@
  */
 
 #include "ConnectionsFactory.h"
-#include "ConnStatic.h"
 #include "ConnGrowth.h"
+#include "ConnStatic.h"
 #include "Connections911.h"
 
 
 /// Constructor is private to keep a singleton instance of this class.
-ConnectionsFactory::ConnectionsFactory() {
+ConnectionsFactory::ConnectionsFactory()
+{
    // register neurons classes
    registerClass("ConnStatic", &ConnStatic::Create);
    registerClass("ConnGrowth", &ConnGrowth::Create);
    registerClass("Connections911", &Connections911::Create);
 }
 
-ConnectionsFactory::~ConnectionsFactory() {
+ConnectionsFactory::~ConnectionsFactory()
+{
    createFunctions.clear();
 }
 
@@ -29,13 +31,15 @@ ConnectionsFactory::~ConnectionsFactory() {
 ///
 ///  @param  className class name.
 ///  @param  Pointer to the class creation function.
-void ConnectionsFactory::registerClass(const string &className, CreateFunction function) {
+void ConnectionsFactory::registerClass(const string &className, CreateFunction function)
+{
    createFunctions[className] = function;
 }
 
 
 /// Creates concrete instance of the desired connections class.
-shared_ptr<Connections> ConnectionsFactory::createConnections(const string &className) {
+shared_ptr<Connections> ConnectionsFactory::createConnections(const string &className)
+{
    connectionsInstance = shared_ptr<Connections>(invokeCreateFunction(className));
    return connectionsInstance;
 }
@@ -44,7 +48,8 @@ shared_ptr<Connections> ConnectionsFactory::createConnections(const string &clas
 ///
 /// The calling method uses this retrieval mechanism in
 /// value assignment.
-Connections *ConnectionsFactory::invokeCreateFunction(const string &className) {
+Connections *ConnectionsFactory::invokeCreateFunction(const string &className)
+{
    for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
       if (className == i->first)
          return i->second();

@@ -7,10 +7,9 @@
  */
 
 
-#include <iostream>
 #include "MatrixFactory.h"
-
 #include "SourceVersions.h"
+#include <iostream>
 
 static VersionInfo version("$Id: MatrixFactory.cpp,v 1.1.1.1 2006/11/18 04:42:32 fumik Exp $");
 
@@ -20,7 +19,7 @@ static VersionInfo version("$Id: MatrixFactory.cpp,v 1.1.1.1 2006/11/18 04:42:32
 /// Outputs:
 ///   type:  "diag" (diagonal matrices), "complete" (all values
 ///          specified), or "sparse". Required.
-///   init:  "none" (initialization data explicitly given, default), 
+///   init:  "none" (initialization data explicitly given, default),
 ///          "const" (initialized to muliplier, if present, else 1.0),
 ///          "random" (random values in the range [0,1]),
 ///          or "implementation" (must be initialized by caller, not
@@ -29,53 +28,51 @@ static VersionInfo version("$Id: MatrixFactory.cpp,v 1.1.1.1 2006/11/18 04:42:32
 ///   columns: number of matrix columns. Required.
 ///   multiplier: constant multiplier used in initialization, default
 ///               1.0. Optional (defaults to 1.0).
-void MatrixFactory::GetAttributes(TiXmlElement* matElement,
-				  string& type, string& init,
-				  int& rows, int& columns,
-				  FLOAT& multiplier)
+void MatrixFactory::GetAttributes(TiXmlElement *matElement, string &type, string &init, int &rows,
+                                  int &columns, FLOAT &multiplier)
 {
-  const char* temp = nullptr;
+   const char *temp = nullptr;
 
 #ifdef MDEBUG
-  cerr << "Getting attributes:" << endl;
+   cerr << "Getting attributes:" << endl;
 #endif
-  temp = matElement->Attribute("type");
-  if (temp != nullptr)
-    type = temp;
-  else
-    type = "undefined";
-  if ((type != "diag") && (type != "complete") && (type != "sparse"))
-    throw KII_invalid_argument("Illegal matrix type: " + type);
+   temp = matElement->Attribute("type");
+   if (temp != nullptr)
+      type = temp;
+   else
+      type = "undefined";
+   if ((type != "diag") && (type != "complete") && (type != "sparse"))
+      throw KII_invalid_argument("Illegal matrix type: " + type);
 #ifdef MDEBUG
-  cerr << "\ttype=" << type << ", ";
-#endif
-
-  if (matElement->QueryIntAttribute("rows", &rows)!=TIXML_SUCCESS)
-    throw KII_invalid_argument("Number of rows not specified for Matrix.");
-#ifdef MDEBUG
-  cerr << "\trows=" << rows << ", ";
+   cerr << "\ttype=" << type << ", ";
 #endif
 
-  if (matElement->QueryIntAttribute("columns", &columns)!=TIXML_SUCCESS)
-    throw KII_invalid_argument("Number of columns not specified for Matrix.");
+   if (matElement->QueryIntAttribute("rows", &rows) != TIXML_SUCCESS)
+      throw KII_invalid_argument("Number of rows not specified for Matrix.");
 #ifdef MDEBUG
-  cerr << "\tcolumns=" << columns << ", ";
+   cerr << "\trows=" << rows << ", ";
 #endif
 
-  if (matElement->QueryFLOATAttribute("multiplier", &multiplier)!=TIXML_SUCCESS) {
-    multiplier = 1.0;
-  }
+   if (matElement->QueryIntAttribute("columns", &columns) != TIXML_SUCCESS)
+      throw KII_invalid_argument("Number of columns not specified for Matrix.");
 #ifdef MDEBUG
-  cerr << "\tmultiplier=" << multiplier << ", ";
+   cerr << "\tcolumns=" << columns << ", ";
 #endif
 
-  temp = matElement->Attribute("init");
-  if (temp != nullptr)
-    init = temp;
-  else
-    init = "none";
+   if (matElement->QueryFLOATAttribute("multiplier", &multiplier) != TIXML_SUCCESS) {
+      multiplier = 1.0;
+   }
 #ifdef MDEBUG
-  cerr << "\tinit=" << init << endl;
+   cerr << "\tmultiplier=" << multiplier << ", ";
+#endif
+
+   temp = matElement->Attribute("init");
+   if (temp != nullptr)
+      init = temp;
+   else
+      init = "none";
+#ifdef MDEBUG
+   cerr << "\tinit=" << init << endl;
 #endif
 }
 
@@ -90,71 +87,73 @@ void MatrixFactory::GetAttributes(TiXmlElement* matElement,
 ///   initialized.
 /// Returns:
 ///   Pointer to created Matrix (nullptr if failure).
-Matrix* MatrixFactory::CreateMatrix(TiXmlElement* matElement) 
+Matrix *MatrixFactory::CreateMatrix(TiXmlElement *matElement)
 {
-  string type;
-  string init;
-  int rows, columns;
-  FLOAT multiplier;
-  Matrix* theMatrix = nullptr;
-  TiXmlHandle matHandle(matElement);
+   string type;
+   string init;
+   int rows, columns;
+   FLOAT multiplier;
+   Matrix *theMatrix = nullptr;
+   TiXmlHandle matHandle(matElement);
 
-  GetAttributes(matElement, type, init, rows, columns, multiplier);
+   GetAttributes(matElement, type, init, rows, columns, multiplier);
 
 #ifdef MDEBUG
-  cerr << "Creating Matrix with attributes: " << type << ", " << init
-       << ", " << rows << "X" << columns << ", " << multiplier << endl;
+   cerr << "Creating Matrix with attributes: " << type << ", " << init << ", " << rows << "X"
+        << columns << ", " << multiplier << endl;
 #endif
 
-  if (init == "implementation")
-    throw KII_invalid_argument("MatrixFactory cannot create implementation-dependent Matrices; client program must perform creation.");
+   if (init == "implementation")
+      throw KII_invalid_argument(
+         "MatrixFactory cannot create implementation-dependent Matrices; client program must perform creation.");
 
-  if (type == "complete") {
-    string values;
-    // Get the Text node that contains the matrix values, if needed
-    if (init == "none") {
-      TiXmlText* valuesNode = matHandle.FirstChild().Text();
-      if (valuesNode == nullptr)
-	throw KII_invalid_argument("Contents not specified for Matrix with init='none'.");
-      values = valuesNode->Value();
+   if (type == "complete") {
+      string values;
+      // Get the Text node that contains the matrix values, if needed
+      if (init == "none") {
+         TiXmlText *valuesNode = matHandle.FirstChild().Text();
+         if (valuesNode == nullptr)
+            throw KII_invalid_argument("Contents not specified for Matrix with init='none'.");
+         values = valuesNode->Value();
 #ifdef MDEBUG
-      cerr << "\tData present for initialization: " << values << endl;
+         cerr << "\tData present for initialization: " << values << endl;
 #endif
-    }
-    if ((rows > 1) && (columns > 1))   // Create a 2D Matrix
-      theMatrix = new CompleteMatrix(type, init, rows, columns,
-				     multiplier, values);
-    else                               // Create a 1D Matrix
-      theMatrix = new VectorMatrix(type, init, rows, columns,
-				   multiplier, values);
-  } else if (type == "diag") {   // Implement diagonal matrices as sparse
-    if (init == "none") {          // a string of values is present & passed
-      TiXmlText* valuesNode = matHandle.FirstChild().Text();
-      if (valuesNode == nullptr)
-	throw KII_invalid_argument("Contents not specified for Sparse Matrix with init='none'.");
-      const char* values = valuesNode->Value();
+      }
+      if ((rows > 1) && (columns > 1))   // Create a 2D Matrix
+         theMatrix = new CompleteMatrix(type, init, rows, columns, multiplier, values);
+      else   // Create a 1D Matrix
+         theMatrix = new VectorMatrix(type, init, rows, columns, multiplier, values);
+   } else if (type == "diag") {   // Implement diagonal matrices as sparse
+      if (init == "none") {       // a string of values is present & passed
+         TiXmlText *valuesNode = matHandle.FirstChild().Text();
+         if (valuesNode == nullptr)
+            throw KII_invalid_argument(
+               "Contents not specified for Sparse Matrix with init='none'.");
+         const char *values = valuesNode->Value();
 #ifdef MDEBUG
-      cerr << "\tData present for initialization: " << values << endl;
+         cerr << "\tData present for initialization: " << values << endl;
 #endif
-      theMatrix = new SparseMatrix(rows, columns, multiplier, values);
-    } else if (init == "const") {   // No string of values or XML row data
-      theMatrix = new SparseMatrix(rows, columns, multiplier);
-    } else
-      throw KII_invalid_argument("Invalid init for sparse matrix");
-  } else if (type == "sparse") {
-    if (init == "none")             // a sequence of row data nodes is present & passed
-      theMatrix = new SparseMatrix(rows, columns, multiplier, matElement);
-    else if (init == "const") {     // No row data
-      if (multiplier == 0.0)
-	theMatrix = new SparseMatrix(rows, columns);
-      else
-	throw KII_invalid_argument("A sparse matrix can only be initialized to zero with const XML init");
-    } else
-      throw KII_invalid_argument("A sparse matrix can only be initialized to zero with const XML init");
-  } else
-    throw KII_invalid_argument("Illegal Matrix type");
+         theMatrix = new SparseMatrix(rows, columns, multiplier, values);
+      } else if (init == "const") {   // No string of values or XML row data
+         theMatrix = new SparseMatrix(rows, columns, multiplier);
+      } else
+         throw KII_invalid_argument("Invalid init for sparse matrix");
+   } else if (type == "sparse") {
+      if (init == "none")   // a sequence of row data nodes is present & passed
+         theMatrix = new SparseMatrix(rows, columns, multiplier, matElement);
+      else if (init == "const") {   // No row data
+         if (multiplier == 0.0)
+            theMatrix = new SparseMatrix(rows, columns);
+         else
+            throw KII_invalid_argument(
+               "A sparse matrix can only be initialized to zero with const XML init");
+      } else
+         throw KII_invalid_argument(
+            "A sparse matrix can only be initialized to zero with const XML init");
+   } else
+      throw KII_invalid_argument("Illegal Matrix type");
 
-  return theMatrix;
+   return theMatrix;
 }
 
 /// This function creates a VectorMatrix from the given tinyxml Element
@@ -167,53 +166,54 @@ Matrix* MatrixFactory::CreateMatrix(TiXmlElement* matElement)
 ///   initialized.
 /// Returns:
 ///   VectorMatrix object (will be empty if some failure occurs).
-VectorMatrix MatrixFactory::CreateVector(TiXmlElement* matElement)
+VectorMatrix MatrixFactory::CreateVector(TiXmlElement *matElement)
 {
-  string type;
-  string init;
-  int rows, columns;
-  FLOAT multiplier;
-  string values;
-  TiXmlHandle matHandle(matElement);
+   string type;
+   string init;
+   int rows, columns;
+   FLOAT multiplier;
+   string values;
+   TiXmlHandle matHandle(matElement);
 
-  GetAttributes(matElement, type, init, rows, columns, multiplier);
+   GetAttributes(matElement, type, init, rows, columns, multiplier);
 
 #ifdef VDEBUG
-  cerr << "Creating Vector with attributes: " << type << ", " << init
-       << ", " << rows << "X" << columns << ", " << multiplier << endl;
+   cerr << "Creating Vector with attributes: " << type << ", " << init << ", " << rows << "X"
+        << columns << ", " << multiplier << endl;
 #endif
 
-  // Get the Text node that contains the matrix values, if needed
-  if (init == "none") {
-    TiXmlText* valuesNode = matHandle.FirstChild().Text();
-    if (valuesNode == nullptr)
-      throw KII_invalid_argument("Contents not specified for Vector with init='none'.");
+   // Get the Text node that contains the matrix values, if needed
+   if (init == "none") {
+      TiXmlText *valuesNode = matHandle.FirstChild().Text();
+      if (valuesNode == nullptr)
+         throw KII_invalid_argument("Contents not specified for Vector with init='none'.");
 
-    values = valuesNode->Value();
+      values = valuesNode->Value();
 #ifdef VDEBUG
-    cerr << "\tData present for initialization: " << values << endl;
+      cerr << "\tData present for initialization: " << values << endl;
 #endif
-  } else if (init == "implementation")
-    throw KII_invalid_argument("MatrixFactory cannot create implementation-dependent Matrices; client program must perform creation");
+   } else if (init == "implementation")
+      throw KII_invalid_argument(
+         "MatrixFactory cannot create implementation-dependent Matrices; client program must perform creation");
 
-  if (type == "sparse")
-    throw KII_invalid_argument("Sparse matrix requested in XML but CreateVector called");
+   if (type == "sparse")
+      throw KII_invalid_argument("Sparse matrix requested in XML but CreateVector called");
 
-  if ((type == "complete") || (type == "diag")) {
-    if ((rows > 1) && (columns > 1)) // Create a 2D Matrix
-      throw KII_domain_error("Cannot create Vector with more than one dimension.");
-    else                               // Create a 1D Matrix
-       return VectorMatrix(type, init, rows, columns, multiplier, values);
-  } else if (type == "sparse")
-    throw KII_invalid_argument("No such thing as sparse Vectors");
-  else
-    throw KII_invalid_argument("Illegal Vector type");
+   if ((type == "complete") || (type == "diag")) {
+      if ((rows > 1) && (columns > 1))   // Create a 2D Matrix
+         throw KII_domain_error("Cannot create Vector with more than one dimension.");
+      else   // Create a 1D Matrix
+         return VectorMatrix(type, init, rows, columns, multiplier, values);
+   } else if (type == "sparse")
+      throw KII_invalid_argument("No such thing as sparse Vectors");
+   else
+      throw KII_invalid_argument("Illegal Vector type");
 
-  return VectorMatrix();
+   return VectorMatrix();
 }
 
 /// This function creates a CompleteMatrix from the given tinyxml Element
-/// and its children. 
+/// and its children.
 ///
 /// Input:
 ///   matElement: tinyxml DOM node containing a Matrix element
@@ -222,46 +222,47 @@ VectorMatrix MatrixFactory::CreateVector(TiXmlElement* matElement)
 ///   initialized.
 /// Returns:
 ///   CompleteMatrix object (will be empty if some failure occurs).
-CompleteMatrix MatrixFactory::CreateComplete(TiXmlElement* matElement)
+CompleteMatrix MatrixFactory::CreateComplete(TiXmlElement *matElement)
 {
-  string type;
-  string init;
-  int rows, columns;
-  FLOAT multiplier;
-  string values;
-  TiXmlHandle matHandle(matElement);
+   string type;
+   string init;
+   int rows, columns;
+   FLOAT multiplier;
+   string values;
+   TiXmlHandle matHandle(matElement);
 
-  GetAttributes(matElement, type, init, rows, columns, multiplier);
+   GetAttributes(matElement, type, init, rows, columns, multiplier);
 
 #ifdef MDEBUG
-  cerr << "Creating Matrix with attributes: " << type << ", " << init
-       << ", " << rows << "X" << columns << ", " << multiplier << endl;
+   cerr << "Creating Matrix with attributes: " << type << ", " << init << ", " << rows << "X"
+        << columns << ", " << multiplier << endl;
 #endif
 
-  // Get the Text node that contains the matrix values, if needed
-  if (init == "none") {
-    TiXmlText* valuesNode = matHandle.FirstChild().Text();
-    if (valuesNode == nullptr)
-      throw KII_invalid_argument("Contents not specified for Matrix with init='none'.");
+   // Get the Text node that contains the matrix values, if needed
+   if (init == "none") {
+      TiXmlText *valuesNode = matHandle.FirstChild().Text();
+      if (valuesNode == nullptr)
+         throw KII_invalid_argument("Contents not specified for Matrix with init='none'.");
 
-    values = valuesNode->Value();
+      values = valuesNode->Value();
 #ifdef MDEBUG
-    cerr << "\tData present for initialization: " << values << endl;
+      cerr << "\tData present for initialization: " << values << endl;
 #endif
-  } else if (init == "implementation")
-    throw KII_invalid_argument("MatrixFactory cannot create implementation-dependent Matrices; client program must perform creation.");
+   } else if (init == "implementation")
+      throw KII_invalid_argument(
+         "MatrixFactory cannot create implementation-dependent Matrices; client program must perform creation.");
 
-  if (type == "sparse")
-    throw KII_invalid_argument("Sparse matrix requested by XML but CreateComplete called");
+   if (type == "sparse")
+      throw KII_invalid_argument("Sparse matrix requested by XML but CreateComplete called");
 
-  if ((type == "complete") || (type == "diag"))
-    return CompleteMatrix(type, init, rows, columns, multiplier, values);
-  else if (type == "sparse")
-    throw KII_invalid_argument("No such thing as sparse CompleteMatrices");
-  else
-    throw KII_invalid_argument("Illegal Vector type");
+   if ((type == "complete") || (type == "diag"))
+      return CompleteMatrix(type, init, rows, columns, multiplier, values);
+   else if (type == "sparse")
+      throw KII_invalid_argument("No such thing as sparse CompleteMatrices");
+   else
+      throw KII_invalid_argument("Illegal Vector type");
 
-  return CompleteMatrix();
+   return CompleteMatrix();
 }
 
 ///  Create a SparseMatrix, based
@@ -269,53 +270,54 @@ CompleteMatrix MatrixFactory::CreateComplete(TiXmlElement* matElement)
 ///  @throws KII_invalid_argument
 ///  @param matElement pointer to Matrix XML element
 ///  @result The SparseMatrix object.
-SparseMatrix MatrixFactory::CreateSparse(TiXmlElement* matElement)
+SparseMatrix MatrixFactory::CreateSparse(TiXmlElement *matElement)
 {
-  string type;
-  string init;
-  int rows, columns;
-  FLOAT multiplier;
-  TiXmlHandle matHandle(matElement);
+   string type;
+   string init;
+   int rows, columns;
+   FLOAT multiplier;
+   TiXmlHandle matHandle(matElement);
 
-  GetAttributes(matElement, type, init, rows, columns, multiplier);
+   GetAttributes(matElement, type, init, rows, columns, multiplier);
 
 #ifdef MDEBUG
-  cerr << "Creating SparseMatrix with attributes: " << type << ", " << init
-       << ", " << rows << "X" << columns << ", " << multiplier << endl;
+   cerr << "Creating SparseMatrix with attributes: " << type << ", " << init << ", " << rows << "X"
+        << columns << ", " << multiplier << endl;
 #endif
 
-  if (type == "diag") {
-    if (init == "none") {          // a string of values is present & passed
-      TiXmlText* valuesNode = matHandle.FirstChild().Text();
-      if (valuesNode == nullptr)
-	throw KII_invalid_argument("Contents not specified for Sparese Matrix with init='none'.");
-      const char* values = valuesNode->Value();
+   if (type == "diag") {
+      if (init == "none") {   // a string of values is present & passed
+         TiXmlText *valuesNode = matHandle.FirstChild().Text();
+         if (valuesNode == nullptr)
+            throw KII_invalid_argument(
+               "Contents not specified for Sparese Matrix with init='none'.");
+         const char *values = valuesNode->Value();
 #ifdef MDEBUG
-      cerr << "\tData present for initialization: " << values << endl;
+         cerr << "\tData present for initialization: " << values << endl;
 #endif
-      return SparseMatrix(rows, columns, multiplier, values);
-    } else if (init == "const") {   // No string of values or XML row data
-      if (multiplier == 0.0)
-	return SparseMatrix(rows, columns);
-      else
-	throw KII_invalid_argument("A sparse matrix can only be initialized to zero with const XML init");
-    } else
-      throw KII_invalid_argument("Invalid init for sparse matrix");
-  } else if (type == "sparse") {
-    if (init == "none")             // a sequence of row data nodes is present & passed
-      return SparseMatrix(rows, columns, multiplier, matElement);
-    else if (init == "const") {     // No row data
-      if (multiplier == 0.0)
-	return SparseMatrix(rows, columns);
-      else
-	throw KII_invalid_argument("A sparse matrix can only be initialized to zero with const XML init");
-    } else
-      throw KII_invalid_argument("A sparse matrix can only be initialized to zero with const XML init");
-  }
+         return SparseMatrix(rows, columns, multiplier, values);
+      } else if (init == "const") {   // No string of values or XML row data
+         if (multiplier == 0.0)
+            return SparseMatrix(rows, columns);
+         else
+            throw KII_invalid_argument(
+               "A sparse matrix can only be initialized to zero with const XML init");
+      } else
+         throw KII_invalid_argument("Invalid init for sparse matrix");
+   } else if (type == "sparse") {
+      if (init == "none")   // a sequence of row data nodes is present & passed
+         return SparseMatrix(rows, columns, multiplier, matElement);
+      else if (init == "const") {   // No row data
+         if (multiplier == 0.0)
+            return SparseMatrix(rows, columns);
+         else
+            throw KII_invalid_argument(
+               "A sparse matrix can only be initialized to zero with const XML init");
+      } else
+         throw KII_invalid_argument(
+            "A sparse matrix can only be initialized to zero with const XML init");
+   }
 
-  // If we get here, then something is really wrong
-  throw KII_invalid_argument("Invalid type specified for sparse matrix.");
-
+   // If we get here, then something is really wrong
+   throw KII_invalid_argument("Invalid type specified for sparse matrix.");
 }
-
-

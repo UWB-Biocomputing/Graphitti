@@ -18,72 +18,71 @@
 #ifndef _MATRIX_H_
 #define _MATRIX_H_
 
-#include <string>
-#include "MatrixExceptions.h"
 #include "BGTypes.h"
+#include "MatrixExceptions.h"
+#include <string>
 
 using namespace std;
 
-class Matrix
-      {
-      public:
-         /// Virtual Destructor
-         virtual ~Matrix() { }
+class Matrix {
+public:
+   /// Virtual Destructor
+   virtual ~Matrix()
+   {
+   }
 
-         /// @brief Generate text representation of the Matrix to a stream
-         virtual void Print(ostream& os) const = 0;
+   /// @brief Generate text representation of the Matrix to a stream
+   virtual void Print(ostream &os) const = 0;
 
-      protected:
-         ///   Initialize attributes at construction time. This is protected to
-         ///   prevent construction of Matrix objects themselves. Would be nice
-         ///   if C++ just allowed one to declare a class abstract. Really
-         ///   obsoleted since the Print() method is pure virtual now.
-         ///
-         ///   @param t Matrix type (subclasses add legal values; basically, cheapo reflection)
-         ///   @param i Matrix initialization (subclasses can also add legal values to this)
-         ///   @param r rows in Matrix
-         ///   @param c columns in Matrix
-         ///   @param m multiplier used for initialization
-         Matrix(string t = "", string i = "", int r = 0, int c = 0, BGFLOAT m = 0.0);
+protected:
+   ///   Initialize attributes at construction time. This is protected to
+   ///   prevent construction of Matrix objects themselves. Would be nice
+   ///   if C++ just allowed one to declare a class abstract. Really
+   ///   obsoleted since the Print() method is pure virtual now.
+   ///
+   ///   @param t Matrix type (subclasses add legal values; basically, cheapo reflection)
+   ///   @param i Matrix initialization (subclasses can also add legal values to this)
+   ///   @param r rows in Matrix
+   ///   @param c columns in Matrix
+   ///   @param m multiplier used for initialization
+   Matrix(string t = "", string i = "", int r = 0, int c = 0, BGFLOAT m = 0.0);
 
-         ///  @brief Convenience mutator
-         ///  @param t Matrix type (subclasses add legal values; basically, cheapo reflection)
-         ///  @param i Matrix initialization (subclasses can also add legal values to this)
-         ///  @param r rows in Matrix
-         ///  @param c columns in Matrix
-         ///  @param m multiplier used for initialization
-         ///  @param d indicates one or two dimensional
-         void SetAttributes(string t, string i, int r, int c, BGFLOAT m, int d);
+   ///  @brief Convenience mutator
+   ///  @param t Matrix type (subclasses add legal values; basically, cheapo reflection)
+   ///  @param i Matrix initialization (subclasses can also add legal values to this)
+   ///  @param r rows in Matrix
+   ///  @param c columns in Matrix
+   ///  @param m multiplier used for initialization
+   ///  @param d indicates one or two dimensional
+   void SetAttributes(string t, string i, int r, int c, BGFLOAT m, int d);
 
-         /******************************************
+   /******************************************
           * @name Attributes from XML files 
          ******************************************/
-         ///@{
+   ///@{
 
-         /// "complete" == all locations nonzero,
-         /// "diag" == only diagonal elements nonzero,
-         /// or "sparse" == nonzero values may be anywhere
-         string type;
+   /// "complete" == all locations nonzero,
+   /// "diag" == only diagonal elements nonzero,
+   /// or "sparse" == nonzero values may be anywhere
+   string type;
 
-         /// "const" == nonzero values with a fixed constant,
-         /// "random" == nonzero values with random numbers,
-         /// or "implementation" == uses a built-in function of the specific subclass
-         string init;
+   /// "const" == nonzero values with a fixed constant,
+   /// "random" == nonzero values with random numbers,
+   /// or "implementation" == uses a built-in function of the specific subclass
+   string init;
 
-         int rows;                  ///< Number of rows in Matrix (>0)
-         int columns;               ///< Number of columns in Matrix (>0)
-         BGFLOAT multiplier;     ///< Constant used for initialization
-         int dimensions;         ///< One or two dimensional
-         ///@}
-      };
+   int rows;             ///< Number of rows in Matrix (>0)
+   int columns;          ///< Number of columns in Matrix (>0)
+   BGFLOAT multiplier;   ///< Constant used for initialization
+   int dimensions;       ///< One or two dimensional
+   ///@}
+};
 
 ///  Stream output operator for the Matrix class
 ///  hierarchy. Subclasses must implement the Print() method
 ///  to take advantage of this.
 ///  @param os the output stream
 ///  @param obj the Matrix object to send to the output stream
-ostream& operator<<(ostream& os, const Matrix& obj);
+ostream &operator<<(ostream &os, const Matrix &obj);
 
 #endif
-
-

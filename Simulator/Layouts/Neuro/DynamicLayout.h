@@ -25,7 +25,10 @@ public:
 
    virtual ~DynamicLayout();
 
-   static Layout *Create() { return new DynamicLayout(); }
+   static Layout *Create()
+   {
+      return new DynamicLayout();
+   }
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
@@ -44,7 +47,7 @@ public:
    virtual void initStarterMap(const int numVertices) override;
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters(); 
+   virtual void loadParameters();
 
    /// Returns the type of synapse at the given coordinates
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
@@ -59,4 +62,3 @@ private:
    /// Fraction of exitatory neurons.
    BGFLOAT fractionExcitatory_;
 };
-

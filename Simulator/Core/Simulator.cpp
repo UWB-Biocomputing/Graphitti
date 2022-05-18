@@ -8,26 +8,26 @@
  */
 
 #include "Simulator.h"
-
-#include <functional>
-
 #include "CPUModel.h"
 #include "GPUModel.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
-#include "RecorderFactory.h"
 #include "RNGFactory.h"
+#include "RecorderFactory.h"
+#include <functional>
 // #include "ParseParamError.h"
 
 /// Acts as constructor first time it's called, returns the instance of the singleton object
-Simulator &Simulator::getInstance() {
+Simulator &Simulator::getInstance()
+{
    static Simulator instance;
    return instance;
 };
 
 /// Constructor is private to keep a singleton instance of this class.
-Simulator::Simulator() {
-   g_simulationStep = 0;  /// uint64_t g_simulationStep instantiated in Global
+Simulator::Simulator()
+{
+   g_simulationStep = 0;   /// uint64_t g_simulationStep instantiated in Global
    deltaT_ = DEFAULT_dt;
 
    consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
@@ -36,16 +36,19 @@ Simulator::Simulator() {
 
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&Simulator::printParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+   OperationManager::getInstance().registerOperation(Operations::printParameters,
+                                                     printParametersFunc);
 }
 
 /// Destructor
-Simulator::~Simulator() {
+Simulator::~Simulator()
+{
    freeResources();
 }
 
 /// Initialize and prepare network for simulation.
-void Simulator::setup() {
+void Simulator::setup()
+{
 #ifdef PERFORMANCE_METRICS
    // Start overall simulation timer
    cerr << "Starting main timer... ";
@@ -70,22 +73,28 @@ void Simulator::setup() {
 }
 
 /// Begin terminating the simulator
-void Simulator::finish() {
-   model_->finish(); // ToDo: Can #term be removed w/ the new model architecture?  // =>ISIMULATION
+void Simulator::finish()
+{
+   model_
+      ->finish();   // ToDo: Can #term be removed w/ the new model architecture?  // =>ISIMULATION
 }
 
 /// Load member variables from configuration file
-void Simulator::loadParameters() {
+void Simulator::loadParameters()
+{
    ParameterManager::getInstance().getIntByXpath("//PoolSize/x/text()", width_);
    ParameterManager::getInstance().getIntByXpath("//PoolSize/y/text()", height_);
    totalNeurons_ = width_ * height_;
 
-   ParameterManager::getInstance().getBGFloatByXpath("//SimParams/epochDuration/text()", epochDuration_);
+   ParameterManager::getInstance().getBGFloatByXpath("//SimParams/epochDuration/text()",
+                                                     epochDuration_);
    ParameterManager::getInstance().getIntByXpath("//SimParams/numEpochs/text()", numEpochs_);
-   ParameterManager::getInstance().getIntByXpath("//SimConfig/maxFiringRate/text()", maxFiringRate_);
-   ParameterManager::getInstance().getIntByXpath("//SimConfig/maxEdgesPerVertex/text()", maxEdgesPerVertex_);
+   ParameterManager::getInstance().getIntByXpath("//SimConfig/maxFiringRate/text()",
+                                                 maxFiringRate_);
+   ParameterManager::getInstance().getIntByXpath("//SimConfig/maxEdgesPerVertex/text()",
+                                                 maxEdgesPerVertex_);
 
-   // Instantiate rng object 
+   // Instantiate rng object
    string type;
    ParameterManager::getInstance().getStringByXpath("//RNGConfig/NoiseRNGSeed/@class", type);
    noiseRNG = RNGFactory::getInstance()->createRNG(type);
@@ -94,38 +103,41 @@ void Simulator::loadParameters() {
    ParameterManager::getInstance().getLongByXpath("//RNGConfig/NoiseRNGSeed/text()", noiseRngSeed_);
    noiseRNG->seed(noiseRngSeed_);
    initRNG.seed(initRngSeed_);
-
 }
 
 /// Prints out loaded parameters to logging file.
-void Simulator::printParameters() const {
+void Simulator::printParameters() const
+{
    LOG4CPLUS_DEBUG(fileLogger_,
-                  "\nSIMULATION PARAMETERS" << endl
-                                          << "\tpool size x:" << width_ << " y:" << height_
-                                          << endl
-                                          << "\tTime between growth updates (in seconds): " << epochDuration_ << endl
-                                          << "\tNumber of epochs to run: " << numEpochs_ << endl
-                                          << "\tMax firing rate: " << maxFiringRate_ << endl
-                                          << "\tMax edges per vertex: " << maxEdgesPerVertex_ << endl
-                                          << "\tNoise RNG Seed: " << noiseRngSeed_ << endl
-                                          << "\tInitializer RNG Seed: " << initRngSeed_ << endl);
+                   "\nSIMULATION PARAMETERS"
+                      << endl
+                      << "\tpool size x:" << width_ << " y:" << height_ << endl
+                      << "\tTime between growth updates (in seconds): " << epochDuration_ << endl
+                      << "\tNumber of epochs to run: " << numEpochs_ << endl
+                      << "\tMax firing rate: " << maxFiringRate_ << endl
+                      << "\tMax edges per vertex: " << maxEdgesPerVertex_ << endl
+                      << "\tNoise RNG Seed: " << noiseRngSeed_ << endl
+                      << "\tInitializer RNG Seed: " << initRngSeed_ << endl);
 }
 
 // Code from STDPFix branch, doesn't do anything
 /// Copy GPU Synapse data to CPU.
-void Simulator::copyGPUSynapseToCPU() {
+void Simulator::copyGPUSynapseToCPU()
+{
    // ToDo: Delete this method and implement using OperationManager
    // model->copyGPUSynapseToCPUModel();
 }
 
 /// Copy CPU Synapse data to GPU.
-void Simulator::copyCPUSynapseToGPU() {
+void Simulator::copyCPUSynapseToGPU()
+{
    // ToDo: Delete this method and implement using OperationManager
    // model->copyCPUSynapseToGPUModel();
 }
 
 /// Resets all of the maps. Releases and re-allocates memory for each map, clearing them as necessary.
-void Simulator::reset() {
+void Simulator::reset()
+{
    LOG4CPLUS_INFO(fileLogger_, "Resetting Simulator");
    // Terminate the simulator
    model_->finish();
@@ -139,10 +151,13 @@ void Simulator::reset() {
 }
 
 /// Clean up objects.
-void Simulator::freeResources() {}
+void Simulator::freeResources()
+{
+}
 
 /// Run simulation
-void Simulator::simulate() {
+void Simulator::simulate()
+{
    // Main simulation loop - execute maxGrowthSteps
    for (int currentEpoch = 1; currentEpoch <= numEpochs_; currentEpoch++) {
       LOG4CPLUS_TRACE(consoleLogger_, "Performing epoch number: " << currentEpoch);
@@ -158,7 +173,8 @@ void Simulator::simulate() {
       // Time to advance
       t_host_advance += short_timer.lap() / 1000000.0;
 #endif
-      LOG4CPLUS_TRACE(consoleLogger_, "done with epoch cycle " << currentEpoch_ << ", beginning growth update");
+      LOG4CPLUS_TRACE(consoleLogger_,
+                      "done with epoch cycle " << currentEpoch_ << ", beginning growth update");
       LOG4CPLUS_TRACE(edgeLogger_, "Epoch: " << currentEpoch_);
 
 #ifdef PERFORMANCE_METRICS
@@ -186,26 +202,26 @@ void Simulator::simulate() {
 /// Helper for #simulate(). Advance simulation until ready for next growth cycle.
 /// This should simulate all neuron and synapse activity for one epoch.
 /// @param currentStep the current epoch in which the network is being simulated.
-void Simulator::advanceEpoch(const int &currentEpoch) const {
+void Simulator::advanceEpoch(const int &currentEpoch) const
+{
    uint64_t count = 0;
    // Compute step number at end of this simulation epoch
-   uint64_t endStep = g_simulationStep
-                      + static_cast<uint64_t>(epochDuration_ / deltaT_);
+   uint64_t endStep = g_simulationStep + static_cast<uint64_t>(epochDuration_ / deltaT_);
    // DEBUG_MID(model->logSimStep();) // Generic model debug call
    while (g_simulationStep < endStep) {
       // Output status once every 10,000 steps
       if (count % 10000 == 0) {
-         LOG4CPLUS_TRACE(consoleLogger_, "Epoch: " << currentEpoch << "/" << numEpochs_
-                                                   << " simulating time: "
-                                                   << g_simulationStep * deltaT_ << "/"
-                                                   << (epochDuration_ * numEpochs_) - 1);
+         LOG4CPLUS_TRACE(consoleLogger_,
+                         "Epoch: " << currentEpoch << "/" << numEpochs_
+                                   << " simulating time: " << g_simulationStep * deltaT_ << "/"
+                                   << (epochDuration_ * numEpochs_) - 1);
          count = 0;
       }
       count++;
       // input stimulus
       /***** S_INPUT NOT IN REPO YET *******/
-//      if (pInput != nullptr)
-//         pInput->inputStimulus();
+      //      if (pInput != nullptr)
+      //         pInput->inputStimulus();
       // Advance the Network one time step
       model_->advance();
       g_simulationStep++;
@@ -213,13 +229,15 @@ void Simulator::advanceEpoch(const int &currentEpoch) const {
 }
 
 /// Writes simulation results to an output destination.
-void Simulator::saveResults() const {
+void Simulator::saveResults() const
+{
    model_->saveResults();
 }
 
 /// Instantiates Model which causes all other lower level simulator objects to be instantiated. Checks if all
 /// expected objects were created correctly and returns T/F on the success of the check.
-bool Simulator::instantiateSimulatorObjects() {
+bool Simulator::instantiateSimulatorObjects()
+{
    // Model Definition
 #if defined(USE_GPU)
    model_ = shared_ptr<Model>(new GPUModel());
@@ -228,12 +246,8 @@ bool Simulator::instantiateSimulatorObjects() {
 #endif
 
    // Perform check on all instantiated objects.
-   if (!model_
-       || !model_->getConnections()
-       || !model_->getConnections()->getEdges()
-       || !model_->getLayout()
-       || !model_->getLayout()->getVertices()
-       || !model_->getRecorder()) {
+   if (!model_ || !model_->getConnections() || !model_->getConnections()->getEdges()
+       || !model_->getLayout() || !model_->getLayout()->getVertices() || !model_->getRecorder()) {
       return false;
    }
    return true;
@@ -245,72 +259,149 @@ bool Simulator::instantiateSimulatorObjects() {
  ***********************************************/
 ///@{
 /// List of summation points (either host or device memory)
-void Simulator::setPSummationMap(BGFLOAT *summationMap) { pSummationMap_ = summationMap; }
+void Simulator::setPSummationMap(BGFLOAT *summationMap)
+{
+   pSummationMap_ = summationMap;
+}
 
-void Simulator::setConfigFileName(const string &fileName) { configFileName_ = fileName; }
+void Simulator::setConfigFileName(const string &fileName)
+{
+   configFileName_ = fileName;
+}
 
-void Simulator::setSerializationFileName(const string &fileName) { serializationFileName_ = fileName; }
+void Simulator::setSerializationFileName(const string &fileName)
+{
+   serializationFileName_ = fileName;
+}
 
-void Simulator::setDeserializationFileName(const string &fileName) { deserializationFileName_ = fileName; }
+void Simulator::setDeserializationFileName(const string &fileName)
+{
+   deserializationFileName_ = fileName;
+}
 
-void Simulator::setStimulusFileName(const string &fileName) { stimulusFileName_ = fileName; }
+void Simulator::setStimulusFileName(const string &fileName)
+{
+   stimulusFileName_ = fileName;
+}
 ///@}
 
 /************************************************
  *  Accessors
  ***********************************************/
 ///@{
-int Simulator::getWidth() const { return width_; }
+int Simulator::getWidth() const
+{
+   return width_;
+}
 
-int Simulator::getHeight() const { return height_; }
+int Simulator::getHeight() const
+{
+   return height_;
+}
 
-int Simulator::getTotalVertices() const { return totalNeurons_; }
+int Simulator::getTotalVertices() const
+{
+   return totalNeurons_;
+}
 
-int Simulator::getCurrentStep() const { return currentEpoch_; }
+int Simulator::getCurrentStep() const
+{
+   return currentEpoch_;
+}
 
-int Simulator::getNumEpochs() const { return numEpochs_; }
+int Simulator::getNumEpochs() const
+{
+   return numEpochs_;
+}
 
-BGFLOAT Simulator::getEpochDuration() const { return epochDuration_; }
+BGFLOAT Simulator::getEpochDuration() const
+{
+   return epochDuration_;
+}
 
-int Simulator::getMaxFiringRate() const { return maxFiringRate_; } /// **GPU Only**
+int Simulator::getMaxFiringRate() const
+{
+   return maxFiringRate_;
+}   /// **GPU Only**
 
-int Simulator::getMaxEdgesPerVertex() const { return maxEdgesPerVertex_; } ///  **GPU Only.**
+int Simulator::getMaxEdgesPerVertex() const
+{
+   return maxEdgesPerVertex_;
+}   ///  **GPU Only.**
 
-BGFLOAT Simulator::getDeltaT() const { return deltaT_; }
+BGFLOAT Simulator::getDeltaT() const
+{
+   return deltaT_;
+}
 
 // ToDo: should be a vector of neuron type
 // ToDo: vector should be contiguous array, resize is used.
-vertexType *Simulator::getRgNeuronTypeMap() const { return rgNeuronTypeMap_; }
+vertexType *Simulator::getRgNeuronTypeMap() const
+{
+   return rgNeuronTypeMap_;
+}
 
 // ToDo: make smart ptr
 /// Starter existence map (T/F).
-bool *Simulator::getRgEndogenouslyActiveNeuronMap() const { return rgEndogenouslyActiveNeuronMap_; }
+bool *Simulator::getRgEndogenouslyActiveNeuronMap() const
+{
+   return rgEndogenouslyActiveNeuronMap_;
+}
 
-BGFLOAT Simulator::getMaxRate() const { return maxRate_; }
+BGFLOAT Simulator::getMaxRate() const
+{
+   return maxRate_;
+}
 
-BGFLOAT *Simulator::getPSummationMap() const { return pSummationMap_; }
+BGFLOAT *Simulator::getPSummationMap() const
+{
+   return pSummationMap_;
+}
 
-long Simulator::getNoiseRngSeed() const { return noiseRngSeed_; }
+long Simulator::getNoiseRngSeed() const
+{
+   return noiseRngSeed_;
+}
 
-long Simulator::getInitRngSeed() const { return initRngSeed_; }
+long Simulator::getInitRngSeed() const
+{
+   return initRngSeed_;
+}
 
-string Simulator::getConfigFileName() const { return configFileName_; }
+string Simulator::getConfigFileName() const
+{
+   return configFileName_;
+}
 
-string Simulator::getSerializationFileName() const { return serializationFileName_; }
+string Simulator::getSerializationFileName() const
+{
+   return serializationFileName_;
+}
 
-string Simulator::getDeserializationFileName() const { return deserializationFileName_; }
+string Simulator::getDeserializationFileName() const
+{
+   return deserializationFileName_;
+}
 
-string Simulator::getStimulusFileName() const { return stimulusFileName_; }
+string Simulator::getStimulusFileName() const
+{
+   return stimulusFileName_;
+}
 
-shared_ptr<Model> Simulator::getModel() const { return model_; }
+shared_ptr<Model> Simulator::getModel() const
+{
+   return model_;
+}
 
 #ifdef PERFOMANCE_METRICS
-Timer Simulator::getTimer() const { return timer; }
+Timer Simulator::getTimer() const
+{
+   return timer;
+}
 
-Timer Simulator::getShort_timer() const { return short_timer; }
+Timer Simulator::getShort_timer() const
+{
+   return short_timer;
+}
 #endif
 ///@}
-
-
-
-

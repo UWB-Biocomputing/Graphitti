@@ -66,12 +66,11 @@
 
 #pragma once
 
-#include <iostream>
-#include <vector>
-
 #include "Connections.h"
 #include "Global.h"
 #include "Simulator.h"
+#include <iostream>
+#include <vector>
 
 // cereal
 #include <cereal/types/vector.hpp>
@@ -84,7 +83,10 @@ public:
 
    virtual ~ConnGrowth();
 
-   static Connections *Create() { return new ConnGrowth(); }
+   static Connections *Create()
+   {
+      return new ConnGrowth();
+   }
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///
@@ -110,13 +112,11 @@ public:
 
    ///  Cereal serialization method
    ///  (Serializes radii)
-   template<class Archive>
-   void save(Archive &archive) const;
+   template <class Archive> void save(Archive &archive) const;
 
    ///  Cereal deserialization method
    ///  (Deserializes radii)
-   template<class Archive>
-   void load(Archive &archive);
+   template <class Archive> void load(Archive &archive);
 
    ///  Prints radii
    void printRadii() const;
@@ -133,11 +133,11 @@ public:
    ///  @param  allVerticesDevice    GPU address of the allVertices struct in device memory.
    ///  @param  allEdgesDevice   GPU address of the allEdges struct in device memory.
    ///  @param  layout              The Layout object.
-   virtual void updateSynapsesWeights(const int numVertices,
-         AllVertices &neurons, AllEdges &synapses,
-         AllSpikingNeuronsDeviceProperties* allVerticesDevice,
-         AllSpikingSynapsesDeviceProperties* allEdgesDevice,
-         Layout *layout) override;
+   virtual void updateSynapsesWeights(const int numVertices, AllVertices &neurons,
+                                      AllEdges &synapses,
+                                      AllSpikingNeuronsDeviceProperties *allVerticesDevice,
+                                      AllSpikingSynapsesDeviceProperties *allEdgesDevice,
+                                      Layout *layout) override;
 #else
    ///  Update the weights of the Synapses in the simulation. To be clear,
    ///  iterates through all source and destination neurons and updates their
@@ -148,11 +148,8 @@ public:
    ///  @param  ineurons    The AllVertices object.
    ///  @param  isynapses   The AllEdges object.
    ///  @param  layout      The Layout object.
-   virtual void
-   updateSynapsesWeights(const int numVertices,
-         AllVertices &vertices,
-         AllEdges &synapses,
-         Layout *layout) override;
+   virtual void updateSynapsesWeights(const int numVertices, AllVertices &vertices,
+                                      AllEdges &synapses, Layout *layout) override;
 
 #endif
 private:
@@ -175,14 +172,14 @@ private:
 
 public:
    struct GrowthParams {
-      BGFLOAT epsilon;     ///< null firing rate(zero outgrowth)
-      BGFLOAT beta;        ///< sensitivity of outgrowth to firing rate
-      BGFLOAT rho;         ///< outgrowth rate constant
-      BGFLOAT targetRate;  ///<  Spikes/second
-      BGFLOAT maxRate;     ///<  = targetRate / epsilon;
-      BGFLOAT minRadius;   ///<  To ensure that even rapidly-firing neurons will connect to
-                           ///< other neurons, when within their RFS.
-      BGFLOAT startRadius; ///< No need to wait a long time before RFs start to overlap
+      BGFLOAT epsilon;       ///< null firing rate(zero outgrowth)
+      BGFLOAT beta;          ///< sensitivity of outgrowth to firing rate
+      BGFLOAT rho;           ///< outgrowth rate constant
+      BGFLOAT targetRate;    ///<  Spikes/second
+      BGFLOAT maxRate;       ///<  = targetRate / epsilon;
+      BGFLOAT minRadius;     ///<  To ensure that even rapidly-firing neurons will connect to
+                             ///< other neurons, when within their RFS.
+      BGFLOAT startRadius;   ///< No need to wait a long time before RFs start to overlap
    };
 
    /// structure to keep growth parameters
@@ -214,13 +211,12 @@ public:
 
    /// displacement of neuron radii
    VectorMatrix *deltaR_;
-
 };
 
 ///  Cereal serialization method
 ///  (Serializes radii)
-template<class Archive>
-void ConnGrowth::save(Archive &archive) const {
+template <class Archive> void ConnGrowth::save(Archive &archive) const
+{
    // uses vector to save radii
    vector<BGFLOAT> radiiVector;
    for (int i = 0; i < radiiSize_; i++) {
@@ -232,8 +228,8 @@ void ConnGrowth::save(Archive &archive) const {
 
 ///  Cereal deserialization method
 ///  (Deserializes radii)
-template<class Archive>
-void ConnGrowth::load(Archive &archive) {
+template <class Archive> void ConnGrowth::load(Archive &archive)
+{
    // uses vector to load radii
    vector<BGFLOAT> radiiVector;
 

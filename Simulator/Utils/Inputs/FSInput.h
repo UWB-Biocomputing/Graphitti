@@ -19,27 +19,26 @@
 #pragma once
 
 #ifndef _FSINPUT_H_
-#define _FSINPUT_H_
+   #define _FSINPUT_H_
 
-#include "ISInput.h"
+   #include "ISInput.h"
 
-class FSInput 
-{
+class FSInput {
 public:
-    //! The constructor for FSInput.
-    FSInput();
-    ~FSInput();
+   //! The constructor for FSInput.
+   FSInput();
+   ~FSInput();
 
-    static FSInput *get()
-    {
-        static FSInput instance;
-        return &instance;
-    }
- 
-    //! Create an instance.
-    ISInput* CreateInstance();
+   static FSInput *get()
+   {
+      static FSInput instance;
+      return &instance;
+   }
+
+   //! Create an instance.
+   ISInput *CreateInstance();
 
 protected:
 };
 
-#endif // _FSINPUT_H_
+#endif   // _FSINPUT_H_

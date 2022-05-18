@@ -24,20 +24,18 @@
  * Supervised by Dr. Michael Stiber, UW Bothell CSSE Division
  */
 
-# pragma once
-
-#include <memory>
-#include <string>
-#include <vector>
+#pragma once
 
 #include "BGTypes.h"
 #include "tinyxml.h"
+#include <memory>
+#include <string>
+#include <vector>
 
 using namespace std;
 
 class ParameterManager {
 public:
-
    /// Get Instance method that returns a reference to this object.
    static ParameterManager &getInstance();
 
@@ -59,7 +57,8 @@ public:
 
    bool getLongByXpath(string xpath, long &referenceVar);
 
-   bool getIntVectorByXpath(const string &path, const string &elementName, vector<int> &referenceVar);
+   bool getIntVectorByXpath(const string &path, const string &elementName,
+                            vector<int> &referenceVar);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    ParameterManager(ParameterManager const &) = delete;

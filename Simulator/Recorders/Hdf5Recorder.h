@@ -18,28 +18,30 @@
 #pragma once
 
 #if defined(HDF5)
-#include <fstream>
-#include "IRecorder.h"
-#include "Model.h"
-#include "H5Cpp.h"
+   #include "H5Cpp.h"
+   #include "IRecorder.h"
+   #include "Model.h"
+   #include <fstream>
 
-#ifndef H5_NO_NAMESPACE
+   #ifndef H5_NO_NAMESPACE
 using namespace H5;
-#endif
+   #endif
 
-#ifdef SINGLEPRECISION
-#define H5_FLOAT PredType::NATIVE_FLOAT
-#else
-#define H5_FLOAT PredType::NATIVE_DOUBLE
-#endif
+   #ifdef SINGLEPRECISION
+      #define H5_FLOAT PredType::NATIVE_FLOAT
+   #else
+      #define H5_FLOAT PredType::NATIVE_DOUBLE
+   #endif
 
-class Hdf5Recorder : public IRecorder
-{
+class Hdf5Recorder : public IRecorder {
 public:
    /// THe constructor and destructor
    Hdf5Recorder();
 
-   static IRecorder *Create() { return new Hdf5Recorder(); }
+   static IRecorder *Create()
+   {
+      return new Hdf5Recorder();
+   }
 
    /// Initialize data
    /// @param[in] stateOutputFileName File name to save histories
@@ -106,4 +108,4 @@ protected:
    vector<uint64_t> *spikesProbedNeurons_;
 };
 
-#endif // HDF5
+#endif   // HDF5
