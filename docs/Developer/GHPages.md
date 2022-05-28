@@ -10,7 +10,7 @@ When making edits and changes to the GitHub Pages, you'll create a new feature b
 
 We use markdown files in order to render our documentation in a web browser. These files follow a relatively simple syntax of which a guide can be found [here](https://www.markdownguide.org/basic-syntax/) for.
 
-Once you've completed your edits and changes, commit them to the branch and obtain approval for merger. The changes will not be visible from the gh-pages branch until the first of the month as per our automation script that publishes the updated pages. Once merged though, the changes should be seen in the master branch.
+Once you've completed your edits and changes, commit them to the branch and obtain approval for merger. The changes will not be visible from the gh-pages branch until the first of the month unless you use the publish-gh-pages.yml script which can manually publish the documentation for you. Once merged though, the changes should be seen in the master branch. Find more information on these GitHub Actions [here](GHActions.md#doxygen-and-github-pages-action-gh-pagesyml) and [here](GHActions.md#manual-github-pages-action-publish-gh-pagesyml). 
 
 ## What is the gh-pages Branch?
 
