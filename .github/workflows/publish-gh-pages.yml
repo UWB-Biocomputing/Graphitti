@@ -8,6 +8,10 @@ jobs:
     steps:
       - name: Checkout Source
         uses: actions/checkout@v2
+      - name: Generate Doxygen
+        uses: mattnotmitt/doxygen-action@v1
+        with:
+          doxyfile-path: docs/Doxygen/Doxyfile
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
