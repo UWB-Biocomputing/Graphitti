@@ -25,5 +25,5 @@ jobs:
 
       - name: Code format check
         run: |
-        echo "*** running clang-format to check for style violations"
-        clang-format --dry-run --Werror --style=file `find . -type f \( -iname "*.cpp" -or -iname "*.h" \) ! -path "./Testing/lib/*" ! -path "./ThirdParty/*" ! -path "./docs/*"`
+          echo "*** running clang-format to check for style violations"
+          clang-format --dry-run --Werror --style=file `find . -type f \( -iname "*.cpp" -or -iname "*.h" \) ! -path "./Testing/lib/*" ! -path "./ThirdParty/*" ! -path "./docs/*"`
