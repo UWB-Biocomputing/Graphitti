@@ -30,7 +30,8 @@ Please adhere to our [coding conventions](codingConventions.md). Your pull reque
 ## Graphitti System Documentation
 
 - Diagrams
-    - Here is a overview [block UML diagram](UML/hand-drawn.pdf)
+    - Here is a overview [block UML diagram](ClassDiagrams/hand-drawn.pdf)
+    - Here is a list of [UML class diagrams](classDiagrams.md) of Graphitti
     - Here are the [sequence UML diagrams](sequenceDiagrams.md) for the Graphitti system
 - Doxygen
     - Documentation generated from source code
