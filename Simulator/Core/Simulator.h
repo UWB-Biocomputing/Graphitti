@@ -81,14 +81,14 @@ public:
    int getMaxEdgesPerVertex() const;   /// Maximum number of synapses per neuron. **GPU Only**
 
    BGFLOAT
-      getDeltaT() const;   /// Time elapsed between the beginning and end of the simulation step
+   getDeltaT() const;   /// Time elapsed between the beginning and end of the simulation step
 
    vertexType *getRgNeuronTypeMap() const;   /// The vertex type map (INH, EXC).
 
    bool *getRgEndogenouslyActiveNeuronMap() const;   /// The starter existence map (T/F).
 
    BGFLOAT
-      getMaxRate() const;   /// growth variable (m_targetRate / m_epsilon) TODO: more detail here
+   getMaxRate() const;   /// growth variable (m_targetRate / m_epsilon) TODO: more detail here
 
    BGFLOAT *getPSummationMap() const;   /// List of summation points (either host or device memory)
 
