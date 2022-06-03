@@ -1,5 +1,6 @@
 [![DOI](https://zenodo.org/badge/273115663.svg)](https://zenodo.org/badge/latestdoi/273115663)
 ![Unit test workflow](https://github.com/UWB-Biocomputing/Graphitti/workflows/Unit%20Tests/badge.svg)
+[![Check for Code Style Violations](https://github.com/UWB-Biocomputing/Graphitti/actions/workflows/format.yml/badge.svg)](https://github.com/UWB-Biocomputing/Graphitti/actions/workflows/format.yml)
 
 # Graphitti
 
