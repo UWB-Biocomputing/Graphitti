@@ -44,19 +44,18 @@ AllVertices::~AllVertices()
 void AllVertices::setupVertices()
 {
    size_ = Simulator::getInstance().getTotalVertices();
-   
 #if defined(USE_GPU)
    // We don't allocate memory for summationMap_ in CPU when building the GPU
    // implementation. This is to avoid misusing it in GPU code.
    summationMap_ = nullptr;
 
-#else // !define(USE_GPU)
+#else
    summationMap_ = new BGFLOAT[size_];
    for (int i = 0; i < size_; ++i) {
       summationMap_[i] = 0;
    }
    Simulator::getInstance().setPSummationMap(summationMap_);
-#endif // define(USE_GPU)
+#endif
 }
 
 ///  Prints out all parameters of the vertices to logging file.
