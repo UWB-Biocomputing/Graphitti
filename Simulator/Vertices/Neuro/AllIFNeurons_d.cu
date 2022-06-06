@@ -58,9 +58,6 @@ void AllIFNeurons::allocDeviceStruct( AllIFNeuronsDeviceProperties &allVerticesD
 	}
 	HANDLE_ERROR( cudaMemcpy ( allVerticesDevice.spikeHistory_, pSpikeHistory,
 		count * sizeof( uint64_t* ), cudaMemcpyHostToDevice ) );
-
-	// get device summation point address
-	summationMap_ = allVerticesDevice.summationMap_;
 }
 
 ///  Delete GPU memories.
