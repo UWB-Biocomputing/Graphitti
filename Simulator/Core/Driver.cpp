@@ -171,8 +171,6 @@ int main(int argc, char *argv[])
       simulator.getModel()->getRecorder()->term();
    }
 
-   delete noiseRNG;
-
    time(&end_time);
    double timeElapsed = difftime(end_time, start_time);
    double ssps = simulator.getEpochDuration() * simulator.getNumEpochs() / timeElapsed;

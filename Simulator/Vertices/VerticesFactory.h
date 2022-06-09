@@ -50,9 +50,6 @@ private:
    /// Makes class-to-function map an internal factory member.
    VerticesFunctionMap createFunctions;
 
-   /// Retrieves and invokes correct ::Create() function.
-   AllVertices *invokeCreateFunction(const string &className);
-
    /// Register vertex class and it's create function to the factory.
    void registerClass(const string &className, CreateFunction function);
 };

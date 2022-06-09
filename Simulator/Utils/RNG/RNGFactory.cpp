@@ -34,20 +34,15 @@ void RNGFactory::registerClass(const string &className, CreateFunction function)
 
 
 /// Creates concrete instance of the desired rng class.
-MTRand *RNGFactory::createRNG(const string &className)
-{
-   return invokeCreateFunction(className);
-}
-
-/// Create an instance of the rng class using the static ::Create() method.
 ///
-/// The calling method uses this retrieval mechanism in
-/// value assignment.
-MTRand *RNGFactory::invokeCreateFunction(const string &className)
+/// @param className rng class name.
+/// @return Shared pointer to RNG instance if className is found in
+///         createFunctions map, nullptr otherwise.
+shared_ptr<MTRand> RNGFactory::createRNG(const string &className)
 {
-   for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
-      if (className == i->first)
-         return i->second();
+   auto createRNGIter = createFunctions.find(className);
+   if (createRNGIter != createFunctions.end()) {
+      return shared_ptr<MTRand>(createRNGIter->second());
    }
    return nullptr;
 }

@@ -27,8 +27,8 @@ LayoutFactory::~LayoutFactory()
 
 ///  Register layout class and its creation function to the factory.
 ///
-///  @param  className  vertices class name.
-///  @param  Pointer to the class creation function.
+///  @param  className  Layout class name.
+///  @param  function Pointer to the class creation function.
 void LayoutFactory::registerClass(const string &className, CreateFunction function)
 {
    createFunctions[className] = function;
@@ -36,21 +36,18 @@ void LayoutFactory::registerClass(const string &className, CreateFunction functi
 
 
 /// Creates concrete instance of the desired layout class.
+///
+/// @param className Layout class name.
+/// @return Shared pointer to layout instance if className is found in
+///         createFunctions map, nullptr otherwise.
 shared_ptr<Layout> LayoutFactory::createLayout(const string &className)
 {
-   layoutInstance = shared_ptr<Layout>(invokeCreateFunction(className));
-   return layoutInstance;
-}
-
-/// Create an instance of the layout class using the static ::Create() method.
-///
-/// The calling method uses this retrieval mechanism in
-/// value assignment.
-Layout *LayoutFactory::invokeCreateFunction(const string &className)
-{
-   for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
-      if (className == i->first)
-         return i->second();
+   auto createLayoutIter = createFunctions.find(className);
+   if (createLayoutIter != createFunctions.end()) {
+      layoutInstance = shared_ptr<Layout>(createLayoutIter->second());
+   } else {
+      layoutInstance = nullptr;
    }
-   return nullptr;
+
+   return layoutInstance;
 }

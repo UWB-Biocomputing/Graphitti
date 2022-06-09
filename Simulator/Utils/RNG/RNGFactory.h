@@ -27,7 +27,7 @@ public:
    }
 
    // Invokes constructor for desired concrete class
-   MTRand *createRNG(const string &className);
+   shared_ptr<MTRand> createRNG(const string &className);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    RNGFactory(RNGFactory const &) = delete;
@@ -49,9 +49,6 @@ private:
 
    /// Makes class-to-function map an internal factory member.
    RNGFunctionMap createFunctions;
-
-   /// Retrieves and invokes correct ::Create() function.
-   MTRand *invokeCreateFunction(const string &className);
 
    /// Register rng class and it's create function to the factory.
    void registerClass(const string &className, CreateFunction function);

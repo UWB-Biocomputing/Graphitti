@@ -49,9 +49,6 @@ private:
    /// Makes class-to-function map an internal factory member.
    ConnectionsFunctionMap createFunctions;
 
-   /// Retrieves and invokes correct ::Create() function.
-   Connections *invokeCreateFunction(const string &className);
-
    /// Register connection class and it's create function to the factory.
    void registerClass(const string &className, CreateFunction function);
 };

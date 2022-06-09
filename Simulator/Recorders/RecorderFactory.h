@@ -49,9 +49,6 @@ private:
    /// Makes class-to-function map an internal factory member.
    RecorderFunctionMap createFunctions;
 
-   /// Retrieves and invokes correct ::Create() function.
-   IRecorder *invokeCreateFunction(const string &className);
-
    /// Register neuron class and it's create function to the factory.
    void registerClass(const string &className, CreateFunction function);
 };

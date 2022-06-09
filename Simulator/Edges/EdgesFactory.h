@@ -49,9 +49,6 @@ private:
    /// Makes class-to-function map an internal factory member.
    EdgesFunctionMap createFunctions;
 
-   /// Retrieves and invokes correct ::Create() function.
-   AllEdges *invokeCreateFunction(const string &className);
-
    /// Register edges class and it's create function to the factory.
    void registerClass(const string &className, CreateFunction function);
 };

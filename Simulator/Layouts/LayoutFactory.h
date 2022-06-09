@@ -49,9 +49,6 @@ private:
    /// Makes class-to-function map an internal factory member.
    LayoutFunctionMap createFunctions;
 
-   /// Retrieves and invokes correct ::Create() function.
-   Layout *invokeCreateFunction(const string &className);
-
    /// Register neuron class and it's create function to the factory.
    void registerClass(const string &className, CreateFunction function);
 };
