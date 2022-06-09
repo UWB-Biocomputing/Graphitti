@@ -37,9 +37,6 @@ private:
    /// Constructor is private to keep a singleton instance of this class.
    EdgesFactory();
 
-   /// Pointer to edges instance
-   shared_ptr<AllEdges> edgesInstance_;
-
    /// Defines function type for usage in internal map
    typedef AllEdges *(*CreateFunction)(void);
 

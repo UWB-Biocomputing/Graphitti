@@ -37,9 +37,6 @@ private:
    /// Constructor is private to keep a singleton instance of this class.
    LayoutFactory();
 
-   /// Smart pointer to layout instance
-   shared_ptr<Layout> layoutInstance;
-
    /// Defines function type for usage in internal map
    typedef Layout *(*CreateFunction)(void);
 

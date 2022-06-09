@@ -37,9 +37,6 @@ private:
    /// Constructor is private to keep a singleton instance of this class.
    RNGFactory();
 
-   /// Pointer to rng instance
-   shared_ptr<MTRand> rngInstance;
-
    /* Type definitions */
    /// Defines function type for usage in internal map
    typedef MTRand *(*CreateFunction)(void);

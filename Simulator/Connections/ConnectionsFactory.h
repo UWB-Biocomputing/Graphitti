@@ -37,9 +37,6 @@ private:
    /// Constructor is private to keep a singleton instance of this class.
    ConnectionsFactory();
 
-   /// Pointer to connections instance.
-   shared_ptr<Connections> connectionsInstance;
-
    /// Defines function type for usage in internal map
    typedef Connections *(*CreateFunction)(void);
 

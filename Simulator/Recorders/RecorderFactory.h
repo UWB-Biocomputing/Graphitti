@@ -37,9 +37,6 @@ private:
    /// Constructor is private to keep a singleton instance of this class.
    RecorderFactory();
 
-   /// Pointer to neurons instance
-   shared_ptr<IRecorder> recorderInstance;
-
    /// Defines function type for usage in internal map
    typedef IRecorder *(*CreateFunction)(void);
 

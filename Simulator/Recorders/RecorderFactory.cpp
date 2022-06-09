@@ -51,10 +51,8 @@ shared_ptr<IRecorder> RecorderFactory::createRecorder(const string &className)
 {
    auto createRecorderIter = createFunctions.find(className);
    if (createRecorderIter != createFunctions.end()) {
-      recorderInstance = shared_ptr<IRecorder>(createRecorderIter->second());
-   } else {
-      recorderInstance = nullptr;
+      return shared_ptr<IRecorder>(createRecorderIter->second());
    }
 
-   return recorderInstance;
+   return nullptr;
 }

@@ -48,10 +48,8 @@ shared_ptr<AllEdges> EdgesFactory::createEdges(const string &className)
 {
    auto createEdgesIter = createFunctions.find(className);
    if (createEdgesIter != createFunctions.end()) {
-      edgesInstance_ = shared_ptr<AllEdges>(createEdgesIter->second());
-   } else {
-      edgesInstance_ = nullptr;
+      return shared_ptr<AllEdges>(createEdgesIter->second());
    }
 
-   return edgesInstance_;
+   return nullptr;
 }

@@ -37,9 +37,6 @@ private:
    /// Constructor is private to keep a singleton instance of this class.
    VerticesFactory();
 
-   /// Pointer to vertices instance
-   shared_ptr<AllVertices> verticesInstance;
-
    /* Type definitions */
    /// Defines function type for usage in internal map
    typedef AllVertices *(*CreateFunction)(void);

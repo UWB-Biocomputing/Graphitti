@@ -44,10 +44,8 @@ shared_ptr<Layout> LayoutFactory::createLayout(const string &className)
 {
    auto createLayoutIter = createFunctions.find(className);
    if (createLayoutIter != createFunctions.end()) {
-      layoutInstance = shared_ptr<Layout>(createLayoutIter->second());
-   } else {
-      layoutInstance = nullptr;
+      return shared_ptr<Layout>(createLayoutIter->second());
    }
 
-   return layoutInstance;
+   return nullptr;
 }

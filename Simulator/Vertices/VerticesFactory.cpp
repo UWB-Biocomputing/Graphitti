@@ -44,10 +44,8 @@ shared_ptr<AllVertices> VerticesFactory::createVertices(const string &className)
 {
    auto createVerticesIter = createFunctions.find(className);
    if (createVerticesIter != createFunctions.end()) {
-      verticesInstance = shared_ptr<AllVertices>(createVerticesIter->second());
-   } else {
-      verticesInstance = nullptr;
+      return shared_ptr<AllVertices>(createVerticesIter->second());
    }
 
-   return verticesInstance;
+   return nullptr;
 }

@@ -46,10 +46,8 @@ shared_ptr<Connections> ConnectionsFactory::createConnections(const string &clas
 {
    auto createConnectionsIter = createFunctions.find(className);
    if (createConnectionsIter != createFunctions.end()) {
-      connectionsInstance = shared_ptr<Connections>(createConnectionsIter->second());
-   } else {
-      connectionsInstance = nullptr;
+      return shared_ptr<Connections>(createConnectionsIter->second());
    }
 
-   return connectionsInstance;
+   return nullptr;
 }
