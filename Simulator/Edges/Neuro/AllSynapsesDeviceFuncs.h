@@ -18,7 +18,14 @@ using namespace std;
 
 #if defined(__CUDACC__)
 
-extern __device__ enumClassSynapses classSynapses_d;
+extern CUDA_CALLABLE enumClassSynapses classSynapses_d;
+extern CUDA_CALLABLE int edgSign( edgeType t );
+extern CUDA_CALLABLE void changeSpikingSynapsesPSRDevice(AllSpikingSynapsesDeviceProperties* allEdgesDevice, const BGSIZE iEdg, const uint64_t simulationStep, const BGFLOAT deltaT);
+extern CUDA_CALLABLE void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties* allEdgesDevice, const BGSIZE iEdg, const uint64_t simulationStep, const BGFLOAT deltaT);
+extern CUDA_CALLABLE bool isSpikingSynapsesSpikeQueueDevice(AllSpikingSynapsesDeviceProperties* allEdgesDevice, BGSIZE iEdg);
+extern CUDA_CALLABLE void stdpLearningDevice(AllSTDPSynapsesDeviceProperties* allEdgesDevice, const BGSIZE iEdg, double delta, double epost, double epre);
+extern CUDA_CALLABLE bool isSTDPSynapseSpikeQueuePostDevice(AllSTDPSynapsesDeviceProperties* allEdgesDevice, BGSIZE iEdg);
+extern CUDA_CALLABLE uint64_t getSTDPSynapseSpikeHistoryDevice(AllSpikingNeuronsDeviceProperties* allVerticesDevice, int index, int offIndex, int maxSpikes);
 
 ///  CUDA code for advancing spiking synapses.
 ///  Perform updating synapses for one time step.
@@ -29,6 +36,9 @@ extern __device__ enumClassSynapses classSynapses_d;
 ///  @param[in] deltaT                Inner simulation step duration.
 ///  @param[in] allEdgesDevice     Pointer to Synapse structures in device memory.
 extern __global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, EdgeIndexMap* edgeIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSpikingSynapsesDeviceProperties* allEdgesDevice );
+
+
+
 
 ///  CUDA code for advancing STDP synapses.
 ///  Perform updating synapses for one time step.
