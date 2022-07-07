@@ -35,7 +35,7 @@ extern CUDA_CALLABLE uint64_t getSTDPSynapseSpikeHistoryDevice(AllSpikingNeurons
 ///  @param[in] simulationStep        The current simulation step.
 ///  @param[in] deltaT                Inner simulation step duration.
 ///  @param[in] allEdgesDevice     Pointer to Synapse structures in device memory.
-extern __global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, EdgeIndexMap* edgeIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSpikingSynapsesDeviceProperties* allEdgesDevice );
+///extern __global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, EdgeIndexMap* edgeIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSpikingSynapsesDeviceProperties* allEdgesDevice );
 
 
 

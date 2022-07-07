@@ -32,6 +32,8 @@ typedef void (*fpPreSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDevicePr
 
 typedef void (*fpPostSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
 
+
+
 class AllSpikingSynapses : public AllNeuroEdges {
 public:
    AllSpikingSynapses();
@@ -289,6 +291,8 @@ protected:
 };
 
 #if defined(USE_GPU)
+
+
 struct AllSpikingSynapsesDeviceProperties : public AllEdgesDeviceProperties
 {
         ///  The decay for the psr.

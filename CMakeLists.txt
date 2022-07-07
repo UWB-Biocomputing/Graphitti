@@ -121,7 +121,7 @@ include_directories(
 
        
 if(ENABLE_CUDA)
-        set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d_Growth.cpp)
+        set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp)
         #set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp)
         set_source_files_properties(${cuda_sources} PROPERTIES LANGUAGE CUDA)
 endif()
@@ -158,6 +158,7 @@ else()
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSynapsesDeviceFuncs.h")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d_Growth.cpp")
+        list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp")
         add_library(Edges STATIC ${Edges_Source})
         
 endif()

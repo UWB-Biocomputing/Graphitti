@@ -9,6 +9,11 @@
 #include "AllSpikingSynapses.h"
 #include "AllSynapsesDeviceFuncs.h"
 #include "Book.h"
+#include <vector>
+#include "AllNeuroEdges.h"
+
+////#ifdef __CUDACC__
+__global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, EdgeIndexMap* edgeIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSpikingSynapsesDeviceProperties* allEdgesDevice );
 
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
@@ -417,3 +422,35 @@ void AllSpikingSynapses::printGPUEdgesProps( void* allEdgesDeviceProps ) const
 }
 
 
+__global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, EdgeIndexMap* edgeIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSpikingSynapsesDeviceProperties* allEdgesDevice ) {
+        int idx = blockIdx.x * blockDim.x + threadIdx.x;
+        if ( idx >= totalSynapseCount )
+                return;
+
+                
+        BGSIZE iEdg = edgeIndexMapDevice->incomingEdgeIndexMap_[idx];
+
+        BGFLOAT &psr = allEdgesDevice->psr_[iEdg];
+        BGFLOAT decay = allEdgesDevice->decay_[iEdg];
+
+        // Checks if there is an input spike in the queue.
+        bool isFired = isSpikingSynapsesSpikeQueueDevice(allEdgesDevice, iEdg);
+
+        // is an input in the queue?
+        if (isFired) {
+                switch (classSynapses_d) {
+                case classAllSpikingSynapses:
+                       changeSpikingSynapsesPSRDevice(static_cast<AllSpikingSynapsesDeviceProperties*>(allEdgesDevice), iEdg, simulationStep, deltaT);
+                        break;
+                case classAllDSSynapses:
+                        changeDSSynapsePSRDevice(static_cast<AllDSSynapsesDeviceProperties*>(allEdgesDevice), iEdg, simulationStep, deltaT);
+                        break;
+                default:
+                        assert(false);
+                }
+        }
+        // decay the post spike response
+        psr *= decay;
+}
+
+////#endif 

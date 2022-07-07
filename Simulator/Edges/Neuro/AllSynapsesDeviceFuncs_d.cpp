@@ -6,6 +6,7 @@
  * @brief Device functions for synapse data
  */
 
+
 #include <vector>
 
 #include "AllSynapsesDeviceFuncs.h"
