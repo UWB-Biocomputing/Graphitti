@@ -37,5 +37,8 @@ To run the tests against the GPU implementation, inside the `Testing` directory 
 
     bash RunTests.sh -g
 
+**Note**: Currently, the GPU regresssion tests fail because the random numbers generated are different from the ones
+generated during the CPU execution, causing the result files to be different to the CPU known good results.
+
 ---------
 [<< Go back to the Graphitti home page](..)
