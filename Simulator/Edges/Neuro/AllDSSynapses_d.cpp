@@ -1,5 +1,5 @@
 /**
- * @file AllDSSynapses_d.cu
+ * @file AllDSSynapses_d.cpp
  *
  * @ingroup Simulator/Edges
  * 

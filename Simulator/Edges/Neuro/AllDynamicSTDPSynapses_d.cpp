@@ -1,5 +1,5 @@
 /**
- * @file AllDynamicSTDPSynapses_d.cu
+ * @file AllDynamicSTDPSynapses_d.cpp
  *
  * @ingroup Simulator/Edges
  * 
