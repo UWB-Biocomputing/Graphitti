@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.12)
 #
 # "YES"/GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
-set(ENABLE_CUDA YES)
+set(ENABLE_CUDA NO)
 
 # Creates the Graphitti project with the correct languages, depending on if using GPU or not
 # If using CUDA, also verify the CUDA package and set required CUDA variables
@@ -121,7 +121,7 @@ include_directories(
 
        
 if(ENABLE_CUDA)
-        set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp)
+        set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp)
         #set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp)
         set_source_files_properties(${cuda_sources} PROPERTIES LANGUAGE CUDA)
 endif()
@@ -159,6 +159,7 @@ else()
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d_Growth.cpp")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp")
+        list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp")
         add_library(Edges STATIC ${Edges_Source})
         
 endif()
