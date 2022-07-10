@@ -41,28 +41,7 @@ CUDA_CALLABLE int edgSign( edgeType t )
 
         return 0;
 }
-///@}
 
-/******************************************
- * @name Device Functions for advanceEdges
-******************************************/
-///@{
-
-///  Update PSR (post synapse response)
-///
-///  @param  allEdgesDevice  GPU address of the AllSpikingSynapsesDeviceProperties struct
-///                             on device memory.
-///  @param  iEdg               Index of the synapse to set.
-///  @param  simulationStep     The current simulation step.
-///  @param  deltaT             Inner simulation step duration.
-CUDA_CALLABLE void changeSpikingSynapsesPSRDevice(AllSpikingSynapsesDeviceProperties* allEdgesDevice, const BGSIZE iEdg, const uint64_t simulationStep, const BGFLOAT deltaT)
-{
-    BGFLOAT &psr = allEdgesDevice->psr_[iEdg];
-    BGFLOAT &W = allEdgesDevice->W_[iEdg];
-    BGFLOAT &decay = allEdgesDevice->decay_[iEdg];
-
-    psr += ( W / decay );    // calculate psr
-}
 
 ///  Update PSR (post synapse response)
 ///
@@ -95,28 +74,6 @@ CUDA_CALLABLE void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties* allEd
     lastSpike = simulationStep; // record the time of the spike
 }
     
-///  Checks if there is an input spike in the queue.
-///
-///  @param[in] allEdgesDevice     GPU address of AllSpikingSynapsesDeviceProperties structures 
-///                                   on device memory.
-///  @param[in] iEdg                  Index of the Synapse to check.
-///
-///  @return true if there is an input spike event.
-CUDA_CALLABLE bool isSpikingSynapsesSpikeQueueDevice(AllSpikingSynapsesDeviceProperties* allEdgesDevice, BGSIZE iEdg)
-{
-    uint32_t &delayQueue = allEdgesDevice->delayQueue_[iEdg];
-    int &delayIdx = allEdgesDevice->delayIndex_[iEdg];
-    int delayQueueLength = allEdgesDevice->delayQueueLength_[iEdg];
-
-    uint32_t delayMask = (0x1 << delayIdx);
-    bool isFired = delayQueue & (delayMask);
-    delayQueue &= ~(delayMask);
-    if ( ++delayIdx >= delayQueueLength ) {
-            delayIdx = 0;
-    }
-
-    return isFired;
-}
    
 ///@}
 
