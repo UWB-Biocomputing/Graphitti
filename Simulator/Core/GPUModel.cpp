@@ -1,5 +1,5 @@
 /**
- * @file GPUModel.cu
+ * @file GPUModel.cpp
  * 
  * @ingroup Simulator/Core
  *

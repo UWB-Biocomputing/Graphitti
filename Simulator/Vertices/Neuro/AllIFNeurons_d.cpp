@@ -1,5 +1,5 @@
 /**
- * @file AllIFNeurons_d.cu
+ * @file AllIFNeurons_d.cpp
  *
  * @brief A container of all Integate and Fire (IF) neuron data
  *

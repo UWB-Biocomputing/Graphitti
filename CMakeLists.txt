@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.12)
 #
 # "YES"/GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
-set(ENABLE_CUDA YES)
+set(ENABLE_CUDA NO)
 
 # Creates the Graphitti project with the correct languages, depending on if using GPU or not
 # If using CUDA, also verify the CUDA package and set required CUDA variables
@@ -121,7 +121,9 @@ include_directories(
 
        
 if(ENABLE_CUDA)
-        set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp Simulator/Edges/Neuro/AllDSSynapses_d.cpp Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp)
+        # Simulator/Core/GPUModel.cpp
+        set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp Simulator/Edges/Neuro/AllDSSynapses_d.cpp Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp Simulator/Vertices/Neuro/AllLIFNeurons_d.cpp Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp Simulator/Vertices/Neuro/AllIFNeurons_d.cpp Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp Simulator/Connections/Neuro/ConnGrowth_d.cpp )
+        
         #set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp)
         set_source_files_properties(${cuda_sources} PROPERTIES LANGUAGE CUDA)
 endif()
@@ -134,8 +136,13 @@ endif()
 
 # Create Connections library
 file(GLOB_RECURSE Connections_Source Simulator/Connections/*.cpp Simulator/Connections/*.h Simulator/Connections/*.cu)
-add_library(Connections STATIC ${Connections_Source})
 
+if(ENABLE_CUDA)
+        add_library(Connections STATIC ${Connections_Source} ${cuda_sources})
+else()
+        list(REMOVE_ITEM Connections_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Connections/Neuro/ConnGrowth_d.cpp")
+        add_library(Connections STATIC ${Connections_Source})
+endif()
 
 # Create Vertices library
 file(GLOB_RECURSE Vertices_Source Simulator/Vertices/*.cpp Simulator/Vertices/*.h Simulator/Vertices/*.cu)
@@ -146,6 +153,12 @@ if(ENABLE_CUDA)
 else()
         list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllVerticesDeviceFuncs.h")
         list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp")
+        list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllLIFNeurons_d.cpp")
+        list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp")
+        list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllIFNeurons_d.cpp")
+        list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp")
+        
+       
         add_library(Vertices STATIC ${Vertices_Source})
         
 endif()
@@ -162,6 +175,8 @@ else()
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllDSSynapses_d.cpp")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp")
+        
+        
         add_library(Edges STATIC ${Edges_Source})
         
 endif()
@@ -184,7 +199,20 @@ add_library(FunctionNodes ${FunctionNodes_Source})
 file(GLOB Core_Source Simulator/Core/*.cpp Simulator/Core/*.h Simulator/Core/*.cu)
 # Remove Driver from the list of files, don't want 'main' in the library
 list(REMOVE_ITEM Core_Source "${CMAKE_CURRENT_SOURCE_DIR}/Driver.cpp")
-add_library(Core STATIC ${Core_Source})
+# add_library(Core STATIC ${Core_Source})
+
+
+# Remove if GPUModel.cpp to GPUModel.cu
+if(ENABLE_CUDA)
+        set(cudaCore_sources Simulator/Core/GPUModel.cpp)
+        set_source_files_properties(${cudaCore_sources} PROPERTIES LANGUAGE CUDA)
+        add_library(Core STATIC ${Core_Source} ${cudaCore_sources})
+else()
+        list(REMOVE_ITEM Core_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Core/GPUModel.cpp")
+        add_library(Core STATIC ${Core_Source})
+endif()     
+
+
 
 # Create Recorders library
 file(GLOB_RECURSE Recorders_Source Simulator/Recorders/*.cpp Simulator/Recorders/*.h)

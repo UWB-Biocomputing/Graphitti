@@ -1,7 +1,8 @@
 /**
- * @file ConnGrowth_d.cu
+ * @file ConnGrowth_d.cpp
  * 
  * @ingroup Simulator/Connections
+ * 
  *
  * @brief Update the weights of the Synapses in the simulation.
  */

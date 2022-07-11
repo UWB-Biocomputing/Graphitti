@@ -1,5 +1,5 @@
 /*
- * @file AllSpikingNeurons_d.cu
+ * @file AllSpikingNeurons_d.cpp
  * 
  * @ingroup Simulator/Vertices
  *
