@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.12)
 #
 # "YES"/GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
-set(ENABLE_CUDA NO)
+set(ENABLE_CUDA YES)
 
 # Creates the Graphitti project with the correct languages, depending on if using GPU or not
 # If using CUDA, also verify the CUDA package and set required CUDA variables
