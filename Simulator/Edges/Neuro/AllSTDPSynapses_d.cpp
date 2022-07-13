@@ -12,8 +12,21 @@
 #include "AllSynapsesDeviceFuncs.h"
 #include "Book.h"
 
+///  CUDA code for advancing STDP synapses.
+///  Perform updating synapses for one time step.
+///
+///  @param[in] totalSynapseCount  Number of synapses.
+///  @param  edgeIndexMapDevice    GPU address of the EdgeIndexMap on device memory.
+///  @param[in] simulationStep        The current simulation step.
+///  @param[in] deltaT                Inner simulation step duration.
+///  @param[in] allEdgesDevice     Pointer to AllSTDPSynapsesDeviceProperties structures 
+///                                   on device memory.
+///  @param[in] allVerticesDevice      GPU address of AllNeurons structures on device memory.
+///  @param[in] maxSpikes             Maximum number of spikes per neuron per epoch.   
 
 __global__ void advanceSTDPSynapsesDevice ( int totalSynapseCount, EdgeIndexMap* edgeIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSTDPSynapsesDeviceProperties* allEdgesDevice, AllSpikingNeuronsDeviceProperties* allVerticesDevice, int maxSpikes );
+
+
 
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.

@@ -12,7 +12,15 @@
 #include <vector>
 #include "AllNeuroEdges.h"
 
-////#ifdef __CUDACC__
+///  CUDA code for advancing spiking synapses.
+///  Perform updating synapses for one time step.
+///
+///  @param[in] totalSynapseCount  Number of synapses.
+///  @param  edgeIndexMapDevice    GPU address of the EdgeIndexMap on device memory.
+///  @param[in] simulationStep        The current simulation step.
+///  @param[in] deltaT                Inner simulation step duration.
+///  @param[in] allEdgesDevice     Pointer to Synapse structures in device memory.
+
 __global__ void advanceSpikingSynapsesDevice ( int totalSynapseCount, EdgeIndexMap* edgeIndexMapDevice, uint64_t simulationStep, const BGFLOAT deltaT, AllSpikingSynapsesDeviceProperties* allEdgesDevice );
 
 ///  Allocate GPU memories to store all synapses' states,
