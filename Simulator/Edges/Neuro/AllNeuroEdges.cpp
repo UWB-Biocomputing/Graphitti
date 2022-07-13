@@ -8,30 +8,34 @@
 
 #include "AllNeuroEdges.h"
 
-AllNeuroEdges::AllNeuroEdges() : AllEdges() {
+AllNeuroEdges::AllNeuroEdges() : AllEdges()
+{
    psr_ = nullptr;
 }
 
-AllNeuroEdges::~AllNeuroEdges() {
+AllNeuroEdges::~AllNeuroEdges()
+{
    BGSIZE maxTotalEdges = maxEdgesPerVertex_ * countVertices_;
    if (maxTotalEdges != 0) {
-     delete[] psr_;
-     }
+      delete[] psr_;
+   }
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
-void AllNeuroEdges::setupEdges() {
+void AllNeuroEdges::setupEdges()
+{
    int maxEdges = Simulator::getInstance().getMaxEdgesPerVertex();
    int numVertices = Simulator::getInstance().getTotalVertices();
    setupEdges(numVertices, maxEdges);
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
-void AllNeuroEdges::setupEdges(const int numVertices, const int maxEdges) {
+void AllNeuroEdges::setupEdges(const int numVertices, const int maxEdges)
+{
    AllEdges::setupEdges(numVertices, maxEdges);
 
    BGSIZE maxTotalEdges = maxEdges * numVertices;
-   
+
    if (maxTotalEdges != 0) {
       psr_ = new BGFLOAT[maxTotalEdges];
    }
@@ -41,7 +45,8 @@ void AllNeuroEdges::setupEdges(const int numVertices, const int maxEdges) {
 ///
 ///  @param  iEdg     Index of the edge to set.
 ///  @param  deltaT   Inner simulation step duration
-void AllNeuroEdges::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
+void AllNeuroEdges::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
+{
    psr_[iEdg] = 0.0;
 }
 
@@ -49,7 +54,8 @@ void AllNeuroEdges::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) {
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the edge to set.
-void AllNeuroEdges::readEdge(istream &input, const BGSIZE iEdg) {
+void AllNeuroEdges::readEdge(istream &input, const BGSIZE iEdg)
+{
    int synapse_type(0);
 
    // input.ignore() so input skips over end-of-line characters.
@@ -73,7 +79,8 @@ void AllNeuroEdges::readEdge(istream &input, const BGSIZE iEdg) {
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the edge to print out.
-void AllNeuroEdges::writeEdge(ostream &output, const BGSIZE iEdg) const {
+void AllNeuroEdges::writeEdge(ostream &output, const BGSIZE iEdg) const
+{
    output << sourceVertexIndex_[iEdg] << ends;
    output << destVertexIndex_[iEdg] << ends;
    output << W_[iEdg] << ends;
@@ -86,7 +93,8 @@ void AllNeuroEdges::writeEdge(ostream &output, const BGSIZE iEdg) const {
 ///
 ///  @param    type    edgeType I to I, I to E, E to I, or E to E
 ///  @return   1 or -1, or 0 if error
-int AllNeuroEdges::edgSign(const edgeType type) {
+int AllNeuroEdges::edgSign(const edgeType type)
+{
    switch (type) {
       case II:
       case IE:
@@ -103,7 +111,8 @@ int AllNeuroEdges::edgSign(const edgeType type) {
 }
 
 ///  Prints SynapsesProps data to console.
-void AllNeuroEdges::printSynapsesProps() const {
+void AllNeuroEdges::printSynapsesProps() const
+{
    cout << "This is SynapsesProps data:" << endl;
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
@@ -122,15 +131,11 @@ void AllNeuroEdges::printSynapsesProps() const {
    }
 
    for (int i = 0; i < countVertices_; i++) {
-      cout << "edge_counts:" << "vertex[" << i << "]" << edgeCounts_[i] << endl;
+      cout << "edge_counts:"
+           << "vertex[" << i << "]" << edgeCounts_[i] << endl;
    }
 
    cout << "totalEdgeCount:" << totalEdgeCount_ << endl;
    cout << "maxEdgesPerVertex:" << maxEdgesPerVertex_ << endl;
    cout << "count_neurons:" << countVertices_ << endl;
 }
-
-
-
-
-

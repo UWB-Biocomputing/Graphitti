@@ -1,6 +1,6 @@
 /**
  * @file Hdf5Recorder.h
- * 
+ *
  * @ingroup Simulator/Recorders
  *
  * @brief An implementation for recording spikes history on hdf5 file
@@ -12,40 +12,39 @@
  *     -# network wide burstiness index data in 1s bins,
  *     -# network wide spike count in 10ms bins.
  *
- * Hierarchical Data Format (HDF) is a set of file formats (HDF4, HDF5) designed 
+ * Hierarchical Data Format (HDF) is a set of file formats (HDF4, HDF5) designed
  * to store and organize large amounts of data.
  */
 #pragma once
 
 #if defined(HDF5)
+   #include "H5Cpp.h"
+   #include "IRecorder.h"
+   #include "Model.h"
+   #include <fstream>
 
-#include <fstream>
-#include "IRecorder.h"
-#include "Model.h"
-#include "H5Cpp.h"
-
-#ifndef H5_NO_NAMESPACE
+   #ifndef H5_NO_NAMESPACE
 using namespace H5;
-#endif
+   #endif
 
-#ifdef SINGLEPRECISION
-#define H5_FLOAT PredType::NATIVE_FLOAT
-#else
-#define H5_FLOAT PredType::NATIVE_DOUBLE
-#endif
+   #ifdef SINGLEPRECISION
+      #define H5_FLOAT PredType::NATIVE_FLOAT
+   #else
+      #define H5_FLOAT PredType::NATIVE_DOUBLE
+   #endif
 
 class Hdf5Recorder : public IRecorder {
 public:
    /// THe constructor and destructor
    Hdf5Recorder();
 
-   ~Hdf5Recorder();
-
-   static IRecorder* Create() { return new Hdf5Recorder(); }
+   static IRecorder *Create()
+   {
+      return new Hdf5Recorder();
+   }
 
    /// Initialize data
-   ///
-   /// @param[in] stateOutputFileName       File name to save histories
+   /// @param[in] stateOutputFileName File name to save histories
    virtual void init() override;
 
    /// Init radii and rates history matrices with default values
@@ -61,15 +60,13 @@ public:
    virtual void term() override;
 
    /// Compile history information in every epoch
-   ///
    /// @param[in] neurons   The entire list of neurons.
    virtual void compileHistories(AllVertices &neurons) override;
 
    /// Writes simulation results to an output destination.
-   ///
    /// @param  neurons the Neuron list to search from.
    virtual void saveSimData(const AllVertices &neurons) override;
-   
+
    /// Prints out all parameters to logging file.
    /// Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
@@ -77,7 +74,10 @@ public:
 protected:
    virtual void initDataSet();
 
-   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
+   // Populates Starter neuron matrix based with boolean values based on starterMap state
+   ///@param[in] matrix  starter neuron matrix
+   ///@param starterMap  Bool map to reference neuron matrix location from.
+   virtual void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap) override;
 
    /// hdf5 file identifier
    H5File *resultOut_;
@@ -85,7 +85,6 @@ protected:
    /// hdf5 file dataset
    DataSet *dataSetBurstHist_;
    DataSet *dataSetSpikesHist_;
-
    DataSet *dataSetXloc_;
    DataSet *dataSetYloc_;
    DataSet *dataSetNeuronTypes_;
@@ -93,15 +92,14 @@ protected:
    DataSet *dataSetStarterNeurons_;
    DataSet *dataSetTsim_;
    DataSet *dataSetSimulationEndTime_;
-
    DataSet *dataSetSpikesProbedNeurons_;
    DataSet *dataSetProbedNeurons_;
 
    /// Keep track of where we are in incrementally writing spikes
-   hsize_t* offsetSpikesProbedNeurons_;
+   hsize_t *offsetSpikesProbedNeurons_;
 
    /// burstiness Histogram goes through the
-   int* burstinessHist_;
+   int *burstinessHist_;
 
    /// spikes history - history of accumulated spikes count of all neurons (10 ms bin)
    int *spikesHistory_;
@@ -110,4 +108,4 @@ protected:
    vector<uint64_t> *spikesProbedNeurons_;
 };
 
-#endif //HDF5
+#endif   // HDF5

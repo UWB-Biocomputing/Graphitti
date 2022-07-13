@@ -13,14 +13,12 @@
 
 #pragma once
 
-#include <functional>
-#include <list>
-#include <memory>
-
-#include <log4cplus/loggingmacros.h>
-
 #include "IFunctionNode.h"
 #include "Operations.h"
+#include <functional>
+#include <list>
+#include <log4cplus/loggingmacros.h>
+#include <memory>
 
 using namespace std;
 
@@ -49,7 +47,8 @@ public:
 
 private:
    /// Constructor is private to keep a singleton instance of this class.
-   OperationManager() {
+   OperationManager()
+   {
       // Set logger_ to a reference to the rootLogger
       logger_ = (log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file")));
    }
@@ -60,5 +59,3 @@ private:
    /// Logger for log4plus
    log4cplus::Logger logger_;
 };
-
-

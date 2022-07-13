@@ -9,38 +9,44 @@
  * OperationManager will be carried through onto other tests.
  */
 
+#include "Layout.h"
+#include "OperationManager.h"
+#include "OperationManagerTestingClass.h"
+#include "Operations.h"
 #include "gtest/gtest.h"
 
-#include "OperationManagerTestingClass.h"
-#include "OperationManager.h"
-#include "Operations.h"
-#include "Layout.h"
-
-TEST(OperationManager, GetInstanceReturnsInstance) {
+TEST(OperationManager, GetInstanceReturnsInstance)
+{
    OperationManager *operationManager = &OperationManager::getInstance();
    ASSERT_TRUE(operationManager != nullptr);
 }
 
-TEST(OperationManager, AddingOneOperation) {
+TEST(OperationManager, AddingOneOperation)
+{
    Foo foo;
    function<void()> function = std::bind(&Foo::loadParameters, foo);
    EXPECT_NO_FATAL_FAILURE(
-         OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function));
+      OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function));
 }
 
-TEST(OperationManager, AddingManyOperations) {
+TEST(OperationManager, AddingManyOperations)
+{
    Foo foo;
    function<void()> function = std::bind(&Foo::loadParameters, foo);
    for (int i = 0; i < 1000; i++) {
-      EXPECT_NO_FATAL_FAILURE(
-            OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function));
+      EXPECT_NO_FATAL_FAILURE(OperationManager::getInstance().registerOperation(
+         Operations::op::loadParameters, function));
    }
 }
 
-TEST(OperationManager, OperationExecutionSuccess) {
-   EXPECT_NO_FATAL_FAILURE(OperationManager::getInstance().executeOperation(Operations::op::loadParameters));
+TEST(OperationManager, OperationExecutionSuccess)
+{
+   EXPECT_NO_FATAL_FAILURE(
+      OperationManager::getInstance().executeOperation(Operations::op::loadParameters));
 }
 
-TEST(OperationManager, OperationExecutionContainsNoFunctionsOfOperationType) {
-   EXPECT_NO_FATAL_FAILURE(OperationManager::getInstance().executeOperation(Operations::op::copyToGPU));
+TEST(OperationManager, OperationExecutionContainsNoFunctionsOfOperationType)
+{
+   EXPECT_NO_FATAL_FAILURE(
+      OperationManager::getInstance().executeOperation(Operations::op::copyToGPU));
 }

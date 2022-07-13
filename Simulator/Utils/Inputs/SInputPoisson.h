@@ -16,42 +16,41 @@
 #pragma once
 
 #ifndef _SINPUTPOISSON_H_
-#define _SINPUTPOISSON_H_
+   #define _SINPUTPOISSON_H_
 
-#include "ISInput.h"
-#include "AllDSSynapses.h"
+   #include "AllDSSynapses.h"
+   #include "ISInput.h"
 
-class SInputPoisson : public ISInput
-{
+class SInputPoisson : public ISInput {
 public:
-    //! The constructor for SInputPoisson.
-    SInputPoisson(TiXmlElement* parms);
-    ~SInputPoisson();
+   //! The constructor for SInputPoisson.
+   SInputPoisson(TiXmlElement *parms);
+   ~SInputPoisson();
 
-    //! Initialize data.
-    virtual void init();
+   //! Initialize data.
+   virtual void init();
 
-    //! Terminate process.
-    virtual void term();
+   //! Terminate process.
+   virtual void term();
 
 protected:
-    //! True if stimuls input is on.
-    bool fSInput;
+   //! True if stimuls input is on.
+   bool fSInput;
 
-    //! synapse weight
-    BGFLOAT weight;
+   //! synapse weight
+   BGFLOAT weight;
 
-    //! inverse firing rate
-    BGFLOAT lambda;
+   //! inverse firing rate
+   BGFLOAT lambda;
 
-    //! interval counter
-    int* nISIs;
+   //! interval counter
+   int *nISIs;
 
-    //! List of synapses
-    AllEdges *edges_;
+   //! List of synapses
+   AllEdges *edges_;
 
-    //! Masks for stimulus input
-    bool* masks;
+   //! Masks for stimulus input
+   bool *masks;
 };
 
-#endif // _SINPUTPOISSON_H_
+#endif   // _SINPUTPOISSON_H_

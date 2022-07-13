@@ -1,0 +1,176 @@
+@startuml RecorderClassDiagram
+
+
+
+
+
+/' Objects '/
+
+class Hdf5GrowthRecorder {
+	+Hdf5GrowthRecorder()
+	+~Hdf5GrowthRecorder()
+	#radiiHistory_ : BGFLOAT*
+	#ratesHistory_ : BGFLOAT*
+	#dataSetRadiiHist_ : DataSet*
+	#dataSetRatesHist_ : DataSet*
+	+{static} Create() : IRecorder*
+	+compileHistories(AllVertices& neurons) : void
+	+getValues() : void
+	#initDataSet() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+term() : void
+	#writeRadiiRates() : void
+}
+
+
+class Hdf5Recorder {
+	+Hdf5Recorder()
+	#dataSetBurstHist_ : DataSet*
+	#dataSetNeuronThresh_ : DataSet*
+	#dataSetNeuronTypes_ : DataSet*
+	#dataSetProbedNeurons_ : DataSet*
+	#dataSetSimulationEndTime_ : DataSet*
+	#dataSetSpikesHist_ : DataSet*
+	#dataSetSpikesProbedNeurons_ : DataSet*
+	#dataSetStarterNeurons_ : DataSet*
+	#dataSetTsim_ : DataSet*
+	#dataSetXloc_ : DataSet*
+	#dataSetYloc_ : DataSet*
+	#resultOut_ : H5File*
+	+{static} Create() : IRecorder*
+	#offsetSpikesProbedNeurons_ : hsize_t*
+	#burstinessHist_ : int*
+	#spikesHistory_ : int*
+	#spikesProbedNeurons_ : vector<uint64_t>*
+	+compileHistories(AllVertices& neurons) : void
+	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
+	+getValues() : void
+	+init() : void
+	#initDataSet() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+saveSimData(const AllVertices& neurons) : void
+	+term() : void
+}
+
+
+abstract class IRecorder {
+	+~IRecorder()
+	#fileLogger_ : log4cplus::Logger
+	#resultFileName_ : string
+	+{abstract} compileHistories(AllVertices& vertices) : void
+	#{abstract} getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
+	+{abstract} getValues() : void
+	+{abstract} init() : void
+	+{abstract} initDefaultValues() : void
+	+{abstract} initValues() : void
+	+{abstract} printParameters() : void
+	+{abstract} saveSimData(const AllVertices& vertices) : void
+	+{abstract} term() : void
+}
+
+
+class RecorderFactory {
+	-RecorderFactory()
+	+~RecorderFactory()
+	-invokeCreateFunction(const string& className) : IRecorder*
+	+{static} getInstance() : RecorderFactory*
+	-createFunctions : RecorderFunctionMap
+	+createRecorder(const string& className) : shared_ptr<IRecorder>
+	-recorderInstance : shared_ptr<IRecorder>
+	-registerClass(const string& className, CreateFunction function) : void
+}
+
+
+class XmlGrowthRecorder {
+	+XmlGrowthRecorder()
+	+~XmlGrowthRecorder()
+	-radiiHistory_ : CompleteMatrix
+	-ratesHistory_ : CompleteMatrix
+	+{static} Create() : IRecorder*
+	+compileHistories(AllVertices& neurons) : void
+	-getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
+	+getValues() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+saveSimData(const AllVertices& neurons) : void
+}
+
+
+class XmlRecorder {
+	+XmlRecorder()
+	+{static} Create() : IRecorder*
+	#burstinessHist_ : VectorMatrix
+	#spikesHistory_ : VectorMatrix
+	#resultOut_ : ofstream
+	+compileHistories(AllVertices& vertices) : void
+	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
+	+getValues() : void
+	+init() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+saveSimData(const AllVertices& vertices) : void
+	+term() : void
+}
+
+
+class XmlSTDPRecorder {
+	+XmlSTDPRecorder()
+	+~XmlSTDPRecorder()
+	+{static} Create() : IRecorder*
+	+toXML(string name, vector<vector<BGFLOAT>> MatrixToWrite) : string {query}
+	+toXML(string name, vector<vector<int>> MatrixToWrite) : string {query}
+	#weightsHistory_ : vector<vector<BGFLOAT>>
+	#destNeuronIndexHistory_ : vector<vector<int>>
+	#sourceNeuronIndexHistory_ : vector<vector<int>>
+	+compileHistories(AllVertices& neurons) : void
+	+getValues() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+saveSimData(const AllVertices& neurons) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+.Hdf5Recorder <|-- .Hdf5GrowthRecorder
+
+
+.IRecorder <|-- .Hdf5Recorder
+
+
+.IRecorder <|-- .XmlRecorder
+
+
+.XmlRecorder <|-- .XmlGrowthRecorder
+
+
+.XmlRecorder <|-- .XmlSTDPRecorder
+
+
+
+
+
+/' Aggregation relationships '/
+
+.RecorderFactory *-- .IRecorder
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

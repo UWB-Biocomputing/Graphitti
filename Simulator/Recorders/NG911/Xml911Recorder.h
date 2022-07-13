@@ -12,10 +12,9 @@
 
 #pragma once
 
-#include <fstream>
-
-#include "XmlRecorder.h"
 #include "Model.h"
+#include "XmlRecorder.h"
+#include <fstream>
 
 class Xml911Recorder : public XmlRecorder {
 public:
@@ -24,7 +23,10 @@ public:
 
    ~Xml911Recorder();
 
-   static IRecorder* Create() { return new Xml911Recorder(); }
+   static IRecorder *Create()
+   {
+      return new Xml911Recorder();
+   }
 
    /// Init radii and rates history matrices with default values
    virtual void initDefaultValues() override;
@@ -51,4 +53,3 @@ public:
 
 private:
 };
-

@@ -35,9 +35,9 @@
 
 #pragma once
 
-#include "Connections/Connections.h"
-#include "AllVertices.h"
 #include "AllEdges.h"
+#include "AllVertices.h"
+#include "Connections/Connections.h"
 #include "Layouts/Layout.h"
 
 class CPUModel : public Model {
@@ -63,9 +63,4 @@ public:
 
    /// Copy CPU Synapse data to GPU.
    virtual void copyCPUtoGPU() override;
-
 };
-
-
-
-

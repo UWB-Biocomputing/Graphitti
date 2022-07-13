@@ -36,7 +36,13 @@ class AllVertices;
 // typedef void (*fpCreateSynapse_t)(void*, const int, const int, int, int, BGFLOAT*, const BGFLOAT, edgeType);
 
 // enumerate all non-abstract edge classes.
-enum enumClassSynapses {classAllSpikingSynapses, classAllDSSynapses, classAllSTDPSynapses, classAllDynamicSTDPSynapses, undefClassSynapses};
+enum enumClassSynapses {
+   classAllSpikingSynapses,
+   classAllDSSynapses,
+   classAllSTDPSynapses,
+   classAllDynamicSTDPSynapses,
+   undefClassSynapses
+};
 
 class AllNeuroEdges : public AllEdges {
 public:
@@ -95,47 +101,45 @@ protected:
 public:
    /// The factor to adjust overlapping area to edge weight.
    static constexpr BGFLOAT SYNAPSE_STRENGTH_ADJUSTMENT = 1.0e-8;
-      ///  The post-synaptic response is the result of whatever computation
+   ///  The post-synaptic response is the result of whatever computation
    ///  is going on in the edge.
    BGFLOAT *psr_;
 };
 
 #if defined(USE_GPU)
-struct AllEdgesDeviceProperties
-{
-        ///  The location of the edge.
-        int *sourceVertexIndex_;
+struct AllEdgesDeviceProperties {
+   ///  The location of the edge.
+   int *sourceVertexIndex_;
 
-        ///  The coordinates of the summation point.
-        int *destVertexIndex_;
+   ///  The coordinates of the summation point.
+   int *destVertexIndex_;
 
-        ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
-         BGFLOAT *W_;
+   ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
+   BGFLOAT *W_;
 
-        ///  Synapse type
-        edgeType *type_;
+   ///  Synapse type
+   edgeType *type_;
 
-        ///  The post-synaptic response is the result of whatever computation
-        ///  is going on in the edge.
-        BGFLOAT *psr_;
+   ///  The post-synaptic response is the result of whatever computation
+   ///  is going on in the edge.
+   BGFLOAT *psr_;
 
-        ///  The boolean value indicating the entry in the array is in use.
-        bool *inUse_;
+   ///  The boolean value indicating the entry in the array is in use.
+   bool *inUse_;
 
-        ///  The number of edges for each vertex.
-        ///  Note: Likely under a different name in GpuSim_struct, see edge_count. -Aaron
-        BGSIZE *edgeCounts_;
+   ///  The number of edges for each vertex.
+   ///  Note: Likely under a different name in GpuSim_struct, see edge_count. -Aaron
+   BGSIZE *edgeCounts_;
 
-        ///  The total number of active edges.
-        BGSIZE totalEdgeCount_;
+   ///  The total number of active edges.
+   BGSIZE totalEdgeCount_;
 
-        ///  The maximum number of edges for each vertex.
-        BGSIZE maxEdgesPerVertex_;
+   ///  The maximum number of edges for each vertex.
+   BGSIZE maxEdgesPerVertex_;
 
-        ///  The number of vertices
-        ///  Aaron: Is this even supposed to be here?!
-        ///  Usage: Used by destructor
-        int countVertices_;
+   ///  The number of vertices
+   ///  Aaron: Is this even supposed to be here?!
+   ///  Usage: Used by destructor
+   int countVertices_;
 };
-#endif // defined(USE_GPU)
-
+#endif   // defined(USE_GPU)

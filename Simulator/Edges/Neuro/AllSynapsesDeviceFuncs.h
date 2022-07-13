@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "AllSpikingSynapses.h"
-#include "AllSpikingNeurons.h"
 #include "AllDSSynapses.h"
 #include "AllSTDPSynapses.h"
+#include "AllSpikingNeurons.h"
+#include "AllSpikingSynapses.h"
 #include "BGTypes.h"
 
 using namespace std;
@@ -24,7 +24,6 @@ extern CUDA_CALLABLE void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties
 
 
 
-
 /// Adjust the strength of the synapse or remove it from the synapse map if it has gone below
 /// zero.
 ///
@@ -34,7 +33,11 @@ extern CUDA_CALLABLE void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties
 /// @param[in] maxEdges        Maximum number of synapses per neuron.
 /// @param[in] allVerticesDevice   Pointer to the Neuron structures in device memory.
 /// @param[in] allEdgesDevice  Pointer to the Synapse structures in device memory.
-extern __global__ void updateSynapsesWeightsDevice( int numVertices, BGFLOAT deltaT, BGFLOAT* W_d, int maxEdges, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, vertexType* neuronTypeMapD );
+extern __global__ void
+   updateSynapsesWeightsDevice(int numVertices, BGFLOAT deltaT, BGFLOAT *W_d, int maxEdges,
+                               AllSpikingNeuronsDeviceProperties *allVerticesDevice,
+                               AllSpikingSynapsesDeviceProperties *allEdgesDevice,
+                               vertexType *neuronTypeMapD);
 
 /// Adds a synapse to the network.  Requires the locations of the source and
 /// destination neurons.
@@ -43,6 +46,8 @@ extern __global__ void updateSynapsesWeightsDevice( int numVertices, BGFLOAT del
 /// @param pSummationMap          Pointer to the summation point.
 /// @param deltaT                 The simulation time step size.
 /// @param weight                 Synapse weight.
-extern __global__ void initSynapsesDevice( int n, AllDSSynapsesDeviceProperties* allEdgesDevice, BGFLOAT *pSummationMap, const BGFLOAT deltaT, BGFLOAT weight );
+extern __global__ void initSynapsesDevice(int n, AllDSSynapsesDeviceProperties *allEdgesDevice,
+                                          BGFLOAT *pSummationMap, const BGFLOAT deltaT,
+                                          BGFLOAT weight);
 
-#endif 
+#endif

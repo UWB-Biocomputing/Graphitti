@@ -7,11 +7,10 @@
  */
 
 
+#include "VectorMatrix.h"
+#include "Global.h"
 #include <iostream>
 #include <sstream>
-
-#include "Global.h"
-#include "VectorMatrix.h"
 
 // Classwide normal RNG
 Norm VectorMatrix::nRng;
@@ -30,325 +29,347 @@ Norm VectorMatrix::nRng;
 /// @param m multiplier used for initialization
 /// @param v values for initializing VectorMatrix
 VectorMatrix::VectorMatrix(string t, string i, int r, int c, BGFLOAT m, string values) :
-	Matrix(t, i, r, c, m), theVector(nullptr) {
-	DEBUG_VECTOR(cerr << "Creating VectorMatrix, size: ";)
+   Matrix(t, i, r, c, m), theVector(nullptr)
+{
+   DEBUG_VECTOR(cerr << "Creating VectorMatrix, size: ";)
 
-	// Bail out if we're being asked to create nonsense
-	if (!((rows == 1) || (columns == 1)) || (rows == 0) || (columns == 0))
-		throw Matrix_invalid_argument("VectorMatrix: Asked to create 2D or zero-size");
+   // Bail out if we're being asked to create nonsense
+   if (!((rows == 1) || (columns == 1)) || (rows == 0) || (columns == 0))
+      throw Matrix_invalid_argument("VectorMatrix: Asked to create 2D or zero-size");
 
-	// We're a 1D Matrix
-	dimensions = 1;
-	size = (rows > columns) ? rows : columns;
+   // We're a 1D Matrix
+   dimensions = 1;
+   size = (rows > columns) ? rows : columns;
 
-	DEBUG_VECTOR(cerr << rows << "X" << columns << ":" << endl;)
+   DEBUG_VECTOR(cerr << rows << "X" << columns << ":" << endl;)
 
-	alloc(size);
+   alloc(size);
 
-	if (values != "") { // Initialize from the text string
-		istringstream valStream(values);
-		if (type == "complete") { // complete matrix with values given
-			for (int i = 0; i < size; i++) {
-				valStream >> theVector[i];
-				theVector[i] *= multiplier;
-			}
-		} else {
-			clear();
-			throw Matrix_invalid_argument("Illegal type for VectorMatrix with 'none' init: " + type);
-		}
-	} else if (init == "const") {
-		if (type == "complete") { // complete matrix with constant values
-			for (int i = 0; i < size; i++)
-				theVector[i] = multiplier;
-		} else {
-			clear();
-			throw Matrix_invalid_argument("Illegal type for VectorMatrix with 'none' init: " + type);
-		}
-	} else if (init == "random") {
-		// Initialize with normally distributed random numbers with zero
-		// mean and unit variance
-		for (int i = 0; i < size; i++) {
-			theVector[i] = nRng();
-		}
-	} else {
-		clear();
-		throw Matrix_invalid_argument("Illegal initialization for VectorMatrix: " + init);
-	}
-	DEBUG_VECTOR(cerr << "\tInitialized " << type << " vector to " << *this << endl;)
+   if (values != "") {   // Initialize from the text string
+      istringstream valStream(values);
+      if (type == "complete") {   // complete matrix with values given
+         for (int i = 0; i < size; i++) {
+            valStream >> theVector[i];
+            theVector[i] *= multiplier;
+         }
+      } else {
+         clear();
+         throw Matrix_invalid_argument("Illegal type for VectorMatrix with 'none' init: " + type);
+      }
+   } else if (init == "const") {
+      if (type == "complete") {   // complete matrix with constant values
+         for (int i = 0; i < size; i++)
+            theVector[i] = multiplier;
+      } else {
+         clear();
+         throw Matrix_invalid_argument("Illegal type for VectorMatrix with 'none' init: " + type);
+      }
+   } else if (init == "random") {
+      // Initialize with normally distributed random numbers with zero
+      // mean and unit variance
+      for (int i = 0; i < size; i++) {
+         theVector[i] = nRng();
+      }
+   } else {
+      clear();
+      throw Matrix_invalid_argument("Illegal initialization for VectorMatrix: " + init);
+   }
+   DEBUG_VECTOR(cerr << "\tInitialized " << type << " vector to " << *this << endl;)
 }
 
 // Copy constructor
-VectorMatrix::VectorMatrix(const VectorMatrix& oldV) :
-	theVector(nullptr) {
-	copy(oldV);
+VectorMatrix::VectorMatrix(const VectorMatrix &oldV) : theVector(nullptr)
+{
+   copy(oldV);
 }
 
 // Assignment operator: set elements of vector to constant
-const VectorMatrix& VectorMatrix::operator=(BGFLOAT c) {
-	for (int i = 0; i < size; i++)
-		theVector[i] = c;
+const VectorMatrix &VectorMatrix::operator=(BGFLOAT c)
+{
+   for (int i = 0; i < size; i++)
+      theVector[i] = c;
 
-	return *this;
+   return *this;
 }
 
 // Assignment operator
-const VectorMatrix& VectorMatrix::operator=(const VectorMatrix& rhs) {
-	if (&rhs == this)
-		return *this;
+const VectorMatrix &VectorMatrix::operator=(const VectorMatrix &rhs)
+{
+   if (&rhs == this)
+      return *this;
 
-	clear();
-	copy(rhs);
-	return *this;
+   clear();
+   copy(rhs);
+   return *this;
 }
 
 // Destructor
-VectorMatrix::~VectorMatrix() {
-	clear();
+VectorMatrix::~VectorMatrix()
+{
+   clear();
 }
 
 // Clear out storage
-void VectorMatrix::clear(void) {
-	if (theVector != nullptr) {
-		delete[] theVector;
-		theVector = nullptr;
-	}
+void VectorMatrix::clear(void)
+{
+   if (theVector != nullptr) {
+      delete[] theVector;
+      theVector = nullptr;
+   }
 }
 
 // Copy vector to this one
-void VectorMatrix::copy(const VectorMatrix& source) {
-	size = source.size;
-	SetAttributes(source.type, source.init, source.rows, source.columns, source.multiplier,
-			source.dimensions);
+void VectorMatrix::copy(const VectorMatrix &source)
+{
+   size = source.size;
+   SetAttributes(source.type, source.init, source.rows, source.columns, source.multiplier,
+                 source.dimensions);
 
-	alloc(size);
+   alloc(size);
 
-	for (int i = 0; i < size; i++)
-		theVector[i] = source.theVector[i];
+   for (int i = 0; i < size; i++)
+      theVector[i] = source.theVector[i];
 }
 
 // Allocate internal storage
-void VectorMatrix::alloc(int size) {
-	if (theVector != nullptr)
-		throw MatrixException("Attempt to allocate storage for non-cleared Vector.");
+void VectorMatrix::alloc(int size)
+{
+   if (theVector != nullptr)
+      throw MatrixException("Attempt to allocate storage for non-cleared Vector.");
 
-	if ((theVector = new BGFLOAT[size]) == nullptr) {
-		throw Matrix_bad_alloc("Failed allocating storage of Vector copy.");
-	}
+   if ((theVector = new BGFLOAT[size]) == nullptr) {
+      throw Matrix_bad_alloc("Failed allocating storage of Vector copy.");
+   }
 
-	DEBUG_VECTOR(cerr << "\tStorage allocated for "<< size << " element Vector." << endl;)
-
+   DEBUG_VECTOR(cerr << "\tStorage allocated for " << size << " element Vector." << endl;)
 }
 
 // Polymorphic output
-void VectorMatrix::Print(ostream& os) const {
-	for (int i = 0; i < size; i++)
-		os << theVector[i] << " ";
+void VectorMatrix::Print(ostream &os) const
+{
+   for (int i = 0; i < size; i++)
+      os << theVector[i] << " ";
 }
 
 // convert vector to XML string
-string VectorMatrix::toXML(string name) const {
-	stringstream os;
+string VectorMatrix::toXML(string name) const
+{
+   stringstream os;
 
-	os << "<Matrix ";
-	if (name != "")
-		os << "name=\"" << name << "\" ";
-	os << "type=\"complete\" rows=\"1\" columns=\"" << size << "\" multiplier=\"1.0\">" << endl;
-	os << "   " << *this << endl;
-	os << "</Matrix>";
+   os << "<Matrix ";
+   if (name != "")
+      os << "name=\"" << name << "\" ";
+   os << "type=\"complete\" rows=\"1\" columns=\"" << size << "\" multiplier=\"1.0\">" << endl;
+   os << "   " << *this << endl;
+   os << "</Matrix>";
 
-	return os.str();
+   return os.str();
 }
 
 // The math operations
 
-const VectorMatrix VectorMatrix::operator+(const VectorMatrix& rhs) const {
-	if (rhs.size != size) {
-		throw Matrix_domain_error("Illegal vector sum. Vectors must be equal length.");
-	}
+const VectorMatrix VectorMatrix::operator+(const VectorMatrix &rhs) const
+{
+   if (rhs.size != size) {
+      throw Matrix_domain_error("Illegal vector sum. Vectors must be equal length.");
+   }
 
-	// Start with this
-	VectorMatrix result(*this);
+   // Start with this
+   VectorMatrix result(*this);
 
-	// Add in rhs
-	for (int i = 0; i < size; i++)
-		result.theVector[i] += rhs.theVector[i];
+   // Add in rhs
+   for (int i = 0; i < size; i++)
+      result.theVector[i] += rhs.theVector[i];
 
-	return result;
+   return result;
 }
 
 // Vector plus a constant
-const VectorMatrix VectorMatrix::operator+(BGFLOAT c) const {
-	// Start with this
-	VectorMatrix result(*this);
+const VectorMatrix VectorMatrix::operator+(BGFLOAT c) const
+{
+   // Start with this
+   VectorMatrix result(*this);
 
-	for (int i = 0; i < size; i++)
-		result.theVector[i] += c;
+   for (int i = 0; i < size; i++)
+      result.theVector[i] += c;
 
-	return result;
+   return result;
 }
 
 // There are two possible products. This is an inner product.
-BGFLOAT VectorMatrix::operator*(const VectorMatrix& rhs) const {
-	if (rhs.size != size) {
-		throw Matrix_domain_error("Illegal vector inner product. Vectors must be equal length.");
-	}
+BGFLOAT VectorMatrix::operator*(const VectorMatrix &rhs) const
+{
+   if (rhs.size != size) {
+      throw Matrix_domain_error("Illegal vector inner product. Vectors must be equal length.");
+   }
 
-	// the result is scalar
-	BGFLOAT result;
+   // the result is scalar
+   BGFLOAT result;
 
-	result = theVector[0] * rhs.theVector[0];
+   result = theVector[0] * rhs.theVector[0];
 
-	for (int i = 1; i < size; i++)
-		result += theVector[i] * rhs.theVector[i];
+   for (int i = 1; i < size; i++)
+      result += theVector[i] * rhs.theVector[i];
 
-	return result;
+   return result;
 }
 
 // Vector times a Complete matrix
-const VectorMatrix VectorMatrix::operator*(const CompleteMatrix& rhs) const {
-	if (rhs.rows != size) {
-		throw Matrix_domain_error(
-				"Illegal vector/matrix product. Rows of matrix must equal vector size.");
-	}
+const VectorMatrix VectorMatrix::operator*(const CompleteMatrix &rhs) const
+{
+   if (rhs.rows != size) {
+      throw Matrix_domain_error(
+         "Illegal vector/matrix product. Rows of matrix must equal vector size.");
+   }
 
-	// the result is a vector the same size as rhs columns
-	VectorMatrix result("complete", "const", 1, rhs.columns, 0.0, "");
+   // the result is a vector the same size as rhs columns
+   VectorMatrix result("complete", "const", 1, rhs.columns, 0.0, "");
 
-	for (int i = 0; i < result.size; i++)
-		// Compute each element of the result
-		for (int j = 0; j < size; j++)
-			result.theVector[i] += theVector[j] * rhs.theMatrix[j][i];
+   for (int i = 0; i < result.size; i++)
+      // Compute each element of the result
+      for (int j = 0; j < size; j++)
+         result.theVector[i] += theVector[j] * rhs.theMatrix[j][i];
 
-	return result;
+   return result;
 }
 
-const VectorMatrix VectorMatrix::ArrayMultiply(const VectorMatrix& rhs) const {
-	if (rhs.size != size) {
-		throw Matrix_domain_error("Illegal array product. Vectors must be equal length.");
-	}
+const VectorMatrix VectorMatrix::ArrayMultiply(const VectorMatrix &rhs) const
+{
+   if (rhs.size != size) {
+      throw Matrix_domain_error("Illegal array product. Vectors must be equal length.");
+   }
 
-	// Start with this
-	VectorMatrix result(*this);
+   // Start with this
+   VectorMatrix result(*this);
 
-	// Multiply elements of rhs
-	for (int i = 0; i < size; i++)
-		result.theVector[i] *= rhs.theVector[i];
+   // Multiply elements of rhs
+   for (int i = 0; i < size; i++)
+      result.theVector[i] *= rhs.theVector[i];
 
-	return result;
+   return result;
 }
 
 // Vector times a constant
-const VectorMatrix VectorMatrix::operator*(BGFLOAT c) const {
-	// Start with this
-	VectorMatrix result(*this);
+const VectorMatrix VectorMatrix::operator*(BGFLOAT c) const
+{
+   // Start with this
+   VectorMatrix result(*this);
 
-	for (int i = 0; i < size; i++)
-		result.theVector[i] *= c;
+   for (int i = 0; i < size; i++)
+      result.theVector[i] *= c;
 
-	return result;
+   return result;
 }
 
 // Vector divided by a constant
-const VectorMatrix VectorMatrix::operator/(BGFLOAT c) const {
-	// Start with this
-	VectorMatrix result(*this);
+const VectorMatrix VectorMatrix::operator/(BGFLOAT c) const
+{
+   // Start with this
+   VectorMatrix result(*this);
 
-	for (int i = 0; i < size; i++)
-		result.theVector[i] /= c;
+   for (int i = 0; i < size; i++)
+      result.theVector[i] /= c;
 
-	return result;
+   return result;
 }
 
 // Constant minus a vector
-const VectorMatrix operator-(BGFLOAT c, const VectorMatrix& v) {
-	// Start with vector
-	VectorMatrix result(v);
+const VectorMatrix operator-(BGFLOAT c, const VectorMatrix &v)
+{
+   // Start with vector
+   VectorMatrix result(v);
 
-	for (int i = 0; i < result.size; i++)
-		result.theVector[i] = c - result.theVector[i];
+   for (int i = 0; i < result.size; i++)
+      result.theVector[i] = c - result.theVector[i];
 
-	return result;
+   return result;
 }
 
 // Constant divided by a vector
-const VectorMatrix operator/(BGFLOAT c, const VectorMatrix& v) {
-	// Start with vector
-	VectorMatrix result(v);
+const VectorMatrix operator/(BGFLOAT c, const VectorMatrix &v)
+{
+   // Start with vector
+   VectorMatrix result(v);
 
-	for (int i = 0; i < result.size; i++)
-		result.theVector[i] = c / result.theVector[i];
+   for (int i = 0; i < result.size; i++)
+      result.theVector[i] = c / result.theVector[i];
 
-	return result;
+   return result;
 }
 
 // Limit values of a vector
-const VectorMatrix VectorMatrix::Limit(BGFLOAT low, BGFLOAT high) const {
-	// Start with this
-	VectorMatrix result(*this);
+const VectorMatrix VectorMatrix::Limit(BGFLOAT low, BGFLOAT high) const
+{
+   // Start with this
+   VectorMatrix result(*this);
 
-	for (int i = 0; i < size; i++) {
-		if (result.theVector[i] < low)
-			result.theVector[i] = low;
-		if (result.theVector[i] > high)
-			result.theVector[i] = high;
-	}
+   for (int i = 0; i < size; i++) {
+      if (result.theVector[i] < low)
+         result.theVector[i] = low;
+      if (result.theVector[i] > high)
+         result.theVector[i] = high;
+   }
 
-	return result;
+   return result;
 }
 
 // Find minimum value
-BGFLOAT VectorMatrix::Min(void) const {
-	BGFLOAT min = theVector[0];
+BGFLOAT VectorMatrix::Min(void) const
+{
+   BGFLOAT min = theVector[0];
 
-	for (int i = 1; i < size; i++)
-		if (theVector[i] < min)
-			min = theVector[i];
+   for (int i = 1; i < size; i++)
+      if (theVector[i] < min)
+         min = theVector[i];
 
-	return min;
+   return min;
 }
 
 // Find maximum value
-BGFLOAT VectorMatrix::Max(void) const {
-	BGFLOAT max = theVector[0];
+BGFLOAT VectorMatrix::Max(void) const
+{
+   BGFLOAT max = theVector[0];
 
-	for (int i = 1; i < size; i++)
-		if (theVector[i] > max)
-			max = theVector[i];
+   for (int i = 1; i < size; i++)
+      if (theVector[i] > max)
+         max = theVector[i];
 
-	return max;
+   return max;
 }
 
 // Element-wise square root of a vector
-const VectorMatrix sqrt(const VectorMatrix& v) {
-	// Start with vector
-	VectorMatrix result(v);
+const VectorMatrix sqrt(const VectorMatrix &v)
+{
+   // Start with vector
+   VectorMatrix result(v);
 
-	for (int i = 0; i < result.size; i++)
-		result.theVector[i] = sqrt(result.theVector[i]);
+   for (int i = 0; i < result.size; i++)
+      result.theVector[i] = sqrt(result.theVector[i]);
 
-	return result;
+   return result;
 }
 
 // Element-wise e^x for vector
-const VectorMatrix exp(const VectorMatrix& v) {
-	// Start with vector
-	VectorMatrix result(v);
+const VectorMatrix exp(const VectorMatrix &v)
+{
+   // Start with vector
+   VectorMatrix result(v);
 
-	for (int i = 0; i < result.size; i++)
-		result.theVector[i] = exp(result.theVector[i]);
+   for (int i = 0; i < result.size; i++)
+      result.theVector[i] = exp(result.theVector[i]);
 
-	return result;
+   return result;
 }
 
-const VectorMatrix& VectorMatrix::operator+=(const VectorMatrix& rhs) {
-	if (rhs.size != size) {
-		throw Matrix_domain_error("Illegal vector sum. Vectors must be equal length.");
-	}
+const VectorMatrix &VectorMatrix::operator+=(const VectorMatrix &rhs)
+{
+   if (rhs.size != size) {
+      throw Matrix_domain_error("Illegal vector sum. Vectors must be equal length.");
+   }
 
-	// Add in rhs
-	for (int i = 0; i < size; i++)
-		theVector[i] += rhs.theVector[i];
+   // Add in rhs
+   for (int i = 0; i < size; i++)
+      theVector[i] += rhs.theVector[i];
 
-	return *this;
+   return *this;
 }
-

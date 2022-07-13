@@ -33,21 +33,22 @@
  */
 
 #include "ConnGrowth.h"
-#include "ParseParamError.h"
 #include "AllEdges.h"
-#include "XmlGrowthRecorder.h"
 #include "AllSpikingNeurons.h"
 #include "Matrix/CompleteMatrix.h"
 #include "Matrix/Matrix.h"
 #include "Matrix/VectorMatrix.h"
-#include "ParameterManager.h"
 #include "OperationManager.h"
+#include "ParameterManager.h"
+#include "ParseParamError.h"
+#include "XmlGrowthRecorder.h"
 
 #ifdef USE_HDF5
-#include "Hdf5GrowthRecorder.h"
+   #include "Hdf5GrowthRecorder.h"
 #endif
 
-ConnGrowth::ConnGrowth() : Connections() {
+ConnGrowth::ConnGrowth() : Connections()
+{
    W_ = nullptr;
    radii_ = nullptr;
    rates_ = nullptr;
@@ -58,14 +59,22 @@ ConnGrowth::ConnGrowth() : Connections() {
    radiiSize_ = 0;
 }
 
-ConnGrowth::~ConnGrowth() {
-   if (W_ != nullptr) delete W_;
-   if (radii_ != nullptr) delete radii_;
-   if (rates_ != nullptr) delete rates_;
-   if (delta_ != nullptr) delete delta_;
-   if (area_ != nullptr) delete area_;
-   if (outgrowth_ != nullptr) delete outgrowth_;
-   if (deltaR_ != nullptr) delete deltaR_;
+ConnGrowth::~ConnGrowth()
+{
+   if (W_ != nullptr)
+      delete W_;
+   if (radii_ != nullptr)
+      delete radii_;
+   if (rates_ != nullptr)
+      delete rates_;
+   if (delta_ != nullptr)
+      delete delta_;
+   if (area_ != nullptr)
+      delete area_;
+   if (outgrowth_ != nullptr)
+      delete outgrowth_;
+   if (deltaR_ != nullptr)
+      delete deltaR_;
 
    W_ = nullptr;
    radii_ = nullptr;
@@ -82,7 +91,8 @@ ConnGrowth::~ConnGrowth() {
 ///  @param  layout    Layout information of the neural network.
 ///  @param  vertices   The vertex list to search from.
 ///  @param  synapses  The Synapse list to search from.
-void ConnGrowth::setupConnections(Layout *layout, AllVertices *vertices, AllEdges *synapses) {
+void ConnGrowth::setupConnections(Layout *layout, AllVertices *vertices, AllEdges *synapses)
+{
    int numVertices = Simulator::getInstance().getTotalVertices();
    radiiSize_ = numVertices;
 
@@ -100,18 +110,25 @@ void ConnGrowth::setupConnections(Layout *layout, AllVertices *vertices, AllEdge
 
 /// Load member variables from configuration file.
 /// Registered to OperationManager as Operations::op::loadParameters
-void ConnGrowth::loadParameters() {
-   ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/epsilon/text()", growthParams_.epsilon);
-   ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/beta/text()", growthParams_.beta);
-   ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/rho/text()", growthParams_.rho);
-   ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/targetRate/text()", growthParams_.targetRate);
-   ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/minRadius/text()", growthParams_.minRadius);
-   ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/startRadius/text()", growthParams_.startRadius);
+void ConnGrowth::loadParameters()
+{
+   ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/epsilon/text()",
+                                                     growthParams_.epsilon);
+   ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/beta/text()",
+                                                     growthParams_.beta);
+   ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/rho/text()",
+                                                     growthParams_.rho);
+   ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/targetRate/text()",
+                                                     growthParams_.targetRate);
+   ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/minRadius/text()",
+                                                     growthParams_.minRadius);
+   ParameterManager::getInstance().getBGFloatByXpath("//GrowthParams/startRadius/text()",
+                                                     growthParams_.startRadius);
 
    // initial maximum firing rate
    if (growthParams_.epsilon != 0) {
       growthParams_.maxRate = growthParams_.targetRate / growthParams_.epsilon;
-	} else {
+   } else {
       LOG4CPLUS_FATAL(fileLogger_, "Parameter GrowthParams/epsilon/ has a value of 0" << endl);
       exit(EXIT_FAILURE);
    }
@@ -119,15 +136,18 @@ void ConnGrowth::loadParameters() {
 
 /// Prints out all parameters to logging file.
 /// Registered to OperationManager as Operation::printParameters
-void ConnGrowth::printParameters() const {
-   LOG4CPLUS_DEBUG(fileLogger_, "\nCONNECTIONS PARAMETERS" << endl
-    << "\tConnections type: ConnGrowth" << endl
-    << "\tepsilon: " << growthParams_.epsilon << endl
-    << "\tbeta: " << growthParams_.beta << endl
-    << "\trho: " << growthParams_.rho << endl
-    << "\tTarget rate: " << growthParams_.targetRate << "," << endl
-    << "\tMinimum radius: " << growthParams_.minRadius << endl
-    << "\tStarting radius: " << growthParams_.startRadius << endl << endl);
+void ConnGrowth::printParameters() const
+{
+   LOG4CPLUS_DEBUG(fileLogger_, "\nCONNECTIONS PARAMETERS"
+                                   << endl
+                                   << "\tConnections type: ConnGrowth" << endl
+                                   << "\tepsilon: " << growthParams_.epsilon << endl
+                                   << "\tbeta: " << growthParams_.beta << endl
+                                   << "\trho: " << growthParams_.rho << endl
+                                   << "\tTarget rate: " << growthParams_.targetRate << "," << endl
+                                   << "\tMinimum radius: " << growthParams_.minRadius << endl
+                                   << "\tStarting radius: " << growthParams_.startRadius << endl
+                                   << endl);
 }
 
 ///  Update the connections status in every epoch.
@@ -135,7 +155,8 @@ void ConnGrowth::printParameters() const {
 ///  @param  vertices  The vertex list to search from.
 ///  @param  layout   Layout information of the neural network.
 ///  @return true if successful, false otherwise.
-bool ConnGrowth::updateConnections(AllVertices &vertices, Layout *layout) {
+bool ConnGrowth::updateConnections(AllVertices &vertices, Layout *layout)
+{
    // Update Connections data
    updateConns(vertices);
 
@@ -151,21 +172,26 @@ bool ConnGrowth::updateConnections(AllVertices &vertices, Layout *layout) {
 ///  Calculates firing rates, vertex radii change and assign new values.
 ///
 ///  @param  vertices  The vertex list to search from.
-void ConnGrowth::updateConns(AllVertices &vertices) {
+void ConnGrowth::updateConns(AllVertices &vertices)
+{
    AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(vertices);
 
    // Calculate growth cycle firing rate for previous period
-   int maxSpikes = static_cast<int> (Simulator::getInstance().getEpochDuration() *
-                                      Simulator::getInstance().getMaxFiringRate());
+   int maxSpikes = static_cast<int>(Simulator::getInstance().getEpochDuration()
+                                    * Simulator::getInstance().getMaxFiringRate());
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       // Calculate firing rate
-      assert(spNeurons.spikeCount_[i] < maxSpikes);
-      (*rates_)[i] = spNeurons.spikeCount_[i] / Simulator::getInstance().getEpochDuration();
+      assert(spNeurons.vertexEvents_[i].getNumEventsInEpoch() < maxSpikes);
+      (*rates_)[i] = spNeurons.vertexEvents_[i].getNumEventsInEpoch()
+                     / Simulator::getInstance().getEpochDuration();
    }
-   
+
    // compute vertex radii change and assign new values
-   (*outgrowth_) =
-         1.0 - 2.0 / (1.0 + exp((growthParams_.epsilon - *rates_ / growthParams_.maxRate) / growthParams_.beta));
+   (*outgrowth_) = 1.0
+                   - 2.0
+                        / (1.0
+                           + exp((growthParams_.epsilon - *rates_ / growthParams_.maxRate)
+                                 / growthParams_.beta));
    (*deltaR_) = Simulator::getInstance().getEpochDuration() * growthParams_.rho * *outgrowth_;
    (*radii_) += (*deltaR_);
 }
@@ -174,7 +200,8 @@ void ConnGrowth::updateConns(AllVertices &vertices) {
 ///
 ///  @param  numVertices  Number of vertices to update.
 ///  @param  layout      Layout information of the neural network.
-void ConnGrowth::updateFrontiers(const int numVertices, Layout *layout) {
+void ConnGrowth::updateFrontiers(const int numVertices, Layout *layout)
+{
    LOG4CPLUS_INFO(fileLogger_, "Updating distance between frontiers...");
    // Update distance between frontiers
    for (int unit = 0; unit < numVertices - 1; unit++) {
@@ -189,7 +216,8 @@ void ConnGrowth::updateFrontiers(const int numVertices, Layout *layout) {
 ///
 ///  @param  numVertices  Number of vertices to update.
 ///  @param  layout      Layout information of the neural network.
-void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout) {
+void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout)
+{
    LOG4CPLUS_INFO(fileLogger_, "Computing areas of overlap");
 
    // Compute areas of overlap; this is only done for overlapping units
@@ -203,10 +231,11 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout) {
             BGFLOAT r2 = (*radii_)[j];
 
             if (lenAB + min(r1, r2) <= max(r1, r2)) {
-               (*area_)(i, j) = pi * min(r1, r2) * min(r1, r2); // Completely overlapping unit
+               (*area_)(i, j) = pi * min(r1, r2) * min(r1, r2);   // Completely overlapping unit
 
                LOG4CPLUS_DEBUG(fileLogger_, "Completely overlapping (i, j, r1, r2, area): "
-                     << i << ", " << j << ", " << r1 << ", " << r2 << ", " << (*area_)(i, j) << endl);
+                                               << i << ", " << j << ", " << r1 << ", " << r2 << ", "
+                                               << (*area_)(i, j) << endl);
             } else {
                // Partially overlapping unit
                BGFLOAT lenAB2 = (*layout->dist2_)(i, j);
@@ -219,14 +248,14 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout) {
                if (fabs(cosCBA) >= 1.0 || fabs(cosCAB) >= 1.0) {
                   (*area_)(i, j) = 0.0;
                } else {
-
                   BGFLOAT angCBA = acos(cosCBA);
                   BGFLOAT angCBD = 2.0 * angCBA;
 
                   BGFLOAT angCAB = acos(cosCAB);
                   BGFLOAT angCAD = 2.0 * angCAB;
 
-                  (*area_)(i, j) = 0.5 * (r22 * (angCBD - sin(angCBD)) + r12 * (angCAD - sin(angCAD)));
+                  (*area_)(i, j)
+                     = 0.5 * (r22 * (angCBD - sin(angCBD)) + r12 * (angCAD - sin(angCAD)));
                }
             }
          }
@@ -245,8 +274,9 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout) {
 ///  @param  ivertices    the AllVertices object.
 ///  @param  iedges   the AllEdges object.
 ///  @param  layout      the Layout object.
-void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &vertices, AllEdges &iedges,
-                                       Layout *layout) {
+void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &vertices,
+                                       AllEdges &iedges, Layout *layout)
+{
    AllNeuroEdges &synapses = dynamic_cast<AllNeuroEdges &>(iedges);
 
    // For now, we just set the weights to equal the areas. We will later
@@ -254,7 +284,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &verti
    (*W_) = (*area_);
 
    int adjusted = 0;
-   int couldBeRemoved = 0; // TODO: use this value
+   int couldBeRemoved = 0;   // TODO: use this value
    int removed = 0;
    int added = 0;
 
@@ -288,50 +318,45 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &verti
                   } else {
                      // adjust
                      // SYNAPSE_STRENGTH_ADJUSTMENT is 1.0e-8;
-                     synapses.W_[iEdg] = (*W_)(srcVertex, destVertex) *
-                                         synapses.edgSign(type) * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+                     synapses.W_[iEdg] = (*W_)(srcVertex, destVertex) * synapses.edgSign(type)
+                                         * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 
-                     LOG4CPLUS_DEBUG(fileLogger_, "Weight of rgSynapseMap" <<
-                                                                           "[" << synapseIndex << "]: " <<
-                                                                           synapses.W_[iEdg]);
+                     LOG4CPLUS_DEBUG(fileLogger_, "Weight of rgSynapseMap"
+                                                     << "[" << synapseIndex
+                                                     << "]: " << synapses.W_[iEdg]);
                   }
                }
                synapse_adjusted++;
-
             }
          }
 
          // if not connected and weight(a,b) > 0, add a new synapse from a to b
          if (!connected && ((*W_)(srcVertex, destVertex) > 0)) {
-
             // locate summation point
             BGFLOAT *sumPoint = &(vertices.summationMap_[destVertex]);
             added++;
 
             BGSIZE iEdg;
             synapses.addEdge(iEdg, type, srcVertex, destVertex, sumPoint,
-                                Simulator::getInstance().getDeltaT());
-            synapses.W_[iEdg] =
-                  (*W_)(srcVertex, destVertex) * synapses.edgSign(type) *
-                  AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
-
+                             Simulator::getInstance().getDeltaT());
+            synapses.W_[iEdg] = (*W_)(srcVertex, destVertex) * synapses.edgSign(type)
+                                * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
          }
       }
    }
 
-   LOG4CPLUS_INFO(fileLogger_, "\nAdjusted: " << adjusted
-             << "\nCould have been removed (TODO: calculate this): " << couldBeRemoved
-             << "\nRemoved: " << removed
-             << "\nAdded: " << added);
+   LOG4CPLUS_INFO(fileLogger_,
+                  "\nAdjusted: " << adjusted << "\nCould have been removed (TODO: calculate this): "
+                                 << couldBeRemoved << "\nRemoved: " << removed
+                                 << "\nAdded: " << added);
 }
 
-#endif // !USE_GPU
+#endif   // !USE_GPU
 
-///  Prints radii 
-void ConnGrowth::printRadii() const {
+///  Prints radii
+void ConnGrowth::printRadii() const
+{
    for (int i = 0; i < radiiSize_; i++) {
       cout << "radii[" << i << "] = " << (*radii_)[i] << endl;
    }
 }
-
-

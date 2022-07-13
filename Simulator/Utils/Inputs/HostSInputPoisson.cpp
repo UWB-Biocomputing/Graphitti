@@ -14,9 +14,8 @@
 ///
 /// @param[in] psi       Pointer to the simulation information
 /// @param[in] parms     TiXmlElement to examine.
-HostSInputPoisson::HostSInputPoisson(TiXmlElement* parms) : SInputPoisson(parms)
+HostSInputPoisson::HostSInputPoisson(TiXmlElement *parms) : SInputPoisson(parms)
 {
-    
 }
 
 HostSInputPoisson::~HostSInputPoisson()
@@ -28,10 +27,10 @@ HostSInputPoisson::~HostSInputPoisson()
 /// @param[in] psi       Pointer to the simulation information.
 void HostSInputPoisson::init()
 {
-    SInputPoisson::init();
+   SInputPoisson::init();
 
-    if (fSInput == false)
-        return;
+   if (fSInput == false)
+      return;
 }
 
 /// Terminate process.
@@ -39,7 +38,7 @@ void HostSInputPoisson::init()
 /// @param[in] psi       Pointer to the simulation information.
 void HostSInputPoisson::term()
 {
-    SInputPoisson::term();
+   SInputPoisson::term();
 }
 
 /// Process input stimulus for each time step.
@@ -48,36 +47,36 @@ void HostSInputPoisson::term()
 /// @param[in] psi             Pointer to the simulation information.
 void HostSInputPoisson::inputStimulus()
 {
-    if (fSInput == false)
-        return;
+   if (fSInput == false)
+      return;
 
 #if defined(USE_OMP)
-int chunk_size = psi->totalVertices / omp_get_max_threads();
+   int chunk_size = psi->totalVertices / omp_get_max_threads();
 #endif
 
 #if defined(USE_OMP)
-#pragma omp parallel for schedule(static, chunk_size)
+   #pragma omp parallel for schedule(static, chunk_size)
 #endif
-    for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalVertices(); neuronIndex++)
-    {
-        if (masks[neuronIndex] == false)
-            continue;
+   for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalVertices();
+        neuronIndex++) {
+      if (masks[neuronIndex] == false)
+         continue;
 
-        BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * neuronIndex;
-        if (--nISIs[neuronIndex] <= 0)
-        {
-            // add a spike
-            dynamic_cast<AllSpikingSynapses*>(edges_)->preSpikeHit(iEdg);
+      BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * neuronIndex;
+      if (--nISIs[neuronIndex] <= 0) {
+         // add a spike
+         dynamic_cast<AllSpikingSynapses *>(edges_)->preSpikeHit(iEdg);
 
-            // update interval counter (exponectially distribution ISIs, Poisson)
-            BGFLOAT isi = -lambda * log(initRNG.inRange(0, 1));
-            // delete isi within refractoriness
-            while (initRNG.inRange(0, 1) <= exp(-(isi*isi)/32))
-                isi = -lambda * log(initRNG.inRange(0, 1));
-            // convert isi from msec to steps
-            nISIs[neuronIndex] = static_cast<int>( (isi / 1000) / Simulator::getInstance().getDeltaT() + 0.5 );
-        }
-        // process synapse
-        edges_->advanceEdge(iEdg, nullptr);
-    }
+         // update interval counter (exponectially distribution ISIs, Poisson)
+         BGFLOAT isi = -lambda * log(initRNG.inRange(0, 1));
+         // delete isi within refractoriness
+         while (initRNG.inRange(0, 1) <= exp(-(isi * isi) / 32))
+            isi = -lambda * log(initRNG.inRange(0, 1));
+         // convert isi from msec to steps
+         nISIs[neuronIndex]
+            = static_cast<int>((isi / 1000) / Simulator::getInstance().getDeltaT() + 0.5);
+      }
+      // process synapse
+      edges_->advanceEdge(iEdg, nullptr);
+   }
 }

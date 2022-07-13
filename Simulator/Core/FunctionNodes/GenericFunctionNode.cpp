@@ -10,28 +10,28 @@
  */
 
 #include "GenericFunctionNode.h"
-
+#include "Operations.h"
 #include <functional>
 
-#include "Operations.h"
-
 /// Constructor, Function Signature: void ()
-GenericFunctionNode::GenericFunctionNode(const Operations::op &operation, const std::function<void()> &func) {
-    operationType_ = operation;
-    function_ = func;
+GenericFunctionNode::GenericFunctionNode(const Operations::op &operation,
+                                         const std::function<void()> &func)
+{
+   operationType_ = operation;
+   function_ = func;
 }
 
 /// Destructor
-GenericFunctionNode::~GenericFunctionNode() {
+GenericFunctionNode::~GenericFunctionNode()
+{
 }
 
 /// Invokes the stored function if the sent operation type matches the operation type the function is stored as.
-bool GenericFunctionNode::invokeFunction(const Operations::op &operation) const {
-    if (operation == operationType_) {
-        __invoke(function_);
-        return true;
-    }
-    return false;
+bool GenericFunctionNode::invokeFunction(const Operations::op &operation) const
+{
+   if (operation == operationType_) {
+      __invoke(function_);
+      return true;
+   }
+   return false;
 }
-
-

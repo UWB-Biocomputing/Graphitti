@@ -8,21 +8,20 @@
 
 #pragma once
 
+#include "Global.h"
+#include "IRecorder.h"
 #include <map>
 #include <memory>
 #include <string>
 
-#include "Global.h"
-#include "IRecorder.h"
-
 using namespace std;
 
 class RecorderFactory {
-
 public:
    ~RecorderFactory();
 
-   static RecorderFactory *getInstance() {
+   static RecorderFactory *getInstance()
+   {
       static RecorderFactory instance;
       return &instance;
    }

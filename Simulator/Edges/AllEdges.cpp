@@ -10,10 +10,8 @@
 #include "AllVertices.h"
 #include "OperationManager.h"
 
-AllEdges::AllEdges() :
-      totalEdgeCount_(0),
-      maxEdgesPerVertex_(0),
-      countVertices_(0) {
+AllEdges::AllEdges() : totalEdgeCount_(0), maxEdgesPerVertex_(0), countVertices_(0)
+{
    destVertexIndex_ = nullptr;
    W_ = nullptr;
    summationPoint_ = nullptr;
@@ -26,23 +24,27 @@ AllEdges::AllEdges() :
    // OperationManager. This will register the appropriate overridden method
    // for the actual (sub)class of the object being created.
    function<void()> loadParametersFunc = std::bind(&AllEdges::loadParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, loadParametersFunc);
+   OperationManager::getInstance().registerOperation(Operations::op::loadParameters,
+                                                     loadParametersFunc);
 
    // Register printParameters function as a printParameters operation in the
    // OperationManager. This will register the appropriate overridden method
    // for the actual (sub)class of the object being created.
    function<void()> printParametersFunc = bind(&AllEdges::printParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::printParameters, printParametersFunc);
+   OperationManager::getInstance().registerOperation(Operations::printParameters,
+                                                     printParametersFunc);
 
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
 }
 
-AllEdges::AllEdges(const int numVertices, const int maxEdges) {
+AllEdges::AllEdges(const int numVertices, const int maxEdges)
+{
    setupEdges(numVertices, maxEdges);
 }
 
-AllEdges::~AllEdges() {
+AllEdges::~AllEdges()
+{
    BGSIZE maxTotalEdges = maxEdgesPerVertex_ * countVertices_;
 
    if (maxTotalEdges != 0) {
@@ -69,30 +71,37 @@ AllEdges::~AllEdges() {
 
 /// Load member variables from configuration file.
 /// Registered to OperationManager as Operation::op::loadParameters
-void AllEdges::loadParameters() {
+void AllEdges::loadParameters()
+{
    // Nothing to load from configuration file besides SynapseType in the current implementation.
 }
 
 ///  Prints out all parameters to logging file.
 ///  Registered to OperationManager as Operation::printParameters
-void AllEdges::printParameters() const {
-   LOG4CPLUS_DEBUG(fileLogger_, "\nEDGES PARAMETERS" << endl
-    << "\t---AllEdges Parameters---" << endl
-    << "\tTotal edge counts: " << totalEdgeCount_ << endl
-    << "\tMax edges per vertex: " << maxEdgesPerVertex_ << endl
-    << "\tVertex count: " << countVertices_ << endl << endl);
+void AllEdges::printParameters() const
+{
+   LOG4CPLUS_DEBUG(fileLogger_, "\nEDGES PARAMETERS"
+                                   << endl
+                                   << "\t---AllEdges Parameters---" << endl
+                                   << "\tTotal edge counts: " << totalEdgeCount_ << endl
+                                   << "\tMax edges per vertex: " << maxEdgesPerVertex_ << endl
+                                   << "\tVertex count: " << countVertices_ << endl
+                                   << endl);
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
-void AllEdges::setupEdges() {
-   setupEdges(Simulator::getInstance().getTotalVertices(), Simulator::getInstance().getMaxEdgesPerVertex());
+void AllEdges::setupEdges()
+{
+   setupEdges(Simulator::getInstance().getTotalVertices(),
+              Simulator::getInstance().getMaxEdgesPerVertex());
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 ///
 ///  @param  numVertices   Total number of vertices in the network.
 ///  @param  maxEdges  Maximum number of edges per vertex.
-void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
+void AllEdges::setupEdges(const int numVertices, const int maxEdges)
+{
    BGSIZE maxTotalEdges = maxEdges * numVertices;
 
    maxEdgesPerVertex_ = maxEdges;
@@ -124,7 +133,8 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges) {
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the edge to set.
-void AllEdges::readEdge(istream &input, const BGSIZE iEdg) {
+void AllEdges::readEdge(istream &input, const BGSIZE iEdg)
+{
    int synapse_type(0);
 
    // input.ignore() so input skips over end-of-line characters.
@@ -146,7 +156,8 @@ void AllEdges::readEdge(istream &input, const BGSIZE iEdg) {
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the edge to print out.
-void AllEdges::writeEdge(ostream &output, const BGSIZE iEdg) const {
+void AllEdges::writeEdge(ostream &output, const BGSIZE iEdg) const
+{
    output << sourceVertexIndex_[iEdg] << ends;
    output << destVertexIndex_[iEdg] << ends;
    output << W_[iEdg] << ends;
@@ -158,7 +169,8 @@ void AllEdges::writeEdge(ostream &output, const BGSIZE iEdg) const {
 ///
 ///  @param  typeOrdinal    Integer that correspond with a edgeType.
 ///  @return the SynapseType that corresponds with the given integer.
-edgeType AllEdges::edgeOrdinalToType(const int typeOrdinal) {
+edgeType AllEdges::edgeOrdinalToType(const int typeOrdinal)
+{
    switch (typeOrdinal) {
       case 0:
          return II;
@@ -182,8 +194,9 @@ edgeType AllEdges::edgeOrdinalToType(const int typeOrdinal) {
 }
 
 ///  Create a edge index map.
-void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap) {
-   Simulator& simulator = Simulator::getInstance();
+void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap)
+{
+   Simulator &simulator = Simulator::getInstance();
    int vertexCount = simulator.getTotalVertices();
    int totalEdgeCount = 0;
 
@@ -193,7 +206,8 @@ void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap) {
       totalEdgeCount += edgeCounts_[i];
    }
 
-   LOG4CPLUS_TRACE(fileLogger_,endl<<"totalEdgeCount: in edgeIndexMap " << totalEdgeCount << endl);
+   LOG4CPLUS_TRACE(fileLogger_, endl
+                                   << "totalEdgeCount: in edgeIndexMap " << totalEdgeCount << endl);
 
    // Create vector for edge forwarding map
    vector<BGSIZE> rgEdgeEdgeIndexMap[vertexCount];
@@ -201,8 +215,9 @@ void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap) {
    BGSIZE edg_i = 0;
    int curr = 0;
 
-   LOG4CPLUS_TRACE(edgeLogger_, "\nSize of edge Index Map "<< vertexCount << "," << totalEdgeCount << endl);
-   
+   LOG4CPLUS_TRACE(edgeLogger_,
+                   "\nSize of edge Index Map " << vertexCount << "," << totalEdgeCount << endl);
+
    for (int i = 0; i < vertexCount; i++) {
       BGSIZE edge_count = 0;
       edgeIndexMap->incomingEdgeBegin_[i] = curr;
@@ -216,24 +231,24 @@ void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap) {
             edge_count++;
          }
       }
-      
-      if(edge_count != edgeCounts_[i])
-      {
-         LOG4CPLUS_FATAL(edgeLogger_, "\nedge_count does not match edgeCounts_" << edge_count << endl);
+
+      if (edge_count != edgeCounts_[i]) {
+         LOG4CPLUS_FATAL(edgeLogger_,
+                         "\nedge_count does not match edgeCounts_" << edge_count << endl);
          throw runtime_error("createEdgeIndexMap: edge_count does not match edgeCounts_.");
       }
 
       edgeIndexMap->incomingEdgeCount_[i] = edge_count;
    }
-   
-   if(totalEdgeCount != curr)
-   {
-      LOG4CPLUS_FATAL(edgeLogger_,"Curr does not match the totalEdgeCount. curr are " << curr << endl);
+
+   if (totalEdgeCount != curr) {
+      LOG4CPLUS_FATAL(edgeLogger_,
+                      "Curr does not match the totalEdgeCount. curr are " << curr << endl);
       throw runtime_error("createEdgeIndexMap: Curr does not match the totalEdgeCount.");
    }
    totalEdgeCount_ = totalEdgeCount;
-   LOG4CPLUS_DEBUG(edgeLogger_,endl<<"totalEdgeCount: " << totalEdgeCount_ << endl);
-   
+   LOG4CPLUS_DEBUG(edgeLogger_, endl << "totalEdgeCount: " << totalEdgeCount_ << endl);
+
    edg_i = 0;
    for (int i = 0; i < vertexCount; i++) {
       edgeIndexMap->outgoingEdgeBegin_[i] = edg_i;
@@ -252,7 +267,8 @@ void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap) {
 ///
 ///  @param  vertices           The vertices.
 ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
-void AllEdges::advanceEdges(AllVertices *vertices, EdgeIndexMap *edgeIndexMap) {
+void AllEdges::advanceEdges(AllVertices *vertices, EdgeIndexMap *edgeIndexMap)
+{
    for (BGSIZE i = 0; i < totalEdgeCount_; i++) {
       BGSIZE iEdg = edgeIndexMap->incomingEdgeIndexMap_[i];
       advanceEdge(iEdg, vertices);
@@ -263,14 +279,15 @@ void AllEdges::advanceEdges(AllVertices *vertices, EdgeIndexMap *edgeIndexMap) {
 ///
 ///  @param  iVert    Index of a vertex to remove from.
 ///  @param  iEdg           Index of a edge to remove.
-void AllEdges::eraseEdge(const int iVert, const BGSIZE iEdg) {
+void AllEdges::eraseEdge(const int iVert, const BGSIZE iEdg)
+{
    edgeCounts_[iVert]--;
    inUse_[iEdg] = false;
    summationPoint_[iEdg] = nullptr;
    W_[iEdg] = 0;
 }
 
-#endif // !defined(USE_GPU)
+#endif   // !defined(USE_GPU)
 
 
 ///  Adds an edge to the model, connecting two Vertices.
@@ -281,8 +298,9 @@ void AllEdges::eraseEdge(const int iVert, const BGSIZE iEdg) {
 ///  @param  destVertex The Vertex that receives from the edge.
 ///  @param  sumPoint   Summation point address.
 ///  @param  deltaT      Inner simulation step duration
-void AllEdges::addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex, BGFLOAT *sumPoint,
-                        const BGFLOAT deltaT) {
+void AllEdges::addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex,
+                       BGFLOAT *sumPoint, const BGFLOAT deltaT)
+{
    if (edgeCounts_[destVertex] >= maxEdgesPerVertex_) {
       LOG4CPLUS_FATAL(edgeLogger_, "Vertex : " << destVertex << " ran out of space for new edges.");
       throw runtime_error("Vertex : " + destVertex + string(" ran out of space for new edges."));

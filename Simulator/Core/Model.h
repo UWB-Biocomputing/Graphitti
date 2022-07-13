@@ -15,13 +15,11 @@
 
 #pragma once
 
-#include <memory>
-
-#include <log4cplus/loggingmacros.h>
-
-#include "Layout.h"
 #include "AllVertices.h"
 #include "IRecorder.h"
+#include "Layout.h"
+#include <log4cplus/loggingmacros.h>
+#include <memory>
 
 using namespace std;
 
@@ -55,7 +53,7 @@ public:
    virtual void setupSim();
 
    /// Performs any finalization tasks on network following a simulation.
-   virtual void finish() = 0; 
+   virtual void finish() = 0;
 
    /// Update the simulation history of every epoch.
    virtual void updateHistory();
@@ -79,7 +77,6 @@ public:
    virtual void updateConnections() = 0;
 
 protected:
-
    /// Prints debug information about the current state of the network.
    void logSimStep() const;
 
@@ -101,5 +98,6 @@ protected:
    log4cplus::Logger fileLogger_;
 
    // ToDo: Find a good place for this method. Makes sense to put it in Layout
-   void createAllVertices(); /// Populate an instance of AllVertices with an initial state for each vertex.
+   void
+      createAllVertices();   /// Populate an instance of AllVertices with an initial state for each vertex.
 };

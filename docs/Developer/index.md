@@ -18,6 +18,8 @@ Please adhere to our [coding conventions](codingConventions.md). Your pull reque
 
 - CMake
     - Refer to the [CMake](CMake.md) documentation to help with any related CMake questions
+- clang-format
+    - Refer to the [clang-format documentation](codingConventions.md#clang-format) to help with using this tool
 - GitHub Pages
     - Refer to the [GitHub Pages documentation](GHPages.md) section for an overview of how we use GitHub Pages and editing practices
 - GitHub Actions Workflows
@@ -28,7 +30,8 @@ Please adhere to our [coding conventions](codingConventions.md). Your pull reque
 ## Graphitti System Documentation
 
 - Diagrams
-    - Here is a overview [block UML diagram](UML/hand-drawn.pdf)
+    - Here is a overview [block UML diagram](ClassDiagrams/hand-drawn.pdf)
+    - Here is a list of [UML class diagrams](classDiagrams.md) of Graphitti
     - Here are the [sequence UML diagrams](sequenceDiagrams.md) for the Graphitti system
 - Doxygen
     - Documentation generated from source code
