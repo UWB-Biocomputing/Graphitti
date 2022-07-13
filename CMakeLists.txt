@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.12)
 #
 # "YES"/GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
-set(ENABLE_CUDA NO)
+set(ENABLE_CUDA YES)
 
 # Creates the Graphitti project with the correct languages, depending on if using GPU or not
 # If using CUDA, also verify the CUDA package and set required CUDA variables
@@ -121,10 +121,18 @@ include_directories(
 
        
 if(ENABLE_CUDA)
-        # Simulator/Core/GPUModel.cpp
-        set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp Simulator/Edges/Neuro/AllDSSynapses_d.cpp Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp Simulator/Vertices/Neuro/AllLIFNeurons_d.cpp Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp Simulator/Vertices/Neuro/AllIFNeurons_d.cpp Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp Simulator/Connections/Neuro/ConnGrowth_d.cpp )
         
-        #set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp)
+        set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp 
+        Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp 
+        Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp 
+        Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp 
+        Simulator/Edges/Neuro/AllDSSynapses_d.cpp 
+        Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp 
+        Simulator/Vertices/Neuro/AllLIFNeurons_d.cpp 
+        Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp 
+        Simulator/Vertices/Neuro/AllIFNeurons_d.cpp 
+        Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp 
+        Simulator/Connections/Neuro/ConnGrowth_d.cpp )
         set_source_files_properties(${cuda_sources} PROPERTIES LANGUAGE CUDA)
 endif()
 
@@ -132,10 +140,10 @@ endif()
 
 
 # Collect source files and create libraries
-# Libraries containing CUDA .cu files should be created as STATIC to ensure proper linking
+# Libraries containing .cpp files compiled as CUDA .cu files should be created as STATIC to ensure proper linking
 
 # Create Connections library
-file(GLOB_RECURSE Connections_Source Simulator/Connections/*.cpp Simulator/Connections/*.h Simulator/Connections/*.cu)
+file(GLOB_RECURSE Connections_Source Simulator/Connections/*.cpp Simulator/Connections/*.h)
 
 if(ENABLE_CUDA)
         add_library(Connections STATIC ${Connections_Source} ${cuda_sources})
@@ -145,7 +153,7 @@ else()
 endif()
 
 # Create Vertices library
-file(GLOB_RECURSE Vertices_Source Simulator/Vertices/*.cpp Simulator/Vertices/*.h Simulator/Vertices/*.cu)
+file(GLOB_RECURSE Vertices_Source Simulator/Vertices/*.cpp Simulator/Vertices/*.h)
 
 
 if(ENABLE_CUDA)
@@ -164,7 +172,7 @@ else()
 endif()
 
 # Create Edges library
-file(GLOB_RECURSE Edges_Source Simulator/Edges/*.cpp Simulator/Edges/*.h Simulator/Edges/*.cu)
+file(GLOB_RECURSE Edges_Source Simulator/Edges/*.cpp Simulator/Edges/*.h)
 if(ENABLE_CUDA)
         add_library(Edges SHARED ${Edges_Source} ${cuda_sources})
 else()
@@ -196,13 +204,13 @@ file(GLOB FunctionNodes_Source Simulator/Core/FunctionNodes/*.cpp Simulator/Core
 add_library(FunctionNodes ${FunctionNodes_Source})
 
 # Create Core library
-file(GLOB Core_Source Simulator/Core/*.cpp Simulator/Core/*.h Simulator/Core/*.cu)
+file(GLOB Core_Source Simulator/Core/*.cpp Simulator/Core/*.h)
 # Remove Driver from the list of files, don't want 'main' in the library
 list(REMOVE_ITEM Core_Source "${CMAKE_CURRENT_SOURCE_DIR}/Driver.cpp")
 # add_library(Core STATIC ${Core_Source})
 
 
-# Remove if GPUModel.cpp to GPUModel.cu
+
 if(ENABLE_CUDA)
         set(cudaCore_sources Simulator/Core/GPUModel.cpp)
         set_source_files_properties(${cudaCore_sources} PROPERTIES LANGUAGE CUDA)
@@ -242,7 +250,7 @@ add_subdirectory(ThirdParty)
 add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
-# Set CUDA_SEPERABLE_COMPILATION to ON for all libraries that contain .cu CUDA files
+# Set CUDA_SEPERABLE_COMPILATION to ON for all libraries that contain .cpp files with device functions compiled as CUDA files
 if(ENABLE_CUDA)
         set_property(TARGET Edges PROPERTY CUDA_STANDARD 11)
         set_property(TARGET Vertices PROPERTY CUDA_STANDARD 11)
