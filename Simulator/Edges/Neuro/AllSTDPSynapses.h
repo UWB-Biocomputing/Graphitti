@@ -66,6 +66,7 @@
 
 #pragma once
 
+#include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
 
 struct AllSTDPSynapsesDeviceProperties;
@@ -349,6 +350,13 @@ public:
 };
 
 #if defined(USE_GPU)
+CUDA_CALLABLE void stdpLearningDevice(AllSTDPSynapsesDeviceProperties *allEdgesDevice,
+                                      const BGSIZE iEdg, double delta, double epost, double epre);
+CUDA_CALLABLE bool
+   isSTDPSynapseSpikeQueuePostDevice(AllSTDPSynapsesDeviceProperties *allEdgesDevice, BGSIZE iEdg);
+CUDA_CALLABLE uint64_t getSTDPSynapseSpikeHistoryDevice(
+   AllSpikingNeuronsDeviceProperties *allVerticesDevice, int index, int offIndex, int maxSpikes);
+
 struct AllSTDPSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperties {
    ///  The synaptic transmission delay (delay of dendritic backpropagating spike),
    ///  descretized into time steps.

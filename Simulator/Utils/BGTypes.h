@@ -65,3 +65,10 @@ typedef unsigned long long int uint64_t;
 // The type for using array indexes (issue #142).
 #define BGSIZE uint32_t
 //#define BGSIZE uint64_t
+
+
+#ifdef __CUDACC__
+   #define CUDA_CALLABLE __device__ __host__
+#else
+   #define CUDA_CALLABLE
+#endif

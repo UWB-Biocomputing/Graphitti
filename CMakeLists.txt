@@ -28,7 +28,8 @@ if(ENABLE_CUDA)
         # Specify the CUDA architecture/gencode that will be targeted
         ### Set gencode and architechture variables to the correct values for your specific NVIDIA hardware
         set(CMAKE_CUDA_ARCHITECTURES 37)        
-        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_37,code=sm_37)    
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_37,code=sm_37)
+            
 else()
         message("\n----Generating Makefile for Graphitti CPU version----")
         project(Graphitti LANGUAGES CXX C)
@@ -123,36 +124,109 @@ include_directories(
         ThirdParty/TinyXPath
         ThirdParty/log4cplus-2.0.7/include)
 
+
+       
+if(ENABLE_CUDA)
+        
+        set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp 
+        Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp 
+        Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp 
+        Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp 
+        Simulator/Edges/Neuro/AllDSSynapses_d.cpp 
+        Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp 
+        Simulator/Vertices/Neuro/AllLIFNeurons_d.cpp 
+        Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp 
+        Simulator/Vertices/Neuro/AllIFNeurons_d.cpp 
+        Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp 
+        Simulator/Connections/Neuro/ConnGrowth_d.cpp )
+        set_source_files_properties(${cuda_sources} PROPERTIES LANGUAGE CUDA)
+endif()
+
+
+
+
 # Collect source files and create libraries
-# Libraries containing CUDA .cu files should be created as STATIC to ensure proper linking
+# Libraries containing .cpp files compiled as CUDA .cu files should be created as STATIC to ensure proper linking
 
 # Create Connections library
-file(GLOB_RECURSE Connections_Source Simulator/Connections/*.cpp Simulator/Connections/*.h Simulator/Connections/*.cu)
-add_library(Connections STATIC ${Connections_Source})
+file(GLOB_RECURSE Connections_Source Simulator/Connections/*.cpp Simulator/Connections/*.h)
+
+if(ENABLE_CUDA)
+        add_library(Connections STATIC ${Connections_Source} ${cuda_sources})
+else()
+        list(REMOVE_ITEM Connections_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Connections/Neuro/ConnGrowth_d.cpp")
+        add_library(Connections STATIC ${Connections_Source})
+endif()
+
+# Create Vertices library
+file(GLOB_RECURSE Vertices_Source Simulator/Vertices/*.cpp Simulator/Vertices/*.h)
+
+
+if(ENABLE_CUDA)
+        add_library(Vertices SHARED ${Vertices_Source} ${cuda_sources})
+else()
+        list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllVerticesDeviceFuncs.h")
+        list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp")
+        list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllLIFNeurons_d.cpp")
+        list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp")
+        list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllIFNeurons_d.cpp")
+        list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp")
+        
+       
+        add_library(Vertices STATIC ${Vertices_Source})
+        
+endif()
 
 # Create Edges library
-file(GLOB_RECURSE Edges_Source Simulator/Edges/*.cpp Simulator/Edges/*.h Simulator/Edges/*.cu)
-add_library(Edges STATIC ${Edges_Source})
+file(GLOB_RECURSE Edges_Source Simulator/Edges/*.cpp Simulator/Edges/*.h)
+if(ENABLE_CUDA)
+        add_library(Edges SHARED ${Edges_Source} ${cuda_sources})
+else()
+        list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSynapsesDeviceFuncs.h")
+        list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp")
+        list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d_Growth.cpp")
+        list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp")
+        list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp")
+        list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllDSSynapses_d.cpp")
+        list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp")
+        
+        
+        add_library(Edges STATIC ${Edges_Source})
+        
+endif()
+# The Vertices library has a dependency on the Edges library
+target_link_libraries(Vertices Edges)
 
 # Create Layouts Library
 file(GLOB_RECURSE Layouts_Source Simulator/Layouts/*.cpp Simulator/Layouts/*.h)
 add_library(Layouts ${Layouts_Source})
 
-# Create Vertices library
-file(GLOB_RECURSE Vertices_Source Simulator/Vertices/*.cpp Simulator/Vertices/*.h Simulator/Vertices/*.cu)
-add_library(Vertices STATIC ${Vertices_Source})
-# The Vertices library has a dependency on the Edges library
-target_link_libraries(Vertices Edges)
+
+
+
 
 # Create FunctionNodes library
 file(GLOB FunctionNodes_Source Simulator/Core/FunctionNodes/*.cpp Simulator/Core/FunctionNodes/*.h)
 add_library(FunctionNodes ${FunctionNodes_Source})
 
 # Create Core library
-file(GLOB Core_Source Simulator/Core/*.cpp Simulator/Core/*.h Simulator/Core/*.cu)
+file(GLOB Core_Source Simulator/Core/*.cpp Simulator/Core/*.h)
 # Remove Driver from the list of files, don't want 'main' in the library
 list(REMOVE_ITEM Core_Source "${CMAKE_CURRENT_SOURCE_DIR}/Driver.cpp")
-add_library(Core STATIC ${Core_Source})
+# add_library(Core STATIC ${Core_Source})
+
+
+
+if(ENABLE_CUDA)
+        set(cudaCore_sources Simulator/Core/GPUModel.cpp)
+        set_source_files_properties(${cudaCore_sources} PROPERTIES LANGUAGE CUDA)
+        add_library(Core STATIC ${Core_Source} ${cudaCore_sources})
+else()
+        list(REMOVE_ITEM Core_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Core/GPUModel.cpp")
+        add_library(Core STATIC ${Core_Source})
+endif()     
+
+
 
 # Create Recorders library
 file(GLOB_RECURSE Recorders_Source Simulator/Recorders/*.cpp Simulator/Recorders/*.h)
@@ -182,8 +256,10 @@ add_subdirectory(ThirdParty)
 add_subdirectory(Testing/lib/googletest-master)
 include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
-# Set CUDA_SEPERABLE_COMPILATION to ON for all libraries that contain .cu CUDA files
+# Set CUDA_SEPERABLE_COMPILATION to ON for all libraries that contain .cpp files with device functions compiled as CUDA files
 if(ENABLE_CUDA)
+        set_property(TARGET Edges PROPERTY CUDA_STANDARD 11)
+        set_property(TARGET Vertices PROPERTY CUDA_STANDARD 11)
         # Enables CUDA code in these libraries to be compiled into seperate object files and then linked together
         set_property(TARGET Edges PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Vertices PROPERTY CUDA_SEPARABLE_COMPILATION ON)
