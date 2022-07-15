@@ -316,7 +316,7 @@ protected:
 #if defined(USE_GPU)
 
 CUDA_CALLABLE bool isSpikingSynapsesSpikeQueueDevice(
-    AllSpikingSynapsesDeviceProperties *allEdgesDevice, BGSIZE iEdg);
+    AllSpikingSynapsesDeviceProperties *allEdgesDevice, const BGSIZE iEdg);
 CUDA_CALLABLE void changeSpikingSynapsesPSRDevice(
     AllSpikingSynapsesDeviceProperties *allEdgesDevice, const BGSIZE iEdg,
     const uint64_t simulationStep, const BGFLOAT deltaT);

@@ -586,10 +586,10 @@ __global__ void advanceSpikingSynapsesDevice(
 ///
 ///  @return true if there is an input spike event.
 CUDA_CALLABLE bool isSpikingSynapsesSpikeQueueDevice(
-    AllSpikingSynapsesDeviceProperties *allEdgesDevice, BGSIZE iEdg) {
+    AllSpikingSynapsesDeviceProperties *allEdgesDevice, const BGSIZE iEdg) {
   uint32_t &delayQueue = allEdgesDevice->delayQueue_[iEdg];
   int &delayIdx = allEdgesDevice->delayIndex_[iEdg];
-  int delayQueueLength = allEdgesDevice->delayQueueLength_[iEdg];
+  int &delayQueueLength = allEdgesDevice->delayQueueLength_[iEdg];
 
   uint32_t delayMask = (0x1 << delayIdx);
   bool isFired = delayQueue & (delayMask);

@@ -144,8 +144,10 @@
 
 
     <RecorderParams class="XmlSTDPRecorder" name="RecorderParams">
-      <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_10000.xml</probedNListFileName>
-      <resultFileName name="resultFileName">Output/Results/test-SB-stdp-100x100.xml</resultFileName>
-   </RecorderParams>
+      <RecorderFiles name="RecorderFiles">
+        <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_10000.xml</probedNListFileName>
+        <resultFileName name="resultFileName">Output/Results/GPU-out-GPUSerial-test-SB-stdp-100x100-out.xml</resultFileName>
+      </RecorderFiles>
+    </RecorderParams>
   </ModelParams>
 </BGSimParams>
