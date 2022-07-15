@@ -1,8 +1,8 @@
 /**
  * @file BGTypes.h
  *
- * @brief Used to define uniform data type sizes based for all operating systems. Also used to test the speed of
- * simulation based on the data types.
+ * @brief Used to define uniform data type sizes based for all operating
+ * systems. Also used to test the speed of simulation based on the data types.
  *
  * @ingroup Simulator/Utils
  *
@@ -46,8 +46,8 @@ typedef unsigned int uint32_t;
 typedef signed int int32_t;
 
 #elif defined _WIN32 || defined _WIN64
-typedef unsigned __int32 uint32_t;		// included in inttypes.h, which is not 
-                                        // available in WIN32
+typedef unsigned __int32 uint32_t; // included in inttypes.h, which is not
+                                   // available in WIN32
 typedef signed __int32 int32_t;
 typedef unsigned long long int uint64_t;
 
@@ -66,9 +66,8 @@ typedef unsigned long long int uint64_t;
 #define BGSIZE uint32_t
 //#define BGSIZE uint64_t
 
-
 #ifdef __CUDACC__
 #define CUDA_CALLABLE __device__ __host__
 #else
 #define CUDA_CALLABLE
-#endif 
+#endif
