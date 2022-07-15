@@ -19,9 +19,10 @@ using namespace std;
 #if defined(__CUDACC__)
 
 extern CUDA_CALLABLE enumClassSynapses classSynapses_d;
-extern CUDA_CALLABLE int edgSign( edgeType t );
-extern CUDA_CALLABLE void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties* allEdgesDevice, const BGSIZE iEdg, const uint64_t simulationStep, const BGFLOAT deltaT);
-
+extern CUDA_CALLABLE int edgSign(edgeType t);
+extern CUDA_CALLABLE void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties *allEdgesDevice,
+                                                   const BGSIZE iEdg, const uint64_t simulationStep,
+                                                   const BGFLOAT deltaT);
 
 
 /// Adjust the strength of the synapse or remove it from the synapse map if it has gone below

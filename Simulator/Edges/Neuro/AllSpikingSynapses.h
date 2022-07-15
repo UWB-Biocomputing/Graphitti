@@ -33,7 +33,6 @@ typedef void (*fpPreSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDevicePr
 typedef void (*fpPostSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
 
 
-
 class AllSpikingSynapses : public AllNeuroEdges {
 public:
    AllSpikingSynapses();
@@ -298,13 +297,17 @@ protected:
 
 #if defined(USE_GPU)
 
-CUDA_CALLABLE bool isSpikingSynapsesSpikeQueueDevice(AllSpikingSynapsesDeviceProperties* allEdgesDevice, BGSIZE iEdg);
-CUDA_CALLABLE void changeSpikingSynapsesPSRDevice(AllSpikingSynapsesDeviceProperties* allEdgesDevice, const BGSIZE iEdg, const uint64_t simulationStep, const BGFLOAT deltaT);
+CUDA_CALLABLE bool
+   isSpikingSynapsesSpikeQueueDevice(AllSpikingSynapsesDeviceProperties *allEdgesDevice,
+                                     BGSIZE iEdg);
+CUDA_CALLABLE void
+   changeSpikingSynapsesPSRDevice(AllSpikingSynapsesDeviceProperties *allEdgesDevice,
+                                  const BGSIZE iEdg, const uint64_t simulationStep,
+                                  const BGFLOAT deltaT);
 
-struct AllSpikingSynapsesDeviceProperties : public AllEdgesDeviceProperties
-{
-        ///  The decay for the psr.
-        BGFLOAT *decay_;
+struct AllSpikingSynapsesDeviceProperties : public AllEdgesDeviceProperties {
+   ///  The decay for the psr.
+   BGFLOAT *decay_;
 
    ///  The synaptic time constant \f$\tau\f$ [units=sec; range=(0,100)].
    BGFLOAT *tau_;

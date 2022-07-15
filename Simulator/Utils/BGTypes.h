@@ -71,4 +71,4 @@ typedef unsigned long long int uint64_t;
    #define CUDA_CALLABLE __device__ __host__
 #else
    #define CUDA_CALLABLE
-#endif 
+#endif
