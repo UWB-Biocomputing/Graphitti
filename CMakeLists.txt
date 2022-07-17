@@ -260,6 +260,11 @@ if(ENABLE_CUDA)
         set_property(TARGET Core PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Connections PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET RNG PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        # set_property(TARGET Edges PROPERTY CMAKE_INTERPROCEDURAL_OPTIMIZATION  ON)
+        # set_property(TARGET Vertices PROPERTY CMAKE_INTERPROCEDURAL_OPTIMIZATION  ON)
+        # set_property(TARGET Core PROPERTY CMAKE_INTERPROCEDURAL_OPTIMIZATION  ON)
+        # set_property(TARGET Connections PROPERTY CMAKE_INTERPROCEDURAL_OPTIMIZATION  ON)
+        # set_property(TARGET RNG PROPERTY CMAKE_INTERPROCEDURAL_OPTIMIZATION  ON)
 endif()
 
 # Link all libraries created in the project's subdirectories into a combined library.
