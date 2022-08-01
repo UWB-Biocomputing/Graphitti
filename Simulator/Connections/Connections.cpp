@@ -27,7 +27,7 @@ Connections::Connections()
    // Create Edges/Synapses class using type definition in configuration file
    string type;
    ParameterManager::getInstance().getStringByXpath("//EdgesParams/@class", type);
-   edges_ = EdgesFactory::getInstance()->createEdges(type);
+   edges_ = EdgesFactory::getInstance().createEdges(type);
 
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&Connections::printParameters, this);

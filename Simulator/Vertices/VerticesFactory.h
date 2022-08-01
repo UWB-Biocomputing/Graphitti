@@ -20,10 +20,10 @@ class VerticesFactory {
 public:
    ~VerticesFactory();
 
-   static VerticesFactory *getInstance()
+   static VerticesFactory &getInstance()
    {
       static VerticesFactory instance;
-      return &instance;
+      return instance;
    }
 
    // Invokes constructor for desired concrete class

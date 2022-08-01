@@ -30,15 +30,15 @@ Model::Model()
 
    // Create Layout class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//LayoutParams/@class", type);
-   layout_ = LayoutFactory::getInstance()->createLayout(type);
+   layout_ = LayoutFactory::getInstance().createLayout(type);
 
    // Create Connections class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//ConnectionsParams/@class", type);
-   connections_ = ConnectionsFactory::getInstance()->createConnections(type);
+   connections_ = ConnectionsFactory::getInstance().createConnections(type);
 
    // Create Recorder class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
-   recorder_ = RecorderFactory::getInstance()->createRecorder(type);
+   recorder_ = RecorderFactory::getInstance().createRecorder(type);
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));

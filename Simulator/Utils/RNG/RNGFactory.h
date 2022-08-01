@@ -20,10 +20,10 @@ class RNGFactory {
 public:
    ~RNGFactory();
 
-   static RNGFactory *getInstance()
+   static RNGFactory &getInstance()
    {
       static RNGFactory instance;
-      return &instance;
+      return instance;
    }
 
    // Invokes constructor for desired concrete class

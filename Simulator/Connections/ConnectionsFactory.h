@@ -20,10 +20,10 @@ class ConnectionsFactory {
 public:
    ~ConnectionsFactory();
 
-   static ConnectionsFactory *getInstance()
+   static ConnectionsFactory &getInstance()
    {
       static ConnectionsFactory instance;
-      return &instance;
+      return instance;
    }
 
    /// Invokes constructor for desired concrete class

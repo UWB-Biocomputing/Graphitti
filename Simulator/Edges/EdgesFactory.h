@@ -20,10 +20,10 @@ class EdgesFactory {
 public:
    ~EdgesFactory();
 
-   static EdgesFactory *getInstance()
+   static EdgesFactory &getInstance()
    {
       static EdgesFactory instance;
-      return &instance;
+      return instance;
    }
 
    // Invokes constructor for desired concrete class

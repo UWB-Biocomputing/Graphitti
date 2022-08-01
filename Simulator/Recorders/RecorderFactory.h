@@ -20,10 +20,10 @@ class RecorderFactory {
 public:
    ~RecorderFactory();
 
-   static RecorderFactory *getInstance()
+   static RecorderFactory &getInstance()
    {
       static RecorderFactory instance;
-      return &instance;
+      return instance;
    }
 
    // Invokes constructor for desired concrete class

@@ -20,10 +20,10 @@ class LayoutFactory {
 public:
    ~LayoutFactory();
 
-   static LayoutFactory *getInstance()
+   static LayoutFactory &getInstance()
    {
       static LayoutFactory instance;
-      return &instance;
+      return instance;
    }
 
    // Invokes constructor for desired concrete class

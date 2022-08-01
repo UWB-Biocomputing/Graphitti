@@ -1,0 +1,41 @@
+/**
+ * @file RNGFactoryTests.cpp
+ *
+ * @brief This file contains unit tests for the RNGFactory using GTest.
+ * 
+ * @ingroup Testing/Core
+ * 
+ * We test that the RNGFactory returns an instance of the correct class
+ * we are requesting.
+ */
+
+#include "RNGFactory.h"
+#include "MTRand.h"
+#include "Norm.h"
+#include "gtest/gtest.h"
+
+TEST(RNGFactory, GetInstanceReturnsInstance)
+{
+    RNGFactory *rngFactory = &RNGFactory::getInstance();
+    ASSERT_NE(nullptr, rngFactory);
+}
+
+TEST(RNGFactory, CreateMTRandInstance)
+{
+    shared_ptr<MTRand> rng = RNGFactory::getInstance().createRNG("MTRand");
+    ASSERT_NE(nullptr, rng);
+    ASSERT_NE(nullptr, dynamic_cast<MTRand *>(rng.get()));
+}
+
+TEST(RNGFactory, CreateNormInstance)
+{
+    shared_ptr<MTRand> rng = RNGFactory::getInstance().createRNG("Norm");
+    ASSERT_NE(nullptr, rng);
+    ASSERT_NE(nullptr, dynamic_cast<Norm *>(rng.get()));
+}
+
+TEST(RNGFactory, CreateNonExistentClassReturnsNullPtr)
+{
+    shared_ptr<MTRand> rng = RNGFactory::getInstance().createRNG("NonExistent");
+    ASSERT_EQ(nullptr, rng);
+}
