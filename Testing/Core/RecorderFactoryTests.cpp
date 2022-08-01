@@ -9,8 +9,8 @@
  * we are requesting.
  */
 
-#include "RecorderFactory.h"
 #include "Hdf5GrowthRecorder.h"
+#include "RecorderFactory.h"
 #include "Xml911Recorder.h"
 #include "XmlGrowthRecorder.h"
 #include "XmlSTDPRecorder.h"
@@ -18,48 +18,46 @@
 
 TEST(RecorderFactory, GetInstanceReturnsInstance)
 {
-    RecorderFactory *recorderFactory = &RecorderFactory::getInstance();
-    ASSERT_NE(nullptr, recorderFactory);
+   RecorderFactory *recorderFactory = &RecorderFactory::getInstance();
+   ASSERT_NE(nullptr, recorderFactory);
 }
 
 TEST(RecorderFactory, CreateXml911RecorderInstance)
 {
-    shared_ptr<IRecorder> recorder =
-            RecorderFactory::getInstance().createRecorder("Xml911Recorder");
-    ASSERT_NE(nullptr, recorder);
-    ASSERT_NE(nullptr, dynamic_cast<Xml911Recorder *>(recorder.get()));
+   shared_ptr<IRecorder> recorder = RecorderFactory::getInstance().createRecorder("Xml911Recorder");
+   ASSERT_NE(nullptr, recorder);
+   ASSERT_NE(nullptr, dynamic_cast<Xml911Recorder *>(recorder.get()));
 }
 
 TEST(RecorderFactory, CreateXmlGrowthRecorderInstance)
 {
-    shared_ptr<IRecorder> recorder =
-            RecorderFactory::getInstance().createRecorder("XmlGrowthRecorder");
-    ASSERT_NE(nullptr, recorder);
-    ASSERT_NE(nullptr, dynamic_cast<XmlGrowthRecorder *>(recorder.get()));
+   shared_ptr<IRecorder> recorder
+      = RecorderFactory::getInstance().createRecorder("XmlGrowthRecorder");
+   ASSERT_NE(nullptr, recorder);
+   ASSERT_NE(nullptr, dynamic_cast<XmlGrowthRecorder *>(recorder.get()));
 }
 
 TEST(RecorderFactory, CreateXmlSTDPRecorderInstance)
 {
-    shared_ptr<IRecorder> recorder =
-            RecorderFactory::getInstance().createRecorder("XmlSTDPRecorder");
-    ASSERT_NE(nullptr, recorder);
-    ASSERT_NE(nullptr, dynamic_cast<XmlSTDPRecorder *>(recorder.get()));
+   shared_ptr<IRecorder> recorder
+      = RecorderFactory::getInstance().createRecorder("XmlSTDPRecorder");
+   ASSERT_NE(nullptr, recorder);
+   ASSERT_NE(nullptr, dynamic_cast<XmlSTDPRecorder *>(recorder.get()));
 }
 
 TEST(RecorderFactory, CreateNonExistentClassReturnsNullPtr)
 {
-    shared_ptr<IRecorder> recorder =
-            RecorderFactory::getInstance().createRecorder("NonExistent");
-    ASSERT_EQ(nullptr, recorder);
+   shared_ptr<IRecorder> recorder = RecorderFactory::getInstance().createRecorder("NonExistent");
+   ASSERT_EQ(nullptr, recorder);
 }
 
 #if defined(HDF5)
 // This test is only possible if HDF5 compilation is available and enabled
 TEST(RecorderFactory, CreateHdf5GrowthRecorderInstance)
 {
-    shared_ptr<IRecorder> recorder =
-            RecorderFactory::getInstance().createRecorder("Hdf5GrowthRecorder");
-    ASSERT_NE(nullptr, recorder);
-    ASSERT_NE(nullptr, dynamic_cast<Hdf5GrowthRecorder *>(recorder.get()));
+   shared_ptr<IRecorder> recorder
+      = RecorderFactory::getInstance().createRecorder("Hdf5GrowthRecorder");
+   ASSERT_NE(nullptr, recorder);
+   ASSERT_NE(nullptr, dynamic_cast<Hdf5GrowthRecorder *>(recorder.get()));
 }
 #endif
