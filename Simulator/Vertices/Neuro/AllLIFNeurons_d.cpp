@@ -7,7 +7,8 @@
  */
 
 #include "AllLIFNeurons.h"
-#include "AllVerticesDeviceFuncs.h"
+// #include "AllVerticesDeviceFuncs.h"
+#include "AllSynapsesDeviceFuncs.h"
 
 #include "Book.h"
 

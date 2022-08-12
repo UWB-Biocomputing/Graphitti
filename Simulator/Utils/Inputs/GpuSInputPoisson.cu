@@ -10,6 +10,14 @@
 #include "GpuSInputPoisson.h"
 #include "Book.h"
 
+
+
+__global__ void
+initSynapsesDevice(int n, AllDSSynapsesDeviceProperties *allEdgesDevice,
+                   BGFLOAT *pSummationMap, const BGFLOAT deltaT,
+                   BGFLOAT weight);
+
+
 /// Memory to save global state for curand.
 curandState* devStates_d;
 
@@ -233,3 +241,30 @@ __global__ void setupSeeds( int n, curandState* devStates_d, unsigned long seed 
 
     curand_init( seed, idx, 0, &devStates_d[idx] );
 } 
+
+/// Adds a synapse to the network.  Requires the locations of the source and
+/// destination neurons.
+///
+/// @param allEdgesDevice      Pointer to the Synapse structures in device
+/// memory.
+/// @param pSummationMap          Pointer to the summation point.
+/// @param deltaT                 The simulation time step size.
+/// @param weight                 Synapse weight.
+__global__ void
+initSynapsesDevice(int n, AllDSSynapsesDeviceProperties *allEdgesDevice,
+                   BGFLOAT *pSummationMap, const BGFLOAT deltaT,
+                   BGFLOAT weight) {
+  int idx = blockIdx.x * blockDim.x + threadIdx.x;
+  if (idx >= n)
+    return;
+
+  // create a synapse
+  int neuronIndex = idx;
+  BGFLOAT *sumPoint = &(pSummationMap[neuronIndex]);
+  edgeType type = allEdgesDevice->type_[neuronIndex];
+  createDSSynapse(allEdgesDevice, neuronIndex, 0, 0, neuronIndex, sumPoint,
+                  deltaT, type);
+  allEdgesDevice->W_[neuronIndex] =
+      weight * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
+}
+///@}

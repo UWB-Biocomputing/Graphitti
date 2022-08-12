@@ -12,6 +12,11 @@
 #include "GPUModel.h"
 #include "Simulator.h"
 
+
+
+
+
+
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
 ///
@@ -407,3 +412,42 @@ void AllDSSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const {
     FPrint = nullptr;
   }
 }
+
+
+
+
+///  Update PSR (post synapse response)
+///
+///  @param  allEdgesDevice  GPU address of the AllDSSynapsesDeviceProperties
+///  struct
+///                             on device memory.
+///  @param  iEdg               Index of the synapse to set.
+///  @param  simulationStep     The current simulation step.
+///  @param  deltaT             Inner simulation step duration.
+CUDA_CALLABLE void
+changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties *allEdgesDevice,
+                         const BGSIZE iEdg, const uint64_t simulationStep,
+                         const BGFLOAT deltaT) {
+  // assert( iEdg < allEdgesDevice->maxEdgesPerVertex *
+  // allEdgesDevice->countVertices_ );
+
+  uint64_t &lastSpike = allEdgesDevice->lastSpike_[iEdg];
+  BGFLOAT &r = allEdgesDevice->r_[iEdg];
+  BGFLOAT &u = allEdgesDevice->u_[iEdg];
+  BGFLOAT D = allEdgesDevice->D_[iEdg];
+  BGFLOAT F = allEdgesDevice->F_[iEdg];
+  BGFLOAT U = allEdgesDevice->U_[iEdg];
+  BGFLOAT W = allEdgesDevice->W_[iEdg];
+  BGFLOAT &psr = allEdgesDevice->psr_[iEdg];
+  BGFLOAT decay = allEdgesDevice->decay_[iEdg];
+
+  // adjust synapse parameters
+  if (lastSpike != ULONG_MAX) {
+    BGFLOAT isi = (simulationStep - lastSpike) * deltaT;
+    r = 1 + (r * (1 - u) - 1) * exp(-isi / D);
+    u = U + u * (1 - U) * exp(-isi / F);
+  }
+  psr += ((W / decay) * u * r); // calculate psr
+  lastSpike = simulationStep;   // record the time of the spike
+}
+

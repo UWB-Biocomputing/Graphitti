@@ -25,6 +25,7 @@
 
 #include "Global.h"
 #include "AllSpikingNeurons.h"
+#include "AllSTDPSynapses.h"
 
 struct AllIFNeuronsDeviceProperties;
 
@@ -252,6 +253,14 @@ private:
 };
 
 #if defined(USE_GPU)
+CUDA_CALLABLE void
+postSTDPSynapseSpikeHitDevice(const BGSIZE iEdg,
+                              AllSTDPSynapsesDeviceProperties *allEdgesDevice);
+CUDA_CALLABLE void postSpikingSynapsesSpikeHitDevice(
+    const BGSIZE iEdg, AllSpikingSynapsesDeviceProperties *allEdgesDevice);
+
+CUDA_CALLABLE void preSpikingSynapsesSpikeHitDevice(
+    const BGSIZE iEdg, AllSpikingSynapsesDeviceProperties *allEdgesDevice);
 struct AllIFNeuronsDeviceProperties : public AllSpikingNeuronsDeviceProperties
 {
         ///  The length of the absolute refractory period. [units=sec; range=(0,1);]

@@ -11,6 +11,10 @@
 #include "AllSynapsesDeviceFuncs.h"
 #include "Book.h"
 #include <vector>
+#include "AllDSSynapses.h"
+
+
+
 
 ///  CUDA code for advancing spiking synapses.
 ///  Perform updating synapses for one time step.
@@ -625,5 +629,8 @@ CUDA_CALLABLE void changeSpikingSynapsesPSRDevice(
 
   psr += (W / decay); // calculate psr
 }
+
+
+
 
 ////#endif

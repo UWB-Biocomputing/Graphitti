@@ -75,7 +75,7 @@
 
 #include "Global.h"
 #include "AllIFNeurons.h"
-#include "AllSpikingSynapses.h"
+// #include "AllSpikingSynapses.h"
 
 
 // Class to hold all data necessary for all the Neurons.

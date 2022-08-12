@@ -34,6 +34,8 @@ __global__ void advanceSTDPSynapsesDevice(
     AllSTDPSynapsesDeviceProperties *allEdgesDevice,
     AllSpikingNeuronsDeviceProperties *allVerticesDevice, int maxSpikes);
 
+
+
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
 ///
@@ -776,4 +778,27 @@ __global__ void advanceSTDPSynapsesDevice(
   }
   // decay the post spike response
   psr *= decay;
+}
+
+
+/******************************************
+ * @name Device Functions for utility
+ ******************************************/
+///@{
+
+/// Return 1 if originating neuron is excitatory, -1 otherwise.
+///
+/// @param[in] t  edgeType I to I, I to E, E to I, or E to E
+/// @return 1 or -1
+CUDA_CALLABLE int edgSign(edgeType t) {
+  switch (t) {
+  case II:
+  case IE:
+    return -1;
+  case EI:
+  case EE:
+    return 1;
+  }
+
+  return 0;
 }

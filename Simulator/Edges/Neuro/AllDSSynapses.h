@@ -240,5 +240,11 @@ struct AllDSSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperties
         ///  The time constant of the facilitation of the dynamic synapse [range=(0,10); units=sec].
         BGFLOAT *F_;
 };
+
+
+CUDA_CALLABLE void
+changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties *allEdgesDevice,
+                         const BGSIZE iEdg, const uint64_t simulationStep,
+                         const BGFLOAT deltaT);
 #endif // defined(USE_GPU)
 

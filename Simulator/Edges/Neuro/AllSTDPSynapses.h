@@ -379,6 +379,7 @@ CUDA_CALLABLE bool isSTDPSynapseSpikeQueuePostDevice(
 CUDA_CALLABLE uint64_t getSTDPSynapseSpikeHistoryDevice(
     AllSpikingNeuronsDeviceProperties *allVerticesDevice, int index,
     int offIndex, int maxSpikes);
+CUDA_CALLABLE int edgSign(edgeType t);
 
 struct AllSTDPSynapsesDeviceProperties
     : public AllSpikingSynapsesDeviceProperties {
