@@ -53,6 +53,7 @@
 extern int g_debug_mask;
 
    #include <cassert>
+   #include <memory>
    #include <sstream>
    #ifdef _WIN32   //needs to be before #include "bgtypes.h" or the #define BGFLOAT will cause problems
       #include <windows.h>                 //warning! windows.h also defines BGFLOAT
@@ -64,7 +65,6 @@ typedef unsigned long long int uint64_t;   //included in inttypes.h, which is no
    //#include "Norm.h"
    #include "Coordinate.h"
    #include "VectorMatrix.h"
-   #include "memory"
 
 using namespace std;
 
