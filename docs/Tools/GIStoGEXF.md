@@ -8,9 +8,9 @@ To represent geographic call data, the script creates a grid of squares that are
 
 Because this script will be reused for different purposes, efficiency was sacrificed to increase readability.
 Python is a language that can be difficult to read and understand, luckily the main dependencies for this script all have excelent documentation which can be found here
-	*[GeoPandas](https://geopandas.org/en/stable/docs.html)
-	*[Pandas](https://pandas.pydata.org/docs/reference/index.html)
-	*[NetworkX](https://networkx.org/documentation/latest/reference/index.html)
+   *[GeoPandas](https://geopandas.org/en/stable/docs.html)
+   *[Pandas](https://pandas.pydata.org/docs/reference/index.html)
+   *[NetworkX](https://networkx.org/documentation/latest/reference/index.html)
 ## Nodes
    * PSAP(Public Answering Service Points) just contain the Display Name for the PSAP
 
@@ -26,6 +26,7 @@ If there are different requirements in the future, the parameters can be adjuste
 The script produces a `.gexf` file that represents the graph that is stored in the `GEXF Files` directory. The name of this file can be changed by changing the `out_file_name` variable in the script.
 
 More information on the GEXF file standard can be found [here](https://gexf.net/primer.html)
+
 ##Installing GeoPandas
 GeoPandas is the main dependency for this project, as all of the GIS data is stored in GeoPandas data structures. 
 It has several dependencies itself, and the installation guide can be found [here](https://geopandas.org/en/stable/getting_started/install.html#dependencies)
