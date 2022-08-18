@@ -57,6 +57,10 @@
 
 Here are some [recommended resources](Resources.md) to browse
 
+## Tools
+
+Here is documentation on the [GIS to GEXF](Tools/GIStoGEXF.md) tool
+
 ## Code of Conduct
 
 Our [code of conduct](../CODE_OF_CONDUCT.md)
