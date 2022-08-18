@@ -8,9 +8,9 @@ To represent geographic call data, the script creates a grid of squares that are
 
 Because this script will be reused for different purposes, efficiency was sacrificed to increase readability.
 Python is a language that can be difficult to read and understand, luckily the main dependencies for this script all have excelent documentation which can be found here
-   *[GeoPandas](https://geopandas.org/en/stable/docs.html)
-   *[Pandas](https://pandas.pydata.org/docs/reference/index.html)
-   *[NetworkX](https://networkx.org/documentation/latest/reference/index.html)
+   * [GeoPandas](https://geopandas.org/en/stable/docs.html)
+   * [Pandas](https://pandas.pydata.org/docs/reference/index.html)
+   * [NetworkX](https://networkx.org/documentation/latest/reference/index.html)
 ## Nodes
    * PSAP(Public Answering Service Points) just contain the Display Name for the PSAP
 
@@ -26,8 +26,7 @@ If there are different requirements in the future, the parameters can be adjuste
 The script produces a `.gexf` file that represents the graph that is stored in the `GEXF Files` directory. The name of this file can be changed by changing the `out_file_name` variable in the script.
 
 More information on the GEXF file standard can be found [here](https://gexf.net/primer.html)
-
-##Installing GeoPandas
+## Installing GeoPandas
 GeoPandas is the main dependency for this project, as all of the GIS data is stored in GeoPandas data structures. 
 It has several dependencies itself, and the installation guide can be found [here](https://geopandas.org/en/stable/getting_started/install.html#dependencies)
 There are several ways to install GeoPandas and it's dependencies, but the easiest method seems to be using the conda package manager found in the Anaconda Distribution of Python.
@@ -37,7 +36,7 @@ I recommend downloading Anaconda [here](https://www.anaconda.com/products/distri
 This will install a suite of packages that includes all of the dependencies for this script. 
 
 There are other methods outlined in the GeoPandas Installation guide, but the method described above was the easiest and most straightforward.
-##Massaging Data
+## Massaging Data
 This script is currently configured to read in GIS data provided by Washington State, and create a graph representing only King County. 
 The data we received from the state was formatted for ArcGIS, which is a paid commercial GIS software that saves GIS information in a way that cannot be read by GeoPandas. 
 In order to get the data into a readable form, I had to drop the `.gdb` file from the state into a free GIS software called QGIS by opening a new project and dragging and dropping the data in.
