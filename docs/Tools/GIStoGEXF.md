@@ -38,6 +38,7 @@ This will install a suite of packages that includes all of the dependencies for 
 There are other methods outlined in the GeoPandas Installation guide, but the method described above was the easiest and most straightforward.
 ## Massaging Data
 This script is currently configured to read in GIS data provided by Washington State, and create a graph representing only King County. 
+
 The data we received from the state was formatted for ArcGIS, which is a paid commercial GIS software that saves GIS information in a way that cannot be read by GeoPandas. 
 In order to get the data into a readable form, I had to drop the `.gdb` file from the state into a free GIS software called QGIS by opening a new project and dragging and dropping the data in.
 Once the data was in QGIS, I exported the relevant layers as `.gpkg` files, making sure to select the "Replace all selected raw field values by displayed values" box to avoid formatting issues.
