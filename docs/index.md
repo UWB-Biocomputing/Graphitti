@@ -59,7 +59,7 @@ Here are some [recommended resources](Resources.md) to browse
 
 ## Tools
 
-Here is documentation on the [GIS to GEXF](Tools/GIStoGEXF.md) tool
+Here is documentation on the [GIS to GEXF](Tools/GIStoGEXF.md) tool. This tool reads in Geographic Information Systems data, constructs a graph based on that data, and produces a GEXF formatted XML file that we can then pass into the Emergency Services Communication Systems simulation.
 
 ## Code of Conduct
 
