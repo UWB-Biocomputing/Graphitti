@@ -20,7 +20,7 @@ Python is a language that can be difficult to read and understand, luckily the m
 ## File Input/Output
 GeoPandas can read several different GIS file formats. `.shp` and `.gpkg` are two of the most common file formats. 
 
-The script is currently looking for fice different layers, PSAP Layer, Law Layer, EMS Layer, Fire Layer, and Provisioning Layer. These layers should be placed in the `GIS Data/Layers/` directory in the GIStoGEXF directory. 
+The script is currently looking for five different layers, PSAP Layer, Law Layer, EMS Layer, Fire Layer, and Provisioning Layer. These layers should be placed in the `GIS Data/Layers/` directory in the GIStoGEXF directory. 
 If there are different requirements in the future, the parameters can be adjusted in the `gpd.read_file()` functions in the script. 
 
 The script produces a `.gexf` file that represents the graph that is stored in the `GEXF Files` directory. The name of this file can be changed by changing the `out_file_name` variable in the script.
