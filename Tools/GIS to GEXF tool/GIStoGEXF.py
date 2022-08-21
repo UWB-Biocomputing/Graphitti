@@ -15,6 +15,8 @@ def main():
     # initialize graph
     G = nx.Graph()
 
+    region_string = []  # stores the strings of squares that will be set as caller region attributes
+
     out_file_name = "King County NG911"
 
     square_counter = 0
@@ -43,29 +45,25 @@ def main():
 
     # Some of the data from the state had messed up psap names. This line fixes them so they can be consolidated
     kc_psap.loc[[265, 262, 185], 'DsplayName'] = "King County Sheriff's Office - Marine Patrol"
-    d_names = np.unique(kc_psap.get("DsplayName").values) # all unique dsplaynames from psaps
-
-    region_string = [] # stores the strings of squares that will be set as caller region attributes
 
     names = [] # 2 empty lists for storing names and polygons for merging psaps together
     polys = []
 
-    # Loops through the unique names, and merges the polygons of psaps with shared names, saving in two lists
-    for n in range(d_names.size):
-        polygons = []
-        for m in range(kc_psap.shape[0]):
-            if(kc_psap.iloc[m].DsplayName == d_names[n]):
-                geo = kc_psap.iloc[m].geometry
-                polygons.append(geo)
-        new_poly = unary_union(polygons)
-        polys.append(new_poly)
-        names.append(d_names[n])
+    # Loops through and finds all unique names, as well as sorting all the polygons that make up those regions
+    for n in range(kc_psap.shape[0]):
+        if (kc_psap.iloc[n].DsplayName) in names:
+            polys[names.index(kc_psap.iloc[n].DsplayName)].append(kc_psap.iloc[n].geometry)
+        else:
+            names.append(kc_psap.iloc[n].DsplayName)
+            polys.append([kc_psap.iloc[n].geometry])
 
-    # Create a dictionary from the two lists, to be turned into a new GeoDataFrame
-    d = {'DisplayName': names, 'geometry': polys}
+    # Takes the lists of polygons, and merges them into new polygons for the creation of the merged_kc_psap GeoDataFrame
+    merged_polys = []
+    for m in range(len(polys)):
+        merged_polys.append(unary_union(polys[m]))
 
-    # Create a new GeoDataFrame with the dictionary from earlier
-    merged_kc_psap = gpd.GeoDataFrame(d, crs=kc_psap.crs)
+    # Create a new GeoDataFrame with the unique names and merged geometries
+    merged_kc_psap = gpd.GeoDataFrame({'DisplayName': names, 'geometry': merged_polys}, crs=kc_psap.crs)
 
     # Find the area of the smallest merged psap, use that to determine the square size
     areas = merged_kc_psap.area
@@ -83,6 +81,7 @@ def main():
     grid = gpd.GeoDataFrame({'geometry': squares}, crs=kc_psap.crs)
 
     # show resulting maps
+    # merged_kc_psap.plot()
     # kc_ems.plot()
     # kc_psap.plot()
     # kc_law.plot()
