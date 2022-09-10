@@ -17,16 +17,16 @@ def main():
 
     region_string = []  # stores the strings of squares that will be set as caller region attributes
 
-    out_file_name = "King County NG911"
+    out_file_name = "King_county_NG911"
 
     square_counter = 0
 
     # read in GIS layer data
-    psap_layer = gpd.read_file("GIS Data/Layers/PSAP layer.gpkg")
-    ems_layer = gpd.read_file("GIS Data/Layers/EMS layer.gpkg")
-    law_layer = gpd.read_file("GIS Data/Layers/Law Layer.gpkg")
-    fire_layer = gpd.read_file("GIS Data/Layers/Fire Layer.gpkg")
-    provisioning_layer = gpd.read_file("GIS Data/Layers/Provisioning layer.gpkg")
+    psap_layer = gpd.read_file("GIS_data/Layers/PSAP_layer.gpkg")
+    ems_layer = gpd.read_file("GIS_data/Layers/EMS_layer.gpkg")
+    law_layer = gpd.read_file("GIS_data/Layers/Law_layer.gpkg")
+    fire_layer = gpd.read_file("GIS_data/Layers/Fire_layer.gpkg")
+    provisioning_layer = gpd.read_file("GIS_data/Layers/Provisioning_layer.gpkg")
 
     # create series of boolean values denoting whether geometry is within King County
     psap_within_kc = psap_layer.within(provisioning_layer.iloc[21].geometry)
@@ -192,7 +192,8 @@ def main():
     print("Number of nodes in graph:", G.number_of_nodes())
     print("Number of edges in graph:", G.number_of_edges())
     print("Number of square in grid: ", square_counter)
-    nx.write_gexf(G, "GEXF Files/" + out_file_name + ".gexf")
+    nx.write_gexf(G, "graph_files/" + out_file_name + ".gexf")
+    nx.write_graphml(G, "graph_files/" + out_file_name + ".graphml")
 
 
 if __name__ == '__main__':
