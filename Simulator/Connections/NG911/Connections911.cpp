@@ -11,6 +11,8 @@
 #include "All911Vertices.h"
 #include "Layout911.h"
 #include "ParameterManager.h"
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graphml.hpp>
 
 Connections911::Connections911()
 {
@@ -24,58 +26,59 @@ Connections911::~Connections911()
 
 void Connections911::setupConnections(Layout *layout, AllVertices *vertices, AllEdges *edges)
 {
-   int numVertices = Simulator::getInstance().getTotalVertices();
-
    int added = 0;
-
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
 
-   Layout911 *layout911 = dynamic_cast<Layout911 *>(layout);
+   // Struct for reading graphml vertex attributes
+   struct VertexProperty
+   {
+      int id;
+      std::string type;
+   };
+   // typedef for graphml graph type (adjacency list)
+   typedef boost::adjacency_list<boost::vecS, boost::vecS,
+      boost::undirectedS, VertexProperty, boost::no_property> Graph;
 
-   // For each source vertex
-   for (int srcVertex = 0; srcVertex < numVertices; srcVertex++) {
-      int connsAdded = 0;
+   Graph graph;
+   boost::dynamic_properties dp(boost::ignore_other_properties);
+   
+   // Register properties
+   dp.property("id", boost::get(&VertexProperty::id, graph));
+   dp.property("type", boost::get(&VertexProperty::type, graph));
 
-      // For each destination verex
-      for (int destVertex = 0; destVertex < numVertices; destVertex++) {
-         if (connsAdded >= connsPerVertex_) {
-            break;
-         }
-         if (srcVertex == destVertex) {
-            continue;
-         }
+   string graph_file_name;
+   if (!ParameterManager::getInstance().getStringByXpath("//graphmlFile/text()",
+                                                         graph_file_name)) {
+      throw runtime_error("In Connections911::setupConnections() "
+                          "graphml file wasn't found and won't be initialized");
+   };
 
-         BGFLOAT dist = (*layout->dist_)(srcVertex, destVertex);
-         edgeType type = layout->edgType(srcVertex, destVertex);
+   // Read graphml file
+   ifstream graph_file(graph_file_name.c_str());
+   if (!graph_file.is_open()) {
+      throw runtime_error("In Connections911::setupConnections() "
+                          "Loading graph file failed "
+                          "\n\tfile path: " + graph_file_name);
+   }
 
-         // Undefined edge types
-         if (type == ETYPE_UNDEF) {
-            continue;
-         }
+   boost::read_graphml(graph_file, graph, dp);
 
-         // Zone each vertex belongs to
-         int srcZone = layout911->zone(srcVertex);
-         int destZone = layout911->zone(destVertex);
+   // add all edges
+   boost::graph_traits<Graph>::edge_iterator ei, ei_end;
+   for (boost::tie(ei, ei_end) =  boost::edges(graph); ei != ei_end; ++ei) {
+      size_t srcV = boost::source(*ei, graph);
+      size_t destV = boost::target(*ei, graph);      
+      edgeType type = layout->edgType(srcV, destV);
+      BGFLOAT *sumPoint = &vertices->summationMap_[destV];
+      
+      BGFLOAT dist = (*layout->dist_)(srcV, destV);
+      LOG4CPLUS_DEBUG(fileLogger_,
+                      "Source: " << srcV << " Dest: " << destV << " Dist: " << dist);
 
-         // CP and PR where they aren't in the same zone
-         // All PP and RC are defined
-         if (type == CP || type == PR) {
-            if (srcZone != destZone) {
-               continue;
-            }
-         }
-
-         BGFLOAT *sumPoint = &vertices->summationMap_[destVertex];
-
-         LOG4CPLUS_DEBUG(fileLogger_,
-                         "Source: " << srcVertex << " Dest: " << destVertex << " Dist: " << dist);
-
-         BGSIZE iEdg;
-         edges->addEdge(iEdg, type, srcVertex, destVertex, sumPoint,
-                        Simulator::getInstance().getDeltaT());
-         added++;
-         connsAdded++;
-      }
+      BGSIZE iEdg;
+      edges->addEdge(iEdg, type, srcV, destV, sumPoint,
+                     Simulator::getInstance().getDeltaT());
+      added++;
    }
 
    LOG4CPLUS_DEBUG(fileLogger_, "Added connections: " << added);

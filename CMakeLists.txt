@@ -53,6 +53,9 @@ else()
         message("-- HDF5 library was not located. Please only use XML recorders.")
 endif()
 
+# Find boost graph library
+find_package(Boost REQUIRED COMPONENTS graph)
+
 # Get git commit ID
 # Change to "git rev-parse --short HEAD" for short commit ID
 execute_process(
@@ -288,7 +291,8 @@ target_link_libraries(combinedLib INTERFACE
         # ThirdParty
         TinyXPath
         log4cplus
-        paramcontainer)
+        paramcontainer
+        Boost::graph)
 
 # Link HDF5 package libaries if to the combined library.
 if (HDF5_FOUND)
