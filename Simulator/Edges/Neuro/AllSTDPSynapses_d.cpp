@@ -593,11 +593,19 @@ CUDA_CALLABLE bool
 CUDA_CALLABLE uint64_t getSTDPSynapseSpikeHistoryDevice(
    AllSpikingNeuronsDeviceProperties *allVerticesDevice, int index, int offIndex, int maxSpikes)
 {
-   // offIndex is a minus offset
-   int idxSp = (allVerticesDevice->spikeCount_[index] + allVerticesDevice->spikeCountOffset_[index]
-                + maxSpikes + offIndex)
-               % maxSpikes;
-   return allVerticesDevice->spikeHistory_[index][idxSp];
+   // // offIndex is a minus offset
+   // int idxSp = (allVerticesDevice->numEventsInEpoch_[index] + 
+   // allVerticesDevice->spikeCountOffset_[index] 
+   // + maxSpikes + offIndex)
+   //             % maxSpikes;
+   // return allVerticesDevice->spikeHistory_[index][idxSp];
+
+      int idxSp =   allVerticesDevice->queueEnd_[index] + offIndex;
+
+      if(idxSp < 0)
+         idxSp = idxSp + maxSpikes;
+
+      return allVerticesDevice->spikeHistory_[index][idxSp];
 }
 
 ///  CUDA code for advancing STDP synapses.

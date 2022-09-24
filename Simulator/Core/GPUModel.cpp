@@ -51,7 +51,7 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
    HANDLE_ERROR(cudaMalloc((void **)&randNoise_d, randNoise_d_size));
 
    // Copy host neuron and synapse arrays into GPU device
-   neurons->copyNeuronHostToDevice(*allVerticesDevice);
+   neurons->copyToDevice(*allVerticesDevice);
    synapses->copyEdgeHostToDevice(*allEdgesDevice);
 
    // Allocate synapse inverse map in device memory
@@ -68,7 +68,7 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
    shared_ptr<AllEdges> synapses = connections_->getEdges();
 
    // Copy device synapse and neuron structs to host memory
-   neurons->copyNeuronDeviceToHost(*allVerticesDevice);
+   neurons->copyFromDevice(*allVerticesDevice);
    // Deallocate device memory
    neurons->deleteNeuronDeviceStruct(*allVerticesDevice);
    // Copy device synapse and neuron structs to host memory
@@ -204,9 +204,9 @@ void GPUModel::updateConnections()
    shared_ptr<AllEdges> synapses = connections_->getEdges();
 
    dynamic_cast<AllSpikingNeurons *>(neurons.get())
-      ->copyNeuronDeviceSpikeCountsToHost(allVerticesDevice_);
-   dynamic_cast<AllSpikingNeurons *>(neurons.get())
-      ->copyNeuronDeviceSpikeHistoryToHost(allVerticesDevice_);
+      ->copyFromDevice(allVerticesDevice_);
+   // dynamic_cast<AllSpikingNeurons *>(neurons.get())
+   //    ->copyNeuronDeviceSpikeHistoryToHost(allVerticesDevice_);
 
    // Update Connections data
    if (connections_->updateConnections(*(neurons.get()), layout_.get())) {

@@ -22,7 +22,12 @@
 
 #pragma once
 #include "Global.h"
+
+class AllSpikingNeurons; 
+class AllIFNeurons;  // forward declaration 
 class EventBuffer {
+friend class  AllIFNeurons;
+friend class  AllSpikingNeurons;
 public:
    /// Create EventBuffer that is sized appropriately
    ///
@@ -120,4 +125,5 @@ private:
    /// Number of events in the current epoch. Note that this could be computed from epochStart_
    /// and queueEnd_, but the code to do that would be unobvious.
    int numEventsInEpoch_;
+
 };

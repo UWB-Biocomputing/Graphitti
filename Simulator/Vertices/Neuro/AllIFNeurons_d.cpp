@@ -52,8 +52,6 @@ void AllIFNeurons::allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDe
    HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.hasFired_, count * sizeof(bool)));
    HANDLE_ERROR(
       cudaMalloc((void **)&allVerticesDevice.numStepsInRefractoryPeriod_, count * sizeof(int)));
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.spikeCount_, count * sizeof(int)));
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.spikeCountOffset_, count * sizeof(int)));
    HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.summationMap_, count * sizeof(BGFLOAT)));
    HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.spikeHistory_, count * sizeof(uint64_t *)));
 
@@ -63,6 +61,13 @@ void AllIFNeurons::allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDe
    }
    HANDLE_ERROR(cudaMemcpy(allVerticesDevice.spikeHistory_, pSpikeHistory,
                            count * sizeof(uint64_t *), cudaMemcpyHostToDevice));
+
+
+//support to GPU event buffer 
+   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.queueFront_, count * sizeof(int)));     
+   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.queueEnd_, count * sizeof(int)));   
+   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.epochStart_, count * sizeof(int))); 
+   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.numEventsInEpoch_, count * sizeof(int)));               
 }
 
 ///  Delete GPU memories.
@@ -112,8 +117,6 @@ void AllIFNeurons::deleteDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesD
    HANDLE_ERROR(cudaFree(allVerticesDevice.Vthresh_));
    HANDLE_ERROR(cudaFree(allVerticesDevice.hasFired_));
    HANDLE_ERROR(cudaFree(allVerticesDevice.numStepsInRefractoryPeriod_));
-   HANDLE_ERROR(cudaFree(allVerticesDevice.spikeCount_));
-   HANDLE_ERROR(cudaFree(allVerticesDevice.spikeCountOffset_));
    HANDLE_ERROR(cudaFree(allVerticesDevice.summationMap_));
    HANDLE_ERROR(cudaFree(allVerticesDevice.spikeHistory_));
 }
@@ -121,168 +124,122 @@ void AllIFNeurons::deleteDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesD
 ///  Copy all neurons' data from host to device.
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
-void AllIFNeurons::copyNeuronHostToDevice(void *allVerticesDevice)
+void AllIFNeurons::copyToDevice(void *allVerticesDevice)
 {
+   int count = Simulator::getInstance().getTotalVertices();
    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
+   
 
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
                            sizeof(AllIFNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
-   copyHostToDevice(allVerticesDeviceProps);
-}
-
-///  Copy all neurons' data from host to device.
-///  (Helper function of copyNeuronHostToDevice)
-///
-///  @param  allVerticesDevice         GPU address of the AllIFNeuronsDeviceProperties struct.
-void AllIFNeurons::copyHostToDevice(AllIFNeuronsDeviceProperties &allVerticesDevice)
-{
-   int count = Simulator::getInstance().getTotalVertices();
 
    HANDLE_ERROR(
-      cudaMemcpy(allVerticesDevice.C1_, C1_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+      cudaMemcpy(allVerticesDeviceProps.C1_, C1_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
    HANDLE_ERROR(
-      cudaMemcpy(allVerticesDevice.C2_, C2_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+      cudaMemcpy(allVerticesDeviceProps.C2_, C2_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
    HANDLE_ERROR(
-      cudaMemcpy(allVerticesDevice.Cm_, Cm_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+      cudaMemcpy(allVerticesDeviceProps.Cm_, Cm_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
    HANDLE_ERROR(
-      cudaMemcpy(allVerticesDevice.I0_, I0_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.Iinject_, Iinject_, count * sizeof(BGFLOAT),
+      cudaMemcpy(allVerticesDeviceProps.I0_, I0_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Iinject_, Iinject_, count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.Inoise_, Inoise_, count * sizeof(BGFLOAT),
-                           cudaMemcpyHostToDevice));
-   HANDLE_ERROR(
-      cudaMemcpy(allVerticesDevice.Isyn_, Isyn_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(
-      cudaMemcpy(allVerticesDevice.Rm_, Rm_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(
-      cudaMemcpy(allVerticesDevice.Tau_, Tau_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.Trefract_, Trefract_, count * sizeof(BGFLOAT),
-                           cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.Vinit_, Vinit_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Inoise_, Inoise_, count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
    HANDLE_ERROR(
-      cudaMemcpy(allVerticesDevice.Vm_, Vm_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.Vreset_, Vreset_, count * sizeof(BGFLOAT),
+      cudaMemcpy(allVerticesDeviceProps.Isyn_, Isyn_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+   HANDLE_ERROR(
+      cudaMemcpy(allVerticesDeviceProps.Rm_, Rm_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+   HANDLE_ERROR(
+      cudaMemcpy(allVerticesDeviceProps.Tau_, Tau_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Trefract_, Trefract_, count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.Vrest_, Vrest_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Vinit_, Vinit_, count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.Vthresh_, Vthresh_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(
+      cudaMemcpy(allVerticesDeviceProps.Vm_, Vm_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Vreset_, Vreset_, count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.hasFired_, hasFired_, count * sizeof(bool),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Vrest_, Vrest_, count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.numStepsInRefractoryPeriod_,
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Vthresh_, Vthresh_, count * sizeof(BGFLOAT),
+                           cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.numStepsInRefractoryPeriod_,
                            numStepsInRefractoryPeriod_, count * sizeof(int),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.spikeCount_, spikeCount_, count * sizeof(int),
-                           cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.spikeCountOffset_, spikeCountOffset_,
-                           count * sizeof(int), cudaMemcpyHostToDevice));
-
-   int maxSpikes = static_cast<int>(Simulator::getInstance().getEpochDuration()
-                                    * Simulator::getInstance().getMaxFiringRate());
-   uint64_t *pSpikeHistory[count];
-   HANDLE_ERROR(cudaMemcpy(pSpikeHistory, allVerticesDevice.spikeHistory_,
-                           count * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
-   for (int i = 0; i < count; i++) {
-      HANDLE_ERROR(cudaMemcpy(pSpikeHistory[i], spikeHistory_[i], maxSpikes * sizeof(uint64_t),
-                              cudaMemcpyHostToDevice));
-   }
+  AllSpikingNeurons::copyToDevice(allVerticesDevice);
 }
 
 ///  Copy all neurons' data from device to host.
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
-void AllIFNeurons::copyNeuronDeviceToHost(void *allVerticesDevice)
+void AllIFNeurons::copyFromDevice(void *allVerticesDevice)
 {
+   AllSpikingNeurons::copyFromDevice(allVerticesDevice);
+   int count = Simulator::getInstance().getTotalVertices();
    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
 
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
                            sizeof(AllIFNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
-   copyDeviceToHost(allVerticesDeviceProps);
-}
-
-///  Copy all neurons' data from device to host.
-///  (Helper function of copyNeuronDeviceToHost)
-///
-///  @param  allVerticesDevice         GPU address of the AllIFNeuronsDeviceProperties struct.
-void AllIFNeurons::copyDeviceToHost(AllIFNeuronsDeviceProperties &allVerticesDevice)
-{
-   int count = Simulator::getInstance().getTotalVertices();
-
    HANDLE_ERROR(
-      cudaMemcpy(C1_, allVerticesDevice.C1_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+      cudaMemcpy(C1_, allVerticesDeviceProps.C1_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
    HANDLE_ERROR(
-      cudaMemcpy(C2_, allVerticesDevice.C2_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+      cudaMemcpy(C2_, allVerticesDeviceProps.C2_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
    HANDLE_ERROR(
-      cudaMemcpy(Cm_, allVerticesDevice.Cm_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+      cudaMemcpy(Cm_, allVerticesDeviceProps.Cm_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
    HANDLE_ERROR(
-      cudaMemcpy(I0_, allVerticesDevice.I0_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Iinject_, allVerticesDevice.Iinject_, count * sizeof(BGFLOAT),
+      cudaMemcpy(I0_, allVerticesDeviceProps.I0_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(Iinject_, allVerticesDeviceProps.Iinject_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Inoise_, allVerticesDevice.Inoise_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Inoise_, allVerticesDeviceProps.Inoise_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
    HANDLE_ERROR(
-      cudaMemcpy(Isyn_, allVerticesDevice.Isyn_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+      cudaMemcpy(Isyn_, allVerticesDeviceProps.Isyn_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
    HANDLE_ERROR(
-      cudaMemcpy(Rm_, allVerticesDevice.Rm_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+      cudaMemcpy(Rm_, allVerticesDeviceProps.Rm_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
    HANDLE_ERROR(
-      cudaMemcpy(Tau_, allVerticesDevice.Tau_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Trefract_, allVerticesDevice.Trefract_, count * sizeof(BGFLOAT),
+      cudaMemcpy(Tau_, allVerticesDeviceProps.Tau_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(Trefract_, allVerticesDeviceProps.Trefract_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Vinit_, allVerticesDevice.Vinit_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Vinit_, allVerticesDeviceProps.Vinit_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
    HANDLE_ERROR(
-      cudaMemcpy(Vm_, allVerticesDevice.Vm_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Vreset_, allVerticesDevice.Vreset_, count * sizeof(BGFLOAT),
+      cudaMemcpy(Vm_, allVerticesDeviceProps.Vm_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(Vreset_, allVerticesDeviceProps.Vreset_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Vrest_, allVerticesDevice.Vrest_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Vrest_, allVerticesDeviceProps.Vrest_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Vthresh_, allVerticesDevice.Vthresh_, count * sizeof(BGFLOAT),
-                           cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(hasFired_, allVerticesDevice.hasFired_, count * sizeof(bool),
+   HANDLE_ERROR(cudaMemcpy(Vthresh_, allVerticesDeviceProps.Vthresh_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
    HANDLE_ERROR(cudaMemcpy(numStepsInRefractoryPeriod_,
-                           allVerticesDevice.numStepsInRefractoryPeriod_, count * sizeof(int),
+                           allVerticesDeviceProps.numStepsInRefractoryPeriod_, count * sizeof(int),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(spikeCount_, allVerticesDevice.spikeCount_, count * sizeof(int),
-                           cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(spikeCountOffset_, allVerticesDevice.spikeCountOffset_,
-                           count * sizeof(int), cudaMemcpyDeviceToHost));
-
-   int maxSpikes = static_cast<int>(Simulator::getInstance().getEpochDuration()
-                                    * Simulator::getInstance().getMaxFiringRate());
-   uint64_t *pSpikeHistory[count];
-   HANDLE_ERROR(cudaMemcpy(pSpikeHistory, allVerticesDevice.spikeHistory_,
-                           count * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
-   for (int i = 0; i < count; i++) {
-      HANDLE_ERROR(cudaMemcpy(spikeHistory_[i], pSpikeHistory[i], maxSpikes * sizeof(uint64_t),
-                              cudaMemcpyDeviceToHost));
-   }
+   
+   
 }
 
 ///  Copy spike history data stored in device memory to host.
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
 // TODO: Move this into EventBuffer somehow
-void AllIFNeurons::copyNeuronDeviceSpikeHistoryToHost(void *allVerticesDevice)
-{
-   AllIFNeuronsDeviceProperties allVerticesDeviceProps;
-   HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
-                           sizeof(AllIFNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
-   AllSpikingNeurons::copyDeviceSpikeHistoryToHost(allVerticesDeviceProps);
-}
+// void AllIFNeurons::copyNeuronDeviceSpikeHistoryToHost(void *allVerticesDevice)
+// {
+//    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
+//    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
+//                            sizeof(AllIFNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
+//    AllSpikingNeurons::copyDeviceSpikeHistoryToHost(allVerticesDeviceProps);
+// }
 
-///  Copy spike counts data stored in device memory to host.
-///
-///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
-// TODO: Move this into EventBuffer somehow
-void AllIFNeurons::copyNeuronDeviceSpikeCountsToHost(void *allVerticesDevice)
-{
-   AllIFNeuronsDeviceProperties allVerticesDeviceProps;
-   HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
-                           sizeof(AllIFNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
-   AllSpikingNeurons::copyDeviceSpikeCountsToHost(allVerticesDeviceProps);
-}
+// ///  Copy spike counts data stored in device memory to host.
+// ///
+// ///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
+// // TODO: Move this into EventBuffer somehow
+// void AllIFNeurons::copyNeuronDeviceSpikeCountsToHost(void *allVerticesDevice)
+// {
+//    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
+//    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
+//                            sizeof(AllIFNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
+//    AllSpikingNeurons::copyDeviceSpikeCountsToHost(allVerticesDeviceProps);
+// }
 
 ///  Clear the spike counts out of all neurons.
 ///

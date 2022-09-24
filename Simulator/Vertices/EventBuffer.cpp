@@ -90,3 +90,4 @@ uint64_t EventBuffer::getPastEvent(int offset) const
    else
       return numeric_limits<unsigned long>::max();
 }
+
