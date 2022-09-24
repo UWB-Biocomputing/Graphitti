@@ -15,11 +15,25 @@
 #pragma once
 
 #include "Layout.h"
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graphml.hpp>
 
 using namespace std;
 
 class Layout911 : public Layout {
 public:
+
+   /// Struct for reading graphml vertex attributes
+   struct VertexProperty
+   {
+      int id;
+      std::string type;
+   };
+
+   /// typedef for graphml graph type (adjacency list)
+   typedef boost::adjacency_list<boost::vecS, boost::vecS,
+      boost::undirectedS, VertexProperty, boost::no_property> Graph;
+
    Layout911();
 
    virtual ~Layout911();
@@ -60,4 +74,6 @@ public:
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
    virtual edgeType edgType(const int srcVertex, const int destVertex) override;
+
+   static void registerVertexProperties(boost::dynamic_properties &dp, Graph &graph);
 };

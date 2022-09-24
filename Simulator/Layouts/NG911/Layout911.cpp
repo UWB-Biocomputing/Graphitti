@@ -73,35 +73,47 @@ void Layout911::generateVertexTypeMap(int numVertices)
 {
    DEBUG(cout << "\nInitializing vertex type map" << endl;);
 
-   // Populate vertexTypeMap_ with base layer of CALR
-   fill_n(vertexTypeMap_, numVertices, CALR);
+   Graph graph;
+   boost::dynamic_properties dp(boost::ignore_other_properties);
+   registerVertexProperties(dp, graph);
 
-   // for (int i = 0; i < numVertices; i++) {
-   //    vertexTypeMap_[i] = CALR;
-   // }
+   // ToDo: ParameterManager could return the open graphml file
+   string graph_file_name;
+   if (!ParameterManager::getInstance().getStringByXpath("//graphmlFile/text()",
+                                                         graph_file_name)) {
+      throw runtime_error("In Connections911::setupConnections() "
+                          "graphml file wasn't found and won't be initialized");
+   };
 
-   int numPSAPs = psapVertexList_.size();
-   int numResps = responderVertexList_.size();
-   int numCalrs = numVertices - numPSAPs - numResps;
+   // Read graphml file
+   ifstream graph_file(graph_file_name.c_str());
+   if (!graph_file.is_open()) {
+      throw runtime_error("In Connections911::setupConnections() "
+                          "Loading graph file failed "
+                          "\n\tfile path: " + graph_file_name);
+   }
+
+   boost::read_graphml(graph_file, graph, dp);
+
+   map<string, vertexType> vTypeMap = {{"CALR", vertexType::CALR},
+                                       {"RESP", vertexType::RESP},
+                                       {"PSAP", vertexType::PSAP}};
+   map<string, int> vTypeCount;
+
+   // add all vertices
+   boost::graph_traits<Graph>::vertex_iterator vi, vi_end;
+   for (boost::tie(vi, vi_end) = boost::vertices(graph); vi != vi_end; ++vi) {
+      assert(*vi < numVertices);
+      vertexTypeMap_[*vi] = vTypeMap[graph[*vi].type];
+      vTypeCount[graph[*vi].type] += 1;
+   }
 
    LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP" << endl
                                                     << "\tTotal vertices: " << numVertices << endl
-                                                    << "\tCaller vertices: " << numCalrs << endl
-                                                    << "\tPSAP vertices: " << numPSAPs << endl
-                                                    << "\tResponder vertices: " << numResps
+                                                    << "\tCaller vertices: " << vTypeCount["CALR"] << endl
+                                                    << "\tPSAP vertices: " << vTypeCount["PSAP"] << endl
+                                                    << "\tResponder vertices: " << vTypeCount["RESP"]
                                                     << endl);
-
-   // Insert PSAPs
-   for (int i = 0; i < numPSAPs; i++) {
-      assert(psapVertexList_.at(i) < numVertices);
-      vertexTypeMap_[psapVertexList_.at(i)] = PSAP;
-   }
-
-   // Insert Responders
-   for (int i = 0; i < responderVertexList_.size(); i++) {
-      assert(responderVertexList_.at(i) < numVertices);
-      vertexTypeMap_[responderVertexList_.at(i)] = RESP;
-   }
 
    LOG4CPLUS_INFO(fileLogger_, "Finished initializing vertex type map");
 }
@@ -136,4 +148,10 @@ edgeType Layout911::edgType(const int srcVertex, const int destVertex)
       return PP;
 
    return ETYPE_UNDEF;
+}
+
+void Layout911::registerVertexProperties(boost::dynamic_properties &dp, Graph &graph)
+{
+   dp.property("id", boost::get(&Layout911::VertexProperty::id, graph));
+   dp.property("type", boost::get(&Layout911::VertexProperty::type, graph));
 }

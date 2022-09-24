@@ -29,23 +29,11 @@ void Connections911::setupConnections(Layout *layout, AllVertices *vertices, All
    int added = 0;
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
 
-   // Struct for reading graphml vertex attributes
-   struct VertexProperty
-   {
-      int id;
-      std::string type;
-   };
-   // typedef for graphml graph type (adjacency list)
-   typedef boost::adjacency_list<boost::vecS, boost::vecS,
-      boost::undirectedS, VertexProperty, boost::no_property> Graph;
-
-   Graph graph;
+   Layout911::Graph graph;
    boost::dynamic_properties dp(boost::ignore_other_properties);
-   
-   // Register properties
-   dp.property("id", boost::get(&VertexProperty::id, graph));
-   dp.property("type", boost::get(&VertexProperty::type, graph));
+   Layout911::registerVertexProperties(dp, graph);
 
+   // ToDo: ParameterManager could return the open graphml file
    string graph_file_name;
    if (!ParameterManager::getInstance().getStringByXpath("//graphmlFile/text()",
                                                          graph_file_name)) {
@@ -64,10 +52,10 @@ void Connections911::setupConnections(Layout *layout, AllVertices *vertices, All
    boost::read_graphml(graph_file, graph, dp);
 
    // add all edges
-   boost::graph_traits<Graph>::edge_iterator ei, ei_end;
+   boost::graph_traits<Layout911::Graph>::edge_iterator ei, ei_end;
    for (boost::tie(ei, ei_end) =  boost::edges(graph); ei != ei_end; ++ei) {
       size_t srcV = boost::source(*ei, graph);
-      size_t destV = boost::target(*ei, graph);      
+      size_t destV = boost::target(*ei, graph);
       edgeType type = layout->edgType(srcV, destV);
       BGFLOAT *sumPoint = &vertices->summationMap_[destV];
       
