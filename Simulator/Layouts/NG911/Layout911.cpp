@@ -77,30 +77,22 @@ void Layout911::generateVertexTypeMap(int numVertices)
    boost::dynamic_properties dp(boost::ignore_other_properties);
    registerVertexProperties(dp, graph);
 
-   // ToDo: ParameterManager could return the open graphml file
-   string graph_file_name;
-   if (!ParameterManager::getInstance().getStringByXpath("//graphmlFile/text()",
-                                                         graph_file_name)) {
-      throw runtime_error("In Connections911::setupConnections() "
+   // Load graphml file into a BGL graph
+   ifstream graph_file;
+   if (!ParameterManager::getInstance().getFileByXpath("//graphmlFile/text()",
+                                                         graph_file)) {
+      throw runtime_error("In Layout911::setupConnections() "
                           "graphml file wasn't found and won't be initialized");
    };
-
-   // Read graphml file
-   ifstream graph_file(graph_file_name.c_str());
-   if (!graph_file.is_open()) {
-      throw runtime_error("In Connections911::setupConnections() "
-                          "Loading graph file failed "
-                          "\n\tfile path: " + graph_file_name);
-   }
-
    boost::read_graphml(graph_file, graph, dp);
 
+   // Map vertex type string to vertexType
    map<string, vertexType> vTypeMap = {{"CALR", vertexType::CALR},
                                        {"RESP", vertexType::RESP},
                                        {"PSAP", vertexType::PSAP}};
-   map<string, int> vTypeCount;
+   map<string, int> vTypeCount;  // Count map for debugging
 
-   // add all vertices
+   // Add all vertices
    boost::graph_traits<Graph>::vertex_iterator vi, vi_end;
    for (boost::tie(vi, vi_end) = boost::vertices(graph); vi != vi_end; ++vi) {
       assert(*vi < numVertices);

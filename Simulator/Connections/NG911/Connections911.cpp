@@ -33,25 +33,16 @@ void Connections911::setupConnections(Layout *layout, AllVertices *vertices, All
    boost::dynamic_properties dp(boost::ignore_other_properties);
    Layout911::registerVertexProperties(dp, graph);
 
-   // ToDo: ParameterManager could return the open graphml file
-   string graph_file_name;
-   if (!ParameterManager::getInstance().getStringByXpath("//graphmlFile/text()",
-                                                         graph_file_name)) {
+   // Load graphml file into a BGL graph
+   ifstream graph_file;
+   if (!ParameterManager::getInstance().getFileByXpath("//graphmlFile/text()",
+                                                         graph_file)) {
       throw runtime_error("In Connections911::setupConnections() "
                           "graphml file wasn't found and won't be initialized");
    };
-
-   // Read graphml file
-   ifstream graph_file(graph_file_name.c_str());
-   if (!graph_file.is_open()) {
-      throw runtime_error("In Connections911::setupConnections() "
-                          "Loading graph file failed "
-                          "\n\tfile path: " + graph_file_name);
-   }
-
    boost::read_graphml(graph_file, graph, dp);
 
-   // add all edges
+   // Add all edges
    boost::graph_traits<Layout911::Graph>::edge_iterator ei, ei_end;
    for (boost::tie(ei, ei_end) =  boost::edges(graph); ei != ei_end; ++ei) {
       size_t srcV = boost::source(*ei, graph);
