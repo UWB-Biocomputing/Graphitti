@@ -16,7 +16,7 @@
 /// Constructor is private to keep a singleton instance of this class.
 EdgesFactory::EdgesFactory()
 {
-   // register neurons classes
+   // register edges classes
    registerClass("AllSpikingSynapses", &AllSpikingSynapses::Create);
    registerClass("AllSTDPSynapses", &AllSTDPSynapses::Create);
    registerClass("AllDSSynapses", &AllDSSynapses::Create);
@@ -31,30 +31,25 @@ EdgesFactory::~EdgesFactory()
 
 ///  Register edges class and its creation function to the factory.
 ///
-///  @param  className  neurons class name.
-///  @param  Pointer to the class creation function.
+///  @param  className  Edges class name.
+///  @param  function   Pointer to the class creation function.
 void EdgesFactory::registerClass(const string &className, CreateFunction function)
 {
    createFunctions[className] = function;
 }
 
 
-/// Creates concrete instance of the desired neurons class.
+/// Creates concrete instance of the desired edges class.
+///
+/// @param className Edges class name.
+/// @return Shared pointer to edges intance if className is found in
+///         createFunctions map, nullptr otherwise.
 shared_ptr<AllEdges> EdgesFactory::createEdges(const string &className)
 {
-   edgesInstance_ = shared_ptr<AllEdges>(invokeCreateFunction(className));
-   return edgesInstance_;
-}
-
-/// Create an instance of the edges class using the static ::Create() method.
-///
-/// The calling method uses this retrieval mechanism in
-/// value assignment.
-AllEdges *EdgesFactory::invokeCreateFunction(const string &className)
-{
-   for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
-      if (className == i->first)
-         return i->second();
+   auto createEdgesIter = createFunctions.find(className);
+   if (createEdgesIter != createFunctions.end()) {
+      return shared_ptr<AllEdges>(createEdgesIter->second());
    }
+
    return nullptr;
 }

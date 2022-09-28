@@ -53,8 +53,8 @@
 extern int g_debug_mask;
 
    #include <cassert>
+   #include <memory>
    #include <sstream>
-   #include <vector>
    #ifdef _WIN32   //needs to be before #include "bgtypes.h" or the #define BGFLOAT will cause problems
       #include <windows.h>                 //warning! windows.h also defines BGFLOAT
 typedef unsigned long long int uint64_t;   //included in inttypes.h, which is not available in WIN32
@@ -83,7 +83,7 @@ extern const BGFLOAT pi;
 extern MTRand initRNG;
 
 // A normalized random number generator.
-extern MTRand *noiseRNG;
+extern shared_ptr<MTRand> noiseRNG;
 
 // The current simulation step.
 extern uint64_t g_simulationStep;

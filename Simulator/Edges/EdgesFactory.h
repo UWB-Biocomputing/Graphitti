@@ -20,10 +20,10 @@ class EdgesFactory {
 public:
    ~EdgesFactory();
 
-   static EdgesFactory *getInstance()
+   static EdgesFactory &getInstance()
    {
       static EdgesFactory instance;
-      return &instance;
+      return instance;
    }
 
    // Invokes constructor for desired concrete class
@@ -37,9 +37,6 @@ private:
    /// Constructor is private to keep a singleton instance of this class.
    EdgesFactory();
 
-   /// Pointer to edges instance
-   shared_ptr<AllEdges> edgesInstance_;
-
    /// Defines function type for usage in internal map
    typedef AllEdges *(*CreateFunction)(void);
 
@@ -48,9 +45,6 @@ private:
 
    /// Makes class-to-function map an internal factory member.
    EdgesFunctionMap createFunctions;
-
-   /// Retrieves and invokes correct ::Create() function.
-   AllEdges *invokeCreateFunction(const string &className);
 
    /// Register edges class and it's create function to the factory.
    void registerClass(const string &className, CreateFunction function);

@@ -20,10 +20,10 @@ class LayoutFactory {
 public:
    ~LayoutFactory();
 
-   static LayoutFactory *getInstance()
+   static LayoutFactory &getInstance()
    {
       static LayoutFactory instance;
-      return &instance;
+      return instance;
    }
 
    // Invokes constructor for desired concrete class
@@ -37,9 +37,6 @@ private:
    /// Constructor is private to keep a singleton instance of this class.
    LayoutFactory();
 
-   /// Smart pointer to layout instance
-   shared_ptr<Layout> layoutInstance;
-
    /// Defines function type for usage in internal map
    typedef Layout *(*CreateFunction)(void);
 
@@ -48,9 +45,6 @@ private:
 
    /// Makes class-to-function map an internal factory member.
    LayoutFunctionMap createFunctions;
-
-   /// Retrieves and invokes correct ::Create() function.
-   Layout *invokeCreateFunction(const string &className);
 
    /// Register neuron class and it's create function to the factory.
    void registerClass(const string &className, CreateFunction function);

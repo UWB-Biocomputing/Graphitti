@@ -27,8 +27,8 @@ VerticesFactory::~VerticesFactory()
 
 ///  Register vertices class and its creation function to the factory.
 ///
-///  @param  className  vertices class name.
-///  @param  Pointer to the class creation function.
+///  @param  className  Vertices class name.
+///  @param  function   Pointer to the class creation function.
 void VerticesFactory::registerClass(const string &className, CreateFunction function)
 {
    createFunctions[className] = function;
@@ -36,21 +36,16 @@ void VerticesFactory::registerClass(const string &className, CreateFunction func
 
 
 /// Creates concrete instance of the desired vertices class.
+///
+/// @param className Vertices class name.
+/// @return Shared pointer to vertices instance if className is found in
+///         createFunctions map, nullptr otherwise.
 shared_ptr<AllVertices> VerticesFactory::createVertices(const string &className)
 {
-   verticesInstance = shared_ptr<AllVertices>(invokeCreateFunction(className));
-   return verticesInstance;
-}
-
-/// Create an instance of the vertices class using the static ::Create() method.
-///
-/// The calling method uses this retrieval mechanism in
-/// value assignment.
-AllVertices *VerticesFactory::invokeCreateFunction(const string &className)
-{
-   for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
-      if (className == i->first)
-         return i->second();
+   auto createVerticesIter = createFunctions.find(className);
+   if (createVerticesIter != createFunctions.end()) {
+      return shared_ptr<AllVertices>(createVerticesIter->second());
    }
+
    return nullptr;
 }
