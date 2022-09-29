@@ -20,10 +20,10 @@ class VerticesFactory {
 public:
    ~VerticesFactory();
 
-   static VerticesFactory *getInstance()
+   static VerticesFactory &getInstance()
    {
       static VerticesFactory instance;
-      return &instance;
+      return instance;
    }
 
    // Invokes constructor for desired concrete class
@@ -37,9 +37,6 @@ private:
    /// Constructor is private to keep a singleton instance of this class.
    VerticesFactory();
 
-   /// Pointer to vertices instance
-   shared_ptr<AllVertices> verticesInstance;
-
    /* Type definitions */
    /// Defines function type for usage in internal map
    typedef AllVertices *(*CreateFunction)(void);
@@ -49,9 +46,6 @@ private:
 
    /// Makes class-to-function map an internal factory member.
    VerticesFunctionMap createFunctions;
-
-   /// Retrieves and invokes correct ::Create() function.
-   AllVertices *invokeCreateFunction(const string &className);
 
    /// Register vertex class and it's create function to the factory.
    void registerClass(const string &className, CreateFunction function);

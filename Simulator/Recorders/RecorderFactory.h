@@ -20,10 +20,10 @@ class RecorderFactory {
 public:
    ~RecorderFactory();
 
-   static RecorderFactory *getInstance()
+   static RecorderFactory &getInstance()
    {
       static RecorderFactory instance;
-      return &instance;
+      return instance;
    }
 
    // Invokes constructor for desired concrete class
@@ -37,9 +37,6 @@ private:
    /// Constructor is private to keep a singleton instance of this class.
    RecorderFactory();
 
-   /// Pointer to neurons instance
-   shared_ptr<IRecorder> recorderInstance;
-
    /// Defines function type for usage in internal map
    typedef IRecorder *(*CreateFunction)(void);
 
@@ -48,9 +45,6 @@ private:
 
    /// Makes class-to-function map an internal factory member.
    RecorderFunctionMap createFunctions;
-
-   /// Retrieves and invokes correct ::Create() function.
-   IRecorder *invokeCreateFunction(const string &className);
 
    /// Register neuron class and it's create function to the factory.
    void registerClass(const string &className, CreateFunction function);

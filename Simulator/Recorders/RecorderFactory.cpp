@@ -34,8 +34,8 @@ RecorderFactory::~RecorderFactory()
 
 ///  Register recorder class and its creation function to the factory.
 ///
-///  @param  className  vertices class name.
-///  @param  Pointer to the class creation function.
+///  @param  className  recorder class name.
+///  @param  function Pointer to the class creation function.
 void RecorderFactory::registerClass(const string &className, CreateFunction function)
 {
    createFunctions[className] = function;
@@ -43,21 +43,16 @@ void RecorderFactory::registerClass(const string &className, CreateFunction func
 
 
 /// Creates concrete instance of the desired recorder class.
+///
+/// @param className Recorder class name.
+/// @return Shared pointer to recorder instance if className is found in
+///         createFunctions map, nullptr otherwise.
 shared_ptr<IRecorder> RecorderFactory::createRecorder(const string &className)
 {
-   recorderInstance = shared_ptr<IRecorder>(invokeCreateFunction(className));
-   return recorderInstance;
-}
-
-/// Create an instance of the vertices class using the static ::Create() method.
-///
-/// The calling method uses this retrieval mechanism in
-/// value assignment.
-IRecorder *RecorderFactory::invokeCreateFunction(const string &className)
-{
-   for (auto i = createFunctions.begin(); i != createFunctions.end(); ++i) {
-      if (className == i->first)
-         return i->second();
+   auto createRecorderIter = createFunctions.find(className);
+   if (createRecorderIter != createFunctions.end()) {
+      return shared_ptr<IRecorder>(createRecorderIter->second());
    }
+
    return nullptr;
 }

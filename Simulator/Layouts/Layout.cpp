@@ -27,7 +27,7 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0), gridLayout_(true)
    // Create Vertices/Neurons class using type definition in configuration file
    string type;
    ParameterManager::getInstance().getStringByXpath("//VerticesParams/@class", type);
-   vertices_ = VerticesFactory::getInstance()->createVertices(type);
+   vertices_ = VerticesFactory::getInstance().createVertices(type);
 
    // Register loadParameters function as a loadParameters operation in the Operation Manager
    function<void()> loadParametersFunc = std::bind(&Layout::loadParameters, this);

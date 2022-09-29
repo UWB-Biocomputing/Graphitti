@@ -20,10 +20,10 @@ class ConnectionsFactory {
 public:
    ~ConnectionsFactory();
 
-   static ConnectionsFactory *getInstance()
+   static ConnectionsFactory &getInstance()
    {
       static ConnectionsFactory instance;
-      return &instance;
+      return instance;
    }
 
    /// Invokes constructor for desired concrete class
@@ -37,9 +37,6 @@ private:
    /// Constructor is private to keep a singleton instance of this class.
    ConnectionsFactory();
 
-   /// Pointer to connections instance.
-   shared_ptr<Connections> connectionsInstance;
-
    /// Defines function type for usage in internal map
    typedef Connections *(*CreateFunction)(void);
 
@@ -48,9 +45,6 @@ private:
 
    /// Makes class-to-function map an internal factory member.
    ConnectionsFunctionMap createFunctions;
-
-   /// Retrieves and invokes correct ::Create() function.
-   Connections *invokeCreateFunction(const string &className);
 
    /// Register connection class and it's create function to the factory.
    void registerClass(const string &className, CreateFunction function);
