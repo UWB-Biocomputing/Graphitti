@@ -1,5 +1,5 @@
 # GIS to GEXF Python Script
-This Python script converts GIS(Geographic Information Sytem) layer data, into a graph that is represented in the `.gexf` file format. 
+This Python script converts GIS(Geographic Information Sytem) layer data, into a graph. The graph is printed out in two formats: `.gexf` and `.graphml`. 
 
 The script read in GIS files using GeoPandas, a Python package built on Pandas designed to handle Geographic data. 
 It constructs a NetworkX undirected graph by checking the relationships between the different geometries in the GeoPandas data structures.
@@ -20,10 +20,10 @@ Python is a language that can be difficult to read and understand, luckily the m
 ## File Input/Output
 GeoPandas can read several different GIS file formats. `.shp` and `.gpkg` are two of the most common file formats. 
 
-The script is currently looking for five different layers, PSAP Layer, Law Layer, EMS Layer, Fire Layer, and Provisioning Layer. These layers should be placed in the `GIS Data/Layers/` directory in the GIStoGEXF directory. 
+The script is currently looking for five different layers, PSAP Layer, Law Layer, EMS Layer, Fire Layer, and Provisioning Layer. These layers should be placed in the `GIS_data/Layers/` directory in the GIStoGEXF directory. 
 If there are different requirements in the future, the parameters can be adjusted in the `gpd.read_file()` functions in the script. 
 
-The script produces a `.gexf` file that represents the graph that is stored in the `GEXF Files` directory. The name of this file can be changed by changing the `out_file_name` variable in the script.
+The script outputs two files to the `graph_files` directory, one with a `.gexf` extension and one with a `.graphml` extension; both files contain the same graph representation but in a different format. The name of these files can be changed by changing the `out_file_name` variable in the script.
 
 More information on the GEXF file standard can be found [here](https://gexf.net/primer.html)
 ## Installing GeoPandas
