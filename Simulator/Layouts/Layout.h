@@ -87,12 +87,6 @@ protected:
 
    vector<int> inhibitoryNeuronLayout_;   ///< Inhibitory neurons list.
 
-   vector<int> callerVertexList_;   ///< Caller vertex list.
-
-   vector<int> psapVertexList_;   ///< PSAP vertex list.
-
-   vector<int> responderVertexList_;   ///< Responder vertex list.
-
    log4cplus::Logger fileLogger_;
 
 private:

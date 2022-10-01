@@ -6,6 +6,7 @@
 * @brief The Layout class defines the layout of vertices in networks
 */
 
+// #include <string>
 #include "Layout911.h"
 #include "ParameterManager.h"
 
@@ -39,28 +40,10 @@ void Layout911::loadParameters()
                           "vertex list file path wasn't found and will not be initialized");
    }
 
-   // Initialize Vertex Lists based on the data read from the xml files
-   if (!ParameterManager::getInstance().getIntVectorByXpath(callerFilePath, "C",
-                                                            callerVertexList_)) {
-      throw runtime_error("In Layout::loadParameters() "
-                          "caller vertex list list file wasn't loaded correctly"
-                          "\n\tfile path: "
-                          + callerFilePath);
-   }
-   numCallerVertices_ = callerVertexList_.size();
-   if (!ParameterManager::getInstance().getIntVectorByXpath(psapFilePath, "P", psapVertexList_)) {
-      throw runtime_error("In Layout::loadParameters() "
-                          "psap vertex list file wasn't loaded correctly."
-                          "\n\tfile path: "
-                          + psapFilePath);
-   }
-   if (!ParameterManager::getInstance().getIntVectorByXpath(responderFilePath, "R",
-                                                            responderVertexList_)) {
-      throw runtime_error("In Layout::loadParameters() "
-                          "responder vertex list file wasn't loaded correctly."
-                          "\n\tfile path: "
-                          + responderFilePath);
-   }
+   // We must register the graph properties before loading it
+   gm_.registerProperty("id", &VertexProperty::id);
+   gm_.registerProperty("type", &VertexProperty::type);
+   gm_.loadGraph();
 }
 
 void Layout911::printParameters() const
@@ -73,19 +56,6 @@ void Layout911::generateVertexTypeMap(int numVertices)
 {
    DEBUG(cout << "\nInitializing vertex type map" << endl;);
 
-   Graph graph;
-   boost::dynamic_properties dp(boost::ignore_other_properties);
-   registerVertexProperties(dp, graph);
-
-   // Load graphml file into a BGL graph
-   ifstream graph_file;
-   if (!ParameterManager::getInstance().getFileByXpath("//graphmlFile/text()",
-                                                         graph_file)) {
-      throw runtime_error("In Layout911::setupConnections() "
-                          "graphml file wasn't found and won't be initialized");
-   };
-   boost::read_graphml(graph_file, graph, dp);
-
    // Map vertex type string to vertexType
    map<string, vertexType> vTypeMap = {{"CALR", vertexType::CALR},
                                        {"RESP", vertexType::RESP},
@@ -93,11 +63,11 @@ void Layout911::generateVertexTypeMap(int numVertices)
    map<string, int> vTypeCount;  // Count map for debugging
 
    // Add all vertices
-   boost::graph_traits<Graph>::vertex_iterator vi, vi_end;
-   for (boost::tie(vi, vi_end) = boost::vertices(graph); vi != vi_end; ++vi) {
+   GraphManager<VertexProperty>::VertexIterator vi, vi_end;
+   for (boost::tie(vi, vi_end) = gm_.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices);
-      vertexTypeMap_[*vi] = vTypeMap[graph[*vi].type];
-      vTypeCount[graph[*vi].type] += 1;
+      vertexTypeMap_[*vi] = vTypeMap[gm_[*vi].type];
+      vTypeCount[gm_[*vi].type] += 1;
    }
 
    LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP" << endl
@@ -142,8 +112,7 @@ edgeType Layout911::edgType(const int srcVertex, const int destVertex)
    return ETYPE_UNDEF;
 }
 
-void Layout911::registerVertexProperties(boost::dynamic_properties &dp, Graph &graph)
+GraphManager<Layout911::VertexProperty> Layout911::getGraphManager()
 {
-   dp.property("id", boost::get(&Layout911::VertexProperty::id, graph));
-   dp.property("type", boost::get(&Layout911::VertexProperty::type, graph));
+   return gm_;
 }

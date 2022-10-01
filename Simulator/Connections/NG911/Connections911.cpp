@@ -11,8 +11,6 @@
 #include "All911Vertices.h"
 #include "Layout911.h"
 #include "ParameterManager.h"
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/graphml.hpp>
 
 Connections911::Connections911()
 {
@@ -29,24 +27,16 @@ void Connections911::setupConnections(Layout *layout, AllVertices *vertices, All
    int added = 0;
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
 
-   Layout911::Graph graph;
-   boost::dynamic_properties dp(boost::ignore_other_properties);
-   Layout911::registerVertexProperties(dp, graph);
-
-   // Load graphml file into a BGL graph
-   ifstream graph_file;
-   if (!ParameterManager::getInstance().getFileByXpath("//graphmlFile/text()",
-                                                         graph_file)) {
-      throw runtime_error("In Connections911::setupConnections() "
-                          "graphml file wasn't found and won't be initialized");
-   };
-   boost::read_graphml(graph_file, graph, dp);
+   // Get GraphManager stored in Layout911
+   Layout911& layout911 = dynamic_cast<Layout911&>(*Simulator::getInstance().getModel()->getLayout());
+   GraphManager<Layout911::VertexProperty> graph = layout911.getGraphManager();
 
    // Add all edges
-   boost::graph_traits<Layout911::Graph>::edge_iterator ei, ei_end;
-   for (boost::tie(ei, ei_end) =  boost::edges(graph); ei != ei_end; ++ei) {
-      size_t srcV = boost::source(*ei, graph);
-      size_t destV = boost::target(*ei, graph);
+   GraphManager<Layout911::VertexProperty>::EdgeIterator ei, ei_end;
+   for (boost::tie(ei, ei_end) =  graph.edges(); ei != ei_end; ++ei) {
+      // Source and target return the vertex index
+      size_t srcV = graph.source(*ei);
+      size_t destV = graph.target(*ei);
       edgeType type = layout->edgType(srcV, destV);
       BGFLOAT *sumPoint = &vertices->summationMap_[destV];
       

@@ -15,8 +15,7 @@
 #pragma once
 
 #include "Layout.h"
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/graphml.hpp>
+#include "GraphManager.h"
 
 using namespace std;
 
@@ -29,10 +28,6 @@ public:
       int id;
       std::string type;
    };
-
-   /// typedef for graphml graph type (adjacency list)
-   typedef boost::adjacency_list<boost::vecS, boost::vecS,
-      boost::undirectedS, VertexProperty, boost::no_property> Graph;
 
    Layout911();
 
@@ -75,5 +70,13 @@ public:
    /// @return type of the synapse.
    virtual edgeType edgType(const int srcVertex, const int destVertex) override;
 
-   static void registerVertexProperties(boost::dynamic_properties &dp, Graph &graph);
+   /// @brief GraphManager accessor
+   /// @return the GraphManager for the loaded graphml file
+   GraphManager<VertexProperty> getGraphManager();
+
+private:
+
+   /// Used for loading the initial graph from a graphml file
+   GraphManager<VertexProperty> gm_;
+
 };
