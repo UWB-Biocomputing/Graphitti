@@ -142,8 +142,8 @@ CUDA_CALLABLE enumClassSynapses classSynapses_d = undefClassSynapses;
 //   allEdgesDevice->decay_[iEdg] = exp(-deltaT / tau);
 //   allEdgesDevice->totalDelay_[iEdg] = static_cast<int>(delay / deltaT) + 1;
 
-//   uint32_t size = allEdgesDevice->totalDelay_[iEdg] / (sizeof(uint8_t) * 8) + 1;
-//   assert(size <= BYTES_OF_DELAYQUEUE);
+//   uint32_t size = allEdgesDevice->totalDelay_[iEdg] / (sizeof(uint8_t) * 8) +
+//   1; assert(size <= BYTES_OF_DELAYQUEUE);
 // }
 
 ///  Create a DS Synapse and connect it to the model.
@@ -161,9 +161,9 @@ CUDA_CALLABLE enumClassSynapses classSynapses_d = undefClassSynapses;
 ///  @param type                 Type of the Synapse to create.
 // CUDA_CALLABLE void
 // createDSSynapse(AllDSSynapsesDeviceProperties *allEdgesDevice,
-//                 const int neuronIndex, const int synapseOffset, int sourceIndex,
-//                 int destIndex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
-//                 edgeType type) {
+//                 const int neuronIndex, const int synapseOffset, int
+//                 sourceIndex, int destIndex, BGFLOAT *sumPoint, const BGFLOAT
+//                 deltaT, edgeType type) {
 //   BGFLOAT delay;
 //   BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
 //   BGSIZE iEdg = maxEdges * neuronIndex + synapseOffset;
@@ -231,17 +231,19 @@ CUDA_CALLABLE enumClassSynapses classSynapses_d = undefClassSynapses;
 //   allEdgesDevice->decay_[iEdg] = exp(-deltaT / tau);
 //   allEdgesDevice->totalDelay_[iEdg] = static_cast<int>(delay / deltaT) + 1;
 
-//   uint32_t size = allEdgesDevice->totalDelay_[iEdg] / (sizeof(uint8_t) * 8) + 1;
-//   assert(size <= BYTES_OF_DELAYQUEUE);
+//   uint32_t size = allEdgesDevice->totalDelay_[iEdg] / (sizeof(uint8_t) * 8) +
+//   1; assert(size <= BYTES_OF_DELAYQUEUE);
 // }
 
 // ///  Create a Synapse and connect it to the model.
 // ///
-// ///  @param allEdgesDevice    GPU address of the AllSTDPSynapsesDeviceProperties
+// ///  @param allEdgesDevice    GPU address of the
+// AllSTDPSynapsesDeviceProperties
 // ///  structures
 // ///                              on device memory.
 // ///  @param neuronIndex          Index of the source neuron.
-// ///  @param synapseOffset        Offset (into neuronIndex's) of the Synapse to
+// ///  @param synapseOffset        Offset (into neuronIndex's) of the Synapse
+// to
 // ///  create.
 // ///  @param srcVertex            Coordinates of the source Neuron.
 // ///  @param destVertex           Coordinates of the destination Neuron.
@@ -297,8 +299,8 @@ CUDA_CALLABLE enumClassSynapses classSynapses_d = undefClassSynapses;
 //   allEdgesDevice->decay_[iEdg] = exp(-deltaT / tau);
 //   allEdgesDevice->totalDelay_[iEdg] = static_cast<int>(delay / deltaT) + 1;
 
-//   uint32_t size = allEdgesDevice->totalDelay_[iEdg] / (sizeof(uint8_t) * 8) + 1;
-//   assert(size <= BYTES_OF_DELAYQUEUE);
+//   uint32_t size = allEdgesDevice->totalDelay_[iEdg] / (sizeof(uint8_t) * 8) +
+//   1; assert(size <= BYTES_OF_DELAYQUEUE);
 
 //   // May 1st 2020
 //   // Use constants from Froemke and Dan (2002).
@@ -337,7 +339,8 @@ CUDA_CALLABLE enumClassSynapses classSynapses_d = undefClassSynapses;
 ///  @param deltaT               The time step size.
 ///  @param type                 Type of the Synapse to create.
 // CUDA_CALLABLE void
-// createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperties *allEdgesDevice,
+// createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperties
+// *allEdgesDevice,
 //                          const int neuronIndex, const int synapseOffset,
 //                          int sourceIndex, int destIndex, BGFLOAT *sumPoint,
 //                          const BGFLOAT deltaT, edgeType type) {
@@ -408,8 +411,8 @@ CUDA_CALLABLE enumClassSynapses classSynapses_d = undefClassSynapses;
 //   allEdgesDevice->decay_[iEdg] = exp(-deltaT / tau);
 //   allEdgesDevice->totalDelay_[iEdg] = static_cast<int>(delay / deltaT) + 1;
 
-//   uint32_t size = allEdgesDevice->totalDelay_[iEdg] / (sizeof(uint8_t) * 8) + 1;
-//   assert(size <= BYTES_OF_DELAYQUEUE);
+//   uint32_t size = allEdgesDevice->totalDelay_[iEdg] / (sizeof(uint8_t) * 8) +
+//   1; assert(size <= BYTES_OF_DELAYQUEUE);
 
 //   // May 1st 2020
 //   // Use constants from Froemke and Dan (2002).
@@ -437,7 +440,8 @@ CUDA_CALLABLE enumClassSynapses classSynapses_d = undefClassSynapses;
 // /// Adds a synapse to the network.  Requires the locations of the source and
 // /// destination neurons.
 // ///
-// /// @param allEdgesDevice      Pointer to the AllSpikingSynapsesDeviceProperties
+// /// @param allEdgesDevice      Pointer to the
+// AllSpikingSynapsesDeviceProperties
 // /// structures
 // ///                               on device memory.
 // /// @param type                   Type of the Synapse to create.
@@ -473,7 +477,8 @@ CUDA_CALLABLE enumClassSynapses classSynapses_d = undefClassSynapses;
 //   // create a synapse
 //   switch (classSynapses_d) {
 //   case classAllSpikingSynapses:
-//     createSpikingSynapse(allEdgesDevice, destVertex, synapseIndex, sourceIndex,
+//     createSpikingSynapse(allEdgesDevice, destVertex, synapseIndex,
+//     sourceIndex,
 //                          destIndex, sumPoint, deltaT, type);
 //     break;
 //   case classAllDSSynapses:
@@ -490,9 +495,9 @@ CUDA_CALLABLE enumClassSynapses classSynapses_d = undefClassSynapses;
 //     break;
 //   case classAllDynamicSTDPSynapses:
 //     createDynamicSTDPSynapse(
-//         static_cast<AllDynamicSTDPSynapsesDeviceProperties *>(allEdgesDevice),
-//         destVertex, synapseIndex, sourceIndex, destIndex, sumPoint, deltaT,
-//         type);
+//         static_cast<AllDynamicSTDPSynapsesDeviceProperties
+//         *>(allEdgesDevice), destVertex, synapseIndex, sourceIndex, destIndex,
+//         sumPoint, deltaT, type);
 //     break;
 //   default:
 //     assert(false);
@@ -526,9 +531,11 @@ CUDA_CALLABLE enumClassSynapses classSynapses_d = undefClassSynapses;
 // /// device memory.
 // /// @param srcVertex             Index of the source neuron.
 // /// @param destVertex            Index of the destination neuron.
-// CUDA_CALLABLE edgeType edgType(vertexType *neuronTypeMap_d, const int srcVertex,
+// CUDA_CALLABLE edgeType edgType(vertexType *neuronTypeMap_d, const int
+// srcVertex,
 //                                const int destVertex) {
-//   if (neuronTypeMap_d[srcVertex] == INH && neuronTypeMap_d[destVertex] == INH)
+//   if (neuronTypeMap_d[srcVertex] == INH && neuronTypeMap_d[destVertex] ==
+//   INH)
 //     return II;
 //   else if (neuronTypeMap_d[srcVertex] == INH &&
 //            neuronTypeMap_d[destVertex] == EXC)
@@ -549,7 +556,8 @@ CUDA_CALLABLE enumClassSynapses classSynapses_d = undefClassSynapses;
 //  ******************************************/
 // ///@{
 
-// /// Adjust the strength of the synapse or remove it from the synapse map if it
+// /// Adjust the strength of the synapse or remove it from the synapse map if
+// it
 // /// has gone below zero.
 // ///
 // /// @param[in] numVertices        Number of vertices.
@@ -622,7 +630,8 @@ CUDA_CALLABLE enumClassSynapses classSynapses_d = undefClassSynapses;
 //       BGFLOAT *sumPoint = &(allVerticesDevice->summationMap_[destVertex]);
 //       added++;
 
-//       addSpikingSynapse(allEdgesDevice, type, srcVertex, destVertex, srcVertex,
+//       addSpikingSynapse(allEdgesDevice, type, srcVertex, destVertex,
+//       srcVertex,
 //                         destVertex, sumPoint, deltaT, W_d, numVertices);
 //     }
 //   }

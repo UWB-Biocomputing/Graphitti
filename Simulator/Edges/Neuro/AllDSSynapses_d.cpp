@@ -12,11 +12,6 @@
 #include "GPUModel.h"
 #include "Simulator.h"
 
-
-
-
-
-
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
 ///
@@ -413,9 +408,6 @@ void AllDSSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const {
   }
 }
 
-
-
-
 ///  Update PSR (post synapse response)
 ///
 ///  @param  allEdgesDevice  GPU address of the AllDSSynapsesDeviceProperties
@@ -450,4 +442,3 @@ changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties *allEdgesDevice,
   psr += ((W / decay) * u * r); // calculate psr
   lastSpike = simulationStep;   // record the time of the spike
 }
-

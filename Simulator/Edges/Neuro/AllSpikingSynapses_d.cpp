@@ -6,15 +6,12 @@
  * @brief A container of all dynamic STDP synapse data
  */
 
+#include "AllDSSynapses.h"
 #include "AllNeuroEdges.h"
 #include "AllSpikingSynapses.h"
 #include "AllSynapsesDeviceFuncs.h"
 #include "Book.h"
 #include <vector>
-#include "AllDSSynapses.h"
-
-
-
 
 ///  CUDA code for advancing spiking synapses.
 ///  Perform updating synapses for one time step.
@@ -629,8 +626,5 @@ CUDA_CALLABLE void changeSpikingSynapsesPSRDevice(
 
   psr += (W / decay); // calculate psr
 }
-
-
-
 
 ////#endif

@@ -34,8 +34,6 @@ __global__ void advanceSTDPSynapsesDevice(
     AllSTDPSynapsesDeviceProperties *allEdgesDevice,
     AllSpikingNeuronsDeviceProperties *allVerticesDevice, int maxSpikes);
 
-
-
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
 ///
@@ -779,7 +777,6 @@ __global__ void advanceSTDPSynapsesDevice(
   // decay the post spike response
   psr *= decay;
 }
-
 
 /******************************************
  * @name Device Functions for utility

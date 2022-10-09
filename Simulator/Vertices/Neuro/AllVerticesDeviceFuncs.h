@@ -19,6 +19,7 @@
 //     const BGSIZE iEdg, AllSpikingSynapsesDeviceProperties *allEdgesDevice);
 // extern CUDA_CALLABLE void
 // postSTDPSynapseSpikeHitDevice(const BGSIZE iEdg,
-//                               AllSTDPSynapsesDeviceProperties *allEdgesDevice);
+//                               AllSTDPSynapsesDeviceProperties
+//                               *allEdgesDevice);
 
 // #endif

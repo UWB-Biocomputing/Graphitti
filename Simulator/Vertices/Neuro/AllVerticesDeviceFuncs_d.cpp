@@ -17,7 +17,8 @@
 // ///  Prepares Synapse for a spike hit.
 // ///
 // ///  @param[in] iEdg                  Index of the Synapse to update.
-// ///  @param[in] allEdgesDevice     Pointer to AllSpikingSynapsesDeviceProperties
+// ///  @param[in] allEdgesDevice     Pointer to
+// AllSpikingSynapsesDeviceProperties
 // ///  structures
 // ///                                   on device memory.
 // CUDA_CALLABLE void preSpikingSynapsesSpikeHitDevice(
@@ -43,7 +44,8 @@
 // ///  Prepares Synapse for a spike hit (for back propagation).
 // ///
 // ///  @param[in] iEdg                  Index of the Synapse to update.
-// ///  @param[in] allEdgesDevice     Pointer to AllSpikingSynapsesDeviceProperties
+// ///  @param[in] allEdgesDevice     Pointer to
+// AllSpikingSynapsesDeviceProperties
 // ///  structures
 // ///                                   on device memory.
 // CUDA_CALLABLE void postSpikingSynapsesSpikeHitDevice(
@@ -57,7 +59,8 @@
 // ///                                   on device memory.
 // CUDA_CALLABLE void
 // postSTDPSynapseSpikeHitDevice(const BGSIZE iEdg,
-//                               AllSTDPSynapsesDeviceProperties *allEdgesDevice) {
+//                               AllSTDPSynapsesDeviceProperties
+//                               *allEdgesDevice) {
 //   uint32_t &delayQueue = allEdgesDevice->delayQueuePost_[iEdg];
 //   int delayIndex = allEdgesDevice->delayIndexPost_[iEdg];
 //   int delayQueueLength = allEdgesDevice->delayQueuePostLength_[iEdg];

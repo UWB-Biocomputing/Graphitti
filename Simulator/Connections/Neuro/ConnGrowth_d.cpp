@@ -7,22 +7,19 @@
  * @brief Update the weights of the Synapses in the simulation.
  */
 
+#include "AllDynamicSTDPSynapses.h"
+#include "AllSTDPSynapses.h"
 #include "AllSpikingSynapses.h"
 #include "AllSynapsesDeviceFuncs.h"
 #include "Book.h"
 #include "ConnGrowth.h"
 #include "Simulator.h"
-#include "AllDynamicSTDPSynapses.h"
-#include "AllSTDPSynapses.h"
-
-
 
 __global__ void updateSynapsesWeightsDevice(
     int numVertices, BGFLOAT deltaT, BGFLOAT *W_d, int maxEdges,
     AllSpikingNeuronsDeviceProperties *allVerticesDevice,
     AllSpikingSynapsesDeviceProperties *allEdgesDevice,
     vertexType *neuronTypeMap_d);
-
 
 CUDA_CALLABLE edgeType edgType(vertexType *neuronTypeMap_d, const int srcVertex,
                                const int destVertex);
@@ -132,8 +129,6 @@ void ConnGrowth::updateSynapsesWeights(
   synapses.copyDeviceEdgeSumIdxToHost(allEdgesDevice);
 }
 
-
-
 ///@}
 
 /******************************************
@@ -220,7 +215,6 @@ __global__ void updateSynapsesWeightsDevice(
   }
 }
 
-
 /// Returns the type of synapse at the given coordinates
 ///
 /// @param[in] allVerticesDevice          Pointer to the Neuron structures in
@@ -244,9 +238,6 @@ CUDA_CALLABLE edgeType edgType(vertexType *neuronTypeMap_d, const int srcVertex,
   return ETYPE_UNDEF;
 }
 
-
-
-
 /// Remove a synapse from the network.
 ///
 /// @param[in] allEdgesDevice      Pointer to the
@@ -264,8 +255,6 @@ eraseSpikingSynapse(AllSpikingSynapsesDeviceProperties *allEdgesDevice,
   allEdgesDevice->inUse_[iSync] = false;
   allEdgesDevice->W_[iSync] = 0;
 }
-
-
 
 /// Adds a synapse to the network.  Requires the locations of the source and
 /// destination neurons.
@@ -334,8 +323,6 @@ addSpikingSynapse(AllSpikingSynapsesDeviceProperties *allEdgesDevice,
       W_d[srcVertex * numVertices + destVertex] * edgSign(type) *
       AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 }
-
-
 
 ///@}
 
@@ -454,8 +441,6 @@ createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperties *allEdgesDevice,
 
   allEdgesDevice->useFroemkeDanSTDP_[iEdg] = false;
 }
-
-
 
 ///  Create a Synapse and connect it to the model.
 ///
@@ -634,8 +619,6 @@ createDSSynapse(AllDSSynapsesDeviceProperties *allEdgesDevice,
   assert(size <= BYTES_OF_DELAYQUEUE);
 }
 
-
-
 ///  Create a Spiking Synapse and connect it to the model.
 ///
 ///  @param allEdgesDevice    GPU address of the
@@ -701,7 +684,6 @@ createSpikingSynapse(AllSpikingSynapsesDeviceProperties *allEdgesDevice,
   uint32_t size = allEdgesDevice->totalDelay_[iEdg] / (sizeof(uint8_t) * 8) + 1;
   assert(size <= BYTES_OF_DELAYQUEUE);
 }
-
 
 // /******************************************
 //  * @name Device Functions for utility

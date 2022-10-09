@@ -352,8 +352,6 @@ void AllIFNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
                                    void *allEdgesDevice, float *randNoise,
                                    EdgeIndexMap *edgeIndexMapDevice) {}
 
-
-
 ///  Prepares Synapse for a spike hit (for back propagation).
 ///
 ///  @param[in] iEdg                  Index of the Synapse to update.
@@ -381,7 +379,6 @@ postSTDPSynapseSpikeHitDevice(const BGSIZE iEdg,
   delayQueue |= (0x1 << idx);
 }
 
-
 ///  Prepares Synapse for a spike hit (for back propagation).
 ///
 ///  @param[in] iEdg                  Index of the Synapse to update.
@@ -390,7 +387,6 @@ postSTDPSynapseSpikeHitDevice(const BGSIZE iEdg,
 ///                                   on device memory.
 CUDA_CALLABLE void postSpikingSynapsesSpikeHitDevice(
     const BGSIZE iEdg, AllSpikingSynapsesDeviceProperties *allEdgesDevice) {}
-
 
 ///  Prepares Synapse for a spike hit.
 ///
