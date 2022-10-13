@@ -320,6 +320,11 @@ bool ParameterManager::getIntVectorByXpath(const string &path, const string &ele
    return true;
 }
 
+/// Load the file indicated by the given string path into the ifstream object.
+///
+/// @param path   the path to the XML element containing the file name
+/// @param file   ifstream object were file will be loaded
+/// @return       true if the retrieval was successful, false otherwise
 bool ParameterManager::getFileByXpath(const string &path, ifstream &file)
 {
     string file_name;
