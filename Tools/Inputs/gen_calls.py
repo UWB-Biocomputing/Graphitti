@@ -31,7 +31,7 @@ def main():
     sorted = call_log.sort_values("start_time")
 
     # At this point the call log only has the start_time and talk_time.
-    # We will generate the coordinates by uniformily distribute the calls along
+    # We will generate the coordinates by uniformily distributing the calls along
     # the caller region grid.
     # The grid is a set of square denoted by their bottom left and upper right corners.
     # We get the grid from the graphml file it looks like this:
@@ -52,13 +52,13 @@ def main():
     # used as a threshold for the emergency type.
     sorted['type_prob'] = np.random.randint(0, 100, sorted.shape[0])
     # 20% of the values should be under 20, 30% between 20 and 49, 50% between 50 and 99
-    sorted['emergency_type'] = sorted.apply(lambda call: 'Fire' if call['type_prob'] < fire else 'Law' if call['type_prob'] < ems else 'EMS', axis=1)
+    sorted['type'] = sorted.apply(lambda call: 'Fire' if call['type_prob'] < fire else 'Law' if call['type_prob'] < ems else 'EMS', axis=1)
 
     # Clean up
     sorted = sorted.drop(['grid_idx', 'type_prob'], axis=1)
 
     # Save dataframe
-    sorted.to_xml("SPD_calls.xml", index=False)
+    sorted.to_xml("SPD_calls.xml", index=False, row_name="event")
 
 
 if __name__ == '__main__':

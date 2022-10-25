@@ -203,7 +203,9 @@ def main():
     # have a direct map between vertex ids.
     G = nx.convert_node_labels_to_integers(G, first_label=0, ordering='default')
     nx.write_gexf(G, "graph_files/" + out_file_name + ".gexf")
+    node_int_G = nx.convert_node_labels_to_integers(G, first_label=0, ordering='default')
     nx.write_graphml(G, "graph_files/" + out_file_name + ".graphml")
+    nx.write_graphml(node_int_G, "graph_files/" + out_file_name + "_int.graphml")
 
 
 if __name__ == '__main__':
