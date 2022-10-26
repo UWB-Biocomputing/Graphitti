@@ -97,7 +97,7 @@ def main():
         rep_point = str(pt.x) + ", " + str(pt.y)
 
         G.add_node(kc_ems.iloc[w].ES_NGUID, objectID=kc_ems.iloc[w].ES_NGUID, name=kc_ems.iloc[w].DsplayName,
-                   type="EMS", point=rep_point)
+                   type="EMS", latitude=pt.y, longitude=pt.x)
 
     # Loop through all Law boundaries, adding nodes with representative points
     for v in range(kc_law.shape[0]):
@@ -105,7 +105,7 @@ def main():
         pt = kc_law.iloc[v].geometry.representative_point()
         rep_point = str(pt.x) + ", " + str(pt.y)
         G.add_node(kc_law.iloc[v].ES_NGUID, objectID=kc_law.iloc[v].ES_NGUID, name=kc_law.iloc[v].DsplayName,
-                   type="LAW", point=rep_point)
+                   type="LAW",latitude=pt.y, longitude=pt.x)
 
     # Loop through all Fire boundaries, adding nodes with representative points
     for u in range(kc_fire.shape[0]):
@@ -113,7 +113,7 @@ def main():
         pt = kc_fire.iloc[u].geometry.representative_point()
         rep_point = str(pt.x) + ", " + str(pt.y)
         G.add_node(kc_fire.iloc[u].ES_NGUID, objectID=kc_fire.iloc[u].ES_NGUID, name=kc_fire.iloc[u].DsplayName,
-                   type="FIRE", point=rep_point)
+                   type="FIRE", latitude=pt.y, longitude=pt.x)
 
     # Loop through all PSAPs, adding each as nodes, and checking against all EMS, Fire, Law boundaries
     for x in range(merged_kc_psap.shape[0]):
@@ -186,7 +186,7 @@ def main():
     for n in range(merged_kc_psap.shape[0]):
         region_name = str(merged_kc_psap.iloc[n].DisplayName) + " Caller region"
         caller_region_id = str(merged_kc_psap.iloc[n].ES_NGUID) + "_CR"
-        G.add_node(caller_region_id, objectID=caller_region_id, name=region_name, type="CR", squares = str(region_string[n]))
+        G.add_node(caller_region_id, objectID=caller_region_id, name=region_name, type="CALR", segments=str(region_string[n]))
         G.add_edge(caller_region_id, str(merged_kc_psap.iloc[n].ES_NGUID))
 
     # Print out graph information and produce .gexf file representing graph
