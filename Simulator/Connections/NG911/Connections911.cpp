@@ -326,15 +326,18 @@ string Connections911::ChangedEdge::toString()
       case PP:
          type_s = "PP";
          break;
-      case RC:
-         type_s = "RC";
+      case PC:
+         type_s = "PC";
+         break;
+      case RP:
+         type_s = "RP";
          break;
       default:
          type_s = "ETYPE_UNDEF";
    }
 
    os << "<item>";
-   os << srcV << " " << destV << " " << type_s;
+   os << srcV << " " << destV << " " << type_s << " " << eType;
    os << "</item>" << endl;
 
    return os.str();

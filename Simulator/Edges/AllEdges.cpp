@@ -185,9 +185,11 @@ edgeType AllEdges::edgeOrdinalToType(const int typeOrdinal)
       case 5:
          return PR;
       case 6:
-         return RC;
+         return PC;
       case 7:
          return PP;
+      case 8:
+         return RP;
       default:
          return ETYPE_UNDEF;
    }
@@ -303,7 +305,7 @@ void AllEdges::addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const i
 {
    if (edgeCounts_[destVertex] >= maxEdgesPerVertex_) {
       LOG4CPLUS_FATAL(edgeLogger_, "Vertex : " << destVertex << " ran out of space for new edges.");
-      throw runtime_error("Vertex : " + destVertex + string(" ran out of space for new edges."));
+      throw runtime_error("Vertex : " + to_string(destVertex) + string(": " + to_string(edgeCounts_[destVertex]) + " ran out of space for new edges sdfsd."));
    }
 
    // add it to the list: find first edge location for vertex destVertex

@@ -41,8 +41,11 @@ void Layout911::loadParameters()
    }
 
    // We must register the graph properties before loading it
-   gm_.registerProperty("id", &VertexProperty::id);
+   gm_.registerProperty("objectID", &VertexProperty::objectID);
+   gm_.registerProperty("name", &VertexProperty::name);
    gm_.registerProperty("type", &VertexProperty::type);
+   gm_.registerProperty("latitude", &VertexProperty::latitude);
+   gm_.registerProperty("longitude", &VertexProperty::longitude);
    gm_.loadGraph();
 }
 
@@ -57,8 +60,12 @@ void Layout911::generateVertexTypeMap(int numVertices)
    DEBUG(cout << "\nInitializing vertex type map" << endl;);
 
    // Map vertex type string to vertexType
+   // In the GraphML file Responders are divided in LAW, FIRE, and EMS.
+   // Perhaps, we need to expand the vertex types?
    map<string, vertexType> vTypeMap = {{"CALR", vertexType::CALR},
-                                       {"RESP", vertexType::RESP},
+                                       {"LAW", vertexType::RESP},
+                                       {"FIRE", vertexType::RESP},
+                                       {"EMS", vertexType::RESP},
                                        {"PSAP", vertexType::PSAP}};
    map<string, int> vTypeCount;  // Count map for debugging
 
@@ -104,12 +111,14 @@ edgeType Layout911::edgType(const int srcVertex, const int destVertex)
       return CP;
    else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == RESP)
       return PR;
-   else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == CALR)
-      return RC;
+   else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == CALR)
+      return PC;
    else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == PSAP)
       return PP;
-
-   return ETYPE_UNDEF;
+   else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == PSAP)
+      return RP;
+   else
+      return ETYPE_UNDEF;
 }
 
 GraphManager<Layout911::VertexProperty> Layout911::getGraphManager()

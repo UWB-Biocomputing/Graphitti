@@ -25,8 +25,12 @@ public:
    /// Struct for reading graphml vertex attributes
    struct VertexProperty
    {
-      int id;
-      std::string type;
+      string objectID;
+      string name;
+      string type;
+      double latitude;
+      double longitude;
+      string segments;
    };
 
    Layout911();

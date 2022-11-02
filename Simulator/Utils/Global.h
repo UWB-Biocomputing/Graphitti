@@ -132,8 +132,9 @@ enum edgeType {
    // NG911
    CP = 4,
    PR = 5,
-   RC = 6,
+   PC = 6,
    PP = 7,
+   RP = 8,
    // UNDEF
    ETYPE_UNDEF = -1
 };
