@@ -31,19 +31,20 @@ void Connections911::setupConnections(Layout *layout, AllVertices *vertices, All
    Layout911& layout911 = dynamic_cast<Layout911&>(*Simulator::getInstance().getModel()->getLayout());
    GraphManager<Layout911::VertexProperty> graph = layout911.getGraphManager();
 
-   // Add all edges
-   GraphManager<Layout911::VertexProperty>::EdgeIterator ei, ei_end;
-   for (boost::tie(ei, ei_end) =  graph.edges(); ei != ei_end; ++ei) {
-      // Source and target return the vertex index
-      size_t srcV = graph.source(*ei);
-      size_t destV = graph.target(*ei);
+   // Get edges sorted by target in ascending order
+   auto sorted_edge_list = graph.edgesSortByTarget();
+
+   // add sorted edges
+   for (auto it = sorted_edge_list.begin(); it != sorted_edge_list.end(); ++it) {
+      size_t srcV = graph.source(*it);
+      size_t destV = graph.target(*it);
       edgeType type = layout->edgType(srcV, destV);
       BGFLOAT *sumPoint = &vertices->summationMap_[destV];
-      
-      BGFLOAT dist = (*layout->dist_)(srcV, destV);
-      LOG4CPLUS_DEBUG(fileLogger_,
-                      "Source: " << srcV << " Dest: " << destV << " Dist: " << dist);
 
+      BGFLOAT dist = (*layout->dist_)(srcV, destV);
+      LOG4CPLUS_DEBUG(edgeLogger_,
+                      "Source: " << srcV << " Dest: " << destV << " Dist: " << dist);
+      
       BGSIZE iEdg;
       edges->addEdge(iEdg, type, srcV, destV, sumPoint,
                      Simulator::getInstance().getDeltaT());

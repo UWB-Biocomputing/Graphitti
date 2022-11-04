@@ -86,7 +86,7 @@ public:
     /// @brief Exposes the BGL Edge Iterators of the stored Graph
     /// @return a pair of EdgeIterators where first points to the beginning
     ///         and second points to the end of the edges vector
-    pair<EdgeIterator, EdgeIterator> edges()
+    pair<EdgeIterator, EdgeIterator> edges() const
     {
         return boost::edges(graph_);
     }
@@ -94,7 +94,7 @@ public:
     /// @brief Retrieves the source vertex index for the given Edge
     /// @param edge the EdgeDescriptor
     /// @return the source vertex index for the given Edge
-    size_t source(const EdgeDescriptor &edge)
+    size_t source(const EdgeDescriptor &edge) const
     {
         return boost::source(edge, graph_);
     }
@@ -102,7 +102,7 @@ public:
     /// @brief Retrieves the target vertex index for the given Edge
     /// @param edge the EdgeDescriptor
     /// @return the target vertex index for the given Edge
-    size_t target(const EdgeDescriptor &edge)
+    size_t target(const EdgeDescriptor &edge) const
     {
         return boost::target(edge, graph_);
     }
@@ -121,6 +121,23 @@ public:
     const VertexProperty &operator[](size_t vertex) const
     {
         return graph_[vertex];
+    }
+
+    /// @brief Returns a list of EdgeDescriptors in ascending order by target vertexID
+    /// @return List of EdgeDescriptors in ascending order by target vertexID
+    const list<EdgeDescriptor> edgesSortByTarget() const
+    {
+        list<EdgeDescriptor> ei_list;
+        EdgeIterator ei, ei_end;
+        for (boost::tie(ei, ei_end) = edges(); ei != ei_end; ++ei) {
+            ei_list.push_back(*ei);
+        }
+
+        ei_list.sort([this](EdgeDescriptor const& a, EdgeDescriptor const& b){
+            return this->target(a) < this->target(b);
+        });
+
+        return ei_list;
     }
 
 private:
