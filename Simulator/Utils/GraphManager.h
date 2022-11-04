@@ -40,7 +40,7 @@ class GraphManager
 public:
     /// typedef for graphml graph type (adjacency list)
     typedef boost::adjacency_list<boost::vecS, boost::vecS,
-            boost::undirectedS, VertexProperty, EdgeProperty,
+            boost::directedS, VertexProperty, EdgeProperty,
             GraphProperty> Graph;
 
     typedef typename boost::graph_traits<Graph>::edge_iterator EdgeIterator;

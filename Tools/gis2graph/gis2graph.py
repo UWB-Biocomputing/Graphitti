@@ -13,7 +13,7 @@ import math
 
 def main():
     # initialize graph
-    G = nx.Graph()
+    G = nx.DiGraph()
 
     region_string = []  # stores the strings of squares that will be set as caller region attributes
 
@@ -135,6 +135,7 @@ def main():
             # finds all PSAPs that share a border with the current PSAP, and adds in adjacency edges
             if x != y and merged_kc_psap.iloc[x].geometry.touches(merged_kc_psap.iloc[y].geometry):
                 G.add_edge(merged_kc_psap.iloc[x].ES_NGUID, merged_kc_psap.iloc[y].ES_NGUID)
+                G.add_edge(merged_kc_psap.iloc[y].ES_NGUID, merged_kc_psap.iloc[x].ES_NGUID)
 
         # Loop through all EMS boundaries adding edges to relevant PSAP nodes
         for z in range(kc_ems.shape[0]):
@@ -142,6 +143,7 @@ def main():
             if (kc_ems.iloc[z].geometry.intersects(merged_kc_psap.iloc[x].geometry) and not kc_ems.iloc[z].geometry.touches(
                     merged_kc_psap.iloc[x].geometry)) or kc_ems.iloc[z].geometry.within(merged_kc_psap.iloc[x].geometry):
                 G.add_edge(merged_kc_psap.iloc[x].ES_NGUID, kc_ems.iloc[z].ES_NGUID)
+                G.add_edge(kc_ems.iloc[z].ES_NGUID, merged_kc_psap.iloc[x].ES_NGUID)
 
         # Loop through all Law boundaries adding edges to relevant PSAP nodes
         for a in range(kc_law.shape[0]):
@@ -149,6 +151,7 @@ def main():
             if (kc_law.iloc[a].geometry.intersects(merged_kc_psap.iloc[x].geometry) and not kc_law.iloc[a].geometry.touches(
                     merged_kc_psap.iloc[x].geometry)) or kc_law.iloc[a].geometry.within(merged_kc_psap.iloc[x].geometry):
                 G.add_edge(merged_kc_psap.iloc[x].ES_NGUID, kc_law.iloc[a].ES_NGUID)
+                G.add_edge(kc_law.iloc[a].ES_NGUID, merged_kc_psap.iloc[x].ES_NGUID)
 
         # Loop through all Fire boundaries adding edges to relevant PSAP nodes
         for b in range(kc_fire.shape[0]):
@@ -156,6 +159,7 @@ def main():
             if (kc_fire.iloc[b].geometry.intersects(merged_kc_psap.iloc[x].geometry) and not kc_fire.iloc[b].geometry.touches(
                     merged_kc_psap.iloc[x].geometry)) or kc_fire.iloc[b].geometry.within(merged_kc_psap.iloc[x].geometry):
                 G.add_edge(merged_kc_psap.iloc[x].ES_NGUID, kc_fire.iloc[b].ES_NGUID)
+                G.add_edge(kc_fire.iloc[b].ES_NGUID, merged_kc_psap.iloc[x].ES_NGUID)
 
     # Loop through all the squares in our grid, checking if each is completely within, or intersects with any psap
     # boundary
@@ -188,6 +192,7 @@ def main():
         caller_region_id = str(merged_kc_psap.iloc[n].ES_NGUID) + "_CR"
         G.add_node(caller_region_id, objectID=caller_region_id, name=region_name, type="CALR", segments=str(region_string[n]))
         G.add_edge(caller_region_id, str(merged_kc_psap.iloc[n].ES_NGUID))
+        G.add_edge(str(merged_kc_psap.iloc[n].ES_NGUID), caller_region_id)
 
     # Print out graph information and produce .gexf file representing graph
     print("Number of nodes in graph:", G.number_of_nodes())
