@@ -359,7 +359,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices *neurons)
          int offIndex = -1;   // last spike
          while (true) {
             spikeHistory = spNeurons->getSpikeHistory(idxPost, offIndex);
-            if (spikeHistory == ULONG_MAX)
+            if (spikeHistory == numeric_limits<unsigned long>::max())
                break;
             // delta is the spike interval between pre-post spikes
             // (include pre-synaptic transmission delay)
@@ -400,7 +400,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices *neurons)
          int offIndex = -1;   // last spike
          while (true) {
             spikeHistory = spNeurons->getSpikeHistory(idxPre, offIndex);
-            if (spikeHistory == ULONG_MAX)
+            if (spikeHistory == numeric_limits<unsigned long>::max())
                break;
 
             if (spikeHistory + total_delay > g_simulationStep) {
