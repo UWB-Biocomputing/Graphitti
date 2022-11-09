@@ -40,7 +40,10 @@ void Layout911::loadParameters()
                           "vertex list file path wasn't found and will not be initialized");
    }
 
-   // We must register the graph properties before loading it
+   // We must register the graph properties before loading it.
+   // We are passing a pointer to a data member of the VertexProperty
+   // so Boost Graph Library can use it for loading the graphML file.
+   // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
    gm_.registerProperty("objectID", &VertexProperty::objectID);
    gm_.registerProperty("name", &VertexProperty::name);
    gm_.registerProperty("type", &VertexProperty::type);

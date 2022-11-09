@@ -31,7 +31,7 @@ void Connections911::setupConnections(Layout *layout, AllVertices *vertices, All
    Layout911& layout911 = dynamic_cast<Layout911&>(*Simulator::getInstance().getModel()->getLayout());
    GraphManager<Layout911::VertexProperty> graph = layout911.getGraphManager();
 
-   // Get edges sorted by target in ascending order
+   // Get list of edges sorted by target in ascending order
    auto sorted_edge_list = graph.edgesSortByTarget();
 
    // add sorted edges
@@ -338,7 +338,7 @@ string Connections911::ChangedEdge::toString()
    }
 
    os << "<item>";
-   os << srcV << " " << destV << " " << type_s << " " << eType;
+   os << srcV << " " << destV << " " << type_s;
    os << "</item>" << endl;
 
    return os.str();

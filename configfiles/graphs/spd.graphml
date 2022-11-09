@@ -5,7 +5,7 @@
 <key id="d2" for="node" attr.name="type" attr.type="string"/>
 <key id="d1" for="node" attr.name="name" attr.type="string"/>
 <key id="d0" for="node" attr.name="objectID" attr.type="string"/>
-<graph edgedefault="undirected"><node id="0">
+<graph edgedefault="directed"><node id="0">
   <data key="d0">PSAP120@kingcounty.gov</data>
   <data key="d1">SEATTLE PD</data>
   <data key="d2">PSAP</data>

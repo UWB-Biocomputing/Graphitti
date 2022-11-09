@@ -16,7 +16,7 @@
       <maxFiringRate name="maxFiringRate">100</maxFiringRate>
       <!-- NOTE: The King County Sherrif office PSAP node has 691 edges. I need to verify
            if this value is correct because it seems unusually large for the number of total responders. -->
-      <maxEdgesPerVertex name="maxEdgesPerVertex">692</maxEdgesPerVertex>
+      <maxEdgesPerVertex name="maxEdgesPerVertex">1383</maxEdgesPerVertex>
     </SimConfig>
     <RNGConfig name="RNGConfig">
       <InitRNGSeed name="InitRNGSeed">1</InitRNGSeed>
