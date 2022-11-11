@@ -9,6 +9,7 @@
 // #include <string>
 #include "Layout911.h"
 #include "GraphManager.h"
+#include "ParameterManager.h"
 
 Layout911::Layout911()
 {

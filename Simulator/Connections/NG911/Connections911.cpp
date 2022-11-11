@@ -11,6 +11,7 @@
 #include "All911Vertices.h"
 #include "Layout911.h"
 #include "GraphManager.h"
+#include "ParameterManager.h"
 
 Connections911::Connections911()
 {
