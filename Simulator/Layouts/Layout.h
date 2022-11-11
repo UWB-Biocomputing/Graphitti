@@ -60,6 +60,10 @@ public:
    /// @return type of the synapse.
    virtual edgeType edgType(const int srcVertex, const int destVertex) = 0;
 
+   /// @brief Returns the number of vertices managed by the Layout
+   /// @return The number of vertices managed by the Layout
+   virtual int getNumVertices() const;
+
    VectorMatrix *xloc_;   ///< Store neuron i's x location.
 
    VectorMatrix *yloc_;   ///< Store neuron i's y location.
@@ -89,9 +93,6 @@ protected:
 
    log4cplus::Logger fileLogger_;
 
-private:
-   /// initialize the location maps (xloc and yloc).
-   void initVerticesLocs();
+   int numVertices_;  ///< Total number of vertices in the graph.
 
-   bool gridLayout_;   ///< True if grid layout.
 };

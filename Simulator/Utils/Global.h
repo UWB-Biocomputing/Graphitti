@@ -7,6 +7,8 @@
  */
 // Globally available functions and default parameter values.
 
+#pragma once
+
 #ifndef _GLOBAL_H_
    #define _GLOBAL_H_
 
@@ -200,3 +202,29 @@ void printPerformanceMetrics(const float total_time, int steps);
 extern const string MATRIX_TYPE;
 // TODO comment
 extern const string MATRIX_INIT;
+
+/*****************************************************************************/
+/* Structures to hold the GraphML properties                                 */
+/*****************************************************************************/
+// We are using the Boost Graph Library (BGL) to load the simulator's initial
+// graph. BGL needs to associate the GraphML properties (graph, vertices, and 
+// edges properties), we do that by registering them before loading the graph.
+// The following structures are used to register those properties with the
+// GraphManager class, which is just a wrapper around BGL. The corresponding
+// classes (Layout, Connections, etc) need to do this before we can load the
+// graph.
+
+/// Struct for vertex attributes
+struct VertexProperty
+{
+   string objectID;
+   string name;
+   string type;
+   double x;
+   double y;
+   string segments;
+};
+
+// 
+struct EdgeProperty {};
+struct GraphProperty {};

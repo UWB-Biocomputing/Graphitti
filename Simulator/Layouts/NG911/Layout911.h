@@ -15,23 +15,11 @@
 #pragma once
 
 #include "Layout.h"
-#include "GraphManager.h"
 
 using namespace std;
 
 class Layout911 : public Layout {
 public:
-
-   /// Struct for reading graphml vertex attributes
-   struct VertexProperty
-   {
-      string objectID;
-      string name;
-      string type;
-      double latitude;
-      double longitude;
-      string segments;
-   };
 
    Layout911();
 
@@ -47,6 +35,10 @@ public:
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters() override;
+
+   /// Setup the internal structure of the class.
+   /// Allocate memories to store all layout state.
+   virtual void setupLayout() override;
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
@@ -73,14 +65,5 @@ public:
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
    virtual edgeType edgType(const int srcVertex, const int destVertex) override;
-
-   /// @brief GraphManager accessor
-   /// @return the GraphManager for the loaded graphml file
-   GraphManager<VertexProperty> getGraphManager();
-
-private:
-
-   /// Used for loading the initial graph from a graphml file
-   GraphManager<VertexProperty> gm_;
 
 };

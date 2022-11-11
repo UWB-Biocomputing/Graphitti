@@ -6,17 +6,25 @@
  *
  * @ingroup Simulator/Utils
  *
- * The class provides a simple interface to load a 
- * graphml file with the following assumptions:
+ * The class provides a simple interface to load a graphML file. The BGL needs
+ * to know the vertices, edges, graph properties before loading the graph. We
+ * tell BGL where to store these properties and their type by registering them
+ * before hand using the registerProperty() method.
+ * Assumptions:
  *   - VertexProperty is a struct that contains the properties related to vertices
  *     lisgted in the graphml file.
  *   - EdgeProperty is a struct that contains the properties related to edges
  *     listed inthe graphml file.
- *   - GraphProperty is a structu that contains the properties related to the graph.
+ *   - GraphProperty is a structure that contains the properties related to the graph.
  *   - All relevant properties are registered via the `registerProperty()` method
  *     before calling `loadGraph`.
  *   - Properties not registered are ignored.
  *
+ * The structures for the VertexProperty, EdgeProperty, and GraphProperty are declared
+ * in Global.h.
+ * 
+ * The class was made a Singleton because is needed in various places to initialize
+ * the differen graph structures of the Simulator.
  *
  * @author Jardi A. M. Jordan
  * Supervised by Dr. Michael Stiber, UW Bothell CSSE Division
@@ -32,9 +40,6 @@
 
 using namespace std;
 
-template <class VertexProperty = boost::no_property, 
-          class EdgeProperty = boost::no_property,
-          class GraphProperty = boost::no_property>
 class GraphManager
 {
 public:
@@ -47,11 +52,24 @@ public:
     typedef typename boost::graph_traits<Graph>::vertex_iterator VertexIterator;
     typedef typename boost::graph_traits<Graph>::edge_descriptor EdgeDescriptor;
 
-    /// @brief Constructor
-    GraphManager() : graph_(), dp_(boost::ignore_other_properties) {}
+    static GraphManager &getInstance()
+    {
+        static GraphManager instance;
+        return instance;
+    }
+
+    void setFilePath(string filePath)
+    {
+        graphFilePath_ = filePath;
+    }
 
     /// @brief Registers a graph property with its attribute name in the graphml file
-    /// @tparam Property    Type of the property to be registered
+    ///
+    /// Note: We are passing a pointer to a data member of the Struct that will hold
+    /// the property. The BGL will use this when loading the graphML file.
+    /// Reference: https://www.studytonight.com/cpp/pointer-to-members.php
+    ///
+    /// @tparam Property    Pointer to a Struct data member that will hold the property
     /// @param propName     The attribute name inthe graphml file
     /// @param property     Pointer to the property to be registered
     template <class Property>
@@ -62,17 +80,27 @@ public:
 
     /// @brief Loads a graph from a graphml file into a BGL graph
     /// @return The graph loaded as an adjacency list
-    Graph &loadGraph()
+    bool loadGraph()
     {
         // Load graphml file into a BGL graph
         ifstream graph_file;
-        if (!ParameterManager::getInstance().getFileByXpath("//graphmlFile/text()",
-                                                            graph_file)) {
-            throw runtime_error("In GraphManager::loadGraph() "
-                                "graphml file wasn't found and won't be initialized");
+
+        // string file_name;
+        string path = "//graphmlFile/text()";
+        if (!ParameterManager::getInstance().getStringByXpath(path,
+                                                              graphFilePath_)) {
+            cerr << "Could not find XML path: " << path << ".\n";
+            return false;
         };
+
+        graph_file.open(graphFilePath_.c_str());
+        if (!graph_file.is_open()) {
+            cerr << "Failed to open file: " << graphFilePath_ << ".\n";
+            return false;
+        }
+
         boost::read_graphml(graph_file, graph_, dp_);
-        return graph_;
+        return true;
     }
 
     /// @brief Exposes the BGL Vertex Iterators of the stored Graph
@@ -140,10 +168,34 @@ public:
         return ei_list;
     }
 
+    /// @brief Retrieves the number of vertices in the current graph
+    /// @return The number of vertices in the current graph
+    size_t numVertices() const
+    {
+        return boost::num_vertices(graph_);
+    }
+
+    /// @brief Retrieves the number of edges in the current graph
+    /// @return The number of edges in the current graph
+    size_t numEdges() const
+    {
+        return boost::num_edges(graph_);
+    }
+
 private:
     /// stores the graph
     Graph graph_;
 
+    string graphFilePath_;
+
     /// container for dynamic properties map
     boost::dynamic_properties dp_;
+
+    /// @brief Constructor
+    GraphManager() : graph_(), dp_(boost::ignore_other_properties)
+    {
+    }
+
+    GraphManager(GraphManager const &) = delete;
+    void operator=(GraphManager const &) = delete;
 };

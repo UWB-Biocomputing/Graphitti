@@ -10,7 +10,7 @@
 #include "Connections911.h"
 #include "All911Vertices.h"
 #include "Layout911.h"
-#include "ParameterManager.h"
+#include "GraphManager.h"
 
 Connections911::Connections911()
 {
@@ -29,7 +29,8 @@ void Connections911::setupConnections(Layout *layout, AllVertices *vertices, All
 
    // Get GraphManager stored in Layout911
    Layout911& layout911 = dynamic_cast<Layout911&>(*Simulator::getInstance().getModel()->getLayout());
-   GraphManager<Layout911::VertexProperty> graph = layout911.getGraphManager();
+   GraphManager &graph = GraphManager::getInstance();
+   // GraphManager<Layout911::VertexProperty> graph = layout911.getGraphManager();
 
    // Get list of edges sorted by target in ascending order
    auto sorted_edge_list = graph.edgesSortByTarget();

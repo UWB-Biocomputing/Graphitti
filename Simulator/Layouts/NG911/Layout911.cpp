@@ -8,7 +8,7 @@
 
 // #include <string>
 #include "Layout911.h"
-#include "ParameterManager.h"
+#include "GraphManager.h"
 
 Layout911::Layout911()
 {
@@ -44,12 +44,46 @@ void Layout911::loadParameters()
    // We are passing a pointer to a data member of the VertexProperty
    // so Boost Graph Library can use it for loading the graphML file.
    // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
-   gm_.registerProperty("objectID", &VertexProperty::objectID);
-   gm_.registerProperty("name", &VertexProperty::name);
-   gm_.registerProperty("type", &VertexProperty::type);
-   gm_.registerProperty("latitude", &VertexProperty::latitude);
-   gm_.registerProperty("longitude", &VertexProperty::longitude);
-   gm_.loadGraph();
+   GraphManager &gm = GraphManager::getInstance();
+   gm.registerProperty("objectID", &VertexProperty::objectID);
+   gm.registerProperty("name", &VertexProperty::name);
+   gm.registerProperty("type", &VertexProperty::type);
+   gm.registerProperty("latitude", &VertexProperty::y);
+   gm.registerProperty("longitude", &VertexProperty::x);
+   gm.loadGraph();
+
+   // Set the number of vertices
+   numVertices_ = gm.numVertices();
+}
+
+void Layout911::setupLayout() {
+   // Base class allocates memory for: xLoc_, yLoc, dist2_, and dist_
+   // so we call its method first
+   Layout::setupLayout();
+
+   // Loop over all vertices and set thir x and y locations
+   GraphManager::VertexIterator vi, vi_end;
+   GraphManager &gm = GraphManager::getInstance();
+   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
+      assert(*vi < numVertices_);
+      (*xloc_)[*vi] = gm[*vi].x;
+      (*yloc_)[*vi] = gm[*vi].y;
+   }
+
+   // Now we cache the between each pair of vertices distances^2 into a matrix
+   for (int n = 0; n < numVertices_ - 1; n++) {
+      for (int n2 = n + 1; n2 < numVertices_; n2++) {
+         // distance^2 between two points in point-slope form
+         (*dist2_)(n, n2) = ((*xloc_)[n] - (*xloc_)[n2]) * ((*xloc_)[n] - (*xloc_)[n2])
+                            + ((*yloc_)[n] - (*yloc_)[n2]) * ((*yloc_)[n] - (*yloc_)[n2]);
+
+         // both points are equidistant from each other
+         (*dist2_)(n2, n) = (*dist2_)(n, n2);
+      }
+   }
+
+   // Finally take the square root to get the distances
+   (*dist_) = sqrt((*dist2_));
 }
 
 void Layout911::printParameters() const
@@ -73,15 +107,17 @@ void Layout911::generateVertexTypeMap(int numVertices)
    map<string, int> vTypeCount;  // Count map for debugging
 
    // Add all vertices
-   GraphManager<VertexProperty>::VertexIterator vi, vi_end;
-   for (boost::tie(vi, vi_end) = gm_.vertices(); vi != vi_end; ++vi) {
-      assert(*vi < numVertices);
-      vertexTypeMap_[*vi] = vTypeMap[gm_[*vi].type];
-      vTypeCount[gm_[*vi].type] += 1;
+   GraphManager::VertexIterator vi, vi_end;
+   GraphManager &gm = GraphManager::getInstance();
+   LOG4CPLUS_DEBUG(fileLogger_, "\nvertices in graph: " << gm.numVertices());
+   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
+      assert(*vi < numVertices_);
+      vertexTypeMap_[*vi] = vTypeMap[gm[*vi].type];
+      vTypeCount[gm[*vi].type] += 1;
    }
 
    LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP" << endl
-                                                    << "\tTotal vertices: " << numVertices << endl
+                                                    << "\tTotal vertices: " << numVertices_ << endl
                                                     << "\tCaller vertices: " << vTypeCount["CALR"] << endl
                                                     << "\tPSAP vertices: " << vTypeCount["PSAP"] << endl
                                                     << "\tResponder vertices: " << vTypeCount["RESP"]
@@ -122,9 +158,4 @@ edgeType Layout911::edgType(const int srcVertex, const int destVertex)
       return RP;
    else
       return ETYPE_UNDEF;
-}
-
-GraphManager<Layout911::VertexProperty> Layout911::getGraphManager()
-{
-   return gm_;
 }

@@ -327,7 +327,7 @@ bool ParameterManager::getIntVectorByXpath(const string &path, const string &ele
 /// @return       true if the retrieval was successful, false otherwise
 bool ParameterManager::getFileByXpath(const string &path, ifstream &file)
 {
-    string file_name;
+   string file_name;
    if (!ParameterManager::getInstance().getStringByXpath(path,
                                                          file_name)) {
       cerr << "Could not find XML path: " << path << ".\n";

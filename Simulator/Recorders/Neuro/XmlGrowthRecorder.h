@@ -36,6 +36,9 @@ public:
    /// Init radii and rates history matrices with default values
    virtual void initDefaultValues() override;
 
+   /// Initialize data in the newly loadeded xml file
+   virtual void init() override;
+
    /// Init radii and rates history matrices with current radii and rates
    virtual void initValues() override;
 
@@ -61,8 +64,8 @@ private:
    void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
 
    // track firing rate
-   CompleteMatrix ratesHistory_;
+   shared_ptr<CompleteMatrix> ratesHistory_;
 
    // track radii
-   CompleteMatrix radiiHistory_;
+   shared_ptr<CompleteMatrix> radiiHistory_;
 };
