@@ -82,7 +82,7 @@ void Model::setupSim()
    Simulator::getInstance.short_timer.start();
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Setting up Layout...");
-   layout_->setupLayout();
+   layout_->setup();
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (layout)
    t_host_initialization_layout += Simulator::getInstance().short_timer.lap() / 1000000.0;
@@ -101,7 +101,7 @@ void Model::setupSim()
    Simulator::getInstance().short_timer.start();
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Setting up Connections...");
-   connections_->setupConnections(layout_.get(), layout_->getVertices().get(),
+   connections_->setup(layout_.get(), layout_->getVertices().get(),
                                   connections_->getEdges().get());
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (connections)

@@ -91,7 +91,7 @@ ConnGrowth::~ConnGrowth()
 ///  @param  layout    Layout information of the neural network.
 ///  @param  vertices   The vertex list to search from.
 ///  @param  synapses  The Synapse list to search from.
-void ConnGrowth::setupConnections(Layout *layout, AllVertices *vertices, AllEdges *synapses)
+void ConnGrowth::setup(Layout *layout, AllVertices *vertices, AllEdges *synapses)
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
    radiiSize_ = numVertices;

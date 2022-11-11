@@ -14,7 +14,8 @@
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">100</maxFiringRate>
-      <maxEdgesPerVertex name="maxEdgesPerVertex">88</maxEdgesPerVertex>
+      <!-- Seattle PD PSAP has 194 edges in total -->
+      <maxEdgesPerVertex name="maxEdgesPerVertex">195</maxEdgesPerVertex>
     </SimConfig>
     <RNGConfig name="RNGConfig">
       <InitRNGSeed name="InitRNGSeed">1</InitRNGSeed>

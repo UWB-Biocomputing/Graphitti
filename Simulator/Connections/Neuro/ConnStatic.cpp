@@ -54,7 +54,7 @@ ConnStatic::~ConnStatic()
 ///  @param  layout    Layout information of the neural network.
 ///  @param  vertices   The Vertex list to search from.
 ///  @param  edges  The Synapse list to search from.
-void ConnStatic::setupConnections(Layout *layout, AllVertices *vertices, AllEdges *edges)
+void ConnStatic::setup(Layout *layout, AllVertices *vertices, AllEdges *edges)
 {
    Simulator &simulator = Simulator::getInstance();
    int numVertices = simulator.getTotalVertices();

@@ -20,11 +20,11 @@ FixedLayout::~FixedLayout()
 {
 }
 
-void FixedLayout::setupLayout()
+void FixedLayout::setup()
 {
    // Base class allocates memory for: xLoc_, yLoc, dist2_, and dist_
    // so we call its method first
-   Layout::setupLayout();
+   Layout::setup();
 
    // Initialize neuron locations memory, grab global info
    initVerticesLocs();

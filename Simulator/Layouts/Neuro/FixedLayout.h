@@ -36,7 +36,7 @@ public:
 
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.
-   virtual void setupLayout() override;
+   virtual void setup() override;
 
    ///  Creates a vertex type map.
    ///

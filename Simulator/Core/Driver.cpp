@@ -114,10 +114,9 @@ int main(int argc, char *argv[])
       return -1;
    }
 
-   // TODO: Ask all objects to register their Graph properties
-   simulator.getModel()->getLayout()->registerGraphProperties();
-
-   // Read GraphML file
+   // Ask all objects to register their Graph properties
+   OperationManager::getInstance().executeOperation(Operations::registerGraphProperties);
+   // Read graph from GraphML file. Uses ParameterManager to get the file name.
    GraphManager::getInstance().readGraph();
 
    // Invoke instantiated simulator objects to load parameters from the configuration file

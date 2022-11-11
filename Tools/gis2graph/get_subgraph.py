@@ -9,8 +9,9 @@ def main():
     G =nx.read_graphml(graphml_file)
 
     # extract the subgraph for the given vertex
-    G_spd = nx.Graph()
-    G_spd.add_edges_from(G.edges(edge_filter, data=True))
+    G_spd = nx.DiGraph()
+    G_spd.add_edges_from(G.out_edges(edge_filter, data=True))
+    G_spd.add_edges_from(G.in_edges(edge_filter, data=True))
     for node in G_spd.nodes():
         G_spd.nodes[node].update(G.nodes[node])
 

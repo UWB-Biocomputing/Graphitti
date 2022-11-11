@@ -15,6 +15,8 @@ public:
    enum op {
       printParameters,
       loadParameters,
+      registerGraphProperties,
+      setup,
       serialize,
       deserialize,
       deallocateGPUMemory,   // Make sure deallocate memory isn't called until all GPU memory is copied back.

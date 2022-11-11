@@ -39,6 +39,12 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
 
+   // Register registerGraphProperties method as registerGraphProperties operation
+   // in the OperationManager
+   function<void()> registerGraphPropertiesFunc = bind(&Layout::registerGraphProperties, this);
+   OperationManager::getInstance().registerOperation(Operations::registerGraphProperties,
+                                                     registerGraphPropertiesFunc);
+
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
@@ -85,7 +91,7 @@ void Layout::registerGraphProperties()
 
 /// Setup the internal structure of the class.
 /// Allocate memories to store all layout state, no sequential dependency in this method
-void Layout::setupLayout()
+void Layout::setup()
 {
    // Allocate memory
    xloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);

@@ -36,7 +36,7 @@ public:
 
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.
-   virtual void setupLayout();
+   virtual void setup();
 
    /// @brief Register vertex properties with the GraphManager
    virtual void registerGraphProperties();

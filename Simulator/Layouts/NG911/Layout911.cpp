@@ -62,10 +62,10 @@ void Layout911::loadParameters()
    numVertices_ = GraphManager::getInstance().numVertices();
 }
 
-void Layout911::setupLayout() {
+void Layout911::setup() {
    // Base class allocates memory for: xLoc_, yLoc, dist2_, and dist_
    // so we call its method first
-   Layout::setupLayout();
+   Layout::setup();
 
    // Loop over all vertices and set thir x and y locations
    GraphManager::VertexIterator vi, vi_end;

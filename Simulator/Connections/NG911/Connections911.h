@@ -37,7 +37,7 @@ public:
    ///  @param  layout    Layout information of the network.
    ///  @param  vertices  The Vertex list to search from.
    ///  @param  edges     The edge list to search from.
-   virtual void setupConnections(Layout *layout, AllVertices *vertices, AllEdges *edges) override;
+   virtual void setup(Layout *layout, AllVertices *vertices, AllEdges *edges) override;
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operations::op::loadParameters

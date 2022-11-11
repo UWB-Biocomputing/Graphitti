@@ -29,14 +29,20 @@ Connections::Connections()
    ParameterManager::getInstance().getStringByXpath("//EdgesParams/@class", type);
    edges_ = EdgesFactory::getInstance().createEdges(type);
 
+   // Get pointer to operations manager Singleton
+   OperationManager &opsManager = OperationManager::getInstance();
+
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&Connections::printParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::printParameters,
-                                                     printParametersFunc);
+   opsManager.registerOperation(Operations::printParameters, printParametersFunc);
 
    // Register loadParameters function with Operation Manager
-   function<void()> function = std::bind(&Connections::loadParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function);
+   function<void()> loadParamsFunc = bind(&Connections::loadParameters, this);
+   opsManager.registerOperation(Operations::op::loadParameters, loadParamsFunc);
+
+   // Register registerGraphProperties as Operations registerGraphPropoerties
+   function<void()> regGraphPropsFunc = bind(&Connections::registerGraphProperties, this);
+   opsManager.registerOperation(Operations::registerGraphProperties, regGraphPropsFunc);
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
@@ -55,6 +61,14 @@ shared_ptr<AllEdges> Connections::getEdges() const
 shared_ptr<EdgeIndexMap> Connections::getEdgeIndexMap() const
 {
    return synapseIndexMap_;
+}
+
+void Connections::registerGraphProperties()
+{
+   // TODO: Here we need to register the edge properties that are common
+   // to all models wit the GraphManager. Perhaps none.
+   // This empty Base class implementation is here because Neural model
+   // doesn't currently use GraphManager.
 }
 
 void Connections::createEdgeIndexMap()

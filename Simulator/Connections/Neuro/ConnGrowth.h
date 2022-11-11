@@ -93,7 +93,7 @@ public:
    ///  @param  layout    Layout information of the neural network.
    ///  @param  neurons   The Neuron list to search from.
    ///  @param  synapses  The Synapse list to search from.
-   virtual void setupConnections(Layout *layout, AllVertices *neurons, AllEdges *synapses) override;
+   virtual void setup(Layout *layout, AllVertices *neurons, AllEdges *synapses) override;
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operations::op::loadParameters

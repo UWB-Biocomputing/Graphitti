@@ -22,23 +22,19 @@ Connections911::~Connections911()
       delete[] oldTypeMap_;
 }
 
-void Connections911::setupConnections(Layout *layout, AllVertices *vertices, AllEdges *edges)
+void Connections911::setup(Layout *layout, AllVertices *vertices, AllEdges *edges)
 {
    int added = 0;
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
 
-   // Get GraphManager stored in Layout911
-   Layout911& layout911 = dynamic_cast<Layout911&>(*Simulator::getInstance().getModel()->getLayout());
-   GraphManager &graph = GraphManager::getInstance();
-   // GraphManager<Layout911::VertexProperty> graph = layout911.getGraphManager();
-
-   // Get list of edges sorted by target in ascending order
-   auto sorted_edge_list = graph.edgesSortByTarget();
+   // Get list of edges sorted by target in ascending order from GraphManager
+   GraphManager &gm = GraphManager::getInstance();
+   auto sorted_edge_list = gm.edgesSortByTarget();
 
    // add sorted edges
    for (auto it = sorted_edge_list.begin(); it != sorted_edge_list.end(); ++it) {
-      size_t srcV = graph.source(*it);
-      size_t destV = graph.target(*it);
+      size_t srcV = gm.source(*it);
+      size_t destV = gm.target(*it);
       edgeType type = layout->edgType(srcV, destV);
       BGFLOAT *sumPoint = &vertices->summationMap_[destV];
 
