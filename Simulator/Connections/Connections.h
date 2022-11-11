@@ -53,11 +53,7 @@ public:
    void createEdgeIndexMap();
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
-   ///
-   ///  @param  layout    Layout information of the neural network.
-   ///  @param  neurons   The Neuron list to search from.
-   ///  @param  synapses  The Synapse list to search from.
-   virtual void setup(Layout *layout, AllVertices *vertices, AllEdges *synapses) = 0;
+   virtual void setup() = 0;
 
    /// @brief Register edge properties with the GraphManager
    virtual void registerGraphProperties();

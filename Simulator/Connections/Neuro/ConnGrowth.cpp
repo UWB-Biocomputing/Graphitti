@@ -91,7 +91,7 @@ ConnGrowth::~ConnGrowth()
 ///  @param  layout    Layout information of the neural network.
 ///  @param  vertices   The vertex list to search from.
 ///  @param  synapses  The Synapse list to search from.
-void ConnGrowth::setup(Layout *layout, AllVertices *vertices, AllEdges *synapses)
+void ConnGrowth::setup()
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
    radiiSize_ = numVertices;
@@ -103,6 +103,9 @@ void ConnGrowth::setup(Layout *layout, AllVertices *vertices, AllEdges *synapses
    area_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices, 0);
    outgrowth_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
    deltaR_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
+
+   // we can obtain the Layout, which holds the vertices, from the Model
+   shared_ptr<Layout> layout = Simulator::getInstance().getModel()->getLayout();
 
    // Init connection frontier distance change matrix with the current distances
    (*delta_) = (*layout->dist_);

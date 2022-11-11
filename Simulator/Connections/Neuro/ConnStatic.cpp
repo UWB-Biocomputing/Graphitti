@@ -50,12 +50,12 @@ ConnStatic::~ConnStatic()
 ///  Initialize the small world network characterized by parameters:
 ///  number of maximum connections per vertex, connection radius threshold, and
 ///  small-world rewiring probability.
-///
-///  @param  layout    Layout information of the neural network.
-///  @param  vertices   The Vertex list to search from.
-///  @param  edges  The Synapse list to search from.
-void ConnStatic::setup(Layout *layout, AllVertices *vertices, AllEdges *edges)
+void ConnStatic::setup()
 {
+   // we can obtain the Layout, which holds the vertices, from the Model
+   shared_ptr<Layout> layout = Simulator::getInstance().getModel()->getLayout();
+   shared_ptr<AllVertices> vertices = layout->getVertices();
+
    Simulator &simulator = Simulator::getInstance();
    int numVertices = simulator.getTotalVertices();
    vector<DistDestVertex> distDestVertices[numVertices];
@@ -63,7 +63,7 @@ void ConnStatic::setup(Layout *layout, AllVertices *vertices, AllEdges *edges)
    WCurrentEpoch_ = new BGFLOAT[maxTotalEdges];
    sourceVertexIndexCurrentEpoch_ = new int[maxTotalEdges];
    destVertexIndexCurrentEpoch_ = new int[maxTotalEdges];
-   AllNeuroEdges *neuroEdges = dynamic_cast<AllNeuroEdges *>(edges);
+   AllNeuroEdges &neuroEdges = dynamic_cast<AllNeuroEdges &>(*edges_);
 
    radiiSize_ = numVertices;
    int added = 0;
@@ -97,25 +97,25 @@ void ConnStatic::setup(Layout *layout, AllVertices *vertices, AllEdges *edges)
                                     << " Dist: " << distDestVertices[srcVertex][i].dist);
 
          BGSIZE iEdg;
-         edges->addEdge(iEdg, type, srcVertex, destVertex, sumPoint, simulator.getDeltaT());
+         edges_->addEdge(iEdg, type, srcVertex, destVertex, sumPoint, simulator.getDeltaT());
          added++;
 
 
          // set edge weight
          // TODO: we need another synaptic weight distibution mode (normal distribution)
-         if (neuroEdges->edgSign(type) > 0) {
-            neuroEdges->W_[iEdg] = initRNG.inRange(excWeight_[0], excWeight_[1]);
+         if (neuroEdges.edgSign(type) > 0) {
+            neuroEdges.W_[iEdg] = initRNG.inRange(excWeight_[0], excWeight_[1]);
          } else {
-            neuroEdges->W_[iEdg] = initRNG.inRange(inhWeight_[0], inhWeight_[1]);
+            neuroEdges.W_[iEdg] = initRNG.inRange(inhWeight_[0], inhWeight_[1]);
          }
       }
    }
 
    string weight_str = "";
    for (int i = 0; i < maxTotalEdges; i++) {
-      WCurrentEpoch_[i] = neuroEdges->W_[i];
-      sourceVertexIndexCurrentEpoch_[i] = neuroEdges->sourceVertexIndex_[i];
-      destVertexIndexCurrentEpoch_[i] = neuroEdges->destVertexIndex_[i];
+      WCurrentEpoch_[i] = neuroEdges.W_[i];
+      sourceVertexIndexCurrentEpoch_[i] = neuroEdges.sourceVertexIndex_[i];
+      destVertexIndexCurrentEpoch_[i] = neuroEdges.destVertexIndex_[i];
 
       if (WCurrentEpoch_[i] != 0) {
          // LOG4CPLUS_DEBUG(edgeLogger_,i << WCurrentEpoch_[i]);

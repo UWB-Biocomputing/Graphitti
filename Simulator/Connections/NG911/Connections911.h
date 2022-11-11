@@ -33,11 +33,7 @@ public:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///  Initialize the network characterized by parameters:
    ///  number of maximum connections per vertex, connection radius threshold
-   ///
-   ///  @param  layout    Layout information of the network.
-   ///  @param  vertices  The Vertex list to search from.
-   ///  @param  edges     The edge list to search from.
-   virtual void setup(Layout *layout, AllVertices *vertices, AllEdges *edges) override;
+   virtual void setup() override;
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operations::op::loadParameters

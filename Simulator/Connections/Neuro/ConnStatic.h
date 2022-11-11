@@ -50,11 +50,7 @@ public:
    ///  Initialize the small world network characterized by parameters:
    ///  number of maximum connections per vertex, connection radius threshold, and
    ///  small-world rewiring probability.
-   ///
-   ///  @param  layout    Layout information of the neural network.
-   ///  @param  vertices   The Neuron list to search from.
-   ///  @param  edges  The Synapse list to search from.
-   virtual void setup(Layout *layout, AllVertices *vertices, AllEdges *edges) override;
+   virtual void setup() override;
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operations::op::loadParameters

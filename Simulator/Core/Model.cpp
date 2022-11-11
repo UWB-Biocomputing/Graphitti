@@ -101,8 +101,7 @@ void Model::setupSim()
    Simulator::getInstance().short_timer.start();
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Setting up Connections...");
-   connections_->setup(layout_.get(), layout_->getVertices().get(),
-                                  connections_->getEdges().get());
+   connections_->setup();
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (connections)
    t_host_initialization_connections += Simulator::getInstance().short_timer.lap() / 1000000.0;

@@ -22,10 +22,14 @@ Connections911::~Connections911()
       delete[] oldTypeMap_;
 }
 
-void Connections911::setup(Layout *layout, AllVertices *vertices, AllEdges *edges)
+void Connections911::setup()
 {
    int added = 0;
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
+
+   // we can obtain the Layout, which holds the vertices, from the Model
+   shared_ptr<Layout> layout = Simulator::getInstance().getModel()->getLayout();
+   shared_ptr<AllVertices> vertices = layout->getVertices();
 
    // Get list of edges sorted by target in ascending order from GraphManager
    GraphManager &gm = GraphManager::getInstance();
@@ -43,7 +47,7 @@ void Connections911::setup(Layout *layout, AllVertices *vertices, AllEdges *edge
                       "Source: " << srcV << " Dest: " << destV << " Dist: " << dist);
       
       BGSIZE iEdg;
-      edges->addEdge(iEdg, type, srcV, destV, sumPoint,
+      edges_->addEdge(iEdg, type, srcV, destV, sumPoint,
                      Simulator::getInstance().getDeltaT());
       added++;
    }
