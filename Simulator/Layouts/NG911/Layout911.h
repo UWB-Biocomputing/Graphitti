@@ -33,6 +33,9 @@ public:
       return new Layout911();
    }
 
+   /// @brief Register vertex properties with the GraphManager
+   virtual void registerGraphProperties() override;
+
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters() override;
 

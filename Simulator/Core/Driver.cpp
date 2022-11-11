@@ -21,6 +21,7 @@
 #include "AllEdges.h"
 #include "CPUModel.h"
 #include "Global.h"
+#include "GraphManager.h"
 #include "IRecorder.h"
 #include "Model.h"
 #include "OperationManager.h"
@@ -112,6 +113,12 @@ int main(int argc, char *argv[])
             + simulator.getConfigFileName() + " for incorrectly declared class types.");
       return -1;
    }
+
+   // TODO: Ask all objects to register their Graph properties
+   simulator.getModel()->getLayout()->registerGraphProperties();
+
+   // Read GraphML file
+   GraphManager::getInstance().readGraph();
 
    // Invoke instantiated simulator objects to load parameters from the configuration file
    LOG4CPLUS_TRACE(consoleLogger, "Loading parameters from configuration file");

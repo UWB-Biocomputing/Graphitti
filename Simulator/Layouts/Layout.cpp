@@ -77,12 +77,16 @@ int Layout::getNumVertices() const
    return numVertices_;
 }
 
+void Layout::registerGraphProperties()
+{
+   // TODO: This will be implemented when all models use graphML files to load the
+   // initial graph
+}
+
 /// Setup the internal structure of the class.
 /// Allocate memories to store all layout state, no sequential dependency in this method
 void Layout::setupLayout()
 {
-   // int numVertices = Simulator::getInstance().getTotalVertices();
-
    // Allocate memory
    xloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
    yloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);

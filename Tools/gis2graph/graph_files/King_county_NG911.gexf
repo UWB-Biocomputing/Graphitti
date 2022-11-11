@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
-  <meta lastmodifieddate="2022-11-03">
+  <meta lastmodifieddate="2022-11-11">
     <creator>NetworkX 2.8.6</creator>
   </meta>
   <graph defaultedgetype="directed" mode="static" name="">
@@ -8,8 +8,8 @@
       <attribute id="0" title="objectID" type="string" />
       <attribute id="1" title="name" type="string" />
       <attribute id="2" title="type" type="string" />
-      <attribute id="3" title="latitude" type="double" />
-      <attribute id="4" title="longitude" type="double" />
+      <attribute id="3" title="y" type="double" />
+      <attribute id="4" title="x" type="double" />
       <attribute id="5" title="segments" type="string" />
     </attributes>
     <nodes>

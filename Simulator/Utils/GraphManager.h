@@ -17,7 +17,7 @@
  *     listed inthe graphml file.
  *   - GraphProperty is a structure that contains the properties related to the graph.
  *   - All relevant properties are registered via the `registerProperty()` method
- *     before calling `loadGraph`.
+ *     before calling `readGraph`.
  *   - Properties not registered are ignored.
  *
  * The structures for the VertexProperty, EdgeProperty, and GraphProperty are declared
@@ -80,7 +80,7 @@ public:
 
     /// @brief Loads a graph from a graphml file into a BGL graph
     /// @return The graph loaded as an adjacency list
-    bool loadGraph()
+    bool readGraph()
     {
         // Load graphml file into a BGL graph
         ifstream graph_file;

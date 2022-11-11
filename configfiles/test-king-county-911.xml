@@ -4,9 +4,9 @@
     <PoolSize name="PoolSize">
       <!-- TODO: The 911 system graph doesn't have a grid layout. This is a hack
         to make it work with the current implementation of layouts but should be fixed. -->
-      <x name="x">32</x>
+      <!-- <x name="x">32</x>
       <y name="y">32</y>
-      <z name="z">1</z>
+      <z name="z">1</z> -->
     </PoolSize>
     <SimParams name="SimParams">
       <epochDuration name="epochDuration">100.0</epochDuration>

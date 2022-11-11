@@ -38,6 +38,9 @@ public:
    /// Allocate memories to store all layout state.
    virtual void setupLayout();
 
+   /// @brief Register vertex properties with the GraphManager
+   virtual void registerGraphProperties();
+
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters() = 0;
 

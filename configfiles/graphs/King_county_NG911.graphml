@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d5" for="node" attr.name="segments" attr.type="string"/>
-<key id="d4" for="node" attr.name="longitude" attr.type="double"/>
-<key id="d3" for="node" attr.name="latitude" attr.type="double"/>
+<key id="d4" for="node" attr.name="x" attr.type="double"/>
+<key id="d3" for="node" attr.name="y" attr.type="double"/>
 <key id="d2" for="node" attr.name="type" attr.type="string"/>
 <key id="d1" for="node" attr.name="name" attr.type="string"/>
 <key id="d0" for="node" attr.name="objectID" attr.type="string"/>

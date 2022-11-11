@@ -18,6 +18,24 @@ Layout911::~Layout911()
 {
 }
 
+void Layout911::registerGraphProperties()
+{
+   // The base class registers properties that al common to all vertices
+   // TODO: Currently not implemented because Nero model doesn't used graphML
+   Layout::registerGraphProperties();
+
+   // We must register the graph properties before loading it.
+   // We are passing a pointer to a data member of the VertexProperty
+   // so Boost Graph Library can use it for loading the graphML file.
+   // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
+   GraphManager &gm = GraphManager::getInstance();
+   gm.registerProperty("objectID", &VertexProperty::objectID);
+   gm.registerProperty("name", &VertexProperty::name);
+   gm.registerProperty("type", &VertexProperty::type);
+   gm.registerProperty("y", &VertexProperty::y);
+   gm.registerProperty("x", &VertexProperty::x);
+}
+
 void Layout911::loadParameters()
 {
    // Get the file paths for the vertex lists from the configuration file
@@ -40,20 +58,8 @@ void Layout911::loadParameters()
                           "vertex list file path wasn't found and will not be initialized");
    }
 
-   // We must register the graph properties before loading it.
-   // We are passing a pointer to a data member of the VertexProperty
-   // so Boost Graph Library can use it for loading the graphML file.
-   // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
-   GraphManager &gm = GraphManager::getInstance();
-   gm.registerProperty("objectID", &VertexProperty::objectID);
-   gm.registerProperty("name", &VertexProperty::name);
-   gm.registerProperty("type", &VertexProperty::type);
-   gm.registerProperty("latitude", &VertexProperty::y);
-   gm.registerProperty("longitude", &VertexProperty::x);
-   gm.loadGraph();
-
-   // Set the number of vertices
-   numVertices_ = gm.numVertices();
+   // Get the number of verticese from the GraphManager
+   numVertices_ = GraphManager::getInstance().numVertices();
 }
 
 void Layout911::setupLayout() {
