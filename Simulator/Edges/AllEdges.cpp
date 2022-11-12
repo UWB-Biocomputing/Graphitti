@@ -305,7 +305,9 @@ void AllEdges::addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const i
 {
    if (edgeCounts_[destVertex] >= maxEdgesPerVertex_) {
       LOG4CPLUS_FATAL(edgeLogger_, "Vertex : " << destVertex << " ran out of space for new edges.");
-      throw runtime_error("Vertex " + to_string(destVertex) + " ran out of space for new edges, current edge = " + to_string(edgeCounts_[destVertex]));
+      throw runtime_error("Vertex " + to_string(destVertex)
+                          + " ran out of space for new edges, current edge = "
+                          + to_string(edgeCounts_[destVertex]));
    }
 
    // add it to the list: find first edge location for vertex destVertex

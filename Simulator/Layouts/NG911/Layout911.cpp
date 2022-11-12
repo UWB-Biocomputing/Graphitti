@@ -63,7 +63,8 @@ void Layout911::loadParameters()
    numVertices_ = GraphManager::getInstance().numVertices();
 }
 
-void Layout911::setup() {
+void Layout911::setup()
+{
    // Base class allocates memory for: xLoc_, yLoc, dist2_, and dist_
    // so we call its method first
    Layout::setup();
@@ -111,7 +112,8 @@ void Layout911::generateVertexTypeMap(int numVertices)
                                        {"FIRE", vertexType::RESP},
                                        {"EMS", vertexType::RESP},
                                        {"PSAP", vertexType::PSAP}};
-   map<string, int> vTypeCount;  // Count map for debugging
+   // Count map for debugging
+   map<string, int> vTypeCount;
 
    // Add all vertices
    GraphManager::VertexIterator vi, vi_end;
@@ -123,12 +125,12 @@ void Layout911::generateVertexTypeMap(int numVertices)
       vTypeCount[gm[*vi].type] += 1;
    }
 
-   LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP" << endl
-                                                    << "\tTotal vertices: " << numVertices_ << endl
-                                                    << "\tCaller vertices: " << vTypeCount["CALR"] << endl
-                                                    << "\tPSAP vertices: " << vTypeCount["PSAP"] << endl
-                                                    << "\tResponder vertices: " << vTypeCount["RESP"]
-                                                    << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP"
+                                   << endl
+                                   << "\tTotal vertices: " << numVertices_ << endl
+                                   << "\tCaller vertices: " << vTypeCount["CALR"] << endl
+                                   << "\tPSAP vertices: " << vTypeCount["PSAP"] << endl
+                                   << "\tResponder vertices: " << vTypeCount["RESP"] << endl);
 
    LOG4CPLUS_INFO(fileLogger_, "Finished initializing vertex type map");
 }

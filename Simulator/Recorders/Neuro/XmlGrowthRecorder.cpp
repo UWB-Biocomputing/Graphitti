@@ -25,20 +25,17 @@ XmlGrowthRecorder::~XmlGrowthRecorder()
 
 void XmlGrowthRecorder::init()
 {
-   XmlRecorder::init(); // call the superclass method first
-   
+   // call the superclass method first
+   XmlRecorder::init();
+
    // Allocate memory for ratesHistory and radiiHistory
-   ratesHistory_ = shared_ptr<CompleteMatrix>(
-      new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT,
-                        static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
-                        Simulator::getInstance().getTotalVertices())
-   );
-   
-   radiiHistory_ = shared_ptr<CompleteMatrix>(
-      new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT,
-                         static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
-                         Simulator::getInstance().getTotalVertices())
-   );
+   ratesHistory_ = shared_ptr<CompleteMatrix>(new CompleteMatrix(
+      MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
+      Simulator::getInstance().getTotalVertices()));
+
+   radiiHistory_ = shared_ptr<CompleteMatrix>(new CompleteMatrix(
+      MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
+      Simulator::getInstance().getTotalVertices()));
 }
 
 /// Init radii and rates history matrices with default values

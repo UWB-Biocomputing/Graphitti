@@ -9,8 +9,8 @@
 
 #include "Connections911.h"
 #include "All911Vertices.h"
-#include "Layout911.h"
 #include "GraphManager.h"
+#include "Layout911.h"
 #include "ParameterManager.h"
 
 Connections911::Connections911()
@@ -44,12 +44,10 @@ void Connections911::setup()
       BGFLOAT *sumPoint = &vertices->summationMap_[destV];
 
       BGFLOAT dist = (*layout->dist_)(srcV, destV);
-      LOG4CPLUS_DEBUG(edgeLogger_,
-                      "Source: " << srcV << " Dest: " << destV << " Dist: " << dist);
-      
+      LOG4CPLUS_DEBUG(edgeLogger_, "Source: " << srcV << " Dest: " << destV << " Dist: " << dist);
+
       BGSIZE iEdg;
-      edges_->addEdge(iEdg, type, srcV, destV, sumPoint,
-                     Simulator::getInstance().getDeltaT());
+      edges_->addEdge(iEdg, type, srcV, destV, sumPoint, Simulator::getInstance().getDeltaT());
       added++;
    }
 

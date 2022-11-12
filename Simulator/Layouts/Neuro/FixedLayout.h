@@ -60,7 +60,7 @@ public:
    virtual edgeType edgType(const int srcVertex, const int destVertex) override;
 
 private:
-    /// initialize the location maps (xloc and yloc).
+   /// initialize the location maps (xloc and yloc).
    void initVerticesLocs();
 
    bool gridLayout_;   ///< True if grid layout.

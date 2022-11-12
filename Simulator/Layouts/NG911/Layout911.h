@@ -20,7 +20,6 @@ using namespace std;
 
 class Layout911 : public Layout {
 public:
-
    Layout911();
 
    virtual ~Layout911();
@@ -68,5 +67,4 @@ public:
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
    virtual edgeType edgType(const int srcVertex, const int destVertex) override;
-
 };
