@@ -96,6 +96,5 @@ protected:
 
    log4cplus::Logger fileLogger_;
 
-   int numVertices_;  ///< Total number of vertices in the graph.
-
+   int numVertices_;   ///< Total number of vertices in the graph.
 };
