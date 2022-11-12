@@ -48,6 +48,9 @@ public:
       return new XmlSTDPRecorder();
    }
 
+   /// Initialize data in the newly loadeded xml file
+   virtual void init() override;
+
    /**
     * Init radii and rates history matrices with default values
     */
