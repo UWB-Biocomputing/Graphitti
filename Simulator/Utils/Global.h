@@ -225,7 +225,11 @@ struct VertexProperty {
 };
 
 /// @brief  The structure to hold the edge properties
-struct EdgeProperty {};
+struct EdgeProperty {
+   // TODO: Edge Properties
+};
 
 /// @brief The structure to hold the Graph properties
-struct GraphProperty {};
+struct GraphProperty {
+   // TODO: Graph Properties
+};
