@@ -12,7 +12,6 @@
 
 void AllSpikingNeurons::copyToDevice( void * deviceAddress)
 {
-
    AllSpikingNeuronsDeviceProperties allVerticesDevice;
    HANDLE_ERROR(cudaMemcpy(&allVerticesDevice, deviceAddress, sizeof(AllSpikingNeuronsDeviceProperties),
                            cudaMemcpyDeviceToHost));
@@ -88,12 +87,32 @@ void AllSpikingNeurons::copyFromDevice(void * deviceAddress)
       hasFired_[i] = cpu_has_fired[i];
    }
 
+   // We have to copy the whole state of the event buffer from GPU memory because
+   // we reset it in CPU code and and copy the new state back to the GPU.
    int cpu_spike_count[numVertices];
-    HANDLE_ERROR(cudaMemcpy(cpu_spike_count, allVerticesDevice.numEventsInEpoch_, numVertices * sizeof(int),
+   HANDLE_ERROR(cudaMemcpy(cpu_spike_count, allVerticesDevice.numEventsInEpoch_, numVertices * sizeof(int),
                            cudaMemcpyDeviceToHost));
    for ( int i = 0; i < numVertices; i++)
    {
       vertexEvents_[i].numEventsInEpoch_ = cpu_spike_count[i];
+   }
+
+   int queue_front[numVertices];
+   HANDLE_ERROR(cudaMemcpy(queue_front, allVerticesDevice.queueFront_, numVertices * sizeof(int), cudaMemcpyDeviceToHost));
+   for (int i = 0; i < numVertices; i++) {
+      vertexEvents_[i].queueFront_ = queue_front[i];
+   }
+
+   int queue_end[numVertices];
+   HANDLE_ERROR(cudaMemcpy(queue_end, allVerticesDevice.queueEnd_, numVertices * sizeof(int), cudaMemcpyDeviceToHost));
+   for (int i = 0; i < numVertices; i++) {
+      vertexEvents_[i].queueEnd_ = queue_end[i];
+   }
+
+   int epoch_start[numVertices];
+   HANDLE_ERROR(cudaMemcpy(epoch_start, allVerticesDevice.epochStart_, numVertices * sizeof(int), cudaMemcpyDeviceToHost));
+   for (int i = 0; i < numVertices; i++) {
+      vertexEvents_[i].epochStart_ = epoch_start[i];
    }
 
    uint64_t *pSpikeHistory[numVertices];
