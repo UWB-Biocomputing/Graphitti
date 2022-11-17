@@ -88,7 +88,7 @@ void AllSpikingNeurons::copyFromDevice(void * deviceAddress)
    }
 
    // We have to copy the whole state of the event buffer from GPU memory because
-   // we reset it in CPU code and and copy the new state back to the GPU.
+   // we reset it in CPU code and then copy the new state back to the GPU.
    int cpu_spike_count[numVertices];
    HANDLE_ERROR(cudaMemcpy(cpu_spike_count, allVerticesDevice.numEventsInEpoch_, numVertices * sizeof(int),
                            cudaMemcpyDeviceToHost));
