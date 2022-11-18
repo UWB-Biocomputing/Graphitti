@@ -52,7 +52,6 @@ ConnGrowth::ConnGrowth() : Connections()
    W_ = nullptr;
    radii_ = nullptr;
    rates_ = nullptr;
-   delta_ = nullptr;
    area_ = nullptr;
    outgrowth_ = nullptr;
    deltaR_ = nullptr;
@@ -67,8 +66,6 @@ ConnGrowth::~ConnGrowth()
       delete radii_;
    if (rates_ != nullptr)
       delete rates_;
-   if (delta_ != nullptr)
-      delete delta_;
    if (area_ != nullptr)
       delete area_;
    if (outgrowth_ != nullptr)
@@ -79,7 +76,6 @@ ConnGrowth::~ConnGrowth()
    W_ = nullptr;
    radii_ = nullptr;
    rates_ = nullptr;
-   delta_ = nullptr;
    area_ = nullptr;
    outgrowth_ = nullptr;
    deltaR_ = nullptr;
@@ -99,16 +95,9 @@ void ConnGrowth::setup()
    W_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices, 0);
    radii_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices, growthParams_.startRadius);
    rates_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices, 0);
-   delta_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices);
    area_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices, 0);
    outgrowth_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
    deltaR_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
-
-   // we can obtain the Layout, which holds the vertices, from the Model
-   shared_ptr<Layout> layout = Simulator::getInstance().getModel()->getLayout();
-
-   // Init connection frontier distance change matrix with the current distances
-   (*delta_) = (*layout->dist_);
 }
 
 /// Load member variables from configuration file.
@@ -163,9 +152,6 @@ bool ConnGrowth::updateConnections(AllVertices &vertices, Layout *layout)
    // Update Connections data
    updateConns(vertices);
 
-   // Update the distance between frontiers of vertices
-   updateFrontiers(Simulator::getInstance().getTotalVertices(), layout);
-
    // Update the areas of overlap in between vertices
    updateOverlap(Simulator::getInstance().getTotalVertices(), layout);
 
@@ -199,22 +185,6 @@ void ConnGrowth::updateConns(AllVertices &vertices)
    (*radii_) += (*deltaR_);
 }
 
-///  Update the distance between frontiers of vertices.
-///
-///  @param  numVertices  Number of vertices to update.
-///  @param  layout      Layout information of the neural network.
-void ConnGrowth::updateFrontiers(const int numVertices, Layout *layout)
-{
-   LOG4CPLUS_INFO(fileLogger_, "Updating distance between frontiers...");
-   // Update distance between frontiers
-   for (int unit = 0; unit < numVertices - 1; unit++) {
-      for (int i = unit + 1; i < numVertices; i++) {
-         (*delta_)(unit, i) = (*layout->dist_)(unit, i) - ((*radii_)[unit] + (*radii_)[i]);
-         (*delta_)(i, unit) = (*delta_)(unit, i);
-      }
-   }
-}
-
 ///  Update the areas of overlap in between Neurons.
 ///
 ///  @param  numVertices  Number of vertices to update.
@@ -224,11 +194,14 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout)
    LOG4CPLUS_INFO(fileLogger_, "Computing areas of overlap");
 
    // Compute areas of overlap; this is only done for overlapping units
-   for (int i = 0; i < numVertices; i++) {
-      for (int j = 0; j < numVertices; j++) {
+   for (int i = 0; i < numVertices - 1; i++) {
+      for (int j = i + 1; j < numVertices; j++) {
          (*area_)(i, j) = 0.0;
 
-         if ((*delta_)(i, j) < 0) {
+         // Calculate the distance between neuron frontiers
+         BGFLOAT frontierDelta = (*layout->dist_)(j, i) - ((*radii_)[j] + (*radii_)[i]);
+
+         if (frontierDelta < 0) {
             BGFLOAT lenAB = (*layout->dist_)(i, j);
             BGFLOAT r1 = (*radii_)[i];
             BGFLOAT r2 = (*radii_)[j];

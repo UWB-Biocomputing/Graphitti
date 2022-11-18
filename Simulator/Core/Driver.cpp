@@ -117,6 +117,9 @@ int main(int argc, char *argv[])
    // Ask all objects to register their Graph properties
    OperationManager::getInstance().executeOperation(Operations::registerGraphProperties);
    // Read graph from GraphML file. Uses ParameterManager to get the file name.
+   // TODO: This method returns false if it fails to read the graph, we ignore it at the
+   //    moment since it currently fails for the Neural Network model because they don't
+   //    yet use GraphML.
    GraphManager::getInstance().readGraph();
 
    // Invoke instantiated simulator objects to load parameters from the configuration file

@@ -154,12 +154,6 @@ private:
    ///  @param  neurons  The Neuron list to search from.
    void updateConns(AllVertices &neurons);
 
-   ///  Update the distance between frontiers of Neurons.
-   ///
-   ///  @param  numVertices  Number of vertices to update.
-   ///  @param  layout      Layout information of the neural network.
-   void updateFrontiers(const int numVertices, Layout *layout);
-
    ///  Update the areas of overlap in between Neurons.
    ///
    ///  @param  numVertices  Number of vertices to update.
@@ -195,9 +189,6 @@ public:
 
    /// spiking rate
    VectorMatrix *rates_;
-
-   /// distance between connection frontiers
-   CompleteMatrix *delta_;
 
    /// areas of overlap
    CompleteMatrix *area_;
