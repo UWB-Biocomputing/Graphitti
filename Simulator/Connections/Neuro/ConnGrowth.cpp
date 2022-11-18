@@ -145,15 +145,14 @@ void ConnGrowth::printParameters() const
 ///  Update the connections status in every epoch.
 ///
 ///  @param  vertices  The vertex list to search from.
-///  @param  layout   Layout information of the neural network.
 ///  @return true if successful, false otherwise.
-bool ConnGrowth::updateConnections(AllVertices &vertices, Layout *layout)
+bool ConnGrowth::updateConnections(AllVertices &vertices)
 {
    // Update Connections data
    updateConns(vertices);
 
    // Update the areas of overlap in between vertices
-   updateOverlap(Simulator::getInstance().getTotalVertices(), layout);
+   updateOverlap();
 
    return true;
 }
@@ -189,8 +188,11 @@ void ConnGrowth::updateConns(AllVertices &vertices)
 ///
 ///  @param  numVertices  Number of vertices to update.
 ///  @param  layout      Layout information of the neural network.
-void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout)
+void ConnGrowth::updateOverlap()
 {
+   int numVertices = Simulator::getInstance().getTotalVertices();
+   Layout &layout = *Simulator::getInstance().getModel()->getLayout();
+
    LOG4CPLUS_INFO(fileLogger_, "Computing areas of overlap");
 
    // Compute areas of overlap; this is only done for overlapping units
@@ -199,10 +201,10 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout)
          (*area_)(i, j) = 0.0;
 
          // Calculate the distance between neuron frontiers
-         BGFLOAT frontierDelta = (*layout->dist_)(j, i) - ((*radii_)[j] + (*radii_)[i]);
+         BGFLOAT frontierDelta = (*layout.dist_)(j, i) - ((*radii_)[j] + (*radii_)[i]);
 
          if (frontierDelta < 0) {
-            BGFLOAT lenAB = (*layout->dist_)(i, j);
+            BGFLOAT lenAB = (*layout.dist_)(i, j);
             BGFLOAT r1 = (*radii_)[i];
             BGFLOAT r2 = (*radii_)[j];
 
@@ -214,7 +216,7 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout)
                                                << (*area_)(i, j) << endl);
             } else {
                // Partially overlapping unit
-               BGFLOAT lenAB2 = (*layout->dist2_)(i, j);
+               BGFLOAT lenAB2 = (*layout.dist2_)(i, j);
                BGFLOAT r12 = r1 * r1;
                BGFLOAT r22 = r2 * r2;
 
@@ -245,20 +247,16 @@ void ConnGrowth::updateOverlap(BGFLOAT numVertices, Layout *layout)
 ///  To be clear, iterates through all source and destination neurons
 ///  and updates their synaptic strengths from the weight matrix.
 ///  Note: Platform Dependent.
-///
-///  @param  numVertices  Number of vertices to update.
-///  @param  ivertices    the AllVertices object.
-///  @param  iedges   the AllEdges object.
-///  @param  layout      the Layout object.
-void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &vertices,
-                                       AllEdges &iedges, Layout *layout)
+void ConnGrowth::updateSynapsesWeights()
 {
-   AllNeuroEdges &synapses = dynamic_cast<AllNeuroEdges &>(iedges);
+   int numVertices = Simulator::getInstance().getTotalVertices();
+   AllNeuroEdges &synapses = dynamic_cast<AllNeuroEdges &>(*edges_);
+   Layout &layout = *Simulator::getInstance().getModel()->getLayout();
+   AllVertices &vertices = *layout.getVertices();
 
    // For now, we just set the weights to equal the areas. We will later
    // scale it and set its sign (when we index and get its sign).
    (*W_) = (*area_);
-
    int adjusted = 0;
    int couldBeRemoved = 0;   // TODO: use this value
    int removed = 0;
@@ -273,7 +271,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &verti
       for (int destVertex = 0; destVertex < numVertices; destVertex++) {
          // visit each synapse at (xa,ya)
          bool connected = false;
-         edgeType type = layout->edgType(srcVertex, destVertex);
+         edgeType type = layout.edgType(srcVertex, destVertex);
 
          // for each existing synapse
          BGSIZE synapseCounts = synapses.edgeCounts_[destVertex];

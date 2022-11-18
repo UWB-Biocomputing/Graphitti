@@ -78,9 +78,8 @@ void Connections911::printParameters() const
 ///  Update the connections status in every epoch.
 ///
 ///  @param  vertices  The Vertex list to search from.
-///  @param  layout   Layout information of the vertex network.
 ///  @return true if successful, false otherwise.
-bool Connections911::updateConnections(AllVertices &vertices, Layout *layout)
+bool Connections911::updateConnections(AllVertices &vertices)
 {
    // Only run on the first epoch
    if (Simulator::getInstance().getCurrentStep() != 1) {
@@ -89,8 +88,9 @@ bool Connections911::updateConnections(AllVertices &vertices, Layout *layout)
 
    // Record old type map
    int numVertices = Simulator::getInstance().getTotalVertices();
+   Layout &layout = *Simulator::getInstance().getModel()->getLayout();
    oldTypeMap_ = new vertexType[numVertices];
-   memcpy(oldTypeMap_, layout->vertexTypeMap_, numVertices * sizeof(vertexType));
+   memcpy(oldTypeMap_, layout.vertexTypeMap_, numVertices * sizeof(vertexType));
 
    // Erase PSAPs
    for (int i = 0; i < psapsToErase_; i++) {
@@ -110,7 +110,7 @@ bool Connections911::updateConnections(AllVertices &vertices, Layout *layout)
 ///  @param  vertices  The Vertex list to search from.
 ///  @param  layout   Layout information of the vertex network.
 ///  @return true if successful, false otherwise.
-bool Connections911::erasePSAP(AllVertices &vertices, Layout *layout)
+bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
 
@@ -119,7 +119,7 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout *layout)
 
    // Find all psaps
    for (int i = 0; i < numVertices; i++) {
-      if (layout->vertexTypeMap_[i] == PSAP) {
+      if (layout.vertexTypeMap_[i] == PSAP) {
          psaps.push_back(i);
       }
    }
@@ -156,19 +156,19 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout *layout)
          ChangedEdge erasedEdge;
          erasedEdge.srcV = srcVertex;
          erasedEdge.destV = destVertex;
-         erasedEdge.eType = layout->edgType(srcVertex, destVertex);
+         erasedEdge.eType = layout.edgType(srcVertex, destVertex);
          edgesErased.push_back(erasedEdge);
 
          changesMade = true;
          edges_->eraseEdge(destVertex, iEdg);
 
          // Identify all psap-less callers
-         if (layout->vertexTypeMap_[srcVertex] == CALR) {
+         if (layout.vertexTypeMap_[srcVertex] == CALR) {
             callersToReroute.push_back(srcVertex);
          }
 
          // Identify all psap-less responders
-         if (layout->vertexTypeMap_[destVertex] == RESP) {
+         if (layout.vertexTypeMap_[destVertex] == RESP) {
             respsToReroute.push_back(destVertex);
          }
       }
@@ -177,7 +177,7 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout *layout)
    if (changesMade) {
       // This is here so that we don't delete the vertex if we can't find any edges
       verticesErased.push_back(randPSAP);
-      layout->vertexTypeMap_[randPSAP] = VTYPE_UNDEF;
+      layout.vertexTypeMap_[randPSAP] = VTYPE_UNDEF;
    }
 
    // Failsafe
@@ -190,11 +190,11 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout *layout)
       int srcVertex = callersToReroute[i];
 
       int closestPSAP = psaps[0];
-      BGFLOAT smallestDist = (*layout->dist_)(srcVertex, closestPSAP);
+      BGFLOAT smallestDist = (*layout.dist_)(srcVertex, closestPSAP);
 
       // Find closest PSAP
       for (int i = 0; i < psaps.size(); i++) {
-         BGFLOAT dist = (*layout->dist_)(srcVertex, psaps[i]);
+         BGFLOAT dist = (*layout.dist_)(srcVertex, psaps[i]);
          if (dist < smallestDist) {
             smallestDist = dist;
             closestPSAP = psaps[i];
@@ -220,11 +220,11 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout *layout)
       int destVertex = respsToReroute[i];
 
       int closestPSAP = psaps[0];
-      BGFLOAT smallestDist = (*layout->dist_)(closestPSAP, destVertex);
+      BGFLOAT smallestDist = (*layout.dist_)(closestPSAP, destVertex);
 
       // Find closest PSAP
       for (int i = 0; i < psaps.size(); i++) {
-         BGFLOAT dist = (*layout->dist_)(psaps[i], destVertex);
+         BGFLOAT dist = (*layout.dist_)(psaps[i], destVertex);
          if (dist < smallestDist) {
             smallestDist = dist;
             closestPSAP = psaps[i];
@@ -253,7 +253,7 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout *layout)
 ///  @param  vertices  The Vertex list to search from.
 ///  @param  layout   Layout information of the vertex network.
 ///  @return true if successful, false otherwise.
-bool Connections911::eraseRESP(AllVertices &vertices, Layout *layout)
+bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
 
@@ -262,7 +262,7 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout *layout)
 
    // Find all resps
    for (int i = 0; i < numVertices; i++) {
-      if (layout->vertexTypeMap_[i] == RESP) {
+      if (layout.vertexTypeMap_[i] == RESP) {
          resps.push_back(i);
       }
    }
@@ -294,7 +294,7 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout *layout)
          ChangedEdge erasedEdge;
          erasedEdge.srcV = srcVertex;
          erasedEdge.destV = destVertex;
-         erasedEdge.eType = layout->edgType(srcVertex, destVertex);
+         erasedEdge.eType = layout.edgType(srcVertex, destVertex);
          edgesErased.push_back(erasedEdge);
 
          changesMade = true;
@@ -305,7 +305,7 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout *layout)
    if (changesMade) {
       // This is here so that we don't delete the vertex if we can't find any edges
       verticesErased.push_back(randRESP);
-      layout->vertexTypeMap_[randRESP] = VTYPE_UNDEF;
+      layout.vertexTypeMap_[randRESP] = VTYPE_UNDEF;
    }
 
    return changesMade;

@@ -62,6 +62,8 @@
  *
  * Some models in this simulator is a rewrite of CSIM (2006) and other
  * work (Stiber and Kawasaki (2007?))
+ * 
+ * NOTE: Currently ConnGrowth doesn't craete edges ad the beginning of the simulation.
  */
 
 #pragma once
@@ -102,9 +104,8 @@ public:
    ///  Update the connections status in every epoch.
    ///
    ///  @param  neurons  The Neuron list to search from.
-   ///  @param  layout   Layout information of the neural network.
    ///  @return true if successful, false otherwise.
-   virtual bool updateConnections(AllVertices &neurons, Layout *layout) override;
+   virtual bool updateConnections(AllVertices &neurons) override;
 
    ///  Cereal serialization method
    ///  (Serializes radii)
@@ -139,13 +140,7 @@ public:
    ///  iterates through all source and destination neurons and updates their
    ///  synaptic strengths from the weight matrix.
    ///  Note: Platform Dependent.
-   ///
-   ///  @param  numVertices  Number of vertices to update.
-   ///  @param  ineurons    The AllVertices object.
-   ///  @param  isynapses   The AllEdges object.
-   ///  @param  layout      The Layout object.
-   virtual void updateSynapsesWeights(const int numVertices, AllVertices &vertices,
-                                      AllEdges &synapses, Layout *layout) override;
+   virtual void updateSynapsesWeights() override;
 
 #endif
 private:
@@ -155,10 +150,7 @@ private:
    void updateConns(AllVertices &neurons);
 
    ///  Update the areas of overlap in between Neurons.
-   ///
-   ///  @param  numVertices  Number of vertices to update.
-   ///  @param  layout      Layout information of the neural network.
-   void updateOverlap(BGFLOAT numVertices, Layout *layout);
+   void updateOverlap();
 
 public:
    struct GrowthParams {

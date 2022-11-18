@@ -69,18 +69,11 @@ public:
    ///  Update the connections status in every epoch.
    ///
    ///  @param  neurons  The Neuron list to search from.
-   ///  @param  layout   Layout information of the neural network.
    ///  @return true if successful, false otherwise.
-   virtual bool updateConnections(AllVertices &vertices, Layout *layout);
+   virtual bool updateConnections(AllVertices &vertices);
 
    ///  Creates synapses from synapse weights saved in the serialization file.
-   ///
-   ///  @param  numVertices Number of vertices to update.
-   ///  @param  layout      Layout information of the neural network.
-   ///  @param  ineurons    The Neuron list to search from.
-   ///  @param  isynapses   The Synapse list to search from.
-   void createSynapsesFromWeights(const int numVertices, Layout *layout, AllVertices &vertices,
-                                  AllEdges &synapses);
+   void createSynapsesFromWeights();
 
 #if defined(USE_GPU)
 public:
@@ -102,12 +95,7 @@ public:
 public:
    ///  Update the weight of the Synapses in the simulation.
    ///  Note: Platform Dependent.
-   ///
-   ///  @param  numVertices Number of vertices to update.
-   ///  @param  ineurons    The Neuron list to search from.
-   ///  @param  isynapses   The Synapse list to search from.
-   virtual void updateSynapsesWeights(const int numVertices, AllVertices &vertices,
-                                      AllEdges &synapses, Layout *layout);
+   virtual void updateSynapsesWeights();
 
 #endif   // USE_GPU
 

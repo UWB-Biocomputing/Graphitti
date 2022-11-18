@@ -295,8 +295,7 @@ bool deserializeSynapses()
    }
 
    // Creates synapses from weight
-   connections->createSynapsesFromWeights(simulator.getTotalVertices(), layout.get(),
-                                          (*layout->getVertices()), (*connections->getEdges()));
+   connections->createSynapsesFromWeights();
 
 
 #if defined(USE_GPU)

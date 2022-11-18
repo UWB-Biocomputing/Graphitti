@@ -44,10 +44,8 @@ void CPUModel::advance()
 void CPUModel::updateConnections()
 {
    // Update Connections data
-   if (connections_->updateConnections(*layout_->getVertices(), layout_.get())) {
-      connections_->updateSynapsesWeights(Simulator::getInstance().getTotalVertices(),
-                                          *layout_->getVertices(), *connections_->getEdges(),
-                                          layout_.get());
+   if (connections_->updateConnections(*layout_->getVertices())) {
+      connections_->updateSynapsesWeights();
       // create synapse inverse map
       connections_->createEdgeIndexMap();
    }
