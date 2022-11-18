@@ -140,7 +140,7 @@ void Connections::createSynapsesFromWeights()
             edgeType type = layout.edgType(srcVertex, destVertex);
             edges_->edgeCounts_[i]++;
             edges_->createEdge(iEdg, srcVertex, destVertex, sumPoint,
-                                Simulator::getInstance().getDeltaT(), type);
+                               Simulator::getInstance().getDeltaT(), type);
             edges_->W_[iEdg] = theW;
          }
       }
