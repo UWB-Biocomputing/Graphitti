@@ -84,7 +84,7 @@ void Simulator::loadParameters()
 {
    ParameterManager::getInstance().getIntByXpath("//PoolSize/x/text()", width_);
    ParameterManager::getInstance().getIntByXpath("//PoolSize/y/text()", height_);
-   totalNeurons_ = width_ * height_;
+   // numVertices_ = width_ * height_;
 
    ParameterManager::getInstance().getBGFloatByXpath("//SimParams/epochDuration/text()",
                                                      epochDuration_);
@@ -283,6 +283,7 @@ void Simulator::setStimulusFileName(const string &fileName)
 {
    stimulusFileName_ = fileName;
 }
+
 ///@}
 
 /************************************************
@@ -301,7 +302,7 @@ int Simulator::getHeight() const
 
 int Simulator::getTotalVertices() const
 {
-   return totalNeurons_;
+   return model_->getLayout()->getNumVertices();
 }
 
 int Simulator::getCurrentStep() const

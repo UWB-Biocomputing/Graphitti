@@ -14,19 +14,28 @@
 
 // TODO: We don't need the explicit call to the superclass constructor, right?
 //! The constructor and destructor
-XmlGrowthRecorder::XmlGrowthRecorder() :
-   ratesHistory_(MATRIX_TYPE, MATRIX_INIT,
-                 static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
-                 Simulator::getInstance().getTotalVertices()),
-   radiiHistory_(MATRIX_TYPE, MATRIX_INIT,
-                 static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
-                 Simulator::getInstance().getTotalVertices())
+XmlGrowthRecorder::XmlGrowthRecorder()
 {
 }
 
 // TODO: Is this needed?
 XmlGrowthRecorder::~XmlGrowthRecorder()
 {
+}
+
+void XmlGrowthRecorder::init()
+{
+   // call the superclass method first
+   XmlRecorder::init();
+
+   // Allocate memory for ratesHistory and radiiHistory
+   ratesHistory_ = shared_ptr<CompleteMatrix>(new CompleteMatrix(
+      MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
+      Simulator::getInstance().getTotalVertices()));
+
+   radiiHistory_ = shared_ptr<CompleteMatrix>(new CompleteMatrix(
+      MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
+      Simulator::getInstance().getTotalVertices()));
 }
 
 /// Init radii and rates history matrices with default values
@@ -36,8 +45,8 @@ void XmlGrowthRecorder::initDefaultValues()
    BGFLOAT startRadius = dynamic_cast<ConnGrowth *>(conns.get())->growthParams_.startRadius;
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      radiiHistory_(0, i) = startRadius;
-      ratesHistory_(0, i) = 0;
+      (*radiiHistory_)(0, i) = startRadius;
+      (*ratesHistory_)(0, i) = 0;
    }
 }
 
@@ -47,8 +56,8 @@ void XmlGrowthRecorder::initValues()
    shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      radiiHistory_(0, i) = (*dynamic_cast<ConnGrowth *>(conns.get())->radii_)[i];
-      ratesHistory_(0, i) = (*dynamic_cast<ConnGrowth *>(conns.get())->rates_)[i];
+      (*radiiHistory_)(0, i) = (*dynamic_cast<ConnGrowth *>(conns.get())->radii_)[i];
+      (*ratesHistory_)(0, i) = (*dynamic_cast<ConnGrowth *>(conns.get())->rates_)[i];
    }
 }
 
@@ -59,9 +68,9 @@ void XmlGrowthRecorder::getValues()
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       (*dynamic_cast<ConnGrowth *>(conns)->radii_)[i]
-         = radiiHistory_(Simulator::getInstance().getCurrentStep(), i);
+         = (*radiiHistory_)(Simulator::getInstance().getCurrentStep(), i);
       (*dynamic_cast<ConnGrowth *>(conns)->rates_)[i]
-         = ratesHistory_(Simulator::getInstance().getCurrentStep(), i);
+         = (*ratesHistory_)(Simulator::getInstance().getCurrentStep(), i);
    }
 }
 
@@ -80,7 +89,7 @@ void XmlGrowthRecorder::compileHistories(AllVertices &neurons)
 
    for (int iVertex = 0; iVertex < Simulator::getInstance().getTotalVertices(); iVertex++) {
       // record firing rate to history matrix
-      ratesHistory_(Simulator::getInstance().getCurrentStep(), iVertex) = rates[iVertex];
+      (*ratesHistory_)(Simulator::getInstance().getCurrentStep(), iVertex) = rates[iVertex];
 
       // Cap minimum radius size and record radii to history matrix
       // TODO: find out why we cap this here.
@@ -89,7 +98,7 @@ void XmlGrowthRecorder::compileHistories(AllVertices &neurons)
          radii[iVertex] = minRadius;
 
       // record radius to history matrix
-      radiiHistory_(Simulator::getInstance().getCurrentStep(), iVertex) = radii[iVertex];
+      (*radiiHistory_)(Simulator::getInstance().getCurrentStep(), iVertex) = radii[iVertex];
    }
 }
 
@@ -120,8 +129,8 @@ void XmlGrowthRecorder::saveSimData(const AllVertices &neurons)
 
    // Write the core state information:
    resultOut_ << "<SimState>\n";
-   resultOut_ << "   " << radiiHistory_.toXML("radiiHistory") << endl;
-   resultOut_ << "   " << ratesHistory_.toXML("ratesHistory") << endl;
+   resultOut_ << "   " << radiiHistory_->toXML("radiiHistory") << endl;
+   resultOut_ << "   " << ratesHistory_->toXML("ratesHistory") << endl;
    resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
    resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
    resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->xloc_->toXML("xloc")

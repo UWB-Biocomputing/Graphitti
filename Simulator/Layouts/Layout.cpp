@@ -15,7 +15,7 @@
 #include "VerticesFactory.h"
 
 /// Constructor
-Layout::Layout() : numEndogenouslyActiveNeurons_(0), gridLayout_(true)
+Layout::Layout() : numEndogenouslyActiveNeurons_(0)
 {
    xloc_ = nullptr;
    yloc_ = nullptr;
@@ -38,6 +38,12 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0), gridLayout_(true)
    function<void()> printParametersFunc = bind(&Layout::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
+
+   // Register registerGraphProperties method as registerGraphProperties operation
+   // in the OperationManager
+   function<void()> registerGraphPropertiesFunc = bind(&Layout::registerGraphProperties, this);
+   OperationManager::getInstance().registerOperation(Operations::registerGraphProperties,
+                                                     registerGraphPropertiesFunc);
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
@@ -72,40 +78,30 @@ shared_ptr<AllVertices> Layout::getVertices() const
    return vertices_;
 }
 
+int Layout::getNumVertices() const
+{
+   return numVertices_;
+}
+
+void Layout::registerGraphProperties()
+{
+   // TODO: This will be implemented when all models use graphML files to load the
+   // initial graph
+}
 
 /// Setup the internal structure of the class.
 /// Allocate memories to store all layout state, no sequential dependency in this method
-void Layout::setupLayout()
+void Layout::setup()
 {
-   int numVertices = Simulator::getInstance().getTotalVertices();
-
    // Allocate memory
-   xloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
-   yloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
-   dist2_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices);
-   dist_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices);
-
-   // Initialize neuron locations memory, grab global info
-   initVerticesLocs();
-
-   // computing distance between each pair of vertices given each vertex's xy location
-   for (int n = 0; n < numVertices - 1; n++) {
-      for (int n2 = n + 1; n2 < numVertices; n2++) {
-         // distance^2 between two points in point-slope form
-         (*dist2_)(n, n2) = ((*xloc_)[n] - (*xloc_)[n2]) * ((*xloc_)[n] - (*xloc_)[n2])
-                            + ((*yloc_)[n] - (*yloc_)[n2]) * ((*yloc_)[n] - (*yloc_)[n2]);
-
-         // both points are equidistant from each other
-         (*dist2_)(n2, n) = (*dist2_)(n, n2);
-      }
-   }
-
-   // take the square root to get actual distance (Pythagoras was right!)
-   (*dist_) = sqrt((*dist2_));
+   xloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
+   yloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
+   dist2_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
+   dist_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
 
    // more allocation of internal memory
-   vertexTypeMap_ = new vertexType[numVertices];   // todo: make array into vector
-   starterMap_ = new bool[numVertices];            // todo: make array into vector
+   vertexTypeMap_ = new vertexType[numVertices_];   // todo: make array into vector
+   starterMap_ = new bool[numVertices_];            // todo: make array into vector
 }
 
 
@@ -147,26 +143,5 @@ void Layout::initStarterMap(const int numVertices)
 {
    for (int i = 0; i < numVertices; i++) {
       starterMap_[i] = false;
-   }
-}
-
-/// Initialize the location maps (xloc and yloc).
-void Layout::initVerticesLocs()
-{
-   int numVertices = Simulator::getInstance().getTotalVertices();
-
-   // Initialize vertex locations
-   if (gridLayout_) {
-      // grid layout
-      for (int i = 0; i < numVertices; i++) {
-         (*xloc_)[i] = i % Simulator::getInstance().getHeight();
-         (*yloc_)[i] = i / Simulator::getInstance().getHeight();
-      }
-   } else {
-      // random layout
-      for (int i = 0; i < numVertices; i++) {
-         (*xloc_)[i] = initRNG.inRange(0, Simulator::getInstance().getWidth());
-         (*yloc_)[i] = initRNG.inRange(0, Simulator::getInstance().getHeight());
-      }
    }
 }

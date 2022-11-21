@@ -36,7 +36,10 @@ public:
 
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.
-   virtual void setupLayout();
+   virtual void setup();
+
+   /// @brief Register vertex properties with the GraphManager
+   virtual void registerGraphProperties();
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters() = 0;
@@ -59,6 +62,10 @@ public:
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
    virtual edgeType edgType(const int srcVertex, const int destVertex) = 0;
+
+   /// @brief Returns the number of vertices managed by the Layout
+   /// @return The number of vertices managed by the Layout
+   virtual int getNumVertices() const;
 
    VectorMatrix *xloc_;   ///< Store neuron i's x location.
 
@@ -87,17 +94,7 @@ protected:
 
    vector<int> inhibitoryNeuronLayout_;   ///< Inhibitory neurons list.
 
-   vector<int> callerVertexList_;   ///< Caller vertex list.
-
-   vector<int> psapVertexList_;   ///< PSAP vertex list.
-
-   vector<int> responderVertexList_;   ///< Responder vertex list.
-
    log4cplus::Logger fileLogger_;
 
-private:
-   /// initialize the location maps (xloc and yloc).
-   void initVerticesLocs();
-
-   bool gridLayout_;   ///< True if grid layout.
+   int numVertices_;   ///< Total number of vertices in the graph.
 };

@@ -60,6 +60,8 @@ public:
    bool getIntVectorByXpath(const string &path, const string &elementName,
                             vector<int> &referenceVar);
 
+   bool getFileByXpath(const string &path, ifstream &file);
+
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    ParameterManager(ParameterManager const &) = delete;
    void operator=(ParameterManager const &) = delete;

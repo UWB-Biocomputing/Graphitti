@@ -34,6 +34,10 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
+   /// Setup the internal structure of the class.
+   /// Allocate memories to store all layout state.
+   virtual void setup() override;
+
    ///  Creates a vertex type map.
    ///
    ///  @param  numVertices number of the vertices to have in the type map.
@@ -54,4 +58,10 @@ public:
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
    virtual edgeType edgType(const int srcVertex, const int destVertex) override;
+
+private:
+   /// initialize the location maps (xloc and yloc).
+   void initVerticesLocs();
+
+   bool gridLayout_;   ///< True if grid layout.
 };

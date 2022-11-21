@@ -28,8 +28,8 @@
 
 #define SINGLEPRECISION
 #define BGFLOAT float
-//#define DOUBLEPRECISION
-//#define BGFLOAT double
+// #define DOUBLEPRECISION
+// #define BGFLOAT double
 
 typedef BGFLOAT *PBGFLOAT;
 

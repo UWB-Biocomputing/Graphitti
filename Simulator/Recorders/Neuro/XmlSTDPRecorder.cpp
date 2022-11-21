@@ -17,6 +17,14 @@
 //! The constructor and destructor
 XmlSTDPRecorder::XmlSTDPRecorder() : XmlRecorder()
 {
+}
+
+XmlSTDPRecorder::~XmlSTDPRecorder()
+{
+}
+
+void XmlSTDPRecorder::init()
+{
    const int numEpochs = Simulator::getInstance().getNumEpochs();
    const int totalNeurons = Simulator::getInstance().getTotalVertices();
    const int maxSynapsesPerNeuron = Simulator::getInstance().getMaxEdgesPerVertex();
@@ -27,10 +35,6 @@ XmlSTDPRecorder::XmlSTDPRecorder() : XmlRecorder()
                                     vector<int>(totalNeurons * maxSynapsesPerNeuron));
 
    destNeuronIndexHistory_.resize(numEpochs + 1, vector<int>(totalNeurons * maxSynapsesPerNeuron));
-}
-
-XmlSTDPRecorder::~XmlSTDPRecorder()
-{
 }
 
 ///Init radii and rates history matrices with default values

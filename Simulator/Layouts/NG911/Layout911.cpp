@@ -6,7 +6,9 @@
 * @brief The Layout class defines the layout of vertices in networks
 */
 
+// #include <string>
 #include "Layout911.h"
+#include "GraphManager.h"
 #include "ParameterManager.h"
 
 Layout911::Layout911()
@@ -15,6 +17,24 @@ Layout911::Layout911()
 
 Layout911::~Layout911()
 {
+}
+
+void Layout911::registerGraphProperties()
+{
+   // The base class registers properties that al common to all vertices
+   // TODO: Currently not implemented because Nero model doesn't used graphML
+   Layout::registerGraphProperties();
+
+   // We must register the graph properties before loading it.
+   // We are passing a pointer to a data member of the VertexProperty
+   // so Boost Graph Library can use it for loading the graphML file.
+   // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
+   GraphManager &gm = GraphManager::getInstance();
+   gm.registerProperty("objectID", &VertexProperty::objectID);
+   gm.registerProperty("name", &VertexProperty::name);
+   gm.registerProperty("type", &VertexProperty::type);
+   gm.registerProperty("y", &VertexProperty::y);
+   gm.registerProperty("x", &VertexProperty::x);
 }
 
 void Layout911::loadParameters()
@@ -39,28 +59,39 @@ void Layout911::loadParameters()
                           "vertex list file path wasn't found and will not be initialized");
    }
 
-   // Initialize Vertex Lists based on the data read from the xml files
-   if (!ParameterManager::getInstance().getIntVectorByXpath(callerFilePath, "C",
-                                                            callerVertexList_)) {
-      throw runtime_error("In Layout::loadParameters() "
-                          "caller vertex list list file wasn't loaded correctly"
-                          "\n\tfile path: "
-                          + callerFilePath);
+   // Get the number of verticese from the GraphManager
+   numVertices_ = GraphManager::getInstance().numVertices();
+}
+
+void Layout911::setup()
+{
+   // Base class allocates memory for: xLoc_, yLoc, dist2_, and dist_
+   // so we call its method first
+   Layout::setup();
+
+   // Loop over all vertices and set thir x and y locations
+   GraphManager::VertexIterator vi, vi_end;
+   GraphManager &gm = GraphManager::getInstance();
+   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
+      assert(*vi < numVertices_);
+      (*xloc_)[*vi] = gm[*vi].x;
+      (*yloc_)[*vi] = gm[*vi].y;
    }
-   numCallerVertices_ = callerVertexList_.size();
-   if (!ParameterManager::getInstance().getIntVectorByXpath(psapFilePath, "P", psapVertexList_)) {
-      throw runtime_error("In Layout::loadParameters() "
-                          "psap vertex list file wasn't loaded correctly."
-                          "\n\tfile path: "
-                          + psapFilePath);
+
+   // Now we cache the between each pair of vertices distances^2 into a matrix
+   for (int n = 0; n < numVertices_ - 1; n++) {
+      for (int n2 = n + 1; n2 < numVertices_; n2++) {
+         // distance^2 between two points in point-slope form
+         (*dist2_)(n, n2) = ((*xloc_)[n] - (*xloc_)[n2]) * ((*xloc_)[n] - (*xloc_)[n2])
+                            + ((*yloc_)[n] - (*yloc_)[n2]) * ((*yloc_)[n] - (*yloc_)[n2]);
+
+         // both points are equidistant from each other
+         (*dist2_)(n2, n) = (*dist2_)(n, n2);
+      }
    }
-   if (!ParameterManager::getInstance().getIntVectorByXpath(responderFilePath, "R",
-                                                            responderVertexList_)) {
-      throw runtime_error("In Layout::loadParameters() "
-                          "responder vertex list file wasn't loaded correctly."
-                          "\n\tfile path: "
-                          + responderFilePath);
-   }
+
+   // Finally take the square root to get the distances
+   (*dist_) = sqrt((*dist2_));
 }
 
 void Layout911::printParameters() const
@@ -73,35 +104,33 @@ void Layout911::generateVertexTypeMap(int numVertices)
 {
    DEBUG(cout << "\nInitializing vertex type map" << endl;);
 
-   // Populate vertexTypeMap_ with base layer of CALR
-   fill_n(vertexTypeMap_, numVertices, CALR);
+   // Map vertex type string to vertexType
+   // In the GraphML file Responders are divided in LAW, FIRE, and EMS.
+   // Perhaps, we need to expand the vertex types?
+   map<string, vertexType> vTypeMap = {{"CALR", vertexType::CALR},
+                                       {"LAW", vertexType::RESP},
+                                       {"FIRE", vertexType::RESP},
+                                       {"EMS", vertexType::RESP},
+                                       {"PSAP", vertexType::PSAP}};
+   // Count map for debugging
+   map<string, int> vTypeCount;
 
-   // for (int i = 0; i < numVertices; i++) {
-   //    vertexTypeMap_[i] = CALR;
-   // }
-
-   int numPSAPs = psapVertexList_.size();
-   int numResps = responderVertexList_.size();
-   int numCalrs = numVertices - numPSAPs - numResps;
-
-   LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP" << endl
-                                                    << "\tTotal vertices: " << numVertices << endl
-                                                    << "\tCaller vertices: " << numCalrs << endl
-                                                    << "\tPSAP vertices: " << numPSAPs << endl
-                                                    << "\tResponder vertices: " << numResps
-                                                    << endl);
-
-   // Insert PSAPs
-   for (int i = 0; i < numPSAPs; i++) {
-      assert(psapVertexList_.at(i) < numVertices);
-      vertexTypeMap_[psapVertexList_.at(i)] = PSAP;
+   // Add all vertices
+   GraphManager::VertexIterator vi, vi_end;
+   GraphManager &gm = GraphManager::getInstance();
+   LOG4CPLUS_DEBUG(fileLogger_, "\nvertices in graph: " << gm.numVertices());
+   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
+      assert(*vi < numVertices_);
+      vertexTypeMap_[*vi] = vTypeMap[gm[*vi].type];
+      vTypeCount[gm[*vi].type] += 1;
    }
 
-   // Insert Responders
-   for (int i = 0; i < responderVertexList_.size(); i++) {
-      assert(responderVertexList_.at(i) < numVertices);
-      vertexTypeMap_[responderVertexList_.at(i)] = RESP;
-   }
+   LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP"
+                                   << endl
+                                   << "\tTotal vertices: " << numVertices_ << endl
+                                   << "\tCaller vertices: " << vTypeCount["CALR"] << endl
+                                   << "\tPSAP vertices: " << vTypeCount["PSAP"] << endl
+                                   << "\tResponder vertices: " << vTypeCount["RESP"] << endl);
 
    LOG4CPLUS_INFO(fileLogger_, "Finished initializing vertex type map");
 }
@@ -130,10 +159,12 @@ edgeType Layout911::edgType(const int srcVertex, const int destVertex)
       return CP;
    else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == RESP)
       return PR;
-   else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == CALR)
-      return RC;
+   else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == CALR)
+      return PC;
    else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == PSAP)
       return PP;
-
-   return ETYPE_UNDEF;
+   else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == PSAP)
+      return RP;
+   else
+      return ETYPE_UNDEF;
 }

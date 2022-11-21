@@ -35,6 +35,7 @@
 
     <ConnectionsParams class="Connections911" name="ConnectionsParams">
       <Connections911Params name="Connections911Params">
+        <graphmlFile name="graphmlFile">../configfiles/graphs/small_911.graphml</graphmlFile>
             <!-- Max ConnsPerVertex = 87 RC + 1 PR -->
         <connsPerVertex name="connsPerVertex">88</connsPerVertex>
         <psapsToErase name="psapsToErase">1</psapsToErase>

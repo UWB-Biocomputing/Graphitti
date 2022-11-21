@@ -26,6 +26,7 @@
 #include "ParameterManager.h"
 #include "BGTypes.h"
 #include "xpath_static.h"
+#include <fstream>
 #include <iostream>
 #include <regex>
 #include <stdexcept>
@@ -316,5 +317,28 @@ bool ParameterManager::getIntVectorByXpath(const string &path, const string &ele
       valueStream >> i;
       referenceVar.push_back(i);
    }
+   return true;
+}
+
+/// Load the file indicated by the given string path into the ifstream object.
+///
+/// @param path   the path to the XML element containing the file name
+/// @param file   ifstream object were file will be loaded
+/// @return       true if the retrieval was successful, false otherwise
+bool ParameterManager::getFileByXpath(const string &path, ifstream &file)
+{
+   string file_name;
+   if (!ParameterManager::getInstance().getStringByXpath(path, file_name)) {
+      cerr << "Could not find XML path: " << path << ".\n";
+      return false;
+   };
+
+   // open file
+   file.open(file_name.c_str());
+   if (!file.is_open()) {
+      cerr << "Failed to open file: " << file_name << ".\n";
+      return false;
+   }
+
    return true;
 }

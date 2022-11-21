@@ -21,6 +21,7 @@
 #include "AllEdges.h"
 #include "CPUModel.h"
 #include "Global.h"
+#include "GraphManager.h"
 #include "IRecorder.h"
 #include "Model.h"
 #include "OperationManager.h"
@@ -112,6 +113,14 @@ int main(int argc, char *argv[])
             + simulator.getConfigFileName() + " for incorrectly declared class types.");
       return -1;
    }
+
+   // Ask all objects to register their Graph properties
+   OperationManager::getInstance().executeOperation(Operations::registerGraphProperties);
+   // Read graph from GraphML file. Uses ParameterManager to get the file name.
+   // TODO: This method returns false if it fails to read the graph, we ignore it at the
+   //    moment since it currently fails for the Neural Network model because they don't
+   //    yet use GraphML.
+   GraphManager::getInstance().readGraph();
 
    // Invoke instantiated simulator objects to load parameters from the configuration file
    LOG4CPLUS_TRACE(consoleLogger, "Loading parameters from configuration file");
@@ -286,8 +295,7 @@ bool deserializeSynapses()
    }
 
    // Creates synapses from weight
-   connections->createSynapsesFromWeights(simulator.getTotalVertices(), layout.get(),
-                                          (*layout->getVertices()), (*connections->getEdges()));
+   connections->createSynapsesFromWeights();
 
 
 #if defined(USE_GPU)

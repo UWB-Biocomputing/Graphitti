@@ -12,12 +12,37 @@
 #include "Util.h"
 
 // TODO: I don't think that either of the constructor or destructor is needed here
-FixedLayout::FixedLayout() : Layout()
+FixedLayout::FixedLayout() : gridLayout_(true), Layout()
 {
 }
 
 FixedLayout::~FixedLayout()
 {
+}
+
+void FixedLayout::setup()
+{
+   // Base class allocates memory for: xLoc_, yLoc, dist2_, and dist_
+   // so we call its method first
+   Layout::setup();
+
+   // Initialize neuron locations memory, grab global info
+   initVerticesLocs();
+
+   // computing distance between each pair of vertices given each vertex's xy location
+   for (int n = 0; n < numVertices_ - 1; n++) {
+      for (int n2 = n + 1; n2 < numVertices_; n2++) {
+         // distance^2 between two points in point-slope form
+         (*dist2_)(n, n2) = ((*xloc_)[n] - (*xloc_)[n2]) * ((*xloc_)[n] - (*xloc_)[n2])
+                            + ((*yloc_)[n] - (*yloc_)[n2]) * ((*yloc_)[n] - (*yloc_)[n2]);
+
+         // both points are equidistant from each other
+         (*dist2_)(n2, n) = (*dist2_)(n, n2);
+      }
+   }
+
+   // take the square root to get actual distance (Pythagoras was right!)
+   (*dist_) = sqrt((*dist2_));
 }
 
 ///  Prints out all parameters to logging file.
@@ -107,6 +132,12 @@ void FixedLayout::loadParameters()
                           "\n\tfile path: "
                           + inhibitoryNListFilePath);
    }
+
+   // Get the total number of vertices
+   int width, height;
+   ParameterManager::getInstance().getIntByXpath("//PoolSize/x/text()", width);
+   ParameterManager::getInstance().getIntByXpath("//PoolSize/y/text()", height);
+   numVertices_ = width * height;
 }
 
 ///  Returns the type of synapse at the given coordinates
@@ -126,4 +157,25 @@ edgeType FixedLayout::edgType(const int srcVertex, const int destVertex)
       return EE;
 
    return ETYPE_UNDEF;
+}
+
+/// Initialize the location maps (xloc and yloc).
+void FixedLayout::initVerticesLocs()
+{
+   int numVertices = Simulator::getInstance().getTotalVertices();
+
+   // Initialize vertex locations
+   if (gridLayout_) {
+      // grid layout
+      for (int i = 0; i < numVertices; i++) {
+         (*xloc_)[i] = i % Simulator::getInstance().getHeight();
+         (*yloc_)[i] = i / Simulator::getInstance().getHeight();
+      }
+   } else {
+      // random layout
+      for (int i = 0; i < numVertices; i++) {
+         (*xloc_)[i] = initRNG.inRange(0, Simulator::getInstance().getWidth());
+         (*yloc_)[i] = initRNG.inRange(0, Simulator::getInstance().getHeight());
+      }
+   }
 }
