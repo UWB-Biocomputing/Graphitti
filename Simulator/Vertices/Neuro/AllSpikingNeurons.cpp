@@ -40,8 +40,7 @@ void AllSpikingNeurons::clearSpikeCounts()
    // }
    for (int i = 0; i < vertexEvents_.size(); i++) {
       vertexEvents_[i].startNewEpoch();
-   }
-   
+   } 
 }
 
 #if !defined(USE_GPU)

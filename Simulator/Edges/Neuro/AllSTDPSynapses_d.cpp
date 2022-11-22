@@ -564,9 +564,7 @@ CUDA_CALLABLE void stdpLearningDevice(AllSTDPSynapsesDeviceProperties *allEdgesD
 ///  @param[in] iEdg                  Index of the Synapse to check.
 ///
 ///  @return true if there is an input spike event.
-CUDA_CALLABLE bool
-   isSTDPSynapseSpikeQueuePostDevice(AllSTDPSynapsesDeviceProperties *allEdgesDevice, BGSIZE iEdg)
-{
+CUDA_CALLABLE bool isSTDPSynapseSpikeQueuePostDevice(AllSTDPSynapsesDeviceProperties *allEdgesDevice, BGSIZE iEdg) {
    uint32_t &delayQueue = allEdgesDevice->delayQueuePost_[iEdg];
    int &delayIndex = allEdgesDevice->delayIndexPost_[iEdg];
    int delayQueueLength = allEdgesDevice->delayQueuePostLength_[iEdg];
@@ -577,7 +575,6 @@ CUDA_CALLABLE bool
    if (++delayIndex >= delayQueueLength) {
       delayIndex = 0;
    }
-
    return isFired;
 }
 
@@ -591,20 +588,9 @@ CUDA_CALLABLE bool
 ///
 ///  @return Spike history.
 CUDA_CALLABLE uint64_t getSTDPSynapseSpikeHistoryDevice(
-   AllSpikingNeuronsDeviceProperties *allVerticesDevice, int index, int offIndex, int maxSpikes)
-{
-   // // offIndex is a minus offset
-   // int idxSp = (allVerticesDevice->numEventsInEpoch_[index] + 
-   // allVerticesDevice->spikeCountOffset_[index] 
-   // + maxSpikes + offIndex)
-   //             % maxSpikes;
-   // return allVerticesDevice->spikeHistory_[index][idxSp];
-
-      int idxSp =   allVerticesDevice->queueEnd_[index] + offIndex;
-
-      if(idxSp < 0)
-         idxSp = idxSp + maxSpikes;
-
+   AllSpikingNeuronsDeviceProperties *allVerticesDevice, int index, int offIndex, int maxSpikes) {
+      int idxSp = allVerticesDevice->queueEnd_[index] + offIndex;
+      if (idxSp < 0) idxSp = idxSp + maxSpikes;
       return allVerticesDevice->spikeHistory_[index][idxSp];
 }
 
@@ -623,8 +609,7 @@ __global__ void advanceSTDPSynapsesDevice(int totalSynapseCount, EdgeIndexMap *e
                                           uint64_t simulationStep, const BGFLOAT deltaT,
                                           AllSTDPSynapsesDeviceProperties *allEdgesDevice,
                                           AllSpikingNeuronsDeviceProperties *allVerticesDevice,
-                                          int maxSpikes)
-{
+                                          int maxSpikes) {
    int idx = blockIdx.x * blockDim.x + threadIdx.x;
    if (idx >= totalSynapseCount)
       return;
