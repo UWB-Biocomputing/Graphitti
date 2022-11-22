@@ -203,8 +203,7 @@ void GPUModel::updateConnections()
    shared_ptr<AllVertices> neurons = layout_->getVertices();
    shared_ptr<AllEdges> synapses = connections_->getEdges();
 
-   dynamic_cast<AllSpikingNeurons *>(neurons.get())
-      ->copyFromDevice(allVerticesDevice_);
+   dynamic_cast<AllSpikingNeurons *>(neurons.get()) ->copyFromDevice(allVerticesDevice_);
    // dynamic_cast<AllSpikingNeurons *>(neurons.get())
    //    ->copyNeuronDeviceSpikeHistoryToHost(allVerticesDevice_);
 

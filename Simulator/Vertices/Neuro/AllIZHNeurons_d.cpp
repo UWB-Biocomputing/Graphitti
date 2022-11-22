@@ -246,8 +246,7 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
       --allVerticesDevice->numStepsInRefractoryPeriod_[idx];
    } else if (r_vm >= allVerticesDevice->Vthresh_[idx]) {   // should it fire?
       int &spikeCount = allVerticesDevice->numEventsInEpoch_[idx];
-     
-
+      
       // Note that the neuron has fired!
       allVerticesDevice->hasFired_[idx] = true;
 
@@ -256,7 +255,7 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
       allVerticesDevice->spikeHistory_[idx][queueEnd] = simulationStep;
       spikeCount++;
 
-      queueEnd = (queueEnd + 1 ) % maxSpikes;
+      queueEnd = (queueEnd + 1) % maxSpikes;
 
       // calculate the number of steps in the absolute refractory period
       allVerticesDevice->numStepsInRefractoryPeriod_[idx]
