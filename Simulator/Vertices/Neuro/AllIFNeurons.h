@@ -26,6 +26,8 @@
 #include "AllSpikingNeurons.h"
 #include "Global.h"
 
+
+
 struct AllIFNeuronsDeviceProperties;
 
 class AllIFNeurons : public AllSpikingNeurons {
@@ -91,21 +93,42 @@ public:
    ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
    virtual void deleteNeuronDeviceStruct(void *allVerticesDevice);
 
+   // ///  Copy all neurons' data from host to device.
+   // ///
+   // ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
+   // virtual void copyToDevice(void *allVerticesDevice);
+
+   // ///  Copy all neurons' data from device to host.
+   // ///
+   // ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
+   // virtual void copyFromDevice(void *allVerticesDevice);
+
+   // ///  Copy spike history data stored in device memory to host.
+   // ///
+   // ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
+   // virtual void copyNeuronDeviceSpikeHistoryToHost(void *allVerticesDevice) override;
+
+   // ///  Copy spike counts data stored in device memory to host.
+   // ///
+   // ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
+   // virtual void copyNeuronDeviceSpikeCountsToHost(void *allVerticesDevice) override;
+
    ///  Clear the spike counts out of all neurons.
+   ///
    ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
    virtual void clearNeuronSpikeCounts(void *allVerticesDevice) override;
-   
-   //Copy all neurons' data from device to host.
-   //@param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void copyFromDevice(void *deviceAddress) override;
-   
-   //Copy all neurons' data from host to device.
-   // @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void copyToDevice(void *deviceAddress) override;
+
+
+   // T0 BE DONE 
+   virtual void copyFromDevice(void * deviceAddress) override;
+
+   // T0 BE DONE 
+   virtual void copyToDevice(void * deviceAddress) override;
 
 protected:
    ///  Allocate GPU memories to store all neurons' states.
    ///  (Helper function of allocNeuronDeviceStruct)
+   ///
    ///  @param  allVerticesDevice         Reference to the AllIFNeuronsDeviceProperties struct.
    void allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDevice);
 

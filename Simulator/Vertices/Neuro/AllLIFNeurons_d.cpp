@@ -116,7 +116,7 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
       allVerticesDevice->spikeHistory_[idx][queueEnd] = simulationStep;
       spikeCount++;
 
-      queueEnd = (queueEnd + 1) % maxSpikes;
+      queueEnd = (queueEnd + 1 ) % maxSpikes;
       // Debug statements to be removed
       // DEBUG_SYNAPSE(
       //     printf("advanceLIFNeuronsDevice\n");
