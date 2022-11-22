@@ -92,13 +92,12 @@ public:
    virtual void deleteNeuronDeviceStruct(void *allVerticesDevice);
 
    ///  Clear the spike counts out of all neurons.
+   //
    ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
    virtual void clearNeuronSpikeCounts(void *allVerticesDevice) override;
-   
    //Copy all neurons' data from device to host.
    //@param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
    virtual void copyFromDevice(void *deviceAddress) override;
-   
    //Copy all neurons' data from host to device.
    // @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
    virtual void copyToDevice(void *deviceAddress) override;

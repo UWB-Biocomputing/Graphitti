@@ -59,7 +59,6 @@ public:
    virtual void copyFromDevice(void *deviceAddress) override;
  
    virtual void copyToDevice(void *deviceAddress) override;
-
 protected:
    ///  Clear the spike counts out of all neurons in device memory.
    ///  (helper function of clearNeuronSpikeCounts)
@@ -121,13 +120,9 @@ struct AllSpikingNeuronsDeviceProperties : public AllVerticesDeviceProperties {
    ///  Each buffer is a circular, and offset of top location of the buffer i is
    ///  specified by spikeCountOffset[i].
    uint64_t **spikeHistory_;
-   
    int *queueFront_;
-
    int *queueEnd_;
-
    int *epochStart_;
-
    int *numEventsInEpoch_;
 };
-#endif   // defined(USE_GPU)
+#endif // defined(USE_GPU)

@@ -105,13 +105,13 @@ private:
    ///  @return true if successful, false otherwise.
    bool eraseRESP(AllVertices &vertices, Layout *layout);
 
-   struct ChangedEdge {
+   struct ChangedEdge
+   {
       int srcV;
       int destV;
       edgeType eType;
       string toString();
    };
-
 #else
 public:
    // Not Implemented; Placeholder for GPU build

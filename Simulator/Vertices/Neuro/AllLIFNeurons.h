@@ -108,7 +108,6 @@ public:
    ///  @param  randNoise              Reference to the random noise array.
    ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
    virtual void advanceVertices(AllEdges &synapses, void *allVerticesDevice, void *allEdgesDevice, float *randNoise, EdgeIndexMap *edgeIndexMapDevice) override;
-
 #else   // !defined(USE_GPU)
 protected:
    ///  Helper for #advanceNeuron. Updates state of a single neuron.

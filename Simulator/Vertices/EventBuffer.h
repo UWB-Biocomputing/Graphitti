@@ -24,15 +24,11 @@
 #include "Global.h"
 
 class AllSpikingNeurons; 
-
 class AllIFNeurons;  // forward declaration 
-
-class EventBuffer {
-
+class EventBuffer
+{
 friend class AllIFNeurons;
-
 friend class AllSpikingNeurons;
-
 public:
    /// Create EventBuffer that is sized appropriately
    ///
@@ -104,8 +100,6 @@ public:
    /// @param offset How many events ago. Must be negative. If that event isn't in the buffer,
    ///               or if the buffer is empty, returns ULONG_MAX.
    uint64_t getPastEvent(int offset) const;
-   ///@}
-
 private:
    /// Holds the event time steps
    vector<uint64_t> eventTimeSteps_;
