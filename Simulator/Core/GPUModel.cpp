@@ -245,14 +245,16 @@ void GPUModel::allocSynapseImap(int count)
    HANDLE_ERROR(cudaMemset(synapseIMapDevice.incomingEdgeBegin_, 0, count * sizeof(BGSIZE)));
    HANDLE_ERROR(cudaMemset(synapseIMapDevice.incomingEdgeCount_, 0, count * sizeof(BGSIZE)));
    HANDLE_ERROR(cudaMalloc((void **)&synapseIndexMapDevice_, sizeof(EdgeIndexMap)));
-   HANDLE_ERROR(cudaMemcpy(synapseIndexMapDevice_, &synapseIMapDevice, sizeof(EdgeIndexMap), cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(synapseIndexMapDevice_, &synapseIMapDevice, sizeof(EdgeIndexMap),
+                           cudaMemcpyHostToDevice));
 }
 
 /// Deallocate device memory for synapse inverse map.
 void GPUModel::deleteSynapseImap()
 {
    EdgeIndexMap synapseIMapDevice;
-   HANDLE_ERROR(cudaMemcpy(&synapseIMapDevice, synapseIndexMapDevice_, sizeof(EdgeIndexMap), cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(&synapseIMapDevice, synapseIndexMapDevice_, sizeof(EdgeIndexMap),
+                           cudaMemcpyDeviceToHost));
    HANDLE_ERROR(cudaFree(synapseIMapDevice.outgoingEdgeBegin_));
    HANDLE_ERROR(cudaFree(synapseIMapDevice.outgoingEdgeCount_));
    HANDLE_ERROR(cudaFree(synapseIMapDevice.outgoingEdgeIndexMap_));
@@ -282,7 +284,8 @@ void GPUModel::copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost
    if (synapseIMapDevice.outgoingEdgeIndexMap_ != nullptr) {
       HANDLE_ERROR(cudaFree(synapseIMapDevice.outgoingEdgeIndexMap_));
    }
-   HANDLE_ERROR(cudaMalloc((void **)&synapseIMapDevice.outgoingEdgeIndexMap_, totalSynapseCount * sizeof(BGSIZE)));
+   HANDLE_ERROR(cudaMalloc((void **)&synapseIMapDevice.outgoingEdgeIndexMap_,
+                           totalSynapseCount * sizeof(BGSIZE)));
    HANDLE_ERROR(cudaMemcpy(synapseIMapDevice.outgoingEdgeIndexMap_,
                            synapseIndexMapHost.outgoingEdgeIndexMap_,
                            totalSynapseCount * sizeof(BGSIZE), cudaMemcpyHostToDevice));
