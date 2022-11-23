@@ -64,7 +64,6 @@ public:
    /// in the preceding epoch) is not the same as the number of events in the buffer, because the buffer
    /// retains events from the previous epoch, too.
    int getNumEventsInEpoch() const;
-   
    /** @name Vertex and Edge Interface
     *  EventBuffer interface for use by the Vertex and Edge classes
     */
