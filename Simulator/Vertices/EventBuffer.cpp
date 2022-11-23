@@ -87,7 +87,6 @@ uint64_t EventBuffer::getPastEvent(int offset) const
    // queueEnd_ AND >= queueFront.
    if ((index < queueEnd_) && (index >= queueFront_))
       return eventTimeSteps_[index];
-   else 
+   else
       return numeric_limits<unsigned long>::max();
 }
-
