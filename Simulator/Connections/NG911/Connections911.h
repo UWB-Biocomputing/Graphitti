@@ -49,7 +49,6 @@ public:
 
    /// Records typeMap history for recorders
    vertexType *oldTypeMap_ = nullptr;
-
 private:
    /// number of maximum connections per vertex
    int connsPerVertex_;
@@ -105,8 +104,7 @@ private:
    ///  @return true if successful, false otherwise.
    bool eraseRESP(AllVertices &vertices, Layout *layout);
 
-   struct ChangedEdge
-   {
+   struct ChangedEdge {
       int srcV;
       int destV;
       edgeType eType;
@@ -126,8 +124,7 @@ public:
 
 private:
    // Not Implemented; Placeholder for GPU build
-   struct ChangedEdge {
-   };
+   struct ChangedEdge{};
 
 #endif
 };
