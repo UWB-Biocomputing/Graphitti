@@ -48,7 +48,7 @@ public:
    virtual void printParameters() const override;
 
    /// Records typeMap history for recorders
-   vertexType *oldTypeMap_= nullptr;
+   vertexType *oldTypeMap_ = nullptr;
 private:
    /// number of maximum connections per vertex
    int connsPerVertex_;
