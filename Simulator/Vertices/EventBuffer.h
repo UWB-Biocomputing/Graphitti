@@ -27,6 +27,7 @@ class AllIFNeurons;
 class EventBuffer {
    friend class AllIFNeurons;
    friend class AllSpikingNeurons;
+
 public:
    /// Create EventBuffer that is sized appropriately
    ///
@@ -56,17 +57,17 @@ public:
    ///
    /// @param i element number
    uint64_t operator[](int i) const;
+
    /// Get number of events in the current/preceding epoch
    ///
    /// Getting the number of events in the current epoch (or, in between epochs, the number of events
    /// in the preceding epoch) is not the same as the number of events in the buffer, because the buffer
    /// retains events from the previous epoch, too.
    int getNumEventsInEpoch() const;
-   ///@}
+   
    /** @name Vertex and Edge Interface
     *  EventBuffer interface for use by the Vertex and Edge classes
     */
-   ///@{
    /// Reset member variables consistent with an empty buffer
    void clear();
    /// Start a new epoch
