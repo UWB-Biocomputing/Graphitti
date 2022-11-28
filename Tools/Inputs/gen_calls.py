@@ -19,12 +19,15 @@ def main():
     law = 30
     fire = 20
 
+    # Id of caller region these calls correspond to
+    SPD_caller_region_id = '194'
+
     # Read files
     call_log = pd.read_csv(call_log)
     G = nx.read_graphml(graph_file)
 
     # use eval() to convert the string into python a list
-    SPD_grid = eval(G.nodes["SEATTLE PD Caller region"]["squares"])
+    SPD_grid = eval(G.nodes[SPD_caller_region_id]["segments"]) # node 194 is Seattle PD's Caller Region
     call_log["start_time"] = pd.to_datetime(call_log["start_time"], format="%m/%d/%Y %H:%M:%S")
 
     # Sort the calls so they are in order
@@ -53,6 +56,8 @@ def main():
     sorted['type_prob'] = np.random.randint(0, 100, sorted.shape[0])
     # 20% of the values should be under 20, 30% between 20 and 49, 50% between 50 and 99
     sorted['type'] = sorted.apply(lambda call: 'Fire' if call['type_prob'] < fire else 'Law' if call['type_prob'] < ems else 'EMS', axis=1)
+    sorted = sorted.assign(vertex_id = SPD_caller_region_id)
+    sorted = sorted.assign(vertex =  G.nodes[SPD_caller_region_id]['name'])
 
     # Clean up
     sorted = sorted.drop(['grid_idx', 'type_prob'], axis=1)

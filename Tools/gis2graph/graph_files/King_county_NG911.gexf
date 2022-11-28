@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
-  <meta lastmodifieddate="2022-11-11">
+  <meta lastmodifieddate="2022-11-28">
     <creator>NetworkX 2.8.6</creator>
   </meta>
   <graph defaultedgetype="directed" mode="static" name="">
@@ -8685,6 +8685,8 @@
           <attvalue for="0" value="PSAP1@kingcounty.gov" />
           <attvalue for="1" value="NORCOM" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.287151179000034" />
+          <attvalue for="4" value="-121.97149717983882" />
         </attvalues>
       </node>
       <node id="964" label="964">
@@ -8692,6 +8694,8 @@
           <attvalue for="0" value="PSAP10@kingcounty.gov" />
           <attvalue for="1" value="King County Sheriff's Office" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.437151981000056" />
+          <attvalue for="4" value="-121.99160162650455" />
         </attvalues>
       </node>
       <node id="965" label="965">
@@ -8699,6 +8703,8 @@
           <attvalue for="0" value="PSAP102@kingcounty.gov" />
           <attvalue for="1" value="SEATTLE PD - LAKE WASHINGTON" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.58040369650007" />
+          <attvalue for="4" value="-122.17507291972626" />
         </attvalues>
       </node>
       <node id="966" label="966">
@@ -8706,6 +8712,8 @@
           <attvalue for="0" value="PSAP117@kingcounty.gov" />
           <attvalue for="1" value="BOTHELL" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.65406326650006" />
+          <attvalue for="4" value="-122.31252830317835" />
         </attvalues>
       </node>
       <node id="967" label="967">
@@ -8713,6 +8721,8 @@
           <attvalue for="0" value="PSAP119@kingcounty.gov" />
           <attvalue for="1" value="Washington State Patrol - Bellevue" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.358638173500054" />
+          <attvalue for="4" value="-122.31679305909984" />
         </attvalues>
       </node>
       <node id="968" label="968">
@@ -8720,6 +8730,8 @@
           <attvalue for="0" value="PSAP121@kingcounty.gov" />
           <attvalue for="1" value="VALLEY COM" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.361644872000056" />
+          <attvalue for="4" value="-122.0056220556865" />
         </attvalues>
       </node>
       <node id="969" label="969">
@@ -8727,6 +8739,8 @@
           <attvalue for="0" value="PSAP161@kingcounty.gov" />
           <attvalue for="1" value="ISSAQUAH PD" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.49060010750006" />
+          <attvalue for="4" value="-122.33014092928096" />
         </attvalues>
       </node>
       <node id="970" label="970">
@@ -8734,6 +8748,8 @@
           <attvalue for="0" value="PSAP163@kingcounty.gov" />
           <attvalue for="1" value="REDMOND PD" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.66211792750005" />
+          <attvalue for="4" value="-122.30159052150982" />
         </attvalues>
       </node>
       <node id="971" label="971">
@@ -8741,6 +8757,8 @@
           <attvalue for="0" value="PSAP197@kingcounty.gov" />
           <attvalue for="1" value="King County Sheriff's Office - Marine Patrol for Redmond" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.629511516000065" />
+          <attvalue for="4" value="-121.96116202017478" />
         </attvalues>
       </node>
       <node id="972" label="972">
@@ -8748,6 +8766,8 @@
           <attvalue for="0" value="PSAP198@kingcounty.gov" />
           <attvalue for="1" value="King County Sheriff's Office - Marine Patrol for Bellevue" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.490804368000056" />
+          <attvalue for="4" value="-121.6980168806331" />
         </attvalues>
       </node>
       <node id="973" label="973">
@@ -8755,6 +8775,8 @@
           <attvalue for="0" value="PSAP224@kingcounty.gov" />
           <attvalue for="1" value="King County Sheriff's Office - Marine Patrol" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.19371531400006" />
+          <attvalue for="4" value="-121.95966959954052" />
         </attvalues>
       </node>
       <node id="974" label="974">
@@ -8762,6 +8784,8 @@
           <attvalue for="0" value="PSAP225@kingcounty.gov" />
           <attvalue for="1" value="King County Sheriff's Office - Marine Patrol for Issaquah" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.46225804350007" />
+          <attvalue for="4" value="-122.25100884949828" />
         </attvalues>
       </node>
       <node id="975" label="975">
@@ -8769,6 +8793,8 @@
           <attvalue for="0" value="PSAP78@kingcounty.gov" />
           <attvalue for="1" value="King County Sheriff's Office - Marine Patrol for Burien" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.66837057700005" />
+          <attvalue for="4" value="-122.10841188764039" />
         </attvalues>
       </node>
       <node id="976" label="976">
@@ -8776,6 +8802,8 @@
           <attvalue for="0" value="PSAP101@kingcounty.gov" />
           <attvalue for="1" value="PORT PD" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.75532571550005" />
+          <attvalue for="4" value="-122.28534596346347" />
         </attvalues>
       </node>
       <node id="977" label="977">
@@ -8783,6 +8811,8 @@
           <attvalue for="0" value="PSAP120@kingcounty.gov" />
           <attvalue for="1" value="SEATTLE PD" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.27281192700005" />
+          <attvalue for="4" value="-122.31477654167" />
         </attvalues>
       </node>
       <node id="978" label="978">
@@ -8790,6 +8820,8 @@
           <attvalue for="0" value="PSAP211@kingcounty.gov" />
           <attvalue for="1" value="King County Sheriff's Office - Marine Patrol for Sammamish" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.417938528000036" />
+          <attvalue for="4" value="-122.11813681916107" />
         </attvalues>
       </node>
       <node id="979" label="979">
@@ -8797,6 +8829,8 @@
           <attvalue for="0" value="PSAP72@kingcounty.gov" />
           <attvalue for="1" value="ENUMCLAW PD" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.47168957850005" />
+          <attvalue for="4" value="-122.31766420083798" />
         </attvalues>
       </node>
       <node id="980" label="980">
@@ -8804,6 +8838,8 @@
           <attvalue for="0" value="PSAP76@kingcounty.gov" />
           <attvalue for="1" value="King County Sheriff's Office - Marine Patrol for Shoreline" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.463509103000035" />
+          <attvalue for="4" value="-122.28979642275718" />
         </attvalues>
       </node>
       <node id="981" label="981">
@@ -8811,6 +8847,8 @@
           <attvalue for="0" value="PSAP100@kingcounty.gov" />
           <attvalue for="1" value="UW PD" />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.69617694400006" />
+          <attvalue for="4" value="-122.00703300429709" />
         </attvalues>
       </node>
       <node id="982" label="982">
@@ -8818,6 +8856,8 @@
           <attvalue for="0" value="PSAP226@kingcounty.gov" />
           <attvalue for="1" value="SNOCO911/Washington State Patrol " />
           <attvalue for="2" value="PSAP" />
+          <attvalue for="3" value="47.65513045550006" />
+          <attvalue for="4" value="-122.31989210667598" />
         </attvalues>
       </node>
       <node id="983" label="983">
