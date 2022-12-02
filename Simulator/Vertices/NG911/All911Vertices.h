@@ -83,8 +83,8 @@ private:
 public:
    virtual void allocNeuronDeviceStruct(void **allVerticesDevice) {};
    virtual void deleteNeuronDeviceStruct(void *allVerticesDevice) {};
-   virtual void copyNeuronHostToDevice(void *allVerticesDevice) {};
-   virtual void copyNeuronDeviceToHost(void *allVerticesDevice) {};
+   virtual void copyToDevice(void *allVerticesDevice) {};
+   virtual void copyFromDevice(void *allVerticesDevice) {};
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
                                 float *randNoise, EdgeIndexMap *edgeIndexMapDevice) {};
    virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};

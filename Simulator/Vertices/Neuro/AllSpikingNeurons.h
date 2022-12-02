@@ -22,9 +22,7 @@
  */
 
 #pragma once
-
 using namespace std;
-
 #include "AllSpikingSynapses.h"
 #include "AllVertices.h"
 #include "EventBuffer.h"
@@ -53,41 +51,20 @@ public:
    ///  @param  synapses               Reference to the allEdges struct on host memory.
    virtual void setAdvanceVerticesDeviceParams(AllEdges &synapses);
 
-   ///  Copy spike counts data stored in device memory to host.
-   ///
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void copyNeuronDeviceSpikeCountsToHost(void *allVerticesDevice) = 0;
-
-   ///  Copy spike history data stored in device memory to host.
-   ///
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void copyNeuronDeviceSpikeHistoryToHost(void *allVerticesDevice) = 0;
-
    ///  Clear the spike counts out of all neurons.
-   ///
+   //
    ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
    virtual void clearNeuronSpikeCounts(void *allVerticesDevice) = 0;
+   virtual void copyFromDevice(void *deviceAddress) override;
+   virtual void copyToDevice(void *deviceAddress) override;
 
 protected:
-   ///  Copy spike history data stored in device memory to host.
-   ///  (Helper function of copyNeuronDeviceSpikeHistoryToHost)
-   ///
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   void copyDeviceSpikeHistoryToHost(AllSpikingNeuronsDeviceProperties &allVerticesDevice);
-
-   ///  Copy spike counts data stored in device memory to host.
-   ///  (Helper function of copyNeuronDeviceSpikeCountsToHost)
-   ///
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   void copyDeviceSpikeCountsToHost(AllSpikingNeuronsDeviceProperties &allVerticesDevice);
-
    ///  Clear the spike counts out of all neurons in device memory.
    ///  (helper function of clearNeuronSpikeCounts)
    ///
    ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
    void clearDeviceSpikeCounts(AllSpikingNeuronsDeviceProperties &allVerticesDevice);
 #else   // !defined(USE_GPU)
-
 public:
    ///  Update internal state of the indexed Neuron (called by every simulation step).
    ///  Notify outgoing synapses if neuron has fired.
@@ -136,17 +113,15 @@ struct AllSpikingNeuronsDeviceProperties : public AllVerticesDeviceProperties {
    ///  The booleans which track whether the neuron has fired.
    bool *hasFired_;
 
-   ///  The number of spikes since the last growth cycle.
-   int *spikeCount_;
-
-   ///  Offset of the spike_history buffer.
-   int *spikeCountOffset_;
-
    ///  Step count (history) for each spike fired by each neuron.
    ///  The step counts are stored in a buffer for each neuron, and the pointers
    ///  to the buffer are stored in a list pointed by spike_history.
    ///  Each buffer is a circular, and offset of top location of the buffer i is
    ///  specified by spikeCountOffset[i].
    uint64_t **spikeHistory_;
+   int *queueFront_;
+   int *queueEnd_;
+   int *epochStart_;
+   int *numEventsInEpoch_;
 };
 #endif   // defined(USE_GPU)
