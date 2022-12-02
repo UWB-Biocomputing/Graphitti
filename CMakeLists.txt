@@ -331,11 +331,31 @@ add_executable(tests
         Testing/Core/RNGFactoryTests.cpp
         Testing/Utils/ParameterManagerTests.cpp)
 
+add_executable(serialTest
+        Testing/RunTests.cpp
+        Testing/Core/SerializationTests.cpp)
+
+add_executable(deserialTest
+        Testing/RunTests.cpp
+        Testing/Core/DeserializationTests.cpp)
+
 # Links the Googletest framework with the testing executable
 target_link_libraries(tests gtest gtest_main)
 
 # Link the combined library into the 'tests' executable.
 target_link_libraries(tests combinedLib)
+
+# Links the Googletest framework with the serialTest executable
+target_link_libraries(serialTest gtest gtest_main)
+
+# Link the combined library into the 'serialTest' executable.
+target_link_libraries(serialTest combinedLib)
+
+# Links the Googletest framework with the deserialTest executable
+target_link_libraries(deserialTest gtest gtest_main)
+
+# Link the combined library into the 'deserialTest' executable.
+target_link_libraries(deserialTest combinedLib)
 
 # Clear ENABLE_CUDA from cache so it's reset for subsequent builds
 unset(ENABLE_CUDA CACHE)

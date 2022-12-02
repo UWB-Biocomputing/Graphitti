@@ -247,7 +247,12 @@ template <class Archive> void AllEdges::save(Archive &archive) const
    }
 
    // serialization
-   archive(WVector, sourceVertexLayoutIndexVector, destVertexLayoutIndexVector);
+   archive(cereal::make_nvp("edgeWeightsSize", WVector.size()),
+           cereal::make_nvp("edgeWeights", WVector),
+           cereal::make_nvp("sourceVerticesSize", sourceVertexLayoutIndexVector.size()),
+           cereal::make_nvp("sourceVertices", sourceVertexLayoutIndexVector),
+           cereal::make_nvp("destinationVerticesSize", destVertexLayoutIndexVector.size()),
+           cereal::make_nvp("destinationVertices", destVertexLayoutIndexVector));
 }
 
 ///  Cereal deserialization method
@@ -255,23 +260,42 @@ template <class Archive> void AllEdges::save(Archive &archive) const
 template <class Archive> void AllEdges::load(Archive &archive)
 {
    // uses vectors to load edge weights, source vertices, and destination vertices
+   int WVectorSize = 0;
+   int sourceVertexLayoutIndexVectorSize = 0;
+   int destVertexLayoutIndexVectorSize = 0;
    vector<BGFLOAT> WVector;
    vector<int> sourceVertexLayoutIndexVector;
    vector<int> destVertexLayoutIndexVector;
 
    // deserializing data to these vectors
-   archive(WVector, sourceVertexLayoutIndexVector, destVertexLayoutIndexVector);
+   archive(WVectorSize, WVector, sourceVertexLayoutIndexVectorSize, sourceVertexLayoutIndexVector,
+           destVertexLayoutIndexVectorSize, destVertexLayoutIndexVector);
 
    // check to see if serialized data sizes matches object sizes
-   if (WVector.size() != maxEdgesPerVertex_ * countVertices_) {
+   int requiredSize = maxEdgesPerVertex_ * countVertices_;
+   if (WVectorSize != requiredSize || WVectorSize != WVector.size()) {
       cerr
-         << "Failed deserializing edge weights, source vertices, and/or destination vertices. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
+         << "Failed deserializing edge weights. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
+         << endl;
+      throw cereal::Exception("Deserialization Error");
+   }
+   if (sourceVertexLayoutIndexVectorSize != requiredSize
+       || sourceVertexLayoutIndexVectorSize != sourceVertexLayoutIndexVector.size()) {
+      cerr
+         << "Failed deserializing source vertices. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
+         << endl;
+      throw cereal::Exception("Deserialization Error");
+   }
+   if (destVertexLayoutIndexVectorSize != requiredSize
+       || destVertexLayoutIndexVectorSize != destVertexLayoutIndexVector.size()) {
+      cerr
+         << "Failed deserializing destination vertices. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
          << endl;
       throw cereal::Exception("Deserialization Error");
    }
 
    // assigns serialized data to objects
-   for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
+   for (int i = 0; i < requiredSize; i++) {
       W_[i] = WVector[i];
       sourceVertexIndex_[i] = sourceVertexLayoutIndexVector[i];
       destVertexIndex_[i] = destVertexLayoutIndexVector[i];
