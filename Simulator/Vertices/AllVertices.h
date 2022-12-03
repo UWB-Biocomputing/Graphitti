@@ -94,12 +94,12 @@ public:
    ///  Copy all vertices' data from host to device.
    ///
    ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void copyToDevice(void *allVerticesDevice) = 0;
+   virtual void copyNeuronHostToDevice(void *allVerticesDevice) = 0;
 
    ///  Copy all vertices' data from device to host.
    ///
    ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void copyFromDevice(void *allVerticesDevice) = 0;
+   virtual void copyNeuronDeviceToHost(void *allVerticesDevice) = 0;
 
    ///  Update the state of all vertices for a time step
    ///  Notify outgoing synapses if vertex has fired.

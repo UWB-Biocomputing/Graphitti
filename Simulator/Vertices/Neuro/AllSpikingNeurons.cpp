@@ -35,11 +35,8 @@ void AllSpikingNeurons::setupVertices()
 ///  Clear the spike counts out of all Neurons.
 void AllSpikingNeurons::clearSpikeCounts()
 {
-   // for (int i = 0; i < vertexEvents_.size(); i++) {
-   //    vertexEvents_[i].clear();
-   // }
    for (int i = 0; i < vertexEvents_.size(); i++) {
-      vertexEvents_[i].startNewEpoch();
+      vertexEvents_[i].clear();
    }
 }
 

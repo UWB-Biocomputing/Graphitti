@@ -104,71 +104,99 @@ void AllIZHNeurons::deleteDeviceStruct(AllIZHNeuronsDeviceProperties &allVertice
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
 ///                             on device memory.
-void AllIZHNeurons::copyToDevice(void *allVerticesDevice)
+void AllIZHNeurons::copyNeuronHostToDevice(void *allVerticesDevice)
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
 
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
                            sizeof(AllIZHNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
+   copyHostToDevice(allVerticesDeviceProps);
+}
 
+///  Copy all neurons' data from host to device.
+///  (Helper function of copyNeuronHostToDevice)
+///
+///  @param  allVerticesDevice    GPU address of the AllIZHNeuronsDeviceProperties struct on device memory.
+void AllIZHNeurons::copyHostToDevice(AllIZHNeuronsDeviceProperties &allVerticesDevice)
+{
    int count = Simulator::getInstance().getTotalVertices();
 
-   AllIFNeurons::copyToDevice(allVerticesDevice);
+   AllIFNeurons::copyHostToDevice(allVerticesDevice);
 
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Aconst_, Aconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.Aconst_, Aconst_, count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Bconst_, Bconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.Bconst_, Bconst_, count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Cconst_, Cconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.Cconst_, Cconst_, count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Dconst_, Dconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.Dconst_, Dconst_, count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
    HANDLE_ERROR(
-      cudaMemcpy(allVerticesDeviceProps.u_, u_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+      cudaMemcpy(allVerticesDevice.u_, u_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
    HANDLE_ERROR(
-      cudaMemcpy(allVerticesDeviceProps.C3_, C3_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+      cudaMemcpy(allVerticesDevice.C3_, C3_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
 }
 
 ///  Copy all neurons' data from device to host.
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
 ///                             on device memory.
-void AllIZHNeurons::copyFromDevice(void *allVerticesDevice)
+void AllIZHNeurons::copyNeuronDeviceToHost(void *allVerticesDevice)
 {
-   AllIFNeurons::copyFromDevice(allVerticesDevice);
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
 
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
                            sizeof(AllIZHNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
+   copyDeviceToHost(allVerticesDeviceProps);
+}
 
+///  Copy all neurons' data from device to host.
+///  (Helper function of copyNeuronDeviceToHost)
+///
+///  @param  allVerticesDevice    GPU address of the AllIZHNeuronsDeviceProperties struct on device memory.
+void AllIZHNeurons::copyDeviceToHost(AllIZHNeuronsDeviceProperties &allVerticesDevice)
+{
    int count = Simulator::getInstance().getTotalVertices();
 
-   HANDLE_ERROR(cudaMemcpy(Aconst_, allVerticesDeviceProps.Aconst_, count * sizeof(BGFLOAT),
+   AllIFNeurons::copyDeviceToHost(allVerticesDevice);
+
+   HANDLE_ERROR(cudaMemcpy(Aconst_, allVerticesDevice.Aconst_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Bconst_, allVerticesDeviceProps.Bconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Bconst_, allVerticesDevice.Bconst_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Cconst_, allVerticesDeviceProps.Cconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Cconst_, allVerticesDevice.Cconst_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Dconst_, allVerticesDeviceProps.Dconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Dconst_, allVerticesDevice.Dconst_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
    HANDLE_ERROR(
-      cudaMemcpy(u_, allVerticesDeviceProps.u_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+      cudaMemcpy(u_, allVerticesDevice.u_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
    HANDLE_ERROR(
-      cudaMemcpy(C3_, allVerticesDeviceProps.C3_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+      cudaMemcpy(C3_, allVerticesDevice.C3_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
 }
 
 ///  Copy spike history data stored in device memory to host.
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
 ///                             on device memory.
-// void AllIZHNeurons::copyNeuronDeviceSpikeHistoryToHost(void *allVerticesDevice)
-// {
-//    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
-//    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
-//                            sizeof(AllIZHNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
-//    AllSpikingNeurons::copyDeviceSpikeHistoryToHost(allVerticesDeviceProps);
-// }
+void AllIZHNeurons::copyNeuronDeviceSpikeHistoryToHost(void *allVerticesDevice)
+{
+   AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
+   HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
+                           sizeof(AllIZHNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
+   AllSpikingNeurons::copyDeviceSpikeHistoryToHost(allVerticesDeviceProps);
+}
 
+///  Copy spike counts data stored in device memory to host.
+///
+///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
+///                             on device memory.
+void AllIZHNeurons::copyNeuronDeviceSpikeCountsToHost(void *allVerticesDevice)
+{
+   AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
+   HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
+                           sizeof(AllIZHNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
+   AllSpikingNeurons::copyDeviceSpikeCountsToHost(allVerticesDeviceProps);
+}
 
 ///  Clear the spike counts out of all neurons.
 ///
@@ -245,15 +273,16 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
    if (allVerticesDevice->numStepsInRefractoryPeriod_[idx] > 0) {   // is neuron refractory?
       --allVerticesDevice->numStepsInRefractoryPeriod_[idx];
    } else if (r_vm >= allVerticesDevice->Vthresh_[idx]) {   // should it fire?
-      int &spikeCount = allVerticesDevice->numEventsInEpoch_[idx];
+      int &spikeCount = allVerticesDevice->spikeCount_[idx];
+      int &spikeCountOffset = allVerticesDevice->spikeCountOffset_[idx];
+
       // Note that the neuron has fired!
       allVerticesDevice->hasFired_[idx] = true;
-      // record spike time
-      int &queueEnd = allVerticesDevice->queueEnd_[idx];
-      allVerticesDevice->spikeHistory_[idx][queueEnd] = simulationStep;
-      spikeCount++;
 
-      queueEnd = (queueEnd + 1) % maxSpikes;
+      // record spike time
+      int idxSp = (spikeCount + spikeCountOffset) % maxSpikes;
+      allVerticesDevice->spikeHistory_[idx][idxSp] = simulationStep;
+      spikeCount++;
 
       // calculate the number of steps in the absolute refractory period
       allVerticesDevice->numStepsInRefractoryPeriod_[idx]

@@ -105,18 +105,17 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
    if (allVerticesDevice->numStepsInRefractoryPeriod_[idx] > 0) {   // is neuron refractory?
       --allVerticesDevice->numStepsInRefractoryPeriod_[idx];
    } else if (r_vm >= allVerticesDevice->Vthresh_[idx]) {   // should it fire?
-      int &spikeCount = allVerticesDevice->numEventsInEpoch_[idx];
+      int &spikeCount = allVerticesDevice->spikeCount_[idx];
+      int &spikeCountOffset = allVerticesDevice->spikeCountOffset_[idx];
 
       // Note that the neuron has fired!
       allVerticesDevice->hasFired_[idx] = true;
 
       // record spike time
-      int &queueEnd = allVerticesDevice->queueEnd_[idx];
-      //int idxSp = allVerticesDevice->queueEnd_[idx];
-      allVerticesDevice->spikeHistory_[idx][queueEnd] = simulationStep;
+      int idxSp = (spikeCount + spikeCountOffset) % maxSpikes;
+      allVerticesDevice->spikeHistory_[idx][idxSp] = simulationStep;
       spikeCount++;
 
-      queueEnd = (queueEnd + 1) % maxSpikes;
       // Debug statements to be removed
       // DEBUG_SYNAPSE(
       //     printf("advanceLIFNeuronsDevice\n");

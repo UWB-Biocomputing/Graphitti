@@ -29,8 +29,6 @@ public:
    {
       return new Connections911();
    }
-   /// Records typeMap history for recorders
-   vertexType *oldTypeMap_ = nullptr;
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///  Initialize the network characterized by parameters:
@@ -44,6 +42,9 @@ public:
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
+
+   /// Records typeMap history for recorders
+   vertexType *oldTypeMap_ = nullptr;
 
 private:
    /// number of maximum connections per vertex
@@ -105,6 +106,7 @@ private:
       edgeType eType;
       string toString();
    };
+
 #else
 public:
    // Not Implemented; Placeholder for GPU build
@@ -119,7 +121,8 @@ public:
 
 private:
    // Not Implemented; Placeholder for GPU build
-   struct ChangedEdge {};
+   struct ChangedEdge {
+   };
 
 #endif
 };
