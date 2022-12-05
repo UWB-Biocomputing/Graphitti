@@ -1,6 +1,7 @@
 import pandas as pd
 import networkx as nx
 import numpy as np
+import lxml.etree as et
 
 def main():
     """Generates an XML file with a list of calls."""
@@ -28,10 +29,18 @@ def main():
 
     # use eval() to convert the string into python a list
     SPD_grid = eval(G.nodes[SPD_caller_region_id]["segments"]) # node 194 is Seattle PD's Caller Region
-    call_log["start_time"] = pd.to_datetime(call_log["start_time"], format="%m/%d/%Y %H:%M:%S")
+    call_log["time"] = pd.to_datetime(call_log["time"], format="%m/%d/%Y %H:%M:%S")
 
     # Sort the calls so they are in order
-    sorted = call_log.sort_values("start_time")
+    sorted = call_log.sort_values("time")
+    # Convert start_time to seconds since the first call in the list
+    first_time = sorted["time"].iloc[0]
+    sorted['time'] = sorted.apply(lambda call: (call['time'] - first_time).seconds + \
+                                                     (call['time'] - first_time).days * 24 * 3600, axis=1)
+
+    # Conver duration to seconds
+    sorted['duration'] = pd.to_timedelta(sorted['duration'])
+    sorted['duration'] = sorted.apply(lambda call: call['duration'].seconds, axis=1)
 
     # At this point the call log only has the start_time and talk_time.
     # We will generate the coordinates by uniformily distributing the calls along
@@ -56,14 +65,31 @@ def main():
     sorted['type_prob'] = np.random.randint(0, 100, sorted.shape[0])
     # 20% of the values should be under 20, 30% between 20 and 49, 50% between 50 and 99
     sorted['type'] = sorted.apply(lambda call: 'Fire' if call['type_prob'] < fire else 'Law' if call['type_prob'] < ems else 'EMS', axis=1)
+
     sorted = sorted.assign(vertex_id = SPD_caller_region_id)
     sorted = sorted.assign(vertex =  G.nodes[SPD_caller_region_id]['name'])
 
     # Clean up
     sorted = sorted.drop(['grid_idx', 'type_prob'], axis=1)
 
-    # Save dataframe
-    sorted.to_xml("SPD_calls.xml", index=False, row_name="event")
+    # Construct an element tree to be writen to a file in XML format
+    # data is the root element
+    data = et.Element('data', {"description": "SPD_calls_sept2020", 
+                               "clock_tick_size": "1sec"})
+
+    # Inset one event element per row
+    for idx, row in sorted.iterrows():
+        d = row.to_dict()
+        event = et.SubElement(data, 'event') # We could add attributes here
+        for k, v in d.items():
+            attr = et.SubElement(event, k)
+            attr.text = str(v)
+
+    tree = et.ElementTree(data)
+    tree_out = tree.write("SPD_calls.xml",
+                          xml_declaration=True,
+                          encoding="UTF-8",
+                          pretty_print=True)
 
 
 if __name__ == '__main__':
