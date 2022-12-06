@@ -208,7 +208,7 @@ void GPUModel::updateConnections()
    //    ->copyNeuronDeviceSpikeHistoryToHost(allVerticesDevice_);
 
    // Update Connections data
-   if (connections_->updateConnections(*(neurons.get()), layout_.get())) {
+   if (connections_->updateConnections(*(neurons.get()))) {
       connections_->updateSynapsesWeights(Simulator::getInstance().getTotalVertices(),
                                           *(neurons.get()), *(synapses.get()), allVerticesDevice_,
                                           allEdgesDevice_, layout_.get());
