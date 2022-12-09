@@ -6,22 +6,24 @@
  * @ingroup Testing/Core
  */
 
-#include "Driver.h"
+#include "Core.h"
 #include "gtest/gtest.h"
 
 using namespace std;
-string serialFileName = "../build/Output/serial1.xml";
-string configFile = "../configfiles/test-small-connected.xml";
 
-TEST(Serialization, SerializeFile)
+
+// Run the simulator to generate a serialized file and check if it exist
+TEST(Serialization, SerializeFileTest)
 {
+   // Test to check if Serialization is a success
+   string executable = "./cgraphitti";
+   string serialFileName = "../build/Output/serial1.xml";
+   string configFile = "../configfiles/test-small-connected.xml";
    string argument = "-c " + configFile + " -w " + serialFileName;
-   Driver driver;
-   ASSERT_EQ(0, driver.setupSimulation(argument));
-};
+   Core core;
+   ASSERT_EQ(0, core.runSimulation(executable, argument));
 
-TEST(Serialization, CheckIfSerializedFileExist)
-{
+   // Test to see if serialized file exist
    FILE *f = fopen("../build/Output/serial1.xml", "r");
    bool fileExist = f != NULL;
    fclose(f);

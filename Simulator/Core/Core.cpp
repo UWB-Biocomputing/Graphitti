@@ -3,9 +3,9 @@
  * 
  * @ingroup Simulator/Core
  *
- * @brief Starting point of the Simulation - Main.
+ * @brief Orchestrates most functionality in the simulation.
  * 
- *  The main functions calls the Driver's setup method which performs the simulation steps:
+ *  The runSimulation method performs the following steps:
  *  1) Instantiates Simulator object
  *  2) Parses command line to get configuration file and additional information if provided
  *  3) Loads global Simulator parameters from configuration file
@@ -15,44 +15,207 @@
  *  7) Run Simulation
  *  8) Simulation shutdown (Save results, serialize)
  *
- * The Driver is de-coupled from main to improve testability.
  */
 
-#include "Driver.h"
-#include "log4cplus/configurator.h"
-#include "log4cplus/logger.h"
-#include "log4cplus/loggingmacros.h"
-#include <fstream>
-#include <iostream>
-#include <string>
+#include "Core.h"
+#include "../ThirdParty/paramcontainer/ParamContainer.h"
+#include "ConnStatic.h"   //TODO: fix this stuff hacked in. that's why its here.
+#include "GraphManager.h"
+#include "OperationManager.h"
+#include "ParameterManager.h"
+#include "Serializer.h"
+#include "config.h"   // build/config.h contains the git commit id
+
+// Uncomment to use visual leak detector (Visual Studios Plugin)
+// #include <vld.h>
+#if defined(USE_GPU)
+   #include "GPUModel.h"
+#elif defined(USE_OMP)
+// #include "MultiThreadedSim.h"
+#else
+
+#endif
+
 using namespace std;
 
-///  Main function calls the Driver's setupSimulation method which
-///  handles command line arguments and loads parameters
-///  from parameter file.
+///  Handles parsing of the command line
 ///
-///  @param  argc    argument count.
-///  @param  argv    arguments.
-///  @return -1 if error, else 0 if success.
-int main(int argc, char *argv[])
+///  @param  cmdLineArguments command line argument
+///  @param executableName Name of the simultaor's executable file
+///  @returns    true if successful, false otherwise.
+bool Core::parseCommandLine(string executableName, string cmdLineArguments)
 {
-   // Clear logging files at the start of each simulation
-   fstream("Output/Debug/logging.txt", ios::out | ios::trunc);
-   fstream("Output/Debug/vertices.txt", ios::out | ios::trunc);
-   fstream("Output/Debug/edges.txt", ios::out | ios::trunc);
+   ParamContainer cl;       // todo: note as third party class.
+   cl.initOptions(false);   // don't allow unknown parameters
+   cl.setHelpString(string(
+      "The UW Bothell graph-based simulation environment, for high-performance neural network and other graph-based problems\n Usage: "
+      + executableName + " "));
 
-   // Initialize log4cplus and set properties based on configure file
-   ::log4cplus::initialize();
-   ::log4cplus::PropertyConfigurator::doConfigure("RuntimeFiles/log4cplus_configure.ini");
-
-   // storing command line arguments as string
-   // required to pass as an argument to setupSimulation
-   string cmdLineArguments;
-   for (int i = 1; i < argc; i++) {
-      cmdLineArguments = cmdLineArguments + argv[i] + " ";
+   // Set up the comment line parser.
+   if ((cl.addParam("configfile", 'c', ParamContainer::filename, "parameter configuration filepath")
+        != ParamContainer::errOk)
+#if defined(USE_GPU)
+       || (cl.addParam("device", 'd', ParamContainer::regular, "CUDA device id")
+           != ParamContainer::errOk)
+#endif   // USE_GPU
+       || (cl.addParam("stimulusfile", 's', ParamContainer::filename, "stimulus input filepath")
+           != ParamContainer::errOk)
+       || (cl.addParam("deserializefile", 'r', ParamContainer::filename,
+                       "simulation deserialization filepath (enables deserialization)")
+           != ParamContainer::errOk)
+       || (cl.addParam("serializefile", 'w', ParamContainer::filename,
+                       "simulation serialization filepath (enables serialization)")
+           != ParamContainer::errOk)
+       || (cl.addParam("version", 'v', ParamContainer::novalue,
+                       "output current git commit ID and exit")
+           != ParamContainer::errOk)) {
+      cerr << "Internal error creating command line parser" << endl;
+      return false;
    }
 
-   // Creating an instance of driver class
-   Driver driver;
-   return driver.setupSimulation(cmdLineArguments);
-};
+   // Parse the command line
+   if (cl.parseCommandLine(cmdLineArguments) != ParamContainer::errOk) {
+      cl.dumpHelp(stderr, true, 78);
+      return false;
+   }
+
+   if (cl["version"].compare("") != 0) {
+      cout << "Git commit ID: " << GIT_COMMIT_ID << endl;
+      exit(0);
+   }
+
+   // Get the command line values
+   Simulator::getInstance().setConfigFileName(cl["configfile"]);
+   Simulator::getInstance().setDeserializationFileName(cl["deserializefile"]);
+   Simulator::getInstance().setSerializationFileName(cl["serializefile"]);
+   Simulator::getInstance().setStimulusFileName(cl["stimulusfile"]);
+
+#if defined(USE_GPU)
+   if (EOF == sscanf(cl["device"].c_str(), "%d", &g_deviceId)) {
+      g_deviceId = 0;
+   }
+#endif   // USE_GPU
+   return true;
+}
+
+///  runSimulation handles command line arguments and loads parameters
+///  from parameter file. All initial configuration loading & running the simulator
+///  is done here.
+///
+///  @param  cmdLineArguments command line arguments
+///  @param executableName Name of the simultaor's executable file
+///  @return -1 if error, else 0 for success.
+int Core::runSimulation(string executableName, string cmdLineArguments)
+{
+   // Get the instance of the console logger and print status
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+
+   LOG4CPLUS_TRACE(consoleLogger, "Instantiating Simulator ");
+   Simulator &simulator = Simulator::getInstance();
+
+   LOG4CPLUS_TRACE(consoleLogger, "Instantiating Serializer");
+   Serializer serializer;
+
+   // Handles parsing of the command line.
+   LOG4CPLUS_TRACE(consoleLogger, "Parsing command line");
+   if (!parseCommandLine(executableName, cmdLineArguments)) {
+      LOG4CPLUS_FATAL(consoleLogger, "ERROR: failed during command line parse");
+      return -1;
+   }
+
+   // Loads the configuration file into the Parameter Manager.
+   if (!ParameterManager::getInstance().loadParameterFile(simulator.getConfigFileName())) {
+      LOG4CPLUS_FATAL(consoleLogger,
+                      "ERROR: failed to load config file: " << simulator.getConfigFileName());
+      return -1;
+   }
+
+   // Read in simulator specific parameters from configuration file.
+   LOG4CPLUS_TRACE(consoleLogger, "Loading Simulator parameters");
+   simulator.loadParameters();
+
+   // Instantiate simulator objects.
+   LOG4CPLUS_TRACE(consoleLogger,
+                   "Instantiating Simulator objects specified in configuration file");
+   if (!simulator.instantiateSimulatorObjects()) {
+      LOG4CPLUS_FATAL(
+         consoleLogger,
+         "ERROR: Unable to instantiate all simulator classes, check configuration file: "
+            + simulator.getConfigFileName() + " for incorrectly declared class types.");
+      return -1;
+   }
+
+   // Ask all objects to register their Graph properties
+   OperationManager::getInstance().executeOperation(Operations::registerGraphProperties);
+   // Read graph from GraphML file. Uses ParameterManager to get the file name.
+   // TODO: This method returns false if it fails to read the graph, we ignore it at the
+   //    moment since it currently fails for the Neural Network model because they don't
+   //    yet use GraphML.
+   GraphManager::getInstance().readGraph();
+
+   // Invoke instantiated simulator objects to load parameters from the configuration file
+   LOG4CPLUS_TRACE(consoleLogger, "Loading parameters from configuration file");
+   OperationManager::getInstance().executeOperation(Operations::loadParameters);
+
+   time_t start_time, end_time;
+   time(&start_time);
+
+   // Setup simulation (calls model->setupSim)
+   LOG4CPLUS_TRACE(consoleLogger, "Performing Simulator setup");
+   simulator.setup();
+
+   // Invoke instantiated simulator objects to print parameters, used for testing purposes only.
+   OperationManager::getInstance().executeOperation(Operations::printParameters);
+
+   // Deserializes internal state from a prior run of the simulation
+   if (!simulator.getDeserializationFileName().empty()) {
+      LOG4CPLUS_TRACE(consoleLogger, "Deserializing state from file.");
+
+      // Deserialization
+      if (!serializer.deserializeSynapses()) {
+         LOG4CPLUS_FATAL(consoleLogger, "Failed while deserializing objects");
+         return -1;
+      }
+   }
+
+   // Run simulation
+   LOG4CPLUS_TRACE(consoleLogger, "Starting Simulation");
+   simulator.simulate();
+
+   // INPUT OBJECTS ARENT IN PROJECT YET
+   // Terminate the stimulus input
+   //   if (pInput != nullptr)
+   //   {
+   //      simInfo->pInput->term();
+   //      delete simInfo->pInput;
+   //   }
+
+   // todo: before this, do copy from gpu.
+   // Writes simulation results to an output destination
+   LOG4CPLUS_TRACE(consoleLogger, "Simulation ended, saving results");
+   simulator.saveResults();
+
+   // todo: going to be moved with the "hack"
+   // Serializes internal state for the current simulation
+   if (!simulator.getSerializationFileName().empty()) {
+      LOG4CPLUS_TRACE(consoleLogger, "Serializing current state");
+      serializer.serializeSynapses();
+   }
+
+   // Tell simulation to clean-up and run any post-simulation logic.
+   LOG4CPLUS_TRACE(consoleLogger, "Simulation finished");
+   simulator.finish();
+
+   // terminates the simulation recorder
+   if (simulator.getModel()->getRecorder() != nullptr) {
+      simulator.getModel()->getRecorder()->term();
+   }
+
+   time(&end_time);
+   double timeElapsed = difftime(end_time, start_time);
+   double ssps = simulator.getEpochDuration() * simulator.getNumEpochs() / timeElapsed;
+   cout << "time simulated: " << simulator.getEpochDuration() * simulator.getNumEpochs() << endl;
+   cout << "time elapsed: " << timeElapsed << endl;
+   cout << "ssps (simulation seconds / real time seconds): " << ssps << endl;
+   return 0;
+}

@@ -66,7 +66,7 @@ execute_process(
 # GIT_COMMIT_ID has trailing whitespaces
 string(REGEX REPLACE "\n$" "" GIT_COMMIT_ID "${GIT_COMMIT_ID}")
 
-# Save GIT_COMMIT_ID to config.h, which is included in Driver.cpp
+# Save GIT_COMMIT_ID to config.h, which is included in Core.cpp
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
                 ${CMAKE_BINARY_DIR}/config.h
                 @ONLY )
@@ -126,8 +126,6 @@ include_directories(
         ThirdParty/cereal
         ThirdParty/TinyXPath
         ThirdParty/log4cplus-2.0.7/include)
-
-
        
 if(ENABLE_CUDA)
         
@@ -145,11 +143,9 @@ if(ENABLE_CUDA)
         set_source_files_properties(${cuda_sources} PROPERTIES LANGUAGE CUDA)
 endif()
 
-
-
-
 # Collect source files and create libraries
 # Libraries containing .cpp files compiled as CUDA .cu files should be created as STATIC to ensure proper linking
+
 
 # Create Connections library
 file(GLOB_RECURSE Connections_Source Simulator/Connections/*.cpp Simulator/Connections/*.h)
@@ -161,9 +157,9 @@ else()
         add_library(Connections STATIC ${Connections_Source})
 endif()
 
+
 # Create Vertices library
 file(GLOB_RECURSE Vertices_Source Simulator/Vertices/*.cpp Simulator/Vertices/*.h)
-
 
 if(ENABLE_CUDA)
         add_library(Vertices SHARED ${Vertices_Source} ${cuda_sources})
@@ -175,10 +171,10 @@ else()
         list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllIFNeurons_d.cpp")
         list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp")
         
-       
         add_library(Vertices STATIC ${Vertices_Source})
         
 endif()
+
 
 # Create Edges library
 file(GLOB_RECURSE Edges_Source Simulator/Edges/*.cpp Simulator/Edges/*.h)
@@ -193,32 +189,28 @@ else()
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllDSSynapses_d.cpp")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp")
         
-        
         add_library(Edges STATIC ${Edges_Source})
         
 endif()
 # The Vertices library has a dependency on the Edges library
 target_link_libraries(Vertices Edges)
 
+
 # Create Layouts Library
 file(GLOB_RECURSE Layouts_Source Simulator/Layouts/*.cpp Simulator/Layouts/*.h)
 add_library(Layouts ${Layouts_Source})
-
-
-
 
 
 # Create FunctionNodes library
 file(GLOB FunctionNodes_Source Simulator/Core/FunctionNodes/*.cpp Simulator/Core/FunctionNodes/*.h)
 add_library(FunctionNodes ${FunctionNodes_Source})
 
+
 # Create Core library
 file(GLOB Core_Source Simulator/Core/*.cpp Simulator/Core/*.h)
-# Remove Driver from the list of files, don't want 'main' in the library
-list(REMOVE_ITEM Core_Source "${CMAKE_CURRENT_SOURCE_DIR}/Driver.cpp")
+# Remove Graphitti_Main from the list of files, don't want 'main' in the library
+list(REMOVE_ITEM Core_Source "${CMAKE_CURRENT_SOURCE_DIR}/Graphitti_Main.cpp")
 # add_library(Core STATIC ${Core_Source})
-
-
 
 if(ENABLE_CUDA)
         set(cudaCore_sources Simulator/Core/GPUModel.cpp)
@@ -230,10 +222,10 @@ else()
 endif()     
 
 
-
 # Create Recorders library
 file(GLOB_RECURSE Recorders_Source Simulator/Recorders/*.cpp Simulator/Recorders/*.h)
 add_library(Recorders ${Recorders_Source})
+
 
 # Create Matrix library
 file(GLOB Matrix_Source Simulator/Utils/Matrix/*.cpp Simulator/Utils/*.h)
@@ -242,15 +234,18 @@ list(REMOVE_ITEM Matrix_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/Matr
 list(REMOVE_ITEM Matrix_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/Matrix/MatrixFactory.cpp")
 add_library(Matrix ${Matrix_Source})
 
+
 # Create RNG library
 file(GLOB RNG_Source Simulator/Utils/RNG/*.cpp Simulator/Utils/RNG/*.h Simulator/Utils/RNG/*.cu)
 # Remove demo from file list as it contains a main and it will cause compilation errors
 list(REMOVE_ITEM RNG_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/RNG/MersenneTwister_demo.cu")
 add_library(RNG STATIC ${RNG_Source})
 
+
 # Create Utils library
 file(GLOB Utils_Source  Simulator/Utils/*.cpp Simulator/Utils/*.h)
 add_library(Utils ${Utils_Source})
+
 
 # Used to locate and run other CMakeLists.txt files from Third Party resources for further compilation of the project.
 add_subdirectory(ThirdParty)
@@ -303,12 +298,12 @@ endif()
 # Add all files that aren't in a library and are needed to run
 if(ENABLE_CUDA)
         # Add the ggraphitti GPU executable
-        add_executable(ggraphitti Simulator/Core/Driver.cpp)
+        add_executable(ggraphitti Simulator/Core/Graphitti_Main.cpp)
         # Link the combined library into the 'graphitti' executable.
 	target_link_libraries(ggraphitti combinedLib)
 else()
         # Add the cgraphitti CPU executable
-	add_executable(cgraphitti Simulator/Core/Driver.cpp)
+	add_executable(cgraphitti Simulator/Core/Graphitti_Main.cpp)
 	# Link the combined library into the 'graphitti' executable.
 	target_link_libraries(cgraphitti combinedLib)
 endif()
@@ -331,25 +326,25 @@ add_executable(tests
         Testing/Core/RNGFactoryTests.cpp
         Testing/Utils/ParameterManagerTests.cpp)
 
-add_executable(serialTest
-        Testing/RunTests.cpp
-        Testing/Core/SerializationTests.cpp)
-
-add_executable(deserialTest
-        Testing/RunTests.cpp
-        Testing/Core/DeserializationTests.cpp)
-
 # Links the Googletest framework with the testing executable
 target_link_libraries(tests gtest gtest_main)
 
 # Link the combined library into the 'tests' executable.
 target_link_libraries(tests combinedLib)
 
+add_executable(serialTest
+        Testing/RunTests.cpp
+        Testing/Core/SerializationTests.cpp)
+
 # Links the Googletest framework with the serialTest executable
 target_link_libraries(serialTest gtest gtest_main)
 
 # Link the combined library into the 'serialTest' executable.
 target_link_libraries(serialTest combinedLib)
+
+add_executable(deserialTest
+        Testing/RunTests.cpp
+        Testing/Core/DeserializationTests.cpp)
 
 # Links the Googletest framework with the deserialTest executable
 target_link_libraries(deserialTest gtest gtest_main)
