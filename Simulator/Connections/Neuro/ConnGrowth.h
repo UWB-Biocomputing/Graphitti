@@ -202,7 +202,7 @@ template <class Archive> void ConnGrowth::save(Archive &archive) const
       radiiVector.push_back((*radii_)[i]);
    }
    // serialization
-   archive(radiiVector);
+   archive(cereal::make_nvp("radiiSize", radiiSize_), cereal::make_nvp("radii", radiiVector));
 }
 
 ///  Cereal deserialization method
@@ -211,12 +211,12 @@ template <class Archive> void ConnGrowth::load(Archive &archive)
 {
    // uses vector to load radii
    vector<BGFLOAT> radiiVector;
-
+   int radiiSize = 0;
    // deserializing data to this vector
-   archive(radiiVector);
+   archive(radiiSize, radiiVector);
 
    // check to see if serialized data size matches object size
-   if (radiiVector.size() != radiiSize_) {
+   if (radiiSize != radiiSize_ || radiiSize != radiiVector.size()) {
       cerr << "Failed deserializing radii. Please verify totalVertices data member." << endl;
       throw cereal::Exception("Deserialization Error");
    }
