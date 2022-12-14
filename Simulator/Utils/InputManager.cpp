@@ -1,64 +1,121 @@
 
-
-#include <boost/property_tree/xml_parser.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/foreach.hpp>
-#include <boost/date_time/gregorian/gregorian.hpp>
-#include <boost/date_time/local_time/local_time.hpp>
-#include <boost/property_map/dynamic_property_map.hpp>
-#include <boost/property_map/property_map.hpp>
-#include <iostream>
-#include <utility>
-#include <functional>
-#include <boost/type_index.hpp>
-
 #include "InputManager.h"
+#include <boost/foreach.hpp>
+#include <boost/property_tree/exceptions.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+#include <iostream>
 
-// enum EventType { EMS, Fire, Law  };
-// boost::dynamic_properties properties(boost::ignore_other_properties);
-// std::map<std::string, boost::type<boost::any>> getterMap;
+using boost::property_tree::ptree;
 
+InputManager::InputManager()
+{
+   // Get a copy of the file logger to use with log4cplus macros
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   LOG4CPLUS_DEBUG(fileLogger_, "Initializing InputManager");
+}
 
-// template <class Property>
-// inline void registerProperty(const std::string &propName, Property property)
-// {
-//     std::map<std::string, Property> eventMap;
-//     boost::associative_property_map<std::map<std::string, Property>> propMap(eventMap);
-//     eventMap.insert(std::make_pair("event", property));
-//     properties.property(propName, propMap);
-// };
+bool InputManager::readInputs()
+{
+   ptree pt;
+   ifstream inputFile;
+   string inputFilePath;
 
-int main() {
+   // Retrieve input file name from ParameterManager
+   string xpath = "//inputFile/text()";
+   if (!ParameterManager::getInstance().getStringByXpath(xpath, inputFilePath)) {
+      cerr << "InputManager: Count not find XML Path: " << xpath << ".\n";
+      return false;
+   }
 
-//     std::map<std::string, double Event::*> eventDouble;
-//     std::map<std::string, uint32_t Event::*> eventInt;
+   inputFile.open(inputFilePath.c_str());
+   if (!inputFile.is_open()) {
+      cerr << "InputManager: Failed to open file: " << inputFilePath << ".\n";
+      return false;
+   }
 
-    // typedef typename std::map<std::string, double Event::*>::mapped_type dbl;
-    
-//     eventDouble.insert(std::make_pair("x", &Event::x));
-//     eventDouble.insert(std::make_pair("y", &Event::y));
-//     eventInt.insert(std::make_pair("id", &Event::vertexId));
+   boost::property_tree::xml_parser::read_xml(inputFile, pt);
+   BOOST_FOREACH (ptree::value_type const &v, pt.get_child("data")) {
+      if (v.first == "event") {
+         try {
+            // We will only read registered attributes
+            Event event;   // the event object to record
+            for (auto propPair : registeredPropMap_) {
+               getProperty(event, propPair.first, propPair.second, v.second);
+            }
 
-//     Event newEvent;
-//     double Event::*ptr = eventDouble.at("x");
+            // operator[] inserts a new element with that key if it doesn't already
+            // exists in the map
+            eventsMap_[event.vertexId].push(event);
+         } catch (boost::property_tree::ptree_bad_data e) {
+            LOG4CPLUS_FATAL(fileLogger_, "InputManager failed to read event node: " << e.what());
+            // TODO: perhaps we need to exit since there is missing info here
+            return false;
+         } catch (boost::bad_get e) {
+            LOG4CPLUS_FATAL(fileLogger_, "Failed to read event property: " << e.what());
+            return false;
+         }
+      }
+   }
+   LOG4CPLUS_DEBUG(fileLogger_, "Input file loaded successfully");
+   return true;
+}
 
-//    std::cout << boost::typeindex::type_id_with_cvr<decltype(&Event::x)>().pretty_name() << "\n";
-//    std::cout << boost::typeindex::type_id_with_cvr<dbl>().pretty_name() << "\n";
+Event InputManager::vertexQueueFront(const VertexId_t &vertexId)
+{
+   // TODO: this throws an out_of_range exception if vertexId is not found
+   return eventsMap_.at(vertexId).front();
+}
 
-//     newEvent.*ptr = 10.5;
-//     std::cout << "x from dynamic prop: " << newEvent.x << std::endl;
+const Event &InputManager::vertexQueueFront(const VertexId_t &vertexId) const
+{
+   return eventsMap_.at(vertexId).front();
+}
 
+void InputManager::vertexQueuePop(const VertexId_t &vertexId)
+{
+   // TODO: handle when vertexID is not found in the map
+   eventsMap_.at(vertexId).pop();
+}
 
-    // std::ifstream input_file;
-    // input_file.open("../../Tools/Inputs/SPD_calls.xml");
+bool InputManager::registerProperty(const string &propName, EventMemberPtr property)
+{
+   registeredPropMap_[propName] = property;
+   return true;
+}
 
-    std:cerr << "Starting test.\n";
-
-    InputManager inputManager;
-    inputManager.readInputs();
-
-    vector<Event> ie = inputManager.getEvents();
-    for (auto e : ie) {
-        std::cout << "x: " << e.x << " y: " << e.y << " vertexId: " << e.vertexId << std::endl;
-    }
-};
+bool InputManager::getProperty(Event &event, string propName, EventMemberPtr &eventMbrPtr,
+                               const ptree &pTree)
+{
+   switch (eventMbrPtr.which()) {
+      // variant.which() returns a value between 0 and number of types - 1
+      case PropertyType::INTEGER: {
+         int Event::*propPtr = get<int Event::*>(eventMbrPtr);
+         event.*propPtr = pTree.get<int>(propName);
+      } break;
+      case PropertyType::LONG: {
+         long Event::*propPtr = get<long Event::*>(eventMbrPtr);
+         event.*propPtr = pTree.get<long>(propName);
+      } break;
+      case PropertyType::UINT64: {
+         uint64_t Event::*propPtr = get<uint64_t Event::*>(eventMbrPtr);
+         event.*propPtr = pTree.get<uint64_t>(propName);
+      } break;
+      case PropertyType::FLOAT: {
+         float Event::*propPtr = get<float Event::*>(eventMbrPtr);
+         event.*propPtr = pTree.get<float>(propName);
+      } break;
+      case PropertyType::DOUBLE: {
+         double Event::*propPtr = get<double Event::*>(eventMbrPtr);
+         event.*propPtr = pTree.get<double>(propName);
+      } break;
+      case PropertyType::STRING: {
+         string Event::*propPtr = get<string Event::*>(eventMbrPtr);
+         event.*propPtr = pTree.get<string>(propName);
+      } break;
+      default:
+         LOG4CPLUS_DEBUG(fileLogger_, "Property not supported: " << propName);
+         return false;
+   }
+   return true;
+}

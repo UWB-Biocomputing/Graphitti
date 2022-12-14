@@ -1,93 +1,74 @@
 
 #pragma once
 
-// #include <log4cplus/loggingmacros.h>
-#include <iostream>
-#include <boost/property_tree/xml_parser.hpp>
+#include "ParameterManager.h"
 #include <boost/property_tree/ptree.hpp>
-#include <boost/foreach.hpp>
-#include <functional>
-
-// #include "ParameterManager.h"
+#include <boost/variant.hpp>
+#include <log4cplus/loggingmacros.h>
+#include <map>
+#include <queue>
 
 using namespace std;
-using boost::property_tree::ptree;
-struct Event
-{
+
+struct Event {
    // The vertexId where the input event happen
-   uint32_t vertexId;
-   
+   int vertexId;
    // The start of the event since the beggining of
    // the simulation in timesteps matches g_simulationStep type
-   uint64_t startTime;
+   uint64_t time;
    // The duration of the even in timesteps
-   uint32_t duration;
-   // Even location
+   int duration;
+   // Event location
    double x;
    double y;
    string type;
 };
 
-
 class InputManager {
 public:
-   InputManager() : events_() {
-      // Get a copy of the file logger to use with log4cplus macros
-      // fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
-      // LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing InputManager");
-   }
+   // Set boost::variant to store the following types. We will use variant.which() to
+   // determine the currently stored value at runtime. Which returns an index value
+   // based on the order in which the type appears in the list, in this case:
+   // int Event::* = 0, uint64_t Event::* = 1 ... string Event::* = 5
+   // For convenience an enum type is defined below but the types must be in the same
+   // order as declared in the boost::variant typedef.
+   typedef boost::variant<int Event::*, uint64_t Event::*, long Event::*, float Event::*,
+                          double Event::*, string Event::*>
+      EventMemberPtr;
+   enum PropertyType { INTEGER, UINT64, LONG, FLOAT, DOUBLE, STRING };
 
-   bool readInputs() {
-      ptree pt;
+   // Some aliases for better readability
+   using VertexId_t = int;
+   using EventMap_t = map<VertexId_t, queue<Event>>;
 
-      ifstream inputFile;
-      // TODO: Remove this after testing
-      string inputFilePath = "../../Tools/Inputs/SPD_calls.xml";
+   InputManager();
 
-      // Retrieve input file name from ParameterManager
-      // string xpath = "//inputFile/text()";
-      // if (!ParameterManager::getInstance().getStringByXpath(xpath, inputFilePath)) {
-      //    cerr << "InputManager: Count not find XML Path: " << xpath << ".\n";
-      //    return false;
-      // }
+   bool readInputs();
 
-      inputFile.open(inputFilePath.c_str());
-      if (!inputFile.is_open()) {
-         cerr << "InputManager: Failed to open file: " << inputFilePath << ".\n";
-         return false;
-      }
+   // vector<Event>& getEvents();
 
-      boost::property_tree::xml_parser::read_xml(inputFile, pt);
-      // LOG4CPLUS_DEBUG(fileLogger_, "\nInputManager: File loaded successfully into ptree.");
-      // function<uint32_t(const ptree&, string)> uintFunc = bind(static_cast<uint32_t(*)(const ptree&,string)>(&getNodeValue<uint32_t>), this);
-      // bind(static_cast<uint32_t(*)()>(&ptree::get_value<uint32_t>));
-      BOOST_FOREACH(ptree::value_type const& v, pt.get_child("data")) {
-         if (v.first == "event") {
-            Event e;
-            e.vertexId = getNodeValue<uint32_t>(v.second, "vertex_id"); // v.second.get<uint32_t>("vertex_id");
-            e.startTime = v.second.get<uint64_t>("time");
-            e.duration = v.second.get<uint64_t>("duration");
-            e.x = v.second.get<double>("x");
-            e.y = v.second.get<double>("y");
-            e.type = v.second.get<string>("type");
-            events_.push_back(e);
-         }
-      }
-      return true;
-   }
+   Event vertexQueueFront(const VertexId_t &vertexId);
 
-   template <typename T>
-   T getNodeValue(const ptree& pt, string nodeName) {
-      T value = pt.get<T>(nodeName);
-      return value;
-   }
+   const Event &vertexQueueFront(const VertexId_t &vertexId) const;
 
-   vector<Event>& getEvents() {
-      return events_;
-   }
+   void vertexQueuePop(const VertexId_t &vertexId);
+
+   bool registerProperty(const string &propName, EventMemberPtr property);
+
+   
 
 private:
-   vector<Event> events_;
+   // vector<Event> events_;
+   EventMap_t eventsMap_;
 
-   // log4cplus::Logger fileLogger_;
+   // Structures for Dynamically registering the Event properties
+   // We could specify the types in the input file but we don't have to
+   // if we make sure that the string can be casted to the registered type.
+   // map<propName, ptrToMember>
+   map<string, EventMemberPtr> registeredPropMap_;
+
+   log4cplus::Logger fileLogger_;
+
+   bool getProperty(Event &event, string propName, EventMemberPtr &eventMbrPtr,
+                    const boost::property_tree::ptree &pTree);
 };

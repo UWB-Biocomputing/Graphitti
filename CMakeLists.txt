@@ -328,6 +328,7 @@ add_executable(tests
         Testing/Core/EdgesFactoryTests.cpp
         Testing/Core/LayoutFactoryTests.cpp
         Testing/Core/RecorderFactoryTests.cpp
+        Testing/Core/InputManagerTests.cpp
         Testing/Core/RNGFactoryTests.cpp
         Testing/Utils/ParameterManagerTests.cpp)
 
