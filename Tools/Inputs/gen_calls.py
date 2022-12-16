@@ -81,13 +81,26 @@ def main():
                                "clock_tick_size": "1sec"})
 
     # Inset one event element per row
+    vertex = et.SubElement(data, 'vertex', {'id': sorted.iloc[0]['vertex_id'], 'name': sorted.iloc[0]['vertex']})
     for idx, row in sorted.iterrows():
         d = row.to_dict()
-        # We could add attributes to the event node
-        event = et.SubElement(data, 'event')
+        # If vertex_id is different create a new vertex node
+        if vertex.attrib['id'] != d['vertex_id']:
+            vertex = et.SubElement(data, 'vertex', {'id': d['vertex_id'], 'name': d['vertex']})
+
+        # remove vertex id and name from the dictionary to avoid redundancy
+        del d['vertex']
+        del d['vertex_id']
+
+        # convert everythin to strings
         for k, v in d.items():
-            attr = et.SubElement(event, k)
-            attr.text = str(v)
+            d[k] = str(v)
+
+        # We could add attributes to the event node
+        event = et.SubElement(vertex, 'event', d)
+        # for k, v in d.items():
+        #     attr = et.SubElement(event, k)
+        #     attr.text = str(v)
 
     tree = et.ElementTree(inputs)
     tree_out = tree.write("SPD_calls.xml",
