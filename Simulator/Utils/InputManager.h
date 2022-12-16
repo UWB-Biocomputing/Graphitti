@@ -16,7 +16,7 @@ struct Event {
    // The start of the event since the beggining of
    // the simulation in timesteps matches g_simulationStep type
    uint64_t time;
-   // The duration of the even in timesteps
+   // The duration of the event in timesteps
    int duration;
    // Event location
    double x;
@@ -32,9 +32,8 @@ public:
    // int Event::* = 0, uint64_t Event::* = 1 ... string Event::* = 5
    // For convenience an enum type is defined below but the types must be in the same
    // order as declared in the boost::variant typedef.
-   typedef boost::variant<int Event::*, uint64_t Event::*, long Event::*, float Event::*,
-                          double Event::*, string Event::*>
-      EventMemberPtr;
+   using EventMemberPtr = boost::variant<int Event::*, uint64_t Event::*, long Event::*, float Event::*,
+                          double Event::*, string Event::*>;
    enum PropertyType { INTEGER, UINT64, LONG, FLOAT, DOUBLE, STRING };
 
    // Some aliases for better readability
@@ -45,11 +44,9 @@ public:
 
    bool readInputs();
 
-   // vector<Event>& getEvents();
+   vector<Event> getEvents(const VertexId_t &vertexId, uint64_t firstStep, uint64_t lastStep);
 
    Event vertexQueueFront(const VertexId_t &vertexId);
-
-   const Event &vertexQueueFront(const VertexId_t &vertexId) const;
 
    void vertexQueuePop(const VertexId_t &vertexId);
 

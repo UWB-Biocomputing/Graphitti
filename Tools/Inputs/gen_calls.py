@@ -32,7 +32,7 @@ def main():
     call_log["time"] = pd.to_datetime(call_log["time"], format="%m/%d/%Y %H:%M:%S")
 
     # Sort the calls so they are in order
-    sorted = call_log.sort_values("time")
+    sorted = call_log.sort_values(["vertex","time"])
     # Convert start_time to seconds since the first call in the list
     first_time = sorted["time"].iloc[0]
     sorted['time'] = sorted.apply(lambda call: (call['time'] - first_time).seconds + \
@@ -72,20 +72,24 @@ def main():
     # Clean up
     sorted = sorted.drop(['grid_idx', 'type_prob'], axis=1)
 
+    # this is the root element
+    inputs = et.Element('simulator_inputs')
+
     # Construct an element tree to be writen to a file in XML format
     # data is the root element
-    data = et.Element('data', {"description": "SPD_calls_sept2020", 
+    data = et.SubElement(inputs, 'data', {"description": "SPD_calls_sept2020", 
                                "clock_tick_size": "1sec"})
 
     # Inset one event element per row
     for idx, row in sorted.iterrows():
         d = row.to_dict()
-        event = et.SubElement(data, 'event') # We could add attributes here
+        # We could add attributes to the event node
+        event = et.SubElement(data, 'event')
         for k, v in d.items():
             attr = et.SubElement(event, k)
             attr.text = str(v)
 
-    tree = et.ElementTree(data)
+    tree = et.ElementTree(inputs)
     tree_out = tree.write("SPD_calls.xml",
                           xml_declaration=True,
                           encoding="UTF-8",

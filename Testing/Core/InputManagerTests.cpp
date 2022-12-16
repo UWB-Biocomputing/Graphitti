@@ -48,15 +48,33 @@ TEST_F(InputManagerFixture, vertexQueueFront) {
     EXPECT_DOUBLE_EQ(event.x, -122.38496236371942);
     EXPECT_DOUBLE_EQ(event.y, 47.570236838209546);
 
-    // this should throw an exception because vertexId doesn't have events
+    // this throws an exception because vertexId doesn't have events
+    // TODO: return an empty vector instead
     EXPECT_ANY_THROW(inputManager.vertexQueueFront(35));
 }
 
-// TEST_F(InputManagerFixture, registerProperty) {
-//     inputManager.registerProperty("vertex_id", InputManager::PropertyType::INTEGER, &Event::vertexId);
-    
-//     // int Event::*ptiptr = boost::get<int Event::*>(inputManager.eventMemberPtrMap_["vertex_id"].second);
-//     // Event newEvent;
-//     // newEvent.*ptiptr = 10;
-//     ASSERT_EQ(newEvent.vertexId, 10);
-// }
+TEST_F(InputManagerFixture, getEpochEvents) {
+    // Get events between time step 0 (inclusive) and 37 (exclusive)
+    vector<Event> epochEventList = inputManager.getEvents(194, 0, 37);
+    // There should be 2 events in the list
+    ASSERT_EQ(epochEventList.size(), 2);
+
+    // Check that we ge the correct information for the first
+    // expected event
+    EXPECT_EQ(epochEventList[0].vertexId, 194);
+    EXPECT_EQ(epochEventList[0].time, 0);
+    EXPECT_EQ(epochEventList[0].duration, 0);
+    EXPECT_EQ(epochEventList[0].type, "EMS");
+    EXPECT_DOUBLE_EQ(epochEventList[0].x, -122.38496236371942);
+    EXPECT_DOUBLE_EQ(epochEventList[0].y, 47.570236838209546);
+
+    // Check that we ge the correct information for the second
+    // expected event
+    EXPECT_EQ(epochEventList[1].vertexId, 194);
+    EXPECT_EQ(epochEventList[1].time, 34);
+    EXPECT_EQ(epochEventList[1].duration, 230);
+    EXPECT_EQ(epochEventList[1].type, "EMS");
+    EXPECT_DOUBLE_EQ(epochEventList[1].x, -122.37482094435583);
+    EXPECT_DOUBLE_EQ(epochEventList[1].y, 47.64839548276973);
+
+}

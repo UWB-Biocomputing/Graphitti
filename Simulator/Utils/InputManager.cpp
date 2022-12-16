@@ -67,11 +67,6 @@ Event InputManager::vertexQueueFront(const VertexId_t &vertexId)
    return eventsMap_.at(vertexId).front();
 }
 
-const Event &InputManager::vertexQueueFront(const VertexId_t &vertexId) const
-{
-   return eventsMap_.at(vertexId).front();
-}
-
 void InputManager::vertexQueuePop(const VertexId_t &vertexId)
 {
    // TODO: handle when vertexID is not found in the map
@@ -80,8 +75,30 @@ void InputManager::vertexQueuePop(const VertexId_t &vertexId)
 
 bool InputManager::registerProperty(const string &propName, EventMemberPtr property)
 {
+   // Check that we the propName is not an empty string
+   if (propName.empty()) {
+      LOG4CPLUS_ERROR(fileLogger_, "Property name should not be an empty string");
+      return false;
+   }
+
+   // The compiler will check that only a type that is part of our variant can be
+   // registered.
    registeredPropMap_[propName] = property;
    return true;
+}
+
+vector<Event> InputManager::getEvents(const VertexId_t &vertexId, uint64_t firstStep, uint64_t lastStep) {
+   vector<Event> result = vector<Event>();   // Will hold the list of events
+   queue<Event> &eventQueue = eventsMap_[vertexId];   // Get a reference to the event queue
+
+   while (!eventQueue.empty() && eventQueue.front().time < lastStep) {
+      // We shouldn't have previous epoch events in the queue
+      assert(eventQueue.front().time >= firstStep);
+      result.push_back(eventQueue.front());
+      eventQueue.pop();
+   }
+
+   return result;
 }
 
 bool InputManager::getProperty(Event &event, string propName, EventMemberPtr &eventMbrPtr,
