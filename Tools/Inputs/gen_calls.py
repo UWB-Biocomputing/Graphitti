@@ -90,7 +90,6 @@ def main():
 
         # remove vertex id and name from the dictionary to avoid redundancy
         del d['vertex']
-        del d['vertex_id']
 
         # convert everythin to strings
         for k, v in d.items():

@@ -40,23 +40,47 @@ public:
    using VertexId_t = int;
    using EventMap_t = map<VertexId_t, queue<Event>>;
 
+   /// @brief  Constructor
    InputManager();
 
+   void setInputFilePath(const string &inputFilePath);
+
+   /// @brief  Read a list of events from an input file and load them into
+   ///         a map, organized per vertex ID
+   /// @return True if the file was successfully read, false otherwise
    bool readInputs();
 
+   /// @brief  Retrieves a list of events that occur between firstStep (inclusive) and
+   ///         lastStep (exclusive) in the given vertexId.
+   /// @param vertexId     The ID of the vertex where the events occur
+   /// @param firstStep    The first time step (inclusive) for the occurrence of the events
+   /// @param lastStep     The last time step (exclusive) for the occurrence of the events
+   /// @return The list of events between firstStep and lastStep for the fiven vertexId
    vector<Event> getEvents(const VertexId_t &vertexId, uint64_t firstStep, uint64_t lastStep);
 
+   /// @brief  Peeks into the event at the front of the vertex queue
+   /// @param vertexId  The ID of the vertex
+   /// @return    The event at the front of the given vertex queue
    Event vertexQueueFront(const VertexId_t &vertexId);
 
+   /// @brief  Removes the event at the back of the vertex queue
+   /// @param vertexId  The ID of the vertex
    void vertexQueuePop(const VertexId_t &vertexId);
 
+   /// @brief  Registers a property with the given name and a pointer to a member of the
+   ///         Event class. The pointer to member is stored in a boost::variant type that
+   ///         is later used to assign the input event data to the correct member variable
+   /// @param propName  The name of the property as defined in the input file
+   /// @param property  The pointer to member variable where the property should be stored
+   /// @return    True if the property was successfully registered, false otherwise
    bool registerProperty(const string &propName, EventMemberPtr property);
 
-   
-
 private:
-   // vector<Event> events_;
-   EventMap_t eventsMap_;
+   // Map that stores a queue of events per vertex
+   map<VertexId_t, queue<Event>> eventsMap_;
+
+   // The path to the input file
+   string inputFilePath_;
 
    // Structures for Dynamically registering the Event properties
    // We could specify the types in the input file but we don't have to
