@@ -3,8 +3,8 @@
 title Graphitti General Program Flow
 
 == Initialization ==
-Driver -> Simulator: Load Simulator Parameters
-Driver -> Simulator: Instatiate Simulator Objects
+Core -> Simulator: Load Simulator Parameters
+Core -> Simulator: Instatiate Simulator Objects
 Simulator -> Model: Instantiate (CPU/GPU) Model
 Model -> "Layout Factory": Invoke Layout Create 
 "Layout Factory" -> Layout: Instantiate
@@ -19,7 +19,7 @@ Connections -> "Edges Factory": Invoke All Edges Create
 Model -> "Recorders Factory": Invoke Recorders Create
 "Recorders Factory" -> Recorder: Instantiate*
 
-Driver -> Simulator: Setup 
+Core -> Simulator: Setup 
 Simulator -> Model: Model Setup
 Model -> Layout: Get Vertices 
 Layout -> "All Vertices": Setup Vertices
@@ -33,13 +33,13 @@ Model -> Layout: Generate Vertex Map
 Model -> Layout: Initialize Starter Map 
 Model -> Layout: Create All Vertices
 opt if serialized file name available
-    Driver -> Driver: Deserialize file
-    Driver -> Connections: Create Synapses from Weights
+    Core -> Serializer: Deserialize file
+    Serializer -> Connections: Create Synapses from Weights
 end
 
 == Simulation ==
 
-Driver -> Simulator: Simulate
+Core -> Simulator: Simulate
 loop for i=0 to currentEpoch-1
     Simulator -> Simulator: Advance Epoch
     loop for i=0 to epochDuration-1
@@ -59,14 +59,14 @@ end
 Simulator -> Model: Save Results 
 Model -> Recorder: Save Simulation Data 
 opt if serialization file name available 
-    Driver -> Driver: Serialize Synapses
+    Core -> Serializer: Serialize Synapses
 end
 
 == Termination ==
 
-Driver -> Simulator: Finish Signal 
+Core -> Simulator: Finish Signal 
 Simulator -> Model: Clean up model resources
-Driver -> Recorder: Terminate Recording
-Driver -> Driver: Exit program
+Core -> Recorder: Terminate Recording
+Core -> Core: Exit program
 
 @enduml

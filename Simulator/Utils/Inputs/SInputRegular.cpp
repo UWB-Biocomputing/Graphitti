@@ -118,7 +118,7 @@ void SInputRegular::term()
 {
 }
 
-/// Helper function for input vaue list (copied from Driver.cpp and modified for BGFLOAT)
+/// Helper function for input vaue list (copied from Core.cpp and modified for BGFLOAT)
 void getValueList(const string &valString, vector<BGFLOAT> *pList)
 {
    std::istringstream valStream(valString);
