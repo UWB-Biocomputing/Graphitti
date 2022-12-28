@@ -59,7 +59,8 @@ bool Serializer::deserializeSynapses()
    try {
       archive(*(dynamic_cast<AllEdges *>(connections->getEdges().get())));
    } catch (cereal::Exception e) {
-      cerr << "Failed deserializing synapse weights, source vertices, and/or destination vertices."
+      cerr << e.what() << endl
+           << "Failed to deserialize synapse weights, source vertices, and/or destination vertices."
            << endl;
       return false;
    }
@@ -93,7 +94,7 @@ bool Serializer::deserializeSynapses()
       try {
          archive(*(dynamic_cast<ConnGrowth *>(connections.get())));
       } catch (cereal::Exception e) {
-         cerr << "Failed deserializing radii." << endl;
+         cerr << e.what() << endl << "Failed to deserialize radii." << endl;
          return false;
       }
    }
