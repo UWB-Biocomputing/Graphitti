@@ -62,11 +62,11 @@ public:
 
    ///  Cereal serialization method
    ///  (Serializes edge weights, source vertices, and destination vertices)
-   template <class Archive> void save(Archive &archive) const;
+   template <class Archive> void save(Archive &archive, std::uint32_t const version) const;
 
    ///  Cereal deserialization method
    ///  (Deserializes edge weights, source vertices, and destination vertices)
-   template <class Archive> void load(Archive &archive);
+   template <class Archive> void load(Archive &archive, std::uint32_t const version);
 
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -231,9 +231,11 @@ public:
    int countVertices_;
 };
 
+CEREAL_CLASS_VERSION(AllEdges, 1);
+
 ///  Cereal serialization method
 ///  (Serializes edge weights, source vertices, and destination vertices)
-template <class Archive> void AllEdges::save(Archive &archive) const
+template <class Archive> void AllEdges::save(Archive &archive, std::uint32_t const version) const
 {
    // uses vector to save edge weights, source vertices, and destination vertices
    vector<BGFLOAT> WVector;
@@ -257,7 +259,7 @@ template <class Archive> void AllEdges::save(Archive &archive) const
 
 ///  Cereal deserialization method
 ///  (Deserializes edge weights, source vertices, and destination vertices)
-template <class Archive> void AllEdges::load(Archive &archive)
+template <class Archive> void AllEdges::load(Archive &archive, std::uint32_t const version)
 {
    // uses vectors to load edge weights, source vertices, and destination vertices
    int WVectorSize = 0;

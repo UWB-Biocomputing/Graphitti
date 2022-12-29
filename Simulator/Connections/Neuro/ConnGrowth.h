@@ -109,11 +109,11 @@ public:
 
    ///  Cereal serialization method
    ///  (Serializes radii)
-   template <class Archive> void save(Archive &archive) const;
+   template <class Archive> void save(Archive &archive, std::uint32_t const version) const;
 
    ///  Cereal deserialization method
    ///  (Deserializes radii)
-   template <class Archive> void load(Archive &archive);
+   template <class Archive> void load(Archive &archive, std::uint32_t const version);
 
    ///  Prints radii
    void printRadii() const;
@@ -192,9 +192,11 @@ public:
    VectorMatrix *deltaR_;
 };
 
+CEREAL_CLASS_VERSION(ConnGrowth, 1);
+
 ///  Cereal serialization method
 ///  (Serializes radii)
-template <class Archive> void ConnGrowth::save(Archive &archive) const
+template <class Archive> void ConnGrowth::save(Archive &archive, std::uint32_t const version) const
 {
    // uses vector to save radii
    vector<BGFLOAT> radiiVector;
@@ -207,7 +209,7 @@ template <class Archive> void ConnGrowth::save(Archive &archive) const
 
 ///  Cereal deserialization method
 ///  (Deserializes radii)
-template <class Archive> void ConnGrowth::load(Archive &archive)
+template <class Archive> void ConnGrowth::load(Archive &archive, std::uint32_t const version)
 {
    // uses vector to load radii
    vector<BGFLOAT> radiiVector;
