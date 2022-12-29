@@ -4,7 +4,7 @@ title Graphitti General Program Flow
 
 == Initialization ==
 Core -> Simulator: Load Simulator Parameters
-Core -> Simulator: Instatiate Simulator Objects
+Core -> Simulator: Instantiate Simulator Objects
 Simulator -> Model: Instantiate (CPU/GPU) Model
 Model -> "Layout Factory": Invoke Layout Create 
 "Layout Factory" -> Layout: Instantiate
