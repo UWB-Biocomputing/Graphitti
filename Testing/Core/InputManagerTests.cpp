@@ -16,7 +16,7 @@ string configFile = "../configfiles/test-spd-911.xml";
 
 class InputManagerFixture: public ::testing::Test {
 public:
-    InputManager inputManager;
+    InputManager<Event> inputManager;
 
     void SetUp() {
         bool areParamsLoaded = ParameterManager::getInstance().loadParameterFile(configFile);
