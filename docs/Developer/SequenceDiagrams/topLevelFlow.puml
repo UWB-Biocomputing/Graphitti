@@ -2,7 +2,7 @@
 
 title Graphitti General Program Flow
 
-Driver -> ParamContainer **: Parse Command Line
+Core -> ParamContainer **: Parse Command Line
 activate ParamContainer
 note right
     Config File
@@ -11,15 +11,15 @@ note right
     Stimulus File
 end note
 
-Driver -> Simulator: Set File Names
+Core -> Simulator: Set File Names
 Simulator -> ParamContainer: Get File Names
 ParamContainer -> Simulator: File Names
 deactivate ParamContainer
 
-Driver -> ParameterManager: Load Parameter File
+Core -> ParameterManager: Load Parameter File
 ParameterManager -> Simulator: Get Config File Name
 Simulator -> ParameterManager: Config File Name
-Driver -> Simulator: Load Parameters
+Core -> Simulator: Load Parameters
 Simulator -> ParameterManager: Get parameters from XML
 ParameterManager -> Simulator: Parameters
 note right
@@ -28,14 +28,14 @@ note right
     maxEdgesPerVertex_, RNG, etc.
 end note
 
-Driver -> Simulator: Instantiate Simulator Objects
+Core -> Simulator: Instantiate Simulator Objects
 note right
     Details are in a separate
     sequence diagram.
 end note
 
 ' Expand in a separate diagram
-Driver -> OperationManager: Load Parameters
+Core -> OperationManager: Load Parameters
 note right
     Runs loadParameters method for
     each instantiated object.
@@ -43,7 +43,7 @@ note right
     OperationManager on instantiation.
 end note
 
-Driver -> Simulator: Setup
+Core -> Simulator: Setup
 Simulator -> Model: Setup Simulation
 note right
     Sets up vertices, edges, layout
@@ -54,10 +54,10 @@ note right
 end note
 
 opt if serialized file name available
-    Driver -> Driver: Deserialize file
+    Core -> Serializer: Deserialize file
 end
 
-Driver -> Simulator: Simulate
+Core -> Simulator: Simulate
 Simulator -> Simulator: Advance Epoch
 Simulator -> Model: Update Connections
 Simulator -> Model: Update History
@@ -68,17 +68,17 @@ note right
     is simulation dependent.
 end note
 
-Driver -> Simulator: Save Results
+Core -> Simulator: Save Results
 Simulator -> Model: Save Results
 Model -> Recorder: Save Simulation Data
 
 opt if serializtion file available
-    Driver -> Driver: Serialize Synapses
+    Core -> Serializer: Serialize Synapses
 end
 
-Driver -> Simulator: Finish
+Core -> Simulator: Finish
 Simulator -> Model: Clean up model resources
-Driver -> Recorder: Terminate Recording
-Driver -> Driver: Exit program
+Core -> Recorder: Terminate Recording
+Core -> Core: Exit program
 
 @enduml

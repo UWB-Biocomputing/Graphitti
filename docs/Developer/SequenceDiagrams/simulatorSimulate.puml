@@ -22,7 +22,7 @@ end
 Simulator -> Model: Save Results
 Model -> Recorder: Save Simulation Data
 opt if serialization file name available 
-    Driver -> Driver: Serialize Synapses
+    Core -> Serializer: Serialize Synapses
 end
 
 @enduml

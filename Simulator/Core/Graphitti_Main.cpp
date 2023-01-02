@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
       cmdLineArguments = cmdLineArguments + argv[i] + " ";
    }
 
-   // Creating an instance of driver class
+   // Creating an instance of core class
    Core core;
    return core.runSimulation(executableName, cmdLineArguments);
 };
