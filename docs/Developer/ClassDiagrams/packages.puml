@@ -17,7 +17,7 @@ package Core{
 
 	/' class relationships '/
 	Model -left-o Simulator 
-	Operations o-right- OperationManager   
+	Operations -right-o OperationManager   
 	Simulator ---> OperationManager 
 
 	/' relative position of classes in this package'/
