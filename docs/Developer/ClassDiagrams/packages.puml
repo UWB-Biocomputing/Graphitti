@@ -10,7 +10,7 @@ package Core{
 	/' class '/
    class Simulator
    class CPUSpikingModel implements Model
-	class GPUSpilingModel implements Model
+	class GPUSpikingModel implements Model
 	class Operations
 	class OperationManager
 	class ParameterManager
@@ -21,9 +21,9 @@ package Core{
 	Simulator ---> OperationManager 
 
 	/' relative position of classes in this package'/
-	CPUSpikingModel-[hidden]right>GPUSpilingModel
-	CPUSpikingModel-[hidden]->Operations
-   OperationManager -[hidden]->ParameterManager
+	CPUSpikingModel -[hidden]right> GPUSpikingModel
+	CPUSpikingModel -[hidden]-> Operations
+   OperationManager -[hidden]-> ParameterManager
 }
 
 package Layouts{
@@ -31,7 +31,7 @@ package Layouts{
 	class DynamicLayout implements Layout
 	class LayoutsFactory
 	FixedLayout <-- LayoutsFactory
-	DynamicLayout<-- LayoutsFactory	
+	DynamicLayout <-- LayoutsFactory	
 }
 
 package Vertices{
@@ -40,8 +40,8 @@ package Vertices{
 	class AllLiFNeurons extends AllIFNeurons
 	class AllZHNeurons extends AllIFNeurons
 	class VerticesFactory 
-	VerticesFactory -up->AllLiFNeurons
-	VerticesFactory -up->AllZHNeurons
+	VerticesFactory -up-> AllLiFNeurons
+	VerticesFactory -up-> AllZHNeurons
 }
 
 package Recorders{
@@ -51,9 +51,9 @@ package Recorders{
 	class Hdf5GrowthRecorder extends HDF5Recorder
 	class RecordersFactory
 	XmLRecorder <-- RecordersFactory
-	HDF5Recorder<-- RecordersFactory
-	XmlGrowthRecroder<-- RecordersFactory
-	Hdf5GrowthRecorder<-- RecordersFactory
+	HDF5Recorder <-- RecordersFactory
+	XmlGrowthRecroder <-- RecordersFactory
+	Hdf5GrowthRecorder <-- RecordersFactory
 }
 
 package Connections{
@@ -70,21 +70,21 @@ package Edges{
 	class AllDSSynapses extends AllSpikingSynapses
 	class AllDynamicsSTDPSynapses extends AllSTDPSynapses
 	class EdgesFactory
-	EdgesFactory --up->AllSTDPSynapses
-	EdgesFactory --up->AllDSSynapses
-	EdgesFactory --up>AllDynamicsSTDPSynapses
+	EdgesFactory --up-> AllSTDPSynapses
+	EdgesFactory --up-> AllDSSynapses
+	EdgesFactory --up> AllDynamicsSTDPSynapses
 }
 
 /' set up packages position '/
 Core -[hidden]right>  Layouts
 Layouts -[hidden]right> Vertices
 Core -[hidden]down---> Recorders
-Layouts -[hidden]down--->Connections
+Layouts -[hidden]down---> Connections
 Vertices -[hidden]down-----> Edges
 
 /'relative position of classes between different packages'/
-Simulator -[#red]->LayoutsFactory
-Simulator -[#red]-->ConnectionsFactory
+Simulator -[#red]-> LayoutsFactory
+Simulator -[#red]--> ConnectionsFactory
 Model o-[#red] Layout
 Model o-[#red]-- Connections
 /'relative position between package Layouts - Vertices'/
@@ -96,5 +96,4 @@ Connections o-[#red]- IRecorder
 Connections o-[#red]- AllEdges
 Connections <-[#red]---- RecordersFactory
 Connections <-[#red]---- EdgesFactory
-
 @enduml
