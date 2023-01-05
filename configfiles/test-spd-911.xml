@@ -47,7 +47,7 @@
     </ConnectionsParams>
 
     <InputParams class="InputManager" name="InputParams">
-      <inputFile name="inputFile">../configfiles/inputs/SPD_calls_new.xml</inputFile>
+      <inputFile name="inputFile">../configfiles/inputs/SPD_calls.xml</inputFile>
     </InputParams>
 
     <LayoutParams class="Layout911" name="LayoutParams">

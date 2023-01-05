@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<simulator_inputs>
+  <data description="neuro_input_test" clock_tick_size="1usec">
+    <vertex id="1">
+      <event time="0" vertex_id="1"/>
+      <event time="34" vertex_id="1"/>
+      <event time="47" vertex_id="1"/>
+      <event time="73" vertex_id="1"/>
+    </vertex>
+    <vertex id="2">
+      <event time="130" vertex_id="2"/>
+      <event time="324" vertex_id="2"/>
+      <event time="388" vertex_id="2"/>
+      <event time="401" vertex_id="2"/>
+    </vertex>
+  </data>
+</simulator_inputs>

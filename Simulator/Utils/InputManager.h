@@ -1,3 +1,36 @@
+/**
+ * @file InputMaager.h
+ * @author Jardi A. M. Jordan (jardiamj@gmail.com)
+ * @date 01-03-2023
+ * Supervised by Dr. Michael Stiber, UW Bothell CSSE Division
+ * @ingroup Simulator/Utils
+ * 
+ * @brief Template class for reading input events from XML formatted files.
+ * 
+ * This class is designed to read input events from input files that contains
+ * a list of events in an XML format, organized by the vertex where the events
+ * ocurr. The following is an example of an input file for the NG-911 model:
+ * 
+ * <?xml version='1.0' encoding='UTF-8'?>
+ * <simulator_inputs>
+ *   <data description="SPD_calls_sept2020" clock_tick_size="1sec">
+ *     <vertex id="194" name="SEATTLE PD Caller region">
+ *       <event time="0" duration="0" x="-122.38496236371942" y="47.570236838209546" type="EMS" vertex_id="194"/>
+ *       <event time="34" duration="230" x="-122.37482094435583" y="47.64839548276973" type="EMS" vertex_id="194"/>
+ *       <event time="37" duration="169" x="-122.4036487601129" y="47.55833788618255" type="Fire" vertex_id="194"/>
+ *       <event time="42" duration="327" x="-122.38534886929502" y="47.515324716436346" type="Fire" vertex_id="194"/>
+ *     </vertex>
+ *   </data>
+ * </simulator_inputs>
+ * 
+ * Similarly to GraphManger, the InputManager is designed so that consumer code
+ * can register event attributes to member of a Struct. The inputs will be loaded
+ * into a map where the key is the vertex associated with the event and the data
+ * a queue of events. See the InputManager unit tests for examples.
+ * 
+ * 
+ *
+ */
 
 #pragma once
 
@@ -15,20 +48,6 @@
 
 using namespace std;
 using boost::property_tree::ptree;
-
-struct Event {
-   // The vertexId where the input event happen
-   int vertexId;
-   // The start of the event since the beggining of
-   // the simulation in timesteps matches g_simulationStep type
-   uint64_t time;
-   // The duration of the event in timesteps
-   int duration;
-   // Event location
-   double x;
-   double y;
-   string type;
-};
 
 template <typename T>
 class InputManager {
@@ -51,13 +70,13 @@ public:
    InputManager() {
       // Get a copy of the file logger to use with log4cplus macros
       fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+      consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       LOG4CPLUS_DEBUG(fileLogger_, "Initializing InputManager");
    }
 
    void setInputFilePath(const string &inputFilePath) {
       if (inputFilePath.empty()) {
-         // TODO: terminate if an a empty string is given as inputFilePath
-         LOG4CPLUS_FATAL(fileLogger_, "inputFilePath must not be an empty string");
+         LOG4CPLUS_FATAL(consoleLogger_, "inputFilePath must not be an empty string");
          exit(EXIT_FAILURE);
       }
 
@@ -66,18 +85,16 @@ public:
 
    /// @brief  Read a list of events from an input file and load them into
    ///         a map, organized per vertex ID
-   /// @return True if the file was successfully read, false otherwise
-   bool readInputs() {
+   void readInputs() {
       ptree pt;
       ifstream inputFile;
-      // string inputFilePath;
 
       if (inputFilePath_.empty()) {
-         // If no inputFilePath_ has bee assigned get it from the ParameterManager
+         // If no inputFilePath_ has been assigned get it from the ParameterManager
          string xpath = "//inputFile/text()";
          if (!ParameterManager::getInstance().getStringByXpath(xpath, inputFilePath_)) {
-            cerr << "InputManager: Count not find XML Path: " << xpath << ".\n";
-            return false;
+            LOG4CPLUS_FATAL(consoleLogger_, "Could not find XML Path: " << xpath);
+            exit(EXIT_FAILURE);
          }
       }
 
@@ -85,8 +102,8 @@ public:
 
       inputFile.open(inputFilePath_.c_str());
       if (!inputFile.is_open()) {
-         cerr << "InputManager: Failed to open file: " << inputFilePath_ << ".\n";
-         return false;
+         LOG4CPLUS_FATAL(consoleLogger_, "Faile to open file: " << inputFilePath_);
+         exit(EXIT_FAILURE);
       }
 
       boost::property_tree::xml_parser::read_xml(inputFile, pt);
@@ -108,20 +125,17 @@ public:
                      // and empty queue if it doesn't yet contain this vertex_id.
                      eventsMap_[vertex_id].push(event);
                   } catch (boost::property_tree::ptree_bad_data e) {
-                     LOG4CPLUS_FATAL(fileLogger_, "InputManager failed to read event node: " << e.what());
-                     // TODO: perhaps we need to exit with a fatal log message since there is
-                     // missing information
-                     return false;
+                     LOG4CPLUS_FATAL(consoleLogger_, "InputManager failed to read event node: " << e.what());
+                     exit(EXIT_FAILURE);
                   } catch (boost::bad_get e) {
-                     LOG4CPLUS_FATAL(fileLogger_, "Failed to read event property: " << e.what());
-                     return false;
+                     LOG4CPLUS_FATAL(consoleLogger_, "Failed to read event property: " << e.what());
+                     exit(EXIT_FAILURE);
                   }
                }
             }
          }
       }
       LOG4CPLUS_DEBUG(fileLogger_, "Input file loaded successfully");
-      return true;
    }
 
    /// @brief  Retrieves a list of events that occur between firstStep (inclusive) and
@@ -131,8 +145,8 @@ public:
    /// @param lastStep     The last time step (exclusive) for the occurrence of the events
    /// @return The list of events between firstStep and lastStep for the fiven vertexId
    vector<T> getEvents(const VertexId_t &vertexId, uint64_t firstStep, uint64_t lastStep) {
-      vector<Event> result = vector<Event>();   // Will hold the list of events
-      queue<Event> &eventQueue = eventsMap_[vertexId];   // Get a reference to the event queue
+      vector<T> result = vector<T>();   // Will hold the list of events
+      queue<T> &eventQueue = eventsMap_[vertexId];   // Get a reference to the event queue
 
       while (!eventQueue.empty() && eventQueue.front().time < lastStep) {
          // We shouldn't have previous epoch events in the queue
@@ -145,18 +159,36 @@ public:
    }
 
    /// @brief  Peeks into the event at the front of the vertex queue
-   /// @param vertexId  The ID of the vertex
+   /// @param  vertexId  The ID of the vertex
+   /// @throws out_of_range, if vertexId is  not found in the map
    /// @return    The event at the front of the given vertex queue
-   Event vertexQueueFront(const VertexId_t &vertexId) {
-      // TODO: this throws an out_of_range exception if vertexId is not found
+   T queueFront(const VertexId_t &vertexId) {
       return eventsMap_.at(vertexId).front();
    }
 
-   /// @brief  Removes the event at the back of the vertex queue
-   /// @param vertexId  The ID of the vertex
-   void vertexQueuePop(const VertexId_t &vertexId) {
-      // TODO: handle when vertexID is not found in the map
-      eventsMap_.at(vertexId).pop();
+   /// @brief  Removes the event at the front of the vertex queue
+   /// @param  vertexId  The ID of the vertex
+   /// @return true if the front of the queue was removed false otherwise.
+   ///         Returns false if there are no events for the given vertex
+   bool queuePop(const VertexId_t &vertexId) {
+      try {
+         eventsMap_.at(vertexId).pop();
+         return true;
+      } catch (std::out_of_range const &err) {
+         return false;
+      }
+   }
+
+   /// @brief  True if the event queue for the given vertex is empty, false otherwise
+   /// @param vertexId  The vertexId
+   /// @return True if the event queue is empty, false otherwise
+   bool queueEmpty(const VertexId_t &vertexId) {
+      try {
+         return eventsMap_.at(vertexId).empty();
+      } catch (std::out_of_range const &err) {
+         // return true if there are no events for the given vertexId
+         return true;
+      }
    }
 
    /// @brief  Registers a property with the given name and a pointer to a member of the
@@ -172,7 +204,7 @@ public:
          return false;
       }
 
-      // The compiler will check that only a type that is part of our variant can be
+      // The compiler will check that only a type that is part of the variant can be
       // registered.
       registeredPropMap_[propName] = property;
       return true;
@@ -191,7 +223,8 @@ private:
    // map<propName, ptrToMember>
    map<string, EventMemberPtr> registeredPropMap_;
 
-   log4cplus::Logger fileLogger_;
+   log4cplus::Logger fileLogger_;   // For logging into a file
+   log4cplus::Logger consoleLogger_;   // For logging to console
 
    bool getProperty(T &event, string propName, EventMemberPtr &eventMbrPtr,
                     const boost::property_tree::ptree &pTree) {
