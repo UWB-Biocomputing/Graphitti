@@ -123,11 +123,6 @@ TEST_F(InputManagerFixture, queuePop) {
     ASSERT_TRUE(inputManager.queueEmpty(194));
 }
 
-TEST(InputManagerFixure, invalidInputFilePath) {
-    
-}
-
-
 TEST(InputManager, readNeuroInputs) {
     InputManager<Event> inputManager;
     inputManager.setInputFilePath(neuroInputs);

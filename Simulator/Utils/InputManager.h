@@ -1,5 +1,5 @@
 /**
- * @file InputMaager.h
+ * @file InputManager.h
  * @author Jardi A. M. Jordan (jardiamj@gmail.com)
  * @date 01-03-2023
  * Supervised by Dr. Michael Stiber, UW Bothell CSSE Division
@@ -74,6 +74,8 @@ public:
       LOG4CPLUS_DEBUG(fileLogger_, "Initializing InputManager");
    }
 
+   /// @brief Sets the path to the input file
+   /// @param inputFilePath   The path to the input file
    void setInputFilePath(const string &inputFilePath) {
       if (inputFilePath.empty()) {
          LOG4CPLUS_FATAL(consoleLogger_, "inputFilePath must not be an empty string");
