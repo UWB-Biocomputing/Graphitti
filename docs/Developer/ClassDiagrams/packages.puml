@@ -1,13 +1,13 @@
 @startuml package UML
 
-/' set up line '/
+/'set up line '/
 skinparam linetype ortho
-/' hide the class members '/
+/'hide the class members '/
 hide members
 
-/' package '/
+/'package '/
 package Core{
-   /' class '/
+   /'class '/
    class Simulator
    class CPUSpikingModel implements Model
    class GPUSpikingModel implements Model
@@ -15,7 +15,7 @@ package Core{
    class OperationManager 
    class ParameterManager 
 
-   /' class relationships in this package '/
+   /'class relationships in this package '/
    Model -left-o Simulator 
    Operations -right-o OperationManager   
    Simulator ---> OperationManager : commands 
@@ -26,14 +26,16 @@ package Core{
    OperationManager -[hidden]-> ParameterManager
 }
 
+/'package '/
 package Layouts{
    class FixedLayout implements Layout
    class DynamicLayout implements Layout
    class LayoutsFactory
    FixedLayout <-- LayoutsFactory : instantiates
-   DynamicLayout <-- LayoutsFactory	: instantiates
+   DynamicLayout <-- LayoutsFactory : instantiates
 }
 
+/'package '/
 package Vertices{
    class AllSpikingNeurons implements AllVertices
    class AllIFNeurons extends AllSpikingNeurons
@@ -44,6 +46,7 @@ package Vertices{
    VerticesFactory -up-> AllZHNeurons : instantiates
 }
 
+/'package '/
 package Recorders{
    class  XmLRecorder implements IRecorder
    class HDF5Recorder implements IRecorder
@@ -52,10 +55,11 @@ package Recorders{
    class RecordersFactory
    XmLRecorder <-- RecordersFactory : instantiates
    HDF5Recorder <-- RecordersFactory : instantiates
-   XmlGrowthRecroder <-- RecordersFactory : instantiates
-   Hdf5GrowthRecorder <-- RecordersFactory : instantiates
+   XmlGrowthRecroder <--- RecordersFactory : instantiates
+   Hdf5GrowthRecorder <--- RecordersFactory : instantiates
 }
 
+/'package '/
 package Connections{
    class ConnStatic implements Connections
    class ConnGrowth Implements Connections
@@ -64,6 +68,7 @@ package Connections{
    ConnectionsFactory --up> ConnGrowth  : instantiates
 }
 
+/'package '/
 package Edges{
    class AllSpikingSynapses implements AllEdges
    class AllSTDPSynapses extends AllSpikingSynapses
@@ -75,19 +80,13 @@ package Edges{
    EdgesFactory --up> AllDynamicsSTDPSynapses : instantiates
 }
 
-/' set up relative packages position in this diagram '/
-Core -[hidden]right>  Layouts
-Layouts -[hidden]right> Vertices
-Core -[hidden]down---> Recorders
-Layouts -[hidden]down---> Connections
-Vertices -[hidden]down-----> Edges
-
 /'relationship of classes in Core and other packages'/
 Simulator -[#red]-> LayoutsFactory : commands
-Simulator -[#red]--> ConnectionsFactory: commands
+Simulator -[#red]----> ConnectionsFactory: commands
 Model o-[#red] Layout
-Model o-[#red]-- Connections
-/'relationship of classes in package Layouts - Vertices'/
+Model o-[#red]--- Connections
+
+'relationship of classes in package Layouts and Vertices'/
 Layout o-[#red] AllVertices
 Layout -[#red]---> VerticesFactory : commands
 
@@ -95,6 +94,14 @@ Layout -[#red]---> VerticesFactory : commands
 /'Connections here refers to the interface in package'/
 Connections o-[#red]- IRecorder
 Connections o-[#red]- AllEdges
-Connections -[#red]----> RecordersFactory : commands
-Connections -[#red]----> EdgesFactory : commands
+Connections -[#red]---> RecordersFactory : commands
+Connections -[#red]---> EdgesFactory : commands
+
+/'overall image layout'/
+/'set up relative packages position in this diagram '/
+Core -[hidden]right>  Layouts
+Layouts -[hidden]right> Vertices
+Core -[hidden]down----> Recorders
+Layouts -[hidden]down----> Connections
+Vertices -[hidden]down-----> Edges
 @enduml
