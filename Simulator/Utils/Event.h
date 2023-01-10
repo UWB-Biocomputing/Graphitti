@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <cstdint>
+#include <string>
+
 struct Event {
    // The vertexId where the input event happen
    int vertexId;
@@ -25,10 +28,10 @@ struct Event {
 };
 
 struct Call : Event {
-    // The duration of the event in timesteps
+   // The duration of the event in timesteps
    int duration;
    // Event location
    double x;
    double y;
-   string type;
+   std::string type;
 };

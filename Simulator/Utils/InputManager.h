@@ -35,22 +35,20 @@
 #pragma once
 
 #include "ParameterManager.h"
-#include <boost/variant.hpp>
-#include <log4cplus/loggingmacros.h>
-#include <map>
-#include <queue>
-
 #include <boost/foreach.hpp>
 #include <boost/property_tree/exceptions.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+#include <boost/variant.hpp>
 #include <iostream>
+#include <log4cplus/loggingmacros.h>
+#include <map>
+#include <queue>
 
 using namespace std;
 using boost::property_tree::ptree;
 
-template <typename T>
-class InputManager {
+template <typename T> class InputManager {
 public:
    // Set boost::variant to store the following types. We will use variant.which() to
    // determine the currently stored value at runtime. Which returns an index value
@@ -58,8 +56,8 @@ public:
    // int Event::* = 0, uint64_t Event::* = 1 ... string Event::* = 5
    // For convenience an enum type is defined below but the types must be in the same
    // order as declared in the boost::variant typedef.
-   using EventMemberPtr = boost::variant<int T::*, uint64_t T::*, long T::*, float T::*,
-                          double T::*, string T::*>;
+   using EventMemberPtr
+      = boost::variant<int T::*, uint64_t T::*, long T::*, float T::*, double T::*, string T::*>;
    enum PropertyType { INTEGER, UINT64, LONG, FLOAT, DOUBLE, STRING };
 
    // Some aliases for better readability
@@ -67,7 +65,8 @@ public:
    using EventMap_t = map<VertexId_t, queue<T>>;
 
    /// @brief  Constructor
-   InputManager() {
+   InputManager()
+   {
       // Get a copy of the file logger to use with log4cplus macros
       fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
       consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
@@ -76,7 +75,8 @@ public:
 
    /// @brief Sets the path to the input file
    /// @param inputFilePath   The path to the input file
-   void setInputFilePath(const string &inputFilePath) {
+   void setInputFilePath(const string &inputFilePath)
+   {
       if (inputFilePath.empty()) {
          LOG4CPLUS_FATAL(consoleLogger_, "inputFilePath must not be an empty string");
          exit(EXIT_FAILURE);
@@ -87,7 +87,8 @@ public:
 
    /// @brief  Read a list of events from an input file and load them into
    ///         a map, organized per vertex ID
-   void readInputs() {
+   void readInputs()
+   {
       ptree pt;
       ifstream inputFile;
 
@@ -109,7 +110,8 @@ public:
       }
 
       boost::property_tree::xml_parser::read_xml(inputFile, pt);
-      BOOST_FOREACH (ptree::value_type const &v, pt.get_child("simulator_inputs").get_child("data")) {
+      BOOST_FOREACH (ptree::value_type const &v,
+                     pt.get_child("simulator_inputs").get_child("data")) {
          if (v.first == "vertex") {
             int vertex_id = v.second.get_child("<xmlattr>").get<int>("id");
             // loop over list of events that belong to this vertex
@@ -127,7 +129,8 @@ public:
                      // and empty queue if it doesn't yet contain this vertex_id.
                      eventsMap_[vertex_id].push(event);
                   } catch (boost::property_tree::ptree_bad_data e) {
-                     LOG4CPLUS_FATAL(consoleLogger_, "InputManager failed to read event node: " << e.what());
+                     LOG4CPLUS_FATAL(consoleLogger_,
+                                     "InputManager failed to read event node: " << e.what());
                      exit(EXIT_FAILURE);
                   } catch (boost::bad_get e) {
                      LOG4CPLUS_FATAL(consoleLogger_, "Failed to read event property: " << e.what());
@@ -146,8 +149,9 @@ public:
    /// @param firstStep    The first time step (inclusive) for the occurrence of the events
    /// @param lastStep     The last time step (exclusive) for the occurrence of the events
    /// @return The list of events between firstStep and lastStep for the fiven vertexId
-   vector<T> getEvents(const VertexId_t &vertexId, uint64_t firstStep, uint64_t lastStep) {
-      vector<T> result = vector<T>();   // Will hold the list of events
+   vector<T> getEvents(const VertexId_t &vertexId, uint64_t firstStep, uint64_t lastStep)
+   {
+      vector<T> result = vector<T>();                // Will hold the list of events
       queue<T> &eventQueue = eventsMap_[vertexId];   // Get a reference to the event queue
 
       while (!eventQueue.empty() && eventQueue.front().time < lastStep) {
@@ -164,7 +168,8 @@ public:
    /// @param  vertexId  The ID of the vertex
    /// @throws out_of_range, if vertexId is  not found in the map
    /// @return    The event at the front of the given vertex queue
-   T queueFront(const VertexId_t &vertexId) {
+   T queueFront(const VertexId_t &vertexId)
+   {
       return eventsMap_.at(vertexId).front();
    }
 
@@ -172,7 +177,8 @@ public:
    /// @param  vertexId  The ID of the vertex
    /// @return true if the front of the queue was removed false otherwise.
    ///         Returns false if there are no events for the given vertex
-   bool queuePop(const VertexId_t &vertexId) {
+   bool queuePop(const VertexId_t &vertexId)
+   {
       try {
          eventsMap_.at(vertexId).pop();
          return true;
@@ -184,7 +190,8 @@ public:
    /// @brief  True if the event queue for the given vertex is empty, false otherwise
    /// @param vertexId  The vertexId
    /// @return True if the event queue is empty, false otherwise
-   bool queueEmpty(const VertexId_t &vertexId) {
+   bool queueEmpty(const VertexId_t &vertexId)
+   {
       try {
          return eventsMap_.at(vertexId).empty();
       } catch (std::out_of_range const &err) {
@@ -199,7 +206,8 @@ public:
    /// @param propName  The name of the property as defined in the input file
    /// @param property  The pointer to member variable where the property should be stored
    /// @return    True if the property was successfully registered, false otherwise
-   bool registerProperty(const string &propName, EventMemberPtr property) {
+   bool registerProperty(const string &propName, EventMemberPtr property)
+   {
       // Check that we the propName is not an empty string
       if (propName.empty()) {
          LOG4CPLUS_ERROR(fileLogger_, "Property name should not be an empty string");
@@ -225,11 +233,12 @@ private:
    // map<propName, ptrToMember>
    map<string, EventMemberPtr> registeredPropMap_;
 
-   log4cplus::Logger fileLogger_;   // For logging into a file
+   log4cplus::Logger fileLogger_;      // For logging into a file
    log4cplus::Logger consoleLogger_;   // For logging to console
 
    bool getProperty(T &event, string propName, EventMemberPtr &eventMbrPtr,
-                    const boost::property_tree::ptree &pTree) {
+                    const boost::property_tree::ptree &pTree)
+   {
       switch (eventMbrPtr.which()) {
          // variant.which() returns a value between 0 and number of types - 1
          case PropertyType::INTEGER: {
