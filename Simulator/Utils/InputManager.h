@@ -109,9 +109,16 @@ public:
          exit(EXIT_FAILURE);
       }
 
+      // Load all events from the Input File
       boost::property_tree::xml_parser::read_xml(inputFile, pt);
-      BOOST_FOREACH (ptree::value_type const &v,
-                     pt.get_child("simulator_inputs").get_child("data")) {
+
+      // Get clock tick size
+      const ptree &dataNode = pt.get_child("simulator_inputs").get_child("data");
+      const ptree &dataAttr = dataNode.get_child("<xmlattr>");
+      clockTickSize_ = dataAttr.get<int>("clock_tick_size");
+      clockTickUnit_ = dataAttr.get<string>("clock_tick_unit");
+
+      BOOST_FOREACH (ptree::value_type const &v, dataNode) {
          if (v.first == "vertex") {
             int vertex_id = v.second.get_child("<xmlattr>").get<int>("id");
             // loop over list of events that belong to this vertex
@@ -162,6 +169,18 @@ public:
       }
 
       return result;
+   }
+
+   /// @brief Retrieves the clock tick size as defined in the input file
+   /// @return The user defined clock tick size
+   int getClockTickSize() {
+      return clockTickSize_;
+   }
+
+   /// @brief Retrieve the clock tick unit as defined in the input file
+   /// @return The user defined clock tick unit
+   string getClockTickUnit() {
+      return clockTickUnit_;
    }
 
    /// @brief  Peeks into the event at the front of the vertex queue
@@ -232,6 +251,10 @@ private:
    // if we make sure that the string can be casted to the registered type.
    // map<propName, ptrToMember>
    map<string, EventMemberPtr> registeredPropMap_;
+
+   // Clock tick size variables
+   int clockTickSize_;
+   string clockTickUnit_;
 
    log4cplus::Logger fileLogger_;      // For logging into a file
    log4cplus::Logger consoleLogger_;   // For logging to console

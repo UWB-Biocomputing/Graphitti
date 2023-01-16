@@ -131,6 +131,16 @@ TEST_F(InputManagerFixture, queuePop)
    ASSERT_TRUE(inputManager.queueEmpty(194));
 }
 
+TEST_F(InputManagerFixture, clockTickSize)
+{
+   ASSERT_EQ(inputManager.getClockTickSize(), 1);
+}
+
+TEST_F(InputManagerFixture, clockTickUnit)
+{
+   ASSERT_EQ(inputManager.getClockTickUnit(), "sec");
+}
+
 TEST(InputManager, readNeuroInputs)
 {
    InputManager<InputEvent> inputManager;
@@ -157,4 +167,7 @@ TEST(InputManager, readNeuroInputs)
 
    ASSERT_EQ(eventList[3].vertexId, 1);
    ASSERT_EQ(eventList[3].time, 73);
+
+   ASSERT_EQ(inputManager.getClockTickSize(), 1);
+   ASSERT_EQ(inputManager.getClockTickUnit(), "usec");
 }
