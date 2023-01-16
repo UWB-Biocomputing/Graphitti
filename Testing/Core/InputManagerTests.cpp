@@ -6,7 +6,7 @@
  * @ingroup Testing/Core
  */
 
-#include "Event.h"
+#include "InputEvent.h"
 #include "InputManager.h"
 #include "ParameterManager.h"
 #include "gtest/gtest.h"
@@ -133,11 +133,11 @@ TEST_F(InputManagerFixture, queuePop)
 
 TEST(InputManager, readNeuroInputs)
 {
-   InputManager<Event> inputManager;
+   InputManager<InputEvent> inputManager;
    inputManager.setInputFilePath(neuroInputs);
 
-   inputManager.registerProperty("vertex_id", &Event::vertexId);
-   inputManager.registerProperty("time", &Event::time);
+   inputManager.registerProperty("vertex_id", &InputEvent::vertexId);
+   inputManager.registerProperty("time", &InputEvent::time);
 
    inputManager.readInputs();
 

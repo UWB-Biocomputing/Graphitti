@@ -78,7 +78,8 @@ def main():
     # Construct an element tree to be writen to a file in XML format
     # data is the root element
     data = et.SubElement(inputs, 'data', {"description": "SPD_calls_sept2020", 
-                               "clock_tick_size": "1sec"})
+                               "clock_tick_size": "1",
+                               "clock_tick_unit": "sec"})
 
     # Inset one event element per row
     vertex = et.SubElement(data, 'vertex', {'id': sorted.iloc[0]['vertex_id'], 'name': sorted.iloc[0]['vertex']})

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <simulator_inputs>
-  <data description="SPD_calls_sept2020" clock_tick_size="1sec">
+  <data description="SPD_calls_sept2020" clock_tick_size="1" clock_tick_unit="sec">
     <vertex id="194" name="SEATTLE PD Caller region">
       <event time="0" duration="0" x="-122.38496236371942" y="47.570236838209546" type="EMS" vertex_id="194"/>
       <event time="34" duration="230" x="-122.37482094435583" y="47.64839548276973" type="EMS" vertex_id="194"/>
