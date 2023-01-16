@@ -46,7 +46,7 @@
       </Connections911Params>
     </ConnectionsParams>
 
-    <InputParams class="InputManager" name="InputParams">
+    <InputParams name="InputParams">
       <inputFile name="inputFile">../configfiles/inputs/SPD_calls.xml</inputFile>
     </InputParams>
 
