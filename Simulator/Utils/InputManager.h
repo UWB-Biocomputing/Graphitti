@@ -173,13 +173,15 @@ public:
 
    /// @brief Retrieves the clock tick size as defined in the input file
    /// @return The user defined clock tick size
-   int getClockTickSize() {
+   int getClockTickSize()
+   {
       return clockTickSize_;
    }
 
    /// @brief Retrieve the clock tick unit as defined in the input file
    /// @return The user defined clock tick unit
-   string getClockTickUnit() {
+   string getClockTickUnit()
+   {
       return clockTickUnit_;
    }
 
