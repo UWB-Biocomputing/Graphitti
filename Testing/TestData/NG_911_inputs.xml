@@ -1,3 +1,13 @@
+<!-- 
+  This is an example of a 911 event inputs file. It is being used for unit tests
+  in the InputManagerTests.cpp file.
+
+  An event inputs file consists of an XML file with a root node `<simulator_inputs>`
+  and a `<data>` node that contains a list of events organized by `<vertex>`.
+  Other nodes can be placed at the `<data>` level for general input properties if they
+  are required by a model.
+ -->
+
 <?xml version='1.0' encoding='UTF-8'?>
 <simulator_inputs>
   <data description="SPD_calls_sept2020" clock_tick_size="1" clock_tick_unit="sec">
