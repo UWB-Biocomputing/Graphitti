@@ -10,7 +10,7 @@
 
 <?xml version='1.0' encoding='UTF-8'?>
 <simulator_inputs>
-  <data description="neuro_input_test" clock_tick_size="1" clock_tick_unit="usec">
+  <data description="neuro_input_test" clock_tick_size="100" clock_tick_unit="usec">
     <vertex id="1">
       <event time="0" vertex_id="1"/>
       <event time="34" vertex_id="1"/>

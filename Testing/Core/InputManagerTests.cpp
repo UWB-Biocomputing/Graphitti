@@ -168,6 +168,6 @@ TEST(InputManager, readNeuroInputs)
    ASSERT_EQ(eventList[3].vertexId, 1);
    ASSERT_EQ(eventList[3].time, 73);
 
-   ASSERT_EQ(inputManager.getClockTickSize(), 1);
+   ASSERT_EQ(inputManager.getClockTickSize(), 100);
    ASSERT_EQ(inputManager.getClockTickUnit(), "usec");
 }
