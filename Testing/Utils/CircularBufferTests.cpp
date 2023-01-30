@@ -1,13 +1,13 @@
 
 
-#include "gtest/gtest.h"
 #include "CircularBuffer.h"
+#include "gtest/gtest.h"
 
 // Tests that the Circular Buffer is initialized as expected
 TEST(CircularBuffer, Constructor)
 {
-    CircularBuffer<int> circle;
-    ASSERT_FALSE(circle.isFull());
+   CircularBuffer<int> circle;
+   ASSERT_FALSE(circle.isFull());
 }
 
 // Tests that put adds the correct number of elements
@@ -22,7 +22,7 @@ TEST(CircularBuffer, Get)
 
 }
 
-// Tests that get retrieves correct value when the buffer is empty 
+// Tests that get retrieves correct value when the buffer is empty
 TEST(CircularBuffer, GetWhenEmpty)
 {
 

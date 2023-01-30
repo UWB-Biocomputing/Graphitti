@@ -20,10 +20,10 @@
 
 
 #include <cassert>
-#include <vector>
 #include <optional>
+#include <vector>
 
-template<typename T> class CircularBuffer {
+template <typename T> class CircularBuffer {
 public:
    /// @brief  Create a circular buffer with the given capacity
    ///
@@ -141,6 +141,6 @@ private:
    std::vector<T> buffer_;
    /// Index of the element at the start of the circular queue
    size_t front_ = 0;
-   /// Index of the location where the next element will be stored in the circular queue 
+   /// Index of the location where the next element will be stored in the circular queue
    size_t end_ = 0;
 };
