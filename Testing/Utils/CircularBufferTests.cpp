@@ -1,13 +1,36 @@
 
 
+#include <string.h>
+
 #include "CircularBuffer.h"
 #include "gtest/gtest.h"
+
+struct TestSruct {
+   int testInt;
+   double testDouble;
+   std::string testString;
+};
 
 // Tests that the Circular Buffer is initialized as expected
 TEST(CircularBuffer, Constructor)
 {
-   CircularBuffer<int> circle;
-   ASSERT_FALSE(circle.isFull());
+   CircularBuffer<int> cbInt(11);
+   ASSERT_TRUE(cbInt.isEmpty());
+   ASSERT_FALSE(cbInt.isFull());
+   ASSERT_EQ(11, cbInt.capacity());
+}
+
+TEST(CircularBuffer, ConstructAndResize)
+{
+   CircularBuffer<int> cbResizable;   // Buffer of size 0
+   ASSERT_EQ(0, cbResizable.capacity());
+   ASSERT_TRUE(cbResizable.isEmpty());
+
+   // Resize to 15
+   cbResizable.resize(15);
+   ASSERT_TRUE(cbResizable.isEmpty());
+   ASSERT_FALSE(cbResizable.isFull());
+   ASSERT_EQ(15, cbResizable.capacity());
 }
 
 // Tests that put adds the correct number of elements

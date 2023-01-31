@@ -109,6 +109,10 @@ public:
    /// @return `true` if the buffer is full, `false` otherwise
    bool isFull() const
    {
+      if (capacity() == 0) {
+         // If capacity is zero the buffer is full
+         return true;
+      }
       return ((front_ + 1) % capacity()) == end_;
    }
 
