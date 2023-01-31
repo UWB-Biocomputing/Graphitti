@@ -20,6 +20,7 @@
 
 
 #include <cassert>
+#include <cstddef>
 #include <optional>
 #include <vector>
 
@@ -39,12 +40,12 @@ public:
    }
 
    /// @brief  Resize the circular buffer
-   /// @pre    Current buffer must be empty
+   /// @pre    Current buffer must be empty (Without valid elements)
    /// @param capacity  The number of elements that the buffer can hold
    void resize(int capacity)
    {
       // We are only allowed to resize an empty buffer
-      assert(buffer_.empty());
+      assert(isEmpty());
       buffer_.resize(capacity + 1);
       // Ensure that the buffer is cleared
       clear();
@@ -60,7 +61,7 @@ public:
 
       // Insert the new element and increment the front index
       buffer_[front_] = element;
-      front_ = (front_ + 1) % capacity();
+      front_ = (front_ + 1) % buffer_.size();
    }
 
    /// @brief  Retrieves the element at the end of the queue
@@ -81,7 +82,7 @@ public:
 
       // Get the value at the end of the queue and free up a space
       T value = buffer_[end_];
-      end_ = (end_ + 1) % capacity();
+      end_ = (end_ + 1) % buffer_.size();
 
       return value;
    }
@@ -109,11 +110,7 @@ public:
    /// @return `true` if the buffer is full, `false` otherwise
    bool isFull() const
    {
-      if (capacity() == 0) {
-         // If capacity is zero the buffer is full
-         return true;
-      }
-      return ((front_ + 1) % capacity()) == end_;
+      return ((front_ + 1) % buffer_.size()) == end_;
    }
 
    /// @brief Retrieves the number of elements that this buffer can hold
