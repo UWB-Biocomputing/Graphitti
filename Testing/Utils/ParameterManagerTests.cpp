@@ -48,7 +48,7 @@ TEST(ParameterManager, LoadingMultipleValidXMLFiles)
 
 TEST(ParameterManager, LoadingMultipleInvalidFiles)
 {
-   string invalid[] = {"../Core/Driver.cpp", "/.this"};
+   string invalid[] = {"../Core/Graphitti_Main.cpp", "/.this"};
    for (int i = 0; i < 2; i++) {
       ASSERT_FALSE(ParameterManager::getInstance().loadParameterFile(invalid[i]));
    }

@@ -109,11 +109,11 @@ public:
 
    ///  Cereal serialization method
    ///  (Serializes radii)
-   template <class Archive> void save(Archive &archive) const;
+   template <class Archive> void save(Archive &archive, std::uint32_t const version) const;
 
    ///  Cereal deserialization method
    ///  (Deserializes radii)
-   template <class Archive> void load(Archive &archive);
+   template <class Archive> void load(Archive &archive, std::uint32_t const version);
 
    ///  Prints radii
    void printRadii() const;
@@ -192,9 +192,11 @@ public:
    VectorMatrix *deltaR_;
 };
 
+CEREAL_CLASS_VERSION(ConnGrowth, 1);
+
 ///  Cereal serialization method
 ///  (Serializes radii)
-template <class Archive> void ConnGrowth::save(Archive &archive) const
+template <class Archive> void ConnGrowth::save(Archive &archive, std::uint32_t const version) const
 {
    // uses vector to save radii
    vector<BGFLOAT> radiiVector;
@@ -202,21 +204,21 @@ template <class Archive> void ConnGrowth::save(Archive &archive) const
       radiiVector.push_back((*radii_)[i]);
    }
    // serialization
-   archive(radiiVector);
+   archive(cereal::make_nvp("radiiSize", radiiSize_), cereal::make_nvp("radii", radiiVector));
 }
 
 ///  Cereal deserialization method
 ///  (Deserializes radii)
-template <class Archive> void ConnGrowth::load(Archive &archive)
+template <class Archive> void ConnGrowth::load(Archive &archive, std::uint32_t const version)
 {
    // uses vector to load radii
    vector<BGFLOAT> radiiVector;
-
+   int radiiSize = 0;
    // deserializing data to this vector
-   archive(radiiVector);
+   archive(radiiSize, radiiVector);
 
    // check to see if serialized data size matches object size
-   if (radiiVector.size() != radiiSize_) {
+   if (radiiSize != radiiSize_ || radiiSize != radiiVector.size()) {
       cerr << "Failed deserializing radii. Please verify totalVertices data member." << endl;
       throw cereal::Exception("Deserialization Error");
    }

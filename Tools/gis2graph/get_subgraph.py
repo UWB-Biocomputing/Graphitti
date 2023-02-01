@@ -17,7 +17,7 @@ def main():
 
     # This will give us a continuos numbering starting from zero
     G_spd = nx.convert_node_labels_to_integers(G_spd, first_label=0, ordering='default')
-    nx.write_graphml(G_spd, subgraph_file)
+    nx.write_graphml(G_spd, subgraph_file, named_key_ids=True)
 
 if __name__ == '__main__':
     main()

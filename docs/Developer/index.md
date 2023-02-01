@@ -42,6 +42,7 @@ Please adhere to our [coding conventions](codingConventions.md). Your pull reque
 - [Event buffering](eventBuffering.md) in vertex classes.
 - [Performing Analyses](PerformingAnalyses.md)
 - [Neuro Implementation](NeuroImplementation.md)
+- [GraphManager and InputManager classes](GraphAndEventInputs.md)
 
 
 ---------

@@ -19,20 +19,11 @@ To become a Graphitti user or collaborator, you might also need:
 Of course, Graphitti is totally open source. If you wanted, you could modify Graphitti and make an OpenCL version. 
 
 ## 1.2.2 Download Graphitti
-
-In order to get started with Graphitti, you will need to build it from scratch, which means getting its source codes. You can either download Graphitti source codes as a zip file of a stable release (See [Download a release](#1.2.2.1-Download-a-release)) or fork the development version from Graphitti GitHub repository (See [Fork and clone Graphitti](#1.2.2.2-fork-and-clone-graphitti)).  
-
-### 1.2.2.1 Download a release
-
-Graphitti releases to be determined.
-
-### 1.2.2.2 Fork and clone Graphitti
-
+In order to get started with Graphitti, you will need to build it from scratch, which means getting its source codes. You can either download Graphitti source codes as a zip file of a stable release (See [the release page](https://github.com/UWB-Biocomputing/Graphitti/releases)) or fork the development version from Graphitti GitHub repository (See [Fork and clone Graphitti](#1221-fork-and-clone-graphitti)).
+### 1.2.2.1 Fork and clone Graphitti
 If you are a Github user, you can simply fork and clone Graphitti. If you are new to Github, follow our Wiki page on [Contribute to Graphitti open source project](https://github.com/UWB-Biocomputing/BrainGrid/wiki/Contribute-to-BrainGrid-open-source-project). You can also go over our [Git Crash Course](https://github.com/UWB-Biocomputing/BrainGrid/wiki/Git-Crash-Course) for some useful tips.
-
 ## 1.2.3 Install Graphitti
-
-In order to compile and run Graphitti, you will need to set up a couple things in the **CMakeLists.txt** first. 
+In order to compile and run Graphitti, you will need to set up a couple things in the [**CMakeLists.txt**](https://github.com/UWB-Biocomputing/Graphitti/blob/master/CMakeLists.txt) first.
 
 1. Change to Graphitti directory in your terminal
 

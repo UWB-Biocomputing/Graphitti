@@ -118,7 +118,10 @@ def main():
     # Loop through all PSAPs, adding each as nodes, and checking against all EMS, Fire, Law boundaries
     for x in range(merged_kc_psap.shape[0]):
         # add PSAP node to graph
-        G.add_node(merged_kc_psap.iloc[x].ES_NGUID, objectID=merged_kc_psap.iloc[x].ES_NGUID, name=merged_kc_psap.iloc[x].DisplayName, type="PSAP")
+        pt = kc_fire.iloc[x].geometry.representative_point()
+        rep_point = str(pt.x) + ", " + str(pt.y)
+        G.add_node(merged_kc_psap.iloc[x].ES_NGUID, objectID=merged_kc_psap.iloc[x].ES_NGUID,
+                   name=merged_kc_psap.iloc[x].DisplayName, type="PSAP", y=pt.y,  x=pt.x)
 
         # find first
         # makes sure that every PSAP has at least 1 call region square
@@ -203,8 +206,7 @@ def main():
     # have a direct map between vertex ids.
     G = nx.convert_node_labels_to_integers(G, first_label=0, ordering='default')
     nx.write_gexf(G, "graph_files/" + out_file_name + ".gexf")
-    nx.write_graphml(G, "graph_files/" + out_file_name + ".graphml")
-
+    nx.write_graphml(G, "graph_files/" + out_file_name + ".graphml", named_key_ids=True)
 
 if __name__ == '__main__':
     main()

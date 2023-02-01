@@ -1,0 +1,27 @@
+<!-- 
+  This is an example of a 911 event inputs file. It is being used for unit tests
+  in the InputManagerTests.cpp file.
+
+  An event inputs file consists of an XML file with a root node `<simulator_inputs>`
+  and a `<data>` node that contains a list of events organized by `<vertex>`.
+  Other nodes can be placed at the `<data>` level for general input properties if they
+  are required by a model.
+ -->
+
+<?xml version='1.0' encoding='UTF-8'?>
+<simulator_inputs>
+  <data description="SPD_calls_sept2020" clock_tick_size="1" clock_tick_unit="sec">
+    <vertex id="194" name="SEATTLE PD Caller region">
+      <event time="0" duration="0" x="-122.38496236371942" y="47.570236838209546" type="EMS" vertex_id="194"/>
+      <event time="34" duration="230" x="-122.37482094435583" y="47.64839548276973" type="EMS" vertex_id="194"/>
+      <event time="47" duration="165" x="-122.27568876640863" y="47.67904232558008" type="EMS" vertex_id="194"/>
+      <event time="73" duration="262" x="-122.36701587581143" y="47.51932484119922" type="EMS" vertex_id="194"/>
+    </vertex>
+    <vertex id="195" name="uw PD">
+      <event time="130" duration="242" x="-122.32733110385414" y="47.65708716342721" type="Law" vertex_id="195"/>
+      <event time="324" duration="209" x="-122.42842939223208" y="47.59298276266974" type="Fire" vertex_id="195"/>
+      <event time="388" duration="45" x="-122.37746466732693" y="47.711139673719046" type="Law" vertex_id="195"/>
+      <event time="401" duration="110" x="-122.45031189490172" y="47.704142615892934" type="EMS" vertex_id="195"/>
+    </vertex>
+  </data>
+</simulator_inputs>
