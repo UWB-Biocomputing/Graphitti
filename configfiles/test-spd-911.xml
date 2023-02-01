@@ -46,6 +46,9 @@
       </Connections911Params>
     </ConnectionsParams>
 
+    <InputParams name="InputParams">
+      <inputFile name="inputFile">../configfiles/inputs/SPD_calls.xml</inputFile>
+    </InputParams>
 
     <LayoutParams class="Layout911" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">

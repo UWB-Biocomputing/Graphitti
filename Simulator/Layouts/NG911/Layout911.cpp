@@ -21,8 +21,8 @@ Layout911::~Layout911()
 
 void Layout911::registerGraphProperties()
 {
-   // The base class registers properties that al common to all vertices
-   // TODO: Currently not implemented because Nero model doesn't used graphML
+   // The base class registers properties that are common to all vertices
+   // TODO: Currently not implemented because Neuro model doesn't used graphML
    Layout::registerGraphProperties();
 
    // We must register the graph properties before loading it.

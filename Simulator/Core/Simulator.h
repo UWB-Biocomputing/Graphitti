@@ -147,7 +147,7 @@ private:
 
    int numEpochs_;   /// Number of simulator epochs
 
-   BGFLOAT epochDuration_;   /// The length of each step in simulation time
+   BGFLOAT epochDuration_;   /// The length of each epoch in simulation time
 
    int maxFiringRate_;   /// Maximum firing rate. **GPU Only**
 
