@@ -33,23 +33,17 @@ void All911Edges::setupEdges()
 
    // To do: Figure out whether we need all of these
    if (maxTotalEdges != 0) {
-      destVertexIndex_ = new int[maxTotalEdges];
-      W_ = new BGFLOAT[maxTotalEdges];
-      summationPoint_ = new BGFLOAT *[maxTotalEdges];
-      sourceVertexIndex_ = new int[maxTotalEdges];
+      destVertexIndex_.resize(maxTotalEdges);
+      W_.resize(maxTotalEdges, 0);
+      summationPoint_.resize(maxTotalEdges);
+      sourceVertexIndex_.resize(maxTotalEdges);
       // psr_ = new BGFLOAT[maxTotalEdges];
-      type_ = new edgeType[maxTotalEdges];
-      inUse_ = new bool[maxTotalEdges];
-      edgeCounts_ = new BGSIZE[numVertices];
+      type_.resize(maxTotalEdges);
+      inUse_ = make_unique<bool[]>(maxTotalEdges);
+      edgeCounts_.resize(numVertices, 0);
 
       for (BGSIZE i = 0; i < maxTotalEdges; i++) {
-         summationPoint_[i] = nullptr;
          inUse_[i] = false;
-         W_[i] = 0;
-      }
-
-      for (int i = 0; i < numVertices; i++) {
-         edgeCounts_[i] = 0;
       }
    }
 }

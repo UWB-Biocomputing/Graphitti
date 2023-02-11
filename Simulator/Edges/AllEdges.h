@@ -198,26 +198,26 @@ public:
 #endif   // defined(USE_GPU)
 
    ///  The location of the edge.
-   int *sourceVertexIndex_;
+   vector<int> sourceVertexIndex_;
 
    ///  The coordinates of the summation point.
-   int *destVertexIndex_;
+   vector<int> destVertexIndex_;
 
    ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
-   BGFLOAT *W_;
+   vector<BGFLOAT> W_;
 
    ///  This edge's summation point's address.
-   BGFLOAT **summationPoint_;
+   vector<BGFLOAT *> summationPoint_;
 
    ///   Synapse type
-   edgeType *type_;
+   vector<edgeType> type_;
 
    ///  The boolean value indicating the entry in the array is in use.
-   bool *inUse_;
+   unique_ptr<bool[]> inUse_;
 
    ///  The number of (incoming) edges for each vertex.
    ///  Note: Likely under a different name in GpuSim_struct, see edge_count. -Aaron
-   BGSIZE *edgeCounts_;
+   vector<BGSIZE> edgeCounts_;
 
    ///  The total number of active edges.
    BGSIZE totalEdgeCount_;
@@ -298,8 +298,8 @@ template <class Archive> void AllEdges::load(Archive &archive, std::uint32_t con
 
    // assigns serialized data to objects
    for (int i = 0; i < requiredSize; i++) {
-      W_[i] = WVector[i];
-      sourceVertexIndex_[i] = sourceVertexLayoutIndexVector[i];
-      destVertexIndex_[i] = destVertexLayoutIndexVector[i];
+      W_.push_back(WVector[i]);
+      sourceVertexIndex_.push_back(sourceVertexLayoutIndexVector[i]);
+      destVertexIndex_.push_back(destVertexLayoutIndexVector[i]);
    }
 }

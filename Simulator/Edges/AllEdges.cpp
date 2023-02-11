@@ -12,14 +12,6 @@
 
 AllEdges::AllEdges() : totalEdgeCount_(0), maxEdgesPerVertex_(0), countVertices_(0)
 {
-   destVertexIndex_ = nullptr;
-   W_ = nullptr;
-   summationPoint_ = nullptr;
-   sourceVertexIndex_ = nullptr;
-   type_ = nullptr;
-   inUse_ = nullptr;
-   edgeCounts_ = nullptr;
-
    // Register loadParameters function as a loadParameters operation in the
    // OperationManager. This will register the appropriate overridden method
    // for the actual (sub)class of the object being created.
@@ -45,26 +37,6 @@ AllEdges::AllEdges(const int numVertices, const int maxEdges)
 
 AllEdges::~AllEdges()
 {
-   BGSIZE maxTotalEdges = maxEdgesPerVertex_ * countVertices_;
-
-   if (maxTotalEdges != 0) {
-      delete[] destVertexIndex_;
-      delete[] W_;
-      delete[] summationPoint_;
-      delete[] sourceVertexIndex_;
-      delete[] type_;
-      delete[] inUse_;
-      delete[] edgeCounts_;
-   }
-
-   destVertexIndex_ = nullptr;
-   W_ = nullptr;
-   summationPoint_ = nullptr;
-   sourceVertexIndex_ = nullptr;
-   type_ = nullptr;
-   inUse_ = nullptr;
-   edgeCounts_ = nullptr;
-
    countVertices_ = 0;
    maxEdgesPerVertex_ = 0;
 }
@@ -109,22 +81,16 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges)
    countVertices_ = numVertices;
 
    if (maxTotalEdges != 0) {
-      destVertexIndex_ = new int[maxTotalEdges];
-      W_ = new BGFLOAT[maxTotalEdges];
-      summationPoint_ = new BGFLOAT *[maxTotalEdges];
-      sourceVertexIndex_ = new int[maxTotalEdges];
-      type_ = new edgeType[maxTotalEdges];
-      inUse_ = new bool[maxTotalEdges];
-      edgeCounts_ = new BGSIZE[numVertices];
+      destVertexIndex_.resize(maxTotalEdges);
+      W_.resize(maxTotalEdges, 0);
+      summationPoint_.resize(maxTotalEdges);
+      sourceVertexIndex_.resize(maxTotalEdges);
+      type_.resize(maxTotalEdges);
+      inUse_ = make_unique<bool[]>(maxTotalEdges);
+      edgeCounts_.resize(numVertices, 0);
 
       for (BGSIZE i = 0; i < maxTotalEdges; i++) {
-         summationPoint_[i] = nullptr;
          inUse_[i] = false;
-         W_[i] = 0;
-      }
-
-      for (int i = 0; i < numVertices; i++) {
-         edgeCounts_[i] = 0;
       }
    }
 }
@@ -146,7 +112,9 @@ void AllEdges::readEdge(istream &input, const BGSIZE iEdg)
    input.ignore();
    input >> synapse_type;
    input.ignore();
-   input >> inUse_[iEdg];
+   bool inUseTemp = false;
+   input >> inUseTemp;
+   inUse_[iEdg] = inUseTemp;
    input.ignore();
 
    type_[iEdg] = edgeOrdinalToType(synapse_type);

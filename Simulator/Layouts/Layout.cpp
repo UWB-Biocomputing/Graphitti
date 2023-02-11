@@ -17,10 +17,6 @@
 /// Constructor
 Layout::Layout() : numEndogenouslyActiveNeurons_(0)
 {
-   xloc_ = nullptr;
-   yloc_ = nullptr;
-   dist2_ = nullptr;
-   dist_ = nullptr;
    vertexTypeMap_ = nullptr;
    starterMap_ = nullptr;
 
@@ -52,23 +48,11 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
 /// Destructor
 Layout::~Layout()
 {
-   if (xloc_ != nullptr)
-      delete xloc_;
-   if (yloc_ != nullptr)
-      delete yloc_;
-   if (dist2_ != nullptr)
-      delete dist2_;
-   if (dist_ != nullptr)
-      delete dist_;
    if (vertexTypeMap_ != nullptr)
       delete[] vertexTypeMap_;   //todo: is delete[] changing once array becomes vector?
    if (starterMap_ != nullptr)
       delete[] starterMap_;   //todo: is delete[] changing once array becomes vector?
 
-   xloc_ = nullptr;
-   yloc_ = nullptr;
-   dist2_ = nullptr;
-   dist_ = nullptr;
    vertexTypeMap_ = nullptr;
    starterMap_ = nullptr;
 }
@@ -94,10 +78,10 @@ void Layout::registerGraphProperties()
 void Layout::setup()
 {
    // Allocate memory
-   xloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
-   yloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
-   dist2_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
-   dist_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
+   xloc_ = make_unique<VectorMatrix>(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
+   yloc_ = make_unique<VectorMatrix>(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
+   dist2_ = make_unique<CompleteMatrix>(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
+   dist_ = make_unique<CompleteMatrix>(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
 
    // more allocation of internal memory
    vertexTypeMap_ = new vertexType[numVertices_];   // todo: make array into vector
