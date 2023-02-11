@@ -41,6 +41,8 @@ graphitti
 ggraphitti
 cgraphitti
 tests
+serialTest
+deserialTest
 *.exe
 *.out
 *.app
@@ -81,6 +83,7 @@ lib/
 build/Output/Debug/*.txt
 
 # Result files
+build/Output/*.xml
 build/Output/Results/*.xml
 build/Output/Results/*.h5
 Testing/RegressionTesting/TestOutput/*.xml
