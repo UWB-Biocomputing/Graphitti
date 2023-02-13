@@ -36,7 +36,7 @@ else()
 endif()
 
 # Setting the base version to C++ 11
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 # set(DEBUG_MODE YES) for debugging, no optimization
 # set(DEBUG_MODE NO) for production code, -O3 optimization enabled

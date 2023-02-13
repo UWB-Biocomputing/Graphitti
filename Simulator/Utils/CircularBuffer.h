@@ -67,18 +67,15 @@ public:
 
    /// @brief  Retrieves the element at the end of the queue
    ///
-   /// If the queue is empty the returned value is default initialized, which is effectively
-   /// invalid but we cannot guarantee that it is distinguishable from a valid one. It is
-   /// the user responsibility to check for a non-empty buffer before calling get().
+   /// The method returns the element wrapped in an std::optional data type. If the
+   /// buffer is empty we return an empty std::optional constructed from std::nullopt.
    ///
-   /// @return The element at the end of the buffer or a default initialized value, if it is empty.
-   T get()
+   /// @return The element at the end of the buffer, or std::nullopt if it is empty.
+   std::optional<T> get()
    {
       if (isEmpty()) {
-         // We return a default initialized value if the buffer is empty.
-         // The caller is responsible to check for an empty buffer since a default
-         // initilized value might, in some instances, be a valid value.
-         return T();
+         // Return an empty optional object
+         return std::nullopt;
       }
 
       // Get the value at the end of the queue and free up a space

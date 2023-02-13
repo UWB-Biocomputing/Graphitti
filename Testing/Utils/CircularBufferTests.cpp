@@ -105,8 +105,9 @@ TEST(CircularBuffer, Get)
    // We will get the values one by one and check
    int size = testBuffer.size();
    for (int i = 0; i < maxSize; i++) {
-      int val = testBuffer.get();
-      ASSERT_EQ(i, val);
+      std::optional<int> val = testBuffer.get();
+      ASSERT_TRUE(val);
+      ASSERT_EQ(i, *val);
       size--;   // Size should be reduced by 1
       ASSERT_EQ(size, testBuffer.size());
    }
@@ -120,14 +121,12 @@ TEST(CircularBuffer, GetWhenEmpty)
 {
    CircularBuffer<TestStruct> testBuffer(5);
 
-   // Buffer is empty to start with
+   // Given an empty buffer
    ASSERT_TRUE(testBuffer.isEmpty());
-
-   // We should get a default constructed value
-   TestStruct expectedVal {};
-   TestStruct val = testBuffer.get();
-
-   ASSERT_EQ(expectedVal, val);
+   // When we try to get the value at the front of te queue
+   std::optional<TestStruct> val = testBuffer.get();
+   // Then the object contained int the optional object is invalid
+   ASSERT_FALSE(val);
 }
 
 // Tests that the buffer is effectively empty after clear() is called
@@ -177,7 +176,8 @@ TEST(CircularBuffer, IsEmpty)
    int size = testBuffer.size();
    ASSERT_EQ(maxSize, size);
    while (!testBuffer.isEmpty()) {
-      int val = testBuffer.get();
+      std::optional<int> val = testBuffer.get();
+      ASSERT_TRUE(val);   // val should contain a valid value
    }
 
    ASSERT_TRUE(testBuffer.isEmpty());
