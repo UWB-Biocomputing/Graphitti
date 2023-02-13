@@ -112,9 +112,7 @@ void AllEdges::readEdge(istream &input, const BGSIZE iEdg)
    input.ignore();
    input >> synapse_type;
    input.ignore();
-   bool inUseTemp = false;
-   input >> inUseTemp;
-   inUse_[iEdg] = inUseTemp;
+   input >> inUse_[iEdg];
    input.ignore();
 
    type_[iEdg] = edgeOrdinalToType(synapse_type);
