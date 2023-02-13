@@ -337,14 +337,14 @@ BGFLOAT Simulator::getDeltaT() const
 
 // ToDo: should be a vector of neuron type
 // ToDo: vector should be contiguous array, resize is used.
-vertexType *Simulator::getRgNeuronTypeMap() const
+vector<vertexType> Simulator::getRgNeuronTypeMap() const
 {
    return rgNeuronTypeMap_;
 }
 
 // ToDo: make smart ptr
 /// Starter existence map (T/F).
-bool *Simulator::getRgEndogenouslyActiveNeuronMap() const
+shared_ptr<bool> Simulator::getRgEndogenouslyActiveNeuronMap() const
 {
    return rgEndogenouslyActiveNeuronMap_;
 }
