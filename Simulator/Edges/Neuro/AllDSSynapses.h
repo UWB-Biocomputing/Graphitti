@@ -1,28 +1,28 @@
 /**
  *  @file AllDSSynapses.h
- * 
+ *
  *  @ingroup Simulator/Edges
  *
  *  @brief A container of all DS synapse data
  *
- *  The container holds synapse parameters of all synapses. 
- *  Each kind of synapse parameter is stored in a 2D array. Each item in the first 
- *  dimention of the array corresponds with each neuron, and each item in the second
- *  dimension of the array corresponds with a synapse parameter of each synapse of the neuron. 
- *  Bacause each neuron owns different number of synapses, the number of synapses 
+ *  The container holds synapse parameters of all synapses.
+ *  Each kind of synapse parameter is stored in a 2D array. Each item in the first
+ *  dimension of the array corresponds with each neuron, and each item in the second
+ *  dimension of the array corresponds with a synapse parameter of each synapse of the neuron.
+ *  Because each neuron owns different number of synapses, the number of synapses
  *  for each neuron is stored in a 1D array, edge_counts.
  *
  *  For CUDA implementation, we used another structure, AllDSSynapsesDevice, where synapse
  *  parameters are stored in 1D arrays instead of 2D arrays, so that device functions
- *  can access these data less latency. When copying a synapse parameter, P[i][j],
- *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in 
+ *  can access these data with less latency. When copying a synapse parameter, P[i][j],
+ *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in
  *  AllDSSynapsesDevice structure.
  *
- *  The latest implementation uses the identical data struture between host and CUDA;
+ *  The latest implementation uses the identical data structure between host and CUDA;
  *  that is, synapse parameters are stored in a 1D array, so we don't need conversion
  *  when copying data between host and device memory.
  *
- * Phenomenological model of frequency-dependent synapses exibit dynamics that include
+ * Phenomenological model of frequency-dependent synapses exhibit dynamics that include
  * activity-dependent facilitation and depression (Tsodyks and Markram 1997, Tsodyks et al. 1998).
  * The model has two state variables: \f$r\f$ (the fraction of available synaptic efficacy), and
  * \f$u\f$ (the running value of utilization of synaptic efficacy).
@@ -44,6 +44,7 @@
  *  EPSP_n = A \cdot r_n \cdot u_n
  * \f]
  */
+
 #pragma once
 
 #include "AllSpikingSynapses.h"
