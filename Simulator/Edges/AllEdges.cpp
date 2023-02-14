@@ -81,13 +81,13 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges)
    countVertices_ = numVertices;
 
    if (maxTotalEdges != 0) {
-      destVertexIndex_.resize(maxTotalEdges);
+      sourceVertexIndex_.resize(maxTotalEdges, 0);
+      destVertexIndex_.resize(maxTotalEdges, 0);
       W_.resize(maxTotalEdges, 0);
-      summationPoint_.resize(maxTotalEdges);
-      sourceVertexIndex_.resize(maxTotalEdges);
+      summationPoint_.resize(maxTotalEdges, nullptr);
       type_.resize(maxTotalEdges);
-      inUse_ = make_unique<bool[]>(maxTotalEdges);
       edgeCounts_.resize(numVertices, 0);
+      inUse_ = make_unique<bool[]>(maxTotalEdges);
 
       for (BGSIZE i = 0; i < maxTotalEdges; i++) {
          inUse_[i] = false;
