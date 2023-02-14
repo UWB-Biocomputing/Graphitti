@@ -297,9 +297,7 @@ template <class Archive> void AllEdges::load(Archive &archive, std::uint32_t con
    }
 
    // assigns serialized data to objects
-   for (int i = 0; i < requiredSize; i++) {
-      W_.push_back(WVector[i]);
-      sourceVertexIndex_.push_back(sourceVertexLayoutIndexVector[i]);
-      destVertexIndex_.push_back(destVertexLayoutIndexVector[i]);
-   }
+   W_ = WVector;
+   sourceVertexIndex_ = sourceVertexLayoutIndexVector;
+   destVertexIndex_ = destVertexLayoutIndexVector;
 }
