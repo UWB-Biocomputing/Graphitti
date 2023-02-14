@@ -1,39 +1,39 @@
 /**
  * @file AllDynamicSTDPSynapses.h
- * 
+ *
  * @ingroup Simulator/Edges
  *
  * @brief A container of all dynamic STDP synapse data
  *
- *  The container holds synapse parameters of all synapses. 
- *  Each kind of synapse parameter is stored in a 2D array. Each item in the first 
- *  dimention of the array corresponds with each neuron, and each item in the second
- *  dimension of the array corresponds with a synapse parameter of each synapse of the neuron. 
- *  Bacause each neuron owns different number of synapses, the number of synapses 
+ *  The container holds synapse parameters of all synapses.
+ *  Each kind of synapse parameter is stored in a 2D array. Each item in the first
+ *  dimension of the array corresponds with each neuron, and each item in the second
+ *  dimension of the array corresponds with a synapse parameter of each synapse of the neuron.
+ * Because each neuron owns different number of synapses, the number of synapses
  *  for each neuron is stored in a 1D array, edge_counts.
  *
  *  For CUDA implementation, we used another structure, AllDSSynapsesDevice, where synapse
  *  parameters are stored in 1D arrays instead of 2D arrays, so that device functions
- *  can access these data less latency. When copying a synapse parameter, P[i][j],
- *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in 
+ *  can access these data with less latency. When copying a synapse parameter, P[i][j],
+ *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in
  *  AllDSSynapsesDevice structure.
  *
- *  The latest implementation uses the identical data struture between host and CUDA;
+ *  The latest implementation uses the identical data structure between host and CUDA;
  *  that is, synapse parameters are stored in a 1D array, so we don't need conversion
  *  when copying data between host and device memory.
  *
  *  The AllDynamicSTDPSynapses inherited properties from the AllDSSynapses and the AllSTDPSynapses
  *  classes (multiple inheritance), and both the AllDSSynapses and the AllSTDPSynapses classes are
  *  the subclass of the AllSpikingSynapses class. Therefore, this is known as a diamond class
- *  inheritance, which causes the problem of ambibuous hierarchy compositon. To solve the
- *  problem, we can use the virtual inheritance. 
- *  However, the virtual inheritance will bring another problem. That is, we cannot static cast
- *  from a pointer to the AllEdges class to a pointer to the AllDSSynapses or the AllSTDPSynapses 
- *  classes. Compiler requires dynamic casting because vtable mechanism is involed in solving the 
- *  casting. But the dynamic casting cannot be used for the pointers to device (CUDA) memories. 
+ *  inheritance, which causes the problem of ambiguous hierarchy composition. To solve the
+ *  problem, we can use virtual inheritance.
+ *  However, virtual inheritance will bring another problem. That is, we cannot static cast
+ *  from a pointer to the AllEdges class to a pointer to the AllDSSynapses or the AllSTDPSynapses
+ *  classes. Compiler requires dynamic casting because vtable mechanism is involved in solving the
+ *  casting. But the dynamic casting cannot be used for the pointers to device (CUDA) memories.
  *  Considering these issues, I decided that making the AllDynamicSTDPSynapses class the subclass
  *  of the AllSTDPSynapses class and adding properties of the AllDSSynapses class to it (fumik).
- *   
+ *  
  *  Independent model:
  *  \f$Delta = t_{post}-t_{pre}\f$ with presynaptic spike at time \f$t_{pre}\f$ and
  *  postsynaptic spike at time \f$t_{post}\f$. Then, the weight update is given by
@@ -46,8 +46,8 @@
  *  \f$W = W * dw\f$ multiply dw (scale ratio) to the current weight to get the new weight
  *  
  *  Note1:This time we don't use useFroemkeDanSTDP_ (useFroemkeDanSTDP_= false) and mupos_ and muneg_ (mupos_=muneg_=0)
- *  Note2:Based on the FroemkeDan paper, the STDP learning rule only applies to excititory synapses, so we
- *  implement it to have only excititory neurons do STDP weight adjustment 
+ *  Note2:Based on the FroemkeDan paper, the STDP learning rule only applies to excitatory synapses, so we
+ *  implement it to have only excitatory neurons do STDP weight adjustment
  */
 
 #pragma once

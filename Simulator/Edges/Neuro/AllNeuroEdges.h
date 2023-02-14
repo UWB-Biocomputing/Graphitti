@@ -2,24 +2,24 @@
  *  @file AllNeuroEdges.h
  *
  *  @ingroup Simulator/Neuro/Edges
- * 
+ *
  *  @brief A container of all edge data
  *
- *  The container holds edge parameters of all edges. 
- *  Each kind of edge parameter is stored in a 2D array. Each item in the first 
- *  dimention of the array corresponds with each vertex, and each item in the second
- *  dimension of the array corresponds with a edge parameter of each edge of the vertex. 
- *  Bacause each vertex owns different number of edges, the number of edges 
+ *  The container holds edge parameters of all edges.
+ *  Each kind of edge parameter is stored in a 2D array. Each item in the first
+ *  dimension of the array corresponds with each vertex, and each item in the second
+ *  dimension of the array corresponds with an edge parameter of each edge of the vertex.
+ *  Because each vertex owns different number of edges, the number of edges
  *  for each vertex is stored in a 1D array, edge_counts.
  *
  *  For CUDA implementation, we used another structure, AllEdgesDevice, where edge
  *  parameters are stored in 1D arrays instead of 2D arrays, so that device functions
- *  can access these data less latency. When copying a edge parameter, P[i][j],
- *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in 
+ *  can access these data with less latency. When copying a edge parameter, P[i][j],
+ *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in
  *  AllEdgesDevice structure.
  *
- *  The latest implementation uses the identical data struture between host and CUDA;
- *  that is, edge parameters are stored in a 1D array, so we don't need conversion 
+ *  The latest implementation uses the identical data structure between host and CUDA;
+ *  that is, edge parameters are stored in a 1D array, so we don't need conversion
  *  when copying data between host and device memory.
  */
 

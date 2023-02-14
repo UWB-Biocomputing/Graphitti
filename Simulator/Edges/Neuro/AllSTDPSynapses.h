@@ -1,27 +1,27 @@
 /**
  *  @file AllSTDPSynapses.h
- * 
+ *
  *  @ingroup Simulator/Edges
  *
  *  @brief A container of all STDP synapse data
  *
- *  The container holds synapse parameters of all synapses. 
- *  Each kind of synapse parameter is stored in a 2D array. Each item in the first 
- *  dimention of the array corresponds with each neuron, and each item in the second
- *  dimension of the array corresponds with a synapse parameter of each synapse of the neuron. 
- *  Bacause each neuron owns different number of synapses, the number of synapses 
+ *  The container holds synapse parameters of all synapses.
+ *  Each kind of synapse parameter is stored in a 2D array. Each item in the first
+ *  dimension of the array corresponds with each neuron, and each item in the second
+ *  dimension of the array corresponds with a synapse parameter of each synapse of the neuron.
+ * Because each neuron owns different number of synapses, the number of synapses
  *  for each neuron is stored in a 1D array, edge_counts.
  *
  *  For CUDA implementation, we used another structure, AllDSSynapsesDevice, where synapse
  *  parameters are stored in 1D arrays instead of 2D arrays, so that device functions
- *  can access these data less latency. When copying a synapse parameter, P[i][j],
- *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in 
+ *  can access these data with less latency. When copying a synapse parameter, P[i][j],
+ *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in
  *  AllDSSynapsesDevice structure.
  *
- *  The latest implementation uses the identical data struture between host and CUDA;
+ *  The latest implementation uses the identical data structure between host and CUDA;
  *  that is, synapse parameters are stored in a 1D array, so we don't need conversion
  *  when copying data between host and device memory.
- * 
+ *
  *  Implements the basic weight update for a time difference \f$Delta =
  *  t_{post}-t_{pre}\f$ with presynaptic spike at time \f$t_{pre}\f$ and
  *  postsynaptic spike at time \f$t_{post}\f$. Then, the weight update is given by
@@ -40,14 +40,14 @@
  *  Set \f$useFroemkeDanSTDP_=1\f$ (this is the default value) and
  *  use \f$tauspost_\f$ and \f$tauspre_\f$ for the rule given in Froemke and Dan
  *  (2002). Spike-timing-dependent synaptic modification induced by natural spike
- *  trains. Nature 416 (3/2002). 
- * 
+ *  trains. Nature 416 (3/2002).
+ *
  *  05/01/2020
- *  Changed the default weight update rule and all formula constants using the 
+ *  Changed the default weight update rule and all formula constants using the
  *  independent model (a basic STDP model) and multiplicative model in
  *  Froemke and Dan (2002). Spike-timing-dependent synaptic modification induced by natural spike
  *  trains. Nature 416 (3/2002)
- * 
+ *
  *  Independent model:
  *  \f$Delta = t_{post}-t_{pre}\f$ with presynaptic spike at time \f$t_{pre}\f$ and
  *  postsynaptic spike at time \f$t_{post}\f$. Then, the weight update is given by
@@ -60,8 +60,8 @@
  *  \f$W = W * dw\f$ multiply dw (scale ratio) to the current weight to get the new weight
  *  
  *  Note1:This time we don't use useFroemkeDanSTDP_ (useFroemkeDanSTDP_= false) and mupos_ and muneg_ (mupos_=muneg_=0)
- *  Note2:Based on the FroemkeDan paper, the STDP learning rule only applies to excititory synapses, so we
- *  implement it to have only excititory neurons do STDP weight adjustment 
+ *  Note2:Based on the FroemkeDan paper, the STDP learning rule only applies to excitatory synapses, so we
+ *  implement it to have only excitatory neurons do STDP weight adjustment
  */
 
 #pragma once
