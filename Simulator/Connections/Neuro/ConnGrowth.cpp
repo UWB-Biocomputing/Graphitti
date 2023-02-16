@@ -49,36 +49,11 @@
 
 ConnGrowth::ConnGrowth() : Connections()
 {
-   W_ = nullptr;
-   radii_ = nullptr;
-   rates_ = nullptr;
-   area_ = nullptr;
-   outgrowth_ = nullptr;
-   deltaR_ = nullptr;
    radiiSize_ = 0;
 }
 
 ConnGrowth::~ConnGrowth()
 {
-   if (W_ != nullptr)
-      delete W_;
-   if (radii_ != nullptr)
-      delete radii_;
-   if (rates_ != nullptr)
-      delete rates_;
-   if (area_ != nullptr)
-      delete area_;
-   if (outgrowth_ != nullptr)
-      delete outgrowth_;
-   if (deltaR_ != nullptr)
-      delete deltaR_;
-
-   W_ = nullptr;
-   radii_ = nullptr;
-   rates_ = nullptr;
-   area_ = nullptr;
-   outgrowth_ = nullptr;
-   deltaR_ = nullptr;
    radiiSize_ = 0;
 }
 
@@ -92,12 +67,12 @@ void ConnGrowth::setup()
    int numVertices = Simulator::getInstance().getTotalVertices();
    radiiSize_ = numVertices;
 
-   W_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices, 0);
-   radii_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices, growthParams_.startRadius);
-   rates_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices, 0);
-   area_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices, 0);
-   outgrowth_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
-   deltaR_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
+   W_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices, 0);
+   radii_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices, growthParams_.startRadius);
+   rates_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices, 0);
+   area_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices, 0);
+   outgrowth_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
+   deltaR_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
 }
 
 /// Load member variables from configuration file.
@@ -170,18 +145,18 @@ void ConnGrowth::updateConns(AllVertices &vertices)
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       // Calculate firing rate
       assert(spNeurons.vertexEvents_[i].getNumEventsInEpoch() < maxSpikes);
-      (*rates_)[i] = spNeurons.vertexEvents_[i].getNumEventsInEpoch()
-                     / Simulator::getInstance().getEpochDuration();
+      rates_[i] = spNeurons.vertexEvents_[i].getNumEventsInEpoch()
+                  / Simulator::getInstance().getEpochDuration();
    }
 
    // compute vertex radii change and assign new values
-   (*outgrowth_) = 1.0
-                   - 2.0
-                        / (1.0
-                           + exp((growthParams_.epsilon - *rates_ / growthParams_.maxRate)
-                                 / growthParams_.beta));
-   (*deltaR_) = Simulator::getInstance().getEpochDuration() * growthParams_.rho * *outgrowth_;
-   (*radii_) += (*deltaR_);
+   outgrowth_ = 1.0
+                - 2.0
+                     / (1.0
+                        + exp((growthParams_.epsilon - rates_ / growthParams_.maxRate)
+                              / growthParams_.beta));
+   deltaR_ = Simulator::getInstance().getEpochDuration() * growthParams_.rho * outgrowth_;
+   radii_ += deltaR_;
 }
 
 ///  Update the areas of overlap in between Neurons.
@@ -198,25 +173,25 @@ void ConnGrowth::updateOverlap()
    // Compute areas of overlap; this is only done for overlapping units
    for (int i = 0; i < numVertices - 1; i++) {
       for (int j = i + 1; j < numVertices; j++) {
-         (*area_)(i, j) = 0.0;
+         area_(i, j) = 0.0;
 
          // Calculate the distance between neuron frontiers
-         BGFLOAT frontierDelta = (*layout.dist_)(j, i) - ((*radii_)[j] + (*radii_)[i]);
+         BGFLOAT frontierDelta = (layout.dist_)(j, i) - (radii_[j] + radii_[i]);
 
          if (frontierDelta < 0) {
-            BGFLOAT lenAB = (*layout.dist_)(i, j);
-            BGFLOAT r1 = (*radii_)[i];
-            BGFLOAT r2 = (*radii_)[j];
+            BGFLOAT lenAB = (layout.dist_)(i, j);
+            BGFLOAT r1 = radii_[i];
+            BGFLOAT r2 = radii_[j];
 
             if (lenAB + min(r1, r2) <= max(r1, r2)) {
-               (*area_)(i, j) = pi * min(r1, r2) * min(r1, r2);   // Completely overlapping unit
+               area_(i, j) = pi * min(r1, r2) * min(r1, r2);   // Completely overlapping unit
 
                LOG4CPLUS_DEBUG(fileLogger_, "Completely overlapping (i, j, r1, r2, area): "
                                                << i << ", " << j << ", " << r1 << ", " << r2 << ", "
-                                               << (*area_)(i, j) << endl);
+                                               << area_(i, j) << endl);
             } else {
                // Partially overlapping unit
-               BGFLOAT lenAB2 = (*layout.dist2_)(i, j);
+               BGFLOAT lenAB2 = (layout.dist2_)(i, j);
                BGFLOAT r12 = r1 * r1;
                BGFLOAT r22 = r2 * r2;
 
@@ -224,7 +199,7 @@ void ConnGrowth::updateOverlap()
                BGFLOAT cosCAB = (r12 + lenAB2 - r22) / (2.0 * r1 * lenAB);
 
                if (fabs(cosCBA) >= 1.0 || fabs(cosCAB) >= 1.0) {
-                  (*area_)(i, j) = 0.0;
+                  area_(i, j) = 0.0;
                } else {
                   BGFLOAT angCBA = acos(cosCBA);
                   BGFLOAT angCBD = 2.0 * angCBA;
@@ -232,8 +207,7 @@ void ConnGrowth::updateOverlap()
                   BGFLOAT angCAB = acos(cosCAB);
                   BGFLOAT angCAD = 2.0 * angCAB;
 
-                  (*area_)(i, j)
-                     = 0.5 * (r22 * (angCBD - sin(angCBD)) + r12 * (angCAD - sin(angCAD)));
+                  area_(i, j) = 0.5 * (r22 * (angCBD - sin(angCBD)) + r12 * (angCAD - sin(angCAD)));
                }
             }
          }
@@ -256,7 +230,7 @@ void ConnGrowth::updateSynapsesWeights()
 
    // For now, we just set the weights to equal the areas. We will later
    // scale it and set its sign (when we index and get its sign).
-   (*W_) = (*area_);
+   W_ = area_;
    int adjusted = 0;
    int couldBeRemoved = 0;   // TODO: use this value
    int removed = 0;
@@ -286,13 +260,13 @@ void ConnGrowth::updateSynapsesWeights()
                   // adjust the strength of the synapse or remove
                   // it from the synapse map if it has gone below
                   // zero.
-                  if ((*W_)(srcVertex, destVertex) <= 0) {
+                  if (W_(srcVertex, destVertex) <= 0) {
                      removed++;
                      synapses.eraseEdge(destVertex, iEdg);
                   } else {
                      // adjust
                      // SYNAPSE_STRENGTH_ADJUSTMENT is 1.0e-8;
-                     synapses.W_[iEdg] = (*W_)(srcVertex, destVertex) * synapses.edgSign(type)
+                     synapses.W_[iEdg] = W_(srcVertex, destVertex) * synapses.edgSign(type)
                                          * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
 
                      LOG4CPLUS_DEBUG(fileLogger_, "Weight of rgSynapseMap"
@@ -305,7 +279,7 @@ void ConnGrowth::updateSynapsesWeights()
          }
 
          // if not connected and weight(a,b) > 0, add a new synapse from a to b
-         if (!connected && ((*W_)(srcVertex, destVertex) > 0)) {
+         if (!connected && (W_(srcVertex, destVertex) > 0)) {
             // locate summation point
             BGFLOAT *sumPoint = &(vertices.summationMap_[destVertex]);
             added++;
@@ -313,7 +287,7 @@ void ConnGrowth::updateSynapsesWeights()
             BGSIZE iEdg;
             synapses.addEdge(iEdg, type, srcVertex, destVertex, sumPoint,
                              Simulator::getInstance().getDeltaT());
-            synapses.W_[iEdg] = (*W_)(srcVertex, destVertex) * synapses.edgSign(type)
+            synapses.W_[iEdg] = W_(srcVertex, destVertex) * synapses.edgSign(type)
                                 * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
          }
       }
@@ -331,6 +305,6 @@ void ConnGrowth::updateSynapsesWeights()
 void ConnGrowth::printRadii() const
 {
    for (int i = 0; i < radiiSize_; i++) {
-      cout << "radii[" << i << "] = " << (*radii_)[i] << endl;
+      cout << "radii[" << i << "] = " << radii_[i] << endl;
    }
 }

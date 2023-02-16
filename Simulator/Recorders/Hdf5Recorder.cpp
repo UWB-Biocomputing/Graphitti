@@ -419,8 +419,8 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
       int *iYloc = new int[simulator.getTotalVertices()];
       for (int i = 0; i < simulator.getTotalVertices(); i++) {
          // convert VectorMatrix to int array
-         iXloc[i] = (*model->getLayout()->xloc_)[i];
-         iYloc[i] = (*model->getLayout()->yloc_)[i];
+         iXloc[i] = (model->getLayout()->xloc_)[i];
+         iYloc[i] = (model->getLayout()->yloc_)[i];
       }
       dataSetXloc_->write(iXloc, PredType::NATIVE_INT);
       dataSetYloc_->write(iYloc, PredType::NATIVE_INT);

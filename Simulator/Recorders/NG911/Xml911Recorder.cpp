@@ -70,8 +70,8 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
 
    // Write the core state information:
    resultOut_ << "<SimState>\n";
-   resultOut_ << "   " << layout->xloc_->toXML("xloc") << endl;
-   resultOut_ << "   " << layout->yloc_->toXML("yloc") << endl;
+   resultOut_ << "   " << layout->xloc_.toXML("xloc") << endl;
+   resultOut_ << "   " << layout->yloc_.toXML("yloc") << endl;
    resultOut_ << "   " << oldTypes.toXML("vertexTypesPreEvent") << endl;
    resultOut_ << "   " << vertexTypes.toXML("vertexTypesPostEvent") << endl;
 

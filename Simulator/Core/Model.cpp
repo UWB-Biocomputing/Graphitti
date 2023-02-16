@@ -142,7 +142,7 @@ void Model::logSimStep() const
                break;
          }
 
-         ss << " " << (*pConnGrowth->radii_)[x + y * Simulator::getInstance().getWidth()];
+         ss << " " << (pConnGrowth->radii_)[x + y * Simulator::getInstance().getWidth()];
 
          if (x + 1 < Simulator::getInstance().getWidth()) {
             ss.width(2);

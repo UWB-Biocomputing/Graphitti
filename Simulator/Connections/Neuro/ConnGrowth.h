@@ -167,29 +167,26 @@ public:
    /// structure to keep growth parameters
    GrowthParams growthParams_;
 
-   /// spike count for each epoch
-   int *spikeCounts_;
-
    /// radii size
    int radiiSize_;
 
    /// synapse weight
-   CompleteMatrix *W_;
+   CompleteMatrix W_;
 
    /// neuron radii
-   VectorMatrix *radii_;
+   VectorMatrix radii_;
 
    /// spiking rate
-   VectorMatrix *rates_;
+   VectorMatrix rates_;
 
    /// areas of overlap
-   CompleteMatrix *area_;
+   CompleteMatrix area_;
 
    /// neuron's outgrowth
-   VectorMatrix *outgrowth_;
+   VectorMatrix outgrowth_;
 
    /// displacement of neuron radii
-   VectorMatrix *deltaR_;
+   VectorMatrix deltaR_;
 };
 
 CEREAL_CLASS_VERSION(ConnGrowth, 1);
@@ -201,7 +198,7 @@ template <class Archive> void ConnGrowth::save(Archive &archive, std::uint32_t c
    // uses vector to save radii
    vector<BGFLOAT> radiiVector;
    for (int i = 0; i < radiiSize_; i++) {
-      radiiVector.push_back((*radii_)[i]);
+      radiiVector.push_back(radii_[i]);
    }
    // serialization
    archive(cereal::make_nvp("radiiSize", radiiSize_), cereal::make_nvp("radii", radiiVector));
@@ -225,6 +222,6 @@ template <class Archive> void ConnGrowth::load(Archive &archive, std::uint32_t c
 
    // assigns serialized data to objects
    for (int i = 0; i < radiiSize_; i++) {
-      (*radii_)[i] = radiiVector[i];
+      radii_[i] = radiiVector[i];
    }
 }

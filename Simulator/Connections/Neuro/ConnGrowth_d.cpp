@@ -35,7 +35,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &verti
    Simulator &simulator = Simulator::getInstance();
    // For now, we just set the weights to equal the areas. We will later
    // scale it and set its sign (when we index and get its sign).
-   (*W_) = (*area_);
+   W_ = area_;
 
    BGFLOAT deltaT = simulator.getDeltaT();
 
@@ -56,7 +56,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &verti
    // copy weight data to the device memory
    for (int i = 0; i < simulator.getTotalVertices(); i++)
       for (int j = 0; j < simulator.getTotalVertices(); j++)
-         W_h[i * simulator.getTotalVertices() + j] = (*W_)(i, j);
+         W_h[i * simulator.getTotalVertices() + j] = W_(i, j);
 
    HANDLE_ERROR(cudaMemcpy(W_d, W_h, W_d_size, cudaMemcpyHostToDevice));
 

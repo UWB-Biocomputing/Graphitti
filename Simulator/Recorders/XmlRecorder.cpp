@@ -125,8 +125,8 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
    resultOut_ << "<SimState>\n";
    resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
    resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   resultOut_ << "   " << layout->xloc_->toXML("xloc") << endl;
-   resultOut_ << "   " << layout->yloc_->toXML("yloc") << endl;
+   resultOut_ << "   " << layout->xloc_.toXML("xloc") << endl;
+   resultOut_ << "   " << layout->yloc_.toXML("yloc") << endl;
    resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
    // create starter neurons matrix

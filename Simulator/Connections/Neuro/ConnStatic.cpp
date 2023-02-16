@@ -76,7 +76,7 @@ void ConnStatic::setup()
       // pick the connections shorter than threshConnsRadius
       for (int destVertex = 0; destVertex < numVertices; destVertex++) {
          if (srcVertex != destVertex) {
-            BGFLOAT dist = (*layout->dist_)(srcVertex, destVertex);
+            BGFLOAT dist = (layout->dist_)(srcVertex, destVertex);
             if (dist <= threshConnsRadius_) {
                DistDestVertex distDestVertex {dist, destVertex};
                distDestVertices[srcVertex].push_back(distDestVertex);

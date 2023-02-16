@@ -78,10 +78,10 @@ void Layout::registerGraphProperties()
 void Layout::setup()
 {
    // Allocate memory
-   xloc_ = make_unique<VectorMatrix>(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
-   yloc_ = make_unique<VectorMatrix>(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
-   dist2_ = make_unique<CompleteMatrix>(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
-   dist_ = make_unique<CompleteMatrix>(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
+   xloc_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
+   yloc_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
+   dist2_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
+   dist_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
 
    // more allocation of internal memory
    vertexTypeMap_ = new vertexType[numVertices_];   // todo: make array into vector

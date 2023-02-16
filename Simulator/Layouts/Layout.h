@@ -67,13 +67,13 @@ public:
    /// @return The number of vertices managed by the Layout
    virtual int getNumVertices() const;
 
-   unique_ptr<VectorMatrix> xloc_;   ///< Store neuron i's x location.
+   VectorMatrix xloc_;   ///< Store neuron i's x location.
 
-   unique_ptr<VectorMatrix> yloc_;   ///< Store neuron i's y location.
+   VectorMatrix yloc_;   ///< Store neuron i's y location.
 
-   unique_ptr<CompleteMatrix> dist2_;   ///< Inter-neuron distance squared.
+   CompleteMatrix dist2_;   ///< Inter-neuron distance squared.
 
-   unique_ptr<CompleteMatrix> dist_;   ///< The true inter-neuron distance.
+   CompleteMatrix dist_;   ///< The true inter-neuron distance.
 
    vector<int>
       probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris

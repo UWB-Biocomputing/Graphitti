@@ -56,8 +56,8 @@ void XmlGrowthRecorder::initValues()
    shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      (*radiiHistory_)(0, i) = (*dynamic_cast<ConnGrowth *>(conns.get())->radii_)[i];
-      (*ratesHistory_)(0, i) = (*dynamic_cast<ConnGrowth *>(conns.get())->rates_)[i];
+      (*radiiHistory_)(0, i) = (dynamic_cast<ConnGrowth *>(conns.get())->radii_)[i];
+      (*ratesHistory_)(0, i) = (dynamic_cast<ConnGrowth *>(conns.get())->rates_)[i];
    }
 }
 
@@ -67,9 +67,9 @@ void XmlGrowthRecorder::getValues()
    Connections *conns = Simulator::getInstance().getModel()->getConnections().get();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      (*dynamic_cast<ConnGrowth *>(conns)->radii_)[i]
+      (dynamic_cast<ConnGrowth *>(conns)->radii_)[i]
          = (*radiiHistory_)(Simulator::getInstance().getCurrentStep(), i);
-      (*dynamic_cast<ConnGrowth *>(conns)->rates_)[i]
+      (dynamic_cast<ConnGrowth *>(conns)->rates_)[i]
          = (*ratesHistory_)(Simulator::getInstance().getCurrentStep(), i);
    }
 }
@@ -84,8 +84,8 @@ void XmlGrowthRecorder::compileHistories(AllVertices &neurons)
    shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
 
    BGFLOAT minRadius = dynamic_cast<ConnGrowth *>(conns.get())->growthParams_.minRadius;
-   VectorMatrix &rates = (*dynamic_cast<ConnGrowth *>(conns.get())->rates_);
-   VectorMatrix &radii = (*dynamic_cast<ConnGrowth *>(conns.get())->radii_);
+   VectorMatrix &rates = (dynamic_cast<ConnGrowth *>(conns.get())->rates_);
+   VectorMatrix &radii = (dynamic_cast<ConnGrowth *>(conns.get())->radii_);
 
    for (int iVertex = 0; iVertex < Simulator::getInstance().getTotalVertices(); iVertex++) {
       // record firing rate to history matrix
@@ -133,9 +133,9 @@ void XmlGrowthRecorder::saveSimData(const AllVertices &neurons)
    resultOut_ << "   " << ratesHistory_->toXML("ratesHistory") << endl;
    resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
    resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->xloc_->toXML("xloc")
+   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->xloc_.toXML("xloc")
               << endl;
-   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->yloc_->toXML("yloc")
+   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->yloc_.toXML("yloc")
               << endl;
    resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
