@@ -36,7 +36,7 @@ else()
 endif()
 
 # Setting the base version to C++ 11
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 # set(DEBUG_MODE YES) for debugging, no optimization
 # set(DEBUG_MODE NO) for production code, -O3 optimization enabled
@@ -325,7 +325,8 @@ add_executable(tests
         Testing/Core/RecorderFactoryTests.cpp
         Testing/Core/InputManagerTests.cpp
         Testing/Core/RNGFactoryTests.cpp
-        Testing/Utils/ParameterManagerTests.cpp)
+        Testing/Utils/ParameterManagerTests.cpp
+        Testing/Utils/CircularBufferTests.cpp)
 
 # Links the Googletest framework with the testing executable
 target_link_libraries(tests gtest gtest_main)
