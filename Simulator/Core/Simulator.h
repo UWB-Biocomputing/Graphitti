@@ -90,7 +90,8 @@ public:
    BGFLOAT
    getMaxRate() const;   /// growth variable (m_targetRate / m_epsilon) TODO: more detail here
 
-   BGFLOAT *getPSummationMap() const;   /// List of summation points (either host or device memory)
+   vector<BGFLOAT>
+      getPSummationMap() const;   /// List of summation points (either host or device memory)
 
    long getNoiseRngSeed() const;   /// Seed used for the simulation random **SingleThreaded Only**
 
@@ -111,7 +112,7 @@ public:
  *  Mutators
  ***********************************************/
    ///@{
-   void setPSummationMap(BGFLOAT *summationMap);   /// Mutator for summation map (added late)
+   void setPSummationMap(vector<BGFLOAT> summationMap);   /// Mutator for summation map (added late)
 
    void setConfigFileName(const string &fileName);
 
@@ -161,8 +162,7 @@ private:
 
    BGFLOAT maxRate_;   /// growth variable (m_targetRate / m_epsilon) TODO: more detail here
 
-   BGFLOAT *
-      pSummationMap_;   /// List of summation points (either host or device memory) ToDo: make smart ptr
+   vector<BGFLOAT> pSummationMap_;   /// List of summation points (either host or device memory)
 
    long noiseRngSeed_;   /// Seed used for the simulation random SINGLE THREADED
 

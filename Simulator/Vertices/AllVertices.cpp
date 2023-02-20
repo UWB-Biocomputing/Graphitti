@@ -12,8 +12,6 @@
 // Default constructor
 AllVertices::AllVertices() : size_(0)
 {
-   summationMap_ = nullptr;
-
    // Register loadParameters function as a loadParameters operation in the Operation Manager
    function<void()> loadParametersFunc = std::bind(&AllVertices::loadParameters, this);
    OperationManager::getInstance().registerOperation(Operations::op::loadParameters,
@@ -31,12 +29,6 @@ AllVertices::AllVertices() : size_(0)
 
 AllVertices::~AllVertices()
 {
-   if (size_ != 0) {
-      delete[] summationMap_;
-   }
-
-   summationMap_ = nullptr;
-
    size_ = 0;
 }
 
@@ -47,13 +39,12 @@ void AllVertices::setupVertices()
 #if defined(USE_GPU)
    // We don't allocate memory for summationMap_ in CPU when building the GPU
    // implementation. This is to avoid misusing it in GPU code.
-   summationMap_ = nullptr;
+   // summationMap_ = nullptr;
 
 #else
-   summationMap_ = new BGFLOAT[size_];
-   for (int i = 0; i < size_; ++i) {
-      summationMap_[i] = 0;
-   }
+   summationMap_.resize(size_);
+   summationMap_.assign(size_, 0);
+
    Simulator::getInstance().setPSummationMap(summationMap_);
 #endif
 }

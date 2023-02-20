@@ -259,7 +259,7 @@ bool Simulator::instantiateSimulatorObjects()
  ***********************************************/
 ///@{
 /// List of summation points (either host or device memory)
-void Simulator::setPSummationMap(BGFLOAT *summationMap)
+void Simulator::setPSummationMap(vector<BGFLOAT> summationMap)
 {
    pSummationMap_ = summationMap;
 }
@@ -354,7 +354,7 @@ BGFLOAT Simulator::getMaxRate() const
    return maxRate_;
 }
 
-BGFLOAT *Simulator::getPSummationMap() const
+vector<BGFLOAT> Simulator::getPSummationMap() const
 {
    return pSummationMap_;
 }

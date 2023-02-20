@@ -68,7 +68,7 @@ public:
    ///  apply (summed up) their PSRs (Post-Synaptic-Response).
    ///  On the next advance cycle, vertices add the values stored in their corresponding
    ///  summation points to their Vm and resets the summation points to zero
-   BGFLOAT *summationMap_;
+   vector<BGFLOAT> summationMap_;
 
 protected:
    ///  Total number of vertices.

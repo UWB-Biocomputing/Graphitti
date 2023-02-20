@@ -45,7 +45,6 @@ public:
    /// Returns shared pointer to Synapses/Edges
    shared_ptr<AllEdges> getEdges() const;
 
-
    /// Returns a shared pointer to the EdgeIndexMap
    shared_ptr<EdgeIndexMap> getEdgeIndexMap() const;
 
@@ -101,7 +100,6 @@ public:
 
 protected:
    shared_ptr<AllEdges> edges_;
-
    shared_ptr<EdgeIndexMap> synapseIndexMap_;
 
    log4cplus::Logger fileLogger_;
