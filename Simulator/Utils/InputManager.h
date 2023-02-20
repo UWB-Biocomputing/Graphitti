@@ -34,6 +34,7 @@
 
 #pragma once
 
+#include "CircularBuffer.h"
 #include "ParameterManager.h"
 #include <boost/foreach.hpp>
 #include <boost/property_tree/exceptions.hpp>
@@ -156,19 +157,20 @@ public:
    /// @param firstStep    The first time step (inclusive) for the occurrence of the events
    /// @param lastStep     The last time step (exclusive) for the occurrence of the events
    /// @return The list of events between firstStep and lastStep for the fiven vertexId
-   vector<T> getEvents(const VertexId_t &vertexId, uint64_t firstStep, uint64_t lastStep)
+   CircularBuffer<T> &getEvents(const VertexId_t &vertexId, uint64_t firstStep, uint64_t lastStep,
+                                CircularBuffer<T> &buffer)
    {
-      vector<T> result = vector<T>();                // Will hold the list of events
+      // vector<T> result = vector<T>();                // Will hold the list of events
       queue<T> &eventQueue = eventsMap_[vertexId];   // Get a reference to the event queue
 
       while (!eventQueue.empty() && eventQueue.front().time < lastStep) {
          // We shouldn't have previous epoch events in the queue
          assert(eventQueue.front().time >= firstStep);
-         result.push_back(eventQueue.front());
+         buffer.put(eventQueue.front());
          eventQueue.pop();
       }
 
-      return result;
+      return buffer;
    }
 
    /// @brief Retrieves the clock tick size as defined in the input file
