@@ -27,23 +27,11 @@ ConnStatic::ConnStatic()
    threshConnsRadius_ = 0;
    connsPerVertex_ = 0;
    rewiringProbability_ = 0;
-   WCurrentEpoch_ = nullptr;
-   destVertexIndexCurrentEpoch_ = nullptr;
-   sourceVertexIndexCurrentEpoch_ = nullptr;
    radiiSize_ = 0;
 }
 
 ConnStatic::~ConnStatic()
 {
-   if (WCurrentEpoch_ != nullptr)
-      delete[] WCurrentEpoch_;
-   WCurrentEpoch_ = nullptr;
-   if (destVertexIndexCurrentEpoch_ != nullptr)
-      delete[] destVertexIndexCurrentEpoch_;
-   destVertexIndexCurrentEpoch_ = nullptr;
-   if (sourceVertexIndexCurrentEpoch_ != nullptr)
-      delete[] sourceVertexIndexCurrentEpoch_;
-   sourceVertexIndexCurrentEpoch_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -60,9 +48,9 @@ void ConnStatic::setup()
    int numVertices = simulator.getTotalVertices();
    vector<DistDestVertex> distDestVertices[numVertices];
    BGSIZE maxTotalEdges = simulator.getMaxEdgesPerVertex() * simulator.getTotalVertices();
-   WCurrentEpoch_ = new BGFLOAT[maxTotalEdges];
-   sourceVertexIndexCurrentEpoch_ = new int[maxTotalEdges];
-   destVertexIndexCurrentEpoch_ = new int[maxTotalEdges];
+   WCurrentEpoch_.resize(maxTotalEdges);
+   sourceVertexIndexCurrentEpoch_.resize(maxTotalEdges);
+   destVertexIndexCurrentEpoch_.resize(maxTotalEdges);
    AllNeuroEdges &neuroEdges = dynamic_cast<AllNeuroEdges &>(*edges_);
 
    radiiSize_ = numVertices;
