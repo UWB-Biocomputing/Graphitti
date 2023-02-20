@@ -165,6 +165,8 @@ edgeType Layout911::edgType(const int srcVertex, const int destVertex)
       return PP;
    else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == PSAP)
       return RP;
+   else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == CALR)
+      return RC;
    else
       return ETYPE_UNDEF;
 }

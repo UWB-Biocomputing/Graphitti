@@ -137,6 +137,7 @@ enum edgeType {
    PC = 6,
    PP = 7,
    RP = 8,
+   RC = 9,
    // UNDEF
    ETYPE_UNDEF = -1
 };
