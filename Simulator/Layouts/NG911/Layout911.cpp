@@ -72,7 +72,7 @@ void Layout911::setup()
    // so we call its method first
    Layout::setup();
 
-   // Loop over all vertices and set thir x and y locations
+   // Loop over all vertices and set their x and y locations
    GraphManager::VertexIterator vi, vi_end;
    GraphManager &gm = GraphManager::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {

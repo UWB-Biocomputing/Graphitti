@@ -8,6 +8,7 @@
 
 #include "All911Vertices.h"
 #include "All911Edges.h"
+#include "GraphManager.h"
 #include "Layout911.h"
 #include "ParameterManager.h"
 
@@ -44,11 +45,33 @@ void All911Vertices::setupVertices()
    fill_n(callNum_, size_, 0);
    fill_n(dispNum_, size_, 0);
    fill_n(respNum_, size_, 0);
+
+   // Resize and fill vectors with 0
+   numAgents_.assign(size_, 0);
+   numTrunks_.assign(size_, 0);
+   waitQueues_.resize(size_);
 }
 
 // Generate callNum_ and dispNum_ for all caller and psap nodes
 void All911Vertices::createAllVertices(Layout *layout)
 {
+   // Loop over all vertices and set the number of agents and trunks
+   GraphManager::VertexIterator vi, vi_end;
+   GraphManager &gm = GraphManager::getInstance();
+   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
+      assert(*vi < size_);
+      numAgents_[*vi] = gm[*vi].agents;
+      numTrunks_[*vi] = gm[*vi].trunks;
+
+      // The waiting queue is of size # Trunks - # Agents
+      int queueSize = numTrunks_[*vi] - numAgents_[*vi];
+      waitQueues_[*vi].resize(queueSize);
+   }
+
+
+
+   // TODO: The code below is from previous version. I am keeping because
+   // it is usefull for testing the output against the previous version.
    vector<int> psapList;
    vector<int> respList;
    psapList.clear();
@@ -100,6 +123,7 @@ void All911Vertices::createAllVertices(Layout *layout)
       }
       respNum_[respList[i]] = respCount;
    }
+   
 }
 
 void All911Vertices::loadParameters()

@@ -18,7 +18,9 @@
 #pragma once
 
 #include "AllVertices.h"
+#include "CircularBuffer.h"
 #include "Global.h"
+#include "InputEvent.h"
 
 // Class to hold all data necessary for all the Vertices.
 class All911Vertices : public AllVertices {
@@ -59,6 +61,19 @@ public:
    virtual string toString(const int index) const;
 
 private:
+   /// Number of agents. In a PSAP these are the call takers, in Responder nodes
+   /// they are responder units
+   vector<int> numAgents_;
+
+   /// Number of phone lines available. Only valid for PSAPs and Responders
+   vector<int> numTrunks_;
+
+   /// These are the queues where calls will wait to be served
+   vector<CircularBuffer<Call>> waitQueues_;
+
+   // TODO: The variables below are from previous version. I need to review what
+   //       they are for and if they are being used anywhere.
+
    /// number of callers
    int *callNum_;
 
