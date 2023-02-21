@@ -215,22 +215,22 @@ protected:
 #endif   // defined(USE_GPU)
 public:
    ///  The time of the last spike.
-   uint64_t *lastSpike_;
+   vector<uint64_t> lastSpike_;
 
    ///  The time varying state variable \f$r\f$ for depression.
-   BGFLOAT *r_;
+   vector<BGFLOAT> r_;
 
    ///  The time varying state variable \f$u\f$ for facilitation.
-   BGFLOAT *u_;
+   vector<BGFLOAT> u_;
 
    ///  The time constant of the depression of the dynamic synapse [range=(0,10); units=sec].
-   BGFLOAT *D_;
+   vector<BGFLOAT> D_;
 
    ///  The use parameter of the dynamic synapse [range=(1e-5,1)].
-   BGFLOAT *U_;
+   vector<BGFLOAT> U_;
 
    ///  The time constant of the facilitation of the dynamic synapse [range=(0,10); units=sec].
-   BGFLOAT *F_;
+   vector<BGFLOAT> F_;
 };
 
 #if defined(USE_GPU)
