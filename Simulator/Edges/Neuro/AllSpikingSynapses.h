@@ -260,10 +260,10 @@ protected:
 
 public:
    ///  The decay for the psr.
-   BGFLOAT *decay_;
+   vector<BGFLOAT> decay_;
 
    ///  The synaptic time constant \f$\tau\f$ [units=sec; range=(0,100)].
-   BGFLOAT *tau_;
+   vector<BGFLOAT> tau_;
 
    BGFLOAT tau_II_;
    BGFLOAT tau_IE_;
@@ -278,19 +278,19 @@ public:
 #define LENGTH_OF_DELAYQUEUE (BYTES_OF_DELAYQUEUE * 8)
 
    ///  The synaptic transmission delay, descretized into time steps.
-   int *totalDelay_;
+   vector<int> totalDelay_;
 
    ///  Pointer to the delayed queue.
-   uint32_t *delayQueue_;
+   vector<uint32_t> delayQueue_;
 
    ///  The index indicating the current time slot in the delayed queue
    ///  Note: This variable is used in GpuSim_struct.cu but I am not sure
    ///  if it is actually from a synapse. Will need a little help here. -Aaron
    ///  Note: This variable can be GLOBAL VARIABLE, but need to modify the code.
-   int *delayIndex_;
+   vector<int> delayIndex_;
 
    ///  Length of the delayed queue.
-   int *delayQueueLength_;
+   vector<int> delayQueueLength_;
 
 protected:
 };
