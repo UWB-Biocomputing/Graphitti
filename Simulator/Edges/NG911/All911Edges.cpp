@@ -33,7 +33,8 @@ void All911Edges::setupEdges()
 
    // To do: Figure out whether we need all of these
    if (maxTotalEdges != 0) {
-      // psr_ = new BGFLOAT[maxTotalEdges];
+      // psr_.resize(maxTotalEdges);
+      // psr_.assign(maxTotalEdges, 0.0);
       sourceVertexIndex_.resize(maxTotalEdges);
       sourceVertexIndex_.assign(maxTotalEdges, 0);
 
