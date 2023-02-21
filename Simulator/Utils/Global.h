@@ -222,6 +222,8 @@ struct VertexProperty {
    string type;
    double x;
    double y;
+   int agents;
+   int trunks;
    string segments;
 };
 

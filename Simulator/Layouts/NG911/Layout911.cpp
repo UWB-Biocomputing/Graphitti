@@ -35,6 +35,9 @@ void Layout911::registerGraphProperties()
    gm.registerProperty("type", &VertexProperty::type);
    gm.registerProperty("y", &VertexProperty::y);
    gm.registerProperty("x", &VertexProperty::x);
+   gm.registerProperty("agents", &VertexProperty::agents);
+   gm.registerProperty("trunks", &VertexProperty::trunks);
+   gm.registerProperty("segments", &VertexProperty::segments);
 }
 
 void Layout911::loadParameters()
