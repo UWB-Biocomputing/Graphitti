@@ -43,7 +43,7 @@ void Connections911::setup()
       edgeType type = layout->edgType(srcV, destV);
       BGFLOAT *sumPoint = &vertices->summationMap_[destV];
 
-      BGFLOAT dist = (layout->dist_)(srcV, destV);
+      BGFLOAT dist = layout->dist_(srcV, destV);
       LOG4CPLUS_DEBUG(edgeLogger_, "Source: " << srcV << " Dest: " << destV << " Dist: " << dist);
 
       BGSIZE iEdg;

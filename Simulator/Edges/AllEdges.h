@@ -237,24 +237,12 @@ CEREAL_CLASS_VERSION(AllEdges, 1);
 ///  (Serializes edge weights, source vertices, and destination vertices)
 template <class Archive> void AllEdges::save(Archive &archive, std::uint32_t const version) const
 {
-   // uses vector to save edge weights, source vertices, and destination vertices
-   vector<BGFLOAT> WVector;
-   vector<int> sourceVertexLayoutIndexVector;
-   vector<int> destVertexLayoutIndexVector;
-
-   for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
-      WVector.push_back(W_[i]);
-      sourceVertexLayoutIndexVector.push_back(sourceVertexIndex_[i]);
-      destVertexLayoutIndexVector.push_back(destVertexIndex_[i]);
-   }
-
    // serialization
-   archive(cereal::make_nvp("edgeWeightsSize", WVector.size()),
-           cereal::make_nvp("edgeWeights", WVector),
-           cereal::make_nvp("sourceVerticesSize", sourceVertexLayoutIndexVector.size()),
-           cereal::make_nvp("sourceVertices", sourceVertexLayoutIndexVector),
-           cereal::make_nvp("destinationVerticesSize", destVertexLayoutIndexVector.size()),
-           cereal::make_nvp("destinationVertices", destVertexLayoutIndexVector));
+   archive(cereal::make_nvp("edgeWeightsSize", W_.size()), cereal::make_nvp("edgeWeights", W_),
+           cereal::make_nvp("sourceVerticesSize", sourceVertexIndex_.size()),
+           cereal::make_nvp("sourceVertices", sourceVertexIndex_),
+           cereal::make_nvp("destinationVerticesSize", destVertexIndex_.size()),
+           cereal::make_nvp("destinationVertices", destVertexIndex_));
 }
 
 ///  Cereal deserialization method

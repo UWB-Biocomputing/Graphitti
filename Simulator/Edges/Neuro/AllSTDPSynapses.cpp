@@ -13,20 +13,6 @@
 
 AllSTDPSynapses::AllSTDPSynapses() : AllSpikingSynapses()
 {
-   totalDelayPost_ = nullptr;
-   delayQueuePost_ = nullptr;
-   delayIndexPost_ = nullptr;
-   delayQueuePostLength_ = nullptr;
-   tauspost_ = nullptr;
-   tauspre_ = nullptr;
-   taupos_ = nullptr;
-   tauneg_ = nullptr;
-   STDPgap_ = nullptr;
-   Wex_ = nullptr;
-   Aneg_ = nullptr;
-   Apos_ = nullptr;
-   mupos_ = nullptr;
-   muneg_ = nullptr;
    defaultSTDPgap_ = 0;
    tauspost_I_ = 0;
    tauspre_I_ = 0;
@@ -52,39 +38,6 @@ AllSTDPSynapses::AllSTDPSynapses(const int numVertices, const int maxEdges) :
 
 AllSTDPSynapses::~AllSTDPSynapses()
 {
-   BGSIZE maxTotalSynapses = maxEdgesPerVertex_ * countVertices_;
-
-   if (maxTotalSynapses != 0) {
-      delete[] totalDelayPost_;
-      delete[] delayQueuePost_;
-      delete[] delayIndexPost_;
-      delete[] delayQueuePostLength_;
-      delete[] tauspost_;
-      delete[] tauspre_;
-      delete[] taupos_;
-      delete[] tauneg_;
-      delete[] STDPgap_;
-      delete[] Wex_;
-      delete[] Aneg_;
-      delete[] Apos_;
-      delete[] mupos_;
-      delete[] muneg_;
-   }
-
-   totalDelayPost_ = nullptr;
-   delayQueuePost_ = nullptr;
-   delayIndexPost_ = nullptr;
-   delayQueuePostLength_ = nullptr;
-   tauspost_ = nullptr;
-   tauspre_ = nullptr;
-   taupos_ = nullptr;
-   tauneg_ = nullptr;
-   STDPgap_ = nullptr;
-   Wex_ = nullptr;
-   Aneg_ = nullptr;
-   Apos_ = nullptr;
-   mupos_ = nullptr;
-   muneg_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -105,20 +58,47 @@ void AllSTDPSynapses::setupEdges(const int numVertices, const int maxEdges)
    BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
    if (maxTotalSynapses != 0) {
-      totalDelayPost_ = new int[maxTotalSynapses];
-      delayQueuePost_ = new uint32_t[maxTotalSynapses];
-      delayIndexPost_ = new int[maxTotalSynapses];
-      delayQueuePostLength_ = new int[maxTotalSynapses];
-      tauspost_ = new BGFLOAT[maxTotalSynapses];
-      tauspre_ = new BGFLOAT[maxTotalSynapses];
-      taupos_ = new BGFLOAT[maxTotalSynapses];
-      tauneg_ = new BGFLOAT[maxTotalSynapses];
-      STDPgap_ = new BGFLOAT[maxTotalSynapses];
-      Wex_ = new BGFLOAT[maxTotalSynapses];
-      Aneg_ = new BGFLOAT[maxTotalSynapses];
-      Apos_ = new BGFLOAT[maxTotalSynapses];
-      mupos_ = new BGFLOAT[maxTotalSynapses];
-      muneg_ = new BGFLOAT[maxTotalSynapses];
+      totalDelayPost_.resize(maxTotalSynapses);
+      totalDelayPost_.assign(maxTotalSynapses, 0);
+
+      delayQueuePost_.resize(maxTotalSynapses);
+      delayQueuePost_.assign(maxTotalSynapses, 0);
+
+      delayIndexPost_.resize(maxTotalSynapses);
+      delayIndexPost_.assign(maxTotalSynapses, 0);
+
+      delayQueuePostLength_.resize(maxTotalSynapses);
+      delayQueuePostLength_.assign(maxTotalSynapses, 0);
+
+      tauspost_.resize(maxTotalSynapses);
+      tauspost_.assign(maxTotalSynapses, 0);
+
+      tauspre_.resize(maxTotalSynapses);
+      tauspre_.assign(maxTotalSynapses, 0);
+
+      taupos_.resize(maxTotalSynapses);
+      taupos_.assign(maxTotalSynapses, 0);
+
+      tauneg_.resize(maxTotalSynapses);
+      tauneg_.assign(maxTotalSynapses, 0);
+
+      STDPgap_.resize(maxTotalSynapses);
+      STDPgap_.assign(maxTotalSynapses, 0);
+
+      Wex_.resize(maxTotalSynapses);
+      Wex_.assign(maxTotalSynapses, 0);
+
+      Aneg_.resize(maxTotalSynapses);
+      Aneg_.assign(maxTotalSynapses, 0);
+
+      Apos_.resize(maxTotalSynapses);
+      Apos_.assign(maxTotalSynapses, 0);
+
+      mupos_.resize(maxTotalSynapses);
+      mupos_.assign(maxTotalSynapses, 0);
+
+      muneg_.resize(maxTotalSynapses);
+      muneg_.assign(maxTotalSynapses, 0);
    }
 }
 
