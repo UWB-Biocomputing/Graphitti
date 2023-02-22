@@ -78,9 +78,9 @@ public:
    vector<int>
       probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
 
-   vertexType *vertexTypeMap_;   ///< The vertex type map (INH, EXC).
+   vector<vertexType> vertexTypeMap_;   ///< The vertex type map (INH, EXC).
 
-   bool *starterMap_;   ///< The starter existence map (T/F).
+   vector<bool> starterMap_;   ///< The starter existence map (T/F).
 
    BGSIZE numEndogenouslyActiveNeurons_;   ///< Number of endogenously active neurons.
 

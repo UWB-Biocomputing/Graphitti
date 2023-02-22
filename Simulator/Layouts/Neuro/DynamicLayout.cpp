@@ -41,7 +41,8 @@ void DynamicLayout::generateVertexTypeMap(int numVertices)
    LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing vertex type map..." << endl);
 
    // Populate vertexTypeMap_ with EXC
-   fill_n(vertexTypeMap_, numVertices, EXC);
+   vertexTypeMap_.assign(numVertices_, EXC);
+   // fill_n(vertexTypeMap_, numVertices, );
 
    // for (int i = 0; i < numVertices; i++) {
    //    vertexTypeMap_[i] = EXC;

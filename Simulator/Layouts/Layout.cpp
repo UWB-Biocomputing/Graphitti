@@ -17,9 +17,6 @@
 /// Constructor
 Layout::Layout() : numEndogenouslyActiveNeurons_(0)
 {
-   vertexTypeMap_ = nullptr;
-   starterMap_ = nullptr;
-
    // Create Vertices/Neurons class using type definition in configuration file
    string type;
    ParameterManager::getInstance().getStringByXpath("//VerticesParams/@class", type);
@@ -48,13 +45,6 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
 /// Destructor
 Layout::~Layout()
 {
-   if (vertexTypeMap_ != nullptr)
-      delete[] vertexTypeMap_;   //todo: is delete[] changing once array becomes vector?
-   if (starterMap_ != nullptr)
-      delete[] starterMap_;   //todo: is delete[] changing once array becomes vector?
-
-   vertexTypeMap_ = nullptr;
-   starterMap_ = nullptr;
 }
 
 shared_ptr<AllVertices> Layout::getVertices() const
@@ -84,8 +74,11 @@ void Layout::setup()
    dist_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
 
    // more allocation of internal memory
-   vertexTypeMap_ = new vertexType[numVertices_];   // todo: make array into vector
-   starterMap_ = new bool[numVertices_];            // todo: make array into vector
+   vertexTypeMap_.resize(numVertices_);
+   vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
+
+   starterMap_.resize(numVertices_);
+   starterMap_.assign(numVertices_, false);
 }
 
 
@@ -114,10 +107,7 @@ void Layout::printParameters() const
 void Layout::generateVertexTypeMap(int numVertices)
 {
    DEBUG(cout << "\nInitializing vertex type map: VTYPE_UNDEF" << endl;);
-
-   for (int i = 0; i < numVertices; i++) {
-      vertexTypeMap_[i] = VTYPE_UNDEF;
-   }
+   vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
 }
 
 /// Populates the starter map.
@@ -125,7 +115,5 @@ void Layout::generateVertexTypeMap(int numVertices)
 /// @param  numVertices number of vertices to have in the map.
 void Layout::initStarterMap(const int numVertices)
 {
-   for (int i = 0; i < numVertices; i++) {
-      starterMap_[i] = false;
-   }
+   starterMap_.assign(numVertices, false);
 }
