@@ -119,38 +119,38 @@ void AllIFNeurons::copyToDevice(void *allVerticesDevice)
    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
                            sizeof(AllIFNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(
-      cudaMemcpy(allVerticesDeviceProps.C1_, C1_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(
-      cudaMemcpy(allVerticesDeviceProps.C2_, C2_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(
-      cudaMemcpy(allVerticesDeviceProps.Cm_, Cm_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(
-      cudaMemcpy(allVerticesDeviceProps.I0_, I0_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Iinject_, Iinject_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.C1_, C1_.data(), count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Inoise_, Inoise_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.C2_, C2_.data(), count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Isyn_, Isyn_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Cm_, Cm_.data(), count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(
-      cudaMemcpy(allVerticesDeviceProps.Rm_, Rm_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Tau_, Tau_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.I0_, I0_.data(), count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Trefract_, Trefract_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Iinject_, Iinject_.data(),
+                           count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Inoise_, Inoise_.data(), count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Vinit_, Vinit_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Isyn_, Isyn_.data(), count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(
-      cudaMemcpy(allVerticesDeviceProps.Vm_, Vm_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Vreset_, Vreset_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Rm_, Rm_.data(), count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Vrest_, Vrest_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Tau_, Tau_.data(), count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Vthresh_, Vthresh_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Trefract_, Trefract_.data(),
+                           count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Vinit_, Vinit_.data(), count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Vm_, Vm_.data(), count * sizeof(BGFLOAT),
+                           cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Vreset_, Vreset_.data(), count * sizeof(BGFLOAT),
+                           cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Vrest_, Vrest_.data(), count * sizeof(BGFLOAT),
+                           cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Vthresh_, Vthresh_.data(),
+                           count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
    HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.numStepsInRefractoryPeriod_,
-                           numStepsInRefractoryPeriod_, count * sizeof(int),
+                           numStepsInRefractoryPeriod_.data(), count * sizeof(int),
                            cudaMemcpyHostToDevice));
    AllSpikingNeurons::copyToDevice(allVerticesDevice);
 }
@@ -165,37 +165,37 @@ void AllIFNeurons::copyFromDevice(void *allVerticesDevice)
    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
                            sizeof(AllIFNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(
-      cudaMemcpy(C1_, allVerticesDeviceProps.C1_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(
-      cudaMemcpy(C2_, allVerticesDeviceProps.C2_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(
-      cudaMemcpy(Cm_, allVerticesDeviceProps.Cm_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(
-      cudaMemcpy(I0_, allVerticesDeviceProps.I0_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Iinject_, allVerticesDeviceProps.Iinject_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(C1_.data(), allVerticesDeviceProps.C1_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Inoise_, allVerticesDeviceProps.Inoise_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(C2_.data(), allVerticesDeviceProps.C2_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Isyn_, allVerticesDeviceProps.Isyn_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Cm_.data(), allVerticesDeviceProps.Cm_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(
-      cudaMemcpy(Rm_, allVerticesDeviceProps.Rm_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Tau_, allVerticesDeviceProps.Tau_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(I0_.data(), allVerticesDeviceProps.I0_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Trefract_, allVerticesDeviceProps.Trefract_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Iinject_.data(), allVerticesDeviceProps.Iinject_,
+                           count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(Inoise_.data(), allVerticesDeviceProps.Inoise_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Vinit_, allVerticesDeviceProps.Vinit_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Isyn_.data(), allVerticesDeviceProps.Isyn_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(
-      cudaMemcpy(Vm_, allVerticesDeviceProps.Vm_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Vreset_, allVerticesDeviceProps.Vreset_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Rm_.data(), allVerticesDeviceProps.Rm_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Vrest_, allVerticesDeviceProps.Vrest_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Tau_.data(), allVerticesDeviceProps.Tau_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Vthresh_, allVerticesDeviceProps.Vthresh_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Trefract_.data(), allVerticesDeviceProps.Trefract_,
+                           count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(Vinit_.data(), allVerticesDeviceProps.Vinit_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(numStepsInRefractoryPeriod_,
+   HANDLE_ERROR(cudaMemcpy(Vm_.data(), allVerticesDeviceProps.Vm_, count * sizeof(BGFLOAT),
+                           cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(Vreset_.data(), allVerticesDeviceProps.Vreset_, count * sizeof(BGFLOAT),
+                           cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(Vrest_.data(), allVerticesDeviceProps.Vrest_, count * sizeof(BGFLOAT),
+                           cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(Vthresh_.data(), allVerticesDeviceProps.Vthresh_,
+                           count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(numStepsInRefractoryPeriod_.data(),
                            allVerticesDeviceProps.numStepsInRefractoryPeriod_, count * sizeof(int),
                            cudaMemcpyDeviceToHost));
 }

@@ -17,61 +17,10 @@
 // Default constructor
 AllIFNeurons::AllIFNeurons()
 {
-   C1_ = nullptr;
-   C2_ = nullptr;
-   Cm_ = nullptr;
-   I0_ = nullptr;
-   Iinject_ = nullptr;
-   Inoise_ = nullptr;
-   Isyn_ = nullptr;
-   Rm_ = nullptr;
-   Tau_ = nullptr;
-   Trefract_ = nullptr;
-   Vinit_ = nullptr;
-   Vm_ = nullptr;
-   Vreset_ = nullptr;
-   Vrest_ = nullptr;
-   Vthresh_ = nullptr;
-   numStepsInRefractoryPeriod_ = nullptr;
 }
 
 AllIFNeurons::~AllIFNeurons()
 {
-   if (size_ != 0) {
-      delete[] C1_;
-      delete[] C2_;
-      delete[] Cm_;
-      delete[] I0_;
-      delete[] Iinject_;
-      delete[] Inoise_;
-      delete[] Isyn_;
-      delete[] Rm_;
-      delete[] Tau_;
-      delete[] Trefract_;
-      delete[] Vinit_;
-      delete[] Vm_;
-      delete[] Vreset_;
-      delete[] Vrest_;
-      delete[] Vthresh_;
-      delete[] numStepsInRefractoryPeriod_;
-   }
-
-   C1_ = nullptr;
-   C2_ = nullptr;
-   Cm_ = nullptr;
-   I0_ = nullptr;
-   Iinject_ = nullptr;
-   Inoise_ = nullptr;
-   Isyn_ = nullptr;
-   Rm_ = nullptr;
-   Tau_ = nullptr;
-   Trefract_ = nullptr;
-   Vinit_ = nullptr;
-   Vm_ = nullptr;
-   Vreset_ = nullptr;
-   Vrest_ = nullptr;
-   Vthresh_ = nullptr;
-   numStepsInRefractoryPeriod_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories).
@@ -80,26 +29,39 @@ void AllIFNeurons::setupVertices()
    AllSpikingNeurons::setupVertices();
 
    // TODO: Rename variables for easier identification
-   C1_ = new BGFLOAT[size_];
-   C2_ = new BGFLOAT[size_];
-   Cm_ = new BGFLOAT[size_];
-   I0_ = new BGFLOAT[size_];
-   Iinject_ = new BGFLOAT[size_];
-   Inoise_ = new BGFLOAT[size_];
-   Isyn_ = new BGFLOAT[size_];
-   Rm_ = new BGFLOAT[size_];
-   Tau_ = new BGFLOAT[size_];
-   Trefract_ = new BGFLOAT[size_];
-   Vinit_ = new BGFLOAT[size_];
-   Vm_ = new BGFLOAT[size_];
-   Vreset_ = new BGFLOAT[size_];
-   Vrest_ = new BGFLOAT[size_];
-   Vthresh_ = new BGFLOAT[size_];
-   numStepsInRefractoryPeriod_ = new int[size_];
+   C1_.resize(size_);
+   C2_.resize(size_);
+   Cm_.resize(size_);
+   I0_.resize(size_);
+   Iinject_.resize(size_);
+   Inoise_.resize(size_);
+   Isyn_.resize(size_);
+   Rm_.resize(size_);
+   Tau_.resize(size_);
+   Trefract_.resize(size_);
+   Vinit_.resize(size_);
+   Vm_.resize(size_);
+   Vreset_.resize(size_);
+   Vrest_.resize(size_);
+   Vthresh_.resize(size_);
+   numStepsInRefractoryPeriod_.resize(size_);
 
-   for (int i = 0; i < size_; ++i) {
-      numStepsInRefractoryPeriod_[i] = 0;
-   }
+   C1_.assign(size_, 0);
+   C2_.assign(size_, 0);
+   Cm_.assign(size_, 0);
+   I0_.assign(size_, 0);
+   Iinject_.assign(size_, 0);
+   Inoise_.assign(size_, 0);
+   Isyn_.assign(size_, 0);
+   Rm_.assign(size_, 0);
+   Tau_.assign(size_, 0);
+   Trefract_.assign(size_, 0);
+   Vinit_.assign(size_, 0);
+   Vm_.assign(size_, 0);
+   Vreset_.assign(size_, 0);
+   Vrest_.assign(size_, 0);
+   Vthresh_.assign(size_, 0);
+   numStepsInRefractoryPeriod_.assign(size_, 0);
 }
 
 ///  Load member variables from configuration file.
