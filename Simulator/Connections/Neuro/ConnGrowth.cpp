@@ -176,10 +176,10 @@ void ConnGrowth::updateOverlap()
          area_(i, j) = 0.0;
 
          // Calculate the distance between neuron frontiers
-         BGFLOAT frontierDelta = (layout.dist_)(j, i) - (radii_[j] + radii_[i]);
+         BGFLOAT frontierDelta = layout.dist_(j, i) - (radii_[j] + radii_[i]);
 
          if (frontierDelta < 0) {
-            BGFLOAT lenAB = (layout.dist_)(i, j);
+            BGFLOAT lenAB = layout.dist_(i, j);
             BGFLOAT r1 = radii_[i];
             BGFLOAT r2 = radii_[j];
 
@@ -191,7 +191,7 @@ void ConnGrowth::updateOverlap()
                                                << area_(i, j) << endl);
             } else {
                // Partially overlapping unit
-               BGFLOAT lenAB2 = (layout.dist2_)(i, j);
+               BGFLOAT lenAB2 = layout.dist2_(i, j);
                BGFLOAT r12 = r1 * r1;
                BGFLOAT r22 = r2 * r2;
 

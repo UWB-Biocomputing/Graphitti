@@ -67,7 +67,7 @@ public:
    void operator=(ParameterManager const &) = delete;
 
 private:
-   TiXmlDocument *xmlDocument_;
+   unique_ptr<TiXmlDocument> xmlDocument_;
    TiXmlElement *root_;
 
    /// Constructor is private to keep a singleton instance of this class.

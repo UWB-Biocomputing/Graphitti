@@ -190,11 +190,11 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       int srcVertex = callersToReroute[i];
 
       int closestPSAP = psaps[0];
-      BGFLOAT smallestDist = (layout.dist_)(srcVertex, closestPSAP);
+      BGFLOAT smallestDist = layout.dist_(srcVertex, closestPSAP);
 
       // Find closest PSAP
       for (int i = 0; i < psaps.size(); i++) {
-         BGFLOAT dist = (layout.dist_)(srcVertex, psaps[i]);
+         BGFLOAT dist = layout.dist_(srcVertex, psaps[i]);
          if (dist < smallestDist) {
             smallestDist = dist;
             closestPSAP = psaps[i];
@@ -220,11 +220,11 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       int destVertex = respsToReroute[i];
 
       int closestPSAP = psaps[0];
-      BGFLOAT smallestDist = (layout.dist_)(closestPSAP, destVertex);
+      BGFLOAT smallestDist = layout.dist_(closestPSAP, destVertex);
 
       // Find closest PSAP
       for (int i = 0; i < psaps.size(); i++) {
-         BGFLOAT dist = (layout.dist_)(psaps[i], destVertex);
+         BGFLOAT dist = layout.dist_(psaps[i], destVertex);
          if (dist < smallestDist) {
             smallestDist = dist;
             closestPSAP = psaps[i];
