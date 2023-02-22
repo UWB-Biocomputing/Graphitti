@@ -13,22 +13,10 @@
 
 All911Vertices::All911Vertices()
 {
-   callNum_ = nullptr;
-   dispNum_ = nullptr;
-   respNum_ = nullptr;
 }
 
 All911Vertices::~All911Vertices()
 {
-   if (size_ != 0) {
-      delete[] callNum_;
-      delete[] dispNum_;
-      delete[] respNum_;
-   }
-
-   callNum_ = nullptr;
-   dispNum_ = nullptr;
-   respNum_ = nullptr;
 }
 
 // Allocate memory for all class properties
@@ -36,14 +24,14 @@ void All911Vertices::setupVertices()
 {
    AllVertices::setupVertices();
 
-   callNum_ = new int[size_];
-   dispNum_ = new int[size_];
-   respNum_ = new int[size_];
+   callNum_.resize(size_);
+   dispNum_.resize(size_);
+   respNum_.resize(size_);
 
    // Populate arrays with 0
-   fill_n(callNum_, size_, 0);
-   fill_n(dispNum_, size_, 0);
-   fill_n(respNum_, size_, 0);
+   callNum_.assign(size_, 0);
+   dispNum_.assign(size_, 0);
+   respNum_.assign(size_, 0);
 }
 
 // Generate callNum_ and dispNum_ for all caller and psap nodes
