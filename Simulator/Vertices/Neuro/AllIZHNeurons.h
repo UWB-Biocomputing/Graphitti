@@ -239,22 +239,22 @@ protected:
 
 public:
    ///  A constant (0.02, 01) describing the coupling of variable u to Vm.
-   BGFLOAT *Aconst_;
+   vector<BGFLOAT> Aconst_;
 
    ///  A constant controlling sensitivity of u.
-   BGFLOAT *Bconst_;
+   vector<BGFLOAT> Bconst_;
 
    ///  A constant controlling reset of Vm.
-   BGFLOAT *Cconst_;
+   vector<BGFLOAT> Cconst_;
 
    ///  A constant controlling reset of u.
-   BGFLOAT *Dconst_;
+   vector<BGFLOAT> Dconst_;
 
    ///  internal variable.
-   BGFLOAT *u_;
+   vector<BGFLOAT> u_;
 
    ///  Internal constant for the exponential Euler integration.
-   BGFLOAT *C3_;
+   vector<BGFLOAT> C3_;
 
 private:
    ///  Default value of Aconst.

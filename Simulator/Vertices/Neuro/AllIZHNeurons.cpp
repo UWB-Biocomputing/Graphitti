@@ -12,31 +12,10 @@
 // Default constructor
 AllIZHNeurons::AllIZHNeurons() : AllIFNeurons()
 {
-   Aconst_ = nullptr;
-   Bconst_ = nullptr;
-   Cconst_ = nullptr;
-   Dconst_ = nullptr;
-   u_ = nullptr;
-   C3_ = nullptr;
 }
 
 AllIZHNeurons::~AllIZHNeurons()
 {
-   if (size_ != 0) {
-      delete[] Aconst_;
-      delete[] Bconst_;
-      delete[] Cconst_;
-      delete[] Dconst_;
-      delete[] u_;
-      delete[] C3_;
-   }
-
-   Aconst_ = nullptr;
-   Bconst_ = nullptr;
-   Cconst_ = nullptr;
-   Dconst_ = nullptr;
-   u_ = nullptr;
-   C3_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories).
@@ -44,12 +23,19 @@ void AllIZHNeurons::setupVertices()
 {
    AllIFNeurons::setupVertices();
 
-   Aconst_ = new BGFLOAT[size_];
-   Bconst_ = new BGFLOAT[size_];
-   Cconst_ = new BGFLOAT[size_];
-   Dconst_ = new BGFLOAT[size_];
-   u_ = new BGFLOAT[size_];
-   C3_ = new BGFLOAT[size_];
+   Aconst_.resize(size_);
+   Bconst_.resize(size_);
+   Cconst_.resize(size_);
+   Dconst_.resize(size_);
+   u_.resize(size_);
+   C3_.resize(size_);
+
+   Aconst_.assign(size_, 0);
+   Bconst_.assign(size_, 0);
+   Cconst_.assign(size_, 0);
+   Dconst_.assign(size_, 0);
+   u_.assign(size_, 0);
+   C3_.assign(size_, 0);
 }
 
 ///  Prints out all parameters of the neurons to logging file.
