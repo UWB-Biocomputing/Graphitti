@@ -15,6 +15,7 @@
 #include "Norm.h"
 #include "SparseMatrix.h"
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -299,7 +300,7 @@ protected:
 
 private:
    /// Pointer to dynamically allocated 1D array
-   BGFLOAT *theVector;
+   vector<BGFLOAT> theVector;
 
    /// The number of elements in "theVector"
    int size;
