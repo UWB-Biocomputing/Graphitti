@@ -83,15 +83,8 @@ public:
    BGFLOAT
    getDeltaT() const;   /// Time elapsed between the beginning and end of the simulation step
 
-   vector<vertexType> getRgNeuronTypeMap() const;   /// The vertex type map (INH, EXC).
-
-   shared_ptr<bool> getRgEndogenouslyActiveNeuronMap() const;   /// The starter existence map (T/F).
-
    BGFLOAT
    getMaxRate() const;   /// growth variable (m_targetRate / m_epsilon) TODO: more detail here
-
-   vector<BGFLOAT>
-      getPSummationMap() const;   /// List of summation points (either host or device memory)
 
    long getNoiseRngSeed() const;   /// Seed used for the simulation random **SingleThreaded Only**
 
@@ -112,8 +105,6 @@ public:
  *  Mutators
  ***********************************************/
    ///@{
-   void setPSummationMap(vector<BGFLOAT> summationMap);   /// Mutator for summation map (added late)
-
    void setConfigFileName(const string &fileName);
 
    void setSerializationFileName(const string &fileName);
@@ -156,13 +147,7 @@ private:
 
    BGFLOAT deltaT_;   /// Inner Simulation Step Duration, purely investigative.
 
-   vector<vertexType> rgNeuronTypeMap_;   /// The vertex type map (INH, EXC).
-
-   shared_ptr<bool> rgEndogenouslyActiveNeuronMap_;   /// The starter existence map (T/F).
-
    BGFLOAT maxRate_;   /// growth variable (m_targetRate / m_epsilon) TODO: more detail here
-
-   vector<BGFLOAT> pSummationMap_;   /// List of summation points (either host or device memory)
 
    long noiseRngSeed_;   /// Seed used for the simulation random SINGLE THREADED
 

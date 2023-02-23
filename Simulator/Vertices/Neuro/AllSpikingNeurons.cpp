@@ -28,8 +28,6 @@ void AllSpikingNeurons::setupVertices()
 
    hasFired_.resize(size_, false);
    vertexEvents_.resize(size_, maxSpikes);
-
-   Simulator::getInstance().setPSummationMap(summationMap_);   //redundant
 }
 
 ///  Clear the spike counts out of all Neurons.

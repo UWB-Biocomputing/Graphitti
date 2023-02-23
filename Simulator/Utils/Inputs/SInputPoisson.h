@@ -1,14 +1,14 @@
 /**
  * @file SInputPoisson.h
- * 
+ *
  * @ingroup Simulator/Utils/Inputs
  *
  * @brief A class that performs stimulus input (implementation Poisson).
  *
  * The SInputPoisson performs providing stimulus input to the network for each time step.
- * In this version, a layer of synapses are added, which accept external spike trains. 
- * Each synapse gets an indivisual spike train (Poisson distribution) characterized 
- * by mean firing rate, and each synapse has individual weight value. 
+ * In this version, a layer of synapses are added, which accept external spike trains.
+ * Each synapse gets an individual spike train (Poisson distribution) characterized
+ * by mean firing rate, and each synapse has an individual weight value.
  *
  * This class is the base class of GpuSInputPoisson and HostSInputPoisson.
  */

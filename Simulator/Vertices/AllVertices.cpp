@@ -45,7 +45,6 @@ void AllVertices::setupVertices()
    summationMap_.resize(size_);
    summationMap_.assign(size_, 0);
 
-   Simulator::getInstance().setPSummationMap(summationMap_);
 #endif
 }
 

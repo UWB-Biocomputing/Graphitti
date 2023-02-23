@@ -60,7 +60,7 @@ void HostSInputRegular::inputStimulus()
    for (int i = Simulator::getInstance().getTotalVertices() - 1; i >= 0; --i) {
       if ((nStepsInCycle >= nShiftValues[i])
           && (nStepsInCycle < (nShiftValues[i] + nStepsDuration) % nStepsCycle))
-         Simulator::getInstance().getPSummationMap()[i] += values[i];
+         Simulator::getInstance().getLayout().getVertices().summationMap_[i] += values[i];
    }
 
    // update cycle count

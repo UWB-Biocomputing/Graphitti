@@ -258,11 +258,6 @@ bool Simulator::instantiateSimulatorObjects()
  *  Mutators
  ***********************************************/
 ///@{
-/// List of summation points (either host or device memory)
-void Simulator::setPSummationMap(vector<BGFLOAT> summationMap)
-{
-   pSummationMap_ = summationMap;
-}
 
 void Simulator::setConfigFileName(const string &fileName)
 {
@@ -335,28 +330,9 @@ BGFLOAT Simulator::getDeltaT() const
    return deltaT_;
 }
 
-// ToDo: should be a vector of neuron type
-// ToDo: vector should be contiguous array, resize is used.
-vector<vertexType> Simulator::getRgNeuronTypeMap() const
-{
-   return rgNeuronTypeMap_;
-}
-
-// ToDo: make smart ptr
-/// Starter existence map (T/F).
-shared_ptr<bool> Simulator::getRgEndogenouslyActiveNeuronMap() const
-{
-   return rgEndogenouslyActiveNeuronMap_;
-}
-
 BGFLOAT Simulator::getMaxRate() const
 {
    return maxRate_;
-}
-
-vector<BGFLOAT> Simulator::getPSummationMap() const
-{
-   return pSummationMap_;
 }
 
 long Simulator::getNoiseRngSeed() const
