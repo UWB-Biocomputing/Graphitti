@@ -33,6 +33,7 @@ Simulator::Simulator()
    consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
+   workbenchLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("workbench"));
 
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&Simulator::printParameters, this);
@@ -161,6 +162,7 @@ void Simulator::simulate()
    // Main simulation loop - execute maxGrowthSteps
    for (int currentEpoch = 1; currentEpoch <= numEpochs_; currentEpoch++) {
       LOG4CPLUS_TRACE(consoleLogger_, "Performing epoch number: " << currentEpoch);
+      LOG4CPLUS_TRACE(workbenchLogger_, "Performing epoch number: " << currentEpoch);
       LOG4CPLUS_TRACE(fileLogger_, "Begin network state:");
       currentEpoch_ = currentEpoch;
 #ifdef PERFORMANCE_METRICS
@@ -175,6 +177,8 @@ void Simulator::simulate()
 #endif
       LOG4CPLUS_TRACE(consoleLogger_,
                       "done with epoch cycle " << currentEpoch_ << ", beginning growth update");
+      LOG4CPLUS_TRACE(workbenchLogger_,
+                      "done with epoch cycle " << currentEpoch_);                
       LOG4CPLUS_TRACE(edgeLogger_, "Epoch: " << currentEpoch_);
 
 #ifdef PERFORMANCE_METRICS
@@ -212,6 +216,10 @@ void Simulator::advanceEpoch(const int &currentEpoch) const
       // Output status once every 10,000 steps
       if (count % 10000 == 0) {
          LOG4CPLUS_TRACE(consoleLogger_,
+                         "Epoch: " << currentEpoch << "/" << numEpochs_
+                                   << " simulating time: " << g_simulationStep * deltaT_ << "/"
+                                   << (epochDuration_ * numEpochs_) - 1);
+         LOG4CPLUS_TRACE(workbenchLogger_,
                          "Epoch: " << currentEpoch << "/" << numEpochs_
                                    << " simulating time: " << g_simulationStep * deltaT_ << "/"
                                    << (epochDuration_ * numEpochs_) - 1);
