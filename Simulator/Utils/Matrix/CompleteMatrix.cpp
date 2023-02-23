@@ -126,16 +126,6 @@ CompleteMatrix &CompleteMatrix::operator=(const CompleteMatrix &rhs)
 void CompleteMatrix::clear(void)
 {
    DEBUG_MATRIX(cerr << "\tclearing " << rows << "X" << columns << " CompleteMatrix...";)
-
-   // if (theMatrix != nullptr) {
-   //    for (int i = 0; i < rows; i++)
-   //       if (theMatrix[i] != nullptr) {
-   //          delete[] theMatrix[i];
-   //          theMatrix[i] = nullptr;
-   //       }
-   //    delete[] theMatrix;
-   //    theMatrix = nullptr;
-   // }
    theMatrix.clear();
    DEBUG_MATRIX(cerr << "done." << endl;)
 }
@@ -172,13 +162,8 @@ void CompleteMatrix::alloc(int rows, int columns)
    if (!theMatrix.empty())
       throw MatrixException("Attempt to allocate storage for non-cleared Matrix");
 
-   // if ((theMatrix = new BGFLOAT *[rows]) == nullptr)
-   //    throw Matrix_bad_alloc("Failed allocating storage to copy Matrix.");
-
    theMatrix.resize(rows);
    for (int i = 0; i < rows; i++)
-      // if ((theMatrix[i] = new BGFLOAT[columns]) == nullptr)
-      //    throw Matrix_bad_alloc("Failed allocating storage to copy Matrix.");
       theMatrix[i].resize(columns);
    DEBUG_MATRIX(cerr << "\tStorage allocated for " << rows << "X" << columns << " Matrix." << endl;)
 }
