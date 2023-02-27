@@ -66,6 +66,9 @@ public:
    /// endStep (exclusive)
    virtual void loadEpochInputs(uint64_t curStep, uint64_t endStep) override;
 
+   /// These are the queues where calls will wait to be served
+   vector<CircularBuffer<Call>> vertexQueues_;
+
 private:
    /// Number of agents. In a PSAP these are the call takers, in Responder nodes
    /// they are responder units
@@ -114,9 +117,6 @@ public:
    virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};
 #else   // !defined(USE_GPU)
 public:
-   /// These are the queues where calls will wait to be served
-   vector<CircularBuffer<Call>> vertexQueues_;
-
    ///  Update internal state of the indexed Vertex (called by every simulation step).
    ///  Notify outgoing edges if vertex has fired.
    ///
@@ -126,7 +126,6 @@ public:
 
 protected:
    void advanceVertex(const int index);
-
 
 #endif   // defined(USE_GPU)
 

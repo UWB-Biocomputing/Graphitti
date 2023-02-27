@@ -223,8 +223,8 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
                // queue. Therefore, this is a dropped call.
             }
          }
-
          // TODO911: Check for dropped calls in incoming edge
+         
       } else if (layout.vertexTypeMap_[idx] == PSAP) {
          // Get the call from the Waiting queue and print it
          optional<Call> nextCall = vertexQueues_[idx].get();
