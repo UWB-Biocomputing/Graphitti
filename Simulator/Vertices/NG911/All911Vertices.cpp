@@ -54,6 +54,9 @@ void All911Vertices::setupVertices()
    numAgents_.assign(size_, 0);
    numTrunks_.assign(size_, 0);
    vertexQueues_.resize(size_);
+   servingCall_.resize(size_);
+   agentCountdown_.resize(size_);
+   agentAvailable_.resize(size_);
 
    // Register call properties with InputManager
    inputManager_.registerProperty("vertex_id", &Call::vertexId);
@@ -83,8 +86,13 @@ void All911Vertices::createAllVertices(Layout *layout)
          numTrunks_[*vi] = gm[*vi].trunks;
 
          // The waiting queue is of size # Trunks - # Agents
-         int queueSize = numTrunks_[*vi] - numAgents_[*vi];
+         int queueSize = gm[*vi].trunks - gm[*vi].agents;
          vertexQueues_[*vi].resize(queueSize);
+
+         // Initialize the data structures for agent availability
+         servingCall_[*vi].resize(gm[*vi].agents);
+         agentCountdown_[*vi].resize(gm[*vi].agents);
+         agentAvailable_[*vi] = make_unique<bool[]>(gm[*vi].agents);
       }
    }
 
@@ -224,8 +232,20 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
             }
          }
          // TODO911: Check for dropped calls in incoming edge
-         
+
       } else if (layout.vertexTypeMap_[idx] == PSAP) {
+         // Loop over all agents and free the ones finishing serving calls
+
+
+         // Assign calls to agents until either no agents are available or
+         // there are no more calls in the waiting queue
+
+
+         // We will now transfer all the calls that have ended at this timestep
+         // to the Responder closest to the emergency location
+         
+
+
          // Get the call from the Waiting queue and print it
          optional<Call> nextCall = vertexQueues_[idx].get();
          if (nextCall) {
