@@ -48,6 +48,14 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
 
+   /// Loads all inputs scheduled to occur in the upcoming epoch.
+   /// These are inputs occurring in between curStep (inclusive) and
+   /// endStep (exclusive)
+   ///
+   /// @param  curStep  The current simulation step
+   /// @param  endStep  The end of epoch simulation step
+   virtual void loadEpochInputs(uint64_t curStep, uint64_t endStep);
+
    ///  Load member variables from configuration file.
    ///  Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters() = 0;

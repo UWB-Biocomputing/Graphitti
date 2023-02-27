@@ -21,6 +21,7 @@
 #include "CircularBuffer.h"
 #include "Global.h"
 #include "InputEvent.h"
+#include "InputManager.h"
 
 // Class to hold all data necessary for all the Vertices.
 class All911Vertices : public AllVertices {
@@ -60,6 +61,11 @@ public:
    ///  @return the complete state of the vertex.
    virtual string toString(const int index) const;
 
+   /// Loads all inputs scheduled to occur in the upcoming epoch.
+   /// These are inputs occurring in between curStep (inclusive) and
+   /// endStep (exclusive)
+   virtual void loadEpochInputs(uint64_t curStep, uint64_t endStep) override;
+
 private:
    /// Number of agents. In a PSAP these are the call takers, in Responder nodes
    /// they are responder units
@@ -68,8 +74,11 @@ private:
    /// Number of phone lines available. Only valid for PSAPs and Responders
    vector<int> numTrunks_;
 
-   /// These are the queues where calls will wait to be served
-   vector<CircularBuffer<Call>> waitQueues_;
+   /// The InputManager holds all the Input Events for the simulation
+   InputManager<Call> inputManager_;
+
+   log4cplus::Logger fileLogger_;      // For logging into a file
+   log4cplus::Logger consoleLogger_;   // For logging to console
 
    // TODO: The variables below are from previous version. I need to review what
    //       they are for and if they are being used anywhere.
@@ -105,6 +114,9 @@ public:
    virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};
 #else   // !defined(USE_GPU)
 public:
+   /// These are the queues where calls will wait to be served
+   vector<CircularBuffer<Call>> vertexQueues_;
+
    ///  Update internal state of the indexed Vertex (called by every simulation step).
    ///  Notify outgoing edges if vertex has fired.
    ///
@@ -117,4 +129,5 @@ protected:
 
 
 #endif   // defined(USE_GPU)
+
 };

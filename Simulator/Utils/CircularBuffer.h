@@ -70,6 +70,7 @@ public:
    /// The method returns the element wrapped in an std::optional data type. If the
    /// buffer is empty we return an empty std::optional constructed from std::nullopt.
    ///
+   /// @post   The buffer will have one less element if it was not empty.
    /// @return The element at the end of the buffer, or std::nullopt if it is empty.
    std::optional<T> get()
    {
@@ -82,6 +83,19 @@ public:
       T value = buffer_[end_];
       end_ = (end_ + 1) % buffer_.size();
 
+      return value;
+   }
+
+   /// @brief  Retrieves the element at the end of the withouth dequeueing it
+   ///
+   /// @post   The elements in the buffer remain the same
+   /// @return The element at the end of the buffer, or std::nulloopt if it is empty.
+   std::optional<T> peek() const
+   {
+      std::optional<T> value;
+      if (!isEmpty()) {
+         value = buffer_[end_];
+      }
       return value;
    }
 

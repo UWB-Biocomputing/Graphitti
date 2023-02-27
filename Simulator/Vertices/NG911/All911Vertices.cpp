@@ -17,6 +17,10 @@ All911Vertices::All911Vertices()
    callNum_ = nullptr;
    dispNum_ = nullptr;
    respNum_ = nullptr;
+
+   // Get a copy of the file logger to use with log4cplus macros
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 }
 
 All911Vertices::~All911Vertices()
@@ -49,25 +53,43 @@ void All911Vertices::setupVertices()
    // Resize and fill vectors with 0
    numAgents_.assign(size_, 0);
    numTrunks_.assign(size_, 0);
-   waitQueues_.resize(size_);
+   vertexQueues_.resize(size_);
+
+   // Register call properties with InputManager
+   inputManager_.registerProperty("vertex_id", &Call::vertexId);
+   inputManager_.registerProperty("time", &Call::time);
+   inputManager_.registerProperty("duration", &Call::duration);
+   inputManager_.registerProperty("x", &Call::x);
+   inputManager_.registerProperty("y", &Call::y);
+   inputManager_.registerProperty("type", &Call::type);
 }
 
 // Generate callNum_ and dispNum_ for all caller and psap nodes
 void All911Vertices::createAllVertices(Layout *layout)
 {
-   // Loop over all vertices and set the number of agents and trunks
+   // Loop over all vertices and set the number of agents and trunks, and
+   // determine the size of the waiting queue.
+   // We get the information needed from the GraphManager.
    GraphManager::VertexIterator vi, vi_end;
    GraphManager &gm = GraphManager::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < size_);
-      numAgents_[*vi] = gm[*vi].agents;
-      numTrunks_[*vi] = gm[*vi].trunks;
 
-      // The waiting queue is of size # Trunks - # Agents
-      int queueSize = numTrunks_[*vi] - numAgents_[*vi];
-      waitQueues_[*vi].resize(queueSize);
+      if (gm[*vi].type == "CALR") {
+         // TODO: Hardcoded queue size for now (10/0.0001)
+         vertexQueues_[*vi].resize(100000);
+      } else {
+         numAgents_[*vi] = gm[*vi].agents;
+         numTrunks_[*vi] = gm[*vi].trunks;
+
+         // The waiting queue is of size # Trunks - # Agents
+         int queueSize = numTrunks_[*vi] - numAgents_[*vi];
+         vertexQueues_[*vi].resize(queueSize);
+      }
    }
 
+   // Read Input Events using the InputManager
+   inputManager_.readInputs();
 
 
    // TODO: The code below is from previous version. I am keeping because
@@ -123,7 +145,6 @@ void All911Vertices::createAllVertices(Layout *layout)
       }
       respNum_[respList[i]] = respCount;
    }
-   
 }
 
 void All911Vertices::loadParameters()
@@ -139,9 +160,26 @@ void All911Vertices::printParameters() const
 {
 }
 
+
 string All911Vertices::toString(const int index) const
 {
    return nullptr;   // Change this
+}
+
+
+void All911Vertices::loadEpochInputs(uint64_t curStep, uint64_t endStep)
+{
+   Simulator &simulator = Simulator::getInstance();
+   Layout &layout = *(simulator.getModel()->getLayout());
+
+   // Load all the calls into the Caller Regions queue by getting the input events
+   // from the InputManager.
+   for (int idx = 0; idx < simulator.getTotalVertices(); ++idx) {
+      if (layout.vertexTypeMap_[idx] == CALR) {
+         // If this is a Caller Region get all calls scheduled for the current epoch
+         inputManager_.getEvents(idx, curStep, endStep, vertexQueues_[idx]);
+      }
+   }
 }
 
 #if !defined(USE_GPU)
@@ -153,41 +191,49 @@ string All911Vertices::toString(const int index) const
 ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
 void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap)
 {
-   //    // casting all911Edges for this method to use & modify
-   //    All911Edges &allEdges = dynamic_cast<All911Edges &>(edges);
-   //    // For each vertex in the network
-   //    for (int idx = Simulator::getInstance().getTotalVertices() - 1; idx >= 0; --idx) {
-   //       // advance vertices
-   //       advanceVertex(idx);
+   Simulator &simulator = Simulator::getInstance();
+   Layout &layout = *(simulator.getModel()->getLayout());
+   uint64_t endEpochStep
+      = g_simulationStep
+        + static_cast<uint64_t>(simulator.getEpochDuration() / simulator.getDeltaT());
 
-   //       // notify the source and destination edges if anything has happened to the vertex
-   //       if (hasFired_[idx]) {
-   //          LOG4CPLUS_DEBUG(vertexLogger_, "Vertex: " << idx << " has fired at time: "
-   //                         << g_simulationStep * Simulator::getInstance().getDeltaT());
+   All911Edges &edges911 = dynamic_cast<All911Edges &>(edges);
 
+   // Advance vertices
+   for (int idx = 0; idx < simulator.getTotalVertices(); ++idx) {
+      if (layout.vertexTypeMap_[idx] == CALR) {
+         // peek at the next call in the queue
+         optional<Call> nextCall = vertexQueues_[idx].peek();
+         if (nextCall && nextCall->time == g_simulationStep) {
+            // The call starts at the current time step so we need to pop it and process it
+            vertexQueues_[idx].get();   // pop from the queue
+            LOG4CPLUS_TRACE(consoleLogger_,
+                            "Calling PSAP at time: " << nextCall->time);
 
-   //          // notify outgoing edges
-   //          BGSIZE edgeCounts;
+            // There is only one outgoing edge from CALR to a PSAP
+            BGSIZE start = edgeIndexMap->outgoingEdgeBegin_[idx];
+            BGSIZE edgeIdx = edgeIndexMap->outgoingEdgeIndexMap_[start];
 
-   //          if (edgeIndexMap != nullptr) {
-   //             edgeCounts = edgeIndexMap->outgoingEdgeCount_[idx];
-   //             if (edgeCounts != 0) {
-   //                int beginIndex = edgeIndexMap->outgoingEdgeBegin_[idx];
-   //                BGSIZE iEdg;
-   //                for (BGSIZE i = 0; i < edgeCounts; i++) {
-   //                   iEdg = edgeIndexMap->outgoingEdgeBegin_[beginIndex + i];
-   //                   allEdges.preSpikeHit(iEdg);
-   //                }
-   //             }
-   //          }
+            // Place new call in the edge going to the PSAP
+            if (edges911.isAvailable_[edgeIdx]) {
+               edges911.call_[edgeIdx] = nextCall.value();
+               edges911.isAvailable_[edgeIdx] = false;
+            } else {
+               // If the call is still there, it means that there was no space in the PSAP's waiting
+               // queue. Therefore, this is a dropped call.
+            }
+         }
 
-   //          // notify incoming edges
-   //          edgeCounts = allEdges.edgeCounts_[idx];
-   //          BGSIZE synapse_notified = 0;
-
-   //          hasFired_[idx] = false;
-   //       }
-   //    }
+         // TODO911: Check for dropped calls in incoming edge
+      } else if (layout.vertexTypeMap_[idx] == PSAP) {
+         // Get the call from the Waiting queue and print it
+         optional<Call> nextCall = vertexQueues_[idx].get();
+         if (nextCall) {
+            LOG4CPLUS_TRACE(consoleLogger_,
+                            "Serving Call starting at time : " << nextCall->time);
+         }
+      }
+   }
 }
 
 ///  Update internal state of the indexed Neuron (called by every simulation step).

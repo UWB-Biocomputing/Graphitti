@@ -36,6 +36,10 @@
       <respsToErase name="respsToErase">2</respsToErase>
     </ConnectionsParams>
 
+    <InputParams name="InputParams">
+      <!-- TODO: I Placed this here for testing purposes -->
+      <inputFile name="inputFile">../configfiles/inputs/SPD_calls.xml</inputFile>
+    </InputParams>
 
     <LayoutParams class="Layout911" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">

@@ -29,6 +29,7 @@ Simulator::Simulator()
 {
    g_simulationStep = 0;   /// uint64_t g_simulationStep instantiated in Global
    deltaT_ = DEFAULT_dt;
+   // deltaT_ = 0.1;
 
    consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
@@ -207,10 +208,13 @@ void Simulator::advanceEpoch(const int &currentEpoch) const
    uint64_t count = 0;
    // Compute step number at end of this simulation epoch
    uint64_t endStep = g_simulationStep + static_cast<uint64_t>(epochDuration_ / deltaT_);
+   
+   model_->getLayout()->getVertices()->loadEpochInputs(g_simulationStep, endStep);
+   
    // DEBUG_MID(model->logSimStep();) // Generic model debug call
    while (g_simulationStep < endStep) {
       // Output status once every 10,000 steps
-      if (count % 10000 == 0) {
+      if (count % int(1/deltaT_) == 0) {
          LOG4CPLUS_TRACE(consoleLogger_,
                          "Epoch: " << currentEpoch << "/" << numEpochs_
                                    << " simulating time: " << g_simulationStep * deltaT_ << "/"

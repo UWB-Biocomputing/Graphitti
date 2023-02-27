@@ -82,6 +82,8 @@ def main():
                                "clock_tick_unit": "sec"})
 
     # Inset one event element per row
+    # Make sure there are no time duplicates
+    prev_time = -1
     vertex = et.SubElement(data, 'vertex', {'id': sorted.iloc[0]['vertex_id'], 'name': sorted.iloc[0]['vertex']})
     for idx, row in sorted.iterrows():
         d = row.to_dict()
@@ -91,6 +93,11 @@ def main():
 
         # remove vertex id and name from the dictionary to avoid redundancy
         del d['vertex']
+
+        # ensure that we don't have duplicate times
+        if d['time'] <= prev_time:
+            d['time'] = prev_time + 1
+        prev_time = d['time']
 
         # convert everythin to strings
         for k, v in d.items():
