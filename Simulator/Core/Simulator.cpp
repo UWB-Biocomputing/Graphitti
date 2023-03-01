@@ -201,6 +201,7 @@ void Simulator::simulate()
       cout << endl;
 #endif
    }
+   LOG4CPLUS_TRACE(workbenchLogger_, "Complete");
 }
 
 /// Helper for #simulate(). Advance simulation until ready for next growth cycle.
