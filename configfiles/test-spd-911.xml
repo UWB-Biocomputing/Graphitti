@@ -2,7 +2,7 @@
 <BGSimParams>
   <SimInfoParams name="SimInfoParams">
     <SimParams name="SimParams">
-      <epochDuration name="epochDuration">10.0</epochDuration>
+      <epochDuration name="epochDuration">10</epochDuration>
       <!-- 26 Epochs * 10 = 260 simulation steps.
           Since efault deltaT_ is 0.0001 then:
             260 / 0.0001 = 2,600,000 timesteps.

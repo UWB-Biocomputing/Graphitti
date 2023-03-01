@@ -80,11 +80,11 @@ private:
    /// Holds the calls being served by each agent
    vector<vector<Call>> servingCall_;
 
+   /// The time that the call being served was answered by the agent
+   vector<vector<uint64_t>> answerTime_;
+
    /// The countdown until the agent is available to take another call
    vector<vector<int>> agentCountdown_;
-
-   /// If the agent is available for taking a call
-   vector<unique_ptr<bool[]>> agentAvailable_;
 
    /// The InputManager holds all the Input Events for the simulation
    InputManager<Call> inputManager_;

@@ -19,7 +19,7 @@ All911Vertices::All911Vertices()
    respNum_ = nullptr;
 
    // Get a copy of the file logger to use with log4cplus macros
-   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));
    consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 }
 
@@ -55,8 +55,8 @@ void All911Vertices::setupVertices()
    numTrunks_.assign(size_, 0);
    vertexQueues_.resize(size_);
    servingCall_.resize(size_);
+   answerTime_.resize(size_);
    agentCountdown_.resize(size_);
-   agentAvailable_.resize(size_);
 
    // Register call properties with InputManager
    inputManager_.registerProperty("vertex_id", &Call::vertexId);
@@ -91,8 +91,8 @@ void All911Vertices::createAllVertices(Layout *layout)
 
          // Initialize the data structures for agent availability
          servingCall_[*vi].resize(gm[*vi].agents);
-         agentCountdown_[*vi].resize(gm[*vi].agents);
-         agentAvailable_[*vi] = make_unique<bool[]>(gm[*vi].agents);
+         answerTime_[*vi].resize(gm[*vi].agents);
+         agentCountdown_[*vi].assign(gm[*vi].agents, 0);
       }
    }
 
@@ -212,11 +212,10 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
       if (layout.vertexTypeMap_[idx] == CALR) {
          // peek at the next call in the queue
          optional<Call> nextCall = vertexQueues_[idx].peek();
-         if (nextCall && nextCall->time == g_simulationStep) {
+         if (nextCall && nextCall->time <= g_simulationStep) {
+            // Calls that start at the same time are process in the order they appear.
             // The call starts at the current time step so we need to pop it and process it
             vertexQueues_[idx].get();   // pop from the queue
-            LOG4CPLUS_TRACE(consoleLogger_,
-                            "Calling PSAP at time: " << nextCall->time);
 
             // There is only one outgoing edge from CALR to a PSAP
             BGSIZE start = edgeIndexMap->outgoingEdgeBegin_[idx];
@@ -226,32 +225,61 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
             if (edges911.isAvailable_[edgeIdx]) {
                edges911.call_[edgeIdx] = nextCall.value();
                edges911.isAvailable_[edgeIdx] = false;
+               LOG4CPLUS_DEBUG(fileLogger_,
+                            "Calling PSAP at time: " << nextCall->time);
             } else {
                // If the call is still there, it means that there was no space in the PSAP's waiting
                // queue. Therefore, this is a dropped call.
+               // TODO: Decide if it needs to be redial
+               LOG4CPLUS_DEBUG(fileLogger_,
+                               "============> Call dropped: " << edges911.call_[edgeIdx].time);
+
+               // Make the edge availabe after taking care of the dropped call
+               edges911.isAvailable_[edgeIdx] = true;
             }
          }
-         // TODO911: Check for dropped calls in incoming edge
+         // TODO911: Check for abandoned calls
 
       } else if (layout.vertexTypeMap_[idx] == PSAP) {
          // Loop over all agents and free the ones finishing serving calls
+         vector<int> availableAgents;
+         for (size_t agent = 0; agent < agentCountdown_[idx].size(); ++agent) {
+            if (agentCountdown_[idx][agent] == 0) {
+               // Agent is available to take calls
+               availableAgents.push_back(agent);
+            } else if (--agentCountdown_[idx][agent] == 0) {
+               // Agent becomes free to take calls
+               // TODO: What about wrap-up time?
+               //       Store call metrics and transfer call to nearest Responder
+               LOG4CPLUS_DEBUG(fileLogger_,
+                            "Finishin call, started: " << servingCall_[idx][agent].time
+                            << ", end time: " << g_simulationStep
+                            
+                            << ", waited: " << answerTime_[idx][agent] - servingCall_[idx][agent].time);
 
+               availableAgents.push_back(agent);
+            }
+         }
 
          // Assign calls to agents until either no agents are available or
          // there are no more calls in the waiting queue
+         for (size_t i = 0; i < availableAgents.size() && !vertexQueues_[idx].isEmpty(); ++i) {
+            int agent = availableAgents[i];
+            optional<Call> call = vertexQueues_[idx].get();
+            assert(call);
+            servingCall_[idx][agent] = call.value();
+            answerTime_[idx][agent] = g_simulationStep;
+            agentCountdown_[idx][agent] = call.value().duration;
 
-
-         // We will now transfer all the calls that have ended at this timestep
-         // to the Responder closest to the emergency location
-         
-
-
-         // Get the call from the Waiting queue and print it
-         optional<Call> nextCall = vertexQueues_[idx].get();
-         if (nextCall) {
-            LOG4CPLUS_TRACE(consoleLogger_,
-                            "Serving Call starting at time : " << nextCall->time);
+            LOG4CPLUS_DEBUG(fileLogger_,
+                            "Serving Call starting at time : " << call->time
+                            << ", sim-step: " << g_simulationStep);
          }
+
+
+         // TODO: We will now transfer all the calls that have ended at this timestep
+         // to the Responder closest to the emergency location
+
       }
    }
 }
