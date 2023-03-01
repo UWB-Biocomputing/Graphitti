@@ -101,11 +101,13 @@ void All911Edges::advanceEdges(AllVertices *vertices, EdgeIndexMap *edgeIndexMap
          assert(dst == vertex);
 
          if (all911Vertices.vertexQueues_[dst].isFull()) {
-            continue;   // There is no space in the waiting queue
+            // Call is dropped because there is no space in the waiting queue
+            all911Vertices.droppedCalls_[dst]++;
+            // continue;
+         } else {
+            all911Vertices.vertexQueues_[dst].put(call_[edgeIdx]);
+            isAvailable_[edgeIdx] = true;
          }
-
-         all911Vertices.vertexQueues_[dst].put(call_[edgeIdx]);
-         isAvailable_[edgeIdx] = true;
       }
    }
 

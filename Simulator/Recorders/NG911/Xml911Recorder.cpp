@@ -10,6 +10,7 @@
  *     -# vertex's locations, and type map,
  */
 
+#include "All911Vertices.h"
 #include "Xml911Recorder.h"
 #include "Connections911.h"
 
@@ -51,15 +52,19 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
 {
    auto conns = Simulator::getInstance().getModel()->getConnections();
    Connections911 &conns911 = dynamic_cast<Connections911 &>(*conns);
+   All911Vertices &all911Vertices = dynamic_cast<All911Vertices &>(*Simulator::getInstance().getModel()->getLayout()->getVertices());
 
    // create Vertex Types matrix
    VectorMatrix oldTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalVertices(),
                          EXC);
    VectorMatrix vertexTypes(MATRIX_TYPE, MATRIX_INIT, 1,
                             Simulator::getInstance().getTotalVertices(), EXC);
+   VectorMatrix droppedCalls(MATRIX_TYPE, MATRIX_INIT, 1,
+                            Simulator::getInstance().getTotalVertices(), EXC);
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       vertexTypes[i] = Simulator::getInstance().getModel()->getLayout()->vertexTypeMap_[i];
       oldTypes[i] = conns911.oldTypeMap_[i];
+      droppedCalls[i] = all911Vertices.droppedCalls_[i];
    }
 
    // Write XML header information:
@@ -74,6 +79,7 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
    resultOut_ << "   " << layout->yloc_->toXML("yloc") << endl;
    resultOut_ << "   " << oldTypes.toXML("vertexTypesPreEvent") << endl;
    resultOut_ << "   " << vertexTypes.toXML("vertexTypesPostEvent") << endl;
+   resultOut_ << "   " << droppedCalls.toXML("droppedCalls") << endl;
 
    // Print out deleted edges and vertices:
    resultOut_ << "   " << conns911.erasedVerticesToXML() << endl;

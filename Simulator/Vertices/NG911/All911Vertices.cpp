@@ -58,6 +58,9 @@ void All911Vertices::setupVertices()
    answerTime_.resize(size_);
    agentCountdown_.resize(size_);
 
+   // Resize and fill data structures for recording
+   droppedCalls_.assign(size_, 0);
+
    // Register call properties with InputManager
    inputManager_.registerProperty("vertex_id", &Call::vertexId);
    inputManager_.registerProperty("time", &Call::time);
@@ -233,7 +236,7 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
                // TODO: Decide if it needs to be redial
                LOG4CPLUS_DEBUG(fileLogger_,
                                "============> Call dropped: " << edges911.call_[edgeIdx].time);
-
+               droppedCalls_[idx]++;
                // Make the edge availabe after taking care of the dropped call
                edges911.isAvailable_[edgeIdx] = true;
             }
@@ -254,7 +257,6 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
                LOG4CPLUS_DEBUG(fileLogger_,
                             "Finishin call, started: " << servingCall_[idx][agent].time
                             << ", end time: " << g_simulationStep
-                            
                             << ", waited: " << answerTime_[idx][agent] - servingCall_[idx][agent].time);
 
                availableAgents.push_back(agent);

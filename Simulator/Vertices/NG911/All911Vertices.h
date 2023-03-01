@@ -69,6 +69,9 @@ public:
    /// These are the queues where calls will wait to be served
    vector<CircularBuffer<Call>> vertexQueues_;
 
+   /// The number of calls that have been dropped (got a busy signal)
+   vector<int> droppedCalls_;
+
 private:
    /// Number of agents. In a PSAP these are the call takers, in Responder nodes
    /// they are responder units
