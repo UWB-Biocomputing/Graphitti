@@ -175,9 +175,7 @@ void Simulator::simulate()
       t_host_advance += short_timer.lap() / 1000000.0;
 #endif
       LOG4CPLUS_TRACE(consoleLogger_,
-                      "done with epoch cycle " << currentEpoch_ << ", beginning growth update");
-      LOG4CPLUS_TRACE(workbenchLogger_,
-                      "done with epoch cycle " << currentEpoch_);                
+                      "done with epoch cycle " << currentEpoch_ << ", beginning growth update");              
       LOG4CPLUS_TRACE(edgeLogger_, "Epoch: " << currentEpoch_);
 
 #ifdef PERFORMANCE_METRICS
