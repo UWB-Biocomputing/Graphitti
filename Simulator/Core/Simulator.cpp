@@ -162,7 +162,6 @@ void Simulator::simulate()
    // Main simulation loop - execute maxGrowthSteps
    for (int currentEpoch = 1; currentEpoch <= numEpochs_; currentEpoch++) {
       LOG4CPLUS_TRACE(consoleLogger_, "Performing epoch number: " << currentEpoch);
-      LOG4CPLUS_TRACE(workbenchLogger_, "Performing epoch number: " << currentEpoch);
       LOG4CPLUS_TRACE(fileLogger_, "Begin network state:");
       currentEpoch_ = currentEpoch;
 #ifdef PERFORMANCE_METRICS
