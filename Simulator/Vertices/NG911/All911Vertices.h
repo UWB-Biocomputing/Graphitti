@@ -102,9 +102,6 @@ private:
    /// The InputManager holds all the Input Events for the simulation
    InputManager<Call> inputManager_;
 
-   log4cplus::Logger fileLogger_;      // For logging into a file
-   log4cplus::Logger consoleLogger_;   // For logging to console
-
    // TODO: The variables below are from previous version. I need to review what
    //       they are for and if they are being used anywhere.
 

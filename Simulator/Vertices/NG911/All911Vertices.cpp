@@ -18,9 +18,6 @@ All911Vertices::All911Vertices()
    dispNum_ = nullptr;
    respNum_ = nullptr;
 
-   // Get a copy of the file logger to use with log4cplus macros
-   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));
-   consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 }
 
 All911Vertices::~All911Vertices()
@@ -242,7 +239,7 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
             assert(edges911.isAvailable_[edgeIdx]);
             edges911.call_[edgeIdx] = nextCall.value();
             edges911.isAvailable_[edgeIdx] = false;
-            LOG4CPLUS_DEBUG(fileLogger_,
+            LOG4CPLUS_DEBUG(vertexLogger_,
                            "Calling PSAP at time: " << nextCall->time);
          }
          // TODO911: Check for abandoned calls
@@ -261,8 +258,8 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
                logBeginTime_[vertex].push_back(servingCall_[vertex][agent].time);
                logAnswerTime_[vertex].push_back(answerTime_[vertex][agent]);
                logEndTime_[vertex].push_back(g_simulationStep);
-               LOG4CPLUS_DEBUG(fileLogger_,
-                            "Finishin call, started: " << servingCall_[vertex][agent].time
+               LOG4CPLUS_DEBUG(vertexLogger_,
+                            "Finishing call, begin time: " << servingCall_[vertex][agent].time
                             << ", end time: " << g_simulationStep
                             << ", waited: " << answerTime_[vertex][agent] - servingCall_[vertex][agent].time);
 
@@ -284,8 +281,8 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
             answerTime_[vertex][agent] = g_simulationStep;
             agentCountdown_[vertex][agent] = call.value().duration;
 
-            LOG4CPLUS_DEBUG(fileLogger_,
-                            "Serving Call starting at time : " << call->time
+            LOG4CPLUS_DEBUG(vertexLogger_,
+                            "Serving Call starting at time: " << call->time
                             << ", sim-step: " << g_simulationStep);
          }
 
