@@ -86,6 +86,26 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
    resultOut_ << "   " << droppedCalls.toXML("droppedCalls") << endl;
    resultOut_ << "   " << receivedCalls.toXML("receivedCalls") << endl;
 
+   // Call logs start here
+   resultOut_ << "<Matrix name=\"callLog\" type=\"complete\" rows=\"1\" columns=\""
+      << all911Vertices.logAnswerTime_.size() << "\" multiplier=\"1.0\">" << endl;
+   resultOut_ << "   ";
+   for (int i = 0; i < all911Vertices.logBeginTime_.size(); ++i) {
+      if (all911Vertices.logBeginTime_[i].empty()) { continue; }   // No log to print
+
+      resultOut_ << "<vertex id=\"" << i << "\">" << endl;
+      for (int c = 0; c < all911Vertices.logBeginTime_[i].size(); ++c) {
+         uint64_t beginTime = all911Vertices.logBeginTime_[i][c];
+         uint64_t answerTime = all911Vertices.logAnswerTime_[i][c];
+         uint64_t endTime = all911Vertices.logEndTime_[i][c];
+         resultOut_ << "      <call beginTime=\"" << beginTime
+                    << "\" answerTime=\"" << answerTime
+                    << "\" endTime=\"" << endTime << "\" />" << endl;
+      }
+      resultOut_ << "</vertex>" << endl;
+   }
+   resultOut_ << "</Matrix>" << endl;
+
    // Print out deleted edges and vertices:
    resultOut_ << "   " << conns911.erasedVerticesToXML() << endl;
    resultOut_ << "   " << conns911.changedEdgesToXML(false) << endl;

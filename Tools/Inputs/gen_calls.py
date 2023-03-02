@@ -81,12 +81,15 @@ def main():
                                "clock_tick_size": "1",
                                "clock_tick_unit": "sec"})
 
-    # Inset one event element per row
+    # Insert one event element per row
     # Make sure there are no time duplicates
     prev_time = -1
     vertex = et.SubElement(data, 'vertex', {'id': sorted.iloc[0]['vertex_id'], 'name': sorted.iloc[0]['vertex']})
     for idx, row in sorted.iterrows():
         d = row.to_dict()
+        if d['duration'] == 0:
+            continue    # not including zero duration calls
+
         # If vertex_id is different create a new vertex node
         if vertex.attrib['id'] != d['vertex_id']:
             vertex = et.SubElement(data, 'vertex', {'id': d['vertex_id'], 'name': d['vertex']})
