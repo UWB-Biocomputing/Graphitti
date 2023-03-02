@@ -2,9 +2,9 @@ name: Unit and Regression Tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master,development-1h23 ]
   pull_request:
-    branches: [ master ]
+    branches: [ master,development-1h23 ]
 
 defaults: 
   run:

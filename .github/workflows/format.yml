@@ -12,6 +12,8 @@ on:
       - '**.h'
     branches:
       - master
+      - development-1h23
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
