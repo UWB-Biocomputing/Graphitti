@@ -61,10 +61,14 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
                             Simulator::getInstance().getTotalVertices(), EXC);
    VectorMatrix droppedCalls(MATRIX_TYPE, MATRIX_INIT, 1,
                             Simulator::getInstance().getTotalVertices(), EXC);
+   VectorMatrix receivedCalls(MATRIX_TYPE, MATRIX_INIT, 1,
+                            Simulator::getInstance().getTotalVertices(), EXC);
+
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       vertexTypes[i] = Simulator::getInstance().getModel()->getLayout()->vertexTypeMap_[i];
       oldTypes[i] = conns911.oldTypeMap_[i];
       droppedCalls[i] = all911Vertices.droppedCalls_[i];
+      receivedCalls[i] = all911Vertices.receivedCalls_[i];
    }
 
    // Write XML header information:
@@ -80,6 +84,7 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
    resultOut_ << "   " << oldTypes.toXML("vertexTypesPreEvent") << endl;
    resultOut_ << "   " << vertexTypes.toXML("vertexTypesPostEvent") << endl;
    resultOut_ << "   " << droppedCalls.toXML("droppedCalls") << endl;
+   resultOut_ << "   " << receivedCalls.toXML("receivedCalls") << endl;
 
    // Print out deleted edges and vertices:
    resultOut_ << "   " << conns911.erasedVerticesToXML() << endl;

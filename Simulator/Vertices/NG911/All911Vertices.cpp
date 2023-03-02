@@ -60,6 +60,7 @@ void All911Vertices::setupVertices()
 
    // Resize and fill data structures for recording
    droppedCalls_.assign(size_, 0);
+   receivedCalls_.assign(size_, 0);
 
    // Register call properties with InputManager
    inputManager_.registerProperty("vertex_id", &Call::vertexId);
@@ -213,6 +214,20 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
    // Advance vertices
    for (int idx = 0; idx < simulator.getTotalVertices(); ++idx) {
       if (layout.vertexTypeMap_[idx] == CALR) {
+         // There is only one outgoing edge from CALR to a PSAP
+         BGSIZE start = edgeIndexMap->outgoingEdgeBegin_[idx];
+         BGSIZE edgeIdx = edgeIndexMap->outgoingEdgeIndexMap_[start];
+
+         // Check for dropped calls, indicated by the edge not being available
+         if (!edges911.isAvailable_[edgeIdx]) {
+            // If the call is still there, it means that there was no space in the PSAP's waiting
+            // queue. Therefore, this is a dropped call.
+            // TODO: Decide if it needs to be redial
+            
+            // Make the edge availabe after taking care of the dropped call
+            edges911.isAvailable_[edgeIdx] = true;
+         }
+
          // peek at the next call in the queue
          optional<Call> nextCall = vertexQueues_[idx].peek();
          if (nextCall && nextCall->time <= g_simulationStep) {
@@ -220,26 +235,12 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
             // The call starts at the current time step so we need to pop it and process it
             vertexQueues_[idx].get();   // pop from the queue
 
-            // There is only one outgoing edge from CALR to a PSAP
-            BGSIZE start = edgeIndexMap->outgoingEdgeBegin_[idx];
-            BGSIZE edgeIdx = edgeIndexMap->outgoingEdgeIndexMap_[start];
-
             // Place new call in the edge going to the PSAP
-            if (edges911.isAvailable_[edgeIdx]) {
-               edges911.call_[edgeIdx] = nextCall.value();
-               edges911.isAvailable_[edgeIdx] = false;
-               LOG4CPLUS_DEBUG(fileLogger_,
-                            "Calling PSAP at time: " << nextCall->time);
-            } else {
-               // If the call is still there, it means that there was no space in the PSAP's waiting
-               // queue. Therefore, this is a dropped call.
-               // TODO: Decide if it needs to be redial
-               LOG4CPLUS_DEBUG(fileLogger_,
-                               "============> Call dropped: " << edges911.call_[edgeIdx].time);
-               droppedCalls_[idx]++;
-               // Make the edge availabe after taking care of the dropped call
-               edges911.isAvailable_[edgeIdx] = true;
-            }
+            assert(edges911.isAvailable_[edgeIdx]);
+            edges911.call_[edgeIdx] = nextCall.value();
+            edges911.isAvailable_[edgeIdx] = false;
+            LOG4CPLUS_DEBUG(fileLogger_,
+                           "Calling PSAP at time: " << nextCall->time);
          }
          // TODO911: Check for abandoned calls
 

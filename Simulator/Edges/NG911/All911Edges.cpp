@@ -10,6 +10,9 @@
 
 All911Edges::All911Edges() : AllEdges()
 {
+   // Get a copy of the file logger to use with log4cplus macros
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));
+   consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 }
 
 All911Edges::All911Edges(const int numVertices, const int maxEdges)
@@ -97,13 +100,17 @@ void All911Edges::advanceEdges(AllVertices *vertices, EdgeIndexMap *edgeIndexMap
          if (isAvailable_[edgeIdx]) { continue; }   // Edge doesn't have a call
 
          int dst = destVertexIndex_[edgeIdx];
+         // Record that we received a call
+         all911Vertices.receivedCalls_[dst]++;
+
          // The destination vertex should be the one pulling the information
          assert(dst == vertex);
-
          if (all911Vertices.vertexQueues_[dst].isFull()) {
             // Call is dropped because there is no space in the waiting queue
             all911Vertices.droppedCalls_[dst]++;
-            // continue;
+            LOG4CPLUS_DEBUG(consoleLogger_,
+                               "============> Call dropped: " << all911Vertices.droppedCalls_[dst]
+                               << ", time: " << call_[edgeIdx].time << ", eIdx: " << edgeIdx);
          } else {
             all911Vertices.vertexQueues_[dst].put(call_[edgeIdx]);
             isAvailable_[edgeIdx] = true;

@@ -72,6 +72,9 @@ public:
    /// The number of calls that have been dropped (got a busy signal)
    vector<int> droppedCalls_;
 
+   /// The number of received calls
+   vector<int> receivedCalls_;
+
 private:
    /// Number of agents. In a PSAP these are the call takers, in Responder nodes
    /// they are responder units
