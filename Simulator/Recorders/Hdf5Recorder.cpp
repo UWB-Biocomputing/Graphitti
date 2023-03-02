@@ -14,7 +14,6 @@
 #if defined(HDF5)
 
 // hdf5 dataset name
-const H5std_string nameBurstHist("burstinessHist");
 const H5std_string nameSpikesHist("spikesHistory");
 const H5std_string nameXloc("xloc");
 const H5std_string nameYloc("yloc");
@@ -93,12 +92,8 @@ void Hdf5Recorder::initDataSet()
 {
    Simulator &simulator = Simulator::getInstance();
 
-   // create the data space & dataset for burstiness history
+   // create the data space & dataset for history
    hsize_t dims[2];
-   dims[0] = static_cast<hsize_t>(simulator.getEpochDuration() * simulator.getNumEpochs());
-   DataSpace dsBurstHist(1, dims);
-   dataSetBurstHist_
-      = new DataSet(resultOut_->createDataSet(nameBurstHist, PredType::NATIVE_INT, dsBurstHist));
 
    // create the data space & dataset for spikes history
    dims[0] = static_cast<hsize_t>(simulator.getEpochDuration() * simulator.getNumEpochs() * 100);
@@ -174,9 +169,7 @@ void Hdf5Recorder::initDataSet()
    }
 
    // allocate and initialize data memories
-   burstinessHist_ = new int[static_cast<int>(simulator.getEpochDuration())];
    spikesHistory_ = new int[static_cast<int>(simulator.getEpochDuration() * 100)];
-   memset(burstinessHist_, 0, static_cast<int>(simulator.getEpochDuration() * sizeof(int)));
    memset(spikesHistory_, 0, static_cast<int>(simulator.getEpochDuration() * 100 * sizeof(int)));
 
    // create the data space & dataset for spikes history of probed neurons
@@ -212,10 +205,8 @@ void Hdf5Recorder::getValues()
 void Hdf5Recorder::term()
 {
    // deallocate all objects
-   delete[] burstinessHist_;
    delete[] spikesHistory_;
 
-   delete dataSetBurstHist_;
    delete dataSetSpikesHist_;
 
    shared_ptr<Model> model = Simulator::getInstance().getModel();
@@ -262,15 +253,7 @@ void Hdf5Recorder::compileHistories(AllVertices &vertices)
          // or 8 epochs (1 epoch = 100s, 1 simulation step = 0.1ms).
 
          // if (idxSp >= maxSpikes) idxSp = 0;
-         //  compile network wide burstiness index data in 1s bins
-         int idx1
-            = static_cast<int>(static_cast<double>(spNeurons.vertexEvents_[iVertex][eventIterator])
-                                  * simulator.getDeltaT()
-                               - ((simulator.getCurrentStep() - 1) * simulator.getEpochDuration()));
-         // make sure idx1 is a valid index of burstinessHist_
-         assert(idx1 >= 0 && idx1 < simulator.getEpochDuration());
-         burstinessHist_[idx1] = burstinessHist_[idx1] + 1.0;
-
+      
          // compile network wide spike count in 10ms bins
          int idx2 = static_cast<int>(
             static_cast<double>(spNeurons.vertexEvents_[iVertex][eventIterator])
@@ -296,22 +279,11 @@ void Hdf5Recorder::compileHistories(AllVertices &vertices)
    spNeurons.clearSpikeCounts();
 
    try {
-      // write burstiness index
+      // write  index
       hsize_t offset[2], count[2];
       hsize_t dimsm[2];
       DataSpace *dataspace;
       DataSpace *memspace;
-
-      offset[0] = (simulator.getCurrentStep() - 1) * simulator.getEpochDuration();
-      count[0] = simulator.getEpochDuration();
-      dimsm[0] = simulator.getEpochDuration();
-      memspace = new DataSpace(1, dimsm, nullptr);
-      dataspace = new DataSpace(dataSetBurstHist_->getSpace());
-      dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
-      dataSetBurstHist_->write(burstinessHist_, PredType::NATIVE_INT, *memspace, *dataspace);
-      memset(burstinessHist_, 0, static_cast<int>(simulator.getEpochDuration() * sizeof(int)));
-      delete dataspace;
-      delete memspace;
 
       // write network wide spike count in 10ms bins
       offset[0] = (simulator.getCurrentStep() - 1) * simulator.getEpochDuration() * 100;

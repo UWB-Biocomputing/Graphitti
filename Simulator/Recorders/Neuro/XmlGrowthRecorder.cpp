@@ -131,7 +131,6 @@ void XmlGrowthRecorder::saveSimData(const AllVertices &neurons)
    resultOut_ << "<SimState>\n";
    resultOut_ << "   " << radiiHistory_->toXML("radiiHistory") << endl;
    resultOut_ << "   " << ratesHistory_->toXML("ratesHistory") << endl;
-   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
    resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
    resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->xloc_->toXML("xloc")
               << endl;
@@ -175,8 +174,6 @@ void XmlGrowthRecorder::printParameters()
    LOG4CPLUS_DEBUG(fileLogger_, "\nXMLRECORDER PARAMETERS"
                                    << endl
                                    << "\tResult file path: " << resultFileName_ << endl
-                                   << "\tBurstiness History Size: " << burstinessHist_.Size()
-                                   << endl
                                    << "\tSpikes History Size: " << spikesHistory_.Size() << endl
                                    << "\n---XmlGrowthRecorder Parameters---" << endl
                                    << "\tRecorder type: XmlGrowthRecorder" << endl);

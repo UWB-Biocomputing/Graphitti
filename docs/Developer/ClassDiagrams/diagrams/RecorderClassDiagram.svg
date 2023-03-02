@@ -40,7 +40,6 @@ class Hdf5GrowthRecorder {
 
 class Hdf5Recorder {
 	+Hdf5Recorder()
-	#dataSetBurstHist_ : DataSet*
 	#dataSetNeuronThresh_ : DataSet*
 	#dataSetNeuronTypes_ : DataSet*
 	#dataSetProbedNeurons_ : DataSet*
@@ -54,7 +53,6 @@ class Hdf5Recorder {
 	#resultOut_ : H5File*
 	+{static} Create() : IRecorder*
 	#offsetSpikesProbedNeurons_ : hsize_t*
-	#burstinessHist_ : int*
 	#spikesHistory_ : int*
 	#spikesProbedNeurons_ : vector<uint64_t>*
 	+compileHistories(AllVertices& neurons) : void
@@ -117,7 +115,6 @@ class XmlGrowthRecorder {
 class XmlRecorder {
 	+XmlRecorder()
 	+{static} Create() : IRecorder*
-	#burstinessHist_ : VectorMatrix
 	#spikesHistory_ : VectorMatrix
 	#resultOut_ : ofstream
 	+compileHistories(AllVertices& vertices) : void
