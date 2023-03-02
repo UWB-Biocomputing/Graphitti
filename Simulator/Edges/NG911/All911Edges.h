@@ -103,9 +103,4 @@ public:
    /// The call information per edge
    vector<Call> call_;
 
-private:
-
-   log4cplus::Logger fileLogger_;      // For logging into a file
-   log4cplus::Logger consoleLogger_;   // For logging to console
-
 };
