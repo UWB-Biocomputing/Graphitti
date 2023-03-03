@@ -9,7 +9,6 @@
  * and compile history information on hdf5 file:
  *     -# neuron's locations, and type map,
  *     -# individual neuron's spike rate in epochs,
- *     -# network wide burstiness index data in 1s bins,
  *     -# network wide spike count in 10ms bins.
  *
  * Hierarchical Data Format (HDF) is a set of file formats (HDF4, HDF5) designed
@@ -83,7 +82,6 @@ protected:
    H5File *resultOut_;
 
    /// hdf5 file dataset
-   DataSet *dataSetBurstHist_;
    DataSet *dataSetSpikesHist_;
    DataSet *dataSetXloc_;
    DataSet *dataSetYloc_;
@@ -97,9 +95,6 @@ protected:
 
    /// Keep track of where we are in incrementally writing spikes
    hsize_t *offsetSpikesProbedNeurons_;
-
-   /// burstiness Histogram goes through the
-   int *burstinessHist_;
 
    /// spikes history - history of accumulated spikes count of all neurons (10 ms bin)
    int *spikesHistory_;
