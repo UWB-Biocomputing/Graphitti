@@ -33,6 +33,7 @@ Simulator::Simulator()
    consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
+   workbenchLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("workbench"));
 
    // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&Simulator::printParameters, this);
@@ -174,7 +175,7 @@ void Simulator::simulate()
       t_host_advance += short_timer.lap() / 1000000.0;
 #endif
       LOG4CPLUS_TRACE(consoleLogger_,
-                      "done with epoch cycle " << currentEpoch_ << ", beginning growth update");
+                      "done with epoch cycle " << currentEpoch_ << ", beginning growth update");              
       LOG4CPLUS_TRACE(edgeLogger_, "Epoch: " << currentEpoch_);
 
 #ifdef PERFORMANCE_METRICS
@@ -197,6 +198,7 @@ void Simulator::simulate()
       cout << endl;
 #endif
    }
+   LOG4CPLUS_TRACE(workbenchLogger_, "Complete");
 }
 
 /// Helper for #simulate(). Advance simulation until ready for next growth cycle.
@@ -212,6 +214,10 @@ void Simulator::advanceEpoch(const int &currentEpoch) const
       // Output status once every 10,000 steps
       if (count % 10000 == 0) {
          LOG4CPLUS_TRACE(consoleLogger_,
+                         "Epoch: " << currentEpoch << "/" << numEpochs_
+                                   << " simulating time: " << g_simulationStep * deltaT_ << "/"
+                                   << (epochDuration_ * numEpochs_) - 1);
+         LOG4CPLUS_TRACE(workbenchLogger_,
                          "Epoch: " << currentEpoch << "/" << numEpochs_
                                    << " simulating time: " << g_simulationStep * deltaT_ << "/"
                                    << (epochDuration_ * numEpochs_) - 1);

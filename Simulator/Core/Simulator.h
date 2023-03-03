@@ -183,6 +183,7 @@ private:
       consoleLogger_;   /// Logger for printing to the console as well as the logging file
    log4cplus::Logger fileLogger_;   /// Logger for printing to the logging file
    log4cplus::Logger edgeLogger_;   /// Logger for printing to the logging file
+   log4cplus::Logger workbenchLogger_;   /// Logger for printing to logging file
 
 #ifdef PERFORMANCE_METRICS
    Timer timer;         /// Timer for measuring performance of an epoch.
