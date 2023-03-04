@@ -13,6 +13,7 @@
 #include "All911Vertices.h"
 #include "Xml911Recorder.h"
 #include "Connections911.h"
+// #include "Global.h"
 
 
 Xml911Recorder::Xml911Recorder()
@@ -59,16 +60,10 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
                          EXC);
    VectorMatrix vertexTypes(MATRIX_TYPE, MATRIX_INIT, 1,
                             Simulator::getInstance().getTotalVertices(), EXC);
-   VectorMatrix droppedCalls(MATRIX_TYPE, MATRIX_INIT, 1,
-                            Simulator::getInstance().getTotalVertices(), EXC);
-   VectorMatrix receivedCalls(MATRIX_TYPE, MATRIX_INIT, 1,
-                            Simulator::getInstance().getTotalVertices(), EXC);
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       vertexTypes[i] = Simulator::getInstance().getModel()->getLayout()->vertexTypeMap_[i];
       oldTypes[i] = conns911.oldTypeMap_[i];
-      droppedCalls[i] = all911Vertices.droppedCalls_[i];
-      receivedCalls[i] = all911Vertices.receivedCalls_[i];
    }
 
    // Write XML header information:
@@ -83,28 +78,13 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
    resultOut_ << "   " << layout->yloc_->toXML("yloc") << endl;
    resultOut_ << "   " << oldTypes.toXML("vertexTypesPreEvent") << endl;
    resultOut_ << "   " << vertexTypes.toXML("vertexTypesPostEvent") << endl;
-   resultOut_ << "   " << droppedCalls.toXML("droppedCalls") << endl;
-   resultOut_ << "   " << receivedCalls.toXML("receivedCalls") << endl;
 
-   // Call logs start here
-   resultOut_ << "<Matrix name=\"callLog\" type=\"complete\" rows=\"1\" columns=\""
-      << all911Vertices.logAnswerTime_.size() << "\" multiplier=\"1.0\">" << endl;
-   resultOut_ << "   ";
-   for (int i = 0; i < all911Vertices.logBeginTime_.size(); ++i) {
-      if (all911Vertices.logBeginTime_[i].empty()) { continue; }   // No log to print
-
-      resultOut_ << "<vertex id=\"" << i << "\">" << endl;
-      for (int c = 0; c < all911Vertices.logBeginTime_[i].size(); ++c) {
-         uint64_t beginTime = all911Vertices.logBeginTime_[i][c];
-         uint64_t answerTime = all911Vertices.logAnswerTime_[i][c];
-         uint64_t endTime = all911Vertices.logEndTime_[i][c];
-         resultOut_ << "      <call beginTime=\"" << beginTime
-                    << "\" answerTime=\"" << answerTime
-                    << "\" endTime=\"" << endTime << "\" />" << endl;
-      }
-      resultOut_ << "</vertex>" << endl;
-   }
-   resultOut_ << "</Matrix>" << endl;
+   // Write call information
+   resultOut_ << vectorToXML(all911Vertices.droppedCalls_, "droppedCalls") << endl;
+   resultOut_ << vectorToXML(all911Vertices.receivedCalls_, "receivedCalls") << endl;
+   resultOut_ << vector2dToXML(all911Vertices.logBeginTime_, "logBeginTime", "vertex") << endl;
+   resultOut_ << vector2dToXML(all911Vertices.logAnswerTime_, "logAnswerTime", "vertex") << endl;
+   resultOut_ << vector2dToXML(all911Vertices.logEndTime_, "logEndTime", "vertex") << endl;
 
    // Print out deleted edges and vertices:
    resultOut_ << "   " << conns911.erasedVerticesToXML() << endl;
