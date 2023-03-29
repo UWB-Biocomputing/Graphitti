@@ -79,7 +79,8 @@ protected:
    virtual void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap) override;
 
    /// hdf5 file identifier
-   H5File *resultOut_;
+   //H5File *resultOut_;
+   H5File resultOut_;
 
    /// hdf5 file dataset
    DataSet *dataSetSpikesHist_;

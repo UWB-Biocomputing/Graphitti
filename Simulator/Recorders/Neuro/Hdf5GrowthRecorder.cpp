@@ -38,13 +38,13 @@ void Hdf5GrowthRecorder::initDataSet()
    dims[0] = static_cast<hsize_t>(simulator.getNumEpochs() + 1);
    dims[1] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsRatesHist(2, dims);
-   dataSetRatesHist_ = new DataSet(resultOut_->createDataSet(nameRatesHist, H5_FLOAT, dsRatesHist));
+   dataSetRatesHist_ = new DataSet(resultOut_.createDataSet(nameRatesHist, H5_FLOAT, dsRatesHist));
 
    // create the data space & dataset for radii history
    dims[0] = static_cast<hsize_t>(simulator.getNumEpochs() + 1);
    dims[1] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsRadiiHist(2, dims);
-   dataSetRadiiHist_ = new DataSet(resultOut_->createDataSet(nameRadiiHist, H5_FLOAT, dsRadiiHist));
+   dataSetRadiiHist_ = new DataSet(resultOut_.createDataSet(nameRadiiHist, H5_FLOAT, dsRadiiHist));
 
    // allocate data memories
    ratesHistory_ = new BGFLOAT[simulator.getTotalVertices()];

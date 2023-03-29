@@ -58,7 +58,8 @@ void Hdf5Recorder::init()
 
    try {
       // create a new file using the default property lists
-      resultOut_ = new H5File(resultFileName_, H5F_ACC_TRUNC);
+      //resultOut_ = new H5File(resultFileName_, H5F_ACC_TRUNC);
+      resultOut_ =  H5File(resultFileName_, H5F_ACC_TRUNC);
       initDataSet();
    }
 
@@ -99,36 +100,36 @@ void Hdf5Recorder::initDataSet()
    dims[0] = static_cast<hsize_t>(simulator.getEpochDuration() * simulator.getNumEpochs() * 100);
    DataSpace dsSpikesHist(1, dims);
    dataSetSpikesHist_
-      = new DataSet(resultOut_->createDataSet(nameSpikesHist, PredType::NATIVE_INT, dsSpikesHist));
+      = new DataSet(resultOut_.createDataSet(nameSpikesHist, PredType::NATIVE_INT, dsSpikesHist));
 
    // create the data space & dataset for xloc & yloc
    dims[0] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsXYloc(1, dims);
-   dataSetXloc_ = new DataSet(resultOut_->createDataSet(nameXloc, PredType::NATIVE_INT, dsXYloc));
-   dataSetYloc_ = new DataSet(resultOut_->createDataSet(nameYloc, PredType::NATIVE_INT, dsXYloc));
+   dataSetXloc_ = new DataSet(resultOut_.createDataSet(nameXloc, PredType::NATIVE_INT, dsXYloc));
+   dataSetYloc_ = new DataSet(resultOut_.createDataSet(nameYloc, PredType::NATIVE_INT, dsXYloc));
 
    // create the data space & dataset for neuron types
    dims[0] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsNeuronTypes(1, dims);
    dataSetNeuronTypes_ = new DataSet(
-      resultOut_->createDataSet(nameNeuronTypes, PredType::NATIVE_INT, dsNeuronTypes));
+      resultOut_.createDataSet(nameNeuronTypes, PredType::NATIVE_INT, dsNeuronTypes));
 
    // create the data space & dataset for neuron threshold
    dims[0] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsNeuronThresh(1, dims);
    dataSetNeuronThresh_
-      = new DataSet(resultOut_->createDataSet(nameNeuronThresh, H5_FLOAT, dsNeuronThresh));
+      = new DataSet(resultOut_.createDataSet(nameNeuronThresh, H5_FLOAT, dsNeuronThresh));
 
    // create the data space & dataset for simulation step duration
    dims[0] = static_cast<hsize_t>(1);
    DataSpace dsTsim(1, dims);
-   dataSetTsim_ = new DataSet(resultOut_->createDataSet(nameTsim, H5_FLOAT, dsTsim));
+   dataSetTsim_ = new DataSet(resultOut_.createDataSet(nameTsim, H5_FLOAT, dsTsim));
 
    // create the data space & dataset for simulation end time
    dims[0] = static_cast<hsize_t>(1);
    DataSpace dsSimulationEndTime(1, dims);
    dataSetSimulationEndTime_ = new DataSet(
-      resultOut_->createDataSet(nameSimulationEndTime, H5_FLOAT, dsSimulationEndTime));
+      resultOut_.createDataSet(nameSimulationEndTime, H5_FLOAT, dsSimulationEndTime));
 
    // Get model instance
    shared_ptr<Model> model = simulator.getModel();
@@ -139,7 +140,7 @@ void Hdf5Recorder::initDataSet()
       dims[0] = static_cast<hsize_t>(model->getLayout()->probedNeuronList_.size());
       DataSpace dsProbedNeurons(1, dims);
       dataSetProbedNeurons_ = new DataSet(
-         resultOut_->createDataSet(nameProbedNeurons, PredType::NATIVE_INT, dsProbedNeurons));
+         resultOut_.createDataSet(nameProbedNeurons, PredType::NATIVE_INT, dsProbedNeurons));
 
       // create the data space & dataset for spikes of probed neurons
 
@@ -164,7 +165,7 @@ void Hdf5Recorder::initDataSet()
       chunk_dims[1] = static_cast<hsize_t>(model->getLayout()->probedNeuronList_.size());
       cparms.setChunk(2, chunk_dims);
 
-      dataSetSpikesProbedNeurons_ = new DataSet(resultOut_->createDataSet(
+      dataSetSpikesProbedNeurons_ = new DataSet(resultOut_.createDataSet(
          nameSpikesProbedNeurons, PredType::NATIVE_UINT64, dsSpikesProbedNeurons, cparms));
    }
 
@@ -219,7 +220,7 @@ void Hdf5Recorder::term()
       delete[] offsetSpikesProbedNeurons_;
    }
 
-   delete resultOut_;
+   //delete resultOut_;
 }
 
 /// Compile history information in every epoch.
@@ -416,7 +417,7 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
          dims[0] = static_cast<hsize_t>(starterNeurons.Size());
          DataSpace dsStarterNeurons(1, dims);
          dataSetStarterNeurons_ = new DataSet(
-            resultOut_->createDataSet(nameStarterNeurons, PredType::NATIVE_INT, dsStarterNeurons));
+            resultOut_.createDataSet(nameStarterNeurons, PredType::NATIVE_INT, dsStarterNeurons));
 
          int *iStarterNeurons = new int[starterNeurons.Size()];
          for (int i = 0; i < starterNeurons.Size(); i++) {
