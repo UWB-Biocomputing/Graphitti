@@ -79,21 +79,24 @@ protected:
    virtual void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap) override;
 
    /// hdf5 file identifier
-   //H5File *resultOut_;
    H5File resultOut_;
 
    /// hdf5 file dataset
-   DataSet *dataSetSpikesHist_;
-   DataSet *dataSetXloc_;
-   DataSet *dataSetYloc_;
-   DataSet *dataSetNeuronTypes_;
-   DataSet *dataSetNeuronThresh_;
-   DataSet *dataSetStarterNeurons_;
-   DataSet *dataSetTsim_;
-   DataSet *dataSetSimulationEndTime_;
-   DataSet *dataSetSpikesProbedNeurons_;
-   DataSet *dataSetProbedNeurons_;
 
+   //static or simple dataset variables
+   DataSet dataSetXloc_;
+   DataSet dataSetYloc_;
+   DataSet dataSetNeuronTypes_;
+   DataSet dataSetNeuronThresh_;
+   DataSet dataSetStarterNeurons_;
+   DataSet dataSetTsim_;
+   DataSet dataSetSimulationEndTime_;
+   DataSet dataSetProbedNeurons_;
+
+   //extentable dataset variable
+   DataSet dataSetSpikesHist_;
+   DataSet dataSetSpikesProbedNeurons_;
+   
    /// Keep track of where we are in incrementally writing spikes
    hsize_t *offsetSpikesProbedNeurons_;
 
