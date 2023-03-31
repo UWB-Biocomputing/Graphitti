@@ -609,8 +609,8 @@ class Hdf5GrowthRecorder {
 	+~Hdf5GrowthRecorder()
 	#radiiHistory_ : BGFLOAT*
 	#ratesHistory_ : BGFLOAT*
-	#dataSetRadiiHist_ : DataSet*
-	#dataSetRatesHist_ : DataSet*
+	#dataSetRadiiHist_ : DataSet
+	#dataSetRatesHist_ : DataSet
 	+{static} Create() : IRecorder*
 	+compileHistories(AllVertices& neurons) : void
 	+getValues() : void

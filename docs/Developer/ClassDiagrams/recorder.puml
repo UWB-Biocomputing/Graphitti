@@ -11,8 +11,8 @@ class Hdf5GrowthRecorder {
 	+~Hdf5GrowthRecorder()
 	#radiiHistory_ : BGFLOAT*
 	#ratesHistory_ : BGFLOAT*
-	#dataSetRadiiHist_ : DataSet*
-	#dataSetRatesHist_ : DataSet*
+	#dataSetRadiiHist_ : DataSet
+	#dataSetRatesHist_ : DataSet
 	+{static} Create() : IRecorder*
 	+compileHistories(AllVertices& neurons) : void
 	+getValues() : void
@@ -27,17 +27,17 @@ class Hdf5GrowthRecorder {
 
 class Hdf5Recorder {
 	+Hdf5Recorder()
-	#dataSetNeuronThresh_ : DataSet*
-	#dataSetNeuronTypes_ : DataSet*
-	#dataSetProbedNeurons_ : DataSet*
-	#dataSetSimulationEndTime_ : DataSet*
-	#dataSetSpikesHist_ : DataSet*
-	#dataSetSpikesProbedNeurons_ : DataSet*
-	#dataSetStarterNeurons_ : DataSet*
-	#dataSetTsim_ : DataSet*
-	#dataSetXloc_ : DataSet*
-	#dataSetYloc_ : DataSet*
-	#resultOut_ : H5File*
+	#dataSetNeuronThresh_ : DataSet
+	#dataSetNeuronTypes_ : DataSet
+	#dataSetProbedNeurons_ : DataSet
+	#dataSetSimulationEndTime_ : DataSet
+	#dataSetSpikesHist_ : DataSet
+	#dataSetSpikesProbedNeurons_ : DataSet
+	#dataSetStarterNeurons_ : DataSet
+	#dataSetTsim_ : DataSet
+	#dataSetXloc_ : DataSet
+	#dataSetYloc_ : DataSet
+	#resultOut_ : H5File
 	+{static} Create() : IRecorder*
 	#offsetSpikesProbedNeurons_ : hsize_t*
 	#spikesHistory_ : int*
