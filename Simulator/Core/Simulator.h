@@ -23,10 +23,6 @@
 
 class Model;
 
-#ifdef PERFORMANCE_METRICS
-   #include "Timer.h"
-#endif
-
 class Simulator {
 public:
    static Simulator &getInstance();   /// Acts as constructor, returns the instance
@@ -102,8 +98,8 @@ public:
 
    string getStimulusFileName() const;   /// File name of the stimulus input file.
 
-   shared_ptr<Model> getModel() const;   /// Neural Network Model interface.
-                                         ///@}
+   Model *getModel() const;   /// Neural Network Model interface.
+                              ///@}
 
    /************************************************
    *  Mutators
@@ -170,7 +166,7 @@ private:
 
    string stimulusFileName_;   /// File name of the stimulus input file.
 
-   shared_ptr<Model> model_;   /// Smart pointer to model class (Model is an interface class)
+   unique_ptr<Model> model_;   /// Smart pointer to model class (Model is an interface class)
 
    log4cplus::Logger
       consoleLogger_;   /// Logger for printing to the console as well as the logging file

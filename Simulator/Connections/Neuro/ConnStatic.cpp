@@ -41,8 +41,8 @@ ConnStatic::~ConnStatic()
 void ConnStatic::setup()
 {
    // we can obtain the Layout, which holds the vertices, from the Model
-   shared_ptr<Layout> layout = Simulator::getInstance().getModel()->getLayout();
-   shared_ptr<AllVertices> vertices = layout->getVertices();
+   Layout &layout = *Simulator::getInstance().getModel()->getLayout();
+   AllVertices &vertices = *layout.getVertices();
 
    Simulator &simulator = Simulator::getInstance();
    int numVertices = simulator.getTotalVertices();
@@ -64,7 +64,7 @@ void ConnStatic::setup()
       // pick the connections shorter than threshConnsRadius
       for (int destVertex = 0; destVertex < numVertices; destVertex++) {
          if (srcVertex != destVertex) {
-            BGFLOAT dist = layout->dist_(srcVertex, destVertex);
+            BGFLOAT dist = layout.dist_(srcVertex, destVertex);
             if (dist <= threshConnsRadius_) {
                DistDestVertex distDestVertex {dist, destVertex};
                distDestVertices[srcVertex].push_back(distDestVertex);
@@ -77,8 +77,8 @@ void ConnStatic::setup()
       // pick the shortest connsPerVertex_ connections
       for (BGSIZE i = 0; i < distDestVertices[srcVertex].size() && (int)i < connsPerVertex_; i++) {
          int destVertex = distDestVertices[srcVertex][i].destVertex;
-         edgeType type = layout->edgType(srcVertex, destVertex);
-         BGFLOAT *sumPoint = &vertices->summationMap_[destVertex];
+         edgeType type = layout.edgType(srcVertex, destVertex);
+         BGFLOAT *sumPoint = &vertices.summationMap_[destVertex];
 
          LOG4CPLUS_DEBUG(fileLogger_,
                          "Source: " << srcVertex << " Dest: " << destVertex

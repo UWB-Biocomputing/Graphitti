@@ -58,7 +58,7 @@ public:
       = 0;
 
    ///  Populate a edge index map.
-   virtual void createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap);
+   virtual void createEdgeIndexMap(EdgeIndexMap &edgeIndexMap);
 
    ///  Cereal serialization method
    ///  (Serializes edge weights, source vertices, and destination vertices)

@@ -178,23 +178,22 @@ void Model::updateHistory()
 /// Get the Connections class object.
 /// @return Pointer to the Connections class object.
 // ToDo: make smart ptr
-shared_ptr<Connections> Model::getConnections() const
+Connections *Model::getConnections() const
 {
-   return connections_;
+   return connections_.get();
 }
 
 /// Get the Layout class object.
 /// @return Pointer to the Layout class object.
-// ToDo: make smart ptr
-shared_ptr<Layout> Model::getLayout() const
+Layout *Model::getLayout() const
 {
-   return layout_;
+   return layout_.get();
 }
 
 /// Get the IRecorder class object.
 /// @return Pointer to the IRecorder class object.
 // ToDo: make smart ptr
-shared_ptr<IRecorder> Model::getRecorder() const
+IRecorder *Model::getRecorder() const
 {
-   return recorder_;
+   return recorder_.get();
 }

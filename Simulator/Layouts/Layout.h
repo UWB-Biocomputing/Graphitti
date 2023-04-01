@@ -32,7 +32,7 @@ public:
 
    virtual ~Layout();
 
-   shared_ptr<AllVertices> getVertices() const;
+   AllVertices *getVertices() const;
 
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.
@@ -88,7 +88,7 @@ public:
 
 
 protected:
-   shared_ptr<AllVertices> vertices_;
+   unique_ptr<AllVertices> vertices_;
 
    vector<int> endogenouslyActiveNeuronList_;   ///< Endogenously active neurons list.
 

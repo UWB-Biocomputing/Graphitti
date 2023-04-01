@@ -40,11 +40,11 @@ void VerticesFactory::registerClass(const string &className, CreateFunction func
 /// @param className Vertices class name.
 /// @return Shared pointer to vertices instance if className is found in
 ///         createFunctions map, nullptr otherwise.
-shared_ptr<AllVertices> VerticesFactory::createVertices(const string &className)
+unique_ptr<AllVertices> VerticesFactory::createVertices(const string &className)
 {
    auto createVerticesIter = createFunctions.find(className);
    if (createVerticesIter != createFunctions.end()) {
-      return shared_ptr<AllVertices>(createVerticesIter->second());
+      return unique_ptr<AllVertices>(createVerticesIter->second());
    }
 
    return nullptr;

@@ -35,10 +35,10 @@
 
 #pragma once
 
-#include "AllEdges.h"
-#include "AllVertices.h"
 #include "Connections/Connections.h"
+#include "Edges/AllEdges.h"
 #include "Layouts/Layout.h"
+#include "Vertices/AllVertices.h"
 
 class CPUModel : public Model {
 public:

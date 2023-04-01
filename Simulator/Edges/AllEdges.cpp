@@ -171,7 +171,7 @@ edgeType AllEdges::edgeOrdinalToType(const int typeOrdinal)
 }
 
 ///  Create a edge index map.
-void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap)
+void AllEdges::createEdgeIndexMap(EdgeIndexMap &edgeIndexMap)
 {
    Simulator &simulator = Simulator::getInstance();
    int vertexCount = simulator.getTotalVertices();
@@ -197,13 +197,13 @@ void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap)
 
    for (int i = 0; i < vertexCount; i++) {
       BGSIZE edge_count = 0;
-      edgeIndexMap->incomingEdgeBegin_[i] = curr;
+      edgeIndexMap.incomingEdgeBegin_[i] = curr;
       for (int j = 0; j < simulator.getMaxEdgesPerVertex(); j++, edg_i++) {
          if (inUse_[edg_i]) {
             int idx = sourceVertexIndex_[edg_i];
             rgEdgeEdgeIndexMap[idx].push_back(edg_i);
 
-            edgeIndexMap->incomingEdgeIndexMap_[curr] = edg_i;
+            edgeIndexMap.incomingEdgeIndexMap_[curr] = edg_i;
             curr++;
             edge_count++;
          }
@@ -215,7 +215,7 @@ void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap)
          throw runtime_error("createEdgeIndexMap: edge_count does not match edgeCounts_.");
       }
 
-      edgeIndexMap->incomingEdgeCount_[i] = edge_count;
+      edgeIndexMap.incomingEdgeCount_[i] = edge_count;
    }
 
    if (totalEdgeCount != curr) {
@@ -228,11 +228,11 @@ void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap)
 
    edg_i = 0;
    for (int i = 0; i < vertexCount; i++) {
-      edgeIndexMap->outgoingEdgeBegin_[i] = edg_i;
-      edgeIndexMap->outgoingEdgeCount_[i] = rgEdgeEdgeIndexMap[i].size();
+      edgeIndexMap.outgoingEdgeBegin_[i] = edg_i;
+      edgeIndexMap.outgoingEdgeCount_[i] = rgEdgeEdgeIndexMap[i].size();
 
       for (BGSIZE j = 0; j < rgEdgeEdgeIndexMap[i].size(); j++, edg_i++) {
-         edgeIndexMap->outgoingEdgeIndexMap_[edg_i] = rgEdgeEdgeIndexMap[i][j];
+         edgeIndexMap.outgoingEdgeIndexMap_[edg_i] = rgEdgeEdgeIndexMap[i][j];
       }
    }
 }

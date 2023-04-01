@@ -29,8 +29,8 @@ void Connections911::setup()
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
 
    // we can obtain the Layout, which holds the vertices, from the Model
-   shared_ptr<Layout> layout = Simulator::getInstance().getModel()->getLayout();
-   shared_ptr<AllVertices> vertices = layout->getVertices();
+   Layout &layout = *Simulator::getInstance().getModel()->getLayout();
+   AllVertices &vertices = *layout.getVertices();
 
    // Get list of edges sorted by target in ascending order from GraphManager
    GraphManager &gm = GraphManager::getInstance();
@@ -40,10 +40,10 @@ void Connections911::setup()
    for (auto it = sorted_edge_list.begin(); it != sorted_edge_list.end(); ++it) {
       size_t srcV = gm.source(*it);
       size_t destV = gm.target(*it);
-      edgeType type = layout->edgType(srcV, destV);
-      BGFLOAT *sumPoint = &vertices->summationMap_[destV];
+      edgeType type = layout.edgType(srcV, destV);
+      BGFLOAT *sumPoint = &vertices.summationMap_[destV];
 
-      BGFLOAT dist = layout->dist_(srcV, destV);
+      BGFLOAT dist = layout.dist_(srcV, destV);
       LOG4CPLUS_DEBUG(edgeLogger_, "Source: " << srcV << " Dest: " << destV << " Dist: " << dist);
 
       BGSIZE iEdg;

@@ -27,7 +27,7 @@ public:
    }
 
    // Invokes constructor for desired concrete class
-   shared_ptr<AllVertices> createVertices(const string &className);
+   unique_ptr<AllVertices> createVertices(const string &className);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    VerticesFactory(VerticesFactory const &) = delete;

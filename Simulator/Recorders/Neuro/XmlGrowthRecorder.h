@@ -64,8 +64,8 @@ private:
    void getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap);
 
    // track firing rate
-   shared_ptr<CompleteMatrix> ratesHistory_;
+   unique_ptr<CompleteMatrix> ratesHistory_;
 
    // track radii
-   shared_ptr<CompleteMatrix> radiiHistory_;
+   unique_ptr<CompleteMatrix> radiiHistory_;
 };

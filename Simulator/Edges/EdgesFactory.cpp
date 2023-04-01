@@ -44,11 +44,11 @@ void EdgesFactory::registerClass(const string &className, CreateFunction functio
 /// @param className Edges class name.
 /// @return Shared pointer to edges intance if className is found in
 ///         createFunctions map, nullptr otherwise.
-shared_ptr<AllEdges> EdgesFactory::createEdges(const string &className)
+unique_ptr<AllEdges> EdgesFactory::createEdges(const string &className)
 {
    auto createEdgesIter = createFunctions.find(className);
    if (createEdgesIter != createFunctions.end()) {
-      return shared_ptr<AllEdges>(createEdgesIter->second());
+      return unique_ptr<AllEdges>(createEdgesIter->second());
    }
 
    return nullptr;

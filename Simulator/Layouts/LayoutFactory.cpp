@@ -15,14 +15,10 @@
 LayoutFactory::LayoutFactory()
 {
    // register layout classes
+   // TODO: Change the create functions to be specific to this .cc file
    registerClass("FixedLayout", &FixedLayout::Create);
    registerClass("DynamicLayout", &DynamicLayout::Create);
    registerClass("Layout911", &Layout911::Create);
-}
-
-LayoutFactory::~LayoutFactory()
-{
-   createFunctions.clear();
 }
 
 ///  Register layout class and its creation function to the factory.
@@ -40,11 +36,11 @@ void LayoutFactory::registerClass(const string &className, CreateFunction functi
 /// @param className Layout class name.
 /// @return Shared pointer to layout instance if className is found in
 ///         createFunctions map, nullptr otherwise.
-shared_ptr<Layout> LayoutFactory::createLayout(const string &className)
+unique_ptr<Layout> LayoutFactory::createLayout(const string &className)
 {
    auto createLayoutIter = createFunctions.find(className);
    if (createLayoutIter != createFunctions.end()) {
-      return shared_ptr<Layout>(createLayoutIter->second());
+      return unique_ptr<Layout>(createLayoutIter->second());
    }
 
    return nullptr;

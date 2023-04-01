@@ -27,7 +27,7 @@ public:
    }
 
    /// Invokes constructor for desired concrete class
-   shared_ptr<Connections> createConnections(const string &className);
+   unique_ptr<Connections> createConnections(const string &className);
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.
    ConnectionsFactory(ConnectionsFactory const &) = delete;
@@ -46,6 +46,6 @@ private:
    /// Makes class-to-function map an internal factory member.
    ConnectionsFunctionMap createFunctions;
 
-   /// Register connection class and it's create function to the factory.
+   /// Register connection class and its create function to the factory.
    void registerClass(const string &className, CreateFunction function);
 };

@@ -6,14 +6,14 @@
  * @brief The base class of all connections classes
  *
  * In graph-based networks, vertices are connected through edges where messages are exchanged.
- * The strength of connections is characterized by edge's weight. 
+ * The strength of connections is characterized by the edge's weight. 
  * The connections classes define topologies, the way to connect vertices,  
  * and dynamics, the way to change connections as time elapses, of the networks. 
  * 
- * Connections can be either static or dynamic. The static connectons are ones where
+ * Connections can be either static or dynamic. The static connections are ones where
  * connections are established at initialization and never change. 
  * The dynamic connections can be changed as the networks evolve, so in the dynamic networks'
- * edges will be created, deleted, or their weight will be modifed.  
+ * edges will be created, deleted, or their weight will be modified.  
  *
  * Connections classes may maintain intra-epoch states of connections in the network. 
  * This includes history and parameters that inform how new connections are made during growth.
@@ -42,11 +42,11 @@ public:
    ///  Destructor
    virtual ~Connections();
 
-   /// Returns shared pointer to Synapses/Edges
-   shared_ptr<AllEdges> getEdges() const;
+   /// Returns pointer to Synapses/Edges
+   AllEdges *getEdges() const;
 
-   /// Returns a shared pointer to the EdgeIndexMap
-   shared_ptr<EdgeIndexMap> getEdgeIndexMap() const;
+   /// Returns a pointer to the EdgeIndexMap
+   EdgeIndexMap *getEdgeIndexMap() const;
 
    /// Calls Synapses to create EdgeIndexMap and stores it as a member variable
    void createEdgeIndexMap();
@@ -61,7 +61,7 @@ public:
    /// Registered to OperationManager as Operations::op::loadParameters
    virtual void loadParameters() = 0;
 
-   ///  Prints out all parameters to logging file.
+   ///  Prints out all parameters to the logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const = 0;
 
@@ -99,8 +99,8 @@ public:
 #endif   // USE_GPU
 
 protected:
-   shared_ptr<AllEdges> edges_;
-   shared_ptr<EdgeIndexMap> synapseIndexMap_;
+   unique_ptr<AllEdges> edges_;
+   unique_ptr<EdgeIndexMap> synapseIndexMap_;
 
    log4cplus::Logger fileLogger_;
    log4cplus::Logger edgeLogger_;

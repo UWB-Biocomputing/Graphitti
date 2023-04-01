@@ -47,9 +47,9 @@ Layout::~Layout()
 {
 }
 
-shared_ptr<AllVertices> Layout::getVertices() const
+AllVertices *Layout::getVertices() const
 {
-   return vertices_;
+   return vertices_.get();
 }
 
 int Layout::getNumVertices() const

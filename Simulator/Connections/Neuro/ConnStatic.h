@@ -7,19 +7,19 @@
  *
  * The small-world networks are regular networks rewired to introduce increasing amounts
  * of disorder, which can be highly clustered, like regular lattices, yet have small
- * characterisic path length, like random graphs. 
+ * characteristic path length, like random graphs. 
  *
  * The structural properties of these graphs are quantified by their characteristic path
  * length \f$L(p)\f$ and clustering coefficient \f$C(p)\f$. Here \f$L\f$ is defined as the number of edges
  * in the shortest path between two vertices, average over all pairs of vertices.
  * The clustering coefficient \f$C(p)\f$ is defined as follows. Suppose that a vertex \f$v\f$ has \f$k_v\f$
- * neighbours; then at most \f$k_v (k_v - 1) / 2\f$ edges can exist between them (this occurs when
- * every neighbour of \f$v\f$ is connected to every other neighbour of \f$v\f$).
+ * neighbors; then at most \f$k_v (k_v - 1) / 2\f$ edges can exist between them (this occurs when
+ * every neighbor of \f$v\f$ is connected to every other neighbor of \f$v\f$).
  * Let \f$C_v\f$ denote the fracion of these allowable edges that actually exist.
- * Define \f$C\f$ as the avarage of \f$C_v\f$ over all \f$v\f$ (Watts etal. 1998).
+ * Define \f$C\f$ as the average of \f$C_v\f$ overall \f$v\f$ (Watts et al. 1998).
  *
- * We first create a regular network characterised by two parameters: number of maximum 
- * connections per neurons and connection radius threshold, then rewire it according 
+ * We first create a regular network characterized by two parameters: the number of maximum 
+ * connections per neuron and connection radius threshold, then rewire it according 
  * to the small-world rewiring probability.
  */
 
@@ -56,7 +56,7 @@ public:
    /// Registered to OperationManager as Operations::op::loadParameters
    virtual void loadParameters() override;
 
-   ///  Prints out all parameters to logging file.
+   ///  Prints out all parameters to the logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
@@ -121,7 +121,7 @@ private:
    BGFLOAT inhWeight_[2];
 
    struct DistDestVertex {
-      BGFLOAT dist;     ///< destance to the destination vertex
+      BGFLOAT dist;     ///< distance to the destination vertex
       int destVertex;   ///< index of the destination vertex
 
       bool operator<(const DistDestVertex &other) const

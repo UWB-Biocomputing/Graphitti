@@ -249,14 +249,15 @@ bool Simulator::instantiateSimulatorObjects()
 {
    // Model Definition
 #if defined(USE_GPU)
-   model_ = shared_ptr<Model>(new GPUModel());
+   model_ = unique_ptr<Model>(new GPUModel());
 #else
-   model_ = shared_ptr<Model>(new CPUModel());
+   model_ = unique_ptr<Model>(new CPUModel());
 #endif
 
    // Perform check on all instantiated objects.
-   if (!model_ || !model_->getConnections() || !model_->getConnections()->getEdges()
-       || !model_->getLayout() || !model_->getLayout()->getVertices() || !model_->getRecorder()) {
+   if (!model_ || (model_->getConnections() == nullptr)
+       || (model_->getConnections()->getEdges() == nullptr) || (model_->getLayout() == nullptr)
+       || (model_->getLayout()->getVertices() == nullptr) || (model_->getRecorder() == nullptr)) {
       return false;
    }
    return true;
@@ -373,9 +374,9 @@ string Simulator::getStimulusFileName() const
    return stimulusFileName_;
 }
 
-shared_ptr<Model> Simulator::getModel() const
+Model *Simulator::getModel() const
 {
-   return model_;
+   return model_.get();
 }
 
 #ifdef PERFORMANCE_METRICS

@@ -19,12 +19,12 @@
  *  edge strengths from the weight matrix.
  *  Note: Platform Dependent.
  *
- *  @param  numVertices         number of vertices to update.
+ *  @param  numVertices         The number of vertices to update.
  *  @param  vertices            The AllVertices object.
- *  @param  synapses           The AllEdges object.
+ *  @param  synapses            The AllEdges object.
  *  @param  allVerticesDevice   GPU address to the AllVertices struct in device memory.
- *  @param  allEdgesDevice  GPU address to the allEdges struct in device memory.
- *  @param  layout             The Layout object.
+ *  @param  allEdgesDevice      GPU address to the AllEdges struct in device memory.
+ *  @param  layout              The Layout object.
  */
 void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &vertices,
                                        AllEdges &synapses,

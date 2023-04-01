@@ -1,27 +1,29 @@
 /**
  * @file ConnGrowth.cpp
- * 
- * @ingroup Simulator/Connections
- * 
- * @brief The model of the activity dependent neurite outgrowth
  *
- * Below all of the resources for the various
- * connections are instantiated and initialized.
- * All of the allocation for memory is done in the
+ * @ingroup Simulator/Connections
+ *
+ * @brief The model of the activity-dependent neurite outgrowth
+ *
+ * Below are all of the resources for the various
+ * connections that are instantiated and initialized.
+ * 
+ * All of the memory allocations are done in the
  * constructor’s parameters and not in the body of
  * the function. Once all memory has been allocated
  * the constructor fills in known information
  * into “radii” and “rates”.
- * 
+ *
  * ERROR
  * terminate called after throwing an instance of 'std::bad_alloc'
  *      what():  St9bad_alloc
+ * 
  * CAUSE
  * As simulations expand in size the number of
- * neurons in total increases exponentially. When
+ * neurons in total increase exponentially. When
  * using a MATRIX_TYPE = “complete” the amount of
  * used memory increases by another order of magnitude.
- * Once enough memory is used no more memory can be
+ * Once enough memory is used, no more memory can be
  * allocated and a “bsd_alloc” will be thrown.
  * The following members of the connection constructor
  * consume equally vast amounts of memory as the
@@ -31,6 +33,7 @@
  *      - delta         - dist
  *      - areai
  */
+
 
 #include "ConnGrowth.h"
 #include "AllEdges.h"
