@@ -110,7 +110,7 @@ public:
    ///  @param  randNoise              Reference to the random noise array.
    ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
-                                float *randNoise, EdgeIndexMap *edgeIndexMapDevice)
+                                float *randNoise, EdgeIndexMapDevice *edgeIndexMapDevice)
       = 0;
 
    ///  Set some parameters used for advanceVerticesDevice.

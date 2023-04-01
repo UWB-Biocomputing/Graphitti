@@ -78,16 +78,8 @@ void Connections::createEdgeIndexMap()
    int maxEdges = vertexCount * edges_->maxEdgesPerVertex_;
 
    if (synapseIndexMap_ == nullptr) {
-      synapseIndexMap_ = shared_ptr<EdgeIndexMap>(new EdgeIndexMap(vertexCount, maxEdges));
+      synapseIndexMap_ = make_shared<EdgeIndexMap>(EdgeIndexMap(vertexCount, maxEdges));
    }
-
-   fill_n(synapseIndexMap_->incomingEdgeBegin_, vertexCount, 0);
-   fill_n(synapseIndexMap_->incomingEdgeCount_, vertexCount, 0);
-   fill_n(synapseIndexMap_->incomingEdgeIndexMap_, maxEdges, 0);
-   fill_n(synapseIndexMap_->outgoingEdgeBegin_, vertexCount, 0);
-   fill_n(synapseIndexMap_->outgoingEdgeCount_, vertexCount, 0);
-   fill_n(synapseIndexMap_->outgoingEdgeIndexMap_, maxEdges, 0);
-
    edges_->createEdgeIndexMap(synapseIndexMap_);
 }
 

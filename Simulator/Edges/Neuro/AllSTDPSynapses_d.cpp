@@ -24,7 +24,8 @@
 ///  @param[in] allVerticesDevice      GPU address of AllNeurons structures on device memory.
 ///  @param[in] maxSpikes             Maximum number of spikes per neuron per epoch.
 
-__global__ void advanceSTDPSynapsesDevice(int totalSynapseCount, EdgeIndexMap *edgeIndexMapDevice,
+__global__ void advanceSTDPSynapsesDevice(int totalSynapseCount,
+                                          EdgeIndexMapDevice *edgeIndexMapDevice,
                                           uint64_t simulationStep, const BGFLOAT deltaT,
                                           AllSTDPSynapsesDeviceProperties *allEdgesDevice,
                                           AllSpikingNeuronsDeviceProperties *allVerticesDevice,
@@ -268,7 +269,7 @@ void AllSTDPSynapses::advanceEdges(void *allEdgesDevice, void *allVerticesDevice
    int blocksPerGrid = (totalEdgeCount_ + threadsPerBlock - 1) / threadsPerBlock;
    // Advance synapses ------------->
    advanceSTDPSynapsesDevice<<<blocksPerGrid, threadsPerBlock>>>(
-      totalEdgeCount_, (EdgeIndexMap *)edgeIndexMapDevice, g_simulationStep,
+      totalEdgeCount_, (EdgeIndexMapDevice *)edgeIndexMapDevice, g_simulationStep,
       Simulator::getInstance().getDeltaT(), (AllSTDPSynapsesDeviceProperties *)allEdgesDevice,
       (AllSpikingNeuronsDeviceProperties *)allVerticesDevice, maxSpikes);
 }
@@ -562,7 +563,8 @@ CUDA_CALLABLE uint64_t getSTDPSynapseSpikeHistoryDevice(
 ///                                      on device memory.
 ///  @param[in] allVerticesDevice         GPU address of AllVertices structures on device memory.
 ///  @param[in] maxSpikes                Maximum number of spikes per neuron per epoch.
-__global__ void advanceSTDPSynapsesDevice(int totalSynapseCount, EdgeIndexMap *edgeIndexMapDevice,
+__global__ void advanceSTDPSynapsesDevice(int totalSynapseCount,
+                                          EdgeIndexMapDevice *edgeIndexMapDevice,
                                           uint64_t simulationStep, const BGFLOAT deltaT,
                                           AllSTDPSynapsesDeviceProperties *allEdgesDevice,
                                           AllSpikingNeuronsDeviceProperties *allVerticesDevice,

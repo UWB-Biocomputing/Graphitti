@@ -30,7 +30,7 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
                                         float *randNoise,
                                         AllIZHNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        EdgeIndexMap *edgeIndexMapDevice,
+                                        EdgeIndexMapDevice *edgeIndexMapDevice,
                                         bool fAllowBackPropagation);
 
 
@@ -185,7 +185,7 @@ void AllIZHNeurons::clearNeuronSpikeCounts(void *allVerticesDevice)
 ///  Notify outgoing synapses if neuron has fired.
 void AllIZHNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
                                     void *allEdgesDevice, float *randNoise,
-                                    EdgeIndexMap *edgeIndexMapDevice)
+                                    EdgeIndexMapDevice *edgeIndexMapDevice)
 {
    int vertex_count = Simulator::getInstance().getTotalVertices();
    int maxSpikes = (int)((Simulator::getInstance().getEpochDuration()
@@ -222,7 +222,7 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
                                         float *randNoise,
                                         AllIZHNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        EdgeIndexMap *edgeIndexMapDevice,
+                                        EdgeIndexMapDevice *edgeIndexMapDevice,
                                         bool fAllowBackPropagation)
 {
    // determine which neuron this thread is processing

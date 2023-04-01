@@ -22,7 +22,7 @@
 ///  @param[in] allEdgesDevice     Pointer to Synapse structures in device memory.
 
 __global__ void advanceSpikingSynapsesDevice(int totalSynapseCount,
-                                             EdgeIndexMap *edgeIndexMapDevice,
+                                             EdgeIndexMapDevice *edgeIndexMapDevice,
                                              uint64_t simulationStep, const BGFLOAT deltaT,
                                              AllSpikingSynapsesDeviceProperties *allEdgesDevice);
 
@@ -330,7 +330,7 @@ void AllSpikingSynapses::advanceEdges(void *allEdgesDevice, void *allVerticesDev
    int blocksPerGrid = (totalEdgeCount_ + threadsPerBlock - 1) / threadsPerBlock;
    // Advance synapses ------------->
    advanceSpikingSynapsesDevice<<<blocksPerGrid, threadsPerBlock>>>(
-      totalEdgeCount_, (EdgeIndexMap *)edgeIndexMapDevice, g_simulationStep,
+      totalEdgeCount_, (EdgeIndexMapDevice *)edgeIndexMapDevice, g_simulationStep,
       Simulator::getInstance().getDeltaT(), (AllSpikingSynapsesDeviceProperties *)allEdgesDevice);
 }
 
@@ -446,7 +446,7 @@ void AllSpikingSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
 
 
 __global__ void advanceSpikingSynapsesDevice(int totalSynapseCount,
-                                             EdgeIndexMap *edgeIndexMapDevice,
+                                             EdgeIndexMapDevice *edgeIndexMapDevice,
                                              uint64_t simulationStep, const BGFLOAT deltaT,
                                              AllSpikingSynapsesDeviceProperties *allEdgesDevice)
 {

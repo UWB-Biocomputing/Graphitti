@@ -78,7 +78,7 @@ public:
    ///  @param  randNoise              Reference to the random noise array.
    ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
    virtual void advanceVertices(AllEdges &synapses, void *allVerticesDevice, void *allEdgesDevice,
-                                float *randNoise, EdgeIndexMap *edgeIndexMapDevice);
+                                float *randNoise, EdgeIndexMapDevice *edgeIndexMapDevice);
 
    ///  Allocate GPU memories to store all neurons' states,
    ///  and copy them from host to GPU memory.

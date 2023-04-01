@@ -114,9 +114,9 @@ public:
    void setStimulusFileName(const string &fileName);
 
 #ifdef PERFORMANCE_METRICS
-   Timer
+   Timer &
       getTimer();   /// Timer measures performance of epoch. returns copy of internal timer owned by simulator.
-   Timer getShort_timer();   ///Timer for measuring performance of connection update.
+   Timer &getShort_timer();   ///Timer for measuring performance of connection update.
 #endif
 
    /// Delete these methods because they can cause copy instances of the singleton when using threads.

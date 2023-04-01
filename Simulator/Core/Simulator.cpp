@@ -370,13 +370,13 @@ shared_ptr<Model> Simulator::getModel() const
    return model_;
 }
 
-#ifdef PERFOMANCE_METRICS
-Timer Simulator::getTimer() const
+#ifdef PERFORMANCE_METRICS
+Timer &Simulator::getTimer()
 {
    return timer;
 }
 
-Timer Simulator::getShort_timer() const
+Timer &Simulator::getShort_timer()
 {
    return short_timer;
 }

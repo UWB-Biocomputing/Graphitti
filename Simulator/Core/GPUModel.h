@@ -118,8 +118,10 @@ protected:
    /// Pointer to device random noise array.
    float *randNoise_d;
 
+#if defined(USE_GPU)
    /// Pointer to synapse index map in device memory.
-   EdgeIndexMap *synapseIndexMapDevice_;
+   EdgeIndexMapDevice *synapseIndexMapDevice_;
+#endif   // defined(USE_GPU)
 
    /// Synapse structures in device memory.
    AllSpikingSynapsesDeviceProperties *allEdgesDevice_;
@@ -161,6 +163,6 @@ void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, uns
 extern __global__ void
    calcSummationMapDevice(int totalVertices,
                           AllSpikingNeuronsDeviceProperties *__restrict__ allNeurnsDevice,
-                          const EdgeIndexMap *__restrict__ synapseIndexMapDevice_,
+                          const EdgeIndexMapDevice *__restrict__ synapseIndexMapDevice_,
                           const AllSpikingSynapsesDeviceProperties *__restrict__ allEdgesDevice);
 #endif

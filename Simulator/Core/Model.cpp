@@ -21,6 +21,7 @@
 #include "LayoutFactory.h"
 #include "ParameterManager.h"
 #include "RecorderFactory.h"
+#include "Simulator.h"
 
 /// Constructor
 Model::Model()
@@ -79,13 +80,13 @@ void Model::setupSim()
    connections_->getEdges()->setupEdges();
 #ifdef PERFORMANCE_METRICS
    // Start timer for initialization
-   Simulator::getInstance.short_timer.start();
+   Simulator::getInstance().getShort_timer().start();
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Setting up Layout...");
    layout_->setup();
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (layout)
-   t_host_initialization_layout += Simulator::getInstance().short_timer.lap() / 1000000.0;
+   t_host_initialization_layout += Simulator::getInstance().getShort_timer().lap() / 1000000.0;
 #endif
    // Init radii and rates history matrices with default values
    if (recorder_ != nullptr) {
@@ -98,13 +99,13 @@ void Model::setupSim()
 
 #ifdef PERFORMANCE_METRICS
    // Start timer for initialization
-   Simulator::getInstance().short_timer.start();
+   Simulator::getInstance().getShort_timer().start();
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Setting up Connections...");
    connections_->setup();
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (connections)
-   t_host_initialization_connections += Simulator::getInstance().short_timer.lap() / 1000000.0;
+   t_host_initialization_connections += Simulator::getInstance().getShort_timer().lap() / 1000000.0;
 #endif
 
    // create an edge index map
