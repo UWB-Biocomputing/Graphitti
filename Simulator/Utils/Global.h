@@ -8,6 +8,7 @@
 // Globally available functions and default parameter values.
 
 #pragma once
+
 #include <cmath>
 #include <iomanip>
 #include <random>
