@@ -33,11 +33,6 @@ void HostSInputRegular::init()
 /// @param[in] psi       Pointer to the simulation information.
 void HostSInputRegular::term()
 {
-   if (values != nullptr)
-      delete[] values;
-
-   if (nShiftValues != nullptr)
-      delete[] nShiftValues;
 }
 
 /// Process input stimulus for each time step.

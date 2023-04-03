@@ -29,9 +29,12 @@ public:
    // Invokes constructor for desired concrete class
    unique_ptr<AllVertices> createVertices(const string &className);
 
-   /// Delete these methods because they can cause copy instances of the singleton when using threads.
-   VerticesFactory(VerticesFactory const &) = delete;
-   void operator=(VerticesFactory const &) = delete;
+   /// Delete copy and move methods to avoid copy instances of the singleton
+   VerticesFactory(const VerticesFactory &verticesFactory) = delete;
+   VerticesFactory &operator=(const VerticesFactory &verticesFactory) = delete;
+
+   VerticesFactory(VerticesFactory &&verticesFactory) = delete;
+   VerticesFactory &operator=(VerticesFactory &&verticesFactory) = delete;
 
 private:
    /// Constructor is private to keep a singleton instance of this class.

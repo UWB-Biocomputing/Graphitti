@@ -15,7 +15,6 @@
 LayoutFactory::LayoutFactory()
 {
    // register layout classes
-   // TODO: Change the create functions to be specific to this .cc file
    registerClass("FixedLayout", &FixedLayout::Create);
    registerClass("DynamicLayout", &DynamicLayout::Create);
    registerClass("Layout911", &Layout911::Create);

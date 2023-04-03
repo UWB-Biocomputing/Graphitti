@@ -29,9 +29,12 @@ public:
    /// Invokes constructor for desired concrete class
    unique_ptr<Connections> createConnections(const string &className);
 
-   /// Delete these methods because they can cause copy instances of the singleton when using threads.
-   ConnectionsFactory(ConnectionsFactory const &) = delete;
-   void operator=(ConnectionsFactory const &) = delete;
+   /// Delete copy and move methods to avoid copy instances of the singleton
+   ConnectionsFactory(const ConnectionsFactory &connectionsFactory) = delete;
+   ConnectionsFactory &operator=(const ConnectionsFactory &connectionsFactory) = delete;
+
+   ConnectionsFactory(ConnectionsFactory &&connectionsFactory) = delete;
+   ConnectionsFactory &operator=(ConnectionsFactory &&connectionsFactory) = delete;
 
 private:
    /// Constructor is private to keep a singleton instance of this class.

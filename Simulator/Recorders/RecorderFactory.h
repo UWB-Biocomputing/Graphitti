@@ -29,9 +29,12 @@ public:
    // Invokes constructor for desired concrete class
    unique_ptr<IRecorder> createRecorder(const string &className);
 
-   /// Delete these methods because they can cause copy instances of the singleton when using threads.
-   RecorderFactory(RecorderFactory const &) = delete;
-   void operator=(RecorderFactory const &) = delete;
+   /// Delete copy and move methods to avoid copy instances of the singleton
+   RecorderFactory(const RecorderFactory &recorderFactory) = delete;
+   RecorderFactory &operator=(const RecorderFactory &recorderFactory) = delete;
+
+   RecorderFactory(RecorderFactory &&recorderFactory) = delete;
+   RecorderFactory &operator=(RecorderFactory &&recorderFactory) = delete;
 
 private:
    /// Constructor is private to keep a singleton instance of this class.

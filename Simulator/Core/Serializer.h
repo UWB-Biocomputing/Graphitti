@@ -14,11 +14,9 @@ public:
    Serializer() = default;
 
    Serializer(const Serializer &serializer) = default;   // default copy constructor
-
    Serializer &operator=(const Serializer &serializer) = default;   // default copy assignment
 
    Serializer(Serializer &&serializer) = default;   // default move constructor
-
    Serializer &operator=(Serializer &&) = default;   // default move assignment
 
    ///  Serializes synapse weights, source vertices, destination vertices,

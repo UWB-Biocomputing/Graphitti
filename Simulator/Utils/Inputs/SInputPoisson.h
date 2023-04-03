@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include <vector>
+
 #ifndef _SINPUTPOISSON_H_
    #define _SINPUTPOISSON_H_
 
@@ -44,13 +46,13 @@ protected:
    BGFLOAT lambda;
 
    //! interval counter
-   int *nISIs;
+   vector<int> nISIs;
 
    //! List of synapses
-   AllEdges *edges_;
+   unique_ptr<AllEdges> edges_;
 
    //! Masks for stimulus input
-   bool *masks;
+   unique_ptr<bool[]> masks;
 };
 
 #endif   // _SINPUTPOISSON_H_

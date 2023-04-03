@@ -62,9 +62,12 @@ public:
 
    bool getFileByXpath(const string &path, ifstream &file);
 
-   /// Delete these methods because they can cause copy instances of the singleton when using threads.
-   ParameterManager(ParameterManager const &) = delete;
-   void operator=(ParameterManager const &) = delete;
+   /// Delete copy and move methods to avoid copy instances of the singleton
+   ParameterManager(const ParameterManager &parameterManager) = delete;
+   ParameterManager &operator=(const ParameterManager &parameterManager) = delete;
+
+   ParameterManager(ParameterManager &&parameterManager) = delete;
+   ParameterManager &operator=(ParameterManager &&parameterManager) = delete;
 
 private:
    unique_ptr<TiXmlDocument> xmlDocument_;

@@ -27,9 +27,10 @@ public:
    // Invokes constructor for desired concrete class
    unique_ptr<Layout> createLayout(const string &className);
 
-   /// Delete these methods because they can cause copy instances of the singleton when using threads.
+   /// Delete copy and move methods to avoid copy instances of the singleton
    LayoutFactory(const LayoutFactory &layoutFactory) = delete;
    LayoutFactory &operator=(const LayoutFactory &layoutFactory) = delete;
+
    LayoutFactory(LayoutFactory &&layoutFactory) = delete;
    LayoutFactory &operator=(LayoutFactory &&layoutFactory) = delete;
 

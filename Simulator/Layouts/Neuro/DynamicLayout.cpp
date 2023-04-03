@@ -59,7 +59,7 @@ void DynamicLayout::generateVertexTypeMap(int numVertices)
 
    LOG4CPLUS_INFO(fileLogger_, "Randomly selecting inhibitory neurons...");
 
-   int *rgInhibitoryLayout = new int[numInhibitory];
+   vector<int> rgInhibitoryLayout(numInhibitory);
 
    for (int i = 0; i < numInhibitory; i++) {
       rgInhibitoryLayout[i] = i;
@@ -75,7 +75,6 @@ void DynamicLayout::generateVertexTypeMap(int numVertices)
    for (int i = 0; i < numInhibitory; i++) {
       vertexTypeMap_[rgInhibitoryLayout[i]] = INH;
    }
-   delete[] rgInhibitoryLayout;
 
    LOG4CPLUS_INFO(fileLogger_, "Done initializing vertex type map");
 }

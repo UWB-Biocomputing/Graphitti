@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <vector>
+
 #ifndef _SINPUTREGULAR_H_
    #define _SINPUTREGULAR_H_
 
@@ -57,10 +59,10 @@ protected:
    vector<BGFLOAT> initValues;
 
    //! Input values, where each entry corresponds with a summationPoint.
-   BGFLOAT *values;
+   vector<BGFLOAT> values;
 
    //! Shift values, which determin the synch of stimuli (all 0 when synchronous)
-   int *nShiftValues;
+   vector<int> nShiftValues;
 };
 
 #endif   // _SINPUTREGULAR_H_

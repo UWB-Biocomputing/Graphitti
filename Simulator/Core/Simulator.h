@@ -119,11 +119,12 @@ public:
    Timer &getShort_timer();   /// Timer for measuring performance of connection update.
 #endif
 
-   /// Delete these methods because they can cause copy instances of the
-   /// singleton when using threads.
-   Simulator(Simulator const &) = delete;
+   /// Delete copy and move methods to avoid copy instances of the singleton
+   Simulator(const Simulator &simulator) = delete;
+   Simulator &operator=(const Simulator &simulator) = delete;
 
-   void operator=(Simulator const &) = delete;
+   Simulator(Simulator &&simulator) = delete;
+   Simulator &operator=(Simulator &&simulator) = delete;
 
 private:
    Simulator();   /// Constructor is private to keep a singleton instance of this

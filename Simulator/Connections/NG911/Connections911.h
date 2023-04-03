@@ -30,7 +30,7 @@ public:
       return new Connections911();
    }
    /// Records typeMap history for recorders
-   vertexType *oldTypeMap_ = nullptr;
+   vector<vertexType> oldTypeMap_;
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///  Initialize the network characterized by parameters:
