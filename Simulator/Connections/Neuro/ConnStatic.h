@@ -67,19 +67,19 @@ public:
    }
 
    /// Get array of vertex weights
-   vector<BGFLOAT> getWCurrentEpoch() const
+   const vector<BGFLOAT> &getWCurrentEpoch() const
    {
       return WCurrentEpoch_;
    }
 
    /// Get all edge source vertex indices
-   vector<int> getSourceVertexIndexCurrentEpoch() const
+   const vector<int> &getSourceVertexIndexCurrentEpoch() const
    {
       return sourceVertexIndexCurrentEpoch_;
    }
 
    /// Get all edge destination vertex indices
-   vector<int> getDestVertexIndexCurrentEpoch() const
+   const vector<int> &getDestVertexIndexCurrentEpoch() const
    {
       return destVertexIndexCurrentEpoch_;
    }

@@ -9,9 +9,6 @@
 
 #pragma once
 
-#include <cmath>
-#include <iomanip>
-#include <random>
 #ifndef _GLOBAL_H_
    #define _GLOBAL_H_
 

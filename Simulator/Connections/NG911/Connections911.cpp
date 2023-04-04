@@ -87,8 +87,7 @@ bool Connections911::updateConnections(AllVertices &vertices)
    // Record old type map
    int numVertices = Simulator::getInstance().getTotalVertices();
    Layout &layout = *Simulator::getInstance().getModel()->getLayout();
-   oldTypeMap_.resize(numVertices);
-   memcpy(oldTypeMap_.data(), layout.vertexTypeMap_.data(), numVertices * sizeof(vertexType));
+   oldTypeMap_ = layout.vertexTypeMap_;
 
    // Erase PSAPs
    for (int i = 0; i < psapsToErase_; i++) {
