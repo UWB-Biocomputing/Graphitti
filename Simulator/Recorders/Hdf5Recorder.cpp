@@ -212,8 +212,6 @@ void Hdf5Recorder::term()
       delete[] spikesProbedNeurons_;
       delete[] offsetSpikesProbedNeurons_;
    }
-
-   //delete resultOut_;
 }
 
 /// Compile history information in every epoch.
@@ -325,7 +323,6 @@ void Hdf5Recorder::compileHistories(AllVertices &vertices)
             spikesProbedNeurons_[i].clear();
             
          }
-
          
       }
    }

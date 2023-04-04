@@ -80,7 +80,6 @@ protected:
 
    /// track radii
    BGFLOAT *radiiHistory_;
-   //BGFLOAT radiiHistory_;
 
    /// track firing rate
    BGFLOAT *ratesHistory_;
