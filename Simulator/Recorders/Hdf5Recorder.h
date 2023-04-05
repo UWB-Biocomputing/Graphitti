@@ -82,7 +82,6 @@ protected:
    H5File resultOut_;
 
    /// hdf5 file dataset
-
    //static or simple dataset variables
    DataSet dataSetXloc_;
    DataSet dataSetYloc_;
@@ -96,7 +95,7 @@ protected:
    //extentable dataset variable
    DataSet dataSetSpikesHist_;
    DataSet dataSetSpikesProbedNeurons_;
-   
+
    /// Keep track of where we are in incrementally writing spikes
    hsize_t *offsetSpikesProbedNeurons_;
 

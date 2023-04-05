@@ -74,7 +74,7 @@ protected:
    void writeRadiiRates();
 
    /// hdf5 file dataset
-   //extentable DataSet 
+   ///extentable DataSet
    DataSet dataSetRatesHist_;
    DataSet dataSetRadiiHist_;
 
