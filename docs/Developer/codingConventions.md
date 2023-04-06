@@ -59,7 +59,7 @@ Code is written once and read a thousand times. Hence, it is important we keep o
     - We use `#pragma once` instead of `#define` guards.
 
   * const and constexpr
-    - We put `const` and `constexpr` before the name as it is more readable
+    - We put `const` and `constexpr` before the typename as it is more readable
 
         `const  int i = 100;` not  `int const  i = 100;`
         

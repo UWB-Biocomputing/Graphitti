@@ -115,14 +115,14 @@ Recommendation:
 ## **Aliases**
 - Prefer using `using` over `typedef` as it provides a more consistent syntax with the rest of C++ and works with templates.
 
-## **Namespaces**
-TODO
-
 ## **Inputs and Outputs**
 - Prefer to return by value or, failing that, return by reference. Avoid returning a pointer unless it can be null.
 - Parameters are either inputs to the function, outputs from the function, or both. Non-optional input parameters should usually be values or const references, while non-optional output and input/output parameters should usually be references (which cannot be null). 
 - Use `optional` to represent optional by-value inputs, and use a `const` pointer when the non-optional form would have used a reference. Use non-const pointers to represent `optional` outputs and `optional` input/output parameters.
 - Use `optional` to express “value-or-not-value”, or “possibly an answer”, or “object with delayed initialization”, as it increases the level of abstraction, making it easier for others to understand what your code is doing. 
+
+## **Namespaces**
+TODO
 
 ---------
 [<< Go back to the Coding Conventions page](codingConventions.md)
