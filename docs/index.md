@@ -14,13 +14,15 @@
 
 2. [Developer Documentation](Developer/index.md)
    
-   2.1 Student Quick Start
+   2.1 [Student Quick Start](Developer/StudentSetup.md)
    
-   2.2 Coding Conventions
+   2.2 [Coding Conventions](Developer/codingConventions.md)
 
-   2.3 Graphitti Repository Tools and Workflows
+   2.3 [C++ Style Guide](Developer/cppStyleGuide.md)
 
-   2.4 Graphitti System Documentation
+   2.4 [Graphitti Repository Tools and Workflows](Developer/index.md) 
+
+   2.5 [Graphitti System Documentation](Developer/index.md)
 
 3. [Testing](Testing/index.md)
 
