@@ -40,7 +40,7 @@ public:
    Connections();
 
    ///  Destructor
-   virtual ~Connections();
+   virtual ~Connections() = default;
 
    /// Returns pointer to Synapses/Edges
    AllEdges *getEdges() const;

@@ -39,7 +39,7 @@ class ConnStatic : public Connections {
 public:
    ConnStatic();
 
-   virtual ~ConnStatic();
+   virtual ~ConnStatic() = default;
 
    static Connections *Create()
    {

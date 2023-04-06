@@ -46,9 +46,9 @@ enum enumClassSynapses {
 
 class AllNeuroEdges : public AllEdges {
 public:
-   AllNeuroEdges();
+   AllNeuroEdges() = default;
 
-   virtual ~AllNeuroEdges();
+   virtual ~AllNeuroEdges() = default;
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    virtual void setupEdges() override;

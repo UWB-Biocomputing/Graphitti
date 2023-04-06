@@ -11,14 +11,6 @@
 #include "Layout911.h"
 #include "ParameterManager.h"
 
-All911Vertices::All911Vertices()
-{
-}
-
-All911Vertices::~All911Vertices()
-{
-}
-
 // Allocate memory for all class properties
 void All911Vertices::setupVertices()
 {

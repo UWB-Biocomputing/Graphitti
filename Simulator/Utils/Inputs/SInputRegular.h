@@ -25,7 +25,8 @@ class SInputRegular : public ISInput {
 public:
    //! The constructor for SInputRegular.
    SInputRegular(TiXmlElement *parms);
-   ~SInputRegular();
+
+   ~SInputRegular() = default;
 
    //! Initialize data.
    virtual void init();

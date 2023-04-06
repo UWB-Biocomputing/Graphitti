@@ -29,10 +29,6 @@ AllSpikingSynapses::AllSpikingSynapses(const int numVertices, const int maxEdges
    setupEdges(numVertices, maxEdges);
 }
 
-AllSpikingSynapses::~AllSpikingSynapses()
-{
-}
-
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 void AllSpikingSynapses::setupEdges()
 {

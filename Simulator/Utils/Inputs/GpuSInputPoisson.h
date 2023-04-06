@@ -24,6 +24,7 @@ class GpuSInputPoisson : public SInputPoisson {
 public:
    //! The constructor for GpuSInputPoisson.
    GpuSInputPoisson(TiXmlElement *parms);
+
    ~GpuSInputPoisson();
 
    //! Initialize data.

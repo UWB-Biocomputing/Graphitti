@@ -18,9 +18,9 @@ using namespace std;
 
 class Connections911 : public Connections {
 public:
-   Connections911();
+   Connections911() = default;
 
-   virtual ~Connections911();
+   virtual ~Connections911() = default;
 
    ///  Creates an instance of the class.
    ///

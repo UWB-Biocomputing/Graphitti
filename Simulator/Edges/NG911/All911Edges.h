@@ -30,11 +30,11 @@ struct All911EdgeDeviceProperties;
 
 class All911Edges : public AllEdges {
 public:
-   All911Edges();
+   All911Edges() = default;
 
    All911Edges(const int numVertices, const int maxEdges);
 
-   virtual ~All911Edges();
+   virtual ~All911Edges() = default;
 
    ///  Creates an instance of the class.
    ///

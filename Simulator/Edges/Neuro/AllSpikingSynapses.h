@@ -39,7 +39,7 @@ public:
 
    AllSpikingSynapses(const int numVertices, const int maxEdges);
 
-   virtual ~AllSpikingSynapses();
+   virtual ~AllSpikingSynapses() = default;
 
    static AllEdges *Create()
    {

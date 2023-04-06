@@ -45,11 +45,6 @@ Model::Model()
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
-/// Destructor
-Model::~Model()
-{
-}
-
 /// Save simulation results to an output destination.
 void Model::saveResults()
 {

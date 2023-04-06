@@ -77,7 +77,7 @@ public:
 
    AllSTDPSynapses(const int numVertices, const int maxEdges);
 
-   virtual ~AllSTDPSynapses();
+   virtual ~AllSTDPSynapses() = default;
 
    static AllEdges *Create()
    {

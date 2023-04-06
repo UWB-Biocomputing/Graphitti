@@ -18,10 +18,6 @@ HostSInputPoisson::HostSInputPoisson(TiXmlElement *parms) : SInputPoisson(parms)
 {
 }
 
-HostSInputPoisson::~HostSInputPoisson()
-{
-}
-
 /// Initialize data.
 ///
 /// @param[in] psi       Pointer to the simulation information.

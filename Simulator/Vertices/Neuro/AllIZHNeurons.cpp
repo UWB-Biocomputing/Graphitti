@@ -9,15 +9,6 @@
 #include "AllIZHNeurons.h"
 #include "ParseParamError.h"
 
-// Default constructor
-AllIZHNeurons::AllIZHNeurons() : AllIFNeurons()
-{
-}
-
-AllIZHNeurons::~AllIZHNeurons()
-{
-}
-
 ///  Setup the internal structure of the class (allocate memories).
 void AllIZHNeurons::setupVertices()
 {

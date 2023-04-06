@@ -24,9 +24,9 @@
 class XmlGrowthRecorder : public XmlRecorder {
 public:
    /// THe constructor and destructor
-   XmlGrowthRecorder();
+   XmlGrowthRecorder() = default;
 
-   ~XmlGrowthRecorder();
+   ~XmlGrowthRecorder() = default;
 
    static IRecorder *Create()
    {

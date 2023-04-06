@@ -38,7 +38,7 @@ class AllVertices {
 public:
    AllVertices();
 
-   virtual ~AllVertices();
+   virtual ~AllVertices() = default;
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all neurons' state.

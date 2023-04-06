@@ -30,9 +30,9 @@ struct AllIFNeuronsDeviceProperties;
 
 class AllIFNeurons : public AllSpikingNeurons {
 public:
-   AllIFNeurons();
+   AllIFNeurons() = default;
 
-   virtual ~AllIFNeurons();
+   virtual ~AllIFNeurons() = default;
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all neurons' state.

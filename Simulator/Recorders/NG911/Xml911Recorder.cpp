@@ -13,15 +13,6 @@
 #include "Xml911Recorder.h"
 #include "Connections911.h"
 
-
-Xml911Recorder::Xml911Recorder()
-{
-}
-
-Xml911Recorder::~Xml911Recorder()
-{
-}
-
 /// Init radii and rates history matrices with default values
 void Xml911Recorder::initDefaultValues()
 {

@@ -77,7 +77,7 @@ class GPUModel : public Model {
 public:
    GPUModel();
 
-   virtual ~GPUModel();
+   virtual ~GPUModel() = default;
 
    /// Set up model state, if anym for a specific simulation run.
    virtual void setupSim() override;

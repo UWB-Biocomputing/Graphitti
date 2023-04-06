@@ -13,16 +13,6 @@
 #include "Simulator.h"
 #include <vector>
 
-// TODO: We don't need to explicitly call the superclass constructor, right?
-//! The constructor and destructor
-XmlSTDPRecorder::XmlSTDPRecorder() : XmlRecorder()
-{
-}
-
-XmlSTDPRecorder::~XmlSTDPRecorder()
-{
-}
-
 void XmlSTDPRecorder::init()
 {
    const int numEpochs = Simulator::getInstance().getNumEpochs();

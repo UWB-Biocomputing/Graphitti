@@ -8,18 +8,10 @@
 
 #include "AllDynamicSTDPSynapses.h"
 
-AllDynamicSTDPSynapses::AllDynamicSTDPSynapses() : AllSTDPSynapses()
-{
-}
-
 AllDynamicSTDPSynapses::AllDynamicSTDPSynapses(const int numVertices, const int maxEdges) :
    AllSTDPSynapses(numVertices, maxEdges)
 {
    setupEdges(numVertices, maxEdges);
-}
-
-AllDynamicSTDPSynapses::~AllDynamicSTDPSynapses()
-{
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).

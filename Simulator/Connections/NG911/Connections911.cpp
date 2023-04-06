@@ -13,14 +13,6 @@
 #include "Layout911.h"
 #include "ParameterManager.h"
 
-Connections911::Connections911()
-{
-}
-
-Connections911::~Connections911()
-{
-}
-
 void Connections911::setup()
 {
    int added = 0;

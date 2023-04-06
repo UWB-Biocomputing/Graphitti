@@ -94,10 +94,6 @@ SInputPoisson::SInputPoisson(TiXmlElement *parms) :
    fSInput = true;
 }
 
-SInputPoisson::~SInputPoisson()
-{
-}
-
 /// Initialize data.
 ///
 ///  @param[in] psi       Pointer to the simulation information.

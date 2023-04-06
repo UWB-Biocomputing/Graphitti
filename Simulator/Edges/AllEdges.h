@@ -21,7 +21,7 @@ class AllEdges {
 public:
    AllEdges();
    AllEdges(const int numVertices, const int maxEdges);
-   virtual ~AllEdges();
+   virtual ~AllEdges() = default;
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    virtual void setupEdges();

@@ -20,9 +20,7 @@
 
 class ISInput {
 public:
-   virtual ~ISInput()
-   {
-   }
+   virtual ~ISInput() = default;
 
    /// Initialize data
    virtual void init() = 0;

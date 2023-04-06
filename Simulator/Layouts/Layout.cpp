@@ -42,11 +42,6 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
-/// Destructor
-Layout::~Layout()
-{
-}
-
 AllVertices *Layout::getVertices() const
 {
    return vertices_.get();

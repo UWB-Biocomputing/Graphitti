@@ -96,11 +96,6 @@ const VectorMatrix &VectorMatrix::operator=(const VectorMatrix &rhs)
    return *this;
 }
 
-// Destructor
-VectorMatrix::~VectorMatrix()
-{
-}
-
 // Copy vector to this one
 void VectorMatrix::copy(const VectorMatrix &source)
 {

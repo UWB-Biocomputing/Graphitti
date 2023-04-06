@@ -40,18 +40,6 @@
 ******************************************/
 ///@{
 
-/// Private Class constructor
-/// Initialize any heap variables to null
-ParameterManager::ParameterManager()
-{
-}
-
-/// Class destructor
-/// Deallocate all heap memory managed by the class
-ParameterManager::~ParameterManager()
-{
-}
-
 /// Get Instance method that returns a reference to this object.
 ParameterManager &ParameterManager::getInstance()
 {

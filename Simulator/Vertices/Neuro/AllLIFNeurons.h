@@ -81,9 +81,9 @@
 // Class to hold all data necessary for all the Neurons.
 class AllLIFNeurons : public AllIFNeurons {
 public:
-   AllLIFNeurons();
+   AllLIFNeurons() = default;
 
-   virtual ~AllLIFNeurons();
+   virtual ~AllLIFNeurons() = default;
 
    ///  Creates an instance of the class.
    ///

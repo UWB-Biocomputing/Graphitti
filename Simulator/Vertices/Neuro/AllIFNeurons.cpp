@@ -14,15 +14,6 @@
 #include "ParameterManager.h"
 #include "ParseParamError.h"
 
-// Default constructor
-AllIFNeurons::AllIFNeurons()
-{
-}
-
-AllIFNeurons::~AllIFNeurons()
-{
-}
-
 ///  Setup the internal structure of the class (allocate memories).
 void AllIFNeurons::setupVertices()
 {

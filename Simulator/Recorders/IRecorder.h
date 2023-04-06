@@ -14,9 +14,7 @@
 class AllVertices;
 class IRecorder {
 public:
-   virtual ~IRecorder()
-   {
-   }
+   virtual ~IRecorder() = default;
 
    // Initialize data
    /// @param[in] stateOutputFileName  File name to save histories

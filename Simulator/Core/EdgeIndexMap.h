@@ -74,9 +74,7 @@ struct EdgeIndexMap {
       }
    };
 
-   ~EdgeIndexMap()
-   {
-   }
+   ~EdgeIndexMap() = default;
 
 private:
    /// Number of total vertices.

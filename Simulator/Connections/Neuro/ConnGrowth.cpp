@@ -55,11 +55,6 @@ ConnGrowth::ConnGrowth() : Connections()
    radiiSize_ = 0;
 }
 
-ConnGrowth::~ConnGrowth()
-{
-   radiiSize_ = 0;
-}
-
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 ///
 ///  @param  layout    Layout information of the neural network.

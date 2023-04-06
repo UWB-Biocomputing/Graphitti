@@ -21,7 +21,8 @@ class HostSInputRegular : public SInputRegular {
 public:
    //! The constructor for HostSInputRegular.
    HostSInputRegular(TiXmlElement *parms);
-   ~HostSInputRegular();
+
+   ~HostSInputRegular() = default;
 
    //! Initialize data.
    virtual void init();

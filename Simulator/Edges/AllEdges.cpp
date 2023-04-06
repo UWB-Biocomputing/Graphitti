@@ -35,12 +35,6 @@ AllEdges::AllEdges(const int numVertices, const int maxEdges)
    setupEdges(numVertices, maxEdges);
 }
 
-AllEdges::~AllEdges()
-{
-   countVertices_ = 0;
-   maxEdgesPerVertex_ = 0;
-}
-
 /// Load member variables from configuration file.
 /// Registered to OperationManager as Operation::op::loadParameters
 void AllEdges::loadParameters()

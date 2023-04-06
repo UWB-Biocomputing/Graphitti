@@ -12,17 +12,6 @@
 
 #if !defined(USE_GPU)
 
-/// Constructor
-CPUModel::CPUModel() : Model()
-{
-}
-
-/// Destructor
-CPUModel::~CPUModel()
-{
-   // Let Model base class handle de-allocation
-}
-
 /// Performs any finalization tasks on network following a simulation.
 void CPUModel::finish()
 {

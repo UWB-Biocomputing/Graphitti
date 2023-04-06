@@ -27,7 +27,7 @@ class Simulator {
 public:
    static Simulator &getInstance();   /// Acts as constructor, returns the instance
                                       /// of singleton object
-   virtual ~Simulator();              /// Destructor
+   virtual ~Simulator() = default;    /// Destructor
 
    void setup();   /// Setup simulation.
 
@@ -129,9 +129,6 @@ public:
 private:
    Simulator();   /// Constructor is private to keep a singleton instance of this
                   /// class.
-
-   void freeResources();   /// Frees dynamically allocated memory associated with
-                           /// the maps.
 
    int width_;   /// Width of neuron map (assumes square)
 

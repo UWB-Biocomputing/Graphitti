@@ -27,7 +27,8 @@ class SInputPoisson : public ISInput {
 public:
    //! The constructor for SInputPoisson.
    SInputPoisson(TiXmlElement *parms);
-   ~SInputPoisson();
+
+   ~SInputPoisson() = default;
 
    //! Initialize data.
    virtual void init();

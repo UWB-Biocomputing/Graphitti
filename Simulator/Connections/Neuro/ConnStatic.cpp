@@ -30,10 +30,6 @@ ConnStatic::ConnStatic()
    radiiSize_ = 0;
 }
 
-ConnStatic::~ConnStatic()
-{
-}
-
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 ///  Initialize the small world network characterized by parameters:
 ///  number of maximum connections per vertex, connection radius threshold, and

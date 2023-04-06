@@ -348,10 +348,6 @@ uint32_t MTRand::hash(time_t t, clock_t c)
    return (h1 + differ++) ^ h2;
 }
 
-MTRand::~MTRand()
-{
-}
-
 // same as rand()
 BGFLOAT MTRand::operator()()
 {

@@ -8,15 +8,7 @@
 
 #include "All911Edges.h"
 
-All911Edges::All911Edges() : AllEdges()
-{
-}
-
 All911Edges::All911Edges(const int numVertices, const int maxEdges)
-{
-}
-
-All911Edges::~All911Edges()
 {
 }
 

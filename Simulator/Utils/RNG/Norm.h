@@ -55,7 +55,7 @@
 */
 class Norm : public MTRand {
 public:
-   virtual ~Norm();
+   virtual ~Norm() = default;
 
    ///  Creates an instance of the class.
    ///

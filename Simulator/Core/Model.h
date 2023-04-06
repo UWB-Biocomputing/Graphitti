@@ -35,7 +35,7 @@ public:
    Model();
 
    /// Destructor
-   virtual ~Model();
+   virtual ~Model() = default;
 
    Connections *getConnections() const;
 

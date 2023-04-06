@@ -23,9 +23,9 @@
 // Class to hold all data necessary for all the Vertices.
 class All911Vertices : public AllVertices {
 public:
-   All911Vertices();
+   All911Vertices() = default;
 
-   virtual ~All911Vertices();
+   virtual ~All911Vertices() = default;
 
    ///  Creates an instance of the class.
    ///

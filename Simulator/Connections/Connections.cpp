@@ -49,10 +49,6 @@ Connections::Connections()
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
 }
 
-Connections::~Connections()
-{
-}
-
 AllEdges *Connections::getEdges() const
 {
    return edges_.get();

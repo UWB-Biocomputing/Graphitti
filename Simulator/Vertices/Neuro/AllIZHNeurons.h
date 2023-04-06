@@ -79,9 +79,9 @@ struct AllIZHNeuronsDeviceProperties;
 // Class to hold all data necessary for all the Neurons.
 class AllIZHNeurons : public AllIFNeurons {
 public:
-   AllIZHNeurons();
+   AllIZHNeurons() = default;
 
-   virtual ~AllIZHNeurons();
+   virtual ~AllIZHNeurons() = default;
 
    static AllVertices *Create()
    {

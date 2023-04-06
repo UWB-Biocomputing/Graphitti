@@ -19,9 +19,9 @@
 class Xml911Recorder : public XmlRecorder {
 public:
    /// The constructor and destructor
-   Xml911Recorder();
+   Xml911Recorder() = default;
 
-   ~Xml911Recorder();
+   ~Xml911Recorder() = default;
 
    static IRecorder *Create()
    {

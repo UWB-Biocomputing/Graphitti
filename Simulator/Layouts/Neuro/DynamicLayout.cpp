@@ -11,15 +11,6 @@
 #include "ParseParamError.h"
 #include "Util.h"
 
-// TODO: Neither the constructor nor the destructor are needed here, right?
-DynamicLayout::DynamicLayout() : Layout()
-{
-}
-
-DynamicLayout::~DynamicLayout()
-{
-}
-
 ///  Prints out all parameters to logging file.
 ///  Registered to OperationManager as Operation::printParameters
 void DynamicLayout::printParameters() const

@@ -12,17 +12,6 @@
 #include "Model.h"
 #include "Simulator.h"
 
-// TODO: We don't need the explicit call to the superclass constructor, right?
-//! The constructor and destructor
-XmlGrowthRecorder::XmlGrowthRecorder()
-{
-}
-
-// TODO: Is this needed?
-XmlGrowthRecorder::~XmlGrowthRecorder()
-{
-}
-
 void XmlGrowthRecorder::init()
 {
    // call the superclass method first

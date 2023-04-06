@@ -43,10 +43,10 @@
 class CPUModel : public Model {
 public:
    /// Constructor
-   CPUModel();
+   CPUModel() = default;
 
    /// Destructor
-   virtual ~CPUModel();
+   virtual ~CPUModel() = default;
 
    /// Performs any finalization tasks on network following a simulation.
    virtual void finish() override;

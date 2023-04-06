@@ -42,12 +42,6 @@ Simulator::Simulator()
                                                      printParametersFunc);
 }
 
-/// Destructor
-Simulator::~Simulator()
-{
-   freeResources();
-}
-
 /// Initialize and prepare network for simulation.
 void Simulator::setup()
 {
@@ -144,18 +138,11 @@ void Simulator::reset()
    LOG4CPLUS_INFO(fileLogger_, "Resetting Simulator");
    // Terminate the simulator
    model_->finish();
-   // Clean up objects
-   freeResources();
    // Reset global simulation Step to 0
    g_simulationStep = 0;
    // Initialize and prepare network for simulation
    model_->setupSim();
    LOG4CPLUS_INFO(fileLogger_, "Simulator Reset Finished");
-}
-
-/// Clean up objects.
-void Simulator::freeResources()
-{
 }
 
 /// Run simulation

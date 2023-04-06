@@ -11,14 +11,6 @@
 #include "GraphManager.h"
 #include "ParameterManager.h"
 
-Layout911::Layout911()
-{
-}
-
-Layout911::~Layout911()
-{
-}
-
 void Layout911::registerGraphProperties()
 {
    // The base class registers properties that are common to all vertices

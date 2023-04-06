@@ -8,14 +8,6 @@
 
 #include "AllNeuroEdges.h"
 
-AllNeuroEdges::AllNeuroEdges() : AllEdges()
-{
-}
-
-AllNeuroEdges::~AllNeuroEdges()
-{
-}
-
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 void AllNeuroEdges::setupEdges()
 {

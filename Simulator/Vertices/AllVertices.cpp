@@ -27,11 +27,6 @@ AllVertices::AllVertices() : size_(0)
    vertexLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));
 }
 
-AllVertices::~AllVertices()
-{
-   size_ = 0;
-}
-
 ///  Setup the internal structure of the class (allocate memories).
 void AllVertices::setupVertices()
 {

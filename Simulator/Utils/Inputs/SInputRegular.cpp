@@ -100,10 +100,6 @@ SInputRegular::SInputRegular(TiXmlElement *parms) : values(nullptr)
    fSInput = true;
 }
 
-SInputRegular::~SInputRegular()
-{
-}
-
 /// Initialize data.
 ///
 /// @param[in] psi       Pointer to the simulation information.

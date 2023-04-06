@@ -16,9 +16,7 @@ using namespace std;
 class IFunctionNode {
 public:
    /// Destructor.
-   virtual ~IFunctionNode()
-   {
-   }
+   virtual ~IFunctionNode() = default;
 
    /// Invokes the stored function if the sent operation type matches the operation type the function is stored as.
    virtual bool invokeFunction(const Operations::op &operation) const = 0;

@@ -83,7 +83,7 @@ class ConnGrowth : public Connections {
 public:
    ConnGrowth();
 
-   virtual ~ConnGrowth();
+   virtual ~ConnGrowth() = default;
 
    static Connections *Create()
    {

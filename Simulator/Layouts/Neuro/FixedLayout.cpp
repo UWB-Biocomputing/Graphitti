@@ -16,10 +16,6 @@ FixedLayout::FixedLayout() : gridLayout_(true), Layout()
 {
 }
 
-FixedLayout::~FixedLayout()
-{
-}
-
 void FixedLayout::setup()
 {
    // Base class allocates memory for: xLoc_, yLoc, dist2_, and dist_

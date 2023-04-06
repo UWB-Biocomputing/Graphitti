@@ -106,10 +106,13 @@ protected:
 
    //Methods
 public:
-   MTRand(uint32_t oneSeed);                                   // initialize with a simple uint32_t
+   MTRand(uint32_t oneSeed);   // initialize with a simple uint32_t
+
    MTRand(uint32_t *const bigSeed, uint32_t seedLength = N);   // or an array
+
    MTRand();   // auto-initialize with /dev/urandom or time() and clock()
-   virtual ~MTRand();
+
+   virtual ~MTRand() = default;
 
    // Do NOT use for CRYPTOGRAPHY without securely hashing several returned
    // values together, otherwise the generator state can be learned after

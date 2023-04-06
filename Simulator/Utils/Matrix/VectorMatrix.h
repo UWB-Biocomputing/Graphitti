@@ -74,7 +74,7 @@ public:
    VectorMatrix(const VectorMatrix &oldV);
 
    ///  @brief De-allocate storage
-   virtual ~VectorMatrix();
+   virtual ~VectorMatrix() = default;
 
    ///  @brief Set elements of vector to a constant. Doesn't change its size.
    ///  @param c the constant

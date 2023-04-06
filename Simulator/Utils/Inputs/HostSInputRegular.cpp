@@ -16,10 +16,6 @@ HostSInputRegular::HostSInputRegular(TiXmlElement *parms) : SInputRegular(parms)
 {
 }
 
-HostSInputRegular::~HostSInputRegular()
-{
-}
-
 /// Initialize data.
 ///
 /// @param[in] psi       Pointer to the simulation information.

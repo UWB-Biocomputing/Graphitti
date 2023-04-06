@@ -16,17 +16,6 @@
 const H5std_string nameRatesHist("ratesHistory");
 const H5std_string nameRadiiHist("radiiHistory");
 
-
-// TODO: Do we need the empty constructor and destructor?
-// The constructor and destructor
-Hdf5GrowthRecorder::Hdf5GrowthRecorder()
-{
-}
-
-Hdf5GrowthRecorder::~Hdf5GrowthRecorder()
-{
-}
-
 ///  Create data spaces and data sets of the hdf5 for recording histories.
 void Hdf5GrowthRecorder::initDataSet()
 {

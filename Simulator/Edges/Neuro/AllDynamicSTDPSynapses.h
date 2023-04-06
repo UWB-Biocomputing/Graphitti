@@ -58,11 +58,11 @@ struct AllDynamicSTDPSynapsesDeviceProperties;
 
 class AllDynamicSTDPSynapses : public AllSTDPSynapses {
 public:
-   AllDynamicSTDPSynapses();
+   AllDynamicSTDPSynapses() = default;
 
    AllDynamicSTDPSynapses(const int numVertices, const int maxEdges);
 
-   virtual ~AllDynamicSTDPSynapses();
+   virtual ~AllDynamicSTDPSynapses() = default;
 
    static AllEdges *Create()
    {

@@ -40,7 +40,7 @@ public:
    static ParameterManager &getInstance();
 
    /// Utility Methods
-   ~ParameterManager();
+   ~ParameterManager() = default;
 
    bool loadParameterFile(string path);
 
@@ -74,7 +74,7 @@ private:
    TiXmlElement *root_;
 
    /// Constructor is private to keep a singleton instance of this class.
-   ParameterManager();
+   ParameterManager() = default;
 
    bool checkDocumentStatus();
 };

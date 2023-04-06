@@ -30,7 +30,7 @@ class Layout {
 public:
    Layout();
 
-   virtual ~Layout();
+   virtual ~Layout() = default;
 
    AllVertices *getVertices() const;
 

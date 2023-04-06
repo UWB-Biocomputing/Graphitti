@@ -8,18 +8,10 @@
 
 #include "AllDSSynapses.h"
 
-AllDSSynapses::AllDSSynapses() : AllSpikingSynapses()
-{
-}
-
 AllDSSynapses::AllDSSynapses(const int numVertices, const int maxEdges) :
    AllSpikingSynapses(numVertices, maxEdges)
 {
    setupEdges(numVertices, maxEdges);
-}
-
-AllDSSynapses::~AllDSSynapses()
-{
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).

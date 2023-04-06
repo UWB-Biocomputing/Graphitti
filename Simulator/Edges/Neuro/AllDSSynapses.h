@@ -53,11 +53,11 @@ struct AllDSSynapsesDeviceProperties;
 
 class AllDSSynapses : public AllSpikingSynapses {
 public:
-   AllDSSynapses();
+   AllDSSynapses() = default;
 
    AllDSSynapses(const int numVertices, const int maxEdges);
 
-   virtual ~AllDSSynapses();
+   virtual ~AllDSSynapses() = default;
 
    static AllEdges *Create()
    {
