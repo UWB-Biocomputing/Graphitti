@@ -74,8 +74,9 @@ protected:
    void writeRadiiRates();
 
    /// hdf5 file dataset
-   DataSet *dataSetRatesHist_;
-   DataSet *dataSetRadiiHist_;
+   ///extentable DataSet
+   DataSet dataSetRatesHist_;
+   DataSet dataSetRadiiHist_;
 
    /// track radii
    BGFLOAT *radiiHistory_;

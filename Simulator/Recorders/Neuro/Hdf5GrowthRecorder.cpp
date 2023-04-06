@@ -38,13 +38,13 @@ void Hdf5GrowthRecorder::initDataSet()
    dims[0] = static_cast<hsize_t>(simulator.getNumEpochs() + 1);
    dims[1] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsRatesHist(2, dims);
-   dataSetRatesHist_ = new DataSet(resultOut_->createDataSet(nameRatesHist, H5_FLOAT, dsRatesHist));
+   dataSetRatesHist_ = resultOut_.createDataSet(nameRatesHist, H5_FLOAT, dsRatesHist);
 
    // create the data space & dataset for radii history
    dims[0] = static_cast<hsize_t>(simulator.getNumEpochs() + 1);
    dims[1] = static_cast<hsize_t>(simulator.getTotalVertices());
    DataSpace dsRadiiHist(2, dims);
-   dataSetRadiiHist_ = new DataSet(resultOut_->createDataSet(nameRadiiHist, H5_FLOAT, dsRadiiHist));
+   dataSetRadiiHist_ = resultOut_.createDataSet(nameRadiiHist, H5_FLOAT, dsRadiiHist);
 
    // allocate data memories
    ratesHistory_ = new BGFLOAT[simulator.getTotalVertices()];
@@ -149,38 +149,34 @@ void Hdf5GrowthRecorder::writeRadiiRates()
 {
    try {
       // Write radii and rates histories information:
-      hsize_t offset[2], count[2];
-      hsize_t dimsm[2];
-      DataSpace *dataspace;
-      DataSpace *memspace;
+      hsize_t offsetRadii[2], countRadii[2];
+      hsize_t dimsmRadii[2];
 
       // write radii history
-      offset[0] = Simulator::getInstance().getCurrentStep();
-      offset[1] = 0;
-      count[0] = 1;
-      count[1] = Simulator::getInstance().getTotalVertices();
-      dimsm[0] = 1;
-      dimsm[1] = Simulator::getInstance().getTotalVertices();
-      memspace = new DataSpace(2, dimsm, nullptr);
-      dataspace = new DataSpace(dataSetRadiiHist_->getSpace());
-      dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
-      dataSetRadiiHist_->write(radiiHistory_, H5_FLOAT, *memspace, *dataspace);
-      delete dataspace;
-      delete memspace;
+      offsetRadii[0] = Simulator::getInstance().getCurrentStep();
+      offsetRadii[1] = 0;
+      countRadii[0] = 1;
+      countRadii[1] = Simulator::getInstance().getTotalVertices();
+      dimsmRadii[0] = 1;
+      dimsmRadii[1] = Simulator::getInstance().getTotalVertices();
+      DataSpace memspace_radii(2, dimsmRadii, nullptr);
+      DataSpace dataspace_radii = dataSetRadiiHist_.getSpace();
+      dataspace_radii.selectHyperslab(H5S_SELECT_SET, countRadii, offsetRadii);
+      dataSetRadiiHist_.write(radiiHistory_, H5_FLOAT, memspace_radii, dataspace_radii);
 
       // write rates history
-      offset[0] = Simulator::getInstance().getCurrentStep();
-      offset[1] = 0;
-      count[0] = 1;
-      count[1] = Simulator::getInstance().getTotalVertices();
-      dimsm[0] = 1;
-      dimsm[1] = Simulator::getInstance().getTotalVertices();
-      memspace = new DataSpace(2, dimsm, nullptr);
-      dataspace = new DataSpace(dataSetRadiiHist_->getSpace());
-      dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
-      dataSetRatesHist_->write(ratesHistory_, H5_FLOAT, *memspace, *dataspace);
-      delete dataspace;
-      delete memspace;
+      hsize_t offsetRates[2], countRates[2];
+      hsize_t dimsmRates[2];
+      offsetRates[0] = Simulator::getInstance().getCurrentStep();
+      offsetRates[1] = 0;
+      countRates[0] = 1;
+      countRates[1] = Simulator::getInstance().getTotalVertices();
+      dimsmRates[0] = 1;
+      dimsmRates[1] = Simulator::getInstance().getTotalVertices();
+      DataSpace memspace(2, dimsmRates, nullptr);
+      DataSpace dataspace = dataSetRatesHist_.getSpace();
+      dataspace.selectHyperslab(H5S_SELECT_SET, countRates, offsetRates);
+      dataSetRatesHist_.write(ratesHistory_, H5_FLOAT, memspace, dataspace);
    }
 
    // catch failure caused by the H5File operations

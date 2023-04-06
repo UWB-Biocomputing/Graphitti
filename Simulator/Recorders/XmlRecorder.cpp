@@ -32,7 +32,7 @@ XmlRecorder::XmlRecorder() :
 }
 
 // Create a new xml file and initialize data
-/// @param[in] stateOutputFileName	File name to save histories
+/// @param[in] stateOutputFileName      File name to save histories
 void XmlRecorder::init()
 {
    resultOut_.open(resultFileName_.c_str());
@@ -80,7 +80,6 @@ void XmlRecorder::compileHistories(AllVertices &vertices)
       for (int eventIterator = 0;
            eventIterator < spNeurons.vertexEvents_[iNeuron].getNumEventsInEpoch();
            eventIterator++) {
-
          // compile network wide spike count in 10ms bins
          int idx2
             = static_cast<int>(static_cast<double>(spNeurons.vertexEvents_[iNeuron][eventIterator])
@@ -171,7 +170,6 @@ void XmlRecorder::printParameters()
 {
    LOG4CPLUS_DEBUG(fileLogger_, "\nXMLRECORDER PARAMETERS"
                                    << endl
-                                   << "\tResult file path: " << resultFileName_ 
-                                   << endl
+                                   << "\tResult file path: " << resultFileName_ << endl
                                    << "\tSpikes History Size: " << spikesHistory_.Size() << endl);
 }
