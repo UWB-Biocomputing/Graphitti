@@ -35,18 +35,18 @@
 
 #pragma once
 
-#include "AllEdges.h"
-#include "AllVertices.h"
 #include "Connections/Connections.h"
+#include "Edges/AllEdges.h"
 #include "Layouts/Layout.h"
+#include "Vertices/AllVertices.h"
 
 class CPUModel : public Model {
 public:
    /// Constructor
-   CPUModel();
+   CPUModel() = default;
 
    /// Destructor
-   virtual ~CPUModel();
+   virtual ~CPUModel() = default;
 
    /// Performs any finalization tasks on network following a simulation.
    virtual void finish() override;

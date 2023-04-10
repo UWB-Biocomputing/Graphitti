@@ -22,7 +22,8 @@ class HostSInputPoisson : public SInputPoisson {
 public:
    // The constructor for HostSInputPoisson.
    HostSInputPoisson(TiXmlElement *parms);
-   ~HostSInputPoisson();
+
+   ~HostSInputPoisson() = default;
 
    // Initialize data.
    virtual void init();

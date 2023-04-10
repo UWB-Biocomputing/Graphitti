@@ -1,24 +1,25 @@
 /**
  *  @file All911Edges.h
- * 
+ *
  *  @ingroup Simulator/Edges/NG911
  *
  *  @brief A container of all 911 edge data
  *
- *  The container holds edge parameters of all edges. 
- *  Each kind of edge parameter is stored in a 2D array. Each item in the first 
- *  dimention of the array corresponds with each vertex, and each item in the second
- *  dimension of the array corresponds with an edge parameter of each edge of the vertex. 
- *  Bacause each vertex owns different number of edges, the number of edges 
+ *  The container holds edge parameters of all edges.
+ *  Each kind of edge parameter is stored in a 2D array. Each item in the first
+ *  dimension of the array corresponds with each vertex, and each item in the second
+ *  dimension of the array corresponds with an edge parameter of each edge of the vertex.
+ * Because each vertex owns different number of edges, the number of edges
  *  for each vertex is stored in a 1D array, edge_counts.
  *
  *  For CUDA implementation, we used another structure, AllEdgesDevice, where edge
  *  parameters are stored in 1D arrays instead of 2D arrays, so that device functions
- *  can access these data less latency. When copying a edge parameter, P[i][j],
- *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in 
+ *  can access these data with less latency. When copying a edge parameter, P[i][j],
+ *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in
  *  AllEdgesDevice structure.
  *
  */
+
 #pragma once
 
 #include "All911Vertices.h"
@@ -29,11 +30,11 @@ struct All911EdgeDeviceProperties;
 
 class All911Edges : public AllEdges {
 public:
-   All911Edges();
+   All911Edges() = default;
 
    All911Edges(const int numVertices, const int maxEdges);
 
-   virtual ~All911Edges();
+   virtual ~All911Edges() = default;
 
    ///  Creates an instance of the class.
    ///

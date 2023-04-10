@@ -1,24 +1,24 @@
 /**
  *  @file AllSpikingSynapses.h
- * 
+ *
  *  @ingroup Simulator/Edges
  *
  *  @brief A container of all spiking synapse data
  *
- *  The container holds synapse parameters of all synapses. 
- *  Each kind of synapse parameter is stored in a 2D array. Each item in the first 
- *  dimention of the array corresponds with each neuron, and each item in the second
- *  dimension of the array corresponds with a synapse parameter of each synapse of the neuron. 
- *  Bacause each neuron owns different number of synapses, the number of synapses 
+ *  The container holds synapse parameters of all synapses.
+ *  Each kind of synapse parameter is stored in a 2D array. Each item in the first
+ *  dimension of the array corresponds with each neuron, and each item in the second
+ *  dimension of the array corresponds with a synapse parameter of each synapse of the neuron.
+ * Because each neuron owns different number of synapses, the number of synapses
  *  for each neuron is stored in a 1D array, edge_counts.
  *
  *  For CUDA implementation, we used another structure, AllEdgesDevice, where synapse
  *  parameters are stored in 1D arrays instead of 2D arrays, so that device functions
- *  can access these data less latency. When copying a synapse parameter, P[i][j],
- *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in 
+ *  can access these data with less latency. When copying a synapse parameter, P[i][j],
+ *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in
  *  AllEdgesDevice structure.
  *
- *  The latest implementation uses the identical data struture between host and CUDA;
+ *  The latest implementation uses the identical data structure between host and CUDA;
  *  that is, synapse parameters are stored in a 1D array, so we don't need conversion
  *  when copying data between host and device memory.
  */
@@ -39,7 +39,7 @@ public:
 
    AllSpikingSynapses(const int numVertices, const int maxEdges);
 
-   virtual ~AllSpikingSynapses();
+   virtual ~AllSpikingSynapses() = default;
 
    static AllEdges *Create()
    {
@@ -260,10 +260,10 @@ protected:
 
 public:
    ///  The decay for the psr.
-   BGFLOAT *decay_;
+   vector<BGFLOAT> decay_;
 
    ///  The synaptic time constant \f$\tau\f$ [units=sec; range=(0,100)].
-   BGFLOAT *tau_;
+   vector<BGFLOAT> tau_;
 
    BGFLOAT tau_II_;
    BGFLOAT tau_IE_;
@@ -278,19 +278,19 @@ public:
 #define LENGTH_OF_DELAYQUEUE (BYTES_OF_DELAYQUEUE * 8)
 
    ///  The synaptic transmission delay, descretized into time steps.
-   int *totalDelay_;
+   vector<int> totalDelay_;
 
    ///  Pointer to the delayed queue.
-   uint32_t *delayQueue_;
+   vector<uint32_t> delayQueue_;
 
    ///  The index indicating the current time slot in the delayed queue
    ///  Note: This variable is used in GpuSim_struct.cu but I am not sure
    ///  if it is actually from a synapse. Will need a little help here. -Aaron
    ///  Note: This variable can be GLOBAL VARIABLE, but need to modify the code.
-   int *delayIndex_;
+   vector<int> delayIndex_;
 
    ///  Length of the delayed queue.
-   int *delayQueueLength_;
+   vector<int> delayQueueLength_;
 
 protected:
 };

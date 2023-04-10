@@ -22,20 +22,20 @@ TEST(RNGFactory, GetInstanceReturnsInstance)
 
 TEST(RNGFactory, CreateMTRandInstance)
 {
-   shared_ptr<MTRand> rng = RNGFactory::getInstance().createRNG("MTRand");
+   unique_ptr<MTRand> rng = RNGFactory::getInstance().createRNG("MTRand");
    ASSERT_NE(nullptr, rng);
    ASSERT_NE(nullptr, dynamic_cast<MTRand *>(rng.get()));
 }
 
 TEST(RNGFactory, CreateNormInstance)
 {
-   shared_ptr<MTRand> rng = RNGFactory::getInstance().createRNG("Norm");
+   unique_ptr<MTRand> rng = RNGFactory::getInstance().createRNG("Norm");
    ASSERT_NE(nullptr, rng);
    ASSERT_NE(nullptr, dynamic_cast<Norm *>(rng.get()));
 }
 
 TEST(RNGFactory, CreateNonExistentClassReturnsNullPtr)
 {
-   shared_ptr<MTRand> rng = RNGFactory::getInstance().createRNG("NonExistent");
+   unique_ptr<MTRand> rng = RNGFactory::getInstance().createRNG("NonExistent");
    ASSERT_EQ(nullptr, rng);
 }

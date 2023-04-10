@@ -38,9 +38,9 @@ using namespace H5;
 class Hdf5GrowthRecorder : public Hdf5Recorder {
 public:
    /// The constructor and destructor
-   Hdf5GrowthRecorder();
+   Hdf5GrowthRecorder() = default;
 
-   ~Hdf5GrowthRecorder();
+   ~Hdf5GrowthRecorder() = default;
 
    static IRecorder *Create()
    {

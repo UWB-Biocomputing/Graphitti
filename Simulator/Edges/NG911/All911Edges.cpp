@@ -8,15 +8,7 @@
 
 #include "All911Edges.h"
 
-All911Edges::All911Edges() : AllEdges()
-{
-}
-
 All911Edges::All911Edges(const int numVertices, const int maxEdges)
-{
-}
-
-All911Edges::~All911Edges()
 {
 }
 
@@ -33,24 +25,28 @@ void All911Edges::setupEdges()
 
    // To do: Figure out whether we need all of these
    if (maxTotalEdges != 0) {
-      destVertexIndex_ = new int[maxTotalEdges];
-      W_ = new BGFLOAT[maxTotalEdges];
-      summationPoint_ = new BGFLOAT *[maxTotalEdges];
-      sourceVertexIndex_ = new int[maxTotalEdges];
-      // psr_ = new BGFLOAT[maxTotalEdges];
-      type_ = new edgeType[maxTotalEdges];
-      inUse_ = new bool[maxTotalEdges];
-      edgeCounts_ = new BGSIZE[numVertices];
+      // psr_.resize(maxTotalEdges);
+      // psr_.assign(maxTotalEdges, 0.0);
+      sourceVertexIndex_.resize(maxTotalEdges);
+      sourceVertexIndex_.assign(maxTotalEdges, 0);
 
-      for (BGSIZE i = 0; i < maxTotalEdges; i++) {
-         summationPoint_[i] = nullptr;
-         inUse_[i] = false;
-         W_[i] = 0;
-      }
+      destVertexIndex_.resize(maxTotalEdges, 0);
+      destVertexIndex_.assign(maxTotalEdges, 0);
 
-      for (int i = 0; i < numVertices; i++) {
-         edgeCounts_[i] = 0;
-      }
+      summationPoint_.resize(maxTotalEdges, nullptr);
+      summationPoint_.assign(maxTotalEdges, nullptr);
+
+      W_.resize(maxTotalEdges, 0);
+      W_.assign(maxTotalEdges, 0);
+
+      type_.resize(maxTotalEdges);
+      type_.assign(maxTotalEdges, ETYPE_UNDEF);
+
+      edgeCounts_.resize(numVertices, 0);
+      edgeCounts_.assign(numVertices, 0);
+
+      inUse_ = make_unique<bool[]>(maxTotalEdges);
+      fill_n(inUse_.get(), maxTotalEdges, false);
    }
 }
 

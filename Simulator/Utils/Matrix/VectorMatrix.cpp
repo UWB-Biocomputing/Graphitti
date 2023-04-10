@@ -29,7 +29,7 @@ Norm VectorMatrix::nRng;
 /// @param m multiplier used for initialization
 /// @param v values for initializing VectorMatrix
 VectorMatrix::VectorMatrix(string t, string i, int r, int c, BGFLOAT m, string values) :
-   Matrix(t, i, r, c, m), theVector(nullptr)
+   Matrix(t, i, r, c, m)
 {
    DEBUG_VECTOR(cerr << "Creating VectorMatrix, size: ";)
 
@@ -43,7 +43,7 @@ VectorMatrix::VectorMatrix(string t, string i, int r, int c, BGFLOAT m, string v
 
    DEBUG_VECTOR(cerr << rows << "X" << columns << ":" << endl;)
 
-   alloc(size);
+   theVector.resize(size);
 
    if (values != "") {   // Initialize from the text string
       istringstream valStream(values);
@@ -53,15 +53,12 @@ VectorMatrix::VectorMatrix(string t, string i, int r, int c, BGFLOAT m, string v
             theVector[i] *= multiplier;
          }
       } else {
-         clear();
          throw Matrix_invalid_argument("Illegal type for VectorMatrix with 'none' init: " + type);
       }
    } else if (init == "const") {
       if (type == "complete") {   // complete matrix with constant values
-         for (int i = 0; i < size; i++)
-            theVector[i] = multiplier;
+         theVector.assign(size, multiplier);
       } else {
-         clear();
          throw Matrix_invalid_argument("Illegal type for VectorMatrix with 'none' init: " + type);
       }
    } else if (init == "random") {
@@ -71,14 +68,13 @@ VectorMatrix::VectorMatrix(string t, string i, int r, int c, BGFLOAT m, string v
          theVector[i] = nRng();
       }
    } else {
-      clear();
       throw Matrix_invalid_argument("Illegal initialization for VectorMatrix: " + init);
    }
    DEBUG_VECTOR(cerr << "\tInitialized " << type << " vector to " << *this << endl;)
 }
 
 // Copy constructor
-VectorMatrix::VectorMatrix(const VectorMatrix &oldV) : theVector(nullptr)
+VectorMatrix::VectorMatrix(const VectorMatrix &oldV)
 {
    copy(oldV);
 }
@@ -86,9 +82,7 @@ VectorMatrix::VectorMatrix(const VectorMatrix &oldV) : theVector(nullptr)
 // Assignment operator: set elements of vector to constant
 const VectorMatrix &VectorMatrix::operator=(BGFLOAT c)
 {
-   for (int i = 0; i < size; i++)
-      theVector[i] = c;
-
+   theVector.assign(size, c);
    return *this;
 }
 
@@ -98,24 +92,8 @@ const VectorMatrix &VectorMatrix::operator=(const VectorMatrix &rhs)
    if (&rhs == this)
       return *this;
 
-   clear();
    copy(rhs);
    return *this;
-}
-
-// Destructor
-VectorMatrix::~VectorMatrix()
-{
-   clear();
-}
-
-// Clear out storage
-void VectorMatrix::clear(void)
-{
-   if (theVector != nullptr) {
-      delete[] theVector;
-      theVector = nullptr;
-   }
 }
 
 // Copy vector to this one
@@ -125,23 +103,9 @@ void VectorMatrix::copy(const VectorMatrix &source)
    SetAttributes(source.type, source.init, source.rows, source.columns, source.multiplier,
                  source.dimensions);
 
-   alloc(size);
+   // alloc(size);
 
-   for (int i = 0; i < size; i++)
-      theVector[i] = source.theVector[i];
-}
-
-// Allocate internal storage
-void VectorMatrix::alloc(int size)
-{
-   if (theVector != nullptr)
-      throw MatrixException("Attempt to allocate storage for non-cleared Vector.");
-
-   if ((theVector = new BGFLOAT[size]) == nullptr) {
-      throw Matrix_bad_alloc("Failed allocating storage of Vector copy.");
-   }
-
-   DEBUG_VECTOR(cerr << "\tStorage allocated for " << size << " element Vector." << endl;)
+   theVector = source.theVector;
 }
 
 // Polymorphic output
@@ -166,7 +130,7 @@ string VectorMatrix::toXML(string name) const
    return os.str();
 }
 
-// The math operations
+// ---------------The math operations--------------
 
 const VectorMatrix VectorMatrix::operator+(const VectorMatrix &rhs) const
 {

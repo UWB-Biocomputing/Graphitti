@@ -35,13 +35,13 @@ public:
    Model();
 
    /// Destructor
-   virtual ~Model();
+   virtual ~Model() = default;
 
-   shared_ptr<Connections> getConnections() const;
+   Connections *getConnections() const;
 
-   shared_ptr<Layout> getLayout() const;
+   Layout *getLayout() const;
 
-   shared_ptr<IRecorder> getRecorder() const;
+   IRecorder *getRecorder() const;
 
    /// Writes simulation results to an output destination.
    /// Downstream from IModel saveData()
@@ -87,11 +87,11 @@ protected:
    virtual void copyCPUtoGPU() = 0;
 
 protected:
-   shared_ptr<Connections> connections_;
+   unique_ptr<Connections> connections_;
 
-   shared_ptr<Layout> layout_;
+   unique_ptr<Layout> layout_;
 
-   shared_ptr<IRecorder> recorder_;
+   unique_ptr<IRecorder> recorder_;
 
    // shared_ptr<ISInput> input_;    /// Stimulus input object.
 

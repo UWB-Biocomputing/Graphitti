@@ -8,41 +8,10 @@
 
 #include "AllDSSynapses.h"
 
-AllDSSynapses::AllDSSynapses() : AllSpikingSynapses()
-{
-   lastSpike_ = nullptr;
-   r_ = nullptr;
-   u_ = nullptr;
-   D_ = nullptr;
-   U_ = nullptr;
-   F_ = nullptr;
-}
-
 AllDSSynapses::AllDSSynapses(const int numVertices, const int maxEdges) :
    AllSpikingSynapses(numVertices, maxEdges)
 {
    setupEdges(numVertices, maxEdges);
-}
-
-AllDSSynapses::~AllDSSynapses()
-{
-   BGSIZE maxTotalSynapses = maxEdgesPerVertex_ * countVertices_;
-
-   if (maxTotalSynapses != 0) {
-      delete[] lastSpike_;
-      delete[] r_;
-      delete[] u_;
-      delete[] D_;
-      delete[] U_;
-      delete[] F_;
-   }
-
-   lastSpike_ = nullptr;
-   r_ = nullptr;
-   u_ = nullptr;
-   D_ = nullptr;
-   U_ = nullptr;
-   F_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -63,12 +32,23 @@ void AllDSSynapses::setupEdges(const int numVertices, const int maxEdges)
    BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
    if (maxTotalSynapses != 0) {
-      lastSpike_ = new uint64_t[maxTotalSynapses];
-      r_ = new BGFLOAT[maxTotalSynapses];
-      u_ = new BGFLOAT[maxTotalSynapses];
-      D_ = new BGFLOAT[maxTotalSynapses];
-      U_ = new BGFLOAT[maxTotalSynapses];
-      F_ = new BGFLOAT[maxTotalSynapses];
+      lastSpike_.resize(maxTotalSynapses);
+      lastSpike_.assign(maxTotalSynapses, 0);
+
+      r_.resize(maxTotalSynapses);
+      r_.assign(maxTotalSynapses, 0);
+
+      u_.resize(maxTotalSynapses);
+      u_.assign(maxTotalSynapses, 0);
+
+      D_.resize(maxTotalSynapses);
+      D_.assign(maxTotalSynapses, 0);
+
+      U_.resize(maxTotalSynapses);
+      U_.assign(maxTotalSynapses, 0);
+
+      F_.resize(maxTotalSynapses);
+      F_.assign(maxTotalSynapses, 0);
    }
 }
 

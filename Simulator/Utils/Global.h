@@ -85,7 +85,7 @@ extern const BGFLOAT pi;
 extern MTRand initRNG;
 
 // A normalized random number generator.
-extern shared_ptr<MTRand> noiseRNG;
+extern unique_ptr<MTRand> noiseRNG;
 
 // The current simulation step.
 extern uint64_t g_simulationStep;

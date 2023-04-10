@@ -16,10 +16,6 @@ HostSInputRegular::HostSInputRegular(TiXmlElement *parms) : SInputRegular(parms)
 {
 }
 
-HostSInputRegular::~HostSInputRegular()
-{
-}
-
 /// Initialize data.
 ///
 /// @param[in] psi       Pointer to the simulation information.
@@ -33,11 +29,6 @@ void HostSInputRegular::init()
 /// @param[in] psi       Pointer to the simulation information.
 void HostSInputRegular::term()
 {
-   if (values != nullptr)
-      delete[] values;
-
-   if (nShiftValues != nullptr)
-      delete[] nShiftValues;
 }
 
 /// Process input stimulus for each time step.
@@ -60,7 +51,7 @@ void HostSInputRegular::inputStimulus()
    for (int i = Simulator::getInstance().getTotalVertices() - 1; i >= 0; --i) {
       if ((nStepsInCycle >= nShiftValues[i])
           && (nStepsInCycle < (nShiftValues[i] + nStepsDuration) % nStepsCycle))
-         Simulator::getInstance().getPSummationMap()[i] += values[i];
+         Simulator::getInstance().getLayout().getVertices().summationMap_[i] += values[i];
    }
 
    // update cycle count

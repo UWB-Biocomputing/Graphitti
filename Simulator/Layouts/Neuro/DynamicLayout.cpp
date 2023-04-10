@@ -11,15 +11,6 @@
 #include "ParseParamError.h"
 #include "Util.h"
 
-// TODO: Neither the constructor nor the destructor are needed here, right?
-DynamicLayout::DynamicLayout() : Layout()
-{
-}
-
-DynamicLayout::~DynamicLayout()
-{
-}
-
 ///  Prints out all parameters to logging file.
 ///  Registered to OperationManager as Operation::printParameters
 void DynamicLayout::printParameters() const
@@ -41,7 +32,8 @@ void DynamicLayout::generateVertexTypeMap(int numVertices)
    LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing vertex type map..." << endl);
 
    // Populate vertexTypeMap_ with EXC
-   fill_n(vertexTypeMap_, numVertices, EXC);
+   vertexTypeMap_.assign(numVertices_, EXC);
+   // fill_n(vertexTypeMap_, numVertices, );
 
    // for (int i = 0; i < numVertices; i++) {
    //    vertexTypeMap_[i] = EXC;
@@ -58,7 +50,7 @@ void DynamicLayout::generateVertexTypeMap(int numVertices)
 
    LOG4CPLUS_INFO(fileLogger_, "Randomly selecting inhibitory neurons...");
 
-   int *rgInhibitoryLayout = new int[numInhibitory];
+   vector<int> rgInhibitoryLayout(numInhibitory);
 
    for (int i = 0; i < numInhibitory; i++) {
       rgInhibitoryLayout[i] = i;
@@ -74,7 +66,6 @@ void DynamicLayout::generateVertexTypeMap(int numVertices)
    for (int i = 0; i < numInhibitory; i++) {
       vertexTypeMap_[rgInhibitoryLayout[i]] = INH;
    }
-   delete[] rgInhibitoryLayout;
 
    LOG4CPLUS_INFO(fileLogger_, "Done initializing vertex type map");
 }

@@ -14,7 +14,7 @@ extern void getValueList(const string &valString, vector<BGFLOAT> *pList);
 
 /// constructor
 /// @param[in] parms     Pointer to xml parms element
-SInputPoisson::SInputPoisson(TiXmlElement *parms) : nISIs(nullptr), edges_(nullptr), masks(nullptr)
+SInputPoisson::SInputPoisson(TiXmlElement *parms) :
 {
    fSInput = false;
 
@@ -42,11 +42,11 @@ SInputPoisson::SInputPoisson(TiXmlElement *parms) : nISIs(nullptr), edges_(nullp
    lambda = 1 / fr_mean;       // inverse firing rate
 
    // allocate memory for interval counter
-   nISIs = new int[Simulator::getInstance().getTotalVertices()];
-   memset(nISIs, 0, sizeof(int) * Simulator::getInstance().getTotalVertices());
+   nISIs.resize(Simulator::getInstance().getTotalVertices());
+   memset(nISIs.data(), 0, sizeof(int) * Simulator::getInstance().getTotalVertices());
 
    // allocate memory for input masks
-   masks = new bool[Simulator::getInstance().getTotalVertices()];
+   masks = make_unique<bool[]>(Simulator::getInstance().getTotalVertices());
 
    // read mask values and set it to masks
    vector<BGFLOAT> maskIndex;
@@ -94,10 +94,6 @@ SInputPoisson::SInputPoisson(TiXmlElement *parms) : nISIs(nullptr), edges_(nullp
    fSInput = true;
 }
 
-SInputPoisson::~SInputPoisson()
-{
-}
-
 /// Initialize data.
 ///
 ///  @param[in] psi       Pointer to the simulation information.
@@ -108,7 +104,7 @@ void SInputPoisson::init()
 
    // create an input synapse layer
    // TODO: do we need to support other types of synapses?
-   edges_ = new AllDSSynapses(Simulator::getInstance().getTotalVertices(), 1);
+   edges_ = make_unique<AllEdges>(Simulator::getInstance().getTotalVertices(), 1);
    for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalVertices();
         neuronIndex++) {
       edgeType type;
@@ -117,7 +113,8 @@ void SInputPoisson::init()
       else
          type = EE;
 
-      BGFLOAT *sumPoint = &(Simulator::getInstance().getPSummationMap()[neuronIndex]);
+      BGFLOAT *sumPoint
+         = &(Simulator::getInstance().getLayout().getVertices().summationMap_[neuronIndex]);
       BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * neuronIndex;
 
       edges_->createEdge(iEdg, 0, neuronIndex, sumPoint, Simulator::getInstance().getDeltaT(),
@@ -132,15 +129,4 @@ void SInputPoisson::init()
 ///  @param[in] psi       Pointer to the simulation information.
 void SInputPoisson::term()
 {
-   // clear memory for interval counter
-   if (nISIs != nullptr)
-      delete[] nISIs;
-
-   // clear the synapse layer, which destroy all synase objects
-   if (edges_ != nullptr)
-      delete edges_;
-
-   // clear memory for input masks
-   if (masks != nullptr)
-      delete[] masks;
 }

@@ -42,11 +42,11 @@ void ConnectionsFactory::registerClass(const string &className, CreateFunction f
 /// @param className Connections class name.
 /// @return Shared pointer to connections instance if className is found in
 ///         createFunctions map, nullptr otherwise.
-shared_ptr<Connections> ConnectionsFactory::createConnections(const string &className)
+unique_ptr<Connections> ConnectionsFactory::createConnections(const string &className)
 {
    auto createConnectionsIter = createFunctions.find(className);
    if (createConnectionsIter != createFunctions.end()) {
-      return shared_ptr<Connections>(createConnectionsIter->second());
+      return unique_ptr<Connections>(createConnectionsIter->second());
    }
 
    return nullptr;

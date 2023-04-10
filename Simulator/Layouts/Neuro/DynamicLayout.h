@@ -21,9 +21,9 @@ using namespace std;
 
 class DynamicLayout : public Layout {
 public:
-   DynamicLayout();
+   DynamicLayout() = default;
 
-   virtual ~DynamicLayout();
+   virtual ~DynamicLayout() = default;
 
    static Layout *Create()
    {

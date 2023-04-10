@@ -89,10 +89,6 @@ BGFLOAT Norm::operator()()
    return (mu_ + sigma_ * X1);
 }
 
-Norm::~Norm()
-{
-}
-
 Norm::Norm(BGFLOAT m, BGFLOAT s, uint32_t seed) : MTRand(seed), odd_(true), mu_(m), sigma_(s)
 {
 }

@@ -30,7 +30,7 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
                                         float *randNoise,
                                         AllIZHNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        EdgeIndexMap *edgeIndexMapDevice,
+                                        EdgeIndexMapDevice *edgeIndexMapDevice,
                                         bool fAllowBackPropagation);
 
 
@@ -115,18 +115,18 @@ void AllIZHNeurons::copyToDevice(void *allVerticesDevice)
 
    AllIFNeurons::copyToDevice(allVerticesDevice);
 
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Aconst_, Aconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Aconst_, Aconst_.data(), count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Bconst_, Bconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Bconst_, Bconst_.data(), count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Cconst_, Cconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Cconst_, Cconst_.data(), count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Dconst_, Dconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Dconst_, Dconst_.data(), count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));
-   HANDLE_ERROR(
-      cudaMemcpy(allVerticesDeviceProps.u_, u_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(
-      cudaMemcpy(allVerticesDeviceProps.C3_, C3_, count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.u_, u_.data(), count * sizeof(BGFLOAT),
+                           cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.C3_, C3_.data(), count * sizeof(BGFLOAT),
+                           cudaMemcpyHostToDevice));
 }
 
 ///  Copy all neurons' data from device to host.
@@ -143,18 +143,18 @@ void AllIZHNeurons::copyFromDevice(void *allVerticesDevice)
 
    int count = Simulator::getInstance().getTotalVertices();
 
-   HANDLE_ERROR(cudaMemcpy(Aconst_, allVerticesDeviceProps.Aconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Aconst_.data(), allVerticesDeviceProps.Aconst_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Bconst_, allVerticesDeviceProps.Bconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Bconst_.data(), allVerticesDeviceProps.Bconst_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Cconst_, allVerticesDeviceProps.Cconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Cconst_.data(), allVerticesDeviceProps.Cconst_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Dconst_, allVerticesDeviceProps.Dconst_, count * sizeof(BGFLOAT),
+   HANDLE_ERROR(cudaMemcpy(Dconst_.data(), allVerticesDeviceProps.Dconst_, count * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(
-      cudaMemcpy(u_, allVerticesDeviceProps.u_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(
-      cudaMemcpy(C3_, allVerticesDeviceProps.C3_, count * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(u_.data(), allVerticesDeviceProps.u_, count * sizeof(BGFLOAT),
+                           cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(C3_.data(), allVerticesDeviceProps.C3_, count * sizeof(BGFLOAT),
+                           cudaMemcpyDeviceToHost));
 }
 
 ///  Copy spike history data stored in device memory to host.
@@ -185,7 +185,7 @@ void AllIZHNeurons::clearNeuronSpikeCounts(void *allVerticesDevice)
 ///  Notify outgoing synapses if neuron has fired.
 void AllIZHNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
                                     void *allEdgesDevice, float *randNoise,
-                                    EdgeIndexMap *edgeIndexMapDevice)
+                                    EdgeIndexMapDevice *edgeIndexMapDevice)
 {
    int vertex_count = Simulator::getInstance().getTotalVertices();
    int maxSpikes = (int)((Simulator::getInstance().getEpochDuration()
@@ -222,7 +222,7 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
                                         float *randNoise,
                                         AllIZHNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        EdgeIndexMap *edgeIndexMapDevice,
+                                        EdgeIndexMapDevice *edgeIndexMapDevice,
                                         bool fAllowBackPropagation)
 {
    // determine which neuron this thread is processing

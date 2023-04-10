@@ -11,6 +11,7 @@
 #include "Matrix.h"
 #include "VectorMatrix.h"
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -146,5 +147,5 @@ protected:
 
 private:
    /// Pointer to dynamically allocated 2D array
-   BGFLOAT **theMatrix;
+   vector<vector<BGFLOAT>> theMatrix;
 };

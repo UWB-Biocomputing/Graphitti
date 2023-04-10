@@ -27,23 +27,7 @@ ConnStatic::ConnStatic()
    threshConnsRadius_ = 0;
    connsPerVertex_ = 0;
    rewiringProbability_ = 0;
-   WCurrentEpoch_ = nullptr;
-   destVertexIndexCurrentEpoch_ = nullptr;
-   sourceVertexIndexCurrentEpoch_ = nullptr;
    radiiSize_ = 0;
-}
-
-ConnStatic::~ConnStatic()
-{
-   if (WCurrentEpoch_ != nullptr)
-      delete[] WCurrentEpoch_;
-   WCurrentEpoch_ = nullptr;
-   if (destVertexIndexCurrentEpoch_ != nullptr)
-      delete[] destVertexIndexCurrentEpoch_;
-   destVertexIndexCurrentEpoch_ = nullptr;
-   if (sourceVertexIndexCurrentEpoch_ != nullptr)
-      delete[] sourceVertexIndexCurrentEpoch_;
-   sourceVertexIndexCurrentEpoch_ = nullptr;
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -53,16 +37,16 @@ ConnStatic::~ConnStatic()
 void ConnStatic::setup()
 {
    // we can obtain the Layout, which holds the vertices, from the Model
-   shared_ptr<Layout> layout = Simulator::getInstance().getModel()->getLayout();
-   shared_ptr<AllVertices> vertices = layout->getVertices();
+   Layout &layout = *Simulator::getInstance().getModel()->getLayout();
+   AllVertices &vertices = *layout.getVertices();
 
    Simulator &simulator = Simulator::getInstance();
    int numVertices = simulator.getTotalVertices();
    vector<DistDestVertex> distDestVertices[numVertices];
    BGSIZE maxTotalEdges = simulator.getMaxEdgesPerVertex() * simulator.getTotalVertices();
-   WCurrentEpoch_ = new BGFLOAT[maxTotalEdges];
-   sourceVertexIndexCurrentEpoch_ = new int[maxTotalEdges];
-   destVertexIndexCurrentEpoch_ = new int[maxTotalEdges];
+   WCurrentEpoch_.resize(maxTotalEdges);
+   sourceVertexIndexCurrentEpoch_.resize(maxTotalEdges);
+   destVertexIndexCurrentEpoch_.resize(maxTotalEdges);
    AllNeuroEdges &neuroEdges = dynamic_cast<AllNeuroEdges &>(*edges_);
 
    radiiSize_ = numVertices;
@@ -76,7 +60,7 @@ void ConnStatic::setup()
       // pick the connections shorter than threshConnsRadius
       for (int destVertex = 0; destVertex < numVertices; destVertex++) {
          if (srcVertex != destVertex) {
-            BGFLOAT dist = (*layout->dist_)(srcVertex, destVertex);
+            BGFLOAT dist = layout.dist_(srcVertex, destVertex);
             if (dist <= threshConnsRadius_) {
                DistDestVertex distDestVertex {dist, destVertex};
                distDestVertices[srcVertex].push_back(distDestVertex);
@@ -89,8 +73,8 @@ void ConnStatic::setup()
       // pick the shortest connsPerVertex_ connections
       for (BGSIZE i = 0; i < distDestVertices[srcVertex].size() && (int)i < connsPerVertex_; i++) {
          int destVertex = distDestVertices[srcVertex][i].destVertex;
-         edgeType type = layout->edgType(srcVertex, destVertex);
-         BGFLOAT *sumPoint = &vertices->summationMap_[destVertex];
+         edgeType type = layout.edgType(srcVertex, destVertex);
+         BGFLOAT *sumPoint = &vertices.summationMap_[destVertex];
 
          LOG4CPLUS_DEBUG(fileLogger_,
                          "Source: " << srcVertex << " Dest: " << destVertex

@@ -24,11 +24,6 @@ OperationManager &OperationManager::getInstance()
    return instance;
 }
 
-/// Destructor.
-OperationManager::~OperationManager()
-{
-}
-
 /// Called by lower level classes constructors on creation to register their operations with their operation type.
 /// This method can be overloaded to handle different function signatures.
 /// Handles function signature: void ()

@@ -23,7 +23,7 @@ TEST(VerticesFactory, GetInstanceReturnsInstance)
 
 TEST(VerticesFactory, CreateAllLIFNeuronsInstance)
 {
-   shared_ptr<AllVertices> vertices
+   unique_ptr<AllVertices> vertices
       = VerticesFactory::getInstance().createVertices("AllLIFNeurons");
    ASSERT_NE(nullptr, vertices);
    ASSERT_NE(nullptr, dynamic_cast<AllLIFNeurons *>(vertices.get()));
@@ -31,7 +31,7 @@ TEST(VerticesFactory, CreateAllLIFNeuronsInstance)
 
 TEST(VerticesFactory, CreateAllIZNeuronsInstance)
 {
-   shared_ptr<AllVertices> vertices
+   unique_ptr<AllVertices> vertices
       = VerticesFactory::getInstance().createVertices("AllIZHNeurons");
    ASSERT_NE(nullptr, vertices);
    ASSERT_NE(nullptr, dynamic_cast<AllIZHNeurons *>(vertices.get()));
@@ -39,7 +39,7 @@ TEST(VerticesFactory, CreateAllIZNeuronsInstance)
 
 TEST(VerticesFactory, CreateAll911VerticesInstance)
 {
-   shared_ptr<AllVertices> vertices
+   unique_ptr<AllVertices> vertices
       = VerticesFactory::getInstance().createVertices("All911Vertices");
    ASSERT_NE(nullptr, vertices);
    ASSERT_NE(nullptr, dynamic_cast<All911Vertices *>(vertices.get()));
@@ -47,6 +47,6 @@ TEST(VerticesFactory, CreateAll911VerticesInstance)
 
 TEST(VerticesFactory, CreateNonExistentClassReturnsNullPtr)
 {
-   shared_ptr<AllVertices> vertices = VerticesFactory::getInstance().createVertices("NonExistent");
+   unique_ptr<AllVertices> vertices = VerticesFactory::getInstance().createVertices("NonExistent");
    ASSERT_TRUE(vertices == nullptr);
 }

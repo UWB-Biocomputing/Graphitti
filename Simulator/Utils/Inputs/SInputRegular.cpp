@@ -17,7 +17,7 @@ void getValueList(const string &valString, vector<BGFLOAT> *pList);
 ///
 /// @param[in] psi       Pointer to the simulation information
 /// @param[in] parms     Pointer to xml parms element
-SInputRegular::SInputRegular(TiXmlElement *parms) : values(nullptr), nShiftValues(nullptr)
+SInputRegular::SInputRegular(TiXmlElement *parms) : values(nullptr)
 {
    fSInput = false;
 
@@ -68,7 +68,7 @@ SInputRegular::SInputRegular(TiXmlElement *parms) : values(nullptr), nShiftValue
    assert(initValues.size() == 100);
 
    // allocate memory for input values
-   values = new BGFLOAT[Simulator::getInstance().getTotalVertices()];
+   values.resize(Simulator::getInstance().getTotalVertices());
 
    // initialize values
    for (int i = 0; i < Simulator::getInstance().getHeight(); i++)
@@ -78,10 +78,10 @@ SInputRegular::SInputRegular(TiXmlElement *parms) : values(nullptr), nShiftValue
    initValues.clear();
 
    // allocate memory for shift values
-   nShiftValues = new int[Simulator::getInstance().getTotalVertices()];
+   nShiftValues.resize(Simulator::getInstance().getTotalVertices());
 
    // initialize shift values
-   memset(nShiftValues, 0, sizeof(int) * Simulator::getInstance().getTotalVertices());
+   memset(nShiftValues.data(), 0, sizeof(int) * Simulator::getInstance().getTotalVertices());
 
    if (sync == "no") {
       // asynchronous stimuli - fill nShiftValues array with values between 0 - nStepsCycle
@@ -98,10 +98,6 @@ SInputRegular::SInputRegular(TiXmlElement *parms) : values(nullptr), nShiftValue
    }
 
    fSInput = true;
-}
-
-SInputRegular::~SInputRegular()
-{
 }
 
 /// Initialize data.

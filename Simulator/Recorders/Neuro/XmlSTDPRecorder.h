@@ -39,9 +39,9 @@
 class XmlSTDPRecorder : public XmlRecorder {
 public:
    //! THe constructor and destructor
-   XmlSTDPRecorder();
+   XmlSTDPRecorder() = default;
 
-   ~XmlSTDPRecorder();
+   ~XmlSTDPRecorder() = default;
 
    static IRecorder *Create()
    {

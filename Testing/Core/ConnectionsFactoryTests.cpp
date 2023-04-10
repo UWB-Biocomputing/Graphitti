@@ -23,7 +23,7 @@ TEST(ConnectionsFactory, GetInstanceReturnsInstance)
 
 TEST(ConnectionsFactory, CreateConnstaticInstance)
 {
-   shared_ptr<Connections> connections
+   unique_ptr<Connections> connections
       = ConnectionsFactory::getInstance().createConnections("ConnStatic");
    ASSERT_NE(nullptr, connections);
    ASSERT_NE(nullptr, dynamic_cast<ConnStatic *>(connections.get()));
@@ -31,7 +31,7 @@ TEST(ConnectionsFactory, CreateConnstaticInstance)
 
 TEST(ConnectionsFactory, CreateConnGrowthInstance)
 {
-   shared_ptr<Connections> connections
+   unique_ptr<Connections> connections
       = ConnectionsFactory::getInstance().createConnections("ConnGrowth");
    ASSERT_NE(nullptr, connections);
    ASSERT_NE(nullptr, dynamic_cast<ConnGrowth *>(connections.get()));
@@ -39,7 +39,7 @@ TEST(ConnectionsFactory, CreateConnGrowthInstance)
 
 TEST(ConnectionsFactory, CreateConnections911Instance)
 {
-   shared_ptr<Connections> connections
+   unique_ptr<Connections> connections
       = ConnectionsFactory::getInstance().createConnections("Connections911");
    ASSERT_NE(nullptr, connections);
    ASSERT_NE(nullptr, dynamic_cast<Connections911 *>(connections.get()));
@@ -47,7 +47,7 @@ TEST(ConnectionsFactory, CreateConnections911Instance)
 
 TEST(ConnectionsFactory, CreateNonExistentClassReturnsNullPtr)
 {
-   shared_ptr<Connections> connections
+   unique_ptr<Connections> connections
       = ConnectionsFactory::getInstance().createConnections("NonExistent");
    ASSERT_EQ(nullptr, connections);
 }

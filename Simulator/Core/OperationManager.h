@@ -28,7 +28,7 @@ public:
    static OperationManager &getInstance();
 
    /// Destructor
-   ~OperationManager();
+   ~OperationManager() = default;
 
    /// Called by lower level classes constructors on creation to register their operations with their operation type.
    /// This method can be overloaded to handle different function signatures.
@@ -41,9 +41,12 @@ public:
    /// Takes in the operation enum and returns the enum as a string. Used for debugging purposes.
    string operationToString(const Operations::op &operation) const;
 
-   /// Delete these methods because they can cause copy instances of the singleton when using threads.
-   OperationManager(OperationManager const &) = delete;
-   void operator=(OperationManager const &) = delete;
+   /// Delete copy and move methods to avoid copy instances of the singleton
+   OperationManager(const OperationManager &operationManager) = delete;
+   OperationManager &operator=(const OperationManager &operationManager) = delete;
+
+   OperationManager(OperationManager &&operationManager) = delete;
+   OperationManager &operator=(OperationManager &&operationManager) = delete;
 
 private:
    /// Constructor is private to keep a singleton instance of this class.

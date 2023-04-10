@@ -16,17 +16,6 @@
 const H5std_string nameRatesHist("ratesHistory");
 const H5std_string nameRadiiHist("radiiHistory");
 
-
-// TODO: Do we need the empty constructor and destructor?
-// The constructor and destructor
-Hdf5GrowthRecorder::Hdf5GrowthRecorder()
-{
-}
-
-Hdf5GrowthRecorder::~Hdf5GrowthRecorder()
-{
-}
-
 ///  Create data spaces and data sets of the hdf5 for recording histories.
 void Hdf5GrowthRecorder::initDataSet()
 {
@@ -55,10 +44,10 @@ void Hdf5GrowthRecorder::initDataSet()
 void Hdf5GrowthRecorder::initDefaultValues()
 {
    Simulator &simulator = Simulator::getInstance();
-   shared_ptr<Model> model = simulator.getModel();
+   Model *model = simulator.getModel();
 
-   shared_ptr<Connections> connections = model->getConnections();
-   BGFLOAT startRadius = dynamic_pointer_cast<ConnGrowth>(connections)->growthParams_.startRadius;
+   Connections *connections = model->getConnections();
+   BGFLOAT startRadius = dynamic_cast<ConnGrowth *>(connections)->growthParams_.startRadius;
 
    for (int i = 0; i < simulator.getTotalVertices(); i++) {
       radiiHistory_[i] = startRadius;
@@ -74,13 +63,13 @@ void Hdf5GrowthRecorder::initDefaultValues()
 void Hdf5GrowthRecorder::initValues()
 {
    Simulator &simulator = Simulator::getInstance();
-   shared_ptr<Model> model = simulator.getModel();
+   Model *model = simulator.getModel();
 
-   shared_ptr<Connections> connections = model->getConnections();
+   Connections *connections = model->getConnections();
 
    for (int i = 0; i < simulator.getTotalVertices(); i++) {
-      radiiHistory_[i] = (*dynamic_pointer_cast<ConnGrowth>(connections)->radii_)[i];
-      ratesHistory_[i] = (*dynamic_pointer_cast<ConnGrowth>(connections)->rates_)[i];
+      radiiHistory_[i] = (dynamic_cast<ConnGrowth *>(connections)->radii_)[i];
+      ratesHistory_[i] = (dynamic_cast<ConnGrowth *>(connections)->rates_)[i];
    }
 
    // write initial radii and rate
@@ -91,12 +80,12 @@ void Hdf5GrowthRecorder::initValues()
 /// Get the current radii and rates values
 void Hdf5GrowthRecorder::getValues()
 {
-   shared_ptr<Model> model = Simulator::getInstance().getModel();
-   shared_ptr<Connections> connections = model->getConnections();
+   Model *model = Simulator::getInstance().getModel();
+   Connections *connections = model->getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      (*dynamic_pointer_cast<ConnGrowth>(connections)->radii_)[i] = radiiHistory_[i];
-      (*dynamic_pointer_cast<ConnGrowth>(connections)->rates_)[i] = ratesHistory_[i];
+      (dynamic_cast<ConnGrowth *>(connections)->radii_)[i] = radiiHistory_[i];
+      (dynamic_cast<ConnGrowth *>(connections)->rates_)[i] = ratesHistory_[i];
    }
 }
 
@@ -117,12 +106,12 @@ void Hdf5GrowthRecorder::compileHistories(AllVertices &neurons)
 {
    Hdf5Recorder::compileHistories(neurons);
 
-   shared_ptr<Model> model = Simulator::getInstance().getModel();
-   shared_ptr<Connections> connections = model->getConnections();
+   Model *model = Simulator::getInstance().getModel();
+   Connections *connections = model->getConnections();
 
-   BGFLOAT minRadius = dynamic_pointer_cast<ConnGrowth>(connections)->growthParams_.minRadius;
-   VectorMatrix &rates = (*dynamic_pointer_cast<ConnGrowth>(connections)->rates_);
-   VectorMatrix &radii = (*dynamic_pointer_cast<ConnGrowth>(connections)->radii_);
+   BGFLOAT minRadius = dynamic_cast<ConnGrowth *>(connections)->growthParams_.minRadius;
+   VectorMatrix &rates = (dynamic_cast<ConnGrowth *>(connections)->rates_);
+   VectorMatrix &radii = (dynamic_cast<ConnGrowth *>(connections)->radii_);
 
    // output spikes
    for (int iVertex = 0; iVertex < Simulator::getInstance().getTotalVertices(); iVertex++) {

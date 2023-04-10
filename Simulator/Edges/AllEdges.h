@@ -21,7 +21,7 @@ class AllEdges {
 public:
    AllEdges();
    AllEdges(const int numVertices, const int maxEdges);
-   virtual ~AllEdges();
+   virtual ~AllEdges() = default;
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    virtual void setupEdges();
@@ -58,7 +58,7 @@ public:
       = 0;
 
    ///  Populate a edge index map.
-   virtual void createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap);
+   virtual void createEdgeIndexMap(EdgeIndexMap &edgeIndexMap);
 
    ///  Cereal serialization method
    ///  (Serializes edge weights, source vertices, and destination vertices)
@@ -198,26 +198,26 @@ public:
 #endif   // defined(USE_GPU)
 
    ///  The location of the edge.
-   int *sourceVertexIndex_;
+   vector<int> sourceVertexIndex_;
 
    ///  The coordinates of the summation point.
-   int *destVertexIndex_;
+   vector<int> destVertexIndex_;
 
    ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
-   BGFLOAT *W_;
+   vector<BGFLOAT> W_;
 
    ///  This edge's summation point's address.
-   BGFLOAT **summationPoint_;
+   vector<BGFLOAT *> summationPoint_;
 
    ///   Synapse type
-   edgeType *type_;
+   vector<edgeType> type_;
 
    ///  The boolean value indicating the entry in the array is in use.
-   bool *inUse_;
+   unique_ptr<bool[]> inUse_;
 
    ///  The number of (incoming) edges for each vertex.
    ///  Note: Likely under a different name in GpuSim_struct, see edge_count. -Aaron
-   BGSIZE *edgeCounts_;
+   vector<BGSIZE> edgeCounts_;
 
    ///  The total number of active edges.
    BGSIZE totalEdgeCount_;
@@ -237,24 +237,12 @@ CEREAL_CLASS_VERSION(AllEdges, 1);
 ///  (Serializes edge weights, source vertices, and destination vertices)
 template <class Archive> void AllEdges::save(Archive &archive, std::uint32_t const version) const
 {
-   // uses vector to save edge weights, source vertices, and destination vertices
-   vector<BGFLOAT> WVector;
-   vector<int> sourceVertexLayoutIndexVector;
-   vector<int> destVertexLayoutIndexVector;
-
-   for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
-      WVector.push_back(W_[i]);
-      sourceVertexLayoutIndexVector.push_back(sourceVertexIndex_[i]);
-      destVertexLayoutIndexVector.push_back(destVertexIndex_[i]);
-   }
-
    // serialization
-   archive(cereal::make_nvp("edgeWeightsSize", WVector.size()),
-           cereal::make_nvp("edgeWeights", WVector),
-           cereal::make_nvp("sourceVerticesSize", sourceVertexLayoutIndexVector.size()),
-           cereal::make_nvp("sourceVertices", sourceVertexLayoutIndexVector),
-           cereal::make_nvp("destinationVerticesSize", destVertexLayoutIndexVector.size()),
-           cereal::make_nvp("destinationVertices", destVertexLayoutIndexVector));
+   archive(cereal::make_nvp("edgeWeightsSize", W_.size()), cereal::make_nvp("edgeWeights", W_),
+           cereal::make_nvp("sourceVerticesSize", sourceVertexIndex_.size()),
+           cereal::make_nvp("sourceVertices", sourceVertexIndex_),
+           cereal::make_nvp("destinationVerticesSize", destVertexIndex_.size()),
+           cereal::make_nvp("destinationVertices", destVertexIndex_));
 }
 
 ///  Cereal deserialization method
@@ -297,9 +285,7 @@ template <class Archive> void AllEdges::load(Archive &archive, std::uint32_t con
    }
 
    // assigns serialized data to objects
-   for (int i = 0; i < requiredSize; i++) {
-      W_[i] = WVector[i];
-      sourceVertexIndex_[i] = sourceVertexLayoutIndexVector[i];
-      destVertexIndex_[i] = destVertexLayoutIndexVector[i];
-   }
+   W_ = WVector;
+   sourceVertexIndex_ = sourceVertexLayoutIndexVector;
+   destVertexIndex_ = destVertexLayoutIndexVector;
 }

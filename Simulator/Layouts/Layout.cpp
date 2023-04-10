@@ -17,13 +17,6 @@
 /// Constructor
 Layout::Layout() : numEndogenouslyActiveNeurons_(0)
 {
-   xloc_ = nullptr;
-   yloc_ = nullptr;
-   dist2_ = nullptr;
-   dist_ = nullptr;
-   vertexTypeMap_ = nullptr;
-   starterMap_ = nullptr;
-
    // Create Vertices/Neurons class using type definition in configuration file
    string type;
    ParameterManager::getInstance().getStringByXpath("//VerticesParams/@class", type);
@@ -49,33 +42,9 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
-/// Destructor
-Layout::~Layout()
+AllVertices *Layout::getVertices() const
 {
-   if (xloc_ != nullptr)
-      delete xloc_;
-   if (yloc_ != nullptr)
-      delete yloc_;
-   if (dist2_ != nullptr)
-      delete dist2_;
-   if (dist_ != nullptr)
-      delete dist_;
-   if (vertexTypeMap_ != nullptr)
-      delete[] vertexTypeMap_;   //todo: is delete[] changing once array becomes vector?
-   if (starterMap_ != nullptr)
-      delete[] starterMap_;   //todo: is delete[] changing once array becomes vector?
-
-   xloc_ = nullptr;
-   yloc_ = nullptr;
-   dist2_ = nullptr;
-   dist_ = nullptr;
-   vertexTypeMap_ = nullptr;
-   starterMap_ = nullptr;
-}
-
-shared_ptr<AllVertices> Layout::getVertices() const
-{
-   return vertices_;
+   return vertices_.get();
 }
 
 int Layout::getNumVertices() const
@@ -94,14 +63,17 @@ void Layout::registerGraphProperties()
 void Layout::setup()
 {
    // Allocate memory
-   xloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
-   yloc_ = new VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
-   dist2_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
-   dist_ = new CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
+   xloc_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
+   yloc_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
+   dist2_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
+   dist_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
 
    // more allocation of internal memory
-   vertexTypeMap_ = new vertexType[numVertices_];   // todo: make array into vector
-   starterMap_ = new bool[numVertices_];            // todo: make array into vector
+   vertexTypeMap_.resize(numVertices_);
+   vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
+
+   starterMap_.resize(numVertices_);
+   starterMap_.assign(numVertices_, false);
 }
 
 
@@ -130,10 +102,7 @@ void Layout::printParameters() const
 void Layout::generateVertexTypeMap(int numVertices)
 {
    DEBUG(cout << "\nInitializing vertex type map: VTYPE_UNDEF" << endl;);
-
-   for (int i = 0; i < numVertices; i++) {
-      vertexTypeMap_[i] = VTYPE_UNDEF;
-   }
+   vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
 }
 
 /// Populates the starter map.
@@ -141,7 +110,5 @@ void Layout::generateVertexTypeMap(int numVertices)
 /// @param  numVertices number of vertices to have in the map.
 void Layout::initStarterMap(const int numVertices)
 {
-   for (int i = 0; i < numVertices; i++) {
-      starterMap_[i] = false;
-   }
+   starterMap_.assign(numVertices, false);
 }
