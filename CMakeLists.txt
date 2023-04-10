@@ -272,7 +272,9 @@ add_library(RNG STATIC ${RNG_Source})
 
 # Create Utils library
 file(GLOB Utils_Source  Simulator/Utils/*.cpp Simulator/Utils/*.h)
-add_library(Utils ${Utils_Source})
+add_library(Utils STATIC ${Utils_Source})
+target_link_libraries(Utils Connections Vertices Edges)
+# Do we need to provide explicit link steps for the Util library ?
 
 
 # Used to locate and run other CMakeLists.txt files from Third Party resources for further compilation of the project.
@@ -292,6 +294,7 @@ if(ENABLE_CUDA)
         set_property(TARGET Core PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Connections PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET RNG PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Utils PROPERTY CUDA_SEPARABLE_COMPILATION ON)
 endif()
 
 # Link all libraries created in the project's subdirectories into a combined library.

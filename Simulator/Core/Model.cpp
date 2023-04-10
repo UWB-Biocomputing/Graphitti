@@ -16,11 +16,9 @@
 #include "Model.h"
 #include "ConnGrowth.h"
 #include "Connections.h"
-#include "ConnectionsFactory.h"
+#include "Factory.h"
 #include "IRecorder.h"
-#include "LayoutFactory.h"
 #include "ParameterManager.h"
-#include "RecorderFactory.h"
 #include "Simulator.h"
 
 /// Constructor
@@ -31,15 +29,15 @@ Model::Model()
 
    // Create Layout class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//LayoutParams/@class", type);
-   layout_ = LayoutFactory::getInstance().createLayout(type);
+   layout_ = Factory<Layout>::getInstance().createType(type);
 
    // Create Connections class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//ConnectionsParams/@class", type);
-   connections_ = ConnectionsFactory::getInstance().createConnections(type);
+   connections_ = Factory<Connections>::getInstance().createType(type);
 
    // Create Recorder class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
-   recorder_ = RecorderFactory::getInstance().createRecorder(type);
+   recorder_ = Factory<IRecorder>::getInstance().createType(type);
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));

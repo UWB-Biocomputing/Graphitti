@@ -11,31 +11,32 @@
 
 #include "MTRand.h"
 #include "Norm.h"
-#include "RNGFactory.h"
+#include "Utils/Factory.h"
 #include "gtest/gtest.h"
+#include <memory>
 
 TEST(RNGFactory, GetInstanceReturnsInstance)
 {
-   RNGFactory *rngFactory = &RNGFactory::getInstance();
+   Factory<MTRand> *rngFactory = &Factory<MTRand>::getInstance();
    ASSERT_NE(nullptr, rngFactory);
 }
 
 TEST(RNGFactory, CreateMTRandInstance)
 {
-   unique_ptr<MTRand> rng = RNGFactory::getInstance().createRNG("MTRand");
+   std::unique_ptr<MTRand> rng = Factory<MTRand>::getInstance().createType("MTRand");
    ASSERT_NE(nullptr, rng);
    ASSERT_NE(nullptr, dynamic_cast<MTRand *>(rng.get()));
 }
 
 TEST(RNGFactory, CreateNormInstance)
 {
-   unique_ptr<MTRand> rng = RNGFactory::getInstance().createRNG("Norm");
+   std::unique_ptr<MTRand> rng = Factory<MTRand>::getInstance().createType("Norm");
    ASSERT_NE(nullptr, rng);
    ASSERT_NE(nullptr, dynamic_cast<Norm *>(rng.get()));
 }
 
 TEST(RNGFactory, CreateNonExistentClassReturnsNullPtr)
 {
-   unique_ptr<MTRand> rng = RNGFactory::getInstance().createRNG("NonExistent");
+   std::unique_ptr<MTRand> rng = Factory<MTRand>::getInstance().createType("NonExistent");
    ASSERT_EQ(nullptr, rng);
 }

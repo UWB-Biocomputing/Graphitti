@@ -18,7 +18,7 @@
 #include "Connections.h"
 #include "AllEdges.h"
 #include "AllVertices.h"
-#include "EdgesFactory.h"
+#include "Factory.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
 
@@ -27,7 +27,7 @@ Connections::Connections()
    // Create Edges/Synapses class using type definition in configuration file
    string type;
    ParameterManager::getInstance().getStringByXpath("//EdgesParams/@class", type);
-   edges_ = EdgesFactory::getInstance().createEdges(type);
+   edges_ = Factory<AllEdges>::getInstance().createType(type);
 
    // Get pointer to operations manager Singleton
    OperationManager &opsManager = OperationManager::getInstance();
@@ -103,7 +103,6 @@ void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vert
 void Connections::updateSynapsesWeights()
 {
 }
-
 #endif   // !USE_GPU
 
 ///  Creates synapses from synapse weights saved in the serialization file.

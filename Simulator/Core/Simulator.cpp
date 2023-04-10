@@ -12,8 +12,7 @@
 #include "GPUModel.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
-#include "RNGFactory.h"
-#include "RecorderFactory.h"
+#include "Utils/Factory.h"
 #include <functional>
 // #include "ParseParamError.h"
 
@@ -93,7 +92,7 @@ void Simulator::loadParameters()
    // Instantiate rng object
    string type;
    ParameterManager::getInstance().getStringByXpath("//RNGConfig/NoiseRNGSeed/@class", type);
-   noiseRNG = RNGFactory::getInstance().createRNG(type);
+   noiseRNG = Factory<MTRand>::getInstance().createType(type);
 
    ParameterManager::getInstance().getLongByXpath("//RNGConfig/InitRNGSeed/text()", initRngSeed_);
    ParameterManager::getInstance().getLongByXpath("//RNGConfig/NoiseRNGSeed/text()", noiseRngSeed_);
