@@ -273,7 +273,7 @@ add_library(RNG STATIC ${RNG_Source})
 # Create Utils library
 file(GLOB Utils_Source  Simulator/Utils/*.cpp Simulator/Utils/*.h)
 add_library(Utils STATIC ${Utils_Source})
-target_link_libraries(Utils Connections Vertices Edges)
+target_link_libraries(Utils Connections Vertices Edges Layouts Recorders)
 # Do we need to provide explicit link steps for the Util library ?
 
 
