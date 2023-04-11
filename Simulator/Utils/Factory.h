@@ -13,7 +13,7 @@
 #include <memory>
 #include <string>
 
-template <typename T> std::map<std::string, T *(*)(void)> getCreateFunctionForType();
+template <typename T> std::map<std::string, T *(*)(void)> getCreateFunctionForType(T *placeholder);
 
 template <typename T> class Factory {
 public:
@@ -21,7 +21,8 @@ public:
 
    static Factory &getInstance()
    {
-      static Factory instance(getCreateFunctionForType<T>());
+      T *placeholder = nullptr;
+      static Factory instance(getCreateFunctionForType<T>(placeholder));
       return instance;
    }
 
@@ -71,3 +72,5 @@ private:
       createFunctions[className] = function;
    }
 };
+
+#include "Factory.cpp"
