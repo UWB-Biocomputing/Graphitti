@@ -22,7 +22,7 @@
 
 #include <algorithm>
 
-ConnStatic::ConnStatic() : Connections()
+ConnStatic::ConnStatic()
 {
    threshConnsRadius_ = 0;
    connsPerVertex_ = 0;
