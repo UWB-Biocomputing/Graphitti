@@ -38,11 +38,11 @@ void RNGFactory::registerClass(const string &className, CreateFunction function)
 /// @param className rng class name.
 /// @return Shared pointer to RNG instance if className is found in
 ///         createFunctions map, nullptr otherwise.
-shared_ptr<MTRand> RNGFactory::createRNG(const string &className)
+unique_ptr<MTRand> RNGFactory::createRNG(const string &className)
 {
    auto createRNGIter = createFunctions.find(className);
    if (createRNGIter != createFunctions.end()) {
-      return shared_ptr<MTRand>(createRNGIter->second());
+      return unique_ptr<MTRand>(createRNGIter->second());
    }
    return nullptr;
 }

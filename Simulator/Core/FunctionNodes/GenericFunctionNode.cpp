@@ -21,11 +21,6 @@ GenericFunctionNode::GenericFunctionNode(const Operations::op &operation,
    function_ = func;
 }
 
-/// Destructor
-GenericFunctionNode::~GenericFunctionNode()
-{
-}
-
 /// Invokes the stored function if the sent operation type matches the operation type the function is stored as.
 bool GenericFunctionNode::invokeFunction(const Operations::op &operation) const
 {

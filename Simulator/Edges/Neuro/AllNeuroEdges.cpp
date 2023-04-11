@@ -8,19 +8,6 @@
 
 #include "AllNeuroEdges.h"
 
-AllNeuroEdges::AllNeuroEdges() : AllEdges()
-{
-   psr_ = nullptr;
-}
-
-AllNeuroEdges::~AllNeuroEdges()
-{
-   BGSIZE maxTotalEdges = maxEdgesPerVertex_ * countVertices_;
-   if (maxTotalEdges != 0) {
-      delete[] psr_;
-   }
-}
-
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 void AllNeuroEdges::setupEdges()
 {
@@ -37,7 +24,8 @@ void AllNeuroEdges::setupEdges(const int numVertices, const int maxEdges)
    BGSIZE maxTotalEdges = maxEdges * numVertices;
 
    if (maxTotalEdges != 0) {
-      psr_ = new BGFLOAT[maxTotalEdges];
+      psr_.resize(maxTotalEdges);
+      psr_.assign(maxTotalEdges, 0.0);
    }
 }
 

@@ -17,7 +17,8 @@
 #include <functional>
 // #include "ParseParamError.h"
 
-/// Acts as constructor first time it's called, returns the instance of the singleton object
+/// Acts as constructor first time it's called, returns the instance of the
+/// singleton object
 Simulator &Simulator::getInstance()
 {
    static Simulator instance;
@@ -41,12 +42,6 @@ Simulator::Simulator()
                                                      printParametersFunc);
 }
 
-/// Destructor
-Simulator::~Simulator()
-{
-   freeResources();
-}
-
 /// Initialize and prepare network for simulation.
 void Simulator::setup()
 {
@@ -66,18 +61,18 @@ void Simulator::setup()
 
    // init stimulus input object
    /* PInput not in project yet
-   if (pInput != nullptr) {
-      cout << "Initializing input." << endl;
-      pInput->init();
-   }
-   */
+  if (pInput != nullptr) {
+     cout << "Initializing input." << endl;
+     pInput->init();
+  }
+  */
 }
 
 /// Begin terminating the simulator
 void Simulator::finish()
 {
-   model_
-      ->finish();   // ToDo: Can #term be removed w/ the new model architecture?  // =>ISIMULATION
+   model_->finish();   // ToDo: Can #term be removed w/ the new model architecture?
+                       // // =>ISIMULATION
 }
 
 /// Load member variables from configuration file
@@ -136,24 +131,18 @@ void Simulator::copyCPUSynapseToGPU()
    // model->copyCPUSynapseToGPUModel();
 }
 
-/// Resets all of the maps. Releases and re-allocates memory for each map, clearing them as necessary.
+/// Resets all of the maps. Releases and re-allocates memory for each map,
+/// clearing them as necessary.
 void Simulator::reset()
 {
    LOG4CPLUS_INFO(fileLogger_, "Resetting Simulator");
    // Terminate the simulator
    model_->finish();
-   // Clean up objects
-   freeResources();
    // Reset global simulation Step to 0
    g_simulationStep = 0;
    // Initialize and prepare network for simulation
    model_->setupSim();
    LOG4CPLUS_INFO(fileLogger_, "Simulator Reset Finished");
-}
-
-/// Clean up objects.
-void Simulator::freeResources()
-{
 }
 
 /// Run simulation
@@ -175,7 +164,7 @@ void Simulator::simulate()
       t_host_advance += short_timer.lap() / 1000000.0;
 #endif
       LOG4CPLUS_TRACE(consoleLogger_,
-                      "done with epoch cycle " << currentEpoch_ << ", beginning growth update");              
+                      "done with epoch cycle " << currentEpoch_ << ", beginning growth update");
       LOG4CPLUS_TRACE(edgeLogger_, "Epoch: " << currentEpoch_);
 
 #ifdef PERFORMANCE_METRICS
@@ -240,35 +229,31 @@ void Simulator::saveResults() const
    model_->saveResults();
 }
 
-/// Instantiates Model which causes all other lower level simulator objects to be instantiated. Checks if all
-/// expected objects were created correctly and returns T/F on the success of the check.
+/// Instantiates Model which causes all other lower level simulator objects to
+/// be instantiated. Checks if all expected objects were created correctly and
+/// returns T/F on the success of the check.
 bool Simulator::instantiateSimulatorObjects()
 {
    // Model Definition
 #if defined(USE_GPU)
-   model_ = shared_ptr<Model>(new GPUModel());
+   model_ = unique_ptr<Model>(new GPUModel());
 #else
-   model_ = shared_ptr<Model>(new CPUModel());
+   model_ = unique_ptr<Model>(new CPUModel());
 #endif
 
    // Perform check on all instantiated objects.
-   if (!model_ || !model_->getConnections() || !model_->getConnections()->getEdges()
-       || !model_->getLayout() || !model_->getLayout()->getVertices() || !model_->getRecorder()) {
+   if (!model_ || (model_->getConnections() == nullptr)
+       || (model_->getConnections()->getEdges() == nullptr) || (model_->getLayout() == nullptr)
+       || (model_->getLayout()->getVertices() == nullptr) || (model_->getRecorder() == nullptr)) {
       return false;
    }
    return true;
 }
 
-
 /************************************************
  *  Mutators
  ***********************************************/
 ///@{
-/// List of summation points (either host or device memory)
-void Simulator::setPSummationMap(BGFLOAT *summationMap)
-{
-   pSummationMap_ = summationMap;
-}
 
 void Simulator::setConfigFileName(const string &fileName)
 {
@@ -341,28 +326,9 @@ BGFLOAT Simulator::getDeltaT() const
    return deltaT_;
 }
 
-// ToDo: should be a vector of neuron type
-// ToDo: vector should be contiguous array, resize is used.
-vertexType *Simulator::getRgNeuronTypeMap() const
-{
-   return rgNeuronTypeMap_;
-}
-
-// ToDo: make smart ptr
-/// Starter existence map (T/F).
-bool *Simulator::getRgEndogenouslyActiveNeuronMap() const
-{
-   return rgEndogenouslyActiveNeuronMap_;
-}
-
 BGFLOAT Simulator::getMaxRate() const
 {
    return maxRate_;
-}
-
-BGFLOAT *Simulator::getPSummationMap() const
-{
-   return pSummationMap_;
 }
 
 long Simulator::getNoiseRngSeed() const
@@ -395,18 +361,18 @@ string Simulator::getStimulusFileName() const
    return stimulusFileName_;
 }
 
-shared_ptr<Model> Simulator::getModel() const
+Model *Simulator::getModel() const
 {
-   return model_;
+   return model_.get();
 }
 
-#ifdef PERFOMANCE_METRICS
-Timer Simulator::getTimer() const
+#ifdef PERFORMANCE_METRICS
+Timer &Simulator::getTimer()
 {
    return timer;
 }
 
-Timer Simulator::getShort_timer() const
+Timer &Simulator::getShort_timer()
 {
    return short_timer;
 }

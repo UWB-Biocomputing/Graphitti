@@ -21,6 +21,7 @@
 #include "LayoutFactory.h"
 #include "ParameterManager.h"
 #include "RecorderFactory.h"
+#include "Simulator.h"
 
 /// Constructor
 Model::Model()
@@ -42,11 +43,6 @@ Model::Model()
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
-}
-
-/// Destructor
-Model::~Model()
-{
 }
 
 /// Save simulation results to an output destination.
@@ -79,13 +75,13 @@ void Model::setupSim()
    connections_->getEdges()->setupEdges();
 #ifdef PERFORMANCE_METRICS
    // Start timer for initialization
-   Simulator::getInstance.short_timer.start();
+   Simulator::getInstance().getShort_timer().start();
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Setting up Layout...");
    layout_->setup();
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (layout)
-   t_host_initialization_layout += Simulator::getInstance().short_timer.lap() / 1000000.0;
+   t_host_initialization_layout += Simulator::getInstance().getShort_timer().lap() / 1000000.0;
 #endif
    // Init radii and rates history matrices with default values
    if (recorder_ != nullptr) {
@@ -98,13 +94,13 @@ void Model::setupSim()
 
 #ifdef PERFORMANCE_METRICS
    // Start timer for initialization
-   Simulator::getInstance().short_timer.start();
+   Simulator::getInstance().getShort_timer().start();
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Setting up Connections...");
    connections_->setup();
 #ifdef PERFORMANCE_METRICS
    // Time to initialization (connections)
-   t_host_initialization_connections += Simulator::getInstance().short_timer.lap() / 1000000.0;
+   t_host_initialization_connections += Simulator::getInstance().getShort_timer().lap() / 1000000.0;
 #endif
 
    // create an edge index map
@@ -142,7 +138,7 @@ void Model::logSimStep() const
                break;
          }
 
-         ss << " " << (*pConnGrowth->radii_)[x + y * Simulator::getInstance().getWidth()];
+         ss << " " << pConnGrowth->radii_[x + y * Simulator::getInstance().getWidth()];
 
          if (x + 1 < Simulator::getInstance().getWidth()) {
             ss.width(2);
@@ -177,23 +173,22 @@ void Model::updateHistory()
 /// Get the Connections class object.
 /// @return Pointer to the Connections class object.
 // ToDo: make smart ptr
-shared_ptr<Connections> Model::getConnections() const
+Connections *Model::getConnections() const
 {
-   return connections_;
+   return connections_.get();
 }
 
 /// Get the Layout class object.
 /// @return Pointer to the Layout class object.
-// ToDo: make smart ptr
-shared_ptr<Layout> Model::getLayout() const
+Layout *Model::getLayout() const
 {
-   return layout_;
+   return layout_.get();
 }
 
 /// Get the IRecorder class object.
 /// @return Pointer to the IRecorder class object.
 // ToDo: make smart ptr
-shared_ptr<IRecorder> Model::getRecorder() const
+IRecorder *Model::getRecorder() const
 {
-   return recorder_;
+   return recorder_.get();
 }

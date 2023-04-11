@@ -21,6 +21,7 @@ class GpuSInputRegular : public SInputRegular {
 public:
    //! The constructor for SInputRegular.
    GpuSInputRegular(TiXmlElement *parms);
+
    ~GpuSInputRegular();
 
    //! Initialize data.

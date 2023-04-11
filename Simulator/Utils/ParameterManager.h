@@ -40,7 +40,7 @@ public:
    static ParameterManager &getInstance();
 
    /// Utility Methods
-   ~ParameterManager();
+   ~ParameterManager() = default;
 
    bool loadParameterFile(string path);
 
@@ -62,16 +62,19 @@ public:
 
    bool getFileByXpath(const string &path, ifstream &file);
 
-   /// Delete these methods because they can cause copy instances of the singleton when using threads.
-   ParameterManager(ParameterManager const &) = delete;
-   void operator=(ParameterManager const &) = delete;
+   /// Delete copy and move methods to avoid copy instances of the singleton
+   ParameterManager(const ParameterManager &parameterManager) = delete;
+   ParameterManager &operator=(const ParameterManager &parameterManager) = delete;
+
+   ParameterManager(ParameterManager &&parameterManager) = delete;
+   ParameterManager &operator=(ParameterManager &&parameterManager) = delete;
 
 private:
-   TiXmlDocument *xmlDocument_;
+   unique_ptr<TiXmlDocument> xmlDocument_;
    TiXmlElement *root_;
 
    /// Constructor is private to keep a singleton instance of this class.
-   ParameterManager();
+   ParameterManager() = default;
 
    bool checkDocumentStatus();
 };

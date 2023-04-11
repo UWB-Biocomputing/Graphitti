@@ -8,15 +8,6 @@
 #include "AllLIFNeurons.h"
 #include "ParseParamError.h"
 
-// Default constructor
-AllLIFNeurons::AllLIFNeurons() : AllIFNeurons()
-{
-}
-
-AllLIFNeurons::~AllLIFNeurons()
-{
-}
-
 ///  Prints out all parameters of the neurons to logging file.
 ///  Registered to OperationManager as Operation::printParameters
 void AllLIFNeurons::printParameters() const

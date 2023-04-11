@@ -23,7 +23,7 @@ class FixedLayout : public Layout {
 public:
    FixedLayout();
 
-   virtual ~FixedLayout();
+   virtual ~FixedLayout() = default;
 
    static Layout *Create()
    {

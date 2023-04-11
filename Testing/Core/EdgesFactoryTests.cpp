@@ -25,41 +25,41 @@ TEST(EdgesFactory, GetInstanceReturnsInstance)
 
 TEST(EdgesFactory, CreateAll911EdgesInstance)
 {
-   shared_ptr<AllEdges> edges = EdgesFactory::getInstance().createEdges("All911Edges");
+   unique_ptr<AllEdges> edges = EdgesFactory::getInstance().createEdges("All911Edges");
    ASSERT_NE(nullptr, edges);
    ASSERT_NE(nullptr, dynamic_cast<All911Edges *>(edges.get()));
 }
 
 TEST(EdgesFactory, CreateAllDSSynapsesInstance)
 {
-   shared_ptr<AllEdges> edges = EdgesFactory::getInstance().createEdges("AllDSSynapses");
+   unique_ptr<AllEdges> edges = EdgesFactory::getInstance().createEdges("AllDSSynapses");
    ASSERT_NE(nullptr, edges);
    ASSERT_NE(nullptr, dynamic_cast<AllDSSynapses *>(edges.get()));
 }
 
 TEST(EdgesFactory, CreateAllDynamicSTDPSynapsesInstance)
 {
-   shared_ptr<AllEdges> edges = EdgesFactory::getInstance().createEdges("AllDynamicSTDPSynapses");
+   unique_ptr<AllEdges> edges = EdgesFactory::getInstance().createEdges("AllDynamicSTDPSynapses");
    ASSERT_NE(nullptr, edges);
    ASSERT_NE(nullptr, dynamic_cast<AllDynamicSTDPSynapses *>(edges.get()));
 }
 
 TEST(EdgesFactory, CreateAllSTDPSynapsesInstance)
 {
-   shared_ptr<AllEdges> edges = EdgesFactory::getInstance().createEdges("AllSTDPSynapses");
+   unique_ptr<AllEdges> edges = EdgesFactory::getInstance().createEdges("AllSTDPSynapses");
    ASSERT_NE(nullptr, edges);
    ASSERT_NE(nullptr, dynamic_cast<AllSTDPSynapses *>(edges.get()));
 }
 
 TEST(EdgesFactory, CreateAllSpikingSynapsesInstance)
 {
-   shared_ptr<AllEdges> edges = EdgesFactory::getInstance().createEdges("AllSpikingSynapses");
+   unique_ptr<AllEdges> edges = EdgesFactory::getInstance().createEdges("AllSpikingSynapses");
    ASSERT_NE(nullptr, edges);
    ASSERT_NE(nullptr, dynamic_cast<AllSpikingSynapses *>(edges.get()));
 }
 
 TEST(EdgesFactory, CreateNonExistentClassReturnsNullPtr)
 {
-   shared_ptr<AllEdges> edges = EdgesFactory::getInstance().createEdges("NonExistent");
+   unique_ptr<AllEdges> edges = EdgesFactory::getInstance().createEdges("NonExistent");
    ASSERT_EQ(nullptr, edges);
 }

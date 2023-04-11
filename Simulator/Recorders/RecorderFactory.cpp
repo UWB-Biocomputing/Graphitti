@@ -47,11 +47,11 @@ void RecorderFactory::registerClass(const string &className, CreateFunction func
 /// @param className Recorder class name.
 /// @return Shared pointer to recorder instance if className is found in
 ///         createFunctions map, nullptr otherwise.
-shared_ptr<IRecorder> RecorderFactory::createRecorder(const string &className)
+unique_ptr<IRecorder> RecorderFactory::createRecorder(const string &className)
 {
    auto createRecorderIter = createFunctions.find(className);
    if (createRecorderIter != createFunctions.end()) {
-      return shared_ptr<IRecorder>(createRecorderIter->second());
+      return unique_ptr<IRecorder>(createRecorderIter->second());
    }
 
    return nullptr;

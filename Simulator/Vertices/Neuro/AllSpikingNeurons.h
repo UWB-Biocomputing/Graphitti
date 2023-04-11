@@ -33,9 +33,9 @@ struct AllSpikingNeuronsDeviceProperties;
 
 class AllSpikingNeurons : public AllVertices {
 public:
-   AllSpikingNeurons();
+   AllSpikingNeurons() = default;
 
-   virtual ~AllSpikingNeurons();
+   virtual ~AllSpikingNeurons() = default;
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all neurons' state.

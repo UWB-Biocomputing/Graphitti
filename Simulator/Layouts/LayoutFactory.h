@@ -18,8 +18,6 @@ using namespace std;
 
 class LayoutFactory {
 public:
-   ~LayoutFactory();
-
    static LayoutFactory &getInstance()
    {
       static LayoutFactory instance;
@@ -27,11 +25,14 @@ public:
    }
 
    // Invokes constructor for desired concrete class
-   shared_ptr<Layout> createLayout(const string &className);
+   unique_ptr<Layout> createLayout(const string &className);
 
-   /// Delete these methods because they can cause copy instances of the singleton when using threads.
-   LayoutFactory(LayoutFactory const &) = delete;
-   void operator=(LayoutFactory const &) = delete;
+   /// Delete copy and move methods to avoid copy instances of the singleton
+   LayoutFactory(const LayoutFactory &layoutFactory) = delete;
+   LayoutFactory &operator=(const LayoutFactory &layoutFactory) = delete;
+
+   LayoutFactory(LayoutFactory &&layoutFactory) = delete;
+   LayoutFactory &operator=(LayoutFactory &&layoutFactory) = delete;
 
 private:
    /// Constructor is private to keep a singleton instance of this class.

@@ -9,15 +9,6 @@
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
 
-// Default constructor
-AllSpikingNeurons::AllSpikingNeurons() : AllVertices()
-{
-}
-
-AllSpikingNeurons::~AllSpikingNeurons()
-{
-}
-
 ///  Setup the internal structure of the class (allocate memories).
 void AllSpikingNeurons::setupVertices()
 {
@@ -28,8 +19,6 @@ void AllSpikingNeurons::setupVertices()
 
    hasFired_.resize(size_, false);
    vertexEvents_.resize(size_, maxSpikes);
-
-   Simulator::getInstance().setPSummationMap(summationMap_);   //redundant
 }
 
 ///  Clear the spike counts out of all Neurons.

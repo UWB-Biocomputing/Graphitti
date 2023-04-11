@@ -30,9 +30,9 @@ class Layout {
 public:
    Layout();
 
-   virtual ~Layout();
+   virtual ~Layout() = default;
 
-   shared_ptr<AllVertices> getVertices() const;
+   AllVertices *getVertices() const;
 
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.
@@ -67,20 +67,20 @@ public:
    /// @return The number of vertices managed by the Layout
    virtual int getNumVertices() const;
 
-   VectorMatrix *xloc_;   ///< Store neuron i's x location.
+   VectorMatrix xloc_;   ///< Store neuron i's x location.
 
-   VectorMatrix *yloc_;   ///< Store neuron i's y location.
+   VectorMatrix yloc_;   ///< Store neuron i's y location.
 
-   CompleteMatrix *dist2_;   ///< Inter-neuron distance squared.
+   CompleteMatrix dist2_;   ///< Inter-neuron distance squared.
 
-   CompleteMatrix *dist_;   ///< The true inter-neuron distance.
+   CompleteMatrix dist_;   ///< The true inter-neuron distance.
 
    vector<int>
       probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
 
-   vertexType *vertexTypeMap_;   ///< The vertex type map (INH, EXC).
+   vector<vertexType> vertexTypeMap_;   ///< The vertex type map (INH, EXC).
 
-   bool *starterMap_;   ///< The starter existence map (T/F).
+   vector<bool> starterMap_;   ///< The starter existence map (T/F).
 
    BGSIZE numEndogenouslyActiveNeurons_;   ///< Number of endogenously active neurons.
 
@@ -88,7 +88,7 @@ public:
 
 
 protected:
-   shared_ptr<AllVertices> vertices_;
+   unique_ptr<AllVertices> vertices_;
 
    vector<int> endogenouslyActiveNeuronList_;   ///< Endogenously active neurons list.
 

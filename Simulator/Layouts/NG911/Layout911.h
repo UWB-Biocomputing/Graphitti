@@ -20,9 +20,9 @@ using namespace std;
 
 class Layout911 : public Layout {
 public:
-   Layout911();
+   Layout911() = default;
 
-   virtual ~Layout911();
+   virtual ~Layout911() = default;
 
    ///  Creates an instance of the class.
    ///

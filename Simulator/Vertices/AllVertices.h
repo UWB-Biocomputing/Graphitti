@@ -38,7 +38,7 @@ class AllVertices {
 public:
    AllVertices();
 
-   virtual ~AllVertices();
+   virtual ~AllVertices() = default;
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all neurons' state.
@@ -68,7 +68,7 @@ public:
    ///  apply (summed up) their PSRs (Post-Synaptic-Response).
    ///  On the next advance cycle, vertices add the values stored in their corresponding
    ///  summation points to their Vm and resets the summation points to zero
-   BGFLOAT *summationMap_;
+   vector<BGFLOAT> summationMap_;
 
 protected:
    ///  Total number of vertices.
@@ -110,7 +110,7 @@ public:
    ///  @param  randNoise              Reference to the random noise array.
    ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
-                                float *randNoise, EdgeIndexMap *edgeIndexMapDevice)
+                                float *randNoise, EdgeIndexMapDevice *edgeIndexMapDevice)
       = 0;
 
    ///  Set some parameters used for advanceVerticesDevice.

@@ -27,7 +27,7 @@ public:
    }
 
    // Invokes constructor for desired concrete class
-   shared_ptr<AllEdges> createEdges(const string &className);
+   unique_ptr<AllEdges> createEdges(const string &className);
 
    // Delete these methods because they can cause copy instances of the singleton when using threads.
    EdgesFactory(EdgesFactory const &) = delete;

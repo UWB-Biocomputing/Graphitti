@@ -13,24 +13,14 @@
 #include "Layout911.h"
 #include "ParameterManager.h"
 
-Connections911::Connections911()
-{
-}
-
-Connections911::~Connections911()
-{
-   if (oldTypeMap_ != nullptr)
-      delete[] oldTypeMap_;
-}
-
 void Connections911::setup()
 {
    int added = 0;
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
 
    // we can obtain the Layout, which holds the vertices, from the Model
-   shared_ptr<Layout> layout = Simulator::getInstance().getModel()->getLayout();
-   shared_ptr<AllVertices> vertices = layout->getVertices();
+   Layout &layout = *Simulator::getInstance().getModel()->getLayout();
+   AllVertices &vertices = *layout.getVertices();
 
    // Get list of edges sorted by target in ascending order from GraphManager
    GraphManager &gm = GraphManager::getInstance();
@@ -40,10 +30,10 @@ void Connections911::setup()
    for (auto it = sorted_edge_list.begin(); it != sorted_edge_list.end(); ++it) {
       size_t srcV = gm.source(*it);
       size_t destV = gm.target(*it);
-      edgeType type = layout->edgType(srcV, destV);
-      BGFLOAT *sumPoint = &vertices->summationMap_[destV];
+      edgeType type = layout.edgType(srcV, destV);
+      BGFLOAT *sumPoint = &vertices.summationMap_[destV];
 
-      BGFLOAT dist = (*layout->dist_)(srcV, destV);
+      BGFLOAT dist = layout.dist_(srcV, destV);
       LOG4CPLUS_DEBUG(edgeLogger_, "Source: " << srcV << " Dest: " << destV << " Dist: " << dist);
 
       BGSIZE iEdg;
@@ -89,8 +79,7 @@ bool Connections911::updateConnections(AllVertices &vertices)
    // Record old type map
    int numVertices = Simulator::getInstance().getTotalVertices();
    Layout &layout = *Simulator::getInstance().getModel()->getLayout();
-   oldTypeMap_ = new vertexType[numVertices];
-   memcpy(oldTypeMap_, layout.vertexTypeMap_, numVertices * sizeof(vertexType));
+   oldTypeMap_ = layout.vertexTypeMap_;
 
    // Erase PSAPs
    for (int i = 0; i < psapsToErase_; i++) {
@@ -190,11 +179,11 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       int srcVertex = callersToReroute[i];
 
       int closestPSAP = psaps[0];
-      BGFLOAT smallestDist = (*layout.dist_)(srcVertex, closestPSAP);
+      BGFLOAT smallestDist = layout.dist_(srcVertex, closestPSAP);
 
       // Find closest PSAP
       for (int i = 0; i < psaps.size(); i++) {
-         BGFLOAT dist = (*layout.dist_)(srcVertex, psaps[i]);
+         BGFLOAT dist = layout.dist_(srcVertex, psaps[i]);
          if (dist < smallestDist) {
             smallestDist = dist;
             closestPSAP = psaps[i];
@@ -220,11 +209,11 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       int destVertex = respsToReroute[i];
 
       int closestPSAP = psaps[0];
-      BGFLOAT smallestDist = (*layout.dist_)(closestPSAP, destVertex);
+      BGFLOAT smallestDist = layout.dist_(closestPSAP, destVertex);
 
       // Find closest PSAP
       for (int i = 0; i < psaps.size(); i++) {
-         BGFLOAT dist = (*layout.dist_)(psaps[i], destVertex);
+         BGFLOAT dist = layout.dist_(psaps[i], destVertex);
          if (dist < smallestDist) {
             smallestDist = dist;
             closestPSAP = psaps[i];

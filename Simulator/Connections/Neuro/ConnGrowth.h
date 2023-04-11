@@ -3,16 +3,16 @@
  * 
  * @ingroup Simulator/Connections
  *
- * @brief The model of the activity dependent neurite outgrowth
+ * @brief The model of the activity-dependent neurite outgrowth
  *
- * The activity dependent neurite outgrowth model is a phenomenological model derived by
- * a number of studies that demonstarated low level of electric activity (low firing rate)
+ * The activity-dependent neurite outgrowth model is a phenomenological model derived by
+ * a number of studies that demonstrated a low-level of electric activity (low firing rate)
  * stimulated neurite outgrowth, and high level of electric activity (high firing rate)
- * lead to regression (Ooyen etal. 1995).
+ * lead to regression (Ooyen et al. 1995).
  *
  * In this, synaptic strength (connectivity), \f$W\f$, was determined dynamically by a model of neurite
  * (cell input and output region) growth and synapse formation,
- * and a cell's region of connectivity is modeled as a circle with radius that changes
+ * and a cell's region of connectivity is modeled as a circle with a radius that changes
  * at a rate inversely proportional to a sigmoidal function of cell firing rate:
  * \f[
  *  \frac{d R_{i}}{dt} = \rho G(F_{i})
@@ -26,11 +26,11 @@
  * no outgrowth or retration), and \f$\beta\f$ determines the slope of \f$G(\cdot)\f$.
  * One divergence in these simulations from strict modeling of the living preparation
  * was that \f$\rho\f$ was increased to reduce simulated development times from the weeks
- * that the living preparation takes to 60,000s (approximaely 16 simulated hours).
- * Extensive analysis and simulation was performed to determine the maximum \f$\rho\f$ \f$(\rho=0.0001)\f$
+ * that the living preparation takes 60,000s (approximately 16 simulated hours).
+ * Extensive analysis and simulation were performed to determine the maximum \f$\rho\f$ \f$(\rho=0.0001)\f$
  * that would not interfere with network dynamics (the increased value of \f$\rho\f$ was still
  * orders of magnitude slower than the slowest of the neuron or synapse time constants,
- * which were order of \f$10^{-2}\f$~\f$10^{-3}sec\f$).
+ * which were the order of \f$10^{-2}\f$~\f$10^{-3}sec\f$).
  *
  * Synaptic strengths were computed for all pairs of neurons that had overlapping connectivity
  * regions as the area of their circle's overlap:
@@ -58,12 +58,12 @@
  * where A and B are the locations of neurons A and B, \f$r_0\f$ and 
  * \f$r_1\f$ are the neurite radii of neuron A and B, C and B are locations of intersections 
  * of neurite boundaries of neuron A and B, and \f$w_{01}\f$ and \f$w_{10}\f$ are the areas of 
- * their circla's overlap. 
+ * their circle's overlap. 
  *
  * Some models in this simulator is a rewrite of CSIM (2006) and other
  * work (Stiber and Kawasaki (2007?))
  * 
- * NOTE: Currently ConnGrowth doesn't craete edges ad the beginning of the simulation.
+ * NOTE: Currently ConnGrowth doesn't create edges ad the beginning of the simulation.
  */
 
 #pragma once
@@ -83,7 +83,7 @@ class ConnGrowth : public Connections {
 public:
    ConnGrowth();
 
-   virtual ~ConnGrowth();
+   virtual ~ConnGrowth() = default;
 
    static Connections *Create()
    {
@@ -124,12 +124,12 @@ public:
    ///  synaptic strengths from the weight matrix.
    ///  Note: Platform Dependent.
    ///
-   ///  @param  numVertices          number of vertices to update.
+   ///  @param  numVertices          The number of vertices to update.
    ///  @param  vertices             The AllVertices object.
-   ///  @param  synapses            The AllEdges object.
-   ///  @param  allVerticesDevice    GPU address of the allVertices struct in device memory.
-   ///  @param  allEdgesDevice   GPU address of the allEdges struct in device memory.
-   ///  @param  layout              The Layout object.
+   ///  @param  synapses             The AllEdges object.
+   ///  @param  allVerticesDevice    GPU address of the AllVertices struct in device memory.
+   ///  @param  allEdgesDevice       GPU address of the AllEdges struct in device memory.
+   ///  @param  layout               The Layout object.
    virtual void updateSynapsesWeights(const int numVertices, AllVertices &neurons,
                                       AllEdges &synapses,
                                       AllSpikingNeuronsDeviceProperties *allVerticesDevice,
@@ -167,29 +167,26 @@ public:
    /// structure to keep growth parameters
    GrowthParams growthParams_;
 
-   /// spike count for each epoch
-   int *spikeCounts_;
-
    /// radii size
    int radiiSize_;
 
    /// synapse weight
-   CompleteMatrix *W_;
+   CompleteMatrix W_;
 
    /// neuron radii
-   VectorMatrix *radii_;
+   VectorMatrix radii_;
 
    /// spiking rate
-   VectorMatrix *rates_;
+   VectorMatrix rates_;
 
    /// areas of overlap
-   CompleteMatrix *area_;
+   CompleteMatrix area_;
 
    /// neuron's outgrowth
-   VectorMatrix *outgrowth_;
+   VectorMatrix outgrowth_;
 
    /// displacement of neuron radii
-   VectorMatrix *deltaR_;
+   VectorMatrix deltaR_;
 };
 
 CEREAL_CLASS_VERSION(ConnGrowth, 1);
@@ -201,7 +198,7 @@ template <class Archive> void ConnGrowth::save(Archive &archive, std::uint32_t c
    // uses vector to save radii
    vector<BGFLOAT> radiiVector;
    for (int i = 0; i < radiiSize_; i++) {
-      radiiVector.push_back((*radii_)[i]);
+      radiiVector.push_back(radii_[i]);
    }
    // serialization
    archive(cereal::make_nvp("radiiSize", radiiSize_), cereal::make_nvp("radii", radiiVector));
@@ -225,6 +222,6 @@ template <class Archive> void ConnGrowth::load(Archive &archive, std::uint32_t c
 
    // assigns serialized data to objects
    for (int i = 0; i < radiiSize_; i++) {
-      (*radii_)[i] = radiiVector[i];
+      radii_[i] = radiiVector[i];
    }
 }

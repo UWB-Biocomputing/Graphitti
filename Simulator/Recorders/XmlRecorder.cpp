@@ -125,8 +125,8 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
    resultOut_ << "<SimState>\n";
    resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
    resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   resultOut_ << "   " << layout->xloc_->toXML("xloc") << endl;
-   resultOut_ << "   " << layout->yloc_->toXML("yloc") << endl;
+   resultOut_ << "   " << layout->xloc_.toXML("xloc") << endl;
+   resultOut_ << "   " << layout->yloc_.toXML("yloc") << endl;
    resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
    // create starter neurons matrix
@@ -161,7 +161,7 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
  *  @param  matrix      Starter Neuron matrix.
  *  @param  starter_map Bool map to reference neuron matrix location from.
  */
-void XmlRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap)
+void XmlRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap)
 {
    int cur = 0;
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
