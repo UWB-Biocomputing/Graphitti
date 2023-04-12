@@ -12,10 +12,9 @@
 
 #pragma once
 
-#ifndef _GPUSINPUTREGULAR_H_
-   #define _GPUSINPUTREGULAR_H_
+#define _GPUSINPUTREGULAR_H_
 
-   #include "SInputRegular.h"
+#include "SInputRegular.h"
 
 class GpuSInputRegular : public SInputRegular {
 public:
@@ -40,5 +39,3 @@ extern __global__ void inputStimulusDevice(int n, BGFLOAT *summationPoint_d, BGF
                                            int *nShiftValues_d, int nStepsInCycle, int nStepsCycle,
                                            int nStepsDuration);
    #endif
-
-#endif   // _GPUSINPUTREGULAR_H_

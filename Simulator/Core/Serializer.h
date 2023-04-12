@@ -8,6 +8,7 @@
  *  Serializes and Deserializes synapse weights, source vertices, destination vertices,
  *  maxEdgesPerVertex, totalVertices and radii.
  */
+#pragma once
 
 class Serializer {
 public:

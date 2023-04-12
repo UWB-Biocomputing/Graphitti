@@ -10,13 +10,12 @@
 
 #pragma once
 
-#ifndef _ISINPUT_H_
-   #define _ISINPUT_H_
+#define _ISINPUT_H_
 
-   #include "Core/Model.h"
-   #include "Global.h"
-   #include "Simulator.h"
-   #include "tinyxml.h"
+#include "Core/Model.h"
+#include "Global.h"
+#include "Simulator.h"
+#include "tinyxml.h"
 
 class ISInput {
 public:
@@ -33,5 +32,3 @@ public:
    /// @param[in] psi       Pointer to the simulation information.
    virtual void inputStimulus() = 0;
 };
-
-#endif   // _ISINPUT_H_

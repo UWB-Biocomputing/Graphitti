@@ -13,10 +13,9 @@
 
 #pragma once
 
-#ifndef _HOSTSINPUTPOISSON_H_
-   #define _HOSTSINPUTPOISSON_H_
+#define _HOSTSINPUTPOISSON_H_
 
-   #include "SInputPoisson.h"
+#include "SInputPoisson.h"
 
 class HostSInputPoisson : public SInputPoisson {
 public:
@@ -36,5 +35,3 @@ public:
 
 private:
 };
-
-#endif   // _HOSTSINPUTPOISSON_H_

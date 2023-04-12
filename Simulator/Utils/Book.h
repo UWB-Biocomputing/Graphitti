@@ -20,7 +20,7 @@
  */
 
 
-#ifndef __BOOK_H__
+#pragma once
 #define __BOOK_H__
 #include <stdio.h>
 //! CUDA Exception handler
@@ -32,5 +32,3 @@ static void HandleError(cudaError_t err, const char *file, int line)
    }
 }
 #define HANDLE_ERROR(err) (HandleError(err, __FILE__, __LINE__))
-
-#endif   // __BOOK_H__

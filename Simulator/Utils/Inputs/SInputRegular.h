@@ -16,10 +16,9 @@
 
 #include <vector>
 
-#ifndef _SINPUTREGULAR_H_
-   #define _SINPUTREGULAR_H_
+#define _SINPUTREGULAR_H_
 
-   #include "ISInput.h"
+#include "ISInput.h"
 
 class SInputRegular : public ISInput {
 public:
@@ -65,5 +64,3 @@ protected:
    //! Shift values, which determin the synch of stimuli (all 0 when synchronous)
    vector<int> nShiftValues;
 };
-
-#endif   // _SINPUTREGULAR_H_

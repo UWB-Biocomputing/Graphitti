@@ -6,7 +6,7 @@
  * @brief Deserializes Matrices from XML
  */
 
-#ifndef _MATRIXFACTORY_H_
+#pragma once
 #define _MATRIXFACTORY_H_
 
 #include "CompleteMatrix.h"
@@ -84,5 +84,3 @@ private:
    }
 };
 
-
-#endif

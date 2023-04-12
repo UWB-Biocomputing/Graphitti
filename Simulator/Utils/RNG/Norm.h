@@ -18,7 +18,7 @@
 //
 //
 
-#ifndef _NORM_H_
+#pragma once
 #define _NORM_H_
 
 #include "MTRand.h"
@@ -113,5 +113,3 @@ private:
    /// Default seeding parameter: seed
    static constexpr uint32_t DEFAULT_seed = 0;
 };
-
-#endif

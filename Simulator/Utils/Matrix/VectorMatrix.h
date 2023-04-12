@@ -7,7 +7,7 @@
  */
 
 
-#ifndef _VECTORMATRIX_H_
+#pragma once
 #define _VECTORMATRIX_H_
 
 #include "CompleteMatrix.h"
@@ -309,5 +309,3 @@ private:
    static Norm nRng;
 };
 
-
-#endif

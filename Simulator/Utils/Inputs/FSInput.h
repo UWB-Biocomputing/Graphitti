@@ -18,10 +18,9 @@
 
 #pragma once
 
-#ifndef _FSINPUT_H_
-   #define _FSINPUT_H_
+#define _FSINPUT_H_
 
-   #include "ISInput.h"
+#include "ISInput.h"
 
 class FSInput {
 public:
@@ -41,5 +40,3 @@ public:
 
 protected:
 };
-
-#endif   // _FSINPUT_H_

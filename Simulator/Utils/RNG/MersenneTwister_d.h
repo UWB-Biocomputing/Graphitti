@@ -17,12 +17,12 @@
 
 // #ifndef MERSENNETWISTER_H
 //#define MERSENNETWISTER_H
-#ifndef mersennetwister_h
-   #define mersennetwister_h
+#pragma once
+#define mersennetwister_h
 
 
-   #define DCMT_SEED 4172
-   #define MT_RNG_PERIOD 607
+#define DCMT_SEED 4172
+#define MT_RNG_PERIOD 607
 
 
 typedef struct {
@@ -52,6 +52,4 @@ typedef struct {
    #define MT_SHIFTC 15
    #define MT_SHIFT1 18
 
-
-#endif
 //#endif

@@ -15,7 +15,7 @@
  * using only Matrix objects.
 */
 
-#ifndef _MATRIX_H_
+#pragma once
 #define _MATRIX_H_
 
 #include "BGTypes.h"
@@ -82,5 +82,3 @@ protected:
 ///  @param os the output stream
 ///  @param obj the Matrix object to send to the output stream
 ostream &operator<<(ostream &os, const Matrix &obj);
-
-#endif

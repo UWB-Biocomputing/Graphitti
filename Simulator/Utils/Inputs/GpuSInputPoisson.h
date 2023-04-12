@@ -13,12 +13,11 @@
 
 #pragma once
 
-#ifndef _GPUSINPUTPOISSON_H_
-   #define _GPUSINPUTPOISSON_H_
+#define _GPUSINPUTPOISSON_H_
 
-   #include "AllSynapsesDeviceFuncs.h"
-   #include "GPUModel.h"
-   #include "SInputPoisson.h"
+#include "AllSynapsesDeviceFuncs.h"
+#include "GPUModel.h"
+#include "SInputPoisson.h"
 
 class GpuSInputPoisson : public SInputPoisson {
 public:
@@ -65,5 +64,3 @@ extern __global__ void applyI2SummationMap(int n, BGFLOAT *summationPoint_d,
                                            AllDSSynapsesDeviceProperties *allEdgesDevice);
 extern __global__ void setupSeeds(int n, curandState *devStates_d, unsigned long seed);
    #endif
-
-#endif   // _GPUSINPUTPOISSON_H_

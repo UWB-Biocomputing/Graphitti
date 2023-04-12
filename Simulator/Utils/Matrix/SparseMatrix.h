@@ -6,7 +6,7 @@
  * @brief An efficient implementation of a dynamically-allocated 2D sparse array.
  */
 
-#ifndef _SPARSEMATRIX_H_
+#pragma once
 #define _SPARSEMATRIX_H_
 
 #include "Matrix.h"
@@ -354,5 +354,3 @@ private:
    /// Hash table used to access elements by coordinates
    HashTable theElements;
 };
-
-#endif
