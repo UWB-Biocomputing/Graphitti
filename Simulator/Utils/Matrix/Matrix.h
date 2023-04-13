@@ -16,7 +16,6 @@
 */
 
 #pragma once
-#define _MATRIX_H_
 
 #include "BGTypes.h"
 #include "MatrixExceptions.h"

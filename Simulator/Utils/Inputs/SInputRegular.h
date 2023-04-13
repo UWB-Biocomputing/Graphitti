@@ -16,8 +16,6 @@
 
 #include <vector>
 
-#define _SINPUTREGULAR_H_
-
 #include "ISInput.h"
 
 class SInputRegular : public ISInput {

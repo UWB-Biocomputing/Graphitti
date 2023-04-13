@@ -13,8 +13,6 @@
 
 #pragma once
 
-#define _HOSTSINPUTPOISSON_H_
-
 #include "SInputPoisson.h"
 
 class HostSInputPoisson : public SInputPoisson {

@@ -7,7 +7,6 @@
  */
 
 #pragma once
-#define _MATRIXFACTORY_H_
 
 #include "CompleteMatrix.h"
 #include "VectorMatrix.h"

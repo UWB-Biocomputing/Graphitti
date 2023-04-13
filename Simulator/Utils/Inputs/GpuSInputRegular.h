@@ -12,8 +12,6 @@
 
 #pragma once
 
-#define _GPUSINPUTREGULAR_H_
-
 #include "SInputRegular.h"
 
 class GpuSInputRegular : public SInputRegular {

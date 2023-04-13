@@ -10,8 +10,6 @@
 
 #pragma once
 
-#define _ISINPUT_H_
-
 #include "Core/Model.h"
 #include "Global.h"
 #include "Simulator.h"

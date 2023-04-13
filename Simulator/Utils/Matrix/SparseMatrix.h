@@ -7,7 +7,6 @@
  */
 
 #pragma once
-#define _SPARSEMATRIX_H_
 
 #include "Matrix.h"
 #include "VectorMatrix.h"

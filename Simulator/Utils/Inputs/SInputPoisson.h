@@ -17,8 +17,6 @@
 
 #include <vector>
 
-#define _SINPUTPOISSON_H_
-
 #include "AllDSSynapses.h"
 #include "ISInput.h"
 

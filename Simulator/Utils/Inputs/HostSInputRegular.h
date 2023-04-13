@@ -12,8 +12,6 @@
 
 #pragma once
 
-#define _HOSTSINPUTREGULAR_H_
-
 #include "SInputRegular.h"
 
 class HostSInputRegular : public SInputRegular {
