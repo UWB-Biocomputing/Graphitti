@@ -19,7 +19,6 @@
 //
 
 #pragma once
-#define _NORM_H_
 
 #include "MTRand.h"
 #include <cmath>

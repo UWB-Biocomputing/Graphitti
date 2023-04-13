@@ -7,7 +7,6 @@
  */
 
 #pragma once
-#define _TIMER_H_
 
 #include <iostream>
 

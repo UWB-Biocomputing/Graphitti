@@ -9,8 +9,6 @@
 
 #pragma once
 
-#define _GLOBAL_H_
-
 // Debug output is included in both debug/release builds now.
 // The Default for debug is "LOW" and "OFF" for Release.
 

@@ -18,8 +18,6 @@
 
 #pragma once
 
-#define _FSINPUT_H_
-
 #include "ISInput.h"
 
 class FSInput {

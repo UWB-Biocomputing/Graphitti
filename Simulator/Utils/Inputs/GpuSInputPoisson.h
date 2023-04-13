@@ -13,8 +13,6 @@
 
 #pragma once
 
-#define _GPUSINPUTPOISSON_H_
-
 #include "AllSynapsesDeviceFuncs.h"
 #include "GPUModel.h"
 #include "SInputPoisson.h"

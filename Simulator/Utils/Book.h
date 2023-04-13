@@ -21,7 +21,7 @@
 
 
 #pragma once
-#define __BOOK_H__
+
 #include <stdio.h>
 //! CUDA Exception handler
 static void HandleError(cudaError_t err, const char *file, int line)

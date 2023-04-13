@@ -8,7 +8,6 @@
  */
 
 #pragma once
-#define _PARSEPARAMERROR_H_
 
 #include <iostream>
 #include <string>

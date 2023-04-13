@@ -18,8 +18,6 @@
 // #ifndef MERSENNETWISTER_H
 //#define MERSENNETWISTER_H
 #pragma once
-#define mersennetwister_h
-
 
 #define DCMT_SEED 4172
 #define MT_RNG_PERIOD 607
