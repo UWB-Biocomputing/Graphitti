@@ -94,9 +94,9 @@ template <typename T> std::map<std::string, T *(*)(void)> CreateFunctionMap(T *p
    std::map<std::string, T *(*)(void)> createFunctionMap;
 
    // Check for undesired type
-   static_assert(std::is_same_v<T, Connections> || std::is_same_v<T, AllEdges>
-                    || std::is_same_v<T, Layout> || std::is_same_v<T, AllVertices>
-                    || std::is_same_v<T, IRecorder> || std::is_same_v<T, MTRand>,
+   static_assert((std::is_same_v<T, Connections> || std::is_same_v<T, AllEdges>
+                  || std::is_same_v<T, Layout> || std::is_same_v<T, AllVertices>
+                  || std::is_same_v<T, IRecorder> || std::is_same_v<T, MTRand>),
                  "Factory does not support instantiating this type");
 
    // Register Connections classes
