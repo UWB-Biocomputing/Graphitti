@@ -41,8 +41,8 @@
 #include "Recorders/XmlRecorder.h"
 
 #if defined(HDF5)
-#include "Recorders/Hdf5Recorder.h"
-#include "Recorders/Neuro/Hdf5GrowthRecorder.h"
+   #include "Recorders/Hdf5Recorder.h"
+   #include "Recorders/Neuro/Hdf5GrowthRecorder.h"
 #endif
 
 // MTRand
@@ -89,65 +89,63 @@
  *
  */
 
-template <typename T>
-std::map<std::string, T *(*)(void)> CreateFunctionMap(T *placeholder) {
-  std::map<std::string, T *(*)(void)> createFunctionMap;
+template <typename T> std::map<std::string, T *(*)(void)> CreateFunctionMap(T *placeholder)
+{
+   std::map<std::string, T *(*)(void)> createFunctionMap;
 
-  // Check for undesired type
-  static_assert((std::is_same_v<T, Connections> ||
-                 std::is_same_v<T, AllEdges> || std::is_same_v<T, Layout> ||
-                 std::is_same_v<T, AllVertices> ||
-                 std::is_same_v<T, IRecorder> || std::is_same_v<T, MTRand>),
-                "Invalid object type passed to CreateFunctionMap");
+   // Check for Invalid type
+   static_assert((std::is_same_v<T, Connections> || std::is_same_v<T, AllEdges>
+                  || std::is_same_v<T, Layout> || std::is_same_v<T, AllVertices>
+                  || std::is_same_v<T, IRecorder> || std::is_same_v<T, MTRand>),
+                 "Invalid object type passed to CreateFunctionMap");
 
-  // Register Connections classes
-  if constexpr (std::is_same_v<T, Connections>) {
-    createFunctionMap["ConnStatic"] = &ConnStatic::Create;
-    createFunctionMap["ConnGrowth"] = &ConnGrowth::Create;
-    createFunctionMap["Connections911"] = &Connections911::Create;
-  }
+   // Register Connections classes
+   if constexpr (std::is_same_v<T, Connections>) {
+      createFunctionMap["ConnStatic"] = &ConnStatic::Create;
+      createFunctionMap["ConnGrowth"] = &ConnGrowth::Create;
+      createFunctionMap["Connections911"] = &Connections911::Create;
+   }
 
-  // Register AllEdges classes
-  else if constexpr (std::is_same_v<T, AllEdges>) {
-    createFunctionMap["AllSpikingSynapses"] = &AllSpikingSynapses::Create;
-    createFunctionMap["AllSTDPSynapses"] = &AllSTDPSynapses::Create;
-    createFunctionMap["AllDSSynapses"] = &AllDSSynapses::Create;
-    createFunctionMap["AllDynamicSTDPSynapses"] =
-        &AllDynamicSTDPSynapses::Create;
-    createFunctionMap["All911Edges"] = &All911Edges::Create;
-  }
+   // Register AllEdges classes
+   else if constexpr (std::is_same_v<T, AllEdges>) {
+      createFunctionMap["AllSpikingSynapses"] = &AllSpikingSynapses::Create;
+      createFunctionMap["AllSTDPSynapses"] = &AllSTDPSynapses::Create;
+      createFunctionMap["AllDSSynapses"] = &AllDSSynapses::Create;
+      createFunctionMap["AllDynamicSTDPSynapses"] = &AllDynamicSTDPSynapses::Create;
+      createFunctionMap["All911Edges"] = &All911Edges::Create;
+   }
 
-  // Register Layout classes
-  else if constexpr (std::is_same_v<T, Layout>) {
-    createFunctionMap["FixedLayout"] = &FixedLayout::Create;
-    createFunctionMap["DynamicLayout"] = &DynamicLayout::Create;
-    createFunctionMap["Layout911"] = &Layout911::Create;
-  }
+   // Register Layout classes
+   else if constexpr (std::is_same_v<T, Layout>) {
+      createFunctionMap["FixedLayout"] = &FixedLayout::Create;
+      createFunctionMap["DynamicLayout"] = &DynamicLayout::Create;
+      createFunctionMap["Layout911"] = &Layout911::Create;
+   }
 
-  // Register AllVertices classes
-  else if constexpr (std::is_same_v<T, AllVertices>) {
-    createFunctionMap["AllLIFNeurons"] = &AllLIFNeurons::Create;
-    createFunctionMap["AllIZHNeurons"] = &AllIZHNeurons::Create;
-    createFunctionMap["All911Vertices"] = &All911Vertices::Create;
-  }
+   // Register AllVertices classes
+   else if constexpr (std::is_same_v<T, AllVertices>) {
+      createFunctionMap["AllLIFNeurons"] = &AllLIFNeurons::Create;
+      createFunctionMap["AllIZHNeurons"] = &AllIZHNeurons::Create;
+      createFunctionMap["All911Vertices"] = &All911Vertices::Create;
+   }
 
-  // Register IRecorder classes
-  else if constexpr (std::is_same_v<T, IRecorder>) {
-    createFunctionMap["XmlRecorder"] = &XmlRecorder::Create;
-    createFunctionMap["XmlGrowthRecorder"] = &XmlGrowthRecorder::Create;
-    createFunctionMap["XmlSTDPRecorder"] = &XmlSTDPRecorder::Create;
-    createFunctionMap["Xml911Recorder"] = &Xml911Recorder::Create;
+   // Register IRecorder classes
+   else if constexpr (std::is_same_v<T, IRecorder>) {
+      createFunctionMap["XmlRecorder"] = &XmlRecorder::Create;
+      createFunctionMap["XmlGrowthRecorder"] = &XmlGrowthRecorder::Create;
+      createFunctionMap["XmlSTDPRecorder"] = &XmlSTDPRecorder::Create;
+      createFunctionMap["Xml911Recorder"] = &Xml911Recorder::Create;
 #if defined(HDF5)
-    createFunctionMap["Hdf5Recorder"] = &Hdf5Recorder::Create;
-    createFunctionMap["Hdf5GrowthRecorder"] = &Hdf5GrowthRecorder::Create;
+      createFunctionMap["Hdf5Recorder"] = &Hdf5Recorder::Create;
+      createFunctionMap["Hdf5GrowthRecorder"] = &Hdf5GrowthRecorder::Create;
 #endif
-  }
+   }
 
-  // Register MTRand classes
-  else if constexpr (std::is_same_v<T, MTRand>) {
-    createFunctionMap["MTRand"] = &MTRand::Create;
-    createFunctionMap["Norm"] = &Norm::Create;
-  }
+   // Register MTRand classes
+   else if constexpr (std::is_same_v<T, MTRand>) {
+      createFunctionMap["MTRand"] = &MTRand::Create;
+      createFunctionMap["Norm"] = &Norm::Create;
+   }
 
-  return createFunctionMap;
+   return createFunctionMap;
 }
