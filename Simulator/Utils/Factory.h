@@ -24,7 +24,7 @@
  * 
  *          One solution would be to pass a map from the respective base class with all the
  *          instance of its derived class. Though simple, this solution gives rise to a 
- *          circular dependency. i.e, the derived class would need to reference the base class,
+ *          circular dependency; i.e, the derived class would need to reference the base class,
  *          and the base class would also need to reference the derived class for the sake of 
  *          this map, leading to an infinite loop of references.
  * 
@@ -87,23 +87,11 @@ public:
    // Default destructor
    ~Factory() = default;
 
-   /// Acts as constructor, returns the instance of singleton object for the instantiated type.
+   /// Acts as constructor, returns the instance of singleton object for the
+   /// instantiated type.
    static Factory &getInstance()
    {
-      /** 
-       * Why the T* argument?
-       * C++ functions resolve polymorphic behavior based on their input arguments,
-       * not their return types. This is because the compiler generates a separate
-       * instance of the function for each function signature. 
-       * 
-       * For the CreateFunctionMap, the T* argument is only used to resolve polymorphic behavior.
-       * Also, you can create a pointer, T*, without having to create an instance of the class T. 
-       * In this case,it is essential, because the function expects a pointer to the (abstract) 
-       * base class.
-       */
-
-      T *placeholder = nullptr;
-      static Factory instance(CreateFunctionMap(placeholder));
+      static Factory instance(CreateFunctionMap());
       return instance;
    }
 
@@ -111,11 +99,12 @@ public:
    ///
    /// @param className class name.
    /// @return Unique pointer to an instance if className is found in
-   ///         createFunctions map, nullptr otherwise.
+   ///         createFunctionsMap map, nullptr otherwise.
+   ///
    std::unique_ptr<T> createType(const std::string &className)
    {
-      auto createIter = createFunctions.find(className);
-      if (createIter != createFunctions.end()) {
+      auto createIter = createFunctionsMap_.find(className);
+      if (createIter != createFunctionsMap_.end()) {
          return std::unique_ptr<T>(createIter->second());
       }
       return nullptr;
@@ -136,41 +125,42 @@ private:
    using FunctionMap = std::map<std::string, CreateFunction>;
 
    /// Makes class-to-function map an internal factory member.
-   FunctionMap createFunctions;
+   FunctionMap createFunctionsMap_;
 
    /// Constructor is private to keep a singleton instance of this class.
    Factory(std::map<std::string, CreateFunction> map)
    {
-      createFunctions = std::move(map);
+      createFunctionsMap_ = std::move(map);
    }
 
-   static std::map<std::string, T *(*)(void)> CreateFunctionMap(T *placeholder)
+   /// @brief     A static method that returns a map with the required instance of
+   ///            derived classes for the respective base class.
+   /// @return    Returns a map with the name (string) of each concrete derived class,
+   ///            and its creation function.
+   ///
+   static std::map<std::string, CreateFunction> CreateFunctionMap()
    {
-      std::map<std::string, T *(*)(void)> createFunctionMap;
+      std::map<std::string, CreateFunction> createFunctionMap;
 
       // A static assert is used to check for any undesired type; thereby generating a
       // compile-time error for any request to instantiate a template for a type that
       // has not been explicitly defined.
-
       static_assert((std::is_same_v<T, Connections> || std::is_same_v<T, AllEdges>
                      || std::is_same_v<T, Layout> || std::is_same_v<T, AllVertices>
                      || std::is_same_v<T, IRecorder> || std::is_same_v<T, MTRand>),
                     "Invalid object type passed to CreateFunctionMap");
 
-      /*
-      * What is std::is_same<> doing?
-      * std::is_same<> is a type trait in C++ that checks whether two types are the
-      * same or not. It is a compile-time type trait that returns a bool value
-      * indicating whether the two types are the same.
-      *
-      * Why can they be constexpr?
-      * The std::is_same<> tests can be evaluated at compile-time because they are
-      * implemented as constexpr functions. This is possible because std::is_same<>
-      * does not actually create any objects or perform any operations at runtime, it
-      * simply checks the types of the given template arguments and returns a boolean
-      * value.
-      *
-      */
+      //  What is std::is_same<> ?
+      //  std::is_same<> is a type trait in C++ that checks whether two types are the
+      //  same or not. It is a compile-time type trait that returns a bool value
+      //  indicating whether the two types are the same.
+
+      //  Why can std::is_same<> be constexpr?
+      //  The std::is_same<> can be evaluated at compile-time because they are
+      //  implemented as constexpr functions. This is possible because std::is_same<>
+      //  does not actually create any objects or perform any operations at runtime, it
+      //  simply checks the types of the given template arguments and returns a boolean
+      //  value.
 
       // Register Connections classes
       if constexpr (std::is_same_v<T, Connections>) {
@@ -181,18 +171,18 @@ private:
 
       // Register AllEdges classes
       else if constexpr (std::is_same_v<T, AllEdges>) {
-         createFunctionMap["AllSpikingSynapses"] = &AllSpikingSynapses::Create;
-         createFunctionMap["AllSTDPSynapses"] = &AllSTDPSynapses::Create;
-         createFunctionMap["AllDSSynapses"] = &AllDSSynapses::Create;
-         createFunctionMap["AllDynamicSTDPSynapses"] = &AllDynamicSTDPSynapses::Create;
          createFunctionMap["All911Edges"] = &All911Edges::Create;
+         createFunctionMap["AllDSSynapses"] = &AllDSSynapses::Create;
+         createFunctionMap["AllSTDPSynapses"] = &AllSTDPSynapses::Create;
+         createFunctionMap["AllSpikingSynapses"] = &AllSpikingSynapses::Create;
+         createFunctionMap["AllDynamicSTDPSynapses"] = &AllDynamicSTDPSynapses::Create;
       }
 
       // Register Layout classes
       else if constexpr (std::is_same_v<T, Layout>) {
+         createFunctionMap["Layout911"] = &Layout911::Create;
          createFunctionMap["FixedLayout"] = &FixedLayout::Create;
          createFunctionMap["DynamicLayout"] = &DynamicLayout::Create;
-         createFunctionMap["Layout911"] = &Layout911::Create;
       }
 
       // Register AllVertices classes
@@ -205,9 +195,10 @@ private:
       // Register IRecorder classes
       else if constexpr (std::is_same_v<T, IRecorder>) {
          createFunctionMap["XmlRecorder"] = &XmlRecorder::Create;
-         createFunctionMap["XmlGrowthRecorder"] = &XmlGrowthRecorder::Create;
-         createFunctionMap["XmlSTDPRecorder"] = &XmlSTDPRecorder::Create;
          createFunctionMap["Xml911Recorder"] = &Xml911Recorder::Create;
+         createFunctionMap["XmlSTDPRecorder"] = &XmlSTDPRecorder::Create;
+         createFunctionMap["XmlGrowthRecorder"] = &XmlGrowthRecorder::Create;
+
 #if defined(HDF5)
          createFunctionMap["Hdf5Recorder"] = &Hdf5Recorder::Create;
          createFunctionMap["Hdf5GrowthRecorder"] = &Hdf5GrowthRecorder::Create;
@@ -216,8 +207,8 @@ private:
 
       // Register MTRand classes
       else if constexpr (std::is_same_v<T, MTRand>) {
-         createFunctionMap["MTRand"] = &MTRand::Create;
          createFunctionMap["Norm"] = &Norm::Create;
+         createFunctionMap["MTRand"] = &MTRand::Create;
       }
 
       return createFunctionMap;
