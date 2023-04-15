@@ -8,7 +8,6 @@
 
 
 #pragma once
-#define _VECTORMATRIX_H_
 
 #include "CompleteMatrix.h"
 #include "Matrix.h"
