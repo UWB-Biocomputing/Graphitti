@@ -1,42 +1,45 @@
 /**
  * @file Factory.h
- * 
+ *
  * @ingroup Simulator/Utils
  *
- * @brief A factory template for creating factory class for any subsystem that requires a
- *        factory to create a (singleton) concrete class instance at runtime.
- *        The class instance is based on a class name specified in the configuration file.
- * 
- * @details Factory is one of the important design patterns of Graphitti. It is developed 
- *          in order to create a singleton instance of each subsystem: Layout, Connections,
- *          Edges, Vertices, and Recorders. This design pattern enables the base class to 
- *          create the correct instances of each of the derived classes, specified by 
- *          simulation configuration information file loaded at runtime.
- * 
- *          The Factory class is templated to provide a pre-designed code skeleton for any
- *          subsystem that requires a to create a (singleton) concrete class instance at
- *          runtime. However, the factory class needs to have a map that includes, for each
- *          concrete derived class, its name (string) and the creation function for that 
- *          particular class.    
- * 
- *          So, the obvious question is "which class populates this map, given that it needs
- *          to be done before the factory can instantiate any object?" 
- * 
- *          One solution would be to pass a map from the respective base class with all the
- *          instance of its derived class. Though simple, this solution gives rise to a 
- *          circular dependency; i.e, the derived class would need to reference the base class,
- *          and the base class would also need to reference the derived class for the sake of 
- *          this map, leading to an infinite loop of references.
- * 
- *          Second solution - the choosen solution for this implementation, is creating a static
- *          method in Factory template. This method- CreateFunctionMap, returns a map with the 
- *          required instance of derived classes for the respective base class. This approach 
- *          helps to keep the code organized and avoids circular dependencies. However, the  
- *          downside of this approach is that the Factory.h file needs to include every 
- *          definition of every class that might be instantiated. This could be considered a 
- *          plus- that all of the map entries are organized in this one file.
- * 
-*/
+ * @brief A factory template for creating factory class for any subsystem that
+ * requires a factory to create a (singleton) concrete class instance at
+ * runtime. The class instance is based on a class name specified in the
+ * configuration file.
+ *
+ * @details Factory is one of the important design patterns of Graphitti. It is
+ * developed in order to create a singleton instance of each subsystem: Layout,
+ * Connections, Edges, Vertices, and Recorders. This design pattern enables the
+ * base class to create the correct instances of each of the derived classes,
+ * specified by simulation configuration information file loaded at runtime.
+ *
+ *          The Factory class is templated to provide a pre-designed code
+ * skeleton for any subsystem that requires a to create a (singleton) concrete
+ * class instance at runtime. However, the factory class needs to have a map
+ * that includes, for each concrete derived class, its name (string) and the
+ * creation function for that particular class.
+ *
+ *          So, the obvious question is "which class populates this map, given
+ * that it needs to be done before the factory can instantiate any object?"
+ *
+ *          One solution would be to pass a map from the respective base class
+ * with all the instance of its derived class. Though simple, this solution
+ * gives rise to a circular dependency; i.e, the derived class would need to
+ * reference the base class, and the base class would also need to reference the
+ * derived class for the sake of this map, leading to an infinite loop of
+ * references.
+ *
+ *          Second solution - the choosen solution for this implementation, is
+ * creating a static method in Factory template. This method- CreateFunctionMap,
+ * returns a map with the required instance of derived classes for the
+ * respective base class. This approach helps to keep the code organized and
+ * avoids circular dependencies. However, the downside of this approach is that
+ * the Factory.h file needs to include every definition of every class that
+ * might be instantiated. This could be considered a plus- that all of the map
+ * entries are organized in this one file.
+ *
+ */
 
 #pragma once
 
@@ -133,34 +136,36 @@ private:
       createFunctionsMap_ = std::move(map);
    }
 
-   /// @brief     A static method that returns a map with the required instance of
+   /// @brief     A static method that returns a map with the required instance
+   /// of
    ///            derived classes for the respective base class.
-   /// @return    Returns a map with the name (string) of each concrete derived class,
+   /// @return    Returns a map with the name (string) of each concrete derived
+   /// class,
    ///            and its creation function.
    ///
    static std::map<std::string, CreateFunction> CreateFunctionMap()
    {
       std::map<std::string, CreateFunction> createFunctionMap;
 
-      // A static assert is used to check for any undesired type; thereby generating a
-      // compile-time error for any request to instantiate a template for a type that
-      // has not been explicitly defined.
+      // A static assert is used to check for any undesired type; thereby
+      // generating a compile-time error for any request to instantiate a template
+      // for a type that has not been explicitly defined.
       static_assert((std::is_same_v<T, Connections> || std::is_same_v<T, AllEdges>
                      || std::is_same_v<T, Layout> || std::is_same_v<T, AllVertices>
                      || std::is_same_v<T, IRecorder> || std::is_same_v<T, MTRand>),
                     "Invalid object type passed to CreateFunctionMap");
 
       //  What is std::is_same<> ?
-      //  std::is_same<> is a type trait in C++ that checks whether two types are the
-      //  same or not. It is a compile-time type trait that returns a bool value
-      //  indicating whether the two types are the same.
+      //  std::is_same<> is a type trait in C++ that checks whether two types are
+      //  the same or not. It is a compile-time type trait that returns a bool
+      //  value indicating whether the two types are the same.
 
       //  Why can std::is_same<> be constexpr?
       //  The std::is_same<> can be evaluated at compile-time because they are
-      //  implemented as constexpr functions. This is possible because std::is_same<>
-      //  does not actually create any objects or perform any operations at runtime, it
-      //  simply checks the types of the given template arguments and returns a boolean
-      //  value.
+      //  implemented as constexpr functions. This is possible because
+      //  std::is_same<> does not actually create any objects or perform any
+      //  operations at runtime, it simply checks the types of the given template
+      //  arguments and returns a boolean value.
 
       // Register Connections classes
       if constexpr (std::is_same_v<T, Connections>) {
