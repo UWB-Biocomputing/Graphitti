@@ -9,7 +9,6 @@
  * and compile history information on xml file:
  *     -# neuron's locations, and type map,
  *     -# individual neuron's spike rate in epochs,
- *     -# network wide burstiness index data in 1s bins,
  *     -# network wide spike count in 10ms bins.
  */
 
@@ -61,9 +60,6 @@ public:
 protected:
    // a file stream for xml output
    ofstream resultOut_;
-
-   // burstiness Histogram goes through the
-   VectorMatrix burstinessHist_;
 
    // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
    VectorMatrix spikesHistory_;

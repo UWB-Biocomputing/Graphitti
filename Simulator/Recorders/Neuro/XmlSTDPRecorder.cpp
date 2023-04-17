@@ -161,7 +161,6 @@ void XmlSTDPRecorder::saveSimData(const AllVertices &neurons)
    resultOut_ << "   " << toXML("sourceNeuronIndexHistory", sourceNeuronIndexHistory_) << endl;
    resultOut_ << "   " << toXML("destNeuronIndexHistory", destNeuronIndexHistory_) << endl;
    resultOut_ << "   " << toXML("weightsHistory", weightsHistory_) << endl;
-   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
    resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
    resultOut_ << "   " << simulator.getModel()->getLayout()->xloc_.toXML("xloc") << endl;
    resultOut_ << "   " << simulator.getModel()->getLayout()->yloc_.toXML("yloc") << endl;

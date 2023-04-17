@@ -18,10 +18,6 @@
 // constructor
 // TODO: I believe the initializer for spikesHistory_ assumes a particular deltaT
 XmlRecorder::XmlRecorder() :
-   burstinessHist_(MATRIX_TYPE, MATRIX_INIT, 1,
-                   static_cast<int>(Simulator::getInstance().getEpochDuration()
-                                    * Simulator::getInstance().getNumEpochs()),
-                   static_cast<BGFLOAT>(0.0)),
    spikesHistory_(MATRIX_TYPE, MATRIX_INIT, 1,
                   static_cast<int>(Simulator::getInstance().getEpochDuration()
                                    * Simulator::getInstance().getNumEpochs() * 100),
@@ -36,7 +32,7 @@ XmlRecorder::XmlRecorder() :
 }
 
 // Create a new xml file and initialize data
-/// @param[in] stateOutputFileName	File name to save histories
+/// @param[in] stateOutputFileName      File name to save histories
 void XmlRecorder::init()
 {
    resultOut_.open(resultFileName_.c_str());
@@ -84,11 +80,6 @@ void XmlRecorder::compileHistories(AllVertices &vertices)
       for (int eventIterator = 0;
            eventIterator < spNeurons.vertexEvents_[iNeuron].getNumEventsInEpoch();
            eventIterator++) {
-         int idx1
-            = static_cast<int>(static_cast<double>(spNeurons.vertexEvents_[iNeuron][eventIterator])
-                               * simulator.getDeltaT());
-         burstinessHist_[idx1] = burstinessHist_[idx1] + 1.0;
-
          // compile network wide spike count in 10ms bins
          int idx2
             = static_cast<int>(static_cast<double>(spNeurons.vertexEvents_[iNeuron][eventIterator])
@@ -123,7 +114,6 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
 
    // Write the core state information:
    resultOut_ << "<SimState>\n";
-   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
    resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
    resultOut_ << "   " << layout->xloc_.toXML("xloc") << endl;
    resultOut_ << "   " << layout->yloc_.toXML("yloc") << endl;
@@ -181,7 +171,5 @@ void XmlRecorder::printParameters()
    LOG4CPLUS_DEBUG(fileLogger_, "\nXMLRECORDER PARAMETERS"
                                    << endl
                                    << "\tResult file path: " << resultFileName_ << endl
-                                   << "\tBurstiness History Size: " << burstinessHist_.Size()
-                                   << endl
                                    << "\tSpikes History Size: " << spikesHistory_.Size() << endl);
 }
