@@ -12,38 +12,38 @@
 #include "DynamicLayout.h"
 #include "FixedLayout.h"
 #include "Layout911.h"
-#include "LayoutFactory.h"
+#include "Utils/Factory.h"
 #include "gtest/gtest.h"
 
 TEST(LayoutFactory, GetInstanceReturnsInstance)
 {
-   LayoutFactory *layoutFactory = &LayoutFactory::getInstance();
+   Factory<Layout> *layoutFactory = &Factory<Layout>::getInstance();
    ASSERT_NE(nullptr, layoutFactory);
 }
 
 TEST(LayoutFactory, CreateDynamicLayoutInstance)
 {
-   shared_ptr<Layout> layout = LayoutFactory::getInstance().createLayout("DynamicLayout");
+   unique_ptr<Layout> layout = Factory<Layout>::getInstance().createType("DynamicLayout");
    ASSERT_NE(nullptr, layout);
    ASSERT_NE(nullptr, dynamic_cast<DynamicLayout *>(layout.get()));
 }
 
 TEST(LayoutFactory, CreateFixedLayoutInstance)
 {
-   shared_ptr<Layout> layout = LayoutFactory::getInstance().createLayout("FixedLayout");
+   unique_ptr<Layout> layout = Factory<Layout>::getInstance().createType("FixedLayout");
    ASSERT_NE(nullptr, layout);
    ASSERT_NE(nullptr, dynamic_cast<FixedLayout *>(layout.get()));
 }
 
 TEST(LayoutFactory, CreateLayout911Instance)
 {
-   shared_ptr<Layout> layout = LayoutFactory::getInstance().createLayout("Layout911");
+   unique_ptr<Layout> layout = Factory<Layout>::getInstance().createType("Layout911");
    ASSERT_NE(nullptr, layout);
    ASSERT_NE(nullptr, dynamic_cast<Layout911 *>(layout.get()));
 }
 
 TEST(LayoutFactory, CreateNonExistentClassReturnsNullPtr)
 {
-   shared_ptr<Layout> layout = LayoutFactory::getInstance().createLayout("NonExistent");
+   unique_ptr<Layout> layout = Factory<Layout>::getInstance().createType("NonExistent");
    ASSERT_EQ(nullptr, layout);
 }

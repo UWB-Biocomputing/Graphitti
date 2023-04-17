@@ -16,10 +16,6 @@ FixedLayout::FixedLayout() : gridLayout_(true), Layout()
 {
 }
 
-FixedLayout::~FixedLayout()
-{
-}
-
 void FixedLayout::setup()
 {
    // Base class allocates memory for: xLoc_, yLoc, dist2_, and dist_
@@ -33,16 +29,16 @@ void FixedLayout::setup()
    for (int n = 0; n < numVertices_ - 1; n++) {
       for (int n2 = n + 1; n2 < numVertices_; n2++) {
          // distance^2 between two points in point-slope form
-         (*dist2_)(n, n2) = ((*xloc_)[n] - (*xloc_)[n2]) * ((*xloc_)[n] - (*xloc_)[n2])
-                            + ((*yloc_)[n] - (*yloc_)[n2]) * ((*yloc_)[n] - (*yloc_)[n2]);
+         dist2_(n, n2) = (xloc_[n] - xloc_[n2]) * (xloc_[n] - xloc_[n2])
+                         + (yloc_[n] - yloc_[n2]) * (yloc_[n] - yloc_[n2]);
 
          // both points are equidistant from each other
-         (*dist2_)(n2, n) = (*dist2_)(n, n2);
+         dist2_(n2, n) = dist2_(n, n2);
       }
    }
 
    // take the square root to get actual distance (Pythagoras was right!)
-   (*dist_) = sqrt((*dist2_));
+   dist_ = sqrt(dist2_);
 }
 
 ///  Prints out all parameters to logging file.
@@ -62,8 +58,8 @@ void FixedLayout::generateVertexTypeMap(int numVertices)
    LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing vertex type map" << endl);
 
    // Populate vertexTypeMap_ with EXC
-   fill_n(vertexTypeMap_, numVertices, EXC);
-
+   // fill_n(vertexTypeMap_, numVertices, EXC);
+   vertexTypeMap_.assign(numVertices, EXC);
    // for (int i = 0; i < numVertices; i++) {
    //    vertexTypeMap_[i] = EXC;
    // }
@@ -168,14 +164,14 @@ void FixedLayout::initVerticesLocs()
    if (gridLayout_) {
       // grid layout
       for (int i = 0; i < numVertices; i++) {
-         (*xloc_)[i] = i % Simulator::getInstance().getHeight();
-         (*yloc_)[i] = i / Simulator::getInstance().getHeight();
+         xloc_[i] = i % Simulator::getInstance().getHeight();
+         yloc_[i] = i / Simulator::getInstance().getHeight();
       }
    } else {
       // random layout
       for (int i = 0; i < numVertices; i++) {
-         (*xloc_)[i] = initRNG.inRange(0, Simulator::getInstance().getWidth());
-         (*yloc_)[i] = initRNG.inRange(0, Simulator::getInstance().getHeight());
+         xloc_[i] = initRNG.inRange(0, Simulator::getInstance().getWidth());
+         yloc_[i] = initRNG.inRange(0, Simulator::getInstance().getHeight());
       }
    }
 }

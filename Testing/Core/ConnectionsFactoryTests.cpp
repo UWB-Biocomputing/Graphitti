@@ -12,42 +12,42 @@
 #include "ConnGrowth.h"
 #include "ConnStatic.h"
 #include "Connections911.h"
-#include "ConnectionsFactory.h"
+#include "Utils/Factory.h"
 #include "gtest/gtest.h"
 
 TEST(ConnectionsFactory, GetInstanceReturnsInstance)
 {
-   ConnectionsFactory *connectionsFactory = &ConnectionsFactory::getInstance();
+   Factory<Connections> *connectionsFactory = &Factory<Connections>::getInstance();
    ASSERT_NE(nullptr, connectionsFactory);
 }
 
 TEST(ConnectionsFactory, CreateConnstaticInstance)
 {
-   shared_ptr<Connections> connections
-      = ConnectionsFactory::getInstance().createConnections("ConnStatic");
+   unique_ptr<Connections> connections
+      = Factory<Connections>::getInstance().createType("ConnStatic");
    ASSERT_NE(nullptr, connections);
    ASSERT_NE(nullptr, dynamic_cast<ConnStatic *>(connections.get()));
 }
 
 TEST(ConnectionsFactory, CreateConnGrowthInstance)
 {
-   shared_ptr<Connections> connections
-      = ConnectionsFactory::getInstance().createConnections("ConnGrowth");
+   unique_ptr<Connections> connections
+      = Factory<Connections>::getInstance().createType("ConnGrowth");
    ASSERT_NE(nullptr, connections);
    ASSERT_NE(nullptr, dynamic_cast<ConnGrowth *>(connections.get()));
 }
 
 TEST(ConnectionsFactory, CreateConnections911Instance)
 {
-   shared_ptr<Connections> connections
-      = ConnectionsFactory::getInstance().createConnections("Connections911");
+   unique_ptr<Connections> connections
+      = Factory<Connections>::getInstance().createType("Connections911");
    ASSERT_NE(nullptr, connections);
    ASSERT_NE(nullptr, dynamic_cast<Connections911 *>(connections.get()));
 }
 
 TEST(ConnectionsFactory, CreateNonExistentClassReturnsNullPtr)
 {
-   shared_ptr<Connections> connections
-      = ConnectionsFactory::getInstance().createConnections("NonExistent");
+   unique_ptr<Connections> connections
+      = Factory<Connections>::getInstance().createType("NonExistent");
    ASSERT_EQ(nullptr, connections);
 }

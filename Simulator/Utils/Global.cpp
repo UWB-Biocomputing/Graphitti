@@ -77,7 +77,7 @@ int g_deviceId = 0;
 MTRand initRNG;
 
 // A normalized random number generator.
-shared_ptr<MTRand> noiseRNG;
+unique_ptr<MTRand> noiseRNG;
 
 //		simulation vars
 uint64_t g_simulationStep = 0;

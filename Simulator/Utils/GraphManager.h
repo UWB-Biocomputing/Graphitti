@@ -124,6 +124,13 @@ public:
    /// @return The number of edges in the current graph
    size_t numEdges() const;
 
+   /// Delete copy and move methods to avoid copy instances of the singleton
+   GraphManager(const GraphManager &graphManager) = delete;
+   GraphManager &operator=(const GraphManager &graphManager) = delete;
+
+   GraphManager(GraphManager &&graphManager) = delete;
+   GraphManager &operator=(GraphManager &&graphManager) = delete;
+
 private:
    /// stores the graph
    Graph graph_;
@@ -137,7 +144,4 @@ private:
    GraphManager() : graph_(), dp_(boost::ignore_other_properties)
    {
    }
-
-   GraphManager(GraphManager const &) = delete;
-   void operator=(GraphManager const &) = delete;
 };

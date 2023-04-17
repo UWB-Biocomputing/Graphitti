@@ -81,9 +81,9 @@
 // Class to hold all data necessary for all the Neurons.
 class AllLIFNeurons : public AllIFNeurons {
 public:
-   AllLIFNeurons();
+   AllLIFNeurons() = default;
 
-   virtual ~AllLIFNeurons();
+   virtual ~AllLIFNeurons() = default;
 
    ///  Creates an instance of the class.
    ///
@@ -108,7 +108,7 @@ public:
    ///  @param  randNoise              Reference to the random noise array.
    ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
    virtual void advanceVertices(AllEdges &synapses, void *allVerticesDevice, void *allEdgesDevice,
-                                float *randNoise, EdgeIndexMap *edgeIndexMapDevice) override;
+                                float *randNoise, EdgeIndexMapDevice *edgeIndexMapDevice) override;
 #else   // !defined(USE_GPU)
 protected:
    ///  Helper for #advanceNeuron. Updates state of a single neuron.

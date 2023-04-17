@@ -22,14 +22,6 @@ class Core {
 public:
    Core() = default;   // default constructor
 
-   Core(const Core &core) = default;   // default copy constructor
-
-   Core &operator=(const Core &core) = default;   // default copy assignment
-
-   Core(Core &&core) = default;   // default move constructor
-
-   Core &operator=(Core &&) = default;   // default move assignment
-
    ///  runSimulation handles command line arguments and loads parameters
    ///  from parameter file. All initial config loading & running the simulator
    ///  is done here.

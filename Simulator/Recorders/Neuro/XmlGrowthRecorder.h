@@ -23,9 +23,9 @@
 class XmlGrowthRecorder : public XmlRecorder {
 public:
    /// THe constructor and destructor
-   XmlGrowthRecorder();
+   XmlGrowthRecorder() = default;
 
-   ~XmlGrowthRecorder();
+   ~XmlGrowthRecorder() = default;
 
    static IRecorder *Create()
    {
@@ -60,11 +60,11 @@ public:
 
 private:
    // TODO: There seems to be multiple copies of this in different classes...
-   void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap);
+   void getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap);
 
    // track firing rate
-   shared_ptr<CompleteMatrix> ratesHistory_;
+   unique_ptr<CompleteMatrix> ratesHistory_;
 
    // track radii
-   shared_ptr<CompleteMatrix> radiiHistory_;
+   unique_ptr<CompleteMatrix> radiiHistory_;
 };

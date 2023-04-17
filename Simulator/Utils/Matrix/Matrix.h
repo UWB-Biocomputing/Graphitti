@@ -27,9 +27,7 @@ using namespace std;
 class Matrix {
 public:
    /// Virtual Destructor
-   virtual ~Matrix()
-   {
-   }
+   virtual ~Matrix() = default;
 
    /// @brief Generate text representation of the Matrix to a stream
    virtual void Print(ostream &os) const = 0;

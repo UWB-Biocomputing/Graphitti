@@ -130,7 +130,7 @@ void Hdf5Recorder::initDataSet()
       = resultOut_.createDataSet(nameSimulationEndTime, H5_FLOAT, dsSimulationEndTime);
 
    // Get model instance
-   shared_ptr<Model> model = simulator.getModel();
+   Model *model = simulator.getModel();
 
    // Set up probed neurons so that they can be written incrementally
    if (model->getLayout()->probedNeuronList_.size() > 0) {
@@ -226,7 +226,7 @@ void Hdf5Recorder::compileHistories(AllVertices &vertices)
    unsigned int iProbe = 0;   // index into the probedNeuronsLayout vector
    bool fProbe = false;
 
-   shared_ptr<Model> model = simulator.getModel();
+   Model *model = simulator.getModel();
 
    // output spikes: iterate over each neuron
    for (int iVertex = 0; iVertex < spNeurons.vertexEvents_.size(); iVertex++) {
@@ -356,7 +356,7 @@ void Hdf5Recorder::compileHistories(AllVertices &vertices)
 void Hdf5Recorder::saveSimData(const AllVertices &vertices)
 {
    Simulator &simulator = Simulator::getInstance();
-   shared_ptr<Model> model = simulator.getModel();
+   Model *model = simulator.getModel();
 
    try {
       // create Neuron Types matrix
@@ -376,8 +376,8 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
       int *iYloc = new int[simulator.getTotalVertices()];
       for (int i = 0; i < simulator.getTotalVertices(); i++) {
          // convert VectorMatrix to int array
-         iXloc[i] = (*model->getLayout()->xloc_)[i];
-         iYloc[i] = (*model->getLayout()->yloc_)[i];
+         iXloc[i] = (model->getLayout()->xloc_)[i];
+         iYloc[i] = (model->getLayout()->yloc_)[i];
       }
       dataSetXloc_.write(iXloc, PredType::NATIVE_INT);
       dataSetYloc_.write(iYloc, PredType::NATIVE_INT);
@@ -472,7 +472,7 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
 ///
 ///  @param  matrix      Starter Neuron matrix.
 ///  @param  startermap Bool map to reference neuron matrix location from.
-void Hdf5Recorder::getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap)
+void Hdf5Recorder::getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap)
 {
    int cur = 0;
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {

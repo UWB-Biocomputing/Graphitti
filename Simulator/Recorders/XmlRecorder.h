@@ -67,5 +67,6 @@ protected:
    // Populates Starter neuron matrix based with boolean values based on starterMap state
    ///@param[in] matrix  starter neuron matrix
    ///@param starterMap  Bool map to reference neuron matrix location from.
-   virtual void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap) override;
+   virtual void getStarterNeuronMatrix(VectorMatrix &matrix,
+                                       const std::vector<bool> &starterMap) override;
 };

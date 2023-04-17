@@ -16,17 +16,33 @@ if(NOT ENABLE_CUDA)
         set(ENABLE_CUDA NO)
 endif()
 
+# CONDITIONAL FLAG to turn on the performance metrics 
+if(NOT PERFORMANCE_METRICS)
+        set(PERFORMANCE_METRICS NO)
+endif()
+
+# CONDITIONAL FLAG to turn on the Gprof profiler (Gprof is a performance analysis tool for Unix applications)
+# Steps to run Gprof
+#       Step 01 : set(GPROF YES) below
+#       Step 02 : Compile and run the simulation on CPU or GPU as usual
+#       Step 03 : Run the generated gmon.out file from the build directory and save the output in an txt file to improve readability-
+#               If using  CPU - "~/Graphitti/build$ gprof cgraphitti gmon.out > analysis_test.txt" 
+#               If using  GPU - "~/Graphitti/build$ gprof ggraphitti gmon.out > analysis_test.txt" 
+if(NOT GPROF)
+        set(GPROF NO)
+endif()
+
 # Creates the Graphitti project with the correct languages, depending on if using GPU or not
-# If using CUDA, also verify the CUDA package and set required CUDA variables
+# If using CUDA, also verify the CUDA package and set the required CUDA variables
 if(ENABLE_CUDA)	
         message("\n----Generating Makefile for Graphitti GPU version----")
         project(Graphitti LANGUAGES CXX CUDA C)
         # Verify CUDA package is present
         find_Package(CUDA REQUIRED)
-        # Set the USE_GPU preproccesser macro so that GPU code will be compiled.
+        # Set the USE_GPU preprocessor macro so that GPU code will be compiled.
         add_compile_definitions(USE_GPU)
         # Specify the CUDA architecture/gencode that will be targeted
-        ### Set gencode and architechture variables to the correct values for your specific NVIDIA hardware
+        ### Set gencode and architecture variables to the correct values for your specific NVIDIA hardware
         set(CMAKE_CUDA_ARCHITECTURES 37)        
         set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_37,code=sm_37)
             
@@ -36,13 +52,25 @@ else()
 endif()
 
 # Setting the base version to C++ 11
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 # set(DEBUG_MODE YES) for debugging, no optimization
 # set(DEBUG_MODE NO) for production code, -O3 optimization enabled
 set(DEBUG_MODE NO)
 
-# HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libaries to the executable later in the file.
+if(PERFORMANCE_METRICS)
+        message("-- Setting PEREFORMANCE_METRICS: ON")
+        add_definitions(-DPERFORMANCE_METRICS)
+endif()
+
+if(GPROF)
+        message("-- Setting GPROF: ON")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+endif()
+
+# HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libraries to the executable later in the file.
 find_package(HDF5 COMPONENTS C CXX)
 if (HDF5_FOUND)
         message("-- HDF5 version ${HDF5_VERSION} located. HDF5 recorders are available.")
@@ -93,7 +121,7 @@ endif()
 add_compile_definitions(TIXML_USE_STL)
 message("-- Setting Compile Definition: TIMXL_USE_STL")
 
-# Used to define file paths for #include definitions. For example you can write:
+# Used to define file paths for #include definitions. For example, you can write:
 # #include "Simulator.h"
 # rather than:
 # #include "Simulator/Core/Simulator.h"
@@ -244,7 +272,8 @@ add_library(RNG STATIC ${RNG_Source})
 
 # Create Utils library
 file(GLOB Utils_Source  Simulator/Utils/*.cpp Simulator/Utils/*.h)
-add_library(Utils ${Utils_Source})
+list(REMOVE_ITEM Utils_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/Factory.cpp")
+add_library(Utils  ${Utils_Source})
 
 
 # Used to locate and run other CMakeLists.txt files from Third Party resources for further compilation of the project.
@@ -258,12 +287,13 @@ include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 if(ENABLE_CUDA)
         set_property(TARGET Edges PROPERTY CUDA_STANDARD 11)
         set_property(TARGET Vertices PROPERTY CUDA_STANDARD 11)
-        # Enables CUDA code in these libraries to be compiled into seperate object files and then linked together
+        # Enables CUDA code in these libraries to be compiled into separate object files and then linked together
         set_property(TARGET Edges PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Vertices PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Core PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Connections PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET RNG PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        set_property(TARGET Utils PROPERTY CUDA_SEPARABLE_COMPILATION ON)
 endif()
 
 # Link all libraries created in the project's subdirectories into a combined library.
@@ -289,7 +319,7 @@ target_link_libraries(combinedLib INTERFACE
         paramcontainer
         Boost::graph)
 
-# Link HDF5 package libaries if to the combined library.
+# Link HDF5 package libraries if to the combined library.
 if (HDF5_FOUND)
         target_link_libraries(combinedLib INTERFACE ${HDF5_LIBRARIES})
 endif()
@@ -325,7 +355,8 @@ add_executable(tests
         Testing/Core/RecorderFactoryTests.cpp
         Testing/Core/InputManagerTests.cpp
         Testing/Core/RNGFactoryTests.cpp
-        Testing/Utils/ParameterManagerTests.cpp)
+        Testing/Utils/ParameterManagerTests.cpp
+        Testing/Utils/CircularBufferTests.cpp)
 
 # Links the Googletest framework with the testing executable
 target_link_libraries(tests gtest gtest_main)
@@ -353,5 +384,7 @@ target_link_libraries(deserialTest gtest gtest_main)
 # Link the combined library into the 'deserialTest' executable.
 target_link_libraries(deserialTest combinedLib)
 
-# Clear ENABLE_CUDA from cache so it's reset for subsequent builds
+# Clear ENABLE_CUDA, PERFORMANCE_METRICS and GPROF from the cache so it's reset for subsequent builds
 unset(ENABLE_CUDA CACHE)
+unset(PERFORMANCE_METRICS CACHE)
+unset(GPROF CACHE)

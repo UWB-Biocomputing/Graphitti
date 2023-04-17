@@ -30,9 +30,9 @@ struct AllIFNeuronsDeviceProperties;
 
 class AllIFNeurons : public AllSpikingNeurons {
 public:
-   AllIFNeurons();
+   AllIFNeurons() = default;
 
-   virtual ~AllIFNeurons();
+   virtual ~AllIFNeurons() = default;
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all neurons' state.
@@ -78,7 +78,7 @@ public:
    ///  @param  randNoise              Reference to the random noise array.
    ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
    virtual void advanceVertices(AllEdges &synapses, void *allVerticesDevice, void *allEdgesDevice,
-                                float *randNoise, EdgeIndexMap *edgeIndexMapDevice);
+                                float *randNoise, EdgeIndexMapDevice *edgeIndexMapDevice);
 
    ///  Allocate GPU memories to store all neurons' states,
    ///  and copy them from host to GPU memory.
@@ -160,56 +160,56 @@ protected:
 
 public:
    ///  The length of the absolute refractory period. [units=sec; range=(0,1);]
-   BGFLOAT *Trefract_;
+   vector<BGFLOAT> Trefract_;
 
    ///  If \f$V_m\f$ exceeds \f$V_{thresh}\f$ a spike is emmited. [units=V; range=(-10,100);]
-   BGFLOAT *Vthresh_;
+   vector<BGFLOAT> Vthresh_;
 
    ///  The resting membrane voltage. [units=V; range=(-1,1);]
-   BGFLOAT *Vrest_;
+   vector<BGFLOAT> Vrest_;
 
    ///  The voltage to reset \f$V_m\f$ to after a spike. [units=V; range=(-1,1);]
-   BGFLOAT *Vreset_;
+   vector<BGFLOAT> Vreset_;
 
    ///  The initial condition for \f$V_m\f$ at time \f$t=0\f$. [units=V; range=(-1,1);]
-   BGFLOAT *Vinit_;
+   vector<BGFLOAT> Vinit_;
 
    ///  The membrane capacitance \f$C_m\f$ [range=(0,1); units=F;]
    ///  Used to initialize Tau (no use after that)
-   BGFLOAT *Cm_;
+   vector<BGFLOAT> Cm_;
 
    ///  The membrane resistance \f$R_m\f$ [units=Ohm; range=(0,1e30)]
-   BGFLOAT *Rm_;
+   vector<BGFLOAT> Rm_;
 
    /// The standard deviation of the noise to be added each integration time constant. [range=(0,1); units=A;]
-   BGFLOAT *Inoise_;
+   vector<BGFLOAT> Inoise_;
 
    ///  A constant current to be injected into the LIF neuron. [units=A; range=(-1,1);]
-   BGFLOAT *Iinject_;
+   vector<BGFLOAT> Iinject_;
 
    /// What the hell is this used for???
    ///  It does not seem to be used; seems to be a candidate for deletion.
    ///  Possibly from the old code before using a separate summation point
    ///  The synaptic input current.
-   BGFLOAT *Isyn_;
+   vector<BGFLOAT> Isyn_;
 
    /// The remaining number of time steps for the absolute refractory period.
-   int *numStepsInRefractoryPeriod_;
+   vector<int> numStepsInRefractoryPeriod_;
 
    /// Internal constant for the exponential Euler integration of f$V_m\f$.
-   BGFLOAT *C1_;
+   vector<BGFLOAT> C1_;
 
    /// Internal constant for the exponential Euler integration of \f$V_m\f$.
-   BGFLOAT *C2_;
+   vector<BGFLOAT> C2_;
 
    /// Internal constant for the exponential Euler integration of \f$V_m\f$.
-   BGFLOAT *I0_;
+   vector<BGFLOAT> I0_;
 
    /// The membrane voltage \f$V_m\f$ [readonly; units=V;]
-   BGFLOAT *Vm_;
+   vector<BGFLOAT> Vm_;
 
    /// The membrane time constant \f$(R_m \cdot C_m)\f$
-   BGFLOAT *Tau_;
+   vector<BGFLOAT> Tau_;
 
 private:
    /// Min/max values of Iinject.
