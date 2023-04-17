@@ -150,9 +150,9 @@ private:
       // A static assert is used to check for any undesired type; thereby
       // generating a compile-time error for any request to instantiate a template
       // for a type that has not been explicitly defined.
-      static_assert((std::is_same_v<T, Connections> || std::is_same_v<T, AllEdges>
-                     || std::is_same_v<T, Layout> || std::is_same_v<T, AllVertices>
-                     || std::is_same_v<T, IRecorder> || std::is_same_v<T, MTRand>),
+      static_assert((std::is_same_v<T, Connections> || std::is_same_v<T, AllEdges>)
+                       || (std::is_same_v<T, Layout> || std::is_same_v<T, AllVertices>)
+                       || (std::is_same_v<T, IRecorder> || std::is_same_v<T, MTRand>),
                     "Invalid object type passed to CreateFunctionMap");
 
       //  What is std::is_same<> ?
