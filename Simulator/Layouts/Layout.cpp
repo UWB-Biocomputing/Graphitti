@@ -7,12 +7,12 @@
  */
 
 #include "Layout.h"
+#include "Factory.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "ParseParamError.h"
 #include "Simulator.h"
 #include "Util.h"
-#include "VerticesFactory.h"
 
 /// Constructor
 Layout::Layout() : numEndogenouslyActiveNeurons_(0)
@@ -20,7 +20,7 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
    // Create Vertices/Neurons class using type definition in configuration file
    string type;
    ParameterManager::getInstance().getStringByXpath("//VerticesParams/@class", type);
-   vertices_ = VerticesFactory::getInstance().createVertices(type);
+   vertices_ = Factory<AllVertices>::getInstance().createType(type);
 
    // Register loadParameters function as a loadParameters operation in the Operation Manager
    function<void()> loadParametersFunc = std::bind(&Layout::loadParameters, this);
