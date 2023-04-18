@@ -27,7 +27,7 @@ const H5std_string nameAttrPNUnit("attrPNUint");
 const H5std_string nameProbedNeurons("probedNeurons");
 
 /// The constructor and destructor
-Hdf5Recorder::Hdf5Recorder() : offsetSpikesProbedNeurons_(nullptr), spikesProbedNeurons_(nullptr)
+Hdf5Recorder::Hdf5Recorder()
 {
    ParameterManager::getInstance().getStringByXpath(
       "//RecorderParams/RecorderFiles/resultFileName/text()", resultFileName_);
@@ -168,18 +168,17 @@ void Hdf5Recorder::initDataSet()
    }
 
    // allocate and initialize data memories
-   spikesHistory_ = new int[static_cast<int>(simulator.getEpochDuration() * 100)];
-   memset(spikesHistory_, 0, static_cast<int>(simulator.getEpochDuration() * 100 * sizeof(int)));
+   spikesHistory_.resize(static_cast<int>(simulator.getEpochDuration() * 100));
+   spikesHistory_.assign(static_cast<int>(simulator.getEpochDuration() * 100), 0);
 
    // create the data space & dataset for spikes history of probed neurons
    if (model->getLayout()->probedNeuronList_.size() > 0) {
       // allocate data for spikesProbedNeurons
-      spikesProbedNeurons_ = new vector<uint64_t>[model->getLayout()->probedNeuronList_.size()];
+      spikesProbedNeurons_.resize(model->getLayout()->probedNeuronList_.size());
 
       // allocate and initialize memory to save offsets of what's been written
-      offsetSpikesProbedNeurons_ = new hsize_t[model->getLayout()->probedNeuronList_.size()];
-      memset(offsetSpikesProbedNeurons_, 0,
-             static_cast<int>(model->getLayout()->probedNeuronList_.size() * sizeof(hsize_t)));
+      offsetSpikesProbedNeurons_.resize(model->getLayout()->probedNeuronList_.size());
+      offsetSpikesProbedNeurons_.assign(model->getLayout()->probedNeuronList_.size(), 0);
    }
 }
 
@@ -203,15 +202,6 @@ void Hdf5Recorder::getValues()
 /// Terminate process
 void Hdf5Recorder::term()
 {
-   // deallocate all objects
-   delete[] spikesHistory_;
-
-   shared_ptr<Model> model = Simulator::getInstance().getModel();
-
-   if (model->getLayout()->probedNeuronList_.size() > 0) {
-      delete[] spikesProbedNeurons_;
-      delete[] offsetSpikesProbedNeurons_;
-   }
 }
 
 /// Compile history information in every epoch.
@@ -282,8 +272,8 @@ void Hdf5Recorder::compileHistories(AllVertices &vertices)
       DataSpace memspace(1, dimsm, nullptr);
       DataSpace dataspace = dataSetSpikesHist_.getSpace();
       dataspace.selectHyperslab(H5S_SELECT_SET, count, offset);
-      dataSetSpikesHist_.write(spikesHistory_, PredType::NATIVE_INT, memspace, dataspace);
-      memset(spikesHistory_, 0, static_cast<int>(simulator.getEpochDuration() * 100 * sizeof(int)));
+      dataSetSpikesHist_.write(spikesHistory_.data(), PredType::NATIVE_INT, memspace, dataspace);
+      spikesHistory_.assign(static_cast<int>(simulator.getEpochDuration() * 100), 0);
 
       // write spikes data of probed neurons
       if (model->getLayout()->probedNeuronList_.size() > 0) {
@@ -372,17 +362,15 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
       }
 
       // Write the neuron location matrices
-      int *iXloc = new int[simulator.getTotalVertices()];
-      int *iYloc = new int[simulator.getTotalVertices()];
+      vector<int> iXloc(simulator.getTotalVertices());
+      vector<int> iYloc(simulator.getTotalVertices());
       for (int i = 0; i < simulator.getTotalVertices(); i++) {
          // convert VectorMatrix to int array
          iXloc[i] = (model->getLayout()->xloc_)[i];
          iYloc[i] = (model->getLayout()->yloc_)[i];
       }
-      dataSetXloc_.write(iXloc, PredType::NATIVE_INT);
-      dataSetYloc_.write(iYloc, PredType::NATIVE_INT);
-      delete[] iXloc;
-      delete[] iYloc;
+      dataSetXloc_.write(iXloc.data(), PredType::NATIVE_INT);
+      dataSetYloc_.write(iYloc.data(), PredType::NATIVE_INT);
 
       int *iNeuronTypes = new int[simulator.getTotalVertices()];
       for (int i = 0; i < simulator.getTotalVertices(); i++) {
@@ -402,12 +390,11 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
          dataSetStarterNeurons_
             = resultOut_.createDataSet(nameStarterNeurons, PredType::NATIVE_INT, dsStarterNeurons);
 
-         int *iStarterNeurons = new int[starterNeurons.Size()];
+         vector<int> iStarterNeurons(starterNeurons.Size());
          for (int i = 0; i < starterNeurons.Size(); i++) {
             iStarterNeurons[i] = starterNeurons[i];
          }
-         dataSetStarterNeurons_.write(iStarterNeurons, PredType::NATIVE_INT);
-         delete[] iStarterNeurons;
+         dataSetStarterNeurons_.write(iStarterNeurons.data(), PredType::NATIVE_INT);
       }
 
       // Finalize probed neurons' spikes dataset
@@ -415,12 +402,11 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
          // create the data space & dataset for probed neurons
          hsize_t dims[2];
 
-         int *iProbedNeurons = new int[model->getLayout()->probedNeuronList_.size()];
+         vector<int> iProbedNeurons(model->getLayout()->probedNeuronList_.size());
          for (unsigned int i = 0; i < model->getLayout()->probedNeuronList_.size(); i++) {
             iProbedNeurons[i] = model->getLayout()->probedNeuronList_[i];
          }
-         dataSetProbedNeurons_.write(iProbedNeurons, PredType::NATIVE_INT);
-         delete[] iProbedNeurons;
+         dataSetProbedNeurons_.write(iProbedNeurons.data(), PredType::NATIVE_INT);
 
          // Create the data space for the attribute (unit of the spikes of probed neurons in second).
          dims[0] = 1;
@@ -436,12 +422,11 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
       }
 
       // Write neuron thresold
-      BGFLOAT *fNeuronThresh = new BGFLOAT[simulator.getTotalVertices()];
+      vector<BGFLOAT> fNeuronThresh(simulator.getTotalVertices());
       for (int i = 0; i < simulator.getTotalVertices(); i++) {
          fNeuronThresh[i] = neuronThresh[i];
       }
-      dataSetNeuronThresh_.write(fNeuronThresh, H5_FLOAT);
-      delete[] fNeuronThresh;
+      dataSetNeuronThresh_.write(fNeuronThresh.data(), H5_FLOAT);
 
       // write time between growth cycles
       BGFLOAT epochDuration = simulator.getEpochDuration();

@@ -98,13 +98,13 @@ protected:
    DataSet dataSetSpikesProbedNeurons_;
 
    /// Keep track of where we are in incrementally writing spikes
-   hsize_t *offsetSpikesProbedNeurons_;
+   vector<hsize_t> offsetSpikesProbedNeurons_;
 
    /// spikes history - history of accumulated spikes count of all neurons (10 ms bin)
-   int *spikesHistory_;
+   vector<int> spikesHistory_;
 
    /// track spikes count of probed neurons
-   vector<uint64_t> *spikesProbedNeurons_;
+   vector<vector<uint64_t>> spikesProbedNeurons_;
 };
 
 #endif   // HDF5
