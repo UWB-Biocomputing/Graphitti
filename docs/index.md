@@ -16,8 +16,6 @@
 
 2. [Developer Documentation](Developer/index.md)
    
-   2.1 [Student Quick Start](Developer/StudentSetup.md)
-   
    2.2 [Coding Conventions](Developer/codingConventions.md)
 
    2.3 [C++ Style Guide](Developer/cppStyleGuide.md)
