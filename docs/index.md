@@ -28,13 +28,11 @@
 
 3. [Testing](Testing/index.md)
 
-   3.1 Unit Tests
+   3.1 Array Performance Testing
 
-   3.2 Array Performance Testing
+   3.2 Dynamic Cast Performance Testing
 
-   3.3 Dynamic Cast Performance Testing
-
-   3.4 Test Config Files
+   3.3 Test Config Files
 
 4. Notes
 
