@@ -12,19 +12,19 @@
 #include "All911Vertices.h"
 #include "AllIZHNeurons.h"
 #include "AllLIFNeurons.h"
-#include "VerticesFactory.h"
+#include "Utils/Factory.h"
 #include "gtest/gtest.h"
 
 TEST(VerticesFactory, GetInstanceReturnsInstance)
 {
-   VerticesFactory *verticesFactory = &VerticesFactory::getInstance();
+   Factory<AllVertices> *verticesFactory = &Factory<AllVertices>::getInstance();
    ASSERT_NE(nullptr, verticesFactory);
 }
 
 TEST(VerticesFactory, CreateAllLIFNeuronsInstance)
 {
    unique_ptr<AllVertices> vertices
-      = VerticesFactory::getInstance().createVertices("AllLIFNeurons");
+      = Factory<AllVertices>::getInstance().createType("AllLIFNeurons");
    ASSERT_NE(nullptr, vertices);
    ASSERT_NE(nullptr, dynamic_cast<AllLIFNeurons *>(vertices.get()));
 }
@@ -32,7 +32,7 @@ TEST(VerticesFactory, CreateAllLIFNeuronsInstance)
 TEST(VerticesFactory, CreateAllIZNeuronsInstance)
 {
    unique_ptr<AllVertices> vertices
-      = VerticesFactory::getInstance().createVertices("AllIZHNeurons");
+      = Factory<AllVertices>::getInstance().createType("AllIZHNeurons");
    ASSERT_NE(nullptr, vertices);
    ASSERT_NE(nullptr, dynamic_cast<AllIZHNeurons *>(vertices.get()));
 }
@@ -40,13 +40,13 @@ TEST(VerticesFactory, CreateAllIZNeuronsInstance)
 TEST(VerticesFactory, CreateAll911VerticesInstance)
 {
    unique_ptr<AllVertices> vertices
-      = VerticesFactory::getInstance().createVertices("All911Vertices");
+      = Factory<AllVertices>::getInstance().createType("All911Vertices");
    ASSERT_NE(nullptr, vertices);
    ASSERT_NE(nullptr, dynamic_cast<All911Vertices *>(vertices.get()));
 }
 
 TEST(VerticesFactory, CreateNonExistentClassReturnsNullPtr)
 {
-   unique_ptr<AllVertices> vertices = VerticesFactory::getInstance().createVertices("NonExistent");
+   unique_ptr<AllVertices> vertices = Factory<AllVertices>::getInstance().createType("NonExistent");
    ASSERT_TRUE(vertices == nullptr);
 }
