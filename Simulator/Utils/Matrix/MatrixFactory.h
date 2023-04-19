@@ -82,4 +82,3 @@ private:
       throw KII_exception("Private MatrixFactory constructor called");
    }
 };
-

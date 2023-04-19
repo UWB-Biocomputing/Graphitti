@@ -15,10 +15,9 @@
 
 #pragma once
 
-#include <vector>
-
 #include "AllDSSynapses.h"
 #include "ISInput.h"
+#include <vector>
 
 class SInputPoisson : public ISInput {
 public:

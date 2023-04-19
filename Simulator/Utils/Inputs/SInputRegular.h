@@ -14,9 +14,8 @@
 
 #pragma once
 
-#include <vector>
-
 #include "ISInput.h"
+#include <vector>
 
 class SInputRegular : public ISInput {
 public:

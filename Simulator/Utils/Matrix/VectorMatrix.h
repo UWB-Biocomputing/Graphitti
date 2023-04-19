@@ -307,4 +307,3 @@ private:
    /// A normal RNG for the whole class
    static Norm nRng;
 };
-

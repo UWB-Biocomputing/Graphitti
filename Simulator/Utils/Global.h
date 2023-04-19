@@ -41,39 +41,39 @@
 // extern __constant__ int d_debug_mask[];
 // #define DEBUG_LOG(__lvl, __x) { if(__lvl & d_debug_mask[0]) { __x } }
 #else
-   #define DEBUG_LOG(__lvl, __x)                                                                \
-      {                                                                                         \
-         if (__lvl & g_debug_mask) {                                                            \
-            __x                                                                                 \
-         }                                                                                      \
+   #define DEBUG_LOG(__lvl, __x)                                                                   \
+      {                                                                                            \
+         if (__lvl & g_debug_mask) {                                                               \
+            __x                                                                                    \
+         }                                                                                         \
       }
 #endif
 
 extern int g_debug_mask;
 
-   #include <cassert>
-   #include <memory>
-   #include <sstream>
-   #ifdef _WIN32   //needs to be before #include "bgtypes.h" or the #define BGFLOAT will cause problems
-      #include <windows.h>                 //warning! windows.h also defines BGFLOAT
+#include <cassert>
+#include <memory>
+#include <sstream>
+#ifdef _WIN32   //needs to be before #include "bgtypes.h" or the #define BGFLOAT will cause problems
+   #include <windows.h>                    //warning! windows.h also defines BGFLOAT
 typedef unsigned long long int uint64_t;   //included in inttypes.h, which is not available in WIN32
-   #else
-      #include <inttypes.h>   //used for uint64_t, unavailable in WIN32
-   #endif
-   #include "BGTypes.h"
+#else
+   #include <inttypes.h>   //used for uint64_t, unavailable in WIN32
+#endif
+#include "BGTypes.h"
    //#include "Norm.h"
-   #include "Coordinate.h"
-   #include "VectorMatrix.h"
+#include "Coordinate.h"
+#include "VectorMatrix.h"
 
 using namespace std;
 
 // If defined, a table with time and each neuron voltage will output to stdout.
 //#define DUMP_VOLTAGES
 
-   #if defined(USE_GPU)
+#if defined(USE_GPU)
 //! CUDA device ID
 extern int g_deviceId;
-   #endif   // USE_GPU
+#endif   // USE_GPU
 
 // The constant PI.
 extern const BGFLOAT pi;
@@ -138,35 +138,35 @@ enum edgeType {
    ETYPE_UNDEF = -1
 };
 
-   // The default membrane capacitance.
-   #define DEFAULT_Cm (3e-8)
-   // The default membrane resistance.
-   #define DEFAULT_Rm (1e6)
-   // The default resting voltage.
-   #define DEFAULT_Vrest (0.0)
-   // The default reset voltage.
-   #define DEFAULT_Vreset (-0.06)
-   // The default absolute refractory period.
-   #define DEFAULT_Trefract (3e-3)
-   // The default synaptic noise.
-   #define DEFAULT_Inoise (0.0)
-   // The default injected current.
-   #define DEFAULT_Iinject (0.0)
-   // The default threshold voltage.  If \f$V_m >= V_{thresh}\f$ then the neuron fires.
-   #define DEFAULT_Vthresh (-0.04)
-   // The default time step size.
-   #define DEFAULT_dt (1e-4)   // MODEL INDEPENDENT
-   // The default absolute refractory period for inhibitory neurons.
-   #define DEFAULT_InhibTrefract (2.0e-3)
-   // The default absolute refractory period for excitory neurons.
-   #define DEFAULT_ExcitTrefract (3.0e-3)
+// The default membrane capacitance.
+#define DEFAULT_Cm (3e-8)
+// The default membrane resistance.
+#define DEFAULT_Rm (1e6)
+// The default resting voltage.
+#define DEFAULT_Vrest (0.0)
+// The default reset voltage.
+#define DEFAULT_Vreset (-0.06)
+// The default absolute refractory period.
+#define DEFAULT_Trefract (3e-3)
+// The default synaptic noise.
+#define DEFAULT_Inoise (0.0)
+// The default injected current.
+#define DEFAULT_Iinject (0.0)
+// The default threshold voltage.  If \f$V_m >= V_{thresh}\f$ then the neuron fires.
+#define DEFAULT_Vthresh (-0.04)
+// The default time step size.
+#define DEFAULT_dt (1e-4)   // MODEL INDEPENDENT
+// The default absolute refractory period for inhibitory neurons.
+#define DEFAULT_InhibTrefract (2.0e-3)
+// The default absolute refractory period for excitory neurons.
+#define DEFAULT_ExcitTrefract (3.0e-3)
 
-   // The default synaptic time constant.
-   #define DEFAULT_tau (3e-3)
-   // The default synaptic efficiency.
-   #define DEFAULT_U (0.4)
-   // The default synaptic efficiency.
-   #define DEFAULT_delay_weight (0)
+// The default synaptic time constant.
+#define DEFAULT_tau (3e-3)
+// The default synaptic efficiency.
+#define DEFAULT_U (0.4)
+// The default synaptic efficiency.
+#define DEFAULT_delay_weight (0)
 // } NMV-END
 
 // Converts a 1-d index into a coordinate string.
@@ -178,7 +178,7 @@ string coordToString(int x, int y, int z);
 // Converts a vertexType into a string.
 string neuronTypeToString(vertexType t);
 
-   #ifdef PERFORMANCE_METRICS
+#ifdef PERFORMANCE_METRICS
 // All times in seconds
 extern double t_host_initialization_layout;
 extern double t_host_initialization_connections;
@@ -191,7 +191,7 @@ extern double t_gpu_advanceSynapses;
 extern double t_gpu_calcSummation;
 
 void printPerformanceMetrics(const float total_time, int steps);
-   #endif   // PERFORMANCE_METRICS
+#endif   // PERFORMANCE_METRICS
 
 // TODO comment
 extern const string MATRIX_TYPE;
