@@ -28,12 +28,12 @@
 #include "AllEdges.h"
 
 #ifdef _WIN32
-typedef unsigned _int8 uint8_t;
+using uint8_t = unsigned _int8;
 #endif
 
 class AllVertices;
 
-// typedef void (*fpCreateSynapse_t)(void*, const int, const int, int, int, BGFLOAT*, const BGFLOAT, edgeType);
+// using fpCreateSynapse_t =  void (*)(void*, const int, const int, int, int, BGFLOAT*, const BGFLOAT, edgeType);
 
 // enumerate all non-abstract edge classes.
 enum enumClassSynapses {
