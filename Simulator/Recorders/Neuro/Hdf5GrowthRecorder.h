@@ -34,6 +34,8 @@ using namespace H5;
       #define H5_FLOAT PredType::NATIVE_DOUBLE
    #endif
 
+   #include <vector>
+
 class Hdf5GrowthRecorder : public Hdf5Recorder {
 public:
    /// The constructor and destructor
@@ -79,10 +81,10 @@ protected:
    DataSet dataSetRadiiHist_;
 
    /// track radii
-   BGFLOAT *radiiHistory_;
+   std::vector<BGFLOAT> radiiHistory_;
 
    /// track firing rate
-   BGFLOAT *ratesHistory_;
+   std::vector<BGFLOAT> ratesHistory_;
 };
 
 #endif   // HDF5
