@@ -40,7 +40,7 @@ Connections::Connections()
    function<void()> loadParamsFunc = bind(&Connections::loadParameters, this);
    opsManager.registerOperation(Operations::op::loadParameters, loadParamsFunc);
 
-   // Register registerGraphProperties as Operations registerGraphPropoerties
+   // Register registerGraphProperties as Operations registerGraphProperties
    function<void()> regGraphPropsFunc = bind(&Connections::registerGraphProperties, this);
    opsManager.registerOperation(Operations::registerGraphProperties, regGraphPropsFunc);
 

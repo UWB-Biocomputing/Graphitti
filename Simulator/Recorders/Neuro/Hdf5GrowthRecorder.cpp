@@ -36,8 +36,8 @@ void Hdf5GrowthRecorder::initDataSet()
    dataSetRadiiHist_ = resultOut_.createDataSet(nameRadiiHist, H5_FLOAT, dsRadiiHist);
 
    // allocate data memories
-   ratesHistory_ = new BGFLOAT[simulator.getTotalVertices()];
-   radiiHistory_ = new BGFLOAT[simulator.getTotalVertices()];
+   ratesHistory_.resize(simulator.getTotalVertices());
+   radiiHistory_.resize(simulator.getTotalVertices());
 }
 
 /// Init radii and rates history matrices with default values
@@ -49,10 +49,8 @@ void Hdf5GrowthRecorder::initDefaultValues()
    Connections *connections = model->getConnections();
    BGFLOAT startRadius = dynamic_cast<ConnGrowth *>(connections)->growthParams_.startRadius;
 
-   for (int i = 0; i < simulator.getTotalVertices(); i++) {
-      radiiHistory_[i] = startRadius;
-      ratesHistory_[i] = 0;
-   }
+   radiiHistory_.assign(simulator.getTotalVertices(), startRadius);
+   ratesHistory_.assign(simulator.getTotalVertices(), 0);
 
    // write initial radii and rate
    // because compileHistories function is not called when simulation starts
@@ -92,10 +90,6 @@ void Hdf5GrowthRecorder::getValues()
 /// Terminate process
 void Hdf5GrowthRecorder::term()
 {
-   // deallocate all objects
-   delete[] ratesHistory_;
-   delete[] radiiHistory_;
-
    Hdf5Recorder::term();
 }
 
@@ -151,7 +145,7 @@ void Hdf5GrowthRecorder::writeRadiiRates()
       DataSpace memspace_radii(2, dimsmRadii, nullptr);
       DataSpace dataspace_radii = dataSetRadiiHist_.getSpace();
       dataspace_radii.selectHyperslab(H5S_SELECT_SET, countRadii, offsetRadii);
-      dataSetRadiiHist_.write(radiiHistory_, H5_FLOAT, memspace_radii, dataspace_radii);
+      dataSetRadiiHist_.write(radiiHistory_.data(), H5_FLOAT, memspace_radii, dataspace_radii);
 
       // write rates history
       hsize_t offsetRates[2], countRates[2];
@@ -165,7 +159,7 @@ void Hdf5GrowthRecorder::writeRadiiRates()
       DataSpace memspace(2, dimsmRates, nullptr);
       DataSpace dataspace = dataSetRatesHist_.getSpace();
       dataspace.selectHyperslab(H5S_SELECT_SET, countRates, offsetRates);
-      dataSetRatesHist_.write(ratesHistory_, H5_FLOAT, memspace, dataspace);
+      dataSetRatesHist_.write(ratesHistory_.data(), H5_FLOAT, memspace, dataspace);
    }
 
    // catch failure caused by the H5File operations
