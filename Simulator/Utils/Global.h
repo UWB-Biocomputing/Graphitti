@@ -61,7 +61,7 @@ extern int g_debug_mask;
       #include <windows.h>                 //warning! windows.h also defines BGFLOAT
 using uint64_t = unsigned long long int;   //included in inttypes.h, which is not available in WIN32
    #else
-      #include <inttypes.h>                //used for uint64_t, unavailable in WIN32
+      #include <inttypes.h>   //used for uint64_t, unavailable in WIN32
    #endif
    #include "BGTypes.h"
    //#include "Norm.h"
