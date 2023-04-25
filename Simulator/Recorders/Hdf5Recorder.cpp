@@ -57,9 +57,11 @@ void Hdf5Recorder::init()
    testFileWrite.close();
 
    // check the file extension is .h5
-   string suffixStr = resultFileName_.substr(resultFileName_.find_last_of('.'));
-   if (suffixStr.compare(".h") != 0) {
-      perror("the file extention is not .h ");
+   string suffix = ".h5";
+   if ((resultFileName_.size() <= suffix.size())
+       || (resultFileName_.compare(resultFileName_.size() - suffix.size(), suffix.size(), suffix)
+           != 0)) {
+      perror("the file extention is not .xml ");
       exit(EXIT_FAILURE);
    }
 
