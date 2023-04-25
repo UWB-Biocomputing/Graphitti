@@ -56,6 +56,13 @@ void Hdf5Recorder::init()
    }
    testFileWrite.close();
 
+   // check the file extension is .h5
+   string suffixStr = resultFileName_.substr(resultFileName_.find_last_of('.'));
+   if (suffixStr.compare(".h") != 0) {
+      perror("the file extention is not .h ");
+      exit(EXIT_FAILURE);
+   }
+
    try {
       // create a new file using the default property lists
       resultOut_ = H5File(resultFileName_, H5F_ACC_TRUNC);
