@@ -61,7 +61,7 @@ void Hdf5Recorder::init()
    if ((resultFileName_.size() <= suffix.size())
        || (resultFileName_.compare(resultFileName_.size() - suffix.size(), suffix.size(), suffix)
            != 0)) {
-      perror("the file extention is not .xml ");
+      perror("the file extention is not .h5 ");
       exit(EXIT_FAILURE);
    }
 
