@@ -241,7 +241,7 @@ bool Simulator::instantiateSimulatorObjects()
 #endif
 
    // Perform check on all instantiated objects.
-   if (!model_ || (model_->getRecorder() == nullptr)) {
+   if (!model_) {
       return false;
    }
    return true;

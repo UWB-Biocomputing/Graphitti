@@ -186,7 +186,7 @@ Layout &Model::getLayout() const
 /// Get the IRecorder class object.
 /// @return Pointer to the IRecorder class object.
 // ToDo: make smart ptr
-IRecorder *Model::getRecorder() const
+IRecorder &Model::getRecorder() const
 {
-   return recorder_.get();
+   return *recorder_;
 }

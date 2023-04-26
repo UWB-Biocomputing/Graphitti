@@ -41,7 +41,7 @@ public:
 
    Layout &getLayout() const;
 
-   IRecorder *getRecorder() const;
+   IRecorder &getRecorder() const;
 
    /// Writes simulation results to an output destination.
    /// Downstream from IModel saveData()

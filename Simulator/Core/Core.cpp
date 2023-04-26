@@ -207,9 +207,8 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
    simulator.finish();
 
    // terminates the simulation recorder
-   if (simulator.getModel()->getRecorder() != nullptr) {
-      simulator.getModel()->getRecorder()->term();
-   }
+   simulator.getModel()->getRecorder().term();
+
 
    time(&end_time);
    double timeElapsed = difftime(end_time, start_time);
