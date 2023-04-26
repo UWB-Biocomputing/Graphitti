@@ -28,9 +28,9 @@
 
 struct AllSpikingSynapsesDeviceProperties;
 
-typedef void (*fpPreSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
+using fpPreSynapsesSpikeHit_t = void (*)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
 
-typedef void (*fpPostSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
+using fpPostSynapsesSpikeHit_t = void (*)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
 
 
 class AllSpikingSynapses : public AllNeuroEdges {

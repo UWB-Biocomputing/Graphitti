@@ -25,7 +25,7 @@
    #define MT_RNG_PERIOD 607
 
 
-typedef struct {
+struct mt_struct_stripped {
    unsigned int matrix_a;
    unsigned int mask_b;
    unsigned int mask_c;
@@ -36,7 +36,7 @@ typedef struct {
    //    unsigned int seed;
    unsigned int iState;
    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-} mt_struct_stripped;
+};
 
 
    #define MT_DATAFILE "RuntimeFiles/Data/MersenneTwister.dat"
