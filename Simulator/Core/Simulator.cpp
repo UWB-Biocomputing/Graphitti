@@ -241,8 +241,7 @@ bool Simulator::instantiateSimulatorObjects()
 #endif
 
    // Perform check on all instantiated objects.
-   if (!model_ || (model_->getConnections() == nullptr)
-       || (model_->getConnections()->getEdges() == nullptr) || (model_->getLayout() == nullptr)
+   if (!model_ || (model_->getConnections() == nullptr) || (model_->getLayout() == nullptr)
        || (model_->getLayout()->getVertices() == nullptr) || (model_->getRecorder() == nullptr)) {
       return false;
    }

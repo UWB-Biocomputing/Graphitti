@@ -56,7 +56,7 @@ void XmlSTDPRecorder::getValues()
 {
    Simulator &simulator = Simulator::getInstance();
    Connections *connections = simulator.getModel()->getConnections();
-   AllEdges &synapses = (*connections->getEdges());
+   AllEdges &synapses = connections->getEdges();
    const int currentStep = simulator.getCurrentStep();
 
    for (int i = 0; i < simulator.getTotalVertices(); i++) {
@@ -75,7 +75,7 @@ void XmlSTDPRecorder::compileHistories(AllVertices &neurons)
    XmlRecorder::compileHistories(neurons);
    Simulator &simulator = Simulator::getInstance();
    Connections *connections = simulator.getModel()->getConnections();
-   AllEdges &synapses = (*connections->getEdges());
+   AllEdges &synapses = connections->getEdges();
    const int currentStep = simulator.getCurrentStep();
 
    for (int iNeuron = 0; iNeuron < simulator.getTotalVertices() * simulator.getMaxEdgesPerVertex();

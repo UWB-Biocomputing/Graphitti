@@ -70,7 +70,7 @@ void Model::setupSim()
    LOG4CPLUS_INFO(fileLogger_, "Setting up Vertices...");
    layout_->getVertices()->setupVertices();
    LOG4CPLUS_INFO(fileLogger_, "Setting up Edges...");
-   connections_->getEdges()->setupEdges();
+   connections_->getEdges().setupEdges();
 #ifdef PERFORMANCE_METRICS
    // Start timer for initialization
    Simulator::getInstance().getShort_timer().start();

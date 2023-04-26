@@ -57,7 +57,7 @@ bool Serializer::deserializeSynapses()
    // Deserializes synapse weights along with each synapse's source vertex and destination vertex
    // Uses "try catch" to catch any cereal exception
    try {
-      archive(*(dynamic_cast<AllEdges *>(connections->getEdges())));
+      archive(dynamic_cast<AllEdges &>(connections->getEdges()));
    } catch (cereal::Exception e) {
       cerr << e.what() << endl
            << "Failed to deserialize synapse weights, source vertices, and/or destination vertices."
@@ -67,7 +67,7 @@ bool Serializer::deserializeSynapses()
 
    // Creates synapses from weight
    //    connections->createSynapsesFromWeights(simulator.getTotalVertices(), layout.get(),
-   //                                           (*layout->getVertices()), (*connections->getEdges()));
+   //                                           (*layout->getVertices()), (connections->getEdges()));
 
    //Creates synapses from weight
    connections->createSynapsesFromWeights();
@@ -134,8 +134,8 @@ void Serializer::serializeSynapses()
    Model *model = simulator.getModel();
 
    // Serializes synapse weights along with each synapse's source vertex and destination vertex
-   archive(cereal::make_nvp("AllEdges",
-                            *(dynamic_cast<AllEdges *>(model->getConnections()->getEdges()))));
+   archive(
+      cereal::make_nvp("AllEdges", dynamic_cast<AllEdges &>(model->getConnections()->getEdges())));
 
    // Serializes radii (only if it is a connGrowth model)
    if (dynamic_cast<ConnGrowth *>(model->getConnections()) != nullptr) {

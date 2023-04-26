@@ -34,7 +34,7 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
 {
    // Get neurons and synapses
    AllVertices &neurons = *layout_->getVertices();
-   AllEdges &synapses = *connections_->getEdges();
+   AllEdges &synapses = connections_->getEdges();
 
    // Allocate Neurons and Synapses structs on GPU device memory
    neurons.allocNeuronDeviceStruct(allVerticesDevice);
@@ -60,7 +60,7 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
 {
    // Get neurons and synapses
    AllVertices &neurons = *layout_->getVertices();
-   AllEdges &synapses = *connections_->getEdges();
+   AllEdges &synapses = connections_->getEdges();
 
    // Copy device synapse and neuron structs to host memory
    neurons.copyFromDevice(*allVerticesDevice);
@@ -111,10 +111,10 @@ void GPUModel::setupSim()
                                    Simulator::getInstance().getTotalVertices());
 
    // set some parameters used for advanceVerticesDevice
-   layout_->getVertices()->setAdvanceVerticesDeviceParams(*(connections_->getEdges()));
+   layout_->getVertices()->setAdvanceVerticesDeviceParams(connections_->getEdges());
 
    // set some parameters used for advanceEdgesDevice
-   connections_->getEdges()->setAdvanceEdgesDeviceParams();
+   connections_->getEdges().setAdvanceEdgesDeviceParams();
 }
 
 /// Performs any finalization tasks on network following a simulation.
@@ -142,7 +142,7 @@ void GPUModel::advance()
 
    // Get neurons and synapses
    AllVertices *neurons = layout_->getVertices();
-   AllEdges *synapses = connections_->getEdges();
+   AllEdges &synapses = connections_->getEdges();
 
    normalMTGPU(randNoise_d);
 
@@ -153,7 +153,7 @@ void GPUModel::advance()
 
    // display running info to console
    // Advance neurons ------------->
-   dynamic_cast<AllSpikingNeurons *>(neurons)->advanceVertices(*(connections_->getEdges()),
+   dynamic_cast<AllSpikingNeurons *>(neurons)->advanceVertices(connections_->getEdges(),
                                                                allVerticesDevice_, allEdgesDevice_,
                                                                randNoise_d, synapseIndexMapDevice_);
 
@@ -163,7 +163,7 @@ void GPUModel::advance()
 #endif   // PERFORMANCE_METRICS
 
    // Advance synapses ------------->
-   synapses->advanceEdges(allEdgesDevice_, allVerticesDevice_, synapseIndexMapDevice_);
+   synapses.advanceEdges(allEdgesDevice_, allVerticesDevice_, synapseIndexMapDevice_);
 
 #ifdef PERFORMANCE_METRICS
    cudaLapTime(t_gpu_advanceSynapses);
@@ -196,7 +196,7 @@ void GPUModel::updateConnections()
 {
    // Get neurons and synapses
    AllVertices *neurons = layout_->getVertices();
-   AllEdges *synapses = connections_->getEdges();
+   AllEdges &synapses = connections_->getEdges();
 
    dynamic_cast<AllSpikingNeurons *>(neurons)->copyFromDevice(allVerticesDevice_);
    // dynamic_cast<AllSpikingNeurons *>(neurons.get())
@@ -205,7 +205,7 @@ void GPUModel::updateConnections()
    // Update Connections data
    if (connections_->updateConnections(*(neurons))) {
       connections_->updateSynapsesWeights(Simulator::getInstance().getTotalVertices(), *(neurons),
-                                          *(synapses), allVerticesDevice_, allEdgesDevice_,
+                                          synapses, allVerticesDevice_, allEdgesDevice_,
                                           layout_.get());
       // create synapse index map
       connections_->createEdgeIndexMap();
@@ -265,8 +265,8 @@ void GPUModel::deleteSynapseImap()
 /// @param  synapseIndexMapHost		Reference to the EdgeIndexMap in host memory.
 void GPUModel::copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices)
 {
-   AllEdges *synapses = connections_->getEdges();
-   int totalSynapseCount = dynamic_cast<AllEdges *>(synapses)->totalEdgeCount_;
+   AllEdges &synapses = connections_->getEdges();
+   int totalSynapseCount = dynamic_cast<AllEdges &>(synapses).totalEdgeCount_;
    if (totalSynapseCount == 0)
       return;
    EdgeIndexMapDevice synapseIMapDevice;
@@ -363,18 +363,18 @@ __global__ void
 void GPUModel::copyGPUtoCPU()
 {
    // copy device synapse structs to host memory
-   connections_->getEdges()->copyEdgeDeviceToHost(allEdgesDevice_);
+   connections_->getEdges().copyEdgeDeviceToHost(allEdgesDevice_);
 }
 
 /// Copy CPU Synapse data to GPU.
 void GPUModel::copyCPUtoGPU()
 {
    // copy host synapse structs to device memory
-   connections_->getEdges()->copyEdgeHostToDevice(allEdgesDevice_);
+   connections_->getEdges().copyEdgeHostToDevice(allEdgesDevice_);
 }
 
 /// Print out SynapseProps on the GPU.
 void GPUModel::printGPUSynapsesPropsModel() const
 {
-   connections_->getEdges()->printGPUEdgesProps(allEdgesDevice_);
+   connections_->getEdges().printGPUEdgesProps(allEdgesDevice_);
 }

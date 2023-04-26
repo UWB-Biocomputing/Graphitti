@@ -43,7 +43,7 @@ public:
    virtual ~Connections() = default;
 
    /// Returns pointer to Synapses/Edges
-   AllEdges *getEdges() const;
+   AllEdges &getEdges() const;
 
    /// Returns a pointer to the EdgeIndexMap
    EdgeIndexMap *getEdgeIndexMap() const;
