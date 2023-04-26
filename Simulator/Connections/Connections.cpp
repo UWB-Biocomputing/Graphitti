@@ -109,7 +109,7 @@ void Connections::updateSynapsesWeights()
 void Connections::createSynapsesFromWeights()
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
-   Layout &layout = *Simulator::getInstance().getModel()->getLayout();
+   Layout &layout = Simulator::getInstance().getModel()->getLayout();
    AllVertices &vertices = layout.getVertices();
 
    // for each neuron

@@ -142,7 +142,7 @@ void XmlSTDPRecorder::saveSimData(const AllVertices &neurons)
    // create Neuron Types matrix
    VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), EXC);
    for (int i = 0; i < simulator.getTotalVertices(); i++) {
-      neuronTypes[i] = simulator.getModel()->getLayout()->vertexTypeMap_[i];
+      neuronTypes[i] = simulator.getModel()->getLayout().vertexTypeMap_[i];
    }
 
    // create neuron threshold matrix
@@ -162,16 +162,16 @@ void XmlSTDPRecorder::saveSimData(const AllVertices &neurons)
    resultOut_ << "   " << toXML("destNeuronIndexHistory", destNeuronIndexHistory_) << endl;
    resultOut_ << "   " << toXML("weightsHistory", weightsHistory_) << endl;
    resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   resultOut_ << "   " << simulator.getModel()->getLayout()->xloc_.toXML("xloc") << endl;
-   resultOut_ << "   " << simulator.getModel()->getLayout()->yloc_.toXML("yloc") << endl;
+   resultOut_ << "   " << simulator.getModel()->getLayout().xloc_.toXML("xloc") << endl;
+   resultOut_ << "   " << simulator.getModel()->getLayout().yloc_.toXML("yloc") << endl;
    resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
    // create starter neuron matrix
    int num_starter_neurons
-      = static_cast<int>(simulator.getModel()->getLayout()->numEndogenouslyActiveNeurons_);
+      = static_cast<int>(simulator.getModel()->getLayout().numEndogenouslyActiveNeurons_);
    if (num_starter_neurons > 0) {
       VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
-      getStarterNeuronMatrix(starterNeurons, simulator.getModel()->getLayout()->starterMap_);
+      getStarterNeuronMatrix(starterNeurons, simulator.getModel()->getLayout().starterMap_);
       resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
    }
 

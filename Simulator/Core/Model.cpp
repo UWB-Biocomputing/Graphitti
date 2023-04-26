@@ -178,9 +178,9 @@ Connections &Model::getConnections() const
 
 /// Get the Layout class object.
 /// @return Pointer to the Layout class object.
-Layout *Model::getLayout() const
+Layout &Model::getLayout() const
 {
-   return layout_.get();
+   return *layout_;
 }
 
 /// Get the IRecorder class object.

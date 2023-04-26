@@ -133,9 +133,9 @@ void Hdf5Recorder::initDataSet()
    Model *model = simulator.getModel();
 
    // Set up probed neurons so that they can be written incrementally
-   if (model->getLayout()->probedNeuronList_.size() > 0) {
+   if (model->getLayout().probedNeuronList_.size() > 0) {
       // create the data space & dataset for probed neurons
-      dims[0] = static_cast<hsize_t>(model->getLayout()->probedNeuronList_.size());
+      dims[0] = static_cast<hsize_t>(model->getLayout().probedNeuronList_.size());
       DataSpace dsProbedNeurons(1, dims);
       dataSetProbedNeurons_
          = resultOut_.createDataSet(nameProbedNeurons, PredType::NATIVE_INT, dsProbedNeurons);
@@ -145,11 +145,11 @@ void Hdf5Recorder::initDataSet()
       // the data space with unlimited dimensions
       hsize_t maxdims[2];
       maxdims[0] = H5S_UNLIMITED;
-      maxdims[1] = static_cast<hsize_t>(model->getLayout()->probedNeuronList_.size());
+      maxdims[1] = static_cast<hsize_t>(model->getLayout().probedNeuronList_.size());
 
       // dataset dimensions at creation
       dims[0] = static_cast<hsize_t>(1);
-      dims[1] = static_cast<hsize_t>(model->getLayout()->probedNeuronList_.size());
+      dims[1] = static_cast<hsize_t>(model->getLayout().probedNeuronList_.size());
       DataSpace dsSpikesProbedNeurons(2, dims, maxdims);
 
       // set fill value for the dataset
@@ -160,7 +160,7 @@ void Hdf5Recorder::initDataSet()
       // modify dataset creation properties, enable chunking
       hsize_t chunk_dims[2];
       chunk_dims[0] = static_cast<hsize_t>(100);
-      chunk_dims[1] = static_cast<hsize_t>(model->getLayout()->probedNeuronList_.size());
+      chunk_dims[1] = static_cast<hsize_t>(model->getLayout().probedNeuronList_.size());
       cparms.setChunk(2, chunk_dims);
 
       dataSetSpikesProbedNeurons_ = resultOut_.createDataSet(
@@ -172,13 +172,13 @@ void Hdf5Recorder::initDataSet()
    spikesHistory_.assign(static_cast<int>(simulator.getEpochDuration() * 100), 0);
 
    // create the data space & dataset for spikes history of probed neurons
-   if (model->getLayout()->probedNeuronList_.size() > 0) {
+   if (model->getLayout().probedNeuronList_.size() > 0) {
       // allocate data for spikesProbedNeurons
-      spikesProbedNeurons_.resize(model->getLayout()->probedNeuronList_.size());
+      spikesProbedNeurons_.resize(model->getLayout().probedNeuronList_.size());
 
       // allocate and initialize memory to save offsets of what's been written
-      offsetSpikesProbedNeurons_.resize(model->getLayout()->probedNeuronList_.size());
-      offsetSpikesProbedNeurons_.assign(model->getLayout()->probedNeuronList_.size(), 0);
+      offsetSpikesProbedNeurons_.resize(model->getLayout().probedNeuronList_.size());
+      offsetSpikesProbedNeurons_.assign(model->getLayout().probedNeuronList_.size(), 0);
    }
 }
 
@@ -221,8 +221,8 @@ void Hdf5Recorder::compileHistories(AllVertices &vertices)
    // output spikes: iterate over each neuron
    for (int iVertex = 0; iVertex < spNeurons.vertexEvents_.size(); iVertex++) {
       // true if this is a probed neuron
-      fProbe = ((iProbe < model->getLayout()->probedNeuronList_.size())
-                && (iVertex == model->getLayout()->probedNeuronList_[iProbe]));
+      fProbe = ((iProbe < model->getLayout().probedNeuronList_.size())
+                && (iVertex == model->getLayout().probedNeuronList_[iProbe]));
 
       // iterate over each spike that neuron produced
       for (int eventIterator = 0;
@@ -276,24 +276,24 @@ void Hdf5Recorder::compileHistories(AllVertices &vertices)
       spikesHistory_.assign(static_cast<int>(simulator.getEpochDuration() * 100), 0);
 
       // write spikes data of probed neurons
-      if (model->getLayout()->probedNeuronList_.size() > 0) {
+      if (model->getLayout().probedNeuronList_.size() > 0) {
          unsigned int max_size = 0;
          // iterate over each neuron to find the maximum number of spikes for
          // this epoch
-         for (unsigned int i = 0; i < model->getLayout()->probedNeuronList_.size(); i++) {
+         for (unsigned int i = 0; i < model->getLayout().probedNeuronList_.size(); i++) {
             unsigned int size = spikesProbedNeurons_[i].size() + offsetSpikesProbedNeurons_[i];
             max_size = (max_size > size) ? max_size : size;
          }
          // dataset dimensions
          dimsm[0] = static_cast<hsize_t>(max_size);
-         dimsm[1] = static_cast<hsize_t>(model->getLayout()->probedNeuronList_.size());
+         dimsm[1] = static_cast<hsize_t>(model->getLayout().probedNeuronList_.size());
 
          // extend the dataset
          dataSetSpikesProbedNeurons_.extend(dimsm);
          dataspace = dataSetSpikesProbedNeurons_.getSpace();
 
          // write it! Iterate over each neuron's spike data.
-         for (unsigned int i = 0; i < model->getLayout()->probedNeuronList_.size(); i++) {
+         for (unsigned int i = 0; i < model->getLayout().probedNeuronList_.size(); i++) {
             dimsm[0] = spikesProbedNeurons_[i].size();
             dimsm[1] = 1;
             DataSpace memspace_spike(2, dimsm, nullptr);
@@ -352,7 +352,7 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
       // create Neuron Types matrix
       VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), EXC);
       for (int i = 0; i < simulator.getTotalVertices(); i++) {
-         neuronTypes[i] = model->getLayout()->vertexTypeMap_[i];
+         neuronTypes[i] = model->getLayout().vertexTypeMap_[i];
       }
 
       // create neuron threshold matrix
@@ -366,8 +366,8 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
       vector<int> iYloc(simulator.getTotalVertices());
       for (int i = 0; i < simulator.getTotalVertices(); i++) {
          // convert VectorMatrix to int array
-         iXloc[i] = (model->getLayout()->xloc_)[i];
-         iYloc[i] = (model->getLayout()->yloc_)[i];
+         iXloc[i] = (model->getLayout().xloc_)[i];
+         iYloc[i] = (model->getLayout().yloc_)[i];
       }
       dataSetXloc_.write(iXloc.data(), PredType::NATIVE_INT);
       dataSetYloc_.write(iYloc.data(), PredType::NATIVE_INT);
@@ -378,10 +378,10 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
       }
       dataSetNeuronTypes_.write(iNeuronTypes, PredType::NATIVE_INT);
 
-      int num_starter_neurons = static_cast<int>(model->getLayout()->numEndogenouslyActiveNeurons_);
+      int num_starter_neurons = static_cast<int>(model->getLayout().numEndogenouslyActiveNeurons_);
       if (num_starter_neurons > 0) {
          VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
-         getStarterNeuronMatrix(starterNeurons, model->getLayout()->starterMap_);
+         getStarterNeuronMatrix(starterNeurons, model->getLayout().starterMap_);
 
          // create the data space & dataset for starter neurons
          hsize_t dims[2];
@@ -398,13 +398,13 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
       }
 
       // Finalize probed neurons' spikes dataset
-      if (model->getLayout()->probedNeuronList_.size() > 0) {
+      if (model->getLayout().probedNeuronList_.size() > 0) {
          // create the data space & dataset for probed neurons
          hsize_t dims[2];
 
-         vector<int> iProbedNeurons(model->getLayout()->probedNeuronList_.size());
-         for (unsigned int i = 0; i < model->getLayout()->probedNeuronList_.size(); i++) {
-            iProbedNeurons[i] = model->getLayout()->probedNeuronList_[i];
+         vector<int> iProbedNeurons(model->getLayout().probedNeuronList_.size());
+         for (unsigned int i = 0; i < model->getLayout().probedNeuronList_.size(); i++) {
+            iProbedNeurons[i] = model->getLayout().probedNeuronList_[i];
          }
          dataSetProbedNeurons_.write(iProbedNeurons.data(), PredType::NATIVE_INT);
 

@@ -19,7 +19,7 @@ void Connections911::setup()
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
 
    // we can obtain the Layout, which holds the vertices, from the Model
-   Layout &layout = *Simulator::getInstance().getModel()->getLayout();
+   Layout &layout = Simulator::getInstance().getModel()->getLayout();
    AllVertices &vertices = layout.getVertices();
 
    // Get list of edges sorted by target in ascending order from GraphManager
@@ -78,7 +78,7 @@ bool Connections911::updateConnections(AllVertices &vertices)
 
    // Record old type map
    int numVertices = Simulator::getInstance().getTotalVertices();
-   Layout &layout = *Simulator::getInstance().getModel()->getLayout();
+   Layout &layout = Simulator::getInstance().getModel()->getLayout();
    oldTypeMap_ = layout.vertexTypeMap_;
 
    // Erase PSAPs

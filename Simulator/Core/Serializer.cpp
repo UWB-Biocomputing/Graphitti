@@ -48,11 +48,7 @@ bool Serializer::deserializeSynapses()
    //cereal::BinaryInputArchive archive(memory_in);
 
    Connections &connections = simulator.getModel()->getConnections();
-   Layout *layout = simulator.getModel()->getLayout();
-
-   if (layout == nullptr) {
-      cerr << "Either connections or layout is not instantiated," << endl;
-   }
+   //Layout &layout = simulator.getModel()->getLayout();
 
    // Deserializes synapse weights along with each synapse's source vertex and destination vertex
    // Uses "try catch" to catch any cereal exception

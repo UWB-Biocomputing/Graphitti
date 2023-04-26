@@ -39,7 +39,7 @@ public:
 
    Connections &getConnections() const;
 
-   Layout *getLayout() const;
+   Layout &getLayout() const;
 
    IRecorder *getRecorder() const;
 
