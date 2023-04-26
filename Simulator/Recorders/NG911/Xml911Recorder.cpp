@@ -40,8 +40,8 @@ void Xml911Recorder::compileHistories(AllVertices &vertices)
 /// @param  vertices the Vertex list to search from.
 void Xml911Recorder::saveSimData(const AllVertices &vertices)
 {
-   auto conns = Simulator::getInstance().getModel()->getConnections();
-   Connections911 &conns911 = dynamic_cast<Connections911 &>(*conns);
+   auto &conns = Simulator::getInstance().getModel()->getConnections();
+   Connections911 &conns911 = dynamic_cast<Connections911 &>(conns);
 
    // create Vertex Types matrix
    VectorMatrix oldTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalVertices(),

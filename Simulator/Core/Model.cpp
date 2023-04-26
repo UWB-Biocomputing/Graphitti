@@ -171,9 +171,9 @@ void Model::updateHistory()
 /// Get the Connections class object.
 /// @return Pointer to the Connections class object.
 // ToDo: make smart ptr
-Connections *Model::getConnections() const
+Connections &Model::getConnections() const
 {
-   return connections_.get();
+   return *connections_;
 }
 
 /// Get the Layout class object.

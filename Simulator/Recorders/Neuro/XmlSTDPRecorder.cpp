@@ -30,24 +30,24 @@ void XmlSTDPRecorder::init()
 ///Init radii and rates history matrices with default values
 void XmlSTDPRecorder::initDefaultValues()
 {
-   Connections *connections = Simulator::getInstance().getModel()->getConnections();
+   Connections &connections = Simulator::getInstance().getModel()->getConnections();
    //AllNeuroEdges *synapses synapses)->W_[iSyn]
-   BGFLOAT startRadius = dynamic_cast<ConnStatic *>(connections)->getConnsRadiusThresh();
+   BGFLOAT startRadius = dynamic_cast<ConnStatic &>(connections).getConnsRadiusThresh();
 }
 
 ///InitValues gets the values for weights, source index and dest index at the time of simulation start
 void XmlSTDPRecorder::initValues()
 {
-   Connections *connections = Simulator::getInstance().getModel()->getConnections();
+   Connections &connections = Simulator::getInstance().getModel()->getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices()
                           * Simulator::getInstance().getMaxEdgesPerVertex();
         i++) {
-      weightsHistory_[0][i] = (dynamic_cast<ConnStatic *>(connections)->getWCurrentEpoch())[i];
+      weightsHistory_[0][i] = (dynamic_cast<ConnStatic &>(connections).getWCurrentEpoch())[i];
       sourceNeuronIndexHistory_[0][i]
-         = (dynamic_cast<ConnStatic *>(connections)->getSourceVertexIndexCurrentEpoch())[i];
+         = (dynamic_cast<ConnStatic &>(connections).getSourceVertexIndexCurrentEpoch())[i];
       destNeuronIndexHistory_[0][i]
-         = (dynamic_cast<ConnStatic *>(connections)->getDestVertexIndexCurrentEpoch())[i];
+         = (dynamic_cast<ConnStatic &>(connections).getDestVertexIndexCurrentEpoch())[i];
    }
 }
 
@@ -55,8 +55,8 @@ void XmlSTDPRecorder::initValues()
 void XmlSTDPRecorder::getValues()
 {
    Simulator &simulator = Simulator::getInstance();
-   Connections *connections = simulator.getModel()->getConnections();
-   AllEdges &synapses = connections->getEdges();
+   Connections &connections = simulator.getModel()->getConnections();
+   AllEdges &synapses = connections.getEdges();
    const int currentStep = simulator.getCurrentStep();
 
    for (int i = 0; i < simulator.getTotalVertices(); i++) {
@@ -74,8 +74,8 @@ void XmlSTDPRecorder::compileHistories(AllVertices &neurons)
    LOG4CPLUS_INFO(fileLogger_, "Compiling STDP HISTORY");
    XmlRecorder::compileHistories(neurons);
    Simulator &simulator = Simulator::getInstance();
-   Connections *connections = simulator.getModel()->getConnections();
-   AllEdges &synapses = connections->getEdges();
+   Connections &connections = simulator.getModel()->getConnections();
+   AllEdges &synapses = connections.getEdges();
    const int currentStep = simulator.getCurrentStep();
 
    for (int iNeuron = 0; iNeuron < simulator.getTotalVertices() * simulator.getMaxEdgesPerVertex();

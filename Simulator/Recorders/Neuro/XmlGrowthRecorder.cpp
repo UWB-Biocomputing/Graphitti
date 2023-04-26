@@ -30,8 +30,8 @@ void XmlGrowthRecorder::init()
 /// Init radii and rates history matrices with default values
 void XmlGrowthRecorder::initDefaultValues()
 {
-   Connections *connections = Simulator::getInstance().getModel()->getConnections();
-   BGFLOAT startRadius = dynamic_cast<ConnGrowth *>(connections)->growthParams_.startRadius;
+   Connections &connections = Simulator::getInstance().getModel()->getConnections();
+   BGFLOAT startRadius = dynamic_cast<ConnGrowth &>(connections).growthParams_.startRadius;
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       (*radiiHistory_)(0, i) = startRadius;
@@ -42,23 +42,23 @@ void XmlGrowthRecorder::initDefaultValues()
 /// Init radii and rates history matrices with current radii and rates
 void XmlGrowthRecorder::initValues()
 {
-   Connections *connections = Simulator::getInstance().getModel()->getConnections();
+   Connections &connections = Simulator::getInstance().getModel()->getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      (*radiiHistory_)(0, i) = (dynamic_cast<ConnGrowth *>(connections)->radii_)[i];
-      (*ratesHistory_)(0, i) = (dynamic_cast<ConnGrowth *>(connections)->rates_)[i];
+      (*radiiHistory_)(0, i) = (dynamic_cast<ConnGrowth &>(connections).radii_)[i];
+      (*ratesHistory_)(0, i) = (dynamic_cast<ConnGrowth &>(connections).rates_)[i];
    }
 }
 
 /// Get the current radii and rates values
 void XmlGrowthRecorder::getValues()
 {
-   Connections *connections = Simulator::getInstance().getModel()->getConnections();
+   Connections &connections = Simulator::getInstance().getModel()->getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      (dynamic_cast<ConnGrowth *>(connections)->radii_)[i]
+      (dynamic_cast<ConnGrowth &>(connections).radii_)[i]
          = (*radiiHistory_)(Simulator::getInstance().getCurrentStep(), i);
-      (dynamic_cast<ConnGrowth *>(connections)->rates_)[i]
+      (dynamic_cast<ConnGrowth &>(connections).rates_)[i]
          = (*ratesHistory_)(Simulator::getInstance().getCurrentStep(), i);
    }
 }
@@ -70,11 +70,11 @@ void XmlGrowthRecorder::compileHistories(AllVertices &neurons)
 {
    XmlRecorder::compileHistories(neurons);
 
-   Connections *connections = Simulator::getInstance().getModel()->getConnections();
+   Connections &connections = Simulator::getInstance().getModel()->getConnections();
 
-   BGFLOAT minRadius = dynamic_cast<ConnGrowth *>(connections)->growthParams_.minRadius;
-   VectorMatrix &rates = (dynamic_cast<ConnGrowth *>(connections)->rates_);
-   VectorMatrix &radii = (dynamic_cast<ConnGrowth *>(connections)->radii_);
+   BGFLOAT minRadius = dynamic_cast<ConnGrowth &>(connections).growthParams_.minRadius;
+   VectorMatrix &rates = (dynamic_cast<ConnGrowth &>(connections).rates_);
+   VectorMatrix &radii = (dynamic_cast<ConnGrowth &>(connections).radii_);
 
    for (int iVertex = 0; iVertex < Simulator::getInstance().getTotalVertices(); iVertex++) {
       // record firing rate to history matrix
