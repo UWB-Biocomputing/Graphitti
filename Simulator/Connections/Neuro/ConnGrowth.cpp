@@ -224,7 +224,7 @@ void ConnGrowth::updateSynapsesWeights()
    int numVertices = Simulator::getInstance().getTotalVertices();
    AllNeuroEdges &synapses = dynamic_cast<AllNeuroEdges &>(*edges_);
    Layout &layout = *Simulator::getInstance().getModel()->getLayout();
-   AllVertices &vertices = *layout.getVertices();
+   AllVertices &vertices = layout.getVertices();
 
    // For now, we just set the weights to equal the areas. We will later
    // scale it and set its sign (when we index and get its sign).

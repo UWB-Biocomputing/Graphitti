@@ -47,7 +47,7 @@ Model::Model()
 void Model::saveResults()
 {
    if (recorder_ != nullptr) {
-      recorder_->saveSimData(*layout_->getVertices());
+      recorder_->saveSimData(layout_->getVertices());
    }
 }
 
@@ -61,14 +61,14 @@ void Model::createAllVertices()
    layout_->initStarterMap(Simulator::getInstance().getTotalVertices());
 
    // set their specific types
-   layout_->getVertices()->createAllVertices(layout_.get());
+   layout_->getVertices().createAllVertices(layout_.get());
 }
 
 /// Sets up the Simulation.
 void Model::setupSim()
 {
    LOG4CPLUS_INFO(fileLogger_, "Setting up Vertices...");
-   layout_->getVertices()->setupVertices();
+   layout_->getVertices().setupVertices();
    LOG4CPLUS_INFO(fileLogger_, "Setting up Edges...");
    connections_->getEdges().setupEdges();
 #ifdef PERFORMANCE_METRICS
@@ -164,7 +164,7 @@ void Model::updateHistory()
       LOG4CPLUS_INFO(fileLogger_, "ERROR: Recorder class is null.");
    }
    if (recorder_ != nullptr) {
-      recorder_->compileHistories(*layout_->getVertices());
+      recorder_->compileHistories(layout_->getVertices());
    }
 }
 

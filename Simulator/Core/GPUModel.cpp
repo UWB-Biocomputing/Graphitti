@@ -33,7 +33,7 @@ GPUModel::GPUModel() :
 void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice)
 {
    // Get neurons and synapses
-   AllVertices &neurons = *layout_->getVertices();
+   AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
 
    // Allocate Neurons and Synapses structs on GPU device memory
@@ -59,7 +59,7 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
 void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevice)
 {
    // Get neurons and synapses
-   AllVertices &neurons = *layout_->getVertices();
+   AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
 
    // Copy device synapse and neuron structs to host memory
@@ -111,7 +111,7 @@ void GPUModel::setupSim()
                                    Simulator::getInstance().getTotalVertices());
 
    // set some parameters used for advanceVerticesDevice
-   layout_->getVertices()->setAdvanceVerticesDeviceParams(connections_->getEdges());
+   layout_->getVertices().setAdvanceVerticesDeviceParams(connections_->getEdges());
 
    // set some parameters used for advanceEdgesDevice
    connections_->getEdges().setAdvanceEdgesDeviceParams();
@@ -141,7 +141,7 @@ void GPUModel::advance()
 #endif   // PERFORMANCE_METRICS
 
    // Get neurons and synapses
-   AllVertices *neurons = layout_->getVertices();
+   AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
 
    normalMTGPU(randNoise_d);
@@ -153,9 +153,9 @@ void GPUModel::advance()
 
    // display running info to console
    // Advance neurons ------------->
-   dynamic_cast<AllSpikingNeurons *>(neurons)->advanceVertices(connections_->getEdges(),
-                                                               allVerticesDevice_, allEdgesDevice_,
-                                                               randNoise_d, synapseIndexMapDevice_);
+   dynamic_cast<AllSpikingNeurons &>(neurons).advanceVertices(connections_->getEdges(),
+                                                              allVerticesDevice_, allEdgesDevice_,
+                                                              randNoise_d, synapseIndexMapDevice_);
 
 #ifdef PERFORMANCE_METRICS
    cudaLapTime(t_gpu_advanceNeurons);
@@ -195,16 +195,16 @@ void GPUModel::calcSummationMap()
 void GPUModel::updateConnections()
 {
    // Get neurons and synapses
-   AllVertices *neurons = layout_->getVertices();
+   AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
 
-   dynamic_cast<AllSpikingNeurons *>(neurons)->copyFromDevice(allVerticesDevice_);
+   dynamic_cast<AllSpikingNeurons &>(neurons).copyFromDevice(allVerticesDevice_);
    // dynamic_cast<AllSpikingNeurons *>(neurons.get())
    //    ->copyNeuronDeviceSpikeHistoryToHost(allVerticesDevice_);
 
    // Update Connections data
-   if (connections_->updateConnections(*(neurons))) {
-      connections_->updateSynapsesWeights(Simulator::getInstance().getTotalVertices(), *(neurons),
+   if (connections_->updateConnections(neurons)) {
+      connections_->updateSynapsesWeights(Simulator::getInstance().getTotalVertices(), neurons,
                                           synapses, allVerticesDevice_, allEdgesDevice_,
                                           layout_.get());
       // create synapse index map
@@ -221,8 +221,8 @@ void GPUModel::updateHistory()
    Model::updateHistory();
    // clear spike count
 
-   AllVertices *neurons = layout_->getVertices();
-   dynamic_cast<AllSpikingNeurons *>(neurons)->clearNeuronSpikeCounts(allVerticesDevice_);
+   AllVertices &neurons = layout_->getVertices();
+   dynamic_cast<AllSpikingNeurons &>(neurons).clearNeuronSpikeCounts(allVerticesDevice_);
 }
 
 /// Allocate device memory for synapse inverse map.

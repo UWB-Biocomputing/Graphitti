@@ -38,7 +38,7 @@ void ConnStatic::setup()
 {
    // we can obtain the Layout, which holds the vertices, from the Model
    Layout &layout = *Simulator::getInstance().getModel()->getLayout();
-   AllVertices &vertices = *layout.getVertices();
+   AllVertices &vertices = layout.getVertices();
 
    Simulator &simulator = Simulator::getInstance();
    int numVertices = simulator.getTotalVertices();

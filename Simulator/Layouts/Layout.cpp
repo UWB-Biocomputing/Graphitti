@@ -42,9 +42,9 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
-AllVertices *Layout::getVertices() const
+AllVertices &Layout::getVertices() const
 {
-   return vertices_.get();
+   return *vertices_;
 }
 
 int Layout::getNumVertices() const

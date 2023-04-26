@@ -67,7 +67,7 @@ bool Serializer::deserializeSynapses()
 
    // Creates synapses from weight
    //    connections->createSynapsesFromWeights(simulator.getTotalVertices(), layout.get(),
-   //                                           (*layout->getVertices()), (connections->getEdges()));
+   //                                           (layout->getVertices()), (connections->getEdges()));
 
    //Creates synapses from weight
    connections->createSynapsesFromWeights();

@@ -20,7 +20,7 @@ void Connections911::setup()
 
    // we can obtain the Layout, which holds the vertices, from the Model
    Layout &layout = *Simulator::getInstance().getModel()->getLayout();
-   AllVertices &vertices = *layout.getVertices();
+   AllVertices &vertices = layout.getVertices();
 
    // Get list of edges sorted by target in ascending order from GraphManager
    GraphManager &gm = GraphManager::getInstance();
