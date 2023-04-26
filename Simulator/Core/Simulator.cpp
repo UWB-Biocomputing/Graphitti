@@ -358,9 +358,9 @@ string Simulator::getStimulusFileName() const
    return stimulusFileName_;
 }
 
-Model *Simulator::getModel() const
+Model &Simulator::getModel() const
 {
-   return model_.get();
+   return *model_;
 }
 
 #ifdef PERFORMANCE_METRICS

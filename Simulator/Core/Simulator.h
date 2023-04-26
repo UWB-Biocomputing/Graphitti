@@ -29,13 +29,13 @@ public:
                                       /// of singleton object
    virtual ~Simulator() = default;    /// Destructor
 
-   void setup();   /// Setup simulation.
+   void setup();                      /// Setup simulation.
 
-   void finish();   /// Cleanup after simulation.
+   void finish();                     /// Cleanup after simulation.
 
-   void loadParameters();   /// Load member variables from configuration file
+   void loadParameters();             /// Load member variables from configuration file
 
-   void printParameters() const;   /// Prints loaded parameters to logging file.
+   void printParameters() const;      /// Prints loaded parameters to logging file.
 
    // Copied over from STDPFix
    void copyGPUSynapseToCPU();   /// Copy GPU Synapse data to CPU.
@@ -43,7 +43,7 @@ public:
    // Copied over from STDPFix
    void copyCPUSynapseToGPU();   /// Copy CPU Synapse data to GPU.
 
-   void reset();   /// Reset simulation objects.
+   void reset();                 /// Reset simulation objects.
 
    void simulate();
 
@@ -61,20 +61,20 @@ public:
    *  Accessors
    ***********************************************/
    ///@{
-   int getWidth() const;   /// Width of neuron map (assumes square)
+   int getWidth() const;           /// Width of neuron map (assumes square)
 
-   int getHeight() const;   /// Height of neuron map
+   int getHeight() const;          /// Height of neuron map
 
    int getTotalVertices() const;   /// Count of neurons in the simulation
 
-   int getCurrentStep() const;   /// Current simulation step
+   int getCurrentStep() const;     /// Current simulation step
 
-   int getNumEpochs() const;   /// Maximum number of simulation steps
+   int getNumEpochs() const;       /// Maximum number of simulation steps
 
    BGFLOAT
-   getEpochDuration() const;   /// The length of each step in simulation time
+   getEpochDuration() const;           /// The length of each step in simulation time
 
-   int getMaxFiringRate() const;   /// Maximum firing rate. **GPU Only**
+   int getMaxFiringRate() const;       /// Maximum firing rate. **GPU Only**
 
    int getMaxEdgesPerVertex() const;   /// Maximum number of synapses per neuron. **GPU Only**
 
@@ -83,23 +83,23 @@ public:
                         /// simulation step
 
    BGFLOAT
-   getMaxRate() const;   /// growth variable (m_targetRate / m_epsilon) TODO: more
-                         /// detail here
+   getMaxRate() const;             /// growth variable (m_targetRate / m_epsilon) TODO: more
+                                   /// detail here
 
    long getNoiseRngSeed() const;   /// Seed used for the simulation random **SingleThreaded Only**
 
-   long getInitRngSeed() const;   /// Seed used to initialize parameters
+   long getInitRngSeed() const;    /// Seed used to initialize parameters
 
-   string getConfigFileName() const;   /// File name of the parameter configuration file.
+   string getConfigFileName() const;            /// File name of the parameter configuration file.
 
-   string getSerializationFileName() const;   /// File name of the serialization file.
+   string getSerializationFileName() const;     /// File name of the serialization file.
 
    string getDeserializationFileName() const;   /// File name of the deserialization file.
 
-   string getStimulusFileName() const;   /// File name of the stimulus input file.
+   string getStimulusFileName() const;          /// File name of the stimulus input file.
 
-   Model *getModel() const;   /// Neural Network Model interface.
-                              ///@}
+   Model &getModel() const;                     /// Neural Network Model interface.
+                                                ///@}
 
    /************************************************
    *  Mutators
@@ -127,44 +127,44 @@ public:
    Simulator &operator=(Simulator &&simulator) = delete;
 
 private:
-   Simulator();   /// Constructor is private to keep a singleton instance of this
-                  /// class.
+   Simulator();                     /// Constructor is private to keep a singleton instance of this
+                                    /// class.
 
-   int width_;   /// Width of neuron map (assumes square)
+   int width_;                      /// Width of neuron map (assumes square)
 
-   int height_;   /// Height of neuron map
+   int height_;                     /// Height of neuron map
 
-   int totalNeurons_;   /// Count of neurons in the simulation
+   int totalNeurons_;               /// Count of neurons in the simulation
 
-   int currentEpoch_;   /// Current epoch step
+   int currentEpoch_;               /// Current epoch step
 
-   int numEpochs_;   /// Number of simulator epochs
+   int numEpochs_;                  /// Number of simulator epochs
 
-   BGFLOAT epochDuration_;   /// The length of each epoch in simulation time
+   BGFLOAT epochDuration_;          /// The length of each epoch in simulation time
 
-   int maxFiringRate_;   /// Maximum firing rate. **GPU Only**
+   int maxFiringRate_;              /// Maximum firing rate. **GPU Only**
 
-   int maxEdgesPerVertex_;   /// Maximum number of synapses per neuron. **GPU
-                             /// Only**
+   int maxEdgesPerVertex_;          /// Maximum number of synapses per neuron. **GPU
+                                    /// Only**
 
-   BGFLOAT deltaT_;   /// Inner Simulation Step Duration, purely investigative.
+   BGFLOAT deltaT_;                 /// Inner Simulation Step Duration, purely investigative.
 
-   BGFLOAT maxRate_;   /// growth variable (m_targetRate / m_epsilon) TODO: more
-                       /// detail here
+   BGFLOAT maxRate_;                /// growth variable (m_targetRate / m_epsilon) TODO: more
+                                    /// detail here
 
-   long noiseRngSeed_;   /// Seed used for the simulation random SINGLE THREADED
+   long noiseRngSeed_;              /// Seed used for the simulation random SINGLE THREADED
 
-   long initRngSeed_;   /// Seed used to initialize parameters
+   long initRngSeed_;               /// Seed used to initialize parameters
 
-   string configFileName_;   /// File name of the parameter configuration file.
+   string configFileName_;          /// File name of the parameter configuration file.
 
    string serializationFileName_;   /// File name of the serialization file.
 
    string deserializationFileName_;   /// File name of the deserialization file.
 
-   string stimulusFileName_;   /// File name of the stimulus input file.
+   string stimulusFileName_;          /// File name of the stimulus input file.
 
-   unique_ptr<Model> model_;   /// Smart pointer to model class (Model is an interface class)
+   unique_ptr<Model> model_;          /// Smart pointer to model class (Model is an interface class)
 
    log4cplus::Logger
       consoleLogger_;   /// Logger for printing to the console as well as the logging file

@@ -207,7 +207,7 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
    simulator.finish();
 
    // terminates the simulation recorder
-   simulator.getModel()->getRecorder().term();
+   simulator.getModel().getRecorder().term();
 
 
    time(&end_time);

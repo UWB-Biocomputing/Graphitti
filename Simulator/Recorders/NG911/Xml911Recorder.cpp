@@ -40,7 +40,7 @@ void Xml911Recorder::compileHistories(AllVertices &vertices)
 /// @param  vertices the Vertex list to search from.
 void Xml911Recorder::saveSimData(const AllVertices &vertices)
 {
-   auto &conns = Simulator::getInstance().getModel()->getConnections();
+   auto &conns = Simulator::getInstance().getModel().getConnections();
    Connections911 &conns911 = dynamic_cast<Connections911 &>(conns);
 
    // create Vertex Types matrix
@@ -49,7 +49,7 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
    VectorMatrix vertexTypes(MATRIX_TYPE, MATRIX_INIT, 1,
                             Simulator::getInstance().getTotalVertices(), EXC);
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      vertexTypes[i] = Simulator::getInstance().getModel()->getLayout().vertexTypeMap_[i];
+      vertexTypes[i] = Simulator::getInstance().getModel().getLayout().vertexTypeMap_[i];
       oldTypes[i] = conns911.oldTypeMap_[i];
    }
 
@@ -57,7 +57,7 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
    resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
               << "<!-- State output file for the 911 systems modeling-->\n";
    //stateOut << version; TODO: version
-   auto &layout = Simulator::getInstance().getModel()->getLayout();
+   auto &layout = Simulator::getInstance().getModel().getLayout();
 
    // Write the core state information:
    resultOut_ << "<SimState>\n";

@@ -108,7 +108,7 @@ void SInputPoisson::init()
    for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalVertices();
         neuronIndex++) {
       edgeType type;
-      if (Simulator::getInstance().getModel()->getLayout().vertexTypeMap_[neuronIndex] == INH)
+      if (Simulator::getInstance().getModel().getLayout().vertexTypeMap_[neuronIndex] == INH)
          type = EI;
       else
          type = EE;

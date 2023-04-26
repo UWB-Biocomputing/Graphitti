@@ -30,7 +30,7 @@ void XmlGrowthRecorder::init()
 /// Init radii and rates history matrices with default values
 void XmlGrowthRecorder::initDefaultValues()
 {
-   Connections &connections = Simulator::getInstance().getModel()->getConnections();
+   Connections &connections = Simulator::getInstance().getModel().getConnections();
    BGFLOAT startRadius = dynamic_cast<ConnGrowth &>(connections).growthParams_.startRadius;
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
@@ -42,7 +42,7 @@ void XmlGrowthRecorder::initDefaultValues()
 /// Init radii and rates history matrices with current radii and rates
 void XmlGrowthRecorder::initValues()
 {
-   Connections &connections = Simulator::getInstance().getModel()->getConnections();
+   Connections &connections = Simulator::getInstance().getModel().getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       (*radiiHistory_)(0, i) = (dynamic_cast<ConnGrowth &>(connections).radii_)[i];
@@ -53,7 +53,7 @@ void XmlGrowthRecorder::initValues()
 /// Get the current radii and rates values
 void XmlGrowthRecorder::getValues()
 {
-   Connections &connections = Simulator::getInstance().getModel()->getConnections();
+   Connections &connections = Simulator::getInstance().getModel().getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       (dynamic_cast<ConnGrowth &>(connections).radii_)[i]
@@ -70,7 +70,7 @@ void XmlGrowthRecorder::compileHistories(AllVertices &neurons)
 {
    XmlRecorder::compileHistories(neurons);
 
-   Connections &connections = Simulator::getInstance().getModel()->getConnections();
+   Connections &connections = Simulator::getInstance().getModel().getConnections();
 
    BGFLOAT minRadius = dynamic_cast<ConnGrowth &>(connections).growthParams_.minRadius;
    VectorMatrix &rates = (dynamic_cast<ConnGrowth &>(connections).rates_);
@@ -101,7 +101,7 @@ void XmlGrowthRecorder::saveSimData(const AllVertices &neurons)
    VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1,
                             Simulator::getInstance().getTotalVertices(), EXC);
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      neuronTypes[i] = Simulator::getInstance().getModel()->getLayout().vertexTypeMap_[i];
+      neuronTypes[i] = Simulator::getInstance().getModel().getLayout().vertexTypeMap_[i];
    }
 
    // create neuron threshold matrix
@@ -121,19 +121,19 @@ void XmlGrowthRecorder::saveSimData(const AllVertices &neurons)
    resultOut_ << "   " << radiiHistory_->toXML("radiiHistory") << endl;
    resultOut_ << "   " << ratesHistory_->toXML("ratesHistory") << endl;
    resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout().xloc_.toXML("xloc")
+   resultOut_ << "   " << Simulator::getInstance().getModel().getLayout().xloc_.toXML("xloc")
               << endl;
-   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout().yloc_.toXML("yloc")
+   resultOut_ << "   " << Simulator::getInstance().getModel().getLayout().yloc_.toXML("yloc")
               << endl;
    resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
    // create starter neuron matrix
    int num_starter_neurons = static_cast<int>(
-      Simulator::getInstance().getModel()->getLayout().numEndogenouslyActiveNeurons_);
+      Simulator::getInstance().getModel().getLayout().numEndogenouslyActiveNeurons_);
    if (num_starter_neurons > 0) {
       VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
       getStarterNeuronMatrix(starterNeurons,
-                             Simulator::getInstance().getModel()->getLayout().starterMap_);
+                             Simulator::getInstance().getModel().getLayout().starterMap_);
       resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
    }
 
