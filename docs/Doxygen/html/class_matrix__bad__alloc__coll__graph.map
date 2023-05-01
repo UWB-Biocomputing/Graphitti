@@ -1,0 +1,5 @@
+<map id="Matrix_bad_alloc" name="Matrix_bad_alloc">
+<area shape="rect" id="node1" title="Signals memory allocation error for Matrix classes." alt="" coords="5,152,124,177"/>
+<area shape="rect" id="node2" href="$class_matrix_exception.html" title="Master base class for Matrix exceptions." alt="" coords="8,79,121,104"/>
+<area shape="rect" id="node3" title=" " alt="" coords="15,5,114,31"/>
+</map>

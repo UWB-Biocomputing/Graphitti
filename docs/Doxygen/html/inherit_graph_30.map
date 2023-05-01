@@ -1,0 +1,8 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" title=" " alt="" coords="5,80,104,105"/>
+<area shape="rect" id="node2" href="$class_matrix_exception.html" title="Master base class for Matrix exceptions." alt="" coords="152,80,265,105"/>
+<area shape="rect" id="node3" href="$class_matrix__bad__alloc.html" title="Signals memory allocation error for Matrix classes." alt="" coords="335,5,454,31"/>
+<area shape="rect" id="node4" href="$class_matrix__bad__cast.html" title="Signals bad cast among Matrices for Matrix classes." alt="" coords="336,55,453,80"/>
+<area shape="rect" id="node5" href="$class_matrix__domain__error.html" title="Signals value bad for domain for Matrix classes." alt="" coords="325,104,464,129"/>
+<area shape="rect" id="node6" href="$class_matrix__invalid__argument.html" title="Signals bad function argument for Matrix classes." alt="" coords="313,153,476,179"/>
+</map>

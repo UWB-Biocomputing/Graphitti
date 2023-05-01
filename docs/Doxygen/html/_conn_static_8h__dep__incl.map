@@ -1,0 +1,11 @@
+<map id="Simulator/Connections/Neuro/ConnStatic.h" name="Simulator/Connections/Neuro/ConnStatic.h">
+<area shape="rect" id="node1" title="The model of the small world network." alt="" coords="291,5,444,45"/>
+<area shape="rect" id="node2" href="$_conn_static_8cpp.html" title="The model of the small world network." alt="" coords="5,93,159,133"/>
+<area shape="rect" id="node3" href="$_core_8cpp.html" title="Orchestrates most functionality in the simulation." alt="" coords="183,101,346,126"/>
+<area shape="rect" id="node4" href="$_xml_s_t_d_p_recorder_8cpp_source.html" title=" " alt="" coords="371,93,569,133"/>
+<area shape="rect" id="node5" href="$_factory_8h.html" title="A factory template for creating factory class for any subsystem that requires a factory to create a (..." alt="" coords="594,101,759,126"/>
+<area shape="rect" id="node6" href="$_connections_8cpp.html" title="Methods for creating and updating connections." alt="" coords="311,181,464,221"/>
+<area shape="rect" id="node7" href="$_model_8cpp.html" title="Implementation of Model for the graph&#45;based networks." alt="" coords="489,189,659,214"/>
+<area shape="rect" id="node8" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="684,189,875,214"/>
+<area shape="rect" id="node9" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="899,189,1094,214"/>
+</map>

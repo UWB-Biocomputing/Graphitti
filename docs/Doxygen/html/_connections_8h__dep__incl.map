@@ -1,0 +1,25 @@
+<map id="Simulator/Connections/Connections.h" name="Simulator/Connections/Connections.h">
+<area shape="rect" id="node1" title="The base class of all connections classes." alt="" coords="1125,5,1278,45"/>
+<area shape="rect" id="node2" href="$_connections_8cpp.html" title="Methods for creating and updating connections." alt="" coords="1183,269,1337,309"/>
+<area shape="rect" id="node3" href="$_connections911_8h.html" title="The model of the static network." alt="" coords="1287,93,1462,133"/>
+<area shape="rect" id="node7" href="$_model_8cpp.html" title="Implementation of Model for the graph&#45;based networks." alt="" coords="5,277,176,302"/>
+<area shape="rect" id="node10" href="$_conn_growth_8h.html" title="The model of the activity&#45;dependent neurite outgrowth." alt="" coords="638,93,791,133"/>
+<area shape="rect" id="node13" href="$_serializer_8cpp.html" title="Handles implementation details of serialization and deserialization of synapses." alt="" coords="908,189,1097,214"/>
+<area shape="rect" id="node16" href="$_conn_static_8h.html" title="The model of the small world network." alt="" coords="2153,93,2306,133"/>
+<area shape="rect" id="node20" href="$_c_p_u_model_8h.html" title="Implementation of Model for execution on CPU (single core)." alt="" coords="1778,101,1963,126"/>
+<area shape="rect" id="node23" href="$_g_p_u_model_8cpp.html" title="Implementation of Model for the spiking neural networks." alt="" coords="2331,101,2531,126"/>
+<area shape="rect" id="node4" href="$_connections911_8cpp.html" title="The model of the static network." alt="" coords="1387,181,1575,221"/>
+<area shape="rect" id="node5" href="$_xml911_recorder_8cpp.html" title="Header file for Xml911Recorder.h." alt="" coords="1173,181,1363,221"/>
+<area shape="rect" id="node6" href="$_factory_8h.html" title="A factory template for creating factory class for any subsystem that requires a factory to create a (..." alt="" coords="1600,189,1765,214"/>
+<area shape="rect" id="node8" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="1707,277,1898,302"/>
+<area shape="rect" id="node9" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="1488,277,1683,302"/>
+<area shape="rect" id="node11" href="$_conn_growth_8cpp.html" title="The model of the activity&#45;dependent neurite outgrowth." alt="" coords="129,181,290,221"/>
+<area shape="rect" id="node12" href="$_conn_growth__d_8cpp.html" title="Update the weights of the Synapses in the simulation." alt="" coords="314,181,489,221"/>
+<area shape="rect" id="node14" href="$_xml_growth_recorder_8cpp.html" title="An implementation for recording spikes history in an XML file for growth simulations." alt="" coords="513,181,719,221"/>
+<area shape="rect" id="node15" href="$_xml_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="743,181,883,221"/>
+<area shape="rect" id="node17" href="$_conn_static_8cpp.html" title="The model of the small world network." alt="" coords="2251,181,2405,221"/>
+<area shape="rect" id="node18" href="$_core_8cpp.html" title="Orchestrates most functionality in the simulation." alt="" coords="2429,189,2592,214"/>
+<area shape="rect" id="node19" href="$_xml_s_t_d_p_recorder_8cpp_source.html" title=" " alt="" coords="2617,181,2815,221"/>
+<area shape="rect" id="node21" href="$_c_p_u_model_8cpp.html" title="Implementation of Model for graph&#45;based networks." alt="" coords="1841,189,2039,214"/>
+<area shape="rect" id="node22" href="$_host_s_input_poisson_8cpp.html" title="A class that performs stimulus input (implementation Poisson)." alt="" coords="2064,181,2227,221"/>
+</map>

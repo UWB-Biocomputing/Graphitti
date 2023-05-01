@@ -1,0 +1,15 @@
+<map id="Simulator/Core/OperationManager.h" name="Simulator/Core/OperationManager.h">
+<area shape="rect" id="node1" title="Singleton instance method that registers and executes functions based on operation types." alt="" coords="1045,5,1213,45"/>
+<area shape="rect" id="node2" href="$_connections_8cpp.html" title="Methods for creating and updating connections." alt="" coords="5,93,159,133"/>
+<area shape="rect" id="node3" href="$_conn_growth_8cpp.html" title="The model of the activity&#45;dependent neurite outgrowth." alt="" coords="183,93,344,133"/>
+<area shape="rect" id="node4" href="$_conn_static_8cpp.html" title="The model of the small world network." alt="" coords="368,93,521,133"/>
+<area shape="rect" id="node5" href="$_core_8cpp.html" title="Orchestrates most functionality in the simulation." alt="" coords="546,101,709,126"/>
+<area shape="rect" id="node6" href="$_operation_manager_8cpp.html" title="Singleton instance method that registers and executes functions based on operation types." alt="" coords="733,93,901,133"/>
+<area shape="rect" id="node7" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="925,101,1116,126"/>
+<area shape="rect" id="node8" href="$_all_edges_8cpp.html" title="A container of all edge data." alt="" coords="1140,101,1336,126"/>
+<area shape="rect" id="node9" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="1361,101,1555,126"/>
+<area shape="rect" id="node10" href="$_hdf5_recorder_8cpp.html" title="An implementation for recording spikes history on hdf5 file." alt="" coords="1580,93,1720,133"/>
+<area shape="rect" id="node11" href="$_xml_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="1744,93,1884,133"/>
+<area shape="rect" id="node12" href="$_all_vertices_8cpp.html" title="A container of the base class of all vertex data." alt="" coords="1908,93,2037,133"/>
+<area shape="rect" id="node13" href="$_all_i_f_neurons_8cpp.html" title="A container of all Integate and Fire (IF) neuron data." alt="" coords="2062,93,2227,133"/>
+</map>

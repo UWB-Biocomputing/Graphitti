@@ -1,0 +1,5 @@
+<map id="Simulator/Core/Serializer.h" name="Simulator/Core/Serializer.h">
+<area shape="rect" id="node1" title="Handles implementation of serialization and deserialization of synapses." alt="" coords="99,5,274,31"/>
+<area shape="rect" id="node2" href="$_core_8cpp.html" title="Orchestrates most functionality in the simulation." alt="" coords="5,79,168,104"/>
+<area shape="rect" id="node3" href="$_serializer_8cpp.html" title="Handles implementation details of serialization and deserialization of synapses." alt="" coords="192,79,381,104"/>
+</map>

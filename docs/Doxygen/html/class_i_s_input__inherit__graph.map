@@ -1,0 +1,9 @@
+<map id="ISInput" name="ISInput">
+<area shape="rect" id="node1" title=" " alt="" coords="273,5,337,31"/>
+<area shape="rect" id="node2" href="$class_s_input_poisson.html" title=" " alt="" coords="175,79,281,104"/>
+<area shape="rect" id="node5" href="$class_s_input_regular.html" title=" " alt="" coords="332,79,436,104"/>
+<area shape="rect" id="node3" href="$class_gpu_s_input_poisson.html" title=" " alt="" coords="5,152,136,177"/>
+<area shape="rect" id="node4" href="$class_host_s_input_poisson.html" title=" " alt="" coords="161,152,295,177"/>
+<area shape="rect" id="node6" href="$class_gpu_s_input_regular.html" title=" " alt="" coords="320,152,448,177"/>
+<area shape="rect" id="node7" href="$class_host_s_input_regular.html" title=" " alt="" coords="473,152,605,177"/>
+</map>
