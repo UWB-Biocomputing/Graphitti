@@ -35,8 +35,7 @@ XmlRecorder::XmlRecorder() :
 /// @param[in] stateOutputFileName      File name to save histories
 void XmlRecorder::init()
 {
-   resultOut_.open(resultFileName_.c_str());
-   // check the file extension is .xml
+   // check the output file extension is .xml
    string suffix = ".xml";
    if ((resultFileName_.size() <= suffix.size())
        || (resultFileName_.compare(resultFileName_.size() - suffix.size(), suffix.size(), suffix)
@@ -45,6 +44,7 @@ void XmlRecorder::init()
       exit(EXIT_FAILURE);
    }
 
+   resultOut_.open(resultFileName_.c_str());
    // TODO: Log error using LOG4CPLUS for workbench
    //       For the time being, we are terminating the program when we can't open a file for writing.
    if (!resultOut_.is_open()) {
