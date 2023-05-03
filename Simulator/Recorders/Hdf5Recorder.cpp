@@ -45,6 +45,15 @@ Hdf5Recorder::Hdf5Recorder()
 /// @param[in] stateOutputFileName      File name to save histories
 void Hdf5Recorder::init()
 {
+   // check the output file extension is .h5
+   string suffix = ".h5";
+   if ((resultFileName_.size() <= suffix.size())
+       || (resultFileName_.compare(resultFileName_.size() - suffix.size(), suffix.size(), suffix)
+           != 0)) {
+      perror("the file extention is not .h5 ");
+      exit(EXIT_FAILURE);
+   }
+
    // Before trying to create H5File, use ofstream to confirm ability to create and write file.
    // TODO: Log error using LOG4CPLUS for workbench
    //       For the time being, we are terminating the program when we can't open a file for writing.
