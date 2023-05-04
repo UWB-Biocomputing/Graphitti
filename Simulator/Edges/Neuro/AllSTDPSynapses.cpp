@@ -54,47 +54,20 @@ void AllSTDPSynapses::setupEdges(const int numVertices, const int maxEdges)
    BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
    if (maxTotalSynapses != 0) {
-      totalDelayPost_.resize(maxTotalSynapses);
-      totalDelayPost_.assign(maxTotalSynapses, 0);
-
-      delayQueuePost_.resize(maxTotalSynapses);
-      delayQueuePost_.assign(maxTotalSynapses, 0);
-
-      delayIndexPost_.resize(maxTotalSynapses);
-      delayIndexPost_.assign(maxTotalSynapses, 0);
-
-      delayQueuePostLength_.resize(maxTotalSynapses);
-      delayQueuePostLength_.assign(maxTotalSynapses, 0);
-
-      tauspost_.resize(maxTotalSynapses);
-      tauspost_.assign(maxTotalSynapses, 0);
-
-      tauspre_.resize(maxTotalSynapses);
-      tauspre_.assign(maxTotalSynapses, 0);
-
-      taupos_.resize(maxTotalSynapses);
-      taupos_.assign(maxTotalSynapses, 0);
-
-      tauneg_.resize(maxTotalSynapses);
-      tauneg_.assign(maxTotalSynapses, 0);
-
-      STDPgap_.resize(maxTotalSynapses);
-      STDPgap_.assign(maxTotalSynapses, 0);
-
-      Wex_.resize(maxTotalSynapses);
       Wex_.assign(maxTotalSynapses, 0);
-
-      Aneg_.resize(maxTotalSynapses);
       Aneg_.assign(maxTotalSynapses, 0);
-
-      Apos_.resize(maxTotalSynapses);
       Apos_.assign(maxTotalSynapses, 0);
-
-      mupos_.resize(maxTotalSynapses);
       mupos_.assign(maxTotalSynapses, 0);
-
-      muneg_.resize(maxTotalSynapses);
       muneg_.assign(maxTotalSynapses, 0);
+      taupos_.assign(maxTotalSynapses, 0);
+      tauneg_.assign(maxTotalSynapses, 0);
+      tauspre_.assign(maxTotalSynapses, 0);
+      STDPgap_.assign(maxTotalSynapses, 0);
+      tauspost_.assign(maxTotalSynapses, 0);
+      totalDelayPost_.assign(maxTotalSynapses, 0);
+      delayQueuePost_.assign(maxTotalSynapses, 0);
+      delayIndexPost_.assign(maxTotalSynapses, 0);
+      delayQueuePostLength_.assign(maxTotalSynapses, 0);
    }
 }
 

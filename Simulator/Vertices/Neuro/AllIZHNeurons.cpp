@@ -13,14 +13,6 @@
 void AllIZHNeurons::setupVertices()
 {
    AllIFNeurons::setupVertices();
-
-   Aconst_.resize(size_);
-   Bconst_.resize(size_);
-   Cconst_.resize(size_);
-   Dconst_.resize(size_);
-   u_.resize(size_);
-   C3_.resize(size_);
-
    Aconst_.assign(size_, 0);
    Bconst_.assign(size_, 0);
    Cconst_.assign(size_, 0);

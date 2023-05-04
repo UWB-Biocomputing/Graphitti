@@ -17,8 +17,8 @@ void AllSpikingNeurons::setupVertices()
    int maxSpikes = static_cast<int>(Simulator::getInstance().getEpochDuration()
                                     * Simulator::getInstance().getMaxFiringRate());
 
-   hasFired_.resize(size_, false);
-   vertexEvents_.resize(size_, maxSpikes);
+   hasFired_.assign(size_, false);
+   vertexEvents_.assign(size_, maxSpikes);
 }
 
 ///  Clear the spike counts out of all Neurons.

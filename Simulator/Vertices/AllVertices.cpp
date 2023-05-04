@@ -37,7 +37,6 @@ void AllVertices::setupVertices()
    // summationMap_ = nullptr;
 
 #else
-   summationMap_.resize(size_);
    summationMap_.assign(size_, 0);
 
 #endif

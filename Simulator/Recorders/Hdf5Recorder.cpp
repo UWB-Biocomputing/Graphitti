@@ -177,7 +177,7 @@ void Hdf5Recorder::initDataSet()
    }
 
    // allocate and initialize data memories
-   spikesHistory_.resize(static_cast<int>(simulator.getEpochDuration() * 100));
+
    spikesHistory_.assign(static_cast<int>(simulator.getEpochDuration() * 100), 0);
 
    // create the data space & dataset for spikes history of probed neurons
@@ -186,7 +186,6 @@ void Hdf5Recorder::initDataSet()
       spikesProbedNeurons_.resize(model->getLayout()->probedNeuronList_.size());
 
       // allocate and initialize memory to save offsets of what's been written
-      offsetSpikesProbedNeurons_.resize(model->getLayout()->probedNeuronList_.size());
       offsetSpikesProbedNeurons_.assign(model->getLayout()->probedNeuronList_.size(), 0);
    }
 }
