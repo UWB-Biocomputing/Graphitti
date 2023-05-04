@@ -229,7 +229,7 @@ string AllIFNeurons::toString(const int index) const
    ss << "Trefract: " << Trefract_[index] << " ";   // the number of steps in the refractory period
    ss << "Inoise: " << Inoise_[index] << " ";   // the stdev of the noise to be added each delta_t
    ss << "Iinject: " << Iinject_[index]
-      << " ";                           // A constant current to be injected into the LIF neuron
+      << " ";   // A constant current to be injected into the LIF neuron
    ss << "nStepsInRefr: " << numStepsInRefractoryPeriod_[index]
       << endl;                          // the number of steps left in the refractory period
    ss << "Vm: " << Vm_[index] << " ";   // the membrane voltage
