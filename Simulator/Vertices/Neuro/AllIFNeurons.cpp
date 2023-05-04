@@ -20,23 +20,6 @@ void AllIFNeurons::setupVertices()
    AllSpikingNeurons::setupVertices();
 
    // TODO: Rename variables for easier identification
-   C1_.resize(size_);
-   C2_.resize(size_);
-   Cm_.resize(size_);
-   I0_.resize(size_);
-   Iinject_.resize(size_);
-   Inoise_.resize(size_);
-   Isyn_.resize(size_);
-   Rm_.resize(size_);
-   Tau_.resize(size_);
-   Trefract_.resize(size_);
-   Vinit_.resize(size_);
-   Vm_.resize(size_);
-   Vreset_.resize(size_);
-   Vrest_.resize(size_);
-   Vthresh_.resize(size_);
-   numStepsInRefractoryPeriod_.resize(size_);
-
    C1_.assign(size_, 0);
    C2_.assign(size_, 0);
    Cm_.assign(size_, 0);

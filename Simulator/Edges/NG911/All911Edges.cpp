@@ -25,26 +25,13 @@ void All911Edges::setupEdges()
 
    // To do: Figure out whether we need all of these
    if (maxTotalEdges != 0) {
-      // psr_.resize(maxTotalEdges);
       // psr_.assign(maxTotalEdges, 0.0);
-      sourceVertexIndex_.resize(maxTotalEdges);
-      sourceVertexIndex_.assign(maxTotalEdges, 0);
-
-      destVertexIndex_.resize(maxTotalEdges, 0);
-      destVertexIndex_.assign(maxTotalEdges, 0);
-
-      summationPoint_.resize(maxTotalEdges, nullptr);
-      summationPoint_.assign(maxTotalEdges, nullptr);
-
-      W_.resize(maxTotalEdges, 0);
       W_.assign(maxTotalEdges, 0);
-
-      type_.resize(maxTotalEdges);
       type_.assign(maxTotalEdges, ETYPE_UNDEF);
-
-      edgeCounts_.resize(numVertices, 0);
       edgeCounts_.assign(numVertices, 0);
-
+      summationPoint_.assign(maxTotalEdges, nullptr);
+      destVertexIndex_.assign(maxTotalEdges, 0);
+      sourceVertexIndex_.assign(maxTotalEdges, 0);
       inUse_ = make_unique<bool[]>(maxTotalEdges);
       fill_n(inUse_.get(), maxTotalEdges, false);
    }
