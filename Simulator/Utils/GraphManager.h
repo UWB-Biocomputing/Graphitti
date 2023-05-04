@@ -43,14 +43,13 @@ using namespace std;
 
 class GraphManager {
 public:
-   /// typedef for graphml graph type (adjacency list)
-   typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, VertexProperty,
-                                 EdgeProperty, GraphProperty>
-      Graph;
+   /// Using directive for graphml graph type (adjacency list)
+   using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, VertexProperty,
+                                       EdgeProperty, GraphProperty>;
 
-   typedef typename boost::graph_traits<Graph>::edge_iterator EdgeIterator;
-   typedef typename boost::graph_traits<Graph>::vertex_iterator VertexIterator;
-   typedef typename boost::graph_traits<Graph>::edge_descriptor EdgeDescriptor;
+   using EdgeIterator = typename boost::graph_traits<Graph>::edge_iterator;
+   using VertexIterator = typename boost::graph_traits<Graph>::vertex_iterator;
+   using EdgeDescriptor = typename boost::graph_traits<Graph>::edge_descriptor;
 
    /// @brief Returns a single instance of the GraphManager
    /// @return The single instance of the GraphManager
@@ -124,6 +123,13 @@ public:
    /// @return The number of edges in the current graph
    size_t numEdges() const;
 
+   /// Delete copy and move methods to avoid copy instances of the singleton
+   GraphManager(const GraphManager &graphManager) = delete;
+   GraphManager &operator=(const GraphManager &graphManager) = delete;
+
+   GraphManager(GraphManager &&graphManager) = delete;
+   GraphManager &operator=(GraphManager &&graphManager) = delete;
+
 private:
    /// stores the graph
    Graph graph_;
@@ -137,7 +143,4 @@ private:
    GraphManager() : graph_(), dp_(boost::ignore_other_properties)
    {
    }
-
-   GraphManager(GraphManager const &) = delete;
-   void operator=(GraphManager const &) = delete;
 };

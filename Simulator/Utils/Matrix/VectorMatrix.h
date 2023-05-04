@@ -15,6 +15,7 @@
 #include "Norm.h"
 #include "SparseMatrix.h"
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -73,7 +74,7 @@ public:
    VectorMatrix(const VectorMatrix &oldV);
 
    ///  @brief De-allocate storage
-   virtual ~VectorMatrix();
+   virtual ~VectorMatrix() = default;
 
    ///  @brief Set elements of vector to a constant. Doesn't change its size.
    ///  @param c the constant
@@ -299,7 +300,7 @@ protected:
 
 private:
    /// Pointer to dynamically allocated 1D array
-   BGFLOAT *theVector;
+   vector<BGFLOAT> theVector;
 
    /// The number of elements in "theVector"
    int size;

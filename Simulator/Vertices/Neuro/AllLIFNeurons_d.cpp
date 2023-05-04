@@ -29,7 +29,7 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
                                         float *randNoise,
                                         AllIFNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        EdgeIndexMap *edgeIndexMapDevice,
+                                        EdgeIndexMapDevice *edgeIndexMapDevice,
                                         bool fAllowBackPropagation);
 
 
@@ -45,7 +45,7 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
 ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
 void AllLIFNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
                                     void *allEdgesDevice, float *randNoise,
-                                    EdgeIndexMap *edgeIndexMapDevice)
+                                    EdgeIndexMapDevice *edgeIndexMapDevice)
 {
    int vertex_count = Simulator::getInstance().getTotalVertices();
    int maxSpikes = (int)((Simulator::getInstance().getEpochDuration()
@@ -88,7 +88,7 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
                                         float *randNoise,
                                         AllIFNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        EdgeIndexMap *edgeIndexMapDevice,
+                                        EdgeIndexMapDevice *edgeIndexMapDevice,
                                         bool fAllowBackPropagation)
 {
    // determine which neuron this thread is processing

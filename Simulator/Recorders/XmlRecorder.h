@@ -9,7 +9,6 @@
  * and compile history information on xml file:
  *     -# neuron's locations, and type map,
  *     -# individual neuron's spike rate in epochs,
- *     -# network wide burstiness index data in 1s bins,
  *     -# network wide spike count in 10ms bins.
  */
 
@@ -62,14 +61,12 @@ protected:
    // a file stream for xml output
    ofstream resultOut_;
 
-   // burstiness Histogram goes through the
-   VectorMatrix burstinessHist_;
-
    // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
    VectorMatrix spikesHistory_;
 
    // Populates Starter neuron matrix based with boolean values based on starterMap state
    ///@param[in] matrix  starter neuron matrix
    ///@param starterMap  Bool map to reference neuron matrix location from.
-   virtual void getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap) override;
+   virtual void getStarterNeuronMatrix(VectorMatrix &matrix,
+                                       const std::vector<bool> &starterMap) override;
 };

@@ -13,16 +13,6 @@
 #include "Simulator.h"
 #include <vector>
 
-// TODO: We don't need to explicitly call the superclass constructor, right?
-//! The constructor and destructor
-XmlSTDPRecorder::XmlSTDPRecorder() : XmlRecorder()
-{
-}
-
-XmlSTDPRecorder::~XmlSTDPRecorder()
-{
-}
-
 void XmlSTDPRecorder::init()
 {
    const int numEpochs = Simulator::getInstance().getNumEpochs();
@@ -40,25 +30,24 @@ void XmlSTDPRecorder::init()
 ///Init radii and rates history matrices with default values
 void XmlSTDPRecorder::initDefaultValues()
 {
-   shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
+   Connections *connections = Simulator::getInstance().getModel()->getConnections();
    //AllNeuroEdges *synapses synapses)->W_[iSyn]
-   BGFLOAT startRadius = dynamic_cast<ConnStatic *>(conns.get())->getConnsRadiusThresh();
+   BGFLOAT startRadius = dynamic_cast<ConnStatic *>(connections)->getConnsRadiusThresh();
 }
 
 ///InitValues gets the values for weights, source index and dest index at the time of simulation start
 void XmlSTDPRecorder::initValues()
 {
-   Connections *conns = Simulator::getInstance().getModel()->getConnections().get();
-
+   Connections *connections = Simulator::getInstance().getModel()->getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices()
                           * Simulator::getInstance().getMaxEdgesPerVertex();
         i++) {
-      weightsHistory_[0][i] = (dynamic_cast<ConnStatic *>(conns)->getWCurrentEpoch())[i];
+      weightsHistory_[0][i] = (dynamic_cast<ConnStatic *>(connections)->getWCurrentEpoch())[i];
       sourceNeuronIndexHistory_[0][i]
-         = (dynamic_cast<ConnStatic *>(conns)->getSourceVertexIndexCurrentEpoch())[i];
+         = (dynamic_cast<ConnStatic *>(connections)->getSourceVertexIndexCurrentEpoch())[i];
       destNeuronIndexHistory_[0][i]
-         = (dynamic_cast<ConnStatic *>(conns)->getDestVertexIndexCurrentEpoch())[i];
+         = (dynamic_cast<ConnStatic *>(connections)->getDestVertexIndexCurrentEpoch())[i];
    }
 }
 
@@ -66,7 +55,7 @@ void XmlSTDPRecorder::initValues()
 void XmlSTDPRecorder::getValues()
 {
    Simulator &simulator = Simulator::getInstance();
-   shared_ptr<Connections> connections = simulator.getModel()->getConnections();
+   Connections *connections = simulator.getModel()->getConnections();
    AllEdges &synapses = (*connections->getEdges());
    const int currentStep = simulator.getCurrentStep();
 
@@ -85,7 +74,7 @@ void XmlSTDPRecorder::compileHistories(AllVertices &neurons)
    LOG4CPLUS_INFO(fileLogger_, "Compiling STDP HISTORY");
    XmlRecorder::compileHistories(neurons);
    Simulator &simulator = Simulator::getInstance();
-   shared_ptr<Connections> connections = simulator.getModel()->getConnections();
+   Connections *connections = simulator.getModel()->getConnections();
    AllEdges &synapses = (*connections->getEdges());
    const int currentStep = simulator.getCurrentStep();
 
@@ -172,10 +161,9 @@ void XmlSTDPRecorder::saveSimData(const AllVertices &neurons)
    resultOut_ << "   " << toXML("sourceNeuronIndexHistory", sourceNeuronIndexHistory_) << endl;
    resultOut_ << "   " << toXML("destNeuronIndexHistory", destNeuronIndexHistory_) << endl;
    resultOut_ << "   " << toXML("weightsHistory", weightsHistory_) << endl;
-   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
    resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   resultOut_ << "   " << simulator.getModel()->getLayout()->xloc_->toXML("xloc") << endl;
-   resultOut_ << "   " << simulator.getModel()->getLayout()->yloc_->toXML("yloc") << endl;
+   resultOut_ << "   " << simulator.getModel()->getLayout()->xloc_.toXML("xloc") << endl;
+   resultOut_ << "   " << simulator.getModel()->getLayout()->yloc_.toXML("yloc") << endl;
    resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
    // create starter neuron matrix

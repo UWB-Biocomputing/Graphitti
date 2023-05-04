@@ -12,28 +12,17 @@
 #include "Model.h"
 #include "Simulator.h"
 
-// TODO: We don't need the explicit call to the superclass constructor, right?
-//! The constructor and destructor
-XmlGrowthRecorder::XmlGrowthRecorder()
-{
-}
-
-// TODO: Is this needed?
-XmlGrowthRecorder::~XmlGrowthRecorder()
-{
-}
-
 void XmlGrowthRecorder::init()
 {
    // call the superclass method first
    XmlRecorder::init();
 
    // Allocate memory for ratesHistory and radiiHistory
-   ratesHistory_ = shared_ptr<CompleteMatrix>(new CompleteMatrix(
+   ratesHistory_ = unique_ptr<CompleteMatrix>(new CompleteMatrix(
       MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
       Simulator::getInstance().getTotalVertices()));
 
-   radiiHistory_ = shared_ptr<CompleteMatrix>(new CompleteMatrix(
+   radiiHistory_ = unique_ptr<CompleteMatrix>(new CompleteMatrix(
       MATRIX_TYPE, MATRIX_INIT, static_cast<int>(Simulator::getInstance().getNumEpochs() + 1),
       Simulator::getInstance().getTotalVertices()));
 }
@@ -41,8 +30,8 @@ void XmlGrowthRecorder::init()
 /// Init radii and rates history matrices with default values
 void XmlGrowthRecorder::initDefaultValues()
 {
-   shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
-   BGFLOAT startRadius = dynamic_cast<ConnGrowth *>(conns.get())->growthParams_.startRadius;
+   Connections *connections = Simulator::getInstance().getModel()->getConnections();
+   BGFLOAT startRadius = dynamic_cast<ConnGrowth *>(connections)->growthParams_.startRadius;
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       (*radiiHistory_)(0, i) = startRadius;
@@ -53,23 +42,23 @@ void XmlGrowthRecorder::initDefaultValues()
 /// Init radii and rates history matrices with current radii and rates
 void XmlGrowthRecorder::initValues()
 {
-   shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
+   Connections *connections = Simulator::getInstance().getModel()->getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      (*radiiHistory_)(0, i) = (*dynamic_cast<ConnGrowth *>(conns.get())->radii_)[i];
-      (*ratesHistory_)(0, i) = (*dynamic_cast<ConnGrowth *>(conns.get())->rates_)[i];
+      (*radiiHistory_)(0, i) = (dynamic_cast<ConnGrowth *>(connections)->radii_)[i];
+      (*ratesHistory_)(0, i) = (dynamic_cast<ConnGrowth *>(connections)->rates_)[i];
    }
 }
 
 /// Get the current radii and rates values
 void XmlGrowthRecorder::getValues()
 {
-   Connections *conns = Simulator::getInstance().getModel()->getConnections().get();
+   Connections *connections = Simulator::getInstance().getModel()->getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      (*dynamic_cast<ConnGrowth *>(conns)->radii_)[i]
+      (dynamic_cast<ConnGrowth *>(connections)->radii_)[i]
          = (*radiiHistory_)(Simulator::getInstance().getCurrentStep(), i);
-      (*dynamic_cast<ConnGrowth *>(conns)->rates_)[i]
+      (dynamic_cast<ConnGrowth *>(connections)->rates_)[i]
          = (*ratesHistory_)(Simulator::getInstance().getCurrentStep(), i);
    }
 }
@@ -81,11 +70,11 @@ void XmlGrowthRecorder::compileHistories(AllVertices &neurons)
 {
    XmlRecorder::compileHistories(neurons);
 
-   shared_ptr<Connections> conns = Simulator::getInstance().getModel()->getConnections();
+   Connections *connections = Simulator::getInstance().getModel()->getConnections();
 
-   BGFLOAT minRadius = dynamic_cast<ConnGrowth *>(conns.get())->growthParams_.minRadius;
-   VectorMatrix &rates = (*dynamic_cast<ConnGrowth *>(conns.get())->rates_);
-   VectorMatrix &radii = (*dynamic_cast<ConnGrowth *>(conns.get())->radii_);
+   BGFLOAT minRadius = dynamic_cast<ConnGrowth *>(connections)->growthParams_.minRadius;
+   VectorMatrix &rates = (dynamic_cast<ConnGrowth *>(connections)->rates_);
+   VectorMatrix &radii = (dynamic_cast<ConnGrowth *>(connections)->radii_);
 
    for (int iVertex = 0; iVertex < Simulator::getInstance().getTotalVertices(); iVertex++) {
       // record firing rate to history matrix
@@ -131,11 +120,10 @@ void XmlGrowthRecorder::saveSimData(const AllVertices &neurons)
    resultOut_ << "<SimState>\n";
    resultOut_ << "   " << radiiHistory_->toXML("radiiHistory") << endl;
    resultOut_ << "   " << ratesHistory_->toXML("ratesHistory") << endl;
-   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
    resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->xloc_->toXML("xloc")
+   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->xloc_.toXML("xloc")
               << endl;
-   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->yloc_->toXML("yloc")
+   resultOut_ << "   " << Simulator::getInstance().getModel()->getLayout()->yloc_.toXML("yloc")
               << endl;
    resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
@@ -175,8 +163,6 @@ void XmlGrowthRecorder::printParameters()
    LOG4CPLUS_DEBUG(fileLogger_, "\nXMLRECORDER PARAMETERS"
                                    << endl
                                    << "\tResult file path: " << resultFileName_ << endl
-                                   << "\tBurstiness History Size: " << burstinessHist_.Size()
-                                   << endl
                                    << "\tSpikes History Size: " << spikesHistory_.Size() << endl
                                    << "\n---XmlGrowthRecorder Parameters---" << endl
                                    << "\tRecorder type: XmlGrowthRecorder" << endl);
@@ -186,7 +172,8 @@ void XmlGrowthRecorder::printParameters()
 ///
 ///  @param  matrix      Starter Neuron matrix.
 ///  @param  starterMap Bool map to reference neuron matrix location from.
-void XmlGrowthRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const bool *starterMap)
+void XmlGrowthRecorder::getStarterNeuronMatrix(VectorMatrix &matrix,
+                                               const std::vector<bool> &starterMap)
 {
    int cur = 0;
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {

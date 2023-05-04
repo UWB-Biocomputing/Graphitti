@@ -16,7 +16,6 @@
  ** and compile history information on xml file:
  **     -# neuron's locations, and type map,
  **     -# individual neuron's spike rate in epochs,
- **     -# network wide burstiness index data in 1s bins,
  **     -# network wide spike count in 10ms bins,
  **     -# individual neuron's radius history of every epoch.
  **
@@ -39,9 +38,9 @@
 class XmlSTDPRecorder : public XmlRecorder {
 public:
    //! THe constructor and destructor
-   XmlSTDPRecorder();
+   XmlSTDPRecorder() = default;
 
-   ~XmlSTDPRecorder();
+   ~XmlSTDPRecorder() = default;
 
    static IRecorder *Create()
    {

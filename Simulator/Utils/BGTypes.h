@@ -31,25 +31,25 @@
 // #define DOUBLEPRECISION
 // #define BGFLOAT double
 
-typedef BGFLOAT *PBGFLOAT;
+using PBGFLOAT = BGFLOAT *;
 
 // TIMEFLOAT is used by the GPU code and needs to be a double
 #define TIMEFLOAT double
 
 // Platform Specific (are the typdef's redundant?)
 #ifdef __linux__
-typedef unsigned int uint32_t;
-typedef signed int int32_t;
+using uint32_t = unsigned int;
+using int32_t = signed int;
 
 #elif defined __APPLE__
-typedef unsigned int uint32_t;
-typedef signed int int32_t;
+using uint32_t = unsigned int;
+using int32_t = signed int;
 
 #elif defined _WIN32 || defined _WIN64
-typedef unsigned __int32 uint32_t;   // included in inttypes.h, which is not
+using uint32_t = unsigned __int32;   // included in inttypes.h, which is not
                                      // available in WIN32
-typedef signed __int32 int32_t;
-typedef unsigned long long int uint64_t;
+using int32_t = signed __int32;
+using uint64_t = unsigned long long int;
 
 #else
    #error "unknown platform"

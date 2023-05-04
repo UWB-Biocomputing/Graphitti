@@ -12,14 +12,6 @@
 
 AllEdges::AllEdges() : totalEdgeCount_(0), maxEdgesPerVertex_(0), countVertices_(0)
 {
-   destVertexIndex_ = nullptr;
-   W_ = nullptr;
-   summationPoint_ = nullptr;
-   sourceVertexIndex_ = nullptr;
-   type_ = nullptr;
-   inUse_ = nullptr;
-   edgeCounts_ = nullptr;
-
    // Register loadParameters function as a loadParameters operation in the
    // OperationManager. This will register the appropriate overridden method
    // for the actual (sub)class of the object being created.
@@ -41,32 +33,6 @@ AllEdges::AllEdges() : totalEdgeCount_(0), maxEdgesPerVertex_(0), countVertices_
 AllEdges::AllEdges(const int numVertices, const int maxEdges)
 {
    setupEdges(numVertices, maxEdges);
-}
-
-AllEdges::~AllEdges()
-{
-   BGSIZE maxTotalEdges = maxEdgesPerVertex_ * countVertices_;
-
-   if (maxTotalEdges != 0) {
-      delete[] destVertexIndex_;
-      delete[] W_;
-      delete[] summationPoint_;
-      delete[] sourceVertexIndex_;
-      delete[] type_;
-      delete[] inUse_;
-      delete[] edgeCounts_;
-   }
-
-   destVertexIndex_ = nullptr;
-   W_ = nullptr;
-   summationPoint_ = nullptr;
-   sourceVertexIndex_ = nullptr;
-   type_ = nullptr;
-   inUse_ = nullptr;
-   edgeCounts_ = nullptr;
-
-   countVertices_ = 0;
-   maxEdgesPerVertex_ = 0;
 }
 
 /// Load member variables from configuration file.
@@ -109,23 +75,26 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges)
    countVertices_ = numVertices;
 
    if (maxTotalEdges != 0) {
-      destVertexIndex_ = new int[maxTotalEdges];
-      W_ = new BGFLOAT[maxTotalEdges];
-      summationPoint_ = new BGFLOAT *[maxTotalEdges];
-      sourceVertexIndex_ = new int[maxTotalEdges];
-      type_ = new edgeType[maxTotalEdges];
-      inUse_ = new bool[maxTotalEdges];
-      edgeCounts_ = new BGSIZE[numVertices];
+      sourceVertexIndex_.resize(maxTotalEdges);
+      sourceVertexIndex_.assign(maxTotalEdges, 0);
 
-      for (BGSIZE i = 0; i < maxTotalEdges; i++) {
-         summationPoint_[i] = nullptr;
-         inUse_[i] = false;
-         W_[i] = 0;
-      }
+      destVertexIndex_.resize(maxTotalEdges, 0);
+      destVertexIndex_.assign(maxTotalEdges, 0);
 
-      for (int i = 0; i < numVertices; i++) {
-         edgeCounts_[i] = 0;
-      }
+      summationPoint_.resize(maxTotalEdges, nullptr);
+      summationPoint_.assign(maxTotalEdges, nullptr);
+
+      W_.resize(maxTotalEdges, 0);
+      W_.assign(maxTotalEdges, 0);
+
+      type_.resize(maxTotalEdges);
+      type_.assign(maxTotalEdges, ETYPE_UNDEF);
+
+      edgeCounts_.resize(numVertices, 0);
+      edgeCounts_.assign(numVertices, 0);
+
+      inUse_ = make_unique<bool[]>(maxTotalEdges);
+      fill_n(inUse_.get(), maxTotalEdges, false);
    }
 }
 
@@ -196,7 +165,7 @@ edgeType AllEdges::edgeOrdinalToType(const int typeOrdinal)
 }
 
 ///  Create a edge index map.
-void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap)
+void AllEdges::createEdgeIndexMap(EdgeIndexMap &edgeIndexMap)
 {
    Simulator &simulator = Simulator::getInstance();
    int vertexCount = simulator.getTotalVertices();
@@ -222,13 +191,13 @@ void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap)
 
    for (int i = 0; i < vertexCount; i++) {
       BGSIZE edge_count = 0;
-      edgeIndexMap->incomingEdgeBegin_[i] = curr;
+      edgeIndexMap.incomingEdgeBegin_[i] = curr;
       for (int j = 0; j < simulator.getMaxEdgesPerVertex(); j++, edg_i++) {
          if (inUse_[edg_i]) {
             int idx = sourceVertexIndex_[edg_i];
             rgEdgeEdgeIndexMap[idx].push_back(edg_i);
 
-            edgeIndexMap->incomingEdgeIndexMap_[curr] = edg_i;
+            edgeIndexMap.incomingEdgeIndexMap_[curr] = edg_i;
             curr++;
             edge_count++;
          }
@@ -240,7 +209,7 @@ void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap)
          throw runtime_error("createEdgeIndexMap: edge_count does not match edgeCounts_.");
       }
 
-      edgeIndexMap->incomingEdgeCount_[i] = edge_count;
+      edgeIndexMap.incomingEdgeCount_[i] = edge_count;
    }
 
    if (totalEdgeCount != curr) {
@@ -253,11 +222,11 @@ void AllEdges::createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap)
 
    edg_i = 0;
    for (int i = 0; i < vertexCount; i++) {
-      edgeIndexMap->outgoingEdgeBegin_[i] = edg_i;
-      edgeIndexMap->outgoingEdgeCount_[i] = rgEdgeEdgeIndexMap[i].size();
+      edgeIndexMap.outgoingEdgeBegin_[i] = edg_i;
+      edgeIndexMap.outgoingEdgeCount_[i] = rgEdgeEdgeIndexMap[i].size();
 
       for (BGSIZE j = 0; j < rgEdgeEdgeIndexMap[i].size(); j++, edg_i++) {
-         edgeIndexMap->outgoingEdgeIndexMap_[edg_i] = rgEdgeEdgeIndexMap[i][j];
+         edgeIndexMap.outgoingEdgeIndexMap_[edg_i] = rgEdgeEdgeIndexMap[i][j];
       }
    }
 }

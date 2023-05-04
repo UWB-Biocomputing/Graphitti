@@ -7,7 +7,7 @@
  * 
  * Below all of the resources for the various
  * connections are instantiated and initialized.
- * All of the allocation for memory is done in the
+ * All of the allocations for memory are done in the
  * constructor’s parameters and not in the body of
  * the function. Once all memory has been allocated
  * the constructor fills in known information
@@ -18,7 +18,7 @@
 #include "Connections.h"
 #include "AllEdges.h"
 #include "AllVertices.h"
-#include "EdgesFactory.h"
+#include "Factory.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
 
@@ -27,7 +27,7 @@ Connections::Connections()
    // Create Edges/Synapses class using type definition in configuration file
    string type;
    ParameterManager::getInstance().getStringByXpath("//EdgesParams/@class", type);
-   edges_ = EdgesFactory::getInstance().createEdges(type);
+   edges_ = Factory<AllEdges>::getInstance().createType(type);
 
    // Get pointer to operations manager Singleton
    OperationManager &opsManager = OperationManager::getInstance();
@@ -40,7 +40,7 @@ Connections::Connections()
    function<void()> loadParamsFunc = bind(&Connections::loadParameters, this);
    opsManager.registerOperation(Operations::op::loadParameters, loadParamsFunc);
 
-   // Register registerGraphProperties as Operations registerGraphPropoerties
+   // Register registerGraphProperties as Operations registerGraphProperties
    function<void()> regGraphPropsFunc = bind(&Connections::registerGraphProperties, this);
    opsManager.registerOperation(Operations::registerGraphProperties, regGraphPropsFunc);
 
@@ -49,24 +49,20 @@ Connections::Connections()
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
 }
 
-Connections::~Connections()
+AllEdges *Connections::getEdges() const
 {
+   return edges_.get();
 }
 
-shared_ptr<AllEdges> Connections::getEdges() const
+EdgeIndexMap *Connections::getEdgeIndexMap() const
 {
-   return edges_;
-}
-
-shared_ptr<EdgeIndexMap> Connections::getEdgeIndexMap() const
-{
-   return synapseIndexMap_;
+   return synapseIndexMap_.get();
 }
 
 void Connections::registerGraphProperties()
 {
    // TODO: Here we need to register the edge properties that are common
-   // to all models wit the GraphManager. Perhaps none.
+   // to all models with the GraphManager. Perhaps none.
    // This empty Base class implementation is here because Neural model
    // doesn't currently use GraphManager.
 }
@@ -78,17 +74,9 @@ void Connections::createEdgeIndexMap()
    int maxEdges = vertexCount * edges_->maxEdgesPerVertex_;
 
    if (synapseIndexMap_ == nullptr) {
-      synapseIndexMap_ = shared_ptr<EdgeIndexMap>(new EdgeIndexMap(vertexCount, maxEdges));
+      synapseIndexMap_ = make_unique<EdgeIndexMap>(EdgeIndexMap(vertexCount, maxEdges));
    }
-
-   fill_n(synapseIndexMap_->incomingEdgeBegin_, vertexCount, 0);
-   fill_n(synapseIndexMap_->incomingEdgeCount_, vertexCount, 0);
-   fill_n(synapseIndexMap_->incomingEdgeIndexMap_, maxEdges, 0);
-   fill_n(synapseIndexMap_->outgoingEdgeBegin_, vertexCount, 0);
-   fill_n(synapseIndexMap_->outgoingEdgeCount_, vertexCount, 0);
-   fill_n(synapseIndexMap_->outgoingEdgeIndexMap_, maxEdges, 0);
-
-   edges_->createEdgeIndexMap(synapseIndexMap_);
+   edges_->createEdgeIndexMap(*synapseIndexMap_);
 }
 
 ///  Update the connections status in every epoch.
@@ -115,7 +103,6 @@ void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vert
 void Connections::updateSynapsesWeights()
 {
 }
-
 #endif   // !USE_GPU
 
 ///  Creates synapses from synapse weights saved in the serialization file.

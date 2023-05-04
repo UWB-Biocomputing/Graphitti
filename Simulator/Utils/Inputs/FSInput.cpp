@@ -15,16 +15,6 @@
 #endif
 #include <tinyxml.h>
 
-/// constructor
-FSInput::FSInput()
-{
-}
-
-/// destructor
-FSInput::~FSInput()
-{
-}
-
 /// Create an instance of the stimulus input class based on the method
 /// specified in the stimulus input file.
 ///

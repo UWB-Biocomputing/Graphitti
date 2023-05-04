@@ -11,14 +11,6 @@
 #include "GraphManager.h"
 #include "ParameterManager.h"
 
-Layout911::Layout911()
-{
-}
-
-Layout911::~Layout911()
-{
-}
-
 void Layout911::registerGraphProperties()
 {
    // The base class registers properties that are common to all vertices
@@ -77,24 +69,24 @@ void Layout911::setup()
    GraphManager &gm = GraphManager::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
-      (*xloc_)[*vi] = gm[*vi].x;
-      (*yloc_)[*vi] = gm[*vi].y;
+      xloc_[*vi] = gm[*vi].x;
+      yloc_[*vi] = gm[*vi].y;
    }
 
    // Now we cache the between each pair of vertices distances^2 into a matrix
    for (int n = 0; n < numVertices_ - 1; n++) {
       for (int n2 = n + 1; n2 < numVertices_; n2++) {
          // distance^2 between two points in point-slope form
-         (*dist2_)(n, n2) = ((*xloc_)[n] - (*xloc_)[n2]) * ((*xloc_)[n] - (*xloc_)[n2])
-                            + ((*yloc_)[n] - (*yloc_)[n2]) * ((*yloc_)[n] - (*yloc_)[n2]);
+         dist2_(n, n2) = (xloc_[n] - xloc_[n2]) * (xloc_[n] - xloc_[n2])
+                         + (yloc_[n] - yloc_[n2]) * (yloc_[n] - yloc_[n2]);
 
          // both points are equidistant from each other
-         (*dist2_)(n2, n) = (*dist2_)(n, n2);
+         dist2_(n2, n) = dist2_(n, n2);
       }
    }
 
    // Finally take the square root to get the distances
-   (*dist_) = sqrt((*dist2_));
+   dist_ = sqrt(dist2_);
 }
 
 void Layout911::printParameters() const

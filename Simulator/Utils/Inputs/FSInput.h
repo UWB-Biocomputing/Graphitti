@@ -26,8 +26,9 @@
 class FSInput {
 public:
    //! The constructor for FSInput.
-   FSInput();
-   ~FSInput();
+   FSInput() = default;
+
+   ~FSInput() = default;
 
    static FSInput *get()
    {

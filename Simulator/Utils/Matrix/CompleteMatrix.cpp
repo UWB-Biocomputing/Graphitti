@@ -33,7 +33,7 @@
 /// @param m multiplier used for initialization (defaults to zero)
 /// @param v values for initializing CompleteMatrix (this string is parsed as a list of floating point numbers)
 CompleteMatrix::CompleteMatrix(string t, string i, int r, int c, BGFLOAT m, string values) :
-   Matrix(t, i, r, c, m), theMatrix(nullptr)
+   Matrix(t, i, r, c, m)
 {
    DEBUG_MATRIX(cerr << "Creating CompleteMatrix, size: ";)
 
@@ -69,7 +69,6 @@ CompleteMatrix::CompleteMatrix(string t, string i, int r, int c, BGFLOAT m, stri
             }
          }
       } else {
-         clear();
          throw Matrix_invalid_argument("Illegal type for CompleteMatrix with 'none' init: " + type);
       }
    } else if (init == "const") {
@@ -83,12 +82,9 @@ CompleteMatrix::CompleteMatrix(string t, string i, int r, int c, BGFLOAT m, stri
          }
       } else if (type == "complete") {   // complete matrix with constant values
          for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-               theMatrix[i][j] = multiplier;
-            }
+            theMatrix[i].assign(columns, multiplier);
          }
       } else {
-         clear();
          throw Matrix_invalid_argument("Illegal type for CompleteMatrix with 'none' init: " + type);
       }
    }
@@ -98,7 +94,7 @@ CompleteMatrix::CompleteMatrix(string t, string i, int r, int c, BGFLOAT m, stri
 
 
 // "Copy Constructor"
-CompleteMatrix::CompleteMatrix(const CompleteMatrix &oldM) : theMatrix(nullptr)
+CompleteMatrix::CompleteMatrix(const CompleteMatrix &oldM)
 {
    DEBUG_MATRIX(cerr << "CompleteMatrix copy constructor:" << endl;)
    copy(oldM);
@@ -108,7 +104,6 @@ CompleteMatrix::CompleteMatrix(const CompleteMatrix &oldM) : theMatrix(nullptr)
 CompleteMatrix::~CompleteMatrix()
 {
    DEBUG_MATRIX(cerr << "Destroying CompleteMatrix" << endl;)
-   clear();
 }
 
 
@@ -127,20 +122,11 @@ CompleteMatrix &CompleteMatrix::operator=(const CompleteMatrix &rhs)
    return *this;
 }
 
-// Clear out storage
+// // Clear out storage
 void CompleteMatrix::clear(void)
 {
    DEBUG_MATRIX(cerr << "\tclearing " << rows << "X" << columns << " CompleteMatrix...";)
-
-   if (theMatrix != nullptr) {
-      for (int i = 0; i < rows; i++)
-         if (theMatrix[i] != nullptr) {
-            delete[] theMatrix[i];
-            theMatrix[i] = nullptr;
-         }
-      delete[] theMatrix;
-      theMatrix = nullptr;
-   }
+   theMatrix.clear();
    DEBUG_MATRIX(cerr << "done." << endl;)
 }
 
@@ -173,15 +159,12 @@ void CompleteMatrix::copy(const CompleteMatrix &source)
 /// Please refer to LIFModel::Connections()
 void CompleteMatrix::alloc(int rows, int columns)
 {
-   if (theMatrix != nullptr)
+   if (!theMatrix.empty())
       throw MatrixException("Attempt to allocate storage for non-cleared Matrix");
 
-   if ((theMatrix = new BGFLOAT *[rows]) == nullptr)
-      throw Matrix_bad_alloc("Failed allocating storage to copy Matrix.");
-
+   theMatrix.resize(rows);
    for (int i = 0; i < rows; i++)
-      if ((theMatrix[i] = new BGFLOAT[columns]) == nullptr)
-         throw Matrix_bad_alloc("Failed allocating storage to copy Matrix.");
+      theMatrix[i].resize(columns);
    DEBUG_MATRIX(cerr << "\tStorage allocated for " << rows << "X" << columns << " Matrix." << endl;)
 }
 

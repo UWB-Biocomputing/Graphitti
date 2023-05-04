@@ -26,9 +26,9 @@
 // Class to hold all data necessary for all the Vertices.
 class All911Vertices : public AllVertices {
 public:
-   All911Vertices();
+   All911Vertices() = default;
 
-   virtual ~All911Vertices();
+   virtual ~All911Vertices() = default;
 
    ///  Creates an instance of the class.
    ///
@@ -106,19 +106,19 @@ private:
    //       they are for and if they are being used anywhere.
 
    /// number of callers
-   int *callNum_;
+   vector<int> callNum_;
 
    /// Min/max values of CallNum.
    int callNumRange_[2];
 
    /// Number of dispatchers per PSAP calculated (with randomness) based on population
-   int *dispNum_;
+   vector<int> dispNum_;
 
    /// Scaling factor for number of dispatchers in a PSAP
    BGFLOAT dispNumScale_;
 
    /// Number of responders per Responder node calculated (with randomness) based on population
-   int *respNum_;
+   vector<int> respNum_;
 
    /// Scaling factor for number of responders in a Responder node
    BGFLOAT respNumScale_;
@@ -132,7 +132,7 @@ public:
    virtual void copyToDevice(void *allVerticesDevice) {};
    virtual void copyFromDevice(void *allVerticesDevice) {};
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
-                                float *randNoise, EdgeIndexMap *edgeIndexMapDevice) {};
+                                float *randNoise, EdgeIndexMapDevice *edgeIndexMapDevice) {};
    virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};
 #else   // !defined(USE_GPU)
 public:

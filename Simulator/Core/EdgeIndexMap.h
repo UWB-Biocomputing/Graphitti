@@ -22,10 +22,70 @@
 #pragma once
 
 #include "BGTypes.h"
+#include <vector>
 
 using namespace std;
 
 struct EdgeIndexMap {
+   /// Pointer to the outgoing edge index map.
+   vector<BGSIZE> outgoingEdgeIndexMap_;
+
+   /// The beginning index of the outgoing edge for each vertex.
+   /// Indexed by a source vertex index.
+   vector<BGSIZE> outgoingEdgeBegin_;
+
+   /// The number of outgoing edges of each vertex.
+   /// Indexed by a source vertex index.
+   vector<BGSIZE> outgoingEdgeCount_;
+
+   /// Pointer to the incoming edge index map.
+   vector<BGSIZE> incomingEdgeIndexMap_;
+
+   /// The beginning index of the incoming edge for each vertex.
+   /// Indexed by a destination vertex index.
+   vector<BGSIZE> incomingEdgeBegin_;
+
+   /// The number of incoming edges for each vertex.
+   vector<BGSIZE> incomingEdgeCount_;
+
+   EdgeIndexMap() : numOfVertices_(0), numOfEdges_(0) {};
+
+   EdgeIndexMap(int vertexCount, int edgeCount) :
+      numOfVertices_(vertexCount), numOfEdges_(edgeCount)
+   {
+      if (numOfVertices_ > 0) {
+         outgoingEdgeBegin_.resize(numOfVertices_);
+         outgoingEdgeCount_.resize(numOfVertices_);
+         incomingEdgeBegin_.resize(numOfVertices_);
+         incomingEdgeCount_.resize(numOfVertices_);
+
+         outgoingEdgeBegin_.assign(numOfVertices_, 0);
+         outgoingEdgeCount_.assign(numOfVertices_, 0);
+         incomingEdgeBegin_.assign(numOfVertices_, 0);
+         incomingEdgeCount_.assign(numOfVertices_, 0);
+      }
+
+      if (numOfEdges_ > 0) {
+         outgoingEdgeIndexMap_.resize(numOfEdges_);
+         incomingEdgeIndexMap_.resize(numOfEdges_);
+
+         outgoingEdgeIndexMap_.assign(numOfEdges_, 0);
+         incomingEdgeIndexMap_.assign(numOfEdges_, 0);
+      }
+   };
+
+   ~EdgeIndexMap() = default;
+
+private:
+   /// Number of total vertices.
+   BGSIZE numOfVertices_;
+
+   /// Number of total edges.
+   BGSIZE numOfEdges_;
+};
+
+#if defined(USE_GPU)
+struct EdgeIndexMapDevice {
    /// Pointer to the outgoing edge index map.
    BGSIZE *outgoingEdgeIndexMap_;
 
@@ -47,52 +107,5 @@ struct EdgeIndexMap {
    /// The number of incoming edges for each vertex.
    /// Indexed by a destination vertex index.
    BGSIZE *incomingEdgeCount_;
-
-   EdgeIndexMap() : numOfVertices_(0), numOfEdges_(0)
-   {
-      outgoingEdgeBegin_ = nullptr;
-      outgoingEdgeCount_ = nullptr;
-      incomingEdgeBegin_ = nullptr;
-      incomingEdgeCount_ = nullptr;
-
-      outgoingEdgeIndexMap_ = nullptr;
-      incomingEdgeIndexMap_ = nullptr;
-   };
-
-   EdgeIndexMap(int vertexCount, int edgeCount) :
-      numOfVertices_(vertexCount), numOfEdges_(edgeCount)
-   {
-      if (numOfVertices_ > 0) {
-         outgoingEdgeBegin_ = new BGSIZE[numOfVertices_];
-         outgoingEdgeCount_ = new BGSIZE[numOfVertices_];
-         incomingEdgeBegin_ = new BGSIZE[numOfVertices_];
-         incomingEdgeCount_ = new BGSIZE[numOfVertices_];
-      }
-
-      if (numOfEdges_ > 0) {
-         outgoingEdgeIndexMap_ = new BGSIZE[numOfEdges_];
-         incomingEdgeIndexMap_ = new BGSIZE[numOfEdges_];
-      }
-   };
-
-   ~EdgeIndexMap()
-   {
-      if (numOfVertices_ > 0) {
-         delete[] outgoingEdgeBegin_;
-         delete[] outgoingEdgeCount_;
-         delete[] incomingEdgeBegin_;
-         delete[] incomingEdgeCount_;
-      }
-      if (numOfEdges_ > 0) {
-         delete[] outgoingEdgeIndexMap_;
-         delete[] incomingEdgeIndexMap_;
-      }
-   }
-
-private:
-   /// Number of total vertices.
-   BGSIZE numOfVertices_;
-
-   /// Number of total edges.
-   BGSIZE numOfEdges_;
 };
+#endif   // defined(USE_GPU)

@@ -40,22 +40,6 @@
 ******************************************/
 ///@{
 
-/// Private Class constructor
-/// Initialize any heap variables to null
-ParameterManager::ParameterManager()
-{
-   xmlDocument_ = nullptr;
-   root_ = nullptr;
-}
-
-/// Class destructor
-/// Deallocate all heap memory managed by the class
-ParameterManager::~ParameterManager()
-{
-   if (xmlDocument_ != nullptr)
-      delete xmlDocument_;
-}
-
 /// Get Instance method that returns a reference to this object.
 ParameterManager &ParameterManager::getInstance()
 {
@@ -69,9 +53,7 @@ ParameterManager &ParameterManager::getInstance()
 bool ParameterManager::loadParameterFile(string path)
 {
    // load the XML document
-   if (xmlDocument_)
-      delete xmlDocument_;
-   xmlDocument_ = new TiXmlDocument(path.c_str());
+   xmlDocument_.reset(new TiXmlDocument(path.c_str()));
    if (!xmlDocument_->LoadFile()) {
       cerr << "Failed loading simulation parameter file " << path << ":"
            << "\n\t" << xmlDocument_->ErrorDesc() << endl;
