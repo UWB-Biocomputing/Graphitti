@@ -42,8 +42,8 @@ SInputPoisson::SInputPoisson(TiXmlElement *parms) :
    lambda = 1 / fr_mean;       // inverse firing rate
 
    // allocate memory for interval counter
-   nISIs.resize(Simulator::getInstance().getTotalVertices());
-   memset(nISIs.data(), 0, sizeof(int) * Simulator::getInstance().getTotalVertices());
+
+   nISIs.assign(Simulator::getInstance().getTotalVertices(), 0);
 
    // allocate memory for input masks
    masks = make_unique<bool[]>(Simulator::getInstance().getTotalVertices());

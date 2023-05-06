@@ -69,11 +69,8 @@ void Layout::setup()
    dist_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
 
    // more allocation of internal memory
-   vertexTypeMap_.resize(numVertices_);
-   vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
-
-   starterMap_.resize(numVertices_);
    starterMap_.assign(numVertices_, false);
+   vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
 }
 
 
