@@ -61,7 +61,7 @@ void Model::createAllVertices()
    layout_->initStarterMap(Simulator::getInstance().getTotalVertices());
 
    // set their specific types
-   layout_->getVertices().createAllVertices(layout_.get());
+   layout_->getVertices().createAllVertices(*layout_);
 }
 
 /// Sets up the Simulation.

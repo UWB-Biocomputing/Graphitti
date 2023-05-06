@@ -54,9 +54,9 @@ AllEdges &Connections::getEdges() const
    return *edges_;
 }
 
-EdgeIndexMap *Connections::getEdgeIndexMap() const
+EdgeIndexMap &Connections::getEdgeIndexMap() const
 {
-   return synapseIndexMap_.get();
+   return *synapseIndexMap_;
 }
 
 void Connections::registerGraphProperties()

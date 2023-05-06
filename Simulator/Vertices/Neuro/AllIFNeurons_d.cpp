@@ -224,6 +224,6 @@ void AllIFNeurons::clearNeuronSpikeCounts(void *allVerticesDevice)
 ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
 void AllIFNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
                                    void *allEdgesDevice, float *randNoise,
-                                   EdgeIndexMapDevice *edgeIndexMapDevice)
+                                   EdgeIndexMapDevice &edgeIndexMapDevice)
 {
 }

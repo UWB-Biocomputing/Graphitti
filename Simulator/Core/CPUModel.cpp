@@ -25,8 +25,7 @@ void CPUModel::advance()
    // dereferencing the ptr, lose late binding -- look into changing!
    layout_->getVertices().advanceVertices(connections_->getEdges(),
                                           connections_->getEdgeIndexMap());
-   connections_->getEdges().advanceEdges(&(layout_->getVertices()),
-                                         connections_->getEdgeIndexMap());
+   connections_->getEdges().advanceEdges(layout_->getVertices(), connections_->getEdgeIndexMap());
 }
 
 /// Update the connection of all the Neurons and Synapses of the simulation.

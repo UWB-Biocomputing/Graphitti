@@ -80,7 +80,7 @@ bool Serializer::deserializeSynapses()
 
 #if defined(USE_GPU)
    GPUModel &gpuModel = static_cast<GPUModel &>(simulator.getModel());
-   gpuModel.copySynapseIndexMapHostToDevice(*(connections.getEdgeIndexMap()),
+   gpuModel.copySynapseIndexMapHostToDevice(connections.getEdgeIndexMap(),
                                             simulator.getTotalVertices());
 #endif   // USE_GPU
 

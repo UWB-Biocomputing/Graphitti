@@ -99,7 +99,7 @@ void AllIFNeurons::printParameters() const
 ///  Creates all the Neurons and generates data for them.
 ///
 ///  @param  layout      Layout information of the neural network.
-void AllIFNeurons::createAllVertices(Layout *layout)
+void AllIFNeurons::createAllVertices(Layout &layout)
 {
    /* set their specific types */
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
@@ -114,7 +114,7 @@ void AllIFNeurons::createAllVertices(Layout *layout)
 ///
 ///  @param  i Index of the neuron to create.
 ///  @param  layout       Layout information of the neural network.
-void AllIFNeurons::createNeuron(int i, Layout *layout)
+void AllIFNeurons::createNeuron(int i, Layout &layout)
 {
    // set the neuron info for neurons
    Iinject_[i] = initRNG.inRange(IinjectRange_[0], IinjectRange_[1]);
@@ -127,7 +127,7 @@ void AllIFNeurons::createNeuron(int i, Layout *layout)
 
    initNeuronConstsFromParamValues(i, Simulator::getInstance().getDeltaT());
 
-   switch (layout->vertexTypeMap_[i]) {
+   switch (layout.vertexTypeMap_[i]) {
       case INH:
          LOG4CPLUS_DEBUG(vertexLogger_, "Setting inhibitory neuron: " << i);
          // set inhibitory absolute refractory period
@@ -142,12 +142,12 @@ void AllIFNeurons::createNeuron(int i, Layout *layout)
 
       default:
          LOG4CPLUS_DEBUG(vertexLogger_,
-                         "ERROR: unknown neuron type: " << layout->vertexTypeMap_[i] << "@" << i);
+                         "ERROR: unknown neuron type: " << layout.vertexTypeMap_[i] << "@" << i);
          assert(false);
          break;
    }
    // endogenously_active_neuron_map -> Model State
-   if (layout->starterMap_[i]) {
+   if (layout.starterMap_[i]) {
       // set endogenously active threshold voltage, reset voltage, and refractory period
       Vthresh_[i] = initRNG.inRange(starterVthreshRange_[0], starterVthreshRange_[1]);
       Vreset_[i] = initRNG.inRange(starterVresetRange_[0], starterVresetRange_[1]);

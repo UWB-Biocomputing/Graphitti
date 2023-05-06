@@ -29,7 +29,7 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
                                         float *randNoise,
                                         AllIFNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        EdgeIndexMapDevice *edgeIndexMapDevice,
+                                        EdgeIndexMapDevice &edgeIndexMapDevice,
                                         bool fAllowBackPropagation);
 
 
@@ -45,7 +45,7 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
 ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
 void AllLIFNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
                                     void *allEdgesDevice, float *randNoise,
-                                    EdgeIndexMapDevice *edgeIndexMapDevice)
+                                    EdgeIndexMapDevice &edgeIndexMapDevice)
 {
    int vertex_count = Simulator::getInstance().getTotalVertices();
    int maxSpikes = (int)((Simulator::getInstance().getEpochDuration()
@@ -88,7 +88,7 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
                                         float *randNoise,
                                         AllIFNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        EdgeIndexMapDevice *edgeIndexMapDevice,
+                                        EdgeIndexMapDevice &edgeIndexMapDevice,
                                         bool fAllowBackPropagation)
 {
    // determine which neuron this thread is processing
@@ -132,12 +132,12 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
       vm = allVerticesDevice->Vreset_[idx];
 
       // notify outgoing synapses of spike
-      BGSIZE synapseCounts = edgeIndexMapDevice->outgoingEdgeCount_[idx];
+      BGSIZE synapseCounts = edgeIndexMapDevice.outgoingEdgeCount_[idx];
       if (synapseCounts != 0) {
          // get the index of where this neuron's list of synapses are
-         BGSIZE beginIndex = edgeIndexMapDevice->outgoingEdgeBegin_[idx];
+         BGSIZE beginIndex = edgeIndexMapDevice.outgoingEdgeBegin_[idx];
          // get the memory location of where that list begins
-         BGSIZE *outgoingMapBegin = &(edgeIndexMapDevice->outgoingEdgeIndexMap_[beginIndex]);
+         BGSIZE *outgoingMapBegin = &(edgeIndexMapDevice.outgoingEdgeIndexMap_[beginIndex]);
 
          // for each synapse, let them know we have fired
          for (BGSIZE i = 0; i < synapseCounts; i++) {
@@ -146,12 +146,12 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
       }
 
       // notify incomming synapses of spike
-      synapseCounts = edgeIndexMapDevice->incomingEdgeCount_[idx];
+      synapseCounts = edgeIndexMapDevice.incomingEdgeCount_[idx];
       if (fAllowBackPropagation && synapseCounts != 0) {
          // get the index of where this neuron's list of synapses are
-         BGSIZE beginIndex = edgeIndexMapDevice->incomingEdgeBegin_[idx];
+         BGSIZE beginIndex = edgeIndexMapDevice.incomingEdgeBegin_[idx];
          // get the memory location of where that list begins
-         BGSIZE *incomingMapBegin = &(edgeIndexMapDevice->incomingEdgeIndexMap_[beginIndex]);
+         BGSIZE *incomingMapBegin = &(edgeIndexMapDevice.incomingEdgeIndexMap_[beginIndex]);
 
          // for each synapse, let them know we have fired
          switch (classSynapses_d) {

@@ -42,11 +42,11 @@ public:
    ///  Destructor
    virtual ~Connections() = default;
 
-   /// Returns pointer to Synapses/Edges
+   /// Returns reference to Synapses/Edges
    AllEdges &getEdges() const;
 
-   /// Returns a pointer to the EdgeIndexMap
-   EdgeIndexMap *getEdgeIndexMap() const;
+   /// Returns a reference to the EdgeIndexMap
+   EdgeIndexMap &getEdgeIndexMap() const;
 
    /// Calls Synapses to create EdgeIndexMap and stores it as a member variable
    void createEdgeIndexMap();

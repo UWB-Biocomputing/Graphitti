@@ -107,7 +107,7 @@ void GPUModel::setupSim()
    allocDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
 
    // copy inverse map to the device memory
-   copySynapseIndexMapHostToDevice(*(connections_->getEdgeIndexMap()),
+   copySynapseIndexMapHostToDevice(connections_->getEdgeIndexMap(),
                                    Simulator::getInstance().getTotalVertices());
 
    // set some parameters used for advanceVerticesDevice
@@ -155,7 +155,7 @@ void GPUModel::advance()
    // Advance neurons ------------->
    dynamic_cast<AllSpikingNeurons &>(neurons).advanceVertices(connections_->getEdges(),
                                                               allVerticesDevice_, allEdgesDevice_,
-                                                              randNoise_d, synapseIndexMapDevice_);
+                                                              randNoise_d, *synapseIndexMapDevice_);
 
 #ifdef PERFORMANCE_METRICS
    cudaLapTime(t_gpu_advanceNeurons);
@@ -210,7 +210,7 @@ void GPUModel::updateConnections()
       // create synapse index map
       connections_->createEdgeIndexMap();
       // copy index map to the device memory
-      copySynapseIndexMapHostToDevice(*(connections_->getEdgeIndexMap()),
+      copySynapseIndexMapHostToDevice(connections_->getEdgeIndexMap(),
                                       Simulator::getInstance().getTotalVertices());
    }
 }

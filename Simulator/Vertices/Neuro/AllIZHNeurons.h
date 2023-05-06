@@ -99,7 +99,7 @@ public:
    ///  Creates all the Neurons and assigns initial data for them.
    ///
    ///  @param  layout      Layout information of the neural network.
-   virtual void createAllVertices(Layout *layout) override;
+   virtual void createAllVertices(Layout &layout) override;
 
    ///  Outputs state of the neuron chosen as a string.
    ///
@@ -128,7 +128,7 @@ public:
    ///  @param  randNoise              Reference to the random noise array.
    ///  @param  edgeIndexMapDevice  Reference to the EdgeIndexMap on device memory.
    virtual void advanceVertices(AllEdges &synapses, void *allVerticesDevice, void *allEdgesDevice,
-                                float *randNoise, EdgeIndexMapDevice *edgeIndexMapDevice) override;
+                                float *randNoise, EdgeIndexMapDevice &edgeIndexMapDevice) override;
 
    ///  Allocate GPU memories to store all neurons' states,
    ///  and copy them from host to GPU memory.
@@ -212,7 +212,7 @@ protected:
    ///
    ///  @param  neuronIndex Index of the neuron to create.
    ///  @param  layout       Layout information of the neural network.
-   void createNeuron(int neuronIndex, Layout *layout);
+   void createNeuron(int neuronIndex, Layout &layout);
 
    ///  Set the Neuron at the indexed location to default values.
    ///

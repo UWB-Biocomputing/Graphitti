@@ -186,7 +186,7 @@ void Hdf5Recorder::initDataSet()
       spikesProbedNeurons_.resize(model.getLayout().probedNeuronList_.size());
 
       // allocate and initialize memory to save offsets of what's been written
-      offsetSpikesProbedNeurons_.assign(model.getLayout()->probedNeuronList_.size(), 0);
+      offsetSpikesProbedNeurons_.assign(model.getLayout().probedNeuronList_.size(), 0);
    }
 }
 

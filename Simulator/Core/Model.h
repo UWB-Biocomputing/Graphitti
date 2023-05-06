@@ -37,10 +37,13 @@ public:
    /// Destructor
    virtual ~Model() = default;
 
+   /// Returns reference to Connections
    Connections &getConnections() const;
 
+   /// Returns reference to Layout
    Layout &getLayout() const;
 
+   /// Returns reference to Recorder
    IRecorder &getRecorder() const;
 
    /// Writes simulation results to an output destination.

@@ -42,7 +42,7 @@ public:
    ///  Creates all the Vertices and assigns initial data for them.
    ///
    ///  @param  layout      Layout information of the network.
-   virtual void createAllVertices(Layout *layout);
+   virtual void createAllVertices(Layout &layout);
 
    ///  Load member variables from configuration file.
    ///  Registered to OperationManager as Operation::loadParameters
@@ -86,7 +86,7 @@ public:
    virtual void copyToDevice(void *allVerticesDevice) {};
    virtual void copyFromDevice(void *allVerticesDevice) {};
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
-                                float *randNoise, EdgeIndexMapDevice *edgeIndexMapDevice) {};
+                                float *randNoise, EdgeIndexMapDevice &edgeIndexMapDevice) {};
    virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};
 #else   // !defined(USE_GPU)
 public:
@@ -95,7 +95,7 @@ public:
    ///
    ///  @param  edges         The Edge list to search from.
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-   virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap) override;
+   virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIndexMap) override;
 
 protected:
    void advanceVertex(const int index);
