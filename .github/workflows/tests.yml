@@ -8,18 +8,29 @@ on:
 
 defaults: 
   run:
-    working-directory: build
+    working-directory: /app
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    container:
+	image:shinjiku/graphitti_env:latest
 
     steps:
+    - name: Cache dock container
+	uses: actions/cache@v3
+	with:
+	  path: ~/app
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+    - name: Checkout code
     - uses: actions/checkout@v2
-    # install Boost Graph Library
-    - name: bgl
-      run: sudo apt-get update && sudo apt-get install -yq libboost-graph-dev
+      with:
+	  path:/app
     # configure and build the Simualtor
     - name: configure
       run: cmake ..
