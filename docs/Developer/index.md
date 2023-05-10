@@ -6,10 +6,6 @@ Writing new code? Then make sure to follow our [contributing guide](../../CONTRI
 
 Reading code that isn't obvious? When you figure out how it works, then *document it here* and *document it in comments in the code.*
 
-## Student Quick Start
-
-Students, use this [Quickstart guide](StudentSetup.md) to help setup, use, and develop with Graphitti.
-
 ## Coding Conventions
 
 Please adhere to our [coding conventions](codingConventions.md). Your pull requests will not be approved if you don't.
