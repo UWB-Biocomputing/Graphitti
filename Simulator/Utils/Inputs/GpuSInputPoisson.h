@@ -13,12 +13,9 @@
 
 #pragma once
 
-#ifndef _GPUSINPUTPOISSON_H_
-   #define _GPUSINPUTPOISSON_H_
-
-   #include "AllSynapsesDeviceFuncs.h"
-   #include "GPUModel.h"
-   #include "SInputPoisson.h"
+#include "AllSynapsesDeviceFuncs.h"
+#include "GPUModel.h"
+#include "SInputPoisson.h"
 
 class GpuSInputPoisson : public SInputPoisson {
 public:
@@ -56,7 +53,7 @@ private:
    bool *deviceMasks_;
 };
 
-   #if defined(__CUDACC__)
+#if defined(__CUDACC__)
 //! Device function that processes input stimulus for each time step.
 extern __global__ void inputStimulusDevice(int n, int *deviceInteralCounter_, bool *deviceMasks_,
                                            BGFLOAT deltaT, BGFLOAT lambda, curandState *devStates_d,
@@ -64,6 +61,4 @@ extern __global__ void inputStimulusDevice(int n, int *deviceInteralCounter_, bo
 extern __global__ void applyI2SummationMap(int n, BGFLOAT *summationPoint_d,
                                            AllDSSynapsesDeviceProperties *allEdgesDevice);
 extern __global__ void setupSeeds(int n, curandState *devStates_d, unsigned long seed);
-   #endif
-
-#endif   // _GPUSINPUTPOISSON_H_
+#endif
