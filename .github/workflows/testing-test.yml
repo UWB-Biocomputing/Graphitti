@@ -1,0 +1,39 @@
+name: Unit and Regression Tests
+
+on:
+  push:
+    branches: [ master, Workflow ]
+  pull_request:
+    branches: [ master, Workflow ]
+
+defaults: 
+  run:
+    working-directory: build
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Restore Boost Library cache
+      id: boost-cache
+      uses: actions/cache@v3
+      with:
+        path: /usr/include/boost
+        key: ${{ runner.os }}-boost
+    # install Boost Graph Library
+    - name: bgl
+      if: steps.boost-cache.outputs.cache-hit != 'true'
+      run: sudo apt-get update && sudo apt-get install -yq libboost-graph-dev
+    # configure and build the Simualtor
+    - name: configure
+      run: cmake ..
+    - id: build
+      name: build
+      run: make
+    - name: run unit tests
+      run: ./tests   
+    - name: output the dir
+      run: ls
+
