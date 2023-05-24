@@ -2,9 +2,9 @@ name: Unit and Regression Tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, Workflow ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, Workflow ]
 
 defaults: 
   run:
@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Restore Boost Library cache
       id: boost-cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: /usr/include/boost
         key: ${{ runner.os }}-boost
