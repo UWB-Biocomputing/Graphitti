@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="823px" preserveAspectRatio="none" style="width:2848px;height:823px;" version="1.1" viewBox="0 0 2848 823" width="2848px" zoomAndPan="magnify"><defs><filter height="300%" id="ffa976bazfvnb" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[935a686a552498c9fe3db149d943753f]
+class AllDSSynapses--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllDSSynapses" style="stroke: #A80036; stroke-width: 1.5;" width="123" x="6" y="656"/><ellipse cx="21" cy="672" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M23.9688,677.6406 Q23.3906,677.9375 22.75,678.0781 Q22.1094,678.2344 21.4063,678.2344 Q18.9063,678.2344 17.5781,676.5938 Q16.2656,674.9375 16.2656,671.8125 Q16.2656,668.6875 17.5781,667.0313 Q18.9063,665.375 21.4063,665.375 Q22.1094,665.375 22.75,665.5313 Q23.4063,665.6875 23.9688,665.9844 L23.9688,668.7031 Q23.3438,668.125 22.75,667.8594 Q22.1563,667.5781 21.5313,667.5781 Q20.1875,667.5781 19.5,668.6563 Q18.8125,669.7188 18.8125,671.8125 Q18.8125,673.9063 19.5,674.9844 Q20.1875,676.0469 21.5313,676.0469 Q22.1563,676.0469 22.75,675.7813 Q23.3438,675.5 23.9688,674.9219 L23.9688,677.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="91" x="35" y="676.1543">AllDSSynapses</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="7" x2="128" y1="688" y2="688"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="7" x2="128" y1="696" y2="696"/><!--MD5=[09c0093d34d85daed484b6b6f446313a]
+class AllDynamicSTDPSynapses--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllDynamicSTDPSynapses" style="stroke: #A80036; stroke-width: 1.5;" width="190" x="138.5" y="764"/><ellipse cx="153.5" cy="780" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M156.4688,785.6406 Q155.8906,785.9375 155.25,786.0781 Q154.6094,786.2344 153.9063,786.2344 Q151.4063,786.2344 150.0781,784.5938 Q148.7656,782.9375 148.7656,779.8125 Q148.7656,776.6875 150.0781,775.0313 Q151.4063,773.375 153.9063,773.375 Q154.6094,773.375 155.25,773.5313 Q155.9063,773.6875 156.4688,773.9844 L156.4688,776.7031 Q155.8438,776.125 155.25,775.8594 Q154.6563,775.5781 154.0313,775.5781 Q152.6875,775.5781 152,776.6563 Q151.3125,777.7188 151.3125,779.8125 Q151.3125,781.9063 152,782.9844 Q152.6875,784.0469 154.0313,784.0469 Q154.6563,784.0469 155.25,783.7813 Q155.8438,783.5 156.4688,782.9219 L156.4688,785.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="158" x="167.5" y="784.1543">AllDynamicSTDPSynapses</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="139.5" x2="327.5" y1="796" y2="796"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="139.5" x2="327.5" y1="804" y2="804"/><!--MD5=[06f12ec46b87224fd0e1c514fed4a6e4]
+class AllEdges--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllEdges" style="stroke: #A80036; stroke-width: 1.5;" width="84" x="168.5" y="332"/><ellipse cx="183.5" cy="348" fill="#A9DCDF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M183.6094,343.3438 L182.4531,348.4219 L184.7813,348.4219 L183.6094,343.3438 Z M182.125,341.1094 L185.1094,341.1094 L188.4688,353.5 L186.0156,353.5 L185.25,350.4375 L181.9688,350.4375 L181.2188,353.5 L178.7813,353.5 L182.125,341.1094 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="52" x="197.5" y="352.1543">AllEdges</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="169.5" x2="251.5" y1="364" y2="364"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="169.5" x2="251.5" y1="372" y2="372"/><!--MD5=[cf80cca85261d84eda43dbc026d5d8d1]
+class AllIFNeurons--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllIFNeurons" style="stroke: #A80036; stroke-width: 1.5;" width="109" x="2170" y="548"/><ellipse cx="2185" cy="564" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2187.9688,569.6406 Q2187.3906,569.9375 2186.75,570.0781 Q2186.1094,570.2344 2185.4063,570.2344 Q2182.9063,570.2344 2181.5781,568.5938 Q2180.2656,566.9375 2180.2656,563.8125 Q2180.2656,560.6875 2181.5781,559.0313 Q2182.9063,557.375 2185.4063,557.375 Q2186.1094,557.375 2186.75,557.5313 Q2187.4063,557.6875 2187.9688,557.9844 L2187.9688,560.7031 Q2187.3438,560.125 2186.75,559.8594 Q2186.1563,559.5781 2185.5313,559.5781 Q2184.1875,559.5781 2183.5,560.6563 Q2182.8125,561.7188 2182.8125,563.8125 Q2182.8125,565.9063 2183.5,566.9844 Q2184.1875,568.0469 2185.5313,568.0469 Q2186.1563,568.0469 2186.75,567.7813 Q2187.3438,567.5 2187.9688,566.9219 L2187.9688,569.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="77" x="2199" y="568.1543">AllIFNeurons</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2171" x2="2278" y1="580" y2="580"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2171" x2="2278" y1="588" y2="588"/><!--MD5=[a4e35ff6c4fc9c7a26a0ff69acb0e23b]
+class AllIZHNeurons--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllIZHNeurons" style="stroke: #A80036; stroke-width: 1.5;" width="120" x="2087.5" y="656"/><ellipse cx="2102.5" cy="672" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2105.4688,677.6406 Q2104.8906,677.9375 2104.25,678.0781 Q2103.6094,678.2344 2102.9063,678.2344 Q2100.4063,678.2344 2099.0781,676.5938 Q2097.7656,674.9375 2097.7656,671.8125 Q2097.7656,668.6875 2099.0781,667.0313 Q2100.4063,665.375 2102.9063,665.375 Q2103.6094,665.375 2104.25,665.5313 Q2104.9063,665.6875 2105.4688,665.9844 L2105.4688,668.7031 Q2104.8438,668.125 2104.25,667.8594 Q2103.6563,667.5781 2103.0313,667.5781 Q2101.6875,667.5781 2101,668.6563 Q2100.3125,669.7188 2100.3125,671.8125 Q2100.3125,673.9063 2101,674.9844 Q2101.6875,676.0469 2103.0313,676.0469 Q2103.6563,676.0469 2104.25,675.7813 Q2104.8438,675.5 2105.4688,674.9219 L2105.4688,677.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="88" x="2116.5" y="676.1543">AllIZHNeurons</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2088.5" x2="2206.5" y1="688" y2="688"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2088.5" x2="2206.5" y1="696" y2="696"/><!--MD5=[17306769ffb707adf94de37859054409]
+class AllLIFNeurons--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllLIFNeurons" style="stroke: #A80036; stroke-width: 1.5;" width="115" x="2243" y="656"/><ellipse cx="2258" cy="672" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2260.9688,677.6406 Q2260.3906,677.9375 2259.75,678.0781 Q2259.1094,678.2344 2258.4063,678.2344 Q2255.9063,678.2344 2254.5781,676.5938 Q2253.2656,674.9375 2253.2656,671.8125 Q2253.2656,668.6875 2254.5781,667.0313 Q2255.9063,665.375 2258.4063,665.375 Q2259.1094,665.375 2259.75,665.5313 Q2260.4063,665.6875 2260.9688,665.9844 L2260.9688,668.7031 Q2260.3438,668.125 2259.75,667.8594 Q2259.1563,667.5781 2258.5313,667.5781 Q2257.1875,667.5781 2256.5,668.6563 Q2255.8125,669.7188 2255.8125,671.8125 Q2255.8125,673.9063 2256.5,674.9844 Q2257.1875,676.0469 2258.5313,676.0469 Q2259.1563,676.0469 2259.75,675.7813 Q2260.3438,675.5 2260.9688,674.9219 L2260.9688,677.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="83" x="2272" y="676.1543">AllLIFNeurons</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2244" x2="2357" y1="688" y2="688"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2244" x2="2357" y1="696" y2="696"/><!--MD5=[96f31d00847e9628d93d2720c47b9604]
+class AllNeuroEdges--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllNeuroEdges" style="stroke: #A80036; stroke-width: 1.5;" width="123" x="89" y="440"/><ellipse cx="104" cy="456" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M106.9688,461.6406 Q106.3906,461.9375 105.75,462.0781 Q105.1094,462.2344 104.4063,462.2344 Q101.9063,462.2344 100.5781,460.5938 Q99.2656,458.9375 99.2656,455.8125 Q99.2656,452.6875 100.5781,451.0313 Q101.9063,449.375 104.4063,449.375 Q105.1094,449.375 105.75,449.5313 Q106.4063,449.6875 106.9688,449.9844 L106.9688,452.7031 Q106.3438,452.125 105.75,451.8594 Q105.1563,451.5781 104.5313,451.5781 Q103.1875,451.5781 102.5,452.6563 Q101.8125,453.7188 101.8125,455.8125 Q101.8125,457.9063 102.5,458.9844 Q103.1875,460.0469 104.5313,460.0469 Q105.1563,460.0469 105.75,459.7813 Q106.3438,459.5 106.9688,458.9219 L106.9688,461.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="91" x="118" y="460.1543">AllNeuroEdges</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="90" x2="211" y1="472" y2="472"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="90" x2="211" y1="480" y2="480"/><!--MD5=[635988d62f36dba7a8b9baa086d12f03]
+class AllSTDPSynapses--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllSTDPSynapses" style="stroke: #A80036; stroke-width: 1.5;" width="138" x="164.5" y="656"/><ellipse cx="179.5" cy="672" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M182.4688,677.6406 Q181.8906,677.9375 181.25,678.0781 Q180.6094,678.2344 179.9063,678.2344 Q177.4063,678.2344 176.0781,676.5938 Q174.7656,674.9375 174.7656,671.8125 Q174.7656,668.6875 176.0781,667.0313 Q177.4063,665.375 179.9063,665.375 Q180.6094,665.375 181.25,665.5313 Q181.9063,665.6875 182.4688,665.9844 L182.4688,668.7031 Q181.8438,668.125 181.25,667.8594 Q180.6563,667.5781 180.0313,667.5781 Q178.6875,667.5781 178,668.6563 Q177.3125,669.7188 177.3125,671.8125 Q177.3125,673.9063 178,674.9844 Q178.6875,676.0469 180.0313,676.0469 Q180.6563,676.0469 181.25,675.7813 Q181.8438,675.5 182.4688,674.9219 L182.4688,677.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="106" x="193.5" y="676.1543">AllSTDPSynapses</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="165.5" x2="301.5" y1="688" y2="688"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="165.5" x2="301.5" y1="696" y2="696"/><!--MD5=[00675e18512933602d55f5e0e2b1ab32]
+class AllSpikingNeurons--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllSpikingNeurons" style="stroke: #A80036; stroke-width: 1.5;" width="143" x="2082" y="440"/><ellipse cx="2097" cy="456" fill="#A9DCDF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2097.1094,451.3438 L2095.9531,456.4219 L2098.2813,456.4219 L2097.1094,451.3438 Z M2095.625,449.1094 L2098.6094,449.1094 L2101.9688,461.5 L2099.5156,461.5 L2098.75,458.4375 L2095.4688,458.4375 L2094.7188,461.5 L2092.2813,461.5 L2095.625,449.1094 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="111" x="2111" y="460.1543">AllSpikingNeurons</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2083" x2="2224" y1="472" y2="472"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2083" x2="2224" y1="480" y2="480"/><!--MD5=[cfe37ad1a50a7dcaaf80645f5fb9fa69]
+class AllSpikingSynapses--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllSpikingSynapses" style="stroke: #A80036; stroke-width: 1.5;" width="151" x="75" y="548"/><ellipse cx="90" cy="564" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M92.9688,569.6406 Q92.3906,569.9375 91.75,570.0781 Q91.1094,570.2344 90.4063,570.2344 Q87.9063,570.2344 86.5781,568.5938 Q85.2656,566.9375 85.2656,563.8125 Q85.2656,560.6875 86.5781,559.0313 Q87.9063,557.375 90.4063,557.375 Q91.1094,557.375 91.75,557.5313 Q92.4063,557.6875 92.9688,557.9844 L92.9688,560.7031 Q92.3438,560.125 91.75,559.8594 Q91.1563,559.5781 90.5313,559.5781 Q89.1875,559.5781 88.5,560.6563 Q87.8125,561.7188 87.8125,563.8125 Q87.8125,565.9063 88.5,566.9844 Q89.1875,568.0469 90.5313,568.0469 Q91.1563,568.0469 91.75,567.7813 Q92.3438,567.5 92.9688,566.9219 L92.9688,569.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="119" x="104" y="568.1543">AllSpikingSynapses</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="76" x2="225" y1="580" y2="580"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="76" x2="225" y1="588" y2="588"/><!--MD5=[34dee175ca2f1207a5c8be9520f72c2f]
+class AllVertices--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllVertices" style="stroke: #A80036; stroke-width: 1.5;" width="96" x="2058.5" y="332"/><ellipse cx="2073.5" cy="348" fill="#A9DCDF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2073.6094,343.3438 L2072.4531,348.4219 L2074.7813,348.4219 L2073.6094,343.3438 Z M2072.125,341.1094 L2075.1094,341.1094 L2078.4688,353.5 L2076.0156,353.5 L2075.25,350.4375 L2071.9688,350.4375 L2071.2188,353.5 L2068.7813,353.5 L2072.125,341.1094 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="64" x="2087.5" y="352.1543">AllVertices</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2059.5" x2="2153.5" y1="364" y2="364"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2059.5" x2="2153.5" y1="372" y2="372"/><!--MD5=[d85fbbe7efff0e713ca3ebcdefdae521]
+class CPUModel--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="CPUModel" style="stroke: #A80036; stroke-width: 1.5;" width="94" x="1197.5" y="224"/><ellipse cx="1212.5" cy="240" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1215.4688,245.6406 Q1214.8906,245.9375 1214.25,246.0781 Q1213.6094,246.2344 1212.9063,246.2344 Q1210.4063,246.2344 1209.0781,244.5938 Q1207.7656,242.9375 1207.7656,239.8125 Q1207.7656,236.6875 1209.0781,235.0313 Q1210.4063,233.375 1212.9063,233.375 Q1213.6094,233.375 1214.25,233.5313 Q1214.9063,233.6875 1215.4688,233.9844 L1215.4688,236.7031 Q1214.8438,236.125 1214.25,235.8594 Q1213.6563,235.5781 1213.0313,235.5781 Q1211.6875,235.5781 1211,236.6563 Q1210.3125,237.7188 1210.3125,239.8125 Q1210.3125,241.9063 1211,242.9844 Q1211.6875,244.0469 1213.0313,244.0469 Q1213.6563,244.0469 1214.25,243.7813 Q1214.8438,243.5 1215.4688,242.9219 L1215.4688,245.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="62" x="1226.5" y="244.1543">CPUModel</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1198.5" x2="1290.5" y1="256" y2="256"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="1198.5" x2="1290.5" y1="264" y2="264"/><!--MD5=[540eab1ed52846d003b47757435df453]
+class ConnGrowth--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="ConnGrowth" style="stroke: #A80036; stroke-width: 1.5;" width="108" x="482.5" y="332"/><ellipse cx="497.5" cy="348" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M500.4688,353.6406 Q499.8906,353.9375 499.25,354.0781 Q498.6094,354.2344 497.9063,354.2344 Q495.4063,354.2344 494.0781,352.5938 Q492.7656,350.9375 492.7656,347.8125 Q492.7656,344.6875 494.0781,343.0313 Q495.4063,341.375 497.9063,341.375 Q498.6094,341.375 499.25,341.5313 Q499.9063,341.6875 500.4688,341.9844 L500.4688,344.7031 Q499.8438,344.125 499.25,343.8594 Q498.6563,343.5781 498.0313,343.5781 Q496.6875,343.5781 496,344.6563 Q495.3125,345.7188 495.3125,347.8125 Q495.3125,349.9063 496,350.9844 Q496.6875,352.0469 498.0313,352.0469 Q498.6563,352.0469 499.25,351.7813 Q499.8438,351.5 500.4688,350.9219 L500.4688,353.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="76" x="511.5" y="352.1543">ConnGrowth</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="483.5" x2="589.5" y1="364" y2="364"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="483.5" x2="589.5" y1="372" y2="372"/><!--MD5=[b671e9144a70d5380b4364952f259167]
+class ConnStatic--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="ConnStatic" style="stroke: #A80036; stroke-width: 1.5;" width="100" x="322.5" y="332"/><ellipse cx="337.5" cy="348" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M340.4688,353.6406 Q339.8906,353.9375 339.25,354.0781 Q338.6094,354.2344 337.9063,354.2344 Q335.4063,354.2344 334.0781,352.5938 Q332.7656,350.9375 332.7656,347.8125 Q332.7656,344.6875 334.0781,343.0313 Q335.4063,341.375 337.9063,341.375 Q338.6094,341.375 339.25,341.5313 Q339.9063,341.6875 340.4688,341.9844 L340.4688,344.7031 Q339.8438,344.125 339.25,343.8594 Q338.6563,343.5781 338.0313,343.5781 Q336.6875,343.5781 336,344.6563 Q335.3125,345.7188 335.3125,347.8125 Q335.3125,349.9063 336,350.9844 Q336.6875,352.0469 338.0313,352.0469 Q338.6563,352.0469 339.25,351.7813 Q339.8438,351.5 340.4688,350.9219 L340.4688,353.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="68" x="351.5" y="352.1543">ConnStatic</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="323.5" x2="421.5" y1="364" y2="364"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="323.5" x2="421.5" y1="372" y2="372"/><!--MD5=[24bb951fb6b9ac52df1580923e830244]
+class Connections--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="Connections" style="stroke: #A80036; stroke-width: 1.5;" width="109" x="482" y="224"/><ellipse cx="497" cy="240" fill="#A9DCDF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M497.1094,235.3438 L495.9531,240.4219 L498.2813,240.4219 L497.1094,235.3438 Z M495.625,233.1094 L498.6094,233.1094 L501.9688,245.5 L499.5156,245.5 L498.75,242.4375 L495.4688,242.4375 L494.7188,245.5 L492.2813,245.5 L495.625,233.1094 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="77" x="511" y="244.1543">Connections</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="483" x2="590" y1="256" y2="256"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="483" x2="590" y1="264" y2="264"/><!--MD5=[07560c205a8067cf69726ad645fec973]
+class ConnectionsFactory--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="ConnectionsFactory" style="stroke: #A80036; stroke-width: 1.5;" width="156" x="458.5" y="116"/><ellipse cx="473.5" cy="132" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M476.4688,137.6406 Q475.8906,137.9375 475.25,138.0781 Q474.6094,138.2344 473.9063,138.2344 Q471.4063,138.2344 470.0781,136.5938 Q468.7656,134.9375 468.7656,131.8125 Q468.7656,128.6875 470.0781,127.0313 Q471.4063,125.375 473.9063,125.375 Q474.6094,125.375 475.25,125.5313 Q475.9063,125.6875 476.4688,125.9844 L476.4688,128.7031 Q475.8438,128.125 475.25,127.8594 Q474.6563,127.5781 474.0313,127.5781 Q472.6875,127.5781 472,128.6563 Q471.3125,129.7188 471.3125,131.8125 Q471.3125,133.9063 472,134.9844 Q472.6875,136.0469 474.0313,136.0469 Q474.6563,136.0469 475.25,135.7813 Q475.8438,135.5 476.4688,134.9219 L476.4688,137.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="124" x="487.5" y="136.1543">ConnectionsFactory</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="459.5" x2="613.5" y1="148" y2="148"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="459.5" x2="613.5" y1="156" y2="156"/><!--MD5=[12f7f85e6a82a668bac37f73aa8a25f9]
+class DynamicLayout--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="DynamicLayout" style="stroke: #A80036; stroke-width: 1.5;" width="125" x="2330" y="332"/><ellipse cx="2345" cy="348" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2347.9688,353.6406 Q2347.3906,353.9375 2346.75,354.0781 Q2346.1094,354.2344 2345.4063,354.2344 Q2342.9063,354.2344 2341.5781,352.5938 Q2340.2656,350.9375 2340.2656,347.8125 Q2340.2656,344.6875 2341.5781,343.0313 Q2342.9063,341.375 2345.4063,341.375 Q2346.1094,341.375 2346.75,341.5313 Q2347.4063,341.6875 2347.9688,341.9844 L2347.9688,344.7031 Q2347.3438,344.125 2346.75,343.8594 Q2346.1563,343.5781 2345.5313,343.5781 Q2344.1875,343.5781 2343.5,344.6563 Q2342.8125,345.7188 2342.8125,347.8125 Q2342.8125,349.9063 2343.5,350.9844 Q2344.1875,352.0469 2345.5313,352.0469 Q2346.1563,352.0469 2346.75,351.7813 Q2347.3438,351.5 2347.9688,350.9219 L2347.9688,353.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="93" x="2359" y="352.1543">DynamicLayout</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2331" x2="2454" y1="364" y2="364"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2331" x2="2454" y1="372" y2="372"/><!--MD5=[2137c854024e09e8076c84fb007b1c3c]
+class EdgesFactory--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="EdgesFactory" style="stroke: #A80036; stroke-width: 1.5;" width="117" x="152" y="224"/><ellipse cx="167" cy="240" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M169.9688,245.6406 Q169.3906,245.9375 168.75,246.0781 Q168.1094,246.2344 167.4063,246.2344 Q164.9063,246.2344 163.5781,244.5938 Q162.2656,242.9375 162.2656,239.8125 Q162.2656,236.6875 163.5781,235.0313 Q164.9063,233.375 167.4063,233.375 Q168.1094,233.375 168.75,233.5313 Q169.4063,233.6875 169.9688,233.9844 L169.9688,236.7031 Q169.3438,236.125 168.75,235.8594 Q168.1563,235.5781 167.5313,235.5781 Q166.1875,235.5781 165.5,236.6563 Q164.8125,237.7188 164.8125,239.8125 Q164.8125,241.9063 165.5,242.9844 Q166.1875,244.0469 167.5313,244.0469 Q168.1563,244.0469 168.75,243.7813 Q169.3438,243.5 169.9688,242.9219 L169.9688,245.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="85" x="181" y="244.1543">EdgesFactory</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="153" x2="268" y1="256" y2="256"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="153" x2="268" y1="264" y2="264"/><!--MD5=[05f17831147ee39527b2431b4d22ccc3]
+class EventBuffer--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="EventBuffer" style="stroke: #A80036; stroke-width: 1.5;" width="104" x="2030.5" y="548"/><ellipse cx="2045.5" cy="564" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2048.4688,569.6406 Q2047.8906,569.9375 2047.25,570.0781 Q2046.6094,570.2344 2045.9063,570.2344 Q2043.4063,570.2344 2042.0781,568.5938 Q2040.7656,566.9375 2040.7656,563.8125 Q2040.7656,560.6875 2042.0781,559.0313 Q2043.4063,557.375 2045.9063,557.375 Q2046.6094,557.375 2047.25,557.5313 Q2047.9063,557.6875 2048.4688,557.9844 L2048.4688,560.7031 Q2047.8438,560.125 2047.25,559.8594 Q2046.6563,559.5781 2046.0313,559.5781 Q2044.6875,559.5781 2044,560.6563 Q2043.3125,561.7188 2043.3125,563.8125 Q2043.3125,565.9063 2044,566.9844 Q2044.6875,568.0469 2046.0313,568.0469 Q2046.6563,568.0469 2047.25,567.7813 Q2047.8438,567.5 2048.4688,566.9219 L2048.4688,569.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="72" x="2059.5" y="568.1543">EventBuffer</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2031.5" x2="2133.5" y1="580" y2="580"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2031.5" x2="2133.5" y1="588" y2="588"/><!--MD5=[c01d281453c5d4cdc24a7f27a30cb7c5]
+class FixedLayout--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="FixedLayout" style="stroke: #A80036; stroke-width: 1.5;" width="105" x="2190" y="332"/><ellipse cx="2205" cy="348" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2207.9688,353.6406 Q2207.3906,353.9375 2206.75,354.0781 Q2206.1094,354.2344 2205.4063,354.2344 Q2202.9063,354.2344 2201.5781,352.5938 Q2200.2656,350.9375 2200.2656,347.8125 Q2200.2656,344.6875 2201.5781,343.0313 Q2202.9063,341.375 2205.4063,341.375 Q2206.1094,341.375 2206.75,341.5313 Q2207.4063,341.6875 2207.9688,341.9844 L2207.9688,344.7031 Q2207.3438,344.125 2206.75,343.8594 Q2206.1563,343.5781 2205.5313,343.5781 Q2204.1875,343.5781 2203.5,344.6563 Q2202.8125,345.7188 2202.8125,347.8125 Q2202.8125,349.9063 2203.5,350.9844 Q2204.1875,352.0469 2205.5313,352.0469 Q2206.1563,352.0469 2206.75,351.7813 Q2207.3438,351.5 2207.9688,350.9219 L2207.9688,353.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="73" x="2219" y="352.1543">FixedLayout</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2191" x2="2294" y1="364" y2="364"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2191" x2="2294" y1="372" y2="372"/><!--MD5=[124ec3daa98f7d6a805c6f5a48dde9c7]
+class GPUModel--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="GPUModel" style="stroke: #A80036; stroke-width: 1.5;" width="95" x="829" y="224"/><ellipse cx="844" cy="240" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M846.9688,245.6406 Q846.3906,245.9375 845.75,246.0781 Q845.1094,246.2344 844.4063,246.2344 Q841.9063,246.2344 840.5781,244.5938 Q839.2656,242.9375 839.2656,239.8125 Q839.2656,236.6875 840.5781,235.0313 Q841.9063,233.375 844.4063,233.375 Q845.1094,233.375 845.75,233.5313 Q846.4063,233.6875 846.9688,233.9844 L846.9688,236.7031 Q846.3438,236.125 845.75,235.8594 Q845.1563,235.5781 844.5313,235.5781 Q843.1875,235.5781 842.5,236.6563 Q841.8125,237.7188 841.8125,239.8125 Q841.8125,241.9063 842.5,242.9844 Q843.1875,244.0469 844.5313,244.0469 Q845.1563,244.0469 845.75,243.7813 Q846.3438,243.5 846.9688,242.9219 L846.9688,245.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="63" x="858" y="244.1543">GPUModel</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="830" x2="923" y1="256" y2="256"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="830" x2="923" y1="264" y2="264"/><!--MD5=[dd9a31495c85b5dc63c13c8cf57db1f9]
+class GenericFunctionNode--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="GenericFunctionNode" style="stroke: #A80036; stroke-width: 1.5;" width="167" x="2315" y="224"/><ellipse cx="2330" cy="240" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2332.9688,245.6406 Q2332.3906,245.9375 2331.75,246.0781 Q2331.1094,246.2344 2330.4063,246.2344 Q2327.9063,246.2344 2326.5781,244.5938 Q2325.2656,242.9375 2325.2656,239.8125 Q2325.2656,236.6875 2326.5781,235.0313 Q2327.9063,233.375 2330.4063,233.375 Q2331.1094,233.375 2331.75,233.5313 Q2332.4063,233.6875 2332.9688,233.9844 L2332.9688,236.7031 Q2332.3438,236.125 2331.75,235.8594 Q2331.1563,235.5781 2330.5313,235.5781 Q2329.1875,235.5781 2328.5,236.6563 Q2327.8125,237.7188 2327.8125,239.8125 Q2327.8125,241.9063 2328.5,242.9844 Q2329.1875,244.0469 2330.5313,244.0469 Q2331.1563,244.0469 2331.75,243.7813 Q2332.3438,243.5 2332.9688,242.9219 L2332.9688,245.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="135" x="2344" y="244.1543">GenericFunctionNode</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2316" x2="2481" y1="256" y2="256"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2316" x2="2481" y1="264" y2="264"/><!--MD5=[af68557a962a5f1f7548a7e590f8fd62]
+class Hdf5GrowthRecorder--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="Hdf5GrowthRecorder" style="stroke: #A80036; stroke-width: 1.5;" width="162" x="1884.5" y="440"/><ellipse cx="1899.5" cy="456" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1902.4688,461.6406 Q1901.8906,461.9375 1901.25,462.0781 Q1900.6094,462.2344 1899.9063,462.2344 Q1897.4063,462.2344 1896.0781,460.5938 Q1894.7656,458.9375 1894.7656,455.8125 Q1894.7656,452.6875 1896.0781,451.0313 Q1897.4063,449.375 1899.9063,449.375 Q1900.6094,449.375 1901.25,449.5313 Q1901.9063,449.6875 1902.4688,449.9844 L1902.4688,452.7031 Q1901.8438,452.125 1901.25,451.8594 Q1900.6563,451.5781 1900.0313,451.5781 Q1898.6875,451.5781 1898,452.6563 Q1897.3125,453.7188 1897.3125,455.8125 Q1897.3125,457.9063 1898,458.9844 Q1898.6875,460.0469 1900.0313,460.0469 Q1900.6563,460.0469 1901.25,459.7813 Q1901.8438,459.5 1902.4688,458.9219 L1902.4688,461.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="130" x="1913.5" y="460.1543">Hdf5GrowthRecorder</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1885.5" x2="2045.5" y1="472" y2="472"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="1885.5" x2="2045.5" y1="480" y2="480"/><!--MD5=[2f81b0e77ba864956fe3cef8330f890e]
+class Hdf5Recorder--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="Hdf5Recorder" style="stroke: #A80036; stroke-width: 1.5;" width="118" x="1827.5" y="332"/><ellipse cx="1842.5" cy="348" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1845.4688,353.6406 Q1844.8906,353.9375 1844.25,354.0781 Q1843.6094,354.2344 1842.9063,354.2344 Q1840.4063,354.2344 1839.0781,352.5938 Q1837.7656,350.9375 1837.7656,347.8125 Q1837.7656,344.6875 1839.0781,343.0313 Q1840.4063,341.375 1842.9063,341.375 Q1843.6094,341.375 1844.25,341.5313 Q1844.9063,341.6875 1845.4688,341.9844 L1845.4688,344.7031 Q1844.8438,344.125 1844.25,343.8594 Q1843.6563,343.5781 1843.0313,343.5781 Q1841.6875,343.5781 1841,344.6563 Q1840.3125,345.7188 1840.3125,347.8125 Q1840.3125,349.9063 1841,350.9844 Q1841.6875,352.0469 1843.0313,352.0469 Q1843.6563,352.0469 1844.25,351.7813 Q1844.8438,351.5 1845.4688,350.9219 L1845.4688,353.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="86" x="1856.5" y="352.1543">Hdf5Recorder</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1828.5" x2="1944.5" y1="364" y2="364"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="1828.5" x2="1944.5" y1="372" y2="372"/><!--MD5=[99788c5c01261f19cd519066f428e9b5]
+class IFunctionNode--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="IFunctionNode" style="stroke: #A80036; stroke-width: 1.5;" width="123" x="2506" y="116"/><ellipse cx="2521" cy="132" fill="#A9DCDF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2521.1094,127.3438 L2519.9531,132.4219 L2522.2813,132.4219 L2521.1094,127.3438 Z M2519.625,125.1094 L2522.6094,125.1094 L2525.9688,137.5 L2523.5156,137.5 L2522.75,134.4375 L2519.4688,134.4375 L2518.7188,137.5 L2516.2813,137.5 L2519.625,125.1094 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="91" x="2535" y="136.1543">IFunctionNode</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2507" x2="2628" y1="148" y2="148"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2507" x2="2628" y1="156" y2="156"/><!--MD5=[a2efe13f97b9395dfb70e2255bd52698]
+class IRecorder--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="IRecorder" style="stroke: #A80036; stroke-width: 1.5;" width="93" x="1581" y="224"/><ellipse cx="1596" cy="240" fill="#A9DCDF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1596.1094,235.3438 L1594.9531,240.4219 L1597.2813,240.4219 L1596.1094,235.3438 Z M1594.625,233.1094 L1597.6094,233.1094 L1600.9688,245.5 L1598.5156,245.5 L1597.75,242.4375 L1594.4688,242.4375 L1593.7188,245.5 L1591.2813,245.5 L1594.625,233.1094 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="61" x="1610" y="244.1543">IRecorder</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1582" x2="1673" y1="256" y2="256"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="1582" x2="1673" y1="264" y2="264"/><!--MD5=[caebf2ddd0fe15aa1cd7c0f919e7d6a1]
+class Layout--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="Layout" style="stroke: #A80036; stroke-width: 1.5;" width="75" x="2205" y="224"/><ellipse cx="2220" cy="240" fill="#A9DCDF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2220.1094,235.3438 L2218.9531,240.4219 L2221.2813,240.4219 L2220.1094,235.3438 Z M2218.625,233.1094 L2221.6094,233.1094 L2224.9688,245.5 L2222.5156,245.5 L2221.75,242.4375 L2218.4688,242.4375 L2217.7188,245.5 L2215.2813,245.5 L2218.625,233.1094 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="43" x="2234" y="244.1543">Layout</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2206" x2="2279" y1="256" y2="256"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2206" x2="2279" y1="264" y2="264"/><!--MD5=[e2bec1e8f5041d1015728825611f3c9f]
+class LayoutFactory--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="LayoutFactory" style="stroke: #A80036; stroke-width: 1.5;" width="119" x="2183" y="116"/><ellipse cx="2198" cy="132" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2200.9688,137.6406 Q2200.3906,137.9375 2199.75,138.0781 Q2199.1094,138.2344 2198.4063,138.2344 Q2195.9063,138.2344 2194.5781,136.5938 Q2193.2656,134.9375 2193.2656,131.8125 Q2193.2656,128.6875 2194.5781,127.0313 Q2195.9063,125.375 2198.4063,125.375 Q2199.1094,125.375 2199.75,125.5313 Q2200.4063,125.6875 2200.9688,125.9844 L2200.9688,128.7031 Q2200.3438,128.125 2199.75,127.8594 Q2199.1563,127.5781 2198.5313,127.5781 Q2197.1875,127.5781 2196.5,128.6563 Q2195.8125,129.7188 2195.8125,131.8125 Q2195.8125,133.9063 2196.5,134.9844 Q2197.1875,136.0469 2198.5313,136.0469 Q2199.1563,136.0469 2199.75,135.7813 Q2200.3438,135.5 2200.9688,134.9219 L2200.9688,137.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="87" x="2212" y="136.1543">LayoutFactory</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2184" x2="2301" y1="148" y2="148"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2184" x2="2301" y1="156" y2="156"/><!--MD5=[7e20e022571e30ec1001cf6eabd7f3e2]
+class Model--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="Model" style="stroke: #A80036; stroke-width: 1.5;" width="69" x="1210" y="116"/><ellipse cx="1225" cy="132" fill="#A9DCDF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1225.1094,127.3438 L1223.9531,132.4219 L1226.2813,132.4219 L1225.1094,127.3438 Z M1223.625,125.1094 L1226.6094,125.1094 L1229.9688,137.5 L1227.5156,137.5 L1226.75,134.4375 L1223.4688,134.4375 L1222.7188,137.5 L1220.2813,137.5 L1223.625,125.1094 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="37" x="1239" y="136.1543">Model</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1211" x2="1278" y1="148" y2="148"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="1211" x2="1278" y1="156" y2="156"/><!--MD5=[314e3b7c2db0a5a356d5ece57f37d58b]
+class OperationManager--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="OperationManager" style="stroke: #A80036; stroke-width: 1.5;" width="149" x="2493" y="8"/><ellipse cx="2508" cy="24" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2510.9688,29.6406 Q2510.3906,29.9375 2509.75,30.0781 Q2509.1094,30.2344 2508.4063,30.2344 Q2505.9063,30.2344 2504.5781,28.5938 Q2503.2656,26.9375 2503.2656,23.8125 Q2503.2656,20.6875 2504.5781,19.0313 Q2505.9063,17.375 2508.4063,17.375 Q2509.1094,17.375 2509.75,17.5313 Q2510.4063,17.6875 2510.9688,17.9844 L2510.9688,20.7031 Q2510.3438,20.125 2509.75,19.8594 Q2509.1563,19.5781 2508.5313,19.5781 Q2507.1875,19.5781 2506.5,20.6563 Q2505.8125,21.7188 2505.8125,23.8125 Q2505.8125,25.9063 2506.5,26.9844 Q2507.1875,28.0469 2508.5313,28.0469 Q2509.1563,28.0469 2509.75,27.7813 Q2510.3438,27.5 2510.9688,26.9219 L2510.9688,29.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="117" x="2522" y="28.1543">OperationManager</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2494" x2="2641" y1="40" y2="40"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2494" x2="2641" y1="48" y2="48"/><!--MD5=[fdf81c1c7218c7a86b85d500a2db5e87]
+class Operations--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="Operations" style="stroke: #A80036; stroke-width: 1.5;" width="101" x="2517" y="224"/><ellipse cx="2532" cy="240" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2534.9688,245.6406 Q2534.3906,245.9375 2533.75,246.0781 Q2533.1094,246.2344 2532.4063,246.2344 Q2529.9063,246.2344 2528.5781,244.5938 Q2527.2656,242.9375 2527.2656,239.8125 Q2527.2656,236.6875 2528.5781,235.0313 Q2529.9063,233.375 2532.4063,233.375 Q2533.1094,233.375 2533.75,233.5313 Q2534.4063,233.6875 2534.9688,233.9844 L2534.9688,236.7031 Q2534.3438,236.125 2533.75,235.8594 Q2533.1563,235.5781 2532.5313,235.5781 Q2531.1875,235.5781 2530.5,236.6563 Q2529.8125,237.7188 2529.8125,239.8125 Q2529.8125,241.9063 2530.5,242.9844 Q2531.1875,244.0469 2532.5313,244.0469 Q2533.1563,244.0469 2533.75,243.7813 Q2534.3438,243.5 2534.9688,242.9219 L2534.9688,245.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="69" x="2546" y="244.1543">Operations</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2518" x2="2617" y1="256" y2="256"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2518" x2="2617" y1="264" y2="264"/><!--MD5=[2d167d26ebdee84d71997832bfe86c3e]
+class RecorderFactory--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="RecorderFactory" style="stroke: #A80036; stroke-width: 1.5;" width="135" x="1560" y="116"/><ellipse cx="1575" cy="132" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1577.9688,137.6406 Q1577.3906,137.9375 1576.75,138.0781 Q1576.1094,138.2344 1575.4063,138.2344 Q1572.9063,138.2344 1571.5781,136.5938 Q1570.2656,134.9375 1570.2656,131.8125 Q1570.2656,128.6875 1571.5781,127.0313 Q1572.9063,125.375 1575.4063,125.375 Q1576.1094,125.375 1576.75,125.5313 Q1577.4063,125.6875 1577.9688,125.9844 L1577.9688,128.7031 Q1577.3438,128.125 1576.75,127.8594 Q1576.1563,127.5781 1575.5313,127.5781 Q1574.1875,127.5781 1573.5,128.6563 Q1572.8125,129.7188 1572.8125,131.8125 Q1572.8125,133.9063 1573.5,134.9844 Q1574.1875,136.0469 1575.5313,136.0469 Q1576.1563,136.0469 1576.75,135.7813 Q1577.3438,135.5 1577.9688,134.9219 L1577.9688,137.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="103" x="1589" y="136.1543">RecorderFactory</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1561" x2="1694" y1="148" y2="148"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="1561" x2="1694" y1="156" y2="156"/><!--MD5=[e78d3bd29d68b8fbdb4aae8710e3db25]
+class Simulator--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="Simulator" style="stroke: #A80036; stroke-width: 1.5;" width="91" x="1199" y="8"/><ellipse cx="1214" cy="24" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1216.9688,29.6406 Q1216.3906,29.9375 1215.75,30.0781 Q1215.1094,30.2344 1214.4063,30.2344 Q1211.9063,30.2344 1210.5781,28.5938 Q1209.2656,26.9375 1209.2656,23.8125 Q1209.2656,20.6875 1210.5781,19.0313 Q1211.9063,17.375 1214.4063,17.375 Q1215.1094,17.375 1215.75,17.5313 Q1216.4063,17.6875 1216.9688,17.9844 L1216.9688,20.7031 Q1216.3438,20.125 1215.75,19.8594 Q1215.1563,19.5781 1214.5313,19.5781 Q1213.1875,19.5781 1212.5,20.6563 Q1211.8125,21.7188 1211.8125,23.8125 Q1211.8125,25.9063 1212.5,26.9844 Q1213.1875,28.0469 1214.5313,28.0469 Q1215.1563,28.0469 1215.75,27.7813 Q1216.3438,27.5 1216.9688,26.9219 L1216.9688,29.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="59" x="1228" y="28.1543">Simulator</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1200" x2="1289" y1="40" y2="40"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="1200" x2="1289" y1="48" y2="48"/><!--MD5=[cc1c410fe2850b6da0ea695abfcea755]
+class VerticesFactory--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="VerticesFactory" style="stroke: #A80036; stroke-width: 1.5;" width="129" x="2041" y="224"/><ellipse cx="2056" cy="240" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2058.9688,245.6406 Q2058.3906,245.9375 2057.75,246.0781 Q2057.1094,246.2344 2056.4063,246.2344 Q2053.9063,246.2344 2052.5781,244.5938 Q2051.2656,242.9375 2051.2656,239.8125 Q2051.2656,236.6875 2052.5781,235.0313 Q2053.9063,233.375 2056.4063,233.375 Q2057.1094,233.375 2057.75,233.5313 Q2058.4063,233.6875 2058.9688,233.9844 L2058.9688,236.7031 Q2058.3438,236.125 2057.75,235.8594 Q2057.1563,235.5781 2056.5313,235.5781 Q2055.1875,235.5781 2054.5,236.6563 Q2053.8125,237.7188 2053.8125,239.8125 Q2053.8125,241.9063 2054.5,242.9844 Q2055.1875,244.0469 2056.5313,244.0469 Q2057.1563,244.0469 2057.75,243.7813 Q2058.3438,243.5 2058.9688,242.9219 L2058.9688,245.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="97" x="2070" y="244.1543">VerticesFactory</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2042" x2="2169" y1="256" y2="256"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2042" x2="2169" y1="264" y2="264"/><!--MD5=[70954963b39295522525212df8952a0c]
+class XmlGrowthRecorder--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="XmlGrowthRecorder" style="stroke: #A80036; stroke-width: 1.5;" width="154" x="1518.5" y="440"/><ellipse cx="1533.5" cy="456" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1536.4688,461.6406 Q1535.8906,461.9375 1535.25,462.0781 Q1534.6094,462.2344 1533.9063,462.2344 Q1531.4063,462.2344 1530.0781,460.5938 Q1528.7656,458.9375 1528.7656,455.8125 Q1528.7656,452.6875 1530.0781,451.0313 Q1531.4063,449.375 1533.9063,449.375 Q1534.6094,449.375 1535.25,449.5313 Q1535.9063,449.6875 1536.4688,449.9844 L1536.4688,452.7031 Q1535.8438,452.125 1535.25,451.8594 Q1534.6563,451.5781 1534.0313,451.5781 Q1532.6875,451.5781 1532,452.6563 Q1531.3125,453.7188 1531.3125,455.8125 Q1531.3125,457.9063 1532,458.9844 Q1532.6875,460.0469 1534.0313,460.0469 Q1534.6563,460.0469 1535.25,459.7813 Q1535.8438,459.5 1536.4688,458.9219 L1536.4688,461.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="122" x="1547.5" y="460.1543">XmlGrowthRecorder</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1519.5" x2="1671.5" y1="472" y2="472"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="1519.5" x2="1671.5" y1="480" y2="480"/><!--MD5=[e2fde7c48d35c1cbf959be266268237c]
+class XmlRecorder--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="XmlRecorder" style="stroke: #A80036; stroke-width: 1.5;" width="110" x="1572.5" y="332"/><ellipse cx="1587.5" cy="348" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1590.4688,353.6406 Q1589.8906,353.9375 1589.25,354.0781 Q1588.6094,354.2344 1587.9063,354.2344 Q1585.4063,354.2344 1584.0781,352.5938 Q1582.7656,350.9375 1582.7656,347.8125 Q1582.7656,344.6875 1584.0781,343.0313 Q1585.4063,341.375 1587.9063,341.375 Q1588.6094,341.375 1589.25,341.5313 Q1589.9063,341.6875 1590.4688,341.9844 L1590.4688,344.7031 Q1589.8438,344.125 1589.25,343.8594 Q1588.6563,343.5781 1588.0313,343.5781 Q1586.6875,343.5781 1586,344.6563 Q1585.3125,345.7188 1585.3125,347.8125 Q1585.3125,349.9063 1586,350.9844 Q1586.6875,352.0469 1588.0313,352.0469 Q1588.6563,352.0469 1589.25,351.7813 Q1589.8438,351.5 1590.4688,350.9219 L1590.4688,353.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="78" x="1601.5" y="352.1543">XmlRecorder</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1573.5" x2="1681.5" y1="364" y2="364"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="1573.5" x2="1681.5" y1="372" y2="372"/><!--MD5=[e01fc12d2ca5b032aa39c4fc4bc72679]
+class XmlSTDPRecorder--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="XmlSTDPRecorder" style="stroke: #A80036; stroke-width: 1.5;" width="142" x="1707.5" y="440"/><ellipse cx="1722.5" cy="456" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1725.4688,461.6406 Q1724.8906,461.9375 1724.25,462.0781 Q1723.6094,462.2344 1722.9063,462.2344 Q1720.4063,462.2344 1719.0781,460.5938 Q1717.7656,458.9375 1717.7656,455.8125 Q1717.7656,452.6875 1719.0781,451.0313 Q1720.4063,449.375 1722.9063,449.375 Q1723.6094,449.375 1724.25,449.5313 Q1724.9063,449.6875 1725.4688,449.9844 L1725.4688,452.7031 Q1724.8438,452.125 1724.25,451.8594 Q1723.6563,451.5781 1723.0313,451.5781 Q1721.6875,451.5781 1721,452.6563 Q1720.3125,453.7188 1720.3125,455.8125 Q1720.3125,457.9063 1721,458.9844 Q1721.6875,460.0469 1723.0313,460.0469 Q1723.6563,460.0469 1724.25,459.7813 Q1724.8438,459.5 1725.4688,458.9219 L1725.4688,461.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="110" x="1736.5" y="460.1543">XmlSTDPRecorder</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1708.5" x2="1848.5" y1="472" y2="472"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="1708.5" x2="1848.5" y1="480" y2="480"/><!--MD5=[ee90c8bb66c047e800df5fa57f6b4f59]
+class Operations::op--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="Operations::op" style="stroke: #A80036; stroke-width: 1.5;" width="125" x="2557" y="332"/><ellipse cx="2572" cy="348" fill="#EB937F" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2576.1094,354 L2568.3906,354 L2568.3906,341.6094 L2576.1094,341.6094 L2576.1094,343.7656 L2570.8438,343.7656 L2570.8438,346.4375 L2575.6094,346.4375 L2575.6094,348.5938 L2570.8438,348.5938 L2570.8438,351.8438 L2576.1094,351.8438 L2576.1094,354 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="93" x="2586" y="352.1543">Operations::op</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2558" x2="2681" y1="364" y2="364"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2558" x2="2681" y1="372" y2="372"/><!--MD5=[2c8a843ca32eecec980159abf8666d97]
+class enumClassSynapses--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="enumClassSynapses" style="stroke: #A80036; stroke-width: 1.5;" width="160" x="2677.5" y="8"/><ellipse cx="2692.5" cy="24" fill="#EB937F" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2696.6094,30 L2688.8906,30 L2688.8906,17.6094 L2696.6094,17.6094 L2696.6094,19.7656 L2691.3438,19.7656 L2691.3438,22.4375 L2696.1094,22.4375 L2696.1094,24.5938 L2691.3438,24.5938 L2691.3438,27.8438 L2696.6094,27.8438 L2696.6094,30 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="128" x="2706.5" y="28.1543">enumClassSynapses</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="2678.5" x2="2836.5" y1="40" y2="40"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="2678.5" x2="2836.5" y1="48" y2="48"/><!--MD5=[12eed8bfdcfc08849f14b9c8d25e6e94]
+class AllDSSynapsesDeviceProperties--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllDSSynapsesDeviceProperties" style="stroke: #A80036; stroke-width: 1.5;" width="229" x="975" y="440"/><ellipse cx="990" cy="456" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M992.9688,461.6406 Q992.3906,461.9375 991.75,462.0781 Q991.1094,462.2344 990.4063,462.2344 Q987.9063,462.2344 986.5781,460.5938 Q985.2656,458.9375 985.2656,455.8125 Q985.2656,452.6875 986.5781,451.0313 Q987.9063,449.375 990.4063,449.375 Q991.1094,449.375 991.75,449.5313 Q992.4063,449.6875 992.9688,449.9844 L992.9688,452.7031 Q992.3438,452.125 991.75,451.8594 Q991.1563,451.5781 990.5313,451.5781 Q989.1875,451.5781 988.5,452.6563 Q987.8125,453.7188 987.8125,455.8125 Q987.8125,457.9063 988.5,458.9844 Q989.1875,460.0469 990.5313,460.0469 Q991.1563,460.0469 991.75,459.7813 Q992.3438,459.5 992.9688,458.9219 L992.9688,461.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="197" x="1004" y="460.1543">AllDSSynapsesDeviceProperties</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="976" x2="1203" y1="472" y2="472"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="976" x2="1203" y1="480" y2="480"/><!--MD5=[4b1be41c79a1ff75e3d6100484a928eb]
+class AllDynamicSTDPSynapsesDeviceProperties--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllDynamicSTDPSynapsesDeviceProperties" style="stroke: #A80036; stroke-width: 1.5;" width="296" x="1213.5" y="548"/><ellipse cx="1228.5" cy="564" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1231.4688,569.6406 Q1230.8906,569.9375 1230.25,570.0781 Q1229.6094,570.2344 1228.9063,570.2344 Q1226.4063,570.2344 1225.0781,568.5938 Q1223.7656,566.9375 1223.7656,563.8125 Q1223.7656,560.6875 1225.0781,559.0313 Q1226.4063,557.375 1228.9063,557.375 Q1229.6094,557.375 1230.25,557.5313 Q1230.9063,557.6875 1231.4688,557.9844 L1231.4688,560.7031 Q1230.8438,560.125 1230.25,559.8594 Q1229.6563,559.5781 1229.0313,559.5781 Q1227.6875,559.5781 1227,560.6563 Q1226.3125,561.7188 1226.3125,563.8125 Q1226.3125,565.9063 1227,566.9844 Q1227.6875,568.0469 1229.0313,568.0469 Q1229.6563,568.0469 1230.25,567.7813 Q1230.8438,567.5 1231.4688,566.9219 L1231.4688,569.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="264" x="1242.5" y="568.1543">AllDynamicSTDPSynapsesDeviceProperties</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1214.5" x2="1508.5" y1="580" y2="580"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="1214.5" x2="1508.5" y1="588" y2="588"/><!--MD5=[017d3a10fe7408131050c5acc75b1a9b]
+class AllEdgesDeviceProperties--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllEdgesDeviceProperties" style="stroke: #A80036; stroke-width: 1.5;" width="191" x="1327" y="224"/><ellipse cx="1342" cy="240" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1344.9688,245.6406 Q1344.3906,245.9375 1343.75,246.0781 Q1343.1094,246.2344 1342.4063,246.2344 Q1339.9063,246.2344 1338.5781,244.5938 Q1337.2656,242.9375 1337.2656,239.8125 Q1337.2656,236.6875 1338.5781,235.0313 Q1339.9063,233.375 1342.4063,233.375 Q1343.1094,233.375 1343.75,233.5313 Q1344.4063,233.6875 1344.9688,233.9844 L1344.9688,236.7031 Q1344.3438,236.125 1343.75,235.8594 Q1343.1563,235.5781 1342.5313,235.5781 Q1341.1875,235.5781 1340.5,236.6563 Q1339.8125,237.7188 1339.8125,239.8125 Q1339.8125,241.9063 1340.5,242.9844 Q1341.1875,244.0469 1342.5313,244.0469 Q1343.1563,244.0469 1343.75,243.7813 Q1344.3438,243.5 1344.9688,242.9219 L1344.9688,245.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="159" x="1356" y="244.1543">AllEdgesDeviceProperties</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1328" x2="1517" y1="256" y2="256"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="1328" x2="1517" y1="264" y2="264"/><!--MD5=[639115fe7f0fcce40793e2aa5cc37621]
+class AllIFNeuronsDeviceProperties--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllIFNeuronsDeviceProperties" style="stroke: #A80036; stroke-width: 1.5;" width="215" x="725" y="440"/><ellipse cx="740" cy="456" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M742.9688,461.6406 Q742.3906,461.9375 741.75,462.0781 Q741.1094,462.2344 740.4063,462.2344 Q737.9063,462.2344 736.5781,460.5938 Q735.2656,458.9375 735.2656,455.8125 Q735.2656,452.6875 736.5781,451.0313 Q737.9063,449.375 740.4063,449.375 Q741.1094,449.375 741.75,449.5313 Q742.4063,449.6875 742.9688,449.9844 L742.9688,452.7031 Q742.3438,452.125 741.75,451.8594 Q741.1563,451.5781 740.5313,451.5781 Q739.1875,451.5781 738.5,452.6563 Q737.8125,453.7188 737.8125,455.8125 Q737.8125,457.9063 738.5,458.9844 Q739.1875,460.0469 740.5313,460.0469 Q741.1563,460.0469 741.75,459.7813 Q742.3438,459.5 742.9688,458.9219 L742.9688,461.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="183" x="754" y="460.1543">AllIFNeuronsDeviceProperties</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="726" x2="939" y1="472" y2="472"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="726" x2="939" y1="480" y2="480"/><!--MD5=[bc6843495936d398fdad119946a0d209]
+class AllIZHNeuronsDeviceProperties--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllIZHNeuronsDeviceProperties" style="stroke: #A80036; stroke-width: 1.5;" width="226" x="719.5" y="548"/><ellipse cx="734.5" cy="564" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M737.4688,569.6406 Q736.8906,569.9375 736.25,570.0781 Q735.6094,570.2344 734.9063,570.2344 Q732.4063,570.2344 731.0781,568.5938 Q729.7656,566.9375 729.7656,563.8125 Q729.7656,560.6875 731.0781,559.0313 Q732.4063,557.375 734.9063,557.375 Q735.6094,557.375 736.25,557.5313 Q736.9063,557.6875 737.4688,557.9844 L737.4688,560.7031 Q736.8438,560.125 736.25,559.8594 Q735.6563,559.5781 735.0313,559.5781 Q733.6875,559.5781 733,560.6563 Q732.3125,561.7188 732.3125,563.8125 Q732.3125,565.9063 733,566.9844 Q733.6875,568.0469 735.0313,568.0469 Q735.6563,568.0469 736.25,567.7813 Q736.8438,567.5 737.4688,566.9219 L737.4688,569.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="194" x="748.5" y="568.1543">AllIZHNeuronsDeviceProperties</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="720.5" x2="944.5" y1="580" y2="580"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="720.5" x2="944.5" y1="588" y2="588"/><!--MD5=[a7843438017f4a8113b6a979c3ec4039]
+class AllSTDPSynapsesDeviceProperties--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllSTDPSynapsesDeviceProperties" style="stroke: #A80036; stroke-width: 1.5;" width="244" x="1239.5" y="440"/><ellipse cx="1254.5" cy="456" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1257.4688,461.6406 Q1256.8906,461.9375 1256.25,462.0781 Q1255.6094,462.2344 1254.9063,462.2344 Q1252.4063,462.2344 1251.0781,460.5938 Q1249.7656,458.9375 1249.7656,455.8125 Q1249.7656,452.6875 1251.0781,451.0313 Q1252.4063,449.375 1254.9063,449.375 Q1255.6094,449.375 1256.25,449.5313 Q1256.9063,449.6875 1257.4688,449.9844 L1257.4688,452.7031 Q1256.8438,452.125 1256.25,451.8594 Q1255.6563,451.5781 1255.0313,451.5781 Q1253.6875,451.5781 1253,452.6563 Q1252.3125,453.7188 1252.3125,455.8125 Q1252.3125,457.9063 1253,458.9844 Q1253.6875,460.0469 1255.0313,460.0469 Q1255.6563,460.0469 1256.25,459.7813 Q1256.8438,459.5 1257.4688,458.9219 L1257.4688,461.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="212" x="1268.5" y="460.1543">AllSTDPSynapsesDeviceProperties</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1240.5" x2="1482.5" y1="472" y2="472"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="1240.5" x2="1482.5" y1="480" y2="480"/><!--MD5=[4ac84e1680f309079c4f5159a2743064]
+class AllSpikingNeuronsDeviceProperties--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllSpikingNeuronsDeviceProperties" style="stroke: #A80036; stroke-width: 1.5;" width="250" x="784.5" y="332"/><ellipse cx="799.5" cy="348" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M802.4688,353.6406 Q801.8906,353.9375 801.25,354.0781 Q800.6094,354.2344 799.9063,354.2344 Q797.4063,354.2344 796.0781,352.5938 Q794.7656,350.9375 794.7656,347.8125 Q794.7656,344.6875 796.0781,343.0313 Q797.4063,341.375 799.9063,341.375 Q800.6094,341.375 801.25,341.5313 Q801.9063,341.6875 802.4688,341.9844 L802.4688,344.7031 Q801.8438,344.125 801.25,343.8594 Q800.6563,343.5781 800.0313,343.5781 Q798.6875,343.5781 798,344.6563 Q797.3125,345.7188 797.3125,347.8125 Q797.3125,349.9063 798,350.9844 Q798.6875,352.0469 800.0313,352.0469 Q800.6563,352.0469 801.25,351.7813 Q801.8438,351.5 802.4688,350.9219 L802.4688,353.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="218" x="813.5" y="352.1543">AllSpikingNeuronsDeviceProperties</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="785.5" x2="1033.5" y1="364" y2="364"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="785.5" x2="1033.5" y1="372" y2="372"/><!--MD5=[9207c363d1f0343d1c8507e42ff7f935]
+class AllSpikingSynapsesDeviceProperties--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllSpikingSynapsesDeviceProperties" style="stroke: #A80036; stroke-width: 1.5;" width="257" x="1152" y="332"/><ellipse cx="1167" cy="348" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1169.9688,353.6406 Q1169.3906,353.9375 1168.75,354.0781 Q1168.1094,354.2344 1167.4063,354.2344 Q1164.9063,354.2344 1163.5781,352.5938 Q1162.2656,350.9375 1162.2656,347.8125 Q1162.2656,344.6875 1163.5781,343.0313 Q1164.9063,341.375 1167.4063,341.375 Q1168.1094,341.375 1168.75,341.5313 Q1169.4063,341.6875 1169.9688,341.9844 L1169.9688,344.7031 Q1169.3438,344.125 1168.75,343.8594 Q1168.1563,343.5781 1167.5313,343.5781 Q1166.1875,343.5781 1165.5,344.6563 Q1164.8125,345.7188 1164.8125,347.8125 Q1164.8125,349.9063 1165.5,350.9844 Q1166.1875,352.0469 1167.5313,352.0469 Q1168.1563,352.0469 1168.75,351.7813 Q1169.3438,351.5 1169.9688,350.9219 L1169.9688,353.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="225" x="1181" y="352.1543">AllSpikingSynapsesDeviceProperties</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1153" x2="1408" y1="364" y2="364"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="1153" x2="1408" y1="372" y2="372"/><!--MD5=[537ade6dbdfe6ef3b32240037651f8aa]
+class AllVerticesDeviceProperties--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="AllVerticesDeviceProperties" style="stroke: #A80036; stroke-width: 1.5;" width="203" x="959" y="224"/><ellipse cx="974" cy="240" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M976.9688,245.6406 Q976.3906,245.9375 975.75,246.0781 Q975.1094,246.2344 974.4063,246.2344 Q971.9063,246.2344 970.5781,244.5938 Q969.2656,242.9375 969.2656,239.8125 Q969.2656,236.6875 970.5781,235.0313 Q971.9063,233.375 974.4063,233.375 Q975.1094,233.375 975.75,233.5313 Q976.4063,233.6875 976.9688,233.9844 L976.9688,236.7031 Q976.3438,236.125 975.75,235.8594 Q975.1563,235.5781 974.5313,235.5781 Q973.1875,235.5781 972.5,236.6563 Q971.8125,237.7188 971.8125,239.8125 Q971.8125,241.9063 972.5,242.9844 Q973.1875,244.0469 974.5313,244.0469 Q975.1563,244.0469 975.75,243.7813 Q976.3438,243.5 976.9688,242.9219 L976.9688,245.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="171" x="988" y="244.1543">AllVerticesDeviceProperties</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="960" x2="1161" y1="256" y2="256"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="960" x2="1161" y1="264" y2="264"/><!--MD5=[1ca6d9ba181062a9a4052698cf88a455]
+class ConnGrowth::GrowthParams--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="ConnGrowth::GrowthParams" style="stroke: #A80036; stroke-width: 1.5;" width="207" x="483" y="440"/><ellipse cx="498" cy="456" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M500.9688,461.6406 Q500.3906,461.9375 499.75,462.0781 Q499.1094,462.2344 498.4063,462.2344 Q495.9063,462.2344 494.5781,460.5938 Q493.2656,458.9375 493.2656,455.8125 Q493.2656,452.6875 494.5781,451.0313 Q495.9063,449.375 498.4063,449.375 Q499.1094,449.375 499.75,449.5313 Q500.4063,449.6875 500.9688,449.9844 L500.9688,452.7031 Q500.3438,452.125 499.75,451.8594 Q499.1563,451.5781 498.5313,451.5781 Q497.1875,451.5781 496.5,452.6563 Q495.8125,453.7188 495.8125,455.8125 Q495.8125,457.9063 496.5,458.9844 Q497.1875,460.0469 498.5313,460.0469 Q499.1563,460.0469 499.75,459.7813 Q500.3438,459.5 500.9688,458.9219 L500.9688,461.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="175" x="512" y="460.1543">ConnGrowth::GrowthParams</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="484" x2="689" y1="472" y2="472"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="484" x2="689" y1="480" y2="480"/><!--MD5=[0db2b2f8d15a42d02f46e8af06351a10]
+class ConnStatic::DistDestVertex--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="ConnStatic::DistDestVertex" style="stroke: #A80036; stroke-width: 1.5;" width="201" x="247" y="440"/><ellipse cx="262" cy="456" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M264.9688,461.6406 Q264.3906,461.9375 263.75,462.0781 Q263.1094,462.2344 262.4063,462.2344 Q259.9063,462.2344 258.5781,460.5938 Q257.2656,458.9375 257.2656,455.8125 Q257.2656,452.6875 258.5781,451.0313 Q259.9063,449.375 262.4063,449.375 Q263.1094,449.375 263.75,449.5313 Q264.4063,449.6875 264.9688,449.9844 L264.9688,452.7031 Q264.3438,452.125 263.75,451.8594 Q263.1563,451.5781 262.5313,451.5781 Q261.1875,451.5781 260.5,452.6563 Q259.8125,453.7188 259.8125,455.8125 Q259.8125,457.9063 260.5,458.9844 Q261.1875,460.0469 262.5313,460.0469 Q263.1563,460.0469 263.75,459.7813 Q264.3438,459.5 264.9688,458.9219 L264.9688,461.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="169" x="276" y="460.1543">ConnStatic::DistDestVertex</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="248" x2="447" y1="472" y2="472"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="248" x2="447" y1="480" y2="480"/><!--MD5=[0b11278c58281ab7c80e79be642856f2]
+class EdgeIndexMap--><rect fill="#FEFECE" filter="url(#ffa976bazfvnb)" height="48" id="EdgeIndexMap" style="stroke: #A80036; stroke-width: 1.5;" width="123" x="626" y="332"/><ellipse cx="641" cy="348" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M643.9688,353.6406 Q643.3906,353.9375 642.75,354.0781 Q642.1094,354.2344 641.4063,354.2344 Q638.9063,354.2344 637.5781,352.5938 Q636.2656,350.9375 636.2656,347.8125 Q636.2656,344.6875 637.5781,343.0313 Q638.9063,341.375 641.4063,341.375 Q642.1094,341.375 642.75,341.5313 Q643.4063,341.6875 643.9688,341.9844 L643.9688,344.7031 Q643.3438,344.125 642.75,343.8594 Q642.1563,343.5781 641.5313,343.5781 Q640.1875,343.5781 639.5,344.6563 Q638.8125,345.7188 638.8125,347.8125 Q638.8125,349.9063 639.5,350.9844 Q640.1875,352.0469 641.5313,352.0469 Q642.1563,352.0469 642.75,351.7813 Q643.3438,351.5 643.9688,350.9219 L643.9688,353.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="91" x="655" y="352.1543">EdgeIndexMap</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="627" x2="748" y1="364" y2="364"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="627" x2="748" y1="372" y2="372"/><!--MD5=[36cebae4583ca589f8881f15eca879f1]
+reverse link AllEdges to AllNeuroEdges--><path d="M187.51,397.61 C179.45,411.85 170.68,427.35 163.7,439.68 " fill="none" id="AllEdges&lt;-AllNeuroEdges" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="181.54,393.96,197.48,380,193.72,400.85,181.54,393.96" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[d895029eba7154c6905399e7eb5aaaea]
+reverse link AllEdgesDeviceProperties to AllSpikingSynapsesDeviceProperties--><path d="M1375.39,284.17 C1354.46,299.79 1330.4,317.75 1311.74,331.68 " fill="none" id="AllEdgesDeviceProperties&lt;-AllSpikingSynapsesDeviceProperties" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="1371.47,278.35,1391.69,272,1379.85,289.57,1371.47,278.35" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[b299d6e53b6ac4d2a1701b68b9dc7554]
+reverse link AllIFNeurons to AllIZHNeurons--><path d="M2195.69,612.66 C2185.16,627.15 2173.6,643.07 2164.44,655.68 " fill="none" id="AllIFNeurons&lt;-AllIZHNeurons" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="2190.37,608.07,2207.79,596,2201.7,616.3,2190.37,608.07" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[7d41fa10eee7108bf615579dc16f66c4]
+reverse link AllIFNeurons to AllLIFNeurons--><path d="M2252.93,612.66 C2263.32,627.15 2274.74,643.07 2283.78,655.68 " fill="none" id="AllIFNeurons&lt;-AllLIFNeurons" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="2246.96,616.33,2240.99,596,2258.33,608.18,2246.96,616.33" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[17cadfdde82fbd78aaa7ab65342c0454]
+reverse link AllIFNeuronsDeviceProperties to AllIZHNeuronsDeviceProperties--><path d="M832.5,508.02 C832.5,521.58 832.5,536.04 832.5,547.68 " fill="none" id="AllIFNeuronsDeviceProperties&lt;-AllIZHNeuronsDeviceProperties" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="825.5,508,832.5,488,839.5,508,825.5,508" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[3d383143b8365dcb1c00482aec0d8f87]
+reverse link AllNeuroEdges to AllSpikingSynapses--><path d="M150.5,508.02 C150.5,521.58 150.5,536.04 150.5,547.68 " fill="none" id="AllNeuroEdges&lt;-AllSpikingSynapses" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="143.5,508,150.5,488,157.5,508,143.5,508" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[5445f169f2d896f0fc54fbb0dd17c8d5]
+reverse link AllSTDPSynapses to AllDynamicSTDPSynapses--><path d="M233.5,724.02 C233.5,737.58 233.5,752.04 233.5,763.68 " fill="none" id="AllSTDPSynapses&lt;-AllDynamicSTDPSynapses" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="226.5,724,233.5,704,240.5,724,226.5,724" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[539a086fdc8dbc8028ce1b9c0d3cb21a]
+reverse link AllSTDPSynapsesDeviceProperties to AllDynamicSTDPSynapsesDeviceProperties--><path d="M1361.5,508.02 C1361.5,521.58 1361.5,536.04 1361.5,547.68 " fill="none" id="AllSTDPSynapsesDeviceProperties&lt;-AllDynamicSTDPSynapsesDeviceProperties" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="1354.5,508,1361.5,488,1368.5,508,1354.5,508" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[8724fdcf162cd93143062af7a28861a5]
+reverse link AllSpikingNeurons to AllIFNeurons--><path d="M2180.06,504.66 C2189.77,519.15 2200.43,535.07 2208.88,547.68 " fill="none" id="AllSpikingNeurons&lt;-AllIFNeurons" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="2174.22,508.51,2168.91,488,2185.85,500.72,2174.22,508.51" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[5fcb689111a9832bf7543527f372e607]
+reverse link AllSpikingNeuronsDeviceProperties to AllIFNeuronsDeviceProperties--><path d="M880.69,396.66 C870.16,411.15 858.6,427.07 849.44,439.68 " fill="none" id="AllSpikingNeuronsDeviceProperties&lt;-AllIFNeuronsDeviceProperties" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="875.37,392.07,892.79,380,886.7,400.3,875.37,392.07" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[f221506eaa2e129ebcab2e085332c1be]
+reverse link AllSpikingSynapses to AllDSSynapses--><path d="M119.82,612.18 C108.37,626.8 95.74,642.93 85.76,655.68 " fill="none" id="AllSpikingSynapses&lt;-AllDSSynapses" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="114.65,607.43,132.49,596,125.67,616.06,114.65,607.43" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[587b9d07fbc4fdda6579551662042140]
+reverse link AllSpikingSynapses to AllSTDPSynapses--><path d="M181.18,612.18 C192.63,626.8 205.26,642.93 215.24,655.68 " fill="none" id="AllSpikingSynapses&lt;-AllSTDPSynapses" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="175.33,616.06,168.51,596,186.35,607.43,175.33,616.06" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[23aac5e482fb680cc0cec1f0f0dd59a6]
+reverse link AllSpikingSynapsesDeviceProperties to AllDSSynapsesDeviceProperties--><path d="M1221.24,389.89 C1192.05,406.09 1157.56,425.23 1131.19,439.86 " fill="none" id="AllSpikingSynapsesDeviceProperties&lt;-AllDSSynapsesDeviceProperties" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="1218.17,383.58,1239.06,380,1224.97,395.83,1218.17,383.58" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[e9a3e383543838c874b32001a8709207]
+reverse link AllSpikingSynapsesDeviceProperties to AllSTDPSynapsesDeviceProperties--><path d="M1310.44,396.18 C1321.61,410.8 1333.94,426.93 1343.68,439.68 " fill="none" id="AllSpikingSynapsesDeviceProperties&lt;-AllSTDPSynapsesDeviceProperties" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="1304.66,400.14,1298.08,380,1315.78,391.64,1304.66,400.14" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[f591e114573ccd2409f159b73ea72911]
+reverse link AllVertices to AllSpikingNeurons--><path d="M2124.93,398.57 C2131.13,412.54 2137.81,427.62 2143.16,439.68 " fill="none" id="AllVertices&lt;-AllSpikingNeurons" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="2118.41,401.12,2116.7,380,2131.2,395.45,2118.41,401.12" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[fcd28df228b50666b72099cd983e7d22]
+reverse link AllVerticesDeviceProperties to AllSpikingNeuronsDeviceProperties--><path d="M1011.34,283.51 C988.77,299.35 962.61,317.71 942.46,331.86 " fill="none" id="AllVerticesDeviceProperties&lt;-AllSpikingNeuronsDeviceProperties" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="1007.34,277.76,1027.74,272,1015.39,289.22,1007.34,277.76" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[10477add2578806cc5f98b33b8db5e65]
+reverse link Connections to ConnGrowth--><path d="M536.5,292.02 C536.5,305.58 536.5,320.04 536.5,331.68 " fill="none" id="Connections&lt;-ConnGrowth" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="529.5,292,536.5,272,543.5,292,529.5,292" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[513ec0388948448dab3ce17eb36460f7]
+reverse link Connections to ConnStatic--><path d="M483.82,283.05 C459.15,298.99 430.4,317.58 408.3,331.86 " fill="none" id="Connections&lt;-ConnStatic" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="480.32,276.98,500.91,272,487.92,288.74,480.32,276.98" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[19d836ace92e712b0d8c405f49d503c3]
+reverse link Hdf5Recorder to Hdf5GrowthRecorder--><path d="M1915.7,396.18 C1926.6,410.8 1938.62,426.93 1948.12,439.68 " fill="none" id="Hdf5Recorder&lt;-Hdf5GrowthRecorder" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="1909.98,400.22,1903.64,380,1921.21,391.85,1909.98,400.22" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[8dd8f9de4d0029903f75705d233ca28a]
+reverse link IFunctionNode to GenericFunctionNode--><path d="M2513.59,174.81 C2488.08,190.81 2458.28,209.51 2435.39,223.86 " fill="none" id="IFunctionNode&lt;-GenericFunctionNode" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="2510.17,168.7,2530.83,164,2517.61,180.56,2510.17,168.7" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[9f6fa59aebac9bc7112aaf284395847c]
+reverse link IRecorder to Hdf5Recorder--><path d="M1692.85,275.75 C1735.09,293.03 1789.5,315.3 1829.88,331.83 " fill="none" id="IRecorder&lt;-Hdf5Recorder" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="1689.96,282.13,1674.1,268.07,1695.26,269.17,1689.96,282.13" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[7186e99c451d736dd7b9f0c726ab5277]
+reverse link IRecorder to XmlRecorder--><path d="M1627.5,292.02 C1627.5,305.58 1627.5,320.04 1627.5,331.68 " fill="none" id="IRecorder&lt;-XmlRecorder" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="1620.5,292,1627.5,272,1634.5,292,1620.5,292" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[7269b632a17f4028eba21f1bd63939ed]
+reverse link Layout to DynamicLayout--><path d="M2291.67,283.75 C2314.01,299.53 2339.84,317.78 2359.76,331.86 " fill="none" id="Layout&lt;-DynamicLayout" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="2287.34,289.26,2275.05,272,2295.42,277.83,2287.34,289.26" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[891067ebdc7a855417ab5d2553f427ef]
+reverse link Layout to FixedLayout--><path d="M2242.5,292.02 C2242.5,305.58 2242.5,320.04 2242.5,331.68 " fill="none" id="Layout&lt;-FixedLayout" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="2235.5,292,2242.5,272,2249.5,292,2235.5,292" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[a2a96d1a257e41c08a9c3a3f8aadcb29]
+reverse link Model to CPUModel--><path d="M1244.5,184.02 C1244.5,197.58 1244.5,212.04 1244.5,223.68 " fill="none" id="Model&lt;-CPUModel" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="1237.5,184,1244.5,164,1251.5,184,1237.5,184" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[8342ff62b1882cdc2aad46dd54e535e9]
+reverse link Model to GPUModel--><path d="M1189.95,154.67 C1129.02,170.23 1027.63,197 941.5,224 C935.9,225.75 930.07,227.68 924.29,229.65 " fill="none" id="Model&lt;-GPUModel" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="1188.62,147.78,1209.73,149.65,1192.06,161.35,1188.62,147.78" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[8e79f27ee7b582c0f30a64eceb9600c6]
+reverse link XmlRecorder to XmlGrowthRecorder--><path d="M1614.66,399.54 C1610.52,413.23 1606.1,427.9 1602.54,439.68 " fill="none" id="XmlRecorder&lt;-XmlGrowthRecorder" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="1608.08,397.12,1620.56,380,1621.48,401.17,1608.08,397.12" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[7b176ba4d3de823aebcc641ddd35342b]
+reverse link XmlRecorder to XmlSTDPRecorder--><path d="M1676.66,391.51 C1699.23,407.35 1725.39,425.71 1745.54,439.86 " fill="none" id="XmlRecorder&lt;-XmlSTDPRecorder" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="1672.61,397.22,1660.26,380,1680.66,385.76,1672.61,397.22" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[f7b242bc45f077880469141c87516fa7]
+reverse link AllSpikingNeurons to EventBuffer--><path d="M2130.72,499.01 C2120.08,514.89 2107.68,533.41 2098.12,547.68 " fill="none" id="AllSpikingNeurons&lt;-EventBuffer" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2138.09,488,2131.4285,490.7613,2131.4153,497.9724,2138.0768,495.2111,2138.09,488" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[25007e0d6d2bc2691ed586569b6b25e2]
+reverse link Connections to AllEdges--><path d="M469.37,270.83 C404.34,291.97 307.72,323.39 252.77,341.26 " fill="none" id="Connections&lt;-AllEdges" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="481.93,266.74,474.9884,264.7871,470.5158,270.4437,477.4575,272.3966,481.93,266.74" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[82859cdc4fc284e53b85be6b34e88627]
+reverse link Connections to EdgeIndexMap--><path d="M580.1,279.61 C603.83,296.26 632.71,316.54 654.54,331.86 " fill="none" id="Connections&lt;-EdgeIndexMap" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="569.26,272,571.8682,278.7229,579.0771,278.901,576.4689,272.1781,569.26,272" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[dbf6625826c2ccd9ab80e1a9e4bec40a]
+reverse link ConnectionsFactory to Connections--><path d="M536.5,177.34 C536.5,192.68 536.5,210.1 536.5,223.68 " fill="none" id="ConnectionsFactory&lt;-Connections" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="536.5,164,532.5,170,536.5,176,540.5,170,536.5,164" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[324f5d3a776c0915160172bb3bb1f68c]
+reverse link EdgesFactory to AllEdges--><path d="M210.5,285.34 C210.5,300.68 210.5,318.1 210.5,331.68 " fill="none" id="EdgesFactory&lt;-AllEdges" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="210.5,272,206.5,278,210.5,284,214.5,278,210.5,272" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[2b5495829f9173c044fb8801621d6187]
+reverse link GPUModel to AllSpikingNeuronsDeviceProperties--><path d="M887.67,284.87 C892.48,300.33 897.97,317.96 902.24,331.68 " fill="none" id="GPUModel&lt;-AllSpikingNeuronsDeviceProperties" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#FFFFFF" points="883.66,272,881.6276,278.9188,887.2325,283.4559,889.2649,276.5371,883.66,272" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[f6129bcb9c73284e17b33b28d9016c76]
+reverse link GPUModel to AllSpikingSynapsesDeviceProperties--><path d="M936.71,270.54 C938.32,271.04 939.92,271.53 941.5,272 C1018.87,295.1 1107.54,316.64 1174.78,331.98 " fill="none" id="GPUModel&lt;-AllSpikingSynapsesDeviceProperties" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#FFFFFF" points="924.24,266.5,928.7184,272.1519,935.658,270.1917,931.1796,264.5399,924.24,266.5" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[5aeaf2a6bd64d076c9a29b9ba5666847]
+reverse link GPUModel to EdgeIndexMap--><path d="M823.93,278.48 C793.87,295.34 756.7,316.19 728.76,331.86 " fill="none" id="GPUModel&lt;-EdgeIndexMap" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#FFFFFF" points="835.49,272,828.3004,271.4441,825.022,277.8669,832.2116,278.4228,835.49,272" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[147440af9da7b06bb1c25492ebb2b6fc]
+reverse link IFunctionNode to Operations--><path d="M2567.5,177.34 C2567.5,192.68 2567.5,210.1 2567.5,223.68 " fill="none" id="IFunctionNode&lt;-Operations" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2567.5,164,2563.5,170,2567.5,176,2571.5,170,2567.5,164" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[9ced99db6c97f860d3e6f1f558ceb823]
+reverse link IFunctionNode to Operations::op--><path d="M2603.26,173.86 C2616,187.91 2628.84,205.37 2635.5,224 C2648.38,260.03 2637.64,304.8 2628.63,331.57 " fill="none" id="IFunctionNode&lt;-Operations::op" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2594.08,164.26,2595.34,171.3602,2602.3786,172.928,2601.1186,165.8278,2594.08,164.26" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[efb7ef13657b6fc949565044919673f3]
+reverse link Layout to AllVertices--><path d="M2202.69,280.03 C2181.5,296.54 2155.89,316.5 2136.42,331.68 " fill="none" id="Layout&lt;-AllVertices" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2212.99,272,2205.7984,272.5297,2203.5213,279.3719,2210.7129,278.8422,2212.99,272" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[95ba44a0b3c69ce18700dade6dfd248d]
+reverse link LayoutFactory to Layout--><path d="M2242.5,177.34 C2242.5,192.68 2242.5,210.1 2242.5,223.68 " fill="none" id="LayoutFactory&lt;-Layout" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2242.5,164,2238.5,170,2242.5,176,2246.5,170,2242.5,164" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[0e5738770afdb953f3cb9465cb228f84]
+reverse link Model to Connections--><path d="M1196.92,148.12 C1070.3,167.08 725.6,218.69 591.2,238.81 " fill="none" id="Model&lt;-Connections" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1209.87,146.18,1203.343,143.1143,1198.0028,147.9601,1204.5297,151.0258,1209.87,146.18" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[68c77613e519ddb3f64ca187dac87597]
+reverse link Model to IRecorder--><path d="M1292.15,154.19 C1366.09,174.65 1507.54,213.8 1580.86,234.09 " fill="none" id="Model&lt;-IRecorder" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1279.16,150.59,1283.8741,156.0469,1290.7243,153.7942,1286.0102,148.3374,1279.16,150.59" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[a911b337811af7fd7ce810fac5ac8c54]
+reverse link Model to Layout--><path d="M1291.99,144.77 C1477.29,159.54 2143.57,213.16 2187.5,224 C2193.23,225.41 2199.13,227.34 2204.85,229.48 " fill="none" id="Model&lt;-Layout" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1279,143.74,1284.665,148.2018,1290.9625,144.6886,1285.2974,140.2268,1279,143.74" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[da4e37961616ea89232dc94550b7be3e]
+reverse link OperationManager to IFunctionNode--><path d="M2567.5,69.34 C2567.5,84.68 2567.5,102.1 2567.5,115.68 " fill="none" id="OperationManager&lt;-IFunctionNode" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2567.5,56,2563.5,62,2567.5,68,2571.5,62,2567.5,56" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[79989c5c612cd705f8c6af7a6267fbc0]
+reverse link RecorderFactory to IRecorder--><path d="M1627.5,177.34 C1627.5,192.68 1627.5,210.1 1627.5,223.68 " fill="none" id="RecorderFactory&lt;-IRecorder" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1627.5,164,1623.5,170,1627.5,176,1631.5,170,1627.5,164" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[263ae887246c1ce3b32534d14bc96b50]
+reverse link Simulator to Model--><path d="M1244.5,69.34 C1244.5,84.68 1244.5,102.1 1244.5,115.68 " fill="none" id="Simulator&lt;-Model" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1244.5,56,1240.5,62,1244.5,68,1248.5,62,1244.5,56" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[420839a3a3a413a1278c95e345e5584e]
+reverse link VerticesFactory to AllVertices--><path d="M2105.84,285.34 C2105.99,300.68 2106.15,318.1 2106.28,331.68 " fill="none" id="VerticesFactory&lt;-AllVertices" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2105.72,272,2101.7729,278.0349,2105.8255,283.9995,2109.7726,277.9646,2105.72,272" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[1c85b8207771a3600805682c49a79883]
+reverse link ConnGrowth to ConnGrowth::GrowthParams--><path d="M553.86,393.81 C561.05,409.04 569.16,426.24 575.5,439.68 " fill="none" id="ConnGrowth&lt;-ConnGrowth::GrowthParams" style="stroke: #A80036; stroke-width: 1.0;"/><ellipse cx="550.7622" cy="387.2358" fill="#FFFFFF" rx="8" ry="8" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="554.1745" x2="547.35" y1="394.4716" y2="380"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="543.5265" x2="557.998" y1="390.648" y2="383.8235"/><!--MD5=[7436606c18ecdbda5eaebb84cf9adb19]
+reverse link ConnStatic to ConnStatic::DistDestVertex--><path d="M363.6,394.75 C360.06,409.74 356.11,426.51 353,439.68 " fill="none" id="ConnStatic&lt;-ConnStatic::DistDestVertex" style="stroke: #A80036; stroke-width: 1.0;"/><ellipse cx="365.2366" cy="387.7847" fill="#FFFFFF" rx="8" ry="8" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="363.3933" x2="367.08" y1="395.5695" y2="380"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="357.4519" x2="373.0214" y1="385.9414" y2="389.6281"/><!--MD5=[5a8d3fbc42f80913afa6dc1778a071da]
+reverse link Operations to Operations::op--><path d="M2585.56,285.81 C2593.03,301.04 2601.47,318.24 2608.06,331.68 " fill="none" id="Operations&lt;-Operations::op" style="stroke: #A80036; stroke-width: 1.0;"/><ellipse cx="2582.3027" cy="279.1827" fill="#FFFFFF" rx="8" ry="8" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="2585.8254" x2="2578.78" y1="286.3653" y2="272"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="2575.12" x2="2589.4854" y1="282.7054" y2="275.66"/><!--MD5=[bc1f83c6546e3822c5bbe3f88e9d0265]
+@startuml GraphittiDomainDiagram
+
+
+
+
+
+
+class AllDSSynapses {
+}
+
+
+class AllDynamicSTDPSynapses {
+}
+
+
+abstract class AllEdges {
+}
+
+
+class AllIFNeurons {
+}
+
+
+class AllIZHNeurons {
+}
+
+
+class AllLIFNeurons {
+}
+
+
+class AllNeuroEdges {
+}
+
+
+class AllSTDPSynapses {
+}
+
+
+abstract class AllSpikingNeurons {
+}
+
+
+class AllSpikingSynapses {
+}
+
+
+abstract class AllVertices {
+}
+
+
+class CPUModel {
+}
+
+
+class ConnGrowth {
+}
+
+
+class ConnStatic {
+}
+
+
+abstract class Connections {
+}
+
+
+class ConnectionsFactory {
+}
+
+
+class DynamicLayout {
+}
+
+
+class EdgesFactory {
+}
+
+
+class EventBuffer {
+}
+
+
+class FixedLayout {
+}
+
+
+class GPUModel {
+}
+
+
+class GenericFunctionNode {
+}
+
+
+class Hdf5GrowthRecorder {
+}
+
+
+class Hdf5Recorder {
+}
+
+
+abstract class IFunctionNode {
+}
+
+
+abstract class IRecorder {
+}
+
+
+abstract class Layout {
+}
+
+
+class LayoutFactory {
+}
+
+
+abstract class Model {
+}
+
+
+class OperationManager {
+}
+
+
+class Operations {
+}
+
+
+class RecorderFactory {
+}
+
+
+class Simulator {
+}
+
+
+class VerticesFactory {
+}
+
+
+class XmlGrowthRecorder {
+}
+
+
+class XmlRecorder {
+}
+
+
+class XmlSTDPRecorder {
+}
+
+
+enum Operations::op {
+}
+
+
+enum enumClassSynapses {
+}
+
+
+class AllDSSynapsesDeviceProperties {
+}
+
+
+class AllDynamicSTDPSynapsesDeviceProperties {
+}
+
+
+class AllEdgesDeviceProperties {
+}
+
+
+class AllIFNeuronsDeviceProperties {
+}
+
+
+class AllIZHNeuronsDeviceProperties {
+}
+
+
+class AllSTDPSynapsesDeviceProperties {
+}
+
+
+class AllSpikingNeuronsDeviceProperties {
+}
+
+
+class AllSpikingSynapsesDeviceProperties {
+}
+
+
+class AllVerticesDeviceProperties {
+}
+
+
+class ConnGrowth::GrowthParams {
+}
+
+
+class ConnStatic::DistDestVertex {
+}
+
+
+class EdgeIndexMap {
+}
+
+
+
+
+
+
+.AllEdges <|- - .AllNeuroEdges
+
+
+.AllEdgesDeviceProperties <|- - .AllSpikingSynapsesDeviceProperties
+
+
+.AllIFNeurons <|- - .AllIZHNeurons
+
+
+.AllIFNeurons <|- - .AllLIFNeurons
+
+
+.AllIFNeuronsDeviceProperties <|- - .AllIZHNeuronsDeviceProperties
+
+
+.AllNeuroEdges <|- - .AllSpikingSynapses
+
+
+.AllSTDPSynapses <|- - .AllDynamicSTDPSynapses
+
+
+.AllSTDPSynapsesDeviceProperties <|- - .AllDynamicSTDPSynapsesDeviceProperties
+
+
+.AllSpikingNeurons <|- - .AllIFNeurons
+
+
+.AllSpikingNeuronsDeviceProperties <|- - .AllIFNeuronsDeviceProperties
+
+
+.AllSpikingSynapses <|- - .AllDSSynapses
+
+
+.AllSpikingSynapses <|- - .AllSTDPSynapses
+
+
+.AllSpikingSynapsesDeviceProperties <|- - .AllDSSynapsesDeviceProperties
+
+
+.AllSpikingSynapsesDeviceProperties <|- - .AllSTDPSynapsesDeviceProperties
+
+
+.AllVertices <|- - .AllSpikingNeurons
+
+
+.AllVerticesDeviceProperties <|- - .AllSpikingNeuronsDeviceProperties
+
+
+.Connections <|- - .ConnGrowth
+
+
+.Connections <|- - .ConnStatic
+
+
+.Hdf5Recorder <|- - .Hdf5GrowthRecorder
+
+
+.IFunctionNode <|- - .GenericFunctionNode
+
+
+.IRecorder <|- - .Hdf5Recorder
+
+
+.IRecorder <|- - .XmlRecorder
+
+
+.Layout <|- - .DynamicLayout
+
+
+.Layout <|- - .FixedLayout
+
+
+.Model <|- - .CPUModel
+
+
+.Model <|- - .GPUModel
+
+
+.XmlRecorder <|- - .XmlGrowthRecorder
+
+
+.XmlRecorder <|- - .XmlSTDPRecorder
+
+
+
+
+
+
+.AllSpikingNeurons *- - .EventBuffer
+
+
+.Connections *- - .AllEdges
+
+
+.Connections *- - .EdgeIndexMap
+
+
+.ConnectionsFactory *- - .Connections
+
+
+.EdgesFactory *- - .AllEdges
+
+
+.GPUModel o- - .AllSpikingNeuronsDeviceProperties
+
+
+.GPUModel o- - .AllSpikingSynapsesDeviceProperties
+
+
+.GPUModel o- - .EdgeIndexMap
+
+
+.IFunctionNode *- - .Operations
+
+
+.IFunctionNode *- - .Operations::op
+
+
+.Layout *- - .AllVertices
+
+
+.LayoutFactory *- - .Layout
+
+
+.Model *- - .Connections
+
+
+.Model *- - .IRecorder
+
+
+.Model *- - .Layout
+
+
+.OperationManager *- - .IFunctionNode
+
+
+.RecorderFactory *- - .IRecorder
+
+
+.Simulator *- - .Model
+
+
+.VerticesFactory *- - .AllVertices
+
+
+
+
+
+
+
+.ConnGrowth +- - .ConnGrowth::GrowthParams
+
+
+.ConnStatic +- - .ConnStatic::DistDestVertex
+
+
+.Operations +- - .Operations::op
+
+
+
+
+@enduml
+
+PlantUML version 1.2020.02(Sun Mar 01 10:22:07 GMT 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 11.0.9+11-Ubuntu-0ubuntu1
+Operating System: Linux
+Default Encoding: ANSI_X3.4-1968
+Language: en
+Country: US
+--></g></svg>

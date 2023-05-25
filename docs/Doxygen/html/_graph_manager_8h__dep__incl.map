@@ -1,0 +1,7 @@
+<map id="Simulator/Utils/GraphManager.h" name="Simulator/Utils/GraphManager.h">
+<area shape="rect" id="node1" title="A basic Template Circular Buffer." alt="" coords="292,5,499,31"/>
+<area shape="rect" id="node2" href="$_connections911_8cpp.html" title="The model of the static network." alt="" coords="5,79,193,119"/>
+<area shape="rect" id="node3" href="$_core_8cpp.html" title="Orchestrates most functionality in the simulation." alt="" coords="218,86,381,111"/>
+<area shape="rect" id="node4" href="$_layout911_8cpp.html" title="The Layout class defines the layout of vertices in networks." alt="" coords="405,79,577,119"/>
+<area shape="rect" id="node5" href="$_graph_manager_8cpp.html" title="The GraphManager is a wrapper around the Boost Graph Library (BGL)." alt="" coords="602,86,823,111"/>
+</map>

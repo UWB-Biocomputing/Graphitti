@@ -1,0 +1,9 @@
+<map id="Simulator/Core/OperationManager.h" name="Simulator/Core/OperationManager.h">
+<area shape="rect" id="node1" title="Singleton instance method that registers and executes functions based on operation types." alt="" coords="195,5,363,45"/>
+<area shape="rect" id="node2" href="$_i_function_node_8h.html" title="Interface for storing and invoking functions. Used to support different FunctionNode classes that def..." alt="" coords="5,93,123,119"/>
+<area shape="rect" id="node3" href="$_operations_8h.html" title="This class is public reference to the operation types that the OperationManager can register and exec..." alt="" coords="65,167,159,192"/>
+<area shape="rect" id="node4" title=" " alt="" coords="198,93,277,119"/>
+<area shape="rect" id="node5" title=" " alt="" coords="301,93,339,119"/>
+<area shape="rect" id="node6" title=" " alt="" coords="363,93,538,119"/>
+<area shape="rect" id="node7" title=" " alt="" coords="562,93,630,119"/>
+</map>

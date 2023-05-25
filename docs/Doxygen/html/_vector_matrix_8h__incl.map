@@ -1,0 +1,21 @@
+<map id="Simulator/Utils/Matrix/VectorMatrix.h" name="Simulator/Utils/Matrix/VectorMatrix.h">
+<area shape="rect" id="node1" title="An efficient implementation of a dynamically&#45;allocated 1D array." alt="" coords="275,5,421,45"/>
+<area shape="rect" id="node2" href="$_complete_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 2D array." alt="" coords="143,93,265,119"/>
+<area shape="rect" id="node3" href="$_matrix_8h.html" title="Abstract base class for Matrices." alt="" coords="84,167,151,192"/>
+<area shape="rect" id="node7" title=" " alt="" coords="161,240,215,265"/>
+<area shape="rect" id="node8" title=" " alt="" coords="225,167,284,192"/>
+<area shape="rect" id="node9" href="$_norm_8h.html" title="Normally distributed random numbers." alt="" coords="579,93,643,119"/>
+<area shape="rect" id="node17" href="$_sparse_matrix_8h.html" title="An efficient implementation of a dynamically&#45;allocated 2D sparse array." alt="" coords="341,93,449,119"/>
+<area shape="rect" id="node4" href="$_b_g_types_8h.html" title="Used to define uniform data type sizes based for all operating systems. Also used to test the speed o..." alt="" coords="239,240,326,265"/>
+<area shape="rect" id="node5" href="$_matrix_exceptions_8h.html" title="Exception class hierarchy for Matrix classes." alt="" coords="5,240,136,265"/>
+<area shape="rect" id="node6" title=" " alt="" coords="31,313,110,339"/>
+<area shape="rect" id="node10" href="$_m_t_rand_8h.html" title="Mersenne Twister logic from Nvidia." alt="" coords="570,167,651,192"/>
+<area shape="rect" id="node12" title=" " alt="" coords="780,240,839,265"/>
+<area shape="rect" id="node11" title=" " alt="" coords="535,240,595,265"/>
+<area shape="rect" id="node13" title=" " alt="" coords="619,240,677,265"/>
+<area shape="rect" id="node14" title=" " alt="" coords="701,240,755,265"/>
+<area shape="rect" id="node15" title=" " alt="" coords="351,240,423,265"/>
+<area shape="rect" id="node16" title=" " alt="" coords="447,240,511,265"/>
+<area shape="rect" id="node18" title=" " alt="" coords="359,167,431,192"/>
+<area shape="rect" id="node19" title=" " alt="" coords="455,167,494,192"/>
+</map>

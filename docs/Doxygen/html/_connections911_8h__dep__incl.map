@@ -1,0 +1,10 @@
+<map id="Simulator/Connections/NG911/Connections911.h" name="Simulator/Connections/NG911/Connections911.h">
+<area shape="rect" id="node1" title="The model of the static network." alt="" coords="225,5,400,45"/>
+<area shape="rect" id="node2" href="$_connections911_8cpp.html" title="The model of the static network." alt="" coords="5,93,193,133"/>
+<area shape="rect" id="node3" href="$_xml911_recorder_8cpp.html" title="Header file for Xml911Recorder.h." alt="" coords="217,93,408,133"/>
+<area shape="rect" id="node4" href="$_factory_8h.html" title="A factory template for creating factory class for any subsystem that requires a factory to create a (..." alt="" coords="433,101,598,126"/>
+<area shape="rect" id="node5" href="$_connections_8cpp.html" title="Methods for creating and updating connections." alt="" coords="149,181,303,221"/>
+<area shape="rect" id="node6" href="$_model_8cpp.html" title="Implementation of Model for the graph&#45;based networks." alt="" coords="327,189,498,214"/>
+<area shape="rect" id="node7" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="523,189,713,214"/>
+<area shape="rect" id="node8" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="738,189,933,214"/>
+</map>

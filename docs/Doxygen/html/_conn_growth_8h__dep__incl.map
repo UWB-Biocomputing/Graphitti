@@ -1,0 +1,13 @@
+<map id="Simulator/Connections/Neuro/ConnGrowth.h" name="Simulator/Connections/Neuro/ConnGrowth.h">
+<area shape="rect" id="node1" title="The model of the activity&#45;dependent neurite outgrowth." alt="" coords="459,5,612,45"/>
+<area shape="rect" id="node2" href="$_conn_growth_8cpp.html" title="The model of the activity&#45;dependent neurite outgrowth." alt="" coords="5,93,167,133"/>
+<area shape="rect" id="node3" href="$_conn_growth__d_8cpp.html" title="Update the weights of the Synapses in the simulation." alt="" coords="191,93,365,133"/>
+<area shape="rect" id="node4" href="$_model_8cpp.html" title="Implementation of Model for the graph&#45;based networks." alt="" coords="491,189,662,214"/>
+<area shape="rect" id="node5" href="$_serializer_8cpp.html" title="Handles implementation details of serialization and deserialization of synapses." alt="" coords="441,101,630,126"/>
+<area shape="rect" id="node6" href="$_xml_growth_recorder_8cpp.html" title="An implementation for recording spikes history in an XML file for growth simulations." alt="" coords="655,93,861,133"/>
+<area shape="rect" id="node7" href="$_xml_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="885,93,1025,133"/>
+<area shape="rect" id="node8" href="$_factory_8h.html" title="A factory template for creating factory class for any subsystem that requires a factory to create a (..." alt="" coords="1050,101,1215,126"/>
+<area shape="rect" id="node9" href="$_connections_8cpp.html" title="Methods for creating and updating connections." alt="" coords="860,181,1013,221"/>
+<area shape="rect" id="node10" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="1037,189,1228,214"/>
+<area shape="rect" id="node11" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="1253,189,1447,214"/>
+</map>
