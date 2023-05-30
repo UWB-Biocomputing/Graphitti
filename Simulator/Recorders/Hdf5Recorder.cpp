@@ -45,6 +45,15 @@ Hdf5Recorder::Hdf5Recorder()
 /// @param[in] stateOutputFileName      File name to save histories
 void Hdf5Recorder::init()
 {
+   // check the output file extension is .h5
+   string suffix = ".h5";
+   if ((resultFileName_.size() <= suffix.size())
+       || (resultFileName_.compare(resultFileName_.size() - suffix.size(), suffix.size(), suffix)
+           != 0)) {
+      perror("the file extention is not .h5 ");
+      exit(EXIT_FAILURE);
+   }
+
    // Before trying to create H5File, use ofstream to confirm ability to create and write file.
    // TODO: Log error using LOG4CPLUS for workbench
    //       For the time being, we are terminating the program when we can't open a file for writing.
@@ -168,7 +177,7 @@ void Hdf5Recorder::initDataSet()
    }
 
    // allocate and initialize data memories
-   spikesHistory_.resize(static_cast<int>(simulator.getEpochDuration() * 100));
+
    spikesHistory_.assign(static_cast<int>(simulator.getEpochDuration() * 100), 0);
 
    // create the data space & dataset for spikes history of probed neurons
@@ -177,7 +186,6 @@ void Hdf5Recorder::initDataSet()
       spikesProbedNeurons_.resize(model->getLayout()->probedNeuronList_.size());
 
       // allocate and initialize memory to save offsets of what's been written
-      offsetSpikesProbedNeurons_.resize(model->getLayout()->probedNeuronList_.size());
       offsetSpikesProbedNeurons_.assign(model->getLayout()->probedNeuronList_.size(), 0);
    }
 }

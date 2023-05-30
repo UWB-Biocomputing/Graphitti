@@ -15,11 +15,6 @@
 void All911Vertices::setupVertices()
 {
    AllVertices::setupVertices();
-
-   callNum_.resize(size_);
-   dispNum_.resize(size_);
-   respNum_.resize(size_);
-
    // Populate arrays with 0
    callNum_.assign(size_, 0);
    dispNum_.assign(size_, 0);

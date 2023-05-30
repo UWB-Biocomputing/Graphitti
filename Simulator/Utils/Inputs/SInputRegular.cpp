@@ -77,11 +77,8 @@ SInputRegular::SInputRegular(TiXmlElement *parms) : values(nullptr)
 
    initValues.clear();
 
-   // allocate memory for shift values
-   nShiftValues.resize(Simulator::getInstance().getTotalVertices());
-
-   // initialize shift values
-   memset(nShiftValues.data(), 0, sizeof(int) * Simulator::getInstance().getTotalVertices());
+   // allocate memory and initialize shift values
+   nShiftValues.assign(Simulator::getInstance().getTotalVertices(), 0);
 
    if (sync == "no") {
       // asynchronous stimuli - fill nShiftValues array with values between 0 - nStepsCycle
