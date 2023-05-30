@@ -13,7 +13,6 @@
  */
 
 #pragma once
-#include "EventBuffer.h"
 #include "Global.h"
 #include "IRecorder.h"
 #include "Model.h"
@@ -57,16 +56,29 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
 
+   /// register variables in the simulation
+   void registerVariables(string varName, EventBuffer &recordVar) override;
+
 protected:
+   string single_neuron_name;
+   EventBuffer* variable_first;
+   std::vector<uint64_t> single_neuron_History_;
+
+   // create a structure contains the information of a variable
+   struct variableInfo{
+      string variableName;
+      EventBuffer* variableLocation;
+   };
+
+   //create table
+   std::vector<variableInfo> variableTable;
+
+
    // a file stream for xml output
    ofstream resultOut_;
 
-   // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
-   VectorMatrix spikesHistory_;
+   virtual string toXML(string name, vector<uint64_t> single_nueron_buffer) const;
 
-   // Populates Starter neuron matrix based with boolean values based on starterMap state
-   ///@param[in] matrix  starter neuron matrix
-   ///@param starterMap  Bool map to reference neuron matrix location from.
-   virtual void getStarterNeuronMatrix(VectorMatrix &matrix,
-                                       const std::vector<bool> &starterMap) override;
+   //this method will be deleted 
+   void getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap);
 };

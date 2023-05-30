@@ -44,7 +44,7 @@
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "ParseParamError.h"
-#include "XmlGrowthRecorder.h"
+//#include "XmlGrowthRecorder.h"
 
 #ifdef USE_HDF5
    #include "Hdf5GrowthRecorder.h"

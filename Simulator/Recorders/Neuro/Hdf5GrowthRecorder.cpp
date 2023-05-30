@@ -196,5 +196,10 @@ void Hdf5GrowthRecorder::printParameters()
                                    << "\tRecorder type: Hdf5GrowthRecorder" << endl);
 }
 
+void Hdf5GrowthRecorder::registerVariables(std::string varName, EventBuffer &recordVar)
+{
+
+}
+
 
 #endif   // HDF5

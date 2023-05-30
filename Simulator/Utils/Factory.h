@@ -72,8 +72,8 @@
 // Recorder
 #include "Recorders/IRecorder.h"
 #include "Recorders/NG911/Xml911Recorder.h"
-#include "Recorders/Neuro/XmlGrowthRecorder.h"
-#include "Recorders/Neuro/XmlSTDPRecorder.h"
+//#include "Recorders/Neuro/XmlGrowthRecorder.h"
+//#include "Recorders/Neuro/XmlSTDPRecorder.h"
 #include "Recorders/XmlRecorder.h"
 
 #if defined(HDF5)
@@ -201,8 +201,8 @@ private:
       else if constexpr (std::is_same_v<T, IRecorder>) {
          createFunctionMap["XmlRecorder"] = &XmlRecorder::Create;
          createFunctionMap["Xml911Recorder"] = &Xml911Recorder::Create;
-         createFunctionMap["XmlSTDPRecorder"] = &XmlSTDPRecorder::Create;
-         createFunctionMap["XmlGrowthRecorder"] = &XmlGrowthRecorder::Create;
+         // createFunctionMap["XmlSTDPRecorder"] = &XmlSTDPRecorder::Create;
+         // createFunctionMap["XmlGrowthRecorder"] = &XmlGrowthRecorder::Create;
 
 #if defined(HDF5)
          createFunctionMap["Hdf5Recorder"] = &Hdf5Recorder::Create;

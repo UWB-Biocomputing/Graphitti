@@ -8,6 +8,7 @@
 
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
+#include "XmlRecorder.h"
 
 ///  Setup the internal structure of the class (allocate memories).
 void AllSpikingNeurons::setupVertices()
@@ -19,6 +20,8 @@ void AllSpikingNeurons::setupVertices()
 
    hasFired_.resize(size_, false);
    vertexEvents_.resize(size_, maxSpikes);
+   IRecorder &recorder = *Simulator::getInstance().getModel()->getRecorder();
+   recorder.registerVariables("Neuron_7", vertexEvents_[7]);
 }
 
 ///  Clear the spike counts out of all Neurons.
