@@ -20,6 +20,8 @@ void AllSpikingNeurons::setupVertices()
 
    hasFired_.resize(size_, false);
    vertexEvents_.resize(size_, maxSpikes);
+
+   // register variables
    IRecorder &recorder = *Simulator::getInstance().getModel()->getRecorder();
    recorder.registerVariables("Neuron_7", vertexEvents_[7]);
 }

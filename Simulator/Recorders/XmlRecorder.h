@@ -56,22 +56,27 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
 
-   /// register variables in the simulation
+   /// Store the neuron number and all the events for this neuron that registered in the variable owner class
    void registerVariables(string varName, EventBuffer &recordVar) override;
 
 protected:
+   // a signle neuron number
    string single_neuron_name;
+
+   // all events for a single neuron
    EventBuffer* variable_first;
+
+   // history of accumulated event of a neurons
    std::vector<uint64_t> single_neuron_History_;
 
-   // create a structure contains the information of a variable
-   struct variableInfo{
-      string variableName;
-      EventBuffer* variableLocation;
-   };
+   // // create a structure contains the information of a variable
+   // struct variableInfo{
+   //    string variableName;
+   //    EventBuffer* variableLocation;
+   // };
 
-   //create table
-   std::vector<variableInfo> variableTable;
+   // // create table
+   // std::vector<variableInfo> variableTable;
 
 
    // a file stream for xml output

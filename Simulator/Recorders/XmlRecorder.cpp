@@ -132,18 +132,10 @@ void XmlRecorder::printParameters()
 }
 
 
-// print out the content in the variable table
+/// Store the neuron number and all the events for this neuron that registered in the variable owner class
 void XmlRecorder::registerVariables(string name, EventBuffer &recordVar)
 {
-   // for(int i = 0; i < variableTable.size(); i++){
-   //    std::cout << "name: " << variableTable[i].variableName << endl;
-   //    std::cout << "location" << variableTable[i].variableLocation << endl;
-
-   // }
-   //EventBuffer &variable_first_test = recordVar;
-   //std::cout << "test_output_address:" <<  variable_first_test.getNumEventsInEpoch() << endl;
    single_neuron_name = name;
    variable_first= &recordVar;
-   //std::cout << "test_output2: << &variable_first << endl;
 
 }
