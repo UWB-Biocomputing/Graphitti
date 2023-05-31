@@ -489,7 +489,6 @@ void Hdf5Recorder::printParameters()
 
 void Hdf5Recorder::registerVariables(std::string varName, EventBuffer &recordVar)
 {
-   
 }
 
 #endif   // HDF5

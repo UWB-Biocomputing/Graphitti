@@ -8,8 +8,8 @@
  */
 
 #pragma once
-#include "EventBuffer.h"
 #include "AllVertices.h"
+#include "EventBuffer.h"
 #include <log4cplus/loggingmacros.h>
 
 class AllVertices;
