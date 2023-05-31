@@ -64,7 +64,7 @@ protected:
    string single_neuron_name;
 
    // all events for a single neuron
-   EventBuffer* variable_first;
+   EventBuffer *variable_first;
 
    // history of accumulated event of a neurons
    std::vector<uint64_t> single_neuron_History_;
@@ -84,6 +84,6 @@ protected:
 
    virtual string toXML(string name, vector<uint64_t> single_nueron_buffer) const;
 
-   //this method will be deleted 
+   //this method will be deleted
    void getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap);
 };

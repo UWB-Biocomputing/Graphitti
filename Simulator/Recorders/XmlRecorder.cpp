@@ -76,7 +76,7 @@ void XmlRecorder::term()
 /// @param[in] neurons    The entire list of neurons.
 void XmlRecorder::compileHistories(AllVertices &vertices)
 {
-   for(int i = 0; i < variable_first->getNumEventsInEpoch(); i++){
+   for (int i = 0; i < variable_first->getNumEventsInEpoch(); i++) {
       //std::cout << "test output:" << (*variable_first)[i] << endl;
       single_neuron_History_.push_back((*variable_first)[i]);
    }
@@ -87,11 +87,10 @@ void XmlRecorder::compileHistories(AllVertices &vertices)
 /// @param  neurons the Neuron list to search from.
 void XmlRecorder::saveSimData(const AllVertices &vertices)
 {
-   for(int i = 0; i < variable_first->getNumEventsInEpoch(); i++){
+   for (int i = 0; i < variable_first->getNumEventsInEpoch(); i++) {
       cout << "test output:" << (*variable_first)[i] << endl;
    }
    resultOut_ << "   " << toXML(single_neuron_name, single_neuron_History_) << endl;
-
 }
 
 /// convert internal buffer to XML string
@@ -102,8 +101,7 @@ string XmlRecorder::toXML(string name, vector<uint64_t> single_neuron_buffer) co
    os << "Event for a signle neuron ";
    if (name != "")
       os << "name=\"" << name << "\" ";
-   os << "type=\"complete\" rows=\"" << single_neuron_buffer.size() << "\" columns=\""
-      << 2  << endl;
+   os << "type=\"complete\" rows=\"" << single_neuron_buffer.size() << "\" columns=\"" << 2 << endl;
    for (int i = 0; i < single_neuron_buffer.size(); i++) {
       os << name << ": ";
       os << single_neuron_buffer[i] << ": ";
@@ -117,7 +115,6 @@ string XmlRecorder::toXML(string name, vector<uint64_t> single_neuron_buffer) co
 
 void XmlRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap)
 {
-
 }
 
 /**
@@ -136,6 +133,5 @@ void XmlRecorder::printParameters()
 void XmlRecorder::registerVariables(string name, EventBuffer &recordVar)
 {
    single_neuron_name = name;
-   variable_first= &recordVar;
-
+   variable_first = &recordVar;
 }
