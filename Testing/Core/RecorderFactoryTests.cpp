@@ -12,8 +12,6 @@
 #include "Hdf5GrowthRecorder.h"
 #include "Utils/Factory.h"
 #include "Xml911Recorder.h"
-//#include "XmlGrowthRecorder.h"
-//#include "XmlSTDPRecorder.h"
 #include "gtest/gtest.h"
 
 TEST(RecorderFactory, GetInstanceReturnsInstance)
@@ -28,21 +26,6 @@ TEST(RecorderFactory, CreateXml911RecorderInstance)
    ASSERT_NE(nullptr, recorder);
    ASSERT_NE(nullptr, dynamic_cast<Xml911Recorder *>(recorder.get()));
 }
-
-// TEST(RecorderFactory, CreateXmlGrowthRecorderInstance)
-// {
-//    unique_ptr<IRecorder> recorder
-//       = Factory<IRecorder>::getInstance().createType("XmlGrowthRecorder");
-//    ASSERT_NE(nullptr, recorder);
-//    ASSERT_NE(nullptr, dynamic_cast<XmlGrowthRecorder *>(recorder.get()));
-// }
-
-// TEST(RecorderFactory, CreateXmlSTDPRecorderInstance)
-// {
-//    unique_ptr<IRecorder> recorder = Factory<IRecorder>::getInstance().createType("XmlSTDPRecorder");
-//    ASSERT_NE(nullptr, recorder);
-//    ASSERT_NE(nullptr, dynamic_cast<XmlSTDPRecorder *>(recorder.get()));
-// }
 
 TEST(RecorderFactory, CreateNonExistentClassReturnsNullPtr)
 {
