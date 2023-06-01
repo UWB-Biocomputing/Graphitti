@@ -23,7 +23,7 @@ void AllSpikingNeurons::setupVertices()
 
    // register variables
    Recorder &recorder = *Simulator::getInstance().getModel()->getRecorder();
-   recorder.registerVariables("Neuron_7", vertexEvents_[7]);
+   recorder.registerVariable("Neuron_7", vertexEvents_[7]);
 }
 
 ///  Clear the spike counts out of all Neurons.

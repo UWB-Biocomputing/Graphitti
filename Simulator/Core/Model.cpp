@@ -17,8 +17,8 @@
 #include "ConnGrowth.h"
 #include "Connections.h"
 #include "Factory.h"
-#include "Recorder.h"
 #include "ParameterManager.h"
+#include "Recorder.h"
 #include "Simulator.h"
 
 /// Constructor

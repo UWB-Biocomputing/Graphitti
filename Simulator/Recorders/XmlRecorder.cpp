@@ -93,7 +93,7 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
    resultOut_ << "   " << toXML(neuronName, single_neuron_History_) << endl;
 }
 
-/// convert internal buffer to XML string
+/// Convert internal buffer to XML string
 string XmlRecorder::toXML(string name, vector<uint64_t> single_neuron_buffer) const
 {
    stringstream os;
@@ -101,8 +101,8 @@ string XmlRecorder::toXML(string name, vector<uint64_t> single_neuron_buffer) co
    os << "<Matrix ";
    if (name != "")
       os << "name=\"" << name << "\" ";
-   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\""
-      << single_neuron_buffer.size() << "\" multiplier=\"1.0\">" << endl;
+   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << single_neuron_buffer.size()
+      << "\" multiplier=\"1.0\">" << endl;
    os << "   ";
    for (int i = 0; i < single_neuron_buffer.size(); i++) {
       os << single_neuron_buffer[i] << " ";
@@ -129,8 +129,9 @@ void XmlRecorder::printParameters()
 }
 
 
-/// Store the neuron number and all the events for this neuron that registered in the variable owner class
-void XmlRecorder::registerVariables(string name, EventBuffer &recordVar)
+/// Obtain the updating value while the simulator runs by storing the address of registered variable
+/// Store a single neuron with the neuron number and its corresponding events
+void XmlRecorder::registerVariable(string name, EventBuffer &recordVar)
 {
    neuronName = name;
    singleNeuronEvents_ = &recordVar;

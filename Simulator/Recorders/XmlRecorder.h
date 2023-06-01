@@ -7,15 +7,14 @@
  *
  * The XmlRecorder provides a mechanism for recording neuron's layout, spikes history,
  * and compile history information on xml file:
- *     -# neuron's locations, and type map,
- *     -# individual neuron's spike rate in epochs,
- *     -# network wide spike count in 10ms bins.
+ *     -# the number of a single neuron,
+ *     -# all vertex events for a single neuron.
  */
 
 #pragma once
 #include "Global.h"
-#include "Recorder.h"
 #include "Model.h"
+#include "Recorder.h"
 #include <fstream>
 #include <vector>
 
@@ -56,17 +55,19 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
 
-   /// Store the neuron number and all the events for this neuron that registered in the variable owner class
-   void registerVariables(string varName, EventBuffer &recordVar) override;
+   /// Store the neuron number and all the events of this single neuron
+   void registerVariable(string varName, EventBuffer &recordVar) override;
 
 protected:
-   // a signle neuron number
+   // variable neuronName records the number of a single neuron
    string neuronName;
 
-   // all events for a single neuron
+   // The address of the registered variable
+   // As the simulator runs, the values will be updated
+   // It can records all events of a single neuron in each epoch
    EventBuffer *singleNeuronEvents_;
 
-   // history of accumulated event of a neurons
+   // history of accumulated event for a single neuron
    std::vector<uint64_t> single_neuron_History_;
 
    // // create a structure contains the information of a variable

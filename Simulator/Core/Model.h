@@ -16,8 +16,8 @@
 #pragma once
 
 #include "AllVertices.h"
-#include "Recorder.h"
 #include "Layout.h"
+#include "Recorder.h"
 #include <log4cplus/loggingmacros.h>
 #include <memory>
 

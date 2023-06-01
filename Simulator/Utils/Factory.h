@@ -70,8 +70,8 @@
 #include "Vertices/Neuro/AllLIFNeurons.h"
 
 // Recorder
-#include "Recorders/Recorder.h"
 #include "Recorders/NG911/Xml911Recorder.h"
+#include "Recorders/Recorder.h"
 #include "Recorders/XmlRecorder.h"
 
 #if defined(HDF5)

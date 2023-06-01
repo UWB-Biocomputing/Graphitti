@@ -28,8 +28,8 @@
 #include "AllSpikingSynapses.h"
 #include "AllVertices.h"
 #include "EdgeIndexMap.h"
-#include "Recorder.h"
 #include "Layout.h"
+#include "Recorder.h"
 #include <log4cplus/loggingmacros.h>
 #include <memory>
 

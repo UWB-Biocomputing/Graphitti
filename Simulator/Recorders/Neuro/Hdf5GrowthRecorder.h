@@ -69,7 +69,7 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
 
-   virtual void registerVariables(std::string varName, EventBuffer &recordVar) override;
+   virtual void registerVariable(std::string varName, EventBuffer &recordVar) override;
 
 protected:
    virtual void initDataSet() override;

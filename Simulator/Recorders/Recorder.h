@@ -44,7 +44,7 @@ public:
    // Prints loaded parameters to logging file.
    virtual void printParameters() = 0;
 
-   virtual void registerVariables(string varName, EventBuffer &recordVar) = 0;
+   virtual void registerVariable(string varName, EventBuffer &recordVar) = 0;
 
 protected:
    // File path to the file that the results will be printed to.
