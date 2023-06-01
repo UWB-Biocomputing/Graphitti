@@ -61,10 +61,10 @@ public:
 
 protected:
    // a signle neuron number
-   string single_neuron_name;
+   string neuronName;
 
    // all events for a single neuron
-   EventBuffer *variable_first;
+   EventBuffer *singleNeuronEvents_;
 
    // history of accumulated event of a neurons
    std::vector<uint64_t> single_neuron_History_;

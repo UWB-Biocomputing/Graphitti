@@ -76,21 +76,21 @@ void XmlRecorder::term()
 /// @param[in] neurons    The entire list of neurons.
 void XmlRecorder::compileHistories(AllVertices &vertices)
 {
-   for (int i = 0; i < variable_first->getNumEventsInEpoch(); i++) {
+   for (int i = 0; i < singleNeuronEvents_->getNumEventsInEpoch(); i++) {
       //std::cout << "test output:" << (*variable_first)[i] << endl;
-      single_neuron_History_.push_back((*variable_first)[i]);
+      single_neuron_History_.push_back((*singleNeuronEvents_)[i]);
    }
-   variable_first->startNewEpoch();
+   singleNeuronEvents_->startNewEpoch();
 }
 
 /// Writes simulation results to an output destination.
 /// @param  neurons the Neuron list to search from.
 void XmlRecorder::saveSimData(const AllVertices &vertices)
 {
-   for (int i = 0; i < variable_first->getNumEventsInEpoch(); i++) {
-      cout << "test output:" << (*variable_first)[i] << endl;
-   }
-   resultOut_ << "   " << toXML(single_neuron_name, single_neuron_History_) << endl;
+   // Write XML header information:
+   resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
+              << "<!-- State output file for the DCT growth modeling-->\n";
+   resultOut_ << "   " << toXML(neuronName, single_neuron_History_) << endl;
 }
 
 /// convert internal buffer to XML string
@@ -98,17 +98,17 @@ string XmlRecorder::toXML(string name, vector<uint64_t> single_neuron_buffer) co
 {
    stringstream os;
 
-   os << "Event for a signle neuron ";
+   os << "<Matrix ";
    if (name != "")
       os << "name=\"" << name << "\" ";
-   os << "type=\"complete\" rows=\"" << single_neuron_buffer.size() << "\" columns=\"" << 2 << endl;
+   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\""
+      << single_neuron_buffer.size() << "\" multiplier=\"1.0\">" << endl;
+   os << "   ";
    for (int i = 0; i < single_neuron_buffer.size(); i++) {
-      os << name << ": ";
-      os << single_neuron_buffer[i] << ": ";
-      os << endl;
+      os << single_neuron_buffer[i] << " ";
    }
    os << endl;
-   //os << "</Matrix>";
+   os << "</Matrix>";
 
    return os.str();
 }
@@ -132,6 +132,6 @@ void XmlRecorder::printParameters()
 /// Store the neuron number and all the events for this neuron that registered in the variable owner class
 void XmlRecorder::registerVariables(string name, EventBuffer &recordVar)
 {
-   single_neuron_name = name;
-   variable_first = &recordVar;
+   neuronName = name;
+   singleNeuronEvents_ = &recordVar;
 }

@@ -33,7 +33,7 @@ struct AllSpikingNeuronsDeviceProperties;
 
 class AllSpikingNeurons : public AllVertices {
 public:
-   //AllSpikingNeurons() = default;
+   AllSpikingNeurons() = default;
 
    virtual ~AllSpikingNeurons() = default;
 
