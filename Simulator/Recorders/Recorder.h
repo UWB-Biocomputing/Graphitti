@@ -1,5 +1,5 @@
 /**
- * @file IRecorder.h
+ * @file Recorder.h
  *
  * @ingroup Simulator/Recorders
  *
@@ -13,9 +13,9 @@
 #include <log4cplus/loggingmacros.h>
 
 class AllVertices;
-class IRecorder {
+class Recorder {
 public:
-   virtual ~IRecorder() = default;
+   virtual ~Recorder() = default;
 
    // Initialize data
    /// @param[in] stateOutputFileName  File name to save histories

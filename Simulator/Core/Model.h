@@ -16,7 +16,7 @@
 #pragma once
 
 #include "AllVertices.h"
-#include "IRecorder.h"
+#include "Recorder.h"
 #include "Layout.h"
 #include <log4cplus/loggingmacros.h>
 #include <memory>
@@ -25,7 +25,7 @@ using namespace std;
 
 class Connections;
 
-class IRecorder;
+class Recorder;
 
 class Layout;
 
@@ -41,7 +41,7 @@ public:
 
    Layout *getLayout() const;
 
-   IRecorder *getRecorder() const;
+   Recorder *getRecorder() const;
 
    /// Writes simulation results to an output destination.
    /// Downstream from IModel saveData()
@@ -91,7 +91,7 @@ protected:
 
    unique_ptr<Layout> layout_;
 
-   unique_ptr<IRecorder> recorder_;
+   unique_ptr<Recorder> recorder_;
 
    // shared_ptr<ISInput> input_;    /// Stimulus input object.
 

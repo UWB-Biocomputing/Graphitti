@@ -611,7 +611,7 @@ class Hdf5GrowthRecorder {
 	#ratesHistory_ : BGFLOAT*
 	#dataSetRadiiHist_ : DataSet
 	#dataSetRatesHist_ : DataSet
-	+{static} Create() : IRecorder*
+	+{static} Create() : Recorder*
 	+compileHistories(AllVertices& neurons) : void
 	+getValues() : void
 	#initDataSet() : void
@@ -636,7 +636,7 @@ class Hdf5Recorder {
 	#dataSetXloc_ : DataSet*
 	#dataSetYloc_ : DataSet*
 	#resultOut_ : H5File*
-	+{static} Create() : IRecorder*
+	+{static} Create() : Recorder*
 	#offsetSpikesProbedNeurons_ : hsize_t*
 	#spikesHistory_ : int*
 	#spikesProbedNeurons_ : vector<uint64_t>*
@@ -660,8 +660,8 @@ abstract class IFunctionNode {
 }
 
 
-abstract class IRecorder {
-	+~IRecorder()
+abstract class Recorder {
+	+~Recorder()
 	#fileLogger_ : log4cplus::Logger
 	#resultFileName_ : string
 	+{abstract} compileHistories(AllVertices& vertices) : void
@@ -725,8 +725,8 @@ abstract class Model {
 	#fileLogger_ : log4cplus::Logger
 	#connections_ : shared_ptr<Connections>
 	+getConnections() : shared_ptr<Connections> {query}
-	+getRecorder() : shared_ptr<IRecorder> {query}
-	#recorder_ : shared_ptr<IRecorder>
+	+getRecorder() : shared_ptr<Recorder> {query}
+	#recorder_ : shared_ptr<Recorder>
 	+getLayout() : shared_ptr<Layout> {query}
 	#layout_ : shared_ptr<Layout>
 	+{abstract} advance() : void
@@ -761,11 +761,11 @@ class Operations {
 class RecorderFactory {
 	-RecorderFactory()
 	+~RecorderFactory()
-	-invokeCreateFunction(const string& className) : IRecorder*
+	-invokeCreateFunction(const string& className) : Recorder*
 	+{static} getInstance() : RecorderFactory*
 	-createFunctions : RecorderFunctionMap
-	+createRecorder(const string& className) : shared_ptr<IRecorder>
-	-recorderInstance : shared_ptr<IRecorder>
+	+createRecorder(const string& className) : shared_ptr<Recorder>
+	-recorderInstance : shared_ptr<Recorder>
 	-registerClass(const string& className, CreateFunction function) : void
 }
 
@@ -858,7 +858,7 @@ class XmlGrowthRecorder {
 	+~XmlGrowthRecorder()
 	-radiiHistory_ : CompleteMatrix
 	-ratesHistory_ : CompleteMatrix
-	+{static} Create() : IRecorder*
+	+{static} Create() : Recorder*
 	+compileHistories(AllVertices& neurons) : void
 	-getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
 	+getValues() : void
@@ -871,7 +871,7 @@ class XmlGrowthRecorder {
 
 class XmlRecorder {
 	+XmlRecorder()
-	+{static} Create() : IRecorder*
+	+{static} Create() : Recorder*
 	#spikesHistory_ : VectorMatrix
 	#resultOut_ : ofstream
 	+compileHistories(AllVertices& vertices) : void
@@ -889,7 +889,7 @@ class XmlRecorder {
 class XmlSTDPRecorder {
 	+XmlSTDPRecorder()
 	+~XmlSTDPRecorder()
-	+{static} Create() : IRecorder*
+	+{static} Create() : Recorder*
 	+toXML(string name, vector<vector<BGFLOAT>> MatrixToWrite) : string {query}
 	+toXML(string name, vector<vector<int>> MatrixToWrite) : string {query}
 	#weightsHistory_ : vector<vector<BGFLOAT>>
@@ -1129,10 +1129,10 @@ class EdgeIndexMap {
 .IFunctionNode <|-- .GenericFunctionNode
 
 
-.IRecorder <|-- .Hdf5Recorder
+.Recorder <|-- .Hdf5Recorder
 
 
-.IRecorder <|-- .XmlRecorder
+.Recorder <|-- .XmlRecorder
 
 
 .Layout <|-- .DynamicLayout
@@ -1197,7 +1197,7 @@ class EdgeIndexMap {
 .Model *-- .Connections
 
 
-.Model *-- .IRecorder
+.Model *-- .Recorder
 
 
 .Model *-- .Layout
@@ -1206,7 +1206,7 @@ class EdgeIndexMap {
 .OperationManager *-- .IFunctionNode
 
 
-.RecorderFactory *-- .IRecorder
+.RecorderFactory *-- .Recorder
 
 
 .Simulator *-- .Model

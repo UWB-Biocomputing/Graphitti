@@ -14,17 +14,17 @@
 
 #pragma once
 #include "Global.h"
-#include "IRecorder.h"
+#include "Recorder.h"
 #include "Model.h"
 #include <fstream>
 #include <vector>
 
-class XmlRecorder : public IRecorder {
+class XmlRecorder : public Recorder {
 public:
    // constructor which opens the xml file to store results
    XmlRecorder();
 
-   static IRecorder *Create()
+   static Recorder *Create()
    {
       return new XmlRecorder();
    }

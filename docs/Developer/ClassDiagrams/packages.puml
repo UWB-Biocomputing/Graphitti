@@ -48,8 +48,8 @@ package Vertices{
 
 /'package '/
 package Recorders{
-   class  XmLRecorder implements IRecorder
-   class HDF5Recorder implements IRecorder
+   class  XmLRecorder implements Recorder
+   class HDF5Recorder implements Recorder
    class XmlGrowthRecroder extends XmLRecorder
    class Hdf5GrowthRecorder extends HDF5Recorder
    class RecordersFactory
@@ -92,7 +92,7 @@ Layout -[#red]---> VerticesFactory : commands
 
 /'relationship of classes in package connections and other package'/
 /'Connections here refers to the interface in package'/
-Connections o-[#red]- IRecorder
+Connections o-[#red]- Recorder
 Connections o-[#red]- AllEdges
 Connections -[#red]---> RecordersFactory : commands
 Connections -[#red]---> EdgesFactory : commands

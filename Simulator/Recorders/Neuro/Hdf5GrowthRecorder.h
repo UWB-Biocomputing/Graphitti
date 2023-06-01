@@ -43,7 +43,7 @@ public:
 
    ~Hdf5GrowthRecorder() = default;
 
-   static IRecorder *Create()
+   static Recorder *Create()
    {
       return new Hdf5GrowthRecorder();
    }
