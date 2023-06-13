@@ -27,10 +27,10 @@
 
 __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int maxSpikes,
                                         const BGFLOAT deltaT, uint64_t simulationStep,
-                                        float *randNoise,
+                                        float randNoise[],
                                         AllIZHNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        EdgeIndexMapDevice &edgeIndexMapDevice,
+                                        EdgeIndexMapDevice *edgeIndexMapDevice,
                                         bool fAllowBackPropagation);
 
 
@@ -184,8 +184,8 @@ void AllIZHNeurons::clearNeuronSpikeCounts(void *allVerticesDevice)
 
 ///  Notify outgoing synapses if neuron has fired.
 void AllIZHNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
-                                    void *allEdgesDevice, float *randNoise,
-                                    EdgeIndexMapDevice &edgeIndexMapDevice)
+                                    void *allEdgesDevice, float randNoise[],
+                                    EdgeIndexMapDevice *edgeIndexMapDevice)
 {
    int vertex_count = Simulator::getInstance().getTotalVertices();
    int maxSpikes = (int)((Simulator::getInstance().getEpochDuration()
@@ -219,10 +219,10 @@ void AllIZHNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
 __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int maxSpikes,
                                         const BGFLOAT deltaT, uint64_t simulationStep,
-                                        float *randNoise,
+                                        float randNoise[],
                                         AllIZHNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        EdgeIndexMapDevice &edgeIndexMapDevice,
+                                        EdgeIndexMapDevice *edgeIndexMapDevice,
                                         bool fAllowBackPropagation)
 {
    // determine which neuron this thread is processing
@@ -244,7 +244,7 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
 
    if (allVerticesDevice->numStepsInRefractoryPeriod_[idx] > 0) {   // is neuron refractory?
       --allVerticesDevice->numStepsInRefractoryPeriod_[idx];
-   } else if (r_vm >= allVerticesDevice->Vthresh_[idx]) {   // should it fire?
+   } else if (r_vm >= allVerticesDevice->Vthresh_[idx]) {           // should it fire?
       int &spikeCount = allVerticesDevice->numEventsInEpoch_[idx];
       // Note that the neuron has fired!
       allVerticesDevice->hasFired_[idx] = true;
@@ -264,12 +264,12 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
       u = r_u + allVerticesDevice->Dconst_[idx];
 
       // notify outgoing synapses of spike
-      BGSIZE synapseCounts = edgeIndexMapDevice.outgoingEdgeCount_[idx];
+      BGSIZE synapseCounts = edgeIndexMapDevice->outgoingEdgeCount_[idx];
       if (synapseCounts != 0) {
          // get the index of where this neuron's list of synapses are
-         BGSIZE beginIndex = edgeIndexMapDevice.outgoingEdgeBegin_[idx];
+         BGSIZE beginIndex = edgeIndexMapDevice->outgoingEdgeBegin_[idx];
          // get the memory location of where that list begins
-         BGSIZE *outgoingMapBegin = &(edgeIndexMapDevice.outgoingEdgeIndexMap_[beginIndex]);
+         BGSIZE *outgoingMapBegin = &(edgeIndexMapDevice->outgoingEdgeIndexMap_[beginIndex]);
 
          // for each synapse, let them know we have fired
          for (BGSIZE i = 0; i < synapseCounts; i++) {
@@ -278,12 +278,12 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
       }
 
       // notify incomming synapses of spike
-      synapseCounts = edgeIndexMapDevice.incomingEdgeCount_[idx];
+      synapseCounts = edgeIndexMapDevice->incomingEdgeCount_[idx];
       if (fAllowBackPropagation && synapseCounts != 0) {
          // get the index of where this neuron's list of synapses are
-         BGSIZE beginIndex = edgeIndexMapDevice.incomingEdgeBegin_[idx];
+         BGSIZE beginIndex = edgeIndexMapDevice->incomingEdgeBegin_[idx];
          // get the memory location of where that list begins
-         BGSIZE *incomingMapBegin = &(edgeIndexMapDevice.incomingEdgeIndexMap_[beginIndex]);
+         BGSIZE *incomingMapBegin = &(edgeIndexMapDevice->incomingEdgeIndexMap_[beginIndex]);
 
          // for each synapse, let them know we have fired
          switch (classSynapses_d) {

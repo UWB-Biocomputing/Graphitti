@@ -128,7 +128,7 @@ public:
    ///  @param  randNoise              Reference to the random noise array.
    ///  @param  edgeIndexMapDevice  Reference to the EdgeIndexMap on device memory.
    virtual void advanceVertices(AllEdges &synapses, void *allVerticesDevice, void *allEdgesDevice,
-                                float *randNoise, EdgeIndexMapDevice &edgeIndexMapDevice) override;
+                                float randNoise[], EdgeIndexMapDevice *edgeIndexMapDevice) override;
 
    ///  Allocate GPU memories to store all neurons' states,
    ///  and copy them from host to GPU memory.
@@ -192,7 +192,7 @@ protected:
    ///  @param  allVerticesDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
    void copyDeviceToHost(AllIZHNeuronsDeviceProperties &allVerticesDevice);
 
-#else   // !defined(USE_GPU)
+#else    // !defined(USE_GPU)
 
 protected:
    ///  Helper for #advanceNeuron. Updates state of a single neuron.

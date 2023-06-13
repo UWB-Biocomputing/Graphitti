@@ -89,7 +89,7 @@ public:
                                       AllEdges &synapses,
                                       AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                       AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                      Layout *layout);
+                                      Layout &layout);
 #else
 public:
    ///  Update the weight of the Synapses in the simulation.

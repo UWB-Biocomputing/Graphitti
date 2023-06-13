@@ -110,14 +110,14 @@ public:
    ///  @param  randNoise              Reference to the random noise array.
    ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
-                                float *randNoise, EdgeIndexMapDevice &edgeIndexMapDevice)
+                                float randNoise[], EdgeIndexMapDevice *edgeIndexMapDevice)
       = 0;
 
    ///  Set some parameters used for advanceVerticesDevice.
    ///
    ///  @param  edges               Reference to the allEdges struct on host memory.
    virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) = 0;
-#else   // !defined(USE_GPU)
+#else    // !defined(USE_GPU)
 public:
    ///  Update internal state of the indexed Neuron (called by every simulation step).
    ///  Notify outgoing synapses if vertex has fired.

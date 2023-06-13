@@ -86,7 +86,7 @@ public:
    virtual void copyToDevice(void *allVerticesDevice) {};
    virtual void copyFromDevice(void *allVerticesDevice) {};
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
-                                float *randNoise, EdgeIndexMapDevice &edgeIndexMapDevice) {};
+                                float randNoise[], EdgeIndexMapDevice *edgeIndexMapDevice) {};
    virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};
 #else   // !defined(USE_GPU)
 public:

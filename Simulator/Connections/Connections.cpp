@@ -93,7 +93,7 @@ void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vert
                                         AllEdges &synapses,
                                         AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        Layout *layout)
+                                        Layout &layout)
 {
 }
 #else
