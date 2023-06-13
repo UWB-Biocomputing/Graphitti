@@ -192,7 +192,7 @@ protected:
    ///  @param  allVerticesDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
    void copyDeviceToHost(AllIZHNeuronsDeviceProperties &allVerticesDevice);
 
-#else    // !defined(USE_GPU)
+#else   // !defined(USE_GPU)
 
 protected:
    ///  Helper for #advanceNeuron. Updates state of a single neuron.
