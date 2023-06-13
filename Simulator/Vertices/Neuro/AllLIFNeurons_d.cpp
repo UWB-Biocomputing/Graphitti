@@ -104,7 +104,7 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
 
    if (allVerticesDevice->numStepsInRefractoryPeriod_[idx] > 0) {   // is neuron refractory?
       --allVerticesDevice->numStepsInRefractoryPeriod_[idx];
-   } else if (r_vm >= allVerticesDevice->Vthresh_[idx]) {           // should it fire?
+   } else if (r_vm >= allVerticesDevice->Vthresh_[idx]) {   // should it fire?
       int &spikeCount = allVerticesDevice->numEventsInEpoch_[idx];
 
       // Note that the neuron has fired!
@@ -181,7 +181,7 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
       // Random number alg. goes here
       r_sp += (randNoise[idx] * allVerticesDevice->Inoise_[idx]);   // add cheap noise
       vm = allVerticesDevice->C1_[idx] * r_vm
-           + allVerticesDevice->C2_[idx] * (r_sp);                  // decay Vm and add inputs
+           + allVerticesDevice->C2_[idx] * (r_sp);   // decay Vm and add inputs
    }
 
    // clear synaptic input for next time step
