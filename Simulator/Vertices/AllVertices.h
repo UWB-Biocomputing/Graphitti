@@ -117,7 +117,7 @@ public:
    ///
    ///  @param  edges               Reference to the allEdges struct on host memory.
    virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) = 0;
-#else    // !defined(USE_GPU)
+#else   // !defined(USE_GPU)
 public:
    ///  Update internal state of the indexed Neuron (called by every simulation step).
    ///  Notify outgoing synapses if vertex has fired.
