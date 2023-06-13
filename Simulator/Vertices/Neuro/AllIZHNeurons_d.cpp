@@ -244,7 +244,7 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
 
    if (allVerticesDevice->numStepsInRefractoryPeriod_[idx] > 0) {   // is neuron refractory?
       --allVerticesDevice->numStepsInRefractoryPeriod_[idx];
-   } else if (r_vm >= allVerticesDevice->Vthresh_[idx]) {           // should it fire?
+   } else if (r_vm >= allVerticesDevice->Vthresh_[idx]) {   // should it fire?
       int &spikeCount = allVerticesDevice->numEventsInEpoch_[idx];
       // Note that the neuron has fired!
       allVerticesDevice->hasFired_[idx] = true;
