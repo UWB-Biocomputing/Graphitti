@@ -32,7 +32,8 @@ public:
 
    virtual ~Layout() = default;
 
-   AllVertices *getVertices() const;
+   /// Returns reference to Vertices
+   AllVertices &getVertices() const;
 
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.

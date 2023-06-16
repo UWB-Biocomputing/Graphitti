@@ -271,7 +271,7 @@ void AllSpikingSynapses::postSpikeHit(const BGSIZE iEdg)
 ///
 ///  @param  iEdg      Index of the Synapse to connect to.
 ///  @param  neurons   The Neuron list to search from.
-void AllSpikingSynapses::advanceEdge(const BGSIZE iEdg, AllVertices *neurons)
+void AllSpikingSynapses::advanceEdge(const BGSIZE iEdg, AllVertices &neurons)
 {
    BGFLOAT &decay = decay_[iEdg];
    BGFLOAT &psr = psr_[iEdg];

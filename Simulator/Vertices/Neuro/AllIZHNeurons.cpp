@@ -51,7 +51,7 @@ void AllIZHNeurons::printParameters() const
 ///  Creates all the Neurons and generates data for them.
 ///
 ///  @param  layout      Layout information of the neural network.
-void AllIZHNeurons::createAllVertices(Layout *layout)
+void AllIZHNeurons::createAllVertices(Layout &layout)
 {
    /* set their specific types */
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
@@ -66,13 +66,13 @@ void AllIZHNeurons::createAllVertices(Layout *layout)
 ///
 ///  @param  i Index of the neuron to create.
 ///  @param  layout       Layout information of the neural network.
-void AllIZHNeurons::createNeuron(int i, Layout *layout)
+void AllIZHNeurons::createNeuron(int i, Layout &layout)
 {
    // set the neuron info for neurons
    AllIFNeurons::createNeuron(i, layout);
 
    // TODO: we may need another distribution mode besides flat distribution
-   if (layout->vertexTypeMap_[i] == EXC) {
+   if (layout.vertexTypeMap_[i] == EXC) {
       // excitatory neuron
       Aconst_[i] = initRNG.inRange(excAconst_[0], excAconst_[1]);
       Bconst_[i] = initRNG.inRange(excBconst_[0], excBconst_[1]);

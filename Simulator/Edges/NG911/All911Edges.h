@@ -85,16 +85,16 @@ public:
    ///
    ///  @param  vertices           The vertex list to search from.
    ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
-   virtual void advanceEdges(AllVertices *vertices, EdgeIndexMap *edgeIndexMap);
+   virtual void advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap);
 
    ///  Advance one specific Edge.
    ///
    ///  @param  iEdg      Index of the Edge to connect to.
    ///  @param  vertices  The Neuron list to search from.
-   void advance911Edge(const BGSIZE iEdg, All911Vertices *vertices);
+   void advance911Edge(const BGSIZE iEdg, All911Vertices &vertices);
 
    /// unused virtual function placeholder
-   virtual void advanceEdge(const BGSIZE iEdg, AllVertices *vertices) override {};
+   virtual void advanceEdge(const BGSIZE iEdg, AllVertices &vertices) override {};
 
 #endif
 };

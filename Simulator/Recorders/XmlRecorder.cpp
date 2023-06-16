@@ -106,7 +106,7 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
    // create Neuron Types matrix
    VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), EXC);
    for (int i = 0; i < simulator.getTotalVertices(); i++) {
-      neuronTypes[i] = simulator.getModel()->getLayout()->vertexTypeMap_[i];
+      neuronTypes[i] = simulator.getModel().getLayout().vertexTypeMap_[i];
    }
    // create neuron threshold matrix
    VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), 0);
@@ -118,20 +118,20 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
    resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
               << "<!-- State output file for the DCT growth modeling-->\n";
    // stateOut << version; TODO: version
-   auto layout = simulator.getModel()->getLayout();
+   auto &layout = simulator.getModel().getLayout();
 
    // Write the core state information:
    resultOut_ << "<SimState>\n";
    resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   resultOut_ << "   " << layout->xloc_.toXML("xloc") << endl;
-   resultOut_ << "   " << layout->yloc_.toXML("yloc") << endl;
+   resultOut_ << "   " << layout.xloc_.toXML("xloc") << endl;
+   resultOut_ << "   " << layout.yloc_.toXML("yloc") << endl;
    resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
    // create starter neurons matrix
-   int num_starter_neurons = static_cast<int>(layout->numEndogenouslyActiveNeurons_);
+   int num_starter_neurons = static_cast<int>(layout.numEndogenouslyActiveNeurons_);
    if (num_starter_neurons > 0) {
       VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
-      getStarterNeuronMatrix(starterNeurons, layout->starterMap_);
+      getStarterNeuronMatrix(starterNeurons, layout.starterMap_);
       resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
    }
 

@@ -30,7 +30,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &verti
                                        AllEdges &synapses,
                                        AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                        AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                       Layout *layout)
+                                       Layout &layout)
 {
    Simulator &simulator = Simulator::getInstance();
    // For now, we just set the weights to equal the areas. We will later
@@ -60,7 +60,7 @@ void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &verti
 
    HANDLE_ERROR(cudaMemcpy(W_d, W_h, W_d_size, cudaMemcpyHostToDevice));
 
-   HANDLE_ERROR(cudaMemcpy(neuronTypeMapD, layout->vertexTypeMap_.data(),
+   HANDLE_ERROR(cudaMemcpy(neuronTypeMapD, layout.vertexTypeMap_.data(),
                            simulator.getTotalVertices() * sizeof(vertexType),
                            cudaMemcpyHostToDevice));
 
