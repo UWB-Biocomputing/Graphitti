@@ -23,7 +23,12 @@ void AllSpikingNeurons::setupVertices()
 
    // register variables
    Recorder &recorder = *Simulator::getInstance().getModel()->getRecorder();
-   recorder.registerVariable("Neuron_7", vertexEvents_[7]);
+   if (size_ < 7) {
+      perror("this neuron number is out of boundary");
+      // exit(EXIT_FAILURE);
+   } else {
+      recorder.registerVariable("Neuron_7", vertexEvents_[7]);
+   }
 }
 
 ///  Clear the spike counts out of all Neurons.

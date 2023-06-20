@@ -25,6 +25,7 @@ XmlRecorder::XmlRecorder()
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   singleNeuronEvents_ = nullptr;
 }
 
 // Create a new xml file and initialize data
@@ -76,11 +77,29 @@ void XmlRecorder::term()
 /// @param[in] neurons    The entire list of neurons.
 void XmlRecorder::compileHistories(AllVertices &vertices)
 {
+   if (singleNeuronEvents_ == nullptr) {
+      return;
+   }
    for (int i = 0; i < singleNeuronEvents_->getNumEventsInEpoch(); i++) {
       //std::cout << "test output:" << (*variable_first)[i] << endl;
       single_neuron_History_.push_back((*singleNeuronEvents_)[i]);
    }
    singleNeuronEvents_->startNewEpoch();
+
+   // // generate the regression test files using prervious version of XmlRecorder
+   // //A single neuron
+   // AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(vertices);
+   // Simulator &simulator = Simulator::getInstance();
+   // int maxSpikes = static_cast<int>(simulator.getEpochDuration() * simulator.getMaxFiringRate());
+
+   // int iNeuron = 7;
+   // for (int eventIterator = 0;
+   //       eventIterator < spNeurons.vertexEvents_[iNeuron].getNumEventsInEpoch();
+   //       eventIterator++) {
+   //    single_neuron_History_.push_back(
+   //       static_cast<int>(static_cast<double>(spNeurons.vertexEvents_[iNeuron][eventIterator])));
+   // }
+   // spNeurons.clearSpikeCounts();
 }
 
 /// Writes simulation results to an output destination.
@@ -88,9 +107,10 @@ void XmlRecorder::compileHistories(AllVertices &vertices)
 void XmlRecorder::saveSimData(const AllVertices &vertices)
 {
    // Write XML header information:
-   resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
-              << "<!-- State output file for the DCT growth modeling-->\n";
-   resultOut_ << "   " << toXML(neuronName, single_neuron_History_) << endl;
+   resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n";
+   if (single_neuron_History_.size() != 0) {
+      resultOut_ << toXML(neuronName, single_neuron_History_) << endl;
+   }
 }
 
 /// Convert internal buffer to XML string
