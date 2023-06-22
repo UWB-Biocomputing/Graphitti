@@ -10,7 +10,7 @@
 
    1.3 [Quickstart](User/quickstart.md)
 
-      1.3.1 [UWB Student Quickstart](User/StudentSetup.md)
+   1.3.1 [UWB Student Quickstart](User/StudentSetup.md)
 
    1.4 [Configuration](User/configuration.md)
 
