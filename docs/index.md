@@ -10,29 +10,29 @@
 
    1.3 [Quickstart](User/quickstart.md)
 
+   1.3.1 [UWB Student Quickstart](User/StudentSetup.md)
+
    1.4 [Configuration](User/configuration.md)
 
 2. [Developer Documentation](Developer/index.md)
    
-   2.1 [Student Quick Start](Developer/StudentSetup.md)
-   
-   2.2 [Coding Conventions](Developer/codingConventions.md)
+   2.1 [Coding Conventions](Developer/codingConventions.md)
 
-   2.3 [C++ Style Guide](Developer/cppStyleGuide.md)
+   2.2 [C++ Style Guide](Developer/cppStyleGuide.md)
 
-   2.4 [Graphitti Repository Tools and Workflows](Developer/index.md) 
+   2.3 [Graphitti Repository Tools and Workflows](Developer/index.md) 
 
-   2.5 [Graphitti System Documentation](Developer/index.md)
+   2.4 [Graphitti System Documentation](Developer/index.md)
+  
+   2.5 [Unit Tests](Developer/UnitTests.md)
 
 3. [Testing](Testing/index.md)
 
-   3.1 Unit Tests
+   3.1 Array Performance Testing
 
-   3.2 Array Performance Testing
+   3.2 Dynamic Cast Performance Testing
 
-   3.3 Dynamic Cast Performance Testing
-
-   3.4 Test Config Files
+   3.3 Test Config Files
 
 4. Notes
 
