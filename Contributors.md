@@ -1,33 +1,16 @@
 <!-- Please add your name in alphabetic order under your respective degree and year (If you are the first one for your year, add your year in chronological order)-->
 # Professor 
-Michael Stiber
+Dr. Michael Stiber
 
 # Undergraduate 
 
-## Miscellaneous years
-Derek McLean
-
+## 2010
 Ethan Crawford
 
+## 2013
+Derek 
+
 Hugo Ribeiro
-
-Lawrence Fiesta
-
-Max Wright
-
-Mariia Lundvall
-
-Nicholas Lewis
-
-Shakeel Khan
-
-Tyler Choi
-
-Vu Tieu
-
-Warner Smidt
-
-Xinyu Wang
 
 ## 2016
 Andrew Watson
@@ -46,8 +29,16 @@ Sean McCallum
 ## 2018
 Angelina Tang
 
+Max Wright
+
+Nicholas Lewis
+
 ## 2019
 Kyle Dukart
+
+Mariia Lundvall
+
+Xinyu Wang
 
 ## 2021
 James Kim
@@ -56,12 +47,22 @@ Jordan Brown
 
 Mark Sorvik
 
+Shakeel Khan
+
+Tyler Choi
+
 Vivek Gandhi
 
 ## 2022
 Alex Neary 
 
 Conor Mcintosh
+
+Lawrence Fiesta
+
+Vu Tieu
+
+Warner Smidt
 
 ## 2023
 Mobei Yang
