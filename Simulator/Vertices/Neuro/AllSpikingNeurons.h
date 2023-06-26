@@ -71,7 +71,7 @@ public:
    ///
    ///  @param  synapses         The Synapse list to search from.
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-   virtual void advanceVertices(AllEdges &synapses, const EdgeIndexMap *edgeIndexMap);
+   virtual void advanceVertices(AllEdges &synapses, const EdgeIndexMap &edgeIndexMap);
 
    /// Get the spike history of neuron[index] at the location offIndex.
    /// More specifically, retrieves the global simulation time step for the spike

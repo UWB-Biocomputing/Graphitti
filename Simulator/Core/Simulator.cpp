@@ -241,9 +241,7 @@ bool Simulator::instantiateSimulatorObjects()
 #endif
 
    // Perform check on all instantiated objects.
-   if (!model_ || (model_->getConnections() == nullptr)
-       || (model_->getConnections()->getEdges() == nullptr) || (model_->getLayout() == nullptr)
-       || (model_->getLayout()->getVertices() == nullptr) || (model_->getRecorder() == nullptr)) {
+   if (!model_) {
       return false;
    }
    return true;
@@ -292,7 +290,7 @@ int Simulator::getHeight() const
 
 int Simulator::getTotalVertices() const
 {
-   return model_->getLayout()->getNumVertices();
+   return model_->getLayout().getNumVertices();
 }
 
 int Simulator::getCurrentStep() const
@@ -360,9 +358,9 @@ string Simulator::getStimulusFileName() const
    return stimulusFileName_;
 }
 
-Model *Simulator::getModel() const
+Model &Simulator::getModel() const
 {
-   return model_.get();
+   return *model_;
 }
 
 #ifdef PERFORMANCE_METRICS

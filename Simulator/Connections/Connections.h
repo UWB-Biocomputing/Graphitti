@@ -42,11 +42,11 @@ public:
    ///  Destructor
    virtual ~Connections() = default;
 
-   /// Returns pointer to Synapses/Edges
-   AllEdges *getEdges() const;
+   /// Returns reference to Synapses/Edges
+   AllEdges &getEdges() const;
 
-   /// Returns a pointer to the EdgeIndexMap
-   EdgeIndexMap *getEdgeIndexMap() const;
+   /// Returns a reference to the EdgeIndexMap
+   EdgeIndexMap &getEdgeIndexMap() const;
 
    /// Calls Synapses to create EdgeIndexMap and stores it as a member variable
    void createEdgeIndexMap();
@@ -89,7 +89,7 @@ public:
                                       AllEdges &synapses,
                                       AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                       AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                      Layout *layout);
+                                      Layout &layout);
 #else
 public:
    ///  Update the weight of the Synapses in the simulation.

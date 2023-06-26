@@ -223,7 +223,7 @@ void AllIFNeurons::clearNeuronSpikeCounts(void *allVerticesDevice)
 ///  @param  randNoise              Reference to the random noise array.
 ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
 void AllIFNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
-                                   void *allEdgesDevice, float *randNoise,
+                                   void *allEdgesDevice, float randNoise[],
                                    EdgeIndexMapDevice *edgeIndexMapDevice)
 {
 }

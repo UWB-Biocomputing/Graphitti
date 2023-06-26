@@ -47,17 +47,13 @@ bool Serializer::deserializeSynapses()
    cereal::XMLInputArchive archive(memory_in);
    //cereal::BinaryInputArchive archive(memory_in);
 
-   Connections *connections = simulator.getModel()->getConnections();
-   Layout *layout = simulator.getModel()->getLayout();
-
-   if (layout == nullptr || connections == nullptr) {
-      cerr << "Either connections or layout is not instantiated," << endl;
-   }
+   Connections &connections = simulator.getModel().getConnections();
+   //Layout &layout = simulator.getModel().getLayout();
 
    // Deserializes synapse weights along with each synapse's source vertex and destination vertex
    // Uses "try catch" to catch any cereal exception
    try {
-      archive(*(dynamic_cast<AllEdges *>(connections->getEdges())));
+      archive(dynamic_cast<AllEdges &>(connections.getEdges()));
    } catch (cereal::Exception e) {
       cerr << e.what() << endl
            << "Failed to deserialize synapse weights, source vertices, and/or destination vertices."
@@ -67,10 +63,10 @@ bool Serializer::deserializeSynapses()
 
    // Creates synapses from weight
    //    connections->createSynapsesFromWeights(simulator.getTotalVertices(), layout.get(),
-   //                                           (*layout->getVertices()), (*connections->getEdges()));
+   //                                           (layout->getVertices()), (connections->getEdges()));
 
    //Creates synapses from weight
-   connections->createSynapsesFromWeights();
+   connections.createSynapsesFromWeights();
 
 
 #if defined(USE_GPU)
@@ -80,24 +76,22 @@ bool Serializer::deserializeSynapses()
 #endif   // USE_GPU
 
    // Creates synapse index map (includes copy CPU index map to GPU)
-   connections->createEdgeIndexMap();
+   connections.createEdgeIndexMap();
 
 #if defined(USE_GPU)
-   GPUModel *gpuModel = static_cast<GPUModel *>(simulator.getModel());
-   gpuModel->copySynapseIndexMapHostToDevice(*(connections->getEdgeIndexMap()),
-                                             simulator.getTotalVertices());
+   GPUModel &gpuModel = static_cast<GPUModel &>(simulator.getModel());
+   gpuModel.copySynapseIndexMapHostToDevice(connections.getEdgeIndexMap(),
+                                            simulator.getTotalVertices());
 #endif   // USE_GPU
 
-   // Deserializes radii (only when running a connGrowth model and radii is in serialization file)
-   if (dynamic_cast<ConnGrowth *>(connections) != nullptr) {
-      // Uses "try catch" to catch any cereal exception
-      try {
-         archive(*(dynamic_cast<ConnGrowth *>(connections)));
-      } catch (cereal::Exception e) {
-         cerr << e.what() << endl << "Failed to deserialize radii." << endl;
-         return false;
-      }
+   // Uses "try catch" to catch any cereal exception
+   try {
+      archive(dynamic_cast<ConnGrowth &>(connections));
+   } catch (cereal::Exception e) {
+      cerr << e.what() << endl << "Failed to deserialize radii." << endl;
+      return false;
    }
+
    return true;
 }
 
@@ -131,15 +125,11 @@ void Serializer::serializeSynapses()
    simulator.copyGPUSynapseToCPU();
 #endif   // USE_GPU
 
-   Model *model = simulator.getModel();
+   Model &model = simulator.getModel();
 
    // Serializes synapse weights along with each synapse's source vertex and destination vertex
-   archive(cereal::make_nvp("AllEdges",
-                            *(dynamic_cast<AllEdges *>(model->getConnections()->getEdges()))));
+   archive(
+      cereal::make_nvp("AllEdges", dynamic_cast<AllEdges &>(model.getConnections().getEdges())));
 
-   // Serializes radii (only if it is a connGrowth model)
-   if (dynamic_cast<ConnGrowth *>(model->getConnections()) != nullptr) {
-      archive(
-         cereal::make_nvp("Connections", *(dynamic_cast<ConnGrowth *>(model->getConnections()))));
-   }
+   archive(cereal::make_nvp("Connections", dynamic_cast<ConnGrowth &>(model.getConnections())));
 }

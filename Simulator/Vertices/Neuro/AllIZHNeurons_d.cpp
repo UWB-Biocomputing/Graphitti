@@ -27,7 +27,7 @@
 
 __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int maxSpikes,
                                         const BGFLOAT deltaT, uint64_t simulationStep,
-                                        float *randNoise,
+                                        float randNoise[],
                                         AllIZHNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                         EdgeIndexMapDevice *edgeIndexMapDevice,
@@ -184,7 +184,7 @@ void AllIZHNeurons::clearNeuronSpikeCounts(void *allVerticesDevice)
 
 ///  Notify outgoing synapses if neuron has fired.
 void AllIZHNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
-                                    void *allEdgesDevice, float *randNoise,
+                                    void *allEdgesDevice, float randNoise[],
                                     EdgeIndexMapDevice *edgeIndexMapDevice)
 {
    int vertex_count = Simulator::getInstance().getTotalVertices();
@@ -219,7 +219,7 @@ void AllIZHNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
 __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int maxSpikes,
                                         const BGFLOAT deltaT, uint64_t simulationStep,
-                                        float *randNoise,
+                                        float randNoise[],
                                         AllIZHNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                         EdgeIndexMapDevice *edgeIndexMapDevice,
