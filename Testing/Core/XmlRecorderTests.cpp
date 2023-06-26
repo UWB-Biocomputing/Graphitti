@@ -149,7 +149,6 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    }
    os << endl;
    os << "</Matrix>";
-   // string os = recorder.toXML(recorder.getNeuronName(), recorder.getHistory());
    std::string expectedXML = "<?xml version=\"1.0\" standalone=\"no\"?>\n" + os.str() + "\n";
    // vertify the output string
    ASSERT_EQ(outputBuffer.str(), expectedXML);

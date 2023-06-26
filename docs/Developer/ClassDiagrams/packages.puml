@@ -50,12 +50,10 @@ package Vertices{
 package Recorders{
    class  XmLRecorder implements Recorder
    class HDF5Recorder implements Recorder
-   class XmlGrowthRecroder extends XmLRecorder
    class Hdf5GrowthRecorder extends HDF5Recorder
    class RecordersFactory
    XmLRecorder <-- RecordersFactory : instantiates
    HDF5Recorder <-- RecordersFactory : instantiates
-   XmlGrowthRecroder <--- RecordersFactory : instantiates
    Hdf5GrowthRecorder <--- RecordersFactory : instantiates
 }
 

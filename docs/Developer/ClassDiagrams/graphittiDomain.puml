@@ -142,15 +142,7 @@ class VerticesFactory {
 }
 
 
-class XmlGrowthRecorder {
-}
-
-
 class XmlRecorder {
-}
-
-
-class XmlSTDPRecorder {
 }
 
 
@@ -291,12 +283,6 @@ class EdgeIndexMap {
 
 
 .Model <|-- .GPUModel
-
-
-.XmlRecorder <|-- .XmlGrowthRecorder
-
-
-.XmlRecorder <|-- .XmlSTDPRecorder
 
 
 

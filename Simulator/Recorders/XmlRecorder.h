@@ -58,16 +58,14 @@ public:
    /// Store the neuron number and all the events of this single neuron
    void registerVariable(string varName, EventBuffer &recordVar) override;
 
-   #ifdef RUNIT_TEST
+#ifdef RUNIT_TEST
    // constructor only for unit test
    XmlRecorder(std::string fileName_)
    {
       resultFileName_ = fileName_;
    }
 
-   // Getter method for resultOut_ (only included during unit tests)
-   // ofstream& getResultOut();
-// Getter method for neuronName (only included during unit tests)
+   // Getter method for neuronName (only included during unit tests)
    std::string getNeuronName() const
    {
       return neuronName;
@@ -82,7 +80,7 @@ public:
    {
       return single_neuron_History_;
    }
-   #endif
+#endif
 
 protected:
    // variable neuronName records the number of a single neuron
@@ -109,7 +107,7 @@ protected:
    // a file stream for xml output
    ofstream resultOut_;
 
-   virtual string toXML(string name, vector<uint64_t> single_nueron_buffer) const;
+   string toXML(string name, vector<uint64_t> single_nueron_buffer) const;
 
    //this method will be deleted
    void getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap);
