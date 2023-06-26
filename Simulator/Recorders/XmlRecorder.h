@@ -58,6 +58,32 @@ public:
    /// Store the neuron number and all the events of this single neuron
    void registerVariable(string varName, EventBuffer &recordVar) override;
 
+   // #ifdef UNIT_TEST
+   // constructor only for unit test
+   XmlRecorder(std::string fileName_)
+   {
+      resultFileName_ = fileName_;
+   }
+
+   // Getter method for resultOut_ (only included during unit tests)
+   // ofstream& getResultOut();
+
+   std::string getNeuronName() const
+   {
+      return neuronName;
+   }
+   // Getter method for singleNeuronEvents_ (only included during unit tests)
+   EventBuffer *getSingleNeuronEvents() const
+   {
+      return singleNeuronEvents_;
+   }
+   // Getter method for single_neuron_History_ (only included during unit tests)
+   std::vector<uint64_t> getHistory() const
+   {
+      return single_neuron_History_;
+   }
+   // #endif
+
 protected:
    // variable neuronName records the number of a single neuron
    string neuronName;

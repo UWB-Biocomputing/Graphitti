@@ -16,6 +16,10 @@ if(NOT ENABLE_CUDA)
         set(ENABLE_CUDA NO)
 endif()
 
+if(NOT UNIT_TEST)
+        set(UNIT_TEST YES)
+endif()
+
 # CONDITIONAL FLAG to turn on the performance metrics 
 if(NOT PERFORMANCE_METRICS)
         set(PERFORMANCE_METRICS NO)
@@ -383,6 +387,15 @@ target_link_libraries(deserialTest gtest gtest_main)
 
 # Link the combined library into the 'deserialTest' executable.
 target_link_libraries(deserialTest combinedLib)
+
+add_executable(recorderTest
+        Testing/RunTests.cpp
+        Testing/Core/XmlRecorderTests.cpp)
+# Links the Googletest framework with the serialTest executable
+target_link_libraries(recorderTest gtest gtest_main)
+
+# Link the combined library into the 'serialTest' executable.
+target_link_libraries(recorderTest combinedLib)
 
 # Clear ENABLE_CUDA, PERFORMANCE_METRICS and GPROF from the cache so it's reset for subsequent builds
 unset(ENABLE_CUDA CACHE)

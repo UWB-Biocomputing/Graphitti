@@ -24,8 +24,7 @@ void AllSpikingNeurons::setupVertices()
    // register variables
    Recorder &recorder = *Simulator::getInstance().getModel()->getRecorder();
    if (size_ < 7) {
-      perror("this neuron number is out of boundary");
-      // exit(EXIT_FAILURE);
+      recorder.registerVariable("Neuron_0", vertexEvents_[0]);
    } else {
       recorder.registerVariable("Neuron_7", vertexEvents_[7]);
    }
