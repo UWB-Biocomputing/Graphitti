@@ -73,9 +73,9 @@ public:
       return neuronName;
    }
    // Getter method for singleNeuronEvents_ (only included during unit tests)
-   EventBuffer *getSingleNeuronEvents() const
+   EventBuffer &getSingleNeuronEvents() const
    {
-      return singleNeuronEvents_;
+      return *singleNeuronEvents_;
    }
    // Getter method for single_neuron_History_ (only included during unit tests)
    std::vector<uint64_t> getHistory() const

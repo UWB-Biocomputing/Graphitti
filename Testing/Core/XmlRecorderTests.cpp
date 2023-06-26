@@ -65,7 +65,7 @@ TEST(XmlRecorderTest, RegisterVariableTest)
 
    // Verify that the registered variable is stored correctly
    ASSERT_EQ("neuron1", recorder.getNeuronName());
-   ASSERT_EQ(&buffer, recorder.getSingleNeuronEvents());
+   ASSERT_EQ(&buffer, &recorder.getSingleNeuronEvents());
 }
 
 // Test case for compiling histories
