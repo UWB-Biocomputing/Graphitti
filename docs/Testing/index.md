@@ -4,11 +4,42 @@ Information on unit tests, test config files for regression testing, and testing
 
 ## 3.1 Unit Tests
 
-We use [Googletest](GoogleTestsTutorial.md) to develop our unit tests.
+We use [GoogleTest](GoogleTestsTutorial.md) to develop our unit tests.
+
+To integrate your unit tests using GoogleTest in Graphitti you can follow these steps:
+1. Open the CMakeLists.txt file in the root directory of Graphitti
+2. Locate at the bottom of the file where the `tests` executable is defined and add your test file to the list of source files.
+3. Build and run your tests using the Graphitti build system and use `./tests` to run the unit tests.
+
+Please note that Graphitti follows the [singleton design pattern](https://en.wikipedia.org/wiki/Singleton_pattern), and several of its classes, such as Simulator, ParameterManager, OperationManager, and GraphManager, are implemented as singletons. If your test scenario requires the instantiation of these classes, it may be necessary to create a separate executable specifically for your tests.
+
+By creating a separate executable, you can ensure that the singleton instances used in the test environment are isolated from the main application's singleton instances. This approach helps maintain the desired behavior and avoid segmentation fault errors.
+
+To create a separate executable for your test case in Graphitti, follow these steps:
+
+1. Open the CMakeLists.txt file in the root directory of Graphitti.
+2. Scroll to the bottom of the file and add the following code to create a new executable for your test case:
+
+```
+add_executable(YOUR_EXECUTABLE_TEST_NAME
+        Testing/RunTests.cpp
+        Testing/Core/YOUR_TEST_FILE.cpp)
+
+# Link the necessary libraries and frameworks
+target_link_libraries(YOUR_EXECUTABLE_TEST_NAME gtest gtest_main)
+target_link_libraries(YOUR_EXECUTABLE_TEST_NAME combinedLib)
+```
+Make sure to replace "YOUR_EXECUTABLE_TEST_NAME" with the desired name for your test executable. Also, update the paths to the testing files according to your project structure.
+
+3. After adding the code, save the CMakeLists.txt file.
+
+4. Additionally, open the .gitignore file in the root directory of your project and add YOUR_EXECUTABLE_TEST_NAME to ignore the test executable.
+
+5.  Build and run your tests using the Graphitti build system and use `./YOUR_EXECUTABLE_TEST_NAME` to run the unit tests.
 
 ## 3.2 Array Performance Testing
 
-Testing the efficency of C++ arrays, Vectors, and Valarrays.
+Testing the efficiency of C++ arrays, Vectors, and Valarrays.
 
 - [Code](ArrayPerformance/ArraySpeedTest.cpp)
 - [Writeup](ArrayPerformance/ArrayPerformance.md)
@@ -41,7 +72,7 @@ To run the tests against the GPU implementation, inside the `Testing` directory 
 
     bash RunTests.sh -g
 
-**Note**: Currently, the GPU regresssion tests fail because the random numbers generated are different from the ones
+**Note**: Currently, the GPU regression tests fail because the random numbers generated are different from the ones
 generated during the CPU execution, causing the result files to be different to the CPU known good results.
 
 ---------

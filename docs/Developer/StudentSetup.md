@@ -16,7 +16,7 @@ Other external guides for remote VS Code development:
 
     If you run into problems, see [https://code.visualstudio.com/docs/remote/troubleshooting](https://code.visualstudio.com/docs/remote/troubleshooting). In particular, you may need to set `"remote.SSH.useLocalServer": false` in VSC's settings.json file if you run into connection problems.
    
-2. Click the Remote Explorer icon on the left sidebar. Add new in remote explorer: raiju.uwb.edu or otachi.uwb.edu (or both).
+2. Click the Remote Explorer icon on the left sidebar. Add new in remote explorer: `raiju.uwb.edu` or `otachi.uwb.edu` (or both).
    
 3. It will ask if you want to update your config file. Go to the config file and add a line with `User` and your uw net id to the file. The config file should now look like this: 
 
@@ -76,9 +76,29 @@ Other external guides for remote VS Code development:
 
     $ ./cgraphitti -c ../configfiles/test-small.xml
     ```
+    
+3. To access the command line options of Graphitti, use the `-help` flag with its CPU or GPU executable. Here's an example of how to run it:
 
-## Using Visual Studio Code
-Install the [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) for IntelliSense and debugging. We recommend setting the IntelliSense Cache Size setting to 10 MB. The default size is 5120 MB, which can result in VSC consuming all of your allotted space on the CSS Linux Machines.
+    ```
+    $ ./cgraphitti -help
+    ```
+
+The following options are available:
+
+- `-c, --configfile=<configfile>`: Specifies the filepath for the parameter configuration file. This file is required.
+- `-s, --stimulusfile=<stimulusfile>`: Specifies the filepath for the stimulus input file. This file is required.
+- `-r, --deserializefile=<deserializefile>`: Specifies the filepath for simulation deserialization. Enabling this option allows you to deserialize a previous simulation.
+- `-w, --serializefile=<serializefile>`: Specifies the filepath for simulation serialization. Enabling this option allows you to serialize the simulation.
+- `-v, --version`: Outputs the current git commit ID and exits.
+
+## Using Visual Studio Code 
+1. Install the [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) for IntelliSense and debugging. We recommend setting the IntelliSense Cache Size setting to 10 MB. The default size is 5120 MB, which can result in VSC consuming all of your allotted space on the CSS Linux Machines.
+
+2. Install the [CMAKE Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) and [CMAKE](https://marketplace.visualstudio.com/items?itemName=twxs.cmake) to access CMake-related functionality within Visual Studio Code.
+
+3. Install the [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker) to catch any unknowing spelling errors in the code or comments.
+
+4. Install the [PlantUML](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml) to create, edit, and preview PlantUML diagrams directly within Visual Studio Code.
 
 ### Building
 VSC can be configured to compile from CMake so that you don't have to type build and launch commands into the terminal every time you want to run. 
@@ -102,7 +122,7 @@ To eliminate the need to type your password in to log in to the CSS Linux machin
 - Make sure to guard your private key!
 
 ## Using Graphitti Servers
-UW students can use the school's research servers to run Graphitti. The raiju and otachi servers have computational NVIDIA GPUs optimized for floating point value computations. More info on the hardware can be found [here](http://depts.washington.edu/cssuwb/wiki/computing_resources#raijuuwbedu). If the user preference is to run Graphitti locally, the CUDA libraries are not necessary; the CPU version of the simulator is user-friendly on local machines.
+UW students can use the school's research servers to run Graphitti. The `raiju` and `otachi` servers have computational NVIDIA GPUs optimized for floating point value computations. More info on the hardware can be found [here](http://depts.washington.edu/cssuwb/wiki/computing_resources#raijuuwbedu). If the user preference is to run Graphitti locally, the CUDA libraries are not necessary; the CPU version of the simulator is user-friendly on local machines.
 
 To access these machines:
 
@@ -112,7 +132,7 @@ To access these machines:
 
 3. Login with UW NetID
    
-4. Connect through comand line SSH or use Visual Studio Code.
+4. Connect through command line SSH or use Visual Studio Code.
 
 ## Windows Troubleshooting
 If you have trouble connecting to the server through VS Code, your ssh exe file might not be properly fetched from VS Code. If you have trouble with this step, refer to these links: 
