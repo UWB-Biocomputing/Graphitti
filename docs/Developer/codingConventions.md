@@ -1,6 +1,6 @@
-# Coding Conventions
+# Code Formatting Etiquettes
 
-Code is written once and read a thousand times. Hence, it is important we keep our codebase consistent to improve readability. In this section, we will discuss all the coding styles that must be followed while contributing to the Graphitti codebase. For C++ style/feature guide please refer to [cppStyleGuide](cppStyleGuide.md).
+Code is written once and read a thousand times. Hence, it is important we keep our codebase consistent to improve readability. In this section, we will discuss all the coding formatting styles that must be followed while contributing to the Graphitti codebase. For C++ style/feature guide please refer to [C++ design and Coding standards](cppStyleGuide.md).
 
   * File Extensions:
     - We use `.cpp` and `.h` for our C++ code, and `.cu` for CUDA source files. We name files with *exactly* the same name (including capitalization) as the primary classes they define.
@@ -57,14 +57,6 @@ Code is written once and read a thousand times. Hence, it is important we keep o
     
   * Header guard:
     - We use `#pragma once` instead of `#define` guards.
-
-  * const and constexpr
-    - We put `const` and `constexpr` before the typename as it is more readable
-
-        `const  int i = 100;` not  `int const  i = 100;`
-        
-        `constexpr  int i = 100;` 
-
 
 ## clang-format
 

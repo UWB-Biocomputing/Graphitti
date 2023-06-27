@@ -23,7 +23,7 @@ initial radius is 0.4. if they are 0.2 away, they do not touch. 2 epochs don't g
 
 20 epochs are enough where synapses should be created.
 
-Are radii increasing? once they overlap, exercise synapse creation method. While andogenously active neurons produce spikes 
+Are radii increasing? once they overlap, exercise synapse creation method. While endogenously active neurons produce spikes 
 
 Being able to test something: make # of epochs long enough (10 epochs should do) and start radius large enough. 
 
@@ -37,7 +37,7 @@ could be possible to copy / paste
 
 2x2 epoch simulation. nodes are 1 unit away, thus if 0.5  is radius, it'll touch next node. 
 
-rate history. Firing rate during preceeding epoch. used to compute change in radius. 
+rate history. Firing rate during preceding epoch. used to compute change in radius. 
 
 burstiness history - ignore for now, was created at some point and no longer used. 
 
@@ -46,7 +46,7 @@ spike history. = number of spikes in 10ms bin. 10ms is 100th of a second.
 100 seconds * 100 bins per second * 2 epochs. = 20,000
 2014 journal paper explains this. 
 
-starter neurons = index of andogenously active neurons. 
+starter neurons = index of endogenously active neurons. 
 
 Neuron thresholds - what causes producing spikes 
 

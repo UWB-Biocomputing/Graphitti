@@ -16,9 +16,9 @@
    
    2.1 [Student Quick Start](Developer/StudentSetup.md)
    
-   2.2 [Coding Conventions](Developer/codingConventions.md)
+   2.2 [Code Formatting Etiquettes](Developer/codingConventions.md)
 
-   2.3 [C++ Style Guide](Developer/cppStyleGuide.md)
+   2.3 [C++ design and Coding standards](Developer/cppStyleGuide.md)
 
    2.4 [Graphitti Repository Tools and Workflows](Developer/index.md) 
 

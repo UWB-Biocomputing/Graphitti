@@ -2,12 +2,12 @@
 
 ### Helpful Sources
 
-Googletest is a C++ testing framework that supports system, integration and unit testing. It allows users to make independent and repeatable tests to assure that changes don’t alter the functionality of the system. 
+GoogleTest is a C++ testing framework that supports system, integration and unit testing. It allows users to make independent and repeatable tests to assure that changes don’t alter the functionality of the system. 
 	
-The following link points to the documentation of Googletest which includes valuable information on what features it offers and a basic tutorial on how to write tests.
+The following link points to the documentation of GoogleTest which includes valuable information on what features it offers and a basic tutorial on how to write tests.
 [http://google.github.io/googletest/primer.html](http://google.github.io/googletest/primer.html)
 
-The following link is a helpful video describing how to write tests and test structs using Googletest.
+The following link is a helpful video describing how to write tests and test structs using GoogleTest.
 [https://www.youtube.com/watch?v=16FI1-d2P4E&amp;](https://www.youtube.com/watch?v=16FI1-d2P4E&amp;)
 
 #### Watch here:
