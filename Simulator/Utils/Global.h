@@ -51,16 +51,16 @@
 
 extern int g_debug_mask;
 
-   #include <cassert>
-   #include <memory>
-   #include <sstream>
-   #ifdef _WIN32   //needs to be before #include "bgtypes.h" or the #define BGFLOAT will cause problems
-      #include <windows.h>                 //warning! windows.h also defines BGFLOAT
+#include <cassert>
+#include <memory>
+#include <sstream>
+#ifdef _WIN32   //needs to be before #include "bgtypes.h" or the #define BGFLOAT will cause problems
+   #include <windows.h>                    //warning! windows.h also defines BGFLOAT
 using uint64_t = unsigned long long int;   //included in inttypes.h, which is not available in WIN32
-   #else
-      #include <inttypes.h>   //used for uint64_t, unavailable in WIN32
-   #endif
-   #include "BGTypes.h"
+#else
+   #include <inttypes.h>   //used for uint64_t, unavailable in WIN32
+#endif
+#include "BGTypes.h"
    //#include "Norm.h"
 #include "Coordinate.h"
 #include "VectorMatrix.h"
