@@ -69,6 +69,9 @@ Mobei Yang
 
 Natalie Gonzales
 
+## 2024
+Andrzej Dawiec 
+
 <!-- ---------------------------------------------------------------------------------- -->
 # Graduate
 
@@ -107,8 +110,6 @@ Victoria Jo Salvatore
 Divya Kamath    
 
 ## 2024
-Andrzej Dawiec 
-
 Jardi Martinez
 
 Nicholas Posey
