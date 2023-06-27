@@ -1,6 +1,6 @@
 # 3. Testing
 
-Information on unit tests, test config files for regression testing, and testing that has been done internally regarding potential improvements to Graphitti.
+Information on test config files for regression testing, and testing that has been done internally regarding potential improvements to Graphitti.
 
 ## 3.1 Unit Tests
 
@@ -44,14 +44,14 @@ Testing the efficiency of C++ arrays, Vectors, and Valarrays.
 - [Code](ArrayPerformance/ArraySpeedTest.cpp)
 - [Writeup](ArrayPerformance/ArrayPerformance.md)
 
-## 3.3 Dynamic Cast Performance Testing
+## 3.2 Dynamic Cast Performance Testing
 
 Testing the performance impact of many dynamic_cast conversions.
 
 - [Code](CastingTest/CastingTest.cpp)
 - [Writeup](CastingTest/CastingTest.md)
 
-## 3.4 Test Config Files
+## 3.3 Test Config Files
 
 Documentation of the changing and constant parameters in a set of 12 test config files.
 

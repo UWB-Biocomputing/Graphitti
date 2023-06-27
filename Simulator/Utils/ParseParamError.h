@@ -7,8 +7,7 @@
  * 
  */
 
-#ifndef _PARSEPARAMERROR_H_
-#define _PARSEPARAMERROR_H_
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -24,5 +23,3 @@ private:
    const string m_paramName;
    const string m_errorMessage;
 };
-
-#endif

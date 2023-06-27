@@ -16,6 +16,7 @@
  *  8) Simulation shutdown (Save results, serialize)
  *
  */
+#pragma once
 #include <string>
 
 class Core {
