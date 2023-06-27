@@ -24,7 +24,6 @@ void AllNeuroEdges::setupEdges(const int numVertices, const int maxEdges)
    BGSIZE maxTotalEdges = maxEdges * numVertices;
 
    if (maxTotalEdges != 0) {
-      psr_.resize(maxTotalEdges);
       psr_.assign(maxTotalEdges, 0.0);
    }
 }

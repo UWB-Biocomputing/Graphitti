@@ -182,13 +182,13 @@ public:
    ///
    ///  @param  vertices       The Vertex list to search from.
    ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
-   virtual void advanceEdges(AllVertices *vertices, EdgeIndexMap *edgeIndexMap);
+   virtual void advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap);
 
    ///  Advance one specific Edge.
    ///
    ///  @param  iEdg      Index of the Edge to connect to.
    ///  @param  vertices  The Vertex list to search from.
-   virtual void advanceEdge(const BGSIZE iEdg, AllVertices *vertices) = 0;
+   virtual void advanceEdge(const BGSIZE iEdg, AllVertices &vertices) = 0;
 
    ///  Remove a edge from the network.
    ///

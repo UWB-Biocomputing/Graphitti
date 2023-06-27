@@ -17,21 +17,27 @@ For UW Bothell students interested in working in the BCL, we use a [shared repos
 - Please ***DO NOT WORK DIRECTLY ON THE MASTER BRANCH***.
 - Instead, please follow the lab workflow that follows.
 
-0. Review our [Coding Conventions](https://uwb-biocomputing.github.io/Graphitti/Developer/codingConventions.html). Your work will be rejected if it doesn't conform (in fact, your pull requests will fail our code style check in many cases).
+0. Review our [Code Formatting Etiquette](https://uwb-biocomputing.github.io/Graphitti/Developer/codingConventions.html) and [C++ design and Coding standards](https://uwb-biocomputing.github.io/Graphitti/Developer/cppStyleGuide.html). Your work will be rejected if it doesn't conform (in fact, your pull requests will fail our code style check in many cases).
 
 1. Your work should be in response to one or more _issues_. If you are planning to work on something that is a small part of an existing issue, then likely that issue is a placeholder "umbrella" that was generated in lieu of thinking through all related details. In that case, now is the time for you to think it through and break that issue down into actionable items — new issues that partially or completely replace the umbrella.
 
-2. Assign yourself to those issue(s).
+2. When creating an issue, ensure that it is not a duplicate of an existing one. At Graphitti, we value proper etiquette for issue management. The issue title should be concise and descriptive, starting with action verbs. The issue body should provide all the necessary details, including a description section and tasks section.
 
-3. Create a new feature branch for your work. If the branch is in response to a single issue, then you can just name the branch accordingly, i.e., "issue-3141"; otherwise, just give it a logical name. Add a comment to the issue(s) including a link to the feature branch (unless you are going to create a pull request right away).
+3. Assign yourself to those issue(s).
 
-4. Make changes to the feature branch (commit/push).
+4. Create a new feature branch for your work. The branch name should be prefixed with issue number followed by a short description of the issue i.e., **issue-3141-add-documentation-cereal**. 
+Use lowercase letters & hyphens to separate words. Additionally, you can add a comment to the issue(s) including a link to the feature branch (unless you are going to create a pull request right away).
 
-5. Create a pull request for your branch (read more about [pull requests](http://help.github.com/pull-requests/)). You may choose to do this early in your work on the branch or later. In your pull request, make sure to do the following (these are all items in the right-hand column of the PR page):
+5. Make changes to the feature branch (commit/push).
+
+6. Create a pull request for your branch, whether early or later in your work, to merge into the development branch (not master). Start the pull request title with the issue number, such as **[ISSUE-3141] Add documentation on cereal**. 
+In the pull request description, tag your issue and provide a brief overview of the changes for the reviewer. Additionally, ensure to perform the following actions in the right-hand column of the pull request page:
 
   - Assign the pull request to yourself.
   - Attach appropriate labels to the pull request.
   - Link the issue(s) you're working on to this pull request (under "Development", for some reason).
+
+For more information on pull requests, you can read the following guide: [pull requests](http://help.github.com/pull-requests/)
 
 6. Before requesting a review of your pull request, *check that your haven't broken anything*. This means checking that all of our automated GitHub actions have passed their tests (this will show directly in the pull request) and that any required manual tests have passed. Some of our tests take a while to run, so rather than do them for every commit to a pull request, we just run them manually when such requests are close to done. Also, GitHub can only test the CPU version of the simulator, so you need to run GPU tests manually. If in doubt, ask someone.
 

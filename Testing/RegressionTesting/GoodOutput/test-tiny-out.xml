@@ -11,9 +11,6 @@
 5 0 0 0 
 
 </Matrix>
-   <Matrix name="burstinessHist" type="complete" rows="1" columns="1" multiplier="1.0">
-   5 
-</Matrix>
    <Matrix name="spikesHistory" type="complete" rows="1" columns="100" multiplier="1.0">
    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 
 </Matrix>

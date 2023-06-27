@@ -1,4 +1,4 @@
-# C++ Coding Conventions
+# C++ design and Coding standards
 
 C++ is the main development language used in Graphitti. Currently, the code should target C++17, the version targeted will advance over time.
 
@@ -11,6 +11,15 @@ The goal of this guide is to describe in detail the dos and don'ts of writing C+
     - [C++ Core Guidelines approved by Bjarne Stroustrup & Herb Sutter](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#rfrules-coding-rules)
 2. This is a living document and will be updated as Graphitti adopts new C++ features. 
 3. For details on features not covered here, refer to the above two guides for the best practice. Please discuss with Professor Stiber and document the feature details here.
+
+## Contents:
+1. [Use of const and constexpr](#use-of-const-and-constexpr)
+2. [Copy and Move operations](#copy-and-move-operations)
+3. [Smart Pointers](#smart-pointers)
+4. [Aliases](#aliases)
+5. [Inputs and Outputs](#inputs-and-outputs)
+6. [Override Keyword](#override-keyword)
+7. [Return-Reference from accessor methods](#return-reference-from-accessor-methods)
 
 ## **Use of const and constexpr**
 
@@ -58,6 +67,7 @@ Recommendation:
 - A move-only class should explicitly declare the move operations.
 - A non-copyable/movable class should explicitly delete the copy operations and a copyable class. 
 - Explicitly declaring or deleting all four copy/move operations is encouraged if it improves readability.
+- Use compiler options `= default` and `= delete`. 
 
 ```c++
 class Copyable {
@@ -121,8 +131,26 @@ Recommendation:
 - Use `optional` to represent optional by-value inputs, and use a `const` pointer when the non-optional form would have used a reference. Use non-const pointers to represent `optional` outputs and `optional` input/output parameters.
 - Use `optional` to express “value-or-not-value”, or “possibly an answer”, or “object with delayed initialization”, as it increases the level of abstraction, making it easier for others to understand what your code is doing. 
 
-## **Namespaces**
-TODO
+## **Override Keyword**
+The "override" keyword in C++ explicitly indicates that a member function in a derived class is intended to override a virtual function from a base class.
+
+Recommendation: 
+- Explicitly annotate overrides of virtual functions or virtual destructors with an override. 
+- Do not use virtual when declaring an override. 
+    
+2 Major advantages:
+  1. A function or destructor marked override or final that is not an override of a base class virtual function will not compile, and this helps catch common errors. 
+  2. The specifiers serve as documentation; if no specifier is present, the reader has to check all ancestors of the class in question to determine if the function or destructor is virtual or not [[Google style guide](https://google.github.io/styleguide/cppguide.html#:~:text=Explicitly%20annotate%20overrides,virtual%20or%20not.)].
+
+## **Return-Reference from accessor methods**
+Accessor methods (getters) should generally return references to the data they access instead of returning by value (excepts for primitives) to avoid unnecessary copying of objects and enable direct modification of the underlying data.
+
+When returning references, ensure that the referenced object remains valid throughout the lifetime of the returned reference, ensuring data integrity and avoiding potential issues with dangling references.
+
+Recommendations:
+- If the accessor method does not modify the underlying data, it is advisable to return a const reference. This promotes const-correctness, indicating to the caller that the data should not be modified through the returned reference, thus preventing unintentional modifications.
+- If the accessor method does modify the underlying data, returning a non-const reference allows the caller to directly modify the data.
+- It is generally best to avoid returning data by address unless necessary, as it often implies optional data that needs to be checked for `null` before usage. Returning references provides a more straightforward and safer approach for accessing and modifying data.
 
 ---------
 [<< Go back to the Coding Conventions page](codingConventions.md)

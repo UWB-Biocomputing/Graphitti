@@ -32,22 +32,11 @@ void AllDSSynapses::setupEdges(const int numVertices, const int maxEdges)
    BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
    if (maxTotalSynapses != 0) {
-      lastSpike_.resize(maxTotalSynapses);
       lastSpike_.assign(maxTotalSynapses, 0);
-
-      r_.resize(maxTotalSynapses);
       r_.assign(maxTotalSynapses, 0);
-
-      u_.resize(maxTotalSynapses);
       u_.assign(maxTotalSynapses, 0);
-
-      D_.resize(maxTotalSynapses);
       D_.assign(maxTotalSynapses, 0);
-
-      U_.resize(maxTotalSynapses);
       U_.assign(maxTotalSynapses, 0);
-
-      F_.resize(maxTotalSynapses);
       F_.assign(maxTotalSynapses, 0);
    }
 }

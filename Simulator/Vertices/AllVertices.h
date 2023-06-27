@@ -55,7 +55,7 @@ public:
    ///  Creates all the Vertices and assigns initial data for them.
    ///
    ///  @param  layout      Layout information of the neural network.
-   virtual void createAllVertices(Layout *layout) = 0;
+   virtual void createAllVertices(Layout &layout) = 0;
 
    ///  Outputs state of the vertex chosen as a string.
    ///
@@ -110,7 +110,7 @@ public:
    ///  @param  randNoise              Reference to the random noise array.
    ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
-                                float *randNoise, EdgeIndexMapDevice *edgeIndexMapDevice)
+                                float randNoise[], EdgeIndexMapDevice *edgeIndexMapDevice)
       = 0;
 
    ///  Set some parameters used for advanceVerticesDevice.
@@ -124,7 +124,7 @@ public:
    ///
    ///  @param  edges         The Synapse list to search from.
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-   virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap) = 0;
+   virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIndexMap) = 0;
 
 #endif   // defined(USE_GPU)
 };

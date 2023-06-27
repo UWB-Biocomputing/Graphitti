@@ -17,8 +17,8 @@ void AllSpikingNeurons::setupVertices()
    int maxSpikes = static_cast<int>(Simulator::getInstance().getEpochDuration()
                                     * Simulator::getInstance().getMaxFiringRate());
 
-   hasFired_.resize(size_, false);
-   vertexEvents_.resize(size_, maxSpikes);
+   hasFired_.assign(size_, false);
+   vertexEvents_.assign(size_, maxSpikes);
 }
 
 ///  Clear the spike counts out of all Neurons.
@@ -39,7 +39,7 @@ void AllSpikingNeurons::clearSpikeCounts()
 ///
 ///  @param  synapses         The Synapse list to search from.
 ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap *edgeIndexMap)
+void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap &edgeIndexMap)
 {
    int maxSpikes = (int)((Simulator::getInstance().getEpochDuration()
                           * Simulator::getInstance().getMaxFiringRate()));
@@ -61,17 +61,17 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap *
          // notify outgoing synapses
          BGSIZE synapseCounts;
 
-         if (edgeIndexMap != nullptr) {
-            synapseCounts = edgeIndexMap->outgoingEdgeCount_[idx];
-            if (synapseCounts != 0) {
-               int beginIndex = edgeIndexMap->outgoingEdgeBegin_[idx];
-               BGSIZE iEdg;
-               for (BGSIZE i = 0; i < synapseCounts; i++) {
-                  iEdg = edgeIndexMap->outgoingEdgeIndexMap_[beginIndex + i];
-                  spSynapses.preSpikeHit(iEdg);
-               }
+
+         synapseCounts = edgeIndexMap.outgoingEdgeCount_[idx];
+         if (synapseCounts != 0) {
+            int beginIndex = edgeIndexMap.outgoingEdgeBegin_[idx];
+            BGSIZE iEdg;
+            for (BGSIZE i = 0; i < synapseCounts; i++) {
+               iEdg = edgeIndexMap.outgoingEdgeIndexMap_[beginIndex + i];
+               spSynapses.preSpikeHit(iEdg);
             }
          }
+
 
          // notify incoming synapses
          synapseCounts = spSynapses.edgeCounts_[idx];

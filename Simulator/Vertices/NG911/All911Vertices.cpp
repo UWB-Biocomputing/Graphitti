@@ -15,11 +15,6 @@
 void All911Vertices::setupVertices()
 {
    AllVertices::setupVertices();
-
-   callNum_.resize(size_);
-   dispNum_.resize(size_);
-   respNum_.resize(size_);
-
    // Populate arrays with 0
    callNum_.assign(size_, 0);
    dispNum_.assign(size_, 0);
@@ -27,7 +22,7 @@ void All911Vertices::setupVertices()
 }
 
 // Generate callNum_ and dispNum_ for all caller and psap nodes
-void All911Vertices::createAllVertices(Layout *layout)
+void All911Vertices::createAllVertices(Layout &layout)
 {
    vector<int> psapList;
    vector<int> respList;
@@ -37,31 +32,31 @@ void All911Vertices::createAllVertices(Layout *layout)
    int callersPerZone[] = {0, 0, 0, 0};
    int respPerZone[] = {0, 0, 0, 0};
 
-   Layout911 *layout911 = dynamic_cast<Layout911 *>(layout);
+   Layout911 &layout911 = dynamic_cast<Layout911 &>(layout);
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       // Create all callers
-      if (layout->vertexTypeMap_[i] == CALR) {
+      if (layout.vertexTypeMap_[i] == CALR) {
          callNum_[i] = initRNG.inRange(callNumRange_[0], callNumRange_[1]);
-         callersPerZone[layout911->zone(i)] += callNum_[i];
+         callersPerZone[layout911.zone(i)] += callNum_[i];
       }
 
       // Find all PSAPs
-      if (layout->vertexTypeMap_[i] == PSAP) {
+      if (layout.vertexTypeMap_[i] == PSAP) {
          psapList.push_back(i);
       }
 
       // Find all resps
-      if (layout->vertexTypeMap_[i] == RESP) {
+      if (layout.vertexTypeMap_[i] == RESP) {
          respList.push_back(i);
-         respPerZone[layout911->zone(i)] += 1;
+         respPerZone[layout911.zone(i)] += 1;
       }
    }
 
    // Create all psaps
    // Dispatchers in a psap = [callers in the zone * k] + some randomness
    for (int i = 0; i < psapList.size(); i++) {
-      int psapQ = layout911->zone(i);
+      int psapQ = layout911.zone(i);
       int dispCount = (callersPerZone[psapQ] * dispNumScale_) + initRNG.inRange(-5, 5);
       if (dispCount < 1) {
          dispCount = 1;
@@ -72,7 +67,7 @@ void All911Vertices::createAllVertices(Layout *layout)
    // Create all responders
    // Responders in a node = [callers in the zone * k]/[number of responder nodes] + some randomness
    for (int i = 0; i < respList.size(); i++) {
-      int respQ = layout911->zone(respList[i]);
+      int respQ = layout911.zone(respList[i]);
       int respCount
          = (callersPerZone[respQ] * respNumScale_) / respPerZone[respQ] + initRNG.inRange(-5, 5);
       if (respCount < 1) {
@@ -107,7 +102,7 @@ string All911Vertices::toString(const int index) const
 ///
 ///  @param  edges         The edge list to search from.
 ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap)
+void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIndexMap)
 {
    //    // casting all911Edges for this method to use & modify
    //    All911Edges &allEdges = dynamic_cast<All911Edges &>(edges);
@@ -126,12 +121,12 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
    //          BGSIZE edgeCounts;
 
    //          if (edgeIndexMap != nullptr) {
-   //             edgeCounts = edgeIndexMap->outgoingEdgeCount_[idx];
+   //             edgeCounts = edgeIndexMap.outgoingEdgeCount_[idx];
    //             if (edgeCounts != 0) {
-   //                int beginIndex = edgeIndexMap->outgoingEdgeBegin_[idx];
+   //                int beginIndex = edgeIndexMap.outgoingEdgeBegin_[idx];
    //                BGSIZE iEdg;
    //                for (BGSIZE i = 0; i < edgeCounts; i++) {
-   //                   iEdg = edgeIndexMap->outgoingEdgeBegin_[beginIndex + i];
+   //                   iEdg = edgeIndexMap.outgoingEdgeBegin_[beginIndex + i];
    //                   allEdges.preSpikeHit(iEdg);
    //                }
    //             }

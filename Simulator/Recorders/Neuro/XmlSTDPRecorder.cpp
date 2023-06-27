@@ -30,24 +30,24 @@ void XmlSTDPRecorder::init()
 ///Init radii and rates history matrices with default values
 void XmlSTDPRecorder::initDefaultValues()
 {
-   Connections *connections = Simulator::getInstance().getModel()->getConnections();
+   Connections &connections = Simulator::getInstance().getModel().getConnections();
    //AllNeuroEdges *synapses synapses)->W_[iSyn]
-   BGFLOAT startRadius = dynamic_cast<ConnStatic *>(connections)->getConnsRadiusThresh();
+   BGFLOAT startRadius = dynamic_cast<ConnStatic &>(connections).getConnsRadiusThresh();
 }
 
 ///InitValues gets the values for weights, source index and dest index at the time of simulation start
 void XmlSTDPRecorder::initValues()
 {
-   Connections *connections = Simulator::getInstance().getModel()->getConnections();
+   Connections &connections = Simulator::getInstance().getModel().getConnections();
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices()
                           * Simulator::getInstance().getMaxEdgesPerVertex();
         i++) {
-      weightsHistory_[0][i] = (dynamic_cast<ConnStatic *>(connections)->getWCurrentEpoch())[i];
+      weightsHistory_[0][i] = (dynamic_cast<ConnStatic &>(connections).getWCurrentEpoch())[i];
       sourceNeuronIndexHistory_[0][i]
-         = (dynamic_cast<ConnStatic *>(connections)->getSourceVertexIndexCurrentEpoch())[i];
+         = (dynamic_cast<ConnStatic &>(connections).getSourceVertexIndexCurrentEpoch())[i];
       destNeuronIndexHistory_[0][i]
-         = (dynamic_cast<ConnStatic *>(connections)->getDestVertexIndexCurrentEpoch())[i];
+         = (dynamic_cast<ConnStatic &>(connections).getDestVertexIndexCurrentEpoch())[i];
    }
 }
 
@@ -55,8 +55,8 @@ void XmlSTDPRecorder::initValues()
 void XmlSTDPRecorder::getValues()
 {
    Simulator &simulator = Simulator::getInstance();
-   Connections *connections = simulator.getModel()->getConnections();
-   AllEdges &synapses = (*connections->getEdges());
+   Connections &connections = simulator.getModel().getConnections();
+   AllEdges &synapses = connections.getEdges();
    const int currentStep = simulator.getCurrentStep();
 
    for (int i = 0; i < simulator.getTotalVertices(); i++) {
@@ -74,8 +74,8 @@ void XmlSTDPRecorder::compileHistories(AllVertices &neurons)
    LOG4CPLUS_INFO(fileLogger_, "Compiling STDP HISTORY");
    XmlRecorder::compileHistories(neurons);
    Simulator &simulator = Simulator::getInstance();
-   Connections *connections = simulator.getModel()->getConnections();
-   AllEdges &synapses = (*connections->getEdges());
+   Connections &connections = simulator.getModel().getConnections();
+   AllEdges &synapses = connections.getEdges();
    const int currentStep = simulator.getCurrentStep();
 
    for (int iNeuron = 0; iNeuron < simulator.getTotalVertices() * simulator.getMaxEdgesPerVertex();
@@ -142,7 +142,7 @@ void XmlSTDPRecorder::saveSimData(const AllVertices &neurons)
    // create Neuron Types matrix
    VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), EXC);
    for (int i = 0; i < simulator.getTotalVertices(); i++) {
-      neuronTypes[i] = simulator.getModel()->getLayout()->vertexTypeMap_[i];
+      neuronTypes[i] = simulator.getModel().getLayout().vertexTypeMap_[i];
    }
 
    // create neuron threshold matrix
@@ -161,18 +161,17 @@ void XmlSTDPRecorder::saveSimData(const AllVertices &neurons)
    resultOut_ << "   " << toXML("sourceNeuronIndexHistory", sourceNeuronIndexHistory_) << endl;
    resultOut_ << "   " << toXML("destNeuronIndexHistory", destNeuronIndexHistory_) << endl;
    resultOut_ << "   " << toXML("weightsHistory", weightsHistory_) << endl;
-   resultOut_ << "   " << burstinessHist_.toXML("burstinessHist") << endl;
    resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   resultOut_ << "   " << simulator.getModel()->getLayout()->xloc_.toXML("xloc") << endl;
-   resultOut_ << "   " << simulator.getModel()->getLayout()->yloc_.toXML("yloc") << endl;
+   resultOut_ << "   " << simulator.getModel().getLayout().xloc_.toXML("xloc") << endl;
+   resultOut_ << "   " << simulator.getModel().getLayout().yloc_.toXML("yloc") << endl;
    resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
 
    // create starter neuron matrix
    int num_starter_neurons
-      = static_cast<int>(simulator.getModel()->getLayout()->numEndogenouslyActiveNeurons_);
+      = static_cast<int>(simulator.getModel().getLayout().numEndogenouslyActiveNeurons_);
    if (num_starter_neurons > 0) {
       VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
-      getStarterNeuronMatrix(starterNeurons, simulator.getModel()->getLayout()->starterMap_);
+      getStarterNeuronMatrix(starterNeurons, simulator.getModel().getLayout().starterMap_);
       resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
    }
 

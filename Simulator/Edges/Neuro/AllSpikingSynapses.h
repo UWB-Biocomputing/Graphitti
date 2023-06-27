@@ -28,9 +28,9 @@
 
 struct AllSpikingSynapsesDeviceProperties;
 
-typedef void (*fpPreSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
+using fpPreSynapsesSpikeHit_t = void (*)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
 
-typedef void (*fpPostSynapsesSpikeHit_t)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
+using fpPostSynapsesSpikeHit_t = void (*)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
 
 
 class AllSpikingSynapses : public AllNeuroEdges {
@@ -231,7 +231,7 @@ public:
    ///
    ///  @param  iEdg      Index of the Synapse to connect to.
    ///  @param  neurons   The Neuron list to search from.
-   virtual void advanceEdge(const BGSIZE iEdg, AllVertices *neurons) override;
+   virtual void advanceEdge(const BGSIZE iEdg, AllVertices &neurons) override;
 
    ///  Prepares Synapse for a spike hit.
    ///

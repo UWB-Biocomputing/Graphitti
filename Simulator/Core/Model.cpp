@@ -47,7 +47,7 @@ Model::Model()
 void Model::saveResults()
 {
    if (recorder_ != nullptr) {
-      recorder_->saveSimData(*layout_->getVertices());
+      recorder_->saveSimData(layout_->getVertices());
    }
 }
 
@@ -61,16 +61,16 @@ void Model::createAllVertices()
    layout_->initStarterMap(Simulator::getInstance().getTotalVertices());
 
    // set their specific types
-   layout_->getVertices()->createAllVertices(layout_.get());
+   layout_->getVertices().createAllVertices(*layout_);
 }
 
 /// Sets up the Simulation.
 void Model::setupSim()
 {
    LOG4CPLUS_INFO(fileLogger_, "Setting up Vertices...");
-   layout_->getVertices()->setupVertices();
+   layout_->getVertices().setupVertices();
    LOG4CPLUS_INFO(fileLogger_, "Setting up Edges...");
-   connections_->getEdges()->setupEdges();
+   connections_->getEdges().setupEdges();
 #ifdef PERFORMANCE_METRICS
    // Start timer for initialization
    Simulator::getInstance().getShort_timer().start();
@@ -164,29 +164,29 @@ void Model::updateHistory()
       LOG4CPLUS_INFO(fileLogger_, "ERROR: Recorder class is null.");
    }
    if (recorder_ != nullptr) {
-      recorder_->compileHistories(*layout_->getVertices());
+      recorder_->compileHistories(layout_->getVertices());
    }
 }
 
 /// Get the Connections class object.
 /// @return Pointer to the Connections class object.
 // ToDo: make smart ptr
-Connections *Model::getConnections() const
+Connections &Model::getConnections() const
 {
-   return connections_.get();
+   return *connections_;
 }
 
 /// Get the Layout class object.
 /// @return Pointer to the Layout class object.
-Layout *Model::getLayout() const
+Layout &Model::getLayout() const
 {
-   return layout_.get();
+   return *layout_;
 }
 
 /// Get the IRecorder class object.
 /// @return Pointer to the IRecorder class object.
 // ToDo: make smart ptr
-IRecorder *Model::getRecorder() const
+IRecorder &Model::getRecorder() const
 {
-   return recorder_.get();
+   return *recorder_;
 }

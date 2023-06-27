@@ -55,7 +55,7 @@ public:
    // based on the order in which the type appears in the list, in this case:
    // int Event::* = 0, uint64_t Event::* = 1 ... string Event::* = 5
    // For convenience an enum type is defined below but the types must be in the same
-   // order as declared in the boost::variant typedef.
+   // order as declared in the boost::variant below.
    using EventMemberPtr
       = boost::variant<int T::*, uint64_t T::*, long T::*, float T::*, double T::*, string T::*>;
    enum PropertyType { INTEGER, UINT64, LONG, FLOAT, DOUBLE, STRING };

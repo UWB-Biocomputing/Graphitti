@@ -2,9 +2,9 @@ name: Unit and Regression Tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master,development-1h23 ]
   pull_request:
-    branches: [ master ]
+    branches: [ master,development-1h23 ]
 
 defaults: 
   run:
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     # install Boost Graph Library
     - name: bgl
       run: sudo apt-get update && sudo apt-get install -yq libboost-graph-dev

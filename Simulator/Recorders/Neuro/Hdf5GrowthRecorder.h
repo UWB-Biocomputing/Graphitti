@@ -9,7 +9,6 @@
  * and compile history information on hdf5 file:
  *     -# neuron's locations, and type map,
  *     -# individual neuron's spike rate in epochs,
- *     -# network wide burstiness index data in 1s bins,
  *     -# network wide spike count in 10ms bins,
  *     -# individual neuron's radius history of every epoch.
  *
@@ -34,6 +33,8 @@ using namespace H5;
    #else
       #define H5_FLOAT PredType::NATIVE_DOUBLE
    #endif
+
+   #include <vector>
 
 class Hdf5GrowthRecorder : public Hdf5Recorder {
 public:
@@ -75,14 +76,15 @@ protected:
    void writeRadiiRates();
 
    /// hdf5 file dataset
-   DataSet *dataSetRatesHist_;
-   DataSet *dataSetRadiiHist_;
+   ///extentable DataSet
+   DataSet dataSetRatesHist_;
+   DataSet dataSetRadiiHist_;
 
    /// track radii
-   BGFLOAT *radiiHistory_;
+   std::vector<BGFLOAT> radiiHistory_;
 
    /// track firing rate
-   BGFLOAT *ratesHistory_;
+   std::vector<BGFLOAT> ratesHistory_;
 };
 
 #endif   // HDF5
