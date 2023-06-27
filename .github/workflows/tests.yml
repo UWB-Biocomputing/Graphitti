@@ -22,10 +22,20 @@ jobs:
       with:
         path: /usr/include/boost
         key: ${{ runner.os }}-boost
+    - name: Restore HDF5
+      id: HDF5-cache
+      uses: actions/cache@v3
+      with:
+        path: /usr/include/hdf5/
+        key: hdf5-dependencies
     # install Boost Graph Library
     - name: bgl
       if: steps.boost-cache.outputs.cache-hit != 'true'
       run: sudo apt-get update && sudo apt-get install -yq libboost-graph-dev
+    # install HDF5 Library
+    - name: hdf5
+      if: steps.HDF5-cache.outputs.cache-hit != 'true'
+      run: sudo apt-get install -y libhdf5-dev
     # configure and build the Simualtor
     - name: configure
       run: cmake ..
