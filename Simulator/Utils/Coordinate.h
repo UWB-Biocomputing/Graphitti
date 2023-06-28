@@ -6,8 +6,7 @@
  * @brief A container for 2-dimensional coordinates.
  */
 
-#ifndef _COORDINATE_H_
-#define _COORDINATE_H_
+#pragma once
 
 //  Utility structure that allows coordinates of points in a 2d array to be
 //	easily tracked with some utility
@@ -33,4 +32,3 @@ struct Coordinate {
    //  The location in the y dimension.
    int y;
 };
-#endif

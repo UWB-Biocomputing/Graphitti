@@ -12,10 +12,7 @@
 
 #pragma once
 
-#ifndef _HOSTSINPUTREGULAR_H_
-   #define _HOSTSINPUTREGULAR_H_
-
-   #include "SInputRegular.h"
+#include "SInputRegular.h"
 
 class HostSInputRegular : public SInputRegular {
 public:
@@ -35,5 +32,3 @@ public:
 
 private:
 };
-
-#endif   // _HOSTSINPUTREGULAR_H_

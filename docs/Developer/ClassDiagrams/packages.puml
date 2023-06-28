@@ -68,7 +68,8 @@ package Connections{
 
 /'package '/
 package Edges{
-   class AllSpikingSynapses implements AllEdges
+   class AllNeuroEdges implements AllEdges
+   class AllSpikingSynapses extends AllNeuroEdges
    class AllSTDPSynapses extends AllSpikingSynapses
    class AllDSSynapses extends AllSpikingSynapses
    class AllDynamicsSTDPSynapses extends AllSTDPSynapses
@@ -81,8 +82,10 @@ package Edges{
 /'relationship of classes in Core and other packages'/
 Simulator -[#red]-> LayoutsFactory : commands
 Simulator -[#red]----> ConnectionsFactory: commands
+Simulator -[#red]----> RecordersFactory: commands
 Model o-[#red] Layout
-Model o-[#red]--- Connections
+Model o-[#red]-- Connections
+Model o-[#red]--- IRecorder
 
 'relationship of classes in package Layouts and Vertices'/
 Layout o-[#red] AllVertices
@@ -90,9 +93,7 @@ Layout -[#red]---> VerticesFactory : commands
 
 /'relationship of classes in package connections and other package'/
 /'Connections here refers to the interface in package'/
-Connections o-[#red]- Recorder
 Connections o-[#red]- AllEdges
-Connections -[#red]---> RecordersFactory : commands
 Connections -[#red]---> EdgesFactory : commands
 
 /'overall image layout'/

@@ -15,13 +15,9 @@
 
 #pragma once
 
+#include "AllDSSynapses.h"
+#include "ISInput.h"
 #include <vector>
-
-#ifndef _SINPUTPOISSON_H_
-   #define _SINPUTPOISSON_H_
-
-   #include "AllDSSynapses.h"
-   #include "ISInput.h"
 
 class SInputPoisson : public ISInput {
 public:
@@ -55,5 +51,3 @@ protected:
    //! Masks for stimulus input
    unique_ptr<bool[]> masks;
 };
-
-#endif   // _SINPUTPOISSON_H_

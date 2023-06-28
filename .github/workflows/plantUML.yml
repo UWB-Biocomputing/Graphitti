@@ -51,7 +51,7 @@ jobs:
         with:
             args: -o "diagrams" -v -tpng ${{ steps.getfile.outputs.files }}
       - name: Push Local Changes
-        uses:  stefanzweifel/git-auto-commit-action@v4.1.2 
+        uses:  stefanzweifel/git-auto-commit-action@v4 
         with:
           commit_message: "Generate SVG and PNG images for PlantUML diagrams" 
           branch: ${{ github.head_ref }}
