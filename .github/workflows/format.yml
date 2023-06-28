@@ -12,7 +12,7 @@ on:
       - '**.h'
     branches:
       - master
-      - development-1h23
+      - development
 
 jobs:
   deploy:
