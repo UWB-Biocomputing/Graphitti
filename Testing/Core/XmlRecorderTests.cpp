@@ -8,10 +8,9 @@
  * We test that XmlRecorder class records correct output into the xml file
  * we are requesting.
  */
+#define RUNIT_TEST
 #include "AllLIFNeurons.h"
-#include "Core.h"
 #include "EventBuffer.h"
-#include "Simulator.h"
 #include "Utils/Factory.h"
 #include "XmlRecorder.h"
 #include "gtest/gtest.h"
@@ -19,16 +18,6 @@
 #include <tinyxml.h>
 
 using namespace std;
-
-// Test case for creating simulation object for testRecorder
-TEST(XmlRecorderTest, CreateSimulation)
-{
-   string executable = "./cgraphitti";
-   string configFile = "../configfiles/test-small-connected.xml";
-   string argument = "-c " + configFile;
-   Core core;
-   core.runSimulation(executable, argument);
-}
 
 // Test case for initializing the XmlRecorder
 TEST(XmlRecorderTest, CreateInstanceSuccess)

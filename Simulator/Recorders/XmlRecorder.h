@@ -58,7 +58,8 @@ public:
    /// Store the neuron number and all the events of this single neuron
    void registerVariable(string varName, EventBuffer &recordVar) override;
 
-#ifdef RUNIT_TEST
+///@{
+   /** These methods are intended only for unit tests */
    // constructor only for unit test
    XmlRecorder(std::string fileName_)
    {
@@ -80,7 +81,7 @@ public:
    {
       return single_neuron_History_;
    }
-#endif
+///@}
 
 protected:
    // variable neuronName records the number of a single neuron
