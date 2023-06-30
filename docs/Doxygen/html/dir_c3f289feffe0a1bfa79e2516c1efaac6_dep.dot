@@ -1,0 +1,16 @@
+digraph "Simulator/Utils/Inputs"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  compound=true
+  subgraph clusterdir_a0272814d0434af1122b2c8b7d064f8e {
+    graph [ bgcolor="#edf0f7", pencolor="grey50", label="Utils", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_a0272814d0434af1122b2c8b7d064f8e.html",tooltip=""]
+  dir_c3f289feffe0a1bfa79e2516c1efaac6 [label="Inputs", fillcolor="#edf0f7", color="grey25", style="filled,bold", URL="dir_c3f289feffe0a1bfa79e2516c1efaac6.html",tooltip=""];
+  }
+  dir_7119e39fba25347656c358c78b4b5d07 [label="Core", fillcolor="#edf0f7", color="red", style="filled,dashed", URL="dir_7119e39fba25347656c358c78b4b5d07.html",tooltip=""];
+  dir_83539a1eabc265fd6adc984748625353 [label="Edges", fillcolor="#edf0f7", color="red", style="filled,dashed", URL="dir_83539a1eabc265fd6adc984748625353.html",tooltip=""];
+  dir_c3f289feffe0a1bfa79e2516c1efaac6->dir_7119e39fba25347656c358c78b4b5d07 [headlabel="4", labeldistance=1.5 headhref="dir_000006_000001.html" color="steelblue1" fontcolor="steelblue1"];
+  dir_c3f289feffe0a1bfa79e2516c1efaac6->dir_83539a1eabc265fd6adc984748625353 [headlabel="3", labeldistance=1.5 headhref="dir_000006_000004.html" color="steelblue1" fontcolor="steelblue1"];
+}
