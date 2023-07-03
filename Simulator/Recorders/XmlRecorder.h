@@ -58,7 +58,7 @@ public:
    /// Store the neuron number and all the events of this single neuron
    void registerVariable(string varName, EventBuffer &recordVar) override;
 
-///@{
+   ///@{
    /** These methods are intended only for unit tests */
    // constructor only for unit test
    XmlRecorder(std::string fileName_)
@@ -81,7 +81,7 @@ public:
    {
       return single_neuron_History_;
    }
-///@}
+   ///@}
 
 protected:
    // variable neuronName records the number of a single neuron
@@ -90,7 +90,7 @@ protected:
    // The address of the registered variable
    // As the simulator runs, the values will be updated
    // It can records all events of a single neuron in each epoch
-   EventBuffer *singleNeuronEvents_;
+   shared_ptr<EventBuffer> singleNeuronEvents_;
 
    // history of accumulated event for a single neuron
    std::vector<uint64_t> single_neuron_History_;

@@ -154,5 +154,8 @@ void XmlRecorder::printParameters()
 void XmlRecorder::registerVariable(string name, EventBuffer &recordVar)
 {
    neuronName = name;
-   singleNeuronEvents_ = &recordVar;
+   singleNeuronEvents_ = std::shared_ptr<EventBuffer>(&recordVar, [](EventBuffer *) {
+   });
+   // cout << "smart pointer singleNeuronEvents_" << endl;
+   // cout << singleNeuronEvents_.get() << endl;
 }

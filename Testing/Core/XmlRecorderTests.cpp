@@ -45,16 +45,19 @@ TEST(XmlRecorderTest, RegisterVariableTest)
 {
    // Create an instance of XmlRecorder
    std::string outputFile = "../build/Output/test_output.xml";
-   XmlRecorder recorder(outputFile);
+   unique_ptr<XmlRecorder> recorderTest_(new XmlRecorder(outputFile));
+   ASSERT_TRUE(recorderTest_ != nullptr);
+   // XmlRecorder recorder(outputFile);
    // Create a mock EventBuffer object
    EventBuffer buffer;
 
    // Register a variable
-   recorder.registerVariable("neuron1", buffer);
+   // recorder.registerVariable("neuron1", buffer);
+   recorderTest_->registerVariable("neuron1", buffer);
 
    // Verify that the registered variable is stored correctly
-   ASSERT_EQ("neuron1", recorder.getNeuronName());
-   ASSERT_EQ(&buffer, &recorder.getSingleNeuronEvents());
+   ASSERT_EQ("neuron1", recorderTest_->getNeuronName());
+   ASSERT_EQ(&buffer, &recorderTest_->getSingleNeuronEvents());
 }
 
 // Test case for compiling histories
@@ -62,7 +65,7 @@ TEST(XmlRecorderTest, CompileHistoriesTest)
 {
    // Create an instance of XmlRecorder
    std::string outputFile = "../build/Output/test_output.xml";
-   XmlRecorder recorder(outputFile);
+   unique_ptr<XmlRecorder> recorderTest_(new XmlRecorder(outputFile));
    // Create a mock AllVertices object
    unique_ptr<AllVertices> vertices
       = Factory<AllVertices>::getInstance().createType("AllLIFNeurons");
@@ -71,7 +74,7 @@ TEST(XmlRecorderTest, CompileHistoriesTest)
    EventBuffer buffer(4);
 
    // Register a variable
-   recorder.registerVariable("neuron1", buffer);
+   recorderTest_->registerVariable("neuron1", buffer);
 
    // Insert some events into the event buffer
    buffer.insertEvent(1);
@@ -79,10 +82,10 @@ TEST(XmlRecorderTest, CompileHistoriesTest)
    buffer.insertEvent(3);
 
    // Call the compileHistories method
-   recorder.compileHistories(*vertices.get());
-   std::vector<uint64_t> history = recorder.getHistory();
+   recorderTest_->compileHistories(*vertices.get());
+   std::vector<uint64_t> history = recorderTest_->getHistory();
    // Verify the neuron name
-   EXPECT_EQ("neuron1", recorder.getNeuronName());
+   EXPECT_EQ("neuron1", recorderTest_->getNeuronName());
 
    // Verify the single neuron events compiled hisotry
    EXPECT_EQ(1, history[0]);
@@ -95,7 +98,7 @@ TEST(XmlRecorderTest, SaveSimDataTest)
 {
    // Create an instance of XmlRecorder
    std::string outputFile = "../build/Output/test_output.xml";
-   XmlRecorder recorder(outputFile);
+   unique_ptr<XmlRecorder> recorderTest_(new XmlRecorder(outputFile));
    // Create a mock AllVertices object
    unique_ptr<AllVertices> vertices
       = Factory<AllVertices>::getInstance().createType("AllLIFNeurons");
@@ -104,10 +107,10 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    EventBuffer buffer(4);
 
    // initialize the XmlRecorder object
-   recorder.init();
+   recorderTest_->init();
 
    // Register a variable
-   recorder.registerVariable("neuron1", buffer);
+   recorderTest_->registerVariable("neuron1", buffer);
 
    // Insert some events into the event buffer
    buffer.insertEvent(1);
@@ -115,9 +118,9 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    buffer.insertEvent(3);
 
    // Call the compileHistories method
-   recorder.compileHistories(*vertices.get());
+   recorderTest_->compileHistories(*vertices.get());
    // Call the saveSimData() function
-   recorder.saveSimData(*vertices.get());
+   recorderTest_->saveSimData(*vertices.get());
 
    // Open the test_output.xml file and read its content
    std::ifstream inputFile("../build/Output/test_output.xml");
@@ -129,12 +132,12 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    // For example, check if the output file contains the expected XML content
    stringstream os;
    os << "<Matrix ";
-   os << "name=\"" << recorder.getNeuronName() << "\" ";
-   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << recorder.getHistory().size()
+   os << "name=\"" << recorderTest_->getNeuronName() << "\" ";
+   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << recorderTest_->getHistory().size()
       << "\" multiplier=\"1.0\">" << endl;
    os << "   ";
-   for (int i = 0; i < recorder.getHistory().size(); i++) {
-      os << recorder.getHistory()[i] << " ";
+   for (int i = 0; i < recorderTest_->getHistory().size(); i++) {
+      os << recorderTest_->getHistory()[i] << " ";
    }
    os << endl;
    os << "</Matrix>";
