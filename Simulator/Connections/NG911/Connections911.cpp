@@ -46,7 +46,6 @@ void Connections911::setup()
 
 void Connections911::loadParameters()
 {
-   ParameterManager::getInstance().getIntByXpath("//connsPerVertex/text()", connsPerVertex_);
    ParameterManager::getInstance().getIntByXpath("//psapsToErase/text()", psapsToErase_);
    ParameterManager::getInstance().getIntByXpath("//respsToErase/text()", respsToErase_);
 }
@@ -58,7 +57,7 @@ void Connections911::printParameters() const
    LOG4CPLUS_DEBUG(fileLogger_, "CONNECTIONS PARAMETERS"
                                    << endl
                                    << "\tConnections Type: Connections911" << endl
-                                   << "\tConnections per vertex: " << connsPerVertex_ << endl
+                                   << "\tMaximum Connections per vertex: " << edges_->maxEdgesPerVertex_ << endl
                                    << "\tPSAPs to erase: " << psapsToErase_ << endl
                                    << "\tRESPs to erase: " << respsToErase_ << endl
                                    << endl);
