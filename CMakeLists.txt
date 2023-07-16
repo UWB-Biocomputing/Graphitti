@@ -53,6 +53,7 @@ endif()
 
 # Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_LIBRARIES "-lstdc++fs")
 
 # set(DEBUG_MODE YES) for debugging, no optimization
 # set(DEBUG_MODE NO) for production code, -O3 optimization enabled
@@ -383,6 +384,16 @@ target_link_libraries(deserialTest gtest gtest_main)
 
 # Link the combined library into the 'deserialTest' executable.
 target_link_libraries(deserialTest combinedLib)
+
+add_executable(serialFileAccessTest
+        Testing/RunTests.cpp
+        Testing/Core/SerializationFileAccessTest.cpp)
+
+# Links the Googletest framework with the serialFileAccessTest executable
+target_link_libraries(serialFileAccessTest gtest gtest_main)
+
+# Link the combined library into the 'serialFileAccessTest' executable.
+target_link_libraries(serialFileAccessTest combinedLib)
 
 # Clear ENABLE_CUDA, PERFORMANCE_METRICS and GPROF from the cache so it's reset for subsequent builds
 unset(ENABLE_CUDA CACHE)
