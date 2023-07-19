@@ -17,48 +17,24 @@ Then run the test using
 When used properly, Array, Vector, and Valarray have very similar performance.  Built-in compiler optimization makes a huge difference in speed.  If you know the size of your data beforehand, then reserve the size of the array before using it.  Avoid functions that perform bounds checking.
 
 ## Sample Output
+### Initialization
+|                           | Array       | Vector      | Valarray    |
+|---------------------------|-------------|-------------|-------------|
+| No optimization           | 43989 µs    | 182074 µs   | 58962 µs    |
+| O1                        | 23012 µs    | 42519 µs    | 24857 µs    |
+| O2                        | 20268 µs    | 37518 µs    | 21361 µs    |
 
->No optimization:
->Array initialization took       	43989   µs
->Vector initialization took      	182074  µs
->Valarray initialization took    	58962   µs
->
->Array access and sum took       	22617   µs
->Vector [] access and sum took   	30256   µs
->Vector .at() access and sum took        105913  µs
->Valarray access and sum took    	30225   µs
->
->Array random access and sum took        105570  µs
->Vector [] random access and sum took    142558  µs
->Vector .at() random access and sum took 289157  µs
->Valarray random access and sum took     143044  µs
->
->O1 :
->Array initialization took       	23012   µs
->Vector initialization took      	42519   µs
->Valarray initialization took    	24857   µs
->
->Array access and sum took       	6809    µs
->Vector [] access and sum took   	6338    µs
->Vector .at() access and sum took        6639    µs
->Valarray access and sum took    	6544    µs
->
->Array random access and sum took        73207   µs
->Vector [] random access and sum took    73429   µs
->Vector .at() random access and sum took 73406   µs
->Valarray random access and sum took     73156   µs
->
->O2:
->Array initialization took       	20268   µs
->Vector initialization took      	37518   µs
->Valarray initialization took    	21361   µs
->
->Array access and sum took       	6906    µs
->Vector [] access and sum took   	6638    µs
->Vector .at() access and sum took        6449    µs
->Valarray access and sum took    	6586    µs
->
->Array random access and sum took        73473   µs
->Vector [] random access and sum took    73400   µs
->Vector .at() random access and sum took 73767   µs
->Valarray random access and sum took     75460   µs
+### Access and Sum
+|                           | Array       | Vector []   | Vector .at() | Valarray    |
+|---------------------------|-------------|-------------|--------------|-------------|
+| No optimization           | 22617 µs    | 30256 µs    | 105913 µs    | 30225 µs    |
+| O1                        | 6809 µs     | 6338 µs     | 6639 µs      | 6544 µs     |
+| O2                        | 6906 µs     | 6638 µs     | 6449 µs      | 6586 µs     |
+
+### Random Access and Sum
+|                           | Array       | Vector []   | Vector .at() | Valarray    |
+|---------------------------|-------------|-------------|--------------|-------------|
+| No optimization           | 105570 µs   | 142558 µs   | 289157 µs    | 143044 µs   |
+| O1                        | 73207 µs    | 73429 µs    | 73406 µs     | 73156 µs    |
+| O2                        | 73473 µs    | 73400 µs    | 73767 µs     | 75460 µs    |
+

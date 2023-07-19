@@ -37,11 +37,14 @@ public:
    /// Destructor
    virtual ~Model() = default;
 
-   Connections *getConnections() const;
+   /// Returns reference to Connections
+   Connections &getConnections() const;
 
-   Layout *getLayout() const;
+   /// Returns reference to Layout
+   Layout &getLayout() const;
 
-   IRecorder *getRecorder() const;
+   /// Returns reference to Recorder
+   IRecorder &getRecorder() const;
 
    /// Writes simulation results to an output destination.
    /// Downstream from IModel saveData()

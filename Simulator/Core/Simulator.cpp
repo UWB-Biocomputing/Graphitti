@@ -199,7 +199,7 @@ void Simulator::advanceEpoch(const int &currentEpoch) const
    // Compute step number at end of this simulation epoch
    uint64_t endStep = g_simulationStep + static_cast<uint64_t>(epochDuration_ / deltaT_);
    
-   model_->getLayout()->getVertices()->loadEpochInputs(g_simulationStep, endStep);
+   model_->getLayout().getVertices().loadEpochInputs(g_simulationStep, endStep);
    
    // DEBUG_MID(model->logSimStep();) // Generic model debug call
    while (g_simulationStep < endStep) {
@@ -245,9 +245,7 @@ bool Simulator::instantiateSimulatorObjects()
 #endif
 
    // Perform check on all instantiated objects.
-   if (!model_ || (model_->getConnections() == nullptr)
-       || (model_->getConnections()->getEdges() == nullptr) || (model_->getLayout() == nullptr)
-       || (model_->getLayout()->getVertices() == nullptr) || (model_->getRecorder() == nullptr)) {
+   if (!model_) {
       return false;
    }
    return true;
@@ -296,7 +294,7 @@ int Simulator::getHeight() const
 
 int Simulator::getTotalVertices() const
 {
-   return model_->getLayout()->getNumVertices();
+   return model_->getLayout().getNumVertices();
 }
 
 int Simulator::getCurrentStep() const
@@ -364,9 +362,9 @@ string Simulator::getStimulusFileName() const
    return stimulusFileName_;
 }
 
-Model *Simulator::getModel() const
+Model &Simulator::getModel() const
 {
-   return model_.get();
+   return *model_;
 }
 
 #ifdef PERFORMANCE_METRICS

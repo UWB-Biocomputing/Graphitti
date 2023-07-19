@@ -18,9 +18,9 @@
 
 > **Neurons**: all neurons have energy, typical behavior includes jittering. gaussian energy. every neuron has noise
 
-> **andogenously active cells**- starter neurons, 10% neurons are andogenously active
+> **endogenously active cells**- starter neurons, 10% neurons are endogenously active
 
-> **Excititory** - An **excitatory neuron** is defined as a **neuron** that triggers a positive change in the membrane of a post synaptic **neuron** it connects to. An inhibitory **neuron** triggers a negative change in the membrane of a post synaptic **neuron** it conencts to. (Quora)
+> **Excitatory** - An **excitatory neuron** is defined as a **neuron** that triggers a positive change in the membrane of a post synaptic **neuron** it connects to. An inhibitory **neuron** triggers a negative change in the membrane of a post synaptic **neuron** it connects to. (Quora)
 
 > **Inhibitory** - Information gathered from: 
 [https://www.quora.com/What-is-the-difference-between-excitatory-and-inhibitory-neurons#:~:text=An%20excitatory%20neurons%20is%20defined,synaptic%20neuron%20it%20conencts%20to.](https://www.quora.com/What-is-the-difference-between-excitatory-and-inhibitory-neurons#:~:text=An%20excitatory%20neurons%20is%20defined,synaptic%20neuron%20it%20conencts%20to.)

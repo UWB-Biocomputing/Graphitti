@@ -54,11 +54,6 @@ struct EdgeIndexMap {
       numOfVertices_(vertexCount), numOfEdges_(edgeCount)
    {
       if (numOfVertices_ > 0) {
-         outgoingEdgeBegin_.resize(numOfVertices_);
-         outgoingEdgeCount_.resize(numOfVertices_);
-         incomingEdgeBegin_.resize(numOfVertices_);
-         incomingEdgeCount_.resize(numOfVertices_);
-
          outgoingEdgeBegin_.assign(numOfVertices_, 0);
          outgoingEdgeCount_.assign(numOfVertices_, 0);
          incomingEdgeBegin_.assign(numOfVertices_, 0);
@@ -66,9 +61,6 @@ struct EdgeIndexMap {
       }
 
       if (numOfEdges_ > 0) {
-         outgoingEdgeIndexMap_.resize(numOfEdges_);
-         incomingEdgeIndexMap_.resize(numOfEdges_);
-
          outgoingEdgeIndexMap_.assign(numOfEdges_, 0);
          incomingEdgeIndexMap_.assign(numOfEdges_, 0);
       }

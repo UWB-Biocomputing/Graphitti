@@ -47,23 +47,12 @@ void AllSpikingSynapses::setupEdges(const int numVertices, const int maxEdges)
    BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
    if (maxTotalSynapses != 0) {
-      decay_.resize(maxTotalSynapses);
-      decay_.assign(maxTotalSynapses, 0);
-
-      totalDelay_.resize(maxTotalSynapses);
-      totalDelay_.assign(maxTotalSynapses, 0);
-
-      delayQueue_.resize(maxTotalSynapses);
-      delayQueue_.assign(maxTotalSynapses, 0);
-
-      delayIndex_.resize(maxTotalSynapses);
-      delayIndex_.assign(maxTotalSynapses, 0);
-
-      delayQueueLength_.resize(maxTotalSynapses);
-      delayQueueLength_.assign(maxTotalSynapses, 0);
-
-      tau_.resize(maxTotalSynapses);
       tau_.assign(maxTotalSynapses, 0);
+      decay_.assign(maxTotalSynapses, 0);
+      totalDelay_.assign(maxTotalSynapses, 0);
+      delayQueue_.assign(maxTotalSynapses, 0);
+      delayIndex_.assign(maxTotalSynapses, 0);
+      delayQueueLength_.assign(maxTotalSynapses, 0);
    }
 }
 
@@ -282,7 +271,7 @@ void AllSpikingSynapses::postSpikeHit(const BGSIZE iEdg)
 ///
 ///  @param  iEdg      Index of the Synapse to connect to.
 ///  @param  neurons   The Neuron list to search from.
-void AllSpikingSynapses::advanceEdge(const BGSIZE iEdg, AllVertices *neurons)
+void AllSpikingSynapses::advanceEdge(const BGSIZE iEdg, AllVertices &neurons)
 {
    BGFLOAT &decay = decay_[iEdg];
    BGFLOAT &psr = psr_[iEdg];

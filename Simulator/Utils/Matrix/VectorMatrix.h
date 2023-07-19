@@ -7,8 +7,7 @@
  */
 
 
-#ifndef _VECTORMATRIX_H_
-#define _VECTORMATRIX_H_
+#pragma once
 
 #include "CompleteMatrix.h"
 #include "Matrix.h"
@@ -308,6 +307,3 @@ private:
    /// A normal RNG for the whole class
    static Norm nRng;
 };
-
-
-#endif

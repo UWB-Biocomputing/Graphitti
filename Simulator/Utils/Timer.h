@@ -6,8 +6,7 @@
  * @brief Timer class, from CSS432
  */
 
-#ifndef _TIMER_H_
-#define _TIMER_H_
+#pragma once
 
 #include <iostream>
 
@@ -65,5 +64,3 @@ private:
    struct timeval startTime;   // Memorize the time to have started an evaluation
    struct timeval endTime;     // Memorize the time to have stopped an evaluation
 };
-
-#endif

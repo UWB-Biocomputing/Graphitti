@@ -6,8 +6,7 @@
  * @brief Deserializes Matrices from XML
  */
 
-#ifndef _MATRIXFACTORY_H_
-#define _MATRIXFACTORY_H_
+#pragma once
 
 #include "CompleteMatrix.h"
 #include "VectorMatrix.h"
@@ -83,6 +82,3 @@ private:
       throw KII_exception("Private MatrixFactory constructor called");
    }
 };
-
-
-#endif

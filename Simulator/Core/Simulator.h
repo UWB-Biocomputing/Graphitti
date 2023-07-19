@@ -98,7 +98,7 @@ public:
 
    string getStimulusFileName() const;   /// File name of the stimulus input file.
 
-   Model *getModel() const;   /// Neural Network Model interface.
+   Model &getModel() const;   /// Neural Network Model interface.
                               ///@}
 
    /************************************************

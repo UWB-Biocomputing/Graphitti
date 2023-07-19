@@ -32,8 +32,6 @@
 
     <ConnectionsParams class="Connections911" name="ConnectionsParams">
       <graphmlFile name="graphmlFile">../configfiles/graphs/King_county_NG911.graphml</graphmlFile>
-          <!-- Max ConnsPerVertex = 87 RC + 1 PR -->
-      <connsPerVertex name="connsPerVertex">100</connsPerVertex>
       <psapsToErase name="psapsToErase">1</psapsToErase>
       <respsToErase name="respsToErase">2</respsToErase>
     </ConnectionsParams>

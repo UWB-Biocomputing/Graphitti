@@ -54,47 +54,20 @@ void AllSTDPSynapses::setupEdges(const int numVertices, const int maxEdges)
    BGSIZE maxTotalSynapses = maxEdges * numVertices;
 
    if (maxTotalSynapses != 0) {
-      totalDelayPost_.resize(maxTotalSynapses);
-      totalDelayPost_.assign(maxTotalSynapses, 0);
-
-      delayQueuePost_.resize(maxTotalSynapses);
-      delayQueuePost_.assign(maxTotalSynapses, 0);
-
-      delayIndexPost_.resize(maxTotalSynapses);
-      delayIndexPost_.assign(maxTotalSynapses, 0);
-
-      delayQueuePostLength_.resize(maxTotalSynapses);
-      delayQueuePostLength_.assign(maxTotalSynapses, 0);
-
-      tauspost_.resize(maxTotalSynapses);
-      tauspost_.assign(maxTotalSynapses, 0);
-
-      tauspre_.resize(maxTotalSynapses);
-      tauspre_.assign(maxTotalSynapses, 0);
-
-      taupos_.resize(maxTotalSynapses);
-      taupos_.assign(maxTotalSynapses, 0);
-
-      tauneg_.resize(maxTotalSynapses);
-      tauneg_.assign(maxTotalSynapses, 0);
-
-      STDPgap_.resize(maxTotalSynapses);
-      STDPgap_.assign(maxTotalSynapses, 0);
-
-      Wex_.resize(maxTotalSynapses);
       Wex_.assign(maxTotalSynapses, 0);
-
-      Aneg_.resize(maxTotalSynapses);
       Aneg_.assign(maxTotalSynapses, 0);
-
-      Apos_.resize(maxTotalSynapses);
       Apos_.assign(maxTotalSynapses, 0);
-
-      mupos_.resize(maxTotalSynapses);
       mupos_.assign(maxTotalSynapses, 0);
-
-      muneg_.resize(maxTotalSynapses);
       muneg_.assign(maxTotalSynapses, 0);
+      taupos_.assign(maxTotalSynapses, 0);
+      tauneg_.assign(maxTotalSynapses, 0);
+      tauspre_.assign(maxTotalSynapses, 0);
+      STDPgap_.assign(maxTotalSynapses, 0);
+      tauspost_.assign(maxTotalSynapses, 0);
+      totalDelayPost_.assign(maxTotalSynapses, 0);
+      delayQueuePost_.assign(maxTotalSynapses, 0);
+      delayIndexPost_.assign(maxTotalSynapses, 0);
+      delayQueuePostLength_.assign(maxTotalSynapses, 0);
    }
 }
 
@@ -286,7 +259,7 @@ void AllSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVerte
 ///
 ///  @param  iEdg      Index of the Synapse to connect to.
 ///  @param  neurons   The Neuron list to search from.
-void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices *neurons)
+void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices &neurons)
 {
    // If the synapse is inhibitory or its weight is zero, update synapse state using AllSpikingSynapses::advanceEdge method
    //LOG4CPLUS_DEBUG(edgeLogger_, "iEdg : " << iEdg );
@@ -313,7 +286,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices *neurons)
       const int total_delay = totalDelay_[iEdg];
 
       BGFLOAT deltaT = Simulator::getInstance().getDeltaT();
-      AllSpikingNeurons *spNeurons = dynamic_cast<AllSpikingNeurons *>(neurons);
+      AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(neurons);
 
       // pre and post neurons index
       int idxPre = sourceVertexIndex_[iEdg];
@@ -326,7 +299,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices *neurons)
          // spikeCount points to the next available position of spike_history,
          // so the getSpikeHistory w/offset = -2 will return the spike time
          // just one before the last spike.
-         spikeHistory = spNeurons->getSpikeHistory(idxPre, -2);
+         spikeHistory = spNeurons.getSpikeHistory(idxPre, -2);
 
          epre = 1.0;
          epost = 1.0;
@@ -334,7 +307,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices *neurons)
          // pre-post spikes
          int offIndex = -1;   // last spike
          while (true) {
-            spikeHistory = spNeurons->getSpikeHistory(idxPost, offIndex);
+            spikeHistory = spNeurons.getSpikeHistory(idxPost, offIndex);
             if (spikeHistory == numeric_limits<unsigned long>::max())
                break;
             // delta is the spike interval between pre-post spikes
@@ -366,7 +339,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices *neurons)
                      // spikeCount points to the next available position of spike_history,
                      // so the getSpikeHistory w/offset = -2 will return the spike time
                      // just one before the last spike.
-         spikeHistory = spNeurons->getSpikeHistory(idxPost, -2);
+         spikeHistory = spNeurons.getSpikeHistory(idxPost, -2);
          epost = 1.0;
          epre = 1;
 
@@ -375,7 +348,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices *neurons)
          // post-pre spikes
          int offIndex = -1;   // last spike
          while (true) {
-            spikeHistory = spNeurons->getSpikeHistory(idxPre, offIndex);
+            spikeHistory = spNeurons.getSpikeHistory(idxPre, offIndex);
             if (spikeHistory == numeric_limits<unsigned long>::max())
                break;
 

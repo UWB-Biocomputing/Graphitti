@@ -51,7 +51,7 @@ void All911Vertices::setupVertices()
 }
 
 // Generate callNum_ and dispNum_ for all caller and psap nodes
-void All911Vertices::createAllVertices(Layout *layout)
+void All911Vertices::createAllVertices(Layout &layout)
 {
    // Loop over all vertices and set the number of agents and trunks, and
    // determine the size of the waiting queue.
@@ -93,31 +93,31 @@ void All911Vertices::createAllVertices(Layout *layout)
    int callersPerZone[] = {0, 0, 0, 0};
    int respPerZone[] = {0, 0, 0, 0};
 
-   Layout911 *layout911 = dynamic_cast<Layout911 *>(layout);
+   Layout911 &layout911 = dynamic_cast<Layout911 &>(layout);
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       // Create all callers
-      if (layout->vertexTypeMap_[i] == CALR) {
+      if (layout.vertexTypeMap_[i] == CALR) {
          callNum_[i] = initRNG.inRange(callNumRange_[0], callNumRange_[1]);
-         callersPerZone[layout911->zone(i)] += callNum_[i];
+         callersPerZone[layout911.zone(i)] += callNum_[i];
       }
 
       // Find all PSAPs
-      if (layout->vertexTypeMap_[i] == PSAP) {
+      if (layout.vertexTypeMap_[i] == PSAP) {
          psapList.push_back(i);
       }
 
       // Find all resps
-      if (layout->vertexTypeMap_[i] == RESP) {
+      if (layout.vertexTypeMap_[i] == RESP) {
          respList.push_back(i);
-         respPerZone[layout911->zone(i)] += 1;
+         respPerZone[layout911.zone(i)] += 1;
       }
    }
 
    // Create all psaps
    // Dispatchers in a psap = [callers in the zone * k] + some randomness
    for (int i = 0; i < psapList.size(); i++) {
-      int psapQ = layout911->zone(i);
+      int psapQ = layout911.zone(i);
       int dispCount = (callersPerZone[psapQ] * dispNumScale_) + initRNG.inRange(-5, 5);
       if (dispCount < 1) {
          dispCount = 1;
@@ -128,7 +128,7 @@ void All911Vertices::createAllVertices(Layout *layout)
    // Create all responders
    // Responders in a node = [callers in the zone * k]/[number of responder nodes] + some randomness
    for (int i = 0; i < respList.size(); i++) {
-      int respQ = layout911->zone(respList[i]);
+      int respQ = layout911.zone(respList[i]);
       int respCount
          = (callersPerZone[respQ] * respNumScale_) / respPerZone[respQ] + initRNG.inRange(-5, 5);
       if (respCount < 1) {
@@ -161,7 +161,7 @@ string All911Vertices::toString(const int index) const
 void All911Vertices::loadEpochInputs(uint64_t curStep, uint64_t endStep)
 {
    Simulator &simulator = Simulator::getInstance();
-   Layout &layout = *(simulator.getModel()->getLayout());
+   Layout &layout = simulator.getModel().getLayout();
 
    // Load all the calls into the Caller Regions queue by getting the input events
    // from the InputManager.
@@ -180,10 +180,10 @@ void All911Vertices::loadEpochInputs(uint64_t curStep, uint64_t endStep)
 ///
 ///  @param  edges         The edge list to search from.
 ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIndexMap)
+void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIndexMap)
 {
    Simulator &simulator = Simulator::getInstance();
-   Layout &layout = *(simulator.getModel()->getLayout());
+   Layout &layout = simulator.getModel().getLayout();
    uint64_t endEpochStep
       = g_simulationStep
         + static_cast<uint64_t>(simulator.getEpochDuration() / simulator.getDeltaT());
@@ -194,8 +194,8 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap *edgeIn
    for (int vertex = 0; vertex < simulator.getTotalVertices(); ++vertex) {
       if (layout.vertexTypeMap_[vertex] == CALR) {
          // There is only one outgoing edge from CALR to a PSAP
-         BGSIZE start = edgeIndexMap->outgoingEdgeBegin_[vertex];
-         BGSIZE edgeIdx = edgeIndexMap->outgoingEdgeIndexMap_[start];
+         BGSIZE start = edgeIndexMap.outgoingEdgeBegin_[vertex];
+         BGSIZE edgeIdx = edgeIndexMap.outgoingEdgeIndexMap_[start];
 
          // Check for dropped calls, indicated by the edge not being available
          if (!edges911.isAvailable_[edgeIdx]) {

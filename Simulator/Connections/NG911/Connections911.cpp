@@ -19,8 +19,8 @@ void Connections911::setup()
    LOG4CPLUS_INFO(fileLogger_, "Initializing connections");
 
    // we can obtain the Layout, which holds the vertices, from the Model
-   Layout &layout = *Simulator::getInstance().getModel()->getLayout();
-   AllVertices &vertices = *layout.getVertices();
+   Layout &layout = Simulator::getInstance().getModel().getLayout();
+   AllVertices &vertices = layout.getVertices();
 
    // Get list of edges sorted by target in ascending order from GraphManager
    GraphManager &gm = GraphManager::getInstance();
@@ -46,7 +46,6 @@ void Connections911::setup()
 
 void Connections911::loadParameters()
 {
-   ParameterManager::getInstance().getIntByXpath("//connsPerVertex/text()", connsPerVertex_);
    ParameterManager::getInstance().getIntByXpath("//psapsToErase/text()", psapsToErase_);
    ParameterManager::getInstance().getIntByXpath("//respsToErase/text()", respsToErase_);
 }
@@ -55,13 +54,14 @@ void Connections911::loadParameters()
 ///  Registered to OperationManager as Operation::printParameters
 void Connections911::printParameters() const
 {
-   LOG4CPLUS_DEBUG(fileLogger_, "CONNECTIONS PARAMETERS"
-                                   << endl
-                                   << "\tConnections Type: Connections911" << endl
-                                   << "\tConnections per vertex: " << connsPerVertex_ << endl
-                                   << "\tPSAPs to erase: " << psapsToErase_ << endl
-                                   << "\tRESPs to erase: " << respsToErase_ << endl
-                                   << endl);
+   LOG4CPLUS_DEBUG(fileLogger_,
+                   "CONNECTIONS PARAMETERS"
+                      << endl
+                      << "\tConnections Type: Connections911" << endl
+                      << "\tMaximum Connections per vertex: " << edges_->maxEdgesPerVertex_ << endl
+                      << "\tPSAPs to erase: " << psapsToErase_ << endl
+                      << "\tRESPs to erase: " << respsToErase_ << endl
+                      << endl);
 }
 
 #if !defined(USE_GPU)
@@ -78,7 +78,7 @@ bool Connections911::updateConnections(AllVertices &vertices)
 
    // Record old type map
    int numVertices = Simulator::getInstance().getTotalVertices();
-   Layout &layout = *Simulator::getInstance().getModel()->getLayout();
+   Layout &layout = Simulator::getInstance().getModel().getLayout();
    oldTypeMap_ = layout.vertexTypeMap_;
 
    // Erase PSAPs

@@ -49,14 +49,14 @@ Connections::Connections()
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
 }
 
-AllEdges *Connections::getEdges() const
+AllEdges &Connections::getEdges() const
 {
-   return edges_.get();
+   return *edges_;
 }
 
-EdgeIndexMap *Connections::getEdgeIndexMap() const
+EdgeIndexMap &Connections::getEdgeIndexMap() const
 {
-   return synapseIndexMap_.get();
+   return *synapseIndexMap_;
 }
 
 void Connections::registerGraphProperties()
@@ -93,7 +93,7 @@ void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vert
                                         AllEdges &synapses,
                                         AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        Layout *layout)
+                                        Layout &layout)
 {
 }
 #else
@@ -109,8 +109,8 @@ void Connections::updateSynapsesWeights()
 void Connections::createSynapsesFromWeights()
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
-   Layout &layout = *Simulator::getInstance().getModel()->getLayout();
-   AllVertices &vertices = *layout.getVertices();
+   Layout &layout = Simulator::getInstance().getModel().getLayout();
+   AllVertices &vertices = layout.getVertices();
 
    // for each neuron
    for (int i = 0; i < numVertices; i++) {

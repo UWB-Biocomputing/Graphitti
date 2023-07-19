@@ -26,7 +26,7 @@
 
 __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int maxSpikes,
                                         const BGFLOAT deltaT, uint64_t simulationStep,
-                                        float *randNoise,
+                                        float randNoise[],
                                         AllIFNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                         EdgeIndexMapDevice *edgeIndexMapDevice,
@@ -44,7 +44,7 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
 ///  @param  randNoise              Reference to the random noise array.
 ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
 void AllLIFNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
-                                    void *allEdgesDevice, float *randNoise,
+                                    void *allEdgesDevice, float randNoise[],
                                     EdgeIndexMapDevice *edgeIndexMapDevice)
 {
    int vertex_count = Simulator::getInstance().getTotalVertices();
@@ -85,7 +85,7 @@ void AllLIFNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
 __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int maxSpikes,
                                         const BGFLOAT deltaT, uint64_t simulationStep,
-                                        float *randNoise,
+                                        float randNoise[],
                                         AllIFNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                         EdgeIndexMapDevice *edgeIndexMapDevice,
