@@ -46,9 +46,6 @@ public:
    virtual void printParameters() const override;
 
 private:
-   /// number of maximum connections per vertex
-   int connsPerVertex_;
-
    /// number of psaps to erase at the end of 1 epoch
    int psapsToErase_;
 
