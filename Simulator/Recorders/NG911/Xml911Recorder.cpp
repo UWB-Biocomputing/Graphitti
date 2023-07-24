@@ -10,8 +10,8 @@
  *     -# vertex's locations, and type map,
  */
 
-#include "All911Vertices.h"
 #include "Xml911Recorder.h"
+#include "All911Vertices.h"
 #include "Connections911.h"
 // #include "Global.h"
 
@@ -44,7 +44,8 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
 {
    auto &conns = Simulator::getInstance().getModel().getConnections();
    Connections911 &conns911 = dynamic_cast<Connections911 &>(conns);
-   All911Vertices &all911Vertices = dynamic_cast<All911Vertices &>(Simulator::getInstance().getModel().getLayout().getVertices());
+   All911Vertices &all911Vertices = dynamic_cast<All911Vertices &>(
+      Simulator::getInstance().getModel().getLayout().getVertices());
 
    // create Vertex Types matrix
    VectorMatrix oldTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalVertices(),

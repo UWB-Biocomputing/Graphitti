@@ -64,7 +64,7 @@ public:
    /// Loads all inputs scheduled to occur in the upcoming epoch.
    /// These are inputs occurring in between curStep (inclusive) and
    /// endStep (exclusive)
-   virtual void loadEpochInputs(uint64_t curStep, uint64_t endStep) override;
+   virtual void loadEpochInputs(uint64_t currentStep, uint64_t endStep) override;
 
    /// These are the queues where calls will wait to be served
    vector<CircularBuffer<Call>> vertexQueues_;
@@ -147,5 +147,4 @@ protected:
    void advanceVertex(const int index);
 
 #endif   // defined(USE_GPU)
-
 };

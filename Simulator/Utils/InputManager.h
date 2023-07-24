@@ -162,7 +162,6 @@ public:
    CircularBuffer<T> &getEvents(const VertexId_t &vertexId, uint64_t firstStep, uint64_t lastStep,
                                 CircularBuffer<T> &buffer)
    {
-      // vector<T> result = vector<T>();                // Will hold the list of events
       queue<T> &eventQueue = eventsMap_[vertexId];   // Get a reference to the event queue
 
       while (!eventQueue.empty() && eventQueue.front().time < lastStep) {

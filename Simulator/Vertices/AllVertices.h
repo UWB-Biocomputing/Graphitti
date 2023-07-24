@@ -54,7 +54,7 @@ public:
    ///
    /// @param  curStep  The current simulation step
    /// @param  endStep  The end of epoch simulation step
-   virtual void loadEpochInputs(uint64_t curStep, uint64_t endStep);
+   virtual void loadEpochInputs(uint64_t currentStep, uint64_t endStep);
 
    ///  Load member variables from configuration file.
    ///  Registered to OperationManager as Operation::loadParameters

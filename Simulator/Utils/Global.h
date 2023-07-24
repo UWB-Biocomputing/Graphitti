@@ -179,8 +179,7 @@ string coordToString(int x, int y, int z);
 // Converts a vertexType into a string.
 string neuronTypeToString(vertexType t);
 
-template <typename T>
-ostream &operator<<(ostream &os, const vector<T> &v)
+template <typename T> ostream &operator<<(ostream &os, const vector<T> &v)
 {
    for (T element : v) {
       os << element << " ";
@@ -188,8 +187,7 @@ ostream &operator<<(ostream &os, const vector<T> &v)
    return os;
 }
 
-template <typename T>
-string vectorToXML(const vector<T> &v, const string &name)
+template <typename T> string vectorToXML(const vector<T> &v, const string &name)
 {
    stringstream ss;
    ss << "   <Matrix name=\"" << name << "\">\n";
@@ -204,7 +202,9 @@ string vector2dToXML(const vector<T> &v, const string &name, const string &rowNa
    stringstream ss;
    ss << "   <Matrix name=\"" << name << "\">\n";
    for (int i = 0; i < v.size(); ++i) {
-      if (v[i].empty()) { continue; }   // No log to print
+      if (v[i].empty()) {
+         continue;
+      }   // No log to print
 
       ss << "      <" << rowName << " id=\"" << i << "\">\n";
       ss << "      " << v[i] << "\n";

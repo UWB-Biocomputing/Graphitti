@@ -103,5 +103,4 @@ public:
 
    /// The call information per edge
    vector<Call> call_;
-
 };

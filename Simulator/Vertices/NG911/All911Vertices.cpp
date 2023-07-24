@@ -158,7 +158,7 @@ string All911Vertices::toString(const int index) const
 }
 
 
-void All911Vertices::loadEpochInputs(uint64_t curStep, uint64_t endStep)
+void All911Vertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
 {
    Simulator &simulator = Simulator::getInstance();
    Layout &layout = simulator.getModel().getLayout();
@@ -167,8 +167,9 @@ void All911Vertices::loadEpochInputs(uint64_t curStep, uint64_t endStep)
    // from the InputManager.
    for (int idx = 0; idx < simulator.getTotalVertices(); ++idx) {
       if (layout.vertexTypeMap_[idx] == CALR) {
-         // If this is a Caller Region get all calls scheduled for the current epoch
-         inputManager_.getEvents(idx, curStep, endStep, vertexQueues_[idx]);
+         // If this is a Caller Region get all calls scheduled for the current epoch,
+         // loading them into the aproppriate index of the vertexQueues_ vector
+         inputManager_.getEvents(idx, currentStep, endStep, vertexQueues_[idx]);
       }
    }
 }
@@ -201,8 +202,7 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
          if (!edges911.isAvailable_[edgeIdx]) {
             // If the call is still there, it means that there was no space in the PSAP's waiting
             // queue. Therefore, this is a dropped call.
-            // TODO: Decide if it needs to be redial
-            
+            // TODO: Decide if it needs to be redialed
             // Make the edge availabe after taking care of the dropped call
             edges911.isAvailable_[edgeIdx] = true;
          }
@@ -218,17 +218,19 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
             assert(edges911.isAvailable_[edgeIdx]);
             edges911.call_[edgeIdx] = nextCall.value();
             edges911.isAvailable_[edgeIdx] = false;
-            LOG4CPLUS_DEBUG(vertexLogger_,
-                           "Calling PSAP at time: " << nextCall->time);
+            LOG4CPLUS_DEBUG(vertexLogger_, "Calling PSAP at time: " << nextCall->time);
          }
-         // TODO911: Check for abandoned calls
-
+         // TODO: Check for abandoned calls. Abandoned calls will be modeled by patience
+         // time which will be a random variable drawn from a weibull distribution,
+         // if (g_simulationStep - call.time) > patience then the call is abandoned.
       } else if (layout.vertexTypeMap_[vertex] == PSAP) {
          // Loop over all agents and free the ones finishing serving calls
          vector<int> availableAgents;
          for (size_t agent = 0; agent < agentCountdown_[vertex].size(); ++agent) {
             if (agentCountdown_[vertex][agent] == 0) {
-               // Agent is available to take calls
+               // Agent is available to take calls. This check is needed because
+               // calls could have duration of zero, meaning they hang up as soon as
+               // the call is answered
                availableAgents.push_back(agent);
             } else if (--agentCountdown_[vertex][agent] == 0) {
                // Agent becomes free to take calls
@@ -238,11 +240,14 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
                logAnswerTime_[vertex].push_back(answerTime_[vertex][agent]);
                logEndTime_[vertex].push_back(g_simulationStep);
                LOG4CPLUS_DEBUG(vertexLogger_,
-                            "Finishing call, begin time: " << servingCall_[vertex][agent].time
-                            << ", end time: " << g_simulationStep
-                            << ", waited: " << answerTime_[vertex][agent] - servingCall_[vertex][agent].time);
+                               "Finishing call, begin time: "
+                                  << servingCall_[vertex][agent].time
+                                  << ", end time: " << g_simulationStep << ", waited: "
+                                  << answerTime_[vertex][agent] - servingCall_[vertex][agent].time);
 
-               // TODO: Dispatch the nearest responder
+               // TODO: Dispatch the Responder closest to the emergency location.
+               // This assumes that the caller doesn't stay in the line until the responder
+               // arrives on scene. This not true in all instances.
 
                availableAgents.push_back(agent);
             }
@@ -260,15 +265,9 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
             answerTime_[vertex][agent] = g_simulationStep;
             agentCountdown_[vertex][agent] = call.value().duration;
 
-            LOG4CPLUS_DEBUG(vertexLogger_,
-                            "Serving Call starting at time: " << call->time
-                            << ", sim-step: " << g_simulationStep);
+            LOG4CPLUS_DEBUG(vertexLogger_, "Serving Call starting at time: "
+                                              << call->time << ", sim-step: " << g_simulationStep);
          }
-
-
-         // TODO: We will now transfer all the calls that have ended at this timestep
-         // to the Responder closest to the emergency location
-
       }
    }
 }

@@ -76,8 +76,12 @@ void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap
       for (int eIdxMap = start; eIdxMap < start + count; ++eIdxMap) {
          int edgeIdx = edgeIndexMap.incomingEdgeIndexMap_[eIdxMap];
 
-         if (!inUse_[edgeIdx]) { continue; }   // Edge isn't in use
-         if (isAvailable_[edgeIdx]) { continue; }   // Edge doesn't have a call
+         if (!inUse_[edgeIdx]) {
+            continue;
+         }   // Edge isn't in use
+         if (isAvailable_[edgeIdx]) {
+            continue;
+         }   // Edge doesn't have a call
 
          int dst = destVertexIndex_[edgeIdx];
          // Record that we received a call
@@ -88,19 +92,15 @@ void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap
          if (all911Vertices.vertexQueues_[dst].isFull()) {
             // Call is dropped because there is no space in the waiting queue
             all911Vertices.droppedCalls_[dst]++;
-            LOG4CPLUS_DEBUG(edgeLogger_,
-                               "Call dropped: " << all911Vertices.droppedCalls_[dst]
-                               << ", time: " << call_[edgeIdx].time << ", eIdx: " << edgeIdx);
+            LOG4CPLUS_DEBUG(edgeLogger_, "Call dropped: " << all911Vertices.droppedCalls_[dst]
+                                                          << ", time: " << call_[edgeIdx].time
+                                                          << ", eIdx: " << edgeIdx);
          } else {
             all911Vertices.vertexQueues_[dst].put(call_[edgeIdx]);
             isAvailable_[edgeIdx] = true;
          }
       }
    }
-
-
-
-
    // All911Vertices *allVertices = dynamic_cast<All911Vertices *>(vertices);
    // for (BGSIZE i = 0; i < totalEdgeCount_; i++) {
    //    if (!inUse_[i]) {
