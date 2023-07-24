@@ -44,6 +44,7 @@ public:
    // Prints loaded parameters to logging file.
    virtual void printParameters() = 0;
 
+   /// Store the neuron number and all the events of this single neuron
    virtual void registerVariable(string varName, EventBuffer &recordVar) = 0;
 
 protected:

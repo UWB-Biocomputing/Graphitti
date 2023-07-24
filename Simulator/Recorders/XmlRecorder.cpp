@@ -25,7 +25,6 @@ XmlRecorder::XmlRecorder()
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
-   singleNeuronEvents_ = nullptr;
 }
 
 // Create a new xml file and initialize data
@@ -82,7 +81,7 @@ void XmlRecorder::compileHistories(AllVertices &vertices)
    }
    for (int i = 0; i < singleNeuronEvents_->getNumEventsInEpoch(); i++) {
       //std::cout << "test output:" << (*variable_first)[i] << endl;
-      single_neuron_History_.push_back((*singleNeuronEvents_)[i]);
+      singleNeuronHistory_.push_back((*singleNeuronEvents_)[i]);
    }
    singleNeuronEvents_->startNewEpoch();
 
@@ -96,7 +95,7 @@ void XmlRecorder::compileHistories(AllVertices &vertices)
    // for (int eventIterator = 0;
    //       eventIterator < spNeurons.vertexEvents_[iNeuron].getNumEventsInEpoch();
    //       eventIterator++) {
-   //    single_neuron_History_.push_back(
+   //    singleNeuronHistory_.push_back(
    //       static_cast<int>(static_cast<double>(spNeurons.vertexEvents_[iNeuron][eventIterator])));
    // }
    // spNeurons.clearSpikeCounts();
@@ -108,24 +107,24 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
 {
    // Write XML header information:
    resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n";
-   if (single_neuron_History_.size() != 0) {
-      resultOut_ << toXML(neuronName, single_neuron_History_) << endl;
+   if (singleNeuronHistory_.size() != 0) {
+      resultOut_ << toXML(neuronName_, singleNeuronHistory_) << endl;
    }
 }
 
 /// Convert internal buffer to XML string
-string XmlRecorder::toXML(string name, vector<uint64_t> single_neuron_buffer) const
+string XmlRecorder::toXML(string name, vector<uint64_t> singleNeuronBuffer_) const
 {
    stringstream os;
 
    os << "<Matrix ";
    if (name != "")
       os << "name=\"" << name << "\" ";
-   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << single_neuron_buffer.size()
+   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << singleNeuronBuffer_.size()
       << "\" multiplier=\"1.0\">" << endl;
    os << "   ";
-   for (int i = 0; i < single_neuron_buffer.size(); i++) {
-      os << single_neuron_buffer[i] << " ";
+   for (int i = 0; i < singleNeuronBuffer_.size(); i++) {
+      os << singleNeuronBuffer_[i] << " ";
    }
    os << endl;
    os << "</Matrix>";
@@ -153,7 +152,7 @@ void XmlRecorder::printParameters()
 /// Store a single neuron with the neuron number and its corresponding events
 void XmlRecorder::registerVariable(string name, EventBuffer &recordVar)
 {
-   neuronName = name;
+   neuronName_ = name;
    singleNeuronEvents_ = std::shared_ptr<EventBuffer>(&recordVar, [](EventBuffer *) {
    });
    // cout << "smart pointer singleNeuronEvents_" << endl;

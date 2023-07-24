@@ -66,26 +66,26 @@ public:
       resultFileName_ = fileName_;
    }
 
-   // Getter method for neuronName (only included during unit tests)
+   // Getter method for neuronName_ (only included during unit tests)
    std::string getNeuronName() const
    {
-      return neuronName;
+      return neuronName_;
    }
    // Getter method for singleNeuronEvents_ (only included during unit tests)
    EventBuffer &getSingleNeuronEvents() const
    {
       return *singleNeuronEvents_;
    }
-   // Getter method for single_neuron_History_ (only included during unit tests)
+   // Getter method for singleNeuronHistory_ (only included during unit tests)
    std::vector<uint64_t> getHistory() const
    {
-      return single_neuron_History_;
+      return singleNeuronHistory_;
    }
    ///@}
 
 protected:
-   // variable neuronName records the number of a single neuron
-   string neuronName;
+   // variable neuronName_ records the number of a single neuron
+   string neuronName_;
 
    // The address of the registered variable
    // As the simulator runs, the values will be updated
@@ -93,7 +93,7 @@ protected:
    shared_ptr<EventBuffer> singleNeuronEvents_;
 
    // history of accumulated event for a single neuron
-   std::vector<uint64_t> single_neuron_History_;
+   std::vector<uint64_t> singleNeuronHistory_;
 
    // // create a structure contains the information of a variable
    // struct variableInfo{
@@ -108,7 +108,7 @@ protected:
    // a file stream for xml output
    ofstream resultOut_;
 
-   string toXML(string name, vector<uint64_t> single_nueron_buffer) const;
+   string toXML(string name, vector<uint64_t> singleNeuronBuffer_) const;
 
    //this method will be deleted
    void getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap);
