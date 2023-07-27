@@ -91,10 +91,10 @@ int AllNeuroEdges::edgSign(const edgeType type)
          return 1;
       case ETYPE_UNDEF:
          return 0;
-      default:
-         return 0;
+      //default:
+        // return 0;
    }
-   
+
    return 0; 
    // if return 0 -> throw exception
    // TODO Throw exception if 0 (error)
