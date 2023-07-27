@@ -95,7 +95,8 @@ int AllNeuroEdges::edgSign(const edgeType type)
          return 0;
    }
    // if return 0 -> throw exception
-   return 0; // TODO Throw exception if 0 (error)
+   return 0; 
+   // TODO Throw exception if 0 (error)
 }
 
 ///  Prints SynapsesProps data to console.
