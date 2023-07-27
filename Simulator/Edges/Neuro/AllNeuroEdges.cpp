@@ -90,11 +90,14 @@ int AllNeuroEdges::edgSign(const edgeType type)
       case EE:
          return 1;
       case ETYPE_UNDEF:
-         // TODO error.
+         return 0;
+      default:
          return 0;
    }
-
-   return 0;
+   
+   return 0; 
+   /// if return 0 -> throw exception
+   /// TODO Throw exception if 0 (error)
 }
 
 ///  Prints SynapsesProps data to console.
