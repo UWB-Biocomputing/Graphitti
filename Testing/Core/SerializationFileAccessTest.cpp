@@ -22,23 +22,22 @@ TEST(SerializationFileAccessTest, FileWritableTest)
 {
    string executable = "./cgraphitti";
    string configFile = "../configfiles/test-small-connected.xml";
-
-   string writableFilePath = "writable_file.txt";
    string nonWritableFilePath = "/root/non_writable_file.txt";
-
-   string writableArgument = "-c " + configFile + " -w " + writableFilePath;
    string nonWritableArgument = "-c " + configFile + " -w " + nonWritableFilePath;
 
-   // Create a writable file
-   std::ofstream writableFile(writableFilePath);
-   writableFile.close();
-
    Core core;
-   // Test a writable file
-   // ASSERT_EQ(0, core.runSimulation(executable, writableArgument));
+
    // Test a non-writable file
    ASSERT_EQ(-1, core.runSimulation(executable, nonWritableArgument));
-
-   // Clean up the writable file
-   std::filesystem::remove(writableFilePath);
 }
+
+// Optional: create a similar test file to test a a positive case
+// 1. Create a writable file
+// string writableFilePath = "writable_file.txt";
+// string writableArgument = "-c " + configFile + " -w " + writableFilePath;
+// std::ofstream writableFile(writableFilePath);
+// writableFile.close();
+// 2. Test
+// ASSERT_EQ(0, core.runSimulation(executable, writableArgument));
+// 3. Clean up the writable file
+// std::filesystem::remove(writableFilePath);

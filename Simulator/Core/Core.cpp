@@ -24,10 +24,7 @@
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "Serializer.h"
-#include "config.h"     // build/config.h contains the git commit id
-#include "exception"
-#include "filesystem"   // C++17 library helps to perform various openeations on file system
-#include "fstream"
+#include "config.h"   // build/config.h contains the git commit id
 
 // Uncomment to use visual leak detector (Visual Studios Plugin)
 // #include <vld.h>
@@ -160,6 +157,18 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
    LOG4CPLUS_TRACE(consoleLogger, "Loading parameters from configuration file");
    OperationManager::getInstance().executeOperation(Operations::loadParameters);
 
+   // Check if the current user has write permission for the specified serialization path
+   if (!simulator.getSerializationFileName().empty()) {
+      std::ofstream file(simulator.getSerializationFileName());
+      if (file) {
+         LOG4CPLUS_TRACE(consoleLogger, "User has write permission for the serialization file.");
+      } else {
+         LOG4CPLUS_FATAL(consoleLogger,
+                         "User does not have write permission for the serialization file.");
+         return -1;
+      }
+   }
+
    time_t start_time, end_time;
    time(&start_time);
 
@@ -177,47 +186,6 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
       // Deserialization
       if (!serializer.deserializeSynapses()) {
          LOG4CPLUS_FATAL(consoleLogger, "Failed while deserializing objects");
-         return -1;
-      }
-   }
-
-   // Check if the current user has write permission for the specified serialization path
-   if (!simulator.getSerializationFileName().empty()) {
-      std::string serializationFilePath = simulator.getSerializationFileName();
-
-      // Initialize the flag to determine writability
-      bool isWritable = false;
-
-      try {
-         // Check if the serialization file exists
-         if (std::filesystem::exists(serializationFilePath)) {
-            // Check write permission for an existing serialization file
-            std::ofstream file(serializationFilePath);
-            isWritable = file.is_open();
-            file.close();
-         } else {
-            // Check write permission for the parent directory to allow file creation
-            std::filesystem::path parentPath
-               = std::filesystem::path(serializationFilePath).parent_path();
-
-            if (std::filesystem::is_directory(parentPath)) {
-               // Attempt to create and open the serialization file
-               std::ofstream file(serializationFilePath);
-               isWritable = file.is_open();
-               file.close();
-            }
-         }
-
-         if (isWritable) {
-            LOG4CPLUS_TRACE(consoleLogger, "User has write permission for the serialization file.");
-         } else {
-            LOG4CPLUS_FATAL(consoleLogger,
-                            "User does not have write permission for the serialization file.");
-            return -1;
-         }
-      } catch (const std::exception &e) {
-         // Exception occurred while accessing the file system
-         LOG4CPLUS_FATAL(consoleLogger, e.what());
          return -1;
       }
    }
