@@ -58,7 +58,7 @@ Documentation of the changing and constant parameters in a set of 12 test config
 - [Writeup](TestConfigFileParameters/testConfigFileParameters.md)
 
 ### Running The Unit And Regression tests
-Unit and regression tests are important to minimize the chances that changes to the code base will produce undesired side effects.
+Unit and regression tests are important to minimize the chances that changes to the code base will produce undesired side effects. For specific performance testing, clear cache by running `make clean` before compiling. 
 
 We have a battery of tests that are run by a GitHub action on any `push` or `pull request` against the master branch. These tests are only executed for the CPU implementation of Graphitti.
 
