@@ -94,8 +94,8 @@ int AllNeuroEdges::edgSign(const edgeType type)
       default:
          return 0;
    }
-   // if return 0 -> throw exception.
-   // TODO Throw exception if 0 (error).
+   // if return 0 throw exception.
+   // TODO Throw exception.
    return 0; 
 }
 

@@ -36,7 +36,7 @@ CUDA_CALLABLE int edgSign(edgeType t)
       case EE:
          return 1;
    }
-    // TODO Potentially add throw exception for easier diagnosis.
+    // Add throw exception.
    return 0;
 }
 
