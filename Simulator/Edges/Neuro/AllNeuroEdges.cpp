@@ -91,6 +91,7 @@ int AllNeuroEdges::edgSign(const edgeType type)
          return 1;
       case ETYPE_UNDEF:
          return 0;
+         break;
       default:
          return 0;
    }
