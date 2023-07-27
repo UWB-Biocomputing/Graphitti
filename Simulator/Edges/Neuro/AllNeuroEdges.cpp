@@ -94,7 +94,7 @@ int AllNeuroEdges::edgSign(const edgeType type)
          return 0;
    }
 
-   return 0; // default.
+   return 0;   // default.
 }
 
 ///  Prints SynapsesProps data to console.
