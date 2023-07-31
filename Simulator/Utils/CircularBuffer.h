@@ -86,7 +86,7 @@ public:
       return value;
    }
 
-   /// @brief  Retrieves the element at the end of the withouth dequeueing it
+   /// @brief  Retrieves the element at the end of the buffer withouth dequeueing it
    ///
    /// @post   The elements in the buffer remain the same
    /// @return The element at the end of the buffer, or std::nulloopt if it is empty.
