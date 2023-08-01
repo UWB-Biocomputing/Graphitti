@@ -28,7 +28,7 @@ Simulator &Simulator::getInstance()
 Simulator::Simulator()
 {
    g_simulationStep = 0;   /// uint64_t g_simulationStep instantiated in Global
-   deltaT_ = DEFAULT_dt;
+   // deltaT_ = DEFAULT_dt;
    // deltaT_ = 0.1;
 
    consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
@@ -89,6 +89,11 @@ void Simulator::loadParameters()
                                                  maxFiringRate_);
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxEdgesPerVertex/text()",
                                                  maxEdgesPerVertex_);
+
+   // Use default deltaT_ if not present in config file
+   if (!ParameterManager::getInstance().getBGFloatByXpath("//SimParams/deltaT/text()", deltaT_)) {
+      deltaT_ = DEFAULT_dt;
+   }
 
    // Instantiate rng object
    string type;
@@ -200,9 +205,10 @@ void Simulator::advanceEpoch(const int &currentEpoch) const
    uint64_t endStep = g_simulationStep + static_cast<uint64_t>(epochDuration_ / deltaT_);
    model_->getLayout().getVertices().loadEpochInputs(g_simulationStep, endStep);
    // DEBUG_MID(model->logSimStep();) // Generic model debug call
+   uint64_t onePercent = (epochDuration_ / deltaT_) * numEpochs_ * 0.01;
    while (g_simulationStep < endStep) {
-      // Output status once every 10,000 steps
-      if (count % int(1 / deltaT_) == 0) {
+      // Output status once every 1% of total simulation time
+      if (count % onePercent == 0) {
          LOG4CPLUS_TRACE(consoleLogger_,
                          "Epoch: " << currentEpoch << "/" << numEpochs_
                                    << " simulating time: " << g_simulationStep * deltaT_ << "/"

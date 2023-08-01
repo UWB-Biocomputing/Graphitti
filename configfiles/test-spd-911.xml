@@ -2,14 +2,12 @@
 <BGSimParams>
   <SimInfoParams name="SimInfoParams">
     <SimParams name="SimParams">
-      <epochDuration name="epochDuration">10</epochDuration>
-      <!-- 26 Epochs * 10 = 260 simulation steps.
-          Since efault deltaT_ is 0.0001 then:
-            260 / 0.0001 = 2,600,000 timesteps.
-          For the 911 simulation a time steps equals 1 seconds. Therefore,
-          2,600,000 timesteps represent a 1 month simulation (about 30 days).
-      -->
-      <numEpochs name="numEpochs">26</numEpochs>
+      <!-- epochDuration is one day in seconds: 24 * 3600 
+      and total simulation is 30 days -->
+      <epochDuration name="epochDuration">86400</epochDuration>
+      <numEpochs name="numEpochs">30</numEpochs>
+      <!-- Every simulation step is 1 second -->
+      <deltaT name="Simulation Step Duration">1</deltaT>
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">100</maxFiringRate>
