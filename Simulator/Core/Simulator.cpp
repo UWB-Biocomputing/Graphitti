@@ -28,8 +28,6 @@ Simulator &Simulator::getInstance()
 Simulator::Simulator()
 {
    g_simulationStep = 0;   /// uint64_t g_simulationStep instantiated in Global
-   // deltaT_ = DEFAULT_dt;
-   // deltaT_ = 0.1;
 
    consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
