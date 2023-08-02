@@ -55,9 +55,9 @@ bool Core::parseCommandLine(string executableName, string cmdLineArguments)
    if ((cl.addParam("configfile", 'c', ParamContainer::filename, "parameter configuration filepath")
         != ParamContainer::errOk)
 #if defined(USE_GPU)
-       || (cl.addParam("device", 'g', ParamContainer::regular, "CUDA device id")   // d to g option change.
+       || (cl.addParam("device", 'g', ParamContainer::regular, "CUDA device id")
            != ParamContainer::errOk)
-#endif   // USE_GPU
+#endif   // USE_GPU changed 'd' to 'g' option
        || (cl.addParam("inputfile", 'i', ParamContainer::filename, "input file path")
            != ParamContainer::errOk)
        || (cl.addParam("deserializefile", 'd', ParamContainer::filename,
