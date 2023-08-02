@@ -43,6 +43,7 @@ cgraphitti
 tests
 serialTest
 deserialTest
+#recorderTest
 *.exe
 *.out
 *.app

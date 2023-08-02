@@ -108,7 +108,7 @@
       </LayoutFiles>
     </LayoutParams>
 
-    <RecorderParams class="XmlGrowthRecorder" name="RecorderParams">
+    <RecorderParams class="XmlRecorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
         <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_2-100.xml</probedNListFileName>
         <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-small-connected-out.xml</resultFileName>

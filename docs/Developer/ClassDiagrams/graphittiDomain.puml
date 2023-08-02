@@ -106,7 +106,7 @@ abstract class IFunctionNode {
 }
 
 
-abstract class IRecorder {
+abstract class Recorder {
 }
 
 
@@ -142,15 +142,7 @@ class VerticesFactory {
 }
 
 
-class XmlGrowthRecorder {
-}
-
-
 class XmlRecorder {
-}
-
-
-class XmlSTDPRecorder {
 }
 
 
@@ -275,10 +267,10 @@ class EdgeIndexMap {
 .IFunctionNode <|-- .GenericFunctionNode
 
 
-.IRecorder <|-- .Hdf5Recorder
+.Recorder <|-- .Hdf5Recorder
 
 
-.IRecorder <|-- .XmlRecorder
+.Recorder <|-- .XmlRecorder
 
 
 .Layout <|-- .DynamicLayout
@@ -291,12 +283,6 @@ class EdgeIndexMap {
 
 
 .Model <|-- .GPUModel
-
-
-.XmlRecorder <|-- .XmlGrowthRecorder
-
-
-.XmlRecorder <|-- .XmlSTDPRecorder
 
 
 
@@ -343,7 +329,7 @@ class EdgeIndexMap {
 .Model *-- .Connections
 
 
-.Model *-- .IRecorder
+.Model *-- .Recorder
 
 
 .Model *-- .Layout
@@ -352,7 +338,7 @@ class EdgeIndexMap {
 .OperationManager *-- .IFunctionNode
 
 
-.RecorderFactory *-- .IRecorder
+.RecorderFactory *-- .Recorder
 
 
 .Simulator *-- .Model
