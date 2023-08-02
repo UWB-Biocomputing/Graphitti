@@ -23,7 +23,7 @@ public:
 
    ~Xml911Recorder() = default;
 
-   static IRecorder *Create()
+   static Recorder *Create()
    {
       return new Xml911Recorder();
    }

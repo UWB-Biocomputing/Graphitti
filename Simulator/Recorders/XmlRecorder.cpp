@@ -17,11 +17,7 @@
 
 // constructor
 // TODO: I believe the initializer for spikesHistory_ assumes a particular deltaT
-XmlRecorder::XmlRecorder() :
-   spikesHistory_(MATRIX_TYPE, MATRIX_INIT, 1,
-                  static_cast<int>(Simulator::getInstance().getEpochDuration()
-                                   * Simulator::getInstance().getNumEpochs() * 100),
-                  static_cast<BGFLOAT>(0.0))
+XmlRecorder::XmlRecorder()
 {
    ParameterManager::getInstance().getStringByXpath(
       "//RecorderParams/RecorderFiles/resultFileName/text()", resultFileName_);
@@ -80,94 +76,64 @@ void XmlRecorder::term()
 /// @param[in] neurons    The entire list of neurons.
 void XmlRecorder::compileHistories(AllVertices &vertices)
 {
-   AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(vertices);
-   Simulator &simulator = Simulator::getInstance();
-   int maxSpikes = static_cast<int>(simulator.getEpochDuration() * simulator.getMaxFiringRate());
-
-   for (int iNeuron = 0; iNeuron < spNeurons.vertexEvents_.size(); iNeuron++) {
-      for (int eventIterator = 0;
-           eventIterator < spNeurons.vertexEvents_[iNeuron].getNumEventsInEpoch();
-           eventIterator++) {
-         // compile network wide spike count in 10ms bins
-         int idx2
-            = static_cast<int>(static_cast<double>(spNeurons.vertexEvents_[iNeuron][eventIterator])
-                               * Simulator::getInstance().getDeltaT() * 100);
-         spikesHistory_[idx2] = spikesHistory_[idx2] + 1.0;
-      }
+   if (singleNeuronEvents_ == nullptr) {
+      return;
    }
-   spNeurons.clearSpikeCounts();
+   for (int i = 0; i < singleNeuronEvents_->getNumEventsInEpoch(); i++) {
+      //std::cout << "test output:" << (*variable_first)[i] << endl;
+      singleNeuronHistory_.push_back((*singleNeuronEvents_)[i]);
+   }
+   singleNeuronEvents_->startNewEpoch();
+
+   // // generate the regression test files using prervious version of XmlRecorder
+   // //A single neuron
+   // AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(vertices);
+   // Simulator &simulator = Simulator::getInstance();
+   // int maxSpikes = static_cast<int>(simulator.getEpochDuration() * simulator.getMaxFiringRate());
+
+   // int iNeuron = 7;
+   // for (int eventIterator = 0;
+   //       eventIterator < spNeurons.vertexEvents_[iNeuron].getNumEventsInEpoch();
+   //       eventIterator++) {
+   //    singleNeuronHistory_.push_back(
+   //       static_cast<int>(static_cast<double>(spNeurons.vertexEvents_[iNeuron][eventIterator])));
+   // }
+   // spNeurons.clearSpikeCounts();
 }
 
 /// Writes simulation results to an output destination.
 /// @param  neurons the Neuron list to search from.
 void XmlRecorder::saveSimData(const AllVertices &vertices)
 {
-   Simulator &simulator = Simulator::getInstance();
-   // create Neuron Types matrix
-   VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), EXC);
-   for (int i = 0; i < simulator.getTotalVertices(); i++) {
-      neuronTypes[i] = simulator.getModel().getLayout().vertexTypeMap_[i];
-   }
-   // create neuron threshold matrix
-   VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), 0);
-   for (int i = 0; i < simulator.getTotalVertices(); i++) {
-      neuronThresh[i] = dynamic_cast<const AllIFNeurons &>(vertices).Vthresh_[i];
-   }
-
    // Write XML header information:
-   resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
-              << "<!-- State output file for the DCT growth modeling-->\n";
-   // stateOut << version; TODO: version
-   auto &layout = simulator.getModel().getLayout();
-
-   // Write the core state information:
-   resultOut_ << "<SimState>\n";
-   resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   resultOut_ << "   " << layout.xloc_.toXML("xloc") << endl;
-   resultOut_ << "   " << layout.yloc_.toXML("yloc") << endl;
-   resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
-
-   // create starter neurons matrix
-   int num_starter_neurons = static_cast<int>(layout.numEndogenouslyActiveNeurons_);
-   if (num_starter_neurons > 0) {
-      VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
-      getStarterNeuronMatrix(starterNeurons, layout.starterMap_);
-      resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
+   resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n";
+   if (singleNeuronHistory_.size() != 0) {
+      resultOut_ << toXML(neuronName_, singleNeuronHistory_) << endl;
    }
-
-   // Write neuron threshold
-   resultOut_ << "   " << neuronThresh.toXML("neuronThresh") << endl;
-
-   // write epoch duration
-   resultOut_
-      << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
-      << endl;
-   resultOut_ << "   " << simulator.getEpochDuration() << endl;
-   resultOut_ << "</Matrix>" << endl;
-
-   // write simulation end time
-   resultOut_
-      << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
-      << endl;
-   resultOut_ << "   " << g_simulationStep * simulator.getDeltaT() << endl;
-   resultOut_ << "</Matrix>" << endl;
-   resultOut_ << "</SimState>" << endl;
 }
 
-/*
- *  Get starter Neuron matrix.
- *  @param  matrix      Starter Neuron matrix.
- *  @param  starter_map Bool map to reference neuron matrix location from.
- */
+/// Convert internal buffer to XML string
+string XmlRecorder::toXML(string name, vector<uint64_t> singleNeuronBuffer_) const
+{
+   stringstream os;
+
+   os << "<Matrix ";
+   if (name != "")
+      os << "name=\"" << name << "\" ";
+   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << singleNeuronBuffer_.size()
+      << "\" multiplier=\"1.0\">" << endl;
+   os << "   ";
+   for (int i = 0; i < singleNeuronBuffer_.size(); i++) {
+      os << singleNeuronBuffer_[i] << " ";
+   }
+   os << endl;
+   os << "</Matrix>";
+
+   return os.str();
+}
+
 void XmlRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap)
 {
-   int cur = 0;
-   for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      if (starterMap[i]) {
-         matrix[cur] = i;
-         cur++;
-      }
-   }
 }
 
 /**
@@ -178,6 +144,17 @@ void XmlRecorder::printParameters()
 {
    LOG4CPLUS_DEBUG(fileLogger_, "\nXMLRECORDER PARAMETERS"
                                    << endl
-                                   << "\tResult file path: " << resultFileName_ << endl
-                                   << "\tSpikes History Size: " << spikesHistory_.Size() << endl);
+                                   << "\tResult file path: " << resultFileName_ << endl);
+}
+
+
+/// Obtain the updating value while the simulator runs by storing the address of registered variable
+/// Store a single neuron with the neuron number and its corresponding events
+void XmlRecorder::registerVariable(string name, EventBuffer &recordVar)
+{
+   neuronName_ = name;
+   singleNeuronEvents_ = std::shared_ptr<EventBuffer>(&recordVar, [](EventBuffer *) {
+   });
+   // cout << "smart pointer singleNeuronEvents_" << endl;
+   // cout << singleNeuronEvents_.get() << endl;
 }

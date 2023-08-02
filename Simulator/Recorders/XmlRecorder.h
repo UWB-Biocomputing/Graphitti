@@ -7,25 +7,23 @@
  *
  * The XmlRecorder provides a mechanism for recording neuron's layout, spikes history,
  * and compile history information on xml file:
- *     -# neuron's locations, and type map,
- *     -# individual neuron's spike rate in epochs,
- *     -# network wide spike count in 10ms bins.
+ *     -# the number of a single neuron,
+ *     -# all vertex events for a single neuron.
  */
 
 #pragma once
-#include "EventBuffer.h"
 #include "Global.h"
-#include "IRecorder.h"
 #include "Model.h"
+#include "Recorder.h"
 #include <fstream>
 #include <vector>
 
-class XmlRecorder : public IRecorder {
+class XmlRecorder : public Recorder {
 public:
    // constructor which opens the xml file to store results
    XmlRecorder();
 
-   static IRecorder *Create()
+   static Recorder *Create()
    {
       return new XmlRecorder();
    }
@@ -57,16 +55,61 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
 
+   /// Store the neuron number and all the events of this single neuron
+   void registerVariable(string varName, EventBuffer &recordVar) override;
+
+   ///@{
+   /** These methods are intended only for unit tests */
+   // constructor only for unit test
+   XmlRecorder(std::string fileName_)
+   {
+      resultFileName_ = fileName_;
+   }
+
+   // Getter method for neuronName_ (only included during unit tests)
+   std::string getNeuronName() const
+   {
+      return neuronName_;
+   }
+   // Getter method for singleNeuronEvents_ (only included during unit tests)
+   EventBuffer &getSingleNeuronEvents() const
+   {
+      return *singleNeuronEvents_;
+   }
+   // Getter method for singleNeuronHistory_ (only included during unit tests)
+   std::vector<uint64_t> getHistory() const
+   {
+      return singleNeuronHistory_;
+   }
+   ///@}
+
 protected:
+   // variable neuronName_ records the number of a single neuron
+   string neuronName_;
+
+   // The address of the registered variable
+   // As the simulator runs, the values will be updated
+   // It can records all events of a single neuron in each epoch
+   shared_ptr<EventBuffer> singleNeuronEvents_;
+
+   // history of accumulated event for a single neuron
+   std::vector<uint64_t> singleNeuronHistory_;
+
+   // // create a structure contains the information of a variable
+   // struct variableInfo{
+   //    string variableName;
+   //    EventBuffer* variableLocation;
+   // };
+
+   // // create table
+   // std::vector<variableInfo> variableTable;
+
+
    // a file stream for xml output
    ofstream resultOut_;
 
-   // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
-   VectorMatrix spikesHistory_;
+   string toXML(string name, vector<uint64_t> singleNeuronBuffer_) const;
 
-   // Populates Starter neuron matrix based with boolean values based on starterMap state
-   ///@param[in] matrix  starter neuron matrix
-   ///@param starterMap  Bool map to reference neuron matrix location from.
-   virtual void getStarterNeuronMatrix(VectorMatrix &matrix,
-                                       const std::vector<bool> &starterMap) override;
+   //this method will be deleted
+   void getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap);
 };
