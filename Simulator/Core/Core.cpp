@@ -55,15 +55,15 @@ bool Core::parseCommandLine(string executableName, string cmdLineArguments)
    if ((cl.addParam("configfile", 'c', ParamContainer::filename, "parameter configuration filepath")
         != ParamContainer::errOk)
 #if defined(USE_GPU)
-       || (cl.addParam("device", 'd', ParamContainer::regular, "CUDA device id")
+       || (cl.addParam("device", 'g', ParamContainer::regular, "CUDA device id") // changed from 'd' to 'g' since deserialize took 'd'
            != ParamContainer::errOk)
 #endif   // USE_GPU
-       || (cl.addParam("stimulusfile", 's', ParamContainer::filename, "stimulus input filepath")
+       || (cl.addParam("inputfile", 'i', ParamContainer::filename, "input file path")
            != ParamContainer::errOk)
-       || (cl.addParam("deserializefile", 'r', ParamContainer::filename,
+       || (cl.addParam("deserializefile", 'd', ParamContainer::filename,
                        "simulation deserialization filepath (enables deserialization)")
            != ParamContainer::errOk)
-       || (cl.addParam("serializefile", 'w', ParamContainer::filename,
+       || (cl.addParam("serializefile", 's', ParamContainer::filename,
                        "simulation serialization filepath (enables serialization)")
            != ParamContainer::errOk)
        || (cl.addParam("version", 'v', ParamContainer::novalue,
