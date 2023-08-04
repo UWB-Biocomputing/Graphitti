@@ -50,8 +50,8 @@ public:
    ///  Create a Edge and connect it to the model.
    ///
    ///  @param  iEdg        Index of the edge to set.
-   ///  @param  srcVertex   Coordinates of the source Neuron.
-   ///  @param  destVertex  Coordinates of the destination Neuron.
+   ///  @param  srcVertex   Coordinates of the source Vertex.
+   ///  @param  destVertex  Coordinates of the destination Vertex.
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Edge to create.
@@ -97,4 +97,10 @@ public:
    virtual void advanceEdge(const BGSIZE iEdg, AllVertices &vertices) override {};
 
 #endif
+
+   /// If edge has a call or not
+   unique_ptr<bool[]> isAvailable_;
+
+   /// The call information per edge
+   vector<Call> call_;
 };
