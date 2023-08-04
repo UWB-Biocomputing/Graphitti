@@ -16,14 +16,19 @@ void All911Edges::setupEdges()
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
    int maxEdges = Simulator::getInstance().getMaxEdgesPerVertex();
-
    BGSIZE maxTotalEdges = maxEdges * numVertices;
+
+   isAvailable_ = make_unique<bool[]>(maxTotalEdges);
+   fill_n(isAvailable_.get(), maxTotalEdges, true);
+
+   call_.resize(maxTotalEdges);
 
    maxEdgesPerVertex_ = maxEdges;
    totalEdgeCount_ = 0;
    countVertices_ = numVertices;
 
    // To do: Figure out whether we need all of these
+   // Jardi: Removing this seems to break the creating of the EdgeIndexMap
    if (maxTotalEdges != 0) {
       // psr_.assign(maxTotalEdges, 0.0);
       W_.assign(maxTotalEdges, 0);
@@ -56,15 +61,55 @@ void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, B
 ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
 void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap)
 {
-   All911Vertices &allVertices = dynamic_cast<All911Vertices &>(vertices);
-   for (BGSIZE i = 0; i < totalEdgeCount_; i++) {
-      if (!inUse_[i]) {
-         continue;
+   Simulator &simulator = Simulator::getInstance();
+   All911Vertices &all911Vertices = dynamic_cast<All911Vertices &>(vertices);
+
+   for (int vertex = 0; vertex < simulator.getTotalVertices(); ++vertex) {
+      int start = edgeIndexMap.incomingEdgeBegin_[vertex];
+      int count = edgeIndexMap.incomingEdgeCount_[vertex];
+
+      if (simulator.getModel().getLayout().vertexTypeMap_[vertex] == CALR) {
+         continue;   // TODO911: Caller Regions will have different behaviour
       }
-      // if the edge is in use...
-      BGSIZE iEdg = edgeIndexMap.incomingEdgeIndexMap_[i];
-      advance911Edge(iEdg, allVertices);
+
+      // Loop over all the edges and pull the data in
+      for (int eIdxMap = start; eIdxMap < start + count; ++eIdxMap) {
+         int edgeIdx = edgeIndexMap.incomingEdgeIndexMap_[eIdxMap];
+
+         if (!inUse_[edgeIdx]) {
+            continue;
+         }   // Edge isn't in use
+         if (isAvailable_[edgeIdx]) {
+            continue;
+         }   // Edge doesn't have a call
+
+         int dst = destVertexIndex_[edgeIdx];
+         // Record that we received a call
+         all911Vertices.receivedCalls_[dst]++;
+
+         // The destination vertex should be the one pulling the information
+         assert(dst == vertex);
+         if (all911Vertices.vertexQueues_[dst].isFull()) {
+            // Call is dropped because there is no space in the waiting queue
+            all911Vertices.droppedCalls_[dst]++;
+            LOG4CPLUS_DEBUG(edgeLogger_, "Call dropped: " << all911Vertices.droppedCalls_[dst]
+                                                          << ", time: " << call_[edgeIdx].time
+                                                          << ", eIdx: " << edgeIdx);
+         } else {
+            all911Vertices.vertexQueues_[dst].put(call_[edgeIdx]);
+            isAvailable_[edgeIdx] = true;
+         }
+      }
    }
+   // All911Vertices *allVertices = dynamic_cast<All911Vertices *>(vertices);
+   // for (BGSIZE i = 0; i < totalEdgeCount_; i++) {
+   //    if (!inUse_[i]) {
+   //       continue;
+   //    }
+   //    // if the edge is in use...
+   //    BGSIZE iEdg = edgeIndexMap->incomingEdgeIndexMap_[i];
+   //    advance911Edge(iEdg, allVertices);
+   // }
 }
 
 ///  Advance one specific edge.
