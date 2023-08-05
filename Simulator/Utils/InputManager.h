@@ -34,6 +34,7 @@
 
 #pragma once
 
+#include "CircularBuffer.h"
 #include "ParameterManager.h"
 #include <boost/foreach.hpp>
 #include <boost/property_tree/exceptions.hpp>
@@ -150,25 +151,27 @@ public:
       LOG4CPLUS_DEBUG(fileLogger_, "Input file loaded successfully");
    }
 
-   /// @brief  Retrieves a list of events that occur between firstStep (inclusive) and
-   ///         lastStep (exclusive) in the given vertexId.
+   /// @brief  Inserts into a the CircularBuffer output parameter the list of events that
+   ///         occur between firstStep (inclusive) and lastStep (exclusive) in the given vertexId.
    /// @param vertexId     The ID of the vertex where the events occur
    /// @param firstStep    The first time step (inclusive) for the occurrence of the events
    /// @param lastStep     The last time step (exclusive) for the occurrence of the events
-   /// @return The list of events between firstStep and lastStep for the fiven vertexId
-   vector<T> getEvents(const VertexId_t &vertexId, uint64_t firstStep, uint64_t lastStep)
+   /// @param buffer       The CircularBuffer where input events will be inserted
+   /// @return A reference to the CircularBuffer containing the list of events between
+   ///         firstStep and lastStep for the given vertexId
+   CircularBuffer<T> &getEvents(const VertexId_t &vertexId, uint64_t firstStep, uint64_t lastStep,
+                                CircularBuffer<T> &buffer)
    {
-      vector<T> result = vector<T>();                // Will hold the list of events
       queue<T> &eventQueue = eventsMap_[vertexId];   // Get a reference to the event queue
 
       while (!eventQueue.empty() && eventQueue.front().time < lastStep) {
          // We shouldn't have previous epoch events in the queue
          assert(eventQueue.front().time >= firstStep);
-         result.push_back(eventQueue.front());
+         buffer.put(eventQueue.front());
          eventQueue.pop();
       }
 
-      return result;
+      return buffer;
    }
 
    /// @brief Retrieves the clock tick size as defined in the input file

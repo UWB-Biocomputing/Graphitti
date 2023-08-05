@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <BGSimParams>
   <SimInfoParams name="SimInfoParams">
-    <PoolSize name="PoolSize">
-      <x name="x">10</x>
-      <y name="y">10</y>
-      <z name="z">1</z>
-    </PoolSize>
     <SimParams name="SimParams">
       <epochDuration name="epochDuration">100.0</epochDuration>
       <numEpochs name="numEpochs">2</numEpochs>
@@ -36,13 +31,15 @@
     <ConnectionsParams class="Connections911" name="ConnectionsParams">
       <Connections911Params name="Connections911Params">
         <graphmlFile name="graphmlFile">../configfiles/graphs/small_911.graphml</graphmlFile>
-            <!-- Max ConnsPerVertex = 87 RC + 1 PR -->
-        <connsPerVertex name="connsPerVertex">88</connsPerVertex>
         <psapsToErase name="psapsToErase">1</psapsToErase>
         <respsToErase name="respsToErase">2</respsToErase>
       </Connections911Params>
     </ConnectionsParams>
 
+    <InputParams name="InputParams">
+      <!-- TODO: I Placed this here for testing purposes -->
+      <inputFile name="inputFile">../configfiles/inputs/SPD_calls.xml</inputFile>
+    </InputParams>
 
     <LayoutParams class="Layout911" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">

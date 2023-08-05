@@ -70,10 +70,8 @@
 #include "Vertices/Neuro/AllLIFNeurons.h"
 
 // Recorder
-#include "Recorders/IRecorder.h"
 #include "Recorders/NG911/Xml911Recorder.h"
-#include "Recorders/Neuro/XmlGrowthRecorder.h"
-#include "Recorders/Neuro/XmlSTDPRecorder.h"
+#include "Recorders/Recorder.h"
 #include "Recorders/XmlRecorder.h"
 
 #if defined(HDF5)
@@ -152,7 +150,7 @@ private:
       // for a type that has not been explicitly defined.
       static_assert((std::is_same_v<T, Connections> || std::is_same_v<T, AllEdges>)
                        || (std::is_same_v<T, Layout> || std::is_same_v<T, AllVertices>)
-                       || (std::is_same_v<T, IRecorder> || std::is_same_v<T, MTRand>),
+                       || (std::is_same_v<T, Recorder> || std::is_same_v<T, MTRand>),
                     "Invalid object type passed to CreateFunctionMap");
 
       //  What is std::is_same<> ?
@@ -197,12 +195,10 @@ private:
          createFunctionMap["All911Vertices"] = &All911Vertices::Create;
       }
 
-      // Register IRecorder classes
-      else if constexpr (std::is_same_v<T, IRecorder>) {
+      // Register Recorder classes
+      else if constexpr (std::is_same_v<T, Recorder>) {
          createFunctionMap["XmlRecorder"] = &XmlRecorder::Create;
          createFunctionMap["Xml911Recorder"] = &Xml911Recorder::Create;
-         createFunctionMap["XmlSTDPRecorder"] = &XmlSTDPRecorder::Create;
-         createFunctionMap["XmlGrowthRecorder"] = &XmlGrowthRecorder::Create;
 
 #if defined(HDF5)
          createFunctionMap["Hdf5Recorder"] = &Hdf5Recorder::Create;

@@ -18,8 +18,8 @@
 
 #if defined(HDF5)
    #include "H5Cpp.h"
-   #include "IRecorder.h"
    #include "Model.h"
+   #include "Recorder.h"
    #include <fstream>
 
    #ifndef H5_NO_NAMESPACE
@@ -32,12 +32,12 @@ using namespace H5;
       #define H5_FLOAT PredType::NATIVE_DOUBLE
    #endif
 
-class Hdf5Recorder : public IRecorder {
+class Hdf5Recorder : public Recorder {
 public:
    /// THe constructor and destructor
    Hdf5Recorder();
 
-   static IRecorder *Create()
+   static Recorder *Create()
    {
       return new Hdf5Recorder();
    }
@@ -69,6 +69,8 @@ public:
    /// Prints out all parameters to logging file.
    /// Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
+
+   virtual void registerVariable(std::string varName, EventBuffer &recordVar) override;
 
 protected:
    virtual void initDataSet();
