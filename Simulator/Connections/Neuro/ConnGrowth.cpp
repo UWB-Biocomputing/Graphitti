@@ -278,7 +278,7 @@ void ConnGrowth::updateSynapsesWeights()
          // if not connected and weight(a,b) > 0, add a new synapse from a to b
          if (!connected && (W_(srcVertex, destVertex) > 0)) {
             // locate summation point
-            BGFLOAT *sumPoint = &(vertices.summationMap_[destVertex]);
+            const int sumPoint = destVertex;
             added++;
 
             BGSIZE iEdg;

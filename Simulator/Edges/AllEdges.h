@@ -11,6 +11,7 @@
 #include "EdgeIndexMap.h"
 #include "Global.h"
 #include "Simulator.h"
+#include "boost/container/vector.hpp"
 #include "cereal/types/vector.hpp"
 #include "log4cplus/loggingmacros.h"
 #include <vector>
@@ -43,7 +44,7 @@ public:
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration
    virtual void addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex,
-                        BGFLOAT *sumPoint, const BGFLOAT deltaT);
+                        const int sumPoint, const BGFLOAT deltaT);
 
    ///  Create a Edge and connect it to the model.
    ///
@@ -53,7 +54,7 @@ public:
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Edge to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
+   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const int sumPoint,
                            const BGFLOAT deltaT, edgeType type)
       = 0;
 
@@ -206,8 +207,9 @@ public:
    ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
    vector<BGFLOAT> W_;
 
-   ///  This edge's summation point's address.
-   vector<BGFLOAT *> summationPoint_;
+   ///  This edge's summation point's index.
+   // This was changed from storing the address to index to help serialization
+   vector<int> summationPoint_;
 
    ///   Synapse type
    vector<edgeType> type_;

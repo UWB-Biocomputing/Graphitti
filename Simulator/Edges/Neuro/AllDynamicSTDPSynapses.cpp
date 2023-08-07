@@ -114,7 +114,7 @@ void AllDynamicSTDPSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
 void AllDynamicSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
-                                        BGFLOAT *sumPoint, const BGFLOAT deltaT, edgeType type)
+                                        const int sumPoint, const BGFLOAT deltaT, edgeType type)
 {
    AllSTDPSynapses::createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
 

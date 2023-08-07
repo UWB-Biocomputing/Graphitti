@@ -229,7 +229,7 @@ void AllSTDPSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
 void AllSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
-                                 BGFLOAT *sumPoint, const BGFLOAT deltaT, edgeType type)
+                                 const int sumPoint, const BGFLOAT deltaT, edgeType type)
 {
    totalDelayPost_[iEdg]
       = 0;   // Apr 12th 2020 move this line so that when AllSpikingSynapses::createEdge() is called, inside this method the initSpikeQueue() method can be called successfully
@@ -274,7 +274,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices &neurons)
 
    BGFLOAT &decay = decay_[iEdg];
    BGFLOAT &psr = psr_[iEdg];
-   BGFLOAT &summationPoint = *(summationPoint_[iEdg]);
+   int summationPoint = summationPoint_[iEdg];
 
    // is an input in the queue?
    bool fPre = isSpikeQueue(iEdg);

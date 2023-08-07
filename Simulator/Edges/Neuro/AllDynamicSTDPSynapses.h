@@ -90,7 +90,7 @@ public:
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
+   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const int sumPoint,
                            const BGFLOAT deltaT, edgeType type) override;
 
    ///  Prints SynapsesProps data.

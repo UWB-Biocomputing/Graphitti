@@ -121,7 +121,7 @@ void Connections::createSynapsesFromWeights()
          // if the synapse weight is not zero (which means there is a connection), create the synapse
          if (edges_->W_[iEdg] != 0.0) {
             BGFLOAT theW = edges_->W_[iEdg];
-            BGFLOAT *sumPoint = &(vertices.summationMap_[i]);
+            const int sumPoint = i;
             int srcVertex = edges_->sourceVertexIndex_[iEdg];
             int destVertex = edges_->destVertexIndex_[iEdg];
             edgeType type = layout.edgType(srcVertex, destVertex);

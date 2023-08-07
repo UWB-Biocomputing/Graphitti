@@ -113,7 +113,7 @@ void AllDSSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
 ///  @param  sumPoint   Summation point address.
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
-void AllDSSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
+void AllDSSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const int sumPoint,
                                const BGFLOAT deltaT, edgeType type)
 {
    AllSpikingSynapses::createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);

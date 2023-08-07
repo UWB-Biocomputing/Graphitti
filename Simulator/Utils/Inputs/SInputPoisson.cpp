@@ -113,8 +113,7 @@ void SInputPoisson::init()
       else
          type = EE;
 
-      BGFLOAT *sumPoint
-         = &(Simulator::getInstance().getLayout().getVertices().summationMap_[neuronIndex]);
+      const int sumPoint = neuronIndex;
       BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * neuronIndex;
 
       edges_->createEdge(iEdg, 0, neuronIndex, sumPoint, Simulator::getInstance().getDeltaT(),

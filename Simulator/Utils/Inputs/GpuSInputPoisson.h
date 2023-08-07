@@ -58,7 +58,7 @@ private:
 extern __global__ void inputStimulusDevice(int n, int *deviceInteralCounter_, bool *deviceMasks_,
                                            BGFLOAT deltaT, BGFLOAT lambda, curandState *devStates_d,
                                            AllDSSynapsesDeviceProperties *allEdgesDevice);
-extern __global__ void applyI2SummationMap(int n, BGFLOAT *summationPoint_d,
+extern __global__ void applyI2SummationMap(int n, int summationPoint_d,
                                            AllDSSynapsesDeviceProperties *allEdgesDevice);
 extern __global__ void setupSeeds(int n, curandState *devStates_d, unsigned long seed);
 #endif

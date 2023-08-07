@@ -78,7 +78,7 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges)
       W_.assign(maxTotalEdges, 0);
       type_.assign(maxTotalEdges, ETYPE_UNDEF);
       edgeCounts_.assign(numVertices, 0);
-      summationPoint_.assign(maxTotalEdges, nullptr);
+      summationPoint_.assign(maxTotalEdges, -1);
       destVertexIndex_.assign(maxTotalEdges, 0);
       sourceVertexIndex_.assign(maxTotalEdges, 0);
 
@@ -243,7 +243,7 @@ void AllEdges::eraseEdge(const int iVert, const BGSIZE iEdg)
 {
    edgeCounts_[iVert]--;
    inUse_[iEdg] = false;
-   summationPoint_[iEdg] = nullptr;
+   summationPoint_[iEdg] = -1;
    W_[iEdg] = 0;
 }
 
@@ -259,7 +259,7 @@ void AllEdges::eraseEdge(const int iVert, const BGSIZE iEdg)
 ///  @param  sumPoint   Summation point address.
 ///  @param  deltaT      Inner simulation step duration
 void AllEdges::addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex,
-                       BGFLOAT *sumPoint, const BGFLOAT deltaT)
+                       const int sumPoint, const BGFLOAT deltaT)
 {
    if (edgeCounts_[destVertex] >= maxEdgesPerVertex_) {
       LOG4CPLUS_FATAL(edgeLogger_, "Vertex : " << destVertex << " ran out of space for new edges.");
