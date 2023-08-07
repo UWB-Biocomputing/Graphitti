@@ -1,8 +1,8 @@
 import numpy as np
 
 
-def primprocess(firstInp, lastInp, PPmu, PPdeadT, SPsigma):
-    events = np.array([firstInp + 2 * SPsigma])
+def primprocess(firstInp, lastInp, PPmu, PPdeadT):
+    events = np.array([firstInp])
     aveInt = PPmu + PPdeadT
 
     # Generate all the primary processes between first and lastInp
@@ -18,7 +18,7 @@ def primprocess(firstInp, lastInp, PPmu, PPdeadT, SPsigma):
     if events[-1] > lastInp:
         events = events[events <= lastInp]
 
-    return events
+    return np.round(events).astype(np.int64)
 
 
 def add_spatial_dimension(events, firstX, lastX, firstY, lastY):
@@ -108,7 +108,8 @@ def secprocess(SPSigma, SPVarSigma, prototypes, primEvts):
         if expected_points_num == 0:
             expected_points_num = 1
         
-        # We must create the constrained prototype here
+        # We must create the constrained prototype here.
+        # 
         prototype = np.random.exponential(scale=SPSigma, size=expected_points_num)
         outliers = np.where(np.abs(prototype) > 4 * SPSigma)[0]
         while len(outliers) > 0:
@@ -151,9 +152,9 @@ def secprocess(SPSigma, SPVarSigma, prototypes, primEvts):
     sec_evts_x = sec_evts_x.reshape(-1, 1)
     sec_evts_y = sec_evts_y.reshape(-1, 1)
     sec_evts_cid = sec_evts_cid.reshape(-1, 1)
-    sec_evts = np.concatenate((sec_evts_t.astype(object),
-                               sec_evts_x.astype(object),
-                               sec_evts_y.astype(object),
+    sec_evts = np.concatenate((np.round(sec_evts_t).astype(np.int64),
+                               sec_evts_x.astype(np.float64),
+                               sec_evts_y.astype(np.float64),
                                sec_evts_cid.astype(object)),
                                axis=1)
 
@@ -165,17 +166,14 @@ if __name__ == '__main__':
     import pandas as pd
     import time, csv, glob
 
-    # incidents = pd.read_csv('cleaned_911.csv')
-
     prototypes = {0: {'mu_r':0.0005, 'sdev_r':0.0001, 'mu_intensity':1000000, 'sdev_intensity': 200000},
               1: {'mu_r':0.001, 'sdev_r':0.0001, 'mu_intensity':1200000, 'sdev_intensity': 200000},
               2: {'mu_r':0.0015, 'sdev_r':0.001, 'mu_intensity':1900000, 'sdev_intensity': 300000},
               3: {'mu_r':0.003, 'sdev_r':0.001, 'mu_intensity':1000000, 'sdev_intensity': 200000}}
     
-    prim_proc_mu = 1/0.27 #0.05
-    prim_proc_dt = 0.1
-    sec_proc_sigma = 0.2 #0.05 #0.001
-    sp_var_sigma = 0.01
+    # All values are in seconds
+    sec_proc_sigma = 15
+    sp_var_sigma = 5
     first_x = 0
     last_x = 100
     first_y = 0
@@ -188,19 +186,21 @@ if __name__ == '__main__':
     # Seattle PD PSAP dispatches to 318069 incidents a year that is,
     # 36.309 avg incidents per hour or an average of 99 seconds between
     # incidents.
-    # We will use a 2 seconds dead time.
     first = 0
     last = 86400    # one day in seconds
     mu = 99 # seconds between incidents
-    deadT = 2   # seconds
-    SPsigma = 9
+    # The dead time helps with having too many calls at the exact same time
+    deadT = 10   # (seconds)
 
+    # Ratios based on NORCOM 2022 report. NORCOM doesn't make a distinction
+    # between EMS and Fire call types, so I split it in half.
     type_ratios = {'Law': 0.64,
                    'EMS': 0.18,
                    'Fire': 0.18}
 
-    incidents = primprocess(first, last, mu, deadT, SPsigma)
+    incidents = primprocess(first, last, mu, deadT)
     print(f'Number of Primary events: {incidents.shape[0]}')
+    print(incidents)
 
     # Generate locations for each incident
     first_x = 0
@@ -215,7 +215,9 @@ if __name__ == '__main__':
     # Seed numpy random number to get consistent results
     np.random.seed(42)
 
-    start_t = time.time()
+    ###########################################################################
+    # SECONDARY EVENTS
+    ###########################################################################
 
     print('Generating Secondary events...')
     sec_events = secprocess(sec_proc_sigma, sp_var_sigma,
