@@ -1,5 +1,5 @@
 import numpy as np
-
+import math
 
 def primprocess(firstInp, lastInp, PPmu, PPdeadT):
     events = np.array([firstInp])
@@ -109,12 +109,21 @@ def secprocess(SPSigma, SPVarSigma, prototypes, primEvts):
             expected_points_num = 1
         
         # We must create the constrained prototype here.
-        # 
+        # Use Tukey's boxplot method for calculating the fence for the outliers. From
+        # Sim et al. (2005) the lower fence for an exponential distribution is effectively 0,
+        # therefore we only need to calculate the upper fence. Upper fence is calculated
+        # as 1.5 times the interquartile range (IQR) above the third quartile (Q3):
+        #   UF = Q3 + 1.5 * IQR
+        #   Q3 = ln(4)/lambda
+        #   IQR = ln(3)/lambda
+        #   and lambda = 1/scale_parameter
+        l = 1/SPSigma
+        upper_fence = (math.log(4) + 1.5 * math.log(3))/l
         prototype = np.random.exponential(scale=SPSigma, size=expected_points_num)
-        outliers = np.where(np.abs(prototype) > 4 * SPSigma)[0]
+        outliers = np.where(np.abs(prototype) > upper_fence)[0]
         while len(outliers) > 0:
             prototype[outliers] = np.random.exponential(scale=SPSigma, size=len(outliers))
-            outliers = np.where(np.abs(prototype) > 4 * SPSigma)[0]
+            outliers = np.where(np.abs(prototype) > upper_fence)[0]
         prototype = np.sort(prototype, axis=0)
         
 
@@ -171,8 +180,9 @@ if __name__ == '__main__':
               2: {'mu_r':0.0015, 'sdev_r':0.001, 'mu_intensity':1900000, 'sdev_intensity': 300000},
               3: {'mu_r':0.003, 'sdev_r':0.001, 'mu_intensity':1000000, 'sdev_intensity': 200000}}
     
-    # All values are in seconds
-    sec_proc_sigma = 15
+    # TODO: These are ballpark values, we need to find these parameter estimates based on real data.
+    # All values are in seconds.
+    sec_proc_sigma = 20 # Mean of call interval after incident
     sp_var_sigma = 5
     first_x = 0
     last_x = 100
