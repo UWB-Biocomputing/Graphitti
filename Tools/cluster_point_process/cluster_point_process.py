@@ -115,18 +115,15 @@ def secprocess(SPSigma, SPVarSigma, prototypes, primEvts):
         # therefore we only need to calculate the upper fence. Upper fence is calculated
         # as 1.5 times the interquartile range (IQR) above the third quartile (Q3):
         #   UF = Q3 + 1.5 * IQR
-        #   Q3 = ln(4)/lambda
-        #   IQR = ln(3)/lambda
-        #   and lambda = 1/scale_parameter
-        l = 1/SPSigma
-        upper_fence = (math.log(4) + 1.5 * math.log(3))/l
+        #   lambda = 1/scale_parameter
+        #   Q3 = ln(4)/lambda = ln(4) * scale_parameter
+        #   IQR = ln(3)/lambda = ln(3) * scale_parameter
+        upper_fence = (math.log(4) + 1.5 * math.log(3)) * SPSigma
         prototype = np.random.exponential(scale=SPSigma, size=expected_points_num)
         outliers = np.where(np.abs(prototype) > upper_fence)[0]
         while len(outliers) > 0:
             prototype[outliers] = np.random.exponential(scale=SPSigma, size=len(outliers))
             outliers = np.where(np.abs(prototype) > upper_fence)[0]
-        prototype = np.sort(prototype, axis=0)
-        
 
         # Generate the clusters
         actClust = SPVarSigma * np.random.randn(expected_points_num, 1) + prototype.reshape(expected_points_num, 1)
@@ -165,10 +162,14 @@ def secprocess(SPSigma, SPVarSigma, prototypes, primEvts):
     #   std dev = 222.57
     # This is consistent with exponentially distributed values where the mean and
     # standard deviation are equal.
+    # We also trim outliers using the Tukey Fences criteria
     duration_mean = 205
+    duration_fence = (math.log(4) + 1.5 * math.log(3)) * duration_mean
     sec_evts_duration = np.random.exponential(scale=duration_mean, size=len(sec_evts_t))
-    print('duration', sec_evts_duration)
-    # TODO: trim outliers using Tukey Fences criteria
+    outliers = np.where(sec_evts_duration > duration_fence)[0]
+    while len(outliers) > 0:
+        sec_evts_duration[outliers] = np.random.exponential(scale=duration_mean, size=len(outliers))
+        outliers = np.where(sec_evts_duration > duration_fence)[0]
 
     # Reshape numpy arrays so we can concatenate them column wise
     sec_evts_t = sec_evts_t.reshape(-1, 1)
