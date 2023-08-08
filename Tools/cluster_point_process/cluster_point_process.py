@@ -2,7 +2,7 @@ import numpy as np
 import math
 
 def primprocess(firstInp, lastInp, PPmu, PPdeadT, region_grid):
-    
+
     events = np.array([firstInp])
     aveInt = PPmu + PPdeadT
 
@@ -192,10 +192,6 @@ if __name__ == '__main__':
     # All values are in seconds.
     sec_proc_sigma = 20 # Mean of call interval after incident
     sp_var_sigma = 5
-    first_x = 0
-    last_x = 100
-    first_y = 0
-    last_y = 100
 
     ###########################################################################
     # PRIMARY EVENTS
@@ -218,13 +214,6 @@ if __name__ == '__main__':
 
     incidents = primprocess(first, last, mu, deadT, spd_grid)
     print(f'Number of Primary events: {incidents.shape[0]}')
-
-    # Generate locations for each incident
-    first_x = 0
-    last_x = 100
-    first_y = 0
-    last_y = 100
-    # incidents_with_loc = add_spatial_dimension(incidents, first_x, last_x, first_y, last_y)
 
     # Generate the incident types based on the type_ratios
     incidents_with_types = add_types(incidents, type_ratios)
