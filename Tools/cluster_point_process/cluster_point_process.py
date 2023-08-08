@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import lxml.etree as et
 
 def primprocess(firstInp, lastInp, PPmu, PPdeadT, region_grid):
 
@@ -157,11 +158,27 @@ def secprocess(SPSigma, SPVarSigma, prototypes, primEvts):
     sec_evts_y = sec_evts_y[indices]
     sec_evts_cid = sec_evts_cid[indices]
 
+    # Draw call duration from an exponential distribution.
+    # From the Seattle PD September 2020 data we obtained the following central point
+    # and spread estimates:
+    #   mean = 204.72
+    #   std dev = 222.57
+    # This is consistent with exponentially distributed values where the mean and
+    # standard deviation are equal.
+    duration_mean = 205
+    sec_evts_duration = np.random.exponential(scale=duration_mean, size=len(sec_evts_t))
+    print('duration', sec_evts_duration)
+    # TODO: trim outliers using Tukey Fences criteria
+
+    # Reshape numpy arrays so we can concatenate them column wise
     sec_evts_t = sec_evts_t.reshape(-1, 1)
     sec_evts_x = sec_evts_x.reshape(-1, 1)
     sec_evts_y = sec_evts_y.reshape(-1, 1)
     sec_evts_cid = sec_evts_cid.reshape(-1, 1)
+    sec_evts_duration = sec_evts_duration.reshape(-1, 1)
+
     sec_evts = np.concatenate((np.round(sec_evts_t).astype(np.int64),
+                               sec_evts_duration.astype(np.int64),
                                sec_evts_x.astype(np.float64),
                                sec_evts_y.astype(np.float64),
                                sec_evts_cid.astype(object)),
@@ -170,11 +187,38 @@ def secprocess(SPSigma, SPVarSigma, prototypes, primEvts):
     return sec_evts
  
 
+def add_vertex_events(node, vertex_id, vertex_name, data):
+    vertex = et.SubElement(node, 'vertex', {'id': vertex_id, 'name': vertex_name})
+    # This is to make sure we don't have calls happening at the exact same second
+    prev_time = -1
+    for row in data:
+        d = dict()
+        d['time'] = row[0] #.astype('int64')
+        d['duration'] = row[1]   # TODO: To be drawn from exponential distribution
+        d['x'] = row[2]
+        d['y'] = row[3]
+        d['type'] = row[4]
+        d['vertex_id'] = vertex_id
+
+        # Ensure that we don't have calls at the same second
+        if d['time'] <= prev_time:
+            d['time'] = prev_time + 1
+        prev_time = d['time']
+
+        # convert everything to string
+        for k, v in d.items():
+            d[k] = str(v)
+        
+        # Add the event to the vertex
+        event = et.SubElement(vertex, 'event', d)
+
+    return node
+
+
 
 if __name__ == '__main__':
     import pandas as pd
     import networkx as nx
-    import lxml.etree as et
 
     # Get the grid for the Seattle PD Caller Region from the graphml file
     graph_file = '../gis2graph/graph_files/spd.graphml'
@@ -224,7 +268,6 @@ if __name__ == '__main__':
     ###########################################################################
     # SECONDARY EVENTS
     ###########################################################################
-
     print('Generating Secondary events...')
     sec_events = secprocess(sec_proc_sigma, sp_var_sigma,
                             prototypes, incidents_with_types)
@@ -232,7 +275,28 @@ if __name__ == '__main__':
     print('Number of Secondary Events:', len(sec_events))
 
     output_file = 'calls.csv'
-    sec_events_df = pd.DataFrame(sec_events, columns=['time', 'x', 'y', 'type'])
+    sec_events_df = pd.DataFrame(sec_events, columns=['time', 'duration', 'x', 'y', 'type'])
     sec_events_df.to_csv(output_file, index=False, header=True)
 
     print('Secondary process was saved to:', output_file)
+
+    ###########################################################################
+    # TURN CALL LIST INTO AN XML TREE AND SAVE TO FILE
+    ###########################################################################
+    # The root element
+    inputs = et.Element('simulator_inputs')
+
+    # The data element will contain all calls grouped per vertex
+    data = et.SubElement(inputs, 'data', {"description": "SPD Calls - Cluster Point Process", 
+                                          "clock_tick_size": "1",
+                                          "clock_tick_unit": "sec"})
+    
+    # Create the vertex element with all its associated calls (events)
+    vertex_name = graph.nodes[spd_cr_id]['name']
+    data = add_vertex_events(data, spd_cr_id, vertex_name, sec_events)
+
+    tree = et.ElementTree(inputs)
+    tree_out = tree.write('SPD_cluster_point_process.xml',
+                          xml_declaration=True,
+                          encoding='UTF-8',
+                          pretty_print=True)

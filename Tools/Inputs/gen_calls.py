@@ -78,8 +78,8 @@ def main():
     # Construct an element tree to be writen to a file in XML format
     # data is the root element
     data = et.SubElement(inputs, 'data', {"description": "SPD_calls_sept2020", 
-                               "clock_tick_size": "1",
-                               "clock_tick_unit": "sec"})
+                                          "clock_tick_size": "1",
+                                          "clock_tick_unit": "sec"})
 
     # Insert one event element per row
     # Make sure there are no time duplicates
@@ -102,7 +102,7 @@ def main():
             d['time'] = prev_time + 1
         prev_time = d['time']
 
-        # convert everythin to strings
+        # convert everything to strings
         for k, v in d.items():
             d[k] = str(v)
 
