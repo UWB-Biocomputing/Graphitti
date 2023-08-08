@@ -32,6 +32,11 @@ if(NOT GPROF)
         set(GPROF NO)
 endif()
 
+# CONDITIONAL FLAG to turn on assert testing in code 
+if(NOT ASSERT_TESTING)
+        set(ASSERT_TESTING NO)
+endif()
+
 # Creates the Graphitti project with the correct languages, depending on if using GPU or not
 # If using CUDA, also verify the CUDA package and set the required CUDA variables
 if(ENABLE_CUDA)	
@@ -68,6 +73,11 @@ if(GPROF)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+endif()
+
+if(ASSERT_TESTING)
+        message("-- Setting ASSERT_TESTING: ON")
+        
 endif()
 
 # HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libraries to the executable later in the file.
@@ -388,3 +398,4 @@ target_link_libraries(deserialTest combinedLib)
 unset(ENABLE_CUDA CACHE)
 unset(PERFORMANCE_METRICS CACHE)
 unset(GPROF CACHE)
+unset(ASSERT_TESTING CACHE)

@@ -131,6 +131,10 @@ void printPerformanceMetrics(const float total_time, int steps)
 }
 #endif   // PERFORMANCE_METRICS
 
+#ifdef ASSERT_TESTING
+
+#endif   // ASSERT_TESTING
+
 // TODO comment
 const string MATRIX_TYPE = "complete";
 // TODO comment
