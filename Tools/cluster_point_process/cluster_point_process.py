@@ -1,7 +1,8 @@
 import numpy as np
 import math
 
-def primprocess(firstInp, lastInp, PPmu, PPdeadT):
+def primprocess(firstInp, lastInp, PPmu, PPdeadT, region_grid):
+    
     events = np.array([firstInp])
     aveInt = PPmu + PPdeadT
 
@@ -18,17 +19,16 @@ def primprocess(firstInp, lastInp, PPmu, PPdeadT):
     if events[-1] > lastInp:
         events = events[events <= lastInp]
 
-    return np.round(events).astype(np.int64)
-
-
-def add_spatial_dimension(events, firstX, lastX, firstY, lastY):
+    # Add spatial dimension to the primary process.
+    # Create a numpy array of uniformly distributed random segments drawn
+    # from the region_grid
     n = len(events)
-    
-    # Draw x and y values from a uniform distribution
-    x = np.random.uniform(low=firstX, high=lastX, size=n)
-    y = np.random.uniform(low=firstY, high=lastY, size=n)
+    rand_segments = region_grid[np.random.randint(0, len(region_grid), n)]
+    # Generate x and y from the 2 corners defined in each segment
+    x = np.random.uniform(rand_segments[:,0,0], rand_segments[:,1,0])
+    y = np.random.uniform(rand_segments[:,0,1], rand_segments[:,1,1])
 
-    return np.column_stack((events, x, y))
+    return np.column_stack((np.round(events).astype(np.int64), x, y))
 
 
 def add_types(events, type_ratios):
@@ -173,8 +173,16 @@ def secprocess(SPSigma, SPVarSigma, prototypes, primEvts):
 
 if __name__ == '__main__':
     import pandas as pd
-    import time, csv, glob
+    import networkx as nx
+    import lxml.etree as et
 
+    # Get the grid for the Seattle PD Caller Region from the graphml file
+    graph_file = '../gis2graph/graph_files/spd.graphml'
+    spd_cr_id = '194'
+    graph = nx.read_graphml(graph_file)
+    spd_grid = np.array(eval(graph.nodes[spd_cr_id]['segments']))
+
+    # Define prototypes for location of secondary spatio-temporal points
     prototypes = {0: {'mu_r':0.0005, 'sdev_r':0.0001, 'mu_intensity':1000000, 'sdev_intensity': 200000},
               1: {'mu_r':0.001, 'sdev_r':0.0001, 'mu_intensity':1200000, 'sdev_intensity': 200000},
               2: {'mu_r':0.0015, 'sdev_r':0.001, 'mu_intensity':1900000, 'sdev_intensity': 300000},
@@ -208,19 +216,18 @@ if __name__ == '__main__':
                    'EMS': 0.18,
                    'Fire': 0.18}
 
-    incidents = primprocess(first, last, mu, deadT)
+    incidents = primprocess(first, last, mu, deadT, spd_grid)
     print(f'Number of Primary events: {incidents.shape[0]}')
-    print(incidents)
 
     # Generate locations for each incident
     first_x = 0
     last_x = 100
     first_y = 0
     last_y = 100
-    incidents_with_loc = add_spatial_dimension(incidents, first_x, last_x, first_y, last_y)
+    # incidents_with_loc = add_spatial_dimension(incidents, first_x, last_x, first_y, last_y)
 
     # Generate the incident types based on the type_ratios
-    incidents_with_types = add_types(incidents_with_loc, type_ratios)
+    incidents_with_types = add_types(incidents, type_ratios)
 
     # Seed numpy random number to get consistent results
     np.random.seed(42)
