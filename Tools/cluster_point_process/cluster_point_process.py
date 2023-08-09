@@ -2,29 +2,29 @@ import numpy as np
 import math
 import lxml.etree as et
 
-def primprocess(firstInp, lastInp, PPmu, PPdeadT, region_grid):
-    # Generates a set of primary spatio-temporal events between firstInp and lastInp.
+def primprocess(first_inp, last_inp, pp_mu, pp_dead_t, region_grid):
+    # Generates a set of primary spatio-temporal events between first_inp and last_inp.
     # The time intervals between events are exponentially distributed with
-    # mean PPmu. The events are then uniformly distributed between the segments
+    # mean pp_mu. The events are then uniformly distributed between the segments
     # of the region_grid, which serve as a constrain box for randomly selecting
     # the (x, y) location.
-    # The PPdeadT is the dead time after an event. It helps to avoid having 2
+    # The pp_dead_t is the dead time after an event. It helps to avoid having 2
     # events ocurring at the exact same time. Finally, the times are given in seconds.
-    events = np.array([firstInp])
-    aveInt = PPmu + PPdeadT
+    events = np.array([first_inp])
+    aveInt = pp_mu + pp_dead_t
 
     # Generate all the primary processes between first and lastInp
     # drawing the interval between event from an exponential
     # distribution
-    while events[-1] < lastInp:
-        numInts = int(np.round((lastInp - events[-1]) / aveInt)) + 1
-        newInts = np.random.exponential(scale=PPmu, size=numInts) + PPdeadT
+    while events[-1] < last_inp:
+        numInts = int(np.round((last_inp - events[-1]) / aveInt)) + 1
+        newInts = np.random.exponential(scale=pp_mu, size=numInts) + pp_dead_t
         newInts = np.cumsum(newInts)
         events = np.concatenate([events, newInts + events[-1]])
 
     # Include only events between first and lastInp
-    if events[-1] > lastInp:
-        events = events[events <= lastInp]
+    if events[-1] > last_inp:
+        events = events[events <= last_inp]
 
     # Add spatial dimension to the primary process.
     # Create a numpy array of uniformly distributed random segments drawn
@@ -64,16 +64,15 @@ def add_types(events, type_ratios):
     return np.column_stack((events, type_list.astype('object')))
 
 
-def secprocess(SPSigma, duration_mean, prototypes, primEvts):
-    # SECPROCESS   Secondary process for clustering
-    # SECPROCESS(SPSIGMA, PROTOTYPES, PRIMEVTS) Selects a prototype
-    # for the prototypes dictionary, which is used as the magnitude
+def secprocess(sp_sigma, duration_mean, prototypes, prim_evts):
+    # Secondary process for clustering. Selects a prototype
+    # from the dictionary of prototypes, which is used as the magnitude
     # an spread of the primary event. This determines the number of 
     # secondary events generated and their distribution in space.
     # It then generates a secondary point process by attaching
-    # to each event in PRIMEVTS a new cluster, with the interval between the
+    # to each event in prim_evts a new cluster, with the interval between the
     # primary event and each secondary event being taken from an exponential
-    # distribution with mean SPSigma.
+    # distribution with mean sp_sigma.
     # 
     # Each secondary events gets a duration drawn from an exponential
     # distribution with mean duration_mean, and a location (x, y) according
@@ -94,7 +93,7 @@ def secprocess(SPSigma, duration_mean, prototypes, primEvts):
     #   class 3 = 1% of events
     # Each of this classes has a mean and standard deviation for the radius
     # and intensity of the generated secondary process
-    proto_class = np.random.rand(len(primEvts))
+    proto_class = np.random.rand(len(prim_evts))
     proto_class[(proto_class >= 0.99)] = 3
     proto_class[proto_class < 0.4] = 0
     proto_class[(proto_class >= 0.4) & (proto_class < 0.9)] = 1
@@ -106,7 +105,7 @@ def secprocess(SPSigma, duration_mean, prototypes, primEvts):
     sec_evts_cid = np.zeros(0)
 
     # We need to compute the actual clusters on a per primary event basis
-    for pe_num in range(len(primEvts)):
+    for pe_num in range(len(prim_evts)):
         # get the radius and intensity
         pcls = proto_class[pe_num]
         # print('protoclass:', pcls)
@@ -131,21 +130,21 @@ def secprocess(SPSigma, duration_mean, prototypes, primEvts):
         #   lambda = 1/scale_parameter
         #   Q3 = ln(4)/lambda = ln(4) * scale_parameter
         #   IQR = ln(3)/lambda = ln(3) * scale_parameter
-        upper_fence = (math.log(4) + 1.5 * math.log(3)) * SPSigma
+        upper_fence = (math.log(4) + 1.5 * math.log(3)) * sp_sigma
 
         # Generate the clusters
-        actClust = np.random.exponential(scale=SPSigma, size=expected_points_num)
+        actClust = np.random.exponential(scale=sp_sigma, size=expected_points_num)
         outliers = np.where(actClust > upper_fence)[0]
         while len(outliers) > 0:
-            actClust[outliers] = np.random.exponential(scale=SPSigma, size=len(outliers))
+            actClust[outliers] = np.random.exponential(scale=sp_sigma, size=len(outliers))
             outliers = np.where(actClust > upper_fence)[0]
         
-        sec_evts_t_tmp = primEvts[pe_num][0] + actClust.reshape(expected_points_num)
+        sec_evts_t_tmp = prim_evts[pe_num][0] + actClust.reshape(expected_points_num)
         sec_evts_t = np.append(sec_evts_t, sec_evts_t_tmp)
 
         # We will locate the secondary events within a circle, with the primary event at the center
-        center_x = primEvts[pe_num][1]
-        center_y = primEvts[pe_num][2]
+        center_x = prim_evts[pe_num][1]
+        center_y = prim_evts[pe_num][2]
 
         # Generate polar coordinates in the circle
         r = np.random.uniform(0, radius, size=expected_points_num)
@@ -158,7 +157,7 @@ def secprocess(SPSigma, duration_mean, prototypes, primEvts):
         sec_evts_y = np.append(sec_evts_y, sec_evts_y_tmp)
 
         # assign the type of the primary event
-        e_type = primEvts[pe_num][3]
+        e_type = prim_evts[pe_num][3]
         sec_evts_cid = np.append(sec_evts_cid, np.full(expected_points_num, e_type))
         
     # Sort events by time, keeping x and y in sync
@@ -200,8 +199,8 @@ def add_vertex_events(node, vertex_id, vertex_name, data):
     prev_time = -1
     for row in data:
         d = dict()
-        d['time'] = row[0] #.astype('int64')
-        d['duration'] = row[1]   # TODO: To be drawn from exponential distribution
+        d['time'] = row[0]
+        d['duration'] = row[1]
         d['x'] = row[2]
         d['y'] = row[3]
         d['type'] = row[4]
@@ -220,7 +219,6 @@ def add_vertex_events(node, vertex_id, vertex_name, data):
         event = et.SubElement(vertex, 'event', d)
 
     return node
-
 
 
 if __name__ == '__main__':
@@ -259,7 +257,7 @@ if __name__ == '__main__':
     last = 86400   # one day in seconds
     mu = 99 # seconds between incidents
     # The dead time helps with having too many calls at the exact same time
-    deadT = 10   # (seconds)
+    dead_t = 10   # (seconds)
 
     # Ratios based on NORCOM 2022 report. NORCOM doesn't make a distinction
     # between EMS and Fire call types, so I split it in half.
@@ -267,14 +265,14 @@ if __name__ == '__main__':
                    'EMS': 0.18,
                    'Fire': 0.18}
 
-    incidents = primprocess(first, last, mu, deadT, spd_grid)
+    # Seed numpy random number to get consistent results
+    np.random.seed(20)
+
+    incidents = primprocess(first, last, mu, dead_t, spd_grid)
     print(f'Number of Primary events: {incidents.shape[0]}')
 
     # Generate the incident types based on the type_ratios
     incidents_with_types = add_types(incidents, type_ratios)
-
-    # Seed numpy random number to get consistent results
-    np.random.seed(42)
 
     ###########################################################################
     # SECONDARY EVENTS
