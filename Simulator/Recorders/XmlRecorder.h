@@ -7,8 +7,8 @@
  *
  * The XmlRecorder provides a mechanism for recording neuron's layout, spikes history,
  * and compile history information on xml file:
- *     -# the number of a single neuron,
- *     -# all vertex events for a single neuron.
+ *     -# the neuron ID.
+ *     -# time steps of events produced by each neuron,
  */
 
 #pragma once
@@ -97,7 +97,11 @@ protected:
 
    // // create a structure contains the information of a variable
    struct variableInfo{
+   // records the name of each neuron
       string variableName_;
+   // This pointer stores the address of the registered variable
+   // As the simulator runs, the values will be updated
+   // It can records all events of a single neuron in each epoch
       shared_ptr<EventBuffer> variableLocation_;
       variableInfo (string name, EventBuffer &location ) {
          variableName_ = name;
@@ -108,6 +112,7 @@ protected:
    };
 
    // create table
+   // the variableTable stores all the variables information that need to be recorded
    std::vector<variableInfo> variableTable;
    std::vector<vector<uint64_t>> neuronsHistory_;
 
