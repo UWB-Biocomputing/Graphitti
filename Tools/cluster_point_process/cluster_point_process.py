@@ -229,6 +229,7 @@ def add_vertex_events(node, vertex_id, vertex_name, data):
 if __name__ == '__main__':
     import pandas as pd
     import networkx as nx
+    import time
 
     # Get the grid for the Seattle PD Caller Region from the graphml file
     graph_file = '../gis2graph/graph_files/spd.graphml'
@@ -259,7 +260,7 @@ if __name__ == '__main__':
     # 36.309 avg incidents per hour or an average of 99 seconds between
     # incidents.
     first = 0
-    last = 86400   # one day in seconds
+    last = 86400  # one day in seconds
     mu = 99 # seconds between incidents
     # The dead time helps with having too many calls at the exact same time
     dead_t = 10   # (seconds)
@@ -282,6 +283,9 @@ if __name__ == '__main__':
     ###########################################################################
     # SECONDARY EVENTS
     ###########################################################################
+    # Time the secondary process generation
+    start_t = time.time()
+
     print('Generating Secondary events...')
     # From the Seattle PD September 2020 data we obtained the following central point
     # and spread estimates:
@@ -292,6 +296,9 @@ if __name__ == '__main__':
     duration_mean = 205
     sec_events = secprocess(sec_proc_sigma, duration_mean,
                             prototypes, incidents_with_types)
+    
+    end_t = time.time()
+    print('Elapsed time:', round(end_t - start_t, 4), 'seconds')
     print('Number of Primary Events:', len(incidents_with_types))
     print('Number of Secondary Events:', len(sec_events))
 
