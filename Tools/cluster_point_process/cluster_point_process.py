@@ -3,7 +3,13 @@ import math
 import lxml.etree as et
 
 def primprocess(firstInp, lastInp, PPmu, PPdeadT, region_grid):
-
+    # Generates a set of primary spatio-temporal events between firstInp and lastInp.
+    # The time intervals between events are exponentially distributed with
+    # mean PPmu. The events are then uniformly distributed between the segments
+    # of the region_grid, which serve as a constrain box for randomly selecting
+    # the (x, y) location.
+    # The PPdeadT is the dead time after an event. It helps to avoid having 2
+    # events ocurring at the exact same time. Finally, the times are given in seconds.
     events = np.array([firstInp])
     aveInt = PPmu + PPdeadT
 
@@ -35,7 +41,8 @@ def primprocess(firstInp, lastInp, PPmu, PPdeadT, region_grid):
 def add_types(events, type_ratios):
     # We will uniformily distribute the events between 3 types: EMS, Fire, and Law.
     # Assigned a number from 0 to 99 using a uniform distribution, which will be
-    # used as a threshold for the emergency type.
+    # used as a threshold for randomly selecting the the emergency type based
+    # on their type_ratios.
     random_ratio = np.random.randint(0, 100, events.shape[0])
     
     # With the ratios sorted in ascending order we set thresholds for the various
@@ -57,22 +64,28 @@ def add_types(events, type_ratios):
     return np.column_stack((events, type_list.astype('object')))
 
 
-def secprocess(SPSigma, SPVarSigma, prototypes, primEvts):
+def secprocess(SPSigma, duration_mean, prototypes, primEvts):
     # SECPROCESS   Secondary process for clustering
-    # SECPROCESS(SPSIGMA, SPVARSIGMA, PRESYNNUM, PRIMEVTS, FIRSTINP, LASTINP) generates
-    # a normally distributed prototype cluster of PRESYNNUM events with variance
-    # SPSIGMA.  It then generates a secondary point process by attaching
+    # SECPROCESS(SPSIGMA, PROTOTYPES, PRIMEVTS) Selects a prototype
+    # for the prototypes dictionary, which is used as the magnitude
+    # an spread of the primary event. This determines the number of 
+    # secondary events generated and their distribution in space.
+    # It then generates a secondary point process by attaching
     # to each event in PRIMEVTS a new cluster, with the interval between the
-    # primary event and each secondary event being taken from a normal
-    # distribution with mean from the prototype cluster and variance 
-    # SPVARSIGMA. It returns [SECEVTS, SECCNUMS], with the former being the
-    # clustering process events, and the latter the corresponding cell numbers
-    # from the original prototype.
+    # primary event and each secondary event being taken from an exponential
+    # distribution with mean SPSigma.
+    # 
+    # Each secondary events gets a duration drawn from an exponential
+    # distribution with mean duration_mean, and a location (x, y) according
+    # to the selected prototype.
+    #
+    # It returns the secondary events containing:
+    # [time, duration, x, y, type].
 
     # Constraints:
-    # 1. The prototype cluster will have no events beyond 3*SPSIGMA.
-    # 2. The final clustering process will have no events before FIRSTINP
-    #    or after LASTINP.
+    # 1. Values drawn from an exponential distribution get their outliers removed.
+    #    The outliers are determines using Tukey's Fence criteria for the upper fence,
+    #    calculated as (ln(4) + 1.5 * ln(3)) * SPSigma
 
     # The prototypes are selected base of 4 classes (0-3) where:
     #   class 0 = 40% of events
@@ -109,29 +122,28 @@ def secprocess(SPSigma, SPVarSigma, prototypes, primEvts):
         if expected_points_num == 0:
             expected_points_num = 1
         
-        # We must create the constrained prototype here.
-        # Use Tukey's boxplot method for calculating the fence for the outliers. From
-        # Sim et al. (2005) the lower fence for an exponential distribution is effectively 0,
-        # therefore we only need to calculate the upper fence. Upper fence is calculated
-        # as 1.5 times the interquartile range (IQR) above the third quartile (Q3):
+        # Use Tukey's boxplot method for calculating the fence for the outliers. Based on
+        # Sim et al. (2005), the lower fence for an exponential distribution is effectively 0.
+        # therefore, we only need to calculate the upper fence. The upper fence is calculated
+        # as 1.5 times the interquartile range (IQR) above the third quartile (Q3), for an
+        # exponential distribution those values are estimated as follows:
         #   UF = Q3 + 1.5 * IQR
         #   lambda = 1/scale_parameter
         #   Q3 = ln(4)/lambda = ln(4) * scale_parameter
         #   IQR = ln(3)/lambda = ln(3) * scale_parameter
         upper_fence = (math.log(4) + 1.5 * math.log(3)) * SPSigma
-        prototype = np.random.exponential(scale=SPSigma, size=expected_points_num)
-        outliers = np.where(np.abs(prototype) > upper_fence)[0]
-        while len(outliers) > 0:
-            prototype[outliers] = np.random.exponential(scale=SPSigma, size=len(outliers))
-            outliers = np.where(np.abs(prototype) > upper_fence)[0]
 
         # Generate the clusters
-        actClust = SPVarSigma * np.random.randn(expected_points_num, 1) + prototype.reshape(expected_points_num, 1)
+        actClust = np.random.exponential(scale=SPSigma, size=expected_points_num)
+        outliers = np.where(actClust > upper_fence)[0]
+        while len(outliers) > 0:
+            actClust[outliers] = np.random.exponential(scale=SPSigma, size=len(outliers))
+            outliers = np.where(actClust > upper_fence)[0]
+        
         sec_evts_t_tmp = primEvts[pe_num][0] + actClust.reshape(expected_points_num)
         sec_evts_t = np.append(sec_evts_t, sec_evts_t_tmp)
 
-        # We will locate the secondary events within a circle,
-        # with the primary event at the center of it
+        # We will locate the secondary events within a circle, with the primary event at the center
         center_x = primEvts[pe_num][1]
         center_y = primEvts[pe_num][2]
 
@@ -145,6 +157,7 @@ def secprocess(SPSigma, SPVarSigma, prototypes, primEvts):
         sec_evts_y_tmp = center_y + r * np.sin(theta)
         sec_evts_y = np.append(sec_evts_y, sec_evts_y_tmp)
 
+        # assign the type of the primary event
         e_type = primEvts[pe_num][3]
         sec_evts_cid = np.append(sec_evts_cid, np.full(expected_points_num, e_type))
         
@@ -156,14 +169,7 @@ def secprocess(SPSigma, SPVarSigma, prototypes, primEvts):
     sec_evts_cid = sec_evts_cid[indices]
 
     # Draw call duration from an exponential distribution.
-    # From the Seattle PD September 2020 data we obtained the following central point
-    # and spread estimates:
-    #   mean = 204.72
-    #   std dev = 222.57
-    # This is consistent with exponentially distributed values where the mean and
-    # standard deviation are equal.
-    # We also trim outliers using the Tukey Fences criteria
-    duration_mean = 205
+    # We also trim outliers using the Tukey's Fences criteria
     duration_fence = (math.log(4) + 1.5 * math.log(3)) * duration_mean
     sec_evts_duration = np.random.exponential(scale=duration_mean, size=len(sec_evts_t))
     outliers = np.where(sec_evts_duration > duration_fence)[0]
@@ -228,15 +234,19 @@ if __name__ == '__main__':
     spd_grid = np.array(eval(graph.nodes[spd_cr_id]['segments']))
 
     # Define prototypes for location of secondary spatio-temporal points
-    prototypes = {0: {'mu_r':0.0005, 'sdev_r':0.0001, 'mu_intensity':1000000, 'sdev_intensity': 200000},
-              1: {'mu_r':0.001, 'sdev_r':0.0001, 'mu_intensity':1200000, 'sdev_intensity': 200000},
-              2: {'mu_r':0.0015, 'sdev_r':0.001, 'mu_intensity':1900000, 'sdev_intensity': 300000},
-              3: {'mu_r':0.003, 'sdev_r':0.001, 'mu_intensity':1000000, 'sdev_intensity': 200000}}
+    # 0.001° is aproximately 111 meters (one footbal field plus both endzones)
+    # intensity represent the expected number of points per square unit.
+    # TODO: The values used for the prototypes are ballpark values not based on
+    #       real data. Althoug, they give us around 70,000 - 75,000 calls in a month,
+    #       which is close to what Seattle PD receives with 900,000 calls per year.
+    prototypes = {0: {'mu_r':0.0005, 'sdev_r':0.0001, 'mu_intensity':500000, 'sdev_intensity': 50000},
+              1: {'mu_r':0.001, 'sdev_r':0.0001, 'mu_intensity':1000000, 'sdev_intensity': 60000},
+              2: {'mu_r':0.0015, 'sdev_r':0.001, 'mu_intensity':1100000, 'sdev_intensity': 70000},
+              3: {'mu_r':0.003, 'sdev_r':0.001, 'mu_intensity':1500000, 'sdev_intensity': 60000}}
     
     # TODO: These are ballpark values, we need to find these parameter estimates based on real data.
     # All values are in seconds.
     sec_proc_sigma = 20 # Mean of call interval after incident
-    sp_var_sigma = 5
 
     ###########################################################################
     # PRIMARY EVENTS
@@ -246,7 +256,7 @@ if __name__ == '__main__':
     # 36.309 avg incidents per hour or an average of 99 seconds between
     # incidents.
     first = 0
-    last = 86400    # one day in seconds
+    last = 86400   # one day in seconds
     mu = 99 # seconds between incidents
     # The dead time helps with having too many calls at the exact same time
     deadT = 10   # (seconds)
@@ -270,16 +280,22 @@ if __name__ == '__main__':
     # SECONDARY EVENTS
     ###########################################################################
     print('Generating Secondary events...')
-    sec_events = secprocess(sec_proc_sigma, sp_var_sigma,
+    # From the Seattle PD September 2020 data we obtained the following central point
+    # and spread estimates:
+    #   mean = 204.72
+    #   std dev = 222.57
+    # This is consistent with exponentially distributed values where the mean and
+    # standard deviation are equal.
+    duration_mean = 205
+    sec_events = secprocess(sec_proc_sigma, duration_mean,
                             prototypes, incidents_with_types)
     print('Number of Primary Events:', len(incidents_with_types))
     print('Number of Secondary Events:', len(sec_events))
 
-    output_file = 'calls.csv'
-    sec_events_df = pd.DataFrame(sec_events, columns=['time', 'duration', 'x', 'y', 'type'])
-    sec_events_df.to_csv(output_file, index=False, header=True)
-
-    print('Secondary process was saved to:', output_file)
+    output_file = 'SPD_cluster_point_process.xml'
+    # Commented out code that saves to a .csv file
+    # sec_events_df = pd.DataFrame(sec_events, columns=['time', 'duration', 'x', 'y', 'type'])
+    # sec_events_df.to_csv(output_file, index=False, header=True)
 
     ###########################################################################
     # TURN CALL LIST INTO AN XML TREE AND SAVE TO FILE
@@ -297,7 +313,9 @@ if __name__ == '__main__':
     data = add_vertex_events(data, spd_cr_id, vertex_name, sec_events)
 
     tree = et.ElementTree(inputs)
-    tree_out = tree.write('SPD_cluster_point_process.xml',
+    tree_out = tree.write(output_file,
                           xml_declaration=True,
                           encoding='UTF-8',
                           pretty_print=True)
+
+    print('Secondary process was saved to:', output_file)
