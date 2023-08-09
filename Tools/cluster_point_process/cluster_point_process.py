@@ -194,6 +194,11 @@ def secprocess(sp_sigma, duration_mean, prototypes, prim_evts):
  
 
 def add_vertex_events(node, vertex_id, vertex_name, data):
+    # Adds all rows in data as event elements of a vertex to
+    # the given xml element tree node.
+    # The vertex node gets the vertex_id as vertex_name as attributes,
+    # and each event will have: time, duration, x, y, type, and vertex_id as
+    # element attribues.
     vertex = et.SubElement(node, 'vertex', {'id': vertex_id, 'name': vertex_name})
     # This is to make sure we don't have calls happening at the exact same second
     prev_time = -1
