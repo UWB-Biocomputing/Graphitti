@@ -76,29 +76,44 @@ void XmlRecorder::term()
 /// @param[in] neurons    The entire list of neurons.
 void XmlRecorder::compileHistories(AllVertices &vertices)
 {
-   if (singleNeuronEvents_ == nullptr) {
-      return;
-   }
-   for (int i = 0; i < singleNeuronEvents_->getNumEventsInEpoch(); i++) {
-      //std::cout << "test output:" << (*variable_first)[i] << endl;
-      singleNeuronHistory_.push_back((*singleNeuronEvents_)[i]);
-   }
-   singleNeuronEvents_->startNewEpoch();
+   // for(int i = 0; i < variableTable.size(); i++){
+   //    if (variableTable[i].variableLocation_->getNumEventsInEpoch() <= 0) {
+   //       cout << "empty: " << variableTable[i].variableName_<< endl;
+   //    }else {
+   //       cout << variableTable[i].variableName_<< endl;
+   //       for (int j = 0; j < variableTable[i].variableLocation_->getNumEventsInEpoch(); j++) {
+   //          // std::cout << "test output:" << (*(variableTable[i].variableLocation_))[j] << endl;
+   //          //singleNeuronHistory_.push_back((*singleNeuronEvents_)[i]);
+   //          cout << (*(variableTable[i].variableLocation_))[j] << " ";
+   //          neuronsHistory_[i].push_back((*(variableTable[i].variableLocation_))[j]);
+   //       }
+   //       cout << endl;
+   //       variableTable[i].variableLocation_->startNewEpoch();
+
+   //    }
+
+   // }
+   // for (int i = 0; i < singleNeuronEvents_->getNumEventsInEpoch(); i++) {
+   //    //std::cout << "test output:" << (**singleNeuronEvents_)[i] << endl;
+   //    singleNeuronHistory_.push_back((*singleNeuronEvents_)[i]);
+   // }
+   // singleNeuronEvents_->startNewEpoch();
 
    // // generate the regression test files using prervious version of XmlRecorder
-   // //A single neuron
-   // AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(vertices);
-   // Simulator &simulator = Simulator::getInstance();
-   // int maxSpikes = static_cast<int>(simulator.getEpochDuration() * simulator.getMaxFiringRate());
+   // //All neurons event
+   AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(vertices);
+   Simulator &simulator = Simulator::getInstance();
+   int maxSpikes = static_cast<int>(simulator.getEpochDuration() * simulator.getMaxFiringRate());
 
-   // int iNeuron = 7;
-   // for (int eventIterator = 0;
-   //       eventIterator < spNeurons.vertexEvents_[iNeuron].getNumEventsInEpoch();
-   //       eventIterator++) {
-   //    singleNeuronHistory_.push_back(
-   //       static_cast<int>(static_cast<double>(spNeurons.vertexEvents_[iNeuron][eventIterator])));
-   // }
-   // spNeurons.clearSpikeCounts();
+   for (int iNeuron = 0; iNeuron < spNeurons.vertexEvents_.size(); iNeuron++) {
+      for (int eventIterator = 0;
+           eventIterator < spNeurons.vertexEvents_[iNeuron].getNumEventsInEpoch();
+           eventIterator++) {
+         neuronsHistory_[iNeuron].push_back(
+         static_cast<int>(static_cast<double>(spNeurons.vertexEvents_[iNeuron][eventIterator])));
+      }
+   }
+   spNeurons.clearSpikeCounts();
 }
 
 /// Writes simulation results to an output destination.
@@ -107,8 +122,15 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
 {
    // Write XML header information:
    resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n";
-   if (singleNeuronHistory_.size() != 0) {
-      resultOut_ << toXML(neuronName_, singleNeuronHistory_) << endl;
+   // if (singleNeuronHistory_.size() != 0) {
+   //    resultOut_ << toXML(neuronName_, singleNeuronHistory_) << endl;
+   // }
+   for(int i = 0; i < variableTable.size(); i++){
+      // if (variableTable[i].variableLocation_ != nullptr) {
+      if (neuronsHistory_[i].size() > 0) {
+         resultOut_ << toXML(variableTable[i].variableName_, neuronsHistory_[i]) << endl;
+      }
+
    }
 }
 
@@ -152,9 +174,23 @@ void XmlRecorder::printParameters()
 /// Store a single neuron with the neuron number and its corresponding events
 void XmlRecorder::registerVariable(string name, EventBuffer &recordVar)
 {
-   neuronName_ = name;
-   singleNeuronEvents_ = std::shared_ptr<EventBuffer>(&recordVar, [](EventBuffer *) {
-   });
-   // cout << "smart pointer singleNeuronEvents_" << endl;
+   // neuronName_ = name;
+   // singleNeuronEvents_ = std::shared_ptr<EventBuffer>(&recordVar, [](EventBuffer *) {
+   // });
+   // cout << name << endl;
+   // cout << ": smart pointer singleNeuronEvents_" << endl;
    // cout << singleNeuronEvents_.get() << endl;
+   // if(singleNeuronEvents_.get() == nullptr){
+   //    cout << "Empty smart pointer" << endl;
+   // }
+   variableTable.push_back(variableInfo(name, recordVar));
+   int newNeuron = variableTable.size() -1;
+   
+   if (variableTable[newNeuron].variableLocation_ != nullptr) {
+      // cout << "empty: " << variableTable[i].variableName_<< endl;
+      // return;
+      std::vector<uint64_t> singleHistory_;
+      neuronsHistory_.push_back(singleHistory_);
+   }
+
 }

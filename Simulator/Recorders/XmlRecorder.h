@@ -96,14 +96,20 @@ protected:
    std::vector<uint64_t> singleNeuronHistory_;
 
    // // create a structure contains the information of a variable
-   // struct variableInfo{
-   //    string variableName;
-   //    EventBuffer* variableLocation;
-   // };
+   struct variableInfo{
+      string variableName_;
+      shared_ptr<EventBuffer> variableLocation_;
+      variableInfo (string name, EventBuffer &location ) {
+         variableName_ = name;
+         variableLocation_ = std::shared_ptr<EventBuffer>(&location, [](EventBuffer *) {
+         });
 
-   // // create table
-   // std::vector<variableInfo> variableTable;
+      }
+   };
 
+   // create table
+   std::vector<variableInfo> variableTable;
+   std::vector<vector<uint64_t>> neuronsHistory_;
 
    // a file stream for xml output
    ofstream resultOut_;

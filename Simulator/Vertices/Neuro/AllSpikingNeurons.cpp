@@ -23,11 +23,30 @@ void AllSpikingNeurons::setupVertices()
 
    // register variables
    Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   if (size_ < 7) {
-      recorder.registerVariable("Neuron_0", vertexEvents_[0]);
-   } else {
-      recorder.registerVariable("Neuron_7", vertexEvents_[7]);
+   for (int i = 0; i < vertexEvents_.size(); i++) {
+      //int i = 1;
+      // if(vertexEvents_[i] != null){
+         string neuronID = "Neuron_" + to_string(i);
+         // cout << "testID" << neuronID << endl;
+         // //test events
+         // cout << vertexEvents_[i][0] << endl;
+         // cout << vertexEvents_[i][1] << endl;
+         // for(int j = 0; j < vertexEvents_[i].getNumEventsInEpoch(); j++){
+         //    cout << vertexEvents_[i][j];
+         // }
+         // cout << endl;
+         recorder.registerVariable(neuronID, vertexEvents_[i]);
+         // if (size_ < 7) {
+         //    recorder.registerVariable("Neuron_0", vertexEvents_[0]);
+         // } else {
+         //    recorder.registerVariable("Neuron_7", vertexEvents_[7]);
+         // }
+
+      // }
+
+
    }
+
 }
 
 ///  Clear the spike counts out of all Neurons.
