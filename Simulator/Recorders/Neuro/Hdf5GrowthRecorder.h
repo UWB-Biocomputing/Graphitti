@@ -43,7 +43,7 @@ public:
 
    ~Hdf5GrowthRecorder() = default;
 
-   static IRecorder *Create()
+   static Recorder *Create()
    {
       return new Hdf5GrowthRecorder();
    }
@@ -68,6 +68,8 @@ public:
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
+
+   virtual void registerVariable(std::string varName, EventBuffer &recordVar) override;
 
 protected:
    virtual void initDataSet() override;

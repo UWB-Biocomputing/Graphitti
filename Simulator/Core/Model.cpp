@@ -17,8 +17,8 @@
 #include "ConnGrowth.h"
 #include "Connections.h"
 #include "Factory.h"
-#include "IRecorder.h"
 #include "ParameterManager.h"
+#include "Recorder.h"
 #include "Simulator.h"
 
 /// Constructor
@@ -37,7 +37,7 @@ Model::Model()
 
    // Create Recorder class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
-   recorder_ = Factory<IRecorder>::getInstance().createType(type);
+   recorder_ = Factory<Recorder>::getInstance().createType(type);
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
@@ -183,10 +183,10 @@ Layout &Model::getLayout() const
    return *layout_;
 }
 
-/// Get the IRecorder class object.
-/// @return Pointer to the IRecorder class object.
+/// Get the Recorder class object.
+/// @return Pointer to the Recorder class object.
 // ToDo: make smart ptr
-IRecorder &Model::getRecorder() const
+Recorder &Model::getRecorder() const
 {
    return *recorder_;
 }

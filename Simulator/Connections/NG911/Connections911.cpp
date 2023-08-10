@@ -322,6 +322,9 @@ string Connections911::ChangedEdge::toString()
       case RP:
          type_s = "RP";
          break;
+      case RC:
+         type_s = "RC";
+         break;
       default:
          type_s = "ETYPE_UNDEF";
    }

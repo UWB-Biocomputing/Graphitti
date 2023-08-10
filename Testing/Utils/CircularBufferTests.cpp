@@ -47,6 +47,10 @@ TEST(CircularBuffer, ConstructAndResize)
    ASSERT_FALSE(cbResizable.isFull());
    ASSERT_EQ(15, cbResizable.capacity());
    ASSERT_EQ(0, cbResizable.size());
+
+   // Resize back to 0
+   cbResizable.resize(0);
+   ASSERT_EQ(0, cbResizable.capacity());
 }
 
 // Tests that put adds the correct number of elements

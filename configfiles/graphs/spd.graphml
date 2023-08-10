@@ -1,5 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="segments" for="node" attr.name="segments" attr.type="string"/>
+<key id="trunks" for="node" attr.name="trunks" attr.type="int"/>
+<key id="agents" for="node" attr.name="agents" attr.type="int"/>
 <key id="x" for="node" attr.name="x" attr.type="double"/>
 <key id="y" for="node" attr.name="y" attr.type="double"/>
 <key id="type" for="node" attr.name="type" attr.type="string"/>
@@ -11,6 +13,8 @@
   <data key="type">PSAP</data>
   <data key="y">47.27281192700005</data>
   <data key="x">-122.31477654167</data>
+  <data key="agents">6</data>
+  <data key="trunks">16</data>
 </node>
 <node id="1">
   <data key="objectID">PSAP10@kingcounty.gov</data>
@@ -18,6 +22,8 @@
   <data key="type">PSAP</data>
   <data key="y">47.437151981000056</data>
   <data key="x">-121.99160162650455</data>
+  <data key="agents">4</data>
+  <data key="trunks">12</data>
 </node>
 <node id="2">
   <data key="objectID">PSAP100@kingcounty.gov</data>
@@ -25,6 +31,8 @@
   <data key="type">PSAP</data>
   <data key="y">47.69617694400006</data>
   <data key="x">-122.00703300429709</data>
+  <data key="agents">2</data>
+  <data key="trunks">4</data>
 </node>
 <node id="3">
   <data key="objectID">PSAP101@kingcounty.gov</data>
@@ -32,6 +40,8 @@
   <data key="type">PSAP</data>
   <data key="y">47.75532571550005</data>
   <data key="x">-122.28534596346347</data>
+  <data key="agents">2</data>
+  <data key="trunks">4</data>
 </node>
 <node id="4">
   <data key="objectID">PSAP102@kingcounty.gov</data>
@@ -39,6 +49,8 @@
   <data key="type">PSAP</data>
   <data key="y">47.58040369650007</data>
   <data key="x">-122.17507291972626</data>
+  <data key="agents">2</data>
+  <data key="trunks">4</data>
 </node>
 <node id="5">
   <data key="objectID">PSAP117@kingcounty.gov</data>
@@ -46,6 +58,8 @@
   <data key="type">PSAP</data>
   <data key="y">47.65406326650006</data>
   <data key="x">-122.31252830317835</data>
+  <data key="agents">2</data>
+  <data key="trunks">4</data>
 </node>
 <node id="6">
   <data key="objectID">PSAP119@kingcounty.gov</data>
@@ -53,6 +67,8 @@
   <data key="type">PSAP</data>
   <data key="y">47.358638173500054</data>
   <data key="x">-122.31679305909984</data>
+  <data key="agents">2</data>
+  <data key="trunks">4</data>
 </node>
 <node id="7">
   <data key="objectID">PSAP121@kingcounty.gov</data>
@@ -60,6 +76,8 @@
   <data key="type">PSAP</data>
   <data key="y">47.361644872000056</data>
   <data key="x">-122.0056220556865</data>
+  <data key="agents">2</data>
+  <data key="trunks">4</data>
 </node>
 <node id="8">
   <data key="objectID">PSAP224@kingcounty.gov</data>
@@ -67,6 +85,8 @@
   <data key="type">PSAP</data>
   <data key="y">47.19371531400006</data>
   <data key="x">-121.95966959954052</data>
+  <data key="agents">2</data>
+  <data key="trunks">4</data>
 </node>
 <node id="9">
   <data key="objectID">PSAP76@kingcounty.gov</data>
@@ -74,6 +94,8 @@
   <data key="type">PSAP</data>
   <data key="y">47.463509103000035</data>
   <data key="x">-122.28979642275718</data>
+  <data key="agents">2</data>
+  <data key="trunks">4</data>
 </node>
 <node id="10">
   <data key="objectID">PSAP78@kingcounty.gov</data>
@@ -81,6 +103,8 @@
   <data key="type">PSAP</data>
   <data key="y">47.66837057700005</data>
   <data key="x">-122.10841188764039</data>
+  <data key="agents">2</data>
+  <data key="trunks">4</data>
 </node>
 <node id="11">
   <data key="objectID">EMS104@kingcounty.gov</data>
@@ -88,6 +112,8 @@
   <data key="type">EMS</data>
   <data key="y">47.65406326650006</data>
   <data key="x">-122.31252830317835</data>
+  <data key="agents">6</data>
+  <data key="trunks">7</data>
 </node>
 <node id="12">
   <data key="objectID">EMS108@kingcounty.gov</data>
@@ -95,6 +121,8 @@
   <data key="type">EMS</data>
   <data key="y">47.49060010750006</data>
   <data key="x">-122.33014092928096</data>
+  <data key="agents">5</data>
+  <data key="trunks">6</data>
 </node>
 <node id="13">
   <data key="objectID">EMS109@kingcounty.gov</data>
@@ -102,6 +130,8 @@
   <data key="type">EMS</data>
   <data key="y">47.66211792750005</data>
   <data key="x">-122.30159052150982</data>
+  <data key="agents">8</data>
+  <data key="trunks">10</data>
 </node>
 <node id="14">
   <data key="objectID">EMS114@kingcounty.gov</data>
@@ -109,6 +139,8 @@
   <data key="type">EMS</data>
   <data key="y">47.65513045550006</data>
   <data key="x">-122.31989210667598</data>
+  <data key="agents">6</data>
+  <data key="trunks">7</data>
 </node>
 <node id="15">
   <data key="objectID">EMS119@kingcounty.gov</data>
@@ -116,6 +148,8 @@
   <data key="type">EMS</data>
   <data key="y">47.63516195100004</data>
   <data key="x">-122.37675567211079</data>
+  <data key="agents">11</data>
+  <data key="trunks">13</data>
 </node>
 <node id="16">
   <data key="objectID">EMS124@kingcounty.gov</data>
@@ -123,6 +157,8 @@
   <data key="type">EMS</data>
   <data key="y">47.634090694000065</data>
   <data key="x">-122.37675123063505</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="17">
   <data key="objectID">EMS126@kingcounty.gov</data>
@@ -130,6 +166,8 @@
   <data key="type">EMS</data>
   <data key="y">47.660350504000064</data>
   <data key="x">-122.31603526054815</data>
+  <data key="agents">6</data>
+  <data key="trunks">7</data>
 </node>
 <node id="18">
   <data key="objectID">EMS128@kingcounty.gov</data>
@@ -137,6 +175,8 @@
   <data key="type">EMS</data>
   <data key="y">47.658464835000046</data>
   <data key="x">-122.31832007441935</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="19">
   <data key="objectID">EMS169@kingcounty.gov</data>
@@ -144,6 +184,8 @@
   <data key="type">EMS</data>
   <data key="y">47.68935662550004</data>
   <data key="x">-122.3336947827485</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="20">
   <data key="objectID">EMS170@kingcounty.gov</data>
@@ -151,6 +193,8 @@
   <data key="type">EMS</data>
   <data key="y">47.65489389000007</data>
   <data key="x">-122.30797587047482</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="21">
   <data key="objectID">EMS172@kingcounty.gov</data>
@@ -158,6 +202,8 @@
   <data key="type">EMS</data>
   <data key="y">47.47612527600006</data>
   <data key="x">-122.27211502823687</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="22">
   <data key="objectID">EMS215@kingcounty.gov</data>
@@ -165,6 +211,8 @@
   <data key="type">EMS</data>
   <data key="y">47.57300213150006</data>
   <data key="x">-122.35453526652114</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="23">
   <data key="objectID">EMS216@kingcounty.gov</data>
@@ -172,6 +220,8 @@
   <data key="type">EMS</data>
   <data key="y">47.57249923550003</data>
   <data key="x">-122.3537809053555</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="24">
   <data key="objectID">EMS217@kingcounty.gov</data>
@@ -179,6 +229,8 @@
   <data key="type">EMS</data>
   <data key="y">47.57205088900005</data>
   <data key="x">-122.35615139017827</data>
+  <data key="agents">13</data>
+  <data key="trunks">16</data>
 </node>
 <node id="25">
   <data key="objectID">EMS218@kingcounty.gov</data>
@@ -186,6 +238,8 @@
   <data key="type">EMS</data>
   <data key="y">47.68210616850004</data>
   <data key="x">-122.40657165554873</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="26">
   <data key="objectID">EMS219@kingcounty.gov</data>
@@ -193,6 +247,8 @@
   <data key="type">EMS</data>
   <data key="y">47.65380082300007</data>
   <data key="x">-122.37930546916499</data>
+  <data key="agents">13</data>
+  <data key="trunks">16</data>
 </node>
 <node id="27">
   <data key="objectID">EMS222@kingcounty.gov</data>
@@ -200,6 +256,8 @@
   <data key="type">EMS</data>
   <data key="y">47.52627830000006</data>
   <data key="x">-122.31120114707798</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="28">
   <data key="objectID">EMS238@kingcounty.gov</data>
@@ -207,6 +265,8 @@
   <data key="type">EMS</data>
   <data key="y">47.54462991950007</data>
   <data key="x">-122.34143318484746</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="29">
   <data key="objectID">EMS239@kingcounty.gov</data>
@@ -214,6 +274,8 @@
   <data key="type">EMS</data>
   <data key="y">47.611059376500066</data>
   <data key="x">-122.34746442111881</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="30">
   <data key="objectID">EMS240@kingcounty.gov</data>
@@ -221,6 +283,8 @@
   <data key="type">EMS</data>
   <data key="y">47.61112187500004</data>
   <data key="x">-122.3491532133011</data>
+  <data key="agents">8</data>
+  <data key="trunks">10</data>
 </node>
 <node id="31">
   <data key="objectID">EMS241@kingcounty.gov</data>
@@ -228,6 +292,8 @@
   <data key="type">EMS</data>
   <data key="y">47.634212479500036</data>
   <data key="x">-122.38412707833021</data>
+  <data key="agents">5</data>
+  <data key="trunks">6</data>
 </node>
 <node id="32">
   <data key="objectID">EMS243@kingcounty.gov</data>
@@ -235,6 +301,8 @@
   <data key="type">EMS</data>
   <data key="y">47.625266066500046</data>
   <data key="x">-122.36992974749485</data>
+  <data key="agents">14</data>
+  <data key="trunks">17</data>
 </node>
 <node id="33">
   <data key="objectID">EMS244@kingcounty.gov</data>
@@ -242,6 +310,8 @@
   <data key="type">EMS</data>
   <data key="y">47.62077796600005</data>
   <data key="x">-122.36338512541633</data>
+  <data key="agents">8</data>
+  <data key="trunks">10</data>
 </node>
 <node id="34">
   <data key="objectID">EMS245@kingcounty.gov</data>
@@ -249,6 +319,8 @@
   <data key="type">EMS</data>
   <data key="y">47.58580383000006</data>
   <data key="x">-122.34610191329722</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="35">
   <data key="objectID">EMS246@kingcounty.gov</data>
@@ -256,6 +328,8 @@
   <data key="type">EMS</data>
   <data key="y">47.57343697950003</data>
   <data key="x">-122.33860795590529</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="36">
   <data key="objectID">EMS247@kingcounty.gov</data>
@@ -263,6 +337,8 @@
   <data key="type">EMS</data>
   <data key="y">47.573976508000044</data>
   <data key="x">-122.3386675257309</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="37">
   <data key="objectID">EMS249@kingcounty.gov</data>
@@ -270,6 +346,8 @@
   <data key="type">EMS</data>
   <data key="y">47.55853324550006</data>
   <data key="x">-122.34854266632951</data>
+  <data key="agents">11</data>
+  <data key="trunks">13</data>
 </node>
 <node id="38">
   <data key="objectID">EMS250@kingcounty.gov</data>
@@ -277,6 +355,8 @@
   <data key="type">EMS</data>
   <data key="y">47.662991002500036</data>
   <data key="x">-122.3916091942244</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="39">
   <data key="objectID">EMS256@kingcounty.gov</data>
@@ -284,6 +364,8 @@
   <data key="type">EMS</data>
   <data key="y">47.53573892900005</data>
   <data key="x">-122.30640112443379</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="40">
   <data key="objectID">EMS258@kingcounty.gov</data>
@@ -291,6 +373,8 @@
   <data key="type">EMS</data>
   <data key="y">47.566431788000045</data>
   <data key="x">-122.34520465646258</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="41">
   <data key="objectID">EMS262@kingcounty.gov</data>
@@ -298,6 +382,8 @@
   <data key="type">EMS</data>
   <data key="y">47.65772517350004</data>
   <data key="x">-122.3798151048806</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="42">
   <data key="objectID">EMS277@kingcounty.gov</data>
@@ -305,6 +391,8 @@
   <data key="type">EMS</data>
   <data key="y">47.45401266200005</data>
   <data key="x">-122.39276015970226</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="43">
   <data key="objectID">EMS281@kingcounty.gov</data>
@@ -312,6 +400,8 @@
   <data key="type">EMS</data>
   <data key="y">47.66149877400005</data>
   <data key="x">-122.3830301351156</data>
+  <data key="agents">8</data>
+  <data key="trunks">10</data>
 </node>
 <node id="44">
   <data key="objectID">EMS282@kingcounty.gov</data>
@@ -319,6 +409,8 @@
   <data key="type">EMS</data>
   <data key="y">47.64025017600005</data>
   <data key="x">-122.33549658837131</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="45">
   <data key="objectID">EMS288@kingcounty.gov</data>
@@ -326,6 +418,8 @@
   <data key="type">EMS</data>
   <data key="y">47.51005524750005</data>
   <data key="x">-122.22648943750005</data>
+  <data key="agents">7</data>
+  <data key="trunks">8</data>
 </node>
 <node id="46">
   <data key="objectID">EMS308@kingcounty.gov</data>
@@ -333,6 +427,8 @@
   <data key="type">EMS</data>
   <data key="y">47.42559755000005</data>
   <data key="x">-122.4114313889884</data>
+  <data key="agents">6</data>
+  <data key="trunks">7</data>
 </node>
 <node id="47">
   <data key="objectID">EMS317@kingcounty.gov</data>
@@ -340,6 +436,8 @@
   <data key="type">EMS</data>
   <data key="y">47.66043903850007</data>
   <data key="x">-122.31693681477202</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="48">
   <data key="objectID">EMS318@kingcounty.gov</data>
@@ -347,6 +445,8 @@
   <data key="type">EMS</data>
   <data key="y">47.65761692700005</data>
   <data key="x">-122.31242362035039</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="49">
   <data key="objectID">EMS319@kingcounty.gov</data>
@@ -354,6 +454,8 @@
   <data key="type">EMS</data>
   <data key="y">47.65717467250005</data>
   <data key="x">-122.31612502859338</data>
+  <data key="agents">11</data>
+  <data key="trunks">13</data>
 </node>
 <node id="50">
   <data key="objectID">EMS320@kingcounty.gov</data>
@@ -361,6 +463,8 @@
   <data key="type">EMS</data>
   <data key="y">47.65663134250005</data>
   <data key="x">-122.31762721901492</data>
+  <data key="agents">8</data>
+  <data key="trunks">10</data>
 </node>
 <node id="51">
   <data key="objectID">EMS322@kingcounty.gov</data>
@@ -368,6 +472,8 @@
   <data key="type">EMS</data>
   <data key="y">47.490387813500064</data>
   <data key="x">-122.37362139961326</data>
+  <data key="agents">7</data>
+  <data key="trunks">8</data>
 </node>
 <node id="52">
   <data key="objectID">EMS330@kingcounty.gov</data>
@@ -375,6 +481,8 @@
   <data key="type">EMS</data>
   <data key="y">47.550106048500055</data>
   <data key="x">-122.24589476151566</data>
+  <data key="agents">5</data>
+  <data key="trunks">6</data>
 </node>
 <node id="53">
   <data key="objectID">EMS331@kingcounty.gov</data>
@@ -382,6 +490,8 @@
   <data key="type">EMS</data>
   <data key="y">47.66260852150006</data>
   <data key="x">-122.25334294630589</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="54">
   <data key="objectID">EMS339@kingcounty.gov</data>
@@ -389,6 +499,8 @@
   <data key="type">EMS</data>
   <data key="y">47.53381567000005</data>
   <data key="x">-122.31146093468112</data>
+  <data key="agents">14</data>
+  <data key="trunks">17</data>
 </node>
 <node id="55">
   <data key="objectID">EMS34@kingcounty.gov</data>
@@ -396,6 +508,8 @@
   <data key="type">EMS</data>
   <data key="y">47.66542234950006</data>
   <data key="x">-122.29879733505709</data>
+  <data key="agents">11</data>
+  <data key="trunks">13</data>
 </node>
 <node id="56">
   <data key="objectID">EMS357@kingcounty.gov</data>
@@ -403,6 +517,8 @@
   <data key="type">EMS</data>
   <data key="y">47.60379872900006</data>
   <data key="x">-122.39271156142489</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="57">
   <data key="objectID">EMS359@kingcounty.gov</data>
@@ -410,6 +526,8 @@
   <data key="type">EMS</data>
   <data key="y">47.755626870500066</data>
   <data key="x">-122.40413908842058</data>
+  <data key="agents">3</data>
+  <data key="trunks">3</data>
 </node>
 <node id="58">
   <data key="objectID">EMS371@kingcounty.gov</data>
@@ -417,6 +535,8 @@
   <data key="type">EMS</data>
   <data key="y">47.51567065200007</data>
   <data key="x">-122.31671871371867</data>
+  <data key="agents">5</data>
+  <data key="trunks">6</data>
 </node>
 <node id="59">
   <data key="objectID">EMS372@kingcounty.gov</data>
@@ -424,6 +544,8 @@
   <data key="type">EMS</data>
   <data key="y">47.57404445550003</data>
   <data key="x">-122.33747497139274</data>
+  <data key="agents">8</data>
+  <data key="trunks">10</data>
 </node>
 <node id="60">
   <data key="objectID">EMS373@kingcounty.gov</data>
@@ -431,6 +553,8 @@
   <data key="type">EMS</data>
   <data key="y">47.57865123550005</data>
   <data key="x">-122.3669310499077</data>
+  <data key="agents">7</data>
+  <data key="trunks">8</data>
 </node>
 <node id="61">
   <data key="objectID">EMS381@kingcounty.gov</data>
@@ -438,6 +562,8 @@
   <data key="type">EMS</data>
   <data key="y">47.75585516250004</data>
   <data key="x">-122.34121845244795</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="62">
   <data key="objectID">EMS391@kingcounty.gov</data>
@@ -445,6 +571,8 @@
   <data key="type">EMS</data>
   <data key="y">47.49411856000006</data>
   <data key="x">-122.24375211184991</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="63">
   <data key="objectID">EMS396@kingcounty.gov</data>
@@ -452,6 +580,8 @@
   <data key="type">EMS</data>
   <data key="y">47.59180395450005</data>
   <data key="x">-122.31145704849996</data>
+  <data key="agents">8</data>
+  <data key="trunks">10</data>
 </node>
 <node id="64">
   <data key="objectID">EMS414@kingcounty.gov</data>
@@ -459,6 +589,8 @@
   <data key="type">EMS</data>
   <data key="y">47.58365055200005</data>
   <data key="x">-122.313783772299</data>
+  <data key="agents">7</data>
+  <data key="trunks">8</data>
 </node>
 <node id="65">
   <data key="objectID">EMS52@kingcounty.gov</data>
@@ -466,6 +598,8 @@
   <data key="type">EMS</data>
   <data key="y">47.52251699100006</data>
   <data key="x">-122.29663899521364</data>
+  <data key="agents">6</data>
+  <data key="trunks">7</data>
 </node>
 <node id="66">
   <data key="objectID">EMS62@kingcounty.gov</data>
@@ -473,6 +607,8 @@
   <data key="type">EMS</data>
   <data key="y">47.65549481350007</data>
   <data key="x">-122.31296536692051</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="67">
   <data key="objectID">EMS63@kingcounty.gov</data>
@@ -480,6 +616,8 @@
   <data key="type">EMS</data>
   <data key="y">47.61389857800006</data>
   <data key="x">-122.35463966428084</data>
+  <data key="agents">6</data>
+  <data key="trunks">7</data>
 </node>
 <node id="68">
   <data key="objectID">EMS64@kingcounty.gov</data>
@@ -487,6 +625,8 @@
   <data key="type">EMS</data>
   <data key="y">47.59300609250005</data>
   <data key="x">-122.32376122798277</data>
+  <data key="agents">7</data>
+  <data key="trunks">8</data>
 </node>
 <node id="69">
   <data key="objectID">EMS65@kingcounty.gov</data>
@@ -494,6 +634,8 @@
   <data key="type">EMS</data>
   <data key="y">47.661438916000066</data>
   <data key="x">-122.30515021372494</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="70">
   <data key="objectID">EMS79@kingcounty.gov</data>
@@ -501,6 +643,8 @@
   <data key="type">EMS</data>
   <data key="y">47.66052444850007</data>
   <data key="x">-122.31489415820312</data>
+  <data key="agents">8</data>
+  <data key="trunks">10</data>
 </node>
 <node id="71">
   <data key="objectID">EMS83@kingcounty.gov</data>
@@ -508,6 +652,8 @@
   <data key="type">EMS</data>
   <data key="y">47.66069656950006</data>
   <data key="x">-122.31394889711899</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="72">
   <data key="objectID">Law104@kingcounty.gov</data>
@@ -515,6 +661,8 @@
   <data key="type">LAW</data>
   <data key="y">47.65406326650006</data>
   <data key="x">-122.31252830317835</data>
+  <data key="agents">13</data>
+  <data key="trunks">16</data>
 </node>
 <node id="73">
   <data key="objectID">Law108@kingcounty.gov</data>
@@ -522,6 +670,8 @@
   <data key="type">LAW</data>
   <data key="y">47.49060010750006</data>
   <data key="x">-122.33014092928096</data>
+  <data key="agents">13</data>
+  <data key="trunks">16</data>
 </node>
 <node id="74">
   <data key="objectID">Law109@kingcounty.gov</data>
@@ -529,6 +679,8 @@
   <data key="type">LAW</data>
   <data key="y">47.66211792750005</data>
   <data key="x">-122.30159052150982</data>
+  <data key="agents">3</data>
+  <data key="trunks">3</data>
 </node>
 <node id="75">
   <data key="objectID">Law114@kingcounty.gov</data>
@@ -536,6 +688,8 @@
   <data key="type">LAW</data>
   <data key="y">47.65513045550006</data>
   <data key="x">-122.31989210667598</data>
+  <data key="agents">13</data>
+  <data key="trunks">16</data>
 </node>
 <node id="76">
   <data key="objectID">Law119@kingcounty.gov</data>
@@ -543,6 +697,8 @@
   <data key="type">LAW</data>
   <data key="y">47.63516195100004</data>
   <data key="x">-122.37675567211079</data>
+  <data key="agents">8</data>
+  <data key="trunks">10</data>
 </node>
 <node id="77">
   <data key="objectID">Law124@kingcounty.gov</data>
@@ -550,6 +706,8 @@
   <data key="type">LAW</data>
   <data key="y">47.634090694000065</data>
   <data key="x">-122.37675123063505</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="78">
   <data key="objectID">Law126@kingcounty.gov</data>
@@ -557,6 +715,8 @@
   <data key="type">LAW</data>
   <data key="y">47.660350504000064</data>
   <data key="x">-122.31603526054815</data>
+  <data key="agents">14</data>
+  <data key="trunks">17</data>
 </node>
 <node id="79">
   <data key="objectID">Law128@kingcounty.gov</data>
@@ -564,6 +724,8 @@
   <data key="type">LAW</data>
   <data key="y">47.658464835000046</data>
   <data key="x">-122.31832007441935</data>
+  <data key="agents">11</data>
+  <data key="trunks">13</data>
 </node>
 <node id="80">
   <data key="objectID">Law169@kingcounty.gov</data>
@@ -571,6 +733,8 @@
   <data key="type">LAW</data>
   <data key="y">47.68935662550004</data>
   <data key="x">-122.3336947827485</data>
+  <data key="agents">5</data>
+  <data key="trunks">6</data>
 </node>
 <node id="81">
   <data key="objectID">Law170@kingcounty.gov</data>
@@ -578,6 +742,8 @@
   <data key="type">LAW</data>
   <data key="y">47.65489389000007</data>
   <data key="x">-122.30797587047482</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="82">
   <data key="objectID">Law172@kingcounty.gov</data>
@@ -585,6 +751,8 @@
   <data key="type">LAW</data>
   <data key="y">47.47612527600006</data>
   <data key="x">-122.27211502823687</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="83">
   <data key="objectID">Law215@kingcounty.gov</data>
@@ -592,6 +760,8 @@
   <data key="type">LAW</data>
   <data key="y">47.57300213150006</data>
   <data key="x">-122.35453526652114</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="84">
   <data key="objectID">Law216@kingcounty.gov</data>
@@ -599,6 +769,8 @@
   <data key="type">LAW</data>
   <data key="y">47.57249923550003</data>
   <data key="x">-122.3537809053555</data>
+  <data key="agents">6</data>
+  <data key="trunks">7</data>
 </node>
 <node id="85">
   <data key="objectID">Law217@kingcounty.gov</data>
@@ -606,6 +778,8 @@
   <data key="type">LAW</data>
   <data key="y">47.57205088900005</data>
   <data key="x">-122.35615139017827</data>
+  <data key="agents">13</data>
+  <data key="trunks">16</data>
 </node>
 <node id="86">
   <data key="objectID">Law218@kingcounty.gov</data>
@@ -613,6 +787,8 @@
   <data key="type">LAW</data>
   <data key="y">47.68210616850004</data>
   <data key="x">-122.40657165554873</data>
+  <data key="agents">3</data>
+  <data key="trunks">3</data>
 </node>
 <node id="87">
   <data key="objectID">Law219@kingcounty.gov</data>
@@ -620,6 +796,8 @@
   <data key="type">LAW</data>
   <data key="y">47.65380082300007</data>
   <data key="x">-122.37930546916499</data>
+  <data key="agents">14</data>
+  <data key="trunks">17</data>
 </node>
 <node id="88">
   <data key="objectID">Law222@kingcounty.gov</data>
@@ -627,6 +805,8 @@
   <data key="type">LAW</data>
   <data key="y">47.52627830000006</data>
   <data key="x">-122.31120114707798</data>
+  <data key="agents">11</data>
+  <data key="trunks">13</data>
 </node>
 <node id="89">
   <data key="objectID">Law238@kingcounty.gov</data>
@@ -634,6 +814,8 @@
   <data key="type">LAW</data>
   <data key="y">47.54462991950007</data>
   <data key="x">-122.34143318484746</data>
+  <data key="agents">7</data>
+  <data key="trunks">8</data>
 </node>
 <node id="90">
   <data key="objectID">Law239@kingcounty.gov</data>
@@ -641,6 +823,8 @@
   <data key="type">LAW</data>
   <data key="y">47.611059376500066</data>
   <data key="x">-122.34746442111881</data>
+  <data key="agents">3</data>
+  <data key="trunks">3</data>
 </node>
 <node id="91">
   <data key="objectID">Law240@kingcounty.gov</data>
@@ -648,6 +832,8 @@
   <data key="type">LAW</data>
   <data key="y">47.61112187500004</data>
   <data key="x">-122.3491532133011</data>
+  <data key="agents">6</data>
+  <data key="trunks">7</data>
 </node>
 <node id="92">
   <data key="objectID">Law241@kingcounty.gov</data>
@@ -655,6 +841,8 @@
   <data key="type">LAW</data>
   <data key="y">47.634212479500036</data>
   <data key="x">-122.38412707833021</data>
+  <data key="agents">6</data>
+  <data key="trunks">7</data>
 </node>
 <node id="93">
   <data key="objectID">Law243@kingcounty.gov</data>
@@ -662,6 +850,8 @@
   <data key="type">LAW</data>
   <data key="y">47.625266066500046</data>
   <data key="x">-122.36992974749485</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="94">
   <data key="objectID">Law244@kingcounty.gov</data>
@@ -669,6 +859,8 @@
   <data key="type">LAW</data>
   <data key="y">47.62077796600005</data>
   <data key="x">-122.36338512541633</data>
+  <data key="agents">14</data>
+  <data key="trunks">17</data>
 </node>
 <node id="95">
   <data key="objectID">Law245@kingcounty.gov</data>
@@ -676,6 +868,8 @@
   <data key="type">LAW</data>
   <data key="y">47.58580383000006</data>
   <data key="x">-122.34610191329722</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="96">
   <data key="objectID">Law246@kingcounty.gov</data>
@@ -683,6 +877,8 @@
   <data key="type">LAW</data>
   <data key="y">47.57343697950003</data>
   <data key="x">-122.33860795590529</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="97">
   <data key="objectID">Law247@kingcounty.gov</data>
@@ -690,6 +886,8 @@
   <data key="type">LAW</data>
   <data key="y">47.573976508000044</data>
   <data key="x">-122.3386675257309</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="98">
   <data key="objectID">Law249@kingcounty.gov</data>
@@ -697,6 +895,8 @@
   <data key="type">LAW</data>
   <data key="y">47.55853324550006</data>
   <data key="x">-122.34854266632951</data>
+  <data key="agents">14</data>
+  <data key="trunks">17</data>
 </node>
 <node id="99">
   <data key="objectID">Law250@kingcounty.gov</data>
@@ -704,6 +904,8 @@
   <data key="type">LAW</data>
   <data key="y">47.662991002500036</data>
   <data key="x">-122.3916091942244</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="100">
   <data key="objectID">Law256@kingcounty.gov</data>
@@ -711,6 +913,8 @@
   <data key="type">LAW</data>
   <data key="y">47.53573892900005</data>
   <data key="x">-122.30640112443379</data>
+  <data key="agents">13</data>
+  <data key="trunks">16</data>
 </node>
 <node id="101">
   <data key="objectID">Law258@kingcounty.gov</data>
@@ -718,6 +922,8 @@
   <data key="type">LAW</data>
   <data key="y">47.566431788000045</data>
   <data key="x">-122.34520465646258</data>
+  <data key="agents">8</data>
+  <data key="trunks">10</data>
 </node>
 <node id="102">
   <data key="objectID">Law262@kingcounty.gov</data>
@@ -725,6 +931,8 @@
   <data key="type">LAW</data>
   <data key="y">47.65772517350004</data>
   <data key="x">-122.3798151048806</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="103">
   <data key="objectID">Law277@kingcounty.gov</data>
@@ -732,6 +940,8 @@
   <data key="type">LAW</data>
   <data key="y">47.45401266200005</data>
   <data key="x">-122.39276015970226</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="104">
   <data key="objectID">Law281@kingcounty.gov</data>
@@ -739,6 +949,8 @@
   <data key="type">LAW</data>
   <data key="y">47.66149877400005</data>
   <data key="x">-122.3830301351156</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="105">
   <data key="objectID">Law282@kingcounty.gov</data>
@@ -746,6 +958,8 @@
   <data key="type">LAW</data>
   <data key="y">47.64025017600005</data>
   <data key="x">-122.33549658837131</data>
+  <data key="agents">7</data>
+  <data key="trunks">8</data>
 </node>
 <node id="106">
   <data key="objectID">Law288@kingcounty.gov</data>
@@ -753,6 +967,8 @@
   <data key="type">LAW</data>
   <data key="y">47.51005524750005</data>
   <data key="x">-122.22648943750005</data>
+  <data key="agents">3</data>
+  <data key="trunks">3</data>
 </node>
 <node id="107">
   <data key="objectID">Law308@kingcounty.gov</data>
@@ -760,6 +976,8 @@
   <data key="type">LAW</data>
   <data key="y">47.42559755000005</data>
   <data key="x">-122.4114313889884</data>
+  <data key="agents">14</data>
+  <data key="trunks">17</data>
 </node>
 <node id="108">
   <data key="objectID">Law317@kingcounty.gov</data>
@@ -767,6 +985,8 @@
   <data key="type">LAW</data>
   <data key="y">47.66043903850007</data>
   <data key="x">-122.31693681477202</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="109">
   <data key="objectID">Law318@kingcounty.gov</data>
@@ -774,6 +994,8 @@
   <data key="type">LAW</data>
   <data key="y">47.65761692700005</data>
   <data key="x">-122.31242362035039</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="110">
   <data key="objectID">Law319@kingcounty.gov</data>
@@ -781,6 +1003,8 @@
   <data key="type">LAW</data>
   <data key="y">47.65717467250005</data>
   <data key="x">-122.31612502859338</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="111">
   <data key="objectID">Law320@kingcounty.gov</data>
@@ -788,6 +1012,8 @@
   <data key="type">LAW</data>
   <data key="y">47.65663134250005</data>
   <data key="x">-122.31762721901492</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="112">
   <data key="objectID">Law322@kingcounty.gov</data>
@@ -795,6 +1021,8 @@
   <data key="type">LAW</data>
   <data key="y">47.490387813500064</data>
   <data key="x">-122.37362139961326</data>
+  <data key="agents">11</data>
+  <data key="trunks">13</data>
 </node>
 <node id="113">
   <data key="objectID">Law330@kingcounty.gov</data>
@@ -802,6 +1030,8 @@
   <data key="type">LAW</data>
   <data key="y">47.550106048500055</data>
   <data key="x">-122.24589476151566</data>
+  <data key="agents">13</data>
+  <data key="trunks">16</data>
 </node>
 <node id="114">
   <data key="objectID">Law331@kingcounty.gov</data>
@@ -809,6 +1039,8 @@
   <data key="type">LAW</data>
   <data key="y">47.66260852150006</data>
   <data key="x">-122.25334294630589</data>
+  <data key="agents">5</data>
+  <data key="trunks">6</data>
 </node>
 <node id="115">
   <data key="objectID">Law339@kingcounty.gov</data>
@@ -816,6 +1048,8 @@
   <data key="type">LAW</data>
   <data key="y">47.53381567000005</data>
   <data key="x">-122.31146093468112</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="116">
   <data key="objectID">Law34@kingcounty.gov</data>
@@ -823,6 +1057,8 @@
   <data key="type">LAW</data>
   <data key="y">47.66542234950006</data>
   <data key="x">-122.29879733505709</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="117">
   <data key="objectID">Law357@kingcounty.gov</data>
@@ -830,6 +1066,8 @@
   <data key="type">LAW</data>
   <data key="y">47.60379872900006</data>
   <data key="x">-122.39271156142489</data>
+  <data key="agents">14</data>
+  <data key="trunks">17</data>
 </node>
 <node id="118">
   <data key="objectID">Law359@kingcounty.gov</data>
@@ -837,6 +1075,8 @@
   <data key="type">LAW</data>
   <data key="y">47.755626870500066</data>
   <data key="x">-122.40413908842058</data>
+  <data key="agents">3</data>
+  <data key="trunks">3</data>
 </node>
 <node id="119">
   <data key="objectID">Law371@kingcounty.gov</data>
@@ -844,6 +1084,8 @@
   <data key="type">LAW</data>
   <data key="y">47.51567065200007</data>
   <data key="x">-122.31671871371867</data>
+  <data key="agents">3</data>
+  <data key="trunks">3</data>
 </node>
 <node id="120">
   <data key="objectID">Law372@kingcounty.gov</data>
@@ -851,6 +1093,8 @@
   <data key="type">LAW</data>
   <data key="y">47.57404445550003</data>
   <data key="x">-122.33747497139274</data>
+  <data key="agents">11</data>
+  <data key="trunks">13</data>
 </node>
 <node id="121">
   <data key="objectID">Law373@kingcounty.gov</data>
@@ -858,6 +1102,8 @@
   <data key="type">LAW</data>
   <data key="y">47.57865123550005</data>
   <data key="x">-122.3669310499077</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="122">
   <data key="objectID">Law381@kingcounty.gov</data>
@@ -865,6 +1111,8 @@
   <data key="type">LAW</data>
   <data key="y">47.75585516250004</data>
   <data key="x">-122.34121845244795</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="123">
   <data key="objectID">Law391@kingcounty.gov</data>
@@ -872,6 +1120,8 @@
   <data key="type">LAW</data>
   <data key="y">47.49411856000006</data>
   <data key="x">-122.24375211184991</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="124">
   <data key="objectID">Law396@kingcounty.gov</data>
@@ -879,6 +1129,8 @@
   <data key="type">LAW</data>
   <data key="y">47.59180395450005</data>
   <data key="x">-122.31145704849996</data>
+  <data key="agents">13</data>
+  <data key="trunks">16</data>
 </node>
 <node id="125">
   <data key="objectID">Law414@kingcounty.gov</data>
@@ -886,6 +1138,8 @@
   <data key="type">LAW</data>
   <data key="y">47.58365055200005</data>
   <data key="x">-122.313783772299</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="126">
   <data key="objectID">Law52@kingcounty.gov</data>
@@ -893,6 +1147,8 @@
   <data key="type">LAW</data>
   <data key="y">47.52251699100006</data>
   <data key="x">-122.29663899521364</data>
+  <data key="agents">7</data>
+  <data key="trunks">8</data>
 </node>
 <node id="127">
   <data key="objectID">Law62@kingcounty.gov</data>
@@ -900,6 +1156,8 @@
   <data key="type">LAW</data>
   <data key="y">47.65549481350007</data>
   <data key="x">-122.31296536692051</data>
+  <data key="agents">7</data>
+  <data key="trunks">8</data>
 </node>
 <node id="128">
   <data key="objectID">Law63@kingcounty.gov</data>
@@ -907,6 +1165,8 @@
   <data key="type">LAW</data>
   <data key="y">47.61389857800006</data>
   <data key="x">-122.35463966428084</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="129">
   <data key="objectID">Law64@kingcounty.gov</data>
@@ -914,6 +1174,8 @@
   <data key="type">LAW</data>
   <data key="y">47.59300609250005</data>
   <data key="x">-122.32376122798277</data>
+  <data key="agents">5</data>
+  <data key="trunks">6</data>
 </node>
 <node id="130">
   <data key="objectID">Law65@kingcounty.gov</data>
@@ -921,6 +1183,8 @@
   <data key="type">LAW</data>
   <data key="y">47.661438916000066</data>
   <data key="x">-122.30515021372494</data>
+  <data key="agents">5</data>
+  <data key="trunks">6</data>
 </node>
 <node id="131">
   <data key="objectID">Law79@kingcounty.gov</data>
@@ -928,6 +1192,8 @@
   <data key="type">LAW</data>
   <data key="y">47.66052444850007</data>
   <data key="x">-122.31489415820312</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="132">
   <data key="objectID">Law83@kingcounty.gov</data>
@@ -935,6 +1201,8 @@
   <data key="type">LAW</data>
   <data key="y">47.66069656950006</data>
   <data key="x">-122.31394889711899</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="133">
   <data key="objectID">FIRE104@kingcounty.gov</data>
@@ -942,6 +1210,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.65406326650006</data>
   <data key="x">-122.31252830317835</data>
+  <data key="agents">7</data>
+  <data key="trunks">8</data>
 </node>
 <node id="134">
   <data key="objectID">FIRE108@kingcounty.gov</data>
@@ -949,6 +1219,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.49060010750006</data>
   <data key="x">-122.33014092928096</data>
+  <data key="agents">11</data>
+  <data key="trunks">13</data>
 </node>
 <node id="135">
   <data key="objectID">FIRE109@kingcounty.gov</data>
@@ -956,6 +1228,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.66211792750005</data>
   <data key="x">-122.30159052150982</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="136">
   <data key="objectID">FIRE114@kingcounty.gov</data>
@@ -963,6 +1237,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.65513045550006</data>
   <data key="x">-122.31989210667598</data>
+  <data key="agents">13</data>
+  <data key="trunks">16</data>
 </node>
 <node id="137">
   <data key="objectID">FIRE119@kingcounty.gov</data>
@@ -970,6 +1246,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.63516195100004</data>
   <data key="x">-122.37675567211079</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="138">
   <data key="objectID">FIRE124@kingcounty.gov</data>
@@ -977,6 +1255,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.634090694000065</data>
   <data key="x">-122.37675123063505</data>
+  <data key="agents">8</data>
+  <data key="trunks">10</data>
 </node>
 <node id="139">
   <data key="objectID">FIRE126@kingcounty.gov</data>
@@ -984,6 +1264,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.660350504000064</data>
   <data key="x">-122.31603526054815</data>
+  <data key="agents">7</data>
+  <data key="trunks">8</data>
 </node>
 <node id="140">
   <data key="objectID">FIRE128@kingcounty.gov</data>
@@ -991,6 +1273,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.658464835000046</data>
   <data key="x">-122.31832007441935</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="141">
   <data key="objectID">FIRE169@kingcounty.gov</data>
@@ -998,6 +1282,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.68935662550004</data>
   <data key="x">-122.3336947827485</data>
+  <data key="agents">5</data>
+  <data key="trunks">6</data>
 </node>
 <node id="142">
   <data key="objectID">FIRE170@kingcounty.gov</data>
@@ -1005,6 +1291,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.65489389000007</data>
   <data key="x">-122.30797587047482</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="143">
   <data key="objectID">FIRE172@kingcounty.gov</data>
@@ -1012,6 +1300,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.47612527600006</data>
   <data key="x">-122.27211502823687</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="144">
   <data key="objectID">FIRE215@kingcounty.gov</data>
@@ -1019,6 +1309,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.57300213150006</data>
   <data key="x">-122.35453526652114</data>
+  <data key="agents">8</data>
+  <data key="trunks">10</data>
 </node>
 <node id="145">
   <data key="objectID">FIRE216@kingcounty.gov</data>
@@ -1026,6 +1318,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.57249923550003</data>
   <data key="x">-122.3537809053555</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="146">
   <data key="objectID">FIRE217@kingcounty.gov</data>
@@ -1033,6 +1327,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.57205088900005</data>
   <data key="x">-122.35615139017827</data>
+  <data key="agents">6</data>
+  <data key="trunks">7</data>
 </node>
 <node id="147">
   <data key="objectID">FIRE218@kingcounty.gov</data>
@@ -1040,6 +1336,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.68210616850004</data>
   <data key="x">-122.40657165554873</data>
+  <data key="agents">11</data>
+  <data key="trunks">13</data>
 </node>
 <node id="148">
   <data key="objectID">FIRE219@kingcounty.gov</data>
@@ -1047,6 +1345,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.65380082300007</data>
   <data key="x">-122.37930546916499</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="149">
   <data key="objectID">FIRE222@kingcounty.gov</data>
@@ -1054,6 +1354,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.52627830000006</data>
   <data key="x">-122.31120114707798</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="150">
   <data key="objectID">FIRE238@kingcounty.gov</data>
@@ -1061,6 +1363,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.54462991950007</data>
   <data key="x">-122.34143318484746</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="151">
   <data key="objectID">FIRE239@kingcounty.gov</data>
@@ -1068,6 +1372,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.611059376500066</data>
   <data key="x">-122.34746442111881</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="152">
   <data key="objectID">FIRE240@kingcounty.gov</data>
@@ -1075,6 +1381,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.61112187500004</data>
   <data key="x">-122.3491532133011</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="153">
   <data key="objectID">FIRE241@kingcounty.gov</data>
@@ -1082,6 +1390,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.634212479500036</data>
   <data key="x">-122.38412707833021</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="154">
   <data key="objectID">FIRE243@kingcounty.gov</data>
@@ -1089,6 +1399,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.625266066500046</data>
   <data key="x">-122.36992974749485</data>
+  <data key="agents">5</data>
+  <data key="trunks">6</data>
 </node>
 <node id="155">
   <data key="objectID">FIRE244@kingcounty.gov</data>
@@ -1096,6 +1408,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.62077796600005</data>
   <data key="x">-122.36338512541633</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="156">
   <data key="objectID">FIRE245@kingcounty.gov</data>
@@ -1103,6 +1417,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.58580383000006</data>
   <data key="x">-122.34610191329722</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="157">
   <data key="objectID">FIRE246@kingcounty.gov</data>
@@ -1110,6 +1426,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.57343697950003</data>
   <data key="x">-122.33860795590529</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="158">
   <data key="objectID">FIRE247@kingcounty.gov</data>
@@ -1117,6 +1435,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.573976508000044</data>
   <data key="x">-122.3386675257309</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="159">
   <data key="objectID">FIRE249@kingcounty.gov</data>
@@ -1124,6 +1444,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.55853324550006</data>
   <data key="x">-122.34854266632951</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="160">
   <data key="objectID">FIRE250@kingcounty.gov</data>
@@ -1131,6 +1453,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.662991002500036</data>
   <data key="x">-122.3916091942244</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="161">
   <data key="objectID">FIRE256@kingcounty.gov</data>
@@ -1138,6 +1462,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.53573892900005</data>
   <data key="x">-122.30640112443379</data>
+  <data key="agents">12</data>
+  <data key="trunks">15</data>
 </node>
 <node id="162">
   <data key="objectID">FIRE258@kingcounty.gov</data>
@@ -1145,6 +1471,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.566431788000045</data>
   <data key="x">-122.34520465646258</data>
+  <data key="agents">13</data>
+  <data key="trunks">16</data>
 </node>
 <node id="163">
   <data key="objectID">FIRE262@kingcounty.gov</data>
@@ -1152,6 +1480,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.65772517350004</data>
   <data key="x">-122.3798151048806</data>
+  <data key="agents">7</data>
+  <data key="trunks">8</data>
 </node>
 <node id="164">
   <data key="objectID">FIRE277@kingcounty.gov</data>
@@ -1159,6 +1489,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.45401266200005</data>
   <data key="x">-122.39276015970226</data>
+  <data key="agents">6</data>
+  <data key="trunks">7</data>
 </node>
 <node id="165">
   <data key="objectID">FIRE281@kingcounty.gov</data>
@@ -1166,6 +1498,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.66149877400005</data>
   <data key="x">-122.3830301351156</data>
+  <data key="agents">5</data>
+  <data key="trunks">6</data>
 </node>
 <node id="166">
   <data key="objectID">FIRE282@kingcounty.gov</data>
@@ -1173,6 +1507,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.64025017600005</data>
   <data key="x">-122.33549658837131</data>
+  <data key="agents">8</data>
+  <data key="trunks">10</data>
 </node>
 <node id="167">
   <data key="objectID">FIRE288@kingcounty.gov</data>
@@ -1180,6 +1516,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.51005524750005</data>
   <data key="x">-122.22648943750005</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="168">
   <data key="objectID">FIRE308@kingcounty.gov</data>
@@ -1187,6 +1525,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.42559755000005</data>
   <data key="x">-122.4114313889884</data>
+  <data key="agents">14</data>
+  <data key="trunks">17</data>
 </node>
 <node id="169">
   <data key="objectID">FIRE317@kingcounty.gov</data>
@@ -1194,6 +1534,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.66043903850007</data>
   <data key="x">-122.31693681477202</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="170">
   <data key="objectID">FIRE318@kingcounty.gov</data>
@@ -1201,6 +1543,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.65761692700005</data>
   <data key="x">-122.31242362035039</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="171">
   <data key="objectID">FIRE319@kingcounty.gov</data>
@@ -1208,6 +1552,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.65717467250005</data>
   <data key="x">-122.31612502859338</data>
+  <data key="agents">5</data>
+  <data key="trunks">6</data>
 </node>
 <node id="172">
   <data key="objectID">FIRE320@kingcounty.gov</data>
@@ -1215,6 +1561,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.65663134250005</data>
   <data key="x">-122.31762721901492</data>
+  <data key="agents">3</data>
+  <data key="trunks">3</data>
 </node>
 <node id="173">
   <data key="objectID">FIRE322@kingcounty.gov</data>
@@ -1222,6 +1570,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.490387813500064</data>
   <data key="x">-122.37362139961326</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="174">
   <data key="objectID">FIRE330@kingcounty.gov</data>
@@ -1229,6 +1579,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.550106048500055</data>
   <data key="x">-122.24589476151566</data>
+  <data key="agents">6</data>
+  <data key="trunks">7</data>
 </node>
 <node id="175">
   <data key="objectID">FIRE331@kingcounty.gov</data>
@@ -1236,6 +1588,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.66260852150006</data>
   <data key="x">-122.25334294630589</data>
+  <data key="agents">10</data>
+  <data key="trunks">12</data>
 </node>
 <node id="176">
   <data key="objectID">FIRE339@kingcounty.gov</data>
@@ -1243,6 +1597,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.53381567000005</data>
   <data key="x">-122.31146093468112</data>
+  <data key="agents">7</data>
+  <data key="trunks">8</data>
 </node>
 <node id="177">
   <data key="objectID">FIRE34@kingcounty.gov</data>
@@ -1250,6 +1606,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.66542234950006</data>
   <data key="x">-122.29879733505709</data>
+  <data key="agents">5</data>
+  <data key="trunks">6</data>
 </node>
 <node id="178">
   <data key="objectID">FIRE357@kingcounty.gov</data>
@@ -1257,6 +1615,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.60379872900006</data>
   <data key="x">-122.39271156142489</data>
+  <data key="agents">11</data>
+  <data key="trunks">13</data>
 </node>
 <node id="179">
   <data key="objectID">FIRE359@kingcounty.gov</data>
@@ -1264,6 +1624,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.755626870500066</data>
   <data key="x">-122.40413908842058</data>
+  <data key="agents">11</data>
+  <data key="trunks">13</data>
 </node>
 <node id="180">
   <data key="objectID">FIRE371@kingcounty.gov</data>
@@ -1271,6 +1633,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.51567065200007</data>
   <data key="x">-122.31671871371867</data>
+  <data key="agents">15</data>
+  <data key="trunks">18</data>
 </node>
 <node id="181">
   <data key="objectID">FIRE372@kingcounty.gov</data>
@@ -1278,6 +1642,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.57404445550003</data>
   <data key="x">-122.33747497139274</data>
+  <data key="agents">6</data>
+  <data key="trunks">7</data>
 </node>
 <node id="182">
   <data key="objectID">FIRE373@kingcounty.gov</data>
@@ -1285,6 +1651,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.57865123550005</data>
   <data key="x">-122.3669310499077</data>
+  <data key="agents">7</data>
+  <data key="trunks">8</data>
 </node>
 <node id="183">
   <data key="objectID">FIRE381@kingcounty.gov</data>
@@ -1292,6 +1660,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.75585516250004</data>
   <data key="x">-122.34121845244795</data>
+  <data key="agents">6</data>
+  <data key="trunks">7</data>
 </node>
 <node id="184">
   <data key="objectID">FIRE391@kingcounty.gov</data>
@@ -1299,6 +1669,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.49411856000006</data>
   <data key="x">-122.24375211184991</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="185">
   <data key="objectID">FIRE396@kingcounty.gov</data>
@@ -1306,6 +1678,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.59180395450005</data>
   <data key="x">-122.31145704849996</data>
+  <data key="agents">14</data>
+  <data key="trunks">17</data>
 </node>
 <node id="186">
   <data key="objectID">FIRE414@kingcounty.gov</data>
@@ -1313,6 +1687,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.58365055200005</data>
   <data key="x">-122.313783772299</data>
+  <data key="agents">14</data>
+  <data key="trunks">17</data>
 </node>
 <node id="187">
   <data key="objectID">FIRE52@kingcounty.gov</data>
@@ -1320,6 +1696,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.52251699100006</data>
   <data key="x">-122.29663899521364</data>
+  <data key="agents">5</data>
+  <data key="trunks">6</data>
 </node>
 <node id="188">
   <data key="objectID">FIRE62@kingcounty.gov</data>
@@ -1327,6 +1705,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.65549481350007</data>
   <data key="x">-122.31296536692051</data>
+  <data key="agents">4</data>
+  <data key="trunks">5</data>
 </node>
 <node id="189">
   <data key="objectID">FIRE63@kingcounty.gov</data>
@@ -1334,6 +1714,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.61389857800006</data>
   <data key="x">-122.35463966428084</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="190">
   <data key="objectID">FIRE64@kingcounty.gov</data>
@@ -1341,6 +1723,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.59300609250005</data>
   <data key="x">-122.32376122798277</data>
+  <data key="agents">9</data>
+  <data key="trunks">11</data>
 </node>
 <node id="191">
   <data key="objectID">FIRE65@kingcounty.gov</data>
@@ -1348,6 +1732,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.661438916000066</data>
   <data key="x">-122.30515021372494</data>
+  <data key="agents">3</data>
+  <data key="trunks">3</data>
 </node>
 <node id="192">
   <data key="objectID">FIRE79@kingcounty.gov</data>
@@ -1355,6 +1741,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.66052444850007</data>
   <data key="x">-122.31489415820312</data>
+  <data key="agents">14</data>
+  <data key="trunks">17</data>
 </node>
 <node id="193">
   <data key="objectID">FIRE83@kingcounty.gov</data>
@@ -1362,6 +1750,8 @@
   <data key="type">FIRE</data>
   <data key="y">47.66069656950006</data>
   <data key="x">-122.31394889711899</data>
+  <data key="agents">3</data>
+  <data key="trunks">3</data>
 </node>
 <node id="194">
   <data key="objectID">PSAP120@kingcounty.gov_CR</data>

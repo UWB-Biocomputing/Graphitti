@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <BGSimParams>
   <SimInfoParams name="SimInfoParams">
-    <PoolSize name="PoolSize">
-      <!-- TODO: The 911 system graph doesn't have a grid layout. This is a hack
-        to make it work with the current implementation of layouts but should be fixed. -->
-      <x name="x">14</x>
-      <y name="y">14</y>
-      <z name="z">1</z>
-    </PoolSize>
     <SimParams name="SimParams">
-      <epochDuration name="epochDuration">100.0</epochDuration>
-      <numEpochs name="numEpochs">2</numEpochs>
+      <!-- epochDuration is one day in seconds: 24 * 3600 
+      and total simulation is 30 days -->
+      <epochDuration name="epochDuration">86400</epochDuration>
+      <numEpochs name="numEpochs">30</numEpochs>
+      <!-- Every simulation step is 1 second -->
+      <deltaT name="Simulation Step Duration">1</deltaT>
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">100</maxFiringRate>
@@ -37,13 +34,11 @@
     </EdgesParams>
 
     <ConnectionsParams class="Connections911" name="ConnectionsParams">
-      <Connections911Params name="Connections911Params">
-        <graphmlFile name="graphmlFile">../configfiles/graphs/spd.graphml</graphmlFile>
-            <!-- Max ConnsPerVertex = 87 RC + 1 PR -->
-        <connsPerVertex name="connsPerVertex">88</connsPerVertex>
-        <psapsToErase name="psapsToErase">1</psapsToErase>
-        <respsToErase name="respsToErase">2</respsToErase>
-      </Connections911Params>
+      <graphmlFile name="graphmlFile">../configfiles/graphs/spd.graphml</graphmlFile>
+          <!-- Max ConnsPerVertex = 87 RC + 1 PR -->
+      <connsPerVertex name="connsPerVertex">88</connsPerVertex>
+      <psapsToErase name="psapsToErase">1</psapsToErase>
+      <respsToErase name="respsToErase">2</respsToErase>
     </ConnectionsParams>
 
     <InputParams name="InputParams">

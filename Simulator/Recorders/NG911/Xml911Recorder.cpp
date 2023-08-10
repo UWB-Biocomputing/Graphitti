@@ -11,7 +11,9 @@
  */
 
 #include "Xml911Recorder.h"
+#include "All911Vertices.h"
 #include "Connections911.h"
+// #include "Global.h"
 
 /// Init radii and rates history matrices with default values
 void Xml911Recorder::initDefaultValues()
@@ -42,12 +44,15 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
 {
    auto &conns = Simulator::getInstance().getModel().getConnections();
    Connections911 &conns911 = dynamic_cast<Connections911 &>(conns);
+   All911Vertices &all911Vertices = dynamic_cast<All911Vertices &>(
+      Simulator::getInstance().getModel().getLayout().getVertices());
 
    // create Vertex Types matrix
    VectorMatrix oldTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalVertices(),
                          EXC);
    VectorMatrix vertexTypes(MATRIX_TYPE, MATRIX_INIT, 1,
                             Simulator::getInstance().getTotalVertices(), EXC);
+
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       vertexTypes[i] = Simulator::getInstance().getModel().getLayout().vertexTypeMap_[i];
       oldTypes[i] = conns911.oldTypeMap_[i];
@@ -65,6 +70,13 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
    resultOut_ << "   " << layout.yloc_.toXML("yloc") << endl;
    resultOut_ << "   " << oldTypes.toXML("vertexTypesPreEvent") << endl;
    resultOut_ << "   " << vertexTypes.toXML("vertexTypesPostEvent") << endl;
+
+   // Write call information
+   resultOut_ << vectorToXML(all911Vertices.droppedCalls_, "droppedCalls") << endl;
+   resultOut_ << vectorToXML(all911Vertices.receivedCalls_, "receivedCalls") << endl;
+   resultOut_ << vector2dToXML(all911Vertices.logBeginTime_, "logBeginTime", "vertex") << endl;
+   resultOut_ << vector2dToXML(all911Vertices.logAnswerTime_, "logAnswerTime", "vertex") << endl;
+   resultOut_ << vector2dToXML(all911Vertices.logEndTime_, "logEndTime", "vertex") << endl;
 
    // Print out deleted edges and vertices:
    resultOut_ << "   " << conns911.erasedVerticesToXML() << endl;

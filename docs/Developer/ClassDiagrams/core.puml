@@ -50,8 +50,8 @@ abstract class Model {
 	#fileLogger_ : log4cplus::Logger
 	#connections_ : shared_ptr<Connections>
 	+getConnections() : shared_ptr<Connections> {query}
-	+getRecorder() : shared_ptr<IRecorder> {query}
-	#recorder_ : shared_ptr<IRecorder>
+	+getRecorder() : shared_ptr<Recorder> {query}
+	#recorder_ : shared_ptr<Recorder>
 	+getLayout() : shared_ptr<Layout> {query}
 	#layout_ : shared_ptr<Layout>
 	+{abstract} advance() : void

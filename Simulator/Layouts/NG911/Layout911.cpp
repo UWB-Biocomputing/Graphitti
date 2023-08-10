@@ -27,6 +27,9 @@ void Layout911::registerGraphProperties()
    gm.registerProperty("type", &VertexProperty::type);
    gm.registerProperty("y", &VertexProperty::y);
    gm.registerProperty("x", &VertexProperty::x);
+   gm.registerProperty("agents", &VertexProperty::agents);
+   gm.registerProperty("trunks", &VertexProperty::trunks);
+   gm.registerProperty("segments", &VertexProperty::segments);
 }
 
 void Layout911::loadParameters()
@@ -61,7 +64,7 @@ void Layout911::setup()
    // so we call its method first
    Layout::setup();
 
-   // Loop over all vertices and set thir x and y locations
+   // Loop over all vertices and set their x and y locations
    GraphManager::VertexIterator vi, vi_end;
    GraphManager &gm = GraphManager::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
@@ -157,6 +160,8 @@ edgeType Layout911::edgType(const int srcVertex, const int destVertex)
       return PP;
    else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == PSAP)
       return RP;
+   else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == CALR)
+      return RC;
    else
       return ETYPE_UNDEF;
 }
