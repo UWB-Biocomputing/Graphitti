@@ -64,7 +64,7 @@ def add_types(events, type_ratios):
     return np.column_stack((events, type_list.astype('object')))
 
 
-def secprocess(sp_sigma, duration_mean, prototypes, prim_evts):
+def secprocess(sp_sigma, duration_mean, duration_min, prototypes, prim_evts):
     # Secondary process for clustering. Selects a prototype
     # from the dictionary of prototypes, which is used as the magnitude
     # an spread of the primary event. This determines the number of 
@@ -176,6 +176,10 @@ def secprocess(sp_sigma, duration_mean, prototypes, prim_evts):
         sec_evts_duration[outliers] = np.random.exponential(scale=duration_mean, size=len(outliers))
         outliers = np.where(sec_evts_duration > duration_fence)[0]
 
+    # Shift call duration distribution to the right by duration_min seconds to
+    # avoid calls with 0 duration
+    sec_evts_duration = sec_evts_duration + duration_min
+
     # Reshape numpy arrays so we can concatenate them column wise
     sec_evts_t = sec_evts_t.reshape(-1, 1)
     sec_evts_x = sec_evts_x.reshape(-1, 1)
@@ -263,7 +267,7 @@ if __name__ == '__main__':
     last = 86400  # one day in seconds
     mu = 99 # seconds between incidents
     # The dead time helps with having too many calls at the exact same time
-    dead_t = 10   # (seconds)
+    pp_dead_t = 10   # (seconds)
 
     # Ratios based on NORCOM 2022 report. NORCOM doesn't make a distinction
     # between EMS and Fire call types, so I split it in half.
@@ -274,7 +278,7 @@ if __name__ == '__main__':
     # Seed numpy random number to get consistent results
     np.random.seed(20)
 
-    incidents = primprocess(first, last, mu, dead_t, spd_grid)
+    incidents = primprocess(first, last, mu, pp_dead_t, spd_grid)
     print(f'Number of Primary events: {incidents.shape[0]}')
 
     # Generate the incident types based on the type_ratios
@@ -294,7 +298,8 @@ if __name__ == '__main__':
     # This is consistent with exponentially distributed values where the mean and
     # standard deviation are equal.
     duration_mean = 205
-    sec_events = secprocess(sec_proc_sigma, duration_mean,
+    duration_min = 4 # seconds (based on Seattle PD September 2020 data)
+    sec_events = secprocess(sec_proc_sigma, duration_mean, duration_min,
                             prototypes, incidents_with_types)
     
     end_t = time.time()
