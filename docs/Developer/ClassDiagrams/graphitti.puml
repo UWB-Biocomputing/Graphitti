@@ -856,7 +856,8 @@ class VerticesFactory {
 class XmlRecorder {
 	+XmlRecorder()
 	+{static} Create() : Recorder*
-	#spikesHistory_ : VectorMatrix
+	#neuronsHistory_ : vector<vector<uint64_t>>
+	#variableTable_ : vector<variableInfo>
 	#resultOut_ : ofstream
 	+compileHistories(AllVertices& vertices) : void
 	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
@@ -867,6 +868,13 @@ class XmlRecorder {
 	+printParameters() : void
 	+saveSimData(const AllVertices& vertices) : void
 	+term() : void
+	+registerVariable(string varName, EventBuffer &recordVar) : void
+
+	/' methods only used for unit test '/
+	+XmlRecorder(string fileName_)
+	+getNeuronName(int numIndex) const : string
+	+getSingleNeuronEvents(int numIndex) const : &EventBuffer
+	+getHistory() const : vector<vector<uint64_t>>
 }
 
 

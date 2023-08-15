@@ -76,20 +76,19 @@ void XmlRecorder::term()
 /// @param[in] neurons    The entire list of neurons.
 void XmlRecorder::compileHistories(AllVertices &vertices)
 {
-   for(int i = 0; i < variableTable.size(); i++){
-      if (variableTable[i].variableLocation_->getNumEventsInEpoch() <= 0) {
-         cout << "empty: " << variableTable[i].variableName_<< endl;
-      }else {
-         cout << variableTable[i].variableName_<< endl;
-         for (int j = 0; j < variableTable[i].variableLocation_->getNumEventsInEpoch(); j++) {
-            // std::cout << "test output:" << (*(variableTable[i].variableLocation_))[j] << endl;
+   for (int i = 0; i < variableTable_.size(); i++) {
+      if (variableTable_[i].variableLocation_->getNumEventsInEpoch() <= 0) {
+         cout << "empty: " << variableTable_[i].variableName_ << endl;
+      } else {
+         cout << variableTable_[i].variableName_ << endl;
+         for (int j = 0; j < variableTable_[i].variableLocation_->getNumEventsInEpoch(); j++) {
+            // std::cout << "test output:" << (*(variableTable_[i].variableLocation_))[j] << endl;
             //singleNeuronHistory_.push_back((*singleNeuronEvents_)[i]);
-            cout << (*(variableTable[i].variableLocation_))[j] << " ";
-            neuronsHistory_[i].push_back((*(variableTable[i].variableLocation_))[j]);
+            cout << (*(variableTable_[i].variableLocation_))[j] << " ";
+            neuronsHistory_[i].push_back((*(variableTable_[i].variableLocation_))[j]);
          }
          cout << endl;
-         variableTable[i].variableLocation_->startNewEpoch();
-
+         variableTable_[i].variableLocation_->startNewEpoch();
       }
    }
 
@@ -119,12 +118,11 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
    // if (singleNeuronHistory_.size() != 0) {
    //    resultOut_ << toXML(neuronName_, singleNeuronHistory_) << endl;
    // }
-   for(int i = 0; i < variableTable.size(); i++){
-      // if (variableTable[i].variableLocation_ != nullptr) {
+   for (int i = 0; i < variableTable_.size(); i++) {
+      // if (variableTable_[i].variableLocation_ != nullptr) {
       if (neuronsHistory_[i].size() > 0) {
-         resultOut_ << toXML(variableTable[i].variableName_, neuronsHistory_[i]) << endl;
+         resultOut_ << toXML(variableTable_[i].variableName_, neuronsHistory_[i]) << endl;
       }
-
    }
 }
 
@@ -168,23 +166,11 @@ void XmlRecorder::printParameters()
 /// Store a single neuron with the neuron number and its corresponding events
 void XmlRecorder::registerVariable(string name, EventBuffer &recordVar)
 {
-   // neuronName_ = name;
-   // singleNeuronEvents_ = std::shared_ptr<EventBuffer>(&recordVar, [](EventBuffer *) {
-   // });
-   // cout << name << endl;
-   // cout << ": smart pointer singleNeuronEvents_" << endl;
-   // cout << singleNeuronEvents_.get() << endl;
-   // if(singleNeuronEvents_.get() == nullptr){
-   //    cout << "Empty smart pointer" << endl;
-   // }
-   variableTable.push_back(variableInfo(name, recordVar));
-   int newNeuron = variableTable.size() -1;
-   
-   if (variableTable[newNeuron].variableLocation_ != nullptr) {
-      // cout << "empty: " << variableTable[i].variableName_<< endl;
-      // return;
+   variableTable_.push_back(variableInfo(name, recordVar));
+   int newNeuron = variableTable_.size() - 1;
+
+   if (variableTable_[newNeuron].variableLocation_ != nullptr) {
       std::vector<uint64_t> singleHistory_;
       neuronsHistory_.push_back(singleHistory_);
    }
-
 }

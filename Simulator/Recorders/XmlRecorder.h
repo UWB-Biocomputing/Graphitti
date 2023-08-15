@@ -67,53 +67,52 @@ public:
    }
 
    // Getter method for neuronName_ (only included during unit tests)
-   std::string getNeuronName() const
+   // @param numIndex   The index number in the variable list.
+   std::string getNeuronName(int numIndex) const
    {
-      return neuronName_;
+      return variableTable_[numIndex].variableName_;
    }
-   // Getter method for singleNeuronEvents_ (only included during unit tests)
-   EventBuffer &getSingleNeuronEvents() const
+
+   // Getter method for a single variable address in the variableTable_
+   // @param numIndex   The index number in the variable list.
+   // (only included during unit tests)
+   EventBuffer &getSingleNeuronEvents(int numIndex) const
    {
-      return *singleNeuronEvents_;
+      return *(variableTable_[numIndex].variableLocation_);
    }
-   // Getter method for singleNeuronHistory_ (only included during unit tests)
-   std::vector<uint64_t> getHistory() const
+
+   // Getter method for neuronsHistory_ (only included during unit tests)
+   std::vector<vector<uint64_t>> getHistory() const
    {
-      return singleNeuronHistory_;
+      return neuronsHistory_;
    }
    ///@}
 
 protected:
-   // variable neuronName_ records the number of a single neuron
-   string neuronName_;
-
-   // The address of the registered variable
-   // As the simulator runs, the values will be updated
-   // It can records all events of a single neuron in each epoch
-   shared_ptr<EventBuffer> singleNeuronEvents_;
-
-   // history of accumulated event for a single neuron
-   std::vector<uint64_t> singleNeuronHistory_;
-
-   // // create a structure contains the information of a variable
-   struct variableInfo{
-   // records the name of each neuron
+   // create a struct contains a variable information
+   struct variableInfo {
+      // records the name of each variable
       string variableName_;
-   // This pointer stores the address of the registered variable
-   // As the simulator runs, the values will be updated
-   // It can records all events of a single neuron in each epoch
+
+      // This pointer stores the address of the registered variable
+      // As the simulator runs, the values will be updated
+      // It can records all events of a single neuron in each epoch
       shared_ptr<EventBuffer> variableLocation_;
-      variableInfo (string name, EventBuffer &location ) {
+
+      //constructor
+      variableInfo(string name, EventBuffer &location)
+      {
          variableName_ = name;
          variableLocation_ = std::shared_ptr<EventBuffer>(&location, [](EventBuffer *) {
          });
-
       }
    };
 
-   // create table
-   // the variableTable stores all the variables information that need to be recorded
-   std::vector<variableInfo> variableTable;
+   // A list of variables
+   // the variableTable_ stores all the variables information that need to be recorded
+   std::vector<variableInfo> variableTable_;
+
+   // history of accumulated event for all neurons
    std::vector<vector<uint64_t>> neuronsHistory_;
 
    // a file stream for xml output
@@ -121,6 +120,6 @@ protected:
 
    string toXML(string name, vector<uint64_t> singleNeuronBuffer_) const;
 
-   //this method will be deleted
+   /// this method will be deleted
    void getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap);
 };

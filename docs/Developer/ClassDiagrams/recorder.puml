@@ -83,24 +83,11 @@ class RecorderFactory {
 }
 
 
-class XmlGrowthRecorder {
-	-radiiHistory_ : CompleteMatrix
-	-ratesHistory_ : CompleteMatrix
-	+{static} Create() : Recorder*
-	+compileHistories(AllVertices& neurons) : void
-	-getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+getValues() : void
-	+initDefaultValues() : void
-	+initValues() : void
-	+printParameters() : void
-	+saveSimData(const AllVertices& neurons) : void
-}
-
-
 class XmlRecorder {
 	+XmlRecorder()
 	+{static} Create() : Recorder*
-	#spikesHistory_ : VectorMatrix
+	#neuronsHistory_ : vector<vector<uint64_t>>
+	#variableTable_ : vector<variableInfo>
 	#resultOut_ : ofstream
 	+compileHistories(AllVertices& vertices) : void
 	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
@@ -111,6 +98,19 @@ class XmlRecorder {
 	+printParameters() : void
 	+saveSimData(const AllVertices& vertices) : void
 	+term() : void
+	+registerVariable(string varName, EventBuffer &recordVar) : void
+	
+	/' methods only used for unit test '/
+	+XmlRecorder(string fileName_)
+	+getNeuronName(int numIndex) const : string
+	+getSingleNeuronEvents(int numIndex) const : &EventBuffer
+	+getHistory() const : vector<vector<uint64_t>>
+}
+
+struct variableInfo {
+	#variableName_ : string
+	#variableLocation_ : shared_ptr<EventBuffer>
+	+variableInfo(string name, EventBuffer &location)
 }
 
 
@@ -130,7 +130,9 @@ class XmlRecorder {
 
 .RecorderFactory *-- .Recorder
 
+/' Composition relationships '/
 
+.XmlRecorder *-- .variableInfo
 
 
 

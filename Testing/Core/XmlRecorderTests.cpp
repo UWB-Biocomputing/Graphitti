@@ -49,15 +49,18 @@ TEST(XmlRecorderTest, RegisterVariableTest)
    ASSERT_TRUE(recorderTest_ != nullptr);
    // XmlRecorder recorder(outputFile);
    // Create a mock EventBuffer object
-   EventBuffer buffer;
+   EventBuffer buffer0;
+   EventBuffer buffer1;
 
-   // Register a variable
-   // recorder.registerVariable("neuron1", buffer);
-   recorderTest_->registerVariable("neuron1", buffer);
+   // Register variables
+   recorderTest_->registerVariable("neuron0", buffer0);
+   recorderTest_->registerVariable("neuron1", buffer1);
 
-   // Verify that the registered variable is stored correctly
-   ASSERT_EQ("neuron1", recorderTest_->getNeuronName());
-   ASSERT_EQ(&buffer, &recorderTest_->getSingleNeuronEvents());
+   // Verify that the registered variables is stored correctly
+   ASSERT_EQ("neuron0", recorderTest_->getNeuronName(0));
+   ASSERT_EQ("neuron1", recorderTest_->getNeuronName(1));
+   ASSERT_EQ(&buffer0, &(recorderTest_->getSingleNeuronEvents(0)));
+   ASSERT_EQ(&buffer1, &(recorderTest_->getSingleNeuronEvents(1)));
 }
 
 // Test case for compiling histories
@@ -71,26 +74,36 @@ TEST(XmlRecorderTest, CompileHistoriesTest)
       = Factory<AllVertices>::getInstance().createType("AllLIFNeurons");
    ASSERT_NE(nullptr, vertices);
    // Create a mock EventBuffer object
-   EventBuffer buffer(4);
+   // buffer size is set to 4
+   EventBuffer buffer0(4);
+   EventBuffer buffer1(4);
 
-   // Register a variable
-   recorderTest_->registerVariable("neuron1", buffer);
+   // Register variables
+   recorderTest_->registerVariable("neuron0", buffer0);
+   recorderTest_->registerVariable("neuron1", buffer1);
 
    // Insert some events into the event buffer
-   buffer.insertEvent(1);
-   buffer.insertEvent(2);
-   buffer.insertEvent(3);
+   buffer0.insertEvent(1);
+   buffer0.insertEvent(2);
+   buffer0.insertEvent(3);
+   buffer1.insertEvent(4);
+   buffer1.insertEvent(5);
+   buffer1.insertEvent(6);
 
    // Call the compileHistories method
    recorderTest_->compileHistories(*vertices.get());
-   std::vector<uint64_t> history = recorderTest_->getHistory();
+   std::vector<vector<uint64_t>> history = recorderTest_->getHistory();
    // Verify the neuron name
-   EXPECT_EQ("neuron1", recorderTest_->getNeuronName());
+   EXPECT_EQ("neuron0", recorderTest_->getNeuronName(0));
+   EXPECT_EQ("neuron1", recorderTest_->getNeuronName(1));
 
-   // Verify the single neuron events compiled hisotry
-   EXPECT_EQ(1, history[0]);
-   EXPECT_EQ(2, history[1]);
-   EXPECT_EQ(3, history[2]);
+   // Verify the events compiled hisotry
+   EXPECT_EQ(1, history[0][0]);
+   EXPECT_EQ(2, history[0][1]);
+   EXPECT_EQ(3, history[0][2]);
+   EXPECT_EQ(4, history[1][0]);
+   EXPECT_EQ(5, history[1][1]);
+   EXPECT_EQ(6, history[1][2]);
 }
 
 // Test case for saving simulation data
@@ -110,7 +123,7 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    recorderTest_->init();
 
    // Register a variable
-   recorderTest_->registerVariable("neuron1", buffer);
+   recorderTest_->registerVariable("neuron0", buffer);
 
    // Insert some events into the event buffer
    buffer.insertEvent(1);
@@ -132,12 +145,12 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    // For example, check if the output file contains the expected XML content
    stringstream os;
    os << "<Matrix ";
-   os << "name=\"" << recorderTest_->getNeuronName() << "\" ";
-   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << recorderTest_->getHistory().size()
-      << "\" multiplier=\"1.0\">" << endl;
+   os << "name=\"" << recorderTest_->getNeuronName(0) << "\" ";
+   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\""
+      << recorderTest_->getHistory()[0].size() << "\" multiplier=\"1.0\">" << endl;
    os << "   ";
-   for (int i = 0; i < recorderTest_->getHistory().size(); i++) {
-      os << recorderTest_->getHistory()[i] << " ";
+   for (int i = 0; i < recorderTest_->getHistory()[0].size(); i++) {
+      os << recorderTest_->getHistory()[0][i] << " ";
    }
    os << endl;
    os << "</Matrix>";
