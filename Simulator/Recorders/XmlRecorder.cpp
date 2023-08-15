@@ -76,19 +76,17 @@ void XmlRecorder::term()
 /// @param[in] neurons    The entire list of neurons.
 void XmlRecorder::compileHistories(AllVertices &vertices)
 {
-   for (int i = 0; i < variableTable_.size(); i++) {
-      if (variableTable_[i].variableLocation_->getNumEventsInEpoch() <= 0) {
-         cout << "empty: " << variableTable_[i].variableName_ << endl;
-      } else {
-         cout << variableTable_[i].variableName_ << endl;
-         for (int j = 0; j < variableTable_[i].variableLocation_->getNumEventsInEpoch(); j++) {
-            // std::cout << "test output:" << (*(variableTable_[i].variableLocation_))[j] << endl;
-            //singleNeuronHistory_.push_back((*singleNeuronEvents_)[i]);
-            cout << (*(variableTable_[i].variableLocation_))[j] << " ";
-            neuronsHistory_[i].push_back((*(variableTable_[i].variableLocation_))[j]);
+   for (int iNeuron = 0; iNeuron < variableTable_.size(); iNeuron++) {
+      if (variableTable_[iNeuron].variableLocation_->getNumEventsInEpoch() > 0) {
+         for (int eventIterator = 0;
+              eventIterator < variableTable_[iNeuron].variableLocation_->getNumEventsInEpoch();
+              eventIterator++) {
+            // cout << (*(variableTable_[i].variableLocation_))[j] << " ";
+            neuronsHistory_[iNeuron].push_back(
+               (*(variableTable_[iNeuron].variableLocation_))[eventIterator]);
          }
-         cout << endl;
-         variableTable_[i].variableLocation_->startNewEpoch();
+         // cout << endl;
+         variableTable_[iNeuron].variableLocation_->startNewEpoch();
       }
    }
 
@@ -115,13 +113,10 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
 {
    // Write XML header information:
    resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n";
-   // if (singleNeuronHistory_.size() != 0) {
-   //    resultOut_ << toXML(neuronName_, singleNeuronHistory_) << endl;
-   // }
-   for (int i = 0; i < variableTable_.size(); i++) {
-      // if (variableTable_[i].variableLocation_ != nullptr) {
-      if (neuronsHistory_[i].size() > 0) {
-         resultOut_ << toXML(variableTable_[i].variableName_, neuronsHistory_[i]) << endl;
+   for (int iNeuron = 0; iNeuron < variableTable_.size(); iNeuron++) {
+      if (neuronsHistory_[iNeuron].size() > 0) {
+         resultOut_ << toXML(variableTable_[iNeuron].variableName_, neuronsHistory_[iNeuron])
+                    << endl;
       }
    }
 }
