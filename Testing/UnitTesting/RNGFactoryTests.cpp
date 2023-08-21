@@ -3,7 +3,7 @@
  *
  * @brief This file contains unit tests for the RNGFactory using GTest.
  * 
- * @ingroup Testing/Core
+ * @ingroup Testing/UnitTesting
  * 
  * We test that the RNGFactory returns an instance of the correct class
  * we are requesting.

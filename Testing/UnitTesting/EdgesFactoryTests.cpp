@@ -3,7 +3,7 @@
  *
  * @brief This file contains unit tests for the EdgesFactory using GTest.
  * 
- * @ingroup Testing/Core
+ * @ingroup Testing/UnitTesting
  * 
  * We test that the EdgesFactory returns an instance of the correct class
  * we are requesting.

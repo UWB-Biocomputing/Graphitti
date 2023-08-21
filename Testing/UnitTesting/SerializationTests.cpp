@@ -3,7 +3,7 @@
  *
  * @brief This file contains the unit tests for Serialization using GTest.
  *
- * @ingroup Testing/Core
+ * @ingroup Testing/UnitTesting
  */
 
 #include "Core.h"
@@ -19,14 +19,14 @@ TEST(Serialization, SerializeFileTest)
 {
    // Test to check if Serialization is a success
    string executable = "./cgraphitti";
-   string serialFileName = "../build/Output/serial1.xml";
+   string serialFileName = "../Testing/UnitTesting/TestOutput/serial1.xml";
    string configFile = "../configfiles/test-small-connected.xml";
    string argument = "-c " + configFile + " -w " + serialFileName;
    Core core;
    ASSERT_EQ(0, core.runSimulation(executable, argument));
 
    // Test to see if serialized file exist
-   FILE *f = fopen("../build/Output/serial1.xml", "r");
+   FILE *f = fopen("../Testing/UnitTesting/TestOutput/serial1.xml", "r");
    bool fileExist = f != NULL;
    fclose(f);
    ASSERT_TRUE(fileExist);
@@ -38,7 +38,7 @@ TEST(Serialization, SerializeFileTest)
    int index = 0;
 
    // Load the XML file
-   TiXmlDocument doc("../build/Output/serial1.xml");
+   TiXmlDocument doc("../Testing/UnitTesting/TestOutput/serial1.xml");
    bool loadOkay = doc.LoadFile();
 
    // Check that the file was successfully loaded
