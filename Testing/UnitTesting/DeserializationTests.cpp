@@ -15,7 +15,8 @@ using namespace std;
 TEST(Deserialization, DeserializeFileTest)
 {
    string executable = "./cgraphitti";
-   string serialFileName = "../Testing/UnitTesting/TestOutput/serial2.xml";   // FileName to write the serialized data
+   string serialFileName
+      = "../Testing/UnitTesting/TestOutput/serial2.xml";   // FileName to write the serialized data
    string deserialFileName
       = "../Testing/UnitTesting/TestOutput/serial1.xml";   // FileName to read the serialized data
    string configFile = "../configfiles/test-small-connected.xml";
