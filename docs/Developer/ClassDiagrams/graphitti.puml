@@ -856,7 +856,7 @@ class VerticesFactory {
 class XmlRecorder {
 	+XmlRecorder()
 	+{static} Create() : Recorder*
-	#neuronsHistory_ : vector<vector<uint64_t>>
+	#variablesHistory_ : vector<vector<uint64_t>>
 	#variableTable_ : vector<variableInfo>
 	#resultOut_ : ofstream
 	+compileHistories(AllVertices& vertices) : void
@@ -874,7 +874,7 @@ class XmlRecorder {
 	+XmlRecorder(string fileName_)
 	+getNeuronName(int numIndex) const : string
 	+getSingleNeuronEvents(int numIndex) const : &EventBuffer
-	+getHistory() const : vector<vector<uint64_t>>
+	+getHistory() const : const &vector<vector<uint64_t>>
 }
 
 

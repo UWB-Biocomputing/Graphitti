@@ -61,36 +61,36 @@ public:
    ///@{
    /** These methods are intended only for unit tests */
    // constructor only for unit test
-   XmlRecorder(std::string fileName_)
+   XmlRecorder(std::string fileName)
    {
-      resultFileName_ = fileName_;
+      resultFileName_ = fileName;
    }
 
-   // Getter method for neuronName_ (only included during unit tests)
+   // Accessor method for neuronName_ (only included during unit tests)
    // @param numIndex   The index number in the variable list.
-   std::string getNeuronName(int numIndex) const
+   std::string getVariableName(int numIndex) const
    {
       return variableTable_[numIndex].variableName_;
    }
 
-   // Getter method for a single variable address in the variableTable_
+   // Accessor method for a single variable address in the variableTable_
    // @param numIndex   The index number in the variable list.
    // (only included during unit tests)
-   EventBuffer &getSingleNeuronEvents(int numIndex) const
+   EventBuffer &getSingleVariable(int numIndex) const
    {
       return *(variableTable_[numIndex].variableLocation_);
    }
 
-   // Getter method for neuronsHistory_ (only included during unit tests)
-   std::vector<vector<uint64_t>> getHistory() const
+   // Accessor method for variablesHistory_ (only included during unit tests)
+   const vector<vector<uint64_t>> &getHistory() const
    {
-      return neuronsHistory_;
+      return variablesHistory_;
    }
    ///@}
 
 protected:
    // create a struct contains a variable information
-   struct variableInfo {
+   struct singleVariableInfo {
       // records the name of each variable
       string variableName_;
 
@@ -100,7 +100,7 @@ protected:
       shared_ptr<EventBuffer> variableLocation_;
 
       //constructor
-      variableInfo(string name, EventBuffer &location)
+      singleVariableInfo(string name, EventBuffer &location)
       {
          variableName_ = name;
          variableLocation_ = std::shared_ptr<EventBuffer>(&location, [](EventBuffer *) {
@@ -110,16 +110,16 @@ protected:
 
    // A list of variables
    // the variableTable_ stores all the variables information that need to be recorded
-   std::vector<variableInfo> variableTable_;
+   vector<singleVariableInfo> variableTable_;
 
    // history of accumulated event for all neurons
-   std::vector<vector<uint64_t>> neuronsHistory_;
+   vector<vector<uint64_t>> variablesHistory_;
 
    // a file stream for xml output
    ofstream resultOut_;
 
-   string toXML(string name, vector<uint64_t> singleNeuronBuffer_) const;
+   string toXML(string name, vector<uint64_t> singleVariableBuffer_) const;
 
    /// this method will be deleted
-   void getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap);
+   void getStarterNeuronMatrix(VectorMatrix &matrix, const vector<bool> &starterMap);
 };

@@ -86,8 +86,8 @@ class RecorderFactory {
 class XmlRecorder {
 	+XmlRecorder()
 	+{static} Create() : Recorder*
-	#neuronsHistory_ : vector<vector<uint64_t>>
-	#variableTable_ : vector<variableInfo>
+	#variablesHistory_ : vector<vector<uint64_t>>
+	#variableTable_ : vector<singleVariableInfo>
 	#resultOut_ : ofstream
 	+compileHistories(AllVertices& vertices) : void
 	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
@@ -102,15 +102,15 @@ class XmlRecorder {
 	
 	/' methods only used for unit test '/
 	+XmlRecorder(string fileName_)
-	+getNeuronName(int numIndex) const : string
-	+getSingleNeuronEvents(int numIndex) const : &EventBuffer
-	+getHistory() const : vector<vector<uint64_t>>
+	+getVariableName(int numIndex) const : string
+	+getSingleVariable(int numIndex) const : &EventBuffer
+	+getHistory() const : const &vector<vector<uint64_t>>
 }
 
-struct variableInfo {
+struct singleVariableInfo {
 	#variableName_ : string
 	#variableLocation_ : shared_ptr<EventBuffer>
-	+variableInfo(string name, EventBuffer &location)
+	+singleVariableInfo(string name, EventBuffer &location)
 }
 
 
@@ -132,7 +132,7 @@ struct variableInfo {
 
 /' Composition relationships '/
 
-.XmlRecorder *-- .variableInfo
+.XmlRecorder *-- .singleVariableInfo
 
 
 

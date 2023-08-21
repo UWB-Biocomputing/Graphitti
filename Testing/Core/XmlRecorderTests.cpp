@@ -57,10 +57,10 @@ TEST(XmlRecorderTest, RegisterVariableTest)
    recorderTest_->registerVariable("neuron1", buffer1);
 
    // Verify that the registered variables is stored correctly
-   ASSERT_EQ("neuron0", recorderTest_->getNeuronName(0));
-   ASSERT_EQ("neuron1", recorderTest_->getNeuronName(1));
-   ASSERT_EQ(&buffer0, &(recorderTest_->getSingleNeuronEvents(0)));
-   ASSERT_EQ(&buffer1, &(recorderTest_->getSingleNeuronEvents(1)));
+   ASSERT_EQ("neuron0", recorderTest_->getVariableName(0));
+   ASSERT_EQ("neuron1", recorderTest_->getVariableName(1));
+   ASSERT_EQ(&buffer0, &(recorderTest_->getSingleVariable(0)));
+   ASSERT_EQ(&buffer1, &(recorderTest_->getSingleVariable(1)));
 }
 
 // Test case for compiling histories
@@ -92,10 +92,10 @@ TEST(XmlRecorderTest, CompileHistoriesTest)
 
    // Call the compileHistories method
    recorderTest_->compileHistories(*vertices.get());
-   std::vector<vector<uint64_t>> history = recorderTest_->getHistory();
+   const vector<vector<uint64_t>>& history = recorderTest_->getHistory();
    // Verify the neuron name
-   EXPECT_EQ("neuron0", recorderTest_->getNeuronName(0));
-   EXPECT_EQ("neuron1", recorderTest_->getNeuronName(1));
+   EXPECT_EQ("neuron0", recorderTest_->getVariableName(0));
+   EXPECT_EQ("neuron1", recorderTest_->getVariableName(1));
 
    // Verify the events compiled hisotry
    EXPECT_EQ(1, history[0][0]);
@@ -143,14 +143,15 @@ TEST(XmlRecorderTest, SaveSimDataTest)
 
    // checks for saving simulation data
    // For example, check if the output file contains the expected XML content
+   const vector<vector<uint64_t>>& history = recorderTest_->getHistory();
    stringstream os;
    os << "<Matrix ";
-   os << "name=\"" << recorderTest_->getNeuronName(0) << "\" ";
+   os << "name=\"" << recorderTest_->getVariableName(0) << "\" ";
    os << "type=\"complete\" rows=\"" << 1 << "\" columns=\""
-      << recorderTest_->getHistory()[0].size() << "\" multiplier=\"1.0\">" << endl;
+      << history[0].size() << "\" multiplier=\"1.0\">" << endl;
    os << "   ";
-   for (int i = 0; i < recorderTest_->getHistory()[0].size(); i++) {
-      os << recorderTest_->getHistory()[0][i] << " ";
+   for (int i = 0; i < history[0].size(); i++) {
+      os << history[0][i] << " ";
    }
    os << endl;
    os << "</Matrix>";
