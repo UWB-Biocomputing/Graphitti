@@ -343,20 +343,21 @@ endif()
 # included in the executable.
 add_executable(tests
         Testing/RunTests.cpp
-        Testing/Core/OperationManagerTests.cpp
-        Testing/Core/EdgeIndexMapTests.cpp
-        Testing/Core/FunctionNodeTests.cpp
-        Testing/Core/SimulatorTests.cpp
-        Testing/Core/OperationManagerTestingClass.h
-        Testing/Core/VerticesFactoryTests.cpp
-        Testing/Core/ConnectionsFactoryTests.cpp
-        Testing/Core/EdgesFactoryTests.cpp
-        Testing/Core/LayoutFactoryTests.cpp
-        Testing/Core/RecorderFactoryTests.cpp
-        Testing/Core/InputManagerTests.cpp
-        Testing/Core/RNGFactoryTests.cpp
+        Testing/UnitTesting/OperationManagerTests.cpp
+        Testing/UnitTesting/EdgeIndexMapTests.cpp
+        Testing/UnitTesting/FunctionNodeTests.cpp
+        Testing/UnitTesting/SimulatorTests.cpp
+        Testing/UnitTesting/OperationManagerTestingClass.h
+        Testing/UnitTesting/VerticesFactoryTests.cpp
+        Testing/UnitTesting/ConnectionsFactoryTests.cpp
+        Testing/UnitTesting/EdgesFactoryTests.cpp
+        Testing/UnitTesting/LayoutFactoryTests.cpp
+        Testing/UnitTesting/RecorderFactoryTests.cpp
+        Testing/UnitTesting/InputManagerTests.cpp
+        Testing/UnitTesting/RNGFactoryTests.cpp
         Testing/Utils/ParameterManagerTests.cpp
-        Testing/Utils/CircularBufferTests.cpp)
+        Testing/Utils/CircularBufferTests.cpp
+        Testing/UnitTesting/XmlRecorderTests.cpp)
 
 # Links the Googletest framework with the testing executable
 target_link_libraries(tests gtest gtest_main)
@@ -366,7 +367,7 @@ target_link_libraries(tests combinedLib)
 
 add_executable(serialTest
         Testing/RunTests.cpp
-        Testing/Core/SerializationTests.cpp)
+        Testing/UnitTesting/SerializationTests.cpp)
 
 # Links the Googletest framework with the serialTest executable
 target_link_libraries(serialTest gtest gtest_main)
@@ -376,13 +377,23 @@ target_link_libraries(serialTest combinedLib)
 
 add_executable(deserialTest
         Testing/RunTests.cpp
-        Testing/Core/DeserializationTests.cpp)
+        Testing/UnitTesting/DeserializationTests.cpp)
 
 # Links the Googletest framework with the deserialTest executable
 target_link_libraries(deserialTest gtest gtest_main)
 
 # Link the combined library into the 'deserialTest' executable.
 target_link_libraries(deserialTest combinedLib)
+
+add_executable(serialFileAccessTest
+        Testing/RunTests.cpp
+        Testing/UnitTesting/SerializationFileAccessTest.cpp)
+
+# Links the Googletest framework with the serialFileAccessTest executable
+target_link_libraries(serialFileAccessTest gtest gtest_main)
+
+# Link the combined library into the 'serialFileAccessTest' executable.
+target_link_libraries(serialFileAccessTest combinedLib)
 
 # Clear ENABLE_CUDA, PERFORMANCE_METRICS and GPROF from the cache so it's reset for subsequent builds
 unset(ENABLE_CUDA CACHE)

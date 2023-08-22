@@ -3,7 +3,7 @@
  *
  * @brief This file contains unit tests for the LayoutFactory using GTest.
  * 
- * @ingroup Testing/Core
+ * @ingroup Testing/UnitTesting
  * 
  * We test that the LayoutFactory returns an instance of the correct class
  * we are requesting.

@@ -3,7 +3,7 @@
  *
  * @brief This file contains unit tests for the RecorderFactory using GTest.
  * 
- * @ingroup Testing/Core
+ * @ingroup Testing/UnitTesting
  * 
  * We test that the RecorderFactory returns an instance of the correct class
  * we are requesting.

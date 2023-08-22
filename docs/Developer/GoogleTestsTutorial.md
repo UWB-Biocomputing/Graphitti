@@ -42,7 +42,7 @@ For each test make sure that you have an `EXPECT` so that we know whether or not
 
 In Graphitti we use this framework to write unit tests for each object class. Follow these steps when making a new object class in the project.
 
- 1. Create a new .cpp file in a directory inside the testing folder named identically as the directory where the class is located. For example if you we’re writing tests for a class  located in Core, you would save the .cpp file in Testing/Core. 
+ 1. Create a new .cpp file in a directory inside the testing folder named identically as the directory where the class is located. For example if you we’re writing tests for a class  located in Core, you would save the .cpp file in Testing/UnitTesting. 
  2. Name the .cpp file `Tests.cpp` 
  3. Write “`#include “gtest/gtest.h`” and any other .h files in the dependencies of the .cpp test class. 
  4. Write tests that assure the class is working properly. Follow the existing format while writing tests.

@@ -3,7 +3,7 @@
  *
  * @brief This file contains the unit tests for EdgeIndexMap using GTest.
  *
- * @ingroup Testing/Core
+ * @ingroup Testing/UnitTesting
  */
 
 #include "EdgeIndexMap.h"

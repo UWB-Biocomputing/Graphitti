@@ -3,7 +3,7 @@
  *
  * @brief This file contains the unit test for the InputManager class
  *
- * @ingroup Testing/Core
+ * @ingroup Testing/UnitTesting
  */
 
 #include "CircularBuffer.h"
