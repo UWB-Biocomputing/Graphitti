@@ -3,7 +3,7 @@
  *
  * @brief This file contains unit tests for the XmlRecorder using GTest.
  * 
- * @ingroup Testing/Core
+ * @ingroup Testing/UnitTesting
  * 
  * We test that XmlRecorder class records correct output into the xml file
  * we are requesting.
@@ -30,11 +30,11 @@ TEST(XmlRecorderTest, CreateInstanceSuccess)
 TEST(XmlRecorderTest, InitTest)
 {
    // Create an instance of XmlRecorder
-   std::string outputFile = "../build/Output/test_output.xml";
+   std::string outputFile = "../Testing/UnitTesting/TestOutput/test_output.xml";
    XmlRecorder recorder(outputFile);
    recorder.init();
    // Test to see if output file exist
-   FILE *f = fopen("../build/Output/test_output.xml", "r");
+   FILE *f = fopen("../Testing/UnitTesting/TestOutput/test_output.xml", "r");
    bool fileExist = f != NULL;
    fclose(f);
    ASSERT_TRUE(fileExist);
@@ -44,7 +44,7 @@ TEST(XmlRecorderTest, InitTest)
 TEST(XmlRecorderTest, RegisterVariableTest)
 {
    // Create an instance of XmlRecorder
-   std::string outputFile = "../build/Output/test_output.xml";
+   std::string outputFile = "../Testing/UnitTesting/TestOutput/test_output.xml";
    unique_ptr<XmlRecorder> recorderTest_(new XmlRecorder(outputFile));
    ASSERT_TRUE(recorderTest_ != nullptr);
    // XmlRecorder recorder(outputFile);
@@ -64,7 +64,7 @@ TEST(XmlRecorderTest, RegisterVariableTest)
 TEST(XmlRecorderTest, CompileHistoriesTest)
 {
    // Create an instance of XmlRecorder
-   std::string outputFile = "../build/Output/test_output.xml";
+   std::string outputFile = "../Testing/UnitTesting/TestOutput/test_output.xml";
    unique_ptr<XmlRecorder> recorderTest_(new XmlRecorder(outputFile));
    // Create a mock AllVertices object
    unique_ptr<AllVertices> vertices
@@ -97,7 +97,7 @@ TEST(XmlRecorderTest, CompileHistoriesTest)
 TEST(XmlRecorderTest, SaveSimDataTest)
 {
    // Create an instance of XmlRecorder
-   std::string outputFile = "../build/Output/test_output.xml";
+   std::string outputFile = "../Testing/UnitTesting/TestOutput/test_output.xml";
    unique_ptr<XmlRecorder> recorderTest_(new XmlRecorder(outputFile));
    // Create a mock AllVertices object
    unique_ptr<AllVertices> vertices
@@ -123,7 +123,7 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    recorderTest_->saveSimData(*vertices.get());
 
    // Open the test_output.xml file and read its content
-   std::ifstream inputFile("../build/Output/test_output.xml");
+   std::ifstream inputFile("../Testing/UnitTesting/TestOutput/test_output.xml");
    std::stringstream outputBuffer;
    outputBuffer << inputFile.rdbuf();
    inputFile.close();

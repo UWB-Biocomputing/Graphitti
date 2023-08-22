@@ -23,7 +23,7 @@ To create a separate executable for your test case in Graphitti, follow these st
 ```
 add_executable(YOUR_EXECUTABLE_TEST_NAME
         Testing/RunTests.cpp
-        Testing/Core/YOUR_TEST_FILE.cpp)
+        Testing/UnitTesting/YOUR_TEST_FILE.cpp)
 
 # Link the necessary libraries and frameworks
 target_link_libraries(YOUR_EXECUTABLE_TEST_NAME gtest gtest_main)

@@ -4,7 +4,7 @@
  * @brief  Sample class used for testing purposes. 
  * Will be replaced once lower level classes are imported into the project.
  *
- * @ingroup Testing/Core
+ * @ingroup Testing/UnitTesting
  */
 
 #pragma once
