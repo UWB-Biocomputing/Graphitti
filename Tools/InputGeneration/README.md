@@ -1,4 +1,25 @@
-# Cluster Point Process
+# Simulation Inputs
+
+The behavior of the system during a simulation is dictated by the occurrence
+of sequences of events. These events can represent a neuronal electric impulse
+(spike) in a Biological Neural Network; or an emergency call or dispatch in
+an Emergency Services Communication System (ESCS). These events can be part of
+the internal workings of the system, or be external stimuli fed via simulation
+inputs. Such input must be provided through an XML, in the format described on
+the developer's documentation.
+
+This directory contains scripts that generate simulation input files, either
+by appropriately transforming real data into the required XML format or
+entirely generating the inputs, synthetically.
+
+The current input generation scripts are:
+
+- `input_file_from_call_log.py`: Takes a real 911 call log and generates an
+    XML input file appropriately formatted.
+- `cluster_point_process\cluster_point_process.py`: Generates synthetic calls
+    modeled as a spatio-temporal cluster point process.
+
+## Cluster Point Process
 
 The call arrival process is an important and complex part of modeling Emergency
 Services Communication Systems (ESCS). Starting with the idea that emergency calls
@@ -12,8 +33,15 @@ Homogeneous Poisson Process, but it could be any reasonable stochastic or determ
 process — stationary or non-stationary. It could even source from a stream of real incident data.
 
 The stream of calls generated is saved to an XML file. This file contains a list of
-`vertices` representing Caller Regions and their stream of `event` items (calls). Below is
-an example of the XML output file:
+`vertices` representing Caller Regions and their stream of `event` items (calls).
+
+## Input file format
+
+The developer's documentation contains more information about the [simulation input file
+format and the class that loads and manages the event inputs]
+(https://uwb-biocomputing.github.io/Graphitti/Developer/GraphAndEventInputs.html).
+
+Below is an example of a simulation input file:
 
 
 ```XML
