@@ -3,7 +3,7 @@
  *
  * @brief This class is used for unit testing the all FunctionNodes that inherit from IFunctionNode using GTest.
  *
- * @ingroup Testing/Core
+ * @ingroup Testing/UnitTesting
  */
 
 #include "GenericFunctionNode.h"

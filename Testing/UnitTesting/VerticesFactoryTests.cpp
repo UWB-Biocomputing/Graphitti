@@ -3,7 +3,7 @@
  * 
  * @brief This file contains unit tests for the VerticesFactory using GTest.
  * 
- * @ingroup Testing/Core
+ * @ingroup Testing/UnitTesting
  * 
  * We test that the VerticesFactory returns an instance of the correct class
  * we are requesting.

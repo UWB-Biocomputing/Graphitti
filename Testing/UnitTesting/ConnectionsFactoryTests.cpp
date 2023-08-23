@@ -3,7 +3,7 @@
  *
  * @brief This file contains unit tests for the ConnectionsFactory using GTest.
  * 
- * @ingroup Testing/Core
+ * @ingroup Testing/UnitTesting
  * 
  * We test that the ConnectionsFactory returns an instance of the correct class
  * we are requesting.

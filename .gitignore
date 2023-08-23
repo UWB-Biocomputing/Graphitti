@@ -90,3 +90,5 @@ build/Output/Results/*.xml
 build/Output/Results/*.h5
 Testing/RegressionTesting/TestOutput/*.xml
 Testing/RegressionTesting/TestOutput/*.h5
+Testing/UnitTesting/TestOutput/*.xml
+Testing/UnitTesting/TestOutput/*.h5

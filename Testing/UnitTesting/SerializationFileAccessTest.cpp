@@ -5,7 +5,7 @@
  * @brief This file contains the unit test to check if serialization file can 
  *        be accessed before the simulation starts, using GTest.
  *
- * @ingroup Testing/Core
+ * @ingroup Testing/UnitTesting
  */
 
 #include "Core.h"
