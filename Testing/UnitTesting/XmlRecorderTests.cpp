@@ -117,7 +117,7 @@ TEST(XmlRecorderTest, CompileHistoriesTest)
 
    // Call the compileHistories method
    recorderTest_->compileHistories(*vertices.get());
-   const vector<vector<uint64_t>>& history = recorderTest_->getHistory();
+   const vector<vector<uint64_t>> &history = recorderTest_->getHistory();
    // Verify the neuron name
    EXPECT_EQ("neuron0", recorderTest_->getVariableName(0));
    EXPECT_EQ("neuron1", recorderTest_->getVariableName(1));
@@ -168,12 +168,12 @@ TEST(XmlRecorderTest, SaveSimDataTest)
 
    // checks for saving simulation data
    // For example, check if the output file contains the expected XML content
-   const vector<vector<uint64_t>>& history = recorderTest_->getHistory();
+   const vector<vector<uint64_t>> &history = recorderTest_->getHistory();
    stringstream os;
    os << "<Matrix ";
    os << "name=\"" << recorderTest_->getVariableName(0) << "\" ";
-   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\""
-      << history[0].size() << "\" multiplier=\"1.0\">" << endl;
+   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << history[0].size()
+      << "\" multiplier=\"1.0\">" << endl;
    os << "   ";
    for (int i = 0; i < history[0].size(); i++) {
       os << history[0][i] << " ";
