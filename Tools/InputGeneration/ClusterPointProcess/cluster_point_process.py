@@ -236,7 +236,7 @@ if __name__ == '__main__':
     import time
 
     # Get the grid for the Seattle PD Caller Region from the graphml file
-    graph_file = '../gis2graph/graph_files/spd.graphml'
+    graph_file = '../../gis2graph/graph_files/spd.graphml'
     spd_cr_id = '194'
     graph = nx.read_graphml(graph_file)
     spd_grid = np.array(eval(graph.nodes[spd_cr_id]['segments']))

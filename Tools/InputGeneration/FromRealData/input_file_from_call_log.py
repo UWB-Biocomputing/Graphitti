@@ -12,7 +12,7 @@ def main():
     # region sections extracted from a GIS dataset.
     call_log = "SPD_call_log.csv"
     # Seattle PD PSAP graph
-    graph_file = "../gis2graph/graph_files/spd.graphml"
+    graph_file = "../../gis2graph/graph_files/spd.graphml"
     # call ratio per emergency type in percentage.
     # TODO: This values are not based on data. Need to either find out from SPD or
     #       from relevant research data.
