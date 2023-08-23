@@ -55,8 +55,11 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
 
-   /// Store the neuron number and all the events of this single neuron
+   /// register a single EventBuffer variable
    void registerVariable(string varName, EventBuffer &recordVar) override;
+
+   /// register a vector of EventBuffers.
+   void registerVariable(string varName, vector<EventBuffer> &recordVar);
 
    ///@{
    /** These methods are intended only for unit tests */

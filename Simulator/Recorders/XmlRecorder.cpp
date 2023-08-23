@@ -157,7 +157,7 @@ void XmlRecorder::printParameters()
                                    << "\tResult file path: " << resultFileName_ << endl);
 }
 
-
+/// register a single EventBuffer.
 /// Obtain the updating value while the simulator runs by storing the address of registered variable
 /// Store a single neuron with the neuron number and its corresponding events
 void XmlRecorder::registerVariable(string name, EventBuffer &recordVar)
@@ -167,4 +167,19 @@ void XmlRecorder::registerVariable(string name, EventBuffer &recordVar)
    // create an internal buffer to store the value of new variable
    vector<uint64_t> singleHistory_;
    variablesHistory_.push_back(singleHistory_);
+}
+
+/// register a vector of EventBuffers.
+/// Obtain the updating value while the simulator runs by storing the address of registered variable
+/// Store all neuron with the neuron number and its corresponding events
+void XmlRecorder::registerVariable(string varName, vector<EventBuffer> &recordVar)
+{
+   for (int i = 0; i < recordVar.size(); i++) {
+      string variableID = varName + to_string(i);
+      // add a new variable into the table
+      variableTable_.push_back(singleVariableInfo(variableID, recordVar[i]));
+      // create an internal buffer to store the value of new variable
+      vector<uint64_t> singleHistory_;
+      variablesHistory_.push_back(singleHistory_);
+   }
 }

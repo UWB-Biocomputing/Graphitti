@@ -40,7 +40,7 @@ TEST(XmlRecorderTest, InitTest)
    ASSERT_TRUE(fileExist);
 }
 
-// Test case for registering a variable
+// Test case for registering a EventBuffer variable
 TEST(XmlRecorderTest, RegisterVariableTest)
 {
    // Create an instance of XmlRecorder
@@ -61,6 +61,31 @@ TEST(XmlRecorderTest, RegisterVariableTest)
    ASSERT_EQ("neuron1", recorderTest_->getVariableName(1));
    ASSERT_EQ(&buffer0, &(recorderTest_->getSingleVariable(0)));
    ASSERT_EQ(&buffer1, &(recorderTest_->getSingleVariable(1)));
+}
+
+// Test case for registering a vector of EventBuffers
+TEST(XmlRecorderTest, RegisterVectorVariableTest)
+{
+   // Create an instance of XmlRecorder
+   std::string outputFile = "../Testing/UnitTesting/TestOutput/test_output.xml";
+   unique_ptr<XmlRecorder> recorderTest_(new XmlRecorder(outputFile));
+   ASSERT_TRUE(recorderTest_ != nullptr);
+   // XmlRecorder recorder(outputFile);
+   // Create a mock EventBuffer object
+   EventBuffer buffer0;
+   EventBuffer buffer1;
+   vector<EventBuffer> vertexEventBuffer;
+   vertexEventBuffer.push_back(buffer0);
+   vertexEventBuffer.push_back(buffer1);
+
+   // Register variables
+   recorderTest_->registerVariable("neuron_", vertexEventBuffer);
+
+   // Verify that the registered variables is stored correctly
+   ASSERT_EQ("neuron_0", recorderTest_->getVariableName(0));
+   ASSERT_EQ("neuron_1", recorderTest_->getVariableName(1));
+   ASSERT_EQ(&vertexEventBuffer[0], &(recorderTest_->getSingleVariable(0)));
+   ASSERT_EQ(&vertexEventBuffer[1], &(recorderTest_->getSingleVariable(1)));
 }
 
 // Test case for compiling histories
