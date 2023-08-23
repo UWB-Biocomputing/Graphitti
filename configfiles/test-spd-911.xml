@@ -46,16 +46,10 @@
     </InputParams>
 
     <LayoutParams class="Layout911" name="LayoutParams">
-      <LayoutFiles name="LayoutFiles">
-        <PSAPsListFileName name="PSAPsListFileName" type="InputFile">../configfiles/NList/NG911_psaps_10x10.xml</PSAPsListFileName>
-        <callersListFileName name="callersListFileName" type="InputFile">../configfiles/NList/NG911_callers_10x10.xml</callersListFileName>
-        <respondersListFileName name="respondersListFileName" type="InputFile">../configfiles/NList/NG911_responders_10x10.xml</respondersListFileName>
-      </LayoutFiles>
     </LayoutParams>
     
     <RecorderParams class="Xml911Recorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
-        <probedListFileName name="prbListFileName" type="InputFile">../configfiles/NList/NG911_probed_10x10.xml</probedListFileName>
         <resultFileName name="resultFileName">Output/Results/test-spd-911-out.xml</resultFileName>
       </RecorderFiles>
     </RecorderParams>
