@@ -12,7 +12,7 @@ def main():
     # region sections extracted from a GIS dataset.
     call_log = "SPD_call_log.csv"
     # Seattle PD PSAP graph
-    graph_file = "../gis2graph/graph_files/spd.graphml"
+    graph_file = "../../gis2graph/graph_files/spd.graphml"
     # call ratio per emergency type in percentage.
     # TODO: This values are not based on data. Need to either find out from SPD or
     #       from relevant research data.
@@ -78,8 +78,8 @@ def main():
     # Construct an element tree to be writen to a file in XML format
     # data is the root element
     data = et.SubElement(inputs, 'data', {"description": "SPD_calls_sept2020", 
-                               "clock_tick_size": "1",
-                               "clock_tick_unit": "sec"})
+                                          "clock_tick_size": "1",
+                                          "clock_tick_unit": "sec"})
 
     # Insert one event element per row
     # Make sure there are no time duplicates
@@ -102,7 +102,7 @@ def main():
             d['time'] = prev_time + 1
         prev_time = d['time']
 
-        # convert everythin to strings
+        # convert everything to strings
         for k, v in d.items():
             d[k] = str(v)
 
