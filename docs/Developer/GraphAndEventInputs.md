@@ -45,7 +45,7 @@ The list of events is provided to Graphitti as an XML input file. We couldn't fi
 ```xml
 <?xml version='1.0' encoding='UTF-8'?>
 <simulator_inputs>
-  <data description="SPD_calls_sept2020" clock_tick_size="1sec">
+  <data description="SPD_calls_sept2020" clock_tick_size="1" clock_tick_unit="sec">
     <vertex id="194" name="SEATTLE PD Caller region">
       <event time="0" duration="0" x="-122.38496236371942" y="47.570236838209546" type="EMS"/>
       <event time="34" duration="230" x="-122.37482094435583" y="47.64839548276973" type="EMS"/>
@@ -58,12 +58,12 @@ The list of events is provided to Graphitti as an XML input file. We couldn't fi
 <simulator_inputs/>
 ```
 
-An input file for the Biological Neural Network model only needs the `time` and `vertex id` such as in the following example:
+An input file for the Biological Neural Network model only needs the `time` and `vertex_id` such as in the following example:
 
 ```xml
 <?xml version='1.0' encoding='UTF-8'?>
 <simulator_inputs>
-  <data description="neuro_input_test" clock_tick_size="1usec">
+  <data description="neuro_input_test" clock_tick_size="1" clock_tick_unit="usec">
     <vertex id="1">
       <event time="0" vertex_id="1"/>
       <event time="34" vertex_id="1"/>
