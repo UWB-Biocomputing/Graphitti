@@ -2,21 +2,18 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import xml.etree.ElementTree as ET
 import geopandas as gpd
-import numpy as np
 from shapely.ops import unary_union
 from shapely.geometry import Polygon
+import numpy as np
 import math
 
 # Load data from XML
 tree = ET.parse('graph_files/King_county_NG911.graphml')
 root = tree.getroot()
+G = nx.Graph()
 
-# Initialize the network graph
-G = nx.DiGraph()
-
-# Type attribute key
+# Attribute key for type
 type_attribute_key = 'type'
-# Namespace from root
 nsmap = {'xmlns': 'http://graphml.graphdrawing.org/xmlns'}
 
 node_positions = {}
@@ -25,66 +22,96 @@ psap_coordinates = []
 calr_nodes = []
 caller_region_patches = []
 
-region_string = []  # stores the strings of squares that will be set as caller region attributes
+def main():
+    G_overlay = nx.DiGraph()
 
-out_file_name = "King_county_NG911"
+    region_string = []  # stores the strings of squares that will be set as caller region attributes
 
-square_counter = 0
+    out_file_name = "King_county_NG911"
 
-psap_layer = gpd.read_file("GIS_data/Layers/PSAP_layer.gpkg")
-provisioning_layer = gpd.read_file("GIS_data/Layers/Provisioning_layer.gpkg")
+    square_counter = 0
+
+    # read in GIS layer data
+    psap_layer = gpd.read_file("GIS_data/Layers/PSAP_layer.gpkg")
+    ems_layer = gpd.read_file("GIS_data/Layers/EMS_layer.gpkg")
+    law_layer = gpd.read_file("GIS_data/Layers/Law_layer.gpkg")
+    fire_layer = gpd.read_file("GIS_data/Layers/Fire_layer.gpkg")
+    provisioning_layer = gpd.read_file("GIS_data/Layers/Provisioning_layer.gpkg")
 
     # create series of boolean values denoting whether geometry is within King County
-psap_within_kc = psap_layer.within(provisioning_layer.iloc[21].geometry)
+    psap_within_kc = psap_layer.within(provisioning_layer.iloc[21].geometry)
+    ems_within_kc = ems_layer.within(provisioning_layer.iloc[21].geometry)
+    law_within_kc = law_layer.within(provisioning_layer.iloc[21].geometry)
+    fire_within_kc = fire_layer.within(provisioning_layer.iloc[21].geometry)
 
     # create new GeoDataFrames of just items located within King County using series above
-kc_psap = psap_layer.drop(np.where(psap_within_kc == False)[0])
-
+    kc_psap = psap_layer.drop(np.where(psap_within_kc == False)[0])
+    kc_ems = ems_layer.drop(np.where(ems_within_kc == False)[0])
+    kc_law = law_layer.drop(np.where(law_within_kc == False)[0])
+    kc_fire = fire_layer.drop(np.where(fire_within_kc == False)[0])
 
     # area_multiplier gets multiplied by the smallest psap area to determine size of the squares in the grid
-area_multiplier = 10
+    area_multiplier = 10
 
     # Some of the data from the state had messed up psap names. This line fixes them so they can be consolidated
-kc_psap.loc[[265, 262, 185], 'DsplayName'] = "King County Sheriff's Office - Marine Patrol"
+    kc_psap.loc[[265, 262, 185], 'DsplayName'] = "King County Sheriff's Office - Marine Patrol"
 
-names = [] # 2 empty lists for storing names and polygons for merging psaps together
-polys = []
-es_nguid = [] # list for storing the nguids
+    names = [] # 2 empty lists for storing names and polygons for merging psaps together
+    polys = []
+    es_nguid = [] # list for storing the nguids
 
     # Loops through and finds all unique names, as well as sorting all the polygons that make up those regions
-for n in range(kc_psap.shape[0]):
-    if (kc_psap.iloc[n].DsplayName) in names:
-        polys[names.index(kc_psap.iloc[n].DsplayName)].append(kc_psap.iloc[n].geometry)
-    else:
-        names.append(kc_psap.iloc[n].DsplayName)
-        polys.append([kc_psap.iloc[n].geometry])
-        es_nguid.append(kc_psap.iloc[n].ES_NGUID)
+    for n in range(kc_psap.shape[0]):
+        if (kc_psap.iloc[n].DsplayName) in names:
+            polys[names.index(kc_psap.iloc[n].DsplayName)].append(kc_psap.iloc[n].geometry)
+        else:
+            names.append(kc_psap.iloc[n].DsplayName)
+            polys.append([kc_psap.iloc[n].geometry])
+            es_nguid.append(kc_psap.iloc[n].ES_NGUID)
 
     # Takes the lists of polygons, and merges them into new polygons for the creation of the merged_kc_psap GeoDataFrame
-merged_polys = []
-for m in range(len(polys)):
-    merged_polys.append(unary_union(polys[m]))
+    merged_polys = []
+    for m in range(len(polys)):
+        merged_polys.append(unary_union(polys[m]))
 
     # Create a new GeoDataFrame with the unique names and merged geometries
-merged_kc_psap = gpd.GeoDataFrame({'DisplayName': names, 'geometry': merged_polys, 'ES_NGUID': es_nguid}, crs=kc_psap.crs)
+    merged_kc_psap = gpd.GeoDataFrame({'DisplayName': names, 'geometry': merged_polys, 'ES_NGUID': es_nguid}, crs=kc_psap.crs)
 
     # Find the area of the smallest merged psap, use that to determine the square size
-areas = merged_kc_psap.area
-side_length = math.sqrt(areas.min() * area_multiplier)
+    areas = merged_kc_psap.area
+    side_length = math.sqrt(areas.min() * area_multiplier)
 
     # Creates a grid of squares based on the bounds of merged_kc_psaps, and the side_length
-xmin, ymin, xmax, ymax = merged_kc_psap.total_bounds
-cols = list(np.arange(xmin, xmax + side_length, side_length))
-rows = list(np.arange(ymin, ymax + side_length, side_length))
-squares = []
-for x in cols[:-1]:
-    for y in rows[:-1]:
-        squares.append(
-            Polygon([(x, y), (x + side_length, y), (x + side_length, y + side_length), (x, y + side_length)]))
-grid = gpd.GeoDataFrame({'geometry': squares}, crs=kc_psap.crs)
-kc_psap.plot()
+    xmin, ymin, xmax, ymax = merged_kc_psap.total_bounds
+    cols = list(np.arange(xmin, xmax + side_length, side_length))
+    rows = list(np.arange(ymin, ymax + side_length, side_length))
+    squares = []
+    for x in cols[:-1]:
+        for y in rows[:-1]:
+            squares.append(
+                Polygon([(x, y), (x + side_length, y), (x + side_length, y + side_length), (x, y + side_length)]))
+    grid = gpd.GeoDataFrame({'geometry': squares}, crs=kc_psap.crs)
 
-#stores all PSAP nodes
+    kc_psap.plot()
+
+    # Return the overlay graph
+    return G_overlay
+
+def overlay_main_graph(G_main, G_overlay, ax):
+    # Draw the main graph
+    edge_alpha = 0.4
+    default_node_color = 'gray' 
+    node_colors_main = [G_main.nodes[node_id].get('color', default_node_color) for node_id in G_main.nodes()]
+    pos_main = nx.get_node_attributes(G_main, 'pos')
+    nx.draw(G_main, node_size=30, pos=pos_main, node_color=node_colors_main, with_labels=False,
+            alpha=edge_alpha, width=0.3, ax=ax)
+
+    # Draw the overlay graph
+    node_colors_overlay = [G_overlay.nodes[node_id].get('color', default_node_color) for node_id in G_overlay.nodes()]
+    pos_overlay = nx.get_node_attributes(G_overlay, 'pos')
+    nx.draw(G_overlay, node_size=30, pos=pos_overlay, node_color=node_colors_overlay, with_labels=False,
+            alpha=edge_alpha, width=0.3, ax=ax)
+
 for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
     type_element = node.find(f'.//{{{nsmap["xmlns"]}}}data[@key="{type_attribute_key}"]')
     if type_element is not None and type_element.text == 'PSAP':
@@ -119,7 +146,7 @@ for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
             node_positions[node_id] = (node_x, node_y)
             G.nodes[node_id]['pos'] = (node_x, node_y)
             G.nodes[node_id]['color'] = 'blue'
-
+    
 
 
 
@@ -157,22 +184,35 @@ for edge in root.findall('.//{http://graphml.graphdrawing.org/xmlns}edge'):
     # Check if both source and target nodes are in G
     if edge_source in G.nodes() and edge_target in G.nodes():
         G.add_edge(edge_source, edge_target)
-# Create the combined plot
-fig, ax = plt.subplots(figsize=(10, 10))
 
-# Plot the network graph
+
+fig, ax = plt.subplots()
+
 edge_alpha = 0.4
 default_node_color = 'gray' 
 node_colors = [G.nodes[node_id].get('color', default_node_color) for node_id in G.nodes()]
-nx.draw(G, node_size=30, pos=node_positions, node_color=node_colors, with_labels=False,
-        alpha=edge_alpha, width=0.3, ax=ax)
+nx.draw(G, node_size = 30, pos = node_positions, node_color=node_colors, with_labels=False, alpha = edge_alpha, width = 0.3, ax = ax)# prints graph
 
-label_pos = {k: (v[0], v[1] + 0.01) for k, v in node_positions.items()}  
+label_pos = {k: (v[0], v[1] + 0.01) for k, v in node_positions.items()}  # Adjust label y-coordinates
 labels = {node: node for node in G.nodes()}
-nx.draw_networkx_labels(G, label_pos, labels=labels, font_size=8, ax=ax)
+nx.draw_networkx_labels(G, label_pos, labels=labels, font_size=8)
 
-# Plot the GIS map without the grid
-kc_psap.plot(ax=ax, color='none', edgecolor='black')
+#image = plt.imread('/Users/bennettye/Downloads/Map-of-Seattle-King-County-SKC-and-Emergency-Response-Zones-Zone-1-East-Side-Zone.png')
+#image_extent =(ax.get_xlim()[0] + 0.05, ax.get_xlim()[1] + 0.05) + (ax.get_ylim()[0] - 0.01, ax.get_ylim()[1] + 0.01)
 
-# Show the combined plot
+#ax.imshow(image, extent=image_extent, aspect='auto', alpha=0.5)
+
+ax.set_axis_on()
+ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
+
 plt.show()
+
+if __name__ == "__main__":
+    # Call the main function to create the overlay graph
+    G_overlay = main()
+
+    fig, ax = plt.subplots()
+
+    overlay_main_graph(G, G_overlay, ax)
+
+    plt.show()
