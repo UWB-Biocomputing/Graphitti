@@ -104,7 +104,6 @@ abstract class AllEdges {
 	+AllEdges(const int numVertices, const int maxEdges)
 	+~AllEdges()
 	+W_ : BGFLOAT*
-	+summationPoint_ : BGFLOAT**
 	+maxEdgesPerVertex_ : BGSIZE
 	+totalEdgeCount_ : BGSIZE
 	+edgeCounts_ : BGSIZE*

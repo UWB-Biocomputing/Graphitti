@@ -168,12 +168,11 @@ void AllSpikingSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
 void AllSpikingSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
-                                    BGFLOAT *sumPoint, const BGFLOAT deltaT, edgeType type)
+                                    const BGFLOAT deltaT, edgeType type)
 {
    BGFLOAT delay;
 
    inUse_[iEdg] = true;
-   summationPoint_[iEdg] = sumPoint;
    destVertexIndex_[iEdg] = destVertex;
    sourceVertexIndex_[iEdg] = srcVertex;
    W_[iEdg] = edgSign(type) * 10.0e-9;
@@ -275,7 +274,6 @@ void AllSpikingSynapses::advanceEdge(const BGSIZE iEdg, AllVertices &neurons)
 {
    BGFLOAT &decay = decay_[iEdg];
    BGFLOAT &psr = psr_[iEdg];
-   BGFLOAT &summationPoint = *(summationPoint_[iEdg]);
 
    // is an input in the queue?
    if (isSpikeQueue(iEdg)) {
@@ -288,7 +286,7 @@ void AllSpikingSynapses::advanceEdge(const BGSIZE iEdg, AllVertices &neurons)
    #ifdef USE_OMP
       #pragma omp atomic #endif
    #endif
-   summationPoint += psr;
+   neurons.summationMap_[iEdg] += psr;
    #ifdef USE_OMP
       //PAB: atomic above has implied flush (following statement generates error -- can't be member variable)
       //#pragma omp flush (summationPoint)

@@ -206,9 +206,6 @@ public:
    ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
    vector<BGFLOAT> W_;
 
-   ///  This edge's summation point's address.
-   vector<BGFLOAT *> summationPoint_;
-
    ///   Synapse type
    vector<edgeType> type_;
 

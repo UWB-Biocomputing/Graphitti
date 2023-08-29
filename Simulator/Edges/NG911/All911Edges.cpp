@@ -34,7 +34,6 @@ void All911Edges::setupEdges()
       W_.assign(maxTotalEdges, 0);
       type_.assign(maxTotalEdges, ETYPE_UNDEF);
       edgeCounts_.assign(numVertices, 0);
-      summationPoint_.assign(maxTotalEdges, nullptr);
       destVertexIndex_.assign(maxTotalEdges, 0);
       sourceVertexIndex_.assign(maxTotalEdges, 0);
       inUse_ = make_unique<bool[]>(maxTotalEdges);
@@ -42,11 +41,10 @@ void All911Edges::setupEdges()
    }
 }
 
-void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
-                             const BGFLOAT deltaT, edgeType type)
+void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+                             edgeType type)
 {
    inUse_[iEdg] = true;
-   summationPoint_[iEdg] = sumPoint;
    destVertexIndex_[iEdg] = destVertex;
    sourceVertexIndex_[iEdg] = srcVertex;
    W_[iEdg] = 10;   // Figure this out

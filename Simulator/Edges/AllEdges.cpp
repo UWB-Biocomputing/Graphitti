@@ -78,7 +78,6 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges)
       W_.assign(maxTotalEdges, 0);
       type_.assign(maxTotalEdges, ETYPE_UNDEF);
       edgeCounts_.assign(numVertices, 0);
-      summationPoint_.assign(maxTotalEdges, nullptr);
       destVertexIndex_.assign(maxTotalEdges, 0);
       sourceVertexIndex_.assign(maxTotalEdges, 0);
 
@@ -243,7 +242,6 @@ void AllEdges::eraseEdge(const int iVert, const BGSIZE iEdg)
 {
    edgeCounts_[iVert]--;
    inUse_[iEdg] = false;
-   summationPoint_[iEdg] = nullptr;
    W_[iEdg] = 0;
 }
 
