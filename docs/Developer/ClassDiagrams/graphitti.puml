@@ -26,7 +26,7 @@ class AllDSSynapses {
 	+copyEdgeHostToDevice(void* allEdgesDevice) : void
 	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
 	#copyHostToDevice(void* allEdgesDevice, AllDSSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
-	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT, edgeType type) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
 	#deleteDeviceStruct(AllDSSynapsesDeviceProperties& allEdgesDeviceProps) : void
 	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
 	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
@@ -61,7 +61,7 @@ class AllDynamicSTDPSynapses {
 	+copyEdgeHostToDevice(void* allEdgesDevice) : void
 	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
 	#copyHostToDevice(void* allEdgesDevice, AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
-	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT, edgeType type) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
 	#deleteDeviceStruct(AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps) : void
 	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
 	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
@@ -92,7 +92,7 @@ abstract class AllEdges {
 	+sourceVertexIndex_ : int*
 	#edgeLogger_ : log4cplus::Logger
 	#fileLogger_ : log4cplus::Logger
-	+addEdge(BGSIZE& iEdg, edgeType type, const int srcVertex, const int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT) : void
+	+addEdge(BGSIZE& iEdg, edgeType type, const int srcVertex, const int destVertex, const BGFLOAT deltaT) : void
 	+{abstract} advanceEdge(const BGSIZE iEdg, AllVertices* vertices) : void
 	+{abstract} advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
 	+advanceEdges(AllVertices* vertices, EdgeIndexMap* edgeIndexMap) : void
@@ -103,7 +103,7 @@ abstract class AllEdges {
 	+{abstract} copyEdgeDeviceToHost(void* allEdgesDevice) : void
 	+{abstract} copyEdgeHostToDevice(void* allEdgesDevice) : void
 	+{abstract} copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
-	+{abstract} createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT, edgeType type) : void
+	+{abstract} createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
 	+createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap) : void
 	+{abstract} deleteEdgeDeviceStruct(void* allEdgesDevice) : void
 	+eraseEdge(const int neuronIndex, const BGSIZE iEdg) : void
@@ -298,7 +298,7 @@ class AllSTDPSynapses {
 	+copyEdgeHostToDevice(void* allEdgesDevice) : void
 	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
 	#copyHostToDevice(void* allEdgesDevice, AllSTDPSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
-	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT, edgeType type) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
 	#deleteDeviceStruct(AllSTDPSynapsesDeviceProperties& allEdgesDevice) : void
 	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
 	#initSpikeQueue(const BGSIZE iEdg) : void
@@ -374,7 +374,7 @@ class AllSpikingSynapses {
 	+copyEdgeHostToDevice(void* allEdgesDevice) : void
 	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
 	#copyHostToDevice(void* allEdgesDevice, AllSpikingSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
-	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT, edgeType type) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
 	#deleteDeviceStruct(AllSpikingSynapsesDeviceProperties& allEdgesDevice) : void
 	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
 	#initSpikeQueue(const BGSIZE iEdg) : void
@@ -575,7 +575,7 @@ class GPUModel {
 	#allEdgesDevice_ : AllSpikingSynapsesDeviceProperties*
 	#synapseIndexMapDevice_ : EdgeIndexMap*
 	#randNoise_d : float*
-	-addEdge(AllEdges& synapses, edgeType type, const int srcVertex, const int destVertex, Coordinate& source, Coordinate& dest, BGFLOAT* sumPoint, BGFLOAT deltaT) : void
+	-addEdge(AllEdges& synapses, edgeType type, const int srcVertex, const int destVertex, Coordinate& source, Coordinate& dest, BGFLOAT deltaT) : void
 	+advance() : void
 	#allocDeviceStruct(void** allVerticesDevice, void** allEdgesDevice) : void
 	-allocSynapseImap(int count) : void
@@ -583,7 +583,7 @@ class GPUModel {
 	+copyCPUtoGPU() : void
 	+copyGPUtoCPU() : void
 	+copySynapseIndexMapHostToDevice(EdgeIndexMap& synapseIndexMapHost, int numVertices) : void
-	-createEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex, Coordinate source, Coordinate dest, BGFLOAT* sp, BGFLOAT deltaT, edgeType type) : void
+	-createEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex, Coordinate source, Coordinate dest, BGFLOAT deltaT, edgeType type) : void
 	#deleteDeviceStruct(void** allVerticesDevice, void** allEdgesDevice) : void
 	-deleteSynapseImap() : void
 	-eraseEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex) : void

@@ -112,11 +112,10 @@ public:
    ///  @param  iEdg        Index of the synapse to set.
    ///  @param  srcVertex   Coordinates of the source Neuron.
    ///  @param  destVertex  Coordinates of the destination Neuron.
-   ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
-                           const BGFLOAT deltaT, edgeType type) override;
+   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+                           edgeType type) override;
 
    ///  Prints SynapsesProps data.
    virtual void printSynapsesProps() const override;

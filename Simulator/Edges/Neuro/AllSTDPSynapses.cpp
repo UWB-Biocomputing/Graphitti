@@ -225,15 +225,14 @@ void AllSTDPSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
 ///  @param  iEdg        Index of the synapse to set.
 ///  @param  srcVertex   Coordinates of the source Neuron.
 ///  @param  destVertex  Coordinates of the destination Neuron.
-///  @param  sumPoint    Summation point address.
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
 void AllSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
-                                 BGFLOAT *sumPoint, const BGFLOAT deltaT, edgeType type)
+                                 const BGFLOAT deltaT, edgeType type)
 {
    totalDelayPost_[iEdg]
       = 0;   // Apr 12th 2020 move this line so that when AllSpikingSynapses::createEdge() is called, inside this method the initSpikeQueue() method can be called successfully
-   AllSpikingSynapses::createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
+   AllSpikingSynapses::createEdge(iEdg, srcVertex, destVertex, deltaT, type);
 
    // May 1st 2020
    // Use constants from Froemke and Dan (2002).
