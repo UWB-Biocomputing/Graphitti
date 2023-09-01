@@ -59,7 +59,7 @@ public:
    void registerVariable(string varName, EventBuffer &recordVar) override;
 
    /// register a vector of EventBuffers.
-   void registerVariable(string varName, vector<EventBuffer> &recordVar);
+   void registerVariable(string varName, vector<EventBuffer> &recordVar) override;
 
    ///@{
    /** These methods are intended only for unit tests */

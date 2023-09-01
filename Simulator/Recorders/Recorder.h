@@ -44,7 +44,7 @@ public:
    // Prints loaded parameters to logging file.
    virtual void printParameters() = 0;
 
-   // register a signle EventBuffer variable.
+   // register a single EventBuffer variable.
    virtual void registerVariable(string varName, EventBuffer &recordVar) = 0;
 
    // register a vector of EventBuffers.
