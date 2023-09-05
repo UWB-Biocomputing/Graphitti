@@ -273,6 +273,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices &neurons)
 
    BGFLOAT &decay = decay_[iEdg];
    BGFLOAT &psr = psr_[iEdg];
+   int sumPointIndex = destVertexIndex_[iEdg];
 
    // is an input in the queue?
    bool fPre = isSpikeQueue(iEdg);
@@ -382,7 +383,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices &neurons)
    #ifdef USE_OMP
       #pragma omp atomic
    #endif
-   neurons.summationMap_[iEdg] += psr;
+   neurons.summationMap_[sumPointIndex] += psr;
    #ifdef USE_OMP
       //PAB: atomic above has implied flush (following statement generates error -- can't be member variable)
       //#pragma omp flush (summationPoint)
