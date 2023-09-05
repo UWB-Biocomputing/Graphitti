@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
 <key id="segments" for="node" attr.name="segments" attr.type="string"/>
-<key id="trunks" for="node" attr.name="trunks" attr.type="long"/>
-<key id="agents" for="node" attr.name="agents" attr.type="long"/>
+<key id="trunks" for="node" attr.name="trunks" attr.type="int"/>
+<key id="agents" for="node" attr.name="agents" attr.type="int"/>
 <key id="x" for="node" attr.name="x" attr.type="double"/>
 <key id="y" for="node" attr.name="y" attr.type="double"/>
 <key id="type" for="node" attr.name="type" attr.type="string"/>
