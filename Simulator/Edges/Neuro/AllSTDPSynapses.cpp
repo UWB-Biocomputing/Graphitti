@@ -223,8 +223,8 @@ void AllSTDPSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
 ///
 ///  @param  synapses    The synapse list to reference.
 ///  @param  iEdg        Index of the synapse to set.
-///  @param  srcVertex   Coordinates of the source Neuron.
-///  @param  destVertex  Coordinates of the destination Neuron.
+///  @param  srcVertex   Index of the source Neuron.
+///  @param  destVertex  Index of the destination Neuron.
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
 void AllSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
