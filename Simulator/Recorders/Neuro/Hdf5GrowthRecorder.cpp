@@ -200,5 +200,9 @@ void Hdf5GrowthRecorder::registerVariable(std::string varName, EventBuffer &reco
 {
 }
 
+void Hdf5GrowthRecorder::registerVariable(string varName, vector<EventBuffer> &recordVar)
+{
+}
+
 
 #endif   // HDF5

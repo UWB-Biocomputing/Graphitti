@@ -72,6 +72,8 @@ public:
 
    virtual void registerVariable(std::string varName, EventBuffer &recordVar) override;
 
+   virtual void registerVariable(std::string varName, vector<EventBuffer> &recordVar) override;
+
 protected:
    virtual void initDataSet();
 
