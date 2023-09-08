@@ -72,6 +72,21 @@ def main():
     # Clean up
     sorted = sorted.drop(['grid_idx', 'type_prob'], axis=1)
 
+    # Add patience time. This is the time a caller is willing to wait before
+    # abandoning the queue.
+    # We will be modeling patience as an exponentially distributed random variable.
+    # The average waiting time is 1/abandonment rate and the abandonment rate is
+    # estimated using Mandelbaum and Zeltyn's formula:
+    #     Abandonment rate = fraction of abandonment / average wait time
+    # 
+    # Patience time calculated from September 2020 data:
+    #   Fraction of abandonment = 0.0942
+    #   Avg Wait Time = 4.65 seconds
+    #   Abandonment rate = 0.0942/4.65 = 0.020258/second
+    #   Avg. Patience = 1/0.020258 = 49.36 Seconds
+    avg_patience = 49.36
+    sorted['patience'] = np.random.exponential(scale=avg_patience, size=sorted.shape[0]).astype(np.int64)
+
     # this is the root element
     inputs = et.Element('simulator_inputs')
 
