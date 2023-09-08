@@ -281,9 +281,8 @@ void ConnGrowth::updateSynapsesWeights()
             BGFLOAT *sumPoint = &(vertices.summationMap_[destVertex]);
             added++;
 
-            BGSIZE iEdg;
-            synapses.addEdge(iEdg, type, srcVertex, destVertex, sumPoint,
-                             Simulator::getInstance().getDeltaT());
+            BGSIZE iEdg = synapses.addEdge(type, srcVertex, destVertex, sumPoint,
+                                           Simulator::getInstance().getDeltaT());
             synapses.W_[iEdg] = W_(srcVertex, destVertex) * synapses.edgSign(type)
                                 * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
          }

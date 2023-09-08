@@ -36,14 +36,14 @@ public:
 
    ///  Adds a Edge to the model, connecting two Vertices.
    ///
-   ///  @param  iEdg        Index of the edge to be added.
    ///  @param  type        The type of the Edge to add.
    ///  @param  srcVertex   The Vertex that sends to this Edge.
    ///  @param  destVertex  The Vertex that receives from the Edge.
    ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration
-   virtual void addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex,
-                        BGFLOAT *sumPoint, const BGFLOAT deltaT);
+   ///  @return  iEdg        Index of the edge to be added.
+   virtual BGSIZE addEdge(edgeType type, const int srcVertex, const int destVertex,
+                          BGFLOAT *sumPoint, const BGFLOAT deltaT);
 
    ///  Create a Edge and connect it to the model.
    ///

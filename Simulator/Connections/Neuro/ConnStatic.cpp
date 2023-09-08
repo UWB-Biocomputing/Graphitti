@@ -80,8 +80,8 @@ void ConnStatic::setup()
                          "Source: " << srcVertex << " Dest: " << destVertex
                                     << " Dist: " << distDestVertices[srcVertex][i].dist);
 
-         BGSIZE iEdg;
-         edges_->addEdge(iEdg, type, srcVertex, destVertex, sumPoint, simulator.getDeltaT());
+         BGSIZE iEdg
+            = edges_->addEdge(type, srcVertex, destVertex, sumPoint, simulator.getDeltaT());
          added++;
 
 
