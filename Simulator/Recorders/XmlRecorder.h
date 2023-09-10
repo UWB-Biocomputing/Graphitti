@@ -7,8 +7,8 @@
  *
  * The XmlRecorder provides a mechanism for recording neuron's layout, spikes history,
  * and compile history information on xml file:
- *     -# the number of a single neuron,
- *     -# all vertex events for a single neuron.
+ *     -# the neuron ID.
+ *     -# time steps of events produced by each neuron,
  */
 
 #pragma once
@@ -55,61 +55,74 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
 
-   /// Store the neuron number and all the events of this single neuron
+   /// register a single EventBuffer variable
    void registerVariable(string varName, EventBuffer &recordVar) override;
+
+   /// register a vector of EventBuffers.
+   void registerVariable(string varName, vector<EventBuffer> &recordVar) override;
 
    ///@{
    /** These methods are intended only for unit tests */
    // constructor only for unit test
-   XmlRecorder(std::string fileName_)
+   XmlRecorder(std::string fileName)
    {
-      resultFileName_ = fileName_;
+      resultFileName_ = fileName;
    }
 
-   // Getter method for neuronName_ (only included during unit tests)
-   std::string getNeuronName() const
+   // Accessor method for neuronName_ (only included during unit tests)
+   // @param numIndex   The index number in the variable list.
+   std::string getVariableName(int numIndex) const
    {
-      return neuronName_;
+      return variableTable_[numIndex].variableName_;
    }
-   // Getter method for singleNeuronEvents_ (only included during unit tests)
-   EventBuffer &getSingleNeuronEvents() const
+
+   // Accessor method for a single variable address in the variableTable_
+   // @param numIndex   The index number in the variable list.
+   // (only included during unit tests)
+   EventBuffer &getSingleVariable(int numIndex) const
    {
-      return *singleNeuronEvents_;
+      return *(variableTable_[numIndex].variableLocation_);
    }
-   // Getter method for singleNeuronHistory_ (only included during unit tests)
-   std::vector<uint64_t> getHistory() const
+
+   // Accessor method for variablesHistory_ (only included during unit tests)
+   const vector<vector<uint64_t>> &getHistory() const
    {
-      return singleNeuronHistory_;
+      return variablesHistory_;
    }
    ///@}
 
 protected:
-   // variable neuronName_ records the number of a single neuron
-   string neuronName_;
+   // create a struct contains a variable information
+   struct singleVariableInfo {
+      // records the name of each variable
+      string variableName_;
 
-   // The address of the registered variable
-   // As the simulator runs, the values will be updated
-   // It can records all events of a single neuron in each epoch
-   shared_ptr<EventBuffer> singleNeuronEvents_;
+      // This pointer stores the address of the registered variable
+      // As the simulator runs, the values will be updated
+      // It can records all events of a single neuron in each epoch
+      shared_ptr<EventBuffer> variableLocation_;
 
-   // history of accumulated event for a single neuron
-   std::vector<uint64_t> singleNeuronHistory_;
+      //constructor
+      singleVariableInfo(string name, EventBuffer &location)
+      {
+         variableName_ = name;
+         variableLocation_ = std::shared_ptr<EventBuffer>(&location, [](EventBuffer *) {
+         });
+      }
+   };
 
-   // // create a structure contains the information of a variable
-   // struct variableInfo{
-   //    string variableName;
-   //    EventBuffer* variableLocation;
-   // };
+   // A list of variables
+   // the variableTable_ stores all the variables information that need to be recorded
+   vector<singleVariableInfo> variableTable_;
 
-   // // create table
-   // std::vector<variableInfo> variableTable;
-
+   // history of accumulated event for all neurons
+   vector<vector<uint64_t>> variablesHistory_;
 
    // a file stream for xml output
    ofstream resultOut_;
 
-   string toXML(string name, vector<uint64_t> singleNeuronBuffer_) const;
+   string toXML(string name, vector<uint64_t> singleVariableBuffer_) const;
 
-   //this method will be deleted
-   void getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap);
+   /// this method will be deleted
+   void getStarterNeuronMatrix(VectorMatrix &matrix, const vector<bool> &starterMap);
 };

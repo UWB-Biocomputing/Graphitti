@@ -491,4 +491,8 @@ void Hdf5Recorder::registerVariable(std::string varName, EventBuffer &recordVar)
 {
 }
 
+void Hdf5Recorder::registerVariable(string varName, vector<EventBuffer> &recordVar)
+{
+}
+
 #endif   // HDF5
