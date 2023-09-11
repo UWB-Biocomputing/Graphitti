@@ -77,6 +77,8 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
    resultOut_ << vector2dToXML(all911Vertices.logBeginTime_, "logBeginTime", "vertex") << endl;
    resultOut_ << vector2dToXML(all911Vertices.logAnswerTime_, "logAnswerTime", "vertex") << endl;
    resultOut_ << vector2dToXML(all911Vertices.logEndTime_, "logEndTime", "vertex") << endl;
+   resultOut_ << vector2dToXML(all911Vertices.logWasAbandoned_, "logWasAbandoned", "vertex")
+              << endl;
 
    // Print out deleted edges and vertices:
    resultOut_ << "   " << conns911.erasedVerticesToXML() << endl;
