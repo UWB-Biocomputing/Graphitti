@@ -40,6 +40,7 @@ void All911Vertices::setupVertices()
    logBeginTime_.resize(size_);
    logAnswerTime_.resize(size_);
    logEndTime_.resize(size_);
+   logWasAbandoned_.resize(size_);
 
    // Register call properties with InputManager
    inputManager_.registerProperty("vertex_id", &Call::vertexId);
@@ -47,6 +48,7 @@ void All911Vertices::setupVertices()
    inputManager_.registerProperty("duration", &Call::duration);
    inputManager_.registerProperty("x", &Call::x);
    inputManager_.registerProperty("y", &Call::y);
+   inputManager_.registerProperty("patience", &Call::patience);
    inputManager_.registerProperty("type", &Call::type);
 }
 
@@ -255,18 +257,34 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
 
          // Assign calls to agents until either no agents are available or
          // there are no more calls in the waiting queue
-         for (size_t i = 0; i < availableAgents.size() && !vertexQueues_[vertex].isEmpty(); ++i) {
+         size_t agentId = 0;
+         while (agentId < availableAgents.size() && !vertexQueues_[vertex].isEmpty()) {
+         // for (size_t i = 0; i < availableAgents.size() && !vertexQueues_[vertex].isEmpty(); ++i) {
             // TODO: calls with duration of zero are being added but because countdown will be zero
             //       they don't show up in the logs
-            int agent = availableAgents[i];
             optional<Call> call = vertexQueues_[vertex].get();
             assert(call);
-            servingCall_[vertex][agent] = call.value();
-            answerTime_[vertex][agent] = g_simulationStep;
-            agentCountdown_[vertex][agent] = call.value().duration;
 
-            LOG4CPLUS_DEBUG(vertexLogger_, "Serving Call starting at time: "
+            // If the patience time is less than the waiting time the call is abandoned
+            if (call->patience < (g_simulationStep - call->time)) {
+               logWasAbandoned_[vertex].push_back(true);
+               logBeginTime_[vertex].push_back(call->time);
+               // Answer time and end time get zero as sentinel for non-valid values
+               logAnswerTime_[vertex].push_back(0);
+               logEndTime_[vertex].push_back(0);
+               LOG4CPLUS_DEBUG(vertexLogger_, "Call was abandoned, Patience: " << call->patience
+                                              << " Ring Time: " << g_simulationStep - call->time);
+            } else {
+               // The available agent starts serving the call
+               int agent = availableAgents[agentId];
+               servingCall_[vertex][agent] = call.value();
+               answerTime_[vertex][agent] = g_simulationStep;
+               agentCountdown_[vertex][agent] = call.value().duration;
+               LOG4CPLUS_DEBUG(vertexLogger_, "Serving Call starting at time: "
                                               << call->time << ", sim-step: " << g_simulationStep);
+               // Next agent
+               ++agentId;
+            }
          }
       }
    }

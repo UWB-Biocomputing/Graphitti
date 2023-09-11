@@ -81,6 +81,8 @@ public:
    vector<vector<uint64_t>> logAnswerTime_;
    /// The end time for every call in the log
    vector<vector<uint64_t>> logEndTime_;
+   /// Logs if the call was abandoned
+   vector<vector<bool>> logWasAbandoned_;
 
 private:
    /// Number of agents. In a PSAP these are the call takers, in Responder nodes
