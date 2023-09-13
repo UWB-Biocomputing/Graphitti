@@ -75,14 +75,14 @@ public:
    /// The number of received calls
    vector<int> receivedCalls_;
 
-   /// The stating time for every call in the log
-   vector<vector<uint64_t>> logBeginTime_;
-   /// The answer time for every call in the log
-   vector<vector<uint64_t>> logAnswerTime_;
-   /// The end time for every call in the log
-   vector<vector<uint64_t>> logEndTime_;
-   /// Logs if the call was abandoned
-   vector<vector<bool>> logWasAbandoned_;
+   /// The starting time for every call
+   vector<vector<uint64_t>> beginTimeHistory_;
+   /// The answer time for every call
+   vector<vector<uint64_t>> answerTimeHistory_;
+   /// The end time for every call
+   vector<vector<uint64_t>> endTimeHistory_;
+   /// True if the call was abandoned
+   vector<vector<bool>> wasAbandonedHistory_;
 
 private:
    /// Number of agents. In a PSAP these are the call takers, in Responder nodes

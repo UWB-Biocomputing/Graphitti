@@ -37,10 +37,10 @@ void All911Vertices::setupVertices()
    // Resize and fill data structures for recording
    droppedCalls_.assign(size_, 0);
    receivedCalls_.assign(size_, 0);
-   logBeginTime_.resize(size_);
-   logAnswerTime_.resize(size_);
-   logEndTime_.resize(size_);
-   logWasAbandoned_.resize(size_);
+   beginTimeHistory_.resize(size_);
+   answerTimeHistory_.resize(size_);
+   endTimeHistory_.resize(size_);
+   wasAbandonedHistory_.resize(size_);
 
    // Register call properties with InputManager
    inputManager_.registerProperty("vertex_id", &Call::vertexId);
@@ -235,10 +235,10 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
                // Agent becomes free to take calls
                // TODO: What about wrap-up time?
                //Store call metrics
-               logWasAbandoned_[vertex].push_back(false);
-               logBeginTime_[vertex].push_back(servingCall_[vertex][agent].time);
-               logAnswerTime_[vertex].push_back(answerTime_[vertex][agent]);
-               logEndTime_[vertex].push_back(g_simulationStep);
+               wasAbandonedHistory_[vertex].push_back(false);
+               beginTimeHistory_[vertex].push_back(servingCall_[vertex][agent].time);
+               answerTimeHistory_[vertex].push_back(answerTime_[vertex][agent]);
+               endTimeHistory_[vertex].push_back(g_simulationStep);
                LOG4CPLUS_DEBUG(vertexLogger_,
                                "Finishing call, begin time: "
                                   << servingCall_[vertex][agent].time
@@ -264,11 +264,11 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
 
             if (call->patience < (g_simulationStep - call->time)) {
                // If the patience time is less than the waiting time, the call is abandoned
-               logWasAbandoned_[vertex].push_back(true);
-               logBeginTime_[vertex].push_back(call->time);
+               wasAbandonedHistory_[vertex].push_back(true);
+               beginTimeHistory_[vertex].push_back(call->time);
                // Answer time and end time get zero as sentinel for non-valid values
-               logAnswerTime_[vertex].push_back(0);
-               logEndTime_[vertex].push_back(0);
+               answerTimeHistory_[vertex].push_back(0);
+               endTimeHistory_[vertex].push_back(0);
                LOG4CPLUS_DEBUG(vertexLogger_,
                                "Call was abandoned, Patience: " << call->patience << " Ring Time: "
                                                                 << g_simulationStep - call->time);
