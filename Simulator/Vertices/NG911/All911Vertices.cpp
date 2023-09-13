@@ -208,7 +208,8 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
             if (!edges911.isRedial_[edgeIdx] && initRNG.randDblExc() >= redialP_) {
                // We only make the edge available if no readialing occurs.
                edges911.isAvailable_[edgeIdx] = true;
-               LOG4CPLUS_DEBUG(vertexLogger_, "Did not redial at time: " << edges911.call_[edgeIdx].time);
+               LOG4CPLUS_DEBUG(vertexLogger_,
+                               "Did not redial at time: " << edges911.call_[edgeIdx].time);
             } else {
                edges911.isRedial_[edgeIdx] = true;
             }
