@@ -28,6 +28,7 @@
       </CallNum>
       <DispNumScale name="DispNumScale">0.3</DispNumScale>
       <RespNumScale name="RespNumScale">0.3</RespNumScale>
+      <RedialP name="RedialProbability">0.85</RedialP>
     </VerticesParams>
 
     <EdgesParams class="All911Edges" name="EdgesParams">

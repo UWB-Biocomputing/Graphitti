@@ -90,6 +90,9 @@ private:
    /// Number of phone lines available. Only valid for PSAPs and Responders
    vector<int> numTrunks_;
 
+   /// The probability that a caller will redial after receiving the busy signal
+   BGFLOAT redialP_;
+
    /// Holds the calls being served by each agent
    vector<vector<Call>> servingCall_;
 
