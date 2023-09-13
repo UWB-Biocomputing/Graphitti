@@ -74,10 +74,12 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
    // Write call information
    resultOut_ << vectorToXML(all911Vertices.droppedCalls_, "droppedCalls") << endl;
    resultOut_ << vectorToXML(all911Vertices.receivedCalls_, "receivedCalls") << endl;
-   resultOut_ << vector2dToXML(all911Vertices.beginTimeHistory_, "logBeginTime", "vertex") << endl;
-   resultOut_ << vector2dToXML(all911Vertices.answerTimeHistory_, "logAnswerTime", "vertex") << endl;
-   resultOut_ << vector2dToXML(all911Vertices.endTimeHistory_, "logEndTime", "vertex") << endl;
-   resultOut_ << vector2dToXML(all911Vertices.wasAbandonedHistory_, "logWasAbandoned", "vertex")
+   resultOut_ << vector2dToXML(all911Vertices.beginTimeHistory_, "BeginTimeHistory", "vertex")
+              << endl;
+   resultOut_ << vector2dToXML(all911Vertices.answerTimeHistory_, "AnswerTimeHistory", "vertex")
+              << endl;
+   resultOut_ << vector2dToXML(all911Vertices.endTimeHistory_, "EndTimeHistory", "vertex") << endl;
+   resultOut_ << vector2dToXML(all911Vertices.wasAbandonedHistory_, "WasAbandoned", "vertex")
               << endl;
 
    // Print out deleted edges and vertices:
