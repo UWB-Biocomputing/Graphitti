@@ -93,7 +93,7 @@ void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap
          if (all911Vertices.vertexQueues_[dst].isFull()) {
             // Call is dropped because there is no space in the waiting queue
             if (!isRedial_[edgeIdx]) {
-               // Only count the dropped call if its is not a redial
+               // Only count the dropped call if it's not a redial
                all911Vertices.droppedCalls_[dst]++;
                // Record that we received a call
                all911Vertices.receivedCalls_[dst]++;
