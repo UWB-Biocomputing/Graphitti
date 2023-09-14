@@ -204,13 +204,14 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
             // If the call is still there, it means that there was no space in the PSAP's waiting
             // queue. Therefore, this is a dropped call.
             // If readialing, we assume that it happens immediately and the caller tries until
-            // getting through. Otherwise, just mark it as a redial.
+            // getting through.
             if (!edges911.isRedial_[edgeIdx] && initRNG.randDblExc() >= redialP_) {
                // We only make the edge available if no readialing occurs.
                edges911.isAvailable_[edgeIdx] = true;
                LOG4CPLUS_DEBUG(vertexLogger_,
                                "Did not redial at time: " << edges911.call_[edgeIdx].time);
             } else {
+               // Keep the edge unavailable but mark it as a redial
                edges911.isRedial_[edgeIdx] = true;
             }
          }
