@@ -33,5 +33,7 @@ struct Call : public InputEvent {
    // Event location
    double x;
    double y;
+   // Patience time: How long a customer is willing to wait in the queue
+   int patience;
    std::string type;
 };
