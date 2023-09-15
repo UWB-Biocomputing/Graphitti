@@ -146,6 +146,7 @@ void All911Vertices::loadParameters()
    ParameterManager::getInstance().getIntByXpath("//CallNum/max/text()", callNumRange_[1]);
    ParameterManager::getInstance().getBGFloatByXpath("//DispNumScale/text()", dispNumScale_);
    ParameterManager::getInstance().getBGFloatByXpath("//RespNumScale/text()", respNumScale_);
+   ParameterManager::getInstance().getBGFloatByXpath("//RedialP/text()", redialP_);
 }
 
 
@@ -204,14 +205,22 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
          if (!edges911.isAvailable_[edgeIdx]) {
             // If the call is still there, it means that there was no space in the PSAP's waiting
             // queue. Therefore, this is a dropped call.
-            // TODO: Decide if it needs to be redialed
-            // Make the edge availabe after taking care of the dropped call
-            edges911.isAvailable_[edgeIdx] = true;
+            // If readialing, we assume that it happens immediately and the caller tries until
+            // getting through.
+            if (!edges911.isRedial_[edgeIdx] && initRNG.randDblExc() >= redialP_) {
+               // We only make the edge available if no readialing occurs.
+               edges911.isAvailable_[edgeIdx] = true;
+               LOG4CPLUS_DEBUG(vertexLogger_,
+                               "Did not redial at time: " << edges911.call_[edgeIdx].time);
+            } else {
+               // Keep the edge unavailable but mark it as a redial
+               edges911.isRedial_[edgeIdx] = true;
+            }
          }
 
          // peek at the next call in the queue
          optional<Call> nextCall = vertexQueues_[vertex].peek();
-         if (nextCall && nextCall->time <= g_simulationStep) {
+         if (edges911.isAvailable_[edgeIdx] && nextCall && nextCall->time <= g_simulationStep) {
             // Calls that start at the same time are process in the order they appear.
             // The call starts at the current time step so we need to pop it and process it
             vertexQueues_[vertex].get();   // pop from the queue
