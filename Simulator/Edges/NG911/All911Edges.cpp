@@ -99,9 +99,11 @@ void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap
                all911Vertices.receivedCalls_[dst]++;
                LOG4CPLUS_DEBUG(edgeLogger_, "Call dropped: " << all911Vertices.droppedCalls_[dst]
                                                              << ", time: " << call_[edgeIdx].time
-                                                             << ", eIdx: " << edgeIdx);
+                                                             << ", vertex: " << dst
+                                                             << ", queue capacity: " << all911Vertices.vertexQueues_[dst].capacity());
             }
          } else {
+            // Transfer call to destination
             all911Vertices.vertexQueues_[dst].put(call_[edgeIdx]);
             // Record that we received a call
             all911Vertices.receivedCalls_[dst]++;

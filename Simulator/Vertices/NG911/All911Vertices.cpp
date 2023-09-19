@@ -6,6 +6,7 @@
  * @brief A container of all 911 vertex data
  */
 
+#include <cmath>
 #include "All911Vertices.h"
 #include "All911Edges.h"
 #include "GraphManager.h"
@@ -255,9 +256,44 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
                                   << answerTime_[vertex][agent] - servingCall_[vertex][agent].time);
 
                // TODO: Dispatch the Responder closest to the emergency location.
+               // loop over the outgoing edges looking for the responder with the shortest
+               // Euclidean distance to the call's location.
+               BGSIZE startOutEdg = edgeIndexMap.outgoingEdgeBegin_[vertex];
+               BGSIZE outEdgCount = edgeIndexMap.outgoingEdgeCount_[vertex];
+
+               // We need the Layout to calculate the distance
+               Layout &layout = Simulator::getInstance().getModel().getLayout();
+
+               int resp, respEdge;
+               double minDistance = numeric_limits<double>::max();
+               for (BGSIZE eIdxMap = startOutEdg; eIdxMap < startOutEdg + outEdgCount; ++eIdxMap) {
+                  BGSIZE outEdg = edgeIndexMap.outgoingEdgeIndexMap_[eIdxMap];
+                  assert(edges911.inUse_[outEdg]);   // Edge must be in use
+
+                  BGSIZE dstVertex = edges911.destVertexIndex_[outEdg];
+                  if (layout.vertexTypeMap_[dstVertex] != RESP) {
+                     continue;   // This is not a responder
+                  }
+
+                  double xDelta = servingCall_[vertex][agent].x - layout.xloc_[dstVertex];
+                  double yDelta = servingCall_[vertex][agent].y - layout.yloc_[dstVertex];
+                  double distance = sqrt(pow(xDelta, 2) + pow(yDelta, 2));
+
+                  if (distance < minDistance) {
+                     minDistance = distance;
+                     resp = dstVertex;
+                     respEdge = outEdg;
+                  }
+               }
+               assert(resp > -1);   // We must have found a responder
+               LOG4CPLUS_DEBUG(vertexLogger_, "Dispatching Responder: " << resp << " type: " << layout.vertexTypeMap_[resp]);
+
+               // Place the call in the edge going to the responder
+               edges911.call_[respEdge] = servingCall_[vertex][agent];
+               edges911.isAvailable_[respEdge] = false;
+
                // This assumes that the caller doesn't stay in the line until the responder
                // arrives on scene. This not true in all instances.
-
                availableAgents.push_back(agent);
             }
          }
@@ -294,6 +330,17 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
                ++agentId;
             }
          }
+         // FIX ME: Update number of busy agents to check for queue space
+         // a number of busy agents should fix queue size bug
+
+      } else if (layout.vertexTypeMap_[vertex] == RESP) {
+         // Let's just record that responder received the call and pop it from the queue
+         if (!vertexQueues_[vertex].isEmpty()) {
+            optional<Call> incident = vertexQueues_[vertex].get();
+            assert(incident);
+            LOG4CPLUS_DEBUG(vertexLogger_, "Responded to incident, type: " << incident->type);
+         }
+         
       }
    }
 }
