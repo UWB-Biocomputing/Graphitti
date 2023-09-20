@@ -211,7 +211,9 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
 }
 
 
-void All911Vertices::advanceCALR(const BGSIZE index, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap) {
+void All911Vertices::advanceCALR(const BGSIZE index, All911Edges &edges911,
+                                 const EdgeIndexMap &edgeIndexMap)
+{
    // There is only one outgoing edge from CALR to a PSAP
    BGSIZE start = edgeIndexMap.outgoingEdgeBegin_[index];
    BGSIZE edgeIdx = edgeIndexMap.outgoingEdgeIndexMap_[start];
@@ -225,8 +227,7 @@ void All911Vertices::advanceCALR(const BGSIZE index, All911Edges &edges911, cons
       if (!edges911.isRedial_[edgeIdx] && initRNG.randDblExc() >= redialP_) {
          // We only make the edge available if no readialing occurs.
          edges911.isAvailable_[edgeIdx] = true;
-         LOG4CPLUS_DEBUG(vertexLogger_,
-                           "Did not redial at time: " << edges911.call_[edgeIdx].time);
+         LOG4CPLUS_DEBUG(vertexLogger_, "Did not redial at time: " << edges911.call_[edgeIdx].time);
       } else {
          // Keep the edge unavailable but mark it as a redial
          edges911.isRedial_[edgeIdx] = true;
@@ -249,7 +250,9 @@ void All911Vertices::advanceCALR(const BGSIZE index, All911Edges &edges911, cons
 }
 
 
-void All911Vertices::advancePSAP(const BGSIZE index, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap) {
+void All911Vertices::advancePSAP(const BGSIZE index, All911Edges &edges911,
+                                 const EdgeIndexMap &edgeIndexMap)
+{
    // Loop over all agents and free the ones finishing serving calls
    vector<int> availableAgents;
    for (size_t agent = 0; agent < agentCountdown_[index].size(); ++agent) {
@@ -267,10 +270,10 @@ void All911Vertices::advancePSAP(const BGSIZE index, All911Edges &edges911, cons
          answerTimeHistory_[index].push_back(answerTime_[index][agent]);
          endTimeHistory_[index].push_back(g_simulationStep);
          LOG4CPLUS_DEBUG(vertexLogger_,
-                           "Finishing call, begin time: "
-                              << servingCall_[index][agent].time
-                              << ", end time: " << g_simulationStep << ", waited: "
-                              << answerTime_[index][agent] - servingCall_[index][agent].time);
+                         "Finishing call, begin time: "
+                            << servingCall_[index][agent].time << ", end time: " << g_simulationStep
+                            << ", waited: "
+                            << answerTime_[index][agent] - servingCall_[index][agent].time);
 
          // TODO: Dispatch the Responder closest to the emergency location.
          // loop over the outgoing edges looking for the responder with the shortest
@@ -303,7 +306,8 @@ void All911Vertices::advancePSAP(const BGSIZE index, All911Edges &edges911, cons
             }
          }
          assert(resp > -1);   // We must have found a responder
-         LOG4CPLUS_DEBUG(vertexLogger_, "Dispatching Responder: " << resp << " type: " << layout.vertexTypeMap_[resp]);
+         LOG4CPLUS_DEBUG(vertexLogger_, "Dispatching Responder: " << resp << " type: "
+                                                                  << layout.vertexTypeMap_[resp]);
 
          // Place the call in the edge going to the responder
          edges911.call_[respEdge] = servingCall_[index][agent];
@@ -331,9 +335,9 @@ void All911Vertices::advancePSAP(const BGSIZE index, All911Edges &edges911, cons
          // Answer time and end time get zero as sentinel for non-valid values
          answerTimeHistory_[index].push_back(0);
          endTimeHistory_[index].push_back(0);
-         LOG4CPLUS_DEBUG(vertexLogger_,
-                           "Call was abandoned, Patience: " << call->patience << " Ring Time: "
-                                                            << g_simulationStep - call->time);
+         LOG4CPLUS_DEBUG(vertexLogger_, "Call was abandoned, Patience: "
+                                           << call->patience
+                                           << " Ring Time: " << g_simulationStep - call->time);
       } else {
          // The available agent starts serving the call
          int agent = availableAgents[agentId];
@@ -341,8 +345,7 @@ void All911Vertices::advancePSAP(const BGSIZE index, All911Edges &edges911, cons
          answerTime_[index][agent] = g_simulationStep;
          agentCountdown_[index][agent] = call.value().duration;
          LOG4CPLUS_DEBUG(vertexLogger_, "Serving Call starting at time: "
-                                             << call->time
-                                             << ", sim-step: " << g_simulationStep);
+                                           << call->time << ", sim-step: " << g_simulationStep);
          // Next agent
          ++agentId;
       }
@@ -353,7 +356,9 @@ void All911Vertices::advancePSAP(const BGSIZE index, All911Edges &edges911, cons
 }
 
 
-void All911Vertices::advanceRESP(const BGSIZE index, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap) {
+void All911Vertices::advanceRESP(const BGSIZE index, All911Edges &edges911,
+                                 const EdgeIndexMap &edgeIndexMap)
+{
    // Let's just record that responder received the call and pop it from the queue
    if (!vertexQueues_[index].isEmpty()) {
       optional<Call> incident = vertexQueues_[index].get();
