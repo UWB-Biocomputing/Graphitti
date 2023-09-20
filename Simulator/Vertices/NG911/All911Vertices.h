@@ -18,10 +18,14 @@
 #pragma once
 
 #include "AllVertices.h"
+// #include "All911Edges.h"
 #include "CircularBuffer.h"
 #include "Global.h"
 #include "InputEvent.h"
 #include "InputManager.h"
+
+// Forward declaration to avoid circular reference
+class All911Edges;
 
 // Class to hold all data necessary for all the Vertices.
 class All911Vertices : public AllVertices {
@@ -69,6 +73,9 @@ public:
    /// These are the queues where calls will wait to be served
    vector<CircularBuffer<Call>> vertexQueues_;
 
+   /// Number of agents currently serving calls
+   vector<int> busyAgents_;
+
    /// The number of calls that have been dropped (got a busy signal)
    vector<int> droppedCalls_;
 
@@ -106,6 +113,27 @@ private:
 
    /// The InputManager holds all the Input Events for the simulation
    InputManager<Call> inputManager_;
+
+   ///  Advance a CALR vertex. Send calls to the appropriate PSAP
+   ///
+   ///  @param  index         Index of the CALR vertex
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   ///  @param  allEdges      Reference to an instance of All911Edges
+   void advanceCALR(const BGSIZE index, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap);
+
+   ///  Advance a PSAP vertex. Controls the redirection and handling of calls
+   ///
+   ///  @param  index         Index of the PSAP vertex
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   ///  @param  allEdges      Reference to an instance of All911Edges
+   void advancePSAP(const BGSIZE index, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap);
+
+   ///  Advance a RESP vertex. Receives call from PSAP and responds to the emergency events
+   ///
+   ///  @param  index         Index of the RESP vertex
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   ///  @param  allEdges      Reference to an instance of All911Edges
+   void advanceRESP(const BGSIZE index, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap);
 
    // TODO: The variables below are from previous version. I need to review what
    //       they are for and if they are being used anywhere.
