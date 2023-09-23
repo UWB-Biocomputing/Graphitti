@@ -8,6 +8,7 @@
 
 #include "All911Vertices.h"
 #include "All911Edges.h"
+#include "Connections911.h"
 #include "GraphManager.h"
 #include "Layout911.h"
 #include "ParameterManager.h"
@@ -264,53 +265,27 @@ void All911Vertices::advancePSAP(const BGSIZE index, All911Edges &edges911,
       } else if (--agentCountdown_[index][agent] == 0) {
          // Agent becomes free to take calls
          // TODO: What about wrap-up time?
+         Call &endingCall = servingCall_[index][agent];
+
          //Store call metrics
          wasAbandonedHistory_[index].push_back(false);
-         beginTimeHistory_[index].push_back(servingCall_[index][agent].time);
+         beginTimeHistory_[index].push_back(endingCall.time);
          answerTimeHistory_[index].push_back(answerTime_[index][agent]);
          endTimeHistory_[index].push_back(g_simulationStep);
          LOG4CPLUS_DEBUG(vertexLogger_,
                          "Finishing call, begin time: "
-                            << servingCall_[index][agent].time << ", end time: " << g_simulationStep
-                            << ", waited: "
-                            << answerTime_[index][agent] - servingCall_[index][agent].time);
+                            << endingCall.time << ", end time: " << g_simulationStep
+                            << ", waited: " << answerTime_[index][agent] - endingCall.time);
 
-         // TODO: Dispatch the Responder closest to the emergency location.
-         // loop over the outgoing edges looking for the responder with the shortest
-         // Euclidean distance to the call's location.
-         BGSIZE startOutEdg = edgeIndexMap.outgoingEdgeBegin_[index];
-         BGSIZE outEdgCount = edgeIndexMap.outgoingEdgeCount_[index];
-
-         // We need the Layout to calculate the distance
-         Layout &layout = Simulator::getInstance().getModel().getLayout();
-
-         int resp, respEdge;
-         double minDistance = numeric_limits<double>::max();
-         for (BGSIZE eIdxMap = startOutEdg; eIdxMap < startOutEdg + outEdgCount; ++eIdxMap) {
-            BGSIZE outEdg = edgeIndexMap.outgoingEdgeIndexMap_[eIdxMap];
-            assert(edges911.inUse_[outEdg]);   // Edge must be in use
-
-            BGSIZE dstVertex = edges911.destVertexIndex_[outEdg];
-            if (layout.vertexTypeMap_[dstVertex] != RESP) {
-               continue;   // This is not a responder
-            }
-
-            double xDelta = servingCall_[index][agent].x - layout.xloc_[dstVertex];
-            double yDelta = servingCall_[index][agent].y - layout.yloc_[dstVertex];
-            double distance = sqrt(pow(xDelta, 2) + pow(yDelta, 2));
-
-            if (distance < minDistance) {
-               minDistance = distance;
-               resp = dstVertex;
-               respEdge = outEdg;
-            }
-         }
-         assert(resp > -1);   // We must have found a responder
-         LOG4CPLUS_DEBUG(vertexLogger_, "Dispatching Responder: " << resp << " type: "
-                                                                  << layout.vertexTypeMap_[resp]);
+         // Dispatch the Responder closest to the emergency location.
+         Connections911 &conn911
+            = dynamic_cast<Connections911 &>(Simulator::getInstance().getModel().getConnections());
+         BGSIZE respEdge = conn911.getEdgeToClosestResponder(endingCall, index);
+         BGSIZE responder = edges911.destVertexIndex_[respEdge];
+         LOG4CPLUS_DEBUG(vertexLogger_, "Dispatching Responder: " << responder);
 
          // Place the call in the edge going to the responder
-         edges911.call_[respEdge] = servingCall_[index][agent];
+         edges911.call_[respEdge] = endingCall;
          edges911.isAvailable_[respEdge] = false;
 
          // This assumes that the caller doesn't stay in the line until the responder

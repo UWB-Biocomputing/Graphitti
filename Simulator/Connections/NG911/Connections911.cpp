@@ -8,7 +8,8 @@
 */
 
 #include "Connections911.h"
-#include "All911Vertices.h"
+#include "All911Edges.h"
+// #include "All911Vertices.h"
 #include "GraphManager.h"
 #include "Layout911.h"
 #include "ParameterManager.h"
@@ -93,6 +94,54 @@ bool Connections911::updateConnections(AllVertices &vertices)
 
    return true;
 }
+
+
+/// Finds the outgoing edge from the given vertex to the Responder closest to
+/// the emergency call location
+///
+/// @param call         The call that needs a Responder
+/// @param vertexIdx    The index of the vertex serving the call (A PSAP)
+/// @return    The index of the outgoing edge to the closest Responder
+BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, const BGSIZE vertexIdx)
+{
+   All911Edges &edges911 = dynamic_cast<All911Edges &>(*edges_);
+
+   // loop over the outgoing edges looking for the responder with the shortest
+   // Euclidean distance to the call's location.
+   BGSIZE startOutEdg = synapseIndexMap_->outgoingEdgeBegin_[vertexIdx];
+   BGSIZE outEdgCount = synapseIndexMap_->outgoingEdgeCount_[vertexIdx];
+
+   // We need the Layout to calculate the distance
+   Layout &layout = Simulator::getInstance().getModel().getLayout();
+
+   BGSIZE resp, respEdge;
+   double minDistance = numeric_limits<double>::max();
+   for (BGSIZE eIdxMap = startOutEdg; eIdxMap < startOutEdg + outEdgCount; ++eIdxMap) {
+      BGSIZE outEdg = synapseIndexMap_->outgoingEdgeIndexMap_[eIdxMap];
+      assert(edges911.inUse_[outEdg]);   // Edge must be in use
+
+      BGSIZE dstVertex = edges911.destVertexIndex_[outEdg];
+      if (layout.vertexTypeMap_[dstVertex] != RESP) {
+         continue;   // This is not a responder
+      }
+
+      double xDelta = call.x - layout.xloc_[dstVertex];
+      double yDelta = call.y - layout.yloc_[dstVertex];
+      double distance = sqrt(pow(xDelta, 2) + pow(yDelta, 2));
+
+      if (distance < minDistance) {
+         minDistance = distance;
+         resp = dstVertex;
+         respEdge = outEdg;
+      }
+   }
+
+   // We must have found a responder
+   assert(minDistance < numeric_limits<double>::max());
+   assert(layout.vertexTypeMap_[resp] == RESP);
+   return respEdge;
+}
+
 
 ///  Randomly delete 1 PSAP and rewire all the edges around it.
 ///
@@ -299,6 +348,7 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
 
    return changesMade;
 }
+
 
 ///  @return xml representation of a single edge
 string Connections911::ChangedEdge::toString()
