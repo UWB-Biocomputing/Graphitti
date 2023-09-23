@@ -11,8 +11,6 @@
 
 #include "Connections.h"
 #include "InputEvent.h"
-#include "Global.h"
-#include "Simulator.h"
 #include <vector>
 
 using namespace std;

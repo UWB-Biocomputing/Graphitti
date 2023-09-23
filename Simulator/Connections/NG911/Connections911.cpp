@@ -9,9 +9,7 @@
 
 #include "Connections911.h"
 #include "All911Edges.h"
-// #include "All911Vertices.h"
 #include "GraphManager.h"
-#include "Layout911.h"
 #include "ParameterManager.h"
 
 void Connections911::setup()
