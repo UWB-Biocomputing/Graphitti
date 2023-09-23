@@ -212,11 +212,11 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
 }
 
 
-void All911Vertices::advanceCALR(const BGSIZE index, All911Edges &edges911,
+void All911Vertices::advanceCALR(const BGSIZE vertexIdx, All911Edges &edges911,
                                  const EdgeIndexMap &edgeIndexMap)
 {
    // There is only one outgoing edge from CALR to a PSAP
-   BGSIZE start = edgeIndexMap.outgoingEdgeBegin_[index];
+   BGSIZE start = edgeIndexMap.outgoingEdgeBegin_[vertexIdx];
    BGSIZE edgeIdx = edgeIndexMap.outgoingEdgeIndexMap_[start];
 
    // Check for dropped calls, indicated by the edge not being available
@@ -236,11 +236,11 @@ void All911Vertices::advanceCALR(const BGSIZE index, All911Edges &edges911,
    }
 
    // peek at the next call in the queue
-   optional<Call> nextCall = vertexQueues_[index].peek();
+   optional<Call> nextCall = vertexQueues_[vertexIdx].peek();
    if (edges911.isAvailable_[edgeIdx] && nextCall && nextCall->time <= g_simulationStep) {
       // Calls that start at the same time are process in the order they appear.
       // The call starts at the current time step so we need to pop it and process it
-      vertexQueues_[index].get();   // pop from the queue
+      vertexQueues_[vertexIdx].get();   // pop from the queue
 
       // Place new call in the edge going to the PSAP
       assert(edges911.isAvailable_[edgeIdx]);
@@ -251,36 +251,36 @@ void All911Vertices::advanceCALR(const BGSIZE index, All911Edges &edges911,
 }
 
 
-void All911Vertices::advancePSAP(const BGSIZE index, All911Edges &edges911,
+void All911Vertices::advancePSAP(const BGSIZE vertexIdx, All911Edges &edges911,
                                  const EdgeIndexMap &edgeIndexMap)
 {
    // Loop over all agents and free the ones finishing serving calls
    vector<int> availableAgents;
-   for (size_t agent = 0; agent < agentCountdown_[index].size(); ++agent) {
-      if (agentCountdown_[index][agent] == 0) {
+   for (size_t agent = 0; agent < agentCountdown_[vertexIdx].size(); ++agent) {
+      if (agentCountdown_[vertexIdx][agent] == 0) {
          // Agent is available to take calls. This check is needed because
          // calls could have duration of zero, meaning they hang up as soon as
          // the call is answered
          availableAgents.push_back(agent);
-      } else if (--agentCountdown_[index][agent] == 0) {
+      } else if (--agentCountdown_[vertexIdx][agent] == 0) {
          // Agent becomes free to take calls
          // TODO: What about wrap-up time?
-         Call &endingCall = servingCall_[index][agent];
+         Call &endingCall = servingCall_[vertexIdx][agent];
 
          //Store call metrics
-         wasAbandonedHistory_[index].push_back(false);
-         beginTimeHistory_[index].push_back(endingCall.time);
-         answerTimeHistory_[index].push_back(answerTime_[index][agent]);
-         endTimeHistory_[index].push_back(g_simulationStep);
+         wasAbandonedHistory_[vertexIdx].push_back(false);
+         beginTimeHistory_[vertexIdx].push_back(endingCall.time);
+         answerTimeHistory_[vertexIdx].push_back(answerTime_[vertexIdx][agent]);
+         endTimeHistory_[vertexIdx].push_back(g_simulationStep);
          LOG4CPLUS_DEBUG(vertexLogger_,
                          "Finishing call, begin time: "
                             << endingCall.time << ", end time: " << g_simulationStep
-                            << ", waited: " << answerTime_[index][agent] - endingCall.time);
+                            << ", waited: " << answerTime_[vertexIdx][agent] - endingCall.time);
 
          // Dispatch the Responder closest to the emergency location.
          Connections911 &conn911
             = dynamic_cast<Connections911 &>(Simulator::getInstance().getModel().getConnections());
-         BGSIZE respEdge = conn911.getEdgeToClosestResponder(endingCall, index);
+         BGSIZE respEdge = conn911.getEdgeToClosestResponder(endingCall, vertexIdx);
          BGSIZE responder = edges911.destVertexIndex_[respEdge];
          LOG4CPLUS_DEBUG(vertexLogger_, "Dispatching Responder: " << responder);
 
@@ -297,28 +297,28 @@ void All911Vertices::advancePSAP(const BGSIZE index, All911Edges &edges911,
    // Assign calls to agents until either no agents are available or
    // there are no more calls in the waiting queue
    size_t agentId = 0;
-   while (agentId < availableAgents.size() && !vertexQueues_[index].isEmpty()) {
+   while (agentId < availableAgents.size() && !vertexQueues_[vertexIdx].isEmpty()) {
       // TODO: calls with duration of zero are being added but because countdown will be zero
       //       they don't show up in the logs
-      optional<Call> call = vertexQueues_[index].get();
+      optional<Call> call = vertexQueues_[vertexIdx].get();
       assert(call);
 
       if (call->patience < (g_simulationStep - call->time)) {
          // If the patience time is less than the waiting time, the call is abandoned
-         wasAbandonedHistory_[index].push_back(true);
-         beginTimeHistory_[index].push_back(call->time);
+         wasAbandonedHistory_[vertexIdx].push_back(true);
+         beginTimeHistory_[vertexIdx].push_back(call->time);
          // Answer time and end time get zero as sentinel for non-valid values
-         answerTimeHistory_[index].push_back(0);
-         endTimeHistory_[index].push_back(0);
+         answerTimeHistory_[vertexIdx].push_back(0);
+         endTimeHistory_[vertexIdx].push_back(0);
          LOG4CPLUS_DEBUG(vertexLogger_, "Call was abandoned, Patience: "
                                            << call->patience
                                            << " Ring Time: " << g_simulationStep - call->time);
       } else {
          // The available agent starts serving the call
          int agent = availableAgents[agentId];
-         servingCall_[index][agent] = call.value();
-         answerTime_[index][agent] = g_simulationStep;
-         agentCountdown_[index][agent] = call.value().duration;
+         servingCall_[vertexIdx][agent] = call.value();
+         answerTime_[vertexIdx][agent] = g_simulationStep;
+         agentCountdown_[vertexIdx][agent] = call.value().duration;
          LOG4CPLUS_DEBUG(vertexLogger_, "Serving Call starting at time: "
                                            << call->time << ", sim-step: " << g_simulationStep);
          // Next agent
@@ -327,16 +327,16 @@ void All911Vertices::advancePSAP(const BGSIZE index, All911Edges &edges911,
    }
 
    // Update number of busy agents. This is used to check if there is space in the queue
-   busyAgents_[index] = numAgents_[index] - availableAgents.size();
+   busyAgents_[vertexIdx] = numAgents_[vertexIdx] - availableAgents.size();
 }
 
 
-void All911Vertices::advanceRESP(const BGSIZE index, All911Edges &edges911,
+void All911Vertices::advanceRESP(const BGSIZE vertexIdx, All911Edges &edges911,
                                  const EdgeIndexMap &edgeIndexMap)
 {
    // Let's just record that responder received the call and pop it from the queue
-   if (!vertexQueues_[index].isEmpty()) {
-      optional<Call> incident = vertexQueues_[index].get();
+   if (!vertexQueues_[vertexIdx].isEmpty()) {
+      optional<Call> incident = vertexQueues_[vertexIdx].get();
       assert(incident);
       LOG4CPLUS_DEBUG(vertexLogger_, "Responded to incident, type: " << incident->type);
    }

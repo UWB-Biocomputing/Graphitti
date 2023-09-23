@@ -116,24 +116,24 @@ private:
 
    ///  Advance a CALR vertex. Send calls to the appropriate PSAP
    ///
-   ///  @param  index         Index of the CALR vertex
+   ///  @param  vertexIdx     Index of the CALR vertex
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    ///  @param  allEdges      Reference to an instance of All911Edges
-   void advanceCALR(const BGSIZE index, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap);
+   void advanceCALR(const BGSIZE vertexIdx, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap);
 
    ///  Advance a PSAP vertex. Controls the redirection and handling of calls
    ///
-   ///  @param  index         Index of the PSAP vertex
+   ///  @param  vertexIdx     Index of the PSAP vertex
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    ///  @param  allEdges      Reference to an instance of All911Edges
-   void advancePSAP(const BGSIZE index, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap);
+   void advancePSAP(const BGSIZE vertexIdx, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap);
 
    ///  Advance a RESP vertex. Receives call from PSAP and responds to the emergency events
    ///
-   ///  @param  index         Index of the RESP vertex
+   ///  @param  vertexIdx     Index of the RESP vertex
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    ///  @param  allEdges      Reference to an instance of All911Edges
-   void advanceRESP(const BGSIZE index, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap);
+   void advanceRESP(const BGSIZE vertexIdx, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap);
 
    // TODO: The variables below are from previous version. I need to review what
    //       they are for and if they are being used anywhere.
