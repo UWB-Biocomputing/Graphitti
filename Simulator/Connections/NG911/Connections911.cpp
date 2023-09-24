@@ -104,14 +104,17 @@ BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, const BGSIZE 
 {
    All911Edges &edges911 = dynamic_cast<All911Edges &>(*edges_);
 
+   vertexType requiredType;
+   if (call.type == "Law") requiredType = LAW;
+   else if (call.type == "EMS") requiredType = EMS;
+   else if (call.type == "Fire") requiredType = FIRE;
+
    // loop over the outgoing edges looking for the responder with the shortest
    // Euclidean distance to the call's location.
    BGSIZE startOutEdg = synapseIndexMap_->outgoingEdgeBegin_[vertexIdx];
    BGSIZE outEdgCount = synapseIndexMap_->outgoingEdgeCount_[vertexIdx];
-
-   // We need the Layout to calculate the distance
    Layout &layout = Simulator::getInstance().getModel().getLayout();
-
+   
    BGSIZE resp, respEdge;
    double minDistance = numeric_limits<double>::max();
    for (BGSIZE eIdxMap = startOutEdg; eIdxMap < startOutEdg + outEdgCount; ++eIdxMap) {
@@ -119,24 +122,22 @@ BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, const BGSIZE 
       assert(edges911.inUse_[outEdg]);   // Edge must be in use
 
       BGSIZE dstVertex = edges911.destVertexIndex_[outEdg];
-      if (layout.vertexTypeMap_[dstVertex] != RESP) {
-         continue;   // This is not a responder
-      }
+      if (layout.vertexTypeMap_[dstVertex] == requiredType) {
+         double xDelta = call.x - layout.xloc_[dstVertex];
+         double yDelta = call.y - layout.yloc_[dstVertex];
+         double distance = sqrt(pow(xDelta, 2) + pow(yDelta, 2));
 
-      double xDelta = call.x - layout.xloc_[dstVertex];
-      double yDelta = call.y - layout.yloc_[dstVertex];
-      double distance = sqrt(pow(xDelta, 2) + pow(yDelta, 2));
-
-      if (distance < minDistance) {
-         minDistance = distance;
-         resp = dstVertex;
-         respEdge = outEdg;
+         if (distance < minDistance) {
+            minDistance = distance;
+            resp = dstVertex;
+            respEdge = outEdg;
+         }
       }
    }
 
-   // We must have found a responder
+   // We must have found the closest responder of the right type
    assert(minDistance < numeric_limits<double>::max());
-   assert(layout.vertexTypeMap_[resp] == RESP);
+   assert(layout.vertexTypeMap_[resp] == requiredType);
    return respEdge;
 }
 
@@ -204,7 +205,8 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
          }
 
          // Identify all psap-less responders
-         if (layout.vertexTypeMap_[destVertex] == RESP) {
+         if (layout.vertexTypeMap_[destVertex] == LAW || layout.vertexTypeMap_[destVertex] == FIRE ||
+             layout.vertexTypeMap_[destVertex] == EMS) {
             respsToReroute.push_back(destVertex);
          }
       }
@@ -298,7 +300,8 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
 
    // Find all resps
    for (int i = 0; i < numVertices; i++) {
-      if (layout.vertexTypeMap_[i] == RESP) {
+      if (layout.vertexTypeMap_[i] == LAW || layout.vertexTypeMap_[i] == FIRE ||
+             layout.vertexTypeMap_[i] == EMS) {
          resps.push_back(i);
       }
    }

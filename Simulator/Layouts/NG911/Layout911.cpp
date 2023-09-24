@@ -83,9 +83,9 @@ void Layout911::generateVertexTypeMap(int numVertices)
    // In the GraphML file Responders are divided in LAW, FIRE, and EMS.
    // Perhaps, we need to expand the vertex types?
    map<string, vertexType> vTypeMap = {{"CALR", vertexType::CALR},
-                                       {"LAW", vertexType::RESP},
-                                       {"FIRE", vertexType::RESP},
-                                       {"EMS", vertexType::RESP},
+                                       {"LAW", vertexType::LAW},
+                                       {"FIRE", vertexType::FIRE},
+                                       {"EMS", vertexType::EMS},
                                        {"PSAP", vertexType::PSAP}};
    // Count map for debugging
    map<string, int> vTypeCount;
@@ -132,15 +132,19 @@ edgeType Layout911::edgType(const int srcVertex, const int destVertex)
 {
    if (vertexTypeMap_[srcVertex] == CALR && vertexTypeMap_[destVertex] == PSAP)
       return CP;
-   else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == RESP)
+   else if (vertexTypeMap_[srcVertex] == PSAP && (vertexTypeMap_[destVertex] == LAW ||
+                                                  vertexTypeMap_[destVertex] == FIRE ||
+                                                  vertexTypeMap_[destVertex] == EMS))
       return PR;
    else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == CALR)
       return PC;
    else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == PSAP)
       return PP;
-   else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == PSAP)
+   else if ((vertexTypeMap_[srcVertex] == LAW || vertexTypeMap_[destVertex] == FIRE ||
+             vertexTypeMap_[destVertex] == EMS) && vertexTypeMap_[destVertex] == PSAP)
       return RP;
-   else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == CALR)
+   else if ((vertexTypeMap_[srcVertex] == LAW || vertexTypeMap_[destVertex] == FIRE ||
+             vertexTypeMap_[destVertex] == EMS) && vertexTypeMap_[destVertex] == CALR)
       return RC;
    else
       return ETYPE_UNDEF;

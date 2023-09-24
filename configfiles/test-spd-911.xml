@@ -38,8 +38,8 @@
       <graphmlFile name="graphmlFile">../configfiles/graphs/spd.graphml</graphmlFile>
           <!-- Max ConnsPerVertex = 87 RC + 1 PR -->
       <connsPerVertex name="connsPerVertex">88</connsPerVertex>
-      <psapsToErase name="psapsToErase">1</psapsToErase>
-      <respsToErase name="respsToErase">2</respsToErase>
+      <psapsToErase name="psapsToErase">0</psapsToErase>
+      <respsToErase name="respsToErase">0</respsToErase>
     </ConnectionsParams>
 
     <InputParams name="InputParams">

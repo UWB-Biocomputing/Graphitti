@@ -105,7 +105,9 @@ enum vertexType {
    // NG911
    CALR = 3,
    PSAP = 4,
-   RESP = 5,
+   EMS = 5,
+   FIRE = 6,
+   LAW = 7,
    // UNDEF
    VTYPE_UNDEF = 0
 };
