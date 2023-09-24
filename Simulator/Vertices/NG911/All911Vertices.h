@@ -72,8 +72,8 @@ public:
    /// These are the queues where calls will wait to be served
    vector<CircularBuffer<Call>> vertexQueues_;
 
-   /// Number of agents currently serving calls
-   vector<int> busyAgents_;
+   /// Number of servers currently serving calls
+   vector<int> busyServers_;
 
    /// The number of calls that have been dropped (got a busy signal)
    vector<int> droppedCalls_;
@@ -91,9 +91,9 @@ public:
    vector<vector<bool>> wasAbandonedHistory_;
 
 private:
-   /// Number of agents. In a PSAP these are the call takers, in Responder nodes
+   /// Number of servers. In a PSAP these are the call takers, in Responder nodes
    /// they are responder units
-   vector<int> numAgents_;
+   vector<int> numServers_;
 
    /// Number of phone lines available. Only valid for PSAPs and Responders
    vector<int> numTrunks_;
@@ -101,14 +101,14 @@ private:
    /// The probability that a caller will redial after receiving the busy signal
    BGFLOAT redialP_;
 
-   /// Holds the calls being served by each agent
+   /// Holds the calls being served by each server
    vector<vector<Call>> servingCall_;
 
-   /// The time that the call being served was answered by the agent
+   /// The time that the call being served was answered by the server
    vector<vector<uint64_t>> answerTime_;
 
-   /// The countdown until the agent is available to take another call
-   vector<vector<int>> agentCountdown_;
+   /// The countdown until the server is available to take another call
+   vector<vector<int>> serverCountdown_;
 
    /// The InputManager holds all the Input Events for the simulation
    InputManager<Call> inputManager_;

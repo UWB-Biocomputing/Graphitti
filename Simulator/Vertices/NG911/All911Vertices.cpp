@@ -29,13 +29,13 @@ void All911Vertices::setupVertices()
    respNum_.assign(size_, 0);
 
    // Resize and fill vectors with 0
-   numAgents_.assign(size_, 0);
-   busyAgents_.assign(size_, 0);
+   numServers_.assign(size_, 0);
+   busyServers_.assign(size_, 0);
    numTrunks_.assign(size_, 0);
    vertexQueues_.resize(size_);
    servingCall_.resize(size_);
    answerTime_.resize(size_);
-   agentCountdown_.resize(size_);
+   serverCountdown_.resize(size_);
 
    // Resize and fill data structures for recording
    droppedCalls_.assign(size_, 0);
@@ -58,7 +58,7 @@ void All911Vertices::setupVertices()
 // Generate callNum_ and dispNum_ for all caller and psap nodes
 void All911Vertices::createAllVertices(Layout &layout)
 {
-   // Loop over all vertices and set the number of agents and trunks, and
+   // Loop over all vertices and set the number of servers and trunks, and
    // determine the size of the waiting queue.
    // We get the information needed from the GraphManager.
    GraphManager::VertexIterator vi, vi_end;
@@ -70,19 +70,19 @@ void All911Vertices::createAllVertices(Layout &layout)
          // TODO: Hardcoded queue size for now (10/0.0001)
          vertexQueues_[*vi].resize(100000);
       } else {
-         numAgents_[*vi] = gm[*vi].agents;
+         numServers_[*vi] = gm[*vi].servers;
          numTrunks_[*vi] = gm[*vi].trunks;
-         // We should not have more agents than trunks
-         assert(numAgents_[*vi] <= numTrunks_[*vi]);
+         // We should not have more servers than trunks
+         assert(numServers_[*vi] <= numTrunks_[*vi]);
 
-         // The waiting queue is of size # trunks. We keep track of the # of busy agents
+         // The waiting queue is of size # trunks. We keep track of the # of busy servers
          // to know when there are no more trunks available.
          vertexQueues_[*vi].resize(numTrunks_[*vi]);
 
          // Initialize the data structures for agent availability
-         servingCall_[*vi].resize(gm[*vi].agents);
-         answerTime_[*vi].resize(gm[*vi].agents);
-         agentCountdown_[*vi].assign(gm[*vi].agents, 0);
+         servingCall_[*vi].resize(gm[*vi].servers);
+         answerTime_[*vi].resize(gm[*vi].servers);
+         serverCountdown_[*vi].assign(gm[*vi].servers, 0);
       }
    }
 
@@ -254,28 +254,28 @@ void All911Vertices::advanceCALR(const BGSIZE vertexIdx, All911Edges &edges911,
 void All911Vertices::advancePSAP(const BGSIZE vertexIdx, All911Edges &edges911,
                                  const EdgeIndexMap &edgeIndexMap)
 {
-   // Loop over all agents and free the ones finishing serving calls
-   vector<int> availableAgents;
-   for (size_t agent = 0; agent < agentCountdown_[vertexIdx].size(); ++agent) {
-      if (agentCountdown_[vertexIdx][agent] == 0) {
-         // Agent is available to take calls. This check is needed because
+   // Loop over all servers and free the ones finishing serving calls
+   vector<int> availableServers;
+   for (size_t server = 0; server < serverCountdown_[vertexIdx].size(); ++server) {
+      if (serverCountdown_[vertexIdx][server] == 0) {
+         // Server is available to take calls. This check is needed because
          // calls could have duration of zero, meaning they hang up as soon as
          // the call is answered
-         availableAgents.push_back(agent);
-      } else if (--agentCountdown_[vertexIdx][agent] == 0) {
-         // Agent becomes free to take calls
+         availableServers.push_back(server);
+      } else if (--serverCountdown_[vertexIdx][server] == 0) {
+         // Server becomes free to take calls
          // TODO: What about wrap-up time?
-         Call &endingCall = servingCall_[vertexIdx][agent];
+         Call &endingCall = servingCall_[vertexIdx][server];
 
          //Store call metrics
          wasAbandonedHistory_[vertexIdx].push_back(false);
          beginTimeHistory_[vertexIdx].push_back(endingCall.time);
-         answerTimeHistory_[vertexIdx].push_back(answerTime_[vertexIdx][agent]);
+         answerTimeHistory_[vertexIdx].push_back(answerTime_[vertexIdx][server]);
          endTimeHistory_[vertexIdx].push_back(g_simulationStep);
          LOG4CPLUS_DEBUG(vertexLogger_,
                          "Finishing call, begin time: "
                             << endingCall.time << ", end time: " << g_simulationStep
-                            << ", waited: " << answerTime_[vertexIdx][agent] - endingCall.time);
+                            << ", waited: " << answerTime_[vertexIdx][server] - endingCall.time);
 
          // Dispatch the Responder closest to the emergency location.
          Connections911 &conn911
@@ -290,14 +290,14 @@ void All911Vertices::advancePSAP(const BGSIZE vertexIdx, All911Edges &edges911,
 
          // This assumes that the caller doesn't stay in the line until the responder
          // arrives on scene. This not true in all instances.
-         availableAgents.push_back(agent);
+         availableServers.push_back(server);
       }
    }
 
-   // Assign calls to agents until either no agents are available or
+   // Assign calls to servers until either no servers are available or
    // there are no more calls in the waiting queue
-   size_t agentId = 0;
-   while (agentId < availableAgents.size() && !vertexQueues_[vertexIdx].isEmpty()) {
+   size_t serverId = 0;
+   while (serverId < availableServers.size() && !vertexQueues_[vertexIdx].isEmpty()) {
       // TODO: calls with duration of zero are being added but because countdown will be zero
       //       they don't show up in the logs
       optional<Call> call = vertexQueues_[vertexIdx].get();
@@ -314,20 +314,20 @@ void All911Vertices::advancePSAP(const BGSIZE vertexIdx, All911Edges &edges911,
                                            << call->patience
                                            << " Ring Time: " << g_simulationStep - call->time);
       } else {
-         // The available agent starts serving the call
-         int agent = availableAgents[agentId];
-         servingCall_[vertexIdx][agent] = call.value();
-         answerTime_[vertexIdx][agent] = g_simulationStep;
-         agentCountdown_[vertexIdx][agent] = call.value().duration;
+         // The available server starts serving the call
+         int availServer = availableServers[serverId];
+         servingCall_[vertexIdx][availServer] = call.value();
+         answerTime_[vertexIdx][availServer] = g_simulationStep;
+         serverCountdown_[vertexIdx][availServer] = call.value().duration;
          LOG4CPLUS_DEBUG(vertexLogger_, "Serving Call starting at time: "
                                            << call->time << ", sim-step: " << g_simulationStep);
-         // Next agent
-         ++agentId;
+         // Next server
+         ++serverId;
       }
    }
 
-   // Update number of busy agents. This is used to check if there is space in the queue
-   busyAgents_[vertexIdx] = numAgents_[vertexIdx] - availableAgents.size();
+   // Update number of busy servers. This is used to check if there is space in the queue
+   busyServers_[vertexIdx] = numServers_[vertexIdx] - availableServers.size();
 }
 
 
