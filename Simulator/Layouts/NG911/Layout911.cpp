@@ -132,19 +132,21 @@ edgeType Layout911::edgType(const int srcVertex, const int destVertex)
 {
    if (vertexTypeMap_[srcVertex] == CALR && vertexTypeMap_[destVertex] == PSAP)
       return CP;
-   else if (vertexTypeMap_[srcVertex] == PSAP && (vertexTypeMap_[destVertex] == LAW ||
-                                                  vertexTypeMap_[destVertex] == FIRE ||
-                                                  vertexTypeMap_[destVertex] == EMS))
+   else if (vertexTypeMap_[srcVertex] == PSAP
+            && (vertexTypeMap_[destVertex] == LAW || vertexTypeMap_[destVertex] == FIRE
+                || vertexTypeMap_[destVertex] == EMS))
       return PR;
    else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == CALR)
       return PC;
    else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == PSAP)
       return PP;
-   else if ((vertexTypeMap_[srcVertex] == LAW || vertexTypeMap_[destVertex] == FIRE ||
-             vertexTypeMap_[destVertex] == EMS) && vertexTypeMap_[destVertex] == PSAP)
+   else if ((vertexTypeMap_[srcVertex] == LAW || vertexTypeMap_[destVertex] == FIRE
+             || vertexTypeMap_[destVertex] == EMS)
+            && vertexTypeMap_[destVertex] == PSAP)
       return RP;
-   else if ((vertexTypeMap_[srcVertex] == LAW || vertexTypeMap_[destVertex] == FIRE ||
-             vertexTypeMap_[destVertex] == EMS) && vertexTypeMap_[destVertex] == CALR)
+   else if ((vertexTypeMap_[srcVertex] == LAW || vertexTypeMap_[destVertex] == FIRE
+             || vertexTypeMap_[destVertex] == EMS)
+            && vertexTypeMap_[destVertex] == CALR)
       return RC;
    else
       return ETYPE_UNDEF;
