@@ -105,16 +105,19 @@ BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, const BGSIZE 
    All911Edges &edges911 = dynamic_cast<All911Edges &>(*edges_);
 
    vertexType requiredType;
-   if (call.type == "Law") requiredType = LAW;
-   else if (call.type == "EMS") requiredType = EMS;
-   else if (call.type == "Fire") requiredType = FIRE;
+   if (call.type == "Law")
+      requiredType = LAW;
+   else if (call.type == "EMS")
+      requiredType = EMS;
+   else if (call.type == "Fire")
+      requiredType = FIRE;
 
    // loop over the outgoing edges looking for the responder with the shortest
    // Euclidean distance to the call's location.
    BGSIZE startOutEdg = synapseIndexMap_->outgoingEdgeBegin_[vertexIdx];
    BGSIZE outEdgCount = synapseIndexMap_->outgoingEdgeCount_[vertexIdx];
    Layout &layout = Simulator::getInstance().getModel().getLayout();
-   
+
    BGSIZE resp, respEdge;
    double minDistance = numeric_limits<double>::max();
    for (BGSIZE eIdxMap = startOutEdg; eIdxMap < startOutEdg + outEdgCount; ++eIdxMap) {
@@ -205,8 +208,8 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
          }
 
          // Identify all psap-less responders
-         if (layout.vertexTypeMap_[destVertex] == LAW || layout.vertexTypeMap_[destVertex] == FIRE ||
-             layout.vertexTypeMap_[destVertex] == EMS) {
+         if (layout.vertexTypeMap_[destVertex] == LAW || layout.vertexTypeMap_[destVertex] == FIRE
+             || layout.vertexTypeMap_[destVertex] == EMS) {
             respsToReroute.push_back(destVertex);
          }
       }
@@ -300,8 +303,8 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
 
    // Find all resps
    for (int i = 0; i < numVertices; i++) {
-      if (layout.vertexTypeMap_[i] == LAW || layout.vertexTypeMap_[i] == FIRE ||
-             layout.vertexTypeMap_[i] == EMS) {
+      if (layout.vertexTypeMap_[i] == LAW || layout.vertexTypeMap_[i] == FIRE
+          || layout.vertexTypeMap_[i] == EMS) {
          resps.push_back(i);
       }
    }

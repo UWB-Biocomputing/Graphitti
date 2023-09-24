@@ -115,7 +115,7 @@ void All911Vertices::createAllVertices(Layout &layout)
       }
 
       // Find all resps
-      if (layout.vertexTypeMap_[i] == EMS || layout.vertexTypeMap_[i] == FIRE 
+      if (layout.vertexTypeMap_[i] == EMS || layout.vertexTypeMap_[i] == FIRE
           || layout.vertexTypeMap_[i] == LAW) {
          respList.push_back(i);
          respPerZone[layout911.zone(i)] += 1;
@@ -206,7 +206,7 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
          advanceCALR(vertex, edges911, edgeIndexMap);
       } else if (layout.vertexTypeMap_[vertex] == PSAP) {
          advancePSAP(vertex, edges911, edgeIndexMap);
-      } else if (layout.vertexTypeMap_[vertex] == EMS || layout.vertexTypeMap_[vertex] == FIRE 
+      } else if (layout.vertexTypeMap_[vertex] == EMS || layout.vertexTypeMap_[vertex] == FIRE
                  || layout.vertexTypeMap_[vertex] == LAW) {
          advanceRESP(vertex, edges911, edgeIndexMap);
       }
