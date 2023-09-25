@@ -110,15 +110,6 @@ void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap
          }
       }
    }
-   // All911Vertices *allVertices = dynamic_cast<All911Vertices *>(vertices);
-   // for (BGSIZE i = 0; i < totalEdgeCount_; i++) {
-   //    if (!inUse_[i]) {
-   //       continue;
-   //    }
-   //    // if the edge is in use...
-   //    BGSIZE iEdg = edgeIndexMap->incomingEdgeIndexMap_[i];
-   //    advance911Edge(iEdg, allVertices);
-   // }
 }
 
 ///  Advance one specific edge.
