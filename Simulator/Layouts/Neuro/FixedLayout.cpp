@@ -6,8 +6,8 @@
  * @brief The Layout class defines the layout of vertices in neural networks
  */
 
-#include "ConnGrowth.h"
 #include "FixedLayout.h"
+#include "ConnGrowth.h"
 #include "ParameterManager.h"
 #include "ParseParamError.h"
 #include "Util.h"
@@ -178,7 +178,8 @@ void FixedLayout::initVerticesLocs()
 
 void FixedLayout::printLayout()
 {
-   ConnGrowth &pConnGrowth = dynamic_cast<ConnGrowth &>(Simulator::getInstance().getModel().getConnections());
+   ConnGrowth &pConnGrowth
+      = dynamic_cast<ConnGrowth &>(Simulator::getInstance().getModel().getConnections());
 
    cout << "format:\ntype,radius,firing rate" << endl;
 
