@@ -14,34 +14,20 @@ All911Edges::All911Edges(const int numVertices, const int maxEdges)
 
 void All911Edges::setupEdges()
 {
-   int numVertices = Simulator::getInstance().getTotalVertices();
-   int maxEdges = Simulator::getInstance().getMaxEdgesPerVertex();
-   BGSIZE maxTotalEdges = maxEdges * numVertices;
+   // Setup the variables in the Super Class
+   AllEdges::setupEdges();
 
-   isAvailable_ = make_unique<bool[]>(maxTotalEdges);
-   fill_n(isAvailable_.get(), maxTotalEdges, true);
+   // Setup the variables in the sub Class
+   BGSIZE maxTotalEdges = maxEdgesPerVertex_ * countVertices_;
 
-   isRedial_ = make_unique<bool[]>(maxTotalEdges);
-   fill_n(isRedial_.get(), maxTotalEdges, false);
+   if (maxTotalEdges > 0) {
+      isAvailable_ = make_unique<bool[]>(maxTotalEdges);
+      fill_n(isAvailable_.get(), maxTotalEdges, true);
 
-   call_.resize(maxTotalEdges);
+      isRedial_ = make_unique<bool[]>(maxTotalEdges);
+      fill_n(isRedial_.get(), maxTotalEdges, false);
 
-   maxEdgesPerVertex_ = maxEdges;
-   totalEdgeCount_ = 0;
-   countVertices_ = numVertices;
-
-   // To do: Figure out whether we need all of these
-   // Jardi: Removing this seems to break the creating of the EdgeIndexMap
-   if (maxTotalEdges != 0) {
-      // psr_.assign(maxTotalEdges, 0.0);
-      W_.assign(maxTotalEdges, 0);
-      type_.assign(maxTotalEdges, ETYPE_UNDEF);
-      edgeCounts_.assign(numVertices, 0);
-      summationPoint_.assign(maxTotalEdges, nullptr);
-      destVertexIndex_.assign(maxTotalEdges, 0);
-      sourceVertexIndex_.assign(maxTotalEdges, 0);
-      inUse_ = make_unique<bool[]>(maxTotalEdges);
-      fill_n(inUse_.get(), maxTotalEdges, false);
+      call_.resize(maxTotalEdges);
    }
 }
 
