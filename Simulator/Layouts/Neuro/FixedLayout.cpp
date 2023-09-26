@@ -6,6 +6,7 @@
  * @brief The Layout class defines the layout of vertices in neural networks
  */
 
+#include "ConnGrowth.h"
 #include "FixedLayout.h"
 #include "ParameterManager.h"
 #include "ParseParamError.h"
@@ -129,11 +130,10 @@ void FixedLayout::loadParameters()
                           + inhibitoryNListFilePath);
    }
 
-   // Get the total number of vertices
-   int width, height;
-   ParameterManager::getInstance().getIntByXpath("//PoolSize/x/text()", width);
-   ParameterManager::getInstance().getIntByXpath("//PoolSize/y/text()", height);
-   numVertices_ = width * height;
+   // Get width, height and total number of vertices
+   ParameterManager::getInstance().getIntByXpath("//PoolSize/x/text()", width_);
+   ParameterManager::getInstance().getIntByXpath("//PoolSize/y/text()", height_);
+   numVertices_ = width_ * height_;
 }
 
 ///  Returns the type of synapse at the given coordinates
@@ -164,14 +164,61 @@ void FixedLayout::initVerticesLocs()
    if (gridLayout_) {
       // grid layout
       for (int i = 0; i < numVertices; i++) {
-         xloc_[i] = i % Simulator::getInstance().getHeight();
-         yloc_[i] = i / Simulator::getInstance().getHeight();
+         xloc_[i] = i % height_;
+         yloc_[i] = i / height_;
       }
    } else {
       // random layout
       for (int i = 0; i < numVertices; i++) {
-         xloc_[i] = initRNG.inRange(0, Simulator::getInstance().getWidth());
-         yloc_[i] = initRNG.inRange(0, Simulator::getInstance().getHeight());
+         xloc_[i] = initRNG.inRange(0, width_);
+         yloc_[i] = initRNG.inRange(0, height_);
       }
+   }
+}
+
+void FixedLayout::printLayout()
+{
+   ConnGrowth &pConnGrowth = dynamic_cast<ConnGrowth &>(Simulator::getInstance().getModel().getConnections());
+
+   cout << "format:\ntype,radius,firing rate" << endl;
+
+   for (int y = 0; y < height_; y++) {
+      stringstream ss;
+      ss << fixed;
+      ss.precision(1);
+
+      for (int x = 0; x < width_; x++) {
+         switch (vertexTypeMap_[x + y * width_]) {
+            case EXC:
+               if (starterMap_[x + y * width_])
+                  ss << "s";
+               else
+                  ss << "e";
+               break;
+            case INH:
+               ss << "i";
+               break;
+            case VTYPE_UNDEF:
+               assert(false);
+               break;
+         }
+
+         ss << " " << pConnGrowth.radii_[x + y * width_];
+
+         if (x + 1 < width_) {
+            ss.width(2);
+            ss << "|";
+            ss.width(2);
+         }
+      }
+
+      ss << endl;
+
+      for (int i = ss.str().length() - 1; i >= 0; i--) {
+         ss << "_";
+      }
+
+      ss << endl;
+      cout << ss.str();
    }
 }

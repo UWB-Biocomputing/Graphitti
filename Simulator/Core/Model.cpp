@@ -109,51 +109,7 @@ void Model::setupSim()
 /// Log this simulation step.
 void Model::logSimStep() const
 {
-   ConnGrowth *pConnGrowth = dynamic_cast<ConnGrowth *>(connections_.get());
-   if (pConnGrowth == nullptr)
-      return;
-
-   cout << "format:\ntype,radius,firing rate" << endl;
-
-   for (int y = 0; y < Simulator::getInstance().getHeight(); y++) {
-      stringstream ss;
-      ss << fixed;
-      ss.precision(1);
-
-      for (int x = 0; x < Simulator::getInstance().getWidth(); x++) {
-         switch (layout_->vertexTypeMap_[x + y * Simulator::getInstance().getWidth()]) {
-            case EXC:
-               if (layout_->starterMap_[x + y * Simulator::getInstance().getWidth()])
-                  ss << "s";
-               else
-                  ss << "e";
-               break;
-            case INH:
-               ss << "i";
-               break;
-            case VTYPE_UNDEF:
-               assert(false);
-               break;
-         }
-
-         ss << " " << pConnGrowth->radii_[x + y * Simulator::getInstance().getWidth()];
-
-         if (x + 1 < Simulator::getInstance().getWidth()) {
-            ss.width(2);
-            ss << "|";
-            ss.width(2);
-         }
-      }
-
-      ss << endl;
-
-      for (int i = ss.str().length() - 1; i >= 0; i--) {
-         ss << "_";
-      }
-
-      ss << endl;
-      cout << ss.str();
-   }
+   layout_->printLayout();
 }
 
 /// Update the simulation history of every epoch.

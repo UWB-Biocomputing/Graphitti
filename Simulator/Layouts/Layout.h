@@ -68,6 +68,9 @@ public:
    /// @return The number of vertices managed by the Layout
    virtual int getNumVertices() const;
 
+   /// @brief  Prints the layout, used for debugging.
+   virtual void printLayout();
+
    VectorMatrix xloc_;   ///< Store neuron i's x location.
 
    VectorMatrix yloc_;   ///< Store neuron i's y location.
