@@ -145,11 +145,11 @@ private:
 
    // TODO
    void addEdge(AllEdges &synapses, edgeType type, const int srcVertex, const int destVertex,
-                Coordinate &source, Coordinate &dest, BGFLOAT *sumPoint, BGFLOAT deltaT);
+                Coordinate &source, Coordinate &dest, BGFLOAT deltaT);
 
    // TODO
    void createEdge(AllEdges &synapses, const int neuronIndex, const int synapseIndex,
-                   Coordinate source, Coordinate dest, BGFLOAT *sp, BGFLOAT deltaT, edgeType type);
+                   Coordinate source, Coordinate dest, BGFLOAT deltaT, edgeType type);
 };
 
 #if defined(__CUDACC__)

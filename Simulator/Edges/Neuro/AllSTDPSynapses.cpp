@@ -223,17 +223,16 @@ void AllSTDPSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
 ///
 ///  @param  synapses    The synapse list to reference.
 ///  @param  iEdg        Index of the synapse to set.
-///  @param  srcVertex   Coordinates of the source Neuron.
-///  @param  destVertex  Coordinates of the destination Neuron.
-///  @param  sumPoint    Summation point address.
+///  @param  srcVertex   Index of the source Neuron.
+///  @param  destVertex  Index of the destination Neuron.
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
 void AllSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
-                                 BGFLOAT *sumPoint, const BGFLOAT deltaT, edgeType type)
+                                 const BGFLOAT deltaT, edgeType type)
 {
    totalDelayPost_[iEdg]
       = 0;   // Apr 12th 2020 move this line so that when AllSpikingSynapses::createEdge() is called, inside this method the initSpikeQueue() method can be called successfully
-   AllSpikingSynapses::createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
+   AllSpikingSynapses::createEdge(iEdg, srcVertex, destVertex, deltaT, type);
 
    // May 1st 2020
    // Use constants from Froemke and Dan (2002).
@@ -274,7 +273,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices &neurons)
 
    BGFLOAT &decay = decay_[iEdg];
    BGFLOAT &psr = psr_[iEdg];
-   BGFLOAT &summationPoint = *(summationPoint_[iEdg]);
+   int sumPointIndex = destVertexIndex_[iEdg];
 
    // is an input in the queue?
    bool fPre = isSpikeQueue(iEdg);
@@ -384,7 +383,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices &neurons)
    #ifdef USE_OMP
       #pragma omp atomic
    #endif
-   summationPoint += psr;
+   neurons.summationMap_[sumPointIndex] += psr;
    #ifdef USE_OMP
       //PAB: atomic above has implied flush (following statement generates error -- can't be member variable)
       //#pragma omp flush (summationPoint)
