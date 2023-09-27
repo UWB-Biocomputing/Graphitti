@@ -92,11 +92,7 @@ abstract class AllEdges {
 	+sourceVertexIndex_ : int*
 	#edgeLogger_ : log4cplus::Logger
 	#fileLogger_ : log4cplus::Logger
-<<<<<<< HEAD
 	+addEdge(edgeType type, const int srcVertex, const int destVertex, const BGFLOAT deltaT) : BGSIZE
-=======
-	+addEdge(BGSIZE& iEdg, edgeType type, const int srcVertex, const int destVertex, const BGFLOAT deltaT) : void
->>>>>>> 2fa779919ad5cfda56103fc1780809633aea55b4
 	+{abstract} advanceEdge(const BGSIZE iEdg, AllVertices* vertices) : void
 	+{abstract} advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
 	+advanceEdges(AllVertices* vertices, EdgeIndexMap* edgeIndexMap) : void
