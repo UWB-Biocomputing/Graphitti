@@ -34,26 +34,6 @@ void Layout911::registerGraphProperties()
 
 void Layout911::loadParameters()
 {
-   // Get the file paths for the vertex lists from the configuration file
-   string callerFilePath;
-   string psapFilePath;
-   string responderFilePath;
-   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/callersListFileName/text()",
-                                                         callerFilePath)) {
-      throw runtime_error("In Layout::loadParameters() caller "
-                          "vertex list file path wasn't found and will not be initialized");
-   }
-   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/PSAPsListFileName/text()",
-                                                         psapFilePath)) {
-      throw runtime_error("In Layout::loadParameters() psap "
-                          "vertex list file path wasn't found and will not be initialized");
-   }
-   if (!ParameterManager::getInstance().getStringByXpath(
-          "//LayoutFiles/respondersListFileName/text()", responderFilePath)) {
-      throw runtime_error("In Layout::loadParameters() responder"
-                          "vertex list file path wasn't found and will not be initialized");
-   }
-
    // Get the number of verticese from the GraphManager
    numVertices_ = GraphManager::getInstance().numVertices();
 }

@@ -21,6 +21,9 @@ void All911Edges::setupEdges()
    isAvailable_ = make_unique<bool[]>(maxTotalEdges);
    fill_n(isAvailable_.get(), maxTotalEdges, true);
 
+   isRedial_ = make_unique<bool[]>(maxTotalEdges);
+   fill_n(isRedial_.get(), maxTotalEdges, false);
+
    call_.resize(maxTotalEdges);
 
    maxEdgesPerVertex_ = maxEdges;
@@ -34,7 +37,6 @@ void All911Edges::setupEdges()
       W_.assign(maxTotalEdges, 0);
       type_.assign(maxTotalEdges, ETYPE_UNDEF);
       edgeCounts_.assign(numVertices, 0);
-      summationPoint_.assign(maxTotalEdges, nullptr);
       destVertexIndex_.assign(maxTotalEdges, 0);
       sourceVertexIndex_.assign(maxTotalEdges, 0);
       inUse_ = make_unique<bool[]>(maxTotalEdges);
@@ -42,11 +44,10 @@ void All911Edges::setupEdges()
    }
 }
 
-void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
-                             const BGFLOAT deltaT, edgeType type)
+void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+                             edgeType type)
 {
    inUse_[iEdg] = true;
-   summationPoint_[iEdg] = sumPoint;
    destVertexIndex_[iEdg] = destVertex;
    sourceVertexIndex_[iEdg] = srcVertex;
    W_[iEdg] = 10;   // Figure this out
@@ -84,20 +85,26 @@ void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap
          }   // Edge doesn't have a call
 
          int dst = destVertexIndex_[edgeIdx];
-         // Record that we received a call
-         all911Vertices.receivedCalls_[dst]++;
 
          // The destination vertex should be the one pulling the information
          assert(dst == vertex);
          if (all911Vertices.vertexQueues_[dst].isFull()) {
             // Call is dropped because there is no space in the waiting queue
-            all911Vertices.droppedCalls_[dst]++;
-            LOG4CPLUS_DEBUG(edgeLogger_, "Call dropped: " << all911Vertices.droppedCalls_[dst]
-                                                          << ", time: " << call_[edgeIdx].time
-                                                          << ", eIdx: " << edgeIdx);
+            if (!isRedial_[edgeIdx]) {
+               // Only count the dropped call if it's not a redial
+               all911Vertices.droppedCalls_[dst]++;
+               // Record that we received a call
+               all911Vertices.receivedCalls_[dst]++;
+               LOG4CPLUS_DEBUG(edgeLogger_, "Call dropped: " << all911Vertices.droppedCalls_[dst]
+                                                             << ", time: " << call_[edgeIdx].time
+                                                             << ", eIdx: " << edgeIdx);
+            }
          } else {
             all911Vertices.vertexQueues_[dst].put(call_[edgeIdx]);
+            // Record that we received a call
+            all911Vertices.receivedCalls_[dst]++;
             isAvailable_[edgeIdx] = true;
+            isRedial_[edgeIdx] = false;
          }
       }
    }

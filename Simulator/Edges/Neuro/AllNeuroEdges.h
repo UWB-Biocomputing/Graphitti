@@ -64,10 +64,9 @@ public:
    // ///  @param  iEdg        Index of the edge to set.
    // ///  @param  source      Coordinates of the source Neuron.
    // ///  @param  dest        Coordinates of the destination Neuron.
-   // ///  @param  sumPoint    Summation point address.
    // ///  @param  deltaT      Inner simulation step duration.
    // ///  @param  type        Type of the Synapse to create.
-   // virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint, const BGFLOAT deltaT,
+   // virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
    //                            edgeType type) override;
 
    ///  Get the sign of the edgeType.

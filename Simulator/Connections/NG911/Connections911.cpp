@@ -31,13 +31,11 @@ void Connections911::setup()
       size_t srcV = gm.source(*it);
       size_t destV = gm.target(*it);
       edgeType type = layout.edgType(srcV, destV);
-      BGFLOAT *sumPoint = &vertices.summationMap_[destV];
 
       BGFLOAT dist = layout.dist_(srcV, destV);
       LOG4CPLUS_DEBUG(edgeLogger_, "Source: " << srcV << " Dest: " << destV << " Dist: " << dist);
 
-      BGSIZE iEdg
-         = edges_->addEdge(type, srcV, destV, sumPoint, Simulator::getInstance().getDeltaT());
+      BGSIZE iEdg = edges_->addEdge(type, srcV, destV, Simulator::getInstance().getDeltaT());
       added++;
    }
 
@@ -191,9 +189,8 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       }
 
       // Insert Caller to PSAP edge
-      BGFLOAT *sumPoint = &vertices.summationMap_[closestPSAP];
-      BGSIZE iEdg = edges_->addEdge(CP, srcVertex, closestPSAP, sumPoint,
-                                    Simulator::getInstance().getDeltaT());
+      BGSIZE iEdg
+         = edges_->addEdge(CP, srcVertex, closestPSAP, Simulator::getInstance().getDeltaT());
 
       // Record added edge
       ChangedEdge addedEdge;
@@ -220,9 +217,8 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       }
 
       // Insert PSAP to Responder edge
-      BGFLOAT *sumPoint = &vertices.summationMap_[destVertex];
-      BGSIZE iEdg = edges_->addEdge(PR, closestPSAP, destVertex, sumPoint,
-                                    Simulator::getInstance().getDeltaT());
+      BGSIZE iEdg
+         = edges_->addEdge(PR, closestPSAP, destVertex, Simulator::getInstance().getDeltaT());
 
       // Record added edge
       ChangedEdge addedEdge;

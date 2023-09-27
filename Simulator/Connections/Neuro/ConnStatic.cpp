@@ -74,16 +74,13 @@ void ConnStatic::setup()
       for (BGSIZE i = 0; i < distDestVertices[srcVertex].size() && (int)i < connsPerVertex_; i++) {
          int destVertex = distDestVertices[srcVertex][i].destVertex;
          edgeType type = layout.edgType(srcVertex, destVertex);
-         BGFLOAT *sumPoint = &vertices.summationMap_[destVertex];
 
          LOG4CPLUS_DEBUG(fileLogger_,
                          "Source: " << srcVertex << " Dest: " << destVertex
                                     << " Dist: " << distDestVertices[srcVertex][i].dist);
 
-         BGSIZE iEdg
-            = edges_->addEdge(type, srcVertex, destVertex, sumPoint, simulator.getDeltaT());
+         BGSIZE iEdg = edges_->addEdge(type, srcVertex, destVertex, simulator.getDeltaT());
          added++;
-
 
          // set edge weight
          // TODO: we need another synaptic weight distibution mode (normal distribution)

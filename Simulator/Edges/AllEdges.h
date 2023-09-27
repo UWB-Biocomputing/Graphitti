@@ -39,22 +39,20 @@ public:
    ///  @param  type        The type of the Edge to add.
    ///  @param  srcVertex   The Vertex that sends to this Edge.
    ///  @param  destVertex  The Vertex that receives from the Edge.
-   ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration
    ///  @return  iEdg        Index of the edge to be added.
    virtual BGSIZE addEdge(edgeType type, const int srcVertex, const int destVertex,
-                          BGFLOAT *sumPoint, const BGFLOAT deltaT);
+                          const BGFLOAT deltaT);
 
    ///  Create a Edge and connect it to the model.
    ///
    ///  @param  iEdg        Index of the edge to set.
    ///  @param  srcVertex   Coordinates of the source Vertex.
    ///  @param  destVertex  Coordinates of the destination Vertex.
-   ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Edge to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
-                           const BGFLOAT deltaT, edgeType type)
+   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+                           edgeType type)
       = 0;
 
    ///  Populate a edge index map.
@@ -205,9 +203,6 @@ public:
 
    ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
    vector<BGFLOAT> W_;
-
-   ///  This edge's summation point's address.
-   vector<BGFLOAT *> summationPoint_;
 
    ///   Synapse type
    vector<edgeType> type_;

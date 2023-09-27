@@ -277,11 +277,8 @@ void ConnGrowth::updateSynapsesWeights()
 
          // if not connected and weight(a,b) > 0, add a new synapse from a to b
          if (!connected && (W_(srcVertex, destVertex) > 0)) {
-            // locate summation point
-            BGFLOAT *sumPoint = &(vertices.summationMap_[destVertex]);
             added++;
-
-            BGSIZE iEdg = synapses.addEdge(type, srcVertex, destVertex, sumPoint,
+            BGSIZE iEdg = synapses.addEdge(type, srcVertex, destVertex,
                                            Simulator::getInstance().getDeltaT());
             synapses.W_[iEdg] = W_(srcVertex, destVertex) * synapses.edgSign(type)
                                 * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;

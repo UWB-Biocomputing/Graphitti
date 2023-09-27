@@ -75,12 +75,14 @@ public:
    /// The number of received calls
    vector<int> receivedCalls_;
 
-   /// The stating time for every call in the log
-   vector<vector<uint64_t>> logBeginTime_;
-   /// The answer time for every call in the log
-   vector<vector<uint64_t>> logAnswerTime_;
-   /// The end time for every call in the log
-   vector<vector<uint64_t>> logEndTime_;
+   /// The starting time for every call
+   vector<vector<uint64_t>> beginTimeHistory_;
+   /// The answer time for every call
+   vector<vector<uint64_t>> answerTimeHistory_;
+   /// The end time for every call
+   vector<vector<uint64_t>> endTimeHistory_;
+   /// True if the call was abandoned
+   vector<vector<bool>> wasAbandonedHistory_;
 
 private:
    /// Number of agents. In a PSAP these are the call takers, in Responder nodes
@@ -89,6 +91,9 @@ private:
 
    /// Number of phone lines available. Only valid for PSAPs and Responders
    vector<int> numTrunks_;
+
+   /// The probability that a caller will redial after receiving the busy signal
+   BGFLOAT redialP_;
 
    /// Holds the calls being served by each agent
    vector<vector<Call>> servingCall_;

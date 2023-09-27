@@ -1,6 +1,7 @@
 import numpy as np
 import math
 import lxml.etree as et
+import pandas as pd
 
 def primprocess(first_inp, last_inp, pp_mu, pp_dead_t, region_grid):
     # Generates a set of primary spatio-temporal events between first_inp and last_inp.
@@ -64,7 +65,7 @@ def add_types(events, type_ratios):
     return np.column_stack((events, type_list.astype('object')))
 
 
-def secprocess(sp_sigma, duration_mean, duration_min, prototypes, prim_evts):
+def secprocess(sp_sigma, duration_mean, duration_min, patience_mean, prototypes, prim_evts):
     # Secondary process for clustering. Selects a prototype
     # from the dictionary of prototypes, which is used as the magnitude
     # an spread of the primary event. This determines the number of 
@@ -180,21 +181,26 @@ def secprocess(sp_sigma, duration_mean, duration_min, prototypes, prim_evts):
     # avoid calls with 0 duration
     sec_evts_duration = sec_evts_duration + duration_min
 
+    # Add exponentially distributer patience time
+    sec_evts_patience = np.random.exponential(scale=patience_mean, size=len(sec_evts_t))
+
     # Reshape numpy arrays so we can concatenate them column wise
     sec_evts_t = sec_evts_t.reshape(-1, 1)
     sec_evts_x = sec_evts_x.reshape(-1, 1)
     sec_evts_y = sec_evts_y.reshape(-1, 1)
     sec_evts_cid = sec_evts_cid.reshape(-1, 1)
     sec_evts_duration = sec_evts_duration.reshape(-1, 1)
+    sec_evts_patience = sec_evts_patience.reshape(-1, 1)
 
     sec_evts = np.concatenate((np.round(sec_evts_t).astype(np.int64),
                                sec_evts_duration.astype(np.int64),
                                sec_evts_x.astype(np.float64),
                                sec_evts_y.astype(np.float64),
-                               sec_evts_cid.astype(object)),
+                               sec_evts_cid.astype(object),
+                               sec_evts_patience.astype(np.int64)),
                                axis=1)
 
-    return sec_evts
+    return pd.DataFrame(sec_evts, columns=['time', 'duration', 'x', 'y', 'type', 'patience'])
  
 
 def add_vertex_events(node, vertex_id, vertex_name, data):
@@ -206,13 +212,8 @@ def add_vertex_events(node, vertex_id, vertex_name, data):
     vertex = et.SubElement(node, 'vertex', {'id': vertex_id, 'name': vertex_name})
     # This is to make sure we don't have calls happening at the exact same second
     prev_time = -1
-    for row in data:
-        d = dict()
-        d['time'] = row[0]
-        d['duration'] = row[1]
-        d['x'] = row[2]
-        d['y'] = row[3]
-        d['type'] = row[4]
+    for idx, row in data.iterrows():
+        d = row.to_dict()
         d['vertex_id'] = vertex_id
 
         # Ensure that we don't have calls at the same second
@@ -237,7 +238,7 @@ if __name__ == '__main__':
 
     # Get the grid for the Seattle PD Caller Region from the graphml file
     graph_file = '../../gis2graph/graph_files/spd.graphml'
-    spd_cr_id = '194'
+    spd_cr_id = '74'
     graph = nx.read_graphml(graph_file)
     spd_grid = np.array(eval(graph.nodes[spd_cr_id]['segments']))
 
@@ -299,13 +300,19 @@ if __name__ == '__main__':
     # standard deviation are equal.
     duration_mean = 205
     duration_min = 4 # seconds (based on Seattle PD September 2020 data)
+    # Patience time calculated from September 2020 data:
+    #   Fraction of abandonment = 0.0942
+    #   Avg Wait Time = 4.65 seconds
+    #   Abandonment rate = 0.0942/4.65 = 0.020258/second
+    #   Avg. Patience = 1/0.020258 = 49.36 Seconds
+    patience_mean = 49.36
     sec_events = secprocess(sec_proc_sigma, duration_mean, duration_min,
-                            prototypes, incidents_with_types)
+                            patience_mean, prototypes, incidents_with_types)
     
     end_t = time.time()
     print('Elapsed time:', round(end_t - start_t, 4), 'seconds')
     print('Number of Primary Events:', len(incidents_with_types))
-    print('Number of Secondary Events:', len(sec_events))
+    print('Number of Secondary Events:', sec_events.shape[0])
 
     output_file = 'SPD_cluster_point_process.xml'
     # Commented out code that saves to a .csv file

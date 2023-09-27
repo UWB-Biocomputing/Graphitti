@@ -52,11 +52,10 @@ public:
    ///  @param  iEdg        Index of the edge to set.
    ///  @param  srcVertex   Coordinates of the source Vertex.
    ///  @param  destVertex  Coordinates of the destination Vertex.
-   ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Edge to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
-                           const BGFLOAT deltaT, edgeType type) override;
+   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+                           edgeType type) override;
 
 protected:
 #if defined(USE_GPU)
@@ -100,6 +99,9 @@ public:
 
    /// If edge has a call or not
    unique_ptr<bool[]> isAvailable_;
+
+   /// If the call in the edge is a redial
+   unique_ptr<bool[]> isRedial_;
 
    /// The call information per edge
    vector<Call> call_;
