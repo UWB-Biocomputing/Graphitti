@@ -24,7 +24,7 @@ class GPUModel {
 	#allEdgesDevice_ : AllSpikingSynapsesDeviceProperties*
 	#synapseIndexMapDevice_ : EdgeIndexMap*
 	#randNoise_d : float*
-	-addEdge(AllEdges& synapses, edgeType type, const int srcVertex, const int destVertex, Coordinate& source, Coordinate& dest, BGFLOAT* sumPoint, BGFLOAT deltaT) : void
+	-addEdge(AllEdges& synapses, edgeType type, const int srcVertex, const int destVertex, Coordinate& source, Coordinate& dest, BGFLOAT deltaT) : void
 	+advance() : void
 	#allocDeviceStruct(void** allVerticesDevice, void** allEdgesDevice) : void
 	-allocSynapseImap(int count) : void
@@ -32,7 +32,7 @@ class GPUModel {
 	+copyCPUtoGPU() : void
 	+copyGPUtoCPU() : void
 	+copySynapseIndexMapHostToDevice(EdgeIndexMap& synapseIndexMapHost, int numVertices) : void
-	-createEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex, Coordinate source, Coordinate dest, BGFLOAT* sp, BGFLOAT deltaT, edgeType type) : void
+	-createEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex, Coordinate source, Coordinate dest, BGFLOAT deltaT, edgeType type) : void
 	#deleteDeviceStruct(void** allVerticesDevice, void** allEdgesDevice) : void
 	-deleteSynapseImap() : void
 	-eraseEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex) : void

@@ -110,11 +110,6 @@ void AllNeuroEdges::printSynapsesProps() const
          cout << " type: " << type_[i];
          cout << " psr: " << psr_[i];
          cout << " in_use:" << inUse_[i];
-         if (summationPoint_[i] != nullptr) {
-            cout << " summationPoint: is created!" << endl;
-         } else {
-            cout << " summationPoint: is EMPTY!!!!!" << endl;
-         }
       }
    }
 
