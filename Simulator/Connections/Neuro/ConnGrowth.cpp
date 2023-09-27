@@ -240,6 +240,11 @@ void ConnGrowth::updateSynapsesWeights()
    for (int srcVertex = 0; srcVertex < numVertices; srcVertex++) {
       // and each destination neuron 'b'
       for (int destVertex = 0; destVertex < numVertices; destVertex++) {
+         if (destVertex == srcVertex) {
+            // we don't create a synapse between the same neuron
+            continue;
+         }
+
          // visit each synapse at (xa,ya)
          bool connected = false;
          edgeType type = layout.edgType(srcVertex, destVertex);

@@ -560,6 +560,11 @@ __global__ void updateSynapsesWeightsDevice(int numVertices, BGFLOAT deltaT, BGF
 
    // and each destination neuron 'b'
    for (int srcVertex = 0; srcVertex < numVertices; srcVertex++) {
+      if (destVertex == srcVertex) {
+         // we don't create a synapse between the same neuron
+         continue;
+      }
+      
       // visit each synapse at (xa,ya)
       bool connected = false;
       edgeType type = edgType(neuronTypeMap_d, srcVertex, destVertex);
