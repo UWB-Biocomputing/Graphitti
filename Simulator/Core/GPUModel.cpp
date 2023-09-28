@@ -325,9 +325,9 @@ void GPUModel::copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost
 /// @param[in] allEdgesDevice      Pointer to Synapse structures in device memory.
 __global__ void
    calcSummationPointDevice(int totalVertices,
-                          AllSpikingNeuronsDeviceProperties *__restrict__ allVerticesDevice,
-                          const EdgeIndexMapDevice *__restrict__ synapseIndexMapDevice_,
-                          const AllSpikingSynapsesDeviceProperties *__restrict__ allEdgesDevice)
+                            AllSpikingNeuronsDeviceProperties *__restrict__ allVerticesDevice,
+                            const EdgeIndexMapDevice *__restrict__ synapseIndexMapDevice_,
+                            const AllSpikingSynapsesDeviceProperties *__restrict__ allEdgesDevice)
 {
    // The usual thread ID calculation and guard against excess threads
    // (beyond the number of vertices, in this case).
