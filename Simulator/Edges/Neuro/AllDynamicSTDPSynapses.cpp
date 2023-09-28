@@ -108,15 +108,14 @@ void AllDynamicSTDPSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
 ///  Create a Synapse and connect it to the model.
 ///
 ///  @param  iEdg        Index of the synapse to set.
-///  @param  srcVertex   Coordinates of the source Neuron.
-///  @param  destVertex  Coordinates of the destination Neuron.
-///  @param  sumPoint    Summation point address.
+///  @param  srcVertex   Index of the source Neuron.
+///  @param  destVertex  Index of the destination Neuron.
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
 void AllDynamicSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
-                                        BGFLOAT *sumPoint, const BGFLOAT deltaT, edgeType type)
+                                        const BGFLOAT deltaT, edgeType type)
 {
-   AllSTDPSynapses::createEdge(iEdg, srcVertex, destVertex, sumPoint, deltaT, type);
+   AllSTDPSynapses::createEdge(iEdg, srcVertex, destVertex, deltaT, type);
 
    U_[iEdg] = DEFAULT_U;
 

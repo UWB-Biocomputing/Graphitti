@@ -113,12 +113,9 @@ void SInputPoisson::init()
       else
          type = EE;
 
-      BGFLOAT *sumPoint
-         = &(Simulator::getInstance().getLayout().getVertices().summationMap_[neuronIndex]);
       BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * neuronIndex;
 
-      edges_->createEdge(iEdg, 0, neuronIndex, sumPoint, Simulator::getInstance().getDeltaT(),
-                         type);
+      edges_->createEdge(iEdg, 0, neuronIndex, Simulator::getInstance().getDeltaT(), type);
       dynamic_cast<AllNeuroEdges *>(edges_)->W_[iEdg]
          = weight * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
    }
