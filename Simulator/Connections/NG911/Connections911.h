@@ -3,8 +3,12 @@
  *
  * @ingroup Simulator/Connections/NG911
  * 
- * @brief The model of the static network
- *
+ * @brief This class manages the Connections of the NG911 network
+ * 
+ * Connections in the NG911 models, represent communication links between the
+ * various network nodes. These are potentially dynamic connections, where
+ * edges between nodes are erased and added, representing loss of communication
+ * between nodes and re-routing of disconnected nodes.
  */
 
 #pragma once

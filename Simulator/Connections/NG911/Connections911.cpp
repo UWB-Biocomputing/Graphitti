@@ -3,8 +3,7 @@
 *
 * @ingroup Simulator/Connections/NG911
 * 
-* @brief The model of the static network
-*
+* @brief This class manages the Connections of the NG911 network
 */
 
 #include "Connections911.h"
@@ -64,9 +63,6 @@ void Connections911::printParameters() const
 
 #if !defined(USE_GPU)
 ///  Update the connections status in every epoch.
-///
-///  @param  vertices  The Vertex list to search from.
-///  @return true if successful, false otherwise.
 bool Connections911::updateConnections(AllVertices &vertices)
 {
    // Only run on the first epoch
@@ -95,10 +91,6 @@ bool Connections911::updateConnections(AllVertices &vertices)
 
 /// Finds the outgoing edge from the given vertex to the Responder closest to
 /// the emergency call location
-///
-/// @param call         The call that needs a Responder
-/// @param vertexIdx    The index of the vertex serving the call (A PSAP)
-/// @return    The index of the outgoing edge to the closest Responder
 BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, const BGSIZE vertexIdx)
 {
    All911Edges &edges911 = dynamic_cast<All911Edges &>(*edges_);
@@ -145,10 +137,6 @@ BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, const BGSIZE 
 
 
 ///  Randomly delete 1 PSAP and rewire all the edges around it.
-///
-///  @param  vertices  The Vertex list to search from.
-///  @param  layout   Layout information of the vertex network.
-///  @return true if successful, false otherwise.
 bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
@@ -285,10 +273,6 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
 }
 
 ///  Randomly delete 1 RESP.
-///
-///  @param  vertices  The Vertex list to search from.
-///  @param  layout   Layout information of the vertex network.
-///  @return true if successful, false otherwise.
 bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
@@ -349,7 +333,7 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
 }
 
 
-///  @return xml representation of a single edge
+///  Returns an xml representation of a single edge
 string Connections911::ChangedEdge::toString()
 {
    stringstream os;
@@ -386,8 +370,6 @@ string Connections911::ChangedEdge::toString()
 }
 
 ///  Returns the complete list of all deleted or added edges as a string.
-///  @param added    true returns the list of added edges, false = erased
-///  @return xml representation of all deleted or added edges
 string Connections911::changedEdgesToXML(bool added)
 {
    stringstream os;
@@ -412,7 +394,6 @@ string Connections911::changedEdgesToXML(bool added)
 }
 
 ///  Returns the complete list of deleted vertices as a string.
-///  @return xml representation of all deleted vertices
 string Connections911::erasedVerticesToXML()
 {
    stringstream os;
