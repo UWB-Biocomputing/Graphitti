@@ -211,7 +211,7 @@ void AllIZHNeurons::advanceNeuron(const int index)
 {
    BGFLOAT &Vm = this->Vm_[index];
    BGFLOAT &Vthresh = this->Vthresh_[index];
-   BGFLOAT &summationPoint = this->summationMap_[index];
+   BGFLOAT &summationPoint = this->summationPoints_[index];
    BGFLOAT &I0 = this->I0_[index];
    BGFLOAT &Inoise = this->Inoise_[index];
    BGFLOAT &C1 = this->C1_[index];

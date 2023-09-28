@@ -601,11 +601,11 @@ __global__ void updateSynapsesWeightsDevice(int numVertices, BGFLOAT deltaT, BGF
 /// destination neurons.
 ///
 /// @param allEdgesDevice      Pointer to the Synapse structures in device memory.
-/// @param pSummationMap          Pointer to the summation point.
+/// @param pSummationPoint          Pointer to the summation point.
 /// @param deltaT                 The simulation time step size.
 /// @param weight                 Synapse weight.
 __global__ void initSynapsesDevice(int n, AllDSSynapsesDeviceProperties *allEdgesDevice,
-                                   BGFLOAT *pSummationMap, const BGFLOAT deltaT, BGFLOAT weight)
+                                   BGFLOAT *pSummationPoint, const BGFLOAT deltaT, BGFLOAT weight)
 {
    int idx = blockIdx.x * blockDim.x + threadIdx.x;
    if (idx >= n)

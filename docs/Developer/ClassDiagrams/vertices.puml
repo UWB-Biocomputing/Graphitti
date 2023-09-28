@@ -144,7 +144,7 @@ abstract class AllSpikingNeurons {
 abstract class AllVertices {
 	+AllVertices()
 	+~AllVertices()
-	+summationMap_ : BGFLOAT*
+	+summationPoints_ : BGFLOAT*
 	#size_ : int
 	#fileLogger_ : log4cplus::Logger
 	#vertexLogger_ : log4cplus::Logger
@@ -231,7 +231,7 @@ class AllSpikingNeuronsDeviceProperties {
 
 
 class AllVerticesDeviceProperties {
-	+summationMap_ : BGFLOAT*
+	+summationPoints_ : BGFLOAT*
 }
 
 
