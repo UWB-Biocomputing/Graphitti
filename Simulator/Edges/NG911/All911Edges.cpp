@@ -3,7 +3,7 @@
  *
  *  @ingroup Simulator/Edges/NG911
  *
- *  @brief A container of all 911 edge data
+ *  @brief Specialization of the AllEdges class for the NG911 network
  */
 
 #include "All911Edges.h"
@@ -57,9 +57,6 @@ void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, c
 #if !defined(USE_GPU)
 
 ///  Advance all the edges in the simulation.
-///
-///  @param  vertices           The vertex list to search from.
-///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
 void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap)
 {
    Simulator &simulator = Simulator::getInstance();
