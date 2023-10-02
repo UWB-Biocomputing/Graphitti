@@ -149,7 +149,7 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
 
 
 // Advance a CALR vertex. Send calls to the appropriate PSAP
-void All911Vertices::advanceCALR(const BGSIZE vertexIdx, All911Edges &edges911,
+void All911Vertices::advanceCALR(BGSIZE vertexIdx, All911Edges &edges911,
                                  const EdgeIndexMap &edgeIndexMap)
 {
    // There is only one outgoing edge from CALR to a PSAP
@@ -189,7 +189,7 @@ void All911Vertices::advanceCALR(const BGSIZE vertexIdx, All911Edges &edges911,
 
 
 // Advance a PSAP vertex. Controls the redirection and handling of calls.
-void All911Vertices::advancePSAP(const BGSIZE vertexIdx, All911Edges &edges911,
+void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
                                  const EdgeIndexMap &edgeIndexMap)
 {
    // Loop over all servers and free the ones finishing serving calls
@@ -270,7 +270,7 @@ void All911Vertices::advancePSAP(const BGSIZE vertexIdx, All911Edges &edges911,
 
 
 // Advance a RESP vertex. Receives call from PSAP and responds to the emergency events
-void All911Vertices::advanceRESP(const BGSIZE vertexIdx, All911Edges &edges911,
+void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
                                  const EdgeIndexMap &edgeIndexMap)
 {
    // Let's just record that responder received the call and pop it from the queue
