@@ -80,6 +80,7 @@ public:
    virtual void updateConnections() = 0;
 
 protected:
+   // Note: This method was previously used for debugging, but it is now dead code left behind.
    /// Prints debug information about the current state of the network.
    void logSimStep() const;
 

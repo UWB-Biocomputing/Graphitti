@@ -14,7 +14,7 @@
  */
 
 #include "Model.h"
-#include "ConnGrowth.h"
+// #include "FixedLayout.h"
 #include "Connections.h"
 #include "Factory.h"
 #include "ParameterManager.h"
@@ -106,10 +106,16 @@ void Model::setupSim()
    connections_->createEdgeIndexMap();
 }
 
+// Note: This method was previously used for debugging, but it is now dead code left behind.
 /// Log this simulation step.
 void Model::logSimStep() const
 {
-   layout_->printLayout();
+   FixedLayout *fixedLayout = dynamic_cast<FixedLayout *>(layout_.get());
+   if (fixedLayout == nullptr) {
+      return;
+   }
+
+   fixedLayout->printLayout();
 }
 
 /// Update the simulation history of every epoch.

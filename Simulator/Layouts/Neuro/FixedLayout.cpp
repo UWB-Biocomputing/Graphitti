@@ -176,6 +176,8 @@ void FixedLayout::initVerticesLocs()
    }
 }
 
+// Note: This code was previously used for debugging, but it is now dead code left behind
+// and it is never executed.
 void FixedLayout::printLayout()
 {
    ConnGrowth &pConnGrowth

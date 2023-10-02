@@ -58,11 +58,6 @@ void Layout::registerGraphProperties()
    // initial graph
 }
 
-void Layout::printLayout()
-{
-   // Empty implementation because not all Layouts implement it but it is used by the Model
-}
-
 /// Setup the internal structure of the class.
 /// Allocate memories to store all layout state, no sequential dependency in this method
 void Layout::setup()

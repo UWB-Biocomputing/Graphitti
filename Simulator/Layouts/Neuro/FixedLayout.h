@@ -59,8 +59,8 @@ public:
    /// @return type of the synapse.
    virtual edgeType edgType(const int srcVertex, const int destVertex) override;
 
-   /// @brief  Prints the layout, used for debugging.
-   virtual void printLayout() override;
+   /// Prints the layout, used for debugging.
+   void printLayout();
 
 private:
    /// initialize the location maps (xloc and yloc).
