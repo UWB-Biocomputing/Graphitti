@@ -14,7 +14,6 @@
  */
 
 #include "Model.h"
-// #include "FixedLayout.h"
 #include "Connections.h"
 #include "Factory.h"
 #include "ParameterManager.h"
@@ -108,15 +107,15 @@ void Model::setupSim()
 
 // Note: This method was previously used for debugging, but it is now dead code left behind.
 /// Log this simulation step.
-void Model::logSimStep() const
-{
-   FixedLayout *fixedLayout = dynamic_cast<FixedLayout *>(layout_.get());
-   if (fixedLayout == nullptr) {
-      return;
-   }
+// void Model::logSimStep() const
+// {
+//    FixedLayout *fixedLayout = dynamic_cast<FixedLayout *>(layout_.get());
+//    if (fixedLayout == nullptr) {
+//       return;
+//    }
 
-   fixedLayout->printLayout();
-}
+//    fixedLayout->printLayout();
+// }
 
 /// Update the simulation history of every epoch.
 void Model::updateHistory()
