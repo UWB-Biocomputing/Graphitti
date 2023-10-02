@@ -19,15 +19,6 @@ void All911Vertices::setupVertices()
 {
    AllVertices::setupVertices();
 
-   callNum_.resize(size_);
-   dispNum_.resize(size_);
-   respNum_.resize(size_);
-
-   // Populate arrays with 0
-   callNum_.assign(size_, 0);
-   dispNum_.assign(size_, 0);
-   respNum_.assign(size_, 0);
-
    // Resize and fill vectors with 0
    numServers_.assign(size_, 0);
    busyServers_.assign(size_, 0);
@@ -89,72 +80,12 @@ void All911Vertices::createAllVertices(Layout &layout)
 
    // Read Input Events using the InputManager
    inputManager_.readInputs();
-
-
-   // TODO: The code below is from previous version. I am keeping because
-   // it is usefull for testing the output against the previous version.
-   vector<int> psapList;
-   vector<int> respList;
-   psapList.clear();
-   respList.clear();
-
-   int callersPerZone[] = {0, 0, 0, 0};
-   int respPerZone[] = {0, 0, 0, 0};
-
-   Layout911 &layout911 = dynamic_cast<Layout911 &>(layout);
-
-   for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      // Create all callers
-      if (layout.vertexTypeMap_[i] == CALR) {
-         callNum_[i] = initRNG.inRange(callNumRange_[0], callNumRange_[1]);
-         callersPerZone[layout911.zone(i)] += callNum_[i];
-      }
-
-      // Find all PSAPs
-      if (layout.vertexTypeMap_[i] == PSAP) {
-         psapList.push_back(i);
-      }
-
-      // Find all resps
-      if (layout.vertexTypeMap_[i] == EMS || layout.vertexTypeMap_[i] == FIRE
-          || layout.vertexTypeMap_[i] == LAW) {
-         respList.push_back(i);
-         respPerZone[layout911.zone(i)] += 1;
-      }
-   }
-
-   // Create all psaps
-   // Dispatchers in a psap = [callers in the zone * k] + some randomness
-   for (int i = 0; i < psapList.size(); i++) {
-      int psapQ = layout911.zone(i);
-      int dispCount = (callersPerZone[psapQ] * dispNumScale_) + initRNG.inRange(-5, 5);
-      if (dispCount < 1) {
-         dispCount = 1;
-      }
-      dispNum_[psapList[i]] = dispCount;
-   }
-
-   // Create all responders
-   // Responders in a node = [callers in the zone * k]/[number of responder nodes] + some randomness
-   for (int i = 0; i < respList.size(); i++) {
-      int respQ = layout911.zone(respList[i]);
-      int respCount
-         = (callersPerZone[respQ] * respNumScale_) / respPerZone[respQ] + initRNG.inRange(-5, 5);
-      if (respCount < 1) {
-         respCount = 1;
-      }
-      respNum_[respList[i]] = respCount;
-   }
 }
 
 
 // Load member variables from configuration file.
 void All911Vertices::loadParameters()
 {
-   ParameterManager::getInstance().getIntByXpath("//CallNum/min/text()", callNumRange_[0]);
-   ParameterManager::getInstance().getIntByXpath("//CallNum/max/text()", callNumRange_[1]);
-   ParameterManager::getInstance().getBGFloatByXpath("//DispNumScale/text()", dispNumScale_);
-   ParameterManager::getInstance().getBGFloatByXpath("//RespNumScale/text()", respNumScale_);
    ParameterManager::getInstance().getBGFloatByXpath("//RedialP/text()", redialP_);
 }
 
@@ -348,39 +279,6 @@ void All911Vertices::advanceRESP(const BGSIZE vertexIdx, All911Edges &edges911,
       assert(incident);
       LOG4CPLUS_DEBUG(vertexLogger_, "Responded to incident, type: " << incident->type);
    }
-}
-
-
-///  Update internal state of the indexed Neuron (called by every simulation step).
-///
-///  @param  index       Index of the Neuron to update.
-void All911Vertices::advanceVertex(const int index)
-{
-   // BGFLOAT &Vm = this->Vm_[index];
-   // BGFLOAT &Vthresh = this->Vthresh_[index];
-   // BGFLOAT &summationPoint = this->summationMap_[index];
-   // BGFLOAT &I0 = this->I0_[index];
-   // BGFLOAT &Inoise = this->Inoise_[index];
-   // BGFLOAT &C1 = this->C1_[index];
-   // BGFLOAT &C2 = this->C2_[index];
-   // int &nStepsInRefr = this->numStepsInRefractoryPeriod_[index];
-
-   // if (nStepsInRefr > 0) {
-   //     // is neuron refractory?
-   //     --nStepsInRefr;
-   // } else if (Vm >= Vthresh) {
-   //     // should it fire?
-   //     fire(index);
-   // } else {
-   //     summationPoint += I0; // add IO
-   //     // add noise
-   //     BGFLOAT noise = (*rgNormrnd)();
-   //     //LOG4CPLUS_DEBUG(vertexLogger_, "ADVANCE NEURON[" << index << "] :: Noise = " << noise);
-   //     summationPoint += noise * Inoise; // add noise
-   //     Vm = C1 * Vm + C2 * summationPoint; // decay Vm and add inputs
-   // }
-   // // clear synaptic input for next time step
-   // summationPoint = 0;
 }
 
 #endif

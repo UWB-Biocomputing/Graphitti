@@ -112,19 +112,6 @@ void Layout911::generateVertexTypeMap(int numVertices)
    LOG4CPLUS_INFO(fileLogger_, "Finished initializing vertex type map");
 }
 
-void Layout911::initStarterMap(const int numVertices)
-{
-   Layout::initStarterMap(numVertices);
-}
-
-// Get the zone of the vertex
-// Only built for 10x10 grid
-// See: https://docs.google.com/spreadsheets/d/1DqP8sjkfJ_pkxtETzuEdoVZbWOGu633EMQAeShe5k68/edit?usp=sharing
-int Layout911::zone(int index)
-{
-   return (index % 10 >= 5) + 2 * (index < 50);
-}
-
 // Returns the type of synapse at the given coordinates
 edgeType Layout911::edgType(const int srcVertex, const int destVertex)
 {
