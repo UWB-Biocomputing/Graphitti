@@ -15,6 +15,12 @@
  * parameters to keep track of its availability. It is worth mentioning that
  * because the class contains all the edges; these parameters are contained in
  * vectors or arrays, where each item correspond to an edge parameter.
+ * 
+ * During the `advanceEdges` step of the simulation the destination vertex pulls
+ * the calls placed in the given edge and queues them into their internal queue.
+ * Here we check that there is space in the queue, the queue in considered full
+ * if all trunks are busy. That is, if the total calls in the waiting queue +
+ * the number of busy agents equals the total number of trunks available.
  */
 
 #pragma once
