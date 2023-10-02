@@ -3,7 +3,7 @@
  * 
  * @ingroup Simulator/Vertices/NG911
  *
- * @brief A container of all 911 vertex data
+ * @brief Specialization of the AllVertices class for the NG911 network
  */
 
 #include "All911Vertices.h"
@@ -55,7 +55,8 @@ void All911Vertices::setupVertices()
    inputManager_.registerProperty("type", &Call::type);
 }
 
-// Generate callNum_ and dispNum_ for all caller and psap nodes
+
+// Creates all the Vertices and assigns initial data for them.
 void All911Vertices::createAllVertices(Layout &layout)
 {
    // Loop over all vertices and set the number of servers and trunks, and
@@ -146,6 +147,8 @@ void All911Vertices::createAllVertices(Layout &layout)
    }
 }
 
+
+// Load member variables from configuration file.
 void All911Vertices::loadParameters()
 {
    ParameterManager::getInstance().getIntByXpath("//CallNum/min/text()", callNumRange_[0]);
@@ -156,17 +159,20 @@ void All911Vertices::loadParameters()
 }
 
 
+// Prints out all parameters of the vertices to logging file.
 void All911Vertices::printParameters() const
 {
 }
 
 
+// Outputs state of the vertex chosen as a string.
 string All911Vertices::toString(const int index) const
 {
    return nullptr;   // Change this
 }
 
 
+// Loads all inputs scheduled to occur in the upcoming epoch.
 void All911Vertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
 {
    Simulator &simulator = Simulator::getInstance();
@@ -185,11 +191,8 @@ void All911Vertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
 
 #if !defined(USE_GPU)
 
-///  Update internal state of the indexed vertex (called by every simulation step).
-///  Notify outgoing edges if vertex has fired.
-///
-///  @param  edges         The edge list to search from.
-///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+
+// Update internal state of the indexed vertex (called by every simulation step).
 void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIndexMap)
 {
    Simulator &simulator = Simulator::getInstance();
@@ -214,6 +217,7 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
 }
 
 
+// Advance a CALR vertex. Send calls to the appropriate PSAP
 void All911Vertices::advanceCALR(const BGSIZE vertexIdx, All911Edges &edges911,
                                  const EdgeIndexMap &edgeIndexMap)
 {
@@ -253,6 +257,7 @@ void All911Vertices::advanceCALR(const BGSIZE vertexIdx, All911Edges &edges911,
 }
 
 
+// Advance a PSAP vertex. Controls the redirection and handling of calls.
 void All911Vertices::advancePSAP(const BGSIZE vertexIdx, All911Edges &edges911,
                                  const EdgeIndexMap &edgeIndexMap)
 {
@@ -333,6 +338,7 @@ void All911Vertices::advancePSAP(const BGSIZE vertexIdx, All911Edges &edges911,
 }
 
 
+// Advance a RESP vertex. Receives call from PSAP and responds to the emergency events
 void All911Vertices::advanceRESP(const BGSIZE vertexIdx, All911Edges &edges911,
                                  const EdgeIndexMap &edgeIndexMap)
 {

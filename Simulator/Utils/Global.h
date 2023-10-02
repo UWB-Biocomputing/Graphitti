@@ -97,7 +97,7 @@ const int g_nMaxChunkSize = 100;
 // NG911:
 // CALR: Caller radii
 // PSAP: PSAP nodes
-// RESP: Responder nodes
+// EMS, FIRE, LAW: Responder nodes
 enum vertexType {
    // Neuro
    INH = 1,
