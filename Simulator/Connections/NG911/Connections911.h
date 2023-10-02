@@ -82,7 +82,7 @@ public:
    /// @param call         The call that needs a Responder
    /// @param vertexIdx    The index of the vertex serving the call (A PSAP)
    /// @return    The index of the outgoing edge to the closest Responder
-   BGSIZE getEdgeToClosestResponder(const Call &call, const BGSIZE vertexIdx);
+   BGSIZE getEdgeToClosestResponder(const Call &call, BGSIZE vertexIdx);
 
    ///  Returns the complete list of all deleted or added edges as a string.
    ///  @return xml representation of all deleted or added edges

@@ -91,7 +91,7 @@ bool Connections911::updateConnections(AllVertices &vertices)
 
 /// Finds the outgoing edge from the given vertex to the Responder closest to
 /// the emergency call location
-BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, const BGSIZE vertexIdx)
+BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, BGSIZE vertexIdx)
 {
    All911Edges &edges911 = dynamic_cast<All911Edges &>(*edges_);
 
