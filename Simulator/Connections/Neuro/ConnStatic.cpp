@@ -79,10 +79,8 @@ void ConnStatic::setup()
                          "Source: " << srcVertex << " Dest: " << destVertex
                                     << " Dist: " << distDestVertices[srcVertex][i].dist);
 
-         BGSIZE iEdg;
-         edges_->addEdge(iEdg, type, srcVertex, destVertex, simulator.getDeltaT());
+         BGSIZE iEdg = edges_->addEdge(type, srcVertex, destVertex, simulator.getDeltaT());
          added++;
-
 
          // set edge weight
          // TODO: we need another synaptic weight distibution mode (normal distribution)
