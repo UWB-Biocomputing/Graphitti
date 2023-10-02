@@ -107,27 +107,6 @@ private:
    /// The InputManager holds all the Input Events for the simulation
    InputManager<Call> inputManager_;
 
-   // TODO: The variables below are from previous version. I need to review what
-   //       they are for and if they are being used anywhere.
-
-   /// number of callers
-   vector<int> callNum_;
-
-   /// Min/max values of CallNum.
-   int callNumRange_[2];
-
-   /// Number of dispatchers per PSAP calculated (with randomness) based on population
-   vector<int> dispNum_;
-
-   /// Scaling factor for number of dispatchers in a PSAP
-   BGFLOAT dispNumScale_;
-
-   /// Number of responders per Responder node calculated (with randomness) based on population
-   vector<int> respNum_;
-
-   /// Scaling factor for number of responders in a Responder node
-   BGFLOAT respNumScale_;
-
 #if defined(USE_GPU)
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract
@@ -149,7 +128,6 @@ public:
    virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIndexMap) override;
 
 protected:
-   void advanceVertex(const int index);
 
 #endif   // defined(USE_GPU)
 };
