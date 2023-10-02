@@ -35,8 +35,7 @@ void Connections911::setup()
       BGFLOAT dist = layout.dist_(srcV, destV);
       LOG4CPLUS_DEBUG(edgeLogger_, "Source: " << srcV << " Dest: " << destV << " Dist: " << dist);
 
-      BGSIZE iEdg;
-      edges_->addEdge(iEdg, type, srcV, destV, Simulator::getInstance().getDeltaT());
+      BGSIZE iEdg = edges_->addEdge(type, srcV, destV, Simulator::getInstance().getDeltaT());
       added++;
    }
 
@@ -190,8 +189,8 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       }
 
       // Insert Caller to PSAP edge
-      BGSIZE iEdg;
-      edges_->addEdge(iEdg, CP, srcVertex, closestPSAP, Simulator::getInstance().getDeltaT());
+      BGSIZE iEdg
+         = edges_->addEdge(CP, srcVertex, closestPSAP, Simulator::getInstance().getDeltaT());
 
       // Record added edge
       ChangedEdge addedEdge;
@@ -218,8 +217,8 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       }
 
       // Insert PSAP to Responder edge
-      BGSIZE iEdg;
-      edges_->addEdge(iEdg, PR, closestPSAP, destVertex, Simulator::getInstance().getDeltaT());
+      BGSIZE iEdg
+         = edges_->addEdge(PR, closestPSAP, destVertex, Simulator::getInstance().getDeltaT());
 
       // Record added edge
       ChangedEdge addedEdge;
