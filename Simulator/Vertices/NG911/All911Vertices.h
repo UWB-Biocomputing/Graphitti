@@ -166,24 +166,21 @@ private:
    ///  @param  vertexIdx     Index of the CALR vertex
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    ///  @param  allEdges      Reference to an instance of All911Edges
-   void advanceCALR(BGSIZE vertexIdx, All911Edges &edges911,
-                    const EdgeIndexMap &edgeIndexMap);
+   void advanceCALR(BGSIZE vertexIdx, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap);
 
    ///  Advance a PSAP vertex. Controls the redirection and handling of calls
    ///
    ///  @param  vertexIdx     Index of the PSAP vertex
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    ///  @param  allEdges      Reference to an instance of All911Edges
-   void advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
-                    const EdgeIndexMap &edgeIndexMap);
+   void advancePSAP(BGSIZE vertexIdx, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap);
 
    ///  Advance a RESP vertex. Receives call from PSAP and responds to the emergency events
    ///
    ///  @param  vertexIdx     Index of the RESP vertex
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    ///  @param  allEdges      Reference to an instance of All911Edges
-   void advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
-                    const EdgeIndexMap &edgeIndexMap);
+   void advanceRESP(BGSIZE vertexIdx, All911Edges &edges911, const EdgeIndexMap &edgeIndexMap);
 
 #if defined(USE_GPU)
    // GPU functionality for 911 simulation is unimplemented.
