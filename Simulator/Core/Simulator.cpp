@@ -76,10 +76,6 @@ void Simulator::finish()
 /// Load member variables from configuration file
 void Simulator::loadParameters()
 {
-   ParameterManager::getInstance().getIntByXpath("//PoolSize/x/text()", width_);
-   ParameterManager::getInstance().getIntByXpath("//PoolSize/y/text()", height_);
-   // numVertices_ = width_ * height_;
-
    ParameterManager::getInstance().getBGFloatByXpath("//SimParams/epochDuration/text()",
                                                      epochDuration_);
    ParameterManager::getInstance().getIntByXpath("//SimParams/numEpochs/text()", numEpochs_);
@@ -110,7 +106,6 @@ void Simulator::printParameters() const
    LOG4CPLUS_DEBUG(fileLogger_,
                    "\nSIMULATION PARAMETERS"
                       << endl
-                      << "\tpool size x:" << width_ << " y:" << height_ << endl
                       << "\tTime between growth updates (in seconds): " << epochDuration_ << endl
                       << "\tNumber of epochs to run: " << numEpochs_ << endl
                       << "\tMax firing rate: " << maxFiringRate_ << endl
@@ -284,16 +279,6 @@ void Simulator::setStimulusFileName(const string &fileName)
  *  Accessors
  ***********************************************/
 ///@{
-int Simulator::getWidth() const
-{
-   return width_;
-}
-
-int Simulator::getHeight() const
-{
-   return height_;
-}
-
 int Simulator::getTotalVertices() const
 {
    return model_->getLayout().getNumVertices();
