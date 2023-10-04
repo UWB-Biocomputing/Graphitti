@@ -59,9 +59,16 @@ public:
    /// @return type of the synapse.
    virtual edgeType edgType(const int srcVertex, const int destVertex) override;
 
+   /// Prints the layout, used for debugging.
+   void printLayout();
+
 private:
    /// initialize the location maps (xloc and yloc).
    void initVerticesLocs();
 
    bool gridLayout_;   ///< True if grid layout.
+
+   int width_;   /// Width of the layout (assumes square)
+
+   int height_;   /// Height of the layout
 };
