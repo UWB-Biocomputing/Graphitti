@@ -84,7 +84,7 @@ for x in cols[:-1]:
 grid = gpd.GeoDataFrame({'geometry': squares}, crs=kc_psap.crs)
 kc_psap.plot()
 
-#stores all PSAP nodes
+#this code iterates through graph ML and finds nodes + adds thenm to graph
 for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
     type_element = node.find(f'.//{{{nsmap["xmlns"]}}}data[@key="{type_attribute_key}"]')
     if type_element is not None and type_element.text == 'PSAP':
@@ -104,7 +104,7 @@ for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
             node_positions[node_id] = (node_x, node_y)
             G.nodes[node_id]['pos'] = (node_x, node_y)
             G.nodes[node_id]['color'] = 'cyan'
-    #find all EMS nodes
+    #change EMS with FIRE or LAW to see fire/police nodes
     elif type_element is not None and type_element.text == 'EMS':
         node_id = node.get('id')
 
@@ -122,7 +122,7 @@ for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
 
 
 
-
+#find the segments of caller regions and find average center to mark as point
 for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
     type_element = node.find(f'.//{{{nsmap["xmlns"]}}}data[@key="{type_attribute_key}"]')
     if type_element is not None and type_element.text == 'CALR':
@@ -171,8 +171,5 @@ label_pos = {k: (v[0], v[1] + 0.01) for k, v in node_positions.items()}
 labels = {node: node for node in G.nodes()}
 nx.draw_networkx_labels(G, label_pos, labels=labels, font_size=8, ax=ax)
 
-# Plot the GIS map without the grid
 kc_psap.plot(ax=ax, color='none', edgecolor='black')
-
-# Show the combined plot
 plt.show()
