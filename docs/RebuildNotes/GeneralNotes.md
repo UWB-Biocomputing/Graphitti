@@ -1,6 +1,6 @@
 ## Object Notes
-### summationMap
-summation points for a vertex. setup() methods are allocating internal storage for summationMap
+### summationPoints
+summation points for a vertex. setup() methods are allocating internal storage for summationPoints
 
 ## Methood Notes
 

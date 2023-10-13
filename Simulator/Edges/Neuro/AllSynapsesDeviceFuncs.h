@@ -44,11 +44,11 @@ extern __global__ void
 /// destination neurons.
 ///
 /// @param allEdgesDevice      Pointer to the Synapse structures in device memory.
-/// @param pSummationMap          Pointer to the summation point.
+/// @param pSummationPoint          Pointer to the summation point.
 /// @param deltaT                 The simulation time step size.
 /// @param weight                 Synapse weight.
 extern __global__ void initSynapsesDevice(int n, AllDSSynapsesDeviceProperties *allEdgesDevice,
-                                          BGFLOAT *pSummationMap, const BGFLOAT deltaT,
+                                          BGFLOAT *pSummationPoint, const BGFLOAT deltaT,
                                           BGFLOAT weight);
 
 #endif
