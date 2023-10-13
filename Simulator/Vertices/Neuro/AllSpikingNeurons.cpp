@@ -21,16 +21,16 @@ void AllSpikingNeurons::setupVertices()
    hasFired_.assign(size_, false);
    vertexEvents_.assign(size_, maxSpikes);
 
-   // register variable vertexEvents_
-   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   recorder.registerVariable("Neuron_", vertexEvents_);
-
-   // // register neuron information in vertexEvents_ one by one
+   // // register variable vertexEvents_
    // Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   // for (int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++) {
-   //    string neuronID = "Neuron_" + to_string(iNeuron);
-   //    recorder.registerVariable(neuronID, vertexEvents_[iNeuron]);
-   // }
+   // recorder.registerVariable("Neuron_", vertexEvents_);
+
+   // register neuron information in vertexEvents_ one by one
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   for (int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++) {
+      string neuronID = "Neuron_" + to_string(iNeuron);
+      recorder.registerVariable(neuronID, vertexEvents_[iNeuron]);
+   }
 }
 
 ///  Clear the spike counts out of all Neurons.

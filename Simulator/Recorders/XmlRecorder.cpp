@@ -82,13 +82,15 @@ void XmlRecorder::compileHistories(AllVertices &vertices)
               columnIndex < variableTable_[rowIndex].variableLocation_->getNumEventsInEpoch();
               columnIndex++) {
             // cout << (*(variableTable_[i].variableLocation_))[j] << " ";
-            variablesHistory_[rowIndex].push_back(
-               (*(variableTable_[rowIndex].variableLocation_))[columnIndex]);
+            variableTable_[rowIndex].variableHistory_.push_back(
+               (*(variableTable_[rowIndex].variableLocation_)).getElement(columnIndex)
+                  );
          }
+      }
          // cout << endl;
          variableTable_[rowIndex].variableLocation_->startNewEpoch();
-      }
    }
+
 
    // // generate the regression test files using prervious version of XmlRecorder
    // //All neurons event
@@ -115,31 +117,53 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
    resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n";
    //iterate the variable list row by row then output the cumulative value to a xml file
    for (int rowIndex = 0; rowIndex < variableTable_.size(); rowIndex++) {
-      if (variablesHistory_[rowIndex].size() > 0) {
-         resultOut_ << toXML(variableTable_[rowIndex].variableName_, variablesHistory_[rowIndex])
+      if (variableTable_[rowIndex].variableHistory_.size() > 0) {
+         resultOut_ << toXML(variableTable_[rowIndex].variableName_,
+            variableTable_[rowIndex].variableHistory_)
                     << endl;
       }
    }
 }
 
 /// Convert internal buffer to XML string
-string XmlRecorder::toXML(string name, vector<uint64_t> singleBuffer_) const
+// string XmlRecorder::toXML(string name,  vector<multipleTypes> singleBuffer_) const
+// {
+//    stringstream os;
+
+//    os << "<Matrix ";
+//    if (name != "")
+//       os << "name=\"" << name << "\" ";
+//    os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << singleBuffer_.size()
+//       << "\" multiplier=\"1.0\">" << endl;
+//    os << "   ";
+//    for (int i = 0; i < singleBuffer_.size(); i++) {
+//       os << get<uint64_t>(singleBuffer_[i]) << " ";
+//    }
+//    os << endl;
+//    os << "</Matrix>";
+
+//    return os.str();
+// }
+string XmlRecorder::toXML(string name, vector<multipleTypes> singleBuffer_) const
 {
-   stringstream os;
+    stringstream os;
 
-   os << "<Matrix ";
-   if (name != "")
-      os << "name=\"" << name << "\" ";
-   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << singleBuffer_.size()
-      << "\" multiplier=\"1.0\">" << endl;
-   os << "   ";
-   for (int i = 0; i < singleBuffer_.size(); i++) {
-      os << singleBuffer_[i] << " ";
-   }
-   os << endl;
-   os << "</Matrix>";
+    os << "<Matrix ";
+    if (!name.empty())
+        os << "name=\"" << name << "\" ";
+    os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << singleBuffer_.size()
+       << "\" multiplier=\"1.0\">" << endl;
+    
+    os << "   ";
+    for (const auto& value : singleBuffer_) {
+        std::visit([&os](const auto& v) {
+            os << v << " ";
+        }, value);
+    }
+    os << endl;
+    os << "</Matrix>";
 
-   return os.str();
+    return os.str();
 }
 
 void XmlRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const vector<bool> &starterMap)
@@ -160,26 +184,20 @@ void XmlRecorder::printParameters()
 /// register a single EventBuffer.
 /// Obtain the updating value while the simulator runs by storing the address of registered variable
 /// Store a single neuron with the neuron number and its corresponding events
-void XmlRecorder::registerVariable(string name, EventBuffer &recordVar)
+void XmlRecorder::registerVariable(string name, RecordableBase &recordVar)
 {
    // add a new variable into the table
    variableTable_.push_back(singleVariableInfo(name, recordVar));
-   // create an internal buffer to store the value of new variable
-   vector<uint64_t> singleHistory_;
-   variablesHistory_.push_back(singleHistory_);
 }
 
 /// register a vector of EventBuffers.
 /// Obtain the updating value while the simulator runs by storing the address of registered variable
 /// Store all neuron with the neuron number and its corresponding events
-void XmlRecorder::registerVariable(string varName, vector<EventBuffer> &recordVar)
+void XmlRecorder::registerVariable(string varName, vector<RecordableBase> &recordVars)
 {
-   for (int i = 0; i < recordVar.size(); i++) {
+   for (int i = 0; i < recordVars.size(); i++) {
       string variableID = varName + to_string(i);
       // add a new variable into the table
-      variableTable_.push_back(singleVariableInfo(variableID, recordVar[i]));
-      // create an internal buffer to store the value of new variable
-      vector<uint64_t> singleHistory_;
-      variablesHistory_.push_back(singleHistory_);
+      variableTable_.push_back(singleVariableInfo(variableID, recordVars[i]));
    }
 }

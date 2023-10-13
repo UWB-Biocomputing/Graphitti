@@ -17,6 +17,7 @@
 #include "Recorder.h"
 #include <fstream>
 #include <vector>
+typedef std::variant<uint64_t, double, char> multipleTypes;
 
 class XmlRecorder : public Recorder {
 public:
@@ -56,57 +57,61 @@ public:
    virtual void printParameters() override;
 
    /// register a single EventBuffer variable
-   void registerVariable(string varName, EventBuffer &recordVar) override;
+   void registerVariable(string varName, RecordableBase &recordVar) override;
 
    /// register a vector of EventBuffers.
-   void registerVariable(string varName, vector<EventBuffer> &recordVar) override;
+   void registerVariable(string varName, vector<RecordableBase> &recordVars) override;
 
-   ///@{
-   /** These methods are intended only for unit tests */
-   // constructor only for unit test
-   XmlRecorder(std::string fileName)
-   {
-      resultFileName_ = fileName;
-   }
+   // ///@{
+   // /** These methods are intended only for unit tests */
+   // // constructor only for unit test
+   // XmlRecorder(std::string fileName)
+   // {
+   //    resultFileName_ = fileName;
+   // }
 
-   // Accessor method for neuronName_ (only included during unit tests)
-   // @param numIndex   The index number in the variable list.
-   std::string getVariableName(int numIndex) const
-   {
-      return variableTable_[numIndex].variableName_;
-   }
+   // // Accessor method for neuronName_ (only included during unit tests)
+   // // @param numIndex   The index number in the variable list.
+   // std::string getVariableName(int numIndex) const
+   // {
+   //    return variableTable_[numIndex].variableName_;
+   // }
 
-   // Accessor method for a single variable address in the variableTable_
-   // @param numIndex   The index number in the variable list.
-   // (only included during unit tests)
-   EventBuffer &getSingleVariable(int numIndex) const
-   {
-      return *(variableTable_[numIndex].variableLocation_);
-   }
+   // // Accessor method for a single variable address in the variableTable_
+   // // @param numIndex   The index number in the variable list.
+   // // (only included during unit tests)
+   // EventBuffer &getSingleVariable(int numIndex) const
+   // {
+   //    return *(variableTable_[numIndex].variableLocation_);
+   // }
 
-   // Accessor method for variablesHistory_ (only included during unit tests)
-   const vector<vector<uint64_t>> &getHistory() const
-   {
-      return variablesHistory_;
-   }
-   ///@}
+   // // Accessor method for variablesHistory_ (only included during unit tests)
+   // const vector<vector<uint64_t>> &getHistory() const
+   // {
+   //    return variablesHistory_;
+   // }
+   // ///@}
 
 protected:
    // create a struct contains a variable information
    struct singleVariableInfo {
       // records the name of each variable
       string variableName_;
+      string datatype;
 
       // This pointer stores the address of the registered variable
       // As the simulator runs, the values will be updated
       // It can records all events of a single neuron in each epoch
-      shared_ptr<EventBuffer> variableLocation_;
-
+      shared_ptr<RecordableBase> variableLocation_;
+      
+      // history of accumulated value for a single variable
+      // vector<uint64_t> variableHistory_;
+      vector<multipleTypes> variableHistory_;
       //constructor
-      singleVariableInfo(string name, EventBuffer &location)
+      singleVariableInfo(string name, RecordableBase &location)
       {
          variableName_ = name;
-         variableLocation_ = std::shared_ptr<EventBuffer>(&location, [](EventBuffer *) {
+         variableLocation_ = std::shared_ptr<RecordableBase>(&location, [](RecordableBase *) {
          });
       }
    };
@@ -115,13 +120,11 @@ protected:
    // the variableTable_ stores all the variables information that need to be recorded
    vector<singleVariableInfo> variableTable_;
 
-   // history of accumulated event for all neurons
-   vector<vector<uint64_t>> variablesHistory_;
-
    // a file stream for xml output
    ofstream resultOut_;
 
-   string toXML(string name, vector<uint64_t> singleVariableBuffer_) const;
+   // string toXML(string name,  vector<multipleTypesuint64_t>const;
+   string toXML(string name, vector<multipleTypes> singleVariableBuffer_) const;
 
    /// this method will be deleted
    void getStarterNeuronMatrix(VectorMatrix &matrix, const vector<bool> &starterMap);

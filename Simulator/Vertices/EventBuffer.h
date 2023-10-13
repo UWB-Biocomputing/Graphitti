@@ -22,9 +22,12 @@
 
 #pragma once
 #include "Global.h"
+#include "Recordable.h"
+// #include "RecordableBase.h"
 class AllSpikingNeurons;
 class AllIFNeurons;
-class EventBuffer {
+// class EventBuffer : public RecordableBase {
+class EventBuffer : public Recordable<uint64_t> {
    friend class AllIFNeurons;
    friend class AllSpikingNeurons;
 
@@ -59,6 +62,7 @@ public:
    ///
    /// @param i element number
    uint64_t operator[](int i) const;
+   std::variant<uint64_t, double, char> getElement(int index) const override;
 
    /// Get number of events in the current/preceding epoch
    ///
@@ -103,7 +107,8 @@ public:
 
 private:
    /// Holds the event time steps
-   vector<uint64_t> eventTimeSteps_;
+   // vector<uint64_t> eventTimeSteps_;
+   using Recordable<uint64_t>::eventTimeSteps_;
 
    /// Index of the first event in the queue
    int queueFront_;

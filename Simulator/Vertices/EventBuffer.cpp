@@ -9,13 +9,19 @@
 */
 
 #include "EventBuffer.h"
+// #include "Recordable.h"
 #include "Global.h"
 #include <cassert>
 #include <limits>
 
-EventBuffer::EventBuffer(int maxEvents) :
-   eventTimeSteps_(maxEvents + 1, numeric_limits<unsigned long>::max())
+// EventBuffer::EventBuffer(int maxEvents) :
+//    eventTimeSteps_(maxEvents + 1, numeric_limits<unsigned long>::max())
+// {
+//    clear();
+// }
+EventBuffer::EventBuffer(int maxEvents)
 {
+   eventTimeSteps_.assign(maxEvents + 1, numeric_limits<unsigned long>::max());
    clear();
 }
 
@@ -39,6 +45,19 @@ void EventBuffer::clear()
 uint64_t EventBuffer::operator[](int i) const
 {
    return eventTimeSteps_[(epochStart_ + i) % eventTimeSteps_.size()];
+}
+
+std::variant<uint64_t, double, char> EventBuffer::getElement(int index) const {
+   return eventTimeSteps_[(epochStart_ + index) % eventTimeSteps_.size()];
+   // if (index >= 0 && index < eventTimeSteps_.size()) {
+   //    // Check if the index is within bounds and return the value at that index.
+   //    return eventTimeSteps_[index];
+   // } else {
+   //    // Handle the case where the index is out of bounds.
+   //    // You can choose to throw an exception or return a default value.
+   //    // Here, we'll throw an exception.
+   //    throw std::out_of_range("Index out of bounds");
+   // }
 }
 
 int EventBuffer::getNumEventsInEpoch() const

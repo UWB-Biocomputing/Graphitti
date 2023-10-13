@@ -11,6 +11,8 @@
 #include "AllVertices.h"
 #include "EventBuffer.h"
 #include <log4cplus/loggingmacros.h>
+#include "Recordable.h"
+#include <variant>
 
 class AllVertices;
 class Recorder {
@@ -45,10 +47,10 @@ public:
    virtual void printParameters() = 0;
 
    // register a single EventBuffer variable.
-   virtual void registerVariable(string varName, EventBuffer &recordVar) = 0;
+   virtual void registerVariable(string varName, RecordableBase &recordVar) = 0;
 
    // register a vector of EventBuffers.
-   virtual void registerVariable(string varName, vector<EventBuffer> &recordVar) = 0;
+   virtual void registerVariable(string varName, vector<RecordableBase> &recordVar)= 0;
 
 protected:
    // File path to the file that the results will be printed to.

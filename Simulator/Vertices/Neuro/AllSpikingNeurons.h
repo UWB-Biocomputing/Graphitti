@@ -99,7 +99,7 @@ public:
    vector<bool> hasFired_;
 
    /// Holds at least one epoch's worth of event times for every vertex
-   vector<EventBuffer> vertexEvents_;
+   vector<EventBuffer>  vertexEvents_;
 
 protected:
    ///  True if back propagaion is allowed.
