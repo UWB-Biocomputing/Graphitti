@@ -96,7 +96,7 @@ void AllDynamicSTDPSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const
 ///
 ///  @param  iEdg            Index of the synapse to set.
 ///  @param  deltaT          Inner simulation step duration
-void AllDynamicSTDPSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
+void AllDynamicSTDPSynapses::resetEdge(const BGSIZE iEdg, BGFLOAT deltaT)
 {
    AllSTDPSynapses::resetEdge(iEdg, deltaT);
 
@@ -113,7 +113,7 @@ void AllDynamicSTDPSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
 void AllDynamicSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
-                                        const BGFLOAT deltaT, edgeType type)
+                                        BGFLOAT deltaT, edgeType type)
 {
    AllSTDPSynapses::createEdge(iEdg, srcVertex, destVertex, deltaT, type);
 
@@ -159,7 +159,7 @@ void AllDynamicSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int de
 ///
 ///  @param  iEdg        Index of the synapse to set.
 ///  @param  deltaT      Inner simulation step duration.
-void AllDynamicSTDPSynapses::changePSR(const BGSIZE iEdg, const BGFLOAT deltaT)
+void AllDynamicSTDPSynapses::changePSR(const BGSIZE iEdg, BGFLOAT deltaT)
 {
    BGFLOAT &psr = this->psr_[iEdg];
    BGFLOAT &W = this->W_[iEdg];

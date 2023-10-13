@@ -50,7 +50,7 @@ CUDA_CALLABLE int edgSign(edgeType t)
 ///  @param  deltaT             Inner simulation step duration.
 CUDA_CALLABLE void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties *allEdgesDevice,
                                             const BGSIZE iEdg, const uint64_t simulationStep,
-                                            const BGFLOAT deltaT)
+                                            BGFLOAT deltaT)
 {
    //assert( iEdg < allEdgesDevice->maxEdgesPerVertex * allEdgesDevice->countVertices_ );
 
@@ -94,7 +94,7 @@ CUDA_CALLABLE void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties *allEd
 ///  @param type                 Type of the Synapse to create.
 CUDA_CALLABLE void createSpikingSynapse(AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                         int neuronIndex, int synapseOffset, int sourceIndex,
-                                        int destIndex, const BGFLOAT deltaT, edgeType type)
+                                        int destIndex, BGFLOAT deltaT, edgeType type)
 {
    BGFLOAT delay;
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
@@ -156,7 +156,7 @@ CUDA_CALLABLE void createSpikingSynapse(AllSpikingSynapsesDeviceProperties *allE
 ///  @param type                 Type of the Synapse to create.
 CUDA_CALLABLE void createDSSynapse(AllDSSynapsesDeviceProperties *allEdgesDevice, int neuronIndex,
                                    int synapseOffset, int sourceIndex, int destIndex,
-                                   const BGFLOAT deltaT, edgeType type)
+                                   BGFLOAT deltaT, edgeType type)
 {
    BGFLOAT delay;
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
@@ -241,7 +241,7 @@ CUDA_CALLABLE void createDSSynapse(AllDSSynapsesDeviceProperties *allEdgesDevice
 ///  @param type                 Type of the Synapse to create.
 CUDA_CALLABLE void createSTDPSynapse(AllSTDPSynapsesDeviceProperties *allEdgesDevice,
                                      int neuronIndex, int synapseOffset, int sourceIndex,
-                                     int destIndex, const BGFLOAT deltaT, edgeType type)
+                                     int destIndex, BGFLOAT deltaT, edgeType type)
 {
    BGFLOAT delay;
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
@@ -324,7 +324,7 @@ CUDA_CALLABLE void createSTDPSynapse(AllSTDPSynapsesDeviceProperties *allEdgesDe
 ///  @param type                 Type of the Synapse to create.
 CUDA_CALLABLE void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperties *allEdgesDevice,
                                             int neuronIndex, int synapseOffset, int sourceIndex,
-                                            int destIndex, const BGFLOAT deltaT, edgeType type)
+                                            int destIndex, BGFLOAT deltaT, edgeType type)
 {
    BGFLOAT delay;
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
@@ -431,8 +431,7 @@ CUDA_CALLABLE void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperti
 /// @param numVertices            The number of vertices.
 CUDA_CALLABLE void addSpikingSynapse(AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                      edgeType type, int srcVertex, int destVertex, int sourceIndex,
-                                     int destIndex, const BGFLOAT deltaT, BGFLOAT *W_d,
-                                     int numVertices)
+                                     int destIndex, BGFLOAT deltaT, BGFLOAT *W_d, int numVertices)
 {
    if (allEdgesDevice->edgeCounts_[destVertex] >= allEdgesDevice->maxEdgesPerVertex_) {
       return;   // TODO: ERROR!
@@ -606,7 +605,7 @@ __global__ void updateSynapsesWeightsDevice(int numVertices, BGFLOAT deltaT, BGF
 /// @param deltaT                 The simulation time step size.
 /// @param weight                 Synapse weight.
 __global__ void initSynapsesDevice(int n, AllDSSynapsesDeviceProperties *allEdgesDevice,
-                                   BGFLOAT *pSummationMap, const BGFLOAT deltaT, BGFLOAT weight)
+                                   BGFLOAT *pSummationMap, BGFLOAT deltaT, BGFLOAT weight)
 {
    int idx = blockIdx.x * blockDim.x + threadIdx.x;
    if (idx >= n)

@@ -53,7 +53,7 @@ public:
    ///
    ///  @param  iEdg     Index of the synapse to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
+   virtual void resetEdge(const BGSIZE iEdg, BGFLOAT deltaT) override;
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::op::loadParameters
    virtual void loadParameters() override;
@@ -69,7 +69,7 @@ public:
    ///  @param  destVertex  Index of the destination Neuron.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
                            edgeType type) override;
 
    ///  Check if the back propagation (notify a spike event to the pre neuron)
@@ -98,7 +98,7 @@ protected:
    ///  @param  iEdg    Index of the synapse to set.
    ///  @param  deltaT  Inner simulation step duration
    ///  @return true is success.
-   bool updateDecay(const BGSIZE iEdg, const BGFLOAT deltaT);
+   bool updateDecay(const BGSIZE iEdg, BGFLOAT deltaT);
 
    ///  Sets the data for Synapse to input's data.
    ///
@@ -253,7 +253,7 @@ protected:
    ///
    ///  @param  iEdg        Index of the synapse to set.
    ///  @param  deltaT      Inner simulation step duration.
-   virtual void changePSR(const BGSIZE iEdg, const BGFLOAT deltaT);
+   virtual void changePSR(const BGSIZE iEdg, BGFLOAT deltaT);
 
 #endif
 
@@ -301,8 +301,7 @@ CUDA_CALLABLE bool
                                      BGSIZE iEdg);
 CUDA_CALLABLE void
    changeSpikingSynapsesPSRDevice(AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                  const BGSIZE iEdg, const uint64_t simulationStep,
-                                  const BGFLOAT deltaT);
+                                  const BGSIZE iEdg, const uint64_t simulationStep, BGFLOAT deltaT);
 
 struct AllSpikingSynapsesDeviceProperties : public AllEdgesDeviceProperties {
    ///  The decay for the psr.

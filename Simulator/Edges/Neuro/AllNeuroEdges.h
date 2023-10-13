@@ -33,7 +33,7 @@ using uint8_t = unsigned _int8;
 
 class AllVertices;
 
-// using fpCreateSynapse_t =  void (*)(void*, int, int, int, int, BGFLOAT*, const BGFLOAT, edgeType);
+// using fpCreateSynapse_t =  void (*)(void*, int, int, int, int, BGFLOAT*, BGFLOAT, edgeType);
 
 // enumerate all non-abstract edge classes.
 enum enumClassSynapses {
@@ -57,7 +57,7 @@ public:
    ///
    ///  @param  iEdg     Index of the edge to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT);
+   virtual void resetEdge(const BGSIZE iEdg, BGFLOAT deltaT);
 
    // ///  Create a Synapse and connect it to the model.
    // ///
@@ -66,7 +66,7 @@ public:
    // ///  @param  dest        Coordinates of the destination Neuron.
    // ///  @param  deltaT      Inner simulation step duration.
    // ///  @param  type        Type of the Synapse to create.
-   // virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+   // virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
    //                            edgeType type) override;
 
    ///  Get the sign of the edgeType.

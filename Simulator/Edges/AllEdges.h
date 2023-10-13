@@ -41,7 +41,7 @@ public:
    ///  @param  destVertex  The Vertex that receives from the Edge.
    ///  @param  deltaT      Inner simulation step duration
    ///  @return  iEdg        Index of the edge to be added.
-   virtual BGSIZE addEdge(edgeType type, int srcVertex, int destVertex, const BGFLOAT deltaT);
+   virtual BGSIZE addEdge(edgeType type, int srcVertex, int destVertex, BGFLOAT deltaT);
 
    ///  Create a Edge and connect it to the model.
    ///
@@ -50,7 +50,7 @@ public:
    ///  @param  destVertex  Coordinates of the destination Vertex.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Edge to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
                            edgeType type)
       = 0;
 

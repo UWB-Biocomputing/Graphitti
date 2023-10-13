@@ -23,7 +23,7 @@
 
 __global__ void advanceSpikingSynapsesDevice(int totalSynapseCount,
                                              EdgeIndexMapDevice *edgeIndexMapDevice,
-                                             uint64_t simulationStep, const BGFLOAT deltaT,
+                                             uint64_t simulationStep, BGFLOAT deltaT,
                                              AllSpikingSynapsesDeviceProperties *allEdgesDevice);
 
 ///  Allocate GPU memories to store all synapses' states,
@@ -447,7 +447,7 @@ void AllSpikingSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
 
 __global__ void advanceSpikingSynapsesDevice(int totalSynapseCount,
                                              EdgeIndexMapDevice *edgeIndexMapDevice,
-                                             uint64_t simulationStep, const BGFLOAT deltaT,
+                                             uint64_t simulationStep, BGFLOAT deltaT,
                                              AllSpikingSynapsesDeviceProperties *allEdgesDevice)
 {
    int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -521,8 +521,7 @@ CUDA_CALLABLE bool
 ///  @param  deltaT             Inner simulation step duration.
 CUDA_CALLABLE void
    changeSpikingSynapsesPSRDevice(AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                  const BGSIZE iEdg, const uint64_t simulationStep,
-                                  const BGFLOAT deltaT)
+                                  const BGSIZE iEdg, const uint64_t simulationStep, BGFLOAT deltaT)
 {
    BGFLOAT &psr = allEdgesDevice->psr_[iEdg];
    BGFLOAT &W = allEdgesDevice->W_[iEdg];

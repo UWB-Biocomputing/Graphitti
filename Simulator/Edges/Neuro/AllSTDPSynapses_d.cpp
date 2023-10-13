@@ -26,7 +26,7 @@
 
 __global__ void advanceSTDPSynapsesDevice(int totalSynapseCount,
                                           EdgeIndexMapDevice *edgeIndexMapDevice,
-                                          uint64_t simulationStep, const BGFLOAT deltaT,
+                                          uint64_t simulationStep, BGFLOAT deltaT,
                                           AllSTDPSynapsesDeviceProperties *allEdgesDevice,
                                           AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                           int maxSpikes);
@@ -565,7 +565,7 @@ CUDA_CALLABLE uint64_t getSTDPSynapseSpikeHistoryDevice(
 ///  @param[in] maxSpikes                Maximum number of spikes per neuron per epoch.
 __global__ void advanceSTDPSynapsesDevice(int totalSynapseCount,
                                           EdgeIndexMapDevice *edgeIndexMapDevice,
-                                          uint64_t simulationStep, const BGFLOAT deltaT,
+                                          uint64_t simulationStep, BGFLOAT deltaT,
                                           AllSTDPSynapsesDeviceProperties *allEdgesDevice,
                                           AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                           int maxSpikes)

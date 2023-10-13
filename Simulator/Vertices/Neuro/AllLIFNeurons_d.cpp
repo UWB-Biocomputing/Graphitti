@@ -25,8 +25,7 @@
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
 
 __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int maxSpikes,
-                                        const BGFLOAT deltaT, uint64_t simulationStep,
-                                        float randNoise[],
+                                        BGFLOAT deltaT, uint64_t simulationStep, float randNoise[],
                                         AllIFNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                         EdgeIndexMapDevice *edgeIndexMapDevice,
@@ -84,8 +83,7 @@ void AllLIFNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
 ///  @param[in] edgeIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
 __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int maxSpikes,
-                                        const BGFLOAT deltaT, uint64_t simulationStep,
-                                        float randNoise[],
+                                        BGFLOAT deltaT, uint64_t simulationStep, float randNoise[],
                                         AllIFNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                         EdgeIndexMapDevice *edgeIndexMapDevice,

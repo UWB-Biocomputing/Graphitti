@@ -187,7 +187,7 @@ void AllIFNeurons::setNeuronDefaults(int index)
 ///
 ///  @param  i    Index of the Neuron.
 ///  @param  deltaT          Inner simulation step duration
-void AllIFNeurons::initNeuronConstsFromParamValues(int i, const BGFLOAT deltaT)
+void AllIFNeurons::initNeuronConstsFromParamValues(int i, BGFLOAT deltaT)
 {
    BGFLOAT &Tau = this->Tau_[i];
    BGFLOAT &C1 = this->C1_[i];

@@ -31,7 +31,7 @@ void All911Edges::setupEdges()
    }
 }
 
-void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
                              edgeType type)
 {
    inUse_[iEdg] = true;

@@ -22,7 +22,7 @@ extern CUDA_CALLABLE enumClassSynapses classSynapses_d;
 extern CUDA_CALLABLE int edgSign(edgeType t);
 extern CUDA_CALLABLE void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties *allEdgesDevice,
                                                    const BGSIZE iEdg, const uint64_t simulationStep,
-                                                   const BGFLOAT deltaT);
+                                                   BGFLOAT deltaT);
 
 
 /// Adjust the strength of the synapse or remove it from the synapse map if it has gone below
@@ -48,7 +48,6 @@ extern __global__ void
 /// @param deltaT                 The simulation time step size.
 /// @param weight                 Synapse weight.
 extern __global__ void initSynapsesDevice(int n, AllDSSynapsesDeviceProperties *allEdgesDevice,
-                                          BGFLOAT *pSummationMap, const BGFLOAT deltaT,
-                                          BGFLOAT weight);
+                                          BGFLOAT *pSummationMap, BGFLOAT deltaT, BGFLOAT weight);
 
 #endif

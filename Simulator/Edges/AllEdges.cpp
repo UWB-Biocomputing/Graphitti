@@ -255,7 +255,7 @@ void AllEdges::eraseEdge(int iVert, const BGSIZE iEdg)
 ///  @param  destVertex The Vertex that receives from the edge.
 ///  @param  deltaT      Inner simulation step duration
 ///  @return  iEdg      Index of the edge to be added.
-BGSIZE AllEdges::addEdge(edgeType type, int srcVertex, int destVertex, const BGFLOAT deltaT)
+BGSIZE AllEdges::addEdge(edgeType type, int srcVertex, int destVertex, BGFLOAT deltaT)
 {
    BGSIZE iEdg;
    if (edgeCounts_[destVertex] >= maxEdgesPerVertex_) {

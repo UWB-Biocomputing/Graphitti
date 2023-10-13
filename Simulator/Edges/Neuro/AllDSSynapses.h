@@ -71,7 +71,7 @@ public:
    ///
    ///  @param  iEdg     Index of the synapse to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
+   virtual void resetEdge(const BGSIZE iEdg, BGFLOAT deltaT) override;
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
@@ -84,7 +84,7 @@ public:
    ///  @param  destVertex        Coordinates of the destination Neuron.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
                            edgeType type) override;
 
    ///  Prints SynapsesProps data to console.
@@ -202,7 +202,7 @@ protected:
    ///
    ///  @param  iEdg        Index of the synapse to set.
    ///  @param  deltaT      Inner simulation step duration.
-   virtual void changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) override;
+   virtual void changePSR(const BGSIZE iEdg, BGFLOAT deltaT) override;
 
 #endif   // defined(USE_GPU)
 public:

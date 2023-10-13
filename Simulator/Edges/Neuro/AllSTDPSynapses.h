@@ -91,7 +91,7 @@ public:
    ///
    ///  @param  iEdg     Index of the synapse to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
+   virtual void resetEdge(const BGSIZE iEdg, BGFLOAT deltaT) override;
 
    ///  Check if the back propagation (notify a spike event to the pre neuron)
    ///  is allowed in the synapse class.
@@ -114,7 +114,7 @@ public:
    ///  @param  destVertex  Index of the destination Neuron.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
                            edgeType type) override;
 
    ///  Prints SynapsesProps data.

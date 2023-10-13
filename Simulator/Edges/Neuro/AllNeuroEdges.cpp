@@ -32,7 +32,7 @@ void AllNeuroEdges::setupEdges(int numVertices, int maxEdges)
 ///
 ///  @param  iEdg     Index of the edge to set.
 ///  @param  deltaT   Inner simulation step duration
-void AllNeuroEdges::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
+void AllNeuroEdges::resetEdge(const BGSIZE iEdg, BGFLOAT deltaT)
 {
    psr_[iEdg] = 0.0;
 }

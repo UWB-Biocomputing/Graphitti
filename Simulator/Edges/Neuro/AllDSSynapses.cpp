@@ -96,7 +96,7 @@ void AllDSSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const
 ///
 ///  @param  iEdg            Index of the synapse to set.
 ///  @param  deltaT          Inner simulation step duration
-void AllDSSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
+void AllDSSynapses::resetEdge(const BGSIZE iEdg, BGFLOAT deltaT)
 {
    AllSpikingSynapses::resetEdge(iEdg, deltaT);
 
@@ -112,8 +112,8 @@ void AllDSSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
 ///  @param  destVertex  Coordinates of the destination Neuron.
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
-void AllDSSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
-                               const BGFLOAT deltaT, edgeType type)
+void AllDSSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
+                               edgeType type)
 {
    AllSpikingSynapses::createEdge(iEdg, srcVertex, destVertex, deltaT, type);
 
@@ -159,7 +159,7 @@ void AllDSSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
 ///
 ///  @param  iEdg        Index of the synapse to set.
 ///  @param  deltaT      Inner simulation step duration.
-void AllDSSynapses::changePSR(const BGSIZE iEdg, const BGFLOAT deltaT)
+void AllDSSynapses::changePSR(const BGSIZE iEdg, BGFLOAT deltaT)
 {
    BGFLOAT &psr = psr_[iEdg];
    BGFLOAT &W = W_[iEdg];

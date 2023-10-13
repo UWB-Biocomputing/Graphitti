@@ -223,7 +223,7 @@ protected:
    ///
    ///  @param  neuronIndex    Index of the Neuron.
    ///  @param  deltaT          Inner simulation step duration
-   virtual void initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT) override;
+   virtual void initNeuronConstsFromParamValues(int neuronIndex, BGFLOAT deltaT) override;
 
    ///  Sets the data for Neuron #index to input's data.
    ///

@@ -77,7 +77,7 @@ void AllSpikingSynapses::initSpikeQueue(const BGSIZE iEdg)
 ///
 ///  @param  iEdg     Index of the synapse to set.
 ///  @param  deltaT   Inner simulation step duration
-void AllSpikingSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
+void AllSpikingSynapses::resetEdge(const BGSIZE iEdg, BGFLOAT deltaT)
 {
    AllNeuroEdges::resetEdge(iEdg, deltaT);
 
@@ -167,7 +167,7 @@ void AllSpikingSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
 void AllSpikingSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
-                                    const BGFLOAT deltaT, edgeType type)
+                                    BGFLOAT deltaT, edgeType type)
 {
    BGFLOAT delay;
 
@@ -297,7 +297,7 @@ void AllSpikingSynapses::advanceEdge(const BGSIZE iEdg, AllVertices &neurons)
 ///
 ///  @param  iEdg        Index of the synapse to set.
 ///  @param  deltaT      Inner simulation step duration.
-void AllSpikingSynapses::changePSR(const BGSIZE iEdg, const BGFLOAT deltaT)
+void AllSpikingSynapses::changePSR(const BGSIZE iEdg, BGFLOAT deltaT)
 {
    BGFLOAT &psr = psr_[iEdg];
    BGFLOAT &W = W_[iEdg];
@@ -312,7 +312,7 @@ void AllSpikingSynapses::changePSR(const BGSIZE iEdg, const BGFLOAT deltaT)
 ///
 ///  @param  iEdg    Index of the synapse to set.
 ///  @param  deltaT  Inner simulation step duration
-bool AllSpikingSynapses::updateDecay(const BGSIZE iEdg, const BGFLOAT deltaT)
+bool AllSpikingSynapses::updateDecay(const BGSIZE iEdg, BGFLOAT deltaT)
 {
    BGFLOAT &tau = tau_[iEdg];
    BGFLOAT &decay = decay_[iEdg];
