@@ -1,23 +1,26 @@
 /**
- *  @file All911Edges.h
+ * @file All911Edges.h
  *
- *  @ingroup Simulator/Edges/NG911
+ * @ingroup Simulator/Edges/NG911
  *
- *  @brief A container of all 911 edge data
- *
- *  The container holds edge parameters of all edges.
- *  Each kind of edge parameter is stored in a 2D array. Each item in the first
- *  dimension of the array corresponds with each vertex, and each item in the second
- *  dimension of the array corresponds with an edge parameter of each edge of the vertex.
- * Because each vertex owns different number of edges, the number of edges
- *  for each vertex is stored in a 1D array, edge_counts.
- *
- *  For CUDA implementation, we used another structure, AllEdgesDevice, where edge
- *  parameters are stored in 1D arrays instead of 2D arrays, so that device functions
- *  can access these data with less latency. When copying a edge parameter, P[i][j],
- *  from host to device, it is stored in P[i * max_edges_per_vertex + j] in
- *  AllEdgesDevice structure.
- *
+ * @brief Specialization of the AllEdges class for the NG911 network
+ * 
+ * In the NG911 Model, an edge represent a communication link between two nodes.
+ * When communication messages, such as calls, are send between the vertices;
+ * they are placed in the outgoing edge of the vertex where the message
+ * originates. These messages are then pulled, for processing, by the destination
+ * vertex.
+ * 
+ * Besides having a placeholder for the message being sent, each edge has
+ * parameters to keep track of its availability. It is worth mentioning that
+ * because the class contains all the edges; these parameters are contained in
+ * vectors or arrays, where each item correspond to an edge parameter.
+ * 
+ * During the `advanceEdges` step of the simulation the destination vertex pulls
+ * the calls placed in the given edge and queues them into their internal queue.
+ * Here we check that there is space in the queue, the queue in considered full
+ * if all trunks are busy. That is, if the total calls in the waiting queue +
+ * the number of busy agents equals the total number of trunks available.
  */
 
 #pragma once
@@ -82,7 +85,7 @@ public:
 public:
    ///  Advance all the edges in the simulation.
    ///
-   ///  @param  vertices           The vertex list to search from.
+   ///  @param  vertices       The vertex list to search from.
    ///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
    virtual void advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap);
 

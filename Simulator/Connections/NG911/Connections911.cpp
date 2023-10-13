@@ -3,14 +3,12 @@
 *
 * @ingroup Simulator/Connections/NG911
 * 
-* @brief The model of the static network
-*
+* @brief This class manages the Connections of the NG911 network
 */
 
 #include "Connections911.h"
-#include "All911Vertices.h"
+#include "All911Edges.h"
 #include "GraphManager.h"
-#include "Layout911.h"
 #include "ParameterManager.h"
 
 void Connections911::setup()
@@ -35,8 +33,7 @@ void Connections911::setup()
       BGFLOAT dist = layout.dist_(srcV, destV);
       LOG4CPLUS_DEBUG(edgeLogger_, "Source: " << srcV << " Dest: " << destV << " Dist: " << dist);
 
-      BGSIZE iEdg;
-      edges_->addEdge(iEdg, type, srcV, destV, Simulator::getInstance().getDeltaT());
+      BGSIZE iEdg = edges_->addEdge(type, srcV, destV, Simulator::getInstance().getDeltaT());
       added++;
    }
 
@@ -65,9 +62,6 @@ void Connections911::printParameters() const
 
 #if !defined(USE_GPU)
 ///  Update the connections status in every epoch.
-///
-///  @param  vertices  The Vertex list to search from.
-///  @return true if successful, false otherwise.
 bool Connections911::updateConnections(AllVertices &vertices)
 {
    // Only run on the first epoch
@@ -93,11 +87,55 @@ bool Connections911::updateConnections(AllVertices &vertices)
    return true;
 }
 
+
+/// Finds the outgoing edge from the given vertex to the Responder closest to
+/// the emergency call location
+BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, BGSIZE vertexIdx)
+{
+   All911Edges &edges911 = dynamic_cast<All911Edges &>(*edges_);
+
+   vertexType requiredType;
+   if (call.type == "Law")
+      requiredType = LAW;
+   else if (call.type == "EMS")
+      requiredType = EMS;
+   else if (call.type == "Fire")
+      requiredType = FIRE;
+
+   // loop over the outgoing edges looking for the responder with the shortest
+   // Euclidean distance to the call's location.
+   BGSIZE startOutEdg = synapseIndexMap_->outgoingEdgeBegin_[vertexIdx];
+   BGSIZE outEdgCount = synapseIndexMap_->outgoingEdgeCount_[vertexIdx];
+   Layout &layout = Simulator::getInstance().getModel().getLayout();
+
+   BGSIZE resp, respEdge;
+   double minDistance = numeric_limits<double>::max();
+   for (BGSIZE eIdxMap = startOutEdg; eIdxMap < startOutEdg + outEdgCount; ++eIdxMap) {
+      BGSIZE outEdg = synapseIndexMap_->outgoingEdgeIndexMap_[eIdxMap];
+      assert(edges911.inUse_[outEdg]);   // Edge must be in use
+
+      BGSIZE dstVertex = edges911.destVertexIndex_[outEdg];
+      if (layout.vertexTypeMap_[dstVertex] == requiredType) {
+         double xDelta = call.x - layout.xloc_[dstVertex];
+         double yDelta = call.y - layout.yloc_[dstVertex];
+         double distance = sqrt(pow(xDelta, 2) + pow(yDelta, 2));
+
+         if (distance < minDistance) {
+            minDistance = distance;
+            resp = dstVertex;
+            respEdge = outEdg;
+         }
+      }
+   }
+
+   // We must have found the closest responder of the right type
+   assert(minDistance < numeric_limits<double>::max());
+   assert(layout.vertexTypeMap_[resp] == requiredType);
+   return respEdge;
+}
+
+
 ///  Randomly delete 1 PSAP and rewire all the edges around it.
-///
-///  @param  vertices  The Vertex list to search from.
-///  @param  layout   Layout information of the vertex network.
-///  @return true if successful, false otherwise.
 bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
@@ -156,7 +194,8 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
          }
 
          // Identify all psap-less responders
-         if (layout.vertexTypeMap_[destVertex] == RESP) {
+         if (layout.vertexTypeMap_[destVertex] == LAW || layout.vertexTypeMap_[destVertex] == FIRE
+             || layout.vertexTypeMap_[destVertex] == EMS) {
             respsToReroute.push_back(destVertex);
          }
       }
@@ -190,8 +229,8 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       }
 
       // Insert Caller to PSAP edge
-      BGSIZE iEdg;
-      edges_->addEdge(iEdg, CP, srcVertex, closestPSAP, Simulator::getInstance().getDeltaT());
+      BGSIZE iEdg
+         = edges_->addEdge(CP, srcVertex, closestPSAP, Simulator::getInstance().getDeltaT());
 
       // Record added edge
       ChangedEdge addedEdge;
@@ -218,8 +257,8 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       }
 
       // Insert PSAP to Responder edge
-      BGSIZE iEdg;
-      edges_->addEdge(iEdg, PR, closestPSAP, destVertex, Simulator::getInstance().getDeltaT());
+      BGSIZE iEdg
+         = edges_->addEdge(PR, closestPSAP, destVertex, Simulator::getInstance().getDeltaT());
 
       // Record added edge
       ChangedEdge addedEdge;
@@ -233,10 +272,6 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
 }
 
 ///  Randomly delete 1 RESP.
-///
-///  @param  vertices  The Vertex list to search from.
-///  @param  layout   Layout information of the vertex network.
-///  @return true if successful, false otherwise.
 bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
@@ -246,7 +281,8 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
 
    // Find all resps
    for (int i = 0; i < numVertices; i++) {
-      if (layout.vertexTypeMap_[i] == RESP) {
+      if (layout.vertexTypeMap_[i] == LAW || layout.vertexTypeMap_[i] == FIRE
+          || layout.vertexTypeMap_[i] == EMS) {
          resps.push_back(i);
       }
    }
@@ -295,7 +331,8 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
    return changesMade;
 }
 
-///  @return xml representation of a single edge
+
+///  Returns an xml representation of a single edge
 string Connections911::ChangedEdge::toString()
 {
    stringstream os;
@@ -332,8 +369,6 @@ string Connections911::ChangedEdge::toString()
 }
 
 ///  Returns the complete list of all deleted or added edges as a string.
-///  @param added    true returns the list of added edges, false = erased
-///  @return xml representation of all deleted or added edges
 string Connections911::changedEdgesToXML(bool added)
 {
    stringstream os;
@@ -358,7 +393,6 @@ string Connections911::changedEdgesToXML(bool added)
 }
 
 ///  Returns the complete list of deleted vertices as a string.
-///  @return xml representation of all deleted vertices
 string Connections911::erasedVerticesToXML()
 {
    stringstream os;
