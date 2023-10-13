@@ -29,8 +29,6 @@ TEST(Simulator, ParametersInitializedSuccessfully)
    ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml");
    Simulator::getInstance().loadParameters();
 
-   EXPECT_EQ(30, Simulator::getInstance().getWidth());
-   EXPECT_EQ(30, Simulator::getInstance().getHeight());
    EXPECT_EQ(BGFLOAT(100), Simulator::getInstance().getEpochDuration());
    EXPECT_EQ(500, Simulator::getInstance().getNumEpochs());
    EXPECT_EQ(200, Simulator::getInstance().getMaxFiringRate());

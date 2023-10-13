@@ -3,14 +3,14 @@
 * 
 * @ingroup Simulator/Layouts/NG911
 *
-* @brief The Layout class defines the layout of vertices in networks
+* @brief Specialization of the Layout class for the NG911 network
 */
 
-// #include <string>
 #include "Layout911.h"
 #include "GraphManager.h"
 #include "ParameterManager.h"
 
+// Register vertex properties with the GraphManager
 void Layout911::registerGraphProperties()
 {
    // The base class registers properties that are common to all vertices
@@ -27,17 +27,19 @@ void Layout911::registerGraphProperties()
    gm.registerProperty("type", &VertexProperty::type);
    gm.registerProperty("y", &VertexProperty::y);
    gm.registerProperty("x", &VertexProperty::x);
-   gm.registerProperty("agents", &VertexProperty::agents);
+   gm.registerProperty("servers", &VertexProperty::servers);
    gm.registerProperty("trunks", &VertexProperty::trunks);
    gm.registerProperty("segments", &VertexProperty::segments);
 }
 
+// Loads Layout911 member variables.
 void Layout911::loadParameters()
 {
    // Get the number of verticese from the GraphManager
    numVertices_ = GraphManager::getInstance().numVertices();
 }
 
+// Setup the internal structure of the class.
 void Layout911::setup()
 {
    // Base class allocates memory for: xLoc_, yLoc, dist2_, and dist_
@@ -69,12 +71,12 @@ void Layout911::setup()
    dist_ = sqrt(dist2_);
 }
 
+// Prints out all parameters to logging file.
 void Layout911::printParameters() const
 {
 }
 
-/// Creates a vertex type map.
-/// @param  numVertices number of the vertices to have in the type map.
+// Creates a vertex type map.
 void Layout911::generateVertexTypeMap(int numVertices)
 {
    DEBUG(cout << "\nInitializing vertex type map" << endl;);
@@ -83,9 +85,9 @@ void Layout911::generateVertexTypeMap(int numVertices)
    // In the GraphML file Responders are divided in LAW, FIRE, and EMS.
    // Perhaps, we need to expand the vertex types?
    map<string, vertexType> vTypeMap = {{"CALR", vertexType::CALR},
-                                       {"LAW", vertexType::RESP},
-                                       {"FIRE", vertexType::RESP},
-                                       {"EMS", vertexType::RESP},
+                                       {"LAW", vertexType::LAW},
+                                       {"FIRE", vertexType::FIRE},
+                                       {"EMS", vertexType::EMS},
                                        {"PSAP", vertexType::PSAP}};
    // Count map for debugging
    map<string, int> vTypeCount;
@@ -110,24 +112,26 @@ void Layout911::generateVertexTypeMap(int numVertices)
    LOG4CPLUS_INFO(fileLogger_, "Finished initializing vertex type map");
 }
 
-///  Returns the type of synapse at the given coordinates
-///
-///  @param    srcVertex  integer that points to a Neuron in the type map as a source.
-///  @param    destVertex integer that points to a Neuron in the type map as a destination.
-///  @return type of the synapse.
+// Returns the type of synapse at the given coordinates
 edgeType Layout911::edgType(const int srcVertex, const int destVertex)
 {
    if (vertexTypeMap_[srcVertex] == CALR && vertexTypeMap_[destVertex] == PSAP)
       return CP;
-   else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == RESP)
+   else if (vertexTypeMap_[srcVertex] == PSAP
+            && (vertexTypeMap_[destVertex] == LAW || vertexTypeMap_[destVertex] == FIRE
+                || vertexTypeMap_[destVertex] == EMS))
       return PR;
    else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == CALR)
       return PC;
    else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == PSAP)
       return PP;
-   else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == PSAP)
+   else if ((vertexTypeMap_[srcVertex] == LAW || vertexTypeMap_[destVertex] == FIRE
+             || vertexTypeMap_[destVertex] == EMS)
+            && vertexTypeMap_[destVertex] == PSAP)
       return RP;
-   else if (vertexTypeMap_[srcVertex] == RESP && vertexTypeMap_[destVertex] == CALR)
+   else if ((vertexTypeMap_[srcVertex] == LAW || vertexTypeMap_[destVertex] == FIRE
+             || vertexTypeMap_[destVertex] == EMS)
+            && vertexTypeMap_[destVertex] == CALR)
       return RC;
    else
       return ETYPE_UNDEF;

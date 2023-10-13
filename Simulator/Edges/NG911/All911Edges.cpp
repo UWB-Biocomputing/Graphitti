@@ -3,7 +3,7 @@
  *
  *  @ingroup Simulator/Edges/NG911
  *
- *  @brief A container of all 911 edge data
+ *  @brief Specialization of the AllEdges class for the NG911 network
  */
 
 #include "All911Edges.h"
@@ -44,9 +44,6 @@ void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, c
 #if !defined(USE_GPU)
 
 ///  Advance all the edges in the simulation.
-///
-///  @param  vertices           The vertex list to search from.
-///  @param  edgeIndexMap   Pointer to EdgeIndexMap structure.
 void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap)
 {
    Simulator &simulator = Simulator::getInstance();
@@ -72,22 +69,25 @@ void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap
          }   // Edge doesn't have a call
 
          int dst = destVertexIndex_[edgeIdx];
-
          // The destination vertex should be the one pulling the information
          assert(dst == vertex);
-         if (all911Vertices.vertexQueues_[dst].isFull()) {
+
+         CircularBuffer<Call> &dstQueue = all911Vertices.vertexQueues_[dst];
+         if (dstQueue.size() == dstQueue.capacity() - all911Vertices.busyServers_[dst]) {
             // Call is dropped because there is no space in the waiting queue
             if (!isRedial_[edgeIdx]) {
                // Only count the dropped call if it's not a redial
                all911Vertices.droppedCalls_[dst]++;
                // Record that we received a call
                all911Vertices.receivedCalls_[dst]++;
-               LOG4CPLUS_DEBUG(edgeLogger_, "Call dropped: " << all911Vertices.droppedCalls_[dst]
-                                                             << ", time: " << call_[edgeIdx].time
-                                                             << ", eIdx: " << edgeIdx);
+               LOG4CPLUS_DEBUG(edgeLogger_,
+                               "Call dropped: " << all911Vertices.droppedCalls_[dst] << ", time: "
+                                                << call_[edgeIdx].time << ", vertex: " << dst
+                                                << ", queue size: " << dstQueue.size());
             }
          } else {
-            all911Vertices.vertexQueues_[dst].put(call_[edgeIdx]);
+            // Transfer call to destination
+            dstQueue.put(call_[edgeIdx]);
             // Record that we received a call
             all911Vertices.receivedCalls_[dst]++;
             isAvailable_[edgeIdx] = true;
