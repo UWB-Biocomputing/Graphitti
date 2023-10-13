@@ -71,7 +71,7 @@ void GpuSInputRegular::inputStimulus(SimulationInfo* psi)
 
     // add input to each summation point
     blocksPerGrid = ( vertex_count + threadsPerBlock - 1 ) / threadsPerBlock;
-    inputStimulusDevice <<< blocksPerGrid, threadsPerBlock >>> ( vertex_count, psi->pSummationMap, initValues_d, nShiftValues_d, nStepsInCycle, nStepsCycle, nStepsDuration );
+    inputStimulusDevice <<< blocksPerGrid, threadsPerBlock >>> ( vertex_count, psi->pSummationPoint, initValues_d, nShiftValues_d, nStepsInCycle, nStepsCycle, nStepsDuration );
     // update cycle count
     nStepsInCycle = (nStepsInCycle + 1) % nStepsCycle;
 }
