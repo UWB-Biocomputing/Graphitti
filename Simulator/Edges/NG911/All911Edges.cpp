@@ -8,7 +8,7 @@
 
 #include "All911Edges.h"
 
-All911Edges::All911Edges(const int numVertices, const int maxEdges)
+All911Edges::All911Edges(int numVertices, int maxEdges)
 {
 }
 

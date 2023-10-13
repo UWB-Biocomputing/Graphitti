@@ -75,7 +75,7 @@ class AllSTDPSynapses : public AllSpikingSynapses {
 public:
    AllSTDPSynapses();
 
-   AllSTDPSynapses(const int numVertices, const int maxEdges);
+   AllSTDPSynapses(int numVertices, int maxEdges);
 
    virtual ~AllSTDPSynapses() = default;
 
@@ -125,7 +125,7 @@ protected:
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of synapses per neuron.
-   virtual void setupEdges(const int numVertices, const int maxEdges) override;
+   virtual void setupEdges(int numVertices, int maxEdges) override;
 
    ///  Sets the data for Synapse to input's data.
    ///

@@ -105,7 +105,7 @@ public:
    ///
    ///  @param  index   index of the neuron (in neurons) to output info from.
    ///  @return the complete state of the neuron.
-   virtual string toString(const int index) const override;
+   virtual string toString(int index) const override;
 
    ///  Reads and sets the data for all neurons from input stream.
    ///
@@ -198,12 +198,12 @@ protected:
    ///  Helper for #advanceNeuron. Updates state of a single neuron.
    ///
    ///  @param  index            Index of the neuron to update.
-   virtual void advanceNeuron(const int index);
+   virtual void advanceNeuron(int index);
 
    ///  Initiates a firing of a neuron to connected neurons.
    ///
    ///  @param  index            Index of the neuron to fire.
-   virtual void fire(const int index);
+   virtual void fire(int index);
 
 #endif   // defined(USE_GPU)
 
@@ -217,7 +217,7 @@ protected:
    ///  Set the Neuron at the indexed location to default values.
    ///
    ///  @param  index    Index of the Neuron that the synapse belongs to.
-   void setNeuronDefaults(const int index);
+   void setNeuronDefaults(int index);
 
    ///  Initializes the Neuron constants at the indexed location.
    ///

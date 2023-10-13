@@ -60,7 +60,7 @@ class AllDynamicSTDPSynapses : public AllSTDPSynapses {
 public:
    AllDynamicSTDPSynapses() = default;
 
-   AllDynamicSTDPSynapses(const int numVertices, const int maxEdges);
+   AllDynamicSTDPSynapses(int numVertices, int maxEdges);
 
    virtual ~AllDynamicSTDPSynapses() = default;
 
@@ -100,7 +100,7 @@ protected:
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of synapses per neuron.
-   virtual void setupEdges(const int numVertices, const int maxEdges) override;
+   virtual void setupEdges(int numVertices, int maxEdges) override;
 
    ///  Sets the data for Synapse to input's data.
    ///

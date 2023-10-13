@@ -141,15 +141,15 @@ private:
    void updateHistory();
 
    // TODO
-   void eraseEdge(AllEdges &synapses, const int neuronIndex, const int synapseIndex);
+   void eraseEdge(AllEdges &synapses, int neuronIndex, int synapseIndex);
 
    // TODO
-   void addEdge(AllEdges &synapses, edgeType type, const int srcVertex, const int destVertex,
+   void addEdge(AllEdges &synapses, edgeType type, int srcVertex, int destVertex,
                 Coordinate &source, Coordinate &dest, BGFLOAT deltaT);
 
    // TODO
-   void createEdge(AllEdges &synapses, const int neuronIndex, const int synapseIndex,
-                   Coordinate source, Coordinate dest, BGFLOAT deltaT, edgeType type);
+   void createEdge(AllEdges &synapses, int neuronIndex, int synapseIndex, Coordinate source,
+                   Coordinate dest, BGFLOAT deltaT, edgeType type);
 };
 
 #if defined(__CUDACC__)

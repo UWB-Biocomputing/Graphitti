@@ -20,7 +20,7 @@ class AllVertices;
 class AllEdges {
 public:
    AllEdges();
-   AllEdges(const int numVertices, const int maxEdges);
+   AllEdges(int numVertices, int maxEdges);
    virtual ~AllEdges() = default;
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -41,7 +41,7 @@ public:
    ///  @param  srcVertex   The Vertex that sends to this Edge.
    ///  @param  destVertex  The Vertex that receives from the Edge.
    ///  @param  deltaT      Inner simulation step duration
-   virtual void addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex,
+   virtual void addEdge(BGSIZE &iEdg, edgeType type, int srcVertex, int destVertex,
                         const BGFLOAT deltaT);
 
    ///  Create a Edge and connect it to the model.
@@ -71,7 +71,7 @@ protected:
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of edges per vertex.
-   virtual void setupEdges(const int numVertices, const int maxEdges);
+   virtual void setupEdges(int numVertices, int maxEdges);
 
    ///  Sets the data for Edge to input's data.
    ///
@@ -89,7 +89,7 @@ protected:
    ///
    ///  @param  typeOrdinal    Integer that correspond with a edgeType.
    ///  @return the SynapseType that corresponds with the given integer.
-   edgeType edgeOrdinalToType(const int typeOrdinal);
+   edgeType edgeOrdinalToType(int typeOrdinal);
 
    /// Loggers used to print to using log4cplus logging macros, prints to Results/Debug/logging.txt
    log4cplus::Logger fileLogger_;
@@ -192,7 +192,7 @@ public:
    ///
    ///  @param  neuronIndex   Index of a vertex to remove from.
    ///  @param  iEdg          Index of a edge to remove.
-   virtual void eraseEdge(const int neuronIndex, const BGSIZE iEdg);
+   virtual void eraseEdge(int neuronIndex, const BGSIZE iEdg);
 #endif   // defined(USE_GPU)
 
    ///  The location of the edge.

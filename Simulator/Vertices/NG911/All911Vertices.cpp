@@ -155,7 +155,7 @@ void All911Vertices::printParameters() const
 }
 
 
-string All911Vertices::toString(const int index) const
+string All911Vertices::toString(int index) const
 {
    return nullptr;   // Change this
 }
@@ -301,7 +301,7 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
 ///  Update internal state of the indexed Neuron (called by every simulation step).
 ///
 ///  @param  index       Index of the Neuron to update.
-void All911Vertices::advanceVertex(const int index)
+void All911Vertices::advanceVertex(int index)
 {
    // BGFLOAT &Vm = this->Vm_[index];
    // BGFLOAT &Vthresh = this->Vthresh_[index];

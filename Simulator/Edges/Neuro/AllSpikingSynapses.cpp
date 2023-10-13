@@ -24,7 +24,7 @@ AllSpikingSynapses::AllSpikingSynapses() : AllNeuroEdges()
    delay_EE_ = 0;
 }
 
-AllSpikingSynapses::AllSpikingSynapses(const int numVertices, const int maxEdges)
+AllSpikingSynapses::AllSpikingSynapses(int numVertices, int maxEdges)
 {
    setupEdges(numVertices, maxEdges);
 }
@@ -40,7 +40,7 @@ void AllSpikingSynapses::setupEdges()
 ///
 ///  @param  numVertices   Total number of vertices in the network.
 ///  @param  maxEdges  Maximum number of synapses per neuron.
-void AllSpikingSynapses::setupEdges(const int numVertices, const int maxEdges)
+void AllSpikingSynapses::setupEdges(int numVertices, int maxEdges)
 {
    AllNeuroEdges::setupEdges(numVertices, maxEdges);
 

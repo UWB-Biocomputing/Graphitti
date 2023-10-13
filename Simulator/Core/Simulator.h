@@ -47,8 +47,8 @@ public:
 
    void simulate();
 
-   void advanceEpoch(const int &currentEpoch) const;   /// Advance simulation to next growth
-                                                       /// cycle. Helper for #simulate().
+   void advanceEpoch(int currentEpoch) const;   /// Advance simulation to next growth
+                                                /// cycle. Helper for #simulate().
 
    void saveResults() const;   /// Writes simulation results to an output destination.
 

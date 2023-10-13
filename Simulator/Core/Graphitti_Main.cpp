@@ -27,6 +27,17 @@
 #include <string>
 using namespace std;
 
+class Test {
+   char a;
+
+   int32_t c;
+   char b;
+};
+class Test2 {
+   char a;
+   char b;
+   int32_t c;
+};
 ///  Main function calls the Core's runSimulation method which
 ///  handles command line arguments and running the simulation.
 ///
@@ -51,6 +62,10 @@ int main(int argc, char *argv[])
    for (int i = 1; i < argc; i++) {
       cmdLineArguments = cmdLineArguments + argv[i] + " ";
    }
+   std::cout << "Size of int: " << sizeof(int) << " bytes" << std::endl;
+
+   std::cout << "Size of Test: " << sizeof(Test) << " bytes" << std::endl;
+   std::cout << "Size of Test2: " << sizeof(Test2) << " bytes" << std::endl;
 
    // Creating an instance of core class
    Core core;

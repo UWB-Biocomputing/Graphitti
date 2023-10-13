@@ -59,7 +59,7 @@ public:
    ///
    ///  @param  index   index of the vertex (in vertices) to output info from.
    ///  @return the complete state of the vertex.
-   virtual string toString(const int index) const;
+   virtual string toString(int index) const;
 
    /// Loads all inputs scheduled to occur in the upcoming epoch.
    /// These are inputs occurring in between curStep (inclusive) and
@@ -149,7 +149,7 @@ public:
    virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIndexMap) override;
 
 protected:
-   void advanceVertex(const int index);
+   void advanceVertex(int index);
 
 #endif   // defined(USE_GPU)
 };

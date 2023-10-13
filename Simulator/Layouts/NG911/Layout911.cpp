@@ -110,7 +110,7 @@ void Layout911::generateVertexTypeMap(int numVertices)
    LOG4CPLUS_INFO(fileLogger_, "Finished initializing vertex type map");
 }
 
-void Layout911::initStarterMap(const int numVertices)
+void Layout911::initStarterMap(int numVertices)
 {
    Layout::initStarterMap(numVertices);
 }
@@ -128,7 +128,7 @@ int Layout911::zone(int index)
 ///  @param    srcVertex  integer that points to a Neuron in the type map as a source.
 ///  @param    destVertex integer that points to a Neuron in the type map as a destination.
 ///  @return type of the synapse.
-edgeType Layout911::edgType(const int srcVertex, const int destVertex)
+edgeType Layout911::edgType(int srcVertex, int destVertex)
 {
    if (vertexTypeMap_[srcVertex] == CALR && vertexTypeMap_[destVertex] == PSAP)
       return CP;

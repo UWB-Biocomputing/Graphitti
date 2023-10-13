@@ -114,12 +114,12 @@ protected:
    ///  Helper for #advanceNeuron. Updates state of a single neuron.
    ///
    ///  @param  index Index of the neuron to update.
-   virtual void advanceNeuron(const int index);
+   virtual void advanceNeuron(int index);
 
    ///  Initiates a firing of a neuron to connected neurons.
    ///
    ///  @param  index Index of the neuron to fire.
-   virtual void fire(const int index);
+   virtual void fire(int index);
 
 #endif   // defined(USE_GPU)
 };

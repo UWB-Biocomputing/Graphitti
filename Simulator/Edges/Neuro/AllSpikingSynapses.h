@@ -37,7 +37,7 @@ class AllSpikingSynapses : public AllNeuroEdges {
 public:
    AllSpikingSynapses();
 
-   AllSpikingSynapses(const int numVertices, const int maxEdges);
+   AllSpikingSynapses(int numVertices, int maxEdges);
 
    virtual ~AllSpikingSynapses() = default;
 
@@ -86,7 +86,7 @@ protected:
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of synapses per neuron.
-   virtual void setupEdges(const int numVertices, const int maxEdges);
+   virtual void setupEdges(int numVertices, int maxEdges);
 
    ///  Initializes the queues for the Synapse.
    ///

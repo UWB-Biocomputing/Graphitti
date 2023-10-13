@@ -33,7 +33,7 @@ using uint8_t = unsigned _int8;
 
 class AllVertices;
 
-// using fpCreateSynapse_t =  void (*)(void*, const int, const int, int, int, BGFLOAT*, const BGFLOAT, edgeType);
+// using fpCreateSynapse_t =  void (*)(void*, int, int, int, int, BGFLOAT*, const BGFLOAT, edgeType);
 
 // enumerate all non-abstract edge classes.
 enum enumClassSynapses {
@@ -83,7 +83,7 @@ protected:
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of edges per vertex.
-   virtual void setupEdges(const int numVertices, const int maxEdges) override;
+   virtual void setupEdges(int numVertices, int maxEdges) override;
 
    ///  Sets the data for Synapse to input's data.
    ///

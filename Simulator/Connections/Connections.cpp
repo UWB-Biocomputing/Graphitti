@@ -89,8 +89,7 @@ bool Connections::updateConnections(AllVertices &vertices)
 }
 
 #if defined(USE_GPU)
-void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vertices,
-                                        AllEdges &synapses,
+void Connections::updateSynapsesWeights(int numVertices, AllVertices &vertices, AllEdges &synapses,
                                         AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                         Layout &layout)

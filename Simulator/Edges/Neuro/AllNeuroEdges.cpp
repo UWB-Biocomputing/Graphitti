@@ -17,7 +17,7 @@ void AllNeuroEdges::setupEdges()
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
-void AllNeuroEdges::setupEdges(const int numVertices, const int maxEdges)
+void AllNeuroEdges::setupEdges(int numVertices, int maxEdges)
 {
    AllEdges::setupEdges(numVertices, maxEdges);
 

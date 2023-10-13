@@ -32,7 +32,7 @@ class All911Edges : public AllEdges {
 public:
    All911Edges() = default;
 
-   All911Edges(const int numVertices, const int maxEdges);
+   All911Edges(int numVertices, int maxEdges);
 
    virtual ~All911Edges() = default;
 

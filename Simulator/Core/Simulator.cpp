@@ -196,7 +196,7 @@ void Simulator::simulate()
 /// Helper for #simulate(). Advance simulation until ready for next growth cycle.
 /// This should simulate all neuron and synapse activity for one epoch.
 /// @param currentStep the current epoch in which the network is being simulated.
-void Simulator::advanceEpoch(const int &currentEpoch) const
+void Simulator::advanceEpoch(int currentEpoch) const
 {
    uint64_t count = 0;
    // Compute step number at end of this simulation epoch

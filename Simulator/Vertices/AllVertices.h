@@ -69,7 +69,7 @@ public:
    ///
    ///  @param  i   index of the vertex (in vertices) to output info from.
    ///  @return the complete state of the vertex.
-   virtual string toString(const int i) const = 0;
+   virtual string toString(int i) const = 0;
 
    ///  The summation point for each vertex.
    ///  Summation points are places where the synapses connected to the vertex

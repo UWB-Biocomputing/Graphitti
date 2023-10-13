@@ -84,7 +84,7 @@ void FixedLayout::generateVertexTypeMap(int numVertices)
 ///  Populates the starter map.
 ///  Selects \e numStarter excitory neurons and converts them into starter neurons.
 ///  @param  numVertices number of vertices to have in the map.
-void FixedLayout::initStarterMap(const int numVertices)
+void FixedLayout::initStarterMap(int numVertices)
 {
    Layout::initStarterMap(numVertices);
 
@@ -141,7 +141,7 @@ void FixedLayout::loadParameters()
 ///  @param    srcVertex  integer that points to a Neuron in the type map as a source.
 ///  @param    destVertex integer that points to a Neuron in the type map as a destination.
 ///  @return type of the synapse.
-edgeType FixedLayout::edgType(const int srcVertex, const int destVertex)
+edgeType FixedLayout::edgType(int srcVertex, int destVertex)
 {
    if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == INH)
       return II;

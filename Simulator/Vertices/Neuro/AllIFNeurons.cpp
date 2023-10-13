@@ -169,7 +169,7 @@ void AllIFNeurons::createNeuron(int i, Layout &layout)
 ///  Set the Neuron at the indexed location to default values.
 ///
 ///  @param  index    Index of the Neuron that the synapse belongs to.
-void AllIFNeurons::setNeuronDefaults(const int index)
+void AllIFNeurons::setNeuronDefaults(int index)
 {
    Cm_[index] = DEFAULT_Cm;
    Rm_[index] = DEFAULT_Rm;
@@ -217,7 +217,7 @@ void AllIFNeurons::initNeuronConstsFromParamValues(int i, const BGFLOAT deltaT)
 ///
 ///  @param  index  index of the neuron (in neurons) to output info from.
 ///  @return the complete state of the neuron.
-string AllIFNeurons::toString(const int index) const
+string AllIFNeurons::toString(int index) const
 {
    stringstream ss;
    ss << "Cm: " << Cm_[index] << " ";               // membrane capacitance

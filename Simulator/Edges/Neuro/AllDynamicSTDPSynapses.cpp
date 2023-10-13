@@ -8,7 +8,7 @@
 
 #include "AllDynamicSTDPSynapses.h"
 
-AllDynamicSTDPSynapses::AllDynamicSTDPSynapses(const int numVertices, const int maxEdges) :
+AllDynamicSTDPSynapses::AllDynamicSTDPSynapses(int numVertices, int maxEdges) :
    AllSTDPSynapses(numVertices, maxEdges)
 {
    setupEdges(numVertices, maxEdges);
@@ -25,7 +25,7 @@ void AllDynamicSTDPSynapses::setupEdges()
 ///
 ///  @param  numVertices   Total number of vertices in the network.
 ///  @param  maxEdges  Maximum number of synapses per neuron.
-void AllDynamicSTDPSynapses::setupEdges(const int numVertices, const int maxEdges)
+void AllDynamicSTDPSynapses::setupEdges(int numVertices, int maxEdges)
 {
    AllSTDPSynapses::setupEdges(numVertices, maxEdges);
 
