@@ -279,5 +279,4 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
       LOG4CPLUS_DEBUG(vertexLogger_, "Responded to incident, type: " << incident->type);
    }
 }
-
 #endif

@@ -76,7 +76,7 @@ public:
    ///  apply (summed up) their PSRs (Post-Synaptic-Response).
    ///  On the next advance cycle, vertices add the values stored in their corresponding
    ///  summation points to their Vm and resets the summation points to zero
-   vector<BGFLOAT> summationMap_;
+   vector<BGFLOAT> summationPoints_;
 
 protected:
    ///  Total number of vertices.
@@ -144,6 +144,6 @@ struct AllVerticesDeviceProperties {
    ///  apply (summed up) their PSRs (Post-Synaptic-Response).
    ///  On the next advance cycle, vertices add the values stored in their corresponding
    ///  summation points to their Vm and resets the summation points to zero
-   BGFLOAT *summationMap_;
+   BGFLOAT *summationPoints_;
 };
 #endif   // defined(USE_GPU)

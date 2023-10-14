@@ -113,7 +113,7 @@ protected:
    virtual void deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevice);
 
    /// Add psr of all incoming synapses to summation points.
-   virtual void calcSummationMap();
+   virtual void calcSummationPoint();
 
    /// Pointer to device random noise array.
    float *randNoise_d;
@@ -161,8 +161,8 @@ void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, uns
 
 //! Calculate summation point.
 extern __global__ void
-   calcSummationMapDevice(int totalVertices,
-                          AllSpikingNeuronsDeviceProperties *__restrict__ allNeurnsDevice,
-                          const EdgeIndexMapDevice *__restrict__ synapseIndexMapDevice_,
-                          const AllSpikingSynapsesDeviceProperties *__restrict__ allEdgesDevice);
+   calcSummationPointDevice(int totalVertices,
+                            AllSpikingNeuronsDeviceProperties *__restrict__ allNeurnsDevice,
+                            const EdgeIndexMapDevice *__restrict__ synapseIndexMapDevice_,
+                            const AllSpikingSynapsesDeviceProperties *__restrict__ allEdgesDevice);
 #endif

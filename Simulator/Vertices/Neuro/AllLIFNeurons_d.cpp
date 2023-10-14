@@ -95,7 +95,7 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
       return;
 
    allVerticesDevice->hasFired_[idx] = false;
-   BGFLOAT &sp = allVerticesDevice->summationMap_[idx];
+   BGFLOAT &sp = allVerticesDevice->summationPoints_[idx];
    BGFLOAT &vm = allVerticesDevice->Vm_[idx];
    BGFLOAT r_sp = sp;
    BGFLOAT r_vm = vm;
