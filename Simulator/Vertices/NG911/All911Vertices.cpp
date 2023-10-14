@@ -96,12 +96,7 @@ void All911Vertices::printParameters() const
 }
 
 
-<<<<<<< HEAD
 string All911Vertices::toString(int index) const
-=======
-// Outputs state of the vertex chosen as a string.
-string All911Vertices::toString(const int index) const
->>>>>>> 870ef8bc8b5bd82e565c08ff3b9b58bfc6d1f00d
 {
    return nullptr;   // Change this
 }

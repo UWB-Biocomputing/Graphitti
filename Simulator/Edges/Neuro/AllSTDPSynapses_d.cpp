@@ -472,8 +472,8 @@ void AllSTDPSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
 ///  @param  delta                Pre/post synaptic spike interval.
 ///  @param  epost                Params for the rule given in Froemke and Dan (2002).
 ///  @param  epre                 Params for the rule given in Froemke and Dan (2002).
-CUDA_CALLABLE void stdpLearningDevice(AllSTDPSynapsesDeviceProperties *allEdgesDevice,
-                                      const BGSIZE iEdg, double delta, double epost, double epre)
+CUDA_CALLABLE void stdpLearningDevice(AllSTDPSynapsesDeviceProperties *allEdgesDevice, BGSIZE iEdg,
+                                      double delta, double epost, double epre)
 {
    BGFLOAT STDPgap = allEdgesDevice->STDPgap_[iEdg];
    BGFLOAT muneg = allEdgesDevice->muneg_[iEdg];

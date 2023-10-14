@@ -90,7 +90,7 @@ void AllEdges::setupEdges(int numVertices, int maxEdges)
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the edge to set.
-void AllEdges::readEdge(istream &input, const BGSIZE iEdg)
+void AllEdges::readEdge(istream &input, BGSIZE iEdg)
 {
    int synapse_type(0);
 
@@ -113,7 +113,7 @@ void AllEdges::readEdge(istream &input, const BGSIZE iEdg)
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the edge to print out.
-void AllEdges::writeEdge(ostream &output, const BGSIZE iEdg) const
+void AllEdges::writeEdge(ostream &output, BGSIZE iEdg) const
 {
    output << sourceVertexIndex_[iEdg] << ends;
    output << destVertexIndex_[iEdg] << ends;
@@ -238,7 +238,7 @@ void AllEdges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap)
 ///
 ///  @param  iVert    Index of a vertex to remove from.
 ///  @param  iEdg           Index of a edge to remove.
-void AllEdges::eraseEdge(int iVert, const BGSIZE iEdg)
+void AllEdges::eraseEdge(int iVert, BGSIZE iEdg)
 {
    edgeCounts_[iVert]--;
    inUse_[iEdg] = false;

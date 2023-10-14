@@ -57,7 +57,7 @@ public:
    ///
    ///  @param  iEdg     Index of the edge to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, BGFLOAT deltaT);
+   virtual void resetEdge(BGSIZE iEdg, BGFLOAT deltaT);
 
    // ///  Create a Synapse and connect it to the model.
    // ///
@@ -66,7 +66,7 @@ public:
    // ///  @param  dest        Coordinates of the destination Neuron.
    // ///  @param  deltaT      Inner simulation step duration.
    // ///  @param  type        Type of the Synapse to create.
-   // virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
+   // virtual void createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
    //                            edgeType type) override;
 
    ///  Get the sign of the edgeType.
@@ -89,13 +89,13 @@ protected:
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the edge to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg) override;
+   virtual void readEdge(istream &input, BGSIZE iEdg) override;
 
    ///  Write the edge data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the edge to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const override;
+   virtual void writeEdge(ostream &output, BGSIZE iEdg) const override;
 
 public:
    /// The factor to adjust overlapping area to edge weight.

@@ -520,8 +520,8 @@ CUDA_CALLABLE bool
 ///  @param  simulationStep     The current simulation step.
 ///  @param  deltaT             Inner simulation step duration.
 CUDA_CALLABLE void
-   changeSpikingSynapsesPSRDevice(AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                  const BGSIZE iEdg, const uint64_t simulationStep, BGFLOAT deltaT)
+   changeSpikingSynapsesPSRDevice(AllSpikingSynapsesDeviceProperties *allEdgesDevice, BGSIZE iEdg,
+                                  const uint64_t simulationStep, BGFLOAT deltaT)
 {
    BGFLOAT &psr = allEdgesDevice->psr_[iEdg];
    BGFLOAT &W = allEdgesDevice->W_[iEdg];

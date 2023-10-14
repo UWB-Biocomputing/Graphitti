@@ -49,7 +49,7 @@ CUDA_CALLABLE int edgSign(edgeType t)
 ///  @param  simulationStep     The current simulation step.
 ///  @param  deltaT             Inner simulation step duration.
 CUDA_CALLABLE void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties *allEdgesDevice,
-                                            const BGSIZE iEdg, const uint64_t simulationStep,
+                                            BGSIZE iEdg, const uint64_t simulationStep,
                                             BGFLOAT deltaT)
 {
    //assert( iEdg < allEdgesDevice->maxEdgesPerVertex * allEdgesDevice->countVertices_ );

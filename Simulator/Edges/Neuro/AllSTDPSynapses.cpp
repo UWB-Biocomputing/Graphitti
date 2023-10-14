@@ -74,7 +74,7 @@ void AllSTDPSynapses::setupEdges(int numVertices, int maxEdges)
 ///  Initializes the queues for the Synapse.
 ///
 ///  @param  iEdg   index of the synapse to set.
-void AllSTDPSynapses::initSpikeQueue(const BGSIZE iEdg)
+void AllSTDPSynapses::initSpikeQueue(BGSIZE iEdg)
 {
    AllSpikingSynapses::initSpikeQueue(iEdg);
 
@@ -151,7 +151,7 @@ void AllSTDPSynapses::printParameters() const
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the synapse to set.
-void AllSTDPSynapses::readEdge(istream &input, const BGSIZE iEdg)
+void AllSTDPSynapses::readEdge(istream &input, BGSIZE iEdg)
 {
    AllSpikingSynapses::readEdge(input, iEdg);
 
@@ -190,7 +190,7 @@ void AllSTDPSynapses::readEdge(istream &input, const BGSIZE iEdg)
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the synapse to print out.
-void AllSTDPSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const
+void AllSTDPSynapses::writeEdge(ostream &output, BGSIZE iEdg) const
 {
    AllSpikingSynapses::writeEdge(output, iEdg);
 
@@ -214,7 +214,7 @@ void AllSTDPSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const
 ///
 ///  @param  iEdg            Index of the synapse to set.
 ///  @param  deltaT          Inner simulation step duration
-void AllSTDPSynapses::resetEdge(const BGSIZE iEdg, BGFLOAT deltaT)
+void AllSTDPSynapses::resetEdge(BGSIZE iEdg, BGFLOAT deltaT)
 {
    AllSpikingSynapses::resetEdge(iEdg, deltaT);
 }
@@ -227,7 +227,7 @@ void AllSTDPSynapses::resetEdge(const BGSIZE iEdg, BGFLOAT deltaT)
 ///  @param  destVertex  Index of the destination Neuron.
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
-void AllSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
+void AllSTDPSynapses::createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
                                  edgeType type)
 {
    totalDelayPost_[iEdg]
@@ -258,7 +258,7 @@ void AllSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVerte
 ///
 ///  @param  iEdg      Index of the Synapse to connect to.
 ///  @param  neurons   The Neuron list to search from.
-void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices &neurons)
+void AllSTDPSynapses::advanceEdge(BGSIZE iEdg, AllVertices &neurons)
 {
    // If the synapse is inhibitory or its weight is zero, update synapse state using AllSpikingSynapses::advanceEdge method
    //LOG4CPLUS_DEBUG(edgeLogger_, "iEdg : " << iEdg );
@@ -391,7 +391,7 @@ void AllSTDPSynapses::advanceEdge(const BGSIZE iEdg, AllVertices &neurons)
 }
 
 
-BGFLOAT AllSTDPSynapses::synapticWeightModification(const BGSIZE iEdg, BGFLOAT synapticWeight,
+BGFLOAT AllSTDPSynapses::synapticWeightModification(BGSIZE iEdg, BGFLOAT synapticWeight,
                                                     double delta)
 {
    BGFLOAT STDPgap = STDPgap_[iEdg];
@@ -431,7 +431,7 @@ BGFLOAT AllSTDPSynapses::synapticWeightModification(const BGSIZE iEdg, BGFLOAT s
 ///  @param  epre        Params for the rule given in Froemke and Dan (2002).
 ///  @param srcVertex Index of source neuron
 ///  @param destVertex Index of destination neuron
-void AllSTDPSynapses::stdpLearning(const BGSIZE iEdg, double delta, double epost, double epre,
+void AllSTDPSynapses::stdpLearning(BGSIZE iEdg, double delta, double epost, double epre,
                                    int srcVertex, int destVertex)
 {
    BGFLOAT STDPgap = STDPgap_[iEdg];
@@ -484,7 +484,7 @@ void AllSTDPSynapses::stdpLearning(const BGSIZE iEdg, double delta, double epost
 ///
 ///  @param  iEdg   Index of the Synapse to connect to.
 ///  @return true if there is an input spike event.
-bool AllSTDPSynapses::isSpikeQueuePost(const BGSIZE iEdg)
+bool AllSTDPSynapses::isSpikeQueuePost(BGSIZE iEdg)
 {
    uint32_t &delayQueue = delayQueuePost_[iEdg];
    int &delayIdx = delayIndexPost_[iEdg];
@@ -501,7 +501,7 @@ bool AllSTDPSynapses::isSpikeQueuePost(const BGSIZE iEdg)
 ///  Prepares Synapse for a spike hit (for back propagation).
 ///
 ///  @param  iEdg   Index of the Synapse to connect to.
-void AllSTDPSynapses::postSpikeHit(const BGSIZE iEdg)
+void AllSTDPSynapses::postSpikeHit(BGSIZE iEdg)
 {
    uint32_t &delay_queue = delayQueuePost_[iEdg];
    int &delayIdx = delayIndexPost_[iEdg];

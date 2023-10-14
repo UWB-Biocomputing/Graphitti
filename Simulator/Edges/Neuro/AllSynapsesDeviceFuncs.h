@@ -21,7 +21,7 @@ using namespace std;
 extern CUDA_CALLABLE enumClassSynapses classSynapses_d;
 extern CUDA_CALLABLE int edgSign(edgeType t);
 extern CUDA_CALLABLE void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties *allEdgesDevice,
-                                                   const BGSIZE iEdg, const uint64_t simulationStep,
+                                                   BGSIZE iEdg, const uint64_t simulationStep,
                                                    BGFLOAT deltaT);
 
 
