@@ -96,8 +96,7 @@ void All911Vertices::printParameters() const
 }
 
 
-// Outputs state of the vertex chosen as a string.
-string All911Vertices::toString(const int index) const
+string All911Vertices::toString(int index) const
 {
    return nullptr;   // Change this
 }

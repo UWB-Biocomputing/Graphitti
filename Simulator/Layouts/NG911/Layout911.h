@@ -73,5 +73,5 @@ public:
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
-   virtual edgeType edgType(const int srcVertex, const int destVertex) override;
+   virtual edgeType edgType(int srcVertex, int destVertex) override;
 };

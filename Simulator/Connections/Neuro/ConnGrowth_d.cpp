@@ -26,8 +26,7 @@
  *  @param  allEdgesDevice      GPU address to the AllEdges struct in device memory.
  *  @param  layout              The Layout object.
  */
-void ConnGrowth::updateSynapsesWeights(const int numVertices, AllVertices &vertices,
-                                       AllEdges &synapses,
+void ConnGrowth::updateSynapsesWeights(int numVertices, AllVertices &vertices, AllEdges &synapses,
                                        AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                        AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                        Layout &layout)
