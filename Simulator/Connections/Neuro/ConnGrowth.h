@@ -130,8 +130,7 @@ public:
    ///  @param  allVerticesDevice    GPU address of the AllVertices struct in device memory.
    ///  @param  allEdgesDevice       GPU address of the AllEdges struct in device memory.
    ///  @param  layout               The Layout object.
-   virtual void updateSynapsesWeights(const int numVertices, AllVertices &neurons,
-                                      AllEdges &synapses,
+   virtual void updateSynapsesWeights(int numVertices, AllVertices &neurons, AllEdges &synapses,
                                       AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                       AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                       Layout &layout) override;

@@ -56,13 +56,13 @@ public:
    /// Selects num_endogenously_active_neurons excitory neurons
    /// and converts them into starter neurons.
    /// @param  numVertices number of vertices to have in the map.
-   virtual void initStarterMap(const int numVertices);
+   virtual void initStarterMap(int numVertices);
 
    /// Returns the type of synapse at the given coordinates
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
-   virtual edgeType edgType(const int srcVertex, const int destVertex) = 0;
+   virtual edgeType edgType(int srcVertex, int destVertex) = 0;
 
    /// @brief Returns the number of vertices managed by the Layout
    /// @return The number of vertices managed by the Layout

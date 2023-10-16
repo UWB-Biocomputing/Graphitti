@@ -95,7 +95,7 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap &
 ///  Fire the selected Neuron and calculate the result.
 ///
 ///  @param  index       Index of the Neuron to update.
-void AllSpikingNeurons::fire(const int index)
+void AllSpikingNeurons::fire(int index)
 {
    // Note that the neuron has fired!
    hasFired_[index] = true;

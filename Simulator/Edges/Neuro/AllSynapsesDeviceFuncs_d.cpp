@@ -49,8 +49,8 @@ CUDA_CALLABLE int edgSign(edgeType t)
 ///  @param  simulationStep     The current simulation step.
 ///  @param  deltaT             Inner simulation step duration.
 CUDA_CALLABLE void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties *allEdgesDevice,
-                                            const BGSIZE iEdg, const uint64_t simulationStep,
-                                            const BGFLOAT deltaT)
+                                            BGSIZE iEdg, const uint64_t simulationStep,
+                                            BGFLOAT deltaT)
 {
    //assert( iEdg < allEdgesDevice->maxEdgesPerVertex * allEdgesDevice->countVertices_ );
 
@@ -93,9 +93,8 @@ CUDA_CALLABLE void changeDSSynapsePSRDevice(AllDSSynapsesDeviceProperties *allEd
 ///  @param deltaT               The time step size.
 ///  @param type                 Type of the Synapse to create.
 CUDA_CALLABLE void createSpikingSynapse(AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        const int neuronIndex, const int synapseOffset,
-                                        int sourceIndex, int destIndex, const BGFLOAT deltaT,
-                                        edgeType type)
+                                        int neuronIndex, int synapseOffset, int sourceIndex,
+                                        int destIndex, BGFLOAT deltaT, edgeType type)
 {
    BGFLOAT delay;
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
@@ -155,9 +154,9 @@ CUDA_CALLABLE void createSpikingSynapse(AllSpikingSynapsesDeviceProperties *allE
 ///  @param destVertex           Coordinates of the destination Neuron.
 ///  @param deltaT               The time step size.
 ///  @param type                 Type of the Synapse to create.
-CUDA_CALLABLE void createDSSynapse(AllDSSynapsesDeviceProperties *allEdgesDevice,
-                                   const int neuronIndex, const int synapseOffset, int sourceIndex,
-                                   int destIndex, const BGFLOAT deltaT, edgeType type)
+CUDA_CALLABLE void createDSSynapse(AllDSSynapsesDeviceProperties *allEdgesDevice, int neuronIndex,
+                                   int synapseOffset, int sourceIndex, int destIndex,
+                                   BGFLOAT deltaT, edgeType type)
 {
    BGFLOAT delay;
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
@@ -241,9 +240,8 @@ CUDA_CALLABLE void createDSSynapse(AllDSSynapsesDeviceProperties *allEdgesDevice
 ///  @param deltaT               The time step size.
 ///  @param type                 Type of the Synapse to create.
 CUDA_CALLABLE void createSTDPSynapse(AllSTDPSynapsesDeviceProperties *allEdgesDevice,
-                                     const int neuronIndex, const int synapseOffset,
-                                     int sourceIndex, int destIndex, const BGFLOAT deltaT,
-                                     edgeType type)
+                                     int neuronIndex, int synapseOffset, int sourceIndex,
+                                     int destIndex, BGFLOAT deltaT, edgeType type)
 {
    BGFLOAT delay;
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
@@ -325,9 +323,8 @@ CUDA_CALLABLE void createSTDPSynapse(AllSTDPSynapsesDeviceProperties *allEdgesDe
 ///  @param deltaT               The time step size.
 ///  @param type                 Type of the Synapse to create.
 CUDA_CALLABLE void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperties *allEdgesDevice,
-                                            const int neuronIndex, const int synapseOffset,
-                                            int sourceIndex, int destIndex, const BGFLOAT deltaT,
-                                            edgeType type)
+                                            int neuronIndex, int synapseOffset, int sourceIndex,
+                                            int destIndex, BGFLOAT deltaT, edgeType type)
 {
    BGFLOAT delay;
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
@@ -433,9 +430,8 @@ CUDA_CALLABLE void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperti
 /// @param W_d                    Array of synapse weight.
 /// @param numVertices            The number of vertices.
 CUDA_CALLABLE void addSpikingSynapse(AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                     edgeType type, const int srcVertex, const int destVertex,
-                                     int sourceIndex, int destIndex, const BGFLOAT deltaT,
-                                     BGFLOAT *W_d, int numVertices)
+                                     edgeType type, int srcVertex, int destVertex, int sourceIndex,
+                                     int destIndex, BGFLOAT deltaT, BGFLOAT *W_d, int numVertices)
 {
    if (allEdgesDevice->edgeCounts_[destVertex] >= allEdgesDevice->maxEdgesPerVertex_) {
       return;   // TODO: ERROR!
@@ -488,7 +484,7 @@ CUDA_CALLABLE void addSpikingSynapse(AllSpikingSynapsesDeviceProperties *allEdge
 /// @param synapseOffset             Offset into neuronIndex's synapses.
 /// @param[in] maxEdges            Maximum number of synapses per neuron.
 CUDA_CALLABLE void eraseSpikingSynapse(AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                       const int neuronIndex, const int synapseOffset, int maxEdges)
+                                       int neuronIndex, int synapseOffset, int maxEdges)
 {
    BGSIZE iSync = maxEdges * neuronIndex + synapseOffset;
    allEdgesDevice->edgeCounts_[neuronIndex]--;
@@ -501,8 +497,7 @@ CUDA_CALLABLE void eraseSpikingSynapse(AllSpikingSynapsesDeviceProperties *allEd
 /// @param[in] allVerticesDevice          Pointer to the Neuron structures in device memory.
 /// @param srcVertex             Index of the source neuron.
 /// @param destVertex            Index of the destination neuron.
-CUDA_CALLABLE edgeType edgType(vertexType *neuronTypeMap_d, const int srcVertex,
-                               const int destVertex)
+CUDA_CALLABLE edgeType edgType(vertexType *neuronTypeMap_d, int srcVertex, int destVertex)
 {
    if (neuronTypeMap_d[srcVertex] == INH && neuronTypeMap_d[destVertex] == INH)
       return II;
@@ -610,7 +605,7 @@ __global__ void updateSynapsesWeightsDevice(int numVertices, BGFLOAT deltaT, BGF
 /// @param deltaT                 The simulation time step size.
 /// @param weight                 Synapse weight.
 __global__ void initSynapsesDevice(int n, AllDSSynapsesDeviceProperties *allEdgesDevice,
-                                   BGFLOAT *pSummationPoint, const BGFLOAT deltaT, BGFLOAT weight)
+                                   BGFLOAT *pSummationMap, BGFLOAT deltaT, BGFLOAT weight)
 {
    int idx = blockIdx.x * blockDim.x + threadIdx.x;
    if (idx >= n)

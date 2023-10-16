@@ -75,7 +75,7 @@ void DynamicLayout::generateVertexTypeMap(int numVertices)
 ///  and converts them into starter neurons.
 ///
 ///  @param  numVertices number of vertices to have in the map.
-void DynamicLayout::initStarterMap(const int numVertices)
+void DynamicLayout::initStarterMap(int numVertices)
 {
    Layout::initStarterMap(numVertices);
 
@@ -145,7 +145,7 @@ void DynamicLayout::loadParameters()
 ///  @param    srcVertex  integer that points to a Neuron in the type map as a source.
 ///  @param    destVertex integer that points to a Neuron in the type map as a destination.
 ///  @return type of the synapse.
-edgeType DynamicLayout::edgType(const int srcVertex, const int destVertex)
+edgeType DynamicLayout::edgType(int srcVertex, int destVertex)
 {
    if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == INH)
       return II;

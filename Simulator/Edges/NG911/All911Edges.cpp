@@ -8,7 +8,7 @@
 
 #include "All911Edges.h"
 
-All911Edges::All911Edges(const int numVertices, const int maxEdges)
+All911Edges::All911Edges(int numVertices, int maxEdges)
 {
 }
 
@@ -31,7 +31,7 @@ void All911Edges::setupEdges()
    }
 }
 
-void All911Edges::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+void All911Edges::createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
                              edgeType type)
 {
    inUse_[iEdg] = true;
@@ -101,7 +101,7 @@ void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap
 ///
 ///  @param  iEdg      Index of the edge to connect to.
 ///  @param  vertices   The vertex list to search from.
-void All911Edges::advance911Edge(const BGSIZE iEdg, All911Vertices &vertices)
+void All911Edges::advance911Edge(BGSIZE iEdg, All911Vertices &vertices)
 {
    // edge
    // source node   -->   destination node

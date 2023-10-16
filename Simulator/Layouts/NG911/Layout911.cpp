@@ -113,7 +113,7 @@ void Layout911::generateVertexTypeMap(int numVertices)
 }
 
 // Returns the type of synapse at the given coordinates
-edgeType Layout911::edgType(const int srcVertex, const int destVertex)
+edgeType Layout911::edgType(int srcVertex, int destVertex)
 {
    if (vertexTypeMap_[srcVertex] == CALR && vertexTypeMap_[destVertex] == PSAP)
       return CP;
