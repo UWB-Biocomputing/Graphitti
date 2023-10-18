@@ -8,7 +8,7 @@ from shapely.geometry import Polygon
 import math
 
 # Load data from XML
-tree = ET.parse('graph_files/King_county_NG911.graphml')
+tree = ET.parse('Tools\gis2graph\graph_files\King_county_NG911.graphml')
 root = tree.getroot()
 
 # Initialize the network graph
@@ -31,8 +31,8 @@ out_file_name = "King_county_NG911"
 
 square_counter = 0
 
-psap_layer = gpd.read_file("GIS_data/Layers/PSAP_layer.gpkg")
-provisioning_layer = gpd.read_file("GIS_data/Layers/Provisioning_layer.gpkg")
+psap_layer = gpd.read_file("Tools\gis2graph\GIS_data\Layers\PSAP_layer.gpkg")
+provisioning_layer = gpd.read_file("Tools\gis2graph\GIS_data\Layers\Provisioning_layer.gpkg")
 
     # create series of boolean values denoting whether geometry is within King County
 psap_within_kc = psap_layer.within(provisioning_layer.iloc[21].geometry)
