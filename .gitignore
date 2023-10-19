@@ -27,6 +27,7 @@
 *.lib
 
 # Generated Files
+__pycache__/
 build/.cmake
 build/bin
 build/Simulator
