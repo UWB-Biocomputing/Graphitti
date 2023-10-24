@@ -125,25 +125,6 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
    }
 }
 
-/// Convert internal buffer to XML string
-// string XmlRecorder::toXML(string name,  vector<multipleTypes> singleBuffer_) const
-// {
-//    stringstream os;
-
-//    os << "<Matrix ";
-//    if (name != "")
-//       os << "name=\"" << name << "\" ";
-//    os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << singleBuffer_.size()
-//       << "\" multiplier=\"1.0\">" << endl;
-//    os << "   ";
-//    for (int i = 0; i < singleBuffer_.size(); i++) {
-//       os << get<uint64_t>(singleBuffer_[i]) << " ";
-//    }
-//    os << endl;
-//    os << "</Matrix>";
-
-//    return os.str();
-// }
 string XmlRecorder::toXML(string name, vector<multipleTypes> singleBuffer_) const
 {
     stringstream os;

@@ -108,7 +108,7 @@ public:
 private:
    /// Holds the event time steps
    // vector<uint64_t> eventTimeSteps_;
-   using Recordable<uint64_t>::eventTimeSteps_;
+   // using Recordable<uint64_t>::eventTimeSteps_;
 
    /// Index of the first event in the queue
    int queueFront_;

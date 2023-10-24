@@ -105,7 +105,6 @@ protected:
       shared_ptr<RecordableBase> variableLocation_;
       
       // history of accumulated value for a single variable
-      // vector<uint64_t> variableHistory_;
       vector<multipleTypes> variableHistory_;
       //constructor
       singleVariableInfo(string name, RecordableBase &location)
