@@ -89,8 +89,7 @@ bool Connections::updateConnections(AllVertices &vertices)
 }
 
 #if defined(USE_GPU)
-void Connections::updateSynapsesWeights(const int numVertices, AllVertices &vertices,
-                                        AllEdges &synapses,
+void Connections::updateSynapsesWeights(int numVertices, AllVertices &vertices, AllEdges &synapses,
                                         AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                         Layout &layout)
@@ -121,13 +120,12 @@ void Connections::createSynapsesFromWeights()
          // if the synapse weight is not zero (which means there is a connection), create the synapse
          if (edges_->W_[iEdg] != 0.0) {
             BGFLOAT theW = edges_->W_[iEdg];
-            BGFLOAT *sumPoint = &(vertices.summationMap_[i]);
             int srcVertex = edges_->sourceVertexIndex_[iEdg];
             int destVertex = edges_->destVertexIndex_[iEdg];
             edgeType type = layout.edgType(srcVertex, destVertex);
             edges_->edgeCounts_[i]++;
-            edges_->createEdge(iEdg, srcVertex, destVertex, sumPoint,
-                               Simulator::getInstance().getDeltaT(), type);
+            edges_->createEdge(iEdg, srcVertex, destVertex, Simulator::getInstance().getDeltaT(),
+                               type);
             edges_->W_[iEdg] = theW;
          }
       }

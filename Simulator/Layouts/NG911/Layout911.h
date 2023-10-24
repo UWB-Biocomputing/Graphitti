@@ -3,13 +3,30 @@
  * 
  * @ingroup Simulator/Layouts/NG911
  *
- * @brief The Layout class defines the layout of vertices in networks
+ * @brief Specialization of the Layout class for the NG911 network
  *
- * The Layout911 class maintains vertices locations (x, y coordinates), 
- * distance of every couple vertices,
- * vertices type map (distribution of vertex types), and starter vertices map
+ * The Layout911 class maintains vertices locations (x, y coordinates), distance
+ * of every pair of vertices, a map of the vertices types, and starter vertices
+ * map.
  *
- * The Layout911 class reads all layout information from parameter description file.
+ * All the information about the vertices is loaded from a GraphML input file
+ * using the GraphManager class. Layout911 registers the vertex properties
+ * with the GraphManager, a singleton, which then loads the graph defined in
+ * the GraphML input file. Subsequently, Layout911 uses the GraphManager to
+ * create a layout of the NG911 nodes used for the simulation.
+ * 
+ * The GraphManager is only used as a middle-man to facilitate the loading
+ * of the initial graph, defined in the GraphML file. After this initialization
+ * step, the layout contained within Layout911 is the one used throughout the
+ * Simulation.
+ * 
+ * Currently, we are using 5 vertexTypes in the NG911 models: CALR, PSAP, EMS,
+ * FIRE, and LAW. EMS, FIRE, and LAW represent types of Emergency Responders;
+ * while CALR and PSAP represent a Caller Region and a Public Safety Answering
+ * Point (PSAP), respectively.
+ * 
+ * Layout911 is in charge of loading and managing the vertices layout while the
+ * All911Vertices class holds the internal behaviour of all vertices.
  */
 
 #pragma once
@@ -24,47 +41,37 @@ public:
 
    virtual ~Layout911() = default;
 
-   ///  Creates an instance of the class.
+   /// Creates an instance of the class.
    ///
-   ///  @return Reference to the instance of the class.
+   /// @return Reference to the instance of the class.
    static Layout *Create()
    {
       return new Layout911();
    }
 
-   /// @brief Register vertex properties with the GraphManager
+   /// Register vertex properties with the GraphManager
    virtual void registerGraphProperties() override;
 
-   /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
+   /// Loads Layout911 member variables.
+   /// Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters() override;
 
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.
    virtual void setup() override;
 
-   ///  Prints out all parameters to logging file.
-   ///  Registered to OperationManager as Operation::printParameters
+   /// Prints out all parameters to logging file.
+   /// Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
-   ///  Creates a vertex type map.
+   /// Creates a vertex type map.
    ///
-   ///  @param  numVertices number of the vertices to have in the type map.
+   /// @param  numVertices number of the vertices to have in the type map.
    virtual void generateVertexTypeMap(int numVertices) override;
-
-   ///  Populates the starter map.
-   ///
-   ///  @param  numVertices number of vertices to have in the map.
-   virtual void initStarterMap(const int numVertices) override;
-
-   /// Get the zone of the vertex
-   /// Only built for 10x10 grid
-   /// See: https://docs.google.com/spreadsheets/d/1DqP8sjkfJ_pkxtETzuEdoVZbWOGu633EMQAeShe5k68/edit?usp=sharing
-   /// @param  index    the index of the vertex
-   int zone(int index);
 
    /// Returns the type of synapse at the given coordinates
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
-   virtual edgeType edgType(const int srcVertex, const int destVertex) override;
+   virtual edgeType edgType(int srcVertex, int destVertex) override;
 };

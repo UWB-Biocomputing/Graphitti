@@ -28,6 +28,7 @@
       </CallNum>
       <DispNumScale name="DispNumScale">0.3</DispNumScale>
       <RespNumScale name="RespNumScale">0.3</RespNumScale>
+      <RedialP name="RedialProbability">0.85</RedialP>
     </VerticesParams>
 
     <EdgesParams class="All911Edges" name="EdgesParams">
@@ -37,8 +38,8 @@
       <graphmlFile name="graphmlFile">../configfiles/graphs/spd.graphml</graphmlFile>
           <!-- Max ConnsPerVertex = 87 RC + 1 PR -->
       <connsPerVertex name="connsPerVertex">88</connsPerVertex>
-      <psapsToErase name="psapsToErase">1</psapsToErase>
-      <respsToErase name="respsToErase">2</respsToErase>
+      <psapsToErase name="psapsToErase">0</psapsToErase>
+      <respsToErase name="respsToErase">0</respsToErase>
     </ConnectionsParams>
 
     <InputParams name="InputParams">
@@ -46,16 +47,10 @@
     </InputParams>
 
     <LayoutParams class="Layout911" name="LayoutParams">
-      <LayoutFiles name="LayoutFiles">
-        <PSAPsListFileName name="PSAPsListFileName" type="InputFile">../configfiles/NList/NG911_psaps_10x10.xml</PSAPsListFileName>
-        <callersListFileName name="callersListFileName" type="InputFile">../configfiles/NList/NG911_callers_10x10.xml</callersListFileName>
-        <respondersListFileName name="respondersListFileName" type="InputFile">../configfiles/NList/NG911_responders_10x10.xml</respondersListFileName>
-      </LayoutFiles>
     </LayoutParams>
     
     <RecorderParams class="Xml911Recorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
-        <probedListFileName name="prbListFileName" type="InputFile">../configfiles/NList/NG911_probed_10x10.xml</probedListFileName>
         <resultFileName name="resultFileName">Output/Results/test-spd-911-out.xml</resultFileName>
       </RecorderFiles>
     </RecorderParams>

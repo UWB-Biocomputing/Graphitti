@@ -85,8 +85,7 @@ public:
    ///  @param  allVerticesDevice    GPU address of the allVertices struct on device memory.
    ///  @param  allEdgesDevice   GPU address of the allEdges struct on device memory.
    ///  @param  layout              Layout information of the neural network.
-   virtual void updateSynapsesWeights(const int numVertices, AllVertices &vertices,
-                                      AllEdges &synapses,
+   virtual void updateSynapsesWeights(int numVertices, AllVertices &vertices, AllEdges &synapses,
                                       AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                       AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                       Layout &layout);
