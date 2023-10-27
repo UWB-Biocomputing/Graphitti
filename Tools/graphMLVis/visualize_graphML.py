@@ -14,7 +14,7 @@ from tkinter import filedialog
 window = Tk()
 
 # variables acquired through dialog box
-class Paths:
+class VSet:
     def __init__(self, graphml_path, node_type):
         self.graphml_path, self.node_type = graphml_path, node_type
 
@@ -24,7 +24,7 @@ class Paths:
     def changenodetype(self):
         self.node_type = radio_var.get()
 
-dVars = Paths(os.path.normpath("Tools\gis2graph\graph_files\King_county_NG911.graphml"), "EMS")
+dVars = VSet(os.path.normpath("Tools\gis2graph\graph_files\King_county_NG911.graphml"), "EMS")
 
 # submit button logic
 def submit():
@@ -148,7 +148,7 @@ for x in cols[:-1]:
 grid = gpd.GeoDataFrame({'geometry': squares}, crs=kc_psap.crs)
 kc_psap.plot()
 
-#this code iterates through graph ML and finds nodes + adds thenm to graph
+# This code iterates through graph ML and finds nodes + adds them to graph
 for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
     type_element = node.find(f'.//{{{nsmap["xmlns"]}}}data[@key="{type_attribute_key}"]')
     if type_element is not None and type_element.text == 'PSAP':
@@ -168,7 +168,7 @@ for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
             node_positions[node_id] = (node_x, node_y)
             G.nodes[node_id]['pos'] = (node_x, node_y)
             G.nodes[node_id]['color'] = 'cyan'
-    #change EMS with FIRE or LAW to see fire/police nodes
+    # dVars.node_type used to change the type of node that is visualized
     elif type_element is not None and type_element.text == dVars.node_type:
         node_id = node.get('id')
 
@@ -186,7 +186,7 @@ for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
 
 
 
-#find the segments of caller regions and find average center to mark as point
+# Find the segments of caller regions and find average center to mark as point
 for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
     type_element = node.find(f'.//{{{nsmap["xmlns"]}}}data[@key="{type_attribute_key}"]')
     if type_element is not None and type_element.text == 'CALR':
