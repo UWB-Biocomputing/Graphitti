@@ -24,7 +24,7 @@ class VSet:
     def changenodetype(self):
         self.node_type = radio_var.get()
 
-dVars = VSet(os.path.normpath("Tools\gis2graph\graph_files\King_county_NG911.graphml"), "EMS")
+dVars = VSet(os.path.normpath("Tools/gis2graph/graph_files/King_county_NG911.graphml"), "EMS")
 
 # submit button logic
 def submit():
@@ -45,7 +45,7 @@ fLabel0 = Label(window, text="Select .graphml File to Visualize: ")
 fLabel0.grid(row=0, column=0)
 fEntry0 = Entry(window, width=55)
 fEntry0.grid(row=0, column=1)
-fEntry0.insert(0, os.path.normpath("Tools\gis2graph\graph_files\King_county_NG911.graphml"))
+fEntry0.insert(0, os.path.normpath("Tools/gis2graph/graph_files/King_county_NG911.graphml"))
 fButton0 = Button(window, text="Select File", command=buttonSelect)
 fButton0.grid(row=0, column=2)
 
@@ -95,8 +95,8 @@ out_file_name = "King_county_NG911"
 
 square_counter = 0
 
-psap_layer = gpd.read_file(os.path.normpath("Tools\gis2graph\GIS_data\Layers\PSAP_layer.gpkg"))
-provisioning_layer = gpd.read_file(os.path.normpath("Tools\gis2graph\GIS_data\Layers\Provisioning_layer.gpkg"))
+psap_layer = gpd.read_file(os.path.normpath("Tools/gis2graph/GIS_data/Layers/PSAP_layer.gpkg"))
+provisioning_layer = gpd.read_file(os.path.normpath("Tools/gis2graph/GIS_data/Layers/Provisioning_layer.gpkg"))
 
     # create series of boolean values denoting whether geometry is within King County
 psap_within_kc = psap_layer.within(provisioning_layer.iloc[21].geometry)
