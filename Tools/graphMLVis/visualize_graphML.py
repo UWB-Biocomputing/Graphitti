@@ -6,9 +6,73 @@ import numpy as np
 from shapely.ops import unary_union
 from shapely.geometry import Polygon
 import math
+import os
+from tkinter import *
+from tkinter import filedialog
+
+# start of dialog box
+window = Tk()
+
+# variables acquired through dialog box
+class VSet:
+    def __init__(self, graphml_path, node_type):
+        self.graphml_path, self.node_type = graphml_path, node_type
+
+    def changegraphml(self, path):
+        self.graphml_path = os.path.normpath(path)
+
+    def changenodetype(self):
+        self.node_type = radio_var.get()
+
+dVars = VSet(os.path.normpath("Tools/gis2graph/graph_files/King_county_NG911.graphml"), "EMS")
+
+# submit button logic
+def submit():
+    dVars.changegraphml(fEntry0.get())
+    window.destroy()
+
+# file selecting button logic
+def buttonSelect():
+    file_path = filedialog.askopenfilename()
+    fEntry0.delete(0, END)
+    fEntry0.insert(0, os.path.normpath(file_path))
+
+# dialog box title
+window.title("Visualizer Setup")
+
+# first file selecting row for .graphml file to load
+fLabel0 = Label(window, text="Select .graphml File to Visualize: ")
+fLabel0.grid(row=0, column=0)
+fEntry0 = Entry(window, width=55)
+fEntry0.grid(row=0, column=1)
+fEntry0.insert(0, os.path.normpath("Tools/gis2graph/graph_files/King_county_NG911.graphml"))
+fButton0 = Button(window, text="Select File", command=buttonSelect)
+fButton0.grid(row=0, column=2)
+
+# radio buttons for node type to visualize
+radio_var = StringVar()
+rLabel = Label(window, text="Select which node type to visualize.")
+rLabel.grid(row=3, column=0)
+typeRB1 = Radiobutton(window, text="EMS", variable=radio_var, value="EMS", command=dVars.changenodetype)
+typeRB1.grid(row=4, column=0)
+typeRB2 = Radiobutton(window, text="FIRE", variable=radio_var, value="FIRE", command=dVars.changenodetype)
+typeRB2.grid(row=4, column=1)
+typeRB3 = Radiobutton(window, text="LAW", variable=radio_var, value="LAW", command=dVars.changenodetype)
+typeRB3.grid(row=4, column=2)
+typeRB1.deselect()
+typeRB2.deselect()
+typeRB3.deselect()
+typeRB1.select()
+
+# submit button
+submitB = Button(window, text="Submit", command=submit)
+submitB.grid(row=5, column=1)
+
+window.mainloop()
+
 
 # Load data from XML
-tree = ET.parse('Tools\gis2graph\graph_files\King_county_NG911.graphml')
+tree = ET.parse(dVars.graphml_path)
 root = tree.getroot()
 
 # Initialize the network graph
@@ -31,8 +95,8 @@ out_file_name = "King_county_NG911"
 
 square_counter = 0
 
-psap_layer = gpd.read_file("Tools\gis2graph\GIS_data\Layers\PSAP_layer.gpkg")
-provisioning_layer = gpd.read_file("Tools\gis2graph\GIS_data\Layers\Provisioning_layer.gpkg")
+psap_layer = gpd.read_file(os.path.normpath("Tools/gis2graph/GIS_data/Layers/PSAP_layer.gpkg"))
+provisioning_layer = gpd.read_file(os.path.normpath("Tools/gis2graph/GIS_data/Layers/Provisioning_layer.gpkg"))
 
     # create series of boolean values denoting whether geometry is within King County
 psap_within_kc = psap_layer.within(provisioning_layer.iloc[21].geometry)
@@ -84,7 +148,7 @@ for x in cols[:-1]:
 grid = gpd.GeoDataFrame({'geometry': squares}, crs=kc_psap.crs)
 kc_psap.plot()
 
-#this code iterates through graph ML and finds nodes + adds thenm to graph
+# This code iterates through graph ML and finds nodes + adds them to graph
 for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
     type_element = node.find(f'.//{{{nsmap["xmlns"]}}}data[@key="{type_attribute_key}"]')
     if type_element is not None and type_element.text == 'PSAP':
@@ -104,8 +168,8 @@ for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
             node_positions[node_id] = (node_x, node_y)
             G.nodes[node_id]['pos'] = (node_x, node_y)
             G.nodes[node_id]['color'] = 'cyan'
-    #change EMS with FIRE or LAW to see fire/police nodes
-    elif type_element is not None and type_element.text == 'EMS':
+    # dVars.node_type used to change the type of node that is visualized
+    elif type_element is not None and type_element.text == dVars.node_type:
         node_id = node.get('id')
 
         for data in node.findall(f'.//{{{nsmap["xmlns"]}}}data', namespaces = nsmap):
@@ -122,7 +186,7 @@ for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
 
 
 
-#find the segments of caller regions and find average center to mark as point
+# Find the segments of caller regions and find average center to mark as point
 for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
     type_element = node.find(f'.//{{{nsmap["xmlns"]}}}data[@key="{type_attribute_key}"]')
     if type_element is not None and type_element.text == 'CALR':
