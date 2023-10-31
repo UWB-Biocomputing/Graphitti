@@ -16,7 +16,7 @@ public:
    virtual void startNewEpoch(){
       return eventTimeSteps_.clear();
    }
-   virtual std::variant<uint64_t, double, char> getElement(int index) const{
+   virtual std::variant<uint64_t, double, string> getElement(int index) const{
       return eventTimeSteps_[index];
    }
    // virtual ~RecordableBase() {}

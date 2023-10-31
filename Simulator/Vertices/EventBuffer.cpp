@@ -47,7 +47,7 @@ uint64_t EventBuffer::operator[](int i) const
    return eventTimeSteps_[(epochStart_ + i) % eventTimeSteps_.size()];
 }
 
-std::variant<uint64_t, double, char> EventBuffer::getElement(int index) const {
+std::variant<uint64_t, double, string> EventBuffer::getElement(int index) const {
    return eventTimeSteps_[(epochStart_ + index) % eventTimeSteps_.size()];
    // if (index >= 0 && index < eventTimeSteps_.size()) {
    //    // Check if the index is within bounds and return the value at that index.

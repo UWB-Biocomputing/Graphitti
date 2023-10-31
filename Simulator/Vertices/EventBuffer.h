@@ -62,7 +62,7 @@ public:
    ///
    /// @param i element number
    uint64_t operator[](int i) const;
-   std::variant<uint64_t, double, char> getElement(int index) const override;
+   std::variant<uint64_t, double, string> getElement(int index) const override;
 
    /// Get number of events in the current/preceding epoch
    ///

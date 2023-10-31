@@ -136,11 +136,31 @@ string XmlRecorder::toXML(string name, vector<multipleTypes> singleBuffer_) cons
        << "\" multiplier=\"1.0\">" << endl;
     
     os << "   ";
-    for (const auto& value : singleBuffer_) {
-        std::visit([&os](const auto& v) {
-            os << v << " ";
-        }, value);
-    }
+   //  for (const auto& value : singleBuffer_) {
+   //      std::visit([&os](const auto& v) {
+   //          os << v << " ";
+   //      }, value);
+   //  }
+
+   // for (const auto& element : singleBuffer_) {
+   //  std::visit(XmlRecorder::VariantVisitor{}, os, element);
+   // }
+
+   for (const multipleTypes& element : singleBuffer_) {
+      if(holds_alternative<uint64_t>(element)){
+         os << get<uint64_t>(element);
+      }else if(holds_alternative<double>(element)){
+         os << get<double>(element);
+      }else if(holds_alternative<string>(element)){
+         os << get<string>(element);
+      }
+ 
+   }
+   // constexpr size_t idx = singleBuffer_[0].
+   //    for (const multipleTypes& element : singleBuffer_) {
+
+   //  }
+
     os << endl;
     os << "</Matrix>";
 

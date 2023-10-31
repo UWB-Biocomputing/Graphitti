@@ -8,7 +8,8 @@
  * The XmlRecorder provides a mechanism for recording neuron's layout, spikes history,
  * and compile history information on xml file:
  *     -# the neuron ID.
- *     -# time steps of events produced by each neuron,
+ *     -# time steps of events produced by each neuron.
+ *     -# the history events information of all neurons.
  */
 
 #pragma once
@@ -17,7 +18,7 @@
 #include "Recorder.h"
 #include <fstream>
 #include <vector>
-typedef std::variant<uint64_t, double, char> multipleTypes;
+typedef std::variant<uint64_t, double, string> multipleTypes;
 
 class XmlRecorder : public Recorder {
 public:
@@ -114,6 +115,21 @@ protected:
          });
       }
    };
+
+// struct VariantVisitor {
+
+//     void outputVariant()(const uint64_t value, stringstream &os) const {
+//         os << value << " ";
+//     }
+
+//     void outputVariant()(const string value, stringstream &os) const {
+//         os << value <<  " ";
+//     }
+
+//     void outputVariant()(const double value, stringstream &os) const {
+//         os << value <<  " ";
+//     }
+// };
 
    // A list of variables
    // the variableTable_ stores all the variables information that need to be recorded
