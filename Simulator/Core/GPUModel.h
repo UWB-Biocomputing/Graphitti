@@ -113,7 +113,7 @@ protected:
    virtual void deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevice);
 
    /// Add psr of all incoming synapses to summation points.
-   virtual void calcSummationMap();
+   virtual void calcSummationPoint();
 
    /// Pointer to device random noise array.
    float *randNoise_d;
@@ -141,15 +141,15 @@ private:
    void updateHistory();
 
    // TODO
-   void eraseEdge(AllEdges &synapses, const int neuronIndex, const int synapseIndex);
+   void eraseEdge(AllEdges &synapses, int neuronIndex, int synapseIndex);
 
    // TODO
-   void addEdge(AllEdges &synapses, edgeType type, const int srcVertex, const int destVertex,
+   void addEdge(AllEdges &synapses, edgeType type, int srcVertex, int destVertex,
                 Coordinate &source, Coordinate &dest, BGFLOAT deltaT);
 
    // TODO
-   void createEdge(AllEdges &synapses, const int neuronIndex, const int synapseIndex,
-                   Coordinate source, Coordinate dest, BGFLOAT deltaT, edgeType type);
+   void createEdge(AllEdges &synapses, int neuronIndex, int synapseIndex, Coordinate source,
+                   Coordinate dest, BGFLOAT deltaT, edgeType type);
 };
 
 #if defined(__CUDACC__)
@@ -161,8 +161,8 @@ void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, uns
 
 //! Calculate summation point.
 extern __global__ void
-   calcSummationMapDevice(int totalVertices,
-                          AllSpikingNeuronsDeviceProperties *__restrict__ allNeurnsDevice,
-                          const EdgeIndexMapDevice *__restrict__ synapseIndexMapDevice_,
-                          const AllSpikingSynapsesDeviceProperties *__restrict__ allEdgesDevice);
+   calcSummationPointDevice(int totalVertices,
+                            AllSpikingNeuronsDeviceProperties *__restrict__ allNeurnsDevice,
+                            const EdgeIndexMapDevice *__restrict__ synapseIndexMapDevice_,
+                            const AllSpikingSynapsesDeviceProperties *__restrict__ allEdgesDevice);
 #endif

@@ -11,7 +11,7 @@
  *  Edge indices are stored in the edge forward map (forwardIndex), and
  *  the pointer and length of the vertex i's outgoing edge indices are specified
  *  by outgoingSynapse_begin[i] and edgeCount[i] respectively.
- *  The incoming edges list is used in calcSummationMapDevice() device function to
+ *  The incoming edges list is used in calcSummationPointDevice() device function to
  *  calculate sum of PSRs for each vertex simultaneously.
  *  The list also used in AllSpikingNeurons::advanceVertices() function to allow back propagation.
  *

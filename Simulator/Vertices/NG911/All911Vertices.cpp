@@ -96,8 +96,7 @@ void All911Vertices::printParameters() const
 }
 
 
-// Outputs state of the vertex chosen as a string.
-string All911Vertices::toString(const int index) const
+string All911Vertices::toString(int index) const
 {
    return nullptr;   // Change this
 }
@@ -280,5 +279,4 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
       LOG4CPLUS_DEBUG(vertexLogger_, "Responded to incident, type: " << incident->type);
    }
 }
-
 #endif

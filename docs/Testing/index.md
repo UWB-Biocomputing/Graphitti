@@ -4,7 +4,7 @@ Information on test config files for regression testing, and testing that has be
 
 ## 3.1 Unit Tests
 
-We use [GoogleTest](GoogleTestsTutorial.md) to develop our unit tests.
+We use [GoogleTest](GoogleTestsTutorial.md) to develop our unit tests. 
 
 To integrate your unit tests using GoogleTest in Graphitti you can follow these steps:
 1. Open the CMakeLists.txt file in the root directory of Graphitti
@@ -58,7 +58,7 @@ Documentation of the changing and constant parameters in a set of 12 test config
 - [Writeup](TestConfigFileParameters/testConfigFileParameters.md)
 
 ### Running The Unit And Regression tests
-Unit and regression tests are important to minimize the chances that changes to the code base will produce undesired side effects. 
+Unit and regression tests are important to minimize the chances that changes to the code base will produce undesired side effects. For specific performance testing, clear cache by running `make clean` before compiling. 
 
 We have a battery of tests that are run by a GitHub action on any `push` or `pull request` against the master branch. These tests are only executed for the CPU implementation of Graphitti.
 

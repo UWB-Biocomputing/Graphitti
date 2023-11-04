@@ -33,7 +33,7 @@ using uint8_t = unsigned _int8;
 
 class AllVertices;
 
-// using fpCreateSynapse_t =  void (*)(void*, const int, const int, int, int, BGFLOAT*, const BGFLOAT, edgeType);
+// using fpCreateSynapse_t =  void (*)(void*, int, int, int, int, BGFLOAT*, BGFLOAT, edgeType);
 
 // enumerate all non-abstract edge classes.
 enum enumClassSynapses {
@@ -57,7 +57,7 @@ public:
    ///
    ///  @param  iEdg     Index of the edge to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT);
+   virtual void resetEdge(BGSIZE iEdg, BGFLOAT deltaT);
 
    // ///  Create a Synapse and connect it to the model.
    // ///
@@ -66,7 +66,7 @@ public:
    // ///  @param  dest        Coordinates of the destination Neuron.
    // ///  @param  deltaT      Inner simulation step duration.
    // ///  @param  type        Type of the Synapse to create.
-   // virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+   // virtual void createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
    //                            edgeType type) override;
 
    ///  Get the sign of the edgeType.
@@ -83,19 +83,19 @@ protected:
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of edges per vertex.
-   virtual void setupEdges(const int numVertices, const int maxEdges) override;
+   virtual void setupEdges(int numVertices, int maxEdges) override;
 
    ///  Sets the data for Synapse to input's data.
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the edge to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg) override;
+   virtual void readEdge(istream &input, BGSIZE iEdg) override;
 
    ///  Write the edge data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the edge to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const override;
+   virtual void writeEdge(ostream &output, BGSIZE iEdg) const override;
 
 public:
    /// The factor to adjust overlapping area to edge weight.

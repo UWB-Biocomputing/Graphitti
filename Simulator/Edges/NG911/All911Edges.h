@@ -35,7 +35,7 @@ class All911Edges : public AllEdges {
 public:
    All911Edges() = default;
 
-   All911Edges(const int numVertices, const int maxEdges);
+   All911Edges(int numVertices, int maxEdges);
 
    virtual ~All911Edges() = default;
 
@@ -57,7 +57,7 @@ public:
    ///  @param  destVertex  Coordinates of the destination Vertex.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Edge to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+   virtual void createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
                            edgeType type) override;
 
 protected:
@@ -93,10 +93,10 @@ public:
    ///
    ///  @param  iEdg      Index of the Edge to connect to.
    ///  @param  vertices  The Neuron list to search from.
-   void advance911Edge(const BGSIZE iEdg, All911Vertices &vertices);
+   void advance911Edge(BGSIZE iEdg, All911Vertices &vertices);
 
    /// unused virtual function placeholder
-   virtual void advanceEdge(const BGSIZE iEdg, AllVertices &vertices) override {};
+   virtual void advanceEdge(BGSIZE iEdg, AllVertices &vertices) override {};
 
 #endif
 
