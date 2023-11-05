@@ -198,7 +198,7 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
    for (size_t server = 0; server < serverCountdown_[vertexIdx].size(); ++server) {
       if (serverCountdown_[vertexIdx][server] == 0) {
          // Server is available to take calls. This check is needed because calls
-         // could have duration of zero or server has nos been assigned a call yet
+         // could have duration of zero or server has not been assigned a call yet
          availableServers.push_back(server);
       } else if (--serverCountdown_[vertexIdx][server] == 0) {
          // Server becomes free to take calls
