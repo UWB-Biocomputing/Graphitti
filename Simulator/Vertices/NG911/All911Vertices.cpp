@@ -51,6 +51,11 @@ void All911Vertices::setupVertices()
 // Creates all the Vertices and assigns initial data for them.
 void All911Vertices::createAllVertices(Layout &layout)
 {
+   BGFLOAT epochDuration = Simulator::getInstance().getEpochDuration();
+   BGFLOAT deltaT = Simulator::getInstance().getDeltaT();
+   // Set the maximum queue size to be the number of time-steps per epoch
+   uint64_t maxQueueSize = static_cast<uint64_t>(epochDuration / deltaT) + 1;
+
    // Loop over all vertices and set the number of servers and trunks, and
    // determine the size of the waiting queue.
    // We get the information needed from the GraphManager.
@@ -60,8 +65,7 @@ void All911Vertices::createAllVertices(Layout &layout)
       assert(*vi < size_);
 
       if (gm[*vi].type == "CALR") {
-         // TODO: Hardcoded queue size for now (10/0.0001)
-         vertexQueues_[*vi].resize(100000);
+         vertexQueues_[*vi].resize(maxQueueSize);
       } else {
          numServers_[*vi] = gm[*vi].servers;
          numTrunks_[*vi] = gm[*vi].trunks;
