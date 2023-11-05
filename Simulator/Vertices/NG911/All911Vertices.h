@@ -138,6 +138,11 @@ public:
    /// True if the call was abandoned
    vector<vector<bool>> wasAbandonedHistory_;
 
+   /// The length of the waiting queue at every time-step
+   vector<vector<int>> queueLengthHistory_;
+   /// The portion of servers that are busy at every time-step
+   vector<vector<double>> utilizationHistory_;
+
 private:
    /// Number of servers. In a PSAP these are the call takers, in Responder nodes
    /// they are responder units

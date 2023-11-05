@@ -35,6 +35,8 @@ void All911Vertices::setupVertices()
    answerTimeHistory_.resize(size_);
    endTimeHistory_.resize(size_);
    wasAbandonedHistory_.resize(size_);
+   queueLengthHistory_.resize(size_);
+   utilizationHistory_.resize(size_);
 
    // Register call properties with InputManager
    inputManager_.registerProperty("vertex_id", &Call::vertexId);
@@ -50,6 +52,12 @@ void All911Vertices::setupVertices()
 // Creates all the Vertices and assigns initial data for them.
 void All911Vertices::createAllVertices(Layout &layout)
 {
+   // Calcualte the total number of time-steps for the data structures that
+   // will record per-step histories
+   Simulator &simulator = Simulator::getInstance();
+   uint64_t stepsPerEpoch = simulator.getEpochDuration() / simulator.getDeltaT();
+   uint64_t totalTimeSteps = stepsPerEpoch * simulator.getNumEpochs();
+
    // Loop over all vertices and set the number of servers and trunks, and
    // determine the size of the waiting queue.
    // We get the information needed from the GraphManager.
@@ -75,6 +83,10 @@ void All911Vertices::createAllVertices(Layout &layout)
          servingCall_[*vi].resize(gm[*vi].servers);
          answerTime_[*vi].resize(gm[*vi].servers);
          serverCountdown_[*vi].assign(gm[*vi].servers, 0);
+
+         // Initialize the data structures for system metrics
+         queueLengthHistory_[*vi].assign(totalTimeSteps, 0);
+         utilizationHistory_[*vi].assign(totalTimeSteps, 0);
       }
    }
 
@@ -265,6 +277,11 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
 
    // Update number of busy servers. This is used to check if there is space in the queue
    busyServers_[vertexIdx] = numServers_[vertexIdx] - availableServers.size();
+
+   // Update queueLength and utilization histories
+   queueLengthHistory_[vertexIdx][g_simulationStep] = vertexQueues_[vertexIdx].size();
+   utilizationHistory_[vertexIdx][g_simulationStep]
+      = static_cast<double>(busyServers_[vertexIdx]) / numServers_[vertexIdx];
 }
 
 
