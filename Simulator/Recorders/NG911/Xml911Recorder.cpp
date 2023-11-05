@@ -83,8 +83,10 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
               << endl;
 
    // Write system utilization and queue length histories
-   resultOut_ << vector2dToXML(all911Vertices.queueLengthHistory_, "queueLengthHistory", "vertex") << endl;
-   resultOut_ << vector2dToXML(all911Vertices.utilizationHistory_, "utilizationHistory", "vertex") << endl;
+   resultOut_ << vector2dToXML(all911Vertices.queueLengthHistory_, "queueLengthHistory", "vertex")
+              << endl;
+   resultOut_ << vector2dToXML(all911Vertices.utilizationHistory_, "utilizationHistory", "vertex")
+              << endl;
 
    // Print out deleted edges and vertices:
    resultOut_ << "   " << conns911.erasedVerticesToXML() << endl;
