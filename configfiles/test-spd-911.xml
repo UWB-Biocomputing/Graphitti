@@ -29,6 +29,8 @@
       <DispNumScale name="DispNumScale">0.3</DispNumScale>
       <RespNumScale name="RespNumScale">0.3</RespNumScale>
       <RedialP name="RedialProbability">0.85</RedialP>
+      <!-- Response unit driving speed in mph -->
+      <AvgDrivingSpeed name="AverageDrivingSpeed">30.0</AvgDrivingSpeed>
     </VerticesParams>
 
     <EdgesParams class="All911Edges" name="EdgesParams">
