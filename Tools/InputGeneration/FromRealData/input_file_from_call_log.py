@@ -87,6 +87,11 @@ def main():
     avg_patience = 49.36
     sorted['patience'] = np.random.exponential(scale=avg_patience, size=sorted.shape[0]).astype(np.int64)
 
+    # Add on_site time as exponentially distributed. I don't have an
+    # average, using 40 minutes for now
+    avg_on_site_time = 40 * 60
+    sorted['on_site_time'] = np.random.exponential(scale=avg_on_site_time, size=sorted.shape[0]).astype(np.int64)
+
     # this is the root element
     inputs = et.Element('simulator_inputs')
 

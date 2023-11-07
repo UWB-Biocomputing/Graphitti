@@ -74,4 +74,11 @@ public:
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
    virtual edgeType edgType(int srcVertex, int destVertex) override;
+
+   /// Calculates the distance between the given vertex and the (x, y) coordinates of a point
+   /// @param vertexId  The index of the vertex to calculate the distance from
+   /// @param x         The x location of a point
+   /// @param y         The y location of a point
+   /// @return The distance between the given vertex and the (x, y) coordinates of a point
+   double getDistance(int vertexId, double x, double y);
 };

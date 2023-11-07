@@ -9,6 +9,7 @@
 #include "Connections911.h"
 #include "All911Edges.h"
 #include "GraphManager.h"
+#include "Layout911.h"
 #include "ParameterManager.h"
 
 void Connections911::setup()
@@ -106,7 +107,8 @@ BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, BGSIZE vertex
    // Euclidean distance to the call's location.
    BGSIZE startOutEdg = synapseIndexMap_->outgoingEdgeBegin_[vertexIdx];
    BGSIZE outEdgCount = synapseIndexMap_->outgoingEdgeCount_[vertexIdx];
-   Layout &layout = Simulator::getInstance().getModel().getLayout();
+   Layout911 &layout911
+      = dynamic_cast<Layout911 &>(Simulator::getInstance().getModel().getLayout());
 
    BGSIZE resp, respEdge;
    double minDistance = numeric_limits<double>::max();
@@ -115,10 +117,8 @@ BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, BGSIZE vertex
       assert(edges911.inUse_[outEdg]);   // Edge must be in use
 
       BGSIZE dstVertex = edges911.destVertexIndex_[outEdg];
-      if (layout.vertexTypeMap_[dstVertex] == requiredType) {
-         double xDelta = call.x - layout.xloc_[dstVertex];
-         double yDelta = call.y - layout.yloc_[dstVertex];
-         double distance = sqrt(pow(xDelta, 2) + pow(yDelta, 2));
+      if (layout911.vertexTypeMap_[dstVertex] == requiredType) {
+         double distance = layout911.getDistance(dstVertex, call.x, call.y);
 
          if (distance < minDistance) {
             minDistance = distance;
@@ -130,7 +130,7 @@ BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, BGSIZE vertex
 
    // We must have found the closest responder of the right type
    assert(minDistance < numeric_limits<double>::max());
-   assert(layout.vertexTypeMap_[resp] == requiredType);
+   assert(layout911.vertexTypeMap_[resp] == requiredType);
    return respEdge;
 }
 

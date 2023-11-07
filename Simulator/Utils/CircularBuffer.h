@@ -146,7 +146,7 @@ public:
 
       // if end_ is greater than front we substract the spaces between them
       // from the buffer's capacity
-      return capacity() + front_ - end_;
+      return buffer_.size() + front_ - end_;
    }
 
 private:

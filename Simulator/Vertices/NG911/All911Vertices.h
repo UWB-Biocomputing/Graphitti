@@ -154,6 +154,9 @@ private:
    /// The probability that a caller will redial after receiving the busy signal
    BGFLOAT redialP_;
 
+   /// The average driving speed of a response unit in mph
+   BGFLOAT avgDrivingSpeed_;
+
    /// Holds the calls being served by each server
    vector<vector<Call>> servingCall_;
 

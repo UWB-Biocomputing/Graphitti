@@ -218,10 +218,26 @@ TEST(CircularBuffer, Size)
    int maxSize = 100;
    CircularBuffer<double> testBuffer(maxSize);
 
-   // We will add a few values and then clear the buffer
+   // We will add a few values
    ASSERT_EQ(0, testBuffer.size());
    for (int i = 0; i < maxSize; i++) {
       testBuffer.put(3.14159);
       ASSERT_EQ(i + 1, testBuffer.size());
    }
+
+   // At this point the buffer is full
+   ASSERT_TRUE(testBuffer.isFull());
+   ASSERT_EQ(maxSize, testBuffer.size());
+
+   // If we remove 2 item and then add 2 more,
+   // the last item will fall at the beginning of
+   // the buffer. The buffer should still be
+   // full and size should equal maxSize.
+   testBuffer.get();
+   testBuffer.get();
+   ASSERT_EQ(maxSize - 2, testBuffer.size());
+   testBuffer.put(6.28);
+   testBuffer.put(6.28);
+   ASSERT_TRUE(testBuffer.isFull());
+   ASSERT_EQ(maxSize, testBuffer.size());
 }
