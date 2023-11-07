@@ -358,5 +358,10 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
 
    // Update number of busy servers. This is used to check if there is space in the queue
    busyServers_[vertexIdx] = numServers_[vertexIdx] - availableUnits.size();
+
+   // Update queueLength and utilization histories
+   queueLengthHistory_[vertexIdx][g_simulationStep] = vertexQueues_[vertexIdx].size();
+   utilizationHistory_[vertexIdx][g_simulationStep]
+      = static_cast<double>(busyServers_[vertexIdx]) / numServers_[vertexIdx];
 }
 #endif
