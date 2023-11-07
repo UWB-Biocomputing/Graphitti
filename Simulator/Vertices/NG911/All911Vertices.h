@@ -46,7 +46,7 @@
  * We also implement call abandonment, which is when a caller gets tired of
  * waiting in the queue and decides to abandon it. This is supported through the
  * `patience` call property, which represent the amount of time a caller is
- * willing to waiting before abandoing the queue. If their in the queue exceeds
+ * willing to waiting before abandoing the queue. If their time in the queue exceeds
  * this `patience` time, the call is considered abandoned.
  * 
  * Redialing is implemented using a redial probability (`redialP`) in the
@@ -143,7 +143,6 @@ public:
    /// The portion of servers that are busy at every time-step
    vector<vector<double>> utilizationHistory_;
 
-private:
    /// Number of servers. In a PSAP these are the call takers, in Responder nodes
    /// they are responder units
    vector<int> numServers_;
@@ -151,6 +150,7 @@ private:
    /// Number of phone lines available. Only valid for PSAPs and Responders
    vector<int> numTrunks_;
 
+private:
    /// The probability that a caller will redial after receiving the busy signal
    BGFLOAT redialP_;
 

@@ -71,6 +71,10 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
    resultOut_ << "   " << oldTypes.toXML("vertexTypesPreEvent") << endl;
    resultOut_ << "   " << vertexTypes.toXML("vertexTypesPostEvent") << endl;
 
+   // Write the number of trunks (lines) and servers
+   resultOut_ << vectorToXML(all911Vertices.numTrunks_, "numTrunks") << endl;
+   resultOut_ << vectorToXML(all911Vertices.numServers_, "numServers") << endl;
+
    // Write call information
    resultOut_ << vectorToXML(all911Vertices.droppedCalls_, "droppedCalls") << endl;
    resultOut_ << vectorToXML(all911Vertices.receivedCalls_, "receivedCalls") << endl;
