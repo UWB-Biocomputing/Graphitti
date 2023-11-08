@@ -90,8 +90,7 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
       vector<bool> vBool(vChar.begin(), vChar.end());
       abandonmentHistoryBool.push_back(vBool);
    }
-   resultOut_ << vector2dToXML(abandonmentHistoryBool, "WasAbandonedHistory", "vertex")
-              << endl;
+   resultOut_ << vector2dToXML(abandonmentHistoryBool, "WasAbandonedHistory", "vertex") << endl;
 
    // Write system utilization and queue length histories
    resultOut_ << vector2dToXML(all911Vertices.queueLengthHistory_, "queueLengthHistory", "vertex")
