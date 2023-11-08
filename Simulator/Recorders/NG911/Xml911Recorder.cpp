@@ -83,7 +83,14 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
    resultOut_ << vector2dToXML(all911Vertices.answerTimeHistory_, "AnswerTimeHistory", "vertex")
               << endl;
    resultOut_ << vector2dToXML(all911Vertices.endTimeHistory_, "EndTimeHistory", "vertex") << endl;
-   resultOut_ << vector2dToXML(all911Vertices.wasAbandonedHistory_, "WasAbandonedHistory", "vertex")
+
+   // Convert vector of unsigned char to bool for printing
+   vector<vector<bool>> abandonmentHistoryBool;
+   for (auto &vChar : all911Vertices.wasAbandonedHistory_) {
+      vector<bool> vBool(vChar.begin(), vChar.end());
+      abandonmentHistoryBool.push_back(vBool);
+   }
+   resultOut_ << vector2dToXML(abandonmentHistoryBool, "WasAbandonedHistory", "vertex")
               << endl;
 
    // Write system utilization and queue length histories

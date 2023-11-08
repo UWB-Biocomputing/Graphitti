@@ -136,7 +136,7 @@ public:
    /// The end time for every call
    vector<vector<uint64_t>> endTimeHistory_;
    /// True if the call was abandoned
-   vector<vector<bool>> wasAbandonedHistory_;
+   vector<vector<unsigned char>> wasAbandonedHistory_;
 
    /// The length of the waiting queue at every time-step
    vector<vector<int>> queueLengthHistory_;
