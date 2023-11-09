@@ -303,6 +303,7 @@ void ConnGrowth::updateSynapsesWeights()
 void ConnGrowth::printRadii() const
 {
    for (int i = 0; i < radiiSize_; i++) {
-      cout << "radii[" << i << "] = " << radii_[i] << endl;
+      // c/out << "radii[" << i << "] = " << radii_[i] << endl;
+      LOG4CPLUS_TRACE(consoleLogger_, ("radii[" << i << "] = " << radii_[i] << endl));
    }
 }

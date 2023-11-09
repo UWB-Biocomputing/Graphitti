@@ -539,17 +539,29 @@ void AllSTDPSynapses::printSynapsesProps() const
    AllSpikingSynapses::printSynapsesProps();
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
-         cout << "total_delayPost[" << i << "] = " << totalDelayPost_[i];
-         cout << " tauspost_: " << tauspost_[i];
-         cout << " tauspre_: " << tauspre_[i];
-         cout << " taupos_: " << taupos_[i];
-         cout << " tauneg_: " << tauneg_[i];
-         cout << " STDPgap_: " << STDPgap_[i];
-         cout << " Wex_: " << Wex_[i];
-         cout << " Aneg_: " << Aneg_[i];
-         cout << " Apos_: " << Apos_[i];
-         cout << " mupos_: " << mupos_[i];
-         cout << " muneg_: " << muneg_[i] << endl;
+         // c/out << "total_delayPost[" << i << "] = " << totalDelayPost_[i];
+         // c/out << " tauspost_: " << tauspost_[i];
+         // c/out << " tauspre_: " << tauspre_[i];
+         // c/out << " taupos_: " << taupos_[i];
+         // c/out << " tauneg_: " << tauneg_[i];
+         // c/out << " STDPgap_: " << STDPgap_[i];
+         // c/out << " Wex_: " << Wex_[i];
+         // c/out << " Aneg_: " << Aneg_[i];
+         // c/out << " Apos_: " << Apos_[i];
+         // c/out << " mupos_: " << mupos_[i];
+         // c/out << " muneg_: " << muneg_[i] << endl;
+
+         LOG4CPLUS_TRACE(consoleLogger_, ("total_delayPost[" << i << "] = " << totalDelayPost_[i]));
+         LOG4CPLUS_TRACE(consoleLogger_, (" tauspost_: " << tauspost_[i]));
+         LOG4CPLUS_TRACE(consoleLogger_, (" tauspre_: " << tauspre_[i]));
+         LOG4CPLUS_TRACE(consoleLogger_, (" taupos_: " << taupos_[i]));
+         LOG4CPLUS_TRACE(consoleLogger_, (" tauneg_: " << tauneg_[i]));
+         LOG4CPLUS_TRACE(consoleLogger_, (" STDPgap_: " << STDPgap_[i]));
+         LOG4CPLUS_TRACE(consoleLogger_, (" Wex_: " << Wex_[i]));
+         LOG4CPLUS_TRACE(consoleLogger_, (" Aneg_: " << Aneg_[i]));
+         LOG4CPLUS_TRACE(consoleLogger_, (" Apos_: " << Apos_[i]));
+         LOG4CPLUS_TRACE(consoleLogger_, (" mupos_: " << mupos_[i]));
+         LOG4CPLUS_TRACE(consoleLogger_, (" muneg_: " << muneg_[i] << endl));
       }
    }
 }

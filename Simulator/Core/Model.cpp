@@ -113,7 +113,9 @@ void Model::logSimStep() const
    if (pConnGrowth == nullptr)
       return;
 
-   cout << "format:\ntype,radius,firing rate" << endl;
+   // c/out << "format:\ntype,radius,firing rate" << endl;
+   LOG4CPLUS_TRACE(consoleLogger_, ("format:\ntype,radius,firing rate" << endl));
+
 
    for (int y = 0; y < Simulator::getInstance().getHeight(); y++) {
       stringstream ss;
@@ -152,7 +154,8 @@ void Model::logSimStep() const
       }
 
       ss << endl;
-      cout << ss.str();
+      // c/out << ss.str();
+      LOG4CPLUS_TRACE(consoleLogger_, ss.str());
    }
 }
 

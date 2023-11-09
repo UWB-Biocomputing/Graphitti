@@ -264,23 +264,29 @@ template <class Archive> void AllEdges::load(Archive &archive, std::uint32_t con
    // check to see if serialized data sizes matches object sizes
    int requiredSize = maxEdgesPerVertex_ * countVertices_;
    if (WVectorSize != requiredSize || WVectorSize != WVector.size()) {
-      cerr
+      LOG4CPLUS_ERROR(fileLogger_, "Failed deserializing edge weights. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
+         << endl);
+      /* c/err
          << "Failed deserializing edge weights. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
-         << endl;
+         << endl; */
       throw cereal::Exception("Deserialization Error");
    }
    if (sourceVertexLayoutIndexVectorSize != requiredSize
        || sourceVertexLayoutIndexVectorSize != sourceVertexLayoutIndexVector.size()) {
-      cerr
+      LOG4CPLUS_ERROR(fileLogger_, "Failed deserializing source vertices. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
+         << endl);
+      /* c/err
          << "Failed deserializing source vertices. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
-         << endl;
+         << endl; */
       throw cereal::Exception("Deserialization Error");
    }
    if (destVertexLayoutIndexVectorSize != requiredSize
        || destVertexLayoutIndexVectorSize != destVertexLayoutIndexVector.size()) {
-      cerr
+      LOG4CPLUS_ERROR(fileLogger_, "Failed deserializing destination vertices. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
+         << endl);
+      /* c/err
          << "Failed deserializing destination vertices. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
-         << endl;
+         << endl; */
       throw cereal::Exception("Deserialization Error");
    }
 

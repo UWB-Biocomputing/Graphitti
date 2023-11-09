@@ -100,29 +100,44 @@ int AllNeuroEdges::edgSign(const edgeType type)
 ///  Prints SynapsesProps data to console.
 void AllNeuroEdges::printSynapsesProps() const
 {
-   cout << "This is SynapsesProps data:" << endl;
+   // c/out << "This is SynapsesProps data:" << endl;
+   LOG4CPLUS_TRACE(consoleLogger, ("This is SynapsesProps data:" << endl));
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
-         cout << "W[" << i << "] = " << W_[i];
-         cout << " sourNeuron: " << sourceVertexIndex_[i];
-         cout << " desNeuron: " << destVertexIndex_[i];
-         cout << " type: " << type_[i];
-         cout << " psr: " << psr_[i];
-         cout << " in_use:" << inUse_[i];
+         // c/out << "W[" << i << "] = " << W_[i];
+         // c/out << " sourNeuron: " << sourceVertexIndex_[i];
+         // c/out << " desNeuron: " << destVertexIndex_[i];
+         // c/out << " type: " << type_[i];
+         // c/out << " psr: " << psr_[i];
+         // c/out << " in_use:" << inUse_[i];
+         LOG4CPLUS_TRACE(consoleLogger, ("W[" << i << "] = " << W_[i]));
+         LOG4CPLUS_TRACE(consoleLogger, (" sourNeuron: " << sourceVertexIndex_[i]));
+         LOG4CPLUS_TRACE(consoleLogger, (" desNeuron: " << destVertexIndex_[i]));
+         LOG4CPLUS_TRACE(consoleLogger, (" type: " << type_[i]));
+         LOG4CPLUS_TRACE(consoleLogger, (" psr: " << psr_[i]));
+         LOG4CPLUS_TRACE(consoleLogger, (" in_use:" << inUse_[i]));
+
          if (summationPoint_[i] != nullptr) {
-            cout << " summationPoint: is created!" << endl;
+            // c/out << " summationPoint: is created!" << endl;
+            LOG4CPLUS_TRACE(consoleLogger, (" summationPoint: is created!" << endl));
          } else {
-            cout << " summationPoint: is EMPTY!!!!!" << endl;
+            // c/out << " summationPoint: is EMPTY!!!!!" << endl;
+            LOG4CPLUS_TRACE(consoleLogger, (" summationPoint: is EMPTY!!!!!" << endl));
          }
       }
    }
 
    for (int i = 0; i < countVertices_; i++) {
-      cout << "edge_counts:"
-           << "vertex[" << i << "]" << edgeCounts_[i] << endl;
+     /* c/out << "edge_counts:"
+           << "vertex[" << i << "]" << edgeCounts_[i] << endl; */
+      LOG4CPLUS_TRACE(consoleLogger, ("edge_counts:"
+           << "vertex[" << i << "]" << edgeCounts_[i] << endl));
    }
 
-   cout << "totalEdgeCount:" << totalEdgeCount_ << endl;
-   cout << "maxEdgesPerVertex:" << maxEdgesPerVertex_ << endl;
-   cout << "count_neurons:" << countVertices_ << endl;
+   // c/out << "totalEdgeCount:" << totalEdgeCount_ << endl;
+   // c/out << "maxEdgesPerVertex:" << maxEdgesPerVertex_ << endl;
+   // c/out << "count_neurons:" << countVertices_ << endl;
+   LOG4CPLUS_TRACE(consoleLogger, ("totalEdgeCount:" << totalEdgeCount_ << endl));
+   LOG4CPLUS_TRACE(consoleLogger, ("maxEdgesPerVertex:" << maxEdgesPerVertex_ << endl));
+   LOG4CPLUS_TRACE(consoleLogger, ("count_neurons:" << countVertices_ << endl));
 }

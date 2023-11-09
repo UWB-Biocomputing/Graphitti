@@ -26,19 +26,23 @@ SInputRegular::SInputRegular(TiXmlElement *parms) : values(nullptr)
    string sync;
    if ((temp = parms->FirstChildElement("IntParams")) != nullptr) {
       if (temp->QueryFLOATAttribute("duration", &duration) != TIXML_SUCCESS) {
-         cerr << "error IntParams:duration" << endl;
+         LOG4CPLUS_ERROR(fileLogger_, "error IntParams:duration" << endl);
+         // c/err << "error IntParams:duration" << endl;
          return;
       }
       if (temp->QueryFLOATAttribute("interval", &interval) != TIXML_SUCCESS) {
-         cerr << "error IntParams:interval" << endl;
+         LOG4CPLUS_ERROR(fileLogger_, "error IntParams:interval" << endl);
+         // c/err << "error IntParams:interval" << endl;
          return;
       }
       if (temp->QueryValueAttribute("sync", &sync) != TIXML_SUCCESS) {
-         cerr << "error IntParams:sync" << endl;
+         LOG4CPLUS_ERROR(fileLogger_, "error IntParams:sync" << endl);
+         // c/err << "error IntParams:sync" << endl;
          return;
       }
    } else {
-      cerr << "missing IntParams" << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "missing IntParams" << endl);
+      // c/err << "missing IntParams" << endl;
       return;
    }
 
@@ -55,12 +59,14 @@ SInputRegular::SInputRegular(TiXmlElement *parms) : values(nullptr)
          if (strcmp(pNode->Value(), "I") == 0) {
             getValueList(pNode->ToElement()->GetText(), &initValues);
          } else {
-            cerr << "error I" << endl;
+            LOG4CPLUS_ERROR(fileLogger_, "error I" << endl);
+            // c/err << "error I" << endl;
             return;
          }
       }
    } else {
-      cerr << "missing Values" << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "missing Values" << endl);
+      // c/err << "missing Values" << endl;
       return;
    }
 

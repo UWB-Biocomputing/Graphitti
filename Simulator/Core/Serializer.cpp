@@ -38,7 +38,8 @@ bool Serializer::deserializeSynapses()
 
    // Checks to see if serialization file exists
    if (!memory_in) {
-      cerr << "The serialization file doesn't exist" << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "The serialization file doesn't exist" << endl);
+      // c/err << "The serialization file doesn't exist" << endl;
       return false;
    }
 
@@ -55,9 +56,12 @@ bool Serializer::deserializeSynapses()
    try {
       archive(dynamic_cast<AllEdges &>(connections.getEdges()));
    } catch (cereal::Exception e) {
-      cerr << e.what() << endl
+      LOG4CPLUS_ERROR(fileLogger_, e.what() << endl
            << "Failed to deserialize synapse weights, source vertices, and/or destination vertices."
-           << endl;
+           << endl);
+      /* c/err << e.what() << endl
+           << "Failed to deserialize synapse weights, source vertices, and/or destination vertices."
+           << endl; */
       return false;
    }
 
@@ -88,7 +92,8 @@ bool Serializer::deserializeSynapses()
    try {
       archive(dynamic_cast<ConnGrowth &>(connections));
    } catch (cereal::Exception e) {
-      cerr << e.what() << endl << "Failed to deserialize radii." << endl;
+      LOG4CPLUS_ERROR(fileLogger_, e.what() << endl << "Failed to deserialize radii." << endl);
+      // c/err << e.what() << endl << "Failed to deserialize radii." << endl;
       return false;
    }
 
@@ -102,10 +107,14 @@ void Serializer::serializeSynapses()
 {
    Simulator &simulator = Simulator::getInstance();
 
+   // Get the instance of the console logger
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+
    // We can serialize to a variety of archive file formats. Below, comment out
    // all but the two lines that correspond to the desired format.
    ofstream memory_out(simulator.getSerializationFileName().c_str());
-   cout << "PLease find the serialized file in " << simulator.getSerializationFileName().c_str();
+   // c/out << "PLease find the serialized file in " << simulator.getSerializationFileName().c_str();
+   LOG4CPLUS_TRACE(consoleLogger, ("PLease find the serialized file in " << simulator.getSerializationFileName().c_str()));
 
    // Options parameter are optional which sets
    // 1. Sets the Preceision of floating point number to 30

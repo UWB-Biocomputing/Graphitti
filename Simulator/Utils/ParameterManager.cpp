@@ -55,10 +55,19 @@ bool ParameterManager::loadParameterFile(string path)
    // load the XML document
    xmlDocument_.reset(new TiXmlDocument(path.c_str()));
    if (!xmlDocument_->LoadFile()) {
-      cerr << "Failed loading simulation parameter file " << path << ":"
+
+      LOG4CPLUS_ERROR(fileLogger_, "Failed loading simulation parameter file " << path << ":"
+           << "\n\t" << xmlDocument_->ErrorDesc() << endl);
+      LOG4CPLUS_ERROR(fileLogger_, " error row: " << xmlDocument_->ErrorRow()
+           << ", error col: " << xmlDocument_->ErrorCol() << endl);
+
+      /*
+      c/err << "Failed loading simulation parameter file " << path << ":"
            << "\n\t" << xmlDocument_->ErrorDesc() << endl;
-      cerr << " error row: " << xmlDocument_->ErrorRow()
+      c/err << " error row: " << xmlDocument_->ErrorRow()
            << ", error col: " << xmlDocument_->ErrorCol() << endl;
+      */
+
       return false;
    }
    // assign the document root_ object
@@ -94,7 +103,9 @@ bool ParameterManager::getStringByXpath(string xpath, string &referenceVar)
    string temp;
    // raise error if tinyxml cannot compute the xpath's value or returns empty
    if (!TinyXPath::o_xpath_string(root_, xpath.c_str(), temp) || temp == "") {
-      cerr << "Failed loading simulation parameter for xpath " << xpath << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Failed loading simulation parameter for xpath " << xpath << endl);
+      //c/err << "Failed loading simulation parameter for xpath " << xpath << endl;
+
       return false;
    }
    referenceVar = temp;
@@ -119,22 +130,29 @@ bool ParameterManager::getIntByXpath(string xpath, int &referenceVar)
    // Workaround for standard value conversion functions.
    // stoi() will cast floats to ints.
    if (regex_match(tmp, regex("\\d+[.]\\d+(e[+-]?\\d+)?f?|\\d+[.]?\\d+(e[+-]?\\d+)?f"))) {
-      cerr << "Parsed parameter is likely a float/double value. "
-           << "Terminating integer cast. Value: " << tmp << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Parsed parameter is likely a float/double value. "
+           << "Terminating integer cast. Value: " << tmp << endl);
+      /* c/err << "Parsed parameter is likely a float/double value. "
+           << "Terminating integer cast. Value: " << tmp << endl; */
       return false;
    } else if (regex_match(tmp, regex(".*[^\\def.]+.*"))) {
-      cerr << "Parsed parameter is likely a string. "
-           << "Terminating integer cast. Value: " << tmp << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Parsed parameter is likely a string. "
+           << "Terminating integer cast. Value: " << tmp << endl);
+      /* c/err << "Parsed parameter is likely a string. "
+           << "Terminating integer cast. Value: " << tmp << endl; */
       return false;
    }
    try {
       referenceVar = stoi(tmp);
    } catch (invalid_argument &arg_exception) {
-      cerr << "Parsed parameter could not be parsed as an integer. Value: " << tmp << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Parsed parameter could not be parsed as an integer. Value: " << tmp << endl);
+      // c/err << "Parsed parameter could not be parsed as an integer. Value: " << tmp << endl;
       return false;
    } catch (out_of_range &range_exception) {
-      cerr << "Parsed string parameter could not be converted to an integer. Value: " << tmp
-           << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Parsed string parameter could not be converted to an integer. Value: " << tmp
+           << endl);
+      /* c/err << "Parsed string parameter could not be converted to an integer. Value: " << tmp
+           << endl; */
       return false;
    }
    return true;
@@ -156,17 +174,21 @@ bool ParameterManager::getDoubleByXpath(string xpath, double &referenceVar)
       return false;
    }
    if (regex_match(tmp, regex(".*[^\\def.+-]+.*"))) {
-      cerr << "Parsed parameter is likely a string. "
-           << "Terminating double conversion. Value: " << tmp << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Parsed parameter is likely a string. "
+           << "Terminating double conversion. Value: " << tmp << endl);
+      /* c/err << "Parsed parameter is likely a string. "
+           << "Terminating double conversion. Value: " << tmp << endl; */
       return false;
    }
    try {
       referenceVar = stod(tmp);
    } catch (invalid_argument &arg_exception) {
-      cerr << "Parsed parameter could not be parsed as a double. Value: " << tmp << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Parsed parameter could not be parsed as a double. Value: " << tmp << endl);
+      // c/err << "Parsed parameter could not be parsed as a double. Value: " << tmp << endl;
       return false;
    } catch (out_of_range &range_exception) {
-      cerr << "Parsed string parameter could not be converted to a double. Value: " << tmp << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Parsed string parameter could not be converted to a double. Value: " << tmp << endl);
+      // c/err << "Parsed string parameter could not be converted to a double. Value: " << tmp << endl;
       return false;
    }
    return true;
@@ -188,17 +210,21 @@ bool ParameterManager::getFloatByXpath(string xpath, float &referenceVariable)
       return false;
    }
    if (regex_match(tmp, regex(".*[^\\def.+-]+.*"))) {
-      cerr << "Parsed parameter is likely a string. "
-           << "Terminating double conversion. Value: " << tmp << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Parsed parameter is likely a string. "
+           << "Terminating double conversion. Value: " << tmp << endl);
+      /* c/err << "Parsed parameter is likely a string. "
+           << "Terminating double conversion. Value: " << tmp << endl; */
       return false;
    }
    try {
       referenceVariable = stof(tmp);
    } catch (invalid_argument &arg_exception) {
-      cerr << "Parsed parameter could not be parsed as a float. Value: " << tmp << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Parsed parameter could not be parsed as a float. Value: " << tmp << endl);
+      // c/err << "Parsed parameter could not be parsed as a float. Value: " << tmp << endl;
       return false;
    } catch (out_of_range &range_exception) {
-      cerr << "Parsed string parameter could not be converted to a float. Value: " << tmp << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Parsed string parameter could not be converted to a float. Value: " << tmp << endl);
+      // c/err << "Parsed string parameter could not be converted to a float. Value: " << tmp << endl;
       return false;
    }
    return true;
@@ -224,7 +250,8 @@ bool ParameterManager::getBGFloatByXpath(string xpath, BGFLOAT &referenceVar)
 #ifdef DOUBLEPRECISION
    return getDoubleByXpath(xpath, referenceVar);
 #endif
-   cerr << "Could not infer primitive type for BGFLOAT variable." << endl;
+   LOG4CPLUS_ERROR(fileLogger_, "Could not infer primitive type for BGFLOAT variable." << endl);
+   // c/err << "Could not infer primitive type for BGFLOAT variable." << endl;
    return false;
 }
 
@@ -244,17 +271,21 @@ bool ParameterManager::getLongByXpath(string xpath, long &referenceVar)
       return false;
    }
    if (!regex_match(tmp, regex("[\\d]+l?"))) {
-      cerr << "Parsed parameter is not a valid long format. "
-           << "Terminating long conversion. Value: " << tmp << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Parsed parameter is not a valid long format. "
+           << "Terminating long conversion. Value: " << tmp << endl);
+      /* c/err << "Parsed parameter is not a valid long format. "
+           << "Terminating long conversion. Value: " << tmp << endl; */
       return false;
    }
    try {
       referenceVar = stol(tmp);
    } catch (invalid_argument &arg_exception) {
-      cerr << "Parsed parameter could not be parsed as a long. Value: " << tmp << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Parsed parameter could not be parsed as a long. Value: " << tmp << endl);
+      // c/err << "Parsed parameter could not be parsed as a long. Value: " << tmp << endl;
       return false;
    } catch (out_of_range &range_exception) {
-      cerr << "Parsed string parameter could not be converted to a long. Value: " << tmp << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Parsed string parameter could not be converted to a long. Value: " << tmp << endl);
+      // c/err << "Parsed string parameter could not be converted to a long. Value: " << tmp << endl;
       return false;
    }
    return true;
@@ -278,15 +309,18 @@ bool ParameterManager::getIntVectorByXpath(const string &path, const string &ele
    // Open file using a local XmlDocument object
    TiXmlDocument xmlDocument(path.c_str());
    if (!xmlDocument.LoadFile()) {
-      cerr << "Failed to load " << path.c_str() << ":"
-           << "\n\t" << xmlDocument.ErrorDesc() << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Failed to load " << path.c_str() << ":"
+           << "\n\t" << xmlDocument.ErrorDesc() << endl);
+      /* c/err << "Failed to load " << path.c_str() << ":"
+           << "\n\t" << xmlDocument.ErrorDesc() << endl; */
       return false;
    }
 
    // Check file for matching element
    TiXmlNode *xmlNode = nullptr;
    if ((xmlNode = xmlDocument.FirstChildElement(elementName)) == nullptr) {
-      cerr << "Could not find <" << elementName << "> in vertex list file " << path << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Could not find <" << elementName << "> in vertex list file " << path << endl);
+      // c/err << "Could not find <" << elementName << "> in vertex list file " << path << endl;
       return false;
    }
 
@@ -311,14 +345,16 @@ bool ParameterManager::getFileByXpath(const string &path, ifstream &file)
 {
    string file_name;
    if (!ParameterManager::getInstance().getStringByXpath(path, file_name)) {
-      cerr << "Could not find XML path: " << path << ".\n";
+      LOG4CPLUS_ERROR(fileLogger_, "Could not find XML path: " << path << ".\n");
+      // c/err << "Could not find XML path: " << path << ".\n";
       return false;
    };
 
    // open file
    file.open(file_name.c_str());
    if (!file.is_open()) {
-      cerr << "Failed to open file: " << file_name << ".\n";
+      LOG4CPLUS_ERROR(fileLogger_, "Failed to open file: " << file_name << ".\n");
+      // c/err << "Failed to open file: " << file_name << ".\n";
       return false;
    }
 

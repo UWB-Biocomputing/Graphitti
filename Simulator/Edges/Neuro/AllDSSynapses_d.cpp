@@ -305,34 +305,59 @@ void AllDSSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
 
       for (int i = 0; i < size; i++) {
          if (WPrint[i] != 0.0) {
-            cout << "GPU W[" << i << "] = " << WPrint[i];
-            cout << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
-            cout << " GPU desNeuron: " << destNeuronIndexPrint[i];
-            cout << " GPU type: " << typePrint[i];
-            cout << " GPU psr: " << psrPrint[i];
-            cout << " GPU in_use:" << inUsePrint[i];
+            // c/out << "GPU W[" << i << "] = " << WPrint[i];
+            // c/out << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
+            // c/out << " GPU desNeuron: " << destNeuronIndexPrint[i];
+            // c/out << " GPU type: " << typePrint[i];
+            // c/out << " GPU psr: " << psrPrint[i];
+            // c/out << " GPU in_use:" << inUsePrint[i];
 
-            cout << " GPU decay: " << decayPrint[i];
-            cout << " GPU tau: " << tauPrint[i];
-            cout << " GPU total_delay: " << totalDelayPrint[i];
+            // c/out << " GPU decay: " << decayPrint[i];
+            // c/out << " GPU tau: " << tauPrint[i];
+            // c/out << " GPU total_delay: " << totalDelayPrint[i];
 
-            cout << " GPU lastSpike: " << lastSpikePrint[i];
-            cout << " GPU r: " << rPrint[i];
-            cout << " GPU u: " << uPrint[i];
-            cout << " GPU D: " << DPrint[i];
-            cout << " GPU U: " << UPrint[i];
-            cout << " GPU F: " << FPrint[i] << endl;
+            // c/out << " GPU lastSpike: " << lastSpikePrint[i];
+            // c/out << " GPU r: " << rPrint[i];
+            // c/out << " GPU u: " << uPrint[i];
+            // c/out << " GPU D: " << DPrint[i];
+            // c/out << " GPU U: " << UPrint[i];
+            // c/out << " GPU F: " << FPrint[i] << endl;
+
+
+            LOG4CPLUS_INFO(consoleLogger, ("GPU W[" << i << "] = " << WPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, (" GPU sourNeuron: " << sourceNeuronIndexPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, (" GPU desNeuron: " << destNeuronIndexPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, (" GPU type: " << typePrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, (" GPU psr: " << psrPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, (" GPU in_use:" << inUsePrint[i]));
+
+            LOG4CPLUS_INFO(consoleLogger, (" GPU decay: " << decayPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, (" GPU tau: " << tauPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, (" GPU total_delay: " << totalDelayPrint[i]));
+
+            LOG4CPLUS_INFO(consoleLogger, (" GPU lastSpike: " << lastSpikePrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, (" GPU r: " << rPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, (" GPU u: " << uPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, (" GPU D: " << DPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, (" GPU U: " << UPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, (" GPU F: " << FPrint[i] << endl));
          }
       }
 
       for (int i = 0; i < countVertices_; i++) {
-         cout << "GPU edge_counts:"
-              << "neuron[" << i << "]" << synapseCountsPrint[i] << endl;
+         /* c/out << "GPU edge_counts:"
+              << "neuron[" << i << "]" << synapseCountsPrint[i] << endl;*/
+         LOG4CPLUS_INFO(consoleLogger, ("GPU edge_counts:"
+              << "neuron[" << i << "]" << synapseCountsPrint[i] << endl));
       }
 
-      cout << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;
-      cout << "GPU maxEdgesPerVertex:" << maxEdgesPerVertexPrint << endl;
-      cout << "GPU countVertices_:" << countNeuronsPrint << endl;
+      // c/out << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;
+      // c/out << "GPU maxEdgesPerVertex:" << maxEdgesPerVertexPrint << endl;
+      // c/out << "GPU countVertices_:" << countNeuronsPrint << endl;
+
+      LOG4CPLUS_INFO(consoleLogger, ("GPU totalSynapseCount:" << totalSynapseCountPrint << endl));
+      LOG4CPLUS_INFO(consoleLogger, ("GPU maxEdgesPerVertex:" << maxEdgesPerVertexPrint << endl));
+      LOG4CPLUS_INFO(consoleLogger, ("GPU countVertices_:" << countNeuronsPrint << endl));
 
 
       // Set countVertices_ to 0 to avoid illegal memory deallocation
