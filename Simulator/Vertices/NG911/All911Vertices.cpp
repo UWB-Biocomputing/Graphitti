@@ -149,7 +149,7 @@ int &All911Vertices::receivedCalls(int vIdx)
    return receivedCalls_[vIdx];
 }
 
-int All911Vertices::busyServers(int vIdx)
+int All911Vertices::busyServers(int vIdx) const
 {
    return busyServers_[vIdx];
 }

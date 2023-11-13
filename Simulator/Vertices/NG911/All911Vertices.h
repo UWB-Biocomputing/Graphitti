@@ -141,7 +141,7 @@ public:
    /// Accessor for the number of busy servers in a given vertex
    /// @param vIdx   The index of the vertex
    /// @return    The number of busy servers in the given vertex
-   int busyServers(int vIdx);
+   int busyServers(int vIdx) const;
 
 private:
    /// The starting time for every call
