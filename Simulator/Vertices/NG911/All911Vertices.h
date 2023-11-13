@@ -120,7 +120,7 @@ public:
    /// endStep (exclusive)
    virtual void loadEpochInputs(uint64_t currentStep, uint64_t endStep) override;
 
-   /// Accessor for a given vertex waiting queue
+   /// Accessor for the waiting queue of a vertex
    ///
    /// @param vIdx   The index of the vertex
    /// @return    The waiting queue for the given vertex
@@ -139,6 +139,7 @@ public:
    int &receivedCalls(int vIdx);
 
    /// Accessor for the number of busy servers in a given vertex
+   ///
    /// @param vIdx   The index of the vertex
    /// @return    The number of busy servers in the given vertex
    int busyServers(int vIdx) const;
