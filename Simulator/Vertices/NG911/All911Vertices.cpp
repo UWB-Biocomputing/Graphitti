@@ -134,6 +134,26 @@ void All911Vertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
    }
 }
 
+CircularBuffer<Call> &All911Vertices::getQueue(int vIdx)
+{
+   return vertexQueues_[vIdx];
+}
+
+int &All911Vertices::droppedCalls(int vIdx)
+{
+   return droppedCalls_[vIdx];
+}
+
+int &All911Vertices::receivedCalls(int vIdx)
+{
+   return receivedCalls_[vIdx];
+}
+
+int All911Vertices::busyServers(int vIdx)
+{
+   return busyServers_[vIdx];
+}
+
 #if !defined(USE_GPU)
 
 
