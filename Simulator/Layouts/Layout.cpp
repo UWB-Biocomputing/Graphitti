@@ -99,7 +99,6 @@ void Layout::printParameters() const
 void Layout::generateVertexTypeMap(int numVertices)
 {
    DEBUG(cout << "\nInitializing vertex type map: VTYPE_UNDEF" << endl;);
-   //DEBUG(LOG4CPLUS_TRACE(consoleLogger_, ("\nInitializing vertex type map: VTYPE_UNDEF" << endl)));
    vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
 }
 
