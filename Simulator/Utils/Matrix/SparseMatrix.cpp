@@ -249,7 +249,7 @@ SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, const char *v) :
          try {
             theElements.insert(el);
          } catch (Matrix_invalid_argument e) {
-            cerr << "Failure during SparseMatrix string constructor: " << e.what() << endl;
+            LOG4CPLUS_ERROR(fileLogger_, "Failure during SparseMatrix string constructor: " << e.what() << endl);
             exit(-1);
          }
       }
@@ -263,7 +263,7 @@ SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, const char *v) :
          try {
             theElements.insert(el);
          } catch (Matrix_invalid_argument e) {
-            cerr << "Failure during SparseMatrix multiplier only constructor: " << e.what() << endl;
+            LOG4CPLUS_ERROR(fileLogger_, "Failure during SparseMatrix multiplier only constructor: " << e.what() << endl);
             exit(-1);
          }
       }
@@ -325,8 +325,8 @@ SparseMatrix::SparseMatrix(const SparseMatrix &oldM) :
    try {
       copy(oldM);
    } catch (Matrix_invalid_argument e) {
-      cerr << "Failure during SparseMatrix copy constructor\n"
-           << "\tError was: " << e.what() << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "Failure during SparseMatrix copy constructor\n"
+           << "\tError was: " << e.what() << endl);
       exit(-1);
    }
 }
@@ -360,8 +360,8 @@ SparseMatrix &SparseMatrix::operator=(const SparseMatrix &rhs)
    try {
       copy(rhs);
    } catch (Matrix_invalid_argument e) {
-      cerr << "\tFailure during SparseMatrix assignment operator\n"
-           << "\tError was: " << e.what() << endl;
+      LOG4CPLUS_ERROR(fileLogger_, "\tFailure during SparseMatrix assignment operator\n"
+           << "\tError was: " << e.what() << endl);
       exit(-1);
    }
    DEBUG_SPARSE(cerr << "\t\tcopy() complete; returning by reference." << endl;)
@@ -427,12 +427,12 @@ void SparseMatrix::copy(const SparseMatrix &source)
          try {
             theElements.insert(el);
          } catch (Matrix_invalid_argument e) {
-            cerr << "\nFailure during SparseMatrix copy() for element " << el->value << " at ("
-                 << el->row << "," << el->column << ")" << endl;
-            cerr << "\twith " << theElements.size << " elements already copied at i=" << i
+            LOG4CPLUS_ERROR(fileLogger_, "\nFailure during SparseMatrix copy() for element " << el->value << " at ("
+                 << el->row << "," << el->column << ")" << endl);
+            LOG4CPLUS_ERROR(fileLogger_, "\twith " << theElements.size << " elements already copied at i=" << i
                  << ", hashed to " << theElements.hash(el) << " in table with capacity "
-                 << theElements.capacity << endl;
-            cerr << "\tSource was: " << source << endl << endl;
+                 << theElements.capacity << endl);
+            LOG4CPLUS_ERROR(fileLogger_, "\tSource was: " << source << endl << endl);
             throw e;
          }
       }
@@ -464,7 +464,7 @@ void SparseMatrix::rowFromXML(TiXmlElement *rowElement)
       try {
          theElements.insert(el);
       } catch (Matrix_invalid_argument e) {
-         cerr << "Failure during SparseMatrix rowFromXML: " << e.what() << endl;
+         LOG4CPLUS_ERROR(fileLogger_, "Failure during SparseMatrix rowFromXML: " << e.what() << endl);
          exit(-1);
       }
    }
@@ -561,8 +561,8 @@ BGFLOAT &SparseMatrix::operator()(int r, int c)
       try {
          theElements.insert(el);
       } catch (Matrix_invalid_argument e) {
-         cerr << "Failure during SparseMatrix operator() at row " << r << " column " << c << ": "
-              << e.what() << endl;
+         LOG4CPLUS_ERROR(fileLogger_, "Failure during SparseMatrix operator() at row " << r << " column " << c << ": "
+              << e.what() << endl);
          exit(-1);
       }
    }

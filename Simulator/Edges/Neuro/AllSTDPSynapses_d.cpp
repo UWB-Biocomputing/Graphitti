@@ -380,40 +380,6 @@ void AllSTDPSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
                               cudaMemcpyDeviceToHost));
       HANDLE_ERROR(cudaMemcpy(munegPrint, allSynapsesProps.muneg_, size * sizeof(BGFLOAT),
                               cudaMemcpyDeviceToHost));
-      // for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
-       //  if (WPrint[i] != 0.0) {
-            // c/out << "GPU W[" << i << "] = " << WPrint[i];
-            // c/out << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
-            // c/out << " GPU desNeuron: " << destNeuronIndexPrint[i];
-            // c/out << " GPU type: " << typePrint[i];
-            // c/out << " GPU psr: " << psrPrint[i];
-            // c/out << " GPU in_use:" << inUsePrint[i];
-
-            // c/out << " GPU decay: " << decayPrint[i];
-            // c/out << " GPU tau: " << tauPrint[i];
-            // c/out << " GPU total_delay: " << totalDelayPrint[i];
-
-            // c/out << " GPU total_delayPost: " << totalDelayPostPrint[i];
-            // c/out << " GPU tauspost_: " << tauspostPrint[i];
-            // c/out << " GPU tauspre_: " << tausprePrint[i];
-            // c/out << " GPU taupos_: " << tauposPrint[i];
-            // c/out << " GPU tauneg_: " << taunegPrint[i];
-            // c/out << " GPU STDPgap_: " << STDPgapPrint[i];
-            // c/out << " GPU Wex_: " << WexPrint[i];
-            // c/out << " GPU Aneg_: " << AnegPrint[i];
-            // c/out << " GPU Apos_: " << AposPrint[i];
-            // c/out << " GPU mupos_: " << muposPrint[i];
-            // c/out << " GPU muneg_: " << munegPrint[i] << endl;
-
-
-      //   }
-      //}
-      //for (int i = 0; i < countVertices_; i++) {
-         // c/out << "GPU edge_counts:" << "neuron[" << i << "]" << synapseCountsPrint[i] << endl;
-      // }
-      // c/out << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;
-      // c/out << "GPU maxEdgesPerVertex:" << maxEdgesPerVertexPrint << endl;
-      // c/out << "GPU countVertices_:" << countNeuronsPrint << endl;
 
       for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
          if (WPrint[i] != 0.0) {

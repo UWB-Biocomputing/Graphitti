@@ -190,12 +190,6 @@ void AllDynamicSTDPSynapses::printSynapsesProps() const
    AllSTDPSynapses::printSynapsesProps();
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
-         // c/out << "lastSpike[" << i << "] = " << lastSpike_[i];
-         // c/out << " r: " << r_[i];
-         // c/out << " u: " << u_[i];
-         // c/out << " D: " << D_[i];
-         // c/out << " U: " << U_[i];
-         // c/out << " F: " << F_[i] << endl;
 
          LOG4CPLUS_TRACE(consoleLogger_, ("lastSpike[" << i << "] = " << lastSpike_[i]));
          LOG4CPLUS_TRACE(consoleLogger_, (" r: " << r_[i]));

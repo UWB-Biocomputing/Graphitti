@@ -305,25 +305,6 @@ void AllDSSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
 
       for (int i = 0; i < size; i++) {
          if (WPrint[i] != 0.0) {
-            // c/out << "GPU W[" << i << "] = " << WPrint[i];
-            // c/out << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
-            // c/out << " GPU desNeuron: " << destNeuronIndexPrint[i];
-            // c/out << " GPU type: " << typePrint[i];
-            // c/out << " GPU psr: " << psrPrint[i];
-            // c/out << " GPU in_use:" << inUsePrint[i];
-
-            // c/out << " GPU decay: " << decayPrint[i];
-            // c/out << " GPU tau: " << tauPrint[i];
-            // c/out << " GPU total_delay: " << totalDelayPrint[i];
-
-            // c/out << " GPU lastSpike: " << lastSpikePrint[i];
-            // c/out << " GPU r: " << rPrint[i];
-            // c/out << " GPU u: " << uPrint[i];
-            // c/out << " GPU D: " << DPrint[i];
-            // c/out << " GPU U: " << UPrint[i];
-            // c/out << " GPU F: " << FPrint[i] << endl;
-
-
             LOG4CPLUS_INFO(consoleLogger, ("GPU W[" << i << "] = " << WPrint[i]));
             LOG4CPLUS_INFO(consoleLogger, (" GPU sourNeuron: " << sourceNeuronIndexPrint[i]));
             LOG4CPLUS_INFO(consoleLogger, (" GPU desNeuron: " << destNeuronIndexPrint[i]));
@@ -345,15 +326,10 @@ void AllDSSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
       }
 
       for (int i = 0; i < countVertices_; i++) {
-         /* c/out << "GPU edge_counts:"
-              << "neuron[" << i << "]" << synapseCountsPrint[i] << endl;*/
          LOG4CPLUS_INFO(consoleLogger, ("GPU edge_counts:"
               << "neuron[" << i << "]" << synapseCountsPrint[i] << endl));
       }
 
-      // c/out << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;
-      // c/out << "GPU maxEdgesPerVertex:" << maxEdgesPerVertexPrint << endl;
-      // c/out << "GPU countVertices_:" << countNeuronsPrint << endl;
 
       LOG4CPLUS_INFO(consoleLogger, ("GPU totalSynapseCount:" << totalSynapseCountPrint << endl));
       LOG4CPLUS_INFO(consoleLogger, ("GPU maxEdgesPerVertex:" << maxEdgesPerVertexPrint << endl));

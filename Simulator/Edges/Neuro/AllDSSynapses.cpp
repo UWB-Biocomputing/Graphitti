@@ -190,12 +190,6 @@ void AllDSSynapses::printSynapsesProps() const
    AllSpikingSynapses::printSynapsesProps();
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
-         // c/out << "lastSpike[" << i << "] = " << lastSpike_[i];
-         // c/out << " r: " << r_[i];
-         // c/out << " u: " << u_[i];
-         // c/out << " D: " << D_[i];
-         // c/out << " U: " << U_[i];
-         // c/out << " F: " << F_[i] << endl;
 
          LOG4CPLUS_INFO(consoleLogger, ("lastSpike[" << i << "] = " << lastSpike_[i]));
          LOG4CPLUS_INFO(consoleLogger, (" r: " << r_[i]));
@@ -205,6 +199,5 @@ void AllDSSynapses::printSynapsesProps() const
          LOG4CPLUS_INFO(consoleLogger, (" F: " << F_[i] << endl));
       }
    }
-   // c/out << endl;
    LOG4CPLUS_INFO(consoleLogger, endl);
 }

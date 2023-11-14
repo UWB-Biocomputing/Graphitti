@@ -26,17 +26,14 @@ SInputPoisson::SInputPoisson(TiXmlElement *parms) :
    if ((temp = parms->FirstChildElement("IntParams")) != nullptr) {
       if (temp->QueryFLOATAttribute("fr_mean", &fr_mean) != TIXML_SUCCESS) {
          LOG4CPLUS_ERROR(fileLogger_, "error IntParams:fr_mean" << endl);
-         // c/err << "error IntParams:fr_mean" << endl;
          return;
       }
       if (temp->QueryFLOATAttribute("weight", &weight) != TIXML_SUCCESS) {
          LOG4CPLUS_ERROR(fileLogger_, "error IntParams:weight" << endl);
-         // c/err << "error IntParams:weight" << endl;
          return;
       }
    } else {
       LOG4CPLUS_ERROR(fileLogger_, "missing IntParams" << endl);
-      // c/err << "missing IntParams" << endl;
       return;
    }
 
@@ -73,20 +70,13 @@ SInputPoisson::SInputPoisson(TiXmlElement *parms) :
                        << maskNListFileName << ":"
                        << "\n\t" << simDoc.ErrorDesc() << endl);
 
-                  /* c/err << "Failed loading positions of stimulus input mask neurons list file "
-                       << maskNListFileName << ":"
-                       << "\n\t" << simDoc.ErrorDesc() << endl; */
-
                   LOG4CPLUS_ERROR(fileLogger_, " error: " << simDoc.ErrorRow() << ", " << simDoc.ErrorCol() << endl);
-                  // c/err << " error: " << simDoc.ErrorRow() << ", " << simDoc.ErrorCol() << endl;
                   break;
                }
                TiXmlNode *temp2 = nullptr;
                if ((temp2 = simDoc.FirstChildElement("M")) == nullptr) {
                   LOG4CPLUS_ERROR(fileLogger_, "Could not find <M> in positons of stimulus input mask neurons list file "
                        << maskNListFileName << endl);
-                  /* c/err << "Could not find <M> in positons of stimulus input mask neurons list file "
-                       << maskNListFileName << endl; */
                   break;
                }
                getValueList(temp2->ToElement()->GetText(), &maskIndex);

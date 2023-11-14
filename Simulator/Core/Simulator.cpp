@@ -47,14 +47,12 @@ void Simulator::setup()
 #ifdef PERFORMANCE_METRICS
    // Start overall simulation timer
    LOG4CPLUS_ERROR(fileLogger_, "Starting main timer... ");
-   // c/err << "Starting main timer... ";
    t_host_initialization_layout = 0.0;
    t_host_initialization_connections = 0.0;
    t_host_advance = 0.0;
    t_host_adjustEdges = 0.0;
    timer.start();
    LOG4CPLUS_ERROR(fileLogger_, "done." << endl);
-   // c/err << "done." << endl;
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Initializing models in network... ");
    model_->setupSim();
@@ -63,7 +61,7 @@ void Simulator::setup()
    // init stimulus input object
    /* PInput not in project yet
   if (pInput != nullptr) {
-     c/out << "Initializing input." << endl;
+     cout << "Initializing input." << endl;
      pInput->init();
   }
   */
@@ -184,9 +182,7 @@ void Simulator::simulate()
       double total_time = timer.lap() / 1000000.0;
 
       LOG4CPLUS_TRACE(consoleLogger_, ("\ntotal_time: " << total_time << " seconds" << endl));
-      // c/out << "\ntotal_time: " << total_time << " seconds" << endl;
       printPerformanceMetrics(total_time, currentEpoch);
-      // c/out << endl;
       LOG4CPLUS_TRACE(consoleLogger_, endl);
 #endif
    }

@@ -113,7 +113,6 @@ void Model::logSimStep() const
    if (pConnGrowth == nullptr)
       return;
 
-   // c/out << "format:\ntype,radius,firing rate" << endl;
    LOG4CPLUS_TRACE(consoleLogger_, ("format:\ntype,radius,firing rate" << endl));
 
 
@@ -154,7 +153,6 @@ void Model::logSimStep() const
       }
 
       ss << endl;
-      // c/out << ss.str();
       LOG4CPLUS_TRACE(consoleLogger_, ss.str());
    }
 }

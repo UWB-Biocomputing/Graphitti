@@ -27,14 +27,12 @@ bool GraphManager::readGraph()
    string path = "//graphmlFile/text()";
    if (!ParameterManager::getInstance().getStringByXpath(path, graphFilePath_)) {
       LOG4CPLUS_ERROR(fileLogger_, "Could not find XML path: " << path << ".\n");
-      //c/err << "Could not find XML path: " << path << ".\n";
       return false;
    };
 
    graph_file.open(graphFilePath_.c_str());
    if (!graph_file.is_open()) {
       LOG4CPLUS_ERROR(fileLogger_, "Failed to open file: " << graphFilePath_ << ".\n");
-      //c/err << "Failed to open file: " << graphFilePath_ << ".\n";
       return false;
    }
 

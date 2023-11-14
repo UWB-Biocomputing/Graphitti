@@ -39,7 +39,6 @@ bool Serializer::deserializeSynapses()
    // Checks to see if serialization file exists
    if (!memory_in) {
       LOG4CPLUS_ERROR(fileLogger_, "The serialization file doesn't exist" << endl);
-      // c/err << "The serialization file doesn't exist" << endl;
       return false;
    }
 
@@ -59,9 +58,6 @@ bool Serializer::deserializeSynapses()
       LOG4CPLUS_ERROR(fileLogger_, e.what() << endl
            << "Failed to deserialize synapse weights, source vertices, and/or destination vertices."
            << endl);
-      /* c/err << e.what() << endl
-           << "Failed to deserialize synapse weights, source vertices, and/or destination vertices."
-           << endl; */
       return false;
    }
 
@@ -93,7 +89,6 @@ bool Serializer::deserializeSynapses()
       archive(dynamic_cast<ConnGrowth &>(connections));
    } catch (cereal::Exception e) {
       LOG4CPLUS_ERROR(fileLogger_, e.what() << endl << "Failed to deserialize radii." << endl);
-      // c/err << e.what() << endl << "Failed to deserialize radii." << endl;
       return false;
    }
 
@@ -113,7 +108,6 @@ void Serializer::serializeSynapses()
    // We can serialize to a variety of archive file formats. Below, comment out
    // all but the two lines that correspond to the desired format.
    ofstream memory_out(simulator.getSerializationFileName().c_str());
-   // c/out << "PLease find the serialized file in " << simulator.getSerializationFileName().c_str();
    LOG4CPLUS_TRACE(consoleLogger, ("PLease find the serialized file in " << simulator.getSerializationFileName().c_str()));
 
    // Options parameter are optional which sets

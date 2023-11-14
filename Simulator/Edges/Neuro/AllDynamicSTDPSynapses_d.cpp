@@ -341,51 +341,7 @@ void AllDynamicSTDPSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
          cudaMemcpy(UPrint, allSynapsesProps.U_, size * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
       HANDLE_ERROR(
          cudaMemcpy(FPrint, allSynapsesProps.F_, size * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-      /*
-      for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
-         if (WPrint[i] != 0.0) {
-            // c/out << "GPU W[" << i << "] = " << WPrint[i];
-            // c/out << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
-            // c/out << " GPU desNeuron: " << destNeuronIndexPrint[i];
-            // c/out << " GPU type: " << typePrint[i];
-            // c/out << " GPU psr: " << psrPrint[i];
-            // c/out << " GPU in_use:" << inUsePrint[i];
-
-            // c/out << " GPU decay: " << decayPrint[i];
-            // c/out << " GPU tau: " << tauPrint[i];
-            // c/out << " GPU total_delay: " << totalDelayPrint[i];
-
-            // c/out << " GPU total_delayPost: " << totalDelayPostPrint[i];
-            // c/out << " GPU tauspost_: " << tauspost_Print[i];
-            // c/out << " GPU tauspre_: " << tauspre_Print[i];
-            // c/out << " GPU taupos_: " << taupos_Print[i];
-            // c/out << " GPU tauneg_: " << tauneg_Print[i];
-            // c/out << " GPU STDPgap_: " << STDPgap_Print[i];
-            // c/out << " GPU Wex_: " << Wex_Print[i];
-            // c/out << " GPU Aneg_: " << Aneg_Print[i];
-            // c/out << " GPU Apos_: " << Apos_Print[i];
-            // c/out << " GPU mupos_: " << mupos_Print[i];
-            // c/out << " GPU muneg_: " << muneg_Print[i];
-            // c/out << " GPU useFroemkeDanSTDP_: " << useFroemkeDanSTDP_Print[i];
-
-            // c/out << " GPU lastSpike: " << lastSpikePrint[i];
-            // c/out << " GPU r: " << rPrint[i];
-            // c/out << " GPU u: " << uPrint[i];
-            // c/out << " GPU D: " << DPrint[i];
-            // c/out << " GPU U: " << UPrint[i];
-            // c/out << " GPU F: " << FPrint[i] << endl;
-         }
-      }
-
-      for (int i = 0; i < countVertices_; i++) {
-         // c/out << "GPU edge_counts:"
-              << "neuron[" << i << "]" << synapseCountsPrint[i] << endl;
-      }
-
-      // c/out << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;
-      // c/out << "GPU maxEdgesPerVertex:" << maxEdgesPerVertexPrint << endl;
-      // c/out << "GPU countVertices_:" << countNeuronsPrint << endl;
-      */
+      
       for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
          if (WPrint[i] != 0.0) {
             LOG4CPLUS_TRACE(consoleLogger_, ("GPU W[" << i << "] = " << WPrint[i]));

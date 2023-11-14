@@ -73,7 +73,6 @@ bool Core::parseCommandLine(string executableName, string cmdLineArguments)
        || (cl.addParam("version", 'v', ParamContainer::novalue,
                        "output current git commit ID and exit")
            != ParamContainer::errOk)) {
-      // c/err << "Internal error creating command line parser" << endl;
       LOG4CPLUS_FATAL(consoleLogger, ("Internal error creating command line parser" << endl));
       return false;
    }
@@ -86,7 +85,6 @@ bool Core::parseCommandLine(string executableName, string cmdLineArguments)
 
    if (cl["version"].compare("") != 0) {
 
-      // c/out << "Git commit ID: " << GIT_COMMIT_ID << endl;
       LOG4CPLUS_TRACE(consoleLogger, ("Git commit ID: " << GIT_COMMIT_ID << endl));
       exit(0);
    }
@@ -223,8 +221,5 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
    LOG4CPLUS_TRACE(consoleLogger, "time simulated: " << simulator.getEpochDuration() * simulator.getNumEpochs() << endl);
    LOG4CPLUS_TRACE(consoleLogger, "time elapsed: " << timeElapsed << endl);
    LOG4CPLUS_TRACE(consoleLogger, "ssps (simulation seconds / real time seconds): " << ssps << endl);
-   //c/out << "time simulated: " << simulator.getEpochDuration() * simulator.getNumEpochs() << endl;
-   //c/out << "time elapsed: " << timeElapsed << endl;
-   //c/out << "ssps (simulation seconds / real time seconds): " << ssps << endl;
    return 0;
 }

@@ -62,12 +62,10 @@ void loadMTGPU(const char *fname){
 	FILE *fd = fopen(fname, "rb");
 	if(!fd){
 		LOG4CPLUS_ERROR(fileLogger_, "initMTGPU(): failed to open " <<  fname << endl << "FAILED" << endl);
-		// c/err << "initMTGPU(): failed to open " <<  fname << endl << "FAILED" << endl;
 		exit(0);
 	}
 	if( !fread(h_MT, mt_rng_count*sizeof(mt_struct_stripped), 1, fd) ){
 		LOG4CPLUS_ERROR(fileLogger_, "initMTGPU(): failed to load " <<  fname << endl << "FAILED" << endl);
-		// c/err << "initMTGPU(): failed to load " <<  fname << endl << "FAILED" << endl;
 		exit(0);
 	}
 	fclose(fd);
@@ -102,7 +100,6 @@ void seedMTGPU(unsigned int seed){
 
 	if(cudaMemcpyToSymbol(ds_MT, MT, mt_rng_count*sizeof(mt_struct_stripped))!=cudaSuccess){
 		LOG4CPLUS_ERROR(fileLogger_, "seedMTGP failed" << endl);
-		// c/err << "seedMTGP failed" << endl;
 		exit(0);
 	}
 

@@ -341,9 +341,6 @@ void AllSpikingSynapses::printSynapsesProps() const
    AllNeuroEdges::printSynapsesProps();
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
-         // c/out<< "decay[" << i << "] = " << decay_[i];
-         // c/out<< " tau: " << tau_[i];
-         // c/out<< " total_delay: " << totalDelay_[i] << endl;
 
          LOG4CPLUS_TRACE(consoleLogger_, ("decay[" << i << "] = " << decay_[i]));
          LOG4CPLUS_TRACE(consoleLogger_, (" tau: " << tau_[i]));

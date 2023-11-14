@@ -539,17 +539,6 @@ void AllSTDPSynapses::printSynapsesProps() const
    AllSpikingSynapses::printSynapsesProps();
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
-         // c/out << "total_delayPost[" << i << "] = " << totalDelayPost_[i];
-         // c/out << " tauspost_: " << tauspost_[i];
-         // c/out << " tauspre_: " << tauspre_[i];
-         // c/out << " taupos_: " << taupos_[i];
-         // c/out << " tauneg_: " << tauneg_[i];
-         // c/out << " STDPgap_: " << STDPgap_[i];
-         // c/out << " Wex_: " << Wex_[i];
-         // c/out << " Aneg_: " << Aneg_[i];
-         // c/out << " Apos_: " << Apos_[i];
-         // c/out << " mupos_: " << mupos_[i];
-         // c/out << " muneg_: " << muneg_[i] << endl;
 
          LOG4CPLUS_TRACE(consoleLogger_, ("total_delayPost[" << i << "] = " << totalDelayPost_[i]));
          LOG4CPLUS_TRACE(consoleLogger_, (" tauspost_: " << tauspost_[i]));

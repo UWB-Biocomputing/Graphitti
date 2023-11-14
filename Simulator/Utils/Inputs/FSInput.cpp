@@ -33,12 +33,7 @@ ISInput *FSInput::CreateInstance()
            << Simulator::getInstance().getStimulusFileName() << ":"
            << "\n\t" << siDoc.ErrorDesc() << endl);
 
-      /* c/err << "Failed loading stimulus input file "
-           << Simulator::getInstance().getStimulusFileName() << ":"
-           << "\n\t" << siDoc.ErrorDesc() << endl; */
-
       LOG4CPLUS_ERROR(fileLogger_, " error: " << siDoc.ErrorRow() << ", " << siDoc.ErrorCol() << endl);
-      // c/err << " error: " << siDoc.ErrorRow() << ", " << siDoc.ErrorCol() << endl;
       return nullptr;
    }
 
@@ -48,8 +43,6 @@ ISInput *FSInput::CreateInstance()
       LOG4CPLUS_ERROR(fileLogger_, "Could not find <InputParms> in stimulus input file "
            << Simulator::getInstance().getStimulusFileName() << endl);
 
-      /* c/err << "Could not find <InputParms> in stimulus input file "
-           << Simulator::getInstance().getStimulusFileName() << endl; */
       return nullptr;
    }
 
@@ -59,12 +52,10 @@ ISInput *FSInput::CreateInstance()
    if ((temp = parms->FirstChildElement("IMethod")) != nullptr) {
       if (temp->QueryValueAttribute("name", &name) != TIXML_SUCCESS) {
          LOG4CPLUS_ERROR(fileLogger_, "error IMethod:name" << endl);
-         // c/err << "error IMethod:name" << endl;
          return nullptr;
       }
    } else {
       LOG4CPLUS_ERROR(fileLogger_, "missing IMethod" << endl);
-      // c/err << "missing IMethod" << endl;
       return nullptr;
    }
 
@@ -85,7 +76,6 @@ ISInput *FSInput::CreateInstance()
 #endif
    } else {
       LOG4CPLUS_ERROR(fileLogger_, "unsupported stimulus input method" << endl);
-      // c/err << "unsupported stimulus input method" << endl;
    }
 
    return pInput;
