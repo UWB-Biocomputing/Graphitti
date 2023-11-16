@@ -134,6 +134,30 @@ void All911Vertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
    }
 }
 
+// Accessor for the waiting queue of a vertex
+CircularBuffer<Call> &All911Vertices::getQueue(int vIdx)
+{
+   return vertexQueues_[vIdx];
+}
+
+// Accessor for the droppedCalls counter of a vertex
+int &All911Vertices::droppedCalls(int vIdx)
+{
+   return droppedCalls_[vIdx];
+}
+
+// Accessor for the receivedCalls counter of a vertex
+int &All911Vertices::receivedCalls(int vIdx)
+{
+   return receivedCalls_[vIdx];
+}
+
+// Accessor for the number of busy servers in a given vertex
+int All911Vertices::busyServers(int vIdx) const
+{
+   return busyServers_[vIdx];
+}
+
 #if !defined(USE_GPU)
 
 

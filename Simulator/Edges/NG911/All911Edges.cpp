@@ -72,16 +72,16 @@ void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap
          // The destination vertex should be the one pulling the information
          assert(dst == vertex);
 
-         CircularBuffer<Call> &dstQueue = all911Vertices.vertexQueues_[dst];
-         if (dstQueue.size() == (dstQueue.capacity() - all911Vertices.busyServers_[dst])) {
+         CircularBuffer<Call> &dstQueue = all911Vertices.getQueue(dst);
+         if (dstQueue.size() == (dstQueue.capacity() - all911Vertices.busyServers(dst))) {
             // Call is dropped because there is no space in the waiting queue
             if (!isRedial_[edgeIdx]) {
                // Only count the dropped call if it's not a redial
-               all911Vertices.droppedCalls_[dst]++;
+               all911Vertices.droppedCalls(dst)++;
                // Record that we received a call
-               all911Vertices.receivedCalls_[dst]++;
+               all911Vertices.receivedCalls(dst)++;
                LOG4CPLUS_DEBUG(edgeLogger_,
-                               "Call dropped: " << all911Vertices.droppedCalls_[dst] << ", time: "
+                               "Call dropped: " << all911Vertices.droppedCalls(dst) << ", time: "
                                                 << call_[edgeIdx].time << ", vertex: " << dst
                                                 << ", queue size: " << dstQueue.size());
             }
@@ -89,7 +89,7 @@ void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap
             // Transfer call to destination
             dstQueue.put(call_[edgeIdx]);
             // Record that we received a call
-            all911Vertices.receivedCalls_[dst]++;
+            all911Vertices.receivedCalls(dst)++;
             isAvailable_[edgeIdx] = true;
             isRedial_[edgeIdx] = false;
          }
