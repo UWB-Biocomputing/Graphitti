@@ -261,7 +261,7 @@ fFrame = Frame(window)
 fFrame.grid(row=0, column=0, pady=10, padx=10)
 
 # first file selecting row for .graphml file to load
-fLabel0 = Label(fFrame, text="Select .graphml File to Visualize: ")
+fLabel0 = Label(fFrame, text="Select .graphml file to load: ")
 fLabel0.grid(row=0, column=0)
 fEntry0 = Entry(fFrame, width=55)
 fEntry0.grid(row=0, column=1)
