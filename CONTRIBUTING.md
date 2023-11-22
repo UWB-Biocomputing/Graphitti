@@ -50,5 +50,3 @@ For more information on pull requests, you can read the following guide: [pull r
 ***Please document what you've done***, not only in your commit messages but also with useful comments in code and via changes to the github pages content in the docs directory.
 
 ***Please write unit tests.*** Every time you touch a file, you should review the existing unit tests and think of at least one new one to add.
-
-testing
