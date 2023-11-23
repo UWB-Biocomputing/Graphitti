@@ -33,6 +33,7 @@ def tabularize():
 
     # get the column headers
     data_types = []
+    data_types.append('id')
     for key in root.findall('.//{http://graphml.graphdrawing.org/xmlns}key'):
         data_types.append(key.get('id'))
 
@@ -40,16 +41,28 @@ def tabularize():
     window = Tk()
     window.geometry("1200x680")
 
-    tFrame = Frame(window)
-    tFrame.pack(fill="both")
+    # configure framing for edit frame and table frame
+    editFrame = Frame(window, width=300)
+    editFrame.pack(side="left", fill="y")
 
-    scroll = Scrollbar(tFrame)
-    scroll.pack(side="right", fill="y")
-    
-    treeview = Treeview(tFrame, show="headings", columns=data_types, yscrollcommand=scroll.set, height=60)
+    tFrame = Frame(window)
+    tFrame.pack(side="left", fill="both", expand=True)
+
+    # vertical scrollbar
+    y_scrollbar = Scrollbar(tFrame, orient="vertical")
+    y_scrollbar.pack(side="right", fill="y")
+
+    # horizontal scrollbar
+    x_scrollbar = Scrollbar(tFrame, orient="horizontal")
+    x_scrollbar.pack(side="bottom", fill="x")
+
+    # treeview
+    treeview = Treeview(tFrame, show="headings", columns=data_types, yscrollcommand=y_scrollbar.set, xscrollcommand=x_scrollbar.set, height=60)
     treeview.pack(fill="both")
-    
-    scroll.config(command=treeview.yview)
+
+    # scrollbar configs
+    y_scrollbar.config(command=treeview.yview)
+    x_scrollbar.config(command=treeview.xview)
 
     # set headers
     for col_name in data_types:
@@ -60,8 +73,43 @@ def tabularize():
     # insert nodes and set node values
     for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
         treeview.insert('', END, values=data_values)
+        # set the id value of the node
+        treeview.set(item=treeview.get_children()[-1], column='id', value=node.get('id'))
+        # set the data values of the node
         for data in node.findall('.//{http://graphml.graphdrawing.org/xmlns}data'):
             treeview.set(item=treeview.get_children()[-1], column=data.get('key'), value=data.text)
+
+    # create entries for each data_type other than the node's id
+    entries = []
+    for data_type in data_types:
+        if data_type != "id":
+            label = Label(editFrame, text=f"{data_type}")
+            label.pack()
+            entry = Entry(editFrame, width=40)
+            entry.pack(padx=5)
+            entries.append(entry)
+    
+    # save entries to the treeview
+    def save_entries():
+        if treeview.selection()[0] is not None:
+            for entry in entries:
+                # index + 1 to avoid the id column
+                treeview.set(item=treeview.selection()[0], column=entries.index(entry)+1, value=entry.get())
+
+    # submit button for saving entries
+    submit = Button(editFrame, text="Submit", command=save_entries)
+    submit.pack(pady=5)
+
+    # autofill entries with data from selection
+    def on_treeview_select(event):
+        selected_item = treeview.selection()[0]
+        item_data = treeview.item(selected_item, 'values')
+        for entry in entries:
+            entry.delete(0, END)
+            # index + 1 to avoid the id column
+            entry.insert(0, item_data[entries.index(entry)+1])
+
+    treeview.bind('<<TreeviewSelect>>', on_treeview_select)
 
     window.mainloop()
 
