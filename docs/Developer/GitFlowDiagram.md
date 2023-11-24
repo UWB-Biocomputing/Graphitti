@@ -32,31 +32,9 @@ Our development branch is considered to be the main branch, where features are b
 ### Merging to Master Branch
 The master and development branches exist parallel to one another. We consider the development branch to be the main branch where the source code always reflects a state with the latest delivered development changes. Once the development branch is ready to merge back to the master, we create a release branch (not supported in our document). Our version can either cherry-pick the developments we want into the master or revert the changes and merge to the master and re-revert the changes (not supported in the document). 
 
-<<<<<<< HEAD
-```mermaid
-%%{init: { 'logLevel': 'debug', 'theme': 'base', 'themeVariables': {
-    'git0': '#2E9AFE',
-    'git1': '#FFBF00'
-},'gitGraph': {'rotateCommitLabel': true, 'showBranches': true, 'showCommitLabel':true}} }%%
-   gitGraph TB:
-      commit id: "Version 1.0"
-      commit id: "Version 1.1"
-      branch Development
-      checkout main
-      checkout Development
-      commit id: "initial commit NG911"
-      commit id: "fixed broken links"
-      checkout main
-      commit id: "Version 1.2"
-      checkout Development
-      commit id: "init commit"
-      checkout main
-      cherry-pick id: "fixed broken links"
-```
+[![](https://mermaid.ink/img/pako:eNqNVNFumzAU_RXLU8QLjQIhAfyWrEkaKe2kpevDxh4cuCFWACNj2tGIf58xZSNr1xTEg8-99_ici69POOQRYIIHgxPLmCTohIyExxt4hMQgyIhgV8aGiQx5gBQaZEcL-AM8UMHoLoFCRU5BhtRjxEyOmsRP9sKfLReG-Re3NL5czpejUR-3NT5zmrePj_-DO308yGoVauCVoPmhUWIILqmEzzxNmdzQnfYiRQlKd3HgT3NBs_CgVffQs_Q9TQowjZSyrM2-o63_W1pIEEZdo3owCLJuW3Q_J1pgqFkQiwgK8AOIgvEMWUMrwDq802Toumkwz1PIZFt1gPDIS_k60KdrfhGjSQferXzrH94lUFkKmL2u_bHebr8trhzL_okaL-jLHq2LooQXgrPkFEQMSACNqgAjWeVA0M16dbNR3z2SNCYB_gqPDJ666g_p14RIcsWcgDpHb2qfv0_YSut89vVGaN-5vySqC5xv2Up9yy3q7KJL1Gfy5h-U0Z6pnoguLER1lbPw-H7_LjQfm01_1EmO1KDrKQ2wnt4AN6QRFceGqFZ5tJR8W2UhJnoucJlHao6uGY0FTfHLUGCImOTitr059AVi4pxm3zlPu0K1xOSEf2EynQxdb2pPHNf3PGti-yauMBk7Q8udup5l-QqaeHZt4mddPxr6jj9yXcd2x55rj91J_Rvb4n0O?type=png)](https://mermaid.live/edit#pako:eNqNVNFumzAU_RXLU8QLjQIhAfyWrEkaKe2kpevDxh4cuCFWACNj2tGIf58xZSNr1xTEg8-99_ici69POOQRYIIHgxPLmCTohIyExxt4hMQgyIhgV8aGiQx5gBQaZEcL-AM8UMHoLoFCRU5BhtRjxEyOmsRP9sKfLReG-Re3NL5czpejUR-3NT5zmrePj_-DO308yGoVauCVoPmhUWIILqmEzzxNmdzQnfYiRQlKd3HgT3NBs_CgVffQs_Q9TQowjZSyrM2-o63_W1pIEEZdo3owCLJuW3Q_J1pgqFkQiwgK8AOIgvEMWUMrwDq802Toumkwz1PIZFt1gPDIS_k60KdrfhGjSQferXzrH94lUFkKmL2u_bHebr8trhzL_okaL-jLHq2LooQXgrPkFEQMSACNqgAjWeVA0M16dbNR3z2SNCYB_gqPDJ666g_p14RIcsWcgDpHb2qfv0_YSut89vVGaN-5vySqC5xv2Up9yy3q7KJL1Gfy5h-U0Z6pnoguLER1lbPw-H7_LjQfm01_1EmO1KDrKQ2wnt4AN6QRFceGqFZ5tJR8W2UhJnoucJlHao6uGY0FTfHLUGCImOTitr059AVi4pxm3zlPu0K1xOSEf2EynQxdb2pPHNf3PGti-yauMBk7Q8udup5l-QqaeHZt4mddPxr6jj9yXcd2x55rj91J_Rvb4n0O)
+
 ---------
 [<< Go back to the Graphitti home page](../index.md)
 
 [<< Go back to the CONTRIBUTING.md](../../CONTRIBUTING.md)
-=======
-[![](https://mermaid.ink/img/pako:eNqNVNFumzAU_RXLU8QLjQIhAfyWrEkaKe2kpevDxh4cuCFWACNj2tGIf58xZSNr1xTEg8-99_ici69POOQRYIIHgxPLmCTohIyExxt4hMQgyIhgV8aGiQx5gBQaZEcL-AM8UMHoLoFCRU5BhtRjxEyOmsRP9sKfLReG-Re3NL5czpejUR-3NT5zmrePj_-DO308yGoVauCVoPmhUWIILqmEzzxNmdzQnfYiRQlKd3HgT3NBs_CgVffQs_Q9TQowjZSyrM2-o63_W1pIEEZdo3owCLJuW3Q_J1pgqFkQiwgK8AOIgvEMWUMrwDq802Toumkwz1PIZFt1gPDIS_k60KdrfhGjSQferXzrH94lUFkKmL2u_bHebr8trhzL_okaL-jLHq2LooQXgrPkFEQMSACNqgAjWeVA0M16dbNR3z2SNCYB_gqPDJ666g_p14RIcsWcgDpHb2qfv0_YSut89vVGaN-5vySqC5xv2Up9yy3q7KJL1Gfy5h-U0Z6pnoguLER1lbPw-H7_LjQfm01_1EmO1KDrKQ2wnt4AN6QRFceGqFZ5tJR8W2UhJnoucJlHao6uGY0FTfHLUGCImOTitr059AVi4pxm3zlPu0K1xOSEf2EynQxdb2pPHNf3PGti-yauMBk7Q8udup5l-QqaeHZt4mddPxr6jj9yXcd2x55rj91J_Rvb4n0O?type=png)](https://mermaid.live/edit#pako:eNqNVNFumzAU_RXLU8QLjQIhAfyWrEkaKe2kpevDxh4cuCFWACNj2tGIf58xZSNr1xTEg8-99_ici69POOQRYIIHgxPLmCTohIyExxt4hMQgyIhgV8aGiQx5gBQaZEcL-AM8UMHoLoFCRU5BhtRjxEyOmsRP9sKfLReG-Re3NL5czpejUR-3NT5zmrePj_-DO308yGoVauCVoPmhUWIILqmEzzxNmdzQnfYiRQlKd3HgT3NBs_CgVffQs_Q9TQowjZSyrM2-o63_W1pIEEZdo3owCLJuW3Q_J1pgqFkQiwgK8AOIgvEMWUMrwDq802Toumkwz1PIZFt1gPDIS_k60KdrfhGjSQferXzrH94lUFkKmL2u_bHebr8trhzL_okaL-jLHq2LooQXgrPkFEQMSACNqgAjWeVA0M16dbNR3z2SNCYB_gqPDJ666g_p14RIcsWcgDpHb2qfv0_YSut89vVGaN-5vySqC5xv2Up9yy3q7KJL1Gfy5h-U0Z6pnoguLER1lbPw-H7_LjQfm01_1EmO1KDrKQ2wnt4AN6QRFceGqFZ5tJR8W2UhJnoucJlHao6uGY0FTfHLUGCImOTitr059AVi4pxm3zlPu0K1xOSEf2EynQxdb2pPHNf3PGti-yauMBk7Q8udup5l-QqaeHZt4mddPxr6jj9yXcd2x55rj91J_Rvb4n0O)
->>>>>>> 34b9d9c59f50adbae5192b907d419e02d9b4f510
