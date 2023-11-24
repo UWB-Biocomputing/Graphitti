@@ -7,78 +7,28 @@ GitFlow is a branching model for Git, created by [Vincent Driessen.](https://nvi
 ## Key Benefits
 
 ### Parallel Development
-One of the great things about GitFlow is that it makes parallel devleopment very easy, by isolating new development from finished work. New development (such as features and non-emergency bug fixes) is done in feature branches, and is only merged back into development branch after going through extensive unit/regressional testing + review through the pull request.
+One of the great things about GitFlow is that it makes parallel devleopment very easy, by isolating new development from finished work. New development (such as features and non-emergency bug fixes) is done in feature branches and is only merged back into the development branch after going through extensive unit/regressional testing + review through the pull request.
 
-Another great thing about GitFlow is that if you are asked to switched from one task to another, all you need to do is commit your changes and create a new branch for your new task. When that task is done, just checkout your original feature branch and you can continue where you left off.
+Another great thing about GitFlow is that if you are asked to switch from one task to another, all you need to do is commit your changes and create a new branch for your new task. When that task is done, just checkout your original feature branch and you can continue where you left off.
 
 ### Collaboration
 Feature branches also make it easier for developers to collaborate on the same feature, because each feature branch is essentially a sandbox where you isolate + test the changes that are only necessary to get a new feature working, making it crystal clear to follow what each collaborator is working on. 
 
 ### Release Staging Area
-As new development is completed, it gets merged back into the development brach, which is a staging area for all completed features that haven't yet been released. So when the next release is branched off of development, it will automatically contain all of the new tasks that have been finished.
+As new development is completed, it gets merged back into the development branch, which is a staging area for all completed features that haven't yet been released. So when the next release is branched off of development, it will automatically contain all of the new tasks that have been finished.
 
 ## How it Works
-New development (new features, non-emergency bug fixes) are built in feature branches. These feature branches are branched off of the development branch, and finished features are merged back into the development branch when they're ready to be reviewed & merged.
+***ALL OF OUR DIAGRAMS READ FROM TOP TO BOTTOM***
 
-### Main Branch
-```mermaid
-%%{init: { 'logLevel': 'debug', 'theme': 'base', 'themeVariables': {
-    'git0': '#2E9AFE',
-    'git1': '#FFBF00'
-},'gitGraph': {'rotateCommitLabel': true, 'showBranches': true, 'showCommitLabel':true}} }%%
-   gitGraph TB:
-      commit id: "Version 1.0"
-      commit id: "Version 1.1"
-      branch Development
-      checkout main
-      checkout Development
-      commit id: "initial commit NG911"
-      commit id: "fixed broken links"
-      checkout main
-      commit id: "Version 1.2"
-      checkout Development
-      commit id: "a"
-```
-### Supporting branches
+### High Overview of Our Process
+[![](https://mermaid.ink/img/pako:eNqVksFunDAQhl_FmmrlC1oBC2vwbTcJuSS9tOoh4jKAw6Is9sqYtini3WtM0rBNFCVwsT_P_8_YMwOUqhLAYbUaGtkYTgZCj6q-ET_FkXJCK1H0NfUINQfRiokU2Il_4AfqBouj6OzJkEtiP1o3xp8Cv4RX6S67ot4LDxzPsn3m-0seOr6Lpn_JN0uey9Gb4LXG02HKR7UyaMSFatvG3GDhKja6F7a67qB-7TXK8uBqW9Cz8Hs8dtNBi42cw7_ifM1b7IzQdBzJuFrlMpfPmcn3PXcVls7ILQsnJZfTq6lTK-SMbfLyQfWGzGbn7FXwi92ndE-5M4Gm12L3yusN23dSn7vtP2zRCl2L_2Rv3GIOW4jBA8vs81d2CN0E5eAmKwdulxXqhxxs520c9kZ9e5QlcNdN6E-V7f5lg7XGFp5aCaJqjNK381S74fbghPJOqfZZaLfAB_gNfBuvWbIN44ilSRLEYerBI_BNtA7YliVBkFoUJ-HowR-n99dplPqMRSHbJCzcsHj8Cwu2CzQ?type=png)](https://mermaid.live/edit#pako:eNqVksFunDAQhl_FmmrlC1oBC2vwbTcJuSS9tOoh4jKAw6Is9sqYtini3WtM0rBNFCVwsT_P_8_YMwOUqhLAYbUaGtkYTgZCj6q-ET_FkXJCK1H0NfUINQfRiokU2Il_4AfqBouj6OzJkEtiP1o3xp8Cv4RX6S67ot4LDxzPsn3m-0seOr6Lpn_JN0uey9Gb4LXG02HKR7UyaMSFatvG3GDhKja6F7a67qB-7TXK8uBqW9Cz8Hs8dtNBi42cw7_ifM1b7IzQdBzJuFrlMpfPmcn3PXcVls7ILQsnJZfTq6lTK-SMbfLyQfWGzGbn7FXwi92ndE-5M4Gm12L3yusN23dSn7vtP2zRCl2L_2Rv3GIOW4jBA8vs81d2CN0E5eAmKwdulxXqhxxs520c9kZ9e5QlcNdN6E-V7f5lg7XGFp5aCaJqjNK381S74fbghPJOqfZZaLfAB_gNfBuvWbIN44ilSRLEYerBI_BNtA7YliVBkFoUJ-HowR-n99dplPqMRSHbJCzcsHj8Cwu2CzQ)
 
-```mermaid
-%%{init: { 'logLevel': 'debug', 'theme': 'base', 'themeVariables': {
-    'git0': '#FFBF00',
-    'git1': '#A4A4A4',
-    'git2': '#A4A4A4'
-},'gitGraph': {'rotateCommitLabel': true, 'showBranches': true, 'showCommitLabel':true}} }%%
-   gitGraph TB:
-      commit id: "initial commit NG911"
-      commit id: "adding comments to function"
-      branch FeatureA
-      commit id: "[ISSUE-412] Name Of Issue" tag:"pull-request"
-      commit id: "commit1"
-      commit id: "commit2:" tag: "GitHub Actions"
-      commit type: HIGHLIGHT id:"Review "
-      checkout main
-      merge FeatureA
-```
+### Feature branches
+Our development branch is considered to be the main branch, where features are branched off of development and merged back into development.
+
+[![](https://mermaid.ink/img/pako:eNqtVE2PmzAQ_SsjVxEXNgqEhIRb0m0-pHS32mx7aOnBwCS4C5gak9004r_XhtBN1I2aQ7E48Dzz3vMM4wMJeYTEI53OgWVMenAAI-HbFe4wMTwwIgzKrWGCIWNMUSMBLfAP8IUKRoMEC7Vz8DNQj7FlsqcD381m01mvZ5ivuFXjE0evU9w-xf2sMjU4FzSPNa8huKQS3_M0ZXJFg9qZFCUqF0XMn6eCZmFcezhBz8KPeEpZ1kTf0eY0t_qgPE8xk0ZVQdXp1K5aeXiceo1NgLAmBBZ54BNdLEaTFrybjy3LJ21oUGvADKksBU7eZPi2XK8_f7hxLPs7aDdwv4FlUZToE5B06_kkL5PkRuDPEgv5yn1GEsY02yLEVES6kWrBjiYq4UL8hr2A3Oe8OIooaM7kogxgEkrGs0t5KQolI5BGe525z9GDxXK-WKn38Wj3AXcMn08IYgyfeCnhpMbX1DIX_AeGEuxL9Zxeo9A4bjtweowINm1frvPa7v0l_0Y7Lad_qZ2fHv5dXPgv1T07u7JLTK2hfv5ITXo9pj6px9cnWj-i4kkTVyqOlpKv91lImpEhZR6p0btldCtoSrwNTQqFYsQkFx-bq6O-QUyS0-wr52mbqD6JdyAvxBsOuu5oaA8cdzwaWQN7bJI98fpO13KH7siyxgoajOzKJL_q_F537Ix7ruvYbn_k2n13UP0GV-Nz_Q?type=png)](https://mermaid.live/edit#pako:eNqtVE2PmzAQ_SsjVxEXNgqEhIRb0m0-pHS32mx7aOnBwCS4C5gak9004r_XhtBN1I2aQ7E48Dzz3vMM4wMJeYTEI53OgWVMenAAI-HbFe4wMTwwIgzKrWGCIWNMUSMBLfAP8IUKRoMEC7Vz8DNQj7FlsqcD381m01mvZ5ivuFXjE0evU9w-xf2sMjU4FzSPNa8huKQS3_M0ZXJFg9qZFCUqF0XMn6eCZmFcezhBz8KPeEpZ1kTf0eY0t_qgPE8xk0ZVQdXp1K5aeXiceo1NgLAmBBZ54BNdLEaTFrybjy3LJ21oUGvADKksBU7eZPi2XK8_f7hxLPs7aDdwv4FlUZToE5B06_kkL5PkRuDPEgv5yn1GEsY02yLEVES6kWrBjiYq4UL8hr2A3Oe8OIooaM7kogxgEkrGs0t5KQolI5BGe525z9GDxXK-WKn38Wj3AXcMn08IYgyfeCnhpMbX1DIX_AeGEuxL9Zxeo9A4bjtweowINm1frvPa7v0l_0Y7Lad_qZ2fHv5dXPgv1T07u7JLTK2hfv5ITXo9pj6px9cnWj-i4kkTVyqOlpKv91lImpEhZR6p0btldCtoSrwNTQqFYsQkFx-bq6O-QUyS0-wr52mbqD6JdyAvxBsOuu5oaA8cdzwaWQN7bJI98fpO13KH7siyxgoajOzKJL_q_F537Ix7ruvYbn_k2n13UP0GV-Nz_Q)
 
 ### Merging to Master Branch
-Merging to the Master branch is kind of tricky for our workflow. Our master and development branch are parallel, meaning, that our development is technically the master branch. The feature branches that are created and destroyed branch off of the Development branch and once the changes are made it is not quite pushed to the Master branch.
+The master and development branches exist parallel to one another. We consider the development branch to be the main branch where the source code always reflects a state with the latest delivered development changes. Once the development branch is ready to merge back to the master, we create a release branch (not supported in our document). Our version can either cherry-pick the developments we want into the master or revert the changes and merge to the master and re-revert the changes (not supported in the document). 
 
-```mermaid
-%%{init: { 'logLevel': 'debug', 'theme': 'base', 'themeVariables': {
-    'git0': '#2E9AFE',
-    'git1': '#FFBF00'
-},'gitGraph': {'rotateCommitLabel': true, 'showBranches': true, 'showCommitLabel':true}} }%%
-   gitGraph TB:
-      commit id: "Version 1.0"
-      commit id: "Version 1.1"
-      branch Development
-      checkout main
-      checkout Development
-      commit id: "initial commit NG911"
-      commit id: "fixed broken links"
-      checkout main
-      commit id: "Version 1.2"
-      checkout Development
-      commit id: "init commit"
-      checkout main
-      cherry-pick id: "fixed broken links"
-```
+[![](https://mermaid.ink/img/pako:eNqNVF1vmzAU_SuWp4gXGgEh4eMtWZM0UtpJS9eHjT04cEOsAEbGtKMR_33GlI2sWVIQDz7n3uNzL74-4pBFgH08GBxpRoWPjkhLWLyGZ0g0H2kRbMtY05Em9pBCg2xJAX-AJ8Ip2SZQSOYYZEg-WkyF0QR-subedDHX9L-4qfDFYrYwjD5uKXxqN28fH_0Ht_t4kNWSauAlJ_m-caJxJoiAzyxNqViTrapF8BKk72LPXmacZOFeue6hJ-E7khSgaymhWRv9QNr670khgGt1jerBIMi6bdHjzFcGQ6WCaOSjAD8BLyjLkDk0AnyJNt_ordoL3Tb9Z3kKmWiz9hAeWCneE3255g9SknTgw9Iz_9FdABElh-n73B-rzebb_MY2rZ-oKRV92aFVUZRwzncKPAbEgURVgJGocvDR3Wp5t5bfIxIk9gP8FZ4pvHTZH_KvBJFgUjkBeczOep9dFmytdXX2_UZo11V_zVRHnG7ZWj1XLerKRdekT-zNPmijPXI9Ex3NeXWT0_BwuX9Xmo_1pj_yoEfyHlBDHGA13AFuRCPCD41QLeNIKdimykLsq7HBZR7JMbulJOYkxW8zgyGigvH79mJR94uOc5J9ZyztEuUS-0f8C_uT8dBxJ9bYdjzXNceWp-MK-yN7aDoTxzVNT0Jj16p1_KryjaFne4bj2JYzch1r5Izr33Jmhpk?type=png)](https://mermaid.live/edit#pako:eNqNVF1vmzAU_SuWp4gXGgEh4eMtWZM0UtpJS9eHjT04cEOsAEbGtKMR_33GlI2sWVIQDz7n3uNzL74-4pBFgH08GBxpRoWPjkhLWLyGZ0g0H2kRbMtY05Em9pBCg2xJAX-AJ8Ip2SZQSOYYZEg-WkyF0QR-subedDHX9L-4qfDFYrYwjD5uKXxqN28fH_0Ht_t4kNWSauAlJ_m-caJxJoiAzyxNqViTrapF8BKk72LPXmacZOFeue6hJ-E7khSgaymhWRv9QNr670khgGt1jerBIMi6bdHjzFcGQ6WCaOSjAD8BLyjLkDk0AnyJNt_ordoL3Tb9Z3kKmWiz9hAeWCneE3255g9SknTgw9Iz_9FdABElh-n73B-rzebb_MY2rZ-oKRV92aFVUZRwzncKPAbEgURVgJGocvDR3Wp5t5bfIxIk9gP8FZ4pvHTZH_KvBJFgUjkBeczOep9dFmytdXX2_UZo11V_zVRHnG7ZWj1XLerKRdekT-zNPmijPXI9Ex3NeXWT0_BwuX9Xmo_1pj_yoEfyHlBDHGA13AFuRCPCD41QLeNIKdimykLsq7HBZR7JMbulJOYkxW8zgyGigvH79mJR94uOc5J9ZyztEuUS-0f8C_uT8dBxJ9bYdjzXNceWp-MK-yN7aDoTxzVNT0Jj16p1_KryjaFne4bj2JYzch1r5Izr33Jmhpk)
