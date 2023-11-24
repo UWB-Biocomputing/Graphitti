@@ -18,17 +18,19 @@
    
    2.1 [Student Quick Start](Developer/StudentSetup.md)
    
-   2.2 [Code Formatting Etiquettes](Developer/codingConventions.md)
+   2.2 [GitFlow Documentation](Developer/GitFlowDiagram.md)
 
-   2.3 [C++ design and Coding standards](Developer/cppStyleGuide.md)
+   2.3 [Code Formatting Etiquettes](Developer/codingConventions.md)
 
-   2.4 [Graphitti Repository Tools and Workflows](Developer/index.md) 
+   2.4 [C++ design and Coding standards](Developer/cppStyleGuide.md)
 
-   2.5 [Graphitti System Documentation](Developer/index.md)
+   2.5 [Graphitti Repository Tools and Workflows](Developer/index.md) 
+
+   2.6 [Graphitti System Documentation](Developer/index.md)
   
-   2.6 [Unit Tests](Developer/UnitTests.md)
+   2.7 [Unit Tests](Developer/UnitTests.md)
 
-3. [Testing](Testing/index.md)
+4. [Testing](Testing/index.md)
 
    3.1 Array Performance Testing
 
@@ -36,7 +38,7 @@
 
    3.3 Test Config Files
 
-4. Notes
+5. Notes
 
    4.1 [General Notes](RebuildNotes/GeneralNotes.md)
 
@@ -50,7 +52,7 @@
 
    4.6 [Recorder Notes](RebuildNotes/RecordersNotes.md)
 
-5. [Glossary](Glossary.md)
+6. [Glossary](Glossary.md)
 
    5.1 Graph Vocabulary
 

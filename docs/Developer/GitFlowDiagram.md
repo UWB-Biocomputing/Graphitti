@@ -82,3 +82,7 @@ Merging to the Master branch is kind of tricky for our workflow. Our master and 
       checkout main
       cherry-pick id: "fixed broken links"
 ```
+---------
+[<< Go back to the Graphitti home page](../index.md)
+
+[<< Go back to the CONTRIBUTING.md](../../CONTRIBUTING.md)
