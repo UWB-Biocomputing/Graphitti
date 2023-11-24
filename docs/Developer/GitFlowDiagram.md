@@ -20,7 +20,7 @@ As new development is completed, it gets merged back into the development brach,
 ## How it Works
 New development (new features, non-emergency bug fixes) are built in feature branches. These feature branches are branched off of the development branch, and finished features are merged back into the development branch when they're ready to be reviewed & merged.
 
-### Main Branche
+### Main Branch
 ```mermaid
 %%{init: { 'logLevel': 'debug', 'theme': 'base', 'themeVariables': {
     'git0': '#2E9AFE',
