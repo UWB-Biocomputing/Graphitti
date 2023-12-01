@@ -30,6 +30,7 @@ def tabularize():
     # load xml data
     tree = ET.parse(dVars.graphml_path)
     root = tree.getroot()
+    ET.register_namespace('',"http://graphml.graphdrawing.org/xmlns")
 
     # get the column headers
     data_types = []
@@ -57,7 +58,12 @@ def tabularize():
     x_scrollbar.pack(side="bottom", fill="x")
 
     # treeview
-    treeview = Treeview(tFrame, show="headings", columns=data_types, yscrollcommand=y_scrollbar.set, xscrollcommand=x_scrollbar.set, height=60)
+    treeview = Treeview(tFrame, 
+                        show="headings", 
+                        columns=data_types, 
+                        yscrollcommand=y_scrollbar.set, 
+                        xscrollcommand=x_scrollbar.set, 
+                        height=60)
     treeview.pack(fill="both")
 
     # scrollbar configs
@@ -68,7 +74,7 @@ def tabularize():
     for col_name in data_types:
         treeview.heading(col_name, text=col_name)
     data_values = []
-    for type in data_types:
+    for data_type in data_types:
         data_values.append('N/A')
     # insert nodes and set node values
     for node in root.findall('.//{http://graphml.graphdrawing.org/xmlns}node'):
@@ -80,21 +86,34 @@ def tabularize():
             treeview.set(item=treeview.get_children()[-1], column=data.get('key'), value=data.text)
 
     # create entries for each data_type other than the node's id
-    entries = []
+    entries = {}
     for data_type in data_types:
         if data_type != "id":
             label = Label(editFrame, text=f"{data_type}")
             label.pack()
             entry = Entry(editFrame, width=40)
             entry.pack(padx=5)
-            entries.append(entry)
+            entries[data_type] = entry
     
     # save entries to the treeview
     def save_entries():
         if treeview.selection()[0] is not None:
-            for entry in entries:
-                # index + 1 to avoid the id column
-                treeview.set(item=treeview.selection()[0], column=entries.index(entry)+1, value=entry.get())
+            selected_item = treeview.selection()[0]
+            item_data = treeview.item(selected_item, 'values')
+            target_id = item_data[0]
+            target_node = root.find(f'.//{{http://graphml.graphdrawing.org/xmlns}}node[@id="{target_id}"]')
+            for data_type in data_types:
+                data = target_node.find(f'.//{{http://graphml.graphdrawing.org/xmlns}}data[@key="{data_type}"]')
+                if data is not None:
+                    data.text = entries.get(data_type).get()
+                    treeview.set(item=treeview.selection()[0], 
+                                 column=data_types.index(data_type), 
+                                 value=entries.get(data_type).get())
+            tree.write(dVars.graphml_path, 
+                       xml_declaration=True, 
+                       encoding='utf-8', 
+                       method='xml')
+                
 
     # submit button for saving entries
     submit = Button(editFrame, text="Submit", command=save_entries)
@@ -105,9 +124,8 @@ def tabularize():
         selected_item = treeview.selection()[0]
         item_data = treeview.item(selected_item, 'values')
         for entry in entries:
-            entry.delete(0, END)
-            # index + 1 to avoid the id column
-            entry.insert(0, item_data[entries.index(entry)+1])
+            entries.get(entry).delete(0, END)
+            entries.get(entry).insert(0, item_data[data_types.index(entry)])
 
     treeview.bind('<<TreeviewSelect>>', on_treeview_select)
 
