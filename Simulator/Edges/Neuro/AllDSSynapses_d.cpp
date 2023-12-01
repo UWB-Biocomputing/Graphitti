@@ -232,10 +232,12 @@ void AllDSSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
 
       edgeType *typePrint = new edgeType[size];
       BGFLOAT *psrPrint = new BGFLOAT[size];
-      bool *inUsePrint = new bool[size];
+      // The representation of inUse has been updated from bool to unsigned char
+      // to store 1 (true) or 0 (false) for the support of serialization operations. See ISSUE-459
+      unsigned char *inUsePrint = new unsigned char[size];
 
       for (BGSIZE i = 0; i < size; i++) {
-         inUsePrint[i] = false;
+         inUsePrint[i] = 0;
       }
 
       for (int i = 0; i < countVertices_; i++) {
@@ -277,7 +279,7 @@ void AllDSSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
                               cudaMemcpyDeviceToHost));
       HANDLE_ERROR(cudaMemcpy(psrPrint, allSynapsesProps.psr_, size * sizeof(BGFLOAT),
                               cudaMemcpyDeviceToHost));
-      HANDLE_ERROR(cudaMemcpy(inUsePrint, allSynapsesProps.inUse_, size * sizeof(bool),
+      HANDLE_ERROR(cudaMemcpy(inUsePrint, allSynapsesProps.inUse_, size * sizeof(unsigned char),
                               cudaMemcpyDeviceToHost));
 
 
@@ -310,7 +312,7 @@ void AllDSSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
             cout << " GPU desNeuron: " << destNeuronIndexPrint[i];
             cout << " GPU type: " << typePrint[i];
             cout << " GPU psr: " << psrPrint[i];
-            cout << " GPU in_use:" << inUsePrint[i];
+            cout << " GPU in_use:" << (inUsePrint[i] == 1 ? "true" : "false");
 
             cout << " GPU decay: " << decayPrint[i];
             cout << " GPU tau: " << tauPrint[i];

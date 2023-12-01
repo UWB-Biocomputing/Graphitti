@@ -74,7 +74,8 @@ void AllSpikingSynapses::allocDeviceStruct(AllSpikingSynapsesDeviceProperties &a
    HANDLE_ERROR(cudaMalloc((void **)&allEdgesDevice.W_, maxTotalSynapses * sizeof(BGFLOAT)));
    HANDLE_ERROR(cudaMalloc((void **)&allEdgesDevice.type_, maxTotalSynapses * sizeof(edgeType)));
    HANDLE_ERROR(cudaMalloc((void **)&allEdgesDevice.psr_, maxTotalSynapses * sizeof(BGFLOAT)));
-   HANDLE_ERROR(cudaMalloc((void **)&allEdgesDevice.inUse_, maxTotalSynapses * sizeof(bool)));
+   HANDLE_ERROR(
+      cudaMalloc((void **)&allEdgesDevice.inUse_, maxTotalSynapses * sizeof(unsigned char)));
    HANDLE_ERROR(cudaMalloc((void **)&allEdgesDevice.edgeCounts_, numVertices * sizeof(BGSIZE)));
    HANDLE_ERROR(cudaMalloc((void **)&allEdgesDevice.decay_, maxTotalSynapses * sizeof(BGFLOAT)));
    HANDLE_ERROR(cudaMalloc((void **)&allEdgesDevice.tau_, maxTotalSynapses * sizeof(BGFLOAT)));
@@ -179,8 +180,8 @@ void AllSpikingSynapses::copyHostToDevice(void *allEdgesDevice,
                            maxTotalSynapses * sizeof(edgeType), cudaMemcpyHostToDevice));
    HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.psr_, psr_.data(),
                            maxTotalSynapses * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.inUse_, inUse_.get(),
-                           maxTotalSynapses * sizeof(bool), cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.inUse_, inUse_.data(),
+                           maxTotalSynapses * sizeof(unsigned char), cudaMemcpyHostToDevice));
    HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.edgeCounts_, edgeCounts_.data(),
                            numVertices * sizeof(BGSIZE), cudaMemcpyHostToDevice));
    HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.decay_, decay_.data(),
@@ -239,8 +240,8 @@ void AllSpikingSynapses::copyDeviceToHost(AllSpikingSynapsesDeviceProperties &al
                            cudaMemcpyDeviceToHost));
    HANDLE_ERROR(cudaMemcpy(psr_.data(), allEdgesDevice.psr_, maxTotalSynapses * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(inUse_.get(), allEdgesDevice.inUse_, maxTotalSynapses * sizeof(bool),
-                           cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(inUse_.data(), allEdgesDevice.inUse_,
+                           maxTotalSynapses * sizeof(unsigned char), cudaMemcpyDeviceToHost));
    HANDLE_ERROR(cudaMemcpy(decay_.data(), allEdgesDevice.decay_, maxTotalSynapses * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
    HANDLE_ERROR(cudaMemcpy(tau_.data(), allEdgesDevice.tau_, maxTotalSynapses * sizeof(BGFLOAT),
@@ -285,8 +286,8 @@ void AllSpikingSynapses::copyDeviceEdgeSumIdxToHost(void *allEdgesDevice)
                            sizeof(AllSpikingSynapsesDeviceProperties), cudaMemcpyDeviceToHost));
    HANDLE_ERROR(cudaMemcpy(sourceVertexIndex_.data(), allEdgesDeviceProps.sourceVertexIndex_,
                            maxTotalSynapses * sizeof(int), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(inUse_.get(), allEdgesDeviceProps.inUse_,
-                           maxTotalSynapses * sizeof(bool), cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(inUse_.data(), allEdgesDeviceProps.inUse_,
+                           maxTotalSynapses * sizeof(unsigned char), cudaMemcpyDeviceToHost));
 
    // Set countVertices_ to 0 to avoid illegal memory deallocation
    // at AllSpikingSynapses deconstructor.
@@ -352,10 +353,12 @@ void AllSpikingSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
       BGFLOAT *WPrint = new BGFLOAT[size];
       edgeType *typePrint = new edgeType[size];
       BGFLOAT *psrPrint = new BGFLOAT[size];
-      bool *inUsePrint = new bool[size];
+      // The representation of inUsePrint has been updated from bool to unsigned char
+      // to store 1 (true) or 0 (false) for the support of serialization operations. See ISSUE-459
+      unsigned char *inUsePrint = new unsigned char[size];
 
       for (BGSIZE i = 0; i < size; i++) {
-         inUsePrint[i] = false;
+         inUsePrint[i] = 0;
       }
 
       for (int i = 0; i < countVertices_; i++) {
@@ -387,7 +390,7 @@ void AllSpikingSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
                               cudaMemcpyDeviceToHost));
       HANDLE_ERROR(cudaMemcpy(psrPrint, allSynapsesProps.psr_, size * sizeof(BGFLOAT),
                               cudaMemcpyDeviceToHost));
-      HANDLE_ERROR(cudaMemcpy(inUsePrint, allSynapsesProps.inUse_, size * sizeof(bool),
+      HANDLE_ERROR(cudaMemcpy(inUsePrint, allSynapsesProps.inUse_, size * sizeof(unsigned char),
                               cudaMemcpyDeviceToHost));
       HANDLE_ERROR(cudaMemcpy(decayPrint, allSynapsesProps.decay_, size * sizeof(BGFLOAT),
                               cudaMemcpyDeviceToHost));
@@ -404,7 +407,7 @@ void AllSpikingSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
             cout << " GPU desNeuron: " << destNeuronIndexPrint[i];
             cout << " GPU type: " << typePrint[i];
             cout << " GPU psr: " << psrPrint[i];
-            cout << " GPU in_use:" << inUsePrint[i];
+            cout << " GPU in_use:" << (inUsePrint[i] == 1 ? "true" : "false");
             cout << " GPU decay: " << decayPrint[i];
             cout << " GPU tau: " << tauPrint[i];
             cout << " GPU total_delay: " << totalDelayPrint[i] << endl;
