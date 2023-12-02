@@ -237,7 +237,7 @@ void AllDSSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
       unsigned char *inUsePrint = new unsigned char[size];
 
       for (BGSIZE i = 0; i < size; i++) {
-         inUsePrint[i] = 0;
+         inUsePrint[i] = false;
       }
 
       for (int i = 0; i < countVertices_; i++) {

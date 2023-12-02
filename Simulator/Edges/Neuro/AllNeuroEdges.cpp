@@ -56,9 +56,7 @@ void AllNeuroEdges::readEdge(istream &input, BGSIZE iEdg)
    input.ignore();
    input >> synapse_type;
    input.ignore();
-   bool inUseValue = false;
-   input >> inUseValue;
-   inUse_[iEdg] = (inUseValue ? 1 : 0);
+   input >> inUse_[iEdg];
    input.ignore();
 
    type_[iEdg] = edgeOrdinalToType(synapse_type);
@@ -111,7 +109,7 @@ void AllNeuroEdges::printSynapsesProps() const
          cout << " desNeuron: " << destVertexIndex_[i];
          cout << " type: " << type_[i];
          cout << " psr: " << psr_[i];
-         cout << " in_use:" << ((inUse_[i] == 1) ? "true" : "false");
+         cout << " in_use:" << (inUse_[i] == 1 ? "true" : "false");
       }
    }
 

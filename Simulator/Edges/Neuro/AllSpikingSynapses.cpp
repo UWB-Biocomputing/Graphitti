@@ -171,7 +171,7 @@ void AllSpikingSynapses::createEdge(BGSIZE iEdg, int srcVertex, int destVertex, 
 {
    BGFLOAT delay;
 
-   inUse_[iEdg] = 1;   // True: 1, False: 0
+   inUse_[iEdg] = true;   // True: 1, False: 0
    destVertexIndex_[iEdg] = destVertex;
    sourceVertexIndex_[iEdg] = srcVertex;
    W_[iEdg] = edgSign(type) * 10.0e-9;
