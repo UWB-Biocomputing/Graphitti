@@ -10,7 +10,7 @@
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">100</maxFiringRate>
-      <!-- Seattle PD PSAP has 194 edges in total -->
+      <!-- max edges in a vertex for test-small-911.graphml is 20 -->
       <maxEdgesPerVertex name="maxEdgesPerVertex">25</maxEdgesPerVertex>
     </SimConfig>
     <RNGConfig name="RNGConfig">
@@ -31,8 +31,6 @@
 
     <ConnectionsParams class="Connections911" name="ConnectionsParams">
       <graphmlFile name="graphmlFile">../configfiles/graphs/test-small-911.graphml</graphmlFile>
-          <!-- Max ConnsPerVertex = 87 RC + 1 PR -->
-      <connsPerVertex name="connsPerVertex">25</connsPerVertex>
       <psapsToErase name="psapsToErase">0</psapsToErase>
       <respsToErase name="respsToErase">0</respsToErase>
     </ConnectionsParams>
