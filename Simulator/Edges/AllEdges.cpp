@@ -77,12 +77,10 @@ void AllEdges::setupEdges(int numVertices, int maxEdges)
    if (maxTotalEdges != 0) {
       W_.assign(maxTotalEdges, 0);
       type_.assign(maxTotalEdges, ETYPE_UNDEF);
+      inUse_.assign(maxTotalEdges, false);
       edgeCounts_.assign(numVertices, 0);
       destVertexIndex_.assign(maxTotalEdges, 0);
       sourceVertexIndex_.assign(maxTotalEdges, 0);
-
-      inUse_ = make_unique<bool[]>(maxTotalEdges);
-      fill_n(inUse_.get(), maxTotalEdges, false);
    }
 }
 
@@ -119,7 +117,7 @@ void AllEdges::writeEdge(ostream &output, BGSIZE iEdg) const
    output << destVertexIndex_[iEdg] << ends;
    output << W_[iEdg] << ends;
    output << type_[iEdg] << ends;
-   output << inUse_[iEdg] << ends;
+   output << (inUse_[iEdg] == 1 ? "true" : "false") << ends;
 }
 
 ///  Returns an appropriate edgeType object for the given integer.
@@ -241,7 +239,7 @@ void AllEdges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap)
 void AllEdges::eraseEdge(int iVert, BGSIZE iEdg)
 {
    edgeCounts_[iVert]--;
-   inUse_[iEdg] = false;
+   inUse_[iEdg] = false;   // True:1, False:0
    W_[iEdg] = 0;
 }
 
