@@ -254,7 +254,7 @@ void ConnGrowth::updateSynapsesWeights()
          BGSIZE synapse_adjusted = 0;
          BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * destVertex;
          for (BGSIZE synapseIndex = 0; synapse_adjusted < synapseCounts; synapseIndex++, iEdg++) {
-            if (synapses.inUse_[iEdg] == true) {
+            if (synapses.inUse_[iEdg]) {
                // if there is a synapse between a and b
                if (synapses.sourceVertexIndex_[iEdg] == srcVertex) {
                   connected = true;

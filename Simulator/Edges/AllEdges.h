@@ -206,8 +206,10 @@ public:
    ///   Synapse type
    vector<edgeType> type_;
 
-   ///  The boolean value indicating the entry in the array is in use.
-   unique_ptr<bool[]> inUse_;
+   ///  The value indicating the entry in the array is in use.
+   // The representation of inUse has been updated from bool to unsigned char
+   // to store 1 (true) or 0 (false) for the support of serialization operations. See ISSUE-459
+   vector<unsigned char> inUse_;
 
    ///  The number of (incoming) edges for each vertex.
    ///  Note: Likely under a different name in GpuSim_struct, see edge_count. -Aaron

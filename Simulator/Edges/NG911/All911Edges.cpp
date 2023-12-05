@@ -34,7 +34,7 @@ void All911Edges::setupEdges()
 void All911Edges::createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
                              edgeType type)
 {
-   inUse_[iEdg] = true;
+   inUse_[iEdg] = true;   // True : 1 , False : 0
    destVertexIndex_[iEdg] = destVertex;
    sourceVertexIndex_[iEdg] = srcVertex;
    W_[iEdg] = 10;   // Figure this out
