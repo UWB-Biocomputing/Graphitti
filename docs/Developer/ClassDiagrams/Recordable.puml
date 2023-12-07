@@ -6,12 +6,15 @@ abstract class RecordableBase {
 	+{abstract} getNumEventsInEpoch() const : int
    +{abstract} startNewEpoch() : void
    +{abstract} getElement(int index) const : std::variant<uint64_t, double, char>
+	+{abstract} getDataType() : string
 }
 class Recordable<T>{
 	-eventTimeSteps_ : vector<T>
-	+{abstract} getNumEventsInEpoch() const : int
-   +{abstract} startNewEpoch() : void
-   +{abstract} getElement(int index) const : std::variant<uint64_t, double, char>
+	- basicDataType_ : string
+	+getNumEventsInEpoch() const : int
+   +startNewEpoch() : void
+   +getElement(int index) const : std::variant<uint64_t, double, char>
+	+getDataType() : string
 }
 
 class EventBuffer<uint64_t> {

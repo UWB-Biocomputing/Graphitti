@@ -94,12 +94,13 @@ protected:
 
 #endif   // defined(USE_GPU)
 
+   // TODO change the "public" after regineering Recorder
 public:
    ///  The booleans which track whether the neuron has fired.
    vector<bool> hasFired_;
 
    /// Holds at least one epoch's worth of event times for every vertex
-   vector<EventBuffer>  vertexEvents_;
+   vector<EventBuffer> vertexEvents_;
 
 protected:
    ///  True if back propagaion is allowed.

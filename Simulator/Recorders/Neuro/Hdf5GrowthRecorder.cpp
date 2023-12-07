@@ -196,11 +196,11 @@ void Hdf5GrowthRecorder::printParameters()
                                    << "\tRecorder type: Hdf5GrowthRecorder" << endl);
 }
 
-void Hdf5GrowthRecorder::registerVariable(std::string varName, RecordableBase &recordVar)
+void Hdf5GrowthRecorder::registerVariable(std::string varName, RecordableBase* recordVar)
 {
 }
 
-void Hdf5GrowthRecorder::registerVariable(string varName, vector<RecordableBase> &recordVar)
+void Hdf5GrowthRecorder::registerVariable(string varName, vector<RecordableBase*> recordVars)
 {
 }
 

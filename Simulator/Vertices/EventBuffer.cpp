@@ -21,6 +21,7 @@
 // }
 EventBuffer::EventBuffer(int maxEvents)
 {
+   basicDataType_ = "uint64_t";
    eventTimeSteps_.assign(maxEvents + 1, numeric_limits<unsigned long>::max());
    clear();
 }
@@ -47,7 +48,11 @@ uint64_t EventBuffer::operator[](int i) const
    return eventTimeSteps_[(epochStart_ + i) % eventTimeSteps_.size()];
 }
 
-std::variant<uint64_t, double, string> EventBuffer::getElement(int index) const {
+// @brief Get the value of the recordable variable at the specified index.
+// @param index The index of the recorded value to retrieve.
+// @return A variant representing the recorded value (uint64_t, double, or string).
+std::variant<uint64_t, double, string> EventBuffer::getElement(int index) const
+{
    return eventTimeSteps_[(epochStart_ + index) % eventTimeSteps_.size()];
    // if (index >= 0 && index < eventTimeSteps_.size()) {
    //    // Check if the index is within bounds and return the value at that index.
@@ -58,6 +63,11 @@ std::variant<uint64_t, double, string> EventBuffer::getElement(int index) const 
    //    // Here, we'll throw an exception.
    //    throw std::out_of_range("Index out of bounds");
    // }
+}
+
+std::string EventBuffer::getDataType() const
+{
+   return basicDataType_;
 }
 
 int EventBuffer::getNumEventsInEpoch() const

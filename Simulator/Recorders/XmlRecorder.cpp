@@ -3,7 +3,7 @@
  *
  * @ingroup Simulator/Recorders
  *
- * @brief An implementation for recording spikes history on xml file
+ * @brief An implementation for recording variable information on xml file
  */
 
 #include "XmlRecorder.h"
@@ -76,19 +76,17 @@ void XmlRecorder::term()
 /// @param[in] vertices will be removed eventually
 void XmlRecorder::compileHistories(AllVertices &vertices)
 {
+   //capture data information in each epoch
    for (int rowIndex = 0; rowIndex < variableTable_.size(); rowIndex++) {
       if (variableTable_[rowIndex].variableLocation_->getNumEventsInEpoch() > 0) {
          for (int columnIndex = 0;
               columnIndex < variableTable_[rowIndex].variableLocation_->getNumEventsInEpoch();
               columnIndex++) {
-            // cout << (*(variableTable_[i].variableLocation_))[j] << " ";
             variableTable_[rowIndex].variableHistory_.push_back(
-               (*(variableTable_[rowIndex].variableLocation_)).getElement(columnIndex)
-                  );
+               (*(variableTable_[rowIndex].variableLocation_)).getElement(columnIndex));
          }
       }
-         // cout << endl;
-         variableTable_[rowIndex].variableLocation_->startNewEpoch();
+      variableTable_[rowIndex].variableLocation_->startNewEpoch();
    }
 
 
@@ -119,52 +117,40 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
    for (int rowIndex = 0; rowIndex < variableTable_.size(); rowIndex++) {
       if (variableTable_[rowIndex].variableHistory_.size() > 0) {
          resultOut_ << toXML(variableTable_[rowIndex].variableName_,
-            variableTable_[rowIndex].variableHistory_)
+                             variableTable_[rowIndex].variableHistory_,
+                             variableTable_[rowIndex].dataType_)
                     << endl;
       }
    }
 }
 
-string XmlRecorder::toXML(string name, vector<multipleTypes> singleBuffer_) const
+string XmlRecorder::toXML(string name, vector<multipleTypes> singleBuffer_, string basicType) const
 {
-    stringstream os;
+   stringstream os;
 
-    os << "<Matrix ";
-    if (!name.empty())
-        os << "name=\"" << name << "\" ";
-    os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << singleBuffer_.size()
-       << "\" multiplier=\"1.0\">" << endl;
-    
-    os << "   ";
-   //  for (const auto& value : singleBuffer_) {
-   //      std::visit([&os](const auto& v) {
-   //          os << v << " ";
-   //      }, value);
-   //  }
+   //  output file header
+   os << "<Matrix ";
+   if (!name.empty())
+      os << "name=\"" << name << "\" ";
+   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << singleBuffer_.size()
+      << "\" multiplier=\"1.0\">" << endl;
+   os << "   ";
 
-   // for (const auto& element : singleBuffer_) {
-   //  std::visit(XmlRecorder::VariantVisitor{}, os, element);
-   // }
-
-   for (const multipleTypes& element : singleBuffer_) {
-      if(holds_alternative<uint64_t>(element)){
-         os << get<uint64_t>(element);
-      }else if(holds_alternative<double>(element)){
-         os << get<double>(element);
-      }else if(holds_alternative<string>(element)){
-         os << get<string>(element);
+   for (const multipleTypes &element : singleBuffer_) {
+      if (basicType == "uint64_t") {
+         os << get<uint64_t>(element) << " ";
+      } else if (basicType == "double") {
+         os << get<double>(element) << " ";
+      } else if (basicType == "string") {
+         os << get<string>(element) << " ";
       }
- 
+      // Add more conditions if there are additional supported data types
    }
-   // constexpr size_t idx = singleBuffer_[0].
-   //    for (const multipleTypes& element : singleBuffer_) {
 
-   //  }
+   os << endl;
+   os << "</Matrix>";
 
-    os << endl;
-    os << "</Matrix>";
-
-    return os.str();
+   return os.str();
 }
 
 void XmlRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const vector<bool> &starterMap)
@@ -184,17 +170,16 @@ void XmlRecorder::printParameters()
 
 /// register a single EventBuffer.
 /// Obtain the updating value while the simulator runs by storing the address of registered variable
-/// Store a single neuron with the neuron number and its corresponding events
-void XmlRecorder::registerVariable(string name, RecordableBase &recordVar)
+/// Neuron : Store a single neuron with the neuron number and its corresponding events
+void XmlRecorder::registerVariable(string name, RecordableBase *recordVar)
 {
    // add a new variable into the table
    variableTable_.push_back(singleVariableInfo(name, recordVar));
 }
 
-/// register a vector of EventBuffers.
-/// Obtain the updating value while the simulator runs by storing the address of registered variable
-/// Store all neuron with the neuron number and its corresponding events
-void XmlRecorder::registerVariable(string varName, vector<RecordableBase> &recordVars)
+/// register a vector of RecordableBase objects to the variable lists
+/// Neuron : Store all neuron with the neuron number and its corresponding events
+void XmlRecorder::registerVariable(string varName, vector<RecordableBase *> recordVars)
 {
    for (int i = 0; i < recordVars.size(); i++) {
       string variableID = varName + to_string(i);

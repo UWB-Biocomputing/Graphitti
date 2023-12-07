@@ -26,7 +26,6 @@
 // #include "RecordableBase.h"
 class AllSpikingNeurons;
 class AllIFNeurons;
-// class EventBuffer : public RecordableBase {
 class EventBuffer : public Recordable<uint64_t> {
    friend class AllIFNeurons;
    friend class AllSpikingNeurons;
@@ -62,8 +61,14 @@ public:
    ///
    /// @param i element number
    uint64_t operator[](int i) const;
+
+   /// @brief Get the value of the recordable variable at the specified index.
+   /// @param index The index of the recorded value to retrieve.
+   /// @return A variant representing the recorded value (uint64_t, double, or string).
    std::variant<uint64_t, double, string> getElement(int index) const override;
 
+   /// @brief Get A string representing the data type of the recordable variable
+   string getDataType() const;
    /// Get number of events in the current/preceding epoch
    ///
    /// Getting the number of events in the current epoch (or, in between epochs, the number of events
@@ -108,7 +113,6 @@ public:
 private:
    /// Holds the event time steps
    // vector<uint64_t> eventTimeSteps_;
-   // using Recordable<uint64_t>::eventTimeSteps_;
 
    /// Index of the first event in the queue
    int queueFront_;

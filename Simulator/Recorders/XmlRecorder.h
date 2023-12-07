@@ -3,9 +3,13 @@
  *
  * @ingroup Simulator/Recorders
  *
- * @brief An implementation for recording spikes history on xml file
+ * @brief An implementation for recording variable history on xml file
  *
- * The XmlRecorder provides a mechanism for recording neuron's layout, spikes history,
+ * The XmlRecorder provides a mechanism for recording simulation variable information.
+ *     -# the recorded variable name.
+ *     -# the recorded variable basic data type.
+ *     -# the recorded variable address.
+ * Neuron network simulation information: neuron's layout, spikes history,
  * and compile history information on xml file:
  *     -# the neuron ID.
  *     -# time steps of events produced by each neuron.
@@ -18,6 +22,8 @@
 #include "Recorder.h"
 #include <fstream>
 #include <vector>
+
+// a list of basic data types for recorded variables
 typedef std::variant<uint64_t, double, string> multipleTypes;
 
 class XmlRecorder : public Recorder {
@@ -33,12 +39,14 @@ public:
    /// Initialize data in the newly loadeded xml file
    virtual void init() override;
 
+   // ToDo : remove it ?
    /// Init radii and rates history matrices with default values
    virtual void initDefaultValues() override;
 
    /// Init radii and rates history matrices with current radii and rates
    virtual void initValues() override;
 
+   // ToDo : remove it ?
    /// Get the current radii and rates vlaues
    virtual void getValues() override;
 
@@ -57,90 +65,91 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
 
-   /// register a single EventBuffer variable
-   void registerVariable(string varName, RecordableBase &recordVar) override;
+   /// register a single RecordableBase variable
+   void registerVariable(string varName, RecordableBase *recordVar) override;
 
-   /// register a vector of EventBuffers.
-   void registerVariable(string varName, vector<RecordableBase> &recordVars) override;
+   /// register a vector of RecordableBase objects.
+   void registerVariable(string varName, vector<RecordableBase *> recordVars) override;
 
-   // ///@{
-   // /** These methods are intended only for unit tests */
-   // // constructor only for unit test
-   // XmlRecorder(std::string fileName)
-   // {
-   //    resultFileName_ = fileName;
-   // }
+   ///@{
+   /** These methods are intended only for unit tests */
+   // constructor only for unit test
+   XmlRecorder(std::string fileName)
+   {
+      resultFileName_ = fileName;
+   }
 
-   // // Accessor method for neuronName_ (only included during unit tests)
-   // // @param numIndex   The index number in the variable list.
-   // std::string getVariableName(int numIndex) const
-   // {
-   //    return variableTable_[numIndex].variableName_;
-   // }
+   // Accessor method for variable name (only included during unit tests)
+   // @param numIndex   The index number in the variable list.
+   std::string getVariableName(int numIndex) const
+   {
+      return variableTable_[numIndex].variableName_;
+   }
 
-   // // Accessor method for a single variable address in the variableTable_
-   // // @param numIndex   The index number in the variable list.
-   // // (only included during unit tests)
-   // EventBuffer &getSingleVariable(int numIndex) const
-   // {
-   //    return *(variableTable_[numIndex].variableLocation_);
-   // }
+   // Accessor method for variable data type (only included during unit tests)
+   // @param numIndex   The index number in the variable list.
+   std::string getDataType(int numIndex) const
+   {
+      return variableTable_[numIndex].dataType_;
+   }
 
-   // // Accessor method for variablesHistory_ (only included during unit tests)
-   // const vector<vector<uint64_t>> &getHistory() const
-   // {
-   //    return variablesHistory_;
-   // }
-   // ///@}
+   // Accessor method for a single variable address in the variableTable_
+   // @param numIndex   The index number in the variable list.
+   // (only included during unit tests)
+   RecordableBase &getSingleVariable(int numIndex) const
+   {
+      return *(variableTable_[numIndex].variableLocation_);
+   }
+
+   // Accessor method for variablesHistory_ (only included during unit tests)
+   vector<multipleTypes> &getHistory(int numIndex)
+   {
+      return (variableTable_[numIndex].variableHistory_);
+   }
+
+   // get an output stream from toXml method
+   string getToXML(string name, vector<multipleTypes> singleVariableBuffer_, string basicType)
+   {
+      string outputXML;
+      outputXML = toXML(name, singleVariableBuffer_, basicType);
+      return outputXML;
+   }
+   ///@}
 
 protected:
    // create a struct contains a variable information
    struct singleVariableInfo {
-      // records the name of each variable
+      // the name of each variable
       string variableName_;
-      string datatype;
 
-      // This pointer stores the address of the registered variable
-      // As the simulator runs, the values will be updated
-      // It can records all events of a single neuron in each epoch
+      // the basic data type
+      string dataType_;
+
+      // a shared_ptr to a RecordableBase object
+      // As the simulator runs, the values in the RecordableBase object will be updated
       shared_ptr<RecordableBase> variableLocation_;
-      
-      // history of accumulated value for a single variable
+
+      // the history of accumulated values for a registered RecordableBase object variable
       vector<multipleTypes> variableHistory_;
-      //constructor
-      singleVariableInfo(string name, RecordableBase &location)
+
+      // Constructor accepting a pointer to RecordableBase
+      singleVariableInfo(string name, RecordableBase *location) :
+         variableName_(name), variableLocation_(location)
       {
-         variableName_ = name;
-         variableLocation_ = std::shared_ptr<RecordableBase>(&location, [](RecordableBase *) {
-         });
+         dataType_ = location->getDataType();
       }
    };
 
-// struct VariantVisitor {
-
-//     void outputVariant()(const uint64_t value, stringstream &os) const {
-//         os << value << " ";
-//     }
-
-//     void outputVariant()(const string value, stringstream &os) const {
-//         os << value <<  " ";
-//     }
-
-//     void outputVariant()(const double value, stringstream &os) const {
-//         os << value <<  " ";
-//     }
-// };
-
-   // A list of variables
-   // the variableTable_ stores all the variables information that need to be recorded
+   // A list of registered variables
+   // this table stores all the variables information that need to be recorded
    vector<singleVariableInfo> variableTable_;
 
    // a file stream for xml output
    ofstream resultOut_;
 
    // string toXML(string name,  vector<multipleTypesuint64_t>const;
-   string toXML(string name, vector<multipleTypes> singleVariableBuffer_) const;
+   string toXML(string name, vector<multipleTypes> singleVariableBuffer_, string basicType) const;
 
-   /// this method will be deleted
+   /// ToDo: this method will be deleted
    void getStarterNeuronMatrix(VectorMatrix &matrix, const vector<bool> &starterMap);
 };
