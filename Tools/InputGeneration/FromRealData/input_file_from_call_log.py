@@ -87,6 +87,26 @@ def main():
     avg_patience = 49.36
     sorted['patience'] = np.random.exponential(scale=avg_patience, size=sorted.shape[0]).astype(np.int64)
 
+    # Add on_site time as exponentially distributed.
+    # The following studies provide insights into the average time that Emergency Personal
+    # spend on-scene. In summary:
+    #   - The average on-scene reported by EMS in Mississippi was 14.67 [1].
+    #   - The overall average on-scene time in 5 regions of Western Cape was 27.55 minutes [3].
+    #   - Participants in the study expressed that emergency care providers should not
+    #     spend more than 20 minutes on the scene[2].
+    #
+    # 1) David, G., & Brachet, T. (2009). Retention, learning by doing, and performance in emergency medical services.
+    # Health Services Research, 44(3), 902–925. https://doi.org/10.1111/j.1475-6773.2009.00953.x
+    # 2) Vincent-Lambert, C., & Mottershaw, T. (2018). Views of emergency care providers about factors that extend
+    # on-scene time intervals. African Journal of Emergency Medicine, https://doi.org/10.1016/j.afjem.2017.08.003
+    # 3) Vanderschuren, M., & McKune, D. (2015). Emergency care facility access in rural areas within the golden
+    # hour?: Western Cape case study. International Journal of Health Geographics, 14(1),
+    # 5. https://doi.org/10.1186/1476-072X-14-5
+    #
+    # After examining these papers I have decided to use 20 minutes as the average on-scene time.
+    avg_on_site_time = 20 * 60
+    sorted['on_site_time'] = np.random.exponential(scale=avg_on_site_time, size=sorted.shape[0]).astype(np.int64)
+
     # this is the root element
     inputs = et.Element('simulator_inputs')
 

@@ -65,7 +65,8 @@ def add_types(events, type_ratios):
     return np.column_stack((events, type_list.astype('object')))
 
 
-def secprocess(sp_sigma, duration_mean, duration_min, patience_mean, prototypes, prim_evts):
+def secprocess(sp_sigma, duration_mean, duration_min, patience_mean, onsite_mean, prototypes,
+               prim_evts):
     # Secondary process for clustering. Selects a prototype
     # from the dictionary of prototypes, which is used as the magnitude
     # an spread of the primary event. This determines the number of 
@@ -181,8 +182,10 @@ def secprocess(sp_sigma, duration_mean, duration_min, patience_mean, prototypes,
     # avoid calls with 0 duration
     sec_evts_duration = sec_evts_duration + duration_min
 
-    # Add exponentially distributer patience time
+    # Add exponentially distributed patience time
     sec_evts_patience = np.random.exponential(scale=patience_mean, size=len(sec_evts_t))
+    # Add exponentially distributed on_site_time
+    sec_evts_onsite_time = np.random.exponential(scale=onsite_mean, size=len(sec_evts_t))
 
     # Reshape numpy arrays so we can concatenate them column wise
     sec_evts_t = sec_evts_t.reshape(-1, 1)
@@ -191,16 +194,19 @@ def secprocess(sp_sigma, duration_mean, duration_min, patience_mean, prototypes,
     sec_evts_cid = sec_evts_cid.reshape(-1, 1)
     sec_evts_duration = sec_evts_duration.reshape(-1, 1)
     sec_evts_patience = sec_evts_patience.reshape(-1, 1)
+    sec_evts_onsite_time = sec_evts_onsite_time.reshape(-1, 1)
 
     sec_evts = np.concatenate((np.round(sec_evts_t).astype(np.int64),
                                sec_evts_duration.astype(np.int64),
                                sec_evts_x.astype(np.float64),
                                sec_evts_y.astype(np.float64),
                                sec_evts_cid.astype(object),
-                               sec_evts_patience.astype(np.int64)),
+                               sec_evts_patience.astype(np.int64),
+                               sec_evts_onsite_time.astype(np.int64)),
                                axis=1)
 
-    return pd.DataFrame(sec_evts, columns=['time', 'duration', 'x', 'y', 'type', 'patience'])
+    return pd.DataFrame(sec_evts, columns=['time', 'duration', 'x', 'y', 'type', 'patience',
+                                           'on_site_time'])
  
 
 def add_vertex_events(node, vertex_id, vertex_name, data):
@@ -306,8 +312,27 @@ if __name__ == '__main__':
     #   Abandonment rate = 0.0942/4.65 = 0.020258/second
     #   Avg. Patience = 1/0.020258 = 49.36 Seconds
     patience_mean = 49.36
-    sec_events = secprocess(sec_proc_sigma, duration_mean, duration_min,
-                            patience_mean, prototypes, incidents_with_types)
+    
+    # Add on_site time as exponentially distributed.
+    # The following studies provide insights into the average time that Emergency Personal
+    # spend on-scene. In summary:
+    #   - The average on-scene reported by EMS in Mississippi was 14.67 [1].
+    #   - The overall average on-scene time in 5 regions of Western Cape was 27.55 minutes [3].
+    #   - Participants in this study expressed that emergency care providers should not
+    #     spend more than 20 minutes on the scene[2].
+    #
+    # 1) David, G., & Brachet, T. (2009). Retention, learning by doing, and performance in emergency medical services.
+    # Health Services Research, 44(3), 902–925. https://doi.org/10.1111/j.1475-6773.2009.00953.x
+    # 2) Vincent-Lambert, C., & Mottershaw, T. (2018). Views of emergency care providers about factors that extend
+    # on-scene time intervals. African Journal of Emergency Medicine, https://doi.org/10.1016/j.afjem.2017.08.003
+    # 3) Vanderschuren, M., & McKune, D. (2015). Emergency care facility access in rural areas within the golden
+    # hour?: Western Cape case study. International Journal of Health Geographics, 14(1),
+    # 5. https://doi.org/10.1186/1476-072X-14-5
+    #
+    # After examining these papers I have decided to use 20 minutes as the average on-scene time.
+    avg_on_site_time = 20 * 60
+    sec_events = secprocess(sec_proc_sigma, duration_mean, duration_min, patience_mean,
+                            avg_on_site_time, prototypes, incidents_with_types)
     
     end_t = time.time()
     print('Elapsed time:', round(end_t - start_t, 4), 'seconds')

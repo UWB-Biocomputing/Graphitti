@@ -136,3 +136,10 @@ edgeType Layout911::edgType(int srcVertex, int destVertex)
    else
       return ETYPE_UNDEF;
 }
+
+
+// Calculates the distance between the given vertex and the (x, y) coordinates of a point
+double Layout911::getDistance(int vertexId, double x, double y)
+{
+   return sqrt(pow(x - xloc_[vertexId], 2) + (pow(y - yloc_[vertexId], 2)));
+}

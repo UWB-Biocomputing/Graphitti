@@ -73,7 +73,7 @@ void AllNeuroEdges::writeEdge(ostream &output, BGSIZE iEdg) const
    output << W_[iEdg] << ends;
    output << psr_[iEdg] << ends;
    output << type_[iEdg] << ends;
-   output << inUse_[iEdg] << ends;
+   output << (inUse_[iEdg] == 1 ? "true" : "false") << ends;
 }
 
 ///  Get the sign of the edgeType.
@@ -109,7 +109,7 @@ void AllNeuroEdges::printSynapsesProps() const
          cout << " desNeuron: " << destVertexIndex_[i];
          cout << " type: " << type_[i];
          cout << " psr: " << psr_[i];
-         cout << " in_use:" << inUse_[i];
+         cout << " in_use:" << (inUse_[i] == 1 ? "true" : "false");
       }
    }
 

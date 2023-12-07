@@ -100,7 +100,7 @@ CUDA_CALLABLE void createSpikingSynapse(AllSpikingSynapsesDeviceProperties *allE
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
    BGSIZE iEdg = maxEdges * neuronIndex + synapseOffset;
 
-   allEdgesDevice->inUse_[iEdg] = true;
+   allEdgesDevice->inUse_[iEdg] = true;   // True: 1, False: 0
    allEdgesDevice->destVertexIndex_[iEdg] = destIndex;
    allEdgesDevice->sourceVertexIndex_[iEdg] = sourceIndex;
    allEdgesDevice->W_[iEdg] = edgSign(type) * 10.0e-9;
@@ -162,7 +162,7 @@ CUDA_CALLABLE void createDSSynapse(AllDSSynapsesDeviceProperties *allEdgesDevice
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
    BGSIZE iEdg = maxEdges * neuronIndex + synapseOffset;
 
-   allEdgesDevice->inUse_[iEdg] = true;
+   allEdgesDevice->inUse_[iEdg] = true;   // True: 1, False: 0
    allEdgesDevice->destVertexIndex_[iEdg] = destIndex;
    allEdgesDevice->sourceVertexIndex_[iEdg] = sourceIndex;
    allEdgesDevice->W_[iEdg] = edgSign(type) * 10.0e-9;
@@ -247,7 +247,7 @@ CUDA_CALLABLE void createSTDPSynapse(AllSTDPSynapsesDeviceProperties *allEdgesDe
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
    BGSIZE iEdg = maxEdges * neuronIndex + synapseOffset;
 
-   allEdgesDevice->inUse_[iEdg] = true;
+   allEdgesDevice->inUse_[iEdg] = true;   // True: 1, False: 0
    allEdgesDevice->destVertexIndex_[iEdg] = destIndex;
    allEdgesDevice->sourceVertexIndex_[iEdg] = sourceIndex;
    allEdgesDevice->W_[iEdg] = edgSign(type) * 10.0e-9;
@@ -330,7 +330,7 @@ CUDA_CALLABLE void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperti
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
    BGSIZE iEdg = maxEdges * neuronIndex + synapseOffset;
 
-   allEdgesDevice->inUse_[iEdg] = true;
+   allEdgesDevice->inUse_[iEdg] = true;   // True: 1, False: 0
    allEdgesDevice->destVertexIndex_[iEdg] = destIndex;
    allEdgesDevice->sourceVertexIndex_[iEdg] = sourceIndex;
    allEdgesDevice->W_[iEdg] = edgSign(type) * 10.0e-9;
@@ -488,7 +488,7 @@ CUDA_CALLABLE void eraseSpikingSynapse(AllSpikingSynapsesDeviceProperties *allEd
 {
    BGSIZE iSync = maxEdges * neuronIndex + synapseOffset;
    allEdgesDevice->edgeCounts_[neuronIndex]--;
-   allEdgesDevice->inUse_[iSync] = false;
+   allEdgesDevice->inUse_[iSync] = false;   // True: 1, False: 0
    allEdgesDevice->W_[iSync] = 0;
 }
 
@@ -562,7 +562,7 @@ __global__ void updateSynapsesWeightsDevice(int numVertices, BGFLOAT deltaT, BGF
       for (BGSIZE synapseIndex = 0; (existingSynapsesChecked < existing_synapses) && !connected;
            synapseIndex++) {
          BGSIZE iEdg = maxEdges * destVertex + synapseIndex;
-         if (allEdgesDevice->inUse_[iEdg] == true) {
+         if (allEdgesDevice->inUse_[iEdg]) {
             // if there is a synapse between a and b
             if (allEdgesDevice->sourceVertexIndex_[iEdg] == srcVertex) {
                connected = true;
