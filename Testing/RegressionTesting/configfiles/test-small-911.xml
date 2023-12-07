@@ -44,7 +44,7 @@
     
     <RecorderParams class="Xml911Recorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
-        <resultFileName name="resultFileName">Output/Results/test-small-911-out.xml</resultFileName>
+        <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-small-911-out.xml</resultFileName>
       </RecorderFiles>
     </RecorderParams>
   </ModelParams>
