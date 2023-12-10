@@ -487,7 +487,7 @@ void Hdf5Recorder::printParameters()
                                    << "\tResult file path: " << resultFileName_ << endl);
 }
 
-void Hdf5Recorder::registerVariable(std::string varName, RecordableBase * recordVar)
+void Hdf5Recorder::registerVariable(std::string varName, RecordableBase *recordVar)
 {
 }
 

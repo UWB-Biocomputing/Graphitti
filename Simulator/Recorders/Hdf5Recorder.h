@@ -70,7 +70,7 @@ public:
    /// Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
 
-   virtual void registerVariable(std::string varName, RecordableBase * recordVar) override;
+   virtual void registerVariable(std::string varName, RecordableBase *recordVar) override;
 
    virtual void registerVariable(std::string varName, vector<RecordableBase *> recordVars) override;
 
