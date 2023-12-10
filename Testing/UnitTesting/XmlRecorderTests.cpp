@@ -2,9 +2,9 @@
 //  * @file XmlRecorderTests.cpp
 //  *
 //  * @brief This file contains unit tests for the XmlRecorder using GTest.
-//  * 
+//  *
 //  * @ingroup Testing/UnitTesting
-//  * 
+//  *
 //  * We test that XmlRecorder class records correct output into the xml file
 //  * we are requesting.
 //  */
@@ -43,49 +43,43 @@ TEST(XmlRecorderTest, InitTest)
 TEST(XmlRecorderTest, RegisterVariableTest)
 {
    // Create an instance of XmlRecorder
-   std::string outputFile = "../Testing/UnitTesting/TestOutput/test_output.xml";
-	// XmlRecorder recorder(outputFile);
-   unique_ptr<XmlRecorder> recorderTest_(new XmlRecorder(outputFile));
-   ASSERT_TRUE(recorderTest_ != nullptr);
-   // Create a mock EventBuffer object
-   EventBuffer buffer0;
-   EventBuffer buffer1;
+   XmlRecorder recorder;
+   // Create an EventBuffer for testing
+   EventBuffer eventBuffer;
 
-   // Register variables
-   recorderTest_->registerVariable("neuron0", &buffer0);
-   recorderTest_->registerVariable("neuron1", &buffer1);
+   // Register the EventBuffer variable
+   recorder.registerVariable("eventBuffer", &eventBuffer);
 
-   // Verify that the registered variables is stored correctly
-   ASSERT_EQ("neuron0", recorderTest_->getVariableName(0));
-   ASSERT_EQ("neuron1", recorderTest_->getVariableName(1));
-   ASSERT_EQ(&buffer0, &(recorderTest_->getSingleVariable(0)));
-   ASSERT_EQ(&buffer1, &(recorderTest_->getSingleVariable(1)));
-	//verify the basic type of recordable variable
-	ASSERT_EQ("uint64_t", recorderTest_->getSingleVariable(0).getDataType());
+   // Verify that the variable is stored correctly
+   ASSERT_EQ("eventBuffer", recorder.getVariableName(0));
+   ASSERT_EQ(&eventBuffer, recorder.getSingleVariable(0));
+   // check the type or other details
+   ASSERT_EQ("uint64_t", recorder.getDataType(0));
 }
 
 // Unit test for registerVariable method with a vector of EventBuffers
-TEST(XmlRecorderTest, RegisterVectorVariableTest) {
-    // Create an instance of XmlRecorder
-    std::string outputFile = "../Testing/UnitTesting/TestOutput/test_output.xml";
-    std::unique_ptr<XmlRecorder> recorderTest_(new XmlRecorder(outputFile));
-    ASSERT_TRUE(recorderTest_ != nullptr);
+TEST(XmlRecorderTest, RegisterVectorVariableTest)
+{
+   // Create an instance of XmlRecorder
+   std::string outputFile = "../Testing/UnitTesting/TestOutput/test_output.xml";
+   unique_ptr<XmlRecorder> recorderTest_(new XmlRecorder(outputFile));
+   ASSERT_TRUE(recorderTest_ != nullptr);
 
-    // Create mock EventBuffer objects for testing
-    EventBuffer buffer0;
-    EventBuffer buffer1;
+   // Create mock EventBuffer objects for testing
+   EventBuffer buffer0;
+   EventBuffer buffer1;
 
-    // Create a vector of pointers to EventBuffer objects
-    std::vector<RecordableBase*> bufferPointers = { &buffer0, &buffer1 };
+   // Create a vector of pointers to EventBuffer objects
+   std::vector<RecordableBase *> bufferPointers = {&buffer0, &buffer1};
 
-    // Register variables
-    recorderTest_->registerVariable("neuron_", bufferPointers);
+   // Register variables
+   recorderTest_->registerVariable("neuron_", bufferPointers);
 
-    // Verify that the registered variables are stored correctly
-    ASSERT_EQ("neuron_0", recorderTest_->getVariableName(0));
-    ASSERT_EQ("neuron_1", recorderTest_->getVariableName(1));
-    ASSERT_EQ(&buffer0, &(recorderTest_->getSingleVariable(0)));
-    ASSERT_EQ(&buffer1, &(recorderTest_->getSingleVariable(1)));
+   // Verify that the registered variables are stored correctly
+   ASSERT_EQ("neuron_0", recorderTest_->getVariableName(0));
+   ASSERT_EQ("neuron_1", recorderTest_->getVariableName(1));
+   ASSERT_EQ(&buffer0, recorderTest_->getSingleVariable(0));
+   ASSERT_EQ(&buffer1, recorderTest_->getSingleVariable(1));
 }
 
 // Test case for compiling histories
@@ -115,7 +109,7 @@ TEST(XmlRecorderTest, CompileHistoriesTest)
 
    // Verify the events compiled hisotry
    uint64_t data = 1;
-   for(int i = 0; i < 2; i++){
+   for (int i = 0; i < 2; i++) {
       EXPECT_EQ(data, get<uint64_t>(history[i]));
       data = data + 1;
    }
@@ -137,7 +131,9 @@ TEST(XmlRecorderTest, ToXML)
    // Verify the expected XML output
    stringstream os;
    os << "<Matrix ";
-   os << "name=\"" << "TestVar" << "\" ";
+   os << "name=\""
+      << "TestVar"
+      << "\" ";
    os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << variableHistory.size()
       << "\" multiplier=\"1.0\">" << endl;
    os << "   ";
@@ -168,7 +164,6 @@ TEST(XmlRecorderTest, SaveSimDataTest)
 
    // Register a variable
    recorderTest_->registerVariable("neuron0", &buffer);
-
    // Insert some events into the event buffer
    buffer.insertEvent(1);
    buffer.insertEvent(2);
@@ -185,8 +180,12 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    outputBuffer << inputFile.rdbuf();
    inputFile.close();
    // checks for saving simulation data
-   vector<std::variant<uint64_t, double, std::string>> mock_history = {uint64_t(1),uint64_t(2), uint64_t(3)};
-   std::string expectXML = recorderTest_->getToXML("TestVar", mock_history, "uint64_t");
+   vector<std::variant<uint64_t, double, std::string>> mock_history
+      = {uint64_t(1), uint64_t(2), uint64_t(3)};
+   std::string expect_header = "<?xml version=\"1.0\" standalone=\"no\"?>\n";
+   std::string expect_end = "\n";
+   std::string expectXML
+      = expect_header + recorderTest_->getToXML("neuron0", mock_history, "uint64_t") + expect_end;
    // vertify the output string
    ASSERT_EQ(outputBuffer.str(), expectXML);
 }

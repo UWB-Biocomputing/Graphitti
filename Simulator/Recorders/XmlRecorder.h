@@ -3,13 +3,16 @@
  *
  * @ingroup Simulator/Recorders
  *
- * @brief An implementation for recording variable history on xml file
+ * @brief Provides an implementation for recording Graph-based simulation
+ *           variable history in an XML file.
  *
- * The XmlRecorder provides a mechanism for recording simulation variable information.
+ * The XmlRecorder class facilitates the recording of various graph-based simulation 
+ * variable information, including :
  *     -# the recorded variable name.
  *     -# the recorded variable basic data type.
  *     -# the recorded variable address.
- * Neuron network simulation information: neuron's layout, spikes history,
+ * 
+ * Use case: Neuron network simulation information: neuron's layout, spikes history,
  * and compile history information on xml file:
  *     -# the neuron ID.
  *     -# time steps of events produced by each neuron.
@@ -23,7 +26,7 @@
 #include <fstream>
 #include <vector>
 
-// a list of basic data types for recorded variables
+// a list of basic data types in different recorded variables
 typedef std::variant<uint64_t, double, string> multipleTypes;
 
 class XmlRecorder : public Recorder {
@@ -65,10 +68,12 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
 
-   /// register a single RecordableBase variable
-   void registerVariable(string varName, RecordableBase *recordVar) override;
+   /// Register a single instance of a class derived from RecordableBase.
+   /// It stores the address of the registered variable and the related information
+   /// of this recorded variable
+   void registerVariable(string varName, RecordableBase* recordVar) override;
 
-   /// register a vector of RecordableBase objects.
+   /// register a vector of instance of a class derived from RecordableBase.
    void registerVariable(string varName, vector<RecordableBase *> recordVars) override;
 
    ///@{
@@ -96,9 +101,10 @@ public:
    // Accessor method for a single variable address in the variableTable_
    // @param numIndex   The index number in the variable list.
    // (only included during unit tests)
-   RecordableBase &getSingleVariable(int numIndex) const
+   RecordableBase* getSingleVariable(int numIndex) const
    {
-      return *(variableTable_[numIndex].variableLocation_);
+      // return *(variableTable_[numIndex].variableLocation_);
+      return (variableTable_[numIndex].variableLocation_.get());
    }
 
    // Accessor method for variablesHistory_ (only included during unit tests)
@@ -117,7 +123,9 @@ public:
    ///@}
 
 protected:
-   // create a struct contains a variable information
+   /// @brief Represents information about a single recorded variable.
+   /// The singleVariableInfo struct encapsulates details about a recorded variable, including its name,
+   ///     basic data type, address (location), and the history of accumulated values over time.
    struct singleVariableInfo {
       // the name of each variable
       string variableName_;
@@ -132,22 +140,33 @@ protected:
       // the history of accumulated values for a registered RecordableBase object variable
       vector<multipleTypes> variableHistory_;
 
-      // Constructor accepting a pointer to RecordableBase
-      singleVariableInfo(string name, RecordableBase *location) :
-         variableName_(name), variableLocation_(location)
+      // Constructor accepting the variable name and the address of recorded variable
+      singleVariableInfo(string name, RecordableBase &location) :
+         variableName_(name)
       {
-         dataType_ = location->getDataType();
+         if (&location != nullptr) {
+            // create a shared_ptr points to the same object of location
+            // using shared_ptr constructor by taking a reference to an object
+            // the second argument is an empty deleter which means that this shared pointer
+            // will not attempt to delete the object when it goes out of scope 
+            variableLocation_ = shared_ptr<RecordableBase>(&location, [](RecordableBase*){});
+            dataType_ = location.getDataType();
+         }
       }
    };
 
-   // A list of registered variables
-   // this table stores all the variables information that need to be recorded
+   /// A list of registered variables
+   /// this table stores all the variables information that need to be recorded
+   /// @brief Represents a list of registered variables for recording.
+   /// The variableTable_ vector stores information about all the variables 
+   ///      that need to be recorded, including their names, basic data types,
+   ///      addresses (locations), and the history of accumulated values.
    vector<singleVariableInfo> variableTable_;
 
-   // a file stream for xml output
+   /// a file stream for xml output
    ofstream resultOut_;
 
-   // string toXML(string name,  vector<multipleTypesuint64_t>const;
+   /// string toXML(string name,  vector<multipleTypesuint64_t>const;
    string toXML(string name, vector<multipleTypes> singleVariableBuffer_, string basicType) const;
 
    /// ToDo: this method will be deleted

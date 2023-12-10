@@ -22,8 +22,15 @@ protected:
 
 public:
    // Constructor
-   Recordable() : basicDataType_("variant")
+   Recordable() : basicDataType_()
    {
+      setDataType();
+   }
+
+   // set up a string representing the basic data type
+   virtual void setDataType()
+   {
+      basicDataType_ = "variant";
    }
 
    // Get the number of events in the current epoch for the recordable variable.

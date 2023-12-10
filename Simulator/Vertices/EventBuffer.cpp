@@ -21,9 +21,36 @@
 // }
 EventBuffer::EventBuffer(int maxEvents)
 {
-   basicDataType_ = "uint64_t";
    eventTimeSteps_.assign(maxEvents + 1, numeric_limits<unsigned long>::max());
    clear();
+   setDataType();
+}
+
+
+// set up a string representing the basic data type
+void EventBuffer::setDataType()
+{
+   basicDataType_ = "uint64_t";
+}
+
+// @brief Get the value of the recordable variable at the specified index.
+// @param index The index of the recorded value to retrieve.
+// @return A variant representing the recorded value (uint64_t, double, or string).
+std::variant<uint64_t, double, string> EventBuffer::getElement(int index) const
+{
+   return eventTimeSteps_[(epochStart_ + index) % eventTimeSteps_.size()];
+   // return eventTimeSteps_[index];
+}
+
+
+std::string EventBuffer::getDataType() const
+{
+   return basicDataType_;
+}
+
+int EventBuffer::getNumEventsInEpoch() const
+{
+   return numEventsInEpoch_;
 }
 
 void EventBuffer::resize(int maxEvents)
@@ -46,33 +73,6 @@ void EventBuffer::clear()
 uint64_t EventBuffer::operator[](int i) const
 {
    return eventTimeSteps_[(epochStart_ + i) % eventTimeSteps_.size()];
-}
-
-// @brief Get the value of the recordable variable at the specified index.
-// @param index The index of the recorded value to retrieve.
-// @return A variant representing the recorded value (uint64_t, double, or string).
-std::variant<uint64_t, double, string> EventBuffer::getElement(int index) const
-{
-   return eventTimeSteps_[(epochStart_ + index) % eventTimeSteps_.size()];
-   // if (index >= 0 && index < eventTimeSteps_.size()) {
-   //    // Check if the index is within bounds and return the value at that index.
-   //    return eventTimeSteps_[index];
-   // } else {
-   //    // Handle the case where the index is out of bounds.
-   //    // You can choose to throw an exception or return a default value.
-   //    // Here, we'll throw an exception.
-   //    throw std::out_of_range("Index out of bounds");
-   // }
-}
-
-std::string EventBuffer::getDataType() const
-{
-   return basicDataType_;
-}
-
-int EventBuffer::getNumEventsInEpoch() const
-{
-   return numEventsInEpoch_;
 }
 
 void EventBuffer::startNewEpoch()

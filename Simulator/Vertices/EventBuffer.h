@@ -41,6 +41,28 @@ public:
    /// @param maxEvents Defaults to zero; otherwise, buffer size is set
    EventBuffer(int maxEvents = 0);
 
+   /** @name Recorder Interface
+    *  virtual method in RecordableBase for use by Recorder classes
+    */
+   ///@{
+   /// set up a string representing the basic data type
+   virtual void setDataType() override;
+
+   /// @brief Get the value of the recordable variable at the specified index.
+   /// @param index The index of the recorded value to retrieve.
+   /// @return A variant representing the recorded value (uint64_t, double, or string).
+   std::variant<uint64_t, double, string> getElement(int index) const override;
+
+   /// @brief Get A string representing the data type of the recordable variable
+   string getDataType() const override;
+   /// Get number of events in the current/preceding epoch
+   ///
+   /// Getting the number of events in the current epoch (or, in between epochs, the number of events
+   /// in the preceding epoch) is not the same as the number of events in the buffer, because the buffer
+   /// retains events from the previous epoch, too.
+   int getNumEventsInEpoch() const override;
+   ///@}
+
    /// Resize event buffer
    ///
    /// Note that the buffer size will be set to maxEvents+1, to distinguish between
@@ -61,21 +83,6 @@ public:
    ///
    /// @param i element number
    uint64_t operator[](int i) const;
-
-   /// @brief Get the value of the recordable variable at the specified index.
-   /// @param index The index of the recorded value to retrieve.
-   /// @return A variant representing the recorded value (uint64_t, double, or string).
-   std::variant<uint64_t, double, string> getElement(int index) const override;
-
-   /// @brief Get A string representing the data type of the recordable variable
-   string getDataType() const;
-   /// Get number of events in the current/preceding epoch
-   ///
-   /// Getting the number of events in the current epoch (or, in between epochs, the number of events
-   /// in the preceding epoch) is not the same as the number of events in the buffer, because the buffer
-   /// retains events from the previous epoch, too.
-   int getNumEventsInEpoch() const;
-   ///@}
 
    /** @name Vertex and Edge Interface
     *  EventBuffer interface for use by the Vertex and Edge classes

@@ -168,22 +168,43 @@ void XmlRecorder::printParameters()
                                    << "\tResult file path: " << resultFileName_ << endl);
 }
 
-/// register a single EventBuffer.
-/// Obtain the updating value while the simulator runs by storing the address of registered variable
-/// Neuron : Store a single neuron with the neuron number and its corresponding events
-void XmlRecorder::registerVariable(string name, RecordableBase *recordVar)
+/**
+ * @brief Register a single instance of a class derived from RecordableBase.
+ *
+ * This method allows the XmlRecorder to obtain the updating value while the simulator runs
+ * by storing the address of the registered variable. In the context of neurons, it is used
+ * to store information about a single neuron, including its name and corresponding events.
+ *
+ * @param name       The name associated with the registered variable.
+ * @param recordVar  A pointer to the RecordableBase object to be registered.
+ */
+void XmlRecorder::registerVariable(string name, RecordableBase* recordVar)
 {
    // add a new variable into the table
-   variableTable_.push_back(singleVariableInfo(name, recordVar));
+   if(recordVar != nullptr){
+      RecordableBase &address = *recordVar;
+      variableTable_.push_back(singleVariableInfo(name, address));
+   }
 }
 
-/// register a vector of RecordableBase objects to the variable lists
-/// Neuron : Store all neuron with the neuron number and its corresponding events
-void XmlRecorder::registerVariable(string varName, vector<RecordableBase *> recordVars)
+/**
+ * @brief Register a vector of instances of classes derived from RecordableBase.
+ *
+ * This method allows the XmlRecorder to store a vector of variables, each represented by
+ * an address and a unique variable name. It is typically used to register multiple instances
+ * of a class derived from RecordableBase, such as neurons, along with their corresponding vertex events.
+ *
+ * @param varName     The name associated with the registered variables.
+ * @param recordVars  A vector of pointers to RecordableBase objects to be registered.
+ */
+void XmlRecorder::registerVariable(string varName, vector<RecordableBase*> recordVars)
 {
    for (int i = 0; i < recordVars.size(); i++) {
       string variableID = varName + to_string(i);
-      // add a new variable into the table
-      variableTable_.push_back(singleVariableInfo(variableID, recordVars[i]));
+      if(recordVars[i] != nullptr){
+         RecordableBase &address = *recordVars[i];
+         // add a new variable into the table
+         variableTable_.push_back(singleVariableInfo(variableID, address));
+      }
    }
 }

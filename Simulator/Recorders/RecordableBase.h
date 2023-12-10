@@ -18,6 +18,7 @@
 class RecordableBase {
    // TODO: will change function names later
 public:
+   virtual ~RecordableBase() = default;
    // Get the number of events in the current epoch for the recordable variable.
    virtual int getNumEventsInEpoch() const = 0;
 
@@ -29,6 +30,9 @@ public:
    // @param index The index of the recorded value to retrieve.
    // @return A variant representing the recorded value (uint64_t, double, or string).
    virtual std::variant<uint64_t, double, string> getElement(int index) const = 0;
+
+   // set up a string representing the basic data type
+   virtual void setDataType() = 0;
 
    // @brief Get A string representing the data type of the recordable variable
    virtual string getDataType() const = 0;
