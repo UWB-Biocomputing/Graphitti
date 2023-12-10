@@ -50,7 +50,7 @@ public:
    virtual void printParameters() = 0;
 
    // register a single RecordableBase variable.
-   virtual void registerVariable(string varName, RecordableBase* recordVar) = 0;
+   virtual void registerVariable(string varName, RecordableBase *recordVar) = 0;
 
    // register a vector of RecordableBase objects.
    virtual void registerVariable(string varName, vector<RecordableBase *> recordVars) = 0;

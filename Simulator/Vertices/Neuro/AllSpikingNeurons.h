@@ -82,7 +82,7 @@ public:
    uint64_t getSpikeHistory(int index, int offIndex);
 
 protected:
-   /// helper for recorder register variables in setupVertices() 
+   /// helper for recorder register variables in setupVertices()
    /// Register spike history variables for all neurons.
    /// Option 1: Register neuron information in vertexEvents_ one by one.
    /// Option 2: Register a vector of EventBuffer variables.

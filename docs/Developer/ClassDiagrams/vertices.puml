@@ -126,8 +126,8 @@ abstract class AllSpikingNeurons {
 	+getSpikeHistory(int index, int offIndex) : uint64_t
 	+vertexEvents_ : vector<EventBuffer>
 	+hasFired_ : vector<bool>
-	#{abstract} advanceNeuron(const int index) : 
-	#registerSpikeHistoryVariables() : void
+	#{abstract} advanceNeuron(const int index) : void
+	+registerSpikeHistoryVariables() : void
 	+setDataType() : void
 	+getDataType() const : void
 	+advanceVertices(AllEdges& synapses, const EdgeIndexMap* edgeIndexMap) : void

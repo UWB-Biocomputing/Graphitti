@@ -178,10 +178,10 @@ void XmlRecorder::printParameters()
  * @param name       The name associated with the registered variable.
  * @param recordVar  A pointer to the RecordableBase object to be registered.
  */
-void XmlRecorder::registerVariable(string name, RecordableBase* recordVar)
+void XmlRecorder::registerVariable(string name, RecordableBase *recordVar)
 {
    // add a new variable into the table
-   if(recordVar != nullptr){
+   if (recordVar != nullptr) {
       RecordableBase &address = *recordVar;
       variableTable_.push_back(singleVariableInfo(name, address));
    }
@@ -197,11 +197,11 @@ void XmlRecorder::registerVariable(string name, RecordableBase* recordVar)
  * @param varName     The name associated with the registered variables.
  * @param recordVars  A vector of pointers to RecordableBase objects to be registered.
  */
-void XmlRecorder::registerVariable(string varName, vector<RecordableBase*> recordVars)
+void XmlRecorder::registerVariable(string varName, vector<RecordableBase *> recordVars)
 {
    for (int i = 0; i < recordVars.size(); i++) {
       string variableID = varName + to_string(i);
-      if(recordVars[i] != nullptr){
+      if (recordVars[i] != nullptr) {
          RecordableBase &address = *recordVars[i];
          // add a new variable into the table
          variableTable_.push_back(singleVariableInfo(variableID, address));

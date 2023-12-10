@@ -71,7 +71,7 @@ public:
    /// Register a single instance of a class derived from RecordableBase.
    /// It stores the address of the registered variable and the related information
    /// of this recorded variable
-   void registerVariable(string varName, RecordableBase* recordVar) override;
+   void registerVariable(string varName, RecordableBase *recordVar) override;
 
    /// register a vector of instance of a class derived from RecordableBase.
    void registerVariable(string varName, vector<RecordableBase *> recordVars) override;
@@ -101,7 +101,7 @@ public:
    // Accessor method for a single variable address in the variableTable_
    // @param numIndex   The index number in the variable list.
    // (only included during unit tests)
-   RecordableBase* getSingleVariable(int numIndex) const
+   RecordableBase *getSingleVariable(int numIndex) const
    {
       // return *(variableTable_[numIndex].variableLocation_);
       return (variableTable_[numIndex].variableLocation_.get());
@@ -141,15 +141,15 @@ protected:
       vector<multipleTypes> variableHistory_;
 
       // Constructor accepting the variable name and the address of recorded variable
-      singleVariableInfo(string name, RecordableBase &location) :
-         variableName_(name)
+      singleVariableInfo(string name, RecordableBase &location) : variableName_(name)
       {
          if (&location != nullptr) {
             // create a shared_ptr points to the same object of location
             // using shared_ptr constructor by taking a reference to an object
             // the second argument is an empty deleter which means that this shared pointer
-            // will not attempt to delete the object when it goes out of scope 
-            variableLocation_ = shared_ptr<RecordableBase>(&location, [](RecordableBase*){});
+            // will not attempt to delete the object when it goes out of scope
+            variableLocation_ = shared_ptr<RecordableBase>(&location, [](RecordableBase *) {
+            });
             dataType_ = location.getDataType();
          }
       }
@@ -158,7 +158,7 @@ protected:
    /// A list of registered variables
    /// this table stores all the variables information that need to be recorded
    /// @brief Represents a list of registered variables for recording.
-   /// The variableTable_ vector stores information about all the variables 
+   /// The variableTable_ vector stores information about all the variables
    ///      that need to be recorded, including their names, basic data types,
    ///      addresses (locations), and the history of accumulated values.
    vector<singleVariableInfo> variableTable_;
