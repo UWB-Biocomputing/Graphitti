@@ -5,7 +5,7 @@
 abstract class RecordableBase {
 	+{abstract} getNumEventsInEpoch() const : int
 	+{abstract} startNewEpoch() : void
-	+{abstract} getElement(int index) const : std::variant<uint64_t, double, char>
+	+{abstract} getElement(int index) const : variant<uint64_t, double, char>
 	+{abstract} setDataType() : void
 	+{abstract} getDataType() : string
 }
@@ -14,7 +14,7 @@ class Recordable<T>{
 	-basicDataType_ : string
 	+getNumEventsInEpoch() const : int
 	+startNewEpoch() : void
-	+getElement(int index) const : std::variant<uint64_t, double, char>
+	+getElement(int index) const : variant<uint64_t, double, char>
 	+setDataType() : void
 	+getDataType() : string
 }
@@ -24,7 +24,7 @@ class EventBuffer<uint64_t> {
 	-epochStart_ : int
 	+setDataType() : void
 	+getDataType() : string
-	+getElement(int index) const : std::variant<uint64_t, double, char>
+	+getElement(int index) const : variant<uint64_t, double, char>
 	+getNumEventsInEpoch() : int {query}
 	-numEventsInEpoch_ : int
 	-queueEnd_ : int

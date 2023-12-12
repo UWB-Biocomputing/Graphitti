@@ -9,7 +9,6 @@
 */
 
 #include "EventBuffer.h"
-// #include "Recordable.h"
 #include "Global.h"
 #include <cassert>
 #include <limits>
@@ -33,17 +32,17 @@ void EventBuffer::setDataType()
    basicDataType_ = "uint64_t";
 }
 
-// @brief Get the value of the recordable variable at the specified index.
-// @param index The index of the recorded value to retrieve.
-// @return A variant representing the recorded value (uint64_t, double, or string).
-std::variant<uint64_t, double, string> EventBuffer::getElement(int index) const
+/// @brief Get the value of the recordable variable at the specified index.
+/// @param index The index of the recorded value to retrieve.
+/// @return A variant representing the recorded value (uint64_t, double, or string).
+variant<uint64_t, double, string> EventBuffer::getElement(int index) const
 {
    return eventTimeSteps_[(epochStart_ + index) % eventTimeSteps_.size()];
    // return eventTimeSteps_[index];
 }
 
 
-std::string EventBuffer::getDataType() const
+string EventBuffer::getDataType() const
 {
    return basicDataType_;
 }

@@ -23,11 +23,9 @@
 #include "Global.h"
 #include "Model.h"
 #include "Recorder.h"
-#include <fstream>
-#include <vector>
 
-// a list of basic data types in different recorded variables
-typedef std::variant<uint64_t, double, string> multipleTypes;
+/// a list of basic data types in different recorded variables
+typedef variant<uint64_t, double, string> multipleTypes;
 
 class XmlRecorder : public Recorder {
 public:
@@ -42,26 +40,26 @@ public:
    /// Initialize data in the newly loadeded xml file
    virtual void init() override;
 
-   // ToDo : remove it ?
+   // TODO : remove it ?
    /// Init radii and rates history matrices with default values
    virtual void initDefaultValues() override;
 
    /// Init radii and rates history matrices with current radii and rates
    virtual void initValues() override;
 
-   // ToDo : remove it ?
+   // TODO : remove it ?
    /// Get the current radii and rates vlaues
    virtual void getValues() override;
 
    /// Terminate process
    virtual void term() override;
 
-   /// Compile history information in every epoch
-   /// @param[in] vertices   The entire list of vertices.
+   // TODO: No parameters needed (AllVertices &vertices)
+   /// Compile/capture variable history information in every epoch
    virtual void compileHistories(AllVertices &vertices) override;
 
+   // TODO: No parameters needed (AllVertices &vertices)
    /// Writes simulation results to an output destination.
-   /// @param  vertices the Vertex list to search from.
    virtual void saveSimData(const AllVertices &vertices) override;
 
    ///  Prints out all parameters to logging file.
@@ -71,49 +69,49 @@ public:
    /// Register a single instance of a class derived from RecordableBase.
    /// It stores the address of the registered variable and the related information
    /// of this recorded variable
-   void registerVariable(string varName, RecordableBase *recordVar) override;
+   void registerVariable(const string &varName, RecordableBase *recordVar) override;
 
    /// register a vector of instance of a class derived from RecordableBase.
-   void registerVariable(string varName, vector<RecordableBase *> recordVars) override;
+   void registerVariable(const string &varName, vector<RecordableBase *> &recordVars) override;
 
    ///@{
    /** These methods are intended only for unit tests */
-   // constructor only for unit test
-   XmlRecorder(std::string fileName)
+   /// constructor only for unit test
+   XmlRecorder(string fileName)
    {
       resultFileName_ = fileName;
    }
 
-   // Accessor method for variable name (only included during unit tests)
-   // @param numIndex   The index number in the variable list.
-   std::string getVariableName(int numIndex) const
+   /// Accessor method for variable name (only included during unit tests)
+   /// @param numIndex   The index number in the variable list.
+   string getVariableName(int numIndex) const
    {
       return variableTable_[numIndex].variableName_;
    }
 
-   // Accessor method for variable data type (only included during unit tests)
-   // @param numIndex   The index number in the variable list.
-   std::string getDataType(int numIndex) const
+   /// Accessor method for variable data type (only included during unit tests)
+   /// @param numIndex   The index number in the variable list.
+   string getDataType(int numIndex) const
    {
       return variableTable_[numIndex].dataType_;
    }
 
-   // Accessor method for a single variable address in the variableTable_
-   // @param numIndex   The index number in the variable list.
-   // (only included during unit tests)
+   /// Accessor method for a single variable address in the variableTable_
+   /// @param numIndex   The index number in the variable list.
+   /// (only included during unit tests)
    RecordableBase *getSingleVariable(int numIndex) const
    {
       // return *(variableTable_[numIndex].variableLocation_);
       return (variableTable_[numIndex].variableLocation_.get());
    }
 
-   // Accessor method for variablesHistory_ (only included during unit tests)
+   /// Accessor method for variablesHistory_ (only included during unit tests)
    vector<multipleTypes> &getHistory(int numIndex)
    {
       return (variableTable_[numIndex].variableHistory_);
    }
 
-   // get an output stream from toXml method
+   /// get an output stream from toXml method
    string getToXML(string name, vector<multipleTypes> singleVariableBuffer_, string basicType)
    {
       string outputXML;
@@ -127,20 +125,20 @@ protected:
    /// The singleVariableInfo struct encapsulates details about a recorded variable, including its name,
    ///     basic data type, address (location), and the history of accumulated values over time.
    struct singleVariableInfo {
-      // the name of each variable
+      /// the name of each variable
       string variableName_;
 
-      // the basic data type
+      /// the basic data type in the Recorded variable
       string dataType_;
 
-      // a shared_ptr to a RecordableBase object
-      // As the simulator runs, the values in the RecordableBase object will be updated
+      /// a shared_ptr to a RecordableBase object
+      /// As the simulator runs, the values in the RecordableBase object will be updated
       shared_ptr<RecordableBase> variableLocation_;
 
-      // the history of accumulated values for a registered RecordableBase object variable
+      /// the history of accumulated values for a registered RecordableBase object variable
       vector<multipleTypes> variableHistory_;
 
-      // Constructor accepting the variable name and the address of recorded variable
+      /// Constructor accepting the variable name and the address of recorded variable
       singleVariableInfo(string name, RecordableBase &location) : variableName_(name)
       {
          if (&location != nullptr) {
@@ -155,9 +153,7 @@ protected:
       }
    };
 
-   /// A list of registered variables
-   /// this table stores all the variables information that need to be recorded
-   /// @brief Represents a list of registered variables for recording.
+   /// Represents a list of registered variables for recording.
    /// The variableTable_ vector stores information about all the variables
    ///      that need to be recorded, including their names, basic data types,
    ///      addresses (locations), and the history of accumulated values.
@@ -169,6 +165,6 @@ protected:
    /// string toXML(string name,  vector<multipleTypesuint64_t>const;
    string toXML(string name, vector<multipleTypes> singleVariableBuffer_, string basicType) const;
 
-   /// ToDo: this method will be deleted
+   // TODO: this method will be deleted
    void getStarterNeuronMatrix(VectorMatrix &matrix, const vector<bool> &starterMap);
 };

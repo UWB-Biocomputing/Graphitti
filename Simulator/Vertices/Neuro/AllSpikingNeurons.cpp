@@ -31,17 +31,17 @@ void AllSpikingNeurons::setupVertices()
 void AllSpikingNeurons::registerSpikeHistoryVariables()
 {
    Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   std::string baseName = "Neuron_";
+   string baseName = "Neuron_";
 
    // Option 1: Register neuron information in vertexEvents_ one by one
    for (int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++) {
       // variable name = baseName + neuron number
-      std::string neuronID = baseName + std::to_string(iNeuron);
+      string neuronID = baseName + std::to_string(iNeuron);
       recorder.registerVariable(neuronID, &vertexEvents_[iNeuron]);
    }
 
    // Option 2: Register a vector of EventBuffer variables
-   // std::vector<RecordableBase *> variables;
+   // vector<RecordableBase *> variables;
    // for(int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++){
    //    variables.push_back(&vertexEvents_[iNeuron]);
    // }

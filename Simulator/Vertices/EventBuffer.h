@@ -23,7 +23,6 @@
 #pragma once
 #include "Global.h"
 #include "Recordable.h"
-// #include "RecordableBase.h"
 class AllSpikingNeurons;
 class AllIFNeurons;
 class EventBuffer : public Recordable<uint64_t> {
@@ -42,7 +41,7 @@ public:
    EventBuffer(int maxEvents = 0);
 
    /** @name Recorder Interface
-    *  virtual method in RecordableBase for use by Recorder classes
+    *  virtual methods in RecordableBase for use by Recorder classes
     */
    ///@{
    /// set up a string representing the basic data type
@@ -51,7 +50,7 @@ public:
    /// @brief Get the value of the recordable variable at the specified index.
    /// @param index The index of the recorded value to retrieve.
    /// @return A variant representing the recorded value (uint64_t, double, or string).
-   std::variant<uint64_t, double, string> getElement(int index) const override;
+   variant<uint64_t, double, string> getElement(int index) const override;
 
    /// @brief Get A string representing the data type of the recordable variable
    string getDataType() const override;
@@ -72,10 +71,6 @@ public:
    /// @param maxEvents Buffer size
    void resize(int maxEvents);
 
-   /** @name Recorder Interface
-    *  EventBuffer interface for use by Recorder classes
-    */
-   ///@{
    /// Access event from current epoch
    ///
    /// Access an element of the buffer as though it is an array or vector with element 0 being the first
