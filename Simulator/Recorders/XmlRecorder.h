@@ -69,29 +69,29 @@ public:
    /// Register a single instance of a class derived from RecordableBase.
    /// It stores the address of the registered variable and the related information
    /// of this recorded variable
-   void registerVariable(const string &varName, RecordableBase *recordVar) override;
+   virtual void registerVariable(const string &varName, RecordableBase *recordVar) override;
 
    /// register a vector of instance of a class derived from RecordableBase.
-   void registerVariable(const string &varName, vector<RecordableBase *> &recordVars) override;
+   virtual void registerVariable(const string &varName, vector<RecordableBase *> &recordVars) override;
 
    ///@{
    /** These methods are intended only for unit tests */
    /// constructor only for unit test
-   XmlRecorder(string fileName)
+   XmlRecorder(const string &fileName)
    {
       resultFileName_ = fileName;
    }
 
    /// Accessor method for variable name (only included during unit tests)
    /// @param numIndex   The index number in the variable list.
-   string getVariableName(int numIndex) const
+   const string &getVariableName(int numIndex) const
    {
       return variableTable_[numIndex].variableName_;
    }
 
    /// Accessor method for variable data type (only included during unit tests)
    /// @param numIndex   The index number in the variable list.
-   string getDataType(int numIndex) const
+   const string &getDataType(int numIndex) const
    {
       return variableTable_[numIndex].dataType_;
    }
@@ -112,7 +112,8 @@ public:
    }
 
    /// get an output stream from toXml method
-   string getToXML(string name, vector<multipleTypes> singleVariableBuffer_, string basicType)
+   string getToXML(const string &name,
+            vector<multipleTypes> &singleVariableBuffer_, const string &basicType)
    {
       string outputXML;
       outputXML = toXML(name, singleVariableBuffer_, basicType);
@@ -121,7 +122,7 @@ public:
    ///@}
 
 protected:
-   /// @brief Represents information about a single recorded variable.
+   /// Represents information about a single recorded variable.
    /// The singleVariableInfo struct encapsulates details about a recorded variable, including its name,
    ///     basic data type, address (location), and the history of accumulated values over time.
    struct singleVariableInfo {
@@ -139,7 +140,7 @@ protected:
       vector<multipleTypes> variableHistory_;
 
       /// Constructor accepting the variable name and the address of recorded variable
-      singleVariableInfo(string name, RecordableBase &location) : variableName_(name)
+      singleVariableInfo(const string& name, RecordableBase &location) : variableName_(name)
       {
          if (&location != nullptr) {
             // create a shared_ptr points to the same object of location
@@ -163,7 +164,8 @@ protected:
    ofstream resultOut_;
 
    /// string toXML(string name,  vector<multipleTypesuint64_t>const;
-   string toXML(string name, vector<multipleTypes> singleVariableBuffer_, string basicType) const;
+   string toXML(const string& name,
+         vector<multipleTypes> &singleVariableBuffer_, const string &basicType) const;
 
    // TODO: this method will be deleted
    void getStarterNeuronMatrix(VectorMatrix &matrix, const vector<bool> &starterMap);

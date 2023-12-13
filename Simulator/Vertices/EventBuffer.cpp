@@ -42,7 +42,7 @@ variant<uint64_t, double, string> EventBuffer::getElement(int index) const
 }
 
 
-string EventBuffer::getDataType() const
+const string &EventBuffer::getDataType() const
 {
    return basicDataType_;
 }

@@ -36,5 +36,5 @@ public:
    virtual void setDataType() = 0;
 
    /// Get A string representing the data type of the recordable variable
-   virtual string getDataType() const = 0;
+   virtual const string &getDataType() const = 0;
 };

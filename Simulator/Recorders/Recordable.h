@@ -22,32 +22,32 @@ public:
    }
 
    /// set up a string representing the basic data type
-   virtual void setDataType()
+   virtual void setDataType() override
    {
       basicDataType_ = "variant";
    }
 
    /// Get the number of events in the current epoch for the recordable variable.
-   virtual int getNumEventsInEpoch() const
+   virtual int getNumEventsInEpoch() const override
    {
       return eventTimeSteps_.size();
    }
 
    /// Start a new epoch for the recordable variable.
-   virtual void startNewEpoch()
+   virtual void startNewEpoch() override
    {
       return eventTimeSteps_.clear();
    }
 
    /// Get the value of the recordable variable at the specified index.
    /// return A variant representing the recorded value (uint64_t, double, or string)
-   virtual variant<uint64_t, double, string> getElement(int index) const
+   virtual variant<uint64_t, double, string> getElement(int index) const override
    {
       return eventTimeSteps_[index];
    }
 
    /// Get A string representing the data type of the recordable variable
-   virtual string getDataType() const
+   virtual const string &getDataType() const override
    {
       return basicDataType_;
    }

@@ -124,7 +124,8 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
    }
 }
 
-string XmlRecorder::toXML(string name, vector<multipleTypes> singleBuffer_, string basicType) const
+string XmlRecorder::toXML(const string &name, vector<multipleTypes> &singleBuffer_,
+                                 const string &basicType) const
 {
    stringstream os;
 
