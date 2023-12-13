@@ -97,12 +97,12 @@ class XmlRecorder {
 	+printParameters() : void
 	+saveSimData(const AllVertices& vertices) : void
 	+term() : void
-	+registerVariable(const string& varName, RecordableBase * recordVar) : void
+	+registerVariable(const string &varName, RecordableBase &recordVar) : void
 	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
 	
 	/' methods only used for unit test 
 	+XmlRecorder(string fileName_)
-	+getVariableName(int numIndex) const : string
+	+getVariableName(int numIndex) const : const string&
 	+getSingleVariable(int numIndex) const : &RecordableBase
 	+getHistory() const : const &vector<variant<uint64_t, double, string>>
 	'/
@@ -110,7 +110,7 @@ class XmlRecorder {
 
 struct singleVariableInfo {
 	#variableName_ : string
-	#variableLocation_ : shared_ptr<RecordableBase>
+	#variableLocation_ : RecordableBase&
 	#variableHistory_ : vector<variant<uint64_t, double, string>
 	#dataType_ : string
 	+singleVariableInfo(string name, RecordableBase &location)

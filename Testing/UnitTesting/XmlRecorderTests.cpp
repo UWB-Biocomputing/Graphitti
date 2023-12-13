@@ -1,13 +1,13 @@
-// /**
-//  * @file XmlRecorderTests.cpp
-//  *
-//  * @brief This file contains unit tests for the XmlRecorder using GTest.
-//  *
-//  * @ingroup Testing/UnitTesting
-//  *
-//  * We test that XmlRecorder class records correct output into the xml file
-//  * we are requesting.
-//  */
+/**
+ * @file XmlRecorderTests.cpp
+ *
+ * @brief This file contains unit tests for the XmlRecorder using GTest.
+ *
+ * @ingroup Testing/UnitTesting
+ *
+ * We test that XmlRecorder class records correct output into the xml file
+ * we are requesting.
+ */
 #define RUNIT_TEST
 #include "AllLIFNeurons.h"
 #include "RecordableBase.h"
@@ -39,7 +39,7 @@ TEST(XmlRecorderTest, InitTest)
    ASSERT_TRUE(fileExist);
 }
 
-// Test case for registering a EventBuffer variable
+// Test case for registering a RecordableBase variable
 TEST(XmlRecorderTest, RegisterVariableTest)
 {
    // Create an instance of XmlRecorder
@@ -48,16 +48,16 @@ TEST(XmlRecorderTest, RegisterVariableTest)
    EventBuffer eventBuffer;
 
    // Register the EventBuffer variable
-   recorder.registerVariable("eventBuffer", &eventBuffer);
+   recorder.registerVariable("eventBuffer", eventBuffer);
 
    // Verify that the variable is stored correctly
    ASSERT_EQ("eventBuffer", recorder.getVariableName(0));
-   ASSERT_EQ(&eventBuffer, recorder.getSingleVariable(0));
+   ASSERT_EQ(&eventBuffer, &recorder.getSingleVariable(0));
    // check the type or other details
    ASSERT_EQ("uint64_t", recorder.getDataType(0));
 }
 
-// Unit test for registerVariable method with a vector of EventBuffers
+// Unit test for registerVariable method with a vector of RecordableBase
 TEST(XmlRecorderTest, RegisterVectorVariableTest)
 {
    // Create an instance of XmlRecorder
@@ -78,8 +78,8 @@ TEST(XmlRecorderTest, RegisterVectorVariableTest)
    // Verify that the registered variables are stored correctly
    ASSERT_EQ("neuron_0", recorderTest_->getVariableName(0));
    ASSERT_EQ("neuron_1", recorderTest_->getVariableName(1));
-   ASSERT_EQ(&buffer0, recorderTest_->getSingleVariable(0));
-   ASSERT_EQ(&buffer1, recorderTest_->getSingleVariable(1));
+   ASSERT_EQ(&buffer0, &recorderTest_->getSingleVariable(0));
+   ASSERT_EQ(&buffer1, &recorderTest_->getSingleVariable(1));
 }
 
 // Test case for compiling histories
@@ -97,7 +97,7 @@ TEST(XmlRecorderTest, CompileHistoriesTest)
    EventBuffer buffer0(4);
 
    // Register variables
-   recorderTest_->registerVariable("neuron0", &buffer0);
+   recorderTest_->registerVariable("neuron0", buffer0);
 
    // Insert some events into the event buffer
    buffer0.insertEvent(1);
@@ -163,7 +163,7 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    recorderTest_->init();
 
    // Register a variable
-   recorderTest_->registerVariable("neuron0", &buffer);
+   recorderTest_->registerVariable("neuron0", buffer);
    // Insert some events into the event buffer
    buffer.insertEvent(1);
    buffer.insertEvent(2);

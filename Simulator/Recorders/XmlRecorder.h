@@ -69,10 +69,11 @@ public:
    /// Register a single instance of a class derived from RecordableBase.
    /// It stores the address of the registered variable and the related information
    /// of this recorded variable
-   virtual void registerVariable(const string &varName, RecordableBase *recordVar) override;
+   virtual void registerVariable(const string &varName, RecordableBase &recordVar) override;
 
    /// register a vector of instance of a class derived from RecordableBase.
-   virtual void registerVariable(const string &varName, vector<RecordableBase *> &recordVars) override;
+   virtual void registerVariable(const string &varName,
+                                 vector<RecordableBase *> &recordVars) override;
 
    ///@{
    /** These methods are intended only for unit tests */
@@ -99,10 +100,9 @@ public:
    /// Accessor method for a single variable address in the variableTable_
    /// @param numIndex   The index number in the variable list.
    /// (only included during unit tests)
-   RecordableBase *getSingleVariable(int numIndex) const
+   RecordableBase &getSingleVariable(int numIndex)
    {
-      // return *(variableTable_[numIndex].variableLocation_);
-      return (variableTable_[numIndex].variableLocation_.get());
+      return variableTable_[numIndex].variableLocation_;
    }
 
    /// Accessor method for variablesHistory_ (only included during unit tests)
@@ -112,8 +112,8 @@ public:
    }
 
    /// get an output stream from toXml method
-   string getToXML(const string &name,
-            vector<multipleTypes> &singleVariableBuffer_, const string &basicType)
+   string getToXML(const string &name, vector<multipleTypes> &singleVariableBuffer_,
+                   const string &basicType)
    {
       string outputXML;
       outputXML = toXML(name, singleVariableBuffer_, basicType);
@@ -132,25 +132,18 @@ protected:
       /// the basic data type in the Recorded variable
       string dataType_;
 
-      /// a shared_ptr to a RecordableBase object
+      /// a reference to a RecordableBase variable
       /// As the simulator runs, the values in the RecordableBase object will be updated
-      shared_ptr<RecordableBase> variableLocation_;
+      RecordableBase &variableLocation_;
 
       /// the history of accumulated values for a registered RecordableBase object variable
       vector<multipleTypes> variableHistory_;
 
       /// Constructor accepting the variable name and the address of recorded variable
-      singleVariableInfo(const string& name, RecordableBase &location) : variableName_(name)
+      singleVariableInfo(const string &name, RecordableBase &location) :
+         variableLocation_(location), variableName_(name)
       {
-         if (&location != nullptr) {
-            // create a shared_ptr points to the same object of location
-            // using shared_ptr constructor by taking a reference to an object
-            // the second argument is an empty deleter which means that this shared pointer
-            // will not attempt to delete the object when it goes out of scope
-            variableLocation_ = shared_ptr<RecordableBase>(&location, [](RecordableBase *) {
-            });
-            dataType_ = location.getDataType();
-         }
+         dataType_ = location.getDataType();
       }
    };
 
@@ -164,8 +157,8 @@ protected:
    ofstream resultOut_;
 
    /// string toXML(string name,  vector<multipleTypesuint64_t>const;
-   string toXML(const string& name,
-         vector<multipleTypes> &singleVariableBuffer_, const string &basicType) const;
+   string toXML(const string &name, vector<multipleTypes> &singleVariableBuffer_,
+                const string &basicType) const;
 
    // TODO: this method will be deleted
    void getStarterNeuronMatrix(VectorMatrix &matrix, const vector<bool> &starterMap);

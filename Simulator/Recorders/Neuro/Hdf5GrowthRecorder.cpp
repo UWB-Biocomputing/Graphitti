@@ -198,7 +198,7 @@ void Hdf5GrowthRecorder::printParameters()
 /// Register a single instance of a class derived from RecordableBase.
 /// It stores the address of the registered variable and the related information
 /// of this recorded variable
-void Hdf5GrowthRecorder::registerVariable(const string &varName, RecordableBase *recordVar)
+void Hdf5GrowthRecorder::registerVariable(const string &varName, RecordableBase &recordVar)
 {
 }
 

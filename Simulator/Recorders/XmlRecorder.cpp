@@ -78,15 +78,15 @@ void XmlRecorder::compileHistories(AllVertices &vertices)
 {
    //capture data information in each epoch
    for (int rowIndex = 0; rowIndex < variableTable_.size(); rowIndex++) {
-      if (variableTable_[rowIndex].variableLocation_->getNumEventsInEpoch() > 0) {
+      if (variableTable_[rowIndex].variableLocation_.getNumEventsInEpoch() > 0) {
          for (int columnIndex = 0;
-              columnIndex < variableTable_[rowIndex].variableLocation_->getNumEventsInEpoch();
+              columnIndex < variableTable_[rowIndex].variableLocation_.getNumEventsInEpoch();
               columnIndex++) {
             variableTable_[rowIndex].variableHistory_.push_back(
-               (*(variableTable_[rowIndex].variableLocation_)).getElement(columnIndex));
+               variableTable_[rowIndex].variableLocation_.getElement(columnIndex));
          }
       }
-      variableTable_[rowIndex].variableLocation_->startNewEpoch();
+      variableTable_[rowIndex].variableLocation_.startNewEpoch();
    }
 
 
@@ -125,7 +125,7 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
 }
 
 string XmlRecorder::toXML(const string &name, vector<multipleTypes> &singleBuffer_,
-                                 const string &basicType) const
+                          const string &basicType) const
 {
    stringstream os;
 
@@ -176,13 +176,10 @@ void XmlRecorder::printParameters()
  * @param name       The name associated with the registered variable.
  * @param recordVar  A pointer to the RecordableBase object to be registered.
  */
-void XmlRecorder::registerVariable(const string &varName, RecordableBase *recordVar)
+void XmlRecorder::registerVariable(const string &varName, RecordableBase &recordVar)
 {
    // add a new variable into the table
-   if (recordVar != nullptr) {
-      RecordableBase &address = *recordVar;
-      variableTable_.push_back(singleVariableInfo(varName, address));
-   }
+   variableTable_.push_back(singleVariableInfo(varName, recordVar));
 }
 
 /**
@@ -198,10 +195,8 @@ void XmlRecorder::registerVariable(const string &varName, vector<RecordableBase 
 {
    for (int i = 0; i < recordVars.size(); i++) {
       string variableID = varName + to_string(i);
-      if (recordVars[i] != nullptr) {
-         RecordableBase &address = *recordVars[i];
-         // add a new variable into the table
-         variableTable_.push_back(singleVariableInfo(variableID, address));
-      }
+      RecordableBase &address = *recordVars[i];
+      // add a new variable into the table
+      variableTable_.push_back(singleVariableInfo(variableID, address));
    }
 }

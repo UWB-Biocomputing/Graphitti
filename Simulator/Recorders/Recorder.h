@@ -54,7 +54,7 @@ public:
    /// Register a single instance of a class derived from RecordableBase.
    /// It stores the address of the registered variable and the related information
    /// of this recorded variable
-   virtual void registerVariable(const string &varName, RecordableBase *recordVar) = 0;
+   virtual void registerVariable(const string &varName, RecordableBase &recordVar) = 0;
 
    /// register a vector of instance of a class derived from RecordableBase.
    virtual void registerVariable(const string &varName, vector<RecordableBase *> &recordVars) = 0;
