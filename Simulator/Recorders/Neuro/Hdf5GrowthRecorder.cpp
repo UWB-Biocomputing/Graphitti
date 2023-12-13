@@ -93,8 +93,8 @@ void Hdf5GrowthRecorder::term()
    Hdf5Recorder::term();
 }
 
-   // TODO: No parameters needed (AllVertices &vertices)
-   /// Compile/capture variable history information in every epoch
+// TODO: No parameters needed (AllVertices &vertices)
+/// Compile/capture variable history information in every epoch
 void Hdf5GrowthRecorder::compileHistories(AllVertices &neurons)
 {
    Hdf5Recorder::compileHistories(neurons);
@@ -203,7 +203,8 @@ void Hdf5GrowthRecorder::registerVariable(const string &varName, RecordableBase 
 }
 
 /// register a vector of instance of a class derived from RecordableBase.
-void Hdf5GrowthRecorder::registerVariable(const string &varName, vector<RecordableBase *> &recordVars)
+void Hdf5GrowthRecorder::registerVariable(const string &varName,
+                                          vector<RecordableBase *> &recordVars)
 {
 }
 

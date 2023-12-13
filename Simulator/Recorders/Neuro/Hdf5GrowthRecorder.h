@@ -75,7 +75,8 @@ public:
    virtual void registerVariable(const string &varName, RecordableBase &recordVar) override;
 
    /// register a vector of instance of a class derived from RecordableBase.
-   virtual void registerVariable(const string &varName, vector<RecordableBase *> &recordVars) override;
+   virtual void registerVariable(const string &varName,
+                                 vector<RecordableBase *> &recordVars) override;
 
 protected:
    virtual void initDataSet() override;
