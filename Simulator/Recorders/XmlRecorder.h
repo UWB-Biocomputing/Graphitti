@@ -25,7 +25,7 @@
 #include "Recorder.h"
 
 /// a list of basic data types in different recorded variables
-typedef variant<uint64_t, double, string> multipleTypes;
+using multipleTypes = variant<uint64_t, double, string>;
 
 class XmlRecorder : public Recorder {
 public:
