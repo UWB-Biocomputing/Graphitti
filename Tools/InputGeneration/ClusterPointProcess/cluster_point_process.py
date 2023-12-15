@@ -417,8 +417,9 @@ class EventGenerator(QWidget):
 
                 # Output filenames are generic, will match the filename you inputted
                 graph_file_path = self.graph_file_label.text()
-                output_file_name = os.path.basename(graph_file_path)
-                output_file = os.path.splitext(output_file_name)[0] + ".xml"
+                output_file_basename = os.path.basename(graph_file_path)
+                output_file_name = os.path.splitext(output_file_basename)[0].upper()
+                output_file = output_file_name + "_cluster_point_process.xml"
                 # Commented out code that saves to a .csv file
                 # sec_events_df = pd.DataFrame(sec_events, columns=['time', 'duration', 'x', 'y', 'type'])
                 # sec_events_df.to_csv(output_file, index=False, header=True)
@@ -429,11 +430,13 @@ class EventGenerator(QWidget):
                 # The root element
                 inputs = et.Element('simulator_inputs')
 
+                output_description_name = output_file_name + "Calls "
                 # The data element will contain all calls grouped per vertex
-                data = et.SubElement(inputs, 'data', {"description": "SPD Calls - Cluster Point Process", 
+                # Use the filename to dynamically update the description attribute
+                data = et.SubElement(inputs, 'data', {"description": f"{output_file_name} Calls - Cluster Point Process", 
                                                     "clock_tick_size": "1",
                                                     "clock_tick_unit": "sec"})
-                
+
                 # Create the vertex element with all its associated calls (events)
                 vertex_name = graph.nodes[graph_id]['name']
                 data = add_vertex_events(data, graph_id, vertex_name, sec_events)
@@ -472,4 +475,3 @@ if __name__ == '__main__':
     import networkx as nx
     import time
     main()
-    
