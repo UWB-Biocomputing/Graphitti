@@ -2,35 +2,39 @@ import numpy as np
 import math
 import lxml.etree as et
 import pandas as pd
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QFileDialog, QMessageBox
+import os
 
-def primprocess(first_inp, last_inp, pp_mu, pp_dead_t, region_grid):
-    # Generates a set of primary spatio-temporal events between first_inp and last_inp.
+def primprocess(first, last, pp_mu, pp_dead_t, region_grid):
+    # Generates a set of primary spatio-temporal events between first and last.
     # The time intervals between events are exponentially distributed with
     # mean pp_mu. The events are then uniformly distributed between the segments
     # of the region_grid, which serve as a constrain box for randomly selecting
     # the (x, y) location.
     # The pp_dead_t is the dead time after an event. It helps to avoid having 2
     # events ocurring at the exact same time. Finally, the times are given in seconds.
-    events = np.array([first_inp])
+    events = np.array([first])
     aveInt = pp_mu + pp_dead_t
 
     # Generate all the primary processes between first and lastInp
     # drawing the interval between event from an exponential
     # distribution
-    while events[-1] < last_inp:
-        numInts = int(np.round((last_inp - events[-1]) / aveInt)) + 1
+    while events[-1] < last:
+        numInts = int(np.round((last - events[-1]) / aveInt)) + 1
         newInts = np.random.exponential(scale=pp_mu, size=numInts) + pp_dead_t
         newInts = np.cumsum(newInts)
         events = np.concatenate([events, newInts + events[-1]])
 
     # Include only events between first and lastInp
-    if events[-1] > last_inp:
-        events = events[events <= last_inp]
+    if events[-1] > last:
+        events = events[events <= last]
 
     # Add spatial dimension to the primary process.
     # Create a numpy array of uniformly distributed random segments drawn
     # from the region_grid
     n = len(events)
+
     rand_segments = region_grid[np.random.randint(0, len(region_grid), n)]
     # Generate x and y from the 2 corners defined in each segment
     x = np.random.uniform(rand_segments[:,0,0], rand_segments[:,1,0])
@@ -236,133 +240,235 @@ def add_vertex_events(node, vertex_id, vertex_name, data):
 
     return node
 
+class EventGenerator(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("911 Call Data Generator")
+        self.init_ui()
+
+    def init_ui(self):
+        layout = QVBoxLayout()
+
+        # Input labels for GUI
+        self.labels = [
+            "First (seconds):",
+            "Last (seconds):",
+            "Mean Time Interval (seconds):",
+            "Dead Time after Event (seconds):",
+            "Mean Call Interval after incident (seconds):",
+            "Mean Duration (seconds):",
+            "Minimum Duration (seconds):",
+            "Mean Patience Time (seconds):",
+            "Mean On-Site Time (seconds):",
+        ]
+
+        self.entries = {}
+        for label_text in self.labels:
+            label = QLabel(label_text)
+            entry = QLineEdit()
+            self.entries[label_text] = entry
+
+            layout.addWidget(label)
+            layout.addWidget(entry)
+        
+        # Graph File input field
+        graph_file_label = QLabel("Select Graph File (.graphml):")
+        self.graph_file_label = QLineEdit()
+        graph_file_button = QPushButton("Browse")
+        graph_file_button.clicked.connect(self.browse_file)
+
+        layout.addWidget(graph_file_label)
+        layout.addWidget(self.graph_file_label)
+        layout.addWidget(graph_file_button)
+
+        # Graph ID input field
+        graph_id_label = QLabel("Graph ID:")
+        self.graph_id_entry = QLineEdit()
+
+        layout.addWidget(graph_id_label)
+        layout.addWidget(self.graph_id_entry)
+
+        # Submit button
+        generate_button = QPushButton("Generate Events")
+        generate_button.clicked.connect(self.generate_events)
+        layout.addWidget(generate_button)
+
+        self.setLayout(layout)
+        self.show()
+    
+    # Function that allows user to browse local files
+    def browse_file(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_dialog = QFileDialog()
+        file_dialog.setNameFilter("GraphML files (*.graphml)")
+        file_dialog.setViewMode(QFileDialog.Detail)
+        file_dialog.setFileMode(QFileDialog.ExistingFile)
+        file_dialog.setOptions(options)
+
+        if file_dialog.exec_():
+            selected_file = file_dialog.selectedFiles()
+            if selected_file[0].endswith(".graphml"):
+                self.graph_file_label.setText(selected_file[0])
+            else:
+                QMessageBox.warning(
+                    self, "Invalid File Type", "Please select a .graphml file."
+                )
+
+    # Moved existing main methods to take user inputted data
+    # Handles invalid inputs (string instead of int, wrong file 
+    # type but not invalid logic)
+    def generate_events(self):
+        error_message = ""
+        invalid_fields = []
+
+        for label_text, entry in self.entries.items():
+            if label_text != "Select Region Grid (.graphml):":
+                text = entry.text().strip()
+                if not text:
+                    invalid_fields.append(label_text)
+                else:
+                    try:
+                        float(text)  # Attempt to convert to float to check validity
+                    except ValueError:
+                        invalid_fields.append(label_text)
+
+        # Error handling
+        graph_file = self.graph_file_label.text().strip()
+        if not graph_file:
+            invalid_fields.append("Select Region Grid (.graphml):")
+        elif not graph_file.endswith(".graphml"):
+            invalid_fields.append("Select Region Grid (.graphml) must be a .graphml file.")
+
+        if invalid_fields:
+            error_message = "Invalid or empty values in the following fields:\n"
+            for field in invalid_fields:
+                error_message += f"- {field}\n"
+
+        try:
+            if error_message:
+                raise ValueError(error_message)
+
+            # Get other necessary inputs for functions
+            first = float(self.entries["First (seconds):"].text())
+            last = float(self.entries["Last (seconds):"].text())
+            mu = float(self.entries["Mean Time Interval (seconds):"].text())
+            pp_dead_t = float(self.entries["Dead Time after Event (seconds):"].text())
+            sec_proc_sigma = float(self.entries["Mean Call Interval after incident (seconds):"].text())
+            duration_mean = float(self.entries["Mean Duration (seconds):"].text())
+            duration_min = float(self.entries["Minimum Duration (seconds):"].text())
+            patience_mean = float(self.entries["Mean Patience Time (seconds):"].text())
+            avg_on_site_time = float(self.entries["Mean On-Site Time (seconds):"].text())
+                
+            # Integration of the event generation code
+            if graph_file:
+                ###########################################################################
+                # PRIMARY EVENTS
+                ###########################################################################
+                # Start your event generation process here based on the valid inputs
+                graph = nx.read_graphml(graph_file)
+                graph_id = self.graph_id_entry.text().strip()
+                graph_attribute = graph.nodes[graph_id]['segments']
+                graph_grid = np.array(eval(graph_attribute))
+                
+                # Seed numpy random number to get consistent results
+                np.random.seed(20)
+                
+                # Call primprocess using the inputs from the interface
+                incidents = primprocess(first, last, mu, pp_dead_t, graph_grid)
+                print(f'Number of Primary events: {incidents.shape[0]}')
+
+                # Ratios based on NORCOM 2022 report. NORCOM doesn't make a distinction
+                # between EMS and Fire call types, so I split it in half.
+                type_ratios = {'Law': 0.64,
+                            'EMS': 0.18,
+                            'Fire': 0.18}
+                
+                # Generate the incident types based on the type_ratios
+                incidents_with_types = add_types(incidents, type_ratios)
+                
+                ###########################################################################
+                # SECONDARY EVENTS
+                ###########################################################################
+                # Define prototypes for location of secondary spatio-temporal points
+                # 0.001° is aproximately 111 meters (one footbal field plus both endzones)
+                # intensity represent the expected number of points per square unit.
+                # TODO: The values used for the prototypes are ballpark values not based on
+                #       real data. Althoug, they give us around 70,000 - 75,000 calls in a month,
+                #       which is close to what Seattle PD receives with 900,000 calls per year.
+                prototypes = {0: {'mu_r':0.0005, 'sdev_r':0.0001, 'mu_intensity':500000, 'sdev_intensity': 50000},
+                        1: {'mu_r':0.001, 'sdev_r':0.0001, 'mu_intensity':1000000, 'sdev_intensity': 60000},
+                        2: {'mu_r':0.0015, 'sdev_r':0.001, 'mu_intensity':1100000, 'sdev_intensity': 70000},
+                        3: {'mu_r':0.003, 'sdev_r':0.001, 'mu_intensity':1500000, 'sdev_intensity': 60000}}
+                
+                # Time the secondary process generation
+                start_t = time.time()
+
+                print('Generating Secondary events...')
+
+                sec_events = secprocess(sec_proc_sigma, duration_mean, duration_min, patience_mean,
+                                        avg_on_site_time, prototypes, incidents_with_types)
+                
+                end_t = time.time()
+
+                print('Elapsed time:', round(end_t - start_t, 4), 'seconds')
+                print('Number of Primary Events:', len(incidents_with_types))
+                print('Number of Secondary Events:', sec_events.shape[0])
+
+                # Output filenames are generic, will match the filename you inputted
+                graph_file_path = self.graph_file_label.text()
+                output_file_name = os.path.basename(graph_file_path)
+                output_file = os.path.splitext(output_file_name)[0] + ".xml"
+                # Commented out code that saves to a .csv file
+                # sec_events_df = pd.DataFrame(sec_events, columns=['time', 'duration', 'x', 'y', 'type'])
+                # sec_events_df.to_csv(output_file, index=False, header=True)
+
+                ###########################################################################
+                # TURN CALL LIST INTO AN XML TREE AND SAVE TO FILE
+                ###########################################################################
+                # The root element
+                inputs = et.Element('simulator_inputs')
+
+                # The data element will contain all calls grouped per vertex
+                data = et.SubElement(inputs, 'data', {"description": "SPD Calls - Cluster Point Process", 
+                                                    "clock_tick_size": "1",
+                                                    "clock_tick_unit": "sec"})
+                
+                # Create the vertex element with all its associated calls (events)
+                vertex_name = graph.nodes[graph_id]['name']
+                data = add_vertex_events(data, graph_id, vertex_name, sec_events)
+
+                tree = et.ElementTree(inputs)
+                tree_out = tree.write(output_file,
+                                    xml_declaration=True,
+                                    encoding='UTF-8',
+                                    pretty_print=True)
+
+                print('Secondary process was saved to:', output_file)
+                
+                # Display message box indicating completion
+                QMessageBox.information(
+                    self, "Process Complete", "Event generation completed successfully."
+                )
+            else:
+                QMessageBox.warning(
+                    self, "Missing File", "Please select a graph file."
+                )
+
+        except ValueError as ve:
+            error_box = QMessageBox()
+            error_box.setIcon(QMessageBox.Warning)
+            error_box.setWindowTitle("Input Error")
+            error_box.setText(str(ve))
+            error_box.exec_()
+
+def main():
+    app = QApplication(sys.argv)
+    window = EventGenerator()
+    sys.exit(app.exec_())
 
 if __name__ == '__main__':
     import pandas as pd
     import networkx as nx
     import time
-
-    # Get the grid for the Seattle PD Caller Region from the graphml file
-    graph_file = '../../gis2graph/graph_files/spd.graphml'
-    spd_cr_id = '74'
-    graph = nx.read_graphml(graph_file)
-    spd_grid = np.array(eval(graph.nodes[spd_cr_id]['segments']))
-
-    # Define prototypes for location of secondary spatio-temporal points
-    # 0.001° is aproximately 111 meters (one footbal field plus both endzones)
-    # intensity represent the expected number of points per square unit.
-    # TODO: The values used for the prototypes are ballpark values not based on
-    #       real data. Althoug, they give us around 70,000 - 75,000 calls in a month,
-    #       which is close to what Seattle PD receives with 900,000 calls per year.
-    prototypes = {0: {'mu_r':0.0005, 'sdev_r':0.0001, 'mu_intensity':500000, 'sdev_intensity': 50000},
-              1: {'mu_r':0.001, 'sdev_r':0.0001, 'mu_intensity':1000000, 'sdev_intensity': 60000},
-              2: {'mu_r':0.0015, 'sdev_r':0.001, 'mu_intensity':1100000, 'sdev_intensity': 70000},
-              3: {'mu_r':0.003, 'sdev_r':0.001, 'mu_intensity':1500000, 'sdev_intensity': 60000}}
-    
-    # TODO: These are ballpark values, we need to find these parameter estimates based on real data.
-    # All values are in seconds.
-    sec_proc_sigma = 20 # Mean of call interval after incident
-
-    ###########################################################################
-    # PRIMARY EVENTS
-    ###########################################################################
-    # Generate incidents for one day 24 hrs * 36000 = 86400 seconds
-    # Seattle PD PSAP dispatches to 318069 incidents a year that is,
-    # 36.309 avg incidents per hour or an average of 99 seconds between
-    # incidents.
-    first = 0
-    last = 86400  # one day in seconds
-    mu = 99 # seconds between incidents
-    # The dead time helps with having too many calls at the exact same time
-    pp_dead_t = 10   # (seconds)
-
-    # Ratios based on NORCOM 2022 report. NORCOM doesn't make a distinction
-    # between EMS and Fire call types, so I split it in half.
-    type_ratios = {'Law': 0.64,
-                   'EMS': 0.18,
-                   'Fire': 0.18}
-
-    # Seed numpy random number to get consistent results
-    np.random.seed(20)
-
-    incidents = primprocess(first, last, mu, pp_dead_t, spd_grid)
-    print(f'Number of Primary events: {incidents.shape[0]}')
-
-    # Generate the incident types based on the type_ratios
-    incidents_with_types = add_types(incidents, type_ratios)
-
-    ###########################################################################
-    # SECONDARY EVENTS
-    ###########################################################################
-    # Time the secondary process generation
-    start_t = time.time()
-
-    print('Generating Secondary events...')
-    # From the Seattle PD September 2020 data we obtained the following central point
-    # and spread estimates:
-    #   mean = 204.72
-    #   std dev = 222.57
-    # This is consistent with exponentially distributed values where the mean and
-    # standard deviation are equal.
-    duration_mean = 205
-    duration_min = 4 # seconds (based on Seattle PD September 2020 data)
-    # Patience time calculated from September 2020 data:
-    #   Fraction of abandonment = 0.0942
-    #   Avg Wait Time = 4.65 seconds
-    #   Abandonment rate = 0.0942/4.65 = 0.020258/second
-    #   Avg. Patience = 1/0.020258 = 49.36 Seconds
-    patience_mean = 49.36
-    
-    # Add on_site time as exponentially distributed.
-    # The following studies provide insights into the average time that Emergency Personal
-    # spend on-scene. In summary:
-    #   - The average on-scene reported by EMS in Mississippi was 14.67 [1].
-    #   - The overall average on-scene time in 5 regions of Western Cape was 27.55 minutes [3].
-    #   - Participants in this study expressed that emergency care providers should not
-    #     spend more than 20 minutes on the scene[2].
-    #
-    # 1) David, G., & Brachet, T. (2009). Retention, learning by doing, and performance in emergency medical services.
-    # Health Services Research, 44(3), 902–925. https://doi.org/10.1111/j.1475-6773.2009.00953.x
-    # 2) Vincent-Lambert, C., & Mottershaw, T. (2018). Views of emergency care providers about factors that extend
-    # on-scene time intervals. African Journal of Emergency Medicine, https://doi.org/10.1016/j.afjem.2017.08.003
-    # 3) Vanderschuren, M., & McKune, D. (2015). Emergency care facility access in rural areas within the golden
-    # hour?: Western Cape case study. International Journal of Health Geographics, 14(1),
-    # 5. https://doi.org/10.1186/1476-072X-14-5
-    #
-    # After examining these papers I have decided to use 20 minutes as the average on-scene time.
-    avg_on_site_time = 20 * 60
-    sec_events = secprocess(sec_proc_sigma, duration_mean, duration_min, patience_mean,
-                            avg_on_site_time, prototypes, incidents_with_types)
-    
-    end_t = time.time()
-    print('Elapsed time:', round(end_t - start_t, 4), 'seconds')
-    print('Number of Primary Events:', len(incidents_with_types))
-    print('Number of Secondary Events:', sec_events.shape[0])
-
-    output_file = 'SPD_cluster_point_process.xml'
-    # Commented out code that saves to a .csv file
-    # sec_events_df = pd.DataFrame(sec_events, columns=['time', 'duration', 'x', 'y', 'type'])
-    # sec_events_df.to_csv(output_file, index=False, header=True)
-
-    ###########################################################################
-    # TURN CALL LIST INTO AN XML TREE AND SAVE TO FILE
-    ###########################################################################
-    # The root element
-    inputs = et.Element('simulator_inputs')
-
-    # The data element will contain all calls grouped per vertex
-    data = et.SubElement(inputs, 'data', {"description": "SPD Calls - Cluster Point Process", 
-                                          "clock_tick_size": "1",
-                                          "clock_tick_unit": "sec"})
-    
-    # Create the vertex element with all its associated calls (events)
-    vertex_name = graph.nodes[spd_cr_id]['name']
-    data = add_vertex_events(data, spd_cr_id, vertex_name, sec_events)
-
-    tree = et.ElementTree(inputs)
-    tree_out = tree.write(output_file,
-                          xml_declaration=True,
-                          encoding='UTF-8',
-                          pretty_print=True)
-
-    print('Secondary process was saved to:', output_file)
+    main()
