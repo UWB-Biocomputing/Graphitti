@@ -64,6 +64,7 @@ using uint64_t = unsigned long long int;   //included in inttypes.h, which is no
    //#include "Norm.h"
 #include "Coordinate.h"
 #include "VectorMatrix.h"
+#include "AllEdges.h"
 
 using namespace std;
 
@@ -230,7 +231,7 @@ void printPerformanceMetrics(const float total_time, int steps);
 #endif   // PERFORMANCE_METRICS
 
 #ifdef ASSERT_TESTING
-
+void testEdges();
 #endif   //ASSERT_TESTING
 
 // TODO comment

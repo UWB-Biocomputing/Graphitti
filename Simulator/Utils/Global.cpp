@@ -132,7 +132,23 @@ void printPerformanceMetrics(const float total_time, int steps)
 #endif   // PERFORMANCE_METRICS
 
 #ifdef ASSERT_TESTING
-
+void testEdges()
+{
+   // Neuro
+   assert(II == 0);
+   assert(IE == 1);
+   assert(EI == 2);
+   assert(EE == 3);
+   // NG911
+   assert(CP == 4);
+   assert(PR == 5);
+   assert(PC == 6);
+   assert(PP == 7);
+   assert(RP == 8);
+   assert(RC == 9);
+   // Default Value
+   assert(ETYPE_UNDEF == -1);
+}
 #endif   // ASSERT_TESTING
 
 // TODO comment
