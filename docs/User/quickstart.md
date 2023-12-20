@@ -50,7 +50,22 @@ As a quick start and sanity test, let's run a small, prepackaged simulation to m
    $ ./cgraphitti -c ../configfiles/test-small.xml
    ```
 
-5. The program will then run and display the current step and epoch of the simulation. The output of the simulation (after the end of the simulation) will be saved in the ```Output/Results``` folder.
+5. To access the command line options of Graphitti, use the `-help` flag with its CPU or GPU executable. Here's an example of how to run it:
+
+    ```
+    $ ./cgraphitti -help
+    ```
+
+The following options are available:
+
+- `-c, --configfile=<configfile>`: Specifies the filepath for the parameter configuration file. This file is required.
+- `-i, --stimulusfile=<stimulusfile>`: Specifies the filepath for the stimulus input file. This file is required.
+- `-d, --deserializefile=<deserializefile>`: Specifies the filepath for simulation deserialization. Enabling this option allows you to deserialize a previous simulation.
+- `-s, --serializefile=<serializefile>`: Specifies the filepath for simulation serialization. Enabling this option allows you to serialize the simulation.
+- `-v, --version`: Outputs the current git commit ID and exits.
+
+
+6. The program will then run and display the current step and epoch of the simulation. The output of the simulation (after the end of the simulation) will be saved in the ```Output/Results``` folder.
 
 The run time of this test is small-ish on a fast computer (maybe a couple minutes), but this particular test also doesn't do much. The output will be mostly nothing - but it shouldn't crash or give you anything weird. 
 

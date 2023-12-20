@@ -86,9 +86,9 @@ Other external guides for remote VS Code development:
 The following options are available:
 
 - `-c, --configfile=<configfile>`: Specifies the filepath for the parameter configuration file. This file is required.
-- `-s, --stimulusfile=<stimulusfile>`: Specifies the filepath for the stimulus input file. This file is required.
-- `-r, --deserializefile=<deserializefile>`: Specifies the filepath for simulation deserialization. Enabling this option allows you to deserialize a previous simulation.
-- `-w, --serializefile=<serializefile>`: Specifies the filepath for simulation serialization. Enabling this option allows you to serialize the simulation.
+- `-i, --stimulusfile=<stimulusfile>`: Specifies the filepath for the stimulus input file. This file is required.
+- `-d, --deserializefile=<deserializefile>`: Specifies the filepath for simulation deserialization. Enabling this option allows you to deserialize a previous simulation.
+- `-s, --serializefile=<serializefile>`: Specifies the filepath for simulation serialization. Enabling this option allows you to serialize the simulation.
 - `-v, --version`: Outputs the current git commit ID and exits.
 
 ## Using Visual Studio Code 
