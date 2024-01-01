@@ -1,49 +1,56 @@
 cmake_minimum_required(VERSION 3.12)
 
 ############################################################################################
-#CONDITIONAL FLAG(to run simulation on CPU or GPU)
+# CONDITIONAL FLAG(to run simulation on CPU or GPU)
 #
-#For GPU : For CPU:
-#set(ENABLE_CUDA YES) set(ENABLE_CUDA NO)
+# For GPU : For CPU:
+# set(ENABLE_CUDA YES) set(ENABLE_CUDA NO)
 #
-#You can also pass this flag when running cmake from the command line like this:
+# You can also pass this flag when running cmake from the command line like this:
 #
-#cmake..- D ENABLE_CUDA = YES
+# cmake .. -DENABLE_CUDA=YES
 #
-#"YES" / GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
+# "YES" / GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
 if(NOT ENABLE_CUDA)
         set(ENABLE_CUDA NO)
 endif()
 
-#CONDITIONAL FLAG to turn on the performance metrics 
+# CONDITIONAL FLAG to turn on the performance metrics 
+# cmake .. -DPERFORMANCE_METRICS=YES
 if(NOT PERFORMANCE_METRICS)
         set(PERFORMANCE_METRICS NO)
 endif()
 
-#CONDITIONAL FLAG to turn on the Gprof profiler(                                                   \
+# CONDITIONAL FLAG to turn on testing 
+# cmake .. -DASSERTION_TESTING=YES
+if(NOT ASSERTION_TESTING)
+        set(ASSERTION_TESTING NO)
+endif()
+
+# CONDITIONAL FLAG to turn on the Gprof profiler(                                                   \
 #   Gprof is a performance analysis tool for Unix applications)
-#Steps to run Gprof
-#Step 01 : set(GPROF YES) below
-#Step 02 : Compile and run the simulation on CPU or GPU as usual
-#Step 03 : Run the generated gmon.out file from the build directory and save the output in an txt  \
+# Steps to run Gprof
+# Step 01 : set(GPROF YES) below
+# Step 02 : Compile and run the simulation on CPU or GPU as usual
+# Step 03 : Run the generated gmon.out file from the build directory and save the output in an txt  \
 #      file to improve readability                                                                  \
-#If using CPU - "~/Graphitti/build$ gprof cgraphitti gmon.out > analysis_test.txt"
-#If using GPU - "~/Graphitti/build$ gprof ggraphitti gmon.out > analysis_test.txt" 
+# If using CPU - "~/Graphitti/build$ gprof cgraphitti gmon.out > analysis_test.txt"
+# If using GPU - "~/Graphitti/build$ gprof ggraphitti gmon.out > analysis_test.txt" 
 if(NOT GPROF)
         set(GPROF NO)
 endif()
 
-#Creates the Graphitti project with the correct languages, depending on if using GPU or not
-#If using CUDA, also verify the CUDA package and set the required CUDA variables
+# Creates the Graphitti project with the correct languages, depending on if using GPU or not
+# If using CUDA, also verify the CUDA package and set the required CUDA variables
 if(ENABLE_CUDA)	
         message("\n----Generating Makefile for Graphitti GPU version----")
         project(Graphitti LANGUAGES CXX CUDA C)
-#Verify CUDA package is present
+# Verify CUDA package is present
         find_Package(CUDA REQUIRED)
-#Set the USE_GPU preprocessor macro so that GPU code will be compiled.
+# Set the USE_GPU preprocessor macro so that GPU code will be compiled.
         add_compile_definitions(USE_GPU)
-#Specify the CUDA architecture / gencode that will be targeted
+# Specify the CUDA architecture / gencode that will be targeted
         ### Set gencode and architecture variables to the correct values for your specific NVIDIA hardware
         set(CMAKE_CUDA_ARCHITECTURES 37)        
         set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_37,code=sm_37)
@@ -53,16 +60,21 @@ else()
         project(Graphitti LANGUAGES CXX C)
 endif()
 
-#Setting the base version to C++ 11
+# Setting the base version to C++ 11
 set(CMAKE_CXX_STANDARD 17)
 
-#set(DEBUG_MODE YES) for debugging, no optimization
-#set(DEBUG_MODE NO) for production code, -O3 optimization enabled
+# set(DEBUG_MODE YES) for debugging, no optimization
+# set(DEBUG_MODE NO) for production code, -O3 optimization enabled
 set(DEBUG_MODE NO)
 
 if(PERFORMANCE_METRICS)
-        message("-- Setting PEREFORMANCE_METRICS: ON")
+        message("-- Setting PERFORMANCE_METRICS: ON")
         add_definitions(-DPERFORMANCE_METRICS)
+endif()
+
+if(ASSERTION_TESTING)
+        message("-- Setting ASSERTION_TESTING: ON")
+        add_definitions(-DASSERTION_TESTING)
 endif()
 
 if(GPROF)
@@ -72,7 +84,7 @@ if(GPROF)
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
 endif()
 
-#HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libraries to the executable     \
+# HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libraries to the executable     \
 #                  later in the file.
 find_package(HDF5 COMPONENTS C CXX)
 if (HDF5_FOUND)
@@ -84,52 +96,52 @@ else()
         message("-- HDF5 library was not located. Please only use XML recorders.")
 endif()
 
-#Find boost graph library
+# Find boost graph library
 find_package(Boost REQUIRED COMPONENTS graph)
 
-#Get git commit ID
-#Change to "git rev-parse --short HEAD" for short commit ID
+# Get git commit ID
+# Change to "git rev-parse --short HEAD" for short commit ID
 execute_process(
         COMMAND
         git rev-parse HEAD
         OUTPUT_VARIABLE        GIT_COMMIT_ID )
 
-#GIT_COMMIT_ID has trailing whitespaces
+# GIT_COMMIT_ID has trailing whitespaces
 string(REGEX REPLACE "\n$" "" GIT_COMMIT_ID "${GIT_COMMIT_ID}")
 
-#Save GIT_COMMIT_ID to config.h, which is included in Core.cpp
+# Save GIT_COMMIT_ID to config.h, which is included in Core.cpp
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
                 ${CMAKE_BINARY_DIR}/config.h
                 @ONLY )
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-#set(CMAKE_VERBOSE_MAKEFILE TRUE)
+# set(CMAKE_VERBOSE_MAKEFILE TRUE)
 
-#Setting the location of the executable to be in the top                                           \
+# Setting the location of the executable to be in the top                                           \
 #  - level directory.This helps when using file paths during
-#runtime.
+# runtime.
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-#Set extra warning flags
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+# Set extra warning flags
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 if (NOT DEBUG_MODE)
         message("-- Setting Optimization flag: O3")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 endif()
 
-#define TIXML_USE_STL as a preproccersser macro to use the C++ standard library with TinyXML
+# define TIXML_USE_STL as a preproccersser macro to use the C++ standard library with TinyXML
 add_compile_definitions(TIXML_USE_STL)
 message("-- Setting Compile Definition: TIMXL_USE_STL")
 
-#Used to define file paths for #include definitions.For example, you can write:
+# Used to define file paths for #include definitions.For example, you can write:
 # #include "Simulator.h"
-#rather than:
+# rather than:
 # #include "Simulator/Core/Simulator.h"
-#if the file path "Simulator/Core" is in the following statement.
+# if the file path "Simulator/Core" is in the following statement.
 include_directories(
         ../Graphitti
         Simulator
@@ -175,12 +187,11 @@ if(ENABLE_CUDA)
         set_source_files_properties(${cuda_sources} PROPERTIES LANGUAGE CUDA)
 endif()
 
-   #Collect source files and create libraries
-   #Libraries containing.cpp files compiled as CUDA.cu files should be created as STATIC to ensure \
-   #proper linking
+# Collect source files and create libraries
+# Libraries containing.cpp files compiled as CUDA.cu files should be created as STATIC to ensure \
+# proper linking
 
-
-   #Create Connections library
+# Create Connections library
 file(GLOB_RECURSE Connections_Source Simulator/Connections/*.cpp Simulator/Connections/*.h)
 
 if(ENABLE_CUDA)
@@ -400,7 +411,8 @@ target_link_libraries(serialFileAccessTest gtest gtest_main)
 # Link the combined library into the 'serialFileAccessTest' executable.
 target_link_libraries(serialFileAccessTest combinedLib)
 
-# Clear ENABLE_CUDA, PERFORMANCE_METRICS and GPROF from the cache so it's reset for subsequent builds
+# Clear ENABLE_CUDA, PERFORMANCE_METRICS, ASSERTION_TESTING and GPROF from the cache so it's reset for subsequent builds
 unset(ENABLE_CUDA CACHE)
 unset(PERFORMANCE_METRICS CACHE)
+unset(ASSERTION_TESTING CACHE)
 unset(GPROF CACHE)
