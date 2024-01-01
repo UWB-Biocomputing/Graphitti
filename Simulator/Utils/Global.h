@@ -233,7 +233,7 @@ void printPerformanceMetrics(const float total_time, int steps);
 
 #ifdef ASSERTION_TESTING
 void testEdges();
-#endif // ASSERTION_TESTING
+#endif   // ASSERTION_TESTING
 
 // TODO comment
 extern const string MATRIX_TYPE;
