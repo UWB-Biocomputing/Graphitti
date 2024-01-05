@@ -1,0 +1,52 @@
+@startuml Recordable ClassDiagram
+
+/' Objects '/
+
+abstract class RecordableBase {
+	+{abstract} getNumEventsInEpoch() const : int
+	+{abstract} startNewEpoch() : void
+	+{abstract} getElement(int index) const : variant<uint64_t, double, char>
+	+{abstract} setDataType() : void
+	+{abstract} getDataType() : string
+}
+class Recordable<T>{
+	-eventTimeSteps_ : vector<T>
+	-basicDataType_ : string
+	+getNumEventsInEpoch() const : int
+	+startNewEpoch() : void
+	+getElement(int index) const : variant<uint64_t, double, char>
+	+setDataType() : void
+	+getDataType() : string
+}
+
+class EventBuffer<uint64_t> {
+	+EventBuffer(int maxEvents)
+	-epochStart_ : int
+	+setDataType() : void
+	+getDataType() : string
+	+getElement(int index) const : variant<uint64_t, double, char>
+	+getNumEventsInEpoch() : int {query}
+	-numEventsInEpoch_ : int
+	-queueEnd_ : int
+	-queueFront_ : int
+	+getPastEvent(int offset) : uint64_t {query}
+	+operator[](int i) : uint64_t {query}
+	/'-eventTimeSteps_ : vector<uint64_t>'/
+	+clear() : void
+	+insertEvent(uint64_t timeStep) : void
+	+resize(int maxEvents) : void
+	+startNewEpoch() : void
+}
+
+class ConstantBuffer<int>
+
+
+/' Inheritance relationships '/
+
+.RecordableBase <|-- .Recordable
+
+
+.Recordable <|-- .EventBuffer
+
+
+.Recordable <|-- .ConstantBuffer

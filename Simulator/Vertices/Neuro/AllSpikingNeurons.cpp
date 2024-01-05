@@ -21,16 +21,31 @@ void AllSpikingNeurons::setupVertices()
    hasFired_.assign(size_, false);
    vertexEvents_.assign(size_, maxSpikes);
 
-   // register variable vertexEvents_
-   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   recorder.registerVariable("Neuron_", vertexEvents_);
+   // Register spike history variables
+   registerSpikeHistoryVariables();
+}
 
-   // // register neuron information in vertexEvents_ one by one
-   // Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   // for (int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++) {
-   //    string neuronID = "Neuron_" + to_string(iNeuron);
-   //    recorder.registerVariable(neuronID, vertexEvents_[iNeuron]);
+///  Register spike history variables for all neurons.
+///  Option 1: Register neuron information in vertexEvents_ one by one.
+///  Option 2: Register a vector of EventBuffer variables.
+void AllSpikingNeurons::registerSpikeHistoryVariables()
+{
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   string baseName = "Neuron_";
+
+   // Option 1: Register neuron information in vertexEvents_ one by one
+   for (int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++) {
+      // variable name = baseName + neuron number
+      string neuronID = baseName + std::to_string(iNeuron);
+      recorder.registerVariable(neuronID, vertexEvents_[iNeuron]);
+   }
+
+   // Option 2: Register a vector of EventBuffer variables
+   // vector<RecordableBase *> variables;
+   // for(int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++){
+   //    variables.push_back(&vertexEvents_[iNeuron]);
    // }
+   // recorder.registerVariable(baseName, variables);
 }
 
 ///  Clear the spike counts out of all Neurons.

@@ -212,8 +212,8 @@ void Hdf5Recorder::term()
 {
 }
 
-/// Compile history information in every epoch.
-/// @param[in] neurons   The entire list of neurons.
+// TODO: No parameters needed (AllVertices &vertices)
+/// Compile/capture variable history information in every epoch
 void Hdf5Recorder::compileHistories(AllVertices &vertices)
 {
    AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(vertices);
@@ -465,7 +465,7 @@ void Hdf5Recorder::saveSimData(const AllVertices &vertices)
 ///
 ///  @param  matrix      Starter Neuron matrix.
 ///  @param  startermap Bool map to reference neuron matrix location from.
-void Hdf5Recorder::getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap)
+void Hdf5Recorder::getStarterNeuronMatrix(VectorMatrix &matrix, const vector<bool> &starterMap)
 {
    int cur = 0;
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
@@ -487,11 +487,15 @@ void Hdf5Recorder::printParameters()
                                    << "\tResult file path: " << resultFileName_ << endl);
 }
 
-void Hdf5Recorder::registerVariable(std::string varName, EventBuffer &recordVar)
+/// Register a single instance of a class derived from RecordableBase.
+/// It stores the address of the registered variable and the related information
+/// of this recorded variable
+void Hdf5Recorder::registerVariable(const string &varName, RecordableBase &recordVar)
 {
 }
 
-void Hdf5Recorder::registerVariable(string varName, vector<EventBuffer> &recordVar)
+/// register a vector of instance of a class derived from RecordableBase.
+void Hdf5Recorder::registerVariable(const string &varName, vector<RecordableBase *> &recordVars)
 {
 }
 

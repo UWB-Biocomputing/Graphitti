@@ -86,7 +86,6 @@ class RecorderFactory {
 class XmlRecorder {
 	+XmlRecorder()
 	+{static} Create() : Recorder*
-	#variablesHistory_ : vector<vector<uint64_t>>
 	#variableTable_ : vector<singleVariableInfo>
 	#resultOut_ : ofstream
 	+compileHistories(AllVertices& vertices) : void
@@ -98,19 +97,23 @@ class XmlRecorder {
 	+printParameters() : void
 	+saveSimData(const AllVertices& vertices) : void
 	+term() : void
-	+registerVariable(string varName, EventBuffer &recordVar) : void
+	+registerVariable(const string &varName, RecordableBase &recordVar) : void
+	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
 	
-	/' methods only used for unit test '/
+	/' methods only used for unit test 
 	+XmlRecorder(string fileName_)
-	+getVariableName(int numIndex) const : string
-	+getSingleVariable(int numIndex) const : &EventBuffer
-	+getHistory() const : const &vector<vector<uint64_t>>
+	+getVariableName(int numIndex) const : const string&
+	+getSingleVariable(int numIndex) const : &RecordableBase
+	+getHistory() const : const &vector<variant<uint64_t, double, string>>
+	'/
 }
 
 struct singleVariableInfo {
 	#variableName_ : string
-	#variableLocation_ : shared_ptr<EventBuffer>
-	+singleVariableInfo(string name, EventBuffer &location)
+	#variableLocation_ : RecordableBase&
+	#variableHistory_ : vector<variant<uint64_t, double, string>
+	#dataType_ : string
+	+singleVariableInfo(string name, RecordableBase &location)
 }
 
 

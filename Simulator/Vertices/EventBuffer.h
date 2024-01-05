@@ -22,9 +22,10 @@
 
 #pragma once
 #include "Global.h"
+#include "Recordable.h"
 class AllSpikingNeurons;
 class AllIFNeurons;
-class EventBuffer {
+class EventBuffer : public Recordable<uint64_t> {
    friend class AllIFNeurons;
    friend class AllSpikingNeurons;
 
@@ -39,6 +40,36 @@ public:
    /// @param maxEvents Defaults to zero; otherwise, buffer size is set
    EventBuffer(int maxEvents = 0);
 
+   /** @name Recorder Interface
+    *  virtual methods in RecordableBase for use by Recorder classes
+    */
+   ///@{
+   /// Set up a string representing the basic data type
+   virtual void setDataType() override;
+
+   /// Get the value of the recordable variable at the specified index.
+   /// @param index The index of the recorded value to retrieve.
+   /// @return A variant representing the recorded value (uint64_t, double, or string).
+   virtual variant<uint64_t, double, string> getElement(int index) const override;
+
+   /// Get A string representing the data type of the recordable variable
+   virtual const string &getDataType() const override;
+
+   /// Get number of events in the current/preceding epoch
+   ///
+   /// Getting the number of events in the current epoch (or, in between epochs, the number of events
+   /// in the preceding epoch) is not the same as the number of events in the buffer, because the buffer
+   /// retains events from the previous epoch, too.
+   virtual int getNumEventsInEpoch() const override;
+
+   /// Start a new epoch
+   ///
+   /// Resets the internal variables associated with tracking the events in a epoch. Note that this doesn't
+   /// affect the contents of the buffer; it just resets things so that the epoch start is the index of the next
+   /// event to be enqueued and that the number of events in the epoch is 0.
+   virtual void startNewEpoch() override;
+   ///@}
+
    /// Resize event buffer
    ///
    /// Note that the buffer size will be set to maxEvents+1, to distinguish between
@@ -48,10 +79,6 @@ public:
    /// @param maxEvents Buffer size
    void resize(int maxEvents);
 
-   /** @name Recorder Interface
-    *  EventBuffer interface for use by Recorder classes
-    */
-   ///@{
    /// Access event from current epoch
    ///
    /// Access an element of the buffer as though it is an array or vector with element 0 being the first
@@ -60,27 +87,12 @@ public:
    /// @param i element number
    uint64_t operator[](int i) const;
 
-   /// Get number of events in the current/preceding epoch
-   ///
-   /// Getting the number of events in the current epoch (or, in between epochs, the number of events
-   /// in the preceding epoch) is not the same as the number of events in the buffer, because the buffer
-   /// retains events from the previous epoch, too.
-   int getNumEventsInEpoch() const;
-   ///@}
-
    /** @name Vertex and Edge Interface
     *  EventBuffer interface for use by the Vertex and Edge classes
     */
    ///@{
    /// Reset member variables consistent with an empty buffer
    void clear();
-
-   /// Start a new epoch
-   ///
-   /// Resets the internal variables associated with tracking the events in a epoch. Note that this doesn't
-   /// affect the contents of the buffer; it just resets things so that the epoch start is the index of the next
-   /// event to be enqueued and that the number of events in the epoch is 0.
-   void startNewEpoch();
 
    /// Insert an event time step
    ///
@@ -103,7 +115,7 @@ public:
 
 private:
    /// Holds the event time steps
-   vector<uint64_t> eventTimeSteps_;
+   // vector<uint64_t> eventTimeSteps_;
 
    /// Index of the first event in the queue
    int queueFront_;
