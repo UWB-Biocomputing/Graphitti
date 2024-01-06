@@ -23,6 +23,9 @@
 /// Constructor
 Model::Model()
 {
+  // Get a copy of the file logger to use log4cplus macros
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+
    // Reference variable used to get class type from ParameterManager.
    string type;
 
@@ -30,16 +33,31 @@ Model::Model()
    ParameterManager::getInstance().getStringByXpath("//LayoutParams/@class", type);
    layout_ = Factory<Layout>::getInstance().createType(type);
 
+   // If the Layout class is invalid (the factory couldn't create the object), exit.
+   if (layout_ == nullptr) {
+      LOG4CPLUS_INFO(fileLogger_, "INVALID CLASS: " + type);
+      exit(0);
+   }
+
    // Create Connections class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//ConnectionsParams/@class", type);
    connections_ = Factory<Connections>::getInstance().createType(type);
 
+   // If the Connections class is invalid (the factory couldn't create the object), exit.
+   if (connections_ == nullptr) {
+      LOG4CPLUS_INFO(fileLogger_, "INVALID CLASS: " + type);
+      exit(0);
+   }
+
    // Create Recorder class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
-   recorder_ = Factory<Recorder>::getInstance().createType(type);
+   recorder_ = Factory<IRecorder>::getInstance().createType(type);
 
-   // Get a copy of the file logger to use log4cplus macros
-   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   // If the Recorder class is invalid (the factory couldn't create the object), exit.
+   if (recorder_ == nullptr) {
+      LOG4CPLUS_INFO(fileLogger_, "INVALID CLASS: " + type);
+      exit(0);
+   } 
 }
 
 /// Save simulation results to an output destination.
