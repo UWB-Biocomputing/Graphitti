@@ -24,10 +24,20 @@
 
 Connections::Connections()
 {
+  // Get a copy of the file logger to use log4cplus macros
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
+
    // Create Edges/Synapses class using type definition in configuration file
    string type;
    ParameterManager::getInstance().getStringByXpath("//EdgesParams/@class", type);
    edges_ = Factory<AllEdges>::getInstance().createType(type);
+
+   // If the Edges class is invalid (the factory couldn't create the object), exit.
+   if (edges_ == nullptr) {
+      LOG4CPLUS_INFO(fileLogger_, "INVALID CLASS: " + type);
+      exit(0);
+   }
 
    // Get pointer to operations manager Singleton
    OperationManager &opsManager = OperationManager::getInstance();
@@ -43,10 +53,6 @@ Connections::Connections()
    // Register registerGraphProperties as Operations registerGraphProperties
    function<void()> regGraphPropsFunc = bind(&Connections::registerGraphProperties, this);
    opsManager.registerOperation(Operations::registerGraphProperties, regGraphPropsFunc);
-
-   // Get a copy of the file logger to use log4cplus macros
-   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
-   edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
 }
 
 AllEdges &Connections::getEdges() const
