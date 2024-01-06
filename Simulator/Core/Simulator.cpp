@@ -94,6 +94,12 @@ void Simulator::loadParameters()
    ParameterManager::getInstance().getStringByXpath("//RNGConfig/NoiseRNGSeed/@class", type);
    noiseRNG = Factory<MTRand>::getInstance().createType(type);
 
+   // If rng is invalid (the factory couldn't create the object), exit.
+   if (noiseRNG == nullptr) {
+      LOG4CPLUS_INFO(fileLogger_, "INVALID OBJECT: " + type);
+      exit(0);
+   }
+   
    ParameterManager::getInstance().getLongByXpath("//RNGConfig/InitRNGSeed/text()", initRngSeed_);
    ParameterManager::getInstance().getLongByXpath("//RNGConfig/NoiseRNGSeed/text()", noiseRngSeed_);
    noiseRNG->seed(noiseRngSeed_);
