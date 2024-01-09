@@ -12,7 +12,6 @@
 #include "VectorMatrix.h"
 #include <string>
 #include <vector>
-
 // cereal
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>

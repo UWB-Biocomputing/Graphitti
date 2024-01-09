@@ -32,7 +32,6 @@
 #include "Recorder.h"
 #include <log4cplus/loggingmacros.h>
 #include <memory>
-
 // cereal
 #include <cereal/types/memory.hpp>
 

@@ -68,7 +68,6 @@
 
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
-
 // cereal
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>

@@ -15,7 +15,6 @@
 #include "SparseMatrix.h"
 #include <string>
 #include <vector>
-
 // cereal
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>
@@ -321,6 +320,5 @@ CEREAL_REGISTER_TYPE(VectorMatrix);   // to enable polymorphism
 template <class Archive> void VectorMatrix::serialize(Archive &archive)
 {
    archive(cereal::base_class<Matrix>(this), cereal::make_nvp("theVector", theVector),
-           cereal::make_nvp("size", size));
+           cereal::make_nvp("size", size), cereal::make_nvp("nRng", nRng));
 }
-//TODO: serialize nRNG

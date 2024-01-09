@@ -19,8 +19,9 @@
 
 #include "BGTypes.h"
 #include "MatrixExceptions.h"
-#include <cereal/types/string.hpp>
 #include <string>
+//cereal
+#include <cereal/types/string.hpp>
 
 using namespace std;
 

@@ -82,6 +82,8 @@
 #include <ctime>
 #include <iostream>
 #include <stdint.h>
+// cereal
+#include <cereal/types/polymorphic.hpp>
 
 class MTRand {
    // Data
@@ -149,6 +151,8 @@ public:
    void load(uint32_t *const loadArray);   // from such array
    friend std::ostream &operator<<(std::ostream &os, const MTRand &mtrand);
    friend std::istream &operator>>(std::istream &is, MTRand &mtrand);
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
    void initialize(uint32_t oneSeed);
@@ -161,6 +165,13 @@ protected:
    static uint32_t hash(time_t t, clock_t c);
 };
 
+CEREAL_REGISTER_TYPE(MTRand);
+
+///  Cereal serialization method
+template <class Archive> void MTRand::serialize(Archive &archive)
+{
+   // archive();
+}
 
 // Change log:
 //

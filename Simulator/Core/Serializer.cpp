@@ -106,7 +106,7 @@ void Serializer::serializeSynapses()
    // We can serialize to a variety of archive file formats. Below, comment out
    // all but the two lines that correspond to the desired format.
    ofstream memory_out(simulator.getSerializationFileName().c_str());
-   cout << "PLease find the serialized file in " << simulator.getSerializationFileName().c_str();
+   cout << "Please find the serialized file in " << simulator.getSerializationFileName().c_str();
 
    // Options parameter are optional which sets
    // 1. Sets the Preceision of floating point number to 30

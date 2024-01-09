@@ -30,7 +30,6 @@
 #include "Simulator.h"
 #include <iostream>
 #include <vector>
-
 // cereal
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>
