@@ -33,6 +33,9 @@
 #include <log4cplus/loggingmacros.h>
 #include <memory>
 
+// cereal
+#include <cereal/types/memory.hpp>
+
 using namespace std;
 
 class Connections {
@@ -74,6 +77,9 @@ public:
    ///  Creates synapses from synapse weights saved in the serialization file.
    void createSynapsesFromWeights();
 
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive, std::uint32_t const version);
+
 #if defined(USE_GPU)
 public:
    ///  Update the weight of the Synapses in the simulation.
@@ -104,3 +110,12 @@ protected:
    log4cplus::Logger fileLogger_;
    log4cplus::Logger edgeLogger_;
 };
+
+CEREAL_CLASS_VERSION(Connections, 1);
+
+///  Cereal serialization method
+template <class Archive> void Connections::serialize(Archive &archive, std::uint32_t const version)
+{
+   archive(cereal::make_nvp("edges_", edges_),
+           cereal::make_nvp("synapseIndexMap_", synapseIndexMap_));
+}

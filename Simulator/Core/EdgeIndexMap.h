@@ -24,6 +24,9 @@
 #include "BGTypes.h"
 #include <vector>
 
+// cereal
+#include <cereal/types/vector.hpp>
+
 using namespace std;
 
 struct EdgeIndexMap {
@@ -68,6 +71,9 @@ struct EdgeIndexMap {
 
    ~EdgeIndexMap() = default;
 
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
+
 private:
    /// Number of total vertices.
    BGSIZE numOfVertices_;
@@ -101,3 +107,17 @@ struct EdgeIndexMapDevice {
    BGSIZE *incomingEdgeCount_;
 };
 #endif   // defined(USE_GPU)
+
+
+///  Cereal serialization method
+template <class Archive> void EdgeIndexMap::serialize(Archive &archive)
+{
+   archive(cereal::make_nvp("outgoingEdgeIndexMap_", outgoingEdgeIndexMap_),
+           cereal::make_nvp("outgoingEdgeBegin_", outgoingEdgeBegin_),
+           cereal::make_nvp("outgoingEdgeCount_", outgoingEdgeCount_),
+           cereal::make_nvp("incomingEdgeIndexMap_", incomingEdgeIndexMap_),
+           cereal::make_nvp("incomingEdgeBegin_", incomingEdgeBegin_),
+           cereal::make_nvp("incomingEdgeCount_", incomingEdgeCount_),
+           cereal::make_nvp("numOfVertices_", numOfVertices_),
+           cereal::make_nvp("numOfEdges_", numOfEdges_));
+}
