@@ -36,7 +36,7 @@ Model::Model()
 
    // Create Recorder class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
-   recorder_ = Factory<Recorder>::getInstance().createType(type);
+   recorder_ = Factory<IRecorder>::getInstance().createType(type);
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
