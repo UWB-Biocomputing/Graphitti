@@ -142,7 +142,7 @@ def secprocess(sp_sigma, duration_mean, duration_min, patience_mean, onsite_mean
             actClust[outliers] = np.random.exponential(scale=sp_sigma, size=len(outliers))
             outliers = np.where(actClust > upper_fence)[0]
         
-        sec_evts_t_tmp = prim_evts[pe_num][0] + actClust.reshape(expected_points_num)
+        sec_evts_t_tmp = prim_evts[pe_num][0] + np.cumsum(actClust.reshape(expected_points_num))
         sec_evts_t = np.append(sec_evts_t, sec_evts_t_tmp)
 
         # We will locate the secondary events within a circle, with the primary event at the center
