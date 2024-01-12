@@ -73,7 +73,7 @@ void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap
          assert(dst == vertex);
 
          CircularBuffer<Call> &dstQueue = all911Vertices.getQueue(dst);
-         if (dstQueue.size() == (dstQueue.capacity() - all911Vertices.busyServers(dst))) {
+         if (dstQueue.size() >= (dstQueue.capacity() - all911Vertices.busyServers(dst))) {
             // Call is dropped because there is no space in the waiting queue
             if (!isRedial_[edgeIdx]) {
                // Only count the dropped call if it's not a redial
