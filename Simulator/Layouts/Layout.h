@@ -21,6 +21,9 @@
 #include <log4cplus/loggingmacros.h>
 #include <memory>
 #include <vector>
+// cereal
+#include <cereal/types/memory.hpp>
+#include <cereal/types/vector.hpp>
 
 using namespace std;
 
@@ -87,6 +90,8 @@ public:
 
    BGSIZE numCallerVertices_;   ///< Number of caller vertices.
 
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive, std::uint32_t const version);
 
 protected:
    unique_ptr<AllVertices> vertices_;
@@ -99,3 +104,21 @@ protected:
 
    int numVertices_;   ///< Total number of vertices in the graph.
 };
+
+CEREAL_CLASS_VERSION(Layout, 1);
+
+///  Cereal serialization method
+template <class Archive> void Layout::serialize(Archive &archive, std::uint32_t const version)
+{
+   archive(cereal::make_nvp("xloc", xloc_), cereal::make_nvp("yloc", yloc_),
+           cereal::make_nvp("dist2", dist2_), cereal::make_nvp("dist", dist_),
+           cereal::make_nvp("probedNeuronList", probedNeuronList_),
+           cereal::make_nvp("vertexTypeMap", vertexTypeMap_),
+           cereal::make_nvp("starterMap", starterMap_),
+           cereal::make_nvp("numEndogenouslyActiveNeurons", numEndogenouslyActiveNeurons_),
+           cereal::make_nvp("numCallerVertices", numCallerVertices_),
+           cereal::make_nvp("vertices", vertices_),
+           cereal::make_nvp("endogenouslyActiveNeuronList", endogenouslyActiveNeuronList_),
+           cereal::make_nvp("inhibitoryNeuronLayout", inhibitoryNeuronLayout_),
+           cereal::make_nvp("numVertices", numVertices_));
+}

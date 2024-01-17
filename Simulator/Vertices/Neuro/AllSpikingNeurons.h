@@ -28,6 +28,9 @@ using namespace std;
 #include "EventBuffer.h"
 #include "Global.h"
 #include <vector>
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
 struct AllSpikingNeuronsDeviceProperties;
 
@@ -43,6 +46,9 @@ public:
 
    ///  Clear the spike counts out of all Neurons.
    void clearSpikeCounts();
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 #if defined(USE_GPU)
 public:
@@ -132,3 +138,13 @@ struct AllSpikingNeuronsDeviceProperties : public AllVerticesDeviceProperties {
    int *numEventsInEpoch_;
 };
 #endif   // defined(USE_GPU)
+
+CEREAL_REGISTER_TYPE(AllSpikingNeurons);
+
+///  Cereal serialization method
+template <class Archive> void AllSpikingNeurons::serialize(Archive &archive)
+{
+   archive(cereal::base_class<AllVertices>(this), cereal::make_nvp("hasFired_", hasFired_),
+           //   cereal::make_nvp("vertexEvents_", vertexEvents_),
+           cereal::make_nvp("fAllowBackPropagation_", fAllowBackPropagation_));
+}
