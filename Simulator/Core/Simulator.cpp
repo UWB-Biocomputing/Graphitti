@@ -50,6 +50,7 @@ void Simulator::setup()
    t_host_initialization_connections = 0.0;
    t_host_advance = 0.0;
    t_host_adjustEdges = 0.0;
+   t_host_updateHistory = 0.0;
    timer.start();
    cerr << "done." << endl;
 #endif
@@ -171,12 +172,22 @@ void Simulator::simulate()
 #endif
       // Update the neuron network
       model_->updateConnections();
-      model_->updateHistory();
 
 #ifdef PERFORMANCE_METRICS
       // Times converted from microseconds to seconds
       // Time to update synapses
       t_host_adjustEdges += short_timer.lap() / 1000000.0;
+      // Start timer for history update
+      short_timer.start();
+
+#endif
+      // Update the neuron network
+      model_->updateHistory();
+
+#ifdef PERFORMANCE_METRICS
+      // Times converted from microseconds to seconds
+      // Time to update history
+      t_host_updateHistory += short_timer.lap() / 1000000.0;
       // Time since start of simulation
       double total_time = timer.lap() / 1000000.0;
 
