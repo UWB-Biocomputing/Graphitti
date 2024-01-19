@@ -18,7 +18,7 @@ endif()
 
 #CONDITIONAL FLAG to turn on the performance metrics 
 if(NOT PERFORMANCE_METRICS)
-        set(PERFORMANCE_METRICS NO)
+        set(PERFORMANCE_METRICS YES)
 endif()
 
 #CONDITIONAL FLAG to turn on the Gprof profiler(                                                   \
