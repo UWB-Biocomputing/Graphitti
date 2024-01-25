@@ -103,7 +103,7 @@ protected:
    static const int M = 397;   // period parameter
 
    uint32_t state[N];   // internal state
-   uint32_t *pNext;     // next value to get from state
+   int iNext;           // next value to get from state
    int left;            // number of values left before reload needed
 
    //Methods
@@ -170,7 +170,8 @@ CEREAL_REGISTER_TYPE(MTRand);
 ///  Cereal serialization method
 template <class Archive> void MTRand::serialize(Archive &archive)
 {
-   // archive();
+   archive(cereal::make_nvp("state", state), cereal::make_nvp("iNext", iNext),
+           cereal::make_nvp("left", left));
 }
 
 // Change log:

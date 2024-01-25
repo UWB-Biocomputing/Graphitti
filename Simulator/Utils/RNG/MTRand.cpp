@@ -123,7 +123,7 @@ uint32_t MTRand::randInt()
    --left;
 
    uint32_t s1;
-   s1 = *pNext++;
+   s1 = state[iNext++];
    s1 ^= (s1 >> 11);
    s1 ^= (s1 << 7) & 0x9d2c5680UL;
    s1 ^= (s1 << 15) & 0xefc60000UL;
@@ -267,7 +267,7 @@ void MTRand::load(uint32_t *const loadArray)
    for (; i--; *s++ = *la++) {
    }
    left = *la;
-   pNext = &state[N - left];
+   iNext = N - left;
 }
 
 
@@ -288,7 +288,7 @@ std::istream &operator>>(std::istream &is, MTRand &mtrand)
    for (; i--; is >> *s++) {
    }
    is >> mtrand.left;
-   mtrand.pNext = &mtrand.state[mtrand.N - mtrand.left];
+   mtrand.iNext = mtrand.N - mtrand.left;
    return is;
 }
 
@@ -321,7 +321,7 @@ void MTRand::reload()
       *p = twist(p[M - N], p[0], p[1]);
    *p = twist(p[M - N], p[0], state[0]);
 
-   left = N, pNext = state;
+   left = N, iNext = 0;
 }
 
 
