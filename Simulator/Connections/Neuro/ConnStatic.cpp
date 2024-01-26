@@ -22,6 +22,7 @@
 
 #include <algorithm>
 
+
 ConnStatic::ConnStatic()
 {
    threshConnsRadius_ = 0;

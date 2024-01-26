@@ -15,6 +15,9 @@
 #include "SparseMatrix.h"
 #include <string>
 #include <vector>
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
 using namespace std;
 
@@ -271,6 +274,9 @@ public:
    friend const VectorMatrix exp(const VectorMatrix &v);
    //@}
 
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
+
 protected:
    /******************************************
   * @name Internal Utilities
@@ -307,3 +313,12 @@ private:
    /// A normal RNG for the whole class
    static Norm nRng;
 };
+
+CEREAL_REGISTER_TYPE(VectorMatrix);   // to enable polymorphism
+
+///  Cereal serialization method
+template <class Archive> void VectorMatrix::serialize(Archive &archive)
+{
+   archive(cereal::base_class<Matrix>(this), cereal::make_nvp("theVector", theVector),
+           cereal::make_nvp("size", size), cereal::make_nvp("nRng", nRng));
+}

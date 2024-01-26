@@ -25,6 +25,9 @@
 #pragma once
 
 #include "AllNeuroEdges.h"
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
 struct AllSpikingSynapsesDeviceProperties;
 
@@ -80,6 +83,9 @@ public:
 
    ///  Prints SynapsesProps data to console.
    virtual void printSynapsesProps() const;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -290,8 +296,6 @@ public:
 
    ///  Length of the delayed queue.
    vector<int> delayQueueLength_;
-
-protected:
 };
 
 #if defined(USE_GPU)
@@ -326,3 +330,19 @@ struct AllSpikingSynapsesDeviceProperties : public AllEdgesDeviceProperties {
    int *delayQueueLength_;
 };
 #endif   // defined(USE_GPU)
+
+CEREAL_REGISTER_TYPE(AllSpikingSynapses);
+
+///  Cereal serialization method
+template <class Archive> void AllSpikingSynapses::serialize(Archive &archive)
+{
+   archive(cereal::base_class<AllNeuroEdges>(this), cereal::make_nvp("decay_", decay_),
+           cereal::make_nvp("tau_", tau_), cereal::make_nvp("tau_II_", tau_II_),
+           cereal::make_nvp("tau_IE_", tau_IE_), cereal::make_nvp("tau_EI_", tau_EI_),
+           cereal::make_nvp("tau_EE_", tau_EE_), cereal::make_nvp("delay_II_", delay_II_),
+           cereal::make_nvp("delay_IE_", delay_IE_), cereal::make_nvp("delay_EI_", delay_EI_),
+           cereal::make_nvp("delay_EE_", delay_EE_), cereal::make_nvp("totalDelay_", totalDelay_),
+           cereal::make_nvp("delayQueue_", delayQueue_),
+           cereal::make_nvp("delayIndex_", delayIndex_),
+           cereal::make_nvp("delayQueueLength_", delayQueueLength_));
+}

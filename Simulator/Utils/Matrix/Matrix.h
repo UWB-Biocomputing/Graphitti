@@ -20,16 +20,23 @@
 #include "BGTypes.h"
 #include "MatrixExceptions.h"
 #include <string>
+//cereal
+#include <cereal/types/string.hpp>
 
 using namespace std;
 
 class Matrix {
+   friend class cereal::access;
+
 public:
    /// Virtual Destructor
    virtual ~Matrix() = default;
 
    /// @brief Generate text representation of the Matrix to a stream
    virtual void Print(ostream &os) const = 0;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
    ///   Initialize attributes at construction time. This is protected to
@@ -81,3 +88,11 @@ protected:
 ///  @param os the output stream
 ///  @param obj the Matrix object to send to the output stream
 ostream &operator<<(ostream &os, const Matrix &obj);
+
+///  Cereal serialization method
+template <class Archive> void Matrix::serialize(Archive &archive)
+{
+   archive(cereal::make_nvp("type", type), cereal::make_nvp("init", init),
+           cereal::make_nvp("rows", rows), cereal::make_nvp("columns", columns),
+           cereal::make_nvp("multiplier", multiplier), cereal::make_nvp("dimensions", dimensions));
+}
