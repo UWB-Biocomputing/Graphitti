@@ -49,6 +49,7 @@
    #include "Hdf5GrowthRecorder.h"
 #endif
 
+
 ConnGrowth::ConnGrowth()
 {
    radiiSize_ = 0;
