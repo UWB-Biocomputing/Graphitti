@@ -12,6 +12,7 @@
  *     -# the number of data in the recorded variable.
  */
 #pragma once
+
 using namespace std;
 #include <variant>
 #include <vector>
@@ -37,4 +38,11 @@ public:
 
    /// Get A string representing the data type of the recordable variable
    virtual const string &getDataType() const = 0;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive)
+   {
+   }
 };
+
+CEREAL_REGISTER_TYPE(RecordableBase);

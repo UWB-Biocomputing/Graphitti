@@ -12,6 +12,10 @@
 #pragma once
 #include "RecordableBase.h"
 #include <vector>
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/vector.hpp>
 
 template <typename T> class Recordable : public RecordableBase {
 public:
@@ -52,9 +56,19 @@ public:
       return basicDataType_;
    }
 
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive)
+   {
+      archive(cereal::virtual_base_class<RecordableBase>(this),
+              cereal::make_nvp("eventTimeSteps_", eventTimeSteps_),
+              cereal::make_nvp("basicDataType_", basicDataType_));
+   }
+
 protected:
    /// Holds the event time steps
    vector<T> eventTimeSteps_;
    /// Private members to store the basic data type for recorded values
    string basicDataType_;
 };
+
+CEREAL_REGISTER_TYPE(Recordable<uint64_t>);

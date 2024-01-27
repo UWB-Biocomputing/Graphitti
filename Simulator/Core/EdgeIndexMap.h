@@ -23,7 +23,6 @@
 
 #include "BGTypes.h"
 #include <vector>
-
 // cereal
 #include <cereal/types/vector.hpp>
 

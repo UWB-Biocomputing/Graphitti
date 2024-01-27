@@ -332,5 +332,5 @@ template <class Archive> void AllIZHNeurons::serialize(Archive &archive)
            cereal::make_nvp("Dconst_", Dconst_), cereal::make_nvp("u_", u_),
            cereal::make_nvp("C3_", C3_));
 
-   //TODO: Serialize private variables?
+   //Private variables are intentionally excluded from serialization as they are populated from configuration files.
 }

@@ -314,5 +314,5 @@ template <class Archive> void AllIFNeurons::serialize(Archive &archive)
            cereal::make_nvp("C1_", C1_), cereal::make_nvp("C2_", C2_), cereal::make_nvp("I0_", I0_),
            cereal::make_nvp("Vm_", Vm_), cereal::make_nvp("Tau_", Tau_));
 
-   //TODO: Serialize private variables (ranges)?
+   //Private variables are intentionally excluded from serialization as they are populated from configuration files.
 }

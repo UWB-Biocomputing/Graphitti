@@ -145,6 +145,6 @@ CEREAL_REGISTER_TYPE(AllSpikingNeurons);
 template <class Archive> void AllSpikingNeurons::serialize(Archive &archive)
 {
    archive(cereal::base_class<AllVertices>(this), cereal::make_nvp("hasFired_", hasFired_),
-           //   cereal::make_nvp("vertexEvents_", vertexEvents_),
+           cereal::make_nvp("vertexEvents_", vertexEvents_),
            cereal::make_nvp("fAllowBackPropagation_", fAllowBackPropagation_));
 }
