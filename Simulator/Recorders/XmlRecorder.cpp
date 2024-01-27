@@ -78,13 +78,16 @@ void XmlRecorder::compileHistories(AllVertices &vertices)
 {
    //capture data information in each epoch
    for (int rowIndex = 0; rowIndex < variableTable_.size(); rowIndex++) {
-      if (variableTable_[rowIndex].variableLocation_.getNumEventsInEpoch() > 0) {
-         for (int columnIndex = 0;
-              columnIndex < variableTable_[rowIndex].variableLocation_.getNumEventsInEpoch();
-              columnIndex++) {
-            variableTable_[rowIndex].variableHistory_.push_back(
-               variableTable_[rowIndex].variableLocation_.getElement(columnIndex));
-         }
+   //    if (variableTable_[rowIndex].variableLocation_.getNumEventsInEpoch() > 0) {
+   //       for (int columnIndex = 0;
+   //            columnIndex < variableTable_[rowIndex].variableLocation_.getNumEventsInEpoch();
+   //            columnIndex++) {
+   //          variableTable_[rowIndex].variableHistory_.push_back(
+   //             variableTable_[rowIndex].variableLocation_.getElement(columnIndex));
+   //       }
+   //    }
+      if(variableTable_[rowIndex].variableType_ == UpdatedType::DYNAMIC){
+         variableTable_[rowIndex].captureData();
       }
       variableTable_[rowIndex].variableLocation_.startNewEpoch();
    }
@@ -112,9 +115,13 @@ void XmlRecorder::compileHistories(AllVertices &vertices)
 void XmlRecorder::saveSimData(const AllVertices &vertices)
 {
    // Write XML header information:
-   resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n";
+   string header = "<?xml version=\"1.0\" standalone=\"no\"?>\n";
+   resultOut_ << header;
    //iterate the variable list row by row then output the cumulative value to a xml file
    for (int rowIndex = 0; rowIndex < variableTable_.size(); rowIndex++) {
+      if(variableTable_[rowIndex].variableType_ == UpdatedType::CONSTANT){
+         variableTable_[rowIndex].captureData();
+      }
       if (variableTable_[rowIndex].variableHistory_.size() > 0) {
          resultOut_ << toXML(variableTable_[rowIndex].variableName_,
                              variableTable_[rowIndex].variableHistory_,
@@ -144,6 +151,8 @@ string XmlRecorder::toXML(const string &name, vector<multipleTypes> &singleBuffe
          os << get<double>(element) << " ";
       } else if (basicType == "string") {
          os << get<string>(element) << " ";
+      } else if (basicType == "BGFLOAT") {
+         os << get<BGFLOAT>(element) << " ";
       }
       // Add more conditions if there are additional supported data types
    }
@@ -182,6 +191,11 @@ void XmlRecorder::registerVariable(const string &varName, RecordableBase &record
    variableTable_.push_back(singleVariableInfo(varName, recordVar));
 }
 
+void XmlRecorder::registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType)
+{
+   variableTable_.push_back(singleVariableInfo(varName, recordVar, variableType));
+
+}
 /**
  * Register a vector of instances of classes derived from RecordableBase.
  *

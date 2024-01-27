@@ -41,13 +41,13 @@ public:
 
    /// Get the value of the recordable variable at the specified index.
    /// return A variant representing the recorded value (uint64_t, double, or string)
-   virtual variant<uint64_t, double, string> getElement(int index) const override
+   virtual variant<uint64_t, double, string, BGFLOAT> getElement(int index) const override
    {
       return eventTimeSteps_[index];
    }
 
    /// Get A string representing the data type of the recordable variable
-   virtual const string &getDataType() const override
+   virtual string &getDataType()  override
    {
       return basicDataType_;
    }
@@ -55,6 +55,5 @@ public:
 protected:
    /// Holds the event time steps
    vector<T> eventTimeSteps_;
-   /// Private members to store the basic data type for recorded values
-   string basicDataType_;
+
 };

@@ -14,6 +14,8 @@
 #include "Simulator.h"
 #include "Util.h"
 
+#include "RecordableBase.h"
+
 /// Constructor
 Layout::Layout() : numEndogenouslyActiveNeurons_(0)
 {
@@ -40,6 +42,7 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+
 }
 
 AllVertices &Layout::getVertices() const
@@ -71,6 +74,17 @@ void Layout::setup()
    // more allocation of internal memory
    starterMap_.assign(numVertices_, false);
    vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
+
+   // register variable
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   string baseName = "Location";
+   string x_location = baseName + "_x";
+   string y_Location = baseName + "_y";
+   recorder.registerVariable(baseName, xloc_, Recorder::UpdatedType::CONSTANT);
+   recorder.registerVariable(baseName, yloc_, Recorder::UpdatedType::CONSTANT);
+   // cout << "xloc_: " << &xloc_ << endl;
+   // RecordableBase& location = xloc_;
+   // cout << "location: " << &location << endl;
 }
 
 

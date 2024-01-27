@@ -104,14 +104,14 @@ class XmlRecorder {
 	+XmlRecorder(string fileName_)
 	+getVariableName(int numIndex) const : const string&
 	+getSingleVariable(int numIndex) const : &RecordableBase
-	+getHistory() const : const &vector<variant<uint64_t, double, string>>
+	+getHistory() const : const &vector<variant<uint64_t, double, string, BGFLOAT>>
 	'/
 }
 
 struct singleVariableInfo {
 	#variableName_ : string
 	#variableLocation_ : RecordableBase&
-	#variableHistory_ : vector<variant<uint64_t, double, string>
+	#variableHistory_ : vector<variant<uint64_t, double, string, BGFLOAT>
 	#dataType_ : string
 	+singleVariableInfo(string name, RecordableBase &location)
 }

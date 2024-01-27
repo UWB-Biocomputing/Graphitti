@@ -25,7 +25,7 @@
 #include "Recorder.h"
 
 /// a list of basic data types in different recorded variables
-using multipleTypes = variant<uint64_t, double, string>;
+using multipleTypes = variant<uint64_t, double, string, BGFLOAT>;
 
 class XmlRecorder : public Recorder {
 public:
@@ -70,6 +70,7 @@ public:
    /// It stores the address of the registered variable and the related information
    /// of this recorded variable
    virtual void registerVariable(const string &varName, RecordableBase &recordVar) override;
+   virtual void registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) override;
 
    /// register a vector of instance of a class derived from RecordableBase.
    virtual void registerVariable(const string &varName,
@@ -132,6 +133,9 @@ protected:
       /// the basic data type in the Recorded variable
       string dataType_;
 
+      /// the variable type
+      UpdatedType variableType_;
+
       /// a reference to a RecordableBase variable
       /// As the simulator runs, the values in the RecordableBase object will be updated
       RecordableBase &variableLocation_;
@@ -144,6 +148,22 @@ protected:
          variableLocation_(location), variableName_(name)
       {
          dataType_ = location.getDataType();
+      }
+      /// Constructor accepting the variable name and the address of recorded variable
+      singleVariableInfo(const string &name, RecordableBase &location, UpdatedType variableType) :
+         variableLocation_(location), variableName_(name), variableType_(variableType)
+      {
+         dataType_ = location.getDataType();
+      }
+
+      void captureData()
+      {
+         if (variableLocation_.getNumEventsInEpoch() > 0) {
+            for (int index = 0; index < variableLocation_.getNumEventsInEpoch();
+               index++) {
+               variableHistory_.push_back(variableLocation_.getElement(index));
+            }
+         }
       }
    };
 

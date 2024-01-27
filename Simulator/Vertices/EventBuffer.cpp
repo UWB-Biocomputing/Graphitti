@@ -35,15 +35,16 @@ void EventBuffer::setDataType()
 /// @brief Get the value of the recordable variable at the specified index.
 /// @param index The index of the recorded value to retrieve.
 /// @return A variant representing the recorded value (uint64_t, double, or string).
-variant<uint64_t, double, string> EventBuffer::getElement(int index) const
+variant<uint64_t, double, string, BGFLOAT> EventBuffer::getElement(int index) const
 {
    return eventTimeSteps_[(epochStart_ + index) % eventTimeSteps_.size()];
    // return eventTimeSteps_[index];
 }
 
 
-const string &EventBuffer::getDataType() const
+string &EventBuffer::getDataType()
 {
+   basicDataType_ = "uint64_t";
    return basicDataType_;
 }
 

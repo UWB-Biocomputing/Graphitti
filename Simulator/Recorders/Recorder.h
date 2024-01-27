@@ -19,6 +19,13 @@ using namespace std;
 class AllVertices;
 class Recorder {
 public:
+   /// The recorded variable Type
+   enum UpdatedType
+   {
+      CONSTANT,
+      DYNAMIC
+      // Add more variable types as needed
+   };
    virtual ~Recorder() = default;
 
    /// Initialize data
@@ -55,6 +62,7 @@ public:
    /// It stores the address of the registered variable and the related information
    /// of this recorded variable
    virtual void registerVariable(const string &varName, RecordableBase &recordVar) = 0;
+   virtual void registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) {}
 
    /// register a vector of instance of a class derived from RecordableBase.
    virtual void registerVariable(const string &varName, vector<RecordableBase *> &recordVars) = 0;

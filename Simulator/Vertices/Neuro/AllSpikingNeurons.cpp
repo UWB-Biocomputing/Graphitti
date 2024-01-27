@@ -37,7 +37,7 @@ void AllSpikingNeurons::registerSpikeHistoryVariables()
    for (int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++) {
       // variable name = baseName + neuron number
       string neuronID = baseName + std::to_string(iNeuron);
-      recorder.registerVariable(neuronID, vertexEvents_[iNeuron]);
+      recorder.registerVariable(neuronID, vertexEvents_[iNeuron], Recorder::UpdatedType::DYNAMIC);
    }
 
    // Option 2: Register a vector of EventBuffer variables

@@ -50,10 +50,10 @@ public:
    /// Get the value of the recordable variable at the specified index.
    /// @param index The index of the recorded value to retrieve.
    /// @return A variant representing the recorded value (uint64_t, double, or string).
-   virtual variant<uint64_t, double, string> getElement(int index) const override;
+   virtual variant<uint64_t, double, string, BGFLOAT> getElement(int index) const override;
 
    /// Get A string representing the data type of the recordable variable
-   virtual const string &getDataType() const override;
+   virtual string &getDataType()  override;
 
    /// Get number of events in the current/preceding epoch
    ///

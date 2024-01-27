@@ -30,11 +30,16 @@ public:
    /// Get the value of the recordable variable at the specified index.
    /// @param index The index of the recorded value to retrieve.
    /// @return A variant representing the recorded value (uint64_t, double, or string).
-   virtual variant<uint64_t, double, string> getElement(int index) const = 0;
+   virtual variant<uint64_t, double, string, BGFLOAT> getElement(int index) const = 0;
 
    /// set up a string representing the basic data type
    virtual void setDataType() = 0;
 
    /// Get A string representing the data type of the recordable variable
-   virtual const string &getDataType() const = 0;
+   virtual string &getDataType()  = 0;
+
+protected:
+   ///the basic data type in the recorded variable
+   string basicDataType_;
+
 };

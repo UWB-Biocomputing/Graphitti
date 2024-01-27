@@ -50,7 +50,7 @@ const VectorMatrix exp(const VectorMatrix &v);
 ///  the number of rows and columns it has, no distinction is made
 ///  between row and column vectors, and in fact it is treated as either,
 ///  depending on the context of the mathematical operation.
-class VectorMatrix : public Matrix {
+class VectorMatrix : public Matrix{
 public:
    ///  Allocate storage and initialize attributes. Either
    ///  "rows" or "columns" must be equal to 1. If "v" is not empty, it
@@ -271,6 +271,32 @@ public:
    friend const VectorMatrix exp(const VectorMatrix &v);
    //@}
 
+   /*{8*/
+   virtual int getNumEventsInEpoch() const {
+      return size;
+   }
+
+   /// Start a new epoch for the recordable variable.
+   /// This method is called at the beginning of each simulation epoch to prepare for recording new events.
+   virtual void startNewEpoch() {}
+
+   /// Get the value of the recordable variable at the specified index.
+   /// @param index The index of the recorded value to retrieve.
+   /// @return A variant representing the recorded value (uint64_t, double, or string).
+   virtual variant<uint64_t, double, string, BGFLOAT> getElement(int index) const {
+      return theVector[index];
+   }
+
+   /// set up a string representing the basic data type
+   virtual void setDataType() {}
+
+   /// Get A string representing the data type of the recordable variable
+   virtual string &getDataType()  {
+      basicDataType_ = "BGFLOAT";
+      return basicDataType_;
+   }
+
+   /*}*/
 protected:
    /******************************************
   * @name Internal Utilities
