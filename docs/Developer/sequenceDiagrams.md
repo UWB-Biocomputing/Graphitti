@@ -10,6 +10,11 @@ Graphitti uses the Factory Method and Singleton design patterns for instantiatin
 
 ![Simulator Object Creation](SequenceDiagrams/diagrams/simObjectsCreation.png?raw=true "Simulator Object Creation")
 
+# Simulator Setup Sequence Diagram
+
+This Diagram represents an overview of the setup sequence.
+
+![Simulator Setup](SequenceDiagrams/diagrams/simulatorSetup.png?raw=true "Simulator Setup")
 
 # Simulation Sequence Diagram
 
