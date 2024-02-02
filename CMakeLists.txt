@@ -51,7 +51,7 @@ else()
         project(Graphitti LANGUAGES CXX C)
 endif()
 
-# Setting the base version to C++ 11
+# Setting the base version to C++ 17
 set(CMAKE_CXX_STANDARD 17)
 
 # set(DEBUG_MODE YES) for debugging, no optimization
