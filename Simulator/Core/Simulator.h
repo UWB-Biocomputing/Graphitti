@@ -47,8 +47,8 @@ public:
 
    void simulate();
 
-   void advanceEpoch(const int &currentEpoch) const;   /// Advance simulation to next growth
-                                                       /// cycle. Helper for #simulate().
+   void advanceEpoch(int currentEpoch) const;   /// Advance simulation to next growth
+                                                /// cycle. Helper for #simulate().
 
    void saveResults() const;   /// Writes simulation results to an output destination.
 
@@ -61,10 +61,6 @@ public:
    *  Accessors
    ***********************************************/
    ///@{
-   int getWidth() const;   /// Width of neuron map (assumes square)
-
-   int getHeight() const;   /// Height of neuron map
-
    int getTotalVertices() const;   /// Count of neurons in the simulation
 
    int getCurrentStep() const;   /// Current simulation step
@@ -129,10 +125,6 @@ public:
 private:
    Simulator();   /// Constructor is private to keep a singleton instance of this
                   /// class.
-
-   int width_;   /// Width of neuron map (assumes square)
-
-   int height_;   /// Height of neuron map
 
    int totalNeurons_;   /// Count of neurons in the simulation
 

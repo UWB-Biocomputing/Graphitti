@@ -4,17 +4,17 @@ void AllNeurons::setupNeurons(SimulationInfo *sim_info)
 
 
     // summation map - summation points for neuron. allocated here. setup methods are also allocating internal storage.
-    summation_map = new BGFLOAT[size];
+    summation_points = new BGFLOAT[size];
     // init summation map. blank. zeroing out.
     for (int i = 0; i < size; ++i) {
-        summation_map[i] = 0;
+        summation_points[i] = 0;
     }
     // giving simulator a pointer to the summation map.
     // TODO: change. synapses need to write into summation points.
     // grab global. alloc internal storage. glue.
     // toDo: when do the synapses pick this up?
     // possible they pick up during init time. then there is a dependency.
-    sim_info->pSummationMap = summation_map;
+    sim_info->pSummationPoint = summation_points;
 }
 
 Notes about neurons:
@@ -47,7 +47,7 @@ void AllSpikingNeurons::setupNeurons(SimulationInfo *sim_info)
         spikeCountOffset[i] = 0;
     }
     // seems to be duplicate of what is in allneurons::setup
-    sim_info->pSummationMap = summation_map;
+    sim_info->pSummationPoint = summation_points;
 }
 
 GPU side code. no setup because copy from CPU

@@ -16,8 +16,8 @@
 #pragma once
 
 #include "AllVertices.h"
-#include "IRecorder.h"
 #include "Layout.h"
+#include "Recorder.h"
 #include <log4cplus/loggingmacros.h>
 #include <memory>
 
@@ -25,7 +25,7 @@ using namespace std;
 
 class Connections;
 
-class IRecorder;
+class Recorder;
 
 class Layout;
 
@@ -44,7 +44,7 @@ public:
    Layout &getLayout() const;
 
    /// Returns reference to Recorder
-   IRecorder &getRecorder() const;
+   Recorder &getRecorder() const;
 
    /// Writes simulation results to an output destination.
    /// Downstream from IModel saveData()
@@ -80,8 +80,9 @@ public:
    virtual void updateConnections() = 0;
 
 protected:
+   // Note: This method was previously used for debugging, but it is now dead code left behind.
    /// Prints debug information about the current state of the network.
-   void logSimStep() const;
+   // void logSimStep() const;
 
    /// Copy GPU Edge data to CPU.
    virtual void copyGPUtoCPU() = 0;
@@ -94,7 +95,7 @@ protected:
 
    unique_ptr<Layout> layout_;
 
-   unique_ptr<IRecorder> recorder_;
+   unique_ptr<Recorder> recorder_;
 
    // shared_ptr<ISInput> input_;    /// Stimulus input object.
 

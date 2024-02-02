@@ -26,7 +26,7 @@
 
 __global__ void advanceSTDPSynapsesDevice(int totalSynapseCount,
                                           EdgeIndexMapDevice *edgeIndexMapDevice,
-                                          uint64_t simulationStep, const BGFLOAT deltaT,
+                                          uint64_t simulationStep, BGFLOAT deltaT,
                                           AllSTDPSynapsesDeviceProperties *allEdgesDevice,
                                           AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                           int maxSpikes);
@@ -306,7 +306,9 @@ void AllSTDPSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
       BGFLOAT *WPrint = new BGFLOAT[size];
       edgeType *typePrint = new edgeType[size];
       BGFLOAT *psrPrint = new BGFLOAT[size];
-      bool *inUsePrint = new bool[size];
+      // The representation of inUsePrint has been updated from bool to unsigned char
+      // to store 1 (true) or 0 (false) for the support of serialization operations. See ISSUE-459
+      unsigned char *inUsePrint = new unsigned char[size];
       for (BGSIZE i = 0; i < size; i++) {
          inUsePrint[i] = false;
       }
@@ -349,7 +351,7 @@ void AllSTDPSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
                               cudaMemcpyDeviceToHost));
       HANDLE_ERROR(cudaMemcpy(psrPrint, allSynapsesProps.psr_, size * sizeof(BGFLOAT),
                               cudaMemcpyDeviceToHost));
-      HANDLE_ERROR(cudaMemcpy(inUsePrint, allSynapsesProps.inUse_, size * sizeof(bool),
+      HANDLE_ERROR(cudaMemcpy(inUsePrint, allSynapsesProps.inUse_, size * sizeof(unsigned char),
                               cudaMemcpyDeviceToHost));
 
       HANDLE_ERROR(cudaMemcpy(decayPrint, allSynapsesProps.decay_, size * sizeof(BGFLOAT),
@@ -387,7 +389,7 @@ void AllSTDPSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
             cout << " GPU desNeuron: " << destNeuronIndexPrint[i];
             cout << " GPU type: " << typePrint[i];
             cout << " GPU psr: " << psrPrint[i];
-            cout << " GPU in_use:" << inUsePrint[i];
+            cout << " GPU in_use:" << (inUsePrint[i] == 1 ? "true" : "false");
 
             cout << " GPU decay: " << decayPrint[i];
             cout << " GPU tau: " << tauPrint[i];
@@ -472,8 +474,8 @@ void AllSTDPSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
 ///  @param  delta                Pre/post synaptic spike interval.
 ///  @param  epost                Params for the rule given in Froemke and Dan (2002).
 ///  @param  epre                 Params for the rule given in Froemke and Dan (2002).
-CUDA_CALLABLE void stdpLearningDevice(AllSTDPSynapsesDeviceProperties *allEdgesDevice,
-                                      const BGSIZE iEdg, double delta, double epost, double epre)
+CUDA_CALLABLE void stdpLearningDevice(AllSTDPSynapsesDeviceProperties *allEdgesDevice, BGSIZE iEdg,
+                                      double delta, double epost, double epre)
 {
    BGFLOAT STDPgap = allEdgesDevice->STDPgap_[iEdg];
    BGFLOAT muneg = allEdgesDevice->muneg_[iEdg];
@@ -565,7 +567,7 @@ CUDA_CALLABLE uint64_t getSTDPSynapseSpikeHistoryDevice(
 ///  @param[in] maxSpikes                Maximum number of spikes per neuron per epoch.
 __global__ void advanceSTDPSynapsesDevice(int totalSynapseCount,
                                           EdgeIndexMapDevice *edgeIndexMapDevice,
-                                          uint64_t simulationStep, const BGFLOAT deltaT,
+                                          uint64_t simulationStep, BGFLOAT deltaT,
                                           AllSTDPSynapsesDeviceProperties *allEdgesDevice,
                                           AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                           int maxSpikes)

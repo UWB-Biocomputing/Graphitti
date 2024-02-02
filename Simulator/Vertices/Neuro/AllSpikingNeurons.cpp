@@ -8,6 +8,7 @@
 
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
+#include "XmlRecorder.h"
 
 ///  Setup the internal structure of the class (allocate memories).
 void AllSpikingNeurons::setupVertices()
@@ -19,6 +20,32 @@ void AllSpikingNeurons::setupVertices()
 
    hasFired_.assign(size_, false);
    vertexEvents_.assign(size_, maxSpikes);
+
+   // Register spike history variables
+   registerSpikeHistoryVariables();
+}
+
+///  Register spike history variables for all neurons.
+///  Option 1: Register neuron information in vertexEvents_ one by one.
+///  Option 2: Register a vector of EventBuffer variables.
+void AllSpikingNeurons::registerSpikeHistoryVariables()
+{
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   string baseName = "Neuron_";
+
+   // Option 1: Register neuron information in vertexEvents_ one by one
+   for (int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++) {
+      // variable name = baseName + neuron number
+      string neuronID = baseName + std::to_string(iNeuron);
+      recorder.registerVariable(neuronID, vertexEvents_[iNeuron]);
+   }
+
+   // Option 2: Register a vector of EventBuffer variables
+   // vector<RecordableBase *> variables;
+   // for(int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++){
+   //    variables.push_back(&vertexEvents_[iNeuron]);
+   // }
+   // recorder.registerVariable(baseName, variables);
 }
 
 ///  Clear the spike counts out of all Neurons.
@@ -80,7 +107,7 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap &
          if (spSynapses.allowBackPropagation()) {
             for (int z = 0; synapse_notified < synapseCounts; z++) {
                BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * idx + z;
-               if (spSynapses.inUse_[iEdg] == true) {
+               if (spSynapses.inUse_[iEdg]) {
                   spSynapses.postSpikeHit(iEdg);
                   synapse_notified++;
                }
@@ -95,7 +122,7 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap &
 ///  Fire the selected Neuron and calculate the result.
 ///
 ///  @param  index       Index of the Neuron to update.
-void AllSpikingNeurons::fire(const int index)
+void AllSpikingNeurons::fire(int index)
 {
    // Note that the neuron has fired!
    hasFired_[index] = true;

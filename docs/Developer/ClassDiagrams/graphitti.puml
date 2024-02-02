@@ -26,7 +26,7 @@ class AllDSSynapses {
 	+copyEdgeHostToDevice(void* allEdgesDevice) : void
 	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
 	#copyHostToDevice(void* allEdgesDevice, AllDSSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
-	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT, edgeType type) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
 	#deleteDeviceStruct(AllDSSynapsesDeviceProperties& allEdgesDeviceProps) : void
 	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
 	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
@@ -61,7 +61,7 @@ class AllDynamicSTDPSynapses {
 	+copyEdgeHostToDevice(void* allEdgesDevice) : void
 	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
 	#copyHostToDevice(void* allEdgesDevice, AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
-	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT, edgeType type) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
 	#deleteDeviceStruct(AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps) : void
 	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
 	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
@@ -81,7 +81,6 @@ abstract class AllEdges {
 	+AllEdges(const int numVertices, const int maxEdges)
 	+~AllEdges()
 	+W_ : BGFLOAT*
-	+summationPoint_ : BGFLOAT**
 	+maxEdgesPerVertex_ : BGSIZE
 	+totalEdgeCount_ : BGSIZE
 	+edgeCounts_ : BGSIZE*
@@ -93,7 +92,7 @@ abstract class AllEdges {
 	+sourceVertexIndex_ : int*
 	#edgeLogger_ : log4cplus::Logger
 	#fileLogger_ : log4cplus::Logger
-	+addEdge(BGSIZE& iEdg, edgeType type, const int srcVertex, const int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT) : void
+	+addEdge(edgeType type, const int srcVertex, const int destVertex, const BGFLOAT deltaT) : BGSIZE
 	+{abstract} advanceEdge(const BGSIZE iEdg, AllVertices* vertices) : void
 	+{abstract} advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
 	+advanceEdges(AllVertices* vertices, EdgeIndexMap* edgeIndexMap) : void
@@ -104,7 +103,7 @@ abstract class AllEdges {
 	+{abstract} copyEdgeDeviceToHost(void* allEdgesDevice) : void
 	+{abstract} copyEdgeHostToDevice(void* allEdgesDevice) : void
 	+{abstract} copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
-	+{abstract} createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT, edgeType type) : void
+	+{abstract} createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
 	+createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap) : void
 	+{abstract} deleteEdgeDeviceStruct(void* allEdgesDevice) : void
 	+eraseEdge(const int neuronIndex, const BGSIZE iEdg) : void
@@ -299,7 +298,7 @@ class AllSTDPSynapses {
 	+copyEdgeHostToDevice(void* allEdgesDevice) : void
 	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
 	#copyHostToDevice(void* allEdgesDevice, AllSTDPSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
-	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT, edgeType type) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
 	#deleteDeviceStruct(AllSTDPSynapsesDeviceProperties& allEdgesDevice) : void
 	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
 	#initSpikeQueue(const BGSIZE iEdg) : void
@@ -375,7 +374,7 @@ class AllSpikingSynapses {
 	+copyEdgeHostToDevice(void* allEdgesDevice) : void
 	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
 	#copyHostToDevice(void* allEdgesDevice, AllSpikingSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
-	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT* sumPoint, const BGFLOAT deltaT, edgeType type) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
 	#deleteDeviceStruct(AllSpikingSynapsesDeviceProperties& allEdgesDevice) : void
 	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
 	#initSpikeQueue(const BGSIZE iEdg) : void
@@ -398,7 +397,7 @@ class AllSpikingSynapses {
 abstract class AllVertices {
 	+AllVertices()
 	+~AllVertices()
-	+summationMap_ : BGFLOAT*
+	+summationPoints_ : BGFLOAT*
 	#size_ : int
 	#fileLogger_ : log4cplus::Logger
 	#vertexLogger_ : log4cplus::Logger
@@ -576,15 +575,15 @@ class GPUModel {
 	#allEdgesDevice_ : AllSpikingSynapsesDeviceProperties*
 	#synapseIndexMapDevice_ : EdgeIndexMap*
 	#randNoise_d : float*
-	-addEdge(AllEdges& synapses, edgeType type, const int srcVertex, const int destVertex, Coordinate& source, Coordinate& dest, BGFLOAT* sumPoint, BGFLOAT deltaT) : void
+	-addEdge(AllEdges& synapses, edgeType type, const int srcVertex, const int destVertex, Coordinate& source, Coordinate& dest, BGFLOAT deltaT) : void
 	+advance() : void
 	#allocDeviceStruct(void** allVerticesDevice, void** allEdgesDevice) : void
 	-allocSynapseImap(int count) : void
-	#calcSummationMap() : void
+	#calcSummationPoint() : void
 	+copyCPUtoGPU() : void
 	+copyGPUtoCPU() : void
 	+copySynapseIndexMapHostToDevice(EdgeIndexMap& synapseIndexMapHost, int numVertices) : void
-	-createEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex, Coordinate source, Coordinate dest, BGFLOAT* sp, BGFLOAT deltaT, edgeType type) : void
+	-createEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex, Coordinate source, Coordinate dest, BGFLOAT deltaT, edgeType type) : void
 	#deleteDeviceStruct(void** allVerticesDevice, void** allEdgesDevice) : void
 	-deleteSynapseImap() : void
 	-eraseEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex) : void
@@ -611,7 +610,7 @@ class Hdf5GrowthRecorder {
 	#ratesHistory_ : BGFLOAT*
 	#dataSetRadiiHist_ : DataSet
 	#dataSetRatesHist_ : DataSet
-	+{static} Create() : IRecorder*
+	+{static} Create() : Recorder*
 	+compileHistories(AllVertices& neurons) : void
 	+getValues() : void
 	#initDataSet() : void
@@ -636,7 +635,7 @@ class Hdf5Recorder {
 	#dataSetXloc_ : DataSet*
 	#dataSetYloc_ : DataSet*
 	#resultOut_ : H5File*
-	+{static} Create() : IRecorder*
+	+{static} Create() : Recorder*
 	#offsetSpikesProbedNeurons_ : hsize_t*
 	#spikesHistory_ : int*
 	#spikesProbedNeurons_ : vector<uint64_t>*
@@ -660,8 +659,8 @@ abstract class IFunctionNode {
 }
 
 
-abstract class IRecorder {
-	+~IRecorder()
+abstract class Recorder {
+	+~Recorder()
 	#fileLogger_ : log4cplus::Logger
 	#resultFileName_ : string
 	+{abstract} compileHistories(AllVertices& vertices) : void
@@ -725,8 +724,8 @@ abstract class Model {
 	#fileLogger_ : log4cplus::Logger
 	#connections_ : shared_ptr<Connections>
 	+getConnections() : shared_ptr<Connections> {query}
-	+getRecorder() : shared_ptr<IRecorder> {query}
-	#recorder_ : shared_ptr<IRecorder>
+	+getRecorder() : shared_ptr<Recorder> {query}
+	#recorder_ : shared_ptr<Recorder>
 	+getLayout() : shared_ptr<Layout> {query}
 	#layout_ : shared_ptr<Layout>
 	+{abstract} advance() : void
@@ -761,11 +760,11 @@ class Operations {
 class RecorderFactory {
 	-RecorderFactory()
 	+~RecorderFactory()
-	-invokeCreateFunction(const string& className) : IRecorder*
+	-invokeCreateFunction(const string& className) : Recorder*
 	+{static} getInstance() : RecorderFactory*
 	-createFunctions : RecorderFunctionMap
-	+createRecorder(const string& className) : shared_ptr<IRecorder>
-	-recorderInstance : shared_ptr<IRecorder>
+	+createRecorder(const string& className) : shared_ptr<Recorder>
+	-recorderInstance : shared_ptr<Recorder>
 	-registerClass(const string& className, CreateFunction function) : void
 }
 
@@ -779,8 +778,6 @@ class Simulator {
 	+getEpochDuration() : BGFLOAT {query}
 	+getMaxRate() : BGFLOAT {query}
 	-maxRate_ : BGFLOAT
-	+getPSummationMap() : BGFLOAT* {query}
-	-pSummationMap_ : BGFLOAT*
 	+{static} getInstance() : Simulator&
 	+getShort_timer() : Timer
 	+getTimer() : Timer
@@ -833,7 +830,6 @@ class Simulator {
 	+saveResults() : void {query}
 	+setConfigFileName(const string& fileName) : void
 	+setDeserializationFileName(const string& fileName) : void
-	+setPSummationMap(BGFLOAT* summationMap) : void
 	+setSerializationFileName(const string& fileName) : void
 	+setStimulusFileName(const string& fileName) : void
 	+setup() : void
@@ -853,26 +849,11 @@ class VerticesFactory {
 }
 
 
-class XmlGrowthRecorder {
-	+XmlGrowthRecorder()
-	+~XmlGrowthRecorder()
-	-radiiHistory_ : CompleteMatrix
-	-ratesHistory_ : CompleteMatrix
-	+{static} Create() : IRecorder*
-	+compileHistories(AllVertices& neurons) : void
-	-getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+getValues() : void
-	+initDefaultValues() : void
-	+initValues() : void
-	+printParameters() : void
-	+saveSimData(const AllVertices& neurons) : void
-}
-
-
 class XmlRecorder {
 	+XmlRecorder()
-	+{static} Create() : IRecorder*
-	#spikesHistory_ : VectorMatrix
+	+{static} Create() : Recorder*
+	#variablesHistory_ : vector<vector<uint64_t>>
+	#variableTable_ : vector<variableInfo>
 	#resultOut_ : ofstream
 	+compileHistories(AllVertices& vertices) : void
 	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
@@ -883,24 +864,13 @@ class XmlRecorder {
 	+printParameters() : void
 	+saveSimData(const AllVertices& vertices) : void
 	+term() : void
-}
+	+registerVariable(string varName, EventBuffer &recordVar) : void
 
-
-class XmlSTDPRecorder {
-	+XmlSTDPRecorder()
-	+~XmlSTDPRecorder()
-	+{static} Create() : IRecorder*
-	+toXML(string name, vector<vector<BGFLOAT>> MatrixToWrite) : string {query}
-	+toXML(string name, vector<vector<int>> MatrixToWrite) : string {query}
-	#weightsHistory_ : vector<vector<BGFLOAT>>
-	#destNeuronIndexHistory_ : vector<vector<int>>
-	#sourceNeuronIndexHistory_ : vector<vector<int>>
-	+compileHistories(AllVertices& neurons) : void
-	+getValues() : void
-	+initDefaultValues() : void
-	+initValues() : void
-	+printParameters() : void
-	+saveSimData(const AllVertices& neurons) : void
+	/' methods only used for unit test '/
+	+XmlRecorder(string fileName_)
+	+getNeuronName(int numIndex) const : string
+	+getSingleNeuronEvents(int numIndex) const : &EventBuffer
+	+getHistory() const : const &vector<vector<uint64_t>>
 }
 
 
@@ -1027,7 +997,7 @@ class AllSpikingSynapsesDeviceProperties {
 
 
 class AllVerticesDeviceProperties {
-	+summationMap_ : BGFLOAT*
+	+summationPoints_ : BGFLOAT*
 }
 
 
@@ -1129,10 +1099,10 @@ class EdgeIndexMap {
 .IFunctionNode <|-- .GenericFunctionNode
 
 
-.IRecorder <|-- .Hdf5Recorder
+.Recorder <|-- .Hdf5Recorder
 
 
-.IRecorder <|-- .XmlRecorder
+.Recorder <|-- .XmlRecorder
 
 
 .Layout <|-- .DynamicLayout
@@ -1145,12 +1115,6 @@ class EdgeIndexMap {
 
 
 .Model <|-- .GPUModel
-
-
-.XmlRecorder <|-- .XmlGrowthRecorder
-
-
-.XmlRecorder <|-- .XmlSTDPRecorder
 
 
 
@@ -1197,7 +1161,7 @@ class EdgeIndexMap {
 .Model *-- .Connections
 
 
-.Model *-- .IRecorder
+.Model *-- .Recorder
 
 
 .Model *-- .Layout
@@ -1206,7 +1170,7 @@ class EdgeIndexMap {
 .OperationManager *-- .IFunctionNode
 
 
-.RecorderFactory *-- .IRecorder
+.RecorderFactory *-- .Recorder
 
 
 .Simulator *-- .Model

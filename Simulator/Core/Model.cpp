@@ -14,11 +14,10 @@
  */
 
 #include "Model.h"
-#include "ConnGrowth.h"
 #include "Connections.h"
 #include "Factory.h"
-#include "IRecorder.h"
 #include "ParameterManager.h"
+#include "Recorder.h"
 #include "Simulator.h"
 
 /// Constructor
@@ -37,7 +36,7 @@ Model::Model()
 
    // Create Recorder class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
-   recorder_ = Factory<IRecorder>::getInstance().createType(type);
+   recorder_ = Factory<Recorder>::getInstance().createType(type);
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
@@ -106,55 +105,17 @@ void Model::setupSim()
    connections_->createEdgeIndexMap();
 }
 
+// Note: This method was previously used for debugging, but it is now dead code left behind.
 /// Log this simulation step.
-void Model::logSimStep() const
-{
-   ConnGrowth *pConnGrowth = dynamic_cast<ConnGrowth *>(connections_.get());
-   if (pConnGrowth == nullptr)
-      return;
+// void Model::logSimStep() const
+// {
+//    FixedLayout *fixedLayout = dynamic_cast<FixedLayout *>(layout_.get());
+//    if (fixedLayout == nullptr) {
+//       return;
+//    }
 
-   cout << "format:\ntype,radius,firing rate" << endl;
-
-   for (int y = 0; y < Simulator::getInstance().getHeight(); y++) {
-      stringstream ss;
-      ss << fixed;
-      ss.precision(1);
-
-      for (int x = 0; x < Simulator::getInstance().getWidth(); x++) {
-         switch (layout_->vertexTypeMap_[x + y * Simulator::getInstance().getWidth()]) {
-            case EXC:
-               if (layout_->starterMap_[x + y * Simulator::getInstance().getWidth()])
-                  ss << "s";
-               else
-                  ss << "e";
-               break;
-            case INH:
-               ss << "i";
-               break;
-            case VTYPE_UNDEF:
-               assert(false);
-               break;
-         }
-
-         ss << " " << pConnGrowth->radii_[x + y * Simulator::getInstance().getWidth()];
-
-         if (x + 1 < Simulator::getInstance().getWidth()) {
-            ss.width(2);
-            ss << "|";
-            ss.width(2);
-         }
-      }
-
-      ss << endl;
-
-      for (int i = ss.str().length() - 1; i >= 0; i--) {
-         ss << "_";
-      }
-
-      ss << endl;
-      cout << ss.str();
-   }
-}
+//    fixedLayout->printLayout();
+// }
 
 /// Update the simulation history of every epoch.
 void Model::updateHistory()
@@ -183,10 +144,10 @@ Layout &Model::getLayout() const
    return *layout_;
 }
 
-/// Get the IRecorder class object.
-/// @return Pointer to the IRecorder class object.
+/// Get the Recorder class object.
+/// @return Pointer to the Recorder class object.
 // ToDo: make smart ptr
-IRecorder &Model::getRecorder() const
+Recorder &Model::getRecorder() const
 {
    return *recorder_;
 }

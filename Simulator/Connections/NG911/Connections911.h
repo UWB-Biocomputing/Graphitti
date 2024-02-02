@@ -3,15 +3,18 @@
  *
  * @ingroup Simulator/Connections/NG911
  * 
- * @brief The model of the static network
- *
+ * @brief This class manages the Connections of the NG911 network
+ * 
+ * Connections in the NG911 models, represent communication links between the
+ * various network nodes. These are potentially dynamic connections, where
+ * edges between nodes are erased and added, representing loss of communication
+ * between nodes and re-routing of disconnected nodes.
  */
 
 #pragma once
 
 #include "Connections.h"
-#include "Global.h"
-#include "Simulator.h"
+#include "InputEvent.h"
 #include <vector>
 
 using namespace std;
@@ -46,9 +49,6 @@ public:
    virtual void printParameters() const override;
 
 private:
-   /// number of maximum connections per vertex
-   int connsPerVertex_;
-
    /// number of psaps to erase at the end of 1 epoch
    int psapsToErase_;
 
@@ -75,6 +75,14 @@ public:
    ///  @param  vertices The Vertex list to search from.
    ///  @return true if successful, false otherwise.
    virtual bool updateConnections(AllVertices &vertices) override;
+
+   /// Finds the outgoing edge from the given vertex to the Responder closest to
+   /// the emergency call location
+   ///
+   /// @param call         The call that needs a Responder
+   /// @param vertexIdx    The index of the vertex serving the call (A PSAP)
+   /// @return    The index of the outgoing edge to the closest Responder
+   BGSIZE getEdgeToClosestResponder(const Call &call, BGSIZE vertexIdx);
 
    ///  Returns the complete list of all deleted or added edges as a string.
    ///  @return xml representation of all deleted or added edges

@@ -82,18 +82,25 @@ public:
    uint64_t getSpikeHistory(int index, int offIndex);
 
 protected:
+   /// helper for recorder register variables in setupVertices()
+   /// Register spike history variables for all neurons.
+   /// Option 1: Register neuron information in vertexEvents_ one by one.
+   /// Option 2: Register a vector of EventBuffer variables.
+   void registerSpikeHistoryVariables();
+
    ///  Helper for #advanceNeuron. Updates state of a single neuron.
    ///
    ///  @param  index            Index of the neuron to update.
-   virtual void advanceNeuron(const int index) = 0;
+   virtual void advanceNeuron(int index) = 0;
 
    ///  Initiates a firing of a neuron to connected neurons
    ///
    ///  @param  index            Index of the neuron to fire.
-   virtual void fire(const int index);
+   virtual void fire(int index);
 
 #endif   // defined(USE_GPU)
 
+   // TODO change the "public" after regineering Recorder
 public:
    ///  The booleans which track whether the neuron has fired.
    vector<bool> hasFired_;

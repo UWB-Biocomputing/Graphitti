@@ -48,6 +48,14 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
 
+   /// Loads all inputs scheduled to occur in the upcoming epoch.
+   /// These are inputs occurring in between curStep (inclusive) and
+   /// endStep (exclusive)
+   ///
+   /// @param  curStep  The current simulation step
+   /// @param  endStep  The end of epoch simulation step
+   virtual void loadEpochInputs(uint64_t currentStep, uint64_t endStep);
+
    ///  Load member variables from configuration file.
    ///  Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters() = 0;
@@ -61,14 +69,14 @@ public:
    ///
    ///  @param  i   index of the vertex (in vertices) to output info from.
    ///  @return the complete state of the vertex.
-   virtual string toString(const int i) const = 0;
+   virtual string toString(int i) const = 0;
 
    ///  The summation point for each vertex.
    ///  Summation points are places where the synapses connected to the vertex
    ///  apply (summed up) their PSRs (Post-Synaptic-Response).
    ///  On the next advance cycle, vertices add the values stored in their corresponding
    ///  summation points to their Vm and resets the summation points to zero
-   vector<BGFLOAT> summationMap_;
+   vector<BGFLOAT> summationPoints_;
 
 protected:
    ///  Total number of vertices.
@@ -136,6 +144,6 @@ struct AllVerticesDeviceProperties {
    ///  apply (summed up) their PSRs (Post-Synaptic-Response).
    ///  On the next advance cycle, vertices add the values stored in their corresponding
    ///  summation points to their Vm and resets the summation points to zero
-   BGFLOAT *summationMap_;
+   BGFLOAT *summationPoints_;
 };
 #endif   // defined(USE_GPU)

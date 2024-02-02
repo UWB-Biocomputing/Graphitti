@@ -48,6 +48,11 @@
 #pragma once
 
 #include "AllSpikingSynapses.h"
+// cereal
+#include <cereal/archives/xml.hpp>   // this is a cereal hack
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
+
 
 struct AllDSSynapsesDeviceProperties;
 
@@ -55,7 +60,7 @@ class AllDSSynapses : public AllSpikingSynapses {
 public:
    AllDSSynapses() = default;
 
-   AllDSSynapses(const int numVertices, const int maxEdges);
+   AllDSSynapses(int numVertices, int maxEdges);
 
    virtual ~AllDSSynapses() = default;
 
@@ -71,7 +76,7 @@ public:
    ///
    ///  @param  iEdg     Index of the synapse to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
+   virtual void resetEdge(BGSIZE iEdg, BGFLOAT deltaT) override;
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
@@ -82,33 +87,35 @@ public:
    ///  @param  iEdg        Index of the synapse to set.
    ///  @param  srcVertex     Coordinates of the source Neuron.
    ///  @param  destVertex        Coordinates of the destination Neuron.
-   ///  @param  sumPoint   Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
-                           const BGFLOAT deltaT, edgeType type) override;
+   virtual void createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
+                           edgeType type) override;
 
    ///  Prints SynapsesProps data to console.
    virtual void printSynapsesProps() const override;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of synapses per neuron.
-   virtual void setupEdges(const int numVertices, const int maxEdges) override;
+   virtual void setupEdges(int numVertices, int maxEdges) override;
 
    ///  Sets the data for Synapse to input's data.
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the synapse to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg) override;
+   virtual void readEdge(istream &input, BGSIZE iEdg) override;
 
    ///  Write the synapse data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the synapse to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const override;
+   virtual void writeEdge(ostream &output, BGSIZE iEdg) const override;
 
 #if defined(USE_GPU)
 public:
@@ -203,7 +210,7 @@ protected:
    ///
    ///  @param  iEdg        Index of the synapse to set.
    ///  @param  deltaT      Inner simulation step duration.
-   virtual void changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) override;
+   virtual void changePSR(BGSIZE iEdg, BGFLOAT deltaT) override;
 
 #endif   // defined(USE_GPU)
 public:
@@ -247,3 +254,13 @@ struct AllDSSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperties
    BGFLOAT *F_;
 };
 #endif   // defined(USE_GPU)
+
+CEREAL_REGISTER_TYPE(AllDSSynapses);
+
+///  Cereal serialization method
+template <class Archive> void AllDSSynapses::serialize(Archive &archive)
+{
+   archive(cereal::base_class<AllSpikingSynapses>(this), cereal::make_nvp("lastSpike_", lastSpike_),
+           cereal::make_nvp("r_", r_), cereal::make_nvp("u_", u_), cereal::make_nvp("D_", D_),
+           cereal::make_nvp("U_", U_), cereal::make_nvp("F_", F_));
+}

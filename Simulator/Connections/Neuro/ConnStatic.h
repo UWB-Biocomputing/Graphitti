@@ -31,6 +31,7 @@
 #include <iostream>
 #include <vector>
 // cereal
+#include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>
 
 using namespace std;
@@ -85,12 +86,7 @@ public:
    }
 
    ///  Cereal serialization method
-   ///  (Serializes radii)
-   template <class Archive> void save(Archive &archive) const;
-
-   ///  Cereal deserialization method
-   ///  (Deserializes radii)
-   template <class Archive> void load(Archive &archive);
+   template <class Archive> void serialize(Archive &archive);
 
 private:
    /// Indices of the source vertex for each edge
@@ -130,3 +126,19 @@ private:
       }
    };
 };
+
+CEREAL_REGISTER_TYPE(ConnStatic);
+
+///  Cereal serialization method
+template <class Archive> void ConnStatic::serialize(Archive &archive)
+{
+   archive(cereal::base_class<Connections>(this),
+           cereal::make_nvp("sourceVertexIndexCurrentEpoch_", sourceVertexIndexCurrentEpoch_),
+           cereal::make_nvp("destVertexIndexCurrentEpoch_", destVertexIndexCurrentEpoch_),
+           cereal::make_nvp("WCurrentEpoch_", WCurrentEpoch_),
+           cereal::make_nvp("radiiSize_", radiiSize_),
+           cereal::make_nvp("connsPerVertex_", connsPerVertex_),
+           cereal::make_nvp("threshConnsRadius_", threshConnsRadius_),
+           cereal::make_nvp("rewiringProbability_", rewiringProbability_),
+           cereal::make_nvp("excWeight_", excWeight_), cereal::make_nvp("inhWeight_", inhWeight_));
+}

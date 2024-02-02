@@ -28,7 +28,6 @@ Simulator &Simulator::getInstance()
 Simulator::Simulator()
 {
    g_simulationStep = 0;   /// uint64_t g_simulationStep instantiated in Global
-   deltaT_ = DEFAULT_dt;
 
    consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
@@ -77,10 +76,6 @@ void Simulator::finish()
 /// Load member variables from configuration file
 void Simulator::loadParameters()
 {
-   ParameterManager::getInstance().getIntByXpath("//PoolSize/x/text()", width_);
-   ParameterManager::getInstance().getIntByXpath("//PoolSize/y/text()", height_);
-   // numVertices_ = width_ * height_;
-
    ParameterManager::getInstance().getBGFloatByXpath("//SimParams/epochDuration/text()",
                                                      epochDuration_);
    ParameterManager::getInstance().getIntByXpath("//SimParams/numEpochs/text()", numEpochs_);
@@ -88,6 +83,11 @@ void Simulator::loadParameters()
                                                  maxFiringRate_);
    ParameterManager::getInstance().getIntByXpath("//SimConfig/maxEdgesPerVertex/text()",
                                                  maxEdgesPerVertex_);
+
+   // Use default deltaT_ if not present in config file
+   if (!ParameterManager::getInstance().getBGFloatByXpath("//SimParams/deltaT/text()", deltaT_)) {
+      deltaT_ = DEFAULT_dt;
+   }
 
    // Instantiate rng object
    string type;
@@ -106,7 +106,6 @@ void Simulator::printParameters() const
    LOG4CPLUS_DEBUG(fileLogger_,
                    "\nSIMULATION PARAMETERS"
                       << endl
-                      << "\tpool size x:" << width_ << " y:" << height_ << endl
                       << "\tTime between growth updates (in seconds): " << epochDuration_ << endl
                       << "\tNumber of epochs to run: " << numEpochs_ << endl
                       << "\tMax firing rate: " << maxFiringRate_ << endl
@@ -192,15 +191,17 @@ void Simulator::simulate()
 /// Helper for #simulate(). Advance simulation until ready for next growth cycle.
 /// This should simulate all neuron and synapse activity for one epoch.
 /// @param currentStep the current epoch in which the network is being simulated.
-void Simulator::advanceEpoch(const int &currentEpoch) const
+void Simulator::advanceEpoch(int currentEpoch) const
 {
    uint64_t count = 0;
    // Compute step number at end of this simulation epoch
    uint64_t endStep = g_simulationStep + static_cast<uint64_t>(epochDuration_ / deltaT_);
+   model_->getLayout().getVertices().loadEpochInputs(g_simulationStep, endStep);
    // DEBUG_MID(model->logSimStep();) // Generic model debug call
+   uint64_t onePercent = (epochDuration_ / deltaT_) * numEpochs_ * 0.01;
    while (g_simulationStep < endStep) {
-      // Output status once every 10,000 steps
-      if (count % 10000 == 0) {
+      // Output status once every 1% of total simulation time
+      if (count % onePercent == 0) {
          LOG4CPLUS_TRACE(consoleLogger_,
                          "Epoch: " << currentEpoch << "/" << numEpochs_
                                    << " simulating time: " << g_simulationStep * deltaT_ << "/"
@@ -278,16 +279,6 @@ void Simulator::setStimulusFileName(const string &fileName)
  *  Accessors
  ***********************************************/
 ///@{
-int Simulator::getWidth() const
-{
-   return width_;
-}
-
-int Simulator::getHeight() const
-{
-   return height_;
-}
-
 int Simulator::getTotalVertices() const
 {
    return model_->getLayout().getNumVertices();

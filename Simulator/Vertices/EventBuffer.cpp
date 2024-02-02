@@ -13,10 +13,43 @@
 #include <cassert>
 #include <limits>
 
-EventBuffer::EventBuffer(int maxEvents) :
-   eventTimeSteps_(maxEvents + 1, numeric_limits<unsigned long>::max())
+// EventBuffer::EventBuffer(int maxEvents) :
+//    eventTimeSteps_(maxEvents + 1, numeric_limits<unsigned long>::max())
+// {
+//    clear();
+// }
+EventBuffer::EventBuffer(int maxEvents)
 {
+   eventTimeSteps_.assign(maxEvents + 1, numeric_limits<unsigned long>::max());
    clear();
+   setDataType();
+}
+
+
+// set up a string representing the basic data type
+void EventBuffer::setDataType()
+{
+   basicDataType_ = "uint64_t";
+}
+
+/// @brief Get the value of the recordable variable at the specified index.
+/// @param index The index of the recorded value to retrieve.
+/// @return A variant representing the recorded value (uint64_t, double, or string).
+variant<uint64_t, double, string> EventBuffer::getElement(int index) const
+{
+   return eventTimeSteps_[(epochStart_ + index) % eventTimeSteps_.size()];
+   // return eventTimeSteps_[index];
+}
+
+
+const string &EventBuffer::getDataType() const
+{
+   return basicDataType_;
+}
+
+int EventBuffer::getNumEventsInEpoch() const
+{
+   return numEventsInEpoch_;
 }
 
 void EventBuffer::resize(int maxEvents)
@@ -39,11 +72,6 @@ void EventBuffer::clear()
 uint64_t EventBuffer::operator[](int i) const
 {
    return eventTimeSteps_[(epochStart_ + i) % eventTimeSteps_.size()];
-}
-
-int EventBuffer::getNumEventsInEpoch() const
-{
-   return numEventsInEpoch_;
 }
 
 void EventBuffer::startNewEpoch()

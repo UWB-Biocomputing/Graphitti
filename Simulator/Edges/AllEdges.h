@@ -11,16 +11,18 @@
 #include "EdgeIndexMap.h"
 #include "Global.h"
 #include "Simulator.h"
-#include "cereal/types/vector.hpp"
 #include "log4cplus/loggingmacros.h"
 #include <vector>
+// cereal
+#include "cereal/types/vector.hpp"
+#include <cereal/types/polymorphic.hpp>
 
 class AllVertices;
 
 class AllEdges {
 public:
    AllEdges();
-   AllEdges(const int numVertices, const int maxEdges);
+   AllEdges(int numVertices, int maxEdges);
    virtual ~AllEdges() = default;
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -36,62 +38,54 @@ public:
 
    ///  Adds a Edge to the model, connecting two Vertices.
    ///
-   ///  @param  iEdg        Index of the edge to be added.
    ///  @param  type        The type of the Edge to add.
    ///  @param  srcVertex   The Vertex that sends to this Edge.
    ///  @param  destVertex  The Vertex that receives from the Edge.
-   ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration
-   virtual void addEdge(BGSIZE &iEdg, edgeType type, const int srcVertex, const int destVertex,
-                        BGFLOAT *sumPoint, const BGFLOAT deltaT);
+   ///  @return  iEdg        Index of the edge to be added.
+   virtual BGSIZE addEdge(edgeType type, int srcVertex, int destVertex, BGFLOAT deltaT);
 
    ///  Create a Edge and connect it to the model.
    ///
    ///  @param  iEdg        Index of the edge to set.
    ///  @param  srcVertex   Coordinates of the source Vertex.
    ///  @param  destVertex  Coordinates of the destination Vertex.
-   ///  @param  sumPoint    Summation point address.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Edge to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
-                           const BGFLOAT deltaT, edgeType type)
+   virtual void createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
+                           edgeType type)
       = 0;
 
    ///  Populate a edge index map.
    virtual void createEdgeIndexMap(EdgeIndexMap &edgeIndexMap);
 
    ///  Cereal serialization method
-   ///  (Serializes edge weights, source vertices, and destination vertices)
-   template <class Archive> void save(Archive &archive, std::uint32_t const version) const;
-
-   ///  Cereal deserialization method
-   ///  (Deserializes edge weights, source vertices, and destination vertices)
-   template <class Archive> void load(Archive &archive, std::uint32_t const version);
+   template <class Archive> void serialize(Archive &archive, std::uint32_t const version);
 
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of edges per vertex.
-   virtual void setupEdges(const int numVertices, const int maxEdges);
+   virtual void setupEdges(int numVertices, int maxEdges);
 
    ///  Sets the data for Edge to input's data.
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the edge to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg);
+   virtual void readEdge(istream &input, BGSIZE iEdg);
 
    ///  Write the edge data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the edge to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const;
+   virtual void writeEdge(ostream &output, BGSIZE iEdg) const;
 
    ///  Returns an appropriate edgeType object for the given integer.
    ///
    ///  @param  typeOrdinal    Integer that correspond with a edgeType.
    ///  @return the SynapseType that corresponds with the given integer.
-   edgeType edgeOrdinalToType(const int typeOrdinal);
+   edgeType edgeOrdinalToType(int typeOrdinal);
 
    /// Loggers used to print to using log4cplus logging macros, prints to Results/Debug/logging.txt
    log4cplus::Logger fileLogger_;
@@ -188,13 +182,13 @@ public:
    ///
    ///  @param  iEdg      Index of the Edge to connect to.
    ///  @param  vertices  The Vertex list to search from.
-   virtual void advanceEdge(const BGSIZE iEdg, AllVertices &vertices) = 0;
+   virtual void advanceEdge(BGSIZE iEdg, AllVertices &vertices) = 0;
 
    ///  Remove a edge from the network.
    ///
    ///  @param  neuronIndex   Index of a vertex to remove from.
    ///  @param  iEdg          Index of a edge to remove.
-   virtual void eraseEdge(const int neuronIndex, const BGSIZE iEdg);
+   virtual void eraseEdge(int neuronIndex, BGSIZE iEdg);
 #endif   // defined(USE_GPU)
 
    ///  The location of the edge.
@@ -206,14 +200,13 @@ public:
    ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
    vector<BGFLOAT> W_;
 
-   ///  This edge's summation point's address.
-   vector<BGFLOAT *> summationPoint_;
-
    ///   Synapse type
    vector<edgeType> type_;
 
-   ///  The boolean value indicating the entry in the array is in use.
-   unique_ptr<bool[]> inUse_;
+   ///  The value indicating the entry in the array is in use.
+   // The representation of inUse has been updated from bool to unsigned char
+   // to store 1 (true) or 0 (false) for the support of serialization operations. See ISSUE-459
+   vector<unsigned char> inUse_;
 
    ///  The number of (incoming) edges for each vertex.
    ///  Note: Likely under a different name in GpuSim_struct, see edge_count. -Aaron
@@ -235,57 +228,14 @@ CEREAL_CLASS_VERSION(AllEdges, 1);
 
 ///  Cereal serialization method
 ///  (Serializes edge weights, source vertices, and destination vertices)
-template <class Archive> void AllEdges::save(Archive &archive, std::uint32_t const version) const
+template <class Archive> void AllEdges::serialize(Archive &archive, std::uint32_t const version)
 {
    // serialization
-   archive(cereal::make_nvp("edgeWeightsSize", W_.size()), cereal::make_nvp("edgeWeights", W_),
-           cereal::make_nvp("sourceVerticesSize", sourceVertexIndex_.size()),
-           cereal::make_nvp("sourceVertices", sourceVertexIndex_),
-           cereal::make_nvp("destinationVerticesSize", destVertexIndex_.size()),
-           cereal::make_nvp("destinationVertices", destVertexIndex_));
-}
-
-///  Cereal deserialization method
-///  (Deserializes edge weights, source vertices, and destination vertices)
-template <class Archive> void AllEdges::load(Archive &archive, std::uint32_t const version)
-{
-   // uses vectors to load edge weights, source vertices, and destination vertices
-   int WVectorSize = 0;
-   int sourceVertexLayoutIndexVectorSize = 0;
-   int destVertexLayoutIndexVectorSize = 0;
-   vector<BGFLOAT> WVector;
-   vector<int> sourceVertexLayoutIndexVector;
-   vector<int> destVertexLayoutIndexVector;
-
-   // deserializing data to these vectors
-   archive(WVectorSize, WVector, sourceVertexLayoutIndexVectorSize, sourceVertexLayoutIndexVector,
-           destVertexLayoutIndexVectorSize, destVertexLayoutIndexVector);
-
-   // check to see if serialized data sizes matches object sizes
-   int requiredSize = maxEdgesPerVertex_ * countVertices_;
-   if (WVectorSize != requiredSize || WVectorSize != WVector.size()) {
-      cerr
-         << "Failed deserializing edge weights. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
-         << endl;
-      throw cereal::Exception("Deserialization Error");
-   }
-   if (sourceVertexLayoutIndexVectorSize != requiredSize
-       || sourceVertexLayoutIndexVectorSize != sourceVertexLayoutIndexVector.size()) {
-      cerr
-         << "Failed deserializing source vertices. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
-         << endl;
-      throw cereal::Exception("Deserialization Error");
-   }
-   if (destVertexLayoutIndexVectorSize != requiredSize
-       || destVertexLayoutIndexVectorSize != destVertexLayoutIndexVector.size()) {
-      cerr
-         << "Failed deserializing destination vertices. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
-         << endl;
-      throw cereal::Exception("Deserialization Error");
-   }
-
-   // assigns serialized data to objects
-   W_ = WVector;
-   sourceVertexIndex_ = sourceVertexLayoutIndexVector;
-   destVertexIndex_ = destVertexLayoutIndexVector;
+   archive(cereal::make_nvp("sourceVertexIndex_", sourceVertexIndex_),
+           cereal::make_nvp("edgeWeights", W_),
+           cereal::make_nvp("destVertexIndex_", destVertexIndex_), cereal::make_nvp("type_", type_),
+           cereal::make_nvp("inUse_", inUse_), cereal::make_nvp("edgeCounts_", edgeCounts_),
+           cereal::make_nvp("totalEdgeCount_", totalEdgeCount_),
+           cereal::make_nvp("maxEdgesPerVertex_", maxEdgesPerVertex_),
+           cereal::make_nvp("countVertices_", countVertices_));
 }

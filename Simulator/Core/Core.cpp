@@ -157,6 +157,18 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
    LOG4CPLUS_TRACE(consoleLogger, "Loading parameters from configuration file");
    OperationManager::getInstance().executeOperation(Operations::loadParameters);
 
+   // Check if the current user has write permission for the specified serialization path
+   if (!simulator.getSerializationFileName().empty()) {
+      std::ofstream file(simulator.getSerializationFileName());
+      if (file) {
+         LOG4CPLUS_TRACE(consoleLogger, "User has write permission for the serialization file.");
+      } else {
+         LOG4CPLUS_FATAL(consoleLogger,
+                         "User does not have write permission for the serialization file.");
+         return -1;
+      }
+   }
+
    time_t start_time, end_time;
    time(&start_time);
 

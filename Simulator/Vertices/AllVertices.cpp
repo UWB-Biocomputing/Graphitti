@@ -32,12 +32,12 @@ void AllVertices::setupVertices()
 {
    size_ = Simulator::getInstance().getTotalVertices();
 #if defined(USE_GPU)
-   // We don't allocate memory for summationMap_ in CPU when building the GPU
+   // We don't allocate memory for summationPoints_ in CPU when building the GPU
    // implementation. This is to avoid misusing it in GPU code.
-   // summationMap_ = nullptr;
+   // summationPoints_ = nullptr;
 
 #else
-   summationMap_.assign(size_, 0);
+   summationPoints_.assign(size_, 0);
 
 #endif
 }
@@ -47,4 +47,13 @@ void AllVertices::setupVertices()
 void AllVertices::printParameters() const
 {
    LOG4CPLUS_DEBUG(fileLogger_, "\nVERTICES PARAMETERS");
+}
+
+/// Loads all inputs scheduled to occur in the upcoming epoch.
+/// These are inputs occurring in between curStep (inclusive) and
+/// endStep (exclusive)
+void AllVertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
+{
+   // This is an empty implementation so that Neural Network simulation works
+   // normally
 }

@@ -15,7 +15,7 @@ NOTE: If you're making a clean build (No CMakeCache.txt) of the GPU version, you
 
 This will generate a Makefile using the instructions in the CMakeLists.txt. Once the Makefile is created input the following  command.
 
-`make`
+`make -j`
 
 This will create the executables `graphitti` and `tests`. `graphitti` is the simulator and `tests` are the unit tests.
 To run the simulation input the following command with a path to a configuration file.

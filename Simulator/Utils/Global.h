@@ -97,7 +97,7 @@ const int g_nMaxChunkSize = 100;
 // NG911:
 // CALR: Caller radii
 // PSAP: PSAP nodes
-// RESP: Responder nodes
+// EMS, FIRE, LAW: Responder nodes
 enum vertexType {
    // Neuro
    INH = 1,
@@ -105,7 +105,9 @@ enum vertexType {
    // NG911
    CALR = 3,
    PSAP = 4,
-   RESP = 5,
+   EMS = 5,
+   FIRE = 6,
+   LAW = 7,
    // UNDEF
    VTYPE_UNDEF = 0
 };
@@ -134,6 +136,7 @@ enum edgeType {
    PC = 6,
    PP = 7,
    RP = 8,
+   RC = 9,
    // UNDEF
    ETYPE_UNDEF = -1
 };
@@ -178,6 +181,41 @@ string coordToString(int x, int y, int z);
 // Converts a vertexType into a string.
 string neuronTypeToString(vertexType t);
 
+template <typename T> ostream &operator<<(ostream &os, const vector<T> &v)
+{
+   for (T element : v) {
+      os << element << " ";
+   }
+   return os;
+}
+
+template <typename T> string vectorToXML(const vector<T> &v, const string &name)
+{
+   stringstream ss;
+   ss << "   <Matrix name=\"" << name << "\">\n";
+   ss << "   " << v << "\n";
+   ss << "   </Matrix>";
+   return ss.str();
+}
+
+template <typename T>
+string vector2dToXML(const vector<T> &v, const string &name, const string &rowName)
+{
+   stringstream ss;
+   ss << "   <Matrix name=\"" << name << "\">\n";
+   for (int i = 0; i < v.size(); ++i) {
+      if (v[i].empty()) {
+         continue;
+      }   // No log to print
+
+      ss << "      <" << rowName << " id=\"" << i << "\">\n";
+      ss << "      " << v[i] << "\n";
+      ss << "      </" << rowName << ">\n";
+   }
+   ss << "   </Matrix>";
+   return ss.str();
+}
+
 #ifdef PERFORMANCE_METRICS
 // All times in seconds
 extern double t_host_initialization_layout;
@@ -216,6 +254,8 @@ struct VertexProperty {
    string type;
    double x;
    double y;
+   int servers = 0;
+   int trunks = 0;
    string segments;
 };
 

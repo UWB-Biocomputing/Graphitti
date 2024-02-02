@@ -27,6 +27,7 @@
 *.lib
 
 # Generated Files
+__pycache__/
 build/.cmake
 build/bin
 build/Simulator
@@ -43,6 +44,8 @@ cgraphitti
 tests
 serialTest
 deserialTest
+serialFileAccessTest
+#recorderTest
 *.exe
 *.out
 *.app
@@ -88,3 +91,5 @@ build/Output/Results/*.xml
 build/Output/Results/*.h5
 Testing/RegressionTesting/TestOutput/*.xml
 Testing/RegressionTesting/TestOutput/*.h5
+Testing/UnitTesting/TestOutput/*.xml
+Testing/UnitTesting/TestOutput/*.h5

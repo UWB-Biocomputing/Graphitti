@@ -43,7 +43,7 @@ public:
 
    ~Hdf5GrowthRecorder() = default;
 
-   static IRecorder *Create()
+   static Recorder *Create()
    {
       return new Hdf5GrowthRecorder();
    }
@@ -60,14 +60,23 @@ public:
    /// Terminate process
    virtual void term() override;
 
-   /// Compile history information in every epoch
-   /// @param[in] neurons   The entire list of neurons.
+   // TODO: No parameters needed (AllVertices &vertices)
+   /// Compile/capture variable history information in every epoch
    virtual void compileHistories(AllVertices &neurons) override;
 
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
+
+   /// Register a single instance of a class derived from RecordableBase.
+   /// It stores the address of the registered variable and the related information
+   /// of this recorded variable
+   virtual void registerVariable(const string &varName, RecordableBase &recordVar) override;
+
+   /// register a vector of instance of a class derived from RecordableBase.
+   virtual void registerVariable(const string &varName,
+                                 vector<RecordableBase *> &recordVars) override;
 
 protected:
    virtual void initDataSet() override;
@@ -81,10 +90,10 @@ protected:
    DataSet dataSetRadiiHist_;
 
    /// track radii
-   std::vector<BGFLOAT> radiiHistory_;
+   vector<BGFLOAT> radiiHistory_;
 
    /// track firing rate
-   std::vector<BGFLOAT> ratesHistory_;
+   vector<BGFLOAT> ratesHistory_;
 };
 
 #endif   // HDF5

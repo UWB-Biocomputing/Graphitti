@@ -48,7 +48,7 @@ public:
    ///  and converts them into starter vertices.
    ///
    ///  @param  numVertices number of vertices to have in the map.
-   virtual void initStarterMap(const int numVertices) override;
+   virtual void initStarterMap(int numVertices) override;
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters() override;
@@ -57,11 +57,18 @@ public:
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
-   virtual edgeType edgType(const int srcVertex, const int destVertex) override;
+   virtual edgeType edgType(int srcVertex, int destVertex) override;
+
+   /// Prints the layout, used for debugging.
+   void printLayout();
 
 private:
    /// initialize the location maps (xloc and yloc).
    void initVerticesLocs();
 
    bool gridLayout_;   ///< True if grid layout.
+
+   int width_;   /// Width of the layout (assumes square)
+
+   int height_;   /// Height of the layout
 };
