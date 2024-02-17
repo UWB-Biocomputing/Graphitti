@@ -105,7 +105,7 @@ void Layout::generateVertexTypeMap(int numVertices)
 /// Populates the starter map.
 /// Selects num_endogenously_active_neurons excitory neurons and converts them into starter neurons.
 /// @param  numVertices number of vertices to have in the map.
-void Layout::initStarterMap(const int numVertices)
+void Layout::initStarterMap(int numVertices)
 {
    starterMap_.assign(numVertices, false);
 }

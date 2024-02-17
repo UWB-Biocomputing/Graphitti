@@ -60,7 +60,7 @@ class AllDynamicSTDPSynapses : public AllSTDPSynapses {
 public:
    AllDynamicSTDPSynapses() = default;
 
-   AllDynamicSTDPSynapses(const int numVertices, const int maxEdges);
+   AllDynamicSTDPSynapses(int numVertices, int maxEdges);
 
    virtual ~AllDynamicSTDPSynapses() = default;
 
@@ -76,7 +76,7 @@ public:
    ///
    ///  @param  iEdg     Index of the synapse to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
+   virtual void resetEdge(BGSIZE iEdg, BGFLOAT deltaT) override;
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
@@ -85,13 +85,12 @@ public:
    ///  Create a Synapse and connect it to the model.
    ///
    ///  @param  iEdg        Index of the synapse to set.
-   ///  @param  srcVertex   Coordinates of the source Neuron.
-   ///  @param  destVertex  Coordinates of the destination Neuron.
-   ///  @param  sumPoint    Summation point address.
+   ///  @param  srcVertex   Index of the source Neuron.
+   ///  @param  destVertex  Index of the destination Neuron.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
-                           const BGFLOAT deltaT, edgeType type) override;
+   virtual void createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
+                           edgeType type) override;
 
    ///  Prints SynapsesProps data.
    virtual void printSynapsesProps() const override;
@@ -101,19 +100,19 @@ protected:
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of synapses per neuron.
-   virtual void setupEdges(const int numVertices, const int maxEdges) override;
+   virtual void setupEdges(int numVertices, int maxEdges) override;
 
    ///  Sets the data for Synapse to input's data.
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the synapse to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg) override;
+   virtual void readEdge(istream &input, BGSIZE iEdg) override;
 
    ///  Write the synapse data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the synapse to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const override;
+   virtual void writeEdge(ostream &output, BGSIZE iEdg) const override;
 
 #if defined(USE_GPU)
 public:
@@ -210,7 +209,7 @@ protected:
    ///
    ///  @param  iEdg        Index of the synapse to set.
    ///  @param  deltaT      Inner simulation step duration.
-   virtual void changePSR(const BGSIZE iEdg, const BGFLOAT deltaT);
+   virtual void changePSR(BGSIZE iEdg, BGFLOAT deltaT);
 
 #endif   // defined(USE_GPU)
 public:

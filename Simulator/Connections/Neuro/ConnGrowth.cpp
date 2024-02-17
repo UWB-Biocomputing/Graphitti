@@ -241,6 +241,11 @@ void ConnGrowth::updateSynapsesWeights()
    for (int srcVertex = 0; srcVertex < numVertices; srcVertex++) {
       // and each destination neuron 'b'
       for (int destVertex = 0; destVertex < numVertices; destVertex++) {
+         if (destVertex == srcVertex) {
+            // we don't create a synapse between the same neuron
+            continue;
+         }
+
          // visit each synapse at (xa,ya)
          bool connected = false;
          edgeType type = layout.edgType(srcVertex, destVertex);
@@ -250,7 +255,7 @@ void ConnGrowth::updateSynapsesWeights()
          BGSIZE synapse_adjusted = 0;
          BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * destVertex;
          for (BGSIZE synapseIndex = 0; synapse_adjusted < synapseCounts; synapseIndex++, iEdg++) {
-            if (synapses.inUse_[iEdg] == true) {
+            if (synapses.inUse_[iEdg]) {
                // if there is a synapse between a and b
                if (synapses.sourceVertexIndex_[iEdg] == srcVertex) {
                   connected = true;
@@ -278,13 +283,9 @@ void ConnGrowth::updateSynapsesWeights()
 
          // if not connected and weight(a,b) > 0, add a new synapse from a to b
          if (!connected && (W_(srcVertex, destVertex) > 0)) {
-            // locate summation point
-            BGFLOAT *sumPoint = &(vertices.summationMap_[destVertex]);
             added++;
-
-            BGSIZE iEdg;
-            synapses.addEdge(iEdg, type, srcVertex, destVertex, sumPoint,
-                             Simulator::getInstance().getDeltaT());
+            BGSIZE iEdg = synapses.addEdge(type, srcVertex, destVertex,
+                                           Simulator::getInstance().getDeltaT());
             synapses.W_[iEdg] = W_(srcVertex, destVertex) * synapses.edgSign(type)
                                 * AllNeuroEdges::SYNAPSE_STRENGTH_ADJUSTMENT;
          }

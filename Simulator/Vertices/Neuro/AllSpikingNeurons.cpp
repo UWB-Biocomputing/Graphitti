@@ -80,7 +80,7 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap &
          if (spSynapses.allowBackPropagation()) {
             for (int z = 0; synapse_notified < synapseCounts; z++) {
                BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * idx + z;
-               if (spSynapses.inUse_[iEdg] == true) {
+               if (spSynapses.inUse_[iEdg]) {
                   spSynapses.postSpikeHit(iEdg);
                   synapse_notified++;
                }
@@ -95,7 +95,7 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap &
 ///  Fire the selected Neuron and calculate the result.
 ///
 ///  @param  index       Index of the Neuron to update.
-void AllSpikingNeurons::fire(const int index)
+void AllSpikingNeurons::fire(int index)
 {
    // Note that the neuron has fired!
    hasFired_[index] = true;

@@ -75,7 +75,7 @@ class AllSTDPSynapses : public AllSpikingSynapses {
 public:
    AllSTDPSynapses();
 
-   AllSTDPSynapses(const int numVertices, const int maxEdges);
+   AllSTDPSynapses(int numVertices, int maxEdges);
 
    virtual ~AllSTDPSynapses() = default;
 
@@ -91,7 +91,7 @@ public:
    ///
    ///  @param  iEdg     Index of the synapse to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
+   virtual void resetEdge(BGSIZE iEdg, BGFLOAT deltaT) override;
 
    ///  Check if the back propagation (notify a spike event to the pre neuron)
    ///  is allowed in the synapse class.
@@ -110,13 +110,12 @@ public:
    ///  Create a Synapse and connect it to the model.
    ///
    ///  @param  iEdg        Index of the synapse to set.
-   ///  @param  srcVertex   Coordinates of the source Neuron.
-   ///  @param  destVertex  Coordinates of the destination Neuron.
-   ///  @param  sumPoint    Summation point address.
+   ///  @param  srcVertex   Index of the source Neuron.
+   ///  @param  destVertex  Index of the destination Neuron.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT *sumPoint,
-                           const BGFLOAT deltaT, edgeType type) override;
+   virtual void createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
+                           edgeType type) override;
 
    ///  Prints SynapsesProps data.
    virtual void printSynapsesProps() const override;
@@ -126,24 +125,24 @@ protected:
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of synapses per neuron.
-   virtual void setupEdges(const int numVertices, const int maxEdges) override;
+   virtual void setupEdges(int numVertices, int maxEdges) override;
 
    ///  Sets the data for Synapse to input's data.
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the synapse to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg) override;
+   virtual void readEdge(istream &input, BGSIZE iEdg) override;
 
    ///  Write the synapse data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the synapse to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const override;
+   virtual void writeEdge(ostream &output, BGSIZE iEdg) const override;
 
    ///  Initializes the queues for the Synapse.
    ///
    ///  @param  iEdg   index of the synapse to set.
-   virtual void initSpikeQueue(const BGSIZE iEdg) override;
+   virtual void initSpikeQueue(BGSIZE iEdg) override;
 
 #if defined(USE_GPU)
 public:
@@ -250,21 +249,21 @@ public:
    ///
    ///  @param  iEdg      Index of the Synapse to connect to.
    ///  @param  neurons   The Neuron list to search from.
-   virtual void advanceEdge(const BGSIZE iEdg, AllVertices &neurons) override;
+   virtual void advanceEdge(BGSIZE iEdg, AllVertices &neurons) override;
 
    ///  Prepares Synapse for a spike hit (for back propagation).
    ///
    ///  @param  iEdg   Index of the Synapse to connect to.
-   virtual void postSpikeHit(const BGSIZE iEdg) override;
+   virtual void postSpikeHit(BGSIZE iEdg) override;
 
 protected:
    ///  Checks if there is an input spike in the queue (for back propagation).
    ///
    ///  @param  iEdg   Index of the Synapse to connect to.
    ///  @return true if there is an input spike event.
-   bool isSpikeQueuePost(const BGSIZE iEdg);
+   bool isSpikeQueuePost(BGSIZE iEdg);
 
-   virtual BGFLOAT synapticWeightModification(const BGSIZE iEdg, BGFLOAT edgeWeight, double delta);
+   virtual BGFLOAT synapticWeightModification(BGSIZE iEdg, BGFLOAT edgeWeight, double delta);
 
 private:
    ///  Adjust synapse weight according to the Spike-timing-dependent synaptic modification
@@ -276,7 +275,7 @@ private:
    ///  @param  epre        Params for the rule given in Froemke and Dan (2002).
    ///  @param srcVertex Index of source neuron
    ///  @param destVertex Index of destination neuron
-   void stdpLearning(const BGSIZE iEdg, double delta, double epost, double epre, int srcVertex,
+   void stdpLearning(BGSIZE iEdg, double delta, double epost, double epre, int srcVertex,
                      int destVertex);
 
 #endif
@@ -349,8 +348,8 @@ public:
 };
 
 #if defined(USE_GPU)
-CUDA_CALLABLE void stdpLearningDevice(AllSTDPSynapsesDeviceProperties *allEdgesDevice,
-                                      const BGSIZE iEdg, double delta, double epost, double epre);
+CUDA_CALLABLE void stdpLearningDevice(AllSTDPSynapsesDeviceProperties *allEdgesDevice, BGSIZE iEdg,
+                                      double delta, double epost, double epre);
 CUDA_CALLABLE bool
    isSTDPSynapseSpikeQueuePostDevice(AllSTDPSynapsesDeviceProperties *allEdgesDevice, BGSIZE iEdg);
 CUDA_CALLABLE uint64_t getSTDPSynapseSpikeHistoryDevice(

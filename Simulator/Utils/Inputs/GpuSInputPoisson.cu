@@ -82,7 +82,7 @@ void GpuSInputPoisson::inputStimulus(SimulationInfo* psi)
     advanceSpikingSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( edge_count, edgeIndexMapDevice, g_simulationStep, psi->deltaT, (AllSpikingSynapsesDeviceProperties*)allEdgesDevice );
 
     // update summation point
-    applyI2SummationMap <<< blocksPerGrid, threadsPerBlock >>> ( vertex_count, psi->pSummationMap, allEdgesDevice );
+    applyI2SummationMap <<< blocksPerGrid, threadsPerBlock >>> ( vertex_count, psi->pSummationPoint, allEdgesDevice );
 }
 
 /// Allocate GPU device memory and copy values
@@ -108,7 +108,7 @@ void GpuSInputPoisson::allocDeviceValues(IModel* model, SimulationInfo* psi, int
     const int threadsPerBlock = 256;
     int blocksPerGrid = ( vertex_count + threadsPerBlock - 1 ) / threadsPerBlock;
 
-    initSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( vertex_count, allEdgesDevice, psi->pSummationMap, psi->width, psi->deltaT, weight );
+    initSynapsesDevice <<< blocksPerGrid, threadsPerBlock >>> ( vertex_count, allEdgesDevice, psi->pSummationPoint, psi->width, psi->deltaT, weight );
 
     // allocate memory for curand global state
     HANDLE_ERROR( cudaMalloc ( &devStates_d, vertex_count * sizeof( curandState ) ) );
