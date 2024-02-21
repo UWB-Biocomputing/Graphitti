@@ -1,6 +1,6 @@
-@startuml graphitti setup
+@startuml simulatorSetup
 
-title Graphitti Setup
+title Simulator Setup
 
 Core -> Simulator: Setup 
 Simulator -> Model: Model Setup
