@@ -572,6 +572,7 @@ __global__ void advanceSTDPSynapsesDevice(int totalSynapseCount,
                                           AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                           int maxSpikes)
 {
+   /** Request for attention: Function needs modularization */
    int idx = blockIdx.x * blockDim.x + threadIdx.x;
    if (idx >= totalSynapseCount)
       return;

@@ -327,7 +327,7 @@ void AllSTDPSynapses::advanceEdge(BGSIZE iEdg, AllVertices &neurons)
             if (delta <= -3.0 * tauneg)
                break;
 
-            stdpLearning(iEdg, delta, epost, epre, idxPre, idxPost);
+            stdpLearning(iEdg, delta);//, epost, epre, idxPre, idxPost);
             --offIndex;
          }
 
@@ -371,7 +371,7 @@ void AllSTDPSynapses::advanceEdge(BGSIZE iEdg, AllVertices &neurons)
             if (delta >= 3.0 * taupos)
                break;
 
-            stdpLearning(iEdg, delta, epost, epre, idxPre, idxPost);
+            stdpLearning(iEdg, delta);//, epost, epre, idxPre, idxPost);
             --offIndex;
          }
       }
@@ -431,8 +431,8 @@ BGFLOAT AllSTDPSynapses::synapticWeightModification(BGSIZE iEdg, BGFLOAT synapti
 ///  @param  epre        Params for the rule given in Froemke and Dan (2002).
 ///  @param srcVertex Index of source neuron
 ///  @param destVertex Index of destination neuron
-void AllSTDPSynapses::stdpLearning(BGSIZE iEdg, double delta, double epost, double epre,
-                                   int srcVertex, int destVertex)
+void AllSTDPSynapses::stdpLearning(BGSIZE iEdg, double delta) /*, double epost, double epre,
+                                   int srcVertex, int destVertex)*/
 {
    BGFLOAT STDPgap = STDPgap_[iEdg];
    BGFLOAT muneg = muneg_[iEdg];

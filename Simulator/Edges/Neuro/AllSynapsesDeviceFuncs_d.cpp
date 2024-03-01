@@ -528,7 +528,7 @@ CUDA_CALLABLE edgeType edgType(vertexType *neuronTypeMap_d, int srcVertex, int d
 /// @param[in] allEdgesDevice  Pointer to the Synapse structures in device memory.
 __global__ void updateSynapsesWeightsDevice(int numVertices, BGFLOAT deltaT, BGFLOAT *W_d,
                                             int maxEdges,
-                                            AllSpikingNeuronsDeviceProperties *allVerticesDevice,
+//                                            AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                             AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                             vertexType *neuronTypeMap_d)
 {

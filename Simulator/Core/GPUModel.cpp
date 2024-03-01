@@ -205,7 +205,7 @@ void GPUModel::updateConnections()
    // Update Connections data
    if (connections_->updateConnections(neurons)) {
       connections_->updateSynapsesWeights(Simulator::getInstance().getTotalVertices(), neurons,
-                                          synapses, allVerticesDevice_, allEdgesDevice_,
+                                          synapses, /*allVerticesDevice_,*/ allEdgesDevice_,
                                           getLayout());
       // create synapse index map
       connections_->createEdgeIndexMap();
