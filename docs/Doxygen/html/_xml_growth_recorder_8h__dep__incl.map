@@ -1,0 +1,17 @@
+<map id="Simulator/Recorders/Neuro/XmlGrowthRecorder.h" name="Simulator/Recorders/Neuro/XmlGrowthRecorder.h">
+<area shape="rect" id="Node000001" title="Header file for XmlGrowthRecorder.h." alt="" coords="197,5,388,46"/>
+<area shape="rect" id="Node000002" href="$_conn_growth_8cpp.html" title="The model of the activity&#45;dependent neurite outgrowth." alt="" coords="5,94,166,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="232,55,134,96,132,91,230,50"/>
+<area shape="rect" id="Node000003" href="$_xml_growth_recorder_8cpp.html" title="An implementation for recording spikes history in an XML file for growth simulations." alt="" coords="190,94,395,135"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="295,62,295,94,290,94,290,62"/>
+<area shape="rect" id="Node000004" href="$_factory_8h.html" title="A factory template for creating factory class for any subsystem that requires a factory to create a (..." alt="" coords="419,102,584,127"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="355,50,473,99,471,103,353,55"/>
+<area shape="rect" id="Node000005" href="$_connections_8cpp.html" title="Methods for creating and updating connections." alt="" coords="137,183,290,223"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="447,135,280,185,278,180,445,130"/>
+<area shape="rect" id="Node000006" href="$_model_8cpp.html" title="Implementation of Model for the graph&#45;based networks." alt="" coords="314,190,484,216"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="478,139,415,192,411,188,474,135"/>
+<area shape="rect" id="Node000007" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="508,190,698,216"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="528,135,591,188,587,192,525,139"/>
+<area shape="rect" id="Node000008" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="722,190,916,216"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="562,129,775,187,774,192,560,134"/>
+</map>

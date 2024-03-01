@@ -1,0 +1,5 @@
+<map id="Simulator/Recorders/Hdf5Recorder.h" name="Simulator/Recorders/Hdf5Recorder.h">
+<area shape="rect" id="Node000001" title="An implementation for recording spikes history on hdf5 file." alt="" coords="5,5,145,46"/>
+<area shape="rect" id="Node000002" href="$_hdf5_recorder_8cpp.html" title="An implementation for recording spikes history on hdf5 file." alt="" coords="5,94,145,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="78,62,78,94,72,94,72,62"/>
+</map>
