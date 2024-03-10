@@ -10,20 +10,25 @@
 #pragma once
 using namespace std;
 
-#include "AllVertices.h"
+#include "AllVertices.h"   //remove it after implementing the HDF5Recorder
 #include "RecordableBase.h"
 #include <fstream>
 #include <log4cplus/loggingmacros.h>
+#include <variant>
 #include <vector>
 
+
+/// a list of pre-defined basic data types in recorded variables
+using multipleTypes = variant<uint64_t, bool, int, BGFLOAT>;
+
+//TODO: remove it after implemtating the HDF5Recorder
 class AllVertices;
 class Recorder {
 public:
-   /// The recorded variable Type
-   enum UpdatedType
-   {
-      CONSTANT,
-      DYNAMIC
+   /// The recorded variable Type/Updated frequency
+   enum UpdatedType {
+      CONSTANT,   // value doesn't change in each epoch
+      DYNAMIC     // value is updated in each peoch
       // Add more variable types as needed
    };
    virtual ~Recorder() = default;
@@ -58,14 +63,34 @@ public:
    /// Prints loaded parameters to logging file.
    virtual void printParameters() = 0;
 
-   /// Register a single instance of a class derived from RecordableBase.
-   /// It stores the address of the registered variable and the related information
-   /// of this recorded variable
-   virtual void registerVariable(const string &varName, RecordableBase &recordVar) = 0;
-   virtual void registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) {}
+   /// Receives a recorded variable entity from the variable owner class
+   /**
+   * @brief Register a variable that is standard library vector class object such as vector<int>
+   * @param varName Name of the recorded variable.
+   * @param recordVar Reference to the recorded variable.
+   * @param variableType Type of the recorded variable.
+   * @param constBasicType Basic data type of the recorded variable.
+   */
+   virtual void registerVariable(const string &varName, RecordableBase &recordVar,
+                                 UpdatedType variableType, string constBasicType)
+      = 0;
 
-   /// register a vector of instance of a class derived from RecordableBase.
-   virtual void registerVariable(const string &varName, vector<RecordableBase *> &recordVars) = 0;
+   /// Receives a recorded variable entity from the variable owner class
+   /// used when the return type from recordable variable is supported by Recorder
+   /**
+   * @brief Registers a single instance of a class derived from RecordableBase.
+   * @param varName Name of the recorded variable.
+   * @param recordVar Reference to the recorded variable.
+   * @param variableType Type of the recorded variable.
+   */
+   virtual void registerVariable(const string &varName, RecordableBase &recordVar,
+                                 UpdatedType variableType)
+      = 0;
+
+   /// Register a vector of instance of a class derived from RecordableBase.
+   virtual void registerVariable(const string &varName, vector<RecordableBase *> &recordVars,
+                                 UpdatedType variableType)
+      = 0;
 
 protected:
    /// File path to the file that the results will be printed to.

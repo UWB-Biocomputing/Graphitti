@@ -4,28 +4,33 @@
  * @ingroup Simulator/Recorders
  *
  * @brief Provides an implementation for recording Graph-based simulation
- *           variable history in an XML file.
+ *        variable history in an XML file. It can be reused to:
+ *        1) Change variables to record in an existing model.
+ *        2) Record variables for new integrated network simulations.
+ * Supports updated types: Constant and Dynamic.
+ * Supports recording 1-D variables whose base class is RecordableBase.
+ *     - EventBuffer
+ *     - VectorMatrix
+ *     - RecordableVector for standard library vector
  *
- * The XmlRecorder class facilitates the recording of various graph-based simulation 
- * variable information, including :
- *     -# the recorded variable name.
- *     -# the recorded variable basic data type.
- *     -# the recorded variable address.
+ * The XmlRecorder class receives a list of registered variable entities passed from 
+ * the variable owner classes and stores them into a variable table.
+ * Each entity in this table includes:
+ *     - The recorded variable name.
+ *     - The recorded variable basic data type.
+ *     - The recorded variable address.
+ *     - The vector container to store the data.
  * 
- * Use case: Neuron network simulation information: neuron's layout, spikes history,
- * and compile history information on xml file:
- *     -# the neuron ID.
- *     -# time steps of events produced by each neuron.
- *     -# the history events information of all neurons.
+ * Use case: Neural network simulation
+ * Record neural network simulation variables' information in an XML file:
+ *     - The neuron ID.
+ *     - Time steps of events produced by each neuron.
  */
 
 #pragma once
 #include "Global.h"
 #include "Model.h"
 #include "Recorder.h"
-
-/// a list of basic data types in different recorded variables
-using multipleTypes = variant<uint64_t, double, string, BGFLOAT>;
 
 class XmlRecorder : public Recorder {
 public:
@@ -66,15 +71,31 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() override;
 
-   /// Register a single instance of a class derived from RecordableBase.
-   /// It stores the address of the registered variable and the related information
-   /// of this recorded variable
-   virtual void registerVariable(const string &varName, RecordableBase &recordVar) override;
-   virtual void registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) override;
+   /// Receives a recorded variable entity from the variable owner class
+   /**
+   * @brief Register a variable that is standard library vector class object such as vector<int>
+   * @param varName Name of the recorded variable.
+   * @param recordVar Reference to the recorded variable.
+   * @param variableType Type of the recorded variable.
+   * @param constBasicType Basic data type of the recorded variable.
+   */
+   virtual void registerVariable(const string &varName, RecordableBase &recordVar,
+                                 UpdatedType variableType, string constBasicType) override;
 
-   /// register a vector of instance of a class derived from RecordableBase.
-   virtual void registerVariable(const string &varName,
-                                 vector<RecordableBase *> &recordVars) override;
+   /// Receives a recorded variable entity from the variable owner class
+   /// used when the return type from recordable variable is supported by Recorder
+   /**
+   * @brief Registers a single instance of a class derived from RecordableBase.
+   * @param varName Name of the recorded variable.
+   * @param recordVar Reference to the recorded variable.
+   * @param variableType Type of the recorded variable.
+   */
+   virtual void registerVariable(const string &varName, RecordableBase &recordVar,
+                                 UpdatedType variableType) override;
+
+   /// Register a vector of instance of a class derived from RecordableBase.
+   virtual void registerVariable(const string &varName, vector<RecordableBase *> &recordVars,
+                                 UpdatedType variableType) override;
 
    ///@{
    /** These methods are intended only for unit tests */
@@ -112,7 +133,7 @@ public:
       return (variableTable_[numIndex].variableHistory_);
    }
 
-   /// get an output stream from toXml method
+   /// get an output stream from toXml method (only included during unit tests)
    string getToXML(const string &name, vector<multipleTypes> &singleVariableBuffer_,
                    const string &basicType)
    {
@@ -124,8 +145,9 @@ public:
 
 protected:
    /// Represents information about a single recorded variable.
-   /// The singleVariableInfo struct encapsulates details about a recorded variable, including its name,
-   ///     basic data type, address (location), and the history of accumulated values over time.
+   /// The singleVariableInfo struct encapsulates details about a recorded variable,
+   /// including its name, basic data type, address (location),
+   /// updated type and the history of accumulated values over time.
    struct singleVariableInfo {
       /// the name of each variable
       string variableName_;
@@ -133,7 +155,7 @@ protected:
       /// the basic data type in the Recorded variable
       string dataType_;
 
-      /// the variable type
+      /// the variable type: updated frequency
       UpdatedType variableType_;
 
       /// a reference to a RecordableBase variable
@@ -143,40 +165,41 @@ protected:
       /// the history of accumulated values for a registered RecordableBase object variable
       vector<multipleTypes> variableHistory_;
 
-      /// Constructor accepting the variable name and the address of recorded variable
-      singleVariableInfo(const string &name, RecordableBase &location) :
-         variableLocation_(location), variableName_(name)
+      /// Constructor
+      /// used when Recordable variable is a standard library template such as vector<int>
+      /// accepting the variable name, the address of recorded variable, updated type and basic type
+      singleVariableInfo(const string &name, RecordableBase &location, UpdatedType variableType,
+                         string constBasicType) :
+         variableLocation_(location),
+         variableName_(name), variableType_(variableType)
       {
-         dataType_ = location.getDataType();
+         dataType_ = constBasicType;
       }
-      /// Constructor accepting the variable name and the address of recorded variable
+      /// Constructor accepting the variable name, the address of recorded variable, the updated type
       singleVariableInfo(const string &name, RecordableBase &location, UpdatedType variableType) :
          variableLocation_(location), variableName_(name), variableType_(variableType)
       {
          dataType_ = location.getDataType();
       }
 
+      /// @brief capture value to the vector in the table
       void captureData()
       {
-         if (variableLocation_.getNumEventsInEpoch() > 0) {
-            for (int index = 0; index < variableLocation_.getNumEventsInEpoch();
-               index++) {
+         if (variableLocation_.getNumElements() > 0) {
+            for (int index = 0; index < variableLocation_.getNumElements(); index++) {
                variableHistory_.push_back(variableLocation_.getElement(index));
             }
          }
       }
    };
 
-   /// Represents a list of registered variables for recording.
-   /// The variableTable_ vector stores information about all the variables
-   ///      that need to be recorded, including their names, basic data types,
-   ///      addresses (locations), and the history of accumulated values.
+   /// List of registered variables for recording
    vector<singleVariableInfo> variableTable_;
 
    /// a file stream for xml output
    ofstream resultOut_;
 
-   /// string toXML(string name,  vector<multipleTypesuint64_t>const;
+   /// Retrieves values of a vector of variant and outputs them to a xml file
    string toXML(const string &name, vector<multipleTypes> &singleVariableBuffer_,
                 const string &basicType) const;
 

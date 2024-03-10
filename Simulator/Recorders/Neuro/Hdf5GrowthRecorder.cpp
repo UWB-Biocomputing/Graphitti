@@ -195,18 +195,37 @@ void Hdf5GrowthRecorder::printParameters()
                                    << "\tRecorder type: Hdf5GrowthRecorder" << endl);
 }
 
-/// Register a single instance of a class derived from RecordableBase.
-/// It stores the address of the registered variable and the related information
-/// of this recorded variable
-void Hdf5GrowthRecorder::registerVariable(const string &varName, RecordableBase &recordVar)
+/// Receives a recorded variable entity from the variable owner class
+/**
+* @brief Register a variable that is standard library vector class object such as vector<int>
+* @param varName Name of the recorded variable.
+* @param recordVar Reference to the recorded variable.
+* @param variableType Type of the recorded variable.
+* @param constBasicType Basic data type of the recorded variable.
+*/
+void Hdf5GrowthRecorder::registerVariable(const string &varName, RecordableBase &recordVar,
+                                          UpdatedType variableType, string constBasicType)
 {
 }
 
-/// register a vector of instance of a class derived from RecordableBase.
+/// Receives a recorded variable entity from the variable owner class
+/// used when the return type from recordable variable is supported by Recorder
+/**
+* @brief Registers a single instance of a class derived from RecordableBase.
+* @param varName Name of the recorded variable.
+* @param recordVar Reference to the recorded variable.
+* @param variableType Type of the recorded variable.
+*/
+void Hdf5GrowthRecorder::registerVariable(const string &varName, RecordableBase &recordVar,
+                                          UpdatedType variableType)
+{
+}
+
+/// Register a vector of instance of a class derived from RecordableBase.
 void Hdf5GrowthRecorder::registerVariable(const string &varName,
-                                          vector<RecordableBase *> &recordVars)
+                                          vector<RecordableBase *> &recordVars,
+                                          UpdatedType variableType)
 {
 }
-
 
 #endif   // HDF5

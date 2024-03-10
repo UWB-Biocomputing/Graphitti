@@ -16,30 +16,33 @@ using namespace std;
 #include <variant>
 #include <vector>
 
+/// A list of pre-defined basic data types for variablse in all the simulations
+/// These pre-defined types should match with the types of variant in Recorder
+using variantTypes = variant<uint64_t, bool, int, BGFLOAT>;
+
 class RecordableBase {
-   /// TODO: will change function names later
 public:
    virtual ~RecordableBase() = default;
-   /// Get the number of events in the current epoch for the recordable variable.
-   virtual int getNumEventsInEpoch() const = 0;
 
-   /// Start a new epoch for the recordable variable.
-   /// This method is called at the beginning of each simulation epoch to prepare for recording new events.
-   virtual void startNewEpoch() = 0;
+   /// Get the number of events in the current epoch for the recordable variable.
+   virtual int getNumElements() const = 0;
 
    /// Get the value of the recordable variable at the specified index.
    /// @param index The index of the recorded value to retrieve.
-   /// @return A variant representing the recorded value (uint64_t, double, or string).
-   virtual variant<uint64_t, double, string, BGFLOAT> getElement(int index) const = 0;
+   /// @return A variant representing the recorded value.
+   virtual variantTypes getElement(int index) const = 0;
 
-   /// set up a string representing the basic data type
+   /// Start a new epoch for the recordable variable.
+   /// Called at the beginning of each simulation epoch to prepare for recording new events.
+   virtual void startNewEpoch() = 0;
+
+   /// Set up a string representing the basic data type
    virtual void setDataType() = 0;
 
    /// Get A string representing the data type of the recordable variable
-   virtual string &getDataType()  = 0;
+   virtual string &getDataType() = 0;
 
 protected:
    ///the basic data type in the recorded variable
    string basicDataType_;
-
 };

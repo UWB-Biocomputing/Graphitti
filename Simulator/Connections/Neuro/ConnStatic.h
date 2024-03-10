@@ -30,6 +30,7 @@
 #include "Simulator.h"
 #include <iostream>
 #include <vector>
+#include "RecordableVector.h"
 // cereal
 #include <cereal/types/vector.hpp>
 
@@ -100,7 +101,8 @@ private:
    vector<int> destVertexIndexCurrentEpoch_;
 
    /// The weight (scaling factor, strength, maximal amplitude) of each vertex for the current epoch.
-   vector<BGFLOAT> WCurrentEpoch_;
+   // vector<BGFLOAT> changes to RecordableVector for recording purpose
+   RecordableVector <BGFLOAT> WCurrentEpoch_;
 
    /// radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
    int radiiSize_;

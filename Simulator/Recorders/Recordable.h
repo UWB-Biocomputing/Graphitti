@@ -24,11 +24,11 @@ public:
    /// set up a string representing the basic data type
    virtual void setDataType() override
    {
-      basicDataType_ = "variant";
+      basicDataType_ = "T";
    }
 
    /// Get the number of events in the current epoch for the recordable variable.
-   virtual int getNumEventsInEpoch() const override
+   virtual int getNumElements() const override
    {
       return eventTimeSteps_.size();
    }
@@ -41,13 +41,13 @@ public:
 
    /// Get the value of the recordable variable at the specified index.
    /// return A variant representing the recorded value (uint64_t, double, or string)
-   virtual variant<uint64_t, double, string, BGFLOAT> getElement(int index) const override
+   virtual variantTypes getElement(int index) const override
    {
       return eventTimeSteps_[index];
    }
 
    /// Get A string representing the data type of the recordable variable
-   virtual string &getDataType()  override
+   virtual string &getDataType() override
    {
       return basicDataType_;
    }
@@ -55,5 +55,4 @@ public:
 protected:
    /// Holds the event time steps
    vector<T> eventTimeSteps_;
-
 };

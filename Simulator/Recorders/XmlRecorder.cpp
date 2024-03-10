@@ -7,12 +7,12 @@
  */
 
 #include "XmlRecorder.h"
-#include "AllIFNeurons.h"   // TODO: remove LIF model specific code
-#include "AllSpikingNeurons.h"
+#include "AllIFNeurons.h"        // TODO: remove LIF model specific code
+#include "AllSpikingNeurons.h"   //TODO: remove after HDF5Recorder implementing
 #include "ConnGrowth.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
-#include "VectorMatrix.h"
+#include "VectorMatrix.h"   ////TODO: remove after HDF5Recorder implementing
 #include <functional>
 
 // constructor
@@ -72,21 +72,13 @@ void XmlRecorder::term()
    resultOut_.close();
 }
 
-// TODO : @param[in] vertices will be removed eventually
+// TODO : @param[in] vertices will be removed eventually after HDF5Recorder implementing
 /// Compile history information in every epoch
 void XmlRecorder::compileHistories(AllVertices &vertices)
 {
    //capture data information in each epoch
    for (int rowIndex = 0; rowIndex < variableTable_.size(); rowIndex++) {
-   //    if (variableTable_[rowIndex].variableLocation_.getNumEventsInEpoch() > 0) {
-   //       for (int columnIndex = 0;
-   //            columnIndex < variableTable_[rowIndex].variableLocation_.getNumEventsInEpoch();
-   //            columnIndex++) {
-   //          variableTable_[rowIndex].variableHistory_.push_back(
-   //             variableTable_[rowIndex].variableLocation_.getElement(columnIndex));
-   //       }
-   //    }
-      if(variableTable_[rowIndex].variableType_ == UpdatedType::DYNAMIC){
+      if (variableTable_[rowIndex].variableType_ == UpdatedType::DYNAMIC) {
          variableTable_[rowIndex].captureData();
       }
       variableTable_[rowIndex].variableLocation_.startNewEpoch();
@@ -110,18 +102,21 @@ void XmlRecorder::compileHistories(AllVertices &vertices)
    // spNeurons.clearSpikeCounts();
 }
 
-// TODO : @param[in] vertices will be removed eventually
+// TODO : @param[in] vertices will be removed eventually after HDF5Recorder implementing
 /// Writes simulation results to an output destination.
 void XmlRecorder::saveSimData(const AllVertices &vertices)
 {
    // Write XML header information:
    string header = "<?xml version=\"1.0\" standalone=\"no\"?>\n";
    resultOut_ << header;
-   //iterate the variable list row by row then output the cumulative value to a xml file
+   // Iterates the variable table to
+   // (1)cpature values of Constant variable
+   // (2) output the cumulative value to a xml file
    for (int rowIndex = 0; rowIndex < variableTable_.size(); rowIndex++) {
-      if(variableTable_[rowIndex].variableType_ == UpdatedType::CONSTANT){
+      if (variableTable_[rowIndex].variableType_ == UpdatedType::CONSTANT) {
          variableTable_[rowIndex].captureData();
       }
+      // cout << variableTable_[rowIndex].variableName_ << endl;
       if (variableTable_[rowIndex].variableHistory_.size() > 0) {
          resultOut_ << toXML(variableTable_[rowIndex].variableName_,
                              variableTable_[rowIndex].variableHistory_,
@@ -131,6 +126,7 @@ void XmlRecorder::saveSimData(const AllVertices &vertices)
    }
 }
 
+//Retrieves values of a vector of variant and outputs them to a xml file
 string XmlRecorder::toXML(const string &name, vector<multipleTypes> &singleBuffer_,
                           const string &basicType) const
 {
@@ -144,13 +140,14 @@ string XmlRecorder::toXML(const string &name, vector<multipleTypes> &singleBuffe
       << "\" multiplier=\"1.0\">" << endl;
    os << "   ";
 
+   // Retrives value from variant
    for (const multipleTypes &element : singleBuffer_) {
       if (basicType == "uint64_t") {
          os << get<uint64_t>(element) << " ";
       } else if (basicType == "double") {
-         os << get<double>(element) << " ";
-      } else if (basicType == "string") {
-         os << get<string>(element) << " ";
+         os << get<bool>(element) << " ";
+      } else if (basicType == "int") {
+         os << get<int>(element) << " ";
       } else if (basicType == "BGFLOAT") {
          os << get<BGFLOAT>(element) << " ";
       }
@@ -178,24 +175,35 @@ void XmlRecorder::printParameters()
                                    << "\tResult file path: " << resultFileName_ << endl);
 }
 
+/// Receives a recorded variable entity from the variable owner class
 /**
- * Register a single instance of a class derived from RecordableBase.
- * This method allows the XmlRecorder to obtain the updating value while the simulator runs
- * by storing the address of the registered variable.
- * @param name       The name associated with the registered variable.
- * @param recordVar  A pointer to the RecordableBase object to be registered.
- */
-void XmlRecorder::registerVariable(const string &varName, RecordableBase &recordVar)
+* @brief Register a variable that is standard library vector class object such as vector<int>
+* @param varName Name of the recorded variable.
+* @param recordVar Reference to the recorded variable.
+* @param variableType Type of the recorded variable.
+* @param constBasicType Basic data type of the recorded variable.
+*/
+void XmlRecorder::registerVariable(const string &varName, RecordableBase &recordVar,
+                                   UpdatedType variableType, string constBasicType)
 {
    // add a new variable into the table
-   variableTable_.push_back(singleVariableInfo(varName, recordVar));
+   variableTable_.push_back(singleVariableInfo(varName, recordVar, variableType, constBasicType));
 }
 
-void XmlRecorder::registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType)
+/// Receives a recorded variable entity from the variable owner class
+/// used when the return type from recordable variable is supported by Recorder
+/**
+* @brief Registers a single instance of a class derived from RecordableBase.
+* @param varName Name of the recorded variable.
+* @param recordVar Reference to the recorded variable.
+* @param variableType Type of the recorded variable.
+*/
+void XmlRecorder::registerVariable(const string &varName, RecordableBase &recordVar,
+                                   UpdatedType variableType)
 {
    variableTable_.push_back(singleVariableInfo(varName, recordVar, variableType));
-
 }
+
 /**
  * Register a vector of instances of classes derived from RecordableBase.
  *
@@ -205,12 +213,13 @@ void XmlRecorder::registerVariable(const string &varName, RecordableBase &record
  * @param varName     The name associated with the registered variables.
  * @param recordVars  A vector of pointers to RecordableBase objects to be registered.
  */
-void XmlRecorder::registerVariable(const string &varName, vector<RecordableBase *> &recordVars)
+void XmlRecorder::registerVariable(const string &varName, vector<RecordableBase *> &recordVars,
+                                   UpdatedType variableType)
 {
    for (int i = 0; i < recordVars.size(); i++) {
       string variableID = varName + to_string(i);
       RecordableBase &address = *recordVars[i];
       // add a new variable into the table
-      variableTable_.push_back(singleVariableInfo(variableID, address));
+      variableTable_.push_back(singleVariableInfo(variableID, address, variableType));
    }
 }

@@ -19,43 +19,13 @@
 
 #include "BGTypes.h"
 #include "MatrixExceptions.h"
-#include <string>
-
 #include "RecordableBase.h"
+#include <string>
 
 using namespace std;
 
 class Matrix : public RecordableBase {
 public:
-
-// /*{8*/
-  virtual int getNumEventsInEpoch() const {
-   return 0;
-  }
-
-   /// Start a new epoch for the recordable variable.
-   /// This method is called at the beginning of each simulation epoch to prepare for recording new events.
-   virtual void startNewEpoch() {}
-
-   /// Get the value of the recordable variable at the specified index.
-   /// @param index The index of the recorded value to retrieve.
-   /// @return A variant representing the recorded value (uint64_t, double, or string).
-   virtual variant<uint64_t, double, string, BGFLOAT> getElement(int index) const {
-      std::variant<uint64_t, double, string, BGFLOAT> a;
-      a = 1.0;
-      return a;
-   }
-
-   /// set up a string representing the basic data type
-   virtual void setDataType() {}
-
-   /// Get A string representing the data type of the recordable variable
-   virtual string &getDataType()  {
-      basicDataType_ = "variant";
-      return basicDataType_;
-   }
-
-/*}*/
    /// Virtual Destructor
    virtual ~Matrix() = default;
 

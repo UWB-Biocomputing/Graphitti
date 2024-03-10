@@ -97,7 +97,7 @@ class XmlRecorder {
 	+printParameters() : void
 	+saveSimData(const AllVertices& vertices) : void
 	+term() : void
-	+registerVariable(const string &varName, RecordableBase &recordVar) : void
+	+registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType, string constBasicType) : void
 	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
 	
 	/' methods only used for unit test 

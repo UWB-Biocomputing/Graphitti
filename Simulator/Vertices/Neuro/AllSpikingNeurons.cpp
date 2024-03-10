@@ -35,7 +35,6 @@ void AllSpikingNeurons::registerSpikeHistoryVariables()
 
    // Option 1: Register neuron information in vertexEvents_ one by one
    for (int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++) {
-      // variable name = baseName + neuron number
       string neuronID = baseName + std::to_string(iNeuron);
       recorder.registerVariable(neuronID, vertexEvents_[iNeuron], Recorder::UpdatedType::DYNAMIC);
    }
@@ -45,7 +44,7 @@ void AllSpikingNeurons::registerSpikeHistoryVariables()
    // for(int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++){
    //    variables.push_back(&vertexEvents_[iNeuron]);
    // }
-   // recorder.registerVariable(baseName, variables);
+   // recorder.registerVariable(baseName, variables, Recorder::UpdatedType::DYNAMIC);
 }
 
 ///  Clear the spike counts out of all Neurons.

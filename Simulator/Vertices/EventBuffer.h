@@ -50,17 +50,12 @@ public:
    /// Get the value of the recordable variable at the specified index.
    /// @param index The index of the recorded value to retrieve.
    /// @return A variant representing the recorded value (uint64_t, double, or string).
-   virtual variant<uint64_t, double, string, BGFLOAT> getElement(int index) const override;
+   virtual variantTypes getElement(int index) const override;
 
    /// Get A string representing the data type of the recordable variable
-   virtual string &getDataType()  override;
+   virtual string &getDataType() override;
 
-   /// Get number of events in the current/preceding epoch
-   ///
-   /// Getting the number of events in the current epoch (or, in between epochs, the number of events
-   /// in the preceding epoch) is not the same as the number of events in the buffer, because the buffer
-   /// retains events from the previous epoch, too.
-   virtual int getNumEventsInEpoch() const override;
+   virtual int getNumElements() const override;
 
    /// Start a new epoch
    ///
@@ -69,6 +64,13 @@ public:
    /// event to be enqueued and that the number of events in the epoch is 0.
    virtual void startNewEpoch() override;
    ///@}
+
+   /// Get number of events in the current/preceding epoch
+   ///
+   /// Getting the number of events in the current epoch (or, in between epochs, the number of events
+   /// in the preceding epoch) is not the same as the number of events in the buffer, because the buffer
+   /// retains events from the previous epoch, too.
+   virtual int getNumEventsInEpoch() const;
 
    /// Resize event buffer
    ///

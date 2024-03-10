@@ -37,6 +37,39 @@ class CompleteMatrix : public Matrix {
    friend class VectorMatrix;
 
 public:
+   ///@{Interface for RecordableBase
+   // Implement virtual methods from RecordableBase
+   int getNumElements() const override
+   {
+      // Implement or throw exception
+      throw std::logic_error("CompleteMatrix does not support getNumElements.");
+   }
+
+   void startNewEpoch() override
+   {
+      // Implement or throw exception
+      throw std::logic_error("CompleteMatrix does not support startNewEpoch.");
+   }
+
+   variantTypes getElement(int index) const override
+   {
+      // Implement or throw exception
+      throw std::logic_error("CompleteMatrix does not support getElement.");
+   }
+
+   void setDataType() override
+   {
+      // Implement or throw exception
+      throw std::logic_error("CompleteMatrix does not support setDataType.");
+   }
+
+   string &getDataType() override
+   {
+      // Implement or throw exception
+      throw std::logic_error("CompleteMatrix does not support getDataType.");
+   }
+   ///@}
+
    ///  Allocate storage and initialize attributes. If "v" (values) is
    ///  not empty, it will be used as a source of data for initializing
    ///  the matrix (and must be a list of whitespace separated textual

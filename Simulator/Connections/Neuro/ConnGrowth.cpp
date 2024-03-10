@@ -70,6 +70,11 @@ void ConnGrowth::setup()
    area_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices, 0);
    outgrowth_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
    deltaR_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
+
+   // Register VertorMatrix radii_ for Recording if need
+   // Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   // string variableName = "radii";
+   // recorder.registerVariable(variableName, radii_, Recorder::UpdatedType::DYNAMIC);
 }
 
 /// Load member variables from configuration file.
