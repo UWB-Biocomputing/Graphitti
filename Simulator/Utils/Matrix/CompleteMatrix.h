@@ -12,6 +12,9 @@
 #include "VectorMatrix.h"
 #include <string>
 #include <vector>
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
 using namespace std;
 
@@ -149,6 +152,9 @@ public:
 
    friend const CompleteMatrix sqrt(const CompleteMatrix &v);
 
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
+
 protected:
    /******************************************
    * @name Internal Utilities
@@ -182,3 +188,11 @@ private:
    /// Pointer to dynamically allocated 2D array
    vector<vector<BGFLOAT>> theMatrix;
 };
+
+CEREAL_REGISTER_TYPE(CompleteMatrix);   // to enable polymorphism
+
+///  Cereal serialization method
+template <class Archive> void CompleteMatrix::serialize(Archive &archive)
+{
+   archive(cereal::base_class<Matrix>(this), cereal::make_nvp("theMatrix", theMatrix));
+}

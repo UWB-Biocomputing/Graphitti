@@ -53,6 +53,10 @@
 #pragma once
 
 #include "AllSTDPSynapses.h"
+// cereal
+// #include <cereal/archives/xml.hpp>   // this is a cereal hack
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
 struct AllDynamicSTDPSynapsesDeviceProperties;
 
@@ -94,6 +98,9 @@ public:
 
    ///  Prints SynapsesProps data.
    virtual void printSynapsesProps() const override;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -253,3 +260,13 @@ struct AllDynamicSTDPSynapsesDeviceProperties : public AllSTDPSynapsesDeviceProp
    BGFLOAT *F_;
 };
 #endif   // defined(USE_GPU)
+
+CEREAL_REGISTER_TYPE(AllDynamicSTDPSynapses);
+
+///  Cereal serialization method
+template <class Archive> void AllDynamicSTDPSynapses::serialize(Archive &archive)
+{
+   archive(cereal::base_class<AllSTDPSynapses>(this), cereal::make_nvp("lastSpike_", lastSpike_),
+           cereal::make_nvp("r_", r_), cereal::make_nvp("u_", u_), cereal::make_nvp("D_", D_),
+           cereal::make_nvp("U_", U_), cereal::make_nvp("F_", F_));
+}

@@ -68,6 +68,9 @@ abstract class Recorder {
 	+{abstract} printParameters() : void
 	+{abstract} saveSimData(const AllVertices& vertices) : void
 	+{abstract} term() : void
+	+{abstract} registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
+	+{abstract} registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType, string constBasicType) : void
+	+{abstract} registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
 }
 
 
@@ -97,6 +100,7 @@ class XmlRecorder {
 	+printParameters() : void
 	+saveSimData(const AllVertices& vertices) : void
 	+term() : void
+	+registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
 	+registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType, string constBasicType) : void
 	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
 	
@@ -104,16 +108,18 @@ class XmlRecorder {
 	+XmlRecorder(string fileName_)
 	+getVariableName(int numIndex) const : const string&
 	+getSingleVariable(int numIndex) const : &RecordableBase
-	+getHistory() const : const &vector<variant<uint64_t, double, string, BGFLOAT>>
+	+getHistory() const : const &vector<variant<uint64_t, bool, int, BGFLOAT>>
 	'/
 }
 
 struct singleVariableInfo {
 	#variableName_ : string
 	#variableLocation_ : RecordableBase&
-	#variableHistory_ : vector<variant<uint64_t, double, string, BGFLOAT>
+	#variableHistory_ : vector<variant<uint64_t, bool, int, BGFLOAT>
 	#dataType_ : string
+	#variableType: UpdatedType
 	+singleVariableInfo(string name, RecordableBase &location)
+	+captureData()
 }
 
 

@@ -3,18 +3,26 @@
 /' Objects '/
 
 abstract class RecordableBase {
-	+{abstract} getNumEventsInEpoch() const : int
+	-basicDataType_ : string
+	+{abstract} getNumElements() const : int
 	+{abstract} startNewEpoch() : void
-	+{abstract} getElement(int index) const : variant<uint64_t, double, char>
+	+{abstract} getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
 	+{abstract} setDataType() : void
 	+{abstract} getDataType() : string
 }
 class Recordable<T>{
 	-eventTimeSteps_ : vector<T>
-	-basicDataType_ : string
-	+getNumEventsInEpoch() const : int
+	+getNumElements() const : int
 	+startNewEpoch() : void
-	+getElement(int index) const : variant<uint64_t, double, char>
+	+getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
+	+setDataType() : void
+	+getDataType() : string
+}
+
+class RecordableVector<T>{
+	+getNumElement() const : int
+	+startNewEpoch() : void
+	+getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
 	+setDataType() : void
 	+getDataType() : string
 }
@@ -38,15 +46,15 @@ class EventBuffer<uint64_t> {
 	+startNewEpoch() : void
 }
 
-class ConstantBuffer<int>
+class vector<T>
 
 
 /' Inheritance relationships '/
 
 .RecordableBase <|-- .Recordable
 
-
 .Recordable <|-- .EventBuffer
 
+.RecordableBase <|-- .RecordableVector
 
-.Recordable <|-- .ConstantBuffer
+.vector <|-- .RecordableVector

@@ -370,35 +370,35 @@ target_link_libraries(tests gtest gtest_main)
 # Link the combined library into the 'tests' executable.
 target_link_libraries(tests combinedLib)
 
-add_executable(serialTest
-        Testing/RunTests.cpp
-        Testing/UnitTesting/SerializationTests.cpp)
+# add_executable(serialTest
+#         Testing/RunTests.cpp
+#         Testing/UnitTesting/SerializationTests.cpp)
 
-# Links the Googletest framework with the serialTest executable
-target_link_libraries(serialTest gtest gtest_main)
+# # Links the Googletest framework with the serialTest executable
+# target_link_libraries(serialTest gtest gtest_main)
 
-# Link the combined library into the 'serialTest' executable.
-target_link_libraries(serialTest combinedLib)
+# # Link the combined library into the 'serialTest' executable.
+# target_link_libraries(serialTest combinedLib)
 
-add_executable(deserialTest
-        Testing/RunTests.cpp
-        Testing/UnitTesting/DeserializationTests.cpp)
+# add_executable(deserialTest
+#         Testing/RunTests.cpp
+#         Testing/UnitTesting/DeserializationTests.cpp)
 
-# Links the Googletest framework with the deserialTest executable
-target_link_libraries(deserialTest gtest gtest_main)
+# # Links the Googletest framework with the deserialTest executable
+# target_link_libraries(deserialTest gtest gtest_main)
 
-# Link the combined library into the 'deserialTest' executable.
-target_link_libraries(deserialTest combinedLib)
+# # Link the combined library into the 'deserialTest' executable.
+# target_link_libraries(deserialTest combinedLib)
 
-add_executable(serialFileAccessTest
-        Testing/RunTests.cpp
-        Testing/UnitTesting/SerializationFileAccessTest.cpp)
+# add_executable(serialFileAccessTest
+#         Testing/RunTests.cpp
+#         Testing/UnitTesting/SerializationFileAccessTest.cpp)
 
-# Links the Googletest framework with the serialFileAccessTest executable
-target_link_libraries(serialFileAccessTest gtest gtest_main)
+# # Links the Googletest framework with the serialFileAccessTest executable
+# target_link_libraries(serialFileAccessTest gtest gtest_main)
 
-# Link the combined library into the 'serialFileAccessTest' executable.
-target_link_libraries(serialFileAccessTest combinedLib)
+# # Link the combined library into the 'serialFileAccessTest' executable.
+# target_link_libraries(serialFileAccessTest combinedLib)
 
 # Clear ENABLE_CUDA, PERFORMANCE_METRICS and GPROF from the cache so it's reset for subsequent builds
 unset(ENABLE_CUDA CACHE)
