@@ -27,10 +27,10 @@
 
 #include "Connections.h"
 #include "Global.h"
+#include "RecordableVector.h"
 #include "Simulator.h"
 #include <iostream>
 #include <vector>
-#include "RecordableVector.h"
 // cereal
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>
@@ -98,7 +98,7 @@ private:
 
    /// The weight (scaling factor, strength, maximal amplitude) of each vertex for the current epoch.
    // vector<BGFLOAT> changes to RecordableVector for recording purpose
-   RecordableVector <BGFLOAT> WCurrentEpoch_;
+   RecordableVector<BGFLOAT> WCurrentEpoch_;
 
    /// radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
    int radiiSize_;
