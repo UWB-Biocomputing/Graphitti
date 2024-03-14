@@ -186,7 +186,8 @@ protected:
       void captureData()
       {
          if (variableLocation_.getNumElements() > 0) {
-            variableHistory_.reserve(variableHistory_.size() + variableLocation_.getNumElements() > 0);
+            variableHistory_.reserve(variableHistory_.size() + variableLocation_.getNumElements()
+                                     > 0);
             for (int index = 0; index < variableLocation_.getNumElements(); index++) {
                variableHistory_.push_back(variableLocation_.getElement(index));
             }
