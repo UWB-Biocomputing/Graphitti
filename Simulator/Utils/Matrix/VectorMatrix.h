@@ -277,6 +277,40 @@ public:
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);
 
+   ///@{Interface for RecordableBase
+   virtual int getNumElements() const
+   {
+      return size;
+   }
+
+   /// Start a new epoch for the recordable variable.
+   /// This method is called at the beginning of each simulation epoch to prepare for recording new events.
+   virtual void startNewEpoch()
+   {
+   }
+
+   /// Get the value of the recordable variable at the specified index.
+   /// @param index The index of the recorded value to retrieve.
+   /// @return A variant representing the recorded value (uint64_t, double, or string).
+   virtual variantTypes getElement(int index) const
+   {
+      return theVector[index];
+   }
+
+   /// set up a string representing the basic data type
+   virtual void setDataType()
+   {
+   }
+
+   /// Get A string representing the data type of the recordable variable
+   virtual string &getDataType()
+   {
+      basicDataType_ = "BGFLOAT";
+      return basicDataType_;
+   }
+   ///@}
+
+   /*}*/
 protected:
    /******************************************
   * @name Internal Utilities

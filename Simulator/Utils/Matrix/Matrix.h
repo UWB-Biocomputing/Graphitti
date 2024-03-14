@@ -19,13 +19,14 @@
 
 #include "BGTypes.h"
 #include "MatrixExceptions.h"
+#include "RecordableBase.h"
 #include <string>
 //cereal
 #include <cereal/types/string.hpp>
 
 using namespace std;
 
-class Matrix {
+class Matrix : public RecordableBase {
    friend class cereal::access;
 
 public:
