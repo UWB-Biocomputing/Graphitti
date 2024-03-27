@@ -162,6 +162,8 @@ void LayoutNeuro::initVerticesLocs()
    // Loop over all vertices and set their x and y locations
    GraphManager::VertexIterator vi, vi_end;
    GraphManager &gm = GraphManager::getInstance();
+   gm.registerProperty("y", &VertexProperty::y);
+   gm.registerProperty("x", &VertexProperty::x);
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
       xloc_[*vi] = gm[*vi].x;
