@@ -9,6 +9,7 @@
 #include "LayoutNeuro.h"
 #include "ConnGrowth.h"
 #include "ParameterManager.h"
+#include "GraphManager.h"
 #include "ParseParamError.h"
 #include "Util.h"
 
@@ -158,21 +159,13 @@ edgeType LayoutNeuro::edgType(int srcVertex, int destVertex)
 /// Initialize the location maps (xloc and yloc).
 void LayoutNeuro::initVerticesLocs()
 {
-   int numVertices = Simulator::getInstance().getTotalVertices();
-
-   // Initialize vertex locations
-   if (gridLayout_) {
-      // grid layout
-      for (int i = 0; i < numVertices; i++) {
-         xloc_[i] = i % height_;
-         yloc_[i] = i / height_;
-      }
-   } else {
-      // random layout
-      for (int i = 0; i < numVertices; i++) {
-         xloc_[i] = initRNG.inRange(0, width_);
-         yloc_[i] = initRNG.inRange(0, height_);
-      }
+   // Loop over all vertices and set their x and y locations
+   GraphManager::VertexIterator vi, vi_end;
+   GraphManager &gm = GraphManager::getInstance();
+   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
+      assert(*vi < numVertices_);
+      xloc_[*vi] = gm[*vi].x;
+      yloc_[*vi] = gm[*vi].y;
    }
 }
 
