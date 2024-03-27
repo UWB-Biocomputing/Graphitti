@@ -16,6 +16,8 @@
 #pragma once
 
 #include "Layout.h"
+// cereal
+#include <cereal/types/polymorphic.hpp>
 
 using namespace std;
 
@@ -55,6 +57,9 @@ public:
    /// @return type of the synapse.
    virtual edgeType edgType(int srcVertex, int destVertex);
 
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
+
 private:
    /// Fraction of endogenously active neurons.
    BGFLOAT fractionEndogenouslyActive_;
@@ -62,3 +67,13 @@ private:
    /// Fraction of exitatory neurons.
    BGFLOAT fractionExcitatory_;
 };
+
+CEREAL_REGISTER_TYPE(DynamicLayout);
+
+///  Cereal serialization method
+template <class Archive> void DynamicLayout::serialize(Archive &archive)
+{
+   archive(cereal::base_class<Layout>(this),
+           cereal::make_nvp("fractionEndogenouslyActive_", fractionEndogenouslyActive_),
+           cereal::make_nvp("fractionExcitatory_", fractionExcitatory_));
+}
