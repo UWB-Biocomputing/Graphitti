@@ -78,10 +78,10 @@ private:
    int height_;   /// Height of the layout
 };
 
-CEREAL_REGISTER_TYPE(FixedLayout);
+CEREAL_REGISTER_TYPE(LayoutNeuro);
 
 ///  Cereal serialization method
-template <class Archive> void FixedLayout::serialize(Archive &archive)
+template <class Archive> void LayoutNeuro::serialize(Archive &archive)
 {
    archive(cereal::base_class<Layout>(this), cereal::make_nvp("gridLayout_", gridLayout_),
            cereal::make_nvp("width_", width_), cereal::make_nvp("height_", height_));
