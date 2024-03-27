@@ -6,7 +6,7 @@
  * @brief The Layout class defines the layout of vertices in neural networks
  */
 
-#include "FixedLayout.h"
+#include "LayoutNeuro.h"
 #include "ConnGrowth.h"
 #include "ParameterManager.h"
 #include "ParseParamError.h"
