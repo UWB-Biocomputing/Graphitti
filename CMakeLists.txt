@@ -290,8 +290,8 @@ include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
 # Set CUDA_SEPERABLE_COMPILATION to ON for all libraries that contain .cpp files with device functions compiled as CUDA files
 if(ENABLE_CUDA)
-        set_property(TARGET Edges PROPERTY CUDA_STANDARD 11)
-        set_property(TARGET Vertices PROPERTY CUDA_STANDARD 11)
+        set_property(TARGET Edges PROPERTY CUDA_STANDARD 17)
+        set_property(TARGET Vertices PROPERTY CUDA_STANDARD 17)
         # Enables CUDA code in these libraries to be compiled into separate object files and then linked together
         set_property(TARGET Edges PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Vertices PROPERTY CUDA_SEPARABLE_COMPILATION ON)
