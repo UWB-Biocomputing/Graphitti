@@ -13,11 +13,11 @@
 #include "Util.h"
 
 // TODO: I don't think that either of the constructor or destructor is needed here
-FixedLayout::FixedLayout() : gridLayout_(true), Layout()
+LayoutNeuro::LayoutNeuro() : gridLayout_(true), Layout()
 {
 }
 
-void FixedLayout::setup()
+void LayoutNeuro::setup()
 {
    // Base class allocates memory for: xLoc_, yLoc, dist2_, and dist_
    // so we call its method first
@@ -44,7 +44,7 @@ void FixedLayout::setup()
 
 ///  Prints out all parameters to logging file.
 ///  Registered to OperationManager as Operation::printParameters
-void FixedLayout::printParameters() const
+void LayoutNeuro::printParameters() const
 {
    Layout::printParameters();
 
@@ -54,7 +54,7 @@ void FixedLayout::printParameters() const
 ///  Creates a randomly ordered distribution with the specified numbers of vertex types.
 ///
 ///  @param  numVertices number of the vertices to have in the type map.
-void FixedLayout::generateVertexTypeMap(int numVertices)
+void LayoutNeuro::generateVertexTypeMap(int numVertices)
 {
    LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing vertex type map" << endl);
 
@@ -85,7 +85,7 @@ void FixedLayout::generateVertexTypeMap(int numVertices)
 ///  Populates the starter map.
 ///  Selects \e numStarter excitory neurons and converts them into starter neurons.
 ///  @param  numVertices number of vertices to have in the map.
-void FixedLayout::initStarterMap(int numVertices)
+void LayoutNeuro::initStarterMap(int numVertices)
 {
    Layout::initStarterMap(numVertices);
 
@@ -96,7 +96,7 @@ void FixedLayout::initStarterMap(int numVertices)
 }
 
 /// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
-void FixedLayout::loadParameters()
+void LayoutNeuro::loadParameters()
 {
    // Get the file paths for the Neuron lists from the configuration file
    string activeNListFilePath;
@@ -141,7 +141,7 @@ void FixedLayout::loadParameters()
 ///  @param    srcVertex  integer that points to a Neuron in the type map as a source.
 ///  @param    destVertex integer that points to a Neuron in the type map as a destination.
 ///  @return type of the synapse.
-edgeType FixedLayout::edgType(int srcVertex, int destVertex)
+edgeType LayoutNeuro::edgType(int srcVertex, int destVertex)
 {
    if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == INH)
       return II;
@@ -156,7 +156,7 @@ edgeType FixedLayout::edgType(int srcVertex, int destVertex)
 }
 
 /// Initialize the location maps (xloc and yloc).
-void FixedLayout::initVerticesLocs()
+void LayoutNeuro::initVerticesLocs()
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
 
@@ -178,7 +178,7 @@ void FixedLayout::initVerticesLocs()
 
 // Note: This code was previously used for debugging, but it is now dead code left behind
 // and it is never executed.
-void FixedLayout::printLayout()
+void LayoutNeuro::printLayout()
 {
    ConnGrowth &pConnGrowth
       = dynamic_cast<ConnGrowth &>(Simulator::getInstance().getModel().getConnections());
