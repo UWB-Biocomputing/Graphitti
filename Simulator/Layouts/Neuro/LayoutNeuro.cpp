@@ -48,7 +48,7 @@ void LayoutNeuro::printParameters() const
 {
    Layout::printParameters();
 
-   LOG4CPLUS_DEBUG(fileLogger_, "\n\tLayout type: FixedLayout" << endl << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\n\tLayout type: LayoutNeuro" << endl << endl);
 }
 
 ///  Creates a randomly ordered distribution with the specified numbers of vertex types.
