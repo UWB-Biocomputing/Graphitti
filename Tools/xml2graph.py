@@ -1,3 +1,11 @@
+# xml2graph.py
+# Omar Elgazzar
+
+# Python script used to convert the neural network xml configfiles
+# into GraphML files
+
+# Credit to Jardi A.M. Jordan for initial code
+
 import networkx as nx
 G = nx.DiGraph()
 height = 100
