@@ -16,6 +16,8 @@
 #pragma once
 
 #include "Layout.h"
+// cereal
+#include <cereal/types/polymorphic.hpp>
 
 using namespace std;
 
@@ -62,13 +64,25 @@ public:
    /// Prints the layout, used for debugging.
    void printLayout();
 
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
+
 private:
    /// initialize the location maps (xloc and yloc).
    void initVerticesLocs();
 
-   bool gridLayout_;   ///< True if grid layout.
+   bool gridLayout_;   /// True if grid layout.
 
    int width_;   /// Width of the layout (assumes square)
 
    int height_;   /// Height of the layout
 };
+
+CEREAL_REGISTER_TYPE(FixedLayout);
+
+///  Cereal serialization method
+template <class Archive> void FixedLayout::serialize(Archive &archive)
+{
+   archive(cereal::base_class<Layout>(this), cereal::make_nvp("gridLayout_", gridLayout_),
+           cereal::make_nvp("width_", width_), cereal::make_nvp("height_", height_));
+}

@@ -23,6 +23,9 @@
 #pragma once
 #include "Global.h"
 #include "Recordable.h"
+// cereal
+#include <cereal/types/polymorphic.hpp>
+
 class AllSpikingNeurons;
 class AllIFNeurons;
 class EventBuffer : public Recordable<uint64_t> {
@@ -116,6 +119,9 @@ public:
    uint64_t getPastEvent(int offset) const;
    ///@}
 
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
+
 private:
    /// Holds the event time steps
    // vector<uint64_t> eventTimeSteps_;
@@ -141,3 +147,15 @@ private:
    /// and queueEnd_, but the code to do that would be unobvious.
    int numEventsInEpoch_;
 };
+
+
+CEREAL_REGISTER_TYPE(EventBuffer);
+
+///  Cereal serialization method
+template <class Archive> void EventBuffer::serialize(Archive &archive)
+{
+   archive(cereal::base_class<Recordable<uint64_t>>(this),
+           cereal::make_nvp("queueFront_", queueFront_), cereal::make_nvp("queueEnd_", queueEnd_),
+           cereal::make_nvp("epochStart_", epochStart_),
+           cereal::make_nvp("numEventsInEpoch_", numEventsInEpoch_));
+}

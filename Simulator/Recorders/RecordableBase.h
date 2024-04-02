@@ -12,10 +12,11 @@
  *     -# the number of data in the recorded variable.
  */
 #pragma once
+
 using namespace std;
+#include <typeinfo>
 #include <variant>
 #include <vector>
-#include <typeinfo>
 
 /// A list of pre-defined basic data types for variablse in all the simulations
 /// These pre-defined types should match with the types of variant in Recorder
@@ -44,7 +45,14 @@ public:
    /// Dynamic or runtime type information of basic data type
    virtual const string &getDataType() const = 0;
 
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive)
+   {
+   }
+
 protected:
    /// the basic data type in the recorded variable
    string basicDataType_;
 };
+
+CEREAL_REGISTER_TYPE(RecordableBase);
