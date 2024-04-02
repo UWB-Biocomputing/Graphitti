@@ -72,23 +72,12 @@ public:
    virtual void printParameters() override;
 
    /// Receives a recorded variable entity from the variable owner class
-   /**
-   * @brief Register a variable that is standard library vector class object such as vector<int>
-   * @param varName Name of the recorded variable.
-   * @param recordVar Reference to the recorded variable.
-   * @param variableType Type of the recorded variable.
-   * @param constBasicType Basic data type of the recorded variable.
-   */
-   virtual void registerVariable(const string &varName, RecordableBase &recordVar,
-                                 UpdatedType variableType, string constBasicType) override;
-
-   /// Receives a recorded variable entity from the variable owner class
-   /// used when the return type from recordable variable is supported by Recorder
+   /// Used when the return type from recordable variable is supported by Recorder
    /**
    * @brief Registers a single instance of a class derived from RecordableBase.
    * @param varName Name of the recorded variable.
    * @param recordVar Reference to the recorded variable.
-   * @param variableType Type of the recorded variable.
+   * @param variableType Updated frequency of the recorded variable.
    */
    virtual void registerVariable(const string &varName, RecordableBase &recordVar,
                                  UpdatedType variableType) override;
@@ -165,16 +154,6 @@ protected:
       /// the history of accumulated values for a registered RecordableBase object variable
       vector<multipleTypes> variableHistory_;
 
-      /// Constructor
-      /// used when Recordable variable is a standard library template such as vector<int>
-      /// accepting the variable name, the address of recorded variable, updated type and basic type
-      singleVariableInfo(const string &name, RecordableBase &location, UpdatedType variableType,
-                         string constBasicType) :
-         variableLocation_(location),
-         variableName_(name), variableType_(variableType)
-      {
-         dataType_ = constBasicType;
-      }
       /// Constructor accepting the variable name, the address of recorded variable, the updated type
       singleVariableInfo(const string &name, RecordableBase &location, UpdatedType variableType) :
          variableLocation_(location), variableName_(name), variableType_(variableType)

@@ -22,14 +22,14 @@ EventBuffer::EventBuffer(int maxEvents)
 {
    eventTimeSteps_.assign(maxEvents + 1, numeric_limits<unsigned long>::max());
    clear();
-   setDataType();
+   setDataType(); // set up data type for recording purpose
 }
 
 
 // set up a string representing the basic data type
 void EventBuffer::setDataType()
 {
-   basicDataType_ = "uint64_t";
+   basicDataType_ = typeid(uint64_t).name();
 }
 
 /// @brief Get the value of the recordable variable at the specified index.
@@ -42,9 +42,8 @@ variantTypes EventBuffer::getElement(int index) const
 }
 
 
-string &EventBuffer::getDataType()
+const string &EventBuffer::getDataType() const
 {
-   basicDataType_ = "uint64_t";
    return basicDataType_;
 }
 

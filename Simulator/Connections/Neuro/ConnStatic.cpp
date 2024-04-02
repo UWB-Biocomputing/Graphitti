@@ -96,8 +96,6 @@ void ConnStatic::setup()
    string weight_str = "";
    for (int i = 0; i < maxTotalEdges; i++) {
       WCurrentEpoch_[i] = neuroEdges.W_[i];
-      // cout << "neuroEdges.W_[i]" << neuroEdges.W_[i] << endl;
-      // cout << "WCurrentEpoch_[i]" << WCurrentEpoch_[i] << endl;
       sourceVertexIndexCurrentEpoch_[i] = neuroEdges.sourceVertexIndex_[i];
       destVertexIndexCurrentEpoch_[i] = neuroEdges.destVertexIndex_[i];
 
@@ -116,7 +114,7 @@ void ConnStatic::setup()
 
    // Register variable weight if need
    // Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   // recorder.registerVariable("weight", WCurrentEpoch_, Recorder::UpdatedType::DYNAMIC, "BGFLOAT");
+   // recorder.registerVariable("weight", WCurrentEpoch_, Recorder::UpdatedType::DYNAMIC);
 }
 
 /// Load member variables from configuration file.

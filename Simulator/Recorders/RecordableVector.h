@@ -3,12 +3,16 @@
 #include <stdexcept>   // for std::out_of_range
 #include <vector>
 
-template <typename T> class RecordableVector : public RecordableBase, public std::vector<T> {
+template <typename T> class RecordableVector : public RecordableBase, public vector<T> {
 public:
+   RecordableVector ()
+   {
+      setDataType();
+   }
    /// Get the number of events in the current epoch for the recordable variable
    int getNumElements() const override
    {
-      return std::vector<T>::size();
+      return vector<T>::size();
    }
 
    /// Start a new epoch for the recordable variable.
@@ -23,25 +27,25 @@ public:
    variantTypes getElement(int index) const override
    {
       // Return the element at the specified index
-      if (index >= 0 && index < std::vector<T>::size()) {
-         return std::vector<T>::operator[](index);
+      if (index >= 0 && index < vector<T>::size()) {
+         return vector<T>::operator[](index);
          // return (*this)[index];
       } else {
          // Handle index out of range
-         throw std::out_of_range("Index out of range");
+         throw out_of_range("Index out of range");
       }
    }
 
    /// Set up a string representing the basic data type
+   /// Return a run time type info
    void setDataType() override
    {
-      basicDataType_ = "T";
+      basicDataType_ = typeid(T).name();
    }
 
-   /// Get A string representing the data type of the recordable variable
-   string &getDataType() override
+   /// Get the data type info in the object at run time
+   const string &getDataType() const override
    {
-      // Implementation for getting data type
       return basicDataType_;
    }
 };

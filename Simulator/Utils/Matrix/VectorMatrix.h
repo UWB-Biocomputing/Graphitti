@@ -297,15 +297,15 @@ public:
       return theVector[index];
    }
 
-   /// set up a string representing the basic data type
+   /// Set up a string representing the basic data type
    virtual void setDataType()
    {
+      basicDataType_ = typeid(BGFLOAT).name();
    }
 
-   /// Get A string representing the data type of the recordable variable
-   virtual string &getDataType()
+   /// Get the run time data type info of the recordable variable
+   virtual const string &getDataType() const override
    {
-      basicDataType_ = "BGFLOAT";
       return basicDataType_;
    }
    ///@}

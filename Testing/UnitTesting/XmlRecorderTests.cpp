@@ -58,7 +58,7 @@ TEST(XmlRecorderTest, RegisterVariableTest)
    ASSERT_EQ("eventBuffer", recorder.getVariableName(0));
    ASSERT_EQ(&eventBuffer, &recorder.getSingleVariable(0));
    // check the type or other details
-   ASSERT_EQ("uint64_t", recorder.getDataType(0));
+   ASSERT_EQ(typeid(uint64_t).name(), recorder.getDataType(0));
 }
 
 // Test case for registering a RecordableBase variable
@@ -77,11 +77,11 @@ TEST(XmlRecorderTest, RegisterVectorMatrixTest)
    ASSERT_EQ("location", recorder.getVariableName(0));
    ASSERT_EQ(&locations, &recorder.getSingleVariable(0));
    // check the type or other details
-   ASSERT_EQ("BGFLOAT", recorder.getDataType(0));
+   ASSERT_EQ(typeid(BGFLOAT).name(), recorder.getDataType(0));
 }
 
 // Test case for registering a RecordableBase variable
-// Test VertexMatrix
+// Test standard library vector and RecordableVector
 TEST(XmlRecorderTest, RegisterRecordableVectorTest)
 {
    // Create an instance of XmlRecorder
@@ -90,13 +90,13 @@ TEST(XmlRecorderTest, RegisterRecordableVectorTest)
    RecordableVector<BGFLOAT> vectorRadii;
 
    // Register the EventBuffer variable
-   recorder.registerVariable("vectorRadii", vectorRadii, Recorder::UpdatedType::DYNAMIC, "BGFLOAT");
+   recorder.registerVariable("vectorRadii", vectorRadii, Recorder::UpdatedType::DYNAMIC);
 
    // Verify that the variable is stored correctly
    ASSERT_EQ("vectorRadii", recorder.getVariableName(0));
    ASSERT_EQ(&vectorRadii, &recorder.getSingleVariable(0));
    // check the type or other details
-   ASSERT_EQ("BGFLOAT", recorder.getDataType(0));
+   ASSERT_EQ(typeid(BGFLOAT).name(), recorder.getDataType(0));
 }
 
 // Unit test for registerVariable method with a vector of RecordableBase
@@ -169,7 +169,7 @@ TEST(XmlRecorderTest, ToXML)
       = {uint64_t(15), uint64_t(20)};
 
    // Test the toXML method
-   std::string xmlOutput = recorderTest_->getToXML("TestVar", variableHistory, "uint64_t");
+   std::string xmlOutput = recorderTest_->getToXML("TestVar", variableHistory, typeid(uint64_t).name());
 
    // Verify the expected XML output
    stringstream os;
@@ -228,7 +228,7 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    std::string expect_header = "<?xml version=\"1.0\" standalone=\"no\"?>\n";
    std::string expect_end = "\n";
    std::string expectXML
-      = expect_header + recorderTest_->getToXML("neuron0", mock_history, "uint64_t") + expect_end;
+      = expect_header + recorderTest_->getToXML("neuron0", mock_history, typeid(uint64_t).name()) + expect_end;
    // vertify the output string
    ASSERT_EQ(outputBuffer.str(), expectXML);
 }

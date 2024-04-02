@@ -44,31 +44,31 @@ public:
    // Implement virtual methods from RecordableBase
    int getNumElements() const override
    {
-      // Implement or throw exception
+      // Throw exception
       throw std::logic_error("CompleteMatrix does not support getNumElements.");
    }
 
    void startNewEpoch() override
    {
-      // Implement or throw exception
+      // Throw exception
       throw std::logic_error("CompleteMatrix does not support startNewEpoch.");
    }
 
    variantTypes getElement(int index) const override
    {
-      // Implement or throw exception
+      // Throw exception
       throw std::logic_error("CompleteMatrix does not support getElement.");
    }
 
    void setDataType() override
    {
-      // Implement or throw exception
+      // Throw exception
       throw std::logic_error("CompleteMatrix does not support setDataType.");
    }
 
-   string &getDataType() override
+   const string &getDataType() const override
    {
-      // Implement or throw exception
+      // Throw exception
       throw std::logic_error("CompleteMatrix does not support getDataType.");
    }
    ///@}

@@ -6,7 +6,8 @@
  * The `Recordable` class template extends the `RecordableBase` interface and provides a concrete
  * implementation for recording variables during simulation. It is templated to accommodate different
  * data types for recording. The class keeps track of recorded values and allows access to information
- * about the recorded variable.
+ * about the recorded variable. Note that it is not intended to directly instantiate a `Recordable` object 
+ * for recording; instead, it serves as a base for specific recordable variable implementations.
  */
 
 #pragma once
@@ -21,10 +22,18 @@ public:
       setDataType();
    }
 
-   /// set up a string representing the basic data type
+   /// Set up a string representing the basic data type
+   /// "undefined" means it is not intended to instantiate
+   /// a Recordable object for recording
    virtual void setDataType() override
    {
-      basicDataType_ = "T";
+      basicDataType_ = "undefined";
+   }
+
+   /// Get A string representing the data type of the recordable variable
+   virtual const string &getDataType() const override
+   {
+      return basicDataType_;
    }
 
    /// Get the number of events in the current epoch for the recordable variable.
@@ -44,12 +53,6 @@ public:
    virtual variantTypes getElement(int index) const override
    {
       return eventTimeSteps_[index];
-   }
-
-   /// Get A string representing the data type of the recordable variable
-   virtual string &getDataType() override
-   {
-      return basicDataType_;
    }
 
 protected:

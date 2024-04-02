@@ -15,6 +15,7 @@
 using namespace std;
 #include <variant>
 #include <vector>
+#include <typeinfo>
 
 /// A list of pre-defined basic data types for variablse in all the simulations
 /// These pre-defined types should match with the types of variant in Recorder
@@ -40,9 +41,10 @@ public:
    virtual void setDataType() = 0;
 
    /// Get A string representing the data type of the recordable variable
-   virtual string &getDataType() = 0;
+   /// Dynamic or runtime type information of basic data type
+   virtual const string &getDataType() const = 0;
 
 protected:
-   ///the basic data type in the recorded variable
+   /// the basic data type in the recorded variable
    string basicDataType_;
 };

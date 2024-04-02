@@ -73,7 +73,7 @@ class SparseMatrix : public Matrix {
       throw std::logic_error("SparseMatrix does not support setDataType.");
    }
 
-   string &getDataType() override
+   const string &getDataType() const override
    {
       // Implement or throw exception
       throw std::logic_error("SparseMatrix does not support getDataType.");

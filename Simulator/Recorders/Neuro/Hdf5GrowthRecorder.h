@@ -70,17 +70,6 @@ public:
    virtual void printParameters() override;
 
    /// Receives a recorded variable entity from the variable owner class
-   /**
-   * @brief Register a variable that is standard library vector class object such as vector<int>
-   * @param varName Name of the recorded variable.
-   * @param recordVar Reference to the recorded variable.
-   * @param variableType Type of the recorded variable.
-   * @param constBasicType Basic data type of the recorded variable.
-   */
-   virtual void registerVariable(const string &varName, RecordableBase &recordVar,
-                                 UpdatedType variableType, string constBasicType) override;
-
-   /// Receives a recorded variable entity from the variable owner class
    /// used when the return type from recordable variable is supported by Recorder
    /**
    * @brief Registers a single instance of a class derived from RecordableBase.

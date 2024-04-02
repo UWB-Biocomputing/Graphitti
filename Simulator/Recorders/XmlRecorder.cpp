@@ -142,14 +142,17 @@ string XmlRecorder::toXML(const string &name, vector<multipleTypes> &singleBuffe
 
    // Retrives value from variant
    for (const multipleTypes &element : singleBuffer_) {
-      if (basicType == "uint64_t") {
+      if (basicType == typeid(uint64_t).name()) {
          os << get<uint64_t>(element) << " ";
-      } else if (basicType == "double") {
+      } else if (basicType == typeid(double).name()) {
          os << get<bool>(element) << " ";
-      } else if (basicType == "int") {
+      } else if (basicType == typeid(int).name()) {
          os << get<int>(element) << " ";
-      } else if (basicType == "BGFLOAT") {
+      } else if (basicType == typeid(BGFLOAT).name()) {
          os << get<BGFLOAT>(element) << " ";
+      }else if (basicType == "undefined") {
+         perror("Error recording Recordable object");
+         exit(EXIT_FAILURE);
       }
       // Add more conditions if there are additional supported data types
    }
@@ -173,21 +176,6 @@ void XmlRecorder::printParameters()
    LOG4CPLUS_DEBUG(fileLogger_, "\nXMLRECORDER PARAMETERS"
                                    << endl
                                    << "\tResult file path: " << resultFileName_ << endl);
-}
-
-/// Receives a recorded variable entity from the variable owner class
-/**
-* @brief Register a variable that is standard library vector class object such as vector<int>
-* @param varName Name of the recorded variable.
-* @param recordVar Reference to the recorded variable.
-* @param variableType Type of the recorded variable.
-* @param constBasicType Basic data type of the recorded variable.
-*/
-void XmlRecorder::registerVariable(const string &varName, RecordableBase &recordVar,
-                                   UpdatedType variableType, string constBasicType)
-{
-   // add a new variable into the table
-   variableTable_.push_back(singleVariableInfo(varName, recordVar, variableType, constBasicType));
 }
 
 /// Receives a recorded variable entity from the variable owner class
