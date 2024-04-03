@@ -72,7 +72,7 @@ Natalie Gonzales
 ## 2024
 Andrzej Dawiec 
 
-Chenghao Hsu
+ChengHao Hsu
 
 <!-- ---------------------------------------------------------------------------------- -->
 # Graduate
