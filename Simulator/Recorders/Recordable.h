@@ -63,8 +63,7 @@ public:
    template <class Archive> void serialize(Archive &archive)
    {
       archive(cereal::virtual_base_class<RecordableBase>(this),
-              cereal::make_nvp("eventTimeSteps_", eventTimeSteps_),
-              cereal::make_nvp("basicDataType_", basicDataType_));
+              cereal::make_nvp("eventTimeSteps_", eventTimeSteps_));
    }
 
 protected:

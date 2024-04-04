@@ -44,7 +44,7 @@ void ConnStatic::setup()
    int numVertices = simulator.getTotalVertices();
    vector<DistDestVertex> distDestVertices[numVertices];
    BGSIZE maxTotalEdges = simulator.getMaxEdgesPerVertex() * simulator.getTotalVertices();
-   WCurrentEpoch_.resize(maxTotalEdges);
+   WCurrentEpoch_.resizeRecordableVector(maxTotalEdges);
    sourceVertexIndexCurrentEpoch_.resize(maxTotalEdges);
    destVertexIndexCurrentEpoch_.resize(maxTotalEdges);
    AllNeuroEdges &neuroEdges = dynamic_cast<AllNeuroEdges &>(*edges_);
@@ -94,13 +94,13 @@ void ConnStatic::setup()
 
    string weight_str = "";
    for (int i = 0; i < maxTotalEdges; i++) {
-      WCurrentEpoch_[i] = neuroEdges.W_[i];
+      WCurrentEpoch_.setData(i, neuroEdges.W_[i]);
       sourceVertexIndexCurrentEpoch_[i] = neuroEdges.sourceVertexIndex_[i];
       destVertexIndexCurrentEpoch_[i] = neuroEdges.destVertexIndex_[i];
 
-      if (WCurrentEpoch_[i] != 0) {
+      if (WCurrentEpoch_.getDataAtIndex(i) != 0) {
          // LOG4CPLUS_DEBUG(edgeLogger_,i << WCurrentEpoch_[i]);
-         weight_str += to_string(WCurrentEpoch_[i]) + " ";
+         weight_str += to_string(WCurrentEpoch_.getDataAtIndex(i)) + " ";
       }
    }
    // LOG4CPLUS_DEBUG(edgeLogger_, "Weights are " << weight_str);

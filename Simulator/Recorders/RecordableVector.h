@@ -1,24 +1,34 @@
 #pragma once
+
 #include "RecordableBase.h"
 #include <stdexcept>   // for std::out_of_range
 #include <vector>
+//cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
-template <typename T> class RecordableVector : public RecordableBase, public vector<T> {
+template <typename T> class RecordableVector : public RecordableBase {
 public:
-   RecordableVector ()
+   RecordableVector()
    {
       setDataType();
    }
+
+   void resizeRecordableVector(int size)
+   {
+      data_.resize(size);
+   }
+
    /// Get the number of events in the current epoch for the recordable variable
    int getNumElements() const override
    {
-      return vector<T>::size();
+      return data_.size();
    }
 
    /// Start a new epoch for the recordable variable.
    void startNewEpoch() override
    {
-      // Implementation for starting a new epoch if need
+      // Implementation for starting a new epoch if needed
    }
 
    /// Get the value of the recordable variable at the specified index.
@@ -27,12 +37,11 @@ public:
    variantTypes getElement(int index) const override
    {
       // Return the element at the specified index
-      if (index >= 0 && index < vector<T>::size()) {
-         return vector<T>::operator[](index);
-         // return (*this)[index];
+      if (index >= 0 && index < getNumElements()) {
+         return data_[index];
       } else {
          // Handle index out of range
-         throw out_of_range("Index out of range");
+         throw std::out_of_range("Index out of range");
       }
    }
 
@@ -44,8 +53,37 @@ public:
    }
 
    /// Get the data type info in the object at run time
-   const string &getDataType() const override
+   const std::string &getDataType() const override
    {
       return basicDataType_;
    }
+
+   template <class Archive> void serialize(Archive &archive)
+   {
+      archive(cereal::virtual_base_class<RecordableBase>(this), data_);
+   }
+
+   T getDataAtIndex(int index) const
+   {
+      return data_[index];
+   }
+
+   void setData(int index, const T &value)
+   {
+      if (index >= 0 && index < getNumElements()) {
+         data_[index] = value;
+      } else {
+         throw std::out_of_range("Index out of range");
+      }
+   }
+
+   const std::vector<T> &getData() const
+   {
+      return data_;
+   }
+
+private:
+   vector<T> data_;
 };
+
+CEREAL_REGISTER_TYPE(RecordableVector<BGFLOAT>);
