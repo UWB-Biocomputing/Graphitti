@@ -92,10 +92,12 @@ protected:
 ostream &operator<<(ostream &os, const Matrix &obj);
 
 CEREAL_REGISTER_TYPE(Matrix);
+
 ///  Cereal serialization method
 template <class Archive> void Matrix::serialize(Archive &archive)
 {
-   archive(cereal::virtual_base_class<RecordableBase>(this), cereal::make_nvp("type", type), cereal::make_nvp("init", init),
-           cereal::make_nvp("rows", rows), cereal::make_nvp("columns", columns),
-           cereal::make_nvp("multiplier", multiplier), cereal::make_nvp("dimensions", dimensions));
+   archive(cereal::virtual_base_class<RecordableBase>(this), cereal::make_nvp("type", type),
+           cereal::make_nvp("init", init), cereal::make_nvp("rows", rows),
+           cereal::make_nvp("columns", columns), cereal::make_nvp("multiplier", multiplier),
+           cereal::make_nvp("dimensions", dimensions));
 }

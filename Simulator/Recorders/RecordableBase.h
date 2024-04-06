@@ -61,5 +61,3 @@ protected:
    /// the basic data type in the recorded variable
    std::string basicDataType_;
 };
-
-CEREAL_REGISTER_TYPE(RecordableBase);
