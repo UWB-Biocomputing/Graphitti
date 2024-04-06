@@ -72,14 +72,14 @@ VectorMatrix::VectorMatrix(string t, string i, int r, int c, BGFLOAT m, string v
    }
    DEBUG_VECTOR(cerr << "\tInitialized " << type << " vector to " << *this << endl;)
 
-   setDataType(); // Set up data type info for recording purpose
+   setDataType();   // Set up data type info for recording purpose
 }
 
 // Copy constructor
 VectorMatrix::VectorMatrix(const VectorMatrix &oldV)
 {
    copy(oldV);
-   setDataType(); // Set up data type info for recording purpose
+   setDataType();   // Set up data type info for recording purpose
 }
 
 // Assignment operator: set elements of vector to constant

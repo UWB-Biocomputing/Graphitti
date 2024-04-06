@@ -2,10 +2,13 @@
 #include "RecordableBase.h"
 #include <stdexcept>   // for std::out_of_range
 #include <vector>
+// Cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
-template <typename T> class RecordableVector : public RecordableBase, public vector<T> {
+template <typename T> class RecordableVector : public RecordableBase, public std::vector<T> {
 public:
-   RecordableVector ()
+   RecordableVector()
    {
       setDataType();
    }
@@ -48,4 +51,25 @@ public:
    {
       return basicDataType_;
    }
+
+   template <class Archive> void serialize(Archive &archive)
+   {
+      archive(cereal::base_class<RecordableBase>(this), cereal::base_class<std::vector<T>>(this));
+   }
 };
+
+// Explicit specialization for RecordableVector<float>
+template <> template <class Archive> void RecordableVector<BGFLOAT>::serialize(Archive &archive)
+{
+   archive(cereal::base_class<RecordableBase>(this),
+           cereal::base_class<std::vector<BGFLOAT>>(this));
+}
+
+// Explicit specialization for RecordableVector<float>
+template <> template <class Archive> void RecordableVector<BGFLOAT>::serialize(Archive &archive)
+{
+   archive(cereal::base_class<RecordableBase>(this),
+           cereal::base_class<std::vector<BGFLOAT>>(this));
+}
+
+CEREAL_REGISTER_TYPE(RecordableVector<BGFLOAT>);

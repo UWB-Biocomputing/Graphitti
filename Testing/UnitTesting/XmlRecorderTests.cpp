@@ -169,7 +169,8 @@ TEST(XmlRecorderTest, ToXML)
       = {uint64_t(15), uint64_t(20)};
 
    // Test the toXML method
-   std::string xmlOutput = recorderTest_->getToXML("TestVar", variableHistory, typeid(uint64_t).name());
+   std::string xmlOutput
+      = recorderTest_->getToXML("TestVar", variableHistory, typeid(uint64_t).name());
 
    // Verify the expected XML output
    stringstream os;
@@ -228,7 +229,8 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    std::string expect_header = "<?xml version=\"1.0\" standalone=\"no\"?>\n";
    std::string expect_end = "\n";
    std::string expectXML
-      = expect_header + recorderTest_->getToXML("neuron0", mock_history, typeid(uint64_t).name()) + expect_end;
+      = expect_header + recorderTest_->getToXML("neuron0", mock_history, typeid(uint64_t).name())
+        + expect_end;
    // vertify the output string
    ASSERT_EQ(outputBuffer.str(), expectXML);
 }

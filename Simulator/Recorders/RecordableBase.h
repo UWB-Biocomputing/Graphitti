@@ -14,9 +14,13 @@
 #pragma once
 
 using namespace std;
+#include <string>
 #include <typeinfo>
 #include <variant>
 #include <vector>
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/string.hpp>
 
 /// A list of pre-defined basic data types for variablse in all the simulations
 /// These pre-defined types should match with the types of variant in Recorder
@@ -48,11 +52,14 @@ public:
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive)
    {
+      archive(cereal::make_nvp("basicDataType_", basicDataType_));
    }
 
 protected:
+   /// prevents any code outside this class from creating a RecordableBase object
+   RecordableBase() = default;
    /// the basic data type in the recorded variable
-   string basicDataType_;
+   std::string basicDataType_;
 };
 
 CEREAL_REGISTER_TYPE(RecordableBase);

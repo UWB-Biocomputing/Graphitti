@@ -13,6 +13,7 @@
 #pragma once
 #include "RecordableBase.h"
 #include <vector>
+#include <string>
 // cereal
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/string.hpp>
@@ -35,7 +36,7 @@ public:
    }
 
    /// Get A string representing the data type of the recordable variable
-   virtual const string &getDataType() const override
+   virtual const std::string &getDataType() const override
    {
       return basicDataType_;
    }
@@ -63,8 +64,7 @@ public:
    template <class Archive> void serialize(Archive &archive)
    {
       archive(cereal::virtual_base_class<RecordableBase>(this),
-              cereal::make_nvp("eventTimeSteps_", eventTimeSteps_),
-              cereal::make_nvp("basicDataType_", basicDataType_));
+              cereal::make_nvp("eventTimeSteps_", eventTimeSteps_));
    }
 
 protected:

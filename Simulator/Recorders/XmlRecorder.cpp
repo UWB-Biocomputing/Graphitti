@@ -150,7 +150,7 @@ string XmlRecorder::toXML(const string &name, vector<multipleTypes> &singleBuffe
          os << get<int>(element) << " ";
       } else if (basicType == typeid(BGFLOAT).name()) {
          os << get<BGFLOAT>(element) << " ";
-      }else if (basicType == "undefined") {
+      } else if (basicType == "undefined") {
          perror("Error recording Recordable object");
          exit(EXIT_FAILURE);
       }
