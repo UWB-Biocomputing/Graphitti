@@ -22,7 +22,7 @@ EventBuffer::EventBuffer(int maxEvents)
 {
    eventTimeSteps_.assign(maxEvents + 1, numeric_limits<unsigned long>::max());
    clear();
-   setDataType(); // set up data type for recording purpose
+   setDataType();   // set up data type for recording purpose
 }
 
 

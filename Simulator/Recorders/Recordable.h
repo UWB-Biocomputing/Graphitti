@@ -12,8 +12,8 @@
 
 #pragma once
 #include "RecordableBase.h"
-#include <vector>
 #include <string>
+#include <vector>
 // cereal
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/string.hpp>
