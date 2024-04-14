@@ -57,7 +57,7 @@ void AllSpikingNeurons::copyToDevice(void *deviceAddress)
 
    // All EventBuffers are of the same size,
    // which is one greater than maxSpikes in GPU spikeHistory array.
-   int maxSpikes = vertexEvents_[0].eventTimeSteps_.size() - 1;
+   int maxSpikes = vertexEvents_[0].eventTimeSteps_.size();
    for (int i = 0; i < count; i++) {
       HANDLE_ERROR(cudaMemcpy(pSpikeHistory[i], vertexEvents_[i].eventTimeSteps_.data(),
                               maxSpikes * sizeof(uint64_t), cudaMemcpyHostToDevice));
@@ -114,7 +114,7 @@ void AllSpikingNeurons::copyFromDevice(void *deviceAddress)
 
    // All EventBuffers are of the same size,
    // which is one greater than maxSpikes in GPU spikeHistory array.
-   int maxSpikes = vertexEvents_[0].eventTimeSteps_.size() - 1;
+   int maxSpikes = vertexEvents_[0].eventTimeSteps_.size();
    for (int i = 0; i < numVertices; i++) {
       HANDLE_ERROR(cudaMemcpy(vertexEvents_[i].eventTimeSteps_.data(), pSpikeHistory[i],
                               maxSpikes * sizeof(uint64_t *), cudaMemcpyDeviceToHost));

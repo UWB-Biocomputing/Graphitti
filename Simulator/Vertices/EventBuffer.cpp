@@ -13,14 +13,9 @@
 #include <cassert>
 #include <limits>
 
-// EventBuffer::EventBuffer(int maxEvents) :
-//    eventTimeSteps_(maxEvents + 1, numeric_limits<unsigned long>::max())
-// {
-//    clear();
-// }
 EventBuffer::EventBuffer(int maxEvents)
 {
-   eventTimeSteps_.assign(maxEvents + 1, numeric_limits<unsigned long>::max());
+   eventTimeSteps_.assign(maxEvents, numeric_limits<unsigned long>::max());
    clear();
    setDataType();
 }
@@ -56,7 +51,7 @@ void EventBuffer::resize(int maxEvents)
 {
    // Only an empty buffer can be resized
    assert(eventTimeSteps_.empty());
-   eventTimeSteps_.resize(maxEvents + 1, 0);
+   eventTimeSteps_.resize(maxEvents, 0);
    // If we resized, we should clear everything
    clear();
 }
@@ -77,13 +72,14 @@ uint64_t EventBuffer::operator[](int i) const
 void EventBuffer::startNewEpoch()
 {
    epochStart_ = queueEnd_;
+   queueFront_ = queueEnd_;
    numEventsInEpoch_ = 0;
 }
 
 void EventBuffer::insertEvent(uint64_t timeStep)
 {
    // If the buffer is full, then this is an error condition
-   assert(((queueEnd_ + 1) % eventTimeSteps_.size()) != queueFront_);
+   assert((numEventsInEpoch_ < eventTimeSteps_.size()));
 
    // Insert time step and increment the queue end index, mod the buffer size
    eventTimeSteps_[queueEnd_] = timeStep;
