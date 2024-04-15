@@ -36,7 +36,7 @@ It is the total number of events in the current Epoch. Ideally it is computed th
 In this section we list all the functions that are used either by vertex classes or recorder classes.
   - `EventBuffer::resize(int maxEvents)`: Initially used to size `dataSeries_` with  `maxEvents+1`, to distinguish between an empty and a full buffer. [_CAUTION: `EventBuffer` only uses this function once and resizing multiple times causes issue in the output results_]
   - `EventBuffer::operator[]`: retrieve an event time step at an offset relative to the start of the current epoch (i.e., `0..numEvents_-1`).
-  - `EventBuffer::getNumEventsInEpoch()`: return the number of events in the current epoch.
+  - `EventBuffer::getNumElements()`: return the number of events in the current epoch.
   - `EventBuffer::clear()`: resets the `eventBuffer` with default values
   - `EventBuffer::insertEvent(uint64_t timeStep)`: performs enqueue operation on the buffer with event time step.
   - `EventBuffer::getPastEvent(offset: int)`: returns an event from the time in the past. `offset` determines the number of events ago the current event. `offset` must be negative.
@@ -48,7 +48,7 @@ To call this method, the current buffer must be empty. Multiple invocation might
 ##### `EventBuffer::operator[]`
 This method invoked with a value between 0 and maximum number of events in the epoch. That is, element `numEventsInEpoch_ - 1` would be the last element in the epoch.
 
-##### `EventBuffer::getNumEventsInEpoch()`
+##### `EventBuffer::getNumElements()`
 This method returns the number of events in the current epoch. Note that this might not be same as the number of events in the buffer as the enqueued events might belong to the previous epochs.
 
 ##### `EventBuffer::clear()`

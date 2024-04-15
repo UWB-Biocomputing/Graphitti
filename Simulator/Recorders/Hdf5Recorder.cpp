@@ -234,7 +234,7 @@ void Hdf5Recorder::compileHistories(AllVertices &vertices)
 
       // iterate over each spike that neuron produced
       for (int eventIterator = 0;
-           eventIterator < spNeurons.vertexEvents_[iVertex].getNumEventsInEpoch();
+           eventIterator < spNeurons.vertexEvents_[iVertex].getNumElements();
            eventIterator++) {
          // Single precision (float) gives you 23 bits of significand, 8 bits of exponent,
          // and 1 sign bit. Double precision (double) gives you 52 bits of significand,

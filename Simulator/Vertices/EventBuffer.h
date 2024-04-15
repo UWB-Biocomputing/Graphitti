@@ -60,8 +60,6 @@ public:
    /// Get the basic data type of the recordable variable
    virtual const string &getDataType() const override;
 
-   virtual int getNumElements() const override;
-
    /// Start a new epoch
    ///
    /// Resets the internal variables associated with tracking the events in a epoch. Note that this doesn't
@@ -75,7 +73,7 @@ public:
    /// Getting the number of events in the current epoch (or, in between epochs, the number of events
    /// in the preceding epoch) is not the same as the number of events in the buffer, because the buffer
    /// retains events from the previous epoch, too.
-   virtual int getNumEventsInEpoch() const;
+   virtual int getNumElements() const override;
 
    /// Resize event buffer
    ///

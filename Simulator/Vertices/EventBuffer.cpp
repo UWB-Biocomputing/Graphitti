@@ -13,14 +13,9 @@
 #include <cassert>
 #include <limits>
 
-// EventBuffer::EventBuffer(int maxEvents) :
-//    dataSeries_(maxEvents + 1, numeric_limits<unsigned long>::max())
-// {
-//    clear();
-// }
 EventBuffer::EventBuffer(int maxEvents)
 {
-   dataSeries_.assign(maxEvents + 1, numeric_limits<unsigned long>::max());
+   dataSeries_.assign(maxEvents, numeric_limits<unsigned long>::max());
    clear();
    setDataType();   // set up data type for recording purpose
 }
@@ -38,7 +33,6 @@ void EventBuffer::setDataType()
 variantTypes EventBuffer::getElement(int index) const
 {
    return dataSeries_[(epochStart_ + index) % dataSeries_.size()];
-   // return dataSeries_[index];
 }
 
 
@@ -47,18 +41,7 @@ const string &EventBuffer::getDataType() const
    return basicDataType_;
 }
 
-void EventBuffer::startNewEpoch()
-{
-   epochStart_ = queueEnd_;
-   numEventsInEpoch_ = 0;
-}
-
 int EventBuffer::getNumElements() const
-{
-   return getNumEventsInEpoch();
-}
-
-int EventBuffer::getNumEventsInEpoch() const
 {
    return numEventsInEpoch_;
 }
@@ -67,7 +50,7 @@ void EventBuffer::resize(int maxEvents)
 {
    // Only an empty buffer can be resized
    assert(dataSeries_.empty());
-   dataSeries_.resize(maxEvents + 1, 0);
+   dataSeries_.resize(maxEvents, 0);
    // If we resized, we should clear everything
    clear();
 }
@@ -85,11 +68,17 @@ uint64_t EventBuffer::operator[](int i) const
    return dataSeries_[(epochStart_ + i) % dataSeries_.size()];
 }
 
+void EventBuffer::startNewEpoch()
+{
+   epochStart_ = queueEnd_;
+   queueFront_ = queueEnd_;
+   numEventsInEpoch_ = 0;
+}
 
 void EventBuffer::insertEvent(uint64_t timeStep)
 {
    // If the buffer is full, then this is an error condition
-   assert(((queueEnd_ + 1) % dataSeries_.size()) != queueFront_);
+   assert((numEventsInEpoch_ < dataSeries_.size()));
 
    // Insert time step and increment the queue end index, mod the buffer size
    dataSeries_[queueEnd_] = timeStep;

@@ -37,7 +37,7 @@ class EventBuffer<uint64_t> {
 	+setDataType() : void
 	+getDataType() : string
 	+getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
-	+getNumEventsInEpoch() : int {query}
+	+getNumElements() : int {query}
 	-numEventsInEpoch_ : int
 	-queueEnd_ : int
 	-queueFront_ : int

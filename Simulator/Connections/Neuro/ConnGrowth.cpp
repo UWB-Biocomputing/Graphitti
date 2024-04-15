@@ -146,8 +146,8 @@ void ConnGrowth::updateConns(AllVertices &vertices)
                                     * Simulator::getInstance().getMaxFiringRate());
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       // Calculate firing rate
-      assert(spNeurons.vertexEvents_[i].getNumEventsInEpoch() < maxSpikes);
-      rates_[i] = spNeurons.vertexEvents_[i].getNumEventsInEpoch()
+      assert(spNeurons.vertexEvents_[i].getNumElements() < maxSpikes);
+      rates_[i] = spNeurons.vertexEvents_[i].getNumElements()
                   / Simulator::getInstance().getEpochDuration();
    }
 

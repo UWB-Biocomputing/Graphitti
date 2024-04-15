@@ -542,7 +542,7 @@ class EdgesFactory {
 class EventBuffer {
 	+EventBuffer(int maxEvents)
 	-epochStart_ : int
-	+getNumEventsInEpoch() : int {query}
+	+getNumElements() : int {query}
 	-numEventsInEpoch_ : int
 	-queueEnd_ : int
 	-queueFront_ : int
