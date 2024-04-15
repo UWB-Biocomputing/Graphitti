@@ -1,68 +1,96 @@
-#pragma once
+/**
+ * @file RecordableVector.h
+ *
+ * @brief A template class providing a concrete implementation of the recordable variable interface for one-dimensional variables.
+ *
+ * The `RecordableVector` class template extends the `RecordableBase` interface and provides a concrete
+ * implementation for recording one-dimensional variables during simulation. It is templated to accommodate different
+ * data types for recording. The class maintains a vector of recorded values and allows access to information
+ * about the recorded variable. This class should be instantiated when there is a one-dimensional variable 
+ * that needs to be recorded by the recorder.
+ */
 
+#pragma once
 #include "RecordableBase.h"
-#include <stdexcept>   // for std::out_of_range
+#include <string>
 #include <vector>
-// Cereal
+// cereal
 #include <cereal/types/polymorphic.hpp>
+#include <cereal/types/string.hpp>
 #include <cereal/types/vector.hpp>
 
-template <typename T> class RecordableVector : public RecordableBase, public std::vector<T> {
+template <typename T> class RecordableVector : public RecordableBase {
 public:
+   /// Constructor
    RecordableVector()
    {
       setDataType();
    }
 
-   /// Get the number of events in the current epoch for the recordable variable
-   int getNumElements() const override
+   /// Set up a string representing the basic data type
+   /// Return a run time type info
+   virtual void setDataType() override
    {
-      return std::vector<T>::size();
+      basicDataType_ = typeid(T).name();
+   }
+
+   /// Get a string representing the data type of the recordable variable
+   virtual const std::string &getDataType() const override
+   {
+      return basicDataType_;
+   }
+
+   /// Get the number of events in the current epoch for the recordable variable.
+   virtual int getNumElements() const override
+   {
+      return dataSeries_.size();
    }
 
    /// Start a new epoch for the recordable variable.
-   void startNewEpoch() override
+   virtual void startNewEpoch() override
    {
-      // Implementation for starting a new epoch if needed
+      return dataSeries_.clear();
    }
 
    /// Get the value of the recordable variable at the specified index.
-   /// @param index The index of the recorded value to retrieve.
-   /// @return A variant representing the recorded value.
-   variantTypes getElement(int index) const override
+   /// return A variant representing the recorded value (uint64_t, double, or string)
+   virtual variantTypes getElement(int index) const override
    {
-      // Return the element at the specified index
-      if (index >= 0 && index < std::vector<T>::size()) {
-         return vector<T>::operator[](index);
+      return dataSeries_[index];
+   }
+
+   /// Resize the eventTimeSteps vector to the specified size.
+   virtual void resize(int maxEvents)
+   {
+      dataSeries_.resize(maxEvents);
+   }
+
+   /// Overload the operator to set the value at a specific index
+   T &operator[](int index)
+   {
+      if (index >= 0 && index < dataSeries_.size()) {
+         return dataSeries_[index];
       } else {
          throw std::out_of_range("Index out of range");
       }
    }
 
-   /// Set up a string representing the basic data type
-   /// Return a run time type info
-   void setDataType() override
+   /// Method to retrieve the underlying std::vector<T>
+   const std::vector<T> &getVector() const
    {
-      basicDataType_ = typeid(T).name();
+      return dataSeries_;
    }
 
-   /// Get the data type info in the object at run time
-   const std::string &getDataType() const override
-   {
-      return basicDataType_;
-   }
-
+   ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive)
    {
-      archive(cereal::base_class<RecordableBase>(this), cereal::base_class<std::vector<T>>(this));
+      archive(cereal::virtual_base_class<RecordableBase>(this),
+              cereal::make_nvp("dataSeries_", dataSeries_));
    }
-};
 
-// Explicit specialization for RecordableVector<float>
-template <> template <class Archive> void RecordableVector<BGFLOAT>::serialize(Archive &archive)
-{
-   archive(cereal::base_class<RecordableBase>(this),
-           cereal::base_class<std::vector<BGFLOAT>>(this));
-}
+protected:
+   /// Holds the event time steps
+   vector<T> dataSeries_;
+};
 
 CEREAL_REGISTER_TYPE(RecordableVector<BGFLOAT>);

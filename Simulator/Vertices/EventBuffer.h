@@ -22,13 +22,13 @@
 
 #pragma once
 #include "Global.h"
-#include "Recordable.h"
+#include "RecordableVector.h"
 // cereal
 #include <cereal/types/polymorphic.hpp>
 
 class AllSpikingNeurons;
 class AllIFNeurons;
-class EventBuffer : public Recordable<uint64_t> {
+class EventBuffer : public RecordableVector<uint64_t> {
    friend class AllIFNeurons;
    friend class AllSpikingNeurons;
 
@@ -47,6 +47,7 @@ public:
     *  virtual methods in RecordableBase for use by Recorder classes
     */
    ///@{
+
    /// Set up a string representing the basic data type
    /// Get the value of the recordable variable at the specified index.
    /// @param index The index of the recorded value to retrieve.
@@ -83,7 +84,7 @@ public:
    ///
    /// @pre current buffer must be empty
    /// @param maxEvents Buffer size
-   void resize(int maxEvents);
+   virtual void resize(int maxEvents) override;
 
    /// Access event from current epoch
    ///
@@ -124,7 +125,7 @@ public:
 
 private:
    /// Holds the event time steps
-   // vector<uint64_t> eventTimeSteps_;
+   // vector<uint64_t> dataSeries_;
 
    /// Index of the first event in the queue
    int queueFront_;
@@ -136,8 +137,8 @@ private:
    /// --- | --- | ---
    /// Initial (empty) queue | 0 | 0
    /// empty queue (otherwise) | i | i
-   /// non-empty queue | i | (i + offset) % eventTimeSteps_.size()
-   /// full queue | i | (i - 1) (eventTimeSteps_.size() - 1 if i==0)
+   /// non-empty queue | i | (i + offset) % dataSeries_.size()
+   /// full queue | i | (i - 1) (dataSeries_.size() - 1 if i==0)
    int queueEnd_;
 
    /// Index of the start of the events in the current epoch
@@ -154,7 +155,7 @@ CEREAL_REGISTER_TYPE(EventBuffer);
 ///  Cereal serialization method
 template <class Archive> void EventBuffer::serialize(Archive &archive)
 {
-   archive(cereal::base_class<Recordable<uint64_t>>(this),
+   archive(cereal::base_class<RecordableVector<uint64_t>>(this),
            cereal::make_nvp("queueFront_", queueFront_), cereal::make_nvp("queueEnd_", queueEnd_),
            cereal::make_nvp("epochStart_", epochStart_),
            cereal::make_nvp("numEventsInEpoch_", numEventsInEpoch_));

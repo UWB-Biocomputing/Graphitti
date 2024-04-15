@@ -5,36 +5,36 @@ Some of the vertex classes in the neuro domain produce *spikes*: short-lived pul
 ### `EventBuffer`
 Event buffer class serves as a data structure implementation that to be used by vertex classes and recorder classes. Specifically, it is a circular array based implementation of queue that holds events produced by vertex(neurons). It serves as interface for Vertex classes to allow event time steps(uint64_t value) to span epoch boundaries and vector like interface for recorder classes to provide zero-based indexing of just the events that occurred in the preceding epoch. 
 Relevant data members are:
-- `eventTimeSteps_`: It is vector that holds event time steps(as uint64_t) as its elements.
-- `queueFront_`: It is an integer pointing to an index of the first event in the queue `eventTimeSteps_`.
-- `queueEnd_`: It is an integer pointing to the location one past the end of the queue `eventTimeSteps_` (enqueue operation is performed on pre incrementing the queueFront_ index pointer).
+- `dataSeries_`: It is vector that holds event time steps(as uint64_t) as its elements.
+- `queueFront_`: It is an integer pointing to an index of the first event in the queue `dataSeries_`.
+- `queueEnd_`: It is an integer pointing to the location one past the end of the queue `dataSeries_` (enqueue operation is performed on pre incrementing the queueFront_ index pointer).
 - `epochStart_`: It is an integer pointing to an index of the start of the events in the current epoch.
 - `numEventsInEpoch_`: Number of events in the current epoch.
 
 _Details on the data members_
-##### `eventTimeSteps_`
+##### `dataSeries_`
 It is a vector initially created with the size of `maxEvents` and initialized with `maximum value of unsigned long integer`. `maxEvents` are maximum spikes value constructed based on epoch duration and maximum firing rate. `maxEvents` is set to 0 is there are no events from the neurons in the simulation instance, it is set to maximum spikes value otherwise.  
 
 ##### `queueFront_`
-It is the Index of the first event in the queue `eventTimeSteps_`. It is used while checking if the vector `eventTimeSteps_` is full.
+It is the Index of the first event in the queue `dataSeries_`. It is used while checking if the vector `dataSeries_` is full.
 
 ##### `queueEnd_`
-It is an integer pointing to the location one past the end of the queue `eventTimeSteps_`. The queue will have at-least one empty item which enables differentiation between an empty and a full queue. Since queue is the circular array implementation, `queueEnd_` should be within valid index of the queue and we use modulus operator with the size of the queue.
-That is  `queueEnd_ = (queueEnd_ + 1) % eventTimeSteps_.size();`
+It is an integer pointing to the location one past the end of the queue `dataSeries_`. The queue will have at-least one empty item which enables differentiation between an empty and a full queue. Since queue is the circular array implementation, `queueEnd_` should be within valid index of the queue and we use modulus operator with the size of the queue.
+That is  `queueEnd_ = (queueEnd_ + 1) % dataSeries_.size();`
 
 > Initially when queue is empty  `queueFront_` and `queueEnd_` is 0.
 
-> Queue full condition: `(queueEnd_ + 1) % eventTimeSteps_.size()) == queueFront_` .
+> Queue full condition: `(queueEnd_ + 1) % dataSeries_.size()) == queueFront_` .
 
 ##### `epochStart_`
-It is the index of the start of the events in the current epoch. Every-time the is `eventTimeSteps_` is cleared, `epochStart_` is set to 0. `epochStart_` is also used to access time steps within the current epoch.
+It is the index of the start of the events in the current epoch. Every-time the is `dataSeries_` is cleared, `epochStart_` is set to 0. `epochStart_` is also used to access time steps within the current epoch.
 
 ##### `numEventsInEpoch_`
 It is the total number of events in the current Epoch. Ideally it is computed through `epochStart_` and `queueEnd_`.
 
 ### Member Functions
 In this section we list all the functions that are used either by vertex classes or recorder classes.
-  - `EventBuffer::resize(int maxEvents)`: Initially used to size `eventTimeSteps_` with  `maxEvents+1`, to distinguish between an empty and a full buffer. [_CAUTION: `EventBuffer` only uses this function once and resizing multiple times causes issue in the output results_]
+  - `EventBuffer::resize(int maxEvents)`: Initially used to size `dataSeries_` with  `maxEvents+1`, to distinguish between an empty and a full buffer. [_CAUTION: `EventBuffer` only uses this function once and resizing multiple times causes issue in the output results_]
   - `EventBuffer::operator[]`: retrieve an event time step at an offset relative to the start of the current epoch (i.e., `0..numEvents_-1`).
   - `EventBuffer::getNumEventsInEpoch()`: return the number of events in the current epoch.
   - `EventBuffer::clear()`: resets the `eventBuffer` with default values
@@ -55,7 +55,7 @@ This method returns the number of events in the current epoch. Note that this mi
 This functions resets the `eventBuffer` by resetting `queueFront_`, `queueEnd_`,`epochStart_` and `numEventsInEpoch_` to 0.
 
 ##### `EventBuffer::insertEvent(uint64_t timeStep)`
-This method checks for eventBuffer size to ensure the buffer is not full to enqueue the new event as `eventTimeSteps_` is a circular array implementation of the queue. If the buffer `eventTimeSteps_` is full then it is an error situation. Currently, we are not capturing errors but just making sure the event buffer is not full prior enqueuing through asserts.
+This method checks for eventBuffer size to ensure the buffer is not full to enqueue the new event as `dataSeries_` is a circular array implementation of the queue. If the buffer `dataSeries_` is full then it is an error situation. Currently, we are not capturing errors but just making sure the event buffer is not full prior enqueuing through asserts.
 
 ##### `EventBuffer::getPastEvent(offset: int)`
 This method gets the time step for an event in the past. An offset of -1 means the last event placed in the buffer; -2 means two events ago. `offset` indicates how many events ago. `offset` must be negative.

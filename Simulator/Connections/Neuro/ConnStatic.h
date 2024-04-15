@@ -71,7 +71,8 @@ public:
    /// Get array of vertex weights
    const vector<BGFLOAT> &getWCurrentEpoch() const
    {
-      return WCurrentEpoch_;
+      // return WCurrentEpoch_;
+      return WCurrentEpoch_.getVector();
    }
 
    /// Get all edge source vertex indices

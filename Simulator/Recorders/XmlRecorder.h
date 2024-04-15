@@ -45,14 +45,15 @@ public:
    /// Initialize data in the newly loadeded xml file
    virtual void init() override;
 
-   // TODO : remove it ?
+   // TODO : remove it if the HDF5 Recorder class doesn't need this method
    /// Init radii and rates history matrices with default values
    virtual void initDefaultValues() override;
 
+   // TODO : remove it if the HDF5 Recorder class doesn't need this method
    /// Init radii and rates history matrices with current radii and rates
    virtual void initValues() override;
 
-   // TODO : remove it ?
+   // TODO : remove it if the HDF5 Recorder class doesn't need this method
    /// Get the current radii and rates vlaues
    virtual void getValues() override;
 
@@ -184,6 +185,6 @@ protected:
    string toXML(const string &name, vector<multipleTypes> &singleVariableBuffer_,
                 const string &basicType) const;
 
-   // TODO: this method will be deleted
+   // TODO: this method will be deleted if the HDF5Recorder doesn't need it
    void getStarterNeuronMatrix(VectorMatrix &matrix, const vector<bool> &starterMap);
 };

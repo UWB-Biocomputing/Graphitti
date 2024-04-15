@@ -91,17 +91,12 @@ class XmlRecorder {
 	+{static} Create() : Recorder*
 	#variableTable_ : vector<singleVariableInfo>
 	#resultOut_ : ofstream
-	+compileHistories(AllVertices& vertices) : void
-	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+getValues() : void
+	+compileHistories() : void
 	+init() : void
-	+initDefaultValues() : void
-	+initValues() : void
 	+printParameters() : void
-	+saveSimData(const AllVertices& vertices) : void
+	+saveSimData() : void
 	+term() : void
 	+registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
-	+registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType, string constBasicType) : void
 	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
 	
 	/' methods only used for unit test 

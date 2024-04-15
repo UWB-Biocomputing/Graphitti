@@ -49,7 +49,7 @@
 
 #include "AllSpikingSynapses.h"
 // cereal
-// #include <cereal/archives/xml.hpp>   // this is a cereal hack
+#include <cereal/archives/xml.hpp>   // this is a cereal hack
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>
 

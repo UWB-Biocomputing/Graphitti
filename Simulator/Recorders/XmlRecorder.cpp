@@ -16,7 +16,6 @@
 #include <functional>
 
 // constructor
-// TODO: I believe the initializer for spikesHistory_ assumes a particular deltaT
 XmlRecorder::XmlRecorder()
 {
    ParameterManager::getInstance().getStringByXpath(
@@ -83,23 +82,6 @@ void XmlRecorder::compileHistories(AllVertices &vertices)
       }
       variableTable_[rowIndex].variableLocation_.startNewEpoch();
    }
-
-
-   // // generate the regression test files using prervious version of XmlRecorder
-   // //All neurons event
-   // AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(vertices);
-   // Simulator &simulator = Simulator::getInstance();
-   // int maxSpikes = static_cast<int>(simulator.getEpochDuration() * simulator.getMaxFiringRate());
-
-   // for (int rowIndex = 0; rowIndex < spNeurons.vertexEvents_.size(); rowIndex++) {
-   //    for (int eventIterator = 0;
-   //         eventIterator < spNeurons.vertexEvents_[rowIndex].getNumEventsInEpoch();
-   //         eventIterator++) {
-   //       variablesHistory_[rowIndex].push_back(
-   //       static_cast<int>(static_cast<double>(spNeurons.vertexEvents_[rowIndex][eventIterator])));
-   //    }
-   // }
-   // spNeurons.clearSpikeCounts();
 }
 
 // TODO : @param[in] vertices will be removed eventually after HDF5Recorder implementing
@@ -150,7 +132,7 @@ string XmlRecorder::toXML(const string &name, vector<multipleTypes> &singleBuffe
          os << get<int>(element) << " ";
       } else if (basicType == typeid(BGFLOAT).name()) {
          os << get<BGFLOAT>(element) << " ";
-      } else if (basicType == "undefined") {
+      } else {
          perror("Error recording Recordable object");
          exit(EXIT_FAILURE);
       }
@@ -179,7 +161,6 @@ void XmlRecorder::printParameters()
 }
 
 /// Receives a recorded variable entity from the variable owner class
-/// used when the return type from recordable variable is supported by Recorder
 /**
 * @brief Registers a single instance of a class derived from RecordableBase.
 * @param varName Name of the recorded variable.

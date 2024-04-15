@@ -64,7 +64,6 @@ public:
    virtual void printParameters() = 0;
 
    /// Receives a recorded variable entity from the variable owner class
-   /// Used when the return type from recordable variable is supported by Recorder
    /**
    * @brief Registers a single instance of a class derived from RecordableBase.
    * @param varName Name of the recorded variable.
