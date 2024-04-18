@@ -132,10 +132,10 @@ struct AllSpikingNeuronsDeviceProperties : public AllVerticesDeviceProperties {
    ///  Each buffer is a circular, and offset of top location of the buffer i is
    ///  specified by spikeCountOffset[i].
    uint64_t **spikeHistory_;
-   int *queueFront_;
-   int *queueEnd_;
+   int *bufferFront_;
+   int *bufferEnd_;
    int *epochStart_;
-   int *numEventsInEpoch_;
+   int *numElementsInEpoch_;
 };
 #endif   // defined(USE_GPU)
 

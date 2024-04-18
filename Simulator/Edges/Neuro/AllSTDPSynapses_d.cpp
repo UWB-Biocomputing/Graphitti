@@ -548,7 +548,7 @@ CUDA_CALLABLE bool
 CUDA_CALLABLE uint64_t getSTDPSynapseSpikeHistoryDevice(
    AllSpikingNeuronsDeviceProperties *allVerticesDevice, int index, int offIndex, int maxSpikes)
 {
-   int idxSp = allVerticesDevice->queueEnd_[index] + offIndex;
+   int idxSp = allVerticesDevice->bufferEnd_[index] + offIndex;
    if (idxSp < 0)
       idxSp = idxSp + maxSpikes;
    return allVerticesDevice->spikeHistory_[index][idxSp];

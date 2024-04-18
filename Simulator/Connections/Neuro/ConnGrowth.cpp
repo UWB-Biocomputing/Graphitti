@@ -70,6 +70,11 @@ void ConnGrowth::setup()
    area_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices, 0);
    outgrowth_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
    deltaR_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
+
+   // Register VertorMatrix radii_ for Recording if need
+   // Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   // string variableName = "radii";
+   // recorder.registerVariable(variableName, radii_, Recorder::UpdatedType::DYNAMIC);
 }
 
 /// Load member variables from configuration file.
@@ -141,8 +146,8 @@ void ConnGrowth::updateConns(AllVertices &vertices)
                                     * Simulator::getInstance().getMaxFiringRate());
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       // Calculate firing rate
-      assert(spNeurons.vertexEvents_[i].getNumEventsInEpoch() < maxSpikes);
-      rates_[i] = spNeurons.vertexEvents_[i].getNumEventsInEpoch()
+      assert(spNeurons.vertexEvents_[i].getNumElementsInEpoch() < maxSpikes);
+      rates_[i] = spNeurons.vertexEvents_[i].getNumElementsInEpoch()
                   / Simulator::getInstance().getEpochDuration();
    }
 

@@ -35,9 +35,8 @@ void AllSpikingNeurons::registerSpikeHistoryVariables()
 
    // Option 1: Register neuron information in vertexEvents_ one by one
    for (int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++) {
-      // variable name = baseName + neuron number
       string neuronID = baseName + std::to_string(iNeuron);
-      recorder.registerVariable(neuronID, vertexEvents_[iNeuron]);
+      recorder.registerVariable(neuronID, vertexEvents_[iNeuron], Recorder::UpdatedType::DYNAMIC);
    }
 
    // Option 2: Register a vector of EventBuffer variables
@@ -45,7 +44,7 @@ void AllSpikingNeurons::registerSpikeHistoryVariables()
    // for(int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++){
    //    variables.push_back(&vertexEvents_[iNeuron]);
    // }
-   // recorder.registerVariable(baseName, variables);
+   // recorder.registerVariable(baseName, variables, Recorder::UpdatedType::DYNAMIC);
 }
 
 ///  Clear the spike counts out of all Neurons.
@@ -83,7 +82,7 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap &
                          "Neuron: " << idx << " has fired at time: "
                                     << g_simulationStep * Simulator::getInstance().getDeltaT());
 
-         assert(vertexEvents_[idx].getNumEventsInEpoch() < maxSpikes);
+         assert(vertexEvents_[idx].getNumElementsInEpoch() < maxSpikes);
 
          // notify outgoing synapses
          BGSIZE synapseCounts;
