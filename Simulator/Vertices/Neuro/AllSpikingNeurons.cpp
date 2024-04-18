@@ -82,7 +82,7 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap &
                          "Neuron: " << idx << " has fired at time: "
                                     << g_simulationStep * Simulator::getInstance().getDeltaT());
 
-         assert(vertexEvents_[idx].getNumElements() < maxSpikes);
+         assert(vertexEvents_[idx].getNumElementsInEpoch() < maxSpikes);
 
          // notify outgoing synapses
          BGSIZE synapseCounts;

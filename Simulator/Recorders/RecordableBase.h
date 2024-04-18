@@ -30,7 +30,7 @@ class RecordableBase {
 public:
    virtual ~RecordableBase() = default;
 
-   /// Get the number of events in the current epoch for the recordable variable.
+   /// Get the number of elements that needs to be recorded
    virtual int getNumElements() const = 0;
 
    /// Get the value of the recordable variable at the specified index.

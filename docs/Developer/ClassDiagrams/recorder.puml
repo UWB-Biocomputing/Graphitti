@@ -69,7 +69,6 @@ abstract class Recorder {
 	+{abstract} saveSimData(const AllVertices& vertices) : void
 	+{abstract} term() : void
 	+{abstract} registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
-	+{abstract} registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType, string constBasicType) : void
 	+{abstract} registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
 }
 

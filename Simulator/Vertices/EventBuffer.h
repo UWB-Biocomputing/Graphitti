@@ -54,6 +54,9 @@ public:
    /// @return A variant representing the recorded value (uint64_t, double, or string).
    virtual variantTypes getElement(int index) const override;
 
+   /// Get the number of elements that needs to be recorded
+   virtual int getNumElements() const override;
+
    /// Return the runtime data type info of unit64_t
    virtual void setDataType() override;
 
@@ -73,7 +76,7 @@ public:
    /// Getting the number of events in the current epoch (or, in between epochs, the number of events
    /// in the preceding epoch) is not the same as the number of events in the buffer, because the buffer
    /// retains events from the previous epoch, too.
-   virtual int getNumElements() const override;
+   int getNumElementsInEpoch() const;
 
    /// Resize event buffer
    ///
@@ -87,7 +90,7 @@ public:
    /// Access event from current epoch
    ///
    /// Access an element of the buffer as though it is an array or vector with element 0 being the first
-   /// event in the epoch (element numEventsInEpoch_ - 1 would be the last element in the epoch).
+   /// event in the epoch (element numElementsInEpoch_ - 1 would be the last element in the epoch).
    ///
    /// @param i element number
    uint64_t operator[](int i) const;
@@ -126,25 +129,25 @@ private:
    // vector<uint64_t> dataSeries_;
 
    /// Index of the first event in the queue
-   int queueFront_;
+   int bufferFront_;
 
    /// Index of the location one past the end of the queue; where the next event will be enqueued. Note
    /// that the array must always have one empty item; otherwise, it would not be possible to tell the
    /// difference between an empty and a full queue. Specific cases:
-   /// Case | queueFront_ | queueEnd_
+   /// Case | bufferFront_ | bufferEnd_
    /// --- | --- | ---
    /// Initial (empty) queue | 0 | 0
    /// empty queue (otherwise) | i | i
    /// non-empty queue | i | (i + offset) % dataSeries_.size()
    /// full queue | i | (i - 1) (dataSeries_.size() - 1 if i==0)
-   int queueEnd_;
+   int bufferEnd_;
 
    /// Index of the start of the events in the current epoch
    int epochStart_;
 
    /// Number of events in the current epoch. Note that this could be computed from epochStart_
-   /// and queueEnd_, but the code to do that would be unobvious.
-   int numEventsInEpoch_;
+   /// and bufferEnd_, but the code to do that would be unobvious.
+   int numElementsInEpoch_;
 };
 
 
@@ -154,7 +157,7 @@ CEREAL_REGISTER_TYPE(EventBuffer);
 template <class Archive> void EventBuffer::serialize(Archive &archive)
 {
    archive(cereal::base_class<RecordableVector<uint64_t>>(this),
-           cereal::make_nvp("queueFront_", queueFront_), cereal::make_nvp("queueEnd_", queueEnd_),
-           cereal::make_nvp("epochStart_", epochStart_),
-           cereal::make_nvp("numEventsInEpoch_", numEventsInEpoch_));
+           cereal::make_nvp("bufferFront_", bufferFront_),
+           cereal::make_nvp("bufferEnd_", bufferEnd_), cereal::make_nvp("epochStart_", epochStart_),
+           cereal::make_nvp("numElementsInEpoch_", numElementsInEpoch_));
 }

@@ -169,10 +169,10 @@ abstract class AllVertices {
 class EventBuffer {
 	+EventBuffer(int maxEvents)
 	-epochStart_ : int
-	+getNumElements() : int {query}
-	-numEventsInEpoch_ : int
-	-queueEnd_ : int
-	-queueFront_ : int
+	+getNumElementsInEpoch() : int {query}
+	-numElementsInEpoch_ : int
+	-bufferEnd_ : int
+	-bufferFront_ : int
 	+getPastEvent(int offset) : uint64_t {query}
 	+operator[](int i) : uint64_t {query}
 	-dataSeries_ : vector<uint64_t>

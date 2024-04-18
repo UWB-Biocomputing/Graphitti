@@ -40,7 +40,7 @@ public:
       return basicDataType_;
    }
 
-   /// Get the number of events in the current epoch for the recordable variable.
+   /// Get the number of elements that needs to be recorded
    virtual int getNumElements() const override
    {
       return dataSeries_.size();

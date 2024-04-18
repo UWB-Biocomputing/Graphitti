@@ -26,23 +26,23 @@ void AllSpikingNeurons::copyToDevice(void *deviceAddress)
 
    int cpu_spike_count[count];
    for (int i = 0; i < count; i++) {
-      cpu_spike_count[i] = vertexEvents_[i].getNumElements();
+      cpu_spike_count[i] = vertexEvents_[i].getNumElementsInEpoch();
    }
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.numEventsInEpoch_, cpu_spike_count,
+   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.numElementsInEpoch_, cpu_spike_count,
                            count * sizeof(int), cudaMemcpyHostToDevice));
 
    int cpu_queue_front[count];
    for (int i = 0; i < count; i++) {
-      cpu_queue_front[i] = vertexEvents_[i].queueFront_;
+      cpu_queue_front[i] = vertexEvents_[i].bufferFront_;
    }
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.queueFront_, cpu_queue_front, count * sizeof(int),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.bufferFront_, cpu_queue_front, count * sizeof(int),
                            cudaMemcpyHostToDevice));
 
    int cpu_queue_end[count];
    for (int i = 0; i < count; i++) {
-      cpu_queue_end[i] = vertexEvents_[i].queueEnd_;
+      cpu_queue_end[i] = vertexEvents_[i].bufferEnd_;
    }
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.queueEnd_, cpu_queue_end, count * sizeof(int),
+   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.bufferEnd_, cpu_queue_end, count * sizeof(int),
                            cudaMemcpyHostToDevice));
    int cpu_queue_start[count];
    for (int i = 0; i < count; i++) {
@@ -81,24 +81,24 @@ void AllSpikingNeurons::copyFromDevice(void *deviceAddress)
    // We have to copy the whole state of the event buffer from GPU memory because
    // we reset it in CPU code and then copy the new state back to the GPU.
    int cpu_spike_count[numVertices];
-   HANDLE_ERROR(cudaMemcpy(cpu_spike_count, allVerticesDevice.numEventsInEpoch_,
+   HANDLE_ERROR(cudaMemcpy(cpu_spike_count, allVerticesDevice.numElementsInEpoch_,
                            numVertices * sizeof(int), cudaMemcpyDeviceToHost));
    for (int i = 0; i < numVertices; i++) {
-      vertexEvents_[i].numEventsInEpoch_ = cpu_spike_count[i];
+      vertexEvents_[i].numElementsInEpoch_ = cpu_spike_count[i];
    }
 
    int queue_front[numVertices];
-   HANDLE_ERROR(cudaMemcpy(queue_front, allVerticesDevice.queueFront_, numVertices * sizeof(int),
+   HANDLE_ERROR(cudaMemcpy(queue_front, allVerticesDevice.bufferFront_, numVertices * sizeof(int),
                            cudaMemcpyDeviceToHost));
    for (int i = 0; i < numVertices; i++) {
-      vertexEvents_[i].queueFront_ = queue_front[i];
+      vertexEvents_[i].bufferFront_ = queue_front[i];
    }
 
    int queue_end[numVertices];
-   HANDLE_ERROR(cudaMemcpy(queue_end, allVerticesDevice.queueEnd_, numVertices * sizeof(int),
+   HANDLE_ERROR(cudaMemcpy(queue_end, allVerticesDevice.bufferEnd_, numVertices * sizeof(int),
                            cudaMemcpyDeviceToHost));
    for (int i = 0; i < numVertices; i++) {
-      vertexEvents_[i].queueEnd_ = queue_end[i];
+      vertexEvents_[i].bufferEnd_ = queue_end[i];
    }
 
    int epoch_start[numVertices];
@@ -130,11 +130,11 @@ void AllSpikingNeurons::clearDeviceSpikeCounts(AllSpikingNeuronsDeviceProperties
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
 
-   HANDLE_ERROR(cudaMemset(allVerticesDevice.numEventsInEpoch_, 0, numVertices * sizeof(int)));
+   HANDLE_ERROR(cudaMemset(allVerticesDevice.numElementsInEpoch_, 0, numVertices * sizeof(int)));
 
    vector<int> epochStart(numVertices);
    for (int i = 0; i < epochStart.size(); ++i) {
-      epochStart[i] = vertexEvents_[i].queueEnd_;
+      epochStart[i] = vertexEvents_[i].bufferEnd_;
    }
    HANDLE_ERROR(cudaMemcpy(allVerticesDevice.epochStart_, epochStart.data(),
                            numVertices * sizeof(int), cudaMemcpyHostToDevice));
