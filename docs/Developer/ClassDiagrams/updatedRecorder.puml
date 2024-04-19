@@ -15,35 +15,41 @@ class Recorder {
    +~Recorder()
    #fileLogger_ : log4cplus::Logger
    #resultFileName_ : string
-   +{abstract} compileHistories(AllVertices& vertices) : void
+   +{abstract} compileHistories() : void
    +{abstract} init() : void
    +{abstract} printParameters() : void
-   +{abstract} saveSimData(const AllVertices& vertices) : void
+   +{abstract} saveSimData() : void
    +{abstract} term() : void
 	+{abstract}registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
-	+{abstract}registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType, string basicType) : void
 	+{abstract}registerVariable(const string &varName, vector<RecordableBase *> &recordVars, UpdatedType variableType) : void
 }
 
 class HDF5Recorder {
    -variableHDF5Table : vector<HDF5VariableInfo>
+	#resultOut_ : H5File
+	+{static} Create() : Recorder*
+	+compileHistories() : void
+	+getValues() : void
+	+init() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+saveSimData() : void
+	+term() : void
    /'add more'/
 }
 
 class XmlRecorder {
-   #variableTable : vector<XmlVariableInfo>
+   #variableTable_ : vector<XmlVariableInfo>
 	+XmlRecorder()
 	#resultOut_ : ofstream
 	+{static} Create() : Recorder*
-	#variableTable_ : vector<singleVariableInfo>
-
-	+compileHistories(AllVertices& vertices) : void
+	+compileHistories() : void
 	+init() : void
 	+printParameters() : void
 	+term() : void
-	+saveSimData(const AllVertices& vertices) : void
+	+saveSimData() : void
 	+registerVariable(const string &varName, RecordableBase &recordVar,  UpdatedType variableType) : void
-	+registerVariable(const string &varName, RecordableBase &recordVar,  UpdatedType variableType, string basicType) : void
 	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
 	
 	/' methods only used for unit test 
@@ -71,6 +77,7 @@ class XmlVariableInfo {
 
 class HDF5VariableInfo {
 -variableDataset_: Dataset
+/'add more methods'/
 }
 
 abstract class RecordableBase {
@@ -81,21 +88,28 @@ abstract class RecordableBase {
 	+{abstract} setDataType() : void
 	+{abstract} getDataType() : string
 }
-class Recordable<T>{
-	#eventTimeSteps_ : vector<T>
+
+class RecordableConstant<T>{
+	-element : T
 	+getNumElements() const : int
 	+startNewEpoch() : void
 	+getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
 	+setDataType() : void
 	+getDataType() : string
+	/'add more method if needed'/
 }
 
+
 class RecordableVector<T>{
-	+getNumElements() const : int
+	-dataSeries__ : vector<T>
+	+getNumElement() const : int
 	+startNewEpoch() : void
 	+getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
 	+setDataType() : void
 	+getDataType() : string
+	/'vector methods'/
+	+resize(int maxEvents) : void
+	+operator[](int i) : &T
 }
 
 
@@ -116,7 +130,7 @@ HDF5Recorder *-- HDF5VariableInfo : contains
 
 BaseVariableInfo *-- RecordableBase : contains
 
-RecordableBase <|-- Recordable : inherits
+RecordableBase <|-- RecordableConstant : inherits
 RecordableBase <|-- RecordableVector : inherits
 
 @enduml 
