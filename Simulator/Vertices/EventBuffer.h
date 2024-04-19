@@ -22,10 +22,13 @@
 
 #pragma once
 #include "Global.h"
-#include "Recordable.h"
+#include "RecordableVector.h"
+// cereal
+#include <cereal/types/polymorphic.hpp>
+
 class AllSpikingNeurons;
 class AllIFNeurons;
-class EventBuffer : public Recordable<uint64_t> {
+class EventBuffer : public RecordableVector<uint64_t> {
    friend class AllIFNeurons;
    friend class AllSpikingNeurons;
 
@@ -44,23 +47,21 @@ public:
     *  virtual methods in RecordableBase for use by Recorder classes
     */
    ///@{
-   /// Set up a string representing the basic data type
-   virtual void setDataType() override;
 
+   /// Set up a string representing the basic data type
    /// Get the value of the recordable variable at the specified index.
    /// @param index The index of the recorded value to retrieve.
    /// @return A variant representing the recorded value (uint64_t, double, or string).
-   virtual variant<uint64_t, double, string> getElement(int index) const override;
+   virtual variantTypes getElement(int index) const override;
 
-   /// Get A string representing the data type of the recordable variable
+   /// Get the number of elements that needs to be recorded
+   virtual int getNumElements() const override;
+
+   /// Return the runtime data type info of unit64_t
+   virtual void setDataType() override;
+
+   /// Get the basic data type of the recordable variable
    virtual const string &getDataType() const override;
-
-   /// Get number of events in the current/preceding epoch
-   ///
-   /// Getting the number of events in the current epoch (or, in between epochs, the number of events
-   /// in the preceding epoch) is not the same as the number of events in the buffer, because the buffer
-   /// retains events from the previous epoch, too.
-   virtual int getNumEventsInEpoch() const override;
 
    /// Start a new epoch
    ///
@@ -70,6 +71,13 @@ public:
    virtual void startNewEpoch() override;
    ///@}
 
+   /// Get number of events in the current/preceding epoch
+   ///
+   /// Getting the number of events in the current epoch (or, in between epochs, the number of events
+   /// in the preceding epoch) is not the same as the number of events in the buffer, because the buffer
+   /// retains events from the previous epoch, too.
+   int getNumElementsInEpoch() const;
+
    /// Resize event buffer
    ///
    /// Note that the buffer size will be set to maxEvents+1, to distinguish between
@@ -77,12 +85,12 @@ public:
    ///
    /// @pre current buffer must be empty
    /// @param maxEvents Buffer size
-   void resize(int maxEvents);
+   virtual void resize(int maxEvents) override;
 
    /// Access event from current epoch
    ///
    /// Access an element of the buffer as though it is an array or vector with element 0 being the first
-   /// event in the epoch (element numEventsInEpoch_ - 1 would be the last element in the epoch).
+   /// event in the epoch (element numElementsInEpoch_ - 1 would be the last element in the epoch).
    ///
    /// @param i element number
    uint64_t operator[](int i) const;
@@ -113,28 +121,43 @@ public:
    uint64_t getPastEvent(int offset) const;
    ///@}
 
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
+
 private:
    /// Holds the event time steps
-   // vector<uint64_t> eventTimeSteps_;
+   // vector<uint64_t> dataSeries_;
 
    /// Index of the first event in the queue
-   int queueFront_;
+   int bufferFront_;
 
    /// Index of the location one past the end of the queue; where the next event will be enqueued. Note
    /// that the array must always have one empty item; otherwise, it would not be possible to tell the
    /// difference between an empty and a full queue. Specific cases:
-   /// Case | queueFront_ | queueEnd_
+   /// Case | bufferFront_ | bufferEnd_
    /// --- | --- | ---
    /// Initial (empty) queue | 0 | 0
    /// empty queue (otherwise) | i | i
-   /// non-empty queue | i | (i + offset) % eventTimeSteps_.size()
-   /// full queue | i | (i - 1) (eventTimeSteps_.size() - 1 if i==0)
-   int queueEnd_;
+   /// non-empty queue | i | (i + offset) % dataSeries_.size()
+   /// full queue | i | (i - 1) (dataSeries_.size() - 1 if i==0)
+   int bufferEnd_;
 
    /// Index of the start of the events in the current epoch
    int epochStart_;
 
    /// Number of events in the current epoch. Note that this could be computed from epochStart_
-   /// and queueEnd_, but the code to do that would be unobvious.
-   int numEventsInEpoch_;
+   /// and bufferEnd_, but the code to do that would be unobvious.
+   int numElementsInEpoch_;
 };
+
+
+CEREAL_REGISTER_TYPE(EventBuffer);
+
+///  Cereal serialization method
+template <class Archive> void EventBuffer::serialize(Archive &archive)
+{
+   archive(cereal::base_class<RecordableVector<uint64_t>>(this),
+           cereal::make_nvp("bufferFront_", bufferFront_),
+           cereal::make_nvp("bufferEnd_", bufferEnd_), cereal::make_nvp("epochStart_", epochStart_),
+           cereal::make_nvp("numElementsInEpoch_", numElementsInEpoch_));
+}

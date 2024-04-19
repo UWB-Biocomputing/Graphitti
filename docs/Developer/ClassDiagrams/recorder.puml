@@ -68,6 +68,8 @@ abstract class Recorder {
 	+{abstract} printParameters() : void
 	+{abstract} saveSimData(const AllVertices& vertices) : void
 	+{abstract} term() : void
+	+{abstract} registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
+	+{abstract} registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
 }
 
 
@@ -88,32 +90,30 @@ class XmlRecorder {
 	+{static} Create() : Recorder*
 	#variableTable_ : vector<singleVariableInfo>
 	#resultOut_ : ofstream
-	+compileHistories(AllVertices& vertices) : void
-	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+getValues() : void
+	+compileHistories() : void
 	+init() : void
-	+initDefaultValues() : void
-	+initValues() : void
 	+printParameters() : void
-	+saveSimData(const AllVertices& vertices) : void
+	+saveSimData() : void
 	+term() : void
-	+registerVariable(const string &varName, RecordableBase &recordVar) : void
+	+registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
 	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
 	
 	/' methods only used for unit test 
 	+XmlRecorder(string fileName_)
 	+getVariableName(int numIndex) const : const string&
 	+getSingleVariable(int numIndex) const : &RecordableBase
-	+getHistory() const : const &vector<variant<uint64_t, double, string>>
+	+getHistory() const : const &vector<variant<uint64_t, bool, int, BGFLOAT>>
 	'/
 }
 
 struct singleVariableInfo {
 	#variableName_ : string
 	#variableLocation_ : RecordableBase&
-	#variableHistory_ : vector<variant<uint64_t, double, string>
+	#variableHistory_ : vector<variant<uint64_t, bool, int, BGFLOAT>
 	#dataType_ : string
+	#variableType: UpdatedType
 	+singleVariableInfo(string name, RecordableBase &location)
+	+captureData()
 }
 
 

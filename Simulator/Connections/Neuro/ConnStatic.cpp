@@ -22,7 +22,6 @@
 
 #include <algorithm>
 
-
 ConnStatic::ConnStatic()
 {
    threshConnsRadius_ = 0;
@@ -111,6 +110,10 @@ void ConnStatic::setup()
    LOG4CPLUS_DEBUG(fileLogger_, "Rewiring connections: " << nRewiring);
 
    LOG4CPLUS_DEBUG(fileLogger_, "Added connections: " << added);
+
+   // Register variable weight if need
+   // Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   // recorder.registerVariable("weight", WCurrentEpoch_, Recorder::UpdatedType::DYNAMIC);
 }
 
 /// Load member variables from configuration file.

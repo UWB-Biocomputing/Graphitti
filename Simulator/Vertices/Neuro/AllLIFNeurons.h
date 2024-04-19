@@ -76,7 +76,8 @@
 #include "AllIFNeurons.h"
 #include "AllSpikingSynapses.h"
 #include "Global.h"
-
+// cereal
+#include <cereal/types/polymorphic.hpp>
 
 // Class to hold all data necessary for all the Neurons.
 class AllLIFNeurons : public AllIFNeurons {
@@ -96,6 +97,9 @@ public:
    ///  Prints out all parameters of the neurons to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 #if defined(USE_GPU)
 public:
@@ -123,3 +127,11 @@ protected:
 
 #endif   // defined(USE_GPU)
 };
+
+CEREAL_REGISTER_TYPE(AllLIFNeurons);
+
+///  Cereal serialization method
+template <class Archive> void AllLIFNeurons::serialize(Archive &archive)
+{
+   archive(cereal::base_class<AllIFNeurons>(this));
+}
