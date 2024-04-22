@@ -126,7 +126,7 @@ string XmlRecorder::toXML(const string &name, vector<multipleTypes> &singleBuffe
    for (const multipleTypes &element : singleBuffer_) {
       if (basicType == typeid(uint64_t).name()) {
          os << get<uint64_t>(element) << " ";
-      } else if (basicType == typeid(double).name()) {
+      } else if (basicType == typeid(bool).name()) {
          os << get<bool>(element) << " ";
       } else if (basicType == typeid(int).name()) {
          os << get<int>(element) << " ";
