@@ -12,20 +12,20 @@ class RecorderFactory {
 }
 
 class Recorder {
-   +~Recorder()
-   #fileLogger_ : log4cplus::Logger
-   #resultFileName_ : string
-   +{abstract} compileHistories() : void
-   +{abstract} init() : void
-   +{abstract} printParameters() : void
-   +{abstract} saveSimData() : void
-   +{abstract} term() : void
+	+~Recorder()
+	#fileLogger_ : log4cplus::Logger
+	#resultFileName_ : string
+	+{abstract} compileHistories() : void
+	+{abstract} init() : void
+	+{abstract} printParameters() : void
+	+{abstract} saveSimData() : void
+	+{abstract} term() : void
 	+{abstract}registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
 	+{abstract}registerVariable(const string &varName, vector<RecordableBase *> &recordVars, UpdatedType variableType) : void
 }
 
 class HDF5Recorder {
-   -variableHDF5Table : vector<HDF5VariableInfo>
+	-variableHDF5Table : vector<HDF5VariableInfo>
 	#resultOut_ : H5File
 	+{static} Create() : Recorder*
 	+compileHistories() : void
@@ -36,11 +36,11 @@ class HDF5Recorder {
 	+printParameters() : void
 	+saveSimData() : void
 	+term() : void
-   /'add more'/
+	/'add more'/
 }
 
 class XmlRecorder {
-   #variableTable_ : vector<XmlVariableInfo>
+	#variableTable_ : vector<XmlVariableInfo>
 	+XmlRecorder()
 	#resultOut_ : ofstream
 	+{static} Create() : Recorder*
@@ -72,12 +72,12 @@ class BaseVariableInfo {
 }
 
 class XmlVariableInfo {
--variableHistory_: vector<variant<uint64_t, bool, int, BGFLOAT>>
+	-variableHistory_: vector<variant<uint64_t, bool, int, BGFLOAT>>
 }
 
 class HDF5VariableInfo {
--variableDataset_: Dataset
-/'add more methods'/
+	-variableDataset_: Dataset
+	/'add more methods'/
 }
 
 abstract class RecordableBase {
