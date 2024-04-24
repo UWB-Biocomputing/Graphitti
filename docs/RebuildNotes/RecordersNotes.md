@@ -65,8 +65,8 @@ recorder.registerVariable("variableName", variableAddress, updateType);
 #### Step 2: Capturing Data and Saving Data in the Recorder
 
 As long as the variable owner class has registered the variable of interest, the Recorder automatically adds each registered variable to the variable table, captures the data, and then outputs them to the output file during the simulation, ensuring that the simulation data is captured at the appropriate moments.
----------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------
 ## Legacy
 
 Previously, the focus was not on analyzing individual spikes but on breaking time into bins of 10ms and counting the number of spikes in each bin. This approach was detailed in a 2014 paper. The comment in the code has not been updated since. In the HDF5Recorder.cpp file, there are specific names for datasets:
