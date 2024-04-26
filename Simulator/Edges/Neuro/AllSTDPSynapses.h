@@ -275,8 +275,9 @@ private:
    ///  @param  epre        Params for the rule given in Froemke and Dan (2002).
    ///  @param srcVertex Index of source neuron
    ///  @param destVertex Index of destination neuron
-   void AllSTDPSynapses::stdpLearning(BGSIZE iEdg, double delta); /*, double epost, double epre,
-int srcVertex, int destVertex);*/
+//   void AllSTDPSynapses::stdpLearning(BGSIZE iEdg, double delta, double epost, double epre,
+//                                      int srcVertex, int destVertex);
+   void stdpLearning(BGSIZE iEdg, double delta);
 
 #endif
 public:
