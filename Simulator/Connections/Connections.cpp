@@ -33,7 +33,7 @@ Connections::Connections()
    edges_ = Factory<AllEdges>::getInstance().createType(type);
 
    // If the factory returns an error (nullptr), exit
-   if (edges_ == nullptr) {
+   if (!edges_) {
       LOG4CPLUS_INFO(consoleLogger_, "INVALID CLASS: " + type);
       exit(EXIT_FAILURE);
    }
