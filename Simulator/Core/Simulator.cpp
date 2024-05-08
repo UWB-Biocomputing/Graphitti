@@ -98,7 +98,7 @@ void Simulator::loadParameters()
    noiseRNG = Factory<MTRand>::getInstance().createType(type);
 
    // If the factory returns an error (nullptr), exit
-   if (vertices_ == nullptr) {
+   if (!noiseRNG) {
       LOG4CPLUS_INFO(consoleLogger_, "INVALID CLASS: " + type);
       exit(EXIT_FAILURE);
    }
