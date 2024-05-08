@@ -24,10 +24,19 @@
 
 Connections::Connections()
 {
+   // Get a copy of the console logger to use in the case of errors
+   log4cplus::Logger consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+   
    // Create Edges/Synapses class using type definition in configuration file
    string type;
    ParameterManager::getInstance().getStringByXpath("//EdgesParams/@class", type);
    edges_ = Factory<AllEdges>::getInstance().createType(type);
+
+   // If the factory returns an error (nullptr), exit
+   if (edges_ == nullptr) {
+      LOG4CPLUS_INFO(consoleLogger_, "INVALID CLASS: " + type);
+      exit(EXIT_FAILURE);
+   }
 
    // Get pointer to operations manager Singleton
    OperationManager &opsManager = OperationManager::getInstance();
