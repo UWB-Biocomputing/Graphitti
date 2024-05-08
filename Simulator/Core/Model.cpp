@@ -34,7 +34,7 @@ Model::Model()
    layout_ = Factory<Layout>::getInstance().createType(type);
 
    // If the factory returns an error (nullptr), exit
-   if (layout_ == nullptr) {
+   if (!layout_) {
       LOG4CPLUS_INFO(consoleLogger_, "INVALID CLASS: " + type);
       exit(EXIT_FAILURE);
    }
@@ -44,7 +44,7 @@ Model::Model()
    connections_ = Factory<Connections>::getInstance().createType(type);
 
    // If the factory returns an error (nullptr), exit
-   if (connections_ == nullptr) {
+   if (!connections_) {
       LOG4CPLUS_INFO(consoleLogger_, "INVALID CLASS: " + type);
       exit(EXIT_FAILURE);
    }
@@ -54,7 +54,7 @@ Model::Model()
    recorder_ = Factory<Recorder>::getInstance().createType(type);
 
    // If the factory returns an error (nullptr), exit
-   if (recorder_ == nullptr) {
+   if (!recorder_) {
       LOG4CPLUS_INFO(consoleLogger_, "INVALID CLASS: " + type);
       exit(EXIT_FAILURE);
    }
