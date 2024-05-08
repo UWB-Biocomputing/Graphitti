@@ -89,10 +89,19 @@ void Simulator::loadParameters()
       deltaT_ = DEFAULT_dt;
    }
 
+   // Note: This might be unnecessary, but to ensure that consoleLogger is initialized
+   consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+
    // Instantiate rng object
    string type;
    ParameterManager::getInstance().getStringByXpath("//RNGConfig/NoiseRNGSeed/@class", type);
    noiseRNG = Factory<MTRand>::getInstance().createType(type);
+
+   // If the factory returns an error (nullptr), exit
+   if (vertices_ == nullptr) {
+      LOG4CPLUS_INFO(consoleLogger_, "INVALID CLASS: " + type);
+      exit(EXIT_FAILURE);
+   }
 
    ParameterManager::getInstance().getLongByXpath("//RNGConfig/InitRNGSeed/text()", initRngSeed_);
    ParameterManager::getInstance().getLongByXpath("//RNGConfig/NoiseRNGSeed/text()", noiseRngSeed_);
