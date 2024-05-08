@@ -27,7 +27,7 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
    vertices_ = Factory<AllVertices>::getInstance().createType(type);
 
    // If the factory returns an error (nullptr), exit
-   if (vertices_ == nullptr) {
+   if (!vertices_) {
       LOG4CPLUS_INFO(consoleLogger_, "INVALID CLASS: " + type);
       exit(EXIT_FAILURE);
    }
