@@ -89,9 +89,6 @@ void Simulator::loadParameters()
       deltaT_ = DEFAULT_dt;
    }
 
-   // Note: This might be unnecessary, but to ensure that consoleLogger is initialized
-   consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
-
    // Instantiate rng object
    string type;
    ParameterManager::getInstance().getStringByXpath("//RNGConfig/NoiseRNGSeed/@class", type);
