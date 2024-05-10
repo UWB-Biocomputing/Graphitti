@@ -101,7 +101,7 @@
             </GrowthParams>
         </ConnectionsParams>
 
-        <LayoutParams class="LayoutNeuro" name="LayoutParams">
+        <LayoutParams class="FixedLayout" name="LayoutParams">
             <LayoutFiles name="LayoutFiles">
                 <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList2x2.xml
                 </activeNListFileName>
