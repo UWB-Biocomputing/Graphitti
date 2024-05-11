@@ -32,6 +32,9 @@ public:
       return new LayoutNeuro();
    }
 
+   /// Register vertex properties with the GraphManager
+   virtual void registerGraphProperties() override;
+
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
