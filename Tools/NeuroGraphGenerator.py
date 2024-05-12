@@ -1,8 +1,8 @@
-# xml2graph.py
+# NeuroGraphGenerator.py
 # Omar Elgazzar
 
-# Python script used to convert the neural network xml configfiles
-# into GraphML files
+# Python script used to create the GraphML files
+# used in the Neural Simulation
 
 # Credit to Jardi A.M. Jordan for initial code
 
