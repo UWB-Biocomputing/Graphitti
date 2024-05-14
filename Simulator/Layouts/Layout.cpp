@@ -19,7 +19,7 @@
 Layout::Layout() : numEndogenouslyActiveNeurons_(0)
 {
    // Get a copy of the console logger to use in the case of errors
-   log4cplus::Logger consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    
    // Create Vertices/Neurons class using type definition in configuration file
    string type;
@@ -28,7 +28,7 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
 
    // If the factory returns an error (nullptr), exit
    if (!vertices_) {
-      LOG4CPLUS_INFO(consoleLogger_, "INVALID CLASS: " + type);
+      LOG4CPLUS_INFO(consoleLogger, "INVALID CLASS: " + type);
       exit(EXIT_FAILURE);
    }
 
