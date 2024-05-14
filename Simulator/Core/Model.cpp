@@ -24,7 +24,7 @@
 Model::Model()
 {
    // Get a copy of the console logger to use in the case of errors
-   log4cplus::Logger consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    
    // Reference variable used to get class type from ParameterManager.
    string type;
@@ -35,7 +35,7 @@ Model::Model()
 
    // If the factory returns an error (nullptr), exit
    if (layout_ == nullptr) {
-      LOG4CPLUS_INFO(consoleLogger_, "INVALID CLASS: " + type);
+      LOG4CPLUS_INFO(consoleLogger, "INVALID CLASS: " + type);
       exit(EXIT_FAILURE);
    }
 
@@ -45,7 +45,7 @@ Model::Model()
 
    // If the factory returns an error (nullptr), exit
    if (connections_ == nullptr) {
-      LOG4CPLUS_INFO(consoleLogger_, "INVALID CLASS: " + type);
+      LOG4CPLUS_INFO(consoleLogger, "INVALID CLASS: " + type);
       exit(EXIT_FAILURE);
    }
 
@@ -55,7 +55,7 @@ Model::Model()
 
    // If the factory returns an error (nullptr), exit
    if (recorder_ == nullptr) {
-      LOG4CPLUS_INFO(consoleLogger_, "INVALID CLASS: " + type);
+      LOG4CPLUS_INFO(consoleLogger, "INVALID CLASS: " + type);
       exit(EXIT_FAILURE);
    }
 
