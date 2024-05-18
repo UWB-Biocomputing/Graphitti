@@ -86,6 +86,7 @@ CEREAL_REGISTER_TYPE(LayoutNeuro);
 ///  Cereal serialization method
 template <class Archive> void LayoutNeuro::serialize(Archive &archive)
 {
+   // TODO: Change width_ and height_ to numVerticies_
    archive(cereal::base_class<Layout>(this), cereal::make_nvp("gridLayout_", gridLayout_),
            cereal::make_nvp("width_", width_), cereal::make_nvp("height_", height_));
 }
