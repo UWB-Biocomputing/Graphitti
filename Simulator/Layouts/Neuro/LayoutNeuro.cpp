@@ -30,6 +30,7 @@ void LayoutNeuro::registerGraphProperties()
     // so Boost Graph Library can use it for loading the graphML file.
     // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
     GraphManager& gm = GraphManager::getInstance();
+    gm.registerProperty("active", &VertexProperty::active);
 }
 
 void LayoutNeuro::setup()
@@ -106,39 +107,25 @@ void LayoutNeuro::generateVertexTypeMap(int numVertices)
 ///  Selects \e numStarter excitory neurons and converts them into starter neurons.
 ///  @param  numVertices number of vertices to have in the map.
 void LayoutNeuro::initStarterMap(int numVertices)
-{
+{   
    Layout::initStarterMap(numVertices);
+   
+   // Set Neuron Activity from GraphML File
+   GraphManager::VertexIterator vi, vi_end;
+   GraphManager& gm = GraphManager::getInstance();
 
-   for (BGSIZE i = 0; i < numEndogenouslyActiveNeurons_; i++) {
-      assert(endogenouslyActiveNeuronList_.at(i) < numVertices);
-      starterMap_[endogenouslyActiveNeuronList_.at(i)] = true;
+   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
+       assert(*vi < numVertices_);
+       if (gm[*vi].active) {
+           starterMap_[*vi] = true;
+           numEndogenouslyActiveNeurons_++;
+       }
    }
 }
 
 /// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
 void LayoutNeuro::loadParameters()
 {
-   // Get the file paths for the Neuron lists from the configuration file
-   string activeNListFilePath;
-   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/activeNListFileName/text()",
-                                                         activeNListFilePath)) {
-      throw runtime_error("In Layout::loadParameters() Endogenously "
-                          "active neuron list file path wasn't found and will not be initialized");
-   }
-
-   // Initialize Neuron Lists based on the data read from the xml files
-   if (!ParameterManager::getInstance().getIntVectorByXpath(activeNListFilePath, "A",
-                                                            endogenouslyActiveNeuronList_)) {
-      throw runtime_error("In Layout::loadParameters() "
-                          "Endogenously active neuron list file wasn't loaded correctly"
-                          "\n\tfile path: "
-                          + activeNListFilePath);
-   }
-   numEndogenouslyActiveNeurons_ = endogenouslyActiveNeuronList_.size();
-
-   // Get width, height and total number of vertices
-   ParameterManager::getInstance().getIntByXpath("//PoolSize/x/text()", width_);
-   ParameterManager::getInstance().getIntByXpath("//PoolSize/y/text()", height_);
    numVertices_ = GraphManager::getInstance().numVertices();
 }
 
