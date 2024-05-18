@@ -83,17 +83,27 @@ void Layout::setup()
 /// Prints out all parameters to logging file. Registered to OperationManager as Operation::printParameters
 void Layout::printParameters() const
 {
+   GraphManager::VertexIterator vi, vi_end;
+   GraphManager& gm = GraphManager::getInstance();
    stringstream output;
    output << "\nLAYOUT PARAMETERS" << endl;
    output << "\tEndogenously active neuron positions: ";
-   for (BGSIZE i = 0; i < numEndogenouslyActiveNeurons_; i++) {
-      output << endogenouslyActiveNeuronList_[i] << " ";
+
+   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
+       assert(*vi < numVertices_);
+       if (gm[*vi].active) {
+           output << *vi << " ";
+       }
    }
    output << endl;
 
    output << "\tInhibitory neuron positions: ";
-   for (BGSIZE i = 0; i < inhibitoryNeuronLayout_.size(); i++) {
-      output << inhibitoryNeuronLayout_[i] << " ";
+
+   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
+       assert(*vi < numVertices_);
+       if (gm[*vi].type == "INH") {
+           output << *vi << " ";
+       }
    }
    output << endl;
 
