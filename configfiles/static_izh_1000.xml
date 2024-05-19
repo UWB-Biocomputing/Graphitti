@@ -101,7 +101,7 @@
             </StaticConnectionsWeight>
         </ConnectionsParams>
 
-        <LayoutParams class="FixedLayout" name="LayoutParams">
+        <LayoutParams class="LayoutNeuron" name="LayoutParams">
             <LayoutFiles name="LayoutFiles">
                 <activeNListFileName name="activeNListFileName" type="InputFile"/>
                 <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/inhNList__1000.xml</inhNListFileName>
