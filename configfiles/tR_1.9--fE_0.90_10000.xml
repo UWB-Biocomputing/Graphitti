@@ -70,7 +70,7 @@
      </GrowthParams>
 </ConnectionsParams>
 
-        <LayoutParams class="FixedLayout" name="LayoutParams">
+        <LayoutParams class="LayoutNeuro" name="LayoutParams">
     <LayoutFiles name="LayoutFiles">
         <probedNListFileName name="prbNListFileName" type="InputFile"/>
     </LayoutFiles>
