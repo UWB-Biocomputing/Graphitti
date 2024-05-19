@@ -134,7 +134,7 @@
         </inhWeight>
     </ConnectionsParams>
 
-    <LayoutParams class="FixedLayout" name="LayoutParams">
+    <LayoutParams class="LayoutNeuro" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">
         <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList100x100-0.1.xml</activeNListFileName>
         <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList100x100-0.1.xml</inhNListFileName>
