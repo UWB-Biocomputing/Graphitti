@@ -2,12 +2,6 @@
 <BGSimParams>
     <SimInfoParams name="SimInfoParams">
       <graphmlFile name="graphmlFile">../configfiles/graphs/test-tiny.graphml</graphmlFile>
-      <PoolSize name="PoolSize">
-            <x name="x">2</x>
-            <y name="y">2</y>
-            <z name="z">1</z>
-        </PoolSize>
-        
         <SimParams name="SimParams">
             <epochDuration name="epochDuration">1.0</epochDuration>
             <numEpochs name="numEpochs">1</numEpochs>
@@ -105,8 +99,6 @@
 
         <LayoutParams class="LayoutNeuro" name="LayoutParams">
             <LayoutFiles name="LayoutFiles">
-                <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList2x2.xml
-                </activeNListFileName>
             </LayoutFiles>
         </LayoutParams>
         
