@@ -97,7 +97,7 @@
             </GrowthParams>
         </ConnectionsParams>
 
-        <LayoutParams class="FixedLayout" name="LayoutParams">
+        <LayoutParams class="LayoutNeuro" name="LayoutParams">
             <LayoutFiles name="LayoutFiles">
             </LayoutFiles>
         </LayoutParams>
