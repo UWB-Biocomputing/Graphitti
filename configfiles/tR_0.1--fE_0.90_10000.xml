@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <BGSimParams>
    <SimInfoParams name="SimInfoParams">
-      <PoolSize name="PoolSize">
-         <x name="x">100</x>
-         <y name="y">100</y>
-         <z name="z">1</z>
-      </PoolSize>
+      <graphmlFile name="graphmlFile">../configfiles/graphs/tR_0.1--fE_0.90_10000.graphml</graphmlFile>
       <SimParams name="SimParams">
          <epochDuration name="epochDuration">100.0</epochDuration>
          <numEpochs name="numEpochs">600</numEpochs>
@@ -76,8 +72,6 @@
 
         <LayoutParams class="LayoutNeuro" name="LayoutParams">
     <LayoutFiles name="LayoutFiles">
-        <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/activeNList_0.10_10000.xml</activeNListFileName>
-        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/inhNList_0.90_10000.xml</inhNListFileName>
         <probedNListFileName name="prbNListFileName" type="InputFile"/>
     </LayoutFiles>
 </LayoutParams>
