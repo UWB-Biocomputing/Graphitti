@@ -24,9 +24,6 @@ void Layout911::registerGraphProperties()
    GraphManager &gm = GraphManager::getInstance();
    gm.registerProperty("objectID", &VertexProperty::objectID);
    gm.registerProperty("name", &VertexProperty::name);
-   gm.registerProperty("type", &VertexProperty::type);
-   gm.registerProperty("y", &VertexProperty::y);
-   gm.registerProperty("x", &VertexProperty::x);
    gm.registerProperty("servers", &VertexProperty::servers);
    gm.registerProperty("trunks", &VertexProperty::trunks);
    gm.registerProperty("segments", &VertexProperty::segments);
