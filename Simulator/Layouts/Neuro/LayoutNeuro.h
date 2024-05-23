@@ -73,14 +73,20 @@ public:
 private:
    /// initialize the location maps (xloc and yloc).
    void initVerticesLocs();
+
+   // TODO: Remove these variables and their serialization
+   bool gridLayout_;
+   int width_;
+   int height_;
 };
 
 CEREAL_REGISTER_TYPE(LayoutNeuro);
 
 ///  Cereal serialization method
-// Not needed as gridLayout_, width_, and height_ are removed
-/*template <class Archive> void LayoutNeuro::serialize(Archive &archive)
+// TODO: Remove this serialization since gridLayout_, width_, and height_ are
+// no longer needed.
+template <class Archive> void LayoutNeuro::serialize(Archive &archive)
 {
    archive(cereal::base_class<Layout>(this), cereal::make_nvp("gridLayout_", gridLayout_),
            cereal::make_nvp("width_", width_), cereal::make_nvp("height_", height_));
-}*/
+}
