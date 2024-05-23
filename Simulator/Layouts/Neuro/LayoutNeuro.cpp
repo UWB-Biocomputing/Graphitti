@@ -14,7 +14,7 @@
 #include "Util.h"
 
 // TODO: I don't think that either of the constructor or destructor is needed here
-LayoutNeuro::LayoutNeuro() : gridLayout_(true), Layout()
+LayoutNeuro::LayoutNeuro() : Layout()
 {
 }
 
@@ -166,7 +166,7 @@ void LayoutNeuro::initVerticesLocs()
 
 // Note: This code was previously used for debugging, but it is now dead code left behind
 // and it is never executed.
-void LayoutNeuro::printLayout()
+/*void LayoutNeuro::printLayout()
 {
    ConnGrowth &pConnGrowth
       = dynamic_cast<ConnGrowth &>(Simulator::getInstance().getModel().getConnections());
@@ -211,5 +211,5 @@ void LayoutNeuro::printLayout()
 
       ss << endl;
       cout << ss.str();
-   }
+   }*/
 }
