@@ -73,20 +73,14 @@ public:
 private:
    /// initialize the location maps (xloc and yloc).
    void initVerticesLocs();
-
-   bool gridLayout_;   /// True if grid layout.
-
-   int width_;   /// Width of the layout (assumes square)
-
-   int height_;   /// Height of the layout
 };
 
 CEREAL_REGISTER_TYPE(LayoutNeuro);
 
 ///  Cereal serialization method
-template <class Archive> void LayoutNeuro::serialize(Archive &archive)
+// Not needed as gridLayout_, width_, and height_ are removed
+/*template <class Archive> void LayoutNeuro::serialize(Archive &archive)
 {
-   // TODO: Change width_ and height_ to numVerticies_
    archive(cereal::base_class<Layout>(this), cereal::make_nvp("gridLayout_", gridLayout_),
            cereal::make_nvp("width_", width_), cereal::make_nvp("height_", height_));
-}
+}*/
