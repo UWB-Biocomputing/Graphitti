@@ -2,7 +2,7 @@
  * @file Model.cpp
  *
  * @ingroup Simulator/Core
- * 
+ *
  * @brief Implementation of Model for the graph-based networks.
  *
  * The network is composed of 3 superimposed 2-d arrays: vertices, edges, and
@@ -10,7 +10,7 @@
  *
  * Edges in the edge map are located at the coordinates of the vertex
  * from which they receive output.  Each edge stores a pointer into a
- * summation point. 
+ * summation point.
  */
 
 #include "Model.h"
@@ -25,7 +25,7 @@ Model::Model()
 {
    // Get a copy of the console logger to use in the case of errors
    log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
-   
+
    // Reference variable used to get class type from ParameterManager.
    string type;
 
