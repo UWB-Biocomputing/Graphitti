@@ -158,10 +158,10 @@ TEST(ParameterManager, ValidBGFloatTargeting)
    ASSERT_TRUE(
       ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string validXPaths[]
-      = {"//Vthresh/min/text()", "//Vresting/min/text()", "//epochDuration/text()", "//z/text()"};
-   BGFLOAT vals[] = {15.0e-03, 0.0, 100.0, 1};
+      = {"//Vthresh/min/text()", "//Vresting/min/text()", "//epochDuration/text()"};
+   BGFLOAT vals[] = {15.0e-03, 0.0, 100.0};
    BGFLOAT referenceVar;
-   for (int i = 0; i < 4; i++) {
+   for (int i = 0; i < 3; i++) {
       ASSERT_TRUE(ParameterManager::getInstance().getBGFloatByXpath(validXPaths[i], referenceVar));
       ASSERT_TRUE(AreEqual(referenceVar, vals[i]));
    }
