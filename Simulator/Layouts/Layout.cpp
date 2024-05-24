@@ -11,26 +11,16 @@
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "ParseParamError.h"
-#include "RecordableBase.h"
 #include "Simulator.h"
 #include "Util.h"
 
 /// Constructor
 Layout::Layout() : numEndogenouslyActiveNeurons_(0)
 {
-   // Get a copy of the console logger to use in the case of errors
-   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
-   
    // Create Vertices/Neurons class using type definition in configuration file
    string type;
    ParameterManager::getInstance().getStringByXpath("//VerticesParams/@class", type);
    vertices_ = Factory<AllVertices>::getInstance().createType(type);
-
-   // If the factory returns an error (nullptr), exit
-   if (!vertices_) {
-      LOG4CPLUS_INFO(consoleLogger, "INVALID CLASS: " + type);
-      exit(EXIT_FAILURE);
-   }
 
    // Register loadParameters function as a loadParameters operation in the Operation Manager
    function<void()> loadParametersFunc = std::bind(&Layout::loadParameters, this);
@@ -81,19 +71,6 @@ void Layout::setup()
    // more allocation of internal memory
    starterMap_.assign(numVertices_, false);
    vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
-
-   // Register variable: vertex locations if need
-   // Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   // string baseName = "Location";
-   // string xLocation = "x_" + baseName;
-   // string yLocation = "y_" + baseName;
-   // recorder.registerVariable(xLocation, xloc_, Recorder::UpdatedType::CONSTANT);
-   // recorder.registerVariable(yLocation, yloc_, Recorder::UpdatedType::CONSTANT);
-
-   // test purpose
-   // cout << "xloc_: " << &xloc_ << endl;
-   // RecordableBase& location = xloc_;
-   // cout << "location: " << &location << endl;
 }
 
 
