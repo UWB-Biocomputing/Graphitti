@@ -75,11 +75,14 @@ TEST(ParameterManager, ValidIntTargeting)
    ASSERT_TRUE(
       ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string valid_xpath[] = {"//maxFiringRate/text()",
+                           "//PoolSize/x/text()",
+                           "//PoolSize/y/text()",
+                           "//PoolSize/z/text()",
                            "//RNGConfig/NoiseRNGSeed/text()",
                            "//numEpochs/text()"};
-   int result[] = {200, 1, 500};
+   int result[] = {200, 30, 30, 1, 1, 500};
    int referenceVar;
-   for (int i = 0; i < 3; i++) {
+   for (int i = 0; i < 6; i++) {
       ASSERT_TRUE(ParameterManager::getInstance().getIntByXpath(valid_xpath[i], referenceVar));
       ASSERT_EQ(referenceVar, result[i]);
    }
@@ -107,10 +110,10 @@ TEST(ParameterManager, ValidFloatTargeting)
    ASSERT_TRUE(
       ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string validXPaths[]
-      = {"//Vthresh/min/text()", "//Vresting/min/text()", "//epochDuration/text()"};
-   float vals[] = {15.0e-03f, 0.0f, 100.0f};
+      = {"//Vthresh/min/text()", "//Vresting/min/text()", "//epochDuration/text()", "//z/text()"};
+   float vals[] = {15.0e-03f, 0.0f, 100.0f, 1};
    float referenceVar;
-   for (int i = 0; i < 3; i++) {
+   for (int i = 0; i < 4; i++) {
       ASSERT_TRUE(ParameterManager::getInstance().getFloatByXpath(validXPaths[i], referenceVar));
       ASSERT_TRUE(AreEqual(referenceVar, vals[i]));
    }
@@ -132,10 +135,10 @@ TEST(ParameterManager, ValidDoubleTargeting)
    ASSERT_TRUE(
       ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string validXPaths[]
-      = {"//Vthresh/min/text()", "//Vresting/min/text()", "//epochDuration/text()"};
-   double vals[] = {15.0e-03, 0.0, 100.0};
+      = {"//Vthresh/min/text()", "//Vresting/min/text()", "//epochDuration/text()", "//z/text()"};
+   double vals[] = {15.0e-03, 0.0, 100.0, 1};
    double referenceVar;
-   for (int i = 0; i < 3; i++) {
+   for (int i = 0; i < 4; i++) {
       ASSERT_TRUE(ParameterManager::getInstance().getDoubleByXpath(validXPaths[i], referenceVar));
       ASSERT_TRUE(AreEqual(referenceVar, vals[i]));
    }
@@ -159,10 +162,10 @@ TEST(ParameterManager, ValidBGFloatTargeting)
    ASSERT_TRUE(
       ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string validXPaths[]
-      = {"//Vthresh/min/text()", "//Vresting/min/text()", "//epochDuration/text()"};
-   BGFLOAT vals[] = {15.0e-03, 0.0, 100.0};
+      = {"//Vthresh/min/text()", "//Vresting/min/text()", "//epochDuration/text()", "//z/text()"};
+   BGFLOAT vals[] = {15.0e-03, 0.0, 100.0, 1};
    BGFLOAT referenceVar;
-   for (int i = 0; i < 3; i++) {
+   for (int i = 0; i < 4; i++) {
       ASSERT_TRUE(ParameterManager::getInstance().getBGFloatByXpath(validXPaths[i], referenceVar));
       ASSERT_TRUE(AreEqual(referenceVar, vals[i]));
    }
@@ -186,11 +189,14 @@ TEST(ParameterManager, ValidLongTargeting)
    ASSERT_TRUE(
       ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
    string valid_xpath[] = {"//maxFiringRate/text()",
+                           "//PoolSize/x/text()",
+                           "//PoolSize/y/text()",
+                           "//PoolSize/z/text()",
                            "//RNGConfig/NoiseRNGSeed/text()",
                            "//numEpochs/text()"};
-   long result[] = {200, 1, 500};
+   long result[] = {200, 30, 30, 1, 1, 500};
    long referenceVar;
-   for (int i = 0; i < 3; i++) {
+   for (int i = 0; i < 6; i++) {
       ASSERT_TRUE(ParameterManager::getInstance().getLongByXpath(valid_xpath[i], referenceVar));
       EXPECT_EQ(referenceVar, result[i]);
    }
@@ -210,6 +216,18 @@ TEST(ParameterManager, InvalidLongTargeting)
    long referenceVar;
    for (int i = 0; i < 7; i++) {
       ASSERT_FALSE(ParameterManager::getInstance().getLongByXpath(invalid_xpath[i], referenceVar));
+   }
+}
+
+TEST(ParameterManager, ValidIntVectorTargeting)
+{
+   vector<int> referenceVar;
+   ASSERT_TRUE(ParameterManager::getInstance().getIntVectorByXpath(
+      "../configfiles/NList/ActiveNList10x10-0.1.xml", "A", referenceVar));
+
+   vector<int> result {7, 11, 14, 37, 41, 44, 67, 71, 74, 97};
+   for (int i = 0; i < 10; i++) {
+      EXPECT_EQ(referenceVar[i], result[i]);
    }
 }
 
