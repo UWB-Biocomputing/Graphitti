@@ -25,6 +25,7 @@ TEST(GraphManager, ReadGraphReturnsTrue)
 {
    GraphManager &graphManager = GraphManager::getInstance();
    graphManager.setFilePath(graphFile);
+
    graphManager.registerProperty("objectID", &VertexProperty::objectID);
    graphManager.registerProperty("name", &VertexProperty::name);
    graphManager.registerProperty("type", &VertexProperty::type);
@@ -33,6 +34,7 @@ TEST(GraphManager, ReadGraphReturnsTrue)
    graphManager.registerProperty("servers", &VertexProperty::servers);
    graphManager.registerProperty("trunks", &VertexProperty::trunks);
    graphManager.registerProperty("segments", &VertexProperty::segments);
+
    ASSERT_TRUE(graphManager.readGraph());
 }
 
