@@ -8,9 +8,9 @@
 
 #include "Layout.h"
 #include "Factory.h"
+#include "GraphManager.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
-#include "GraphManager.h"
 #include "ParseParamError.h"
 #include "Simulator.h"
 #include "Util.h"
@@ -57,11 +57,10 @@ void Layout::registerGraphProperties()
 {
    // TODO: This will be implemented when all models use graphML files to load the
    // initial graph
-    GraphManager& gm = GraphManager::getInstance();
-    gm.registerProperty("y", &VertexProperty::y);
-    gm.registerProperty("x", &VertexProperty::x);
-    gm.registerProperty("type", &VertexProperty::type);
-    
+   GraphManager &gm = GraphManager::getInstance();
+   gm.registerProperty("y", &VertexProperty::y);
+   gm.registerProperty("x", &VertexProperty::x);
+   gm.registerProperty("type", &VertexProperty::type);
 }
 
 /// Setup the internal structure of the class.
@@ -84,26 +83,26 @@ void Layout::setup()
 void Layout::printParameters() const
 {
    GraphManager::VertexIterator vi, vi_end;
-   GraphManager& gm = GraphManager::getInstance();
+   GraphManager &gm = GraphManager::getInstance();
    stringstream output;
    output << "\nLAYOUT PARAMETERS" << endl;
    output << "\tEndogenously active neuron positions: ";
 
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
-       assert(*vi < numVertices_);
-       if (gm[*vi].active) {
-           output << *vi << " ";
-       }
+      assert(*vi < numVertices_);
+      if (gm[*vi].active) {
+         output << *vi << " ";
+      }
    }
    output << endl;
 
    output << "\tInhibitory neuron positions: ";
 
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
-       assert(*vi < numVertices_);
-       if (gm[*vi].type == "INH") {
-           output << *vi << " ";
-       }
+      assert(*vi < numVertices_);
+      if (gm[*vi].type == "INH") {
+         output << *vi << " ";
+      }
    }
    output << endl;
 
