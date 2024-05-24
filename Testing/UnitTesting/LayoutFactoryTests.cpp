@@ -9,8 +9,8 @@
  * we are requesting.
  */
 
-#include "LayoutNeuro.h"
 #include "Layout911.h"
+#include "LayoutNeuro.h"
 #include "Utils/Factory.h"
 #include "gtest/gtest.h"
 
