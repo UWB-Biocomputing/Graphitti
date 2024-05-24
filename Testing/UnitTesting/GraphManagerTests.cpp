@@ -1,10 +1,10 @@
 /**
-* @file GraphManagerTests.cpp
-*
-* @brief This file contains unit tests for the GraphManager class
-*
-* @ingroup Testing/UnitTesting
-*/
+ * @file GraphManagerTests.cpp
+ *
+ * @brief This file contains unit tests for the GraphManager class
+ *
+ * @ingroup Testing/UnitTesting
+ */
 
 #include "GraphManager.h"
 #include "gtest/gtest.h"
