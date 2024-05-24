@@ -1,8 +1,8 @@
 /**
 * @file GraphManagerTests.cpp
-* 
+*
 * @brief This file contains unit tests for the GraphManager class
-* 
+*
 * @ingroup Testing/UnitTesting
 */
 
