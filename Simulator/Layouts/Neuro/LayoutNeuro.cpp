@@ -35,24 +35,9 @@ void LayoutNeuro::registerGraphProperties()
 
 void LayoutNeuro::setup()
 {
-   // Base class allocates memory for: xLoc_, yLoc, dist2_, and dist_
-   // so we call its method first
+   // Base class allocates memory and computes: xLoc_, yLoc, dist2_, and dist_
+   // so we just call that.
    Layout::setup();
-
-   // computing distance between each pair of vertices given each vertex's xy location
-   for (int n = 0; n < numVertices_ - 1; n++) {
-      for (int n2 = n + 1; n2 < numVertices_; n2++) {
-         // distance^2 between two points in point-slope form
-         dist2_(n, n2) = (xloc_[n] - xloc_[n2]) * (xloc_[n] - xloc_[n2])
-                         + (yloc_[n] - yloc_[n2]) * (yloc_[n] - yloc_[n2]);
-
-         // both points are equidistant from each other
-         dist2_(n2, n) = dist2_(n, n2);
-      }
-   }
-
-   // take the square root to get actual distance (Pythagoras was right!)
-   dist_ = sqrt(dist2_);
 }
 
 ///  Prints out all parameters to logging file.
