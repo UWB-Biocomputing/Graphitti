@@ -64,7 +64,7 @@ TEST(GraphManager, GetEdgesAndSource)
 
    list<GraphManager::EdgeDescriptor> ei_list;
    for (boost::tie(ei, ei_end) = gm.edges(); ei != ei_end; ++ei) {
-       ei_list.push_back(*ei);
+      ei_list.push_back(*ei);
    }
    auto start = ei_list.begin();
    ASSERT_EQ(gm.source(*start), 0);
@@ -77,7 +77,7 @@ TEST(GraphManager, GetEdgesAndTarget)
 
    list<GraphManager::EdgeDescriptor> ei_list;
    for (boost::tie(ei, ei_end) = gm.edges(); ei != ei_end; ++ei) {
-       ei_list.push_back(*ei);
+      ei_list.push_back(*ei);
    }
    auto start = ei_list.begin();
    ASSERT_EQ(gm.target(*start), 1);
