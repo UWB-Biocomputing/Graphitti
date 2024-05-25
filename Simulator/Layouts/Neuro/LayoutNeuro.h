@@ -71,9 +71,6 @@ public:
    template <class Archive> void serialize(Archive &archive);
 
 private:
-   /// initialize the location maps (xloc and yloc).
-   void initVerticesLocs();
-
    // TODO: Remove these variables and their serialization
    bool gridLayout_;
    int width_;
