@@ -37,26 +37,10 @@ void Layout911::loadParameters()
 }
 
 // Setup the internal structure of the class.
-void Layout911::setup()
+void Layout911::setup() : Layout::setup()
 {
    // Base class allocates memory for: xLoc_, yLoc, dist2_, and dist_
    // so we call its method first
-   Layout::setup();
-
-   // Now we cache the between each pair of vertices distances^2 into a matrix
-   for (int n = 0; n < numVertices_ - 1; n++) {
-      for (int n2 = n + 1; n2 < numVertices_; n2++) {
-         // distance^2 between two points in point-slope form
-         dist2_(n, n2) = (xloc_[n] - xloc_[n2]) * (xloc_[n] - xloc_[n2])
-                         + (yloc_[n] - yloc_[n2]) * (yloc_[n] - yloc_[n2]);
-
-         // both points are equidistant from each other
-         dist2_(n2, n) = dist2_(n, n2);
-      }
-   }
-
-   // Finally take the square root to get the distances
-   dist_ = sqrt(dist2_);
 }
 
 // Prints out all parameters to logging file.
