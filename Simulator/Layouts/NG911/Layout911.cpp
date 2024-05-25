@@ -37,10 +37,11 @@ void Layout911::loadParameters()
 }
 
 // Setup the internal structure of the class.
-void Layout911::setup() : Layout::setup()
+void Layout911::setup()
 {
-   // Base class allocates memory for: xLoc_, yLoc, dist2_, and dist_
-   // so we call its method first
+   // Base class allocates memory and computes: xLoc_, yLoc, dist2_, and dist_
+   // so we just call that.
+   Layout::setup();
 }
 
 // Prints out all parameters to logging file.
