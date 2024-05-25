@@ -39,9 +39,6 @@ void LayoutNeuro::setup()
    // so we call its method first
    Layout::setup();
 
-   // Initialize neuron locations memory, grab global info
-   initVerticesLocs();
-
    // computing distance between each pair of vertices given each vertex's xy location
    for (int n = 0; n < numVertices_ - 1; n++) {
       for (int n2 = n + 1; n2 < numVertices_; n2++) {
@@ -146,21 +143,6 @@ edgeType LayoutNeuro::edgType(int srcVertex, int destVertex)
       return EE;
 
    return ETYPE_UNDEF;
-}
-
-/// Initialize the location maps (xloc and yloc).
-void LayoutNeuro::initVerticesLocs()
-{
-   // Loop over all vertices and set their x and y locations
-   GraphManager::VertexIterator vi, vi_end;
-
-   GraphManager &gm = GraphManager::getInstance();
-
-   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
-      assert(*vi < numVertices_);
-      xloc_[*vi] = gm[*vi].x;
-      yloc_[*vi] = gm[*vi].y;
-   }
 }
 
 // Note: This code was previously used for debugging, but it is now dead code left behind
