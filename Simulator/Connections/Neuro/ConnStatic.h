@@ -27,6 +27,7 @@
 
 #include "Connections.h"
 #include "Global.h"
+#include "RecordableVector.h"
 #include "Simulator.h"
 #include <iostream>
 #include <vector>
@@ -70,7 +71,8 @@ public:
    /// Get array of vertex weights
    const vector<BGFLOAT> &getWCurrentEpoch() const
    {
-      return WCurrentEpoch_;
+      // return WCurrentEpoch_;
+      return WCurrentEpoch_.getVector();
    }
 
    /// Get all edge source vertex indices
@@ -96,7 +98,9 @@ private:
    vector<int> destVertexIndexCurrentEpoch_;
 
    /// The weight (scaling factor, strength, maximal amplitude) of each vertex for the current epoch.
-   vector<BGFLOAT> WCurrentEpoch_;
+   // vector<BGFLOAT> changes to RecordableVector for recording purpose
+   RecordableVector<BGFLOAT> WCurrentEpoch_;
+   // vector<BGFLOAT> WCurrentEpoch_;
 
    /// radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
    int radiiSize_;

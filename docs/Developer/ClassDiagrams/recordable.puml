@@ -3,20 +3,32 @@
 /' Objects '/
 
 abstract class RecordableBase {
-	+{abstract} getNumEventsInEpoch() const : int
+	-basicDataType_ : string
+	+{abstract} getNumElements() const : int
 	+{abstract} startNewEpoch() : void
-	+{abstract} getElement(int index) const : variant<uint64_t, double, char>
+	+{abstract} getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
 	+{abstract} setDataType() : void
 	+{abstract} getDataType() : string
 }
-class Recordable<T>{
-	-eventTimeSteps_ : vector<T>
-	-basicDataType_ : string
-	+getNumEventsInEpoch() const : int
+class RecordableConstant<T>{
+	-element : T
+	+getNumElements() const : int
 	+startNewEpoch() : void
-	+getElement(int index) const : variant<uint64_t, double, char>
+	+getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
 	+setDataType() : void
 	+getDataType() : string
+}
+
+class RecordableVector<T>{
+	-dataSeries__ : vector<T>
+	+getNumElement() const : int
+	+startNewEpoch() : void
+	+getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
+	+setDataType() : void
+	+getDataType() : string
+	/'vector methods'/
+	+resize(int maxEvents) : void
+	+operator[](int i) : &T
 }
 
 class EventBuffer<uint64_t> {
@@ -24,29 +36,28 @@ class EventBuffer<uint64_t> {
 	-epochStart_ : int
 	+setDataType() : void
 	+getDataType() : string
-	+getElement(int index) const : variant<uint64_t, double, char>
-	+getNumEventsInEpoch() : int {query}
-	-numEventsInEpoch_ : int
-	-queueEnd_ : int
-	-queueFront_ : int
+	+getNumElements() const : int
+	+getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
+	+getNumElementsInEpoch() : int {query}
+	-numElementsInEpoch_ : int
+	-bufferEnd_ : int
+	-bufferFront_ : int
 	+getPastEvent(int offset) : uint64_t {query}
 	+operator[](int i) : uint64_t {query}
-	/'-eventTimeSteps_ : vector<uint64_t>'/
+	/'-dataSeries_ : vector<uint64_t>'/
 	+clear() : void
 	+insertEvent(uint64_t timeStep) : void
 	+resize(int maxEvents) : void
 	+startNewEpoch() : void
 }
 
-class ConstantBuffer<int>
+
 
 
 /' Inheritance relationships '/
 
-.RecordableBase <|-- .Recordable
+.RecordableBase <|-- .RecordableVector
 
+.RecordableVector <|-- .EventBuffer
 
-.Recordable <|-- .EventBuffer
-
-
-.Recordable <|-- .ConstantBuffer
+.RecordableBase <|-- .RecordableConstant

@@ -12,6 +12,7 @@
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "ParseParamError.h"
+#include "RecordableBase.h"
 #include "Simulator.h"
 #include "Util.h"
 
@@ -85,6 +86,19 @@ void Layout::setup()
       xloc_[*vi] = gm[*vi].x;
       yloc_[*vi] = gm[*vi].y;
    }
+
+   // Register variable: vertex locations if need
+   // Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   // string baseName = "Location";
+   // string xLocation = "x_" + baseName;
+   // string yLocation = "y_" + baseName;
+   // recorder.registerVariable(xLocation, xloc_, Recorder::UpdatedType::CONSTANT);
+   // recorder.registerVariable(yLocation, yloc_, Recorder::UpdatedType::CONSTANT);
+
+   // test purpose
+   // cout << "xloc_: " << &xloc_ << endl;
+   // RecordableBase& location = xloc_;
+   // cout << "location: " << &location << endl;
 }
 
 
