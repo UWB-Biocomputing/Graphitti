@@ -43,15 +43,6 @@ void Layout911::setup()
    // so we call its method first
    Layout::setup();
 
-   // Loop over all vertices and set their x and y locations
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
-   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
-      assert(*vi < numVertices_);
-      xloc_[*vi] = gm[*vi].x;
-      yloc_[*vi] = gm[*vi].y;
-   }
-
    // Now we cache the between each pair of vertices distances^2 into a matrix
    for (int n = 0; n < numVertices_ - 1; n++) {
       for (int n2 = n + 1; n2 < numVertices_; n2++) {
