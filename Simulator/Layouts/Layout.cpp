@@ -76,6 +76,15 @@ void Layout::setup()
    // more allocation of internal memory
    starterMap_.assign(numVertices_, false);
    vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
+
+   // Loop over all vertices and set their x and y locations
+   GraphManager::VertexIterator vi, vi_end;
+   GraphManager &gm = GraphManager::getInstance();
+   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
+      assert(*vi < numVertices_);
+      xloc_[*vi] = gm[*vi].x;
+      yloc_[*vi] = gm[*vi].y;
+   }
 }
 
 
