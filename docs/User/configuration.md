@@ -16,10 +16,10 @@ Ready? Okay.
 
 There are two config files needed to run a simulation on Graphitti:
 
-1. The input (or "stimulation") file - **SimInfoParams**
-2. The model configuration - **ModelParams**
+1. The input (or "stimulation") and model configuration file - **test.xml**
+2. The initialization parameters - **test.graphml**
 
-First, we are going to go through using a built-in model. This is by far the easiest route - if you have a quick idea you want to play with that uses a grid of **Izhikivich** or **LIF** neurons, go for it! As long as you only want to use excitatory and inhibitory neurons, this is the way to go. I'll show you how to specify the parameters you want and then run the simulation.
+First, we are going to go through using a built-in model. This is by far the easiest route - if you have a quick idea you want to play with that uses a setup of **Izhikivich** or **LIF** neurons, go for it! As long as you only want to use excitatory and inhibitory neurons, this is the way to go. I'll show you how to specify the parameters you want and then run the simulation.
 
 If on the other hand, you have a more complicated model in mind - such as using different types of neurotransmitters, then you will have to get your hands dirty writing some C++ code. Don't worry though, I'll walk you through that too.
 
@@ -34,17 +34,18 @@ Take a look at **test-tiny.xml** file that is under  `Graphitti/configfiles`  di
 <!-- Parameter file for the DCT growth modeling -->
 <!-- This file holds constants, not state information -->
 <SimInfoParams>
-   <!-- size of pool of neurons [x y z] -->
-   <PoolSize x="2" y="2" z="1"/>
+   <!-- GraphML file that contains neuron location (x, y), type (excitatory or inhibitory),
+       and activness (endogenously active or not) -->
+   <graphmlFile name="graphmlFile">../configfiles/graphs/test-tiny.graphml</graphmlFile>
    <!-- Simulation Parameters -->
    <SimParams epochDuration="1.0" numEpochs="1"/>
    <!-- Simulation Configuration Parameters -->
    <SimConfig maxFiringRate="200" maxEdgesPerVertex="200"/>
    <!-- Random seed - set to zero to use /dev/random -->
-   <!-- TODO: implement support for this -->
-   <Seed value="1"/>
-   <!-- State output file name, this name will be overwritten if -o option is specified -->
-   <OutputParams stateOutputFileName="test-tiny-out.xml"/>
+  <RNGConfig name="RNGConfig">
+      <InitRNGSeed name="InitRNGSeed">1</InitRNGSeed>
+      <NoiseRNGSeed class="Norm" name="NoiseRNGSeed">1</NoiseRNGSeed>
+   </RNGConfig>
 </SimInfoParams>
 
 <ModelParams>
@@ -67,40 +68,50 @@ Take a look at **test-tiny.xml** file that is under  `Graphitti/configfiles`  di
       <starter_vreset min="13.0e-3" max="13.0e-3"/>
    </VerticesParams>
    
-   <EdgesParams class="AllDSSynapses">
-   </EdgesParams>
+   <EdgesParams class="AllDSSynapses" name="EdgesParams">
+            <tau name="tau">
+                <ii name="ii">6e-3</ii>
+                <ie name="ie">6e-3</ie>
+                <ei name="ei">3e-3</ei>
+                <ee name="ee">3e-3</ee>
+            </tau>
+            <delay name="delay">
+                <ii name="ii">0.8e-3</ii>
+                <ie name="ie">0.8e-3</ie>
+                <ei name="ei">0.8e-3</ei>
+                <ee name="ee">1.5e-3</ee>
+            </delay>
+            <U name="U">
+                <ii name="ii">0.32</ii>
+                <ie name="ie">0.25</ie>
+                <ei name="ei">0.05</ei>
+                <ee name="ee">0.5</ee>
+            </U>
+            <D name="D">
+                <ii name="ii">0.144</ii>
+                <ie name="ie">0.7</ie>
+                <ei name="ei">0.125</ei>
+                <ee name="ee">1.1</ee>
+            </D>
+            <F name="F">
+                <ii name="ii">0.06</ii>
+                <ie name="ie">0.02</ie>
+                <ei name="ei">1.2</ei>
+                <ee name="ee">0.05</ee>
+            </F>
+        </EdgesParams>
    
    <ConnectionsParams class="ConnGrowth">
       <!-- Growth parameters -->
       <GrowthParams epsilon="0.60" beta="0.10" rho="0.0001" targetRate="1.9" minRadius="0.1" startRadius="0.4"/>
    </ConnectionsParams>
 
-   <LayoutParams class="FixedLayout">
-
-      <!-- If FixedLayout is present, the grid will be laid out according to the positions below, rather than randomly based on LsmParams -->
-      <FixedLayoutParams>
-         <!-- 0-indexed positions of endogenously active neurons in the list -->
-         <A>0</A>
-
-         <!-- 0-indexed positions of inhibitory neurons in the list -->
-         <I>1</I>
-        
-         <!--
-         original 10x10 (not updated for 30x30)
-            9 . . . . . . . A . .
-            8 . . . . . . . . . .
-            7 . A . . A . . . . .
-            6 . . . . . . I A . .
-            5 . . . . . . . . . .
-            4 . A . . A . . . . .
-            3 . . . I . . . A . .
-            2 . . . . . . . . . .
-            1 . A . . A . . . . .
-            0 . . . . . . . A . .
-              0 1 2 3 4 5 6 7 8 9
-         -->
-      </FixedLayoutParams>
+   <!-- This may be empty, but it is needed to create the classes/objects for the simulator -->
+   <LayoutParams class="LayoutNeuro" name="LayoutParams">
+            <LayoutFiles name="LayoutFiles">
+            </LayoutFiles>
    </LayoutParams>
+
 </ModelParams>
 ```
 
@@ -108,7 +119,7 @@ This is a typical example of a model configuration file that you must give to us
 
 You can see that this file is a pretty standard XML file. It has tags that specify what each section is, like `<SimInfoParams>` and end tags that end said section, like `</SimInfoParams>`. Within each section, you can have sub-sections ad infinitum (in fact, XML files follow a tree structure, with a root node which branches into a top level of nodes, which branch into their own nodes, which branch, etc.)
 
-Notice the `<!-- Parameter file for the DCT growth modeling -->` Anything that follows that pattern (i.e., `<!-- blah blah blah -->` is a comment, and won't have any effect on anything. It is good practice to comment stuff in helpful, far-seeing ways.
+Notice the `<!-- Parameter file for the DCT growth modeling -->` Anything that follows that pattern (i.e., `<!-- blah blah blah -->`) is a comment, and won't have any effect on anything. It is good practice to comment stuff in helpful, far-seeing ways.
 
 On to the actual parameters.
 
@@ -116,7 +127,7 @@ On to the actual parameters.
 
 The first set of parameters that Graphitti expects out of this file is stored in the SimInfoParams node. These parameters are required no matter what your model is. Here you must specify the:
 
-* **PoolSize**: the three dimensional grid of neurons' parameters - expects an x (how many neurons are on the x axis), a y (how many neurons are on the y axis) and a z (not currently used). These three numbers together form a network of neurons that is x by y by z neurons (though in reality, the z dimension is not currently implemented).
+* **graphmlFile**: GraphML file that holds data for the initial structure of the simulation, such as the number of neurons, their xy locations, type, and activeness. We will go into further detail later on.
 * **SimParams**: the time configurations - expects a epochDuration, which is how much time the simulation is simulating (in seconds) and a numEpochs, which is how many times to run the simulation (each simulation cycle picks up where the previous one left off)
 * **SimConfig**: the maxFiringRate of a neuron and the maxEdgesPerVertex (the limitations of the simulation). Note the rate is in Hz.
 * **Seed**: a random seed for the random generator.
@@ -141,8 +152,10 @@ The next set of parameters is the ModelParams. These parameters are specific to 
 * **ConnectionsParams**: Another node to populate. Its parameters are as follows:
     + **GrowthParams**: The growth parameters for this simulation. The mathematics behind epsilon, beta, and rho can be found [TODO]. The targetRate is TODO, and the minRadius, and startRadius should be self-explanatory.
 
-* **Layout Params**: Another node to populate. Its only parameter is:
-    + **FixedLayoutParams**: As you can see from the helpful comment, the simulator will use this if specified, rather than randomly placing the neurons.
+* **Layout Params**: Currently empty as the GraphML file holds this information. This is still kept in the file so that the simulator can create the class.
+
+### GraphML File
+
 
 -------------
 [<< Go back to User Documentation page](index.md)
