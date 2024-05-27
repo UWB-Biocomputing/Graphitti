@@ -69,37 +69,7 @@ Take a look at **test-tiny.xml** file that is under  `Graphitti/configfiles`  di
    </VerticesParams>
    
    <EdgesParams class="AllDSSynapses" name="EdgesParams">
-            <tau name="tau">
-                <ii name="ii">6e-3</ii>
-                <ie name="ie">6e-3</ie>
-                <ei name="ei">3e-3</ei>
-                <ee name="ee">3e-3</ee>
-            </tau>
-            <delay name="delay">
-                <ii name="ii">0.8e-3</ii>
-                <ie name="ie">0.8e-3</ie>
-                <ei name="ei">0.8e-3</ei>
-                <ee name="ee">1.5e-3</ee>
-            </delay>
-            <U name="U">
-                <ii name="ii">0.32</ii>
-                <ie name="ie">0.25</ie>
-                <ei name="ei">0.05</ei>
-                <ee name="ee">0.5</ee>
-            </U>
-            <D name="D">
-                <ii name="ii">0.144</ii>
-                <ie name="ie">0.7</ie>
-                <ei name="ei">0.125</ei>
-                <ee name="ee">1.1</ee>
-            </D>
-            <F name="F">
-                <ii name="ii">0.06</ii>
-                <ie name="ie">0.02</ie>
-                <ei name="ei">1.2</ei>
-                <ee name="ee">0.05</ee>
-            </F>
-        </EdgesParams>
+   </EdgesParams>
    
    <ConnectionsParams class="ConnGrowth">
       <!-- Growth parameters -->
