@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <BGSimParams>
    <SimInfoParams name="SimInfoParams">
-      <graphmlFile name="graphmlFile">../configfiles/graphs/half_tR_1.0--fE_0.90_10000.graphml</graphmlFile>
+      <graphmlFile name="graphmlFile">../configfiles/graphs/tR_0.1--fE_0.90_10000.graphml</graphmlFile>
       <SimParams name="SimParams">
          <epochDuration name="epochDuration">100.0</epochDuration>
          <numEpochs name="numEpochs">300</numEpochs>
