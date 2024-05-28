@@ -167,7 +167,11 @@ As you can see, there are four neurons, or nodes, and each neuron has four keys 
 
 ## 1.4.3 911
 
-Recently we added an additional domian to our simulator, 911 communication networks. The configuration for these simulations are the same as the neural network simulations in the sense that they both have an xml configuration file and a GraphML file (the parameters are different, obviously). We discussed the neural simulation parameters above, so in this section we will go over the 911 specific details.
+Recently we added an additional domian to our simulator, 911 communication networks. The configuration for these simulations are the same as the neural network simulations in the sense that they both have an xml configuration file and a GraphML file (the parameters are different, obviously). We discussed the neural simulation parameters above, so in this section we will go over the 911 specific details. We start off with the xml configuration file, then the GraphML file. The 911 simulation has a third configuration file, which are the inputs ("calls"), so we go over that last.
+
+### Main configuration
+
+
 
 -------------
 [<< Go back to User Documentation page](index.md)
