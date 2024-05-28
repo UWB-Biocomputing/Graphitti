@@ -131,9 +131,9 @@ You might have noticed that within **SimInfoParams** there is a parameter that p
 <?xml version='1.0' encoding='utf-8'?>
 <graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
   <key id="type" for="node" attr.name="type" attr.type="string" />
-  <key id="active" for="node" attr.name="active" attr.type="long" />
-  <key id="y" for="node" attr.name="y" attr.type="long" />
-  <key id="x" for="node" attr.name="x" attr.type="long" />
+  <key id="active" for="node" attr.name="active" attr.type="boolean" />
+  <key id="y" for="node" attr.name="y" attr.type="double" />
+  <key id="x" for="node" attr.name="x" attr.type="double" />
   <graph edgedefault="directed">
     <node id="0">
       <data key="x">0</data>
@@ -164,6 +164,10 @@ You might have noticed that within **SimInfoParams** there is a parameter that p
 ```
 
 As you can see, there are four neurons, or nodes, and each neuron has four keys that store its x,y location, neuron type, and whether it is endogenously active or not. There are no edges because the GraphML file is used in initialization, and the initial state of the simulation has no connections between the neurons.
+
+## 1.4.3 911
+
+Recently we added an additional domian to our simulator, 911 communication networks. The configuration for these simulations are the same as the neural network simulations in the sense that they both have an xml configuration file and a GraphML file (the parameters are different, obviously). We discussed the neural simulation parameters above, so in this section we will go over the 911 specific details.
 
 -------------
 [<< Go back to User Documentation page](index.md)
