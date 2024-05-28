@@ -124,8 +124,46 @@ The next set of parameters is the ModelParams. These parameters are specific to 
 
 * **Layout Params**: Currently empty as the GraphML file holds this information. This is still kept in the file so that the simulator can create the class.
 
-### GraphML File
+### GraphML
+You might have noticed that within **SimInfoParams** there is a parameter that points to another file. This is the GraphML file, a type of XML file that is used to describe graphs through node, edge, and graph descriptors. For more information about how GraphML works, [see this page](http://graphml.graphdrawing.org/primer/graphml-primer.html). In the context of the Neural simulation, the GraphML file holds details about neuron contents. Lets look at the GraphML file mentioned in the xml, which is also within the `Graphitti/configfiles/graphs` directory:
 
+```xml
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="type" for="node" attr.name="type" attr.type="string" />
+  <key id="active" for="node" attr.name="active" attr.type="long" />
+  <key id="y" for="node" attr.name="y" attr.type="long" />
+  <key id="x" for="node" attr.name="x" attr.type="long" />
+  <graph edgedefault="directed">
+    <node id="0">
+      <data key="x">0</data>
+      <data key="y">0</data>
+      <data key="active">1</data>
+      <data key="type">EXC</data>
+    </node>
+    <node id="1">
+      <data key="x">1</data>
+      <data key="y">0</data>
+      <data key="active">0</data>
+      <data key="type">INH</data>
+    </node>
+    <node id="2">
+      <data key="x">0</data>
+      <data key="y">1</data>
+      <data key="active">0</data>
+      <data key="type">EXC</data>
+    </node>
+    <node id="3">
+      <data key="x">1</data>
+      <data key="y">1</data>
+      <data key="active">0</data>
+      <data key="type">EXC</data>
+    </node>
+  </graph>
+</graphml>
+```
+
+As you can see, there are four neurons, or nodes, and each neuron has four keys that store its x,y location, neuron type, and whether it is endogenously active or not. There are no edges because the GraphML file is used in initialization, and the initial state of the simulation has no connections between the neurons.
 
 -------------
 [<< Go back to User Documentation page](index.md)
