@@ -169,9 +169,232 @@ As you can see, there are four neurons, or nodes, and each neuron has four keys 
 
 Recently we added an additional domian to our simulator, 911 communication networks. The configuration for these simulations are the same as the neural network simulations in the sense that they both have an xml configuration file and a GraphML file (the parameters are different, obviously). We discussed the neural simulation parameters above, so in this section we will go over the 911 specific details. We start off with the xml configuration file, then the GraphML file. The 911 simulation has a third configuration file, which are the inputs ("calls"), so we go over that last.
 
-### Main configuration
+### Main Configuration
 
+There are some elements of the main configuration file that is similar to the Nerual simulation, such as **SimParams**, **SimConfig**, and **RNGConfig**. The only vertice parameters for the 911 simulation are RedialPropability, which determines how likely a call will happen again, and the average driving speed of a response unit. An example configuration file is shown below.
 
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<BGSimParams>
+  <SimInfoParams name="SimInfoParams">
+    <SimParams name="SimParams">
+      <!-- 2 epochs of 15 minutes each -->
+      <epochDuration name="epochDuration">900</epochDuration>
+      <numEpochs name="numEpochs">2</numEpochs>
+      <!-- Every simulation step is 1 second -->
+      <deltaT name="Simulation Step Duration">1</deltaT>
+    </SimParams>
+    <SimConfig name="SimConfig">
+      <maxFiringRate name="maxFiringRate">100</maxFiringRate>
+      <!-- max edges in a vertex for test-small-911.graphml is 20 -->
+      <maxEdgesPerVertex name="maxEdgesPerVertex">25</maxEdgesPerVertex>
+    </SimConfig>
+    <RNGConfig name="RNGConfig">
+      <InitRNGSeed name="InitRNGSeed">1</InitRNGSeed>
+      <NoiseRNGSeed class="Norm" name="NoiseRNGSeed">1</NoiseRNGSeed>
+    </RNGConfig>
+  </SimInfoParams>
+
+  <ModelParams>
+    <VerticesParams class="All911Vertices" name="VerticesParams">
+      <RedialP name="RedialProbability">0.85</RedialP>
+      <!-- Response unit driving speed in mph -->
+      <AvgDrivingSpeed name="AverageDrivingSpeed">30.0</AvgDrivingSpeed>
+    </VerticesParams>
+
+    <EdgesParams class="All911Edges" name="EdgesParams">
+    </EdgesParams>
+
+    <ConnectionsParams class="Connections911" name="ConnectionsParams">
+      <graphmlFile name="graphmlFile">../configfiles/graphs/test-small-911.graphml</graphmlFile>
+      <psapsToErase name="psapsToErase">0</psapsToErase>
+      <respsToErase name="respsToErase">0</respsToErase>
+    </ConnectionsParams>
+
+    <InputParams name="InputParams">
+      <inputFile name="inputFile">../configfiles/inputs/test-small-911-calls.xml</inputFile>
+    </InputParams>
+
+    <LayoutParams class="Layout911" name="LayoutParams">
+    </LayoutParams>
+    
+    <RecorderParams class="Xml911Recorder" name="RecorderParams">
+      <RecorderFiles name="RecorderFiles">
+        <resultFileName name="resultFileName">Output/Results/test-small-911-out.xml</resultFileName>
+      </RecorderFiles>
+    </RecorderParams>
+  </ModelParams>
+</BGSimParams>
+```
+
+### GraphML
+
+The 911 GraphML file holds more data than the neural GraphML file. Both hold (x, y) location and node type, but the 911 graph also holds data such as ID, node name, number of servers, etc. The 911 GraphML also has edges, since these are defined from the start. The corresponding GraphML file for the configuration file above is:
+
+```xml
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+<key id="segments" for="node" attr.name="segments" attr.type="string"/>
+<key id="trunks" for="node" attr.name="trunks" attr.type="int"/>
+<key id="servers" for="node" attr.name="servers" attr.type="int"/>
+<key id="x" for="node" attr.name="x" attr.type="double"/>
+<key id="y" for="node" attr.name="y" attr.type="double"/>
+<key id="type" for="node" attr.name="type" attr.type="string"/>
+<key id="name" for="node" attr.name="name" attr.type="string"/>
+<key id="objectID" for="node" attr.name="objectID" attr.type="string"/>
+<graph edgedefault="directed">
+<node id="0">
+  <data key="objectID">PSAP120@kingcounty.gov</data>
+  <data key="name">SEATTLE PD</data>
+  <data key="type">PSAP</data>
+  <data key="y">47.604309311762556</data>
+  <data key="x">-122.32903357244062</data>
+  <data key="servers">4</data>
+  <data key="trunks">5</data>
+</node>
+<node id="1">
+  <data key="objectID">EMS218@kingcounty.gov</data>
+  <data key="name">Seattle FD - Greenwood</data>
+  <data key="type">EMS</data>
+  <data key="y">47.68208718681924</data>
+  <data key="x">-122.35498346016459</data>
+  <data key="servers">5</data>
+  <data key="trunks">10</data>
+</node>
+<node id="2">
+  <data key="objectID">EMS246@kingcounty.gov</data>
+  <data key="name">Seattle FD - West Seattle</data>
+  <data key="type">EMS</data>
+  <data key="y">47.560795490890584</data>
+  <data key="x">-122.37975380249847</data>
+  <data key="servers">3</data>
+  <data key="trunks">10</data>
+</node>
+<node id="3">
+  <data key="objectID">EMS262@kingcounty.gov</data>
+  <data key="name">Seattle FD - Laurelhurst</data>
+  <data key="type">EMS</data>
+  <data key="y">47.66863807147154</data>
+  <data key="x">-122.28446260064581</data>
+  <data key="servers">3</data>
+  <data key="trunks">10</data>
+</node>
+<node id="4">
+  <data key="objectID">Law104@kingcounty.gov</data>
+  <data key="name">Seattle PD - North Precinct</data>
+  <data key="type">LAW</data>
+  <data key="y">47.70290245181223</data>
+  <data key="x">-122.33454218929678</data>
+  <data key="servers">3</data>
+  <data key="trunks">10</data>
+</node>
+<node id="5">
+  <data key="objectID">Law108@kingcounty.gov</data>
+  <data key="name">Seattle PD - West Precinct</data>
+  <data key="type">LAW</data>
+  <data key="y">47.61615143092955</data>
+  <data key="x">-122.33703384492664</data>
+  <data key="servers">3</data>
+  <data key="trunks">10</data>
+</node>
+<node id="6">
+  <data key="objectID">Law109@kingcounty.gov</data>
+  <data key="name">Seattle PD - East Precinct</data>
+  <data key="type">LAW</data>
+  <data key="y">47.615172448270286</data>
+  <data key="x">-122.31711730383483</data>
+  <data key="servers">3</data>
+  <data key="trunks">5</data>
+</node>
+<node id="7">
+  <data key="objectID">Law119@kingcounty.gov</data>
+  <data key="name">Seattle PD - Southwest Precinct</data>
+  <data key="type">LAW</data>
+  <data key="y">47.53601093999662</data>
+  <data key="x">-122.3619473720436</data>
+  <data key="servers">4</data>
+  <data key="trunks">10</data>
+</node>
+<node id="8">
+  <data key="objectID">FIRE169@kingcounty.gov</data>
+  <data key="name">Seattle FD - Beacon Hill</data>
+  <data key="type">FIRE</data>
+  <data key="y">47.571870954923924</data>
+  <data key="x">-122.30856118715617</data>
+  <data key="servers">5</data>
+  <data key="trunks">10</data>
+</node>
+<node id="9">
+  <data key="objectID">FIRE218@kingcounty.gov</data>
+  <data key="name">Seattle FD - Greenwood</data>
+  <data key="type">FIRE</data>
+  <data key="y">47.68208718681924</data>
+  <data key="x">-122.35498346016459</data>
+  <data key="servers">3</data>
+  <data key="trunks">10</data>
+</node>
+<node id="10">
+  <data key="objectID">PSAP120@kingcounty.gov_CR</data>
+  <data key="name">SEATTLE PD Caller region</data>
+  <data key="type">CALR</data>
+  <data key="segments">[(-122.40326150882478, 47.59789698297564), (-122.37990573296226, 47.62125275883817)], [(-122.47332883641236, 47.55118543125059), (-122.44997306054984, 47.574541207113114)], ...</data>
+</node>
+<edge source="0" target="1"/>
+<edge source="0" target="2"/>
+<edge source="0" target="3"/>
+<edge source="0" target="4"/>
+<edge source="0" target="5"/>
+<edge source="0" target="6"/>
+<edge source="0" target="7"/>
+<edge source="0" target="8"/>
+<edge source="0" target="9"/>
+<edge source="0" target="10"/>
+<edge source="1" target="0"/>
+<edge source="2" target="0"/>
+<edge source="3" target="0"/>
+<edge source="4" target="0"/>
+<edge source="5" target="0"/>
+<edge source="6" target="0"/>
+<edge source="7" target="0"/>
+<edge source="8" target="0"/>
+<edge source="9" target="0"/>
+<edge source="10" target="0"/>
+</graph></graphml>
+```
+
+### Inputs
+
+The final file used in 911 configuration is the input file, which is a simple xml file that describes when an input (call) is introduced into the simulation, the location of the input, the type of call, its duration, etc. The file is shown below.
+
+```xml
+<?xml version='1.0' encoding='UTF-8'?>
+<simulator_inputs>
+  <data description="SPD_calls_sept2020" clock_tick_size="1" clock_tick_unit="sec">
+    <vertex id="10" name="SEATTLE PD Caller region">
+      <event time="34" duration="230" x="-122.37482094435583" y="47.64839548276973" type="EMS" vertex_id="10" patience="61" on_site_time="3142"/>
+      <event time="37" duration="169" x="-122.4036487601129" y="47.55833788618255" type="Fire" vertex_id="10" patience="3" on_site_time="2032"/>
+      <event time="42" duration="327" x="-122.38534886929502" y="47.515324716436346" type="Fire" vertex_id="10" patience="8" on_site_time="782"/>
+      <event time="47" duration="165" x="-122.27568876640863" y="47.67904232558008" type="EMS" vertex_id="10" patience="9" on_site_time="627"/>
+      <event time="73" duration="262" x="-122.36701587581143" y="47.51932484119922" type="EMS" vertex_id="10" patience="50" on_site_time="1890"/>
+      <event time="130" duration="242" x="-122.32733110385414" y="47.65708716342721" type="Law" vertex_id="10" patience="150" on_site_time="1105"/>
+      <event time="324" duration="209" x="-122.42842939223208" y="47.59298276266974" type="Fire" vertex_id="10" patience="5" on_site_time="603"/>
+      <event time="388" duration="45" x="-122.37746466732693" y="47.711139673719046" type="Law" vertex_id="10" patience="66" on_site_time="182"/>
+      <event time="401" duration="110" x="-122.45031189490172" y="47.704142615892934" type="EMS" vertex_id="10" patience="45" on_site_time="53"/>
+      <event time="435" duration="54" x="-122.38497853357659" y="47.58597687545961" type="EMS" vertex_id="10" patience="139" on_site_time="770"/>
+      <event time="490" duration="259" x="-122.33562990965024" y="47.64880090244549" type="Law" vertex_id="10" patience="77" on_site_time="2142"/>
+      <event time="541" duration="350" x="-122.37503877878919" y="47.5274803656548" type="Law" vertex_id="10" patience="86" on_site_time="510"/>
+      <event time="671" duration="389" x="-122.43846764661109" y="47.594429736848575" type="EMS" vertex_id="10" patience="60" on_site_time="637"/>
+      <event time="900" duration="81" x="-122.29491177376885" y="47.60886297661482" type="Fire" vertex_id="10" patience="57" on_site_time="90"/>
+      <event time="960" duration="53" x="-122.29648552268789" y="47.61776320232366" type="Law" vertex_id="10" patience="113" on_site_time="824"/>
+      <event time="1009" duration="638" x="-122.35596534749182" y="47.6773160725642" type="Law" vertex_id="10" patience="38" on_site_time="81"/>
+      <event time="1106" duration="230" x="-122.44721574783861" y="47.60935496208115" type="EMS" vertex_id="10" patience="16" on_site_time="3378"/>
+      <event time="1110" duration="64" x="-122.31713723952292" y="47.54535782341512" type="Fire" vertex_id="10" patience="8" on_site_time="139"/>
+      <event time="1143" duration="241" x="-122.39378273701678" y="47.48431540296322" type="Fire" vertex_id="10" patience="47" on_site_time="633"/>
+      <event time="1155" duration="180" x="-122.43233093624063" y="47.682969737450534" type="Fire" vertex_id="10" patience="20" on_site_time="967"/>  
+    </vertex>
+  </data>
+</simulator_inputs>
+```
 
 -------------
 [<< Go back to User Documentation page](index.md)
