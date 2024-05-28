@@ -45,6 +45,7 @@ Students, use this [quickstart guide](StudentSetup.md) to help setup, use, and d
 - [Performing Analyses](PerformingAnalyses.md)
 - [Neuro Implementation](NeuroImplementation.md)
 - [GraphManager and InputManager classes](GraphAndEventInputs.md)
+- [Configuration](../User/configuration.md)
 
 
 ---------
