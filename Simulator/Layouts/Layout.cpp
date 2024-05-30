@@ -91,7 +91,7 @@ void Layout::setup()
       yloc_[*vi] = gm[*vi].y;
    }
 
-   // Now we calculate the distance and distance^2 
+   // Now we calculate the distance and distance^2
    // between each pair of vertices
    for (int n = 0; n < numVertices_ - 1; n++) {
       for (int n2 = n + 1; n2 < numVertices_; n2++) {
