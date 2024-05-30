@@ -96,11 +96,6 @@ public:
 protected:
    unique_ptr<AllVertices> vertices_;
 
-   // TODO: Remove these two vectors, since GraphML now stores these values
-   vector<int> endogenouslyActiveNeuronList_;   ///< Endogenously active neurons list.
-
-   vector<int> inhibitoryNeuronLayout_;   ///< Inhibitory neurons list.
-
    log4cplus::Logger fileLogger_;
 
    int numVertices_;   ///< Total number of vertices in the graph.
