@@ -118,7 +118,7 @@ edgeType LayoutNeuro::edgType(int srcVertex, int destVertex)
 
 // Note: This code was previously used for debugging, but it is now dead code left behind
 // and it is never executed.
-void LayoutNeuro::printLayout()
+/*void LayoutNeuro::printLayout()
 {
    ConnGrowth &pConnGrowth
       = dynamic_cast<ConnGrowth &>(Simulator::getInstance().getModel().getConnections());
@@ -164,4 +164,4 @@ void LayoutNeuro::printLayout()
       ss << endl;
       cout << ss.str();
    }
-}
+}*/
