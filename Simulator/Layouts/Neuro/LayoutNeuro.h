@@ -41,7 +41,7 @@ public:
 
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.
-   virtual void setup() override;
+   virtual void setup();
 
    ///  Creates a vertex type map.
    ///
@@ -56,7 +56,7 @@ public:
    virtual void initStarterMap() override;
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters() override;
+   virtual void loadParameters();
 
    /// Returns the type of synapse at the given coordinates
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
