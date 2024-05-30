@@ -46,7 +46,7 @@ public:
    virtual void registerGraphProperties();
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters() = 0;
+   virtual void loadParameters();
 
    /// Prints out all parameters to logging file. Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
