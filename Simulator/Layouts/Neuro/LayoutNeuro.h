@@ -39,10 +39,6 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
-   /// Setup the internal structure of the class.
-   /// Allocate memories to store all layout state.
-   virtual void setup();
-
    ///  Creates a vertex type map.
    ///
    ///  @param  numVertices number of the vertices to have in the type map.
@@ -54,9 +50,6 @@ public:
    ///
    ///  @param  numVertices number of vertices to have in the map.
    virtual void initStarterMap() override;
-
-   /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters();
 
    /// Returns the type of synapse at the given coordinates
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
