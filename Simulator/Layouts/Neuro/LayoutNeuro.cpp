@@ -22,7 +22,6 @@ LayoutNeuro::LayoutNeuro() : gridLayout_(true), Layout()
 void LayoutNeuro::registerGraphProperties()
 {
    // The base class registers properties that are common to all vertices
-   // TODO: Currently not fully implemented because Neuro model is still integrating graphML
    Layout::registerGraphProperties();
 
    // We must register the graph properties before loading it.
@@ -31,13 +30,6 @@ void LayoutNeuro::registerGraphProperties()
    // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
    GraphManager &gm = GraphManager::getInstance();
    gm.registerProperty("active", &VertexProperty::active);
-}
-
-void LayoutNeuro::setup()
-{
-   // Base class allocates memory and computes: xLoc_, yLoc, dist2_, and dist_
-   // so we just call that.
-   Layout::setup();
 }
 
 ///  Prints out all parameters to logging file.
@@ -52,7 +44,7 @@ void LayoutNeuro::printParameters() const
 ///  Creates a randomly ordered distribution with the specified numbers of vertex types.
 ///
 ///  @param  numVertices number of the vertices to have in the type map.
-void LayoutNeuro::generateVertexTypeMap(int numVertices)
+void LayoutNeuro::generateVertexTypeMap()
 {
    LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing vertex type map" << endl);
 
@@ -75,11 +67,11 @@ void LayoutNeuro::generateVertexTypeMap(int numVertices)
       }
    }
 
-   numExcititoryNeurons = numVertices - numInhibitoryNeurons;
+   numExcititoryNeurons = numVertices_ - numInhibitoryNeurons;
 
    LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP"
                                    << endl
-                                   << "\tTotal vertices: " << numVertices << endl
+                                   << "\tTotal vertices: " << numVertices_ << endl
                                    << "\tInhibitory Neurons: " << numInhibitoryNeurons << endl
                                    << "\tExcitatory Neurons: " << numExcititoryNeurons << endl);
    LOG4CPLUS_INFO(fileLogger_, "Finished initializing vertex type map");
@@ -88,9 +80,9 @@ void LayoutNeuro::generateVertexTypeMap(int numVertices)
 ///  Populates the starter map.
 ///  Selects \e numStarter excitory neurons and converts them into starter neurons.
 ///  @param  numVertices number of vertices to have in the map.
-void LayoutNeuro::initStarterMap(int numVertices)
+void LayoutNeuro::initStarterMap()
 {
-   Layout::initStarterMap(numVertices);
+   Layout::initStarterMap();
 
    // Set Neuron Activity from GraphML File
    GraphManager::VertexIterator vi, vi_end;
@@ -103,12 +95,6 @@ void LayoutNeuro::initStarterMap(int numVertices)
          numEndogenouslyActiveNeurons_++;
       }
    }
-}
-
-/// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
-void LayoutNeuro::loadParameters()
-{
-   numVertices_ = GraphManager::getInstance().numVertices();
 }
 
 ///  Returns the type of synapse at the given coordinates
