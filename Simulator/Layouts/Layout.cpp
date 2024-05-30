@@ -154,7 +154,7 @@ void Layout::printParameters() const
 
 /// Creates a vertex type map.
 /// @param  numVertices number of the vertices to have in the type map.
-void Layout::generateVertexTypeMap(int numVertices)
+void Layout::generateVertexTypeMap()
 {
    DEBUG(cout << "\nInitializing vertex type map: VTYPE_UNDEF" << endl;);
    vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
@@ -163,7 +163,7 @@ void Layout::generateVertexTypeMap(int numVertices)
 /// Populates the starter map.
 /// Selects num_endogenously_active_neurons excitory neurons and converts them into starter neurons.
 /// @param  numVertices number of vertices to have in the map.
-void Layout::initStarterMap(int numVertices)
+void Layout::initStarterMap()
 {
    starterMap_.assign(numVertices, false);
 }
