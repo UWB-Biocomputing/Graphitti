@@ -54,6 +54,12 @@ int Layout::getNumVertices() const
    return numVertices_;
 }
 
+/// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
+void Layout::loadParameters()
+{
+   numVertices_ = GraphManager::getInstance().numVertices();
+}
+
 void Layout::registerGraphProperties()
 {
    // TODO: This will be implemented when all models use graphML files to load the
@@ -87,7 +93,8 @@ void Layout::setup()
       yloc_[*vi] = gm[*vi].y;
    }
 
-   // Now we cache the between each pair of vertices distances^2 into a matrix
+   // Now we calculate the distance and distance^2 
+   // between each pair of vertices
    for (int n = 0; n < numVertices_ - 1; n++) {
       for (int n2 = n + 1; n2 < numVertices_; n2++) {
          // distance^2 between two points in point-slope form
