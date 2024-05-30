@@ -20,7 +20,7 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
 {
    // Get a copy of the console logger to use in the case of errors
    log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
-   
+
    // Create Vertices/Neurons class using type definition in configuration file
    string type;
    ParameterManager::getInstance().getStringByXpath("//VerticesParams/@class", type);
