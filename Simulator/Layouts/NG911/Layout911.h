@@ -54,11 +54,11 @@ public:
 
    /// Loads Layout911 member variables.
    /// Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters() override;
+   virtual void loadParameters();
 
    /// Setup the internal structure of the class.
    /// Allocate memories to store all layout state.
-   virtual void setup() override;
+   virtual void setup();
 
    /// Prints out all parameters to logging file.
    /// Registered to OperationManager as Operation::printParameters
