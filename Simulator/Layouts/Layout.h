@@ -53,13 +53,13 @@ public:
 
    /// Creates a neurons type map.
    /// @param  numVertices number of the neurons to have in the type map.
-   virtual void generateVertexTypeMap(int numVertices);
+   virtual void generateVertexTypeMap();
 
    /// Populates the starter map.
    /// Selects num_endogenously_active_neurons excitory neurons
    /// and converts them into starter neurons.
    /// @param  numVertices number of vertices to have in the map.
-   virtual void initStarterMap(int numVertices);
+   virtual void initStarterMap();
 
    /// Returns the type of synapse at the given coordinates
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
