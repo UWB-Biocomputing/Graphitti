@@ -46,14 +46,14 @@ public:
    ///  Creates a vertex type map.
    ///
    ///  @param  numVertices number of the vertices to have in the type map.
-   virtual void generateVertexTypeMap(int numVertices) override;
+   virtual void generateVertexTypeMap() override;
 
    ///  Populates the starter map.
    ///  Selects num_endogenously_active_neurons excitory neurons
    ///  and converts them into starter vertices.
    ///
    ///  @param  numVertices number of vertices to have in the map.
-   virtual void initStarterMap(int numVertices) override;
+   virtual void initStarterMap() override;
 
    /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters() override;
