@@ -61,22 +61,16 @@ public:
    void printLayout();
 
    ///  Cereal serialization method
-   template <class Archive> void serialize(Archive &archive);
-
-private:
-   // TODO: Remove these variables and their serialization
-   bool gridLayout_;
-   int width_;
-   int height_;
+   //template <class Archive> void serialize(Archive &archive);
 };
 
-CEREAL_REGISTER_TYPE(LayoutNeuro);
+//CEREAL_REGISTER_TYPE(LayoutNeuro);
 
 ///  Cereal serialization method
 // TODO: Remove this serialization since gridLayout_, width_, and height_ are
 // no longer needed.
-template <class Archive> void LayoutNeuro::serialize(Archive &archive)
-{
-   archive(cereal::base_class<Layout>(this), cereal::make_nvp("gridLayout_", gridLayout_),
-           cereal::make_nvp("width_", width_), cereal::make_nvp("height_", height_));
-}
+//template <class Archive> void LayoutNeuro::serialize(Archive &archive)
+//{
+//   archive(cereal::base_class<Layout>(this), cereal::make_nvp("gridLayout_", gridLayout_),
+//           cereal::make_nvp("width_", width_), cereal::make_nvp("height_", height_));
+//}
