@@ -165,5 +165,5 @@ void Layout::generateVertexTypeMap()
 /// @param  numVertices number of vertices to have in the map.
 void Layout::initStarterMap()
 {
-   starterMap_.assign(numVertices, false);
+   starterMap_.assign(numVertices_, false);
 }
