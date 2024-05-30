@@ -62,8 +62,6 @@ void Layout::loadParameters()
 
 void Layout::registerGraphProperties()
 {
-   // TODO: This will be implemented when all models use graphML files to load the
-   // initial graph
    GraphManager &gm = GraphManager::getInstance();
    gm.registerProperty("y", &VertexProperty::y);
    gm.registerProperty("x", &VertexProperty::x);
