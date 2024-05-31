@@ -7,9 +7,8 @@
 # Credit to Jardi A.M. Jordan for initial code
 
 # IMPORTANT: Once you generate the GraphML file, you will need
-# to manually change the keys "attr.type" member to the data type you desire
-# For example for key 'x' you will need to change attr.type from "long" to "double"
-# and for key 'active' you will need to change attr.type from "long" to "boolean"
+# to manually change the keys "attr.type" member
+# for the key 'active'. You will need to change attr.type from "long" to "boolean"
 
 # It is currently unknown whether the networkx library has a way to change the data
 # type automatically, but from the research conducted this can't be done in this script
@@ -25,8 +24,8 @@ InhibitoryNList = [1] # Specify which nodes are inhibitory neurons
 
 G.add_nodes_from([i for i in range(height * height)])
 for id, node in G.nodes(data=True):
-        node['x'] = id % height
-        node['y'] = id // height
+        node['x'] = float(id % height)
+        node['y'] = float(id // height)
         if (id in ActiveNList):
             node['active'] = 1
         else:
