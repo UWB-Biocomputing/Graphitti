@@ -1,0 +1,41 @@
+@startuml redesignedRecorderFlow
+
+title Redesigned Recorder Sequence Diagram
+
+participant "SimulationComponent" as S
+participant "Recorder" as R
+participant "RecordableBase" as RB
+
+S -> R : registerVariable(varName, recordVar, variableType, ......)
+activate R
+RB -> R : getDataType(): string
+note left of R : add all received variables to the table
+
+loop Simulation Epoch
+   S -> RB : updateVariable()
+   activate RB
+   loop Variable Table Iteration
+      opt if variable is DYNAMIC
+         alt XmlRecorder
+            note right of R : Capture value and Accumulate data
+            RB -> R : getElement(index): variant<uint64_t, BGFLOAT, int, bool>
+            note left of RB : retrieve primitive data\nthat's encapsulated in a variant
+            R -> R : compileHistories()
+
+         else HDF5Recorder
+            note right of R : Capture data and Write data to HDF5 file
+            R -> R : compileHistories()
+         end
+      end
+   end
+end
+loop Variable Table Iteration
+   opt if variable is CONSTANT
+      RB -> R : getElement(index): variant<uint64_t, BGFLOAT, int, bool>
+      R -> R : captureData()
+   end
+   deactivate RB
+   R -> R : saveSimData()
+   note right of R : Extracting the value from the variant knowing its type\nOutput data 
+end
+@enduml

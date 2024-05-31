@@ -47,6 +47,39 @@ const VectorMatrix operator*(const VectorMatrix &v, const SparseMatrix &m);
 /// elements, thus facilitating efficient math operations. We can also use the hash table
 /// to provide constant time random access by row and column, like a full 2D array would provide.
 class SparseMatrix : public Matrix {
+   ///@{Interface for RecordableBase
+   // Implement virtual methods from RecordableBase
+   int getNumElements() const override
+   {
+      // Implement or throw exception
+      throw std::logic_error("SparseMatrix does not support getNumElements.");
+   }
+
+   void startNewEpoch() override
+   {
+      // Implement or throw exception
+      throw std::logic_error("SparseMatrix does not support startNewEpoch.");
+   }
+
+   variantTypes getElement(int index) const override
+   {
+      // Implement or throw exception
+      throw std::logic_error("SparseMatrix does not support getElement.");
+   }
+
+   void setDataType() override
+   {
+      // Implement or throw exception
+      throw std::logic_error("SparseMatrix does not support setDataType.");
+   }
+
+   const string &getDataType() const override
+   {
+      // Implement or throw exception
+      throw std::logic_error("SparseMatrix does not support getDataType.");
+   }
+   ///@}
+
    /// @struct Element
    /// @brief This structure is used to hold a non-zero element of a sparse matrix.
    struct Element {
@@ -257,12 +290,12 @@ public:
    virtual string toXML(string name = "") const;
 
    /******************************************
-	* @name Math Operations
+        * @name Math Operations
     * 
-	* Math operations. For efficiency's sake, these methods will be
-	* implemented as being "aware" of each other (i.e., using "friend"
-	* and including the other subclasses' headers).
-	******************************************/
+        * Math operations. For efficiency's sake, these methods will be
+        * implemented as being "aware" of each other (i.e., using "friend"
+        * and including the other subclasses' headers).
+        ******************************************/
    //@{
 
    /// Unary minus. Negate all elements of the SparseMatrix.
@@ -296,8 +329,8 @@ public:
 
 protected:
    /******************************************
-	* @name Internal Utilities
-	******************************************/
+        * @name Internal Utilities
+        ******************************************/
    //@{
 
    /// @brief Frees up all dynamically allocated storage

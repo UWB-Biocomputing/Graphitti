@@ -19,13 +19,15 @@
 
 #include "BGTypes.h"
 #include "MatrixExceptions.h"
+#include "RecordableBase.h"
 #include <string>
 //cereal
+#include <cereal/types/polymorphic.hpp>
 #include <cereal/types/string.hpp>
 
 using namespace std;
 
-class Matrix {
+class Matrix : public RecordableBase {
    friend class cereal::access;
 
 public:
@@ -89,10 +91,13 @@ protected:
 ///  @param obj the Matrix object to send to the output stream
 ostream &operator<<(ostream &os, const Matrix &obj);
 
+CEREAL_REGISTER_TYPE(Matrix);
+
 ///  Cereal serialization method
 template <class Archive> void Matrix::serialize(Archive &archive)
 {
-   archive(cereal::make_nvp("type", type), cereal::make_nvp("init", init),
-           cereal::make_nvp("rows", rows), cereal::make_nvp("columns", columns),
-           cereal::make_nvp("multiplier", multiplier), cereal::make_nvp("dimensions", dimensions));
+   archive(cereal::virtual_base_class<RecordableBase>(this), cereal::make_nvp("type", type),
+           cereal::make_nvp("init", init), cereal::make_nvp("rows", rows),
+           cereal::make_nvp("columns", columns), cereal::make_nvp("multiplier", multiplier),
+           cereal::make_nvp("dimensions", dimensions));
 }

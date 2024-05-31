@@ -233,8 +233,7 @@ void Hdf5Recorder::compileHistories(AllVertices &vertices)
                 && (iVertex == model.getLayout().probedNeuronList_[iProbe]));
 
       // iterate over each spike that neuron produced
-      for (int eventIterator = 0;
-           eventIterator < spNeurons.vertexEvents_[iVertex].getNumEventsInEpoch();
+      for (int eventIterator = 0; eventIterator < spNeurons.vertexEvents_[iVertex].getNumElements();
            eventIterator++) {
          // Single precision (float) gives you 23 bits of significand, 8 bits of exponent,
          // and 1 sign bit. Double precision (double) gives you 52 bits of significand,
@@ -487,15 +486,22 @@ void Hdf5Recorder::printParameters()
                                    << "\tResult file path: " << resultFileName_ << endl);
 }
 
-/// Register a single instance of a class derived from RecordableBase.
-/// It stores the address of the registered variable and the related information
-/// of this recorded variable
-void Hdf5Recorder::registerVariable(const string &varName, RecordableBase &recordVar)
+/// Receives a recorded variable entity from the variable owner class
+/// used when the return type from recordable variable is supported by Recorder
+/**
+* @brief Registers a single instance of a class derived from RecordableBase.
+* @param varName Name of the recorded variable.
+* @param recordVar Reference to the recorded variable.
+* @param variableType Type of the recorded variable.
+*/
+void Hdf5Recorder::registerVariable(const string &varName, RecordableBase &recordVar,
+                                    UpdatedType variableType)
 {
 }
 
-/// register a vector of instance of a class derived from RecordableBase.
-void Hdf5Recorder::registerVariable(const string &varName, vector<RecordableBase *> &recordVars)
+/// Register a vector of instance of a class derived from RecordableBase.
+void Hdf5Recorder::registerVariable(const string &varName, vector<RecordableBase *> &recordVars,
+                                    UpdatedType variableType)
 {
 }
 

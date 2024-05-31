@@ -58,10 +58,10 @@ void AllIFNeurons::allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDe
    }
    HANDLE_ERROR(cudaMemcpy(allVerticesDevice.spikeHistory_, pSpikeHistory,
                            count * sizeof(uint64_t *), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.queueFront_, count * sizeof(int)));
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.queueEnd_, count * sizeof(int)));
+   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.bufferFront_, count * sizeof(int)));
+   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.bufferEnd_, count * sizeof(int)));
    HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.epochStart_, count * sizeof(int)));
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.numEventsInEpoch_, count * sizeof(int)));
+   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.numElementsInEpoch_, count * sizeof(int)));
 }
 
 ///  Delete GPU memories.
