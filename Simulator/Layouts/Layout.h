@@ -107,12 +107,12 @@ CEREAL_CLASS_VERSION(Layout, 1);
 template <class Archive> void Layout::serialize(Archive &archive, std::uint32_t const version)
 {
    archive(cereal::make_nvp("xloc", xloc_), cereal::make_nvp("yloc", yloc_),
-      cereal::make_nvp("dist2", dist2_), cereal::make_nvp("dist", dist_),
-      cereal::make_nvp("probedNeuronList", probedNeuronList_),
-      cereal::make_nvp("vertexTypeMap", vertexTypeMap_),
-      cereal::make_nvp("starterMap", starterMap_),
-      cereal::make_nvp("numEndogenouslyActiveNeurons", numEndogenouslyActiveNeurons_),
-      cereal::make_nvp("numCallerVertices", numCallerVertices_),
-      cereal::make_nvp("vertices", vertices_),
-      cereal::make_nvp("numVertices", numVertices_));
+            cereal::make_nvp("dist2", dist2_), cereal::make_nvp("dist", dist_),
+            cereal::make_nvp("probedNeuronList", probedNeuronList_),
+            cereal::make_nvp("vertexTypeMap", vertexTypeMap_),
+            cereal::make_nvp("starterMap", starterMap_),
+            cereal::make_nvp("numEndogenouslyActiveNeurons", numEndogenouslyActiveNeurons_),
+            cereal::make_nvp("numCallerVertices", numCallerVertices_),
+            cereal::make_nvp("vertices", vertices_),
+            cereal::make_nvp("numVertices", numVertices_));
 }
