@@ -16,8 +16,6 @@
 #pragma once
 
 #include "Layout.h"
-// cereal
-#include <cereal/types/polymorphic.hpp>
 
 using namespace std;
 
@@ -40,15 +38,11 @@ public:
    virtual void printParameters() const override;
 
    ///  Creates a vertex type map.
-   ///
-   ///  @param  numVertices number of the vertices to have in the type map.
    virtual void generateVertexTypeMap() override;
 
    ///  Populates the starter map.
    ///  Selects num_endogenously_active_neurons excitory neurons
    ///  and converts them into starter vertices.
-   ///
-   ///  @param  numVertices number of vertices to have in the map.
    virtual void initStarterMap() override;
 
    /// Returns the type of synapse at the given coordinates
@@ -59,18 +53,4 @@ public:
 
    /// Prints the layout, used for debugging.
    void printLayout();
-
-   ///  Cereal serialization method
-   //template <class Archive> void serialize(Archive &archive);
 };
-
-//CEREAL_REGISTER_TYPE(LayoutNeuro);
-
-///  Cereal serialization method
-// TODO: Remove this serialization since gridLayout_, width_, and height_ are
-// no longer needed.
-//template <class Archive> void LayoutNeuro::serialize(Archive &archive)
-//{
-//   archive(cereal::base_class<Layout>(this), cereal::make_nvp("gridLayout_", gridLayout_),
-//           cereal::make_nvp("width_", width_), cereal::make_nvp("height_", height_));
-//}
