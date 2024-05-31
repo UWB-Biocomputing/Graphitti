@@ -14,7 +14,7 @@
 #include "Util.h"
 
 // TODO: I don't think that either of the constructor or destructor is needed here
-LayoutNeuro::LayoutNeuro() : gridLayout_(true), Layout()
+LayoutNeuro::LayoutNeuro() : Layout()
 {
 }
 
