@@ -360,6 +360,7 @@ add_executable(tests
         Testing/UnitTesting/RecorderFactoryTests.cpp
         Testing/UnitTesting/InputManagerTests.cpp
         Testing/UnitTesting/RNGFactoryTests.cpp
+	Testing/UnitTesting/GraphManagerTests.cpp
         Testing/Utils/ParameterManagerTests.cpp
         Testing/Utils/CircularBufferTests.cpp
         Testing/UnitTesting/XmlRecorderTests.cpp)

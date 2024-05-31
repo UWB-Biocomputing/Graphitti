@@ -23,12 +23,15 @@ bool GraphManager::readGraph()
    // Load graphml file into a BGL graph
    ifstream graph_file;
 
-   // string file_name;
-   string path = "//graphmlFile/text()";
-   if (!ParameterManager::getInstance().getStringByXpath(path, graphFilePath_)) {
-      cerr << "Could not find XML path: " << path << ".\n";
-      return false;
-   };
+   // If graphFilePath_ isn't already defined, get it from ParameterManager
+   if (graphFilePath_ == "") {
+      // string file_name;
+      string path = "//graphmlFile/text()";
+      if (!ParameterManager::getInstance().getStringByXpath(path, graphFilePath_)) {
+         cerr << "Could not find XML path: " << path << ".\n";
+         return false;
+      };
+   }
 
    graph_file.open(graphFilePath_.c_str());
    if (!graph_file.is_open()) {
