@@ -54,10 +54,14 @@ int Layout::getNumVertices() const
    return numVertices_;
 }
 
+/// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
+void Layout::loadParameters()
+{
+   numVertices_ = GraphManager::getInstance().numVertices();
+}
+
 void Layout::registerGraphProperties()
 {
-   // TODO: This will be implemented when all models use graphML files to load the
-   // initial graph
    GraphManager &gm = GraphManager::getInstance();
    gm.registerProperty("y", &VertexProperty::y);
    gm.registerProperty("x", &VertexProperty::x);
@@ -87,7 +91,8 @@ void Layout::setup()
       yloc_[*vi] = gm[*vi].y;
    }
 
-   // Now we cache the between each pair of vertices distances^2 into a matrix
+   // Now we calculate the distance and distance^2
+   // between each pair of vertices
    for (int n = 0; n < numVertices_ - 1; n++) {
       for (int n2 = n + 1; n2 < numVertices_; n2++) {
          // distance^2 between two points in point-slope form
@@ -149,7 +154,7 @@ void Layout::printParameters() const
 
 /// Creates a vertex type map.
 /// @param  numVertices number of the vertices to have in the type map.
-void Layout::generateVertexTypeMap(int numVertices)
+void Layout::generateVertexTypeMap()
 {
    DEBUG(cout << "\nInitializing vertex type map: VTYPE_UNDEF" << endl;);
    vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
@@ -158,7 +163,7 @@ void Layout::generateVertexTypeMap(int numVertices)
 /// Populates the starter map.
 /// Selects num_endogenously_active_neurons excitory neurons and converts them into starter neurons.
 /// @param  numVertices number of vertices to have in the map.
-void Layout::initStarterMap(int numVertices)
+void Layout::initStarterMap()
 {
-   starterMap_.assign(numVertices, false);
+   starterMap_.assign(numVertices_, false);
 }
