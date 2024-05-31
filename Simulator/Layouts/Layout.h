@@ -109,6 +109,5 @@ template <class Archive> void Layout::serialize(Archive &archive, std::uint32_t 
            cereal::make_nvp("starterMap", starterMap_),
            cereal::make_nvp("numEndogenouslyActiveNeurons", numEndogenouslyActiveNeurons_),
            cereal::make_nvp("numCallerVertices", numCallerVertices_),
-           cereal::make_nvp("vertices", vertices_),
-           cereal::make_nvp("numVertices", numVertices_));
+           cereal::make_nvp("vertices", vertices_), cereal::make_nvp("numVertices", numVertices_));
 }
