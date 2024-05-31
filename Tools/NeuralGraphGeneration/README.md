@@ -14,11 +14,11 @@ Note: You might have noticed that the `node[active]` attributed is set to either
 
 # Important Note Regarding `attr.type`
 
-When you create the file, you may see the keys you have created with a different data type than what you intended.
+When you create the file, you may see any boolean key you have created has a different data type than what you intended.
 
-![image](https://github.com/UWB-Biocomputing/Graphitti/assets/125625083/fa01c56d-c4b4-4674-9837-dd9ed9912e56)
+![image](https://github.com/UWB-Biocomputing/Graphitti/assets/125625083/16367b4f-7a0a-4642-bf7b-c139aabf0b9a)
 
 This could be a problem as there will be a data type mismatch, which will break the simulation. You will need to edit the GraphML file so that it the attribute data type is correct.
 
-![image](https://github.com/UWB-Biocomputing/Graphitti/assets/125625083/99a85c87-0cbe-4024-bf8a-d5cc4fbd0640)
+![image](https://github.com/UWB-Biocomputing/Graphitti/assets/125625083/ba6f866f-df1c-41a4-b29b-c2c910242b06)
 
