@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <BGSimParams>
   <SimInfoParams name="SimInfoParams">
+    <graphmlFile name="graphmlFile">../configfiles/graphs/test-small.graphml</graphmlFile>
     <PoolSize name="PoolSize">
       <x name="x">10</x>
       <y name="y">10</y>
@@ -101,7 +102,7 @@
       </GrowthParams>
     </ConnectionsParams>
 
-    <LayoutParams class="FixedLayout" name="LayoutParams">
+    <LayoutParams class="LayoutNeuro" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">
         <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList10x10-0.1.xml</activeNListFileName>
         <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList10x10-0.1.xml</inhNListFileName>

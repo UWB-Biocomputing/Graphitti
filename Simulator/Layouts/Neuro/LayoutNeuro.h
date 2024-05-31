@@ -1,16 +1,16 @@
 /**
- * @file FixedLayout.h
+ * @file LayoutNeuro.h
  * 
  * @ingroup Simulator/Layouts
  *
  * @brief The Layout class defines the layout of vertices in neural networks
  *
- * The FixedLayout class maintains vertices locations (x, y coordinates), 
+ * The LayoutNeuro class maintains vertices locations (x, y coordinates), 
  * distance of every couple vertices,
  * vertices type map (distribution of excitatory and inhibitory neurons), and starter vertices map
  * (distribution of endogenously active neurons).  
  *
- * The FixedLayout class reads all layout information from parameter description file.
+ * The LayoutNeuro class reads all layout information from parameter description file.
  */
 
 #pragma once
@@ -21,16 +21,19 @@
 
 using namespace std;
 
-class FixedLayout : public Layout {
+class LayoutNeuro : public Layout {
 public:
-   FixedLayout();
+   LayoutNeuro();
 
-   virtual ~FixedLayout() = default;
+   virtual ~LayoutNeuro() = default;
 
    static Layout *Create()
    {
-      return new FixedLayout();
+      return new LayoutNeuro();
    }
+
+   /// Register vertex properties with the GraphManager
+   virtual void registerGraphProperties() override;
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
@@ -78,10 +81,10 @@ private:
    int height_;   /// Height of the layout
 };
 
-CEREAL_REGISTER_TYPE(FixedLayout);
+CEREAL_REGISTER_TYPE(LayoutNeuro);
 
 ///  Cereal serialization method
-template <class Archive> void FixedLayout::serialize(Archive &archive)
+template <class Archive> void LayoutNeuro::serialize(Archive &archive)
 {
    archive(cereal::base_class<Layout>(this), cereal::make_nvp("gridLayout_", gridLayout_),
            cereal::make_nvp("width_", width_), cereal::make_nvp("height_", height_));

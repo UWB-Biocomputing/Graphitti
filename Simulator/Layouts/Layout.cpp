@@ -8,6 +8,7 @@
 
 #include "Layout.h"
 #include "Factory.h"
+#include "GraphManager.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "ParseParamError.h"
@@ -57,6 +58,9 @@ void Layout::registerGraphProperties()
 {
    // TODO: This will be implemented when all models use graphML files to load the
    // initial graph
+   GraphManager &gm = GraphManager::getInstance();
+   gm.registerProperty("y", &VertexProperty::y);
+   gm.registerProperty("x", &VertexProperty::x);
 }
 
 /// Setup the internal structure of the class.
