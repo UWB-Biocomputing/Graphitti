@@ -27,7 +27,7 @@
  *  @param  layout              The Layout object.
  */
 void ConnGrowth::updateSynapsesWeights(int numVertices, AllVertices &vertices, AllEdges &synapses,
-                                       AllSpikingNeuronsDeviceProperties *allVerticesDevice,
+//                                       AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                        AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                        Layout &layout)
 {
@@ -66,7 +66,7 @@ void ConnGrowth::updateSynapsesWeights(int numVertices, AllVertices &vertices, A
    blocksPerGrid = (simulator.getTotalVertices() + threadsPerBlock - 1) / threadsPerBlock;
    updateSynapsesWeightsDevice<<<blocksPerGrid, threadsPerBlock>>>(
       simulator.getTotalVertices(), deltaT, W_d, simulator.getMaxEdgesPerVertex(),
-      allVerticesDevice, allEdgesDevice, neuronTypeMapD);
+      /*allVerticesDevice,*/ allEdgesDevice, neuronTypeMapD);
 
    // free memories
    HANDLE_ERROR(cudaFree(W_d));

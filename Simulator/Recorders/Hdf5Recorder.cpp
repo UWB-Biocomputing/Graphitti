@@ -98,7 +98,7 @@ void Hdf5Recorder::init()
 
 ///  Create data spaces and data sets of the hdf5 for recording histories.
 void Hdf5Recorder::initDataSet()
-{
+{  /** Request for attention: Function could use modularization */
    Simulator &simulator = Simulator::getInstance();
 
    // create the data space & dataset for history
