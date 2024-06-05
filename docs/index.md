@@ -30,6 +30,8 @@
   
    2.7 [Unit Tests](Developer/UnitTests.md)
 
+   2.8 [Serialization](Developer/Serialization.md)
+
 4. [Testing](Testing/index.md)
 
    3.1 Array Performance Testing
