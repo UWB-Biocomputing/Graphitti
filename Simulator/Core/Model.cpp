@@ -2,7 +2,7 @@
  * @file Model.cpp
  *
  * @ingroup Simulator/Core
- * 
+ *
  * @brief Implementation of Model for the graph-based networks.
  *
  * The network is composed of 3 superimposed 2-d arrays: vertices, edges, and
@@ -10,7 +10,7 @@
  *
  * Edges in the edge map are located at the coordinates of the vertex
  * from which they receive output.  Each edge stores a pointer into a
- * summation point. 
+ * summation point.
  */
 
 #include "Model.h"
@@ -23,6 +23,9 @@
 /// Constructor
 Model::Model()
 {
+   // Get a copy of the console logger to use in the case of errors
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+
    // Reference variable used to get class type from ParameterManager.
    string type;
 
@@ -30,13 +33,31 @@ Model::Model()
    ParameterManager::getInstance().getStringByXpath("//LayoutParams/@class", type);
    layout_ = Factory<Layout>::getInstance().createType(type);
 
+   // If the factory returns an error (nullptr), exit
+   if (layout_ == nullptr) {
+      LOG4CPLUS_INFO(consoleLogger, "INVALID CLASS: " + type);
+      exit(EXIT_FAILURE);
+   }
+
    // Create Connections class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//ConnectionsParams/@class", type);
    connections_ = Factory<Connections>::getInstance().createType(type);
 
+   // If the factory returns an error (nullptr), exit
+   if (connections_ == nullptr) {
+      LOG4CPLUS_INFO(consoleLogger, "INVALID CLASS: " + type);
+      exit(EXIT_FAILURE);
+   }
+
    // Create Recorder class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
    recorder_ = Factory<Recorder>::getInstance().createType(type);
+
+   // If the factory returns an error (nullptr), exit
+   if (recorder_ == nullptr) {
+      LOG4CPLUS_INFO(consoleLogger, "INVALID CLASS: " + type);
+      exit(EXIT_FAILURE);
+   }
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
