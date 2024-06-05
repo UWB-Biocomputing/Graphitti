@@ -1,23 +1,38 @@
 /**
- * @file FixedLayout.cpp
+ * @file LayoutNeuro.cpp
  *
  * @ingroup Simulator/Layouts
  * 
  * @brief The Layout class defines the layout of vertices in neural networks
  */
 
-#include "FixedLayout.h"
+#include "LayoutNeuro.h"
 #include "ConnGrowth.h"
+#include "GraphManager.h"
 #include "ParameterManager.h"
 #include "ParseParamError.h"
 #include "Util.h"
 
 // TODO: I don't think that either of the constructor or destructor is needed here
-FixedLayout::FixedLayout() : gridLayout_(true), Layout()
+LayoutNeuro::LayoutNeuro() : gridLayout_(true), Layout()
 {
 }
 
-void FixedLayout::setup()
+// Register vertex properties with the GraphManager
+void LayoutNeuro::registerGraphProperties()
+{
+   // The base class registers properties that are common to all vertices
+   // TODO: Currently not fully implemented because Neuro model is still integrating graphML
+   Layout::registerGraphProperties();
+
+   // We must register the graph properties before loading it.
+   // We are passing a pointer to a data member of the VertexProperty
+   // so Boost Graph Library can use it for loading the graphML file.
+   // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
+   GraphManager &gm = GraphManager::getInstance();
+}
+
+void LayoutNeuro::setup()
 {
    // Base class allocates memory for: xLoc_, yLoc, dist2_, and dist_
    // so we call its method first
@@ -44,17 +59,17 @@ void FixedLayout::setup()
 
 ///  Prints out all parameters to logging file.
 ///  Registered to OperationManager as Operation::printParameters
-void FixedLayout::printParameters() const
+void LayoutNeuro::printParameters() const
 {
    Layout::printParameters();
 
-   LOG4CPLUS_DEBUG(fileLogger_, "\n\tLayout type: FixedLayout" << endl << endl);
+   LOG4CPLUS_DEBUG(fileLogger_, "\n\tLayout type: LayoutNeuro" << endl << endl);
 }
 
 ///  Creates a randomly ordered distribution with the specified numbers of vertex types.
 ///
 ///  @param  numVertices number of the vertices to have in the type map.
-void FixedLayout::generateVertexTypeMap(int numVertices)
+void LayoutNeuro::generateVertexTypeMap(int numVertices)
 {
    LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing vertex type map" << endl);
 
@@ -85,7 +100,7 @@ void FixedLayout::generateVertexTypeMap(int numVertices)
 ///  Populates the starter map.
 ///  Selects \e numStarter excitory neurons and converts them into starter neurons.
 ///  @param  numVertices number of vertices to have in the map.
-void FixedLayout::initStarterMap(int numVertices)
+void LayoutNeuro::initStarterMap(int numVertices)
 {
    Layout::initStarterMap(numVertices);
 
@@ -96,7 +111,7 @@ void FixedLayout::initStarterMap(int numVertices)
 }
 
 /// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
-void FixedLayout::loadParameters()
+void LayoutNeuro::loadParameters()
 {
    // Get the file paths for the Neuron lists from the configuration file
    string activeNListFilePath;
@@ -141,7 +156,7 @@ void FixedLayout::loadParameters()
 ///  @param    srcVertex  integer that points to a Neuron in the type map as a source.
 ///  @param    destVertex integer that points to a Neuron in the type map as a destination.
 ///  @return type of the synapse.
-edgeType FixedLayout::edgType(int srcVertex, int destVertex)
+edgeType LayoutNeuro::edgType(int srcVertex, int destVertex)
 {
    if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == INH)
       return II;
@@ -156,29 +171,23 @@ edgeType FixedLayout::edgType(int srcVertex, int destVertex)
 }
 
 /// Initialize the location maps (xloc and yloc).
-void FixedLayout::initVerticesLocs()
+void LayoutNeuro::initVerticesLocs()
 {
-   int numVertices = Simulator::getInstance().getTotalVertices();
+   // Loop over all vertices and set their x and y locations
+   GraphManager::VertexIterator vi, vi_end;
 
-   // Initialize vertex locations
-   if (gridLayout_) {
-      // grid layout
-      for (int i = 0; i < numVertices; i++) {
-         xloc_[i] = i % height_;
-         yloc_[i] = i / height_;
-      }
-   } else {
-      // random layout
-      for (int i = 0; i < numVertices; i++) {
-         xloc_[i] = initRNG.inRange(0, width_);
-         yloc_[i] = initRNG.inRange(0, height_);
-      }
+   GraphManager &gm = GraphManager::getInstance();
+
+   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
+      assert(*vi < numVertices_);
+      xloc_[*vi] = gm[*vi].x;
+      yloc_[*vi] = gm[*vi].y;
    }
 }
 
 // Note: This code was previously used for debugging, but it is now dead code left behind
 // and it is never executed.
-void FixedLayout::printLayout()
+void LayoutNeuro::printLayout()
 {
    ConnGrowth &pConnGrowth
       = dynamic_cast<ConnGrowth &>(Simulator::getInstance().getModel().getConnections());
