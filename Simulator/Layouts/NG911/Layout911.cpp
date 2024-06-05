@@ -29,28 +29,13 @@ void Layout911::registerGraphProperties()
    gm.registerProperty("segments", &VertexProperty::segments);
 }
 
-// Loads Layout911 member variables.
-void Layout911::loadParameters()
-{
-   // Get the number of verticese from the GraphManager
-   numVertices_ = GraphManager::getInstance().numVertices();
-}
-
-// Setup the internal structure of the class.
-void Layout911::setup()
-{
-   // Base class allocates memory and computes: xLoc_, yLoc, dist2_, and dist_
-   // so we just call that.
-   Layout::setup();
-}
-
 // Prints out all parameters to logging file.
 void Layout911::printParameters() const
 {
 }
 
 // Creates a vertex type map.
-void Layout911::generateVertexTypeMap(int numVertices)
+void Layout911::generateVertexTypeMap()
 {
    DEBUG(cout << "\nInitializing vertex type map" << endl;);
 

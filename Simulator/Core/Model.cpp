@@ -56,8 +56,8 @@ void Model::createAllVertices()
 {
    LOG4CPLUS_INFO(fileLogger_, "Allocating Vertices...");
 
-   layout_->generateVertexTypeMap(Simulator::getInstance().getTotalVertices());
-   layout_->initStarterMap(Simulator::getInstance().getTotalVertices());
+   layout_->generateVertexTypeMap();
+   layout_->initStarterMap();
 
    // set their specific types
    layout_->getVertices().createAllVertices(*layout_);
