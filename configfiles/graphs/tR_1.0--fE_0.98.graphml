@@ -21,7 +21,7 @@
       <data key="x">2</data>
       <data key="y">0</data>
       <data key="active">0</data>
-      <data key="type">INH</data>
+      <data key="type">EXC</data>
     </node>
     <node id="3">
       <data key="x">3</data>
@@ -159,7 +159,7 @@
       <data key="x">5</data>
       <data key="y">2</data>
       <data key="active">0</data>
-      <data key="type">INH</data>
+      <data key="type">EXC</data>
     </node>
     <node id="26">
       <data key="x">6</data>
@@ -177,7 +177,7 @@
       <data key="x">8</data>
       <data key="y">2</data>
       <data key="active">0</data>
-      <data key="type">INH</data>
+      <data key="type">EXC</data>
     </node>
     <node id="29">
       <data key="x">9</data>
@@ -201,13 +201,13 @@
       <data key="x">2</data>
       <data key="y">3</data>
       <data key="active">0</data>
-      <data key="type">INH</data>
+      <data key="type">EXC</data>
     </node>
     <node id="33">
       <data key="x">3</data>
       <data key="y">3</data>
       <data key="active">0</data>
-      <data key="type">EXC</data>
+      <data key="type">INH</data>
     </node>
     <node id="34">
       <data key="x">4</data>
@@ -339,7 +339,7 @@
       <data key="x">5</data>
       <data key="y">5</data>
       <data key="active">0</data>
-      <data key="type">INH</data>
+      <data key="type">EXC</data>
     </node>
     <node id="56">
       <data key="x">6</data>
@@ -357,7 +357,7 @@
       <data key="x">8</data>
       <data key="y">5</data>
       <data key="active">0</data>
-      <data key="type">INH</data>
+      <data key="type">EXC</data>
     </node>
     <node id="59">
       <data key="x">9</data>
@@ -381,7 +381,7 @@
       <data key="x">2</data>
       <data key="y">6</data>
       <data key="active">0</data>
-      <data key="type">INH</data>
+      <data key="type">EXC</data>
     </node>
     <node id="63">
       <data key="x">3</data>
@@ -405,7 +405,7 @@
       <data key="x">6</data>
       <data key="y">6</data>
       <data key="active">0</data>
-      <data key="type">EXC</data>
+      <data key="type">INH</data>
     </node>
     <node id="67">
       <data key="x">7</data>
@@ -519,7 +519,7 @@
       <data key="x">5</data>
       <data key="y">8</data>
       <data key="active">0</data>
-      <data key="type">INH</data>
+      <data key="type">EXC</data>
     </node>
     <node id="86">
       <data key="x">6</data>
@@ -537,7 +537,7 @@
       <data key="x">8</data>
       <data key="y">8</data>
       <data key="active">0</data>
-      <data key="type">INH</data>
+      <data key="type">EXC</data>
     </node>
     <node id="89">
       <data key="x">9</data>
@@ -561,7 +561,7 @@
       <data key="x">2</data>
       <data key="y">9</data>
       <data key="active">0</data>
-      <data key="type">INH</data>
+      <data key="type">EXC</data>
     </node>
     <node id="93">
       <data key="x">3</data>

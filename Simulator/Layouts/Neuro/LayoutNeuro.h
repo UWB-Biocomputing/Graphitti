@@ -16,8 +16,6 @@
 #pragma once
 
 #include "Layout.h"
-// cereal
-#include <cereal/types/polymorphic.hpp>
 
 using namespace std;
 
@@ -39,24 +37,13 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
-   /// Setup the internal structure of the class.
-   /// Allocate memories to store all layout state.
-   virtual void setup() override;
-
    ///  Creates a vertex type map.
-   ///
-   ///  @param  numVertices number of the vertices to have in the type map.
-   virtual void generateVertexTypeMap(int numVertices) override;
+   virtual void generateVertexTypeMap() override;
 
    ///  Populates the starter map.
    ///  Selects num_endogenously_active_neurons excitory neurons
    ///  and converts them into starter vertices.
-   ///
-   ///  @param  numVertices number of vertices to have in the map.
-   virtual void initStarterMap(int numVertices) override;
-
-   /// Load member variables from configuration file. Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters() override;
+   virtual void initStarterMap() override;
 
    /// Returns the type of synapse at the given coordinates
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
@@ -66,26 +53,4 @@ public:
 
    /// Prints the layout, used for debugging.
    void printLayout();
-
-   ///  Cereal serialization method
-   template <class Archive> void serialize(Archive &archive);
-
-private:
-   /// initialize the location maps (xloc and yloc).
-   void initVerticesLocs();
-
-   bool gridLayout_;   /// True if grid layout.
-
-   int width_;   /// Width of the layout (assumes square)
-
-   int height_;   /// Height of the layout
 };
-
-CEREAL_REGISTER_TYPE(LayoutNeuro);
-
-///  Cereal serialization method
-template <class Archive> void LayoutNeuro::serialize(Archive &archive)
-{
-   archive(cereal::base_class<Layout>(this), cereal::make_nvp("gridLayout_", gridLayout_),
-           cereal::make_nvp("width_", width_), cereal::make_nvp("height_", height_));
-}

@@ -52,14 +52,6 @@ public:
    /// Register vertex properties with the GraphManager
    virtual void registerGraphProperties() override;
 
-   /// Loads Layout911 member variables.
-   /// Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters() override;
-
-   /// Setup the internal structure of the class.
-   /// Allocate memories to store all layout state.
-   virtual void setup() override;
-
    /// Prints out all parameters to logging file.
    /// Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
@@ -67,7 +59,7 @@ public:
    /// Creates a vertex type map.
    ///
    /// @param  numVertices number of the vertices to have in the type map.
-   virtual void generateVertexTypeMap(int numVertices) override;
+   virtual void generateVertexTypeMap() override;
 
    /// Returns the type of synapse at the given coordinates
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
