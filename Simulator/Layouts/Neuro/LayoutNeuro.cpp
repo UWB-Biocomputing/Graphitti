@@ -73,27 +73,32 @@ void LayoutNeuro::generateVertexTypeMap(int numVertices)
 {
    LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing vertex type map" << endl);
 
-   // Populate vertexTypeMap_ with EXC
-   // fill_n(vertexTypeMap_, numVertices, EXC);
-   vertexTypeMap_.assign(numVertices, EXC);
-   // for (int i = 0; i < numVertices; i++) {
-   //    vertexTypeMap_[i] = EXC;
-   // }
+   int numInhibitoryNeurons;
+   int numExcititoryNeurons;
 
-   int numInhibitoryNeurons = inhibitoryNeuronLayout_.size();
-   int numExcititoryNeurons = numVertices - numInhibitoryNeurons;
+   // Set Neuron Type from GraphML File
+   GraphManager::VertexIterator vi, vi_end;
+   GraphManager &gm = GraphManager::getInstance();
+
+   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
+      assert(*vi < numVertices_);
+      if (gm[*vi].type == "INH") {
+         vertexTypeMap_[*vi] = INH;
+         numInhibitoryNeurons++;
+      }
+      // Default Type is Excitatory
+      else {
+         vertexTypeMap_[*vi] = EXC;
+      }
+   }
+
+   numExcititoryNeurons = numVertices - numInhibitoryNeurons;
 
    LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP"
                                    << endl
                                    << "\tTotal vertices: " << numVertices << endl
                                    << "\tInhibitory Neurons: " << numInhibitoryNeurons << endl
                                    << "\tExcitatory Neurons: " << numExcititoryNeurons << endl);
-
-   for (int i = 0; i < numInhibitoryNeurons; i++) {
-      assert(inhibitoryNeuronLayout_.at(i) < numVertices);
-      vertexTypeMap_[inhibitoryNeuronLayout_.at(i)] = INH;
-   }
-
    LOG4CPLUS_INFO(fileLogger_, "Finished initializing vertex type map");
 }
 
@@ -115,17 +120,10 @@ void LayoutNeuro::loadParameters()
 {
    // Get the file paths for the Neuron lists from the configuration file
    string activeNListFilePath;
-   string inhibitoryNListFilePath;
    if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/activeNListFileName/text()",
                                                          activeNListFilePath)) {
       throw runtime_error("In Layout::loadParameters() Endogenously "
                           "active neuron list file path wasn't found and will not be initialized");
-   }
-   if (!ParameterManager::getInstance().getStringByXpath("//LayoutFiles/inhNListFileName/text()",
-                                                         inhibitoryNListFilePath)) {
-      throw runtime_error(
-         "In Layout::loadParameters() "
-         "Inhibitory neuron list file path wasn't found and will not be initialized");
    }
 
    // Initialize Neuron Lists based on the data read from the xml files
@@ -137,18 +135,11 @@ void LayoutNeuro::loadParameters()
                           + activeNListFilePath);
    }
    numEndogenouslyActiveNeurons_ = endogenouslyActiveNeuronList_.size();
-   if (!ParameterManager::getInstance().getIntVectorByXpath(inhibitoryNListFilePath, "I",
-                                                            inhibitoryNeuronLayout_)) {
-      throw runtime_error("In Layout::loadParameters() "
-                          "Inhibitory neuron list file wasn't loaded correctly."
-                          "\n\tfile path: "
-                          + inhibitoryNListFilePath);
-   }
 
    // Get width, height and total number of vertices
    ParameterManager::getInstance().getIntByXpath("//PoolSize/x/text()", width_);
    ParameterManager::getInstance().getIntByXpath("//PoolSize/y/text()", height_);
-   numVertices_ = width_ * height_;
+   numVertices_ = GraphManager::getInstance().numVertices();
 }
 
 ///  Returns the type of synapse at the given coordinates

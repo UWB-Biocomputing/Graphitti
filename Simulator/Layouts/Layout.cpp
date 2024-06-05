@@ -61,6 +61,7 @@ void Layout::registerGraphProperties()
    GraphManager &gm = GraphManager::getInstance();
    gm.registerProperty("y", &VertexProperty::y);
    gm.registerProperty("x", &VertexProperty::x);
+   gm.registerProperty("type", &VertexProperty::type);
 }
 
 /// Setup the internal structure of the class.

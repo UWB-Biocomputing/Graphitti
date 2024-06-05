@@ -1,407 +1,508 @@
 <?xml version='1.0' encoding='utf-8'?>
 <graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="type" for="node" attr.name="type" attr.type="string" />
   <key id="y" for="node" attr.name="y" attr.type="double" />
   <key id="x" for="node" attr.name="x" attr.type="double" />
   <graph edgedefault="directed">
     <node id="0">
       <data key="x">0</data>
       <data key="y">0</data>
+      <data key="type">EXC</data>
     </node>
     <node id="1">
       <data key="x">1</data>
       <data key="y">0</data>
+      <data key="type">EXC</data>
     </node>
     <node id="2">
       <data key="x">2</data>
       <data key="y">0</data>
+      <data key="type">INH</data>
     </node>
     <node id="3">
       <data key="x">3</data>
       <data key="y">0</data>
+      <data key="type">EXC</data>
     </node>
     <node id="4">
       <data key="x">4</data>
       <data key="y">0</data>
+      <data key="type">EXC</data>
     </node>
     <node id="5">
       <data key="x">5</data>
       <data key="y">0</data>
+      <data key="type">EXC</data>
     </node>
     <node id="6">
       <data key="x">6</data>
       <data key="y">0</data>
+      <data key="type">EXC</data>
     </node>
     <node id="7">
       <data key="x">7</data>
       <data key="y">0</data>
+      <data key="type">EXC</data>
     </node>
     <node id="8">
       <data key="x">8</data>
       <data key="y">0</data>
+      <data key="type">EXC</data>
     </node>
     <node id="9">
       <data key="x">9</data>
       <data key="y">0</data>
+      <data key="type">EXC</data>
     </node>
     <node id="10">
       <data key="x">0</data>
       <data key="y">1</data>
+      <data key="type">EXC</data>
     </node>
     <node id="11">
       <data key="x">1</data>
       <data key="y">1</data>
+      <data key="type">EXC</data>
     </node>
     <node id="12">
       <data key="x">2</data>
       <data key="y">1</data>
+      <data key="type">EXC</data>
     </node>
     <node id="13">
       <data key="x">3</data>
       <data key="y">1</data>
+      <data key="type">EXC</data>
     </node>
     <node id="14">
       <data key="x">4</data>
       <data key="y">1</data>
+      <data key="type">EXC</data>
     </node>
     <node id="15">
       <data key="x">5</data>
       <data key="y">1</data>
+      <data key="type">EXC</data>
     </node>
     <node id="16">
       <data key="x">6</data>
       <data key="y">1</data>
+      <data key="type">EXC</data>
     </node>
     <node id="17">
       <data key="x">7</data>
       <data key="y">1</data>
+      <data key="type">EXC</data>
     </node>
     <node id="18">
       <data key="x">8</data>
       <data key="y">1</data>
+      <data key="type">EXC</data>
     </node>
     <node id="19">
       <data key="x">9</data>
       <data key="y">1</data>
+      <data key="type">EXC</data>
     </node>
     <node id="20">
       <data key="x">0</data>
       <data key="y">2</data>
+      <data key="type">EXC</data>
     </node>
     <node id="21">
       <data key="x">1</data>
       <data key="y">2</data>
+      <data key="type">EXC</data>
     </node>
     <node id="22">
       <data key="x">2</data>
       <data key="y">2</data>
+      <data key="type">EXC</data>
     </node>
     <node id="23">
       <data key="x">3</data>
       <data key="y">2</data>
+      <data key="type">EXC</data>
     </node>
     <node id="24">
       <data key="x">4</data>
       <data key="y">2</data>
+      <data key="type">EXC</data>
     </node>
     <node id="25">
       <data key="x">5</data>
       <data key="y">2</data>
+      <data key="type">INH</data>
     </node>
     <node id="26">
       <data key="x">6</data>
       <data key="y">2</data>
+      <data key="type">EXC</data>
     </node>
     <node id="27">
       <data key="x">7</data>
       <data key="y">2</data>
+      <data key="type">EXC</data>
     </node>
     <node id="28">
       <data key="x">8</data>
       <data key="y">2</data>
+      <data key="type">INH</data>
     </node>
     <node id="29">
       <data key="x">9</data>
       <data key="y">2</data>
+      <data key="type">EXC</data>
     </node>
     <node id="30">
       <data key="x">0</data>
       <data key="y">3</data>
+      <data key="type">EXC</data>
     </node>
     <node id="31">
       <data key="x">1</data>
       <data key="y">3</data>
+      <data key="type">EXC</data>
     </node>
     <node id="32">
       <data key="x">2</data>
       <data key="y">3</data>
+      <data key="type">INH</data>
     </node>
     <node id="33">
       <data key="x">3</data>
       <data key="y">3</data>
+      <data key="type">EXC</data>
     </node>
     <node id="34">
       <data key="x">4</data>
       <data key="y">3</data>
+      <data key="type">EXC</data>
     </node>
     <node id="35">
       <data key="x">5</data>
       <data key="y">3</data>
+      <data key="type">EXC</data>
     </node>
     <node id="36">
       <data key="x">6</data>
       <data key="y">3</data>
+      <data key="type">EXC</data>
     </node>
     <node id="37">
       <data key="x">7</data>
       <data key="y">3</data>
+      <data key="type">EXC</data>
     </node>
     <node id="38">
       <data key="x">8</data>
       <data key="y">3</data>
+      <data key="type">EXC</data>
     </node>
     <node id="39">
       <data key="x">9</data>
       <data key="y">3</data>
+      <data key="type">EXC</data>
     </node>
     <node id="40">
       <data key="x">0</data>
       <data key="y">4</data>
+      <data key="type">EXC</data>
     </node>
     <node id="41">
       <data key="x">1</data>
       <data key="y">4</data>
+      <data key="type">EXC</data>
     </node>
     <node id="42">
       <data key="x">2</data>
       <data key="y">4</data>
+      <data key="type">EXC</data>
     </node>
     <node id="43">
       <data key="x">3</data>
       <data key="y">4</data>
+      <data key="type">EXC</data>
     </node>
     <node id="44">
       <data key="x">4</data>
       <data key="y">4</data>
+      <data key="type">EXC</data>
     </node>
     <node id="45">
       <data key="x">5</data>
       <data key="y">4</data>
+      <data key="type">EXC</data>
     </node>
     <node id="46">
       <data key="x">6</data>
       <data key="y">4</data>
+      <data key="type">EXC</data>
     </node>
     <node id="47">
       <data key="x">7</data>
       <data key="y">4</data>
+      <data key="type">EXC</data>
     </node>
     <node id="48">
       <data key="x">8</data>
       <data key="y">4</data>
+      <data key="type">EXC</data>
     </node>
     <node id="49">
       <data key="x">9</data>
       <data key="y">4</data>
+      <data key="type">EXC</data>
     </node>
     <node id="50">
       <data key="x">0</data>
       <data key="y">5</data>
+      <data key="type">EXC</data>
     </node>
     <node id="51">
       <data key="x">1</data>
       <data key="y">5</data>
+      <data key="type">EXC</data>
     </node>
     <node id="52">
       <data key="x">2</data>
       <data key="y">5</data>
+      <data key="type">EXC</data>
     </node>
     <node id="53">
       <data key="x">3</data>
       <data key="y">5</data>
+      <data key="type">EXC</data>
     </node>
     <node id="54">
       <data key="x">4</data>
       <data key="y">5</data>
+      <data key="type">EXC</data>
     </node>
     <node id="55">
       <data key="x">5</data>
       <data key="y">5</data>
+      <data key="type">INH</data>
     </node>
     <node id="56">
       <data key="x">6</data>
       <data key="y">5</data>
+      <data key="type">EXC</data>
     </node>
     <node id="57">
       <data key="x">7</data>
       <data key="y">5</data>
+      <data key="type">EXC</data>
     </node>
     <node id="58">
       <data key="x">8</data>
       <data key="y">5</data>
+      <data key="type">INH</data>
     </node>
     <node id="59">
       <data key="x">9</data>
       <data key="y">5</data>
+      <data key="type">EXC</data>
     </node>
     <node id="60">
       <data key="x">0</data>
       <data key="y">6</data>
+      <data key="type">EXC</data>
     </node>
     <node id="61">
       <data key="x">1</data>
       <data key="y">6</data>
+      <data key="type">EXC</data>
     </node>
     <node id="62">
       <data key="x">2</data>
       <data key="y">6</data>
+      <data key="type">INH</data>
     </node>
     <node id="63">
       <data key="x">3</data>
       <data key="y">6</data>
+      <data key="type">EXC</data>
     </node>
     <node id="64">
       <data key="x">4</data>
       <data key="y">6</data>
+      <data key="type">EXC</data>
     </node>
     <node id="65">
       <data key="x">5</data>
       <data key="y">6</data>
+      <data key="type">EXC</data>
     </node>
     <node id="66">
       <data key="x">6</data>
       <data key="y">6</data>
+      <data key="type">EXC</data>
     </node>
     <node id="67">
       <data key="x">7</data>
       <data key="y">6</data>
+      <data key="type">EXC</data>
     </node>
     <node id="68">
       <data key="x">8</data>
       <data key="y">6</data>
+      <data key="type">EXC</data>
     </node>
     <node id="69">
       <data key="x">9</data>
       <data key="y">6</data>
+      <data key="type">EXC</data>
     </node>
     <node id="70">
       <data key="x">0</data>
       <data key="y">7</data>
+      <data key="type">EXC</data>
     </node>
     <node id="71">
       <data key="x">1</data>
       <data key="y">7</data>
+      <data key="type">EXC</data>
     </node>
     <node id="72">
       <data key="x">2</data>
       <data key="y">7</data>
+      <data key="type">EXC</data>
     </node>
     <node id="73">
       <data key="x">3</data>
       <data key="y">7</data>
+      <data key="type">EXC</data>
     </node>
     <node id="74">
       <data key="x">4</data>
       <data key="y">7</data>
+      <data key="type">EXC</data>
     </node>
     <node id="75">
       <data key="x">5</data>
       <data key="y">7</data>
+      <data key="type">EXC</data>
     </node>
     <node id="76">
       <data key="x">6</data>
       <data key="y">7</data>
+      <data key="type">EXC</data>
     </node>
     <node id="77">
       <data key="x">7</data>
       <data key="y">7</data>
+      <data key="type">EXC</data>
     </node>
     <node id="78">
       <data key="x">8</data>
       <data key="y">7</data>
+      <data key="type">EXC</data>
     </node>
     <node id="79">
       <data key="x">9</data>
       <data key="y">7</data>
+      <data key="type">EXC</data>
     </node>
     <node id="80">
       <data key="x">0</data>
       <data key="y">8</data>
+      <data key="type">EXC</data>
     </node>
     <node id="81">
       <data key="x">1</data>
       <data key="y">8</data>
+      <data key="type">EXC</data>
     </node>
     <node id="82">
       <data key="x">2</data>
       <data key="y">8</data>
+      <data key="type">EXC</data>
     </node>
     <node id="83">
       <data key="x">3</data>
       <data key="y">8</data>
+      <data key="type">EXC</data>
     </node>
     <node id="84">
       <data key="x">4</data>
       <data key="y">8</data>
+      <data key="type">EXC</data>
     </node>
     <node id="85">
       <data key="x">5</data>
       <data key="y">8</data>
+      <data key="type">INH</data>
     </node>
     <node id="86">
       <data key="x">6</data>
       <data key="y">8</data>
+      <data key="type">EXC</data>
     </node>
     <node id="87">
       <data key="x">7</data>
       <data key="y">8</data>
+      <data key="type">EXC</data>
     </node>
     <node id="88">
       <data key="x">8</data>
       <data key="y">8</data>
+      <data key="type">INH</data>
     </node>
     <node id="89">
       <data key="x">9</data>
       <data key="y">8</data>
+      <data key="type">EXC</data>
     </node>
     <node id="90">
       <data key="x">0</data>
       <data key="y">9</data>
+      <data key="type">EXC</data>
     </node>
     <node id="91">
       <data key="x">1</data>
       <data key="y">9</data>
+      <data key="type">EXC</data>
     </node>
     <node id="92">
       <data key="x">2</data>
       <data key="y">9</data>
+      <data key="type">INH</data>
     </node>
     <node id="93">
       <data key="x">3</data>
       <data key="y">9</data>
+      <data key="type">EXC</data>
     </node>
     <node id="94">
       <data key="x">4</data>
       <data key="y">9</data>
+      <data key="type">EXC</data>
     </node>
     <node id="95">
       <data key="x">5</data>
       <data key="y">9</data>
+      <data key="type">EXC</data>
     </node>
     <node id="96">
       <data key="x">6</data>
       <data key="y">9</data>
+      <data key="type">EXC</data>
     </node>
     <node id="97">
       <data key="x">7</data>
       <data key="y">9</data>
+      <data key="type">EXC</data>
     </node>
     <node id="98">
       <data key="x">8</data>
       <data key="y">9</data>
+      <data key="type">EXC</data>
     </node>
     <node id="99">
       <data key="x">9</data>
       <data key="y">9</data>
+      <data key="type">EXC</data>
     </node>
   </graph>
 </graphml>
