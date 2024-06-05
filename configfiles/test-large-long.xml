@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <BGSimParams>
   <SimInfoParams name="SimInfoParams">
-    <graphmlFile name="graphmlFile">../configfiles/graphs/test-large.graphml</graphmlFile>    <SimParams name="SimParams">
+    <graphmlFile name="graphmlFile">../configfiles/graphs/test-large.graphml</graphmlFile>
+    <SimParams name="SimParams">
       <epochDuration name="epochDuration">100.0</epochDuration>
       <numEpochs name="numEpochs">10</numEpochs>
     </SimParams>
