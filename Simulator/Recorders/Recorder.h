@@ -21,7 +21,7 @@ using namespace std;
 /// a list of pre-defined basic data types in recorded variables
 using multipleTypes = variant<uint64_t, bool, int, BGFLOAT>;
 
-//TODO: remove it after implemtating the HDF5Recorder
+//TODO: remove it after implemtating the Hdf5Recorder
 class AllVertices;
 class Recorder {
 public:
