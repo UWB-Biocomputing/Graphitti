@@ -21,8 +21,4 @@ Hdf5Recorder::Hdf5Recorder()
     init();
 }
 
-Recorder* Hdf5Recorder::Create() {
-    return new Hdf5Recorder();
-}
-
 // Other member functions implementation...
