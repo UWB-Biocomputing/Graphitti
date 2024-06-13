@@ -93,6 +93,7 @@ double t_host_initialization_layout;
 double t_host_initialization_connections;
 double t_host_advance;
 double t_host_adjustEdges;
+double t_host_updateHistory;
 
 double t_gpu_rndGeneration;
 double t_gpu_advanceNeurons;
@@ -121,6 +122,9 @@ void printPerformanceMetrics(const float total_time, int steps)
 
    cout << "\nHost adjustEdges: " << t_host_adjustEdges << " seconds ("
         << t_host_adjustEdges / total_time * 100 << "%)" << endl;
+
+   cout << "\nHost update History: " << t_host_updateHistory << " seconds ("
+        << t_host_updateHistory / total_time * 100 << "%)" << endl;
 
    cout << "\nAverage time per simulation epoch:" << endl;
 
