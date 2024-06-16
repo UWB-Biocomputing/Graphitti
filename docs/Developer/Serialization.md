@@ -50,8 +50,7 @@ Graphitti utilizes Cereal to enable efficient serialization and deserialization 
 
 - **Defining Serialization Functions**: Cereal requires to know which data members to serialize in a class. By implementing a serialization function `serialize` within a class, you indicate to Cereal which data members should be serialized. 
 
-- **Default Constructor Requirement**:
-    - Cereal requires access to a default constructor for classes it serializes to construct the object during deserialization.
+- **Default Constructor Requirement**:Cereal requires access to a default constructor for classes it serializes to construct the object during deserialization.
 
 - **Name-Value Pairs**: Cereal supports name-value pairs, allowing you to attach names to serialized objects. This feature is particularly useful for XML archives and is adopted in Graphitti's serialization process.
 
@@ -146,6 +145,7 @@ If you answer "yes" to any of the following questions, follow the corresponding 
 <summary><strong>
 Is your class a derived class?
 </summary></strong>
+
 Cereal needs a serialization path from the derived class to the base type(s). This is usually handled with either `cereal::base_class` or `cereal::virtual_base_class`. 
 
 #### [a] Is your class derived from a virtual inheritance ?
@@ -349,7 +349,7 @@ Encountering a Cereal error during compiling or running Graphitti? Here's a chec
     
 With these checks, you should be able to diagnose and resolve common Cereal errors in Graphitti.
 
-## Serialization flow in Graphitti (For Debugging purposes) 
+<!-- ## Serialization flow in Graphitti (For Debugging purposes)  -->
 
 
 
