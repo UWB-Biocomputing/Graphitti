@@ -2,6 +2,8 @@
 #include "Recorder.h"
 #include "gtest/gtest.h"
 
+#if defined(HDF5)
+
 // Test case for initializing the Hdf5Recorder
 TEST(Hdf5RecorderTest, CreateInstanceSuccess)
 {
@@ -22,3 +24,4 @@ TEST(Hdf5RecorderTest, Hdf5InitTest)
    fclose(f);
    ASSERT_TRUE(fileExist);*/
 }
+#endif   // HDF5
