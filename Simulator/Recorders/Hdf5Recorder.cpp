@@ -13,6 +13,8 @@
 #include <fstream>
 #include <iostream>
 
+#if defined(HDF5)
+
 /// The constructor and destructor
 Hdf5Recorder::Hdf5Recorder()
 {
@@ -74,3 +76,4 @@ void Hdf5Recorder::init()
         return;
     }*/
 }
+#endif   // HDF5
