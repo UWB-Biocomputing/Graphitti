@@ -37,9 +37,8 @@ TEST(RecorderFactory, CreateNonExistentClassReturnsNullPtr)
 // This test is only possible if HDF5 compilation is available and enabled
 TEST(RecorderFactory, CreateHdf5RecorderInstance)
 {
-   unique_ptr<Recorder> recorder
-      = Factory<Recorder>::getInstance().createType("Hdf5Recorder");
+   unique_ptr<Recorder> recorder = Factory<Recorder>::getInstance().createType("Hdf5Recorder");
    ASSERT_NE(nullptr, recorder);
    ASSERT_NE(nullptr, dynamic_cast<Hdf5Recorder *>(recorder.get()));
 }
-#endif 
+#endif

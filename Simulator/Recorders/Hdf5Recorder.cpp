@@ -16,16 +16,16 @@
 /// The constructor and destructor
 Hdf5Recorder::Hdf5Recorder()
 {
-    // Retrieve the result file name from the ParameterManager
+   // Retrieve the result file name from the ParameterManager
    ParameterManager::getInstance().getStringByXpath(
       "//RecorderParams/RecorderFiles/resultFileName/text()", resultFileName_);
 
-    // Register the printParameters function with the OperationManager
+   // Register the printParameters function with the OperationManager
    function<void()> printParametersFunc = std::bind(&Hdf5Recorder::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
 
-    // Initialize the logger for file operations
+   // Initialize the logger for file operations
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 
    resultOut_ = nullptr;

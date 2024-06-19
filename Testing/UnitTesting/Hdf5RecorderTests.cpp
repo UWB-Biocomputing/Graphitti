@@ -1,6 +1,6 @@
 #include "Hdf5Recorder.h"
-#include "gtest/gtest.h"
 #include "Recorder.h"
+#include "gtest/gtest.h"
 
 // Test case for initializing the Hdf5Recorder
 TEST(Hdf5RecorderTest, CreateInstanceSuccess)
