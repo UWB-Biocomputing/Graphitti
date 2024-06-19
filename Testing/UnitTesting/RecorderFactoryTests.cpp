@@ -9,7 +9,7 @@
  * we are requesting.
  */
 
-//#include "Hdf5GrowthRecorder.h"
+#include "Hdf5Recorder.h"
 #include "Utils/Factory.h"
 #include "Xml911Recorder.h"
 #include "gtest/gtest.h"

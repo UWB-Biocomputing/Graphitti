@@ -24,6 +24,11 @@ class Hdf5Recorder : public Recorder {
 public:
    Hdf5Recorder();
 
+   /**
+   * @brief Factory method to create a new HDF5Recorder instance.
+   *
+   * @return A pointer to a new HDF5Recorder instance.
+   */
    static Recorder* Create()  {
       return new Hdf5Recorder();
    }
@@ -31,7 +36,7 @@ public:
    // Other member functions...
    /// Initialize data
    /// @param[in] stateOutputFileName File name to save histories
-   virtual void init() override {}
+   virtual void init() override;
 
    /// Init radii and rates history matrices with default values
    virtual void initDefaultValues() override {}
@@ -72,6 +77,13 @@ public:
    virtual void registerVariable(const string &varName, vector<RecordableBase *> &recordVars,
                                  UpdatedType variableType) override {}
 
+   ///@{
+   /** These methods are intended only for unit tests */
+   /// constructor only for unit test
+   Hdf5Recorder(const string &fileName)
+   {
+      resultFileName_ = fileName;
+   }
 private:
    virtual void initDataSet() {}
 
