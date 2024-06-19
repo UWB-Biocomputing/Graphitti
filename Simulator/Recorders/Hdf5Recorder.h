@@ -29,7 +29,8 @@ public:
    *
    * @return A pointer to a new HDF5Recorder instance.
    */
-   static Recorder* Create()  {
+   static Recorder *Create()
+   {
       return new Hdf5Recorder();
    }
 
@@ -39,28 +40,42 @@ public:
    virtual void init() override;
 
    /// Init radii and rates history matrices with default values
-   virtual void initDefaultValues() override {}
+   virtual void initDefaultValues() override
+   {
+   }
 
    /// Init radii and rates history matrices with current radii and rates
-   virtual void initValues() override {}
+   virtual void initValues() override
+   {
+   }
 
    /// Get the current radii and rates vlaues
-   virtual void getValues() override {}
+   virtual void getValues() override
+   {
+   }
 
    /// Terminate process
-   virtual void term() override {}
+   virtual void term() override
+   {
+   }
 
    // TODO: No parameters needed (AllVertices &vertices)
    /// Compile/capture variable history information in every epoch
-   virtual void compileHistories(AllVertices &neurons) override {}
+   virtual void compileHistories(AllVertices &neurons) override
+   {
+   }
 
    // TODO: No parameters needed (AllVertices &vertices)
    /// Writes simulation results to an output destination.
-   virtual void saveSimData(const AllVertices &neurons) override {}
+   virtual void saveSimData(const AllVertices &neurons) override
+   {
+   }
 
    /// Prints out all parameters to logging file.
    /// Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() override {}
+   virtual void printParameters() override
+   {
+   }
 
    /// Receives a recorded variable entity from the variable owner class
    /// used when the return type from recordable variable is supported by Recorder
@@ -71,11 +86,15 @@ public:
    * @param variableType Type of the recorded variable.
    */
    virtual void registerVariable(const string &varName, RecordableBase &recordVar,
-                                 UpdatedType variableType) override {}
+                                 UpdatedType variableType) override
+   {
+   }
 
    /// Register a vector of instance of a class derived from RecordableBase.
    virtual void registerVariable(const string &varName, vector<RecordableBase *> &recordVars,
-                                 UpdatedType variableType) override {}
+                                 UpdatedType variableType) override
+   {
+   }
 
    ///@{
    /** These methods are intended only for unit tests */
@@ -84,17 +103,22 @@ public:
    {
       resultFileName_ = fileName;
    }
+
 private:
-   virtual void initDataSet() {}
+   virtual void initDataSet()
+   {
+   }
 
    /// Populates Starter neuron matrix based with boolean values based on starterMap state
    ///@param[in] matrix  starter neuron matrix
    ///@param starterMap  Bool vector to reference neuron matrix location from.
    virtual void getStarterNeuronMatrix(VectorMatrix &matrix,
-                                       const vector<bool> &starterMap) override {}
+                                       const vector<bool> &starterMap) override
+   {
+   }
 
    // Member variables for HDF5 datasets
-   H5File* resultOut_;
+   H5File *resultOut_;
    DataSet dataSetXloc_;
    DataSet dataSetYloc_;
    DataSet dataSetNeuronTypes_;
@@ -127,7 +151,6 @@ private:
    vector<vector<uint64_t>> spikesProbedNeurons_;
 
    // Other member functions...
-   
 };
 
-#endif // HDF5
+#endif   // HDF5
