@@ -75,7 +75,6 @@
 
 #if defined(HDF5)
    #include "Recorders/Hdf5Recorder.h"
-   #include "Recorders/Neuro/Hdf5GrowthRecorder.h"
 #endif
 
 // MTRand
@@ -200,7 +199,6 @@ private:
 
 #if defined(HDF5)
          createFunctionMap["Hdf5Recorder"] = &Hdf5Recorder::Create;
-         createFunctionMap["Hdf5GrowthRecorder"] = &Hdf5GrowthRecorder::Create;
 #endif
       }
 

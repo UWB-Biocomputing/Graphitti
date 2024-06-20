@@ -5,7 +5,7 @@
  *
  * @brief An implementation for recording spikes history on hdf5 file
  */
-
+/*
 #if defined(HDF5)
 
    #include "Hdf5GrowthRecorder.h"
@@ -202,7 +202,7 @@ void Hdf5GrowthRecorder::printParameters()
 * @param varName Name of the recorded variable.
 * @param recordVar Reference to the recorded variable.
 * @param variableType Type of the recorded variable.
-*/
+
 void Hdf5GrowthRecorder::registerVariable(const string &varName, RecordableBase &recordVar,
                                           UpdatedType variableType)
 {
@@ -215,4 +215,4 @@ void Hdf5GrowthRecorder::registerVariable(const string &varName,
 {
 }
 
-#endif   // HDF5
+#endif   // HDF5*/

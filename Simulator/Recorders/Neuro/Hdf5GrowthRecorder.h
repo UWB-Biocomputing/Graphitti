@@ -15,7 +15,7 @@
  * Hierarchical Data Format (HDF) is a set of file formats (HDF4, HDF5) designed 
  * to store and organize large amounts of data. 
  */
-
+/*
 #pragma once
 
 #if defined(HDF5)
@@ -76,7 +76,7 @@ public:
    * @param varName Name of the recorded variable.
    * @param recordVar Reference to the recorded variable.
    * @param variableType Type of the recorded variable.
-   */
+   
    virtual void registerVariable(const string &varName, RecordableBase &recordVar,
                                  UpdatedType variableType) override;
 
@@ -102,4 +102,4 @@ protected:
    vector<BGFLOAT> ratesHistory_;
 };
 
-#endif   // HDF5
+#endif   // HDF5 */

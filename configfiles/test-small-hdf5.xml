@@ -102,7 +102,7 @@
       </LayoutFiles>
     </LayoutParams>
     
-    <RecorderParams class="Hdf5GrowthRecorder" name="RecorderParams">
+    <RecorderParams class="Hdf5Recorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
         <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_2-100.xml</probedNListFileName>
         <resultFileName name="resultFileName">Output/Results/test-small-out.h5</resultFileName>
