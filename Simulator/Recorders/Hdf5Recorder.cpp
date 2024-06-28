@@ -31,10 +31,9 @@ Hdf5Recorder::Hdf5Recorder()
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 
    resultOut_ = nullptr;
-
-   init();
 }
 
+// destructor
 Hdf5Recorder::~Hdf5Recorder()
 {
    term();
@@ -86,21 +85,24 @@ void Hdf5Recorder::init()
    }
 }
 
+// This method closes the HDF5 file and releases any associated resources
 void Hdf5Recorder::term()
 {
+   // checks if the file object `resultOut_` is not null, then attempts to close the file and delete the object
    if (resultOut_ != nullptr) {
       try {
          resultOut_->close();
          delete resultOut_;
          resultOut_ = nullptr;
       } catch (FileIException &error) {
+         // If an exception occurs during this process, it prints the error stack for debugging purposes
          cerr << "HDF5 File I/O Exception during termination: ";
          error.printErrorStack();
       }
    }
 }
 
-///  Create data spaces and data sets of the hdf5 for recording histories.
+//  Create data spaces and data sets of the hdf5 for recording histories.
 void Hdf5Recorder::initDataSet()
 {
 }

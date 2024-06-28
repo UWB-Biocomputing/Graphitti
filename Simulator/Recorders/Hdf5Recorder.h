@@ -101,7 +101,6 @@ public:
    Hdf5Recorder(const string &fileName)
    {
       resultFileName_ = fileName;
-      init();
    }
 
 private:
