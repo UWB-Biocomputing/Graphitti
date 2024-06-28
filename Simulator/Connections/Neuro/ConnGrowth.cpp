@@ -46,7 +46,6 @@
 #include "ParseParamError.h"
 
 #ifdef USE_HDF5
-   //#include "Hdf5GrowthRecorder.h"
    #include "Hdf5Recorder.h"
 #endif
 

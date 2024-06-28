@@ -11,17 +11,26 @@ TEST(Hdf5RecorderTest, CreateInstanceSuccess)
    ASSERT_TRUE(recorder != nullptr);
 }
 
-// Test case for open file successfully
-TEST(Hdf5RecorderTest, Hdf5InitTest)
+// Test case for init() and term()
+TEST(Hdf5RecorderTest, Hdf5InitAndTermTest)
 {
-   // Create an instance of Hdf5Recorder
-   std::string outputFile = "../Testing/UnitTesting/TestOutput/Hdf5test_output.h5";
+   // Create an instance of Hdf5Recorder with a specific output file name
+   std::string outputFile = "../Testing/UnitTesting/TestOutput/Hdf5test_output_term.h5";
    Hdf5Recorder recorder(outputFile);
-   /*recorder.init();
-   // Test to see if output file exist
-   FILE *f = fopen("../Testing/UnitTesting/TestOutput/Hdf5test_output.h5", "r");
+   recorder.init();
+
+   // Ensure the file has been created successfully by the constructor
+   FILE *f = fopen(outputFile.c_str(), "r");
+   ASSERT_TRUE(f != NULL);
+   fclose(f);
+
+   // Call the term() method to close the HDF5 file
+   recorder.term();
+
+   // Check if the file can be reopened, indicating it was closed properly
+   f = fopen(outputFile.c_str(), "r");
    bool fileExist = f != NULL;
    fclose(f);
-   ASSERT_TRUE(fileExist);*/
+   ASSERT_TRUE(fileExist);
 }
 #endif   // HDF5
