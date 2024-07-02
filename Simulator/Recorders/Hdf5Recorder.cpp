@@ -30,6 +30,8 @@ Hdf5Recorder::Hdf5Recorder()
    // Initialize the logger for file operations
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 
+   // Initialize the HDF5 file object to nullptr
+   // This is the HDF5 file (H5File) object.
    resultOut_ = nullptr;
 }
 
