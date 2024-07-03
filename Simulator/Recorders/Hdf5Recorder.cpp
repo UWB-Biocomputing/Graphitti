@@ -30,50 +30,82 @@ Hdf5Recorder::Hdf5Recorder()
    // Initialize the logger for file operations
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 
+   // Initialize the HDF5 file object to nullptr
+   // This is the HDF5 file (H5File) object.
    resultOut_ = nullptr;
-   // I just comment this for now because something wrong with my init function
-   //init();
+}
+
+// destructor
+Hdf5Recorder::~Hdf5Recorder()
+{
+   term();
 }
 
 // Other member functions implementation...
 void Hdf5Recorder::init()
 {
    // Check the output file extension is .h5
-   /*string suffix = ".h5";
-    if ((resultFileName_.size() <= suffix.size()) ||
-        (resultFileName_.compare(resultFileName_.size() - suffix.size(), suffix.size(), suffix) != 0)) {
-        std::cerr << "The file extension is not .h5" << std::endl;
-        exit(EXIT_FAILURE);
-    }
+   string suffix = ".h5";
+   if ((resultFileName_.size() <= suffix.size())
+       || (resultFileName_.compare(resultFileName_.size() - suffix.size(), suffix.size(), suffix)
+           != 0)) {
+      //perror("the file extention is not .h5 ");
+      string errorMsg
+         = "Error: the file extension is not .h5. Provided file name: " + resultFileName_;
+      perror(errorMsg.c_str());
+      exit(EXIT_FAILURE);
+   }
 
-    // Check if we can create and write to the file
-    std::ofstream testFileWrite(resultFileName_);
-    if (!testFileWrite.is_open()) {
-        std::cerr << "Error opening output file for writing" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-    testFileWrite.close();
+   // Check if we can create and write to the file
+   ofstream testFileWrite(resultFileName_.c_str());
+   if (!testFileWrite.is_open()) {
+      perror("Error opening output file for writing ");
+      exit(EXIT_FAILURE);
+   }
+   testFileWrite.close();
 
-    try {
-        // Create a new file using the default property lists
-        resultOut_ = H5File(resultFileName_, H5F_ACC_TRUNC);
-        initDataSet();
-    } catch (const FileIException& error) {
-        std::cerr << "HDF5 File I/O Exception: ";
-        error.printErrorStack();
-        return;
-    } catch (const DataSetIException& error) {
-        std::cerr << "HDF5 Dataset Exception: ";
-        error.printErrorStack();
-        return;
-    } catch (const DataSpaceIException& error) {
-        std::cerr << "HDF5 Dataspace Exception: ";
-        error.printErrorStack();
-        return;
-    } catch (const DataTypeIException& error) {
-        std::cerr << "HDF5 Datatype Exception: ";
-        error.printErrorStack();
-        return;
-    }*/
+   try {
+      // Create a new file using the default property lists
+      resultOut_ = new H5File(resultFileName_, H5F_ACC_TRUNC);
+      initDataSet();
+   } catch (FileIException &error) {
+      cerr << "HDF5 File I/O Exception: " << endl;
+      error.printErrorStack();
+      return;
+   } catch (DataSetIException &error) {
+      cerr << "HDF5 Dataset Exception: " << endl;
+      error.printErrorStack();
+      return;
+   } catch (DataSpaceIException &error) {
+      cerr << "HDF5 Dataspace Exception: " << endl;
+      error.printErrorStack();
+      return;
+   } catch (DataTypeIException &error) {
+      cerr << "HDF5 Datatype Exception: " << endl;
+      error.printErrorStack();
+      return;
+   }
+}
+
+// This method closes the HDF5 file and releases any associated resources
+void Hdf5Recorder::term()
+{
+   // checks if the file object `resultOut_` is not null, then attempts to close the file and delete the object
+   if (resultOut_ != nullptr) {
+      try {
+         resultOut_->close();
+         delete resultOut_;
+         resultOut_ = nullptr;
+      } catch (FileIException &error) {
+         // If an exception occurs during this process, it prints the error stack for debugging purposes
+         cerr << "HDF5 File I/O Exception during termination: ";
+         error.printErrorStack();
+      }
+   }
+}
+
+//  Create data spaces and data sets of the hdf5 for recording histories.
+void Hdf5Recorder::initDataSet()
+{
 }
 #endif   // HDF5

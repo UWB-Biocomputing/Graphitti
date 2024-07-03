@@ -23,6 +23,7 @@ using std::vector;
 class Hdf5Recorder : public Recorder {
 public:
    Hdf5Recorder();
+   virtual ~Hdf5Recorder();
 
    /**
    * @brief Factory method to create a new HDF5Recorder instance.
@@ -55,9 +56,7 @@ public:
    }
 
    /// Terminate process
-   virtual void term() override
-   {
-   }
+   virtual void term() override;
 
    // TODO: No parameters needed (AllVertices &vertices)
    /// Compile/capture variable history information in every epoch
@@ -105,9 +104,7 @@ public:
    }
 
 private:
-   virtual void initDataSet()
-   {
-   }
+   virtual void initDataSet();
 
    /// Populates Starter neuron matrix based with boolean values based on starterMap state
    ///@param[in] matrix  starter neuron matrix
