@@ -72,7 +72,7 @@ void ConnGrowth::setup()
    area_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices, 0);
    outgrowth_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
    deltaR_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
-   
+
    // Initialize connection frontier distance change matrix with the current distances
    Layout &layout = Simulator::getInstance().getModel().getLayout();
    delta_ = layout.dist_;
@@ -175,7 +175,7 @@ void ConnGrowth::updateFrontiers()
    for (int unit = 0; unit < numVertices - 1; unit++) {
       for (int i = unit + 1; i < numVertices; i++) {
          delta_(unit, i) = layout.dist_(unit, i) - (radii_[unit] + radii_[i]);
-	 delta_(i, unit) = delta_(unit, i);
+         delta_(i, unit) = delta_(unit, i);
       }
    }
 }
