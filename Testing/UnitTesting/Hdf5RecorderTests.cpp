@@ -1,8 +1,38 @@
+#include "EventBuffer.h"
 #include "Hdf5Recorder.h"
+#include "RecordableBase.h"
+#include "RecordableVector.h"
 #include "Recorder.h"
 #include "gtest/gtest.h"
 
 #if defined(HDF5)
+   #include "H5Cpp.h"
+
+// Unit test for verifying the registerVariable method
+TEST(Hdf5RecorderTest, RegisterVariableTest)
+{
+   // Create an instance of Hdf5Recorder
+   std::string outputFile = "../Testing/UnitTesting/TestOutput/Hdf5test_output_register.h5";
+   Hdf5Recorder recorder(outputFile);
+   recorder.init();
+
+   // Create an EventBuffer for testing
+   EventBuffer eventBuffer;
+   const H5std_string hdf5Name("test_var");
+
+   // Register the variable
+   recorder.registerVariable(hdf5Name, eventBuffer, Recorder::UpdatedType::CONSTANT);
+
+   // Retrieve the registered variable info
+   const Hdf5Recorder::singleVariableInfo &varInfo = recorder.getVariableTable()[0];
+
+   // Verify the variable type
+   ASSERT_EQ(Recorder::UpdatedType::CONSTANT, varInfo.variableType_);
+   // Verify the variable name
+   ASSERT_EQ(hdf5Name, varInfo.variableName_);
+   // Verify the HDF5 data type
+   ASSERT_EQ(PredType::NATIVE_UINT64, varInfo.hdf5Datatype_);
+}
 
 // Test case for initializing the Hdf5Recorder
 TEST(Hdf5RecorderTest, CreateInstanceSuccess)
