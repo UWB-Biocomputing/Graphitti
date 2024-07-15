@@ -14,7 +14,7 @@
 #include <iostream>
 
 #if defined(HDF5)
-const H5std_string hdf5Name("testingName");
+
 /// The constructor and destructor
 Hdf5Recorder::Hdf5Recorder()
 {
