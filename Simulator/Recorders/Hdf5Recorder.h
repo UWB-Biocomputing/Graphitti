@@ -85,9 +85,7 @@ public:
    * @param variableType Type of the recorded variable.
    */
    virtual void registerVariable(const string &varName, RecordableBase &recordVar,
-                                 UpdatedType variableType) override
-   {
-   }
+                                 UpdatedType variableType) override;
 
    /// Register a vector of instance of a class derived from RecordableBase.
    virtual void registerVariable(const string &varName, vector<RecordableBase *> &recordVars,
@@ -95,12 +93,80 @@ public:
    {
    }
 
+   struct singleVariableInfo {
+      /// the name of each variable
+      string variableName_;
+
+      /// the basic data type in the Recorded variable
+      string dataType_;
+
+      /// the data type in Hdf5 file
+      DataType hdf5Datatype_;
+
+      /// the data set for Hdf5 file
+      DataSet hdf5DataSet_;
+
+      /// the variable type: updated frequency
+      UpdatedType variableType_;
+
+      /// a reference to a RecordableBase variable
+      /// As the simulator runs, the values in the RecordableBase object will be updated
+      RecordableBase &variableLocation_;
+
+      // Constructor accepting the variable name, the address of recorded variable, the updated type
+      singleVariableInfo(const string &name, RecordableBase &location, UpdatedType variableType) :
+         variableLocation_(location), variableName_(name), variableType_(variableType)
+      {
+         dataType_ = location.getDataType();
+         convertType();
+      }
+
+      // Converts the data type of the variable to HDF5 data type
+      void convertType()
+      {
+         if (dataType_ == typeid(uint64_t).name()) {
+            hdf5Datatype_ = PredType::NATIVE_UINT64;
+         } else if (dataType_ == typeid(bool).name()) {
+            hdf5Datatype_ = PredType::NATIVE_UINT8;
+         } else if (dataType_ == typeid(int).name()) {
+            hdf5Datatype_ = PredType::NATIVE_INT;
+         } else if (dataType_ == typeid(float).name()) {
+            hdf5Datatype_ = PredType::NATIVE_FLOAT;
+         } else if (dataType_ == typeid(double).name()) {
+            hdf5Datatype_ = PredType::NATIVE_DOUBLE;
+         } else {
+            //string errorMsg = "Not supported type for type: " + dataType_;
+            throw runtime_error("Unsupported data type");
+         }
+      }
+
+      // Creates a dynamic dataset in the HDF5 file
+      void createDynamicDataset(H5File *resultOut_)
+      {
+         // Create dataspace with initial size and unlimited max size
+         hsize_t dims[1] = {static_cast<hsize_t>(variableLocation_.getNumElements())};
+         hsize_t maxDims[1] = {H5S_UNLIMITED};
+         DataSpace dataspace(1, dims, maxDims);
+
+         // Create dataset
+         hdf5DataSet_ = resultOut_->createDataSet(variableName_, hdf5Datatype_, dataspace);
+
+         std::cout << "Created dataset: " << variableName_ << std::endl;
+      }
+   };
+
    ///@{
    /** These methods are intended only for unit tests */
    /// constructor only for unit test
    Hdf5Recorder(const string &fileName)
    {
       resultFileName_ = fileName;
+   }
+
+   // Accessor method to retrieve variableTable_
+   const vector<singleVariableInfo> &getVariableTable() const
+   {
+      return variableTable_;
    }
 
 private:
@@ -147,6 +213,8 @@ private:
    // track spikes count of probed neurons
    vector<vector<uint64_t>> spikesProbedNeurons_;
 
+   /// List of registered variables for recording
+   vector<singleVariableInfo> variableTable_;
    // Other member functions...
 };
 

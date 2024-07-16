@@ -49,7 +49,6 @@ void Hdf5Recorder::init()
    if ((resultFileName_.size() <= suffix.size())
        || (resultFileName_.compare(resultFileName_.size() - suffix.size(), suffix.size(), suffix)
            != 0)) {
-      //perror("the file extention is not .h5 ");
       string errorMsg
          = "Error: the file extension is not .h5. Provided file name: " + resultFileName_;
       perror(errorMsg.c_str());
@@ -107,5 +106,23 @@ void Hdf5Recorder::term()
 //  Create data spaces and data sets of the hdf5 for recording histories.
 void Hdf5Recorder::initDataSet()
 {
+}
+
+/// Receives a recorded variable entity from the variable owner class
+/// used when the return type from recordable variable is supported by Recorder
+/**
+* @brief Registers a single instance of a class derived from RecordableBase.
+* @param varName Name of the recorded variable.
+* @param recordVar Reference to the recorded variable.
+* @param variableType Type of the recorded variable.
+*/
+void Hdf5Recorder::registerVariable(const string &varName, RecordableBase &recordVar,
+                                    UpdatedType variableType)
+{
+   // Create a singleVariableInfo object for the variable
+   singleVariableInfo hdf5VarInfo(varName, recordVar, variableType);
+
+   // Add the variable information to the variableTable_
+   variableTable_.push_back(hdf5VarInfo);
 }
 #endif   // HDF5
