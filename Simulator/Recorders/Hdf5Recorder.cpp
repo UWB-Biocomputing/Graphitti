@@ -66,7 +66,7 @@ void Hdf5Recorder::init()
    try {
       // Create a new file using the default property lists
       resultOut_ = new H5File(resultFileName_, H5F_ACC_TRUNC);
-      initDataSet();
+
    } catch (FileIException &error) {
       cerr << "HDF5 File I/O Exception: " << endl;
       error.printErrorStack();
@@ -103,9 +103,23 @@ void Hdf5Recorder::term()
    }
 }
 
-//  Create data spaces and data sets of the hdf5 for recording histories.
-void Hdf5Recorder::initDataSet()
+// create the dataset for constant variable and store the data to dataset
+void Hdf5Recorder::saveSimData(const AllVertices &neurons)
 {
+   // Initialize datasets for constant variables
+   for (auto &variableInfo : variableTable_) {
+      if (variableInfo.variableType_ == UpdatedType::CONSTANT) {
+         // Define dimensions for the constant dataset
+         hsize_t constantDims[1]
+            = {static_cast<hsize_t>(variableInfo.variableLocation_.getNumElements())};
+         DataSpace constantSpace(1, constantDims);
+
+         // Create dataset
+         variableInfo.hdf5DataSet_ = resultOut_->createDataSet(
+            variableInfo.variableName_, variableInfo.hdf5Datatype_, constantSpace);
+         variableInfo.captureData();
+      }
+   }
 }
 
 /// Receives a recorded variable entity from the variable owner class
