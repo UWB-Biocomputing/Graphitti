@@ -132,8 +132,10 @@ public:
             hdf5Datatype_ = PredType::NATIVE_INT;
          } else if (dataType_ == typeid(int).name()) {
             hdf5Datatype_ = PredType::NATIVE_INT;
-         } else if (dataType_ == typeid(BGFLOAT).name()) {
+         } else if (dataType_ == typeid(float).name()) {
             hdf5Datatype_ = PredType::NATIVE_FLOAT;
+         } else if (dataType_ == typeid(double).name()) {
+            hdf5Datatype_ = PredType::NATIVE_DOUBLE;
          } else {
             throw runtime_error("Unsupported data type");
          }
@@ -146,9 +148,9 @@ public:
          if (variableLocation_.getNumElements() > 0) {
             // Prepare the data buffer based on the HDF5 data type
             if (hdf5Datatype_ == PredType::NATIVE_FLOAT) {
-               vector<BGFLOAT> dataBuffer(variableLocation_.getNumElements());
+               vector<float> dataBuffer(variableLocation_.getNumElements());
                for (int i = 0; i < variableLocation_.getNumElements(); ++i) {
-                  dataBuffer[i] = get<BGFLOAT>(variableLocation_.getElement(i));
+                  dataBuffer[i] = get<float>(variableLocation_.getElement(i));
                }
                // Write the data to the dataset
                hdf5DataSet_.write(dataBuffer.data(), hdf5Datatype_);
