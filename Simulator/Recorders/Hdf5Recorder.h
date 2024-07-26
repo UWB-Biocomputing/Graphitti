@@ -66,9 +66,7 @@ public:
 
    // TODO: No parameters needed (AllVertices &vertices)
    /// Writes simulation results to an output destination.
-   virtual void saveSimData(const AllVertices &neurons) override
-   {
-   }
+   virtual void saveSimData(const AllVertices &neurons) override;
 
    /// Prints out all parameters to logging file.
    /// Registered to OperationManager as Operation::printParameters
@@ -90,6 +88,10 @@ public:
    /// Register a vector of instance of a class derived from RecordableBase.
    virtual void registerVariable(const string &varName, vector<RecordableBase *> &recordVars,
                                  UpdatedType variableType) override
+   {
+   }
+
+   virtual void initDataSet()
    {
    }
 
@@ -127,7 +129,7 @@ public:
          if (dataType_ == typeid(uint64_t).name()) {
             hdf5Datatype_ = PredType::NATIVE_UINT64;
          } else if (dataType_ == typeid(bool).name()) {
-            hdf5Datatype_ = PredType::NATIVE_UINT8;
+            hdf5Datatype_ = PredType::NATIVE_INT;
          } else if (dataType_ == typeid(int).name()) {
             hdf5Datatype_ = PredType::NATIVE_INT;
          } else if (dataType_ == typeid(float).name()) {
@@ -135,23 +137,43 @@ public:
          } else if (dataType_ == typeid(double).name()) {
             hdf5Datatype_ = PredType::NATIVE_DOUBLE;
          } else {
-            //string errorMsg = "Not supported type for type: " + dataType_;
             throw runtime_error("Unsupported data type");
          }
       }
 
-      // Creates a dynamic dataset in the HDF5 file
-      void createDynamicDataset(H5File *resultOut_)
+      // Method to capture and write data to the HDF5 dataset
+      void captureData()
       {
-         // Create dataspace with initial size and unlimited max size
-         hsize_t dims[1] = {static_cast<hsize_t>(variableLocation_.getNumElements())};
-         hsize_t maxDims[1] = {H5S_UNLIMITED};
-         DataSpace dataspace(1, dims, maxDims);
+         // Ensure the dataset exists and data can be written
+         if (variableLocation_.getNumElements() > 0) {
+            // Prepare the data buffer based on the HDF5 data type
+            if (hdf5Datatype_ == PredType::NATIVE_FLOAT) {
+               vector<float> dataBuffer(variableLocation_.getNumElements());
+               for (int i = 0; i < variableLocation_.getNumElements(); ++i) {
+                  dataBuffer[i] = get<float>(variableLocation_.getElement(i));
+               }
+               // Write the data to the dataset
+               hdf5DataSet_.write(dataBuffer.data(), hdf5Datatype_);
 
-         // Create dataset
-         hdf5DataSet_ = resultOut_->createDataSet(variableName_, hdf5Datatype_, dataspace);
+            } else if (hdf5Datatype_ == PredType::NATIVE_INT) {
+               vector<int> dataBuffer(variableLocation_.getNumElements());
+               for (int i = 0; i < variableLocation_.getNumElements(); ++i) {
+                  dataBuffer[i] = get<int>(variableLocation_.getElement(i));
+               }
+               hdf5DataSet_.write(dataBuffer.data(), hdf5Datatype_);
 
-         std::cout << "Created dataset: " << variableName_ << std::endl;
+            } else if (hdf5Datatype_ == PredType::NATIVE_UINT64) {
+               vector<uint64_t> dataBuffer(variableLocation_.getNumElements());
+               for (int i = 0; i < variableLocation_.getNumElements(); ++i) {
+                  dataBuffer[i] = get<uint64_t>(variableLocation_.getElement(i));
+               }
+               hdf5DataSet_.write(dataBuffer.data(), hdf5Datatype_);
+
+            } else {
+               // Throw an error if the data type is unsupported
+               throw runtime_error("Unsupported data type");
+            }
+         }
       }
    };
 
@@ -170,8 +192,6 @@ public:
    }
 
 private:
-   virtual void initDataSet();
-
    /// Populates Starter neuron matrix based with boolean values based on starterMap state
    ///@param[in] matrix  starter neuron matrix
    ///@param starterMap  Bool vector to reference neuron matrix location from.
@@ -182,7 +202,7 @@ private:
 
    // Member variables for HDF5 datasets
    H5File *resultOut_;
-   DataSet dataSetXloc_;
+   /*DataSet dataSetXloc_;
    DataSet dataSetYloc_;
    DataSet dataSetNeuronTypes_;
    DataSet dataSetNeuronThresh_;
@@ -204,7 +224,7 @@ private:
    const H5std_string nameSimulationEndTime = "simulationEndTime";
    const H5std_string nameSpikesProbedNeurons = "spikesProbedNeurons";
    const H5std_string nameAttrPNUnit = "attrPNUint";
-   const H5std_string nameProbedNeurons = "probedNeurons";
+   const H5std_string nameProbedNeurons = "probedNeurons";*/
 
    // Keep track of where we are in incrementally writing spikes
    vector<hsize_t> offsetSpikesProbedNeurons_;

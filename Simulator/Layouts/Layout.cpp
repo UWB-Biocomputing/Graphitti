@@ -117,12 +117,12 @@ void Layout::setup()
    dist_ = sqrt(dist2_);
 
    // Register variable: vertex locations if need
-   // Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   // string baseName = "Location";
-   // string xLocation = "x_" + baseName;
-   // string yLocation = "y_" + baseName;
-   // recorder.registerVariable(xLocation, xloc_, Recorder::UpdatedType::CONSTANT);
-   // recorder.registerVariable(yLocation, yloc_, Recorder::UpdatedType::CONSTANT);
+   //Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   //string baseName = "Location";
+   //string xLocation = "x_" + baseName;
+   //string yLocation = "y_" + baseName;
+   //recorder.registerVariable(xLocation, xloc_, Recorder::UpdatedType::CONSTANT);
+   //recorder.registerVariable(yLocation, yloc_, Recorder::UpdatedType::CONSTANT);
 
    // test purpose
    // cout << "xloc_: " << &xloc_ << endl;
