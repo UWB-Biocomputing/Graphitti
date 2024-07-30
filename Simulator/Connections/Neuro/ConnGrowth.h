@@ -148,6 +148,9 @@ private:
    ///  @param  neurons  The Neuron list to search from.
    void updateConns(AllVertices &neurons);
 
+   /// Update the distance between frontiers of Neurons.
+   void updateFrontiers();
+
    ///  Update the areas of overlap in between Neurons.
    void updateOverlap();
 
@@ -177,6 +180,9 @@ public:
 
    /// spiking rate
    VectorMatrix rates_;
+
+   /// distance between connection frontiers
+   CompleteMatrix delta_;
 
    /// areas of overlap
    CompleteMatrix area_;
