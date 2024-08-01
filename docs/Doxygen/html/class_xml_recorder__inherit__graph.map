@@ -1,0 +1,11 @@
+<map id="XmlRecorder" name="XmlRecorder">
+<area shape="rect" id="Node000001" title=" " alt="" coords="168,79,264,105"/>
+<area shape="rect" id="Node000003" href="$class_xml911_recorder.html" title=" " alt="" coords="5,153,123,178"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="178,114,91,154,89,150,175,109"/>
+<area shape="rect" id="Node000004" href="$class_xml_growth_recorder.html" title=" " alt="" coords="147,153,285,178"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="219,120,219,152,213,152,213,120"/>
+<area shape="rect" id="Node000005" href="$class_xml_s_t_d_p_recorder.html" title=" " alt="" coords="309,153,440,178"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="258,109,349,150,347,154,255,114"/>
+<area shape="rect" id="Node000002" href="$class_i_recorder.html" title=" " alt="" coords="177,5,255,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,46,219,79,213,79,213,46"/>
+</map>
