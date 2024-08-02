@@ -67,7 +67,7 @@ Model::Model()
 void Model::saveResults()
 {
    if (recorder_ != nullptr) {
-      recorder_->saveSimData(layout_->getVertices());
+      recorder_->saveSimData();
    }
 }
 
@@ -146,7 +146,7 @@ void Model::updateHistory()
       LOG4CPLUS_INFO(fileLogger_, "ERROR: Recorder class is null.");
    }
    if (recorder_ != nullptr) {
-      recorder_->compileHistories(layout_->getVertices());
+      recorder_->compileHistories();
    }
 }
 

@@ -58,13 +58,13 @@ public:
    /// Terminate process
    virtual void term() override;
 
-   // TODO: No parameters needed (AllVertices &vertices)
+   
    /// Compile/capture variable history information in every epoch
-   virtual void compileHistories(AllVertices &neurons) override;
+   virtual void compileHistories() override;
 
-   // TODO: No parameters needed (AllVertices &vertices)
+   
    /// Writes simulation results to an output destination.
-   virtual void saveSimData(const AllVertices &neurons) override;
+   virtual void saveSimData() override;
 
    /// Prints out all parameters to logging file.
    /// Registered to OperationManager as Operation::printParameters

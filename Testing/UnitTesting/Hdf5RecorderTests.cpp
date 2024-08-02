@@ -86,11 +86,8 @@ TEST(Hdf5RecorderTest, SaveSimDataTest)
    // Register the variable with Hdf5Recorder
    recorder.registerVariable("test_var1", eventBuffer, Recorder::UpdatedType::CONSTANT);
 
-   // Create a unique_ptr to an empty AllVertices object
-   unique_ptr<AllVertices> vertices = 0;
-
    // Call saveSimData() to write the data to the file
-   recorder.saveSimData(*vertices);
+   recorder.saveSimData();
 
    // Open the HDF5 file and read back the data
    H5File file(outputFile, H5F_ACC_RDONLY);
@@ -129,8 +126,6 @@ TEST(Hdf5RecorderTest, CompileHistoriesTest)
    // Register the variable with Hdf5Recorder as DYNAMIC
    recorder.registerVariable("test_var_int", eventBufferInt, Recorder::UpdatedType::DYNAMIC);
 
-   // Create a unique_ptr to an empty AllVertices object
-   unique_ptr<AllVertices> vertices = 0;
 
    // Call compileHistories() multiple times to simulate multiple epochs
    for (int epoch = 0; epoch < 3; ++epoch) {
@@ -142,7 +137,7 @@ TEST(Hdf5RecorderTest, CompileHistoriesTest)
       eventBufferInt.insertEvent(4 * (epoch + 1));
       eventBufferInt.insertEvent(5 * (epoch + 1));
 
-      recorder.compileHistories(*vertices);
+      recorder.compileHistories();
    }
 
    // Open the HDF5 file and read back the data

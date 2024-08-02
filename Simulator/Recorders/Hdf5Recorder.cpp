@@ -104,7 +104,7 @@ void Hdf5Recorder::term()
 }
 
 // create the dataset for constant variable and store the data to dataset
-void Hdf5Recorder::saveSimData(const AllVertices &neurons)
+void Hdf5Recorder::saveSimData()
 {
    // Initialize datasets for constant variables
    for (auto &variableInfo : variableTable_) {
@@ -124,9 +124,11 @@ void Hdf5Recorder::saveSimData(const AllVertices &neurons)
 }
 
 // Processes and updates HDF5 datasets for variables marked as DYNAMIC
-void Hdf5Recorder::compileHistories(AllVertices &vertices)
+void Hdf5Recorder::compileHistories()
 {
    // Define the maximum chunk size for datasets to optimize storage and access
+   // This defines the maximum number of elements per chunk
+   // If the dataset size exceeds this value, HDF5 will create multiple chunks to store the data
    const hsize_t max_chunk_size = 1024;
 
    // Iterate over each variableInfo object in the variable table
@@ -178,21 +180,21 @@ void Hdf5Recorder::compileHistories(AllVertices &vertices)
 
                // Prepare the data buffer and write the new data to the dataset
                if (variableInfo.hdf5Datatype_ == PredType::NATIVE_FLOAT) {
-                  std::vector<float> dataBuffer(variableInfo.variableLocation_.getNumElements());
+                  vector<float> dataBuffer(variableInfo.variableLocation_.getNumElements());
                   for (size_t i = 0; i < variableInfo.variableLocation_.getNumElements(); ++i) {
                      dataBuffer[i] = get<float>(variableInfo.variableLocation_.getElement(i));
                   }
                   variableInfo.hdf5DataSet_.write(dataBuffer.data(), variableInfo.hdf5Datatype_,
                                                   memSpace, fileSpace);
                } else if (variableInfo.hdf5Datatype_ == PredType::NATIVE_INT) {
-                  std::vector<int> dataBuffer(variableInfo.variableLocation_.getNumElements());
+                  vector<int> dataBuffer(variableInfo.variableLocation_.getNumElements());
                   for (size_t i = 0; i < variableInfo.variableLocation_.getNumElements(); ++i) {
                      dataBuffer[i] = get<int>(variableInfo.variableLocation_.getElement(i));
                   }
                   variableInfo.hdf5DataSet_.write(dataBuffer.data(), variableInfo.hdf5Datatype_,
                                                   memSpace, fileSpace);
                } else if (variableInfo.hdf5Datatype_ == PredType::NATIVE_UINT64) {
-                  std::vector<uint64_t> dataBuffer(variableInfo.variableLocation_.getNumElements());
+                  vector<uint64_t> dataBuffer(variableInfo.variableLocation_.getNumElements());
                   for (size_t i = 0; i < variableInfo.variableLocation_.getNumElements(); ++i) {
                      dataBuffer[i] = get<uint64_t>(variableInfo.variableLocation_.getElement(i));
                   }
@@ -200,7 +202,8 @@ void Hdf5Recorder::compileHistories(AllVertices &vertices)
                                                   memSpace, fileSpace);
                } else {
                   // Throw an exception if the data type is unsupported
-                  throw std::runtime_error("Unsupported data type");
+                  throw runtime_error("Unsupported data type for variable: "
+                                      + variableInfo.variableName_);
                }
             }
          }

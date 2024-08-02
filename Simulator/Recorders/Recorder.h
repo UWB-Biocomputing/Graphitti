@@ -52,13 +52,13 @@ public:
    /// Terminate process
    virtual void term() = 0;
 
-   // TODO: No parameters needed (AllVertices &vertices)
+   
    /// Compile/capture variable history information in every epoch
-   virtual void compileHistories(AllVertices &vertices) = 0;
+   virtual void compileHistories() = 0;
 
-   // TODO: No parameters needed (AllVertices &vertices)
+   
    /// Writes simulation results to an output destination.
-   virtual void saveSimData(const AllVertices &vertices) = 0;
+   virtual void saveSimData() = 0;
 
    /// Prints loaded parameters to logging file.
    virtual void printParameters() = 0;
