@@ -58,11 +58,11 @@ public:
    /// Terminate process
    virtual void term() override;
 
-   
+
    /// Compile/capture variable history information in every epoch
    virtual void compileHistories() override;
 
-   
+
    /// Writes simulation results to an output destination.
    virtual void saveSimData() override;
 
