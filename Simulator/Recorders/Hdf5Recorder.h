@@ -60,9 +60,7 @@ public:
 
    // TODO: No parameters needed (AllVertices &vertices)
    /// Compile/capture variable history information in every epoch
-   virtual void compileHistories(AllVertices &neurons) override
-   {
-   }
+   virtual void compileHistories(AllVertices &neurons) override;
 
    // TODO: No parameters needed (AllVertices &vertices)
    /// Writes simulation results to an output destination.
@@ -202,29 +200,6 @@ private:
 
    // Member variables for HDF5 datasets
    H5File *resultOut_;
-   /*DataSet dataSetXloc_;
-   DataSet dataSetYloc_;
-   DataSet dataSetNeuronTypes_;
-   DataSet dataSetNeuronThresh_;
-   DataSet dataSetStarterNeurons_;
-   DataSet dataSetTsim_;
-   DataSet dataSetSimulationEndTime_;
-   DataSet dataSetProbedNeurons_;
-   DataSet dataSetSpikesHist_;
-   DataSet dataSetSpikesProbedNeurons_;
-
-   // HDF5 dataset names
-   const H5std_string nameSpikesHist = "spikesHistory";
-   const H5std_string nameXloc = "xloc";
-   const H5std_string nameYloc = "yloc";
-   const H5std_string nameNeuronTypes = "neuronTypes";
-   const H5std_string nameNeuronThresh = "neuronThresh";
-   const H5std_string nameStarterNeurons = "starterNeurons";
-   const H5std_string nameTsim = "Tsim";
-   const H5std_string nameSimulationEndTime = "simulationEndTime";
-   const H5std_string nameSpikesProbedNeurons = "spikesProbedNeurons";
-   const H5std_string nameAttrPNUnit = "attrPNUint";
-   const H5std_string nameProbedNeurons = "probedNeurons";*/
 
    // Keep track of where we are in incrementally writing spikes
    vector<hsize_t> offsetSpikesProbedNeurons_;

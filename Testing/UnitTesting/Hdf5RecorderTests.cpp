@@ -112,4 +112,57 @@ TEST(Hdf5RecorderTest, SaveSimDataTest)
    }
 }
 
+// Define the test case for compiling histories
+TEST(Hdf5RecorderTest, CompileHistoriesTest)
+{
+   // Define a temporary file path for testing
+   std::string outputFile
+      = "../Testing/UnitTesting/TestOutput/Hdf5test_output_compile_histories.h5";
+
+   // Create an instance of Hdf5Recorder
+   Hdf5Recorder recorder(outputFile);
+   recorder.init();
+
+   // Create and configure variables for testing
+   EventBuffer eventBufferInt(5);   // Example with int type
+
+   // Register the variable with Hdf5Recorder as DYNAMIC
+   recorder.registerVariable("test_var_int", eventBufferInt, Recorder::UpdatedType::DYNAMIC);
+
+   // Create a unique_ptr to an empty AllVertices object
+   unique_ptr<AllVertices> vertices = 0;
+
+   // Call compileHistories() multiple times to simulate multiple epochs
+   for (int epoch = 0; epoch < 3; ++epoch) {
+      // Clear and insert new events to simulate new data each epoch
+      eventBufferInt.clear();
+      eventBufferInt.insertEvent(1 * (epoch + 1));
+      eventBufferInt.insertEvent(2 * (epoch + 1));
+      eventBufferInt.insertEvent(3 * (epoch + 1));
+      eventBufferInt.insertEvent(4 * (epoch + 1));
+      eventBufferInt.insertEvent(5 * (epoch + 1));
+
+      recorder.compileHistories(*vertices);
+   }
+
+   // Open the HDF5 file and read back the data
+   H5File file(outputFile, H5F_ACC_RDONLY);
+   DataSet dataset = file.openDataSet("test_var_int");
+   DataSpace dataspace = dataset.getSpace();
+
+   hsize_t num_elements;
+   dataspace.getSimpleExtentDims(&num_elements, nullptr);
+
+   std::vector<int> dataBuffer(num_elements);
+   // Read the data into the buffer
+   dataset.read(dataBuffer.data(), PredType::NATIVE_INT);
+
+   // Verify the data matches the expected values (repeated 3 times)
+   std::vector<int> expectedData = {1, 2, 3, 4, 5, 2, 4, 6, 8, 10, 3, 6, 9, 12, 15};
+   ASSERT_EQ(expectedData.size(), dataBuffer.size());
+   for (size_t i = 0; i < expectedData.size(); ++i) {
+      EXPECT_EQ(expectedData[i], dataBuffer[i]);
+   }
+}
+
 #endif   // HDF5

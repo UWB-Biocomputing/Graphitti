@@ -108,7 +108,8 @@ void Hdf5Recorder::saveSimData(const AllVertices &neurons)
 {
    // Initialize datasets for constant variables
    for (auto &variableInfo : variableTable_) {
-      if (variableInfo.variableType_ == UpdatedType::CONSTANT) {
+      if (variableInfo.variableLocation_.getNumElements() > 0
+          && variableInfo.variableType_ == UpdatedType::CONSTANT) {
          // Define dimensions for the constant dataset
          hsize_t constantDims[1]
             = {static_cast<hsize_t>(variableInfo.variableLocation_.getNumElements())};
@@ -119,6 +120,94 @@ void Hdf5Recorder::saveSimData(const AllVertices &neurons)
             variableInfo.variableName_, variableInfo.hdf5Datatype_, constantSpace);
          variableInfo.captureData();
       }
+   }
+}
+
+// Processes and updates HDF5 datasets for variables marked as DYNAMIC
+void Hdf5Recorder::compileHistories(AllVertices &vertices)
+{
+   // Define the maximum chunk size for datasets to optimize storage and access
+   const hsize_t max_chunk_size = 1024;
+
+   // Iterate over each variableInfo object in the variable table
+   for (auto &variableInfo : variableTable_) {
+      // Process only variables marked as DYNAMIC, which change over time
+      if (variableInfo.variableType_ == UpdatedType::DYNAMIC) {
+         // Check if there are elements to process
+         if (variableInfo.variableLocation_.getNumElements() > 0) {
+            // Determine the new dimensions for the dataset based on the number of elements
+            hsize_t newDims[1]
+               = {static_cast<hsize_t>(variableInfo.variableLocation_.getNumElements())};
+
+            // Create the dataset if it does not already exist
+            if (!H5Iis_valid(variableInfo.hdf5DataSet_.getId())) {
+               // Create initial dataspace with unlimited maximum dimensions
+               hsize_t maxDims[1] = {H5S_UNLIMITED};
+               DataSpace initialSpace(1, newDims, maxDims);
+
+               // Create dataset creation properties and set chunk size for efficiency
+               DSetCreatPropList cparms;
+               hsize_t chunk_dims[1] = {std::min(newDims[0], max_chunk_size)};
+               cparms.setChunk(1, chunk_dims);
+
+               // Create the dataset with specified name, datatype, initial space, and properties
+               variableInfo.hdf5DataSet_ = resultOut_->createDataSet(
+                  variableInfo.variableName_, variableInfo.hdf5Datatype_, initialSpace, cparms);
+
+               // Write the initial data to the dataset
+               variableInfo.captureData();
+            } else {
+               // Handle the case where the dataset already exists
+
+               // Get the current dimensions of the dataset
+               DataSpace currentSpace = variableInfo.hdf5DataSet_.getSpace();
+               hsize_t currentDims[1];
+               currentSpace.getSimpleExtentDims(currentDims, nullptr);
+
+               // Calculate the new dimensions after appending the new data
+               hsize_t appendDims[1] = {currentDims[0] + newDims[0]};
+               variableInfo.hdf5DataSet_.extend(appendDims);
+
+               // Select the hyperslab in the extended portion of the dataset
+               DataSpace fileSpace = variableInfo.hdf5DataSet_.getSpace();
+               hsize_t offset[1] = {currentDims[0]};
+               fileSpace.selectHyperslab(H5S_SELECT_SET, newDims, offset);
+
+               // Create a memory dataspace for the new data
+               DataSpace memSpace(1, newDims);
+
+               // Prepare the data buffer and write the new data to the dataset
+               if (variableInfo.hdf5Datatype_ == PredType::NATIVE_FLOAT) {
+                  std::vector<float> dataBuffer(variableInfo.variableLocation_.getNumElements());
+                  for (size_t i = 0; i < variableInfo.variableLocation_.getNumElements(); ++i) {
+                     dataBuffer[i] = get<float>(variableInfo.variableLocation_.getElement(i));
+                  }
+                  variableInfo.hdf5DataSet_.write(dataBuffer.data(), variableInfo.hdf5Datatype_,
+                                                  memSpace, fileSpace);
+               } else if (variableInfo.hdf5Datatype_ == PredType::NATIVE_INT) {
+                  std::vector<int> dataBuffer(variableInfo.variableLocation_.getNumElements());
+                  for (size_t i = 0; i < variableInfo.variableLocation_.getNumElements(); ++i) {
+                     dataBuffer[i] = get<int>(variableInfo.variableLocation_.getElement(i));
+                  }
+                  variableInfo.hdf5DataSet_.write(dataBuffer.data(), variableInfo.hdf5Datatype_,
+                                                  memSpace, fileSpace);
+               } else if (variableInfo.hdf5Datatype_ == PredType::NATIVE_UINT64) {
+                  std::vector<uint64_t> dataBuffer(variableInfo.variableLocation_.getNumElements());
+                  for (size_t i = 0; i < variableInfo.variableLocation_.getNumElements(); ++i) {
+                     dataBuffer[i] = get<uint64_t>(variableInfo.variableLocation_.getElement(i));
+                  }
+                  variableInfo.hdf5DataSet_.write(dataBuffer.data(), variableInfo.hdf5Datatype_,
+                                                  memSpace, fileSpace);
+               } else {
+                  // Throw an exception if the data type is unsupported
+                  throw std::runtime_error("Unsupported data type");
+               }
+            }
+         }
+      }
+
+      // Call startNewEpoch() to prepare for new data input
+      variableInfo.variableLocation_.startNewEpoch();
    }
 }
 
