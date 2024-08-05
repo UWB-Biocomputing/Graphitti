@@ -7,7 +7,7 @@
     <SimParams name="SimParams">
      <!-- epochDuration is one day in seconds: 24 * 3600 
       and total simulation is 30 days -->
-      <epochDuration name="epochDuration">3200</epochDuration>
+      <epochDuration name="epochDuration">3600</epochDuration>
       <numEpochs name="numEpochs">12</numEpochs>
       <!-- Every simulation step is 1 second -->
       <deltaT name="Simulation Step Duration">1</deltaT>
