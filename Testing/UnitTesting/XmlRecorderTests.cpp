@@ -146,7 +146,7 @@ TEST(XmlRecorderTest, CompileHistoriesTest)
    buffer0.insertEvent(2);
 
    // Call the compileHistories method
-   recorderTest_->compileHistories(*vertices.get());
+   recorderTest_->compileHistories();
    vector<std::variant<uint64_t, bool, int, BGFLOAT>> history = recorderTest_->getHistory(0);
 
    // Verify the events compiled hisotry
@@ -214,9 +214,9 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    buffer.insertEvent(3);
 
    // Call the compileHistories method
-   recorderTest_->compileHistories(*vertices.get());
+   recorderTest_->compileHistories();
    // Call the saveSimData() function
-   recorderTest_->saveSimData(*vertices.get());
+   recorderTest_->saveSimData();
 
    // Open the test_output.xml file and read its content
    std::ifstream inputFile("../Testing/UnitTesting/TestOutput/test_output.xml");

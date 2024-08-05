@@ -73,7 +73,7 @@ void XmlRecorder::term()
 
 // TODO : @param[in] vertices will be removed eventually after HDF5Recorder implementing
 /// Compile history information in every epoch
-void XmlRecorder::compileHistories(AllVertices &vertices)
+void XmlRecorder::compileHistories()
 {
    //capture data information in each epoch
    for (int rowIndex = 0; rowIndex < variableTable_.size(); rowIndex++) {
@@ -86,7 +86,7 @@ void XmlRecorder::compileHistories(AllVertices &vertices)
 
 // TODO : @param[in] vertices will be removed eventually after HDF5Recorder implementing
 /// Writes simulation results to an output destination.
-void XmlRecorder::saveSimData(const AllVertices &vertices)
+void XmlRecorder::saveSimData()
 {
    // Write XML header information:
    string header = "<?xml version=\"1.0\" standalone=\"no\"?>\n";
