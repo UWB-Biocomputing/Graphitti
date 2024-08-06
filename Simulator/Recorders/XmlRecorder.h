@@ -45,18 +45,6 @@ public:
    /// Initialize data in the newly loadeded xml file
    virtual void init() override;
 
-   // TODO : remove it if the HDF5 Recorder class doesn't need this method
-   /// Init radii and rates history matrices with default values
-   virtual void initDefaultValues() override;
-
-   // TODO : remove it if the HDF5 Recorder class doesn't need this method
-   /// Init radii and rates history matrices with current radii and rates
-   virtual void initValues() override;
-
-   // TODO : remove it if the HDF5 Recorder class doesn't need this method
-   /// Get the current radii and rates vlaues
-   virtual void getValues() override;
-
    /// Terminate process
    virtual void term() override;
 

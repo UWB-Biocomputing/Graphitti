@@ -55,7 +55,7 @@ TEST(Hdf5RecorderTest, RegisterVariableTest)
    recorder.registerVariable(hdf5Name, eventBuffer, Recorder::UpdatedType::CONSTANT);
 
    // Retrieve the registered variable info
-   const Hdf5Recorder::singleVariableInfo &varInfo = recorder.getVariableTable()[0];
+   const Hdf5Recorder::hdf5VariableInfo &varInfo = recorder.getVariableTable()[0];
 
    // Verify the variable type
    ASSERT_EQ(Recorder::UpdatedType::CONSTANT, varInfo.variableType_);
@@ -63,6 +63,36 @@ TEST(Hdf5RecorderTest, RegisterVariableTest)
    ASSERT_EQ(hdf5Name, varInfo.variableName_);
    // Verify the HDF5 data type
    ASSERT_EQ(PredType::NATIVE_UINT64, varInfo.hdf5Datatype_);
+}
+
+// Unit test for registerVariable method with a vector of RecordableBase
+TEST(Hdf5RecorderTest, RegisterVectorVariableTest)
+{
+   // Create an instance of Hdf5Recorder
+   std::string outputFile = "../Testing/UnitTesting/TestOutput/Hdf5test_output_register.h5";
+   Hdf5Recorder recorder(outputFile);
+   recorder.init();
+
+   // Create mock EventBuffer objects for testing
+   EventBuffer buffer0;
+   EventBuffer buffer1;
+
+   // Create a vector of pointers to EventBuffer objects
+   std::vector<RecordableBase *> bufferPointers = {&buffer0, &buffer1};
+
+   // Register variables
+   recorder.registerVariable("neuron_", bufferPointers, Recorder::UpdatedType::DYNAMIC);
+
+   // Verify that the registered variables are stored correctly
+   const auto &variableTable = recorder.getVariableTable();
+   ASSERT_EQ(2, variableTable.size());
+
+   ASSERT_EQ("neuron_0", variableTable[0].variableName_);
+   ASSERT_EQ("neuron_1", variableTable[1].variableName_);
+   ASSERT_EQ(&buffer0, &variableTable[0].variableLocation_);
+   ASSERT_EQ(&buffer1, &variableTable[1].variableLocation_);
+   ASSERT_EQ(Recorder::UpdatedType::DYNAMIC, variableTable[0].variableType_);
+   ASSERT_EQ(Recorder::UpdatedType::DYNAMIC, variableTable[1].variableType_);
 }
 
 // Define the test case for saving simulation data

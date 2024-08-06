@@ -29,10 +29,7 @@ class HDF5Recorder {
 	#resultOut_ : H5File
 	+{static} Create() : Recorder*
 	+compileHistories() : void
-	+getValues() : void
 	+init() : void
-	+initDefaultValues() : void
-	+initValues() : void
 	+printParameters() : void
 	+saveSimData() : void
 	+term() : void

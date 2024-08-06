@@ -104,7 +104,6 @@ void Model::setupSim()
    // Init radii and rates history matrices with default values
    if (recorder_ != nullptr) {
       recorder_->init();
-      recorder_->initDefaultValues();
    }
 
    // Creates all the vertices and generates data for them.
