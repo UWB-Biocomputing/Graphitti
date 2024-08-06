@@ -603,52 +603,20 @@ class GenericFunctionNode {
 }
 
 
-class Hdf5GrowthRecorder {
-	+Hdf5GrowthRecorder()
-	+~Hdf5GrowthRecorder()
-	#radiiHistory_ : BGFLOAT*
-	#ratesHistory_ : BGFLOAT*
-	#dataSetRadiiHist_ : DataSet
-	#dataSetRatesHist_ : DataSet
-	+{static} Create() : Recorder*
-	+compileHistories(AllVertices& neurons) : void
-	+getValues() : void
-	#initDataSet() : void
-	+initDefaultValues() : void
-	+initValues() : void
-	+printParameters() : void
-	+term() : void
-	#writeRadiiRates() : void
-}
-
-
 class Hdf5Recorder {
 	+Hdf5Recorder()
-	#dataSetNeuronThresh_ : DataSet*
-	#dataSetNeuronTypes_ : DataSet*
-	#dataSetProbedNeurons_ : DataSet*
-	#dataSetSimulationEndTime_ : DataSet*
-	#dataSetSpikesHist_ : DataSet*
-	#dataSetSpikesProbedNeurons_ : DataSet*
-	#dataSetStarterNeurons_ : DataSet*
-	#dataSetTsim_ : DataSet*
-	#dataSetXloc_ : DataSet*
-	#dataSetYloc_ : DataSet*
 	#resultOut_ : H5File*
+	#variableTable_ : vector<hdf5VariableInfo>
 	+{static} Create() : Recorder*
-	#offsetSpikesProbedNeurons_ : hsize_t*
-	#spikesHistory_ : int*
-	#spikesProbedNeurons_ : vector<uint64_t>*
-	+compileHistories(AllVertices& neurons) : void
+	+compileHistories() : void
 	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+getValues() : void
 	+init() : void
 	#initDataSet() : void
-	+initDefaultValues() : void
-	+initValues() : void
 	+printParameters() : void
-	+saveSimData(const AllVertices& neurons) : void
+	+saveSimData() : void
 	+term() : void
+	+registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
+	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
 }
 
 
@@ -665,10 +633,7 @@ abstract class Recorder {
 	#resultFileName_ : string
 	+{abstract} compileHistories(AllVertices& vertices) : void
 	#{abstract} getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+{abstract} getValues() : void
 	+{abstract} init() : void
-	+{abstract} initDefaultValues() : void
-	+{abstract} initValues() : void
 	+{abstract} printParameters() : void
 	+{abstract} saveSimData(const AllVertices& vertices) : void
 	+{abstract} term() : void
@@ -855,14 +820,11 @@ class XmlRecorder {
 	#variablesHistory_ : vector<vector<uint64_t>>
 	#variableTable_ : vector<variableInfo>
 	#resultOut_ : ofstream
-	+compileHistories(AllVertices& vertices) : void
+	+compileHistories() : void
 	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+getValues() : void
 	+init() : void
-	+initDefaultValues() : void
-	+initValues() : void
 	+printParameters() : void
-	+saveSimData(const AllVertices& vertices) : void
+	+saveSimData() : void
 	+term() : void
 	+registerVariable(string varName, EventBuffer &recordVar) : void
 
@@ -1091,9 +1053,6 @@ class EdgeIndexMap {
 
 
 .Connections <|-- .ConnStatic
-
-
-.Hdf5Recorder <|-- .Hdf5GrowthRecorder
 
 
 .IFunctionNode <|-- .GenericFunctionNode

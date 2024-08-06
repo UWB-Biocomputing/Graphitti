@@ -48,23 +48,6 @@ void XmlRecorder::init()
    }
 }
 
-// TODO: for the empty functions below, what should happen? Should they ever
-// TODO: be called? Is it an error if they're called?
-/// Init radii and rates history matrices with default values
-void XmlRecorder::initDefaultValues()
-{
-}
-
-/// Init radii and rates history matrices with current radii and rates
-void XmlRecorder::initValues()
-{
-}
-
-/// Get the current radii and rates values
-void XmlRecorder::getValues()
-{
-}
-
 /// Terminate process
 void XmlRecorder::term()
 {

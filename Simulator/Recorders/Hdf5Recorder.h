@@ -40,21 +40,6 @@ public:
    /// @param[in] stateOutputFileName File name to save histories
    virtual void init() override;
 
-   /// Init radii and rates history matrices with default values
-   virtual void initDefaultValues() override
-   {
-   }
-
-   /// Init radii and rates history matrices with current radii and rates
-   virtual void initValues() override
-   {
-   }
-
-   /// Get the current radii and rates vlaues
-   virtual void getValues() override
-   {
-   }
-
    /// Terminate process
    virtual void term() override;
 
@@ -85,15 +70,10 @@ public:
 
    /// Register a vector of instance of a class derived from RecordableBase.
    virtual void registerVariable(const string &varName, vector<RecordableBase *> &recordVars,
-                                 UpdatedType variableType) override
-   {
-   }
+                                 UpdatedType variableType) override;
 
-   virtual void initDataSet()
-   {
-   }
 
-   struct singleVariableInfo {
+   struct hdf5VariableInfo {
       /// the name of each variable
       string variableName_;
 
@@ -114,7 +94,7 @@ public:
       RecordableBase &variableLocation_;
 
       // Constructor accepting the variable name, the address of recorded variable, the updated type
-      singleVariableInfo(const string &name, RecordableBase &location, UpdatedType variableType) :
+      hdf5VariableInfo(const string &name, RecordableBase &location, UpdatedType variableType) :
          variableLocation_(location), variableName_(name), variableType_(variableType)
       {
          dataType_ = location.getDataType();
@@ -184,7 +164,7 @@ public:
    }
 
    // Accessor method to retrieve variableTable_
-   const vector<singleVariableInfo> &getVariableTable() const
+   const vector<hdf5VariableInfo> &getVariableTable() const
    {
       return variableTable_;
    }
@@ -201,15 +181,8 @@ private:
    // Member variables for HDF5 datasets
    H5File *resultOut_;
 
-   // Keep track of where we are in incrementally writing spikes
-   vector<hsize_t> offsetSpikesProbedNeurons_;
-   // spikes history - history of accumulated spikes count of all neurons (10 ms bin)
-   vector<int> spikesHistory_;
-   // track spikes count of probed neurons
-   vector<vector<uint64_t>> spikesProbedNeurons_;
-
    /// List of registered variables for recording
-   vector<singleVariableInfo> variableTable_;
+   vector<hdf5VariableInfo> variableTable_;
    // Other member functions...
 };
 

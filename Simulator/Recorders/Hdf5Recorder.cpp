@@ -225,10 +225,22 @@ void Hdf5Recorder::compileHistories()
 void Hdf5Recorder::registerVariable(const string &varName, RecordableBase &recordVar,
                                     UpdatedType variableType)
 {
-   // Create a singleVariableInfo object for the variable
-   singleVariableInfo hdf5VarInfo(varName, recordVar, variableType);
+   // Create a hdf5VariableInfo object for the variable
+   hdf5VariableInfo hdf5VarInfo(varName, recordVar, variableType);
 
    // Add the variable information to the variableTable_
    variableTable_.push_back(hdf5VarInfo);
+}
+
+/// Register a vector of instance of a class derived from RecordableBase
+void Hdf5Recorder::registerVariable(const string &varName, vector<RecordableBase *> &recordVars,
+                                    UpdatedType variableType)
+{
+   for (int i = 0; i < recordVars.size(); i++) {
+      string variableID = varName + to_string(i);
+      RecordableBase &address = *recordVars[i];
+      // add a new variable into the table
+      variableTable_.push_back(hdf5VariableInfo(variableID, address, variableType));
+   }
 }
 #endif   // HDF5

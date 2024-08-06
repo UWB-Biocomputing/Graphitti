@@ -37,18 +37,6 @@ public:
    /// @param[in] stateOutputFileName  File name to save histories
    virtual void init() = 0;
 
-   // ToDo : remove it ?
-   /// Init radii and rates history matrices with default values
-   virtual void initDefaultValues() = 0;
-
-
-   /// Init radii and rates history matrices with current radii and rates
-   virtual void initValues() = 0;
-
-   // ToDo : remove it ?
-   /// Get the current radii and rates values
-   virtual void getValues() = 0;
-
    /// Terminate process
    virtual void term() = 0;
 
