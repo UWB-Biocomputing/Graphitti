@@ -1,6 +1,6 @@
 Documentation of steps for generating GPU GoodOutput files.
 
-Results generated at 4pm on August 7th, 2024
+Results generated at 4pm on August 7th, 2024 using development branch
 
 GPU GoodOutput generation commands
 test-medium-connected-long-out.xml: ./ggraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-connected-long.xml
