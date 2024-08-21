@@ -94,6 +94,12 @@ void Simulator::loadParameters()
    ParameterManager::getInstance().getStringByXpath("//RNGConfig/NoiseRNGSeed/@class", type);
    noiseRNG = Factory<MTRand>::getInstance().createType(type);
 
+   // If the factory returns an error (nullptr), exit
+   if (noiseRNG == nullptr) {
+      LOG4CPLUS_INFO(consoleLogger_, "INVALID CLASS: " + type);
+      exit(EXIT_FAILURE);
+   }
+
    ParameterManager::getInstance().getLongByXpath("//RNGConfig/InitRNGSeed/text()", initRngSeed_);
    ParameterManager::getInstance().getLongByXpath("//RNGConfig/NoiseRNGSeed/text()", noiseRngSeed_);
    noiseRNG->seed(noiseRngSeed_);
@@ -191,7 +197,7 @@ void Simulator::simulate()
 /// Helper for #simulate(). Advance simulation until ready for next growth cycle.
 /// This should simulate all neuron and synapse activity for one epoch.
 /// @param currentStep the current epoch in which the network is being simulated.
-void Simulator::advanceEpoch(const int &currentEpoch) const
+void Simulator::advanceEpoch(int currentEpoch) const
 {
    uint64_t count = 0;
    // Compute step number at end of this simulation epoch

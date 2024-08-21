@@ -100,7 +100,7 @@ void AllIZHNeurons::createNeuron(int i, Layout &layout)
 ///  Set the Neuron at the indexed location to default values.
 ///
 ///  @param  i    Index of the Neuron to refer.
-void AllIZHNeurons::setNeuronDefaults(const int index)
+void AllIZHNeurons::setNeuronDefaults(int index)
 {
    AllIFNeurons::setNeuronDefaults(index);
 
@@ -117,7 +117,7 @@ void AllIZHNeurons::setNeuronDefaults(const int index)
 ///
 ///  @param  i    Index of the Neuron.
 ///  @param  deltaT          Inner simulation step duration
-void AllIZHNeurons::initNeuronConstsFromParamValues(int i, const BGFLOAT deltaT)
+void AllIZHNeurons::initNeuronConstsFromParamValues(int i, BGFLOAT deltaT)
 {
    AllIFNeurons::initNeuronConstsFromParamValues(i, deltaT);
 
@@ -129,7 +129,7 @@ void AllIZHNeurons::initNeuronConstsFromParamValues(int i, const BGFLOAT deltaT)
 ///
 ///  @param  index index of the neuron (in neurons) to output info from.
 ///  @return the complete state of the neuron.
-string AllIZHNeurons::toString(const int index) const
+string AllIZHNeurons::toString(int index) const
 {
    stringstream ss;
 
@@ -207,11 +207,11 @@ void AllIZHNeurons::writeNeuron(ostream &output, int index) const
 ///  Update internal state of the indexed Neuron (called by every simulation step).
 ///
 ///  @param  index       Index of the Neuron to update.
-void AllIZHNeurons::advanceNeuron(const int index)
+void AllIZHNeurons::advanceNeuron(int index)
 {
    BGFLOAT &Vm = this->Vm_[index];
    BGFLOAT &Vthresh = this->Vthresh_[index];
-   BGFLOAT &summationPoint = this->summationMap_[index];
+   BGFLOAT &summationPoint = this->summationPoints_[index];
    BGFLOAT &I0 = this->I0_[index];
    BGFLOAT &Inoise = this->Inoise_[index];
    BGFLOAT &C1 = this->C1_[index];
@@ -271,7 +271,7 @@ void AllIZHNeurons::advanceNeuron(const int index)
 ///  Fire the selected Neuron and calculate the result.
 ///
 ///  @param  index       Index of the Neuron to update.
-void AllIZHNeurons::fire(const int index)
+void AllIZHNeurons::fire(int index)
 {
    const BGFLOAT deltaT = Simulator::getInstance().getDeltaT();
    AllSpikingNeurons::fire(index);

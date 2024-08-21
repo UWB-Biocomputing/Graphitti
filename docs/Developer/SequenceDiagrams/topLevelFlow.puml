@@ -34,6 +34,13 @@ note right
     sequence diagram.
 end note
 
+Core -> OperationManager: Register Graph Properties
+note right
+    Ask all objects to register their Graph properties
+end note
+
+Core -> GraphManager: Read Graph
+
 ' Expand in a separate diagram
 Core -> OperationManager: Load Parameters
 note right
@@ -44,33 +51,21 @@ note right
 end note
 
 Core -> Simulator: Setup
-Simulator -> Model: Setup Simulation
 note right
-    Sets up vertices, edges, layout
-    Initializes recorder
-    Creates all vertices
-    Sets up connections and
-    Creates EdgeIndexMap
+    Details are in a separate
+    sequence diagram.
 end note
+
 
 opt if serialized file name available
     Core -> Serializer: Deserialize file
 end
 
 Core -> Simulator: Simulate
-Simulator -> Simulator: Advance Epoch
-Simulator -> Model: Update Connections
-Simulator -> Model: Update History
-Model -> Recorder: Compile Histories
 note right
-    Only vertices are compiled
-    and saved. Implementation
-    is simulation dependent.
+    Details are in a separate
+    sequence diagram.
 end note
-
-Core -> Simulator: Save Results
-Simulator -> Model: Save Results
-Model -> Recorder: Save Simulation Data
 
 opt if serializtion file available
     Core -> Serializer: Serialize Synapses

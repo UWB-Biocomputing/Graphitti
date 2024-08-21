@@ -30,7 +30,7 @@ AllEdges::AllEdges() : totalEdgeCount_(0), maxEdgesPerVertex_(0), countVertices_
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
 }
 
-AllEdges::AllEdges(const int numVertices, const int maxEdges)
+AllEdges::AllEdges(int numVertices, int maxEdges)
 {
    setupEdges(numVertices, maxEdges);
 }
@@ -66,7 +66,7 @@ void AllEdges::setupEdges()
 ///
 ///  @param  numVertices   Total number of vertices in the network.
 ///  @param  maxEdges  Maximum number of edges per vertex.
-void AllEdges::setupEdges(const int numVertices, const int maxEdges)
+void AllEdges::setupEdges(int numVertices, int maxEdges)
 {
    BGSIZE maxTotalEdges = maxEdges * numVertices;
 
@@ -77,12 +77,10 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges)
    if (maxTotalEdges != 0) {
       W_.assign(maxTotalEdges, 0);
       type_.assign(maxTotalEdges, ETYPE_UNDEF);
+      inUse_.assign(maxTotalEdges, false);
       edgeCounts_.assign(numVertices, 0);
       destVertexIndex_.assign(maxTotalEdges, 0);
       sourceVertexIndex_.assign(maxTotalEdges, 0);
-
-      inUse_ = make_unique<bool[]>(maxTotalEdges);
-      fill_n(inUse_.get(), maxTotalEdges, false);
    }
 }
 
@@ -90,7 +88,7 @@ void AllEdges::setupEdges(const int numVertices, const int maxEdges)
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the edge to set.
-void AllEdges::readEdge(istream &input, const BGSIZE iEdg)
+void AllEdges::readEdge(istream &input, BGSIZE iEdg)
 {
    int synapse_type(0);
 
@@ -113,20 +111,20 @@ void AllEdges::readEdge(istream &input, const BGSIZE iEdg)
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the edge to print out.
-void AllEdges::writeEdge(ostream &output, const BGSIZE iEdg) const
+void AllEdges::writeEdge(ostream &output, BGSIZE iEdg) const
 {
    output << sourceVertexIndex_[iEdg] << ends;
    output << destVertexIndex_[iEdg] << ends;
    output << W_[iEdg] << ends;
    output << type_[iEdg] << ends;
-   output << inUse_[iEdg] << ends;
+   output << (inUse_[iEdg] == 1 ? "true" : "false") << ends;
 }
 
 ///  Returns an appropriate edgeType object for the given integer.
 ///
 ///  @param  typeOrdinal    Integer that correspond with a edgeType.
 ///  @return the SynapseType that corresponds with the given integer.
-edgeType AllEdges::edgeOrdinalToType(const int typeOrdinal)
+edgeType AllEdges::edgeOrdinalToType(int typeOrdinal)
 {
    switch (typeOrdinal) {
       case 0:
@@ -238,10 +236,10 @@ void AllEdges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap)
 ///
 ///  @param  iVert    Index of a vertex to remove from.
 ///  @param  iEdg           Index of a edge to remove.
-void AllEdges::eraseEdge(const int iVert, const BGSIZE iEdg)
+void AllEdges::eraseEdge(int iVert, BGSIZE iEdg)
 {
    edgeCounts_[iVert]--;
-   inUse_[iEdg] = false;
+   inUse_[iEdg] = false;   // True:1, False:0
    W_[iEdg] = 0;
 }
 
@@ -255,8 +253,7 @@ void AllEdges::eraseEdge(const int iVert, const BGSIZE iEdg)
 ///  @param  destVertex The Vertex that receives from the edge.
 ///  @param  deltaT      Inner simulation step duration
 ///  @return  iEdg      Index of the edge to be added.
-BGSIZE AllEdges::addEdge(edgeType type, const int srcVertex, const int destVertex,
-                         const BGFLOAT deltaT)
+BGSIZE AllEdges::addEdge(edgeType type, int srcVertex, int destVertex, BGFLOAT deltaT)
 {
    BGSIZE iEdg;
    if (edgeCounts_[destVertex] >= maxEdgesPerVertex_) {

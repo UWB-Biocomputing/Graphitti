@@ -15,32 +15,17 @@
 #include "Connections911.h"
 // #include "Global.h"
 
-/// Init radii and rates history matrices with default values
-void Xml911Recorder::initDefaultValues()
-{
-}
-
-/// Init radii and rates history matrices with current radii and rates
-void Xml911Recorder::initValues()
-{
-}
-
-/// Get the current radii and rates vlaues
-void Xml911Recorder::getValues()
-{
-}
-
 /// Compile history information in every epoch
 ///
 /// @param[in] vertices   The entire list of vertices.
-void Xml911Recorder::compileHistories(AllVertices &vertices)
+void Xml911Recorder::compileHistories()
 {
 }
 
 /// Writes simulation results to an output destination.
 ///
 /// @param  vertices the Vertex list to search from.
-void Xml911Recorder::saveSimData(const AllVertices &vertices)
+void Xml911Recorder::saveSimData()
 {
    auto &conns = Simulator::getInstance().getModel().getConnections();
    Connections911 &conns911 = dynamic_cast<Connections911 &>(conns);
@@ -71,6 +56,10 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
    resultOut_ << "   " << oldTypes.toXML("vertexTypesPreEvent") << endl;
    resultOut_ << "   " << vertexTypes.toXML("vertexTypesPostEvent") << endl;
 
+   // Write the number of trunks (lines) and servers
+   resultOut_ << vectorToXML(all911Vertices.numTrunks_, "numTrunks") << endl;
+   resultOut_ << vectorToXML(all911Vertices.numServers_, "numServers") << endl;
+
    // Write call information
    resultOut_ << vectorToXML(all911Vertices.droppedCalls_, "droppedCalls") << endl;
    resultOut_ << vectorToXML(all911Vertices.receivedCalls_, "receivedCalls") << endl;
@@ -79,7 +68,19 @@ void Xml911Recorder::saveSimData(const AllVertices &vertices)
    resultOut_ << vector2dToXML(all911Vertices.answerTimeHistory_, "AnswerTimeHistory", "vertex")
               << endl;
    resultOut_ << vector2dToXML(all911Vertices.endTimeHistory_, "EndTimeHistory", "vertex") << endl;
-   resultOut_ << vector2dToXML(all911Vertices.wasAbandonedHistory_, "WasAbandonedHistory", "vertex")
+
+   // Convert vector of unsigned char to bool for printing
+   vector<vector<bool>> abandonmentHistoryBool;
+   for (auto &vChar : all911Vertices.wasAbandonedHistory_) {
+      vector<bool> vBool(vChar.begin(), vChar.end());
+      abandonmentHistoryBool.push_back(vBool);
+   }
+   resultOut_ << vector2dToXML(abandonmentHistoryBool, "WasAbandonedHistory", "vertex") << endl;
+
+   // Write system utilization and queue length histories
+   resultOut_ << vector2dToXML(all911Vertices.queueLengthHistory_, "queueLengthHistory", "vertex")
+              << endl;
+   resultOut_ << vector2dToXML(all911Vertices.utilizationHistory_, "utilizationHistory", "vertex")
               << endl;
 
    // Print out deleted edges and vertices:

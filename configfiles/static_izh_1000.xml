@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <BGSimParams>
     <SimInfoParams name="SimInfoParams">
-        <PoolSize name="PoolSize">
-            <x name="x">40</x>
-            <y name="y">25</y>
-            <z name="z">1</z>
-        </PoolSize>
+        <graphmlFile name="graphmlFile">../configfiles/graphs/static_izh_1000.graphml</graphmlFile>
         <SimParams name="SimParams">
             <epochDuration name="epochDuration">1</epochDuration>
             <numEpochs name="numEpochs">1</numEpochs>
@@ -101,10 +97,8 @@
             </StaticConnectionsWeight>
         </ConnectionsParams>
 
-        <LayoutParams class="FixedLayout" name="LayoutParams">
+        <LayoutParams class="LayoutNeuron" name="LayoutParams">
             <LayoutFiles name="LayoutFiles">
-                <activeNListFileName name="activeNListFileName" type="InputFile"/>
-                <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/inhNList__1000.xml</inhNListFileName>
                 <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_1000.xml</probedNListFileName>
             </LayoutFiles>
         </LayoutParams>

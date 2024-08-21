@@ -30,6 +30,8 @@ using namespace std;
 #include "Simulator.h"
 #include <iostream>
 #include <log4cplus/loggingmacros.h>
+// cereal
+#include "cereal/types/vector.hpp"
 
 class Layout;
 class AllEdges;
@@ -69,14 +71,17 @@ public:
    ///
    ///  @param  i   index of the vertex (in vertices) to output info from.
    ///  @return the complete state of the vertex.
-   virtual string toString(const int i) const = 0;
+   virtual string toString(int i) const = 0;
 
    ///  The summation point for each vertex.
    ///  Summation points are places where the synapses connected to the vertex
    ///  apply (summed up) their PSRs (Post-Synaptic-Response).
    ///  On the next advance cycle, vertices add the values stored in their corresponding
    ///  summation points to their Vm and resets the summation points to zero
-   vector<BGFLOAT> summationMap_;
+   vector<BGFLOAT> summationPoints_;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive, std::uint32_t const version);
 
 protected:
    ///  Total number of vertices.
@@ -144,6 +149,13 @@ struct AllVerticesDeviceProperties {
    ///  apply (summed up) their PSRs (Post-Synaptic-Response).
    ///  On the next advance cycle, vertices add the values stored in their corresponding
    ///  summation points to their Vm and resets the summation points to zero
-   BGFLOAT *summationMap_;
+   BGFLOAT *summationPoints_;
 };
 #endif   // defined(USE_GPU)
+
+CEREAL_CLASS_VERSION(AllVertices, 1);
+
+template <class Archive> void AllVertices::serialize(Archive &archive, std::uint32_t const version)
+{
+   archive(cereal::make_nvp("summationPoints", summationPoints_), cereal::make_nvp("size", size_));
+}

@@ -72,6 +72,10 @@ Natalie Gonzales
 ## 2024
 Andrzej Dawiec 
 
+ChengHao Hsu
+
+Zaina Shaikh
+
 <!-- ---------------------------------------------------------------------------------- -->
 # Graduate
 

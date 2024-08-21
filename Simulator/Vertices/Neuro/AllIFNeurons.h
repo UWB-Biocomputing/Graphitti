@@ -25,6 +25,9 @@
 
 #include "AllSpikingNeurons.h"
 #include "Global.h"
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
 struct AllIFNeuronsDeviceProperties;
 
@@ -55,7 +58,7 @@ public:
    ///
    ///  @param  index   index of the neuron (in neurons) to output info from.
    ///  @return the complete state of the neuron.
-   virtual string toString(const int index) const;
+   virtual string toString(int index) const;
 
    /// Reads and sets the data for all neurons from input stream.
    ///
@@ -66,6 +69,9 @@ public:
    ///
    ///  @param  output      stream to write out to.ss.
    virtual void serialize(ostream &output) const;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 #if defined(USE_GPU)
 public:
@@ -138,13 +144,13 @@ protected:
    ///  Set the Neuron at the indexed location to default values.
    ///
    ///  @param  index    Index of the Neuron that the synapse belongs to.
-   void setNeuronDefaults(const int index);
+   void setNeuronDefaults(int index);
 
    ///  Initializes the Neuron constants at the indexed location.
    ///
    ///  @param  neuronIndex    Index of the Neuron.
    ///  @param  deltaT          Inner simulation step duration
-   virtual void initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT);
+   virtual void initNeuronConstsFromParamValues(int neuronIndex, BGFLOAT deltaT);
 
    ///  Sets the data for Neuron #index to input's data.
    ///
@@ -292,3 +298,21 @@ struct AllIFNeuronsDeviceProperties : public AllSpikingNeuronsDeviceProperties {
    BGFLOAT *Tau_;
 };
 #endif   // defined(USE_GPU)
+
+CEREAL_REGISTER_TYPE(AllIFNeurons);
+
+///  Cereal serialization method
+template <class Archive> void AllIFNeurons::serialize(Archive &archive)
+{
+   archive(cereal::base_class<AllSpikingNeurons>(this), cereal::make_nvp("Trefract_", Trefract_),
+           cereal::make_nvp("Vthresh_", Vthresh_), cereal::make_nvp("Vrest_", Vrest_),
+           cereal::make_nvp("Vreset_", Vreset_), cereal::make_nvp("Vinit_", Vinit_),
+           cereal::make_nvp("Cm_", Cm_), cereal::make_nvp("Rm_", Rm_),
+           cereal::make_nvp("Inoise_", Inoise_), cereal::make_nvp("Iinject_", Iinject_),
+           cereal::make_nvp("Isyn_", Isyn_),
+           cereal::make_nvp("numStepsInRefractoryPeriod_", numStepsInRefractoryPeriod_),
+           cereal::make_nvp("C1_", C1_), cereal::make_nvp("C2_", C2_), cereal::make_nvp("I0_", I0_),
+           cereal::make_nvp("Vm_", Vm_), cereal::make_nvp("Tau_", Tau_));
+
+   //Private variables are intentionally excluded from serialization as they are populated from configuration files.
+}

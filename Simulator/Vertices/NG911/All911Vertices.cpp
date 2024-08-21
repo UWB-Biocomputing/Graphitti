@@ -35,6 +35,8 @@ void All911Vertices::setupVertices()
    answerTimeHistory_.resize(size_);
    endTimeHistory_.resize(size_);
    wasAbandonedHistory_.resize(size_);
+   queueLengthHistory_.resize(size_);
+   utilizationHistory_.resize(size_);
 
    // Register call properties with InputManager
    inputManager_.registerProperty("vertex_id", &Call::vertexId);
@@ -43,6 +45,7 @@ void All911Vertices::setupVertices()
    inputManager_.registerProperty("x", &Call::x);
    inputManager_.registerProperty("y", &Call::y);
    inputManager_.registerProperty("patience", &Call::patience);
+   inputManager_.registerProperty("on_site_time", &Call::onSiteTime);
    inputManager_.registerProperty("type", &Call::type);
 }
 
@@ -50,6 +53,14 @@ void All911Vertices::setupVertices()
 // Creates all the Vertices and assigns initial data for them.
 void All911Vertices::createAllVertices(Layout &layout)
 {
+   // Calcualte the total number of time-steps for the data structures that
+   // will record per-step histories
+   Simulator &simulator = Simulator::getInstance();
+   uint64_t stepsPerEpoch = simulator.getEpochDuration() / simulator.getDeltaT();
+   uint64_t totalTimeSteps = stepsPerEpoch * simulator.getNumEpochs();
+   BGFLOAT epochDuration = simulator.getEpochDuration();
+   BGFLOAT deltaT = simulator.getDeltaT();
+
    // Loop over all vertices and set the number of servers and trunks, and
    // determine the size of the waiting queue.
    // We get the information needed from the GraphManager.
@@ -59,8 +70,7 @@ void All911Vertices::createAllVertices(Layout &layout)
       assert(*vi < size_);
 
       if (gm[*vi].type == "CALR") {
-         // TODO: Hardcoded queue size for now (10/0.0001)
-         vertexQueues_[*vi].resize(100000);
+         vertexQueues_[*vi].resize(stepsPerEpoch);
       } else {
          numServers_[*vi] = gm[*vi].servers;
          numTrunks_[*vi] = gm[*vi].trunks;
@@ -75,6 +85,10 @@ void All911Vertices::createAllVertices(Layout &layout)
          servingCall_[*vi].resize(gm[*vi].servers);
          answerTime_[*vi].resize(gm[*vi].servers);
          serverCountdown_[*vi].assign(gm[*vi].servers, 0);
+
+         // Initialize the data structures for system metrics
+         queueLengthHistory_[*vi].assign(totalTimeSteps, 0);
+         utilizationHistory_[*vi].assign(totalTimeSteps, 0);
       }
    }
 
@@ -87,6 +101,7 @@ void All911Vertices::createAllVertices(Layout &layout)
 void All911Vertices::loadParameters()
 {
    ParameterManager::getInstance().getBGFloatByXpath("//RedialP/text()", redialP_);
+   ParameterManager::getInstance().getBGFloatByXpath("//AvgDrivingSpeed/text()", avgDrivingSpeed_);
 }
 
 
@@ -96,8 +111,7 @@ void All911Vertices::printParameters() const
 }
 
 
-// Outputs state of the vertex chosen as a string.
-string All911Vertices::toString(const int index) const
+string All911Vertices::toString(int index) const
 {
    return nullptr;   // Change this
 }
@@ -118,6 +132,30 @@ void All911Vertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
          inputManager_.getEvents(idx, currentStep, endStep, vertexQueues_[idx]);
       }
    }
+}
+
+// Accessor for the waiting queue of a vertex
+CircularBuffer<Call> &All911Vertices::getQueue(int vIdx)
+{
+   return vertexQueues_[vIdx];
+}
+
+// Accessor for the droppedCalls counter of a vertex
+int &All911Vertices::droppedCalls(int vIdx)
+{
+   return droppedCalls_[vIdx];
+}
+
+// Accessor for the receivedCalls counter of a vertex
+int &All911Vertices::receivedCalls(int vIdx)
+{
+   return receivedCalls_[vIdx];
+}
+
+// Accessor for the number of busy servers in a given vertex
+int All911Vertices::busyServers(int vIdx) const
+{
+   return busyServers_[vIdx];
 }
 
 #if !defined(USE_GPU)
@@ -196,9 +234,8 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
    vector<int> availableServers;
    for (size_t server = 0; server < serverCountdown_[vertexIdx].size(); ++server) {
       if (serverCountdown_[vertexIdx][server] == 0) {
-         // Server is available to take calls. This check is needed because
-         // calls could have duration of zero, meaning they hang up as soon as
-         // the call is answered
+         // Server is available to take calls. This check is needed because calls
+         // could have duration of zero or server has not been assigned a call yet
          availableServers.push_back(server);
       } else if (--serverCountdown_[vertexIdx][server] == 0) {
          // Server becomes free to take calls
@@ -223,6 +260,8 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
          LOG4CPLUS_DEBUG(vertexLogger_, "Dispatching Responder: " << responder);
 
          // Place the call in the edge going to the responder
+         // Call becomes a dispatch order at this time
+         endingCall.time = g_simulationStep;
          edges911.call_[respEdge] = endingCall;
          edges911.isAvailable_[respEdge] = false;
 
@@ -266,6 +305,11 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
 
    // Update number of busy servers. This is used to check if there is space in the queue
    busyServers_[vertexIdx] = numServers_[vertexIdx] - availableServers.size();
+
+   // Update queueLength and utilization histories
+   queueLengthHistory_[vertexIdx][g_simulationStep] = vertexQueues_[vertexIdx].size();
+   utilizationHistory_[vertexIdx][g_simulationStep]
+      = static_cast<double>(busyServers_[vertexIdx]) / numServers_[vertexIdx];
 }
 
 
@@ -273,12 +317,75 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
 void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
                                  const EdgeIndexMap &edgeIndexMap)
 {
-   // Let's just record that responder received the call and pop it from the queue
-   if (!vertexQueues_[vertexIdx].isEmpty()) {
-      optional<Call> incident = vertexQueues_[vertexIdx].get();
-      assert(incident);
-      LOG4CPLUS_DEBUG(vertexLogger_, "Responded to incident, type: " << incident->type);
-   }
-}
+   Layout &layout = Simulator::getInstance().getModel().getLayout();
 
+   // Free the units finishing up with emergency responses
+   vector<int> availableUnits;
+   for (size_t unit = 0; unit < serverCountdown_[vertexIdx].size(); ++unit) {
+      if (serverCountdown_[vertexIdx][unit] == 0) {
+         // Unit is available
+         availableUnits.push_back(unit);
+      } else if (--serverCountdown_[vertexIdx][unit] == 0) {
+         // Unit becomes available to responde to new incidents
+         Call &endingIncident = servingCall_[vertexIdx][unit];
+
+         //Store incident response metrics
+         wasAbandonedHistory_[vertexIdx].push_back(false);
+         beginTimeHistory_[vertexIdx].push_back(endingIncident.time);
+         answerTimeHistory_[vertexIdx].push_back(answerTime_[vertexIdx][unit]);
+         endTimeHistory_[vertexIdx].push_back(g_simulationStep);
+         LOG4CPLUS_DEBUG(vertexLogger_,
+                         "Finishing response, begin time: "
+                            << endingIncident.time << ", end time: " << g_simulationStep
+                            << ", waited: " << answerTime_[vertexIdx][unit] - endingIncident.time);
+
+         // Unit is added to available units
+         availableUnits.push_back(unit);
+      }
+   }
+
+
+   // Assign reponse dispatches until no units are available or there are no more
+   // incidents in the waiting queue
+   for (size_t unit = 0; unit < availableUnits.size() && !vertexQueues_[vertexIdx].isEmpty();
+        ++unit) {
+      optional<Call> incident = vertexQueues_[vertexIdx].get();
+      assert(incident);   // Safety check for valid incidents
+
+      // The available unit starts serving the call
+      int availUnit = availableUnits[unit];
+      servingCall_[vertexIdx][availUnit] = incident.value();
+      answerTime_[vertexIdx][availUnit] = g_simulationStep;
+
+      // We need to calculate the distance in miles but the x and y coordinates
+      // represent, respectively, degrees of longitude and latitude.
+      // One degree of latitude is aproximately 69 miles regardles of the location. However,
+      // a degree of longitude varies, being 69.172 miles at the equator and gradually shrinking
+      // to zero at the poles.
+      // One degree of longitude can be converted to miles using the following formula:
+      //    1 degree of longitude = cos(latitude) * 69.172
+      double lngDegreeLength = cos(layout.yloc_[vertexIdx] * (pi / 180)) * 69.172;
+      double latDegreeLength = 69.0;
+      double deltaLng = incident->x - layout.xloc_[vertexIdx];
+      double deltaLat = incident->y - layout.yloc_[vertexIdx];
+      double dist2incident
+         = sqrt(pow(deltaLng * lngDegreeLength, 2) + pow(deltaLat * latDegreeLength, 2));
+
+      // Calculate the driving time to the incident in seconds
+      double driveTime = (dist2incident / avgDrivingSpeed_) * 3600;
+      serverCountdown_[vertexIdx][availUnit] = driveTime + incident->onSiteTime;
+
+      serverCountdown_[vertexIdx][availUnit] = incident.value().duration;
+      LOG4CPLUS_DEBUG(vertexLogger_, "Response, driving time: " << driveTime << ", On-site time: "
+                                                                << incident->onSiteTime);
+   }
+
+   // Update number of busy servers. This is used to check if there is space in the queue
+   busyServers_[vertexIdx] = numServers_[vertexIdx] - availableUnits.size();
+
+   // Update queueLength and utilization histories
+   queueLengthHistory_[vertexIdx][g_simulationStep] = vertexQueues_[vertexIdx].size();
+   utilizationHistory_[vertexIdx][g_simulationStep]
+      = static_cast<double>(busyServers_[vertexIdx]) / numServers_[vertexIdx];
+}
 #endif

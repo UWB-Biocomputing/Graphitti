@@ -46,7 +46,7 @@
  * We also implement call abandonment, which is when a caller gets tired of
  * waiting in the queue and decides to abandon it. This is supported through the
  * `patience` call property, which represent the amount of time a caller is
- * willing to waiting before abandoing the queue. If their in the queue exceeds
+ * willing to waiting before abandoing the queue. If their time in the queue exceeds
  * this `patience` time, the call is considered abandoned.
  * 
  * Redialing is implemented using a redial probability (`redialP`) in the
@@ -77,6 +77,9 @@ class All911Edges;
 // Class to hold all data necessary for all the Vertices.
 class All911Vertices : public AllVertices {
 public:
+   // Xml911Recorder needs to access some of this class private members
+   friend class Xml911Recorder;
+
    All911Vertices() = default;
 
    virtual ~All911Vertices() = default;
@@ -110,25 +113,38 @@ public:
    ///
    ///  @param  index   index of the vertex (in vertices) to output info from.
    ///  @return the complete state of the vertex.
-   virtual string toString(const int index) const;
+   virtual string toString(int index) const;
 
    /// Loads all inputs scheduled to occur in the upcoming epoch.
    /// These are inputs occurring in between curStep (inclusive) and
    /// endStep (exclusive)
    virtual void loadEpochInputs(uint64_t currentStep, uint64_t endStep) override;
 
-   /// These are the queues where calls will wait to be served
-   vector<CircularBuffer<Call>> vertexQueues_;
+   /// Accessor for the waiting queue of a vertex
+   ///
+   /// @param vIdx   The index of the vertex
+   /// @return    The waiting queue for the given vertex
+   CircularBuffer<Call> &getQueue(int vIdx);
 
-   /// Number of servers currently serving calls
-   vector<int> busyServers_;
+   /// Accessor for the droppedCalls counter of a vertex
+   ///
+   /// @param vIdx   The index of the vertex
+   /// @return    A reference to the droppedCalls counter of the vertex
+   int &droppedCalls(int vIdx);
 
-   /// The number of calls that have been dropped (got a busy signal)
-   vector<int> droppedCalls_;
+   /// Accessor for the receivedCalls counter of a vertex
+   ///
+   /// @param vIdx   The index of the vertex
+   /// @return    A reference to the receivedCalls counter of the vertex
+   int &receivedCalls(int vIdx);
 
-   /// The number of received calls
-   vector<int> receivedCalls_;
+   /// Accessor for the number of busy servers in a given vertex
+   ///
+   /// @param vIdx   The index of the vertex
+   /// @return    The number of busy servers in the given vertex
+   int busyServers(int vIdx) const;
 
+private:
    /// The starting time for every call
    vector<vector<uint64_t>> beginTimeHistory_;
    /// The answer time for every call
@@ -136,9 +152,24 @@ public:
    /// The end time for every call
    vector<vector<uint64_t>> endTimeHistory_;
    /// True if the call was abandoned
-   vector<vector<bool>> wasAbandonedHistory_;
+   vector<vector<unsigned char>> wasAbandonedHistory_;
+   /// The length of the waiting queue at every time-step
+   vector<vector<int>> queueLengthHistory_;
+   /// The portion of servers that are busy at every time-step
+   vector<vector<double>> utilizationHistory_;
 
-private:
+   /// These are the queues where calls will wait to be served
+   vector<CircularBuffer<Call>> vertexQueues_;
+
+   /// The number of calls that have been dropped (got a busy signal)
+   vector<int> droppedCalls_;
+
+   /// The number of received calls
+   vector<int> receivedCalls_;
+
+   /// Number of servers currently serving calls
+   vector<int> busyServers_;
+
    /// Number of servers. In a PSAP these are the call takers, in Responder nodes
    /// they are responder units
    vector<int> numServers_;
@@ -148,6 +179,9 @@ private:
 
    /// The probability that a caller will redial after receiving the busy signal
    BGFLOAT redialP_;
+
+   /// The average driving speed of a response unit in mph
+   BGFLOAT avgDrivingSpeed_;
 
    /// Holds the calls being served by each server
    vector<vector<Call>> servingCall_;

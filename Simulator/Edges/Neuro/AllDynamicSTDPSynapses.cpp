@@ -8,7 +8,7 @@
 
 #include "AllDynamicSTDPSynapses.h"
 
-AllDynamicSTDPSynapses::AllDynamicSTDPSynapses(const int numVertices, const int maxEdges) :
+AllDynamicSTDPSynapses::AllDynamicSTDPSynapses(int numVertices, int maxEdges) :
    AllSTDPSynapses(numVertices, maxEdges)
 {
    setupEdges(numVertices, maxEdges);
@@ -25,7 +25,7 @@ void AllDynamicSTDPSynapses::setupEdges()
 ///
 ///  @param  numVertices   Total number of vertices in the network.
 ///  @param  maxEdges  Maximum number of synapses per neuron.
-void AllDynamicSTDPSynapses::setupEdges(const int numVertices, const int maxEdges)
+void AllDynamicSTDPSynapses::setupEdges(int numVertices, int maxEdges)
 {
    AllSTDPSynapses::setupEdges(numVertices, maxEdges);
 
@@ -57,7 +57,7 @@ void AllDynamicSTDPSynapses::printParameters() const
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the synapse to set.
-void AllDynamicSTDPSynapses::readEdge(istream &input, const BGSIZE iEdg)
+void AllDynamicSTDPSynapses::readEdge(istream &input, BGSIZE iEdg)
 {
    AllSTDPSynapses::readEdge(input, iEdg);
 
@@ -80,7 +80,7 @@ void AllDynamicSTDPSynapses::readEdge(istream &input, const BGSIZE iEdg)
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the synapse to print out.
-void AllDynamicSTDPSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const
+void AllDynamicSTDPSynapses::writeEdge(ostream &output, BGSIZE iEdg) const
 {
    AllSTDPSynapses::writeEdge(output, iEdg);
 
@@ -96,7 +96,7 @@ void AllDynamicSTDPSynapses::writeEdge(ostream &output, const BGSIZE iEdg) const
 ///
 ///  @param  iEdg            Index of the synapse to set.
 ///  @param  deltaT          Inner simulation step duration
-void AllDynamicSTDPSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
+void AllDynamicSTDPSynapses::resetEdge(BGSIZE iEdg, BGFLOAT deltaT)
 {
    AllSTDPSynapses::resetEdge(iEdg, deltaT);
 
@@ -112,8 +112,8 @@ void AllDynamicSTDPSynapses::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
 ///  @param  destVertex  Index of the destination Neuron.
 ///  @param  deltaT      Inner simulation step duration.
 ///  @param  type        Type of the Synapse to create.
-void AllDynamicSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int destVertex,
-                                        const BGFLOAT deltaT, edgeType type)
+void AllDynamicSTDPSynapses::createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
+                                        edgeType type)
 {
    AllSTDPSynapses::createEdge(iEdg, srcVertex, destVertex, deltaT, type);
 
@@ -159,7 +159,7 @@ void AllDynamicSTDPSynapses::createEdge(const BGSIZE iEdg, int srcVertex, int de
 ///
 ///  @param  iEdg        Index of the synapse to set.
 ///  @param  deltaT      Inner simulation step duration.
-void AllDynamicSTDPSynapses::changePSR(const BGSIZE iEdg, const BGFLOAT deltaT)
+void AllDynamicSTDPSynapses::changePSR(BGSIZE iEdg, BGFLOAT deltaT)
 {
    BGFLOAT &psr = this->psr_[iEdg];
    BGFLOAT &W = this->W_[iEdg];

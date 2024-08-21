@@ -15,14 +15,13 @@
 
 #if defined(__CUDACC__)
 extern CUDA_CALLABLE void
-   preSpikingSynapsesSpikeHitDevice(const BGSIZE iEdg,
+   preSpikingSynapsesSpikeHitDevice(BGSIZE iEdg,
                                     AllSpikingSynapsesDeviceProperties *allEdgesDevice);
 extern CUDA_CALLABLE void
-   postSpikingSynapsesSpikeHitDevice(const BGSIZE iEdg,
+   postSpikingSynapsesSpikeHitDevice(BGSIZE iEdg,
                                      AllSpikingSynapsesDeviceProperties *allEdgesDevice);
 extern CUDA_CALLABLE void
-   postSTDPSynapseSpikeHitDevice(const BGSIZE iEdg,
-                                 AllSTDPSynapsesDeviceProperties *allEdgesDevice);
+   postSTDPSynapseSpikeHitDevice(BGSIZE iEdg, AllSTDPSynapsesDeviceProperties *allEdgesDevice);
 
 
 #endif

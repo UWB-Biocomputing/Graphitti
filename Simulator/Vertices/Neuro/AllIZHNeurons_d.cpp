@@ -26,8 +26,7 @@
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
 
 __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int maxSpikes,
-                                        const BGFLOAT deltaT, uint64_t simulationStep,
-                                        float randNoise[],
+                                        BGFLOAT deltaT, uint64_t simulationStep, float randNoise[],
                                         AllIZHNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                         EdgeIndexMapDevice *edgeIndexMapDevice,
@@ -218,8 +217,7 @@ void AllIZHNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
 ///  @param[in] edgeIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
 __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int maxSpikes,
-                                        const BGFLOAT deltaT, uint64_t simulationStep,
-                                        float randNoise[],
+                                        BGFLOAT deltaT, uint64_t simulationStep, float randNoise[],
                                         AllIZHNeuronsDeviceProperties *allVerticesDevice,
                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                         EdgeIndexMapDevice *edgeIndexMapDevice,
@@ -231,7 +229,7 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
       return;
 
    allVerticesDevice->hasFired_[idx] = false;
-   BGFLOAT &sp = allVerticesDevice->summationMap_[idx];
+   BGFLOAT &sp = allVerticesDevice->summationPoints_[idx];
    BGFLOAT &vm = allVerticesDevice->Vm_[idx];
    BGFLOAT &a = allVerticesDevice->Aconst_[idx];
    BGFLOAT &b = allVerticesDevice->Bconst_[idx];
@@ -245,11 +243,11 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
    if (allVerticesDevice->numStepsInRefractoryPeriod_[idx] > 0) {   // is neuron refractory?
       --allVerticesDevice->numStepsInRefractoryPeriod_[idx];
    } else if (r_vm >= allVerticesDevice->Vthresh_[idx]) {   // should it fire?
-      int &spikeCount = allVerticesDevice->numEventsInEpoch_[idx];
+      int &spikeCount = allVerticesDevice->numElementsInEpoch_[idx];
       // Note that the neuron has fired!
       allVerticesDevice->hasFired_[idx] = true;
       // record spike time
-      int &queueEnd = allVerticesDevice->queueEnd_[idx];
+      int &queueEnd = allVerticesDevice->bufferEnd_[idx];
       allVerticesDevice->spikeHistory_[idx][queueEnd] = simulationStep;
       spikeCount++;
 

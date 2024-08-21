@@ -32,12 +32,12 @@ void AllVertices::setupVertices()
 {
    size_ = Simulator::getInstance().getTotalVertices();
 #if defined(USE_GPU)
-   // We don't allocate memory for summationMap_ in CPU when building the GPU
+   // We don't allocate memory for summationPoints_ in CPU when building the GPU
    // implementation. This is to avoid misusing it in GPU code.
-   // summationMap_ = nullptr;
+   // summationPoints_ = nullptr;
 
 #else
-   summationMap_.assign(size_, 0);
+   summationPoints_.assign(size_, 0);
 
 #endif
 }

@@ -2,12 +2,16 @@
 <BGSimParams>
   <SimInfoParams name="SimInfoParams">
     <SimParams name="SimParams">
-      <epochDuration name="epochDuration">100.0</epochDuration>
+      <!-- 2 epochs of 15 minutes each -->
+      <epochDuration name="epochDuration">900</epochDuration>
       <numEpochs name="numEpochs">2</numEpochs>
+      <!-- Every simulation step is 1 second -->
+      <deltaT name="Simulation Step Duration">1</deltaT>
     </SimParams>
     <SimConfig name="SimConfig">
       <maxFiringRate name="maxFiringRate">100</maxFiringRate>
-      <maxEdgesPerVertex name="maxEdgesPerVertex">88</maxEdgesPerVertex>
+      <!-- max edges in a vertex for test-small-911.graphml is 20 -->
+      <maxEdgesPerVertex name="maxEdgesPerVertex">25</maxEdgesPerVertex>
     </SimConfig>
     <RNGConfig name="RNGConfig">
       <InitRNGSeed name="InitRNGSeed">1</InitRNGSeed>
@@ -17,28 +21,22 @@
 
   <ModelParams>
     <VerticesParams class="All911Vertices" name="VerticesParams">
-      <CallNum name="CallNum">
-        <min name="min">3</min>
-        <max name="max">37</max>
-      </CallNum>
-      <DispNumScale name="DispNumScale">0.3</DispNumScale>
-      <RespNumScale name="RespNumScale">0.3</RespNumScale>
+      <RedialP name="RedialProbability">0.85</RedialP>
+      <!-- Response unit driving speed in mph -->
+      <AvgDrivingSpeed name="AverageDrivingSpeed">30.0</AvgDrivingSpeed>
     </VerticesParams>
 
     <EdgesParams class="All911Edges" name="EdgesParams">
     </EdgesParams>
 
     <ConnectionsParams class="Connections911" name="ConnectionsParams">
-      <Connections911Params name="Connections911Params">
-        <graphmlFile name="graphmlFile">../configfiles/graphs/small_911.graphml</graphmlFile>
-        <psapsToErase name="psapsToErase">1</psapsToErase>
-        <respsToErase name="respsToErase">2</respsToErase>
-      </Connections911Params>
+      <graphmlFile name="graphmlFile">../configfiles/graphs/test-small-911.graphml</graphmlFile>
+      <psapsToErase name="psapsToErase">0</psapsToErase>
+      <respsToErase name="respsToErase">0</respsToErase>
     </ConnectionsParams>
 
     <InputParams name="InputParams">
-      <!-- TODO: I Placed this here for testing purposes -->
-      <inputFile name="inputFile">../configfiles/inputs/SPD_calls.xml</inputFile>
+      <inputFile name="inputFile">../configfiles/inputs/test-small-911-calls.xml</inputFile>
     </InputParams>
 
     <LayoutParams class="Layout911" name="LayoutParams">

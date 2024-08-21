@@ -8,11 +8,13 @@ Reading code that isn't obvious? When you figure out how it works, then *documen
 
 ## Student Quick Start
 
-Students, use this [Quickstart guide](StudentSetup.md) to help setup, use, and develop with Graphitti.
+Students, use this [quickstart guide](StudentSetup.md) to help setup, use, and develop with Graphitti.
 
-## Coding Conventions
+## Software Development Process
 
-Please adhere to our [coding conventions](codingConventions.md). Your pull requests will not be approved if you don't.
+- To further understand our development process, please check out our [gitflow documentation](GitFlowDiagram.md).
+
+- Your pull requests will not be approved if you do not adhere to our [coding conventions](codingConventions.md).
 
 ## Graphitti Repository Tools and Workflows
 
@@ -43,6 +45,7 @@ Please adhere to our [coding conventions](codingConventions.md). Your pull reque
 - [Performing Analyses](PerformingAnalyses.md)
 - [Neuro Implementation](NeuroImplementation.md)
 - [GraphManager and InputManager classes](GraphAndEventInputs.md)
+- [Configuration](../User/configuration.md)
 
 
 ---------

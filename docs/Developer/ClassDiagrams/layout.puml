@@ -146,7 +146,7 @@ abstract class AllSpikingNeurons {
 abstract class AllVertices {
 	+AllVertices()
 	+~AllVertices()
-	+summationMap_ : BGFLOAT*
+	+summationPoints_ : BGFLOAT*
 	#size_ : int
 	#fileLogger_ : log4cplus::Logger
 	#vertexLogger_ : log4cplus::Logger
@@ -182,13 +182,13 @@ class DynamicLayout {
 class EventBuffer {
 	+EventBuffer(int maxEvents)
 	-epochStart_ : int
-	+getNumEventsInEpoch() : int {query}
-	-numEventsInEpoch_ : int
-	-queueEnd_ : int
-	-queueFront_ : int
+	+getNumElementsInEpoch() : int {query}
+	-numElementsInEpoch_ : int
+	-bufferEnd_ : int
+	-bufferFront_ : int
 	+getPastEvent(int offset) : uint64_t {query}
 	+operator[](int i) : uint64_t {query}
-	-eventTimeSteps_ : vector<uint64_t>
+	-dataSeries_ : vector<uint64_t>
 	+clear() : void
 	+insertEvent(uint64_t timeStep) : void
 	+resize(int maxEvents) : void
@@ -302,7 +302,7 @@ class AllSpikingNeuronsDeviceProperties {
 
 
 class AllVerticesDeviceProperties {
-	+summationMap_ : BGFLOAT*
+	+summationPoints_ : BGFLOAT*
 }
 
 

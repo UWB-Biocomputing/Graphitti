@@ -73,8 +73,8 @@
 #include "Simulator.h"
 #include <iostream>
 #include <vector>
-
 // cereal
+#include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>
 
 using namespace std;
@@ -108,12 +108,7 @@ public:
    virtual bool updateConnections(AllVertices &neurons) override;
 
    ///  Cereal serialization method
-   ///  (Serializes radii)
-   template <class Archive> void save(Archive &archive, std::uint32_t const version) const;
-
-   ///  Cereal deserialization method
-   ///  (Deserializes radii)
-   template <class Archive> void load(Archive &archive, std::uint32_t const version);
+   template <class Archive> void serialize(Archive &archive);
 
    ///  Prints radii
    void printRadii() const;
@@ -130,8 +125,7 @@ public:
    ///  @param  allVerticesDevice    GPU address of the AllVertices struct in device memory.
    ///  @param  allEdgesDevice       GPU address of the AllEdges struct in device memory.
    ///  @param  layout               The Layout object.
-   virtual void updateSynapsesWeights(const int numVertices, AllVertices &neurons,
-                                      AllEdges &synapses,
+   virtual void updateSynapsesWeights(int numVertices, AllVertices &neurons, AllEdges &synapses,
                                       AllSpikingNeuronsDeviceProperties *allVerticesDevice,
                                       AllSpikingSynapsesDeviceProperties *allEdgesDevice,
                                       Layout &layout) override;
@@ -149,6 +143,9 @@ private:
    ///  @param  neurons  The Neuron list to search from.
    void updateConns(AllVertices &neurons);
 
+   /// Update the distance between frontiers of Neurons.
+   void updateFrontiers();
+
    ///  Update the areas of overlap in between Neurons.
    void updateOverlap();
 
@@ -162,6 +159,15 @@ public:
       BGFLOAT minRadius;     ///<  To ensure that even rapidly-firing neurons will connect to
                              ///< other neurons, when within their RFS.
       BGFLOAT startRadius;   ///< No need to wait a long time before RFs start to overlap
+
+      ///  Cereal serialization method
+      template <class Archive> void serialize(Archive &archive)
+      {
+         archive(cereal::make_nvp("epsilon", epsilon), cereal::make_nvp("beta", beta),
+                 cereal::make_nvp("rho", rho), cereal::make_nvp("targetRate", targetRate),
+                 cereal::make_nvp("maxRate", maxRate), cereal::make_nvp("minRadius", minRadius),
+                 cereal::make_nvp("startRadius", startRadius));
+      }
    };
 
    /// structure to keep growth parameters
@@ -179,6 +185,9 @@ public:
    /// spiking rate
    VectorMatrix rates_;
 
+   /// distance between connection frontiers
+   CompleteMatrix delta_;
+
    /// areas of overlap
    CompleteMatrix area_;
 
@@ -189,39 +198,14 @@ public:
    VectorMatrix deltaR_;
 };
 
-CEREAL_CLASS_VERSION(ConnGrowth, 1);
+CEREAL_REGISTER_TYPE(ConnGrowth);   // to enable polymorphism
 
 ///  Cereal serialization method
-///  (Serializes radii)
-template <class Archive> void ConnGrowth::save(Archive &archive, std::uint32_t const version) const
+template <class Archive> void ConnGrowth::serialize(Archive &archive)
 {
-   // uses vector to save radii
-   vector<BGFLOAT> radiiVector;
-   for (int i = 0; i < radiiSize_; i++) {
-      radiiVector.push_back(radii_[i]);
-   }
-   // serialization
-   archive(cereal::make_nvp("radiiSize", radiiSize_), cereal::make_nvp("radii", radiiVector));
-}
-
-///  Cereal deserialization method
-///  (Deserializes radii)
-template <class Archive> void ConnGrowth::load(Archive &archive, std::uint32_t const version)
-{
-   // uses vector to load radii
-   vector<BGFLOAT> radiiVector;
-   int radiiSize = 0;
-   // deserializing data to this vector
-   archive(radiiSize, radiiVector);
-
-   // check to see if serialized data size matches object size
-   if (radiiSize != radiiSize_ || radiiSize != radiiVector.size()) {
-      cerr << "Failed deserializing radii. Please verify totalVertices data member." << endl;
-      throw cereal::Exception("Deserialization Error");
-   }
-
-   // assigns serialized data to objects
-   for (int i = 0; i < radiiSize_; i++) {
-      radii_[i] = radiiVector[i];
-   }
+   archive(cereal::base_class<Connections>(this), cereal::make_nvp("radiiSize", radiiSize_),
+           cereal::make_nvp("growthParams_", growthParams_), cereal::make_nvp("W_", W_),
+           cereal::make_nvp("radii_", radii_), cereal::make_nvp("rates_", rates_),
+           cereal::make_nvp("area_", area_), cereal::make_nvp("outgrowth_", outgrowth_),
+           cereal::make_nvp("deltaR_", deltaR_));
 }

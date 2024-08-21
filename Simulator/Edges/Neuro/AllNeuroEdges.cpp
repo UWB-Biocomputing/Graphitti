@@ -17,7 +17,7 @@ void AllNeuroEdges::setupEdges()
 }
 
 ///  Setup the internal structure of the class (allocate memories and initialize them).
-void AllNeuroEdges::setupEdges(const int numVertices, const int maxEdges)
+void AllNeuroEdges::setupEdges(int numVertices, int maxEdges)
 {
    AllEdges::setupEdges(numVertices, maxEdges);
 
@@ -32,7 +32,7 @@ void AllNeuroEdges::setupEdges(const int numVertices, const int maxEdges)
 ///
 ///  @param  iEdg     Index of the edge to set.
 ///  @param  deltaT   Inner simulation step duration
-void AllNeuroEdges::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
+void AllNeuroEdges::resetEdge(BGSIZE iEdg, BGFLOAT deltaT)
 {
    psr_[iEdg] = 0.0;
 }
@@ -41,7 +41,7 @@ void AllNeuroEdges::resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT)
 ///
 ///  @param  input  istream to read from.
 ///  @param  iEdg   Index of the edge to set.
-void AllNeuroEdges::readEdge(istream &input, const BGSIZE iEdg)
+void AllNeuroEdges::readEdge(istream &input, BGSIZE iEdg)
 {
    int synapse_type(0);
 
@@ -66,14 +66,14 @@ void AllNeuroEdges::readEdge(istream &input, const BGSIZE iEdg)
 ///
 ///  @param  output  stream to print out to.
 ///  @param  iEdg    Index of the edge to print out.
-void AllNeuroEdges::writeEdge(ostream &output, const BGSIZE iEdg) const
+void AllNeuroEdges::writeEdge(ostream &output, BGSIZE iEdg) const
 {
    output << sourceVertexIndex_[iEdg] << ends;
    output << destVertexIndex_[iEdg] << ends;
    output << W_[iEdg] << ends;
    output << psr_[iEdg] << ends;
    output << type_[iEdg] << ends;
-   output << inUse_[iEdg] << ends;
+   output << (inUse_[iEdg] == 1 ? "true" : "false") << ends;
 }
 
 ///  Get the sign of the edgeType.
@@ -109,7 +109,7 @@ void AllNeuroEdges::printSynapsesProps() const
          cout << " desNeuron: " << destVertexIndex_[i];
          cout << " type: " << type_[i];
          cout << " psr: " << psr_[i];
-         cout << " in_use:" << inUse_[i];
+         cout << " in_use:" << (inUse_[i] == 1 ? "true" : "false");
       }
    }
 

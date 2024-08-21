@@ -73,6 +73,9 @@
 
 #include "AllIFNeurons.h"
 #include "Global.h"
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
 struct AllIZHNeuronsDeviceProperties;
 
@@ -105,7 +108,7 @@ public:
    ///
    ///  @param  index   index of the neuron (in neurons) to output info from.
    ///  @return the complete state of the neuron.
-   virtual string toString(const int index) const override;
+   virtual string toString(int index) const override;
 
    ///  Reads and sets the data for all neurons from input stream.
    ///
@@ -116,6 +119,9 @@ public:
    ///
    ///  @param  output      stream to write out to.
    virtual void serialize(ostream &output) const override;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 #if defined(USE_GPU)
 public:
@@ -198,12 +204,12 @@ protected:
    ///  Helper for #advanceNeuron. Updates state of a single neuron.
    ///
    ///  @param  index            Index of the neuron to update.
-   virtual void advanceNeuron(const int index);
+   virtual void advanceNeuron(int index);
 
    ///  Initiates a firing of a neuron to connected neurons.
    ///
    ///  @param  index            Index of the neuron to fire.
-   virtual void fire(const int index);
+   virtual void fire(int index);
 
 #endif   // defined(USE_GPU)
 
@@ -217,13 +223,13 @@ protected:
    ///  Set the Neuron at the indexed location to default values.
    ///
    ///  @param  index    Index of the Neuron that the synapse belongs to.
-   void setNeuronDefaults(const int index);
+   void setNeuronDefaults(int index);
 
    ///  Initializes the Neuron constants at the indexed location.
    ///
    ///  @param  neuronIndex    Index of the Neuron.
    ///  @param  deltaT          Inner simulation step duration
-   virtual void initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT) override;
+   virtual void initNeuronConstsFromParamValues(int neuronIndex, BGFLOAT deltaT) override;
 
    ///  Sets the data for Neuron #index to input's data.
    ///
@@ -315,3 +321,16 @@ struct AllIZHNeuronsDeviceProperties : public AllIFNeuronsDeviceProperties {
    BGFLOAT *C3_;
 };
 #endif   // defined(USE_GPU)
+
+CEREAL_REGISTER_TYPE(AllIZHNeurons);
+
+///  Cereal serialization method
+template <class Archive> void AllIZHNeurons::serialize(Archive &archive)
+{
+   archive(cereal::base_class<AllIFNeurons>(this), cereal::make_nvp("Aconst_", Aconst_),
+           cereal::make_nvp("Bconst_", Bconst_), cereal::make_nvp("Cconst_", Cconst_),
+           cereal::make_nvp("Dconst_", Dconst_), cereal::make_nvp("u_", u_),
+           cereal::make_nvp("C3_", C3_));
+
+   //Private variables are intentionally excluded from serialization as they are populated from configuration files.
+}

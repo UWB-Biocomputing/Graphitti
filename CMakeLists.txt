@@ -290,8 +290,8 @@ include_directories(Testing/lib/GoogleTest/googletest-master/googletest/include)
 
 # Set CUDA_SEPERABLE_COMPILATION to ON for all libraries that contain .cpp files with device functions compiled as CUDA files
 if(ENABLE_CUDA)
-        set_property(TARGET Edges PROPERTY CUDA_STANDARD 11)
-        set_property(TARGET Vertices PROPERTY CUDA_STANDARD 11)
+        set_property(TARGET Edges PROPERTY CUDA_STANDARD 17)
+        set_property(TARGET Vertices PROPERTY CUDA_STANDARD 17)
         # Enables CUDA code in these libraries to be compiled into separate object files and then linked together
         set_property(TARGET Edges PROPERTY CUDA_SEPARABLE_COMPILATION ON)
         set_property(TARGET Vertices PROPERTY CUDA_SEPARABLE_COMPILATION ON)
@@ -360,9 +360,11 @@ add_executable(tests
         Testing/UnitTesting/RecorderFactoryTests.cpp
         Testing/UnitTesting/InputManagerTests.cpp
         Testing/UnitTesting/RNGFactoryTests.cpp
+	Testing/UnitTesting/GraphManagerTests.cpp
         Testing/Utils/ParameterManagerTests.cpp
         Testing/Utils/CircularBufferTests.cpp
-        Testing/UnitTesting/XmlRecorderTests.cpp)
+        Testing/UnitTesting/XmlRecorderTests.cpp
+        Testing/UnitTesting/Hdf5RecorderTests.cpp)
 
 # Links the Googletest framework with the testing executable
 target_link_libraries(tests gtest gtest_main)
@@ -370,35 +372,35 @@ target_link_libraries(tests gtest gtest_main)
 # Link the combined library into the 'tests' executable.
 target_link_libraries(tests combinedLib)
 
-add_executable(serialTest
-        Testing/RunTests.cpp
-        Testing/UnitTesting/SerializationTests.cpp)
+# add_executable(serialTest
+#         Testing/RunTests.cpp
+#         Testing/UnitTesting/SerializationTests.cpp)
 
-# Links the Googletest framework with the serialTest executable
-target_link_libraries(serialTest gtest gtest_main)
+# # Links the Googletest framework with the serialTest executable
+# target_link_libraries(serialTest gtest gtest_main)
 
-# Link the combined library into the 'serialTest' executable.
-target_link_libraries(serialTest combinedLib)
+# # Link the combined library into the 'serialTest' executable.
+# target_link_libraries(serialTest combinedLib)
 
-add_executable(deserialTest
-        Testing/RunTests.cpp
-        Testing/UnitTesting/DeserializationTests.cpp)
+# add_executable(deserialTest
+#         Testing/RunTests.cpp
+#         Testing/UnitTesting/DeserializationTests.cpp)
 
-# Links the Googletest framework with the deserialTest executable
-target_link_libraries(deserialTest gtest gtest_main)
+# # Links the Googletest framework with the deserialTest executable
+# target_link_libraries(deserialTest gtest gtest_main)
 
-# Link the combined library into the 'deserialTest' executable.
-target_link_libraries(deserialTest combinedLib)
+# # Link the combined library into the 'deserialTest' executable.
+# target_link_libraries(deserialTest combinedLib)
 
-add_executable(serialFileAccessTest
-        Testing/RunTests.cpp
-        Testing/UnitTesting/SerializationFileAccessTest.cpp)
+# add_executable(serialFileAccessTest
+#         Testing/RunTests.cpp
+#         Testing/UnitTesting/SerializationFileAccessTest.cpp)
 
-# Links the Googletest framework with the serialFileAccessTest executable
-target_link_libraries(serialFileAccessTest gtest gtest_main)
+# # Links the Googletest framework with the serialFileAccessTest executable
+# target_link_libraries(serialFileAccessTest gtest gtest_main)
 
-# Link the combined library into the 'serialFileAccessTest' executable.
-target_link_libraries(serialFileAccessTest combinedLib)
+# # Link the combined library into the 'serialFileAccessTest' executable.
+# target_link_libraries(serialFileAccessTest combinedLib)
 
 # Clear ENABLE_CUDA, PERFORMANCE_METRICS and GPROF from the cache so it's reset for subsequent builds
 unset(ENABLE_CUDA CACHE)

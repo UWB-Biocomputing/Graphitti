@@ -61,8 +61,7 @@
 
 // Layout
 #include "Layouts/NG911/Layout911.h"
-#include "Layouts/Neuro/DynamicLayout.h"
-#include "Layouts/Neuro/FixedLayout.h"
+#include "Layouts/Neuro/LayoutNeuro.h"
 
 // Vertices
 #include "Vertices/NG911/All911Vertices.h"
@@ -76,7 +75,6 @@
 
 #if defined(HDF5)
    #include "Recorders/Hdf5Recorder.h"
-   #include "Recorders/Neuro/Hdf5GrowthRecorder.h"
 #endif
 
 // MTRand
@@ -184,8 +182,7 @@ private:
       // Register Layout classes
       else if constexpr (std::is_same_v<T, Layout>) {
          createFunctionMap["Layout911"] = &Layout911::Create;
-         createFunctionMap["FixedLayout"] = &FixedLayout::Create;
-         createFunctionMap["DynamicLayout"] = &DynamicLayout::Create;
+         createFunctionMap["LayoutNeuro"] = &LayoutNeuro::Create;
       }
 
       // Register AllVertices classes
@@ -202,7 +199,6 @@ private:
 
 #if defined(HDF5)
          createFunctionMap["Hdf5Recorder"] = &Hdf5Recorder::Create;
-         createFunctionMap["Hdf5GrowthRecorder"] = &Hdf5GrowthRecorder::Create;
 #endif
       }
 

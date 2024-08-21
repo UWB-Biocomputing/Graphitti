@@ -171,7 +171,7 @@ void GPUModel::advance()
 #endif   // PERFORMANCE_METRICS
 
    // calculate summation point
-   calcSummationMap();
+   calcSummationPoint();
 
 #ifdef PERFORMANCE_METRICS
    cudaLapTime(t_gpu_calcSummation);
@@ -179,14 +179,14 @@ void GPUModel::advance()
 }
 
 /// Add psr of all incoming synapses to summation points.
-void GPUModel::calcSummationMap()
+void GPUModel::calcSummationPoint()
 {
    // CUDA parameters
    const int threadsPerBlock = 256;
    int blocksPerGrid
       = (Simulator::getInstance().getTotalVertices() + threadsPerBlock - 1) / threadsPerBlock;
 
-   calcSummationMapDevice<<<blocksPerGrid, threadsPerBlock>>>(
+   calcSummationPointDevice<<<blocksPerGrid, threadsPerBlock>>>(
       Simulator::getInstance().getTotalVertices(), allVerticesDevice_, synapseIndexMapDevice_,
       allEdgesDevice_);
 }
@@ -324,10 +324,10 @@ void GPUModel::copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost
 /// @param[in] synapseIndexMapDevice_  Pointer to forward map structures in device memory.
 /// @param[in] allEdgesDevice      Pointer to Synapse structures in device memory.
 __global__ void
-   calcSummationMapDevice(int totalVertices,
-                          AllSpikingNeuronsDeviceProperties *__restrict__ allVerticesDevice,
-                          const EdgeIndexMapDevice *__restrict__ synapseIndexMapDevice_,
-                          const AllSpikingSynapsesDeviceProperties *__restrict__ allEdgesDevice)
+   calcSummationPointDevice(int totalVertices,
+                            AllSpikingNeuronsDeviceProperties *__restrict__ allVerticesDevice,
+                            const EdgeIndexMapDevice *__restrict__ synapseIndexMapDevice_,
+                            const AllSpikingSynapsesDeviceProperties *__restrict__ allEdgesDevice)
 {
    // The usual thread ID calculation and guard against excess threads
    // (beyond the number of vertices, in this case).
@@ -355,7 +355,7 @@ __global__ void
          sum += allEdgesDevice->psr_[synIndex];
       }
       // Store summed PSR into this neuron's summation point
-      allVerticesDevice->summationMap_[idx] = sum;
+      allVerticesDevice->summationPoints_[idx] = sum;
    }
 }
 

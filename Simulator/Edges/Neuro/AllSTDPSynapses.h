@@ -68,6 +68,9 @@
 
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
 struct AllSTDPSynapsesDeviceProperties;
 
@@ -75,7 +78,7 @@ class AllSTDPSynapses : public AllSpikingSynapses {
 public:
    AllSTDPSynapses();
 
-   AllSTDPSynapses(const int numVertices, const int maxEdges);
+   AllSTDPSynapses(int numVertices, int maxEdges);
 
    virtual ~AllSTDPSynapses() = default;
 
@@ -91,7 +94,7 @@ public:
    ///
    ///  @param  iEdg     Index of the synapse to set.
    ///  @param  deltaT   Inner simulation step duration
-   virtual void resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) override;
+   virtual void resetEdge(BGSIZE iEdg, BGFLOAT deltaT) override;
 
    ///  Check if the back propagation (notify a spike event to the pre neuron)
    ///  is allowed in the synapse class.
@@ -114,35 +117,38 @@ public:
    ///  @param  destVertex  Index of the destination Neuron.
    ///  @param  deltaT      Inner simulation step duration.
    ///  @param  type        Type of the Synapse to create.
-   virtual void createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT,
+   virtual void createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
                            edgeType type) override;
 
    ///  Prints SynapsesProps data.
    virtual void printSynapsesProps() const override;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///
    ///  @param  numVertices   Total number of vertices in the network.
    ///  @param  maxEdges  Maximum number of synapses per neuron.
-   virtual void setupEdges(const int numVertices, const int maxEdges) override;
+   virtual void setupEdges(int numVertices, int maxEdges) override;
 
    ///  Sets the data for Synapse to input's data.
    ///
    ///  @param  input  istream to read from.
    ///  @param  iEdg   Index of the synapse to set.
-   virtual void readEdge(istream &input, const BGSIZE iEdg) override;
+   virtual void readEdge(istream &input, BGSIZE iEdg) override;
 
    ///  Write the synapse data to the stream.
    ///
    ///  @param  output  stream to print out to.
    ///  @param  iEdg    Index of the synapse to print out.
-   virtual void writeEdge(ostream &output, const BGSIZE iEdg) const override;
+   virtual void writeEdge(ostream &output, BGSIZE iEdg) const override;
 
    ///  Initializes the queues for the Synapse.
    ///
    ///  @param  iEdg   index of the synapse to set.
-   virtual void initSpikeQueue(const BGSIZE iEdg) override;
+   virtual void initSpikeQueue(BGSIZE iEdg) override;
 
 #if defined(USE_GPU)
 public:
@@ -249,21 +255,21 @@ public:
    ///
    ///  @param  iEdg      Index of the Synapse to connect to.
    ///  @param  neurons   The Neuron list to search from.
-   virtual void advanceEdge(const BGSIZE iEdg, AllVertices &neurons) override;
+   virtual void advanceEdge(BGSIZE iEdg, AllVertices &neurons) override;
 
    ///  Prepares Synapse for a spike hit (for back propagation).
    ///
    ///  @param  iEdg   Index of the Synapse to connect to.
-   virtual void postSpikeHit(const BGSIZE iEdg) override;
+   virtual void postSpikeHit(BGSIZE iEdg) override;
 
 protected:
    ///  Checks if there is an input spike in the queue (for back propagation).
    ///
    ///  @param  iEdg   Index of the Synapse to connect to.
    ///  @return true if there is an input spike event.
-   bool isSpikeQueuePost(const BGSIZE iEdg);
+   bool isSpikeQueuePost(BGSIZE iEdg);
 
-   virtual BGFLOAT synapticWeightModification(const BGSIZE iEdg, BGFLOAT edgeWeight, double delta);
+   virtual BGFLOAT synapticWeightModification(BGSIZE iEdg, BGFLOAT edgeWeight, double delta);
 
 private:
    ///  Adjust synapse weight according to the Spike-timing-dependent synaptic modification
@@ -275,7 +281,7 @@ private:
    ///  @param  epre        Params for the rule given in Froemke and Dan (2002).
    ///  @param srcVertex Index of source neuron
    ///  @param destVertex Index of destination neuron
-   void stdpLearning(const BGSIZE iEdg, double delta, double epost, double epre, int srcVertex,
+   void stdpLearning(BGSIZE iEdg, double delta, double epost, double epre, int srcVertex,
                      int destVertex);
 
 #endif
@@ -348,8 +354,8 @@ public:
 };
 
 #if defined(USE_GPU)
-CUDA_CALLABLE void stdpLearningDevice(AllSTDPSynapsesDeviceProperties *allEdgesDevice,
-                                      const BGSIZE iEdg, double delta, double epost, double epre);
+CUDA_CALLABLE void stdpLearningDevice(AllSTDPSynapsesDeviceProperties *allEdgesDevice, BGSIZE iEdg,
+                                      double delta, double epost, double epre);
 CUDA_CALLABLE bool
    isSTDPSynapseSpikeQueuePostDevice(AllSTDPSynapsesDeviceProperties *allEdgesDevice, BGSIZE iEdg);
 CUDA_CALLABLE uint64_t getSTDPSynapseSpikeHistoryDevice(
@@ -410,3 +416,29 @@ struct AllSTDPSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperti
    bool *useFroemkeDanSTDP_;
 };
 #endif   // defined(USE_GPU)
+
+
+CEREAL_REGISTER_TYPE(AllSTDPSynapses);
+
+///  Cereal serialization method
+template <class Archive> void AllSTDPSynapses::serialize(Archive &archive)
+{
+   archive(cereal::base_class<AllSpikingSynapses>(this),
+           cereal::make_nvp("totalDelayPost_", totalDelayPost_),
+           cereal::make_nvp("delayQueuePost_", delayQueuePost_),
+           cereal::make_nvp("delayIndexPost_", delayIndexPost_),
+           cereal::make_nvp("delayQueuePostLength_", delayQueuePostLength_),
+           cereal::make_nvp("tauspost_", tauspost_), cereal::make_nvp("tauspre_", tauspre_),
+           cereal::make_nvp("taupos_", taupos_), cereal::make_nvp("tauneg_", tauneg_),
+           cereal::make_nvp("STDPgap_", STDPgap_), cereal::make_nvp("Wex_", Wex_),
+           cereal::make_nvp("Aneg_", Aneg_), cereal::make_nvp("Apos_", Apos_),
+           cereal::make_nvp("mupos_", mupos_), cereal::make_nvp("muneg_", muneg_),
+           cereal::make_nvp("defaultSTDPgap_", defaultSTDPgap_),
+           cereal::make_nvp("tauspost_I_", tauspost_I_), cereal::make_nvp("tauspre_I_", tauspre_I_),
+           cereal::make_nvp("tauspost_E_", tauspost_E_), cereal::make_nvp("tauspre_E_", tauspre_E_),
+           cereal::make_nvp("taupos_I_", taupos_I_), cereal::make_nvp("tauneg_I_", tauneg_I_),
+           cereal::make_nvp("taupos_E_", taupos_E_), cereal::make_nvp("tauneg_E_", tauneg_E_),
+           cereal::make_nvp("Wex_I_", Wex_I_), cereal::make_nvp("Wex_E_", Wex_E_),
+           cereal::make_nvp("Aneg_I_", Aneg_I_), cereal::make_nvp("Aneg_E_", Aneg_E_),
+           cereal::make_nvp("Apos_I_", Apos_I_), cereal::make_nvp("Apos_E_", Apos_E_));
+}

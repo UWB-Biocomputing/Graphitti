@@ -21,16 +21,30 @@ void AllSpikingNeurons::setupVertices()
    hasFired_.assign(size_, false);
    vertexEvents_.assign(size_, maxSpikes);
 
-   // register variable vertexEvents_
-   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   recorder.registerVariable("Neuron_", vertexEvents_);
+   // Register spike history variables
+   registerSpikeHistoryVariables();
+}
 
-   // // register neuron information in vertexEvents_ one by one
-   // Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   // for (int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++) {
-   //    string neuronID = "Neuron_" + to_string(iNeuron);
-   //    recorder.registerVariable(neuronID, vertexEvents_[iNeuron]);
+///  Register spike history variables for all neurons.
+///  Option 1: Register neuron information in vertexEvents_ one by one.
+///  Option 2: Register a vector of EventBuffer variables.
+void AllSpikingNeurons::registerSpikeHistoryVariables()
+{
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   string baseName = "Neuron_";
+
+   // Option 1: Register neuron information in vertexEvents_ one by one
+   for (int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++) {
+      string neuronID = baseName + std::to_string(iNeuron);
+      recorder.registerVariable(neuronID, vertexEvents_[iNeuron], Recorder::UpdatedType::DYNAMIC);
+   }
+
+   // Option 2: Register a vector of EventBuffer variables
+   // vector<RecordableBase *> variables;
+   // for(int iNeuron = 0; iNeuron < vertexEvents_.size(); iNeuron++){
+   //    variables.push_back(&vertexEvents_[iNeuron]);
    // }
+   // recorder.registerVariable(baseName, variables, Recorder::UpdatedType::DYNAMIC);
 }
 
 ///  Clear the spike counts out of all Neurons.
@@ -68,7 +82,7 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap &
                          "Neuron: " << idx << " has fired at time: "
                                     << g_simulationStep * Simulator::getInstance().getDeltaT());
 
-         assert(vertexEvents_[idx].getNumEventsInEpoch() < maxSpikes);
+         assert(vertexEvents_[idx].getNumElementsInEpoch() < maxSpikes);
 
          // notify outgoing synapses
          BGSIZE synapseCounts;
@@ -92,7 +106,7 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap &
          if (spSynapses.allowBackPropagation()) {
             for (int z = 0; synapse_notified < synapseCounts; z++) {
                BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * idx + z;
-               if (spSynapses.inUse_[iEdg] == true) {
+               if (spSynapses.inUse_[iEdg]) {
                   spSynapses.postSpikeHit(iEdg);
                   synapse_notified++;
                }
@@ -107,7 +121,7 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap &
 ///  Fire the selected Neuron and calculate the result.
 ///
 ///  @param  index       Index of the Neuron to update.
-void AllSpikingNeurons::fire(const int index)
+void AllSpikingNeurons::fire(int index)
 {
    // Note that the neuron has fired!
    hasFired_[index] = true;

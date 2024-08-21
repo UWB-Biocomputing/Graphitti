@@ -52,14 +52,6 @@ public:
    /// Register vertex properties with the GraphManager
    virtual void registerGraphProperties() override;
 
-   /// Loads Layout911 member variables.
-   /// Registered to OperationManager as Operation::loadParameters
-   virtual void loadParameters() override;
-
-   /// Setup the internal structure of the class.
-   /// Allocate memories to store all layout state.
-   virtual void setup() override;
-
    /// Prints out all parameters to logging file.
    /// Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
@@ -67,11 +59,18 @@ public:
    /// Creates a vertex type map.
    ///
    /// @param  numVertices number of the vertices to have in the type map.
-   virtual void generateVertexTypeMap(int numVertices) override;
+   virtual void generateVertexTypeMap() override;
 
    /// Returns the type of synapse at the given coordinates
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.
    /// @param    destVertex integer that points to a Neuron in the type map as a destination.
    /// @return type of the synapse.
-   virtual edgeType edgType(const int srcVertex, const int destVertex) override;
+   virtual edgeType edgType(int srcVertex, int destVertex) override;
+
+   /// Calculates the distance between the given vertex and the (x, y) coordinates of a point
+   /// @param vertexId  The index of the vertex to calculate the distance from
+   /// @param x         The x location of a point
+   /// @param y         The y location of a point
+   /// @return The distance between the given vertex and the (x, y) coordinates of a point
+   double getDistance(int vertexId, double x, double y);
 };

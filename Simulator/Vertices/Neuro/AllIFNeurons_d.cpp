@@ -49,7 +49,7 @@ void AllIFNeurons::allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDe
    HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.hasFired_, count * sizeof(bool)));
    HANDLE_ERROR(
       cudaMalloc((void **)&allVerticesDevice.numStepsInRefractoryPeriod_, count * sizeof(int)));
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.summationMap_, count * sizeof(BGFLOAT)));
+   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.summationPoints_, count * sizeof(BGFLOAT)));
    HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.spikeHistory_, count * sizeof(uint64_t *)));
 
    uint64_t *pSpikeHistory[count];
@@ -58,10 +58,10 @@ void AllIFNeurons::allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDe
    }
    HANDLE_ERROR(cudaMemcpy(allVerticesDevice.spikeHistory_, pSpikeHistory,
                            count * sizeof(uint64_t *), cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.queueFront_, count * sizeof(int)));
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.queueEnd_, count * sizeof(int)));
+   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.bufferFront_, count * sizeof(int)));
+   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.bufferEnd_, count * sizeof(int)));
    HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.epochStart_, count * sizeof(int)));
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.numEventsInEpoch_, count * sizeof(int)));
+   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.numElementsInEpoch_, count * sizeof(int)));
 }
 
 ///  Delete GPU memories.
@@ -106,7 +106,7 @@ void AllIFNeurons::deleteDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesD
    HANDLE_ERROR(cudaFree(allVerticesDevice.Vthresh_));
    HANDLE_ERROR(cudaFree(allVerticesDevice.hasFired_));
    HANDLE_ERROR(cudaFree(allVerticesDevice.numStepsInRefractoryPeriod_));
-   HANDLE_ERROR(cudaFree(allVerticesDevice.summationMap_));
+   HANDLE_ERROR(cudaFree(allVerticesDevice.summationPoints_));
    HANDLE_ERROR(cudaFree(allVerticesDevice.spikeHistory_));
 }
 

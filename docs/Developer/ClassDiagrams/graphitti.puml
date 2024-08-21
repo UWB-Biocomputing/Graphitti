@@ -397,7 +397,7 @@ class AllSpikingSynapses {
 abstract class AllVertices {
 	+AllVertices()
 	+~AllVertices()
-	+summationMap_ : BGFLOAT*
+	+summationPoints_ : BGFLOAT*
 	#size_ : int
 	#fileLogger_ : log4cplus::Logger
 	#vertexLogger_ : log4cplus::Logger
@@ -542,13 +542,13 @@ class EdgesFactory {
 class EventBuffer {
 	+EventBuffer(int maxEvents)
 	-epochStart_ : int
-	+getNumEventsInEpoch() : int {query}
-	-numEventsInEpoch_ : int
-	-queueEnd_ : int
-	-queueFront_ : int
+	+getNumElementsInEpoch() : int {query}
+	-numElementsInEpoch_ : int
+	-bufferEnd_ : int
+	-bufferFront_ : int
 	+getPastEvent(int offset) : uint64_t {query}
 	+operator[](int i) : uint64_t {query}
-	-eventTimeSteps_ : vector<uint64_t>
+	-dataSeries_ : vector<uint64_t>
 	+clear() : void
 	+insertEvent(uint64_t timeStep) : void
 	+resize(int maxEvents) : void
@@ -579,7 +579,7 @@ class GPUModel {
 	+advance() : void
 	#allocDeviceStruct(void** allVerticesDevice, void** allEdgesDevice) : void
 	-allocSynapseImap(int count) : void
-	#calcSummationMap() : void
+	#calcSummationPoint() : void
 	+copyCPUtoGPU() : void
 	+copyGPUtoCPU() : void
 	+copySynapseIndexMapHostToDevice(EdgeIndexMap& synapseIndexMapHost, int numVertices) : void
@@ -603,52 +603,20 @@ class GenericFunctionNode {
 }
 
 
-class Hdf5GrowthRecorder {
-	+Hdf5GrowthRecorder()
-	+~Hdf5GrowthRecorder()
-	#radiiHistory_ : BGFLOAT*
-	#ratesHistory_ : BGFLOAT*
-	#dataSetRadiiHist_ : DataSet
-	#dataSetRatesHist_ : DataSet
-	+{static} Create() : Recorder*
-	+compileHistories(AllVertices& neurons) : void
-	+getValues() : void
-	#initDataSet() : void
-	+initDefaultValues() : void
-	+initValues() : void
-	+printParameters() : void
-	+term() : void
-	#writeRadiiRates() : void
-}
-
-
 class Hdf5Recorder {
 	+Hdf5Recorder()
-	#dataSetNeuronThresh_ : DataSet*
-	#dataSetNeuronTypes_ : DataSet*
-	#dataSetProbedNeurons_ : DataSet*
-	#dataSetSimulationEndTime_ : DataSet*
-	#dataSetSpikesHist_ : DataSet*
-	#dataSetSpikesProbedNeurons_ : DataSet*
-	#dataSetStarterNeurons_ : DataSet*
-	#dataSetTsim_ : DataSet*
-	#dataSetXloc_ : DataSet*
-	#dataSetYloc_ : DataSet*
 	#resultOut_ : H5File*
+	#variableTable_ : vector<hdf5VariableInfo>
 	+{static} Create() : Recorder*
-	#offsetSpikesProbedNeurons_ : hsize_t*
-	#spikesHistory_ : int*
-	#spikesProbedNeurons_ : vector<uint64_t>*
-	+compileHistories(AllVertices& neurons) : void
+	+compileHistories() : void
 	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+getValues() : void
 	+init() : void
 	#initDataSet() : void
-	+initDefaultValues() : void
-	+initValues() : void
 	+printParameters() : void
-	+saveSimData(const AllVertices& neurons) : void
+	+saveSimData() : void
 	+term() : void
+	+registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
+	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
 }
 
 
@@ -665,10 +633,7 @@ abstract class Recorder {
 	#resultFileName_ : string
 	+{abstract} compileHistories(AllVertices& vertices) : void
 	#{abstract} getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+{abstract} getValues() : void
 	+{abstract} init() : void
-	+{abstract} initDefaultValues() : void
-	+{abstract} initValues() : void
 	+{abstract} printParameters() : void
 	+{abstract} saveSimData(const AllVertices& vertices) : void
 	+{abstract} term() : void
@@ -778,8 +743,6 @@ class Simulator {
 	+getEpochDuration() : BGFLOAT {query}
 	+getMaxRate() : BGFLOAT {query}
 	-maxRate_ : BGFLOAT
-	+getPSummationMap() : BGFLOAT* {query}
-	-pSummationMap_ : BGFLOAT*
 	+{static} getInstance() : Simulator&
 	+getShort_timer() : Timer
 	+getTimer() : Timer
@@ -832,7 +795,6 @@ class Simulator {
 	+saveResults() : void {query}
 	+setConfigFileName(const string& fileName) : void
 	+setDeserializationFileName(const string& fileName) : void
-	+setPSummationMap(BGFLOAT* summationMap) : void
 	+setSerializationFileName(const string& fileName) : void
 	+setStimulusFileName(const string& fileName) : void
 	+setup() : void
@@ -858,14 +820,11 @@ class XmlRecorder {
 	#variablesHistory_ : vector<vector<uint64_t>>
 	#variableTable_ : vector<variableInfo>
 	#resultOut_ : ofstream
-	+compileHistories(AllVertices& vertices) : void
+	+compileHistories() : void
 	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+getValues() : void
 	+init() : void
-	+initDefaultValues() : void
-	+initValues() : void
 	+printParameters() : void
-	+saveSimData(const AllVertices& vertices) : void
+	+saveSimData() : void
 	+term() : void
 	+registerVariable(string varName, EventBuffer &recordVar) : void
 
@@ -1000,7 +959,7 @@ class AllSpikingSynapsesDeviceProperties {
 
 
 class AllVerticesDeviceProperties {
-	+summationMap_ : BGFLOAT*
+	+summationPoints_ : BGFLOAT*
 }
 
 
@@ -1094,9 +1053,6 @@ class EdgeIndexMap {
 
 
 .Connections <|-- .ConnStatic
-
-
-.Hdf5Recorder <|-- .Hdf5GrowthRecorder
 
 
 .IFunctionNode <|-- .GenericFunctionNode
