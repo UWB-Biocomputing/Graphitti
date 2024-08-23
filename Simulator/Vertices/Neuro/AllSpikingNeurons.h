@@ -47,6 +47,11 @@ public:
    ///  Clear the spike counts out of all Neurons.
    void clearSpikeCounts();
 
+   /// Helper function for recorder to register spike history variables for all neurons.
+   /// Option 1: Register neuron information in vertexEvents_ one by one.
+   /// Option 2: Register a vector of EventBuffer variables.
+   virtual void registerHistoryVariables() override;
+
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);
 
@@ -112,12 +117,6 @@ protected:
    ///  True if back propagation is allowed.
    ///  (parameters used for advanceVerticesDevice.)
    bool fAllowBackPropagation_;
-
-   /// helper for recorder register variables in setupVertices()
-   /// Register spike history variables for all neurons.
-   /// Option 1: Register neuron information in vertexEvents_ one by one.
-   /// Option 2: Register a vector of EventBuffer variables.
-   void registerSpikeHistoryVariables();
 };
 
 // TODO: move this into EventBuffer.h. Well, hasFired_ and inherited members have to stay somehow.
