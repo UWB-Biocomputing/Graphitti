@@ -121,7 +121,9 @@ public:
    virtual void loadEpochInputs(uint64_t currentStep, uint64_t endStep) override;
 
    /// unused virtual function placeholder
-   virtual void registerHistoryVariables() override {}; 
+   virtual void registerHistoryVariables() override
+   {
+   }
 
    /// Accessor for the waiting queue of a vertex
    ///
