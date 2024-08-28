@@ -37,6 +37,8 @@
 
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
+// cereal
+// #include <cereal/types/polymorphic.hpp>
 
 #ifdef __CUDACC__
    #include "Book.h"
@@ -100,6 +102,9 @@ public:
 
    /// Print out SynapseProps on the GPU.
    void printGPUSynapsesPropsModel() const;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
    /// Allocates  and initializes memories on CUDA device.
@@ -166,3 +171,11 @@ extern __global__ void
                             const EdgeIndexMapDevice *__restrict__ synapseIndexMapDevice_,
                             const AllSpikingSynapsesDeviceProperties *__restrict__ allEdgesDevice);
 #endif
+
+// CEREAL_REGISTER_TYPE(GPUModel);
+
+// ///  Cereal serialization method
+// template <class Archive> void GPUModel::serialize(Archive &archive)
+// {
+//    archive(cereal::virtual_base_class<Model>(this));
+// }

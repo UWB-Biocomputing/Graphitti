@@ -144,7 +144,7 @@ CEREAL_REGISTER_TYPE(AllSpikingNeurons);
 ///  Cereal serialization method
 template <class Archive> void AllSpikingNeurons::serialize(Archive &archive)
 {
-   archive(cereal::base_class<AllVertices>(this), cereal::make_nvp("hasFired_", hasFired_),
-           cereal::make_nvp("vertexEvents_", vertexEvents_),
-           cereal::make_nvp("fAllowBackPropagation_", fAllowBackPropagation_));
+   archive(cereal::base_class<AllVertices>(this), cereal::make_nvp("hasFired", hasFired_),
+           cereal::make_nvp("vertexEvents", vertexEvents_),
+           cereal::make_nvp("fAllowBackPropagation", fAllowBackPropagation_));
 }

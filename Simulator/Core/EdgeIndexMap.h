@@ -111,12 +111,12 @@ struct EdgeIndexMapDevice {
 ///  Cereal serialization method
 template <class Archive> void EdgeIndexMap::serialize(Archive &archive)
 {
-   archive(cereal::make_nvp("outgoingEdgeIndexMap_", outgoingEdgeIndexMap_),
-           cereal::make_nvp("outgoingEdgeBegin_", outgoingEdgeBegin_),
-           cereal::make_nvp("outgoingEdgeCount_", outgoingEdgeCount_),
-           cereal::make_nvp("incomingEdgeIndexMap_", incomingEdgeIndexMap_),
-           cereal::make_nvp("incomingEdgeBegin_", incomingEdgeBegin_),
-           cereal::make_nvp("incomingEdgeCount_", incomingEdgeCount_),
-           cereal::make_nvp("numOfVertices_", numOfVertices_),
-           cereal::make_nvp("numOfEdges_", numOfEdges_));
+   archive(cereal::make_nvp("outgoingEdgeIndexMap", outgoingEdgeIndexMap_),
+           cereal::make_nvp("outgoingEdgeBegin", outgoingEdgeBegin_),
+           cereal::make_nvp("outgoingEdgeCount", outgoingEdgeCount_),
+           cereal::make_nvp("incomingEdgeIndexMap", incomingEdgeIndexMap_),
+           cereal::make_nvp("incomingEdgeBegin", incomingEdgeBegin_),
+           cereal::make_nvp("incomingEdgeCount", incomingEdgeCount_),
+           cereal::make_nvp("numOfVertices", numOfVertices_),
+           cereal::make_nvp("numOfEdges", numOfEdges_));
 }

@@ -16,6 +16,8 @@
 #pragma once
 
 #include "Layout.h"
+// cereal
+#include <cereal/types/polymorphic.hpp>
 
 using namespace std;
 
@@ -53,4 +55,15 @@ public:
 
    /// Prints the layout, used for debugging.
    void printLayout();
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 };
+
+CEREAL_REGISTER_TYPE(LayoutNeuro);
+
+///  Cereal serialization method
+template <class Archive> void LayoutNeuro::serialize(Archive &archive)
+{
+   archive(cereal::base_class<Layout>(this));
+}

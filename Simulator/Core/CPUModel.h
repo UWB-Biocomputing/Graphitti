@@ -39,6 +39,8 @@
 #include "Edges/AllEdges.h"
 #include "Layouts/Layout.h"
 #include "Vertices/AllVertices.h"
+// cereal
+// #include <cereal/types/polymorphic.hpp>
 
 class CPUModel : public Model {
 public:
@@ -63,4 +65,15 @@ public:
 
    /// Copy CPU Synapse data to GPU.
    virtual void copyCPUtoGPU() override;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 };
+
+// CEREAL_REGISTER_TYPE(CPUModel);
+
+// ///  Cereal serialization method
+// template <class Archive> void CPUModel::serialize(Archive &archive)
+// {
+//    archive(cereal::virtual_base_class<Model>(this));
+// }

@@ -115,6 +115,6 @@ CEREAL_CLASS_VERSION(Connections, 1);
 ///  Cereal serialization method
 template <class Archive> void Connections::serialize(Archive &archive, std::uint32_t const version)
 {
-   archive(cereal::make_nvp("edges_", edges_),
-           cereal::make_nvp("synapseIndexMap_", synapseIndexMap_));
+   archive(cereal::make_nvp("edges", edges_),
+           cereal::make_nvp("synapseIndexMap", synapseIndexMap_));
 }
