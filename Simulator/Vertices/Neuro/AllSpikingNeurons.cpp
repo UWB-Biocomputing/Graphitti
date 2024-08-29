@@ -20,15 +20,12 @@ void AllSpikingNeurons::setupVertices()
 
    hasFired_.assign(size_, false);
    vertexEvents_.assign(size_, maxSpikes);
-
-   // Register spike history variables
-   registerSpikeHistoryVariables();
 }
 
 ///  Register spike history variables for all neurons.
 ///  Option 1: Register neuron information in vertexEvents_ one by one.
 ///  Option 2: Register a vector of EventBuffer variables.
-void AllSpikingNeurons::registerSpikeHistoryVariables()
+void AllSpikingNeurons::registerHistoryVariables()
 {
    Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
    string baseName = "Neuron_";
