@@ -20,6 +20,8 @@
 #include "Recorder.h"
 #include <log4cplus/loggingmacros.h>
 #include <memory>
+//cereal
+#include <cereal/types/memory.hpp>
 
 using namespace std;
 
@@ -79,6 +81,9 @@ public:
    /// might be similar to advance.
    virtual void updateConnections() = 0;
 
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
+
 protected:
    // Note: This method was previously used for debugging, but it is now dead code left behind.
    /// Prints debug information about the current state of the network.
@@ -105,3 +110,11 @@ protected:
    void
       createAllVertices();   /// Populate an instance of AllVertices with an initial state for each vertex.
 };
+
+CEREAL_REGISTER_TYPE(Model);
+
+///  Cereal serialization method
+template <class Archive> void Model::serialize(Archive &archive)
+{
+   archive(cereal::make_nvp("connections", connections_), cereal::make_nvp("layout", layout_));
+}
