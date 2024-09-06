@@ -336,13 +336,12 @@ CEREAL_REGISTER_TYPE(AllSpikingSynapses);
 ///  Cereal serialization method
 template <class Archive> void AllSpikingSynapses::serialize(Archive &archive)
 {
-   archive(cereal::base_class<AllNeuroEdges>(this), cereal::make_nvp("decay_", decay_),
-           cereal::make_nvp("tau_", tau_), cereal::make_nvp("tau_II_", tau_II_),
-           cereal::make_nvp("tau_IE_", tau_IE_), cereal::make_nvp("tau_EI_", tau_EI_),
-           cereal::make_nvp("tau_EE_", tau_EE_), cereal::make_nvp("delay_II_", delay_II_),
-           cereal::make_nvp("delay_IE_", delay_IE_), cereal::make_nvp("delay_EI_", delay_EI_),
-           cereal::make_nvp("delay_EE_", delay_EE_), cereal::make_nvp("totalDelay_", totalDelay_),
-           cereal::make_nvp("delayQueue_", delayQueue_),
-           cereal::make_nvp("delayIndex_", delayIndex_),
-           cereal::make_nvp("delayQueueLength_", delayQueueLength_));
+   archive(cereal::base_class<AllNeuroEdges>(this), cereal::make_nvp("decay", decay_),
+           cereal::make_nvp("tau", tau_), cereal::make_nvp("tau_II", tau_II_),
+           cereal::make_nvp("tau_IE", tau_IE_), cereal::make_nvp("tau_EI", tau_EI_),
+           cereal::make_nvp("tau_EE", tau_EE_), cereal::make_nvp("delay_II", delay_II_),
+           cereal::make_nvp("delay_IE", delay_IE_), cereal::make_nvp("delay_EI", delay_EI_),
+           cereal::make_nvp("delay_EE", delay_EE_), cereal::make_nvp("totalDelay", totalDelay_),
+           cereal::make_nvp("delayQueue", delayQueue_), cereal::make_nvp("delayIndex", delayIndex_),
+           cereal::make_nvp("delayQueueLength", delayQueueLength_));
 }

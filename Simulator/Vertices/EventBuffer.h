@@ -157,7 +157,7 @@ CEREAL_REGISTER_TYPE(EventBuffer);
 template <class Archive> void EventBuffer::serialize(Archive &archive)
 {
    archive(cereal::base_class<RecordableVector<uint64_t>>(this),
-           cereal::make_nvp("bufferFront_", bufferFront_),
-           cereal::make_nvp("bufferEnd_", bufferEnd_), cereal::make_nvp("epochStart_", epochStart_),
-           cereal::make_nvp("numElementsInEpoch_", numElementsInEpoch_));
+           cereal::make_nvp("bufferFront", bufferFront_), cereal::make_nvp("bufferEnd", bufferEnd_),
+           cereal::make_nvp("epochStart", epochStart_),
+           cereal::make_nvp("numElementsInEpoch", numElementsInEpoch_));
 }

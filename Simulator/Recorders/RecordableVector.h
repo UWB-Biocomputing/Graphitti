@@ -85,7 +85,7 @@ public:
    template <class Archive> void serialize(Archive &archive)
    {
       archive(cereal::virtual_base_class<RecordableBase>(this),
-              cereal::make_nvp("dataSeries_", dataSeries_));
+              cereal::make_nvp("dataSeries", dataSeries_));
    }
 
 protected:

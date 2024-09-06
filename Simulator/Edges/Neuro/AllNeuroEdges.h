@@ -156,5 +156,5 @@ CEREAL_REGISTER_TYPE(AllNeuroEdges);
 ///  Cereal serialization method
 template <class Archive> void AllNeuroEdges::serialize(Archive &archive)
 {
-   archive(cereal::base_class<AllEdges>(this), cereal::make_nvp("psr_", psr_));
+   archive(cereal::base_class<AllEdges>(this), cereal::make_nvp("psr", psr_));
 }

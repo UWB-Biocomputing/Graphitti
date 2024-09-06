@@ -137,12 +137,12 @@ CEREAL_REGISTER_TYPE(ConnStatic);
 template <class Archive> void ConnStatic::serialize(Archive &archive)
 {
    archive(cereal::base_class<Connections>(this),
-           cereal::make_nvp("sourceVertexIndexCurrentEpoch_", sourceVertexIndexCurrentEpoch_),
-           cereal::make_nvp("destVertexIndexCurrentEpoch_", destVertexIndexCurrentEpoch_),
-           cereal::make_nvp("WCurrentEpoch_", WCurrentEpoch_),
-           cereal::make_nvp("radiiSize_", radiiSize_),
-           cereal::make_nvp("connsPerVertex_", connsPerVertex_),
-           cereal::make_nvp("threshConnsRadius_", threshConnsRadius_),
-           cereal::make_nvp("rewiringProbability_", rewiringProbability_),
-           cereal::make_nvp("excWeight_", excWeight_), cereal::make_nvp("inhWeight_", inhWeight_));
+           cereal::make_nvp("sourceVertexIndexCurrentEpoch", sourceVertexIndexCurrentEpoch_),
+           cereal::make_nvp("destVertexIndexCurrentEpoch", destVertexIndexCurrentEpoch_),
+           cereal::make_nvp("WCurrentEpoch", WCurrentEpoch_),
+           cereal::make_nvp("radiiSize", radiiSize_),
+           cereal::make_nvp("connsPerVertex", connsPerVertex_),
+           cereal::make_nvp("threshConnsRadius", threshConnsRadius_),
+           cereal::make_nvp("rewiringProbability", rewiringProbability_),
+           cereal::make_nvp("excWeight", excWeight_), cereal::make_nvp("inhWeight", inhWeight_));
 }

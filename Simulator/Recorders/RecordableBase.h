@@ -52,7 +52,7 @@ public:
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive)
    {
-      archive(cereal::make_nvp("basicDataType_", basicDataType_));
+      archive(cereal::make_nvp("basicDataType", basicDataType_));
    }
 
 protected:
