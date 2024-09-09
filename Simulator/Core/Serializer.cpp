@@ -29,7 +29,7 @@
 #include <fstream>
 
 // About CEREAL_XML_STRING_VALUE
-// 1. Displays Graphitti as top most element instead of the default Cereal.
+// 1. Displays Graphitti as top most element instead of the default Cereal in the serialized xml file.
 // 2. It should be placed before defining cereal archives library
 #define CEREAL_XML_STRING_VALUE "Graphitti"
 #include <cereal/archives/binary.hpp>
