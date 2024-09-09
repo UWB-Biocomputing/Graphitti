@@ -120,21 +120,6 @@ void Simulator::printParameters() const
                       << "\tInitializer RNG Seed: " << initRngSeed_ << endl);
 }
 
-// Code from STDPFix branch, doesn't do anything
-/// Copy GPU Synapse data to CPU.
-void Simulator::copyGPUSynapseToCPU()
-{
-   // ToDo: Delete this method and implement using OperationManager
-   // model->copyGPUSynapseToCPUModel();
-}
-
-/// Copy CPU Synapse data to GPU.
-void Simulator::copyCPUSynapseToGPU()
-{
-   // ToDo: Delete this method and implement using OperationManager
-   // model->copyCPUSynapseToGPUModel();
-}
-
 /// Resets all of the maps. Releases and re-allocates memory for each map,
 /// clearing them as necessary.
 void Simulator::reset()
@@ -153,16 +138,16 @@ void Simulator::reset()
 void Simulator::simulate()
 {
    // Main simulation loop - execute maxGrowthSteps
-   for (int currentEpoch = 1; currentEpoch <= numEpochs_; currentEpoch++) {
-      LOG4CPLUS_TRACE(consoleLogger_, "Performing epoch number: " << currentEpoch);
+   for (currentEpoch_ = 1; currentEpoch_ <= numEpochs_; currentEpoch_++) {
+      LOG4CPLUS_TRACE(consoleLogger_, "Performing epoch number: " << currentEpoch_);
       LOG4CPLUS_TRACE(fileLogger_, "Begin network state:");
-      currentEpoch_ = currentEpoch;
+
 #ifdef PERFORMANCE_METRICS
       // Start timer for advance
       short_timer.start();
 #endif
       // Advance simulation to next growth cycle
-      advanceEpoch(currentEpoch);
+      advanceEpoch(currentEpoch_);
 #ifdef PERFORMANCE_METRICS
       // Time to advance
       t_host_advance += short_timer.lap() / 1000000.0;
@@ -208,16 +193,20 @@ void Simulator::advanceEpoch(int currentEpoch) const
    while (g_simulationStep < endStep) {
       // Output status once every 1% of total simulation time
       if (count % onePercent == 0) {
-         LOG4CPLUS_TRACE(consoleLogger_,
-                         "Epoch: " << currentEpoch << "/" << numEpochs_
-                                   << " simulating time: " << g_simulationStep * deltaT_ << "/"
-                                   << (epochDuration_ * numEpochs_) - 1);
-         LOG4CPLUS_TRACE(workbenchLogger_,
-                         "Epoch: " << currentEpoch << "/" << numEpochs_
-                                   << " simulating time: " << g_simulationStep * deltaT_ << "/"
-                                   << (epochDuration_ * numEpochs_) - 1);
+         uint64_t totalDuration = (epochDuration_ * numEpochs_) - 1;
+         uint64_t simulatedTime = (uint64_t)(g_simulationStep * deltaT_) % totalDuration;
+
+         LOG4CPLUS_TRACE(consoleLogger_, "Epoch: " << currentEpoch << "/" << numEpochs_
+                                                   << " simulating time: " << simulatedTime << "/"
+                                                   << totalDuration);
+
+         LOG4CPLUS_TRACE(workbenchLogger_, "Epoch: " << currentEpoch << "/" << numEpochs_
+                                                     << " simulating time: " << simulatedTime << "/"
+                                                     << totalDuration);
+
          count = 0;
       }
+
       count++;
       // input stimulus
       /***** S_INPUT NOT IN REPO YET *******/
