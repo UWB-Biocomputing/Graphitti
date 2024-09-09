@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+  <key id="segments" for="node" attr.name="segments" attr.type="string" />
+  <key id="trunks" for="node" attr.name="trunks" attr.type="int" />
+  <key id="servers" for="node" attr.name="servers" attr.type="int" />
+  <key id="x" for="node" attr.name="x" attr.type="double" />
+  <key id="y" for="node" attr.name="y" attr.type="double" />
+  <key id="type" for="node" attr.name="type" attr.type="string" />
+  <key id="name" for="node" attr.name="name" attr.type="string" />
+  <key id="objectID" for="node" attr.name="objectID" attr.type="string" />
+  <graph edgedefault="directed">
+    <node id="0">
+      <data key="type">PSAP</data>
+      <data key="objectID">PSAP_0@GraphGeneration.gov</data>
+      <data key="name">UNKNOWN</data>
+      <data key="trunks">8</data>
+      <data key="servers">2</data>
+      <data key="x">26.684175347875303</data>
+      <data key="y">45.12151029185926</data>
+    </node>
+    <node id="1">
+      <data key="type">EMS</data>
+      <data key="objectID">EMS_1@GraphGeneration.gov</data>
+      <data key="name">UNKNOWN</data>
+      <data key="trunks">7</data>
+      <data key="servers">4</data>
+      <data key="x">88.32504538743825</data>
+      <data key="y">24.3447255741982</data>
+    </node>
+    <node id="2">
+      <data key="type">FIRE</data>
+      <data key="objectID">FIRE_2@GraphGeneration.gov</data>
+      <data key="name">UNKNOWN</data>
+      <data key="trunks">8</data>
+      <data key="servers">4</data>
+      <data key="x">3.9823587389481663</data>
+      <data key="y">33.12527947769887</data>
+    </node>
+    <node id="3">
+      <data key="type">LAW</data>
+      <data key="objectID">LAW_3@GraphGeneration.gov</data>
+      <data key="name">UNKNOWN</data>
+      <data key="trunks">6</data>
+      <data key="servers">5</data>
+      <data key="x">62.74352502259012</data>
+      <data key="y">89.86247931321437</data>
+    </node>
+    <node id="4">
+      <data key="type">CALR</data>
+      <data key="segments">[(88.6655318954315, 80.59422141193761), (88.66108394788328, 80.58829513193072)], [(88.65688470078041, 80.60914243480023), (88.64822534141489, 80.62360098258685)], [(88.68755290369927, 80.60306787184061), (88.69194787621343, 80.62407937984158)], [(88.66559919239761, 80.61796741778754), (88.67481367186535, 80.61602845749785)], [(88.66301191269032, 80.62926368747596), (88.68222934879772, 80.61373229568781)], [(88.6768844137644, 80.63440642988589), (88.67714843377304, 80.61100496779682)], [(88.69509992626257, 80.60106115513616), (88.68763270210539, 80.59961670586264)], [(88.67891598800084, 80.596892128318), (88.65455212861859, 80.57815000429407)], [(88.68163803498936, 80.58707945479941), (88.67719827740397, 80.57128675316203)], [(88.68151339066573, 80.58769300210768), (88.66875090589971, 80.57544642650143)], [(88.68221015199637, 80.58624563259468), (88.67670687645209, 80.5997696774591)], [(88.69696224540381, 80.58840093930385), (88.67623685489689, 80.57656979081507)], [(88.68646409098352, 80.61976072065416), (88.69059850145676, 80.64407908189612)], [(88.6875034393669, 80.60664662214589), (88.67891142283952, 80.6213029432923)], [(88.66797824692223, 80.62112248531248), (88.66868584908771, 80.62949690377971)], [(88.69386754908471, 80.58825151466647), (88.69167050990208, 80.58328851580391)], [(88.6681913991846, 80.58825647384441), (88.6596228542019, 80.56347057912728)], [(88.67797877597543, 80.60469456231246), (88.69349686641544, 80.59403925728365)], [(88.69543262967403, 80.62831879726674), (88.6943525788961, 80.64567353393359)], [(88.70140952167908, 80.6342631458782), (88.71527900847981, 80.62860298379456)], [(88.69502288524498, 80.62272372776557), (88.71184416309778, 80.62477923491348)], [(88.68512920193588, 80.63464193818199), (88.67779679585692, 80.61763114838281)], [(88.69659999798363, 80.60746907113719), (88.69379415375072, 80.60786710145494)], [(88.67233426767133, 80.61679090928803), (88.65473009343556, 80.60629680830912)], [(88.67733755532379, 80.58711319266834), (88.67827896613815, 80.58313665439634)]</data>
+      <data key="objectID">CALL_4@GraphGeneration.gov</data>
+      <data key="name">UNKNOWN</data>
+    </node>
+    <edge source="0" target="1" />
+    <edge source="0" target="2" />
+    <edge source="0" target="3" />
+    <edge source="0" target="4" />
+    <edge source="1" target="0" />
+    <edge source="2" target="0" />
+    <edge source="3" target="0" />
+    <edge source="4" target="0" />
+  </graph>
+</graphml>
