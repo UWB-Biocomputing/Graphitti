@@ -80,6 +80,11 @@ public:
    ///  summation points to their Vm and resets the summation points to zero
    vector<BGFLOAT> summationPoints_;
 
+   /// Helper function for recorder to register spike history variables for all neurons.
+   /// Option 1: Register neuron information in vertexEvents_ one by one.
+   /// Option 2: Register a vector of EventBuffer variables.
+   virtual void registerHistoryVariables() = 0;
+
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive, std::uint32_t const version);
 
