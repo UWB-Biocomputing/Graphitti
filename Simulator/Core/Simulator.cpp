@@ -193,8 +193,14 @@ void Simulator::advanceEpoch(int currentEpoch) const
    while (g_simulationStep < endStep) {
       // Output status once every 1% of total simulation time
       if (count % onePercent == 0) {
+         // Simulation time is calculated independently to handle deserialization scenarios.
+         // If g_simulationStep is set to a value greater than totalDuration after deserialization,
+         // a modulo operation is applied to ensure the displayed simulation time is accurate.
+         // If totalDuration is zero, the entire simulation time is determined by g_simulationStep * deltaT_.
          uint64_t totalDuration = (epochDuration_ * numEpochs_) - 1;
-         uint64_t simulatedTime = (uint64_t)(g_simulationStep * deltaT_) % totalDuration;
+         auto simulatedTime
+            = (totalDuration == 0 ? (g_simulationStep * deltaT_)
+                                  : (uint64_t)(g_simulationStep * deltaT_) % totalDuration);
 
          LOG4CPLUS_TRACE(consoleLogger_, "Epoch: " << currentEpoch << "/" << numEpochs_
                                                    << " simulating time: " << simulatedTime << "/"
