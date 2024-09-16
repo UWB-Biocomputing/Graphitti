@@ -65,5 +65,5 @@ CEREAL_REGISTER_TYPE(LayoutNeuro);
 ///  Cereal serialization method
 template <class Archive> void LayoutNeuro::serialize(Archive &archive)
 {
-   archive(cereal::base_class<Layout>(this));
+   archive(cereal::virtual_base_class<Layout>(this));
 }

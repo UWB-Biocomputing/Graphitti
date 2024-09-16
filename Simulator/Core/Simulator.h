@@ -37,12 +37,6 @@ public:
 
    void printParameters() const;   /// Prints loaded parameters to logging file.
 
-   // Copied over from STDPFix
-   void copyGPUSynapseToCPU();   /// Copy GPU Synapse data to CPU.
-
-   // Copied over from STDPFix
-   void copyCPUSynapseToGPU();   /// Copy CPU Synapse data to GPU.
-
    void reset();   /// Reset simulation objects.
 
    void simulate();
@@ -125,8 +119,6 @@ public:
 private:
    Simulator();   /// Constructor is private to keep a singleton instance of this
                   /// class.
-
-   int totalNeurons_;   /// Count of neurons in the simulation
 
    int currentEpoch_;   /// Current epoch step
 
