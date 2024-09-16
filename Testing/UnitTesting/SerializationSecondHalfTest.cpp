@@ -14,7 +14,7 @@
  *    STEP 5: Compare the serialized output of the second half with the full simulation's serialized output.
  *            If they match, the final result files should also be identical, confirming successful serialization.
  *
- * @note This specific test, SerializationSecondHalfTest, covers the Fourth and Fifth step above.
+ * @note This specific test, SerializationSecondHalfTest, covers the fourth and fifth step above.
  * 
  * To run the serialization tests, execute the script `run_serial_test.sh` located in the `build` directory.
  *
