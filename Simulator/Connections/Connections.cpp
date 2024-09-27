@@ -103,31 +103,3 @@ void Connections::updateSynapsesWeights()
 {
 }
 #endif   // !USE_GPU
-
-///  Creates synapses from synapse weights saved in the serialization file.
-void Connections::createSynapsesFromWeights()
-{
-   int numVertices = Simulator::getInstance().getTotalVertices();
-   Layout &layout = Simulator::getInstance().getModel().getLayout();
-   AllVertices &vertices = layout.getVertices();
-
-   // for each neuron
-   for (int i = 0; i < numVertices; i++) {
-      // for each synapse in the vertex
-      for (BGSIZE synapseIndex = 0; synapseIndex < Simulator::getInstance().getMaxEdgesPerVertex();
-           synapseIndex++) {
-         BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * i + synapseIndex;
-         // if the synapse weight is not zero (which means there is a connection), create the synapse
-         if (edges_->W_[iEdg] != 0.0) {
-            BGFLOAT theW = edges_->W_[iEdg];
-            int srcVertex = edges_->sourceVertexIndex_[iEdg];
-            int destVertex = edges_->destVertexIndex_[iEdg];
-            edgeType type = layout.edgType(srcVertex, destVertex);
-            edges_->edgeCounts_[i]++;
-            edges_->createEdge(iEdg, srcVertex, destVertex, Simulator::getInstance().getDeltaT(),
-                               type);
-            edges_->W_[iEdg] = theW;
-         }
-      }
-   }
-}

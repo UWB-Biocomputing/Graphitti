@@ -30,6 +30,7 @@ where:
 
 # Check for passed options [-g] or [-h]
 BUILD_GPU=false
+PROCESSING_UNIT='Cpu'
 GRAPHITTI=./cgraphitti
 while getopts "gh" option
 do
@@ -37,6 +38,7 @@ do
         h) echo "$usage"
            exit ;;
         g) BUILD_GPU=true
+           PROCESSING_UNIT='Gpu'
            GRAPHITTI=./ggraphitti ;;
        \?) printf "illegal option: -%s" "$OPTARG" >&2
            echo "$usage" >&2
@@ -53,7 +55,7 @@ NC='\033[0m' # No color
 # Files and directory variables
 CONFIG_DIR=../Testing/RegressionTesting/configfiles
 TEST_OUT_DIR=../Testing/RegressionTesting/TestOutput
-GOOD_OUT_DIR=../Testing/RegressionTesting/GoodOutput
+GOOD_OUT_DIR=../Testing/RegressionTesting/GoodOutput/${PROCESSING_UNIT}
 declare -a TEST_FILES=("test-tiny"
                        "test-small"
                        "test-small-connected"

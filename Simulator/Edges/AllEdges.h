@@ -15,7 +15,6 @@
 #include <vector>
 // cereal
 #include "cereal/types/vector.hpp"
-#include <cereal/types/polymorphic.hpp>
 
 class AllVertices;
 
@@ -231,11 +230,11 @@ CEREAL_CLASS_VERSION(AllEdges, 1);
 template <class Archive> void AllEdges::serialize(Archive &archive, std::uint32_t const version)
 {
    // serialization
-   archive(cereal::make_nvp("sourceVertexIndex_", sourceVertexIndex_),
+   archive(cereal::make_nvp("sourceVertexIndex", sourceVertexIndex_),
            cereal::make_nvp("edgeWeights", W_),
-           cereal::make_nvp("destVertexIndex_", destVertexIndex_), cereal::make_nvp("type_", type_),
-           cereal::make_nvp("inUse_", inUse_), cereal::make_nvp("edgeCounts_", edgeCounts_),
-           cereal::make_nvp("totalEdgeCount_", totalEdgeCount_),
-           cereal::make_nvp("maxEdgesPerVertex_", maxEdgesPerVertex_),
-           cereal::make_nvp("countVertices_", countVertices_));
+           cereal::make_nvp("destVertexIndex", destVertexIndex_), cereal::make_nvp("type", type_),
+           cereal::make_nvp("inUse", inUse_), cereal::make_nvp("edgeCounts", edgeCounts_),
+           cereal::make_nvp("totalEdgeCount", totalEdgeCount_),
+           cereal::make_nvp("maxEdgesPerVertex", maxEdgesPerVertex_),
+           cereal::make_nvp("countVertices", countVertices_));
 }

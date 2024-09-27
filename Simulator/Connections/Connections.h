@@ -73,9 +73,6 @@ public:
    ///  @return true if successful, false otherwise.
    virtual bool updateConnections(AllVertices &vertices);
 
-   ///  Creates synapses from synapse weights saved in the serialization file.
-   void createSynapsesFromWeights();
-
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive, std::uint32_t const version);
 
@@ -115,6 +112,6 @@ CEREAL_CLASS_VERSION(Connections, 1);
 ///  Cereal serialization method
 template <class Archive> void Connections::serialize(Archive &archive, std::uint32_t const version)
 {
-   archive(cereal::make_nvp("edges_", edges_),
-           cereal::make_nvp("synapseIndexMap_", synapseIndexMap_));
+   archive(cereal::make_nvp("edges", edges_),
+           cereal::make_nvp("synapseIndexMap", synapseIndexMap_));
 }

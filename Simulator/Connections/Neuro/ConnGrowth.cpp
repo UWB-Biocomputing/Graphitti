@@ -46,7 +46,7 @@
 #include "ParseParamError.h"
 
 #ifdef USE_HDF5
-   #include "Hdf5GrowthRecorder.h"
+   #include "Hdf5Recorder.h"
 #endif
 
 ConnGrowth::ConnGrowth()
@@ -67,9 +67,14 @@ void ConnGrowth::setup()
    W_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices, 0);
    radii_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices, growthParams_.startRadius);
    rates_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices, 0);
+   delta_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices);
    area_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices, numVertices, 0);
    outgrowth_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
    deltaR_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices);
+
+   // Initialize connection frontier distance change matrix with the current distances
+   Layout &layout = Simulator::getInstance().getModel().getLayout();
+   delta_ = layout.dist_;
 
    // Register VertorMatrix radii_ for Recording if need
    // Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
@@ -128,6 +133,9 @@ bool ConnGrowth::updateConnections(AllVertices &vertices)
    // Update Connections data
    updateConns(vertices);
 
+   // Updata the distance between forntiers of vertices
+   updateFrontiers();
+
    // Update the areas of overlap in between vertices
    updateOverlap();
 
@@ -161,10 +169,22 @@ void ConnGrowth::updateConns(AllVertices &vertices)
    radii_ += deltaR_;
 }
 
+/// Update the distance between frontiers of vertices.
+void ConnGrowth::updateFrontiers()
+{
+   LOG4CPLUS_INFO(fileLogger_, "Updating distance between frontiers...");
+   // Update distance between frontiers
+   Layout &layout = Simulator::getInstance().getModel().getLayout();
+   int numVertices = Simulator::getInstance().getTotalVertices();
+   for (int unit = 0; unit < numVertices - 1; unit++) {
+      for (int i = unit + 1; i < numVertices; i++) {
+         delta_(unit, i) = layout.dist_(unit, i) - (radii_[unit] + radii_[i]);
+         delta_(i, unit) = delta_(unit, i);
+      }
+   }
+}
+
 ///  Update the areas of overlap in between Neurons.
-///
-///  @param  numVertices  Number of vertices to update.
-///  @param  layout      Layout information of the neural network.
 void ConnGrowth::updateOverlap()
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
@@ -173,14 +193,11 @@ void ConnGrowth::updateOverlap()
    LOG4CPLUS_INFO(fileLogger_, "Computing areas of overlap");
 
    // Compute areas of overlap; this is only done for overlapping units
-   for (int i = 0; i < numVertices - 1; i++) {
-      for (int j = i + 1; j < numVertices; j++) {
+   for (int i = 0; i < numVertices; i++) {
+      for (int j = 0; j < numVertices; j++) {
          area_(i, j) = 0.0;
 
-         // Calculate the distance between neuron frontiers
-         BGFLOAT frontierDelta = layout.dist_(j, i) - (radii_[j] + radii_[i]);
-
-         if (frontierDelta < 0) {
+         if (delta_(i, j) < 0) {
             BGFLOAT lenAB = layout.dist_(i, j);
             BGFLOAT r1 = radii_[i];
             BGFLOAT r2 = radii_[j];

@@ -21,7 +21,7 @@ using namespace std;
 /// a list of pre-defined basic data types in recorded variables
 using multipleTypes = variant<uint64_t, bool, int, BGFLOAT>;
 
-//TODO: remove it after implemtating the HDF5Recorder
+//TODO: remove it after implemtating the Hdf5Recorder
 class AllVertices;
 class Recorder {
 public:
@@ -37,28 +37,16 @@ public:
    /// @param[in] stateOutputFileName  File name to save histories
    virtual void init() = 0;
 
-   // ToDo : remove it ?
-   /// Init radii and rates history matrices with default values
-   virtual void initDefaultValues() = 0;
-
-
-   /// Init radii and rates history matrices with current radii and rates
-   virtual void initValues() = 0;
-
-   // ToDo : remove it ?
-   /// Get the current radii and rates values
-   virtual void getValues() = 0;
-
    /// Terminate process
    virtual void term() = 0;
 
-   // TODO: No parameters needed (AllVertices &vertices)
-   /// Compile/capture variable history information in every epoch
-   virtual void compileHistories(AllVertices &vertices) = 0;
 
-   // TODO: No parameters needed (AllVertices &vertices)
+   /// Compile/capture variable history information in every epoch
+   virtual void compileHistories() = 0;
+
+
    /// Writes simulation results to an output destination.
-   virtual void saveSimData(const AllVertices &vertices) = 0;
+   virtual void saveSimData() = 0;
 
    /// Prints loaded parameters to logging file.
    virtual void printParameters() = 0;

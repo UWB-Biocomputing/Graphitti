@@ -143,6 +143,9 @@ private:
    ///  @param  neurons  The Neuron list to search from.
    void updateConns(AllVertices &neurons);
 
+   /// Update the distance between frontiers of Neurons.
+   void updateFrontiers();
+
    ///  Update the areas of overlap in between Neurons.
    void updateOverlap();
 
@@ -182,6 +185,9 @@ public:
    /// spiking rate
    VectorMatrix rates_;
 
+   /// distance between connection frontiers
+   CompleteMatrix delta_;
+
    /// areas of overlap
    CompleteMatrix area_;
 
@@ -198,8 +204,8 @@ CEREAL_REGISTER_TYPE(ConnGrowth);   // to enable polymorphism
 template <class Archive> void ConnGrowth::serialize(Archive &archive)
 {
    archive(cereal::base_class<Connections>(this), cereal::make_nvp("radiiSize", radiiSize_),
-           cereal::make_nvp("growthParams_", growthParams_), cereal::make_nvp("W_", W_),
-           cereal::make_nvp("radii_", radii_), cereal::make_nvp("rates_", rates_),
-           cereal::make_nvp("area_", area_), cereal::make_nvp("outgrowth_", outgrowth_),
-           cereal::make_nvp("deltaR_", deltaR_));
+           cereal::make_nvp("growthParams", growthParams_), cereal::make_nvp("W", W_),
+           cereal::make_nvp("radii", radii_), cereal::make_nvp("rates", rates_),
+           cereal::make_nvp("delta", delta_), cereal::make_nvp("area", area_),
+           cereal::make_nvp("outgrowth", outgrowth_), cereal::make_nvp("deltaR", deltaR_));
 }

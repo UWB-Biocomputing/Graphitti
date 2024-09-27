@@ -266,7 +266,7 @@ CEREAL_REGISTER_TYPE(AllDynamicSTDPSynapses);
 ///  Cereal serialization method
 template <class Archive> void AllDynamicSTDPSynapses::serialize(Archive &archive)
 {
-   archive(cereal::base_class<AllSTDPSynapses>(this), cereal::make_nvp("lastSpike_", lastSpike_),
-           cereal::make_nvp("r_", r_), cereal::make_nvp("u_", u_), cereal::make_nvp("D_", D_),
-           cereal::make_nvp("U_", U_), cereal::make_nvp("F_", F_));
+   archive(cereal::base_class<AllSTDPSynapses>(this), cereal::make_nvp("lastSpike", lastSpike_),
+           cereal::make_nvp("r", r_), cereal::make_nvp("u", u_), cereal::make_nvp("D", D_),
+           cereal::make_nvp("U", U_), cereal::make_nvp("F", F_));
 }

@@ -184,11 +184,14 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
       LOG4CPLUS_TRACE(consoleLogger, "Deserializing state from file.");
 
       // Deserialization
-      if (!serializer.deserializeSynapses()) {
+      if (!serializer.deserialize()) {
          LOG4CPLUS_FATAL(consoleLogger, "Failed while deserializing objects");
          return -1;
       }
    }
+
+   // Helper function for recorder to register spike history variables for all neurons.
+   simulator.getModel().getLayout().getVertices().registerHistoryVariables();
 
    // Run simulation
    LOG4CPLUS_TRACE(consoleLogger, "Starting Simulation");
@@ -211,7 +214,7 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
    // Serializes internal state for the current simulation
    if (!simulator.getSerializationFileName().empty()) {
       LOG4CPLUS_TRACE(consoleLogger, "Serializing current state");
-      serializer.serializeSynapses();
+      serializer.serialize();
    }
 
    // Tell simulation to clean-up and run any post-simulation logic.

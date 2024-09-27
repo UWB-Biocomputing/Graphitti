@@ -9,7 +9,7 @@
  * we are requesting.
  */
 
-#include "Hdf5GrowthRecorder.h"
+#include "Hdf5Recorder.h"
 #include "Utils/Factory.h"
 #include "Xml911Recorder.h"
 #include "gtest/gtest.h"
@@ -35,11 +35,10 @@ TEST(RecorderFactory, CreateNonExistentClassReturnsNullPtr)
 
 #if defined(HDF5)
 // This test is only possible if HDF5 compilation is available and enabled
-TEST(RecorderFactory, CreateHdf5GrowthRecorderInstance)
+TEST(RecorderFactory, CreateHdf5RecorderInstance)
 {
-   unique_ptr<Recorder> recorder
-      = Factory<Recorder>::getInstance().createType("Hdf5GrowthRecorder");
+   unique_ptr<Recorder> recorder = Factory<Recorder>::getInstance().createType("Hdf5Recorder");
    ASSERT_NE(nullptr, recorder);
-   ASSERT_NE(nullptr, dynamic_cast<Hdf5GrowthRecorder *>(recorder.get()));
+   ASSERT_NE(nullptr, dynamic_cast<Hdf5Recorder *>(recorder.get()));
 }
 #endif
