@@ -2,39 +2,35 @@
 
 This guide explains how to implement serialization using the Cereal library within Graphitti. If you're looking to add serialization to your class, follow this guide. For more comprehensive information on Cereal, refer to their [official documentation](https://uscilab.github.io/cereal/index.html).
 
-<details>
-<summary><strong>
+<strong>
 Understanding Serialization and Deserialization 
-</strong></summary>
+</strong>
 
 Serialization involves converting an object or data structure into a format that can be stored or transmitted, while deserialization is the reverse process— reconstructing an object from the serialized format.
-</details>
 <br>
-<details>
-<summary><strong>
+
+<strong>
 What is Cereal?
-</strong></summary>
+</strong>
 
 Cereal is a lightweight C++11 library designed for object serialization and deserialization. It provides a straightforward interface for serializing objects and supports a wide range of data types. Cereal is efficient and well-suited for handling large data sets, making it a preferred choice for serialization tasks in Graphitti.
-</details>
 <br>
 
-<details>
-<summary><strong>
+
+<strong>
 Why Graphitti Uses Serialization?
-</strong></summary>
+</strong>
 
 Graphitti utilizes Cereal to enable efficient serialization and deserialization of the network structure. Serialized data can serve as a checkpoint for large simulations or as input for subsequent simulations with varying conditions. This flexibility enhances Graphitti's efficiency and adaptability in modeling scenarios.
-</details>
 <br>
 
-## Basics of Cereal
+## Understand Cereal at a High Level
 
 ### C++ Features Supported by Cereal
 
-- **Standard Library Support**: Cereal fully supports the C++11  [standard library](http://en.cppreference.com/w/). You can include the necessary headers from Cereal to enable support for various types (e.g., `<cereal/types/vector.hpp>`). Refer to the [Cereal Doxygen docs](https://uscilab.github.io/cereal/assets/doxygen/group__STLSupport.html) for a complete list of supported types.
+- **Standard Library Support**: Cereal fully supports the C++11  [standard library](http://en.cppreference.com/w/). You can include the necessary headers from Cereal to enable support for various types (e.g., If you need to serialize a `std::vector`, add `<cereal/types/vector.hpp>`). Refer to the complete list of supported types below or in [Cereal Doxygen docs](https://uscilab.github.io/cereal/assets/doxygen/group__STLSupport.html).
 
-- **Smart Pointers**: Cereal supports modern smart pointers (`std::shared_ptr` and `std::unique_ptr`) via `<cereal/types/memory.hpp>`. However, raw pointers or references are not supported.
+- **Smart Pointers**: Cereal supports modern smart pointers (`std::shared_ptr` and `std::unique_ptr`) via `<cereal/types/memory.hpp>`. <strong> However, raw pointers or references are NOT supported.</strong>
 
 - **Inheritance and Polymorphism**: Cereal can seamlessly handles inheritance and polymorphism- more on this in the coming section.
 
@@ -50,7 +46,7 @@ Graphitti utilizes Cereal to enable efficient serialization and deserialization 
 
 - **Defining Serialization Functions**: Cereal requires to know which data members to serialize in a class. By implementing a serialization function `serialize` within a class, you indicate to Cereal which data members should be serialized. 
 
-- **Default Constructor Requirement**:Cereal requires access to a default constructor for classes it serializes to construct the object during deserialization.
+- **Default Constructor Requirement**: Cereal requires access to a default constructor for classes it serializes to construct the object during deserialization.
 
 - **Name-Value Pairs**: Cereal supports name-value pairs, allowing you to attach names to serialized objects. This feature is particularly useful for XML archives and is adopted in Graphitti's serialization process.
 
@@ -58,17 +54,22 @@ Graphitti utilizes Cereal to enable efficient serialization and deserialization 
 
 ## Incorporate Cereal in your class 
 
-- Cereal supports two approaches for serialization functions: internal or external. Cereal also provides two types of serialization function `serialize` and `load and save`. For consistency within Graphitti, it's recommended to use an internal single `serialize` function.
-
+- Cereal supports two approaches for serialization functions: internal or external. Cereal also provides two types of serialization function `serialize` and `load and save`. For consistency within Graphitti, use an internal single `serialize` function.
 - Throughout Graphitti, we typically serialize all data members (private, protected, and public) of a class.
-<br>
 
-### **Step 01: Include Necessary Cereal Headers**
- Include the necessary Cereal headers for the data member types you want to serialize. If you are using a custom data member type, follow these steps for the custom data type class or struct as well.
+### **STEP 01: ADD CEREAL HEADERS**
+Before implementing serialization in your class, you need to include the appropriate Cereal headers for the types of data members you want to serialize. Cereal provides headers for various standard types, such as vectors, strings, and other containers.
+
+- For example, if you're serializing a `std::vector<int>`, you'll need to include the following header:
+```cpp
+#include <cereal/types/vector.hpp>
+```
+
+- If you are using custom types, ensure the serialization process is correctly implemented for those types as well. The same approach applies to user-defined types, so include the appropriate headers and define the serialize function in that class or struct.
 
 <details>
 
-<summary>Refer to the table below for a reference on commonly used C++ data types and their corresponding Cereal headers</summary>
+<summary><strong>Commonly used C++ data types and their corresponding Cereal headers</strong></summary>
 
 
 | Type                | Header to include                               |
@@ -101,11 +102,27 @@ Graphitti utilizes Cereal to enable efficient serialization and deserialization 
 
 <br>
 
-### **Step 02: Include and Define the Serialize Function**
+### **STEP 02: ADD SERIALIZE FUNCTION**
 
 Within your class header file
-1. Declare the `serialize` function under the public section. 
-2. At the end of your header file, define the `serialize` function for your class.
+- Firstly, declare the `serialize` function inside the class:
+    - Add the following template function signature in the public section of your class to allow serialization for any archive type.
+```cpp 
+    template <class Archive> 
+    void serialize(Archive & archive); 
+```  
+- Secondly, define the `serialize` function outside the class:
+    - After your class declaration, define the serialize function at the end of the header file. 
+    - This function specifies which member variables are serialized and deserialized, and how that process occurs.
+```cpp
+    template <class Archive> 
+    void YOUR_CLASS_NAME::serialize(Archive &archive)
+    {
+        archive(ADD_YOUR_MEMBER_VARIABLES_HERE);
+        // Refer to the example below
+    }
+```
+Here’s a sample implementation to guide you:
 
 ``` cpp
 
@@ -125,11 +142,12 @@ class MyCoolClass
     int X_;
 };
 
-//STEP 02 (b): Define the serialize function at the bottom of the header file
+//STEP 02 (b): Define the serialize function outside the class
+
 template <class Archive> 
 void MyCoolClass::serialize(Archive &archive)
 {
-   archive(cereal::make_nvp("myVector", myVector_), cereal::make_nvp("X", X_));
+   archive(cereal::make_nvp("myVector", myVector_), cereal::make_nvp("myInt", X_));
 }
 
 
@@ -137,25 +155,27 @@ void MyCoolClass::serialize(Archive &archive)
 
 Adjust the function names and data member names as per your specific requirements.
 
-### **Step 03: Check for any Special Modifications**
+NOTE: 
+- The `template <class Archive>` declaration allows the function to work with any type of Cereal archive (e.g., JSON, XML, binary).
+- When defining the `serialize` function, use Cereal’s `make_nvp()` for custom names or `CEREAL_NVP()` for automatic name-value pair serialization.
+- Defining the function outside the class maintains a consistent style for serialized code and makes the function easier to locate, especially in larger projects like Graphitti. This approach also keeps your class declaration cleaner and less cluttered. 
 
-If you answer "yes" to any of the following questions, follow the corresponding steps. Some classes may fall under multiple categories, so review all questions carefully.
+### **STEP 03: SPECIAL CASES**
+
+Cereal requires additional steps for certain special cases such as inheritance, polymorphism, and templates. In this section, we outline specific steps based on whether your class matches one of these conditions. If you answer "yes" to any of the following questions, follow the corresponding steps. Some classes may fall under multiple categories, so be sure to review all the details carefully.
+
+### **1. DERIVED CLASS?**
+This step explains how to serialize base classes in a derived class. Cereal requires a path from the derived to the base type(s), typically done with `cereal::base_class` or `cereal::virtual_base_class`. 
 
 <details>
-<summary><strong>
-Is your class a derived class?
-</summary></strong>
-
-Cereal needs a serialization path from the derived class to the base type(s). This is usually handled with either `cereal::base_class` or `cereal::virtual_base_class`. 
-
-#### [a] Is your class derived from a virtual inheritance ?
-When inheriting from objects from a virtual inheritance (e.g.`class Derived : virtual Base`), the recommended method is to utilize `cereal::virtual_base_class<BaseT>(this)`  to cast the derived class to the base class. 
+<summary><strong> Virtual Inheritance ? </summary></strong>
+If your derived class uses virtual inheritance (`class Derived : virtual Base`), use `cereal::virtual_base_class<BaseT>(this)` to cast the derived class to its base class. Ensure this is placed at the start of the `archive` in the `serialize` function before member variables in the derived class.
 
 ```cpp
 
 class MyDerived : virtual MyBase
 {
-  int y;
+  int X_;
   template <class Archive>
   void serialize( Archive & ar );
 };
@@ -164,20 +184,23 @@ template <class Archive>
   void MyDerived::serialize( Archive & archive )
   { 
     // We pass this cast to the base type for each base type we need to serialize. 
-    archive(cereal::virtual_base_class<MyBase>(this), y); 
+    archive(cereal::virtual_base_class<MyBase>(this), cereal::make_nvp("myInt", X_)); 
 
     // For multiple inheritance, link all the base classes one after the other
-    //archive(cereal::virtual_base_class<MyBase1>(this), cereal::virtual_base_class<MyBase2>(this), y);
+    //archive(cereal::virtual_base_class<MyBase1>(this), cereal::virtual_base_class<MyBase2>(this), cereal::make_nvp("myInt", X_));
   }
 ```
-#### [b] Is your class derived from a normal (non-virtual) inheritance ?
-When inheriting from objects without using virtual inheritance (e.g.`class Derived : public Base`), the recommended method is to utilize `cereal::base_class<BaseT>(this)` to cast the derived class to the base class. 
+</details>
+
+<details>
+<summary><strong> Normal Inheritance ?</summary></strong>
+For non-virtual inheritance (`class Derived : public Base`), use `cereal::base_class<BaseT>(this) to serialize the base class. Ensure this is placed at the start of the `archive` in the `serialize` function before member variables in the derived class.
 
 ```cpp
 
 class MyDerived : public MyBase
 {
-  int y;
+  int X_;
   template <class Archive>
   void serialize( Archive & ar );
 };
@@ -186,32 +209,33 @@ template <class Archive>
   void MyDerived::serialize( Archive & archive )
   { 
     // We pass this cast to the base type for each base type we need to serialize. 
-    archive(cereal::base_class<MyBase>(this), y); 
+    archive(cereal::base_class<MyBase>(this), cereal::make_nvp("myInt", X_)); 
 
     // For multiple inheritance, link all the base classes one after the other
-    //archive(cereal::base_class<MyBase1>(this), cereal::base_class<MyBase2>(this), y);
+    //archive(cereal::base_class<MyBase1>(this), cereal::base_class<MyBase2>(this), cereal::make_nvp("myInt", X_));
   }
 ```
 For more details, refer to the official Cereal documentation on [inheritance](https://uscilab.github.io/cereal/inheritance.html)
 
 </details>
-<br>
 
-<details>
-<summary><strong>
-Does your class exhibit polymorphic behavior?
-</summary></strong>
+### **2. EXHIBIT POLYMORPHISM?**
 
 If you answered "yes" to the previous question about your class being a derived class, this is likely "yes" as well.
 
-If your class exhibits polymorphic behavior, particularly if it's a derived class, follow these steps:
+<details>
+<summary><strong>
+Follow these steps if your class exhibits polymorphic behavior:
+</summary></strong>
 
 1. Include Necessary Headers:
-Make sure to include the polymorphic header to enable support for polymorphism in Cereal.
+
+Make sure to include the polymorphic header to enable support for polymorphism in Cereal in the derived class.
 ``` #include <cereal/types/polymorphic.hpp> ```
 
 2. Register Your Derived Types:
-Register each derived class using `CEREAL_REGISTER_TYPE(DerivedClassName)`.
+
+Register each derived class above the definition of the `serialize` function using `CEREAL_REGISTER_TYPE(DerivedClassName)` in the respective derived class.
 
 ```cpp
 // be sure to include support for polymorphism
@@ -235,7 +259,8 @@ template <class Archive>
 ```
 
 3. Register Your Base Class (if not registered automatically):
-Normally, registering base classes is handled automatically if you serialize a derived type with either `cereal::base_class` or `cereal::virtual_base_class`. However, in situations where neither of these is used, explicit registration is required using the `CEREAL_REGISTER_POLYMORPHIC_RELATION` macro.
+
+Normally, registering base classes is handled automatically if you serialize a derived type with either `cereal::base_class` or `cereal::virtual_base_class`. However, in situations where neither of these is used, explicit registration is required using the `CEREAL_REGISTER_POLYMORPHIC_RELATION` macro in the derived class. 
 
 ```cpp
 struct MyEmptyBase
@@ -266,14 +291,14 @@ template <class Archive>
 For more detailed information and examples on polymorphism in Cereal, refer to the official documentation on [Polymorphism](https://uscilab.github.io/cereal/polymorphism.html).
 
 </details>
-<br>
 
+### **3. TEMPLATE?**
 <details>
 <summary><strong>
-Is your class a template?
+Template involves inheritance?
 </summary></strong>
 
-Follow all the steps from Step 01 as if your class is a regular class. However, if the template involves inheritance, you might need to register all potential instantiations of the template during polymorphism handling.
+Follow all the steps from STEP 01 as if your class is a regular class. However, if the template involves inheritance, you might need to register all potential instantiations of the template during polymorphism handling.
 
 ```cpp
 
@@ -310,21 +335,13 @@ CEREAL_REGISTER_TYPE(DerivedClassTemplate<float>);
 // CEREAL_REGISTER_POLYMORPHIC_RELATION(BaseClass, DerivedClassTemplate<float>);
 
 ```
-
 </details>
-<br>
 
-<details>
-<summary><strong>
-Are you serializing smart pointers to objects that do not have a default constructor?
-</summary></strong>
+### **4. NO DEFAULT CONSTRUCTOR?**
 
 Cereal provides a special overload method to handle this situation. Refer to the [Cereal documentation](https://uscilab.github.io/cereal/pointers) for detailed information on this technique.
 
-</details>
-<br>
-
-## Debugging Cereal Errors in Graphitti
+## Common Cereal Errors
 
 Encountering a Cereal error during compiling or running Graphitti? Here's a checklist to troubleshoot:
 
@@ -348,10 +365,6 @@ Encountering a Cereal error during compiling or running Graphitti? Here's a chec
     Reasoning: Polymorphic type registration requires mapping your registered type to archives included prior to CEREAL_REGISTER_TYPE being called. Missing archive headers in certain classes could lead to this error.
     
 With these checks, you should be able to diagnose and resolve common Cereal errors in Graphitti.
-
-<!-- ## Serialization flow in Graphitti (For Debugging purposes)  -->
-
-
 
 ---------
 [<< Go back to the Developer Documentation page](index.md)
