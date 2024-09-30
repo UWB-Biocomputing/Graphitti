@@ -3,7 +3,7 @@
 This guide explains how to implement serialization using the Cereal library within Graphitti. If you're looking to add serialization to your class, follow this guide. For more comprehensive information on Cereal, refer to their [official documentation](https://uscilab.github.io/cereal/index.html).
 
 <strong>
-Understanding Serialization and Deserialization 
+What is Serialization and Deserialization? 
 </strong>
 
 Serialization involves converting an object or data structure into a format that can be stored or transmitted, while deserialization is the reverse process— reconstructing an object from the serialized format.
@@ -21,7 +21,7 @@ Cereal is a lightweight C++11 library designed for object serialization and dese
 Why Graphitti Uses Serialization?
 </strong>
 
-Graphitti utilizes Cereal to enable efficient serialization and deserialization of the network structure. Serialized data can serve as a checkpoint for large simulations or as input for subsequent simulations with varying conditions. This flexibility enhances Graphitti's efficiency and adaptability in modeling scenarios.
+Graphitti utilizes Cereal to enable efficient serialization and deserialization of its simulation state and network structure. Serialized data can serve as a checkpoint for large simulations or as input for subsequent simulations with varying conditions. This flexibility enhances Graphitti's efficiency and adaptability in modeling scenarios.
 <br>
 
 ## Understand Cereal at a High Level
@@ -106,7 +106,7 @@ Before implementing serialization in your class, you need to include the appropr
 
 Within your class header file
 - Firstly, declare the `serialize` function inside the class:
-    - Add the following template function signature in the public section of your class to allow serialization for any archive type.
+    - Add the following template function signature in the **public** section of your class to allow serialization for any archive type.
 ```cpp 
     template <class Archive> 
     void serialize(Archive & archive); 
@@ -139,7 +139,7 @@ class MyCoolClass
 
   private:
     std::vector<int> myVector_;
-    int X_;
+    int x_;
 };
 
 //STEP 02 (b): Define the serialize function outside the class
@@ -147,7 +147,7 @@ class MyCoolClass
 template <class Archive> 
 void MyCoolClass::serialize(Archive &archive)
 {
-   archive(cereal::make_nvp("myVector", myVector_), cereal::make_nvp("myInt", X_));
+   archive(cereal::make_nvp("myVector", myVector_), cereal::make_nvp("myInt", x_));
 }
 
 
@@ -155,10 +155,18 @@ void MyCoolClass::serialize(Archive &archive)
 
 Adjust the function names and data member names as per your specific requirements.
 
-NOTE: 
-- The `template <class Archive>` declaration allows the function to work with any type of Cereal archive (e.g., JSON, XML, binary).
-- When defining the `serialize` function, use Cereal’s `make_nvp()` for custom names or `CEREAL_NVP()` for automatic name-value pair serialization.
-- Defining the function outside the class maintains a consistent style for serialized code and makes the function easier to locate, especially in larger projects like Graphitti. This approach also keeps your class declaration cleaner and less cluttered. 
+NOTE:
+
+- The `template <class Archive>` declaration allows the serialize function to be flexible, enabling it to work with different types of Cereal archives, such as JSON, XML, or binary formats.
+
+- When defining the `serialize` function, use `make_nvp()` and `CEREAL_NVP()` for each member variable:
+  - `make_nvp()` is used when you want to assign custom names to your serialized member variables, which can be helpful for clarity in the serialized output.
+  - `CEREAL_NVP()` automatically uses the variable's name for serialization without the need to explicitly name it.
+
+- Why define `serialize` in the header?
+  - Cereal relies heavily on templates, and C++ templates require full implementation details to be available during compilation for proper instantiation. Since templates must be instantiated at compile time, placing the serialize function in a `.cpp` file could result in missing template information, leading to linker errors. By defining the function in the header file, the compiler has all the necessary information to properly instantiate the serialize function for various data types.
+
+- Defining the function outside the class (but still in the header) promotes a clean code style, making the class declaration less cluttered and easier to maintain. It also makes serialized code easier to find, which is especially important in larger projects like Graphitti.
 
 ### **STEP 03: SPECIAL CASES**
 
@@ -175,7 +183,7 @@ If your derived class uses virtual inheritance (`class Derived : virtual Base`),
 
 class MyDerived : virtual MyBase
 {
-  int X_;
+  int x_;
   template <class Archive>
   void serialize( Archive & ar );
 };
@@ -184,7 +192,7 @@ template <class Archive>
   void MyDerived::serialize( Archive & archive )
   { 
     // We pass this cast to the base type for each base type we need to serialize. 
-    archive(cereal::virtual_base_class<MyBase>(this), cereal::make_nvp("myInt", X_)); 
+    archive(cereal::virtual_base_class<MyBase>(this), cereal::make_nvp("myInt", x_)); 
 
     // For multiple inheritance, link all the base classes one after the other
     //archive(cereal::virtual_base_class<MyBase1>(this), cereal::virtual_base_class<MyBase2>(this), cereal::make_nvp("myInt", X_));
@@ -200,7 +208,7 @@ For non-virtual inheritance (`class Derived : public Base`), use `cereal::base_c
 
 class MyDerived : public MyBase
 {
-  int X_;
+  int x_;
   template <class Archive>
   void serialize( Archive & ar );
 };
@@ -209,7 +217,7 @@ template <class Archive>
   void MyDerived::serialize( Archive & archive )
   { 
     // We pass this cast to the base type for each base type we need to serialize. 
-    archive(cereal::base_class<MyBase>(this), cereal::make_nvp("myInt", X_)); 
+    archive(cereal::base_class<MyBase>(this), cereal::make_nvp("myInt", x_)); 
 
     // For multiple inheritance, link all the base classes one after the other
     //archive(cereal::base_class<MyBase1>(this), cereal::base_class<MyBase2>(this), cereal::make_nvp("myInt", X_));
@@ -243,7 +251,7 @@ Register each derived class above the definition of the `serialize` function usi
 
 class MyDerived : public MyBase
 {
-  int y;
+  int x_;
   template <class Archive>
   void serialize( Archive & ar );
 };
@@ -254,7 +262,7 @@ CEREAL_REGISTER_TYPE(MyDerived);
 template <class Archive>
   void MyDerived::serialize( Archive & archive )
   { 
-    archive(cereal::base_class<MyBase>(this), y); 
+    archive(cereal::base_class<MyBase>(this), cereal::make_nvp("myInt", x_)); 
   }
 ```
 
@@ -271,7 +279,7 @@ struct MyEmptyBase
 struct MyDerived: MyEmptyBase
 {
   void foo() {}
-  double y;
+  double y_;
   template <class Archive>
   void serialize( Archive & archive );
 };
@@ -284,7 +292,7 @@ CEREAL_REGISTER_POLYMORPHIC_RELATION(MyEmptyBase, MyDerived)
 template <class Archive>
   void MyDerived::serialize( Archive & archive )
   {
-    archive( y );
+    archive( cereal::make_nvp("myDouble", y_) );
   }
 ```
 
@@ -316,13 +324,13 @@ struct BaseClass
 template <typename T>
 struct DerivedClassTemplate : public BaseClass
 {
-    T value;
+    T value_;
     void sayType();
 
     template <class Archive>
     void serialize(Archive & archive)
     {
-        archive(cereal::virtual_base_class<MyEmptyBase>(this), value);
+        archive(cereal::virtual_base_class<MyEmptyBase>(this), cereal::make_nvp("myValue", value_));
     }
 };
 
