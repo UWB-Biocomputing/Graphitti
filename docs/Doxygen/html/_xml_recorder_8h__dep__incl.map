@@ -1,0 +1,34 @@
+<map id="Simulator/Recorders/XmlRecorder.h" name="Simulator/Recorders/XmlRecorder.h">
+<area shape="rect" id="Node000001" title="An implementation for recording spikes history on xml file." alt="" coords="404,5,543,46"/>
+<area shape="rect" id="Node000002" href="$_conn_static_8cpp.html" title="The model of the small world network." alt="" coords="17,94,170,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="389,49,170,98,169,93,388,44"/>
+<area shape="rect" id="Node000003" href="$_xml911_recorder_8h.html" title="Header file for Xml911Recorder.h." alt="" coords="193,94,370,135"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="417,55,326,96,324,91,415,50"/>
+<area shape="rect" id="Node000005" href="$_factory_8h.html" title="A factory template for creating factory class for any subsystem that requires a factory to create a (..." alt="" coords="286,190,450,216"/>
+<area shape="poly" id="edge17_Node000001_Node000005" title=" " alt="" coords="456,61,434,95,377,191,373,188,430,93,451,58"/>
+<area shape="rect" id="Node000010" href="$_xml_growth_recorder_8h.html" title="Header file for XmlGrowthRecorder.h." alt="" coords="445,94,636,135"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="500,57,527,92,523,95,496,60"/>
+<area shape="rect" id="Node000013" href="$_xml_s_t_d_p_recorder_8h.html" title="An implementation for recording spikes history in an XML file for spike timining dependent plasticity..." alt="" coords="660,94,844,135"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="552,48,690,91,688,96,551,54"/>
+<area shape="rect" id="Node000015" href="$_xml_recorder_8cpp.html" title="An implementation for recording spikes history on xml file." alt="" coords="868,94,1007,135"/>
+<area shape="poly" id="edge16_Node000001_Node000015" title=" " alt="" coords="559,38,857,91,868,94,867,99,856,97,558,43"/>
+<area shape="rect" id="Node000004" href="$_xml911_recorder_8cpp.html" title="Header file for Xml911Recorder.h." alt="" coords="72,183,262,223"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="245,146,194,184,191,180,242,142"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="314,144,358,188,354,192,310,148"/>
+<area shape="rect" id="Node000006" href="$_connections_8cpp.html" title="Methods for creating and updating connections." alt="" coords="5,271,158,312"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="314,223,147,273,146,268,312,218"/>
+<area shape="rect" id="Node000007" href="$_model_8cpp.html" title="Implementation of Model for the graph&#45;based networks." alt="" coords="182,279,352,305"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="345,228,283,281,279,276,341,224"/>
+<area shape="rect" id="Node000008" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="376,279,566,305"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="395,224,458,276,455,281,392,228"/>
+<area shape="rect" id="Node000009" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="590,279,784,305"/>
+<area shape="poly" id="edge8_Node000005_Node000009" title=" " alt="" coords="428,218,643,276,641,281,427,223"/>
+<area shape="poly" id="edge12_Node000010_Node000005" title=" " alt="" coords="489,144,393,192,391,187,486,140"/>
+<area shape="rect" id="Node000011" href="$_conn_growth_8cpp.html" title="The model of the activity&#45;dependent neurite outgrowth." alt="" coords="704,183,864,223"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="610,138,729,180,728,185,609,143"/>
+<area shape="rect" id="Node000012" href="$_xml_growth_recorder_8cpp.html" title="An implementation for recording spikes history in an XML file for growth simulations." alt="" coords="475,183,680,223"/>
+<area shape="poly" id="edge11_Node000010_Node000012" title=" " alt="" coords="557,148,572,181,567,183,552,150"/>
+<area shape="poly" id="edge15_Node000013_Node000005" title=" " alt="" coords="650,141,423,192,422,187,649,136"/>
+<area shape="rect" id="Node000014" href="$_xml_s_t_d_p_recorder_8cpp_source.html" title=" " alt="" coords="889,183,1087,223"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="821,138,935,180,934,185,819,143"/>
+</map>

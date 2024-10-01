@@ -1,0 +1,9 @@
+<map id="Matrix" name="Matrix">
+<area shape="rect" id="Node000001" title=" " alt="" coords="161,5,217,31"/>
+<area shape="rect" id="Node000002" href="$class_complete_matrix.html" title="An efficient implementation of a dynamically&#45;allocated 2D array." alt="" coords="5,79,117,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,41,84,81,82,76,153,37"/>
+<area shape="rect" id="Node000003" href="$class_sparse_matrix.html" title="An efficient implementation of a dynamically&#45;allocated sparse 2D array." alt="" coords="140,79,238,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="192,46,192,79,186,79,186,46"/>
+<area shape="rect" id="Node000004" href="$class_vector_matrix.html" title="An efficient implementation of a dynamically&#45;allocated 1D array." alt="" coords="262,79,356,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="224,37,290,76,287,81,221,42"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$class_i_recorder.html" title=" " alt="" coords="5,55,83,80"/>
+<area shape="rect" id="Node000001" href="$class_xml_recorder.html" title=" " alt="" coords="131,55,227,80"/>
+<area shape="poly" id="edge17_Node000000_Node000001" title=" " alt="" coords="98,65,130,65,130,70,98,70"/>
+<area shape="rect" id="Node000002" href="$class_xml911_recorder.html" title=" " alt="" coords="286,5,403,31"/>
+<area shape="poly" id="edge18_Node000001_Node000002" title=" " alt="" coords="238,47,298,29,299,34,240,52"/>
+<area shape="rect" id="Node000003" href="$class_xml_growth_recorder.html" title=" " alt="" coords="275,55,413,80"/>
+<area shape="poly" id="edge19_Node000001_Node000003" title=" " alt="" coords="243,65,274,65,274,70,243,70"/>
+<area shape="rect" id="Node000004" href="$class_xml_s_t_d_p_recorder.html" title=" " alt="" coords="279,104,410,130"/>
+<area shape="poly" id="edge20_Node000001_Node000004" title=" " alt="" coords="240,83,299,101,298,106,238,88"/>
+</map>

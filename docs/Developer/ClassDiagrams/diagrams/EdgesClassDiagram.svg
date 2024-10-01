@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="3297px" preserveAspectRatio="none" style="width:1566px;height:3297px;" version="1.1" viewBox="0 0 1566 3297" width="1566px" zoomAndPan="magnify"><defs><filter height="300%" id="ffrmugac6bnnv" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[935a686a552498c9fe3db149d943753f]
+class AllDSSynapses--><rect codeLine="8" fill="#FEFECE" filter="url(#ffrmugac6bnnv)" height="444.9453" id="AllDSSynapses" style="stroke:#A80036;stroke-width:1.5;" width="724" x="9" y="2135.5"/><ellipse cx="326.75" cy="2151.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M326.6875,2147.3281 Q325.9375,2147.3281 325.375,2147.625 Q324.8125,2147.9063 324.4219,2148.4375 Q324.0313,2148.9688 323.8281,2149.75 Q323.6406,2150.5156 323.6406,2151.4688 Q323.6406,2152.4375 323.8125,2153.2031 Q324,2153.9531 324.3594,2154.4688 Q324.7344,2154.9844 325.3125,2155.2656 Q325.8906,2155.5313 326.6875,2155.5313 Q327.4219,2155.5313 328.1563,2155.3594 Q328.9063,2155.1875 329.7813,2154.8906 L329.7813,2157.0469 Q329.375,2157.2031 328.9844,2157.3281 Q328.5938,2157.4375 328.1875,2157.5156 Q327.7813,2157.5938 327.3594,2157.625 Q326.9375,2157.6719 326.4375,2157.6719 Q325.0313,2157.6719 324,2157.2188 Q322.9844,2156.7656 322.3125,2155.9531 Q321.6406,2155.1406 321.3125,2154 Q320.9844,2152.8438 320.9844,2151.4531 Q320.9844,2150.0781 321.3594,2148.9219 Q321.7344,2147.7656 322.4531,2146.9375 Q323.1719,2146.1094 324.2344,2145.6563 Q325.2969,2145.1875 326.6875,2145.1875 Q327.5938,2145.1875 328.5,2145.4219 Q329.4063,2145.6406 330.2344,2146.0469 L329.4063,2148.1406 Q328.7188,2147.8125 328.0313,2147.5781 Q327.3438,2147.3281 326.6875,2147.3281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="80" x="347.25" y="2155.6543">AllDSSynapses</text><line style="stroke:#A80036;stroke-width:1.5;" x1="10" x2="732" y1="2167.5" y2="2167.5"/><ellipse cx="20" cy="2178.5" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="74" x="29" y="2181.7104">D_ : BGFLOAT*</text><ellipse cx="20" cy="2191.3047" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="71" x="29" y="2194.5151">F_ : BGFLOAT*</text><ellipse cx="20" cy="2204.1094" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="74" x="29" y="2207.3198">U_ : BGFLOAT*</text><ellipse cx="20" cy="2216.9141" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="70" x="29" y="2220.1245">r_ : BGFLOAT*</text><ellipse cx="20" cy="2229.7188" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="72" x="29" y="2232.9292">u_ : BGFLOAT*</text><ellipse cx="20" cy="2242.5234" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="101" x="29" y="2245.7339">lastSpike_ : uint64_t*</text><line style="stroke:#A80036;stroke-width:1.5;" x1="10" x2="732" y1="2252.3281" y2="2252.3281"/><ellipse cx="20" cy="2263.3281" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="77" x="29" y="2266.5386">AllDSSynapses()</text><ellipse cx="20" cy="2276.1328" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="283" x="29" y="2279.3433">AllDSSynapses(const int numVertices, const int maxEdges)</text><ellipse cx="20" cy="2288.9375" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="83" x="29" y="2292.1479">~AllDSSynapses()</text><ellipse cx="20" cy="2301.7422" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="94" x="29" y="2304.9526">Create() : AllEdges*</text><polygon fill="#FFFF44" points="20,2309.5469,24,2313.5469,20,2317.5469,16,2313.5469" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="524" x="29" y="2317.7573">allocDeviceStruct(AllDSSynapsesDeviceProperties&amp; allEdges, int numVertices, int maxEdgesPerVertex) : void</text><ellipse cx="20" cy="2327.3516" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="249" x="29" y="2330.562">allocEdgeDeviceStruct(void** allEdgesDevice) : void</text><ellipse cx="20" cy="2340.1563" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="452" x="29" y="2343.3667">allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void</text><polygon fill="#FFFF44" points="20,2347.9609,24,2351.9609,20,2355.9609,16,2351.9609" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="291" x="29" y="2356.1714">changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) : void</text><polygon fill="#FFFF44" points="20,2360.7656,24,2364.7656,20,2368.7656,16,2364.7656" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="388" x="29" y="2368.9761">copyDeviceToHost(AllDSSynapsesDeviceProperties&amp; allEdgesDeviceProps) : void</text><ellipse cx="20" cy="2378.5703" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="250" x="29" y="2381.7808">copyEdgeDeviceToHost(void* allEdgesDevice) : void</text><ellipse cx="20" cy="2391.375" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="250" x="29" y="2394.5854">copyEdgeHostToDevice(void* allEdgesDevice) : void</text><ellipse cx="20" cy="2404.1797" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="453" x="29" y="2407.3901">copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void</text><polygon fill="#FFFF44" points="20,2411.9844,24,2415.9844,20,2419.9844,16,2415.9844" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="698" x="29" y="2420.1948">copyHostToDevice(void* allEdgesDevice, AllDSSynapsesDeviceProperties&amp; allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void</text><ellipse cx="20" cy="2429.7891" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="513" x="29" y="2432.9995">createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void</text><polygon fill="#FFFF44" points="20,2437.5938,24,2441.5938,20,2445.5938,16,2441.5938" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="390" x="29" y="2445.8042">deleteDeviceStruct(AllDSSynapsesDeviceProperties&amp; allEdgesDeviceProps) : void</text><ellipse cx="20" cy="2455.3984" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="252" x="29" y="2458.6089">deleteEdgeDeviceStruct(void* allEdgesDevice) : void</text><ellipse cx="20" cy="2468.2031" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="302" x="29" y="2471.4136">printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}</text><ellipse cx="20" cy="2481.0078" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="153" x="29" y="2484.2183">printParameters() : void {query}</text><ellipse cx="20" cy="2493.8125" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="169" x="29" y="2497.0229">printSynapsesProps() : void {query}</text><polygon fill="#FFFF44" points="20,2501.6172,24,2505.6172,20,2509.6172,16,2505.6172" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="248" x="29" y="2509.8276">readEdge(istream&amp; input, const BGSIZE iEdg) : void</text><ellipse cx="20" cy="2519.4219" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="286" x="29" y="2522.6323">resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void</text><ellipse cx="20" cy="2532.2266" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="110" x="29" y="2535.437">setEdgeClassID() : void</text><ellipse cx="20" cy="2545.0313" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="91" x="29" y="2548.2417">setupEdges() : void</text><polygon fill="#FFFF44" points="20,2552.8359,24,2556.8359,20,2560.8359,16,2556.8359" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="297" x="29" y="2561.0464">setupEdges(const int numVertices, const int maxEdges) : void</text><polygon fill="#FFFF44" points="20,2565.6406,24,2569.6406,20,2573.6406,16,2569.6406" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="301" x="29" y="2573.8511">writeEdge(ostream&amp; output, const BGSIZE iEdg) : void {query}</text><!--MD5=[09c0093d34d85daed484b6b6f446313a]
+class AllDynamicSTDPSynapses--><rect codeLine="43" fill="#FEFECE" filter="url(#ffrmugac6bnnv)" height="444.9453" id="AllDynamicSTDPSynapses" style="stroke:#A80036;stroke-width:1.5;" width="778" x="747" y="2839"/><ellipse cx="1061.25" cy="2855" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1061.1875,2850.8281 Q1060.4375,2850.8281 1059.875,2851.125 Q1059.3125,2851.4063 1058.9219,2851.9375 Q1058.5313,2852.4688 1058.3281,2853.25 Q1058.1406,2854.0156 1058.1406,2854.9688 Q1058.1406,2855.9375 1058.3125,2856.7031 Q1058.5,2857.4531 1058.8594,2857.9688 Q1059.2344,2858.4844 1059.8125,2858.7656 Q1060.3906,2859.0313 1061.1875,2859.0313 Q1061.9219,2859.0313 1062.6563,2858.8594 Q1063.4063,2858.6875 1064.2813,2858.3906 L1064.2813,2860.5469 Q1063.875,2860.7031 1063.4844,2860.8281 Q1063.0938,2860.9375 1062.6875,2861.0156 Q1062.2813,2861.0938 1061.8594,2861.125 Q1061.4375,2861.1719 1060.9375,2861.1719 Q1059.5313,2861.1719 1058.5,2860.7188 Q1057.4844,2860.2656 1056.8125,2859.4531 Q1056.1406,2858.6406 1055.8125,2857.5 Q1055.4844,2856.3438 1055.4844,2854.9531 Q1055.4844,2853.5781 1055.8594,2852.4219 Q1056.2344,2851.2656 1056.9531,2850.4375 Q1057.6719,2849.6094 1058.7344,2849.1563 Q1059.7969,2848.6875 1061.1875,2848.6875 Q1062.0938,2848.6875 1063,2848.9219 Q1063.9063,2849.1406 1064.7344,2849.5469 L1063.9063,2851.6406 Q1063.2188,2851.3125 1062.5313,2851.0781 Q1061.8438,2850.8281 1061.1875,2850.8281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="141" x="1081.75" y="2859.1543">AllDynamicSTDPSynapses</text><line style="stroke:#A80036;stroke-width:1.5;" x1="748" x2="1524" y1="2871" y2="2871"/><ellipse cx="758" cy="2882" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="74" x="767" y="2885.2104">D_ : BGFLOAT*</text><ellipse cx="758" cy="2894.8047" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="71" x="767" y="2898.0151">F_ : BGFLOAT*</text><ellipse cx="758" cy="2907.6094" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="74" x="767" y="2910.8198">U_ : BGFLOAT*</text><ellipse cx="758" cy="2920.4141" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="70" x="767" y="2923.6245">r_ : BGFLOAT*</text><ellipse cx="758" cy="2933.2188" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="72" x="767" y="2936.4292">u_ : BGFLOAT*</text><ellipse cx="758" cy="2946.0234" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="101" x="767" y="2949.2339">lastSpike_ : uint64_t*</text><line style="stroke:#A80036;stroke-width:1.5;" x1="748" x2="1524" y1="2955.8281" y2="2955.8281"/><ellipse cx="758" cy="2966.8281" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="131" x="767" y="2970.0386">AllDynamicSTDPSynapses()</text><ellipse cx="758" cy="2979.6328" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="337" x="767" y="2982.8433">AllDynamicSTDPSynapses(const int numVertices, const int maxEdges)</text><ellipse cx="758" cy="2992.4375" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="137" x="767" y="2995.6479">~AllDynamicSTDPSynapses()</text><ellipse cx="758" cy="3005.2422" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="94" x="767" y="3008.4526">Create() : AllEdges*</text><polygon fill="#FFFF44" points="758,3013.0469,762,3017.0469,758,3021.0469,754,3017.0469" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="578" x="767" y="3021.2573">allocDeviceStruct(AllDynamicSTDPSynapsesDeviceProperties&amp; allEdges, int numVertices, int maxEdgesPerVertex) : void</text><ellipse cx="758" cy="3030.8516" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="249" x="767" y="3034.062">allocEdgeDeviceStruct(void** allEdgesDevice) : void</text><ellipse cx="758" cy="3043.6563" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="452" x="767" y="3046.8667">allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void</text><polygon fill="#FFFF44" points="758,3051.4609,762,3055.4609,758,3059.4609,754,3055.4609" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="291" x="767" y="3059.6714">changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) : void</text><polygon fill="#FFFF44" points="758,3064.2656,762,3068.2656,758,3072.2656,754,3068.2656" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="442" x="767" y="3072.4761">copyDeviceToHost(AllDynamicSTDPSynapsesDeviceProperties&amp; allEdgesDeviceProps) : void</text><ellipse cx="758" cy="3082.0703" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="250" x="767" y="3085.2808">copyEdgeDeviceToHost(void* allEdgesDevice) : void</text><ellipse cx="758" cy="3094.875" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="250" x="767" y="3098.0854">copyEdgeHostToDevice(void* allEdgesDevice) : void</text><ellipse cx="758" cy="3107.6797" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="453" x="767" y="3110.8901">copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void</text><polygon fill="#FFFF44" points="758,3115.4844,762,3119.4844,758,3123.4844,754,3119.4844" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="752" x="767" y="3123.6948">copyHostToDevice(void* allEdgesDevice, AllDynamicSTDPSynapsesDeviceProperties&amp; allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void</text><ellipse cx="758" cy="3133.2891" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="513" x="767" y="3136.4995">createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void</text><polygon fill="#FFFF44" points="758,3141.0938,762,3145.0938,758,3149.0938,754,3145.0938" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="444" x="767" y="3149.3042">deleteDeviceStruct(AllDynamicSTDPSynapsesDeviceProperties&amp; allEdgesDeviceProps) : void</text><ellipse cx="758" cy="3158.8984" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="252" x="767" y="3162.1089">deleteEdgeDeviceStruct(void* allEdgesDevice) : void</text><ellipse cx="758" cy="3171.7031" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="302" x="767" y="3174.9136">printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}</text><ellipse cx="758" cy="3184.5078" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="153" x="767" y="3187.7183">printParameters() : void {query}</text><ellipse cx="758" cy="3197.3125" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="169" x="767" y="3200.5229">printSynapsesProps() : void {query}</text><polygon fill="#FFFF44" points="758,3205.1172,762,3209.1172,758,3213.1172,754,3209.1172" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="248" x="767" y="3213.3276">readEdge(istream&amp; input, const BGSIZE iEdg) : void</text><ellipse cx="758" cy="3222.9219" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="286" x="767" y="3226.1323">resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void</text><ellipse cx="758" cy="3235.7266" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="110" x="767" y="3238.937">setEdgeClassID() : void</text><ellipse cx="758" cy="3248.5313" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="91" x="767" y="3251.7417">setupEdges() : void</text><polygon fill="#FFFF44" points="758,3256.3359,762,3260.3359,758,3264.3359,754,3260.3359" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="297" x="767" y="3264.5464">setupEdges(const int numVertices, const int maxEdges) : void</text><polygon fill="#FFFF44" points="758,3269.1406,762,3273.1406,758,3277.1406,754,3273.1406" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="301" x="767" y="3277.3511">writeEdge(ostream&amp; output, const BGSIZE iEdg) : void {query}</text><!--MD5=[06f12ec46b87224fd0e1c514fed4a6e4]
+class AllEdges--><rect codeLine="78" fill="#FEFECE" filter="url(#ffrmugac6bnnv)" height="572.9922" id="AllEdges" style="stroke:#A80036;stroke-width:1.5;" width="539" x="483.5" y="243"/><ellipse cx="726.25" cy="259" fill="#A9DCDF" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M729.2031,264 L728.375,261.1094 L724.1875,261.1094 L723.3438,264 L720.75,264 L724.6875,251.8125 L727.8438,251.8125 L731.7969,264 L729.2031,264 Z M727.7656,258.9531 L727,256.2969 Q726.9375,256.1406 726.8438,255.8125 Q726.75,255.4688 726.625,255.0625 Q726.5156,254.6406 726.4063,254.2344 Q726.3125,253.8125 726.2813,253.5313 Q726.25,253.7031 726.1875,253.9531 Q726.1406,254.2031 726.0625,254.4844 Q726,254.7656 725.9219,255.0469 Q725.8438,255.3281 725.7813,255.5781 Q725.7188,255.8281 725.6563,256.0156 Q725.6094,256.2031 725.5781,256.2969 L724.8125,258.9531 L727.7656,258.9531 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="45" x="746.75" y="263.1543">AllEdges</text><line style="stroke:#A80036;stroke-width:1.5;" x1="484.5" x2="1021.5" y1="275" y2="275"/><ellipse cx="494.5" cy="286" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="75" x="503.5" y="289.2104">W_ : BGFLOAT*</text><ellipse cx="494.5" cy="298.8047" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="151" x="503.5" y="302.0151">maxEdgesPerVertex_ : BGSIZE</text><ellipse cx="494.5" cy="311.6094" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="126" x="503.5" y="314.8198">totalEdgeCount_ : BGSIZE</text><ellipse cx="494.5" cy="324.4141" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="115" x="503.5" y="327.6245">edgeCounts_ : BGSIZE*</text><ellipse cx="494.5" cy="337.2188" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="67" x="503.5" y="340.4292">inUse_ : bool*</text><ellipse cx="494.5" cy="350.0234" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="89" x="503.5" y="353.2339">type_ : edgeType*</text><ellipse cx="494.5" cy="362.8281" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="92" x="503.5" y="366.0386">countVertices_ : int</text><ellipse cx="494.5" cy="375.6328" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="113" x="503.5" y="378.8433">destVertexIndex_ : int*</text><ellipse cx="494.5" cy="388.4375" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="124" x="503.5" y="391.6479">sourceVertexIndex_ : int*</text><polygon fill="none" points="494.5,396.2422,498.5,400.2422,494.5,404.2422,490.5,400.2422" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="154" x="503.5" y="404.4526">edgeLogger_ : log4cplus::Logger</text><polygon fill="none" points="494.5,409.0469,498.5,413.0469,494.5,417.0469,490.5,413.0469" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="144" x="503.5" y="417.2573">fileLogger_ : log4cplus::Logger</text><line style="stroke:#A80036;stroke-width:1.5;" x1="484.5" x2="1021.5" y1="423.8516" y2="423.8516"/><ellipse cx="494.5" cy="434.8516" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="46" x="503.5" y="438.062">AllEdges()</text><ellipse cx="494.5" cy="447.6563" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="252" x="503.5" y="450.8667">AllEdges(const int numVertices, const int maxEdges)</text><ellipse cx="494.5" cy="460.4609" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="52" x="503.5" y="463.6714">~AllEdges()</text><polygon fill="#FFFF44" points="494.5,468.2656,498.5,472.2656,494.5,476.2656,490.5,472.2656" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="256" x="503.5" y="476.4761">edgeOrdinalToType(const int typeOrdinal) : edgeType</text><ellipse cx="494.5" cy="486.0703" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="480" x="503.5" y="489.2808">addEdge(edgeType type, const int srcVertex, const int destVertex, const BGFLOAT deltaT) : BGSIZE</text><ellipse cx="494.5" cy="498.875" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="292" x="503.5" y="502.0854">advanceEdge(const BGSIZE iEdg, AllVertices* vertices) : void</text><ellipse cx="494.5" cy="511.6797" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="464" x="503.5" y="514.8901">advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void</text><ellipse cx="494.5" cy="524.4844" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="363" x="503.5" y="527.6948">advanceEdges(AllVertices* vertices, EdgeIndexMap* edgeIndexMap) : void</text><ellipse cx="494.5" cy="537.2891" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="249" x="503.5" y="540.4995">allocEdgeDeviceStruct(void** allEdgesDevice) : void</text><ellipse cx="494.5" cy="550.0938" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="452" x="503.5" y="553.3042">allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void</text><ellipse cx="494.5" cy="562.8984" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="284" x="503.5" y="566.1089">copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void</text><ellipse cx="494.5" cy="575.7031" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="287" x="503.5" y="578.9136">copyDeviceEdgeSumIdxToHost(void* allEdgesDevice) : void</text><ellipse cx="494.5" cy="588.5078" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="250" x="503.5" y="591.7183">copyEdgeDeviceToHost(void* allEdgesDevice) : void</text><ellipse cx="494.5" cy="601.3125" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="250" x="503.5" y="604.5229">copyEdgeHostToDevice(void* allEdgesDevice) : void</text><ellipse cx="494.5" cy="614.1172" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="453" x="503.5" y="617.3276">copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void</text><ellipse cx="494.5" cy="626.9219" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="513" x="503.5" y="630.1323">createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void</text><ellipse cx="494.5" cy="639.7266" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="352" x="503.5" y="642.937">createEdgeIndexMap(shared_ptr&lt;EdgeIndexMap&gt; edgeIndexMap) : void</text><ellipse cx="494.5" cy="652.5313" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="252" x="503.5" y="655.7417">deleteEdgeDeviceStruct(void* allEdgesDevice) : void</text><ellipse cx="494.5" cy="665.3359" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="286" x="503.5" y="668.5464">eraseEdge(const int neuronIndex, const BGSIZE iEdg) : void</text><ellipse cx="494.5" cy="678.1406" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="137" x="503.5" y="681.3511">load(Archive&amp; archive) : void</text><ellipse cx="494.5" cy="690.9453" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="112" x="503.5" y="694.1558">loadParameters() : void</text><ellipse cx="494.5" cy="703.75" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="302" x="503.5" y="706.9604">printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}</text><ellipse cx="494.5" cy="716.5547" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="153" x="503.5" y="719.7651">printParameters() : void {query}</text><polygon fill="#FFFF44" points="494.5,724.3594,498.5,728.3594,494.5,732.3594,490.5,728.3594" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="248" x="503.5" y="732.5698">readEdge(istream&amp; input, const BGSIZE iEdg) : void</text><ellipse cx="494.5" cy="742.1641" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="179" x="503.5" y="745.3745">save(Archive&amp; archive) : void {query}</text><ellipse cx="494.5" cy="754.9688" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="191" x="503.5" y="758.1792">setAdvanceEdgesDeviceParams() : void</text><ellipse cx="494.5" cy="767.7734" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="110" x="503.5" y="770.9839">setEdgeClassID() : void</text><ellipse cx="494.5" cy="780.5781" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="91" x="503.5" y="783.7886">setupEdges() : void</text><polygon fill="#FFFF44" points="494.5,788.3828,498.5,792.3828,494.5,796.3828,490.5,792.3828" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="297" x="503.5" y="796.5933">setupEdges(const int numVertices, const int maxEdges) : void</text><polygon fill="#FFFF44" points="494.5,801.1875,498.5,805.1875,494.5,809.1875,490.5,805.1875" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="301" x="503.5" y="809.3979">writeEdge(ostream&amp; output, const BGSIZE iEdg) : void {query}</text><!--MD5=[96f31d00847e9628d93d2720c47b9604]
+class AllNeuroEdges--><rect codeLine="123" fill="#FEFECE" filter="url(#ffrmugac6bnnv)" height="188.8516" id="AllNeuroEdges" style="stroke:#A80036;stroke-width:1.5;" width="336" x="585" y="901.5"/><ellipse cx="709.25" cy="917.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M709.1875,913.3281 Q708.4375,913.3281 707.875,913.625 Q707.3125,913.9063 706.9219,914.4375 Q706.5313,914.9688 706.3281,915.75 Q706.1406,916.5156 706.1406,917.4688 Q706.1406,918.4375 706.3125,919.2031 Q706.5,919.9531 706.8594,920.4688 Q707.2344,920.9844 707.8125,921.2656 Q708.3906,921.5313 709.1875,921.5313 Q709.9219,921.5313 710.6563,921.3594 Q711.4063,921.1875 712.2813,920.8906 L712.2813,923.0469 Q711.875,923.2031 711.4844,923.3281 Q711.0938,923.4375 710.6875,923.5156 Q710.2813,923.5938 709.8594,923.625 Q709.4375,923.6719 708.9375,923.6719 Q707.5313,923.6719 706.5,923.2188 Q705.4844,922.7656 704.8125,921.9531 Q704.1406,921.1406 703.8125,920 Q703.4844,918.8438 703.4844,917.4531 Q703.4844,916.0781 703.8594,914.9219 Q704.2344,913.7656 704.9531,912.9375 Q705.6719,912.1094 706.7344,911.6563 Q707.7969,911.1875 709.1875,911.1875 Q710.0938,911.1875 711,911.4219 Q711.9063,911.6406 712.7344,912.0469 L711.9063,914.1406 Q711.2188,913.8125 710.5313,913.5781 Q709.8438,913.3281 709.1875,913.3281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="79" x="729.75" y="921.6543">AllNeuroEdges</text><line style="stroke:#A80036;stroke-width:1.5;" x1="586" x2="920" y1="933.5" y2="933.5"/><ellipse cx="596" cy="944.5" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="81" x="605" y="947.7104">psr_ : BGFLOAT*</text><ellipse cx="596" cy="957.3047" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="310" x="605" y="960.5151">SYNAPSE_STRENGTH_ADJUSTMENT : static constexpr BGFLOAT</text><line style="stroke:#A80036;stroke-width:1.5;" x1="586" x2="920" y1="967.1094" y2="967.1094"/><ellipse cx="596" cy="978.1094" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="76" x="605" y="981.3198">AllNeuroEdges()</text><ellipse cx="596" cy="990.9141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="82" x="605" y="994.1245">~AllNeuroEdges()</text><ellipse cx="596" cy="1003.7188" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="166" x="605" y="1006.9292">edgSign(const edgeType type) : int</text><ellipse cx="596" cy="1016.5234" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="169" x="605" y="1019.7339">printSynapsesProps() : void {query}</text><polygon fill="#FFFF44" points="596,1024.3281,600,1028.3281,596,1032.3281,592,1028.3281" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="248" x="605" y="1032.5386">readEdge(istream&amp; input, const BGSIZE iEdg) : void</text><ellipse cx="596" cy="1042.1328" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="286" x="605" y="1045.3433">resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void</text><ellipse cx="596" cy="1054.9375" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="91" x="605" y="1058.1479">setupEdges() : void</text><polygon fill="#FFFF44" points="596,1062.7422,600,1066.7422,596,1070.7422,592,1066.7422" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="297" x="605" y="1070.9526">setupEdges(const int numVertices, const int maxEdges) : void</text><polygon fill="#FFFF44" points="596,1075.5469,600,1079.5469,596,1083.5469,592,1079.5469" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="301" x="605" y="1083.7573">writeEdge(ostream&amp; output, const BGSIZE iEdg) : void {query}</text><!--MD5=[635988d62f36dba7a8b9baa086d12f03]
+class AllSTDPSynapses--><rect codeLine="138" fill="#FEFECE" filter="url(#ffrmugac6bnnv)" height="841.8906" id="AllSTDPSynapses" style="stroke:#A80036;stroke-width:1.5;" width="735" x="768.5" y="1937"/><ellipse cx="1084.75" cy="1953" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1084.6875,1948.8281 Q1083.9375,1948.8281 1083.375,1949.125 Q1082.8125,1949.4063 1082.4219,1949.9375 Q1082.0313,1950.4688 1081.8281,1951.25 Q1081.6406,1952.0156 1081.6406,1952.9688 Q1081.6406,1953.9375 1081.8125,1954.7031 Q1082,1955.4531 1082.3594,1955.9688 Q1082.7344,1956.4844 1083.3125,1956.7656 Q1083.8906,1957.0313 1084.6875,1957.0313 Q1085.4219,1957.0313 1086.1563,1956.8594 Q1086.9063,1956.6875 1087.7813,1956.3906 L1087.7813,1958.5469 Q1087.375,1958.7031 1086.9844,1958.8281 Q1086.5938,1958.9375 1086.1875,1959.0156 Q1085.7813,1959.0938 1085.3594,1959.125 Q1084.9375,1959.1719 1084.4375,1959.1719 Q1083.0313,1959.1719 1082,1958.7188 Q1080.9844,1958.2656 1080.3125,1957.4531 Q1079.6406,1956.6406 1079.3125,1955.5 Q1078.9844,1954.3438 1078.9844,1952.9531 Q1078.9844,1951.5781 1079.3594,1950.4219 Q1079.7344,1949.2656 1080.4531,1948.4375 Q1081.1719,1947.6094 1082.2344,1947.1563 Q1083.2969,1946.6875 1084.6875,1946.6875 Q1085.5938,1946.6875 1086.5,1946.9219 Q1087.4063,1947.1406 1088.2344,1947.5469 L1087.4063,1949.6406 Q1086.7188,1949.3125 1086.0313,1949.0781 Q1085.3438,1948.8281 1084.6875,1948.8281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="94" x="1105.25" y="1957.1543">AllSTDPSynapses</text><line style="stroke:#A80036;stroke-width:1.5;" x1="769.5" x2="1502.5" y1="1969" y2="1969"/><ellipse cx="779.5" cy="1980" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="96" x="788.5" y="1983.2104">Aneg_E_ : BGFLOAT</text><ellipse cx="779.5" cy="1992.8047" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="93" x="788.5" y="1996.0151">Aneg_I_ : BGFLOAT</text><ellipse cx="779.5" cy="2005.6094" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="95" x="788.5" y="2008.8198">Apos_E_ : BGFLOAT</text><ellipse cx="779.5" cy="2018.4141" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="92" x="788.5" y="2021.6245">Apos_I_ : BGFLOAT</text><ellipse cx="779.5" cy="2031.2188" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="92" x="788.5" y="2034.4292">Wex_E_ : BGFLOAT</text><ellipse cx="779.5" cy="2044.0234" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="89" x="788.5" y="2047.2339">Wex_I_ : BGFLOAT</text><ellipse cx="779.5" cy="2056.8281" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="137" x="788.5" y="2060.0386">defaultSTDPgap_ : BGFLOAT</text><ellipse cx="779.5" cy="2069.6328" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="105" x="788.5" y="2072.8433">tauneg_E_ : BGFLOAT</text><ellipse cx="779.5" cy="2082.4375" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="102" x="788.5" y="2085.6479">tauneg_I_ : BGFLOAT</text><ellipse cx="779.5" cy="2095.2422" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="104" x="788.5" y="2098.4526">taupos_E_ : BGFLOAT</text><ellipse cx="779.5" cy="2108.0469" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="101" x="788.5" y="2111.2573">taupos_I_ : BGFLOAT</text><ellipse cx="779.5" cy="2120.8516" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="113" x="788.5" y="2124.062">tauspost_E_ : BGFLOAT</text><ellipse cx="779.5" cy="2133.6563" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="110" x="788.5" y="2136.8667">tauspost_I_ : BGFLOAT</text><ellipse cx="779.5" cy="2146.4609" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="108" x="788.5" y="2149.6714">tauspre_E_ : BGFLOAT</text><ellipse cx="779.5" cy="2159.2656" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="105" x="788.5" y="2162.4761">tauspre_I_ : BGFLOAT</text><ellipse cx="779.5" cy="2172.0703" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="91" x="788.5" y="2175.2808">Aneg_ : BGFLOAT*</text><ellipse cx="779.5" cy="2184.875" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="90" x="788.5" y="2188.0854">Apos_ : BGFLOAT*</text><ellipse cx="779.5" cy="2197.6797" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="109" x="788.5" y="2200.8901">STDPgap_ : BGFLOAT*</text><ellipse cx="779.5" cy="2210.4844" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="87" x="788.5" y="2213.6948">Wex_ : BGFLOAT*</text><ellipse cx="779.5" cy="2223.2891" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="100" x="788.5" y="2226.4995">muneg_ : BGFLOAT*</text><ellipse cx="779.5" cy="2236.0938" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="99" x="788.5" y="2239.3042">mupos_ : BGFLOAT*</text><ellipse cx="779.5" cy="2248.8984" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="100" x="788.5" y="2252.1089">tauneg_ : BGFLOAT*</text><ellipse cx="779.5" cy="2261.7031" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="99" x="788.5" y="2264.9136">taupos_ : BGFLOAT*</text><ellipse cx="779.5" cy="2274.5078" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="108" x="788.5" y="2277.7183">tauspost_ : BGFLOAT*</text><ellipse cx="779.5" cy="2287.3125" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="103" x="788.5" y="2290.5229">tauspre_ : BGFLOAT*</text><ellipse cx="779.5" cy="2300.1172" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="106" x="788.5" y="2303.3276">delayIndexPost_ : int*</text><ellipse cx="779.5" cy="2312.9219" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="145" x="788.5" y="2316.1323">delayQueuePostLength_ : int*</text><ellipse cx="779.5" cy="2325.7266" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="103" x="788.5" y="2328.937">totalDelayPost_ : int*</text><ellipse cx="779.5" cy="2338.5313" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="139" x="788.5" y="2341.7417">delayQueuePost_ : uint32_t*</text><line style="stroke:#A80036;stroke-width:1.5;" x1="769.5" x2="1502.5" y1="2348.3359" y2="2348.3359"/><ellipse cx="779.5" cy="2359.3359" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="88" x="788.5" y="2362.5464">AllSTDPSynapses()</text><ellipse cx="779.5" cy="2372.1406" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="294" x="788.5" y="2375.3511">AllSTDPSynapses(const int numVertices, const int maxEdges)</text><ellipse cx="779.5" cy="2384.9453" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="94" x="788.5" y="2388.1558">~AllSTDPSynapses()</text><ellipse cx="779.5" cy="2397.75" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="94" x="788.5" y="2400.9604">Create() : AllEdges*</text><polygon fill="#FFFF44" points="779.5,2405.5547,783.5,2409.5547,779.5,2413.5547,775.5,2409.5547" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="459" x="788.5" y="2413.7651">synapticWeightModification(const BGSIZE iEdg, BGFLOAT edgeWeight, double delta) : BGFLOAT</text><ellipse cx="779.5" cy="2423.3594" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="140" x="788.5" y="2426.5698">allowBackPropagation() : bool</text><polygon fill="#FFFF44" points="779.5,2431.1641,783.5,2435.1641,779.5,2439.1641,775.5,2435.1641" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="210" x="788.5" y="2439.3745">isSpikeQueuePost(const BGSIZE iEdg) : bool</text><ellipse cx="779.5" cy="2448.9688" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="293" x="788.5" y="2452.1792">advanceEdge(const BGSIZE iEdg, AllVertices* neurons) : void</text><ellipse cx="779.5" cy="2461.7734" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="464" x="788.5" y="2464.9839">advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void</text><polygon fill="#FFFF44" points="779.5,2469.5781,783.5,2473.5781,779.5,2477.5781,775.5,2473.5781" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="568" x="788.5" y="2477.7886">allocDeviceStruct(AllSTDPSynapsesDeviceProperties&amp; allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void</text><ellipse cx="779.5" cy="2487.3828" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="249" x="788.5" y="2490.5933">allocEdgeDeviceStruct(void** allEdgesDevice) : void</text><ellipse cx="779.5" cy="2500.1875" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="452" x="788.5" y="2503.3979">allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void</text><polygon fill="#FFFF44" points="779.5,2507.9922,783.5,2511.9922,779.5,2515.9922,775.5,2511.9922" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="372" x="788.5" y="2516.2026">copyDeviceToHost(AllSTDPSynapsesDeviceProperties&amp; allEdgesDevice) : void</text><ellipse cx="779.5" cy="2525.7969" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="250" x="788.5" y="2529.0073">copyEdgeDeviceToHost(void* allEdgesDevice) : void</text><ellipse cx="779.5" cy="2538.6016" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="250" x="788.5" y="2541.812">copyEdgeHostToDevice(void* allEdgesDevice) : void</text><ellipse cx="779.5" cy="2551.4063" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="453" x="788.5" y="2554.6167">copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void</text><polygon fill="#FFFF44" points="779.5,2559.2109,783.5,2563.2109,779.5,2567.2109,775.5,2563.2109" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="709" x="788.5" y="2567.4214">copyHostToDevice(void* allEdgesDevice, AllSTDPSynapsesDeviceProperties&amp; allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void</text><ellipse cx="779.5" cy="2577.0156" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="513" x="788.5" y="2580.2261">createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void</text><polygon fill="#FFFF44" points="779.5,2584.8203,783.5,2588.8203,779.5,2592.8203,775.5,2588.8203" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="374" x="788.5" y="2593.0308">deleteDeviceStruct(AllSTDPSynapsesDeviceProperties&amp; allEdgesDevice) : void</text><ellipse cx="779.5" cy="2602.625" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="252" x="788.5" y="2605.8354">deleteEdgeDeviceStruct(void* allEdgesDevice) : void</text><polygon fill="#FFFF44" points="779.5,2610.4297,783.5,2614.4297,779.5,2618.4297,775.5,2614.4297" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="196" x="788.5" y="2618.6401">initSpikeQueue(const BGSIZE iEdg) : void</text><ellipse cx="779.5" cy="2628.2344" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="112" x="788.5" y="2631.4448">loadParameters() : void</text><ellipse cx="779.5" cy="2641.0391" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="184" x="788.5" y="2644.2495">postSpikeHit(const BGSIZE iEdg) : void</text><ellipse cx="779.5" cy="2653.8438" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="302" x="788.5" y="2657.0542">printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}</text><ellipse cx="779.5" cy="2666.6484" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="153" x="788.5" y="2669.8589">printParameters() : void {query}</text><ellipse cx="779.5" cy="2679.4531" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="169" x="788.5" y="2682.6636">printSynapsesProps() : void {query}</text><polygon fill="#FFFF44" points="779.5,2687.2578,783.5,2691.2578,779.5,2695.2578,775.5,2691.2578" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="248" x="788.5" y="2695.4683">readEdge(istream&amp; input, const BGSIZE iEdg) : void</text><ellipse cx="779.5" cy="2705.0625" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="286" x="788.5" y="2708.2729">resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void</text><ellipse cx="779.5" cy="2717.8672" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="110" x="788.5" y="2721.0776">setEdgeClassID() : void</text><ellipse cx="779.5" cy="2730.6719" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="91" x="788.5" y="2733.8823">setupEdges() : void</text><polygon fill="#FFFF44" points="779.5,2738.4766,783.5,2742.4766,779.5,2746.4766,775.5,2742.4766" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="297" x="788.5" y="2746.687">setupEdges(const int numVertices, const int maxEdges) : void</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="776.5" y="2753.2813"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="525" x="788.5" y="2759.4917">stdpLearning(const BGSIZE iEdg, double delta, double epost, double epre, int srcVertex, int destVertex) : void</text><polygon fill="#FFFF44" points="779.5,2764.0859,783.5,2768.0859,779.5,2772.0859,775.5,2768.0859" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="301" x="788.5" y="2772.2964">writeEdge(ostream&amp; output, const BGSIZE iEdg) : void {query}</text><!--MD5=[cfe37ad1a50a7dcaaf80645f5fb9fa69]
+class AllSpikingSynapses--><rect codeLine="204" fill="#FEFECE" filter="url(#ffrmugac6bnnv)" height="701.0391" id="AllSpikingSynapses" style="stroke:#A80036;stroke-width:1.5;" width="743" x="381.5" y="1176"/><ellipse cx="696.75" cy="1192" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M696.6875,1187.8281 Q695.9375,1187.8281 695.375,1188.125 Q694.8125,1188.4063 694.4219,1188.9375 Q694.0313,1189.4688 693.8281,1190.25 Q693.6406,1191.0156 693.6406,1191.9688 Q693.6406,1192.9375 693.8125,1193.7031 Q694,1194.4531 694.3594,1194.9688 Q694.7344,1195.4844 695.3125,1195.7656 Q695.8906,1196.0313 696.6875,1196.0313 Q697.4219,1196.0313 698.1563,1195.8594 Q698.9063,1195.6875 699.7813,1195.3906 L699.7813,1197.5469 Q699.375,1197.7031 698.9844,1197.8281 Q698.5938,1197.9375 698.1875,1198.0156 Q697.7813,1198.0938 697.3594,1198.125 Q696.9375,1198.1719 696.4375,1198.1719 Q695.0313,1198.1719 694,1197.7188 Q692.9844,1197.2656 692.3125,1196.4531 Q691.6406,1195.6406 691.3125,1194.5 Q690.9844,1193.3438 690.9844,1191.9531 Q690.9844,1190.5781 691.3594,1189.4219 Q691.7344,1188.2656 692.4531,1187.4375 Q693.1719,1186.6094 694.2344,1186.1563 Q695.2969,1185.6875 696.6875,1185.6875 Q697.5938,1185.6875 698.5,1185.9219 Q699.4063,1186.1406 700.2344,1186.5469 L699.4063,1188.6406 Q698.7188,1188.3125 698.0313,1188.0781 Q697.3438,1187.8281 696.6875,1187.8281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="104" x="717.25" y="1196.1543">AllSpikingSynapses</text><line style="stroke:#A80036;stroke-width:1.5;" x1="382.5" x2="1123.5" y1="1208" y2="1208"/><ellipse cx="392.5" cy="1219" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="103" x="401.5" y="1222.2104">delay_EE_ : BGFLOAT</text><ellipse cx="392.5" cy="1231.8047" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="100" x="401.5" y="1235.0151">delay_EI_ : BGFLOAT</text><ellipse cx="392.5" cy="1244.6094" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="100" x="401.5" y="1247.8198">delay_IE_ : BGFLOAT</text><ellipse cx="392.5" cy="1257.4141" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="97" x="401.5" y="1260.6245">delay_II_ : BGFLOAT</text><ellipse cx="392.5" cy="1270.2188" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="93" x="401.5" y="1273.4292">tau_EE_ : BGFLOAT</text><ellipse cx="392.5" cy="1283.0234" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="90" x="401.5" y="1286.2339">tau_EI_ : BGFLOAT</text><ellipse cx="392.5" cy="1295.8281" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="90" x="401.5" y="1299.0386">tau_IE_ : BGFLOAT</text><ellipse cx="392.5" cy="1308.6328" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="87" x="401.5" y="1311.8433">tau_II_ : BGFLOAT</text><ellipse cx="392.5" cy="1321.4375" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="95" x="401.5" y="1324.6479">decay_ : BGFLOAT*</text><ellipse cx="392.5" cy="1334.2422" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="82" x="401.5" y="1337.4526">tau_ : BGFLOAT*</text><ellipse cx="392.5" cy="1347.0469" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="85" x="401.5" y="1350.2573">delayIndex_ : int*</text><ellipse cx="392.5" cy="1359.8516" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="124" x="401.5" y="1363.062">delayQueueLength_ : int*</text><ellipse cx="392.5" cy="1372.6563" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="82" x="401.5" y="1375.8667">totalDelay_ : int*</text><ellipse cx="392.5" cy="1385.4609" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="118" x="401.5" y="1388.6714">delayQueue_ : uint32_t*</text><line style="stroke:#A80036;stroke-width:1.5;" x1="382.5" x2="1123.5" y1="1395.2656" y2="1395.2656"/><ellipse cx="392.5" cy="1406.2656" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="96" x="401.5" y="1409.4761">AllSpikingSynapses()</text><ellipse cx="392.5" cy="1419.0703" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="302" x="401.5" y="1422.2808">AllSpikingSynapses(const int numVertices, const int maxEdges)</text><ellipse cx="392.5" cy="1431.875" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="102" x="401.5" y="1435.0854">~AllSpikingSynapses()</text><ellipse cx="392.5" cy="1444.6797" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="94" x="401.5" y="1447.8901">Create() : AllEdges*</text><ellipse cx="392.5" cy="1457.4844" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="140" x="401.5" y="1460.6948">allowBackPropagation() : bool</text><polygon fill="#FFFF44" points="392.5,1465.2891,396.5,1469.2891,392.5,1473.2891,388.5,1469.2891" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="189" x="401.5" y="1473.4995">isSpikeQueue(const BGSIZE iEdg) : bool</text><polygon fill="#FFFF44" points="392.5,1478.0938,396.5,1482.0938,392.5,1486.0938,388.5,1482.0938" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="302" x="401.5" y="1486.3042">updateDecay(const BGSIZE iEdg, const BGFLOAT deltaT) : bool</text><ellipse cx="392.5" cy="1495.8984" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="293" x="401.5" y="1499.1089">advanceEdge(const BGSIZE iEdg, AllVertices* neurons) : void</text><ellipse cx="392.5" cy="1508.7031" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="464" x="401.5" y="1511.9136">advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void</text><polygon fill="#FFFF44" points="392.5,1516.5078,396.5,1520.5078,392.5,1524.5078,388.5,1520.5078" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="576" x="401.5" y="1524.7183">allocDeviceStruct(AllSpikingSynapsesDeviceProperties&amp; allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void</text><ellipse cx="392.5" cy="1534.3125" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="249" x="401.5" y="1537.5229">allocEdgeDeviceStruct(void** allEdgesDevice) : void</text><ellipse cx="392.5" cy="1547.1172" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="452" x="401.5" y="1550.3276">allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void</text><polygon fill="#FFFF44" points="392.5,1554.9219,396.5,1558.9219,392.5,1562.9219,388.5,1558.9219" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="291" x="401.5" y="1563.1323">changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) : void</text><ellipse cx="392.5" cy="1572.7266" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="284" x="401.5" y="1575.937">copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void</text><ellipse cx="392.5" cy="1585.5313" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="287" x="401.5" y="1588.7417">copyDeviceEdgeSumIdxToHost(void* allEdgesDevice) : void</text><polygon fill="#FFFF44" points="392.5,1593.3359,396.5,1597.3359,392.5,1601.3359,388.5,1597.3359" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="380" x="401.5" y="1601.5464">copyDeviceToHost(AllSpikingSynapsesDeviceProperties&amp; allEdgesDevice) : void</text><ellipse cx="392.5" cy="1611.1406" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="250" x="401.5" y="1614.3511">copyEdgeDeviceToHost(void* allEdgesDevice) : void</text><ellipse cx="392.5" cy="1623.9453" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="250" x="401.5" y="1627.1558">copyEdgeHostToDevice(void* allEdgesDevice) : void</text><ellipse cx="392.5" cy="1636.75" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="453" x="401.5" y="1639.9604">copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void</text><polygon fill="#FFFF44" points="392.5,1644.5547,396.5,1648.5547,392.5,1652.5547,388.5,1648.5547" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="717" x="401.5" y="1652.7651">copyHostToDevice(void* allEdgesDevice, AllSpikingSynapsesDeviceProperties&amp; allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void</text><ellipse cx="392.5" cy="1662.3594" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="513" x="401.5" y="1665.5698">createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void</text><polygon fill="#FFFF44" points="392.5,1670.1641,396.5,1674.1641,392.5,1678.1641,388.5,1674.1641" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="382" x="401.5" y="1678.3745">deleteDeviceStruct(AllSpikingSynapsesDeviceProperties&amp; allEdgesDevice) : void</text><ellipse cx="392.5" cy="1687.9688" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="252" x="401.5" y="1691.1792">deleteEdgeDeviceStruct(void* allEdgesDevice) : void</text><polygon fill="#FFFF44" points="392.5,1695.7734,396.5,1699.7734,392.5,1703.7734,388.5,1699.7734" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="196" x="401.5" y="1703.9839">initSpikeQueue(const BGSIZE iEdg) : void</text><ellipse cx="392.5" cy="1713.5781" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="112" x="401.5" y="1716.7886">loadParameters() : void</text><ellipse cx="392.5" cy="1726.3828" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="184" x="401.5" y="1729.5933">postSpikeHit(const BGSIZE iEdg) : void</text><ellipse cx="392.5" cy="1739.1875" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="179" x="401.5" y="1742.3979">preSpikeHit(const BGSIZE iEdg) : void</text><ellipse cx="392.5" cy="1751.9922" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="302" x="401.5" y="1755.2026">printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}</text><ellipse cx="392.5" cy="1764.7969" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="153" x="401.5" y="1768.0073">printParameters() : void {query}</text><ellipse cx="392.5" cy="1777.6016" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="169" x="401.5" y="1780.812">printSynapsesProps() : void {query}</text><polygon fill="#FFFF44" points="392.5,1785.4063,396.5,1789.4063,392.5,1793.4063,388.5,1789.4063" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="248" x="401.5" y="1793.6167">readEdge(istream&amp; input, const BGSIZE iEdg) : void</text><ellipse cx="392.5" cy="1803.2109" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="286" x="401.5" y="1806.4214">resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void</text><ellipse cx="392.5" cy="1816.0156" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="191" x="401.5" y="1819.2261">setAdvanceEdgesDeviceParams() : void</text><ellipse cx="392.5" cy="1828.8203" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="110" x="401.5" y="1832.0308">setEdgeClassID() : void</text><ellipse cx="392.5" cy="1841.625" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="91" x="401.5" y="1844.8354">setupEdges() : void</text><polygon fill="#FFFF44" points="392.5,1849.4297,396.5,1853.4297,392.5,1857.4297,388.5,1853.4297" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="297" x="401.5" y="1857.6401">setupEdges(const int numVertices, const int maxEdges) : void</text><polygon fill="#FFFF44" points="392.5,1862.2344,396.5,1866.2344,392.5,1870.2344,388.5,1866.2344" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="301" x="401.5" y="1870.4448">writeEdge(ostream&amp; output, const BGSIZE iEdg) : void {query}</text><!--MD5=[2137c854024e09e8076c84fb007b1c3c]
+class EdgesFactory--><rect codeLine="259" fill="#FEFECE" filter="url(#ffrmugac6bnnv)" height="150.4375" id="EdgesFactory" style="stroke:#A80036;stroke-width:1.5;" width="364" x="571" y="20"/><ellipse cx="713.25" cy="36" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M713.1875,31.8281 Q712.4375,31.8281 711.875,32.125 Q711.3125,32.4063 710.9219,32.9375 Q710.5313,33.4688 710.3281,34.25 Q710.1406,35.0156 710.1406,35.9688 Q710.1406,36.9375 710.3125,37.7031 Q710.5,38.4531 710.8594,38.9688 Q711.2344,39.4844 711.8125,39.7656 Q712.3906,40.0313 713.1875,40.0313 Q713.9219,40.0313 714.6563,39.8594 Q715.4063,39.6875 716.2813,39.3906 L716.2813,41.5469 Q715.875,41.7031 715.4844,41.8281 Q715.0938,41.9375 714.6875,42.0156 Q714.2813,42.0938 713.8594,42.125 Q713.4375,42.1719 712.9375,42.1719 Q711.5313,42.1719 710.5,41.7188 Q709.4844,41.2656 708.8125,40.4531 Q708.1406,39.6406 707.8125,38.5 Q707.4844,37.3438 707.4844,35.9531 Q707.4844,34.5781 707.8594,33.4219 Q708.2344,32.2656 708.9531,31.4375 Q709.6719,30.6094 710.7344,30.1563 Q711.7969,29.6875 713.1875,29.6875 Q714.0938,29.6875 715,29.9219 Q715.9063,30.1406 716.7344,30.5469 L715.9063,32.6406 Q715.2188,32.3125 714.5313,32.0781 Q713.8438,31.8281 713.1875,31.8281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="71" x="733.75" y="40.1543">EdgesFactory</text><line style="stroke:#A80036;stroke-width:1.5;" x1="572" x2="934" y1="52" y2="52"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="579" y="60"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="176" x="591" y="66.2104">createFunctions : EdgesFunctionMap</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="579" y="72.8047"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="188" x="591" y="79.0151">edgesInstance_ : shared_ptr&lt;AllEdges&gt;</text><line style="stroke:#A80036;stroke-width:1.5;" x1="572" x2="934" y1="85.6094" y2="85.6094"/><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="579" y="93.6094"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="71" x="591" y="99.8198">EdgesFactory()</text><ellipse cx="582" cy="109.4141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="77" x="591" y="112.6245">~EdgesFactory()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="579" y="119.2188"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="285" x="591" y="125.4292">invokeCreateFunction(const string&amp; className) : AllEdges*</text><ellipse cx="582" cy="135.0234" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="143" x="591" y="138.2339">getInstance() : EdgesFactory*</text><ellipse cx="582" cy="147.8281" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="299" x="591" y="151.0386">createEdges(const string&amp; className) : shared_ptr&lt;AllEdges&gt;</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="579" y="157.6328"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="338" x="591" y="163.8433">registerClass(const string&amp; className, CreateFunction function) : void</text><!--MD5=[2c8a843ca32eecec980159abf8666d97]
+class enumClassSynapses--><rect codeLine="271" fill="#FEFECE" filter="url(#ffrmugac6bnnv)" height="112.0234" id="enumClassSynapses" style="stroke:#A80036;stroke-width:1.5;" width="160" x="995" y="39"/><ellipse cx="1016.75" cy="55" fill="#EB937F" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1019.7656,61 L1012.7813,61 L1012.7813,48.8594 L1019.7656,48.8594 L1019.7656,50.9688 L1015.3438,50.9688 L1015.3438,53.6406 L1019.4531,53.6406 L1019.4531,55.75 L1015.3438,55.75 L1015.3438,58.875 L1019.7656,58.875 L1019.7656,61 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="113" x="1032.25" y="59.1543">enumClassSynapses</text><line style="stroke:#A80036;stroke-width:1.5;" x1="996" x2="1154" y1="71" y2="71"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="94" x="1001" y="85.2104">classAllDSSynapses</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="148" x="1001" y="98.0151">classAllDynamicSTDPSynapses</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="105" x="1001" y="110.8198">classAllSTDPSynapses</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="113" x="1001" y="123.6245">classAllSpikingSynapses</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="99" x="1001" y="136.4292">undefClassSynapses</text><line style="stroke:#A80036;stroke-width:1.5;" x1="996" x2="1154" y1="143.0234" y2="143.0234"/><!--MD5=[12eed8bfdcfc08849f14b9c8d25e6e94]
+class AllDSSynapsesDeviceProperties--><rect codeLine="280" fill="#FEFECE" filter="url(#ffrmugac6bnnv)" height="124.8281" id="AllDSSynapsesDeviceProperties" style="stroke:#A80036;stroke-width:1.5;" width="204" x="1072" y="933.5"/><ellipse cx="1087" cy="949.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1086.9375,945.3281 Q1086.1875,945.3281 1085.625,945.625 Q1085.0625,945.9063 1084.6719,946.4375 Q1084.2813,946.9688 1084.0781,947.75 Q1083.8906,948.5156 1083.8906,949.4688 Q1083.8906,950.4375 1084.0625,951.2031 Q1084.25,951.9531 1084.6094,952.4688 Q1084.9844,952.9844 1085.5625,953.2656 Q1086.1406,953.5313 1086.9375,953.5313 Q1087.6719,953.5313 1088.4063,953.3594 Q1089.1563,953.1875 1090.0313,952.8906 L1090.0313,955.0469 Q1089.625,955.2031 1089.2344,955.3281 Q1088.8438,955.4375 1088.4375,955.5156 Q1088.0313,955.5938 1087.6094,955.625 Q1087.1875,955.6719 1086.6875,955.6719 Q1085.2813,955.6719 1084.25,955.2188 Q1083.2344,954.7656 1082.5625,953.9531 Q1081.8906,953.1406 1081.5625,952 Q1081.2344,950.8438 1081.2344,949.4531 Q1081.2344,948.0781 1081.6094,946.9219 Q1081.9844,945.7656 1082.7031,944.9375 Q1083.4219,944.1094 1084.4844,943.6563 Q1085.5469,943.1875 1086.9375,943.1875 Q1087.8438,943.1875 1088.75,943.4219 Q1089.6563,943.6406 1090.4844,944.0469 L1089.6563,946.1406 Q1088.9688,945.8125 1088.2813,945.5781 Q1087.5938,945.3281 1086.9375,945.3281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="172" x="1101" y="953.6543">AllDSSynapsesDeviceProperties</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1073" x2="1275" y1="965.5" y2="965.5"/><ellipse cx="1083" cy="976.5" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="74" x="1092" y="979.7104">D_ : BGFLOAT*</text><ellipse cx="1083" cy="989.3047" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="71" x="1092" y="992.5151">F_ : BGFLOAT*</text><ellipse cx="1083" cy="1002.1094" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="74" x="1092" y="1005.3198">U_ : BGFLOAT*</text><ellipse cx="1083" cy="1014.9141" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="70" x="1092" y="1018.1245">r_ : BGFLOAT*</text><ellipse cx="1083" cy="1027.7188" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="72" x="1092" y="1030.9292">u_ : BGFLOAT*</text><ellipse cx="1083" cy="1040.5234" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="101" x="1092" y="1043.7339">lastSpike_ : uint64_t*</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1073" x2="1275" y1="1050.3281" y2="1050.3281"/><!--MD5=[4b1be41c79a1ff75e3d6100484a928eb]
+class AllDynamicSTDPSynapsesDeviceProperties--><rect codeLine="290" fill="#FEFECE" filter="url(#ffrmugac6bnnv)" height="124.8281" id="AllDynamicSTDPSynapsesDeviceProperties" style="stroke:#A80036;stroke-width:1.5;" width="265" x="1287.5" y="1464"/><ellipse cx="1302.5" cy="1480" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1302.4375,1475.8281 Q1301.6875,1475.8281 1301.125,1476.125 Q1300.5625,1476.4063 1300.1719,1476.9375 Q1299.7813,1477.4688 1299.5781,1478.25 Q1299.3906,1479.0156 1299.3906,1479.9688 Q1299.3906,1480.9375 1299.5625,1481.7031 Q1299.75,1482.4531 1300.1094,1482.9688 Q1300.4844,1483.4844 1301.0625,1483.7656 Q1301.6406,1484.0313 1302.4375,1484.0313 Q1303.1719,1484.0313 1303.9063,1483.8594 Q1304.6563,1483.6875 1305.5313,1483.3906 L1305.5313,1485.5469 Q1305.125,1485.7031 1304.7344,1485.8281 Q1304.3438,1485.9375 1303.9375,1486.0156 Q1303.5313,1486.0938 1303.1094,1486.125 Q1302.6875,1486.1719 1302.1875,1486.1719 Q1300.7813,1486.1719 1299.75,1485.7188 Q1298.7344,1485.2656 1298.0625,1484.4531 Q1297.3906,1483.6406 1297.0625,1482.5 Q1296.7344,1481.3438 1296.7344,1479.9531 Q1296.7344,1478.5781 1297.1094,1477.4219 Q1297.4844,1476.2656 1298.2031,1475.4375 Q1298.9219,1474.6094 1299.9844,1474.1563 Q1301.0469,1473.6875 1302.4375,1473.6875 Q1303.3438,1473.6875 1304.25,1473.9219 Q1305.1563,1474.1406 1305.9844,1474.5469 L1305.1563,1476.6406 Q1304.4688,1476.3125 1303.7813,1476.0781 Q1303.0938,1475.8281 1302.4375,1475.8281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="233" x="1316.5" y="1484.1543">AllDynamicSTDPSynapsesDeviceProperties</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1288.5" x2="1551.5" y1="1496" y2="1496"/><ellipse cx="1298.5" cy="1507" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="74" x="1307.5" y="1510.2104">D_ : BGFLOAT*</text><ellipse cx="1298.5" cy="1519.8047" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="71" x="1307.5" y="1523.0151">F_ : BGFLOAT*</text><ellipse cx="1298.5" cy="1532.6094" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="74" x="1307.5" y="1535.8198">U_ : BGFLOAT*</text><ellipse cx="1298.5" cy="1545.4141" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="70" x="1307.5" y="1548.6245">r_ : BGFLOAT*</text><ellipse cx="1298.5" cy="1558.2188" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="72" x="1307.5" y="1561.4292">u_ : BGFLOAT*</text><ellipse cx="1298.5" cy="1571.0234" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="101" x="1307.5" y="1574.2339">lastSpike_ : uint64_t*</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1288.5" x2="1551.5" y1="1580.8281" y2="1580.8281"/><!--MD5=[017d3a10fe7408131050c5acc75b1a9b]
+class AllEdgesDeviceProperties--><rect codeLine="300" fill="#FEFECE" filter="url(#ffrmugac6bnnv)" height="176.0469" id="AllEdgesDeviceProperties" style="stroke:#A80036;stroke-width:1.5;" width="177" x="1202.5" y="7"/><ellipse cx="1221.1" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1221.0375,18.8281 Q1220.2875,18.8281 1219.725,19.125 Q1219.1625,19.4063 1218.7719,19.9375 Q1218.3813,20.4688 1218.1781,21.25 Q1217.9906,22.0156 1217.9906,22.9688 Q1217.9906,23.9375 1218.1625,24.7031 Q1218.35,25.4531 1218.7094,25.9688 Q1219.0844,26.4844 1219.6625,26.7656 Q1220.2406,27.0313 1221.0375,27.0313 Q1221.7719,27.0313 1222.5063,26.8594 Q1223.2563,26.6875 1224.1313,26.3906 L1224.1313,28.5469 Q1223.725,28.7031 1223.3344,28.8281 Q1222.9438,28.9375 1222.5375,29.0156 Q1222.1313,29.0938 1221.7094,29.125 Q1221.2875,29.1719 1220.7875,29.1719 Q1219.3813,29.1719 1218.35,28.7188 Q1217.3344,28.2656 1216.6625,27.4531 Q1215.9906,26.6406 1215.6625,25.5 Q1215.3344,24.3438 1215.3344,22.9531 Q1215.3344,21.5781 1215.7094,20.4219 Q1216.0844,19.2656 1216.8031,18.4375 Q1217.5219,17.6094 1218.5844,17.1563 Q1219.6469,16.6875 1221.0375,16.6875 Q1221.9438,16.6875 1222.85,16.9219 Q1223.7563,17.1406 1224.5844,17.5469 L1223.7563,19.6406 Q1223.0688,19.3125 1222.3813,19.0781 Q1221.6938,18.8281 1221.0375,18.8281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="137" x="1235.9" y="27.1543">AllEdgesDeviceProperties</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1203.5" x2="1378.5" y1="39" y2="39"/><ellipse cx="1213.5" cy="50" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="75" x="1222.5" y="53.2104">W_ : BGFLOAT*</text><ellipse cx="1213.5" cy="62.8047" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="81" x="1222.5" y="66.0151">psr_ : BGFLOAT*</text><ellipse cx="1213.5" cy="75.6094" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="151" x="1222.5" y="78.8198">maxEdgesPerVertex_ : BGSIZE</text><ellipse cx="1213.5" cy="88.4141" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="126" x="1222.5" y="91.6245">totalEdgeCount_ : BGSIZE</text><ellipse cx="1213.5" cy="101.2188" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="115" x="1222.5" y="104.4292">edgeCounts_ : BGSIZE*</text><ellipse cx="1213.5" cy="114.0234" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="67" x="1222.5" y="117.2339">inUse_ : bool*</text><ellipse cx="1213.5" cy="126.8281" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="89" x="1222.5" y="130.0386">type_ : edgeType*</text><ellipse cx="1213.5" cy="139.6328" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="92" x="1222.5" y="142.8433">countVertices_ : int</text><ellipse cx="1213.5" cy="152.4375" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="113" x="1222.5" y="155.6479">destVertexIndex_ : int*</text><ellipse cx="1213.5" cy="165.2422" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="124" x="1222.5" y="168.4526">sourceVertexIndex_ : int*</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1203.5" x2="1378.5" y1="175.0469" y2="175.0469"/><!--MD5=[a7843438017f4a8113b6a979c3ec4039]
+class AllSTDPSynapsesDeviceProperties--><rect codeLine="314" fill="#FEFECE" filter="url(#ffrmugac6bnnv)" height="240.0703" id="AllSTDPSynapsesDeviceProperties" style="stroke:#A80036;stroke-width:1.5;" width="218" x="1311" y="876"/><ellipse cx="1326" cy="892" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1325.9375,887.8281 Q1325.1875,887.8281 1324.625,888.125 Q1324.0625,888.4063 1323.6719,888.9375 Q1323.2813,889.4688 1323.0781,890.25 Q1322.8906,891.0156 1322.8906,891.9688 Q1322.8906,892.9375 1323.0625,893.7031 Q1323.25,894.4531 1323.6094,894.9688 Q1323.9844,895.4844 1324.5625,895.7656 Q1325.1406,896.0313 1325.9375,896.0313 Q1326.6719,896.0313 1327.4063,895.8594 Q1328.1563,895.6875 1329.0313,895.3906 L1329.0313,897.5469 Q1328.625,897.7031 1328.2344,897.8281 Q1327.8438,897.9375 1327.4375,898.0156 Q1327.0313,898.0938 1326.6094,898.125 Q1326.1875,898.1719 1325.6875,898.1719 Q1324.2813,898.1719 1323.25,897.7188 Q1322.2344,897.2656 1321.5625,896.4531 Q1320.8906,895.6406 1320.5625,894.5 Q1320.2344,893.3438 1320.2344,891.9531 Q1320.2344,890.5781 1320.6094,889.4219 Q1320.9844,888.2656 1321.7031,887.4375 Q1322.4219,886.6094 1323.4844,886.1563 Q1324.5469,885.6875 1325.9375,885.6875 Q1326.8438,885.6875 1327.75,885.9219 Q1328.6563,886.1406 1329.4844,886.5469 L1328.6563,888.6406 Q1327.9688,888.3125 1327.2813,888.0781 Q1326.5938,887.8281 1325.9375,887.8281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="186" x="1340" y="896.1543">AllSTDPSynapsesDeviceProperties</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1312" x2="1528" y1="908" y2="908"/><ellipse cx="1322" cy="919" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="91" x="1331" y="922.2104">Aneg_ : BGFLOAT*</text><ellipse cx="1322" cy="931.8047" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="90" x="1331" y="935.0151">Apos_ : BGFLOAT*</text><ellipse cx="1322" cy="944.6094" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="109" x="1331" y="947.8198">STDPgap_ : BGFLOAT*</text><ellipse cx="1322" cy="957.4141" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="87" x="1331" y="960.6245">Wex_ : BGFLOAT*</text><ellipse cx="1322" cy="970.2188" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="100" x="1331" y="973.4292">muneg_ : BGFLOAT*</text><ellipse cx="1322" cy="983.0234" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="99" x="1331" y="986.2339">mupos_ : BGFLOAT*</text><ellipse cx="1322" cy="995.8281" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="100" x="1331" y="999.0386">tauneg_ : BGFLOAT*</text><ellipse cx="1322" cy="1008.6328" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="99" x="1331" y="1011.8433">taupos_ : BGFLOAT*</text><ellipse cx="1322" cy="1021.4375" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="108" x="1331" y="1024.6479">tauspost_ : BGFLOAT*</text><ellipse cx="1322" cy="1034.2422" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="103" x="1331" y="1037.4526">tauspre_ : BGFLOAT*</text><ellipse cx="1322" cy="1047.0469" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="144" x="1331" y="1050.2573">useFroemkeDanSTDP_ : bool*</text><ellipse cx="1322" cy="1059.8516" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="106" x="1331" y="1063.062">delayIndexPost_ : int*</text><ellipse cx="1322" cy="1072.6563" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="145" x="1331" y="1075.8667">delayQueuePostLength_ : int*</text><ellipse cx="1322" cy="1085.4609" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="103" x="1331" y="1088.6714">totalDelayPost_ : int*</text><ellipse cx="1322" cy="1098.2656" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="139" x="1331" y="1101.4761">delayQueuePost_ : uint32_t*</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1312" x2="1528" y1="1108.0703" y2="1108.0703"/><!--MD5=[9207c363d1f0343d1c8507e42ff7f935]
+class AllSpikingSynapsesDeviceProperties--><rect codeLine="333" fill="#FEFECE" filter="url(#ffrmugac6bnnv)" height="124.8281" id="AllSpikingSynapsesDeviceProperties" style="stroke:#A80036;stroke-width:1.5;" width="228" x="1177" y="467"/><ellipse cx="1192" cy="483" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1191.9375,478.8281 Q1191.1875,478.8281 1190.625,479.125 Q1190.0625,479.4063 1189.6719,479.9375 Q1189.2813,480.4688 1189.0781,481.25 Q1188.8906,482.0156 1188.8906,482.9688 Q1188.8906,483.9375 1189.0625,484.7031 Q1189.25,485.4531 1189.6094,485.9688 Q1189.9844,486.4844 1190.5625,486.7656 Q1191.1406,487.0313 1191.9375,487.0313 Q1192.6719,487.0313 1193.4063,486.8594 Q1194.1563,486.6875 1195.0313,486.3906 L1195.0313,488.5469 Q1194.625,488.7031 1194.2344,488.8281 Q1193.8438,488.9375 1193.4375,489.0156 Q1193.0313,489.0938 1192.6094,489.125 Q1192.1875,489.1719 1191.6875,489.1719 Q1190.2813,489.1719 1189.25,488.7188 Q1188.2344,488.2656 1187.5625,487.4531 Q1186.8906,486.6406 1186.5625,485.5 Q1186.2344,484.3438 1186.2344,482.9531 Q1186.2344,481.5781 1186.6094,480.4219 Q1186.9844,479.2656 1187.7031,478.4375 Q1188.4219,477.6094 1189.4844,477.1563 Q1190.5469,476.6875 1191.9375,476.6875 Q1192.8438,476.6875 1193.75,476.9219 Q1194.6563,477.1406 1195.4844,477.5469 L1194.6563,479.6406 Q1193.9688,479.3125 1193.2813,479.0781 Q1192.5938,478.8281 1191.9375,478.8281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="196" x="1206" y="487.1543">AllSpikingSynapsesDeviceProperties</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1178" x2="1404" y1="499" y2="499"/><ellipse cx="1188" cy="510" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="95" x="1197" y="513.2104">decay_ : BGFLOAT*</text><ellipse cx="1188" cy="522.8047" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="82" x="1197" y="526.0151">tau_ : BGFLOAT*</text><ellipse cx="1188" cy="535.6094" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="85" x="1197" y="538.8198">delayIndex_ : int*</text><ellipse cx="1188" cy="548.4141" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="124" x="1197" y="551.6245">delayQueueLength_ : int*</text><ellipse cx="1188" cy="561.2188" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="82" x="1197" y="564.4292">totalDelay_ : int*</text><ellipse cx="1188" cy="574.0234" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="118" x="1197" y="577.2339">delayQueue_ : uint32_t*</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1178" x2="1404" y1="583.8281" y2="583.8281"/><!--MD5=[36cebae4583ca589f8881f15eca879f1]
+reverse link AllEdges to AllNeuroEdges--><path codeLine="348" d="M753,836.25 C753,859.43 753,881.53 753,901.48 " fill="none" id="AllEdges-backto-AllNeuroEdges" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="746,836.08,753,816.08,760,836.08,746,836.08" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[d895029eba7154c6905399e7eb5aaaea]
+reverse link AllEdgesDeviceProperties to AllSpikingSynapsesDeviceProperties--><path codeLine="351" d="M1291,203.16 C1291,286.15 1291,398.18 1291,466.77 " fill="none" id="AllEdgesDeviceProperties-backto-AllSpikingSynapsesDeviceProperties" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="1284,203,1291,183,1298,203,1284,203" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[3d383143b8365dcb1c00482aec0d8f87]
+reverse link AllNeuroEdges to AllSpikingSynapses--><path codeLine="354" d="M753,1110.62 C753,1130.89 753,1152.93 753,1175.95 " fill="none" id="AllNeuroEdges-backto-AllSpikingSynapses" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="746,1110.57,753,1090.57,760,1110.57,746,1110.57" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[5445f169f2d896f0fc54fbb0dd17c8d5]
+reverse link AllSTDPSynapses to AllDynamicSTDPSynapses--><path codeLine="357" d="M1136,2799.53 C1136,2812.84 1136,2825.95 1136,2838.8 " fill="none" id="AllSTDPSynapses-backto-AllDynamicSTDPSynapses" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="1129,2799.22,1136,2779.22,1143,2799.22,1129,2799.22" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[539a086fdc8dbc8028ce1b9c0d3cb21a]
+reverse link AllSTDPSynapsesDeviceProperties to AllDynamicSTDPSynapsesDeviceProperties--><path codeLine="360" d="M1420,1136.36 C1420,1242.66 1420,1383.99 1420,1463.79 " fill="none" id="AllSTDPSynapsesDeviceProperties-backto-AllDynamicSTDPSynapsesDeviceProperties" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="1413,1136.26,1420,1116.26,1427,1136.26,1413,1136.26" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[f221506eaa2e129ebcab2e085332c1be]
+reverse link AllSpikingSynapses to AllDSSynapses--><path codeLine="363" d="M583.57,1895.41 C545.9,1977.21 507.1,2061.46 473.13,2135.24 " fill="none" id="AllSpikingSynapses-backto-AllDSSynapses" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="577.24,1892.42,591.97,1877.18,589.96,1898.27,577.24,1892.42" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[587b9d07fbc4fdda6579551662042140]
+reverse link AllSpikingSynapses to AllSTDPSynapses--><path codeLine="366" d="M923.01,1895.7 C929.29,1909.31 935.61,1923 941.93,1936.69 " fill="none" id="AllSpikingSynapses-backto-AllSTDPSynapses" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="916.48,1898.27,914.46,1877.18,929.19,1892.4,916.48,1898.27" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[23aac5e482fb680cc0cec1f0f0dd59a6]
+reverse link AllSpikingSynapsesDeviceProperties to AllDSSynapsesDeviceProperties--><path codeLine="369" d="M1270.54,611.71 C1247.44,703.45 1210.35,850.7 1189.51,933.43 " fill="none" id="AllSpikingSynapsesDeviceProperties-backto-AllDSSynapsesDeviceProperties" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="1263.79,609.87,1275.46,592.18,1277.37,613.29,1263.79,609.87" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[e9a3e383543838c874b32001a8709207]
+reverse link AllSpikingSynapsesDeviceProperties to AllSTDPSynapsesDeviceProperties--><path codeLine="372" d="M1313.58,611.79 C1333.85,684.8 1363.88,792.91 1386.87,875.71 " fill="none" id="AllSpikingSynapsesDeviceProperties-backto-AllSTDPSynapsesDeviceProperties" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="1306.74,613.33,1308.13,592.18,1320.23,609.58,1306.74,613.33" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[324f5d3a776c0915160172bb3bb1f68c]
+reverse link EdgesFactory to AllEdges--><path codeLine="380" d="M753,183.5 C753,201.62 753,221.63 753,242.62 " fill="none" id="EdgesFactory-backto-AllEdges" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="753,170.35,749,176.35,753,182.35,757,176.35,753,170.35" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[7355f2239dc55ec2cf68497562d3b46c]
+@startuml EdgesClassDiagram
+
+
+
+
+
+/' Objects '/
+
+class AllDSSynapses {
+	+AllDSSynapses()
+	+AllDSSynapses(const int numVertices, const int maxEdges)
+	+~AllDSSynapses()
+	+{static} Create() : AllEdges*
+	+D_ : BGFLOAT*
+	+F_ : BGFLOAT*
+	+U_ : BGFLOAT*
+	+r_ : BGFLOAT*
+	+u_ : BGFLOAT*
+	+lastSpike_ : uint64_t*
+	#allocDeviceStruct(AllDSSynapsesDeviceProperties& allEdges, int numVertices, int maxEdgesPerVertex) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	#copyDeviceToHost(AllDSSynapsesDeviceProperties& allEdgesDeviceProps) : void
+	+copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyHostToDevice(void* allEdgesDevice, AllDSSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	#deleteDeviceStruct(AllDSSynapsesDeviceProperties& allEdgesDeviceProps) : void
+	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class AllDynamicSTDPSynapses {
+	+AllDynamicSTDPSynapses()
+	+AllDynamicSTDPSynapses(const int numVertices, const int maxEdges)
+	+~AllDynamicSTDPSynapses()
+	+{static} Create() : AllEdges*
+	+D_ : BGFLOAT*
+	+F_ : BGFLOAT*
+	+U_ : BGFLOAT*
+	+r_ : BGFLOAT*
+	+u_ : BGFLOAT*
+	+lastSpike_ : uint64_t*
+	#allocDeviceStruct(AllDynamicSTDPSynapsesDeviceProperties& allEdges, int numVertices, int maxEdgesPerVertex) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	#copyDeviceToHost(AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps) : void
+	+copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyHostToDevice(void* allEdgesDevice, AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	#deleteDeviceStruct(AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps) : void
+	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+abstract class AllEdges {
+	+AllEdges()
+	+AllEdges(const int numVertices, const int maxEdges)
+	+~AllEdges()
+	+W_ : BGFLOAT*
+	+maxEdgesPerVertex_ : BGSIZE
+	+totalEdgeCount_ : BGSIZE
+	+edgeCounts_ : BGSIZE*
+	+inUse_ : bool*
+	#edgeOrdinalToType(const int typeOrdinal) : edgeType
+	+type_ : edgeType*
+	+countVertices_ : int
+	+destVertexIndex_ : int*
+	+sourceVertexIndex_ : int*
+	#edgeLogger_ : log4cplus::Logger
+	#fileLogger_ : log4cplus::Logger
+	+addEdge(edgeType type, const int srcVertex, const int destVertex, const BGFLOAT deltaT) : BGSIZE
+	+{abstract} advanceEdge(const BGSIZE iEdg, AllVertices* vertices) : void
+	+{abstract} advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
+	+advanceEdges(AllVertices* vertices, EdgeIndexMap* edgeIndexMap) : void
+	+{abstract} allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+{abstract} allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	+{abstract} copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void
+	+{abstract} copyDeviceEdgeSumIdxToHost(void* allEdgesDevice) : void
+	+{abstract} copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+{abstract} copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+{abstract} copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	+{abstract} createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	+createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap) : void
+	+{abstract} deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	+eraseEdge(const int neuronIndex, const BGSIZE iEdg) : void
+	+load(Archive& archive) : void
+	+loadParameters() : void
+	+{abstract} printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+save(Archive& archive) : void {query}
+	+{abstract} setAdvanceEdgesDeviceParams() : void
+	+{abstract} setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class AllNeuroEdges {
+	+AllNeuroEdges()
+	+~AllNeuroEdges()
+	+psr_ : BGFLOAT*
+	+edgSign(const edgeType type) : int
+	+{static} SYNAPSE_STRENGTH_ADJUSTMENT : static constexpr BGFLOAT
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class AllSTDPSynapses {
+	+AllSTDPSynapses()
+	+AllSTDPSynapses(const int numVertices, const int maxEdges)
+	+~AllSTDPSynapses()
+	+{static} Create() : AllEdges*
+	+Aneg_E_ : BGFLOAT
+	+Aneg_I_ : BGFLOAT
+	+Apos_E_ : BGFLOAT
+	+Apos_I_ : BGFLOAT
+	+Wex_E_ : BGFLOAT
+	+Wex_I_ : BGFLOAT
+	+defaultSTDPgap_ : BGFLOAT
+	#synapticWeightModification(const BGSIZE iEdg, BGFLOAT edgeWeight, double delta) : BGFLOAT
+	+tauneg_E_ : BGFLOAT
+	+tauneg_I_ : BGFLOAT
+	+taupos_E_ : BGFLOAT
+	+taupos_I_ : BGFLOAT
+	+tauspost_E_ : BGFLOAT
+	+tauspost_I_ : BGFLOAT
+	+tauspre_E_ : BGFLOAT
+	+tauspre_I_ : BGFLOAT
+	+Aneg_ : BGFLOAT*
+	+Apos_ : BGFLOAT*
+	+STDPgap_ : BGFLOAT*
+	+Wex_ : BGFLOAT*
+	+muneg_ : BGFLOAT*
+	+mupos_ : BGFLOAT*
+	+tauneg_ : BGFLOAT*
+	+taupos_ : BGFLOAT*
+	+tauspost_ : BGFLOAT*
+	+tauspre_ : BGFLOAT*
+	+allowBackPropagation() : bool
+	#isSpikeQueuePost(const BGSIZE iEdg) : bool
+	+delayIndexPost_ : int*
+	+delayQueuePostLength_ : int*
+	+totalDelayPost_ : int*
+	+delayQueuePost_ : uint32_t*
+	+advanceEdge(const BGSIZE iEdg, AllVertices* neurons) : void
+	+advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
+	#allocDeviceStruct(AllSTDPSynapsesDeviceProperties& allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyDeviceToHost(AllSTDPSynapsesDeviceProperties& allEdgesDevice) : void
+	+copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyHostToDevice(void* allEdgesDevice, AllSTDPSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	#deleteDeviceStruct(AllSTDPSynapsesDeviceProperties& allEdgesDevice) : void
+	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	#initSpikeQueue(const BGSIZE iEdg) : void
+	+loadParameters() : void
+	+postSpikeHit(const BGSIZE iEdg) : void
+	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	-stdpLearning(const BGSIZE iEdg, double delta, double epost, double epre, int srcVertex, int destVertex) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class AllSpikingSynapses {
+	+AllSpikingSynapses()
+	+AllSpikingSynapses(const int numVertices, const int maxEdges)
+	+~AllSpikingSynapses()
+	+{static} Create() : AllEdges*
+	+delay_EE_ : BGFLOAT
+	+delay_EI_ : BGFLOAT
+	+delay_IE_ : BGFLOAT
+	+delay_II_ : BGFLOAT
+	+tau_EE_ : BGFLOAT
+	+tau_EI_ : BGFLOAT
+	+tau_IE_ : BGFLOAT
+	+tau_II_ : BGFLOAT
+	+decay_ : BGFLOAT*
+	+tau_ : BGFLOAT*
+	+allowBackPropagation() : bool
+	#isSpikeQueue(const BGSIZE iEdg) : bool
+	#updateDecay(const BGSIZE iEdg, const BGFLOAT deltaT) : bool
+	+delayIndex_ : int*
+	+delayQueueLength_ : int*
+	+totalDelay_ : int*
+	+delayQueue_ : uint32_t*
+	+advanceEdge(const BGSIZE iEdg, AllVertices* neurons) : void
+	+advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
+	#allocDeviceStruct(AllSpikingSynapsesDeviceProperties& allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void
+	+copyDeviceEdgeSumIdxToHost(void* allEdgesDevice) : void
+	#copyDeviceToHost(AllSpikingSynapsesDeviceProperties& allEdgesDevice) : void
+	+copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyHostToDevice(void* allEdgesDevice, AllSpikingSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	#deleteDeviceStruct(AllSpikingSynapsesDeviceProperties& allEdgesDevice) : void
+	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	#initSpikeQueue(const BGSIZE iEdg) : void
+	+loadParameters() : void
+	+postSpikeHit(const BGSIZE iEdg) : void
+	+preSpikeHit(const BGSIZE iEdg) : void
+	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setAdvanceEdgesDeviceParams() : void
+	+setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class EdgesFactory {
+	-EdgesFactory()
+	+~EdgesFactory()
+	-invokeCreateFunction(const string& className) : AllEdges*
+	+{static} getInstance() : EdgesFactory*
+	-createFunctions : EdgesFunctionMap
+	+createEdges(const string& className) : shared_ptr<AllEdges>
+	-edgesInstance_ : shared_ptr<AllEdges>
+	-registerClass(const string& className, CreateFunction function) : void
+}
+
+
+enum enumClassSynapses {
+	classAllDSSynapses
+	classAllDynamicSTDPSynapses
+	classAllSTDPSynapses
+	classAllSpikingSynapses
+	undefClassSynapses
+}
+
+
+class AllDSSynapsesDeviceProperties {
+	+D_ : BGFLOAT*
+	+F_ : BGFLOAT*
+	+U_ : BGFLOAT*
+	+r_ : BGFLOAT*
+	+u_ : BGFLOAT*
+	+lastSpike_ : uint64_t*
+}
+
+
+class AllDynamicSTDPSynapsesDeviceProperties {
+	+D_ : BGFLOAT*
+	+F_ : BGFLOAT*
+	+U_ : BGFLOAT*
+	+r_ : BGFLOAT*
+	+u_ : BGFLOAT*
+	+lastSpike_ : uint64_t*
+}
+
+
+class AllEdgesDeviceProperties {
+	+W_ : BGFLOAT*
+	+psr_ : BGFLOAT*
+	+maxEdgesPerVertex_ : BGSIZE
+	+totalEdgeCount_ : BGSIZE
+	+edgeCounts_ : BGSIZE*
+	+inUse_ : bool*
+	+type_ : edgeType*
+	+countVertices_ : int
+	+destVertexIndex_ : int*
+	+sourceVertexIndex_ : int*
+}
+
+
+class AllSTDPSynapsesDeviceProperties {
+	+Aneg_ : BGFLOAT*
+	+Apos_ : BGFLOAT*
+	+STDPgap_ : BGFLOAT*
+	+Wex_ : BGFLOAT*
+	+muneg_ : BGFLOAT*
+	+mupos_ : BGFLOAT*
+	+tauneg_ : BGFLOAT*
+	+taupos_ : BGFLOAT*
+	+tauspost_ : BGFLOAT*
+	+tauspre_ : BGFLOAT*
+	+useFroemkeDanSTDP_ : bool*
+	+delayIndexPost_ : int*
+	+delayQueuePostLength_ : int*
+	+totalDelayPost_ : int*
+	+delayQueuePost_ : uint32_t*
+}
+
+
+class AllSpikingSynapsesDeviceProperties {
+	+decay_ : BGFLOAT*
+	+tau_ : BGFLOAT*
+	+delayIndex_ : int*
+	+delayQueueLength_ : int*
+	+totalDelay_ : int*
+	+delayQueue_ : uint32_t*
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+.AllEdges <|- - .AllNeuroEdges
+
+
+.AllEdgesDeviceProperties <|- - .AllSpikingSynapsesDeviceProperties
+
+
+.AllNeuroEdges <|- - .AllSpikingSynapses
+
+
+.AllSTDPSynapses <|- - .AllDynamicSTDPSynapses
+
+
+.AllSTDPSynapsesDeviceProperties <|- - .AllDynamicSTDPSynapsesDeviceProperties
+
+
+.AllSpikingSynapses <|- - .AllDSSynapses
+
+
+.AllSpikingSynapses <|- - .AllSTDPSynapses
+
+
+.AllSpikingSynapsesDeviceProperties <|- - .AllDSSynapsesDeviceProperties
+
+
+.AllSpikingSynapsesDeviceProperties <|- - .AllSTDPSynapsesDeviceProperties
+
+
+
+
+
+/' Aggregation relationships '/
+
+.EdgesFactory *- - .AllEdges
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml
+
+@startuml EdgesClassDiagram
+
+
+
+
+
+
+class AllDSSynapses {
+	+AllDSSynapses()
+	+AllDSSynapses(const int numVertices, const int maxEdges)
+	+~AllDSSynapses()
+	+{static} Create() : AllEdges*
+	+D_ : BGFLOAT*
+	+F_ : BGFLOAT*
+	+U_ : BGFLOAT*
+	+r_ : BGFLOAT*
+	+u_ : BGFLOAT*
+	+lastSpike_ : uint64_t*
+	#allocDeviceStruct(AllDSSynapsesDeviceProperties& allEdges, int numVertices, int maxEdgesPerVertex) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	#copyDeviceToHost(AllDSSynapsesDeviceProperties& allEdgesDeviceProps) : void
+	+copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyHostToDevice(void* allEdgesDevice, AllDSSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	#deleteDeviceStruct(AllDSSynapsesDeviceProperties& allEdgesDeviceProps) : void
+	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class AllDynamicSTDPSynapses {
+	+AllDynamicSTDPSynapses()
+	+AllDynamicSTDPSynapses(const int numVertices, const int maxEdges)
+	+~AllDynamicSTDPSynapses()
+	+{static} Create() : AllEdges*
+	+D_ : BGFLOAT*
+	+F_ : BGFLOAT*
+	+U_ : BGFLOAT*
+	+r_ : BGFLOAT*
+	+u_ : BGFLOAT*
+	+lastSpike_ : uint64_t*
+	#allocDeviceStruct(AllDynamicSTDPSynapsesDeviceProperties& allEdges, int numVertices, int maxEdgesPerVertex) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	#copyDeviceToHost(AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps) : void
+	+copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyHostToDevice(void* allEdgesDevice, AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	#deleteDeviceStruct(AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps) : void
+	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+abstract class AllEdges {
+	+AllEdges()
+	+AllEdges(const int numVertices, const int maxEdges)
+	+~AllEdges()
+	+W_ : BGFLOAT*
+	+maxEdgesPerVertex_ : BGSIZE
+	+totalEdgeCount_ : BGSIZE
+	+edgeCounts_ : BGSIZE*
+	+inUse_ : bool*
+	#edgeOrdinalToType(const int typeOrdinal) : edgeType
+	+type_ : edgeType*
+	+countVertices_ : int
+	+destVertexIndex_ : int*
+	+sourceVertexIndex_ : int*
+	#edgeLogger_ : log4cplus::Logger
+	#fileLogger_ : log4cplus::Logger
+	+addEdge(edgeType type, const int srcVertex, const int destVertex, const BGFLOAT deltaT) : BGSIZE
+	+{abstract} advanceEdge(const BGSIZE iEdg, AllVertices* vertices) : void
+	+{abstract} advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
+	+advanceEdges(AllVertices* vertices, EdgeIndexMap* edgeIndexMap) : void
+	+{abstract} allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+{abstract} allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	+{abstract} copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void
+	+{abstract} copyDeviceEdgeSumIdxToHost(void* allEdgesDevice) : void
+	+{abstract} copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+{abstract} copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+{abstract} copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	+{abstract} createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	+createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap) : void
+	+{abstract} deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	+eraseEdge(const int neuronIndex, const BGSIZE iEdg) : void
+	+load(Archive& archive) : void
+	+loadParameters() : void
+	+{abstract} printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+save(Archive& archive) : void {query}
+	+{abstract} setAdvanceEdgesDeviceParams() : void
+	+{abstract} setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class AllNeuroEdges {
+	+AllNeuroEdges()
+	+~AllNeuroEdges()
+	+psr_ : BGFLOAT*
+	+edgSign(const edgeType type) : int
+	+{static} SYNAPSE_STRENGTH_ADJUSTMENT : static constexpr BGFLOAT
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class AllSTDPSynapses {
+	+AllSTDPSynapses()
+	+AllSTDPSynapses(const int numVertices, const int maxEdges)
+	+~AllSTDPSynapses()
+	+{static} Create() : AllEdges*
+	+Aneg_E_ : BGFLOAT
+	+Aneg_I_ : BGFLOAT
+	+Apos_E_ : BGFLOAT
+	+Apos_I_ : BGFLOAT
+	+Wex_E_ : BGFLOAT
+	+Wex_I_ : BGFLOAT
+	+defaultSTDPgap_ : BGFLOAT
+	#synapticWeightModification(const BGSIZE iEdg, BGFLOAT edgeWeight, double delta) : BGFLOAT
+	+tauneg_E_ : BGFLOAT
+	+tauneg_I_ : BGFLOAT
+	+taupos_E_ : BGFLOAT
+	+taupos_I_ : BGFLOAT
+	+tauspost_E_ : BGFLOAT
+	+tauspost_I_ : BGFLOAT
+	+tauspre_E_ : BGFLOAT
+	+tauspre_I_ : BGFLOAT
+	+Aneg_ : BGFLOAT*
+	+Apos_ : BGFLOAT*
+	+STDPgap_ : BGFLOAT*
+	+Wex_ : BGFLOAT*
+	+muneg_ : BGFLOAT*
+	+mupos_ : BGFLOAT*
+	+tauneg_ : BGFLOAT*
+	+taupos_ : BGFLOAT*
+	+tauspost_ : BGFLOAT*
+	+tauspre_ : BGFLOAT*
+	+allowBackPropagation() : bool
+	#isSpikeQueuePost(const BGSIZE iEdg) : bool
+	+delayIndexPost_ : int*
+	+delayQueuePostLength_ : int*
+	+totalDelayPost_ : int*
+	+delayQueuePost_ : uint32_t*
+	+advanceEdge(const BGSIZE iEdg, AllVertices* neurons) : void
+	+advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
+	#allocDeviceStruct(AllSTDPSynapsesDeviceProperties& allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyDeviceToHost(AllSTDPSynapsesDeviceProperties& allEdgesDevice) : void
+	+copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyHostToDevice(void* allEdgesDevice, AllSTDPSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	#deleteDeviceStruct(AllSTDPSynapsesDeviceProperties& allEdgesDevice) : void
+	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	#initSpikeQueue(const BGSIZE iEdg) : void
+	+loadParameters() : void
+	+postSpikeHit(const BGSIZE iEdg) : void
+	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	-stdpLearning(const BGSIZE iEdg, double delta, double epost, double epre, int srcVertex, int destVertex) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class AllSpikingSynapses {
+	+AllSpikingSynapses()
+	+AllSpikingSynapses(const int numVertices, const int maxEdges)
+	+~AllSpikingSynapses()
+	+{static} Create() : AllEdges*
+	+delay_EE_ : BGFLOAT
+	+delay_EI_ : BGFLOAT
+	+delay_IE_ : BGFLOAT
+	+delay_II_ : BGFLOAT
+	+tau_EE_ : BGFLOAT
+	+tau_EI_ : BGFLOAT
+	+tau_IE_ : BGFLOAT
+	+tau_II_ : BGFLOAT
+	+decay_ : BGFLOAT*
+	+tau_ : BGFLOAT*
+	+allowBackPropagation() : bool
+	#isSpikeQueue(const BGSIZE iEdg) : bool
+	#updateDecay(const BGSIZE iEdg, const BGFLOAT deltaT) : bool
+	+delayIndex_ : int*
+	+delayQueueLength_ : int*
+	+totalDelay_ : int*
+	+delayQueue_ : uint32_t*
+	+advanceEdge(const BGSIZE iEdg, AllVertices* neurons) : void
+	+advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
+	#allocDeviceStruct(AllSpikingSynapsesDeviceProperties& allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void
+	+copyDeviceEdgeSumIdxToHost(void* allEdgesDevice) : void
+	#copyDeviceToHost(AllSpikingSynapsesDeviceProperties& allEdgesDevice) : void
+	+copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyHostToDevice(void* allEdgesDevice, AllSpikingSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	#deleteDeviceStruct(AllSpikingSynapsesDeviceProperties& allEdgesDevice) : void
+	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	#initSpikeQueue(const BGSIZE iEdg) : void
+	+loadParameters() : void
+	+postSpikeHit(const BGSIZE iEdg) : void
+	+preSpikeHit(const BGSIZE iEdg) : void
+	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setAdvanceEdgesDeviceParams() : void
+	+setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class EdgesFactory {
+	-EdgesFactory()
+	+~EdgesFactory()
+	-invokeCreateFunction(const string& className) : AllEdges*
+	+{static} getInstance() : EdgesFactory*
+	-createFunctions : EdgesFunctionMap
+	+createEdges(const string& className) : shared_ptr<AllEdges>
+	-edgesInstance_ : shared_ptr<AllEdges>
+	-registerClass(const string& className, CreateFunction function) : void
+}
+
+
+enum enumClassSynapses {
+	classAllDSSynapses
+	classAllDynamicSTDPSynapses
+	classAllSTDPSynapses
+	classAllSpikingSynapses
+	undefClassSynapses
+}
+
+
+class AllDSSynapsesDeviceProperties {
+	+D_ : BGFLOAT*
+	+F_ : BGFLOAT*
+	+U_ : BGFLOAT*
+	+r_ : BGFLOAT*
+	+u_ : BGFLOAT*
+	+lastSpike_ : uint64_t*
+}
+
+
+class AllDynamicSTDPSynapsesDeviceProperties {
+	+D_ : BGFLOAT*
+	+F_ : BGFLOAT*
+	+U_ : BGFLOAT*
+	+r_ : BGFLOAT*
+	+u_ : BGFLOAT*
+	+lastSpike_ : uint64_t*
+}
+
+
+class AllEdgesDeviceProperties {
+	+W_ : BGFLOAT*
+	+psr_ : BGFLOAT*
+	+maxEdgesPerVertex_ : BGSIZE
+	+totalEdgeCount_ : BGSIZE
+	+edgeCounts_ : BGSIZE*
+	+inUse_ : bool*
+	+type_ : edgeType*
+	+countVertices_ : int
+	+destVertexIndex_ : int*
+	+sourceVertexIndex_ : int*
+}
+
+
+class AllSTDPSynapsesDeviceProperties {
+	+Aneg_ : BGFLOAT*
+	+Apos_ : BGFLOAT*
+	+STDPgap_ : BGFLOAT*
+	+Wex_ : BGFLOAT*
+	+muneg_ : BGFLOAT*
+	+mupos_ : BGFLOAT*
+	+tauneg_ : BGFLOAT*
+	+taupos_ : BGFLOAT*
+	+tauspost_ : BGFLOAT*
+	+tauspre_ : BGFLOAT*
+	+useFroemkeDanSTDP_ : bool*
+	+delayIndexPost_ : int*
+	+delayQueuePostLength_ : int*
+	+totalDelayPost_ : int*
+	+delayQueuePost_ : uint32_t*
+}
+
+
+class AllSpikingSynapsesDeviceProperties {
+	+decay_ : BGFLOAT*
+	+tau_ : BGFLOAT*
+	+delayIndex_ : int*
+	+delayQueueLength_ : int*
+	+totalDelay_ : int*
+	+delayQueue_ : uint32_t*
+}
+
+
+
+
+
+
+.AllEdges <|- - .AllNeuroEdges
+
+
+.AllEdgesDeviceProperties <|- - .AllSpikingSynapsesDeviceProperties
+
+
+.AllNeuroEdges <|- - .AllSpikingSynapses
+
+
+.AllSTDPSynapses <|- - .AllDynamicSTDPSynapses
+
+
+.AllSTDPSynapsesDeviceProperties <|- - .AllDynamicSTDPSynapsesDeviceProperties
+
+
+.AllSpikingSynapses <|- - .AllDSSynapses
+
+
+.AllSpikingSynapses <|- - .AllSTDPSynapses
+
+
+.AllSpikingSynapsesDeviceProperties <|- - .AllDSSynapsesDeviceProperties
+
+
+.AllSpikingSynapsesDeviceProperties <|- - .AllSTDPSynapsesDeviceProperties
+
+
+
+
+
+
+.EdgesFactory *- - .AllEdges
+
+
+
+
+
+
+
+
+
+@enduml
+
+PlantUML version 1.2020.23(Sun Dec 13 19:14:58 GMT 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
