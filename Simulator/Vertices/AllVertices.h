@@ -86,7 +86,7 @@ public:
    virtual void registerHistoryVariables() = 0;
 
    ///  Cereal serialization method
-   template <class Archive> void serialize(Archive &archive, std::uint32_t const version);
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
    ///  Total number of vertices.
@@ -158,9 +158,7 @@ struct AllVerticesDeviceProperties {
 };
 #endif   // defined(USE_GPU)
 
-CEREAL_CLASS_VERSION(AllVertices, 1);
-
-template <class Archive> void AllVertices::serialize(Archive &archive, std::uint32_t const version)
+template <class Archive> void AllVertices::serialize(Archive &archive)
 {
    archive(cereal::make_nvp("summationPoints", summationPoints_), cereal::make_nvp("size", size_));
 }

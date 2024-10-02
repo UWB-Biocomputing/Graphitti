@@ -74,7 +74,7 @@ public:
    virtual bool updateConnections(AllVertices &vertices);
 
    ///  Cereal serialization method
-   template <class Archive> void serialize(Archive &archive, std::uint32_t const version);
+   template <class Archive> void serialize(Archive &archive);
 
 #if defined(USE_GPU)
 public:
@@ -107,10 +107,8 @@ protected:
    log4cplus::Logger edgeLogger_;
 };
 
-CEREAL_CLASS_VERSION(Connections, 1);
-
 ///  Cereal serialization method
-template <class Archive> void Connections::serialize(Archive &archive, std::uint32_t const version)
+template <class Archive> void Connections::serialize(Archive &archive)
 {
    archive(cereal::make_nvp("edges", edges_),
            cereal::make_nvp("synapseIndexMap", synapseIndexMap_));

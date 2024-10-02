@@ -59,7 +59,7 @@ public:
    virtual void createEdgeIndexMap(EdgeIndexMap &edgeIndexMap);
 
    ///  Cereal serialization method
-   template <class Archive> void serialize(Archive &archive, std::uint32_t const version);
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -223,11 +223,9 @@ public:
    int countVertices_;
 };
 
-CEREAL_CLASS_VERSION(AllEdges, 1);
-
 ///  Cereal serialization method
 ///  (Serializes edge weights, source vertices, and destination vertices)
-template <class Archive> void AllEdges::serialize(Archive &archive, std::uint32_t const version)
+template <class Archive> void AllEdges::serialize(Archive &archive)
 {
    // serialization
    archive(cereal::make_nvp("sourceVertexIndex", sourceVertexIndex_),
