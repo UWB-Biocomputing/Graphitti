@@ -53,7 +53,7 @@ else()
         project(Graphitti LANGUAGES CXX C)
 endif()
 
-#Setting the base version to C++ 11
+#Setting the base version to C++ 17
 set(CMAKE_CXX_STANDARD 17)
 
 #set(DEBUG_MODE YES) for debugging, no optimization
@@ -372,35 +372,37 @@ target_link_libraries(tests gtest gtest_main)
 # Link the combined library into the 'tests' executable.
 target_link_libraries(tests combinedLib)
 
-# add_executable(serialTest
-#         Testing/RunTests.cpp
-#         Testing/UnitTesting/SerializationTests.cpp)
+#------- SERIALIZATION TESTS --------------------
+# Serialization tests must be executed separately, as each test requires the 
+# simulation to run from start to finish. Running multiple simulations with 
+# the same singleton instance results in a segmentation fault (SEG FAULT).
 
-# # Links the Googletest framework with the serialTest executable
-# target_link_libraries(serialTest gtest gtest_main)
+add_executable(serialFullTest
+        Testing/RunTests.cpp
+        Testing/UnitTesting/SerializationFullTest.cpp)
 
-# # Link the combined library into the 'serialTest' executable.
-# target_link_libraries(serialTest combinedLib)
+add_executable(serialFirstHalfTest
+        Testing/RunTests.cpp
+        Testing/UnitTesting/SerializationFirstHalfTest.cpp)
 
-# add_executable(deserialTest
-#         Testing/RunTests.cpp
-#         Testing/UnitTesting/DeserializationTests.cpp)
+add_executable(serialSecondHalfTest
+        Testing/RunTests.cpp
+        Testing/UnitTesting/SerializationSecondHalfTest.cpp)
 
-# # Links the Googletest framework with the deserialTest executable
-# target_link_libraries(deserialTest gtest gtest_main)
+# Link the GoogleTest framework to each of the serial test executables.
+target_link_libraries(serialFullTest gtest gtest_main)
+target_link_libraries(serialFirstHalfTest gtest gtest_main)
+target_link_libraries(serialSecondHalfTest gtest gtest_main)
 
-# # Link the combined library into the 'deserialTest' executable.
-# target_link_libraries(deserialTest combinedLib)
+# Link the combined library and filesystem support to the respective serial test executables.
+target_link_libraries(serialFullTest stdc++fs)
+target_link_libraries(serialFullTest combinedLib)
 
-# add_executable(serialFileAccessTest
-#         Testing/RunTests.cpp
-#         Testing/UnitTesting/SerializationFileAccessTest.cpp)
+target_link_libraries(serialFirstHalfTest stdc++fs)
+target_link_libraries(serialFirstHalfTest combinedLib)
 
-# # Links the Googletest framework with the serialFileAccessTest executable
-# target_link_libraries(serialFileAccessTest gtest gtest_main)
-
-# # Link the combined library into the 'serialFileAccessTest' executable.
-# target_link_libraries(serialFileAccessTest combinedLib)
+target_link_libraries(serialSecondHalfTest stdc++fs)
+target_link_libraries(serialSecondHalfTest combinedLib)
 
 # Clear ENABLE_CUDA, PERFORMANCE_METRICS and GPROF from the cache so it's reset for subsequent builds
 unset(ENABLE_CUDA CACHE)
