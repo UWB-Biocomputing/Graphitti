@@ -114,8 +114,10 @@ Victoria Jo Salvatore
 Divya Kamath    
 
 ## 2024
+Vanessa Arndorfer
+
+Xiang Li
+
 Jardi Martinez
 
 Nicholas Posey
-
-Xiang Li  
