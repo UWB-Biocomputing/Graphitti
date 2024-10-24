@@ -34,7 +34,28 @@ The master and development branches exist parallel to one another. We consider t
 
 [![](https://mermaid.ink/img/pako:eNqNVNFumzAU_RXLU8QLjQIhAfyWrEkaKe2kpevDxh4cuCFWACNj2tGIf58xZSNr1xTEg8-99_ici69POOQRYIIHgxPLmCTohIyExxt4hMQgyIhgV8aGiQx5gBQaZEcL-AM8UMHoLoFCRU5BhtRjxEyOmsRP9sKfLReG-Re3NL5czpejUR-3NT5zmrePj_-DO308yGoVauCVoPmhUWIILqmEzzxNmdzQnfYiRQlKd3HgT3NBs_CgVffQs_Q9TQowjZSyrM2-o63_W1pIEEZdo3owCLJuW3Q_J1pgqFkQiwgK8AOIgvEMWUMrwDq802Toumkwz1PIZFt1gPDIS_k60KdrfhGjSQferXzrH94lUFkKmL2u_bHebr8trhzL_okaL-jLHq2LooQXgrPkFEQMSACNqgAjWeVA0M16dbNR3z2SNCYB_gqPDJ666g_p14RIcsWcgDpHb2qfv0_YSut89vVGaN-5vySqC5xv2Up9yy3q7KJL1Gfy5h-U0Z6pnoguLER1lbPw-H7_LjQfm01_1EmO1KDrKQ2wnt4AN6QRFceGqFZ5tJR8W2UhJnoucJlHao6uGY0FTfHLUGCImOTitr059AVi4pxm3zlPu0K1xOSEf2EynQxdb2pPHNf3PGti-yauMBk7Q8udup5l-QqaeHZt4mddPxr6jj9yXcd2x55rj91J_Rvb4n0O?type=png)](https://mermaid.live/edit#pako:eNqNVNFumzAU_RXLU8QLjQIhAfyWrEkaKe2kpevDxh4cuCFWACNj2tGIf58xZSNr1xTEg8-99_ici69POOQRYIIHgxPLmCTohIyExxt4hMQgyIhgV8aGiQx5gBQaZEcL-AM8UMHoLoFCRU5BhtRjxEyOmsRP9sKfLReG-Re3NL5czpejUR-3NT5zmrePj_-DO308yGoVauCVoPmhUWIILqmEzzxNmdzQnfYiRQlKd3HgT3NBs_CgVffQs_Q9TQowjZSyrM2-o63_W1pIEEZdo3owCLJuW3Q_J1pgqFkQiwgK8AOIgvEMWUMrwDq802Toumkwz1PIZFt1gPDIS_k60KdrfhGjSQferXzrH94lUFkKmL2u_bHebr8trhzL_okaL-jLHq2LooQXgrPkFEQMSACNqgAjWeVA0M16dbNR3z2SNCYB_gqPDJ666g_p14RIcsWcgDpHb2qfv0_YSut89vVGaN-5vySqC5xv2Up9yy3q7KJL1Gfy5h-U0Z6pnoguLER1lbPw-H7_LjQfm01_1EmO1KDrKQ2wnt4AN6QRFceGqFZ5tJR8W2UhJnoucJlHao6uGY0FTfHLUGCImOTitr059AVi4pxm3zlPu0K1xOSEf2EynQxdb2pPHNf3PGti-yauMBk7Q8udup5l-QqaeHZt4mddPxr6jj9yXcd2x55rj91J_Rvb4n0O)
 
+## Detailed Run-Through of Making a Release
+
+The basic idea is to create a release branch off of `master`, then cherry pick the commits we want to incorporate into this release. So, first of all, we want to get a list of all of the commits in `development` that aren't in `master`:
+
+    git log --no-merges development ^master > /tmp/nomerges.txt
+
+You'll note that we exclude merge commits above. We then go through that file and delete the commits we don't want to incorporate into our release. Next, we extract just the lines that contain the commit IDs:
+
+    grep commit /tmp/nomerges.txt > /tmp/commits.txt
+
+These are in reverse order (newest to oldest); we'd like the list to be oldest to newest:
+
+    tail -r /tmp/commits.txt > /tmp/revcommits.txt
+
+And then we can use simple find/replace in a text editor (for example, in emacs) to create a shell script with lines that look like:
+
+    git cherry-pick -x -X theirs f622b2c36f0f29472f366470cc2d054149ce4258
+
+In principle, if our current branch is the release branch, this should induce git to cherry pick each commit into that branch, resolving any conflicts in favor of the incoming commit. We can test by copying and pasting a line or two from that file, then, if satisfied, just `sh /tmp/revcommits.txt`.
+
+
 ---------
 [<< Go back to the Graphitti home page](../index.md)
 
-[<< Go back to the CONTRIBUTING.md](../../CONTRIBUTING.md)
+[<< Go back to the CONTRIBUTING.md](https://github.com/UWB-Biocomputing/Graphitti/blob/master/CONTRIBUTING.md)
