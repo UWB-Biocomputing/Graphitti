@@ -12,6 +12,9 @@
 #include "VectorMatrix.h"
 #include <string>
 #include <vector>
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
 using namespace std;
 
@@ -37,6 +40,39 @@ class CompleteMatrix : public Matrix {
    friend class VectorMatrix;
 
 public:
+   ///@{Interface for RecordableBase
+   // Implement virtual methods from RecordableBase
+   int getNumElements() const override
+   {
+      // Throw exception
+      throw std::logic_error("CompleteMatrix does not support getNumElements.");
+   }
+
+   void startNewEpoch() override
+   {
+      // Throw exception
+      throw std::logic_error("CompleteMatrix does not support startNewEpoch.");
+   }
+
+   variantTypes getElement(int index) const override
+   {
+      // Throw exception
+      throw std::logic_error("CompleteMatrix does not support getElement.");
+   }
+
+   void setDataType() override
+   {
+      // Throw exception
+      throw std::logic_error("CompleteMatrix does not support setDataType.");
+   }
+
+   const string &getDataType() const override
+   {
+      // Throw exception
+      throw std::logic_error("CompleteMatrix does not support getDataType.");
+   }
+   ///@}
+
    ///  Allocate storage and initialize attributes. If "v" (values) is
    ///  not empty, it will be used as a source of data for initializing
    ///  the matrix (and must be a list of whitespace separated textual
@@ -116,6 +152,9 @@ public:
 
    friend const CompleteMatrix sqrt(const CompleteMatrix &v);
 
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
+
 protected:
    /******************************************
    * @name Internal Utilities
@@ -149,3 +188,11 @@ private:
    /// Pointer to dynamically allocated 2D array
    vector<vector<BGFLOAT>> theMatrix;
 };
+
+CEREAL_REGISTER_TYPE(CompleteMatrix);   // to enable polymorphism
+
+///  Cereal serialization method
+template <class Archive> void CompleteMatrix::serialize(Archive &archive)
+{
+   archive(cereal::base_class<Matrix>(this), cereal::make_nvp("theMatrix", theMatrix));
+}

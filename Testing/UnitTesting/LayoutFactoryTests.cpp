@@ -9,9 +9,8 @@
  * we are requesting.
  */
 
-#include "DynamicLayout.h"
-#include "FixedLayout.h"
 #include "Layout911.h"
+#include "LayoutNeuro.h"
 #include "Utils/Factory.h"
 #include "gtest/gtest.h"
 
@@ -21,18 +20,12 @@ TEST(LayoutFactory, GetInstanceReturnsInstance)
    ASSERT_NE(nullptr, layoutFactory);
 }
 
-TEST(LayoutFactory, CreateDynamicLayoutInstance)
-{
-   unique_ptr<Layout> layout = Factory<Layout>::getInstance().createType("DynamicLayout");
-   ASSERT_NE(nullptr, layout);
-   ASSERT_NE(nullptr, dynamic_cast<DynamicLayout *>(layout.get()));
-}
 
-TEST(LayoutFactory, CreateFixedLayoutInstance)
+TEST(LayoutFactory, CreateLayoutNeuroInstance)
 {
-   unique_ptr<Layout> layout = Factory<Layout>::getInstance().createType("FixedLayout");
+   unique_ptr<Layout> layout = Factory<Layout>::getInstance().createType("LayoutNeuro");
    ASSERT_NE(nullptr, layout);
-   ASSERT_NE(nullptr, dynamic_cast<FixedLayout *>(layout.get()));
+   ASSERT_NE(nullptr, dynamic_cast<LayoutNeuro *>(layout.get()));
 }
 
 TEST(LayoutFactory, CreateLayout911Instance)

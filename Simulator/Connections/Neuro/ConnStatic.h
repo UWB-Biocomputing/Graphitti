@@ -27,10 +27,12 @@
 
 #include "Connections.h"
 #include "Global.h"
+#include "RecordableVector.h"
 #include "Simulator.h"
 #include <iostream>
 #include <vector>
 // cereal
+#include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>
 
 using namespace std;
@@ -69,7 +71,8 @@ public:
    /// Get array of vertex weights
    const vector<BGFLOAT> &getWCurrentEpoch() const
    {
-      return WCurrentEpoch_;
+      // return WCurrentEpoch_;
+      return WCurrentEpoch_.getVector();
    }
 
    /// Get all edge source vertex indices
@@ -85,12 +88,7 @@ public:
    }
 
    ///  Cereal serialization method
-   ///  (Serializes radii)
-   template <class Archive> void save(Archive &archive) const;
-
-   ///  Cereal deserialization method
-   ///  (Deserializes radii)
-   template <class Archive> void load(Archive &archive);
+   template <class Archive> void serialize(Archive &archive);
 
 private:
    /// Indices of the source vertex for each edge
@@ -100,7 +98,9 @@ private:
    vector<int> destVertexIndexCurrentEpoch_;
 
    /// The weight (scaling factor, strength, maximal amplitude) of each vertex for the current epoch.
-   vector<BGFLOAT> WCurrentEpoch_;
+   // vector<BGFLOAT> changes to RecordableVector for recording purpose
+   RecordableVector<BGFLOAT> WCurrentEpoch_;
+   // vector<BGFLOAT> WCurrentEpoch_;
 
    /// radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
    int radiiSize_;
@@ -130,3 +130,19 @@ private:
       }
    };
 };
+
+CEREAL_REGISTER_TYPE(ConnStatic);
+
+///  Cereal serialization method
+template <class Archive> void ConnStatic::serialize(Archive &archive)
+{
+   archive(cereal::base_class<Connections>(this),
+           cereal::make_nvp("sourceVertexIndexCurrentEpoch", sourceVertexIndexCurrentEpoch_),
+           cereal::make_nvp("destVertexIndexCurrentEpoch", destVertexIndexCurrentEpoch_),
+           cereal::make_nvp("WCurrentEpoch", WCurrentEpoch_),
+           cereal::make_nvp("radiiSize", radiiSize_),
+           cereal::make_nvp("connsPerVertex", connsPerVertex_),
+           cereal::make_nvp("threshConnsRadius", threshConnsRadius_),
+           cereal::make_nvp("rewiringProbability", rewiringProbability_),
+           cereal::make_nvp("excWeight", excWeight_), cereal::make_nvp("inhWeight", inhWeight_));
+}

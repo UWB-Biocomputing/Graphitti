@@ -36,7 +36,7 @@ jobs:
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
     - name: verify test-tiny
       if: always() && steps.tt.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml ../Testing/RegressionTesting/GoodOutput/test-tiny-out.xml
+      run: diff ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-tiny-out.xml
 
     - id: ts
       name: run test-small
@@ -44,7 +44,7 @@ jobs:
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small.xml
     - name: verify test-small
       if: always() && steps.ts.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-small-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-out.xml
+      run: diff ../Testing/RegressionTesting/TestOutput/test-small-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-out.xml
 
     - id: tsc
       name: run test-small-connected
@@ -52,7 +52,7 @@ jobs:
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected.xml
     - name: verify test-small-connected
       if: always() && steps.tsc.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-small-connected-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-connected-out.xml
+      run: diff ../Testing/RegressionTesting/TestOutput/test-small-connected-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-connected-out.xml
 
     - id: tsl
       name: run test-small-long
@@ -60,7 +60,7 @@ jobs:
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-long.xml
     - name: verify test-small-long
       if: always() && steps.tsl.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-small-long-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-long-out.xml
+      run: diff ../Testing/RegressionTesting/TestOutput/test-small-long-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-long-out.xml
     
     - id: tscl
       name: run test-small-connected-long
@@ -68,7 +68,15 @@ jobs:
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected-long.xml
     - name: verify test-small-connected-long
       if: always() && steps.tscl.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-small-connected-long-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-connected-long-out.xml
+      run: diff ../Testing/RegressionTesting/TestOutput/test-small-connected-long-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-connected-long-out.xml
+
+    - id: ts911
+      name: run test-small-911
+      if: always() && steps.build.conclusion == 'success'
+      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-911.xml
+    - name: verify test-small-911
+      if: always() && steps.tt.conclusion == 'success'
+      run: diff ../Testing/RegressionTesting/TestOutput/test-small-911-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-911-out.xml
 
     - id: ts911
       name: run test-small-911
@@ -84,7 +92,7 @@ jobs:
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium.xml
     - name: verify test-medium
       if: always() && steps.tm.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-out.xml ../Testing/RegressionTesting/GoodOutput/test-medium-out.xml
+      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-out.xml
 
     - id: tmc
       name: run test-medium-connected
@@ -92,7 +100,7 @@ jobs:
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-connected.xml
     - name: verify test-medium-connected
       if: always() && steps.tmc.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-connected-out.xml ../Testing/RegressionTesting/GoodOutput/test-medium-connected-out.xml
+      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-connected-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-connected-out.xml
 
     - id: tml
       name: run test-medium-long
@@ -100,7 +108,7 @@ jobs:
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-long.xml
     - name: verify test-medium-long
       if: always() && steps.tml.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-long-out.xml ../Testing/RegressionTesting/GoodOutput/test-medium-long-out.xml
+      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-long-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-long-out.xml
 
     - id: tmcl
       name: run test-medium-connected-long
@@ -108,4 +116,4 @@ jobs:
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-connected-long.xml
     - name: verify test-medium-connected-long
       if: always() && steps.tmcl.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-connected-long-out.xml ../Testing/RegressionTesting/GoodOutput/test-medium-connected-long-out.xml
+      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-connected-long-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-connected-long-out.xml

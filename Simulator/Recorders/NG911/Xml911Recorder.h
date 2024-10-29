@@ -23,29 +23,20 @@ public:
 
    ~Xml911Recorder() = default;
 
-   static IRecorder *Create()
+   static Recorder *Create()
    {
       return new Xml911Recorder();
    }
 
-   /// Init radii and rates history matrices with default values
-   virtual void initDefaultValues() override;
-
-   /// Init radii and rates history matrices with current radii and rates
-   virtual void initValues() override;
-
-   /// Get the current radii and rates vlaues
-   virtual void getValues() override;
-
    /// Compile history information in every epoch
    ///
    /// @param[in] vertices   The entire list of vertices.
-   virtual void compileHistories(AllVertices &vertices) override;
+   virtual void compileHistories() override;
 
    /// Writes simulation results to an output destination.
    ///
    /// @param  vertices the Vertex list to search from.
-   virtual void saveSimData(const AllVertices &vertices) override;
+   virtual void saveSimData() override;
 
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters

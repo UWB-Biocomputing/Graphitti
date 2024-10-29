@@ -55,15 +55,15 @@ bool Core::parseCommandLine(string executableName, string cmdLineArguments)
    if ((cl.addParam("configfile", 'c', ParamContainer::filename, "parameter configuration filepath")
         != ParamContainer::errOk)
 #if defined(USE_GPU)
-       || (cl.addParam("device", 'd', ParamContainer::regular, "CUDA device id")
+       || (cl.addParam("device", 'g', ParamContainer::regular, "CUDA GPU device ID")
            != ParamContainer::errOk)
 #endif   // USE_GPU
-       || (cl.addParam("stimulusfile", 's', ParamContainer::filename, "stimulus input filepath")
+       || (cl.addParam("inputfile", 'i', ParamContainer::filename, "input file path")
            != ParamContainer::errOk)
-       || (cl.addParam("deserializefile", 'r', ParamContainer::filename,
+       || (cl.addParam("deserializefile", 'd', ParamContainer::filename,
                        "simulation deserialization filepath (enables deserialization)")
            != ParamContainer::errOk)
-       || (cl.addParam("serializefile", 'w', ParamContainer::filename,
+       || (cl.addParam("serializefile", 's', ParamContainer::filename,
                        "simulation serialization filepath (enables serialization)")
            != ParamContainer::errOk)
        || (cl.addParam("version", 'v', ParamContainer::novalue,
@@ -157,6 +157,18 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
    LOG4CPLUS_TRACE(consoleLogger, "Loading parameters from configuration file");
    OperationManager::getInstance().executeOperation(Operations::loadParameters);
 
+   // Check if the current user has write permission for the specified serialization path
+   if (!simulator.getSerializationFileName().empty()) {
+      std::ofstream file(simulator.getSerializationFileName());
+      if (file) {
+         LOG4CPLUS_TRACE(consoleLogger, "User has write permission for the serialization file.");
+      } else {
+         LOG4CPLUS_FATAL(consoleLogger,
+                         "User does not have write permission for the serialization file.");
+         return -1;
+      }
+   }
+
    time_t start_time, end_time;
    time(&start_time);
 
@@ -172,11 +184,14 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
       LOG4CPLUS_TRACE(consoleLogger, "Deserializing state from file.");
 
       // Deserialization
-      if (!serializer.deserializeSynapses()) {
+      if (!serializer.deserialize()) {
          LOG4CPLUS_FATAL(consoleLogger, "Failed while deserializing objects");
          return -1;
       }
    }
+
+   // Helper function for recorder to register spike history variables for all neurons.
+   simulator.getModel().getLayout().getVertices().registerHistoryVariables();
 
    // Run simulation
    LOG4CPLUS_TRACE(consoleLogger, "Starting Simulation");
@@ -199,7 +214,7 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
    // Serializes internal state for the current simulation
    if (!simulator.getSerializationFileName().empty()) {
       LOG4CPLUS_TRACE(consoleLogger, "Serializing current state");
-      serializer.serializeSynapses();
+      serializer.serialize();
    }
 
    // Tell simulation to clean-up and run any post-simulation logic.

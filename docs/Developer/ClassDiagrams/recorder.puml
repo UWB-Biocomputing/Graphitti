@@ -6,164 +6,113 @@
 
 /' Objects '/
 
-class Hdf5GrowthRecorder {
-	+Hdf5GrowthRecorder()
-	+~Hdf5GrowthRecorder()
-	#radiiHistory_ : BGFLOAT*
-	#ratesHistory_ : BGFLOAT*
-	#dataSetRadiiHist_ : DataSet
-	#dataSetRatesHist_ : DataSet
-	+{static} Create() : IRecorder*
-	+compileHistories(AllVertices& neurons) : void
-	+getValues() : void
-	#initDataSet() : void
-	+initDefaultValues() : void
-	+initValues() : void
-	+printParameters() : void
-	+term() : void
-	#writeRadiiRates() : void
-}
-
 
 class Hdf5Recorder {
 	+Hdf5Recorder()
-	#dataSetNeuronThresh_ : DataSet
-	#dataSetNeuronTypes_ : DataSet
-	#dataSetProbedNeurons_ : DataSet
-	#dataSetSimulationEndTime_ : DataSet
-	#dataSetSpikesHist_ : DataSet
-	#dataSetSpikesProbedNeurons_ : DataSet
-	#dataSetStarterNeurons_ : DataSet
-	#dataSetTsim_ : DataSet
-	#dataSetXloc_ : DataSet
-	#dataSetYloc_ : DataSet
 	#resultOut_ : H5File
-	+{static} Create() : IRecorder*
-	#offsetSpikesProbedNeurons_ : hsize_t*
-	#spikesHistory_ : int*
-	#spikesProbedNeurons_ : vector<uint64_t>*
-	+compileHistories(AllVertices& neurons) : void
+	#variableTable_ : vector<hdf5VariableInfo>
+	+{static} Create() : Recorder*
+	+compileHistories() : void
 	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+getValues() : void
 	+init() : void
 	#initDataSet() : void
-	+initDefaultValues() : void
-	+initValues() : void
 	+printParameters() : void
-	+saveSimData(const AllVertices& neurons) : void
+	+saveSimData() : void
 	+term() : void
+	+registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
+	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
+}
+
+struct hdf5VariableInfo {
+	#variableName_ : string
+	#variableLocation_ : RecordableBase&
+	#dataType_ : string
+	#hdf5Datatype_ : DataType
+	#hdf5DataSet_ : DataSet hdf5DataSet_
+	#variableType: UpdatedType
+	+hdf5VariableInfo(string name, RecordableBase &location)
+	+captureData()
+	+convertType()
 }
 
 
-abstract class IRecorder {
-	+~IRecorder()
+abstract class Recorder {
+	+~Recorder()
 	#fileLogger_ : log4cplus::Logger
 	#resultFileName_ : string
 	+{abstract} compileHistories(AllVertices& vertices) : void
 	#{abstract} getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+{abstract} getValues() : void
 	+{abstract} init() : void
-	+{abstract} initDefaultValues() : void
-	+{abstract} initValues() : void
 	+{abstract} printParameters() : void
 	+{abstract} saveSimData(const AllVertices& vertices) : void
 	+{abstract} term() : void
+	+{abstract} registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
+	+{abstract} registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
 }
 
 
 class RecorderFactory {
 	-RecorderFactory()
 	+~RecorderFactory()
-	-invokeCreateFunction(const string& className) : IRecorder*
+	-invokeCreateFunction(const string& className) : Recorder*
 	+{static} getInstance() : RecorderFactory*
 	-createFunctions : RecorderFunctionMap
-	+createRecorder(const string& className) : shared_ptr<IRecorder>
-	-recorderInstance : shared_ptr<IRecorder>
+	+createRecorder(const string& className) : shared_ptr<Recorder>
+	-recorderInstance : shared_ptr<Recorder>
 	-registerClass(const string& className, CreateFunction function) : void
-}
-
-
-class XmlGrowthRecorder {
-	+XmlGrowthRecorder()
-	+~XmlGrowthRecorder()
-	-radiiHistory_ : CompleteMatrix
-	-ratesHistory_ : CompleteMatrix
-	+{static} Create() : IRecorder*
-	+compileHistories(AllVertices& neurons) : void
-	-getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+getValues() : void
-	+initDefaultValues() : void
-	+initValues() : void
-	+printParameters() : void
-	+saveSimData(const AllVertices& neurons) : void
 }
 
 
 class XmlRecorder {
 	+XmlRecorder()
-	+{static} Create() : IRecorder*
-	#spikesHistory_ : VectorMatrix
+	+{static} Create() : Recorder*
+	#variableTable_ : vector<singleVariableInfo>
 	#resultOut_ : ofstream
-	+compileHistories(AllVertices& vertices) : void
-	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+getValues() : void
+	+compileHistories() : void
 	+init() : void
-	+initDefaultValues() : void
-	+initValues() : void
 	+printParameters() : void
-	+saveSimData(const AllVertices& vertices) : void
+	+saveSimData() : void
 	+term() : void
+	+registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
+	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
+	
+	/' methods only used for unit test 
+	+XmlRecorder(string fileName_)
+	+getVariableName(int numIndex) const : const string&
+	+getSingleVariable(int numIndex) const : &RecordableBase
+	+getHistory() const : const &vector<variant<uint64_t, bool, int, BGFLOAT>>
+	'/
 }
 
-
-class XmlSTDPRecorder {
-	+XmlSTDPRecorder()
-	+~XmlSTDPRecorder()
-	+{static} Create() : IRecorder*
-	+toXML(string name, vector<vector<BGFLOAT>> MatrixToWrite) : string {query}
-	+toXML(string name, vector<vector<int>> MatrixToWrite) : string {query}
-	#weightsHistory_ : vector<vector<BGFLOAT>>
-	#destNeuronIndexHistory_ : vector<vector<int>>
-	#sourceNeuronIndexHistory_ : vector<vector<int>>
-	+compileHistories(AllVertices& neurons) : void
-	+getValues() : void
-	+initDefaultValues() : void
-	+initValues() : void
-	+printParameters() : void
-	+saveSimData(const AllVertices& neurons) : void
+struct singleVariableInfo {
+	#variableName_ : string
+	#variableLocation_ : RecordableBase&
+	#variableHistory_ : vector<variant<uint64_t, bool, int, BGFLOAT>
+	#dataType_ : string
+	#variableType: UpdatedType
+	+singleVariableInfo(string name, RecordableBase &location)
+	+captureData()
 }
-
-
 
 
 
 /' Inheritance relationships '/
 
-.Hdf5Recorder <|-- .Hdf5GrowthRecorder
+.Recorder <|-- .Hdf5Recorder
 
 
-.IRecorder <|-- .Hdf5Recorder
-
-
-.IRecorder <|-- .XmlRecorder
-
-
-.XmlRecorder <|-- .XmlGrowthRecorder
-
-
-.XmlRecorder <|-- .XmlSTDPRecorder
-
-
-
+.Recorder <|-- .XmlRecorder
 
 
 /' Aggregation relationships '/
 
-.RecorderFactory *-- .IRecorder
+.RecorderFactory *-- .Recorder
 
+/' Composition relationships '/
 
+.XmlRecorder *-- .singleVariableInfo
 
-
+.Hdf5Recorder *-- .hdf5VariableInfo
 
 
 /' Nested objects '/

@@ -16,16 +16,18 @@
 #pragma once
 
 #include "AllVertices.h"
-#include "IRecorder.h"
 #include "Layout.h"
+#include "Recorder.h"
 #include <log4cplus/loggingmacros.h>
 #include <memory>
+//cereal
+#include <cereal/types/memory.hpp>
 
 using namespace std;
 
 class Connections;
 
-class IRecorder;
+class Recorder;
 
 class Layout;
 
@@ -44,7 +46,7 @@ public:
    Layout &getLayout() const;
 
    /// Returns reference to Recorder
-   IRecorder &getRecorder() const;
+   Recorder &getRecorder() const;
 
    /// Writes simulation results to an output destination.
    /// Downstream from IModel saveData()
@@ -79,6 +81,9 @@ public:
    /// might be similar to advance.
    virtual void updateConnections() = 0;
 
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive, std::uint32_t const version);
+
 protected:
    // Note: This method was previously used for debugging, but it is now dead code left behind.
    /// Prints debug information about the current state of the network.
@@ -95,7 +100,7 @@ protected:
 
    unique_ptr<Layout> layout_;
 
-   unique_ptr<IRecorder> recorder_;
+   unique_ptr<Recorder> recorder_;
 
    // shared_ptr<ISInput> input_;    /// Stimulus input object.
 
@@ -105,3 +110,11 @@ protected:
    void
       createAllVertices();   /// Populate an instance of AllVertices with an initial state for each vertex.
 };
+
+CEREAL_CLASS_VERSION(Model, 1);
+
+///  Cereal serialization method
+template <class Archive> void Model::serialize(Archive &archive, std::uint32_t const version)
+{
+   archive(cereal::make_nvp("connections", connections_), cereal::make_nvp("layout", layout_));
+}

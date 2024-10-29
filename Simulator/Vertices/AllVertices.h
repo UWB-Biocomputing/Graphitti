@@ -30,6 +30,8 @@ using namespace std;
 #include "Simulator.h"
 #include <iostream>
 #include <log4cplus/loggingmacros.h>
+// cereal
+#include "cereal/types/vector.hpp"
 
 class Layout;
 class AllEdges;
@@ -77,6 +79,14 @@ public:
    ///  On the next advance cycle, vertices add the values stored in their corresponding
    ///  summation points to their Vm and resets the summation points to zero
    vector<BGFLOAT> summationPoints_;
+
+   /// Helper function for recorder to register spike history variables for all neurons.
+   /// Option 1: Register neuron information in vertexEvents_ one by one.
+   /// Option 2: Register a vector of EventBuffer variables.
+   virtual void registerHistoryVariables() = 0;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
    ///  Total number of vertices.
@@ -147,3 +157,8 @@ struct AllVerticesDeviceProperties {
    BGFLOAT *summationPoints_;
 };
 #endif   // defined(USE_GPU)
+
+template <class Archive> void AllVertices::serialize(Archive &archive)
+{
+   archive(cereal::make_nvp("summationPoints", summationPoints_), cereal::make_nvp("size", size_));
+}

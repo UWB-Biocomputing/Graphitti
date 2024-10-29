@@ -22,6 +22,8 @@
 
 #include "MTRand.h"
 #include <cmath>
+// cereal
+#include <cereal/types/polymorphic.hpp>
 
 /*!
    @class Norm
@@ -84,8 +86,13 @@ public:
 
    /// Allow Norm re-seeding (with same behavior as initializers)
    void seed(BGFLOAT m, BGFLOAT s, uint32_t seed);
+
    virtual void seed(uint32_t seed) override;
+
    virtual void seed() override;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 private:
    // Additional state information
@@ -112,3 +119,13 @@ private:
    /// Default seeding parameter: seed
    static constexpr uint32_t DEFAULT_seed = 0;
 };
+
+CEREAL_REGISTER_TYPE(Norm);
+
+///  Cereal serialization method
+template <class Archive> void Norm::serialize(Archive &archive)
+{
+   archive(cereal::base_class<MTRand>(this), cereal::make_nvp("odd_", odd_),
+           cereal::make_nvp("X2_", X2_), cereal::make_nvp("mu_", mu_),
+           cereal::make_nvp("sigma_", sigma_));
+}

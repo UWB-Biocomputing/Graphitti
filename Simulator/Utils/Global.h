@@ -249,14 +249,20 @@ extern const string MATRIX_INIT;
 
 /// Struct for vertex attributes
 struct VertexProperty {
-   string objectID;
-   string name;
+   // Common Properties:
    string type;
    double x;
    double y;
+
+   // 911 Properties
+   string objectID;
+   string name;
    int servers = 0;
    int trunks = 0;
    string segments;
+
+   // Neural Properties
+   bool active;
 };
 
 /// @brief  The structure to hold the edge properties

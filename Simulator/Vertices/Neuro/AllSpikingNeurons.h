@@ -28,6 +28,9 @@ using namespace std;
 #include "EventBuffer.h"
 #include "Global.h"
 #include <vector>
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
 struct AllSpikingNeuronsDeviceProperties;
 
@@ -43,6 +46,14 @@ public:
 
    ///  Clear the spike counts out of all Neurons.
    void clearSpikeCounts();
+
+   /// Helper function for recorder to register spike history variables for all neurons.
+   /// Option 1: Register neuron information in vertexEvents_ one by one.
+   /// Option 2: Register a vector of EventBuffer variables.
+   virtual void registerHistoryVariables() override;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 #if defined(USE_GPU)
 public:
@@ -92,8 +103,9 @@ protected:
    ///  @param  index            Index of the neuron to fire.
    virtual void fire(int index);
 
-#endif   // defined(USE_GPU)
+#endif   // !defined(USE_GPU)
 
+   // TODO change the "public" after re-engineering Recorder
 public:
    ///  The booleans which track whether the neuron has fired.
    vector<bool> hasFired_;
@@ -102,7 +114,7 @@ public:
    vector<EventBuffer> vertexEvents_;
 
 protected:
-   ///  True if back propagaion is allowed.
+   ///  True if back propagation is allowed.
    ///  (parameters used for advanceVerticesDevice.)
    bool fAllowBackPropagation_;
 };
@@ -119,9 +131,19 @@ struct AllSpikingNeuronsDeviceProperties : public AllVerticesDeviceProperties {
    ///  Each buffer is a circular, and offset of top location of the buffer i is
    ///  specified by spikeCountOffset[i].
    uint64_t **spikeHistory_;
-   int *queueFront_;
-   int *queueEnd_;
+   int *bufferFront_;
+   int *bufferEnd_;
    int *epochStart_;
-   int *numEventsInEpoch_;
+   int *numElementsInEpoch_;
 };
 #endif   // defined(USE_GPU)
+
+CEREAL_REGISTER_TYPE(AllSpikingNeurons);
+
+///  Cereal serialization method
+template <class Archive> void AllSpikingNeurons::serialize(Archive &archive)
+{
+   archive(cereal::base_class<AllVertices>(this), cereal::make_nvp("hasFired", hasFired_),
+           cereal::make_nvp("vertexEvents", vertexEvents_),
+           cereal::make_nvp("fAllowBackPropagation", fAllowBackPropagation_));
+}

@@ -67,7 +67,7 @@ public:
    /// Creates a vertex type map.
    ///
    /// @param  numVertices number of the vertices to have in the type map.
-   virtual void generateVertexTypeMap(int numVertices) override;
+   virtual void generateVertexTypeMap() override;
 
    /// Returns the type of synapse at the given coordinates
    /// @param    srcVertex  integer that points to a Neuron in the type map as a source.

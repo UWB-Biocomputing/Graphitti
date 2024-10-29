@@ -127,6 +127,9 @@ abstract class AllSpikingNeurons {
 	+vertexEvents_ : vector<EventBuffer>
 	+hasFired_ : vector<bool>
 	#{abstract} advanceNeuron(const int index) : void
+	+registerSpikeHistoryVariables() : void
+	+setDataType() : void
+	+getDataType() const : void
 	+advanceVertices(AllEdges& synapses, const EdgeIndexMap* edgeIndexMap) : void
 	#clearDeviceSpikeCounts(AllSpikingNeuronsDeviceProperties& allVerticesDevice) : void
 	+{abstract} clearNeuronSpikeCounts(void* allVerticesDevice) : void
@@ -166,13 +169,13 @@ abstract class AllVertices {
 class EventBuffer {
 	+EventBuffer(int maxEvents)
 	-epochStart_ : int
-	+getNumEventsInEpoch() : int {query}
-	-numEventsInEpoch_ : int
-	-queueEnd_ : int
-	-queueFront_ : int
+	+getNumElementsInEpoch() : int {query}
+	-numElementsInEpoch_ : int
+	-bufferEnd_ : int
+	-bufferFront_ : int
 	+getPastEvent(int offset) : uint64_t {query}
 	+operator[](int i) : uint64_t {query}
-	-eventTimeSteps_ : vector<uint64_t>
+	-dataSeries_ : vector<uint64_t>
 	+clear() : void
 	+insertEvent(uint64_t timeStep) : void
 	+resize(int maxEvents) : void

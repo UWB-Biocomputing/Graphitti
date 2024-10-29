@@ -2,7 +2,7 @@
  * @file Model.cpp
  *
  * @ingroup Simulator/Core
- * 
+ *
  * @brief Implementation of Model for the graph-based networks.
  *
  * The network is composed of 3 superimposed 2-d arrays: vertices, edges, and
@@ -10,19 +10,22 @@
  *
  * Edges in the edge map are located at the coordinates of the vertex
  * from which they receive output.  Each edge stores a pointer into a
- * summation point. 
+ * summation point.
  */
 
 #include "Model.h"
 #include "Connections.h"
 #include "Factory.h"
-#include "IRecorder.h"
 #include "ParameterManager.h"
+#include "Recorder.h"
 #include "Simulator.h"
 
 /// Constructor
 Model::Model()
 {
+   // Get a copy of the console logger to use in the case of errors
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+
    // Reference variable used to get class type from ParameterManager.
    string type;
 
@@ -30,13 +33,31 @@ Model::Model()
    ParameterManager::getInstance().getStringByXpath("//LayoutParams/@class", type);
    layout_ = Factory<Layout>::getInstance().createType(type);
 
+   // If the factory returns an error (nullptr), exit
+   if (layout_ == nullptr) {
+      LOG4CPLUS_INFO(consoleLogger, "INVALID CLASS: " + type);
+      exit(EXIT_FAILURE);
+   }
+
    // Create Connections class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//ConnectionsParams/@class", type);
    connections_ = Factory<Connections>::getInstance().createType(type);
 
+   // If the factory returns an error (nullptr), exit
+   if (connections_ == nullptr) {
+      LOG4CPLUS_INFO(consoleLogger, "INVALID CLASS: " + type);
+      exit(EXIT_FAILURE);
+   }
+
    // Create Recorder class using type definition from configuration file.
    ParameterManager::getInstance().getStringByXpath("//RecorderParams/@class", type);
-   recorder_ = Factory<IRecorder>::getInstance().createType(type);
+   recorder_ = Factory<Recorder>::getInstance().createType(type);
+
+   // If the factory returns an error (nullptr), exit
+   if (recorder_ == nullptr) {
+      LOG4CPLUS_INFO(consoleLogger, "INVALID CLASS: " + type);
+      exit(EXIT_FAILURE);
+   }
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
@@ -46,7 +67,7 @@ Model::Model()
 void Model::saveResults()
 {
    if (recorder_ != nullptr) {
-      recorder_->saveSimData(layout_->getVertices());
+      recorder_->saveSimData();
    }
 }
 
@@ -56,8 +77,8 @@ void Model::createAllVertices()
 {
    LOG4CPLUS_INFO(fileLogger_, "Allocating Vertices...");
 
-   layout_->generateVertexTypeMap(Simulator::getInstance().getTotalVertices());
-   layout_->initStarterMap(Simulator::getInstance().getTotalVertices());
+   layout_->generateVertexTypeMap();
+   layout_->initStarterMap();
 
    // set their specific types
    layout_->getVertices().createAllVertices(*layout_);
@@ -83,7 +104,6 @@ void Model::setupSim()
    // Init radii and rates history matrices with default values
    if (recorder_ != nullptr) {
       recorder_->init();
-      recorder_->initDefaultValues();
    }
 
    // Creates all the vertices and generates data for them.
@@ -125,7 +145,7 @@ void Model::updateHistory()
       LOG4CPLUS_INFO(fileLogger_, "ERROR: Recorder class is null.");
    }
    if (recorder_ != nullptr) {
-      recorder_->compileHistories(layout_->getVertices());
+      recorder_->compileHistories();
    }
 }
 
@@ -144,10 +164,10 @@ Layout &Model::getLayout() const
    return *layout_;
 }
 
-/// Get the IRecorder class object.
-/// @return Pointer to the IRecorder class object.
+/// Get the Recorder class object.
+/// @return Pointer to the Recorder class object.
 // ToDo: make smart ptr
-IRecorder &Model::getRecorder() const
+Recorder &Model::getRecorder() const
 {
    return *recorder_;
 }

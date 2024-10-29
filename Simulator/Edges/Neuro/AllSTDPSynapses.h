@@ -68,6 +68,9 @@
 
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
 struct AllSTDPSynapsesDeviceProperties;
 
@@ -119,6 +122,9 @@ public:
 
    ///  Prints SynapsesProps data.
    virtual void printSynapsesProps() const override;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -410,3 +416,29 @@ struct AllSTDPSynapsesDeviceProperties : public AllSpikingSynapsesDeviceProperti
    bool *useFroemkeDanSTDP_;
 };
 #endif   // defined(USE_GPU)
+
+
+CEREAL_REGISTER_TYPE(AllSTDPSynapses);
+
+///  Cereal serialization method
+template <class Archive> void AllSTDPSynapses::serialize(Archive &archive)
+{
+   archive(cereal::base_class<AllSpikingSynapses>(this),
+           cereal::make_nvp("totalDelayPost", totalDelayPost_),
+           cereal::make_nvp("delayQueuePost", delayQueuePost_),
+           cereal::make_nvp("delayIndexPost", delayIndexPost_),
+           cereal::make_nvp("delayQueuePostLength", delayQueuePostLength_),
+           cereal::make_nvp("tauspost", tauspost_), cereal::make_nvp("tauspre", tauspre_),
+           cereal::make_nvp("taupos", taupos_), cereal::make_nvp("tauneg", tauneg_),
+           cereal::make_nvp("STDPgap", STDPgap_), cereal::make_nvp("Wex", Wex_),
+           cereal::make_nvp("Aneg", Aneg_), cereal::make_nvp("Apos", Apos_),
+           cereal::make_nvp("mupos", mupos_), cereal::make_nvp("muneg", muneg_),
+           cereal::make_nvp("defaultSTDPgap", defaultSTDPgap_),
+           cereal::make_nvp("tauspost_I", tauspost_I_), cereal::make_nvp("tauspre_I", tauspre_I_),
+           cereal::make_nvp("tauspost_E", tauspost_E_), cereal::make_nvp("tauspre_E", tauspre_E_),
+           cereal::make_nvp("taupos_I", taupos_I_), cereal::make_nvp("tauneg_I", tauneg_I_),
+           cereal::make_nvp("taupos_E", taupos_E_), cereal::make_nvp("tauneg_E", tauneg_E_),
+           cereal::make_nvp("Wex_I", Wex_I_), cereal::make_nvp("Wex_E", Wex_E_),
+           cereal::make_nvp("Aneg_I", Aneg_I_), cereal::make_nvp("Aneg_E", Aneg_E_),
+           cereal::make_nvp("Apos_I", Apos_I_), cereal::make_nvp("Apos_E", Apos_E_));
+}

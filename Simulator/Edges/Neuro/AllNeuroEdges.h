@@ -26,6 +26,9 @@
 #pragma once
 
 #include "AllEdges.h"
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
 #ifdef _WIN32
 using uint8_t = unsigned _int8;
@@ -77,6 +80,9 @@ public:
 
    ///  Prints SynapsesProps data to console.
    virtual void printSynapsesProps() const;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -144,3 +150,11 @@ struct AllEdgesDeviceProperties {
    int countVertices_;
 };
 #endif   // defined(USE_GPU)
+
+CEREAL_REGISTER_TYPE(AllNeuroEdges);
+
+///  Cereal serialization method
+template <class Archive> void AllNeuroEdges::serialize(Archive &archive)
+{
+   archive(cereal::base_class<AllEdges>(this), cereal::make_nvp("psr", psr_));
+}

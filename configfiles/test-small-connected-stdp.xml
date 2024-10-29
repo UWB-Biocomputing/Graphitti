@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <BGSimParams>
   <SimInfoParams name="SimInfoParams">
-    <PoolSize name="PoolSize">
-      <x name="x">10</x>
-      <y name="y">10</y>
-      <z name="z">1</z>
-    </PoolSize>
+    <graphmlFile name="graphmlFile">../configfiles/graphs/test-small.graphml</graphmlFile>
     <SimParams name="SimParams">
       <epochDuration name="epochDuration">100.0</epochDuration>
       <numEpochs name="numEpochs">3</numEpochs>
@@ -133,14 +129,12 @@
         </inhWeight>
     </ConnectionsParams>
 
-    <LayoutParams class="FixedLayout" name="LayoutParams">
+    <LayoutParams class="LayoutNeuro" name="LayoutParams">
       <LayoutFiles name="LayoutFiles">
-        <activeNListFileName name="activeNListFileName" type="InputFile">../configfiles/NList/ActiveNList10x10-0.1.xml</activeNListFileName>
-        <inhNListFileName name="inhNListFileName" type="InputFile">../configfiles/NList/InhibitoryNList10x10-0.02.xml</inhNListFileName>
       </LayoutFiles>
     </LayoutParams>
 
-    <RecorderParams class="XmlSTDPRecorder" name="RecorderParams">
+    <RecorderParams class="XmlRecorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
         <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_2-100.xml</probedNListFileName>
         <resultFileName name="resultFileName">Output/Results/test-small-connected-stdp-out.xml</resultFileName>

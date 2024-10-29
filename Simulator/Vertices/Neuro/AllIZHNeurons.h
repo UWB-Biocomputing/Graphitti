@@ -73,6 +73,9 @@
 
 #include "AllIFNeurons.h"
 #include "Global.h"
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
 struct AllIZHNeuronsDeviceProperties;
 
@@ -116,6 +119,9 @@ public:
    ///
    ///  @param  output      stream to write out to.
    virtual void serialize(ostream &output) const override;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 #if defined(USE_GPU)
 public:
@@ -315,3 +321,16 @@ struct AllIZHNeuronsDeviceProperties : public AllIFNeuronsDeviceProperties {
    BGFLOAT *C3_;
 };
 #endif   // defined(USE_GPU)
+
+CEREAL_REGISTER_TYPE(AllIZHNeurons);
+
+///  Cereal serialization method
+template <class Archive> void AllIZHNeurons::serialize(Archive &archive)
+{
+   archive(cereal::base_class<AllIFNeurons>(this), cereal::make_nvp("Aconst", Aconst_),
+           cereal::make_nvp("Bconst", Bconst_), cereal::make_nvp("Cconst", Cconst_),
+           cereal::make_nvp("Dconst", Dconst_), cereal::make_nvp("u", u_),
+           cereal::make_nvp("C3", C3_));
+
+   //Private variables are intentionally excluded from serialization as they are populated from configuration files.
+}

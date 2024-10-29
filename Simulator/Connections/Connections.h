@@ -28,10 +28,12 @@
 #include "AllSpikingSynapses.h"
 #include "AllVertices.h"
 #include "EdgeIndexMap.h"
-#include "IRecorder.h"
 #include "Layout.h"
+#include "Recorder.h"
 #include <log4cplus/loggingmacros.h>
 #include <memory>
+// cereal
+#include <cereal/types/memory.hpp>
 
 using namespace std;
 
@@ -71,8 +73,8 @@ public:
    ///  @return true if successful, false otherwise.
    virtual bool updateConnections(AllVertices &vertices);
 
-   ///  Creates synapses from synapse weights saved in the serialization file.
-   void createSynapsesFromWeights();
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 #if defined(USE_GPU)
 public:
@@ -104,3 +106,10 @@ protected:
    log4cplus::Logger fileLogger_;
    log4cplus::Logger edgeLogger_;
 };
+
+///  Cereal serialization method
+template <class Archive> void Connections::serialize(Archive &archive)
+{
+   archive(cereal::make_nvp("edges", edges_),
+           cereal::make_nvp("synapseIndexMap", synapseIndexMap_));
+}

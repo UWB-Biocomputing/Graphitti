@@ -77,7 +77,7 @@ void Layout911::printParameters() const
 }
 
 // Creates a vertex type map.
-void Layout911::generateVertexTypeMap(int numVertices)
+void Layout911::generateVertexTypeMap()
 {
    DEBUG(cout << "\nInitializing vertex type map" << endl;);
 
