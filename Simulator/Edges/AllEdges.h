@@ -11,9 +11,10 @@
 #include "EdgeIndexMap.h"
 #include "Global.h"
 #include "Simulator.h"
-#include "cereal/types/vector.hpp"
 #include "log4cplus/loggingmacros.h"
 #include <vector>
+// cereal
+#include "cereal/types/vector.hpp"
 
 class AllVertices;
 
@@ -58,12 +59,7 @@ public:
    virtual void createEdgeIndexMap(EdgeIndexMap &edgeIndexMap);
 
    ///  Cereal serialization method
-   ///  (Serializes edge weights, source vertices, and destination vertices)
-   template <class Archive> void save(Archive &archive, std::uint32_t const version) const;
-
-   ///  Cereal deserialization method
-   ///  (Deserializes edge weights, source vertices, and destination vertices)
-   template <class Archive> void load(Archive &archive, std::uint32_t const version);
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
@@ -227,61 +223,16 @@ public:
    int countVertices_;
 };
 
-CEREAL_CLASS_VERSION(AllEdges, 1);
-
 ///  Cereal serialization method
 ///  (Serializes edge weights, source vertices, and destination vertices)
-template <class Archive> void AllEdges::save(Archive &archive, std::uint32_t const version) const
+template <class Archive> void AllEdges::serialize(Archive &archive)
 {
    // serialization
-   archive(cereal::make_nvp("edgeWeightsSize", W_.size()), cereal::make_nvp("edgeWeights", W_),
-           cereal::make_nvp("sourceVerticesSize", sourceVertexIndex_.size()),
-           cereal::make_nvp("sourceVertices", sourceVertexIndex_),
-           cereal::make_nvp("destinationVerticesSize", destVertexIndex_.size()),
-           cereal::make_nvp("destinationVertices", destVertexIndex_));
-}
-
-///  Cereal deserialization method
-///  (Deserializes edge weights, source vertices, and destination vertices)
-template <class Archive> void AllEdges::load(Archive &archive, std::uint32_t const version)
-{
-   // uses vectors to load edge weights, source vertices, and destination vertices
-   int WVectorSize = 0;
-   int sourceVertexLayoutIndexVectorSize = 0;
-   int destVertexLayoutIndexVectorSize = 0;
-   vector<BGFLOAT> WVector;
-   vector<int> sourceVertexLayoutIndexVector;
-   vector<int> destVertexLayoutIndexVector;
-
-   // deserializing data to these vectors
-   archive(WVectorSize, WVector, sourceVertexLayoutIndexVectorSize, sourceVertexLayoutIndexVector,
-           destVertexLayoutIndexVectorSize, destVertexLayoutIndexVector);
-
-   // check to see if serialized data sizes matches object sizes
-   int requiredSize = maxEdgesPerVertex_ * countVertices_;
-   if (WVectorSize != requiredSize || WVectorSize != WVector.size()) {
-      cerr
-         << "Failed deserializing edge weights. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
-         << endl;
-      throw cereal::Exception("Deserialization Error");
-   }
-   if (sourceVertexLayoutIndexVectorSize != requiredSize
-       || sourceVertexLayoutIndexVectorSize != sourceVertexLayoutIndexVector.size()) {
-      cerr
-         << "Failed deserializing source vertices. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
-         << endl;
-      throw cereal::Exception("Deserialization Error");
-   }
-   if (destVertexLayoutIndexVectorSize != requiredSize
-       || destVertexLayoutIndexVectorSize != destVertexLayoutIndexVector.size()) {
-      cerr
-         << "Failed deserializing destination vertices. Please verify maxEdgesPerVertex and count_neurons data members in AllEdges class."
-         << endl;
-      throw cereal::Exception("Deserialization Error");
-   }
-
-   // assigns serialized data to objects
-   W_ = WVector;
-   sourceVertexIndex_ = sourceVertexLayoutIndexVector;
-   destVertexIndex_ = destVertexLayoutIndexVector;
+   archive(cereal::make_nvp("sourceVertexIndex", sourceVertexIndex_),
+           cereal::make_nvp("edgeWeights", W_),
+           cereal::make_nvp("destVertexIndex", destVertexIndex_), cereal::make_nvp("type", type_),
+           cereal::make_nvp("inUse", inUse_), cereal::make_nvp("edgeCounts", edgeCounts_),
+           cereal::make_nvp("totalEdgeCount", totalEdgeCount_),
+           cereal::make_nvp("maxEdgesPerVertex", maxEdgesPerVertex_),
+           cereal::make_nvp("countVertices", countVertices_));
 }

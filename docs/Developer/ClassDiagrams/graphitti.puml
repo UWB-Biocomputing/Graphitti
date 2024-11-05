@@ -542,13 +542,13 @@ class EdgesFactory {
 class EventBuffer {
 	+EventBuffer(int maxEvents)
 	-epochStart_ : int
-	+getNumEventsInEpoch() : int {query}
-	-numEventsInEpoch_ : int
-	-queueEnd_ : int
-	-queueFront_ : int
+	+getNumElementsInEpoch() : int {query}
+	-numElementsInEpoch_ : int
+	-bufferEnd_ : int
+	-bufferFront_ : int
 	+getPastEvent(int offset) : uint64_t {query}
 	+operator[](int i) : uint64_t {query}
-	-eventTimeSteps_ : vector<uint64_t>
+	-dataSeries_ : vector<uint64_t>
 	+clear() : void
 	+insertEvent(uint64_t timeStep) : void
 	+resize(int maxEvents) : void
@@ -603,52 +603,20 @@ class GenericFunctionNode {
 }
 
 
-class Hdf5GrowthRecorder {
-	+Hdf5GrowthRecorder()
-	+~Hdf5GrowthRecorder()
-	#radiiHistory_ : BGFLOAT*
-	#ratesHistory_ : BGFLOAT*
-	#dataSetRadiiHist_ : DataSet
-	#dataSetRatesHist_ : DataSet
-	+{static} Create() : IRecorder*
-	+compileHistories(AllVertices& neurons) : void
-	+getValues() : void
-	#initDataSet() : void
-	+initDefaultValues() : void
-	+initValues() : void
-	+printParameters() : void
-	+term() : void
-	#writeRadiiRates() : void
-}
-
-
 class Hdf5Recorder {
 	+Hdf5Recorder()
-	#dataSetNeuronThresh_ : DataSet*
-	#dataSetNeuronTypes_ : DataSet*
-	#dataSetProbedNeurons_ : DataSet*
-	#dataSetSimulationEndTime_ : DataSet*
-	#dataSetSpikesHist_ : DataSet*
-	#dataSetSpikesProbedNeurons_ : DataSet*
-	#dataSetStarterNeurons_ : DataSet*
-	#dataSetTsim_ : DataSet*
-	#dataSetXloc_ : DataSet*
-	#dataSetYloc_ : DataSet*
 	#resultOut_ : H5File*
-	+{static} Create() : IRecorder*
-	#offsetSpikesProbedNeurons_ : hsize_t*
-	#spikesHistory_ : int*
-	#spikesProbedNeurons_ : vector<uint64_t>*
-	+compileHistories(AllVertices& neurons) : void
+	#variableTable_ : vector<hdf5VariableInfo>
+	+{static} Create() : Recorder*
+	+compileHistories() : void
 	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+getValues() : void
 	+init() : void
 	#initDataSet() : void
-	+initDefaultValues() : void
-	+initValues() : void
 	+printParameters() : void
-	+saveSimData(const AllVertices& neurons) : void
+	+saveSimData() : void
 	+term() : void
+	+registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
+	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
 }
 
 
@@ -659,16 +627,13 @@ abstract class IFunctionNode {
 }
 
 
-abstract class IRecorder {
-	+~IRecorder()
+abstract class Recorder {
+	+~Recorder()
 	#fileLogger_ : log4cplus::Logger
 	#resultFileName_ : string
 	+{abstract} compileHistories(AllVertices& vertices) : void
 	#{abstract} getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+{abstract} getValues() : void
 	+{abstract} init() : void
-	+{abstract} initDefaultValues() : void
-	+{abstract} initValues() : void
 	+{abstract} printParameters() : void
 	+{abstract} saveSimData(const AllVertices& vertices) : void
 	+{abstract} term() : void
@@ -724,8 +689,8 @@ abstract class Model {
 	#fileLogger_ : log4cplus::Logger
 	#connections_ : shared_ptr<Connections>
 	+getConnections() : shared_ptr<Connections> {query}
-	+getRecorder() : shared_ptr<IRecorder> {query}
-	#recorder_ : shared_ptr<IRecorder>
+	+getRecorder() : shared_ptr<Recorder> {query}
+	#recorder_ : shared_ptr<Recorder>
 	+getLayout() : shared_ptr<Layout> {query}
 	#layout_ : shared_ptr<Layout>
 	+{abstract} advance() : void
@@ -760,11 +725,11 @@ class Operations {
 class RecorderFactory {
 	-RecorderFactory()
 	+~RecorderFactory()
-	-invokeCreateFunction(const string& className) : IRecorder*
+	-invokeCreateFunction(const string& className) : Recorder*
 	+{static} getInstance() : RecorderFactory*
 	-createFunctions : RecorderFunctionMap
-	+createRecorder(const string& className) : shared_ptr<IRecorder>
-	-recorderInstance : shared_ptr<IRecorder>
+	+createRecorder(const string& className) : shared_ptr<Recorder>
+	-recorderInstance : shared_ptr<Recorder>
 	-registerClass(const string& className, CreateFunction function) : void
 }
 
@@ -849,54 +814,25 @@ class VerticesFactory {
 }
 
 
-class XmlGrowthRecorder {
-	+XmlGrowthRecorder()
-	+~XmlGrowthRecorder()
-	-radiiHistory_ : CompleteMatrix
-	-ratesHistory_ : CompleteMatrix
-	+{static} Create() : IRecorder*
-	+compileHistories(AllVertices& neurons) : void
-	-getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+getValues() : void
-	+initDefaultValues() : void
-	+initValues() : void
-	+printParameters() : void
-	+saveSimData(const AllVertices& neurons) : void
-}
-
-
 class XmlRecorder {
 	+XmlRecorder()
-	+{static} Create() : IRecorder*
-	#spikesHistory_ : VectorMatrix
+	+{static} Create() : Recorder*
+	#variablesHistory_ : vector<vector<uint64_t>>
+	#variableTable_ : vector<variableInfo>
 	#resultOut_ : ofstream
-	+compileHistories(AllVertices& vertices) : void
+	+compileHistories() : void
 	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
-	+getValues() : void
 	+init() : void
-	+initDefaultValues() : void
-	+initValues() : void
 	+printParameters() : void
-	+saveSimData(const AllVertices& vertices) : void
+	+saveSimData() : void
 	+term() : void
-}
+	+registerVariable(string varName, EventBuffer &recordVar) : void
 
-
-class XmlSTDPRecorder {
-	+XmlSTDPRecorder()
-	+~XmlSTDPRecorder()
-	+{static} Create() : IRecorder*
-	+toXML(string name, vector<vector<BGFLOAT>> MatrixToWrite) : string {query}
-	+toXML(string name, vector<vector<int>> MatrixToWrite) : string {query}
-	#weightsHistory_ : vector<vector<BGFLOAT>>
-	#destNeuronIndexHistory_ : vector<vector<int>>
-	#sourceNeuronIndexHistory_ : vector<vector<int>>
-	+compileHistories(AllVertices& neurons) : void
-	+getValues() : void
-	+initDefaultValues() : void
-	+initValues() : void
-	+printParameters() : void
-	+saveSimData(const AllVertices& neurons) : void
+	/' methods only used for unit test '/
+	+XmlRecorder(string fileName_)
+	+getNeuronName(int numIndex) const : string
+	+getSingleNeuronEvents(int numIndex) const : &EventBuffer
+	+getHistory() const : const &vector<vector<uint64_t>>
 }
 
 
@@ -1119,16 +1055,13 @@ class EdgeIndexMap {
 .Connections <|-- .ConnStatic
 
 
-.Hdf5Recorder <|-- .Hdf5GrowthRecorder
-
-
 .IFunctionNode <|-- .GenericFunctionNode
 
 
-.IRecorder <|-- .Hdf5Recorder
+.Recorder <|-- .Hdf5Recorder
 
 
-.IRecorder <|-- .XmlRecorder
+.Recorder <|-- .XmlRecorder
 
 
 .Layout <|-- .DynamicLayout
@@ -1141,12 +1074,6 @@ class EdgeIndexMap {
 
 
 .Model <|-- .GPUModel
-
-
-.XmlRecorder <|-- .XmlGrowthRecorder
-
-
-.XmlRecorder <|-- .XmlSTDPRecorder
 
 
 
@@ -1193,7 +1120,7 @@ class EdgeIndexMap {
 .Model *-- .Connections
 
 
-.Model *-- .IRecorder
+.Model *-- .Recorder
 
 
 .Model *-- .Layout
@@ -1202,7 +1129,7 @@ class EdgeIndexMap {
 .OperationManager *-- .IFunctionNode
 
 
-.RecorderFactory *-- .IRecorder
+.RecorderFactory *-- .Recorder
 
 
 .Simulator *-- .Model

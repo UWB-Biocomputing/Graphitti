@@ -3,25 +3,20 @@
  *
  * @ingroup Simulator/Recorders
  *
- * @brief An implementation for recording spikes history on xml file
+ * @brief An implementation for recording variable information on xml file
  */
 
 #include "XmlRecorder.h"
-#include "AllIFNeurons.h"   // TODO: remove LIF model specific code
-#include "AllSpikingNeurons.h"
+#include "AllIFNeurons.h"        // TODO: remove LIF model specific code
+#include "AllSpikingNeurons.h"   //TODO: remove after HDF5Recorder implementing
 #include "ConnGrowth.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
-#include "VectorMatrix.h"
+#include "VectorMatrix.h"   ////TODO: remove after HDF5Recorder implementing
 #include <functional>
 
 // constructor
-// TODO: I believe the initializer for spikesHistory_ assumes a particular deltaT
-XmlRecorder::XmlRecorder() :
-   spikesHistory_(MATRIX_TYPE, MATRIX_INIT, 1,
-                  static_cast<int>(Simulator::getInstance().getEpochDuration()
-                                   * Simulator::getInstance().getNumEpochs() * 100),
-                  static_cast<BGFLOAT>(0.0))
+XmlRecorder::XmlRecorder()
 {
    ParameterManager::getInstance().getStringByXpath(
       "//RecorderParams/RecorderFiles/resultFileName/text()", resultFileName_);
@@ -31,7 +26,7 @@ XmlRecorder::XmlRecorder() :
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
-// Create a new xml file and initialize data
+/// Create a new xml file and initialize data
 /// @param[in] stateOutputFileName      File name to save histories
 void XmlRecorder::init()
 {
@@ -53,121 +48,88 @@ void XmlRecorder::init()
    }
 }
 
-// TODO: for the empty functions below, what should happen? Should they ever
-// TODO: be called? Is it an error if they're called?
-/// Init radii and rates history matrices with default values
-void XmlRecorder::initDefaultValues()
-{
-}
-
-/// Init radii and rates history matrices with current radii and rates
-void XmlRecorder::initValues()
-{
-}
-
-/// Get the current radii and rates values
-void XmlRecorder::getValues()
-{
-}
-
 /// Terminate process
 void XmlRecorder::term()
 {
    resultOut_.close();
 }
 
+// TODO : @param[in] vertices will be removed eventually after HDF5Recorder implementing
 /// Compile history information in every epoch
-/// @param[in] neurons    The entire list of neurons.
-void XmlRecorder::compileHistories(AllVertices &vertices)
+void XmlRecorder::compileHistories()
 {
-   AllSpikingNeurons &spNeurons = dynamic_cast<AllSpikingNeurons &>(vertices);
-   Simulator &simulator = Simulator::getInstance();
-   int maxSpikes = static_cast<int>(simulator.getEpochDuration() * simulator.getMaxFiringRate());
-
-   for (int iNeuron = 0; iNeuron < spNeurons.vertexEvents_.size(); iNeuron++) {
-      for (int eventIterator = 0;
-           eventIterator < spNeurons.vertexEvents_[iNeuron].getNumEventsInEpoch();
-           eventIterator++) {
-         // compile network wide spike count in 10ms bins
-         int idx2
-            = static_cast<int>(static_cast<double>(spNeurons.vertexEvents_[iNeuron][eventIterator])
-                               * Simulator::getInstance().getDeltaT() * 100);
-         spikesHistory_[idx2] = spikesHistory_[idx2] + 1.0;
+   //capture data information in each epoch
+   for (int rowIndex = 0; rowIndex < variableTable_.size(); rowIndex++) {
+      if (variableTable_[rowIndex].variableType_ == UpdatedType::DYNAMIC) {
+         variableTable_[rowIndex].captureData();
       }
+      variableTable_[rowIndex].variableLocation_.startNewEpoch();
    }
-   spNeurons.clearSpikeCounts();
 }
 
+// TODO : @param[in] vertices will be removed eventually after HDF5Recorder implementing
 /// Writes simulation results to an output destination.
-/// @param  neurons the Neuron list to search from.
-void XmlRecorder::saveSimData(const AllVertices &vertices)
+void XmlRecorder::saveSimData()
 {
-   Simulator &simulator = Simulator::getInstance();
-   // create Neuron Types matrix
-   VectorMatrix neuronTypes(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), EXC);
-   for (int i = 0; i < simulator.getTotalVertices(); i++) {
-      neuronTypes[i] = simulator.getModel().getLayout().vertexTypeMap_[i];
-   }
-   // create neuron threshold matrix
-   VectorMatrix neuronThresh(MATRIX_TYPE, MATRIX_INIT, 1, simulator.getTotalVertices(), 0);
-   for (int i = 0; i < simulator.getTotalVertices(); i++) {
-      neuronThresh[i] = dynamic_cast<const AllIFNeurons &>(vertices).Vthresh_[i];
-   }
-
    // Write XML header information:
-   resultOut_ << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
-              << "<!-- State output file for the DCT growth modeling-->\n";
-   // stateOut << version; TODO: version
-   auto &layout = simulator.getModel().getLayout();
-
-   // Write the core state information:
-   resultOut_ << "<SimState>\n";
-   resultOut_ << "   " << spikesHistory_.toXML("spikesHistory") << endl;
-   resultOut_ << "   " << layout.xloc_.toXML("xloc") << endl;
-   resultOut_ << "   " << layout.yloc_.toXML("yloc") << endl;
-   resultOut_ << "   " << neuronTypes.toXML("neuronTypes") << endl;
-
-   // create starter neurons matrix
-   int num_starter_neurons = static_cast<int>(layout.numEndogenouslyActiveNeurons_);
-   if (num_starter_neurons > 0) {
-      VectorMatrix starterNeurons(MATRIX_TYPE, MATRIX_INIT, 1, num_starter_neurons);
-      getStarterNeuronMatrix(starterNeurons, layout.starterMap_);
-      resultOut_ << "   " << starterNeurons.toXML("starterNeurons") << endl;
-   }
-
-   // Write neuron threshold
-   resultOut_ << "   " << neuronThresh.toXML("neuronThresh") << endl;
-
-   // write epoch duration
-   resultOut_
-      << "   <Matrix name=\"Tsim\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
-      << endl;
-   resultOut_ << "   " << simulator.getEpochDuration() << endl;
-   resultOut_ << "</Matrix>" << endl;
-
-   // write simulation end time
-   resultOut_
-      << "   <Matrix name=\"simulationEndTime\" type=\"complete\" rows=\"1\" columns=\"1\" multiplier=\"1.0\">"
-      << endl;
-   resultOut_ << "   " << g_simulationStep * simulator.getDeltaT() << endl;
-   resultOut_ << "</Matrix>" << endl;
-   resultOut_ << "</SimState>" << endl;
-}
-
-/*
- *  Get starter Neuron matrix.
- *  @param  matrix      Starter Neuron matrix.
- *  @param  starter_map Bool map to reference neuron matrix location from.
- */
-void XmlRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const std::vector<bool> &starterMap)
-{
-   int cur = 0;
-   for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      if (starterMap[i]) {
-         matrix[cur] = i;
-         cur++;
+   string header = "<?xml version=\"1.0\" standalone=\"no\"?>\n";
+   resultOut_ << header;
+   // Iterates the variable table to
+   // (1)cpature values of Constant variable
+   // (2) output the cumulative value to a xml file
+   for (int rowIndex = 0; rowIndex < variableTable_.size(); rowIndex++) {
+      if (variableTable_[rowIndex].variableType_ == UpdatedType::CONSTANT) {
+         variableTable_[rowIndex].captureData();
+      }
+      // cout << variableTable_[rowIndex].variableName_ << endl;
+      if (variableTable_[rowIndex].variableHistory_.size() > 0) {
+         resultOut_ << toXML(variableTable_[rowIndex].variableName_,
+                             variableTable_[rowIndex].variableHistory_,
+                             variableTable_[rowIndex].dataType_)
+                    << endl;
       }
    }
+}
+
+//Retrieves values of a vector of variant and outputs them to a xml file
+string XmlRecorder::toXML(const string &name, vector<multipleTypes> &singleBuffer_,
+                          const string &basicType) const
+{
+   stringstream os;
+
+   //  output file header
+   os << "<Matrix ";
+   if (!name.empty())
+      os << "name=\"" << name << "\" ";
+   os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << singleBuffer_.size()
+      << "\" multiplier=\"1.0\">" << endl;
+   os << "   ";
+
+   // Retrives value from variant
+   for (const multipleTypes &element : singleBuffer_) {
+      if (basicType == typeid(uint64_t).name()) {
+         os << get<uint64_t>(element) << " ";
+      } else if (basicType == typeid(bool).name()) {
+         os << get<bool>(element) << " ";
+      } else if (basicType == typeid(int).name()) {
+         os << get<int>(element) << " ";
+      } else if (basicType == typeid(BGFLOAT).name()) {
+         os << get<BGFLOAT>(element) << " ";
+      } else {
+         perror("Error recording Recordable object");
+         exit(EXIT_FAILURE);
+      }
+      // Add more conditions if there are additional supported data types
+   }
+
+   os << endl;
+   os << "</Matrix>";
+
+   return os.str();
+}
+
+void XmlRecorder::getStarterNeuronMatrix(VectorMatrix &matrix, const vector<bool> &starterMap)
+{
 }
 
 /**
@@ -178,6 +140,38 @@ void XmlRecorder::printParameters()
 {
    LOG4CPLUS_DEBUG(fileLogger_, "\nXMLRECORDER PARAMETERS"
                                    << endl
-                                   << "\tResult file path: " << resultFileName_ << endl
-                                   << "\tSpikes History Size: " << spikesHistory_.Size() << endl);
+                                   << "\tResult file path: " << resultFileName_ << endl);
+}
+
+/// Receives a recorded variable entity from the variable owner class
+/**
+* @brief Registers a single instance of a class derived from RecordableBase.
+* @param varName Name of the recorded variable.
+* @param recordVar Reference to the recorded variable.
+* @param variableType Type of the recorded variable.
+*/
+void XmlRecorder::registerVariable(const string &varName, RecordableBase &recordVar,
+                                   UpdatedType variableType)
+{
+   variableTable_.push_back(singleVariableInfo(varName, recordVar, variableType));
+}
+
+/**
+ * Register a vector of instances of classes derived from RecordableBase.
+ *
+ * This method allows the XmlRecorder to store a vector of variables, each represented by
+ * an address and a unique variable name. It is typically used to register multiple instances
+ * of a class derived from RecordableBase.
+ * @param varName     The name associated with the registered variables.
+ * @param recordVars  A vector of pointers to RecordableBase objects to be registered.
+ */
+void XmlRecorder::registerVariable(const string &varName, vector<RecordableBase *> &recordVars,
+                                   UpdatedType variableType)
+{
+   for (int i = 0; i < recordVars.size(); i++) {
+      string variableID = varName + to_string(i);
+      RecordableBase &address = *recordVars[i];
+      // add a new variable into the table
+      variableTable_.push_back(singleVariableInfo(variableID, address, variableType));
+   }
 }

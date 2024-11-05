@@ -44,10 +44,9 @@
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "ParseParamError.h"
-#include "XmlGrowthRecorder.h"
 
 #ifdef USE_HDF5
-   #include "Hdf5GrowthRecorder.h"
+   #include "Hdf5Recorder.h"
 #endif
 
 ConnGrowth::ConnGrowth()
@@ -76,6 +75,11 @@ void ConnGrowth::setup()
    // Initialize connection frontier distance change matrix with the current distances
    Layout &layout = Simulator::getInstance().getModel().getLayout();
    delta_ = layout.dist_;
+
+   // Register VertorMatrix radii_ for Recording if need
+   // Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   // string variableName = "radii";
+   // recorder.registerVariable(variableName, radii_, Recorder::UpdatedType::DYNAMIC);
 }
 
 /// Load member variables from configuration file.
@@ -150,8 +154,8 @@ void ConnGrowth::updateConns(AllVertices &vertices)
                                     * Simulator::getInstance().getMaxFiringRate());
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       // Calculate firing rate
-      assert(spNeurons.vertexEvents_[i].getNumEventsInEpoch() < maxSpikes);
-      rates_[i] = spNeurons.vertexEvents_[i].getNumEventsInEpoch()
+      assert(spNeurons.vertexEvents_[i].getNumElementsInEpoch() < maxSpikes);
+      rates_[i] = spNeurons.vertexEvents_[i].getNumElementsInEpoch()
                   / Simulator::getInstance().getEpochDuration();
    }
 

@@ -25,6 +25,9 @@
 
 #include "AllSpikingNeurons.h"
 #include "Global.h"
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
 struct AllIFNeuronsDeviceProperties;
 
@@ -66,6 +69,9 @@ public:
    ///
    ///  @param  output      stream to write out to.ss.
    virtual void serialize(ostream &output) const;
+
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 #if defined(USE_GPU)
 public:
@@ -292,3 +298,21 @@ struct AllIFNeuronsDeviceProperties : public AllSpikingNeuronsDeviceProperties {
    BGFLOAT *Tau_;
 };
 #endif   // defined(USE_GPU)
+
+CEREAL_REGISTER_TYPE(AllIFNeurons);
+
+///  Cereal serialization method
+template <class Archive> void AllIFNeurons::serialize(Archive &archive)
+{
+   archive(cereal::base_class<AllSpikingNeurons>(this), cereal::make_nvp("Trefract", Trefract_),
+           cereal::make_nvp("Vthresh", Vthresh_), cereal::make_nvp("Vrest", Vrest_),
+           cereal::make_nvp("Vreset", Vreset_), cereal::make_nvp("Vinit", Vinit_),
+           cereal::make_nvp("Cm", Cm_), cereal::make_nvp("Rm", Rm_),
+           cereal::make_nvp("Inoise", Inoise_), cereal::make_nvp("Iinject", Iinject_),
+           cereal::make_nvp("Isyn", Isyn_),
+           cereal::make_nvp("numStepsInRefractoryPeriod", numStepsInRefractoryPeriod_),
+           cereal::make_nvp("C1", C1_), cereal::make_nvp("C2", C2_), cereal::make_nvp("I0", I0_),
+           cereal::make_nvp("Vm", Vm_), cereal::make_nvp("Tau", Tau_));
+
+   //Private variables are intentionally excluded from serialization as they are populated from configuration files.
+}

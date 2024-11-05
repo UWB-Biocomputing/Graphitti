@@ -15,32 +15,17 @@
 #include "Connections911.h"
 // #include "Global.h"
 
-/// Init radii and rates history matrices with default values
-void Xml911Recorder::initDefaultValues()
-{
-}
-
-/// Init radii and rates history matrices with current radii and rates
-void Xml911Recorder::initValues()
-{
-}
-
-/// Get the current radii and rates vlaues
-void Xml911Recorder::getValues()
-{
-}
-
 /// Compile history information in every epoch
 ///
 /// @param[in] vertices   The entire list of vertices.
-void Xml911Recorder::compileHistories(AllVertices &vertices)
+void Xml911Recorder::compileHistories()
 {
 }
 
 /// Writes simulation results to an output destination.
 ///
 /// @param  vertices the Vertex list to search from.
-void Xml911Recorder::saveSimData(const AllVertices &vertices)
+void Xml911Recorder::saveSimData()
 {
    auto &conns = Simulator::getInstance().getModel().getConnections();
    Connections911 &conns911 = dynamic_cast<Connections911 &>(conns);

@@ -44,6 +44,8 @@ cgraphitti
 tests
 serialTest
 deserialTest
+serialFileAccessTest
+#recorderTest
 *.exe
 *.out
 *.app
