@@ -402,6 +402,16 @@ target_link_libraries(tests combinedLib)
 # # Link the combined library into the 'serialFileAccessTest' executable.
 # target_link_libraries(serialFileAccessTest combinedLib)
 
+add_executable(serialFileAccessTest
+        Testing/RunTests.cpp
+        Testing/UnitTesting/SerializationFileAccessTest.cpp)
+
+# Links the Googletest framework with the serialFileAccessTest executable
+target_link_libraries(serialFileAccessTest gtest gtest_main)
+
+# Link the combined library into the 'serialFileAccessTest' executable.
+target_link_libraries(serialFileAccessTest combinedLib)
+
 # Clear ENABLE_CUDA, PERFORMANCE_METRICS and GPROF from the cache so it's reset for subsequent builds
 unset(ENABLE_CUDA CACHE)
 unset(PERFORMANCE_METRICS CACHE)

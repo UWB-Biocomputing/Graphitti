@@ -52,6 +52,14 @@ public:
    /// Register vertex properties with the GraphManager
    virtual void registerGraphProperties() override;
 
+   /// Loads Layout911 member variables.
+   /// Registered to OperationManager as Operation::loadParameters
+   virtual void loadParameters() override;
+
+   /// Setup the internal structure of the class.
+   /// Allocate memories to store all layout state.
+   virtual void setup() override;
+
    /// Prints out all parameters to logging file.
    /// Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
