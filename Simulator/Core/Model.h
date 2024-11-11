@@ -82,7 +82,7 @@ public:
    virtual void updateConnections() = 0;
 
    ///  Cereal serialization method
-   template <class Archive> void serialize(Archive &archive);
+   template <class Archive> void serialize(Archive &archive, std::uint32_t const version);
 
 protected:
    // Note: This method was previously used for debugging, but it is now dead code left behind.
@@ -111,10 +111,10 @@ protected:
       createAllVertices();   /// Populate an instance of AllVertices with an initial state for each vertex.
 };
 
-CEREAL_REGISTER_TYPE(Model);
+CEREAL_CLASS_VERSION(Model, 1);
 
 ///  Cereal serialization method
-template <class Archive> void Model::serialize(Archive &archive)
+template <class Archive> void Model::serialize(Archive &archive, std::uint32_t const version)
 {
    archive(cereal::make_nvp("connections", connections_), cereal::make_nvp("layout", layout_));
 }

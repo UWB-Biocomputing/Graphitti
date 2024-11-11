@@ -43,11 +43,11 @@ jobs:
         run: |
           echo ${{ steps.getfile.outputs.files }}
       - name: Generate SVG Diagrams
-        uses: cloudbees/plantuml-github-action@master
+        uses: UWB-Biocomputing/plantuml-github-action@main
         with:
             args: -o "diagrams" -v -tsvg ${{ steps.getfile.outputs.files }}
       - name: Generate PNG Diagrams
-        uses: cloudbees/plantuml-github-action@master
+        uses: UWB-Biocomputing/plantuml-github-action@main
         with:
             args: -o "diagrams" -v -tpng ${{ steps.getfile.outputs.files }}
       - name: Push Local Changes

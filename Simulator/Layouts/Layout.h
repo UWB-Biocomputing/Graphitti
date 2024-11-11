@@ -85,7 +85,7 @@ public:
    BGSIZE numEndogenouslyActiveNeurons_;   ///< Number of endogenously active neurons.
 
    ///  Cereal serialization method
-   template <class Archive> void serialize(Archive &archive, std::uint32_t const version);
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
    unique_ptr<AllVertices> vertices_;
@@ -95,10 +95,8 @@ protected:
    int numVertices_;   ///< Total number of vertices in the graph.
 };
 
-CEREAL_CLASS_VERSION(Layout, 1);
-
 ///  Cereal serialization method
-template <class Archive> void Layout::serialize(Archive &archive, std::uint32_t const version)
+template <class Archive> void Layout::serialize(Archive &archive)
 {
    archive(cereal::make_nvp("xloc", xloc_), cereal::make_nvp("yloc", yloc_),
            cereal::make_nvp("dist2", dist2_), cereal::make_nvp("dist", dist_),
