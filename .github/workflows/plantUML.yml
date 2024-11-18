@@ -55,11 +55,13 @@ jobs:
       - name: Generate SVG Diagrams
         uses: rotaract/plantuml-action@v1
         with:
-            format: svg
+          pattern: "docs/**.puml"
+          format: svg ${{ steps.getfile.outputs.files }}
       - name: Generate PNG Diagrams
         uses: rotaract/plantuml-action@v1
         with:
-            format: png
+          pattern: "docs/**.puml"
+          format: png ${{ steps.getfile.outputs.files }}
 
       - name: Push Local Changes
         uses:  stefanzweifel/git-auto-commit-action@v4 
