@@ -42,14 +42,25 @@ jobs:
       - name: UML files considered echo output
         run: |
           echo ${{ steps.getfile.outputs.files }}
+
+      # - name: Generate SVG Diagrams
+      #   uses: UWB-Biocomputing/plantuml-github-action@main
+      #   with:
+      #       args: -o "diagrams" -v -tsvg ${{ steps.getfile.outputs.files }}
+      # - name: Generate PNG Diagrams
+      #   uses: UWB-Biocomputing/plantuml-github-action@main
+      #   with:
+      #       args: -o "diagrams" -v -tpng ${{ steps.getfile.outputs.files }}
+
       - name: Generate SVG Diagrams
-        uses: UWB-Biocomputing/plantuml-github-action@main
+        uses: rotaract/plantuml-action@v1
         with:
-            args: -o "diagrams" -v -tsvg ${{ steps.getfile.outputs.files }}
+            format: svg
       - name: Generate PNG Diagrams
-        uses: UWB-Biocomputing/plantuml-github-action@main
+        uses: rotaract/plantuml-action@v1
         with:
-            args: -o "diagrams" -v -tpng ${{ steps.getfile.outputs.files }}
+            format: png
+
       - name: Push Local Changes
         uses:  stefanzweifel/git-auto-commit-action@v4 
         with:
