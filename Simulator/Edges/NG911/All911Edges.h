@@ -27,9 +27,24 @@
 
 #include "All911Vertices.h"
 #include "AllEdges.h"
+#include "Global.h"
+// cereal
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
 
+struct All911EdgesDeviceProperties;
 
-struct All911EdgeDeviceProperties;
+// enumerate all non-abstract edge classes.
+enum ESCSEdges {
+   NineOneOneEdges,
+   undefESCSEdges
+};
+
+enum ResponderTypes {
+   EMS = vertexType::EMS,
+   FIRE = vertexType::FIRE,
+   LAW = vertexType::LAW
+};
 
 class All911Edges : public AllEdges {
 public:
@@ -59,6 +74,9 @@ public:
    ///  @param  type        Type of the Edge to create.
    virtual void createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT,
                            edgeType type) override;
+   
+   ///  Cereal serialization method
+   template <class Archive> void serialize(Archive &archive);
 
 protected:
 #if defined(USE_GPU)
@@ -101,11 +119,82 @@ public:
 #endif
 
    /// If edge has a call or not
-   unique_ptr<bool[]> isAvailable_;
+   vector<unsigned char> isAvailable_;
 
    /// If the call in the edge is a redial
-   unique_ptr<bool[]> isRedial_;
+   vector<unsigned char> isRedial_;
 
    /// The call information per edge
-   vector<Call> call_;
+   //
+   // The vertexId where the input event happen
+   vector<int> vertexId_;
+
+   // The start of the event since the beggining of
+   // the simulation in timesteps matches g_simulationStep type
+   vector<uint64_t> time_;
+
+   // The duration of the event in timesteps
+   vector<int> duration_;
+
+   // Event location
+   vector<double> x_;
+   vector<double> y_;
+
+   // Patience time: How long a customer is willing to wait in the queue
+   vector<int> patience_;
+
+   // On Site Time: Time spent by a responder at the site of the incident
+   vector<int> onSiteTime_;
+   vector<ResponderTypes> type_;
 };
+
+#if defined(USE_GPU)
+struct All911EdgesDeviceProperties : public AllEdgesDeviceProperties {
+   /// If edge has a call or not
+   unsigned char *isAvailable_;
+
+   /// If the call in the edge is a redial
+   unsigned char *isRedial_;
+
+   /// The call information per edge
+   //
+   // The vertexId where the input event happen
+   int *vertexId_;
+
+   // The start of the event since the beggining of
+   // the simulation in timesteps matches g_simulationStep type
+   uint64_t *time_;
+
+   // The duration of the event in timesteps
+   int *duration_;
+
+   // Event location
+   double *x_;
+   double *y_;
+
+   // Patience time: How long a customer is willing to wait in the queue
+   int *patience_;
+
+   // On Site Time: Time spent by a responder at the site of the incident
+   int *onSiteTime_;
+   ResponderTypes *responderType_;
+};
+#endif   // defined(USE_GPU)
+
+CEREAL_REGISTER_TYPE(All911Edges);
+
+///  Cereal serialization method
+template <class Archive> void All911Edges::serialize(Archive &archive)
+{
+   archive(cereal::base_class<AllEdges>(this), 
+           cereal::make_nvp("isAvailable", isAvailable_),
+           cereal::make_nvp("isRedial", isRedial_),
+           cereal::make_nvp("vertexId", vertexId_),
+           cereal::make_nvp("time", time_),
+           cereal::make_nvp("duration", duration_),
+           cereal::make_nvp("x", x_),
+           cereal::make_nvp("y", y_),
+           cereal::make_nvp("patience", patience_),
+           cereal::make_nvp("onSiteTime", onSiteTime_),
+           cereal::make_nvp("responderType", responderType_));
+}
