@@ -4,14 +4,18 @@ on:
   schedule:
     # Triggers at the end of the day on the 1st of every month
     - cron: '0 0 1 * *'
+  workflow_dispatch:
+    # Manual trigger
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: mattnotmitt/doxygen-action@v1
+      - name: Checkout Source
+        uses: actions/checkout@v3
+      - name: Generate Doxygen
+        uses: mattnotmitt/doxygen-action@v1
         with:
           doxyfile-path: docs/Doxygen/Doxyfile
       - name: Deploy
