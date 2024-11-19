@@ -82,12 +82,10 @@ void XmlRecorder::saveSimData()
          variableTable_[rowIndex].captureData();
       }
       // cout << variableTable_[rowIndex].variableName_ << endl;
-      if (variableTable_[rowIndex].variableHistory_.size() > 0) {
-         resultOut_ << toXML(variableTable_[rowIndex].variableName_,
-                             variableTable_[rowIndex].variableHistory_,
-                             variableTable_[rowIndex].dataType_)
-                    << endl;
-      }
+      resultOut_ << toXML(variableTable_[rowIndex].variableName_,
+                           variableTable_[rowIndex].variableHistory_,
+                           variableTable_[rowIndex].dataType_)
+                  << endl;
    }
 }
 
