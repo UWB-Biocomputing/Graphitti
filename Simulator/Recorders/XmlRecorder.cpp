@@ -83,9 +83,9 @@ void XmlRecorder::saveSimData()
       }
       // cout << variableTable_[rowIndex].variableName_ << endl;
       resultOut_ << toXML(variableTable_[rowIndex].variableName_,
-                           variableTable_[rowIndex].variableHistory_,
-                           variableTable_[rowIndex].dataType_)
-                  << endl;
+                          variableTable_[rowIndex].variableHistory_,
+                          variableTable_[rowIndex].dataType_)
+                 << endl;
    }
 }
 
