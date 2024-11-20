@@ -6,6 +6,7 @@ on:
     branches:
       - master
       - gh-pages
+      - issue-726-update-PlantUML
   pull_request:
     paths:
       - '**.puml'
@@ -20,8 +21,7 @@ jobs:
     steps:
       - name: Checkout Source 
         uses: actions/checkout@v3
-        with:
-          ref:  
+        with: 
           fetch-depth: 0
       - name: Get all UML files
         id: getfile
