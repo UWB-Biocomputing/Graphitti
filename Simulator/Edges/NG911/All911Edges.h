@@ -43,7 +43,8 @@ enum ESCSEdges {
 enum ResponderTypes {
    EMS = vertexType::EMS,
    FIRE = vertexType::FIRE,
-   LAW = vertexType::LAW
+   LAW = vertexType::LAW,
+   VTYPE_UNDEF = vertexType::VTYPE_UNDEF
 };
 
 class All911Edges : public AllEdges {
