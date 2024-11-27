@@ -145,7 +145,7 @@ public:
 
    // On Site Time: Time spent by a responder at the site of the incident
    vector<int> onSiteTime_;
-   vector<ResponderTypes> type_;
+   vector<ResponderTypes> responderType_;
 };
 
 #if defined(USE_GPU)
