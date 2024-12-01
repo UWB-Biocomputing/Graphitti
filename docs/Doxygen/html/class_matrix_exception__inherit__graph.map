@@ -1,0 +1,13 @@
+<map id="MatrixException" name="MatrixException">
+<area shape="rect" id="Node000001" title="Master base class for Matrix exceptions." alt="" coords="226,79,338,105"/>
+<area shape="rect" id="Node000003" href="$class_matrix__bad__alloc.html" title="Signals memory allocation error for Matrix classes." alt="" coords="5,153,124,178"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="231,112,102,155,101,150,230,107"/>
+<area shape="rect" id="Node000004" href="$class_matrix__bad__cast.html" title="Signals bad cast among Matrices for Matrix classes." alt="" coords="148,153,264,178"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="260,117,220,154,217,150,256,114"/>
+<area shape="rect" id="Node000005" href="$class_matrix__domain__error.html" title="Signals value bad for domain for Matrix classes." alt="" coords="289,153,427,178"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="308,114,347,150,343,154,304,117"/>
+<area shape="rect" id="Node000006" href="$class_matrix__invalid__argument.html" title="Signals bad function argument for Matrix classes." alt="" coords="451,153,612,178"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="340,107,489,149,488,155,338,112"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="233,5,331,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="285,46,285,79,279,79,279,46"/>
+</map>

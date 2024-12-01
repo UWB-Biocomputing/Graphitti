@@ -1,0 +1,19 @@
+@startuml simulatorSetup
+
+title Simulator Setup
+
+Core -> Simulator: Setup 
+Simulator -> Model: Model Setup
+Model -> Layout: Get Vertices 
+Layout -> "All Vertices": Setup Vertices
+Model -> Connections: Get Edges
+Connections -> "All Edges": Setup Edges
+Model -> Layout: Setup Layout
+Layout -> Layout: Initialize Vertices Locations
+Model -> Recorder: Initialize Recorder 
+Model -> Model: Create All Vertices*
+Model -> Layout: Generate Vertex Map 
+Model -> Layout: Initialize Starter Map 
+Model -> Layout: Create All Vertices
+
+@enduml

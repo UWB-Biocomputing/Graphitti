@@ -1,0 +1,59 @@
+<map id="Simulator/Utils/ParameterManager.h" name="Simulator/Utils/ParameterManager.h">
+<area shape="rect" id="Node000001" title="A singleton class which contains and manages access to the XML parameter file used by a simulator ins..." alt="" coords="1135,5,1306,46"/>
+<area shape="rect" id="Node000002" href="$_connections_8cpp.html" title="Methods for creating and updating connections." alt="" coords="5,449,158,489"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1119,29,853,32,522,41,363,49,224,61,120,76,84,86,62,96,37,118,24,141,19,167,17,202,17,293,23,337,37,380,71,447,66,449,32,382,18,339,12,293,12,202,13,167,19,139,33,114,59,92,82,81,119,71,224,55,362,44,522,35,853,26,1119,24"/>
+<area shape="rect" id="Node000003" href="$_connections911_8cpp.html" title="This class manages the Connections of the NG911 network." alt="" coords="751,360,938,401"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1119,35,996,45,863,58,753,75,716,85,697,96,685,112,679,129,677,164,688,202,709,239,736,275,766,307,821,357,818,361,762,311,732,278,704,242,683,204,671,165,673,127,681,109,693,92,714,80,752,70,863,53,995,39,1119,30"/>
+<area shape="rect" id="Node000004" href="$_conn_growth_8cpp.html" title="The model of the activity&#45;dependent neurite outgrowth." alt="" coords="103,94,263,135"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1119,32,747,51,512,70,275,97,264,98,263,93,274,91,511,64,746,46,1119,27"/>
+<area shape="rect" id="Node000005" href="$_conn_static_8cpp.html" title="The model of the small world network." alt="" coords="287,94,439,135"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1119,34,819,55,635,73,451,97,440,98,439,93,450,91,635,68,819,50,1119,29"/>
+<area shape="rect" id="Node000006" href="$_core_8cpp.html" title="Orchestrates most functionality in the simulation." alt="" coords="463,102,625,127"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1119,39,901,63,645,97,605,103,604,98,644,91,900,57,1119,34"/>
+<area shape="rect" id="Node000007" href="$_model_8cpp.html" title="Implementation of Model for the graph&#45;based networks." alt="" coords="447,456,617,482"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1119,29,859,30,536,38,381,46,248,58,147,75,113,85,93,96,73,119,67,142,68,202,68,293,71,307,79,321,110,348,156,372,213,394,341,429,458,453,457,458,340,435,211,399,154,377,107,352,75,324,66,309,63,293,63,202,61,141,69,116,89,92,111,80,146,70,247,53,381,41,536,33,859,25,1119,24"/>
+<area shape="rect" id="Node000008" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="774,456,965,482"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="1119,31,1015,36,903,46,804,66,767,80,741,96,722,119,715,142,716,202,716,293,717,350,725,373,741,399,759,417,781,432,826,453,824,458,778,437,756,421,737,402,720,376,712,351,711,293,711,202,710,141,717,117,737,92,764,75,803,61,902,41,1014,30,1119,25"/>
+<area shape="rect" id="Node000009" href="$_all_s_t_d_p_synapses_8cpp.html" title="A container of all STDP synapse data." alt="" coords="751,94,908,135"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1120,52,909,98,908,93,1119,47"/>
+<area shape="rect" id="Node000010" href="$_all_spiking_synapses_8cpp.html" title="A container of all dynamic STDP synapse data." alt="" coords="931,94,1096,135"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1160,55,1062,96,1060,91,1158,50"/>
+<area shape="rect" id="Node000011" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="1056,456,1249,482"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1322,24,1575,27,1887,37,2037,45,2167,57,2265,72,2300,81,2322,92,2347,115,2360,139,2366,167,2367,202,2367,293,2364,304,2357,315,2329,334,2287,352,2231,368,2088,396,1915,419,1729,437,1545,450,1249,467,1249,461,1545,445,1728,431,1914,413,2087,391,2230,363,2285,347,2327,330,2353,311,2359,302,2362,293,2362,202,2361,168,2355,141,2343,118,2319,96,2298,86,2264,77,2166,62,2037,51,1887,42,1575,33,1322,30"/>
+<area shape="rect" id="Node000012" href="$_layout911_8cpp.html" title="Specialization of the Layout class for the NG911 network." alt="" coords="1344,94,1515,135"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="1283,50,1383,91,1381,96,1281,55"/>
+<area shape="rect" id="Node000013" href="$_layout_neuro_8cpp.html" title="The Layout class defines the layout of vertices in neural networks." alt="" coords="1539,94,1704,135"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="1322,46,1539,93,1538,98,1321,51"/>
+<area shape="rect" id="Node000014" href="$_hdf5_recorder_8cpp.html" title="An implementation for recording spikes history on hdf5 file." alt="" coords="1728,94,1867,135"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="1321,35,1506,58,1717,91,1728,94,1727,99,1716,97,1505,63,1321,40"/>
+<area shape="rect" id="Node000015" href="$_xml_recorder_8cpp.html" title="An implementation for recording variable information on xml file." alt="" coords="1892,94,2031,135"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="1322,31,1575,52,1728,69,1879,91,1892,94,1891,99,1878,97,1727,75,1575,58,1321,36"/>
+<area shape="rect" id="Node000016" href="$_graph_manager_8cpp.html" title="The GraphManager is a wrapper around the Boost Graph Library (BGL)." alt="" coords="2055,102,2276,127"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="1321,30,1643,53,1843,70,2043,91,2093,98,2093,104,2043,97,1842,76,1643,58,1321,36"/>
+<area shape="rect" id="Node000017" href="$_input_manager_8h.html" title="Template class for reading input events from XML formatted files." alt="" coords="1120,102,1320,127"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="1223,62,1223,101,1218,101,1218,62"/>
+<area shape="rect" id="Node000022" href="$_all911_vertices_8cpp.html" title="Specialization of the AllVertices class for the NG911 network." alt="" coords="1335,360,1513,401"/>
+<area shape="poly" id="edge31_Node000001_Node000022" title=" " alt="" coords="1321,27,1578,35,1890,49,2160,68,2248,79,2276,85,2290,92,2322,136,2331,156,2334,176,2333,194,2327,212,2303,242,2264,269,2214,292,2154,312,2086,328,1935,353,1778,369,1632,377,1514,381,1514,376,1632,372,1778,363,1934,348,2085,323,2153,307,2212,287,2262,265,2299,239,2322,209,2327,193,2329,176,2326,158,2318,139,2286,96,2274,90,2247,84,2160,73,1890,54,1577,41,1321,32"/>
+<area shape="rect" id="Node000024" href="$_parameter_manager_8cpp.html" title="A class which contains and manages access to the XML parameter file used by a simulator instance at r..." alt="" coords="2401,94,2573,135"/>
+<area shape="poly" id="edge30_Node000001_Node000024" title=" " alt="" coords="1322,26,1518,31,1782,43,2081,62,2383,91,2401,94,2400,99,2383,97,2080,67,1781,48,1518,37,1321,31"/>
+<area shape="rect" id="Node000025" href="$_all_i_f_neurons_8cpp.html" title="A container of all Integate and Fire (IF) neuron data." alt="" coords="2597,94,2761,135"/>
+<area shape="poly" id="edge32_Node000001_Node000025" title=" " alt="" coords="1321,24,1549,27,1862,36,2221,56,2405,72,2584,91,2597,93,2596,98,2584,97,2404,77,2221,62,1862,41,1548,32,1321,29"/>
+<area shape="rect" id="Node000018" href="$_all911_vertices_8h.html" title="Specialization of the AllVertices class for the NG911 network." alt="" coords="1138,183,1302,223"/>
+<area shape="poly" id="edge17_Node000017_Node000018" title=" " alt="" coords="1223,143,1223,183,1218,183,1218,143"/>
+<area shape="rect" id="Node000019" href="$_all911_edges_8h.html" title="Specialization of the AllEdges class for the NG911 network." alt="" coords="1112,271,1273,312"/>
+<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="1212,239,1201,272,1196,270,1207,237"/>
+<area shape="rect" id="Node000021" href="$_factory_8h.html" title="A factory template for creating factory class for any subsystem that requires a factory to create a (..." alt="" coords="962,368,1126,393"/>
+<area shape="poly" id="edge28_Node000018_Node000021" title=" " alt="" coords="1157,233,1127,251,1101,273,1082,297,1068,323,1050,368,1045,366,1063,321,1078,294,1097,269,1124,247,1155,228"/>
+<area shape="poly" id="edge29_Node000018_Node000022" title=" " alt="" coords="1252,232,1338,310,1399,357,1395,362,1334,314,1248,236"/>
+<area shape="rect" id="Node000023" href="$_xml911_recorder_8cpp.html" title="Header file for Xml911Recorder.h." alt="" coords="1348,271,1538,312"/>
+<area shape="poly" id="edge27_Node000018_Node000023" title=" " alt="" coords="1286,227,1393,268,1391,273,1284,232"/>
+<area shape="poly" id="edge19_Node000019_Node000003" title=" " alt="" coords="1099,319,924,362,923,357,1097,314"/>
+<area shape="rect" id="Node000020" href="$_all911_edges_8cpp.html" title="Specialization of the AllEdges class for the NG911 network." alt="" coords="1150,360,1312,401"/>
+<area shape="poly" id="edge20_Node000019_Node000020" title=" " alt="" coords="1210,325,1225,358,1220,361,1205,328"/>
+<area shape="poly" id="edge21_Node000019_Node000021" title=" " alt="" coords="1147,322,1066,369,1064,365,1144,318"/>
+<area shape="poly" id="edge26_Node000019_Node000022" title=" " alt="" coords="1260,315,1372,357,1370,362,1258,320"/>
+<area shape="poly" id="edge22_Node000021_Node000002" title=" " alt="" coords="975,399,950,403,788,420,566,438,158,466,158,460,565,433,787,415,949,398,974,394"/>
+<area shape="poly" id="edge23_Node000021_Node000007" title=" " alt="" coords="971,399,950,403,614,458,613,453,949,398,970,394"/>
+<area shape="poly" id="edge24_Node000021_Node000008" title=" " alt="" coords="1007,403,895,458,893,453,1005,398"/>
+<area shape="poly" id="edge25_Node000021_Node000011" title=" " alt="" coords="1073,401,1139,453,1135,458,1069,405"/>
+</map>

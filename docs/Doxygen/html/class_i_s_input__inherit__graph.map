@@ -1,0 +1,15 @@
+<map id="ISInput" name="ISInput">
+<area shape="rect" id="Node000001" title=" " alt="" coords="272,5,336,31"/>
+<area shape="rect" id="Node000002" href="$class_s_input_poisson.html" title=" " alt="" coords="173,79,280,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="281,44,241,81,238,77,278,40"/>
+<area shape="rect" id="Node000005" href="$class_s_input_regular.html" title=" " alt="" coords="330,79,433,105"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="330,40,370,77,366,81,326,44"/>
+<area shape="rect" id="Node000003" href="$class_gpu_s_input_poisson.html" title=" " alt="" coords="5,153,136,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="187,114,98,154,96,150,185,109"/>
+<area shape="rect" id="Node000004" href="$class_host_s_input_poisson.html" title=" " alt="" coords="159,153,294,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="229,120,229,152,224,152,224,120"/>
+<area shape="rect" id="Node000006" href="$class_gpu_s_input_regular.html" title=" " alt="" coords="318,153,445,178"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="384,120,384,152,379,152,379,120"/>
+<area shape="rect" id="Node000007" href="$class_host_s_input_regular.html" title=" " alt="" coords="469,153,600,178"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="422,109,509,150,507,154,420,114"/>
+</map>

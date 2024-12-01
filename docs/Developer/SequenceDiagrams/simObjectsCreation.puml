@@ -1,0 +1,21 @@
+
+@startuml simObjectsCreation
+
+title Simulator Object Creation Sequence Diagram
+
+Simulator -> Model ** : New CPU/GPU Model
+activate Model
+Model -> Factory: Create Layout
+Factory -> Layout **: Instantiate
+Layout -> Factory: Create Vertices
+Factory -> AllVertices **: Instantiate
+
+Model -> Factory: Create Connections
+Factory -> Connections **: Instantiate
+Connections -> Factory: Create  AllEdges
+Factory -> AllEdges **: Instantiate
+
+Model -> Factory: Create Recorders
+Factory -> Recorder **: Instantiate
+
+@enduml
