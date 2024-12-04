@@ -363,6 +363,7 @@ add_executable(tests
 	Testing/UnitTesting/GraphManagerTests.cpp
         Testing/Utils/ParameterManagerTests.cpp
         Testing/Utils/CircularBufferTests.cpp
+        Testing/UnitTesting/EventBufferTests.cpp
         Testing/UnitTesting/XmlRecorderTests.cpp
         Testing/UnitTesting/Hdf5RecorderTests.cpp)
 
