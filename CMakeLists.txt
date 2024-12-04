@@ -22,16 +22,21 @@ if(NOT PERFORMANCE_METRICS)
 endif()
 
 #CONDITIONAL FLAG to turn on the Gprof profiler(                                                   \
-#   Gprof is a performance analysis tool for Unix applications)
+   #Gprof is a performance analysis tool for Unix applications)
 #Steps to run Gprof
 #Step 01 : set(GPROF YES) below
 #Step 02 : Compile and run the simulation on CPU or GPU as usual
-#Step 03 : Run the generated gmon.out file from the build directory and save the output in an txt  \
-#      file to improve readability                                                                  \
-#If using CPU - "~/Graphitti/build$ gprof cgraphitti gmon.out > analysis_test.txt"
+#Step 03 : Run the generated gmon.out file from the build directory and save the output in an      \
+      txt #file to improve readability #If using CPU                                               \
+   - "~/Graphitti/build$ gprof cgraphitti gmon.out > analysis_test.txt"
 #If using GPU - "~/Graphitti/build$ gprof ggraphitti gmon.out > analysis_test.txt" 
 if(NOT GPROF)
         set(GPROF NO)
+endif()
+
+#CONDITIONAL FLAG to turn on TESTING_MODE
+if(NOT TESTING_MODE)
+        set(TESTING_MODE YES)
 endif()
 
 #Creates the Graphitti project with the correct languages, depending on if using GPU or not
@@ -72,8 +77,13 @@ if(GPROF)
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
 endif()
 
-#HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libraries to the executable     \
-#                  later in the file.
+if(TESTING_MODE)
+        message("-- Setting TESTING_MODE: ON")
+        add_definitions(-DTESTING_MODE)
+endif()
+
+#HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libraries to the                \
+                  executable #later in the file.
 find_package(HDF5 COMPONENTS C CXX)
 if (HDF5_FOUND)
         message("-- HDF5 version ${HDF5_VERSION} located. HDF5 recorders are available.")
@@ -106,8 +116,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 #set(CMAKE_VERBOSE_MAKEFILE TRUE)
 
-#Setting the location of the executable to be in the top                                           \
-#  - level directory.This helps when using file paths during
+#Setting the location of the executable to be in the top #                                         \
+   - level directory.This helps when using file paths during
 #runtime.
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -176,8 +186,8 @@ if(ENABLE_CUDA)
 endif()
 
    #Collect source files and create libraries
-   #Libraries containing.cpp files compiled as CUDA.cu files should be created as STATIC to ensure \
-   #proper linking
+   #Libraries containing.cpp files compiled as CUDA.cu files should be created as STATIC to        \
+      ensure #proper linking
 
 
    #Create Connections library
