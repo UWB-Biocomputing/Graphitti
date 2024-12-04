@@ -26,10 +26,10 @@ endif()
 #Steps to run Gprof
 #Step 01 : set(GPROF YES) below
 #Step 02 : Compile and run the simulation on CPU or GPU as usual
-#Step 03 : Run the generated gmon.out file from the build directory and save the output in an      \
-      txt #file to improve readability #If using CPU                                               \
-   - "~/Graphitti/build$ gprof cgraphitti gmon.out > analysis_test.txt"
-#If using GPU - "~/Graphitti/build$ gprof ggraphitti gmon.out > analysis_test.txt" 
+#Step 03 : Run the generated gmon.out file from the build directory and save the output in an txt  \
+#file to improve readability 
+#If using CPU - "~/Graphitti/build$ gprof cgraphitti gmon.out > analysis_test.txt"                 \
+#If using GPU - "~/Graphitti/build$ gprof ggraphitti gmon.out > analysis_test.txt"                 \
 if(NOT GPROF)
         set(GPROF NO)
 endif()
