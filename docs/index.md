@@ -34,11 +34,12 @@
 
 4. [Testing](Testing/index.md)
 
-   3.1 Array Performance Testing
+   3.1 [Array Performance Testing](Testing/ArrayPerformance/ArrayPerformance.md)
 
-   3.2 Dynamic Cast Performance Testing
+   3.2 [Dynamic Cast Performance Testing](Testing/CastingTest/CastingTest.md)
 
-   3.3 Test Config Files
+   3.3 [Test Config Files](Testing/TestConfigFileParameters/testConfigFileParameters.md)
+
 
 5. Notes
 
@@ -71,7 +72,7 @@ Here is documentation on the [GIS to GEXF](Tools/GIStoGraph.md) tool. This tool 
 
 ## Code of Conduct
 
-Our [code of conduct](../CODE_OF_CONDUCT.md)
+Our [code of conduct](CODE_OF_CONDUCT.md)
 
 ## [Acknowledgements](acknowledgements.md)
 
