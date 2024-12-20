@@ -32,15 +32,15 @@
 
    2.8 [Serialization](Developer/Serialization.md)
 
-4. [Testing](Testing/index.md)
+3. [Testing](Testing/index.md)
 
-   3.1 Array Performance Testing
+   3.1 [Array Performance Testing](Testing/ArrayPerformance/ArrayPerformance.md)
 
-   3.2 Dynamic Cast Performance Testing
+   3.2 [Dynamic Cast Performance Testing](Testing/CastingTest/CastingTest.md)
 
-   3.3 Test Config Files
+   3.3 [Test Config Files](Testing/TestConfigFileParameters/testConfigFileParameters.md)
 
-5. Notes
+4. Notes
 
    4.1 [General Notes](RebuildNotes/GeneralNotes.md)
 
@@ -54,7 +54,7 @@
 
    4.6 [Recorder Notes](RebuildNotes/RecordersNotes.md)
 
-6. [Glossary](Glossary.md)
+5. [Glossary](Glossary.md)
 
    5.1 Graph Vocabulary
 
