@@ -1,24 +1,46 @@
-# Introducing GitFlow
+# INL Software Development Workflow
+
+Our workflow is based on GitFlow, with both shared and personal development branches, release branches, and hotfix branches.
 
 ## What is GitFlow?
 
 GitFlow is a branching model for Git, created by [Vincent Driessen.](https://nvie.com/posts/a-successful-git-branching-model/) 
 
-## Key Benefits
+## Key Features
 
 ### Parallel Development
-One of the great things about GitFlow is that it makes parallel devleopment very easy, by isolating new development from finished work. New development (such as features and non-emergency bug fixes) is done in feature branches and is only merged back into the development branch after going through extensive unit/regressional testing + review through the pull request.
 
-Another great thing about GitFlow is that if you are asked to switch from one task to another, all you need to do is commit your changes and create a new branch for your new task. When that task is done, just checkout your original feature branch and you can continue where you left off.
+One of the great things about GitFlow is that it makes parallel development very easy, by isolating new development from finished work. New development (such as features and non-emergency bug fixes) is done in feature branches and is only merged back into the development branch after going through extensive unit/regressional testing and review through the pull request mechanism.
 
 ### Collaboration
-Feature branches also make it easier for developers to collaborate on the same feature, because each feature branch is essentially a sandbox where you isolate + test the changes that are only necessary to get a new feature working, making it crystal clear to follow what each collaborator is working on. 
+
+Feature branches also make it easier for developers to collaborate on the same feature, because each feature branch is essentially a sandbox where you isolate and test the changes that are only necessary to get a new feature working, making it clear what each collaborator is working on.
+
+### Conflict Resolution
+
+Developers who are working on code that will take an extended period of time to complete (likely composed of multiple issues/features) are able to maintain their personal development branches with code that may break others'. Each developer is responsible for resolving conflicts introduced by others' code before merging into the shared development branch.
 
 ### Release Staging Area
+
 As new development is completed, it gets merged back into the development branch, which is a staging area for all completed features that haven't yet been released. So when the next release is branched off of development, it will automatically contain all of the new tasks that have been finished.
 
 ## How it Works
+
 ***ALL OF OUR DIAGRAMS READ FROM TOP TO BOTTOM***
+
+The diagram below provides a high-level view of our workflow overall operation. The main points are:
+
+* Shared and personal development branches are used.
+* With the exception of hotfixes (described later and not shown in this diagram), the "master" branch is only updated when a release is to be made.
+* Releases are made through creation of "release" branches. Release branches are used to resolve all conflicts and complete all testing before merging into "master" and producing a tagged release.
+* Feature branches are associated with individual issues. They are merged into personal development branches.
+* Users periodically check the shared development branch for changes since the last divergence of their personal development branch (i.e., how many commits behind are they). If there are any commits in the shared development branch that aren't in their personal one, they merge shared development into their personal branch. This should be done no less frequently than once every two weeks; better that it is done weekly.
+* The above check ***must*** be done before merging a personal development branch into the shared development branch.
+* Each user is responsible for resolving any conflicts or broken code resulting from the merge of shared development into their personal development branch. Of course, they can seek help from the code author.
+* Basically, the personal development code must be working and passing all tests before it is merged into shared development. Since is should be up-to-date with shared development, the same will be true for shared development after a merge.
+* Generally, after being merged into shared development, the personal development branch may be deleted.
+* So, from that point of view, a personal development branch is like a "super feature branch", resolving multiple related issues that individually can't be merged into shared development because they don't leave the code in a "good" (or even working) state.
+* The names shown below are mostly not what we actually call these branches; see below and our onboarding guide for naming conventions.
 
 ### High Level Overview of Our Process
 
