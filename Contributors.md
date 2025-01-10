@@ -72,6 +72,8 @@ Natalie Gonzales
 ## 2024
 Andrzej Dawiec 
 
+Jasleen Kaur Saini
+
 ChengHao Hsu
 
 Zaina Shaikh
@@ -114,8 +116,16 @@ Victoria Jo Salvatore
 Divya Kamath    
 
 ## 2024
+Vanessa Arndorfer
+
+Xiang Li
+
 Jardi Martinez
 
 Nicholas Posey
 
-Xiang Li  
+Xiang Li
+
+Nayana Yeshlur
+
+Hari Priya Dhanasekaran
