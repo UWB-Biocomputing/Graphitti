@@ -20,9 +20,57 @@ As new development is completed, it gets merged back into the development branch
 ## How it Works
 ***ALL OF OUR DIAGRAMS READ FROM TOP TO BOTTOM***
 
-### High Overview of Our Process
+### High Level Overview of Our Process
 
-[![](https://mermaid.ink/img/pako:eNqVksFuozAQhl_FmiryBUVAIAbfkm3ZS9tLqx4qLgN4CWqwI2Pa7SLevca022RbVV242J_n_2fsmQFKVQngsFgMjWwMJwOhe1Vfikexp5zQShR9TT1CzU60YiIFduIvuEPdYLEXnT0ZcknsR-vG-FPgWXiRbrIL6r3zwPEs22a-f8xDxzfR9B_z1THP5ehN8KfGw27KR7UyaMQP1baNucTCVWx0L2x13U49bTXKcudqO6In4b9w300HLTZyDr_G-ZpX2Bmh6TiScbHI5Vtecrvlrr7S2bhl4YTkfHozdWiFnLFNXT6o3pDZ6pR9CH63-y_da-5MoOm12Hzw-sT2i9SnbttvW7RC1-If2Se3mMNOxOCBpfb5KzuEboJycJOVA7fLCvVDDrbzNg57o26eZQncdRP6Q2W7f95grbGF11aCqBqj9NU81W64PTigvFeqfRPaLfABfgNfx0uWrMM4YmmSBHGYevAMfBUtA7ZmSRCkFsVJOHrwx-n9ZRqlPmNRyFYJC1csHl8A7fELNA?type=png)](https://mermaid.live/edit#pako:eNqVksFuozAQhl_FmiryBUVAIAbfkm3ZS9tLqx4qLgN4CWqwI2Pa7SLevca022RbVV242J_n_2fsmQFKVQngsFgMjWwMJwOhe1Vfikexp5zQShR9TT1CzU60YiIFduIvuEPdYLEXnT0ZcknsR-vG-FPgWXiRbrIL6r3zwPEs22a-f8xDxzfR9B_z1THP5ehN8KfGw27KR7UyaMQP1baNucTCVWx0L2x13U49bTXKcudqO6In4b9w300HLTZyDr_G-ZpX2Bmh6TiScbHI5Vtecrvlrr7S2bhl4YTkfHozdWiFnLFNXT6o3pDZ6pR9CH63-y_da-5MoOm12Hzw-sT2i9SnbttvW7RC1-If2Se3mMNOxOCBpfb5KzuEboJycJOVA7fLCvVDDrbzNg57o26eZQncdRP6Q2W7f95grbGF11aCqBqj9NU81W64PTigvFeqfRPaLfABfgNfx0uWrMM4YmmSBHGYevAMfBUtA7ZmSRCkFsVJOHrwx-n9ZRqlPmNRyFYJC1csHl8A7fELNA)
+```mermaid
+%%{init: { 'logLevel': 'debug', 'theme': 'base', 'themeVariables': {
+    'git0': '#2E9AFE',
+    'gitInv0': '#2E9AFE',
+    'git1': '#A829FF',
+    'git2': '#FFBF00',
+    'git3': '#8FED0A',
+    'git4': '#A4A4A4',
+    'git5': '#8FED0A',
+    'git6': '#A4A4A4',
+    'tagLabelFontSize': '12px'
+},'gitGraph': {'rotateCommitLabel': true, 'showBranches': true, 'showCommitLabel':false, 'mainBranchName': 'Master'}} }%%
+gitGraph TB:
+   commit
+   branch SharedDev order: 2
+   checkout Master
+   checkout SharedDev
+   commit
+   branch AUserDev order: 3
+   checkout AUserDev
+   commit
+      branch FeatureA order: 4
+      checkout SharedDev
+      branch BUserDev order: 5
+         commit
+         branch FeatureB order: 6
+   commit
+      checkout FeatureA
+      commit
+      commit
+   checkout AUserDev
+   merge FeatureA
+   checkout SharedDev
+   merge AUserDev
+   checkout BUserDev
+   merge SharedDev
+   commit  tag: "fix broken code"
+   merge FeatureB
+   checkout SharedDev
+   merge BUserDev
+   checkout SharedDev
+   checkout Master
+   branch Release order: 1
+   merge SharedDev
+   commit
+   checkout Master
+   merge Release type: HIGHLIGHT tag: "v1.1.2"
+```
+
 
 ### Feature branches
 Our development branch is considered to be the main branch, where features are branched off of development and merged back into development.
