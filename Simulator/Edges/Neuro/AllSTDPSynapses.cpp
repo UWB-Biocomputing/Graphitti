@@ -122,7 +122,6 @@ void AllSTDPSynapses::printParameters() const
                                    << endl
                                    << "\tEdges type: AllSTDPSynapses" << endl
                                    << endl
-
                                    << "\tSTDP gap" << defaultSTDPgap_ << endl
                                    << "\n\tTauspost value: ["
                                    << " I: " << tauspost_I_ << ", "
