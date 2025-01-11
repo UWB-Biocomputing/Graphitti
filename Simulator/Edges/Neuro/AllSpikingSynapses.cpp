@@ -107,15 +107,14 @@ void AllSpikingSynapses::printParameters() const
                                    << endl
                                    << "\tEdges type: AllSpikingSynapses" << endl
                                    << endl);
-   LOG4CPLUS_DEBUG(edgeLogger_, "\n\tTau values: [" << " II: " << tau_II_ << ","
-                                                    << " IE: " << tau_IE_ << ","
-                                                    << " EI: " << tau_EI_ << ","
+   LOG4CPLUS_DEBUG(edgeLogger_, "\n\tTau values: [" << " II: " << tau_II_ << "," << " IE: "
+                                                    << tau_IE_ << "," << " EI: " << tau_EI_ << ","
                                                     << " EE: " << tau_EE_ << "]" << endl);
 
-   LOG4CPLUS_DEBUG(edgeLogger_, "\n\tDelay values: [" << " II: " << delay_II_ << ","
-                                                      << " IE: " << delay_IE_ << ","
-                                                      << " EI:" << delay_EI_ << ","
-                                                      << " EE: " << delay_EE_ << "]" << endl);
+   LOG4CPLUS_DEBUG(edgeLogger_, "\n\tDelay values: ["
+                                   << " II: " << delay_II_ << "," << " IE: " << delay_IE_ << ","
+                                   << " EI:" << delay_EI_ << "," << " EE: " << delay_EE_ << "]"
+                                   << endl);
 }
 
 ///  Sets the data for Synapse to input's data.
