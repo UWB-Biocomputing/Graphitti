@@ -96,11 +96,11 @@ gitGraph TB:
 
 ### Feature branches
 
-Our shared development branch is considered to be the main branch, in terms of being the latest functioning code (which may or may not be ready for merging into master and creating a release). So, all personal development branches start off as functioning code and are not merged back into the shared development branch until they are once again functioning code. Until then, features are branched off of the personal development and merged back into personal development.
+Our shared development branch is considered to be the main branch, in terms of being the latest functioning code (which may or may not be ready for merging into master and creating a release) and so is the source for creation of all personal development branches. So, all personal development branches start off as functioning code and are not merged back into the shared development branch until they are once again functioning code. Until then, features are branched off of the personal development and merged back into personal development (with pull requests, tests, and code reviews).
 
 ```mermaid
 %%{init: { 'logLevel': 'debug', 'theme': 'base', 'themeVariables': {
-    'git0': '#FFBF00',
+    'git0': '#8FED0A',
     'git1': '#A4A4A4',
     'git2': '#A4A4A4'
 },'gitGraph': {'rotateCommitLabel': true, 'showBranches': true, 'showCommitLabel':true, 'mainBranchName': 'AUserDev'}} }%%
@@ -124,10 +124,51 @@ Our shared development branch is considered to be the main branch, in terms of b
       merge FeatureB tag: "merged featureB"
 ```
 
-### Merging to Master Branch
-The master and development branches exist parallel to one another. We consider the development branch to be the main branch where the source code always reflects a state with the latest delivered development changes. Once the development branch is ready to merge back to the master, we create a release branch (not supported in our document). Our version can either cherry-pick the developments we want into the master or revert the changes and merge to the master and re-revert the changes (not supported in the document). 
+### Merging to Shared Development
 
-[![](https://mermaid.ink/img/pako:eNqNVNFumzAU_RXLU8QLjQIhAfyWrEkaKe2kpevDxh4cuCFWACNj2tGIf58xZSNr1xTEg8-99_ici69POOQRYIIHgxPLmCTohIyExxt4hMQgyIhgV8aGiQx5gBQaZEcL-AM8UMHoLoFCRU5BhtRjxEyOmsRP9sKfLReG-Re3NL5czpejUR-3NT5zmrePj_-DO308yGoVauCVoPmhUWIILqmEzzxNmdzQnfYiRQlKd3HgT3NBs_CgVffQs_Q9TQowjZSyrM2-o63_W1pIEEZdo3owCLJuW3Q_J1pgqFkQiwgK8AOIgvEMWUMrwDq802Toumkwz1PIZFt1gPDIS_k60KdrfhGjSQferXzrH94lUFkKmL2u_bHebr8trhzL_okaL-jLHq2LooQXgrPkFEQMSACNqgAjWeVA0M16dbNR3z2SNCYB_gqPDJ666g_p14RIcsWcgDpHb2qfv0_YSut89vVGaN-5vySqC5xv2Up9yy3q7KJL1Gfy5h-U0Z6pnoguLER1lbPw-H7_LjQfm01_1EmO1KDrKQ2wnt4AN6QRFceGqFZ5tJR8W2UhJnoucJlHao6uGY0FTfHLUGCImOTitr059AVi4pxm3zlPu0K1xOSEf2EynQxdb2pPHNf3PGti-yauMBk7Q8udup5l-QqaeHZt4mddPxr6jj9yXcd2x55rj91J_Rvb4n0O?type=png)](https://mermaid.live/edit#pako:eNqNVNFumzAU_RXLU8QLjQIhAfyWrEkaKe2kpevDxh4cuCFWACNj2tGIf58xZSNr1xTEg8-99_ici69POOQRYIIHgxPLmCTohIyExxt4hMQgyIhgV8aGiQx5gBQaZEcL-AM8UMHoLoFCRU5BhtRjxEyOmsRP9sKfLReG-Re3NL5czpejUR-3NT5zmrePj_-DO308yGoVauCVoPmhUWIILqmEzzxNmdzQnfYiRQlKd3HgT3NBs_CgVffQs_Q9TQowjZSyrM2-o63_W1pIEEZdo3owCLJuW3Q_J1pgqFkQiwgK8AOIgvEMWUMrwDq802Toumkwz1PIZFt1gPDIS_k60KdrfhGjSQferXzrH94lUFkKmL2u_bHebr8trhzL_okaL-jLHq2LooQXgrPkFEQMSACNqgAjWeVA0M16dbNR3z2SNCYB_gqPDJ666g_p14RIcsWcgDpHb2qfv0_YSut89vVGaN-5vySqC5xv2Up9yy3q7KJL1Gfy5h-U0Z6pnoguLER1lbPw-H7_LjQfm01_1EmO1KDrKQ2wnt4AN6QRFceGqFZ5tJR8W2UhJnoucJlHao6uGY0FTfHLUGCImOTitr059AVi4pxm3zlPu0K1xOSEf2EynQxdb2pPHNf3PGti-yauMBk7Q8udup5l-QqaeHZt4mddPxr6jj9yXcd2x55rj91J_Rvb4n0O)
+The shared and personal development branches exist parallel to one another. We consider the shared development branch to be the main branch where the source code always reflects a state with the latest delivered development changes. The personal development branches, on the other hand, may be in a state in which the code is "broken", i.e., in the middle of a sequence of feature branch changes that will, incrementally, produce fully working code. So, one principle is that we don't merge code into the shared development branch until the associated line of development is complete. At that point, we double-check that the personal development branch isn't behind shared development and generate a pull request to merge it.
+
+
+```mermaid
+%%{init: { 'logLevel': 'debug', 'theme': 'base', 'themeVariables': {
+    'git0': '#FFBF00',
+    'git1': '#8FED0A',
+    'git2': '#A4A4A4',
+    'git3': '#A4A4A4',
+    'git4': '#A4A4A4'
+},
+'gitGraph': {'rotateCommitLabel': true, 'showBranches': true, 'showCommitLabel':false,'mainBranchName': 'SharedDev'}} }%%
+gitGraph TB:
+   commit id: "Version 1.1"
+   branch AUserDev
+   checkout AUserDev
+   commit id: "initial commit NG911"
+   branch FeatureA
+   commit id: "[ISSUE-412] Name Of Issue"
+   commit id: "merge ready" type: HIGHLIGHT tag:"Review"
+   checkout AUserDev
+   commit id: "ready to release"
+   branch FeatureB
+   checkout AUserDev
+   merge FeatureA id: "merged featureA"
+   checkout AUserDev
+   checkout FeatureB
+   commit type: HIGHLIGHT tag: "Review "
+   checkout AUserDev
+   merge FeatureB
+   checkout AUserDev
+   checkout SharedDev
+   merge AUserDev
+   checkout AUserDev
+   commit
+```
+
+### Merging to Master
+
+
+
+Once the development branch is ready to merge back to the master, we create a release branch (not supported in our document). Our version can either cherry-pick the developments we want into the master or revert the changes and merge to the master and re-revert the changes (not supported in the document). 
+
 
 ## Detailed Run-Through of Making a Release
 
