@@ -95,9 +95,34 @@ gitGraph TB:
 
 
 ### Feature branches
-Our development branch is considered to be the main branch, where features are branched off of development and merged back into development.
 
-[![](https://mermaid.ink/img/pako:eNqtlE1vm0AQhv_KaCuLC7EMxsHmZpr6Q3KTKk57aOlhDWPYBli6LE5ci__eXWwaW7VVH8qKAw_z8c6MZnck5BESj3Q6O5Yz6cEOjJTHC9xganhgRLiqYsMEQyaYoSYrWuIf8IUKRlcplurPLshBPUbMZE8bvptM_EmvZ5hv3Gr42NHnmNvHPMhrU8OpoEWi4xqCSyrxPc8yJhd01SiTokKlokz4iy9oHiaNhiN6Yn7gGWX53vqe7qu504XyIsNcGnUNdafTqGrTw5Pv7WUChE1AYJEHAdHNYjRt4f10ZFkBaU1XTQ6YIJWVwPHZCN_my-XnDzeOZX8HrQYe1jAvywoDApLGXkCKKk1vBP6ssJRvsU-ChAnNY4SEikgPUh3Y0FQ5XLBfs1eQ24KXhyQKTZmcVSsYh5Lx_JJfhkKlEUijrfbcFujBbD6dLdT7dJD7iBuGL0cBEgyfeSXhqMfX9LIQ_AeGEuxL_fSvybBX3E6gLbahEazbwVwntv33V_4z87Sc_qV5fnr8d3fhv7T3pHj_fPG-DkVMTdVaROoOaBY4IM1iB0R7RFQ8a7Na2dFK8uU2D8l-mUhVRGop7xiNBc2It6ZpqShGTHLxcX-pNHeLSQqaf-U8ax3VJ_F25JV4t4OuO7y1B447Gg6tgT0yyZZ4fadrubfu0LJGCg2Gdm2SX41_rztyRj3XdWy3P3TtvjuofwOb-nzg?type=png)](https://mermaid.live/edit#pako:eNqtlE1vm0AQhv_KaCuLC7EMxsHmZpr6Q3KTKk57aOlhDWPYBli6LE5ci__eXWwaW7VVH8qKAw_z8c6MZnck5BESj3Q6O5Yz6cEOjJTHC9xganhgRLiqYsMEQyaYoSYrWuIf8IUKRlcplurPLshBPUbMZE8bvptM_EmvZ5hv3Gr42NHnmNvHPMhrU8OpoEWi4xqCSyrxPc8yJhd01SiTokKlokz4iy9oHiaNhiN6Yn7gGWX53vqe7qu504XyIsNcGnUNdafTqGrTw5Pv7WUChE1AYJEHAdHNYjRt4f10ZFkBaU1XTQ6YIJWVwPHZCN_my-XnDzeOZX8HrQYe1jAvywoDApLGXkCKKk1vBP6ssJRvsU-ChAnNY4SEikgPUh3Y0FQ5XLBfs1eQ24KXhyQKTZmcVSsYh5Lx_JJfhkKlEUijrfbcFujBbD6dLdT7dJD7iBuGL0cBEgyfeSXhqMfX9LIQ_AeGEuxL_fSvybBX3E6gLbahEazbwVwntv33V_4z87Sc_qV5fnr8d3fhv7T3pHj_fPG-DkVMTdVaROoOaBY4IM1iB0R7RFQ8a7Na2dFK8uU2D8l-mUhVRGop7xiNBc2It6ZpqShGTHLxcX-pNHeLSQqaf-U8ax3VJ_F25JV4t4OuO7y1B447Gg6tgT0yyZZ4fadrubfu0LJGCg2Gdm2SX41_rztyRj3XdWy3P3TtvjuofwOb-nzg)
+Our shared development branch is considered to be the main branch, in terms of being the latest functioning code (which may or may not be ready for merging into master and creating a release). So, all personal development branches start off as functioning code and are not merged back into the shared development branch until they are once again functioning code. Until then, features are branched off of the personal development and merged back into personal development.
+
+```mermaid
+%%{init: { 'logLevel': 'debug', 'theme': 'base', 'themeVariables': {
+    'git0': '#FFBF00',
+    'git1': '#A4A4A4',
+    'git2': '#A4A4A4'
+},'gitGraph': {'rotateCommitLabel': true, 'showBranches': true, 'showCommitLabel':true, 'mainBranchName': 'AUserDev'}} }%%
+   gitGraph TB:
+      commit id: "initial commit NG911"
+      branch FeatureA
+      commit id: "[ISSUE-412] Name Of Issue" tag:"pull-request"
+      commit id: "change hardcodeded values"
+      commit id: "fix typos" tag: "GitHub Actions"
+      commit id: "merge ready" type: HIGHLIGHT tag:"Review"
+      checkout AUserDev
+      commit id: "initial commit project 2"
+      branch FeatureB
+      checkout AUserDev
+      merge FeatureA tag: "merged featureA"
+      checkout AUserDev
+      checkout FeatureB
+      commit id: "[ISSUE-143] Name Of Issue" tag:"PR"
+      commit id: "merge ready " type: HIGHLIGHT tag:"Review"
+      checkout AUserDev
+      merge FeatureB tag: "merged featureB"
+```
 
 ### Merging to Master Branch
 The master and development branches exist parallel to one another. We consider the development branch to be the main branch where the source code always reflects a state with the latest delivered development changes. Once the development branch is ready to merge back to the master, we create a release branch (not supported in our document). Our version can either cherry-pick the developments we want into the master or revert the changes and merge to the master and re-revert the changes (not supported in the document). 
