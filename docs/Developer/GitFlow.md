@@ -163,14 +163,42 @@ gitGraph TB:
    commit
 ```
 
-### Merging to Master
+### Merging to Master and Making a Release
+
+Once the shared development branch is ready to merge back to the master, we create a release branch. We then merge the shared development branch into the release branch, do final testing (including manual tests for GPU, etc.), fix any problems, merge into master, and create a release.
+
+```mermaid
+%%{init: { 'logLevel': 'debug', 'theme': 'base', 'themeVariables': {
+    'git0': '#2E9AFE',
+    'gitInv0': '#2E9AFE',
+    'git1': '#A829FF',
+    'git2': '#FFBF00',
+    'git3': '#8FED0A',
+    'git4': '#A4A4A4',
+    'git5': '#8FED0A',
+    'git6': '#A4A4A4',
+    'tagLabelFontSize': '12px'
+},'gitGraph': {'rotateCommitLabel': true, 'showBranches': true, 'showCommitLabel':false, 'mainBranchName': 'Master'}} }%%
+gitGraph TB:
+   commit
+   branch SharedDev order: 2
+   checkout Master
+   checkout SharedDev
+   commit
+   checkout Master
+   branch Release order: 1
+   merge SharedDev
+   commit
+   checkout Master
+   merge Release type: HIGHLIGHT tag: "v1.2"
+   checkout SharedDev
+   merge Release
+```
 
 
+# Why are we doing this?
 
-Once the development branch is ready to merge back to the master, we create a release branch (not supported in our document). Our version can either cherry-pick the developments we want into the master or revert the changes and merge to the master and re-revert the changes (not supported in the document). 
-
-
-## Detailed Run-Through of Making a Release
+The information below is left-over details relating to how we used to do a release, when we only had one development branch and cherry-picked commits to merge into a release branch. Unfortunately, cherry picking doesn't preserve commit hashes, and so git eventually gets hopelessly confused about conflicts and merging into master then becomes very difficult.
 
 The basic idea is to create a release branch off of `master`, then cherry pick the commits we want to incorporate into this release. So, first of all, we want to get a list of all of the commits in `development` that aren't in `master`:
 
