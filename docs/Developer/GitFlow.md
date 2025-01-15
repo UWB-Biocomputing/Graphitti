@@ -194,9 +194,17 @@ gitGraph TB:
    checkout SharedDev
    merge Release
 ```
+## Naming Conventions
 
+* Shared development branch: "SharedDevelopment"
+* Personal development branch: "*Name*Dev" or "*Name*Development", where "*name*" can be either the user's name or GitHub ID.
+* Feature branch: "issue-*XXX*-*description*", where "*XXX*" is the corresponding issue number and "*description*" is the issue title (possibly shortened).
+* Hotfix branches: "hotfix-issue-*XXX*-*description*"
+* Release branches: "release-v*##*", where *##* is the anticipated release tag.
+* Most pull requests: "[issue-*XXX*] *description*"
+* Release pull requests: "Release *##*"
 
-# Why are we doing this?
+## Why are we doing this?
 
 The information below is left-over details relating to how we used to do a release, when we only had one development branch and cherry-picked commits to merge into a release branch. Unfortunately, cherry picking doesn't preserve commit hashes, and so git eventually gets hopelessly confused about conflicts and merging into master then becomes very difficult.
 
