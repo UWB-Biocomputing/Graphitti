@@ -45,13 +45,16 @@ The list of events is provided to Graphitti as an XML input file. We couldn't fi
 ```xml
 <?xml version='1.0' encoding='UTF-8'?>
 <simulator_inputs>
-  <data description="SPD_calls_sept2020" clock_tick_size="1" clock_tick_unit="sec">
-    <vertex id="194" name="SEATTLE PD Caller region">
-      <event time="0" duration="0" x="-122.38496236371942" y="47.570236838209546" type="EMS"/>
-      <event time="34" duration="230" x="-122.37482094435583" y="47.64839548276973" type="EMS"/>
-      <event time="37" duration="169" x="-122.4036487601129" y="47.55833788618255" type="Fire"/>
-      <event time="42" duration="327" x="-122.38534886929502" y="47.515324716436346" type="Fire"/>
-...
+  <data description="SYNTH_OUTPUT2 Calls - Cluster Point Process" clock_tick_size="1" clock_tick_unit="sec">
+    <vertex id="4" name="UNKNOWN">
+      <event time="26" duration="38" x="13.111984735748287" y="62.57456126541278" type="Law" patience="54" on_site_time="33" vertex_id="4"/>
+      <event time="35" duration="30" x="13.101924628231098" y="62.5788162451589" type="Fire" patience="2" on_site_time="12" vertex_id="4"/>
+      <event time="60" duration="48" x="13.103238844738144" y="62.57852864894537" type="Fire" patience="26" on_site_time="71" vertex_id="4"/>
+      <event time="61" duration="33" x="13.103729766137114" y="62.57884701874643" type="Fire" patience="27" on_site_time="2" vertex_id="4"/>
+      <event time="74" duration="32" x="13.104050198095443" y="62.578851926237746" type="Fire" patience="23" on_site_time="38" vertex_id="4"/>
+      <event time="77" duration="41" x="13.125015368211848" y="62.547956222166015" type="EMS" patience="2" on_site_time="239" vertex_id="4"/>
+      <event time="111" duration="45" x="13.12497529802989" y="62.54820796343649" type="EMS" patience="46" on_site_time="77" vertex_id="4"/>
+      ...
     <vertex/>
 ...
   <data/>
