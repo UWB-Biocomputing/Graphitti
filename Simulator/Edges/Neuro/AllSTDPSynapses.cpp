@@ -118,33 +118,18 @@ void AllSTDPSynapses::printParameters() const
 {
    AllSpikingSynapses::printParameters();
 
-   LOG4CPLUS_DEBUG(edgeLogger_, "\n\t---AllSTDPSynapses Parameters---"
-                                   << endl
-                                   << "\tEdges type: AllSTDPSynapses" << endl
-                                   << endl
-
-                                   << "\tSTDP gap" << defaultSTDPgap_ << endl
-                                   << "\n\tTauspost value: ["
-                                   << " I: " << tauspost_I_ << ", "
-                                   << " E: " << tauspost_E_ << "]" << endl
-                                   << "\n\tTauspre value: ["
-                                   << " I: " << tauspre_I_ << ", "
-                                   << " E: " << tauspre_E_ << "]" << endl
-                                   << "\n\tTaupos value: ["
-                                   << " I: " << taupos_I_ << ", "
-                                   << " E: " << taupos_E_ << "]" << endl
-                                   << "\n\tTau negvalue: ["
-                                   << " I: " << tauneg_I_ << ", "
-                                   << " E: " << tauneg_E_ << "]" << endl
-                                   << "\n\tWex value: ["
-                                   << " I: " << Wex_I_ << ", "
-                                   << " E: " << Wex_E_ << "]" << endl
-                                   << "\n\tAneg value: ["
-                                   << " I: " << Aneg_I_ << ", "
-                                   << " E: " << Aneg_E_ << "]" << endl
-                                   << "\n\tApos value: ["
-                                   << " I: " << Apos_I_ << ", "
-                                   << " E: " << Apos_E_ << "]" << endl);
+   LOG4CPLUS_DEBUG(
+      edgeLogger_,
+      "\n\t---AllSTDPSynapses Parameters---"
+         << "\n\tEdges type: AllSTDPSynapses \n\n"
+         << "\tSTDP gap" << defaultSTDPgap_ << "\n\n\tTauspost value: [" << " I: " << tauspost_I_
+         << ", " << " E: " << tauspost_E_ << "]" << "\n\n\tTauspre value: [" << " I: " << tauspre_I_
+         << ", " << " E: " << tauspre_E_ << "]" << "\n\n\tTaupos value: [" << " I: " << taupos_I_
+         << ", " << " E: " << taupos_E_ << "]" << "\n\n\tTau negvalue: [" << " I: " << tauneg_I_
+         << ", " << " E: " << tauneg_E_ << "]" << "\n\n\tWex value: [" << " I: " << Wex_I_ << ", "
+         << " E: " << Wex_E_ << "]" << "\n\n\tAneg value: [" << " I: " << Aneg_I_ << ", "
+         << " E: " << Aneg_E_ << "]" << "\n\n\tApos value: [" << " I: " << Apos_I_ << ", "
+         << " E: " << Apos_E_ << "]" << endl);
 }
 
 ///  Sets the data for Synapse to input's data.

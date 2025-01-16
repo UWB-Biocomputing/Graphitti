@@ -38,22 +38,23 @@ The stream of calls generated is saved to an XML file. This file contains a list
 ## Input file format
 
 The developer's documentation contains more information about the [simulation input file
-format and the class that loads and manages the event inputs]
-(https://uwb-biocomputing.github.io/Graphitti/Developer/GraphAndEventInputs.html).
+format and the class that loads and manages the event inputs](https://uwb-biocomputing.github.io/Graphitti/Developer/GraphAndEventInputs.html).
 
 Below is an example of a simulation input file:
 
 
 ```XML
-?xml version='1.0' encoding='UTF-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <simulator_inputs>
-  <data description="SPD Calls - Cluster Point Process" clock_tick_size="1" clock_tick_unit="sec">
-    <vertex id="194" name="SEATTLE PD Caller region">
-      <event time="12" duration="568" x="-122.43656117361931" y="47.604800151342786" type="Law" vertex_id="194"/>
-      <event time="99" duration="36" x="-122.43611438152655" y="47.5321990385178" type="EMS" vertex_id="194"/>
-      <event time="336" duration="100" x="-122.34868883298704" y="47.56973909330686" type="Law" vertex_id="194"/>
-      <event time="601" duration="367" x="-122.44122311134316" y="47.70298531339788" type="Law" vertex_id="194"/>
-      <event time="766" duration="96" x="-122.28084792007573" y="47.70594997190379" type="Fire" vertex_id="194"/>
+  <data description="SYNTH_OUTPUT2 Calls - Cluster Point Process" clock_tick_size="1" clock_tick_unit="sec">
+    <vertex id="4" name="UNKNOWN">
+      <event time="26" duration="38" x="13.111984735748287" y="62.57456126541278" type="Law" patience="54" on_site_time="33" vertex_id="4"/>
+      <event time="35" duration="30" x="13.101924628231098" y="62.5788162451589" type="Fire" patience="2" on_site_time="12" vertex_id="4"/>
+      <event time="60" duration="48" x="13.103238844738144" y="62.57852864894537" type="Fire" patience="26" on_site_time="71" vertex_id="4"/>
+      <event time="61" duration="33" x="13.103729766137114" y="62.57884701874643" type="Fire" patience="27" on_site_time="2" vertex_id="4"/>
+      <event time="74" duration="32" x="13.104050198095443" y="62.578851926237746" type="Fire" patience="23" on_site_time="38" vertex_id="4"/>
+      <event time="77" duration="41" x="13.125015368211848" y="62.547956222166015" type="EMS" patience="2" on_site_time="239" vertex_id="4"/>
+      <event time="111" duration="45" x="13.12497529802989" y="62.54820796343649" type="EMS" patience="46" on_site_time="77" vertex_id="4"/>
       ...
     </vertex>
   </data>

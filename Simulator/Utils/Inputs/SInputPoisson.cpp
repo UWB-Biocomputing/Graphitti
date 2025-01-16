@@ -67,8 +67,7 @@ SInputPoisson::SInputPoisson(TiXmlElement *parms) :
                TiXmlDocument simDoc(maskNListFileName.c_str());
                if (!simDoc.LoadFile()) {
                   cerr << "Failed loading positions of stimulus input mask neurons list file "
-                       << maskNListFileName << ":"
-                       << "\n\t" << simDoc.ErrorDesc() << endl;
+                       << maskNListFileName << ":" << "\n\t" << simDoc.ErrorDesc() << endl;
                   cerr << " error: " << simDoc.ErrorRow() << ", " << simDoc.ErrorCol() << endl;
                   break;
                }
