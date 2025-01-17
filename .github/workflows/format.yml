@@ -10,9 +10,7 @@ on:
     paths:
       - '**.cpp'
       - '**.h'
-    branches:
-      - master
-      - development
+    types: [opened, synchronize, reopened]
 
 jobs:
   deploy:

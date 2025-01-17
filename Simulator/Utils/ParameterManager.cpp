@@ -55,8 +55,8 @@ bool ParameterManager::loadParameterFile(string path)
    // load the XML document
    xmlDocument_.reset(new TiXmlDocument(path.c_str()));
    if (!xmlDocument_->LoadFile()) {
-      cerr << "Failed loading simulation parameter file " << path << ":"
-           << "\n\t" << xmlDocument_->ErrorDesc() << endl;
+      cerr << "Failed loading simulation parameter file " << path << ":" << endl;
+      cerr << "\t" << xmlDocument_->ErrorDesc() << endl;
       cerr << " error row: " << xmlDocument_->ErrorRow()
            << ", error col: " << xmlDocument_->ErrorCol() << endl;
       return false;
@@ -123,8 +123,8 @@ bool ParameterManager::getIntByXpath(string xpath, int &referenceVar)
            << "Terminating integer cast. Value: " << tmp << endl;
       return false;
    } else if (regex_match(tmp, regex(".*[^\\def.]+.*"))) {
-      cerr << "Parsed parameter is likely a string. "
-           << "Terminating integer cast. Value: " << tmp << endl;
+      cerr << "Parsed parameter is likely a string. " << endl;
+      cerr << "Terminating integer cast. Value: " << tmp << endl;
       return false;
    }
    try {
@@ -278,8 +278,8 @@ bool ParameterManager::getIntVectorByXpath(const string &path, const string &ele
    // Open file using a local XmlDocument object
    TiXmlDocument xmlDocument(path.c_str());
    if (!xmlDocument.LoadFile()) {
-      cerr << "Failed to load " << path.c_str() << ":"
-           << "\n\t" << xmlDocument.ErrorDesc() << endl;
+      cerr << "Failed to load " << path.c_str() << ":" << endl;
+      cerr << "\t" << xmlDocument.ErrorDesc() << endl;
       return false;
    }
 
