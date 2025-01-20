@@ -46,8 +46,8 @@ if(ENABLE_CUDA)
         add_compile_definitions(USE_GPU)
 #Specify the CUDA architecture / gencode that will be targeted
         ### Set gencode and architecture variables to the correct values for your specific NVIDIA hardware
-        set(CMAKE_CUDA_ARCHITECTURES 75)        
-        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_75,code=sm_75)
+        set(CMAKE_CUDA_ARCHITECTURES 37)        
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_37,code=sm_37)
             
 else()
         message("\n----Generating Makefile for Graphitti CPU version----")
