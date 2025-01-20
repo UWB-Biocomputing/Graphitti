@@ -12,7 +12,7 @@ Students, use this [quickstart guide](StudentSetup.md) to help setup, use, and d
 
 ## Software Development Process
 
-- To further understand our development process, please check out our [gitflow documentation](GitFlowDiagram.md).
+- To further understand our development process, please check out our [gitflow documentation](GitFlow.md).
 
 - Your pull requests will not be approved if you do not adhere to our [coding conventions](codingConventions.md).
 
