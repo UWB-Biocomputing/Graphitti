@@ -12,6 +12,7 @@ cmake_minimum_required(VERSION 3.12)
 #
 #"YES" / GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
+
 if(NOT ENABLE_CUDA)
         set(ENABLE_CUDA NO)
 endif()
@@ -161,18 +162,24 @@ include_directories(
        
 if(ENABLE_CUDA)
         
-        set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp 
-        Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp 
-        Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp 
-        Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp 
-        Simulator/Edges/Neuro/AllDSSynapses_d.cpp 
-        Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp 
-        Simulator/Vertices/Neuro/AllLIFNeurons_d.cpp 
-        Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp 
-        Simulator/Vertices/Neuro/AllIFNeurons_d.cpp 
-        Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp 
+        set(cuda_ConnectionsSources 
         Simulator/Connections/Neuro/ConnGrowth_d.cpp )
-        set_source_files_properties(${cuda_sources} PROPERTIES LANGUAGE CUDA)
+        set_source_files_properties(${cuda_ConnectionsSources} PROPERTIES LANGUAGE CUDA)
+
+        set(cuda_EdgesSources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp
+        Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp
+        Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp
+        Simulator/Edges/Neuro/AllDSSynapses_d.cpp
+        Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp)
+        set_source_files_properties(${cuda_EdgesSources} PROPERTIES LANGUAGE CUDA)
+
+        set(cuda_VerticesSources 
+        Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp
+        Simulator/Vertices/Neuro/AllLIFNeurons_d.cpp
+        Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp
+        Simulator/Vertices/Neuro/AllIFNeurons_d.cpp
+        Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp)
+        set_source_files_properties(${cuda_VerticesSources} PROPERTIES LANGUAGE CUDA)
 endif()
 
    #Collect source files and create libraries
@@ -184,7 +191,7 @@ endif()
 file(GLOB_RECURSE Connections_Source Simulator/Connections/*.cpp Simulator/Connections/*.h)
 
 if(ENABLE_CUDA)
-        add_library(Connections STATIC ${Connections_Source} ${cuda_sources})
+        add_library(Connections STATIC ${Connections_Source} ${cuda_ConnectionsSources})
 else()
         list(REMOVE_ITEM Connections_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Connections/Neuro/ConnGrowth_d.cpp")
         add_library(Connections STATIC ${Connections_Source})
@@ -195,7 +202,7 @@ endif()
 file(GLOB_RECURSE Vertices_Source Simulator/Vertices/*.cpp Simulator/Vertices/*.h)
 
 if(ENABLE_CUDA)
-        add_library(Vertices SHARED ${Vertices_Source} ${cuda_sources})
+        add_library(Vertices STATIC ${Vertices_Source} ${cuda_VerticesSources})
 else()
         list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllVerticesDeviceFuncs.h")
         list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp")
@@ -212,7 +219,7 @@ endif()
 # Create Edges library
 file(GLOB_RECURSE Edges_Source Simulator/Edges/*.cpp Simulator/Edges/*.h)
 if(ENABLE_CUDA)
-        add_library(Edges SHARED ${Edges_Source} ${cuda_sources})
+        add_library(Edges STATIC ${Edges_Source} ${cuda_EdgesSources})
 else()
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSynapsesDeviceFuncs.h")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp")
