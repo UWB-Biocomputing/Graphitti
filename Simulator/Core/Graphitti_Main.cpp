@@ -35,10 +35,10 @@ using namespace std;
 ///  @return -1 if error, else 0 if success.
 int main(int argc, char *argv[])
 {
-   #ifdef TESTING_MODE
-      cout << "Testing mode is ON \n";
-   #endif 
-   
+#ifdef TESTING_MODE
+   cout << "Testing mode is ON \n";
+#endif
+
    // Clear logging files at the start of each simulation
    fstream("Output/Debug/logging.txt", ios::out | ios::trunc);
    fstream("Output/Debug/vertices.txt", ios::out | ios::trunc);
