@@ -34,6 +34,11 @@ if(NOT GPROF)
         set(GPROF NO)
 endif()
 
+#CONDITIONAL FLAG to turn on TESTING_MODE
+if(NOT TESTING_MODE)
+        set(TESTING_MODE YES)
+endif()
+
 #Creates the Graphitti project with the correct languages, depending on if using GPU or not
 #If using CUDA, also verify the CUDA package and set the required CUDA variables
 if(ENABLE_CUDA)	
@@ -70,6 +75,11 @@ if(GPROF)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+endif()
+
+if(TESTING_MODE)
+        message("-- Setting TESTING_MODE: ON")
+        add_definitions(-DTESTING_MODE)
 endif()
 
 #HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libraries to the executable     \
