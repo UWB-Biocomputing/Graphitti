@@ -13,7 +13,7 @@ cmake_minimum_required(VERSION 3.12)
 #"YES" / GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
 if(NOT ENABLE_CUDA)
-        set(ENABLE_CUDA NO)
+        set(ENABLE_CUDA YES)
 endif()
 
 #CONDITIONAL FLAG to turn on the performance metrics 
@@ -32,6 +32,11 @@ endif()
 #If using GPU - "~/Graphitti/build$ gprof ggraphitti gmon.out > analysis_test.txt" 
 if(NOT GPROF)
         set(GPROF NO)
+endif()
+
+#CONDITIONAL FLAG to turn on TESTING_MODE
+if(NOT TESTING_MODE)
+        set(TESTING_MODE YES)
 endif()
 
 #Creates the Graphitti project with the correct languages, depending on if using GPU or not
@@ -70,6 +75,11 @@ if(GPROF)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+endif()
+
+if(TESTING_MODE)
+        message("-- Setting TESTING_MODE: ON")
+        add_definitions(-DTESTING_MODE)
 endif()
 
 #HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libraries to the executable     \
