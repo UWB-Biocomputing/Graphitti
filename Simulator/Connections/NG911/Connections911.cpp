@@ -97,11 +97,11 @@ BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, BGSIZE vertex
 
    vertexType requiredType;
    if (call.type == "Law")
-      requiredType = LAW;
+      requiredType = vertexType::LAW;
    else if (call.type == "EMS")
-      requiredType = EMS;
+      requiredType = vertexType::EMS;
    else if (call.type == "Fire")
-      requiredType = FIRE;
+      requiredType = vertexType::FIRE;
 
    // loop over the outgoing edges looking for the responder with the shortest
    // Euclidean distance to the call's location.
@@ -145,7 +145,7 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
 
    // Find all psaps
    for (int i = 0; i < numVertices; i++) {
-      if (layout.vertexTypeMap_[i] == PSAP) {
+      if (layout.vertexTypeMap_[i] == vertexType::PSAP) {
          psaps.push_back(i);
       }
    }
@@ -189,13 +189,13 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
          edges_->eraseEdge(destVertex, iEdg);
 
          // Identify all psap-less callers
-         if (layout.vertexTypeMap_[srcVertex] == CALR) {
+         if (layout.vertexTypeMap_[srcVertex] == vertexType::CALR) {
             callersToReroute.push_back(srcVertex);
          }
 
          // Identify all psap-less responders
-         if (layout.vertexTypeMap_[destVertex] == LAW || layout.vertexTypeMap_[destVertex] == FIRE
-             || layout.vertexTypeMap_[destVertex] == EMS) {
+         if (layout.vertexTypeMap_[destVertex] == vertexType::LAW || layout.vertexTypeMap_[destVertex] == vertexType::FIRE
+             || layout.vertexTypeMap_[destVertex] == vertexType::EMS) {
             respsToReroute.push_back(destVertex);
          }
       }
@@ -204,7 +204,7 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
    if (changesMade) {
       // This is here so that we don't delete the vertex if we can't find any edges
       verticesErased.push_back(randPSAP);
-      layout.vertexTypeMap_[randPSAP] = VTYPE_UNDEF;
+      layout.vertexTypeMap_[randPSAP] = vertexType::VTYPE_UNDEF;
    }
 
    // Failsafe
@@ -230,13 +230,13 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
 
       // Insert Caller to PSAP edge
       BGSIZE iEdg
-         = edges_->addEdge(CP, srcVertex, closestPSAP, Simulator::getInstance().getDeltaT());
+         = edges_->addEdge(edgeType::CP, srcVertex, closestPSAP, Simulator::getInstance().getDeltaT());
 
       // Record added edge
       ChangedEdge addedEdge;
       addedEdge.srcV = srcVertex;
       addedEdge.destV = closestPSAP;
-      addedEdge.eType = CP;
+      addedEdge.eType = edgeType::CP;
       edgesAdded.push_back(addedEdge);
    }
 
@@ -258,13 +258,13 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
 
       // Insert PSAP to Responder edge
       BGSIZE iEdg
-         = edges_->addEdge(PR, closestPSAP, destVertex, Simulator::getInstance().getDeltaT());
+         = edges_->addEdge(edgeType::PR, closestPSAP, destVertex, Simulator::getInstance().getDeltaT());
 
       // Record added edge
       ChangedEdge addedEdge;
       addedEdge.srcV = closestPSAP;
       addedEdge.destV = destVertex;
-      addedEdge.eType = PR;
+      addedEdge.eType = edgeType::PR;
       edgesAdded.push_back(addedEdge);
    }
 
@@ -281,8 +281,8 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
 
    // Find all resps
    for (int i = 0; i < numVertices; i++) {
-      if (layout.vertexTypeMap_[i] == LAW || layout.vertexTypeMap_[i] == FIRE
-          || layout.vertexTypeMap_[i] == EMS) {
+      if (layout.vertexTypeMap_[i] == vertexType::LAW || layout.vertexTypeMap_[i] == vertexType::FIRE
+          || layout.vertexTypeMap_[i] == vertexType::EMS) {
          resps.push_back(i);
       }
    }
@@ -325,7 +325,7 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
    if (changesMade) {
       // This is here so that we don't delete the vertex if we can't find any edges
       verticesErased.push_back(randRESP);
-      layout.vertexTypeMap_[randRESP] = VTYPE_UNDEF;
+      layout.vertexTypeMap_[randRESP] = vertexType::VTYPE_UNDEF;
    }
 
    return changesMade;
@@ -339,22 +339,22 @@ string Connections911::ChangedEdge::toString()
    string type_s;
 
    switch (eType) {
-      case CP:
+      case edgeType::CP:
          type_s = "CP";
          break;
-      case PR:
+      case edgeType::PR:
          type_s = "PR";
          break;
-      case PP:
+      case edgeType::PP:
          type_s = "PP";
          break;
-      case PC:
+      case edgeType::PC:
          type_s = "PC";
          break;
-      case RP:
+      case edgeType::RP:
          type_s = "RP";
          break;
-      case RC:
+      case edgeType::RC:
          type_s = "RC";
          break;
       default:

@@ -115,26 +115,26 @@ void Layout911::generateVertexTypeMap()
 // Returns the type of synapse at the given coordinates
 edgeType Layout911::edgType(int srcVertex, int destVertex)
 {
-   if (vertexTypeMap_[srcVertex] == CALR && vertexTypeMap_[destVertex] == PSAP)
-      return CP;
-   else if (vertexTypeMap_[srcVertex] == PSAP
-            && (vertexTypeMap_[destVertex] == LAW || vertexTypeMap_[destVertex] == FIRE
-                || vertexTypeMap_[destVertex] == EMS))
-      return PR;
-   else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == CALR)
-      return PC;
-   else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == PSAP)
-      return PP;
-   else if ((vertexTypeMap_[srcVertex] == LAW || vertexTypeMap_[destVertex] == FIRE
-             || vertexTypeMap_[destVertex] == EMS)
-            && vertexTypeMap_[destVertex] == PSAP)
-      return RP;
-   else if ((vertexTypeMap_[srcVertex] == LAW || vertexTypeMap_[destVertex] == FIRE
-             || vertexTypeMap_[destVertex] == EMS)
-            && vertexTypeMap_[destVertex] == CALR)
-      return RC;
+   if (vertexTypeMap_[srcVertex] == vertexType::CALR && vertexTypeMap_[destVertex] == vertexType::PSAP)
+      return edgeType::CP;
+   else if (vertexTypeMap_[srcVertex] == vertexType::PSAP
+            && (vertexTypeMap_[destVertex] == vertexType::LAW || vertexTypeMap_[destVertex] == vertexType::FIRE
+                || vertexTypeMap_[destVertex] == vertexType::EMS))
+      return edgeType::PR;
+   else if (vertexTypeMap_[srcVertex] == vertexType::PSAP && vertexTypeMap_[destVertex] == vertexType::CALR)
+      return edgeType::PC;
+   else if (vertexTypeMap_[srcVertex] == vertexType::PSAP && vertexTypeMap_[destVertex] == vertexType::PSAP)
+      return edgeType::PP;
+   else if ((vertexTypeMap_[srcVertex] == vertexType::LAW || vertexTypeMap_[destVertex] == vertexType::FIRE
+             || vertexTypeMap_[destVertex] == vertexType::EMS)
+            && vertexTypeMap_[destVertex] == vertexType::PSAP)
+      return edgeType::RP;
+   else if ((vertexTypeMap_[srcVertex] == vertexType::LAW || vertexTypeMap_[destVertex] == vertexType::FIRE
+             || vertexTypeMap_[destVertex] == vertexType::EMS)
+            && vertexTypeMap_[destVertex] == vertexType::CALR)
+      return edgeType::RC;
    else
-      return ETYPE_UNDEF;
+      return edgeType::ETYPE_UNDEF;
 }
 
 

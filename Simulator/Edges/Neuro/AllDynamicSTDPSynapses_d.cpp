@@ -211,7 +211,7 @@ void AllDynamicSTDPSynapses::copyDeviceToHost(
 ///  (see issue#137).
 void AllDynamicSTDPSynapses::setEdgeClassID()
 {
-   enumClassSynapses classSynapses_h = classAllDynamicSTDPSynapses;
+   enumClassSynapses classSynapses_h = enumClassSynapses::classAllDynamicSTDPSynapses;
 
    HANDLE_ERROR(cudaMemcpyToSymbol(classSynapses_d, &classSynapses_h, sizeof(enumClassSynapses)));
 }
@@ -349,7 +349,7 @@ void AllDynamicSTDPSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
             cout << "GPU W[" << i << "] = " << WPrint[i];
             cout << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
             cout << " GPU desNeuron: " << destNeuronIndexPrint[i];
-            cout << " GPU type: " << typePrint[i];
+            cout << " GPU type: " << static_cast<int>(typePrint[i]);
             cout << " GPU psr: " << psrPrint[i];
             cout << " GPU in_use:" << (inUsePrint[i] == 1 ? "true" : "false");
 

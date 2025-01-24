@@ -126,7 +126,7 @@ void All911Vertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
    // Load all the calls into the Caller Regions queue by getting the input events
    // from the InputManager.
    for (int idx = 0; idx < simulator.getTotalVertices(); ++idx) {
-      if (layout.vertexTypeMap_[idx] == CALR) {
+      if (layout.vertexTypeMap_[idx] == vertexType::CALR) {
          // If this is a Caller Region get all calls scheduled for the current epoch,
          // loading them into the aproppriate index of the vertexQueues_ vector
          inputManager_.getEvents(idx, currentStep, endStep, vertexQueues_[idx]);
@@ -174,12 +174,12 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
 
    // Advance vertices
    for (int vertex = 0; vertex < simulator.getTotalVertices(); ++vertex) {
-      if (layout.vertexTypeMap_[vertex] == CALR) {
+      if (layout.vertexTypeMap_[vertex] == vertexType::CALR) {
          advanceCALR(vertex, edges911, edgeIndexMap);
-      } else if (layout.vertexTypeMap_[vertex] == PSAP) {
+      } else if (layout.vertexTypeMap_[vertex] == vertexType::PSAP) {
          advancePSAP(vertex, edges911, edgeIndexMap);
-      } else if (layout.vertexTypeMap_[vertex] == EMS || layout.vertexTypeMap_[vertex] == FIRE
-                 || layout.vertexTypeMap_[vertex] == LAW) {
+      } else if (layout.vertexTypeMap_[vertex] == vertexType::EMS || layout.vertexTypeMap_[vertex] == vertexType::FIRE
+                 || layout.vertexTypeMap_[vertex] == vertexType::LAW) {
          advanceRESP(vertex, edges911, edgeIndexMap);
       }
    }

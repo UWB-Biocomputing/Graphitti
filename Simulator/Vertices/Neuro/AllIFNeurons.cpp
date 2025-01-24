@@ -128,13 +128,13 @@ void AllIFNeurons::createNeuron(int i, Layout &layout)
    initNeuronConstsFromParamValues(i, Simulator::getInstance().getDeltaT());
 
    switch (layout.vertexTypeMap_[i]) {
-      case INH:
+      case vertexType::INH:
          LOG4CPLUS_DEBUG(vertexLogger_, "Setting inhibitory neuron: " << i);
          // set inhibitory absolute refractory period
          Trefract_[i] = DEFAULT_InhibTrefract;   // TODO(derek): move defaults inside model.
          break;
 
-      case EXC:
+      case vertexType::EXC:
          LOG4CPLUS_DEBUG(vertexLogger_, "Setting excitatory neuron: " << i);
          // set excitatory absolute refractory period
          Trefract_[i] = DEFAULT_ExcitTrefract;
@@ -142,7 +142,7 @@ void AllIFNeurons::createNeuron(int i, Layout &layout)
 
       default:
          LOG4CPLUS_DEBUG(vertexLogger_,
-                         "ERROR: unknown neuron type: " << layout.vertexTypeMap_[i] << "@" << i);
+                         "ERROR: unknown neuron type: " << static_cast<int>(layout.vertexTypeMap_[i]) << "@" << i);
          assert(false);
          break;
    }
