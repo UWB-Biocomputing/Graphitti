@@ -20,14 +20,18 @@ void All911Edges::setupEdges()
    // Setup the variables in the sub Class
    BGSIZE maxTotalEdges = maxEdgesPerVertex_ * countVertices_;
 
-   if (maxTotalEdges > 0) {
-      isAvailable_ = make_unique<bool[]>(maxTotalEdges);
-      fill_n(isAvailable_.get(), maxTotalEdges, true);
-
-      isRedial_ = make_unique<bool[]>(maxTotalEdges);
-      fill_n(isRedial_.get(), maxTotalEdges, false);
-
-      call_.resize(maxTotalEdges);
+   if (maxTotalEdges != 0) {
+      isAvailable_.assign(maxTotalEdges, true);
+      isRedial_.assign(maxTotalEdges, false);
+      //Call information
+      vertexId_.assign(maxTotalEdges, 0);
+      time_.assign(maxTotalEdges, 0);
+      duration_.assign(maxTotalEdges, 0);
+      x_.assign(maxTotalEdges, 0);
+      y_.assign(maxTotalEdges, 0);
+      patience_.assign(maxTotalEdges, 0);
+      onSiteTime_.assign(maxTotalEdges, 0);;
+      responderType_.assign(maxTotalEdges, VTYPE_UNDEF);
    }
 }
 
@@ -82,7 +86,7 @@ void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap
                all911Vertices.receivedCalls(dst)++;
                LOG4CPLUS_DEBUG(edgeLogger_,
                                "Call dropped: " << all911Vertices.droppedCalls(dst) << ", time: "
-                                                << call_[edgeIdx].time << ", vertex: " << dst
+                                                << time_[edgeIdx] << ", vertex: " << dst
                                                 << ", queue size: " << dstQueue.size());
             }
          } else {

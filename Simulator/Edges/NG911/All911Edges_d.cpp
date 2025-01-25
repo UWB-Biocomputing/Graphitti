@@ -9,6 +9,8 @@
 #include "All911Edges.h"
 #include "Book.h"
 
+__global__ void advance911EdgesDevice();
+
 ///  Allocate GPU memories to store all edge states,
 ///  and copy them from host to GPU memory.
 ///
@@ -137,9 +139,7 @@ void All911Edges::copyHostToDevice(void *allEdgesDevice, All911EdgeDevicePropert
    HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.W_, W_.data(), maxTotalEdges * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
    HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.type_, type_.data(), maxTotalEdges * sizeof(edgeType), cudaMemcpyHostToDevice));
    HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.inUse_, inUse_.data(), maxTotalEdges * sizeof(unsigned char), cudaMemcpyHostToDevice));
-   //Why is edge counts proportional to numVertices
    HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.edgeCounts_, edgeCounts_.data(), numVertices * sizeof(BGSIZE), cudaMemcpyHostToDevice));
-   //
    allEdgesDeviceProps.totalEdgeCount_ = totalEdgeCount_;
    allEdgesDeviceProps.maxEdgesPerVertex_ = maxEdgesPerVertex_;
    allEdgesDeviceProps.countVertices_ = countVertices_;
@@ -185,9 +185,7 @@ void All911Edges::copyDeviceToHost(All911EdgeDeviceProperties &allEdgesDevicePro
    HANDLE_ERROR(cudaMemcpy(W_.data(), allEdgesDeviceProps.W_, maxTotalEdges * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
    HANDLE_ERROR(cudaMemcpy(type_.data(), allEdgesDeviceProps.type_, maxTotalEdges * sizeof(edgeType), cudaMemcpyDeviceToHost));
    HANDLE_ERROR(cudaMemcpy(inUse_.data(), allEdgesDeviceProps.inUse_, maxTotalEdges * sizeof(unsigned char), cudaMemcpyDeviceToHost));
-   //*********** Why is edge counts proportional to numVertices?
    HANDLE_ERROR(cudaMemcpy(edgeCounts_.data(), allEdgesDeviceProps.edgeCounts_, numVertices * sizeof(BGSIZE), cudaMemcpyDeviceToHost));
-   //
    totalEdgeCount_ = allEdgesDeviceProps.totalEdgeCount_;
    maxEdgesPerVertex_ = allEdgesDeviceProps.maxEdgesPerVertex_;
    countVertices_ = allEdgesDeviceProps.countVertices_;
@@ -233,13 +231,27 @@ void All911Edges::copyDeviceEdgeSumIdxToHost(void *allEdgesDevice)
    HANDLE_ERROR(cudaMemcpy(inUse_.data(), allEdgesDeviceProps.inUse_, maxTotalEdges * sizeof(unsigned char), cudaMemcpyDeviceToHost));
 }
 
+// ///  Advance all the edges in the simulation.
+// ///  Update the state of all edges for a time step.
+// ///
+// ///  @param  allEdgesDevice      GPU address of the AllEdgesDeviceProperties struct
+// ///                                 on device memory.
+// ///  @param  allVerticesDevice       GPU address of the AllVerticesDeviceProperties struct on device memory.
+// ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
+// void All911Edges::advanceEdges(void *allEdgesDevice, void *allVerticesDevice, void *edgeIndexMapDevice)
+// {
+//    if (totalEdgeCount_ == 0)
+//       return;
+//    // CUDA parameters
+//    const int threadsPerBlock = 256;
+//    int blocksPerGrid = (totalEdgeCount_ + threadsPerBlock - 1) / threadsPerBlock;
+//    // Advance synapses ------------->
+//    advance911EdgesDevice<<<blocksPerGrid, threadsPerBlock>>>(
+//       totalEdgeCount_, (EdgeIndexMapDevice *)edgeIndexMapDevice, g_simulationStep,
+//       Simulator::getInstance().getDeltaT(), (All911EdgeDeviceProperties *)allEdgesDevice);
+// }
+
 ///  Advance all the edges in the simulation.
-///  Update the state of all edges for a time step.
-///
-///  @param  allEdgesDevice      GPU address of the AllEdgesDeviceProperties struct
-///                                 on device memory.
-///  @param  allVerticesDevice       GPU address of the AllVerticesDeviceProperties struct on device memory.
-///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
 void All911Edges::advanceEdges(void *allEdgesDevice, void *allVerticesDevice, void *edgeIndexMapDevice)
 {
    if (totalEdgeCount_ == 0)
@@ -247,10 +259,62 @@ void All911Edges::advanceEdges(void *allEdgesDevice, void *allVerticesDevice, vo
    // CUDA parameters
    const int threadsPerBlock = 256;
    int blocksPerGrid = (totalEdgeCount_ + threadsPerBlock - 1) / threadsPerBlock;
-   // Advance synapses ------------->
-   advance911EdgesDevice<<<blocksPerGrid, threadsPerBlock>>>(
-      totalEdgeCount_, (EdgeIndexMapDevice *)edgeIndexMapDevice, g_simulationStep,
-      Simulator::getInstance().getDeltaT(), (All911EdgeDeviceProperties *)allEdgesDevice);
+
+   //Advancement logic
+   Simulator &simulator = Simulator::getInstance();
+   //What is this if we haven't implemented a GPU version of vertices??
+   AllVertices *vertices = (AllVertices *)allVerticesDevice;
+   All911Vertices &all911Vertices = dynamic_cast<All911Vertices &>(*vertices);
+
+   for (int vertex = 0; vertex < simulator.getTotalVertices(); ++vertex) {
+      if (simulator.getModel().getLayout().vertexTypeMap_[vertex] == CALR) {
+         continue;   // TODO911: Caller Regions will have different behaviour
+      }
+      advanceSingleEdge(vertex);
+   }
+}
+
+void All911Edges::advanceSingleEdge(int vertex) {
+   int start = edgeIndexMap.incomingEdgeBegin_[vertex];
+   int count = edgeIndexMap.incomingEdgeCount_[vertex];
+
+   // Loop over all the edges and pull the data in
+   for (int eIdxMap = start; eIdxMap < start + count; ++eIdxMap) {
+      int edgeIdx = edgeIndexMap.incomingEdgeIndexMap_[eIdxMap];
+
+      if (!inUse_[edgeIdx]) {
+         continue;
+      }   // Edge isn't in use
+      if (isAvailable_[edgeIdx]) {
+         continue;
+      }   // Edge doesn't have a call
+
+      int dst = destVertexIndex_[edgeIdx];
+      // The destination vertex should be the one pulling the information
+      assert(dst == vertex);
+
+      CircularBuffer<Call> &dstQueue = all911Vertices.getQueue(dst);
+      if (dstQueue.size() >= (dstQueue.capacity() - all911Vertices.busyServers(dst))) {
+         // Call is dropped because there is no space in the waiting queue
+         if (!isRedial_[edgeIdx]) {
+            // Only count the dropped call if it's not a redial
+            all911Vertices.droppedCalls(dst)++;
+            // Record that we received a call
+            all911Vertices.receivedCalls(dst)++;
+            LOG4CPLUS_DEBUG(edgeLogger_,
+                           "Call dropped: " << all911Vertices.droppedCalls(dst) << ", time: "
+                                             << time_[edgeIdx] << ", vertex: " << dst
+                                             << ", queue size: " << dstQueue.size());
+         }
+      } else {
+         // Transfer call to destination
+         dstQueue.put(call_[edgeIdx]);
+         // Record that we received a call
+         all911Vertices.receivedCalls(dst)++;
+         isAvailable_[edgeIdx] = true;
+         isRedial_[edgeIdx] = false;
+      }
+   }
 }
 
 ///  Set some parameters used for advanceEdgesDevice.
@@ -282,21 +346,16 @@ void All911Edges::printGPUEdgesProps(void *allEdgesDeviceProps) const
    BGSIZE size = maxEdgesPerVertex_ * countVertices_;
    if (size != 0) {
       //allocate print out data members
-      //int *sourceNeuronIndexPrint = new int[size];
       int *sourceVertexIndexPrint = new int[size];
-      //int *destNeuronIndexPrint = new int[size];
       int *destVertexIndexPrint = new int[size];
       BGFLOAT *WPrint = new BGFLOAT[size];
       edgeType *typePrint = new edgeType[size];
       // The representation of inUsePrint has been updated from bool to unsigned char
       // to store 1 (true) or 0 (false) for the support of serialization operations. See ISSUE-459
       unsigned char *inUsePrint = new unsigned char[size];
-      //BGSIZE *synapseCountsPrint = new BGSIZE[countVertices_];
       BGSIZE *edgeCountsPrint = new BGSIZE[countVertices_];
-      //BGSIZE totalSynapseCountPrint;
       BGSIZE totalEdgeCountPrint;
       BGSIZE maxEdgesPerVertexPrint;
-      //int countNeuronsPrint;
       int countVerticesPrint;
       unsigned char *isAvailablePrint = new unsigned char[size];
       unsigned char *isRedialPrint = new unsigned char[size];
@@ -420,4 +479,28 @@ void All911Edges::printGPUEdgesProps(void *allEdgesDeviceProps) const
       delete[] responderTypePrint;
       responderTypePrint = nullptr;
    }
+}
+
+__global__ void advance911EdgesDevice(int totalEdgeCount, EdgeIndexMapDevice *edgeIndexMapDevice, All911EdgeDeviceProperties *allEdgesDevice)
+{
+   int idx = blockIdx.x * blockDim.x + threadIdx.x;
+   if (idx >= totalEdgeCount) {
+      return;
+   }
+   BGSIZE iEdg = edgeIndexMapDevice->incomingEdgeIndexMap_[idx];
+   unsigned char inUse = allEdgesDevice->inUse_[iEdg];
+   unsigned char isAvailable = allEdgesDevice->isAvailable_[iEdg];
+   unsigned char isRedial = allEdgesDevice->isRedial_[iEdg];
+
+   if (inUse == 0) {
+      return;
+   }   // Edge isn't in use
+   if (isAvailable == 1) {
+      return;
+   }   // Edge doesn't have a call
+   
+   int dst = allEdgesDevice->destVertexIndex_[iEdg];
+   // The destination vertex should be the one pulling the information
+   //Not sure if assert can be called from a kernel
+   //assert(dst == vertex);
 }

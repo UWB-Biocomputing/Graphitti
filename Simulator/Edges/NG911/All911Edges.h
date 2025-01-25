@@ -119,10 +119,10 @@ public:
 
 #endif
 
-   /// If edge has a call or not
+   /// If edge has a call or not. Store 1 (true) or 0 (false)
    vector<unsigned char> isAvailable_;
 
-   /// If the call in the edge is a redial
+   /// If the call in the edge is a redial. Store 1 (true) or 0 (false)
    vector<unsigned char> isRedial_;
 
    /// The call information per edge
@@ -151,10 +151,10 @@ public:
 
 #if defined(USE_GPU)
 struct All911EdgesDeviceProperties : public AllEdgesDeviceProperties {
-   /// If edge has a call or not
+   /// If edge has a call or not. Store 1 (true) or 0 (false)
    unsigned char *isAvailable_;
 
-   /// If the call in the edge is a redial
+   /// If the call in the edge is a redial. Store 1 (true) or 0 (false)
    unsigned char *isRedial_;
 
    /// The call information per edge
