@@ -173,7 +173,7 @@ void GPUModel::advance()
    // // calculate summation point
    // calcSummationPoint();
    // integrate the inputs of the vertices
-   dynamic_cast<AllSpikingNeurons &>(vertices).integrateVertexInputs(allVerticesDevice_, synapseIndexMapDevice_, allEdgesDevice_)
+   dynamic_cast<AllSpikingNeurons &>(vertices).integrateVertexInputs(allVerticesDevice_, synapseIndexMapDevice_, allEdgesDevice_);
 
 #ifdef PERFORMANCE_METRICS
    cudaLapTime(t_gpu_calcSummation);
