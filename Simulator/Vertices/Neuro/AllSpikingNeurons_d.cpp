@@ -10,6 +10,28 @@
 #include "AllSpikingSynapses.h"
 #include "Book.h"
 
+/// CUDA kernel for adding psr of all incoming synapses to summation points.
+///
+/// Calculate the sum of synaptic input to each neuron. One thread
+/// corresponds to one neuron. Iterates sequentially through the
+/// forward synapse index map (synapseIndexMapDevice_) to access only
+/// existing synapses. Using this structure eliminates the need to skip
+/// synapses that have undergone lazy deletion from the main
+/// (allEdgesDevice) synapse structure. The forward map is
+/// re-computed during each network restructure (once per epoch) to
+/// ensure that all synapse pointers for a neuron are stored
+/// contiguously.
+///
+/// @param[in] totalVertices           Number of vertices in the entire simulation.
+/// @param[in,out] allVerticesDevice   Pointer to Neuron structures in device memory.
+/// @param[in] synapseIndexMapDevice_  Pointer to forward map structures in device memory.
+/// @param[in] allEdgesDevice      Pointer to Synapse structures in device memory.
+
+__global__ void calcSummationPointDevice(int totalVertices,
+                            AllSpikingNeuronsDeviceProperties *allVerticesDevice,
+                            EdgeIndexMapDevice *edgeIndexMapDevice,
+                            AllSpikingSynapsesDeviceProperties *allEdgesDevice);
+
 void AllSpikingNeurons::copyToDevice(void *deviceAddress)
 {
    AllSpikingNeuronsDeviceProperties allVerticesDevice;
@@ -152,4 +174,77 @@ void AllSpikingNeurons::setAdvanceVerticesDeviceParams(AllEdges &synapses)
 {
    AllSpikingSynapses &spSynapses = dynamic_cast<AllSpikingSynapses &>(synapses);
    fAllowBackPropagation_ = spSynapses.allowBackPropagation();
+}
+
+/// Add psr of all incoming synapses to summation points.
+///
+/// @param allVerticesDevice       GPU address of the allVertices struct on device memory.
+/// @param edgeIndexMapDevice      GPU address of the EdgeIndexMap on device memory.
+/// @param allEdgesDevice          GPU address of the allEdges struct on device memory.
+void AllSpikingNeurons::integrateVertexInputs(void *allVerticesDevice, EdgeIndexMapDevice *edgeIndexMapDevice, void *allEdgesDevice)
+{
+   // CUDA parameters
+   const int threadsPerBlock = 256;
+   int blocksPerGrid
+      = (Simulator::getInstance().getTotalVertices() + threadsPerBlock - 1) / threadsPerBlock;
+   int vertex_count = Simulator::getInstance().getTotalVertices();
+
+   calcSummationPointDevice<<<blocksPerGrid, threadsPerBlock>>>(
+      vertex_count, 
+      (AllSpikingNeuronsDeviceProperties *)allVerticesDevice, 
+      edgeIndexMapDevice,
+      (AllSpikingSynapsesDeviceProperties *)allEdgesDevice);
+}
+
+/// CUDA kernel for adding psr of all incoming synapses to summation points.
+///
+/// Calculate the sum of synaptic input to each neuron. One thread
+/// corresponds to one neuron. Iterates sequentially through the
+/// forward synapse index map (synapseIndexMapDevice_) to access only
+/// existing synapses. Using this structure eliminates the need to skip
+/// synapses that have undergone lazy deletion from the main
+/// (allEdgesDevice) synapse structure. The forward map is
+/// re-computed during each network restructure (once per epoch) to
+/// ensure that all synapse pointers for a neuron are stored
+/// contiguously.
+///
+/// @param[in] totalVertices           Number of vertices in the entire simulation.
+/// @param[in,out] allVerticesDevice   Pointer to Neuron structures in device memory.
+/// @param[in] edgeIndexMapDevice  Pointer to forward map structures in device memory.
+/// @param[in] allEdgesDevice      Pointer to Synapse structures in device memory.
+
+__global__ void
+   calcSummationPointDevice(int totalVertices,
+                            AllSpikingNeuronsDeviceProperties *allVerticesDevice,
+                            EdgeIndexMapDevice *edgeIndexMapDevice,
+                            AllSpikingSynapsesDeviceProperties *allEdgesDevice)
+{
+   // The usual thread ID calculation and guard against excess threads
+   // (beyond the number of vertices, in this case).
+   int idx = blockIdx.x * blockDim.x + threadIdx.x;
+   if (idx >= totalVertices)
+      return;
+
+   // Number of incoming synapses
+   BGSIZE synCount = edgeIndexMapDevice->incomingEdgeCount_[idx];
+   // Optimization: terminate thread if no incoming synapses
+   if (synCount != 0) {
+      // Index of start of this neuron's block of forward map entries
+      int beginIndex = edgeIndexMapDevice->incomingEdgeBegin_[idx];
+      // Address of the start of this neuron's block of forward map entries
+      BGSIZE *activeMapBegin = &(edgeIndexMapDevice->incomingEdgeIndexMap_[beginIndex]);
+      // Summed post-synaptic response (PSR)
+      BGFLOAT sum = 0.0;
+      // Index of the current incoming synapse
+      BGSIZE synIndex;
+      // Repeat for each incoming synapse
+      for (BGSIZE i = 0; i < synCount; i++) {
+         // Get index of current incoming synapse
+         synIndex = activeMapBegin[i];
+         // Fetch its PSR and add into sum
+         sum += allEdgesDevice->psr_[synIndex];
+      }
+      // Store summed PSR into this neuron's summation point
+      allVerticesDevice->summationPoints_[idx] = sum;
+   }
 }
