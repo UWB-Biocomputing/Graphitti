@@ -241,6 +241,12 @@ public:
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIndexMap) override;
 
+   /// Performs an integration operation per vertex using the inputs to the vertex.
+   ///
+   ///  @param  edges         The edge list to search from.
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   virtual void integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIndexMap);
+
 protected:
 
 #endif   // defined(USE_GPU)
