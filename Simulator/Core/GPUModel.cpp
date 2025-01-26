@@ -170,8 +170,6 @@ void GPUModel::advance()
    cudaStartTimer();
 #endif   // PERFORMANCE_METRICS
 
-   // // calculate summation point
-   // calcSummationPoint();
    // integrate the inputs of the vertices
    dynamic_cast<AllSpikingNeurons &>(vertices).integrateVertexInputs(allVerticesDevice_, synapseIndexMapDevice_, allEdgesDevice_);
 
@@ -179,19 +177,6 @@ void GPUModel::advance()
    cudaLapTime(t_gpu_calcSummation);
 #endif   // PERFORMANCE_METRICS
 }
-
-// /// Add psr of all incoming synapses to summation points.
-// void GPUModel::calcSummationPoint()
-// {
-//    // CUDA parameters
-//    const int threadsPerBlock = 256;
-//    int blocksPerGrid
-//       = (Simulator::getInstance().getTotalVertices() + threadsPerBlock - 1) / threadsPerBlock;
-
-//    calcSummationPointDevice<<<blocksPerGrid, threadsPerBlock>>>(
-//       Simulator::getInstance().getTotalVertices(), allVerticesDevice_, synapseIndexMapDevice_,
-//       allEdgesDevice_);
-// }
 
 /// Update the connection of all the Neurons and Synapses of the simulation.
 void GPUModel::updateConnections()
@@ -308,58 +293,6 @@ void GPUModel::copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost
    HANDLE_ERROR(cudaMemcpy(synapseIndexMapDevice_, &synapseIMapDevice, sizeof(EdgeIndexMapDevice),
                            cudaMemcpyHostToDevice));
 }
-
-// /// Calculate the sum of synaptic input to each neuron.
-// ///
-// /// Calculate the sum of synaptic input to each neuron. One thread
-// /// corresponds to one neuron. Iterates sequentially through the
-// /// forward synapse index map (synapseIndexMapDevice_) to access only
-// /// existing synapses. Using this structure eliminates the need to skip
-// /// synapses that have undergone lazy deletion from the main
-// /// (allEdgesDevice) synapse structure. The forward map is
-// /// re-computed during each network restructure (once per epoch) to
-// /// ensure that all synapse pointers for a neuron are stored
-// /// contiguously.
-// ///
-// /// @param[in] totalVertices           Number of vertices in the entire simulation.
-// /// @param[in,out] allVerticesDevice   Pointer to Neuron structures in device memory.
-// /// @param[in] synapseIndexMapDevice_  Pointer to forward map structures in device memory.
-// /// @param[in] allEdgesDevice      Pointer to Synapse structures in device memory.
-// __global__ void
-//    calcSummationPointDevice(int totalVertices,
-//                             AllSpikingNeuronsDeviceProperties *__restrict__ allVerticesDevice,
-//                             const EdgeIndexMapDevice *__restrict__ synapseIndexMapDevice_,
-//                             const AllSpikingSynapsesDeviceProperties *__restrict__ allEdgesDevice)
-// {
-//    // The usual thread ID calculation and guard against excess threads
-//    // (beyond the number of vertices, in this case).
-//    int idx = blockIdx.x * blockDim.x + threadIdx.x;
-//    if (idx >= totalVertices)
-//       return;
-
-//    // Number of incoming synapses
-//    const BGSIZE synCount = synapseIndexMapDevice_->incomingEdgeCount_[idx];
-//    // Optimization: terminate thread if no incoming synapses
-//    if (synCount != 0) {
-//       // Index of start of this neuron's block of forward map entries
-//       const int beginIndex = synapseIndexMapDevice_->incomingEdgeBegin_[idx];
-//       // Address of the start of this neuron's block of forward map entries
-//       const BGSIZE *activeMapBegin = &(synapseIndexMapDevice_->incomingEdgeIndexMap_[beginIndex]);
-//       // Summed post-synaptic response (PSR)
-//       BGFLOAT sum = 0.0;
-//       // Index of the current incoming synapse
-//       BGSIZE synIndex;
-//       // Repeat for each incoming synapse
-//       for (BGSIZE i = 0; i < synCount; i++) {
-//          // Get index of current incoming synapse
-//          synIndex = activeMapBegin[i];
-//          // Fetch its PSR and add into sum
-//          sum += allEdgesDevice->psr_[synIndex];
-//       }
-//       // Store summed PSR into this neuron's summation point
-//       allVerticesDevice->summationPoints_[idx] = sum;
-//    }
-// }
 
 /// Copy GPU Synapse data to CPU.
 void GPUModel::copyGPUtoCPU()

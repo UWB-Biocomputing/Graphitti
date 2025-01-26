@@ -151,16 +151,6 @@ struct AllSpikingNeuronsDeviceProperties : public AllVerticesDeviceProperties {
 };
 #endif   // defined(USE_GPU)
 
-// //TODO: It'd be nice to put this inside the #if defined(USE_GPU) if possible
-// #if defined(__CUDACC__)
-// //! Calculate summation point.
-// extern __global__ void
-//    calcSummationPointDevice(int totalVertices,
-//                             AllSpikingNeuronsDeviceProperties *__restrict__ allNeurnsDevice,
-//                             const EdgeIndexMapDevice *__restrict__ synapseIndexMapDevice_,
-//                             const AllSpikingSynapsesDeviceProperties *__restrict__ allEdgesDevice);
-// #endif
-
 CEREAL_REGISTER_TYPE(AllSpikingNeurons);
 
 ///  Cereal serialization method
