@@ -153,9 +153,8 @@ void GPUModel::advance()
 
    // display running info to console
    // Advance neurons ------------->
-   dynamic_cast<AllSpikingNeurons &>(vertices).advanceVertices(edges,
-                                                              allVerticesDevice_, allEdgesDevice_,
-                                                              randNoise_d, synapseIndexMapDevice_);
+   dynamic_cast<AllSpikingNeurons &>(vertices).advanceVertices(
+      edges, allVerticesDevice_, allEdgesDevice_, randNoise_d, synapseIndexMapDevice_);
 
 #ifdef PERFORMANCE_METRICS
    cudaLapTime(t_gpu_advanceNeurons);
@@ -171,7 +170,8 @@ void GPUModel::advance()
 #endif   // PERFORMANCE_METRICS
 
    // integrate the inputs of the vertices
-   dynamic_cast<AllSpikingNeurons &>(vertices).integrateVertexInputs(allVerticesDevice_, synapseIndexMapDevice_, allEdgesDevice_);
+   dynamic_cast<AllSpikingNeurons &>(vertices).integrateVertexInputs(
+      allVerticesDevice_, synapseIndexMapDevice_, allEdgesDevice_);
 
 #ifdef PERFORMANCE_METRICS
    cudaLapTime(t_gpu_calcSummation);

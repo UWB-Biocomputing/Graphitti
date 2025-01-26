@@ -232,13 +232,15 @@ public:
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
                                 float randNoise[], EdgeIndexMapDevice *edgeIndexMapDevice) {};
    virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};
-   
+
    /// Performs an integration operation per vertex using the inputs to the vertex.
    ///
    /// @param allVerticesDevice       GPU address of the allVertices struct on device memory.
    /// @param edgeIndexMapDevice      GPU address of the EdgeIndexMap on device memory.
    /// @param allEdgesDevice          GPU address of the allEdges struct on device memory.
-   virtual void integrateVertexInputs(void *allVerticesDevice, EdgeIndexMapDevice *edgeIndexMapDevice, void *allEdgesDevice) {};
+   virtual void integrateVertexInputs(void *allVerticesDevice,
+                                      EdgeIndexMapDevice *edgeIndexMapDevice,
+                                      void *allEdgesDevice) {};
 #else   // !defined(USE_GPU)
 public:
    ///  Update internal state of the indexed Vertex (called by every simulation step).

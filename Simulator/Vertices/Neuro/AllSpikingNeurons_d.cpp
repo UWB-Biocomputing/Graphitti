@@ -28,9 +28,9 @@
 /// @param[in] allEdgesDevice      Pointer to Synapse structures in device memory.
 
 __global__ void calcSummationPointDevice(int totalVertices,
-                            AllSpikingNeuronsDeviceProperties *allVerticesDevice,
-                            EdgeIndexMapDevice *edgeIndexMapDevice,
-                            AllSpikingSynapsesDeviceProperties *allEdgesDevice);
+                                         AllSpikingNeuronsDeviceProperties *allVerticesDevice,
+                                         EdgeIndexMapDevice *edgeIndexMapDevice,
+                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice);
 
 void AllSpikingNeurons::copyToDevice(void *deviceAddress)
 {
@@ -181,7 +181,9 @@ void AllSpikingNeurons::setAdvanceVerticesDeviceParams(AllEdges &synapses)
 /// @param allVerticesDevice       GPU address of the allVertices struct on device memory.
 /// @param edgeIndexMapDevice      GPU address of the EdgeIndexMap on device memory.
 /// @param allEdgesDevice          GPU address of the allEdges struct on device memory.
-void AllSpikingNeurons::integrateVertexInputs(void *allVerticesDevice, EdgeIndexMapDevice *edgeIndexMapDevice, void *allEdgesDevice)
+void AllSpikingNeurons::integrateVertexInputs(void *allVerticesDevice,
+                                              EdgeIndexMapDevice *edgeIndexMapDevice,
+                                              void *allEdgesDevice)
 {
    // CUDA parameters
    const int threadsPerBlock = 256;
@@ -190,9 +192,7 @@ void AllSpikingNeurons::integrateVertexInputs(void *allVerticesDevice, EdgeIndex
    int vertex_count = Simulator::getInstance().getTotalVertices();
 
    calcSummationPointDevice<<<blocksPerGrid, threadsPerBlock>>>(
-      vertex_count, 
-      (AllSpikingNeuronsDeviceProperties *)allVerticesDevice, 
-      edgeIndexMapDevice,
+      vertex_count, (AllSpikingNeuronsDeviceProperties *)allVerticesDevice, edgeIndexMapDevice,
       (AllSpikingSynapsesDeviceProperties *)allEdgesDevice);
 }
 
@@ -213,11 +213,10 @@ void AllSpikingNeurons::integrateVertexInputs(void *allVerticesDevice, EdgeIndex
 /// @param[in] edgeIndexMapDevice  Pointer to forward map structures in device memory.
 /// @param[in] allEdgesDevice      Pointer to Synapse structures in device memory.
 
-__global__ void
-   calcSummationPointDevice(int totalVertices,
-                            AllSpikingNeuronsDeviceProperties *allVerticesDevice,
-                            EdgeIndexMapDevice *edgeIndexMapDevice,
-                            AllSpikingSynapsesDeviceProperties *allEdgesDevice)
+__global__ void calcSummationPointDevice(int totalVertices,
+                                         AllSpikingNeuronsDeviceProperties *allVerticesDevice,
+                                         EdgeIndexMapDevice *edgeIndexMapDevice,
+                                         AllSpikingSynapsesDeviceProperties *allEdgesDevice)
 {
    // The usual thread ID calculation and guard against excess threads
    // (beyond the number of vertices, in this case).

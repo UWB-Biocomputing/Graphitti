@@ -67,7 +67,8 @@ public:
    /// @param allVerticesDevice       GPU address of the allVertices struct on device memory.
    /// @param edgeIndexMapDevice      GPU address of the EdgeIndexMap on device memory.
    /// @param allEdgesDevice          GPU address of the allEdges struct on device memory.
-   virtual void integrateVertexInputs(void *allVerticesDevice, EdgeIndexMapDevice *edgeIndexMapDevice, void *allEdgesDevice);
+   virtual void integrateVertexInputs(void *allVerticesDevice,
+                                      EdgeIndexMapDevice *edgeIndexMapDevice, void *allEdgesDevice);
 
    ///  Clear the spike counts out of all neurons.
    //

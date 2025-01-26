@@ -129,15 +129,15 @@ void AllSpikingNeurons::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edg
       BGSIZE iEdg = edgeIndexMap.incomingEdgeIndexMap_[i];
       BGFLOAT &psr = synapses.psr_[iEdg];
       int sumPointIndex = synapses.destVertexIndex_[iEdg];
-      // and apply it to the summation point
-      #ifdef USE_OMP
+   // and apply it to the summation point
+   #ifdef USE_OMP
       #pragma omp atomic #endif
-      #endif
+   #endif
       summationPoints_[sumPointIndex] += psr;
-      #ifdef USE_OMP
-      //PAB: atomic above has implied flush (following statement generates error -- can't be member variable)
-      //#pragma omp flush (summationPoint)
-      #endif
+   #ifdef USE_OMP
+   //PAB: atomic above has implied flush (following statement generates error -- can't be member variable)
+   //#pragma omp flush (summationPoint)
+   #endif
    }
 }
 
