@@ -499,13 +499,17 @@ CUDA_CALLABLE void eraseSpikingSynapse(AllSpikingSynapsesDeviceProperties *allEd
 /// @param destVertex            Index of the destination neuron.
 CUDA_CALLABLE edgeType edgType(vertexType *neuronTypeMap_d, int srcVertex, int destVertex)
 {
-   if (neuronTypeMap_d[srcVertex] == vertexType::INH && neuronTypeMap_d[destVertex] == vertexType::INH)
+   if (neuronTypeMap_d[srcVertex] == vertexType::INH
+       && neuronTypeMap_d[destVertex] == vertexType::INH)
       return edgeType::II;
-   else if (neuronTypeMap_d[srcVertex] == vertexType::INH && neuronTypeMap_d[destVertex] == vertexType::EXC)
+   else if (neuronTypeMap_d[srcVertex] == vertexType::INH
+            && neuronTypeMap_d[destVertex] == vertexType::EXC)
       return edgeType::IE;
-   else if (neuronTypeMap_d[srcVertex] == vertexType::EXC && neuronTypeMap_d[destVertex] == vertexType::INH)
+   else if (neuronTypeMap_d[srcVertex] == vertexType::EXC
+            && neuronTypeMap_d[destVertex] == vertexType::INH)
       return edgeType::EI;
-   else if (neuronTypeMap_d[srcVertex] == vertexType::EXC && neuronTypeMap_d[destVertex] == vertexType::EXC)
+   else if (neuronTypeMap_d[srcVertex] == vertexType::EXC
+            && neuronTypeMap_d[destVertex] == vertexType::EXC)
       return edgeType::EE;
 
    return edgeType::ETYPE_UNDEF;

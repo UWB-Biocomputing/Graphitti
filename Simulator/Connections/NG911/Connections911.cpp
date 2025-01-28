@@ -194,7 +194,8 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
          }
 
          // Identify all psap-less responders
-         if (layout.vertexTypeMap_[destVertex] == vertexType::LAW || layout.vertexTypeMap_[destVertex] == vertexType::FIRE
+         if (layout.vertexTypeMap_[destVertex] == vertexType::LAW
+             || layout.vertexTypeMap_[destVertex] == vertexType::FIRE
              || layout.vertexTypeMap_[destVertex] == vertexType::EMS) {
             respsToReroute.push_back(destVertex);
          }
@@ -229,8 +230,8 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       }
 
       // Insert Caller to PSAP edge
-      BGSIZE iEdg
-         = edges_->addEdge(edgeType::CP, srcVertex, closestPSAP, Simulator::getInstance().getDeltaT());
+      BGSIZE iEdg = edges_->addEdge(edgeType::CP, srcVertex, closestPSAP,
+                                    Simulator::getInstance().getDeltaT());
 
       // Record added edge
       ChangedEdge addedEdge;
@@ -257,8 +258,8 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       }
 
       // Insert PSAP to Responder edge
-      BGSIZE iEdg
-         = edges_->addEdge(edgeType::PR, closestPSAP, destVertex, Simulator::getInstance().getDeltaT());
+      BGSIZE iEdg = edges_->addEdge(edgeType::PR, closestPSAP, destVertex,
+                                    Simulator::getInstance().getDeltaT());
 
       // Record added edge
       ChangedEdge addedEdge;
@@ -281,7 +282,8 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
 
    // Find all resps
    for (int i = 0; i < numVertices; i++) {
-      if (layout.vertexTypeMap_[i] == vertexType::LAW || layout.vertexTypeMap_[i] == vertexType::FIRE
+      if (layout.vertexTypeMap_[i] == vertexType::LAW
+          || layout.vertexTypeMap_[i] == vertexType::FIRE
           || layout.vertexTypeMap_[i] == vertexType::EMS) {
          resps.push_back(i);
       }

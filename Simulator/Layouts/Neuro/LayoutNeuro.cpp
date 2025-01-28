@@ -104,13 +104,17 @@ void LayoutNeuro::initStarterMap()
 ///  @return type of the synapse.
 edgeType LayoutNeuro::edgType(int srcVertex, int destVertex)
 {
-   if (vertexTypeMap_[srcVertex] == vertexType::INH && vertexTypeMap_[destVertex] == vertexType::INH)
+   if (vertexTypeMap_[srcVertex] == vertexType::INH
+       && vertexTypeMap_[destVertex] == vertexType::INH)
       return edgeType::II;
-   else if (vertexTypeMap_[srcVertex] == vertexType::INH && vertexTypeMap_[destVertex] == vertexType::EXC)
+   else if (vertexTypeMap_[srcVertex] == vertexType::INH
+            && vertexTypeMap_[destVertex] == vertexType::EXC)
       return edgeType::IE;
-   else if (vertexTypeMap_[srcVertex] == vertexType::EXC && vertexTypeMap_[destVertex] == vertexType::INH)
+   else if (vertexTypeMap_[srcVertex] == vertexType::EXC
+            && vertexTypeMap_[destVertex] == vertexType::INH)
       return edgeType::EI;
-   else if (vertexTypeMap_[srcVertex] == vertexType::EXC && vertexTypeMap_[destVertex] == vertexType::EXC)
+   else if (vertexTypeMap_[srcVertex] == vertexType::EXC
+            && vertexTypeMap_[destVertex] == vertexType::EXC)
       return edgeType::EE;
 
    return edgeType::ETYPE_UNDEF;
