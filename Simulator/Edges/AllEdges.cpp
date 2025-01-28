@@ -116,7 +116,7 @@ void AllEdges::writeEdge(ostream &output, BGSIZE iEdg) const
    output << sourceVertexIndex_[iEdg] << ends;
    output << destVertexIndex_[iEdg] << ends;
    output << W_[iEdg] << ends;
-   output << static_cast<int>(type_[iEdg]) << ends;
+   output << type_[iEdg] << ends;
    output << (inUse_[iEdg] == 1 ? "true" : "false") << ends;
 }
 
