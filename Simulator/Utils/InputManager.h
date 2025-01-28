@@ -267,29 +267,29 @@ private:
    bool getProperty(T &event, string propName, EventMemberPtr &eventMbrPtr,
                     const boost::property_tree::ptree &pTree)
    {
-      switch (eventMbrPtr.which()) {
+      switch (static_cast<PropertyType>(eventMbrPtr.which())) {
          // variant.which() returns a value between 0 and number of types - 1
-         case static_cast<int>(PropertyType::INTEGER): {
+         case PropertyType::INTEGER: {
             int T::*propPtr = get<int T::*>(eventMbrPtr);
             event.*propPtr = pTree.get<int>(propName);
          } break;
-         case static_cast<int>(PropertyType::LONG): {
+         case PropertyType::LONG: {
             long T::*propPtr = get<long T::*>(eventMbrPtr);
             event.*propPtr = pTree.get<long>(propName);
          } break;
-         case static_cast<int>(PropertyType::UINT64): {
+         case PropertyType::UINT64: {
             uint64_t T::*propPtr = get<uint64_t T::*>(eventMbrPtr);
             event.*propPtr = pTree.get<uint64_t>(propName);
          } break;
-         case static_cast<int>(PropertyType::FLOAT): {
+         case PropertyType::FLOAT: {
             float T::*propPtr = get<float T::*>(eventMbrPtr);
             event.*propPtr = pTree.get<float>(propName);
          } break;
-         case static_cast<int>(PropertyType::DOUBLE): {
+         case PropertyType::DOUBLE: {
             double T::*propPtr = get<double T::*>(eventMbrPtr);
             event.*propPtr = pTree.get<double>(propName);
          } break;
-         case static_cast<int>(PropertyType::STRING): {
+         case PropertyType::STRING: {
             string T::*propPtr = get<string T::*>(eventMbrPtr);
             event.*propPtr = pTree.get<string>(propName);
          } break;

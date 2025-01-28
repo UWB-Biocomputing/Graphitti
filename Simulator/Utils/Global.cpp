@@ -62,7 +62,7 @@ string neuronTypeToString(vertexType t)
       case vertexType::EXC:
          return "EXC";
       default:
-         cerr << "ERROR->neuronTypeToString() failed, unknown type: " << static_cast<int>(t) << endl;
+         cerr << "ERROR->neuronTypeToString() failed, unknown type: " << t << endl;
          assert(false);
          return nullptr;   // Must return a value -- this will probably cascade to another failure
    }
