@@ -39,7 +39,7 @@ class AllVertices;
 // using fpCreateSynapse_t =  void (*)(void*, int, int, int, int, BGFLOAT*, BGFLOAT, edgeType);
 
 // enumerate all non-abstract edge classes.
-enum enumClassSynapses {
+enum class enumClassSynapses {
    classAllSpikingSynapses,
    classAllDSSynapses,
    classAllSTDPSynapses,

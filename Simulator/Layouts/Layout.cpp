@@ -35,7 +35,7 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
 
    // Register loadParameters function as a loadParameters operation in the Operation Manager
    function<void()> loadParametersFunc = std::bind(&Layout::loadParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::op::loadParameters,
+   OperationManager::getInstance().registerOperation(Operations::loadParameters,
                                                      loadParametersFunc);
 
    // Register printParameters function as a printParameters operation in the OperationManager
@@ -46,7 +46,7 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
    // Register registerGraphProperties method as registerGraphProperties operation
    // in the OperationManager
    function<void()> registerGraphPropertiesFunc = bind(&Layout::registerGraphProperties, this);
-   OperationManager::getInstance().registerOperation(Operations::registerGraphProperties,
+   OperationManager::getInstance().registerOperation((Operations::registerGraphProperties),
                                                      registerGraphPropertiesFunc);
 
    // Get a copy of the file logger to use log4cplus macros
@@ -89,7 +89,7 @@ void Layout::setup()
 
    // more allocation of internal memory
    starterMap_.assign(numVertices_, false);
-   vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
+   vertexTypeMap_.assign(numVertices_, vertexType::VTYPE_UNDEF);
 
    // Loop over all vertices and set their x and y locations
    GraphManager::VertexIterator vi, vi_end;
@@ -166,7 +166,7 @@ void Layout::printParameters() const
 void Layout::generateVertexTypeMap()
 {
    DEBUG(cout << "\nInitializing vertex type map: VTYPE_UNDEF" << endl;);
-   vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
+   vertexTypeMap_.assign(numVertices_, vertexType::VTYPE_UNDEF);
 }
 
 /// Populates the starter map.

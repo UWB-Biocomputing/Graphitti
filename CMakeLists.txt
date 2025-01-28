@@ -12,7 +12,6 @@ cmake_minimum_required(VERSION 3.12)
 #
 #"YES" / GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
-
 if(NOT ENABLE_CUDA)
         set(ENABLE_CUDA NO)
 endif()

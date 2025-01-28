@@ -33,13 +33,13 @@ public:
    /// Called by lower level classes constructors on creation to register their operations with their operation type.
    /// This method can be overloaded to handle different function signatures.
    /// Handles function signature: void ()
-   void registerOperation(const Operations::op &operation, const function<void()> &function);
+   void registerOperation(const Operations &operation, const function<void()> &function);
 
    /// Takes in a operation type and invokes all registered functions that are classified as that operation type.
-   void executeOperation(const Operations::op &operation) const;
+   void executeOperation(const Operations &operation) const;
 
    /// Takes in the operation enum and returns the enum as a string. Used for debugging purposes.
-   string operationToString(const Operations::op &operation) const;
+   string operationToString(const Operations &operation) const;
 
    /// Delete copy and move methods to avoid copy instances of the singleton
    OperationManager(const OperationManager &operationManager) = delete;

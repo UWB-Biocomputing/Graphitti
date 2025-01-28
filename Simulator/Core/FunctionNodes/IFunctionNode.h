@@ -19,9 +19,9 @@ public:
    virtual ~IFunctionNode() = default;
 
    /// Invokes the stored function if the sent operation type matches the operation type the function is stored as.
-   virtual bool invokeFunction(const Operations::op &operation) const = 0;
+   virtual bool invokeFunction(const Operations &operation) const = 0;
 
 protected:
    /// The operation type of the stored function.
-   Operations::op operationType_;
+   Operations operationType_;
 };

@@ -83,13 +83,13 @@ void AllNeuroEdges::writeEdge(ostream &output, BGSIZE iEdg) const
 int AllNeuroEdges::edgSign(const edgeType type)
 {
    switch (type) {
-      case II:
-      case IE:
+      case edgeType::II:
+      case edgeType::IE:
          return -1;
-      case EI:
-      case EE:
+      case edgeType::EI:
+      case edgeType::EE:
          return 1;
-      case ETYPE_UNDEF:
+      case edgeType::ETYPE_UNDEF:
          return 0;
       default:
          return 0;

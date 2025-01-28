@@ -53,7 +53,7 @@ void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap
       int start = edgeIndexMap.incomingEdgeBegin_[vertex];
       int count = edgeIndexMap.incomingEdgeCount_[vertex];
 
-      if (simulator.getModel().getLayout().vertexTypeMap_[vertex] == CALR) {
+      if (simulator.getModel().getLayout().vertexTypeMap_[vertex] == vertexType::CALR) {
          continue;   // TODO911: Caller Regions will have different behaviour
       }
 

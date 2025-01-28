@@ -58,12 +58,12 @@ void LayoutNeuro::generateVertexTypeMap()
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
       if (gm[*vi].type == "INH") {
-         vertexTypeMap_[*vi] = INH;
+         vertexTypeMap_[*vi] = vertexType::INH;
          numInhibitoryNeurons++;
       }
       // Default Type is Excitatory
       else {
-         vertexTypeMap_[*vi] = EXC;
+         vertexTypeMap_[*vi] = vertexType::EXC;
       }
    }
 
@@ -104,16 +104,20 @@ void LayoutNeuro::initStarterMap()
 ///  @return type of the synapse.
 edgeType LayoutNeuro::edgType(int srcVertex, int destVertex)
 {
-   if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == INH)
-      return II;
-   else if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == EXC)
-      return IE;
-   else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == INH)
-      return EI;
-   else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == EXC)
-      return EE;
+   if (vertexTypeMap_[srcVertex] == vertexType::INH
+       && vertexTypeMap_[destVertex] == vertexType::INH)
+      return edgeType::II;
+   else if (vertexTypeMap_[srcVertex] == vertexType::INH
+            && vertexTypeMap_[destVertex] == vertexType::EXC)
+      return edgeType::IE;
+   else if (vertexTypeMap_[srcVertex] == vertexType::EXC
+            && vertexTypeMap_[destVertex] == vertexType::INH)
+      return edgeType::EI;
+   else if (vertexTypeMap_[srcVertex] == vertexType::EXC
+            && vertexTypeMap_[destVertex] == vertexType::EXC)
+      return edgeType::EE;
 
-   return ETYPE_UNDEF;
+   return edgeType::ETYPE_UNDEF;
 }
 
 // Note: This code was previously used for debugging, but it is now dead code left behind

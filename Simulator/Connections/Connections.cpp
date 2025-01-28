@@ -38,7 +38,7 @@ Connections::Connections()
 
    // Register loadParameters function with Operation Manager
    function<void()> loadParamsFunc = bind(&Connections::loadParameters, this);
-   opsManager.registerOperation(Operations::op::loadParameters, loadParamsFunc);
+   opsManager.registerOperation(Operations::loadParameters, loadParamsFunc);
 
    // Register registerGraphProperties as Operations registerGraphProperties
    function<void()> regGraphPropsFunc = bind(&Connections::registerGraphProperties, this);

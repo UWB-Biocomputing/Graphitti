@@ -59,7 +59,7 @@ public:
    // order as declared in the boost::variant below.
    using EventMemberPtr
       = boost::variant<int T::*, uint64_t T::*, long T::*, float T::*, double T::*, string T::*>;
-   enum PropertyType { INTEGER, UINT64, LONG, FLOAT, DOUBLE, STRING };
+   enum class PropertyType { INTEGER, UINT64, LONG, FLOAT, DOUBLE, STRING };
 
    // Some aliases for better readability
    using VertexId_t = int;
@@ -267,7 +267,7 @@ private:
    bool getProperty(T &event, string propName, EventMemberPtr &eventMbrPtr,
                     const boost::property_tree::ptree &pTree)
    {
-      switch (eventMbrPtr.which()) {
+      switch (static_cast<PropertyType>(eventMbrPtr.which())) {
          // variant.which() returns a value between 0 and number of types - 1
          case PropertyType::INTEGER: {
             int T::*propPtr = get<int T::*>(eventMbrPtr);
