@@ -26,7 +26,7 @@ class AllVertices;
 class Recorder {
 public:
    /// The recorded variable Type/Updated frequency
-   enum UpdatedType {
+   enum class UpdatedType {
       CONSTANT,   // value doesn't change in each epoch
       DYNAMIC     // value is updated in each peoch
       // Add more variable types as needed

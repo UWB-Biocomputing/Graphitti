@@ -72,7 +72,7 @@ void AllNeuroEdges::writeEdge(ostream &output, BGSIZE iEdg) const
    output << destVertexIndex_[iEdg] << ends;
    output << W_[iEdg] << ends;
    output << psr_[iEdg] << ends;
-   output << type_[iEdg] << ends;
+   output << static_cast<int>(type_[iEdg]) << ends;
    output << (inUse_[iEdg] == 1 ? "true" : "false") << ends;
 }
 
@@ -83,13 +83,13 @@ void AllNeuroEdges::writeEdge(ostream &output, BGSIZE iEdg) const
 int AllNeuroEdges::edgSign(const edgeType type)
 {
    switch (type) {
-      case II:
-      case IE:
+      case edgeType::II:
+      case edgeType::IE:
          return -1;
-      case EI:
-      case EE:
+      case edgeType::EI:
+      case edgeType::EE:
          return 1;
-      case ETYPE_UNDEF:
+      case edgeType::ETYPE_UNDEF:
          return 0;
       default:
          return 0;
@@ -107,7 +107,7 @@ void AllNeuroEdges::printSynapsesProps() const
          cout << "W[" << i << "] = " << W_[i];
          cout << " sourNeuron: " << sourceVertexIndex_[i];
          cout << " desNeuron: " << destVertexIndex_[i];
-         cout << " type: " << type_[i];
+         cout << " type: " << static_cast<int>(type_[i]);
          cout << " psr: " << psr_[i];
          cout << " in_use:" << (inUse_[i] == 1 ? "true" : "false");
       }

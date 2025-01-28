@@ -310,7 +310,7 @@ void AllSpikingSynapses::setAdvanceEdgesDeviceParams()
 ///  (see issue#137).
 void AllSpikingSynapses::setEdgeClassID()
 {
-   enumClassSynapses classSynapses_h = classAllSpikingSynapses;
+   enumClassSynapses classSynapses_h = enumClassSynapses::classAllSpikingSynapses;
    HANDLE_ERROR(cudaMemcpyToSymbol(classSynapses_d, &classSynapses_h, sizeof(enumClassSynapses)));
 }
 
@@ -405,7 +405,7 @@ void AllSpikingSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
             cout << "GPU W[" << i << "] = " << WPrint[i];
             cout << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
             cout << " GPU desNeuron: " << destNeuronIndexPrint[i];
-            cout << " GPU type: " << typePrint[i];
+            cout << " GPU type: " << static_cast<int>(typePrint[i]);
             cout << " GPU psr: " << psrPrint[i];
             cout << " GPU in_use:" << (inUsePrint[i] == 1 ? "true" : "false");
             cout << " GPU decay: " << decayPrint[i];
@@ -465,12 +465,12 @@ __global__ void advanceSpikingSynapsesDevice(int totalSynapseCount,
    // is an input in the queue?
    if (isFired) {
       switch (classSynapses_d) {
-         case classAllSpikingSynapses:
+         case enumClassSynapses::classAllSpikingSynapses:
             changeSpikingSynapsesPSRDevice(
                static_cast<AllSpikingSynapsesDeviceProperties *>(allEdgesDevice), iEdg,
                simulationStep, deltaT);
             break;
-         case classAllDSSynapses:
+         case enumClassSynapses::classAllDSSynapses:
             changeDSSynapsePSRDevice(static_cast<AllDSSynapsesDeviceProperties *>(allEdgesDevice),
                                      iEdg, simulationStep, deltaT);
             break;

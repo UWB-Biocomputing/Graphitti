@@ -284,7 +284,7 @@ void AllSTDPSynapses::advanceEdges(void *allEdgesDevice, void *allVerticesDevice
 ///  (see issue#137).
 void AllSTDPSynapses::setEdgeClassID()
 {
-   enumClassSynapses classSynapses_h = classAllSTDPSynapses;
+   enumClassSynapses classSynapses_h = enumClassSynapses::classAllSTDPSynapses;
    HANDLE_ERROR(cudaMemcpyToSymbol(classSynapses_d, &classSynapses_h, sizeof(enumClassSynapses)));
 }
 
@@ -387,7 +387,7 @@ void AllSTDPSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
             cout << "GPU W[" << i << "] = " << WPrint[i];
             cout << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
             cout << " GPU desNeuron: " << destNeuronIndexPrint[i];
-            cout << " GPU type: " << typePrint[i];
+            cout << " GPU type: " << static_cast<int>(typePrint[i]);
             cout << " GPU psr: " << psrPrint[i];
             cout << " GPU in_use:" << (inUsePrint[i] == 1 ? "true" : "false");
 
@@ -589,12 +589,12 @@ __global__ void advanceSTDPSynapsesDevice(int totalSynapseCount,
       // is an input in the queue?
       if (isFired) {
          switch (classSynapses_d) {
-            case classAllSTDPSynapses:
+            case enumClassSynapses::classAllSTDPSynapses:
                changeSpikingSynapsesPSRDevice(
                   static_cast<AllSpikingSynapsesDeviceProperties *>(allEdgesDevice), iEdg,
                   simulationStep, deltaT);
                break;
-            case classAllDynamicSTDPSynapses:
+            case enumClassSynapses::classAllDynamicSTDPSynapses:
                // Note: we cast void * over the allEdgesDevice, then recast it,
                // because AllDSSynapsesDeviceProperties inherited properties from
                // the AllDSSynapsesDeviceProperties and the AllSTDPSynapsesDeviceProperties.
@@ -674,12 +674,12 @@ __global__ void advanceSTDPSynapsesDevice(int totalSynapseCount,
          }
 
          switch (classSynapses_d) {
-            case classAllSTDPSynapses:
+            case enumClassSynapses::classAllSTDPSynapses:
                changeSpikingSynapsesPSRDevice(
                   static_cast<AllSpikingSynapsesDeviceProperties *>(allEdgesDevice), iEdg,
                   simulationStep, deltaT);
                break;
-            case classAllDynamicSTDPSynapses:
+            case enumClassSynapses::classAllDynamicSTDPSynapses:
                // Note: we cast void * over the allEdgesDevice, then recast it,
                // because AllDSSynapsesDeviceProperties inherited properties from
                // the AllDSSynapsesDeviceProperties and the AllSTDPSynapsesDeviceProperties.

@@ -59,7 +59,7 @@ public:
    // order as declared in the boost::variant below.
    using EventMemberPtr
       = boost::variant<int T::*, uint64_t T::*, long T::*, float T::*, double T::*, string T::*>;
-   enum PropertyType { INTEGER, UINT64, LONG, FLOAT, DOUBLE, STRING };
+   enum class PropertyType { INTEGER, UINT64, LONG, FLOAT, DOUBLE, STRING };
 
    // Some aliases for better readability
    using VertexId_t = int;
@@ -269,27 +269,27 @@ private:
    {
       switch (eventMbrPtr.which()) {
          // variant.which() returns a value between 0 and number of types - 1
-         case PropertyType::INTEGER: {
+         case static_cast<int>(PropertyType::INTEGER): {
             int T::*propPtr = get<int T::*>(eventMbrPtr);
             event.*propPtr = pTree.get<int>(propName);
          } break;
-         case PropertyType::LONG: {
+         case static_cast<int>(PropertyType::LONG): {
             long T::*propPtr = get<long T::*>(eventMbrPtr);
             event.*propPtr = pTree.get<long>(propName);
          } break;
-         case PropertyType::UINT64: {
+         case static_cast<int>(PropertyType::UINT64): {
             uint64_t T::*propPtr = get<uint64_t T::*>(eventMbrPtr);
             event.*propPtr = pTree.get<uint64_t>(propName);
          } break;
-         case PropertyType::FLOAT: {
+         case static_cast<int>(PropertyType::FLOAT): {
             float T::*propPtr = get<float T::*>(eventMbrPtr);
             event.*propPtr = pTree.get<float>(propName);
          } break;
-         case PropertyType::DOUBLE: {
+         case static_cast<int>(PropertyType::DOUBLE): {
             double T::*propPtr = get<double T::*>(eventMbrPtr);
             event.*propPtr = pTree.get<double>(propName);
          } break;
-         case PropertyType::STRING: {
+         case static_cast<int>(PropertyType::STRING): {
             string T::*propPtr = get<string T::*>(eventMbrPtr);
             event.*propPtr = pTree.get<string>(propName);
          } break;

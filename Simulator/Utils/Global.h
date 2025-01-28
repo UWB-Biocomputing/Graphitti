@@ -98,7 +98,7 @@ const int g_nMaxChunkSize = 100;
 // CALR: Caller radii
 // PSAP: PSAP nodes
 // EMS, FIRE, LAW: Responder nodes
-enum vertexType {
+enum class vertexType {
    // Neuro
    INH = 1,
    EXC = 2,
@@ -124,7 +124,7 @@ enum vertexType {
 //  RC - Responder to Caller
 //  PP - PSAP to PSAP
 
-enum edgeType {
+enum class edgeType {
    // NEURO
    II = 0,
    IE = 1,
