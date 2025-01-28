@@ -150,6 +150,7 @@ inline std::ostream& operator<<(std::ostream& os, edgeType eT) {
     os << static_cast<int>(eT);
     return os;
 }
+
 // The default membrane capacitance.
 #define DEFAULT_Cm (3e-8)
 // The default membrane resistance.
