@@ -178,7 +178,8 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
          advanceCALR(vertex, edges911, edgeIndexMap);
       } else if (layout.vertexTypeMap_[vertex] == vertexType::PSAP) {
          advancePSAP(vertex, edges911, edgeIndexMap);
-      } else if (layout.vertexTypeMap_[vertex] == vertexType::EMS || layout.vertexTypeMap_[vertex] == vertexType::FIRE
+      } else if (layout.vertexTypeMap_[vertex] == vertexType::EMS
+                 || layout.vertexTypeMap_[vertex] == vertexType::FIRE
                  || layout.vertexTypeMap_[vertex] == vertexType::LAW) {
          advanceRESP(vertex, edges911, edgeIndexMap);
       }

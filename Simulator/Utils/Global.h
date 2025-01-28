@@ -112,9 +112,10 @@ enum class vertexType {
    VTYPE_UNDEF = 0
 };
 // Custom streaming operator<< for the enum class vertexType
-inline std::ostream& operator<<(std::ostream& os, vertexType vT) {
-    os << static_cast<int>(vT);
-    return os;
+inline std::ostream &operator<<(std::ostream &os, vertexType vT)
+{
+   os << static_cast<int>(vT);
+   return os;
 }
 
 // Edge types.
@@ -146,9 +147,10 @@ enum class edgeType {
    ETYPE_UNDEF = -1
 };
 // Custom streaming operator<< for the enum class edgeType
-inline std::ostream& operator<<(std::ostream& os, edgeType eT) {
-    os << static_cast<int>(eT);
-    return os;
+inline std::ostream &operator<<(std::ostream &os, edgeType eT)
+{
+   os << static_cast<int>(eT);
+   return os;
 }
 
 // The default membrane capacitance.
