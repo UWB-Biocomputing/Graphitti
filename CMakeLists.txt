@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.12)
 #
 #You can also pass this flag when running cmake from the command line like this:
 #
-#cmake..- D ENABLE_CUDA = YES
+#cmake -D ENABLE_CUDA=YES ..
 #
 #"YES" / GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
@@ -34,6 +34,21 @@ if(NOT GPROF)
         set(GPROF NO)
 endif()
 
+############################################################################################
+#CONDITIONAL FLAG to change target architecture for the GPU simulator from the default
+#
+#You can pass this flag when running cmake from the command line like this, setting TARGET_ARCH \
+#       to your desired architecture:                                                            \
+#
+#cmake -D ENABLE_CUDA=YES -D TARGET_ARCH=70 ..
+#
+#"YES" / GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
+#If no TARGET_ARCH is passed in then it will default to 37 which is the kepler architecture
+############################################################################################
+if(NOT DEFINED TARGET_ARCH)
+        set(TARGET_ARCH 37)
+endif()
+
 #Creates the Graphitti project with the correct languages, depending on if using GPU or not
 #If using CUDA, also verify the CUDA package and set the required CUDA variables
 if(ENABLE_CUDA)	
@@ -45,8 +60,9 @@ if(ENABLE_CUDA)
         add_compile_definitions(USE_GPU)
 #Specify the CUDA architecture / gencode that will be targeted
         ### Set gencode and architecture variables to the correct values for your specific NVIDIA hardware
-        set(CMAKE_CUDA_ARCHITECTURES 37)        
-        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_37,code=sm_37)
+        set(CMAKE_CUDA_ARCHITECTURES ${TARGET_ARCH})        
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_${TARGET_ARCH},code=sm_${TARGET_ARCH})
+        message(STATUS "Using CUDA architecture: ${TARGET_ARCH}")
             
 else()
         message("\n----Generating Makefile for Graphitti CPU version----")
