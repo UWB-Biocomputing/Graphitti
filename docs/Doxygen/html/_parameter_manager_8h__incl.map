@@ -1,0 +1,13 @@
+<map id="Simulator/Utils/ParameterManager.h" name="Simulator/Utils/ParameterManager.h">
+<area shape="rect" id="Node000001" title="A singleton class which contains and manages access to the XML parameter file used by a simulator ins..." alt="" coords="158,5,330,46"/>
+<area shape="rect" id="Node000002" href="$_b_g_types_8h.html" title="Used to define uniform data type sizes based for all operating systems. Also used to test the speed o..." alt="" coords="5,94,91,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,49,93,90,91,85,194,44"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="115,94,186,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="223,48,178,86,175,82,219,44"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="210,94,278,120"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="247,46,247,78,241,78,241,46"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="301,94,355,120"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="267,44,306,81,302,85,263,48"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="379,94,437,120"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="286,44,370,85,368,89,284,49"/>
+</map>

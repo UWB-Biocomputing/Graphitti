@@ -1,0 +1,15 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$class_i_s_input.html" title=" " alt="" coords="5,80,69,106"/>
+<area shape="rect" id="Node000001" href="$class_s_input_poisson.html" title=" " alt="" coords="117,55,223,80"/>
+<area shape="poly" id="edge17_Node000000_Node000001" title=" " alt="" coords="83,81,116,75,117,80,84,87"/>
+<area shape="rect" id="Node000004" href="$class_s_input_regular.html" title=" " alt="" coords="118,104,222,130"/>
+<area shape="poly" id="edge20_Node000000_Node000004" title=" " alt="" coords="85,99,118,105,117,110,84,104"/>
+<area shape="rect" id="Node000002" href="$class_gpu_s_input_poisson.html" title=" " alt="" coords="273,5,403,31"/>
+<area shape="poly" id="edge18_Node000001_Node000002" title=" " alt="" coords="230,47,291,29,292,34,231,52"/>
+<area shape="rect" id="Node000003" href="$class_host_s_input_poisson.html" title=" " alt="" coords="271,55,405,80"/>
+<area shape="poly" id="edge19_Node000001_Node000003" title=" " alt="" coords="239,65,271,65,271,70,239,70"/>
+<area shape="rect" id="Node000005" href="$class_gpu_s_input_regular.html" title=" " alt="" coords="274,104,402,130"/>
+<area shape="poly" id="edge21_Node000004_Node000005" title=" " alt="" coords="237,114,274,114,274,120,237,120"/>
+<area shape="rect" id="Node000006" href="$class_host_s_input_regular.html" title=" " alt="" coords="272,153,404,179"/>
+<area shape="poly" id="edge22_Node000004_Node000006" title=" " alt="" coords="231,132,292,150,291,155,230,137"/>
+</map>
