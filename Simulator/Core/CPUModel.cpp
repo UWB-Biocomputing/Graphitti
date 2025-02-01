@@ -23,9 +23,13 @@ void CPUModel::advance()
 {
    // ToDo: look at pointer v no pointer in params - to change
    // dereferencing the ptr, lose late binding -- look into changing!
-   layout_->getVertices().advanceVertices(connections_->getEdges(),
-                                          connections_->getEdgeIndexMap());
-   connections_->getEdges().advanceEdges(layout_->getVertices(), connections_->getEdgeIndexMap());
+   AllVertices &vertices = layout_->getVertices();
+   AllEdges &edges = connections_->getEdges();
+   EdgeIndexMap &edgeIndexMap = connections_->getEdgeIndexMap();
+
+   vertices.advanceVertices(edges, edgeIndexMap);
+   edges.advanceEdges(vertices, edgeIndexMap);
+   vertices.integrateVertexInputs(edges, edgeIndexMap);
 }
 
 /// Update the connection of all the Neurons and Synapses of the simulation.

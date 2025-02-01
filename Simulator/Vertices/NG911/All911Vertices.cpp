@@ -160,6 +160,11 @@ int All911Vertices::busyServers(int vIdx) const
 
 #if !defined(USE_GPU)
 
+// Short description of the method.
+void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIndexMap)
+{
+   //TODO: Figure out where the appropriate logic is and move it here.
+}
 
 // Update internal state of the indexed vertex (called by every simulation step).
 void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIndexMap)
