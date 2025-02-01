@@ -254,7 +254,7 @@ public:
    ///
    ///  @param  edges         The edge list to search from.
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
-   virtual void integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIndexMap);
+   virtual void integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIndexMap) override;
 
 protected:
 
