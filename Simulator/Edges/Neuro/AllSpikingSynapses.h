@@ -79,7 +79,7 @@ public:
    ///  is allowed in the synapse class.
    ///
    ///  @return true if the back propagation is allowed.
-   virtual bool allowBackPropagation();
+   virtual bool allowagation();
 
    ///  Prints SynapsesProps data to console.
    virtual void printSynapsesProps() const;
