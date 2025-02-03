@@ -62,6 +62,14 @@ public:
    ///  @param  synapses               Reference to the allEdges struct on host memory.
    virtual void setAdvanceVerticesDeviceParams(AllEdges &synapses);
 
+   /// Add psr of all incoming synapses to summation points.
+   ///
+   /// @param allVerticesDevice       GPU address of the allVertices struct on device memory.
+   /// @param edgeIndexMapDevice      GPU address of the EdgeIndexMap on device memory.
+   /// @param allEdgesDevice          GPU address of the allEdges struct on device memory.
+   virtual void integrateVertexInputs(void *allVerticesDevice,
+                                      EdgeIndexMapDevice *edgeIndexMapDevice, void *allEdgesDevice);
+
    ///  Clear the spike counts out of all neurons.
    //
    ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
@@ -83,6 +91,12 @@ public:
    ///  @param  synapses         The Synapse list to search from.
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    virtual void advanceVertices(AllEdges &synapses, const EdgeIndexMap &edgeIndexMap);
+
+   /// Add psr of all incoming synapses to summation points.
+   ///
+   ///  @param  edges         The edge list to search from.
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   virtual void integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIndexMap);
 
    /// Get the spike history of neuron[index] at the location offIndex.
    /// More specifically, retrieves the global simulation time step for the spike
