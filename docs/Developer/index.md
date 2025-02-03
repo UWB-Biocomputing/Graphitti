@@ -2,7 +2,7 @@
 
 If you're developing Graphitti code, then here are your reference documents. 
 
-Writing new code? Then make sure to follow our [contributing guide](../../CONTRIBUTING.md) and  *document your code here*. 
+Writing new code? Then make sure to follow our [contributing guide] and  *document your code here*. 
 
 Reading code that isn't obvious? When you figure out how it works, then *document it here* and *document it in comments in the code.*
 
@@ -38,7 +38,7 @@ Students, use this [quickstart guide](StudentSetup.md) to help setup, use, and d
 - Doxygen
     - Documentation generated from source code
     - Doxygen provides web-based indices and hierarchical views of Graphitti's class and file structures
-    - [Visit Doxygen Generated Documentation](https://uwb-biocomputing.github.io/Graphitti/Doxygen/html/index.html)
+    - [Visit Doxygen Generated Documentation]
     - Document code in the `.h` file using the [Doxygen Style Guide](../Doxygen/DoxygenStyleGuide.md) format
     - [Doxygen Update Guide](../Doxygen/DoxygenUpdateGuide.md)
 - [Event buffering](eventBuffering.md) in vertex classes.
@@ -50,3 +50,10 @@ Students, use this [quickstart guide](StudentSetup.md) to help setup, use, and d
 
 ---------
 [<< Go back to the Graphitti home page](../index.md)
+
+[//]: # (Moving URL links to the bottom of the document for ease of updating - LS)
+[//]: # (Links to repo items which exist outside of the docs folder need a direct link.)
+
+   [contributing guide]: <https://github.com/UWB-Biocomputing/Graphitti/blob/master/CONTRIBUTING.md>
+   [Visit Doxygen Generated Documentation]: <https://uwb-biocomputing.github.io/Graphitti/Doxygen/html/index.html>
+   
