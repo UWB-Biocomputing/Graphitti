@@ -71,7 +71,7 @@ Here is documentation on the [GIS to GEXF](Tools/GIStoGraph.md) tool. This tool 
 
 ## Code of Conduct
 
-Our [code of conduct](../CODE_OF_CONDUCT.md)
+Our [code of conduct].
 
 ## [Acknowledgements](acknowledgements.md)
 
@@ -79,3 +79,8 @@ Those who have helped make Graphitti what it is and shaping what it will be.
 
 ---------
 [<< Go back to UWB Intelligent Networks Lab home page](http://uwb-biocomputing.github.io/)
+
+[//]: # (Moving URL links to the bottom of the document for ease of updating - LS)
+[//]: # (Links to repo items which exist outside of the docs folder need a direct link.)
+
+	[code of conduct]: <https://github.com/UWB-Biocomputing/Graphitti/blob/master/CODE_OF_CONDUCT.md>
