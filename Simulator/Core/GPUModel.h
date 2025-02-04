@@ -35,14 +35,12 @@
 
 #pragma once
 
-#include "AllSpikingNeurons.h"
-#include "AllSpikingSynapses.h"
+#include "AllEdges.h"
+#include "AllVertices.h"
 
 #ifdef __CUDACC__
    #include "Book.h"
 #endif
-
-const BGFLOAT SYNAPSE_STRENGTH_ADJUSTMENT = 1.0e-8;
 
 /************************************************
  * @name Inline functions for handling performance recording
@@ -69,7 +67,7 @@ inline void cudaLapTime(double &t_event)
 #endif   // PERFORMANCE_METRICS
 ///@}
 
-class AllSpikingSynapses;
+class AllEdges;
 
 class GPUModel : public Model {
    friend class GpuSInputPoisson;
@@ -121,10 +119,10 @@ protected:
 #endif   // defined(USE_GPU)
 
    /// Synapse structures in device memory.
-   AllSpikingSynapsesDeviceProperties *allEdgesDevice_;
+   AllEdgesDeviceProperties *allEdgesDevice_;
 
    /// Neuron structure in device memory.
-   AllSpikingNeuronsDeviceProperties *allVerticesDevice_;
+   AllVerticesDeviceProperties *allVerticesDevice_;
 
 private:
    void allocEdgeIndexMap(int count);
@@ -141,8 +139,8 @@ private:
    void eraseEdge(AllEdges &edges, int vertexIndex, int edgeIndex);
 
    // TODO
-   void addEdge(AllEdges &edges, edgeType type, int srcVertex, int destVertex,
-                Coordinate &source, Coordinate &dest, BGFLOAT deltaT);
+   void addEdge(AllEdges &edges, edgeType type, int srcVertex, int destVertex, Coordinate &source,
+                Coordinate &dest, BGFLOAT deltaT);
 
    // TODO
    void createEdge(AllEdges &edges, int vertexIndex, int edgeIndex, Coordinate source,

@@ -35,6 +35,7 @@ using namespace std;
 
 class Layout;
 class AllEdges;
+struct AllVerticesDeviceProperties;
 
 class AllVertices {
 public:
@@ -73,13 +74,6 @@ public:
    ///  @return the complete state of the vertex.
    virtual string toString(int i) const = 0;
 
-   ///  The summation point for each vertex.
-   ///  Summation points are places where the synapses connected to the vertex
-   ///  apply (summed up) their PSRs (Post-Synaptic-Response).
-   ///  On the next advance cycle, vertices add the values stored in their corresponding
-   ///  summation points to their Vm and resets the summation points to zero
-   vector<BGFLOAT> summationPoints_;
-
    /// Helper function for recorder to register spike history variables for all neurons.
    /// Option 1: Register neuron information in vertexEvents_ one by one.
    /// Option 2: Register a vector of EventBuffer variables.
@@ -108,6 +102,11 @@ public:
    ///
    ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
    virtual void deleteNeuronDeviceStruct(void *allVerticesDevice) = 0;
+
+   ///  Clear the spike counts out of all neurons.
+   //
+   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
+   virtual void clearVertexHistory(void *allVerticesDevice) = 0;
 
    ///  Copy all vertices' data from host to device.
    ///
@@ -163,17 +162,10 @@ public:
 };
 
 #if defined(USE_GPU)
-struct AllVerticesDeviceProperties {
-   ///  The summation point for each vertex.
-   ///  Summation points are places where the synapses connected to the vertex
-   ///  apply (summed up) their PSRs (Post-Synaptic-Response).
-   ///  On the next advance cycle, vertices add the values stored in their corresponding
-   ///  summation points to their Vm and resets the summation points to zero
-   BGFLOAT *summationPoints_;
-};
+struct AllVerticesDeviceProperties {};
 #endif   // defined(USE_GPU)
 
 template <class Archive> void AllVertices::serialize(Archive &archive)
 {
-   archive(cereal::make_nvp("summationPoints", summationPoints_), cereal::make_nvp("size", size_));
+   archive(cereal::make_nvp("size", size_));
 }

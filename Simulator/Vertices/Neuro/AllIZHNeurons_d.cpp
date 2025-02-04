@@ -173,7 +173,7 @@ void AllIZHNeurons::copyFromDevice(void *allVerticesDevice)
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
 ///                             on device memory.
-void AllIZHNeurons::clearNeuronSpikeCounts(void *allVerticesDevice)
+void AllIZHNeurons::clearVertexHistory(void *allVerticesDevice)
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,

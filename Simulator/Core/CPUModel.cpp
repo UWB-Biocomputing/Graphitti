@@ -37,7 +37,7 @@ void CPUModel::updateConnections()
 {
    // Update Connections data
    if (connections_->updateConnections(layout_->getVertices())) {
-      connections_->updateSynapsesWeights();
+      connections_->updateEdgesWeights();
       // create synapse inverse map
       connections_->createEdgeIndexMap();
    }

@@ -203,7 +203,7 @@ void AllIFNeurons::copyFromDevice(void *allVerticesDevice)
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
 // TODO: Move this into EventBuffer somehow
-void AllIFNeurons::clearNeuronSpikeCounts(void *allVerticesDevice)
+void AllIFNeurons::clearVertexHistory(void *allVerticesDevice)
 {
    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,

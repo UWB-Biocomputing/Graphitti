@@ -125,16 +125,16 @@ public:
    ///  @param  allVerticesDevice    GPU address of the AllVertices struct in device memory.
    ///  @param  allEdgesDevice       GPU address of the AllEdges struct in device memory.
    ///  @param  layout               The Layout object.
-   virtual void updateSynapsesWeights(int numVertices, AllVertices &neurons, AllEdges &synapses,
-                                      AllSpikingNeuronsDeviceProperties *allVerticesDevice,
-                                      AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                      Layout &layout) override;
+   virtual void updateEdgesWeights(int numVertices, AllVertices &neurons, AllEdges &synapses,
+                                   AllVerticesDeviceProperties *allVerticesDevice,
+                                   AllEdgesDeviceProperties *allEdgesDevice,
+                                   Layout &layout) override;
 #else
    ///  Update the weights of the Synapses in the simulation. To be clear,
    ///  iterates through all source and destination neurons and updates their
    ///  synaptic strengths from the weight matrix.
    ///  Note: Platform Dependent.
-   virtual void updateSynapsesWeights() override;
+   virtual void updateEdgesWeights() override;
 
 #endif
 private:

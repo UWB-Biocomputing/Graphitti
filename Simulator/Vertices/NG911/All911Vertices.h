@@ -94,7 +94,7 @@ public:
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all vertices' states.
-   virtual void setupVertices();
+   virtual void setupVertices() override;
 
    ///  Creates all the Vertices and assigns initial data for them.
    ///
@@ -232,6 +232,7 @@ public:
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
                                 float randNoise[], EdgeIndexMapDevice *edgeIndexMapDevice) {};
    virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};
+   virtual void clearVertexHistory(void *allVerticesDevice) {};
 
    /// Performs an integration operation per vertex using the inputs to the vertex.
    ///

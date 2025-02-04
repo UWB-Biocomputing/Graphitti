@@ -307,7 +307,7 @@ CUDA_CALLABLE void
    changeSpikingSynapsesPSRDevice(AllSpikingSynapsesDeviceProperties *allEdgesDevice, BGSIZE iEdg,
                                   const uint64_t simulationStep, BGFLOAT deltaT);
 
-struct AllSpikingSynapsesDeviceProperties : public AllEdgesDeviceProperties {
+struct AllSpikingSynapsesDeviceProperties : public AllNeuroEdgesDeviceProperties {
    ///  The decay for the psr.
    BGFLOAT *decay_;
 
