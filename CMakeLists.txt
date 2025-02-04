@@ -16,23 +16,6 @@ if(NOT ENABLE_CUDA)
         set(ENABLE_CUDA NO)
 endif()
 
-#CONDITIONAL FLAG to turn on the performance metrics 
-if(NOT PERFORMANCE_METRICS)
-        set(PERFORMANCE_METRICS NO)
-endif()
-
-#CONDITIONAL FLAG to turn on the Gprof profiler(                                                   \
-#   Gprof is a performance analysis tool for Unix applications)
-#Steps to run Gprof
-#Step 01 : set(GPROF YES) below
-#Step 02 : Compile and run the simulation on CPU or GPU as usual
-#Step 03 : Run the generated gmon.out file from the build directory and save the output in an txt  \
-#      file to improve readability                                                                  \
-#If using CPU - "~/Graphitti/build$ gprof cgraphitti gmon.out > analysis_test.txt"
-#If using GPU - "~/Graphitti/build$ gprof ggraphitti gmon.out > analysis_test.txt" 
-if(NOT GPROF)
-        set(GPROF NO)
-endif()
 
 ############################################################################################
 #CONDITIONAL FLAG to change target architecture for the GPU simulator from the default
@@ -54,14 +37,11 @@ endif()
 if(ENABLE_CUDA)	
         message("\n----Generating Makefile for Graphitti GPU version----")
         project(Graphitti LANGUAGES CXX CUDA C)
-#Verify CUDA package is present
-        find_Package(CUDA REQUIRED)
 #Set the USE_GPU preprocessor macro so that GPU code will be compiled.
         add_compile_definitions(USE_GPU)
 #Specify the CUDA architecture / gencode that will be targeted
         ### Set gencode and architecture variables to the correct values for your specific NVIDIA hardware
         set(CMAKE_CUDA_ARCHITECTURES ${TARGET_ARCH})        
-        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_${TARGET_ARCH},code=sm_${TARGET_ARCH})
         message(STATUS "Using CUDA architecture: ${TARGET_ARCH}")
             
 else()
@@ -69,23 +49,104 @@ else()
         project(Graphitti LANGUAGES CXX C)
 endif()
 
+#CONDITIONAL FLAG to turn on the performance metrics 
+if(NOT PERFORMANCE_METRICS)
+        set(PERFORMANCE_METRICS NO)
+endif()
+
+
+# -----------------------------------------------------------------------------
+# Build Type Configuration
+#
+# CMake support for different build types controling optimization, debugging and profiling:
+#
+#   - Debug         : No optimizations (`-O0`), includes debug symbols (`-g`).
+#   - Release       : Optimized build (`-O3`), removes debug symbols.
+#   - RelWithDebInfo: Optimized (`-O2`) but keeps debug symbols (`-g`) for profiling.
+#   - Profiling     : Custom build type (defined in this project) that enables:
+#                     - CPU profiling via `-pg` (GPROF)
+#                     - CUDA profiling via `-lineinfo` (for Nsight Compute)
+#
+# Selecting a Build Type:
+#   - By default, CMake does NOT set a build type for single-config generators.
+#   - If no build type is specified, this script defaults to "Release" for performance.
+#   - You can explicitly set the build type when configuring CMake:
+#
+#       cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug      # Debug mode
+#       cmake -S . -B build -DCMAKE_BUILD_TYPE=Release    # Release mode
+#       cmake -S . -B build -DCMAKE_BUILD_TYPE=Profiling  # Profiling mode 
+#       
+#       If you don't want to pass in the build type flag, you can edit this file and add...
+#               set(CMAKE_BUILD_TYPE "Debug") or whichever build type you want
+# -----------------------------------------------------------------------------
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release;RelWithDebInfo;MinSizeRel;Profiling" CACHE STRING "Supported build types" FORCE)
+
+# Ensure single-config generators use a valid default
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the build type." FORCE)
+endif()
+
+# Set flags for all build types
+set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+# We should consider using the -DNDEBUG flag for release code, it disables assert() calls and is higher performance
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
+
+# Define a custom build type: "Profiling"
+set(CMAKE_CXX_FLAGS_PROFILING "-pg -O2")
+set(CMAKE_EXE_LINKER_FLAGS_PROFILING "-pg")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+
+# Apply the correct flags based on the selected build type
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG}")
+    if(ENABLE_CUDA)
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -G")   
+    endif()
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}")
+    if(ENABLE_CUDA)
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3")
+    endif()
+elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+elseif(CMAKE_BUILD_TYPE STREQUAL "Profiling")
+    message(STATUS "Profiling build enabled: Adding -pg (GPROF)")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_PROFILING}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS_PROFILING}")
+    if(ENABLE_CUDA)
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -lineinfo")   
+#       set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -lineinfo -Xptxas=-v")   
+    endif()
+endif()
+
+
+#   Gprof is a performance analysis tool for Unix applications)
+#Steps to run Gprof
+#Step 01 : set build configuration to Profiling  ...   -DCMAKE_BUILD_TYPE=Profiling
+#Step 02 : Compile and run the simulation on CPU or GPU as usual
+#Step 03 : Run the generated gmon.out file from the build directory and save the output in an txt  \
+#      file to improve readability                                                                  \
+#If using CPU - "~/Graphitti/build$ gprof cgraphitti gmon.out > analysis_test.txt"
+#If using GPU - "~/Graphitti/build$ gprof ggraphitti gmon.out > analysis_test.txt" 
+
+
+# Print build type for verification
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+
+message(STATUS "ENABLE_CUDA: ${ENABLE_CUDA}")
+if(ENABLE_CUDA)
+        message(STATUS "CMAKE_CUDA_FLAGS: ${CMAKE_CUDA_FLAGS}")
+endif()
+
+
 #Setting the base version to C++ 17
 set(CMAKE_CXX_STANDARD 17)
-
-#set(DEBUG_MODE YES) for debugging, no optimization
-#set(DEBUG_MODE NO) for production code, -O3 optimization enabled
-set(DEBUG_MODE NO)
 
 if(PERFORMANCE_METRICS)
         message("-- Setting PEREFORMANCE_METRICS: ON")
         add_definitions(-DPERFORMANCE_METRICS)
-endif()
-
-if(GPROF)
-        message("-- Setting GPROF: ON")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
-        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
 endif()
 
 #HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libraries to the executable     \
@@ -131,11 +192,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 #Set extra warning flags
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
-
-if (NOT DEBUG_MODE)
-        message("-- Setting Optimization flag: O3")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
-endif()
 
 #define TIXML_USE_STL as a preproccersser macro to use the C++ standard library with TinyXML
 add_compile_definitions(TIXML_USE_STL)
@@ -368,6 +424,9 @@ endif()
 # ------ TESTS EXECUTABLE ------
 # Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
 # included in the executable.
+target_compile_options(gtest PRIVATE -Wno-error=maybe-uninitialized)
+target_compile_options(gtest_main PRIVATE -Wno-error=maybe-uninitialized)
+
 add_executable(tests
         Testing/RunTests.cpp
         Testing/UnitTesting/OperationManagerTests.cpp
