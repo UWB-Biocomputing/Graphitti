@@ -132,20 +132,20 @@ private:
    void deleteEdgeIndexMap();
 
 public:   //2020/03/14 changed to public for accessing in Core
-   void copyEdgeIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices);
+   void copyEdgeIndexMapHostToDevice(EdgeIndexMap &edgeIndexMapHost, int numVertices);
 
 private:
    void updateHistory();
 
    // TODO
-   void eraseEdge(AllEdges &synapses, int neuronIndex, int synapseIndex);
+   void eraseEdge(AllEdges &edges, int vertexIndex, int edgeIndex);
 
    // TODO
-   void addEdge(AllEdges &synapses, edgeType type, int srcVertex, int destVertex,
+   void addEdge(AllEdges &edges, edgeType type, int srcVertex, int destVertex,
                 Coordinate &source, Coordinate &dest, BGFLOAT deltaT);
 
    // TODO
-   void createEdge(AllEdges &synapses, int neuronIndex, int synapseIndex, Coordinate source,
+   void createEdge(AllEdges &edges, int vertexIndex, int edgeIndex, Coordinate source,
                    Coordinate dest, BGFLOAT deltaT, edgeType type);
 };
 
