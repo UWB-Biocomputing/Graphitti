@@ -117,7 +117,7 @@ protected:
 
 #if defined(USE_GPU)
    /// Pointer to synapse index map in device memory.
-   EdgeIndexMapDevice *synapseIndexMapDevice_;
+   EdgeIndexMapDevice *edgeIndexMapDevice_;
 #endif   // defined(USE_GPU)
 
    /// Synapse structures in device memory.
