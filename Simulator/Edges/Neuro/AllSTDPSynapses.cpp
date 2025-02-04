@@ -118,18 +118,29 @@ void AllSTDPSynapses::printParameters() const
 {
    AllSpikingSynapses::printParameters();
 
-   LOG4CPLUS_DEBUG(
-      edgeLogger_,
-      "\n\t---AllSTDPSynapses Parameters---"
-         << "\n\tEdges type: AllSTDPSynapses \n\n"
-         << "\tSTDP gap" << defaultSTDPgap_ << "\n\n\tTauspost value: [" << " I: " << tauspost_I_
-         << ", " << " E: " << tauspost_E_ << "]" << "\n\n\tTauspre value: [" << " I: " << tauspre_I_
-         << ", " << " E: " << tauspre_E_ << "]" << "\n\n\tTaupos value: [" << " I: " << taupos_I_
-         << ", " << " E: " << taupos_E_ << "]" << "\n\n\tTau negvalue: [" << " I: " << tauneg_I_
-         << ", " << " E: " << tauneg_E_ << "]" << "\n\n\tWex value: [" << " I: " << Wex_I_ << ", "
-         << " E: " << Wex_E_ << "]" << "\n\n\tAneg value: [" << " I: " << Aneg_I_ << ", "
-         << " E: " << Aneg_E_ << "]" << "\n\n\tApos value: [" << " I: " << Apos_I_ << ", "
-         << " E: " << Apos_E_ << "]" << endl);
+   LOG4CPLUS_DEBUG(edgeLogger_, "\n\t---AllSTDPSynapses Parameters---"
+                                   << "\n\tEdges type: AllSTDPSynapses \n\n"
+                                   << "\tSTDP gap" << defaultSTDPgap_ << "\n\n\tTauspost value: ["
+                                   << " I: " << tauspost_I_ << ", "
+                                   << " E: " << tauspost_E_ << "]"
+                                   << "\n\n\tTauspre value: ["
+                                   << " I: " << tauspre_I_ << ", "
+                                   << " E: " << tauspre_E_ << "]"
+                                   << "\n\n\tTaupos value: ["
+                                   << " I: " << taupos_I_ << ", "
+                                   << " E: " << taupos_E_ << "]"
+                                   << "\n\n\tTau negvalue: ["
+                                   << " I: " << tauneg_I_ << ", "
+                                   << " E: " << tauneg_E_ << "]"
+                                   << "\n\n\tWex value: ["
+                                   << " I: " << Wex_I_ << ", "
+                                   << " E: " << Wex_E_ << "]"
+                                   << "\n\n\tAneg value: ["
+                                   << " I: " << Aneg_I_ << ", "
+                                   << " E: " << Aneg_E_ << "]"
+                                   << "\n\n\tApos value: ["
+                                   << " I: " << Apos_I_ << ", "
+                                   << " E: " << Apos_E_ << "]" << endl);
 }
 
 ///  Sets the data for Synapse to input's data.
@@ -364,15 +375,6 @@ void AllSTDPSynapses::advanceEdge(BGSIZE iEdg, AllVertices &neurons)
 
    // decay the post spike response
    psr *= decay;
-   // and apply it to the summation point
-   #ifdef USE_OMP
-      #pragma omp atomic
-   #endif
-   neurons.summationPoints_[sumPointIndex] += psr;
-   #ifdef USE_OMP
-      //PAB: atomic above has implied flush (following statement generates error -- can't be member variable)
-      //#pragma omp flush (summationPoint)
-   #endif
 }
 
 
