@@ -50,7 +50,7 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
    synapses.copyEdgeHostToDevice(*allEdgesDevice);
 
    // Allocate synapse inverse map in device memory
-   allocSynapseImap(numVertices);
+   allocEdgeIndexMap(numVertices);
 }
 
 /// Copies device memories to host memories and deallocates them.
@@ -107,7 +107,7 @@ void GPUModel::setupSim()
    allocDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
 
    // copy inverse map to the device memory
-   copySynapseIndexMapHostToDevice(connections_->getEdgeIndexMap(),
+   copyEdgeIndexMapHostToDevice(connections_->getEdgeIndexMap(),
                                    Simulator::getInstance().getTotalVertices());
 
    // set some parameters used for advanceVerticesDevice
@@ -122,7 +122,7 @@ void GPUModel::finish()
 {
    // deallocates memories on CUDA device
    deleteDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
-   deleteSynapseImap();
+   deleteEdgeIndexMap();
 
 #ifdef PERFORMANCE_METRICS
    cudaEventDestroy(start);
@@ -196,7 +196,7 @@ void GPUModel::updateConnections()
       // create synapse index map
       connections_->createEdgeIndexMap();
       // copy index map to the device memory
-      copySynapseIndexMapHostToDevice(connections_->getEdgeIndexMap(),
+      copyEdgeIndexMapHostToDevice(connections_->getEdgeIndexMap(),
                                       Simulator::getInstance().getTotalVertices());
    }
 }
@@ -213,7 +213,7 @@ void GPUModel::updateHistory()
 
 /// Allocate device memory for synapse inverse map.
 /// @param  count	The number of vertices.
-void GPUModel::allocSynapseImap(int count)
+void GPUModel::allocEdgeIndexMap(int count)
 {
    EdgeIndexMapDevice synapseIMapDevice;
 
@@ -233,7 +233,7 @@ void GPUModel::allocSynapseImap(int count)
 }
 
 /// Deallocate device memory for synapse inverse map.
-void GPUModel::deleteSynapseImap()
+void GPUModel::deleteEdgeIndexMap()
 {
    EdgeIndexMapDevice synapseIMapDevice;
    HANDLE_ERROR(cudaMemcpy(&synapseIMapDevice, edgeIndexMapDevice_, sizeof(EdgeIndexMapDevice),
@@ -249,7 +249,7 @@ void GPUModel::deleteSynapseImap()
 
 /// Copy EdgeIndexMap in host memory to EdgeIndexMap in device memory.
 /// @param  synapseIndexMapHost		Reference to the EdgeIndexMap in host memory.
-void GPUModel::copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices)
+void GPUModel::copyEdgeIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices)
 {
    AllEdges &synapses = connections_->getEdges();
    int totalSynapseCount = dynamic_cast<AllEdges &>(synapses).totalEdgeCount_;
@@ -308,7 +308,7 @@ void GPUModel::copyCPUtoGPU()
 }
 
 /// Print out SynapseProps on the GPU.
-void GPUModel::printGPUSynapsesPropsModel() const
+void GPUModel::printGPUEdgesPropsModel() const
 {
    connections_->getEdges().printGPUEdgesProps(allEdgesDevice_);
 }

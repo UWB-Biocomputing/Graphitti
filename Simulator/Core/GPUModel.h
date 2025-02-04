@@ -99,7 +99,7 @@ public:
    virtual void copyCPUtoGPU() override;
 
    /// Print out SynapseProps on the GPU.
-   void printGPUSynapsesPropsModel() const;
+   void printGPUEdgesPropsModel() const;
 
 protected:
    /// Allocates  and initializes memories on CUDA device.
@@ -127,12 +127,12 @@ protected:
    AllSpikingNeuronsDeviceProperties *allVerticesDevice_;
 
 private:
-   void allocSynapseImap(int count);
+   void allocEdgeIndexMap(int count);
 
-   void deleteSynapseImap();
+   void deleteEdgeIndexMap();
 
 public:   //2020/03/14 changed to public for accessing in Core
-   void copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices);
+   void copyEdgeIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices);
 
 private:
    void updateHistory();
