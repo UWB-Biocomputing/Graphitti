@@ -56,12 +56,6 @@ else()
         project(Graphitti LANGUAGES CXX C)
 endif()
 
-#CONDITIONAL FLAG to turn on the performance metrics 
-if(NOT PERFORMANCE_METRICS)
-        set(PERFORMANCE_METRICS NO)
-endif()
-
-
 # -----------------------------------------------------------------------------
 # Build Type Configuration
 #
