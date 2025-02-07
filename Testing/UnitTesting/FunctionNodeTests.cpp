@@ -17,6 +17,6 @@ TEST(GenericFunctionNode, TemplateFunctionTest)
 {
    Foo foo;
    function<void()> func = std::bind(&Foo::loadParameters, foo);
-   IFunctionNode *chainNode = new GenericFunctionNode(Operations::op::loadParameters, func);
-   ASSERT_TRUE(chainNode->invokeFunction(Operations::op::loadParameters));
+   IFunctionNode *chainNode = new GenericFunctionNode(Operations::loadParameters, func);
+   ASSERT_TRUE(chainNode->invokeFunction(Operations::loadParameters));
 }

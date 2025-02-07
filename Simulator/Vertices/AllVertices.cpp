@@ -14,7 +14,7 @@ AllVertices::AllVertices() : size_(0)
 {
    // Register loadParameters function as a loadParameters operation in the Operation Manager
    function<void()> loadParametersFunc = std::bind(&AllVertices::loadParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::op::loadParameters,
+   OperationManager::getInstance().registerOperation(Operations::loadParameters,
                                                      loadParametersFunc);
 
    // Register printParameters function as a printParameters operation in the OperationManager
