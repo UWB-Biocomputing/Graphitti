@@ -30,6 +30,7 @@ endif()
 ############################################################################################
 if(NOT DEFINED TARGET_ARCH)
         set(TARGET_ARCH 37)
+	set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_37,code=sm_37)
 endif()
 
 #Creates the Graphitti project with the correct languages, depending on if using GPU or not
@@ -41,7 +42,8 @@ if(ENABLE_CUDA)
         add_compile_definitions(USE_GPU)
 #Specify the CUDA architecture / gencode that will be targeted
         ### Set gencode and architecture variables to the correct values for your specific NVIDIA hardware
-        set(CMAKE_CUDA_ARCHITECTURES ${TARGET_ARCH})        
+        set(CMAKE_CUDA_ARCHITECTURES ${TARGET_ARCH})
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_${TARGET_ARCH},code=sm_${TARGET_ARCH})        
         message(STATUS "Using CUDA architecture: ${TARGET_ARCH}")
             
 else()
