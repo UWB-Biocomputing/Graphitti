@@ -28,17 +28,15 @@ GPUModel::GPUModel() :
 }
 
 /// Allocates  and initializes memories on CUDA device.
-/// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
-/// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
-void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice)
+void GPUModel::allocDeviceStruct()
 {
    // Get neurons and synapses
    AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
 
    // Allocate Neurons and Synapses structs on GPU device memory
-   neurons.allocNeuronDeviceStruct(allVerticesDevice);
-   synapses.allocEdgeDeviceStruct(allEdgesDevice);
+   neurons.allocNeuronDeviceStruct((void**)&allVerticesDevice_);
+   synapses.allocEdgeDeviceStruct((void**)&allEdgesDevice_);
 
    // Allocate memory for random noise array
    int numVertices = Simulator::getInstance().getTotalVertices();
@@ -46,8 +44,8 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
    HANDLE_ERROR(cudaMalloc((void **)&randNoise_d, randNoise_d_size));
 
    // Copy host neuron and synapse arrays into GPU device
-   neurons.copyToDevice(*allVerticesDevice);
-   synapses.copyEdgeHostToDevice(*allEdgesDevice);
+   neurons.copyToDevice(allVerticesDevice_);
+   synapses.copyEdgeHostToDevice(allEdgesDevice_);
 
    // Allocate synapse inverse map in device memory
    allocSynapseImap(numVertices);
@@ -104,7 +102,7 @@ void GPUModel::setupSim()
 #endif   // PERFORMANCE_METRICS
 
    // allocates memories on CUDA device
-   allocDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
+   allocDeviceStruct();
 
    // copy inverse map to the device memory
    copySynapseIndexMapHostToDevice(connections_->getEdgeIndexMap(),
