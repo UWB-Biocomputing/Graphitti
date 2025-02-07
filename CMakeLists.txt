@@ -16,6 +16,10 @@ if(NOT ENABLE_CUDA)
         set(ENABLE_CUDA NO)
 endif()
 
+#CONDITIONAL FLAG to turn on the performance metrics 
+if(NOT PERFORMANCE_METRICS)
+        set(PERFORMANCE_METRICS NO)
+endif()
 
 ############################################################################################
 #CONDITIONAL FLAG to change target architecture for the GPU simulator from the default
@@ -37,6 +41,8 @@ endif()
 if(ENABLE_CUDA)	
         message("\n----Generating Makefile for Graphitti GPU version----")
         project(Graphitti LANGUAGES CXX CUDA C)
+#Verify CUDA package is present
+        find_Package(CUDA REQUIRED)
 #Set the USE_GPU preprocessor macro so that GPU code will be compiled.
         add_compile_definitions(USE_GPU)
 #Specify the CUDA architecture / gencode that will be targeted
@@ -80,7 +86,7 @@ endif()
 #       If you don't want to pass in the build type flag, you can edit this file and add...
 #               set(CMAKE_BUILD_TYPE "Debug") or whichever build type you want
 # -----------------------------------------------------------------------------
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release;RelWithDebInfo;MinSizeRel;Profiling" CACHE STRING "Supported build types" FORCE)
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release;RelWithDebInfo;Profiling" CACHE STRING "Supported build types" FORCE)
 
 # Ensure single-config generators use a valid default
 if(NOT CMAKE_BUILD_TYPE)
