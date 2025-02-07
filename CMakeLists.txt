@@ -30,7 +30,6 @@ endif()
 ############################################################################################
 if(NOT DEFINED TARGET_ARCH)
         set(TARGET_ARCH 37)
-	set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_37,code=sm_37)
 endif()
 
 #Creates the Graphitti project with the correct languages, depending on if using GPU or not
