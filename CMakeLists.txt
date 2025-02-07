@@ -355,9 +355,33 @@ add_library(RNG STATIC ${RNG_Source})
 
 
 # Create Utils library
-file(GLOB Utils_Source  Simulator/Utils/*.cpp Simulator/Utils/*.h)
+file(GLOB Utils_Source Simulator/Utils/*.cpp Simulator/Utils/*.h)
 list(REMOVE_ITEM Utils_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/Factory.cpp")
-add_library(Utils  ${Utils_Source})
+
+if(CMAKE_BUILD_TYPE STREQUAL "Profiling")
+        if(ENABLE_CUDA)
+# Find NVTX Library
+                find_library(NVTX_LIBRARY nvToolsExt)
+                if(NVTX_LIBRARY)
+                        message(STATUS "Found NVTX: ${NVTX_LIBRARY} included in Profiling")
+                        add_compile_definitions(ENABLE_NVTX) 
+                else()
+                        message(STATUS "NVTX library not found! Not included in Profiling.")
+                        list(REMOVE_ITEM Utils_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/NvtxHelper.cpp")
+                endif()
+        endif()
+
+else()
+        list(REMOVE_ITEM Utils_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/NvtxHelper.cpp")
+endif()
+
+# Always create the Utils library (even if NVTX and CUDA are missing)
+add_library(Utils ${Utils_Source})
+
+# Only link NVTX if it was found
+if(NVTX_LIBRARY)
+        target_link_libraries(Utils PRIVATE ${NVTX_LIBRARY})
+endif()
 
 
 # Used to locate and run other CMakeLists.txt files from Third Party resources for further compilation of the project.
