@@ -13,7 +13,6 @@
 #include "AllVertices.h"
 #include "Connections.h"
 #include "Global.h"
-#include "NvtxHelper.h"
 
 #ifdef PERFORMANCE_METRICS
 float g_time;
@@ -187,11 +186,9 @@ void GPUModel::calcSummationPoint()
    int blocksPerGrid
       = (Simulator::getInstance().getTotalVertices() + threadsPerBlock - 1) / threadsPerBlock;
 
-   nvtxPushColor("calcSummation", GREEN);
    calcSummationPointDevice<<<blocksPerGrid, threadsPerBlock>>>(
       Simulator::getInstance().getTotalVertices(), allVerticesDevice_, synapseIndexMapDevice_,
       allEdgesDevice_);
-   nvtxPop();
 }
 
 /// Update the connection of all the Neurons and Synapses of the simulation.
