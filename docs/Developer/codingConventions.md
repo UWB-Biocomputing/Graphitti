@@ -80,6 +80,23 @@ clang-format -i fileName
 
 * If you want to make changes to the clang-format file options themselves, then visit the [clang-format options online documentation](https://clang.llvm.org/docs/ClangFormatStyleOptions.html)
 
+### running clang-format inside VSCode
+
+If you want to set clang as the default formatter in VSCode and automatically run clang-format on files as they're saved, you can add this to your settings.json
+
+```json
+{
+    "editor.defaultFormatter": "xaver.clang-format",
+    "clang-format.style": "file",
+    "clang-format.executable": "/usr/bin/clang-format", 
+    "editor.formatOnSave": true,
+    "files.associations": {
+        "ostream": "cpp"
+    }
+}
+```
+
+Change the file path to wherever you have installed clang-format
 
 ---------
 [<< Go back to the Developer Documentation page](index.md)
