@@ -144,7 +144,18 @@ void GPUModel::advance()
    AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
 
-   normalMTGPU(randNoise_d);
+   //#ifdef VALIDATION_MODE
+   int verts = Simulator::getInstance().getTotalVertices();
+   std::vector<float> randNoise_h(verts);
+   for (int i = 0; i < verts; i++) {
+      randNoise_h[i] = noiseRNG->rand();
+   }
+   cudaMemcpy(randNoise_d, randNoise_h.data(), verts * sizeof(float), cudaMemcpyHostToDevice);
+   //#endif // VALIDATION_MODE
+
+   //#else VALIDATION_MODE
+   //   normalMTGPU(randNoise_d);
+   //#endif
 
 #ifdef PERFORMANCE_METRICS
    cudaLapTime(t_gpu_rndGeneration);
