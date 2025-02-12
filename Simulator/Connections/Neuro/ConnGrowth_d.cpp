@@ -78,4 +78,7 @@ void ConnGrowth::updateSynapsesWeights(int numVertices, AllVertices &vertices, A
    synapses.copyDeviceEdgeCountsToHost(allEdgesDevice);
    // copy device synapse summation coordinate to host memory
    synapses.copyDeviceEdgeSumIdxToHost(allEdgesDevice);
+   synapses.copyDeviceEdgeWeightsToHost(allEdgesDevice);
+
+   synapses.Setup_xml_to_file();
 }

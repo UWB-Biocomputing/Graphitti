@@ -273,6 +273,60 @@ void AllSpikingSynapses::copyDeviceEdgeCountsToHost(void *allEdgesDevice)
    //allEdges.countVertices_ = 0;
 }
 
+//
+void AllSpikingSynapses::copyDeviceEdgeWeightsToHost(void *allEdgesDevice)
+{
+   AllSpikingSynapsesDeviceProperties allEdgesDeviceProps;
+   int numVertices = Simulator::getInstance().getTotalVertices();
+   BGSIZE maxTotalSynapses = Simulator::getInstance().getMaxEdgesPerVertex() * numVertices;
+   int vertexCount = Simulator::getInstance().getTotalVertices();
+   HANDLE_ERROR(cudaMemcpy(&allEdgesDeviceProps, allEdgesDevice,
+                           sizeof(AllSpikingSynapsesDeviceProperties), cudaMemcpyDeviceToHost));
+   // std::cout << "size: " << vertexCount * vertexCount * sizeof(BGFLOAT) << std::endl;
+   // std::cout << "W_.data(): " << W_.data() << std::endl;
+   // std::cout << "allEdgesDeviceProps.W_: " << allEdgesDeviceProps.W_ << std::endl;
+   HANDLE_ERROR(cudaMemcpy(W_.data(), allEdgesDeviceProps.W_, 
+                  maxTotalSynapses * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+}
+   // Set countVertices_ to 0 to avoid illegal memory deallocation
+   // at AllSpikingSynapses deconstructor.
+   //allEdges.countVertices_ = 0;
+
+std::string vectorToXML(const std::vector<BGFLOAT>& matrix, int rows, int cols, const std::string& name) {
+    std::ostringstream os;
+    os << "<Matrix name=\"" << name << "\" rows=\"" << rows << "\" columns=\"" << cols << "\">\n";
+
+    int index = 0;
+    std::for_each(matrix.begin(), matrix.end(), [&](BGFLOAT value) mutable {
+        if (index % cols == 0) os << "   ";  // new row
+        os << value << " ";
+        if (++index % cols == 0) os << "\n";  // New line after every row
+    });
+
+    os << "</Matrix>";
+    return os.str();
+}
+
+void AllSpikingSynapses::Setup_xml_to_file() {
+    const std::string filename = "/DATA/Weights.xml"; // Hardcoded filename
+    int vertexCount = Simulator::getInstance().getTotalVertices();
+    
+    std::ofstream outFile(filename);  
+    if (!outFile) {
+        std::cerr << "Error: Unable to open file " << filename << std::endl;
+        std::cerr << "Error details: " << strerror(errno) << std::endl;
+        return;
+    }
+
+    std::string xmlContent = vectorToXML(W_, vertexCount, vertexCount, "WeightMatrix");
+    outFile << xmlContent;
+    outFile.close();
+
+    std::cout << "Success: XML written to " << filename << std::endl;
+}
+
+
+
 ///  Get summationCoord and in_use in AllEdges struct on device memory.
 ///
 ///  @param  allEdgesDevice  GPU address of the AllSpikingSynapsesDeviceProperties struct
