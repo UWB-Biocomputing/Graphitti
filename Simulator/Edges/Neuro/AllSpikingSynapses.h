@@ -167,7 +167,9 @@ public:
    ///
    ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
    virtual void copyDeviceEdgeSumIdxToHost(void *allEdgesDevice) override;
-
+   virtual void copyDeviceEdgeWeightsToHost(void *allEdgesDevice) ;
+   virtual void Setup_xml_to_file() ;
+   //virtual std::string vectorToXML(const std::vector<float> &matrix, int rows, int cols, const std::string &name) ;
    ///  Advance all the Synapses in the simulation.
    ///  Update the state of all synapses for a time step.
    ///
