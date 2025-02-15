@@ -89,14 +89,14 @@ bool Connections::updateConnections(AllVertices &vertices)
 }
 
 #if defined(USE_GPU)
-void Connections::updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &synapses,
+void Connections::updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &edges,
                                      AllVerticesDeviceProperties *allVerticesDevice,
                                      AllEdgesDeviceProperties *allEdgesDevice, Layout &layout)
 {
 }
 #else
 
-///  Update the weight of the Synapses in the simulation.
+///  Update the weight of the edges in the simulation.
 ///  Note: Platform Dependent.
 void Connections::updateEdgesWeights()
 {

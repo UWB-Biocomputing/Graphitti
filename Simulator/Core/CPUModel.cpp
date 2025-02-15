@@ -7,7 +7,6 @@
  */
 
 #include "CPUModel.h"
-#include "AllDSSynapses.h"
 #include "Simulator.h"
 
 #if !defined(USE_GPU)
@@ -32,25 +31,25 @@ void CPUModel::advance()
    vertices.integrateVertexInputs(edges, edgeIndexMap);
 }
 
-/// Update the connection of all the Neurons and Synapses of the simulation.
+/// Update the connection of all the vertices and edges of the simulation.
 void CPUModel::updateConnections()
 {
    // Update Connections data
    if (connections_->updateConnections(layout_->getVertices())) {
       connections_->updateEdgesWeights();
-      // create synapse inverse map
+      // create edge inverse map
       connections_->createEdgeIndexMap();
    }
 }
 
-/// Copy GPU Synapse data to CPU. (Inheritance, no implem)
+/// Copy GPU edge data to CPU. (Inheritance, no implem)
 void CPUModel::copyGPUtoCPU()
 {
    LOG4CPLUS_WARN(fileLogger_, "ERROR: CPUModel::copyGPUtoCPU() was called." << endl);
    exit(EXIT_FAILURE);
 }
 
-/// Copy CPU Synapse data to GPU. (Inheritance, no implem, GPUModel has implem)
+/// Copy CPU edge data to GPU. (Inheritance, no implem, GPUModel has implem)
 void CPUModel::copyCPUtoGPU()
 {
    LOG4CPLUS_WARN(fileLogger_, "ERROR: CPUModel::copyCPUtoGPU() was called." << endl);

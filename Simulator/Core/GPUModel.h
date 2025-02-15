@@ -6,28 +6,14 @@
  * @brief Implementation of Model for the graph-based networks.
  *
  * The Model class maintains and manages classes of objects that make up
- * essential components of graph-based networks.
- *    -# AllVertices: A class to define a list of particular type of neurons.
- *    -# AllEdges: A class to define a list of particular type of synapses.
- *    -# Connections: A class to define connections of the neural network.
- *    -# Layout: A class to define neurons' layout information in the network.
+ * essential components of the graph network.
+ *    -# AllVertices: A class to define a list of particular type of vertices.
+ *    -# AllEdges: A class to define a list of particular type of edges.
+ *    -# Connections: A class to define connections of the graph network.
+ *    -# Layout: A class to define vertices' layout information in the network.
  *
- * The network is composed of 3 superimposed 2-d arrays: neurons, synapses, and
- * summation points.
- *
- * Synapses in the synapse map are located at the coordinates of the neuron
- * from which they receive output.  Each synapse stores a pointer into a
- * summation point.
- *
- * If, during an advance cycle, a neuron \f$A\f$ at coordinates \f$x,y\f$ fires, every synapse
- * which receives output is notified of the spike. Those synapses then hold
- * the spike until their delay period is completed.  At a later advance cycle, once the delay
- * period has been completed, the synapses apply their PSRs (Post-Synaptic-Response) to
- * the summation points.
- *
- * Finally, on the next advance cycle, each neuron \f$B\f$ adds the value stored
- * in their corresponding summation points to their \f$V_m\f$ and resets the summation points to
- * zero.
+ * Edges in the edge map are located at the coordinates of the vertex
+ * from which they receive output.
  *
  * The model runs on multi-threaded on a GPU.
  *
@@ -86,42 +72,42 @@ public:
    /// Advances network state one simulation step.
    virtual void advance() override;
 
-   /// Modifies connections between neurons based on current state of the network and behavior
+   /// Modifies connections between vertices based on current state of the network and behavior
    /// over the past epoch. Should be called once every epoch.
    virtual void updateConnections() override;
 
-   /// Copy GPU Synapse data to CPU.
+   /// Copy GPU edge data to CPU.
    virtual void copyGPUtoCPU() override;
 
-   /// Copy CPU Synapse data to GPU.
+   /// Copy CPU edge data to GPU.
    virtual void copyCPUtoGPU() override;
 
-   /// Print out SynapseProps on the GPU.
+   /// Print out EdgeProps on the GPU.
    void printGPUEdgesPropsModel() const;
 
 protected:
    /// Allocates  and initializes memories on CUDA device.
-   /// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
-   /// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
+   /// @param[out] allVerticesDevice          Memory location of the pointer to the vertices list on device memory.
+   /// @param[out] allEdgesDevice         Memory location of the pointer to the edges list on device memory.
    void allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice);
 
    /// Copies device memories to host memories and deallocates them.
-   /// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
-   /// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
+   /// @param[out] allVerticesDevice          Memory location of the pointer to the vertices list on device memory.
+   /// @param[out] allEdgesDevice         Memory location of the pointer to the edges list on device memory.
    virtual void deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevice);
 
    /// Pointer to device random noise array.
    float *randNoise_d;
 
 #if defined(USE_GPU)
-   /// Pointer to synapse index map in device memory.
+   /// Pointer to edge index map in device memory.
    EdgeIndexMapDevice *edgeIndexMapDevice_;
 #endif   // defined(USE_GPU)
 
-   /// Synapse structures in device memory.
+   /// edge structures in device memory.
    AllEdgesDeviceProperties *allEdgesDevice_;
 
-   /// Neuron structure in device memory.
+   /// vertex structure in device memory.
    AllVerticesDeviceProperties *allVerticesDevice_;
 
 private:
