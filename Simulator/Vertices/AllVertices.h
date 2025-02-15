@@ -87,7 +87,7 @@ protected:
    int size_;
 
    // Loggers used to print to using log4cplus logging macros
-   log4cplus::Logger fileLogger_;     // Logs to Output/Debug/logging.txt
+   log4cplus::Logger fileLogger_;   // Logs to Output/Debug/logging.txt
    /// TODO: Should check to see if this file name "neurons" is hardcoded and change it to vertices
    log4cplus::Logger vertexLogger_;   // Logs to Output/Debug/neurons.txt
 
