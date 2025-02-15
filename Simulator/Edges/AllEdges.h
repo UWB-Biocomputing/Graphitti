@@ -84,7 +84,7 @@ protected:
    ///  Returns an appropriate edgeType object for the given integer.
    ///
    ///  @param  typeOrdinal    Integer that correspond with a edgeType.
-   ///  @return the SynapseType that corresponds with the given integer.
+   ///  @return the edgeType that corresponds with the given integer.
    edgeType edgeOrdinalToType(int typeOrdinal);
 
    /// Loggers used to print to using log4cplus logging macros, prints to Results/Debug/logging.txt
@@ -136,16 +136,11 @@ public:
    ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
    virtual void copyDeviceEdgeCountsToHost(void *allEdgesDevice) = 0;
 
-   ///  Get summationCoord and in_use in AllEdges struct on device memory.
-   ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyDeviceEdgeSumIdxToHost(void *allEdgesDevice) = 0;
-
-   ///  Advance all the Synapses in the simulation.
+   ///  Advance all the edges in the simulation.
    ///  Update the state of all edges for a time step.
    ///
    ///  @param  allEdgesDevice      GPU address of the allEdges struct on device memory.
-   ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
+   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
    ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
    virtual void advanceEdges(void *allEdgesDevice, void *allVerticesDevice,
                              void *edgeIndexMapDevice)
@@ -154,6 +149,7 @@ public:
    ///  Set some parameters used for advanceEdgesDevice.
    virtual void setAdvanceEdgesDeviceParams() = 0;
 
+   ///  TODO: Clean up this comment to remove synapses reference since this is neuro-specific
    ///  Set edge class ID defined by enumClassSynapses for the caller's Edge class.
    ///  The class ID will be set to classSynapses_d in device memory,
    ///  and the classSynapses_d will be referred to call a device function for the
@@ -164,9 +160,9 @@ public:
    ///  (see issue#137).
    virtual void setEdgeClassID() = 0;
 
-   ///  Prints GPU SynapsesProps data.
+   ///  Prints GPU edgesProps data.
    ///
-   ///  @param  allEdgesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
+   ///  @param  allEdgesDeviceProps   GPU address of the corresponding AllEdgesDeviceProperties struct on device memory.
    virtual void printGPUEdgesProps(void *allEdgesDeviceProps) const = 0;
 
 #else    // !defined(USE_GPU)
@@ -186,21 +182,22 @@ public:
 
    ///  Remove a edge from the network.
    ///
-   ///  @param  neuronIndex   Index of a vertex to remove from.
+   ///  @param  vertexIndex   Index of a vertex to remove from.
    ///  @param  iEdg          Index of a edge to remove.
-   virtual void eraseEdge(int neuronIndex, BGSIZE iEdg);
+   virtual void eraseEdge(int vertexIndex, BGSIZE iEdg);
 #endif   // defined(USE_GPU)
 
    ///  The location of the edge.
    vector<int> sourceVertexIndex_;
 
+   ///  TODO: Should generalize this comment since summation point is neuro-specific
    ///  The coordinates of the summation point.
    vector<int> destVertexIndex_;
 
    ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
    vector<BGFLOAT> W_;
 
-   ///   Synapse type
+   ///   edge type
    vector<edgeType> type_;
 
    ///  The value indicating the entry in the array is in use.
@@ -229,13 +226,14 @@ struct AllEdgesDeviceProperties {
    ///  The location of the edge.
    int *sourceVertexIndex_;
 
+   ///  TODO: Should generalize this comment since summation point is neuro-specific
    ///  The coordinates of the summation point.
    int *destVertexIndex_;
 
    ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
    BGFLOAT *W_;
 
-   ///  Synapse type
+   ///  edge type
    edgeType *type_;
 
    ///  The value indicating the entry in the array is in use.

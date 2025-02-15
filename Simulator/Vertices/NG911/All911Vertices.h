@@ -225,8 +225,8 @@ private:
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract
 public:
-   virtual void allocNeuronDeviceStruct(void **allVerticesDevice) {};
-   virtual void deleteNeuronDeviceStruct(void *allVerticesDevice) {};
+   virtual void allocVerticesDeviceStruct(void **allVerticesDevice) {};
+   virtual void deleteVerticesDeviceStruct(void *allVerticesDevice) {};
    virtual void copyToDevice(void *allVerticesDevice) {};
    virtual void copyFromDevice(void *allVerticesDevice) {};
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,

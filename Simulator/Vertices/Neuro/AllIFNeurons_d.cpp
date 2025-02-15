@@ -13,7 +13,7 @@
 ///  and copy them from host to GPU memory.
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
-void AllIFNeurons::allocNeuronDeviceStruct(void **allVerticesDevice)
+void AllIFNeurons::allocVerticesDeviceStruct(void **allVerticesDevice)
 {
    AllIFNeuronsDeviceProperties allNeurons;
    allocDeviceStruct(allNeurons);
@@ -23,7 +23,7 @@ void AllIFNeurons::allocNeuronDeviceStruct(void **allVerticesDevice)
 }
 
 ///  Allocate GPU memories to store all neurons' states.
-///  (Helper function of allocNeuronDeviceStruct)
+///  (Helper function of allocVerticesDeviceStruct)
 ///
 ///  @param  allVerticesDevice         GPU address of the AllIFNeuronsDeviceProperties struct.
 void AllIFNeurons::allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDevice)
@@ -66,8 +66,8 @@ void AllIFNeurons::allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDe
 
 ///  Delete GPU memories.
 ///
-///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
-void AllIFNeurons::deleteNeuronDeviceStruct(void *allVerticesDevice)
+///  @param  allVerticesDevice   GPU address of the AllVerticesDeviceProperties struct on device memory.
+void AllIFNeurons::deleteVerticesDeviceStruct(void *allVerticesDevice)
 {
    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
@@ -77,7 +77,7 @@ void AllIFNeurons::deleteNeuronDeviceStruct(void *allVerticesDevice)
 }
 
 ///  Delete GPU memories.
-///  (Helper function of deleteNeuronDeviceStruct)
+///  (Helper function of deleteVerticesDeviceStruct)
 ///
 ///  @param  allVerticesDevice         GPU address of the AllIFNeuronsDeviceProperties struct.
 void AllIFNeurons::deleteDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDevice)

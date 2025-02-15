@@ -163,11 +163,6 @@ public:
    ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
    virtual void copyDeviceEdgeCountsToHost(void *allEdgesDevice) override;
 
-   ///  Get summationCoord and in_use in AllNeuroEdges struct on device memory.
-   ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyDeviceEdgeSumIdxToHost(void *allEdgesDevice) override;
-
    ///  Advance all the Synapses in the simulation.
    ///  Update the state of all synapses for a time step.
    ///
@@ -195,6 +190,11 @@ public:
    ///
    ///  @param  allEdgesDeviceProps   GPU address of the corresponding SynapsesDeviceProperties struct on device memory.
    virtual void printGPUEdgesProps(void *allEdgesDeviceProps) const override;
+
+   ///  Get summationCoord and in_use in AllNeuroEdges struct on device memory.
+   ///
+   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
+   void copyDeviceEdgeSumIdxToHost(void *allEdgesDevice);
 
 protected:
    ///  Allocate GPU memories to store all synapses' states,

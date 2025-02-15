@@ -3,7 +3,7 @@
  * 
  * @ingroup Simulator/Core
  *
- * @brief Implementation of Model for the spiking neural networks.
+ * @brief Implementation of Model for the graph-based networks.
  * 
  */
 
@@ -27,16 +27,16 @@ GPUModel::GPUModel() :
 }
 
 /// Allocates  and initializes memories on CUDA device.
-/// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
-/// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
+/// @param[out] allVerticesDevice          Memory location of the pointer to the vertices list on device memory.
+/// @param[out] allEdgesDevice         Memory location of the pointer to the edges list on device memory.
 void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice)
 {
-   // Get neurons and synapses
+   // Get vertices and edges
    AllVertices &vertices = layout_->getVertices();
    AllEdges &edges = connections_->getEdges();
 
-   // Allocate Neurons and Synapses structs on GPU device memory
-   vertices.allocNeuronDeviceStruct(allVerticesDevice);
+   // Allocate vertices and edges structs on GPU device memory
+   vertices.allocVerticesDeviceStruct(allVerticesDevice);
    edges.allocEdgeDeviceStruct(allEdgesDevice);
 
    // Allocate memory for random noise array
@@ -44,28 +44,28 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
    BGSIZE randNoise_d_size = numVertices * sizeof(float);   // size of random noise array
    HANDLE_ERROR(cudaMalloc((void **)&randNoise_d, randNoise_d_size));
 
-   // Copy host neuron and synapse arrays into GPU device
+   // Copy host vertex and edge arrays into GPU device
    vertices.copyToDevice(*allVerticesDevice);
    edges.copyEdgeHostToDevice(*allEdgesDevice);
 
-   // Allocate synapse inverse map in device memory
+   // Allocate edge inverse map in device memory
    allocEdgeIndexMap(numVertices);
 }
 
 /// Copies device memories to host memories and deallocates them.
-/// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
-/// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
+/// @param[out] allVerticesDevice          Memory location of the pointer to the vertices list on device memory.
+/// @param[out] allEdgesDevice         Memory location of the pointer to the edges list on device memory.
 void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevice)
 {
-   // Get neurons and synapses
+   // Get vertices and edges
    AllVertices &vertices = layout_->getVertices();
    AllEdges &edges = connections_->getEdges();
 
-   // Copy device synapse and neuron structs to host memory
+   // Copy device edge and vertex structs to host memory
    vertices.copyFromDevice(*allVerticesDevice);
    // Deallocate device memory
-   vertices.deleteNeuronDeviceStruct(*allVerticesDevice);
-   // Copy device synapse and neuron structs to host memory
+   vertices.deleteVerticesDeviceStruct(*allVerticesDevice);
+   // Copy device edge and vertex structs to host memory
    edges.copyEdgeDeviceToHost(*allEdgesDevice);
    // Deallocate device memory
    edges.deleteEdgeDeviceStruct(*allEdgesDevice);
@@ -152,7 +152,7 @@ void GPUModel::advance()
 #endif   // PERFORMANCE_METRICS
 
    // display running info to console
-   // Advance neurons ------------->
+   // Advance vertices ------------->
    vertices.advanceVertices(edges, allVerticesDevice_, allEdgesDevice_, randNoise_d,
                             edgeIndexMapDevice_);
 
@@ -161,7 +161,7 @@ void GPUModel::advance()
    cudaStartTimer();
 #endif   // PERFORMANCE_METRICS
 
-   // Advance synapses ------------->
+   // Advance edges ------------->
    edges.advanceEdges(allEdgesDevice_, allVerticesDevice_, edgeIndexMapDevice_);
 
 #ifdef PERFORMANCE_METRICS
@@ -177,10 +177,10 @@ void GPUModel::advance()
 #endif   // PERFORMANCE_METRICS
 }
 
-/// Update the connection of all the Neurons and Synapses of the simulation.
+/// Update the connection of all the vertices and edges of the simulation.
 void GPUModel::updateConnections()
 {
-   // Get neurons and synapses
+   // Get vertices and edges
    AllVertices &vertices = layout_->getVertices();
    AllEdges &edges = connections_->getEdges();
 
@@ -190,7 +190,7 @@ void GPUModel::updateConnections()
    if (connections_->updateConnections(vertices)) {
       connections_->updateEdgesWeights(Simulator::getInstance().getTotalVertices(), vertices, edges,
                                        allVerticesDevice_, allEdgesDevice_, getLayout());
-      // create synapse index map
+      // create edge index map
       connections_->createEdgeIndexMap();
       // copy index map to the device memory
       copyEdgeIndexMapHostToDevice(connections_->getEdgeIndexMap(),
@@ -198,7 +198,7 @@ void GPUModel::updateConnections()
    }
 }
 
-/// Update the Neuron's history.
+/// Update the vertex's history.
 void GPUModel::updateHistory()
 {
    Model::updateHistory();
@@ -206,7 +206,7 @@ void GPUModel::updateHistory()
    layout_->getVertices().clearVertexHistory(allVerticesDevice_);
 }
 
-/// Allocate device memory for synapse inverse map.
+/// Allocate device memory for edge inverse map.
 /// @param  count	The number of vertices.
 void GPUModel::allocEdgeIndexMap(int count)
 {
@@ -231,7 +231,7 @@ void GPUModel::allocEdgeIndexMap(int count)
                            cudaMemcpyHostToDevice));
 }
 
-/// Deallocate device memory for synapse inverse map.
+/// Deallocate device memory for edge inverse map.
 void GPUModel::deleteEdgeIndexMap()
 {
    EdgeIndexMapDevice edgeIndexMapDevice;
@@ -292,21 +292,21 @@ void GPUModel::copyEdgeIndexMapHostToDevice(EdgeIndexMap &edgeIndexMapHost, int 
                            cudaMemcpyHostToDevice));
 }
 
-/// Copy GPU Synapse data to CPU.
+/// Copy GPU edge data to CPU.
 void GPUModel::copyGPUtoCPU()
 {
-   // copy device synapse structs to host memory
+   // copy device edge structs to host memory
    connections_->getEdges().copyEdgeDeviceToHost(allEdgesDevice_);
 }
 
-/// Copy CPU Synapse data to GPU.
+/// Copy CPU edge data to GPU.
 void GPUModel::copyCPUtoGPU()
 {
-   // copy host synapse structs to device memory
+   // copy host edge structs to device memory
    connections_->getEdges().copyEdgeHostToDevice(allEdgesDevice_);
 }
 
-/// Print out SynapseProps on the GPU.
+/// Print out EdgeProps on the GPU.
 void GPUModel::printGPUEdgesPropsModel() const
 {
    connections_->getEdges().printGPUEdgesProps(allEdgesDevice_);

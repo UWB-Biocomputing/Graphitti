@@ -7,6 +7,7 @@
  * @brief Update the weights of the Synapses in the simulation.
  */
 
+#include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
 #include "AllSynapsesDeviceFuncs.h"
 #include "Book.h"
@@ -21,12 +22,12 @@
  *
  *  @param  numVertices         The number of vertices to update.
  *  @param  vertices            The AllVertices object.
- *  @param  synapses            The AllEdges object.
+ *  @param  edges               The AllEdges object.
  *  @param  allVerticesDevice   GPU address to the AllVertices struct in device memory.
  *  @param  allEdgesDevice      GPU address to the AllEdges struct in device memory.
  *  @param  layout              The Layout object.
  */
-void ConnGrowth::updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &synapses,
+void ConnGrowth::updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &edges,
                                     AllVerticesDeviceProperties *allVerticesDevice,
                                     AllEdgesDeviceProperties *allEdgesDevice, Layout &layout)
 {
@@ -75,7 +76,7 @@ void ConnGrowth::updateEdgesWeights(int numVertices, AllVertices &vertices, AllE
    HANDLE_ERROR(cudaFree(neuronTypeMapD));
 
    // copy device synapse count to host memory
-   synapses.copyDeviceEdgeCountsToHost(allEdgesDevice);
+   edges.copyDeviceEdgeCountsToHost(allEdgesDevice);
    // copy device synapse summation coordinate to host memory
-   synapses.copyDeviceEdgeSumIdxToHost(allEdgesDevice);
+   dynamic_cast<AllSpikingSynapses &>(edges).copyDeviceEdgeSumIdxToHost(allEdgesDevice);
 }
