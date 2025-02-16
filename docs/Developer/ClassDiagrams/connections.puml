@@ -265,6 +265,7 @@ class ConnGrowth {
 	+{abstract} loadParameters() : void <<override>>
 	+{abstract} printParameters() : void {query} <<override>>
 	+{abstract} updateConnections(AllVertices& vertices) : bool <<override>>
+	+serialize(Archive& archive) : void
 	+printRadii() : void {query}
 	+{abstract} updateEdgesWeights(int numVertices, AllVertices& vertices, AllEdges& edges, AllVerticesDeviceProperties* allVerticesDevice, AllEdgesDeviceProperties* allEdgesDevice, Layout& layout) : void <<override>>
 	+{abstract} updateEdgesWeights() : void <<override>>
@@ -319,6 +320,7 @@ abstract class Connections {
 	+{abstract} loadParameters() : void
 	+{abstract} printParameters() : void {query}
 	+{abstract} updateConnections(AllVertices& vertices) : bool
+	+serialize(Archive& archive) : void
 	+{abstract} updateEdgesWeights(int numVertices, AllVertices& vertices, AllEdges& edges, AllVerticesDeviceProperties* allVerticesDevice, AllEdgesDeviceProperties* allEdgesDevice, Layout& layout) : void
 	+{abstract} updateEdgesWeights() : void
 	#edges_ : shared_ptr<AllEdges>

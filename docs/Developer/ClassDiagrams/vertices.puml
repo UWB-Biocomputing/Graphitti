@@ -14,6 +14,7 @@ class AllIFNeurons {
 	+{abstract} toString(int index) : string {query}
 	+{abstract} deserialize(istream& input) : void
 	+{abstract} serialize(ostream& output) : void {query}
+	+serialize(Archive& archive) : void
 	+{abstract} advanceVertices(AllEdges& synapses, void* allVerticesDevice, void* allEdgesDevice, float randNoise[], EdgeIndexMapDevice* edgeIndexMapDevice) : void
 	+{abstract} allocVerticesDeviceStruct(void** allVerticesDevice) : void
 	+{abstract} deleteVerticesDeviceStruct(void* allVerticesDevice) : void
@@ -28,30 +29,30 @@ class AllIFNeurons {
 	#{abstract} initNeuronConstsFromParamValues(int neuronIndex, BGFLOAT deltaT) : void
 	#readNeuron(istream& input, int i) : void
 	#writeNeuron(ostream& output, int i) : void {query}
-  +Trefract_ : vector<BGFLOAT>
-  +Vthresh_ : vector<BGFLOAT>
-  +Vrest_ : vector<BGFLOAT>
-  +Vreset_ : vector<BGFLOAT>
-  +Vinit_ : vector<BGFLOAT>
-  +Cm_ : vector<BGFLOAT>
-  +Rm_ : vector<BGFLOAT>
-  +Inoise_ : vector<BGFLOAT>
-  +Iinject_ : vector<BGFLOAT>
-  +Isyn_ : vector<BGFLOAT>
-  +numStepsInRefractoryPeriod_ : vector<int>
-  +C1_ : vector<BGFLOAT>
-  +C2_ : vector<BGFLOAT>
-  +I0_ : vector<BGFLOAT>
-  +Vm_ : vector<BGFLOAT>
-  +Tau_ : vector<BGFLOAT>
-  -IinjectRange_ : BGFLOAT[2]
-  -InoiseRange_ : BGFLOAT[2]
-  -VthreshRange_ : BGFLOAT[2]
-  -VrestingRange_ : BGFLOAT[2]
-  -VresetRange_ : BGFLOAT[2]
-  -VinitRange_ : BGFLOAT[2]
-  -starterVthreshRange_ : BGFLOAT[2]
-  -starterVresetRange_ : BGFLOAT[2]
+  	+Trefract_ : vector<BGFLOAT>
+  	+Vthresh_ : vector<BGFLOAT>
+  	+Vrest_ : vector<BGFLOAT>
+  	+Vreset_ : vector<BGFLOAT>
+  	+Vinit_ : vector<BGFLOAT>
+  	+Cm_ : vector<BGFLOAT>
+  	+Rm_ : vector<BGFLOAT>
+ 	+Inoise_ : vector<BGFLOAT>
+  	+Iinject_ : vector<BGFLOAT>
+  	+Isyn_ : vector<BGFLOAT>
+  	+numStepsInRefractoryPeriod_ : vector<int>
+  	+C1_ : vector<BGFLOAT>
+  	+C2_ : vector<BGFLOAT>
+  	+I0_ : vector<BGFLOAT>
+  	+Vm_ : vector<BGFLOAT>
+  	+Tau_ : vector<BGFLOAT>
+  	-IinjectRange_ : BGFLOAT[2]
+  	-InoiseRange_ : BGFLOAT[2]
+  	-VthreshRange_ : BGFLOAT[2]
+  	-VrestingRange_ : BGFLOAT[2]
+  	-VresetRange_ : BGFLOAT[2]
+  	-VinitRange_ : BGFLOAT[2]
+  	-starterVthreshRange_ : BGFLOAT[2]
+  	-starterVresetRange_ : BGFLOAT[2]
 }
 
 
@@ -65,6 +66,7 @@ class AllIZHNeurons {
 	+{abstract} toString(int index) : string {query} <<override>>
 	+{abstract} deserialize(istream& input) : void <<override>>
 	+{abstract} serialize(ostream& output) : void {query} <<override>>
+	+serialize(Archive& archive) : void
 	+{abstract} advanceVertices(AllEdges& synapses, void* allVerticesDevice, void* allEdgesDevice, float randNoise[], EdgeIndexMapDevice* edgeIndexMapDevice) : void <<override>>
 	+{abstract} allocVerticesDeviceStruct(void** allVerticesDevice) : void <<override>>
 	+{abstract} deleteVerticesDeviceStruct(void* allVerticesDevice) : void <<override>>
@@ -108,6 +110,7 @@ class AllLIFNeurons {
 	+{abstract} ~AllLIFNeurons()
 	+{static} Create() : AllVertices*
 	+{abstract} printParameters() : void {query} <<override>>
+	+serialize(Archive& archive) : void
 	+{abstract} advanceVertices(AllEdges& synapses, void* allVerticesDevice, void* allEdgesDevice, float randNoise[], EdgeIndexMapDevice* edgeIndexMapDevice) : void <<override>>
 	#{abstract} advanceNeuron(int index) : void
 	#{abstract} fire(int index) : void
@@ -120,6 +123,7 @@ abstract class AllSpikingNeurons {
 	+{abstract} setupVertices() : void <<override>>
 	+clearSpikeCounts() : void
 	+{abstract} registerHistoryVariables() : void <<override>>
+	+serialize(Archive& archive) : void
 	+{abstract} setAdvanceVerticesDeviceParams(AllEdges& synapses) : void
 	+{abstract} integrateVertexInputs(void* allVerticesDevice, EdgeIndexMapDevice* edgeIndexMapDevice, void* allEdgesDevice) : void
 	+{abstract} copyFromDevice(void* deviceAddress) : void <<override>>
@@ -147,6 +151,7 @@ abstract class AllVertices {
 	+{abstract} createAllVertices(Layout& layout) : void
 	+{abstract} toString(int i) : string {query}
 	+{abstract} registerHistoryVariables() : void
+	+serialize(Archive& archive) : void
 	#size_ : int
 	#fileLogger_ : log4cplus::Logger
 	#vertexLogger_ : log4cplus::Logger

@@ -86,6 +86,7 @@ abstract class AllEdges {
 	+{abstract} addEdge(edgeType type, int srcVertex, int destVertex, BGFLOAT deltaT) : BGSIZE
 	+{abstract} createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT, edgeType type) : void
 	+{abstract} createEdgeIndexMap(EdgeIndexMap& edgeIndexMap) : void
+	+serialize(Archive& archive) : void
 	#{abstract} setupEdges(int numVertices, int maxEdges) : void
 	#{abstract} readEdge(istream& input, BGSIZE iEdg) : void
 	#{abstract} writeEdge(ostream& output, BGSIZE iEdg) : void {query}
@@ -152,6 +153,7 @@ class AllNeuroEdges {
 	+{abstract} resetEdge(BGSIZE iEdg, BGFLOAT deltaT) : void
 	+edgSign(const edgeType type) : int
 	+{abstract} printSynapsesProps() : void {query}
+	+serialize(Archive& archive) : void
 	#{abstract} setupEdges(int numVertices, int maxEdges) : void <<override>>
 	#{abstract} readEdge(istream& input, BGSIZE iEdg) : void <<override>>
 	#{abstract} writeEdge(ostream& output, BGSIZE iEdg) : void {query} <<override>>
@@ -238,6 +240,7 @@ class AllSpikingSynapses {
 	+{abstract} createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT, edgeType type) : void <<override>>
 	+{abstract} allowBackPropagation() : bool
 	+{abstract} printSynapsesProps() : void {query}
+	+serialize(Archive& archive) : void
 	#{abstract} setupEdges(int numVertices, int maxEdges) : void
 	#{abstract} initSpikeQueue(BGSIZE iEdg) : void
 	#updateDecay(BGSIZE iEdg, BGFLOAT deltaT) : bool
