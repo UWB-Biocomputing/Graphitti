@@ -136,7 +136,7 @@ class All911Edges {
   +{abstract} advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
   +{abstract} setAdvanceEdgesDeviceParams() : void
   +{abstract} setEdgeClassID() : void
-  +{abstract} printGPUEdgesProps(void* allEdgesDeviceProps) const : void
+  +{abstract} printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
   +{abstract} advanceEdges(AllVertices& vertices, EdgeIndexMap& edgeIndexMap) : void
   +advance911Edge(BGSIZE iEdg, All911Vertices& vertices) : void
   +{abstract} advanceEdge(BGSIZE iEdg, AllVertices& vertices) : void <<override>>

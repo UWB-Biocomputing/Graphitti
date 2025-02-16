@@ -204,14 +204,14 @@ class All911Vertices {
   +{abstract} setupVertices() : void <<override>>
   +{abstract} createAllVertices(Layout& layout) : void
   +{abstract} loadParameters() : void
-  +{abstract} printParameters() const : void <<override>>
-  +{abstract} toString(int index) const : string
+  +{abstract} printParameters() : void {query} <<override>>
+  +{abstract} toString(int index) : string {query}
   +{abstract} loadEpochInputs(uint64_t currentStep, uint64_t endStep) : void <<override>>
   +{abstract} registerHistoryVariables() : void <<override>>
   +getQueue(int vIdx) : CircularBuffer<Call>&
   +droppedCalls(int vIdx) : int&
   +receivedCalls(int vIdx) : int&
-  +busyServers(int vIdx) const : int
+  +busyServers(int vIdx) : int {query}
   -beginTimeHistory_ : vector<vector<uint64_t>>
   -answerTimeHistory_ : vector<vector<uint64_t>>
   -endTimeHistory_ : vector<vector<uint64_t>>
