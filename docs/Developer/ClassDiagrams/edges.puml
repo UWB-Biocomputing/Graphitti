@@ -78,61 +78,85 @@ class AllDynamicSTDPSynapses {
 
 abstract class AllEdges {
 	+AllEdges()
-	+AllEdges(const int numVertices, const int maxEdges)
-	+~AllEdges()
-	+W_ : BGFLOAT*
-	+maxEdgesPerVertex_ : BGSIZE
-	+totalEdgeCount_ : BGSIZE
-	+edgeCounts_ : BGSIZE*
-	+inUse_ : bool*
-	#edgeOrdinalToType(const int typeOrdinal) : edgeType
-	+type_ : edgeType*
-	+countVertices_ : int
-	+destVertexIndex_ : int*
-	+sourceVertexIndex_ : int*
-	#edgeLogger_ : log4cplus::Logger
+	+AllEdges(int numVertices, int maxEdges)
+	+{abstract} ~AllEdges()
+	+{abstract} setupEdges() : void
+	+{abstract} loadParameters() : void
+	+{abstract} printParameters() : void {query}
+	+{abstract} addEdge(edgeType type, int srcVertex, int destVertex, BGFLOAT deltaT) : BGSIZE
+	+{abstract} createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT, edgeType type) : void
+	+{abstract} createEdgeIndexMap(EdgeIndexMap& edgeIndexMap) : void
+	#{abstract} setupEdges(int numVertices, int maxEdges) : void
+	#{abstract} readEdge(istream& input, BGSIZE iEdg) : void
+	#{abstract} writeEdge(ostream& output, BGSIZE iEdg) : void {query}
+	#edgeOrdinalToType(int typeOrdinal) : edgeType
 	#fileLogger_ : log4cplus::Logger
-	+addEdge(edgeType type, const int srcVertex, const int destVertex, const BGFLOAT deltaT) : BGSIZE
-	+{abstract} advanceEdge(const BGSIZE iEdg, AllVertices* vertices) : void
-	+{abstract} advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
-	+advanceEdges(AllVertices* vertices, EdgeIndexMap* edgeIndexMap) : void
+	#edgeLogger_ : log4cplus::Logger
 	+{abstract} allocEdgeDeviceStruct(void** allEdgesDevice) : void
 	+{abstract} allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
-	+{abstract} copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void
-	+{abstract} copyDeviceEdgeSumIdxToHost(void* allEdgesDevice) : void
-	+{abstract} copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+{abstract} deleteEdgeDeviceStruct(void* allEdgesDevice) : void
 	+{abstract} copyEdgeHostToDevice(void* allEdgesDevice) : void
 	+{abstract} copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
-	+{abstract} createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
-	+createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap) : void
-	+{abstract} deleteEdgeDeviceStruct(void* allEdgesDevice) : void
-	+eraseEdge(const int neuronIndex, const BGSIZE iEdg) : void
-	+load(Archive& archive) : void
-	+loadParameters() : void
-	+{abstract} printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
-	+printParameters() : void {query}
-	#readEdge(istream& input, const BGSIZE iEdg) : void
-	+save(Archive& archive) : void {query}
+	+{abstract} copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+{abstract} copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void
+	+{abstract} advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
 	+{abstract} setAdvanceEdgesDeviceParams() : void
 	+{abstract} setEdgeClassID() : void
-	+setupEdges() : void
-	#setupEdges(const int numVertices, const int maxEdges) : void
-	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+	+{abstract} printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+{abstract} advanceEdges(AllVertices& vertices, EdgeIndexMap& edgeIndexMap) : void
+	+{abstract} advanceEdge(BGSIZE iEdg, AllVertices& vertices) : void
+	+{abstract} eraseEdge(int vertexIndex, BGSIZE iEdg) : void
+	+sourceVertexIndex_ : vector<int>
+	+destVertexIndex_ : vector<int>
+	+W_ : vector<BGFLOAT>
+	+type_ : vector<edgeType>
+	+inUse_ : vector<unsigned char>
+	+edgeCounts_ : vector<BGSIZE>
+	+totalEdgeCount_ : BGSIZE
+	+maxEdgesPerVertex_ : BGSIZE
+	+countVertices_ : int
+}
+
+
+class All911Edges {
+  +All911Edges()
+  +All911Edges(int numVertices, int maxEdges)
+  +{abstract} ~All911Edges()
+  +{static} Create() : AllEdges*
+  +{abstract} setupEdges() : void <<override>>
+  +{abstract} createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT, edgeType type) : void <<override>>
+  +{abstract} allocEdgeDeviceStruct(void** allEdgesDevice) :  void
+  +{abstract} allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+  +{abstract} deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+  +{abstract} copyEdgeHostToDevice(void* allEdgesDevice) : void
+  +{abstract} copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+  +{abstract} copyEdgeDeviceToHost(void* allEdgesDevice) : void
+  +{abstract} copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void
+  +{abstract} advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
+  +{abstract} setAdvanceEdgesDeviceParams() : void
+  +{abstract} setEdgeClassID() : void
+  +{abstract} printGPUEdgesProps(void* allEdgesDeviceProps) const : void
+  +{abstract} advanceEdges(AllVertices& vertices, EdgeIndexMap& edgeIndexMap) : void
+  +advance911Edge(BGSIZE iEdg, All911Vertices& vertices) : void
+  +{abstract} advanceEdge(BGSIZE iEdg, AllVertices& vertices) : void <<override>>
+  +isAvailable_ : unique_ptr<bool[]>
+  +isRedial_ : unique_ptr<bool[]>
+  +call_ : vector<Call>
 }
 
 
 class AllNeuroEdges {
 	+AllNeuroEdges()
-	+~AllNeuroEdges()
-	+psr_ : BGFLOAT*
+	+{abstract} ~AllNeuroEdges()
+	+{abstract} setupEdges() : void <<override>>
+	+{abstract} resetEdge(BGSIZE iEdg, BGFLOAT deltaT) : void
 	+edgSign(const edgeType type) : int
+	+{abstract} printSynapsesProps() : void {query}
+	#{abstract} setupEdges(int numVertices, int maxEdges) : void <<override>>
+	#{abstract} readEdge(istream& input, BGSIZE iEdg) : void <<override>>
+	#{abstract} writeEdge(ostream& output, BGSIZE iEdg) : void {query} <<override>>
 	+{static} SYNAPSE_STRENGTH_ADJUSTMENT : static constexpr BGFLOAT
-	+printSynapsesProps() : void {query}
-	#readEdge(istream& input, const BGSIZE iEdg) : void
-	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
-	+setupEdges() : void
-	#setupEdges(const int numVertices, const int maxEdges) : void
-	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+	+psr_ : vector<BGFLOAT>
 }
 
 
@@ -204,56 +228,56 @@ class AllSTDPSynapses {
 
 class AllSpikingSynapses {
 	+AllSpikingSynapses()
-	+AllSpikingSynapses(const int numVertices, const int maxEdges)
-	+~AllSpikingSynapses()
+	+AllSpikingSynapses(int numVertices, int maxEdges)
+	+{abstract} ~AllSpikingSynapses()
 	+{static} Create() : AllEdges*
-	+delay_EE_ : BGFLOAT
-	+delay_EI_ : BGFLOAT
-	+delay_IE_ : BGFLOAT
-	+delay_II_ : BGFLOAT
-	+tau_EE_ : BGFLOAT
-	+tau_EI_ : BGFLOAT
-	+tau_IE_ : BGFLOAT
-	+tau_II_ : BGFLOAT
-	+decay_ : BGFLOAT*
-	+tau_ : BGFLOAT*
-	+allowBackPropagation() : bool
-	#isSpikeQueue(const BGSIZE iEdg) : bool
-	#updateDecay(const BGSIZE iEdg, const BGFLOAT deltaT) : bool
-	+delayIndex_ : int*
-	+delayQueueLength_ : int*
-	+totalDelay_ : int*
-	+delayQueue_ : uint32_t*
-	+advanceEdge(const BGSIZE iEdg, AllVertices* neurons) : void
-	+advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
-	#allocDeviceStruct(AllSpikingSynapsesDeviceProperties& allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
-	+allocEdgeDeviceStruct(void** allEdgesDevice) : void
-	+allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
-	#changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) : void
-	+copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void
+	+{abstract} setupEdges() : void <<override>>
+	+{abstract} resetEdge(BGSIZE iEdg, BGFLOAT deltaT) : void <<override>>
+	+{abstract} loadParameters() : void <<override>>
+	+{abstract} printParameters() : void {query} <<override>>
+	+{abstract} createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT, edgeType type) : void <<override>>
+	+{abstract} allowBackPropagation() : bool
+	+{abstract} printSynapsesProps() : void {query}
+	#{abstract} setupEdges(int numVertices, int maxEdges) : void
+	#{abstract} initSpikeQueue(BGSIZE iEdg) : void
+	#updateDecay(BGSIZE iEdg, BGFLOAT deltaT) : bool
+	#{abstract} readEdge(istream& input, BGSIZE iEdg) : void <<override>>
+	#{abstract} writeEdge(ostream& output, BGSIZE iEdg) : void {query} <<override>>
+	+{abstract} allocEdgeDeviceStruct(void** allEdgesDevice) : void <<override>>
+	+{abstract} allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void <<override>>
+	+{abstract} deleteEdgeDeviceStruct(void* allEdgesDevice) : void <<override>>
+	+{abstract} copyEdgeHostToDevice(void* allEdgesDevice) : void <<override>>
+	+{abstract} copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void <<override>>
+	+{abstract} copyEdgeDeviceToHost(void* allEdgesDevice) : void <<override>>
+	+{abstract} copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void <<override>>
+	+{abstract} advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void <<override>>
+	+{abstract} setAdvanceEdgesDeviceParams() : void <<override>>
+	+{abstract} setEdgeClassID() : void <<override>>
+	+{abstract} printGPUEdgesProps(void* allEdgesDeviceProps) : void {query} <<override>>
 	+copyDeviceEdgeSumIdxToHost(void* allEdgesDevice) : void
-	#copyDeviceToHost(AllSpikingSynapsesDeviceProperties& allEdgesDevice) : void
-	+copyEdgeDeviceToHost(void* allEdgesDevice) : void
-	+copyEdgeHostToDevice(void* allEdgesDevice) : void
-	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
-	#copyHostToDevice(void* allEdgesDevice, AllSpikingSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
-	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	#allocDeviceStruct(AllSpikingSynapsesDeviceProperties& allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
 	#deleteDeviceStruct(AllSpikingSynapsesDeviceProperties& allEdgesDevice) : void
-	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
-	#initSpikeQueue(const BGSIZE iEdg) : void
-	+loadParameters() : void
-	+postSpikeHit(const BGSIZE iEdg) : void
-	+preSpikeHit(const BGSIZE iEdg) : void
-	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
-	+printParameters() : void {query}
-	+printSynapsesProps() : void {query}
-	#readEdge(istream& input, const BGSIZE iEdg) : void
-	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
-	+setAdvanceEdgesDeviceParams() : void
-	+setEdgeClassID() : void
-	+setupEdges() : void
-	#setupEdges(const int numVertices, const int maxEdges) : void
-	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+	#copyHostToDevice(void* allEdgesDevice, AllSpikingSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
+	#copyDeviceToHost(AllSpikingSynapsesDeviceProperties& allEdgesDevice) : void
+	+{abstract} advanceEdge(BGSIZE iEdg, AllVertices& neurons) : void <<override>>
+	+{abstract} preSpikeHit(BGSIZE iEdg) : void
+	+{abstract} postSpikeHit(BGSIZE iEdg) : void
+	#isSpikeQueue(BGSIZE iEdg) : bool
+	#{abstract} changePSR(BGSIZE iEdg, BGFLOAT deltaT) : void
+	+decay_ : vector<BGFLOAT>
+	+tau_ : vector<BGFLOAT>
+	+tau_II_ : BGFLOAT
+	+tau_IE_ : BGFLOAT
+	+tau_EI_ : BGFLOAT
+	+tau_EE_ : BGFLOAT
+	+delay_II_ : BGFLOAT
+	+delay_IE_ : BGFLOAT
+	+delay_EI_ : BGFLOAT
+	+delay_EE_ : BGFLOAT
+	+totalDelay_ : vector<int>
+	+delayQueue_ : vector<uint32_t>
+	+delayIndex_ : vector<int>
+	+delayQueueLength_ : vector<int>
 }
 
 
@@ -299,16 +323,20 @@ class AllDynamicSTDPSynapsesDeviceProperties {
 
 
 class AllEdgesDeviceProperties {
-	+W_ : BGFLOAT*
-	+psr_ : BGFLOAT*
-	+maxEdgesPerVertex_ : BGSIZE
-	+totalEdgeCount_ : BGSIZE
-	+edgeCounts_ : BGSIZE*
-	+inUse_ : bool*
-	+type_ : edgeType*
+  +sourceVertexIndex_ : int*
+  +destVertexIndex_ : int*
+  +W_ : BGFLOAT*
+  +type_ : edgeType*
+  +inUse_ : unsigned char*
+  +edgeCounts_ : BGSIZE*
+  +totalEdgeCount_ : BGSIZE
+  +maxEdgesPerVertex_ : BGSIZE
 	+countVertices_ : int
-	+destVertexIndex_ : int*
-	+sourceVertexIndex_ : int*
+}
+
+
+class AllNeuroEdgesDeviceProperties {
+  +psr_ : BGFLOAT*
 }
 
 
@@ -349,7 +377,10 @@ class AllSpikingSynapsesDeviceProperties {
 .AllEdges <|-- .AllNeuroEdges
 
 
-.AllEdgesDeviceProperties <|-- .AllSpikingSynapsesDeviceProperties
+.AllEdgesDeviceProperties <|-- .AllNeuroEdgesDeviceProperties
+
+
+.AllNeuroEdgesDeviceProperties <|-- .AllSpikingSynapsesDeviceProperties
 
 
 .AllNeuroEdges <|-- .AllSpikingSynapses
