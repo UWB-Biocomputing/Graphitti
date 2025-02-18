@@ -98,7 +98,7 @@ const int g_nMaxChunkSize = 100;
 // CALR: Caller radii
 // PSAP: PSAP nodes
 // EMS, FIRE, LAW: Responder nodes
-enum vertexType {
+enum class vertexType {
    // Neuro
    INH = 1,
    EXC = 2,
@@ -111,6 +111,12 @@ enum vertexType {
    // UNDEF
    VTYPE_UNDEF = 0
 };
+// Custom streaming operator<< for the enum class vertexType
+inline std::ostream &operator<<(std::ostream &os, vertexType vT)
+{
+   os << static_cast<int>(vT);
+   return os;
+}
 
 // Edge types.
 // NEURO:
@@ -124,7 +130,7 @@ enum vertexType {
 //  RC - Responder to Caller
 //  PP - PSAP to PSAP
 
-enum edgeType {
+enum class edgeType {
    // NEURO
    II = 0,
    IE = 1,
@@ -140,6 +146,12 @@ enum edgeType {
    // UNDEF
    ETYPE_UNDEF = -1
 };
+// Custom streaming operator<< for the enum class edgeType
+inline std::ostream &operator<<(std::ostream &os, edgeType eT)
+{
+   os << static_cast<int>(eT);
+   return os;
+}
 
 // The default membrane capacitance.
 #define DEFAULT_Cm (3e-8)

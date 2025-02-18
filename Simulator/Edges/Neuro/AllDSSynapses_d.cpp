@@ -207,7 +207,7 @@ void AllDSSynapses::copyDeviceToHost(AllDSSynapsesDeviceProperties &allEdgesDevi
 ///  (see issue#137).
 void AllDSSynapses::setEdgeClassID()
 {
-   enumClassSynapses classSynapses_h = classAllDSSynapses;
+   enumClassSynapses classSynapses_h = enumClassSynapses::classAllDSSynapses;
 
    HANDLE_ERROR(cudaMemcpyToSymbol(classSynapses_d, &classSynapses_h, sizeof(enumClassSynapses)));
 }
