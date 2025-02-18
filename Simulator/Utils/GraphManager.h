@@ -1,39 +1,46 @@
 /**
  * @file GraphManager.h
  * @author Jardi A. M. Jordan (jardiamj@gmail.com)
- * @date 11-11-2022
+ * @author Jasleen Kaur Saini (jasleenksaini@gmail.com)
+ * @date 02-18-2025
  * Supervised by Dr. Michael Stiber, UW Bothell CSSE Division
  * @ingroup Simulator/Utils
  * 
- * @brief This is a wrapper around the Boost Graph Library (BGL).
+ * @brief A templated wrapper around the Boost Graph Library (BGL).
  * 
- * It is used to read graphml files that hold the initial simulation graph.
- *
- * The class provides a simple interface to load a graphML file. The BGL needs
- * to know the vertices, edges, graph properties before loading the graph. We
- * tell BGL where to store these properties and their type by registering them
- * before hand using the registerProperty() method.
- * Assumptions:
- *   - VertexProperty is a struct that contains the properties related to vertices
- *     lisgted in the graphml file.
- *   - EdgeProperty is a struct that contains the properties related to edges
- *     listed inthe graphml file.
- *   - GraphProperty is a structure that contains the properties related to the graph.
- *   - All relevant properties are registered via the `registerProperty()` method
- *     before calling `readGraph`.
- *   - Properties not registered are ignored.
- *
- * The structures for the VertexProperty, EdgeProperty, and GraphProperty are declared
- * in Global.h.
+ * The GraphManager class is responsible for reading and managing GraphML files 
+ * that define the initial simulation graph structure. It provides a simple 
+ * interface for loading graphs while ensuring that BGL correctly associates 
+ * graph elements with their respective properties.
  * 
- * The class was made a Singleton because is needed in various places to initialize
- * the differen graph structures of the Simulator.
+ * The templatized class is designed to support multiple applications by using  
+ * `VertexProperty` struct that employs inheritance. This allows for specialization 
+ * based on different simulation domains, such as:
+ *   - Neuro: Graph structures used in Neural Network-specific simulations.
+ *   - NG911: Graph structures used for Next Generation 911 emergency simulations.
  *
+ * ## Assumptions:
+ *   - `VertexProperty` is a base struct that includes application-specific properties 
+ *     via inheritance. Derived structs are NG911Property and NeuralProperty.
+ *   - `EdgeProperty` is a struct containing properties related to edges in the graph.
+ *   - `GraphProperty` is a struct containing properties related to the entire graph.
+ *   - All relevant properties are registered using the `registerProperty()` method 
+ *     before calling `readGraph()`.
+ *   - Properties not  registered will be ignored.
+ *   - The entire GraphManager class is included in the header file to ensure that  
+ *     the templated class can be compiled without requiring separate declarations.  
+ *
+ * The structures for `VertexProperty`, `EdgeProperty`, and `GraphProperty` 
+ * are declared in `Global.h`.
+ * 
+ * This class follows the Singleton design pattern, ensuring a single instance 
+ * is used throughout the simulation for consistent graph management.
  */
 
 #pragma once
 
 #include "Global.h"
+#include "ParameterManager.h"
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphml.hpp>
 #include <string>
@@ -41,6 +48,7 @@
 
 using namespace std;
 
+template <typename VertexProperty>
 class GraphManager {
 public:
    /// Using directive for graphml graph type (adjacency list)
@@ -91,6 +99,7 @@ public:
    ///         and second points to the end of the edges vector
    pair<EdgeIterator, EdgeIterator> edges() const;
 
+
    /// @brief Retrieves the source vertex index for the given Edge
    /// @param edge the EdgeDescriptor
    /// @return the source vertex index for the given Edge
@@ -133,14 +142,141 @@ public:
 private:
    /// stores the graph
    Graph graph_;
-
    string graphFilePath_;
 
    /// container for dynamic properties map
    boost::dynamic_properties dp_;
 
    /// @brief Constructor
-   GraphManager() : graph_(), dp_(boost::ignore_other_properties)
-   {
-   }
+   GraphManager() : graph_(), dp_(boost::ignore_other_properties) {}
 };
+ 
+/**
+ * @class GraphManager
+ * @brief A templated wrapper around the Boost Graph Library (BGL).
+ */
+
+
+/// @brief Sets the file path for the graphML file.
+/// @param filePath The absolute path to the graphML file.
+template <typename VertexProperty>
+void GraphManager<VertexProperty>::setFilePath(string filePath)
+{
+   graphFilePath_ = filePath;
+}
+ 
+/// @brief Reads a graph from a GraphML file into a BGL graph.
+/// @return True if the graph was successfully read, false otherwise.
+template <typename VertexProperty>
+bool GraphManager<VertexProperty>::readGraph()
+{
+   // Load graphml file into a BGL graph
+   ifstream graph_file;
+ 
+   // If graphFilePath_ isn't already defined, get it from ParameterManager
+   if (graphFilePath_ == "") {
+      // string file_name;
+      string path = "//graphmlFile/text()";
+      if (!ParameterManager::getInstance().getStringByXpath(path, graphFilePath_)) {
+         cerr << "Could not find XML path: " << path << ".\n";
+         return false;
+      };
+   }
+ 
+   graph_file.open(graphFilePath_.c_str());
+   if (!graph_file.is_open()) {
+      cerr << "Failed to open file: " << graphFilePath_ << ".\n";
+      return false;
+   }
+ 
+   boost::read_graphml(graph_file, graph_, dp_);
+   return true;
+}
+ 
+/// @brief Retrieves the vertices of the graph.
+/// @return A pair of VertexIterators for the graph vertices.
+template <typename VertexProperty>
+pair<typename GraphManager<VertexProperty>::VertexIterator, typename GraphManager<VertexProperty>::VertexIterator> GraphManager<VertexProperty>::vertices()
+{
+   return boost::vertices(graph_);
+}
+ 
+/// @brief Retrieves the edges of the graph.
+/// @return A pair of EdgeIterators for the graph edges.
+template <typename VertexProperty>
+pair<typename GraphManager<VertexProperty>::EdgeIterator, typename GraphManager<VertexProperty>::EdgeIterator> GraphManager<VertexProperty>::edges() const
+{
+   return boost::edges(graph_);
+}
+ 
+/// @brief Retrieves the source vertex of a given edge.
+/// @param edge The edge descriptor.
+/// @return The source vertex index.
+template <typename VertexProperty>
+size_t GraphManager<VertexProperty>::source(const typename GraphManager<VertexProperty>::EdgeDescriptor &edge) const
+{
+   return boost::source(edge, graph_);
+}
+
+/// @brief Retrieves the target vertex of a given edge.
+/// @param edge The edge descriptor.
+/// @return The target vertex index.
+template <typename VertexProperty>
+size_t GraphManager<VertexProperty>::target(const typename GraphManager<VertexProperty>::EdgeDescriptor &edge) const
+{
+   return boost::target(edge, graph_);
+}
+ 
+/// @brief Directly access the VertexProperty of a vertex descriptor.
+/// @param vertex The vertex descriptor (index).
+/// @return The VertexProperty of the vertex.
+template <typename VertexProperty>
+VertexProperty &GraphManager<VertexProperty>::operator[](size_t vertex)
+{
+   return graph_[vertex];
+}
+ 
+/// @brief Directly access the VertexProperty of a vertex descriptor (const).
+/// @param vertex The vertex descriptor (index).
+/// @return The VertexProperty of the vertex.
+template <typename VertexProperty>
+const VertexProperty &GraphManager<VertexProperty>::operator[](size_t vertex) const
+{
+   return graph_[vertex];
+}
+ 
+/// @brief Returns a list of EdgeDescriptors sorted by target vertexID.
+/// @return A sorted list of EdgeDescriptors.
+template <typename VertexProperty>
+const list<typename GraphManager<VertexProperty>::EdgeDescriptor> GraphManager<VertexProperty>::edgesSortByTarget() const
+{
+   list<EdgeDescriptor> ei_list;
+   EdgeIterator ei, ei_end;
+   for (boost::tie(ei, ei_end) = edges(); ei != ei_end; ++ei) {
+      ei_list.push_back(*ei);
+   }
+ 
+   // Use a lambda function for sorting the list of edges
+   ei_list.sort([this](EdgeDescriptor const &a, EdgeDescriptor const &b) {
+      return this->target(a) < this->target(b);
+   });
+ 
+   return ei_list;
+}
+ 
+/// @brief Retrieves the number of vertices in the current graph.
+/// @return The number of vertices.
+template <typename VertexProperty>
+size_t GraphManager<VertexProperty>::numVertices() const
+{
+   return boost::num_vertices(graph_);
+}
+ 
+/// @brief Retrieves the number of edges in the current graph.
+/// @return The number of edges.
+template <typename VertexProperty>
+size_t GraphManager<VertexProperty>::numEdges() const
+{
+   return boost::num_edges(graph_);
+}
+ 

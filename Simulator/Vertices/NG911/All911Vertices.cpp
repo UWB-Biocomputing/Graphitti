@@ -9,9 +9,11 @@
 #include "All911Vertices.h"
 #include "All911Edges.h"
 #include "Connections911.h"
+#include "CircularBuffer.h"
 #include "GraphManager.h"
 #include "Layout911.h"
 #include "ParameterManager.h"
+#include "Global.h"
 #include <cmath>
 
 // Allocate memory for all class properties
@@ -64,8 +66,8 @@ void All911Vertices::createAllVertices(Layout &layout)
    // Loop over all vertices and set the number of servers and trunks, and
    // determine the size of the waiting queue.
    // We get the information needed from the GraphManager.
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NG911Property>::VertexIterator vi, vi_end;
+   GraphManager<NG911Property> &gm = GraphManager<NG911Property>::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < size_);
 
@@ -126,7 +128,7 @@ void All911Vertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
    // Load all the calls into the Caller Regions queue by getting the input events
    // from the InputManager.
    for (int idx = 0; idx < simulator.getTotalVertices(); ++idx) {
-      if (layout.vertexTypeMap_[idx] == vertexType::CALR) {
+      if (layout.vertexTypeMap_[idx] == CALR) {
          // If this is a Caller Region get all calls scheduled for the current epoch,
          // loading them into the aproppriate index of the vertexQueues_ vector
          inputManager_.getEvents(idx, currentStep, endStep, vertexQueues_[idx]);
@@ -174,13 +176,12 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
 
    // Advance vertices
    for (int vertex = 0; vertex < simulator.getTotalVertices(); ++vertex) {
-      if (layout.vertexTypeMap_[vertex] == vertexType::CALR) {
+      if (layout.vertexTypeMap_[vertex] == CALR) {
          advanceCALR(vertex, edges911, edgeIndexMap);
-      } else if (layout.vertexTypeMap_[vertex] == vertexType::PSAP) {
+      } else if (layout.vertexTypeMap_[vertex] == PSAP) {
          advancePSAP(vertex, edges911, edgeIndexMap);
-      } else if (layout.vertexTypeMap_[vertex] == vertexType::EMS
-                 || layout.vertexTypeMap_[vertex] == vertexType::FIRE
-                 || layout.vertexTypeMap_[vertex] == vertexType::LAW) {
+      } else if (layout.vertexTypeMap_[vertex] == EMS || layout.vertexTypeMap_[vertex] == FIRE
+                 || layout.vertexTypeMap_[vertex] == LAW) {
          advanceRESP(vertex, edges911, edgeIndexMap);
       }
    }

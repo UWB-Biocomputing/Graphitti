@@ -98,7 +98,7 @@ const int g_nMaxChunkSize = 100;
 // CALR: Caller radii
 // PSAP: PSAP nodes
 // EMS, FIRE, LAW: Responder nodes
-enum class vertexType {
+enum vertexType {
    // Neuro
    INH = 1,
    EXC = 2,
@@ -111,12 +111,6 @@ enum class vertexType {
    // UNDEF
    VTYPE_UNDEF = 0
 };
-// Custom streaming operator<< for the enum class vertexType
-inline std::ostream &operator<<(std::ostream &os, vertexType vT)
-{
-   os << static_cast<int>(vT);
-   return os;
-}
 
 // Edge types.
 // NEURO:
@@ -130,7 +124,7 @@ inline std::ostream &operator<<(std::ostream &os, vertexType vT)
 //  RC - Responder to Caller
 //  PP - PSAP to PSAP
 
-enum class edgeType {
+enum edgeType {
    // NEURO
    II = 0,
    IE = 1,
@@ -146,12 +140,6 @@ enum class edgeType {
    // UNDEF
    ETYPE_UNDEF = -1
 };
-// Custom streaming operator<< for the enum class edgeType
-inline std::ostream &operator<<(std::ostream &os, edgeType eT)
-{
-   os << static_cast<int>(eT);
-   return os;
-}
 
 // The default membrane capacitance.
 #define DEFAULT_Cm (3e-8)
@@ -259,21 +247,25 @@ extern const string MATRIX_INIT;
 // classes (Layout, Connections, etc) need to do this before we can load the
 // graph.
 
-/// Struct for vertex attributes
+/// @brief Parent structure to store common properties for all graph vertices 
 struct VertexProperty {
-   // Common Properties:
    string type;
    double x;
-   double y;
+   double y ;
+};
 
-   // 911 Properties
+/// @brief Derived structure for NG911-specific properties
+/// Inherits from VertexProperty and includes attributes specific to 911 networks
+struct NG911Property : public VertexProperty {
    string objectID;
    string name;
-   int servers = 0;
-   int trunks = 0;
+   int servers;
+   int trunks;
    string segments;
+};
 
-   // Neural Properties
+/// @brief Derived structure for Neural Network-specific properties
+struct NeuralProperty : public VertexProperty {
    bool active;
 };
 
@@ -286,3 +278,4 @@ struct EdgeProperty {
 struct GraphProperty {
    // TODO: Graph Properties
 };
+

@@ -12,6 +12,7 @@
 #include "ParameterManager.h"
 #include "ParseParamError.h"
 #include "Util.h"
+#include "Global.h"
 
 // TODO: I don't think that either of the constructor or destructor is needed here
 LayoutNeuro::LayoutNeuro() : Layout()
@@ -28,8 +29,8 @@ void LayoutNeuro::registerGraphProperties()
    // We are passing a pointer to a data member of the VertexProperty
    // so Boost Graph Library can use it for loading the graphML file.
    // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
-   GraphManager &gm = GraphManager::getInstance();
-   gm.registerProperty("active", &VertexProperty::active);
+   GraphManager<NeuralProperty> &gm = GraphManager<NeuralProperty>::getInstance();
+   gm.registerProperty("active", &NeuralProperty::active);
 }
 
 ///  Prints out all parameters to logging file.
@@ -52,18 +53,18 @@ void LayoutNeuro::generateVertexTypeMap()
    int numExcititoryNeurons;
 
    // Set Neuron Type from GraphML File
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NeuralProperty>::VertexIterator vi, vi_end;
+   GraphManager<NeuralProperty> &gm = GraphManager<NeuralProperty>::getInstance();
 
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
       if (gm[*vi].type == "INH") {
-         vertexTypeMap_[*vi] = vertexType::INH;
+         vertexTypeMap_[*vi] = INH;
          numInhibitoryNeurons++;
       }
       // Default Type is Excitatory
       else {
-         vertexTypeMap_[*vi] = vertexType::EXC;
+         vertexTypeMap_[*vi] = EXC;
       }
    }
 
@@ -85,8 +86,8 @@ void LayoutNeuro::initStarterMap()
    Layout::initStarterMap();
 
    // Set Neuron Activity from GraphML File
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NeuralProperty>::VertexIterator vi, vi_end;
+   GraphManager<NeuralProperty> &gm = GraphManager<NeuralProperty>::getInstance();
 
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
@@ -104,20 +105,16 @@ void LayoutNeuro::initStarterMap()
 ///  @return type of the synapse.
 edgeType LayoutNeuro::edgType(int srcVertex, int destVertex)
 {
-   if (vertexTypeMap_[srcVertex] == vertexType::INH
-       && vertexTypeMap_[destVertex] == vertexType::INH)
-      return edgeType::II;
-   else if (vertexTypeMap_[srcVertex] == vertexType::INH
-            && vertexTypeMap_[destVertex] == vertexType::EXC)
-      return edgeType::IE;
-   else if (vertexTypeMap_[srcVertex] == vertexType::EXC
-            && vertexTypeMap_[destVertex] == vertexType::INH)
-      return edgeType::EI;
-   else if (vertexTypeMap_[srcVertex] == vertexType::EXC
-            && vertexTypeMap_[destVertex] == vertexType::EXC)
-      return edgeType::EE;
+   if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == INH)
+      return II;
+   else if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == EXC)
+      return IE;
+   else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == INH)
+      return EI;
+   else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == EXC)
+      return EE;
 
-   return edgeType::ETYPE_UNDEF;
+   return ETYPE_UNDEF;
 }
 
 // Note: This code was previously used for debugging, but it is now dead code left behind

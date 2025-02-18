@@ -64,12 +64,13 @@
  * when the queue is full.
  */
 #pragma once
-
-#include "AllVertices.h"
+           
 #include "CircularBuffer.h"
 #include "Global.h"
 #include "InputEvent.h"
 #include "InputManager.h"
+#include "GraphManager.h"
+#include "AllVertices.h"
 
 // Forward declaration to avoid circular reference
 class All911Edges;
