@@ -20,6 +20,15 @@ void AllSpikingNeurons::setupVertices()
 
    hasFired_.assign(size_, false);
    vertexEvents_.assign(size_, maxSpikes);
+#if defined(USE_GPU)
+   // We don't allocate memory for summationPoints_ in CPU when building the GPU
+   // implementation. This is to avoid misusing it in GPU code.
+   // summationPoints_ = nullptr;
+
+#else
+   summationPoints_.assign(size_, 0);
+
+#endif
 }
 
 ///  Register spike history variables for all neurons.

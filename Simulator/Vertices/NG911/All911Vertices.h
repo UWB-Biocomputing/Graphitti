@@ -94,7 +94,7 @@ public:
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all vertices' states.
-   virtual void setupVertices();
+   virtual void setupVertices() override;
 
    ///  Creates all the Vertices and assigns initial data for them.
    ///
@@ -225,13 +225,14 @@ private:
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract
 public:
-   virtual void allocNeuronDeviceStruct(void **allVerticesDevice) {};
-   virtual void deleteNeuronDeviceStruct(void *allVerticesDevice) {};
+   virtual void allocVerticesDeviceStruct(void **allVerticesDevice) {};
+   virtual void deleteVerticesDeviceStruct(void *allVerticesDevice) {};
    virtual void copyToDevice(void *allVerticesDevice) {};
    virtual void copyFromDevice(void *allVerticesDevice) {};
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
                                 float randNoise[], EdgeIndexMapDevice *edgeIndexMapDevice) {};
    virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};
+   virtual void clearVertexHistory(void *allVerticesDevice) {};
 
    /// Performs an integration operation per vertex using the inputs to the vertex.
    ///

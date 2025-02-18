@@ -70,10 +70,6 @@ public:
    virtual void integrateVertexInputs(void *allVerticesDevice,
                                       EdgeIndexMapDevice *edgeIndexMapDevice, void *allEdgesDevice);
 
-   ///  Clear the spike counts out of all neurons.
-   //
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void clearNeuronSpikeCounts(void *allVerticesDevice) = 0;
    virtual void copyFromDevice(void *deviceAddress) override;
    virtual void copyToDevice(void *deviceAddress) override;
 
@@ -127,6 +123,13 @@ public:
    /// Holds at least one epoch's worth of event times for every vertex
    vector<EventBuffer> vertexEvents_;
 
+   ///  The summation point for each vertex.
+   ///  Summation points are places where the synapses connected to the vertex
+   ///  apply (summed up) their PSRs (Post-Synaptic-Response).
+   ///  On the next advance cycle, vertices add the values stored in their corresponding
+   ///  summation points to their Vm and resets the summation points to zero
+   vector<BGFLOAT> summationPoints_;
+
 protected:
    ///  True if back propagation is allowed.
    ///  (parameters used for advanceVerticesDevice.)
@@ -149,6 +152,13 @@ struct AllSpikingNeuronsDeviceProperties : public AllVerticesDeviceProperties {
    int *bufferEnd_;
    int *epochStart_;
    int *numElementsInEpoch_;
+
+   ///  The summation point for each vertex.
+   ///  Summation points are places where the synapses connected to the vertex
+   ///  apply (summed up) their PSRs (Post-Synaptic-Response).
+   ///  On the next advance cycle, vertices add the values stored in their corresponding
+   ///  summation points to their Vm and resets the summation points to zero
+   BGFLOAT *summationPoints_;
 };
 #endif   // defined(USE_GPU)
 
@@ -159,5 +169,6 @@ template <class Archive> void AllSpikingNeurons::serialize(Archive &archive)
 {
    archive(cereal::base_class<AllVertices>(this), cereal::make_nvp("hasFired", hasFired_),
            cereal::make_nvp("vertexEvents", vertexEvents_),
+           cereal::make_nvp("summationPoints", summationPoints_),
            cereal::make_nvp("fAllowBackPropagation", fAllowBackPropagation_));
 }
