@@ -38,7 +38,7 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
 ///                             on device memory.
-void AllIZHNeurons::allocNeuronDeviceStruct(void **allVerticesDevice)
+void AllIZHNeurons::allocVerticesDeviceStruct(void **allVerticesDevice)
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
 
@@ -50,7 +50,7 @@ void AllIZHNeurons::allocNeuronDeviceStruct(void **allVerticesDevice)
 }
 
 ///  Allocate GPU memories to store all neurons' states.
-///  (Helper function of allocNeuronDeviceStruct)
+///  (Helper function of allocVerticesDeviceStruct)
 ///
 ///  @param  allVerticesDevice    GPU address of the AllIZHNeuronsDeviceProperties struct on device memory.
 void AllIZHNeurons::allocDeviceStruct(AllIZHNeuronsDeviceProperties &allVerticesDevice)
@@ -69,9 +69,9 @@ void AllIZHNeurons::allocDeviceStruct(AllIZHNeuronsDeviceProperties &allVertices
 
 ///  Delete GPU memories.
 ///
-///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
+///  @param  allVerticesDevice   GPU address of the AllVerticesDeviceProperties struct
 ///                             on device memory.
-void AllIZHNeurons::deleteNeuronDeviceStruct(void *allVerticesDevice)
+void AllIZHNeurons::deleteVerticesDeviceStruct(void *allVerticesDevice)
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
 
@@ -84,7 +84,7 @@ void AllIZHNeurons::deleteNeuronDeviceStruct(void *allVerticesDevice)
 }
 
 ///  Delete GPU memories.
-///  (Helper function of deleteNeuronDeviceStruct)
+///  (Helper function of deleteVerticesDeviceStruct)
 ///
 ///  @param  allVerticesDevice    GPU address of the AllIZHNeuronsDeviceProperties struct on device memory.
 void AllIZHNeurons::deleteDeviceStruct(AllIZHNeuronsDeviceProperties &allVerticesDevice)
@@ -173,7 +173,7 @@ void AllIZHNeurons::copyFromDevice(void *allVerticesDevice)
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
 ///                             on device memory.
-void AllIZHNeurons::clearNeuronSpikeCounts(void *allVerticesDevice)
+void AllIZHNeurons::clearVertexHistory(void *allVerticesDevice)
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
