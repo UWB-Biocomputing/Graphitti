@@ -8,6 +8,7 @@
 // Globally available functions and default parameter values.
 
 #pragma once
+#include "MTRand.h"  
 
 // Debug output is included in both debug/release builds now.
 // The Default for debug is "LOW" and "OFF" for Release.
@@ -64,6 +65,7 @@ using uint64_t = unsigned long long int;   //included in inttypes.h, which is no
    //#include "Norm.h"
 #include "Coordinate.h"
 #include "VectorMatrix.h"
+#include "VertexType.h"
 
 using namespace std;
 
@@ -98,6 +100,8 @@ const int g_nMaxChunkSize = 100;
 // CALR: Caller radii
 // PSAP: PSAP nodes
 // EMS, FIRE, LAW: Responder nodes
+/* 
+// Moved to Utils/VertexType.h 
 enum class vertexType {
    // Neuro
    INH = 1,
@@ -117,6 +121,7 @@ inline std::ostream &operator<<(std::ostream &os, vertexType vT)
    os << static_cast<int>(vT);
    return os;
 }
+*/
 
 // Edge types.
 // NEURO:
