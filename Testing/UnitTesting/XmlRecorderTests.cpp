@@ -280,7 +280,7 @@ TEST(XmlRecorderTest, SaveSimDataVertexTypeTest)
    recorderTest_->saveSimData();
 
    // Open the test_output.xml file and read its content
-   std::ifstream inputFile("../Testing/UnitTesting/TestOutput/test_neuron_type.xml");
+   std::ifstream inputFile("../Testing/UnitTesting/TestOutput/test_vertex_type.xml");
    std::stringstream outputBuffer;
    outputBuffer << inputFile.rdbuf();
    inputFile.close();
