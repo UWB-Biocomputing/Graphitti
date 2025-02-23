@@ -7,9 +7,9 @@
 */
 
 #include "Layout911.h"
+#include "Global.h"
 #include "GraphManager.h"
 #include "ParameterManager.h"
-#include "Global.h"
 
 // Register vertex properties with the GraphManager
 void Layout911::registerGraphProperties()

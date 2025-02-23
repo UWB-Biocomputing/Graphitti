@@ -8,11 +8,11 @@
 
 #include "LayoutNeuro.h"
 #include "ConnGrowth.h"
+#include "Global.h"
 #include "GraphManager.h"
 #include "ParameterManager.h"
 #include "ParseParamError.h"
 #include "Util.h"
-#include "Global.h"
 
 // TODO: I don't think that either of the constructor or destructor is needed here
 LayoutNeuro::LayoutNeuro() : Layout()

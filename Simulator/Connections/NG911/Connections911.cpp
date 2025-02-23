@@ -8,10 +8,10 @@
 
 #include "Connections911.h"
 #include "All911Edges.h"
+#include "Global.h"
 #include "GraphManager.h"
 #include "Layout911.h"
 #include "ParameterManager.h"
-#include "Global.h"
 
 void Connections911::setup()
 {

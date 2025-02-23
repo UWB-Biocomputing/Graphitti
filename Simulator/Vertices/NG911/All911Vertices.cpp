@@ -8,12 +8,12 @@
 
 #include "All911Vertices.h"
 #include "All911Edges.h"
-#include "Connections911.h"
 #include "CircularBuffer.h"
+#include "Connections911.h"
+#include "Global.h"
 #include "GraphManager.h"
 #include "Layout911.h"
 #include "ParameterManager.h"
-#include "Global.h"
 #include <cmath>
 
 // Allocate memory for all class properties

@@ -48,8 +48,7 @@
 
 using namespace std;
 
-template <typename VertexProperty>
-class GraphManager {
+template <typename VertexProperty> class GraphManager {
 public:
    /// Using directive for graphml graph type (adjacency list)
    using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, VertexProperty,
@@ -148,9 +147,11 @@ private:
    boost::dynamic_properties dp_;
 
    /// @brief Constructor
-   GraphManager() : graph_(), dp_(boost::ignore_other_properties) {}
+   GraphManager() : graph_(), dp_(boost::ignore_other_properties)
+   {
+   }
 };
- 
+
 /**
  * @class GraphManager
  * @brief A templated wrapper around the Boost Graph Library (BGL).
@@ -159,20 +160,18 @@ private:
 
 /// @brief Sets the file path for the graphML file.
 /// @param filePath The absolute path to the graphML file.
-template <typename VertexProperty>
-void GraphManager<VertexProperty>::setFilePath(string filePath)
+template <typename VertexProperty> void GraphManager<VertexProperty>::setFilePath(string filePath)
 {
    graphFilePath_ = filePath;
 }
- 
+
 /// @brief Reads a graph from a GraphML file into a BGL graph.
 /// @return True if the graph was successfully read, false otherwise.
-template <typename VertexProperty>
-bool GraphManager<VertexProperty>::readGraph()
+template <typename VertexProperty> bool GraphManager<VertexProperty>::readGraph()
 {
    // Load graphml file into a BGL graph
    ifstream graph_file;
- 
+
    // If graphFilePath_ isn't already defined, get it from ParameterManager
    if (graphFilePath_ == "") {
       // string file_name;
@@ -182,38 +181,43 @@ bool GraphManager<VertexProperty>::readGraph()
          return false;
       };
    }
- 
+
    graph_file.open(graphFilePath_.c_str());
    if (!graph_file.is_open()) {
       cerr << "Failed to open file: " << graphFilePath_ << ".\n";
       return false;
    }
- 
+
    boost::read_graphml(graph_file, graph_, dp_);
    return true;
 }
- 
+
 /// @brief Retrieves the vertices of the graph.
 /// @return A pair of VertexIterators for the graph vertices.
 template <typename VertexProperty>
-pair<typename GraphManager<VertexProperty>::VertexIterator, typename GraphManager<VertexProperty>::VertexIterator> GraphManager<VertexProperty>::vertices()
+pair<typename GraphManager<VertexProperty>::VertexIterator,
+     typename GraphManager<VertexProperty>::VertexIterator>
+   GraphManager<VertexProperty>::vertices()
 {
    return boost::vertices(graph_);
 }
- 
+
 /// @brief Retrieves the edges of the graph.
 /// @return A pair of EdgeIterators for the graph edges.
 template <typename VertexProperty>
-pair<typename GraphManager<VertexProperty>::EdgeIterator, typename GraphManager<VertexProperty>::EdgeIterator> GraphManager<VertexProperty>::edges() const
+pair<typename GraphManager<VertexProperty>::EdgeIterator,
+     typename GraphManager<VertexProperty>::EdgeIterator>
+   GraphManager<VertexProperty>::edges() const
 {
    return boost::edges(graph_);
 }
- 
+
 /// @brief Retrieves the source vertex of a given edge.
 /// @param edge The edge descriptor.
 /// @return The source vertex index.
 template <typename VertexProperty>
-size_t GraphManager<VertexProperty>::source(const typename GraphManager<VertexProperty>::EdgeDescriptor &edge) const
+size_t GraphManager<VertexProperty>::source(
+   const typename GraphManager<VertexProperty>::EdgeDescriptor &edge) const
 {
    return boost::source(edge, graph_);
 }
@@ -222,11 +226,12 @@ size_t GraphManager<VertexProperty>::source(const typename GraphManager<VertexPr
 /// @param edge The edge descriptor.
 /// @return The target vertex index.
 template <typename VertexProperty>
-size_t GraphManager<VertexProperty>::target(const typename GraphManager<VertexProperty>::EdgeDescriptor &edge) const
+size_t GraphManager<VertexProperty>::target(
+   const typename GraphManager<VertexProperty>::EdgeDescriptor &edge) const
 {
    return boost::target(edge, graph_);
 }
- 
+
 /// @brief Directly access the VertexProperty of a vertex descriptor.
 /// @param vertex The vertex descriptor (index).
 /// @return The VertexProperty of the vertex.
@@ -235,7 +240,7 @@ VertexProperty &GraphManager<VertexProperty>::operator[](size_t vertex)
 {
    return graph_[vertex];
 }
- 
+
 /// @brief Directly access the VertexProperty of a vertex descriptor (const).
 /// @param vertex The vertex descriptor (index).
 /// @return The VertexProperty of the vertex.
@@ -244,39 +249,37 @@ const VertexProperty &GraphManager<VertexProperty>::operator[](size_t vertex) co
 {
    return graph_[vertex];
 }
- 
+
 /// @brief Returns a list of EdgeDescriptors sorted by target vertexID.
 /// @return A sorted list of EdgeDescriptors.
 template <typename VertexProperty>
-const list<typename GraphManager<VertexProperty>::EdgeDescriptor> GraphManager<VertexProperty>::edgesSortByTarget() const
+const list<typename GraphManager<VertexProperty>::EdgeDescriptor>
+   GraphManager<VertexProperty>::edgesSortByTarget() const
 {
    list<EdgeDescriptor> ei_list;
    EdgeIterator ei, ei_end;
    for (boost::tie(ei, ei_end) = edges(); ei != ei_end; ++ei) {
       ei_list.push_back(*ei);
    }
- 
+
    // Use a lambda function for sorting the list of edges
    ei_list.sort([this](EdgeDescriptor const &a, EdgeDescriptor const &b) {
       return this->target(a) < this->target(b);
    });
- 
+
    return ei_list;
 }
- 
+
 /// @brief Retrieves the number of vertices in the current graph.
 /// @return The number of vertices.
-template <typename VertexProperty>
-size_t GraphManager<VertexProperty>::numVertices() const
+template <typename VertexProperty> size_t GraphManager<VertexProperty>::numVertices() const
 {
    return boost::num_vertices(graph_);
 }
- 
+
 /// @brief Retrieves the number of edges in the current graph.
 /// @return The number of edges.
-template <typename VertexProperty>
-size_t GraphManager<VertexProperty>::numEdges() const
+template <typename VertexProperty> size_t GraphManager<VertexProperty>::numEdges() const
 {
    return boost::num_edges(graph_);
 }
- 

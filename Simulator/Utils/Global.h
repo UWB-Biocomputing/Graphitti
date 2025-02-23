@@ -247,11 +247,11 @@ extern const string MATRIX_INIT;
 // classes (Layout, Connections, etc) need to do this before we can load the
 // graph.
 
-/// @brief Parent structure to store common properties for all graph vertices 
+/// @brief Parent structure to store common properties for all graph vertices
 struct VertexProperty {
    string type;
    double x;
-   double y ;
+   double y;
 };
 
 /// @brief Derived structure for NG911-specific properties
@@ -278,4 +278,3 @@ struct EdgeProperty {
 struct GraphProperty {
    // TODO: Graph Properties
 };
-

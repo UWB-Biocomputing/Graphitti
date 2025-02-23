@@ -6,8 +6,8 @@
  * @ingroup Testing/UnitTesting
  */
 
-#include "GraphManager.h"
 #include "Global.h"
+#include "GraphManager.h"
 #include "gtest/gtest.h"
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphml.hpp>
