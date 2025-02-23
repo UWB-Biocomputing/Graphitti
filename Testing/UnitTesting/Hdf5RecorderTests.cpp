@@ -207,7 +207,7 @@ TEST(Hdf5RecorderTest, SaveSimDataVertexTypeTest)
    // Verify the data matches the expected NeuronType values (converted to int)
    vector<int> expectedData = {static_cast<int>(vertexType::EXC), static_cast<int>(vertexType::INH),
                                static_cast<int>(vertexType::EXC)};
-                               
+
    ASSERT_EQ(expectedData.size(), dataBuffer.size());
    for (size_t i = 0; i < expectedData.size(); ++i) {
       EXPECT_EQ(expectedData[i], dataBuffer[i]);

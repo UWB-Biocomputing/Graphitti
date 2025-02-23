@@ -42,4 +42,4 @@ inline std::ostream &operator<<(std::ostream &os, vertexType vT)
    return os;
 }
 
-#endif // VERTEX_TYPE_H
+#endif   // VERTEX_TYPE_H

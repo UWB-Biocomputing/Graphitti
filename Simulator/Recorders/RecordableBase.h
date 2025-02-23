@@ -14,9 +14,9 @@
 #pragma once
 
 using namespace std;
+#include "VertexType.h"
 #include <string>
 #include <typeinfo>
-#include "VertexType.h"
 #include <variant>
 #include <vector>
 // cereal
