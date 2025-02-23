@@ -39,7 +39,7 @@ enum class vertexType {
 inline std::ostream &operator<<(std::ostream &os, vertexType vT)
 {
    os << static_cast<int>(vT);
-   return os; 
+   return os;
 }
 
-#endif  // VERTEX_TYPE_H
+#endif // VERTEX_TYPE_H

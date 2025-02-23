@@ -105,7 +105,7 @@ TEST(XmlRecorderTest, RegisterVectorVertexTypeTest)
    // Create an instance of XmlRecorder
    XmlRecorder recorder;
 
-   // Create a RecordableVector<vertexType> 
+   // Create a RecordableVector<vertexType>
    RecordableVector<vertexType> vertTypes;
    vertTypes.resize(2);
    vertTypes[0] = vertexType::EXC;
@@ -170,7 +170,8 @@ TEST(XmlRecorderTest, CompileHistoriesTest)
 
    // Call the compileHistories method
    recorderTest_->compileHistories();
-   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType>> history = recorderTest_->getHistory(0);
+   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType>> history
+      = recorderTest_->getHistory(0);
 
    // Verify the events compiled hisotry
    uint64_t data = 1;
@@ -198,7 +199,9 @@ TEST(XmlRecorderTest, ToXML)
    // Verify the expected XML output
    stringstream os;
    os << "<Matrix ";
-   os << "name=\"" << "TestVar" << "\" ";
+   os << "name=\""
+      << "TestVar"
+      << "\" ";
    os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << variableHistory.size()
       << "\" multiplier=\"1.0\">" << endl;
    os << "   ";
@@ -261,19 +264,19 @@ TEST(XmlRecorderTest, SaveSimDataVertexTypeTest)
 {
    std::string outputFile = "../Testing/UnitTesting/TestOutput/test_vertex_type.xml";
    unique_ptr<XmlRecorder> recorderTest_(new XmlRecorder(outputFile));
-   
-   // Create a recordable vector 
+
+   // Create a recordable vector
    RecordableVector<vertexType> vertTypes;
    vertTypes.resize(2);
-   vertTypes[0] = vertexType::EXC;  
-   vertTypes[1] = vertexType::INH;  
+   vertTypes[0] = vertexType::EXC;
+   vertTypes[1] = vertexType::INH;
 
    // Register the RecordableVector of VertexTypes
    recorderTest_->registerVariable("VertexTypes", vertTypes, Recorder::UpdatedType::DYNAMIC);
 
    // initialize the XmlRecorder object
    recorderTest_->init();
-   
+
    // Call the compileHistories method
    recorderTest_->compileHistories();
    // Call the saveSimData() function
@@ -284,7 +287,7 @@ TEST(XmlRecorderTest, SaveSimDataVertexTypeTest)
    std::stringstream outputBuffer;
    outputBuffer << inputFile.rdbuf();
    inputFile.close();
-   
+
    // checks for saving simulation data
    vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType>> mock_history
       = {vertexType::EXC, vertexType::INH};
@@ -292,7 +295,8 @@ TEST(XmlRecorderTest, SaveSimDataVertexTypeTest)
    std::string expect_header = "<?xml version=\"1.0\" standalone=\"no\"?>\n";
    std::string expect_end = "\n";
    std::string expectXML
-      = expect_header + recorderTest_->getToXML("VertexTypes", mock_history, typeid(vertexType).name())
+      = expect_header
+        + recorderTest_->getToXML("VertexTypes", mock_history, typeid(vertexType).name())
         + expect_end;
    // Vertify the output string
    ASSERT_EQ(outputBuffer.str(), expectXML);

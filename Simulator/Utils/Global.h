@@ -8,7 +8,7 @@
 // Globally available functions and default parameter values.
 
 #pragma once
-#include "MTRand.h"  
+#include "MTRand.h"
 
 // Debug output is included in both debug/release builds now.
 // The Default for debug is "LOW" and "OFF" for Release.

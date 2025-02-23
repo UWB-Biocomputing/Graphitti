@@ -189,8 +189,12 @@ void Hdf5Recorder::compileHistories()
                } else if (variableInfo.hdf5Datatype_ == PredType::NATIVE_INT) {
                   vector<int> dataBuffer(variableInfo.variableLocation_.getNumElements());
                   for (size_t i = 0; i < variableInfo.variableLocation_.getNumElements(); ++i) {
-                     if constexpr (std::is_same_v<vertexType, std::decay_t<decltype(get<vertexType>(variableInfo.variableLocation_.getElement(i)))>>) {
-                        dataBuffer[i] = static_cast<int>(get<vertexType>(variableInfo.variableLocation_.getElement(i)));
+                     if constexpr (std::is_same_v<
+                                      vertexType,
+                                      std::decay_t<decltype(get<vertexType>(
+                                         variableInfo.variableLocation_.getElement(i)))>>) {
+                        dataBuffer[i] = static_cast<int>(
+                           get<vertexType>(variableInfo.variableLocation_.getElement(i)));
                      } else {
                         dataBuffer[i] = get<int>(variableInfo.variableLocation_.getElement(i));
                      }

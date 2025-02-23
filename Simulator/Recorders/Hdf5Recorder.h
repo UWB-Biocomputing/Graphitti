@@ -4,7 +4,6 @@
    #include "H5Cpp.h"
    #include "Model.h"
    #include "Recorder.h"
-
    #include <fstream>
    #include <vector>
 
@@ -117,8 +116,7 @@ public:
             hdf5Datatype_ = PredType::NATIVE_DOUBLE;
          } else if (dataType_ == typeid(vertexType).name()) {
             hdf5Datatype_ = PredType::NATIVE_INT;
-         }
-         else {
+         } else {
             throw runtime_error("Unsupported data type");
          }
       }
@@ -140,8 +138,9 @@ public:
             } else if (hdf5Datatype_ == PredType::NATIVE_INT) {
                vector<int> dataBuffer(variableLocation_.getNumElements());
                for (int i = 0; i < variableLocation_.getNumElements(); ++i) {
-                  if constexpr (std::is_same_v<vertexType, std::decay_t<decltype(get<vertexType>(variableLocation_.getElement(i)))>>) {
-                     dataBuffer[i] = static_cast<int>(get<vertexType>(variableLocation_.getElement(i)));;
+                  if constexpr (std::is_same_v<vertexType, std::decay_t<decltype(get<vertexType>
+                     (variableLocation_.getElement(i)))>>) {
+                     dataBuffer[i] = static_cast<int>(get<vertexType>(variableLocation_.getElement(i)));
                   } else {
                      dataBuffer[i] = get<int>(variableLocation_.getElement(i));
                   }

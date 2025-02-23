@@ -106,15 +106,15 @@ TEST(Hdf5RecorderTest, RegisterVertexTypeTest)
    // Create a vector of NeuronType enums
    RecordableVector<vertexType> neuronTypes;
    neuronTypes.resize(2);
-   neuronTypes[0] = vertexType::EXC;  
-   neuronTypes[1] = vertexType::INH;  
+   neuronTypes[0] = vertexType::EXC;
+   neuronTypes[1] = vertexType::INH;
 
    // register the vector of NeuronTypes
    recorder.registerVariable("neuron_types", neuronTypes, Recorder::UpdatedType::DYNAMIC);
 
    // Verify that the registered variables are stored correctly
    const auto &variableTable = recorder.getVariableTable();
-   ASSERT_EQ(1, variableTable.size());  // Only one variable, "neuron_types"
+   ASSERT_EQ(1, variableTable.size());   // Only one variable, "neuron_types"
 
    // Verify that the registered variable name matches
    ASSERT_EQ("neuron_types", variableTable[0].variableName_);
@@ -182,9 +182,9 @@ TEST(Hdf5RecorderTest, SaveSimDataVertexTypeTest)
    // Create and configure RecordableVector<vertexType> for testing
    RecordableVector<vertexType> neuronTypes;
    neuronTypes.resize(3);
-   neuronTypes[0] = vertexType::EXC;  
-   neuronTypes[1] = vertexType::INH; 
-   neuronTypes[2] = vertexType::EXC;  
+   neuronTypes[0] = vertexType::EXC;
+   neuronTypes[1] = vertexType::INH;
+   neuronTypes[2] = vertexType::EXC;
 
    // Register the variable with Hdf5Recorder
    recorder.registerVariable("neuron_types", neuronTypes, Recorder::UpdatedType::CONSTANT);
@@ -205,10 +205,9 @@ TEST(Hdf5RecorderTest, SaveSimDataVertexTypeTest)
    dataset.read(dataBuffer.data(), PredType::NATIVE_INT);
 
    // Verify the data matches the expected NeuronType values (converted to int)
-   vector<int> expectedData = {static_cast<int>(vertexType::EXC), 
-                               static_cast<int>(vertexType::INH), 
+   vector<int> expectedData = {static_cast<int>(vertexType::EXC), static_cast<int>(vertexType::INH),
                                static_cast<int>(vertexType::EXC)};
-   
+                               
    ASSERT_EQ(expectedData.size(), dataBuffer.size());
    for (size_t i = 0; i < expectedData.size(); ++i) {
       EXPECT_EQ(expectedData[i], dataBuffer[i]);
@@ -288,7 +287,7 @@ TEST(Hdf5RecorderTest, CompileHistoriesVertexTypeTest)
 
    // Call compileHistories() multiple times to simulate multiple epochs
    for (int epoch = 0; epoch < 3; ++epoch) {
-      // Clear and insert new NeuronType values 
+      // Clear and insert new NeuronType values
       eventBufferNeuron.clear();
       eventBufferNeuron.insertEvent(static_cast<int>(vertexType::EXC));
       eventBufferNeuron.insertEvent(static_cast<int>(vertexType::INH));
