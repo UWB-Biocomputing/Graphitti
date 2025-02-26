@@ -52,7 +52,7 @@ Students, use this [quickstart guide](StudentSetup.md) to help setup, use, and d
 [<< Go back to the Graphitti home page](../index.md)
 
 [//]: # (Moving URL links to the bottom of the document for ease of updating - LS)
-[//]: # (Links to repo items which exist outside of the docs folder need a direct link.)
+[//]: # (Links to repo items which exist outside of the docs folder need an absolute link.)
 
    [contributing guide]: <https://github.com/UWB-Biocomputing/Graphitti/blob/master/CONTRIBUTING.md>
    [Visit Doxygen Generated Documentation]: <https://uwb-biocomputing.github.io/Graphitti/Doxygen/html/index.html>
