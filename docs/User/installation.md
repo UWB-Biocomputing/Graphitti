@@ -1,5 +1,9 @@
 # 1.2 Installation
 
+For student installation and quickstart, see [student quickstart].
+
+For all others, see below.
+
 ## 1.2.1 Necessary Hardware/Software
 
 Graphitti is designed to be easy to use and fast to simulate with, but given its scope and flexibility, there are some tradeoffs. 
@@ -56,14 +60,15 @@ In order to compile and run Graphitti, you will need to set up a couple things i
 [//]: # (Moving URL links to the bottom of the document for ease of updating - LS)
 [//]: # (Links to repo items which exist outside of the docs folder need an absolute link.)
 
-   [Contribute to Graphitti open source project]: <https://github.com/UWB-Biocomputing/Graphitti/blob/master/CONTRIBUTING.md>
-   [**CMakeLists.txt**]: <https://github.com/UWB-Biocomputing/Graphitti/blob/master/CMakeLists.txt>
-   [Git Crash Course]: <https://github.com/UWB-Biocomputing/BrainGrid/wiki/Git-Crash-Course>
-   [the release page]: <https://github.com/UWB-Biocomputing/Graphitti/releases>
-   [h5c++]: <https://support.hdfgroup.org/archive/support/HDF5/Tutor/compile.html>
-   [nvcc]: <http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/#axzz4ftSRZe00>
-   [make]: <https://www.gnu.org/software/make/>
-   [g++]: <https://gcc.gnu.org/>
-   [**CUDA**]: <https://developer.nvidia.com/cuda-downloads>
-   [HDF5]: <https://support.hdfgroup.org/documentation/hdf5/latest/_getting_started.html>
-   [list]: <https://developer.nvidia.com/cuda-gpus>
+[Contribute to Graphitti open source project]: <https://github.com/UWB-Biocomputing/Graphitti/blob/master/CONTRIBUTING.md>
+[**CMakeLists.txt**]: <https://github.com/UWB-Biocomputing/Graphitti/blob/master/CMakeLists.txt>
+[Git Crash Course]: <https://github.com/UWB-Biocomputing/BrainGrid/wiki/Git-Crash-Course>
+[the release page]: <https://github.com/UWB-Biocomputing/Graphitti/releases>
+[h5c++]: <https://support.hdfgroup.org/archive/support/HDF5/Tutor/compile.html>
+[nvcc]: <http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/#axzz4ftSRZe00>
+[make]: <https://www.gnu.org/software/make/>
+[g++]: <https://gcc.gnu.org/>
+[**CUDA**]: <https://developer.nvidia.com/cuda-downloads>
+[HDF5]: <https://support.hdfgroup.org/documentation/hdf5/latest/_getting_started.html>
+[list]: <https://developer.nvidia.com/cuda-gpus>
+[student quickstart]: (../Developer/StudentSetup.md)
