@@ -188,7 +188,7 @@ void GPUModel::advance()
    HANDLE_ERROR(cudaMemcpy(Inoise_h.data(), validationNeurons.Inoise_, verts * sizeof(float),
                            cudaMemcpyDeviceToHost));
 
-   for (int i = 0; i < verts; i++) {
+   for (int i = verts - 1; i >= 0; i--) {
       LOG4CPLUS_DEBUG(vertexLogger_, "CUDA advance Index[ "
                                         << i << "] :: Noise = " << randNoise_h[i]
                                         << "\tVm: " << vm_h[i] << endl
