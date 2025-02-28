@@ -178,16 +178,14 @@ void GPUModel::advance()
    std::vector<float> sp_h(verts);
    std::vector<float> vm_h(verts);
    std::vector<float> Inoise_h(verts);
-   HANDLE_ERROR(cudaMemcpy(sp_h.data(), allVerticesDevice_->summationPoints_, verts * sizeof(float),
+   AllIFNeuronsDeviceProperties validationNeurons;
+   HANDLE_ERROR(cudaMemcpy((void *)&validationNeurons, allVerticesDevice_,
+                           sizeof(AllIFNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(sp_h.data(), validationNeurons.spValidation_, verts * sizeof(float),
                            cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(
-      cudaMemcpy(sp_h.data(), randNoise_d, verts * sizeof(float), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(vm_h.data(), ((AllIFNeuronsDeviceProperties *)(allVerticesDevice_))->Vm_,
-                           verts * sizeof(float), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Inoise_h.data(),
-                           ((AllIFNeuronsDeviceProperties *)(allVerticesDevice_))->Inoise_,
-                           verts * sizeof(float), cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(sp_h.data(), allVerticesDevice_->spValidation_, verts * sizeof(float),
+   HANDLE_ERROR(cudaMemcpy(vm_h.data(), validationNeurons.Vm_, verts * sizeof(float),
+                           cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(Inoise_h.data(), validationNeurons.Inoise_, verts * sizeof(float),
                            cudaMemcpyDeviceToHost));
 
    for (int i = 0; i < verts; i++) {
