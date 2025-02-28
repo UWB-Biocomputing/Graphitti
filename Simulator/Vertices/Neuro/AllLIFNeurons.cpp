@@ -33,33 +33,46 @@ void AllLIFNeurons::advanceNeuron(int index)
    int &nStepsInRefr = this->numStepsInRefractoryPeriod_[index];
 
    if (nStepsInRefr > 0) {
-      // is neuron refractory?
+   // is neuron refractory?
+   #ifdef VALIDATION_MODE
+      BGFLOAT noise = (*noiseRNG)();
+      LOG4CPLUS_DEBUG(vertexLogger_, "neuron refractory LIF[" << index << "] :: Noise = " << noise);
+   #endif
       --nStepsInRefr;
    } else if (Vm >= Vthresh) {
-      // should it fire?
+   // should it fire?
+   #ifdef VALIDATION_MODE
+      BGFLOAT noise = (*noiseRNG)();
+      LOG4CPLUS_DEBUG(vertexLogger_, "FIRE NEURON LIF[" << index << "] :: Noise = " << noise);
+   #endif
       fire(index);
    } else {
       summationPoint += I0;   // add IO
       // add noise
       BGFLOAT noise = (*noiseRNG)();
-      //LOG4CPLUS_DEBUG(vertexLogger_, "ADVANCE NEURON[" << index << "] :: Noise = " << noise);
+   #ifdef VALIDATION_MODE
+      LOG4CPLUS_DEBUG(vertexLogger_, "ADVANCE NEURON LIF[" << index << "] :: Noise = " << noise);
+   #endif
       summationPoint += noise * Inoise;     // add noise
       Vm = C1 * Vm + C2 * summationPoint;   // decay Vm and add inputs
    }
-   // clear synaptic input for next time step
-   summationPoint = 0;
 
    // Causes a huge slowdown since it's printed so frequently
-   //    LOG4CPLUS_DEBUG(vertexLogger_, "Index: " << index << " Vm: " << Vm);
-   //    LOG4CPLUS_DEBUG(vertexLogger_, "NEURON[" << index << "] {" << endl
-   //                   << "\tVm = " << Vm << endl
-   //                   << "\tVthresh = " << Vthresh << endl
-   //                   << "\tsummationPoint = " << summationPoint << endl
-   //                   << "\tI0 = " << I0 << endl
-   //                   << "\tInoise = " << Inoise << endl
-   //                   << "\tC1 = " << C1 << endl
-   //                   << "\tC2 = " << C2 << endl
-   //                   << "}" << endl);
+   #ifdef VALIDATION_MODE
+   LOG4CPLUS_DEBUG(vertexLogger_, "Index: " << index << " Vm: " << Vm);
+   LOG4CPLUS_DEBUG(vertexLogger_, "NEURON[" << index << "] {" << endl
+                                            << "\tVm = " << Vm << endl
+                                            << "\tVthresh = " << Vthresh << endl
+                                            << "\tsummationPoint = " << summationPoint << endl
+                                            << "\tI0 = " << I0 << endl
+                                            << "\tInoise = " << Inoise << endl
+                                            << "\tC1 = " << C1 << endl
+                                            << "\tC2 = " << C2 << endl
+                                            << "}" << endl);
+   #endif
+
+   // clear synaptic input for next time step
+   summationPoint = 0;
 }
 
 ///  Fire the selected Neuron and calculate the result.

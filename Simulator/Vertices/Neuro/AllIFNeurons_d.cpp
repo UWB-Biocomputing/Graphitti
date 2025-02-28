@@ -50,6 +50,9 @@ void AllIFNeurons::allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDe
    HANDLE_ERROR(
       cudaMalloc((void **)&allVerticesDevice.numStepsInRefractoryPeriod_, count * sizeof(int)));
    HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.summationPoints_, count * sizeof(BGFLOAT)));
+#ifdef VALIDATION_MODE
+   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.spValidation_, count * sizeof(BGFLOAT)));
+#endif
    HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.spikeHistory_, count * sizeof(uint64_t *)));
 
    uint64_t *pSpikeHistory[count];
@@ -107,6 +110,9 @@ void AllIFNeurons::deleteDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesD
    HANDLE_ERROR(cudaFree(allVerticesDevice.hasFired_));
    HANDLE_ERROR(cudaFree(allVerticesDevice.numStepsInRefractoryPeriod_));
    HANDLE_ERROR(cudaFree(allVerticesDevice.summationPoints_));
+#ifdef VALIDATION_MODE
+   HANDLE_ERROR(cudaFree(allVerticesDevice.spValidation_));
+#endif
    HANDLE_ERROR(cudaFree(allVerticesDevice.spikeHistory_));
 }
 

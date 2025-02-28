@@ -36,6 +36,11 @@ if(NOT DEFINED TARGET_ARCH)
         set(TARGET_ARCH 37)
 endif()
 
+#CONDITIONAL FLAG to turn on the validation mode
+if(NOT VALIDATION_MODE)
+        set(VALIDATION_MODE NO)
+endif()
+
 #Creates the Graphitti project with the correct languages, depending on if using GPU or not
 #If using CUDA, also verify the CUDA package and set the required CUDA variables
 if(ENABLE_CUDA)	
@@ -102,7 +107,7 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG}")
     if(ENABLE_CUDA)
-        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -G")   
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -g -G")   
     endif()
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}")
@@ -148,6 +153,11 @@ set(CMAKE_CXX_STANDARD 17)
 if(PERFORMANCE_METRICS)
         message("-- Setting PEREFORMANCE_METRICS: ON")
         add_definitions(-DPERFORMANCE_METRICS)
+endif()
+
+if(VALIDATION_MODE)
+        message("-- Setting VALIDATION_MODE: ON")
+        add_definitions(-DVALIDATION_MODE)
 endif()
 
 #HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libraries to the executable     \
@@ -529,3 +539,4 @@ unset(GPROF CACHE)
 unset(CMAKE_BUILD_TYPE CACHE)
 unset(NVTX_LIBRARY CACHE)
 unset(TARGET_ARCH CACHE)
+unset(VALIDATION_MODE CACHE)
