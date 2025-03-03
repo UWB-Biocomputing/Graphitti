@@ -198,8 +198,9 @@ void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIn
                // Record that we received a call
                receivedCalls(dst)++;
                LOG4CPLUS_DEBUG(vertexLogger_,
-                               "Call dropped: " << droppedCalls(dst) << ", time: "
-                                                << all911Edges.call_[edgeIdx].time << ", vertex: " << dst
+                               "Call dropped: " << droppedCalls(dst)
+                                                << ", time: " << all911Edges.call_[edgeIdx].time
+                                                << ", vertex: " << dst
                                                 << ", queue size: " << dstQueue.size());
             }
          } else {
