@@ -66,12 +66,12 @@ int Layout::getNumVertices() const
 /// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
 void Layout::loadParameters()
 {
-   numVertices_ = GraphManager<NeuralProperty>::getInstance().numVertices();
+   numVertices_ = GraphManager<NeuralVertexProperty>::getInstance().numVertices();
 }
 
 void Layout::registerGraphProperties()
 {
-   GraphManager<NeuralProperty> &gm = GraphManager<NeuralProperty>::getInstance();
+   GraphManager<NeuralVertexProperty> &gm = GraphManager<NeuralVertexProperty>::getInstance();
    gm.registerProperty("y", &VertexProperty::y);
    gm.registerProperty("x", &VertexProperty::x);
    gm.registerProperty("type", &VertexProperty::type);
@@ -92,8 +92,8 @@ void Layout::setup()
    vertexTypeMap_.assign(numVertices_, vertexType::VTYPE_UNDEF);
 
    // Loop over all vertices and set their x and y locations
-   GraphManager<NeuralProperty>::VertexIterator vi, vi_end;
-   GraphManager<NeuralProperty> &gm = GraphManager<NeuralProperty>::getInstance();
+   GraphManager<NeuralVertexProperty>::VertexIterator vi, vi_end;
+   GraphManager<NeuralVertexProperty> &gm = GraphManager<NeuralVertexProperty>::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
       xloc_[*vi] = gm[*vi].x;
@@ -134,8 +134,8 @@ void Layout::setup()
 /// Prints out all parameters to logging file. Registered to OperationManager as Operation::printParameters
 void Layout::printParameters() const
 {
-   GraphManager<NeuralProperty>::VertexIterator vi, vi_end;
-   GraphManager<NeuralProperty> &gm = GraphManager<NeuralProperty>::getInstance();
+   GraphManager<NeuralVertexProperty>::VertexIterator vi, vi_end;
+   GraphManager<NeuralVertexProperty> &gm = GraphManager<NeuralVertexProperty>::getInstance();
    stringstream output;
    output << "\nLAYOUT PARAMETERS" << endl;
    output << "\tEndogenously active neuron positions: ";

@@ -22,22 +22,22 @@ void Layout911::registerGraphProperties()
    // We are passing a pointer to a data member of the VertexProperty
    // so Boost Graph Library can use it for loading the graphML file.
    // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
-   GraphManager<NG911Property> &gm = GraphManager<NG911Property>::getInstance();
-   gm.registerProperty("objectID", &NG911Property::objectID);
-   gm.registerProperty("name", &NG911Property::name);
-   gm.registerProperty("type", &NG911Property::type);
-   gm.registerProperty("y", &NG911Property::y);
-   gm.registerProperty("x", &NG911Property::x);
-   gm.registerProperty("servers", &NG911Property::servers);
-   gm.registerProperty("trunks", &NG911Property::trunks);
-   gm.registerProperty("segments", &NG911Property::segments);
+   GraphManager<NG911VertexProperty> &gm = GraphManager<NG911VertexProperty>::getInstance();
+   gm.registerProperty("objectID", &NG911VertexProperty::objectID);
+   gm.registerProperty("name", &NG911VertexProperty::name);
+   gm.registerProperty("type", &NG911VertexProperty::type);
+   gm.registerProperty("y", &NG911VertexProperty::y);
+   gm.registerProperty("x", &NG911VertexProperty::x);
+   gm.registerProperty("servers", &NG911VertexProperty::servers);
+   gm.registerProperty("trunks", &NG911VertexProperty::trunks);
+   gm.registerProperty("segments", &NG911VertexProperty::segments);
 }
 
 // Loads Layout911 member variables.
 void Layout911::loadParameters()
 {
    // Get the number of vertices from the GraphManager
-   numVertices_ = GraphManager<NG911Property>::getInstance().numVertices();
+   numVertices_ = GraphManager<NG911VertexProperty>::getInstance().numVertices();
 }
 
 // Setup the internal structure of the class.
@@ -48,8 +48,8 @@ void Layout911::setup()
    Layout::setup();
 
    // Loop over all vertices and set their x and y locations
-   GraphManager<NG911Property>::VertexIterator vi, vi_end;
-   GraphManager<NG911Property> &gm = GraphManager<NG911Property>::getInstance();
+   GraphManager<NG911VertexProperty>::VertexIterator vi, vi_end;
+   GraphManager<NG911VertexProperty> &gm = GraphManager<NG911VertexProperty>::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
       xloc_[*vi] = gm[*vi].x;
@@ -94,8 +94,8 @@ void Layout911::generateVertexTypeMap()
    map<string, int> vTypeCount;
 
    // Add all vertices
-   GraphManager<NG911Property>::VertexIterator vi, vi_end;
-   GraphManager<NG911Property> &gm = GraphManager<NG911Property>::getInstance();
+   GraphManager<NG911VertexProperty>::VertexIterator vi, vi_end;
+   GraphManager<NG911VertexProperty> &gm = GraphManager<NG911VertexProperty>::getInstance();
    LOG4CPLUS_DEBUG(fileLogger_, "\nvertices in graph: " << gm.numVertices());
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
@@ -116,26 +116,32 @@ void Layout911::generateVertexTypeMap()
 // Returns the type of synapse at the given coordinates
 edgeType Layout911::edgType(int srcVertex, int destVertex)
 {
-   if (vertexTypeMap_[srcVertex] == CALR && vertexTypeMap_[destVertex] == PSAP)
-      return CP;
-   else if (vertexTypeMap_[srcVertex] == PSAP
-            && (vertexTypeMap_[destVertex] == LAW || vertexTypeMap_[destVertex] == FIRE
-                || vertexTypeMap_[destVertex] == EMS))
-      return PR;
-   else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == CALR)
-      return PC;
-   else if (vertexTypeMap_[srcVertex] == PSAP && vertexTypeMap_[destVertex] == PSAP)
-      return PP;
-   else if ((vertexTypeMap_[srcVertex] == LAW || vertexTypeMap_[destVertex] == FIRE
-             || vertexTypeMap_[destVertex] == EMS)
-            && vertexTypeMap_[destVertex] == PSAP)
-      return RP;
-   else if ((vertexTypeMap_[srcVertex] == LAW || vertexTypeMap_[destVertex] == FIRE
-             || vertexTypeMap_[destVertex] == EMS)
-            && vertexTypeMap_[destVertex] == CALR)
-      return RC;
+   if (vertexTypeMap_[srcVertex] == vertexType::CALR
+       && vertexTypeMap_[destVertex] == vertexType::PSAP)
+      return edgeType::CP;
+   else if (vertexTypeMap_[srcVertex] == vertexType::PSAP
+            && (vertexTypeMap_[destVertex] == vertexType::LAW
+                || vertexTypeMap_[destVertex] == vertexType::FIRE
+                || vertexTypeMap_[destVertex] == vertexType::EMS))
+      return edgeType::PR;
+   else if (vertexTypeMap_[srcVertex] == vertexType::PSAP
+            && vertexTypeMap_[destVertex] == vertexType::CALR)
+      return edgeType::PC;
+   else if (vertexTypeMap_[srcVertex] == vertexType::PSAP
+            && vertexTypeMap_[destVertex] == vertexType::PSAP)
+      return edgeType::PP;
+   else if ((vertexTypeMap_[srcVertex] == vertexType::LAW
+             || vertexTypeMap_[destVertex] == vertexType::FIRE
+             || vertexTypeMap_[destVertex] == vertexType::EMS)
+            && vertexTypeMap_[destVertex] == vertexType::PSAP)
+      return edgeType::RP;
+   else if ((vertexTypeMap_[srcVertex] == vertexType::LAW
+             || vertexTypeMap_[destVertex] == vertexType::FIRE
+             || vertexTypeMap_[destVertex] == vertexType::EMS)
+            && vertexTypeMap_[destVertex] == vertexType::CALR)
+      return edgeType::RC;
    else
-      return ETYPE_UNDEF;
+      return edgeType::ETYPE_UNDEF;
 }
 
 

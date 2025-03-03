@@ -159,10 +159,10 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
    ParameterManager::getInstance().getStringByXpath("//LayoutParams/@class", configData);
 
    if (configData.find("Neur")) {
-      GraphManager<NeuralProperty>::getInstance().readGraph();
+      GraphManager<NeuralVertexProperty>::getInstance().readGraph();
    }
    if (configData.find("91")) {
-      GraphManager<NG911Property>::getInstance().readGraph();
+      GraphManager<NG911VertexProperty>::getInstance().readGraph();
    } else {
       LOG4CPLUS_FATAL(consoleLogger, "ERROR: Unknown simulation type'");
       return -1;
