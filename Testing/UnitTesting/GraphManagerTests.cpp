@@ -18,13 +18,15 @@ string emptyGraphFile = "../configfiles/graphs/empty-graph.graphml";
 
 TEST(GraphManager, GetInstanceReturnsInstance)
 {
-   GraphManager<NG911VertexProperty> *graphManager = &GraphManager<NG911VertexProperty>::getInstance();
+   GraphManager<NG911VertexProperty> *graphManager
+      = &GraphManager<NG911VertexProperty>::getInstance();
    ASSERT_NE(graphManager, nullptr);
 }
 
 TEST(GraphManager, ReadGraphReturnsTrue)
 {
-   GraphManager<NG911VertexProperty> &graphManager = GraphManager<NG911VertexProperty>::getInstance();
+   GraphManager<NG911VertexProperty> &graphManager
+      = GraphManager<NG911VertexProperty>::getInstance();
    graphManager.setFilePath(graphFile);
 
    graphManager.registerProperty("objectID", &NG911VertexProperty::objectID);
@@ -97,14 +99,16 @@ TEST(GraphManager, SortEdges)
 // the GraphManager singleton is not overwritten with the new graphs.
 TEST(GraphManager, ReadEmptyGraph)
 {
-   GraphManager<NG911VertexProperty> &graphManager = GraphManager<NG911VertexProperty>::getInstance();
+   GraphManager<NG911VertexProperty> &graphManager
+      = GraphManager<NG911VertexProperty>::getInstance();
    graphManager.setFilePath(emptyGraphFile);
    ASSERT_TRUE(graphManager.readGraph());
 }
 
 TEST(GraphManager, ReadNonExistentGraph)
 {
-   GraphManager<NG911VertexProperty> &graphManager = GraphManager<NG911VertexProperty>::getInstance();
+   GraphManager<NG911VertexProperty> &graphManager
+      = GraphManager<NG911VertexProperty>::getInstance();
    graphManager.setFilePath("nonExistent.graphml");
    ASSERT_FALSE(graphManager.readGraph());
 }
