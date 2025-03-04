@@ -191,19 +191,18 @@ void Hdf5Recorder::compileHistories()
                   for (size_t i = 0; i < variableInfo.variableLocation_.getNumElements(); ++i) {
                      // For type int, a distinction needs to be made between vertexType and regular integers
                      // Since vertexType is an enum class, it needs to first be converted to an integer before storing
-                     
-                     // 'decltype' determines the type at compile time 
+
+                     // 'decltype' determines the type at compile time
                      // 'decay_t' removes any references/const from the type
                      // This simplifies comparisons through 'is_same_v' to ensure type matches vertexType
-                     if (std::is_same_v<
-                                      vertexType,
-                                      std::decay_t<decltype(get<vertexType>(
-                                         variableInfo.variableLocation_.getElement(i)))>>) {
+                     if (std::is_same_v<vertexType,
+                                        std::decay_t<decltype(get<vertexType>(
+                                           variableInfo.variableLocation_.getElement(i)))>>) {
                         // If type matches vertexType, convert to int before storing
                         dataBuffer[i] = static_cast<int>(
                            get<vertexType>(variableInfo.variableLocation_.getElement(i)));
                      } else {
-                        // Otherwise, store as a regular integer  
+                        // Otherwise, store as a regular integer
                         dataBuffer[i] = get<int>(variableInfo.variableLocation_.getElement(i));
                      }
                   }
