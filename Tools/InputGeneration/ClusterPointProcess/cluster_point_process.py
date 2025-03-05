@@ -339,7 +339,7 @@ class EventGenerator(QWidget):
                 # PRIMARY EVENTS
                 ###########################################################################
                 # Start your event generation process here based on the valid inputs
-                graph_file_path = os.path.join('/Users', 'rimjhimsudhesh', 'research-summer-24', 'data-generation', 'graphml1', 'synth_output2.graphml')
+                graph_file_path = os.path.join('..', '..', 'gis2graph', 'graph_files', 'spd.graphml')
                 graph = nx.read_graphml(graph_file_path)
                 graph_id = str(self.entries["Graph ID:"].text())
                 graph_attribute = graph.nodes[graph_id]['segments']
