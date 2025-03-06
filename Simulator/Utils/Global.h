@@ -91,38 +91,6 @@ extern uint64_t g_simulationStep;
 
 const int g_nMaxChunkSize = 100;
 
-// NETWORK MODEL VARIABLES NMV-BEGIN {
-// Vertex types.
-// NEURO:
-//	INH - Inhibitory neuron
-//	EXC - Excitory neuron
-// NG911:
-// CALR: Caller radii
-// PSAP: PSAP nodes
-// EMS, FIRE, LAW: Responder nodes
-/* 
-// Moved to Utils/VertexType.h 
-enum class vertexType {
-   // Neuro
-   INH = 1,
-   EXC = 2,
-   // NG911
-   CALR = 3,
-   PSAP = 4,
-   EMS = 5,
-   FIRE = 6,
-   LAW = 7,
-   // UNDEF
-   VTYPE_UNDEF = 0
-};
-// Custom streaming operator<< for the enum class vertexType
-inline std::ostream &operator<<(std::ostream &os, vertexType vT)
-{
-   os << static_cast<int>(vT);
-   return os;
-}
-*/
-
 // Edge types.
 // NEURO:
 //	II - Synapse from inhibitory neuron to inhibitory neuron.
