@@ -155,6 +155,9 @@ struct AllVerticesDeviceProperties {
    ///  On the next advance cycle, vertices add the values stored in their corresponding
    ///  summation points to their Vm and resets the summation points to zero
    BGFLOAT *summationPoints_;
+   #ifdef VALIDATION_MODE
+   BGFLOAT *spValidation_;
+   #endif
 };
 #endif   // defined(USE_GPU)
 
