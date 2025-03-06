@@ -33,6 +33,9 @@ using namespace std;
 // cereal
 #include "cereal/types/vector.hpp"
 
+// Utility function to convert a vertexType into a string.
+string vertexTypeToString(vertexType t);
+
 class Layout;
 class AllEdges;
 struct AllVerticesDeviceProperties;

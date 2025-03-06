@@ -195,8 +195,6 @@ string index2dToString(int i, int width, int height);
 string coordToString(int x, int y);
 // Converts a 3-d coordinate into a string.
 string coordToString(int x, int y, int z);
-// Converts a vertexType into a string.
-string neuronTypeToString(vertexType t);
 
 template <typename T> ostream &operator<<(ostream &os, const vector<T> &v)
 {
