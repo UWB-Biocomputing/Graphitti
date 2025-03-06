@@ -66,16 +66,17 @@ int Layout::getNumVertices() const
 /// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
 void Layout::loadParameters()
 {
-   numVertices_ = GraphManager::getInstance().numVertices();
+   numVertices_ = GraphManager<NeuralVertexProperties>::getInstance().numVertices();
 }
 
 void Layout::registerGraphProperties()
 {
-   GraphManager &gm = GraphManager::getInstance();
-   gm.registerProperty("y", &VertexProperty::y);
-   gm.registerProperty("x", &VertexProperty::x);
-   gm.registerProperty("type", &VertexProperty::type);
+   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
+   gm.registerProperty("y", &VertexProperties::y);
+   gm.registerProperty("x", &VertexProperties::x);
+   gm.registerProperty("type", &VertexProperties::type);
 }
+
 
 /// Setup the internal structure of the class.
 /// Allocate memories to store all layout state, no sequential dependency in this method
@@ -92,8 +93,8 @@ void Layout::setup()
    vertexTypeMap_.assign(numVertices_, vertexType::VTYPE_UNDEF);
 
    // Loop over all vertices and set their x and y locations
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NeuralVertexProperties>::VertexIterator vi, vi_end;
+   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
       xloc_[*vi] = gm[*vi].x;
@@ -134,8 +135,8 @@ void Layout::setup()
 /// Prints out all parameters to logging file. Registered to OperationManager as Operation::printParameters
 void Layout::printParameters() const
 {
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NeuralVertexProperties>::VertexIterator vi, vi_end;
+   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
    stringstream output;
    output << "\nLAYOUT PARAMETERS" << endl;
    output << "\tEndogenously active neuron positions: ";

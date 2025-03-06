@@ -259,30 +259,34 @@ extern const string MATRIX_INIT;
 // classes (Layout, Connections, etc) need to do this before we can load the
 // graph.
 
-/// Struct for vertex attributes
-struct VertexProperty {
-   // Common Properties:
+/// @brief Parent structure to store common properties for all graph vertices
+struct VertexProperties {
    string type;
    double x;
    double y;
+};
 
-   // 911 Properties
+/// @brief Derived structure for NG911-specific properties
+/// Inherits from VertexProperty and includes attributes specific to 911 networks
+struct NG911VertexProperties : public VertexProperties {
    string objectID;
    string name;
    int servers = 0;
    int trunks = 0;
    string segments;
+};
 
-   // Neural Properties
+/// @brief Derived structure for Neural Network-specific properties
+struct NeuralVertexProperties : public VertexProperties {
    bool active;
 };
 
 /// @brief  The structure to hold the edge properties
-struct EdgeProperty {
+struct EdgeProperties {
    // TODO: Edge Properties
 };
 
 /// @brief The structure to hold the Graph properties
-struct GraphProperty {
+struct GraphProperties {
    // TODO: Graph Properties
 };

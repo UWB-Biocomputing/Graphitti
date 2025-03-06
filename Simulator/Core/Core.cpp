@@ -147,11 +147,22 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
 
    // Ask all objects to register their Graph properties
    OperationManager::getInstance().executeOperation(Operations::registerGraphProperties);
-   // Read graph from GraphML file. Uses ParameterManager to get the file name.
-   // TODO: This method returns false if it fails to read the graph, we ignore it at the
-   //    moment since it currently fails for the Neural Network model because they don't
-   //    yet use GraphML.
-   GraphManager::getInstance().readGraph();
+
+   // Retrieve class attribute from the 'LayoutParams' in the config file
+   // This value indicate the simulation type (Neural or NG911) for graph manager configuration
+   // Log fatal error if no simulation type is found and terminate
+   string configData;
+   ParameterManager::getInstance().getStringByXpath("//LayoutParams/@class", configData);
+
+   if (configData.find("Neur")) {
+      GraphManager<NeuralVertexProperties>::getInstance().readGraph();
+   }
+   if (configData.find("91")) {
+      GraphManager<NG911VertexProperties>::getInstance().readGraph();
+   } else {
+      LOG4CPLUS_FATAL(consoleLogger, "ERROR: Unknown simulation type'");
+      return -1;
+   }
 
    // Invoke instantiated simulator objects to load parameters from the configuration file
    LOG4CPLUS_TRACE(consoleLogger, "Loading parameters from configuration file");
