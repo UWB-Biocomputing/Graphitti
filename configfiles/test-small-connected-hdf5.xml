@@ -98,13 +98,10 @@
     </ConnectionsParams>
 
     <LayoutParams class="LayoutNeuro" name="LayoutParams">
-      <LayoutFiles name="LayoutFiles">
-      </LayoutFiles>
     </LayoutParams>
 
     <RecorderParams class="Hdf5GrowthRecorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
-        <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_2-100.xml</probedNListFileName>
         <resultFileName name="resultFileName">Output/Results/test-small-connected-out.h5</resultFileName>
       </RecorderFiles>
     </RecorderParams>

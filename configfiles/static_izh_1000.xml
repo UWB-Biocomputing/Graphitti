@@ -98,9 +98,6 @@
         </ConnectionsParams>
 
         <LayoutParams class="LayoutNeuron" name="LayoutParams">
-            <LayoutFiles name="LayoutFiles">
-                <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_1000.xml</probedNListFileName>
-            </LayoutFiles>
         </LayoutParams>
     </ModelParams>
 </BGSimParams>
