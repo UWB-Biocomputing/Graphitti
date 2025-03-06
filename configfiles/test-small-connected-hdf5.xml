@@ -100,7 +100,7 @@
     <LayoutParams class="LayoutNeuro" name="LayoutParams">
     </LayoutParams>
 
-    <RecorderParams class="Hdf5GrowthRecorder" name="RecorderParams">
+    <RecorderParams class="Hdf5Recorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
         <resultFileName name="resultFileName">Output/Results/test-small-connected-out.h5</resultFileName>
       </RecorderFiles>

@@ -97,7 +97,7 @@
             </StaticConnectionsWeight>
         </ConnectionsParams>
 
-        <LayoutParams class="LayoutNeuron" name="LayoutParams">
+        <LayoutParams class="LayoutNeuro" name="LayoutParams">
         </LayoutParams>
     </ModelParams>
 </BGSimParams>
