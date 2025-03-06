@@ -9,7 +9,7 @@
 #include "AllVertices.h"
 #include "OperationManager.h"
 
-// Utility function to convert a vertexType into a string 
+// Utility function to convert a vertexType into a string.
 // MODEL INDEPENDENT FUNCTION NMV-BEGIN {
 string vertexTypeToString(vertexType t)
 {
