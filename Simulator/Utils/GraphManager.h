@@ -160,7 +160,8 @@ private:
 
 /// @brief Sets the file path for the graphML file.
 /// @param filePath The absolute path to the graphML file.
-template <typename VertexProperties> void GraphManager<VertexProperties>::setFilePath(string filePath)
+template <typename VertexProperties>
+void GraphManager<VertexProperties>::setFilePath(string filePath)
 {
    graphFilePath_ = filePath;
 }
