@@ -19,14 +19,14 @@ using namespace std;
 
 
 /// a list of pre-defined basic data types in recorded variables
-using multipleTypes = variant<uint64_t, bool, int, BGFLOAT>;
+using multipleTypes = variant<uint64_t, bool, int, BGFLOAT, vertexType>;
 
 //TODO: remove it after implemtating the Hdf5Recorder
 class AllVertices;
 class Recorder {
 public:
    /// The recorded variable Type/Updated frequency
-   enum class UpdatedType {
+   enum UpdatedType {
       CONSTANT,   // value doesn't change in each epoch
       DYNAMIC     // value is updated in each peoch
       // Add more variable types as needed
