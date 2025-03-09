@@ -9,6 +9,7 @@
 #include "Layout.h"
 #include "Factory.h"
 #include "GraphManager.h"
+#include "Global.h"
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "ParseParamError.h"
@@ -71,7 +72,7 @@ void Layout::loadParameters()
 
 void Layout::registerGraphProperties()
 {
-   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
+   GraphManager<VertexProperties> &gm = GraphManager<VertexProperties>::getInstance();
    gm.registerProperty("y", &VertexProperties::y);
    gm.registerProperty("x", &VertexProperties::x);
    gm.registerProperty("type", &VertexProperties::type);

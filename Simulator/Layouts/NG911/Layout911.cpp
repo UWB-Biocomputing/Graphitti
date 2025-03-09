@@ -11,7 +11,7 @@
 #include "ParameterManager.h"
 
 // Register vertex properties with the GraphManager
-void Layout911::registerGraphProperties()
+void Layout911::registerGraphProperties() 
 {
    // The base class registers properties that are common to all vertices
    // TODO: Currently not implemented because Neuro model doesn't used graphML

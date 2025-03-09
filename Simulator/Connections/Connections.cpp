@@ -61,10 +61,7 @@ EdgeIndexMap &Connections::getEdgeIndexMap() const
 
 void Connections::registerGraphProperties()
 {
-   // TODO: Here we need to register the edge properties that are common
-   // to all models with the GraphManager. Perhaps none.
-   // This empty Base class implementation is here because Neural model
-   // doesn't currently use GraphManager.
+   // TODO: Here we need to register the edge properties that are common/templatize 
 }
 
 void Connections::createEdgeIndexMap()

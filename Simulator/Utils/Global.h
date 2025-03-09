@@ -286,6 +286,14 @@ struct EdgeProperties {
    // TODO: Edge Properties
 };
 
+/// @brief  The structure to hold the edge properties
+/// @brief Structure to hold edge properties
+struct NeuralEdgeProperties {
+   string source;
+   string target;
+   BGFLOAT weight;
+};
+
 /// @brief The structure to hold the Graph properties
 struct GraphProperties {
    // TODO: Graph Properties

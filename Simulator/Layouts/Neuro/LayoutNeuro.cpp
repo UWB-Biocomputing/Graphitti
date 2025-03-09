@@ -29,7 +29,15 @@ void LayoutNeuro::registerGraphProperties()
    // so Boost Graph Library can use it for loading the graphML file.
    // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
    GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
+   gm.registerProperty("y", &NeuralVertexProperties::y);
+   gm.registerProperty("x", &NeuralVertexProperties::x);
+   gm.registerProperty("type", &NeuralVertexProperties::type);
    gm.registerProperty("active", &NeuralVertexProperties::active);
+
+   // gm.registerProperty("source", &NeuralEdgeProperties::source);
+   // gm.registerProperty("target", &NeuralEdgeProperties::target);
+   // gm.registerProperty("weight", &NeuralEdgeProperties::weight);
+
 }
 
 ///  Prints out all parameters to logging file.
@@ -119,53 +127,3 @@ edgeType LayoutNeuro::edgType(int srcVertex, int destVertex)
 
    return edgeType::ETYPE_UNDEF;
 }
-
-// Note: This code was previously used for debugging, but it is now dead code left behind
-// and it is never executed.
-/*void LayoutNeuro::printLayout()
-{
-   ConnGrowth &pConnGrowth
-      = dynamic_cast<ConnGrowth &>(Simulator::getInstance().getModel().getConnections());
-
-   cout << "format:\ntype,radius,firing rate" << endl;
-
-   for (int y = 0; y < height_; y++) {
-      stringstream ss;
-      ss << fixed;
-      ss.precision(1);
-
-      for (int x = 0; x < width_; x++) {
-         switch (vertexTypeMap_[x + y * width_]) {
-            case EXC:
-               if (starterMap_[x + y * width_])
-                  ss << "s";
-               else
-                  ss << "e";
-               break;
-            case INH:
-               ss << "i";
-               break;
-            case VTYPE_UNDEF:
-               assert(false);
-               break;
-         }
-
-         ss << " " << pConnGrowth.radii_[x + y * width_];
-
-         if (x + 1 < width_) {
-            ss.width(2);
-            ss << "|";
-            ss.width(2);
-         }
-      }
-
-      ss << endl;
-
-      for (int i = ss.str().length() - 1; i >= 0; i--) {
-         ss << "_";
-      }
-
-      ss << endl;
-      cout << ss.str();
-   }
-}*/

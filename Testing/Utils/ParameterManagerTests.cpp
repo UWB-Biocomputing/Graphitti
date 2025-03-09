@@ -40,7 +40,7 @@ TEST(ParameterManager, LoadingXMLFile)
 TEST(ParameterManager, LoadingMultipleValidXMLFiles)
 {
    string valid[] {"../configfiles/test-medium-100.xml", "../configfiles/test-small.xml",
-                   "../configfiles/test-tiny.xml"};
+                   "../configfiles/test-tiny-stdp.xml"};
    for (int i = 0; i < 3; i++) {
       ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile(valid[i]));
    }

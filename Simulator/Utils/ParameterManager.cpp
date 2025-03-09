@@ -94,7 +94,7 @@ bool ParameterManager::getStringByXpath(string xpath, string &referenceVar)
    string temp;
    // raise error if tinyxml cannot compute the xpath's value or returns empty
    if (!TinyXPath::o_xpath_string(root_, xpath.c_str(), temp) || temp == "") {
-      cerr << "Failed loading simulation parameter for xpath " << xpath << endl;
+      // cerr << "Failed loading simulation parameter for xpath " << xpath << endl;
       return false;
    }
    referenceVar = temp;

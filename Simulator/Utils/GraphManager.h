@@ -52,7 +52,7 @@ template <typename VertexProperties> class GraphManager {
 public:
    /// Using directive for graphml graph type (adjacency list)
    using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, VertexProperties,
-                                       EdgeProperties, GraphProperties>;
+                                       NeuralEdgeProperties, GraphProperties>;
 
    using EdgeIterator = typename boost::graph_traits<Graph>::edge_iterator;
    using VertexIterator = typename boost::graph_traits<Graph>::vertex_iterator;
