@@ -84,6 +84,9 @@ void AllSpikingNeurons::copyToDevice(void *deviceAddress)
       HANDLE_ERROR(cudaMemcpy(pSpikeHistory[i], vertexEvents_[i].dataSeries_.data(),
                               maxSpikes * sizeof(uint64_t), cudaMemcpyHostToDevice));
    }
+
+   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.summationPoints_, summationPoints_.data(),
+                           count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
 }
 void AllSpikingNeurons::copyFromDevice(void *deviceAddress)
 {
@@ -141,6 +144,9 @@ void AllSpikingNeurons::copyFromDevice(void *deviceAddress)
       HANDLE_ERROR(cudaMemcpy(vertexEvents_[i].dataSeries_.data(), pSpikeHistory[i],
                               maxSpikes * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
    }
+
+   HANDLE_ERROR(cudaMemcpy(summationPoints_.data(), allVerticesDevice.summationPoints_,
+                           numVertices * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
 }
 
 ///  Clear the spike counts out of all neurons in device memory.
