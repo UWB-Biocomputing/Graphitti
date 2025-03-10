@@ -130,8 +130,6 @@
       </ConnectionsParams>
 
       <LayoutParams class="LayoutNeuro" name="LayoutParams">
-        <LayoutFiles name="LayoutFiles">
-        </LayoutFiles>
       </LayoutParams>
 
       <RecorderParams class="Hdf5Recorder" name="RecorderParams">
