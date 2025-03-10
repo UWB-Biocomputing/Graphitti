@@ -31,7 +31,6 @@
 #include "Simulator.h"
 #include <iostream>
 #include <vector>
-// cereal
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>
 
@@ -53,6 +52,9 @@ public:
    ///  number of maximum connections per vertex, connection radius threshold, and
    ///  small-world rewiring probability.
    virtual void setup() override;
+
+   /// Register vertex properties with the GraphManager
+   virtual void registerGraphProperties() override;
 
    /// Load member variables from configuration file.
    /// Registered to OperationManager as Operations::op::loadParameters
@@ -114,12 +116,6 @@ private:
    /// Small-world rewiring probability
    BGFLOAT rewiringProbability_;
 
-   /// Min/max values of excitatory neuron's synapse weight
-   BGFLOAT excWeight_[2];
-
-   /// Min/max values of inhibitory neuron's synapse weight
-   BGFLOAT inhWeight_[2];
-
    struct DistDestVertex {
       BGFLOAT dist;     ///< distance to the destination vertex
       int destVertex;   ///< index of the destination vertex
@@ -134,15 +130,15 @@ private:
 CEREAL_REGISTER_TYPE(ConnStatic);
 
 ///  Cereal serialization method
-template <class Archive> void ConnStatic::serialize(Archive &archive)
+template <class Archive>
+void ConnStatic::serialize(Archive &archive)
 {
-   archive(cereal::base_class<Connections>(this),
-           cereal::make_nvp("sourceVertexIndexCurrentEpoch", sourceVertexIndexCurrentEpoch_),
-           cereal::make_nvp("destVertexIndexCurrentEpoch", destVertexIndexCurrentEpoch_),
-           cereal::make_nvp("WCurrentEpoch", WCurrentEpoch_),
-           cereal::make_nvp("radiiSize", radiiSize_),
-           cereal::make_nvp("connsPerVertex", connsPerVertex_),
-           cereal::make_nvp("threshConnsRadius", threshConnsRadius_),
-           cereal::make_nvp("rewiringProbability", rewiringProbability_),
-           cereal::make_nvp("excWeight", excWeight_), cereal::make_nvp("inhWeight", inhWeight_));
+    archive(cereal::base_class<Connections>(this),
+            cereal::make_nvp("sourceVertexIndexCurrentEpoch", sourceVertexIndexCurrentEpoch_),
+            cereal::make_nvp("destVertexIndexCurrentEpoch", destVertexIndexCurrentEpoch_),
+            cereal::make_nvp("WCurrentEpoch", WCurrentEpoch_),
+            cereal::make_nvp("radiiSize", radiiSize_),
+            cereal::make_nvp("connsPerVertex", connsPerVertex_),
+            cereal::make_nvp("threshConnsRadius", threshConnsRadius_),
+            cereal::make_nvp("rewiringProbability", rewiringProbability_));
 }

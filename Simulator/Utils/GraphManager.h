@@ -109,6 +109,15 @@ public:
    /// @return the target vertex index for the given Edge
    size_t target(const EdgeDescriptor &edge) const;
 
+   /// @brief Retrieves the weight of an edge
+   /// @param edge the EdgeDescriptor
+   /// @return the weight of the given edge
+   BGFLOAT weight(const EdgeDescriptor &edge) const;
+ 
+   /// @brief Exposes the BGL Edge Iterators along with weights
+   /// @return a vector of tuples (EdgeDescriptor, weight)
+   vector<pair<EdgeDescriptor, BGFLOAT>> edgesWithWeights() const;
+
    /// @brief Direct access to the VertexProperties of a vertex descriptor
    /// @param vertex   the vertex descriptor (index)
    /// @return the VertexProperties of the vertex descriptor
@@ -232,6 +241,24 @@ size_t GraphManager<VertexProperties>::target(
 {
    return boost::target(edge, graph_);
 }
+
+template <typename VertexProperties>
+BGFLOAT GraphManager<VertexProperties>::weight(const EdgeDescriptor &edge) const
+{
+   return graph_[edge].weight;
+}
+
+template <typename VertexProperties>
+vector<pair<typename GraphManager<VertexProperties>::EdgeDescriptor, BGFLOAT>> 
+GraphManager<VertexProperties>::edgesWithWeights() const
+{
+   vector<pair<EdgeDescriptor, BGFLOAT>> edgeList;
+   for (auto ei = boost::edges(graph_).first; ei != boost::edges(graph_).second; ++ei) {
+      edgeList.push_back({*ei, graph_[*ei].weight});
+   }
+   return edgeList;
+}
+
 
 /// @brief Directly access the VertexProperties of a vertex descriptor.
 /// @param vertex The vertex descriptor (index).

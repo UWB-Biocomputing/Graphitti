@@ -119,12 +119,6 @@
           <threshConnsRadius name="threshConnsRadius">4</threshConnsRadius>
           <connsPerNeuron name="connsPerNeuron">2</connsPerNeuron>
           <rewiringProbability name="rewiringProbability">0.75</rewiringProbability>
-          <edgeWeights>
-           <edge weight="0.5" source="0" target="1"/>
-           <edge weight="1.2" source="1" target="2"/>
-           <edge weight="0.8" source="2" target="3"/>
-           <edge weight="1.5" source="3" target="0"/>
-          </edgeWeights>
         </ConnectionsParams>
 
         <LayoutParams class="LayoutNeuro" name="LayoutParams">
