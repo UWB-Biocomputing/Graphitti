@@ -22,7 +22,7 @@ void Connections911::setup()
    AllVertices &vertices = layout.getVertices();
 
    // Get list of edges sorted by target in ascending order from GraphManager
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
    auto sorted_edge_list = gm.edgesSortByTarget();
 
    // add sorted edges
