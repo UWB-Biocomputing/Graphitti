@@ -25,6 +25,7 @@ AllVertices::AllVertices() : size_(0)
    // Get a copy of the file and vertex logger to use log4cplus macros to print to debug files
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    vertexLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));
+   vertexLogger_.setLogLevel(log4cplus::DEBUG_LOG_LEVEL);
 }
 
 ///  Setup the internal structure of the class (allocate memories).

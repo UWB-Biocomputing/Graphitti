@@ -181,7 +181,9 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
       vm = allVerticesDevice->C1_[idx] * r_vm
            + allVerticesDevice->C2_[idx] * (r_sp);   // decay Vm and add inputs
    }
-
+#ifdef VALIDATION_MODE
+   allVerticesDevice->spValidation_[idx] = r_sp;
+#endif
    // clear synaptic input for next time step
    sp = 0;
 }
