@@ -240,7 +240,7 @@ void ConnGrowth::updateOverlap()
 ///  To be clear, iterates through all source and destination neurons
 ///  and updates their synaptic strengths from the weight matrix.
 ///  Note: Platform Dependent.
-void ConnGrowth::updateSynapsesWeights()
+void ConnGrowth::updateEdgesWeights()
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
    AllNeuroEdges &synapses = dynamic_cast<AllNeuroEdges &>(*edges_);

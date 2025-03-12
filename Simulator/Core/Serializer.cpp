@@ -67,8 +67,8 @@ bool Serializer::deserialize()
 
 #if defined(USE_GPU)
    GPUModel &gpuModel = static_cast<GPUModel &>(simulator.getModel());
-   gpuModel.copySynapseIndexMapHostToDevice(simulator.getModel().getConnections().getEdgeIndexMap(),
-                                            simulator.getTotalVertices());
+   gpuModel.copyEdgeIndexMapHostToDevice(simulator.getModel().getConnections().getEdgeIndexMap(),
+                                         simulator.getTotalVertices());
 #endif   // USE_GPU
 
    return true;

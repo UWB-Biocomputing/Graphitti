@@ -70,11 +70,10 @@ public:
                                       int maxEdgesPerVertex) {};
    virtual void deleteEdgeDeviceStruct(void *allEdgesDevice) {};
    virtual void copyEdgeHostToDevice(void *allEdgesDevice) {};
-   virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices,
-                                     int maxEdgesPerVertex) {};
+   virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices, int maxEdgesPerVertex) {
+   };
    virtual void copyEdgeDeviceToHost(void *allEdgesDevice) {};
    virtual void copyDeviceEdgeCountsToHost(void *allEdgesDevice) {};
-   virtual void copyDeviceEdgeSumIdxToHost(void *allEdgesDevice) {};
    virtual void advanceEdges(void *allEdgesDevice, void *allVerticesDevice,
                              void *edgeIndexMapDevice) {};
    virtual void setAdvanceEdgesDeviceParams() {};

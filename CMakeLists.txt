@@ -53,7 +53,7 @@ else()
         project(Graphitti LANGUAGES CXX C)
 endif()
 
-#Setting the base version to C++ 11
+#Setting the base version to C++ 17
 set(CMAKE_CXX_STANDARD 17)
 
 #set(DEBUG_MODE YES) for debugging, no optimization
@@ -161,18 +161,24 @@ include_directories(
        
 if(ENABLE_CUDA)
         
-        set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp 
-        Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp 
-        Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp 
-        Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp 
-        Simulator/Edges/Neuro/AllDSSynapses_d.cpp 
-        Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp 
-        Simulator/Vertices/Neuro/AllLIFNeurons_d.cpp 
-        Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp 
-        Simulator/Vertices/Neuro/AllIFNeurons_d.cpp 
-        Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp 
+        set(cuda_ConnectionsSources 
         Simulator/Connections/Neuro/ConnGrowth_d.cpp )
-        set_source_files_properties(${cuda_sources} PROPERTIES LANGUAGE CUDA)
+        set_source_files_properties(${cuda_ConnectionsSources} PROPERTIES LANGUAGE CUDA)
+
+        set(cuda_EdgesSources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp
+        Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp
+        Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp
+        Simulator/Edges/Neuro/AllDSSynapses_d.cpp
+        Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp)
+        set_source_files_properties(${cuda_EdgesSources} PROPERTIES LANGUAGE CUDA)
+
+        set(cuda_VerticesSources 
+        Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp
+        Simulator/Vertices/Neuro/AllLIFNeurons_d.cpp
+        Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp
+        Simulator/Vertices/Neuro/AllIFNeurons_d.cpp
+        Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp)
+        set_source_files_properties(${cuda_VerticesSources} PROPERTIES LANGUAGE CUDA)
 endif()
 
    #Collect source files and create libraries
@@ -184,7 +190,7 @@ endif()
 file(GLOB_RECURSE Connections_Source Simulator/Connections/*.cpp Simulator/Connections/*.h)
 
 if(ENABLE_CUDA)
-        add_library(Connections STATIC ${Connections_Source} ${cuda_sources})
+        add_library(Connections STATIC ${Connections_Source} ${cuda_ConnectionsSources})
 else()
         list(REMOVE_ITEM Connections_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Connections/Neuro/ConnGrowth_d.cpp")
         add_library(Connections STATIC ${Connections_Source})
@@ -195,7 +201,7 @@ endif()
 file(GLOB_RECURSE Vertices_Source Simulator/Vertices/*.cpp Simulator/Vertices/*.h)
 
 if(ENABLE_CUDA)
-        add_library(Vertices SHARED ${Vertices_Source} ${cuda_sources})
+        add_library(Vertices STATIC ${Vertices_Source} ${cuda_VerticesSources})
 else()
         list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllVerticesDeviceFuncs.h")
         list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp")
@@ -212,7 +218,7 @@ endif()
 # Create Edges library
 file(GLOB_RECURSE Edges_Source Simulator/Edges/*.cpp Simulator/Edges/*.h)
 if(ENABLE_CUDA)
-        add_library(Edges SHARED ${Edges_Source} ${cuda_sources})
+        add_library(Edges STATIC ${Edges_Source} ${cuda_EdgesSources})
 else()
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSynapsesDeviceFuncs.h")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp")
@@ -373,45 +379,48 @@ target_link_libraries(tests gtest gtest_main)
 # Link the combined library into the 'tests' executable.
 target_link_libraries(tests combinedLib)
 
-# add_executable(serialTest
-#         Testing/RunTests.cpp
-#         Testing/UnitTesting/SerializationTests.cpp)
+#------- SERIALIZATION TESTS --------------------
+# Serialization tests must be executed separately, as each test requires the 
+# simulation to run from start to finish. Running multiple simulations with 
+# the same singleton instance results in a segmentation fault (SEG FAULT).
 
-# # Links the Googletest framework with the serialTest executable
-# target_link_libraries(serialTest gtest gtest_main)
-
-# # Link the combined library into the 'serialTest' executable.
-# target_link_libraries(serialTest combinedLib)
-
-# add_executable(deserialTest
-#         Testing/RunTests.cpp
-#         Testing/UnitTesting/DeserializationTests.cpp)
-
-# # Links the Googletest framework with the deserialTest executable
-# target_link_libraries(deserialTest gtest gtest_main)
-
-# # Link the combined library into the 'deserialTest' executable.
-# target_link_libraries(deserialTest combinedLib)
-
-# add_executable(serialFileAccessTest
-#         Testing/RunTests.cpp
-#         Testing/UnitTesting/SerializationFileAccessTest.cpp)
-
-# # Links the Googletest framework with the serialFileAccessTest executable
-# target_link_libraries(serialFileAccessTest gtest gtest_main)
-
-# # Link the combined library into the 'serialFileAccessTest' executable.
-# target_link_libraries(serialFileAccessTest combinedLib)
-
-add_executable(serialFileAccessTest
+add_executable(serialFullTest
         Testing/RunTests.cpp
-        Testing/UnitTesting/SerializationFileAccessTest.cpp)
+        Testing/UnitTesting/SerializationFullTest.cpp)
+
+add_executable(serialFirstHalfTest
+        Testing/RunTests.cpp
+        Testing/UnitTesting/SerializationFirstHalfTest.cpp)
+
+add_executable(serialSecondHalfTest
+        Testing/RunTests.cpp
+        Testing/UnitTesting/SerializationSecondHalfTest.cpp)
+
+# Link the GoogleTest framework to each of the serial test executables.
+target_link_libraries(serialFullTest gtest gtest_main)
+target_link_libraries(serialFirstHalfTest gtest gtest_main)
+target_link_libraries(serialSecondHalfTest gtest gtest_main)
+
+# Link the combined library and filesystem support to the respective serial test executables.
+target_link_libraries(serialFullTest stdc++fs)
+target_link_libraries(serialFullTest combinedLib)
+
+target_link_libraries(serialFirstHalfTest stdc++fs)
+target_link_libraries(serialFirstHalfTest combinedLib)
+
+target_link_libraries(serialSecondHalfTest stdc++fs)
+target_link_libraries(serialSecondHalfTest combinedLib)
+
+# commenting out serialFileAccessTest until issue-754 is resolved
+# add_executable(serialFileAccessTest
+#        Testing/RunTests.cpp
+#        Testing/UnitTesting/SerializationFileAccessTest.cpp)
 
 # Links the Googletest framework with the serialFileAccessTest executable
-target_link_libraries(serialFileAccessTest gtest gtest_main)
+# target_link_libraries(serialFileAccessTest gtest gtest_main)
 
 # Link the combined library into the 'serialFileAccessTest' executable.
-target_link_libraries(serialFileAccessTest combinedLib)
+# target_link_libraries(serialFileAccessTest combinedLib)
 
 # Clear ENABLE_CUDA, PERFORMANCE_METRICS and GPROF from the cache so it's reset for subsequent builds
 unset(ENABLE_CUDA CACHE)

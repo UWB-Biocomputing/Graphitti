@@ -121,6 +121,33 @@ abstract class AllEdges {
 }
 
 
+class All911Edges {
+  +All911Edges()
+  +All911Edges(int numVertices, int maxEdges)
+  +{abstract} ~All911Edges()
+  +{static} Create() : AllEdges*
+  +{abstract} setupEdges() : void <<override>>
+  +{abstract} createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT, edgeType type) : void <<override>>
+  +{abstract} allocEdgeDeviceStruct(void** allEdgesDevice) :  void
+  +{abstract} allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+  +{abstract} deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+  +{abstract} copyEdgeHostToDevice(void* allEdgesDevice) : void
+  +{abstract} copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+  +{abstract} copyEdgeDeviceToHost(void* allEdgesDevice) : void
+  +{abstract} copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void
+  +{abstract} advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
+  +{abstract} setAdvanceEdgesDeviceParams() : void
+  +{abstract} setEdgeClassID() : void
+  +{abstract} printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+  +{abstract} advanceEdges(AllVertices& vertices, EdgeIndexMap& edgeIndexMap) : void
+  +advance911Edge(BGSIZE iEdg, All911Vertices& vertices) : void
+  +{abstract} advanceEdge(BGSIZE iEdg, AllVertices& vertices) : void <<override>>
+  +isAvailable_ : unique_ptr<bool[]>
+  +isRedial_ : unique_ptr<bool[]>
+  +call_ : vector<Call>
+}
+
+
 class AllNeuroEdges {
 	+AllNeuroEdges()
 	+~AllNeuroEdges()
@@ -259,30 +286,28 @@ class AllSpikingSynapses {
 
 class ConnGrowth {
 	+ConnGrowth()
-	+~ConnGrowth()
-	+W_ : CompleteMatrix*
-	+area_ : CompleteMatrix*
-	+delta_ : CompleteMatrix*
+	+{abstract} ~ConnGrowth()
 	+{static} Create() : Connections*
-	+growthParams_ : GrowthParams
-	+deltaR_ : VectorMatrix*
-	+outgrowth_ : VectorMatrix*
-	+radii_ : VectorMatrix*
-	+rates_ : VectorMatrix*
-	+updateConnections(AllVertices& neurons, Layout* layout) : bool
-	+radiiSize_ : int
-	+spikeCounts_ : int*
-	+load(Archive& archive) : void
-	+loadParameters() : void
-	+printParameters() : void {query}
+	+{abstract} setup() : void <<override>>
+	+{abstract} loadParameters() : void <<override>>
+	+{abstract} printParameters() : void {query} <<override>>
+	+{abstract} updateConnections(AllVertices& vertices) : bool <<override>>
+	+serialize(Archive& archive) : void
 	+printRadii() : void {query}
-	+save(Archive& archive) : void {query}
-	+setupConnections(Layout* layout, AllVertices* neurons, AllEdges* synapses) : void
+	+{abstract} updateEdgesWeights(int numVertices, AllVertices& vertices, AllEdges& edges, AllVerticesDeviceProperties* allVerticesDevice, AllEdgesDeviceProperties* allEdgesDevice, Layout& layout) : void <<override>>
+	+{abstract} updateEdgesWeights() : void <<override>>
 	-updateConns(AllVertices& neurons) : void
-	-updateFrontiers(const int numVertices, Layout* layout) : void
-	-updateOverlap(BGFLOAT numVertices, Layout* layout) : void
-	+updateSynapsesWeights(const int numVertices, AllVertices& neurons, AllEdges& synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout* layout) : void
-	+updateSynapsesWeights(const int numVertices, AllVertices& vertices, AllEdges& synapses, Layout* layout) : void
+	-updateFrontiers() : void
+	-updateOverlap() : void
+	+growthParams_ : GrowthParams
+	+radiiSize_ : int
+	+W_ : CompleteMatrix
+	+radii_ : VectorMatrix
+	+rates_ : VectorMatrix
+	+delta_ : CompleteMatrix
+	+area_ : CompleteMatrix
+	+outgrowth_ : VectorMatrix
+	+deltaR_ : VectorMatrix
 }
 
 
@@ -313,21 +338,22 @@ class ConnStatic {
 
 abstract class Connections {
 	+Connections()
-	+~Connections()
-	+updateConnections(AllVertices& vertices, Layout* layout) : bool
-	#edgeLogger_ : log4cplus::Logger
-	#fileLogger_ : log4cplus::Logger
-	#edges_ : shared_ptr<AllEdges>
-	+getEdges() : shared_ptr<AllEdges> {query}
-	+getEdgeIndexMap() : shared_ptr<EdgeIndexMap> {query}
-	#synapseIndexMap_ : shared_ptr<EdgeIndexMap>
+	+{abstract} ~Connections()
+	+getEdges() : AllEdges& {query}
+	+getEdgeIndexMap() : EdgeIndexMap& {query}
 	+createEdgeIndexMap() : void
-	+createSynapsesFromWeights(const int numVertices, Layout* layout, AllVertices& vertices, AllEdges& synapses) : void
+	+{abstract} setup() : void
+	+{abstract} registerGraphProperties() : void
 	+{abstract} loadParameters() : void
 	+{abstract} printParameters() : void {query}
-	+{abstract} setupConnections(Layout* layout, AllVertices* vertices, AllEdges* synapses) : void
-	+updateSynapsesWeights(const int numVertices, AllVertices& vertices, AllEdges& synapses, AllSpikingNeuronsDeviceProperties* allVerticesDevice, AllSpikingSynapsesDeviceProperties* allEdgesDevice, Layout* layout) : void
-	+updateSynapsesWeights(const int numVertices, AllVertices& vertices, AllEdges& synapses, Layout* layout) : void
+	+{abstract} updateConnections(AllVertices& vertices) : bool
+	+serialize(Archive& archive) : void
+	+{abstract} updateEdgesWeights(int numVertices, AllVertices& vertices, AllEdges& edges, AllVerticesDeviceProperties* allVerticesDevice, AllEdgesDeviceProperties* allEdgesDevice, Layout& layout) : void
+	+{abstract} updateEdgesWeights() : void
+	#edges_ : shared_ptr<AllEdges>
+	#synapseIndexMap_ : shared_ptr<EdgeIndexMap>
+	#fileLogger_ : log4cplus::Logger
+	#edgeLogger_ : log4cplus::Logger
 }
 
 
@@ -451,6 +477,9 @@ class ConnStatic::DistDestVertex {
 /' Inheritance relationships '/
 
 .AllEdges <|-- .AllNeuroEdges
+
+
+.AllEdges <|-- .All911Edges
 
 
 .AllEdgesDeviceProperties <|-- .AllSpikingSynapsesDeviceProperties
