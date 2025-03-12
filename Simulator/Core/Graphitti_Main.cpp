@@ -31,13 +31,14 @@
 using namespace std;
 
 // Function to check whether there is a file given at a specific path
-bool findFile(string path) {
+bool findFile(string path)
+{
 
    // Opens the file at specified path
    ifstream newFile(path);
 
    // Checks if file is opened properly, otherwise results in an error and returns false
-   if(newFile.is_open()) {
+   if (newFile.is_open()) {
       
       // Use good() to check if the file exists
       bool found = newFile.good();
@@ -75,7 +76,7 @@ int main(int argc, char *argv[])
    
    // Checks whether the file is in the home directory
    // otherwise uses the file in RuntimeFiles
-   if(findFile(absPath)) {
+   if (findFile(absPath)) {
       ::log4cplus::PropertyConfigurator::doConfigure(absPath);
    } else {
       ::log4cplus::PropertyConfigurator::doConfigure("RuntimeFiles/log4cplus_configure.ini");
