@@ -31,6 +31,7 @@ Simulator::Simulator()
 
    consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   fileLogger_.setLogLevel(log4cplus::DEBUG_LOG_LEVEL);
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
    workbenchLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("workbench"));
 
