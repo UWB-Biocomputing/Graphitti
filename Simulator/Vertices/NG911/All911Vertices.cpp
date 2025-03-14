@@ -64,8 +64,8 @@ void All911Vertices::createAllVertices(Layout &layout)
    // Loop over all vertices and set the number of servers and trunks, and
    // determine the size of the waiting queue.
    // We get the information needed from the GraphManager.
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NG911VertexProperties>::VertexIterator vi, vi_end;
+   GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < size_);
 
