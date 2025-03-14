@@ -119,12 +119,10 @@ void MTRand_d::seedMTGPU(unsigned int seed)
    int threadsPerBlock = 256;
    //get ceil of MT_RNG_COUNT/threadsPerBlock
    int blocksPerGrid = (mt_rng_count + threadsPerBlock - 1) / threadsPerBlock;
-   seedMTGPUState<<<blocksPerGrid, threadsPerBlock>>>(seed);
+   seedMTGPUState<<<blocksPerGrid, threadsPerBlock>>>(mt_d, seed);
 
-   if (cudaMemcpyToSymbol(ds_MT, MT, mt_rng_count * sizeof(mt_struct_stripped)) != cudaSuccess) {
-      cerr << "seedMTGP failed" << endl;
-      exit(0);
-   }
+   HANDLE_ERROR(
+      cudaMemcpy(MT_d, MT_, mt_rng_count_ * sizeof(mt_struct_stripped), cudaMemcyptHostToDevice));
 }
 
 
@@ -137,7 +135,8 @@ void MTRand_d::seedMTGPU(unsigned int seed)
 // The local seeds, in their turn, can be extracted from global seed
 // by means of any simple random number generator, like LCG.
 ////////////////////////////////////////////////////////////////////////////////
-__global__ void RandomGPU(float *d_Random, int nPerRng, int mt_rng_count)
+__global__ void RandomGPU(mt_struct_stripped *ds_MT, unsigned int *mt, float *d_Random, int nPerRng,
+                          int mt_rng_count)
 {
    const int tid = blockDim.x * blockIdx.x + threadIdx.x;
    int iState, iState1, iStateM, iOut;
@@ -163,7 +162,7 @@ __global__ void RandomGPU(float *d_Random, int nPerRng, int mt_rng_count)
       mtiM = mt[iStateM];
 
       // MT recurrence
-      x = (mti & MT_UMASK) | (mti1 & MT_LMASK);
+      x = (mti & MTRand_d::UMASK) | (mti1 & MTRand_d::LMASK);
       x = mtiM ^ (x >> 1) ^ ((x & 1) ? matrix_a : 0);
 
       mt[iState] = x;
@@ -190,7 +189,7 @@ __global__ void RandomGPU(float *d_Random, int nPerRng, int mt_rng_count)
 __device__ inline void BoxMuller(float &u1, float &u2)
 {
    float r = sqrtf(-2.0f * logf(u1));
-   float phi = 2 * PI * u2;
+   float phi = 2 * MTRand_d::PI * u2;
    u1 = r * __cosf(phi);
    u2 = r * __sinf(phi);
 }
@@ -207,7 +206,8 @@ __global__ void BoxMullerGPU(float *d_Random, int nPerRng, int mt_rng_count)
 
 //skip the seperate BoxMullerGPU for increased speed (uses register memory).
 //nPerRng must be a multiple of 2
-__global__ void RandomNormGPU(float *d_Random, int nPerRng, int mt_rng_count)
+__global__ void RandomNormGPU(mt_struct_stripped *ds_MT, unsigned int *mt, float *d_Random,
+                              int nPerRng, int mt_rng_count)
 {
    const int tid = blockDim.x * blockIdx.x + threadIdx.x;
    int iState, iState1, iStateM, iOut;
@@ -236,17 +236,17 @@ __global__ void RandomNormGPU(float *d_Random, int nPerRng, int mt_rng_count)
       mtiM = mt[iStateM];
 
       // MT recurrence
-      x = (mti & MT_UMASK) | (mti1 & MT_LMASK);
+      x = (mti & MTRand_d::UMASK) | (mti1 & MTRand_d::LMASK);
       x = mtiM ^ (x >> 1) ^ ((x & 1) ? matrix_a : 0);
 
       mt[iState] = x;
       iState = iState1;
 
       //Tempering transformation
-      x ^= (x >> MT_SHIFT0);
-      x ^= (x << MT_SHIFTB) & mask_b;
-      x ^= (x << MT_SHIFTC) & mask_c;
-      x ^= (x >> MT_SHIFT1);
+      x ^= (x >> MTRand_d::SHIFT0);
+      x ^= (x << MTRand_d::SHIFTB) & mask_b;
+      x ^= (x << MTRand_d::SHIFTC) & mask_c;
+      x ^= (x >> MTRand_d::SHIFT1);
 
       if (boxFlag) {
          regVal2 = ((float)x + 1.0f) / 4294967296.0f;
@@ -264,12 +264,12 @@ __global__ void RandomNormGPU(float *d_Random, int nPerRng, int mt_rng_count)
 
 void MTRand_d::uniformMTGPU(float *d_random)
 {
-   RandomGPU<<<mt_blocks, mt_threads>>>(d_random, mt_nPerRng, mt_rng_count);
+   RandomGPU<<<mt_blocks_, mt_threads_>>>(MT_d, mt_d, d_random, mt_nPerRng_, mt_rng_count_);
 }
 
 void MTRand_d::normalMTGPU(float *d_random)
 {
-   RandomNormGPU<<<mt_blocks, mt_threads>>>(d_random, mt_nPerRng, mt_rng_count);
+   RandomNormGPU<<<mt_blocks_, mt_threads_>>>(MT_d, mt_d, d_random, mt_nPerRng, mt_rng_count);
 }
 
 //initialize globals and setup state
@@ -285,7 +285,7 @@ void MTRand_d::initMTGPU(unsigned int seed, unsigned int totalVertices)
    //    mt_rng_count = mt_rng_c;
    //mt_threads_ = 256;
    const int y = 256;
-   const int max_xy = 2500;
+   const int max_xy = 4096;
    int best_x = -1, best_z = -1;
    int min_value = INT_MAX;
    for (int x = 1; x * y <= max_xy; ++x) {
