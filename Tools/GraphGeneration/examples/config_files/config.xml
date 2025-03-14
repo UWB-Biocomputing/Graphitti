@@ -41,7 +41,7 @@
 
     <ConnectionsParams class="Connections911" name="ConnectionsParams">
     <!-- Graphml file for graph modeling details -->
-      <graphmlFile name="graphmlFile">/home/NETID/jsaini/Graphitti/Tools/GraphGeneration/examples/graphml_generation/synth_input.graphml.xml</graphmlFile>
+      <graphmlFile name="graphmlFile">../GraphGeneration/synth_input.graphml</graphmlFile>
       <connsPerVertex name="connsPerVertex">88</connsPerVertex>
       <psapsToErase name="psapsToErase">0</psapsToErase>
       <respsToErase name="respsToErase">0</respsToErase>
@@ -49,7 +49,7 @@
 
     <InputParams name="InputParams">
     <!-- Call generation file from cluster-point -->
-    <inputFile name="inputFile">/home/NETID/jsaini/Graphitti/Tools/GraphGeneration/examples/call_generation/call_gen.xml</inputFile>
+    <inputFile name="inputFile">../GraphGeneration/call_gen.xml</inputFile>
     </InputParams>
 
     <LayoutParams class="Layout911" name="LayoutParams">
