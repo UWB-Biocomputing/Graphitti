@@ -89,5 +89,4 @@ void ConnStatic::loadParameters()
 /// @brief Prints the parameters of the connection
 void ConnStatic::printParameters() const
 {
-
 }
