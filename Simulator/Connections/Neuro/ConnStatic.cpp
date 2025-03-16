@@ -89,6 +89,5 @@ void ConnStatic::loadParameters()
 /// @brief Prints the parameters of the connection
 void ConnStatic::printParameters() const
 {
-   LOG4CPLUS_DEBUG(fileLogger_, "CONNECTIONS PARAMETERS"
-                                   << "\n\tConnections Type: ConnStatic");
+
 }
