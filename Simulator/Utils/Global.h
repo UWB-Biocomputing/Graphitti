@@ -286,10 +286,13 @@ struct NeuralVertexProperties : public VertexProperties {
    bool active;
 };
 
-/// @brief  The structure to hold the edge properties
-struct EdgeProperties {
-   // TODO: Edge Properties
+/// @brief The structure to hold the edge properties
+struct NeuralEdgeProperties {
+   int source;
+   int target;
+   double weight;
 };
+
 
 /// @brief The structure to hold the Graph properties
 struct GraphProperties {

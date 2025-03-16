@@ -11,9 +11,10 @@ There are two main steps to implementing a graph representation of an NG911 netw
 
 ### GraphManager Class
 
-The GraphManager is mainly a wrapper around the Boost Graph Library (BGL) but you should not need to know about Boost to use it. The BGL loads the properties for the graph, vertices and edges into user-defined structs. We have declared the `VertexProperty`, `EdgeProperty`, and `GraphProperty` structs for that purpose in the `Global.h` file. The GraphManager needs to convert each property into the right type and load them into the appropriate struct member variable. We tell GraphManager where to load the properties via the `registerProperty()` method and it infers the appropriate type. The registration of the Graph properties is being implemented as an OperationManager step that is called in the Driver class before reading the GraphML file, therefore classes that need to load graph properties are responsible for implementing the `registerGraphProperties()` method. The following is the `Layout911` implementation:
+The GraphManager is mainly a wrapper around the Boost Graph Library (BGL), but you do not need direct knowledge of Boost to use it. The BGL loads properties for the graph, vertices, and edges into user-defined structs. We have declared the `VertexProperties`, `NeuralEdgeProperties`, and `GraphProperties` structs in `Global.h` for this purpose. In the updated design, GraphManager is templated based on `VertexProperties`. The VertexProperties struct serves as a base struct, allowing for specialized inheritance by `NG911VertexProperties` and `NeuroVertexProperties`, enabling greater flexibility in managing different types of graphs. The GraphManager needs to convert each property into the right type and load them into the appropriate struct member variable. We tell GraphManager where to load the properties via the `registerProperty()` method and it infers the appropriate type. The registration of the Graph properties is being implemented as an OperationManager step that is called in the Driver class before reading the GraphML file, therefore classes that need to load graph properties are responsible for implementing the `registerGraphProperties()` method. 
 
-```cpp
+The following is the `Layout911` implementation:
+
 void Layout911::registerGraphProperties()
 {
    // The base class registers properties that are common to all vertices
@@ -23,12 +24,12 @@ void Layout911::registerGraphProperties()
    // We are passing a pointer to a data member of the VertexProperty
    // so Boost Graph Library can use it for loading the graphML file.
    // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
-   GraphManager &gm = GraphManager::getInstance();
-   gm.registerProperty("objectID", &VertexProperty::objectID);
-   gm.registerProperty("name", &VertexProperty::name);
-   gm.registerProperty("type", &VertexProperty::type);
-   gm.registerProperty("y", &VertexProperty::y);
-   gm.registerProperty("x", &VertexProperty::x);
+   GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
+   gm.registerProperty("objectID", &NG911VertexProperties::objectID);
+   gm.registerProperty("name", &NG911VertexProperties::name);
+   gm.registerProperty("type", &NG911VertexProperties::type);
+   gm.registerProperty("y", &NG911VertexProperties::y);
+   gm.registerProperty("x", &NG911VertexProperties::x);
 }
 ```
 
