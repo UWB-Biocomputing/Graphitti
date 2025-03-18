@@ -31,16 +31,16 @@
       <data key="type">EXC</data>
     </node>
     <edge id="e1" source="0" target="1">
-      <data key="weight">0.5</data>
+      <data key="weight">5.0e-9</data>
     </edge>
     <edge id="e2" source="1" target="2">
-      <data key="weight">3.2</data>
+      <data key="weight">-3.2e-8</data>
     </edge>
     <edge id="e3" source="2" target="3">
-      <data key="weight">3.3</data>
+      <data key="weight">3.3e-8</data>
     </edge>
     <edge id="e4" source="3" target="0">
-      <data key="weight">6.4</data>
+      <data key="weight">6.4e-8</data>
     </edge>
   </graph>
 </graphml>

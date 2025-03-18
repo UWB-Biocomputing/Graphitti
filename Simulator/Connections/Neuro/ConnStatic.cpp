@@ -83,7 +83,6 @@ void ConnStatic::registerGraphProperties()
 /// @brief Loads parameters related to connections
 void ConnStatic::loadParameters()
 {
-   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
 }
 
 /// @brief Prints the parameters of the connection
