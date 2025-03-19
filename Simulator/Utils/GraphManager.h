@@ -52,7 +52,7 @@ template <typename VertexProperties> class GraphManager {
 public:
    /// Using directive for graphml graph type (adjacency list)
    using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, VertexProperties,
-                                       EdgeProperties, GraphProperties>;
+                                       NeuralEdgeProperties, GraphProperties>;
 
    using EdgeIterator = typename boost::graph_traits<Graph>::edge_iterator;
    using VertexIterator = typename boost::graph_traits<Graph>::vertex_iterator;
@@ -108,6 +108,11 @@ public:
    /// @param edge the EdgeDescriptor
    /// @return the target vertex index for the given Edge
    size_t target(const EdgeDescriptor &edge) const;
+
+   /// @brief Retrieves the weight of an edge
+   /// @param edge the EdgeDescriptor
+   /// @return the weight of the given edge
+   double weight(const EdgeDescriptor &edge) const;
 
    /// @brief Direct access to the VertexProperties of a vertex descriptor
    /// @param vertex   the vertex descriptor (index)
@@ -175,7 +180,6 @@ template <typename VertexProperties> bool GraphManager<VertexProperties>::readGr
 
    // If graphFilePath_ isn't already defined, get it from ParameterManager
    if (graphFilePath_ == "") {
-      // string file_name;
       string path = "//graphmlFile/text()";
       if (!ParameterManager::getInstance().getStringByXpath(path, graphFilePath_)) {
          cerr << "Could not find XML path: " << path << ".\n";
@@ -231,6 +235,16 @@ size_t GraphManager<VertexProperties>::target(
    const typename GraphManager<VertexProperties>::EdgeDescriptor &edge) const
 {
    return boost::target(edge, graph_);
+}
+
+/// @brief Retrieves the weight of an edge
+/// @param edge the EdgeDescriptor
+/// @return the weight of the given edge
+template <typename VertexProperties>
+double GraphManager<VertexProperties>::weight(
+   const typename GraphManager<VertexProperties>::EdgeDescriptor &edge) const
+{
+   return boost::get(&NeuralEdgeProperties::weight, graph_, edge);
 }
 
 /// @brief Directly access the VertexProperties of a vertex descriptor.
