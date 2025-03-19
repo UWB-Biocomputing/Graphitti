@@ -112,7 +112,7 @@ public:
    /// @brief Retrieves the weight of an edge
    /// @param edge the EdgeDescriptor
    /// @return the weight of the given edge
-   size_t weight(const EdgeDescriptor &edge) const;
+   double weight(const EdgeDescriptor &edge) const;
 
    /// @brief Direct access to the VertexProperties of a vertex descriptor
    /// @param vertex   the vertex descriptor (index)
@@ -241,7 +241,7 @@ size_t GraphManager<VertexProperties>::target(
 /// @param edge the EdgeDescriptor
 /// @return the weight of the given edge
 template <typename VertexProperties>
-size_t GraphManager<VertexProperties>::weight(
+double GraphManager<VertexProperties>::weight(
    const typename GraphManager<VertexProperties>::EdgeDescriptor &edge) const
 {
    return boost::get(&NeuralEdgeProperties::weight, graph_, edge);
