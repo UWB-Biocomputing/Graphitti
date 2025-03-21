@@ -24,6 +24,11 @@
 #include "AllEdges.h"
 #include "AllVertices.h"
 
+#ifdef VALIDATION_MODE
+   #include <fstream>
+   #include <iostream>
+#endif   // VALIDATION_MODE
+
 #ifdef __CUDACC__
    #include "Book.h"
 #endif

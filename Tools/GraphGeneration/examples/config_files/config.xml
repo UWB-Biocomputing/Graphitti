@@ -24,7 +24,7 @@
   </SimInfoParams>
 
   <ModelParams>
-    <VerticesParams class="AllGraphGenerationVertices" name="VerticesParams">
+    <VerticesParams class="All911Vertices" name="VerticesParams">
       <CallNum name="CallNum">
         <min name="min">3</min>
         <max name="max">37</max>
@@ -36,10 +36,10 @@
       <AvgDrivingSpeed name="AverageDrivingSpeed">30.0</AvgDrivingSpeed>
     </VerticesParams>
 
-    <EdgesParams class="AllGraphGenerationEdges" name="EdgesParams">
+    <EdgesParams class="All911Edges" name="EdgesParams">
     </EdgesParams>
 
-    <ConnectionsParams class="ConnectionsGraphGeneration" name="ConnectionsParams">
+    <ConnectionsParams class="Connections911" name="ConnectionsParams">
     <!-- Graphml file for graph modeling details -->
       <graphmlFile name="graphmlFile">../GraphGeneration/synth_input.graphml</graphmlFile>
       <connsPerVertex name="connsPerVertex">88</connsPerVertex>
@@ -52,12 +52,12 @@
     <inputFile name="inputFile">../GraphGeneration/call_gen.xml</inputFile>
     </InputParams>
 
-    <LayoutParams class="LayoutGraphGeneration" name="LayoutParams">
+    <LayoutParams class="Layout911" name="LayoutParams">
     </LayoutParams>
     
-    <RecorderParams class="XmlGraphGenerationRecorder" name="RecorderParams">
+    <RecorderParams class="Xml911Recorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
-        <resultFileName name="resultFileName">synth_output.xml</resultFileName>
+        <resultFileName name="resultFileName">output.xml</resultFileName>
       </RecorderFiles>
     </RecorderParams>
   </ModelParams>

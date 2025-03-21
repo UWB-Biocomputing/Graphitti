@@ -12,7 +12,10 @@
 #include "AllVertices.h"
 #include "Connections.h"
 #include "Global.h"
-
+#ifdef VALIDATION_MODE
+   #include "AllIFNeurons.h"
+   #include "OperationManager.h"
+#endif
 #ifdef PERFORMANCE_METRICS
 float g_time;
 cudaEvent_t start, stop;
@@ -144,8 +147,21 @@ void GPUModel::advance()
    AllVertices &vertices = layout_->getVertices();
    AllEdges &edges = connections_->getEdges();
 
+#ifdef VALIDATION_MODE
+   int verts = Simulator::getInstance().getTotalVertices();
+   std::vector<float> randNoise_h(verts);
+   for (int i = verts - 1; i >= 0; i--) {
+      randNoise_h[i] = (*noiseRNG)();
+   }
+   //static int testNumbers = 0;
+   // for (int i = 0; i < verts; i++) {
+   //    outFile << "index: " << i << " " << randNoise_h[i] << endl;
+   // }
+   cudaMemcpy(randNoise_d, randNoise_h.data(), verts * sizeof(float), cudaMemcpyHostToDevice);
+#else
    normalMTGPU(randNoise_d);
-
+#endif
+//LOG4CPLUS_DEBUG(vertexLogger_, "Index: " << index << " Vm: " << Vm);
 #ifdef PERFORMANCE_METRICS
    cudaLapTime(t_gpu_rndGeneration);
    cudaStartTimer();
@@ -155,7 +171,41 @@ void GPUModel::advance()
    // Advance vertices ------------->
    vertices.advanceVertices(edges, allVerticesDevice_, allEdgesDevice_, randNoise_d,
                             edgeIndexMapDevice_);
+#ifdef VALIDATION_MODE
+   //(AllIFNeuronsDeviceProperties *)allVerticesDevice,
+   log4cplus::Logger vertexLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));
+   std::vector<float> sp_h(verts);
+   std::vector<float> vm_h(verts);
+   std::vector<float> Inoise_h(verts);
+   AllIFNeuronsDeviceProperties validationNeurons;
+   HANDLE_ERROR(cudaMemcpy((void *)&validationNeurons, allVerticesDevice_,
+                           sizeof(AllIFNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(sp_h.data(), validationNeurons.spValidation_, verts * sizeof(float),
+                           cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(vm_h.data(), validationNeurons.Vm_, verts * sizeof(float),
+                           cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(Inoise_h.data(), validationNeurons.Inoise_, verts * sizeof(float),
+                           cudaMemcpyDeviceToHost));
 
+   for (int i = verts - 1; i >= 0; i--) {
+      LOG4CPLUS_DEBUG(vertexLogger_, endl
+                                        << "Advance Index[" << i << "] :: Noise = "
+                                        << randNoise_h[i] << "\tVm: " << vm_h[i] << endl
+                                        << "\tsp = " << sp_h[i] << endl
+                                        << "\tInoise = " << Inoise_h[i] << endl);
+   }
+#endif
+//LOG4CPLUS_DEBUG(vertexLogger_, "ADVANCE NEURON LIF[" << index << "] :: Noise = " << noise);
+//LOG4CPLUS_DEBUG(vertexLogger_, "Index: " << index << " Vm: " << Vm);
+// LOG4CPLUS_DEBUG(vertexLogger_, "NEURON[" << index << "] {" << endl
+//                                          << "\tVm = " << Vm << endl
+//                                          << "\tVthresh = " << Vthresh << endl
+//                                          << "\tsummationPoint = " << summationPoint << endl
+//                                          << "\tI0 = " << I0 << endl
+//                                          << "\tInoise = " << Inoise << endl
+//                                          << "\tC1 = " << C1 << endl
+//                                          << "\tC2 = " << C2 << endl
+//                                          << "}" << endl);
 #ifdef PERFORMANCE_METRICS
    cudaLapTime(t_gpu_advanceNeurons);
    cudaStartTimer();

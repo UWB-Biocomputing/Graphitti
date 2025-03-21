@@ -21,22 +21,22 @@ void Layout911::registerGraphProperties()
    // We are passing a pointer to a data member of the VertexProperty
    // so Boost Graph Library can use it for loading the graphML file.
    // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
-   GraphManager &gm = GraphManager::getInstance();
-   gm.registerProperty("objectID", &VertexProperty::objectID);
-   gm.registerProperty("name", &VertexProperty::name);
-   gm.registerProperty("type", &VertexProperty::type);
-   gm.registerProperty("y", &VertexProperty::y);
-   gm.registerProperty("x", &VertexProperty::x);
-   gm.registerProperty("servers", &VertexProperty::servers);
-   gm.registerProperty("trunks", &VertexProperty::trunks);
-   gm.registerProperty("segments", &VertexProperty::segments);
+   GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
+   gm.registerProperty("objectID", &NG911VertexProperties::objectID);
+   gm.registerProperty("name", &NG911VertexProperties::name);
+   gm.registerProperty("type", &NG911VertexProperties::type);
+   gm.registerProperty("y", &NG911VertexProperties::y);
+   gm.registerProperty("x", &NG911VertexProperties::x);
+   gm.registerProperty("servers", &NG911VertexProperties::servers);
+   gm.registerProperty("trunks", &NG911VertexProperties::trunks);
+   gm.registerProperty("segments", &NG911VertexProperties::segments);
 }
 
 // Loads Layout911 member variables.
 void Layout911::loadParameters()
 {
    // Get the number of verticese from the GraphManager
-   numVertices_ = GraphManager::getInstance().numVertices();
+   numVertices_ = GraphManager<NG911VertexProperties>::getInstance().numVertices();
 }
 
 // Setup the internal structure of the class.
@@ -47,8 +47,8 @@ void Layout911::setup()
    Layout::setup();
 
    // Loop over all vertices and set their x and y locations
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NG911VertexProperties>::VertexIterator vi, vi_end;
+   GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
       xloc_[*vi] = gm[*vi].x;
@@ -93,8 +93,8 @@ void Layout911::generateVertexTypeMap()
    map<string, int> vTypeCount;
 
    // Add all vertices
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NG911VertexProperties>::VertexIterator vi, vi_end;
+   GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
    LOG4CPLUS_DEBUG(fileLogger_, "\nvertices in graph: " << gm.numVertices());
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
