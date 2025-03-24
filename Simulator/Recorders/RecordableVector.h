@@ -65,6 +65,12 @@ public:
       dataSeries_.resize(maxEvents);
    }
 
+   /// Assigns the given value to the vector for the specified size. 
+   virtual void assign(size_t size, const T& value)
+   {
+      dataSeries_.assign(size, value);
+   }
+
    /// Overload the operator to set the value at a specific index
    T &operator[](int index)
    {
@@ -73,6 +79,12 @@ public:
       } else {
          throw std::out_of_range("Index out of range");
       }
+   }
+
+   /// Add a new value to recordable vector 
+   void push_back(const T &value)
+   {
+      dataSeries_.push_back(value);
    }
 
    /// Method to retrieve the underlying std::vector<T>

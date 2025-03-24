@@ -15,6 +15,7 @@
 
 #include "AllVertices.h"
 #include "Utils/Global.h"
+#include "RecordableVector.h"
 #include <iostream>
 #include <log4cplus/loggingmacros.h>
 #include <memory>
@@ -78,7 +79,7 @@ public:
    vector<int>
       probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
 
-   vector<vertexType> vertexTypeMap_;   ///< The vertex type mao, (INH, EXC).
+   RecordableVector<vertexType> vertexTypeMap_;   ///< The vertex type mao, (INH, EXC).
 
    vector<bool> starterMap_;   ///< The starter existence map (T/F).
 

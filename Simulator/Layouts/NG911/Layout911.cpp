@@ -102,6 +102,10 @@ void Layout911::generateVertexTypeMap()
       vTypeCount[gm[*vi].type] += 1;
    }
 
+   // Register vertexTypes with recorder
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   recorder.registerVariable("vertexTypeMap", vertexTypeMap_, Recorder::UpdatedType::CONSTANT);
+   
    LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP"
                                    << endl
                                    << "\tTotal vertices: " << numVertices_ << endl

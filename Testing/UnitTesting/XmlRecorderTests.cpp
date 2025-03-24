@@ -170,7 +170,7 @@ TEST(XmlRecorderTest, CompileHistoriesTest)
 
    // Call the compileHistories method
    recorderTest_->compileHistories();
-   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType>> history
+   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType, double, unsigned char>> history
       = recorderTest_->getHistory(0);
 
    // Verify the events compiled hisotry
@@ -189,7 +189,7 @@ TEST(XmlRecorderTest, ToXML)
    unique_ptr<XmlRecorder> recorderTest_(new XmlRecorder(outputFile));
 
    // Add some dummy data to variableHistory_
-   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType>> variableHistory
+   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType, double, unsigned char>> variableHistory
       = {uint64_t(15), uint64_t(20)};
 
    // Test the toXML method
@@ -246,7 +246,7 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    outputBuffer << inputFile.rdbuf();
    inputFile.close();
    // checks for saving simulation data
-   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType>> mock_history
+   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType, double, unsigned char>> mock_history
       = {uint64_t(1), uint64_t(2), uint64_t(3)};
    std::string expect_header = "<?xml version=\"1.0\" standalone=\"no\"?>\n";
    std::string expect_end = "\n";
@@ -287,7 +287,7 @@ TEST(XmlRecorderTest, SaveSimDataVertexTypeTest)
    inputFile.close();
 
    // checks for saving simulation data
-   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType>> mock_history
+   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType, double, unsigned char>> mock_history
       = {vertexType::EXC, vertexType::INH};
 
    std::string expect_header = "<?xml version=\"1.0\" standalone=\"no\"?>\n";

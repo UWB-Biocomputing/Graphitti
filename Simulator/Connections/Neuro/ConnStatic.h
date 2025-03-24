@@ -61,6 +61,9 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
+   /// Registers history variables for recording during simulation 
+   virtual void registerHistoryVariables() override;
+
    /// Get array of vertex weights
    const vector<BGFLOAT> &getWCurrentEpoch() const
    {
@@ -71,13 +74,13 @@ public:
    /// Get all edge source vertex indices
    const vector<int> &getSourceVertexIndexCurrentEpoch() const
    {
-      return sourceVertexIndexCurrentEpoch_;
+      return sourceVertexIndexCurrentEpoch_.getVector();
    }
 
    /// Get all edge destination vertex indices
    const vector<int> &getDestVertexIndexCurrentEpoch() const
    {
-      return destVertexIndexCurrentEpoch_;
+      return destVertexIndexCurrentEpoch_.getVector();
    }
 
    ///  Cereal serialization method
@@ -85,10 +88,10 @@ public:
 
 private:
    /// Indices of the source vertex for each edge
-   vector<int> sourceVertexIndexCurrentEpoch_;
+   RecordableVector<int> sourceVertexIndexCurrentEpoch_;
 
    /// Indices of the destination vertex for each edge
-   vector<int> destVertexIndexCurrentEpoch_;
+   RecordableVector<int> destVertexIndexCurrentEpoch_;
 
    /// The weight (scaling factor, strength, maximal amplitude) of each vertex for the current epoch.
    // vector<BGFLOAT> changes to RecordableVector for recording purpose

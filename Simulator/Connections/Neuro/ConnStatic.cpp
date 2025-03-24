@@ -89,3 +89,13 @@ void ConnStatic::loadParameters()
 void ConnStatic::printParameters() const
 {
 }
+
+void ConnStatic::registerHistoryVariables()
+{
+   // Register the following variables to be recorded
+   // Note: There may be potential duplicate weight, source, destination vertices 
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   recorder.registerVariable("weight", WCurrentEpoch_, Recorder::UpdatedType::DYNAMIC);
+   recorder.registerVariable("sourceVertex", sourceVertexIndexCurrentEpoch_, Recorder::UpdatedType::DYNAMIC);
+   recorder.registerVariable("destinationVertex", destVertexIndexCurrentEpoch_, Recorder::UpdatedType::DYNAMIC);
+}

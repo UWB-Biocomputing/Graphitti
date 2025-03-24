@@ -27,6 +27,7 @@ void Xml911Recorder::compileHistories()
 /// @param  vertices the Vertex list to search from.
 void Xml911Recorder::saveSimData()
 {
+   /*
    auto &conns = Simulator::getInstance().getModel().getConnections();
    Connections911 &conns911 = dynamic_cast<Connections911 &>(conns);
    All911Vertices &all911Vertices = dynamic_cast<All911Vertices &>(
@@ -104,6 +105,7 @@ void Xml911Recorder::saveSimData()
    resultOut_ << "   " << g_simulationStep * Simulator::getInstance().getDeltaT() << endl;
    resultOut_ << "</Matrix>" << endl;
    resultOut_ << "</SimState>" << endl;
+   */
 }
 
 ///  Prints out all parameters to logging file.
