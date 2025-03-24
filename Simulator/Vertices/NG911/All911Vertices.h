@@ -156,11 +156,12 @@ private:
    /// The end time for every call
    vector<RecordableVector<uint64_t>> endTimeHistory_;
    /// True if the call was abandoned
-   vector<RecordableVector<unsigned char>> wasAbandonedHistory_; // changed to bool from unsigned char
+   vector<RecordableVector<unsigned char>>
+      wasAbandonedHistory_;   // changed to bool from unsigned char
    /// The length of the waiting queue at every time-step
    vector<RecordableVector<int>> queueLengthHistory_;
    /// The portion of servers that are busy at every time-step
-   vector<RecordableVector<double>> utilizationHistory_;   
+   vector<RecordableVector<double>> utilizationHistory_;
 
    /// These are the queues where calls will wait to be served
    vector<CircularBuffer<Call>> vertexQueues_;

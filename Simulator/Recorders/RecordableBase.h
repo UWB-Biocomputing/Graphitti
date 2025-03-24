@@ -41,7 +41,7 @@ public:
 
    /// Start a new epoch for the recordable variable.
    /// Makes the variable look empty from recorder point of view
-   /// Depends on subclass implementation 
+   /// Depends on subclass implementation
    /// Called at the beginning of each simulation epoch to prepare for recording new events.
    virtual void startNewEpoch() = 0;
 

@@ -61,7 +61,7 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
-   /// Registers history variables for recording during simulation 
+   /// Registers history variables for recording during simulation
    virtual void registerHistoryVariables() override;
 
    /// Get array of vertex weights

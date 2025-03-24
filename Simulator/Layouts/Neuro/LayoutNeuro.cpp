@@ -67,7 +67,7 @@ void LayoutNeuro::generateVertexTypeMap()
       }
    }
 
-   // Register vertexTypeMap to be recorded 
+   // Register vertexTypeMap to be recorded
    Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
    recorder.registerVariable("vertexTypeMap", vertexTypeMap_, Recorder::UpdatedType::CONSTANT);
 

@@ -145,32 +145,32 @@ void All911Vertices::registerHistoryVariables()
    recorder.registerVariable("receivedCalls", receivedCalls_, Recorder::UpdatedType::CONSTANT);
 
    for (int i = 0; i < beginTimeHistory_.size(); i++) {
-      string varName = "BeginTimeHistory" + std::to_string(i);
+      string varName = "BeginTimeHistory_" + std::to_string(i);
       recorder.registerVariable(varName, beginTimeHistory_[i], Recorder::UpdatedType::DYNAMIC);
    }
 
    for (int i = 0; i < answerTimeHistory_.size(); i++) {
-      string varName = "AnswerTimeHistory" + std::to_string(i);
+      string varName = "AnswerTimeHistory_" + std::to_string(i);
       recorder.registerVariable(varName, answerTimeHistory_[i], Recorder::UpdatedType::DYNAMIC);
    }
 
    for (int i = 0; i < endTimeHistory_.size(); i++) {
-      string varName = "EndTimeHistory" + std::to_string(i);
+      string varName = "EndTimeHistory_" + std::to_string(i);
       recorder.registerVariable(varName, endTimeHistory_[i], Recorder::UpdatedType::DYNAMIC);
    }
 
    for (int i = 0; i < wasAbandonedHistory_.size(); i++) {
-      string varName = "WasAbandonedHistory" + std::to_string(i);
+      string varName = "WasAbandonedHistory_" + std::to_string(i);
       recorder.registerVariable(varName, wasAbandonedHistory_[i], Recorder::UpdatedType::DYNAMIC);
    }
 
    for (int i = 0; i < queueLengthHistory_.size(); i++) {
-      string varName = "QueueLengthHistory" + std::to_string(i);
+      string varName = "QueueLengthHistory_" + std::to_string(i);
       recorder.registerVariable(varName, queueLengthHistory_[i], Recorder::UpdatedType::DYNAMIC);
    }
-  
+
    for (int i = 0; i < utilizationHistory_.size(); i++) {
-      string varName = "UtilizationHistory" + std::to_string(i);
+      string varName = "UtilizationHistory_" + std::to_string(i);
       recorder.registerVariable(varName, utilizationHistory_[i], Recorder::UpdatedType::DYNAMIC);
    }
 }

@@ -370,7 +370,7 @@ string Connections911::ChangedEdge::toString()
    return os.str();
 }
 
-/// Registers variable to be recorded 
+/// Registers variable to be recorded
 void Connections911::registerHistoryVariables()
 {
    Recorder &recorder = Simulator::getInstance().getModel().getRecorder();

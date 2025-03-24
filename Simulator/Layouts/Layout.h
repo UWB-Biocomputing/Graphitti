@@ -14,8 +14,8 @@
 #pragma once
 
 #include "AllVertices.h"
-#include "Utils/Global.h"
 #include "RecordableVector.h"
+#include "Utils/Global.h"
 #include <iostream>
 #include <log4cplus/loggingmacros.h>
 #include <memory>

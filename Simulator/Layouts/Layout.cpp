@@ -117,7 +117,7 @@ void Layout::setup()
    // Finally take the square root to get the distances
    dist_ = sqrt(dist2_);
 
-   //Register variable: vertex locations 
+   //Register variable: vertex locations
    Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
    string baseName = "Location";
    string xLocation = "x_" + baseName;

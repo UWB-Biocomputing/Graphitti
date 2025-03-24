@@ -189,8 +189,8 @@ TEST(XmlRecorderTest, ToXML)
    unique_ptr<XmlRecorder> recorderTest_(new XmlRecorder(outputFile));
 
    // Add some dummy data to variableHistory_
-   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType, double, unsigned char>> variableHistory
-      = {uint64_t(15), uint64_t(20)};
+   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType, double, unsigned char>>
+      variableHistory = {uint64_t(15), uint64_t(20)};
 
    // Test the toXML method
    std::string xmlOutput
@@ -199,7 +199,9 @@ TEST(XmlRecorderTest, ToXML)
    // Verify the expected XML output
    stringstream os;
    os << "<Matrix ";
-   os << "name=\"" << "TestVar" << "\" ";
+   os << "name=\""
+      << "TestVar"
+      << "\" ";
    os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << variableHistory.size()
       << "\" multiplier=\"1.0\">" << endl;
    os << "   ";
@@ -246,8 +248,8 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    outputBuffer << inputFile.rdbuf();
    inputFile.close();
    // checks for saving simulation data
-   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType, double, unsigned char>> mock_history
-      = {uint64_t(1), uint64_t(2), uint64_t(3)};
+   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType, double, unsigned char>>
+      mock_history = {uint64_t(1), uint64_t(2), uint64_t(3)};
    std::string expect_header = "<?xml version=\"1.0\" standalone=\"no\"?>\n";
    std::string expect_end = "\n";
    std::string expectXML
@@ -287,8 +289,8 @@ TEST(XmlRecorderTest, SaveSimDataVertexTypeTest)
    inputFile.close();
 
    // checks for saving simulation data
-   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType, double, unsigned char>> mock_history
-      = {vertexType::EXC, vertexType::INH};
+   vector<std::variant<uint64_t, bool, int, BGFLOAT, vertexType, double, unsigned char>>
+      mock_history = {vertexType::EXC, vertexType::INH};
 
    std::string expect_header = "<?xml version=\"1.0\" standalone=\"no\"?>\n";
    std::string expect_end = "\n";

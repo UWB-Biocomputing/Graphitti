@@ -97,7 +97,7 @@ public:
    /// Registered to OperationManager as Operations::op::loadParameters
    virtual void loadParameters() override;
 
-   /// Registers history variables for recording during simulation 
+   /// Registers history variables for recording during simulation
    virtual void registerHistoryVariables() override;
 
    ///  Prints out all parameters to logging file.

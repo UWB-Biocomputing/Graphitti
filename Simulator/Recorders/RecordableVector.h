@@ -65,8 +65,8 @@ public:
       dataSeries_.resize(maxEvents);
    }
 
-   /// Assigns the given value to the vector for the specified size. 
-   virtual void assign(size_t size, const T& value)
+   /// Assigns the given value to the vector for the specified size.
+   virtual void assign(size_t size, const T &value)
    {
       dataSeries_.assign(size, value);
    }
@@ -81,7 +81,7 @@ public:
       }
    }
 
-   /// Add a new value to recordable vector 
+   /// Add a new value to recordable vector
    void push_back(const T &value)
    {
       dataSeries_.push_back(value);
