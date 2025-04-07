@@ -362,15 +362,21 @@ __global__ void
 /// Copy GPU Synapse data to CPU.
 void GPUModel::copyGPUtoCPU()
 {
-   // copy device synapse structs to host memory
-   connections_->getEdges().copyEdgeDeviceToHost(allEdgesDevice_);
+   // copy device neuron and synapse structs to host memory
+   AllVertices &neurons = layout_->getVertices();
+   AllEdges &synapses = connections_->getEdges();
+   neurons.copyFromDevice(*allVerticesDevice);
+   synapses.copyEdgeDeviceToHost(*allEdgesDevice);
 }
 
 /// Copy CPU Synapse data to GPU.
 void GPUModel::copyCPUtoGPU()
 {
-   // copy host synapse structs to device memory
-   connections_->getEdges().copyEdgeHostToDevice(allEdgesDevice_);
+   // copy host neurons and synapse structs to device memory
+   AllVertices &neurons = layout_->getVertices();
+   AllEdges &synapses = connections_->getEdges();
+   neurons.copyToDevice(*allVerticesDevice);
+   synapses.copyEdgeHostToDevice(*allEdgesDevice);
 }
 
 /// Print out SynapseProps on the GPU.

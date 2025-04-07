@@ -92,10 +92,10 @@ public:
    /// over the past epoch. Should be called once every epoch.
    virtual void updateConnections() override;
 
-   /// Copy GPU Synapse data to CPU.
+   /// Copy GPU Neuron and Synapse data to CPU.
    virtual void copyGPUtoCPU() override;
 
-   /// Copy CPU Synapse data to GPU.
+   /// Copy CPU Neuron and Synapse data to GPU.
    virtual void copyCPUtoGPU() override;
 
    /// Print out SynapseProps on the GPU.
