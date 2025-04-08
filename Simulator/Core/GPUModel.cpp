@@ -46,9 +46,7 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
    HANDLE_ERROR(cudaMalloc((void **)&randNoise_d, randNoise_d_size));
 
    // Copy host neuron and synapse arrays into GPU device
-   neurons.copyToDevice(*allVerticesDevice);
-   synapses.copyEdgeHostToDevice(*allEdgesDevice);
-
+   copyCPUtoGPU();
    // Allocate synapse inverse map in device memory
    allocSynapseImap(numVertices);
 }
@@ -63,11 +61,9 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
    AllEdges &synapses = connections_->getEdges();
 
    // Copy device synapse and neuron structs to host memory
-   neurons.copyFromDevice(*allVerticesDevice);
+   copyGPUtoCPU();
    // Deallocate device memory
    neurons.deleteNeuronDeviceStruct(*allVerticesDevice);
-   // Copy device synapse and neuron structs to host memory
-   synapses.copyEdgeDeviceToHost(*allEdgesDevice);
    // Deallocate device memory
    synapses.deleteEdgeDeviceStruct(*allEdgesDevice);
    HANDLE_ERROR(cudaFree(randNoise_d));
@@ -77,6 +73,7 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
 void GPUModel::setupSim()
 {
    // Set device ID
+   std::cout << "gdevice id: " << g_deviceId << std::endl;
    HANDLE_ERROR(cudaSetDevice(g_deviceId));
    // Set DEBUG flag
    HANDLE_ERROR(cudaMemcpyToSymbol(d_debug_mask, &g_debug_mask, sizeof(int)));
@@ -365,8 +362,8 @@ void GPUModel::copyGPUtoCPU()
    // copy device neuron and synapse structs to host memory
    AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
-   neurons.copyFromDevice(*allVerticesDevice);
-   synapses.copyEdgeDeviceToHost(*allEdgesDevice);
+   neurons.copyFromDevice(allVerticesDevice_);
+   synapses.copyEdgeDeviceToHost(allEdgesDevice_);
 }
 
 /// Copy CPU Synapse data to GPU.
@@ -375,8 +372,8 @@ void GPUModel::copyCPUtoGPU()
    // copy host neurons and synapse structs to device memory
    AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
-   neurons.copyToDevice(*allVerticesDevice);
-   synapses.copyEdgeHostToDevice(*allEdgesDevice);
+   neurons.copyToDevice(allVerticesDevice_);
+   synapses.copyEdgeHostToDevice(allEdgesDevice_);
 }
 
 /// Print out SynapseProps on the GPU.
