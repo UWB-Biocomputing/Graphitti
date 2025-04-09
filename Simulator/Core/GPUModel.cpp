@@ -45,10 +45,6 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
    BGSIZE randNoise_d_size = numVertices * sizeof(float);   // size of random noise array
    HANDLE_ERROR(cudaMalloc((void **)&randNoise_d, randNoise_d_size));
 
-   // Copy host neuron and synapse arrays into GPU device
-   neurons.copyToDevice(*allVerticesDevice);
-   synapses.copyEdgeHostToDevice(*allEdgesDevice);
-
    // Allocate synapse inverse map in device memory
    allocSynapseImap(numVertices);
 }
@@ -62,12 +58,8 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
    AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
 
-   // Copy device synapse and neuron structs to host memory
-   neurons.copyFromDevice(*allVerticesDevice);
    // Deallocate device memory
    neurons.deleteNeuronDeviceStruct(*allVerticesDevice);
-   // Copy device synapse and neuron structs to host memory
-   synapses.copyEdgeDeviceToHost(*allEdgesDevice);
    // Deallocate device memory
    synapses.deleteEdgeDeviceStruct(*allEdgesDevice);
    HANDLE_ERROR(cudaFree(randNoise_d));
@@ -105,7 +97,8 @@ void GPUModel::setupSim()
 
    // allocates memories on CUDA device
    allocDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
-
+   // Copy host neuron and synapse arrays into GPU device
+   copyCPUtoGPU();
    // copy inverse map to the device memory
    copySynapseIndexMapHostToDevice(connections_->getEdgeIndexMap(),
                                    Simulator::getInstance().getTotalVertices());
@@ -120,6 +113,8 @@ void GPUModel::setupSim()
 /// Performs any finalization tasks on network following a simulation.
 void GPUModel::finish()
 {
+   // copy device synapse and neuron structs to host memory
+   copyGPUtoCPU();
    // deallocates memories on CUDA device
    deleteDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
    deleteSynapseImap();
@@ -362,15 +357,21 @@ __global__ void
 /// Copy GPU Synapse data to CPU.
 void GPUModel::copyGPUtoCPU()
 {
-   // copy device synapse structs to host memory
-   connections_->getEdges().copyEdgeDeviceToHost(allEdgesDevice_);
+   // copy device neuron and synapse structs to host memory
+   AllVertices &neurons = layout_->getVertices();
+   AllEdges &synapses = connections_->getEdges();
+   neurons.copyFromDevice(allVerticesDevice_);
+   synapses.copyEdgeDeviceToHost(allEdgesDevice_);
 }
 
 /// Copy CPU Synapse data to GPU.
 void GPUModel::copyCPUtoGPU()
 {
-   // copy host synapse structs to device memory
-   connections_->getEdges().copyEdgeHostToDevice(allEdgesDevice_);
+   // copy host neurons and synapse structs to device memory
+   AllVertices &neurons = layout_->getVertices();
+   AllEdges &synapses = connections_->getEdges();
+   neurons.copyToDevice(allVerticesDevice_);
+   synapses.copyEdgeHostToDevice(allEdgesDevice_);
 }
 
 /// Print out SynapseProps on the GPU.
