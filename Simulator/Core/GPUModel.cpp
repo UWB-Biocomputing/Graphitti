@@ -45,8 +45,6 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
    BGSIZE randNoise_d_size = numVertices * sizeof(float);   // size of random noise array
    HANDLE_ERROR(cudaMalloc((void **)&randNoise_d, randNoise_d_size));
 
-   // Copy host neuron and synapse arrays into GPU device
-   copyCPUtoGPU();
    // Allocate synapse inverse map in device memory
    allocSynapseImap(numVertices);
 }
@@ -60,8 +58,6 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
    AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
 
-   // Copy device synapse and neuron structs to host memory
-   copyGPUtoCPU();
    // Deallocate device memory
    neurons.deleteNeuronDeviceStruct(*allVerticesDevice);
    // Deallocate device memory
@@ -73,7 +69,6 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
 void GPUModel::setupSim()
 {
    // Set device ID
-   std::cout << "gdevice id: " << g_deviceId << std::endl;
    HANDLE_ERROR(cudaSetDevice(g_deviceId));
    // Set DEBUG flag
    HANDLE_ERROR(cudaMemcpyToSymbol(d_debug_mask, &g_debug_mask, sizeof(int)));
@@ -102,7 +97,8 @@ void GPUModel::setupSim()
 
    // allocates memories on CUDA device
    allocDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
-
+   // Copy host neuron and synapse arrays into GPU device
+   copyCPUtoGPU();
    // copy inverse map to the device memory
    copySynapseIndexMapHostToDevice(connections_->getEdgeIndexMap(),
                                    Simulator::getInstance().getTotalVertices());
@@ -117,6 +113,8 @@ void GPUModel::setupSim()
 /// Performs any finalization tasks on network following a simulation.
 void GPUModel::finish()
 {
+   // copy device synapse and neuron structs to host memory
+   copyGPUtoCPU();
    // deallocates memories on CUDA device
    deleteDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
    deleteSynapseImap();
