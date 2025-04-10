@@ -101,6 +101,12 @@ public:
    /// Print out SynapseProps on the GPU.
    void printGPUSynapsesPropsModel() const;
 
+   /// Getter for synapse structures in device memory
+   AllSpikingSynapsesDeviceProperties* getAllEdgesDevice() const;
+
+   /// Getter for neuron structure in device memory
+   AllSpikingNeuronsDeviceProperties* getAllVerticesDevice() const;
+
 protected:
    /// Allocates  and initializes memories on CUDA device.
    /// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.

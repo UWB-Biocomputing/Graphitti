@@ -379,3 +379,15 @@ void GPUModel::printGPUSynapsesPropsModel() const
 {
    connections_->getEdges().printGPUEdgesProps(allEdgesDevice_);
 }
+
+/// Getter for neuron structure in device memory
+AllSpikingNeuronsDeviceProperties* GPUModel::getAllVerticesDevice() const
+{
+   return allVerticesDevice_;
+}
+
+/// Getter for synapse structures in device memory
+AllSpikingSynapsesDeviceProperties* GPUModel::getAllEdgesDevice() const
+{
+   return allEdgesDevice_;
+}
