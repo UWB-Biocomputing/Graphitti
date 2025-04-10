@@ -8,14 +8,18 @@
 
 #include "AllIFNeurons.h"
 #include "Book.h"
+#include "Simulator.h"
+#include "GPUModel.h"
 
 ///  Allocate GPU memories to store all neurons' states,
 ///  and copy them from host to GPU memory.
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
-void AllIFNeurons::allocNeuronDeviceStruct(void **allVerticesDevice)
+void AllIFNeurons::allocNeuronDeviceStruct()
 {
    AllIFNeuronsDeviceProperties allNeurons;
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void** allVerticesDevice = reinterpret_cast<void**>(gpuModel->getAllVerticesDevice());
    allocDeviceStruct(allNeurons);
    HANDLE_ERROR(cudaMalloc(allVerticesDevice, sizeof(AllIFNeuronsDeviceProperties)));
    HANDLE_ERROR(cudaMemcpy(*allVerticesDevice, &allNeurons, sizeof(AllIFNeuronsDeviceProperties),

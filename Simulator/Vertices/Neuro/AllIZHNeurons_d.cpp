@@ -10,7 +10,8 @@
 #include "AllSpikingSynapses.h"
 #include "AllVerticesDeviceFuncs.h"
 #include "Book.h"
-
+#include "Simulator.h"
+#include "GPUModel.h"
 
 ///  CUDA code for advancing izhikevich neurons
 ///
@@ -36,12 +37,11 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
 ///  Allocate GPU memories to store all neurons' states,
 ///  and copy them from host to GPU memory.
 ///
-///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
-///                             on device memory.
-void AllIZHNeurons::allocNeuronDeviceStruct(void **allVerticesDevice)
+void AllIZHNeurons::allocNeuronDeviceStruct()
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
-
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void** allVerticesDevice = reinterpret_cast<void**>(gpuModel->getAllVerticesDevice());
    allocDeviceStruct(allVerticesDeviceProps);
 
    HANDLE_ERROR(cudaMalloc(allVerticesDevice, sizeof(AllIZHNeuronsDeviceProperties)));

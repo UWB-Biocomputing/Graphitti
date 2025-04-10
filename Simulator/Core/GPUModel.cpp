@@ -37,7 +37,7 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
    AllEdges &synapses = connections_->getEdges();
 
    // Allocate Neurons and Synapses structs on GPU device memory
-   neurons.allocNeuronDeviceStruct(allVerticesDevice);
+   neurons.allocNeuronDeviceStruct();
    synapses.allocEdgeDeviceStruct(allEdgesDevice);
 
    // Allocate memory for random noise array
