@@ -11,6 +11,8 @@
 #include "AllSynapsesDeviceFuncs.h"
 #include "Book.h"
 #include <vector>
+#include "GPUModel.h"
+#include "Simulator.h"
 
 ///  CUDA code for advancing spiking synapses.
 ///  Perform updating synapses for one time step.
@@ -28,11 +30,10 @@ __global__ void advanceSpikingSynapsesDevice(int totalSynapseCount,
 
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
-///
-///  @param  allEdgesDevice  GPU address of the AllSpikingSynapsesDeviceProperties struct
-///                             on device memory.
-void AllSpikingSynapses::allocEdgeDeviceStruct(void **allEdgesDevice)
+void AllSpikingSynapses::allocEdgeDeviceStruct()
 {
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void** allEdgesDevice = reinterpret_cast<void**>(&(gpuModel->getAllEdgesDevice()));
    allocEdgeDeviceStruct(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                          Simulator::getInstance().getMaxEdgesPerVertex());
 }

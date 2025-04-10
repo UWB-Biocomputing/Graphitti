@@ -124,10 +124,8 @@ protected:
 #if defined(USE_GPU)
 public:
    ///  Allocate GPU memories to store all synapses' states,
-   ///  and copy them from host to GPU memory.
-   ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void allocEdgeDeviceStruct(void **allEdgesDevice) override;
+   ///  and copy them from host to GPU memory. memory.
+   virtual void allocEdgeDeviceStruct() override;
 
    ///  Allocate GPU memories to store all synapses' states,
    ///  and copy them from host to GPU memory.
