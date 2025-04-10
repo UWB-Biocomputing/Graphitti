@@ -167,13 +167,6 @@ void ConnGrowth::updateConns(AllVertices &vertices)
                               / growthParams_.beta));
    deltaR_ = Simulator::getInstance().getEpochDuration() * growthParams_.rho * outgrowth_;
    radii_ += deltaR_;
-
-   // limit the min radius
-   for (int i = 0; i < radiiSize_; i++) {
-      if (radii_[i] < growthParams_.minRadius) {
-         radii_[i] = growthParams_.minRadius;
-      }
-   }
 }
 
 /// Update the distance between frontiers of vertices.
