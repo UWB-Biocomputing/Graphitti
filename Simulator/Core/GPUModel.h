@@ -37,6 +37,7 @@
 
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
+#include "OperationManager.h"
 
 #ifdef __CUDACC__
    #include "Book.h"
@@ -101,11 +102,15 @@ public:
    /// Print out SynapseProps on the GPU.
    void printGPUSynapsesPropsModel() const;
 
+   /// Getter for synapse structures in device memory
+   AllSpikingSynapsesDeviceProperties*& getAllEdgesDevice();
+
+   /// Getter for neuron structure in device memory
+   AllSpikingNeuronsDeviceProperties*& getAllVerticesDevice();
+
 protected:
    /// Allocates  and initializes memories on CUDA device.
-   /// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
-   /// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
-   void allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice);
+   void allocDeviceStruct();
 
    /// Copies device memories to host memories and deallocates them.
    /// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.

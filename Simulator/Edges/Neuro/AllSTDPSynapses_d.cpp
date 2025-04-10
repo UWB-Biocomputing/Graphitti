@@ -32,11 +32,10 @@ __global__ void advanceSTDPSynapsesDevice(int totalSynapseCount,
                                           int maxSpikes);
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
-///
-///  @param  allEdgesDevice  GPU address of the AllSTDPSynapsesDeviceProperties struct
-///                             on device memory.
-void AllSTDPSynapses::allocEdgeDeviceStruct(void **allEdgesDevice)
+void AllSTDPSynapses::allocEdgeDeviceStruct()
 {
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void** allEdgesDevice = reinterpret_cast<void**>(&(gpuModel->getAllEdgesDevice()));
    allocEdgeDeviceStruct(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                          Simulator::getInstance().getMaxEdgesPerVertex());
 }

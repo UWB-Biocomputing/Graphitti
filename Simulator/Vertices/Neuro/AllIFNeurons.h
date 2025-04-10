@@ -90,7 +90,7 @@ public:
    ///  and copy them from host to GPU memory.
    ///
    ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void allocNeuronDeviceStruct(void **allVerticesDevice);
+   virtual void allocNeuronDeviceStruct();
 
    ///  Delete GPU memories.
    ///

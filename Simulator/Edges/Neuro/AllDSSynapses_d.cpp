@@ -14,11 +14,10 @@
 
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
-///
-///  @param  allEdgesDevice  GPU address of the AllDSSynapsesDeviceProperties struct
-///                             on device memory.
-void AllDSSynapses::allocEdgeDeviceStruct(void **allEdgesDevice)
+void AllDSSynapses::allocEdgeDeviceStruct()
 {
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void** allEdgesDevice = reinterpret_cast<void**>(&(gpuModel->getAllEdgesDevice()));
    allocEdgeDeviceStruct(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                          Simulator::getInstance().getMaxEdgesPerVertex());
 }
