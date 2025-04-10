@@ -102,10 +102,10 @@ public:
    void printGPUSynapsesPropsModel() const;
 
    /// Getter for synapse structures in device memory
-   AllSpikingSynapsesDeviceProperties* getAllEdgesDevice() const;
+   AllSpikingSynapsesDeviceProperties*& getAllEdgesDevice();
 
    /// Getter for neuron structure in device memory
-   AllSpikingNeuronsDeviceProperties* getAllVerticesDevice() const;
+   AllSpikingNeuronsDeviceProperties*& getAllVerticesDevice();
 
 protected:
    /// Allocates  and initializes memories on CUDA device.

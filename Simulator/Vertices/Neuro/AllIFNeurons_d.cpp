@@ -19,7 +19,7 @@ void AllIFNeurons::allocNeuronDeviceStruct()
 {
    AllIFNeuronsDeviceProperties allNeurons;
    GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
-   void** allVerticesDevice = reinterpret_cast<void**>(gpuModel->getAllVerticesDevice());
+   void** allVerticesDevice = reinterpret_cast<void**>(&(gpuModel->getAllVerticesDevice()));
    allocDeviceStruct(allNeurons);
    HANDLE_ERROR(cudaMalloc(allVerticesDevice, sizeof(AllIFNeuronsDeviceProperties)));
    HANDLE_ERROR(cudaMemcpy(*allVerticesDevice, &allNeurons, sizeof(AllIFNeuronsDeviceProperties),

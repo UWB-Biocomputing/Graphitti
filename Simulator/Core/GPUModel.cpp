@@ -381,13 +381,13 @@ void GPUModel::printGPUSynapsesPropsModel() const
 }
 
 /// Getter for neuron structure in device memory
-AllSpikingNeuronsDeviceProperties* GPUModel::getAllVerticesDevice() const
+AllSpikingNeuronsDeviceProperties*& GPUModel::getAllVerticesDevice()
 {
    return allVerticesDevice_;
 }
 
 /// Getter for synapse structures in device memory
-AllSpikingSynapsesDeviceProperties* GPUModel::getAllEdgesDevice() const
+AllSpikingSynapsesDeviceProperties*& GPUModel::getAllEdgesDevice()
 {
    return allEdgesDevice_;
 }
