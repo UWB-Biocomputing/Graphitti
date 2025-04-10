@@ -13,6 +13,7 @@
 #include "AllVertices.h"
 #include "Connections.h"
 #include "Global.h"
+#include "OperationManager.h"
 
 #ifdef PERFORMANCE_METRICS
 float g_time;
@@ -25,21 +26,17 @@ GPUModel::GPUModel() :
    Model::Model(), synapseIndexMapDevice_(nullptr), randNoise_d(nullptr),
    allVerticesDevice_(nullptr), allEdgesDevice_(nullptr)
 {
+   #if defined(USE_GPU)
+   // Register allocNeuronDeviceStruct function as a allocateGPU operation in the OperationManager
+   function<void()> allocateGPU = bind(&GPUModel::allocDeviceStruct, this);
+   OperationManager::getInstance().registerOperation(Operations::allocateGPU,
+                                                     allocateGPU);
+   #endif
 }
 
 /// Allocates  and initializes memories on CUDA device.
-/// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
-/// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
-void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice)
+void GPUModel::allocDeviceStruct()
 {
-   // Get neurons and synapses
-   AllVertices &neurons = layout_->getVertices();
-   AllEdges &synapses = connections_->getEdges();
-
-   // Allocate Neurons and Synapses structs on GPU device memory
-   neurons.allocNeuronDeviceStruct();
-   synapses.allocEdgeDeviceStruct();
-
    // Allocate memory for random noise array
    int numVertices = Simulator::getInstance().getTotalVertices();
    BGSIZE randNoise_d_size = numVertices * sizeof(float);   // size of random noise array
@@ -94,9 +91,8 @@ void GPUModel::setupSim()
    t_gpu_advanceSynapses = 0.0;
    t_gpu_calcSummation = 0.0;
 #endif   // PERFORMANCE_METRICS
-
-   // allocates memories on CUDA device
-   allocDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
+   // Allocate and copy neuron/synapse data structures to GPU memory
+   OperationManager::getInstance().executeOperation(Operations::allocateGPU);
    // Copy host neuron and synapse arrays into GPU device
    copyCPUtoGPU();
    // copy inverse map to the device memory

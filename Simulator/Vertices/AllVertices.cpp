@@ -22,6 +22,13 @@ AllVertices::AllVertices() : size_(0)
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
 
+   #if defined(USE_GPU)
+   // Register allocNeuronDeviceStruct function as a allocateGPU operation in the OperationManager
+   function<void()> allocateGPU = bind(&AllVertices::allocNeuronDeviceStruct, this);
+   OperationManager::getInstance().registerOperation(Operations::allocateGPU,
+                                                     allocateGPU);
+   #endif
+
    // Get a copy of the file and vertex logger to use log4cplus macros to print to debug files
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    vertexLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));

@@ -26,6 +26,13 @@ AllEdges::AllEdges() : totalEdgeCount_(0), maxEdgesPerVertex_(0), countVertices_
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
 
+   #if defined(USE_GPU)
+   // Register allocNeuronDeviceStruct function as a allocateGPU operation in the OperationManager
+   function<void()> allocateGPU = bind(static_cast<void (AllEdges::*)()>(&AllEdges::allocEdgeDeviceStruct), this);
+   OperationManager::getInstance().registerOperation(Operations::allocateGPU,
+                                                     allocateGPU);
+   #endif
+
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
 }
