@@ -287,7 +287,7 @@ void AllSTDPSynapses::advanceEdge(BGSIZE iEdg, AllVertices &neurons)
          int offIndex = -1;   // last spike
          while (true) {
             // time of the offset post-spike hit
-            uint64_t t_post = spNeurons.getSpikeHistory(idxPost, offIndex);
+            t_post = spNeurons.getSpikeHistory(idxPost, offIndex);
 
             // break if no post-spike is found
             if (t_post == numeric_limits<unsigned long>::max())
