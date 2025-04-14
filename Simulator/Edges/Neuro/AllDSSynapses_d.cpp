@@ -99,10 +99,10 @@ void AllDSSynapses::deleteDeviceStruct(AllDSSynapsesDeviceProperties &allEdgesDe
 
 ///  Copy all synapses' data from host to device.
 ///
-///  @param  allEdgesDevice  GPU address of the AllDSSynapsesDeviceProperties struct
-///                            on device memory.
-void AllDSSynapses::copyEdgeHostToDevice(void *allEdgesDevice)
+void AllDSSynapses::copyEdgeHostToDevice()
 {   // copy everything necessary
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void* allEdgesDevice = static_cast<void*>(gpuModel->getAllEdgesDevice());
    copyEdgeHostToDevice(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                         Simulator::getInstance().getMaxEdgesPerVertex());
 }

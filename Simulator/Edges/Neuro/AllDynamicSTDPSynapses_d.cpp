@@ -102,10 +102,10 @@ void AllDynamicSTDPSynapses::deleteDeviceStruct(
 
 ///  Copy all synapses' data from host to device.
 ///
-///  @param  allEdgesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct
-///                             on device memory.
-void AllDynamicSTDPSynapses::copyEdgeHostToDevice(void *allEdgesDevice)
+void AllDynamicSTDPSynapses::copyEdgeHostToDevice()
 {   // copy everything necessary
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void* allEdgesDevice = static_cast<void*>(gpuModel->getAllEdgesDevice());
    copyEdgeHostToDevice(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                         Simulator::getInstance().getMaxEdgesPerVertex());
 }

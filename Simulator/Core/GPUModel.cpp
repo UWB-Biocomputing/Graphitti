@@ -31,6 +31,12 @@ GPUModel::GPUModel() :
    function<void()> allocateGPU = bind(&GPUModel::allocDeviceStruct, this);
    OperationManager::getInstance().registerOperation(Operations::allocateGPU,
                                                      allocateGPU);
+   
+   // Register copySynapseIndexMapHostToDevice function as a copyCPUtoGPU operation in the OperationManager
+   function<void()> copyCPUtoGPU= bind(&GPUModel::copySynapseIndexMapHostToDevice, this);
+   OperationManager::getInstance().registerOperation(Operations::copyToGPU,
+                                                      copyCPUtoGPU);
+
    #endif
 }
 
@@ -367,7 +373,7 @@ void GPUModel::copyCPUtoGPU()
    AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
    neurons.copyToDevice();
-   synapses.copyEdgeHostToDevice(allEdgesDevice_);
+   synapses.copyEdgeHostToDevice();
 }
 
 /// Print out SynapseProps on the GPU.
