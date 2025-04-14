@@ -366,7 +366,7 @@ void GPUModel::copyCPUtoGPU()
    // copy host neurons and synapse structs to device memory
    AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
-   neurons.copyToDevice(allVerticesDevice_);
+   neurons.copyToDevice();
    synapses.copyEdgeHostToDevice(allEdgesDevice_);
 }
 
