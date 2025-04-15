@@ -21,11 +21,9 @@ void All911Edges::setupEdges()
    BGSIZE maxTotalEdges = maxEdgesPerVertex_ * countVertices_;
 
    if (maxTotalEdges > 0) {
-      isAvailable_ = make_unique<bool[]>(maxTotalEdges);
-      fill_n(isAvailable_.get(), maxTotalEdges, true);
+      isAvailable_.assign(maxTotalEdges, true);
 
-      isRedial_ = make_unique<bool[]>(maxTotalEdges);
-      fill_n(isRedial_.get(), maxTotalEdges, false);
+      isRedial_.assign(maxTotalEdges, false);
 
       call_.resize(maxTotalEdges);
    }

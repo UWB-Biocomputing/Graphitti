@@ -100,10 +100,10 @@ public:
 #endif
 
    /// If edge has a call or not
-   unique_ptr<bool[]> isAvailable_;
+   vector<unsigned char> isAvailable_;
 
    /// If the call in the edge is a redial
-   unique_ptr<bool[]> isRedial_;
+   vector<unsigned char> isRedial_;
 
    /// The call information per edge
    vector<Call> call_;
