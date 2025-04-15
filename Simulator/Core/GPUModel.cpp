@@ -100,9 +100,10 @@ void GPUModel::setupSim()
    // Allocate and copy neuron/synapse data structures to GPU memory
    OperationManager::getInstance().executeOperation(Operations::allocateGPU);
    // Copy host neuron and synapse arrays into GPU device
-   copyCPUtoGPU();
    // copy inverse map to the device memory
-   copySynapseIndexMapHostToDevice();
+   OperationManager::getInstance().executeOperation(Operations::copyToGPU);
+   //copyCPUtoGPU();
+   //copySynapseIndexMapHostToDevice();
 
    // set some parameters used for advanceVerticesDevice
    layout_->getVertices().setAdvanceVerticesDeviceParams(connections_->getEdges());

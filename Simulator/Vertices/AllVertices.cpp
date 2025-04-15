@@ -28,8 +28,8 @@ AllVertices::AllVertices() : size_(0)
    OperationManager::getInstance().registerOperation(Operations::allocateGPU,
                                                      allocateGPU);
 
-   // Register copySynapseIndexMapHostToDevice function as a copyCPUtoGPU operation in the OperationManager
-   function<void()> copyCPUtoGPU= bind(&GPUModel::copySynapseIndexMapHostToDevice, this);
+   // Register AllVertices::copyToDevice function as a copyToGPU operation in the OperationManager
+   function<void()> copyCPUtoGPU= bind(&AllVertices::copyToDevice, this);
    OperationManager::getInstance().registerOperation(Operations::copyToGPU,
                                                       copyCPUtoGPU);
    #endif
