@@ -27,6 +27,11 @@ AllVertices::AllVertices() : size_(0)
    function<void()> allocateGPU = bind(&AllVertices::allocNeuronDeviceStruct, this);
    OperationManager::getInstance().registerOperation(Operations::allocateGPU,
                                                      allocateGPU);
+
+   // Register AllVertices::copyToDevice function as a copyToGPU operation in the OperationManager
+   function<void()> copyCPUtoGPU= bind(&AllVertices::copyToDevice, this);
+   OperationManager::getInstance().registerOperation(Operations::copyToGPU,
+                                                      copyCPUtoGPU);
    #endif
 
    // Get a copy of the file and vertex logger to use log4cplus macros to print to debug files

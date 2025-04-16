@@ -31,6 +31,12 @@ GPUModel::GPUModel() :
    function<void()> allocateGPU = bind(&GPUModel::allocDeviceStruct, this);
    OperationManager::getInstance().registerOperation(Operations::allocateGPU,
                                                      allocateGPU);
+   
+   // Register copySynapseIndexMapHostToDevice function as a copyCPUtoGPU operation in the OperationManager
+   function<void()> copyCPUtoGPU= bind(&GPUModel::copySynapseIndexMapHostToDevice, this);
+   OperationManager::getInstance().registerOperation(Operations::copyToGPU,
+                                                      copyCPUtoGPU);
+
    #endif
 }
 
@@ -94,10 +100,10 @@ void GPUModel::setupSim()
    // Allocate and copy neuron/synapse data structures to GPU memory
    OperationManager::getInstance().executeOperation(Operations::allocateGPU);
    // Copy host neuron and synapse arrays into GPU device
-   copyCPUtoGPU();
    // copy inverse map to the device memory
-   copySynapseIndexMapHostToDevice(connections_->getEdgeIndexMap(),
-                                   Simulator::getInstance().getTotalVertices());
+   OperationManager::getInstance().executeOperation(Operations::copyToGPU);
+   //copyCPUtoGPU();
+   //copySynapseIndexMapHostToDevice();
 
    // set some parameters used for advanceVerticesDevice
    layout_->getVertices().setAdvanceVerticesDeviceParams(connections_->getEdges());
@@ -201,8 +207,7 @@ void GPUModel::updateConnections()
       // create synapse index map
       connections_->createEdgeIndexMap();
       // copy index map to the device memory
-      copySynapseIndexMapHostToDevice(connections_->getEdgeIndexMap(),
-                                      Simulator::getInstance().getTotalVertices());
+      copySynapseIndexMapHostToDevice();
    }
 }
 
@@ -254,8 +259,10 @@ void GPUModel::deleteSynapseImap()
 
 /// Copy EdgeIndexMap in host memory to EdgeIndexMap in device memory.
 /// @param  synapseIndexMapHost		Reference to the EdgeIndexMap in host memory.
-void GPUModel::copySynapseIndexMapHostToDevice(EdgeIndexMap &synapseIndexMapHost, int numVertices)
+void GPUModel::copySynapseIndexMapHostToDevice()
 {
+   EdgeIndexMap synapseIndexMapHost = connections_->getEdgeIndexMap();
+   int numVertices = Simulator::getInstance().getTotalVertices();
    AllEdges &synapses = connections_->getEdges();
    int totalSynapseCount = dynamic_cast<AllEdges &>(synapses).totalEdgeCount_;
    if (totalSynapseCount == 0)
@@ -366,8 +373,8 @@ void GPUModel::copyCPUtoGPU()
    // copy host neurons and synapse structs to device memory
    AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
-   neurons.copyToDevice(allVerticesDevice_);
-   synapses.copyEdgeHostToDevice(allEdgesDevice_);
+   neurons.copyToDevice();
+   synapses.copyEdgeHostToDevice();
 }
 
 /// Print out SynapseProps on the GPU.

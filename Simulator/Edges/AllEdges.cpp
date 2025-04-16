@@ -31,6 +31,11 @@ AllEdges::AllEdges() : totalEdgeCount_(0), maxEdgesPerVertex_(0), countVertices_
    function<void()> allocateGPU = bind(static_cast<void (AllEdges::*)()>(&AllEdges::allocEdgeDeviceStruct), this);
    OperationManager::getInstance().registerOperation(Operations::allocateGPU,
                                                      allocateGPU);
+
+   // Register AllEdges::copyEdgeHostToDevice function as a copyToGPU operation in the OperationManager
+   function<void()> copyCPUtoGPU= bind(static_cast<void (AllEdges::*)()>(&AllEdges::copyEdgeHostToDevice), this);
+   OperationManager::getInstance().registerOperation(Operations::copyToGPU,
+                                                      copyCPUtoGPU);
    #endif
 
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));

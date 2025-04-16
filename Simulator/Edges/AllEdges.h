@@ -110,10 +110,8 @@ public:
    ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
    virtual void deleteEdgeDeviceStruct(void *allEdgesDevice) = 0;
 
-   ///  Copy all edges' data from host to device.
-   ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyEdgeHostToDevice(void *allEdgesDevice) = 0;
+   ///  Copy all edges' data from host to device.   
+   virtual void copyEdgeHostToDevice() = 0;
 
    ///  Copy all edges' data from host to device.
    ///

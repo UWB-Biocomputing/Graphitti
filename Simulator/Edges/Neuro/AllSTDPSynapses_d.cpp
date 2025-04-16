@@ -128,12 +128,10 @@ void AllSTDPSynapses::deleteDeviceStruct(AllSTDPSynapsesDeviceProperties &allEdg
 
 ///  Copy all synapses' data from host to device.
 ///
-///  @param  allEdgesDevice     GPU address of the AllSTDPSynapsesDeviceProperties struct
-///                                on device memory.
-///  @param  numVertices            Number of vertices.
-///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-void AllSTDPSynapses::copyEdgeHostToDevice(void *allEdgesDevice)
+void AllSTDPSynapses::copyEdgeHostToDevice()
 {   // copy everything necessary
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void* allEdgesDevice = static_cast<void*>(gpuModel->getAllEdgesDevice());
    copyEdgeHostToDevice(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                         Simulator::getInstance().getMaxEdgesPerVertex());
 }

@@ -171,9 +171,7 @@ public:
    virtual void deleteEdgeDeviceStruct(void *allEdgesDevice) override;
 
    ///  Copy all synapses' data from host to device.
-   ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyEdgeHostToDevice(void *allEdgesDevice) override;
+   virtual void copyEdgeHostToDevice() override;
 
    ///  Copy all synapses' data from host to device.
    ///

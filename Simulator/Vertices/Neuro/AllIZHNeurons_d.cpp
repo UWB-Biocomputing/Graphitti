@@ -101,18 +101,17 @@ void AllIZHNeurons::deleteDeviceStruct(AllIZHNeuronsDeviceProperties &allVertice
 
 ///  Copy all neurons' data from host to device.
 ///
-///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
-///                             on device memory.
-void AllIZHNeurons::copyToDevice(void *allVerticesDevice)
+void AllIZHNeurons::copyToDevice()
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
-
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void* allVerticesDevice = static_cast<void*>(gpuModel->getAllVerticesDevice());
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
                            sizeof(AllIZHNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
 
    int count = Simulator::getInstance().getTotalVertices();
 
-   AllIFNeurons::copyToDevice(allVerticesDevice);
+   AllIFNeurons::copyToDevice();
 
    HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Aconst_, Aconst_.data(), count * sizeof(BGFLOAT),
                            cudaMemcpyHostToDevice));

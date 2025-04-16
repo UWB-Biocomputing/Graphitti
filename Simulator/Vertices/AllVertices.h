@@ -110,9 +110,7 @@ public:
    virtual void deleteNeuronDeviceStruct(void *allVerticesDevice) = 0;
 
    ///  Copy all vertices' data from host to device.
-   ///
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void copyToDevice(void *allVerticesDevice) = 0;
+   virtual void copyToDevice() = 0;
 
    ///  Copy all vertices' data from device to host.
    ///
