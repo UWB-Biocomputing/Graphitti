@@ -159,13 +159,12 @@ void AllDynamicSTDPSynapses::copyHostToDevice(
 
 ///  Copy all synapses' data from device to host.
 ///
-///  @param  allEdgesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct
-///                             on device memory.
-void AllDynamicSTDPSynapses::copyEdgeDeviceToHost(void *allEdgesDevice)
+void AllDynamicSTDPSynapses::copyEdgeDeviceToHost()
 {
    // copy everything necessary
    AllDynamicSTDPSynapsesDeviceProperties allEdges;
-
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void* allEdgesDevice = static_cast<void*>(gpuModel->getAllEdgesDevice());
    HANDLE_ERROR(cudaMemcpy(&allEdges, allEdgesDevice,
                            sizeof(AllDynamicSTDPSynapsesDeviceProperties), cudaMemcpyDeviceToHost));
 

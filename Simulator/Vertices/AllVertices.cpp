@@ -32,6 +32,11 @@ AllVertices::AllVertices() : size_(0)
    function<void()> copyCPUtoGPU= bind(&AllVertices::copyToDevice, this);
    OperationManager::getInstance().registerOperation(Operations::copyToGPU,
                                                       copyCPUtoGPU);
+
+   // Register copyFromGPU operation for transferring edge data from device to host                                                   
+   function<void()> copyFromGPU= bind(&AllVertices::copyFromDevice, this);
+   OperationManager::getInstance().registerOperation(Operations::copyFromGPU,
+                                                      copyFromGPU);
    #endif
 
    // Get a copy of the file and vertex logger to use log4cplus macros to print to debug files

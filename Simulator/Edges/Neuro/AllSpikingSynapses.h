@@ -152,8 +152,7 @@ public:
 
    /// Copy all synapses' data from device to host.
    ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyEdgeDeviceToHost(void *allEdgesDevice) override;
+   virtual void copyEdgeDeviceToHost() override;
 
    ///  Get edge_counts in AllNeuroEdges struct on device memory.
    ///

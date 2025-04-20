@@ -66,7 +66,7 @@ public:
    //
    ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
    virtual void clearNeuronSpikeCounts(void *allVerticesDevice) = 0;
-   virtual void copyFromDevice(void *deviceAddress) override;
+   virtual void copyFromDevice() override;
    virtual void copyToDevice() override;
 
 protected:

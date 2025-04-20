@@ -123,8 +123,7 @@ public:
 
    ///  Copy all edges' data from device to host.
    ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyEdgeDeviceToHost(void *allEdgesDevice) = 0;
+   virtual void copyEdgeDeviceToHost() = 0;
 
    ///  Get edge_counts in AllEdges struct on device memory.
    ///

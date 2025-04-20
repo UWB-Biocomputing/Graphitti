@@ -114,8 +114,7 @@ public:
 
    ///  Copy all vertices' data from device to host.
    ///
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void copyFromDevice(void *allVerticesDevice) = 0;
+   virtual void copyFromDevice() = 0;
 
    ///  Update the state of all vertices for a time step
    ///  Notify outgoing synapses if vertex has fired.

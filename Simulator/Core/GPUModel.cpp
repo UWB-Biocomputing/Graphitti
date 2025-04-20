@@ -102,8 +102,6 @@ void GPUModel::setupSim()
    // Copy host neuron and synapse arrays into GPU device
    // copy inverse map to the device memory
    OperationManager::getInstance().executeOperation(Operations::copyToGPU);
-   //copyCPUtoGPU();
-   //copySynapseIndexMapHostToDevice();
 
    // set some parameters used for advanceVerticesDevice
    layout_->getVertices().setAdvanceVerticesDeviceParams(connections_->getEdges());
@@ -195,7 +193,7 @@ void GPUModel::updateConnections()
    AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
 
-   dynamic_cast<AllSpikingNeurons &>(neurons).copyFromDevice(allVerticesDevice_);
+   dynamic_cast<AllSpikingNeurons &>(neurons).copyFromDevice();
    // dynamic_cast<AllSpikingNeurons *>(neurons.get())
    //    ->copyNeuronDeviceSpikeHistoryToHost(allVerticesDevice_);
 
@@ -361,10 +359,7 @@ __global__ void
 void GPUModel::copyGPUtoCPU()
 {
    // copy device neuron and synapse structs to host memory
-   AllVertices &neurons = layout_->getVertices();
-   AllEdges &synapses = connections_->getEdges();
-   neurons.copyFromDevice(allVerticesDevice_);
-   synapses.copyEdgeDeviceToHost(allEdgesDevice_);
+   OperationManager::getInstance().executeOperation(Operations::copyFromGPU);
 }
 
 /// Copy CPU Synapse data to GPU.
