@@ -73,7 +73,8 @@ void AllDynamicSTDPSynapses::allocDeviceStruct(
 void AllDynamicSTDPSynapses::deleteEdgeDeviceStruct(void *allEdgesDevice)
 {
    AllDynamicSTDPSynapsesDeviceProperties allEdges;
-
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void* allEdgesDevice = static_cast<void*>(gpuModel->getAllEdgesDevice());
    HANDLE_ERROR(cudaMemcpy(&allEdges, allEdgesDevice,
                            sizeof(AllDynamicSTDPSynapsesDeviceProperties), cudaMemcpyDeviceToHost));
 

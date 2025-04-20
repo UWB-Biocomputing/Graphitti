@@ -90,11 +90,11 @@ void AllSpikingSynapses::allocDeviceStruct(AllSpikingSynapsesDeviceProperties &a
 
 ///  Delete GPU memories.
 ///
-///  @param  allEdgesDevice  GPU address of the AllSpikingSynapsesDeviceProperties struct
-///                             on device memory.
-void AllSpikingSynapses::deleteEdgeDeviceStruct(void *allEdgesDevice)
+void AllSpikingSynapses::deleteEdgeDeviceStruct()
 {
    AllSpikingSynapsesDeviceProperties allEdges;
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void* allEdgesDevice = static_cast<void*>(gpuModel->getAllEdgesDevice());
    HANDLE_ERROR(cudaMemcpy(&allEdges, allEdgesDevice, sizeof(AllSpikingSynapsesDeviceProperties),
                            cudaMemcpyDeviceToHost));
    deleteDeviceStruct(allEdges);

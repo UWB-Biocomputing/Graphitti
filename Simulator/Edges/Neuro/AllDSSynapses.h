@@ -134,8 +134,7 @@ public:
 
    ///  Delete GPU memories.
    ///
-   ///  @param  allEdgesDevice     GPU address of the allEdges struct on device memory.
-   virtual void deleteEdgeDeviceStruct(void *allEdgesDevice) override;
+   virtual void deleteEdgeDeviceStruct() override;
 
    ///  Copy all synapses' data from host to device.
    ///

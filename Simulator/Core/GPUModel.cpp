@@ -33,9 +33,14 @@ GPUModel::GPUModel() :
                                                      allocateGPU);
    
    // Register copySynapseIndexMapHostToDevice function as a copyCPUtoGPU operation in the OperationManager
-   function<void()> copyCPUtoGPU= bind(&GPUModel::copySynapseIndexMapHostToDevice, this);
+   function<void()> copyCPUtoGPU = bind(&GPUModel::copySynapseIndexMapHostToDevice, this);
    OperationManager::getInstance().registerOperation(Operations::copyToGPU,
                                                       copyCPUtoGPU);
+
+   // Register deleteSynapseImap function as a deallocateGPUMemory operation in the OperationManager
+   function<void()> deallocateGPUMemory = bind(&GPUModel::deleteSynapseImap, this);
+   OperationManager::getInstance().registerOperation(Operations::deallocateGPUMemory,
+                                                      deallocateGPUMemory);
 
    #endif
 }
@@ -366,7 +371,7 @@ void GPUModel::copyGPUtoCPU()
 void GPUModel::copyCPUtoGPU()
 {
    // copy host neurons and synapse structs to device memory
-   AllVertices &neurons = layout_->getVertices();
+   AllVertices &neuroyns = laout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
    neurons.copyToDevice();
    synapses.copyEdgeHostToDevice();

@@ -94,8 +94,7 @@ public:
 
    ///  Delete GPU memories.
    ///
-   ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void deleteNeuronDeviceStruct(void *allVerticesDevice);
+   virtual void deleteNeuronDeviceStruct();
 
    ///  Clear the spike counts out of all neurons.
    //
