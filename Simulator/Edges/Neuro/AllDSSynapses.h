@@ -151,8 +151,7 @@ public:
 
    ///  Copy all synapses' data from device to host.
    ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyEdgeDeviceToHost(void *allEdgesDevice) override;
+   virtual void copyEdgeDeviceToHost() override;
 
    ///  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
    ///  The class ID will be set to classSynapses_d in device memory,

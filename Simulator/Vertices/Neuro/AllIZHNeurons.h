@@ -164,8 +164,7 @@ public:
 
    // Copy all neurons' data from device to host.
    //
-   /// @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void copyFromDevice(void *deviceAddress) override;
+   virtual void copyFromDevice() override;
 
    //   Copy all neurons' data from host to device.
    virtual void copyToDevice() override;

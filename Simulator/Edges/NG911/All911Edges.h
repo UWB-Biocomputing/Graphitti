@@ -72,7 +72,7 @@ public:
    virtual void copyEdgeHostToDevice() {};
    virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices,
                                      int maxEdgesPerVertex) {};
-   virtual void copyEdgeDeviceToHost(void *allEdgesDevice) {};
+   virtual void copyEdgeDeviceToHost() {};
    virtual void copyDeviceEdgeCountsToHost(void *allEdgesDevice) {};
    virtual void copyDeviceEdgeSumIdxToHost(void *allEdgesDevice) {};
    virtual void advanceEdges(void *allEdgesDevice, void *allVerticesDevice,

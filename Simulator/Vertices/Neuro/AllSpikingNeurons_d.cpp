@@ -67,8 +67,10 @@ void AllSpikingNeurons::copyToDevice()
                               maxSpikes * sizeof(uint64_t), cudaMemcpyHostToDevice));
    }
 }
-void AllSpikingNeurons::copyFromDevice(void *deviceAddress)
+void AllSpikingNeurons::copyFromDevice()
 {
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void* deviceAddress = static_cast<void*>(gpuModel->getAllVerticesDevice());
    int numVertices = Simulator::getInstance().getTotalVertices();
 
    AllSpikingNeuronsDeviceProperties allVerticesDevice;

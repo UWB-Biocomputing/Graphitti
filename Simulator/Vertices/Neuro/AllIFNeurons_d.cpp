@@ -161,10 +161,11 @@ void AllIFNeurons::copyToDevice()
 
 ///  Copy all neurons' data from device to host.
 ///
-///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
-void AllIFNeurons::copyFromDevice(void *allVerticesDevice)
+void AllIFNeurons::copyFromDevice()
 {
-   AllSpikingNeurons::copyFromDevice(allVerticesDevice);
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void* allVerticesDevice = static_cast<void*>(gpuModel->getAllVerticesDevice());
+   AllSpikingNeurons::copyFromDevice();
    int count = Simulator::getInstance().getTotalVertices();
    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
