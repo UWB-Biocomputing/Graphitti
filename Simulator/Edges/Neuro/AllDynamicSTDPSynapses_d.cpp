@@ -70,7 +70,7 @@ void AllDynamicSTDPSynapses::allocDeviceStruct(
 ///
 ///  @param  allEdgesDevice  GPU address of the AllDynamicSTDPSynapsesDeviceProperties struct
 ///                             on device memory.
-void AllDynamicSTDPSynapses::deleteEdgeDeviceStruct(void *allEdgesDevice)
+void AllDynamicSTDPSynapses::deleteEdgeDeviceStruct()
 {
    AllDynamicSTDPSynapsesDeviceProperties allEdges;
    GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());

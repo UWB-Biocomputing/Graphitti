@@ -41,6 +41,12 @@ AllEdges::AllEdges() : totalEdgeCount_(0), maxEdgesPerVertex_(0), countVertices_
    function<void()> copyFromGPU= bind(&AllEdges::copyEdgeDeviceToHost, this);
    OperationManager::getInstance().registerOperation(Operations::copyFromGPU,
                                                       copyFromGPU);
+
+   // Register deleteEdgeDeviceStruct function as a deallocateGPUMemory operation in the OperationManager
+   function<void()> deallocateGPUMemory = bind(&AllEdges::deleteEdgeDeviceStruct, this);
+   OperationManager::getInstance().registerOperation(Operations::deallocateGPUMemory,
+                                                      deallocateGPUMemory);
+
    #endif
 
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));

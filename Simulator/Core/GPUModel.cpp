@@ -67,9 +67,9 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
    AllEdges &synapses = connections_->getEdges();
 
    // Deallocate device memory
-   neurons.deleteNeuronDeviceStruct(*allVerticesDevice);
+   neurons.deleteNeuronDeviceStruct();
    // Deallocate device memory
-   synapses.deleteEdgeDeviceStruct(*allEdgesDevice);
+   synapses.deleteEdgeDeviceStruct();
    HANDLE_ERROR(cudaFree(randNoise_d));
 }
 
@@ -121,8 +121,7 @@ void GPUModel::finish()
    // copy device synapse and neuron structs to host memory
    copyGPUtoCPU();
    // deallocates memories on CUDA device
-   deleteDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
-   deleteSynapseImap();
+   OperationManager::getInstance().executeOperation(Operations::deallocateGPUMemory);
 
 #ifdef PERFORMANCE_METRICS
    cudaEventDestroy(start);
@@ -371,7 +370,7 @@ void GPUModel::copyGPUtoCPU()
 void GPUModel::copyCPUtoGPU()
 {
    // copy host neurons and synapse structs to device memory
-   AllVertices &neuroyns = laout_->getVertices();
+   AllVertices &neurons = layout_->getVertices();
    AllEdges &synapses = connections_->getEdges();
    neurons.copyToDevice();
    synapses.copyEdgeHostToDevice();
