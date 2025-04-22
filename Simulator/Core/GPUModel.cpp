@@ -26,23 +26,21 @@ GPUModel::GPUModel() :
    Model::Model(), synapseIndexMapDevice_(nullptr), randNoise_d(nullptr),
    allVerticesDevice_(nullptr), allEdgesDevice_(nullptr)
 {
-   #if defined(USE_GPU)
+#if defined(USE_GPU)
    // Register allocNeuronDeviceStruct function as a allocateGPU operation in the OperationManager
    function<void()> allocateGPU = bind(&GPUModel::allocDeviceStruct, this);
-   OperationManager::getInstance().registerOperation(Operations::allocateGPU,
-                                                     allocateGPU);
-   
+   OperationManager::getInstance().registerOperation(Operations::allocateGPU, allocateGPU);
+
    // Register copySynapseIndexMapHostToDevice function as a copyCPUtoGPU operation in the OperationManager
    function<void()> copyCPUtoGPU = bind(&GPUModel::copySynapseIndexMapHostToDevice, this);
-   OperationManager::getInstance().registerOperation(Operations::copyToGPU,
-                                                      copyCPUtoGPU);
+   OperationManager::getInstance().registerOperation(Operations::copyToGPU, copyCPUtoGPU);
 
    // Register deleteSynapseImap function as a deallocateGPUMemory operation in the OperationManager
    function<void()> deallocateGPUMemory = bind(&GPUModel::deleteSynapseImap, this);
    OperationManager::getInstance().registerOperation(Operations::deallocateGPUMemory,
-                                                      deallocateGPUMemory);
+                                                     deallocateGPUMemory);
 
-   #endif
+#endif
 }
 
 /// Allocates  and initializes memories on CUDA device.
@@ -383,13 +381,13 @@ void GPUModel::printGPUSynapsesPropsModel() const
 }
 
 /// Getter for neuron structure in device memory
-AllSpikingNeuronsDeviceProperties*& GPUModel::getAllVerticesDevice()
+AllSpikingNeuronsDeviceProperties *&GPUModel::getAllVerticesDevice()
 {
    return allVerticesDevice_;
 }
 
 /// Getter for synapse structures in device memory
-AllSpikingSynapsesDeviceProperties*& GPUModel::getAllEdgesDevice()
+AllSpikingSynapsesDeviceProperties *&GPUModel::getAllEdgesDevice()
 {
    return allEdgesDevice_;
 }

@@ -9,14 +9,14 @@
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
 #include "Book.h"
-#include "Simulator.h"
 #include "GPUModel.h"
+#include "Simulator.h"
 
 void AllSpikingNeurons::copyToDevice()
 {
    AllSpikingNeuronsDeviceProperties allVerticesDevice;
-   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
-   void* deviceAddress = static_cast<void*>(gpuModel->getAllVerticesDevice());
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *deviceAddress = static_cast<void *>(gpuModel->getAllVerticesDevice());
    HANDLE_ERROR(cudaMemcpy(&allVerticesDevice, deviceAddress,
                            sizeof(AllSpikingNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
 
@@ -69,8 +69,8 @@ void AllSpikingNeurons::copyToDevice()
 }
 void AllSpikingNeurons::copyFromDevice()
 {
-   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
-   void* deviceAddress = static_cast<void*>(gpuModel->getAllVerticesDevice());
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *deviceAddress = static_cast<void *>(gpuModel->getAllVerticesDevice());
    int numVertices = Simulator::getInstance().getTotalVertices();
 
    AllSpikingNeuronsDeviceProperties allVerticesDevice;

@@ -109,7 +109,7 @@ public:
    ///
    virtual void deleteEdgeDeviceStruct() = 0;
 
-   ///  Copy all edges' data from host to device.   
+   ///  Copy all edges' data from host to device.
    virtual void copyEdgeHostToDevice() = 0;
 
    ///  Copy all edges' data from host to device.

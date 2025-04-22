@@ -34,8 +34,8 @@ __global__ void advanceSTDPSynapsesDevice(int totalSynapseCount,
 ///  and copy them from host to GPU memory.
 void AllSTDPSynapses::allocEdgeDeviceStruct()
 {
-   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
-   void** allEdgesDevice = reinterpret_cast<void**>(&(gpuModel->getAllEdgesDevice()));
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void **allEdgesDevice = reinterpret_cast<void **>(&(gpuModel->getAllEdgesDevice()));
    allocEdgeDeviceStruct(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                          Simulator::getInstance().getMaxEdgesPerVertex());
 }
@@ -95,8 +95,8 @@ void AllSTDPSynapses::allocDeviceStruct(AllSTDPSynapsesDeviceProperties &allEdge
 void AllSTDPSynapses::deleteEdgeDeviceStruct()
 {
    AllSTDPSynapsesDeviceProperties allEdgesDeviceProps;
-   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
-   void* allEdgesDevice = static_cast<void*>(gpuModel->getAllEdgesDevice());
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
    HANDLE_ERROR(cudaMemcpy(&allEdgesDeviceProps, allEdgesDevice,
                            sizeof(AllSTDPSynapsesDeviceProperties), cudaMemcpyDeviceToHost));
    deleteDeviceStruct(allEdgesDeviceProps);
@@ -130,8 +130,8 @@ void AllSTDPSynapses::deleteDeviceStruct(AllSTDPSynapsesDeviceProperties &allEdg
 ///
 void AllSTDPSynapses::copyEdgeHostToDevice()
 {   // copy everything necessary
-   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
-   void* allEdgesDevice = static_cast<void*>(gpuModel->getAllEdgesDevice());
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
    copyEdgeHostToDevice(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                         Simulator::getInstance().getMaxEdgesPerVertex());
 }
@@ -201,8 +201,8 @@ void AllSTDPSynapses::copyEdgeDeviceToHost()
 {
    // copy everything necessary
    AllSTDPSynapsesDeviceProperties allEdgesDeviceProps;
-   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
-   void* allEdgesDevice = static_cast<void*>(gpuModel->getAllEdgesDevice());
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
    HANDLE_ERROR(cudaMemcpy(&allEdgesDeviceProps, allEdgesDevice,
                            sizeof(AllSTDPSynapsesDeviceProperties), cudaMemcpyDeviceToHost));
    copyDeviceToHost(allEdgesDeviceProps);
