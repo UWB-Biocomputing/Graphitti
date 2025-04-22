@@ -66,12 +66,11 @@ void AllDSSynapses::allocDeviceStruct(AllDSSynapsesDeviceProperties &allEdges, i
 
 ///  Delete GPU memories.
 ///
-///  @param  allEdgesDevice  GPU address of the AllDSSynapsesDeviceProperties struct
-///                             on device memory.
-void AllDSSynapses::deleteEdgeDeviceStruct(void *allEdgesDevice)
+void AllDSSynapses::deleteEdgeDeviceStruct()
 {
    AllDSSynapsesDeviceProperties allEdges;
-
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void* allEdgesDevice = static_cast<void*>(gpuModel->getAllEdgesDevice());
    HANDLE_ERROR(cudaMemcpy(&allEdges, allEdgesDevice, sizeof(AllDSSynapsesDeviceProperties),
                            cudaMemcpyDeviceToHost));
 

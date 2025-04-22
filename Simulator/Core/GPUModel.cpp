@@ -33,9 +33,14 @@ GPUModel::GPUModel() :
                                                      allocateGPU);
    
    // Register copySynapseIndexMapHostToDevice function as a copyCPUtoGPU operation in the OperationManager
-   function<void()> copyCPUtoGPU= bind(&GPUModel::copySynapseIndexMapHostToDevice, this);
+   function<void()> copyCPUtoGPU = bind(&GPUModel::copySynapseIndexMapHostToDevice, this);
    OperationManager::getInstance().registerOperation(Operations::copyToGPU,
                                                       copyCPUtoGPU);
+
+   // Register deleteSynapseImap function as a deallocateGPUMemory operation in the OperationManager
+   function<void()> deallocateGPUMemory = bind(&GPUModel::deleteSynapseImap, this);
+   OperationManager::getInstance().registerOperation(Operations::deallocateGPUMemory,
+                                                      deallocateGPUMemory);
 
    #endif
 }
@@ -62,9 +67,9 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
    AllEdges &synapses = connections_->getEdges();
 
    // Deallocate device memory
-   neurons.deleteNeuronDeviceStruct(*allVerticesDevice);
+   neurons.deleteNeuronDeviceStruct();
    // Deallocate device memory
-   synapses.deleteEdgeDeviceStruct(*allEdgesDevice);
+   synapses.deleteEdgeDeviceStruct();
    HANDLE_ERROR(cudaFree(randNoise_d));
 }
 
@@ -116,8 +121,7 @@ void GPUModel::finish()
    // copy device synapse and neuron structs to host memory
    copyGPUtoCPU();
    // deallocates memories on CUDA device
-   deleteDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
-   deleteSynapseImap();
+   OperationManager::getInstance().executeOperation(Operations::deallocateGPUMemory);
 
 #ifdef PERFORMANCE_METRICS
    cudaEventDestroy(start);

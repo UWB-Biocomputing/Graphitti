@@ -68,7 +68,7 @@ public:
    virtual void allocEdgeDeviceStruct() {};
    virtual void allocEdgeDeviceStruct(void **allEdgesDevice, int numVertices,
                                       int maxEdgesPerVertex) {};
-   virtual void deleteEdgeDeviceStruct(void *allEdgesDevice) {};
+   virtual void deleteEdgeDeviceStruct() {};
    virtual void copyEdgeHostToDevice() {};
    virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices,
                                      int maxEdgesPerVertex) {};

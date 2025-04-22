@@ -37,6 +37,11 @@ AllVertices::AllVertices() : size_(0)
    function<void()> copyFromGPU= bind(&AllVertices::copyFromDevice, this);
    OperationManager::getInstance().registerOperation(Operations::copyFromGPU,
                                                       copyFromGPU);
+
+   // Register deleteNeuronDeviceStruct function as a deallocateGPUMemory operation in the OperationManager
+   function<void()> deallocateGPUMemory = bind(&AllVertices::deleteNeuronDeviceStruct, this);
+   OperationManager::getInstance().registerOperation(Operations::deallocateGPUMemory,
+                                                      deallocateGPUMemory);
    #endif
 
    // Get a copy of the file and vertex logger to use log4cplus macros to print to debug files

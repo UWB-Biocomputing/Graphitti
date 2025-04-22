@@ -144,8 +144,7 @@ public:
 
    ///  Delete GPU memories.
    //
-   ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void deleteNeuronDeviceStruct(void *allVerticesDevice) override;
+   virtual void deleteNeuronDeviceStruct() override;
 
    ///  Copy spike history data stored in device memory to host.
    //

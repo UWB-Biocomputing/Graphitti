@@ -70,10 +70,11 @@ void AllIFNeurons::allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDe
 
 ///  Delete GPU memories.
 ///
-///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
-void AllIFNeurons::deleteNeuronDeviceStruct(void *allVerticesDevice)
+void AllIFNeurons::deleteNeuronDeviceStruct()
 {
    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
+   GPUModel* gpuModel = static_cast<GPUModel*>(&Simulator::getInstance().getModel());
+   void* allVerticesDevice = static_cast<void*>(gpuModel->getAllVerticesDevice());
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
                            sizeof(AllIFNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
    deleteDeviceStruct(allVerticesDeviceProps);

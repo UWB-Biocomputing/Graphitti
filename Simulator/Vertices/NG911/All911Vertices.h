@@ -226,7 +226,7 @@ private:
    // These signatures are required to make the class non-abstract
 public:
    virtual void allocNeuronDeviceStruct() {};
-   virtual void deleteNeuronDeviceStruct(void *allVerticesDevice) {};
+   virtual void deleteNeuronDeviceStruct() {};
    virtual void copyToDevice() {};
    virtual void copyFromDevice() {};
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
