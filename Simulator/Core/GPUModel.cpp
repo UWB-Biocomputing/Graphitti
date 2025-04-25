@@ -26,7 +26,6 @@ GPUModel::GPUModel() :
    Model::Model(), synapseIndexMapDevice_(nullptr), randNoise_d(nullptr),
    allVerticesDevice_(nullptr), allEdgesDevice_(nullptr)
 {
-#if defined(USE_GPU)
    // Register allocNeuronDeviceStruct function as a allocateGPU operation in the OperationManager
    function<void()> allocateGPU = bind(&GPUModel::allocDeviceStruct, this);
    OperationManager::getInstance().registerOperation(Operations::allocateGPU, allocateGPU);
@@ -39,8 +38,6 @@ GPUModel::GPUModel() :
    function<void()> deallocateGPUMemory = bind(&GPUModel::deleteSynapseImap, this);
    OperationManager::getInstance().registerOperation(Operations::deallocateGPUMemory,
                                                      deallocateGPUMemory);
-
-#endif
 }
 
 /// Allocates  and initializes memories on CUDA device.
@@ -56,19 +53,10 @@ void GPUModel::allocDeviceStruct()
 }
 
 /// Copies device memories to host memories and deallocates them.
-/// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
-/// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
-void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevice)
+void GPUModel::deleteDeviceStruct()
 {
-   // Get neurons and synapses
-   AllVertices &neurons = layout_->getVertices();
-   AllEdges &synapses = connections_->getEdges();
-
    // Deallocate device memory
-   neurons.deleteNeuronDeviceStruct();
-   // Deallocate device memory
-   synapses.deleteEdgeDeviceStruct();
-   HANDLE_ERROR(cudaFree(randNoise_d));
+   OperationManager::getInstance().executeOperation(Operations::deallocateGPUMemory);
 }
 
 /// Sets up the Simulation.
@@ -101,10 +89,7 @@ void GPUModel::setupSim()
    t_gpu_calcSummation = 0.0;
 #endif   // PERFORMANCE_METRICS
    // Allocate and copy neuron/synapse data structures to GPU memory
-   OperationManager::getInstance().executeOperation(Operations::allocateGPU);
-   // Copy host neuron and synapse arrays into GPU device
-   // copy inverse map to the device memory
-   OperationManager::getInstance().executeOperation(Operations::copyToGPU);
+   copyCPUtoGPU();
 
    // set some parameters used for advanceVerticesDevice
    layout_->getVertices().setAdvanceVerticesDeviceParams(connections_->getEdges());
@@ -119,7 +104,7 @@ void GPUModel::finish()
    // copy device synapse and neuron structs to host memory
    copyGPUtoCPU();
    // deallocates memories on CUDA device
-   OperationManager::getInstance().executeOperation(Operations::deallocateGPUMemory);
+   deleteDeviceStruct();
 
 #ifdef PERFORMANCE_METRICS
    cudaEventDestroy(start);
@@ -255,6 +240,7 @@ void GPUModel::deleteSynapseImap()
    HANDLE_ERROR(cudaFree(synapseIMapDevice.incomingEdgeCount_));
    HANDLE_ERROR(cudaFree(synapseIMapDevice.incomingEdgeIndexMap_));
    HANDLE_ERROR(cudaFree(synapseIndexMapDevice_));
+   HANDLE_ERROR(cudaFree(randNoise_d));
 }
 
 /// Copy EdgeIndexMap in host memory to EdgeIndexMap in device memory.
@@ -364,14 +350,14 @@ void GPUModel::copyGPUtoCPU()
    OperationManager::getInstance().executeOperation(Operations::copyFromGPU);
 }
 
-/// Copy CPU Synapse data to GPU.
+/// Allocate and Copy CPU Synapse data to GPU.
 void GPUModel::copyCPUtoGPU()
 {
-   // copy host neurons and synapse structs to device memory
-   AllVertices &neurons = layout_->getVertices();
-   AllEdges &synapses = connections_->getEdges();
-   neurons.copyToDevice();
-   synapses.copyEdgeHostToDevice();
+   // Allocate and copy neuron/synapse data structures to GPU memory
+   OperationManager::getInstance().executeOperation(Operations::allocateGPU);
+   // Copy host neuron and synapse arrays into GPU device
+   // copy inverse map to the device memory
+   OperationManager::getInstance().executeOperation(Operations::copyToGPU);
 }
 
 /// Print out SynapseProps on the GPU.

@@ -112,10 +112,8 @@ protected:
    /// Allocates  and initializes memories on CUDA device.
    void allocDeviceStruct();
 
-   /// Copies device memories to host memories and deallocates them.
-   /// @param[out] allVerticesDevice          Memory location of the pointer to the neurons list on device memory.
-   /// @param[out] allEdgesDevice         Memory location of the pointer to the synapses list on device memory.
-   virtual void deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevice);
+   /// Deallocates device memories.
+   virtual void deleteDeviceStruct();
 
    /// Add psr of all incoming synapses to summation points.
    virtual void calcSummationPoint();
