@@ -252,7 +252,8 @@ if(ENABLE_CUDA)
         Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp
         Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp
         Simulator/Edges/Neuro/AllDSSynapses_d.cpp
-        Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp)
+        Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp
+        Simulator/Edges/NG911/All911Edges_d.cpp)
         set_source_files_properties(${cuda_EdgesSources} PROPERTIES LANGUAGE CUDA)
 
         set(cuda_VerticesSources 
@@ -310,6 +311,7 @@ else()
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllDSSynapses_d.cpp")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp")
+        list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/NG911/All911Edges_d.cpp")
         
         add_library(Edges STATIC ${Edges_Source})
         
