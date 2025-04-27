@@ -145,20 +145,9 @@ public:
    virtual void advanceEdges(void *allEdgesDevice, void *allVerticesDevice,
                              void *edgeIndexMapDevice)
       = 0;
-
+   
    ///  Set some parameters used for advanceEdgesDevice.
    virtual void setAdvanceEdgesDeviceParams() = 0;
-
-   ///  TODO: Clean up this comment to remove synapses reference since this is neuro-specific
-   ///  Set edge class ID defined by enumClassSynapses for the caller's Edge class.
-   ///  The class ID will be set to classSynapses_d in device memory,
-   ///  and the classSynapses_d will be referred to call a device function for the
-   ///  particular edge class.
-   ///  Because we cannot use virtual function (Polymorphism) in device functions,
-   ///  we use this scheme.
-   ///  Note: we used to use a function pointer; however, it caused the growth_cuda crash
-   ///  (see issue#137).
-   virtual void setEdgeClassID() = 0;
 
    ///  Prints GPU edgesProps data.
    ///
