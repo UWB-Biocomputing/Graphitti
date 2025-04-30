@@ -24,8 +24,8 @@ cudaEvent_t start, stop;
 __constant__ int d_debug_mask[1];
 
 GPUModel::GPUModel() :
-   Model::Model(), edgeIndexMapDevice_(nullptr), allVerticesDevice_(nullptr),
-   allEdgesDevice_(nullptr), MTRandGenerator_()
+   Model::Model(), edgeIndexMapDevice_(nullptr), randNoise_d(nullptr), allVerticesDevice_(nullptr),
+   allEdgesDevice_(nullptr)
 {
 }
 

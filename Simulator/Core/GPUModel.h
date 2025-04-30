@@ -23,7 +23,11 @@
 
 #include "AllEdges.h"
 #include "AllVertices.h"
-#include "MTRand_d.h"
+
+#ifdef VALIDATION_MODE
+   #include <fstream>
+   #include <iostream>
+#endif   // VALIDATION_MODE
 
 #ifdef __CUDACC__
    #include "Book.h"
@@ -97,6 +101,9 @@ protected:
    /// @param[out] allEdgesDevice         Memory location of the pointer to the edges list on device memory.
    virtual void deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevice);
 
+   /// Pointer to device random noise array.
+   float *randNoise_d;
+
 #if defined(USE_GPU)
    /// Pointer to edge index map in device memory.
    EdgeIndexMapDevice *edgeIndexMapDevice_;
@@ -129,8 +136,6 @@ private:
    // TODO
    void createEdge(AllEdges &edges, int vertexIndex, int edgeIndex, Coordinate source,
                    Coordinate dest, BGFLOAT deltaT, edgeType type);
-
-   MTRand_d MTRandGenerator_;
 };
 
 #if defined(__CUDACC__)
