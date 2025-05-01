@@ -130,7 +130,7 @@ public:
    virtual void advanceEdge(BGSIZE iEdg, AllVertices &vertices) override {};
 
 #endif
-
+public:
    /// If edge has a call or not. Store 1 (true) or 0 (false)
    vector<unsigned char> isAvailable_;
 
