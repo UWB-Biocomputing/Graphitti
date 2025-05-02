@@ -26,17 +26,4 @@ jobs:
       - name: Code format check
         run: |
           echo "*** running clang-format to check for style violations"
-          
-          # Find and print the .clang-format file
-          dir="$PWD"
-          while [ "$dir" != "/" ]; do
-            if [ -f "$dir/.clang-format" ]; then
-              echo "Found .clang-format at: $dir/.clang-format"
-              cat "$dir/.clang-format"
-              break
-            fi
-            dir=$(dirname "$dir")
-          done
-          
-          # Run the style check
           clang-format --dry-run --Werror --style=file `find . -type f \( -iname "*.cpp" -or -iname "*.h" \) ! -path "./Testing/lib/*" ! -path "./ThirdParty/*" ! -path "./docs/*"`
