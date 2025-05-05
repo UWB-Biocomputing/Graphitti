@@ -137,9 +137,6 @@ private:
 
    void deleteSynapseImap();
 
-public:   //2020/03/14 changed to public for accessing in Core
-   void copySynapseIndexMapHostToDevice();
-
 private:
    void updateHistory();
 
