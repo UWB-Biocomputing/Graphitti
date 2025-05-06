@@ -35,7 +35,7 @@ GPUModel::GPUModel() :
    OperationManager::getInstance().registerOperation(Operations::copyToGPU, copyCPUtoGPU);
 
    // Register deleteSynapseImap function as a deallocateGPUMemory operation in the OperationManager
-   function<void()> deallocateGPUMemory = bind(&GPUModel::deleteSynapseImap, this);
+   function<void()> deallocateGPUMemory = bind(&GPUModel::deleteDeviceStruct, this);
    OperationManager::getInstance().registerOperation(Operations::deallocateGPUMemory,
                                                      deallocateGPUMemory);
 }
@@ -56,7 +56,17 @@ void GPUModel::allocDeviceStruct()
 void GPUModel::deleteDeviceStruct()
 {
    // Deallocate device memory
-   OperationManager::getInstance().executeOperation(Operations::deallocateGPUMemory);
+   EdgeIndexMapDevice synapseIMapDevice;
+   HANDLE_ERROR(cudaMemcpy(&synapseIMapDevice, synapseIndexMapDevice_, sizeof(EdgeIndexMapDevice),
+                           cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaFree(synapseIMapDevice.outgoingEdgeBegin_));
+   HANDLE_ERROR(cudaFree(synapseIMapDevice.outgoingEdgeCount_));
+   HANDLE_ERROR(cudaFree(synapseIMapDevice.outgoingEdgeIndexMap_));
+   HANDLE_ERROR(cudaFree(synapseIMapDevice.incomingEdgeBegin_));
+   HANDLE_ERROR(cudaFree(synapseIMapDevice.incomingEdgeCount_));
+   HANDLE_ERROR(cudaFree(synapseIMapDevice.incomingEdgeIndexMap_));
+   HANDLE_ERROR(cudaFree(synapseIndexMapDevice_));
+   HANDLE_ERROR(cudaFree(randNoise_d));
 }
 
 /// Sets up the Simulation.
@@ -103,9 +113,9 @@ void GPUModel::setupSim()
 void GPUModel::finish()
 {
    // copy device synapse and neuron structs to host memory
-   copyGPUtoCPU();
+   OperationManager::getInstance().executeOperation(Operations::copyFromGPU);
    // deallocates memories on CUDA device
-   deleteDeviceStruct();
+   OperationManager::getInstance().executeOperation(Operations::deallocateGPUMemory);
 
 #ifdef PERFORMANCE_METRICS
    cudaEventDestroy(start);
@@ -228,22 +238,6 @@ void GPUModel::allocSynapseImap(int count)
                            cudaMemcpyHostToDevice));
 }
 
-/// Deallocate device memory for synapse inverse map.
-void GPUModel::deleteSynapseImap()
-{
-   EdgeIndexMapDevice synapseIMapDevice;
-   HANDLE_ERROR(cudaMemcpy(&synapseIMapDevice, synapseIndexMapDevice_, sizeof(EdgeIndexMapDevice),
-                           cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaFree(synapseIMapDevice.outgoingEdgeBegin_));
-   HANDLE_ERROR(cudaFree(synapseIMapDevice.outgoingEdgeCount_));
-   HANDLE_ERROR(cudaFree(synapseIMapDevice.outgoingEdgeIndexMap_));
-   HANDLE_ERROR(cudaFree(synapseIMapDevice.incomingEdgeBegin_));
-   HANDLE_ERROR(cudaFree(synapseIMapDevice.incomingEdgeCount_));
-   HANDLE_ERROR(cudaFree(synapseIMapDevice.incomingEdgeIndexMap_));
-   HANDLE_ERROR(cudaFree(synapseIndexMapDevice_));
-   HANDLE_ERROR(cudaFree(randNoise_d));
-}
-
 /// Calculate the sum of synaptic input to each neuron.
 ///
 /// Calculate the sum of synaptic input to each neuron. One thread
@@ -294,13 +288,6 @@ __global__ void
       // Store summed PSR into this neuron's summation point
       allVerticesDevice->summationPoints_[idx] = sum;
    }
-}
-
-/// Copy GPU Synapse data to CPU.
-void GPUModel::copyGPUtoCPU()
-{
-   // copy device neuron and synapse structs to host memory
-   OperationManager::getInstance().executeOperation(Operations::copyFromGPU);
 }
 
 /// Allocate and Copy CPU Synapse data to GPU.

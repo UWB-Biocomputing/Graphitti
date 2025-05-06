@@ -1,0 +1,410 @@
+nohup: ignoring input
+[4;34m============================================================================[0m
+[4;34m|                            GRAPHITTI BUILD                               |[0m
+[4;34m============================================================================[0m
+
+----Generating Makefile for Graphitti GPU version----
+-- HDF5 version 1.10.4 located. HDF5 recorders are available.
+-- Setting Optimization flag: O3
+-- Setting Compile Definition: TIMXL_USE_STL
+-- Generating build for Log4cplus version 2.0.7
+-- Threads: -lpthread
+-- Threads: -lpthread
+-- Sources: loggingserver.cxx
+-- Compiler: /usr/bin/c++
+-- GNU version 8.3.0
+-- Compiler flags:  -O3
+-- System name: Linux
+-- System version: 4.19.0-16-amd64
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/NETID/shinjiku/issue828/Graphitti/build
+[  4%] Built target Core
+[  5%] Built target RNG
+[ 14%] Built target Edges
+[ 20%] Built target Connections
+[ 21%] Built target FunctionNodes
+[ 30%] Built target Vertices
+[ 33%] Built target Matrix
+[ 35%] Built target Recorders
+[ 38%] Built target Utils
+[ 39%] Built target Layouts
+[ 40%] Built target paramcontainer
+[ 47%] Built target TinyXPath
+[ 68%] Built target log4cplus
+[ 69%] Built target ggraphitti
+[ 70%] Built target gtest
+[ 71%] Built target gtest_main
+[ 80%] Built target tests
+[ 81%] Built target serialFileAccessTest
+[ 82%] Built target loggingserver
+[ 83%] Built target appender_test
+[ 84%] Built target configandwatch_test
+[ 85%] Built target customloglevel_test
+[ 86%] Built target fileappender_test
+[ 87%] Built target filter_test
+[ 88%] Built target hierarchy_test
+[ 89%] Built target loglog_test
+[ 90%] Built target ndc_test
+[ 91%] Built target ostream_test
+[ 92%] Built target patternlayout_test
+[ 92%] Built target performance_test
+[ 94%] Built target priority_test
+[ 95%] Built target propertyconfig_test
+[ 96%] Built target thread_test
+[ 97%] Built target timeformat_test
+[ 98%] Built target unit_tests
+[ 99%] Built target gmock
+[100%] Built target gmock_main
+[4;34m============================================================================[0m
+[4;34m|                                UNIT TESTS                                |[0m
+[4;34m============================================================================[0m
+[INFO ][2025-05-06 00:02:48] Running Tests
+[==========] Running 112 tests from 19 test suites.
+[----------] Global test environment set-up.
+[----------] 5 tests from OperationManager
+[ RUN      ] OperationManager.GetInstanceReturnsInstance
+[       OK ] OperationManager.GetInstanceReturnsInstance (0 ms)
+[ RUN      ] OperationManager.AddingOneOperation
+[       OK ] OperationManager.AddingOneOperation (0 ms)
+[ RUN      ] OperationManager.AddingManyOperations
+[       OK ] OperationManager.AddingManyOperations (0 ms)
+[ RUN      ] OperationManager.OperationExecutionSuccess
+[       OK ] OperationManager.OperationExecutionSuccess (0 ms)
+[ RUN      ] OperationManager.OperationExecutionContainsNoFunctionsOfOperationType
+[       OK ] OperationManager.OperationExecutionContainsNoFunctionsOfOperationType (0 ms)
+[----------] 5 tests from OperationManager (0 ms total)
+
+[----------] 3 tests from EdgeIndexMap
+[ RUN      ] EdgeIndexMap.DefaultConstructor
+[       OK ] EdgeIndexMap.DefaultConstructor (0 ms)
+[ RUN      ] EdgeIndexMap.OverloadedConstructor
+[       OK ] EdgeIndexMap.OverloadedConstructor (0 ms)
+[ RUN      ] EdgeIndexMap.ZeroValueConstructor
+[       OK ] EdgeIndexMap.ZeroValueConstructor (0 ms)
+[----------] 3 tests from EdgeIndexMap (0 ms total)
+
+[----------] 6 tests from SynapseIndexMapTestObject
+[ RUN      ] SynapseIndexMapTestObject.OutgoingSynapseMapInitialiedSuccessfully
+[       OK ] SynapseIndexMapTestObject.OutgoingSynapseMapInitialiedSuccessfully (0 ms)
+[ RUN      ] SynapseIndexMapTestObject.OutgoingSynapseBeginInitialiedSuccessfully
+[       OK ] SynapseIndexMapTestObject.OutgoingSynapseBeginInitialiedSuccessfully (0 ms)
+[ RUN      ] SynapseIndexMapTestObject.OutgoingSynapseCountInitialiedSuccessfully
+[       OK ] SynapseIndexMapTestObject.OutgoingSynapseCountInitialiedSuccessfully (0 ms)
+[ RUN      ] SynapseIndexMapTestObject.IncomingSynapseIndexMapInitialiedSuccessfully
+[       OK ] SynapseIndexMapTestObject.IncomingSynapseIndexMapInitialiedSuccessfully (0 ms)
+[ RUN      ] SynapseIndexMapTestObject.IncomingSynapseBeginInitialiedSuccessfully
+[       OK ] SynapseIndexMapTestObject.IncomingSynapseBeginInitialiedSuccessfully (0 ms)
+[ RUN      ] SynapseIndexMapTestObject.IncomingSynapseCountInitializedSuccessfully
+[       OK ] SynapseIndexMapTestObject.IncomingSynapseCountInitializedSuccessfully (0 ms)
+[----------] 6 tests from SynapseIndexMapTestObject (0 ms total)
+
+[----------] 1 test from GenericFunctionNode
+[ RUN      ] GenericFunctionNode.TemplateFunctionTest
+[       OK ] GenericFunctionNode.TemplateFunctionTest (0 ms)
+[----------] 1 test from GenericFunctionNode (0 ms total)
+
+[----------] 3 tests from Simulator
+[ RUN      ] Simulator.GetInstanceSuccess
+[       OK ] Simulator.GetInstanceSuccess (0 ms)
+[ RUN      ] Simulator.PrintParameters
+[       OK ] Simulator.PrintParameters (0 ms)
+[ RUN      ] Simulator.ParametersInitializedSuccessfully
+[       OK ] Simulator.ParametersInitializedSuccessfully (3 ms)
+[----------] 3 tests from Simulator (3 ms total)
+
+[----------] 5 tests from VerticesFactory
+[ RUN      ] VerticesFactory.GetInstanceReturnsInstance
+[       OK ] VerticesFactory.GetInstanceReturnsInstance (0 ms)
+[ RUN      ] VerticesFactory.CreateAllLIFNeuronsInstance
+[       OK ] VerticesFactory.CreateAllLIFNeuronsInstance (0 ms)
+[ RUN      ] VerticesFactory.CreateAllIZNeuronsInstance
+[       OK ] VerticesFactory.CreateAllIZNeuronsInstance (0 ms)
+[ RUN      ] VerticesFactory.CreateAll911VerticesInstance
+[       OK ] VerticesFactory.CreateAll911VerticesInstance (0 ms)
+[ RUN      ] VerticesFactory.CreateNonExistentClassReturnsNullPtr
+[       OK ] VerticesFactory.CreateNonExistentClassReturnsNullPtr (0 ms)
+[----------] 5 tests from VerticesFactory (0 ms total)
+
+[----------] 5 tests from ConnectionsFactory
+[ RUN      ] ConnectionsFactory.GetInstanceReturnsInstance
+[       OK ] ConnectionsFactory.GetInstanceReturnsInstance (0 ms)
+[ RUN      ] ConnectionsFactory.CreateConnstaticInstance
+[       OK ] ConnectionsFactory.CreateConnstaticInstance (0 ms)
+[ RUN      ] ConnectionsFactory.CreateConnGrowthInstance
+[       OK ] ConnectionsFactory.CreateConnGrowthInstance (0 ms)
+[ RUN      ] ConnectionsFactory.CreateConnections911Instance
+[       OK ] ConnectionsFactory.CreateConnections911Instance (0 ms)
+[ RUN      ] ConnectionsFactory.CreateNonExistentClassReturnsNullPtr
+[       OK ] ConnectionsFactory.CreateNonExistentClassReturnsNullPtr (0 ms)
+[----------] 5 tests from ConnectionsFactory (0 ms total)
+
+[----------] 7 tests from EdgesFactory
+[ RUN      ] EdgesFactory.GetInstanceReturnsInstance
+[       OK ] EdgesFactory.GetInstanceReturnsInstance (0 ms)
+[ RUN      ] EdgesFactory.CreateAll911EdgesInstance
+[       OK ] EdgesFactory.CreateAll911EdgesInstance (0 ms)
+[ RUN      ] EdgesFactory.CreateAllDSSynapsesInstance
+[       OK ] EdgesFactory.CreateAllDSSynapsesInstance (0 ms)
+[ RUN      ] EdgesFactory.CreateAllDynamicSTDPSynapsesInstance
+[       OK ] EdgesFactory.CreateAllDynamicSTDPSynapsesInstance (0 ms)
+[ RUN      ] EdgesFactory.CreateAllSTDPSynapsesInstance
+[       OK ] EdgesFactory.CreateAllSTDPSynapsesInstance (0 ms)
+[ RUN      ] EdgesFactory.CreateAllSpikingSynapsesInstance
+[       OK ] EdgesFactory.CreateAllSpikingSynapsesInstance (1 ms)
+[ RUN      ] EdgesFactory.CreateNonExistentClassReturnsNullPtr
+[       OK ] EdgesFactory.CreateNonExistentClassReturnsNullPtr (0 ms)
+[----------] 7 tests from EdgesFactory (1 ms total)
+
+[----------] 4 tests from LayoutFactory
+[ RUN      ] LayoutFactory.GetInstanceReturnsInstance
+[       OK ] LayoutFactory.GetInstanceReturnsInstance (0 ms)
+[ RUN      ] LayoutFactory.CreateLayoutNeuroInstance
+[       OK ] LayoutFactory.CreateLayoutNeuroInstance (0 ms)
+[ RUN      ] LayoutFactory.CreateLayout911Instance
+[       OK ] LayoutFactory.CreateLayout911Instance (0 ms)
+[ RUN      ] LayoutFactory.CreateNonExistentClassReturnsNullPtr
+[       OK ] LayoutFactory.CreateNonExistentClassReturnsNullPtr (0 ms)
+[----------] 4 tests from LayoutFactory (0 ms total)
+
+[----------] 4 tests from RecorderFactory
+[ RUN      ] RecorderFactory.GetInstanceReturnsInstance
+[       OK ] RecorderFactory.GetInstanceReturnsInstance (0 ms)
+[ RUN      ] RecorderFactory.CreateXml911RecorderInstance
+[       OK ] RecorderFactory.CreateXml911RecorderInstance (0 ms)
+[ RUN      ] RecorderFactory.CreateNonExistentClassReturnsNullPtr
+[       OK ] RecorderFactory.CreateNonExistentClassReturnsNullPtr (0 ms)
+[ RUN      ] RecorderFactory.CreateHdf5RecorderInstance
+[       OK ] RecorderFactory.CreateHdf5RecorderInstance (0 ms)
+[----------] 4 tests from RecorderFactory (0 ms total)
+
+[----------] 9 tests from InputManagerFixture
+[ RUN      ] InputManagerFixture.queueFront
+[       OK ] InputManagerFixture.queueFront (0 ms)
+[ RUN      ] InputManagerFixture.queueFrontException
+[       OK ] InputManagerFixture.queueFrontException (0 ms)
+[ RUN      ] InputManagerFixture.getEpochEvents
+[       OK ] InputManagerFixture.getEpochEvents (0 ms)
+[ RUN      ] InputManagerFixture.nonEmptyEventQueue
+[       OK ] InputManagerFixture.nonEmptyEventQueue (1 ms)
+[ RUN      ] InputManagerFixture.emptyQueueAfterGettingEpochEvents
+[       OK ] InputManagerFixture.emptyQueueAfterGettingEpochEvents (0 ms)
+[ RUN      ] InputManagerFixture.emptyQueueForMissingVertex
+[       OK ] InputManagerFixture.emptyQueueForMissingVertex (0 ms)
+[ RUN      ] InputManagerFixture.queuePop
+[       OK ] InputManagerFixture.queuePop (0 ms)
+[ RUN      ] InputManagerFixture.clockTickSize
+[       OK ] InputManagerFixture.clockTickSize (0 ms)
+[ RUN      ] InputManagerFixture.clockTickUnit
+[       OK ] InputManagerFixture.clockTickUnit (0 ms)
+[----------] 9 tests from InputManagerFixture (1 ms total)
+
+[----------] 1 test from InputManager
+[ RUN      ] InputManager.readNeuroInputs
+[       OK ] InputManager.readNeuroInputs (0 ms)
+[----------] 1 test from InputManager (0 ms total)
+
+[----------] 4 tests from RNGFactory
+[ RUN      ] RNGFactory.GetInstanceReturnsInstance
+[       OK ] RNGFactory.GetInstanceReturnsInstance (0 ms)
+[ RUN      ] RNGFactory.CreateMTRandInstance
+[       OK ] RNGFactory.CreateMTRandInstance (0 ms)
+[ RUN      ] RNGFactory.CreateNormInstance
+[       OK ] RNGFactory.CreateNormInstance (0 ms)
+[ RUN      ] RNGFactory.CreateNonExistentClassReturnsNullPtr
+[       OK ] RNGFactory.CreateNonExistentClassReturnsNullPtr (0 ms)
+[----------] 4 tests from RNGFactory (0 ms total)
+
+[----------] 10 tests from GraphManager
+[ RUN      ] GraphManager.GetInstanceReturnsInstance
+[       OK ] GraphManager.GetInstanceReturnsInstance (0 ms)
+[ RUN      ] GraphManager.ReadGraphReturnsTrue
+[       OK ] GraphManager.ReadGraphReturnsTrue (1 ms)
+[ RUN      ] GraphManager.NumVerticesReturnsEleven
+[       OK ] GraphManager.NumVerticesReturnsEleven (0 ms)
+[ RUN      ] GraphManager.NumEdgesReturnsTwenty
+[       OK ] GraphManager.NumEdgesReturnsTwenty (0 ms)
+[ RUN      ] GraphManager.GetVertcies
+[       OK ] GraphManager.GetVertcies (0 ms)
+[ RUN      ] GraphManager.GetEdgesAndSource
+[       OK ] GraphManager.GetEdgesAndSource (0 ms)
+[ RUN      ] GraphManager.GetEdgesAndTarget
+[       OK ] GraphManager.GetEdgesAndTarget (0 ms)
+[ RUN      ] GraphManager.SortEdges
+[       OK ] GraphManager.SortEdges (0 ms)
+[ RUN      ] GraphManager.ReadEmptyGraph
+[       OK ] GraphManager.ReadEmptyGraph (0 ms)
+[ RUN      ] GraphManager.ReadNonExistentGraph
+[       OK ] GraphManager.ReadNonExistentGraph (0 ms)
+[----------] 10 tests from GraphManager (1 ms total)
+
+[----------] 16 tests from ParameterManager
+[ RUN      ] ParameterManager.GetInstanceReturnsInstance
+[       OK ] ParameterManager.GetInstanceReturnsInstance (0 ms)
+[ RUN      ] ParameterManager.LoadingXMLFile
+[       OK ] ParameterManager.LoadingXMLFile (0 ms)
+[ RUN      ] ParameterManager.LoadingMultipleValidXMLFiles
+[       OK ] ParameterManager.LoadingMultipleValidXMLFiles (1 ms)
+[ RUN      ] ParameterManager.LoadingMultipleInvalidFiles
+[       OK ] ParameterManager.LoadingMultipleInvalidFiles (0 ms)
+[ RUN      ] ParameterManager.ValidStringTargeting
+[       OK ] ParameterManager.ValidStringTargeting (0 ms)
+[ RUN      ] ParameterManager.ValidIntTargeting
+[       OK ] ParameterManager.ValidIntTargeting (2 ms)
+[ RUN      ] ParameterManager.InvalidIntTargeting
+[       OK ] ParameterManager.InvalidIntTargeting (2 ms)
+[ RUN      ] ParameterManager.ValidFloatTargeting
+[       OK ] ParameterManager.ValidFloatTargeting (1 ms)
+[ RUN      ] ParameterManager.InvalidFloatTargeting
+[       OK ] ParameterManager.InvalidFloatTargeting (0 ms)
+[ RUN      ] ParameterManager.ValidDoubleTargeting
+[       OK ] ParameterManager.ValidDoubleTargeting (0 ms)
+[ RUN      ] ParameterManager.InvalidDoubleTargeting
+[       OK ] ParameterManager.InvalidDoubleTargeting (1 ms)
+[ RUN      ] ParameterManager.ValidBGFloatTargeting
+[       OK ] ParameterManager.ValidBGFloatTargeting (0 ms)
+[ RUN      ] ParameterManager.InvalidBGFloatTargeting
+[       OK ] ParameterManager.InvalidBGFloatTargeting (0 ms)
+[ RUN      ] ParameterManager.ValidLongTargeting
+[       OK ] ParameterManager.ValidLongTargeting (1 ms)
+[ RUN      ] ParameterManager.InvalidLongTargeting
+[       OK ] ParameterManager.InvalidLongTargeting (0 ms)
+[ RUN      ] ParameterManager.InvalidIntVectorTargeting
+[       OK ] ParameterManager.InvalidIntVectorTargeting (0 ms)
+[----------] 16 tests from ParameterManager (8 ms total)
+
+[----------] 10 tests from CircularBuffer
+[ RUN      ] CircularBuffer.Constructor
+[       OK ] CircularBuffer.Constructor (0 ms)
+[ RUN      ] CircularBuffer.ConstructAndResize
+[       OK ] CircularBuffer.ConstructAndResize (0 ms)
+[ RUN      ] CircularBuffer.Put
+[       OK ] CircularBuffer.Put (0 ms)
+[ RUN      ] CircularBuffer.Get
+[       OK ] CircularBuffer.Get (0 ms)
+[ RUN      ] CircularBuffer.GetWhenEmpty
+[       OK ] CircularBuffer.GetWhenEmpty (0 ms)
+[ RUN      ] CircularBuffer.Clear
+[       OK ] CircularBuffer.Clear (0 ms)
+[ RUN      ] CircularBuffer.IsEmpty
+[       OK ] CircularBuffer.IsEmpty (0 ms)
+[ RUN      ] CircularBuffer.IsFull
+[       OK ] CircularBuffer.IsFull (8 ms)
+[ RUN      ] CircularBuffer.Capacity
+[       OK ] CircularBuffer.Capacity (29 ms)
+[ RUN      ] CircularBuffer.Size
+[       OK ] CircularBuffer.Size (0 ms)
+[----------] 10 tests from CircularBuffer (38 ms total)
+
+[----------] 4 tests from EventBufferTest
+[ RUN      ] EventBufferTest.GetElementFromEmptyBuffer
+[       OK ] EventBufferTest.GetElementFromEmptyBuffer (0 ms)
+[ RUN      ] EventBufferTest.GetPastEventFromEmptyBuffer
+[       OK ] EventBufferTest.GetPastEventFromEmptyBuffer (0 ms)
+[ RUN      ] EventBufferTest.InsertEventEmptyBuffer
+[       OK ] EventBufferTest.InsertEventEmptyBuffer (0 ms)
+[ RUN      ] EventBufferTest.BufferWrapAround
+[       OK ] EventBufferTest.BufferWrapAround (0 ms)
+[----------] 4 tests from EventBufferTest (0 ms total)
+
+[----------] 9 tests from XmlRecorderTest
+[ RUN      ] XmlRecorderTest.CreateInstanceSuccess
+[       OK ] XmlRecorderTest.CreateInstanceSuccess (0 ms)
+[ RUN      ] XmlRecorderTest.InitTest
+[       OK ] XmlRecorderTest.InitTest (0 ms)
+[ RUN      ] XmlRecorderTest.RegisterVariableTest
+[       OK ] XmlRecorderTest.RegisterVariableTest (0 ms)
+[ RUN      ] XmlRecorderTest.RegisterVectorMatrixTest
+[       OK ] XmlRecorderTest.RegisterVectorMatrixTest (0 ms)
+[ RUN      ] XmlRecorderTest.RegisterRecordableVectorTest
+[       OK ] XmlRecorderTest.RegisterRecordableVectorTest (1 ms)
+[ RUN      ] XmlRecorderTest.RegisterVectorVariableTest
+[       OK ] XmlRecorderTest.RegisterVectorVariableTest (0 ms)
+[ RUN      ] XmlRecorderTest.CompileHistoriesTest
+[       OK ] XmlRecorderTest.CompileHistoriesTest (0 ms)
+[ RUN      ] XmlRecorderTest.ToXML
+[       OK ] XmlRecorderTest.ToXML (0 ms)
+[ RUN      ] XmlRecorderTest.SaveSimDataTest
+[       OK ] XmlRecorderTest.SaveSimDataTest (0 ms)
+[----------] 9 tests from XmlRecorderTest (1 ms total)
+
+[----------] 6 tests from Hdf5RecorderTest
+[ RUN      ] Hdf5RecorderTest.CreateInstanceSuccess
+[       OK ] Hdf5RecorderTest.CreateInstanceSuccess (0 ms)
+[ RUN      ] Hdf5RecorderTest.Hdf5InitAndTermTest
+[       OK ] Hdf5RecorderTest.Hdf5InitAndTermTest (1 ms)
+[ RUN      ] Hdf5RecorderTest.RegisterVariableTest
+[       OK ] Hdf5RecorderTest.RegisterVariableTest (0 ms)
+[ RUN      ] Hdf5RecorderTest.RegisterVectorVariableTest
+[       OK ] Hdf5RecorderTest.RegisterVectorVariableTest (0 ms)
+[ RUN      ] Hdf5RecorderTest.SaveSimDataTest
+[       OK ] Hdf5RecorderTest.SaveSimDataTest (1 ms)
+[ RUN      ] Hdf5RecorderTest.CompileHistoriesTest
+[       OK ] Hdf5RecorderTest.CompileHistoriesTest (0 ms)
+[----------] 6 tests from Hdf5RecorderTest (2 ms total)
+
+[----------] Global test environment tear-down
+[==========] 112 tests from 19 test suites ran. (55 ms total)
+[  PASSED  ] 112 tests.
+
+[4;34m============================================================================[0m
+[4;34m|                             REGRESSION TESTS                             |[0m
+[4;34m============================================================================[0m
+Run simulations in parallel, using: ./ggraphitti
+[4;34m[ RUN TEST ][0m ./ggraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
+[4;34m[ RUN TEST ][0m ./ggraphitti -c ../Testing/RegressionTesting/configfiles/test-small.xml
+[4;34m[ RUN TEST ][0m ./ggraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected.xml
+[4;34m[ RUN TEST ][0m ./ggraphitti -c ../Testing/RegressionTesting/configfiles/test-small-long.xml
+[4;34m[ RUN TEST ][0m ./ggraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected-long.xml
+[4;34m[ RUN TEST ][0m ./ggraphitti -c ../Testing/RegressionTesting/configfiles/test-medium.xml
+[4;34m[ RUN TEST ][0m ./ggraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-connected.xml
+[4;34m[ RUN TEST ][0m ./ggraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-long.xml
+[4;34m[ RUN TEST ][0m ./ggraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-connected-long.xml
+[4;34m[ RUN TEST ][0m Waiting for simulations to finish...
+Failed loading simulation parameter for xpath //SimParams/deltaT/text()
+Failed loading simulation parameter for xpath //SimParams/deltaT/text()
+Failed loading simulation parameter for xpath //SimParams/deltaT/text()
+Failed loading simulation parameter for xpath //SimParams/deltaT/text()
+Failed loading simulation parameter for xpath //SimParams/deltaT/text()
+Failed loading simulation parameter for xpath //SimParams/deltaT/text()
+Failed loading simulation parameter for xpath //SimParams/deltaT/text()
+Failed loading simulation parameter for xpath Failed loading simulation parameter for xpath //SimParams/deltaT/text()//SimParams/deltaT/text()
+
+
+[4;34m[========][0m Start verification
+[4;34m[--------][0mVerifying test-tiny.xml simulation output...[0m
+[0;32m[        ][0m Output file: ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml
+[0;32m[  AND   ][0m Good output: ../Testing/RegressionTesting/GoodOutput/Gpu/test-tiny-out.xml
+[0;32m[ PASSED ][0m Are equal
+[4;34m[--------][0mVerifying test-small.xml simulation output...[0m
+[0;32m[        ][0m Output file: ../Testing/RegressionTesting/TestOutput/test-small-out.xml
+[0;32m[  AND   ][0m Good output: ../Testing/RegressionTesting/GoodOutput/Gpu/test-small-out.xml
+[0;32m[ PASSED ][0m Are equal
+[4;34m[--------][0mVerifying test-small-connected.xml simulation output...[0m
+[0;32m[        ][0m Output file: ../Testing/RegressionTesting/TestOutput/test-small-connected-out.xml
+[0;32m[  AND   ][0m Good output: ../Testing/RegressionTesting/GoodOutput/Gpu/test-small-connected-out.xml
+[0;32m[ PASSED ][0m Are equal
+[4;34m[--------][0mVerifying test-small-long.xml simulation output...[0m
+[0;32m[        ][0m Output file: ../Testing/RegressionTesting/TestOutput/test-small-long-out.xml
+[0;32m[  AND   ][0m Good output: ../Testing/RegressionTesting/GoodOutput/Gpu/test-small-long-out.xml
+[0;32m[ PASSED ][0m Are equal
+[4;34m[--------][0mVerifying test-small-connected-long.xml simulation output...[0m
+[0;32m[        ][0m Output file: ../Testing/RegressionTesting/TestOutput/test-small-connected-long-out.xml
+[0;32m[  AND   ][0m Good output: ../Testing/RegressionTesting/GoodOutput/Gpu/test-small-connected-long-out.xml
+[0;32m[ PASSED ][0m Are equal
+[4;34m[--------][0mVerifying test-medium.xml simulation output...[0m
+[0;32m[        ][0m Output file: ../Testing/RegressionTesting/TestOutput/test-medium-out.xml
+[0;32m[  AND   ][0m Good output: ../Testing/RegressionTesting/GoodOutput/Gpu/test-medium-out.xml
+[0;32m[ PASSED ][0m Are equal
+[4;34m[--------][0mVerifying test-medium-connected.xml simulation output...[0m
+[0;32m[        ][0m Output file: ../Testing/RegressionTesting/TestOutput/test-medium-connected-out.xml
+[0;32m[  AND   ][0m Good output: ../Testing/RegressionTesting/GoodOutput/Gpu/test-medium-connected-out.xml
+[0;32m[ PASSED ][0m Are equal
+[4;34m[--------][0mVerifying test-medium-long.xml simulation output...[0m
+[0;32m[        ][0m Output file: ../Testing/RegressionTesting/TestOutput/test-medium-long-out.xml
+[0;32m[  AND   ][0m Good output: ../Testing/RegressionTesting/GoodOutput/Gpu/test-medium-long-out.xml
+[0;32m[ PASSED ][0m Are equal
+[4;34m[--------][0mVerifying test-medium-connected-long.xml simulation output...[0m
+[0;32m[        ][0m Output file: ../Testing/RegressionTesting/TestOutput/test-medium-connected-long-out.xml
+[0;32m[  AND   ][0m Good output: ../Testing/RegressionTesting/GoodOutput/Gpu/test-medium-connected-long-out.xml
+[0;32m[ PASSED ][0m Are equal

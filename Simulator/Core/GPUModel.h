@@ -93,11 +93,12 @@ public:
    /// over the past epoch. Should be called once every epoch.
    virtual void updateConnections() override;
 
-   /// Copy GPU Neuron and Synapse data to CPU.
-   virtual void copyGPUtoCPU() override;
-
-   /// Copy CPU Neuron and Synapse data to GPU.
+   /// Copy Synapse Map data to GPU.
    virtual void copyCPUtoGPU() override;
+
+   // GPUModel itself does not have anything to be copied back, this function is a
+   // dummy function just to make GPUModel non virtual
+   void copyGPUtoCPU() override {}
 
    /// Print out SynapseProps on the GPU.
    void printGPUSynapsesPropsModel() const;
@@ -134,8 +135,6 @@ protected:
 
 private:
    void allocSynapseImap(int count);
-
-   void deleteSynapseImap();
 
 private:
    void updateHistory();
