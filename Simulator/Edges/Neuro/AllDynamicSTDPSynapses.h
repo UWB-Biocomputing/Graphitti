@@ -9,7 +9,7 @@
  *  Each kind of synapse parameter is stored in a 2D array. Each item in the first
  *  dimension of the array corresponds with each neuron, and each item in the second
  *  dimension of the array corresponds with a synapse parameter of each synapse of the neuron.
- * Because each neuron owns different number of synapses, the number of synapses
+ *  Because each neuron owns different number of synapses, the number of synapses
  *  for each neuron is stored in a 1D array, edge_counts.
  *
  *  For CUDA implementation, we used another structure, AllDSSynapsesDevice, where synapse

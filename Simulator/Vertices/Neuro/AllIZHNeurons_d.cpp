@@ -37,7 +37,7 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
 ///  Allocate GPU memories to store all neurons' states,
 ///  and copy them from host to GPU memory.
 ///
-void AllIZHNeurons::allocNeuronDeviceStruct()
+void AllIZHNeurons::allocVerticesDeviceStruct()
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
    GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
@@ -50,7 +50,7 @@ void AllIZHNeurons::allocNeuronDeviceStruct()
 }
 
 ///  Allocate GPU memories to store all neurons' states.
-///  (Helper function of allocNeuronDeviceStruct)
+///  (Helper function of allocVerticesDeviceStruct)
 ///
 ///  @param  allVerticesDevice    GPU address of the AllIZHNeuronsDeviceProperties struct on device memory.
 void AllIZHNeurons::allocDeviceStruct(AllIZHNeuronsDeviceProperties &allVerticesDevice)
@@ -69,7 +69,7 @@ void AllIZHNeurons::allocDeviceStruct(AllIZHNeuronsDeviceProperties &allVertices
 
 ///  Delete GPU memories.
 ///
-void AllIZHNeurons::deleteNeuronDeviceStruct()
+void AllIZHNeurons::deleteVerticesDeviceStruct()
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
    GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
@@ -83,7 +83,7 @@ void AllIZHNeurons::deleteNeuronDeviceStruct()
 }
 
 ///  Delete GPU memories.
-///  (Helper function of deleteNeuronDeviceStruct)
+///  (Helper function of deleteVerticesDeviceStruct)
 ///
 ///  @param  allVerticesDevice    GPU address of the AllIZHNeuronsDeviceProperties struct on device memory.
 void AllIZHNeurons::deleteDeviceStruct(AllIZHNeuronsDeviceProperties &allVerticesDevice)
@@ -171,7 +171,7 @@ void AllIZHNeurons::copyFromDevice()
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
 ///                             on device memory.
-void AllIZHNeurons::clearNeuronSpikeCounts(void *allVerticesDevice)
+void AllIZHNeurons::clearVertexHistory(void *allVerticesDevice)
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
@@ -283,8 +283,8 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
 
          // for each synapse, let them know we have fired
          switch (classSynapses_d) {
-            case classAllSTDPSynapses:
-            case classAllDynamicSTDPSynapses:
+            case enumClassSynapses::classAllSTDPSynapses:
+            case enumClassSynapses::classAllDynamicSTDPSynapses:
                for (BGSIZE i = 0; i < synapseCounts; i++) {
                   postSTDPSynapseSpikeHitDevice(
                      incomingMapBegin[i],
@@ -292,8 +292,8 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
                }   // end for
                break;
 
-            case classAllSpikingSynapses:
-            case classAllDSSynapses:
+            case enumClassSynapses::classAllSpikingSynapses:
+            case enumClassSynapses::classAllDSSynapses:
                for (BGSIZE i = 0; i < synapseCounts; i++) {
                   postSpikingSynapsesSpikeHitDevice(incomingMapBegin[i], allEdgesDevice);
                }   // end for

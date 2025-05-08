@@ -103,9 +103,9 @@ public:
 
    ///  Update the connections status in every epoch.
    ///
-   ///  @param  neurons  The Neuron list to search from.
+   ///  @param  vertices  The vertex list to search from.
    ///  @return true if successful, false otherwise.
-   virtual bool updateConnections(AllVertices &neurons) override;
+   virtual bool updateConnections(AllVertices &vertices) override;
 
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);
@@ -121,20 +121,20 @@ public:
    ///
    ///  @param  numVertices          The number of vertices to update.
    ///  @param  vertices             The AllVertices object.
-   ///  @param  synapses             The AllEdges object.
+   ///  @param  edges                The AllEdges object.
    ///  @param  allVerticesDevice    GPU address of the AllVertices struct in device memory.
    ///  @param  allEdgesDevice       GPU address of the AllEdges struct in device memory.
    ///  @param  layout               The Layout object.
-   virtual void updateSynapsesWeights(int numVertices, AllVertices &neurons, AllEdges &synapses,
-                                      AllSpikingNeuronsDeviceProperties *allVerticesDevice,
-                                      AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                      Layout &layout) override;
+   virtual void updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &edges,
+                                   AllVerticesDeviceProperties *allVerticesDevice,
+                                   AllEdgesDeviceProperties *allEdgesDevice,
+                                   Layout &layout) override;
 #else
    ///  Update the weights of the Synapses in the simulation. To be clear,
    ///  iterates through all source and destination neurons and updates their
    ///  synaptic strengths from the weight matrix.
    ///  Note: Platform Dependent.
-   virtual void updateSynapsesWeights() override;
+   virtual void updateEdgesWeights() override;
 
 #endif
 private:

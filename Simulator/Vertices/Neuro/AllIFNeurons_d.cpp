@@ -15,7 +15,7 @@
 ///  and copy them from host to GPU memory.
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
-void AllIFNeurons::allocNeuronDeviceStruct()
+void AllIFNeurons::allocVerticesDeviceStruct()
 {
    AllIFNeuronsDeviceProperties allNeurons;
    GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
@@ -27,7 +27,7 @@ void AllIFNeurons::allocNeuronDeviceStruct()
 }
 
 ///  Allocate GPU memories to store all neurons' states.
-///  (Helper function of allocNeuronDeviceStruct)
+///  (Helper function of allocVerticesDeviceStruct)
 ///
 ///  @param  allVerticesDevice         GPU address of the AllIFNeuronsDeviceProperties struct.
 void AllIFNeurons::allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDevice)
@@ -54,6 +54,9 @@ void AllIFNeurons::allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDe
    HANDLE_ERROR(
       cudaMalloc((void **)&allVerticesDevice.numStepsInRefractoryPeriod_, count * sizeof(int)));
    HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.summationPoints_, count * sizeof(BGFLOAT)));
+#ifdef VALIDATION_MODE
+   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.spValidation_, count * sizeof(BGFLOAT)));
+#endif
    HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.spikeHistory_, count * sizeof(uint64_t *)));
 
    uint64_t *pSpikeHistory[count];
@@ -70,7 +73,7 @@ void AllIFNeurons::allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDe
 
 ///  Delete GPU memories.
 ///
-void AllIFNeurons::deleteNeuronDeviceStruct()
+void AllIFNeurons::deleteVerticesDeviceStruct()
 {
    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
    GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
@@ -82,7 +85,7 @@ void AllIFNeurons::deleteNeuronDeviceStruct()
 }
 
 ///  Delete GPU memories.
-///  (Helper function of deleteNeuronDeviceStruct)
+///  (Helper function of deleteVerticesDeviceStruct)
 ///
 ///  @param  allVerticesDevice         GPU address of the AllIFNeuronsDeviceProperties struct.
 void AllIFNeurons::deleteDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDevice)
@@ -112,6 +115,9 @@ void AllIFNeurons::deleteDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesD
    HANDLE_ERROR(cudaFree(allVerticesDevice.hasFired_));
    HANDLE_ERROR(cudaFree(allVerticesDevice.numStepsInRefractoryPeriod_));
    HANDLE_ERROR(cudaFree(allVerticesDevice.summationPoints_));
+#ifdef VALIDATION_MODE
+   HANDLE_ERROR(cudaFree(allVerticesDevice.spValidation_));
+#endif
    HANDLE_ERROR(cudaFree(allVerticesDevice.spikeHistory_));
 }
 
@@ -209,7 +215,7 @@ void AllIFNeurons::copyFromDevice()
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
 // TODO: Move this into EventBuffer somehow
-void AllIFNeurons::clearNeuronSpikeCounts(void *allVerticesDevice)
+void AllIFNeurons::clearVertexHistory(void *allVerticesDevice)
 {
    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,

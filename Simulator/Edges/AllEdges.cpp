@@ -16,7 +16,7 @@ AllEdges::AllEdges() : totalEdgeCount_(0), maxEdgesPerVertex_(0), countVertices_
    // OperationManager. This will register the appropriate overridden method
    // for the actual (sub)class of the object being created.
    function<void()> loadParametersFunc = std::bind(&AllEdges::loadParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::op::loadParameters,
+   OperationManager::getInstance().registerOperation(Operations::loadParameters,
                                                      loadParametersFunc);
 
    // Register printParameters function as a printParameters operation in the
@@ -98,7 +98,7 @@ void AllEdges::setupEdges(int numVertices, int maxEdges)
 
    if (maxTotalEdges != 0) {
       W_.assign(maxTotalEdges, 0);
-      type_.assign(maxTotalEdges, ETYPE_UNDEF);
+      type_.assign(maxTotalEdges, edgeType::ETYPE_UNDEF);
       inUse_.assign(maxTotalEdges, false);
       edgeCounts_.assign(numVertices, 0);
       destVertexIndex_.assign(maxTotalEdges, 0);
@@ -150,25 +150,25 @@ edgeType AllEdges::edgeOrdinalToType(int typeOrdinal)
 {
    switch (typeOrdinal) {
       case 0:
-         return II;
+         return edgeType::II;
       case 1:
-         return IE;
+         return edgeType::IE;
       case 2:
-         return EI;
+         return edgeType::EI;
       case 3:
-         return EE;
+         return edgeType::EE;
       case 4:
-         return CP;
+         return edgeType::CP;
       case 5:
-         return PR;
+         return edgeType::PR;
       case 6:
-         return PC;
+         return edgeType::PC;
       case 7:
-         return PP;
+         return edgeType::PP;
       case 8:
-         return RP;
+         return edgeType::RP;
       default:
-         return ETYPE_UNDEF;
+         return edgeType::ETYPE_UNDEF;
    }
 }
 

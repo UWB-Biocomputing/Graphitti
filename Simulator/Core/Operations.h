@@ -7,23 +7,20 @@
  * @ingroup Simulator/Core
  */
 
-#pragma once
+ #pragma once
 
-class Operations {
-public:
-   /// Available operations the OperationManager can register and execute.
-   enum op {
-      printParameters,
-      loadParameters,
-      registerGraphProperties,
-      setup,
-      serialize,
-      deserialize,
-      deallocateGPUMemory,   // Make sure deallocate memory isn't called until all GPU memory is copied back.
-      restoreToDefault,   // Not sure what this refers to.
-      copyToGPU,
-      copyFromGPU,
-      allocateGPU,
-      registerHistoryVariables
-   };
-};
+ enum class Operations {
+    /// Available operations the OperationManager can register and execute.
+    printParameters,
+    loadParameters,
+    registerGraphProperties,
+    setup,
+    serialize,
+    deserialize,
+    deallocateGPUMemory,   // Make sure deallocate memory isn't called until all GPU memory is copied back.
+    restoreToDefault,   // Not sure what this refers to.
+    copyToGPU,
+    copyFromGPU,
+    allocateGPU,
+    registerHistoryVariables
+ };

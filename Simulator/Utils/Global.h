@@ -8,6 +8,7 @@
 // Globally available functions and default parameter values.
 
 #pragma once
+#include "MTRand.h"
 
 // Debug output is included in both debug/release builds now.
 // The Default for debug is "LOW" and "OFF" for Release.
@@ -64,6 +65,7 @@ using uint64_t = unsigned long long int;   //included in inttypes.h, which is no
    //#include "Norm.h"
 #include "Coordinate.h"
 #include "VectorMatrix.h"
+#include "VertexType.h"
 
 using namespace std;
 
@@ -98,7 +100,9 @@ const int g_nMaxChunkSize = 100;
 // CALR: Caller radii
 // PSAP: PSAP nodes
 // EMS, FIRE, LAW: Responder nodes
-enum vertexType {
+/* 
+// Moved to Utils/VertexType.h 
+enum class vertexType {
    // Neuro
    INH = 1,
    EXC = 2,
@@ -111,6 +115,13 @@ enum vertexType {
    // UNDEF
    VTYPE_UNDEF = 0
 };
+// Custom streaming operator<< for the enum class vertexType
+inline std::ostream &operator<<(std::ostream &os, vertexType vT)
+{
+   os << static_cast<int>(vT);
+   return os;
+}
+*/
 
 // Edge types.
 // NEURO:
@@ -124,7 +135,7 @@ enum vertexType {
 //  RC - Responder to Caller
 //  PP - PSAP to PSAP
 
-enum edgeType {
+enum class edgeType {
    // NEURO
    II = 0,
    IE = 1,
@@ -140,6 +151,12 @@ enum edgeType {
    // UNDEF
    ETYPE_UNDEF = -1
 };
+// Custom streaming operator<< for the enum class edgeType
+inline std::ostream &operator<<(std::ostream &os, edgeType eT)
+{
+   os << static_cast<int>(eT);
+   return os;
+}
 
 // The default membrane capacitance.
 #define DEFAULT_Cm (3e-8)
@@ -247,30 +264,37 @@ extern const string MATRIX_INIT;
 // classes (Layout, Connections, etc) need to do this before we can load the
 // graph.
 
-/// Struct for vertex attributes
-struct VertexProperty {
-   // Common Properties:
+/// @brief Parent structure to store common properties for all graph vertices
+struct VertexProperties {
    string type;
    double x;
    double y;
+};
 
-   // 911 Properties
+/// @brief Derived structure for NG911-specific properties
+/// Inherits from VertexProperty and includes attributes specific to 911 networks
+struct NG911VertexProperties : public VertexProperties {
    string objectID;
    string name;
    int servers = 0;
    int trunks = 0;
    string segments;
+};
 
-   // Neural Properties
+/// @brief Derived structure for Neural Network-specific properties
+struct NeuralVertexProperties : public VertexProperties {
    bool active;
 };
 
-/// @brief  The structure to hold the edge properties
-struct EdgeProperty {
-   // TODO: Edge Properties
+/// @brief The structure to hold the edge properties
+struct NeuralEdgeProperties {
+   int source;
+   int target;
+   double weight;
 };
 
+
 /// @brief The structure to hold the Graph properties
-struct GraphProperty {
+struct GraphProperties {
    // TODO: Graph Properties
 };

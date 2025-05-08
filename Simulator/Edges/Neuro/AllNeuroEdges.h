@@ -39,7 +39,7 @@ class AllVertices;
 // using fpCreateSynapse_t =  void (*)(void*, int, int, int, int, BGFLOAT*, BGFLOAT, edgeType);
 
 // enumerate all non-abstract edge classes.
-enum enumClassSynapses {
+enum class enumClassSynapses {
    classAllSpikingSynapses,
    classAllDSSynapses,
    classAllSTDPSynapses,
@@ -112,42 +112,10 @@ public:
 };
 
 #if defined(USE_GPU)
-struct AllEdgesDeviceProperties {
-   ///  The location of the edge.
-   int *sourceVertexIndex_;
-
-   ///  The coordinates of the summation point.
-   int *destVertexIndex_;
-
-   ///   The weight (scaling factor, strength, maximal amplitude) of the edge.
-   BGFLOAT *W_;
-
-   ///  Synapse type
-   edgeType *type_;
-
+struct AllNeuroEdgesDeviceProperties : public AllEdgesDeviceProperties {
    ///  The post-synaptic response is the result of whatever computation
    ///  is going on in the edge.
    BGFLOAT *psr_;
-
-   ///  The value indicating the entry in the array is in use.
-   // The representation of inUse has been updated from bool to unsigned char
-   // to store 1 (true) or 0 (false) for the support of serialization operations. See ISSUE-459
-   unsigned char *inUse_;
-
-   ///  The number of edges for each vertex.
-   ///  Note: Likely under a different name in GpuSim_struct, see edge_count. -Aaron
-   BGSIZE *edgeCounts_;
-
-   ///  The total number of active edges.
-   BGSIZE totalEdgeCount_;
-
-   ///  The maximum number of edges for each vertex.
-   BGSIZE maxEdgesPerVertex_;
-
-   ///  The number of vertices
-   ///  Aaron: Is this even supposed to be here?!
-   ///  Usage: Used by destructor
-   int countVertices_;
 };
 #endif   // defined(USE_GPU)
 

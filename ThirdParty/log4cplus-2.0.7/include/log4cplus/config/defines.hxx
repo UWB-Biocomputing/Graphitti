@@ -1,4 +1,3 @@
-/* include/log4cplus/config/defines.hxx.  Generated from defines.hxx.in by configure.  */
 #ifndef LOG4CPLUS_CONFIG_DEFINES_HXX
 #define LOG4CPLUS_CONFIG_DEFINES_HXX
 
@@ -63,7 +62,7 @@
 #define LOG4CPLUS_HAVE_WCHAR_H 1
 
 /* */
-/* #undef LOG4CPLUS_HAVE_ICONV_H */
+#define LOG4CPLUS_HAVE_ICONV_H 1
 
 /* */
 #define LOG4CPLUS_HAVE_LIMITS_H 1
@@ -234,15 +233,15 @@
 
 /* Define to 1 if the system has the `constructor' function attribute
    with priority */
-#define LOG4CPLUS_HAVE_FUNC_ATTRIBUTE_CONSTRUCTOR_PRIORITY 1
+/* #undef LOG4CPLUS_HAVE_FUNC_ATTRIBUTE_CONSTRUCTOR_PRIORITY */
 
 /* Define to 1 if the system has the `constructor' function attribute */
-#define LOG4CPLUS_HAVE_FUNC_ATTRIBUTE_CONSTRUCTOR 1
+/* #undef LOG4CPLUS_HAVE_FUNC_ATTRIBUTE_CONSTRUCTOR */
 
 /* Define to 1 if the system has the `init_priority' variable attribute */
-#define LOG4CPLUS_HAVE_VAR_ATTRIBUTE_INIT_PRIORITY 1
+/* #undef LOG4CPLUS_HAVE_VAR_ATTRIBUTE_INIT_PRIORITY */
 
 /* Defined to enable unit tests. */
-/* #undef LOG4CPLUS_WITH_UNIT_TESTS */
+#define LOG4CPLUS_WITH_UNIT_TESTS 1
 
 #endif // LOG4CPLUS_CONFIG_DEFINES_HXX

@@ -62,12 +62,15 @@ public:
    ///  @param  synapses               Reference to the allEdges struct on host memory.
    virtual void setAdvanceVerticesDeviceParams(AllEdges &synapses);
 
-   ///  Clear the spike counts out of all neurons.
-   //
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void clearNeuronSpikeCounts(void *allVerticesDevice) = 0;
    virtual void copyFromDevice() override;
    virtual void copyToDevice() override;
+   /// Add psr of all incoming synapses to summation points.
+   ///
+   /// @param allVerticesDevice       GPU address of the allVertices struct on device memory.
+   /// @param edgeIndexMapDevice      GPU address of the EdgeIndexMap on device memory.
+   /// @param allEdgesDevice          GPU address of the allEdges struct on device memory.
+   virtual void integrateVertexInputs(void *allVerticesDevice,
+                                      EdgeIndexMapDevice *edgeIndexMapDevice, void *allEdgesDevice);
 
 protected:
    ///  Clear the spike counts out of all neurons in device memory.
@@ -83,6 +86,12 @@ public:
    ///  @param  synapses         The Synapse list to search from.
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    virtual void advanceVertices(AllEdges &synapses, const EdgeIndexMap &edgeIndexMap);
+
+   /// Add psr of all incoming synapses to summation points.
+   ///
+   ///  @param  edges         The edge list to search from.
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   virtual void integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIndexMap);
 
    /// Get the spike history of neuron[index] at the location offIndex.
    /// More specifically, retrieves the global simulation time step for the spike
@@ -113,6 +122,13 @@ public:
    /// Holds at least one epoch's worth of event times for every vertex
    vector<EventBuffer> vertexEvents_;
 
+   ///  The summation point for each vertex.
+   ///  Summation points are places where the synapses connected to the vertex
+   ///  apply (summed up) their PSRs (Post-Synaptic-Response).
+   ///  On the next advance cycle, vertices add the values stored in their corresponding
+   ///  summation points to their Vm and resets the summation points to zero
+   vector<BGFLOAT> summationPoints_;
+
 protected:
    ///  True if back propagation is allowed.
    ///  (parameters used for advanceVerticesDevice.)
@@ -135,6 +151,16 @@ struct AllSpikingNeuronsDeviceProperties : public AllVerticesDeviceProperties {
    int *bufferEnd_;
    int *epochStart_;
    int *numElementsInEpoch_;
+
+   ///  The summation point for each vertex.
+   ///  Summation points are places where the synapses connected to the vertex
+   ///  apply (summed up) their PSRs (Post-Synaptic-Response).
+   ///  On the next advance cycle, vertices add the values stored in their corresponding
+   ///  summation points to their Vm and resets the summation points to zero
+   BGFLOAT *summationPoints_;
+   #ifdef VALIDATION_MODE
+   BGFLOAT *spValidation_;
+   #endif
 };
 #endif   // defined(USE_GPU)
 
@@ -145,5 +171,6 @@ template <class Archive> void AllSpikingNeurons::serialize(Archive &archive)
 {
    archive(cereal::base_class<AllVertices>(this), cereal::make_nvp("hasFired", hasFired_),
            cereal::make_nvp("vertexEvents", vertexEvents_),
+           cereal::make_nvp("summationPoints", summationPoints_),
            cereal::make_nvp("fAllowBackPropagation", fAllowBackPropagation_));
 }

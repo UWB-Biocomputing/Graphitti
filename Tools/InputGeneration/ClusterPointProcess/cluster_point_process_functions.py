@@ -4,24 +4,34 @@ import lxml.etree as et
 import pandas as pd
 
 def primprocess(first, last, pp_mu, pp_dead_t, region_grid):
-    # Generates a set of primary spatio-temporal events between first and last.
-    # The time intervals between events are exponentially distributed with
-    # mean pp_mu. The events are then uniformly distributed between the segments
-    # of the region_grid, which serve as a constrain box for randomly selecting
-    # the (x, y) location.
-    # The pp_dead_t is the dead time after an event. It helps to avoid having 2
-    # events ocurring at the exact same time. Finally, the times are given in seconds.
-    events = np.array([first])
-    aveInt = pp_mu + pp_dead_t
+    """Generates a set of primary spatio-temporal events between 'first' and 'last'.
+
+    - The time intervals between events follow an exponential distribution with mean 'pp_mu'.
+    - A dead time 'pp_dead_t' is added after each event to prevent two events from occurring at the same time.
+    - Events are uniformly distributed within the segments defined by 'region_grid'.
+    - The function returns an array where each row represents an event with (time, x, y) coordinates.
+
+    Parameters:
+        first (float): The starting time for event generation.
+        last (float): The ending time for event generation.
+        pp_mu (float): Mean of the exponential distribution for event intervals.
+        pp_dead_t (float): Dead time after each event.
+        region_grid (numpy.ndarray): Array defining spatial segments as bounding boxes.
+
+    Returns:
+        numpy.ndarray: A (N, 3) array with event times (rounded to int) and (x, y) coordinates."""
+
+    events = np.array([first]) # Initialize the events array with the starting time
+    aveInt = pp_mu + pp_dead_t # Average interval between events, including dead time
 
     # Generate all the primary processes between first and lastInp
     # drawing the interval between event from an exponential
     # distribution
     while events[-1] < last:
-        numInts = int(np.round((last - events[-1]) / aveInt)) + 1
-        newInts = np.random.exponential(scale=pp_mu, size=numInts) + pp_dead_t
-        newInts = np.cumsum(newInts)
-        events = np.concatenate([events, newInts + events[-1]])
+        numInts = int(np.round((last - events[-1]) / aveInt)) + 1 # Estimate required intervals
+        newInts = np.random.exponential(scale=pp_mu, size=numInts) + pp_dead_t # Generate intervals
+        newInts = np.cumsum(newInts)  # Cumulative sum to get event times
+        events = np.concatenate([events, newInts + events[-1]]) # Append new events
 
     # Include only events between first and lastInp
     if events[-1] > last:
@@ -30,40 +40,68 @@ def primprocess(first, last, pp_mu, pp_dead_t, region_grid):
     # Add spatial dimension to the primary process.
     # Create a numpy array of uniformly distributed random segments drawn
     # from the region_grid
-    n = len(events)
+    n = len(events) # Number of events
 
-    rand_segments = region_grid[np.random.randint(0, len(region_grid), n)]
+    # Randomly select spatial segments from 'region_grid' for each event
+    rand_segments = region_grid[np.random.randint(0, len(region_grid), n)] # Randomly select segments
     # Generate x and y from the 2 corners defined in each segment
     x = np.random.uniform(rand_segments[:,0,0], rand_segments[:,1,0])
     y = np.random.uniform(rand_segments[:,0,1], rand_segments[:,1,1])
 
+    # Combine time and spatial coordinates into a single array
+    # Return an array containing event times (rounded to int) and (x, y) coordinates
     return np.column_stack((np.round(events).astype(np.int64), x, y))
 
 
 def add_types(events, type_ratios):
+    # Updated August 1rst, 2024 for Graph Generation 
+
     # We will uniformily distribute the events between 3 types: EMS, Fire, and Law.
     # Assigned a number from 0 to 99 using a uniform distribution, which will be
     # used as a threshold for randomly selecting the the emergency type based
     # on their type_ratios.
-    random_ratio = np.random.randint(0, 100, events.shape[0])
     
     # With the ratios sorted in ascending order we set thresholds for the various
     # incident types using their cummulative sum. For instance, if we have ratios of
     # 15% EMS, 15% Fire, and 70% Law; we assign EMS when the uniformly distributed
     # random variable gets a value less than 15, Fire is assigned when it gets a
     # value between 15 and 29, and Law for values between 30 and 99.
-    prev_threshold = 0
-    cond_list = []
-    choice_list = []
-    for key, value in sorted(type_ratios.items(), key=lambda x:x[1]):
+    # Ensure the type_ratios sum to 1
+
+    # Randomly assign a number from 0 to 99 for each event
+    random_ratio = np.random.randint(0, 100, events.shape[0])
+
+    # Initialize variables to track cumulative thresholds and mappings
+    prev_threshold = 0 # The starting point for the cumulative threshold
+    cond_list = [] # A list of conditions for type assignment
+    choice_list = [] # A list of corresponding types (EMS, Fire, Law)
+
+    # Iterate through the `type_ratios` dictionary, sorted by value (ascending order),
+    # to define thresholds for each type.
+    for key, value in sorted(type_ratios.items(), key=lambda x: x[1]):
+        # Calculate the cumulative threshold for the current type
         threshold = prev_threshold + value * 100
+        # Add a condition for assigning the current type based on the random number
         cond_list.append(random_ratio < threshold)
-        # print('Threshold:', key, '= ', threshold)
+        # Map the condition to the current type
         choice_list.append(key)
+        # Update the cumulative threshold for the next iteration
         prev_threshold = threshold
-        
-    type_list = np.select(cond_list, choice_list)
-    return np.column_stack((events, type_list.astype('object')))
+
+    # Ensure the condition list is not empty
+    if len(cond_list) == 0:
+        raise ValueError("Condition list is empty")
+
+    # Assign types based on the conditions and choices
+    # If no condition matches, the default type is set to 'Unknown'.
+    type_list = np.select(cond_list, choice_list, default='Unknown').astype('object')
+
+    # Validate that the number of assigned types matches the number of events.
+    if type_list.shape[0] != events.shape[0]:
+        raise ValueError("Mismatch in dimensions between events and type_list")
+
+    # Stack the events with the assigned types
+    return np.column_stack((events, type_list))
 
 
 def secprocess(sp_sigma, duration_mean, duration_min, patience_mean, onsite_mean, prototypes,
@@ -96,20 +134,23 @@ def secprocess(sp_sigma, duration_mean, duration_min, patience_mean, onsite_mean
     #   class 3 = 1% of events
     # Each of this classes has a mean and standard deviation for the radius
     # and intensity of the generated secondary process
+    # Assign prototype class based on predefined probabilities
     proto_class = np.random.rand(len(prim_evts))
-    proto_class[(proto_class >= 0.99)] = 3
-    proto_class[proto_class < 0.4] = 0
-    proto_class[(proto_class >= 0.4) & (proto_class < 0.9)] = 1
-    proto_class[(proto_class >= 0.9) & (proto_class < 0.99)] = 2
+    proto_class[(proto_class >= 0.99)] = 3 # 1% chance for class 3
+    proto_class[proto_class < 0.4] = 0 # 40% chance for class 0
+    proto_class[(proto_class >= 0.4) & (proto_class < 0.9)] = 1 # 50% for class 1
+    proto_class[(proto_class >= 0.9) & (proto_class < 0.99)] = 2 # 9% for class 2
 
+    # Initialize arrays for secondary event attributes
     sec_evts_t = np.zeros(0) #np.zeros(len(primEvts) * expected_points_num)
     sec_evts_x = np.zeros(0) #np.zeros(len(primEvts) * expected_points_num)
     sec_evts_y = np.zeros(0) #np.zeros(len(primEvts) * expected_points_num)
     sec_evts_cid = np.zeros(0)
 
     # We need to compute the actual clusters on a per primary event basis
+     # Process each primary event to generate secondary events
     for pe_num in range(len(prim_evts)):
-        # get the radius and intensity
+        # Select the prototype for this primary event
         pcls = proto_class[pe_num]
         # print('protoclass:', pcls)
         radius = np.random.normal(prototypes[pcls]['mu_r'],
@@ -119,6 +160,7 @@ def secprocess(sp_sigma, duration_mean, duration_min, patience_mean, onsite_mean
                                      prototypes[pcls]['sdev_intensity'],
                                      size=1)[0]
         
+        # Estimate the expected number of secondary events
         expected_points_num = int(intensity * np.pi * radius**2)
         # Ensure that at least 1 call is generated
         if expected_points_num == 0:

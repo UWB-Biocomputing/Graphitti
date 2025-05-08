@@ -1,5 +1,5 @@
 /**
- * @file GraphManager.h
+ * @file CircularBuffer.h
  * @author Jardi A. M. Jordan (jardiamj@gmail.com)
  * @date 01-22-2023
  * Supervised by Dr. Michael Stiber, UW Bothell CSSE Division

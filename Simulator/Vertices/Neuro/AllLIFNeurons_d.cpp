@@ -153,8 +153,8 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
 
          // for each synapse, let them know we have fired
          switch (classSynapses_d) {
-            case classAllSTDPSynapses:
-            case classAllDynamicSTDPSynapses:
+            case enumClassSynapses::classAllSTDPSynapses:
+            case enumClassSynapses::classAllDynamicSTDPSynapses:
                for (BGSIZE i = 0; i < synapseCounts; i++) {
                   postSTDPSynapseSpikeHitDevice(
                      incomingMapBegin[i],
@@ -162,8 +162,8 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
                }   // end for
                break;
 
-            case classAllSpikingSynapses:
-            case classAllDSSynapses:
+            case enumClassSynapses::classAllSpikingSynapses:
+            case enumClassSynapses::classAllDSSynapses:
                for (BGSIZE i = 0; i < synapseCounts; i++) {
                   postSpikingSynapsesSpikeHitDevice(incomingMapBegin[i], allEdgesDevice);
                }   // end for
@@ -181,7 +181,9 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
       vm = allVerticesDevice->C1_[idx] * r_vm
            + allVerticesDevice->C2_[idx] * (r_sp);   // decay Vm and add inputs
    }
-
+#ifdef VALIDATION_MODE
+   allVerticesDevice->spValidation_[idx] = r_sp;
+#endif
    // clear synaptic input for next time step
    sp = 0;
 }

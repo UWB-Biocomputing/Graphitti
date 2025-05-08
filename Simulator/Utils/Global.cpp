@@ -57,9 +57,9 @@ string coordToString(int x, int y, int z)
 string neuronTypeToString(vertexType t)
 {
    switch (t) {
-      case INH:
+      case vertexType::INH:
          return "INH";
-      case EXC:
+      case vertexType::EXC:
          return "EXC";
       default:
          cerr << "ERROR->neuronTypeToString() failed, unknown type: " << t << endl;

@@ -8,39 +8,40 @@
 
 class CPUModel {
 	+CPUModel()
-	+~CPUModel()
-	+advance() : void
-	+copyCPUtoGPU() : void
-	+copyGPUtoCPU() : void
-	+finish() : void
-	+updateConnections() : void
+	+{abstract} ~CPUModel()
+	+{abstract} finish() : void <<override>>
+	+{abstract} advance() : void <<override>>
+	+{abstract} updateConnections() : void <<override>>
+	+{abstract} copyGPUtoCPU() : void <<override>>
+	+{abstract} copyCPUtoGPU() : void <<override>>
 }
 
 
 class GPUModel {
 	+GPUModel()
-	+~GPUModel()
-	#allVerticesDevice_ : AllSpikingNeuronsDeviceProperties*
-	#allEdgesDevice_ : AllSpikingSynapsesDeviceProperties*
-	#synapseIndexMapDevice_ : EdgeIndexMap*
+	+{abstract} ~GPUModel()
+	+{abstract} setupSim() : void <<override>>
+	+{abstract} finish() : void <<override>>
+	+{abstract} advance() : void <<override>>
+	+{abstract} updateConnections() : void <<override>>
+	+{abstract} copyGPUtoCPU() : void <<override>>
+	+{abstract} copyCPUtoGPU() : void <<override>>
+	+printGPUEdgesPropsModel() : void {query}
+	#allocDeviceStruct(void* * allVerticesDevice, void** allEdgesDevice) : void
+	#{abstract} deleteDeviceStruct(void* * allVerticesDevice, void** allEdgesDevice) : void
 	#randNoise_d : float*
-	-addEdge(AllEdges& synapses, edgeType type, const int srcVertex, const int destVertex, Coordinate& source, Coordinate& dest, BGFLOAT deltaT) : void
-	+advance() : void
-	#allocDeviceStruct(void** allVerticesDevice, void** allEdgesDevice) : void
-	-allocSynapseImap(int count) : void
-	#calcSummationPoint() : void
-	+copyCPUtoGPU() : void
-	+copyGPUtoCPU() : void
-	+copySynapseIndexMapHostToDevice(EdgeIndexMap& synapseIndexMapHost, int numVertices) : void
-	-createEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex, Coordinate source, Coordinate dest, BGFLOAT deltaT, edgeType type) : void
-	#deleteDeviceStruct(void** allVerticesDevice, void** allEdgesDevice) : void
-	-deleteSynapseImap() : void
-	-eraseEdge(AllEdges& synapses, const int neuronIndex, const int synapseIndex) : void
-	+finish() : void
-	+printGPUSynapsesPropsModel() : void {query}
-	+setupSim() : void
-	+updateConnections() : void
+	#edgeIndexMapDevice_ : EdgeIndexMapDevice*
+	#allEdgesDevice_ : AllEdgesDeviceProperties*
+	#allVerticesDevice_ : AllVerticesDeviceProperties*
+	-allocEdgeIndexMap(int count) : void
+	-deleteEdgeIndexMap() : void
+	+copyEdgeIndexMapHostToDevice(EdgeIndexMap& edgeIndexMapHost, int numVertices) : void
 	-updateHistory() : void
+	-eraseEdge(AllEdges& edges, int vertexIndex, int edgeIndex) : void
+	-addEdge(AllEdges& edges, edgeType type, int srcVertex, int destVertex, Coordinate& source, Coordinate& dest, BGFLOAT deltaT) : void
+	-createEdge(AllEdges& edges, int vertexIndex, int edgeIndex, Coordinate source, Coordinate dest, BGFLOAT deltaT, edgeType type) : void
+	+normalMTGPU(float *randNoise_d) : void
+	+initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, unsigned int nPerRng, unsigned int mt_rng_count) : void
 }
 
 
@@ -135,18 +136,31 @@ class Simulator {
 }
 
 
-class EdgeIndexMap {
-	+EdgeIndexMap()
-	+EdgeIndexMap(int vertexCount, int edgeCount)
-	+~EdgeIndexMap()
-	-numOfEdges_ : BGSIZE
-	-numOfVertices_ : BGSIZE
-	+incomingEdgeBegin_ : BGSIZE*
-	+incomingEdgeCount_ : BGSIZE*
-	+incomingEdgeIndexMap_ : BGSIZE*
-	+outgoingEdgeBegin_ : BGSIZE*
-	+outgoingEdgeCount_ : BGSIZE*
-	+outgoingEdgeIndexMap_ : BGSIZE*
+class EdgeIndexMapDevice {
+  +outgoingEdgeIndexMap_ : BGSIZE*
+  +outgoingEdgeBegin_ : BGSIZE*
+  +outgoingEdgeCount_ : BGSIZE*
+  +incomingEdgeIndexMap_ : BGSIZE*
+  +incomingEdgeBegin_ : BGSIZE*
+  +incomingEdgeCount_ : BGSIZE*
+}
+
+
+class AllEdgesDeviceProperties {
+  +sourceVertexIndex_ : int*
+  +destVertexIndex_ : int*
+  +W_ : BGFLOAT*
+  +type_ : edgeType*
+  +inUse_ : unsigned char*
+  +edgeCounts_ : BGSIZE*
+  +totalEdgeCount_ : BGSIZE
+  +maxEdgesPerVertex_ : BGSIZE
+  +countVertices_ : int
+}
+
+
+class AllVerticesDeviceProperties {
+
 }
 
 
@@ -166,7 +180,9 @@ class EdgeIndexMap {
 
 /' Aggregation relationships '/
 
-.GPUModel o-- .EdgeIndexMap
+.GPUModel o-- .EdgeIndexMapDevice
+.GPUModel o-- .AllEdgesDeviceProperties
+.GPUModel o-- .AllVerticesDeviceProperties
 
 .Simulator *-- .Model
 
