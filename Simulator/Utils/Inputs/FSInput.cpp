@@ -30,8 +30,8 @@ ISInput *FSInput::CreateInstance()
    // load stimulus input file
    TiXmlDocument siDoc(stimulusFileName.c_str());
    if (!siDoc.LoadFile()) {
-      cerr << "Failed loading stimulus input file " << stimulusFileName << ":" << "\n\t"
-           << siDoc.ErrorDesc() << endl;
+      cerr << "Failed loading stimulus input file " << stimulusFileName << ":"
+           << "\n\t" << siDoc.ErrorDesc() << endl;
       cerr << " error: " << siDoc.ErrorRow() << ", " << siDoc.ErrorCol() << endl;
       return nullptr;
    }

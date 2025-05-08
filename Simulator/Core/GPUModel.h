@@ -21,11 +21,11 @@
 
 #pragma once
 
-#include "OperationManager.h"
 #include "AllEdges.h"
-#include "AllVertices.h"
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
+#include "AllVertices.h"
+#include "OperationManager.h"
 
 #ifdef VALIDATION_MODE
    #include <fstream>
@@ -89,7 +89,9 @@ public:
 
    // GPUModel itself does not have anything to be copied back, this function is a
    // dummy function just to make GPUModel non virtual
-   virtual void copyGPUtoCPU() override {}
+   virtual void copyGPUtoCPU() override
+   {
+   }
 
    /// Print out EdgeProps on the GPU.
    void printGPUEdgesPropsModel() const;

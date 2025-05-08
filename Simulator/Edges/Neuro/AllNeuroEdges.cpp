@@ -114,7 +114,8 @@ void AllNeuroEdges::printSynapsesProps() const
    }
 
    for (int i = 0; i < countVertices_; i++) {
-      cout << "edge_counts:" << "vertex[" << i << "]" << edgeCounts_[i] << endl;
+      cout << "edge_counts:"
+           << "vertex[" << i << "]" << edgeCounts_[i] << endl;
    }
 
    cout << "totalEdgeCount:" << totalEdgeCount_ << endl;

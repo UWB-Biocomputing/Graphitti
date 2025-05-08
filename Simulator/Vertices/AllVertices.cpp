@@ -25,7 +25,7 @@ AllVertices::AllVertices() : size_(0)
    // Register registerHistoryVariables function as a registerHistoryVariables operation in the OperationManager
    function<void()> registerHistory = bind(&AllVertices::registerHistoryVariables, this);
    OperationManager::getInstance().registerOperation(Operations::registerHistoryVariables,
-                                                      registerHistory);
+                                                     registerHistory);
 
 #if defined(USE_GPU)
    // Register allocNeuronDeviceStruct function as a allocateGPU operation in the OperationManager

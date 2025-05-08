@@ -199,7 +199,9 @@ TEST(XmlRecorderTest, ToXML)
    // Verify the expected XML output
    stringstream os;
    os << "<Matrix ";
-   os << "name=\"" << "TestVar" << "\" ";
+   os << "name=\""
+      << "TestVar"
+      << "\" ";
    os << "type=\"complete\" rows=\"" << 1 << "\" columns=\"" << variableHistory.size()
       << "\" multiplier=\"1.0\">" << endl;
    os << "   ";

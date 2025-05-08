@@ -325,7 +325,8 @@ void AllDSSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
       }
 
       for (int i = 0; i < countVertices_; i++) {
-         cout << "GPU edge_counts:" << "neuron[" << i << "]" << synapseCountsPrint[i] << endl;
+         cout << "GPU edge_counts:"
+              << "neuron[" << i << "]" << synapseCountsPrint[i] << endl;
       }
 
       cout << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;

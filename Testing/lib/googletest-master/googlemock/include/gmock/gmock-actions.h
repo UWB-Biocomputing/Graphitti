@@ -27,7 +27,6 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 // Google Mock - a framework for writing C++ mock classes.
 //
 // The ACTION* family of macros can be used in a namespace scope to
@@ -131,7 +130,7 @@
 #define GMOCK_INCLUDE_GMOCK_GMOCK_ACTIONS_H_
 
 #ifndef _WIN32_WCE
-# include <errno.h>
+#include <errno.h>
 #endif
 
 #include <algorithm>
@@ -147,8 +146,8 @@
 #include "gmock/internal/gmock-pp.h"
 
 #ifdef _MSC_VER
-# pragma warning(push)
-# pragma warning(disable:4100)
+#pragma warning(push)
+#pragma warning(disable : 4100)
 #endif
 
 namespace testing {
@@ -196,9 +195,7 @@ class BuiltInDefaultValue {
  public:
   // This function returns true if and only if type T has a built-in default
   // value.
-  static bool Exists() {
-    return ::std::is_default_constructible<T>::value;
-  }
+  static bool Exists() { return ::std::is_default_constructible<T>::value; }
 
   static T Get() {
     return BuiltInDefaultValueGetter<
@@ -227,11 +224,11 @@ class BuiltInDefaultValue<T*> {
 // The following specializations define the default values for
 // specific types we care about.
 #define GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(type, value) \
-  template <> \
-  class BuiltInDefaultValue<type> { \
-   public: \
-    static bool Exists() { return true; } \
-    static type Get() { return value; } \
+  template <>                                                     \
+  class BuiltInDefaultValue<type> {                               \
+   public:                                                        \
+    static bool Exists() { return true; }                         \
+    static type Get() { return value; }                           \
   }
 
 GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(void, );  // NOLINT
@@ -255,10 +252,10 @@ GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(unsigned short, 0U);  // NOLINT
 GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(signed short, 0);     // NOLINT
 GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(unsigned int, 0U);
 GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(signed int, 0);
-GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(unsigned long, 0UL);  // NOLINT
-GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(signed long, 0L);     // NOLINT
+GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(unsigned long, 0UL);     // NOLINT
+GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(signed long, 0L);        // NOLINT
 GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(unsigned long long, 0);  // NOLINT
-GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(signed long long, 0);  // NOLINT
+GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(signed long long, 0);    // NOLINT
 GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(float, 0);
 GMOCK_DEFINE_DEFAULT_ACTION_FOR_RETURN_TYPE_(double, 0);
 
@@ -838,7 +835,7 @@ class ReturnRoundRobinAction {
 
   template <typename... Args>
   T operator()(Args&&...) const {
-     return state_->Next();
+    return state_->Next();
   }
 
  private:
@@ -861,7 +858,9 @@ class DoDefaultAction {
   // This template type conversion operator allows DoDefault() to be
   // used in any function.
   template <typename F>
-  operator Action<F>() const { return Action<F>(); }  // NOLINT
+  operator Action<F>() const {
+    return Action<F>();
+  }  // NOLINT
 };
 
 // Implements the Assign action to set a given pointer referent to a
@@ -889,8 +888,7 @@ template <typename T>
 class SetErrnoAndReturnAction {
  public:
   SetErrnoAndReturnAction(int errno_value, T result)
-      : errno_(errno_value),
-        result_(result) {}
+      : errno_(errno_value), result_(result) {}
   template <typename Result, typename ArgumentTuple>
   Result Perform(const ArgumentTuple& /* args */) const {
     errno = errno_;
@@ -1001,8 +999,8 @@ class IgnoreResultAction {
    private:
     // Type OriginalFunction is the same as F except that its return
     // type is IgnoredValue.
-    typedef typename internal::Function<F>::MakeResultIgnoredValue
-        OriginalFunction;
+    typedef
+        typename internal::Function<F>::MakeResultIgnoredValue OriginalFunction;
 
     const Action<OriginalFunction> action_;
   };
@@ -1019,12 +1017,12 @@ struct WithArgsAction {
   template <typename R, typename... Args>
   operator Action<R(Args...)>() const {  // NOLINT
     using TupleType = std::tuple<Args...>;
-    Action<R(typename std::tuple_element<I, TupleType>::type...)>
-        converted(action);
+    Action<R(typename std::tuple_element<I, TupleType>::type...)> converted(
+        action);
 
     return [converted](Args... args) -> R {
       return converted.Perform(std::forward_as_tuple(
-        std::get<I>(std::forward_as_tuple(std::forward<Args>(args)...))...));
+          std::get<I>(std::forward_as_tuple(std::forward<Args>(args)...))...));
     };
   }
 };
@@ -1106,8 +1104,8 @@ internal::DoAllAction<typename std::decay<Action>::type...> DoAll(
 // multiple arguments.  For convenience, we also provide
 // WithArgs<k>(an_action) (defined below) as a synonym.
 template <size_t k, typename InnerAction>
-internal::WithArgsAction<typename std::decay<InnerAction>::type, k>
-WithArg(InnerAction&& action) {
+internal::WithArgsAction<typename std::decay<InnerAction>::type, k> WithArg(
+    InnerAction&& action) {
   return {std::forward<InnerAction>(action)};
 }
 
@@ -1126,8 +1124,8 @@ WithArgs(InnerAction&& action) {
 // argument.  In other words, it adapts an action accepting no
 // argument to one that accepts (and ignores) arguments.
 template <typename InnerAction>
-internal::WithArgsAction<typename std::decay<InnerAction>::type>
-WithoutArgs(InnerAction&& action) {
+internal::WithArgsAction<typename std::decay<InnerAction>::type> WithoutArgs(
+    InnerAction&& action) {
   return {std::forward<InnerAction>(action)};
 }
 
@@ -1213,7 +1211,7 @@ internal::SetArgumentPointeeAction<N, T> SetArgumentPointee(T value) {
 
 // Creates an action that sets a pointer referent to a given value.
 template <typename T1, typename T2>
-PolymorphicAction<internal::AssignAction<T1, T2> > Assign(T1* ptr, T2 val) {
+PolymorphicAction<internal::AssignAction<T1, T2>> Assign(T1* ptr, T2 val) {
   return MakePolymorphicAction(internal::AssignAction<T1, T2>(ptr, val));
 }
 
@@ -1221,8 +1219,8 @@ PolymorphicAction<internal::AssignAction<T1, T2> > Assign(T1* ptr, T2 val) {
 
 // Creates an action that sets errno and returns the appropriate error.
 template <typename T>
-PolymorphicAction<internal::SetErrnoAndReturnAction<T> >
-SetErrnoAndReturn(int errval, T result) {
+PolymorphicAction<internal::SetErrnoAndReturnAction<T>> SetErrnoAndReturn(
+    int errval, T result) {
   return MakePolymorphicAction(
       internal::SetErrnoAndReturnAction<T>(errval, result));
 }
@@ -1483,9 +1481,8 @@ auto InvokeArgumentAdl(AdlTag, F f, Args... args) -> decltype(f(args...)) {
   template <typename F>                                                       \
   template <GMOCK_ACTION_TEMPLATE_ARGS_NAMES_>                                \
   typename ::testing::internal::Function<F>::Result                           \
-      full_name<GMOCK_ACTION_TYPE_PARAMS_(params)>::gmock_Impl<               \
-          F>::gmock_PerformImpl(GMOCK_ACTION_ARG_TYPES_AND_NAMES_UNUSED_)     \
-          const
+  full_name<GMOCK_ACTION_TYPE_PARAMS_(params)>::gmock_Impl<                   \
+      F>::gmock_PerformImpl(GMOCK_ACTION_ARG_TYPES_AND_NAMES_UNUSED_) const
 
 }  // namespace internal
 
@@ -1552,8 +1549,7 @@ auto InvokeArgumentAdl(AdlTag, F f, Args... args) -> decltype(f(args...)) {
 }  // namespace testing
 
 #ifdef _MSC_VER
-# pragma warning(pop)
+#pragma warning(pop)
 #endif
-
 
 #endif  // GMOCK_INCLUDE_GMOCK_GMOCK_ACTIONS_H_

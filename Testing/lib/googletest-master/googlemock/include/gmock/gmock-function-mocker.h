@@ -136,8 +136,9 @@ using internal::FunctionMocker;
       _Signature)>::Result                                                     \
   GMOCK_INTERNAL_EXPAND(_CallType)                                             \
       _MethodName(GMOCK_PP_REPEAT(GMOCK_INTERNAL_PARAMETER, _Signature, _N))   \
-          GMOCK_PP_IF(_Constness, const, ) _NoexceptSpec                       \
-          GMOCK_PP_IF(_Override, override, ) GMOCK_PP_IF(_Final, final, ) {    \
+          GMOCK_PP_IF(_Constness, const, )                                     \
+              _NoexceptSpec GMOCK_PP_IF(_Override, override, )                 \
+                  GMOCK_PP_IF(_Final, final, ) {                               \
     GMOCK_MOCKER_(_N, _Constness, _MethodName)                                 \
         .SetOwnerAndName(this, #_MethodName);                                  \
     return GMOCK_MOCKER_(_N, _Constness, _MethodName)                          \
@@ -160,7 +161,7 @@ using internal::FunctionMocker;
             GMOCK_INTERNAL_A_MATCHER_ARGUMENT, _Signature, _N));               \
   }                                                                            \
   mutable ::testing::FunctionMocker<GMOCK_PP_REMOVE_PARENS(_Signature)>        \
-      GMOCK_MOCKER_(_N, _Constness, _MethodName)
+  GMOCK_MOCKER_(_N, _Constness, _MethodName)
 
 #define GMOCK_INTERNAL_EXPAND(...) __VA_ARGS__
 
