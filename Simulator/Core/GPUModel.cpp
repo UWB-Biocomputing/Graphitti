@@ -37,6 +37,11 @@ GPUModel::GPUModel() :
    function<void()> copyCPUtoGPU = bind(&GPUModel::copyCPUtoGPU, this);
    OperationManager::getInstance().registerOperation(Operations::copyToGPU, copyCPUtoGPU);
 
+   // Note: We do not register a corresponding copyFromGPU operation here because
+   // we are only copying the synapseIndexMap to the GPU. This map is a read-only lookup table
+   // that gets recreated from scratch on each update. As a result, we only need to allocate,
+   // copy to GPU, and deallocate — there is no meaningful data to copy back from the GPU.
+
    // Register deleteSynapseImap function as a deallocateGPUMemory operation in the OperationManager
    function<void()> deallocateGPUMemory = bind(&GPUModel::deleteDeviceStruct, this);
    OperationManager::getInstance().registerOperation(Operations::deallocateGPUMemory,

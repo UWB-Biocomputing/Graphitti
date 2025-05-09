@@ -84,7 +84,12 @@ public:
    /// over the past epoch. Should be called once every epoch.
    virtual void updateConnections() override;
 
-   /// Copy Synapse Map data to GPU.
+   /// Copies neuron and synapse data from CPU to GPU memory.
+   /// TODO: Refactor this. Currently, GPUModel handles low-level memory transfer for vertices and edges.
+   ///       Consider moving this responsibility to a more appropriate class, such as a dedicated memory manager
+   ///       or the OperationManager, to better separate concerns and keep the model focused on high-level coordination.
+   virtual void copyCPUtoGPU() override;
+
    virtual void copyCPUtoGPU() override;
 
    // GPUModel itself does not have anything to be copied back, this function is a
@@ -96,10 +101,10 @@ public:
    /// Print out EdgeProps on the GPU.
    void printGPUEdgesPropsModel() const;
 
-   /// Getter for synapse structures in device memory
+   /// Getter for edge (synapse) structures in device memory
    AllEdgesDeviceProperties *&getAllEdgesDevice();
 
-   /// Getter for neuron structure in device memory
+   /// Getter for vertex (neuron) structures in device memory
    AllVerticesDeviceProperties *&getAllVerticesDevice();
 
 protected:
