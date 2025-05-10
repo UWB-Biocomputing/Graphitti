@@ -90,8 +90,6 @@ public:
    ///       or the OperationManager, to better separate concerns and keep the model focused on high-level coordination.
    virtual void copyCPUtoGPU() override;
 
-   virtual void copyCPUtoGPU() override;
-
    // GPUModel itself does not have anything to be copied back, this function is a
    // dummy function just to make GPUModel non virtual
    virtual void copyGPUtoCPU() override
