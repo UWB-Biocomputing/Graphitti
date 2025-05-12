@@ -23,6 +23,7 @@
 
 #include "AllEdges.h"
 #include "AllVertices.h"
+#include "AsyncMT_d.h"
 
 #ifdef VALIDATION_MODE
    #include <fstream>
@@ -103,7 +104,7 @@ protected:
 
    /// Pointer to device random noise array.
    float *randNoise_d;
-
+   AsyncMT_d AsyncGenerator;
 #if defined(USE_GPU)
    /// Pointer to edge index map in device memory.
    EdgeIndexMapDevice *edgeIndexMapDevice_;

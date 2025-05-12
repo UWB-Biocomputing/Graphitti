@@ -1,7 +1,8 @@
 #include "AsyncMT_d.h"
 #include <cassert>
 #include <curand_mtgp32dc_p_11213.h>
-
+#include <iostream>
+#include <chrono>
 __global__ void generateKernel(curandStateMtgp32 *state, float *output, int samplesPerGen)
 {
    int tid = threadIdx.x;
@@ -48,6 +49,7 @@ AsyncMT_d::AsyncMT_d(int samplesPerSegment, unsigned long seed) :
    // Pre-fill both buffers
    fillBuffer(0);
    fillBuffer(1);
+   cudaStreamSynchronize(stream); //wait for both buffers to be filled before the first request
 }
 
 AsyncMT_d::~AsyncMT_d()
@@ -61,6 +63,7 @@ AsyncMT_d::~AsyncMT_d()
 
 float *AsyncMT_d::requestSegment()
 {
+   //auto start = std::chrono::high_resolution_clock::now();
    if (segmentIndex >= totalSegments) {
       // Switch buffer and launch async refill on the now-unused one
       int refillBuffer = currentBuffer;
@@ -68,10 +71,15 @@ float *AsyncMT_d::requestSegment()
       segmentIndex = 0;
       cudaStreamSynchronize(stream);   // Ensure refillBuffer is done
       fillBuffer(refillBuffer);
+      //cudaStreamSynchronize(stream);
    }
 
    float *segmentPtr = buffers[currentBuffer] + segmentIndex * segmentSize;
    segmentIndex++;
+
+   // auto end = std::chrono::high_resolution_clock::now();
+   // std::cout << "Segment: " << segmentIndex << ", Launch time: " << (end - start).count() << " ns\n";
+
    return segmentPtr;
 }
 

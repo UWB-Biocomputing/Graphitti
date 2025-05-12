@@ -8,6 +8,7 @@
 
 class AsyncMT_d {
 public:
+   AsyncMT_d() = default;
    AsyncMT_d(int samplesPerGen, unsigned long seed);
    ~AsyncMT_d();
 
