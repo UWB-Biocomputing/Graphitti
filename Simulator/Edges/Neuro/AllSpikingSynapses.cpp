@@ -108,8 +108,8 @@ void AllSpikingSynapses::printParameters() const
                                    << "\tEdges type: AllSpikingSynapses" << endl
                                    << endl);
    LOG4CPLUS_DEBUG(edgeLogger_, "\n\tTau values: [" << " II: " << tau_II_ << "," << " IE: "
-                                   << tau_IE_ << "," << " EI: " << tau_EI_ << ","
-                                   << " EE: " << tau_EE_ << "]" << endl);
+                                                    << tau_IE_ << "," << " EI: " << tau_EI_ << ","
+                                                    << " EE: " << tau_EE_ << "]" << endl);
 
    LOG4CPLUS_DEBUG(edgeLogger_, "\n\tDelay values: ["
                                    << " II: " << delay_II_ << "," << " IE: " << delay_IE_ << ","
