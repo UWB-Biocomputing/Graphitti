@@ -1,6 +1,6 @@
 #ifndef HAVE_CONFIG_H
 #define HAVE_CONFIG_H
 
-#define GIT_COMMIT_ID "e2ad9d1a614ca1e7da5e4ce3ec2924430eceb3a9"
+#define GIT_COMMIT_ID "7f485918bc1a47d31d5c95d0b7dd74793969b96b"
 
 #endif
