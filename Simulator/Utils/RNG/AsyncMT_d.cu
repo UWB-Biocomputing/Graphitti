@@ -24,7 +24,7 @@ void AsyncMT_d::loadAsyncMT(int samplesPerSegment, unsigned long seed)
    seed = seed;
    currentBuffer = 0;
    segmentIndex = 0;
-   totalSegments = 100000;   // Each buffer has 10 segments
+   totalSegments = 10000;   // Each buffer has 10000 segments
    bufferSize = segmentSize * totalSegments;
    totalSamples = bufferSize * 2;
    numGenerators = 50;   //placeholder num of blocks
@@ -84,7 +84,6 @@ float *AsyncMT_d::requestSegment()
 
    // auto end = std::chrono::high_resolution_clock::now();
    // std::cout << "Segment: " << segmentIndex << ", Launch time: " << (end - start).count() << " ns\n";
-   numRequests++;
    return segmentPtr;
 }
 
