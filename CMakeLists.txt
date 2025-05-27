@@ -48,6 +48,7 @@ if(ENABLE_CUDA)
         project(Graphitti LANGUAGES CXX CUDA C)
 #Verify CUDA package is present
         find_Package(CUDA REQUIRED)
+        include_directories(${CUDA_INCLUDE_DIRS})
 #Set the USE_GPU preprocessor macro so that GPU code will be compiled.
         add_compile_definitions(USE_GPU)
 #Specify the CUDA architecture / gencode that will be targeted
