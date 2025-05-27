@@ -11,7 +11,7 @@ public:
    AsyncMT_d() = default;
    AsyncMT_d(int samplesPerGen, unsigned long seed);
    ~AsyncMT_d();
-
+   void loadAsyncMT(int samplesPerSegment, unsigned long seed);
    float *requestSegment();
 
 private:

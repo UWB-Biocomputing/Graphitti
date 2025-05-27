@@ -94,7 +94,9 @@ void GPUModel::setupSim()
    // int rng_threads = rng_mt_rng_count / rng_blocks;   //# threads per block needed
    // initMTGPU(Simulator::getInstance().getNoiseRngSeed(), rng_blocks, rng_threads, rng_nPerRng,
    //           rng_mt_rng_count);
-   AsyncGenerator = AsyncMT_d(Simulator::getInstance().getTotalVertices(),
+   // AsyncGenerator = AsyncMT_d(Simulator::getInstance().getTotalVertices(),
+   //                            Simulator::getInstance().getNoiseRngSeed());
+   AsyncGenerator.loadAsyncMT(Simulator::getInstance().getTotalVertices(),
                               Simulator::getInstance().getNoiseRngSeed());
 
 #ifdef PERFORMANCE_METRICS

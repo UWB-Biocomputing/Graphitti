@@ -17,9 +17,12 @@ __global__ void generateKernel(curandStateMtgp32 *state, float *output, int samp
    state[gen_id] = localState;
 }
 
-AsyncMT_d::AsyncMT_d(int samplesPerSegment, unsigned long seed) :
-   segmentSize(samplesPerSegment), seed(seed), currentBuffer(0), segmentIndex(0)
+void AsyncMT_d::loadAsyncMT(int samplesPerSegment, unsigned long seed)
 {
+   segmentSize = samplesPerSegment;
+   seed = seed;
+   currentBuffer = 0;
+   segmentIndex = 0;
    totalSegments = 10;   // Each buffer has 10 segments
    bufferSize = segmentSize * totalSegments;
    totalSamples = bufferSize * 2;
