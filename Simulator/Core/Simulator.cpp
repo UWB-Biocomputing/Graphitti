@@ -173,7 +173,7 @@ void Simulator::simulate()
       double total_time = timer.lap() / 1000000.0;
 
       cout << "\ntotal_time: " << total_time << " seconds" << endl;
-      printPerformanceMetrics(total_time, currentEpoch);
+      printPerformanceMetrics(total_time, currentEpoch_);
       cout << endl;
 #endif
    }
