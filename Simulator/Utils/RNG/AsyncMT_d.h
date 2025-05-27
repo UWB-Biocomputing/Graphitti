@@ -5,7 +5,7 @@
 #include <curand_mtgp32_host.h>
 #include <curand_mtgp32_kernel.h>
 #include <curand_mtgp32dc_p_11213.h>   // Precomputed parameter table
-
+#include <log4cplus/loggingmacros.h>
 class AsyncMT_d {
 public:
    AsyncMT_d() = default;
@@ -30,6 +30,9 @@ private:
 
    curandStateMtgp32 *d_states;
    mtgp32_kernel_params_t *d_params;
+
+   log4cplus::Logger
+      consoleLogger_;   /// Logger for printing to the console as well as the logging file
 
    void fillBuffer(int bufferIndex);
 };

@@ -19,11 +19,12 @@ __global__ void generateKernel(curandStateMtgp32 *state, float *output, int samp
 
 void AsyncMT_d::loadAsyncMT(int samplesPerSegment, unsigned long seed)
 {
+   consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    segmentSize = samplesPerSegment;
    seed = seed;
    currentBuffer = 0;
    segmentIndex = 0;
-   totalSegments = 10;   // Each buffer has 10 segments
+   totalSegments = 100000;   // Each buffer has 10 segments
    bufferSize = segmentSize * totalSegments;
    totalSamples = bufferSize * 2;
    numGenerators = 50;   //placeholder num of blocks
@@ -66,6 +67,7 @@ AsyncMT_d::~AsyncMT_d()
 
 float *AsyncMT_d::requestSegment()
 {
+   //LOG4CPLUS_TRACE(consoleLogger_, "request segment");
    //auto start = std::chrono::high_resolution_clock::now();
    if (segmentIndex >= totalSegments) {
       // Switch buffer and launch async refill on the now-unused one
@@ -78,11 +80,11 @@ float *AsyncMT_d::requestSegment()
    }
 
    float *segmentPtr = buffers[currentBuffer] + segmentIndex * segmentSize;
-   segmentIndex++;
+   segmentIndex += 1;
 
    // auto end = std::chrono::high_resolution_clock::now();
    // std::cout << "Segment: " << segmentIndex << ", Launch time: " << (end - start).count() << " ns\n";
-
+   numRequests++;
    return segmentPtr;
 }
 
@@ -90,6 +92,7 @@ void AsyncMT_d::fillBuffer(int bufferIndex)
 {
    dim3 blocks(numGenerators);
    dim3 threads(256);
+   //LOG4CPLUS_TRACE(consoleLogger_, "filling buffer:");
    generateKernel<<<blocks, threads, 0, stream>>>(d_states, buffers[bufferIndex],
                                                   bufferSize / numGenerators);
 }
