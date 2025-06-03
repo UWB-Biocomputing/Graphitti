@@ -19,12 +19,14 @@ public:
    float *requestSegment();
 
 private:
-   int numGenerators;
+   int numBlocks;
+   int numThreads;
+   int totalThreads;
    int segmentSize;
    int totalSegments;
    int bufferSize;
-   int totalSamples;
    unsigned long seed;
+
 
    cudaStream_t stream;
 
@@ -32,8 +34,11 @@ private:
    int currentBuffer;
    int segmentIndex;
 
-   curandStateMtgp32 *d_states;
-   mtgp32_kernel_params_t *d_params;
+   curandStatePhilox4_32_10_t* spStates;
+
+
+   //curandStateMtgp32 *d_states;
+   //mtgp32_kernel_params_t *d_params;
 
    FILE* logfile;
    float* hostBuffer;

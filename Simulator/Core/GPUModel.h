@@ -145,5 +145,6 @@ extern "C" {
 void normalMTGPU(float *randNoise_d);
 void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, unsigned int nPerRng,
                unsigned int mt_rng_count);
+void closeFileMT();
 }
 #endif

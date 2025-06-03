@@ -74,6 +74,8 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
    // Deallocate device memory
    edges.deleteEdgeDeviceStruct(*allEdgesDevice);
    // HANDLE_ERROR(cudaFree(randNoise_d));
+   AsyncGenerator.deleteDeviceStruct();
+   // closeFileMT();
 }
 
 /// Sets up the Simulation.
@@ -164,7 +166,7 @@ void GPUModel::advance()
    // }
    cudaMemcpy(randNoise_d, randNoise_h.data(), verts * sizeof(float), cudaMemcpyHostToDevice);
 #else
-   //normalMTGPU(randNoise_d);
+   // normalMTGPU(randNoise_d);
    randNoise_d = AsyncGenerator.requestSegment();
    // int verts = Simulator::getInstance().getTotalVertices();
    // float* h_data = new float[verts];
