@@ -12,6 +12,7 @@
 #include "AllVertices.h"
 #include "Connections.h"
 #include "Global.h"
+#include <fstream>
 #ifdef VALIDATION_MODE
    #include "AllIFNeurons.h"
    #include "OperationManager.h"
@@ -44,8 +45,8 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
 
    // Allocate memory for random noise array
    int numVertices = Simulator::getInstance().getTotalVertices();
-   // BGSIZE randNoise_d_size = numVertices * sizeof(float);   // size of random noise array
-   // HANDLE_ERROR(cudaMalloc((void **)&randNoise_d, randNoise_d_size));
+   BGSIZE randNoise_d_size = numVertices * sizeof(float);   // size of random noise array
+   HANDLE_ERROR(cudaMalloc((void **)&randNoise_d, randNoise_d_size));
 
    // Copy host vertex and edge arrays into GPU device
    vertices.copyToDevice(*allVerticesDevice);
@@ -72,7 +73,7 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
    edges.copyEdgeDeviceToHost(*allEdgesDevice);
    // Deallocate device memory
    edges.deleteEdgeDeviceStruct(*allEdgesDevice);
-   //HANDLE_ERROR(cudaFree(randNoise_d));
+   HANDLE_ERROR(cudaFree(randNoise_d));
 }
 
 /// Sets up the Simulation.
@@ -94,8 +95,7 @@ void GPUModel::setupSim()
    // int rng_threads = rng_mt_rng_count / rng_blocks;   //# threads per block needed
    // initMTGPU(Simulator::getInstance().getNoiseRngSeed(), rng_blocks, rng_threads, rng_nPerRng,
    //           rng_mt_rng_count);
-   // AsyncGenerator = AsyncMT_d(Simulator::getInstance().getTotalVertices(),
-   //                            Simulator::getInstance().getNoiseRngSeed());
+   //cout << "blocks, threads, nPerRng, rng_rng_count: " << rng_blocks << " " << rng_threads << " " << rng_nPerRng << " " << rng_mt_rng_count << endl;
    AsyncGenerator.loadAsyncMT(Simulator::getInstance().getTotalVertices(),
                               Simulator::getInstance().getNoiseRngSeed());
 
@@ -165,6 +165,17 @@ void GPUModel::advance()
 #else
    //normalMTGPU(randNoise_d);
    randNoise_d = AsyncGenerator.requestSegment();
+   // int verts = Simulator::getInstance().getTotalVertices();
+   // float* h_data = new float[verts];
+   // cudaDeviceSynchronize();
+   // HANDLE_ERROR(cudaMemcpy(h_data, randNoise_d, verts * sizeof(float), cudaMemcpyDeviceToHost));
+   // log4cplus::Logger vertexLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));
+   // for(int i=0; i< verts; i++){
+   //     LOG4CPLUS_DEBUG(vertexLogger_, endl
+   //                                      << "Rand Index[" << i << "] :: Noise = "
+   //                                      << h_data[i]);
+   // }
+   // delete[] h_data;
 #endif
 //LOG4CPLUS_DEBUG(vertexLogger_, "Index: " << index << " Vm: " << Vm);
 #ifdef PERFORMANCE_METRICS
