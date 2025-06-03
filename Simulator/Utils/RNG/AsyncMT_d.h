@@ -40,8 +40,8 @@ private:
    //curandStateMtgp32 *d_states;
    //mtgp32_kernel_params_t *d_params;
 
-   FILE* logfile;
-   float* hostBuffer;
+   // FILE* logfile;
+   // float* hostBuffer;
    log4cplus::Logger
       consoleLogger_;   /// Logger for printing to the console as well as the logging file
 

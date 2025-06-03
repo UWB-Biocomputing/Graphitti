@@ -49,9 +49,9 @@ __global__ void initPhilox(curandStatePhilox4_32_10_t* states, unsigned long see
 
 void AsyncMT_d::loadAsyncMT(int samplesPerSegment, unsigned long seed)
 {
-   hostBuffer = nullptr;
-   cudaHostAlloc(&hostBuffer, samplesPerSegment * sizeof(float), cudaHostAllocDefault);
-   logfile = std::fopen("philox_output.bin", "wb");
+   // hostBuffer = nullptr;
+   // cudaHostAlloc(&hostBuffer, samplesPerSegment * sizeof(float), cudaHostAllocDefault);
+   // logfile = std::fopen("philox_output.bin", "wb");
    //consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    segmentSize = samplesPerSegment;
    seed = seed;
@@ -98,8 +98,8 @@ void AsyncMT_d::loadAsyncMT(int samplesPerSegment, unsigned long seed)
    HANDLE_ERROR(cudaStreamSynchronize(stream)); //wait for both buffers to be filled before the first request
 }
 void AsyncMT_d::deleteDeviceStruct(){
-   std::fclose(logfile);
-   cudaFree(hostBuffer);
+   // std::fclose(logfile);
+   // cudaFree(hostBuffer);
    HANDLE_ERROR(cudaFree(buffers[0]));
    HANDLE_ERROR(cudaFree(buffers[1]));
    HANDLE_ERROR(cudaFree(spStates));
@@ -129,8 +129,8 @@ float *AsyncMT_d::requestSegment()
 
    // auto end = std::chrono::high_resolution_clock::now();
    // std::cout << "Segment: " << segmentIndex << ", Launch time: " << (end - start).count() << " ns\n";
-   cudaMemcpy(hostBuffer, segmentPtr, segmentSize * sizeof(float), cudaMemcpyDeviceToHost);
-   std::fwrite(hostBuffer, sizeof(float), segmentSize, logfile);
+   // cudaMemcpy(hostBuffer, segmentPtr, segmentSize * sizeof(float), cudaMemcpyDeviceToHost);
+   // std::fwrite(hostBuffer, sizeof(float), segmentSize, logfile);
 
    return segmentPtr;
 }

@@ -74,7 +74,6 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
    // Deallocate device memory
    edges.deleteEdgeDeviceStruct(*allEdgesDevice);
    // HANDLE_ERROR(cudaFree(randNoise_d));
-   AsyncGenerator.deleteDeviceStruct();
    // closeFileMT();
 }
 
