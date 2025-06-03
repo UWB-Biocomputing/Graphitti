@@ -45,8 +45,8 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
 
    // Allocate memory for random noise array
    int numVertices = Simulator::getInstance().getTotalVertices();
-   BGSIZE randNoise_d_size = numVertices * sizeof(float);   // size of random noise array
-   HANDLE_ERROR(cudaMalloc((void **)&randNoise_d, randNoise_d_size));
+   // BGSIZE randNoise_d_size = numVertices * sizeof(float);   // size of random noise array
+   // HANDLE_ERROR(cudaMalloc((void **)&randNoise_d, randNoise_d_size));
 
    // Copy host vertex and edge arrays into GPU device
    vertices.copyToDevice(*allVerticesDevice);
@@ -73,7 +73,7 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
    edges.copyEdgeDeviceToHost(*allEdgesDevice);
    // Deallocate device memory
    edges.deleteEdgeDeviceStruct(*allEdgesDevice);
-   HANDLE_ERROR(cudaFree(randNoise_d));
+   // HANDLE_ERROR(cudaFree(randNoise_d));
 }
 
 /// Sets up the Simulation.
@@ -128,6 +128,7 @@ void GPUModel::setupSim()
 void GPUModel::finish()
 {
    // deallocates memories on CUDA device
+   AsyncGenerator.deleteDeviceStruct();
    deleteDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
    deleteEdgeIndexMap();
 

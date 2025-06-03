@@ -105,6 +105,7 @@ protected:
    /// Pointer to device random noise array.
    float *randNoise_d;
    AsyncMT_d AsyncGenerator;
+   float *randNoise_h;
 #if defined(USE_GPU)
    /// Pointer to edge index map in device memory.
    EdgeIndexMapDevice *edgeIndexMapDevice_;

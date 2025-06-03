@@ -6,12 +6,16 @@
 #include <curand_mtgp32_kernel.h>
 #include <curand_mtgp32dc_p_11213.h>   // Precomputed parameter table
 #include <log4cplus/loggingmacros.h>
+#include "Book.h"
+#include <cstdio>
+#include <cstdlib>
 class AsyncMT_d {
 public:
    AsyncMT_d() = default;
    AsyncMT_d(int samplesPerGen, unsigned long seed);
    ~AsyncMT_d();
    void loadAsyncMT(int samplesPerSegment, unsigned long seed);
+   void deleteDeviceStruct();
    float *requestSegment();
 
 private:
@@ -31,6 +35,8 @@ private:
    curandStateMtgp32 *d_states;
    mtgp32_kernel_params_t *d_params;
 
+   FILE* logfile;
+   float* hostBuffer;
    log4cplus::Logger
       consoleLogger_;   /// Logger for printing to the console as well as the logging file
 
