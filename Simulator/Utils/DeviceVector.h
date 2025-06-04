@@ -88,11 +88,8 @@ public:
    /// @param size Initial size of the host vector (defaults to 0)
    /// @post Host vector is created with 'size' default-constructed elements
    /// @post Device pointer is nullptr (no GPU memory allocated)
-   explicit DeviceVector(size_t size = 0) : hostData_(size)
+   explicit DeviceVector(size_t size = 0) : hostData_(size), devicePtr_(nullptr)
    {
-#if defined(__CUDACC__)
-      devicePtr_ = nullptr;
-#endif
    }
 
    ~DeviceVector() = default;
@@ -449,7 +446,9 @@ public:
 private:
    std::vector<T> hostData_;   // Host-side vector
 
-#if defined(__CUDACC__)
+   // Introducing compilation guards (__CUDACC__) for the device pointer
+   // causes a runtime error during GPU simulations.
+   // This is likely because DeviceVector is included in both
+   // host (.cpp) and device (_d.cpp) code, and compiled on both sides.
    T *devicePtr_;   // Device pointer
-#endif
 };
