@@ -62,6 +62,8 @@ public:
    ///  @param  synapses               Reference to the allEdges struct on host memory.
    virtual void setAdvanceVerticesDeviceParams(AllEdges &synapses);
 
+   virtual void copyFromDevice() override;
+   virtual void copyToDevice() override;
    /// Add psr of all incoming synapses to summation points.
    ///
    /// @param allVerticesDevice       GPU address of the allVertices struct on device memory.
@@ -69,9 +71,6 @@ public:
    /// @param allEdgesDevice          GPU address of the allEdges struct on device memory.
    virtual void integrateVertexInputs(void *allVerticesDevice,
                                       EdgeIndexMapDevice *edgeIndexMapDevice, void *allEdgesDevice);
-
-   virtual void copyFromDevice(void *deviceAddress) override;
-   virtual void copyToDevice(void *deviceAddress) override;
 
 protected:
    ///  Clear the spike counts out of all neurons in device memory.

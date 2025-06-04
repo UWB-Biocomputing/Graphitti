@@ -8,14 +8,18 @@
 
 #include "AllIFNeurons.h"
 #include "Book.h"
+#include "GPUModel.h"
+#include "Simulator.h"
 
 ///  Allocate GPU memories to store all neurons' states,
 ///  and copy them from host to GPU memory.
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
-void AllIFNeurons::allocVerticesDeviceStruct(void **allVerticesDevice)
+void AllIFNeurons::allocVerticesDeviceStruct()
 {
    AllIFNeuronsDeviceProperties allNeurons;
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void **allVerticesDevice = reinterpret_cast<void **>(&(gpuModel->getAllVerticesDevice()));
    allocDeviceStruct(allNeurons);
    HANDLE_ERROR(cudaMalloc(allVerticesDevice, sizeof(AllIFNeuronsDeviceProperties)));
    HANDLE_ERROR(cudaMemcpy(*allVerticesDevice, &allNeurons, sizeof(AllIFNeuronsDeviceProperties),
@@ -69,10 +73,11 @@ void AllIFNeurons::allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDe
 
 ///  Delete GPU memories.
 ///
-///  @param  allVerticesDevice   GPU address of the AllVerticesDeviceProperties struct on device memory.
-void AllIFNeurons::deleteVerticesDeviceStruct(void *allVerticesDevice)
+void AllIFNeurons::deleteVerticesDeviceStruct()
 {
    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allVerticesDevice = static_cast<void *>(gpuModel->getAllVerticesDevice());
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
                            sizeof(AllIFNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
    deleteDeviceStruct(allVerticesDeviceProps);
@@ -117,11 +122,11 @@ void AllIFNeurons::deleteDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesD
 }
 
 ///  Copy all neurons' data from host to device.
-///
-///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
-void AllIFNeurons::copyToDevice(void *allVerticesDevice)
+void AllIFNeurons::copyToDevice()
 {
    int count = Simulator::getInstance().getTotalVertices();
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allVerticesDevice = static_cast<void *>(gpuModel->getAllVerticesDevice());
    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
                            sizeof(AllIFNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
@@ -158,15 +163,16 @@ void AllIFNeurons::copyToDevice(void *allVerticesDevice)
    HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.numStepsInRefractoryPeriod_,
                            numStepsInRefractoryPeriod_.data(), count * sizeof(int),
                            cudaMemcpyHostToDevice));
-   AllSpikingNeurons::copyToDevice(allVerticesDevice);
+   AllSpikingNeurons::copyToDevice();
 }
 
 ///  Copy all neurons' data from device to host.
 ///
-///  @param  allVerticesDevice   GPU address of the AllIFNeuronsDeviceProperties struct on device memory.
-void AllIFNeurons::copyFromDevice(void *allVerticesDevice)
+void AllIFNeurons::copyFromDevice()
 {
-   AllSpikingNeurons::copyFromDevice(allVerticesDevice);
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allVerticesDevice = static_cast<void *>(gpuModel->getAllVerticesDevice());
+   AllSpikingNeurons::copyFromDevice();
    int count = Simulator::getInstance().getTotalVertices();
    AllIFNeuronsDeviceProperties allVerticesDeviceProps;
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,

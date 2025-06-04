@@ -154,9 +154,7 @@ protected:
 public:
    ///  Allocate GPU memories to store all synapses' states,
    ///  and copy them from host to GPU memory.
-   ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void allocEdgeDeviceStruct(void **allEdgesDevice) override;
+   virtual void allocEdgeDeviceStruct() override;
 
    ///  Allocate GPU memories to store all synapses' states,
    ///  and copy them from host to GPU memory.
@@ -169,13 +167,10 @@ public:
 
    ///  Delete GPU memories.
    ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void deleteEdgeDeviceStruct(void *allEdgesDevice) override;
+   virtual void deleteEdgeDeviceStruct() override;
 
    ///  Copy all synapses' data from host to device.
-   ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyEdgeHostToDevice(void *allEdgesDevice) override;
+   virtual void copyEdgeHostToDevice() override;
 
    ///  Copy all synapses' data from host to device.
    ///
@@ -187,8 +182,7 @@ public:
 
    ///  Copy all synapses' data from device to host.
    ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyEdgeDeviceToHost(void *allEdgesDevice) override;
+   virtual void copyEdgeDeviceToHost() override;
 
    ///  Advance all the Synapses in the simulation.
    ///  Update the state of all synapses for a time step.
