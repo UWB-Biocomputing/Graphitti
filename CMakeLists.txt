@@ -359,7 +359,7 @@ add_library(Matrix ${Matrix_Source})
 
 
 # Create RNG library
-file(GLOB RNG_Source Simulator/Utils/RNG/*.cpp Simulator/Utils/RNG/*.h Simulator/Utils/RNG/*.cu)
+file(GLOB RNG_Source Simulator/Utils/RNG/*.cpp Simulator/Utils/RNG/*.h Simulator/Utils/RNG/*.cu )
 # Remove demo from file list as it contains a main and it will cause compilation errors
 list(REMOVE_ITEM RNG_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/RNG/MersenneTwister_demo.cu")
 add_library(RNG STATIC ${RNG_Source})
@@ -391,9 +391,13 @@ add_library(Utils ${Utils_Source})
 
 # Only link NVTX if it was found
 if(NVTX_LIBRARY)
+        
+        message(STATUS "Adding NVTX: to Utils lib")
         target_link_libraries(Utils PRIVATE ${NVTX_LIBRARY})
 endif()
 
+message(STATUS "Linking RNG against Utils")
+target_link_libraries(RNG PRIVATE Utils)
 
 # Used to locate and run other CMakeLists.txt files from Third Party resources for further compilation of the project.
 add_subdirectory(ThirdParty)
