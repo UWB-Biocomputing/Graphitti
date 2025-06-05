@@ -467,6 +467,12 @@ endif()
 target_compile_options(gtest PRIVATE -Wno-error=maybe-uninitialized)
 target_compile_options(gtest_main PRIVATE -Wno-error=maybe-uninitialized)
 
+if(ENABLE_CUDA)
+    set(cuda_TestSources
+        Testing/UnitTesting/DeviceVectorTests.cpp)
+    set_source_files_properties(${cuda_TestSources} PROPERTIES LANGUAGE CUDA)
+endif()
+
 add_executable(tests
         Testing/RunTests.cpp
         Testing/UnitTesting/OperationManagerTests.cpp
@@ -486,7 +492,8 @@ add_executable(tests
         Testing/Utils/CircularBufferTests.cpp
         Testing/UnitTesting/EventBufferTests.cpp
         Testing/UnitTesting/XmlRecorderTests.cpp
-        Testing/UnitTesting/Hdf5RecorderTests.cpp)
+        Testing/UnitTesting/Hdf5RecorderTests.cpp
+        Testing/UnitTesting/DeviceVectorTests.cpp)
 
 # Links the Googletest framework with the testing executable
 target_link_libraries(tests gtest gtest_main)

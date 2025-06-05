@@ -25,6 +25,7 @@
 using namespace std;
 #include "AllSpikingSynapses.h"
 #include "AllVertices.h"
+#include "DeviceVector.h"
 #include "EventBuffer.h"
 #include "Global.h"
 #include <vector>
@@ -119,7 +120,7 @@ protected:
    // TODO change the "public" after re-engineering Recorder
 public:
    ///  The booleans which track whether the neuron has fired.
-   vector<bool> hasFired_;
+   DeviceVector<bool> hasFired_;
 
    /// Holds at least one epoch's worth of event times for every vertex
    vector<EventBuffer> vertexEvents_;
@@ -129,7 +130,7 @@ public:
    ///  apply (summed up) their PSRs (Post-Synaptic-Response).
    ///  On the next advance cycle, vertices add the values stored in their corresponding
    ///  summation points to their Vm and resets the summation points to zero
-   vector<BGFLOAT> summationPoints_;
+   DeviceVector<BGFLOAT> summationPoints_;
 
 protected:
    ///  True if back propagation is allowed.
@@ -140,9 +141,6 @@ protected:
 // TODO: move this into EventBuffer.h. Well, hasFired_ and inherited members have to stay somehow.
 #if defined(USE_GPU)
 struct AllSpikingNeuronsDeviceProperties : public AllVerticesDeviceProperties {
-   ///  The booleans which track whether the neuron has fired.
-   bool *hasFired_;
-
    ///  Step count (history) for each spike fired by each neuron.
    ///  The step counts are stored in a buffer for each neuron, and the pointers
    ///  to the buffer are stored in a list pointed by spike_history.
@@ -154,12 +152,6 @@ struct AllSpikingNeuronsDeviceProperties : public AllVerticesDeviceProperties {
    int *epochStart_;
    int *numElementsInEpoch_;
 
-   ///  The summation point for each vertex.
-   ///  Summation points are places where the synapses connected to the vertex
-   ///  apply (summed up) their PSRs (Post-Synaptic-Response).
-   ///  On the next advance cycle, vertices add the values stored in their corresponding
-   ///  summation points to their Vm and resets the summation points to zero
-   BGFLOAT *summationPoints_;
    #ifdef VALIDATION_MODE
    BGFLOAT *spValidation_;
    #endif
@@ -171,8 +163,9 @@ CEREAL_REGISTER_TYPE(AllSpikingNeurons);
 ///  Cereal serialization method
 template <class Archive> void AllSpikingNeurons::serialize(Archive &archive)
 {
-   archive(cereal::base_class<AllVertices>(this), cereal::make_nvp("hasFired", hasFired_),
+   archive(cereal::base_class<AllVertices>(this),
+           cereal::make_nvp("hasFired", hasFired_.getHostVector()),
            cereal::make_nvp("vertexEvents", vertexEvents_),
-           cereal::make_nvp("summationPoints", summationPoints_),
+           cereal::make_nvp("summationPoints", summationPoints_.getHostVector()),
            cereal::make_nvp("fAllowBackPropagation", fAllowBackPropagation_));
 }
