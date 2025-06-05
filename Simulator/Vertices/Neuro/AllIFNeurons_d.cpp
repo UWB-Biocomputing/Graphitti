@@ -65,6 +65,7 @@ void AllIFNeurons::allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDe
    HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.bufferEnd_, count * sizeof(int)));
    HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.epochStart_, count * sizeof(int)));
    HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.numElementsInEpoch_, count * sizeof(int)));
+
 }
 
 ///  Delete GPU memories.
@@ -110,6 +111,7 @@ void AllIFNeurons::deleteDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesD
    HANDLE_ERROR(cudaFree(allVerticesDevice.hasFired_));
    HANDLE_ERROR(cudaFree(allVerticesDevice.numStepsInRefractoryPeriod_));
    HANDLE_ERROR(cudaFree(allVerticesDevice.summationPoints_));
+
 #ifdef VALIDATION_MODE
    HANDLE_ERROR(cudaFree(allVerticesDevice.spValidation_));
 #endif

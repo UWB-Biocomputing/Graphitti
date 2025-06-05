@@ -1,10 +1,6 @@
 #pragma once
-
-#include <cuda_runtime.h>
 #include <curand_kernel.h>
-#include <curand_mtgp32_host.h>
-#include <curand_mtgp32_kernel.h>
-#include <curand_mtgp32dc_p_11213.h>   // Precomputed parameter table
+#include <cuda_runtime.h>
 #include <log4cplus/loggingmacros.h>
 #include "Book.h"
 #include <cstdio>
@@ -27,6 +23,11 @@ private:
    int bufferSize;
    unsigned long seed;
 
+   #ifdef ENABLE_NVTX
+   int nvtxMarker;
+   int nvtxCurrentMarker;
+   #endif
+
 
    cudaStream_t stream;
 
@@ -35,10 +36,6 @@ private:
    int segmentIndex;
 
    curandStatePhilox4_32_10_t* spStates;
-
-
-   //curandStateMtgp32 *d_states;
-   //mtgp32_kernel_params_t *d_params;
 
    // FILE* logfile;
    // float* hostBuffer;

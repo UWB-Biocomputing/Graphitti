@@ -195,7 +195,7 @@ void AllIZHNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
    int blocksPerGrid = (vertex_count + threadsPerBlock - 1) / threadsPerBlock;
 
    // Advance neurons ------------->
-   advanceIZHNeuronsDevice<<<blocksPerGrid, threadsPerBlock>>>(
+   advanceIZHNeuronsDevice<<<blocksPerGrid, threadsPerBlock,0,stream>>>(
       vertex_count, Simulator::getInstance().getMaxEdgesPerVertex(), maxSpikes,
       Simulator::getInstance().getDeltaT(), g_simulationStep, randNoise,
       (AllIZHNeuronsDeviceProperties *)allVerticesDevice,

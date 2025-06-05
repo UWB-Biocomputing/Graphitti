@@ -75,6 +75,7 @@ void ConnGrowth::setup()
    // Initialize connection frontier distance change matrix with the current distances
    Layout &layout = Simulator::getInstance().getModel().getLayout();
    delta_ = layout.dist_;
+ 
 
    // Register VertorMatrix radii_ for Recording if need
    // Recorder &recorder = Simulator::getInstance().getModel().getRecorder();

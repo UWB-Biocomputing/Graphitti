@@ -32,6 +32,8 @@ __global__ void calcSummationPointDevice(int totalVertices,
                                          EdgeIndexMapDevice *edgeIndexMapDevice,
                                          AllSpikingSynapsesDeviceProperties *allEdgesDevice);
 
+                                    
+
 void AllSpikingNeurons::copyToDevice(void *deviceAddress)
 {
    AllSpikingNeuronsDeviceProperties allVerticesDevice;
@@ -197,7 +199,7 @@ void AllSpikingNeurons::integrateVertexInputs(void *allVerticesDevice,
       = (Simulator::getInstance().getTotalVertices() + threadsPerBlock - 1) / threadsPerBlock;
    int vertex_count = Simulator::getInstance().getTotalVertices();
 
-   calcSummationPointDevice<<<blocksPerGrid, threadsPerBlock>>>(
+   calcSummationPointDevice<<<blocksPerGrid, threadsPerBlock,0,stream>>>(
       vertex_count, (AllSpikingNeuronsDeviceProperties *)allVerticesDevice, edgeIndexMapDevice,
       (AllSpikingSynapsesDeviceProperties *)allEdgesDevice);
 }

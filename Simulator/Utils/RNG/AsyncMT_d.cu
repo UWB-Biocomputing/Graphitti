@@ -1,8 +1,10 @@
 #include "AsyncMT_d.h"
 #include <cassert>
-#include <curand_mtgp32dc_p_11213.h>
 #include <iostream>
 #include <chrono>
+
+#include "NvtxHelper.h"
+
 // __global__ void generateKernel(curandStateMtgp32 *state, float *output, int samplesPerGen)
 // {
 //    int tid = threadIdx.x;
@@ -51,46 +53,48 @@ void AsyncMT_d::loadAsyncMT(int samplesPerSegment, unsigned long seed)
 {
    // hostBuffer = nullptr;
    // cudaHostAlloc(&hostBuffer, samplesPerSegment * sizeof(float), cudaHostAllocDefault);
-   // logfile = std::fopen("philox_output.bin", "wb");
+   // logfile = std::fopen("philox_output_32_10.bin", "wb");
    //consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    segmentSize = samplesPerSegment;
    seed = seed;
    currentBuffer = 0;
    segmentIndex = 0;
-   totalSegments = 10000;   // Each buffer has 10000 segments
+
+   totalSegments = 10;   
+
+#ifdef ENABLE_NVTX
+   nvtxMarker = 10000 / totalSegments; // make a marker every nvtxMarker buffer fills;
+   nvtxCurrentMarker = nvtxMarker;     // count down to color flip
+#endif
    bufferSize = segmentSize * totalSegments;
-   numBlocks = 50;   //placeholder num of blocks
-   numThreads = 256;
+   numBlocks = 64;   //placeholder num of blocks
+   numThreads = 64;
 
     
 
    totalThreads = numThreads * numBlocks;
 
 
+   int leastPriority, greatestPriority;
+   HANDLE_ERROR(cudaDeviceGetStreamPriorityRange(&leastPriority, &greatestPriority));
+   // └─ leastPriority is the numerically largest value → lowest actual priority
+   // └─ greatestPriority is the numerically smallest value → highest actual priority
+
+   HANDLE_ERROR(cudaStreamCreateWithPriority(&stream,
+                              cudaStreamNonBlocking,
+                              leastPriority));
+
+
    // Create internal stream
-   HANDLE_ERROR(cudaStreamCreate(&stream));
+ //  HANDLE_ERROR(cudaStreamCreate(&stream));
 
    // Allocate two large buffers
    HANDLE_ERROR(cudaMalloc(&buffers[0], bufferSize * sizeof(float)));
    HANDLE_ERROR(cudaMalloc(&buffers[1], bufferSize * sizeof(float)));
 
-   // // Allocate state and param memory
-   // HANDLE_ERROR(cudaMalloc(&d_states, numGenerators * sizeof(curandStateMtgp32)));
-   // HANDLE_ERROR(cudaMalloc(&d_params, numGenerators * sizeof(mtgp32_kernel_params_t)));
-
-
    HANDLE_ERROR(cudaMalloc(&spStates, totalThreads * sizeof(curandStatePhilox4_32_10_t)));
 
    initPhilox<<<totalThreads+255/256,256,0,stream>>>(spStates,seed,totalThreads);
-
-   // Create local param buffer of correct type
- //  mtgp32_kernel_params_t *h_params = new mtgp32_kernel_params_t[numGenerators];
-  // curandMakeMTGP32Constants(mtgp32dc_params_fast_11213, h_params);
- //  HANDLE_ERROR(cudaMemcpy(d_params, h_params, numGenerators * sizeof(mtgp32_kernel_params_t),
- //             cudaMemcpyHostToDevice));
- //  delete[] h_params;
-
-  // curandMakeMTGP32KernelState(d_states, mtgp32dc_params_fast_11213, d_params, numGenerators, seed);
 
    // Pre-fill both buffers
    fillBuffer(0);
@@ -114,8 +118,27 @@ float *AsyncMT_d::requestSegment()
 {
    //LOG4CPLUS_TRACE(consoleLogger_, "request segment");
    //auto start = std::chrono::high_resolution_clock::now();
+   static bool flipColor;
    if (segmentIndex >= totalSegments) {
       // Switch buffer and launch async refill on the now-unused one
+
+      #ifdef ENABLE_NVTX
+      if(nvtxCurrentMarker <= 0){
+         nvtxPop();
+         if(flipColor == true)
+            nvtxPushColor("10,000 time steps", Color::RED);
+         else
+            nvtxPushColor("10,000 time steps", Color::BLUE);
+
+         flipColor = !flipColor;
+         nvtxCurrentMarker = nvtxMarker;  
+      }
+      else
+         --nvtxCurrentMarker;
+      #endif
+      
+      
+
       int refillBuffer = currentBuffer;
       currentBuffer = 1 - currentBuffer;
       segmentIndex = 0;

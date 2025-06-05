@@ -54,6 +54,11 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
 
    // Allocate edge inverse map in device memory
    allocEdgeIndexMap(numVertices);
+
+      // Create gpu model stream
+   HANDLE_ERROR(cudaStreamCreate(&stream));
+
+
 }
 
 /// Copies device memories to host memories and deallocates them.
@@ -75,6 +80,8 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
    edges.deleteEdgeDeviceStruct(*allEdgesDevice);
    // HANDLE_ERROR(cudaFree(randNoise_d));
    // closeFileMT();
+   HANDLE_ERROR(cudaStreamDestroy(stream));
+
 }
 
 /// Sets up the Simulation.
@@ -99,6 +106,7 @@ void GPUModel::setupSim()
    //cout << "blocks, threads, nPerRng, rng_rng_count: " << rng_blocks << " " << rng_threads << " " << rng_nPerRng << " " << rng_mt_rng_count << endl;
    AsyncGenerator.loadAsyncMT(Simulator::getInstance().getTotalVertices(),
                               Simulator::getInstance().getNoiseRngSeed());
+                   
 
 #ifdef PERFORMANCE_METRICS
    cudaEventCreate(&start);
@@ -123,15 +131,21 @@ void GPUModel::setupSim()
 
    // set some parameters used for advanceEdgesDevice
    edges.setAdvanceEdgesDeviceParams();
+   AllVertices &vertices = layout_->getVertices();
+   vertices.SetStream(stream);
+   edges.SetStream(stream);
+
+
 }
 
 /// Performs any finalization tasks on network following a simulation.
 void GPUModel::finish()
 {
    // deallocates memories on CUDA device
-   AsyncGenerator.deleteDeviceStruct();
+   AsyncGenerator.deleteDeviceStruct(); 
    deleteDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
    deleteEdgeIndexMap();
+
 
 #ifdef PERFORMANCE_METRICS
    cudaEventDestroy(start);
@@ -257,7 +271,7 @@ void GPUModel::updateConnections()
    // Update Connections data
    if (connections_->updateConnections(vertices)) {
       connections_->updateEdgesWeights(Simulator::getInstance().getTotalVertices(), vertices, edges,
-                                       allVerticesDevice_, allEdgesDevice_, getLayout());
+                                       allVerticesDevice_, allEdgesDevice_, getLayout(),stream);
       // create edge index map
       connections_->createEdgeIndexMap();
       // copy index map to the device memory

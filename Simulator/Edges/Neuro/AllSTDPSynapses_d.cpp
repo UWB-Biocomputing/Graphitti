@@ -89,6 +89,8 @@ void AllSTDPSynapses::allocDeviceStruct(AllSTDPSynapsesDeviceProperties &allEdge
    HANDLE_ERROR(cudaMalloc((void **)&allEdgesDevice.Apos_, maxTotalSynapses * sizeof(BGFLOAT)));
    HANDLE_ERROR(cudaMalloc((void **)&allEdgesDevice.mupos_, maxTotalSynapses * sizeof(BGFLOAT)));
    HANDLE_ERROR(cudaMalloc((void **)&allEdgesDevice.muneg_, maxTotalSynapses * sizeof(BGFLOAT)));
+
+   
 }
 
 ///  Delete GPU memories.
@@ -268,10 +270,10 @@ void AllSTDPSynapses::advanceEdges(void *allEdgesDevice, void *allVerticesDevice
    const int threadsPerBlock = 256;
    int blocksPerGrid = (totalEdgeCount_ + threadsPerBlock - 1) / threadsPerBlock;
    // Advance synapses ------------->
-   advanceSTDPSynapsesDevice<<<blocksPerGrid, threadsPerBlock>>>(
+   advanceSTDPSynapsesDevice<<<blocksPerGrid, threadsPerBlock,0,stream>>>(
       totalEdgeCount_, (EdgeIndexMapDevice *)edgeIndexMapDevice, g_simulationStep,
       Simulator::getInstance().getDeltaT(), (AllSTDPSynapsesDeviceProperties *)allEdgesDevice,
-      (AllSpikingNeuronsDeviceProperties *)allVerticesDevice, maxSpikes);
+      (AllSpikingNeuronsDeviceProperties *)allVerticesDevice, maxSpikes);      
 }
 
 ///  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.

@@ -24,6 +24,7 @@
 #include "AllEdges.h"
 #include "AllVertices.h"
 #include "AsyncMT_d.h"
+#include <cuda_runtime.h>
 
 #ifdef VALIDATION_MODE
    #include <fstream>
@@ -106,6 +107,9 @@ protected:
    float *randNoise_d;
    AsyncMT_d AsyncGenerator;
    float *randNoise_h;
+   /// Cuda Stream for kernel use
+   cudaStream_t stream;
+
 #if defined(USE_GPU)
    /// Pointer to edge index map in device memory.
    EdgeIndexMapDevice *edgeIndexMapDevice_;
@@ -116,6 +120,7 @@ protected:
 
    /// vertex structure in device memory.
    AllVerticesDeviceProperties *allVerticesDevice_;
+
 
 private:
    void allocEdgeIndexMap(int count);

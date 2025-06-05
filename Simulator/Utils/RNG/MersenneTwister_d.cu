@@ -35,7 +35,8 @@
 
 #include <iostream>
 #include <stdio.h>
-
+#include <cstdio>
+#include <cstdlib>
 using namespace std;
 #include "MersenneTwister_d.h"
 
@@ -56,6 +57,8 @@ unsigned int mt_rng_count;
 unsigned int mt_blocks;
 unsigned int mt_threads;
 unsigned int mt_nPerRng;
+
+
 
 //Load twister configurations
 void loadMTGPU(const char *fname){
@@ -242,12 +245,24 @@ __global__ void RandomNormGPU(
 	ds_MT[tid].iState = iState;
 }
 
+
+
+
 extern "C" void uniformMTGPU(float * d_random){
 	RandomGPU<<<mt_blocks,mt_threads>>>(d_random, mt_nPerRng, mt_rng_count);
 }
 
+
+   float* hostBuffer = nullptr;
+   FILE* logfile;
+  
+
 extern "C" void normalMTGPU(float * d_random){
-	RandomNormGPU<<<mt_blocks,mt_threads>>>(d_random, mt_nPerRng, mt_rng_count);	
+	RandomNormGPU<<<mt_blocks,mt_threads>>>(d_random, mt_nPerRng, mt_rng_count);
+
+	cudaMemcpy(hostBuffer, d_random, mt_rng_count*mt_nPerRng * sizeof(float), cudaMemcpyDeviceToHost);
+    std::fwrite(hostBuffer, sizeof(float), mt_rng_count*mt_nPerRng, logfile);
+	
 }
 
 //initialize globals and setup state
@@ -260,5 +275,15 @@ extern "C" void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int t
 
 	loadMTGPU(MT_DATAFILE);
 	seedMTGPU(seed);
+
+	cudaHostAlloc(&hostBuffer, mt_rng_count*nPerRng * sizeof(float), cudaHostAllocDefault);
+	logfile = std::fopen("mt_old_output.bin", "wb");
+
+}
+
+extern "C" void closeFileMT(){
+
+	std::fclose(logfile);
+    cudaFree(hostBuffer);
 }
 
