@@ -103,7 +103,6 @@ void GPUModel::setupSim()
    AsyncGenerator.loadAsyncPhilox(Simulator::getInstance().getTotalVertices(),
                                   Simulator::getInstance().getNoiseRngSeed());
 
-
 #ifdef PERFORMANCE_METRICS
    cudaEventCreate(&start);
    cudaEventCreate(&stop);
@@ -139,7 +138,6 @@ void GPUModel::finish()
    AsyncGenerator.deleteDeviceStruct();
    deleteDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
    deleteEdgeIndexMap();
-
 
 #ifdef PERFORMANCE_METRICS
    cudaEventDestroy(start);

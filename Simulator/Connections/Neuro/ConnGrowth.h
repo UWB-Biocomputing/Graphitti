@@ -73,9 +73,6 @@
 #include "Simulator.h"
 #include <iostream>
 #include <vector>
-
-
-
 // cereal
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>
@@ -130,8 +127,8 @@ public:
    ///  @param  layout               The Layout object.
    virtual void updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &edges,
                                    AllVerticesDeviceProperties *allVerticesDevice,
-                                   AllEdgesDeviceProperties *allEdgesDevice,
-                                   Layout &layout, cudaStream_t stream) override;
+                                   AllEdgesDeviceProperties *allEdgesDevice, Layout &layout,
+                                   cudaStream_t stream) override;
 
 #else
    ///  Update the weights of the Synapses in the simulation. To be clear,

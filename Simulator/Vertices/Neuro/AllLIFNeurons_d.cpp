@@ -56,14 +56,13 @@ void AllLIFNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
    int blocksPerGrid = (vertex_count + threadsPerBlock - 1) / threadsPerBlock;
 
    // Advance neurons ------------->
-   advanceLIFNeuronsDevice<<<blocksPerGrid, threadsPerBlock,0,stream>>>(
+   advanceLIFNeuronsDevice<<<blocksPerGrid, threadsPerBlock, 0, stream>>>(
       vertex_count, Simulator::getInstance().getMaxEdgesPerVertex(), maxSpikes,
       Simulator::getInstance().getDeltaT(), g_simulationStep, randNoise, hasFired_,
       summationPoints_, Vm_, Trefract_, numStepsInRefractoryPeriod_, Vthresh_, Vreset_, I0_,
       Inoise_, C2_, C1_, (AllIFNeuronsDeviceProperties *)allVerticesDevice,
       (AllSpikingSynapsesDeviceProperties *)allEdgesDevice, edgeIndexMapDevice,
       fAllowBackPropagation_);
-
 }
 
 ///@}

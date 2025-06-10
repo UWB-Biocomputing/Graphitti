@@ -26,10 +26,6 @@
 #include "AllSpikingNeurons.h"
 #include "DeviceVector.h"
 #include "Global.h"
-#ifdef USE_GPU
-#include <cuda_runtime.h>
-#endif
-
 // cereal
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>

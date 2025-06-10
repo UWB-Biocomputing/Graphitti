@@ -121,7 +121,6 @@ protected:
    /// vertex structure in device memory.
    AllVerticesDeviceProperties *allVerticesDevice_;
 
-
 private:
    void allocEdgeIndexMap(int count);
 
