@@ -29,7 +29,6 @@
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>
 
-
 struct AllSpikingSynapsesDeviceProperties;
 
 using fpPreSynapsesSpikeHit_t = void (*)(const BGSIZE, AllSpikingSynapsesDeviceProperties *);
