@@ -368,7 +368,9 @@ add_library(RNG STATIC ${RNG_Source})
 # Create Utils library
 file(GLOB Utils_Source Simulator/Utils/*.cpp Simulator/Utils/*.h)
 list(REMOVE_ITEM Utils_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/Factory.cpp")
-
+if(NOT ENABLE_CUDA)
+        list(REMOVE_ITEM Utils_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/Book.h")
+endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Profiling")
         if(ENABLE_CUDA)
 # Find NVTX Library
