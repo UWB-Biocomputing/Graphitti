@@ -34,7 +34,7 @@
 #include <cereal/types/memory.hpp>
 
 #ifdef USE_GPU
-#include <cuda_runtime.h>
+   #include <cuda_runtime.h>
 #endif
 
 
@@ -92,10 +92,8 @@ public:
    ///  @param  layout               Layout information of the graph network.
    virtual void updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &edges,
                                    AllVerticesDeviceProperties *allVerticesDevice,
-                                   AllEdgesDeviceProperties *allEdgesDevice, Layout &layout
-                                 ,cudaStream_t stream);
-
-   
+                                   AllEdgesDeviceProperties *allEdgesDevice, Layout &layout,
+                                   cudaStream_t stream);
 #else
 public:
    ///  Update the weight of the edges in the simulation.

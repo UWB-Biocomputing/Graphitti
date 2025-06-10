@@ -32,7 +32,6 @@ __global__ void calcSummationPointDevice(int totalVertices, BGFLOAT *summationPo
                                          EdgeIndexMapDevice *edgeIndexMapDevice,
                                          AllSpikingSynapsesDeviceProperties *allEdgesDevice);
 
-
 void AllSpikingNeurons::copyToDevice(void *deviceAddress)
 {
    AllSpikingNeuronsDeviceProperties allVerticesDevice;
