@@ -13,37 +13,38 @@
  */
 
 #include "AsyncPhilox_d.h"
-#include <cassert>
-#include <iostream>
-#include <chrono>
-
 #include "NvtxHelper.h"
+#include <cassert>
+#include <chrono>
+#include <iostream>
 
-__global__ void generatePhilox(curandStatePhilox4_32_10_t* states, float* output,int bufferSize)
+__global__ void generatePhilox(curandStatePhilox4_32_10_t *states, float *output, int bufferSize)
 {
-    // Compute a unique global index for this thread
-    int threadId = threadIdx.x;
-    int blockId  = blockIdx.x;
-    int threadsPerBlock = blockDim.x;
-    int totalThreads = gridDim.x * threadsPerBlock;
-    int gid = blockId * threadsPerBlock + threadId;
+   // Compute a unique global index for this thread
+   int threadId = threadIdx.x;
+   int blockId = blockIdx.x;
+   int threadsPerBlock = blockDim.x;
+   int totalThreads = gridDim.x * threadsPerBlock;
+   int gid = blockId * threadsPerBlock + threadId;
 
-    // Load this thread’s Philox state
-    curandStatePhilox4_32_10_t local = states[gid];
+   // Load this thread’s Philox state
+   curandStatePhilox4_32_10_t local = states[gid];
 
-    // Stride‐loop: write one random per iteration until we cover bufferSize
-    for (int idx = gid; idx < bufferSize; idx += totalThreads) {
-        output[idx] = curand_normal(&local);
-    }
+   // Stride‐loop: write one random per iteration until we cover bufferSize
+   for (int idx = gid; idx < bufferSize; idx += totalThreads) {
+      output[idx] = curand_normal(&local);
+   }
 
-    // Store back the updated state
-    states[gid] = local;
+   // Store back the updated state
+   states[gid] = local;
 }
 
-__global__ void initPhilox(curandStatePhilox4_32_10_t* states, unsigned long seed,int totalThreads) {
-    int gid = blockIdx.x * blockDim.x + threadIdx.x;
-    if (gid >= totalThreads) return;
-    curand_init(seed, gid, 0, &states[gid]);
+__global__ void initPhilox(curandStatePhilox4_32_10_t *states, unsigned long seed, int totalThreads)
+{
+   int gid = blockIdx.x * blockDim.x + threadIdx.x;
+   if (gid >= totalThreads)
+      return;
+   curand_init(seed, gid, 0, &states[gid]);
 }
 
 void AsyncPhilox_d::loadAsyncPhilox(int samplesPerSegment, unsigned long seed)
@@ -57,11 +58,11 @@ void AsyncPhilox_d::loadAsyncPhilox(int samplesPerSegment, unsigned long seed)
    currentBuffer = 0;
    segmentIndex = 0;
 
-   totalSegments = 10;   
+   totalSegments = 10;
 
 #ifdef ENABLE_NVTX
-   nvtxMarker = 10000 / totalSegments; // make a marker every nvtxMarker buffer fills;
-   nvtxCurrentMarker = nvtxMarker;     // count down to color flip
+   nvtxMarker = 10000 / totalSegments;   // make a marker every nvtxMarker buffer fills;
+   nvtxCurrentMarker = nvtxMarker;       // count down to color flip
 #endif
    bufferSize = segmentSize * totalSegments;
    numBlocks = 64;   //placeholder num of blocks
@@ -75,9 +76,7 @@ void AsyncPhilox_d::loadAsyncPhilox(int samplesPerSegment, unsigned long seed)
    // └─ greatestPriority is the numerically smallest value → highest actual priority
 
    // Create internal stream
-   HANDLE_ERROR(cudaStreamCreateWithPriority(&stream,
-                              cudaStreamNonBlocking,
-                              leastPriority));
+   HANDLE_ERROR(cudaStreamCreateWithPriority(&stream, cudaStreamNonBlocking, leastPriority));
 
    // Allocate two large buffers
    HANDLE_ERROR(cudaMalloc(&buffers[0], bufferSize * sizeof(float)));
@@ -85,14 +84,16 @@ void AsyncPhilox_d::loadAsyncPhilox(int samplesPerSegment, unsigned long seed)
 
    HANDLE_ERROR(cudaMalloc(&spStates, totalThreads * sizeof(curandStatePhilox4_32_10_t)));
 
-   initPhilox<<<totalThreads+255/256,256,0,stream>>>(spStates,seed,totalThreads);
+   initPhilox<<<totalThreads + 255 / 256, 256, 0, stream>>>(spStates, seed, totalThreads);
 
    // Pre-fill both buffers
    fillBuffer(0);
    fillBuffer(1);
-   HANDLE_ERROR(cudaStreamSynchronize(stream)); //wait for both buffers to be filled before the first request
+   HANDLE_ERROR(cudaStreamSynchronize(
+      stream));   //wait for both buffers to be filled before the first request
 }
-void AsyncPhilox_d::deleteDeviceStruct(){
+void AsyncPhilox_d::deleteDeviceStruct()
+{
    // std::fclose(logfile);
    // cudaFree(hostBuffer);
    HANDLE_ERROR(cudaFree(buffers[0]));
@@ -113,20 +114,19 @@ float *AsyncPhilox_d::requestSegment()
    if (segmentIndex >= totalSegments) {
       // Switch buffer and launch async refill on the now-unused one
 
-      #ifdef ENABLE_NVTX
-      if(nvtxCurrentMarker <= 0){
+#ifdef ENABLE_NVTX
+      if (nvtxCurrentMarker <= 0) {
          nvtxPop();
-         if(flipColor == true)
+         if (flipColor == true)
             nvtxPushColor("10,000 time steps", Color::RED);
          else
             nvtxPushColor("10,000 time steps", Color::BLUE);
 
          flipColor = !flipColor;
-         nvtxCurrentMarker = nvtxMarker;  
-      }
-      else
+         nvtxCurrentMarker = nvtxMarker;
+      } else
          --nvtxCurrentMarker;
-      #endif
+#endif
 
       int refillBuffer = currentBuffer;
       currentBuffer = 1 - currentBuffer;

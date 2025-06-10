@@ -13,12 +13,12 @@
  */
 
 #pragma once
-#include <curand_kernel.h>
-#include <cuda_runtime.h>
-#include <log4cplus/loggingmacros.h>
 #include "Book.h"
 #include <cstdio>
 #include <cstdlib>
+#include <cuda_runtime.h>
+#include <curand_kernel.h>
+#include <log4cplus/loggingmacros.h>
 class AsyncPhilox_d {
 public:
    AsyncPhilox_d() = default;
@@ -37,10 +37,10 @@ private:
    int bufferSize;
    unsigned long seed;
 
-   #ifdef ENABLE_NVTX
+#ifdef ENABLE_NVTX
    int nvtxMarker;
    int nvtxCurrentMarker;
-   #endif
+#endif
 
 
    cudaStream_t stream;
@@ -49,7 +49,7 @@ private:
    int currentBuffer;
    int segmentIndex;
 
-   curandStatePhilox4_32_10_t* spStates;
+   curandStatePhilox4_32_10_t *spStates;
 
    // FILE* logfile;
    // float* hostBuffer;

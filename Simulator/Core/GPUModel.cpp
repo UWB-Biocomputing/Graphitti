@@ -102,7 +102,7 @@ void GPUModel::setupSim()
    //           rng_mt_rng_count);
    //cout << "blocks, threads, nPerRng, rng_rng_count: " << rng_blocks << " " << rng_threads << " " << rng_nPerRng << " " << rng_mt_rng_count << endl;
    AsyncGenerator.loadAsyncPhilox(Simulator::getInstance().getTotalVertices(),
-                              Simulator::getInstance().getNoiseRngSeed());
+                                  Simulator::getInstance().getNoiseRngSeed());
 
 
 #ifdef PERFORMANCE_METRICS
