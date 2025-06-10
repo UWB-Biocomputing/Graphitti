@@ -145,11 +145,10 @@ private:
                    Coordinate dest, BGFLOAT deltaT, edgeType type);
 };
 
-#if defined(__CUDACC__)
-extern "C" {
-void normalMTGPU(float *randNoise_d);
-void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, unsigned int nPerRng,
-               unsigned int mt_rng_count);
-void closeFileMT();
-}
-#endif
+// #if defined(__CUDACC__)
+// extern "C" {
+// void normalMTGPU(float *randNoise_d);
+// void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, unsigned int nPerRng,
+//                unsigned int mt_rng_count);
+// }
+// #endif

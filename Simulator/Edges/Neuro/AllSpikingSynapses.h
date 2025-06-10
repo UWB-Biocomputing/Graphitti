@@ -29,9 +29,6 @@
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>
 
-#ifdef USE_GPU
-#include <cuda_runtime.h>
-#endif
 
 struct AllSpikingSynapsesDeviceProperties;
 
@@ -174,7 +171,7 @@ public:
    ///  @param  allVerticesDevice       GPU address of the allNeurons struct on device memory.
    ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
    virtual void advanceEdges(void *allEdgesDevice, void *allVerticesDevice,
-                             void *edgeIndexMapDevice ) override;
+                             void *edgeIndexMapDevice) override;
 
    ///  Set some parameters used for advanceEdgesDevice.
    ///  Currently we set a member variable: m_fpChangePSR_h.

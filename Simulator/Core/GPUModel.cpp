@@ -12,7 +12,6 @@
 #include "AllVertices.h"
 #include "Connections.h"
 #include "Global.h"
-#include <fstream>
 #ifdef VALIDATION_MODE
    #include "AllIFNeurons.h"
    #include "OperationManager.h"

@@ -80,7 +80,6 @@ protected:
    ///
    ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
    void clearDeviceSpikeCounts(AllSpikingNeuronsDeviceProperties &allVerticesDevice);
-
 #else   // !defined(USE_GPU)
 public:
    ///  Update internal state of the indexed Neuron (called by every simulation step).

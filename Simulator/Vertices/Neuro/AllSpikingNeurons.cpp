@@ -58,8 +58,6 @@ void AllSpikingNeurons::clearSpikeCounts()
 
 #if !defined(USE_GPU)
 
-
-
 ///  Update internal state of the indexed Neuron (called by every simulation step).
 ///  Notify outgoing synapses if neuron has fired.
 ///
