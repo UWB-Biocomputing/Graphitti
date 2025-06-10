@@ -1,23 +1,23 @@
-#include "AsyncMT_d.h"
+/**
+ * @file AsyncPhilox_d.cu
+ * 
+ * @ingroup Simulator/Utils/RNG
+ * 
+ * @brief Asynchronous Philox RNG using curand to fill GPU buffers
+ * 
+ * AsyncPhilox_d class maintains two large GPU buffers for noise.
+ * GPUModel calls loadAsyncPhilox to initialize states and
+ * fill the buffers, then, each advance requestSegment
+ * returns a float* slice of a buffer for use in
+ * advanceVertices
+ */
+
+#include "AsyncPhilox_d.h"
 #include <cassert>
 #include <iostream>
 #include <chrono>
 
 #include "NvtxHelper.h"
-
-// __global__ void generateKernel(curandStateMtgp32 *state, float *output, int samplesPerGen)
-// {
-//    int tid = threadIdx.x;
-//    int gen_id = blockIdx.x;
-//    if (gen_id >= gridDim.x)
-//       return;
-
-//    curandStateMtgp32 localState = state[gen_id];
-//    for (int i = tid; i < samplesPerGen; i += blockDim.x) {
-//       output[gen_id * samplesPerGen + i] = curand_normal(&localState);
-//    }
-//    state[gen_id] = localState;
-// }
 
 __global__ void generatePhilox(curandStatePhilox4_32_10_t* states, float* output,int bufferSize)
 {
@@ -40,16 +40,13 @@ __global__ void generatePhilox(curandStatePhilox4_32_10_t* states, float* output
     states[gid] = local;
 }
 
-
-
-
 __global__ void initPhilox(curandStatePhilox4_32_10_t* states, unsigned long seed,int totalThreads) {
     int gid = blockIdx.x * blockDim.x + threadIdx.x;
     if (gid >= totalThreads) return;
     curand_init(seed, gid, 0, &states[gid]);
 }
 
-void AsyncMT_d::loadAsyncMT(int samplesPerSegment, unsigned long seed)
+void AsyncPhilox_d::loadAsyncPhilox(int samplesPerSegment, unsigned long seed)
 {
    // hostBuffer = nullptr;
    // cudaHostAlloc(&hostBuffer, samplesPerSegment * sizeof(float), cudaHostAllocDefault);
@@ -70,23 +67,17 @@ void AsyncMT_d::loadAsyncMT(int samplesPerSegment, unsigned long seed)
    numBlocks = 64;   //placeholder num of blocks
    numThreads = 64;
 
-    
-
    totalThreads = numThreads * numBlocks;
-
 
    int leastPriority, greatestPriority;
    HANDLE_ERROR(cudaDeviceGetStreamPriorityRange(&leastPriority, &greatestPriority));
    // └─ leastPriority is the numerically largest value → lowest actual priority
    // └─ greatestPriority is the numerically smallest value → highest actual priority
 
+   // Create internal stream
    HANDLE_ERROR(cudaStreamCreateWithPriority(&stream,
                               cudaStreamNonBlocking,
                               leastPriority));
-
-
-   // Create internal stream
- //  HANDLE_ERROR(cudaStreamCreate(&stream));
 
    // Allocate two large buffers
    HANDLE_ERROR(cudaMalloc(&buffers[0], bufferSize * sizeof(float)));
@@ -101,7 +92,7 @@ void AsyncMT_d::loadAsyncMT(int samplesPerSegment, unsigned long seed)
    fillBuffer(1);
    HANDLE_ERROR(cudaStreamSynchronize(stream)); //wait for both buffers to be filled before the first request
 }
-void AsyncMT_d::deleteDeviceStruct(){
+void AsyncPhilox_d::deleteDeviceStruct(){
    // std::fclose(logfile);
    // cudaFree(hostBuffer);
    HANDLE_ERROR(cudaFree(buffers[0]));
@@ -110,11 +101,11 @@ void AsyncMT_d::deleteDeviceStruct(){
 
    HANDLE_ERROR(cudaStreamDestroy(stream));
 }
-AsyncMT_d::~AsyncMT_d()
+AsyncPhilox_d::~AsyncPhilox_d()
 {
 }
 
-float *AsyncMT_d::requestSegment()
+float *AsyncPhilox_d::requestSegment()
 {
    //LOG4CPLUS_TRACE(consoleLogger_, "request segment");
    //auto start = std::chrono::high_resolution_clock::now();
@@ -136,15 +127,12 @@ float *AsyncMT_d::requestSegment()
       else
          --nvtxCurrentMarker;
       #endif
-      
-      
 
       int refillBuffer = currentBuffer;
       currentBuffer = 1 - currentBuffer;
       segmentIndex = 0;
       cudaStreamSynchronize(stream);   // Ensure refillBuffer is done
       fillBuffer(refillBuffer);
-      //cudaStreamSynchronize(stream);
    }
 
    float *segmentPtr = buffers[currentBuffer] + segmentIndex * segmentSize;
@@ -158,7 +146,7 @@ float *AsyncMT_d::requestSegment()
    return segmentPtr;
 }
 
-void AsyncMT_d::fillBuffer(int bufferIndex)
+void AsyncPhilox_d::fillBuffer(int bufferIndex)
 {
    //LOG4CPLUS_TRACE(consoleLogger_, "filling buffer:");
    generatePhilox<<<numBlocks, numThreads, 0, stream>>>(spStates, buffers[bufferIndex], bufferSize);

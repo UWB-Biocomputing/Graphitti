@@ -23,7 +23,7 @@
 
 #include "AllEdges.h"
 #include "AllVertices.h"
-#include "AsyncMT_d.h"
+#include "AsyncPhilox_d.h"
 #include <cuda_runtime.h>
 
 #ifdef VALIDATION_MODE
@@ -105,7 +105,7 @@ protected:
 
    /// Pointer to device random noise array.
    float *randNoise_d;
-   AsyncMT_d AsyncGenerator;
+   AsyncPhilox_d AsyncGenerator;
    float *randNoise_h;
    /// Cuda Stream for kernel use
    cudaStream_t stream;

@@ -1,3 +1,17 @@
+/**
+ * @file AsyncPhilox_d.h
+ * 
+ * @ingroup Simulator/Utils/RNG
+ * 
+ * @brief Asynchronous Philox RNG using curand to fill GPU buffers
+ * 
+ * AsyncPhilox_d class maintains two large GPU buffers for noise.
+ * GPUModel calls loadAsyncPhilox to initialize states and
+ * fill the buffers, then, each advance requestSegment
+ * returns a float* slice of a buffer for use in
+ * advanceVertices
+ */
+
 #pragma once
 #include <curand_kernel.h>
 #include <cuda_runtime.h>
@@ -5,12 +19,12 @@
 #include "Book.h"
 #include <cstdio>
 #include <cstdlib>
-class AsyncMT_d {
+class AsyncPhilox_d {
 public:
-   AsyncMT_d() = default;
-   AsyncMT_d(int samplesPerGen, unsigned long seed);
-   ~AsyncMT_d();
-   void loadAsyncMT(int samplesPerSegment, unsigned long seed);
+   AsyncPhilox_d() = default;
+   AsyncPhilox_d(int samplesPerGen, unsigned long seed);
+   ~AsyncPhilox_d();
+   void loadAsyncPhilox(int samplesPerSegment, unsigned long seed);
    void deleteDeviceStruct();
    float *requestSegment();
 

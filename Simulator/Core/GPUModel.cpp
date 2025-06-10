@@ -101,7 +101,7 @@ void GPUModel::setupSim()
    // initMTGPU(Simulator::getInstance().getNoiseRngSeed(), rng_blocks, rng_threads, rng_nPerRng,
    //           rng_mt_rng_count);
    //cout << "blocks, threads, nPerRng, rng_rng_count: " << rng_blocks << " " << rng_threads << " " << rng_nPerRng << " " << rng_mt_rng_count << endl;
-   AsyncGenerator.loadAsyncMT(Simulator::getInstance().getTotalVertices(),
+   AsyncGenerator.loadAsyncPhilox(Simulator::getInstance().getTotalVertices(),
                               Simulator::getInstance().getNoiseRngSeed());
 
 
@@ -176,17 +176,6 @@ void GPUModel::advance()
 #else
    // normalMTGPU(randNoise_d);
    randNoise_d = AsyncGenerator.requestSegment();
-   // int verts = Simulator::getInstance().getTotalVertices();
-   // float* h_data = new float[verts];
-   // cudaDeviceSynchronize();
-   // HANDLE_ERROR(cudaMemcpy(h_data, randNoise_d, verts * sizeof(float), cudaMemcpyDeviceToHost));
-   // log4cplus::Logger vertexLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));
-   // for(int i=0; i< verts; i++){
-   //     LOG4CPLUS_DEBUG(vertexLogger_, endl
-   //                                      << "Rand Index[" << i << "] :: Noise = "
-   //                                      << h_data[i]);
-   // }
-   // delete[] h_data;
 #endif
 //LOG4CPLUS_DEBUG(vertexLogger_, "Index: " << index << " Vm: " << Vm);
 #ifdef PERFORMANCE_METRICS
