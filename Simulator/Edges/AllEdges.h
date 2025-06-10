@@ -15,6 +15,9 @@
 #include <vector>
 // cereal
 #include "cereal/types/vector.hpp"
+#ifdef USE_GPU
+#include <cuda_runtime.h>
+#endif
 
 class AllVertices;
 struct AllEdgesDeviceProperties;
@@ -92,7 +95,15 @@ protected:
    log4cplus::Logger edgeLogger_;
 
 #if defined(USE_GPU)
+
+   ///  Cuda Stream for Edge Kernels
+   cudaStream_t stream;
 public:
+
+   // Set GPU stream for edge kernels
+
+   void SetStream(cudaStream_t pStream);
+
    ///  Allocate GPU memories to store all edges' states,
    ///  and copy them from host to GPU memory.
    ///

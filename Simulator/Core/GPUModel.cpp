@@ -12,6 +12,7 @@
 #include "AllVertices.h"
 #include "Connections.h"
 #include "Global.h"
+#include <fstream>
 #ifdef VALIDATION_MODE
    #include "AllIFNeurons.h"
    #include "OperationManager.h"
@@ -44,8 +45,8 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
 
    // Allocate memory for random noise array
    int numVertices = Simulator::getInstance().getTotalVertices();
-   BGSIZE randNoise_d_size = numVertices * sizeof(float);   // size of random noise array
-   HANDLE_ERROR(cudaMalloc((void **)&randNoise_d, randNoise_d_size));
+   // BGSIZE randNoise_d_size = numVertices * sizeof(float);   // size of random noise array
+   // HANDLE_ERROR(cudaMalloc((void **)&randNoise_d, randNoise_d_size));
 
    // Copy host vertex and edge arrays into GPU device
    vertices.copyToDevice(*allVerticesDevice);
@@ -53,6 +54,9 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
 
    // Allocate edge inverse map in device memory
    allocEdgeIndexMap(numVertices);
+
+   // Create gpu model stream
+   HANDLE_ERROR(cudaStreamCreate(&stream));
 }
 
 /// Copies device memories to host memories and deallocates them.
@@ -72,7 +76,9 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
    edges.copyEdgeDeviceToHost(*allEdgesDevice);
    // Deallocate device memory
    edges.deleteEdgeDeviceStruct(*allEdgesDevice);
-   HANDLE_ERROR(cudaFree(randNoise_d));
+   // HANDLE_ERROR(cudaFree(randNoise_d));
+   // closeFileMT();
+   HANDLE_ERROR(cudaStreamDestroy(stream));
 }
 
 /// Sets up the Simulation.
@@ -86,14 +92,18 @@ void GPUModel::setupSim()
 
    //initialize Mersenne Twister
    //assuming numVertices >= 100 and is a multiple of 100. Note rng_mt_rng_count must be <= MT_RNG_COUNT
-   int rng_blocks = 25;   //# of blocks the kernel will use
-   int rng_nPerRng
-      = 4;   //# of iterations per thread (thread granularity, # of rands generated per thread)
-   int rng_mt_rng_count = Simulator::getInstance().getTotalVertices()
-                          / rng_nPerRng;   //# of threads to generate for numVertices rand #s
-   int rng_threads = rng_mt_rng_count / rng_blocks;   //# threads per block needed
-   initMTGPU(Simulator::getInstance().getNoiseRngSeed(), rng_blocks, rng_threads, rng_nPerRng,
-             rng_mt_rng_count);
+   // int rng_blocks = 25;   //# of blocks the kernel will use
+   // int rng_nPerRng
+   //    = 4;   //# of iterations per thread (thread granularity, # of rands generated per thread)
+   // int rng_mt_rng_count = Simulator::getInstance().getTotalVertices()
+   //                        / rng_nPerRng;   //# of threads to generate for numVertices rand #s
+   // int rng_threads = rng_mt_rng_count / rng_blocks;   //# threads per block needed
+   // initMTGPU(Simulator::getInstance().getNoiseRngSeed(), rng_blocks, rng_threads, rng_nPerRng,
+   //           rng_mt_rng_count);
+   //cout << "blocks, threads, nPerRng, rng_rng_count: " << rng_blocks << " " << rng_threads << " " << rng_nPerRng << " " << rng_mt_rng_count << endl;
+   AsyncGenerator.loadAsyncPhilox(Simulator::getInstance().getTotalVertices(),
+                              Simulator::getInstance().getNoiseRngSeed());
+
 
 #ifdef PERFORMANCE_METRICS
    cudaEventCreate(&start);
@@ -118,14 +128,19 @@ void GPUModel::setupSim()
 
    // set some parameters used for advanceEdgesDevice
    edges.setAdvanceEdgesDeviceParams();
+   AllVertices &vertices = layout_->getVertices();
+   vertices.SetStream(stream);
+   edges.SetStream(stream);
 }
 
 /// Performs any finalization tasks on network following a simulation.
 void GPUModel::finish()
 {
    // deallocates memories on CUDA device
+   AsyncGenerator.deleteDeviceStruct();
    deleteDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
    deleteEdgeIndexMap();
+
 
 #ifdef PERFORMANCE_METRICS
    cudaEventDestroy(start);
@@ -159,7 +174,8 @@ void GPUModel::advance()
    // }
    cudaMemcpy(randNoise_d, randNoise_h.data(), verts * sizeof(float), cudaMemcpyHostToDevice);
 #else
-   normalMTGPU(randNoise_d);
+   // normalMTGPU(randNoise_d);
+   randNoise_d = AsyncGenerator.requestSegment();
 #endif
 //LOG4CPLUS_DEBUG(vertexLogger_, "Index: " << index << " Vm: " << Vm);
 #ifdef PERFORMANCE_METRICS
@@ -239,7 +255,7 @@ void GPUModel::updateConnections()
    // Update Connections data
    if (connections_->updateConnections(vertices)) {
       connections_->updateEdgesWeights(Simulator::getInstance().getTotalVertices(), vertices, edges,
-                                       allVerticesDevice_, allEdgesDevice_, getLayout());
+                                       allVerticesDevice_, allEdgesDevice_, getLayout(), stream);
       // create edge index map
       connections_->createEdgeIndexMap();
       // copy index map to the device memory

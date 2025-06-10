@@ -23,6 +23,8 @@
 
 #include "AllEdges.h"
 #include "AllVertices.h"
+#include "AsyncPhilox_d.h"
+#include <cuda_runtime.h>
 
 #ifdef VALIDATION_MODE
    #include <fstream>
@@ -103,6 +105,10 @@ protected:
 
    /// Pointer to device random noise array.
    float *randNoise_d;
+   AsyncPhilox_d AsyncGenerator;
+   float *randNoise_h;
+   /// Cuda Stream for kernel use
+   cudaStream_t stream;
 
 #if defined(USE_GPU)
    /// Pointer to edge index map in device memory.
@@ -114,6 +120,7 @@ protected:
 
    /// vertex structure in device memory.
    AllVerticesDeviceProperties *allVerticesDevice_;
+
 
 private:
    void allocEdgeIndexMap(int count);
@@ -143,5 +150,6 @@ extern "C" {
 void normalMTGPU(float *randNoise_d);
 void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, unsigned int nPerRng,
                unsigned int mt_rng_count);
+void closeFileMT();
 }
 #endif

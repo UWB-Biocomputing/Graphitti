@@ -56,15 +56,31 @@ NC='\033[0m' # No color
 CONFIG_DIR=../Testing/RegressionTesting/configfiles
 TEST_OUT_DIR=../Testing/RegressionTesting/TestOutput
 GOOD_OUT_DIR=../Testing/RegressionTesting/GoodOutput/${PROCESSING_UNIT}
-declare -a TEST_FILES=("test-tiny"
-                       "test-small"
-                       "test-small-connected"
-                       "test-small-long"
-                       "test-small-connected-long"
-                       "test-medium"
-                       "test-medium-connected"
-                       "test-medium-long"
-                       "test-medium-connected-long")
+
+# Get define the list of test files that we can run per processing unit
+# Lists are diffent when we have a CPU implementation of a model but no GPU implementation
+if [ $PROCESSING_UNIT == 'Cpu' ]; then
+    declare -a TEST_FILES=("test-tiny"
+                        "test-small"
+                        "test-small-connected"
+                        "test-small-long"
+                        "test-small-connected-long"
+                        "test-medium"
+                        "test-medium-connected"
+                        "test-medium-long"
+                        "test-medium-connected-long"
+                        "test-small-911")
+else
+    declare -a TEST_FILES=("test-tiny"
+                        "test-small"
+                        "test-small-connected"
+                        "test-small-long"
+                        "test-small-connected-long"
+                        "test-medium"
+                        "test-medium-connected"
+                        "test-medium-long"
+                        "test-medium-connected-long")
+fi
 
 # This function starts the simulations in parallel
 function run_simulations() {

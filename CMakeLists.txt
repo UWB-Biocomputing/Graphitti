@@ -48,6 +48,7 @@ if(ENABLE_CUDA)
         project(Graphitti LANGUAGES CXX CUDA C)
 #Verify CUDA package is present
         find_Package(CUDA REQUIRED)
+        include_directories(${CUDA_INCLUDE_DIRS})
 #Set the USE_GPU preprocessor macro so that GPU code will be compiled.
         add_compile_definitions(USE_GPU)
 #Specify the CUDA architecture / gencode that will be targeted
@@ -358,7 +359,7 @@ add_library(Matrix ${Matrix_Source})
 
 
 # Create RNG library
-file(GLOB RNG_Source Simulator/Utils/RNG/*.cpp Simulator/Utils/RNG/*.h Simulator/Utils/RNG/*.cu)
+file(GLOB RNG_Source Simulator/Utils/RNG/*.cpp Simulator/Utils/RNG/*.h Simulator/Utils/RNG/*.cu )
 # Remove demo from file list as it contains a main and it will cause compilation errors
 list(REMOVE_ITEM RNG_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/RNG/MersenneTwister_demo.cu")
 add_library(RNG STATIC ${RNG_Source})
@@ -390,9 +391,13 @@ add_library(Utils ${Utils_Source})
 
 # Only link NVTX if it was found
 if(NVTX_LIBRARY)
+        
+        message(STATUS "Adding NVTX: to Utils lib")
         target_link_libraries(Utils PRIVATE ${NVTX_LIBRARY})
 endif()
 
+message(STATUS "Linking RNG against Utils")
+target_link_libraries(RNG PRIVATE Utils)
 
 # Used to locate and run other CMakeLists.txt files from Third Party resources for further compilation of the project.
 add_subdirectory(ThirdParty)
@@ -462,6 +467,12 @@ endif()
 target_compile_options(gtest PRIVATE -Wno-error=maybe-uninitialized)
 target_compile_options(gtest_main PRIVATE -Wno-error=maybe-uninitialized)
 
+if(ENABLE_CUDA)
+    set(cuda_TestSources
+        Testing/UnitTesting/DeviceVectorTests.cpp)
+    set_source_files_properties(${cuda_TestSources} PROPERTIES LANGUAGE CUDA)
+endif()
+
 add_executable(tests
         Testing/RunTests.cpp
         Testing/UnitTesting/OperationManagerTests.cpp
@@ -481,7 +492,8 @@ add_executable(tests
         Testing/Utils/CircularBufferTests.cpp
         Testing/UnitTesting/EventBufferTests.cpp
         Testing/UnitTesting/XmlRecorderTests.cpp
-        Testing/UnitTesting/Hdf5RecorderTests.cpp)
+        Testing/UnitTesting/Hdf5RecorderTests.cpp
+        Testing/UnitTesting/DeviceVectorTests.cpp)
 
 # Links the Googletest framework with the testing executable
 target_link_libraries(tests gtest gtest_main)

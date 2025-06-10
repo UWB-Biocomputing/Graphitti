@@ -217,9 +217,16 @@ void AllEdges::createEdgeIndexMap(EdgeIndexMap &edgeIndexMap)
    }
 }
 
+#if defined(USE_GPU)
+// Set GPU stream for edge kernels
+
+void AllEdges::SetStream(cudaStream_t pStream)
+{
+   stream = pStream;
+}
+#endif
 
 #if !defined(USE_GPU)
-
 ///  Advance all the edges in the simulation.
 ///
 ///  @param  vertices           The vertices.

@@ -33,6 +33,11 @@
 // cereal
 #include <cereal/types/memory.hpp>
 
+#ifdef USE_GPU
+#include <cuda_runtime.h>
+#endif
+
+
 using namespace std;
 
 class Connections {
@@ -87,7 +92,10 @@ public:
    ///  @param  layout               Layout information of the graph network.
    virtual void updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &edges,
                                    AllVerticesDeviceProperties *allVerticesDevice,
-                                   AllEdgesDeviceProperties *allEdgesDevice, Layout &layout);
+                                   AllEdgesDeviceProperties *allEdgesDevice, Layout &layout
+                                 ,cudaStream_t stream);
+
+   
 #else
 public:
    ///  Update the weight of the edges in the simulation.
