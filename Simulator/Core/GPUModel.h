@@ -24,7 +24,9 @@
 #include "AllEdges.h"
 #include "AllVertices.h"
 #include "AsyncPhilox_d.h"
+#ifdef USE_GPU
 #include <cuda_runtime.h>
+#endif
 
 #ifdef VALIDATION_MODE
    #include <fstream>
