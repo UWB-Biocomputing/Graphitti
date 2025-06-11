@@ -362,6 +362,9 @@ add_library(Matrix ${Matrix_Source})
 file(GLOB RNG_Source Simulator/Utils/RNG/*.cpp Simulator/Utils/RNG/*.h Simulator/Utils/RNG/*.cu)
 # Remove demo from file list as it contains a main and it will cause compilation errors
 list(REMOVE_ITEM RNG_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/RNG/MersenneTwister_demo.cu")
+if(NOT ENABLE_CUDA)
+        list(REMOVE_ITEM Utils_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/AsyncPhilox_d.cu")
+endif()
 add_library(RNG STATIC ${RNG_Source})
 
 

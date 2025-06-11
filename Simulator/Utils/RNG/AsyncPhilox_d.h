@@ -16,10 +16,8 @@
 #include "Book.h"
 #include <cstdio>
 #include <cstdlib>
-#ifdef USE_GPU
 #include <cuda_runtime.h>
 #include <curand_kernel.h>
-#endif
 #include <log4cplus/loggingmacros.h>
 class AsyncPhilox_d {
 public:

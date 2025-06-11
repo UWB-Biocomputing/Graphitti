@@ -22,9 +22,7 @@
 
 #pragma once
 
-#ifdef USE_GPU
 #include <cuda_runtime.h>
-#endif
 #include <stdio.h>
 //! CUDA Exception handler
 static void HandleError(cudaError_t err, const char *file, int line)

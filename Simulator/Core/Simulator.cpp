@@ -9,7 +9,9 @@
 
 #include "Simulator.h"
 #include "CPUModel.h"
-#include "GPUModel.h"
+#if defined(USE_GPU)
+   #include "GPUModel.h"
+#endif
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "Utils/Factory.h"
