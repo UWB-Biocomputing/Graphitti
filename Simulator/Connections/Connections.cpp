@@ -91,8 +91,8 @@ bool Connections::updateConnections(AllVertices &vertices)
 #if defined(USE_GPU)
 void Connections::updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &edges,
                                      AllVerticesDeviceProperties *allVerticesDevice,
-                                     AllEdgesDeviceProperties *allEdgesDevice, Layout &layout
-                                    ,cudaStream_t stream)
+                                     AllEdgesDeviceProperties *allEdgesDevice, Layout &layout,
+                                     cudaStream_t stream)
 {
 }
 #else

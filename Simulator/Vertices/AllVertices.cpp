@@ -53,7 +53,8 @@ void AllVertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
 
 #ifdef USE_GPU
 // Set Cuda Stream for Vertices kernels
-void AllVertices::SetStream(cudaStream_t pStream){
+void AllVertices::SetStream(cudaStream_t pStream)
+{
    stream = pStream;
 }
 #endif

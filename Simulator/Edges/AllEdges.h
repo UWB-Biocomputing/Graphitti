@@ -16,7 +16,7 @@
 // cereal
 #include "cereal/types/vector.hpp"
 #ifdef USE_GPU
-#include <cuda_runtime.h>
+   #include <cuda_runtime.h>
 #endif
 
 class AllVertices;
@@ -98,8 +98,8 @@ protected:
 
    ///  Cuda Stream for Edge Kernels
    cudaStream_t stream;
-public:
 
+public:
    // Set GPU stream for edge kernels
 
    void SetStream(cudaStream_t pStream);
