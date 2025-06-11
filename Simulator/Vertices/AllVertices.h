@@ -32,8 +32,8 @@ using namespace std;
 #include <log4cplus/loggingmacros.h>
 // cereal
 #include "cereal/types/vector.hpp"
-#ifdef USE_GPU
-#include <cuda_runtime.h>
+#if defined(USE_GPU)
+   #include <cuda_runtime.h>
 #endif
 
 class Layout;
@@ -97,10 +97,9 @@ protected:
 #if defined(USE_GPU)
    ///  Cuda Stream for Vertices Kernels
    cudaStream_t stream;
+
 public:
-
    // Set GPU stream for Vertices kernels
-
    void SetStream(cudaStream_t pStream);
 
    ///  Allocate GPU memories to store all vertices' states,
