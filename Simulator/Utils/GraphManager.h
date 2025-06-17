@@ -41,6 +41,7 @@
 
 #include "Global.h"
 #include "ParameterManager.h"
+#include "Simulator.h"
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphml.hpp>
 #include <string>
@@ -177,19 +178,20 @@ template <typename VertexProperties> bool GraphManager<VertexProperties>::readGr
 {
    // Load graphml file into a BGL graph
    ifstream graph_file;
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 
    // If graphFilePath_ isn't already defined, get it from ParameterManager
    if (graphFilePath_ == "") {
       string path = "//graphmlFile/text()";
       if (!ParameterManager::getInstance().getStringByXpath(path, graphFilePath_)) {
-         cerr << "Could not find XML path: " << path << ".\n";
+         LOG4CPLUS_ERROR(consoleLogger,  ("Could not find XML path: " + path + ".\n"));
          return false;
       };
    }
 
    graph_file.open(graphFilePath_.c_str());
    if (!graph_file.is_open()) {
-      cerr << "Failed to open file: " << graphFilePath_ << ".\n";
+      LOG4CPLUS_ERROR(consoleLogger,  ("Failed to open file: " + graphFilePath_ + ".\n"));
       return false;
    }
 

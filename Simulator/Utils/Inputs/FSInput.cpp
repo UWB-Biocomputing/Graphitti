@@ -9,6 +9,7 @@
 #include "FSInput.h"
 #include "HostSInputPoisson.h"
 #include "HostSInputRegular.h"
+#include "Simulator.h"
 #if defined(USE_GPU)
    #include "GpuSInputPoisson.h"
    #include "GpuSInputRegular.h"
@@ -26,20 +27,21 @@ ISInput *FSInput::CreateInstance()
    if (stimulusFileName.empty()) {
       return nullptr;
    }
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 
    // load stimulus input file
    TiXmlDocument siDoc(stimulusFileName.c_str());
    if (!siDoc.LoadFile()) {
-      cerr << "Failed loading stimulus input file " << stimulusFileName << ":" << "\n\t"
-           << siDoc.ErrorDesc() << endl;
-      cerr << " error: " << siDoc.ErrorRow() << ", " << siDoc.ErrorCol() << endl;
+      LOG4CPLUS_ERROR(consoleLogger, ("Failed loading stimulus input file " << stimulusFileName << ":" << "\n\t"
+           << siDoc.ErrorDesc() << endl));
+      LOG4CPLUS_ERROR(consoleLogger, (" error: " << siDoc.ErrorRow() << ", " << siDoc.ErrorCol() << endl));
       return nullptr;
    }
 
    // load input parameters
    TiXmlElement *parms = nullptr;
    if ((parms = siDoc.FirstChildElement("InputParams")) == nullptr) {
-      cerr << "Could not find <InputParms> in stimulus input file " << stimulusFileName << endl;
+      LOG4CPLUS_ERROR(consoleLogger, ("Could not find <InputParms> in stimulus input file " << stimulusFileName << endl));
       return nullptr;
    }
 
@@ -48,11 +50,11 @@ ISInput *FSInput::CreateInstance()
    string name;
    if ((temp = parms->FirstChildElement("IMethod")) != nullptr) {
       if (temp->QueryValueAttribute("name", &name) != TIXML_SUCCESS) {
-         cerr << "error IMethod:name" << endl;
+         LOG4CPLUS_ERROR(consoleLogger, ("error IMethod:name" << endl));
          return nullptr;
       }
    } else {
-      cerr << "missing IMethod" << endl;
+      LOG4CPLUS_ERROR(consoleLogger, ("missing IMethod" << endl));
       return nullptr;
    }
 
@@ -72,7 +74,7 @@ ISInput *FSInput::CreateInstance()
       pInput = new HostSInputPoisson(parms);
 #endif
    } else {
-      cerr << "unsupported stimulus input method" << endl;
+      LOG4CPLUS_ERROR(consoleLogger, ("unsupported stimulus input method" << endl));
    }
 
    return pInput;

@@ -32,9 +32,11 @@ void MatrixFactory::GetAttributes(TiXmlElement *matElement, string &type, string
                                   int &columns, FLOAT &multiplier)
 {
    const char *temp = nullptr;
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+
 
 #ifdef MDEBUG
-   cerr << "Getting attributes:" << endl;
+   LOG4CPLUS_ERROR(consoleLogger, ("Getting attributes:" << endl));
 #endif
    temp = matElement->Attribute("type");
    if (temp != nullptr)
@@ -44,26 +46,26 @@ void MatrixFactory::GetAttributes(TiXmlElement *matElement, string &type, string
    if ((type != "diag") && (type != "complete") && (type != "sparse"))
       throw KII_invalid_argument("Illegal matrix type: " + type);
 #ifdef MDEBUG
-   cerr << "\ttype=" << type << ", ";
+   LOG4CPLUS_TRACE(consoleLogger,  ("\ttype=" << type << ", "));
 #endif
 
    if (matElement->QueryIntAttribute("rows", &rows) != TIXML_SUCCESS)
       throw KII_invalid_argument("Number of rows not specified for Matrix.");
 #ifdef MDEBUG
-   cerr << "\trows=" << rows << ", ";
+   LOG4CPLUS_TRACE(consoleLogger, ("\trows=" << rows << ", "));
 #endif
 
    if (matElement->QueryIntAttribute("columns", &columns) != TIXML_SUCCESS)
       throw KII_invalid_argument("Number of columns not specified for Matrix.");
 #ifdef MDEBUG
-   cerr << "\tcolumns=" << columns << ", ";
+   LOG4CPLUS_TRACE(consoleLogger, ("\tcolumns=" << columns << ", "));
 #endif
 
    if (matElement->QueryFLOATAttribute("multiplier", &multiplier) != TIXML_SUCCESS) {
       multiplier = 1.0;
    }
 #ifdef MDEBUG
-   cerr << "\tmultiplier=" << multiplier << ", ";
+   LOG4CPLUS_TRACE(consoleLogger, ("\tmultiplier=" << multiplier << ", "));
 #endif
 
    temp = matElement->Attribute("init");
@@ -72,7 +74,7 @@ void MatrixFactory::GetAttributes(TiXmlElement *matElement, string &type, string
    else
       init = "none";
 #ifdef MDEBUG
-   cerr << "\tinit=" << init << endl;
+   LOG4CPLUS_TRACE(consoleLogger, ("\tinit=" << init << endl));
 #endif
 }
 
@@ -95,12 +97,13 @@ Matrix *MatrixFactory::CreateMatrix(TiXmlElement *matElement)
    FLOAT multiplier;
    Matrix *theMatrix = nullptr;
    TiXmlHandle matHandle(matElement);
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 
    GetAttributes(matElement, type, init, rows, columns, multiplier);
 
 #ifdef MDEBUG
-   cerr << "Creating Matrix with attributes: " << type << ", " << init << ", " << rows << "X"
-        << columns << ", " << multiplier << endl;
+   LOG4CPLUS_ERROR(consoleLogger, ("Creating Matrix with attributes: " << type << ", " << init << ", " << rows << "X"
+        << columns << ", " << multiplier << endl));
 #endif
 
    if (init == "implementation")
@@ -116,7 +119,7 @@ Matrix *MatrixFactory::CreateMatrix(TiXmlElement *matElement)
             throw KII_invalid_argument("Contents not specified for Matrix with init='none'.");
          values = valuesNode->Value();
 #ifdef MDEBUG
-         cerr << "\tData present for initialization: " << values << endl;
+         LOG4CPLUS_ERROR(consoleLogger, ("\tData present for initialization: " << values << endl));
 #endif
       }
       if ((rows > 1) && (columns > 1))   // Create a 2D Matrix
@@ -131,7 +134,7 @@ Matrix *MatrixFactory::CreateMatrix(TiXmlElement *matElement)
                "Contents not specified for Sparse Matrix with init='none'.");
          const char *values = valuesNode->Value();
 #ifdef MDEBUG
-         cerr << "\tData present for initialization: " << values << endl;
+         LOG4CPLUS_ERROR(consoleLogger, ("\tData present for initialization: " << values << endl));
 #endif
          theMatrix = new SparseMatrix(rows, columns, multiplier, values);
       } else if (init == "const") {   // No string of values or XML row data
@@ -174,12 +177,13 @@ VectorMatrix MatrixFactory::CreateVector(TiXmlElement *matElement)
    FLOAT multiplier;
    string values;
    TiXmlHandle matHandle(matElement);
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 
    GetAttributes(matElement, type, init, rows, columns, multiplier);
 
 #ifdef VDEBUG
-   cerr << "Creating Vector with attributes: " << type << ", " << init << ", " << rows << "X"
-        << columns << ", " << multiplier << endl;
+   LOG4CPLUS_ERROR(consoleLogger, ("Creating Vector with attributes: " << type << ", " << init << ", " << rows << "X"
+        << columns << ", " << multiplier << endl));
 #endif
 
    // Get the Text node that contains the matrix values, if needed
@@ -190,7 +194,7 @@ VectorMatrix MatrixFactory::CreateVector(TiXmlElement *matElement)
 
       values = valuesNode->Value();
 #ifdef VDEBUG
-      cerr << "\tData present for initialization: " << values << endl;
+      LOG4CPLUS_ERROR(consoleLogger, ("\tData present for initialization: " << values << endl));
 #endif
    } else if (init == "implementation")
       throw KII_invalid_argument(
@@ -230,12 +234,13 @@ CompleteMatrix MatrixFactory::CreateComplete(TiXmlElement *matElement)
    FLOAT multiplier;
    string values;
    TiXmlHandle matHandle(matElement);
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 
    GetAttributes(matElement, type, init, rows, columns, multiplier);
 
 #ifdef MDEBUG
-   cerr << "Creating Matrix with attributes: " << type << ", " << init << ", " << rows << "X"
-        << columns << ", " << multiplier << endl;
+   LOG4CPLUS_ERROR(consoleLogger, ("Creating Matrix with attributes: " << type << ", " << init << ", " << rows << "X"
+        << columns << ", " << multiplier << endl));
 #endif
 
    // Get the Text node that contains the matrix values, if needed
@@ -246,7 +251,7 @@ CompleteMatrix MatrixFactory::CreateComplete(TiXmlElement *matElement)
 
       values = valuesNode->Value();
 #ifdef MDEBUG
-      cerr << "\tData present for initialization: " << values << endl;
+      LOG4CPLUS_ERROR(consoleLogger, ("\tData present for initialization: " << values << endl));
 #endif
    } else if (init == "implementation")
       throw KII_invalid_argument(
@@ -277,12 +282,13 @@ SparseMatrix MatrixFactory::CreateSparse(TiXmlElement *matElement)
    int rows, columns;
    FLOAT multiplier;
    TiXmlHandle matHandle(matElement);
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 
    GetAttributes(matElement, type, init, rows, columns, multiplier);
 
 #ifdef MDEBUG
-   cerr << "Creating SparseMatrix with attributes: " << type << ", " << init << ", " << rows << "X"
-        << columns << ", " << multiplier << endl;
+   LOG4CPLUS_ERROR(consoleLogger, ("Creating SparseMatrix with attributes: " << type << ", " << init << ", " << rows << "X"
+        << columns << ", " << multiplier << endl));
 #endif
 
    if (type == "diag") {
@@ -293,7 +299,7 @@ SparseMatrix MatrixFactory::CreateSparse(TiXmlElement *matElement)
                "Contents not specified for Sparese Matrix with init='none'.");
          const char *values = valuesNode->Value();
 #ifdef MDEBUG
-         cerr << "\tData present for initialization: " << values << endl;
+         LOG4CPLUS_ERROR(consoleLogger, ("\tData present for initialization: " << values << endl));
 #endif
          return SparseMatrix(rows, columns, multiplier, values);
       } else if (init == "const") {   // No string of values or XML row data

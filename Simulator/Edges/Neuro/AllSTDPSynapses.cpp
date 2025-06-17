@@ -498,19 +498,20 @@ bool AllSTDPSynapses::allowBackPropagation()
 void AllSTDPSynapses::printSynapsesProps() const
 {
    AllSpikingSynapses::printSynapsesProps();
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
-         cout << "total_delayPost[" << i << "] = " << totalDelayPost_[i];
-         cout << " tauspost_: " << tauspost_[i];
-         cout << " tauspre_: " << tauspre_[i];
-         cout << " taupos_: " << taupos_[i];
-         cout << " tauneg_: " << tauneg_[i];
-         cout << " STDPgap_: " << STDPgap_[i];
-         cout << " Wex_: " << Wex_[i];
-         cout << " Aneg_: " << Aneg_[i];
-         cout << " Apos_: " << Apos_[i];
-         cout << " mupos_: " << mupos_[i];
-         cout << " muneg_: " << muneg_[i] << endl;
+         LOG4CPLUS_TRACE(consoleLogger,  "total_delayPost[" << i << "] = " << totalDelayPost_[i]);
+         LOG4CPLUS_TRACE(consoleLogger, " tauspost_: " << tauspost_[i]);
+         LOG4CPLUS_TRACE(consoleLogger, " tauspre_: " << tauspre_[i]);
+         LOG4CPLUS_TRACE(consoleLogger, " taupos_: " << taupos_[i]);
+         LOG4CPLUS_TRACE(consoleLogger, " tauneg_: " << tauneg_[i]);
+         LOG4CPLUS_TRACE(consoleLogger, " STDPgap_: " << STDPgap_[i]);
+         LOG4CPLUS_TRACE(consoleLogger, " Wex_: " << Wex_[i]);
+         LOG4CPLUS_TRACE(consoleLogger, " Aneg_: " << Aneg_[i]);
+         LOG4CPLUS_TRACE(consoleLogger, " Apos_: " << Apos_[i]);
+         LOG4CPLUS_TRACE(consoleLogger, " mupos_: " << mupos_[i]);
+         LOG4CPLUS_TRACE(consoleLogger, " muneg_: " << muneg_[i] << endl);
       }
    }
 }

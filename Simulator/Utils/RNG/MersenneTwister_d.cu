@@ -33,6 +33,7 @@
  */
 
 
+#include <Simulator.h>
 #include <iostream>
 #include <stdio.h>
 
@@ -60,12 +61,14 @@ unsigned int mt_nPerRng;
 //Load twister configurations
 void loadMTGPU(const char *fname){
 	FILE *fd = fopen(fname, "rb");
+	log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+
 	if(!fd){
-		cerr << "initMTGPU(): failed to open " <<  fname << endl << "FAILED" << endl;
+		LOG4CPLUS_ERROR(consoleLogger, "initMTGPU(): failed to open " <<  fname << endl << "FAILED" << endl);
 		exit(0);
 	}
 	if( !fread(h_MT, mt_rng_count*sizeof(mt_struct_stripped), 1, fd) ){
-		cerr << "initMTGPU(): failed to load " <<  fname << endl << "FAILED" << endl;
+		LOG4CPLUS_ERROR(consoleLogger, "initMTGPU(): failed to load " <<  fname << endl << "FAILED" << endl);
 		exit(0);
 	}
 	fclose(fd);
@@ -86,6 +89,7 @@ void seedMTGPU(unsigned int seed){
 	int i;
     //Need to be thread-safe
 	mt_struct_stripped *MT = (mt_struct_stripped *)malloc(mt_rng_count * sizeof(mt_struct_stripped));
+	log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 
 	for(i = 0; i < mt_rng_count; i++){
 		MT[i]      = h_MT[i];
@@ -99,7 +103,7 @@ void seedMTGPU(unsigned int seed){
 	seedMTGPUState<<<blocksPerGrid,threadsPerBlock>>>(seed);
 
 	if(cudaMemcpyToSymbol(ds_MT, MT, mt_rng_count*sizeof(mt_struct_stripped))!=cudaSuccess){
-		cerr << "seedMTGP failed" << endl;
+		LOG4CPLUS_ERROR(consoleLogger, "seedMTGP failed" << endl);
 		exit(0);
 	}
 

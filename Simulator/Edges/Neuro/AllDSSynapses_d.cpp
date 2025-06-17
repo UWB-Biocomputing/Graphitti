@@ -305,25 +305,61 @@ void AllDSSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
          cudaMemcpy(FPrint, allSynapsesProps.F_, size * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
 
 
+      log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+
       for (int i = 0; i < size; i++) {
          if (WPrint[i] != 0.0) {
-            cout << "GPU W[" << i << "] = " << WPrint[i];
-            cout << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
-            cout << " GPU desNeuron: " << destNeuronIndexPrint[i];
-            cout << " GPU type: " << typePrint[i];
-            cout << " GPU psr: " << psrPrint[i];
-            cout << " GPU in_use:" << (inUsePrint[i] == 1 ? "true" : "false");
+            // cout << "GPU W[" << i << "] = " << WPrint[i];
+            // cout << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
+            // cout << " GPU desNeuron: " << destNeuronIndexPrint[i];
+            // cout << " GPU type: " << typePrint[i];
+            // cout << " GPU psr: " << psrPrint[i];
+            // cout << " GPU in_use:" << (inUsePrint[i] == 1 ? "true" : "false");
 
-            cout << " GPU decay: " << decayPrint[i];
-            cout << " GPU tau: " << tauPrint[i];
-            cout << " GPU total_delay: " << totalDelayPrint[i];
+            // cout << " GPU decay: " << decayPrint[i];
+            // cout << " GPU tau: " << tauPrint[i];
+            // cout << " GPU total_delay: " << totalDelayPrint[i];
 
-            cout << " GPU lastSpike: " << lastSpikePrint[i];
-            cout << " GPU r: " << rPrint[i];
-            cout << " GPU u: " << uPrint[i];
-            cout << " GPU D: " << DPrint[i];
-            cout << " GPU U: " << UPrint[i];
-            cout << " GPU F: " << FPrint[i] << endl;
+            // cout << " GPU lastSpike: " << lastSpikePrint[i];
+            // cout << " GPU r: " << rPrint[i];
+            // cout << " GPU u: " << uPrint[i];
+            // cout << " GPU D: " << DPrint[i];
+            // cout << " GPU U: " << UPrint[i];
+            // cout << " GPU F: " << FPrint[i] << endl;
+
+            string message = ("GPU W[" + to_string(i) + "] = " + to_string(WPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, message);
+            message = (" GPU sourNeuron: " + sourceNeuronIndexPrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, message);
+            message = (" GPU desNeuron: " + destNeuronIndexPrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, message);
+            int currType = (int) typePrint[i];
+            message = (" GPU type: " + to_string(currType));
+            LOG4CPLUS_INFO(consoleLogger, message);
+            message = (" GPU psr: " + to_string(psrPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, message);
+            message = (" GPU in_use:" + inUsePrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, message);
+
+            message = (" GPU decay: " + to_string(decayPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, message);
+            message = (" GPU tau: " + to_string(tauPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, message);
+            message = (" GPU total_delay: " + totalDelayPrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, message);
+
+            message = (" GPU lastSpike: " + lastSpikePrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, message);
+            message = (" GPU r: " + to_string(rPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, message);
+            message = (" GPU u: " + to_string(uPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, message);
+            message = (" GPU D: " + to_string(DPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, message);
+            message = (" GPU U: " + to_string(UPrint[i]));
+            LOG4CPLUS_INFO(consoleLogger, message);
+            message = (" GPU F: " + to_string(FPrint[i]) + "\n");
+            LOG4CPLUS_INFO(consoleLogger, message);
          }
       }
 

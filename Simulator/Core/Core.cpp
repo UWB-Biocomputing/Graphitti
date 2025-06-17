@@ -25,7 +25,8 @@
 #include "ParameterManager.h"
 #include "Serializer.h"
 #include "config.h"   // build/config.h contains the git commit id
-
+#include <iostream>
+#include <string>
 // Uncomment to use visual leak detector (Visual Studios Plugin)
 // #include <vld.h>
 #if defined(USE_GPU)
@@ -51,6 +52,8 @@ bool Core::parseCommandLine(string executableName, string cmdLineArguments)
       "The UW Bothell graph-based simulation environment, for high-performance neural network and other graph-based problems\n Usage: "
       + executableName + " "));
 
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+
    // Set up the comment line parser.
    if ((cl.addParam("configfile", 'c', ParamContainer::filename, "parameter configuration filepath")
         != ParamContainer::errOk)
@@ -69,7 +72,7 @@ bool Core::parseCommandLine(string executableName, string cmdLineArguments)
        || (cl.addParam("version", 'v', ParamContainer::novalue,
                        "output current git commit ID and exit")
            != ParamContainer::errOk)) {
-      cerr << "Internal error creating command line parser" << endl;
+      LOG4CPLUS_FATAL(consoleLogger, ("Internal error creating command line parser\n"));
       return false;
    }
 
@@ -80,7 +83,9 @@ bool Core::parseCommandLine(string executableName, string cmdLineArguments)
    }
 
    if (cl["version"].compare("") != 0) {
-      cout << "Git commit ID: " << GIT_COMMIT_ID << endl;
+      string str(GIT_COMMIT_ID);
+      string message = "Git commit ID: " + str + "\n";
+      LOG4CPLUS_TRACE(consoleLogger, message);
       exit(0);
    }
 
@@ -243,8 +248,11 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
    time(&end_time);
    double timeElapsed = difftime(end_time, start_time);
    double ssps = simulator.getEpochDuration() * simulator.getNumEpochs() / timeElapsed;
-   cout << "time simulated: " << simulator.getEpochDuration() * simulator.getNumEpochs() << endl;
-   cout << "time elapsed: " << timeElapsed << endl;
-   cout << "ssps (simulation seconds / real time seconds): " << ssps << endl;
+   // cout << "time simulated: " << simulator.getEpochDuration() * simulator.getNumEpochs() << endl;
+   // cout << "time elapsed: " << timeElapsed << endl;
+   // cout << "ssps (simulation seconds / real time seconds): " << ssps << endl;
+   LOG4CPLUS_TRACE(consoleLogger, "time simulated: " << simulator.getEpochDuration() * simulator.getNumEpochs() << endl);
+   LOG4CPLUS_TRACE(consoleLogger, "time elapsed: " << timeElapsed << endl);
+   LOG4CPLUS_TRACE(consoleLogger, "ssps (simulation seconds / real time seconds): " << ssps << endl);
    return 0;
 }

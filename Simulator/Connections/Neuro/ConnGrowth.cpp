@@ -44,6 +44,7 @@
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "ParseParamError.h"
+#include <log4cplus/loggingmacros.h>
 
 #ifdef USE_HDF5
    #include "Hdf5Recorder.h"
@@ -324,7 +325,10 @@ void ConnGrowth::updateEdgesWeights()
 ///  Prints radii
 void ConnGrowth::printRadii() const
 {
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    for (int i = 0; i < radiiSize_; i++) {
-      cout << "radii[" << i << "] = " << radii_[i] << endl;
+      // cout << "radii[" << i << "] = " << radii_[i] << endl;
+      string msg = "radii[" + to_string(i) + "] = " + to_string(radii_[i]);
+      LOG4CPLUS_TRACE(consoleLogger, msg);
    }
 }
