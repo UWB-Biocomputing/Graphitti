@@ -105,7 +105,8 @@ void AllNeuroEdges::printSynapsesProps() const
    LOG4CPLUS_TRACE(consoleLogger, "This is SynapsesProps data:" << endl);
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
-         LOG4CPLUS_TRACE(consoleLogger, "W[" << i << "] = " << W_[i]);
+         string message = "W[" + to_string(i) + "] = " + to_string(W_[i]) + "\n";
+         LOG4CPLUS_TRACE(consoleLogger, message);         
          LOG4CPLUS_TRACE(consoleLogger, " sourNeuron: " << sourceVertexIndex_[i]);
          LOG4CPLUS_TRACE(consoleLogger, " desNeuron: " << destVertexIndex_[i]);
          LOG4CPLUS_TRACE(consoleLogger, " type: " << type_[i]);

@@ -501,7 +501,7 @@ void AllSTDPSynapses::printSynapsesProps() const
    log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
-         LOG4CPLUS_TRACE(consoleLogger,  "total_delayPost[" << i << "] = " << totalDelayPost_[i]);
+         LOG4CPLUS_TRACE(consoleLogger, "total_delayPost[" << i << "] = " << totalDelayPost_[i]);
          LOG4CPLUS_TRACE(consoleLogger, " tauspost_: " << tauspost_[i]);
          LOG4CPLUS_TRACE(consoleLogger, " tauspre_: " << tauspre_[i]);
          LOG4CPLUS_TRACE(consoleLogger, " taupos_: " << taupos_[i]);

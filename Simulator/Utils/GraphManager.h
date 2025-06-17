@@ -184,14 +184,16 @@ template <typename VertexProperties> bool GraphManager<VertexProperties>::readGr
    if (graphFilePath_ == "") {
       string path = "//graphmlFile/text()";
       if (!ParameterManager::getInstance().getStringByXpath(path, graphFilePath_)) {
-         LOG4CPLUS_ERROR(consoleLogger,  ("Could not find XML path: " + path + ".\n"));
+         string message = "Could not find XML path: " + path + ".\n";
+         LOG4CPLUS_ERROR(consoleLogger, message);
          return false;
       };
    }
 
    graph_file.open(graphFilePath_.c_str());
    if (!graph_file.is_open()) {
-      LOG4CPLUS_ERROR(consoleLogger,  ("Failed to open file: " + graphFilePath_ + ".\n"));
+      string message = "Failed to open file: " + graphFilePath_ + ".\n";
+      LOG4CPLUS_ERROR(consoleLogger, message);
       return false;
    }
 

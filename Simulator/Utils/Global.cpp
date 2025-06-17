@@ -64,7 +64,9 @@ string neuronTypeToString(vertexType t)
       case vertexType::EXC:
          return "EXC";
       default:
-         LOG4CPLUS_ERROR(consoleLogger, "ERROR->neuronTypeToString() failed, unknown type: " << t << endl);
+         int type = int(t);
+         string message = "ERROR->neuronTypeToString() failed, unknown type: " + to_string(type) + "\n";
+         LOG4CPLUS_ERROR(consoleLogger, message);
          assert(false);
          return nullptr;   // Must return a value -- this will probably cascade to another failure
    }
@@ -104,33 +106,47 @@ double t_gpu_calcSummation;
 void printPerformanceMetrics(const float total_time, int steps)
 {
    log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
-   LOG4CPLUS_TRACE(consoleLogger, ("t_gpu_rndGeneration: " << t_gpu_rndGeneration << " ms ("
-        << t_gpu_rndGeneration / total_time * 100 << "%)" << endl));
-   LOG4CPLUS_TRACE(consoleLogger, ("t_gpu_advanceNeurons: " << t_gpu_advanceNeurons << " ms ("
-        << t_gpu_advanceNeurons / total_time * 100 << "%)" << endl));
-   LOG4CPLUS_TRACE(consoleLogger, ("t_gpu_advanceSynapses: " << t_gpu_advanceSynapses << " ms ("
-        << t_gpu_advanceSynapses / total_time * 100 << "%)" << endl));
-   LOG4CPLUS_TRACE(consoleLogger, ("t_gpu_calcSummation: " << t_gpu_calcSummation << " ms ("
-        << t_gpu_calcSummation / total_time * 100 << "%)" << endl));
 
-   LOG4CPLUS_TRACE(consoleLogger, ("\nHost initialization (layout): " << t_host_initialization_layout << " seconds ("
-        << t_host_initialization_layout / total_time * 100 << "%)" << endl));
+   string message = "t_gpu_rndGeneration: " + to_string(t_gpu_rndGeneration) + " ms (" 
+      + to_string(t_gpu_rndGeneration / total_time * 100) + "%)\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
+   message = "t_gpu_advanceNeurons: " + to_string(t_gpu_advanceNeurons) + " ms ("
+      + to_string(t_gpu_advanceNeurons / total_time * 100) + "%)\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
+   message = "t_gpu_advanceSynapses: " + to_string(t_gpu_advanceSynapses) + " ms ("
+      + to_string(t_gpu_advanceSynapses / total_time * 100) + "%)\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
+   message = "t_gpu_calcSummation: " + to_string(t_gpu_calcSummation) + " ms ("
+      + to_string(t_gpu_calcSummation / total_time * 100) + "%)\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
 
-   LOG4CPLUS_TRACE(consoleLogger, ("\nHost initialization (connections): " << t_host_initialization_connections
-        << " seconds (" << t_host_initialization_connections / total_time * 100 << "%)" << endl));
+   message = "\nHost initialization (layout): " + to_string(t_host_initialization_layout) + " seconds ("
+      + to_string(t_host_initialization_layout / total_time * 100) + "%)\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
 
-   LOG4CPLUS_TRACE(consoleLogger, ("\nHost advance: " << t_host_advance << " seconds (" << t_host_advance / total_time * 100
-        << "%)" << endl));
+   message = "\nHost initialization (connections): " + to_string(t_host_initialization_connections)
+      + " seconds (" + to_string(t_host_initialization_connections / total_time * 100) + "%)\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
 
-   LOG4CPLUS_TRACE(consoleLogger, ("\nHost adjustEdges: " << t_host_adjustEdges << " seconds ("
-        << t_host_adjustEdges / total_time * 100 << "%)" << endl));
+   message = "\nHost advance: " + to_string(t_host_advance) + " seconds ("
+      + to_string(t_host_advance / total_time * 100) + "%)\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
 
-   LOG4CPLUS_TRACE(consoleLogger, ("\nAverage time per simulation epoch:" << endl));
+   message = "\nHost adjustEdges: " + to_string(t_host_adjustEdges) + " seconds ("
+      + to_string(t_host_adjustEdges / total_time * 100) + "%)\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
 
-   LOG4CPLUS_TRACE(consoleLogger, ("t_gpu_rndGeneration: " << t_gpu_rndGeneration / steps << " ms/epoch" << endl));
-   LOG4CPLUS_TRACE(consoleLogger, ("t_gpu_advanceNeurons: " << t_gpu_advanceNeurons / steps << " ms/epoch" << endl));
-   LOG4CPLUS_TRACE(consoleLogger, ("t_gpu_advanceSynapses: " << t_gpu_advanceSynapses / steps << " ms/epoch" << endl));
-   LOG4CPLUS_TRACE(consoleLogger, ("t_gpu_calcSummation: " << t_gpu_calcSummation / steps << " ms/epoch" << endl));
+   message = "\nAverage time per simulation epoch:\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
+
+   message = "t_gpu_rndGeneration: " + to_string(t_gpu_rndGeneration / steps) + " ms/epoch\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
+   message = "t_gpu_advanceNeurons: " + to_string(t_gpu_advanceNeurons / steps) + " ms/epoch\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
+   message = "t_gpu_advanceSynapses: " + to_string(t_gpu_advanceSynapses / steps) + " ms/epoch\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
+   message = "t_gpu_calcSummation: " + to_string(t_gpu_calcSummation / steps) + " ms/epoch\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
 }
 #endif   // PERFORMANCE_METRICS
 

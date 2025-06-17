@@ -309,31 +309,13 @@ void AllDSSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
 
       for (int i = 0; i < size; i++) {
          if (WPrint[i] != 0.0) {
-            // cout << "GPU W[" << i << "] = " << WPrint[i];
-            // cout << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
-            // cout << " GPU desNeuron: " << destNeuronIndexPrint[i];
-            // cout << " GPU type: " << typePrint[i];
-            // cout << " GPU psr: " << psrPrint[i];
-            // cout << " GPU in_use:" << (inUsePrint[i] == 1 ? "true" : "false");
-
-            // cout << " GPU decay: " << decayPrint[i];
-            // cout << " GPU tau: " << tauPrint[i];
-            // cout << " GPU total_delay: " << totalDelayPrint[i];
-
-            // cout << " GPU lastSpike: " << lastSpikePrint[i];
-            // cout << " GPU r: " << rPrint[i];
-            // cout << " GPU u: " << uPrint[i];
-            // cout << " GPU D: " << DPrint[i];
-            // cout << " GPU U: " << UPrint[i];
-            // cout << " GPU F: " << FPrint[i] << endl;
-
             string message = ("GPU W[" + to_string(i) + "] = " + to_string(WPrint[i]));
             LOG4CPLUS_INFO(consoleLogger, message);
             message = (" GPU sourNeuron: " + sourceNeuronIndexPrint[i]);
             LOG4CPLUS_INFO(consoleLogger, message);
             message = (" GPU desNeuron: " + destNeuronIndexPrint[i]);
             LOG4CPLUS_INFO(consoleLogger, message);
-            int currType = (int) typePrint[i];
+            int currType = (int)typePrint[i];
             message = (" GPU type: " + to_string(currType));
             LOG4CPLUS_INFO(consoleLogger, message);
             message = (" GPU psr: " + to_string(psrPrint[i]));

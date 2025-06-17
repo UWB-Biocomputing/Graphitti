@@ -7,8 +7,8 @@
  *          Self-allocating and de-allocating.
  */
 
-#include "SparseMatrix.h"
 #include "Simulator.h"
+#include "SparseMatrix.h"
 #include "Global.h"
 #include <algorithm>
 #include <iostream>
@@ -251,7 +251,7 @@ SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, const char *v) :
          try {
             theElements.insert(el);
          } catch (Matrix_invalid_argument e) {
-            LOG4CPLUS_ERROR(consoleLogger,"Failure during SparseMatrix string constructor: " << e.what() << endl);
+            LOG4CPLUS_ERROR(consoleLogger, "Failure during SparseMatrix string constructor: " << e.what() << endl);
             exit(-1);
          }
       }
@@ -265,7 +265,9 @@ SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, const char *v) :
          try {
             theElements.insert(el);
          } catch (Matrix_invalid_argument e) {
-            LOG4CPLUS_ERROR(consoleLogger, "Failure during SparseMatrix multiplier only constructor: " << e.what() << endl);
+            string w = e.what();
+            string message = "Failure during SparseMatrix multiplier only constructor: " + w + "\n";
+            LOG4CPLUS_ERROR(consoleLogger, message);
             exit(-1);
          }
       }
@@ -328,8 +330,10 @@ SparseMatrix::SparseMatrix(const SparseMatrix &oldM) :
    try {
       copy(oldM);
    } catch (Matrix_invalid_argument e) {
-      LOG4CPLUS_ERROR(consoleLogger,"Failure during SparseMatrix copy constructor\n"
-           << "\tError was: " << e.what() << endl);
+      string w = e.what();
+      string message = "Failure during SparseMatrix copy constructor\n"
+           + ("\tError was: " + w) + "\n";
+      LOG4CPLUS_ERROR(consoleLogger, message);
       exit(-1);
    }
 }
@@ -438,6 +442,16 @@ void SparseMatrix::copy(const SparseMatrix &source)
                  << ", hashed to " << theElements.hash(el) << " in table with capacity "
                  << theElements.capacity << endl);
             LOG4CPLUS_ERROR(consoleLogger, "\tSource was: " << source << endl << endl);
+            string message = "\nFailure during SparseMatrix copy() for element " + to_string(el->value) + " at ("
+               + to_string(el->row) + "," + to_string(el->column) + ")\n";
+            LOG4CPLUS_ERROR(consoleLogger, message);
+
+            message = "\twith " + to_string(theElements.size) + " elements already copied at i=" + to_string(i)
+               + ", hashed to " + to_string(theElements.hash(el)) + " in table with capacity "
+               + to_string(theElements.capacity) + "\n";
+            LOG4CPLUS_ERROR(consoleLogger, message);
+
+            LOG4CPLUS_ERROR(consoleLogger, "\tSource was: " << source << "\n\n");
             throw e;
          }
       }

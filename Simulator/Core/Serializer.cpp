@@ -47,11 +47,12 @@ bool Serializer::deserialize()
    // out all but the line that is compatible with the desired format.
    ifstream memory_in(simulator.getDeserializationFileName().c_str());
    //ifstream memory_in (simInfo->memInputFileName.c_str(), std::ios::binary);
+
    log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    
    // Checks to see if serialization file exists
    if (!memory_in) {
-      LOG4CPLUS_FATAL(consoleLogger,"The serialization file doesn't exist");
+      LOG4CPLUS_FATAL(consoleLogger, "The serialization file doesn't exist");
       return false;
    }
 

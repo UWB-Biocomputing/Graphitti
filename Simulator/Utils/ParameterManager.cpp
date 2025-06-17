@@ -136,7 +136,7 @@ bool ParameterManager::getIntByXpath(string xpath, int &referenceVar)
       log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       string errorMsg = "Parsed parameter is likely a float/double value. \n";
       errorMsg += "Terminating integer cast. Value: " + tmp;
-      LOG4CPLUS_INFO(consoleLogger,  errorMsg);
+      LOG4CPLUS_INFO(consoleLogger, errorMsg);
       
       return false;
    } else if (regex_match(tmp, regex(".*[^\\def.]+.*"))) {
@@ -145,7 +145,7 @@ bool ParameterManager::getIntByXpath(string xpath, int &referenceVar)
       log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       string errorMsg = "Parsed parameter is likely a string. \n";
       errorMsg += "Terminating integer cast. Value: " + tmp;
-      LOG4CPLUS_INFO(consoleLogger,  errorMsg);
+      LOG4CPLUS_INFO(consoleLogger, errorMsg);
       
       return false;
    }
@@ -155,7 +155,7 @@ bool ParameterManager::getIntByXpath(string xpath, int &referenceVar)
       // cerr << "Parsed parameter could not be parsed as an integer. Value: " << tmp << endl;
       log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       string errorMsg = "Parsed parameter could not be parsed as an integer. Value: " + tmp;
-      LOG4CPLUS_FATAL(consoleLogger,  errorMsg);
+      LOG4CPLUS_FATAL(consoleLogger, errorMsg);
       
       return false;
    } catch (out_of_range &range_exception) {
@@ -163,7 +163,7 @@ bool ParameterManager::getIntByXpath(string xpath, int &referenceVar)
       //      << endl;
       log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       string errorMsg = "Parsed string parameter could not be converted to an integer. Value: " + tmp;
-      LOG4CPLUS_FATAL(consoleLogger,  errorMsg);
+      LOG4CPLUS_FATAL(consoleLogger, errorMsg);
 
       return false;
    }
@@ -233,7 +233,7 @@ bool ParameterManager::getFloatByXpath(string xpath, float &referenceVariable)
       log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       string errorMsg = "Parsed parameter is likely a string.  \n";
       errorMsg += "Terminating integer cast. Value: " + tmp;
-      LOG4CPLUS_INFO(consoleLogger,  errorMsg);
+      LOG4CPLUS_INFO(consoleLogger, errorMsg);
       return false;
    }
    try {
@@ -242,13 +242,13 @@ bool ParameterManager::getFloatByXpath(string xpath, float &referenceVariable)
       // cerr << "Parsed parameter could not be parsed as a float. Value: " << tmp << endl;
       log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       string errorMsg = "Parsed parameter could not be parsed as a float. Value: " + tmp;
-      LOG4CPLUS_FATAL(consoleLogger,  errorMsg);
+      LOG4CPLUS_FATAL(consoleLogger, errorMsg);
       return false;
    } catch (out_of_range &range_exception) {
       // cerr << "Parsed string parameter could not be converted to a float. Value: " << tmp << endl;
       log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       string errorMsg = "Parsed string parameter could not be converted to a float. Value: " + tmp;
-      LOG4CPLUS_FATAL(consoleLogger,  errorMsg);
+      LOG4CPLUS_FATAL(consoleLogger, errorMsg);
       return false;
    }
    return true;
@@ -277,7 +277,7 @@ bool ParameterManager::getBGFloatByXpath(string xpath, BGFLOAT &referenceVar)
    // cerr << "Could not infer primitive type for BGFLOAT variable." << endl;
    log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    string errorMsg = "Could not infer primitive type for BGFLOAT variable.";
-   LOG4CPLUS_FATAL(consoleLogger,  errorMsg);   
+   LOG4CPLUS_FATAL(consoleLogger, errorMsg);   
    return false;
 }
 
@@ -302,7 +302,7 @@ bool ParameterManager::getLongByXpath(string xpath, long &referenceVar)
       log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       string errorMsg = "Parsed parameter is not a valid long format. + \n";
       errorMsg += "Terminating long conversion. Value: " + tmp;
-      LOG4CPLUS_FATAL(consoleLogger,  errorMsg);   
+      LOG4CPLUS_FATAL(consoleLogger, errorMsg);   
       return false;
    }
    try {
@@ -311,13 +311,13 @@ bool ParameterManager::getLongByXpath(string xpath, long &referenceVar)
       // cerr << "Parsed parameter could not be parsed as a long. Value: " << tmp << endl;
       log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       string errorMsg = "Parsed parameter could not be parsed as a long. Value: " + tmp;
-      LOG4CPLUS_FATAL(consoleLogger,  errorMsg);
+      LOG4CPLUS_FATAL(consoleLogger, errorMsg);
       return false;
    } catch (out_of_range &range_exception) {
       // cerr << "Parsed string parameter could not be converted to a long. Value: " << tmp << endl;
       log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       string errorMsg = "Parsed string parameter could not be converted to a long. Value: " + tmp;
-      LOG4CPLUS_FATAL(consoleLogger,  errorMsg);
+      LOG4CPLUS_FATAL(consoleLogger, errorMsg);
       return false;
    }
    return true;
@@ -348,7 +348,7 @@ bool ParameterManager::getIntVectorByXpath(const string &path, const string &ele
       string errorMsg = "Failed to load " + p + ":";
       string xError = xmlDocument.ErrorDesc();
       errorMsg += "\t" + xError;
-      LOG4CPLUS_FATAL(consoleLogger,  errorMsg);      
+      LOG4CPLUS_FATAL(consoleLogger, errorMsg);      
       return false;
    }
 
@@ -358,7 +358,7 @@ bool ParameterManager::getIntVectorByXpath(const string &path, const string &ele
       // cerr << "Could not find <" << elementName << "> in vertex list file " << path << endl;
       log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       string errorMsg = "Could not find <" + elementName + "> in vertex list file " + path;
-      LOG4CPLUS_FATAL(consoleLogger,  errorMsg);
+      LOG4CPLUS_FATAL(consoleLogger, errorMsg);
       return false;
    }
 
@@ -386,7 +386,7 @@ bool ParameterManager::getFileByXpath(const string &path, ifstream &file)
       // cerr << "Could not find XML path: " << path << ".\n";
       log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       string errorMsg = "Could not find XML path: " + path;
-      LOG4CPLUS_FATAL(consoleLogger,  errorMsg);
+      LOG4CPLUS_FATAL(consoleLogger, errorMsg);
       return false;
    };
 
@@ -396,7 +396,7 @@ bool ParameterManager::getFileByXpath(const string &path, ifstream &file)
       // cerr << "Failed to open file: " << file_name << ".\n";
       log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       string errorMsg = "Failed to open file: " + file_name;
-      LOG4CPLUS_FATAL(consoleLogger,  errorMsg);      
+      LOG4CPLUS_FATAL(consoleLogger, errorMsg);      
       return false;
    }
 

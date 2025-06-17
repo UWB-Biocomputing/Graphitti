@@ -386,28 +386,49 @@ void AllSTDPSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
       log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
          if (WPrint[i] != 0.0) {
-             LOG4CPLUS_TRACE(consoleLogger, "GPU W[" << i << "] = " << WPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU sourNeuron: " << sourceNeuronIndexPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU desNeuron: " << destNeuronIndexPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU type: " << typePrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU psr: " << psrPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU in_use:" << (inUsePrint[i] == 1 ? "true" : "false"));
+            string message = "GPU W[" + to_string(i) + "] = " + to_string(WPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU sourNeuron: " + to_string(sourceNeuronIndexPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU desNeuron: " + to_string(destNeuronIndexPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            int type = (int)typePrint[i];
+            message = " GPU type: " + to_string(type) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU psr: " + to_string(psrPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU in_use: " + string(inUsePrint[i] == 1 ? "true" : "false") + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
 
-             LOG4CPLUS_TRACE(consoleLogger, " GPU decay: " << decayPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU tau: " << tauPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU total_delay: " << totalDelayPrint[i]);
+            message = " GPU decay: " + to_string(decayPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU tau: " + to_string(tauPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU total_delay: " + to_string(totalDelayPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
 
-             LOG4CPLUS_TRACE(consoleLogger, " GPU total_delayPost: " << totalDelayPostPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU tauspost_: " << tauspostPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU tauspre_: " << tausprePrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU taupos_: " << tauposPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU tauneg_: " << taunegPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU STDPgap_: " << STDPgapPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU Wex_: " << WexPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU Aneg_: " << AnegPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU Apos_: " << AposPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU mupos_: " << muposPrint[i]);
-             LOG4CPLUS_TRACE(consoleLogger, " GPU muneg_: " << munegPrint[i] << endl);
+            message = " GPU total_delayPost: " + to_string(totalDelayPostPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU tauspost_: " + to_string(tauspostPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU tauspre_: " + to_string(tausprePrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU taupos_: " + to_string(tauposPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU tauneg_: " + to_string(taunegPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU STDPgap_: " + to_string(STDPgapPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU Wex_: " + to_string(WexPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU Aneg_: " + to_string(AnegPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU Apos_: " + to_string(AposPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU mupos_: " + to_string(muposPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
+            message = " GPU muneg_: " + to_string(munegPrint[i]) + "\n";
+            LOG4CPLUS_TRACE(consoleLogger, message);
          }
       }
       for (int i = 0; i < countVertices_; i++) {

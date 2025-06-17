@@ -251,8 +251,11 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
    // cout << "time simulated: " << simulator.getEpochDuration() * simulator.getNumEpochs() << endl;
    // cout << "time elapsed: " << timeElapsed << endl;
    // cout << "ssps (simulation seconds / real time seconds): " << ssps << endl;
-   LOG4CPLUS_TRACE(consoleLogger, "time simulated: " << simulator.getEpochDuration() * simulator.getNumEpochs() << endl);
-   LOG4CPLUS_TRACE(consoleLogger, "time elapsed: " << timeElapsed << endl);
-   LOG4CPLUS_TRACE(consoleLogger, "ssps (simulation seconds / real time seconds): " << ssps << endl);
+   string message = "time simulated: " + to_string(simulator.getEpochDuration() * simulator.getNumEpochs()) + "\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
+   message = "time elapsed: " + to_string(timeElapsed) + "\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
+   message = "ssps (simulation seconds / real time seconds): " + to_string(ssps) + "\n";
+   LOG4CPLUS_TRACE(consoleLogger, message);
    return 0;
 }
