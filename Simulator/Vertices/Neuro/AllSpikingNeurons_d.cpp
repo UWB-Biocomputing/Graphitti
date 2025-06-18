@@ -11,6 +11,7 @@
 #include "Book.h"
 #include "GPUModel.h"
 #include "Simulator.h"
+#include "DeviceVector.h"
 
 /// CUDA kernel for adding psr of all incoming synapses to summation points.
 ///
@@ -29,8 +30,7 @@
 /// @param[in] synapseIndexMapDevice_  Pointer to forward map structures in device memory.
 /// @param[in] allEdgesDevice      Pointer to Synapse structures in device memory.
 
-__global__ void calcSummationPointDevice(int totalVertices,
-                                         AllSpikingNeuronsDeviceProperties *allVerticesDevice,
+__global__ void calcSummationPointDevice(int totalVertices, BGFLOAT *summationPoints_,
                                          EdgeIndexMapDevice *edgeIndexMapDevice,
                                          AllSpikingSynapsesDeviceProperties *allEdgesDevice);
 
@@ -43,13 +43,13 @@ void AllSpikingNeurons::copyToDevice()
                            sizeof(AllSpikingNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
 
    int count = Simulator::getInstance().getTotalVertices();
-   bool cpu_has_fired[count];
-   for (int i = 0; i < count; i++) {
-      cpu_has_fired[i] = hasFired_[i];
-   }
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.hasFired_, cpu_has_fired, count * sizeof(bool),
-                           cudaMemcpyHostToDevice));
 
+   //Device vector handles memory operations for hasFired_ and summationPoints_
+   hasFired_.copyToDevice();
+   summationPoints_.copyToDevice();
+
+   //Handling memory operations for event buffer (device side) explicitly
+   // since device vector does not support object types yet
    int cpu_spike_count[count];
    for (int i = 0; i < count; i++) {
       cpu_spike_count[i] = vertexEvents_[i].getNumElementsInEpoch();
@@ -88,9 +88,6 @@ void AllSpikingNeurons::copyToDevice()
       HANDLE_ERROR(cudaMemcpy(pSpikeHistory[i], vertexEvents_[i].dataSeries_.data(),
                               maxSpikes * sizeof(uint64_t), cudaMemcpyHostToDevice));
    }
-
-   HANDLE_ERROR(cudaMemcpy(allVerticesDevice.summationPoints_, summationPoints_.data(),
-                           count * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
 }
 void AllSpikingNeurons::copyFromDevice()
 {
@@ -102,12 +99,12 @@ void AllSpikingNeurons::copyFromDevice()
    HANDLE_ERROR(cudaMemcpy(&allVerticesDevice, deviceAddress,
                            sizeof(AllSpikingNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
 
-   bool cpu_has_fired[numVertices];
-   HANDLE_ERROR(cudaMemcpy(cpu_has_fired, allVerticesDevice.hasFired_, numVertices * sizeof(bool),
-                           cudaMemcpyDeviceToHost));
-   for (int i = 0; i < numVertices; i++) {
-      hasFired_[i] = cpu_has_fired[i];
-   }
+   //Device vector handles memory operations for hasFired_ and summationPoints_
+   hasFired_.copyToHost();
+   summationPoints_.copyToHost();
+
+   //Handling memory operations for event buffer (device side) explicitly
+   // since device vector does not support object types yet
 
    // We have to copy the whole state of the event buffer from GPU memory because
    // we reset it in CPU code and then copy the new state back to the GPU.
@@ -150,9 +147,6 @@ void AllSpikingNeurons::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(vertexEvents_[i].dataSeries_.data(), pSpikeHistory[i],
                               maxSpikes * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
    }
-
-   HANDLE_ERROR(cudaMemcpy(summationPoints_.data(), allVerticesDevice.summationPoints_,
-                           numVertices * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
 }
 
 ///  Clear the spike counts out of all neurons in device memory.
@@ -162,6 +156,9 @@ void AllSpikingNeurons::copyFromDevice()
 ///                             on device memory.
 void AllSpikingNeurons::clearDeviceSpikeCounts(AllSpikingNeuronsDeviceProperties &allVerticesDevice)
 {
+   //Handling memory operations for event buffer (device side) explicitly
+   // since device vector does not support object types yet
+
    int numVertices = Simulator::getInstance().getTotalVertices();
 
    HANDLE_ERROR(cudaMemset(allVerticesDevice.numElementsInEpoch_, 0, numVertices * sizeof(int)));
@@ -204,7 +201,7 @@ void AllSpikingNeurons::integrateVertexInputs(void *allVerticesDevice,
    int vertex_count = Simulator::getInstance().getTotalVertices();
 
    calcSummationPointDevice<<<blocksPerGrid, threadsPerBlock>>>(
-      vertex_count, (AllSpikingNeuronsDeviceProperties *)allVerticesDevice, edgeIndexMapDevice,
+      vertex_count, summationPoints_, edgeIndexMapDevice,
       (AllSpikingSynapsesDeviceProperties *)allEdgesDevice);
 }
 
@@ -225,8 +222,7 @@ void AllSpikingNeurons::integrateVertexInputs(void *allVerticesDevice,
 /// @param[in] edgeIndexMapDevice  Pointer to forward map structures in device memory.
 /// @param[in] allEdgesDevice      Pointer to Synapse structures in device memory.
 
-__global__ void calcSummationPointDevice(int totalVertices,
-                                         AllSpikingNeuronsDeviceProperties *allVerticesDevice,
+__global__ void calcSummationPointDevice(int totalVertices, BGFLOAT *summationPoints_,
                                          EdgeIndexMapDevice *edgeIndexMapDevice,
                                          AllSpikingSynapsesDeviceProperties *allEdgesDevice)
 {
@@ -256,6 +252,6 @@ __global__ void calcSummationPointDevice(int totalVertices,
          sum += allEdgesDevice->psr_[synIndex];
       }
       // Store summed PSR into this neuron's summation point
-      allVerticesDevice->summationPoints_[idx] = sum;
+      summationPoints_[idx] = sum;
    }
 }
