@@ -177,19 +177,19 @@ void AllSpikingSynapses::createEdge(BGSIZE iEdg, int srcVertex, int destVertex, 
 
    BGFLOAT tau;
    switch (type) {
-      case II:
+      case edgeType::II:
          tau = 6e-3;
          delay = 0.8e-3;
          break;
-      case IE:
+      case edgeType::IE:
          tau = 6e-3;
          delay = 0.8e-3;
          break;
-      case EI:
+      case edgeType::EI:
          tau = 3e-3;
          delay = 0.8e-3;
          break;
-      case EE:
+      case edgeType::EE:
          tau = 3e-3;
          delay = 1.5e-3;
          break;
@@ -279,15 +279,6 @@ void AllSpikingSynapses::advanceEdge(BGSIZE iEdg, AllVertices &neurons)
 
    // decay the post spike response
    psr *= decay;
-   // and apply it to the summation point
-   #ifdef USE_OMP
-      #pragma omp atomic #endif
-   #endif
-   neurons.summationPoints_[sumPointIndex] += psr;
-   #ifdef USE_OMP
-      //PAB: atomic above has implied flush (following statement generates error -- can't be member variable)
-      //#pragma omp flush (summationPoint)
-   #endif
 }
 
 ///  Calculate the post synapse response after a spike.

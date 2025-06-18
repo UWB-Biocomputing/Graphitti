@@ -14,6 +14,7 @@
 #pragma once
 
 using namespace std;
+#include "VertexType.h"
 #include <string>
 #include <typeinfo>
 #include <variant>
@@ -24,7 +25,7 @@ using namespace std;
 
 /// A list of pre-defined basic data types for variablse in all the simulations
 /// These pre-defined types should match with the types of variant in Recorder
-using variantTypes = variant<uint64_t, bool, int, BGFLOAT>;
+using variantTypes = variant<uint64_t, bool, int, BGFLOAT, vertexType>;
 
 class RecordableBase {
 public:

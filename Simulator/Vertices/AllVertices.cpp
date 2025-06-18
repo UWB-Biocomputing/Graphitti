@@ -9,12 +9,29 @@
 #include "AllVertices.h"
 #include "OperationManager.h"
 
+// Utility function to convert a vertexType into a string.
+// MODEL INDEPENDENT FUNCTION NMV-BEGIN {
+string vertexTypeToString(vertexType t)
+{
+   switch (t) {
+      case vertexType::INH:
+         return "INH";
+      case vertexType::EXC:
+         return "EXC";
+      default:
+         cerr << "ERROR->vertexTypeToString() failed, unknown type: " << t << endl;
+         assert(false);
+         return nullptr;   // Must return a value -- this will probably cascade to another failure
+   }
+}
+// } NMV-END
+
 // Default constructor
 AllVertices::AllVertices() : size_(0)
 {
    // Register loadParameters function as a loadParameters operation in the Operation Manager
    function<void()> loadParametersFunc = std::bind(&AllVertices::loadParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::op::loadParameters,
+   OperationManager::getInstance().registerOperation(Operations::loadParameters,
                                                      loadParametersFunc);
 
    // Register printParameters function as a printParameters operation in the OperationManager
@@ -25,21 +42,13 @@ AllVertices::AllVertices() : size_(0)
    // Get a copy of the file and vertex logger to use log4cplus macros to print to debug files
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    vertexLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));
+   vertexLogger_.setLogLevel(log4cplus::DEBUG_LOG_LEVEL);
 }
 
 ///  Setup the internal structure of the class (allocate memories).
 void AllVertices::setupVertices()
 {
    size_ = Simulator::getInstance().getTotalVertices();
-#if defined(USE_GPU)
-   // We don't allocate memory for summationPoints_ in CPU when building the GPU
-   // implementation. This is to avoid misusing it in GPU code.
-   // summationPoints_ = nullptr;
-
-#else
-   summationPoints_.assign(size_, 0);
-
-#endif
 }
 
 ///  Prints out all parameters of the vertices to logging file.
