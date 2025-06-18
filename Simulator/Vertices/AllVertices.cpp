@@ -9,6 +9,23 @@
 #include "AllVertices.h"
 #include "OperationManager.h"
 
+// Utility function to convert a vertexType into a string.
+// MODEL INDEPENDENT FUNCTION NMV-BEGIN {
+string vertexTypeToString(vertexType t)
+{
+   switch (t) {
+      case vertexType::INH:
+         return "INH";
+      case vertexType::EXC:
+         return "EXC";
+      default:
+         cerr << "ERROR->vertexTypeToString() failed, unknown type: " << t << endl;
+         assert(false);
+         return nullptr;   // Must return a value -- this will probably cascade to another failure
+   }
+}
+// } NMV-END
+
 // Default constructor
 AllVertices::AllVertices() : size_(0)
 {
