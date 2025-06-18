@@ -24,12 +24,13 @@
 ///  @param[in] edgeIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
 
-__global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int maxSpikes,
-                                        BGFLOAT deltaT, uint64_t simulationStep, float randNoise[],
-                                        AllIFNeuronsDeviceProperties *allVerticesDevice,
-                                        AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        EdgeIndexMapDevice *edgeIndexMapDevice,
-                                        bool fAllowBackPropagation);
+__global__ void advanceLIFNeuronsDevice(
+   int totalVertices, int maxEdges, int maxSpikes, BGFLOAT deltaT, uint64_t simulationStep,
+   float randNoise[], bool *hasFired_, BGFLOAT *summationPoints_, BGFLOAT *Vm_, BGFLOAT *Trefract_,
+   int *numStepsInRefractoryPeriod_, BGFLOAT *Vthresh_, BGFLOAT *Vreset_, BGFLOAT *I0_,
+   BGFLOAT *Inoise, BGFLOAT *C2_, BGFLOAT *C1_, AllIFNeuronsDeviceProperties *allVerticesDevice,
+   AllSpikingSynapsesDeviceProperties *allEdgesDevice, EdgeIndexMapDevice *edgeIndexMapDevice,
+   bool fAllowBackPropagation);
 
 
 ///  Update the state of all neurons for a time step
@@ -57,8 +58,9 @@ void AllLIFNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
    // Advance neurons ------------->
    advanceLIFNeuronsDevice<<<blocksPerGrid, threadsPerBlock>>>(
       vertex_count, Simulator::getInstance().getMaxEdgesPerVertex(), maxSpikes,
-      Simulator::getInstance().getDeltaT(), g_simulationStep, randNoise,
-      (AllIFNeuronsDeviceProperties *)allVerticesDevice,
+      Simulator::getInstance().getDeltaT(), g_simulationStep, randNoise, hasFired_,
+      summationPoints_, Vm_, Trefract_, numStepsInRefractoryPeriod_, Vthresh_, Vreset_, I0_,
+      Inoise_, C2_, C1_, (AllIFNeuronsDeviceProperties *)allVerticesDevice,
       (AllSpikingSynapsesDeviceProperties *)allEdgesDevice, edgeIndexMapDevice,
       fAllowBackPropagation_);
 }
@@ -82,31 +84,32 @@ void AllLIFNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
 ///  @param[in] allEdgesDevice     Pointer to Synapse structures in device memory.
 ///  @param[in] edgeIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
-__global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int maxSpikes,
-                                        BGFLOAT deltaT, uint64_t simulationStep, float randNoise[],
-                                        AllIFNeuronsDeviceProperties *allVerticesDevice,
-                                        AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        EdgeIndexMapDevice *edgeIndexMapDevice,
-                                        bool fAllowBackPropagation)
+__global__ void advanceLIFNeuronsDevice(
+   int totalVertices, int maxEdges, int maxSpikes, BGFLOAT deltaT, uint64_t simulationStep,
+   float randNoise[], bool *hasFired_, BGFLOAT *summationPoints_, BGFLOAT *Vm_, BGFLOAT *Trefract_,
+   int *numStepsInRefractoryPeriod_, BGFLOAT *Vthresh_, BGFLOAT *Vreset_, BGFLOAT *I0_,
+   BGFLOAT *Inoise_, BGFLOAT *C2_, BGFLOAT *C1_, AllIFNeuronsDeviceProperties *allVerticesDevice,
+   AllSpikingSynapsesDeviceProperties *allEdgesDevice, EdgeIndexMapDevice *edgeIndexMapDevice,
+   bool fAllowBackPropagation)
 {
    // determine which neuron this thread is processing
    int idx = blockIdx.x * blockDim.x + threadIdx.x;
    if (idx >= totalVertices)
       return;
 
-   allVerticesDevice->hasFired_[idx] = false;
-   BGFLOAT &sp = allVerticesDevice->summationPoints_[idx];
-   BGFLOAT &vm = allVerticesDevice->Vm_[idx];
+   hasFired_[idx] = false;
+   BGFLOAT &sp = summationPoints_[idx];
+   BGFLOAT &vm = Vm_[idx];
    BGFLOAT r_sp = sp;
    BGFLOAT r_vm = vm;
 
-   if (allVerticesDevice->numStepsInRefractoryPeriod_[idx] > 0) {   // is neuron refractory?
-      --allVerticesDevice->numStepsInRefractoryPeriod_[idx];
-   } else if (r_vm >= allVerticesDevice->Vthresh_[idx]) {   // should it fire?
+   if (numStepsInRefractoryPeriod_[idx] > 0) {   // is neuron refractory?
+      --numStepsInRefractoryPeriod_[idx];
+   } else if (r_vm >= Vthresh_[idx]) {   // should it fire?
       int &spikeCount = allVerticesDevice->numElementsInEpoch_[idx];
 
       // Note that the neuron has fired!
-      allVerticesDevice->hasFired_[idx] = true;
+      hasFired_[idx] = true;
 
       // record spike time
       int &queueEnd = allVerticesDevice->bufferEnd_[idx];
@@ -123,11 +126,10 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
       // );
 
       // calculate the number of steps in the absolute refractory period
-      allVerticesDevice->numStepsInRefractoryPeriod_[idx]
-         = static_cast<int>(allVerticesDevice->Trefract_[idx] / deltaT + 0.5);
+      numStepsInRefractoryPeriod_[idx] = static_cast<int>(Trefract_[idx] / deltaT + 0.5);
 
       // reset to 'Vreset'
-      vm = allVerticesDevice->Vreset_[idx];
+      vm = Vreset_[idx];
 
       // notify outgoing synapses of spike
       BGSIZE synapseCounts = edgeIndexMapDevice->outgoingEdgeCount_[idx];
@@ -174,14 +176,15 @@ __global__ void advanceLIFNeuronsDevice(int totalVertices, int maxEdges, int max
          }   // end switch
       }
    } else {
-      r_sp += allVerticesDevice->I0_[idx];   // add IO
+      r_sp += I0_[idx];   // add IO
 
       // Random number alg. goes here
-      r_sp += (randNoise[idx] * allVerticesDevice->Inoise_[idx]);   // add cheap noise
-      vm = allVerticesDevice->C1_[idx] * r_vm
-           + allVerticesDevice->C2_[idx] * (r_sp);   // decay Vm and add inputs
+      r_sp += (randNoise[idx] * Inoise_[idx]);    // add cheap noise
+      vm = C1_[idx] * r_vm + C2_[idx] * (r_sp);   // decay Vm and add inputs
    }
-
+#ifdef VALIDATION_MODE
+   allVerticesDevice->spValidation_[idx] = r_sp;
+#endif
    // clear synaptic input for next time step
    sp = 0;
 }

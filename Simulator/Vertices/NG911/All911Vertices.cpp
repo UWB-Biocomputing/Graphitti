@@ -64,8 +64,8 @@ void All911Vertices::createAllVertices(Layout &layout)
    // Loop over all vertices and set the number of servers and trunks, and
    // determine the size of the waiting queue.
    // We get the information needed from the GraphManager.
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NG911VertexProperties>::VertexIterator vi, vi_end;
+   GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < size_);
 
@@ -160,10 +160,59 @@ int All911Vertices::busyServers(int vIdx) const
 
 #if !defined(USE_GPU)
 
-// Short description of the method.
+// Take calls from the edges and transfer them to the vertex if it's queue is not full
 void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIndexMap)
 {
-   //TODO: Figure out where the appropriate logic is and move it here.
+   Simulator &simulator = Simulator::getInstance();
+   All911Edges &all911Edges = dynamic_cast<All911Edges &>(edges);
+
+   for (int vertex = 0; vertex < simulator.getTotalVertices(); ++vertex) {
+      int start = edgeIndexMap.incomingEdgeBegin_[vertex];
+      int count = edgeIndexMap.incomingEdgeCount_[vertex];
+
+      if (simulator.getModel().getLayout().vertexTypeMap_[vertex] == vertexType::CALR) {
+         continue;   // TODO911: Caller Regions will have different behaviour
+      }
+
+      // Loop over all the edges and pull the data in
+      for (int edge = start; edge < start + count; ++edge) {
+         int edgeIdx = edgeIndexMap.incomingEdgeIndexMap_[edge];
+
+         if (!all911Edges.inUse_[edgeIdx]) {
+            continue;
+         }   // Edge isn't in use
+         if (all911Edges.isAvailable_[edgeIdx]) {
+            continue;
+         }   // Edge doesn't have a call
+
+         int dst = all911Edges.destVertexIndex_[edgeIdx];
+         // The destination vertex should be the one pulling the information
+         assert(dst == vertex);
+
+         CircularBuffer<Call> &dstQueue = getQueue(dst);
+         if (dstQueue.size() >= (dstQueue.capacity() - busyServers(dst))) {
+            // Call is dropped because there is no space in the waiting queue
+            if (!all911Edges.isRedial_[edgeIdx]) {
+               // Only count the dropped call if it's not a redial
+               droppedCalls(dst)++;
+               // Record that we received a call
+               receivedCalls(dst)++;
+               LOG4CPLUS_DEBUG(vertexLogger_,
+                               "Call dropped: " << droppedCalls(dst)
+                                                << ", time: " << all911Edges.call_[edgeIdx].time
+                                                << ", vertex: " << dst
+                                                << ", queue size: " << dstQueue.size());
+            }
+         } else {
+            // Transfer call to destination
+            dstQueue.put(all911Edges.call_[edgeIdx]);
+            // Record that we received a call
+            receivedCalls(dst)++;
+            all911Edges.isAvailable_[edgeIdx] = true;
+            all911Edges.isRedial_[edgeIdx] = false;
+         }
+      }
+   }
 }
 
 // Update internal state of the indexed vertex (called by every simulation step).

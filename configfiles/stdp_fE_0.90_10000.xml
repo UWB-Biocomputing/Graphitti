@@ -3,8 +3,8 @@
     <SimInfoParams name="SimInfoParams">
         <graphmlFile name="graphmlFile">../configfiles/graphs/fE_0.90_10000.graphml</graphmlFile>
         <SimParams name="SimParams">
-          <epochDuration name="epochDuration">100.0</epochDuration>
-          <numEpochs name="numEpochs">3</numEpochs>
+          <epochDuration name="epochDuration">10.0</epochDuration>
+          <numEpochs name="numEpochs">1</numEpochs>
         </SimParams>
         <SimConfig name="SimConfig">
           <maxFiringRate name="maxFiringRate">200</maxFiringRate>
@@ -106,7 +106,7 @@
           <e name="e">5.0265e-7</e>
         </Wex> 
         <Aneg name="Aneg">
-          <i name="i">-52e-2</i>
+          <i name="i">-0.52</i>
           <e name="e">-0.52</e>
         </Aneg>
          <Apos name="Apos">
@@ -116,22 +116,9 @@
       </EdgesParams>
 
       <ConnectionsParams class="ConnStatic" name="ConnectionsParams">
-        <threshConnsRadius name="threshConnsRadius">0</threshConnsRadius>
-        <connsPerNeuron name="connsPerNeuron">0</connsPerNeuron>
-        <rewiringProbability name="rewiringProbability">0</rewiringProbability>
-        <excWeight name=" excWeight">
-          <min name="min">2.36936e-38</min>
-          <max name="max">2.35106e-38</max>
-        </excWeight>
-        <inhWeight name=" inhWeight">
-          <min name="min">9.18355e-41</min>
-          <max name="max">3.58732e-43</max>
-        </inhWeight>
       </ConnectionsParams>
 
       <LayoutParams class="LayoutNeuro" name="LayoutParams">
-        <LayoutFiles name="LayoutFiles">
-        </LayoutFiles>
       </LayoutParams>
 
       <RecorderParams class="Hdf5Recorder" name="RecorderParams">

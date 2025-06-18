@@ -28,8 +28,8 @@ void LayoutNeuro::registerGraphProperties()
    // We are passing a pointer to a data member of the VertexProperty
    // so Boost Graph Library can use it for loading the graphML file.
    // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
-   GraphManager &gm = GraphManager::getInstance();
-   gm.registerProperty("active", &VertexProperty::active);
+   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
+   gm.registerProperty("active", &NeuralVertexProperties::active);
 }
 
 ///  Prints out all parameters to logging file.
@@ -52,8 +52,8 @@ void LayoutNeuro::generateVertexTypeMap()
    int numExcititoryNeurons;
 
    // Set Neuron Type from GraphML File
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NeuralVertexProperties>::VertexIterator vi, vi_end;
+   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
 
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
@@ -85,8 +85,8 @@ void LayoutNeuro::initStarterMap()
    Layout::initStarterMap();
 
    // Set Neuron Activity from GraphML File
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NeuralVertexProperties>::VertexIterator vi, vi_end;
+   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
 
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);

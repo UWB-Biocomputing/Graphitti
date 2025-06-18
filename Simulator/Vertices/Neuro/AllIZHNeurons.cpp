@@ -224,17 +224,27 @@ void AllIZHNeurons::advanceNeuron(int index)
    BGFLOAT &u = this->u_[index];
 
    if (nStepsInRefr > 0) {
-      // is neuron refractory?
+   // is neuron refractory?
+   #ifdef VALIDATION_MODE
+      BGFLOAT noise = (*noiseRNG)();
+      LOG4CPLUS_DEBUG(vertexLogger_, "REFRACTORY NEURON IZH[" << index << "] :: Noise = " << noise);
+   #endif
       --nStepsInRefr;
    } else if (Vm >= Vthresh) {
-      // should it fire?
+   // should it fire?
+   #ifdef VALIDATION_MODE
+      BGFLOAT noise = (*noiseRNG)();
+      LOG4CPLUS_DEBUG(vertexLogger_, "FIRE NEURON IZH[" << index << "] :: Noise = " << noise);
+   #endif
       fire(index);
    } else {
       summationPoint += I0;   // add IO
       // add noise
       BGFLOAT noise = (*noiseRNG)();
-      // Happens really often, causes drastic slow down
-      // DEBUG_MID(cout << "ADVANCE NEURON[" << index << "] :: noise = " << noise << endl;)
+   // Happens really often, causes drastic slow down
+   #ifdef VALIDATION_MODE
+      LOG4CPLUS_DEBUG(vertexLogger_, "ADVANCE NEURON IZH[" << index << "] :: Noise = " << noise);
+   #endif
       summationPoint += noise * Inoise;   // add noise
 
       BGFLOAT Vint = Vm * 1000;
