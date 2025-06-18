@@ -72,12 +72,19 @@
 #pragma once
 
 #include "AllIFNeurons.h"
+#include "DeviceVector.h"
 #include "Global.h"
 // cereal
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>
 
-struct AllIZHNeuronsDeviceProperties;
+//AllIZHNeuronsDeviceProperties is alias for AllIFNeuronsDeviceProperties
+//for now, to avoid removing the AllIZHNeuronsDeviceProperties struct, but
+//eventually it can be removed from all the places where it is used and
+//instead replaced by AllSpikingNeuronsDeviceProperties(base struct) itself.
+#if defined(USE_GPU)
+using AllIZHNeuronsDeviceProperties = AllIFNeuronsDeviceProperties;
+#endif   // defined(USE_GPU)
 
 // Class to hold all data necessary for all the Neurons.
 class AllIZHNeurons : public AllIFNeurons {
@@ -140,12 +147,12 @@ public:
    ///  and copy them from host to GPU memory.
    //
    ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void allocNeuronDeviceStruct(void **allVerticesDevice) override;
+   virtual void allocVerticesDeviceStruct(void **allVerticesDevice) override;
 
    ///  Delete GPU memories.
    //
    ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void deleteNeuronDeviceStruct(void *allVerticesDevice) override;
+   virtual void deleteVerticesDeviceStruct(void *allVerticesDevice) override;
 
    ///  Copy spike history data stored in device memory to host.
    //
@@ -160,7 +167,7 @@ public:
    ///  Clear the spike counts out of all neurons.
    //
    ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void clearNeuronSpikeCounts(void *allVerticesDevice) override;
+   virtual void clearVertexHistory(void *allVerticesDevice) override;
 
    // Copy all neurons' data from device to host.
    //
@@ -175,13 +182,13 @@ public:
 
 protected:
    ///  Allocate GPU memories to store all neurons' states.
-   ///  (Helper function of allocNeuronDeviceStruct)
+   ///  (Helper function of allocVerticesDeviceStruct)
    ///
    ///  @param  allVerticesDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
    void allocDeviceStruct(AllIZHNeuronsDeviceProperties &allVerticesDevice);
 
    ///  Delete GPU memories.
-   ///  (Helper function of deleteNeuronDeviceStruct)
+   ///  (Helper function of deleteVerticesDeviceStruct)
    ///
    ///  @param  allVerticesDevice         Reference to the AllIZHNeuronsDeviceProperties struct.
    void deleteDeviceStruct(AllIZHNeuronsDeviceProperties &allVerticesDevice);
@@ -245,22 +252,22 @@ protected:
 
 public:
    ///  A constant (0.02, 01) describing the coupling of variable u to Vm.
-   vector<BGFLOAT> Aconst_;
+   DeviceVector<BGFLOAT> Aconst_;
 
    ///  A constant controlling sensitivity of u.
-   vector<BGFLOAT> Bconst_;
+   DeviceVector<BGFLOAT> Bconst_;
 
    ///  A constant controlling reset of Vm.
-   vector<BGFLOAT> Cconst_;
+   DeviceVector<BGFLOAT> Cconst_;
 
    ///  A constant controlling reset of u.
-   vector<BGFLOAT> Dconst_;
+   DeviceVector<BGFLOAT> Dconst_;
 
    ///  internal variable.
-   vector<BGFLOAT> u_;
+   DeviceVector<BGFLOAT> u_;
 
    ///  Internal constant for the exponential Euler integration.
-   vector<BGFLOAT> C3_;
+   DeviceVector<BGFLOAT> C3_;
 
 private:
    ///  Default value of Aconst.
@@ -300,37 +307,17 @@ private:
    BGFLOAT inhDconst_[2];
 };
 
-#if defined(USE_GPU)
-struct AllIZHNeuronsDeviceProperties : public AllIFNeuronsDeviceProperties {
-   ///  A constant (0.02, 01) describing the coupling of variable u to Vm.
-   BGFLOAT *Aconst_;
-
-   ///  A constant controlling sensitivity of u.
-   BGFLOAT *Bconst_;
-
-   ///  A constant controlling reset of Vm.
-   BGFLOAT *Cconst_;
-
-   ///  A constant controlling reset of u.
-   BGFLOAT *Dconst_;
-
-   ///  internal variable.
-   BGFLOAT *u_;
-
-   ///  Internal constant for the exponential Euler integration.
-   BGFLOAT *C3_;
-};
-#endif   // defined(USE_GPU)
-
 CEREAL_REGISTER_TYPE(AllIZHNeurons);
 
 ///  Cereal serialization method
 template <class Archive> void AllIZHNeurons::serialize(Archive &archive)
 {
-   archive(cereal::base_class<AllIFNeurons>(this), cereal::make_nvp("Aconst", Aconst_),
-           cereal::make_nvp("Bconst", Bconst_), cereal::make_nvp("Cconst", Cconst_),
-           cereal::make_nvp("Dconst", Dconst_), cereal::make_nvp("u", u_),
-           cereal::make_nvp("C3", C3_));
+   archive(cereal::base_class<AllIFNeurons>(this),
+           cereal::make_nvp("Aconst", Aconst_.getHostVector()),
+           cereal::make_nvp("Bconst", Bconst_.getHostVector()),
+           cereal::make_nvp("Cconst", Cconst_.getHostVector()),
+           cereal::make_nvp("Dconst", Dconst_.getHostVector()),
+           cereal::make_nvp("u", u_.getHostVector()), cereal::make_nvp("C3", C3_.getHostVector()));
 
    //Private variables are intentionally excluded from serialization as they are populated from configuration files.
 }

@@ -95,6 +95,36 @@ TEST(Hdf5RecorderTest, RegisterVectorVariableTest)
    ASSERT_EQ(Recorder::UpdatedType::DYNAMIC, variableTable[1].variableType_);
 }
 
+// Unit test for registerVariable method with a vector of NeuronType enums
+TEST(Hdf5RecorderTest, RegisterVertexTypeTest)
+{
+   // Create an instance of Hdf5Recorder
+   std::string outputFile = "../Testing/UnitTesting/TestOutput/Hdf5test_output_register.h5";
+   Hdf5Recorder recorder(outputFile);
+   recorder.init();
+
+   // Create a vector of NeuronType enums
+   RecordableVector<vertexType> neuronTypes;
+   neuronTypes.resize(2);
+   neuronTypes[0] = vertexType::EXC;
+   neuronTypes[1] = vertexType::INH;
+
+   // register the vector of NeuronTypes
+   recorder.registerVariable("neuron_types", neuronTypes, Recorder::UpdatedType::DYNAMIC);
+
+   // Verify that the registered variables are stored correctly
+   const auto &variableTable = recorder.getVariableTable();
+   ASSERT_EQ(1, variableTable.size());   // Only one variable, "neuron_types"
+
+   // Verify that the registered variable name matches
+   ASSERT_EQ("neuron_types", variableTable[0].variableName_);
+   ASSERT_EQ(&neuronTypes, &variableTable[0].variableLocation_);
+
+   // Verify the type of update for this variable
+   ASSERT_EQ(Recorder::UpdatedType::DYNAMIC, variableTable[0].variableType_);
+}
+
+
 // Define the test case for saving simulation data
 TEST(Hdf5RecorderTest, SaveSimDataTest)
 {
@@ -133,6 +163,51 @@ TEST(Hdf5RecorderTest, SaveSimDataTest)
 
    // Verify the data matches the expected values
    vector<uint64_t> expectedData = {1, 2, 3, 4, 5};
+   ASSERT_EQ(expectedData.size(), dataBuffer.size());
+   for (size_t i = 0; i < expectedData.size(); ++i) {
+      EXPECT_EQ(expectedData[i], dataBuffer[i]);
+   }
+}
+
+// Unit test for saving simulation data with a vector of NeuronType enums
+TEST(Hdf5RecorderTest, SaveSimDataVertexTypeTest)
+{
+   // Define a temporary file path for testing
+   std::string outputFile = "../Testing/UnitTesting/TestOutput/Hdf5test_output_save.h5";
+
+   // Create an instance of Hdf5Recorder
+   Hdf5Recorder recorder(outputFile);
+   recorder.init();
+
+   // Create and configure RecordableVector<vertexType> for testing
+   RecordableVector<vertexType> neuronTypes;
+   neuronTypes.resize(3);
+   neuronTypes[0] = vertexType::EXC;
+   neuronTypes[1] = vertexType::INH;
+   neuronTypes[2] = vertexType::EXC;
+
+   // Register the variable with Hdf5Recorder
+   recorder.registerVariable("neuron_types", neuronTypes, Recorder::UpdatedType::CONSTANT);
+
+   // Call saveSimData() to write the data to the file
+   recorder.saveSimData();
+
+   // Open the HDF5 file and read back the data
+   H5File file(outputFile, H5F_ACC_RDONLY);
+   DataSet dataset = file.openDataSet("neuron_types");
+   DataSpace dataspace = dataset.getSpace();
+
+   hsize_t num_elements;
+   dataspace.getSimpleExtentDims(&num_elements, nullptr);
+
+   // Read the data into a buffer
+   vector<int> dataBuffer(num_elements);
+   dataset.read(dataBuffer.data(), PredType::NATIVE_INT);
+
+   // Verify the data matches the expected NeuronType values (converted to int)
+   vector<int> expectedData = {static_cast<int>(vertexType::EXC), static_cast<int>(vertexType::INH),
+                               static_cast<int>(vertexType::EXC)};
+
    ASSERT_EQ(expectedData.size(), dataBuffer.size());
    for (size_t i = 0; i < expectedData.size(); ++i) {
       EXPECT_EQ(expectedData[i], dataBuffer[i]);
@@ -190,4 +265,64 @@ TEST(Hdf5RecorderTest, CompileHistoriesTest)
    }
 }
 
+// Define the test case for compiling histories with vertexType enum
+TEST(Hdf5RecorderTest, CompileHistoriesVertexTypeTest)
+{
+   // Define temporary file path for testing
+   std::string outputFile
+      = "../Testing/UnitTesting/TestOutput/Hdf5test_output_compile_histories_neuron_type.h5";
+
+   // Create an instance of Hdf5Recorder
+   Hdf5Recorder recorder(outputFile);
+   recorder.init();
+
+   // Create and configure EventBuffer for testing (stored as int)
+   EventBuffer eventBufferNeuron(5);
+
+   // Register the variable with Hdf5Recorder as DYNAMIC
+   recorder.registerVariable("neuron_types", eventBufferNeuron, Recorder::UpdatedType::DYNAMIC);
+
+   // Expected values for checking correctness
+   std::vector<int> expectedData;
+
+   // Call compileHistories() multiple times to simulate multiple epochs
+   for (int epoch = 0; epoch < 3; ++epoch) {
+      // Clear and insert new NeuronType values
+      eventBufferNeuron.clear();
+      eventBufferNeuron.insertEvent(static_cast<int>(vertexType::EXC));
+      eventBufferNeuron.insertEvent(static_cast<int>(vertexType::INH));
+      eventBufferNeuron.insertEvent(static_cast<int>(vertexType::EXC));
+      eventBufferNeuron.insertEvent(static_cast<int>(vertexType::EXC));
+      eventBufferNeuron.insertEvent(static_cast<int>(vertexType::INH));
+
+      // Append expected values for this epoch
+      expectedData.push_back(static_cast<int>(vertexType::EXC));
+      expectedData.push_back(static_cast<int>(vertexType::INH));
+      expectedData.push_back(static_cast<int>(vertexType::EXC));
+      expectedData.push_back(static_cast<int>(vertexType::EXC));
+      expectedData.push_back(static_cast<int>(vertexType::INH));
+
+      // Call compile history
+      recorder.compileHistories();
+   }
+
+   // Open the HDF5 file and read back the data
+   H5File file(outputFile, H5F_ACC_RDONLY);
+   DataSet dataset = file.openDataSet("neuron_types");
+   DataSpace dataspace = dataset.getSpace();
+
+   hsize_t num_elements;
+   dataspace.getSimpleExtentDims(&num_elements, nullptr);
+
+   std::vector<int> dataBuffer(num_elements);
+   dataset.read(dataBuffer.data(), PredType::NATIVE_INT);
+
+   // Ensure data size matches expectation
+   ASSERT_EQ(expectedData.size(), dataBuffer.size());
+
+   // Verify that stored values match expected values
+   for (size_t i = 0; i < expectedData.size(); ++i) {
+      EXPECT_EQ(expectedData[i], dataBuffer[i]);
+   }
+}
 #endif   // HDF5

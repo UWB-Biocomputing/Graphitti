@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master,development ]
   pull_request:
-    branches: [ master,development ]
+    types: [opened, synchronize, reopened]
 
 defaults: 
   run:
@@ -76,7 +76,7 @@ jobs:
       run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-911.xml
     - name: verify test-small-911
       if: always() && steps.tt.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-small-911-out.xml ../Testing/RegressionTesting/GoodOutput/test-small-911-out.xml
+      run: diff ../Testing/RegressionTesting/TestOutput/test-small-911-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-911-out.xml
 
     - id: tm
       name: run test-medium

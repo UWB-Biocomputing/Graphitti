@@ -34,13 +34,15 @@ void Xml911Recorder::saveSimData()
 
    // create Vertex Types matrix
    VectorMatrix oldTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalVertices(),
-                         EXC);
+                         static_cast<BGFLOAT>(vertexType::EXC));
    VectorMatrix vertexTypes(MATRIX_TYPE, MATRIX_INIT, 1,
-                            Simulator::getInstance().getTotalVertices(), EXC);
+                            Simulator::getInstance().getTotalVertices(),
+                            static_cast<BGFLOAT>(vertexType::EXC));
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      vertexTypes[i] = Simulator::getInstance().getModel().getLayout().vertexTypeMap_[i];
-      oldTypes[i] = conns911.oldTypeMap_[i];
+      vertexTypes[i]
+         = static_cast<BGFLOAT>(Simulator::getInstance().getModel().getLayout().vertexTypeMap_[i]);
+      oldTypes[i] = static_cast<BGFLOAT>(conns911.oldTypeMap_[i]);
    }
 
    // Write XML header information:

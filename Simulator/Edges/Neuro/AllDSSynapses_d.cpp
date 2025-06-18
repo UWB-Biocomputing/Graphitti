@@ -207,7 +207,7 @@ void AllDSSynapses::copyDeviceToHost(AllDSSynapsesDeviceProperties &allEdgesDevi
 ///  (see issue#137).
 void AllDSSynapses::setEdgeClassID()
 {
-   enumClassSynapses classSynapses_h = classAllDSSynapses;
+   enumClassSynapses classSynapses_h = enumClassSynapses::classAllDSSynapses;
 
    HANDLE_ERROR(cudaMemcpyToSymbol(classSynapses_d, &classSynapses_h, sizeof(enumClassSynapses)));
 }
@@ -328,8 +328,7 @@ void AllDSSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
       }
 
       for (int i = 0; i < countVertices_; i++) {
-         cout << "GPU edge_counts:"
-              << "neuron[" << i << "]" << synapseCountsPrint[i] << endl;
+         cout << "GPU edge_counts:" << "neuron[" << i << "]" << synapseCountsPrint[i] << endl;
       }
 
       cout << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;

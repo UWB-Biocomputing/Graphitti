@@ -16,11 +16,16 @@ As a quick start and sanity test, let's run a small, prepackaged simulation to m
    $ make
    $ ./tests
    ```
-   To compile the GPU version set the variable `ENABLE_CUDA` to `YES` in the `CMakeLists.txt`
+   To compile the GPU version, use the cmake conditional flag ENABLE_CUDA, setting it to YES
    ```shell
-   set(ENABLE_CUDA YES)
+   cmake -D ENABLE_CUDA=YES ..
    ```
 
+   By default, the target CUDA architecture is set to 37 which is the kepler architecture
+   To target a different architecture use the cmake conditional flag TARGET_ARCH setting it to your desired architecture
+   ```shell
+   cmake -D ENABLE_CUDA=YES -D TARGET_ARCH=70 ..
+   ```
 3. Unless you have the necessary **HDF5** libraries installed please only use XML recorders only.
 
    - HDF5 is useful for making the data analysis easier for Matlab, which has native HDF5 support, after a simulation - especially a very long one; but it is fine to use the default XML output.

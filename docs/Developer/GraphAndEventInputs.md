@@ -11,9 +11,10 @@ There are two main steps to implementing a graph representation of an NG911 netw
 
 ### GraphManager Class
 
-The GraphManager is mainly a wrapper around the Boost Graph Library (BGL) but you should not need to know about Boost to use it. The BGL loads the properties for the graph, vertices and edges into user-defined structs. We have declared the `VertexProperty`, `EdgeProperty`, and `GraphProperty` structs for that purpose in the `Global.h` file. The GraphManager needs to convert each property into the right type and load them into the appropriate struct member variable. We tell GraphManager where to load the properties via the `registerProperty()` method and it infers the appropriate type. The registration of the Graph properties is being implemented as an OperationManager step that is called in the Driver class before reading the GraphML file, therefore classes that need to load graph properties are responsible for implementing the `registerGraphProperties()` method. The following is the `Layout911` implementation:
+The GraphManager is mainly a wrapper around the Boost Graph Library (BGL), but you do not need direct knowledge of Boost to use it. The BGL loads properties for the graph, vertices, and edges into user-defined structs. We have declared the `VertexProperties`, `NeuralEdgeProperties`, and `GraphProperties` structs in `Global.h` for this purpose. In the updated design, GraphManager is templated based on `VertexProperties`. The VertexProperties struct serves as a base struct, allowing for specialized inheritance by `NG911VertexProperties` and `NeuralVertexProperties`, enabling greater flexibility in managing different types of graphs. The GraphManager needs to convert each property into the right type and load them into the appropriate struct member variable. We tell GraphManager where to load the properties via the `registerProperty()` method and it infers the appropriate type. The registration of the Graph properties is being implemented as an OperationManager step that is called in the Driver class before reading the GraphML file, therefore classes that need to load graph properties are responsible for implementing the `registerGraphProperties()` method. 
 
-```cpp
+The following is the `Layout911` implementation:
+
 void Layout911::registerGraphProperties()
 {
    // The base class registers properties that are common to all vertices
@@ -23,12 +24,12 @@ void Layout911::registerGraphProperties()
    // We are passing a pointer to a data member of the VertexProperty
    // so Boost Graph Library can use it for loading the graphML file.
    // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
-   GraphManager &gm = GraphManager::getInstance();
-   gm.registerProperty("objectID", &VertexProperty::objectID);
-   gm.registerProperty("name", &VertexProperty::name);
-   gm.registerProperty("type", &VertexProperty::type);
-   gm.registerProperty("y", &VertexProperty::y);
-   gm.registerProperty("x", &VertexProperty::x);
+   GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
+   gm.registerProperty("objectID", &NG911VertexProperties::objectID);
+   gm.registerProperty("name", &NG911VertexProperties::name);
+   gm.registerProperty("type", &NG911VertexProperties::type);
+   gm.registerProperty("y", &NG911VertexProperties::y);
+   gm.registerProperty("x", &NG911VertexProperties::x);
 }
 ```
 
@@ -45,13 +46,16 @@ The list of events is provided to Graphitti as an XML input file. We couldn't fi
 ```xml
 <?xml version='1.0' encoding='UTF-8'?>
 <simulator_inputs>
-  <data description="SPD_calls_sept2020" clock_tick_size="1" clock_tick_unit="sec">
-    <vertex id="194" name="SEATTLE PD Caller region">
-      <event time="0" duration="0" x="-122.38496236371942" y="47.570236838209546" type="EMS"/>
-      <event time="34" duration="230" x="-122.37482094435583" y="47.64839548276973" type="EMS"/>
-      <event time="37" duration="169" x="-122.4036487601129" y="47.55833788618255" type="Fire"/>
-      <event time="42" duration="327" x="-122.38534886929502" y="47.515324716436346" type="Fire"/>
-...
+  <data description="SYNTH_OUTPUT2 Calls - Cluster Point Process" clock_tick_size="1" clock_tick_unit="sec">
+    <vertex id="4" name="UNKNOWN">
+      <event time="26" duration="38" x="13.111984735748287" y="62.57456126541278" type="Law" patience="54" on_site_time="33" vertex_id="4"/>
+      <event time="35" duration="30" x="13.101924628231098" y="62.5788162451589" type="Fire" patience="2" on_site_time="12" vertex_id="4"/>
+      <event time="60" duration="48" x="13.103238844738144" y="62.57852864894537" type="Fire" patience="26" on_site_time="71" vertex_id="4"/>
+      <event time="61" duration="33" x="13.103729766137114" y="62.57884701874643" type="Fire" patience="27" on_site_time="2" vertex_id="4"/>
+      <event time="74" duration="32" x="13.104050198095443" y="62.578851926237746" type="Fire" patience="23" on_site_time="38" vertex_id="4"/>
+      <event time="77" duration="41" x="13.125015368211848" y="62.547956222166015" type="EMS" patience="2" on_site_time="239" vertex_id="4"/>
+      <event time="111" duration="45" x="13.12497529802989" y="62.54820796343649" type="EMS" patience="46" on_site_time="77" vertex_id="4"/>
+      ...
     <vertex/>
 ...
   <data/>

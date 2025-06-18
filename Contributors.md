@@ -78,6 +78,13 @@ ChengHao Hsu
 
 Zaina Shaikh
 
+Rimjhim Sudhesh
+
+## 2025
+Andrew Madison
+
+Padmanabh Patil
+
 <!-- ---------------------------------------------------------------------------------- -->
 # Graduate
 

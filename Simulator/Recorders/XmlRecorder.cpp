@@ -115,6 +115,8 @@ string XmlRecorder::toXML(const string &name, vector<multipleTypes> &singleBuffe
          os << get<int>(element) << " ";
       } else if (basicType == typeid(BGFLOAT).name()) {
          os << get<BGFLOAT>(element) << " ";
+      } else if (basicType == typeid(vertexType).name()) {
+         os << static_cast<int>(get<vertexType>(element)) << " ";
       } else {
          perror("Error recording Recordable object");
          exit(EXIT_FAILURE);
