@@ -8,9 +8,9 @@
 
 #include "AllIFNeurons.h"
 #include "Book.h"
+#include "DeviceVector.h"
 #include "GPUModel.h"
 #include "Simulator.h"
-#include "DeviceVector.h"
 
 ///  Allocate GPU memories to store all neurons' states,
 ///  and copy them from host to GPU memory.

@@ -10,10 +10,9 @@
 #include "AllSpikingSynapses.h"
 #include "AllVerticesDeviceFuncs.h"
 #include "Book.h"
+#include "DeviceVector.h"
 #include "GPUModel.h"
 #include "Simulator.h"
-#include "DeviceVector.h"
-
 
 ///  CUDA code for advancing izhikevich neurons
 ///

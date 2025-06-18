@@ -9,9 +9,9 @@
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
 #include "Book.h"
+#include "DeviceVector.h"
 #include "GPUModel.h"
 #include "Simulator.h"
-#include "DeviceVector.h"
 
 /// CUDA kernel for adding psr of all incoming synapses to summation points.
 ///
