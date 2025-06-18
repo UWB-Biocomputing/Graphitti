@@ -4,21 +4,21 @@ General notes for various parts of the Graphitti system.
 
 ## 4.1 General Notes
 
-   [General Notes](RebuildNotes/GeneralNotes.md)
+   [General Notes](GeneralNotes.md)
 
-   [Layout Notes](RebuildNotes/LayoutsNotes.md)
+   [Layout Notes](LayoutsNotes.md)
 
-   [Connections Notes](RebuildNotes/ConnectionsNotes.md)
+   [Connections Notes](ConnectionsNotes.md)
 
-   [Neuron Notes](RebuildNotes/NeuronsNotes.md)
+   [Neuron Notes](NeuronsNotes.md)
 
-   [Synapses Notes](RebuildNotes/SynapsesNotes.md)
+   [Synapses Notes](SynapsesNotes.md)
 
-   [Recorder Notes](RebuildNotes/RecordersNotes.md)
+   [Recorder Notes](RecordersNotes.md)
 
 ## 4.2 Glossary
 
-   [Glossary](RebuildNotes/Glossary.md)
+   [Glossary](Glossary.md)
 	
 ## 4.3 Useful Resources
 

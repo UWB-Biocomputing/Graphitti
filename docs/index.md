@@ -36,7 +36,7 @@
 
    3.3 [Test Config Files](Testing/TestConfigFileParameters/testConfigFileParameters.md)
 
-4. [Glossary & Notes](RebuildNotes/index.md)
+4. [Glossary & Notes](Notes/index.md)
 
 ## [Code of Conduct]
 
