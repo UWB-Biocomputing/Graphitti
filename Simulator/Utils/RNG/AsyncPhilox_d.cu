@@ -81,8 +81,8 @@ void AsyncPhilox_d::loadAsyncPhilox(int samplesPerSegment, unsigned long seed)
    totalSegments_ = 10;
 
 #ifdef ENABLE_NVTX
-   nvtxMarker = 10000 / totalSegments;   // make a marker every nvtxMarker buffer fills;
-   nvtxCurrentMarker = nvtxMarker;       // count down to color flip
+   nvtxMarker_ = 10000 / totalSegments;   // make a marker every nvtxMarker buffer fills;
+   nvtxCurrentMarker_ = nvtxMarker_;      // count down to color flip
 #endif
    bufferSize_ = segmentSize_ * totalSegments_;
    numBlocks_ = 64;   //placeholder num of blocks
