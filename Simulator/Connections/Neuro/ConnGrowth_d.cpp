@@ -26,11 +26,12 @@
  *  @param  allVerticesDevice   GPU address to the AllVertices struct in device memory.
  *  @param  allEdgesDevice      GPU address to the AllEdges struct in device memory.
  *  @param  layout              The Layout object.
+ *  @param  simulationStream    The cuda stream for all synchronous kernels.
  */
 void ConnGrowth::updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &edges,
                                     AllVerticesDeviceProperties *allVerticesDevice,
                                     AllEdgesDeviceProperties *allEdgesDevice, Layout &layout,
-                                    cudaStream_t stream)
+                                    cudaStream_t simulationStream)
 {
    Simulator &simulator = Simulator::getInstance();
    // For now, we just set the weights to equal the areas. We will later
@@ -65,7 +66,7 @@ void ConnGrowth::updateEdgesWeights(int numVertices, AllVertices &vertices, AllE
                            cudaMemcpyHostToDevice));
 
    blocksPerGrid = (simulator.getTotalVertices() + threadsPerBlock - 1) / threadsPerBlock;
-   updateSynapsesWeightsDevice<<<blocksPerGrid, threadsPerBlock, 0, stream>>>(
+   updateSynapsesWeightsDevice<<<blocksPerGrid, threadsPerBlock, 0, simulationStream>>>(
       simulator.getTotalVertices(), deltaT, W_d, simulator.getMaxEdgesPerVertex(),
       (AllSpikingNeuronsDeviceProperties *)allVerticesDevice,
       (AllSpikingSynapsesDeviceProperties *)allEdgesDevice, neuronTypeMapD);

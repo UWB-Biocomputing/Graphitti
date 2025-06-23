@@ -95,12 +95,18 @@ protected:
    log4cplus::Logger vertexLogger_;   // Logs to Output/Debug/neurons.txt
 
 #if defined(USE_GPU)
-   ///  Cuda Stream for Vertices Kernels
-   cudaStream_t stream;
+   ///  Cuda Stream for Edge Kernels
+   cudaStream_t simulationStream_;
 
 public:
-   // Set GPU stream for Vertices kernels
-   void SetStream(cudaStream_t pStream);
+   /// Set the CUDA stream to be used by GPU vertices kernels in derived classes.
+   ///
+   /// This assigns a CUDA stream to the base class, allowing subclasses
+   /// to launch kernels on the correct stream. The stream is typically
+   /// created by GPUModel and passed down during simulation setup.
+   ///
+   /// @param simulationStream A valid CUDA stream (`cudaStream_t`) managed by the caller.
+   void SetStream(cudaStream_t simulationStream);
 
    ///  Allocate GPU memories to store all vertices' states,
    ///  and copy them from host to GPU memory.

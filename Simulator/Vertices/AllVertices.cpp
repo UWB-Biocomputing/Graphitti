@@ -52,9 +52,15 @@ void AllVertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
 
 
 #ifdef USE_GPU
-// Set Cuda Stream for Vertices kernels
-void AllVertices::SetStream(cudaStream_t pStream)
+/// Set the CUDA stream to be used by GPU vertices kernels in derived classes.
+///
+/// This assigns a CUDA stream to the base class, allowing subclasses
+/// to launch kernels on the correct stream. The stream is typically
+/// created by GPUModel and passed down during simulation setup.
+///
+/// @param simulationStream A valid CUDA stream (`cudaStream_t`) managed by the caller.
+void AllVertices::SetStream(cudaStream_t simulationStream)
 {
-   stream = pStream;
+   simulationStream_ = simulationStream;
 }
 #endif

@@ -125,10 +125,11 @@ public:
    ///  @param  allVerticesDevice    GPU address of the AllVertices struct in device memory.
    ///  @param  allEdgesDevice       GPU address of the AllEdges struct in device memory.
    ///  @param  layout               The Layout object.
+   ///  @param  simulationStream     The cuda stream for all synchronous kernels.
    virtual void updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &edges,
                                    AllVerticesDeviceProperties *allVerticesDevice,
                                    AllEdgesDeviceProperties *allEdgesDevice, Layout &layout,
-                                   cudaStream_t stream) override;
+                                   cudaStream_t simulationStream) override;
 
 #else
    ///  Update the weights of the Synapses in the simulation. To be clear,

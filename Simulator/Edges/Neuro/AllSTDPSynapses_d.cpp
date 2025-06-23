@@ -268,7 +268,7 @@ void AllSTDPSynapses::advanceEdges(void *allEdgesDevice, void *allVerticesDevice
    const int threadsPerBlock = 256;
    int blocksPerGrid = (totalEdgeCount_ + threadsPerBlock - 1) / threadsPerBlock;
    // Advance synapses ------------->
-   advanceSTDPSynapsesDevice<<<blocksPerGrid, threadsPerBlock, 0, stream>>>(
+   advanceSTDPSynapsesDevice<<<blocksPerGrid, threadsPerBlock, 0, simulationStream_>>>(
       totalEdgeCount_, (EdgeIndexMapDevice *)edgeIndexMapDevice, g_simulationStep,
       Simulator::getInstance().getDeltaT(), (AllSTDPSynapsesDeviceProperties *)allEdgesDevice,
       (AllSpikingNeuronsDeviceProperties *)allVerticesDevice, maxSpikes);

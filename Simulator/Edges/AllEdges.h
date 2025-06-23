@@ -95,14 +95,19 @@ protected:
    log4cplus::Logger edgeLogger_;
 
 #if defined(USE_GPU)
-
    ///  Cuda Stream for Edge Kernels
-   cudaStream_t stream;
+   cudaStream_t simulationStream_;
 
 public:
-   // Set GPU stream for edge kernels
-
-   void SetStream(cudaStream_t pStream);
+   /// Set the CUDA stream to be used by GPU edge kernels in derived classes.
+   ///
+   /// This assigns a CUDA stream to the base class, allowing subclasses
+   /// (e.g., AllSpikingSynapses_d, AllSTDPSynapses_d) to launch kernels on
+   /// the correct stream. The stream is typically created by GPUModel and
+   /// passed down during simulation setup.
+   ///
+   /// @param simulationStream A valid CUDA stream (`cudaStream_t`) managed by the caller.
+   void SetStream(cudaStream_t simulationStream);
 
    ///  Allocate GPU memories to store all edges' states,
    ///  and copy them from host to GPU memory.

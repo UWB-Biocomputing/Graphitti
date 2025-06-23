@@ -54,8 +54,11 @@ void GPUModel::allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice
    // Allocate edge inverse map in device memory
    allocEdgeIndexMap(numVertices);
 
-   // Create gpu model stream
-   HANDLE_ERROR(cudaStreamCreate(&stream));
+   // Create the CUDA stream used to launch synchronous GPU kernels during the simulation.
+   // This stream is passed to components like AllEdges and used consistently for kernel launches.
+   // For stream behavior and management, see:
+   // https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__STREAM.html
+   HANDLE_ERROR(cudaStreamCreate(&simulationStream_));
 }
 
 /// Copies device memories to host memories and deallocates them.
@@ -77,7 +80,7 @@ void GPUModel::deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevic
    edges.deleteEdgeDeviceStruct(*allEdgesDevice);
    // HANDLE_ERROR(cudaFree(randNoise_d));
    // closeFileMT();
-   HANDLE_ERROR(cudaStreamDestroy(stream));
+   HANDLE_ERROR(cudaStreamDestroy(simulationStream_));
 }
 
 /// Sets up the Simulation.
@@ -100,7 +103,7 @@ void GPUModel::setupSim()
    // initMTGPU(Simulator::getInstance().getNoiseRngSeed(), rng_blocks, rng_threads, rng_nPerRng,
    //           rng_mt_rng_count);
    //cout << "blocks, threads, nPerRng, rng_rng_count: " << rng_blocks << " " << rng_threads << " " << rng_nPerRng << " " << rng_mt_rng_count << endl;
-   AsyncGenerator.loadAsyncPhilox(Simulator::getInstance().getTotalVertices(),
+   AsyncGenerator_.loadAsyncPhilox(Simulator::getInstance().getTotalVertices(),
                                   Simulator::getInstance().getNoiseRngSeed());
 
 #ifdef PERFORMANCE_METRICS
@@ -127,15 +130,15 @@ void GPUModel::setupSim()
    // set some parameters used for advanceEdgesDevice
    edges.setAdvanceEdgesDeviceParams();
    AllVertices &vertices = layout_->getVertices();
-   vertices.SetStream(stream);
-   edges.SetStream(stream);
+   vertices.SetStream(simulationStream_);
+   edges.SetStream(simulationStream_);
 }
 
 /// Performs any finalization tasks on network following a simulation.
 void GPUModel::finish()
 {
    // deallocates memories on CUDA device
-   AsyncGenerator.deleteDeviceStruct();
+   AsyncGenerator_.deleteDeviceStruct();
    deleteDeviceStruct((void **)&allVerticesDevice_, (void **)&allEdgesDevice_);
    deleteEdgeIndexMap();
 
@@ -172,7 +175,7 @@ void GPUModel::advance()
    cudaMemcpy(randNoise_d, randNoise_h.data(), verts * sizeof(float), cudaMemcpyHostToDevice);
 #else
    // normalMTGPU(randNoise_d);
-   randNoise_d = AsyncGenerator.requestSegment();
+   randNoise_d = AsyncGenerator_.requestSegment();
 #endif
 //LOG4CPLUS_DEBUG(vertexLogger_, "Index: " << index << " Vm: " << Vm);
 #ifdef PERFORMANCE_METRICS
@@ -252,7 +255,7 @@ void GPUModel::updateConnections()
    // Update Connections data
    if (connections_->updateConnections(vertices)) {
       connections_->updateEdgesWeights(Simulator::getInstance().getTotalVertices(), vertices, edges,
-                                       allVerticesDevice_, allEdgesDevice_, getLayout(), stream);
+                                       allVerticesDevice_, allEdgesDevice_, getLayout(), simulationStream_);
       // create edge index map
       connections_->createEdgeIndexMap();
       // copy index map to the device memory

@@ -92,7 +92,7 @@ bool Connections::updateConnections(AllVertices &vertices)
 void Connections::updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &edges,
                                      AllVerticesDeviceProperties *allVerticesDevice,
                                      AllEdgesDeviceProperties *allEdgesDevice, Layout &layout,
-                                     cudaStream_t stream)
+                                     cudaStream_t simulationStream)
 {
 }
 #else
