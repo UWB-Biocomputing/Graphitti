@@ -261,3 +261,77 @@ protected:
 
 #endif   // defined(USE_GPU)
 };
+
+#if defined(USE_GPU)
+struct All911VerticesDeviceProperties : public AllVerticesDeviceProperties {
+   /// The starting time for every call
+   //vector<vector<uint64_t>> beginTimeHistory_;
+   uint64_t **beginTimeHistory_;
+   /// The answer time for every call
+   //vector<vector<uint64_t>> answerTimeHistory_;
+   uint64_t **answerTimeHistory_;
+   /// The end time for every call
+   //vector<vector<uint64_t>> endTimeHistory_;
+   uint64_t **endTimeHistory_;
+   /// True if the call was abandoned
+   //vector<vector<unsigned char>> wasAbandonedHistory_;
+   unsigned char **wasAbandonedHistory_;
+   /// The length of the waiting queue at every time-step
+   //vector<vector<int>> queueLengthHistory_;
+   int **queueLengthHistory_;
+   /// The portion of servers that are busy at every time-step
+   //vector<vector<double>> utilizationHistory_;
+   BGFLOAT **utilizationHistory_;
+
+   /// These are the queues where calls will wait to be served
+   //vector<CircularBuffer<Call>> vertexQueues_;
+   int **vertexQueuesBufferVertexId_;
+   uint64_t **vertexQueuesBufferTime_;
+   int **vertexQueuesBufferDuration_;
+   BGFLOAT **vertexQueuesBufferX_;
+   BGFLOAT **vertexQueuesBufferY_;
+   int **vertexQueuesBufferPatience_;
+   int **vertexQueuesBufferOnSiteTime_;
+   int **vertexQueuesBufferResponderType_;
+
+   /// The number of calls that have been dropped (got a busy signal)
+   //vector<int> droppedCalls_;
+   int *droppedCalls_;
+
+   /// The number of received calls
+   //vector<int> receivedCalls_;
+   int *receivedCalls_;
+
+   /// Number of servers currently serving calls
+   //vector<int> busyServers_;
+   int *busyServers_;
+
+   /// Number of servers. In a PSAP these are the call takers, in Responder nodes
+   /// they are responder units
+   //vector<int> numServers_;
+   int *numServers_;
+
+   /// Number of phone lines available. Only valid for PSAPs and Responders
+   //vector<int> numTrunks_;
+   int *numTrunks_;
+
+   /// Holds the calls being served by each server
+   //vector<vector<Call>> servingCall_;
+   int **servingCallBufferVertexId_;
+   uint64_t **servingCallBufferTime_;
+   int **servingCallBufferDuration_;
+   BGFLOAT **servingCallBufferX_;
+   BGFLOAT **servingCallBufferY_;
+   int **servingCallBufferPatience_;
+   int **servingCallBufferOnSiteTime_;
+   int **servingCallBufferResponderType_;
+
+   /// The time that the call being served was answered by the server
+   //vector<vector<uint64_t>> answerTime_;
+   uint64_t **answerTime_;
+
+   /// The countdown until the server is available to take another call
+   //vector<vector<int>> serverCountdown_;
+   int **serverCountdown_;
+};
+#endif   // defined(USE_GPU)
