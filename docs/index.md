@@ -10,27 +10,23 @@
 
    1.3 [Quickstart](User/quickstart.md)
 
-   1.3.1 [UWB Student Quickstart](Developer/StudentSetup.md)
-
    1.4 [Configuration](User/configuration.md)
 
 2. [Developer Documentation](Developer/index.md)
    
-   2.1 [Student Quick Start](Developer/StudentSetup.md)
-   
-   2.2 [GitFlow Documentation](Developer/GitFlowDiagram.md)
+   2.1 [GitFlow Documentation](Developer/GitFlowDiagram.md)
 
-   2.3 [Code Formatting Etiquettes](Developer/codingConventions.md)
+   2.2 [Code Formatting Etiquettes](Developer/codingConventions.md)
 
-   2.4 [C++ design and Coding standards](Developer/cppStyleGuide.md)
+   2.3 [C++ design and Coding standards](Developer/cppStyleGuide.md)
 
-   2.5 [Graphitti Repository Tools and Workflows](Developer/index.md) 
+   2.4 [Graphitti Repository Tools and Workflows](Developer/index.md) 
 
-   2.6 [Graphitti System Documentation](Developer/index.md)
+   2.5 [Graphitti System Documentation](Developer/index.md)
   
-   2.7 [Unit Tests](Developer/UnitTests.md)
+   2.6 [Unit Tests](Developer/UnitTests.md)
 
-   2.8 [Serialization](Developer/Serialization.md)
+   2.7 [Serialization](Developer/Serialization.md)
 
 3. [Testing](Testing/index.md)
 
@@ -40,38 +36,11 @@
 
    3.3 [Test Config Files](Testing/TestConfigFileParameters/testConfigFileParameters.md)
 
-4. Notes
+4. [Glossary & Notes](Notes/index.md)
 
-   4.1 [General Notes](RebuildNotes/GeneralNotes.md)
+## [Code of Conduct]
 
-   4.2 [Layout Notes](RebuildNotes/LayoutsNotes.md)
-
-   4.3 [Connections Notes](RebuildNotes/ConnectionsNotes.md)
-
-   4.4 [Neuron Notes](RebuildNotes/NeuronsNotes.md)
-
-   4.5 [Synapses Notes](RebuildNotes/SynapsesNotes.md)
-
-   4.6 [Recorder Notes](RebuildNotes/RecordersNotes.md)
-
-5. [Glossary](Glossary.md)
-
-   5.1 Graph Vocabulary
-
-   5.2 Neuroscience Vocabulary
-   
-
-## Extra Resources
-
-Here are some [recommended resources](Resources.md) to browse
-
-## Tools
-
-Here is documentation on the [GIS to GEXF](Tools/GIStoGraph.md) tool. This tool reads in Geographic Information Systems data, constructs a graph based on that data, and produces GEXF and GraphML formatted XML files that we can then pass into the Emergency Services Communication Systems simulation.
-
-## Code of Conduct
-
-Our [code of conduct](../CODE_OF_CONDUCT.md)
+Our [code of conduct] by which Graphitti has been developed.
 
 ## [Acknowledgements](acknowledgements.md)
 
@@ -79,3 +48,8 @@ Those who have helped make Graphitti what it is and shaping what it will be.
 
 ---------
 [<< Go back to UWB Intelligent Networks Lab home page](http://uwb-biocomputing.github.io/)
+
+[//]: # (Moving URL links to the bottom of the document for ease of updating - LS)
+[//]: # (Links to repo items which exist outside of the docs folder need a direct link.)
+
+[Code of Conduct]: <https://github.com/UWB-Biocomputing/Graphitti/blob/master/CODE_OF_CONDUCT.md>
