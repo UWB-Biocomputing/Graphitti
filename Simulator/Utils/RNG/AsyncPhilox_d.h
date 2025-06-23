@@ -85,8 +85,7 @@ private:
    // FILE* logfile;
    // float* hostBuffer;
    /// Logger for printing to the console as well as the logging file
-   log4cplus::Logger
-      consoleLogger_;   
+   log4cplus::Logger consoleLogger_;
 
    /// Internal helper to fill a specified buffer with random floats.
    /// @param bufferIndex Index (0 or 1) of the buffer to fill.

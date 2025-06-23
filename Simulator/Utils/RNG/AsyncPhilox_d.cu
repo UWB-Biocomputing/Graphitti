@@ -178,5 +178,6 @@ float *AsyncPhilox_d::requestSegment()
 void AsyncPhilox_d::fillBuffer(int bufferIndex)
 {
    //LOG4CPLUS_TRACE(consoleLogger_, "filling buffer:");
-   generatePhilox<<<numBlocks_, numThreads_, 0, RNG_stream_>>>(spStates_d, buffers_d[bufferIndex], bufferSize_);
+   generatePhilox<<<numBlocks_, numThreads_, 0, RNG_stream_>>>(spStates_d, buffers_d[bufferIndex],
+                                                               bufferSize_);
 }

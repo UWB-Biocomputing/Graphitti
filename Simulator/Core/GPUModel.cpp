@@ -104,7 +104,7 @@ void GPUModel::setupSim()
    //           rng_mt_rng_count);
    //cout << "blocks, threads, nPerRng, rng_rng_count: " << rng_blocks << " " << rng_threads << " " << rng_nPerRng << " " << rng_mt_rng_count << endl;
    AsyncGenerator_.loadAsyncPhilox(Simulator::getInstance().getTotalVertices(),
-                                  Simulator::getInstance().getNoiseRngSeed());
+                                   Simulator::getInstance().getNoiseRngSeed());
 
 #ifdef PERFORMANCE_METRICS
    cudaEventCreate(&start);
@@ -255,7 +255,8 @@ void GPUModel::updateConnections()
    // Update Connections data
    if (connections_->updateConnections(vertices)) {
       connections_->updateEdgesWeights(Simulator::getInstance().getTotalVertices(), vertices, edges,
-                                       allVerticesDevice_, allEdgesDevice_, getLayout(), simulationStream_);
+                                       allVerticesDevice_, allEdgesDevice_, getLayout(),
+                                       simulationStream_);
       // create edge index map
       connections_->createEdgeIndexMap();
       // copy index map to the device memory
