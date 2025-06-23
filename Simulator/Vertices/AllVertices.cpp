@@ -21,6 +21,14 @@ AllVertices::AllVertices() : size_(0)
    function<void()> printParametersFunc = bind(&AllVertices::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
+   
+   function<void(uint64_t,uint64_t)> loadEpochInputsFunc = std::bind(&AllVertices::loadEpochInputs, 
+                                                                     this, 
+                                                                     std::placeholders::_1, 
+                                                                     std::placeholders::_2);
+   OperationManager::getInstance().registerOperation(Operations::loadEpochInputs,
+                                                     loadEpochInputsFunc);
+
 
    // Get a copy of the file and vertex logger to use log4cplus macros to print to debug files
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));

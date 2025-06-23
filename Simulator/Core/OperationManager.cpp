@@ -13,6 +13,7 @@
 
 #include "OperationManager.h"
 #include "GenericFunctionNode.h"
+#include "TwoUint64ArgFunctionNode.h"
 #include <list>
 #include <memory>
 #include <string>
@@ -40,6 +41,21 @@ void OperationManager::registerOperation(const Operations &operation,
    }
 }
 
+/// @brief Handles function signature: void (uint64_t,uint64_t).
+/// @param operation The Operation type that will use the input function.
+/// @param function The function invoked for the operation. Takes in two arguments of type uint64_t
+void OperationManager::registerOperation(const Operations &operation, const function<void(uint64_t,uint64_t)> &function)
+{
+   try {
+      functionList_.push_back(
+         unique_ptr<IFunctionNode>(new TwoUint64ArgFunctionNode(operation, function)));
+   } catch (exception e) {
+      LOG4CPLUS_FATAL(logger_, string(e.what())
+                                  + ". Push back failed in OperationManager::registerOperation");
+      throw runtime_error(string(e.what()) + " in OperationManager::registerOperation");
+   }
+}
+
 /// Takes in a operation type and invokes all registered functions that are classified as that operation type.
 void OperationManager::executeOperation(const Operations &operation) const
 {
@@ -47,6 +63,20 @@ void OperationManager::executeOperation(const Operations &operation) const
    if (functionList_.size() > 0) {
       for (auto i = functionList_.begin(); i != functionList_.end(); ++i) {
          (*i)->invokeFunction(operation);
+         //TODO: Throw fatal if false
+      }
+   }
+}
+
+/// Take in a operation type and invokes all registered functions that are classified as that operation type using the input arguments.
+void OperationManager::executeOperation(const Operations &operation, uint64_t arg1, uint64_t arg2) const
+{
+   LOG4CPLUS_INFO(logger_, "Executing operation " + operationToString(operation));
+   /// TODO: Should we check anything about arg1 and arg2 before passing to the invoke???
+   if (functionList_.size() > 0) {
+      for (auto i = functionList_.begin(); i != functionList_.end(); ++i) {
+         (*i)->invokeFunction(operation, arg1, arg2);
+         //TODO: Throw fatal if false
       }
    }
 }
@@ -71,6 +101,8 @@ string OperationManager::operationToString(const Operations &operation) const
          return "copyToGPU";
       case Operations::copyFromGPU:
          return "copyFromGPU";
+      case Operations::loadEpochInputs:
+         return "loadEpochInputs";
       default:
          return "Operation isn't in OperationManager::operationToString()";
    }
