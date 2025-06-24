@@ -89,3 +89,15 @@ void ConnStatic::loadParameters()
 void ConnStatic::printParameters() const
 {
 }
+
+///  Update the connections status in every epoch.
+///
+///  @param  vertices  The vertex list to search from.
+///  @return true if successful, false otherwise.
+bool ConnStatic::updateConnections(AllVertices &vertices)
+{
+   AllNeuroEdges &synapses = dynamic_cast<AllNeuroEdges &>(*edges_);
+   synapses.outputWeights(Simulator::getInstance().getCurrentStep());
+   
+   return true;
+}

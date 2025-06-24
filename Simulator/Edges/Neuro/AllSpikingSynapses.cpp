@@ -333,3 +333,56 @@ void AllSpikingSynapses::printSynapsesProps() const
       }
    }
 }
+
+string vectorToXML(const vector<BGFLOAT>& matrix, int rows, int cols, const string& name) {
+   ostringstream os;
+   os << "<" << name << " rows=\"" << rows << "\" columns=\"" << cols << "\">\n";
+
+   int index = 0;
+   for_each(matrix.begin(), matrix.end(), [&](BGFLOAT value) mutable {
+      os << "   <value" << index << ">" << value << "</value" << index << ">\n";
+      index++;
+   });
+
+   os << "</" << name << ">\n";
+   return os.str();
+}
+
+string vectorToXML(const vector<int>& matrix, int rows, int cols, const string& name) {
+   ostringstream os;
+   os << "<" << name << " rows=\"" << rows << "\" columns=\"" << cols << "\">\n";
+
+   int index = 0;
+   for_each(matrix.begin(), matrix.end(), [&](int value) mutable {
+       os << "   <value" << index << ">" << value << "</value" << index << ">\n";
+       index++;
+   });
+
+   os << "</" << name << ">\n";
+   return os.str();
+}
+
+void AllSpikingSynapses::outputWeights(int epochNum) {
+   const std::string filename = "./Output/Results/weights-epoch-" + std::to_string(epochNum) + ".xml"; // Hardcoded filename
+   int vertexCount = Simulator::getInstance().getTotalVertices();
+    
+   ofstream outFile(filename);  
+   if (!outFile) {
+      cerr << "Error: Unable to open file " << filename << endl;
+      cerr << "Error details: " << strerror(errno) << endl;
+      return;
+   }
+
+   int maxEdges = Simulator::getInstance().getMaxEdgesPerVertex();
+
+   string wContent = vectorToXML(W_, vertexCount, maxEdges, "WeightMatrix");
+   string srcContent = vectorToXML(sourceVertexIndex_, vertexCount, maxEdges, "SourceVertexIndex");
+    
+   outFile << "<Graph>\n";
+   outFile << wContent;
+   outFile << srcContent;
+   outFile << "</Graph>";
+   outFile.close();
+
+   cout << "Success: XML written to " << filename << endl;
+}

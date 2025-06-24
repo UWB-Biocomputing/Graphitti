@@ -87,6 +87,9 @@ public:
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);
 
+   /// Output weights and srcIndex to xml
+   virtual void outputWeights(int epochNum);
+
 protected:
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///
