@@ -98,6 +98,6 @@ bool ConnStatic::updateConnections(AllVertices &vertices)
 {
    AllNeuroEdges &synapses = dynamic_cast<AllNeuroEdges &>(*edges_);
    synapses.outputWeights(Simulator::getInstance().getCurrentStep());
-   
+
    return true;
 }

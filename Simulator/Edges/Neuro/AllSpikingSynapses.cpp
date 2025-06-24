@@ -334,12 +334,14 @@ void AllSpikingSynapses::printSynapsesProps() const
    }
 }
 
-string vectorToXML(const vector<BGFLOAT>& matrix, int rows, int cols, const string& name) {
+string vectorToXML(const vector<BGFLOAT> &matrix, int rows, int cols, const string &name)
+{
    ostringstream os;
    os << "<" << name << " rows=\"" << rows << "\" columns=\"" << cols << "\">\n";
 
    int index = 0;
-   for_each(matrix.begin(), matrix.end(), [&](BGFLOAT value) mutable {
+   for_each(matrix.begin(), matrix.end(), [&](BGFLOAT value) mutable
+   {
       os << "   <value" << index << ">" << value << "</value" << index << ">\n";
       index++;
    });
@@ -348,12 +350,14 @@ string vectorToXML(const vector<BGFLOAT>& matrix, int rows, int cols, const stri
    return os.str();
 }
 
-string vectorToXML(const vector<int>& matrix, int rows, int cols, const string& name) {
+string vectorToXML(const vector<int> &matrix, int rows, int cols, const string &name)
+{
    ostringstream os;
    os << "<" << name << " rows=\"" << rows << "\" columns=\"" << cols << "\">\n";
 
    int index = 0;
-   for_each(matrix.begin(), matrix.end(), [&](int value) mutable {
+   for_each(matrix.begin(), matrix.end(), [&](int value) mutable
+   {
        os << "   <value" << index << ">" << value << "</value" << index << ">\n";
        index++;
    });
@@ -362,11 +366,12 @@ string vectorToXML(const vector<int>& matrix, int rows, int cols, const string& 
    return os.str();
 }
 
-void AllSpikingSynapses::outputWeights(int epochNum) {
-   const std::string filename = "./Output/Results/weights-epoch-" + std::to_string(epochNum) + ".xml"; // Hardcoded filename
+void AllSpikingSynapses::outputWeights(int epochNum)
+{
+   const std::string filename = "./Output/Results/weights-epoch-" + std::to_string(epochNum) + ".xml";   // Hardcoded filename
    int vertexCount = Simulator::getInstance().getTotalVertices();
-    
-   ofstream outFile(filename);  
+
+   ofstream outFile(filename);
    if (!outFile) {
       cerr << "Error: Unable to open file " << filename << endl;
       cerr << "Error details: " << strerror(errno) << endl;
@@ -377,7 +382,7 @@ void AllSpikingSynapses::outputWeights(int epochNum) {
 
    string wContent = vectorToXML(W_, vertexCount, maxEdges, "WeightMatrix");
    string srcContent = vectorToXML(sourceVertexIndex_, vertexCount, maxEdges, "SourceVertexIndex");
-    
+
    outFile << "<Graph>\n";
    outFile << wContent;
    outFile << srcContent;
