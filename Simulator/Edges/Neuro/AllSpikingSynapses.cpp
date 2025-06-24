@@ -107,14 +107,17 @@ void AllSpikingSynapses::printParameters() const
                                    << endl
                                    << "\tEdges type: AllSpikingSynapses" << endl
                                    << endl);
-   LOG4CPLUS_DEBUG(edgeLogger_, "\n\tTau values: [" << " II: " << tau_II_ << "," << " IE: "
-                                                    << tau_IE_ << "," << " EI: " << tau_EI_ << ","
-                                                    << " EE: " << tau_EE_ << "]" << endl);
+   LOG4CPLUS_DEBUG(edgeLogger_, "\n\tTau values: ["
+                                   << " II: " << tau_II_ << ","
+                                   << " IE: " << tau_IE_ << ","
+                                   << " EI: " << tau_EI_ << ","
+                                   << " EE: " << tau_EE_ << "]" << endl);
 
    LOG4CPLUS_DEBUG(edgeLogger_, "\n\tDelay values: ["
-                                   << " II: " << delay_II_ << "," << " IE: " << delay_IE_ << ","
-                                   << " EI:" << delay_EI_ << "," << " EE: " << delay_EE_ << "]"
-                                   << endl);
+                                   << " II: " << delay_II_ << ","
+                                   << " IE: " << delay_IE_ << ","
+                                   << " EI:" << delay_EI_ << ","
+                                   << " EE: " << delay_EE_ << "]" << endl);
 }
 
 ///  Sets the data for Synapse to input's data.
@@ -340,8 +343,7 @@ string vectorToXML(const vector<BGFLOAT> &matrix, int rows, int cols, const stri
    os << "<" << name << " rows=\"" << rows << "\" columns=\"" << cols << "\">\n";
 
    int index = 0;
-   for_each(matrix.begin(), matrix.end(), [&](BGFLOAT value) mutable
-   {
+   for_each(matrix.begin(), matrix.end(), [&](BGFLOAT value) mutable {
       os << "   <value" << index << ">" << value << "</value" << index << ">\n";
       index++;
    });
@@ -356,10 +358,10 @@ string vectorToXML(const vector<int> &matrix, int rows, int cols, const string &
    os << "<" << name << " rows=\"" << rows << "\" columns=\"" << cols << "\">\n";
 
    int index = 0;
-   for_each(matrix.begin(), matrix.end(), [&](int value) mutable
-   {
-       os << "   <value" << index << ">" << value << "</value" << index << ">\n";
-       index++;
+   for_each(matrix.begin(), matrix.end(), [&](int value) mutable {
+      os << "   <value" << index << ">" << value << "</value" << index << ">\n";
+
+      index++;
    });
 
    os << "</" << name << ">\n";
@@ -368,7 +370,8 @@ string vectorToXML(const vector<int> &matrix, int rows, int cols, const string &
 
 void AllSpikingSynapses::outputWeights(int epochNum)
 {
-   const std::string filename = "./Output/Results/weights-epoch-" + std::to_string(epochNum) + ".xml";   // Hardcoded filename
+   const std::string filename = "./Output/Results/weights-epoch-" + std::to_string(epochNum)
+                                + ".xml";   // Hardcoded filename
    int vertexCount = Simulator::getInstance().getTotalVertices();
 
    ofstream outFile(filename);
