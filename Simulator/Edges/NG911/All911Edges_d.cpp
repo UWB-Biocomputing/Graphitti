@@ -475,8 +475,7 @@ void All911Edges::printGPUEdgesProps(void *allEdgesDeviceProps) const
          }
       }
       for (int i = 0; i < countVertices_; i++) {
-         cout << "GPU edgeCounts: "
-              << "vertex[" << i << "]" << edgeCountsPrint[i] << endl;
+         cout << "GPU edgeCounts: " << "vertex[" << i << "]" << edgeCountsPrint[i] << endl;
       }
       cout << "GPU totalEdgeCount: " << totalEdgeCountPrint << endl;
       cout << "GPU maxEdgesPerVertex: " << maxEdgesPerVertexPrint << endl;
