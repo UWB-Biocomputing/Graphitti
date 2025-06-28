@@ -85,7 +85,7 @@ public:
    template <class Archive> void serialize(Archive &archive);
 
 #if defined(USE_GPU)
-public: 
+public:
    ///  Set edge class ID defined by enumClassSynapses for the caller's Edge class.
    ///  The class ID will be set to classSynapses_d in device memory,
    ///  and the classSynapses_d will be referred to call a device function for the

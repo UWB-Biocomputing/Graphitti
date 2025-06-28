@@ -16,9 +16,9 @@
 
 #pragma once
 
+#include "BGTypes.h"
 #include <cstdint>
 #include <string>
-#include "BGTypes.h"
 
 struct InputEvent {
    // The vertexId where the input event happen

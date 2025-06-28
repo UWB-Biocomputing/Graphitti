@@ -145,7 +145,7 @@ public:
    virtual void advanceEdges(void *allEdgesDevice, void *allVerticesDevice,
                              void *edgeIndexMapDevice)
       = 0;
-   
+
    ///  Set some parameters used for advanceEdgesDevice.
    virtual void setAdvanceEdgesDeviceParams() = 0;
 

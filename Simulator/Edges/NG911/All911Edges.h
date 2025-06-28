@@ -70,7 +70,8 @@ public:
                                       int maxEdgesPerVertex) override;
    virtual void deleteEdgeDeviceStruct(void *allEdgesDevice) override;
    virtual void copyEdgeHostToDevice(void *allEdgesDevice) override;
-   virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices, int maxEdgesPerVertex) override;
+   virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices,
+                                     int maxEdgesPerVertex) override;
    virtual void copyEdgeDeviceToHost(void *allEdgesDevice) override;
    virtual void copyDeviceEdgeCountsToHost(void *allEdgesDevice) override;
    virtual void advanceEdges(void *allEdgesDevice, void *allVerticesDevice,
@@ -87,7 +88,8 @@ protected:
    ///                                on device memory.
    ///  @param  numVertices            Number of vertices.
    ///  @param  maxEdgesPerVertex  Maximum number of edges per vertex.
-   void allocDeviceStruct(All911EdgesDeviceProperties &allEdgesDevice, int numVertices, int maxEdgesPerVertex);
+   void allocDeviceStruct(All911EdgesDeviceProperties &allEdgesDevice, int numVertices,
+                          int maxEdgesPerVertex);
 
    ///  Delete GPU memories.
    ///  (Helper function of deleteEdgeDeviceStruct)
@@ -103,7 +105,8 @@ protected:
    ///  @param  allEdgesDeviceProps      CPU address of the All911EdgesDeviceProperties struct on host memory.
    ///  @param  numVertices              Number of vertices.
    ///  @param  maxEdgesPerVertex        Maximum number of edges per vertex.
-   void copyHostToDevice(void *allEdgesDevice, All911EdgesDeviceProperties &allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex);
+   void copyHostToDevice(void *allEdgesDevice, All911EdgesDeviceProperties &allEdgesDeviceProps,
+                         int numVertices, int maxEdgesPerVertex);
 
    ///  Copy all edge data from device to host.
    ///  (Helper function of copyEdgeDeviceToHost)
@@ -173,4 +176,4 @@ struct All911EdgesDeviceProperties : public AllEdgesDeviceProperties {
    // Use int type instead of string to make using on GPU easier
    int *responderType_;
 };
-#endif //defined(USE_GPU)
+#endif   //defined(USE_GPU)
