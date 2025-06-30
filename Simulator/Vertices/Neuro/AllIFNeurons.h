@@ -95,25 +95,20 @@ public:
 
    ///  Allocate GPU memories to store all neurons' states,
    ///  and copy them from host to GPU memory.
-   ///
-   ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void allocVerticesDeviceStruct(void **allVerticesDevice);
+   virtual void allocVerticesDeviceStruct();
 
    ///  Delete GPU memories.
    ///
-   ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void deleteVerticesDeviceStruct(void *allVerticesDevice);
+   virtual void deleteVerticesDeviceStruct();
 
    ///  Clear the spike counts out of all neurons.
    //
    ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
    virtual void clearVertexHistory(void *allVerticesDevice) override;
    //Copy all neurons' data from device to host.
-   //@param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void copyFromDevice(void *deviceAddress) override;
+   virtual void copyFromDevice() override;
    //Copy all neurons' data from host to device.
-   // @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void copyToDevice(void *deviceAddress) override;
+   virtual void copyToDevice() override;
 
 protected:
    ///  Allocate GPU memories to store all neurons' states.

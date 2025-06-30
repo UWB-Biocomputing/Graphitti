@@ -39,6 +39,30 @@ AllVertices::AllVertices() : size_(0)
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
 
+   // Register registerHistoryVariables function as a registerHistoryVariables operation in the OperationManager
+   function<void()> registerHistory = bind(&AllVertices::registerHistoryVariables, this);
+   OperationManager::getInstance().registerOperation(Operations::registerHistoryVariables,
+                                                     registerHistory);
+
+#if defined(USE_GPU)
+   // Register allocNeuronDeviceStruct function as a allocateGPU operation in the OperationManager
+   function<void()> allocateGPU = bind(&AllVertices::allocVerticesDeviceStruct, this);
+   OperationManager::getInstance().registerOperation(Operations::allocateGPU, allocateGPU);
+
+   // Register AllVertices::copyToDevice function as a copyToGPU operation in the OperationManager
+   function<void()> copyCPUtoGPU = bind(&AllVertices::copyToDevice, this);
+   OperationManager::getInstance().registerOperation(Operations::copyToGPU, copyCPUtoGPU);
+
+   // Register copyFromGPU operation for transferring edge data from device to host
+   function<void()> copyFromGPU = bind(&AllVertices::copyFromDevice, this);
+   OperationManager::getInstance().registerOperation(Operations::copyFromGPU, copyFromGPU);
+
+   // Register deleteNeuronDeviceStruct function as a deallocateGPUMemory operation in the OperationManager
+   function<void()> deallocateGPUMemory = bind(&AllVertices::deleteVerticesDeviceStruct, this);
+   OperationManager::getInstance().registerOperation(Operations::deallocateGPUMemory,
+                                                     deallocateGPUMemory);
+#endif
+
    // Get a copy of the file and vertex logger to use log4cplus macros to print to debug files
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    vertexLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));
