@@ -85,6 +85,8 @@ Andrew Madison
 
 Padmanabh Patil
 
+Lawrence Scott
+
 <!-- ---------------------------------------------------------------------------------- -->
 # Graduate
 

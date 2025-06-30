@@ -57,16 +57,13 @@ string coordToString(int x, int y, int z)
 // MODEL INDEPENDENT FUNCTION NMV-BEGIN {
 string neuronTypeToString(vertexType t)
 {
-   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    switch (t) {
       case vertexType::INH:
          return "INH";
       case vertexType::EXC:
          return "EXC";
       default:
-         int type = int(t);
-         string message = "ERROR->neuronTypeToString() failed, unknown type: " + to_string(type) + "\n";
-         LOG4CPLUS_ERROR(consoleLogger, message);
+         cerr << "ERROR->neuronTypeToString() failed, unknown type: " << t << endl;
          assert(false);
          return nullptr;   // Must return a value -- this will probably cascade to another failure
    }

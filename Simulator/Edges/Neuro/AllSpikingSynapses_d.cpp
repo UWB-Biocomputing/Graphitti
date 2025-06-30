@@ -10,6 +10,8 @@
 #include "AllSpikingSynapses.h"
 #include "AllSynapsesDeviceFuncs.h"
 #include "Book.h"
+#include "GPUModel.h"
+#include "Simulator.h"
 #include <vector>
 
 ///  CUDA code for advancing spiking synapses.
@@ -28,11 +30,10 @@ __global__ void advanceSpikingSynapsesDevice(int totalSynapseCount,
 
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
-///
-///  @param  allEdgesDevice  GPU address of the AllSpikingSynapsesDeviceProperties struct
-///                             on device memory.
-void AllSpikingSynapses::allocEdgeDeviceStruct(void **allEdgesDevice)
+void AllSpikingSynapses::allocEdgeDeviceStruct()
 {
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void **allEdgesDevice = reinterpret_cast<void **>(&(gpuModel->getAllEdgesDevice()));
    allocEdgeDeviceStruct(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                          Simulator::getInstance().getMaxEdgesPerVertex());
 }
@@ -89,11 +90,11 @@ void AllSpikingSynapses::allocDeviceStruct(AllSpikingSynapsesDeviceProperties &a
 
 ///  Delete GPU memories.
 ///
-///  @param  allEdgesDevice  GPU address of the AllSpikingSynapsesDeviceProperties struct
-///                             on device memory.
-void AllSpikingSynapses::deleteEdgeDeviceStruct(void *allEdgesDevice)
+void AllSpikingSynapses::deleteEdgeDeviceStruct()
 {
    AllSpikingSynapsesDeviceProperties allEdges;
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
    HANDLE_ERROR(cudaMemcpy(&allEdges, allEdgesDevice, sizeof(AllSpikingSynapsesDeviceProperties),
                            cudaMemcpyDeviceToHost));
    deleteDeviceStruct(allEdges);
@@ -127,10 +128,10 @@ void AllSpikingSynapses::deleteDeviceStruct(AllSpikingSynapsesDeviceProperties &
 
 ///  Copy all synapses' data from host to device.
 ///
-///  @param  allEdgesDevice  GPU address of the AllSpikingSynapsesDeviceProperties struct
-///                             on device memory.
-void AllSpikingSynapses::copyEdgeHostToDevice(void *allEdgesDevice)
+void AllSpikingSynapses::copyEdgeHostToDevice()
 {   // copy everything necessary
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
    copyEdgeHostToDevice(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                         Simulator::getInstance().getMaxEdgesPerVertex());
 }
@@ -200,12 +201,12 @@ void AllSpikingSynapses::copyHostToDevice(void *allEdgesDevice,
 
 ///  Copy all synapses' data from device to host.
 ///
-///  @param  allEdgesDevice  GPU address of the AllSpikingSynapsesDeviceProperties struct
-///                             on device memory.
-void AllSpikingSynapses::copyEdgeDeviceToHost(void *allEdgesDevice)
+void AllSpikingSynapses::copyEdgeDeviceToHost()
 {
    // copy everything necessary
    AllSpikingSynapsesDeviceProperties allEdges;
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
    HANDLE_ERROR(cudaMemcpy(&allEdges, allEdgesDevice, sizeof(AllSpikingSynapsesDeviceProperties),
                            cudaMemcpyDeviceToHost));
    copyDeviceToHost(allEdges);
