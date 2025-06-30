@@ -22,11 +22,14 @@
 #pragma once
 
 #include "AllEdges.h"
+#include "AllSpikingNeurons.h"
+#include "AllSpikingSynapses.h"
 #include "AllVertices.h"
 #include "AsyncPhilox_d.h"
 #ifdef USE_GPU
    #include <cuda_runtime.h>
 #endif
+#include "OperationManager.h"
 
 #ifdef VALIDATION_MODE
    #include <fstream>
@@ -85,25 +88,33 @@ public:
    /// over the past epoch. Should be called once every epoch.
    virtual void updateConnections() override;
 
-   /// Copy GPU edge data to CPU.
-   virtual void copyGPUtoCPU() override;
-
-   /// Copy CPU edge data to GPU.
+   /// Copies neuron and synapse data from CPU to GPU memory.
+   /// TODO: Refactor this. Currently, GPUModel handles low-level memory transfer for vertices and edges.
+   ///       Consider moving this responsibility to a more appropriate class, such as a dedicated memory manager
+   ///       or the OperationManager, to better separate concerns and keep the model focused on high-level coordination.
    virtual void copyCPUtoGPU() override;
+
+   // GPUModel itself does not have anything to be copied back, this function is a
+   // dummy function just to make GPUModel non virtual
+   virtual void copyGPUtoCPU() override
+   {
+   }
 
    /// Print out EdgeProps on the GPU.
    void printGPUEdgesPropsModel() const;
 
+   /// Getter for edge (synapse) structures in device memory
+   AllEdgesDeviceProperties *&getAllEdgesDevice();
+
+   /// Getter for vertex (neuron) structures in device memory
+   AllVerticesDeviceProperties *&getAllVerticesDevice();
+
 protected:
    /// Allocates  and initializes memories on CUDA device.
-   /// @param[out] allVerticesDevice          Memory location of the pointer to the vertices list on device memory.
-   /// @param[out] allEdgesDevice         Memory location of the pointer to the edges list on device memory.
-   void allocDeviceStruct(void **allVerticesDevice, void **allEdgesDevice);
+   void allocDeviceStruct();
 
-   /// Copies device memories to host memories and deallocates them.
-   /// @param[out] allVerticesDevice          Memory location of the pointer to the vertices list on device memory.
-   /// @param[out] allEdgesDevice         Memory location of the pointer to the edges list on device memory.
-   virtual void deleteDeviceStruct(void **allVerticesDevice, void **allEdgesDevice);
+   /// Deallocates device memories.
+   virtual void deleteDeviceStruct();
 
    /// Pointer to device random noise array.
    float *randNoise_d;
@@ -130,11 +141,6 @@ protected:
 
 private:
    void allocEdgeIndexMap(int count);
-
-   void deleteEdgeIndexMap();
-
-public:   //2020/03/14 changed to public for accessing in Core
-   void copyEdgeIndexMapHostToDevice(EdgeIndexMap &edgeIndexMapHost, int numVertices);
 
 private:
    void updateHistory();

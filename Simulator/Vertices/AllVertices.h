@@ -36,6 +36,9 @@ using namespace std;
    #include <cuda_runtime.h>
 #endif
 
+// Utility function to convert a vertexType into a string.
+string vertexTypeToString(vertexType t);
+
 class Layout;
 class AllEdges;
 struct AllVerticesDeviceProperties;
@@ -110,14 +113,11 @@ public:
 
    ///  Allocate GPU memories to store all vertices' states,
    ///  and copy them from host to GPU memory.
-   ///
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void allocVerticesDeviceStruct(void **allVerticesDevice) = 0;
+   virtual void allocVerticesDeviceStruct() = 0;
 
    ///  Delete GPU memories.
    ///
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void deleteVerticesDeviceStruct(void *allVerticesDevice) = 0;
+   virtual void deleteVerticesDeviceStruct() = 0;
 
    ///  Clear the spike counts out of all vertices.
    //
@@ -125,14 +125,11 @@ public:
    virtual void clearVertexHistory(void *allVerticesDevice) = 0;
 
    ///  Copy all vertices' data from host to device.
-   ///
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void copyToDevice(void *allVerticesDevice) = 0;
+   virtual void copyToDevice() = 0;
 
    ///  Copy all vertices' data from device to host.
    ///
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void copyFromDevice(void *allVerticesDevice) = 0;
+   virtual void copyFromDevice() = 0;
 
    ///  Update the state of all vertices for a time step
    ///  Notify outgoing edges if vertex has fired.
