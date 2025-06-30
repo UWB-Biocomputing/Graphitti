@@ -43,8 +43,8 @@ TEST_F(InputManagerFixture, queueFront)
    EXPECT_EQ(event.time, 0);
    EXPECT_EQ(event.duration, 0);
    EXPECT_EQ(event.type, "EMS");
-   EXPECT_DOUBLE_EQ(event.x, -122.38496236371942);
-   EXPECT_DOUBLE_EQ(event.y, 47.570236838209546);
+   EXPECT_FLOAT_EQ(event.x, -122.38496236371942);
+   EXPECT_FLOAT_EQ(event.y, 47.570236838209546);
 }
 
 TEST_F(InputManagerFixture, queueFrontException)
@@ -77,8 +77,8 @@ TEST_F(InputManagerFixture, getEpochEvents)
    EXPECT_EQ(call1->time, 0);
    EXPECT_EQ(call1->duration, 0);
    EXPECT_EQ(call1->type, "EMS");
-   EXPECT_DOUBLE_EQ(call1->x, -122.38496236371942);
-   EXPECT_DOUBLE_EQ(call1->y, 47.570236838209546);
+   EXPECT_FLOAT_EQ(call1->x, -122.38496236371942);
+   EXPECT_FLOAT_EQ(call1->y, 47.570236838209546);
 
    // Check that we ge the correct information for the second
    // expected event
@@ -88,8 +88,8 @@ TEST_F(InputManagerFixture, getEpochEvents)
    EXPECT_EQ(call2->time, 34);
    EXPECT_EQ(call2->duration, 230);
    EXPECT_EQ(call2->type, "EMS");
-   EXPECT_DOUBLE_EQ(call2->x, -122.37482094435583);
-   EXPECT_DOUBLE_EQ(call2->y, 47.64839548276973);
+   EXPECT_FLOAT_EQ(call2->x, -122.37482094435583);
+   EXPECT_FLOAT_EQ(call2->y, 47.64839548276973);
 
    // Get event for vertex 195
    CircularBuffer<Call> v195Queue(5);
@@ -105,8 +105,8 @@ TEST_F(InputManagerFixture, getEpochEvents)
    EXPECT_EQ(call3->time, 388);
    EXPECT_EQ(call3->duration, 45);
    EXPECT_EQ(call3->type, "Law");
-   EXPECT_DOUBLE_EQ(call3->x, -122.37746466732693);
-   EXPECT_DOUBLE_EQ(call3->y, 47.711139673719046);
+   EXPECT_FLOAT_EQ(call3->x, -122.37746466732693);
+   EXPECT_FLOAT_EQ(call3->y, 47.711139673719046);
 }
 
 TEST_F(InputManagerFixture, nonEmptyEventQueue)
