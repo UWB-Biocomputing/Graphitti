@@ -63,7 +63,7 @@ void Connections911::printParameters() const
 
 #if !defined(USE_GPU)
 ///  Update the connections status in every epoch.
-bool Connections911::updateConnections(AllVertices &vertices)
+bool Connections911::updateConnections()
 {
    // Only run on the first epoch
    if (Simulator::getInstance().getCurrentStep() != 1) {
@@ -73,6 +73,7 @@ bool Connections911::updateConnections(AllVertices &vertices)
    // Record old type map
    int numVertices = Simulator::getInstance().getTotalVertices();
    Layout &layout = Simulator::getInstance().getModel().getLayout();
+   AllVertices &vertices = layout.getVertices();
    oldTypeMap_ = layout.vertexTypeMap_;
 
    // Erase PSAPs

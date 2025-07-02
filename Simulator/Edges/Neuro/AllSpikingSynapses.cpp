@@ -389,5 +389,5 @@ void AllSpikingSynapses::outputWeights(int epochNum)
    outFile << "</Graph>";
    outFile.close();
 
-   cout << "Success: XML written to " << filename << endl;
+   cout << "Weights matrix output to: " << filename << endl;
 }

@@ -90,11 +90,10 @@ void ConnStatic::printParameters() const
 {
 }
 
-///  Update the connections status in every epoch.
+///  Output the weights matrix after every epoch.
 ///
-///  @param  vertices  The vertex list to search from.
 ///  @return true if successful, false otherwise.
-bool ConnStatic::updateConnections(AllVertices &vertices)
+bool ConnStatic::updateConnections()
 {
    AllNeuroEdges &synapses = dynamic_cast<AllNeuroEdges &>(*edges_);
    synapses.outputWeights(Simulator::getInstance().getCurrentStep());
