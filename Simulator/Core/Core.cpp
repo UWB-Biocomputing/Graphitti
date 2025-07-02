@@ -206,7 +206,7 @@ int Core::runSimulation(string executableName, string cmdLineArguments)
    }
 
    // Helper function for recorder to register spike history variables for all neurons.
-   OperationManager::getInstance().executeOperation(Operations::registerHistoryVariables);
+   simulator.getModel().getLayout().getVertices().registerHistoryVariables();
 
    // Run simulation
    LOG4CPLUS_TRACE(consoleLogger, "Starting Simulation");

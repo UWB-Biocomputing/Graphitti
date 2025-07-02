@@ -71,8 +71,6 @@ string OperationManager::operationToString(const Operations &operation) const
          return "copyToGPU";
       case Operations::copyFromGPU:
          return "copyFromGPU";
-      case Operations::allocateGPU:
-         return "allocateGPU";
       default:
          return "Operation isn't in OperationManager::operationToString()";
    }

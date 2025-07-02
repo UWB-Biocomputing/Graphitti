@@ -11,8 +11,7 @@
 #include "AllVerticesDeviceFuncs.h"
 #include "Book.h"
 #include "DeviceVector.h"
-#include "GPUModel.h"
-#include "Simulator.h"
+
 
 ///  CUDA code for advancing izhikevich neurons
 ///
@@ -40,11 +39,12 @@ __global__ void advanceIZHNeuronsDevice(
 ///  Allocate GPU memories to store all neurons' states,
 ///  and copy them from host to GPU memory.
 ///
-void AllIZHNeurons::allocVerticesDeviceStruct()
+///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
+///                             on device memory.
+void AllIZHNeurons::allocVerticesDeviceStruct(void **allVerticesDevice)
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
-   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
-   void **allVerticesDevice = reinterpret_cast<void **>(&(gpuModel->getAllVerticesDevice()));
+
    allocDeviceStruct(allVerticesDeviceProps);
 
    HANDLE_ERROR(cudaMalloc(allVerticesDevice, sizeof(AllIZHNeuronsDeviceProperties)));
@@ -70,11 +70,12 @@ void AllIZHNeurons::allocDeviceStruct(AllIZHNeuronsDeviceProperties &allVertices
 
 ///  Delete GPU memories.
 ///
-void AllIZHNeurons::deleteVerticesDeviceStruct()
+///  @param  allVerticesDevice   GPU address of the AllVerticesDeviceProperties struct
+///                             on device memory.
+void AllIZHNeurons::deleteVerticesDeviceStruct(void *allVerticesDevice)
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
-   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
-   void *allVerticesDevice = static_cast<void *>(gpuModel->getAllVerticesDevice());
+
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
                            sizeof(AllIZHNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
 
@@ -101,9 +102,11 @@ void AllIZHNeurons::deleteDeviceStruct(AllIZHNeuronsDeviceProperties &allVertice
 
 ///  Copy all neurons' data from host to device.
 ///
-void AllIZHNeurons::copyToDevice()
+///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
+///                             on device memory.
+void AllIZHNeurons::copyToDevice(void *allVerticesDevice)
 {
-   AllIFNeurons::copyToDevice();
+   AllIFNeurons::copyToDevice(allVerticesDevice);
 
    Aconst_.copyToDevice();
    Bconst_.copyToDevice();
@@ -115,9 +118,11 @@ void AllIZHNeurons::copyToDevice()
 
 ///  Copy all neurons' data from device to host.
 ///
-void AllIZHNeurons::copyFromDevice()
+///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
+///                             on device memory.
+void AllIZHNeurons::copyFromDevice(void *allVerticesDevice)
 {
-   AllIFNeurons::copyFromDevice();
+   AllIFNeurons::copyFromDevice(allVerticesDevice);
 
    Aconst_.copyToHost();
    Bconst_.copyToHost();

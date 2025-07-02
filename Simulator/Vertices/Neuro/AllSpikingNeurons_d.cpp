@@ -10,8 +10,6 @@
 #include "AllSpikingSynapses.h"
 #include "Book.h"
 #include "DeviceVector.h"
-#include "GPUModel.h"
-#include "Simulator.h"
 
 /// CUDA kernel for adding psr of all incoming synapses to summation points.
 ///
@@ -34,11 +32,9 @@ __global__ void calcSummationPointDevice(int totalVertices, BGFLOAT *summationPo
                                          EdgeIndexMapDevice *edgeIndexMapDevice,
                                          AllSpikingSynapsesDeviceProperties *allEdgesDevice);
 
-void AllSpikingNeurons::copyToDevice()
+void AllSpikingNeurons::copyToDevice(void *deviceAddress)
 {
    AllSpikingNeuronsDeviceProperties allVerticesDevice;
-   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
-   void *deviceAddress = static_cast<void *>(gpuModel->getAllVerticesDevice());
    HANDLE_ERROR(cudaMemcpy(&allVerticesDevice, deviceAddress,
                            sizeof(AllSpikingNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
 
@@ -89,10 +85,8 @@ void AllSpikingNeurons::copyToDevice()
                               maxSpikes * sizeof(uint64_t), cudaMemcpyHostToDevice));
    }
 }
-void AllSpikingNeurons::copyFromDevice()
+void AllSpikingNeurons::copyFromDevice(void *deviceAddress)
 {
-   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
-   void *deviceAddress = static_cast<void *>(gpuModel->getAllVerticesDevice());
    int numVertices = Simulator::getInstance().getTotalVertices();
 
    AllSpikingNeuronsDeviceProperties allVerticesDevice;

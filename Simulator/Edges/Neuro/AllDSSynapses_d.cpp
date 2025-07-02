@@ -14,10 +14,11 @@
 
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
-void AllDSSynapses::allocEdgeDeviceStruct()
+///
+///  @param  allEdgesDevice  GPU address of the AllDSSynapsesDeviceProperties struct
+///                             on device memory.
+void AllDSSynapses::allocEdgeDeviceStruct(void **allEdgesDevice)
 {
-   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
-   void **allEdgesDevice = reinterpret_cast<void **>(&(gpuModel->getAllEdgesDevice()));
    allocEdgeDeviceStruct(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                          Simulator::getInstance().getMaxEdgesPerVertex());
 }
@@ -66,11 +67,12 @@ void AllDSSynapses::allocDeviceStruct(AllDSSynapsesDeviceProperties &allEdges, i
 
 ///  Delete GPU memories.
 ///
-void AllDSSynapses::deleteEdgeDeviceStruct()
+///  @param  allEdgesDevice  GPU address of the AllDSSynapsesDeviceProperties struct
+///                             on device memory.
+void AllDSSynapses::deleteEdgeDeviceStruct(void *allEdgesDevice)
 {
    AllDSSynapsesDeviceProperties allEdges;
-   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
-   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
+
    HANDLE_ERROR(cudaMemcpy(&allEdges, allEdgesDevice, sizeof(AllDSSynapsesDeviceProperties),
                            cudaMemcpyDeviceToHost));
 
@@ -98,10 +100,10 @@ void AllDSSynapses::deleteDeviceStruct(AllDSSynapsesDeviceProperties &allEdgesDe
 
 ///  Copy all synapses' data from host to device.
 ///
-void AllDSSynapses::copyEdgeHostToDevice()
+///  @param  allEdgesDevice  GPU address of the AllDSSynapsesDeviceProperties struct
+///                            on device memory.
+void AllDSSynapses::copyEdgeHostToDevice(void *allEdgesDevice)
 {   // copy everything necessary
-   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
-   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
    copyEdgeHostToDevice(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                         Simulator::getInstance().getMaxEdgesPerVertex());
 }
@@ -154,12 +156,13 @@ void AllDSSynapses::copyHostToDevice(void *allEdgesDevice,
 
 ///  Copy all synapses' data from device to host.
 ///
-void AllDSSynapses::copyEdgeDeviceToHost()
+///  @param  allEdgesDevice  GPU address of the AllDSSynapsesDeviceProperties struct
+///                             on device memory.
+void AllDSSynapses::copyEdgeDeviceToHost(void *allEdgesDevice)
 {
    // copy everything necessary
    AllDSSynapsesDeviceProperties allEdgesDeviceProps;
-   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
-   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
+
    HANDLE_ERROR(cudaMemcpy(&allEdgesDeviceProps, allEdgesDevice,
                            sizeof(AllDSSynapsesDeviceProperties), cudaMemcpyDeviceToHost));
 

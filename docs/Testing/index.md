@@ -4,14 +4,14 @@ Information on test config files for regression testing, and testing that has be
 
 ## 3.1 Unit Tests
 
-We use [GoogleTest](../Developer/GoogleTestsTutorial.md) to develop our unit tests. 
+We use [GoogleTest](GoogleTestsTutorial.md) to develop our unit tests. 
 
 To integrate your unit tests using GoogleTest in Graphitti you can follow these steps:
 1. Open the CMakeLists.txt file in the root directory of Graphitti
 2. Locate at the bottom of the file where the `tests` executable is defined and add your test file to the list of source files.
 3. Build and run your tests using the Graphitti build system and use `./tests` to run the unit tests.
 
-Please note that Graphitti follows the [singleton design pattern], and several of its classes, such as Simulator, ParameterManager, OperationManager, and GraphManager, are implemented as singletons. If your test scenario requires the instantiation of these classes, it may be necessary to create a separate executable specifically for your tests.
+Please note that Graphitti follows the [singleton design pattern](https://en.wikipedia.org/wiki/Singleton_pattern), and several of its classes, such as Simulator, ParameterManager, OperationManager, and GraphManager, are implemented as singletons. If your test scenario requires the instantiation of these classes, it may be necessary to create a separate executable specifically for your tests.
 
 By creating a separate executable, you can ensure that the singleton instances used in the test environment are isolated from the main application's singleton instances. This approach helps maintain the desired behavior and avoid segmentation fault errors.
 
@@ -77,8 +77,3 @@ generated during the CPU execution, causing the result files to be different to 
 
 ---------
 [<< Go back to the Graphitti home page](../index.md)
-
-[//]: # (Moving URL links to the bottom of the document for ease of updating - LS)
-[//]: # (Links to repo items which exist outside of the docs folder need an absolute link.)
-
-[singleton design pattern]: <https://en.wikipedia.org/wiki/Singleton_pattern>

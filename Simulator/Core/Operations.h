@@ -20,7 +20,5 @@ enum class Operations {
    deallocateGPUMemory,   // Make sure deallocate memory isn't called until all GPU memory is copied back.
    restoreToDefault,   // Not sure what this refers to.
    copyToGPU,
-   copyFromGPU,
-   allocateGPU,
-   registerHistoryVariables
+   copyFromGPU
 };
