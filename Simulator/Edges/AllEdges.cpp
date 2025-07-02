@@ -26,6 +26,28 @@ AllEdges::AllEdges() : totalEdgeCount_(0), maxEdgesPerVertex_(0), countVertices_
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
 
+#if defined(USE_GPU)
+   // Register allocNeuronDeviceStruct function as a allocateGPU operation in the OperationManager
+   function<void()> allocateGPU
+      = bind(static_cast<void (AllEdges::*)()>(&AllEdges::allocEdgeDeviceStruct), this);
+   OperationManager::getInstance().registerOperation(Operations::allocateGPU, allocateGPU);
+
+   // Register AllEdges::copyEdgeHostToDevice function as a copyToGPU operation in the OperationManager
+   function<void()> copyCPUtoGPU
+      = bind(static_cast<void (AllEdges::*)()>(&AllEdges::copyEdgeHostToDevice), this);
+   OperationManager::getInstance().registerOperation(Operations::copyToGPU, copyCPUtoGPU);
+
+   // Register copyFromGPU operation for transferring edge data from device to host
+   function<void()> copyFromGPU = bind(&AllEdges::copyEdgeDeviceToHost, this);
+   OperationManager::getInstance().registerOperation(Operations::copyFromGPU, copyFromGPU);
+
+   // Register deleteEdgeDeviceStruct function as a deallocateGPUMemory operation in the OperationManager
+   function<void()> deallocateGPUMemory = bind(&AllEdges::deleteEdgeDeviceStruct, this);
+   OperationManager::getInstance().registerOperation(Operations::deallocateGPUMemory,
+                                                     deallocateGPUMemory);
+
+#endif
+
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
 }
@@ -233,6 +255,7 @@ void AllEdges::SetStream(cudaStream_t simulationStream)
 #endif
 
 #if !defined(USE_GPU)
+
 ///  Advance all the edges in the simulation.
 ///
 ///  @param  vertices           The vertices.
