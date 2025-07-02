@@ -81,6 +81,7 @@ void GPUModel::deleteDeviceStruct()
    HANDLE_ERROR(cudaFree(synapseIMapDevice.incomingEdgeIndexMap_));
    HANDLE_ERROR(cudaFree(edgeIndexMapDevice_));
    HANDLE_ERROR(cudaStreamDestroy(simulationStream_));
+   AsyncGenerator_.deleteDeviceStruct();
 }
 
 /// Sets up the Simulation.
@@ -137,7 +138,6 @@ void GPUModel::finish()
    OperationManager::getInstance().executeOperation(Operations::copyFromGPU);
    // deallocates memories on CUDA device
    OperationManager::getInstance().executeOperation(Operations::deallocateGPUMemory);
-   AsyncGenerator_.deleteDeviceStruct();
 
 #ifdef PERFORMANCE_METRICS
    cudaEventDestroy(start);
