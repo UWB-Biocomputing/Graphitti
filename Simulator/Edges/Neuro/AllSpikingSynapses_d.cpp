@@ -291,8 +291,8 @@ void AllSpikingSynapses::copyDeviceEdgeWeightsToHost(void *allEdgesDevice)
    // std::cout << "W_.data(): " << W_.data() << std::endl;
    // std::cout << "allEdgesDeviceProps.W_: " << allEdgesDeviceProps.W_ << std::endl;
 
-   HANDLE_ERROR(cudaMemcpy(W_.data(), allEdgesDeviceProps.W_, 
-                  maxTotalSynapses * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+   HANDLE_ERROR(cudaMemcpy(W_.data(), allEdgesDeviceProps.W_,
+                           maxTotalSynapses * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
 }
 
 ///  Get summationCoord and in_use in AllEdges struct on device memory.

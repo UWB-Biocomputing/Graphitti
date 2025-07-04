@@ -203,7 +203,7 @@ public:
    ///
    ///  @param  allEdgesDevice  GPU address of the AllSpikingSynapsesDeviceProperties struct
    ///                             on device memory.
-   virtual void copyDeviceEdgeWeightsToHost(void *allEdgesDevice) ;
+   virtual void copyDeviceEdgeWeightsToHost(void *allEdgesDevice);
 
 protected:
    ///  Allocate GPU memories to store all synapses' states,
