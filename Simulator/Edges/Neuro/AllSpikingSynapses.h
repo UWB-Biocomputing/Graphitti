@@ -199,6 +199,12 @@ public:
    ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
    void copyDeviceEdgeSumIdxToHost(void *allEdgesDevice);
 
+   ///  Get weights matrix in AllEdges struct on device memory.
+   ///
+   ///  @param  allEdgesDevice  GPU address of the AllSpikingSynapsesDeviceProperties struct
+   ///                             on device memory.
+   virtual void copyDeviceEdgeWeightsToHost(void *allEdgesDevice) ;
+
 protected:
    ///  Allocate GPU memories to store all synapses' states,
    ///  and copy them from host to GPU memory.

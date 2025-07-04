@@ -77,6 +77,12 @@ void ConnGrowth::updateEdgesWeights(int numVertices, AllVertices &vertices, AllE
 
    // copy device synapse count to host memory
    edges.copyDeviceEdgeCountsToHost(allEdgesDevice);
-   // copy device synapse summation coordinate to host memory
-   dynamic_cast<AllSpikingSynapses &>(edges).copyDeviceEdgeSumIdxToHost(allEdgesDevice);
+
+   // copy device synapse summation coordinate and weights to host memory
+   AllSpikingSynapses &synapses = dynamic_cast<AllSpikingSynapses &>(edges);
+   synapses.copyDeviceEdgeSumIdxToHost(allEdgesDevice);
+   synapses.copyDeviceEdgeWeightsToHost(allEdgesDevice);
+
+   // output weight matrix every epoch
+   synapses.outputWeights(simulator.getCurrentStep());
 }

@@ -237,7 +237,7 @@ void GPUModel::updateConnections()
    vertices.copyFromDevice(allVerticesDevice_);
 
    // Update Connections data
-   if (connections_->updateConnections(vertices)) {
+   if (connections_->updateConnections()) {
       connections_->updateEdgesWeights(Simulator::getInstance().getTotalVertices(), vertices, edges,
                                        allVerticesDevice_, allEdgesDevice_, getLayout());
       // create edge index map
