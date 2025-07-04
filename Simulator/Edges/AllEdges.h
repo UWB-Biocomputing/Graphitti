@@ -95,9 +95,7 @@ protected:
 public:
    ///  Allocate GPU memories to store all edges' states,
    ///  and copy them from host to GPU memory.
-   ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void allocEdgeDeviceStruct(void **allEdgesDevice) = 0;
+   virtual void allocEdgeDeviceStruct() = 0;
 
    ///  Allocate GPU memories to store all edges' states,
    ///  and copy them from host to GPU memory.
@@ -110,13 +108,10 @@ public:
 
    ///  Delete GPU memories.
    ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void deleteEdgeDeviceStruct(void *allEdgesDevice) = 0;
+   virtual void deleteEdgeDeviceStruct() = 0;
 
    ///  Copy all edges' data from host to device.
-   ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyEdgeHostToDevice(void *allEdgesDevice) = 0;
+   virtual void copyEdgeHostToDevice() = 0;
 
    ///  Copy all edges' data from host to device.
    ///
@@ -128,8 +123,7 @@ public:
 
    ///  Copy all edges' data from device to host.
    ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyEdgeDeviceToHost(void *allEdgesDevice) = 0;
+   virtual void copyEdgeDeviceToHost() = 0;
 
    ///  Get edge_counts in AllEdges struct on device memory.
    ///

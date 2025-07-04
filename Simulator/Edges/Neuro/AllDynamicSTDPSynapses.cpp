@@ -17,7 +17,7 @@ AllDynamicSTDPSynapses::AllDynamicSTDPSynapses(int numVertices, int maxEdges) :
 ///  Setup the internal structure of the class (allocate memories and initialize them).
 void AllDynamicSTDPSynapses::setupEdges()
 {
-   setupEdges(Simulator::getInstance().getDeltaT(),
+   setupEdges(Simulator::getInstance().getTotalVertices(),
               Simulator::getInstance().getMaxEdgesPerVertex());
 }
 

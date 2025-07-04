@@ -83,6 +83,10 @@ Rimjhim Sudhesh
 ## 2025
 Andrew Madison
 
+Padmanabh Patil
+
+Lawrence Scott
+
 <!-- ---------------------------------------------------------------------------------- -->
 # Graduate
 
