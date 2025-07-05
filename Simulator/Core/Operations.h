@@ -21,5 +21,7 @@ enum class Operations {
    restoreToDefault,   // Not sure what this refers to.
    copyToGPU,
    copyFromGPU,
+   allocateGPU,
+   registerHistoryVariables,
    loadEpochInputs
 };

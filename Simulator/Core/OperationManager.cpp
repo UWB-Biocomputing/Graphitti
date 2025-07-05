@@ -101,6 +101,8 @@ string OperationManager::operationToString(const Operations &operation) const
          return "copyToGPU";
       case Operations::copyFromGPU:
          return "copyFromGPU";
+      case Operations::allocateGPU:
+         return "allocateGPU";
       case Operations::loadEpochInputs:
          return "loadEpochInputs";
       default:

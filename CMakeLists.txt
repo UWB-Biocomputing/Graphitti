@@ -252,7 +252,8 @@ if(ENABLE_CUDA)
         Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp
         Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp
         Simulator/Edges/Neuro/AllDSSynapses_d.cpp
-        Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp)
+        Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp
+        Simulator/Edges/NG911/All911Edges_d.cpp)
         set_source_files_properties(${cuda_EdgesSources} PROPERTIES LANGUAGE CUDA)
 
         set(cuda_VerticesSources 
@@ -310,6 +311,7 @@ else()
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllDSSynapses_d.cpp")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp")
+        list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/NG911/All911Edges_d.cpp")
         
         add_library(Edges STATIC ${Edges_Source})
         
@@ -462,6 +464,12 @@ endif()
 target_compile_options(gtest PRIVATE -Wno-error=maybe-uninitialized)
 target_compile_options(gtest_main PRIVATE -Wno-error=maybe-uninitialized)
 
+if(ENABLE_CUDA)
+    set(cuda_TestSources
+        Testing/UnitTesting/DeviceVectorTests.cpp)
+    set_source_files_properties(${cuda_TestSources} PROPERTIES LANGUAGE CUDA)
+endif()
+
 add_executable(tests
         Testing/RunTests.cpp
         Testing/UnitTesting/OperationManagerTests.cpp
@@ -481,7 +489,8 @@ add_executable(tests
         Testing/Utils/CircularBufferTests.cpp
         Testing/UnitTesting/EventBufferTests.cpp
         Testing/UnitTesting/XmlRecorderTests.cpp
-        Testing/UnitTesting/Hdf5RecorderTests.cpp)
+        Testing/UnitTesting/Hdf5RecorderTests.cpp
+        Testing/UnitTesting/DeviceVectorTests.cpp)
 
 # Links the Googletest framework with the testing executable
 target_link_libraries(tests gtest gtest_main)

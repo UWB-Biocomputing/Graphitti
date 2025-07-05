@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include "BGTypes.h"
 #include <cstdint>
 #include <string>
 
@@ -31,8 +32,8 @@ struct Call : public InputEvent {
    // The duration of the event in timesteps
    int duration;
    // Event location
-   double x;
-   double y;
+   BGFLOAT x;
+   BGFLOAT y;
    // Patience time: How long a customer is willing to wait in the queue
    int patience;
    // On Site Time: Time spent by a responder at the site of the incident

@@ -29,7 +29,7 @@
 #include "AllEdges.h"
 
 
-struct All911EdgeDeviceProperties;
+struct All911EdgesDeviceProperties;
 
 class All911Edges : public AllEdges {
 public:
@@ -65,20 +65,54 @@ protected:
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract
 public:
-   virtual void allocEdgeDeviceStruct(void **allEdgesDevice) {};
+   virtual void allocEdgeDeviceStruct() override;
    virtual void allocEdgeDeviceStruct(void **allEdgesDevice, int numVertices,
-                                      int maxEdgesPerVertex) {};
-   virtual void deleteEdgeDeviceStruct(void *allEdgesDevice) {};
-   virtual void copyEdgeHostToDevice(void *allEdgesDevice) {};
-   virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices, int maxEdgesPerVertex) {
-   };
-   virtual void copyEdgeDeviceToHost(void *allEdgesDevice) {};
-   virtual void copyDeviceEdgeCountsToHost(void *allEdgesDevice) {};
+                                      int maxEdgesPerVertex) override;
+   virtual void deleteEdgeDeviceStruct() override;
+   virtual void copyEdgeHostToDevice() override;
+   virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices, int maxEdgesPerVertex) override;
+   virtual void copyEdgeDeviceToHost() override;
+   virtual void copyDeviceEdgeCountsToHost(void *allEdgesDevice) override;
    virtual void advanceEdges(void *allEdgesDevice, void *allVerticesDevice,
-                             void *edgeIndexMapDevice) {};
-   virtual void setAdvanceEdgesDeviceParams() {};
-   virtual void setEdgeClassID() {};
-   virtual void printGPUEdgesProps(void *allEdgesDeviceProps) const {};
+                             void *edgeIndexMapDevice) override;
+   virtual void setAdvanceEdgesDeviceParams() override;
+   virtual void printGPUEdgesProps(void *allEdgesDeviceProps) const override;
+
+protected:
+   ///  Allocate GPU memories to store all edges' states,
+   ///  and copy them from host to GPU memory.
+   ///  (Helper function of allocEdgeDeviceStruct)
+   ///
+   ///  @param  allEdgesDevice     GPU address of the All911EdgesDeviceProperties struct
+   ///                                on device memory.
+   ///  @param  numVertices            Number of vertices.
+   ///  @param  maxEdgesPerVertex  Maximum number of edges per vertex.
+   void allocDeviceStruct(All911EdgesDeviceProperties &allEdgesDevice, int numVertices,
+                          int maxEdgesPerVertex);
+
+   ///  Delete GPU memories.
+   ///  (Helper function of deleteEdgeDeviceStruct)
+   ///
+   ///  @param  allEdgesDeviceProps  GPU address of the All911EdgesDeviceProperties struct
+   ///                             on device memory.
+   void deleteDeviceStruct(All911EdgesDeviceProperties &allEdgesDeviceProps);
+
+   ///  Copy all edges' data from host to device.
+   ///  (Helper function of copyEdgeHostToDevice)
+   ///
+   ///  @param  allEdgesDevice           GPU address of the All911EdgesDeviceProperties struct on device memory.
+   ///  @param  allEdgesDeviceProps      CPU address of the All911EdgesDeviceProperties struct on host memory.
+   ///  @param  numVertices              Number of vertices.
+   ///  @param  maxEdgesPerVertex        Maximum number of edges per vertex.
+   void copyHostToDevice(void *allEdgesDevice, All911EdgesDeviceProperties &allEdgesDeviceProps,
+                         int numVertices, int maxEdgesPerVertex);
+
+   ///  Copy all edge data from device to host.
+   ///  (Helper function of copyEdgeDeviceToHost)
+   ///
+   ///  @param  allEdgesProperties     GPU address of the All911EdgesDeviceProperties struct
+   ///                                on device memory.
+   void copyDeviceToHost(All911EdgesDeviceProperties &allEdgesDeviceProps);
 
 #else   // !defined(USE_GPU)
 public:
@@ -98,13 +132,47 @@ public:
    virtual void advanceEdge(BGSIZE iEdg, AllVertices &vertices) override {};
 
 #endif
+public:
+   /// If edge has a call or not. Store 1 (true) or 0 (false)
+   vector<unsigned char> isAvailable_;
 
-   /// If edge has a call or not
-   unique_ptr<bool[]> isAvailable_;
-
-   /// If the call in the edge is a redial
-   unique_ptr<bool[]> isRedial_;
+   /// If the call in the edge is a redial. Store 1 (true) or 0 (false)
+   vector<unsigned char> isRedial_;
 
    /// The call information per edge
    vector<Call> call_;
 };
+
+#if defined(USE_GPU)
+struct All911EdgesDeviceProperties : public AllEdgesDeviceProperties {
+   /// If edge has a call or not. Store 1 (true) or 0 (false)
+   unsigned char *isAvailable_;
+
+   /// If the call in the edge is a redial. Store 1 (true) or 0 (false)
+   unsigned char *isRedial_;
+
+   /// The call information per edge
+   //
+   // The vertexId where the input event happened
+   int *vertexId_;
+
+   // The start of the event since the beggining of
+   // the simulation in timesteps matches g_simulationStep type
+   uint64_t *time_;
+
+   // The duration of the event in timesteps
+   int *duration_;
+
+   // Event location
+   BGFLOAT *x_;
+   BGFLOAT *y_;
+
+   // Patience time: How long a customer is willing to wait in the queue
+   int *patience_;
+
+   // On Site Time: Time spent by a responder at the site of the incident
+   int *onSiteTime_;
+   // Use int type instead of string to make using on GPU easier
+   int *responderType_;
+};
+#endif   //defined(USE_GPU)

@@ -107,7 +107,9 @@ void Layout911::generateVertexTypeMap()
                                    << "\tTotal vertices: " << numVertices_ << endl
                                    << "\tCaller vertices: " << vTypeCount["CALR"] << endl
                                    << "\tPSAP vertices: " << vTypeCount["PSAP"] << endl
-                                   << "\tResponder vertices: " << vTypeCount["RESP"] << endl);
+                                   << "\tLaw vertices: " << vTypeCount["LAW"] << endl
+                                   << "\tFire vertices: " << vTypeCount["FIRE"] << endl
+                                   << "\tEMS vertices: " << vTypeCount["EMS"] << endl);
 
    LOG4CPLUS_INFO(fileLogger_, "Finished initializing vertex type map");
 }

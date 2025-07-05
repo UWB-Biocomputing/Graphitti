@@ -95,9 +95,7 @@ protected:
 public:
    ///  Allocate GPU memories to store all edges' states,
    ///  and copy them from host to GPU memory.
-   ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void allocEdgeDeviceStruct(void **allEdgesDevice) = 0;
+   virtual void allocEdgeDeviceStruct() = 0;
 
    ///  Allocate GPU memories to store all edges' states,
    ///  and copy them from host to GPU memory.
@@ -110,13 +108,10 @@ public:
 
    ///  Delete GPU memories.
    ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void deleteEdgeDeviceStruct(void *allEdgesDevice) = 0;
+   virtual void deleteEdgeDeviceStruct() = 0;
 
    ///  Copy all edges' data from host to device.
-   ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyEdgeHostToDevice(void *allEdgesDevice) = 0;
+   virtual void copyEdgeHostToDevice() = 0;
 
    ///  Copy all edges' data from host to device.
    ///
@@ -128,8 +123,7 @@ public:
 
    ///  Copy all edges' data from device to host.
    ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyEdgeDeviceToHost(void *allEdgesDevice) = 0;
+   virtual void copyEdgeDeviceToHost() = 0;
 
    ///  Get edge_counts in AllEdges struct on device memory.
    ///
@@ -148,17 +142,6 @@ public:
 
    ///  Set some parameters used for advanceEdgesDevice.
    virtual void setAdvanceEdgesDeviceParams() = 0;
-
-   ///  TODO: Clean up this comment to remove synapses reference since this is neuro-specific
-   ///  Set edge class ID defined by enumClassSynapses for the caller's Edge class.
-   ///  The class ID will be set to classSynapses_d in device memory,
-   ///  and the classSynapses_d will be referred to call a device function for the
-   ///  particular edge class.
-   ///  Because we cannot use virtual function (Polymorphism) in device functions,
-   ///  we use this scheme.
-   ///  Note: we used to use a function pointer; however, it caused the growth_cuda crash
-   ///  (see issue#137).
-   virtual void setEdgeClassID() = 0;
 
    ///  Prints GPU edgesProps data.
    ///
