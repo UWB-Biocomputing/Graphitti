@@ -65,15 +65,14 @@ protected:
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract
 public:
-   virtual void allocEdgeDeviceStruct() {};
+   virtual void allocEdgeDeviceStruct() override;
    virtual void allocEdgeDeviceStruct(void **allEdgesDevice, int numVertices,
-                                      int maxEdgesPerVertex) {};
-   virtual void deleteEdgeDeviceStruct() {};
-   virtual void copyEdgeHostToDevice() {};
-   virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices, int maxEdgesPerVertex) {
-   };
-   virtual void copyEdgeDeviceToHost() {};
-   virtual void copyDeviceEdgeCountsToHost(void *allEdgesDevice) {};
+                                      int maxEdgesPerVertex) override;
+   virtual void deleteEdgeDeviceStruct() override;
+   virtual void copyEdgeHostToDevice() override;
+   virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices, int maxEdgesPerVertex) override;
+   virtual void copyEdgeDeviceToHost() override;
+   virtual void copyDeviceEdgeCountsToHost(void *allEdgesDevice) override;
    virtual void advanceEdges(void *allEdgesDevice, void *allVerticesDevice,
                              void *edgeIndexMapDevice) override;
    virtual void setAdvanceEdgesDeviceParams() override;
@@ -143,3 +142,37 @@ public:
    /// The call information per edge
    vector<Call> call_;
 };
+
+#if defined(USE_GPU)
+struct All911EdgesDeviceProperties : public AllEdgesDeviceProperties {
+   /// If edge has a call or not. Store 1 (true) or 0 (false)
+   unsigned char *isAvailable_;
+
+   /// If the call in the edge is a redial. Store 1 (true) or 0 (false)
+   unsigned char *isRedial_;
+
+   /// The call information per edge
+   //
+   // The vertexId where the input event happened
+   int *vertexId_;
+
+   // The start of the event since the beggining of
+   // the simulation in timesteps matches g_simulationStep type
+   uint64_t *time_;
+
+   // The duration of the event in timesteps
+   int *duration_;
+
+   // Event location
+   BGFLOAT *x_;
+   BGFLOAT *y_;
+
+   // Patience time: How long a customer is willing to wait in the queue
+   int *patience_;
+
+   // On Site Time: Time spent by a responder at the site of the incident
+   int *onSiteTime_;
+   // Use int type instead of string to make using on GPU easier
+   int *responderType_;
+};
+#endif   //defined(USE_GPU)

@@ -8,14 +8,17 @@
 
 #include "All911Edges.h"
 #include "Book.h"
+#include "GPUModel.h"
 
 ///  Allocate GPU memories to store all edge states,
 ///  and copy them from host to GPU memory.
 ///
 ///  @param  allEdgesDevice  GPU address of the All911EdgesDeviceProperties struct
 ///                             on device memory.
-void All911Edges::allocEdgeDeviceStruct(void **allEdgesDevice)
+void All911Edges::allocEdgeDeviceStruct()
 {
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void **allEdgesDevice = reinterpret_cast<void **>(&(gpuModel->getAllEdgesDevice()));
    allocEdgeDeviceStruct(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                          Simulator::getInstance().getMaxEdgesPerVertex());
 }
@@ -74,9 +77,11 @@ void All911Edges::allocDeviceStruct(All911EdgesDeviceProperties &allEdgesDevice,
 ///
 ///  @param  allEdgesDevice  GPU address of the All911EdgesDeviceProperties struct
 ///                             on device memory.
-void All911Edges::deleteEdgeDeviceStruct(void *allEdgesDevice)
+void All911Edges::deleteEdgeDeviceStruct()
 {
    All911EdgesDeviceProperties allEdgesDeviceProps;
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
    HANDLE_ERROR(cudaMemcpy(&allEdgesDeviceProps, allEdgesDevice,
                            sizeof(All911EdgesDeviceProperties), cudaMemcpyDeviceToHost));
    deleteDeviceStruct(allEdgesDeviceProps);
@@ -112,8 +117,10 @@ void All911Edges::deleteDeviceStruct(All911EdgesDeviceProperties &allEdgesDevice
 ///
 ///  @param  allEdgesDevice  GPU address of the All911EdgesDeviceProperties struct
 ///                             on device memory.
-void All911Edges::copyEdgeHostToDevice(void *allEdgesDevice)
+void All911Edges::copyEdgeHostToDevice()
 {
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
    copyEdgeHostToDevice(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                         Simulator::getInstance().getMaxEdgesPerVertex());
 }
@@ -269,10 +276,12 @@ void All911Edges::copyHostToDevice(void *allEdgesDevice,
 ///
 ///  @param  allEdgesDevice  GPU address of the All911EdgesDeviceProperties struct
 ///                             on device memory.
-void All911Edges::copyEdgeDeviceToHost(void *allEdgesDevice)
+void All911Edges::copyEdgeDeviceToHost()
 {
    // copy everything necessary
    All911EdgesDeviceProperties allEdgesDeviceProps;
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
    HANDLE_ERROR(cudaMemcpy(&allEdgesDeviceProps, allEdgesDevice,
                            sizeof(All911EdgesDeviceProperties), cudaMemcpyDeviceToHost));
    copyDeviceToHost(allEdgesDeviceProps);
