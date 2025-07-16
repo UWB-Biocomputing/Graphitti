@@ -81,9 +81,8 @@ void Connections::createEdgeIndexMap()
 
 ///  Update the connections status in every epoch.
 ///
-///  @param  vertices  The vertex list to search from.
 ///  @return true if successful, false otherwise.
-bool Connections::updateConnections(AllVertices &vertices)
+bool Connections::updateConnections()
 {
    return false;
 }

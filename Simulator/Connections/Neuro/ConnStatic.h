@@ -80,6 +80,11 @@ public:
       return destVertexIndexCurrentEpoch_;
    }
 
+   ///  Output the weights matrix after every epoch.
+   ///
+   ///  @return true if successful, false otherwise.
+   virtual bool updateConnections() override;
+
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);
 

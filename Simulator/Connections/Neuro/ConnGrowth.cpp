@@ -126,10 +126,12 @@ void ConnGrowth::printParameters() const
 
 ///  Update the connections status in every epoch.
 ///
-///  @param  vertices  The vertex list to search from.
 ///  @return true if successful, false otherwise.
-bool ConnGrowth::updateConnections(AllVertices &vertices)
+bool ConnGrowth::updateConnections()
 {
+   Layout &layout = Simulator::getInstance().getModel().getLayout();
+   AllVertices &vertices = layout.getVertices();
+
    // Update Connections data
    updateConns(vertices);
 

@@ -72,9 +72,8 @@ public:
    ///  Update the connections status in every epoch.
    ///  Uses the parent definition for USE_GPU
    ///
-   ///  @param  vertices The Vertex list to search from.
    ///  @return true if successful, false otherwise.
-   virtual bool updateConnections(AllVertices &vertices) override;
+   virtual bool updateConnections() override;
 
    /// Finds the outgoing edge from the given vertex to the Responder closest to
    /// the emergency call location

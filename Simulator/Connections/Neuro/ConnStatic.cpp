@@ -89,3 +89,14 @@ void ConnStatic::loadParameters()
 void ConnStatic::printParameters() const
 {
 }
+
+///  Output the weights matrix after every epoch.
+///
+///  @return true if successful, false otherwise.
+bool ConnStatic::updateConnections()
+{
+   AllNeuroEdges &synapses = dynamic_cast<AllNeuroEdges &>(*edges_);
+   synapses.outputWeights(Simulator::getInstance().getCurrentStep());
+
+   return true;
+}
