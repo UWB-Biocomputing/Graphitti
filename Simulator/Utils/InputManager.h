@@ -68,6 +68,8 @@ public:
    /// @brief  Constructor
    InputManager()
    {
+      // Initial number of events in the manager is zero
+      totalNumberOfEvents_ = 0;
       // Get a copy of the file logger to use with log4cplus macros
       fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
       consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
@@ -136,6 +138,7 @@ public:
                      // Add the event object to the event map. Map's operator[] creates
                      // and empty queue if it doesn't yet contain this vertex_id.
                      eventsMap_[vertex_id].push(event);
+                     ++totalNumberOfEvents_;
                   } catch (boost::property_tree::ptree_bad_data e) {
                      LOG4CPLUS_FATAL(consoleLogger_,
                                      "InputManager failed to read event node: " << e.what());
@@ -186,6 +189,13 @@ public:
    string getClockTickUnit()
    {
       return clockTickUnit_;
+   }
+
+   /// @brief Retrieves the total number of events as defined in the input file
+   /// @return The total number of events in input file
+   int getTotalNumberOfEvents()
+   {
+      return totalNumberOfEvents_;
    }
 
    /// @brief  Peeks into the event at the front of the vertex queue
@@ -260,6 +270,9 @@ private:
    // Clock tick size variables
    int clockTickSize_;
    string clockTickUnit_;
+
+   // Total number of events loaded into the manager
+   int totalNumberOfEvents_;
 
    log4cplus::Logger fileLogger_;      // For logging into a file
    log4cplus::Logger consoleLogger_;   // For logging to console
