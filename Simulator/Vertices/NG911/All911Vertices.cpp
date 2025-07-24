@@ -139,7 +139,7 @@ void All911Vertices::registerHistoryVariables()
    Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
 
    // Registering the following variables to be recorded
-   recorder.registerVariable("numTrunkS", numTrunks_, Recorder::UpdatedType::CONSTANT);
+   recorder.registerVariable("numTrunks", numTrunks_, Recorder::UpdatedType::CONSTANT);
    recorder.registerVariable("numServers", numServers_, Recorder::UpdatedType::CONSTANT);
    recorder.registerVariable("droppedCalls", droppedCalls_, Recorder::UpdatedType::DYNAMIC);
    recorder.registerVariable("receivedCalls", receivedCalls_, Recorder::UpdatedType::CONSTANT);
