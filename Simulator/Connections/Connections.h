@@ -70,9 +70,8 @@ public:
 
    ///  Update the connections status in every epoch.
    ///
-   ///  @param  vertices  The vertex list to search from.
    ///  @return true if successful, false otherwise.
-   virtual bool updateConnections(AllVertices &vertices);
+   virtual bool updateConnections();
 
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);

@@ -63,7 +63,7 @@ void Connections911::printParameters() const
 
 #if !defined(USE_GPU)
 ///  Update the connections status in every epoch.
-bool Connections911::updateConnections(AllVertices &vertices)
+bool Connections911::updateConnections()
 {
    // Only run on the first epoch
    if (Simulator::getInstance().getCurrentStep() != 1) {
