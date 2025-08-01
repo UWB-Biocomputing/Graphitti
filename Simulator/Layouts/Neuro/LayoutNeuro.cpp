@@ -67,6 +67,10 @@ void LayoutNeuro::generateVertexTypeMap()
       }
    }
 
+   // Register vertexTypeMap to be recorded
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   recorder.registerVariable("vertexTypeMap", vertexTypeMap_, Recorder::UpdatedType::CONSTANT);
+
    numExcititoryNeurons = numVertices_ - numInhibitoryNeurons;
 
    LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP"

@@ -41,6 +41,7 @@ ThirdParty/log4cplus-2.0.7/src/liblog4cplus.so.2.0.7
 graphitti
 ggraphitti
 cgraphitti
+compare_matrices
 tests
 serialFullTest
 serialFirstHalfTest

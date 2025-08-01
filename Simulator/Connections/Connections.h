@@ -65,6 +65,9 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const = 0;
 
+   /// Registers history variables for recording during simulation
+   virtual void registerHistoryVariables() = 0;
+
    ///  Update the connections status in every epoch.
    ///
    ///  @return true if successful, false otherwise.

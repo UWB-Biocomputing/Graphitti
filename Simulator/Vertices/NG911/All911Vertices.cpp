@@ -134,6 +134,47 @@ void All911Vertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
    }
 }
 
+void All911Vertices::registerHistoryVariables()
+{
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+
+   // Registering the following variables to be recorded
+   recorder.registerVariable("numTrunks", numTrunks_, Recorder::UpdatedType::CONSTANT);
+   recorder.registerVariable("numServers", numServers_, Recorder::UpdatedType::CONSTANT);
+   recorder.registerVariable("droppedCalls", droppedCalls_, Recorder::UpdatedType::DYNAMIC);
+   recorder.registerVariable("receivedCalls", receivedCalls_, Recorder::UpdatedType::CONSTANT);
+
+   for (int i = 0; i < beginTimeHistory_.size(); i++) {
+      string varName = "BeginTimeHistory_" + std::to_string(i);
+      recorder.registerVariable(varName, beginTimeHistory_[i], Recorder::UpdatedType::DYNAMIC);
+   }
+
+   for (int i = 0; i < answerTimeHistory_.size(); i++) {
+      string varName = "AnswerTimeHistory_" + std::to_string(i);
+      recorder.registerVariable(varName, answerTimeHistory_[i], Recorder::UpdatedType::DYNAMIC);
+   }
+
+   for (int i = 0; i < endTimeHistory_.size(); i++) {
+      string varName = "EndTimeHistory_" + std::to_string(i);
+      recorder.registerVariable(varName, endTimeHistory_[i], Recorder::UpdatedType::DYNAMIC);
+   }
+
+   for (int i = 0; i < wasAbandonedHistory_.size(); i++) {
+      string varName = "WasAbandonedHistory_" + std::to_string(i);
+      recorder.registerVariable(varName, wasAbandonedHistory_[i], Recorder::UpdatedType::DYNAMIC);
+   }
+
+   for (int i = 0; i < queueLengthHistory_.size(); i++) {
+      string varName = "QueueLengthHistory_" + std::to_string(i);
+      recorder.registerVariable(varName, queueLengthHistory_[i], Recorder::UpdatedType::DYNAMIC);
+   }
+
+   for (int i = 0; i < utilizationHistory_.size(); i++) {
+      string varName = "UtilizationHistory_" + std::to_string(i);
+      recorder.registerVariable(varName, utilizationHistory_[i], Recorder::UpdatedType::DYNAMIC);
+   }
+}
+
 // Accessor for the waiting queue of a vertex
 CircularBuffer<Call> &All911Vertices::getQueue(int vIdx)
 {
@@ -362,7 +403,9 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
    busyServers_[vertexIdx] = numServers_[vertexIdx] - availableServers.size();
 
    // Update queueLength and utilization histories
+   queueLengthHistory_[vertexIdx].resize(g_simulationStep + 1);
    queueLengthHistory_[vertexIdx][g_simulationStep] = vertexQueues_[vertexIdx].size();
+   utilizationHistory_[vertexIdx].resize(g_simulationStep + 1);
    utilizationHistory_[vertexIdx][g_simulationStep]
       = static_cast<double>(busyServers_[vertexIdx]) / numServers_[vertexIdx];
 }
@@ -439,7 +482,9 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
    busyServers_[vertexIdx] = numServers_[vertexIdx] - availableUnits.size();
 
    // Update queueLength and utilization histories
+   queueLengthHistory_[vertexIdx].resize(g_simulationStep + 1);
    queueLengthHistory_[vertexIdx][g_simulationStep] = vertexQueues_[vertexIdx].size();
+   utilizationHistory_[vertexIdx].resize(g_simulationStep + 1);
    utilizationHistory_[vertexIdx][g_simulationStep]
       = static_cast<double>(busyServers_[vertexIdx]) / numServers_[vertexIdx];
 }

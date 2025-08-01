@@ -330,3 +330,7 @@ void ConnGrowth::printRadii() const
       cout << "radii[" << i << "] = " << radii_[i] << endl;
    }
 }
+
+void ConnGrowth::registerHistoryVariables()
+{
+}
