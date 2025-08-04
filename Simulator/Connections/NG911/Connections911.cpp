@@ -89,52 +89,6 @@ bool Connections911::updateConnections(AllVertices &vertices)
 }
 
 
-/// Finds the outgoing edge from the given vertex to the Responder closest to
-/// the emergency call location
-BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, BGSIZE vertexIdx)
-{
-   All911Edges &edges911 = dynamic_cast<All911Edges &>(*edges_);
-
-   vertexType requiredType;
-   if (call.type == "Law")
-      requiredType = vertexType::LAW;
-   else if (call.type == "EMS")
-      requiredType = vertexType::EMS;
-   else if (call.type == "Fire")
-      requiredType = vertexType::FIRE;
-
-   // loop over the outgoing edges looking for the responder with the shortest
-   // Euclidean distance to the call's location.
-   BGSIZE startOutEdg = synapseIndexMap_->outgoingEdgeBegin_[vertexIdx];
-   BGSIZE outEdgCount = synapseIndexMap_->outgoingEdgeCount_[vertexIdx];
-   Layout911 &layout911
-      = dynamic_cast<Layout911 &>(Simulator::getInstance().getModel().getLayout());
-
-   BGSIZE resp, respEdge;
-   double minDistance = numeric_limits<double>::max();
-   for (BGSIZE eIdxMap = startOutEdg; eIdxMap < startOutEdg + outEdgCount; ++eIdxMap) {
-      BGSIZE outEdg = synapseIndexMap_->outgoingEdgeIndexMap_[eIdxMap];
-      assert(edges911.inUse_[outEdg]);   // Edge must be in use
-
-      BGSIZE dstVertex = edges911.destVertexIndex_[outEdg];
-      if (layout911.vertexTypeMap_[dstVertex] == requiredType) {
-         double distance = layout911.getDistance(dstVertex, call.x, call.y);
-
-         if (distance < minDistance) {
-            minDistance = distance;
-            resp = dstVertex;
-            respEdge = outEdg;
-         }
-      }
-   }
-
-   // We must have found the closest responder of the right type
-   assert(minDistance < numeric_limits<double>::max());
-   assert(layout911.vertexTypeMap_[resp] == requiredType);
-   return respEdge;
-}
-
-
 ///  Randomly delete 1 PSAP and rewire all the edges around it.
 bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
 {

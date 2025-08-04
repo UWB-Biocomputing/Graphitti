@@ -200,6 +200,16 @@ private:
    /// The InputManager holds all the Input Events for the simulation
    InputManager<Call> inputManager_;
 
+protected:
+   /// Finds the outgoing edge from the given vertex to the Responder closest to
+   /// the emergency call location
+   ///
+   /// @param call         The call that needs a Responder
+   /// @param vertexIdx    The index of the vertex serving the call (A PSAP)
+   /// @return    The index of the outgoing edge to the closest Responder
+   BGSIZE getEdgeToClosestResponder(const Call &call, BGSIZE vertexIdx);
+
+private:
    ///  Advance a CALR vertex. Send calls to the appropriate PSAP
    ///
    ///  @param  vertexIdx     Index of the CALR vertex
