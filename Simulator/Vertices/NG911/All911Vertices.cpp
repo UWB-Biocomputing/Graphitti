@@ -20,6 +20,7 @@ void All911Vertices::setupVertices()
    AllVertices::setupVertices();
 
    // Resize and fill vectors with 0
+   vertexType_.assign(size_, 0);
    numServers_.assign(size_, 0);
    busyServers_.assign(size_, 0);
    numTrunks_.assign(size_, 0);
@@ -53,6 +54,12 @@ void All911Vertices::setupVertices()
 // Creates all the Vertices and assigns initial data for them.
 void All911Vertices::createAllVertices(Layout &layout)
 {
+   // Read Input Events using the InputManager
+   inputManager_.readInputs();
+   int totalNumberOfEvents = inputManager_.getTotalNumberOfEvents();
+   assert(0 < totalNumberOfEvents);
+   LOG4CPLUS_DEBUG(vertexLogger_, "Total number of events: " << totalNumberOfEvents);
+
    // Calcualte the total number of time-steps for the data structures that
    // will record per-step histories
    Simulator &simulator = Simulator::getInstance();
@@ -70,8 +77,14 @@ void All911Vertices::createAllVertices(Layout &layout)
       assert(*vi < size_);
       
       if (gm[*vi].type == "CALR") {
+         vertexType_[*vi] = 1;
          vertexQueues_[*vi].resize(stepsPerEpoch);
       } else {
+         if (gm[*vi].type == "PSAP") {
+            vertexType_[*vi] = 2;
+         } else if (gm[*vi].type == "RESP") {
+            vertexType_[*vi] = 3;
+         }
          numServers_[*vi] = gm[*vi].servers;
          numTrunks_[*vi] = gm[*vi].trunks;
          // We should not have more servers than trunks
@@ -89,11 +102,10 @@ void All911Vertices::createAllVertices(Layout &layout)
          // Initialize the data structures for system metrics
          queueLengthHistory_[*vi].assign(totalTimeSteps, 0);
          utilizationHistory_[*vi].assign(totalTimeSteps, 0);
+
+         beginTimeHistory_[*vi].reserve(10);
       }
    }
-
-   // Read Input Events using the InputManager
-   inputManager_.readInputs();
 }
 
 

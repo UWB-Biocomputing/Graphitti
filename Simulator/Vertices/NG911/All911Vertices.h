@@ -73,6 +73,7 @@
 
 // Forward declaration to avoid circular reference
 class All911Edges;
+struct All911VerticesDeviceProperties;
 
 // Class to hold all data necessary for all the Vertices.
 class All911Vertices : public AllVertices {
@@ -149,7 +150,8 @@ public:
    /// @return    The number of busy servers in the given vertex
    int busyServers(int vIdx) const;
 
-private:
+   /// Index each vertex and record it's type
+   vector<int> vertexType_;
    /// The starting time for every call
    vector<vector<uint64_t>> beginTimeHistory_;
    /// The answer time for every call
@@ -235,12 +237,12 @@ private:
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract
 public:
-   virtual void allocVerticesDeviceStruct() {};
+   virtual void allocVerticesDeviceStruct() override;
    virtual void deleteVerticesDeviceStruct() {};
    virtual void copyToDevice() {};
    virtual void copyFromDevice() {};
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
-                                float randNoise[], EdgeIndexMapDevice *edgeIndexMapDevice) {};
+                                float randNoise[], EdgeIndexMapDevice *edgeIndexMapDevice) override;
    virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};
    virtual void clearVertexHistory(void *allVerticesDevice) {};
 
@@ -252,6 +254,13 @@ public:
    virtual void integrateVertexInputs(void *allVerticesDevice,
                                       EdgeIndexMapDevice *edgeIndexMapDevice,
                                       void *allEdgesDevice) {};
+   /// Copies all inputs scheduled to occur in the upcoming epoch onto device.
+   virtual void copyEpochInputsToDevice() override;
+protected:
+   ///  Allocate GPU memories to store all vertices' states.
+   ///  (Helper function of allocVerticesDeviceStruct)
+   ///  @param  allVerticesDevice         Reference to the All911VerticesDeviceProperties struct.
+   void allocDeviceStruct(All911VerticesDeviceProperties &allVerticesDevice);
 #else   // !defined(USE_GPU)
 public:
    ///  Update internal state of the indexed Vertex (called by every simulation step).
@@ -274,6 +283,8 @@ protected:
 
 #if defined(USE_GPU)
 struct All911VerticesDeviceProperties : public AllVerticesDeviceProperties {
+   /// Index each vertex and record it's type
+   int *vertexType_;
    /// The starting time for every call
    //vector<vector<uint64_t>> beginTimeHistory_;
    uint64_t **beginTimeHistory_;
@@ -303,6 +314,8 @@ struct All911VerticesDeviceProperties : public AllVerticesDeviceProperties {
    int **vertexQueuesBufferPatience_;
    int **vertexQueuesBufferOnSiteTime_;
    int **vertexQueuesBufferResponderType_;
+   uint64_t *vertexQueuesFront_;
+   uint64_t *vertexQueuesEnd_;
 
    /// The number of calls that have been dropped (got a busy signal)
    //vector<int> droppedCalls_;
