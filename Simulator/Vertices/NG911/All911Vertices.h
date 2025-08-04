@@ -118,7 +118,7 @@ public:
    /// Loads all inputs scheduled to occur in the upcoming epoch.
    /// These are inputs occurring in between curStep (inclusive) and
    /// endStep (exclusive)
-   virtual void loadEpochInputs(uint64_t currentStep, uint64_t endStep) override;
+   virtual void loadEpochInputsToVertices(uint64_t currentStep, uint64_t endStep) override;
 
    /// unused virtual function placeholder
    virtual void registerHistoryVariables() override

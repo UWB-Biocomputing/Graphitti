@@ -95,6 +95,24 @@ void AllVertices::printParameters() const
 /// endStep (exclusive)
 void AllVertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
 {
+   loadEpochInputsToVertices(currentStep, endStep);
+   #if defined(USE_GPU)
+   copyEpochInputsToDevice();
+   #endif
+}
+
+void AllVertices::loadEpochInputsToVertices(uint64_t currentStep, uint64_t endStep)
+{
    // This is an empty implementation so that Neural Network simulation works
    // normally
+   LOG4CPLUS_DEBUG(vertexLogger_, "Calling AllVertices::loadEpochInputsToVertices");
 }
+
+#if defined(USE_GPU)
+void AllVertices::copyEpochInputsToDevice()
+{
+   // This is an empty implementation so that Neural Network simulation works
+   // normally
+   LOG4CPLUS_DEBUG(vertexLogger_, "Calling AllVertices::copyEpochInputsToDevice");
+}
+#endif

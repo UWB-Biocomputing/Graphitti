@@ -53,7 +53,7 @@ void All911Vertices::setupVertices()
 // Creates all the Vertices and assigns initial data for them.
 void All911Vertices::createAllVertices(Layout &layout)
 {
-   // Calcualte the total number of time-steps for the data structures that
+      // Calcualte the total number of time-steps for the data structures that
    // will record per-step histories
    Simulator &simulator = Simulator::getInstance();
    uint64_t stepsPerEpoch = simulator.getEpochDuration() / simulator.getDeltaT();
@@ -68,7 +68,7 @@ void All911Vertices::createAllVertices(Layout &layout)
    GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < size_);
-
+      
       if (gm[*vi].type == "CALR") {
          vertexQueues_[*vi].resize(stepsPerEpoch);
       } else {
@@ -118,8 +118,9 @@ string All911Vertices::toString(int index) const
 
 
 // Loads all inputs scheduled to occur in the upcoming epoch.
-void All911Vertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
+void All911Vertices::loadEpochInputsToVertices(uint64_t currentStep, uint64_t endStep)
 {
+   LOG4CPLUS_DEBUG(fileLogger_, "Calling All911Vertices::loadEpochInputsToVertices");
    Simulator &simulator = Simulator::getInstance();
    Layout &layout = simulator.getModel().getLayout();
 

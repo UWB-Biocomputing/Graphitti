@@ -19,8 +19,6 @@ public:
    virtual void loadParameters() = 0;
 
    virtual void printParameters() = 0;
-
-   virtual void loadEpochInputs(uint64_t currentStep, uint64_t endStep) = 0;
 };
 
 
@@ -40,7 +38,7 @@ public:
       cout << "Foo printing parameters" << endl;
    }
 
-   virtual void loadEpochInputs(uint64_t currentStep, uint64_t endStep)
+   void loadEpochInputs(uint64_t currentStep, uint64_t endStep)
    {
       cout << "Foo current step: " << currentStep << endl;
       cout << "Foo end step: " << endStep << endl;

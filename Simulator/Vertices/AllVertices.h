@@ -60,7 +60,15 @@ public:
    ///
    /// @param  curStep  The current simulation step
    /// @param  endStep  The end of epoch simulation step
-   virtual void loadEpochInputs(uint64_t currentStep, uint64_t endStep);
+   void loadEpochInputs(uint64_t currentStep, uint64_t endStep);
+
+   /// Loads all inputs scheduled to occur in the upcoming epoch.
+   /// These are inputs occurring in between curStep (inclusive) and
+   /// endStep (exclusive)
+   ///
+   /// @param  curStep  The current simulation step
+   /// @param  endStep  The end of epoch simulation step
+   virtual void loadEpochInputsToVertices(uint64_t currentStep, uint64_t endStep);
 
    ///  Load member variables from configuration file.
    ///  Registered to OperationManager as Operation::loadParameters
@@ -115,6 +123,9 @@ public:
    ///  Copy all vertices' data from device to host.
    ///
    virtual void copyFromDevice() = 0;
+
+   /// Copies all inputs scheduled to occur in the upcoming epoch onto device.
+   virtual void copyEpochInputsToDevice();
 
    ///  Update the state of all vertices for a time step
    ///  Notify outgoing edges if vertex has fired.
