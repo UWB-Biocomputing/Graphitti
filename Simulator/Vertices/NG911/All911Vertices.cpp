@@ -102,8 +102,6 @@ void All911Vertices::createAllVertices(Layout &layout)
          // Initialize the data structures for system metrics
          queueLengthHistory_[*vi].assign(totalTimeSteps, 0);
          utilizationHistory_[*vi].assign(totalTimeSteps, 0);
-
-         beginTimeHistory_[*vi].reserve(10);
       }
    }
 }
