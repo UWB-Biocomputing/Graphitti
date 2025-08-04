@@ -97,15 +97,17 @@ public:
    /// Registered to OperationManager as Operations::op::loadParameters
    virtual void loadParameters() override;
 
+   /// Registers history variables for recording during simulation
+   virtual void registerHistoryVariables() override;
+
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
    ///  Update the connections status in every epoch.
    ///
-   ///  @param  vertices  The vertex list to search from.
    ///  @return true if successful, false otherwise.
-   virtual bool updateConnections(AllVertices &vertices) override;
+   virtual bool updateConnections() override;
 
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);

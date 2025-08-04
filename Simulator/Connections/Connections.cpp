@@ -44,6 +44,10 @@ Connections::Connections()
    function<void()> regGraphPropsFunc = bind(&Connections::registerGraphProperties, this);
    opsManager.registerOperation(Operations::registerGraphProperties, regGraphPropsFunc);
 
+   // Register registerHistoryVariables function as a registerHistoryVariables operation in the OperationManager
+   function<void()> registerHistoryVarsFunc = bind(&Connections::registerHistoryVariables, this);
+   opsManager.registerOperation(Operations::registerHistoryVariables, registerHistoryVarsFunc);
+
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
@@ -81,9 +85,8 @@ void Connections::createEdgeIndexMap()
 
 ///  Update the connections status in every epoch.
 ///
-///  @param  vertices  The vertex list to search from.
 ///  @return true if successful, false otherwise.
-bool Connections::updateConnections(AllVertices &vertices)
+bool Connections::updateConnections()
 {
    return false;
 }

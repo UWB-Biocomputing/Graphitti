@@ -215,6 +215,21 @@ void Hdf5Recorder::compileHistories()
                   }
                   variableInfo.hdf5DataSet_.write(dataBuffer.data(), variableInfo.hdf5Datatype_,
                                                   memSpace, fileSpace);
+               } else if (variableInfo.hdf5Datatype_ == PredType::NATIVE_DOUBLE) {
+                  vector<double> dataBuffer(variableInfo.variableLocation_.getNumElements());
+                  for (size_t i = 0; i < variableInfo.variableLocation_.getNumElements(); ++i) {
+                     dataBuffer[i] = get<double>(variableInfo.variableLocation_.getElement(i));
+                  }
+                  variableInfo.hdf5DataSet_.write(dataBuffer.data(), variableInfo.hdf5Datatype_,
+                                                  memSpace, fileSpace);
+               } else if (variableInfo.hdf5Datatype_ == PredType::NATIVE_UCHAR) {
+                  vector<unsigned char> dataBuffer(variableInfo.variableLocation_.getNumElements());
+                  for (size_t i = 0; i < variableInfo.variableLocation_.getNumElements(); ++i) {
+                     dataBuffer[i]
+                        = get<unsigned char>(variableInfo.variableLocation_.getElement(i));
+                  }
+                  variableInfo.hdf5DataSet_.write(dataBuffer.data(), variableInfo.hdf5Datatype_,
+                                                  memSpace, fileSpace);
                } else {
                   // Throw an exception if the data type is unsupported
                   throw runtime_error("Unsupported data type for variable: "
@@ -222,10 +237,10 @@ void Hdf5Recorder::compileHistories()
                }
             }
          }
+         // Call startNewEpoch() to prepare for new data input
+         // Only done for dynamic variables since constant variables are only captured at end
+         variableInfo.variableLocation_.startNewEpoch();
       }
-
-      // Call startNewEpoch() to prepare for new data input
-      variableInfo.variableLocation_.startNewEpoch();
    }
 }
 

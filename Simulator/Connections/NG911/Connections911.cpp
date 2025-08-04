@@ -63,7 +63,7 @@ void Connections911::printParameters() const
 
 #if !defined(USE_GPU)
 ///  Update the connections status in every epoch.
-bool Connections911::updateConnections(AllVertices &vertices)
+bool Connections911::updateConnections()
 {
    // Only run on the first epoch
    if (Simulator::getInstance().getCurrentStep() != 1) {
@@ -73,7 +73,7 @@ bool Connections911::updateConnections(AllVertices &vertices)
    // Record old type map
    int numVertices = Simulator::getInstance().getTotalVertices();
    Layout &layout = Simulator::getInstance().getModel().getLayout();
-   oldTypeMap_ = layout.vertexTypeMap_;
+   AllVertices &vertices = layout.getVertices();
 
    // Erase PSAPs
    for (int i = 0; i < psapsToErase_; i++) {
@@ -137,7 +137,7 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
          erasedEdge.srcV = srcVertex;
          erasedEdge.destV = destVertex;
          erasedEdge.eType = layout.edgType(srcVertex, destVertex);
-         edgesErased.push_back(erasedEdge);
+         edgesErased_.push_back(erasedEdge);
 
          changesMade = true;
          edges_->eraseEdge(destVertex, iEdg);
@@ -158,7 +158,7 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
 
    if (changesMade) {
       // This is here so that we don't delete the vertex if we can't find any edges
-      verticesErased.push_back(randPSAP);
+      verticesErased_.push_back(randPSAP);
       layout.vertexTypeMap_[randPSAP] = vertexType::VTYPE_UNDEF;
    }
 
@@ -192,7 +192,7 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       addedEdge.srcV = srcVertex;
       addedEdge.destV = closestPSAP;
       addedEdge.eType = edgeType::CP;
-      edgesAdded.push_back(addedEdge);
+      edgesAdded_.push_back(addedEdge);
    }
 
    // For each psap-less responder, find closest match
@@ -220,7 +220,7 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       addedEdge.srcV = closestPSAP;
       addedEdge.destV = destVertex;
       addedEdge.eType = edgeType::PR;
-      edgesAdded.push_back(addedEdge);
+      edgesAdded_.push_back(addedEdge);
    }
 
    return changesMade;
@@ -271,7 +271,7 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
          erasedEdge.srcV = srcVertex;
          erasedEdge.destV = destVertex;
          erasedEdge.eType = layout.edgType(srcVertex, destVertex);
-         edgesErased.push_back(erasedEdge);
+         edgesErased_.push_back(erasedEdge);
 
          changesMade = true;
          edges_->eraseEdge(destVertex, iEdg);
@@ -280,7 +280,7 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
 
    if (changesMade) {
       // This is here so that we don't delete the vertex if we can't find any edges
-      verticesErased.push_back(randRESP);
+      verticesErased_.push_back(randRESP);
       layout.vertexTypeMap_[randRESP] = vertexType::VTYPE_UNDEF;
    }
 
@@ -324,16 +324,23 @@ string Connections911::ChangedEdge::toString()
    return os.str();
 }
 
+/// Registers variable to be recorded
+void Connections911::registerHistoryVariables()
+{
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   recorder.registerVariable("verticesDeleted", verticesErased_, Recorder::UpdatedType::DYNAMIC);
+}
+
 ///  Returns the complete list of all deleted or added edges as a string.
 string Connections911::changedEdgesToXML(bool added)
 {
    stringstream os;
 
-   vector<ChangedEdge> changed = edgesErased;
+   vector<ChangedEdge> changed = edgesErased_;
    string name = "edgesDeleted";
 
    if (added) {
-      changed = edgesAdded;
+      changed = edgesAdded_;
       name = "edgesAdded";
    }
 
@@ -348,22 +355,24 @@ string Connections911::changedEdgesToXML(bool added)
    return os.str();
 }
 
+/*
 ///  Returns the complete list of deleted vertices as a string.
 string Connections911::erasedVerticesToXML()
 {
    stringstream os;
 
    os << "<Matrix name=\"verticesDeleted\" type=\"complete\" rows=\"1\" columns=\""
-      << verticesErased.size() << "\" multiplier=\"1.0\">" << endl;
+      << verticesErased_.size() << "\" multiplier=\"1.0\">" << endl;
    os << "   ";
 
-   sort(verticesErased.begin(), verticesErased.end());
-   for (int i = 0; i < verticesErased.size(); i++) {
-      os << verticesErased[i] << " ";
+   sort(verticesErased_.begin(), verticesErased_.end());
+   for (int i = 0; i < verticesErased_.size(); i++) {
+      os << verticesErased_[i] << " ";
    }
 
    os << endl << "</Matrix>";
    return os.str();
 }
+*/
 
 #endif

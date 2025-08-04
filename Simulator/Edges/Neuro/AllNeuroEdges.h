@@ -84,6 +84,9 @@ public:
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);
 
+   /// Output weights and srcIndex to xml
+   virtual void outputWeights(int epochNum) = 0;
+
 #if defined(USE_GPU)
 public:
    ///  Set edge class ID defined by enumClassSynapses for the caller's Edge class.

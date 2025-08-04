@@ -274,6 +274,28 @@ void AllSpikingSynapses::copyDeviceEdgeCountsToHost(void *allEdgesDevice)
    //allEdges.countVertices_ = 0;
 }
 
+///  Get weights matrix in AllEdges struct on device memory.
+///
+///  @param  allEdgesDevice  GPU address of the AllSpikingSynapsesDeviceProperties struct
+///                             on device memory.
+void AllSpikingSynapses::copyDeviceEdgeWeightsToHost(void *allEdgesDevice)
+{
+   AllSpikingSynapsesDeviceProperties allEdgesDeviceProps;
+
+   int numVertices = Simulator::getInstance().getTotalVertices();
+   BGSIZE maxTotalSynapses = Simulator::getInstance().getMaxEdgesPerVertex() * numVertices;
+
+   HANDLE_ERROR(cudaMemcpy(&allEdgesDeviceProps, allEdgesDevice,
+                           sizeof(AllSpikingSynapsesDeviceProperties), cudaMemcpyDeviceToHost));
+
+   // std::cout << "size: " << vertexCount * vertexCount * sizeof(BGFLOAT) << std::endl;
+   // std::cout << "W_.data(): " << W_.data() << std::endl;
+   // std::cout << "allEdgesDeviceProps.W_: " << allEdgesDeviceProps.W_ << std::endl;
+
+   HANDLE_ERROR(cudaMemcpy(W_.data(), allEdgesDeviceProps.W_, maxTotalSynapses * sizeof(BGFLOAT),
+                           cudaMemcpyDeviceToHost));
+}
+
 ///  Get summationCoord and in_use in AllEdges struct on device memory.
 ///
 ///  @param  allEdgesDevice  GPU address of the AllSpikingSynapsesDeviceProperties struct

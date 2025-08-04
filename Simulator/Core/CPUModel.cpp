@@ -35,7 +35,7 @@ void CPUModel::advance()
 void CPUModel::updateConnections()
 {
    // Update Connections data
-   if (connections_->updateConnections(layout_->getVertices())) {
+   if (connections_->updateConnections()) {
       connections_->updateEdgesWeights();
       // create edge inverse map
       connections_->createEdgeIndexMap();

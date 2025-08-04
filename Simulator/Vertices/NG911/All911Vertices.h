@@ -70,6 +70,7 @@
 #include "Global.h"
 #include "InputEvent.h"
 #include "InputManager.h"
+#include "RecordableVector.h"
 
 // Forward declaration to avoid circular reference
 class All911Edges;
@@ -122,9 +123,7 @@ public:
    virtual void loadEpochInputsToVertices(uint64_t currentStep, uint64_t endStep) override;
 
    /// unused virtual function placeholder
-   virtual void registerHistoryVariables() override
-   {
-   }
+   virtual void registerHistoryVariables() override;
 
    /// Accessor for the waiting queue of a vertex
    ///
@@ -153,36 +152,37 @@ public:
    /// Index each vertex and record it's type
    vector<int> vertexType_;
    /// The starting time for every call
-   vector<vector<uint64_t>> beginTimeHistory_;
+   vector<RecordableVector<uint64_t>> beginTimeHistory_;
    /// The answer time for every call
-   vector<vector<uint64_t>> answerTimeHistory_;
+   vector<RecordableVector<uint64_t>> answerTimeHistory_;
    /// The end time for every call
-   vector<vector<uint64_t>> endTimeHistory_;
+   vector<RecordableVector<uint64_t>> endTimeHistory_;
    /// True if the call was abandoned
-   vector<vector<unsigned char>> wasAbandonedHistory_;
+   vector<RecordableVector<unsigned char>>
+      wasAbandonedHistory_;   // changed to bool from unsigned char
    /// The length of the waiting queue at every time-step
-   vector<vector<int>> queueLengthHistory_;
+   vector<RecordableVector<int>> queueLengthHistory_;
    /// The portion of servers that are busy at every time-step
-   vector<vector<double>> utilizationHistory_;
+   vector<RecordableVector<double>> utilizationHistory_;
 
    /// These are the queues where calls will wait to be served
    vector<CircularBuffer<Call>> vertexQueues_;
 
    /// The number of calls that have been dropped (got a busy signal)
-   vector<int> droppedCalls_;
+   RecordableVector<int> droppedCalls_;
 
    /// The number of received calls
-   vector<int> receivedCalls_;
+   RecordableVector<int> receivedCalls_;
 
    /// Number of servers currently serving calls
    vector<int> busyServers_;
 
    /// Number of servers. In a PSAP these are the call takers, in Responder nodes
    /// they are responder units
-   vector<int> numServers_;
+   RecordableVector<int> numServers_;
 
    /// Number of phone lines available. Only valid for PSAPs and Responders
-   vector<int> numTrunks_;
+   RecordableVector<int> numTrunks_;
 
    /// The probability that a caller will redial after receiving the busy signal
    BGFLOAT redialP_;

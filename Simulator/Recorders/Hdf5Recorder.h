@@ -116,6 +116,8 @@ public:
             hdf5Datatype_ = PredType::NATIVE_DOUBLE;
          } else if (dataType_ == typeid(vertexType).name()) {
             hdf5Datatype_ = PredType::NATIVE_INT;
+         } else if (dataType_ == typeid(unsigned char).name()) {
+            hdf5Datatype_ = PredType::NATIVE_UCHAR;
          } else {
             throw runtime_error("Unsupported data type");
          }
@@ -163,6 +165,19 @@ public:
                }
                hdf5DataSet_.write(dataBuffer.data(), hdf5Datatype_);
 
+            } else if (hdf5Datatype_ == PredType::NATIVE_DOUBLE) {
+               vector<double> dataBuffer(variableLocation_.getNumElements());
+               for (int i = 0; i < variableLocation_.getNumElements(); ++i) {
+                  dataBuffer[i] = get<double>(variableLocation_.getElement(i));
+               }
+               hdf5DataSet_.write(dataBuffer.data(), hdf5Datatype_);
+
+            } else if (hdf5Datatype_ == PredType::NATIVE_UCHAR) {
+               vector<unsigned char> dataBuffer(variableLocation_.getNumElements());
+               for (int i = 0; i < variableLocation_.getNumElements(); ++i) {
+                  dataBuffer[i] = get<unsigned char>(variableLocation_.getElement(i));
+               }
+               hdf5DataSet_.write(dataBuffer.data(), hdf5Datatype_);
             } else {
                // Throw an error if the data type is unsupported
                throw runtime_error("Unsupported data type");
