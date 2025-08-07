@@ -62,8 +62,8 @@ void XmlRecorder::compileHistories()
    for (int rowIndex = 0; rowIndex < variableTable_.size(); rowIndex++) {
       if (variableTable_[rowIndex].variableType_ == UpdatedType::DYNAMIC) {
          variableTable_[rowIndex].captureData();
+         variableTable_[rowIndex].variableLocation_.startNewEpoch();
       }
-      variableTable_[rowIndex].variableLocation_.startNewEpoch();
    }
 }
 
@@ -115,6 +115,12 @@ string XmlRecorder::toXML(const string &name, vector<multipleTypes> &singleBuffe
          os << get<int>(element) << " ";
       } else if (basicType == typeid(BGFLOAT).name()) {
          os << get<BGFLOAT>(element) << " ";
+      } else if (basicType == typeid(vertexType).name()) {
+         os << static_cast<int>(get<vertexType>(element)) << " ";
+      } else if (basicType == typeid(double).name()) {
+         os << get<double>(element) << " ";
+      } else if (basicType == typeid(unsigned char).name()) {
+         os << get<unsigned char>(element) << " ";
       } else {
          perror("Error recording Recordable object");
          exit(EXIT_FAILURE);

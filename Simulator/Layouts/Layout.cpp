@@ -35,7 +35,7 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
 
    // Register loadParameters function as a loadParameters operation in the Operation Manager
    function<void()> loadParametersFunc = std::bind(&Layout::loadParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::op::loadParameters,
+   OperationManager::getInstance().registerOperation(Operations::loadParameters,
                                                      loadParametersFunc);
 
    // Register printParameters function as a printParameters operation in the OperationManager
@@ -46,7 +46,7 @@ Layout::Layout() : numEndogenouslyActiveNeurons_(0)
    // Register registerGraphProperties method as registerGraphProperties operation
    // in the OperationManager
    function<void()> registerGraphPropertiesFunc = bind(&Layout::registerGraphProperties, this);
-   OperationManager::getInstance().registerOperation(Operations::registerGraphProperties,
+   OperationManager::getInstance().registerOperation((Operations::registerGraphProperties),
                                                      registerGraphPropertiesFunc);
 
    // Get a copy of the file logger to use log4cplus macros
@@ -66,16 +66,17 @@ int Layout::getNumVertices() const
 /// Load member variables from configuration file. Registered to OperationManager as Operations::op::loadParameters
 void Layout::loadParameters()
 {
-   numVertices_ = GraphManager::getInstance().numVertices();
+   numVertices_ = GraphManager<NeuralVertexProperties>::getInstance().numVertices();
 }
 
 void Layout::registerGraphProperties()
 {
-   GraphManager &gm = GraphManager::getInstance();
-   gm.registerProperty("y", &VertexProperty::y);
-   gm.registerProperty("x", &VertexProperty::x);
-   gm.registerProperty("type", &VertexProperty::type);
+   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
+   gm.registerProperty("y", &VertexProperties::y);
+   gm.registerProperty("x", &VertexProperties::x);
+   gm.registerProperty("type", &VertexProperties::type);
 }
+
 
 /// Setup the internal structure of the class.
 /// Allocate memories to store all layout state, no sequential dependency in this method
@@ -89,11 +90,11 @@ void Layout::setup()
 
    // more allocation of internal memory
    starterMap_.assign(numVertices_, false);
-   vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
+   vertexTypeMap_.assign(numVertices_, vertexType::VTYPE_UNDEF);
 
    // Loop over all vertices and set their x and y locations
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NeuralVertexProperties>::VertexIterator vi, vi_end;
+   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
       xloc_[*vi] = gm[*vi].x;
@@ -116,13 +117,13 @@ void Layout::setup()
    // Finally take the square root to get the distances
    dist_ = sqrt(dist2_);
 
-   // Register variable: vertex locations if need
-   //Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   //string baseName = "Location";
-   //string xLocation = "x_" + baseName;
-   //string yLocation = "y_" + baseName;
-   //recorder.registerVariable(xLocation, xloc_, Recorder::UpdatedType::CONSTANT);
-   //recorder.registerVariable(yLocation, yloc_, Recorder::UpdatedType::CONSTANT);
+   //Register variable: vertex locations
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   string baseName = "Location";
+   string xLocation = "x_" + baseName;
+   string yLocation = "y_" + baseName;
+   recorder.registerVariable(xLocation, xloc_, Recorder::UpdatedType::CONSTANT);
+   recorder.registerVariable(yLocation, yloc_, Recorder::UpdatedType::CONSTANT);
 
    // test purpose
    // cout << "xloc_: " << &xloc_ << endl;
@@ -134,8 +135,8 @@ void Layout::setup()
 /// Prints out all parameters to logging file. Registered to OperationManager as Operation::printParameters
 void Layout::printParameters() const
 {
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NeuralVertexProperties>::VertexIterator vi, vi_end;
+   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
    stringstream output;
    output << "\nLAYOUT PARAMETERS" << endl;
    output << "\tEndogenously active neuron positions: ";
@@ -166,7 +167,7 @@ void Layout::printParameters() const
 void Layout::generateVertexTypeMap()
 {
    DEBUG(cout << "\nInitializing vertex type map: VTYPE_UNDEF" << endl;);
-   vertexTypeMap_.assign(numVertices_, VTYPE_UNDEF);
+   vertexTypeMap_.assign(numVertices_, vertexType::VTYPE_UNDEF);
 }
 
 /// Populates the starter map.

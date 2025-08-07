@@ -65,16 +65,15 @@ protected:
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract
 public:
-   virtual void allocEdgeDeviceStruct(void **allEdgesDevice) {};
+   virtual void allocEdgeDeviceStruct() {};
    virtual void allocEdgeDeviceStruct(void **allEdgesDevice, int numVertices,
                                       int maxEdgesPerVertex) {};
-   virtual void deleteEdgeDeviceStruct(void *allEdgesDevice) {};
-   virtual void copyEdgeHostToDevice(void *allEdgesDevice) {};
-   virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices,
-                                     int maxEdgesPerVertex) {};
-   virtual void copyEdgeDeviceToHost(void *allEdgesDevice) {};
+   virtual void deleteEdgeDeviceStruct() {};
+   virtual void copyEdgeHostToDevice() {};
+   virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices, int maxEdgesPerVertex) {
+   };
+   virtual void copyEdgeDeviceToHost() {};
    virtual void copyDeviceEdgeCountsToHost(void *allEdgesDevice) {};
-   virtual void copyDeviceEdgeSumIdxToHost(void *allEdgesDevice) {};
    virtual void advanceEdges(void *allEdgesDevice, void *allVerticesDevice,
                              void *edgeIndexMapDevice) {};
    virtual void setAdvanceEdgesDeviceParams() {};

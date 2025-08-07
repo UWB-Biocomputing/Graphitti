@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.12)
 #
 #You can also pass this flag when running cmake from the command line like this:
 #
-#cmake..- D ENABLE_CUDA = YES
+#cmake -D ENABLE_CUDA=YES ..
 #
 #"YES" / GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
 ############################################################################################
@@ -21,17 +21,24 @@ if(NOT PERFORMANCE_METRICS)
         set(PERFORMANCE_METRICS NO)
 endif()
 
-#CONDITIONAL FLAG to turn on the Gprof profiler(                                                   \
-#   Gprof is a performance analysis tool for Unix applications)
-#Steps to run Gprof
-#Step 01 : set(GPROF YES) below
-#Step 02 : Compile and run the simulation on CPU or GPU as usual
-#Step 03 : Run the generated gmon.out file from the build directory and save the output in an txt  \
-#      file to improve readability                                                                  \
-#If using CPU - "~/Graphitti/build$ gprof cgraphitti gmon.out > analysis_test.txt"
-#If using GPU - "~/Graphitti/build$ gprof ggraphitti gmon.out > analysis_test.txt" 
-if(NOT GPROF)
-        set(GPROF NO)
+############################################################################################
+#CONDITIONAL FLAG to change target architecture for the GPU simulator from the default
+#
+#You can pass this flag when running cmake from the command line like this, setting TARGET_ARCH \
+#       to your desired architecture:                                                            \
+#
+#cmake -D ENABLE_CUDA=YES -D TARGET_ARCH=70 ..
+#
+#"YES" / GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
+#If no TARGET_ARCH is passed in then it will default to 37 which is the kepler architecture
+############################################################################################
+if(NOT DEFINED TARGET_ARCH)
+        set(TARGET_ARCH 37)
+endif()
+
+#CONDITIONAL FLAG to turn on the validation mode
+if(NOT VALIDATION_MODE)
+        set(VALIDATION_MODE NO)
 endif()
 
 #Creates the Graphitti project with the correct languages, depending on if using GPU or not
@@ -45,31 +52,112 @@ if(ENABLE_CUDA)
         add_compile_definitions(USE_GPU)
 #Specify the CUDA architecture / gencode that will be targeted
         ### Set gencode and architecture variables to the correct values for your specific NVIDIA hardware
-        set(CMAKE_CUDA_ARCHITECTURES 37)        
-        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_37,code=sm_37)
+        set(CMAKE_CUDA_ARCHITECTURES ${TARGET_ARCH})
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_${TARGET_ARCH},code=sm_${TARGET_ARCH})        
+        message(STATUS "Using CUDA architecture: ${TARGET_ARCH}")
             
 else()
         message("\n----Generating Makefile for Graphitti CPU version----")
         project(Graphitti LANGUAGES CXX C)
 endif()
 
-#Setting the base version to C++ 11
-set(CMAKE_CXX_STANDARD 17)
+# -----------------------------------------------------------------------------
+# Build Type Configuration
+#
+# CMake support for different build types controling optimization, debugging and profiling:
+#
+#   - Debug         : No optimizations (`-O0`), includes debug symbols (`-g`).
+#   - Release       : Optimized build (`-O3`), removes debug symbols.
+#   - RelWithDebInfo: Optimized (`-O2`) but keeps debug symbols (`-g`) for profiling.
+#   - Profiling     : Custom build type (defined in this project) that enables:
+#                     - CPU profiling via `-pg` (GPROF)
+#                     - CUDA profiling via `-lineinfo` (for Nsight Compute)
+#
+# Selecting a Build Type:
+#   - By default, CMake does NOT set a build type for single-config generators.
+#   - If no build type is specified, this script defaults to "Release" for performance.
+#   - You can explicitly set the build type when configuring CMake:
+#
+#       cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug      # Debug mode
+#       cmake -S . -B build -DCMAKE_BUILD_TYPE=Release    # Release mode
+#       cmake -S . -B build -DCMAKE_BUILD_TYPE=Profiling  # Profiling mode 
+#       
+#       If you don't want to pass in the build type flag, you can edit this file and add...
+#               set(CMAKE_BUILD_TYPE "Debug") or whichever build type you want
+# -----------------------------------------------------------------------------
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release;RelWithDebInfo;Profiling" CACHE STRING "Supported build types" FORCE)
 
-#set(DEBUG_MODE YES) for debugging, no optimization
-#set(DEBUG_MODE NO) for production code, -O3 optimization enabled
-set(DEBUG_MODE NO)
+# Ensure single-config generators use a valid default
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the build type." FORCE)
+endif()
+
+# Set flags for all build types
+set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+# We should consider using the -DNDEBUG flag for release code, it disables assert() calls and is higher performance
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
+
+# Define a custom build type: "Profiling"
+set(CMAKE_CXX_FLAGS_PROFILING "-pg -O2")
+set(CMAKE_EXE_LINKER_FLAGS_PROFILING "-pg")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+
+# Apply the correct flags based on the selected build type
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG}")
+    if(ENABLE_CUDA)
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -g -G")   
+    endif()
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}")
+    if(ENABLE_CUDA)
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3")
+    endif()
+elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+elseif(CMAKE_BUILD_TYPE STREQUAL "Profiling")
+    message(STATUS "Profiling build enabled: Adding -pg (GPROF)")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_PROFILING}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS_PROFILING}")
+    if(ENABLE_CUDA)
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -lineinfo")   
+#       set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -lineinfo -Xptxas=-v")   
+    endif()
+endif()
+
+
+#   Gprof is a performance analysis tool for Unix applications)
+#Steps to run Gprof
+#Step 01 : set build configuration to Profiling  ...   -DCMAKE_BUILD_TYPE=Profiling
+#Step 02 : Compile and run the simulation on CPU or GPU as usual
+#Step 03 : Run the generated gmon.out file from the build directory and save the output in an txt  \
+#      file to improve readability                                                                  \
+#If using CPU - "~/Graphitti/build$ gprof cgraphitti gmon.out > analysis_test.txt"
+#If using GPU - "~/Graphitti/build$ gprof ggraphitti gmon.out > analysis_test.txt" 
+
+
+# Print build type for verification
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+
+message(STATUS "ENABLE_CUDA: ${ENABLE_CUDA}")
+if(ENABLE_CUDA)
+        message(STATUS "CMAKE_CUDA_FLAGS: ${CMAKE_CUDA_FLAGS}")
+endif()
+
+
+#Setting the base version to C++ 17
+set(CMAKE_CXX_STANDARD 17)
 
 if(PERFORMANCE_METRICS)
         message("-- Setting PEREFORMANCE_METRICS: ON")
         add_definitions(-DPERFORMANCE_METRICS)
 endif()
 
-if(GPROF)
-        message("-- Setting GPROF: ON")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
-        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+if(VALIDATION_MODE)
+        message("-- Setting VALIDATION_MODE: ON")
+        add_definitions(-DVALIDATION_MODE)
 endif()
 
 #HDF5 Support, finds HDF5 package for C and C++ and links the hdf5 libraries to the executable     \
@@ -116,11 +204,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 #Set extra warning flags
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
-if (NOT DEBUG_MODE)
-        message("-- Setting Optimization flag: O3")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
-endif()
-
 #define TIXML_USE_STL as a preproccersser macro to use the C++ standard library with TinyXML
 add_compile_definitions(TIXML_USE_STL)
 message("-- Setting Compile Definition: TIMXL_USE_STL")
@@ -161,18 +244,24 @@ include_directories(
        
 if(ENABLE_CUDA)
         
-        set(cuda_sources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp 
-        Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp 
-        Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp 
-        Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp 
-        Simulator/Edges/Neuro/AllDSSynapses_d.cpp 
-        Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp 
-        Simulator/Vertices/Neuro/AllLIFNeurons_d.cpp 
-        Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp 
-        Simulator/Vertices/Neuro/AllIFNeurons_d.cpp 
-        Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp 
+        set(cuda_ConnectionsSources 
         Simulator/Connections/Neuro/ConnGrowth_d.cpp )
-        set_source_files_properties(${cuda_sources} PROPERTIES LANGUAGE CUDA)
+        set_source_files_properties(${cuda_ConnectionsSources} PROPERTIES LANGUAGE CUDA)
+
+        set(cuda_EdgesSources Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp
+        Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp
+        Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp
+        Simulator/Edges/Neuro/AllDSSynapses_d.cpp
+        Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp)
+        set_source_files_properties(${cuda_EdgesSources} PROPERTIES LANGUAGE CUDA)
+
+        set(cuda_VerticesSources 
+        Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp
+        Simulator/Vertices/Neuro/AllLIFNeurons_d.cpp
+        Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp
+        Simulator/Vertices/Neuro/AllIFNeurons_d.cpp
+        Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp)
+        set_source_files_properties(${cuda_VerticesSources} PROPERTIES LANGUAGE CUDA)
 endif()
 
    #Collect source files and create libraries
@@ -184,7 +273,7 @@ endif()
 file(GLOB_RECURSE Connections_Source Simulator/Connections/*.cpp Simulator/Connections/*.h)
 
 if(ENABLE_CUDA)
-        add_library(Connections STATIC ${Connections_Source} ${cuda_sources})
+        add_library(Connections STATIC ${Connections_Source} ${cuda_ConnectionsSources})
 else()
         list(REMOVE_ITEM Connections_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Connections/Neuro/ConnGrowth_d.cpp")
         add_library(Connections STATIC ${Connections_Source})
@@ -195,7 +284,7 @@ endif()
 file(GLOB_RECURSE Vertices_Source Simulator/Vertices/*.cpp Simulator/Vertices/*.h)
 
 if(ENABLE_CUDA)
-        add_library(Vertices SHARED ${Vertices_Source} ${cuda_sources})
+        add_library(Vertices STATIC ${Vertices_Source} ${cuda_VerticesSources})
 else()
         list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllVerticesDeviceFuncs.h")
         list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllVerticesDeviceFuncs_d.cpp")
@@ -212,7 +301,7 @@ endif()
 # Create Edges library
 file(GLOB_RECURSE Edges_Source Simulator/Edges/*.cpp Simulator/Edges/*.h)
 if(ENABLE_CUDA)
-        add_library(Edges SHARED ${Edges_Source} ${cuda_sources})
+        add_library(Edges STATIC ${Edges_Source} ${cuda_EdgesSources})
 else()
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSynapsesDeviceFuncs.h")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSynapsesDeviceFuncs_d.cpp")
@@ -276,9 +365,33 @@ add_library(RNG STATIC ${RNG_Source})
 
 
 # Create Utils library
-file(GLOB Utils_Source  Simulator/Utils/*.cpp Simulator/Utils/*.h)
+file(GLOB Utils_Source Simulator/Utils/*.cpp Simulator/Utils/*.h)
 list(REMOVE_ITEM Utils_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/Factory.cpp")
-add_library(Utils  ${Utils_Source})
+
+if(CMAKE_BUILD_TYPE STREQUAL "Profiling")
+        if(ENABLE_CUDA)
+# Find NVTX Library
+                find_library(NVTX_LIBRARY nvToolsExt)
+                if(NVTX_LIBRARY)
+                        message(STATUS "Found NVTX: ${NVTX_LIBRARY} included in Profiling")
+                        add_compile_definitions(ENABLE_NVTX) 
+                else()
+                        message(STATUS "NVTX library not found! Not included in Profiling.")
+                        list(REMOVE_ITEM Utils_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/NvtxHelper.cpp")
+                endif()
+        endif()
+
+else()
+        list(REMOVE_ITEM Utils_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/NvtxHelper.cpp")
+endif()
+
+# Always create the Utils library (even if NVTX and CUDA are missing)
+add_library(Utils ${Utils_Source})
+
+# Only link NVTX if it was found
+if(NVTX_LIBRARY)
+        target_link_libraries(Utils PRIVATE ${NVTX_LIBRARY})
+endif()
 
 
 # Used to locate and run other CMakeLists.txt files from Third Party resources for further compilation of the project.
@@ -346,6 +459,15 @@ endif()
 # ------ TESTS EXECUTABLE ------
 # Add the file that contains main (RunTests.cpp) and all test files. GoogleTest will only recognize them if they are
 # included in the executable.
+target_compile_options(gtest PRIVATE -Wno-error=maybe-uninitialized)
+target_compile_options(gtest_main PRIVATE -Wno-error=maybe-uninitialized)
+
+if(ENABLE_CUDA)
+    set(cuda_TestSources
+        Testing/UnitTesting/DeviceVectorTests.cpp)
+    set_source_files_properties(${cuda_TestSources} PROPERTIES LANGUAGE CUDA)
+endif()
+
 add_executable(tests
         Testing/RunTests.cpp
         Testing/UnitTesting/OperationManagerTests.cpp
@@ -365,7 +487,8 @@ add_executable(tests
         Testing/Utils/CircularBufferTests.cpp
         Testing/UnitTesting/EventBufferTests.cpp
         Testing/UnitTesting/XmlRecorderTests.cpp
-        Testing/UnitTesting/Hdf5RecorderTests.cpp)
+        Testing/UnitTesting/Hdf5RecorderTests.cpp
+        Testing/UnitTesting/DeviceVectorTests.cpp)
 
 # Links the Googletest framework with the testing executable
 target_link_libraries(tests gtest gtest_main)
@@ -373,47 +496,54 @@ target_link_libraries(tests gtest gtest_main)
 # Link the combined library into the 'tests' executable.
 target_link_libraries(tests combinedLib)
 
-# add_executable(serialTest
-#         Testing/RunTests.cpp
-#         Testing/UnitTesting/SerializationTests.cpp)
+#------- SERIALIZATION TESTS --------------------
+# Serialization tests must be executed separately, as each test requires the 
+# simulation to run from start to finish. Running multiple simulations with 
+# the same singleton instance results in a segmentation fault (SEG FAULT).
 
-# # Links the Googletest framework with the serialTest executable
-# target_link_libraries(serialTest gtest gtest_main)
-
-# # Link the combined library into the 'serialTest' executable.
-# target_link_libraries(serialTest combinedLib)
-
-# add_executable(deserialTest
-#         Testing/RunTests.cpp
-#         Testing/UnitTesting/DeserializationTests.cpp)
-
-# # Links the Googletest framework with the deserialTest executable
-# target_link_libraries(deserialTest gtest gtest_main)
-
-# # Link the combined library into the 'deserialTest' executable.
-# target_link_libraries(deserialTest combinedLib)
-
-# add_executable(serialFileAccessTest
-#         Testing/RunTests.cpp
-#         Testing/UnitTesting/SerializationFileAccessTest.cpp)
-
-# # Links the Googletest framework with the serialFileAccessTest executable
-# target_link_libraries(serialFileAccessTest gtest gtest_main)
-
-# # Link the combined library into the 'serialFileAccessTest' executable.
-# target_link_libraries(serialFileAccessTest combinedLib)
-
-add_executable(serialFileAccessTest
+add_executable(serialFullTest
         Testing/RunTests.cpp
-        Testing/UnitTesting/SerializationFileAccessTest.cpp)
+        Testing/UnitTesting/SerializationFullTest.cpp)
+
+add_executable(serialFirstHalfTest
+        Testing/RunTests.cpp
+        Testing/UnitTesting/SerializationFirstHalfTest.cpp)
+
+add_executable(serialSecondHalfTest
+        Testing/RunTests.cpp
+        Testing/UnitTesting/SerializationSecondHalfTest.cpp)
+
+# Link the GoogleTest framework to each of the serial test executables.
+target_link_libraries(serialFullTest gtest gtest_main)
+target_link_libraries(serialFirstHalfTest gtest gtest_main)
+target_link_libraries(serialSecondHalfTest gtest gtest_main)
+
+# Link the combined library and filesystem support to the respective serial test executables.
+target_link_libraries(serialFullTest stdc++fs)
+target_link_libraries(serialFullTest combinedLib)
+
+target_link_libraries(serialFirstHalfTest stdc++fs)
+target_link_libraries(serialFirstHalfTest combinedLib)
+
+target_link_libraries(serialSecondHalfTest stdc++fs)
+target_link_libraries(serialSecondHalfTest combinedLib)
+
+# commenting out serialFileAccessTest until issue-754 is resolved
+# add_executable(serialFileAccessTest
+#        Testing/RunTests.cpp
+#        Testing/UnitTesting/SerializationFileAccessTest.cpp)
 
 # Links the Googletest framework with the serialFileAccessTest executable
-target_link_libraries(serialFileAccessTest gtest gtest_main)
+# target_link_libraries(serialFileAccessTest gtest gtest_main)
 
 # Link the combined library into the 'serialFileAccessTest' executable.
-target_link_libraries(serialFileAccessTest combinedLib)
+# target_link_libraries(serialFileAccessTest combinedLib)
 
 # Clear ENABLE_CUDA, PERFORMANCE_METRICS and GPROF from the cache so it's reset for subsequent builds
 unset(ENABLE_CUDA CACHE)
 unset(PERFORMANCE_METRICS CACHE)
 unset(GPROF CACHE)
+unset(CMAKE_BUILD_TYPE CACHE)
+unset(NVTX_LIBRARY CACHE)
+unset(TARGET_ARCH CACHE)
+unset(VALIDATION_MODE CACHE)

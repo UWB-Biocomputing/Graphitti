@@ -1,0 +1,64 @@
+<!-- Graph Generation Simulation Configuration File #1 -->
+<!-- Synthetic simplified graph-modeling with 1 set of responders (3) -->
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<BGSimParams>
+  <SimInfoParams name="SimInfoParams">
+    <SimParams name="SimParams">
+     <!-- epochDuration is one day in seconds: 24 * 3600 
+      and total simulation is 30 days -->
+      <epochDuration name="epochDuration">3600</epochDuration>
+      <numEpochs name="numEpochs">12</numEpochs>
+      <!-- Every simulation step is 1 second -->
+      <deltaT name="Simulation Step Duration">1</deltaT>
+    </SimParams>
+    <SimConfig name="SimConfig">
+      <maxFiringRate name="maxFiringRate">100</maxFiringRate>
+      <!-- Given vertex parameter -->
+      <maxEdgesPerVertex name="maxEdgesPerVertex">195</maxEdgesPerVertex>
+    </SimConfig>
+    <RNGConfig name="RNGConfig">
+      <InitRNGSeed name="InitRNGSeed">1</InitRNGSeed>
+      <NoiseRNGSeed class="Norm" name="NoiseRNGSeed">1</NoiseRNGSeed>
+    </RNGConfig>
+  </SimInfoParams>
+
+  <ModelParams>
+    <VerticesParams class="All911Vertices" name="VerticesParams">
+      <CallNum name="CallNum">
+        <min name="min">3</min>
+        <max name="max">37</max>
+      </CallNum>
+      <DispNumScale name="DispNumScale">0.3</DispNumScale>
+      <RespNumScale name="RespNumScale">0.3</RespNumScale>
+      <RedialP name="RedialProbability">0.85</RedialP>
+      <!-- Average response unit driving speed in mph -->
+      <AvgDrivingSpeed name="AverageDrivingSpeed">30.0</AvgDrivingSpeed>
+    </VerticesParams>
+
+    <EdgesParams class="All911Edges" name="EdgesParams">
+    </EdgesParams>
+
+    <ConnectionsParams class="Connections911" name="ConnectionsParams">
+    <!-- Graphml file for graph modeling details -->
+      <graphmlFile name="graphmlFile">../GraphGeneration/synth_input.graphml</graphmlFile>
+      <connsPerVertex name="connsPerVertex">88</connsPerVertex>
+      <psapsToErase name="psapsToErase">0</psapsToErase>
+      <respsToErase name="respsToErase">0</respsToErase>
+    </ConnectionsParams>
+
+    <InputParams name="InputParams">
+    <!-- Call generation file from cluster-point -->
+    <inputFile name="inputFile">../GraphGeneration/call_gen.xml</inputFile>
+    </InputParams>
+
+    <LayoutParams class="Layout911" name="LayoutParams">
+    </LayoutParams>
+    
+    <RecorderParams class="Xml911Recorder" name="RecorderParams">
+      <RecorderFiles name="RecorderFiles">
+        <resultFileName name="resultFileName">output.xml</resultFileName>
+      </RecorderFiles>
+    </RecorderParams>
+  </ModelParams>
+</BGSimParams>

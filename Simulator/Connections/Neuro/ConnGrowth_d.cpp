@@ -7,6 +7,7 @@
  * @brief Update the weights of the Synapses in the simulation.
  */
 
+#include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
 #include "AllSynapsesDeviceFuncs.h"
 #include "Book.h"
@@ -21,15 +22,14 @@
  *
  *  @param  numVertices         The number of vertices to update.
  *  @param  vertices            The AllVertices object.
- *  @param  synapses            The AllEdges object.
+ *  @param  edges               The AllEdges object.
  *  @param  allVerticesDevice   GPU address to the AllVertices struct in device memory.
  *  @param  allEdgesDevice      GPU address to the AllEdges struct in device memory.
  *  @param  layout              The Layout object.
  */
-void ConnGrowth::updateSynapsesWeights(int numVertices, AllVertices &vertices, AllEdges &synapses,
-                                       AllSpikingNeuronsDeviceProperties *allVerticesDevice,
-                                       AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                       Layout &layout)
+void ConnGrowth::updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &edges,
+                                    AllVerticesDeviceProperties *allVerticesDevice,
+                                    AllEdgesDeviceProperties *allEdgesDevice, Layout &layout)
 {
    Simulator &simulator = Simulator::getInstance();
    // For now, we just set the weights to equal the areas. We will later
@@ -66,7 +66,8 @@ void ConnGrowth::updateSynapsesWeights(int numVertices, AllVertices &vertices, A
    blocksPerGrid = (simulator.getTotalVertices() + threadsPerBlock - 1) / threadsPerBlock;
    updateSynapsesWeightsDevice<<<blocksPerGrid, threadsPerBlock>>>(
       simulator.getTotalVertices(), deltaT, W_d, simulator.getMaxEdgesPerVertex(),
-      allVerticesDevice, allEdgesDevice, neuronTypeMapD);
+      (AllSpikingNeuronsDeviceProperties *)allVerticesDevice,
+      (AllSpikingSynapsesDeviceProperties *)allEdgesDevice, neuronTypeMapD);
 
    // free memories
    HANDLE_ERROR(cudaFree(W_d));
@@ -75,7 +76,13 @@ void ConnGrowth::updateSynapsesWeights(int numVertices, AllVertices &vertices, A
    HANDLE_ERROR(cudaFree(neuronTypeMapD));
 
    // copy device synapse count to host memory
-   synapses.copyDeviceEdgeCountsToHost(allEdgesDevice);
-   // copy device synapse summation coordinate to host memory
+   edges.copyDeviceEdgeCountsToHost(allEdgesDevice);
+
+   // copy device synapse summation coordinate and weights to host memory
+   AllSpikingSynapses &synapses = dynamic_cast<AllSpikingSynapses &>(edges);
    synapses.copyDeviceEdgeSumIdxToHost(allEdgesDevice);
+   synapses.copyDeviceEdgeWeightsToHost(allEdgesDevice);
+
+   // output weight matrix every epoch
+   synapses.outputWeights(simulator.getCurrentStep());
 }

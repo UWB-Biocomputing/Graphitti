@@ -53,21 +53,6 @@ string coordToString(int x, int y, int z)
    return ss.str();
 }
 
-// MODEL INDEPENDENT FUNCTION NMV-BEGIN {
-string neuronTypeToString(vertexType t)
-{
-   switch (t) {
-      case INH:
-         return "INH";
-      case EXC:
-         return "EXC";
-      default:
-         cerr << "ERROR->neuronTypeToString() failed, unknown type: " << t << endl;
-         assert(false);
-         return nullptr;   // Must return a value -- this will probably cascade to another failure
-   }
-}
-// } NMV-END
 #if defined(USE_GPU)
 //! CUDA device ID
 int g_deviceId = 0;

@@ -10,7 +10,9 @@
 #include "AllSpikingSynapses.h"
 #include "AllVerticesDeviceFuncs.h"
 #include "Book.h"
-
+#include "DeviceVector.h"
+#include "GPUModel.h"
+#include "Simulator.h"
 
 ///  CUDA code for advancing izhikevich neurons
 ///
@@ -25,23 +27,24 @@
 ///  @param[in] edgeIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
 
-__global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int maxSpikes,
-                                        BGFLOAT deltaT, uint64_t simulationStep, float randNoise[],
-                                        AllIZHNeuronsDeviceProperties *allVerticesDevice,
-                                        AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        EdgeIndexMapDevice *edgeIndexMapDevice,
-                                        bool fAllowBackPropagation);
+__global__ void advanceIZHNeuronsDevice(
+   int totalVertices, int maxEdges, int maxSpikes, BGFLOAT deltaT, uint64_t simulationStep,
+   float randNoise[], bool *hasFired_, BGFLOAT *summationPoints_, BGFLOAT *Vm_, BGFLOAT *Aconst_,
+   BGFLOAT *Bconst_, BGFLOAT *u_, int *numStepsInRefractoryPeriod_, BGFLOAT *Vthresh_,
+   BGFLOAT *Trefract_, BGFLOAT *Cconst_, BGFLOAT *Dconst_, BGFLOAT *I0_, BGFLOAT *Inoise_,
+   BGFLOAT *C3_, BGFLOAT *C2_, AllIZHNeuronsDeviceProperties *allVerticesDevice,
+   AllSpikingSynapsesDeviceProperties *allEdgesDevice, EdgeIndexMapDevice *edgeIndexMapDevice,
+   bool fAllowBackPropagation);
 
 
 ///  Allocate GPU memories to store all neurons' states,
 ///  and copy them from host to GPU memory.
 ///
-///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
-///                             on device memory.
-void AllIZHNeurons::allocNeuronDeviceStruct(void **allVerticesDevice)
+void AllIZHNeurons::allocVerticesDeviceStruct()
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
-
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void **allVerticesDevice = reinterpret_cast<void **>(&(gpuModel->getAllVerticesDevice()));
    allocDeviceStruct(allVerticesDeviceProps);
 
    HANDLE_ERROR(cudaMalloc(allVerticesDevice, sizeof(AllIZHNeuronsDeviceProperties)));
@@ -50,31 +53,28 @@ void AllIZHNeurons::allocNeuronDeviceStruct(void **allVerticesDevice)
 }
 
 ///  Allocate GPU memories to store all neurons' states.
-///  (Helper function of allocNeuronDeviceStruct)
+///  (Helper function of allocVerticesDeviceStruct)
 ///
 ///  @param  allVerticesDevice    GPU address of the AllIZHNeuronsDeviceProperties struct on device memory.
 void AllIZHNeurons::allocDeviceStruct(AllIZHNeuronsDeviceProperties &allVerticesDevice)
 {
-   int count = Simulator::getInstance().getTotalVertices();
-
    AllIFNeurons::allocDeviceStruct(allVerticesDevice);
 
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.Aconst_, count * sizeof(BGFLOAT)));
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.Bconst_, count * sizeof(BGFLOAT)));
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.Cconst_, count * sizeof(BGFLOAT)));
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.Dconst_, count * sizeof(BGFLOAT)));
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.u_, count * sizeof(BGFLOAT)));
-   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.C3_, count * sizeof(BGFLOAT)));
+   Aconst_.allocateDeviceMemory();
+   Bconst_.allocateDeviceMemory();
+   Cconst_.allocateDeviceMemory();
+   Dconst_.allocateDeviceMemory();
+   u_.allocateDeviceMemory();
+   C3_.allocateDeviceMemory();
 }
 
 ///  Delete GPU memories.
 ///
-///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
-///                             on device memory.
-void AllIZHNeurons::deleteNeuronDeviceStruct(void *allVerticesDevice)
+void AllIZHNeurons::deleteVerticesDeviceStruct()
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
-
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allVerticesDevice = static_cast<void *>(gpuModel->getAllVerticesDevice());
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
                            sizeof(AllIZHNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
 
@@ -84,76 +84,47 @@ void AllIZHNeurons::deleteNeuronDeviceStruct(void *allVerticesDevice)
 }
 
 ///  Delete GPU memories.
-///  (Helper function of deleteNeuronDeviceStruct)
+///  (Helper function of deleteVerticesDeviceStruct)
 ///
 ///  @param  allVerticesDevice    GPU address of the AllIZHNeuronsDeviceProperties struct on device memory.
 void AllIZHNeurons::deleteDeviceStruct(AllIZHNeuronsDeviceProperties &allVerticesDevice)
 {
-   HANDLE_ERROR(cudaFree(allVerticesDevice.Aconst_));
-   HANDLE_ERROR(cudaFree(allVerticesDevice.Bconst_));
-   HANDLE_ERROR(cudaFree(allVerticesDevice.Cconst_));
-   HANDLE_ERROR(cudaFree(allVerticesDevice.Dconst_));
-   HANDLE_ERROR(cudaFree(allVerticesDevice.u_));
-   HANDLE_ERROR(cudaFree(allVerticesDevice.C3_));
+   Aconst_.freeDeviceMemory();
+   Bconst_.freeDeviceMemory();
+   Cconst_.freeDeviceMemory();
+   Dconst_.freeDeviceMemory();
+   u_.freeDeviceMemory();
+   C3_.freeDeviceMemory();
 
    AllIFNeurons::deleteDeviceStruct(allVerticesDevice);
 }
 
 ///  Copy all neurons' data from host to device.
 ///
-///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
-///                             on device memory.
-void AllIZHNeurons::copyToDevice(void *allVerticesDevice)
+void AllIZHNeurons::copyToDevice()
 {
-   AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
+   AllIFNeurons::copyToDevice();
 
-   HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
-                           sizeof(AllIZHNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
-
-   int count = Simulator::getInstance().getTotalVertices();
-
-   AllIFNeurons::copyToDevice(allVerticesDevice);
-
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Aconst_, Aconst_.data(), count * sizeof(BGFLOAT),
-                           cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Bconst_, Bconst_.data(), count * sizeof(BGFLOAT),
-                           cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Cconst_, Cconst_.data(), count * sizeof(BGFLOAT),
-                           cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.Dconst_, Dconst_.data(), count * sizeof(BGFLOAT),
-                           cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.u_, u_.data(), count * sizeof(BGFLOAT),
-                           cudaMemcpyHostToDevice));
-   HANDLE_ERROR(cudaMemcpy(allVerticesDeviceProps.C3_, C3_.data(), count * sizeof(BGFLOAT),
-                           cudaMemcpyHostToDevice));
+   Aconst_.copyToDevice();
+   Bconst_.copyToDevice();
+   Cconst_.copyToDevice();
+   Dconst_.copyToDevice();
+   u_.copyToDevice();
+   C3_.copyToDevice();
 }
 
 ///  Copy all neurons' data from device to host.
 ///
-///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
-///                             on device memory.
-void AllIZHNeurons::copyFromDevice(void *allVerticesDevice)
+void AllIZHNeurons::copyFromDevice()
 {
-   AllIFNeurons::copyFromDevice(allVerticesDevice);
-   AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
+   AllIFNeurons::copyFromDevice();
 
-   HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
-                           sizeof(AllIZHNeuronsDeviceProperties), cudaMemcpyDeviceToHost));
-
-   int count = Simulator::getInstance().getTotalVertices();
-
-   HANDLE_ERROR(cudaMemcpy(Aconst_.data(), allVerticesDeviceProps.Aconst_, count * sizeof(BGFLOAT),
-                           cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Bconst_.data(), allVerticesDeviceProps.Bconst_, count * sizeof(BGFLOAT),
-                           cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Cconst_.data(), allVerticesDeviceProps.Cconst_, count * sizeof(BGFLOAT),
-                           cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(Dconst_.data(), allVerticesDeviceProps.Dconst_, count * sizeof(BGFLOAT),
-                           cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(u_.data(), allVerticesDeviceProps.u_, count * sizeof(BGFLOAT),
-                           cudaMemcpyDeviceToHost));
-   HANDLE_ERROR(cudaMemcpy(C3_.data(), allVerticesDeviceProps.C3_, count * sizeof(BGFLOAT),
-                           cudaMemcpyDeviceToHost));
+   Aconst_.copyToHost();
+   Bconst_.copyToHost();
+   Cconst_.copyToHost();
+   Dconst_.copyToHost();
+   u_.copyToHost();
+   C3_.copyToHost();
 }
 
 ///  Copy spike history data stored in device memory to host.
@@ -173,7 +144,7 @@ void AllIZHNeurons::copyFromDevice(void *allVerticesDevice)
 ///
 ///  @param  allVerticesDevice   GPU address of the AllIZHNeuronsDeviceProperties struct
 ///                             on device memory.
-void AllIZHNeurons::clearNeuronSpikeCounts(void *allVerticesDevice)
+void AllIZHNeurons::clearVertexHistory(void *allVerticesDevice)
 {
    AllIZHNeuronsDeviceProperties allVerticesDeviceProps;
    HANDLE_ERROR(cudaMemcpy(&allVerticesDeviceProps, allVerticesDevice,
@@ -197,8 +168,9 @@ void AllIZHNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
    // Advance neurons ------------->
    advanceIZHNeuronsDevice<<<blocksPerGrid, threadsPerBlock>>>(
       vertex_count, Simulator::getInstance().getMaxEdgesPerVertex(), maxSpikes,
-      Simulator::getInstance().getDeltaT(), g_simulationStep, randNoise,
-      (AllIZHNeuronsDeviceProperties *)allVerticesDevice,
+      Simulator::getInstance().getDeltaT(), g_simulationStep, randNoise, hasFired_,
+      summationPoints_, Vm_, Aconst_, Bconst_, u_, numStepsInRefractoryPeriod_, Vthresh_, Trefract_,
+      Cconst_, Dconst_, I0_, Inoise_, C3_, C2_, (AllIZHNeuronsDeviceProperties *)allVerticesDevice,
       (AllSpikingSynapsesDeviceProperties *)allEdgesDevice, edgeIndexMapDevice,
       fAllowBackPropagation_);
 }
@@ -216,36 +188,38 @@ void AllIZHNeurons::advanceVertices(AllEdges &synapses, void *allVerticesDevice,
 ///  @param[in] allEdgesDevice     Pointer to Synapse structures in device memory.
 ///  @param[in] edgeIndexMap       Inverse map, which is a table indexed by an input neuron and maps to the synapses that provide input to that neuron.
 ///  @param[in] fAllowBackPropagation True if back propagaion is allowed.
-__global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int maxSpikes,
-                                        BGFLOAT deltaT, uint64_t simulationStep, float randNoise[],
-                                        AllIZHNeuronsDeviceProperties *allVerticesDevice,
-                                        AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        EdgeIndexMapDevice *edgeIndexMapDevice,
-                                        bool fAllowBackPropagation)
+__global__ void advanceIZHNeuronsDevice(
+   int totalVertices, int maxEdges, int maxSpikes, BGFLOAT deltaT, uint64_t simulationStep,
+   float randNoise[], bool *hasFired_, BGFLOAT *summationPoints_, BGFLOAT *Vm_, BGFLOAT *Aconst_,
+   BGFLOAT *Bconst_, BGFLOAT *u_, int *numStepsInRefractoryPeriod_, BGFLOAT *Vthresh_,
+   BGFLOAT *Trefract_, BGFLOAT *Cconst_, BGFLOAT *Dconst_, BGFLOAT *I0_, BGFLOAT *Inoise_,
+   BGFLOAT *C3_, BGFLOAT *C2_, AllIZHNeuronsDeviceProperties *allVerticesDevice,
+   AllSpikingSynapsesDeviceProperties *allEdgesDevice, EdgeIndexMapDevice *edgeIndexMapDevice,
+   bool fAllowBackPropagation)
 {
    // determine which neuron this thread is processing
    int idx = blockIdx.x * blockDim.x + threadIdx.x;
    if (idx >= totalVertices)
       return;
 
-   allVerticesDevice->hasFired_[idx] = false;
-   BGFLOAT &sp = allVerticesDevice->summationPoints_[idx];
-   BGFLOAT &vm = allVerticesDevice->Vm_[idx];
-   BGFLOAT &a = allVerticesDevice->Aconst_[idx];
-   BGFLOAT &b = allVerticesDevice->Bconst_[idx];
-   BGFLOAT &u = allVerticesDevice->u_[idx];
+   hasFired_[idx] = false;
+   BGFLOAT &sp = summationPoints_[idx];
+   BGFLOAT &vm = Vm_[idx];
+   BGFLOAT &a = Aconst_[idx];
+   BGFLOAT &b = Bconst_[idx];
+   BGFLOAT &u = u_[idx];
    BGFLOAT r_sp = sp;
    BGFLOAT r_vm = vm;
    BGFLOAT r_a = a;
    BGFLOAT r_b = b;
    BGFLOAT r_u = u;
 
-   if (allVerticesDevice->numStepsInRefractoryPeriod_[idx] > 0) {   // is neuron refractory?
-      --allVerticesDevice->numStepsInRefractoryPeriod_[idx];
-   } else if (r_vm >= allVerticesDevice->Vthresh_[idx]) {   // should it fire?
+   if (numStepsInRefractoryPeriod_[idx] > 0) {   // is neuron refractory?
+      --numStepsInRefractoryPeriod_[idx];
+   } else if (r_vm >= Vthresh_[idx]) {   // should it fire?
       int &spikeCount = allVerticesDevice->numElementsInEpoch_[idx];
       // Note that the neuron has fired!
-      allVerticesDevice->hasFired_[idx] = true;
+      hasFired_[idx] = true;
       // record spike time
       int &queueEnd = allVerticesDevice->bufferEnd_[idx];
       allVerticesDevice->spikeHistory_[idx][queueEnd] = simulationStep;
@@ -254,12 +228,11 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
       queueEnd = (queueEnd + 1) % maxSpikes;
 
       // calculate the number of steps in the absolute refractory period
-      allVerticesDevice->numStepsInRefractoryPeriod_[idx]
-         = static_cast<int>(allVerticesDevice->Trefract_[idx] / deltaT + 0.5);
+      numStepsInRefractoryPeriod_[idx] = static_cast<int>(Trefract_[idx] / deltaT + 0.5);
 
       // reset to 'Vreset'
-      vm = allVerticesDevice->Cconst_[idx] * 0.001;
-      u = r_u + allVerticesDevice->Dconst_[idx];
+      vm = Cconst_[idx] * 0.001;
+      u = r_u + Dconst_[idx];
 
       // notify outgoing synapses of spike
       BGSIZE synapseCounts = edgeIndexMapDevice->outgoingEdgeCount_[idx];
@@ -285,8 +258,8 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
 
          // for each synapse, let them know we have fired
          switch (classSynapses_d) {
-            case classAllSTDPSynapses:
-            case classAllDynamicSTDPSynapses:
+            case enumClassSynapses::classAllSTDPSynapses:
+            case enumClassSynapses::classAllDynamicSTDPSynapses:
                for (BGSIZE i = 0; i < synapseCounts; i++) {
                   postSTDPSynapseSpikeHitDevice(
                      incomingMapBegin[i],
@@ -294,8 +267,8 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
                }   // end for
                break;
 
-            case classAllSpikingSynapses:
-            case classAllDSSynapses:
+            case enumClassSynapses::classAllSpikingSynapses:
+            case enumClassSynapses::classAllDSSynapses:
                for (BGSIZE i = 0; i < synapseCounts; i++) {
                   postSpikingSynapsesSpikeHitDevice(incomingMapBegin[i], allEdgesDevice);
                }   // end for
@@ -306,18 +279,18 @@ __global__ void advanceIZHNeuronsDevice(int totalVertices, int maxEdges, int max
          }   // end switch
       }
    } else {
-      r_sp += allVerticesDevice->I0_[idx];   // add IO
+      r_sp += I0_[idx];   // add IO
 
       // Random number alg. goes here
-      r_sp += (randNoise[idx] * allVerticesDevice->Inoise_[idx]);   // add cheap noise
+      r_sp += (randNoise[idx] * Inoise_[idx]);   // add cheap noise
 
       BGFLOAT Vint = r_vm * 1000;
 
       // Izhikevich model integration step
-      BGFLOAT Vb = Vint + allVerticesDevice->C3_[idx] * (0.04 * Vint * Vint + 5 * Vint + 140 - u);
-      u = r_u + allVerticesDevice->C3_[idx] * r_a * (r_b * Vint - r_u);
+      BGFLOAT Vb = Vint + C3_[idx] * (0.04 * Vint * Vint + 5 * Vint + 140 - u);
+      u = r_u + C3_[idx] * r_a * (r_b * Vint - r_u);
 
-      vm = Vb * 0.001 + allVerticesDevice->C2_[idx] * r_sp;   // add inputs
+      vm = Vb * 0.001 + C2_[idx] * r_sp;   // add inputs
    }
 
    // clear synaptic input for next time step

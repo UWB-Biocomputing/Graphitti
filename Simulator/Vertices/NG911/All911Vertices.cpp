@@ -64,8 +64,8 @@ void All911Vertices::createAllVertices(Layout &layout)
    // Loop over all vertices and set the number of servers and trunks, and
    // determine the size of the waiting queue.
    // We get the information needed from the GraphManager.
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NG911VertexProperties>::VertexIterator vi, vi_end;
+   GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < size_);
 
@@ -126,11 +126,52 @@ void All911Vertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
    // Load all the calls into the Caller Regions queue by getting the input events
    // from the InputManager.
    for (int idx = 0; idx < simulator.getTotalVertices(); ++idx) {
-      if (layout.vertexTypeMap_[idx] == CALR) {
+      if (layout.vertexTypeMap_[idx] == vertexType::CALR) {
          // If this is a Caller Region get all calls scheduled for the current epoch,
          // loading them into the aproppriate index of the vertexQueues_ vector
          inputManager_.getEvents(idx, currentStep, endStep, vertexQueues_[idx]);
       }
+   }
+}
+
+void All911Vertices::registerHistoryVariables()
+{
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+
+   // Registering the following variables to be recorded
+   recorder.registerVariable("numTrunks", numTrunks_, Recorder::UpdatedType::CONSTANT);
+   recorder.registerVariable("numServers", numServers_, Recorder::UpdatedType::CONSTANT);
+   recorder.registerVariable("droppedCalls", droppedCalls_, Recorder::UpdatedType::DYNAMIC);
+   recorder.registerVariable("receivedCalls", receivedCalls_, Recorder::UpdatedType::CONSTANT);
+
+   for (int i = 0; i < beginTimeHistory_.size(); i++) {
+      string varName = "BeginTimeHistory_" + std::to_string(i);
+      recorder.registerVariable(varName, beginTimeHistory_[i], Recorder::UpdatedType::DYNAMIC);
+   }
+
+   for (int i = 0; i < answerTimeHistory_.size(); i++) {
+      string varName = "AnswerTimeHistory_" + std::to_string(i);
+      recorder.registerVariable(varName, answerTimeHistory_[i], Recorder::UpdatedType::DYNAMIC);
+   }
+
+   for (int i = 0; i < endTimeHistory_.size(); i++) {
+      string varName = "EndTimeHistory_" + std::to_string(i);
+      recorder.registerVariable(varName, endTimeHistory_[i], Recorder::UpdatedType::DYNAMIC);
+   }
+
+   for (int i = 0; i < wasAbandonedHistory_.size(); i++) {
+      string varName = "WasAbandonedHistory_" + std::to_string(i);
+      recorder.registerVariable(varName, wasAbandonedHistory_[i], Recorder::UpdatedType::DYNAMIC);
+   }
+
+   for (int i = 0; i < queueLengthHistory_.size(); i++) {
+      string varName = "QueueLengthHistory_" + std::to_string(i);
+      recorder.registerVariable(varName, queueLengthHistory_[i], Recorder::UpdatedType::DYNAMIC);
+   }
+
+   for (int i = 0; i < utilizationHistory_.size(); i++) {
+      string varName = "UtilizationHistory_" + std::to_string(i);
+      recorder.registerVariable(varName, utilizationHistory_[i], Recorder::UpdatedType::DYNAMIC);
    }
 }
 
@@ -160,6 +201,60 @@ int All911Vertices::busyServers(int vIdx) const
 
 #if !defined(USE_GPU)
 
+// Take calls from the edges and transfer them to the vertex if it's queue is not full
+void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIndexMap)
+{
+   Simulator &simulator = Simulator::getInstance();
+   All911Edges &all911Edges = dynamic_cast<All911Edges &>(edges);
+
+   for (int vertex = 0; vertex < simulator.getTotalVertices(); ++vertex) {
+      int start = edgeIndexMap.incomingEdgeBegin_[vertex];
+      int count = edgeIndexMap.incomingEdgeCount_[vertex];
+
+      if (simulator.getModel().getLayout().vertexTypeMap_[vertex] == vertexType::CALR) {
+         continue;   // TODO911: Caller Regions will have different behaviour
+      }
+
+      // Loop over all the edges and pull the data in
+      for (int edge = start; edge < start + count; ++edge) {
+         int edgeIdx = edgeIndexMap.incomingEdgeIndexMap_[edge];
+
+         if (!all911Edges.inUse_[edgeIdx]) {
+            continue;
+         }   // Edge isn't in use
+         if (all911Edges.isAvailable_[edgeIdx]) {
+            continue;
+         }   // Edge doesn't have a call
+
+         int dst = all911Edges.destVertexIndex_[edgeIdx];
+         // The destination vertex should be the one pulling the information
+         assert(dst == vertex);
+
+         CircularBuffer<Call> &dstQueue = getQueue(dst);
+         if (dstQueue.size() >= (dstQueue.capacity() - busyServers(dst))) {
+            // Call is dropped because there is no space in the waiting queue
+            if (!all911Edges.isRedial_[edgeIdx]) {
+               // Only count the dropped call if it's not a redial
+               droppedCalls(dst)++;
+               // Record that we received a call
+               receivedCalls(dst)++;
+               LOG4CPLUS_DEBUG(vertexLogger_,
+                               "Call dropped: " << droppedCalls(dst)
+                                                << ", time: " << all911Edges.call_[edgeIdx].time
+                                                << ", vertex: " << dst
+                                                << ", queue size: " << dstQueue.size());
+            }
+         } else {
+            // Transfer call to destination
+            dstQueue.put(all911Edges.call_[edgeIdx]);
+            // Record that we received a call
+            receivedCalls(dst)++;
+            all911Edges.isAvailable_[edgeIdx] = true;
+            all911Edges.isRedial_[edgeIdx] = false;
+         }
+      }
+   }
+}
 
 // Update internal state of the indexed vertex (called by every simulation step).
 void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIndexMap)
@@ -174,12 +269,13 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
 
    // Advance vertices
    for (int vertex = 0; vertex < simulator.getTotalVertices(); ++vertex) {
-      if (layout.vertexTypeMap_[vertex] == CALR) {
+      if (layout.vertexTypeMap_[vertex] == vertexType::CALR) {
          advanceCALR(vertex, edges911, edgeIndexMap);
-      } else if (layout.vertexTypeMap_[vertex] == PSAP) {
+      } else if (layout.vertexTypeMap_[vertex] == vertexType::PSAP) {
          advancePSAP(vertex, edges911, edgeIndexMap);
-      } else if (layout.vertexTypeMap_[vertex] == EMS || layout.vertexTypeMap_[vertex] == FIRE
-                 || layout.vertexTypeMap_[vertex] == LAW) {
+      } else if (layout.vertexTypeMap_[vertex] == vertexType::EMS
+                 || layout.vertexTypeMap_[vertex] == vertexType::FIRE
+                 || layout.vertexTypeMap_[vertex] == vertexType::LAW) {
          advanceRESP(vertex, edges911, edgeIndexMap);
       }
    }
@@ -307,7 +403,9 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
    busyServers_[vertexIdx] = numServers_[vertexIdx] - availableServers.size();
 
    // Update queueLength and utilization histories
+   queueLengthHistory_[vertexIdx].resize(g_simulationStep + 1);
    queueLengthHistory_[vertexIdx][g_simulationStep] = vertexQueues_[vertexIdx].size();
+   utilizationHistory_[vertexIdx].resize(g_simulationStep + 1);
    utilizationHistory_[vertexIdx][g_simulationStep]
       = static_cast<double>(busyServers_[vertexIdx]) / numServers_[vertexIdx];
 }
@@ -384,7 +482,9 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
    busyServers_[vertexIdx] = numServers_[vertexIdx] - availableUnits.size();
 
    // Update queueLength and utilization histories
+   queueLengthHistory_[vertexIdx].resize(g_simulationStep + 1);
    queueLengthHistory_[vertexIdx][g_simulationStep] = vertexQueues_[vertexIdx].size();
+   utilizationHistory_[vertexIdx].resize(g_simulationStep + 1);
    utilizationHistory_[vertexIdx][g_simulationStep]
       = static_cast<double>(busyServers_[vertexIdx]) / numServers_[vertexIdx];
 }

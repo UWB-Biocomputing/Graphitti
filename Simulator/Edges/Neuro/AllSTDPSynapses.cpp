@@ -118,33 +118,18 @@ void AllSTDPSynapses::printParameters() const
 {
    AllSpikingSynapses::printParameters();
 
-   LOG4CPLUS_DEBUG(edgeLogger_, "\n\t---AllSTDPSynapses Parameters---"
-                                   << endl
-                                   << "\tEdges type: AllSTDPSynapses" << endl
-                                   << endl
-
-                                   << "\tSTDP gap" << defaultSTDPgap_ << endl
-                                   << "\n\tTauspost value: ["
-                                   << " I: " << tauspost_I_ << ", "
-                                   << " E: " << tauspost_E_ << "]" << endl
-                                   << "\n\tTauspre value: ["
-                                   << " I: " << tauspre_I_ << ", "
-                                   << " E: " << tauspre_E_ << "]" << endl
-                                   << "\n\tTaupos value: ["
-                                   << " I: " << taupos_I_ << ", "
-                                   << " E: " << taupos_E_ << "]" << endl
-                                   << "\n\tTau negvalue: ["
-                                   << " I: " << tauneg_I_ << ", "
-                                   << " E: " << tauneg_E_ << "]" << endl
-                                   << "\n\tWex value: ["
-                                   << " I: " << Wex_I_ << ", "
-                                   << " E: " << Wex_E_ << "]" << endl
-                                   << "\n\tAneg value: ["
-                                   << " I: " << Aneg_I_ << ", "
-                                   << " E: " << Aneg_E_ << "]" << endl
-                                   << "\n\tApos value: ["
-                                   << " I: " << Apos_I_ << ", "
-                                   << " E: " << Apos_E_ << "]" << endl);
+   LOG4CPLUS_DEBUG(
+      edgeLogger_,
+      "\n\t---AllSTDPSynapses Parameters---"
+         << "\n\tEdges type: AllSTDPSynapses \n\n"
+         << "\tSTDP gap" << defaultSTDPgap_ << "\n\n\tTauspost value: [" << " I: " << tauspost_I_
+         << ", " << " E: " << tauspost_E_ << "]" << "\n\n\tTauspre value: [" << " I: " << tauspre_I_
+         << ", " << " E: " << tauspre_E_ << "]" << "\n\n\tTaupos value: [" << " I: " << taupos_I_
+         << ", " << " E: " << taupos_E_ << "]" << "\n\n\tTau negvalue: [" << " I: " << tauneg_I_
+         << ", " << " E: " << tauneg_E_ << "]" << "\n\n\tWex value: [" << " I: " << Wex_I_ << ", "
+         << " E: " << Wex_E_ << "]" << "\n\n\tAneg value: [" << " I: " << Aneg_I_ << ", "
+         << " E: " << Aneg_E_ << "]" << "\n\n\tApos value: [" << " I: " << Apos_I_ << ", "
+         << " E: " << Apos_E_ << "]" << endl);
 }
 
 ///  Sets the data for Synapse to input's data.
@@ -290,28 +275,28 @@ void AllSTDPSynapses::advanceEdge(BGSIZE iEdg, AllVertices &neurons)
       // pre and post neurons index
       int idxPre = sourceVertexIndex_[iEdg];
       int idxPost = destVertexIndex_[iEdg];
-      uint64_t spikeHistory, spikeHistory2;
+      uint64_t t_post, t_pre;
       BGFLOAT delta;
-      BGFLOAT epre, epost;
+
+      // epre and epost are set to 1 for the independent model [Froemke and Dan (2002)]
+      BGFLOAT epre = 1.0;
+      BGFLOAT epost = 1.0;
 
       if (fPre) {   // preSpikeHit
-         // spikeCount points to the next available position of spike_history,
-         // so the getSpikeHistory w/offset = -2 will return the spike time
-         // just one before the last spike.
-         spikeHistory = spNeurons.getSpikeHistory(idxPre, -2);
-
-         epre = 1.0;
-         epost = 1.0;
-         // call the learning function stdpLearning() for each pair of
-         // pre-post spikes
+         // call the learning function stdpLearning() for each pair of pre-post spikes
          int offIndex = -1;   // last spike
          while (true) {
-            spikeHistory = spNeurons.getSpikeHistory(idxPost, offIndex);
-            if (spikeHistory == numeric_limits<unsigned long>::max())
+            // time of the offset post-spike hit
+            t_post = spNeurons.getSpikeHistory(idxPost, offIndex);
+
+            // break if no post-spike is found
+            if (t_post == numeric_limits<unsigned long>::max())
                break;
+
             // delta is the spike interval between pre-post spikes
-            // (include pre-synaptic transmission delay)
-            delta = -static_cast<BGFLOAT>(g_simulationStep - spikeHistory) * deltaT;
+            // deltaT converts the timestep to seconds
+            delta = -static_cast<BGFLOAT>(g_simulationStep - t_post) * deltaT;
+
             /*
              LOG4CPLUS_DEBUG(fileLogger_,"\nAllSTDPSynapses::advanceSynapse: fPre" << endl
              << "\tiEdg: " << iEdg << endl
@@ -335,28 +320,25 @@ void AllSTDPSynapses::advanceEdge(BGSIZE iEdg, AllVertices &neurons)
       }
 
       if (fPost) {   // postSpikeHit
-                     // spikeCount points to the next available position of spike_history,
-                     // so the getSpikeHistory w/offset = -2 will return the spike time
-                     // just one before the last spike.
-         spikeHistory = spNeurons.getSpikeHistory(idxPost, -2);
-         epost = 1.0;
-         epre = 1;
-
-
-         // call the learning function stdpLearning() for each pair of
-         // post-pre spikes
+         // call the learning function stdpLearning() for each pair of post-pre spikes
          int offIndex = -1;   // last spike
          while (true) {
-            spikeHistory = spNeurons.getSpikeHistory(idxPre, offIndex);
-            if (spikeHistory == numeric_limits<unsigned long>::max())
+            // time when the pre-spike left the source neuron
+            t_pre = spNeurons.getSpikeHistory(idxPre, offIndex);
+
+            // break if no pre-spike is found
+            if (t_pre == numeric_limits<unsigned long>::max())
                break;
 
-            if (spikeHistory + total_delay > g_simulationStep) {
+            // delay accounts for the time it takes the spike to reach the destination neuron
+            if (t_pre + total_delay > g_simulationStep) {
                --offIndex;
                continue;
             }
+
             // delta is the spike interval between post-pre spikes
-            delta = static_cast<BGFLOAT>(g_simulationStep - spikeHistory - total_delay) * deltaT;
+            delta = static_cast<BGFLOAT>(g_simulationStep - t_pre - total_delay) * deltaT;
+
             /*
              LOG4CPLUS_DEBUG(fileLogger_,"\nAllSTDPSynapses::advanceSynapse: fPost" << endl
              << "\tiEdg: " << iEdg << endl
@@ -368,6 +350,7 @@ void AllSTDPSynapses::advanceEdge(BGSIZE iEdg, AllVertices &neurons)
              << "\tepost: " << epost << endl
              << "\tdelta: " << delta << endl << endl);
              */
+
             if (delta >= 3.0 * taupos)
                break;
 
@@ -379,17 +362,7 @@ void AllSTDPSynapses::advanceEdge(BGSIZE iEdg, AllVertices &neurons)
 
    // decay the post spike response
    psr *= decay;
-   // and apply it to the summation point
-   #ifdef USE_OMP
-      #pragma omp atomic
-   #endif
-   neurons.summationPoints_[sumPointIndex] += psr;
-   #ifdef USE_OMP
-      //PAB: atomic above has implied flush (following statement generates error -- can't be member variable)
-      //#pragma omp flush (summationPoint)
-   #endif
 }
-
 
 BGFLOAT AllSTDPSynapses::synapticWeightModification(BGSIZE iEdg, BGFLOAT synapticWeight,
                                                     double delta)
@@ -403,15 +376,11 @@ BGFLOAT AllSTDPSynapses::synapticWeightModification(BGSIZE iEdg, BGFLOAT synapti
    BGFLOAT Apos = Apos_[iEdg];
    BGFLOAT Wex = Wex_[iEdg];
    BGFLOAT &W = W_[iEdg];
-   edgeType type = type_[iEdg];
    BGFLOAT dw = 0;
-   BGFLOAT oldW = W;
 
-   // BGFLOAT modDelta = fabs(delta);
-
+   // muneg and mupos default to 0 for the basic multiplicative model
    if (delta < -STDPgap) {
       // depression
-
       dw = pow(fabs(W) / Wex, muneg) * Aneg * exp(delta / tauneg);   // normalize
    } else if (delta > STDPgap) {
       // potentiation
@@ -435,24 +404,17 @@ void AllSTDPSynapses::stdpLearning(BGSIZE iEdg, double delta, double epost, doub
                                    int srcVertex, int destVertex)
 {
    BGFLOAT STDPgap = STDPgap_[iEdg];
-   BGFLOAT muneg = muneg_[iEdg];
-   BGFLOAT mupos = mupos_[iEdg];
-   BGFLOAT tauneg = tauneg_[iEdg];
-   BGFLOAT taupos = taupos_[iEdg];
-   BGFLOAT Aneg = Aneg_[iEdg];
-   BGFLOAT Apos = Apos_[iEdg];
    BGFLOAT Wex = Wex_[iEdg];
    BGFLOAT &W = W_[iEdg];
    edgeType type = type_[iEdg];
    BGFLOAT oldW = W;
-   // BGFLOAT modDelta = fabs(delta);
 
-   if (delta <= fabs(STDPgap)) {
+   if (fabs(delta) <= STDPgap) {
       return;
    }
 
    // dw is the fractional change in synaptic strength; add 1.0 to become the scaling ratio
-   //dw = 1.0 + dw * epre * epost;
+   // dw = 1.0 + dw * epre * epost; // used for the non-independent model
    BGFLOAT dw = 1.0 + synapticWeightModification(iEdg, W, delta);
 
    // if scaling ratio is less than zero, set it to zero so this synapse, its

@@ -27,7 +27,7 @@ OperationManager &OperationManager::getInstance()
 /// Called by lower level classes constructors on creation to register their operations with their operation type.
 /// This method can be overloaded to handle different function signatures.
 /// Handles function signature: void ()
-void OperationManager::registerOperation(const Operations::op &operation,
+void OperationManager::registerOperation(const Operations &operation,
                                          const function<void()> &function)
 {
    try {
@@ -41,7 +41,7 @@ void OperationManager::registerOperation(const Operations::op &operation,
 }
 
 /// Takes in a operation type and invokes all registered functions that are classified as that operation type.
-void OperationManager::executeOperation(const Operations::op &operation) const
+void OperationManager::executeOperation(const Operations &operation) const
 {
    LOG4CPLUS_INFO(logger_, "Executing operation " + operationToString(operation));
    if (functionList_.size() > 0) {
@@ -52,25 +52,27 @@ void OperationManager::executeOperation(const Operations::op &operation) const
 }
 
 /// Takes in the operation enum and returns the enum as a string. Used for debugging purposes.
-string OperationManager::operationToString(const Operations::op &operation) const
+string OperationManager::operationToString(const Operations &operation) const
 {
    switch (operation) {
-      case Operations::op::printParameters:
+      case Operations::printParameters:
          return "printParameters";
-      case Operations::op::loadParameters:
+      case Operations::loadParameters:
          return "loadParameters";
-      case Operations::op::serialize:
+      case Operations::serialize:
          return "serialize";
-      case Operations::op::deserialize:
+      case Operations::deserialize:
          return "deserialize";
-      case Operations::op::deallocateGPUMemory:
+      case Operations::deallocateGPUMemory:
          return "deallocateGPUMemory";
-      case Operations::op::restoreToDefault:
+      case Operations::restoreToDefault:
          return "restoreToDefault";
-      case Operations::op::copyToGPU:
+      case Operations::copyToGPU:
          return "copyToGPU";
-      case Operations::op::copyFromGPU:
+      case Operations::copyFromGPU:
          return "copyFromGPU";
+      case Operations::allocateGPU:
+         return "allocateGPU";
       default:
          return "Operation isn't in OperationManager::operationToString()";
    }

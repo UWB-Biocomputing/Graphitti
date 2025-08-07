@@ -107,17 +107,14 @@ void AllSpikingSynapses::printParameters() const
                                    << endl
                                    << "\tEdges type: AllSpikingSynapses" << endl
                                    << endl);
-   LOG4CPLUS_DEBUG(edgeLogger_, "\n\tTau values: ["
-                                   << " II: " << tau_II_ << ", "
-                                   << " IE: " << tau_IE_ << ","
-                                   << "EI : " << tau_EI_ << ","
-                                   << " EE: " << tau_EE_ << "]" << endl);
+   LOG4CPLUS_DEBUG(edgeLogger_, "\n\tTau values: [" << " II: " << tau_II_ << "," << " IE: "
+                                                    << tau_IE_ << "," << " EI: " << tau_EI_ << ","
+                                                    << " EE: " << tau_EE_ << "]" << endl);
 
    LOG4CPLUS_DEBUG(edgeLogger_, "\n\tDelay values: ["
-                                   << " II: " << delay_II_ << ", "
-                                   << " IE: " << delay_IE_ << ","
-                                   << "EI :" << delay_EI_ << ","
-                                   << " EE: " << delay_EE_ << "]" << endl);
+                                   << " II: " << delay_II_ << "," << " IE: " << delay_IE_ << ","
+                                   << " EI:" << delay_EI_ << "," << " EE: " << delay_EE_ << "]"
+                                   << endl);
 }
 
 ///  Sets the data for Synapse to input's data.
@@ -180,19 +177,19 @@ void AllSpikingSynapses::createEdge(BGSIZE iEdg, int srcVertex, int destVertex, 
 
    BGFLOAT tau;
    switch (type) {
-      case II:
+      case edgeType::II:
          tau = 6e-3;
          delay = 0.8e-3;
          break;
-      case IE:
+      case edgeType::IE:
          tau = 6e-3;
          delay = 0.8e-3;
          break;
-      case EI:
+      case edgeType::EI:
          tau = 3e-3;
          delay = 0.8e-3;
          break;
-      case EE:
+      case edgeType::EE:
          tau = 3e-3;
          delay = 1.5e-3;
          break;
@@ -282,15 +279,6 @@ void AllSpikingSynapses::advanceEdge(BGSIZE iEdg, AllVertices &neurons)
 
    // decay the post spike response
    psr *= decay;
-   // and apply it to the summation point
-   #ifdef USE_OMP
-      #pragma omp atomic #endif
-   #endif
-   neurons.summationPoints_[sumPointIndex] += psr;
-   #ifdef USE_OMP
-      //PAB: atomic above has implied flush (following statement generates error -- can't be member variable)
-      //#pragma omp flush (summationPoint)
-   #endif
 }
 
 ///  Calculate the post synapse response after a spike.
@@ -344,4 +332,62 @@ void AllSpikingSynapses::printSynapsesProps() const
          cout << " total_delay: " << totalDelay_[i] << endl;
       }
    }
+}
+
+string vectorToXML(const vector<BGFLOAT> &matrix, int rows, int cols, const string &name)
+{
+   ostringstream os;
+   os << "<" << name << " rows=\"" << rows << "\" columns=\"" << cols << "\">\n";
+
+   int index = 0;
+   for_each(matrix.begin(), matrix.end(), [&](BGFLOAT value) mutable {
+      os << "   <value" << index << ">" << value << "</value" << index << ">\n";
+      index++;
+   });
+
+   os << "</" << name << ">\n";
+   return os.str();
+}
+
+string vectorToXML(const vector<int> &matrix, int rows, int cols, const string &name)
+{
+   ostringstream os;
+   os << "<" << name << " rows=\"" << rows << "\" columns=\"" << cols << "\">\n";
+
+   int index = 0;
+   for_each(matrix.begin(), matrix.end(), [&](int value) mutable {
+      os << "   <value" << index << ">" << value << "</value" << index << ">\n";
+
+      index++;
+   });
+
+   os << "</" << name << ">\n";
+   return os.str();
+}
+
+void AllSpikingSynapses::outputWeights(int epochNum)
+{
+   const std::string filename = "./Output/Results/weights-epoch-" + std::to_string(epochNum)
+                                + ".xml";   // Hardcoded filename
+   int vertexCount = Simulator::getInstance().getTotalVertices();
+
+   ofstream outFile(filename);
+   if (!outFile) {
+      cerr << "Error: Unable to open file " << filename << endl;
+      cerr << "Error details: " << strerror(errno) << endl;
+      return;
+   }
+
+   int maxEdges = Simulator::getInstance().getMaxEdgesPerVertex();
+
+   string wContent = vectorToXML(W_, vertexCount, maxEdges, "WeightMatrix");
+   string srcContent = vectorToXML(sourceVertexIndex_, vertexCount, maxEdges, "SourceVertexIndex");
+
+   outFile << "<Graph>\n";
+   outFile << wContent;
+   outFile << srcContent;
+   outFile << "</Graph>";
+   outFile.close();
+
+   cout << "Weights matrix output to: " << filename << endl;
 }

@@ -28,8 +28,8 @@ void LayoutNeuro::registerGraphProperties()
    // We are passing a pointer to a data member of the VertexProperty
    // so Boost Graph Library can use it for loading the graphML file.
    // Look at: https://www.studytonight.com/cpp/pointer-to-members.php
-   GraphManager &gm = GraphManager::getInstance();
-   gm.registerProperty("active", &VertexProperty::active);
+   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
+   gm.registerProperty("active", &NeuralVertexProperties::active);
 }
 
 ///  Prints out all parameters to logging file.
@@ -52,20 +52,24 @@ void LayoutNeuro::generateVertexTypeMap()
    int numExcititoryNeurons;
 
    // Set Neuron Type from GraphML File
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NeuralVertexProperties>::VertexIterator vi, vi_end;
+   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
 
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
       if (gm[*vi].type == "INH") {
-         vertexTypeMap_[*vi] = INH;
+         vertexTypeMap_[*vi] = vertexType::INH;
          numInhibitoryNeurons++;
       }
       // Default Type is Excitatory
       else {
-         vertexTypeMap_[*vi] = EXC;
+         vertexTypeMap_[*vi] = vertexType::EXC;
       }
    }
+
+   // Register vertexTypeMap to be recorded
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   recorder.registerVariable("vertexTypeMap", vertexTypeMap_, Recorder::UpdatedType::CONSTANT);
 
    numExcititoryNeurons = numVertices_ - numInhibitoryNeurons;
 
@@ -85,8 +89,8 @@ void LayoutNeuro::initStarterMap()
    Layout::initStarterMap();
 
    // Set Neuron Activity from GraphML File
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NeuralVertexProperties>::VertexIterator vi, vi_end;
+   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
 
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
@@ -104,16 +108,20 @@ void LayoutNeuro::initStarterMap()
 ///  @return type of the synapse.
 edgeType LayoutNeuro::edgType(int srcVertex, int destVertex)
 {
-   if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == INH)
-      return II;
-   else if (vertexTypeMap_[srcVertex] == INH && vertexTypeMap_[destVertex] == EXC)
-      return IE;
-   else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == INH)
-      return EI;
-   else if (vertexTypeMap_[srcVertex] == EXC && vertexTypeMap_[destVertex] == EXC)
-      return EE;
+   if (vertexTypeMap_[srcVertex] == vertexType::INH
+       && vertexTypeMap_[destVertex] == vertexType::INH)
+      return edgeType::II;
+   else if (vertexTypeMap_[srcVertex] == vertexType::INH
+            && vertexTypeMap_[destVertex] == vertexType::EXC)
+      return edgeType::IE;
+   else if (vertexTypeMap_[srcVertex] == vertexType::EXC
+            && vertexTypeMap_[destVertex] == vertexType::INH)
+      return edgeType::EI;
+   else if (vertexTypeMap_[srcVertex] == vertexType::EXC
+            && vertexTypeMap_[destVertex] == vertexType::EXC)
+      return edgeType::EE;
 
-   return ETYPE_UNDEF;
+   return edgeType::ETYPE_UNDEF;
 }
 
 // Note: This code was previously used for debugging, but it is now dead code left behind

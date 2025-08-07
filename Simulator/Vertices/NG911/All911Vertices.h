@@ -70,6 +70,7 @@
 #include "Global.h"
 #include "InputEvent.h"
 #include "InputManager.h"
+#include "RecordableVector.h"
 
 // Forward declaration to avoid circular reference
 class All911Edges;
@@ -94,7 +95,7 @@ public:
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all vertices' states.
-   virtual void setupVertices();
+   virtual void setupVertices() override;
 
    ///  Creates all the Vertices and assigns initial data for them.
    ///
@@ -121,9 +122,7 @@ public:
    virtual void loadEpochInputs(uint64_t currentStep, uint64_t endStep) override;
 
    /// unused virtual function placeholder
-   virtual void registerHistoryVariables() override
-   {
-   }
+   virtual void registerHistoryVariables() override;
 
    /// Accessor for the waiting queue of a vertex
    ///
@@ -151,36 +150,37 @@ public:
 
 private:
    /// The starting time for every call
-   vector<vector<uint64_t>> beginTimeHistory_;
+   vector<RecordableVector<uint64_t>> beginTimeHistory_;
    /// The answer time for every call
-   vector<vector<uint64_t>> answerTimeHistory_;
+   vector<RecordableVector<uint64_t>> answerTimeHistory_;
    /// The end time for every call
-   vector<vector<uint64_t>> endTimeHistory_;
+   vector<RecordableVector<uint64_t>> endTimeHistory_;
    /// True if the call was abandoned
-   vector<vector<unsigned char>> wasAbandonedHistory_;
+   vector<RecordableVector<unsigned char>>
+      wasAbandonedHistory_;   // changed to bool from unsigned char
    /// The length of the waiting queue at every time-step
-   vector<vector<int>> queueLengthHistory_;
+   vector<RecordableVector<int>> queueLengthHistory_;
    /// The portion of servers that are busy at every time-step
-   vector<vector<double>> utilizationHistory_;
+   vector<RecordableVector<double>> utilizationHistory_;
 
    /// These are the queues where calls will wait to be served
    vector<CircularBuffer<Call>> vertexQueues_;
 
    /// The number of calls that have been dropped (got a busy signal)
-   vector<int> droppedCalls_;
+   RecordableVector<int> droppedCalls_;
 
    /// The number of received calls
-   vector<int> receivedCalls_;
+   RecordableVector<int> receivedCalls_;
 
    /// Number of servers currently serving calls
    vector<int> busyServers_;
 
    /// Number of servers. In a PSAP these are the call takers, in Responder nodes
    /// they are responder units
-   vector<int> numServers_;
+   RecordableVector<int> numServers_;
 
    /// Number of phone lines available. Only valid for PSAPs and Responders
-   vector<int> numTrunks_;
+   RecordableVector<int> numTrunks_;
 
    /// The probability that a caller will redial after receiving the busy signal
    BGFLOAT redialP_;
@@ -225,13 +225,23 @@ private:
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract
 public:
-   virtual void allocNeuronDeviceStruct(void **allVerticesDevice) {};
-   virtual void deleteNeuronDeviceStruct(void *allVerticesDevice) {};
-   virtual void copyToDevice(void *allVerticesDevice) {};
-   virtual void copyFromDevice(void *allVerticesDevice) {};
+   virtual void allocVerticesDeviceStruct() {};
+   virtual void deleteVerticesDeviceStruct() {};
+   virtual void copyToDevice() {};
+   virtual void copyFromDevice() {};
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
                                 float randNoise[], EdgeIndexMapDevice *edgeIndexMapDevice) {};
    virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};
+   virtual void clearVertexHistory(void *allVerticesDevice) {};
+
+   /// Performs an integration operation per vertex using the inputs to the vertex.
+   ///
+   /// @param allVerticesDevice       GPU address of the allVertices struct on device memory.
+   /// @param edgeIndexMapDevice      GPU address of the EdgeIndexMap on device memory.
+   /// @param allEdgesDevice          GPU address of the allEdges struct on device memory.
+   virtual void integrateVertexInputs(void *allVerticesDevice,
+                                      EdgeIndexMapDevice *edgeIndexMapDevice,
+                                      void *allEdgesDevice) {};
 #else   // !defined(USE_GPU)
 public:
    ///  Update internal state of the indexed Vertex (called by every simulation step).
@@ -240,6 +250,12 @@ public:
    ///  @param  edges         The Edge list to search from.
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIndexMap) override;
+
+   /// Performs an integration operation per vertex using the inputs to the vertex.
+   ///
+   ///  @param  edges         The edge list to search from.
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   virtual void integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIndexMap) override;
 
 protected:
 

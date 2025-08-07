@@ -14,6 +14,7 @@
 #pragma once
 
 using namespace std;
+#include "VertexType.h"
 #include <string>
 #include <typeinfo>
 #include <variant>
@@ -24,7 +25,7 @@ using namespace std;
 
 /// A list of pre-defined basic data types for variablse in all the simulations
 /// These pre-defined types should match with the types of variant in Recorder
-using variantTypes = variant<uint64_t, bool, int, BGFLOAT>;
+using variantTypes = variant<uint64_t, bool, int, BGFLOAT, vertexType, double, unsigned char>;
 
 class RecordableBase {
 public:
@@ -39,6 +40,8 @@ public:
    virtual variantTypes getElement(int index) const = 0;
 
    /// Start a new epoch for the recordable variable.
+   /// Makes the variable look empty from recorder point of view
+   /// Depends on subclass implementation
    /// Called at the beginning of each simulation epoch to prepare for recording new events.
    virtual void startNewEpoch() = 0;
 

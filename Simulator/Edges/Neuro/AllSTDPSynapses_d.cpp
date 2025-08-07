@@ -32,11 +32,10 @@ __global__ void advanceSTDPSynapsesDevice(int totalSynapseCount,
                                           int maxSpikes);
 ///  Allocate GPU memories to store all synapses' states,
 ///  and copy them from host to GPU memory.
-///
-///  @param  allEdgesDevice  GPU address of the AllSTDPSynapsesDeviceProperties struct
-///                             on device memory.
-void AllSTDPSynapses::allocEdgeDeviceStruct(void **allEdgesDevice)
+void AllSTDPSynapses::allocEdgeDeviceStruct()
 {
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void **allEdgesDevice = reinterpret_cast<void **>(&(gpuModel->getAllEdgesDevice()));
    allocEdgeDeviceStruct(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                          Simulator::getInstance().getMaxEdgesPerVertex());
 }
@@ -93,11 +92,11 @@ void AllSTDPSynapses::allocDeviceStruct(AllSTDPSynapsesDeviceProperties &allEdge
 
 ///  Delete GPU memories.
 ///
-///  @param  allEdgesDevice  GPU address of the AllSTDPSynapsesDeviceProperties struct
-///                             on device memory.
-void AllSTDPSynapses::deleteEdgeDeviceStruct(void *allEdgesDevice)
+void AllSTDPSynapses::deleteEdgeDeviceStruct()
 {
    AllSTDPSynapsesDeviceProperties allEdgesDeviceProps;
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
    HANDLE_ERROR(cudaMemcpy(&allEdgesDeviceProps, allEdgesDevice,
                            sizeof(AllSTDPSynapsesDeviceProperties), cudaMemcpyDeviceToHost));
    deleteDeviceStruct(allEdgesDeviceProps);
@@ -129,12 +128,10 @@ void AllSTDPSynapses::deleteDeviceStruct(AllSTDPSynapsesDeviceProperties &allEdg
 
 ///  Copy all synapses' data from host to device.
 ///
-///  @param  allEdgesDevice     GPU address of the AllSTDPSynapsesDeviceProperties struct
-///                                on device memory.
-///  @param  numVertices            Number of vertices.
-///  @param  maxEdgesPerVertex  Maximum number of synapses per neuron.
-void AllSTDPSynapses::copyEdgeHostToDevice(void *allEdgesDevice)
+void AllSTDPSynapses::copyEdgeHostToDevice()
 {   // copy everything necessary
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
    copyEdgeHostToDevice(allEdgesDevice, Simulator::getInstance().getTotalVertices(),
                         Simulator::getInstance().getMaxEdgesPerVertex());
 }
@@ -200,13 +197,12 @@ void AllSTDPSynapses::copyHostToDevice(void *allEdgesDevice,
 
 ///  Copy all synapses' data from device to host.
 ///
-///  @param  allEdgesDevice  GPU address of the AllSTDPSynapsesDeviceProperties struct
-///                             on device memory.
-void AllSTDPSynapses::copyEdgeDeviceToHost(void *allEdgesDevice)
+void AllSTDPSynapses::copyEdgeDeviceToHost()
 {
    // copy everything necessary
    AllSTDPSynapsesDeviceProperties allEdgesDeviceProps;
-
+   GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
+   void *allEdgesDevice = static_cast<void *>(gpuModel->getAllEdgesDevice());
    HANDLE_ERROR(cudaMemcpy(&allEdgesDeviceProps, allEdgesDevice,
                            sizeof(AllSTDPSynapsesDeviceProperties), cudaMemcpyDeviceToHost));
    copyDeviceToHost(allEdgesDeviceProps);
@@ -284,7 +280,7 @@ void AllSTDPSynapses::advanceEdges(void *allEdgesDevice, void *allVerticesDevice
 ///  (see issue#137).
 void AllSTDPSynapses::setEdgeClassID()
 {
-   enumClassSynapses classSynapses_h = classAllSTDPSynapses;
+   enumClassSynapses classSynapses_h = enumClassSynapses::classAllSTDPSynapses;
    HANDLE_ERROR(cudaMemcpyToSymbol(classSynapses_d, &classSynapses_h, sizeof(enumClassSynapses)));
 }
 
@@ -409,8 +405,7 @@ void AllSTDPSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
          }
       }
       for (int i = 0; i < countVertices_; i++) {
-         cout << "GPU edge_counts:"
-              << "neuron[" << i << "]" << synapseCountsPrint[i] << endl;
+         cout << "GPU edge_counts:" << "neuron[" << i << "]" << synapseCountsPrint[i] << endl;
       }
       cout << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;
       cout << "GPU maxEdgesPerVertex:" << maxEdgesPerVertexPrint << endl;
@@ -590,12 +585,12 @@ __global__ void advanceSTDPSynapsesDevice(int totalSynapseCount,
       // is an input in the queue?
       if (isFired) {
          switch (classSynapses_d) {
-            case classAllSTDPSynapses:
+            case enumClassSynapses::classAllSTDPSynapses:
                changeSpikingSynapsesPSRDevice(
                   static_cast<AllSpikingSynapsesDeviceProperties *>(allEdgesDevice), iEdg,
                   simulationStep, deltaT);
                break;
-            case classAllDynamicSTDPSynapses:
+            case enumClassSynapses::classAllDynamicSTDPSynapses:
                // Note: we cast void * over the allEdgesDevice, then recast it,
                // because AllDSSynapsesDeviceProperties inherited properties from
                // the AllDSSynapsesDeviceProperties and the AllSTDPSynapsesDeviceProperties.
@@ -675,12 +670,12 @@ __global__ void advanceSTDPSynapsesDevice(int totalSynapseCount,
          }
 
          switch (classSynapses_d) {
-            case classAllSTDPSynapses:
+            case enumClassSynapses::classAllSTDPSynapses:
                changeSpikingSynapsesPSRDevice(
                   static_cast<AllSpikingSynapsesDeviceProperties *>(allEdgesDevice), iEdg,
                   simulationStep, deltaT);
                break;
-            case classAllDynamicSTDPSynapses:
+            case enumClassSynapses::classAllDynamicSTDPSynapses:
                // Note: we cast void * over the allEdgesDevice, then recast it,
                // because AllDSSynapsesDeviceProperties inherited properties from
                // the AllDSSynapsesDeviceProperties and the AllSTDPSynapsesDeviceProperties.

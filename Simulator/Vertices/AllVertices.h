@@ -33,8 +33,12 @@ using namespace std;
 // cereal
 #include "cereal/types/vector.hpp"
 
+// Utility function to convert a vertexType into a string.
+string vertexTypeToString(vertexType t);
+
 class Layout;
 class AllEdges;
+struct AllVerticesDeviceProperties;
 
 class AllVertices {
 public:
@@ -43,10 +47,10 @@ public:
    virtual ~AllVertices() = default;
 
    ///  Setup the internal structure of the class.
-   ///  Allocate memories to store all neurons' state.
+   ///  Allocate memories to store all vertices' state.
    virtual void setupVertices();
 
-   ///  Prints out all parameters of the neurons to logging file.
+   ///  Prints out all parameters of the vertices to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const;
 
@@ -64,7 +68,7 @@ public:
 
    ///  Creates all the Vertices and assigns initial data for them.
    ///
-   ///  @param  layout      Layout information of the neural network.
+   ///  @param  layout      Layout information of the network.
    virtual void createAllVertices(Layout &layout) = 0;
 
    ///  Outputs state of the vertex chosen as a string.
@@ -73,15 +77,8 @@ public:
    ///  @return the complete state of the vertex.
    virtual string toString(int i) const = 0;
 
-   ///  The summation point for each vertex.
-   ///  Summation points are places where the synapses connected to the vertex
-   ///  apply (summed up) their PSRs (Post-Synaptic-Response).
-   ///  On the next advance cycle, vertices add the values stored in their corresponding
-   ///  summation points to their Vm and resets the summation points to zero
-   vector<BGFLOAT> summationPoints_;
-
-   /// Helper function for recorder to register spike history variables for all neurons.
-   /// Option 1: Register neuron information in vertexEvents_ one by one.
+   /// Helper function for recorder to register spike history variables for all vertices.
+   /// Option 1: Register vertex information in vertexEvents_ one by one.
    /// Option 2: Register a vector of EventBuffer variables.
    virtual void registerHistoryVariables() = 0;
 
@@ -93,34 +90,34 @@ protected:
    int size_;
 
    // Loggers used to print to using log4cplus logging macros
-   log4cplus::Logger fileLogger_;     // Logs to Output/Debug/logging.txt
+   log4cplus::Logger fileLogger_;   // Logs to Output/Debug/logging.txt
+   /// TODO: Should check to see if this file name "neurons" is hardcoded and change it to vertices
    log4cplus::Logger vertexLogger_;   // Logs to Output/Debug/neurons.txt
 
 #if defined(USE_GPU)
 public:
    ///  Allocate GPU memories to store all vertices' states,
    ///  and copy them from host to GPU memory.
-   ///
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void allocNeuronDeviceStruct(void **allVerticesDevice) = 0;
+   virtual void allocVerticesDeviceStruct() = 0;
 
    ///  Delete GPU memories.
    ///
+   virtual void deleteVerticesDeviceStruct() = 0;
+
+   ///  Clear the spike counts out of all vertices.
+   //
    ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void deleteNeuronDeviceStruct(void *allVerticesDevice) = 0;
+   virtual void clearVertexHistory(void *allVerticesDevice) = 0;
 
    ///  Copy all vertices' data from host to device.
-   ///
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void copyToDevice(void *allVerticesDevice) = 0;
+   virtual void copyToDevice() = 0;
 
    ///  Copy all vertices' data from device to host.
    ///
-   ///  @param  allVerticesDevice   GPU address of the allVertices struct on device memory.
-   virtual void copyFromDevice(void *allVerticesDevice) = 0;
+   virtual void copyFromDevice() = 0;
 
    ///  Update the state of all vertices for a time step
-   ///  Notify outgoing synapses if vertex has fired.
+   ///  Notify outgoing edges if vertex has fired.
    ///
    ///  @param  edges               Reference to the allEdges struct on host memory.
    ///  @param  allVerticesDevice       GPU address of the allVertices struct on device memory.
@@ -135,30 +132,38 @@ public:
    ///
    ///  @param  edges               Reference to the allEdges struct on host memory.
    virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) = 0;
+
+   /// Performs an integration operation per vertex using the inputs to the vertex.
+   ///
+   /// @param allVerticesDevice       GPU address of the allVertices struct on device memory.
+   /// @param edgeIndexMapDevice      GPU address of the EdgeIndexMap on device memory.
+   /// @param allEdgesDevice          GPU address of the allEdges struct on device memory.
+   virtual void integrateVertexInputs(void *allVerticesDevice,
+                                      EdgeIndexMapDevice *edgeIndexMapDevice, void *allEdgesDevice)
+      = 0;
 #else   // !defined(USE_GPU)
 public:
-   ///  Update internal state of the indexed Neuron (called by every simulation step).
-   ///  Notify outgoing synapses if vertex has fired.
+   ///  Update internal state of the indexed vertex (called by every simulation step).
+   ///  Notify outgoing edges if vertex has fired.
    ///
-   ///  @param  edges         The Synapse list to search from.
+   ///  @param  edges         The edge list to search from.
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIndexMap) = 0;
+
+   /// Performs an integration operation per vertex using the inputs to the vertex.
+   ///
+   ///  @param  edges         The edge list to search from.
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   virtual void integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIndexMap) = 0;
 
 #endif   // defined(USE_GPU)
 };
 
 #if defined(USE_GPU)
-struct AllVerticesDeviceProperties {
-   ///  The summation point for each vertex.
-   ///  Summation points are places where the synapses connected to the vertex
-   ///  apply (summed up) their PSRs (Post-Synaptic-Response).
-   ///  On the next advance cycle, vertices add the values stored in their corresponding
-   ///  summation points to their Vm and resets the summation points to zero
-   BGFLOAT *summationPoints_;
-};
+struct AllVerticesDeviceProperties {};
 #endif   // defined(USE_GPU)
 
 template <class Archive> void AllVertices::serialize(Archive &archive)
 {
-   archive(cereal::make_nvp("summationPoints", summationPoints_), cereal::make_nvp("size", size_));
+   archive(cereal::make_nvp("size", size_));
 }
