@@ -32,8 +32,6 @@ void All911Vertices::setupVertices()
    // Resize and fill data structures for recording
    droppedCalls_.assign(size_, 0);
    receivedCalls_.assign(size_, 0);
-   queueLengthHistory_.resize(size_);
-   utilizationHistory_.resize(size_);
 
    // Register call properties with InputManager
    inputManager_.registerProperty("vertex_id", &Call::vertexId);
@@ -55,6 +53,7 @@ void All911Vertices::createAllVertices(Layout &layout)
    int totalNumberOfEvents = inputManager_.getTotalNumberOfEvents();
    assert(0 < totalNumberOfEvents);
    LOG4CPLUS_DEBUG(vertexLogger_, "Total number of events: " << totalNumberOfEvents);
+   // Initialize the data structures for system metrics
    beginTimeHistory_.assign(size_, totalNumberOfEvents);
    answerTimeHistory_.assign(size_, totalNumberOfEvents);
    endTimeHistory_.assign(size_, totalNumberOfEvents);
@@ -67,6 +66,9 @@ void All911Vertices::createAllVertices(Layout &layout)
    uint64_t totalTimeSteps = stepsPerEpoch * simulator.getNumEpochs();
    BGFLOAT epochDuration = simulator.getEpochDuration();
    BGFLOAT deltaT = simulator.getDeltaT();
+   // Initialize the data structures for system metrics
+   queueLengthHistory_.assign(size_, totalTimeSteps);
+   utilizationHistory_.assign(size_, totalTimeSteps);
 
    // Loop over all vertices and set the number of servers and trunks, and
    // determine the size of the waiting queue.
@@ -98,10 +100,6 @@ void All911Vertices::createAllVertices(Layout &layout)
          servingCall_[*vi].resize(gm[*vi].servers);
          answerTime_[*vi].resize(gm[*vi].servers);
          serverCountdown_[*vi].assign(gm[*vi].servers, 0);
-
-         // Initialize the data structures for system metrics
-         queueLengthHistory_[*vi].assign(totalTimeSteps, 0);
-         utilizationHistory_[*vi].assign(totalTimeSteps, 0);
       }
    }
 }
@@ -429,11 +427,8 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
    busyServers_[vertexIdx] = numberOfServers - numberOfAvailableServers;
 
    // Update queueLength and utilization histories
-   queueLengthHistory_[vertexIdx].resize(g_simulationStep + 1);
-   queueLengthHistory_[vertexIdx][g_simulationStep] = vertexQueues_[vertexIdx].size();
-   utilizationHistory_[vertexIdx].resize(g_simulationStep + 1);
-   utilizationHistory_[vertexIdx][g_simulationStep]
-      = static_cast<double>(busyServers_[vertexIdx]) / numberOfServers;
+   queueLengthHistory_[vertexIdx].insertEvent(vertexQueues_[vertexIdx].size());
+   utilizationHistory_[vertexIdx].insertEvent(static_cast<double>(busyServers_[vertexIdx]) / numberOfServers);
 }
 
 
@@ -524,11 +519,8 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
    busyServers_[vertexIdx] = numberOfUnits - numberOfAvailableUnits;
 
    // Update queueLength and utilization histories
-   queueLengthHistory_[vertexIdx].resize(g_simulationStep + 1);
-   queueLengthHistory_[vertexIdx][g_simulationStep] = vertexQueues_[vertexIdx].size();
-   utilizationHistory_[vertexIdx].resize(g_simulationStep + 1);
-   utilizationHistory_[vertexIdx][g_simulationStep]
-      = static_cast<double>(busyServers_[vertexIdx]) / numberOfUnits;
+   queueLengthHistory_[vertexIdx].insertEvent(vertexQueues_[vertexIdx].size());
+   utilizationHistory_[vertexIdx].insertEvent(static_cast<double>(busyServers_[vertexIdx]) / numberOfUnits);
 }
 
 

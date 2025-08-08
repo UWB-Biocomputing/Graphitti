@@ -66,6 +66,7 @@
 #pragma once
 
 #include "AllVertices.h"
+#include "DoubleEventBuffer.h"
 #include "CircularBuffer.h"
 #include "EventBuffer.h"
 #include "Global.h"
@@ -162,9 +163,9 @@ public:
    vector<EventBuffer>
       wasAbandonedHistory_;   // changed to bool from unsigned char
    /// The length of the waiting queue at every time-step
-   vector<RecordableVector<int>> queueLengthHistory_;
+   vector<EventBuffer> queueLengthHistory_;
    /// The portion of servers that are busy at every time-step
-   vector<RecordableVector<double>> utilizationHistory_;
+   vector<DoubleEventBuffer> utilizationHistory_;
 
    /// These are the queues where calls will wait to be served
    vector<CircularBuffer<Call>> vertexQueues_;
