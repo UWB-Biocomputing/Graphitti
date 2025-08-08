@@ -343,13 +343,13 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
    vector<unsigned char> availableServers; // Use vector but treat like array to better mirror on GPU
    availableServers.reserve(numberOfServers);
    for (BGSIZE serverIndex = 0; serverIndex < numberOfServers; serverIndex++) {
-      availableServers[serverIndex] = 0;
+      availableServers[serverIndex] = false;
    }
    for (size_t server = 0; server < numberOfServers; ++server) {
       if (serverCountdown_[vertexIdx][server] == 0) {
          // Server is available to take calls. This check is needed because calls
          // could have duration of zero or server has not been assigned a call yet
-         availableServers[server] = 1;
+         availableServers[server] = true;
          numberOfAvailableServers++;
       } else if (--serverCountdown_[vertexIdx][server] == 0) {
          // Server becomes free to take calls
@@ -379,7 +379,7 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
 
          // This assumes that the caller doesn't stay in the line until the responder
          // arrives on scene. This not true in all instances.
-         availableServers[server] = 1;
+         availableServers[server] = true;
          numberOfAvailableServers++;
       }
    }
@@ -409,10 +409,10 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
          // The available server starts serving the call
          int availServer;
          for(BGSIZE serverIndex = 0; serverIndex < numberOfServers; serverIndex++) {
-            if (availableServers[serverIndex] == 1) {
+            if (availableServers[serverIndex] == true) {
                // If server is available, have that server serve the call
                availServer = serverIndex;
-               availableServers[serverIndex] = 0;
+               availableServers[serverIndex] = false;
                currentlyAvailableServers--;
                break;
             }
@@ -449,12 +449,12 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
    vector<unsigned char> availableUnits; // Use vector but treat like array to better mirror on GPU
    availableUnits.reserve(numberOfUnits);
    for (BGSIZE unitIndex = 0; unitIndex < numberOfUnits; unitIndex++) {
-      availableUnits[unitIndex] = 0;
+      availableUnits[unitIndex] = false;
    }
    for (size_t unit = 0; unit < numberOfUnits; ++unit) {
       if (serverCountdown_[vertexIdx][unit] == 0) {
          // Unit is available
-         availableUnits[unit] = 1;
+         availableUnits[unit] = true;
          numberOfAvailableUnits++;
       } else if (--serverCountdown_[vertexIdx][unit] == 0) {
          // Unit becomes available to responde to new incidents
@@ -471,7 +471,7 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
                             << ", waited: " << answerTime_[vertexIdx][unit] - endingIncident.time);
 
          // Unit is added to available units
-         availableUnits[unit] = 1;
+         availableUnits[unit] = true;
          numberOfAvailableUnits++;
       }
    }
@@ -487,10 +487,10 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
       // The available unit starts serving the call
       int availUnit;
       for(BGSIZE unitIndex = 0; unitIndex < numberOfUnits; unitIndex++) {
-         if (availableUnits[unitIndex] == 1) {
+         if (availableUnits[unitIndex] == true) {
             // If server is available, have that server serve the call
             availUnit = unitIndex;
-            availableUnits[unitIndex] = 0;
+            availableUnits[unitIndex] = false;
             break;
          }
       }
