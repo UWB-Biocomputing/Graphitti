@@ -32,10 +32,6 @@ void All911Vertices::setupVertices()
    // Resize and fill data structures for recording
    droppedCalls_.assign(size_, 0);
    receivedCalls_.assign(size_, 0);
-   beginTimeHistory_.resize(size_);
-   answerTimeHistory_.resize(size_);
-   endTimeHistory_.resize(size_);
-   wasAbandonedHistory_.resize(size_);
    queueLengthHistory_.resize(size_);
    utilizationHistory_.resize(size_);
 
@@ -59,6 +55,10 @@ void All911Vertices::createAllVertices(Layout &layout)
    int totalNumberOfEvents = inputManager_.getTotalNumberOfEvents();
    assert(0 < totalNumberOfEvents);
    LOG4CPLUS_DEBUG(vertexLogger_, "Total number of events: " << totalNumberOfEvents);
+   beginTimeHistory_.assign(size_, totalNumberOfEvents);
+   answerTimeHistory_.assign(size_, totalNumberOfEvents);
+   endTimeHistory_.assign(size_, totalNumberOfEvents);
+   wasAbandonedHistory_.assign(size_, totalNumberOfEvents);
 
    // Calcualte the total number of time-steps for the data structures that
    // will record per-step histories
@@ -357,10 +357,10 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
          Call &endingCall = servingCall_[vertexIdx][server];
 
          //Store call metrics
-         wasAbandonedHistory_[vertexIdx].push_back(false);
-         beginTimeHistory_[vertexIdx].push_back(endingCall.time);
-         answerTimeHistory_[vertexIdx].push_back(answerTime_[vertexIdx][server]);
-         endTimeHistory_[vertexIdx].push_back(g_simulationStep);
+         wasAbandonedHistory_[vertexIdx].insertEvent(false);
+         beginTimeHistory_[vertexIdx].insertEvent(endingCall.time);
+         answerTimeHistory_[vertexIdx].insertEvent(answerTime_[vertexIdx][server]);
+         endTimeHistory_[vertexIdx].insertEvent(g_simulationStep);
          LOG4CPLUS_DEBUG(vertexLogger_,
                          "Finishing call, begin time: "
                             << endingCall.time << ", end time: " << g_simulationStep
@@ -397,11 +397,11 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
 
       if (call->patience < (g_simulationStep - call->time)) {
          // If the patience time is less than the waiting time, the call is abandoned
-         wasAbandonedHistory_[vertexIdx].push_back(true);
-         beginTimeHistory_[vertexIdx].push_back(call->time);
+         wasAbandonedHistory_[vertexIdx].insertEvent(true);
+         beginTimeHistory_[vertexIdx].insertEvent(call->time);
          // Answer time and end time get zero as sentinel for non-valid values
-         answerTimeHistory_[vertexIdx].push_back(0);
-         endTimeHistory_[vertexIdx].push_back(0);
+         answerTimeHistory_[vertexIdx].insertEvent(0);
+         endTimeHistory_[vertexIdx].insertEvent(0);
          LOG4CPLUS_DEBUG(vertexLogger_, "Call was abandoned, Patience: "
                                            << call->patience
                                            << " Ring Time: " << g_simulationStep - call->time);
@@ -461,10 +461,10 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
          Call &endingIncident = servingCall_[vertexIdx][unit];
 
          //Store incident response metrics
-         wasAbandonedHistory_[vertexIdx].push_back(false);
-         beginTimeHistory_[vertexIdx].push_back(endingIncident.time);
-         answerTimeHistory_[vertexIdx].push_back(answerTime_[vertexIdx][unit]);
-         endTimeHistory_[vertexIdx].push_back(g_simulationStep);
+         wasAbandonedHistory_[vertexIdx].insertEvent(false);
+         beginTimeHistory_[vertexIdx].insertEvent(endingIncident.time);
+         answerTimeHistory_[vertexIdx].insertEvent(answerTime_[vertexIdx][unit]);
+         endTimeHistory_[vertexIdx].insertEvent(g_simulationStep);
          LOG4CPLUS_DEBUG(vertexLogger_,
                          "Finishing response, begin time: "
                             << endingIncident.time << ", end time: " << g_simulationStep

@@ -67,6 +67,7 @@
 
 #include "AllVertices.h"
 #include "CircularBuffer.h"
+#include "EventBuffer.h"
 #include "Global.h"
 #include "InputEvent.h"
 #include "InputManager.h"
@@ -152,13 +153,13 @@ public:
    /// Index each vertex and record it's type
    vector<int> vertexType_;
    /// The starting time for every call
-   vector<RecordableVector<uint64_t>> beginTimeHistory_;
+   vector<EventBuffer> beginTimeHistory_;
    /// The answer time for every call
-   vector<RecordableVector<uint64_t>> answerTimeHistory_;
+   vector<EventBuffer> answerTimeHistory_;
    /// The end time for every call
-   vector<RecordableVector<uint64_t>> endTimeHistory_;
+   vector<EventBuffer> endTimeHistory_;
    /// True if the call was abandoned
-   vector<RecordableVector<unsigned char>>
+   vector<EventBuffer>
       wasAbandonedHistory_;   // changed to bool from unsigned char
    /// The length of the waiting queue at every time-step
    vector<RecordableVector<int>> queueLengthHistory_;
