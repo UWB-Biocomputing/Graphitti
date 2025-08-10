@@ -48,7 +48,7 @@ TEST(Hdf5RecorderTest, RegisterVariableTest)
    recorder.init();
 
    // Create an EventBuffer for testing
-   EventBuffer eventBuffer;
+   EventBuffer<uint64_t> eventBuffer;
    const H5std_string hdf5Name("test_var");
 
    // Register the variable
@@ -74,8 +74,8 @@ TEST(Hdf5RecorderTest, RegisterVectorVariableTest)
    recorder.init();
 
    // Create mock EventBuffer objects for testing
-   EventBuffer buffer0;
-   EventBuffer buffer1;
+   EventBuffer<uint64_t> buffer0;
+   EventBuffer<uint64_t> buffer1;
 
    // Create a vector of pointers to EventBuffer objects
    std::vector<RecordableBase *> bufferPointers = {&buffer0, &buffer1};
@@ -136,7 +136,7 @@ TEST(Hdf5RecorderTest, SaveSimDataTest)
    recorder.init();
 
    // Create and configure EventBuffer for testing
-   EventBuffer eventBuffer(5);   // Initialize with a size that matches the mock data
+   EventBuffer<uint64_t> eventBuffer(5);   // Initialize with a size that matches the mock data
    eventBuffer.insertEvent(1);
    eventBuffer.insertEvent(2);
    eventBuffer.insertEvent(3);
@@ -226,7 +226,7 @@ TEST(Hdf5RecorderTest, CompileHistoriesTest)
    recorder.init();
 
    // Create and configure variables for testing
-   EventBuffer eventBufferInt(5);   // Example with int type
+   EventBuffer<uint64_t> eventBufferInt(5);   // Example with int type
 
    // Register the variable with Hdf5Recorder as DYNAMIC
    recorder.registerVariable("test_var_int", eventBufferInt, Recorder::UpdatedType::DYNAMIC);
@@ -277,7 +277,7 @@ TEST(Hdf5RecorderTest, CompileHistoriesVertexTypeTest)
    recorder.init();
 
    // Create and configure EventBuffer for testing (stored as int)
-   EventBuffer eventBufferNeuron(5);
+   EventBuffer<uint64_t> eventBufferNeuron(5);
 
    // Register the variable with Hdf5Recorder as DYNAMIC
    recorder.registerVariable("neuron_types", eventBufferNeuron, Recorder::UpdatedType::DYNAMIC);
