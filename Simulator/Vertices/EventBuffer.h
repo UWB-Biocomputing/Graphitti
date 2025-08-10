@@ -27,7 +27,6 @@
 #include <cereal/types/polymorphic.hpp>
 
 template <typename T> class EventBuffer : public RecordableVector<T> {
-
 public:
    /// Create EventBuffer that is sized appropriately
    ///
@@ -85,7 +84,7 @@ public:
    {
       return bufferFront_;
    }
-   
+
    /// @brief Accessor for the buffer end value.
    /// @return Returns index of the last event in the queue.
    int getBufferEnd() const
@@ -117,7 +116,7 @@ public:
    {
       bufferFront_ = bufferFront;
    }
-   
+
    /// @brief Mutator for the buffer end value.
    void setBufferEnd(int bufferEnd)
    {
@@ -177,7 +176,7 @@ public:
       numElementsInEpoch_ = 0;
    }
 
-   /// @brief 
+   /// @brief
    /// @return Returns the size of the buffer.
    int size()
    {
@@ -242,9 +241,10 @@ public:
    template <class Archive> void serialize(Archive &archive)
    {
       archive(cereal::base_class<RecordableVector<T>>(this),
-            cereal::make_nvp("bufferFront", bufferFront_), cereal::make_nvp("bufferEnd", bufferEnd_),
-            cereal::make_nvp("epochStart", epochStart_),
-            cereal::make_nvp("numElementsInEpoch", numElementsInEpoch_));
+              cereal::make_nvp("bufferFront", bufferFront_),
+              cereal::make_nvp("bufferEnd", bufferEnd_),
+              cereal::make_nvp("epochStart", epochStart_),
+              cereal::make_nvp("numElementsInEpoch", numElementsInEpoch_));
    }
 
 private:
