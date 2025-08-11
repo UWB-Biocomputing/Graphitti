@@ -38,7 +38,6 @@ public:
    /// @param maxEvents Defaults to zero; otherwise, buffer size is set
    EventBuffer(int maxEvents = 0)
    {
-      //RecordableVector<T>();
       this->dataSeries_.assign(maxEvents, numeric_limits<T>::max());
       clear();
       this->setDataType();   // set up data type for recording purpose
@@ -109,7 +108,7 @@ public:
       return numElementsInEpoch_;
    }
 
-   /// Getters are needed for copying from the GPU. Allows us to remove the friend keyword requirement.
+   /// Setters are needed for copying from the GPU. Allows us to remove the friend keyword requirement.
    /// {
    /// @brief Mutator for the buffer front value.
    void setBufferFront(int bufferFront)
