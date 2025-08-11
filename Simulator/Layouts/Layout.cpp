@@ -93,6 +93,8 @@ void Layout::registerHistoryVariables()
 /// Allocate memories to store all layout state, no sequential dependency in this method
 void Layout::setup()
 {
+   dist2_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
+   dist_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
    // Allocation of internal memory
    vertexTypeMap_.assign(numVertices_, vertexType::VTYPE_UNDEF);
 }

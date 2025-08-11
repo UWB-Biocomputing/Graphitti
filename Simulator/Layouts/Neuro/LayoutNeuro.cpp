@@ -27,8 +27,6 @@ void LayoutNeuro::setup()
    // Allocate memory
    xloc_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
    yloc_ = VectorMatrix(MATRIX_TYPE, MATRIX_INIT, 1, numVertices_);
-   dist2_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
-   dist_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
    /// Populates the starter map.
    starterMap_.assign(numVertices_, false);
 
