@@ -26,6 +26,8 @@
 // cereal
 #include <cereal/types/polymorphic.hpp>
 
+// Uses this pointer because we have a template class inheriting from other template class
+// All base class references need to be accessed through the this pointer
 template <typename T> class EventBuffer : public RecordableVector<T> {
 public:
    /// Create EventBuffer that is sized appropriately
