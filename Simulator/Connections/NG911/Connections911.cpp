@@ -61,6 +61,13 @@ void Connections911::printParameters() const
                       << endl);
 }
 
+/// Registers variable to be recorded
+void Connections911::registerHistoryVariables()
+{
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   recorder.registerVariable("verticesDeleted", verticesErased_, Recorder::UpdatedType::DYNAMIC);
+}
+
 #if !defined(USE_GPU)
 ///  Update the connections status in every epoch.
 bool Connections911::updateConnections()
@@ -368,13 +375,6 @@ string Connections911::ChangedEdge::toString()
    os << "</item>" << endl;
 
    return os.str();
-}
-
-/// Registers variable to be recorded
-void Connections911::registerHistoryVariables()
-{
-   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   recorder.registerVariable("verticesDeleted", verticesErased_, Recorder::UpdatedType::DYNAMIC);
 }
 
 ///  Returns the complete list of all deleted or added edges as a string.
