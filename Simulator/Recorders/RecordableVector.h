@@ -101,6 +101,14 @@ public:
       return dataSeries_.data();
    }
 
+   /// @brief Gets pointer to contiguous host memory array
+   /// @return Pointer to the first element in host memory
+   /// @note Returns nullptr if vector is empty
+   T *data()
+   {
+      return dataSeries_.data();
+   }
+
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive)
    {
