@@ -437,6 +437,7 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
                                  const EdgeIndexMap &edgeIndexMap)
 {
    Layout &layout = Simulator::getInstance().getModel().getLayout();
+   Layout911 &layout911 = dynamic_cast<Layout911 &>(layout);
 
    int numberOfUnits = numServers_[vertexIdx];
    // Free the units finishing up with emergency responses
@@ -499,10 +500,10 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
       // to zero at the poles.
       // One degree of longitude can be converted to miles using the following formula:
       //    1 degree of longitude = cos(latitude) * 69.172
-      double lngDegreeLength = cos(layout.yloc_[vertexIdx] * (pi / 180)) * 69.172;
+      double lngDegreeLength = cos(layout911.yloc_[vertexIdx] * (pi / 180)) * 69.172;
       double latDegreeLength = 69.0;
-      double deltaLng = incident->x - layout.xloc_[vertexIdx];
-      double deltaLat = incident->y - layout.yloc_[vertexIdx];
+      double deltaLng = incident->x - layout911.xloc_[vertexIdx];
+      double deltaLat = incident->y - layout911.yloc_[vertexIdx];
       double dist2incident
          = sqrt(pow(deltaLng * lngDegreeLength, 2) + pow(deltaLat * latDegreeLength, 2));
 
