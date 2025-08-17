@@ -58,6 +58,12 @@ void GPUModel::allocDeviceStruct()
 
    // Allocate synapse inverse map in device memory
    allocEdgeIndexMap(numVertices);
+
+   // Create the CUDA stream used to launch synchronous GPU kernels during the simulation.
+   // This stream is passed to components like AllEdges and used consistently for kernel launches.
+   // For stream behavior and management, see:
+   // https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__STREAM.html
+   HANDLE_ERROR(cudaStreamCreate(&simulationStream_));
 }
 
 /// Copies device memories to host memories and deallocates them.
@@ -74,7 +80,8 @@ void GPUModel::deleteDeviceStruct()
    HANDLE_ERROR(cudaFree(synapseIMapDevice.incomingEdgeCount_));
    HANDLE_ERROR(cudaFree(synapseIMapDevice.incomingEdgeIndexMap_));
    HANDLE_ERROR(cudaFree(edgeIndexMapDevice_));
-   HANDLE_ERROR(cudaFree(randNoise_d));
+   HANDLE_ERROR(cudaStreamDestroy(simulationStream_));
+   AsyncGenerator_.deleteDeviceStruct();
 }
 
 /// Sets up the Simulation.
@@ -88,14 +95,17 @@ void GPUModel::setupSim()
 
    //initialize Mersenne Twister
    //assuming numVertices >= 100 and is a multiple of 100. Note rng_mt_rng_count must be <= MT_RNG_COUNT
-   int rng_blocks = 25;   //# of blocks the kernel will use
-   int rng_nPerRng
-      = 4;   //# of iterations per thread (thread granularity, # of rands generated per thread)
-   int rng_mt_rng_count = Simulator::getInstance().getTotalVertices()
-                          / rng_nPerRng;   //# of threads to generate for numVertices rand #s
-   int rng_threads = rng_mt_rng_count / rng_blocks;   //# threads per block needed
-   initMTGPU(Simulator::getInstance().getNoiseRngSeed(), rng_blocks, rng_threads, rng_nPerRng,
-             rng_mt_rng_count);
+   // int rng_blocks = 25;   //# of blocks the kernel will use
+   // int rng_nPerRng
+   //    = 4;   //# of iterations per thread (thread granularity, # of rands generated per thread)
+   // int rng_mt_rng_count = Simulator::getInstance().getTotalVertices()
+   //                        / rng_nPerRng;   //# of threads to generate for numVertices rand #s
+   // int rng_threads = rng_mt_rng_count / rng_blocks;   //# threads per block needed
+   // initMTGPU(Simulator::getInstance().getNoiseRngSeed(), rng_blocks, rng_threads, rng_nPerRng,
+   //           rng_mt_rng_count);
+   //cout << "blocks, threads, nPerRng, rng_rng_count: " << rng_blocks << " " << rng_threads << " " << rng_nPerRng << " " << rng_mt_rng_count << endl;
+   AsyncGenerator_.loadAsyncPhilox(Simulator::getInstance().getTotalVertices(),
+                                   Simulator::getInstance().getNoiseRngSeed());
 
 #ifdef PERFORMANCE_METRICS
    cudaEventCreate(&start);
@@ -116,6 +126,9 @@ void GPUModel::setupSim()
 
    // set some parameters used for advanceEdgesDevice
    edges.setAdvanceEdgesDeviceParams();
+   AllVertices &vertices = layout_->getVertices();
+   vertices.SetStream(simulationStream_);
+   edges.SetStream(simulationStream_);
 }
 
 /// Performs any finalization tasks on network following a simulation.
@@ -158,7 +171,8 @@ void GPUModel::advance()
    // }
    cudaMemcpy(randNoise_d, randNoise_h.data(), verts * sizeof(float), cudaMemcpyHostToDevice);
 #else
-   normalMTGPU(randNoise_d);
+   // normalMTGPU(randNoise_d);
+   randNoise_d = AsyncGenerator_.requestSegment();
 #endif
 //LOG4CPLUS_DEBUG(vertexLogger_, "Index: " << index << " Vm: " << Vm);
 #ifdef PERFORMANCE_METRICS
@@ -238,7 +252,8 @@ void GPUModel::updateConnections()
    // Update Connections data
    if (connections_->updateConnections()) {
       connections_->updateEdgesWeights(Simulator::getInstance().getTotalVertices(), vertices, edges,
-                                       allVerticesDevice_, allEdgesDevice_, getLayout());
+                                       allVerticesDevice_, allEdgesDevice_, getLayout(),
+                                       simulationStream_);
       // create edge index map
       connections_->createEdgeIndexMap();
       // copy index map to the device memory

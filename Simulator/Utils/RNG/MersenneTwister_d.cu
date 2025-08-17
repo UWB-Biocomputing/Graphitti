@@ -261,4 +261,3 @@ extern "C" void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int t
 	loadMTGPU(MT_DATAFILE);
 	seedMTGPU(seed);
 }
-
