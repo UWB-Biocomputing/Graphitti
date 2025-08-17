@@ -187,15 +187,23 @@ void AllDSSynapses::changePSR(BGSIZE iEdg, BGFLOAT deltaT)
 void AllDSSynapses::printSynapsesProps() const
 {
    AllSpikingSynapses::printSynapsesProps();
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
-         cout << "lastSpike[" << i << "] = " << lastSpike_[i];
-         cout << " r: " << r_[i];
-         cout << " u: " << u_[i];
-         cout << " D: " << D_[i];
-         cout << " U: " << U_[i];
-         cout << " F: " << F_[i] << endl;
+         string message = ("lastSpike[" + to_string(i) + "] = " + to_string(lastSpike_[i]));
+         LOG4CPLUS_INFO(consoleLogger, message);
+         message = (" r: " + to_string(r_[i]));
+         LOG4CPLUS_INFO(consoleLogger, message);
+         message = (" u: " + to_string(u_[i]));
+         LOG4CPLUS_INFO(consoleLogger, message);
+         message = (" D: " +  to_string(D_[i]));
+         LOG4CPLUS_INFO(consoleLogger, message);
+         message = (" U: " + to_string(U_[i]));
+         LOG4CPLUS_INFO(consoleLogger, message);
+         message = (" F: " +  to_string(F_[i]) + "\n");
+         LOG4CPLUS_INFO(consoleLogger, message);
       }
    }
-   cout << endl;
+   LOG4CPLUS_INFO(consoleLogger, endl);
+
 }

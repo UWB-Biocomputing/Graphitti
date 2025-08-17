@@ -325,11 +325,12 @@ bool AllSpikingSynapses::allowBackPropagation()
 void AllSpikingSynapses::printSynapsesProps() const
 {
    AllNeuroEdges::printSynapsesProps();
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
       if (W_[i] != 0.0) {
-         cout << "decay[" << i << "] = " << decay_[i];
-         cout << " tau: " << tau_[i];
-         cout << " total_delay: " << totalDelay_[i] << endl;
+         LOG4CPLUS_TRACE(consoleLogger, "decay[" << i << "] = " << decay_[i]);
+         LOG4CPLUS_TRACE(consoleLogger, " tau: " << tau_[i]);
+         LOG4CPLUS_TRACE(consoleLogger, " total_delay: " << totalDelay_[i] << endl);
       }
    }
 }
