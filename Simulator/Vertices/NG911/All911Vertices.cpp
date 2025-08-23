@@ -21,6 +21,12 @@ void All911Vertices::setupVertices()
 
    // Resize and fill vectors with 0
    vertexType_.assign(size_, 0);
+   beginTimeHistory_.resize(size_);
+   answerTimeHistory_.resize(size_);
+   endTimeHistory_.resize(size_);
+   wasAbandonedHistory_.resize(size_);
+   queueLengthHistory_.resize(size_);
+   utilizationHistory_.resize(size_);
    numServers_.assign(size_, 0);
    busyServers_.assign(size_, 0);
    numTrunks_.assign(size_, 0);
@@ -54,10 +60,10 @@ void All911Vertices::createAllVertices(Layout &layout)
    assert(0 < totalNumberOfEvents);
    LOG4CPLUS_DEBUG(vertexLogger_, "Total number of events: " << totalNumberOfEvents);
    // Initialize the data structures for system metrics
-   beginTimeHistory_.assign(size_, totalNumberOfEvents);
-   answerTimeHistory_.assign(size_, totalNumberOfEvents);
-   endTimeHistory_.assign(size_, totalNumberOfEvents);
-   wasAbandonedHistory_.assign(size_, totalNumberOfEvents);
+   // beginTimeHistory_.assign(size_, totalNumberOfEvents);
+   // answerTimeHistory_.assign(size_, totalNumberOfEvents);
+   // endTimeHistory_.assign(size_, totalNumberOfEvents);
+   // wasAbandonedHistory_.assign(size_, totalNumberOfEvents);
 
    // Calcualte the total number of time-steps for the data structures that
    // will record per-step histories
@@ -67,8 +73,8 @@ void All911Vertices::createAllVertices(Layout &layout)
    BGFLOAT epochDuration = simulator.getEpochDuration();
    BGFLOAT deltaT = simulator.getDeltaT();
    // Initialize the data structures for system metrics
-   queueLengthHistory_.assign(size_, totalTimeSteps);
-   utilizationHistory_.assign(size_, totalTimeSteps);
+   // queueLengthHistory_.assign(size_, totalTimeSteps);
+   // utilizationHistory_.assign(size_, totalTimeSteps);
 
    // Loop over all vertices and set the number of servers and trunks, and
    // determine the size of the waiting queue.
@@ -79,28 +85,57 @@ void All911Vertices::createAllVertices(Layout &layout)
       assert(*vi < size_);
       
       if (gm[*vi].type == "CALR") {
-         vertexType_[*vi] = 1;
-         vertexQueues_[*vi].resize(stepsPerEpoch);
+         vertexType_[*vi] = 3;
+         //vertexQueues_[*vi].resize(stepsPerEpoch);
       } else {
          if (gm[*vi].type == "PSAP") {
-            vertexType_[*vi] = 2;
-         } else if (gm[*vi].type == "RESP") {
-            vertexType_[*vi] = 3;
+            vertexType_[*vi] = 4;
+         } else if (gm[*vi].type == "EMS") {
+            vertexType_[*vi] = 5;
+         } else if (gm[*vi].type == "FIRE") {
+            vertexType_[*vi] = 6;
+         } else if (gm[*vi].type == "LAW") {
+            vertexType_[*vi] = 7;
          }
          numServers_[*vi] = gm[*vi].servers;
          numTrunks_[*vi] = gm[*vi].trunks;
          // We should not have more servers than trunks
          assert(numServers_[*vi] <= numTrunks_[*vi]);
+         if(maxNumberOfServers_ < numServers_[*vi]) {
+            maxNumberOfServers_ = numServers_[*vi];
+         }
+         if(maxNumberOfTrunks_ < numTrunks_[*vi]) {
+            maxNumberOfTrunks_ = numTrunks_[*vi];
+         }
 
          // The waiting queue is of size # trunks. We keep track of the # of busy servers
          // to know when there are no more trunks available.
-         vertexQueues_[*vi].resize(numTrunks_[*vi]);
+         //vertexQueues_[*vi].resize(numTrunks_[*vi]);
+         //vertexQueues_[*vi].resize(maxNumberOfTrunks_);
 
          // Initialize the data structures for agent availability
-         servingCall_[*vi].resize(gm[*vi].servers);
-         answerTime_[*vi].resize(gm[*vi].servers);
-         serverCountdown_[*vi].assign(gm[*vi].servers, 0);
+         //servingCall_[*vi].resize(gm[*vi].servers);
+         //servingCall_[*vi].resize(maxNumberOfServers_);
+         //answerTime_[*vi].resize(gm[*vi].servers);
+         //answerTime_[*vi].resize(maxNumberOfServers_);
+         //serverCountdown_[*vi].assign(gm[*vi].servers, 0);
+         //serverCountdown_[*vi].assign(maxNumberOfServers_, 0);
       }
+   }
+
+   // Loop over the vertices again to appropriate resize data members such that
+   // each data member used the same size for all of it's vertices.
+   for (int vertexId = 0; vertexId < size_; vertexId++) {
+      beginTimeHistory_[vertexId].resize(totalNumberOfEvents);
+      answerTimeHistory_[vertexId].resize(totalNumberOfEvents);
+      endTimeHistory_[vertexId].resize(totalNumberOfEvents);
+      wasAbandonedHistory_[vertexId].resize(totalNumberOfEvents);
+      queueLengthHistory_[vertexId].resize(totalTimeSteps);
+      utilizationHistory_[vertexId].resize(totalTimeSteps);
+      vertexQueues_[vertexId].resize(stepsPerEpoch);
+      servingCall_[vertexId].resize(maxNumberOfServers_);
+      answerTime_[vertexId].resize(maxNumberOfServers_);
+      serverCountdown_[vertexId].assign(maxNumberOfServers_, 0);
    }
 }
 
@@ -305,7 +340,8 @@ void All911Vertices::advanceCALR(BGSIZE vertexIdx, All911Edges &edges911,
       // queue. Therefore, this is a dropped call.
       // If readialing, we assume that it happens immediately and the caller tries until
       // getting through.
-      if (!edges911.isRedial_[edgeIdx] && initRNG.randDblExc() >= redialP_) {
+      // temporarily replace initRNG.randDblExc() with a constant 1.00 value for comparing against GPU.
+      if (!edges911.isRedial_[edgeIdx] && 1.00 >= redialP_) {
          // We only make the edge available if no readialing occurs.
          edges911.isAvailable_[edgeIdx] = true;
          LOG4CPLUS_DEBUG(vertexLogger_, "Did not redial at time: " << edges911.call_[edgeIdx].time);
@@ -340,6 +376,7 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
    int numberOfAvailableServers = 0;
    vector<unsigned char> availableServers; // Use vector but treat like array to better mirror on GPU
    availableServers.reserve(numberOfServers);
+   // Initialize to no servers having been assigned a call yet
    for (BGSIZE serverIndex = 0; serverIndex < numberOfServers; serverIndex++) {
       availableServers[serverIndex] = false;
    }
@@ -428,7 +465,7 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
 
    // Update queueLength and utilization histories
    queueLengthHistory_[vertexIdx].insertEvent(vertexQueues_[vertexIdx].size());
-   utilizationHistory_[vertexIdx].insertEvent(static_cast<double>(busyServers_[vertexIdx]) / numberOfServers);
+   utilizationHistory_[vertexIdx].insertEvent(static_cast<float>(busyServers_[vertexIdx]) / numberOfServers);
 }
 
 
@@ -521,7 +558,7 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
 
    // Update queueLength and utilization histories
    queueLengthHistory_[vertexIdx].insertEvent(vertexQueues_[vertexIdx].size());
-   utilizationHistory_[vertexIdx].insertEvent(static_cast<double>(busyServers_[vertexIdx]) / numberOfUnits);
+   utilizationHistory_[vertexIdx].insertEvent(static_cast<float>(busyServers_[vertexIdx]) / numberOfUnits);
 }
 
 
