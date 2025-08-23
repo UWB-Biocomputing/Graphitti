@@ -12,7 +12,9 @@
 // cereal
 #include <cereal/types/polymorphic.hpp>
 
-class DoubleEventBuffer : public RecordableVector<double> {
+class All911Vertices;
+class DoubleEventBuffer : public RecordableVector<float> {
+   friend class All911Vertices;
 
 public:
    /// Create EventBuffer that is sized appropriately
@@ -75,7 +77,7 @@ public:
    /// event in the epoch (element numElementsInEpoch_ - 1 would be the last element in the epoch).
    ///
    /// @param i element number
-   double operator[](int i) const;
+   float operator[](int i) const;
 
    /** @name Vertex and Edge Interface
     *  EventBuffer interface for use by the Vertex and Edge classes
@@ -91,7 +93,7 @@ public:
    ///
    /// @pre The buffer is not full
    /// @param timeStep Value to store in buffer
-   void insertEvent(double timeStep);
+   void insertEvent(float timeStep);
 
    /// Get an event from a time in the past
    ///
@@ -100,7 +102,7 @@ public:
    ///
    /// @param offset How many events ago. Must be negative. If that event isn't in the buffer,
    ///               or if the buffer is empty, returns ULONG_MAX.
-   double getPastEvent(int offset) const;
+   float getPastEvent(int offset) const;
    ///@}
 
    ///  Cereal serialization method
@@ -138,7 +140,7 @@ CEREAL_REGISTER_TYPE(DoubleEventBuffer);
 ///  Cereal serialization method
 template <class Archive> void DoubleEventBuffer::serialize(Archive &archive)
 {
-   archive(cereal::base_class<RecordableVector<double>>(this),
+   archive(cereal::base_class<RecordableVector<float>>(this),
            cereal::make_nvp("bufferFront", bufferFront_), cereal::make_nvp("bufferEnd", bufferEnd_),
            cereal::make_nvp("epochStart", epochStart_),
            cereal::make_nvp("numElementsInEpoch", numElementsInEpoch_));

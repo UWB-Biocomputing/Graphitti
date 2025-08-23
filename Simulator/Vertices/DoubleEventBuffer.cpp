@@ -13,7 +13,7 @@
 
 DoubleEventBuffer::DoubleEventBuffer(int maxEvents)
 {
-   dataSeries_.assign(maxEvents, numeric_limits<double>::max());
+   dataSeries_.assign(maxEvents, numeric_limits<float>::max());
    clear();
    setDataType();   // set up data type for recording purpose
 }
@@ -22,7 +22,7 @@ DoubleEventBuffer::DoubleEventBuffer(int maxEvents)
 // set up a string representing the basic data type
 void DoubleEventBuffer::setDataType()
 {
-   basicDataType_ = typeid(double).name();
+   basicDataType_ = typeid(float).name();
 }
 
 /// @brief Get the value of the recordable variable at the specified index.
@@ -66,7 +66,7 @@ void DoubleEventBuffer::clear()
    numElementsInEpoch_ = 0;
 }
 
-double DoubleEventBuffer::operator[](int i) const
+float DoubleEventBuffer::operator[](int i) const
 {
    return dataSeries_[(epochStart_ + i) % dataSeries_.size()];
 }
@@ -78,7 +78,7 @@ void DoubleEventBuffer::startNewEpoch()
    numElementsInEpoch_ = 0;
 }
 
-void DoubleEventBuffer::insertEvent(double timeStep)
+void DoubleEventBuffer::insertEvent(float timeStep)
 {
    // If the buffer is full, then this is an error condition
    assert((numElementsInEpoch_ < dataSeries_.size()));
@@ -89,7 +89,7 @@ void DoubleEventBuffer::insertEvent(double timeStep)
    numElementsInEpoch_ += 1;
 }
 
-double DoubleEventBuffer::getPastEvent(int offset) const
+float DoubleEventBuffer::getPastEvent(int offset) const
 {
    // Quick checks: offset must be in past, and not larger than the buffer size
    assert(((offset < 0)) && (offset > -(dataSeries_.size() - 1)));
@@ -114,5 +114,5 @@ double DoubleEventBuffer::getPastEvent(int offset) const
    if ((index < bufferEnd_) && (index >= bufferFront_))
       return dataSeries_[index];
    else
-      return numeric_limits<double>::max();
+      return numeric_limits<float>::max();
 }
