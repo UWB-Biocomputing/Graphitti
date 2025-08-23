@@ -149,6 +149,39 @@ public:
       return buffer_.size() + front_ - end_;
    }
 
+   std::vector<T> getBuffer()
+   {
+      return buffer_;
+   }
+
+   /// @brief Accessor for the front index of the circular buffer.
+   /// @return Returns the front index of the circular buffer.
+   size_t getFrontIndex()
+   {
+      return front_;
+   }
+
+   /// @brief Accessor for the end index of the circular buffer.
+   /// @return Returns the end index of the circular buffer.
+   size_t getEndIndex()
+   {
+      return end_;
+   }
+
+   /// @brief Accessor for the front index of the circular buffer.
+   /// @return Returns the front index of the circular buffer.
+   void setFrontIndex(unsigned long front)
+   {
+      front_ = front;
+   }
+
+   /// @brief Accessor for the end index of the circular buffer.
+   /// @return Returns the end index of the circular buffer.
+   void setEndIndex(unsigned long end)
+   {
+      end_ = end;
+   }
+
 private:
    /// Container for holding the buffer elements
    std::vector<T> buffer_;

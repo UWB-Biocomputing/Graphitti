@@ -28,9 +28,11 @@
 
 class AllSpikingNeurons;
 class AllIFNeurons;
+class All911Vertices;
 class EventBuffer : public RecordableVector<uint64_t> {
    friend class AllIFNeurons;
    friend class AllSpikingNeurons;
+   friend class All911Vertices;
 
 public:
    /// Create EventBuffer that is sized appropriately
