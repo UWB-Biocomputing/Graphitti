@@ -261,7 +261,8 @@ if(ENABLE_CUDA)
         Simulator/Vertices/Neuro/AllLIFNeurons_d.cpp
         Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp
         Simulator/Vertices/Neuro/AllIFNeurons_d.cpp
-        Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp)
+        Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp
+        Simulator/Vertices/NG911/All911Vertices_d.cpp)
         set_source_files_properties(${cuda_VerticesSources} PROPERTIES LANGUAGE CUDA)
 endif()
 
