@@ -158,7 +158,14 @@ void GPUModel::advance()
    // }
    cudaMemcpy(randNoise_d, randNoise_h.data(), verts * sizeof(float), cudaMemcpyHostToDevice);
 #else
-   normalMTGPU(randNoise_d);
+   int numVertices = Simulator::getInstance().getTotalVertices();
+   if(numVertices >= 100 && numVertices % 100 == 0) {
+      normalMTGPU(randNoise_d);
+   } else {
+      LOG4CPLUS_DEBUG(log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex")), "WARNING: Number of vertices was less than 100 or "
+         << "not a multiple of 100 so random noise wasn't " <<
+         "put on the GPU. Number of Vertices: " << numVertices);
+   }
 #endif
 //LOG4CPLUS_DEBUG(vertexLogger_, "Index: " << index << " Vm: " << Vm);
 #ifdef PERFORMANCE_METRICS
