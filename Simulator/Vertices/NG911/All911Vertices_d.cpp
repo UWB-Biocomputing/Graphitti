@@ -899,9 +899,9 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
             std::string typeInBuffer = buffer[j].type;
             if (typeInBuffer == "EMS") {
                callResponderTypeInBuffer[j] = 5;
-            } else if (typeInBuffer == "FIRE") {
+            } else if (typeInBuffer == "Fire") {
                callResponderTypeInBuffer[j] = 6;
-            } else if (typeInBuffer == "LAW") {
+            } else if (typeInBuffer == "Law") {
                callResponderTypeInBuffer[j] = 7;
             }
          }
@@ -1119,9 +1119,9 @@ void All911Vertices::copyServingCallToDevice(int numberOfVertices, All911Vertice
             std::string typeInBuffer = buffer[j].type;
             if (typeInBuffer == "EMS") {
                callResponderTypeInBuffer[j] = 5;
-            } else if (typeInBuffer == "FIRE") {
+            } else if (typeInBuffer == "Fire") {
                callResponderTypeInBuffer[j] = 6;
-            } else if (typeInBuffer == "LAW") {
+            } else if (typeInBuffer == "Law") {
                callResponderTypeInBuffer[j] = 7;
             }
          }
@@ -1671,9 +1671,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
             if (callResponderTypeInBuffer[j] == 5) {
                buffer[j].type = "EMS";
             } else if (callResponderTypeInBuffer[j] == 6) {
-               buffer[j].type = "FIRE";
+               buffer[j].type = "Fire";
             } else if (callResponderTypeInBuffer[j] == 7) {
-               buffer[j].type = "LAW";
+               buffer[j].type = "Law";
             }
          }
          // clear vector before filling with next vertex's call ids
@@ -1884,9 +1884,9 @@ void All911Vertices::copyServingCallFromDevice(int numberOfVertices, All911Verti
             if (callResponderTypeInBuffer[j] == 5) {
                buffer[j].type = "EMS";
             } else if (callResponderTypeInBuffer[j] == 6) {
-               buffer[j].type = "FIRE";
+               buffer[j].type = "Fire";
             } else if (callResponderTypeInBuffer[j] == 7) {
-               buffer[j].type = "LAW";
+               buffer[j].type = "Law";
             }
          }
          // clear vector before filling with next vertex's call ids
