@@ -24,6 +24,7 @@
 __global__ void advance911VerticesDevice(int totalVertices,
                                          int totalNumberOfEvents,
                                          uint64_t stepsPerEpoch,
+                                         uint64_t totalTimeSteps,
                                          uint64_t simulationStep,
                                          BGFLOAT drivingSpeed,
                                          BGFLOAT pi,
@@ -55,6 +56,7 @@ __device__ void advanceCALRVerticesDevice(int vertexId,
 __device__ void advancePSAPVerticesDevice(int vertexIdx,
                                              int totalNumberOfEvents,
                                              uint64_t stepsPerEpoch,
+                                             uint64_t totalTimeSteps,
                                              uint64_t simulationStep,
                                              BGFLOAT *xLocation,
                                              BGFLOAT *yLocation,
@@ -65,6 +67,7 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx,
 __device__ void advanceRESPVerticesDevice(int vertexIdx,
                                              int totalNumberOfEvents,
                                              uint64_t stepsPerEpoch,
+                                             uint64_t totalTimeSteps,
                                              uint64_t simulationStep,
                                              BGFLOAT drivingSpeed,
                                              BGFLOAT pi, 
@@ -2271,6 +2274,7 @@ void All911Vertices::advanceVertices(AllEdges &edges, void *allVerticesDevice,
       = (simulator.getTotalVertices() + threadsPerBlock - 1) / threadsPerBlock;
    int totalNumberOfEvents = inputManager_.getTotalNumberOfEvents();
    uint64_t stepsPerEpoch = simulator.getEpochDuration() / simulator.getDeltaT();
+   uint64_t totalTimeSteps = stepsPerEpoch * simulator.getNumEpochs();
    Layout &layout = simulator.getModel().getLayout();
    Layout911 &layout911 = dynamic_cast<Layout911 &>(layout);
    BGFLOAT *xLoc_device = layout911.xloc_.getDevicePointer();
@@ -2280,6 +2284,7 @@ void All911Vertices::advanceVertices(AllEdges &edges, void *allVerticesDevice,
    advance911VerticesDevice<<<blocksPerGrid, threadsPerBlock>>>(size_,
                                                                 totalNumberOfEvents,
                                                                 stepsPerEpoch,
+                                                                totalTimeSteps,
                                                                 g_simulationStep,
                                                                 avgDrivingSpeed_,
                                                                 pi,
@@ -2295,6 +2300,7 @@ void All911Vertices::advanceVertices(AllEdges &edges, void *allVerticesDevice,
 __global__ void advance911VerticesDevice(int totalVertices,
                                          int totalNumberOfEvents,
                                          uint64_t stepsPerEpoch,
+                                         uint64_t totalTimeSteps,
                                          uint64_t simulationStep,
                                          BGFLOAT drivingSpeed,
                                          BGFLOAT pi,
@@ -2398,6 +2404,7 @@ __device__ void advanceCALRVerticesDevice(int vertexId,
 __device__ void advancePSAPVerticesDevice(int vertexIdx,
                                              int totalNumberOfEvents,
                                              uint64_t stepsPerEpoch,
+                                             uint64_t totalTimeSteps,
                                              uint64_t simulationStep,
                                              BGFLOAT *xLocation,
                                              BGFLOAT *yLocation,
@@ -2603,20 +2610,20 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx,
    if (queueFrontIndex >= queueEndIndex) {
       queueSize = queueFrontIndex - queueEndIndex;
    } else {
-      queueSize = stepsPerEpoch + queueFrontIndex - queueEndIndex;
+      queueSize = totalTimeSteps + queueFrontIndex - queueEndIndex;
    }
    // EventBuffer::insertEvent
    //assert(allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx] < totalNumberOfEvents);
    int &queueLengthHistoryQueueEnd = allVerticesDevice->queueLengthHistoryBufferEnd_[vertexIdx];
    allVerticesDevice->queueLengthHistory_[vertexIdx][queueLengthHistoryQueueEnd] = queueSize;
-   queueLengthHistoryQueueEnd = (queueLengthHistoryQueueEnd + 1) % totalNumberOfEvents;
+   queueLengthHistoryQueueEnd = (queueLengthHistoryQueueEnd + 1) % totalTimeSteps;
    allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx]++;
    // EventBuffer::insertEvent
    //assert(allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx] < totalNumberOfEvents);
    int &utilizationHistoryQueueEnd = allVerticesDevice->utilizationHistoryBufferEnd_[vertexIdx];
    allVerticesDevice->utilizationHistory_[vertexIdx][utilizationHistoryQueueEnd] 
       = static_cast<float>(allVerticesDevice->busyServers_[vertexIdx]) / allVerticesDevice->numServers_[vertexIdx];
-   utilizationHistoryQueueEnd = (utilizationHistoryQueueEnd + 1) % totalNumberOfEvents;
+   utilizationHistoryQueueEnd = (utilizationHistoryQueueEnd + 1) % totalTimeSteps;
    allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx]++;
 }
 
@@ -2625,6 +2632,7 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx,
 __device__ void advanceRESPVerticesDevice(int vertexIdx,
                                              int totalNumberOfEvents,
                                              uint64_t stepsPerEpoch,
+                                             uint64_t totalTimeSteps,
                                              uint64_t simulationStep,
                                              BGFLOAT drivingSpeed,
                                              BGFLOAT pi, BGFLOAT *xLocation, BGFLOAT *yLocation, All911VerticesDeviceProperties *allVerticesDevice, All911EdgesDeviceProperties *allEdgesDevice, EdgeIndexMapDevice *edgeIndexMapDevice)
@@ -2753,20 +2761,20 @@ __device__ void advanceRESPVerticesDevice(int vertexIdx,
    if (queueFrontIndex >= queueEndIndex) {
       queueSize = queueFrontIndex - queueEndIndex;
    } else {
-      queueSize = stepsPerEpoch + queueFrontIndex - queueEndIndex;
+      queueSize = totalTimeSteps + queueFrontIndex - queueEndIndex;
    }
    // EventBuffer::insertEvent
    //assert(allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx] < totalNumberOfEvents);
    int &queueLengthHistoryQueueEnd = allVerticesDevice->queueLengthHistoryBufferEnd_[vertexIdx];
    allVerticesDevice->queueLengthHistory_[vertexIdx][queueLengthHistoryQueueEnd] = queueSize;
-   queueLengthHistoryQueueEnd = (queueLengthHistoryQueueEnd + 1) % totalNumberOfEvents;
+   queueLengthHistoryQueueEnd = (queueLengthHistoryQueueEnd + 1) % totalTimeSteps;
    allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx]++;
    // EventBuffer::insertEvent
    //assert(allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx] < totalNumberOfEvents);
    int &utilizationHistoryQueueEnd = allVerticesDevice->utilizationHistoryBufferEnd_[vertexIdx];
    allVerticesDevice->utilizationHistory_[vertexIdx][utilizationHistoryQueueEnd] 
       = static_cast<float>(allVerticesDevice->busyServers_[vertexIdx]) / numberOfUnits;
-   utilizationHistoryQueueEnd = (utilizationHistoryQueueEnd + 1) % totalNumberOfEvents;
+   utilizationHistoryQueueEnd = (utilizationHistoryQueueEnd + 1) % totalTimeSteps;
    allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx]++;
 }
 
