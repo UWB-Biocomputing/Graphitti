@@ -272,7 +272,6 @@ protected:
    void copyVertexQueuesFromDevice(int numberOfVertices, uint64_t stepsPerEpoch, All911VerticesDeviceProperties &allVerticesDevice);
    void copyServingCallToDevice(int numberOfVertices, All911VerticesDeviceProperties &allVerticesDevice);
    void copyServingCallFromDevice(int numberOfVertices, All911VerticesDeviceProperties &allVerticesDevice);
-   void clearVertexQueuesOnDevice(int numberOfVertices, uint64_t stepsPerEpoch, All911VerticesDeviceProperties &allVerticesDevice);
 #else   // !defined(USE_GPU)
 public:
    ///  Update internal state of the indexed Vertex (called by every simulation step).
