@@ -2659,6 +2659,9 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx,
       = static_cast<float>(allVerticesDevice->busyServers_[vertexIdx]) / allVerticesDevice->numServers_[vertexIdx];
    utilizationHistoryQueueEnd = (utilizationHistoryQueueEnd + 1) % totalTimeSteps;
    allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx]++;
+
+   // Free the availableServers array
+   free(availableServers);
 }
 
 ///  CUDA code for advancing emergency responder vertices
@@ -2829,6 +2832,9 @@ __device__ void advanceRESPVerticesDevice(int vertexIdx,
       = static_cast<float>(allVerticesDevice->busyServers_[vertexIdx]) / numberOfUnits;
    utilizationHistoryQueueEnd = (utilizationHistoryQueueEnd + 1) % totalTimeSteps;
    allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx]++;
+
+   // Free the availableUnits array
+   free(availableUnits);
 }
 
 /// Take a call from an edge and add it to the queue if the queue isn't full.
