@@ -2558,7 +2558,7 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx,
       int callPatience = allVerticesDevice->vertexQueuesBufferPatience_[vertexIdx][queueEndIndex];
       int callOnSiteTime = allVerticesDevice->vertexQueuesBufferOnSiteTime_[vertexIdx][queueEndIndex];
       int callResponderType = allVerticesDevice->vertexQueuesBufferResponderType_[vertexIdx][queueEndIndex];
-      queueEndIndex = (queueEndIndex + 1) % stepsPerEpoch;
+      queueEndIndex = (queueEndIndex + 1) % allVerticesDevice->numTrunks_[vertexIdx];
 
       if (callPatience < (simulationStep - callTime)) {
          // If the patience time is less than the waiting time, the call is abandoned
@@ -2757,7 +2757,7 @@ __device__ void advanceRESPVerticesDevice(int vertexIdx,
       int incidentPatience = allVerticesDevice->vertexQueuesBufferPatience_[vertexIdx][queueEndIndex];
       int incidentOnSiteTime = allVerticesDevice->vertexQueuesBufferOnSiteTime_[vertexIdx][queueEndIndex];
       int incidentResponderType = allVerticesDevice->vertexQueuesBufferResponderType_[vertexIdx][queueEndIndex];
-      queueEndIndex = (queueEndIndex + 1) % stepsPerEpoch;
+      queueEndIndex = (queueEndIndex + 1) % allVerticesDevice->numTrunks_[vertexIdx];
 
       // The available unit starts serving the call
       int availUnit;
@@ -2907,11 +2907,11 @@ __global__ void maybeTakeCallFromEdge(int totalVertices,
       if (queueFrontIndex >= queueEndIndex) {
          dstQueueSize = queueFrontIndex - queueEndIndex;
       } else {
-         dstQueueSize = stepsPerEpoch + queueFrontIndex - queueEndIndex;
+         dstQueueSize = allVerticesDevice->numTrunks_[dstIndex] + queueFrontIndex - queueEndIndex;
       }
 
       // Compute the capacity of the destination queue
-      int dstQueueCapacity = stepsPerEpoch - 1;
+      int dstQueueCapacity = allVerticesDevice->numTrunks_[dstIndex] - 1;
 
       // Get the number fo busy servers at the destination vertex
       int dstBusyServers = allVerticesDevice->busyServers_[dstIndex];
@@ -2927,7 +2927,7 @@ __global__ void maybeTakeCallFromEdge(int totalVertices,
       } else {
          // Transfer call to destination
          // We throw an error if the buffer is full
-         if (((queueFrontIndex + 1) % stepsPerEpoch) == queueEndIndex) {
+         if (((queueFrontIndex + 1) % allVerticesDevice->numTrunks_[dstIndex]) == queueEndIndex) {
             printf("ERROR: Vertex queue is full. Vertex ID [%d] Front Index [%" PRIu64 "] End Index [%" PRIu64 "] Buffer size [%" PRIu64 "]\n", dstIndex, queueFrontIndex, queueEndIndex, stepsPerEpoch);
             return;
          }
@@ -2940,7 +2940,7 @@ __global__ void maybeTakeCallFromEdge(int totalVertices,
          allVerticesDevice->vertexQueuesBufferPatience_[dstIndex][queueFrontIndex] = allEdgesDevice->patience_[edgeIdx];
          allVerticesDevice->vertexQueuesBufferOnSiteTime_[dstIndex][queueFrontIndex] = allEdgesDevice->onSiteTime_[edgeIdx];
          allVerticesDevice->vertexQueuesBufferResponderType_[dstIndex][queueFrontIndex] = allEdgesDevice->responderType_[edgeIdx];
-         allVerticesDevice->vertexQueuesFront_[dstIndex] = (queueFrontIndex + 1) % stepsPerEpoch;
+         allVerticesDevice->vertexQueuesFront_[dstIndex] = (queueFrontIndex + 1) % allVerticesDevice->numTrunks_[dstIndex];
          // Record that we received a call
          allVerticesDevice->receivedCalls_[dstIndex]++;
          allEdgesDevice->isAvailable_[edgeIdx] = true;

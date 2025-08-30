@@ -149,7 +149,7 @@ public:
       return buffer_.size() + front_ - end_;
    }
 
-   std::vector<T> getBuffer()
+   std::vector<T>& getBuffer()
    {
       return buffer_;
    }

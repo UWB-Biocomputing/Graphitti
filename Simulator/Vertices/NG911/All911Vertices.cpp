@@ -275,7 +275,19 @@ void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIn
          assert(dst == vertex);
 
          CircularBuffer<Call> &dstQueue = getQueue(dst);
-         if (dstQueue.size() >= (dstQueue.capacity() - busyServers(dst))) {
+         // Compute the size of the destination queue
+         uint64_t dstQueueSize;
+         uint64_t queueFrontIndex = dstQueue.getFrontIndex();
+         uint64_t queueEndIndex = dstQueue.getEndIndex();
+         if (queueFrontIndex >= queueEndIndex) {
+            dstQueueSize = queueFrontIndex - queueEndIndex;
+         } else {
+            dstQueueSize = numTrunks_[dst] + queueFrontIndex - queueEndIndex;
+         }
+
+         // Compute the capacity of the destination queue
+         int dstQueueCapacity = numTrunks_[dst] - 1;
+         if (dstQueueSize >= (dstQueueCapacity - busyServers(dst))) {
             // Call is dropped because there is no space in the waiting queue
             if (!all911Edges.isRedial_[edgeIdx]) {
                // Only count the dropped call if it's not a redial
@@ -286,11 +298,15 @@ void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIn
                                "Call dropped: " << droppedCalls(dst)
                                                 << ", time: " << all911Edges.call_[edgeIdx].time
                                                 << ", vertex: " << dst
-                                                << ", queue size: " << dstQueue.size());
+                                                << ", queue size: " << dstQueueSize);
             }
          } else {
             // Transfer call to destination
-            dstQueue.put(all911Edges.call_[edgeIdx]);
+            assert(((queueFrontIndex + 1) % numTrunks_[dst]) != queueEndIndex);
+            vector<Call> &queueBuffer = dstQueue.getBuffer();
+            queueBuffer[queueFrontIndex] = all911Edges.call_[edgeIdx];
+            uint64_t newFrontIndex = (queueFrontIndex + 1) % numTrunks_[dst];
+            dstQueue.setFrontIndex(newFrontIndex);
             // Record that we received a call
             receivedCalls(dst)++;
             all911Edges.isAvailable_[edgeIdx] = true;
@@ -340,8 +356,7 @@ void All911Vertices::advanceCALR(BGSIZE vertexIdx, All911Edges &edges911,
       // queue. Therefore, this is a dropped call.
       // If readialing, we assume that it happens immediately and the caller tries until
       // getting through.
-      // temporarily replace initRNG.randDblExc() with a constant 1.00 value for comparing against GPU.
-      if (!edges911.isRedial_[edgeIdx] && 1.00 >= redialP_) {
+      if (!edges911.isRedial_[edgeIdx] && 1.0 >= redialP_) {//initRNG.randDblExc() >= redialP_) {
          // We only make the edge available if no readialing occurs.
          edges911.isAvailable_[edgeIdx] = true;
          LOG4CPLUS_DEBUG(vertexLogger_, "Did not redial at time: " << edges911.call_[edgeIdx].time);
@@ -356,6 +371,7 @@ void All911Vertices::advanceCALR(BGSIZE vertexIdx, All911Edges &edges911,
    if (edges911.isAvailable_[edgeIdx] && nextCall && nextCall->time <= g_simulationStep) {
       // Calls that start at the same time are process in the order they appear.
       // The call starts at the current time step so we need to pop it and process it
+      // Can use get because caller regions don't use trunks
       vertexQueues_[vertexIdx].get();   // pop from the queue
 
       // Place new call in the edge going to the PSAP
@@ -427,19 +443,22 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
    while (currentlyAvailableServers > 0 && !vertexQueues_[vertexIdx].isEmpty()) {
       // TODO: calls with duration of zero are being added but because countdown will be zero
       //       they don't show up in the logs
-      optional<Call> call = vertexQueues_[vertexIdx].get();
-      assert(call);
+      vector<Call> queueBuffer = vertexQueues_[vertexIdx].getBuffer();
+      uint64_t queueEnd = vertexQueues_[vertexIdx].getEndIndex();
+      Call call = queueBuffer[queueEnd];
+      uint64_t newEndIndex = (queueEnd + 1) % numTrunks_[vertexIdx];
+      vertexQueues_[vertexIdx].setEndIndex(newEndIndex);
 
-      if (call->patience < (g_simulationStep - call->time)) {
+      if (call.patience < (g_simulationStep - call.time)) {
          // If the patience time is less than the waiting time, the call is abandoned
          wasAbandonedHistory_[vertexIdx].insertEvent(true);
-         beginTimeHistory_[vertexIdx].insertEvent(call->time);
+         beginTimeHistory_[vertexIdx].insertEvent(call.time);
          // Answer time and end time get zero as sentinel for non-valid values
          answerTimeHistory_[vertexIdx].insertEvent(0);
          endTimeHistory_[vertexIdx].insertEvent(0);
          LOG4CPLUS_DEBUG(vertexLogger_, "Call was abandoned, Patience: "
-                                           << call->patience
-                                           << " Ring Time: " << g_simulationStep - call->time);
+                                           << call.patience
+                                           << " Ring Time: " << g_simulationStep - call.time);
       } else {
          // The available server starts serving the call
          int availServer;
@@ -452,11 +471,11 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
                break;
             }
          }
-         servingCall_[vertexIdx][availServer] = call.value();
+         servingCall_[vertexIdx][availServer] = call;
          answerTime_[vertexIdx][availServer] = g_simulationStep;
-         serverCountdown_[vertexIdx][availServer] = call.value().duration;
+         serverCountdown_[vertexIdx][availServer] = call.duration;
          LOG4CPLUS_DEBUG(vertexLogger_, "Serving Call starting at time: "
-                                           << call->time << ", sim-step: " << g_simulationStep);
+                                           << call.time << ", sim-step: " << g_simulationStep);
       }
    }
 
@@ -464,7 +483,15 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
    busyServers_[vertexIdx] = numberOfServers - numberOfAvailableServers;
 
    // Update queueLength and utilization histories
-   queueLengthHistory_[vertexIdx].insertEvent(vertexQueues_[vertexIdx].size());
+   uint64_t queueSize;
+   uint64_t queueFront = vertexQueues_[vertexIdx].getFrontIndex();
+   uint64_t queueEnd = vertexQueues_[vertexIdx].getFrontIndex();
+   if (queueFront >= queueEnd) {
+      queueSize = queueFront - queueEnd;
+   } else {
+      queueSize = numTrunks_[vertexIdx] + queueFront - queueEnd;
+   }
+   queueLengthHistory_[vertexIdx].insertEvent(queueSize);
    utilizationHistory_[vertexIdx].insertEvent(static_cast<float>(busyServers_[vertexIdx]) / numberOfServers);
 }
 
@@ -514,8 +541,11 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
    // incidents in the waiting queue
    for (size_t unit = 0; unit < numberOfAvailableUnits && !vertexQueues_[vertexIdx].isEmpty();
         ++unit) {
-      optional<Call> incident = vertexQueues_[vertexIdx].get();
-      assert(incident);   // Safety check for valid incidents
+      vector<Call> queueBuffer = vertexQueues_[vertexIdx].getBuffer();
+      uint64_t queueEnd = vertexQueues_[vertexIdx].getEndIndex();
+      Call incident = queueBuffer[queueEnd];
+      uint64_t newEndIndex = (queueEnd + 1) % numTrunks_[vertexIdx];
+      vertexQueues_[vertexIdx].setEndIndex(newEndIndex);
 
       // The available unit starts serving the call
       int availUnit;
@@ -527,7 +557,7 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
             break;
          }
       }
-      servingCall_[vertexIdx][availUnit] = incident.value();
+      servingCall_[vertexIdx][availUnit] = incident;
       answerTime_[vertexIdx][availUnit] = g_simulationStep;
 
       // We need to calculate the distance in miles but the x and y coordinates
@@ -539,25 +569,33 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
       //    1 degree of longitude = cos(latitude) * 69.172
       double lngDegreeLength = cos(layout911.yloc_[vertexIdx] * (pi / 180)) * 69.172;
       double latDegreeLength = 69.0;
-      double deltaLng = incident->x - layout911.xloc_[vertexIdx];
-      double deltaLat = incident->y - layout911.yloc_[vertexIdx];
+      double deltaLng = incident.x - layout911.xloc_[vertexIdx];
+      double deltaLat = incident.y - layout911.yloc_[vertexIdx];
       double dist2incident
          = sqrt(pow(deltaLng * lngDegreeLength, 2) + pow(deltaLat * latDegreeLength, 2));
 
       // Calculate the driving time to the incident in seconds
       double driveTime = (dist2incident / avgDrivingSpeed_) * 3600;
-      serverCountdown_[vertexIdx][availUnit] = driveTime + incident->onSiteTime;
+      serverCountdown_[vertexIdx][availUnit] = driveTime + incident.onSiteTime;
 
-      serverCountdown_[vertexIdx][availUnit] = incident.value().duration;
+      serverCountdown_[vertexIdx][availUnit] = incident.duration;
       LOG4CPLUS_DEBUG(vertexLogger_, "Response, driving time: " << driveTime << ", On-site time: "
-                                                                << incident->onSiteTime);
+                                                                << incident.onSiteTime);
    }
 
    // Update number of busy servers. This is used to check if there is space in the queue
    busyServers_[vertexIdx] = numberOfUnits - numberOfAvailableUnits;
 
    // Update queueLength and utilization histories
-   queueLengthHistory_[vertexIdx].insertEvent(vertexQueues_[vertexIdx].size());
+   uint64_t queueSize;
+   uint64_t queueFront = vertexQueues_[vertexIdx].getFrontIndex();
+   uint64_t queueEnd = vertexQueues_[vertexIdx].getFrontIndex();
+   if (queueFront >= queueEnd) {
+      queueSize = queueFront - queueEnd;
+   } else {
+      queueSize = numTrunks_[vertexIdx] + queueFront - queueEnd;
+   }
+   queueLengthHistory_[vertexIdx].insertEvent(queueSize);
    utilizationHistory_[vertexIdx].insertEvent(static_cast<float>(busyServers_[vertexIdx]) / numberOfUnits);
 }
 
