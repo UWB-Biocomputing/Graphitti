@@ -217,6 +217,11 @@ protected:
    /// @return    The index of the outgoing edge to the closest Responder
    BGSIZE getEdgeToClosestResponder(const Call &call, BGSIZE vertexIdx);
 
+   /// The number of vertices that needs device noise. Only caller regions need noise for determining
+   /// redial so this is meant to help save memory. A member variable is used so that we don't have to
+   /// recompute this value multiple times.
+   int numberOfVerticesNeedingDeviceNoise_;
+
 private:
    ///  Advance a CALR vertex. Send calls to the appropriate PSAP
    ///
@@ -262,6 +267,7 @@ public:
                                       void *allEdgesDevice) override;
    /// Copies all inputs scheduled to occur in the upcoming epoch onto device.
    virtual void copyEpochInputsToDevice() override;
+   virtual int getNumberOfVerticesNeedingDeviceNoise() const override;
 protected:
    ///  Allocate GPU memories to store all vertices' states.
    ///  (Helper function of allocVerticesDeviceStruct)

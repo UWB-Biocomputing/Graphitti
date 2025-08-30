@@ -52,12 +52,14 @@ GPUModel::GPUModel() :
 void GPUModel::allocDeviceStruct()
 {
    // Allocate memory for random noise array
-   int numVertices = Simulator::getInstance().getTotalVertices();
-   BGSIZE randNoise_d_size = numVertices * sizeof(float);   // size of random noise array
+   int numVerticesNeedingNoise = layout_->getVertices().getNumberOfVerticesNeedingDeviceNoise();
+   int numberOfNoiseElements = roundUpNumberOfNoiseElements(numVerticesNeedingNoise);
+   LOG4CPLUS_DEBUG(fileLogger_, "Number of elements allocated for noise: " << numberOfNoiseElements);
+   BGSIZE randNoise_d_size = numberOfNoiseElements * sizeof(float);   // size of random noise array
    HANDLE_ERROR(cudaMalloc((void **)&randNoise_d, randNoise_d_size));
 
    // Allocate synapse inverse map in device memory
-   allocEdgeIndexMap(numVertices);
+   allocEdgeIndexMap(Simulator::getInstance().getTotalVertices());
 }
 
 /// Copies device memories to host memories and deallocates them.
@@ -91,7 +93,9 @@ void GPUModel::setupSim()
    int rng_blocks = 25;   //# of blocks the kernel will use
    int rng_nPerRng
       = 4;   //# of iterations per thread (thread granularity, # of rands generated per thread)
-   int rng_mt_rng_count = Simulator::getInstance().getTotalVertices()
+   int numVerticesNeedingNoise = layout_->getVertices().getNumberOfVerticesNeedingDeviceNoise();
+   int numberOfNoiseElements = roundUpNumberOfNoiseElements(numVerticesNeedingNoise);
+   int rng_mt_rng_count = numberOfNoiseElements
                           / rng_nPerRng;   //# of threads to generate for numVertices rand #s
    int rng_threads = rng_mt_rng_count / rng_blocks;   //# threads per block needed
    initMTGPU(Simulator::getInstance().getNoiseRngSeed(), rng_blocks, rng_threads, rng_nPerRng,
@@ -158,14 +162,7 @@ void GPUModel::advance()
    // }
    cudaMemcpy(randNoise_d, randNoise_h.data(), verts * sizeof(float), cudaMemcpyHostToDevice);
 #else
-   int numVertices = Simulator::getInstance().getTotalVertices();
-   if(numVertices >= 100 && numVertices % 100 == 0) {
-      normalMTGPU(randNoise_d);
-   } else {
-      LOG4CPLUS_DEBUG(log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex")), "WARNING: Number of vertices was less than 100 or "
-         << "not a multiple of 100 so random noise wasn't " <<
-         "put on the GPU. Number of Vertices: " << numVertices);
-   }
+   normalMTGPU(randNoise_d);
 #endif
 //LOG4CPLUS_DEBUG(vertexLogger_, "Index: " << index << " Vm: " << Vm);
 #ifdef PERFORMANCE_METRICS
@@ -349,4 +346,16 @@ AllVerticesDeviceProperties *&GPUModel::getAllVerticesDevice()
 AllEdgesDeviceProperties *&GPUModel::getAllEdgesDevice()
 {
    return allEdgesDevice_;
+}
+
+int GPUModel::roundUpNumberOfNoiseElements(int input)
+{
+   // MersenneTwister requires the number of elements to be 100 or more and a multiple of 100
+   // To deal with this, we take the input and round it up to the nearest multiple of 100.
+   assert(input > 0);
+   // Already a multiple of 100 so return
+   if (input % 100 == 0)
+      return input;
+   // Return the next highest multiple of 100
+   return ((input + 99) / 100) * 100;
 }

@@ -2280,7 +2280,6 @@ void All911Vertices::advanceVertices(AllEdges &edges, void *allVerticesDevice,
    Layout911 &layout911 = dynamic_cast<Layout911 &>(layout);
    BGFLOAT *xLoc_device = layout911.xloc_.getDevicePointer();
    BGFLOAT *yLoc_device = layout911.yloc_.getDevicePointer();
-   LOG4CPLUS_DEBUG(vertexLogger_, "blocksPerGrid: " << blocksPerGrid << " threadsPerBlock: " << threadsPerBlock);
    // Advance vertices ------------->
    advance911VerticesDevice<<<blocksPerGrid, threadsPerBlock>>>(size_,
                                                                 totalNumberOfEvents,
@@ -3040,4 +3039,9 @@ void All911Vertices::copyEpochInputsToDevice()
 void All911Vertices::setAdvanceVerticesDeviceParams(AllEdges &edges)
 {
 
+}
+
+int All911Vertices::getNumberOfVerticesNeedingDeviceNoise() const
+{
+   return numberOfVerticesNeedingDeviceNoise_;
 }

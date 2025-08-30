@@ -87,6 +87,7 @@ void All911Vertices::createAllVertices(Layout &layout)
       if (gm[*vi].type == "CALR") {
          vertexType_[*vi] = 3;
          //vertexQueues_[*vi].resize(stepsPerEpoch);
+         numberOfVerticesNeedingDeviceNoise_++;
       } else {
          if (gm[*vi].type == "PSAP") {
             vertexType_[*vi] = 4;
@@ -122,6 +123,8 @@ void All911Vertices::createAllVertices(Layout &layout)
          //serverCountdown_[*vi].assign(maxNumberOfServers_, 0);
       }
    }
+
+   LOG4CPLUS_DEBUG(vertexLogger_, "Number of vertices needing device noise: " << numberOfVerticesNeedingDeviceNoise_);
 
    // Loop over the vertices again to appropriate resize data members such that
    // each data member used the same size for all of it's vertices.

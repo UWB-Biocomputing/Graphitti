@@ -115,4 +115,9 @@ void AllVertices::copyEpochInputsToDevice()
    // normally
    LOG4CPLUS_DEBUG(vertexLogger_, "Calling AllVertices::copyEpochInputsToDevice");
 }
+
+int AllVertices::getNumberOfVerticesNeedingDeviceNoise() const
+{
+   return Simulator::getInstance().getTotalVertices();
+}
 #endif
