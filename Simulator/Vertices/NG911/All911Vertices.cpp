@@ -185,7 +185,7 @@ void All911Vertices::registerHistoryVariables()
    // Registering the following variables to be recorded
    recorder.registerVariable("numTrunks", numTrunks_, Recorder::UpdatedType::CONSTANT);
    recorder.registerVariable("numServers", numServers_, Recorder::UpdatedType::CONSTANT);
-   recorder.registerVariable("droppedCalls", droppedCalls_, Recorder::UpdatedType::DYNAMIC);
+   recorder.registerVariable("droppedCalls", droppedCalls_, Recorder::UpdatedType::CONSTANT);
    recorder.registerVariable("receivedCalls", receivedCalls_, Recorder::UpdatedType::CONSTANT);
 
    for (int i = 0; i < beginTimeHistory_.size(); i++) {
