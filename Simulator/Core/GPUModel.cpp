@@ -13,6 +13,7 @@
 #include "Connections.h"
 #include "Global.h"
 #include "OperationManager.h"
+#include "MersenneTwister_d.h"
 
 #ifdef VALIDATION_MODE
    #include "AllIFNeurons.h"
@@ -97,6 +98,7 @@ void GPUModel::setupSim()
    int numberOfNoiseElements = roundUpNumberOfNoiseElements(numVerticesNeedingNoise);
    int rng_mt_rng_count = numberOfNoiseElements
                           / rng_nPerRng;   //# of threads to generate for numVertices rand #s
+   assert(rng_mt_rng_count <= MT_RNG_COUNT);
    int rng_threads = rng_mt_rng_count / rng_blocks;   //# threads per block needed
    initMTGPU(Simulator::getInstance().getNoiseRngSeed(), rng_blocks, rng_threads, rng_nPerRng,
              rng_mt_rng_count);
