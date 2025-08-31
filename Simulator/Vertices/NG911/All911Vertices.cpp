@@ -292,7 +292,9 @@ void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIn
 
          // Compute the capacity of the destination queue
          int dstQueueCapacity = numTrunks_[dst] - 1;
-         if (dstQueueSize >= (dstQueueCapacity - busyServers(dst))) {
+         // Size can't be negative but we need to be able to compare it to a possible negative waiting queue
+         // so cast the size to an int for comparison
+         if ((int)dstQueueSize >= (dstQueueCapacity - busyServers(dst))) {
             // Call is dropped because there is no space in the waiting queue
             if (!all911Edges.isRedial_[edgeIdx]) {
                // Only count the dropped call if it's not a redial

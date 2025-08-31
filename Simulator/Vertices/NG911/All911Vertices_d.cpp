@@ -2928,7 +2928,9 @@ __global__ void maybeTakeCallFromEdge(int totalVertices,
       // Get the number fo busy servers at the destination vertex
       int dstBusyServers = allVerticesDevice->busyServers_[dstIndex];
 
-      if (dstQueueSize >= (dstQueueCapacity - dstBusyServers)) {
+      // Size can't be negative but we need to be able to compare it to a possible negative waiting queue
+      // so cast the size to an int for comparison
+      if ((int)dstQueueSize >= (dstQueueCapacity - dstBusyServers)) {
          // Call is dropped because there is no space in the waiting queue
          if (!allEdgesDevice->isRedial_[edgeIdx]) {
             // Only count the dropped call if it's not a redial
