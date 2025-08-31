@@ -2940,7 +2940,7 @@ __global__ void maybeTakeCallFromEdge(int totalVertices,
          // Transfer call to destination
          // We throw an error if the buffer is full
          if (((queueFrontIndex + 1) % allVerticesDevice->numTrunks_[dstIndex]) == queueEndIndex) {
-            printf("ERROR: Vertex queue is full. Vertex ID [%d] Front Index [%" PRIu64 "] End Index [%" PRIu64 "] Buffer size [%" PRIu64 "]\n", dstIndex, queueFrontIndex, queueEndIndex, stepsPerEpoch);
+            printf("ERROR: Vertex queue is full. Vertex ID [%d] Front Index [%" PRIu64 "] End Index [%" PRIu64 "] Buffer size [%" PRIu64 "]\n", dstIndex, queueFrontIndex, queueEndIndex, allVerticesDevice->numTrunks_[dstIndex]);
             return;
          }
          // Insert the new element and increment the front index
