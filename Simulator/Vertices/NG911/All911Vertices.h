@@ -208,6 +208,12 @@ public:
    /// The InputManager holds all the Input Events for the simulation
    InputManager<Call> inputManager_;
 
+   /// Mapping of the vertex ID to the index in the noise array. Only caller regions
+   /// need noise for determining if a redial occurs. Caller regions have a value
+   /// 0 to n where n is the number of caller regions. Non-caller regions have a 
+   /// value of -1.
+   vector<int> vertexIdToNoiseIndex_;
+
 protected:
    /// Finds the outgoing edge from the given vertex to the Responder closest to
    /// the emergency call location
@@ -401,5 +407,12 @@ struct All911VerticesDeviceProperties : public AllVerticesDeviceProperties {
    /// The countdown until the server is available to take another call
    //vector<vector<int>> serverCountdown_;
    int **serverCountdown_;
+
+   /// Mapping of the vertex ID to the index in the noise array. Only caller regions
+   /// need noise for determining if a redial occurs. Caller regions have a value
+   /// 0 to n where n is the number of caller regions. Non-caller regions have a 
+   /// value of -1.
+   //vector<int> vertexIdToNoiseIndex_;
+   int *vertexIdToNoiseIndex_;
 };
 #endif   // defined(USE_GPU)

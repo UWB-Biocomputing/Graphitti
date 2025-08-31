@@ -29,6 +29,7 @@ __global__ void advance911VerticesDevice(int totalVertices,
                                          uint64_t simulationStep,
                                          BGFLOAT drivingSpeed,
                                          BGFLOAT pi,
+                                         float redialValues[],
                                          BGFLOAT redialProbability,
                                          BGFLOAT *xLocation,
                                          BGFLOAT *yLocation,
@@ -391,6 +392,8 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.serverCountdown_, cpuServerCountdown,
                               numberOfVertices * sizeof(int *), cudaMemcpyHostToDevice));
    }
+   //int *vertexIdToNoiseIndex_;
+   HANDLE_ERROR(cudaMalloc((void **)&allVerticesDevice.vertexIdToNoiseIndex_, numberOfVertices * sizeof(int)));
 }
 
 ///  Delete GPU memories.
@@ -725,6 +728,8 @@ void All911Vertices::deleteDeviceStruct(All911VerticesDeviceProperties &allVerti
       }
       HANDLE_ERROR(cudaFree(allVerticesDevice.serverCountdown_));
    }
+   //int *vertexIdToNoiseIndex_;
+   HANDLE_ERROR(cudaFree(allVerticesDevice.vertexIdToNoiseIndex_));
 }
 
 /// @brief Helper function for copying vertex queues to device from CPU.
@@ -1492,6 +1497,9 @@ void All911Vertices::copyToDevice()
                                  maxNumberOfServers_ * sizeof(int), cudaMemcpyHostToDevice));
       }
    }
+   // int *vertexIdToNoiseIndex_;
+   HANDLE_ERROR(cudaMemcpy(allVertices.vertexIdToNoiseIndex_, vertexIdToNoiseIndex_.data(),
+                           numberOfVertices * sizeof(int), cudaMemcpyHostToDevice));
 }
 
 /// @brief Helper function for copying vertex queues from device to CPU.
@@ -2253,6 +2261,9 @@ void All911Vertices::copyFromDevice()
                                  maxNumberOfServers_ * sizeof(int), cudaMemcpyDeviceToHost));
       }
    }
+   // int *vertexIdToNoiseIndex_;
+   HANDLE_ERROR(cudaMemcpy(vertexIdToNoiseIndex_.data(), allVertices.vertexIdToNoiseIndex_, numberOfVertices * sizeof(int),
+                           cudaMemcpyDeviceToHost));
 }
 
 /// @brief Update internal state of the indexed vertex (called by every simulation step).
@@ -2288,6 +2299,7 @@ void All911Vertices::advanceVertices(AllEdges &edges, void *allVerticesDevice,
                                                                 g_simulationStep,
                                                                 avgDrivingSpeed_,
                                                                 pi,
+                                                                randNoise,
                                                                 redialP_,
                                                                 xLoc_device,
                                                                 yLoc_device,
@@ -2304,6 +2316,7 @@ __global__ void advance911VerticesDevice(int totalVertices,
                                          uint64_t simulationStep,
                                          BGFLOAT drivingSpeed,
                                          BGFLOAT pi,
+                                         float redialValues[],
                                          BGFLOAT redialProbability,
                                          BGFLOAT *xLocation,
                                          BGFLOAT *yLocation,
@@ -2318,7 +2331,7 @@ __global__ void advance911VerticesDevice(int totalVertices,
       return;
    switch (allVerticesDevice->vertexType_[idx]) {
       case 3: //CALR
-         advanceCALRVerticesDevice(idx, totalNumberOfEvents, stepsPerEpoch, simulationStep, 1.0f, redialProbability, allVerticesDevice, allEdgesDevice, edgeIndexMapDevice);
+         advanceCALRVerticesDevice(idx, totalNumberOfEvents, stepsPerEpoch, simulationStep, redialValues[allVerticesDevice->vertexIdToNoiseIndex_[idx]], redialProbability, allVerticesDevice, allEdgesDevice, edgeIndexMapDevice);
          break;
       case 4: //PSAP
          advancePSAPVerticesDevice(idx, totalNumberOfEvents, stepsPerEpoch, totalTimeSteps, simulationStep, xLocation, yLocation, allVerticesDevice, allEdgesDevice, edgeIndexMapDevice);

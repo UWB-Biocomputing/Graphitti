@@ -34,6 +34,7 @@ void All911Vertices::setupVertices()
    servingCall_.resize(size_);
    answerTime_.resize(size_);
    serverCountdown_.resize(size_);
+   vertexIdToNoiseIndex_.assign(size_, -1);
 
    // Resize and fill data structures for recording
    droppedCalls_.assign(size_, 0);
@@ -87,6 +88,7 @@ void All911Vertices::createAllVertices(Layout &layout)
       if (gm[*vi].type == "CALR") {
          vertexType_[*vi] = 3;
          //vertexQueues_[*vi].resize(stepsPerEpoch);
+         vertexIdToNoiseIndex_[*vi] = numberOfVerticesNeedingDeviceNoise_;
          numberOfVerticesNeedingDeviceNoise_++;
       } else {
          if (gm[*vi].type == "PSAP") {
