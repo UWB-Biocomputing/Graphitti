@@ -82,6 +82,7 @@ __device__ void advanceRESPVerticesDevice(int vertexIdx,
 void All911Vertices::allocVerticesDeviceStruct()
 {
    All911VerticesDeviceProperties allVertices;
+   LOG4CPLUS_DEBUG(vertexLogger_, "Size of 911 vertice device: " << sizeof(All911VerticesDeviceProperties));
    GPUModel *gpuModel = static_cast<GPUModel *>(&Simulator::getInstance().getModel());
    void **allVerticesDevice = reinterpret_cast<void **>(&(gpuModel->getAllVerticesDevice()));
    allocDeviceStruct(allVertices);

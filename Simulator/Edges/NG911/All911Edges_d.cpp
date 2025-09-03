@@ -33,6 +33,9 @@ void All911Edges::allocEdgeDeviceStruct()
 void All911Edges::allocEdgeDeviceStruct(void **allEdgesDevice, int numVertices,
                                         int maxEdgesPerVertex)
 {
+   LOG4CPLUS_DEBUG(edgeLogger_, "Size of 911 edges device: " << sizeof(All911EdgesDeviceProperties));
+   LOG4CPLUS_DEBUG(edgeLogger_, "maxTotalEdges: " << maxEdgesPerVertex * numVertices);
+   LOG4CPLUS_DEBUG(edgeLogger_, "Size of edgetype: " << sizeof(edgeType));
    All911EdgesDeviceProperties allEdges;
    allocDeviceStruct(allEdges, numVertices, maxEdgesPerVertex);
    HANDLE_ERROR(cudaMalloc(allEdgesDevice, sizeof(All911EdgesDeviceProperties)));

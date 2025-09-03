@@ -73,6 +73,8 @@ void All911Vertices::createAllVertices(Layout &layout)
    uint64_t totalTimeSteps = stepsPerEpoch * simulator.getNumEpochs();
    BGFLOAT epochDuration = simulator.getEpochDuration();
    BGFLOAT deltaT = simulator.getDeltaT();
+   LOG4CPLUS_DEBUG(vertexLogger_, "Total time steps: " << totalTimeSteps);
+   LOG4CPLUS_DEBUG(vertexLogger_, "Steps per epoch: " << stepsPerEpoch);
    // Initialize the data structures for system metrics
    // queueLengthHistory_.assign(size_, totalTimeSteps);
    // utilizationHistory_.assign(size_, totalTimeSteps);
@@ -127,6 +129,7 @@ void All911Vertices::createAllVertices(Layout &layout)
    }
 
    LOG4CPLUS_DEBUG(vertexLogger_, "Number of vertices needing device noise: " << numberOfVerticesNeedingDeviceNoise_);
+   LOG4CPLUS_DEBUG(vertexLogger_, "Max number of servers: " << maxNumberOfServers_);
 
    // Loop over the vertices again to appropriate resize data members such that
    // each data member used the same size for all of it's vertices.
