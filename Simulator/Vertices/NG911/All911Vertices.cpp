@@ -71,8 +71,8 @@ void All911Vertices::createAllVertices(Layout &layout)
    Simulator &simulator = Simulator::getInstance();
    uint64_t stepsPerEpoch = simulator.getEpochDuration() / simulator.getDeltaT();
    uint64_t totalTimeSteps = stepsPerEpoch * simulator.getNumEpochs();
-   BGFLOAT epochDuration = simulator.getEpochDuration();
-   BGFLOAT deltaT = simulator.getDeltaT();
+   int maxEventsPerEpoch = static_cast<int>(Simulator::getInstance().getEpochDuration()
+                                 * Simulator::getInstance().getMaxFiringRate());
    LOG4CPLUS_DEBUG(vertexLogger_, "Total time steps: " << totalTimeSteps);
    LOG4CPLUS_DEBUG(vertexLogger_, "Steps per epoch: " << stepsPerEpoch);
    // Initialize the data structures for system metrics
@@ -134,12 +134,12 @@ void All911Vertices::createAllVertices(Layout &layout)
    // Loop over the vertices again to appropriate resize data members such that
    // each data member used the same size for all of it's vertices.
    for (int vertexId = 0; vertexId < size_; vertexId++) {
-      beginTimeHistory_[vertexId].resize(totalNumberOfEvents);
-      answerTimeHistory_[vertexId].resize(totalNumberOfEvents);
-      endTimeHistory_[vertexId].resize(totalNumberOfEvents);
-      wasAbandonedHistory_[vertexId].resize(totalNumberOfEvents);
-      queueLengthHistory_[vertexId].resize(totalTimeSteps);
-      utilizationHistory_[vertexId].resize(totalTimeSteps);
+      beginTimeHistory_[vertexId].resize(maxEventsPerEpoch);
+      answerTimeHistory_[vertexId].resize(maxEventsPerEpoch);
+      endTimeHistory_[vertexId].resize(maxEventsPerEpoch);
+      wasAbandonedHistory_[vertexId].resize(maxEventsPerEpoch);
+      queueLengthHistory_[vertexId].resize(stepsPerEpoch);
+      utilizationHistory_[vertexId].resize(stepsPerEpoch);
       vertexQueues_[vertexId].resize(stepsPerEpoch);
       servingCall_[vertexId].resize(maxNumberOfServers_);
       answerTime_[vertexId].resize(maxNumberOfServers_);
