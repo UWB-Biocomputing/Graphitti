@@ -291,11 +291,11 @@ void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIn
          if (queueFrontIndex >= queueEndIndex) {
             dstQueueSize = queueFrontIndex - queueEndIndex;
          } else {
-            dstQueueSize = numTrunks_[dst] + queueFrontIndex - queueEndIndex;
+            dstQueueSize = numTrunks_[dst] + 1 + queueFrontIndex - queueEndIndex;
          }
 
          // Compute the capacity of the destination queue
-         int dstQueueCapacity = numTrunks_[dst] - 1;
+         int dstQueueCapacity = numTrunks_[dst];
          // Size can't be negative but we need to be able to compare it to a possible negative waiting queue
          // so cast the size to an int for comparison
          if ((int)dstQueueSize >= (dstQueueCapacity - busyServers(dst))) {
@@ -313,10 +313,10 @@ void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIn
             }
          } else {
             // Transfer call to destination
-            assert(((queueFrontIndex + 1) % numTrunks_[dst]) != queueEndIndex);
+            assert(((queueFrontIndex + 1) % numTrunks_[dst] + 1) != queueEndIndex);
             vector<Call> &queueBuffer = dstQueue.getBuffer();
             queueBuffer[queueFrontIndex] = all911Edges.call_[edgeIdx];
-            uint64_t newFrontIndex = (queueFrontIndex + 1) % numTrunks_[dst];
+            uint64_t newFrontIndex = (queueFrontIndex + 1) % (numTrunks_[dst] + 1);
             dstQueue.setFrontIndex(newFrontIndex);
             // Record that we received a call
             receivedCalls(dst)++;
@@ -457,7 +457,7 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
       vector<Call> queueBuffer = vertexQueues_[vertexIdx].getBuffer();
       uint64_t queueEnd = vertexQueues_[vertexIdx].getEndIndex();
       Call call = queueBuffer[queueEnd];
-      uint64_t newEndIndex = (queueEnd + 1) % numTrunks_[vertexIdx];
+      uint64_t newEndIndex = (queueEnd + 1) % (numTrunks_[vertexIdx] + 1);
       vertexQueues_[vertexIdx].setEndIndex(newEndIndex);
 
       if (call.patience < (g_simulationStep - call.time)) {
@@ -500,7 +500,7 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
    if (queueFront >= queueEnd) {
       queueSize = queueFront - queueEnd;
    } else {
-      queueSize = numTrunks_[vertexIdx] + queueFront - queueEnd;
+      queueSize = numTrunks_[vertexIdx] + 1 + queueFront - queueEnd;
    }
    queueLengthHistory_[vertexIdx].insertEvent(queueSize);
    utilizationHistory_[vertexIdx].insertEvent(static_cast<float>(busyServers_[vertexIdx]) / numberOfServers);
@@ -555,7 +555,7 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
       vector<Call> queueBuffer = vertexQueues_[vertexIdx].getBuffer();
       uint64_t queueEnd = vertexQueues_[vertexIdx].getEndIndex();
       Call incident = queueBuffer[queueEnd];
-      uint64_t newEndIndex = (queueEnd + 1) % numTrunks_[vertexIdx];
+      uint64_t newEndIndex = (queueEnd + 1) % (numTrunks_[vertexIdx] + 1);
       vertexQueues_[vertexIdx].setEndIndex(newEndIndex);
 
       // The available unit starts serving the call
@@ -604,7 +604,7 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
    if (queueFront >= queueEnd) {
       queueSize = queueFront - queueEnd;
    } else {
-      queueSize = numTrunks_[vertexIdx] + queueFront - queueEnd;
+      queueSize = numTrunks_[vertexIdx] + 1 + queueFront - queueEnd;
    }
    queueLengthHistory_[vertexIdx].insertEvent(queueSize);
    utilizationHistory_[vertexIdx].insertEvent(static_cast<float>(busyServers_[vertexIdx]) / numberOfUnits);
