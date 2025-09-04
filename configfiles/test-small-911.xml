@@ -9,9 +9,8 @@
       <deltaT name="Simulation Step Duration">1</deltaT>
     </SimParams>
     <SimConfig name="SimConfig">
-      <!-- should be proportional to the epoch duration as we can only have -->
-      <!-- at most 1 call per second -->
-      <maxFiringRate name="maxFiringRate">900</maxFiringRate>
+      <!-- we can only have at most 1 call per second -->
+      <maxFiringRate name="maxFiringRate">1</maxFiringRate>
       <!-- max edges in a vertex for test-small-911.graphml is 20 -->
       <maxEdgesPerVertex name="maxEdgesPerVertex">25</maxEdgesPerVertex>
     </SimConfig>

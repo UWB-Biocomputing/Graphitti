@@ -75,6 +75,7 @@ void All911Vertices::createAllVertices(Layout &layout)
                                  * Simulator::getInstance().getMaxFiringRate());
    LOG4CPLUS_DEBUG(vertexLogger_, "Total time steps: " << totalTimeSteps);
    LOG4CPLUS_DEBUG(vertexLogger_, "Steps per epoch: " << stepsPerEpoch);
+   LOG4CPLUS_DEBUG(vertexLogger_, "Max events per epoch: " << maxEventsPerEpoch);
    // Initialize the data structures for system metrics
    // queueLengthHistory_.assign(size_, totalTimeSteps);
    // utilizationHistory_.assign(size_, totalTimeSteps);
