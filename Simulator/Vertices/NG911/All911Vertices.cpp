@@ -496,7 +496,7 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
    // Update queueLength and utilization histories
    uint64_t queueSize;
    uint64_t queueFront = vertexQueues_[vertexIdx].getFrontIndex();
-   uint64_t queueEnd = vertexQueues_[vertexIdx].getFrontIndex();
+   uint64_t queueEnd = vertexQueues_[vertexIdx].getEndIndex();
    if (queueFront >= queueEnd) {
       queueSize = queueFront - queueEnd;
    } else {
@@ -600,7 +600,7 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
    // Update queueLength and utilization histories
    uint64_t queueSize;
    uint64_t queueFront = vertexQueues_[vertexIdx].getFrontIndex();
-   uint64_t queueEnd = vertexQueues_[vertexIdx].getFrontIndex();
+   uint64_t queueEnd = vertexQueues_[vertexIdx].getEndIndex();
    if (queueFront >= queueEnd) {
       queueSize = queueFront - queueEnd;
    } else {
