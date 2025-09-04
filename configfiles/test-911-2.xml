@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<BGSimParams>
+  <SimInfoParams name="SimInfoParams">
+    <SimParams name="SimParams">
+      <!-- 8 epochs of 75 minutes each -->
+      <epochDuration name="epochDuration">36000</epochDuration>
+      <numEpochs name="numEpochs">8</numEpochs>
+      <!-- Every simulation step is 1 second -->
+      <deltaT name="Simulation Step Duration">1</deltaT>
+    </SimParams>
+    <SimConfig name="SimConfig">
+      <maxFiringRate name="maxFiringRate">100</maxFiringRate>
+      <!-- max edges to a vertex is 182 -->
+      <maxEdgesPerVertex name="maxEdgesPerVertex">190</maxEdgesPerVertex>
+    </SimConfig>
+    <RNGConfig name="RNGConfig">
+      <InitRNGSeed name="InitRNGSeed">1</InitRNGSeed>
+      <NoiseRNGSeed class="Norm" name="NoiseRNGSeed">1</NoiseRNGSeed>
+    </RNGConfig>
+  </SimInfoParams>
+
+  <ModelParams>
+    <VerticesParams class="All911Vertices" name="VerticesParams">
+      <RedialP name="RedialProbability">0.85</RedialP>
+      <!-- Response unit driving speed in mph -->
+      <AvgDrivingSpeed name="AverageDrivingSpeed">30.0</AvgDrivingSpeed>
+    </VerticesParams>
+
+    <EdgesParams class="All911Edges" name="EdgesParams">
+    </EdgesParams>
+
+    <ConnectionsParams class="Connections911" name="ConnectionsParams">
+      <graphmlFile name="graphmlFile">../configfiles/graphs/test-911-2.graphml</graphmlFile>
+      <psapsToErase name="psapsToErase">0</psapsToErase>
+      <respsToErase name="respsToErase">0</respsToErase>
+    </ConnectionsParams>
+
+    <InputParams name="InputParams">
+      <inputFile name="inputFile">../configfiles/inputs/test-911-2-calls.xml</inputFile>
+    </InputParams>
+
+    <LayoutParams class="Layout911" name="LayoutParams">
+    </LayoutParams>
+    
+    <RecorderParams class="XmlRecorder" name="RecorderParams">
+      <RecorderFiles name="RecorderFiles">
+        <resultFileName name="resultFileName">Output/Results/test-911-2-out.xml</resultFileName>
+      </RecorderFiles>
+    </RecorderParams>
+  </ModelParams>
+</BGSimParams>
