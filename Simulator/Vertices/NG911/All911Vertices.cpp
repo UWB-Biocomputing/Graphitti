@@ -367,7 +367,7 @@ void All911Vertices::advanceCALR(BGSIZE vertexIdx, All911Edges &edges911,
       // queue. Therefore, this is a dropped call.
       // If readialing, we assume that it happens immediately and the caller tries until
       // getting through.
-      if (!edges911.isRedial_[edgeIdx] && 1.0 >= redialP_) {//initRNG.randDblExc() >= redialP_) {
+      if (!edges911.isRedial_[edgeIdx] && initRNG.randDblExc() >= redialP_) {
          // We only make the edge available if no readialing occurs.
          edges911.isAvailable_[edgeIdx] = true;
          LOG4CPLUS_DEBUG(vertexLogger_, "Did not redial at time: " << edges911.call_[edgeIdx].time);
