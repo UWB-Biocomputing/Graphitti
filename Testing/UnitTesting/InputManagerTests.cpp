@@ -192,3 +192,8 @@ TEST(InputManager, readNeuroInputs)
    ASSERT_EQ(inputManager.getClockTickSize(), 100);
    ASSERT_EQ(inputManager.getClockTickUnit(), "usec");
 }
+
+TEST_F(InputManagerFixture, totalNumberOfEvents)
+{
+   ASSERT_EQ(inputManager.getTotalNumberOfEvents(), 8);
+}

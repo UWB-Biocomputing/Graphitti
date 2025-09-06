@@ -35,8 +35,14 @@ public:
    /// Handles function signature: void ()
    void registerOperation(const Operations &operation, const function<void()> &function);
 
+   /// Handles function signature: void (uint64_t,uint64_t)
+   void registerOperation(const Operations &operation, const function<void(uint64_t,uint64_t)> &function);
+
    /// Takes in a operation type and invokes all registered functions that are classified as that operation type.
    void executeOperation(const Operations &operation) const;
+
+   /// Take in a operation type and invokes all registered functions that are classified as that operation type using the input arguments.
+   void executeOperation(const Operations &operation, uint64_t arg1, uint64_t arg2) const;
 
    /// Takes in the operation enum and returns the enum as a string. Used for debugging purposes.
    string operationToString(const Operations &operation) const;

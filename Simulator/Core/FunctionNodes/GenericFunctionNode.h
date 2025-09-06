@@ -23,7 +23,10 @@ public:
    ~GenericFunctionNode() = default;
 
    /// Invokes the stored function if the sent operation type matches the operation type the function is stored as.
-   bool invokeFunction(const Operations &operation) const override;
+   virtual bool invokeFunction(const Operations &operation) const override;
+
+   /// TODO: Remove when IFunctionNode supports functions with non-empty signatures
+   virtual bool invokeFunction(const Operations &operation, uint64_t arg1, uint64_t arg2) const { return false; }
 
 private:
    std::function<void()> function_;   ///< Stored function.

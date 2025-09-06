@@ -33,6 +33,9 @@ void All911Edges::allocEdgeDeviceStruct()
 void All911Edges::allocEdgeDeviceStruct(void **allEdgesDevice, int numVertices,
                                         int maxEdgesPerVertex)
 {
+   LOG4CPLUS_DEBUG(edgeLogger_, "Size of 911 edges device: " << sizeof(All911EdgesDeviceProperties));
+   LOG4CPLUS_DEBUG(edgeLogger_, "maxTotalEdges: " << maxEdgesPerVertex * numVertices);
+   LOG4CPLUS_DEBUG(edgeLogger_, "Size of edgetype: " << sizeof(edgeType));
    All911EdgesDeviceProperties allEdges;
    allocDeviceStruct(allEdges, numVertices, maxEdgesPerVertex);
    HANDLE_ERROR(cudaMalloc(allEdgesDevice, sizeof(All911EdgesDeviceProperties)));
@@ -150,6 +153,7 @@ void All911Edges::copyHostToDevice(void *allEdgesDevice,
                                    All911EdgesDeviceProperties &allEdgesDeviceProps,
                                    int numVertices, int maxEdgesPerVertex)
 {
+   LOG4CPLUS_DEBUG(edgeLogger_, "Copying 911Edges to device");
    BGSIZE maxTotalEdges = maxEdgesPerVertex * numVertices;
    HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.sourceVertexIndex_, sourceVertexIndex_.data(),
                            maxTotalEdges * sizeof(int), cudaMemcpyHostToDevice));
@@ -171,98 +175,82 @@ void All911Edges::copyHostToDevice(void *allEdgesDevice,
    HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.isRedial_, isRedial_.data(),
                            maxTotalEdges * sizeof(unsigned char), cudaMemcpyHostToDevice));
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      int cpuVertexId[maxTotalEdges];
-      for (int i = 0; i < maxTotalEdges; i++) {
-         cpuVertexId[i] = call_[i].vertexId;
-      }
-      HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.vertexId_, cpuVertexId,
-                              maxTotalEdges * sizeof(int), cudaMemcpyHostToDevice));
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   int* cpuVertexId = new int[maxTotalEdges];
+   for (int i = 0; i < maxTotalEdges; i++) {
+      cpuVertexId[i] = call_[i].vertexId;
    }
+   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.vertexId_, cpuVertexId,
+                           maxTotalEdges * sizeof(int), cudaMemcpyHostToDevice));
+   delete[] cpuVertexId;
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      uint64_t cpuTime[maxTotalEdges];
-      for (int i = 0; i < maxTotalEdges; i++) {
-         cpuTime[i] = call_[i].time;
-      }
-      HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.time_, cpuTime, maxTotalEdges * sizeof(uint64_t),
-                              cudaMemcpyHostToDevice));
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   uint64_t* cpuTime = new uint64_t[maxTotalEdges];
+   for (int i = 0; i < maxTotalEdges; i++) {
+      cpuTime[i] = call_[i].time;
    }
+   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.time_, cpuTime, maxTotalEdges * sizeof(uint64_t),
+                           cudaMemcpyHostToDevice));
+   delete[] cpuTime;
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      int cpuDuration[maxTotalEdges];
-      for (int i = 0; i < maxTotalEdges; i++) {
-         cpuDuration[i] = call_[i].duration;
-      }
-      HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.duration_, cpuDuration,
-                              maxTotalEdges * sizeof(int), cudaMemcpyHostToDevice));
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   int* cpuDuration = new int[maxTotalEdges];
+   for (int i = 0; i < maxTotalEdges; i++) {
+      cpuDuration[i] = call_[i].duration;
    }
+   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.duration_, cpuDuration,
+                           maxTotalEdges * sizeof(int), cudaMemcpyHostToDevice));
+   delete[] cpuDuration;
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      BGFLOAT cpuX[maxTotalEdges];
-      for (int i = 0; i < maxTotalEdges; i++) {
-         cpuX[i] = call_[i].x;
-      }
-      HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.x_, cpuX, maxTotalEdges * sizeof(BGFLOAT),
-                              cudaMemcpyHostToDevice));
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   BGFLOAT* cpuX = new BGFLOAT[maxTotalEdges];
+   for (int i = 0; i < maxTotalEdges; i++) {
+      cpuX[i] = call_[i].x;
    }
+   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.x_, cpuX, maxTotalEdges * sizeof(BGFLOAT),
+                           cudaMemcpyHostToDevice));
+   delete[] cpuX;
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      BGFLOAT cpuY[maxTotalEdges];
-      for (int i = 0; i < maxTotalEdges; i++) {
-         cpuY[i] = call_[i].y;
-      }
-      HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.y_, cpuY, maxTotalEdges * sizeof(BGFLOAT),
-                              cudaMemcpyHostToDevice));
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   BGFLOAT* cpuY = new BGFLOAT[maxTotalEdges];
+   for (int i = 0; i < maxTotalEdges; i++) {
+      cpuY[i] = call_[i].y;
    }
+   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.y_, cpuY, maxTotalEdges * sizeof(BGFLOAT),
+                           cudaMemcpyHostToDevice));
+   delete[] cpuY;
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      int cpuPatience[maxTotalEdges];
-      for (int i = 0; i < maxTotalEdges; i++) {
-         cpuPatience[i] = call_[i].patience;
-      }
-      HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.patience_, cpuPatience,
-                              maxTotalEdges * sizeof(int), cudaMemcpyHostToDevice));
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   int* cpuPatience = new int[maxTotalEdges];
+   for (int i = 0; i < maxTotalEdges; i++) {
+      cpuPatience[i] = call_[i].patience;
    }
+   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.patience_, cpuPatience,
+                           maxTotalEdges * sizeof(int), cudaMemcpyHostToDevice));
+   delete[] cpuPatience;
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      int cpuOnSiteTime[maxTotalEdges];
-      for (int i = 0; i < maxTotalEdges; i++) {
-         cpuOnSiteTime[i] = call_[i].onSiteTime;
-      }
-      HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.onSiteTime_, cpuOnSiteTime,
-                              maxTotalEdges * sizeof(int), cudaMemcpyHostToDevice));
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   int* cpuOnSiteTime = new int[maxTotalEdges];
+   for (int i = 0; i < maxTotalEdges; i++) {
+      cpuOnSiteTime[i] = call_[i].onSiteTime;
    }
+   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.onSiteTime_, cpuOnSiteTime,
+                           maxTotalEdges * sizeof(int), cudaMemcpyHostToDevice));
+   delete[] cpuOnSiteTime;
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      int cpuResponderType[maxTotalEdges];
-      for (int i = 0; i < maxTotalEdges; i++) {
-         if (call_[i].type == "Law")
-            cpuResponderType[i] = 7;
-         else if (call_[i].type == "EMS")
-            cpuResponderType[i] = 5;
-         else if (call_[i].type == "Fire")
-            cpuResponderType[i] = 6;
-      }
-      HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.responderType_, cpuResponderType,
-                              maxTotalEdges * sizeof(int), cudaMemcpyHostToDevice));
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   int* cpuResponderType = new int[maxTotalEdges];
+   for (int i = 0; i < maxTotalEdges; i++) {
+      if (call_[i].type == "Law")
+         cpuResponderType[i] = 7;
+      else if (call_[i].type == "EMS")
+         cpuResponderType[i] = 5;
+      else if (call_[i].type == "Fire")
+         cpuResponderType[i] = 6;
    }
+   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.responderType_, cpuResponderType,
+                           maxTotalEdges * sizeof(int), cudaMemcpyHostToDevice));
+   delete[] cpuResponderType;
 
    HANDLE_ERROR(cudaMemcpy(allEdgesDevice, &allEdgesDeviceProps,
                            sizeof(All911EdgesDeviceProperties), cudaMemcpyHostToDevice));
@@ -319,98 +307,82 @@ void All911Edges::copyDeviceToHost(All911EdgesDeviceProperties &allEdgesDevicePr
    HANDLE_ERROR(cudaMemcpy(isRedial_.data(), allEdgesDeviceProps.isRedial_,
                            maxTotalEdges * sizeof(unsigned char), cudaMemcpyDeviceToHost));
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      int cpuVertexId[maxTotalEdges];
-      HANDLE_ERROR(cudaMemcpy(cpuVertexId, allEdgesDeviceProps.vertexId_,
-                              maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
-      for (int i = 0; i < maxTotalEdges; i++) {
-         call_[i].vertexId = cpuVertexId[i];
-      }
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   int* cpuVertexId = new int[maxTotalEdges];
+   HANDLE_ERROR(cudaMemcpy(cpuVertexId, allEdgesDeviceProps.vertexId_,
+                           maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
+   for (int i = 0; i < maxTotalEdges; i++) {
+      call_[i].vertexId = cpuVertexId[i];
    }
+   delete[] cpuVertexId;
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      uint64_t cpuTime[maxTotalEdges];
-      HANDLE_ERROR(cudaMemcpy(cpuTime, allEdgesDeviceProps.time_, maxTotalEdges * sizeof(uint64_t),
-                              cudaMemcpyDeviceToHost));
-      for (int i = 0; i < maxTotalEdges; i++) {
-         call_[i].time = cpuTime[i];
-      }
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   uint64_t* cpuTime = new uint64_t[maxTotalEdges];
+   HANDLE_ERROR(cudaMemcpy(cpuTime, allEdgesDeviceProps.time_, maxTotalEdges * sizeof(uint64_t),
+                           cudaMemcpyDeviceToHost));
+   for (int i = 0; i < maxTotalEdges; i++) {
+      call_[i].time = cpuTime[i];
    }
+   delete[] cpuTime;
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      int cpuDuration[maxTotalEdges];
-      HANDLE_ERROR(cudaMemcpy(cpuDuration, allEdgesDeviceProps.duration_,
-                              maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
-      for (int i = 0; i < maxTotalEdges; i++) {
-         call_[i].duration = cpuDuration[i];
-      }
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   int* cpuDuration = new int[maxTotalEdges];
+   HANDLE_ERROR(cudaMemcpy(cpuDuration, allEdgesDeviceProps.duration_,
+                           maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
+   for (int i = 0; i < maxTotalEdges; i++) {
+      call_[i].duration = cpuDuration[i];
    }
+   delete[] cpuDuration;
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      BGFLOAT cpuX[maxTotalEdges];
-      HANDLE_ERROR(cudaMemcpy(cpuX, allEdgesDeviceProps.x_, maxTotalEdges * sizeof(BGFLOAT),
-                              cudaMemcpyDeviceToHost));
-      for (int i = 0; i < maxTotalEdges; i++) {
-         call_[i].x = cpuX[i];
-      }
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   BGFLOAT* cpuX = new BGFLOAT[maxTotalEdges];
+   HANDLE_ERROR(cudaMemcpy(cpuX, allEdgesDeviceProps.x_, maxTotalEdges * sizeof(BGFLOAT),
+                           cudaMemcpyDeviceToHost));
+   for (int i = 0; i < maxTotalEdges; i++) {
+      call_[i].x = cpuX[i];
    }
+   delete[] cpuX;
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      BGFLOAT cpuY[maxTotalEdges];
-      HANDLE_ERROR(cudaMemcpy(cpuY, allEdgesDeviceProps.y_, maxTotalEdges * sizeof(BGFLOAT),
-                              cudaMemcpyDeviceToHost));
-      for (int i = 0; i < maxTotalEdges; i++) {
-         call_[i].y = cpuY[i];
-      }
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   BGFLOAT* cpuY = new BGFLOAT[maxTotalEdges];
+   HANDLE_ERROR(cudaMemcpy(cpuY, allEdgesDeviceProps.y_, maxTotalEdges * sizeof(BGFLOAT),
+                           cudaMemcpyDeviceToHost));
+   for (int i = 0; i < maxTotalEdges; i++) {
+      call_[i].y = cpuY[i];
    }
+   delete[] cpuY;
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      int cpuPatience[maxTotalEdges];
-      HANDLE_ERROR(cudaMemcpy(cpuPatience, allEdgesDeviceProps.patience_,
-                              maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
-      for (int i = 0; i < maxTotalEdges; i++) {
-         call_[i].patience = cpuPatience[i];
-      }
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   int* cpuPatience = new int[maxTotalEdges];
+   HANDLE_ERROR(cudaMemcpy(cpuPatience, allEdgesDeviceProps.patience_,
+                           maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
+   for (int i = 0; i < maxTotalEdges; i++) {
+      call_[i].patience = cpuPatience[i];
    }
+   delete[] cpuPatience;
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      int cpuOnSiteTime[maxTotalEdges];
-      HANDLE_ERROR(cudaMemcpy(cpuOnSiteTime, allEdgesDeviceProps.onSiteTime_,
-                              maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
-      for (int i = 0; i < maxTotalEdges; i++) {
-         call_[i].onSiteTime = cpuOnSiteTime[i];
-      }
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   int* cpuOnSiteTime = new int[maxTotalEdges];
+   HANDLE_ERROR(cudaMemcpy(cpuOnSiteTime, allEdgesDeviceProps.onSiteTime_,
+                           maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
+   for (int i = 0; i < maxTotalEdges; i++) {
+      call_[i].onSiteTime = cpuOnSiteTime[i];
    }
+   delete[] cpuOnSiteTime;
 
-   // Bracket array declaration to memcpy to manually release array from stack
-   // This is necessary to prevent segmentation faults when running large graphs
-   {
-      int cpuResponderType[maxTotalEdges];
-      HANDLE_ERROR(cudaMemcpy(cpuResponderType, allEdgesDeviceProps.responderType_,
-                              maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
-      for (int i = 0; i < maxTotalEdges; i++) {
-         if (cpuResponderType[i] == 7)
-            call_[i].type = "Law";
-         else if (cpuResponderType[i] == 5)
-            call_[i].type = "EMS";
-         else if (cpuResponderType[i] == 6)
-            call_[i].type = "Fire";
-      }
+   // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
+   int* cpuResponderType = new int[maxTotalEdges];
+   HANDLE_ERROR(cudaMemcpy(cpuResponderType, allEdgesDeviceProps.responderType_,
+                           maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
+   for (int i = 0; i < maxTotalEdges; i++) {
+      if (cpuResponderType[i] == 7)
+         call_[i].type = "Law";
+      else if (cpuResponderType[i] == 5)
+         call_[i].type = "EMS";
+      else if (cpuResponderType[i] == 6)
+         call_[i].type = "Fire";
    }
+   delete[] cpuResponderType;
 }
 
 ///  Get edge_counts in AllEdges struct on device memory.
