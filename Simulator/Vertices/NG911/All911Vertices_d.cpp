@@ -198,7 +198,7 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
    {
       int *cpuCallId[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-          HANDLE_ERROR(cudaMalloc((void **)&cpuCallId[i], stepsPerEpoch * sizeof(int)));
+          HANDLE_ERROR(cudaMalloc((void **)&cpuCallId[i], (stepsPerEpoch + 1) * sizeof(int)));
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.vertexQueuesBufferVertexId_, cpuCallId,
                               numberOfVertices * sizeof(int *), cudaMemcpyHostToDevice));
@@ -208,7 +208,7 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
    {
       uint64_t *cpuCallTime[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-          HANDLE_ERROR(cudaMalloc((void **)&cpuCallTime[i], stepsPerEpoch * sizeof(uint64_t)));
+          HANDLE_ERROR(cudaMalloc((void **)&cpuCallTime[i], (stepsPerEpoch + 1) * sizeof(uint64_t)));
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.vertexQueuesBufferTime_, cpuCallTime,
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyHostToDevice));
@@ -218,7 +218,7 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
    {
       int *cpuCallDuration[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-          HANDLE_ERROR(cudaMalloc((void **)&cpuCallDuration[i], stepsPerEpoch * sizeof(int)));
+          HANDLE_ERROR(cudaMalloc((void **)&cpuCallDuration[i], (stepsPerEpoch + 1) * sizeof(int)));
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.vertexQueuesBufferDuration_, cpuCallDuration,
                               numberOfVertices * sizeof(int *), cudaMemcpyHostToDevice));
@@ -228,7 +228,7 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
    {
       BGFLOAT *cpuCallLocationX[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-          HANDLE_ERROR(cudaMalloc((void **)&cpuCallLocationX[i], stepsPerEpoch * sizeof(BGFLOAT)));
+          HANDLE_ERROR(cudaMalloc((void **)&cpuCallLocationX[i], (stepsPerEpoch + 1) * sizeof(BGFLOAT)));
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.vertexQueuesBufferX_, cpuCallLocationX,
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyHostToDevice));
@@ -238,7 +238,7 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
    {
       BGFLOAT *cpuCallLocationY[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-          HANDLE_ERROR(cudaMalloc((void **)&cpuCallLocationY[i], stepsPerEpoch * sizeof(BGFLOAT)));
+          HANDLE_ERROR(cudaMalloc((void **)&cpuCallLocationY[i], (stepsPerEpoch + 1) * sizeof(BGFLOAT)));
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.vertexQueuesBufferY_, cpuCallLocationY,
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyHostToDevice));
@@ -248,7 +248,7 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
    {
       int *cpuCallPatience[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-          HANDLE_ERROR(cudaMalloc((void **)&cpuCallPatience[i], stepsPerEpoch * sizeof(int)));
+          HANDLE_ERROR(cudaMalloc((void **)&cpuCallPatience[i], (stepsPerEpoch + 1) * sizeof(int)));
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.vertexQueuesBufferPatience_, cpuCallPatience,
                               numberOfVertices * sizeof(int *), cudaMemcpyHostToDevice));
@@ -258,7 +258,7 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
    {
       int *cpuCallOnSiteTime[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-          HANDLE_ERROR(cudaMalloc((void **)&cpuCallOnSiteTime[i], stepsPerEpoch * sizeof(int)));
+          HANDLE_ERROR(cudaMalloc((void **)&cpuCallOnSiteTime[i], (stepsPerEpoch + 1) * sizeof(int)));
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.vertexQueuesBufferOnSiteTime_, cpuCallOnSiteTime,
                               numberOfVertices * sizeof(int *), cudaMemcpyHostToDevice));
@@ -268,7 +268,7 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
    {
       int *cpuCallResponderType[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-          HANDLE_ERROR(cudaMalloc((void **)&cpuCallResponderType[i], stepsPerEpoch * sizeof(int)));
+          HANDLE_ERROR(cudaMalloc((void **)&cpuCallResponderType[i], (stepsPerEpoch + 1) * sizeof(int)));
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.vertexQueuesBufferResponderType_, cpuCallResponderType,
                               numberOfVertices * sizeof(int *), cudaMemcpyHostToDevice));
@@ -745,13 +745,13 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       // management
       vector<int> callIdInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callIdInBuffer.resize(stepsPerEpoch);
+         callIdInBuffer.resize(stepsPerEpoch + 1);
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             callIdInBuffer[j] = buffer[j].vertexId;
          }
          HANDLE_ERROR(cudaMemcpy(callIdCpu[i], callIdInBuffer.data(),
-                                 stepsPerEpoch * sizeof(int), cudaMemcpyHostToDevice));
+                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyHostToDevice));
          // clear vector before filling with next vertex's call ids
          callIdInBuffer.clear();
       }
@@ -767,13 +767,13 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       // management
       vector<uint64_t> callTimeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callTimeInBuffer.resize(stepsPerEpoch);
+         callTimeInBuffer.resize(stepsPerEpoch + 1);
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             callTimeInBuffer[j] = buffer[j].time;
          }
          HANDLE_ERROR(cudaMemcpy(callTimeCpu[i], callTimeInBuffer.data(),
-                                 stepsPerEpoch * sizeof(uint64_t), cudaMemcpyHostToDevice));
+                                 (stepsPerEpoch + 1) * sizeof(uint64_t), cudaMemcpyHostToDevice));
          // clear vector before filling with next vertex's call ids
          callTimeInBuffer.clear();
       }
@@ -789,13 +789,13 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       // management
       vector<int> callDurationInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callDurationInBuffer.resize(stepsPerEpoch);
+         callDurationInBuffer.resize(stepsPerEpoch + 1);
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             callDurationInBuffer[j] = buffer[j].duration;
          }
          HANDLE_ERROR(cudaMemcpy(callDurationCpu[i], callDurationInBuffer.data(),
-                                 stepsPerEpoch * sizeof(int), cudaMemcpyHostToDevice));
+                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyHostToDevice));
          // clear vector before filling with next vertex's call ids
          callDurationInBuffer.clear();
       }
@@ -811,13 +811,13 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       // management
       vector<BGFLOAT> callLocationXInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callLocationXInBuffer.resize(stepsPerEpoch);
+         callLocationXInBuffer.resize(stepsPerEpoch + 1);
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             callLocationXInBuffer[j] = buffer[j].x;
          }
          HANDLE_ERROR(cudaMemcpy(callLocationXCpu[i], callLocationXInBuffer.data(),
-                                 stepsPerEpoch * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+                                 (stepsPerEpoch + 1) * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
          // clear vector before filling with next vertex's call ids
          callLocationXInBuffer.clear();
       }
@@ -833,13 +833,13 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       // management
       vector<BGFLOAT> callLocationYInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callLocationYInBuffer.resize(stepsPerEpoch);
+         callLocationYInBuffer.resize(stepsPerEpoch + 1);
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             callLocationYInBuffer[j] = buffer[j].y;
          }
          HANDLE_ERROR(cudaMemcpy(callLocationYCpu[i], callLocationYInBuffer.data(),
-                                 stepsPerEpoch * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+                                 (stepsPerEpoch + 1) * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
          // clear vector before filling with next vertex's call ids
          callLocationYInBuffer.clear();
       }
@@ -855,13 +855,13 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       // management
       vector<int> callPatienceInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callPatienceInBuffer.resize(stepsPerEpoch);
+         callPatienceInBuffer.resize(stepsPerEpoch + 1);
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             callPatienceInBuffer[j] = buffer[j].patience;
          }
          HANDLE_ERROR(cudaMemcpy(callPatienceCpu[i], callPatienceInBuffer.data(),
-                                 stepsPerEpoch * sizeof(int), cudaMemcpyHostToDevice));
+                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyHostToDevice));
          // clear vector before filling with next vertex's call ids
          callPatienceInBuffer.clear();
       }
@@ -877,13 +877,13 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       // management
       vector<int> callOnSiteTimeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callOnSiteTimeInBuffer.resize(stepsPerEpoch);
+         callOnSiteTimeInBuffer.resize(stepsPerEpoch + 1);
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             callOnSiteTimeInBuffer[j] = buffer[j].onSiteTime;
          }
          HANDLE_ERROR(cudaMemcpy(callOnSiteTimeCpu[i], callOnSiteTimeInBuffer.data(),
-                                 stepsPerEpoch * sizeof(int), cudaMemcpyHostToDevice));
+                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyHostToDevice));
          // clear vector before filling with next vertex's call ids
          callOnSiteTimeInBuffer.clear();
       }
@@ -899,7 +899,7 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       // management
       vector<int> callResponderTypeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callResponderTypeInBuffer.resize(stepsPerEpoch);
+         callResponderTypeInBuffer.resize(stepsPerEpoch + 1);
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             std::string typeInBuffer = buffer[j].type;
@@ -912,7 +912,7 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
             }
          }
          HANDLE_ERROR(cudaMemcpy(callResponderTypeCpu[i], callResponderTypeInBuffer.data(),
-                                 stepsPerEpoch * sizeof(int), cudaMemcpyHostToDevice));
+                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyHostToDevice));
          // clear vector before filling with next vertex's call ids
          callResponderTypeInBuffer.clear();
       }
@@ -1517,9 +1517,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       vector<int> callIdInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
          // Make sure internal buffer can hold all device values
-         callIdInBuffer.resize(stepsPerEpoch);
+         callIdInBuffer.resize(stepsPerEpoch + 1);
          HANDLE_ERROR(cudaMemcpy(callIdInBuffer.data(), callIdCpu[i],
-                                 stepsPerEpoch * sizeof(int), cudaMemcpyDeviceToHost));
+                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyDeviceToHost));
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          // Only copy over the number of IDs that we have on the CPU.
          for (int j = 0; j < buffer.size(); j++) {
@@ -1540,9 +1540,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       // management
       vector<uint64_t> callTimeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callTimeInBuffer.resize(stepsPerEpoch);
+         callTimeInBuffer.resize(stepsPerEpoch + 1);
          HANDLE_ERROR(cudaMemcpy(callTimeInBuffer.data(), callTimeCpu[i],
-                                 stepsPerEpoch * sizeof(uint64_t), cudaMemcpyDeviceToHost));
+                                 (stepsPerEpoch + 1) * sizeof(uint64_t), cudaMemcpyDeviceToHost));
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             buffer[j].time = callTimeInBuffer[j];
@@ -1562,9 +1562,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       // management
       vector<int> callDurationInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callDurationInBuffer.resize(stepsPerEpoch);
+         callDurationInBuffer.resize(stepsPerEpoch + 1);
          HANDLE_ERROR(cudaMemcpy(callDurationInBuffer.data(), callDurationCpu[i],
-                                 stepsPerEpoch * sizeof(int), cudaMemcpyDeviceToHost));
+                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyDeviceToHost));
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             buffer[j].duration = callDurationInBuffer[j];
@@ -1584,9 +1584,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       // management
       vector<BGFLOAT> callLocationXInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callLocationXInBuffer.resize(stepsPerEpoch);
+         callLocationXInBuffer.resize(stepsPerEpoch + 1);
          HANDLE_ERROR(cudaMemcpy(callLocationXInBuffer.data(), callLocationXCpu[i],
-                                 stepsPerEpoch * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+                                 (stepsPerEpoch + 1) * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             buffer[j].x = callLocationXInBuffer[j];
@@ -1606,9 +1606,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       // management
       vector<BGFLOAT> callLocationYInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callLocationYInBuffer.resize(stepsPerEpoch);
+         callLocationYInBuffer.resize(stepsPerEpoch + 1);
          HANDLE_ERROR(cudaMemcpy(callLocationYInBuffer.data(), callLocationYCpu[i],
-                                 stepsPerEpoch * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+                                 (stepsPerEpoch + 1) * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             buffer[j].y = callLocationYInBuffer[j];
@@ -1628,9 +1628,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       // management
       vector<int> callPatienceInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callPatienceInBuffer.resize(stepsPerEpoch);
+         callPatienceInBuffer.resize(stepsPerEpoch + 1);
          HANDLE_ERROR(cudaMemcpy(callPatienceInBuffer.data(), callPatienceCpu[i],
-                                 stepsPerEpoch * sizeof(int), cudaMemcpyDeviceToHost));
+                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyDeviceToHost));
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             buffer[j].patience = callPatienceInBuffer[j];
@@ -1650,9 +1650,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       // management
       vector<int> callOnSiteTimeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callOnSiteTimeInBuffer.resize(stepsPerEpoch);
+         callOnSiteTimeInBuffer.resize(stepsPerEpoch + 1);
          HANDLE_ERROR(cudaMemcpy(callOnSiteTimeInBuffer.data(), callOnSiteTimeCpu[i],
-                                 stepsPerEpoch * sizeof(int), cudaMemcpyDeviceToHost));
+                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyDeviceToHost));
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             buffer[j].onSiteTime = callOnSiteTimeInBuffer[j];
@@ -1672,9 +1672,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       // management
       vector<int> callResponderTypeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callResponderTypeInBuffer.resize(stepsPerEpoch);
+         callResponderTypeInBuffer.resize(stepsPerEpoch + 1);
          HANDLE_ERROR(cudaMemcpy(callResponderTypeInBuffer.data(), callResponderTypeCpu[i],
-                                 stepsPerEpoch * sizeof(int), cudaMemcpyDeviceToHost));
+                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyDeviceToHost));
          vector<Call> buffer = vertexQueues_[i].getBuffer();
          for (int j = 0; j < buffer.size(); j++) {
             if (callResponderTypeInBuffer[j] == 5) {
