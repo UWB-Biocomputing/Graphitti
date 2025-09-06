@@ -23,9 +23,8 @@
 ///  CUDA code for advancing all vertices
 ///
 __global__ void advance911VerticesDevice(int totalVertices,
-                                         int totalNumberOfEvents,
+                                         int maxEventsPerEpoch,
                                          uint64_t stepsPerEpoch,
-                                         uint64_t totalTimeSteps,
                                          uint64_t simulationStep,
                                          BGFLOAT drivingSpeed,
                                          BGFLOAT pi,
@@ -46,7 +45,6 @@ __global__ void maybeTakeCallFromEdge(int totalVertices,
                                       EdgeIndexMapDevice *edgeIndexMapDevice);
 
 __device__ void advanceCALRVerticesDevice(int vertexId,
-                                             int totalNumberOfEvents,
                                              uint64_t stepsPerEpoch,
                                              uint64_t simulationStep,
                                              BGFLOAT redialValue,
@@ -56,9 +54,8 @@ __device__ void advanceCALRVerticesDevice(int vertexId,
                                              EdgeIndexMapDevice *edgeIndexMapDevice);
 
 __device__ void advancePSAPVerticesDevice(int vertexIdx,
-                                             int totalNumberOfEvents,
+                                             int maxEventsPerEpoch,
                                              uint64_t stepsPerEpoch,
-                                             uint64_t totalTimeSteps,
                                              uint64_t simulationStep,
                                              BGFLOAT *xLocation,
                                              BGFLOAT *yLocation,
@@ -67,9 +64,8 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx,
                                              EdgeIndexMapDevice *edgeIndexMapDevice);
 
 __device__ void advanceRESPVerticesDevice(int vertexIdx,
-                                             int totalNumberOfEvents,
+                                             int maxEventsPerEpoch,
                                              uint64_t stepsPerEpoch,
-                                             uint64_t totalTimeSteps,
                                              uint64_t simulationStep,
                                              BGFLOAT drivingSpeed,
                                              BGFLOAT pi, 
@@ -98,9 +94,9 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
 {
    Simulator &simulator = Simulator::getInstance();
    uint64_t stepsPerEpoch = simulator.getEpochDuration() / simulator.getDeltaT();
-   uint64_t totalTimeSteps = stepsPerEpoch * simulator.getNumEpochs();
    int numberOfVertices = simulator.getTotalVertices();
-   int totalNumberOfEvents = inputManager_.getTotalNumberOfEvents();
+   int maxEventsPerEpoch = static_cast<int>(Simulator::getInstance().getEpochDuration()
+                                 * Simulator::getInstance().getMaxFiringRate());
 
    // Layout locations
    Layout &layout = simulator.getModel().getLayout();
@@ -118,7 +114,7 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
    {
       uint64_t *cpuBeginTimeHistory[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-          HANDLE_ERROR(cudaMalloc((void **)&cpuBeginTimeHistory[i], totalNumberOfEvents * sizeof(uint64_t)));
+          HANDLE_ERROR(cudaMalloc((void **)&cpuBeginTimeHistory[i], maxEventsPerEpoch * sizeof(uint64_t)));
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.beginTimeHistory_, cpuBeginTimeHistory,
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyHostToDevice));
@@ -132,7 +128,7 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
    {
       uint64_t *cpuAnswerTimeHistory[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-          HANDLE_ERROR(cudaMalloc((void **)&cpuAnswerTimeHistory[i], totalNumberOfEvents * sizeof(uint64_t)));
+          HANDLE_ERROR(cudaMalloc((void **)&cpuAnswerTimeHistory[i], maxEventsPerEpoch * sizeof(uint64_t)));
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.answerTimeHistory_, cpuAnswerTimeHistory,
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyHostToDevice));
@@ -146,7 +142,7 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
    {
       uint64_t *cpuEndTimeHistory[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-          HANDLE_ERROR(cudaMalloc((void **)&cpuEndTimeHistory[i], totalNumberOfEvents * sizeof(uint64_t)));
+          HANDLE_ERROR(cudaMalloc((void **)&cpuEndTimeHistory[i], maxEventsPerEpoch * sizeof(uint64_t)));
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.endTimeHistory_, cpuEndTimeHistory,
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyHostToDevice));
@@ -160,7 +156,7 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
    {
       uint64_t *cpuWasAbandonedHistory[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-          HANDLE_ERROR(cudaMalloc((void **)&cpuWasAbandonedHistory[i], totalNumberOfEvents * sizeof(uint64_t)));
+          HANDLE_ERROR(cudaMalloc((void **)&cpuWasAbandonedHistory[i], maxEventsPerEpoch * sizeof(uint64_t)));
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.wasAbandonedHistory_, cpuWasAbandonedHistory,
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyHostToDevice));
@@ -174,7 +170,7 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
    {
       uint64_t *cpuQueueLengthHistory[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-          HANDLE_ERROR(cudaMalloc((void **)&cpuQueueLengthHistory[i], totalTimeSteps * sizeof(uint64_t)));
+          HANDLE_ERROR(cudaMalloc((void **)&cpuQueueLengthHistory[i], stepsPerEpoch * sizeof(uint64_t)));
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.queueLengthHistory_, cpuQueueLengthHistory,
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyHostToDevice));
@@ -188,7 +184,7 @@ void All911Vertices::allocDeviceStruct(All911VerticesDeviceProperties &allVertic
    {
       BGFLOAT *cpuUtilizationHistory[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-          HANDLE_ERROR(cudaMalloc((void **)&cpuUtilizationHistory[i], totalTimeSteps * sizeof(BGFLOAT)));
+          HANDLE_ERROR(cudaMalloc((void **)&cpuUtilizationHistory[i], stepsPerEpoch * sizeof(BGFLOAT)));
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.utilizationHistory_, cpuUtilizationHistory,
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyHostToDevice));
@@ -1155,9 +1151,9 @@ void All911Vertices::copyToDevice()
                            sizeof(All911VerticesDeviceProperties), cudaMemcpyDeviceToHost));
 
    uint64_t stepsPerEpoch = simulator.getEpochDuration() / simulator.getDeltaT();
-   uint64_t totalTimeSteps = stepsPerEpoch * simulator.getNumEpochs();
+   int maxEventsPerEpoch = static_cast<int>(Simulator::getInstance().getEpochDuration()
+                                 * Simulator::getInstance().getMaxFiringRate());
    int numberOfVertices = simulator.getTotalVertices();
-   int totalNumberOfEvents = inputManager_.getTotalNumberOfEvents();
 
    // Copy layout locations
    Layout &layout = simulator.getModel().getLayout();
@@ -1174,7 +1170,7 @@ void All911Vertices::copyToDevice()
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
          HANDLE_ERROR(cudaMemcpy(cpuBeginTimeHistory[i], beginTimeHistory_[i].data(),
-                                 totalNumberOfEvents * sizeof(uint64_t), cudaMemcpyHostToDevice));
+                                 maxEventsPerEpoch * sizeof(uint64_t), cudaMemcpyHostToDevice));
       }
    }
    // int *beginTimeHistoryBufferFront_;
@@ -1220,7 +1216,7 @@ void All911Vertices::copyToDevice()
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
          HANDLE_ERROR(cudaMemcpy(cpuAnswerTimeHistory[i], answerTimeHistory_[i].data(),
-                                 totalNumberOfEvents * sizeof(uint64_t), cudaMemcpyHostToDevice));
+                                 maxEventsPerEpoch * sizeof(uint64_t), cudaMemcpyHostToDevice));
       }
    }
    // int *answerTimeHistoryBufferFront_;
@@ -1266,7 +1262,7 @@ void All911Vertices::copyToDevice()
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
          HANDLE_ERROR(cudaMemcpy(cpuEndTimeHistory[i], endTimeHistory_[i].data(),
-                                 totalNumberOfEvents * sizeof(uint64_t), cudaMemcpyHostToDevice));
+                                 maxEventsPerEpoch * sizeof(uint64_t), cudaMemcpyHostToDevice));
       }
    }
    // int *endTimeHistoryBufferFront_;
@@ -1312,7 +1308,7 @@ void All911Vertices::copyToDevice()
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
          HANDLE_ERROR(cudaMemcpy(cpuWasAbandonedHistory[i], wasAbandonedHistory_[i].data(),
-                                 totalNumberOfEvents * sizeof(uint64_t), cudaMemcpyHostToDevice));
+                                 maxEventsPerEpoch * sizeof(uint64_t), cudaMemcpyHostToDevice));
       }
    }
    // int *wasAbandonedHistoryBufferFront_;
@@ -1358,7 +1354,7 @@ void All911Vertices::copyToDevice()
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
          HANDLE_ERROR(cudaMemcpy(cpuQueueLengthHistory[i], queueLengthHistory_[i].data(),
-                                 totalTimeSteps * sizeof(uint64_t), cudaMemcpyHostToDevice));
+                                 stepsPerEpoch * sizeof(uint64_t), cudaMemcpyHostToDevice));
       }
    }
    // int *queueLengthHistoryBufferFront_;
@@ -1404,7 +1400,7 @@ void All911Vertices::copyToDevice()
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
          HANDLE_ERROR(cudaMemcpy(cpuUtilizationHistory[i], utilizationHistory_[i].data(),
-                                 totalTimeSteps * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
+                                 stepsPerEpoch * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
       }
    }
    // int *utilizationHistoryBufferFront_;
@@ -1919,9 +1915,9 @@ void All911Vertices::copyFromDevice()
                            sizeof(All911VerticesDeviceProperties), cudaMemcpyDeviceToHost));                     
 
    uint64_t stepsPerEpoch = simulator.getEpochDuration() / simulator.getDeltaT();
-   uint64_t totalTimeSteps = stepsPerEpoch * simulator.getNumEpochs();
+   int maxEventsPerEpoch = static_cast<int>(Simulator::getInstance().getEpochDuration()
+                                 * Simulator::getInstance().getMaxFiringRate());
    int numberOfVertices = simulator.getTotalVertices();
-   int totalNumberOfEvents = inputManager_.getTotalNumberOfEvents();
 
    // Copy layout locations
    Layout &layout = simulator.getModel().getLayout();
@@ -1938,7 +1934,7 @@ void All911Vertices::copyFromDevice()
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
          HANDLE_ERROR(cudaMemcpy(beginTimeHistory_[i].data(), cpuBeginTimeHistory[i],
-                                 totalNumberOfEvents * sizeof(uint64_t), cudaMemcpyDeviceToHost));
+                                 maxEventsPerEpoch * sizeof(uint64_t), cudaMemcpyDeviceToHost));
       }
    }
    // int *beginTimeHistoryBufferFront_;
@@ -1984,7 +1980,7 @@ void All911Vertices::copyFromDevice()
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
          HANDLE_ERROR(cudaMemcpy(answerTimeHistory_[i].data(), cpuAnswerTimeHistory[i],
-                                 totalNumberOfEvents * sizeof(uint64_t), cudaMemcpyDeviceToHost));
+                                 maxEventsPerEpoch * sizeof(uint64_t), cudaMemcpyDeviceToHost));
       }
    }
    // int *answerTimeHistoryBufferFront_;
@@ -2030,7 +2026,7 @@ void All911Vertices::copyFromDevice()
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
          HANDLE_ERROR(cudaMemcpy(endTimeHistory_[i].data(), cpuEndTimeHistory[i],
-                                 totalNumberOfEvents * sizeof(uint64_t), cudaMemcpyDeviceToHost));
+                                 maxEventsPerEpoch * sizeof(uint64_t), cudaMemcpyDeviceToHost));
       }
    }
    // int *endTimeHistoryBufferFront_;
@@ -2076,7 +2072,7 @@ void All911Vertices::copyFromDevice()
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
          HANDLE_ERROR(cudaMemcpy(wasAbandonedHistory_[i].data(), cpuWasAbandonedHistory[i],
-                                 totalNumberOfEvents * sizeof(uint64_t), cudaMemcpyDeviceToHost));
+                                 maxEventsPerEpoch * sizeof(uint64_t), cudaMemcpyDeviceToHost));
       }
    }
    // int *wasAbandonedHistoryBufferFront_;
@@ -2122,7 +2118,7 @@ void All911Vertices::copyFromDevice()
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
          HANDLE_ERROR(cudaMemcpy(queueLengthHistory_[i].data(), cpuQueueLengthHistory[i],
-                                 totalTimeSteps * sizeof(uint64_t), cudaMemcpyDeviceToHost));
+                                 stepsPerEpoch * sizeof(uint64_t), cudaMemcpyDeviceToHost));
       }
    }
    // int *queueLengthHistoryBufferFront_;
@@ -2168,7 +2164,7 @@ void All911Vertices::copyFromDevice()
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
          HANDLE_ERROR(cudaMemcpy(utilizationHistory_[i].data(), cpuUtilizationHistory[i],
-                                 totalTimeSteps * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
+                                 stepsPerEpoch * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
       }
    }
    // int *utilizationHistoryBufferFront_;
@@ -2285,18 +2281,17 @@ void All911Vertices::advanceVertices(AllEdges &edges, void *allVerticesDevice,
    const int threadsPerBlock = 256;
    int blocksPerGrid
       = (simulator.getTotalVertices() + threadsPerBlock - 1) / threadsPerBlock;
-   int totalNumberOfEvents = inputManager_.getTotalNumberOfEvents();
+   int maxEventsPerEpoch = static_cast<int>(Simulator::getInstance().getEpochDuration()
+                                 * Simulator::getInstance().getMaxFiringRate());
    uint64_t stepsPerEpoch = simulator.getEpochDuration() / simulator.getDeltaT();
-   uint64_t totalTimeSteps = stepsPerEpoch * simulator.getNumEpochs();
    Layout &layout = simulator.getModel().getLayout();
    Layout911 &layout911 = dynamic_cast<Layout911 &>(layout);
    BGFLOAT *xLoc_device = layout911.xloc_.getDevicePointer();
    BGFLOAT *yLoc_device = layout911.yloc_.getDevicePointer();
    // Advance vertices ------------->
    advance911VerticesDevice<<<blocksPerGrid, threadsPerBlock>>>(size_,
-                                                                totalNumberOfEvents,
+                                                                maxEventsPerEpoch,
                                                                 stepsPerEpoch,
-                                                                totalTimeSteps,
                                                                 g_simulationStep,
                                                                 avgDrivingSpeed_,
                                                                 pi,
@@ -2311,9 +2306,8 @@ void All911Vertices::advanceVertices(AllEdges &edges, void *allVerticesDevice,
 }
 
 __global__ void advance911VerticesDevice(int totalVertices,
-                                         int totalNumberOfEvents,
+                                         int maxEventsPerEpoch,
                                          uint64_t stepsPerEpoch,
-                                         uint64_t totalTimeSteps,
                                          uint64_t simulationStep,
                                          BGFLOAT drivingSpeed,
                                          BGFLOAT pi,
@@ -2332,15 +2326,15 @@ __global__ void advance911VerticesDevice(int totalVertices,
       return;
    switch (allVerticesDevice->vertexType_[idx]) {
       case 3: //CALR
-         advanceCALRVerticesDevice(idx, totalNumberOfEvents, stepsPerEpoch, simulationStep, redialValues[allVerticesDevice->vertexIdToNoiseIndex_[idx]], redialProbability, allVerticesDevice, allEdgesDevice, edgeIndexMapDevice);
+         advanceCALRVerticesDevice(idx, stepsPerEpoch, simulationStep, redialValues[allVerticesDevice->vertexIdToNoiseIndex_[idx]], redialProbability, allVerticesDevice, allEdgesDevice, edgeIndexMapDevice);
          break;
       case 4: //PSAP
-         advancePSAPVerticesDevice(idx, totalNumberOfEvents, stepsPerEpoch, totalTimeSteps, simulationStep, xLocation, yLocation, allVerticesDevice, allEdgesDevice, edgeIndexMapDevice);
+         advancePSAPVerticesDevice(idx, maxEventsPerEpoch, stepsPerEpoch, simulationStep, xLocation, yLocation, allVerticesDevice, allEdgesDevice, edgeIndexMapDevice);
          break;
       case 5: //EMS
       case 6: //FIRE
       case 7: //LAW
-         advanceRESPVerticesDevice(idx, totalNumberOfEvents, stepsPerEpoch, totalTimeSteps, simulationStep, drivingSpeed, pi, xLocation, yLocation, allVerticesDevice, allEdgesDevice, edgeIndexMapDevice);
+         advanceRESPVerticesDevice(idx, maxEventsPerEpoch, stepsPerEpoch, simulationStep, drivingSpeed, pi, xLocation, yLocation, allVerticesDevice, allEdgesDevice, edgeIndexMapDevice);
          break;
       default:
          printf("ERROR: Vertex is of unknown type [%d]\n", allVerticesDevice->vertexType_[idx]);
@@ -2350,7 +2344,6 @@ __global__ void advance911VerticesDevice(int totalVertices,
 ///  CUDA code for advancing Caller region vertices
 ///
 __device__ void advanceCALRVerticesDevice(int vertexId,
-                                             int totalNumberOfEvents,
                                              uint64_t stepsPerEpoch,
                                              uint64_t simulationStep,
                                              BGFLOAT redialValue,
@@ -2410,9 +2403,8 @@ __device__ void advanceCALRVerticesDevice(int vertexId,
 ///  CUDA code for advancing PSAP vertices
 ///
 __device__ void advancePSAPVerticesDevice(int vertexIdx,
-                                             int totalNumberOfEvents,
+                                             int maxEventsPerEpoch,
                                              uint64_t stepsPerEpoch,
-                                             uint64_t totalTimeSteps,
                                              uint64_t simulationStep,
                                              BGFLOAT *xLocation,
                                              BGFLOAT *yLocation,
@@ -2446,43 +2438,43 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx,
          //Store call metrics
          // Store wasAbandonedHistory
          // EventBuffer::insertEvent
-         if (allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx] >= totalNumberOfEvents) {
-            printf("ERROR: wasAbandonHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, totalNumberOfEvents, allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx]);
+         if (allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
+            printf("ERROR: wasAbandonHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx]);
             return;
          }
          int &abandonedHistoryQueueEnd = allVerticesDevice->wasAbandonedHistoryBufferEnd_[vertexIdx];
          allVerticesDevice->wasAbandonedHistory_[vertexIdx][abandonedHistoryQueueEnd] = false;
-         abandonedHistoryQueueEnd = (abandonedHistoryQueueEnd + 1) % totalNumberOfEvents;
+         abandonedHistoryQueueEnd = (abandonedHistoryQueueEnd + 1) % maxEventsPerEpoch;
          allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx]++;
          // Store beginTimeHistory
          // EventBuffer::insertEvent
-         if (allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx] >= totalNumberOfEvents) {
-            printf("ERROR: beginTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, totalNumberOfEvents, allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx]);
+         if (allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
+            printf("ERROR: beginTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx]);
             return;
          }
          int &beginHistoryQueueEnd = allVerticesDevice->beginTimeHistoryBufferEnd_[vertexIdx];
          allVerticesDevice->beginTimeHistory_[vertexIdx][beginHistoryQueueEnd] = allVerticesDevice->servingCallBufferTime_[vertexIdx][server];
-         beginHistoryQueueEnd = (beginHistoryQueueEnd + 1) % totalNumberOfEvents;
+         beginHistoryQueueEnd = (beginHistoryQueueEnd + 1) % maxEventsPerEpoch;
          allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx]++;
          // Store answerTimeHistory
          // EventBuffer::insertEvent
-         if (allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx] >= totalNumberOfEvents) {
-            printf("ERROR: answerTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, totalNumberOfEvents, allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx]);
+         if (allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
+            printf("ERROR: answerTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx]);
             return;
          }
          int &answerHistoryQueueEnd = allVerticesDevice->answerTimeHistoryBufferEnd_[vertexIdx];
          allVerticesDevice->answerTimeHistory_[vertexIdx][answerHistoryQueueEnd] = allVerticesDevice->answerTime_[vertexIdx][server];
-         answerHistoryQueueEnd = (answerHistoryQueueEnd + 1) % totalNumberOfEvents;
+         answerHistoryQueueEnd = (answerHistoryQueueEnd + 1) % maxEventsPerEpoch;
          allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx]++;
          // Store endTimeHistory
          // EventBuffer::insertEvent
-         if (allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx] >= totalNumberOfEvents) {
-            printf("ERROR: endTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, totalNumberOfEvents, allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx]);
+         if (allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
+            printf("ERROR: endTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx]);
             return;
          }
          int &endHistoryQueueEnd = allVerticesDevice->endTimeHistoryBufferEnd_[vertexIdx];
          allVerticesDevice->endTimeHistory_[vertexIdx][endHistoryQueueEnd] = simulationStep;
-         endHistoryQueueEnd = (endHistoryQueueEnd + 1) % totalNumberOfEvents;
+         endHistoryQueueEnd = (endHistoryQueueEnd + 1) % maxEventsPerEpoch;
          allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx]++;
 
          int requiredType = allVerticesDevice->servingCallBufferResponderType_[vertexIdx][server];
@@ -2577,44 +2569,44 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx,
          // If the patience time is less than the waiting time, the call is abandoned
          // Store wasAbandonedHistory
          // EventBuffer::insertEvent
-         if (allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx] >= totalNumberOfEvents) {
-            printf("ERROR: wasAbandonHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, totalNumberOfEvents, allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx]);
+         if (allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
+            printf("ERROR: wasAbandonHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx]);
             return;
          }
          int &abandonedHistoryQueueEnd = allVerticesDevice->wasAbandonedHistoryBufferEnd_[vertexIdx];
          allVerticesDevice->wasAbandonedHistory_[vertexIdx][abandonedHistoryQueueEnd] = true;
-         abandonedHistoryQueueEnd = (abandonedHistoryQueueEnd + 1) % totalNumberOfEvents;
+         abandonedHistoryQueueEnd = (abandonedHistoryQueueEnd + 1) % maxEventsPerEpoch;
          allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx]++;
          // Store beginTimeHistory
          // EventBuffer::insertEvent
-         if (allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx] >= totalNumberOfEvents) {
-            printf("ERROR: beginTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, totalNumberOfEvents, allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx]);
+         if (allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
+            printf("ERROR: beginTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx]);
             return;
          }
          int &beginHistoryQueueEnd = allVerticesDevice->beginTimeHistoryBufferEnd_[vertexIdx];
          allVerticesDevice->beginTimeHistory_[vertexIdx][beginHistoryQueueEnd] = callTime;
-         beginHistoryQueueEnd = (beginHistoryQueueEnd + 1) % totalNumberOfEvents;
+         beginHistoryQueueEnd = (beginHistoryQueueEnd + 1) % maxEventsPerEpoch;
          allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx]++;
          // Answer time and end time get zero as sentinel for non-valid values
          // Store answerTimeHistory
          // EventBuffer::insertEvent
-         if (allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx] >= totalNumberOfEvents) {
-            printf("ERROR: answerTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, totalNumberOfEvents, allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx]);
+         if (allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
+            printf("ERROR: answerTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx]);
             return;
          }
          int &answerHistoryQueueEnd = allVerticesDevice->answerTimeHistoryBufferEnd_[vertexIdx];
          allVerticesDevice->answerTimeHistory_[vertexIdx][answerHistoryQueueEnd] = 0;
-         answerHistoryQueueEnd = (answerHistoryQueueEnd + 1) % totalNumberOfEvents;
+         answerHistoryQueueEnd = (answerHistoryQueueEnd + 1) % maxEventsPerEpoch;
          allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx]++;
          // Store endTimeHistory
          // EventBuffer::insertEvent
-         if (allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx] >= totalNumberOfEvents) {
-            printf("ERROR: endTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, totalNumberOfEvents, allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx]);
+         if (allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
+            printf("ERROR: endTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx]);
             return;
          }
          int &endHistoryQueueEnd = allVerticesDevice->endTimeHistoryBufferEnd_[vertexIdx];
          allVerticesDevice->endTimeHistory_[vertexIdx][endHistoryQueueEnd] = 0;
-         endHistoryQueueEnd = (endHistoryQueueEnd + 1) % totalNumberOfEvents;
+         endHistoryQueueEnd = (endHistoryQueueEnd + 1) % maxEventsPerEpoch;
          allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx]++;
       } else {
          // The available server starts serving the call
@@ -2651,26 +2643,26 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx,
    if (queueFrontIndex >= queueEndIndex) {
       queueSize = queueFrontIndex - queueEndIndex;
    } else {
-      queueSize = totalTimeSteps + queueFrontIndex - queueEndIndex;
+      queueSize = stepsPerEpoch + queueFrontIndex - queueEndIndex;
    }
    // EventBuffer::insertEvent
-   if (allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx] >= totalTimeSteps) {
-      printf("ERROR: queueLengthHistory buffer is full. Vertex ID [%d] Buffer size [%" PRIu64 "] Number of Elements in Epoch [%d]\n", vertexIdx, totalTimeSteps, allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx]);
+   if (allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx] >= stepsPerEpoch) {
+      printf("ERROR: queueLengthHistory buffer is full. Vertex ID [%d] Buffer size [%" PRIu64 "] Number of Elements in Epoch [%d]\n", vertexIdx, stepsPerEpoch, allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx]);
       return;
    }
    int &queueLengthHistoryQueueEnd = allVerticesDevice->queueLengthHistoryBufferEnd_[vertexIdx];
    allVerticesDevice->queueLengthHistory_[vertexIdx][queueLengthHistoryQueueEnd] = queueSize;
-   queueLengthHistoryQueueEnd = (queueLengthHistoryQueueEnd + 1) % totalTimeSteps;
+   queueLengthHistoryQueueEnd = (queueLengthHistoryQueueEnd + 1) % stepsPerEpoch;
    allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx]++;
    // EventBuffer::insertEvent
-   if (allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx] >= totalTimeSteps) {
-      printf("ERROR: utilizationHistory buffer is full. Vertex ID [%d] Buffer size [%" PRIu64 "] Number of Elements in Epoch [%d]\n", vertexIdx, totalTimeSteps, allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx]);
+   if (allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx] >= stepsPerEpoch) {
+      printf("ERROR: utilizationHistory buffer is full. Vertex ID [%d] Buffer size [%" PRIu64 "] Number of Elements in Epoch [%d]\n", vertexIdx, stepsPerEpoch, allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx]);
       return;
    }
    int &utilizationHistoryQueueEnd = allVerticesDevice->utilizationHistoryBufferEnd_[vertexIdx];
    allVerticesDevice->utilizationHistory_[vertexIdx][utilizationHistoryQueueEnd] 
       = static_cast<float>(allVerticesDevice->busyServers_[vertexIdx]) / allVerticesDevice->numServers_[vertexIdx];
-   utilizationHistoryQueueEnd = (utilizationHistoryQueueEnd + 1) % totalTimeSteps;
+   utilizationHistoryQueueEnd = (utilizationHistoryQueueEnd + 1) % stepsPerEpoch;
    allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx]++;
 
    // Free the availableServers array
@@ -2680,9 +2672,8 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx,
 ///  CUDA code for advancing emergency responder vertices
 ///
 __device__ void advanceRESPVerticesDevice(int vertexIdx,
-                                             int totalNumberOfEvents,
+                                             int maxEventsPerEpoch,
                                              uint64_t stepsPerEpoch,
-                                             uint64_t totalTimeSteps,
                                              uint64_t simulationStep,
                                              BGFLOAT drivingSpeed,
                                              BGFLOAT pi, BGFLOAT *xLocation, BGFLOAT *yLocation, All911VerticesDeviceProperties *allVerticesDevice, All911EdgesDeviceProperties *allEdgesDevice, EdgeIndexMapDevice *edgeIndexMapDevice)
@@ -2710,43 +2701,43 @@ __device__ void advanceRESPVerticesDevice(int vertexIdx,
          //Store incident response metrics
          // Store wasAbandonedHistory
          // EventBuffer::insertEvent
-         if (allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx] >= totalNumberOfEvents) {
-            printf("ERROR: wasAbandonHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, totalNumberOfEvents, allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx]);
+         if (allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
+            printf("ERROR: wasAbandonHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx]);
             return;
          }
          int &abandonedHistoryQueueEnd = allVerticesDevice->wasAbandonedHistoryBufferEnd_[vertexIdx];
          allVerticesDevice->wasAbandonedHistory_[vertexIdx][abandonedHistoryQueueEnd] = false;
-         abandonedHistoryQueueEnd = (abandonedHistoryQueueEnd + 1) % totalNumberOfEvents;
+         abandonedHistoryQueueEnd = (abandonedHistoryQueueEnd + 1) % maxEventsPerEpoch;
          allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx]++;
          // Store beginTimeHistory
          // EventBuffer::insertEvent
-         if (allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx] >= totalNumberOfEvents) {
-            printf("ERROR: beginTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, totalNumberOfEvents, allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx]);
+         if (allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
+            printf("ERROR: beginTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx]);
             return;
          }
          int &beginHistoryQueueEnd = allVerticesDevice->beginTimeHistoryBufferEnd_[vertexIdx];
          allVerticesDevice->beginTimeHistory_[vertexIdx][beginHistoryQueueEnd] = allVerticesDevice->servingCallBufferTime_[vertexIdx][unit];
-         beginHistoryQueueEnd = (beginHistoryQueueEnd + 1) % totalNumberOfEvents;
+         beginHistoryQueueEnd = (beginHistoryQueueEnd + 1) % maxEventsPerEpoch;
          allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx]++;
          // Store answerTimeHistory
          // EventBuffer::insertEvent
-         if (allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx] >= totalNumberOfEvents) {
-            printf("ERROR: answerTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, totalNumberOfEvents, allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx]);
+         if (allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
+            printf("ERROR: answerTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx]);
             return;
          }
          int &answerHistoryQueueEnd = allVerticesDevice->answerTimeHistoryBufferEnd_[vertexIdx];
          allVerticesDevice->answerTimeHistory_[vertexIdx][answerHistoryQueueEnd] = allVerticesDevice->answerTime_[vertexIdx][unit];
-         answerHistoryQueueEnd = (answerHistoryQueueEnd + 1) % totalNumberOfEvents;
+         answerHistoryQueueEnd = (answerHistoryQueueEnd + 1) % maxEventsPerEpoch;
          allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx]++;
          // Store endTimeHistory
          // EventBuffer::insertEvent
-         if (allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx] >= totalNumberOfEvents) {
-            printf("ERROR: endTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, totalNumberOfEvents, allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx]);
+         if (allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
+            printf("ERROR: endTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx]);
             return;
          }
          int &endHistoryQueueEnd = allVerticesDevice->endTimeHistoryBufferEnd_[vertexIdx];
          allVerticesDevice->endTimeHistory_[vertexIdx][endHistoryQueueEnd] = simulationStep;
-         endHistoryQueueEnd = (endHistoryQueueEnd + 1) % totalNumberOfEvents;
+         endHistoryQueueEnd = (endHistoryQueueEnd + 1) % maxEventsPerEpoch;
          allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx]++;
 
          // Unit is added to available units
@@ -2824,26 +2815,26 @@ __device__ void advanceRESPVerticesDevice(int vertexIdx,
    if (queueFrontIndex >= queueEndIndex) {
       queueSize = queueFrontIndex - queueEndIndex;
    } else {
-      queueSize = totalTimeSteps + queueFrontIndex - queueEndIndex;
+      queueSize = stepsPerEpoch + queueFrontIndex - queueEndIndex;
    }
    // EventBuffer::insertEvent
-   if (allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx] >= totalTimeSteps) {
-      printf("ERROR: queueLengthHistory buffer is full. Vertex ID [%d] Buffer size [%" PRIu64 "] Number of Elements in Epoch [%d]\n", vertexIdx, totalTimeSteps, allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx]);
+   if (allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx] >= stepsPerEpoch) {
+      printf("ERROR: queueLengthHistory buffer is full. Vertex ID [%d] Buffer size [%" PRIu64 "] Number of Elements in Epoch [%d]\n", vertexIdx, stepsPerEpoch, allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx]);
       return;
    }
    int &queueLengthHistoryQueueEnd = allVerticesDevice->queueLengthHistoryBufferEnd_[vertexIdx];
    allVerticesDevice->queueLengthHistory_[vertexIdx][queueLengthHistoryQueueEnd] = queueSize;
-   queueLengthHistoryQueueEnd = (queueLengthHistoryQueueEnd + 1) % totalTimeSteps;
+   queueLengthHistoryQueueEnd = (queueLengthHistoryQueueEnd + 1) % stepsPerEpoch;
    allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx]++;
    // EventBuffer::insertEvent
-   if (allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx] >= totalTimeSteps) {
-      printf("ERROR: utilizationHistory buffer is full. Vertex ID [%d] Buffer size [%" PRIu64 "] Number of Elements in Epoch [%d]\n", vertexIdx, totalTimeSteps, allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx]);
+   if (allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx] >= stepsPerEpoch) {
+      printf("ERROR: utilizationHistory buffer is full. Vertex ID [%d] Buffer size [%" PRIu64 "] Number of Elements in Epoch [%d]\n", vertexIdx, stepsPerEpoch, allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx]);
       return;
    }
    int &utilizationHistoryQueueEnd = allVerticesDevice->utilizationHistoryBufferEnd_[vertexIdx];
    allVerticesDevice->utilizationHistory_[vertexIdx][utilizationHistoryQueueEnd] 
       = static_cast<float>(allVerticesDevice->busyServers_[vertexIdx]) / numberOfUnits;
-   utilizationHistoryQueueEnd = (utilizationHistoryQueueEnd + 1) % totalTimeSteps;
+   utilizationHistoryQueueEnd = (utilizationHistoryQueueEnd + 1) % stepsPerEpoch;
    allVerticesDevice->utilizationHistoryNumElementsInEpoch_[vertexIdx]++;
 
    // Free the availableUnits array
@@ -3054,7 +3045,7 @@ void All911Vertices::copyEpochInputsToDevice()
 
 void All911Vertices::setAdvanceVerticesDeviceParams(AllEdges &edges)
 {
-
+   LOG4CPLUS_DEBUG(vertexLogger_, "Setting Advance Vertices device parameters");
 }
 
 int All911Vertices::getNumberOfVerticesNeedingDeviceNoise() const
