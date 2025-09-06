@@ -3,13 +3,13 @@
   <SimInfoParams name="SimInfoParams">
     <SimParams name="SimParams">
       <!-- 8 epochs of 125 minutes each -->
-      <epochDuration name="epochDuration">60000</epochDuration>
-      <numEpochs name="numEpochs">8</numEpochs>
+      <epochDuration name="epochDuration">600</epochDuration>
+      <numEpochs name="numEpochs">800</numEpochs>
       <!-- Every simulation step is 1 second -->
       <deltaT name="Simulation Step Duration">1</deltaT>
     </SimParams>
     <SimConfig name="SimConfig">
-      <maxFiringRate name="maxFiringRate">100</maxFiringRate>
+      <maxFiringRate name="maxFiringRate">1</maxFiringRate>
       <!-- max edges to a vertex is 344 -->
       <maxEdgesPerVertex name="maxEdgesPerVertex">350</maxEdgesPerVertex>
     </SimConfig>
