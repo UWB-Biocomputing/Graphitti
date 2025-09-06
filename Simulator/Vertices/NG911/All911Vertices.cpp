@@ -57,40 +57,28 @@ void All911Vertices::createAllVertices(Layout &layout)
 {
    // Read Input Events using the InputManager
    inputManager_.readInputs();
-   int totalNumberOfEvents = inputManager_.getTotalNumberOfEvents();
-   assert(0 < totalNumberOfEvents);
-   LOG4CPLUS_DEBUG(vertexLogger_, "Total number of events: " << totalNumberOfEvents);
-   // Initialize the data structures for system metrics
-   // beginTimeHistory_.assign(size_, totalNumberOfEvents);
-   // answerTimeHistory_.assign(size_, totalNumberOfEvents);
-   // endTimeHistory_.assign(size_, totalNumberOfEvents);
-   // wasAbandonedHistory_.assign(size_, totalNumberOfEvents);
 
-   // Calcualte the total number of time-steps for the data structures that
-   // will record per-step histories
    Simulator &simulator = Simulator::getInstance();
+   // For metrics whose entries are recorded for each time step such as queue length history
    uint64_t stepsPerEpoch = simulator.getEpochDuration() / simulator.getDeltaT();
-   uint64_t totalTimeSteps = stepsPerEpoch * simulator.getNumEpochs();
+   // For metrics whose entries are recorded for each call such as begin time history
    int maxEventsPerEpoch = static_cast<int>(Simulator::getInstance().getEpochDuration()
                                  * Simulator::getInstance().getMaxFiringRate());
-   LOG4CPLUS_DEBUG(vertexLogger_, "Total time steps: " << totalTimeSteps);
    LOG4CPLUS_DEBUG(vertexLogger_, "Steps per epoch: " << stepsPerEpoch);
    LOG4CPLUS_DEBUG(vertexLogger_, "Max events per epoch: " << maxEventsPerEpoch);
-   // Initialize the data structures for system metrics
-   // queueLengthHistory_.assign(size_, totalTimeSteps);
-   // utilizationHistory_.assign(size_, totalTimeSteps);
 
-   // Loop over all vertices and set the number of servers and trunks, and
-   // determine the size of the waiting queue.
+   // Loop over all vertices and set the number of servers and trunks.
    // We get the information needed from the GraphManager.
    GraphManager<NG911VertexProperties>::VertexIterator vi, vi_end;
    GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
+   // Variable to map caller region IDs to 0 to n-1 where n is the number of caller regions.
+   // This allows caller regions to exist anywhere in the graph file
+   numberOfVerticesNeedingDeviceNoise_ = 0;
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < size_);
       
       if (gm[*vi].type == "CALR") {
          vertexType_[*vi] = 3;
-         //vertexQueues_[*vi].resize(stepsPerEpoch);
          vertexIdToNoiseIndex_[*vi] = numberOfVerticesNeedingDeviceNoise_;
          numberOfVerticesNeedingDeviceNoise_++;
       } else {
@@ -110,22 +98,6 @@ void All911Vertices::createAllVertices(Layout &layout)
          if(maxNumberOfServers_ < numServers_[*vi]) {
             maxNumberOfServers_ = numServers_[*vi];
          }
-         if(maxNumberOfTrunks_ < numTrunks_[*vi]) {
-            maxNumberOfTrunks_ = numTrunks_[*vi];
-         }
-
-         // The waiting queue is of size # trunks. We keep track of the # of busy servers
-         // to know when there are no more trunks available.
-         //vertexQueues_[*vi].resize(numTrunks_[*vi]);
-         //vertexQueues_[*vi].resize(maxNumberOfTrunks_);
-
-         // Initialize the data structures for agent availability
-         //servingCall_[*vi].resize(gm[*vi].servers);
-         //servingCall_[*vi].resize(maxNumberOfServers_);
-         //answerTime_[*vi].resize(gm[*vi].servers);
-         //answerTime_[*vi].resize(maxNumberOfServers_);
-         //serverCountdown_[*vi].assign(gm[*vi].servers, 0);
-         //serverCountdown_[*vi].assign(maxNumberOfServers_, 0);
       }
    }
 
@@ -133,8 +105,10 @@ void All911Vertices::createAllVertices(Layout &layout)
    LOG4CPLUS_DEBUG(vertexLogger_, "Max number of servers: " << maxNumberOfServers_);
 
    // Loop over the vertices again to appropriate resize data members such that
-   // each data member used the same size for all of it's vertices.
+   // each data member used the same size for all of it's vertices. This is to
+   // help with mirroring the implementation on the GPU.
    for (int vertexId = 0; vertexId < size_; vertexId++) {
+      // Initialize the data structures for system metrics
       beginTimeHistory_[vertexId].resize(maxEventsPerEpoch);
       answerTimeHistory_[vertexId].resize(maxEventsPerEpoch);
       endTimeHistory_[vertexId].resize(maxEventsPerEpoch);
@@ -142,6 +116,7 @@ void All911Vertices::createAllVertices(Layout &layout)
       queueLengthHistory_[vertexId].resize(stepsPerEpoch);
       utilizationHistory_[vertexId].resize(stepsPerEpoch);
       vertexQueues_[vertexId].resize(stepsPerEpoch);
+      // Initialize the data structures for agent availability
       servingCall_[vertexId].resize(maxNumberOfServers_);
       answerTime_[vertexId].resize(maxNumberOfServers_);
       serverCountdown_[vertexId].assign(maxNumberOfServers_, 0);
@@ -285,18 +260,21 @@ void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIn
 
          CircularBuffer<Call> &dstQueue = getQueue(dst);
          // Compute the size of the destination queue
+         // Allows us to use larger capacity queues but treat them like they are smaller
+         // to simplify the mirroring on the GPU.
          uint64_t dstQueueSize;
          uint64_t queueFrontIndex = dstQueue.getFrontIndex();
          uint64_t queueEndIndex = dstQueue.getEndIndex();
          if (queueFrontIndex >= queueEndIndex) {
             dstQueueSize = queueFrontIndex - queueEndIndex;
          } else {
+            // Internal CircularBuffer buffer size is capacity + 1
             dstQueueSize = numTrunks_[dst] + 1 + queueFrontIndex - queueEndIndex;
          }
 
          // Compute the capacity of the destination queue
          int dstQueueCapacity = numTrunks_[dst];
-         // Size can't be negative but we need to be able to compare it to a possible negative waiting queue
+         // dstQueueSize can't be negative but we need to be able to compare it to a possible negative waiting queue
          // so cast the size to an int for comparison
          if ((int)dstQueueSize >= (dstQueueCapacity - busyServers(dst))) {
             // Call is dropped because there is no space in the waiting queue
@@ -312,6 +290,8 @@ void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIn
                                                 << ", queue size: " << dstQueueSize);
             }
          } else {
+            // Internal CircularBuffer buffer size is capacity + 1
+            //
             // Transfer call to destination
             assert(((queueFrontIndex + 1) % numTrunks_[dst] + 1) != queueEndIndex);
             vector<Call> &queueBuffer = dstQueue.getBuffer();
@@ -332,9 +312,6 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
 {
    Simulator &simulator = Simulator::getInstance();
    Layout &layout = simulator.getModel().getLayout();
-   uint64_t endEpochStep
-      = g_simulationStep
-        + static_cast<uint64_t>(simulator.getEpochDuration() / simulator.getDeltaT());
 
    All911Edges &edges911 = dynamic_cast<All911Edges &>(edges);
 
@@ -377,12 +354,14 @@ void All911Vertices::advanceCALR(BGSIZE vertexIdx, All911Edges &edges911,
       }
    }
 
+   // We can use CircularBuffer methods because we don't need the caller region queue
+   // to behave like it only has a capacity of numTrunks_ like we do for other vertices.
+   //
    // peek at the next call in the queue
    optional<Call> nextCall = vertexQueues_[vertexIdx].peek();
    if (edges911.isAvailable_[edgeIdx] && nextCall && nextCall->time <= g_simulationStep) {
       // Calls that start at the same time are process in the order they appear.
       // The call starts at the current time step so we need to pop it and process it
-      // Can use get because caller regions don't use trunks
       vertexQueues_[vertexIdx].get();   // pop from the queue
 
       // Place new call in the edge going to the PSAP
@@ -454,6 +433,8 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
    while (currentlyAvailableServers > 0 && !vertexQueues_[vertexIdx].isEmpty()) {
       // TODO: calls with duration of zero are being added but because countdown will be zero
       //       they don't show up in the logs
+      //
+      // Internal CircularBuffer buffer size is capacity + 1
       vector<Call> queueBuffer = vertexQueues_[vertexIdx].getBuffer();
       uint64_t queueEnd = vertexQueues_[vertexIdx].getEndIndex();
       Call call = queueBuffer[queueEnd];
@@ -500,6 +481,7 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
    if (queueFront >= queueEnd) {
       queueSize = queueFront - queueEnd;
    } else {
+      // Internal CircularBuffer buffer size is capacity + 1
       queueSize = numTrunks_[vertexIdx] + 1 + queueFront - queueEnd;
    }
    queueLengthHistory_[vertexIdx].insertEvent(queueSize);
@@ -552,6 +534,7 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
    // incidents in the waiting queue
    for (size_t unit = 0; unit < numberOfAvailableUnits && !vertexQueues_[vertexIdx].isEmpty();
         ++unit) {
+      // Internal CircularBuffer buffer size is capacity + 1
       vector<Call> queueBuffer = vertexQueues_[vertexIdx].getBuffer();
       uint64_t queueEnd = vertexQueues_[vertexIdx].getEndIndex();
       Call incident = queueBuffer[queueEnd];
@@ -604,6 +587,7 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
    if (queueFront >= queueEnd) {
       queueSize = queueFront - queueEnd;
    } else {
+      // Internal CircularBuffer buffer size is capacity + 1
       queueSize = numTrunks_[vertexIdx] + 1 + queueFront - queueEnd;
    }
    queueLengthHistory_[vertexIdx].insertEvent(queueSize);

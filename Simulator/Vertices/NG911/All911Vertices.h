@@ -185,8 +185,6 @@ public:
    /// they are responder units
    RecordableVector<int> numServers_;
 
-   // Record the max number of trunks for GPU memory allocation
-   int maxNumberOfTrunks_;
    /// Number of phone lines available. Only valid for PSAPs and Responders
    RecordableVector<int> numTrunks_;
 
