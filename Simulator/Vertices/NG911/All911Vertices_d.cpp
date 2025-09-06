@@ -2395,7 +2395,7 @@ __device__ void advanceCALRVerticesDevice(int vertexId,
       allEdgesDevice->responderType_[edgeIdx] = allVerticesDevice->vertexQueuesBufferResponderType_[vertexId][queueEndIndex];
 
       // Pop from the queue
-      queueEndIndex = (queueEndIndex + 1) % stepsPerEpoch;
+      queueEndIndex = (queueEndIndex + 1) % (stepsPerEpoch + 1);
       allEdgesDevice->isAvailable_[edgeIdx] = false;
    }
 }
@@ -2563,7 +2563,7 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx,
       int callPatience = allVerticesDevice->vertexQueuesBufferPatience_[vertexIdx][queueEndIndex];
       int callOnSiteTime = allVerticesDevice->vertexQueuesBufferOnSiteTime_[vertexIdx][queueEndIndex];
       int callResponderType = allVerticesDevice->vertexQueuesBufferResponderType_[vertexIdx][queueEndIndex];
-      queueEndIndex = (queueEndIndex + 1) % allVerticesDevice->numTrunks_[vertexIdx];
+      queueEndIndex = (queueEndIndex + 1) % (allVerticesDevice->numTrunks_[vertexIdx] + 1);
 
       if (callPatience < (simulationStep - callTime)) {
          // If the patience time is less than the waiting time, the call is abandoned
@@ -2761,7 +2761,7 @@ __device__ void advanceRESPVerticesDevice(int vertexIdx,
       int incidentPatience = allVerticesDevice->vertexQueuesBufferPatience_[vertexIdx][queueEndIndex];
       int incidentOnSiteTime = allVerticesDevice->vertexQueuesBufferOnSiteTime_[vertexIdx][queueEndIndex];
       int incidentResponderType = allVerticesDevice->vertexQueuesBufferResponderType_[vertexIdx][queueEndIndex];
-      queueEndIndex = (queueEndIndex + 1) % allVerticesDevice->numTrunks_[vertexIdx];
+      queueEndIndex = (queueEndIndex + 1) % (allVerticesDevice->numTrunks_[vertexIdx] + 1);
 
       // The available unit starts serving the call
       int availUnit;
@@ -2911,11 +2911,11 @@ __global__ void maybeTakeCallFromEdge(int totalVertices,
       if (queueFrontIndex >= queueEndIndex) {
          dstQueueSize = queueFrontIndex - queueEndIndex;
       } else {
-         dstQueueSize = allVerticesDevice->numTrunks_[dstIndex] + queueFrontIndex - queueEndIndex;
+         dstQueueSize = allVerticesDevice->numTrunks_[dstIndex] + 1 + queueFrontIndex - queueEndIndex;
       }
 
       // Compute the capacity of the destination queue
-      int dstQueueCapacity = allVerticesDevice->numTrunks_[dstIndex] - 1;
+      int dstQueueCapacity = allVerticesDevice->numTrunks_[dstIndex];
 
       // Get the number fo busy servers at the destination vertex
       int dstBusyServers = allVerticesDevice->busyServers_[dstIndex];
@@ -2933,8 +2933,8 @@ __global__ void maybeTakeCallFromEdge(int totalVertices,
       } else {
          // Transfer call to destination
          // We throw an error if the buffer is full
-         if (((queueFrontIndex + 1) % allVerticesDevice->numTrunks_[dstIndex]) == queueEndIndex) {
-            printf("ERROR: Vertex queue is full. Vertex ID [%d] Front Index [%" PRIu64 "] End Index [%" PRIu64 "] Buffer size [%" PRIu64 "]\n", dstIndex, queueFrontIndex, queueEndIndex, allVerticesDevice->numTrunks_[dstIndex]);
+         if (((queueFrontIndex + 1) % (allVerticesDevice->numTrunks_[dstIndex] + 1)) == queueEndIndex) {
+            printf("ERROR: Vertex queue is full. Vertex ID [%d] Front Index [%" PRIu64 "] End Index [%" PRIu64 "] Buffer size [%" PRIu64 "]\n", dstIndex, queueFrontIndex, queueEndIndex, (allVerticesDevice->numTrunks_[dstIndex] + 1));
             return;
          }
          // Insert the new element and increment the front index
@@ -2946,7 +2946,7 @@ __global__ void maybeTakeCallFromEdge(int totalVertices,
          allVerticesDevice->vertexQueuesBufferPatience_[dstIndex][queueFrontIndex] = allEdgesDevice->patience_[edgeIdx];
          allVerticesDevice->vertexQueuesBufferOnSiteTime_[dstIndex][queueFrontIndex] = allEdgesDevice->onSiteTime_[edgeIdx];
          allVerticesDevice->vertexQueuesBufferResponderType_[dstIndex][queueFrontIndex] = allEdgesDevice->responderType_[edgeIdx];
-         allVerticesDevice->vertexQueuesFront_[dstIndex] = (queueFrontIndex + 1) % allVerticesDevice->numTrunks_[dstIndex];
+         allVerticesDevice->vertexQueuesFront_[dstIndex] = (queueFrontIndex + 1) % (allVerticesDevice->numTrunks_[dstIndex] + 1);
          // Record that we received a call
          allVerticesDevice->receivedCalls_[dstIndex]++;
          allEdgesDevice->isAvailable_[edgeIdx] = true;
