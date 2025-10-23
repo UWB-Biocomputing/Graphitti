@@ -101,3 +101,4 @@ Testing/UnitTesting/TestOutput/*.h5
 
 # Machine Specific build script
 build.sh
+CMakeLists.txt

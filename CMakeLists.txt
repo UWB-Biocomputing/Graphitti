@@ -3,8 +3,11 @@ cmake_minimum_required(VERSION 3.12)
 ############################################################################################
 #CONDITIONAL FLAG(to run simulation on CPU or GPU)
 #
-#For GPU : For CPU:
-#set(ENABLE_CUDA YES) set(ENABLE_CUDA NO)
+#For GPU:
+set(ENABLE_CUDA YES) 
+# 
+#For CPU:
+#set(ENABLE_CUDA NO)
 #
 #You can also pass this flag when running cmake from the command line like this:
 #
