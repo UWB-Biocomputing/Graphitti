@@ -14,13 +14,15 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      CUDAToolkit_ROOT: /usr/local/cuda
 
     steps:
     - uses: actions/checkout@v3
     # install Boost Graph Library
     - name: bgl
       run: sudo apt-get update && sudo apt-get install -yq libboost-graph-dev
-    # configure and build the Simualtor
+    # configure and build Simulator
     - name: configure
       run: cmake ..
     - id: build
