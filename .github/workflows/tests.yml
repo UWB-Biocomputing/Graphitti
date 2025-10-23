@@ -14,8 +14,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    env:
-      CUDAToolkit_ROOT: /usr/local/cuda
 
     steps:
     - uses: actions/checkout@v3
