@@ -83,6 +83,8 @@ Rimjhim Sudhesh
 ## 2025
 Andrew Madison
 
+Kyle Ricks
+
 Padmanabh Patil
 
 Lawrence Scott
