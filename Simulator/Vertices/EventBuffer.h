@@ -26,12 +26,9 @@
 // cereal
 #include <cereal/types/polymorphic.hpp>
 
-class AllSpikingNeurons;
-class AllIFNeurons;
-class EventBuffer : public RecordableVector<uint64_t> {
-   friend class AllIFNeurons;
-   friend class AllSpikingNeurons;
-
+// Uses this pointer because we have a template class inheriting from other template class
+// All base class references need to be accessed through the this pointer
+template <typename T> class EventBuffer : public RecordableVector<T> {
 public:
    /// Create EventBuffer that is sized appropriately
    ///
@@ -41,7 +38,12 @@ public:
    /// an empty and a full buffer.
    ///
    /// @param maxEvents Defaults to zero; otherwise, buffer size is set
-   EventBuffer(int maxEvents = 0);
+   EventBuffer(int maxEvents = 0)
+   {
+      this->dataSeries_.assign(maxEvents, numeric_limits<T>::max());
+      clear();
+      this->setDataType();   // set up data type for recording purpose
+   }
 
    /** @name Recorder Interface
     *  virtual methods in RecordableBase for use by Recorder classes
@@ -52,31 +54,88 @@ public:
    /// Get the value of the recordable variable at the specified index.
    /// @param index The index of the recorded value to retrieve.
    /// @return A variant representing the recorded value (uint64_t, double, or string).
-   virtual variantTypes getElement(int index) const override;
+   variantTypes getElement(int index) const
+   {
+      return this->dataSeries_[(epochStart_ + index) % this->dataSeries_.size()];
+   }
 
    /// Get the number of elements that needs to be recorded
-   virtual int getNumElements() const override;
-
-   /// Return the runtime data type info of unit64_t
-   virtual void setDataType() override;
-
-   /// Get the basic data type of the recordable variable
-   virtual const string &getDataType() const override;
+   int getNumElements() const
+   {
+      return numElementsInEpoch_;
+   }
 
    /// Start a new epoch
    ///
    /// Resets the internal variables associated with tracking the events in a epoch. Note that this doesn't
    /// affect the contents of the buffer; it just resets things so that the epoch start is the index of the next
    /// event to be enqueued and that the number of events in the epoch is 0.
-   virtual void startNewEpoch() override;
+   void startNewEpoch()
+   {
+      epochStart_ = bufferEnd_;
+      bufferFront_ = bufferEnd_;
+      numElementsInEpoch_ = 0;
+   }
    ///@}
+
+
+   /// @brief Accessor for the buffer front value.
+   /// @return Returns index of the first event in the queue.
+   int getBufferFront() const
+   {
+      return bufferFront_;
+   }
+
+   /// @brief Accessor for the buffer end value.
+   /// @return Returns index of the last event in the queue.
+   int getBufferEnd() const
+   {
+      return bufferEnd_;
+   }
+
+   /// @brief Accessor for the epoch start value.
+   /// @return Returns index of the start of the events in the current epoch.
+   int getEpochStart() const
+   {
+      return epochStart_;
+   }
 
    /// Get number of events in the current/preceding epoch
    ///
    /// Getting the number of events in the current epoch (or, in between epochs, the number of events
    /// in the preceding epoch) is not the same as the number of events in the buffer, because the buffer
    /// retains events from the previous epoch, too.
-   int getNumElementsInEpoch() const;
+   int getNumElementsInEpoch() const
+   {
+      return numElementsInEpoch_;
+   }
+
+   /// Setters are needed for copying from the GPU. Allows us to remove the friend keyword requirement.
+   /// {
+   /// @brief Mutator for the buffer front value.
+   void setBufferFront(int bufferFront)
+   {
+      bufferFront_ = bufferFront;
+   }
+
+   /// @brief Mutator for the buffer end value.
+   void setBufferEnd(int bufferEnd)
+   {
+      bufferEnd_ = bufferEnd;
+   }
+
+   /// @brief Mutator for the epoch start value.
+   void setEpochStart(int epochStart)
+   {
+      epochStart_ = epochStart;
+   }
+
+   /// Sets number of events in the current/preceding epoch
+   void setNumElementsInEpoch(int numElementsInEpoch)
+   {
+      numElementsInEpoch_ = numElementsInEpoch;
+   }
+   /// }
 
    /// Resize event buffer
    ///
@@ -85,7 +144,14 @@ public:
    ///
    /// @pre current buffer must be empty
    /// @param maxEvents Buffer size
-   virtual void resize(int maxEvents) override;
+   void resize(int maxEvents)
+   {
+      // Only an empty buffer can be resized
+      assert(this->dataSeries_.empty());
+      this->dataSeries_.resize(maxEvents, 0);
+      // If we resized, we should clear everything
+      clear();
+   }
 
    /// Access event from current epoch
    ///
@@ -93,14 +159,30 @@ public:
    /// event in the epoch (element numElementsInEpoch_ - 1 would be the last element in the epoch).
    ///
    /// @param i element number
-   uint64_t operator[](int i) const;
+   T operator[](int i) const
+   {
+      return this->dataSeries_[(epochStart_ + i) % this->dataSeries_.size()];
+   }
 
    /** @name Vertex and Edge Interface
     *  EventBuffer interface for use by the Vertex and Edge classes
     */
    ///@{
    /// Reset member variables consistent with an empty buffer
-   void clear();
+   void clear()
+   {
+      bufferFront_ = 0;
+      bufferEnd_ = 0;
+      epochStart_ = 0;
+      numElementsInEpoch_ = 0;
+   }
+
+   /// @brief
+   /// @return Returns the size of the buffer.
+   int size()
+   {
+      return this->dataSeries_.size();
+   }
 
    /// Insert an event time step
    ///
@@ -109,7 +191,16 @@ public:
    ///
    /// @pre The buffer is not full
    /// @param timeStep Value to store in buffer
-   void insertEvent(uint64_t timeStep);
+   void insertEvent(T timeStep)
+   {
+      // If the buffer is full, then this is an error condition
+      assert((numElementsInEpoch_ < this->dataSeries_.size()));
+
+      // Insert time step and increment the queue end index, mod the buffer size
+      this->dataSeries_[bufferEnd_] = timeStep;
+      bufferEnd_ = (bufferEnd_ + 1) % this->dataSeries_.size();
+      numElementsInEpoch_ += 1;
+   }
 
    /// Get an event from a time in the past
    ///
@@ -118,11 +209,44 @@ public:
    ///
    /// @param offset How many events ago. Must be negative. If that event isn't in the buffer,
    ///               or if the buffer is empty, returns ULONG_MAX.
-   uint64_t getPastEvent(int offset) const;
+   T getPastEvent(int offset) const
+   {
+      // Quick checks: offset must be in past, and not larger than the buffer size
+      assert(((offset < 0)) && (offset > -(this->dataSeries_.size() - 1)));
+
+      // The  event is at bufferEnd_ + offset (taking into account the
+      // buffer size, and the fact that offset is negative).
+      int index = bufferEnd_ + offset;
+      if (index < 0)
+         index += this->dataSeries_.size();
+
+      // Need to check that we're not asking for an item so long ago that it is
+      // not in the buffer. Note that there are three possibilities:
+      // 1. if bufferEnd_ > bufferFront_, then valid entries are within the range
+      //    [bufferFront_, bufferEnd_)
+      // 2. if bufferEnd_ < bufferFront_, then the buffer wraps around the end of
+      //    vector and valid entries are within the range [0, bufferEnd_) or the
+      //    range [bufferFront_, size()).
+      // 3. if buffer is empty (bufferFront_ == bufferEnd_), then there are no events
+      //
+      // Note that this means that index at this point must always be less than
+      // bufferEnd_ AND >= queueFront.
+      if ((index < bufferEnd_) && (index >= bufferFront_))
+         return this->dataSeries_[index];
+      else
+         return numeric_limits<T>::max();
+   }
    ///@}
 
    ///  Cereal serialization method
-   template <class Archive> void serialize(Archive &archive);
+   template <class Archive> void serialize(Archive &archive)
+   {
+      archive(cereal::base_class<RecordableVector<T>>(this),
+              cereal::make_nvp("bufferFront", bufferFront_),
+              cereal::make_nvp("bufferEnd", bufferEnd_),
+              cereal::make_nvp("epochStart", epochStart_),
+              cereal::make_nvp("numElementsInEpoch", numElementsInEpoch_));
+   }
 
 private:
    /// Holds the event time steps
@@ -151,13 +275,4 @@ private:
 };
 
 
-CEREAL_REGISTER_TYPE(EventBuffer);
-
-///  Cereal serialization method
-template <class Archive> void EventBuffer::serialize(Archive &archive)
-{
-   archive(cereal::base_class<RecordableVector<uint64_t>>(this),
-           cereal::make_nvp("bufferFront", bufferFront_), cereal::make_nvp("bufferEnd", bufferEnd_),
-           cereal::make_nvp("epochStart", epochStart_),
-           cereal::make_nvp("numElementsInEpoch", numElementsInEpoch_));
-}
+// CEREAL_REGISTER_TYPE(EventBuffer<T>);
