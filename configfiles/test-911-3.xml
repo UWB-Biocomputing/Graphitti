@@ -3,8 +3,8 @@
   <SimInfoParams name="SimInfoParams">
     <SimParams name="SimParams">
       <!-- 8 epochs of 125 minutes each -->
-      <epochDuration name="epochDuration">600</epochDuration>
-      <numEpochs name="numEpochs">800</numEpochs>
+      <epochDuration name="epochDuration">200</epochDuration>
+      <numEpochs name="numEpochs">2400</numEpochs>
       <!-- Every simulation step is 1 second -->
       <deltaT name="Simulation Step Duration">1</deltaT>
     </SimParams>

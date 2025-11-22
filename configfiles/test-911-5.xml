@@ -42,9 +42,9 @@
     <LayoutParams class="Layout911" name="LayoutParams">
     </LayoutParams>
     
-    <RecorderParams class="XmlRecorder" name="RecorderParams">
+    <RecorderParams class="Hdf5Recorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
-        <resultFileName name="resultFileName">Output/Results/test-911-5-out.xml</resultFileName>
+        <resultFileName name="resultFileName">Output/Results/test-911-5-out.h5</resultFileName>
       </RecorderFiles>
     </RecorderParams>
   </ModelParams>
