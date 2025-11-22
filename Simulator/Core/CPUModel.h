@@ -25,6 +25,7 @@
 #include "Edges/AllEdges.h"
 #include "Layouts/Layout.h"
 #include "Vertices/AllVertices.h"
+#include "Timer.h"
 
 class CPUModel : public Model {
 public:
@@ -49,4 +50,6 @@ public:
 
    /// Copy CPU edge data to GPU.
    virtual void copyCPUtoGPU() override;
+
+   Timer timer;
 };

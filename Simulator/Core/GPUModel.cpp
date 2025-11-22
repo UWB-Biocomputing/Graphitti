@@ -14,6 +14,7 @@
 #include "Global.h"
 #include "OperationManager.h"
 #include "MersenneTwister_d.h"
+#include "Timer.h"
 
 #ifdef VALIDATION_MODE
    #include "AllIFNeurons.h"
@@ -171,11 +172,16 @@ void GPUModel::advance()
    cudaLapTime(t_gpu_rndGeneration);
    cudaStartTimer();
 #endif   // PERFORMANCE_METRICS
-
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+   // Elapsed time in us
+   //double elapsedTime = 0.0;
+   //timer.start();
    // display running info to console
    // Advance vertices ------------->
    vertices.advanceVertices(edges, allVerticesDevice_, allEdgesDevice_, randNoise_d,
                             edgeIndexMapDevice_);
+   //elapsedTime = timer.lap();
+   //LOG4CPLUS_TRACE(consoleLogger, "advanceVertices time: " << elapsedTime);
 #ifdef VALIDATION_MODE
    //(AllIFNeuronsDeviceProperties *)allVerticesDevice,
    log4cplus::Logger vertexLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));
@@ -216,16 +222,21 @@ void GPUModel::advance()
    cudaStartTimer();
 #endif   // PERFORMANCE_METRICS
 
+   //timer.start();
    // Advance edges ------------->
    edges.advanceEdges(allEdgesDevice_, allVerticesDevice_, edgeIndexMapDevice_);
+   //elapsedTime = timer.lap();
+   //LOG4CPLUS_TRACE(consoleLogger, "advanceEdges time: " << elapsedTime);
 
 #ifdef PERFORMANCE_METRICS
    cudaLapTime(t_gpu_advanceSynapses);
    cudaStartTimer();
 #endif   // PERFORMANCE_METRICS
-
+   //timer.start();
    // integrate the inputs of the vertices
    vertices.integrateVertexInputs(allVerticesDevice_, edgeIndexMapDevice_, allEdgesDevice_);
+   //elapsedTime = timer.lap();
+   //LOG4CPLUS_TRACE(consoleLogger, "integrateVertexInputs time: " << elapsedTime);
 
 #ifdef PERFORMANCE_METRICS
    cudaLapTime(t_gpu_calcSummation);

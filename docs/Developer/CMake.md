@@ -24,4 +24,6 @@
 
 - Verbose output: https://sidvind.com/wiki/CMake/Verbose_output
 
+# Examples
 
+- To build for profiling on the GPU: cmake .. -D ENABLE_CUDA=YES -DCMAKE_BUILD_TYPE=Profiling
