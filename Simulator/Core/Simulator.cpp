@@ -172,7 +172,7 @@ void Simulator::simulate()
       // Time since start of simulation
       double total_time = timer.lap() / 1000000.0;
 
-      cout << "\ntotal_time: " << total_time << " seconds" << endl;
+      LOG4CPLUS_TRACE(consoleLogger_, "\ntotal_time: " << total_time << " seconds");
       printPerformanceMetrics(total_time, currentEpoch);
       cout << endl;
 #endif
