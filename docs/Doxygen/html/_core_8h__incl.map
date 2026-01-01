@@ -1,0 +1,5 @@
+<map id="Simulator/Core/Core.h" name="Simulator/Core/Core.h">
+<area shape="rect" id="Node000001" title="Orchestrates most functionality in the simulation." alt="" coords="5,5,154,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="53,79,106,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,31,82,63,77,63,77,31"/>
+</map>

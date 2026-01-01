@@ -1,0 +1,31 @@
+<map id="Simulator/Utils/ParameterManager.cpp" name="Simulator/Utils/ParameterManager.cpp">
+<area shape="rect" id="Node000001" title="A class which contains and manages access to the XML parameter file used by a simulator instance at r..." alt="" coords="405,5,576,46"/>
+<area shape="rect" id="Node000002" href="$_parameter_manager_8h.html" title="A singleton class which contains and manages access to the XML parameter file used by a simulator ins..." alt="" coords="173,94,315,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="430,49,297,91,296,86,428,44"/>
+<area shape="rect" id="Node000003" href="$_b_g_types_8h.html" title="Used to define uniform data type sizes based for all operating systems. Also used to test the speed o..." alt="" coords="5,168,91,193"/>
+<area shape="poly" id="edge7_Node000001_Node000003" title=" " alt="" coords="405,34,345,40,278,52,210,70,145,96,103,125,69,158,66,154,99,121,143,92,208,65,277,47,344,35,404,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="115,168,186,193"/>
+<area shape="poly" id="edge15_Node000001_Node000004" title=" " alt="" coords="405,36,335,44,263,56,202,73,179,84,163,96,155,108,151,122,149,152,144,152,145,121,150,106,159,92,176,79,200,68,262,51,334,39,404,31"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="301,168,355,193"/>
+<area shape="poly" id="edge13_Node000001_Node000006" title=" " alt="" coords="469,49,415,96,352,158,348,155,412,92,466,45"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="379,168,437,193"/>
+<area shape="poly" id="edge16_Node000001_Node000007" title=" " alt="" coords="469,48,448,70,430,95,419,124,413,153,408,152,414,123,426,93,444,66,465,45"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="440,94,541,120"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="493,46,493,78,488,78,488,46"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="566,94,631,120"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="519,44,572,82,568,87,516,49"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="655,94,726,120"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="542,44,647,85,645,90,540,49"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="750,94,802,120"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="566,44,736,90,734,96,565,49"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="827,94,904,120"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="577,42,812,91,811,96,576,47"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="928,94,994,120"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="577,36,730,58,913,91,913,96,729,63,576,41"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="212,123,96,165,94,159,210,118"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="230,122,180,160,177,156,227,118"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="210,168,278,193"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="247,120,247,152,241,152,241,120"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="260,118,304,155,301,159,257,122"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="273,118,367,159,365,164,271,123"/>
+</map>

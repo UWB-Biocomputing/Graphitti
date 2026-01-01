@@ -1,0 +1,13 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,80,103,106"/>
+<area shape="rect" id="Node000001" href="$class_matrix_exception.html" title="Master base class for Matrix exceptions." alt="" coords="151,80,263,106"/>
+<area shape="poly" id="edge40_Node000000_Node000001" title=" " alt="" coords="118,90,150,90,150,96,118,96"/>
+<area shape="rect" id="Node000002" href="$class_matrix__bad__alloc.html" title="Signals memory allocation error for Matrix classes." alt="" coords="332,5,451,31"/>
+<area shape="poly" id="edge41_Node000001_Node000002" title=" " alt="" coords="245,70,310,40,340,29,342,34,312,45,247,75"/>
+<area shape="rect" id="Node000003" href="$class_matrix__bad__cast.html" title="Signals bad cast among Matrices for Matrix classes." alt="" coords="334,55,450,80"/>
+<area shape="poly" id="edge42_Node000001_Node000003" title=" " alt="" coords="278,80,332,73,333,78,279,86"/>
+<area shape="rect" id="Node000004" href="$class_matrix__domain__error.html" title="Signals value bad for domain for Matrix classes." alt="" coords="322,104,461,130"/>
+<area shape="poly" id="edge43_Node000001_Node000004" title=" " alt="" coords="279,99,322,105,321,110,278,105"/>
+<area shape="rect" id="Node000005" href="$class_matrix__invalid__argument.html" title="Signals bad function argument for Matrix classes." alt="" coords="311,153,472,179"/>
+<area shape="poly" id="edge44_Node000001_Node000005" title=" " alt="" coords="248,111,312,140,343,150,341,155,310,145,246,116"/>
+</map>

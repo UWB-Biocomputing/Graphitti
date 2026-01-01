@@ -1,0 +1,30 @@
+<map id="Simulator/Utils/Matrix/Matrix.h" name="Simulator/Utils/Matrix/Matrix.h">
+<area shape="rect" id="Node000001" title="Abstract base class for Matrices." alt="" coords="302,5,448,46"/>
+<area shape="rect" id="Node000002" href="$_b_g_types_8h.html" title="Used to define uniform data type sizes based for all operating systems. Also used to test the speed o..." alt="" coords="48,94,133,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="304,49,149,92,148,87,303,44"/>
+<area shape="rect" id="Node000003" href="$_matrix_exceptions_8h.html" title="Exception class hierarchy for Matrix classes." alt="" coords="158,94,287,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="338,49,261,89,258,84,335,44"/>
+<area shape="rect" id="Node000005" href="$_recordable_base_8h.html" title="An abstract base class defining the interface for recordable variables in the simulator." alt="" coords="362,94,488,120"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="389,45,412,79,407,82,385,48"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="107,168,160,193"/>
+<area shape="poly" id="edge13_Node000001_Node000008" title=" " alt="" coords="366,48,339,85,301,122,252,142,176,168,174,163,250,137,299,117,335,82,361,45"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="560,168,749,193"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="413,44,501,92,621,158,619,162,499,96,410,49"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="772,168,924,193"/>
+<area shape="poly" id="edge15_Node000001_Node000013" title=" " alt="" coords="436,44,797,160,795,165,435,49"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,168,83,193"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="193,123,89,164,88,159,191,118"/>
+<area shape="rect" id="Node000006" href="$_vertex_type_8h.html" title="Enum class of vertex types." alt="" coords="184,168,280,193"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="393,123,280,164,278,159,392,118"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="370,123,175,170,174,165,369,118"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="304,168,370,193"/>
+<area shape="poly" id="edge8_Node000005_Node000009" title=" " alt="" coords="412,122,366,160,362,156,409,118"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="395,168,456,193"/>
+<area shape="poly" id="edge9_Node000005_Node000010" title=" " alt="" coords="428,120,428,152,423,152,423,120"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="479,168,537,193"/>
+<area shape="poly" id="edge10_Node000005_Node000011" title=" " alt="" coords="441,118,484,155,481,159,438,122"/>
+<area shape="poly" id="edge11_Node000005_Node000012" title=" " alt="" coords="465,118,602,160,601,165,463,123"/>
+<area shape="poly" id="edge12_Node000005_Node000013" title=" " alt="" coords="490,116,761,162,760,167,489,122"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="198,241,266,267"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="235,194,235,226,229,226,229,194"/>
+</map>

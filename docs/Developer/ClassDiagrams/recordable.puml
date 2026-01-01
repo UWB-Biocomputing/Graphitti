@@ -1,0 +1,63 @@
+@startuml Recordable ClassDiagram
+
+/' Objects '/
+
+abstract class RecordableBase {
+	-basicDataType_ : string
+	+{abstract} getNumElements() const : int
+	+{abstract} startNewEpoch() : void
+	+{abstract} getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
+	+{abstract} setDataType() : void
+	+{abstract} getDataType() : string
+}
+class RecordableConstant<T>{
+	-element : T
+	+getNumElements() const : int
+	+startNewEpoch() : void
+	+getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
+	+setDataType() : void
+	+getDataType() : string
+}
+
+class RecordableVector<T>{
+	-dataSeries__ : vector<T>
+	+getNumElement() const : int
+	+startNewEpoch() : void
+	+getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
+	+setDataType() : void
+	+getDataType() : string
+	/'vector methods'/
+	+resize(int maxEvents) : void
+	+operator[](int i) : &T
+}
+
+class EventBuffer<uint64_t> {
+	+EventBuffer(int maxEvents)
+	-epochStart_ : int
+	+setDataType() : void
+	+getDataType() : string
+	+getNumElements() const : int
+	+getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
+	+getNumElementsInEpoch() : int {query}
+	-numElementsInEpoch_ : int
+	-bufferEnd_ : int
+	-bufferFront_ : int
+	+getPastEvent(int offset) : uint64_t {query}
+	+operator[](int i) : uint64_t {query}
+	/'-dataSeries_ : vector<uint64_t>'/
+	+clear() : void
+	+insertEvent(uint64_t timeStep) : void
+	+resize(int maxEvents) : void
+	+startNewEpoch() : void
+}
+
+
+
+
+/' Inheritance relationships '/
+
+.RecordableBase <|-- .RecordableVector
+
+.RecordableVector <|-- .EventBuffer
+
+.RecordableBase <|-- .RecordableConstant

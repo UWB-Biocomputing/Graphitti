@@ -1,0 +1,14 @@
+<map id="AllIFNeurons" name="AllIFNeurons">
+<area shape="rect" id="Node000001" title=" " alt="" coords="359,337,456,363"/>
+<area shape="rect" id="Node000002" href="$class_all_spiking_neurons.html" title=" " alt="" coords="167,171,296,197"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="257,205,396,334,393,338,253,209"/>
+<area shape="rect" id="Node000003" href="$class_all_vertices.html" title=" " alt="" coords="5,5,90,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="74,39,220,169,216,173,70,43"/>
+<area shape="rect" id="Node000004" href="$class_device_vector.html" title=" " alt="" coords="114,5,259,31"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="188,46,190,69,208,126,228,169,223,172,203,128,185,71,183,47"/>
+<area shape="rect" id="Node000005" href="$class_device_vector.html" title=" " alt="" coords="300,5,483,31"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="395,47,410,337,404,337,390,47"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="306,39,280,57,259,84,246,116,235,171,230,170,241,115,255,82,276,53,303,35"/>
+<area shape="rect" id="Node000006" href="$class_device_vector.html" title=" " alt="" coords="477,171,612,197"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="527,210,420,338,416,335,523,207"/>
+</map>

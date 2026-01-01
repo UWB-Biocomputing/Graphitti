@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1174px" preserveAspectRatio="none" style="width:1267px;height:1174px;" version="1.1" viewBox="0 0 1267 1174" width="1267px" zoomAndPan="magnify"><defs><filter height="300%" id="f1uttok0tk7039" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[af68557a962a5f1f7548a7e590f8fd62]
+class Hdf5GrowthRecorder--><rect codeLine="8" fill="#FEFECE" filter="url(#f1uttok0tk7039)" height="240.0703" id="Hdf5GrowthRecorder" style="stroke:#A80036;stroke-width:1.5;" width="240" x="91.5" y="920"/><ellipse cx="150.75" cy="936" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M150.6875,931.8281 Q149.9375,931.8281 149.375,932.125 Q148.8125,932.4063 148.4219,932.9375 Q148.0313,933.4688 147.8281,934.25 Q147.6406,935.0156 147.6406,935.9688 Q147.6406,936.9375 147.8125,937.7031 Q148,938.4531 148.3594,938.9688 Q148.7344,939.4844 149.3125,939.7656 Q149.8906,940.0313 150.6875,940.0313 Q151.4219,940.0313 152.1563,939.8594 Q152.9063,939.6875 153.7813,939.3906 L153.7813,941.5469 Q153.375,941.7031 152.9844,941.8281 Q152.5938,941.9375 152.1875,942.0156 Q151.7813,942.0938 151.3594,942.125 Q150.9375,942.1719 150.4375,942.1719 Q149.0313,942.1719 148,941.7188 Q146.9844,941.2656 146.3125,940.4531 Q145.6406,939.6406 145.3125,938.5 Q144.9844,937.3438 144.9844,935.9531 Q144.9844,934.5781 145.3594,933.4219 Q145.7344,932.2656 146.4531,931.4375 Q147.1719,930.6094 148.2344,930.1563 Q149.2969,929.6875 150.6875,929.6875 Q151.5938,929.6875 152.5,929.9219 Q153.4063,930.1406 154.2344,930.5469 L153.4063,932.6406 Q152.7188,932.3125 152.0313,932.0781 Q151.3438,931.8281 150.6875,931.8281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="113" x="171.25" y="940.1543">Hdf5GrowthRecorder</text><line style="stroke:#A80036;stroke-width:1.5;" x1="92.5" x2="330.5" y1="952" y2="952"/><polygon fill="none" points="102.5,958,106.5,962,102.5,966,98.5,962" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="121" x="111.5" y="966.2104">radiiHistory_ : BGFLOAT*</text><polygon fill="none" points="102.5,970.8047,106.5,974.8047,102.5,978.8047,98.5,974.8047" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="126" x="111.5" y="979.0151">ratesHistory_ : BGFLOAT*</text><polygon fill="none" points="102.5,983.6094,106.5,987.6094,102.5,991.6094,98.5,987.6094" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="134" x="111.5" y="991.8198">dataSetRadiiHist_ : DataSet</text><polygon fill="none" points="102.5,996.4141,106.5,1000.4141,102.5,1004.4141,98.5,1000.4141" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="139" x="111.5" y="1004.6245">dataSetRatesHist_ : DataSet</text><line style="stroke:#A80036;stroke-width:1.5;" x1="92.5" x2="330.5" y1="1011.2188" y2="1011.2188"/><ellipse cx="102.5" cy="1022.2188" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="110" x="111.5" y="1025.4292">Hdf5GrowthRecorder()</text><ellipse cx="102.5" cy="1035.0234" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="116" x="111.5" y="1038.2339">~Hdf5GrowthRecorder()</text><ellipse cx="102.5" cy="1047.8281" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="101" x="111.5" y="1051.0386">Create() : IRecorder*</text><ellipse cx="102.5" cy="1060.6328" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="214" x="111.5" y="1063.8433">compileHistories(AllVertices&amp; neurons) : void</text><ellipse cx="102.5" cy="1073.4375" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="83" x="111.5" y="1076.6479">getValues() : void</text><polygon fill="#FFFF44" points="102.5,1081.2422,106.5,1085.2422,102.5,1089.2422,98.5,1085.2422" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="89" x="111.5" y="1089.4526">initDataSet() : void</text><ellipse cx="102.5" cy="1099.0469" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="117" x="111.5" y="1102.2573">initDefaultValues() : void</text><ellipse cx="102.5" cy="1111.8516" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="81" x="111.5" y="1115.062">initValues() : void</text><ellipse cx="102.5" cy="1124.6563" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="114" x="111.5" y="1127.8667">printParameters() : void</text><ellipse cx="102.5" cy="1137.4609" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="59" x="111.5" y="1140.6714">term() : void</text><polygon fill="#FFFF44" points="102.5,1145.2656,106.5,1149.2656,102.5,1153.2656,98.5,1149.2656" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="110" x="111.5" y="1153.4761">writeRadiiRates() : void</text><!--MD5=[2f81b0e77ba864956fe3cef8330f890e]
+class Hdf5Recorder--><rect codeLine="27" fill="#FEFECE" filter="url(#f1uttok0tk7039)" height="380.9219" id="Hdf5Recorder" style="stroke:#A80036;stroke-width:1.5;" width="405" x="9" y="479"/><ellipse cx="170.25" cy="495" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M170.1875,490.8281 Q169.4375,490.8281 168.875,491.125 Q168.3125,491.4063 167.9219,491.9375 Q167.5313,492.4688 167.3281,493.25 Q167.1406,494.0156 167.1406,494.9688 Q167.1406,495.9375 167.3125,496.7031 Q167.5,497.4531 167.8594,497.9688 Q168.2344,498.4844 168.8125,498.7656 Q169.3906,499.0313 170.1875,499.0313 Q170.9219,499.0313 171.6563,498.8594 Q172.4063,498.6875 173.2813,498.3906 L173.2813,500.5469 Q172.875,500.7031 172.4844,500.8281 Q172.0938,500.9375 171.6875,501.0156 Q171.2813,501.0938 170.8594,501.125 Q170.4375,501.1719 169.9375,501.1719 Q168.5313,501.1719 167.5,500.7188 Q166.4844,500.2656 165.8125,499.4531 Q165.1406,498.6406 164.8125,497.5 Q164.4844,496.3438 164.4844,494.9531 Q164.4844,493.5781 164.8594,492.4219 Q165.2344,491.2656 165.9531,490.4375 Q166.6719,489.6094 167.7344,489.1563 Q168.7969,488.6875 170.1875,488.6875 Q171.0938,488.6875 172,488.9219 Q172.9063,489.1406 173.7344,489.5469 L172.9063,491.6406 Q172.2188,491.3125 171.5313,491.0781 Q170.8438,490.8281 170.1875,490.8281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="74" x="190.75" y="499.1543">Hdf5Recorder</text><line style="stroke:#A80036;stroke-width:1.5;" x1="10" x2="413" y1="511" y2="511"/><polygon fill="none" points="20,517,24,521,20,525,16,521" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="160" x="29" y="525.2104">dataSetNeuronThresh_ : DataSet</text><polygon fill="none" points="20,529.8047,24,533.8047,20,537.8047,16,533.8047" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="156" x="29" y="538.0151">dataSetNeuronTypes_ : DataSet</text><polygon fill="none" points="20,542.6094,24,546.6094,20,550.6094,16,546.6094" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="167" x="29" y="550.8198">dataSetProbedNeurons_ : DataSet</text><polygon fill="none" points="20,555.4141,24,559.4141,20,563.4141,16,559.4141" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="183" x="29" y="563.6245">dataSetSimulationEndTime_ : DataSet</text><polygon fill="none" points="20,568.2188,24,572.2188,20,576.2188,16,572.2188" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="141" x="29" y="576.4292">dataSetSpikesHist_ : DataSet</text><polygon fill="none" points="20,581.0234,24,585.0234,20,589.0234,16,585.0234" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="197" x="29" y="589.2339">dataSetSpikesProbedNeurons_ : DataSet</text><polygon fill="none" points="20,593.8281,24,597.8281,20,601.8281,16,597.8281" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="167" x="29" y="602.0386">dataSetStarterNeurons_ : DataSet</text><polygon fill="none" points="20,606.6328,24,610.6328,20,614.6328,16,610.6328" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="114" x="29" y="614.8433">dataSetTsim_ : DataSet</text><polygon fill="none" points="20,619.4375,24,623.4375,20,627.4375,16,623.4375" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="111" x="29" y="627.6479">dataSetXloc_ : DataSet</text><polygon fill="none" points="20,632.2422,24,636.2422,20,640.2422,16,636.2422" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="112" x="29" y="640.4526">dataSetYloc_ : DataSet</text><polygon fill="none" points="20,645.0469,24,649.0469,20,653.0469,16,649.0469" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="89" x="29" y="653.2573">resultOut_ : H5File</text><polygon fill="none" points="20,657.8516,24,661.8516,20,665.8516,16,661.8516" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="187" x="29" y="666.062">offsetSpikesProbedNeurons_ : hsize_t*</text><polygon fill="none" points="20,670.6563,24,674.6563,20,678.6563,16,674.6563" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="96" x="29" y="678.8667">spikesHistory_ : int*</text><polygon fill="none" points="20,683.4609,24,687.4609,20,691.4609,16,687.4609" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="206" x="29" y="691.6714">spikesProbedNeurons_ : vector&lt;uint64_t&gt;*</text><line style="stroke:#A80036;stroke-width:1.5;" x1="10" x2="413" y1="698.2656" y2="698.2656"/><ellipse cx="20" cy="709.2656" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="74" x="29" y="712.4761">Hdf5Recorder()</text><ellipse cx="20" cy="722.0703" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="101" x="29" y="725.2808">Create() : IRecorder*</text><ellipse cx="20" cy="734.875" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="214" x="29" y="738.0854">compileHistories(AllVertices&amp; neurons) : void</text><polygon fill="#FFFF44" points="20,742.6797,24,746.6797,20,750.6797,16,746.6797" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="379" x="29" y="750.8901">getStarterNeuronMatrix(VectorMatrix&amp; matrix, const bool* starterMap) : void</text><ellipse cx="20" cy="760.4844" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="83" x="29" y="763.6948">getValues() : void</text><ellipse cx="20" cy="773.2891" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="49" x="29" y="776.4995">init() : void</text><polygon fill="#FFFF44" points="20,781.0938,24,785.0938,20,789.0938,16,785.0938" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="89" x="29" y="789.3042">initDataSet() : void</text><ellipse cx="20" cy="798.8984" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="117" x="29" y="802.1089">initDefaultValues() : void</text><ellipse cx="20" cy="811.7031" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="81" x="29" y="814.9136">initValues() : void</text><ellipse cx="20" cy="824.5078" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="114" x="29" y="827.7183">printParameters() : void</text><ellipse cx="20" cy="837.3125" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="229" x="29" y="840.5229">saveSimData(const AllVertices&amp; neurons) : void</text><ellipse cx="20" cy="850.1172" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="59" x="29" y="853.3276">term() : void</text><!--MD5=[a2efe13f97b9395dfb70e2255bd52698]
+class IRecorder--><rect codeLine="57" fill="#FEFECE" filter="url(#f1uttok0tk7039)" height="201.6563" id="IRecorder" style="stroke:#A80036;stroke-width:1.5;" width="405" x="229" y="217"/><ellipse cx="400.75" cy="233" fill="#A9DCDF" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M403.7031,238 L402.875,235.1094 L398.6875,235.1094 L397.8438,238 L395.25,238 L399.1875,225.8125 L402.3438,225.8125 L406.2969,238 L403.7031,238 Z M402.2656,232.9531 L401.5,230.2969 Q401.4375,230.1406 401.3438,229.8125 Q401.25,229.4688 401.125,229.0625 Q401.0156,228.6406 400.9063,228.2344 Q400.8125,227.8125 400.7813,227.5313 Q400.75,227.7031 400.6875,227.9531 Q400.6406,228.2031 400.5625,228.4844 Q400.5,228.7656 400.4219,229.0469 Q400.3438,229.3281 400.2813,229.5781 Q400.2188,229.8281 400.1563,230.0156 Q400.1094,230.2031 400.0781,230.2969 L399.3125,232.9531 L402.2656,232.9531 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="53" x="421.25" y="237.1543">IRecorder</text><line style="stroke:#A80036;stroke-width:1.5;" x1="230" x2="633" y1="249" y2="249"/><polygon fill="none" points="240,255,244,259,240,263,236,259" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="144" x="249" y="263.2104">fileLogger_ : log4cplus::Logger</text><polygon fill="none" points="240,267.8047,244,271.8047,240,275.8047,236,271.8047" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="113" x="249" y="276.0151">resultFileName_ : string</text><line style="stroke:#A80036;stroke-width:1.5;" x1="230" x2="633" y1="282.6094" y2="282.6094"/><ellipse cx="240" cy="293.6094" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="59" x="249" y="296.8198">~IRecorder()</text><ellipse cx="240" cy="306.4141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="213" x="249" y="309.6245">compileHistories(AllVertices&amp; vertices) : void</text><polygon fill="#FFFF44" points="240,314.2188,244,318.2188,240,322.2188,236,318.2188" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="379" x="249" y="322.4292">getStarterNeuronMatrix(VectorMatrix&amp; matrix, const bool* starterMap) : void</text><ellipse cx="240" cy="332.0234" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="83" x="249" y="335.2339">getValues() : void</text><ellipse cx="240" cy="344.8281" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="49" x="249" y="348.0386">init() : void</text><ellipse cx="240" cy="357.6328" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="117" x="249" y="360.8433">initDefaultValues() : void</text><ellipse cx="240" cy="370.4375" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="81" x="249" y="373.6479">initValues() : void</text><ellipse cx="240" cy="383.2422" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="114" x="249" y="386.4526">printParameters() : void</text><ellipse cx="240" cy="396.0469" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="228" x="249" y="399.2573">saveSimData(const AllVertices&amp; vertices) : void</text><ellipse cx="240" cy="408.8516" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="59" x="249" y="412.062">term() : void</text><!--MD5=[2d167d26ebdee84d71997832bfe86c3e]
+class RecorderFactory--><rect codeLine="73" fill="#FEFECE" filter="url(#f1uttok0tk7039)" height="150.4375" id="RecorderFactory" style="stroke:#A80036;stroke-width:1.5;" width="364" x="249.5" y="7"/><ellipse cx="383.25" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M383.1875,18.8281 Q382.4375,18.8281 381.875,19.125 Q381.3125,19.4063 380.9219,19.9375 Q380.5313,20.4688 380.3281,21.25 Q380.1406,22.0156 380.1406,22.9688 Q380.1406,23.9375 380.3125,24.7031 Q380.5,25.4531 380.8594,25.9688 Q381.2344,26.4844 381.8125,26.7656 Q382.3906,27.0313 383.1875,27.0313 Q383.9219,27.0313 384.6563,26.8594 Q385.4063,26.6875 386.2813,26.3906 L386.2813,28.5469 Q385.875,28.7031 385.4844,28.8281 Q385.0938,28.9375 384.6875,29.0156 Q384.2813,29.0938 383.8594,29.125 Q383.4375,29.1719 382.9375,29.1719 Q381.5313,29.1719 380.5,28.7188 Q379.4844,28.2656 378.8125,27.4531 Q378.1406,26.6406 377.8125,25.5 Q377.4844,24.3438 377.4844,22.9531 Q377.4844,21.5781 377.8594,20.4219 Q378.2344,19.2656 378.9531,18.4375 Q379.6719,17.6094 380.7344,17.1563 Q381.7969,16.6875 383.1875,16.6875 Q384.0938,16.6875 385,16.9219 Q385.9063,17.1406 386.7344,17.5469 L385.9063,19.6406 Q385.2188,19.3125 384.5313,19.0781 Q383.8438,18.8281 383.1875,18.8281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="88" x="403.75" y="27.1543">RecorderFactory</text><line style="stroke:#A80036;stroke-width:1.5;" x1="250.5" x2="612.5" y1="39" y2="39"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="257.5" y="47"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="191" x="269.5" y="53.2104">createFunctions : RecorderFunctionMap</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="257.5" y="59.8047"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="202" x="269.5" y="66.0151">recorderInstance : shared_ptr&lt;IRecorder&gt;</text><line style="stroke:#A80036;stroke-width:1.5;" x1="250.5" x2="612.5" y1="72.6094" y2="72.6094"/><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="257.5" y="80.6094"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="86" x="269.5" y="86.8198">RecorderFactory()</text><ellipse cx="260.5" cy="96.4141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="92" x="269.5" y="99.6245">~RecorderFactory()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="257.5" y="106.2188"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="292" x="269.5" y="112.4292">invokeCreateFunction(const string&amp; className) : IRecorder*</text><ellipse cx="260.5" cy="122.0234" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="158" x="269.5" y="125.2339">getInstance() : RecorderFactory*</text><ellipse cx="260.5" cy="134.8281" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="321" x="269.5" y="138.0386">createRecorder(const string&amp; className) : shared_ptr&lt;IRecorder&gt;</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="257.5" y="144.6328"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="338" x="269.5" y="150.8433">registerClass(const string&amp; className, CreateFunction function) : void</text><!--MD5=[70954963b39295522525212df8952a0c]
+class XmlGrowthRecorder--><rect codeLine="85" fill="#FEFECE" filter="url(#f1uttok0tk7039)" height="201.6563" id="XmlGrowthRecorder" style="stroke:#A80036;stroke-width:1.5;" width="405" x="408" y="939"/><ellipse cx="551.75" cy="955" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M551.6875,950.8281 Q550.9375,950.8281 550.375,951.125 Q549.8125,951.4063 549.4219,951.9375 Q549.0313,952.4688 548.8281,953.25 Q548.6406,954.0156 548.6406,954.9688 Q548.6406,955.9375 548.8125,956.7031 Q549,957.4531 549.3594,957.9688 Q549.7344,958.4844 550.3125,958.7656 Q550.8906,959.0313 551.6875,959.0313 Q552.4219,959.0313 553.1563,958.8594 Q553.9063,958.6875 554.7813,958.3906 L554.7813,960.5469 Q554.375,960.7031 553.9844,960.8281 Q553.5938,960.9375 553.1875,961.0156 Q552.7813,961.0938 552.3594,961.125 Q551.9375,961.1719 551.4375,961.1719 Q550.0313,961.1719 549,960.7188 Q547.9844,960.2656 547.3125,959.4531 Q546.6406,958.6406 546.3125,957.5 Q545.9844,956.3438 545.9844,954.9531 Q545.9844,953.5781 546.3594,952.4219 Q546.7344,951.2656 547.4531,950.4375 Q548.1719,949.6094 549.2344,949.1563 Q550.2969,948.6875 551.6875,948.6875 Q552.5938,948.6875 553.5,948.9219 Q554.4063,949.1406 555.2344,949.5469 L554.4063,951.6406 Q553.7188,951.3125 553.0313,951.0781 Q552.3438,950.8281 551.6875,950.8281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="109" x="572.25" y="959.1543">XmlGrowthRecorder</text><line style="stroke:#A80036;stroke-width:1.5;" x1="409" x2="812" y1="971" y2="971"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="416" y="979"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="148" x="428" y="985.2104">radiiHistory_ : CompleteMatrix</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="416" y="991.8047"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="153" x="428" y="998.0151">ratesHistory_ : CompleteMatrix</text><line style="stroke:#A80036;stroke-width:1.5;" x1="409" x2="812" y1="1004.6094" y2="1004.6094"/><ellipse cx="419" cy="1015.6094" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="104" x="428" y="1018.8198">XmlGrowthRecorder()</text><ellipse cx="419" cy="1028.4141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="110" x="428" y="1031.6245">~XmlGrowthRecorder()</text><ellipse cx="419" cy="1041.2188" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="101" x="428" y="1044.4292">Create() : IRecorder*</text><ellipse cx="419" cy="1054.0234" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="214" x="428" y="1057.2339">compileHistories(AllVertices&amp; neurons) : void</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="416" y="1063.8281"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="379" x="428" y="1070.0386">getStarterNeuronMatrix(VectorMatrix&amp; matrix, const bool* starterMap) : void</text><ellipse cx="419" cy="1079.6328" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="83" x="428" y="1082.8433">getValues() : void</text><ellipse cx="419" cy="1092.4375" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="117" x="428" y="1095.6479">initDefaultValues() : void</text><ellipse cx="419" cy="1105.2422" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="81" x="428" y="1108.4526">initValues() : void</text><ellipse cx="419" cy="1118.0469" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="114" x="428" y="1121.2573">printParameters() : void</text><ellipse cx="419" cy="1130.8516" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="229" x="428" y="1134.062">saveSimData(const AllVertices&amp; neurons) : void</text><!--MD5=[e2fde7c48d35c1cbf959be266268237c]
+class XmlRecorder--><rect codeLine="101" fill="#FEFECE" filter="url(#f1uttok0tk7039)" height="214.4609" id="XmlRecorder" style="stroke:#A80036;stroke-width:1.5;" width="405" x="449" y="562.5"/><ellipse cx="612.25" cy="578.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M612.1875,574.3281 Q611.4375,574.3281 610.875,574.625 Q610.3125,574.9063 609.9219,575.4375 Q609.5313,575.9688 609.3281,576.75 Q609.1406,577.5156 609.1406,578.4688 Q609.1406,579.4375 609.3125,580.2031 Q609.5,580.9531 609.8594,581.4688 Q610.2344,581.9844 610.8125,582.2656 Q611.3906,582.5313 612.1875,582.5313 Q612.9219,582.5313 613.6563,582.3594 Q614.4063,582.1875 615.2813,581.8906 L615.2813,584.0469 Q614.875,584.2031 614.4844,584.3281 Q614.0938,584.4375 613.6875,584.5156 Q613.2813,584.5938 612.8594,584.625 Q612.4375,584.6719 611.9375,584.6719 Q610.5313,584.6719 609.5,584.2188 Q608.4844,583.7656 607.8125,582.9531 Q607.1406,582.1406 606.8125,581 Q606.4844,579.8438 606.4844,578.4531 Q606.4844,577.0781 606.8594,575.9219 Q607.2344,574.7656 607.9531,573.9375 Q608.6719,573.1094 609.7344,572.6563 Q610.7969,572.1875 612.1875,572.1875 Q613.0938,572.1875 614,572.4219 Q614.9063,572.6406 615.7344,573.0469 L614.9063,575.1406 Q614.2188,574.8125 613.5313,574.5781 Q612.8438,574.3281 612.1875,574.3281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="70" x="632.75" y="582.6543">XmlRecorder</text><line style="stroke:#A80036;stroke-width:1.5;" x1="450" x2="853" y1="594.5" y2="594.5"/><polygon fill="none" points="460,600.5,464,604.5,460,608.5,456,604.5" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="142" x="469" y="608.7104">spikesHistory_ : VectorMatrix</text><polygon fill="none" points="460,613.3047,464,617.3047,460,621.3047,456,617.3047" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="105" x="469" y="621.5151">resultOut_ : ofstream</text><line style="stroke:#A80036;stroke-width:1.5;" x1="450" x2="853" y1="628.1094" y2="628.1094"/><ellipse cx="460" cy="639.1094" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="68" x="469" y="642.3198">XmlRecorder()</text><ellipse cx="460" cy="651.9141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="101" x="469" y="655.1245">Create() : IRecorder*</text><ellipse cx="460" cy="664.7188" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="213" x="469" y="667.9292">compileHistories(AllVertices&amp; vertices) : void</text><polygon fill="#FFFF44" points="460,672.5234,464,676.5234,460,680.5234,456,676.5234" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="379" x="469" y="680.7339">getStarterNeuronMatrix(VectorMatrix&amp; matrix, const bool* starterMap) : void</text><ellipse cx="460" cy="690.3281" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="83" x="469" y="693.5386">getValues() : void</text><ellipse cx="460" cy="703.1328" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="49" x="469" y="706.3433">init() : void</text><ellipse cx="460" cy="715.9375" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="117" x="469" y="719.1479">initDefaultValues() : void</text><ellipse cx="460" cy="728.7422" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="81" x="469" y="731.9526">initValues() : void</text><ellipse cx="460" cy="741.5469" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="114" x="469" y="744.7573">printParameters() : void</text><ellipse cx="460" cy="754.3516" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="228" x="469" y="757.562">saveSimData(const AllVertices&amp; vertices) : void</text><ellipse cx="460" cy="767.1563" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="59" x="469" y="770.3667">term() : void</text><!--MD5=[e01fc12d2ca5b032aa39c4fc4bc72679]
+class XmlSTDPRecorder--><rect codeLine="118" fill="#FEFECE" filter="url(#f1uttok0tk7039)" height="227.2656" id="XmlSTDPRecorder" style="stroke:#A80036;stroke-width:1.5;" width="405" x="848" y="926.5"/><ellipse cx="996.75" cy="942.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M996.6875,938.3281 Q995.9375,938.3281 995.375,938.625 Q994.8125,938.9063 994.4219,939.4375 Q994.0313,939.9688 993.8281,940.75 Q993.6406,941.5156 993.6406,942.4688 Q993.6406,943.4375 993.8125,944.2031 Q994,944.9531 994.3594,945.4688 Q994.7344,945.9844 995.3125,946.2656 Q995.8906,946.5313 996.6875,946.5313 Q997.4219,946.5313 998.1563,946.3594 Q998.9063,946.1875 999.7813,945.8906 L999.7813,948.0469 Q999.375,948.2031 998.9844,948.3281 Q998.5938,948.4375 998.1875,948.5156 Q997.7813,948.5938 997.3594,948.625 Q996.9375,948.6719 996.4375,948.6719 Q995.0313,948.6719 994,948.2188 Q992.9844,947.7656 992.3125,946.9531 Q991.6406,946.1406 991.3125,945 Q990.9844,943.8438 990.9844,942.4531 Q990.9844,941.0781 991.3594,939.9219 Q991.7344,938.7656 992.4531,937.9375 Q993.1719,937.1094 994.2344,936.6563 Q995.2969,936.1875 996.6875,936.1875 Q997.5938,936.1875 998.5,936.4219 Q999.4063,936.6406 1000.2344,937.0469 L999.4063,939.1406 Q998.7188,938.8125 998.0313,938.5781 Q997.3438,938.3281 996.6875,938.3281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="99" x="1017.25" y="946.6543">XmlSTDPRecorder</text><line style="stroke:#A80036;stroke-width:1.5;" x1="849" x2="1252" y1="958.5" y2="958.5"/><polygon fill="none" points="859,964.5,863,968.5,859,972.5,855,968.5" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="218" x="868" y="972.7104">weightsHistory_ : vector&lt;vector&lt;BGFLOAT&gt;&gt;</text><polygon fill="none" points="859,977.3047,863,981.3047,859,985.3047,855,981.3047" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="231" x="868" y="985.5151">destNeuronIndexHistory_ : vector&lt;vector&lt;int&gt;&gt;</text><polygon fill="none" points="859,990.1094,863,994.1094,859,998.1094,855,994.1094" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="242" x="868" y="998.3198">sourceNeuronIndexHistory_ : vector&lt;vector&lt;int&gt;&gt;</text><line style="stroke:#A80036;stroke-width:1.5;" x1="849" x2="1252" y1="1004.9141" y2="1004.9141"/><ellipse cx="859" cy="1015.9141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="93" x="868" y="1019.1245">XmlSTDPRecorder()</text><ellipse cx="859" cy="1028.7188" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="99" x="868" y="1031.9292">~XmlSTDPRecorder()</text><ellipse cx="859" cy="1041.5234" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="101" x="868" y="1044.7339">Create() : IRecorder*</text><ellipse cx="859" cy="1054.3281" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="379" x="868" y="1057.5386">toXML(string name, vector&lt;vector&lt;BGFLOAT&gt;&gt; MatrixToWrite) : string {query}</text><ellipse cx="859" cy="1067.1328" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="345" x="868" y="1070.3433">toXML(string name, vector&lt;vector&lt;int&gt;&gt; MatrixToWrite) : string {query}</text><ellipse cx="859" cy="1079.9375" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="214" x="868" y="1083.1479">compileHistories(AllVertices&amp; neurons) : void</text><ellipse cx="859" cy="1092.7422" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="83" x="868" y="1095.9526">getValues() : void</text><ellipse cx="859" cy="1105.5469" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="117" x="868" y="1108.7573">initDefaultValues() : void</text><ellipse cx="859" cy="1118.3516" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="81" x="868" y="1121.562">initValues() : void</text><ellipse cx="859" cy="1131.1563" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="114" x="868" y="1134.3667">printParameters() : void</text><ellipse cx="859" cy="1143.9609" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="229" x="868" y="1147.1714">saveSimData(const AllVertices&amp; neurons) : void</text><!--MD5=[19d836ace92e712b0d8c405f49d503c3]
+reverse link Hdf5Recorder to Hdf5GrowthRecorder--><path codeLine="141" d="M211.5,880.52 C211.5,893.87 211.5,907.04 211.5,919.74 " fill="none" id="Hdf5Recorder-backto-Hdf5GrowthRecorder" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="204.5,880.15,211.5,860.15,218.5,880.15,204.5,880.15" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[9f6fa59aebac9bc7112aaf284395847c]
+reverse link IRecorder to Hdf5Recorder--><path codeLine="144" d="M357.66,436.3 C348.99,450.08 339.97,464.4 330.87,478.86 " fill="none" id="IRecorder-backto-Hdf5Recorder" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="351.88,432.35,368.46,419.15,363.73,439.81,351.88,432.35" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[7186e99c451d736dd7b9f0c726ab5277]
+reverse link IRecorder to XmlRecorder--><path codeLine="147" d="M505.33,436.29 C530.97,477.02 559.56,522.44 584.61,562.23 " fill="none" id="IRecorder-backto-XmlRecorder" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="499.27,439.81,494.54,419.15,511.12,432.35,499.27,439.81" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[8e79f27ee7b582c0f30a64eceb9600c6]
+reverse link XmlRecorder to XmlGrowthRecorder--><path codeLine="150" d="M637.45,796.77 C632.29,843.13 626.53,894.95 621.66,938.72 " fill="none" id="XmlRecorder-backto-XmlGrowthRecorder" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="630.53,795.69,639.7,776.59,644.44,797.24,630.53,795.69" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[7b176ba4d3de823aebcc641ddd35342b]
+reverse link XmlRecorder to XmlSTDPRecorder--><path codeLine="153" d="M781.18,790.27 C828.49,833.97 881.81,883.2 928.44,926.27 " fill="none" id="XmlRecorder-backto-XmlSTDPRecorder" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="776.32,795.3,766.37,776.59,785.81,785.02,776.32,795.3" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[79989c5c612cd705f8c6af7a6267fbc0]
+reverse link RecorderFactory to IRecorder--><path codeLine="161" d="M431.5,170.2 C431.5,185.43 431.5,201.38 431.5,216.91 " fill="none" id="RecorderFactory-backto-IRecorder" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="431.5,157.04,427.5,163.04,431.5,169.04,435.5,163.04,431.5,157.04" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[1870dd9d9ce405d658b9868db227871f]
+@startuml RecorderClassDiagram
+
+
+
+
+
+/' Objects '/
+
+class Hdf5GrowthRecorder {
+	+Hdf5GrowthRecorder()
+	+~Hdf5GrowthRecorder()
+	#radiiHistory_ : BGFLOAT*
+	#ratesHistory_ : BGFLOAT*
+	#dataSetRadiiHist_ : DataSet
+	#dataSetRatesHist_ : DataSet
+	+{static} Create() : IRecorder*
+	+compileHistories(AllVertices& neurons) : void
+	+getValues() : void
+	#initDataSet() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+term() : void
+	#writeRadiiRates() : void
+}
+
+
+class Hdf5Recorder {
+	+Hdf5Recorder()
+	#dataSetNeuronThresh_ : DataSet
+	#dataSetNeuronTypes_ : DataSet
+	#dataSetProbedNeurons_ : DataSet
+	#dataSetSimulationEndTime_ : DataSet
+	#dataSetSpikesHist_ : DataSet
+	#dataSetSpikesProbedNeurons_ : DataSet
+	#dataSetStarterNeurons_ : DataSet
+	#dataSetTsim_ : DataSet
+	#dataSetXloc_ : DataSet
+	#dataSetYloc_ : DataSet
+	#resultOut_ : H5File
+	+{static} Create() : IRecorder*
+	#offsetSpikesProbedNeurons_ : hsize_t*
+	#spikesHistory_ : int*
+	#spikesProbedNeurons_ : vector<uint64_t>*
+	+compileHistories(AllVertices& neurons) : void
+	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
+	+getValues() : void
+	+init() : void
+	#initDataSet() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+saveSimData(const AllVertices& neurons) : void
+	+term() : void
+}
+
+
+abstract class IRecorder {
+	+~IRecorder()
+	#fileLogger_ : log4cplus::Logger
+	#resultFileName_ : string
+	+{abstract} compileHistories(AllVertices& vertices) : void
+	#{abstract} getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
+	+{abstract} getValues() : void
+	+{abstract} init() : void
+	+{abstract} initDefaultValues() : void
+	+{abstract} initValues() : void
+	+{abstract} printParameters() : void
+	+{abstract} saveSimData(const AllVertices& vertices) : void
+	+{abstract} term() : void
+}
+
+
+class RecorderFactory {
+	-RecorderFactory()
+	+~RecorderFactory()
+	-invokeCreateFunction(const string& className) : IRecorder*
+	+{static} getInstance() : RecorderFactory*
+	-createFunctions : RecorderFunctionMap
+	+createRecorder(const string& className) : shared_ptr<IRecorder>
+	-recorderInstance : shared_ptr<IRecorder>
+	-registerClass(const string& className, CreateFunction function) : void
+}
+
+
+class XmlGrowthRecorder {
+	+XmlGrowthRecorder()
+	+~XmlGrowthRecorder()
+	-radiiHistory_ : CompleteMatrix
+	-ratesHistory_ : CompleteMatrix
+	+{static} Create() : IRecorder*
+	+compileHistories(AllVertices& neurons) : void
+	-getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
+	+getValues() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+saveSimData(const AllVertices& neurons) : void
+}
+
+
+class XmlRecorder {
+	+XmlRecorder()
+	+{static} Create() : IRecorder*
+	#spikesHistory_ : VectorMatrix
+	#resultOut_ : ofstream
+	+compileHistories(AllVertices& vertices) : void
+	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
+	+getValues() : void
+	+init() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+saveSimData(const AllVertices& vertices) : void
+	+term() : void
+}
+
+
+class XmlSTDPRecorder {
+	+XmlSTDPRecorder()
+	+~XmlSTDPRecorder()
+	+{static} Create() : IRecorder*
+	+toXML(string name, vector<vector<BGFLOAT>> MatrixToWrite) : string {query}
+	+toXML(string name, vector<vector<int>> MatrixToWrite) : string {query}
+	#weightsHistory_ : vector<vector<BGFLOAT>>
+	#destNeuronIndexHistory_ : vector<vector<int>>
+	#sourceNeuronIndexHistory_ : vector<vector<int>>
+	+compileHistories(AllVertices& neurons) : void
+	+getValues() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+saveSimData(const AllVertices& neurons) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+.Hdf5Recorder <|- - .Hdf5GrowthRecorder
+
+
+.IRecorder <|- - .Hdf5Recorder
+
+
+.IRecorder <|- - .XmlRecorder
+
+
+.XmlRecorder <|- - .XmlGrowthRecorder
+
+
+.XmlRecorder <|- - .XmlSTDPRecorder
+
+
+
+
+
+/' Aggregation relationships '/
+
+.RecorderFactory *- - .IRecorder
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml
+
+@startuml RecorderClassDiagram
+
+
+
+
+
+
+class Hdf5GrowthRecorder {
+	+Hdf5GrowthRecorder()
+	+~Hdf5GrowthRecorder()
+	#radiiHistory_ : BGFLOAT*
+	#ratesHistory_ : BGFLOAT*
+	#dataSetRadiiHist_ : DataSet
+	#dataSetRatesHist_ : DataSet
+	+{static} Create() : IRecorder*
+	+compileHistories(AllVertices& neurons) : void
+	+getValues() : void
+	#initDataSet() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+term() : void
+	#writeRadiiRates() : void
+}
+
+
+class Hdf5Recorder {
+	+Hdf5Recorder()
+	#dataSetNeuronThresh_ : DataSet
+	#dataSetNeuronTypes_ : DataSet
+	#dataSetProbedNeurons_ : DataSet
+	#dataSetSimulationEndTime_ : DataSet
+	#dataSetSpikesHist_ : DataSet
+	#dataSetSpikesProbedNeurons_ : DataSet
+	#dataSetStarterNeurons_ : DataSet
+	#dataSetTsim_ : DataSet
+	#dataSetXloc_ : DataSet
+	#dataSetYloc_ : DataSet
+	#resultOut_ : H5File
+	+{static} Create() : IRecorder*
+	#offsetSpikesProbedNeurons_ : hsize_t*
+	#spikesHistory_ : int*
+	#spikesProbedNeurons_ : vector<uint64_t>*
+	+compileHistories(AllVertices& neurons) : void
+	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
+	+getValues() : void
+	+init() : void
+	#initDataSet() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+saveSimData(const AllVertices& neurons) : void
+	+term() : void
+}
+
+
+abstract class IRecorder {
+	+~IRecorder()
+	#fileLogger_ : log4cplus::Logger
+	#resultFileName_ : string
+	+{abstract} compileHistories(AllVertices& vertices) : void
+	#{abstract} getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
+	+{abstract} getValues() : void
+	+{abstract} init() : void
+	+{abstract} initDefaultValues() : void
+	+{abstract} initValues() : void
+	+{abstract} printParameters() : void
+	+{abstract} saveSimData(const AllVertices& vertices) : void
+	+{abstract} term() : void
+}
+
+
+class RecorderFactory {
+	-RecorderFactory()
+	+~RecorderFactory()
+	-invokeCreateFunction(const string& className) : IRecorder*
+	+{static} getInstance() : RecorderFactory*
+	-createFunctions : RecorderFunctionMap
+	+createRecorder(const string& className) : shared_ptr<IRecorder>
+	-recorderInstance : shared_ptr<IRecorder>
+	-registerClass(const string& className, CreateFunction function) : void
+}
+
+
+class XmlGrowthRecorder {
+	+XmlGrowthRecorder()
+	+~XmlGrowthRecorder()
+	-radiiHistory_ : CompleteMatrix
+	-ratesHistory_ : CompleteMatrix
+	+{static} Create() : IRecorder*
+	+compileHistories(AllVertices& neurons) : void
+	-getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
+	+getValues() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+saveSimData(const AllVertices& neurons) : void
+}
+
+
+class XmlRecorder {
+	+XmlRecorder()
+	+{static} Create() : IRecorder*
+	#spikesHistory_ : VectorMatrix
+	#resultOut_ : ofstream
+	+compileHistories(AllVertices& vertices) : void
+	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
+	+getValues() : void
+	+init() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+saveSimData(const AllVertices& vertices) : void
+	+term() : void
+}
+
+
+class XmlSTDPRecorder {
+	+XmlSTDPRecorder()
+	+~XmlSTDPRecorder()
+	+{static} Create() : IRecorder*
+	+toXML(string name, vector<vector<BGFLOAT>> MatrixToWrite) : string {query}
+	+toXML(string name, vector<vector<int>> MatrixToWrite) : string {query}
+	#weightsHistory_ : vector<vector<BGFLOAT>>
+	#destNeuronIndexHistory_ : vector<vector<int>>
+	#sourceNeuronIndexHistory_ : vector<vector<int>>
+	+compileHistories(AllVertices& neurons) : void
+	+getValues() : void
+	+initDefaultValues() : void
+	+initValues() : void
+	+printParameters() : void
+	+saveSimData(const AllVertices& neurons) : void
+}
+
+
+
+
+
+
+.Hdf5Recorder <|- - .Hdf5GrowthRecorder
+
+
+.IRecorder <|- - .Hdf5Recorder
+
+
+.IRecorder <|- - .XmlRecorder
+
+
+.XmlRecorder <|- - .XmlGrowthRecorder
+
+
+.XmlRecorder <|- - .XmlSTDPRecorder
+
+
+
+
+
+
+.RecorderFactory *- - .IRecorder
+
+
+
+
+
+
+
+
+
+@enduml
+
+PlantUML version 1.2020.23(Sun Dec 13 19:14:58 GMT 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

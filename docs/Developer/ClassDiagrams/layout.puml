@@ -1,0 +1,366 @@
+@startuml LayoutClassDiagram
+
+
+
+
+
+/' Objects '/
+
+class AllIFNeurons {
+	+AllIFNeurons()
+	+~AllIFNeurons()
+	-IinjectRange_ : BGFLOAT
+	-InoiseRange_ : BGFLOAT
+	-VinitRange_ : BGFLOAT
+	-VresetRange_ : BGFLOAT
+	-VrestingRange_ : BGFLOAT
+	-VthreshRange_ : BGFLOAT
+	-starterVresetRange_ : BGFLOAT
+	-starterVthreshRange_ : BGFLOAT
+	+C1_ : BGFLOAT*
+	+C2_ : BGFLOAT*
+	+Cm_ : BGFLOAT*
+	+I0_ : BGFLOAT*
+	+Iinject_ : BGFLOAT*
+	+Inoise_ : BGFLOAT*
+	+Isyn_ : BGFLOAT*
+	+Rm_ : BGFLOAT*
+	+Tau_ : BGFLOAT*
+	+Trefract_ : BGFLOAT*
+	+Vinit_ : BGFLOAT*
+	+Vm_ : BGFLOAT*
+	+Vreset_ : BGFLOAT*
+	+Vrest_ : BGFLOAT*
+	+Vthresh_ : BGFLOAT*
+	+numStepsInRefractoryPeriod_ : int*
+	+toString(const int index) : string {query}
+	+advanceVertices(AllEdges& synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice) : void
+	#allocDeviceStruct(AllIFNeuronsDeviceProperties& allVerticesDevice) : void
+	+allocNeuronDeviceStruct(void** allVerticesDevice) : void
+	+clearNeuronSpikeCounts(void* allVerticesDevice) : void
+	#copyDeviceToHost(AllIFNeuronsDeviceProperties& allVerticesDevice) : void
+	#copyHostToDevice(AllIFNeuronsDeviceProperties& allVerticesDevice) : void
+	+copyNeuronDeviceSpikeCountsToHost(void* allVerticesDevice) : void
+	+copyNeuronDeviceSpikeHistoryToHost(void* allVerticesDevice) : void
+	+copyNeuronDeviceToHost(void* allVerticesDevice) : void
+	+copyNeuronHostToDevice(void* allVerticesDevice) : void
+	+createAllVertices(Layout* layout) : void
+	#createNeuron(int neuronIndex, Layout* layout) : void
+	#deleteDeviceStruct(AllIFNeuronsDeviceProperties& allVerticesDevice) : void
+	+deleteNeuronDeviceStruct(void* allVerticesDevice) : void
+	+deserialize(istream& input) : void
+	#initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT) : void
+	+loadParameters() : void
+	+printParameters() : void {query}
+	#readNeuron(istream& input, int i) : void
+	+serialize(ostream& output) : void {query}
+	#setNeuronDefaults(const int index) : void
+	+setupVertices() : void
+	#writeNeuron(ostream& output, int i) : void {query}
+}
+
+
+class AllIZHNeurons {
+	+AllIZHNeurons()
+	+~AllIZHNeurons()
+	+{static} Create() : AllVertices*
+	-excAconst_ : BGFLOAT
+	-excBconst_ : BGFLOAT
+	-excCconst_ : BGFLOAT
+	-excDconst_ : BGFLOAT
+	-inhAconst_ : BGFLOAT
+	-inhBconst_ : BGFLOAT
+	-inhCconst_ : BGFLOAT
+	-inhDconst_ : BGFLOAT
+	+Aconst_ : BGFLOAT*
+	+Bconst_ : BGFLOAT*
+	+C3_ : BGFLOAT*
+	+Cconst_ : BGFLOAT*
+	+Dconst_ : BGFLOAT*
+	+u_ : BGFLOAT*
+	-{static} DEFAULT_a : static constexpr BGFLOAT
+	-{static} DEFAULT_b : static constexpr BGFLOAT
+	-{static} DEFAULT_c : static constexpr BGFLOAT
+	-{static} DEFAULT_d : static constexpr BGFLOAT
+	+toString(const int index) : string {query}
+	#advanceNeuron(const int index) : void
+	+advanceVertices(AllEdges& synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice) : void
+	#allocDeviceStruct(AllIZHNeuronsDeviceProperties& allVerticesDevice) : void
+	+allocNeuronDeviceStruct(void** allVerticesDevice) : void
+	+clearNeuronSpikeCounts(void* allVerticesDevice) : void
+	#copyDeviceToHost(AllIZHNeuronsDeviceProperties& allVerticesDevice) : void
+	#copyHostToDevice(AllIZHNeuronsDeviceProperties& allVerticesDevice) : void
+	+copyNeuronDeviceSpikeCountsToHost(void* allVerticesDevice) : void
+	+copyNeuronDeviceSpikeHistoryToHost(void* allVerticesDevice) : void
+	+copyNeuronDeviceToHost(void* allVerticesDevice) : void
+	+copyNeuronHostToDevice(void* allVerticesDevice) : void
+	+createAllVertices(Layout* layout) : void
+	#createNeuron(int neuronIndex, Layout* layout) : void
+	#deleteDeviceStruct(AllIZHNeuronsDeviceProperties& allVerticesDevice) : void
+	+deleteNeuronDeviceStruct(void* allVerticesDevice) : void
+	+deserialize(istream& input) : void
+	#fire(const int index) : void
+	#initNeuronConstsFromParamValues(int neuronIndex, const BGFLOAT deltaT) : void
+	+printParameters() : void {query}
+	#readNeuron(istream& input, int index) : void
+	+serialize(ostream& output) : void {query}
+	#setNeuronDefaults(const int index) : void
+	+setupVertices() : void
+	#writeNeuron(ostream& output, int index) : void {query}
+}
+
+
+class AllLIFNeurons {
+	+AllLIFNeurons()
+	+~AllLIFNeurons()
+	+{static} Create() : AllVertices*
+	#advanceNeuron(const int index) : void
+	+advanceVertices(AllEdges& synapses, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice) : void
+	#fire(const int index) : void
+	+printParameters() : void {query}
+}
+
+
+abstract class AllSpikingNeurons {
+	+AllSpikingNeurons()
+	+~AllSpikingNeurons()
+	#fAllowBackPropagation_ : bool
+	+getSpikeHistory(int index, int offIndex) : uint64_t
+	+vertexEvents_ : vector<EventBuffer>
+	+hasFired_ : vector<bool>
+	#{abstract} advanceNeuron(const int index) : void
+	+advanceVertices(AllEdges& synapses, const EdgeIndexMap* edgeIndexMap) : void
+	#clearDeviceSpikeCounts(AllSpikingNeuronsDeviceProperties& allVerticesDevice) : void
+	+{abstract} clearNeuronSpikeCounts(void* allVerticesDevice) : void
+	+clearSpikeCounts() : void
+	#copyDeviceSpikeCountsToHost(AllSpikingNeuronsDeviceProperties& allVerticesDevice) : void
+	#copyDeviceSpikeHistoryToHost(AllSpikingNeuronsDeviceProperties& allVerticesDevice) : void
+	+{abstract} copyNeuronDeviceSpikeCountsToHost(void* allVerticesDevice) : void
+	+{abstract} copyNeuronDeviceSpikeHistoryToHost(void* allVerticesDevice) : void
+	#fire(const int index) : void
+	+setAdvanceVerticesDeviceParams(AllEdges& synapses) : void
+	+setupVertices() : void
+}
+
+
+abstract class AllVertices {
+	+AllVertices()
+	+~AllVertices()
+	+summationPoints_ : BGFLOAT*
+	#size_ : int
+	#fileLogger_ : log4cplus::Logger
+	#vertexLogger_ : log4cplus::Logger
+	+{abstract} toString(const int i) : string {query}
+	+{abstract} advanceVertices(AllEdges& edges, void* allVerticesDevice, void* allEdgesDevice, float* randNoise, EdgeIndexMap* edgeIndexMapDevice) : void
+	+{abstract} advanceVertices(AllEdges& edges, const EdgeIndexMap* edgeIndexMap) : void
+	+{abstract} allocNeuronDeviceStruct(void** allVerticesDevice) : void
+	+{abstract} copyNeuronDeviceToHost(void* allVerticesDevice) : void
+	+{abstract} copyNeuronHostToDevice(void* allVerticesDevice) : void
+	+{abstract} createAllVertices(Layout* layout) : void
+	+{abstract} deleteNeuronDeviceStruct(void* allVerticesDevice) : void
+	+{abstract} loadParameters() : void
+	+printParameters() : void {query}
+	+{abstract} setAdvanceVerticesDeviceParams(AllEdges& edges) : void
+	+setupVertices() : void
+}
+
+
+class DynamicLayout {
+	+DynamicLayout()
+	+~DynamicLayout()
+	-fractionEndogenouslyActive_ : BGFLOAT
+	-fractionExcitatory_ : BGFLOAT
+	+{static} Create() : Layout*
+	+edgType(const int srcVertex, const int destVertex) : edgeType
+	+generateVertexTypeMap(int numVertices) : void
+	+initStarterMap(const int numVertices) : void
+	+loadParameters() : void
+	+printParameters() : void {query}
+}
+
+
+class EventBuffer {
+	+EventBuffer(int maxEvents)
+	-epochStart_ : int
+	+getNumElementsInEpoch() : int {query}
+	-numElementsInEpoch_ : int
+	-bufferEnd_ : int
+	-bufferFront_ : int
+	+getPastEvent(int offset) : uint64_t {query}
+	+operator[](int i) : uint64_t {query}
+	-dataSeries_ : vector<uint64_t>
+	+clear() : void
+	+insertEvent(uint64_t timeStep) : void
+	+resize(int maxEvents) : void
+	+startNewEpoch() : void
+}
+
+
+class FixedLayout {
+	+FixedLayout()
+	+~FixedLayout()
+	+{static} Create() : Layout*
+	+edgType(const int srcVertex, const int destVertex) : edgeType
+	+generateVertexTypeMap(int numVertices) : void
+	+initStarterMap(const int numVertices) : void
+	+loadParameters() : void
+	+printParameters() : void {query}
+}
+
+
+abstract class Layout {
+	+Layout()
+	+~Layout()
+	+numCallerVertices_ : BGSIZE
+	+numEndogenouslyActiveNeurons_ : BGSIZE
+	+dist2_ : CompleteMatrix*
+	+dist_ : CompleteMatrix*
+	+xloc_ : VectorMatrix*
+	+yloc_ : VectorMatrix*
+	-gridLayout_ : bool
+	+starterMap_ : bool*
+	+{abstract} edgType(const int srcVertex, const int destVertex) : edgeType
+	#fileLogger_ : log4cplus::Logger
+	+getVertices() : shared_ptr<AllVertices> {query}
+	#vertices_ : shared_ptr<AllVertices>
+	#callerVertexList_ : vector<int>
+	#endogenouslyActiveNeuronList_ : vector<int>
+	#inhibitoryNeuronLayout_ : vector<int>
+	+probedNeuronList_ : vector<int>
+	#psapVertexList_ : vector<int>
+	#responderVertexList_ : vector<int>
+	+vertexTypeMap_ : vertexType*
+	+generateVertexTypeMap(int numVertices) : void
+	+initStarterMap(const int numVertices) : void
+	-initVerticesLocs() : void
+	+{abstract} loadParameters() : void
+	+printParameters() : void {query}
+	+setupLayout() : void
+}
+
+
+class LayoutFactory {
+	-LayoutFactory()
+	+~LayoutFactory()
+	-invokeCreateFunction(const string& className) : Layout*
+	+{static} getInstance() : LayoutFactory*
+	-createFunctions : LayoutFunctionMap
+	+createLayout(const string& className) : shared_ptr<Layout>
+	-layoutInstance : shared_ptr<Layout>
+	-registerClass(const string& className, CreateFunction function) : void
+}
+
+
+class VerticesFactory {
+	-VerticesFactory()
+	+~VerticesFactory()
+	-invokeCreateFunction(const string& className) : AllVertices*
+	+{static} getInstance() : VerticesFactory*
+	-createFunctions : VerticesFunctionMap
+	+createVertices(const string& className) : shared_ptr<AllVertices>
+	-verticesInstance : shared_ptr<AllVertices>
+	-registerClass(const string& className, CreateFunction function) : void
+}
+
+
+class AllIFNeuronsDeviceProperties {
+	+C1_ : BGFLOAT*
+	+C2_ : BGFLOAT*
+	+Cm_ : BGFLOAT*
+	+I0_ : BGFLOAT*
+	+Iinject_ : BGFLOAT*
+	+Inoise_ : BGFLOAT*
+	+Isyn_ : BGFLOAT*
+	+Rm_ : BGFLOAT*
+	+Tau_ : BGFLOAT*
+	+Trefract_ : BGFLOAT*
+	+Vinit_ : BGFLOAT*
+	+Vm_ : BGFLOAT*
+	+Vreset_ : BGFLOAT*
+	+Vrest_ : BGFLOAT*
+	+Vthresh_ : BGFLOAT*
+	+numStepsInRefractoryPeriod_ : int*
+}
+
+
+class AllIZHNeuronsDeviceProperties {
+	+Aconst_ : BGFLOAT*
+	+Bconst_ : BGFLOAT*
+	+C3_ : BGFLOAT*
+	+Cconst_ : BGFLOAT*
+	+Dconst_ : BGFLOAT*
+	+u_ : BGFLOAT*
+}
+
+
+class AllSpikingNeuronsDeviceProperties {
+	+hasFired_ : bool*
+	+spikeCountOffset_ : int*
+	+spikeCount_ : int*
+	+spikeHistory_ : uint64_t**
+}
+
+
+class AllVerticesDeviceProperties {
+	+summationPoints_ : BGFLOAT*
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+.AllIFNeurons <|-- .AllIZHNeurons
+
+
+.AllIFNeurons <|-- .AllLIFNeurons
+
+
+.AllIFNeuronsDeviceProperties <|-- .AllIZHNeuronsDeviceProperties
+
+
+.AllSpikingNeurons <|-- .AllIFNeurons
+
+
+.AllSpikingNeuronsDeviceProperties <|-- .AllIFNeuronsDeviceProperties
+
+
+.AllVertices <|-- .AllSpikingNeurons
+
+
+.AllVerticesDeviceProperties <|-- .AllSpikingNeuronsDeviceProperties
+
+
+.Layout <|-- .DynamicLayout
+
+
+.Layout <|-- .FixedLayout
+
+
+
+
+
+/' Aggregation relationships '/
+
+.AllSpikingNeurons *-- .EventBuffer
+
+
+.Layout *-- .AllVertices
+
+
+.LayoutFactory *-- .Layout
+
+
+.VerticesFactory *-- .AllVertices
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="686px" preserveAspectRatio="none" style="width:844px;height:686px;" version="1.1" viewBox="0 0 844 686" width="844px" zoomAndPan="magnify"><defs><filter height="300%" id="f15qlnn60bffzg" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[dd9a31495c85b5dc63c13c8cf57db1f9]
+class GenericFunctionNode--><rect codeLine="3" fill="#FEFECE" filter="url(#f15qlnn60bffzg)" height="99.2188" id="GenericFunctionNode" style="stroke:#A80036;stroke-width:1.5;" width="505" x="7" y="363"/><ellipse cx="195.75" cy="379" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M195.6875,374.8281 Q194.9375,374.8281 194.375,375.125 Q193.8125,375.4063 193.4219,375.9375 Q193.0313,376.4688 192.8281,377.25 Q192.6406,378.0156 192.6406,378.9688 Q192.6406,379.9375 192.8125,380.7031 Q193,381.4531 193.3594,381.9688 Q193.7344,382.4844 194.3125,382.7656 Q194.8906,383.0313 195.6875,383.0313 Q196.4219,383.0313 197.1563,382.8594 Q197.9063,382.6875 198.7813,382.3906 L198.7813,384.5469 Q198.375,384.7031 197.9844,384.8281 Q197.5938,384.9375 197.1875,385.0156 Q196.7813,385.0938 196.3594,385.125 Q195.9375,385.1719 195.4375,385.1719 Q194.0313,385.1719 193,384.7188 Q191.9844,384.2656 191.3125,383.4531 Q190.6406,382.6406 190.3125,381.5 Q189.9844,380.3438 189.9844,378.9531 Q189.9844,377.5781 190.3594,376.4219 Q190.7344,375.2656 191.4531,374.4375 Q192.1719,373.6094 193.2344,373.1563 Q194.2969,372.6875 195.6875,372.6875 Q196.5938,372.6875 197.5,372.9219 Q198.4063,373.1406 199.2344,373.5469 L198.4063,375.6406 Q197.7188,375.3125 197.0313,375.0781 Q196.3438,374.8281 195.6875,374.8281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="119" x="216.25" y="383.1543">GenericFunctionNode</text><line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="511" y1="395" y2="395"/><line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="511" y1="403" y2="403"/><ellipse cx="18" cy="414" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="479" x="27" y="417.2104">GenericFunctionNode(const Operations::op&amp; operationType, const std::function&lt;void ( )&gt;&amp; function)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="423.8047"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="71" x="27" y="430.0151">function&lt;void()</text><ellipse cx="18" cy="439.6094" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="115" x="27" y="442.8198">~GenericFunctionNode()</text><ellipse cx="18" cy="452.4141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="303" x="27" y="455.6245">invokeFunction(const Operations::op&amp; operation) : bool {query}</text><!--MD5=[99788c5c01261f19cd519066f428e9b5]
+class IFunctionNode--><rect codeLine="11" fill="#FEFECE" filter="url(#f15qlnn60bffzg)" height="86.4141" id="IFunctionNode" style="stroke:#A80036;stroke-width:1.5;" width="329" x="429" y="217"/><ellipse cx="548.75" cy="233" fill="#A9DCDF" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M551.7031,238 L550.875,235.1094 L546.6875,235.1094 L545.8438,238 L543.25,238 L547.1875,225.8125 L550.3438,225.8125 L554.2969,238 L551.7031,238 Z M550.2656,232.9531 L549.5,230.2969 Q549.4375,230.1406 549.3438,229.8125 Q549.25,229.4688 549.125,229.0625 Q549.0156,228.6406 548.9063,228.2344 Q548.8125,227.8125 548.7813,227.5313 Q548.75,227.7031 548.6875,227.9531 Q548.6406,228.2031 548.5625,228.4844 Q548.5,228.7656 548.4219,229.0469 Q548.3438,229.3281 548.2813,229.5781 Q548.2188,229.8281 548.1563,230.0156 Q548.1094,230.2031 548.0781,230.2969 L547.3125,232.9531 L550.2656,232.9531 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="81" x="569.25" y="237.1543">IFunctionNode</text><line style="stroke:#A80036;stroke-width:1.5;" x1="430" x2="757" y1="249" y2="249"/><polygon fill="none" points="440,255,444,259,440,263,436,259" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="155" x="449" y="263.2104">operationType_ : Operations::op</text><line style="stroke:#A80036;stroke-width:1.5;" x1="430" x2="757" y1="269.8047" y2="269.8047"/><ellipse cx="440" cy="280.8047" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="81" x="449" y="284.0151">~IFunctionNode()</text><ellipse cx="440" cy="293.6094" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="303" x="449" y="296.8198">invokeFunction(const Operations::op&amp; operation) : bool {query}</text><!--MD5=[314e3b7c2db0a5a356d5ece57f37d58b]
+class OperationManager--><rect codeLine="18" fill="#FEFECE" filter="url(#f15qlnn60bffzg)" height="150.4375" id="OperationManager" style="stroke:#A80036;stroke-width:1.5;" width="473" x="357" y="7"/><ellipse cx="537.25" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M537.1875,18.8281 Q536.4375,18.8281 535.875,19.125 Q535.3125,19.4063 534.9219,19.9375 Q534.5313,20.4688 534.3281,21.25 Q534.1406,22.0156 534.1406,22.9688 Q534.1406,23.9375 534.3125,24.7031 Q534.5,25.4531 534.8594,25.9688 Q535.2344,26.4844 535.8125,26.7656 Q536.3906,27.0313 537.1875,27.0313 Q537.9219,27.0313 538.6563,26.8594 Q539.4063,26.6875 540.2813,26.3906 L540.2813,28.5469 Q539.875,28.7031 539.4844,28.8281 Q539.0938,28.9375 538.6875,29.0156 Q538.2813,29.0938 537.8594,29.125 Q537.4375,29.1719 536.9375,29.1719 Q535.5313,29.1719 534.5,28.7188 Q533.4844,28.2656 532.8125,27.4531 Q532.1406,26.6406 531.8125,25.5 Q531.4844,24.3438 531.4844,22.9531 Q531.4844,21.5781 531.8594,20.4219 Q532.2344,19.2656 532.9531,18.4375 Q533.6719,17.6094 534.7344,17.1563 Q535.7969,16.6875 537.1875,16.6875 Q538.0938,16.6875 539,16.9219 Q539.9063,17.1406 540.7344,17.5469 L539.9063,19.6406 Q539.2188,19.3125 538.5313,19.0781 Q537.8438,18.8281 537.1875,18.8281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="104" x="557.75" y="27.1543">OperationManager</text><line style="stroke:#A80036;stroke-width:1.5;" x1="358" x2="829" y1="39" y2="39"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="365" y="47"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="226" x="377" y="53.2104">functionList_ : list&lt;unique_ptr&lt;IFunctionNode&gt;&gt;</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="365" y="59.8047"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="127" x="377" y="66.0151">logger_ : log4cplus::Logger</text><line style="stroke:#A80036;stroke-width:1.5;" x1="358" x2="829" y1="72.6094" y2="72.6094"/><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="365" y="80.6094"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="99" x="377" y="86.8198">OperationManager()</text><ellipse cx="368" cy="96.4141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="105" x="377" y="99.6245">~OperationManager()</text><ellipse cx="368" cy="109.2188" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="173" x="377" y="112.4292">getInstance() : OperationManager&amp;</text><ellipse cx="368" cy="122.0234" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="324" x="377" y="125.2339">operationToString(const Operations::op&amp; operation) : string {query}</text><ellipse cx="368" cy="134.8281" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="320" x="377" y="138.0386">executeOperation(const Operations::op&amp; operation) : void {query}</text><ellipse cx="368" cy="147.6328" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="447" x="377" y="150.8433">registerOperation(const Operations::op&amp; operation, const function&lt;void ( )&gt;&amp; function) : void</text><!--MD5=[fdf81c1c7218c7a86b85d500a2db5e87]
+class Operations--><rect codeLine="30" fill="#FEFECE" filter="url(#f15qlnn60bffzg)" height="48" id="Operations" style="stroke:#A80036;stroke-width:1.5;" width="93" x="547" y="388.5"/><ellipse cx="562" cy="404.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M561.9375,400.3281 Q561.1875,400.3281 560.625,400.625 Q560.0625,400.9063 559.6719,401.4375 Q559.2813,401.9688 559.0781,402.75 Q558.8906,403.5156 558.8906,404.4688 Q558.8906,405.4375 559.0625,406.2031 Q559.25,406.9531 559.6094,407.4688 Q559.9844,407.9844 560.5625,408.2656 Q561.1406,408.5313 561.9375,408.5313 Q562.6719,408.5313 563.4063,408.3594 Q564.1563,408.1875 565.0313,407.8906 L565.0313,410.0469 Q564.625,410.2031 564.2344,410.3281 Q563.8438,410.4375 563.4375,410.5156 Q563.0313,410.5938 562.6094,410.625 Q562.1875,410.6719 561.6875,410.6719 Q560.2813,410.6719 559.25,410.2188 Q558.2344,409.7656 557.5625,408.9531 Q556.8906,408.1406 556.5625,407 Q556.2344,405.8438 556.2344,404.4531 Q556.2344,403.0781 556.6094,401.9219 Q556.9844,400.7656 557.7031,399.9375 Q558.4219,399.1094 559.4844,398.6563 Q560.5469,398.1875 561.9375,398.1875 Q562.8438,398.1875 563.75,398.4219 Q564.6563,398.6406 565.4844,399.0469 L564.6563,401.1406 Q563.9688,400.8125 563.2813,400.5781 Q562.5938,400.3281 561.9375,400.3281 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="61" x="576" y="408.6543">Operations</text><line style="stroke:#A80036;stroke-width:1.5;" x1="548" x2="639" y1="420.5" y2="420.5"/><line style="stroke:#A80036;stroke-width:1.5;" x1="548" x2="639" y1="428.5" y2="428.5"/><!--MD5=[ee90c8bb66c047e800df5fa57f6b4f59]
+class Operations::op--><rect codeLine="34" fill="#FEFECE" filter="url(#f15qlnn60bffzg)" height="150.4375" id="Operations::op" style="stroke:#A80036;stroke-width:1.5;" width="125" x="581" y="522"/><ellipse cx="601.4" cy="538" fill="#EB937F" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M604.4156,544 L597.4313,544 L597.4313,531.8594 L604.4156,531.8594 L604.4156,533.9688 L599.9938,533.9688 L599.9938,536.6406 L604.1031,536.6406 L604.1031,538.75 L599.9938,538.75 L599.9938,541.875 L604.4156,541.875 L604.4156,544 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="81" x="616.6" y="542.1543">Operations::op</text><line style="stroke:#A80036;stroke-width:1.5;" x1="582" x2="705" y1="554" y2="554"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="70" x="587" y="568.2104">copyFromGPU</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="56" x="587" y="581.0151">copyToGPU</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="113" x="587" y="593.8198">deallocateGPUMemory</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="50" x="587" y="606.6245">deserialize</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="77" x="587" y="619.4292">loadParameters</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="79" x="587" y="632.2339">printParameters</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="82" x="587" y="645.0386">restoreToDefault</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="38" x="587" y="657.8433">serialize</text><line style="stroke:#A80036;stroke-width:1.5;" x1="582" x2="705" y1="664.4375" y2="664.4375"/><!--MD5=[8dd8f9de4d0029903f75705d233ca28a]
+reverse link IFunctionNode to GenericFunctionNode--><path codeLine="48" d="M481.73,311.37 C444.87,327.97 403.98,346.4 367.42,362.87 " fill="none" id="IFunctionNode-backto-GenericFunctionNode" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="478.91,304.96,500.02,303.12,484.66,317.72,478.91,304.96" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[147440af9da7b06bb1c25492ebb2b6fc]
+reverse link IFunctionNode to Operations--><path codeLine="53" d="M593.5,316.66 C593.5,341.36 593.5,369.09 593.5,388.16 " fill="none" id="IFunctionNode-backto-Operations" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="593.5,303.32,589.5,309.32,593.5,315.32,597.5,309.32,593.5,303.32" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[9ced99db6c97f860d3e6f1f558ceb823]
+reverse link IFunctionNode to Operations::op--><path codeLine="56" d="M634.62,314.16 C643.99,329.15 652.62,346.03 657.5,363 C672.38,414.7 668.06,475.43 660.45,521.93 " fill="none" id="IFunctionNode-backto-Operations::op" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="627.36,303.08,627.3051,310.2909,633.9401,313.115,633.9951,305.9041,627.36,303.08" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[da4e37961616ea89232dc94550b7be3e]
+reverse link OperationManager to IFunctionNode--><path codeLine="59" d="M593.5,170.54 C593.5,186.58 593.5,202.63 593.5,216.57 " fill="none" id="OperationManager-backto-IFunctionNode" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="593.5,157.13,589.5,163.13,593.5,169.13,597.5,163.13,593.5,157.13" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[5a8d3fbc42f80913afa6dc1778a071da]
+reverse link Operations to Operations::op--><path codeLine="65" d="M603.87,451.34 C609.45,471.73 616.55,497.62 623.18,521.84 " fill="none" id="Operations-backto-Operations::op" style="stroke:#A80036;stroke-width:1.0;"/><ellipse cx="601.9472" cy="444.3248" fill="#FFFFFF" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="604.0644" x2="599.83" y1="452.0395" y2="436.61"/><line style="stroke:#A80036;stroke-width:1.0;" x1="594.2324" x2="609.6619" y1="446.4419" y2="442.2076"/><!--MD5=[86586f94efdc62ca8c028985deb272d3]
+@startuml OperationManagerClassDiagram
+
+
+class GenericFunctionNode {
+	+GenericFunctionNode(const Operations::op& operationType, const std::function<void ( )>& function)
+	-function<void()
+	+~GenericFunctionNode()
+	+invokeFunction(const Operations::op& operation) : bool {query}
+}
+
+
+abstract class IFunctionNode {
+	+~IFunctionNode()
+	#operationType_ : Operations::op
+	+{abstract} invokeFunction(const Operations::op& operation) : bool {query}
+}
+
+
+class OperationManager {
+	-OperationManager()
+	+~OperationManager()
+	+{static} getInstance() : OperationManager&
+	-functionList_ : list<unique_ptr<IFunctionNode>>
+	-logger_ : log4cplus::Logger
+	+operationToString(const Operations::op& operation) : string {query}
+	+executeOperation(const Operations::op& operation) : void {query}
+	+registerOperation(const Operations::op& operation, const function<void ( )>& function) : void
+}
+
+
+class Operations {
+}
+
+
+enum Operations::op {
+	copyFromGPU
+	copyToGPU
+	deallocateGPUMemory
+	deserialize
+	loadParameters
+	printParameters
+	restoreToDefault
+	serialize
+}
+
+
+/' Inheritance '/
+
+.IFunctionNode <|- - .GenericFunctionNode
+
+
+/' Aggregation relationships '/
+
+.IFunctionNode *- - .Operations
+
+
+.IFunctionNode *- - .Operations::op
+
+
+.OperationManager *- - .IFunctionNode
+
+
+
+/' Nested objects '/
+
+.Operations +- - .Operations::op
+
+
+
+@enduml
+
+@startuml OperationManagerClassDiagram
+
+
+class GenericFunctionNode {
+	+GenericFunctionNode(const Operations::op& operationType, const std::function<void ( )>& function)
+	-function<void()
+	+~GenericFunctionNode()
+	+invokeFunction(const Operations::op& operation) : bool {query}
+}
+
+
+abstract class IFunctionNode {
+	+~IFunctionNode()
+	#operationType_ : Operations::op
+	+{abstract} invokeFunction(const Operations::op& operation) : bool {query}
+}
+
+
+class OperationManager {
+	-OperationManager()
+	+~OperationManager()
+	+{static} getInstance() : OperationManager&
+	-functionList_ : list<unique_ptr<IFunctionNode>>
+	-logger_ : log4cplus::Logger
+	+operationToString(const Operations::op& operation) : string {query}
+	+executeOperation(const Operations::op& operation) : void {query}
+	+registerOperation(const Operations::op& operation, const function<void ( )>& function) : void
+}
+
+
+class Operations {
+}
+
+
+enum Operations::op {
+	copyFromGPU
+	copyToGPU
+	deallocateGPUMemory
+	deserialize
+	loadParameters
+	printParameters
+	restoreToDefault
+	serialize
+}
+
+
+
+.IFunctionNode <|- - .GenericFunctionNode
+
+
+
+.IFunctionNode *- - .Operations
+
+
+.IFunctionNode *- - .Operations::op
+
+
+.OperationManager *- - .IFunctionNode
+
+
+
+
+.Operations +- - .Operations::op
+
+
+
+@enduml
+
+PlantUML version 1.2020.23(Sun Dec 13 19:14:58 GMT 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

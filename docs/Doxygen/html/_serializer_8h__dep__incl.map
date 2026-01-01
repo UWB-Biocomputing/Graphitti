@@ -1,0 +1,7 @@
+<map id="Simulator/Core/Serializer.h" name="Simulator/Core/Serializer.h">
+<area shape="rect" id="Node000001" title="Provides serialization and deserialization functionality using the Cereal library." alt="" coords="99,5,274,31"/>
+<area shape="rect" id="Node000002" href="$_core_8cpp.html" title="Orchestrates most functionality in the simulation." alt="" coords="5,79,168,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,42,105,81,102,76,156,38"/>
+<area shape="rect" id="Node000003" href="$_serializer_8cpp.html" title="Provides serialization and deserialization functionality using the Cereal library." alt="" coords="192,79,381,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="217,38,271,76,268,81,214,42"/>
+</map>
