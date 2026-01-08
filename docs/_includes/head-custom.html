@@ -1,0 +1,21 @@
+{% if site.mermaid %}
+<script type="module">
+
+    // Old and un-optimized. 
+    // Injects mermaid into each page regardless if a page uses it or not
+    // Array.from(document.getElementsByClassName("language-mermaid")).forEach(element => {
+    //   element.classList.add("mermaid");
+    // });
+    // import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    // mermaid.initialize({ startOnLoad: true });
+
+    // Latest version as of 1/7/26
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+  mermaid.initialize({ startOnLoad: false });
+  
+  // Once page is loaded, render Mermaid diagrams
+  document.addEventListener('DOMContentLoaded', () => {
+    mermaid.run({ querySelector: '.language-mermaid' });
+  });
+</script>
