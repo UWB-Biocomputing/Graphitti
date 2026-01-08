@@ -239,6 +239,20 @@ void AllEdges::createEdgeIndexMap(EdgeIndexMap &edgeIndexMap)
    }
 }
 
+#if defined(USE_GPU)
+/// Set the CUDA stream to be used by GPU edge kernels in derived classes.
+///
+/// This assigns a CUDA stream to the base class, allowing subclasses
+/// (e.g., AllSpikingSynapses_d, AllSTDPSynapses_d) to launch kernels on
+/// the correct stream. The stream is typically created by GPUModel and
+/// passed down during simulation setup.
+///
+/// @param simulationStream A valid CUDA stream (`cudaStream_t`) managed by the caller.
+void AllEdges::SetStream(cudaStream_t simulationStream)
+{
+   simulationStream_ = simulationStream;
+}
+#endif
 
 #if !defined(USE_GPU)
 

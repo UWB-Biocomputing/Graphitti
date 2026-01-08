@@ -46,7 +46,7 @@ Students, use this [quickstart guide](StudentSetup.md) to help setup, use, and d
 - [Neuro Implementation](NeuroImplementation.md)
 - [GraphManager and InputManager classes](GraphAndEventInputs.md)
 - [Configuration](../User/configuration.md)
-
+- [AsyncPhilox RNG class](AsyncPhilox.md)
 
 ---------
 [<< Go back to the Graphitti home page](../index.md)

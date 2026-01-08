@@ -25,7 +25,9 @@
 
 #include "Serializer.h"
 #include "ConnGrowth.h"
-#include "GPUModel.h"
+#if defined(USE_GPU)
+   #include "GPUModel.h"
+#endif
 #include <fstream>
 
 // About CEREAL_XML_STRING_VALUE

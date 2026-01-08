@@ -32,6 +32,9 @@ using namespace std;
 #include <log4cplus/loggingmacros.h>
 // cereal
 #include "cereal/types/vector.hpp"
+#if defined(USE_GPU)
+   #include <cuda_runtime.h>
+#endif
 
 // Utility function to convert a vertexType into a string.
 string vertexTypeToString(vertexType t);
@@ -95,7 +98,19 @@ protected:
    log4cplus::Logger vertexLogger_;   // Logs to Output/Debug/neurons.txt
 
 #if defined(USE_GPU)
+   ///  Cuda Stream for Edge Kernels
+   cudaStream_t simulationStream_;
+
 public:
+   /// Set the CUDA stream to be used by GPU vertices kernels in derived classes.
+   ///
+   /// This assigns a CUDA stream to the base class, allowing subclasses
+   /// to launch kernels on the correct stream. The stream is typically
+   /// created by GPUModel and passed down during simulation setup.
+   ///
+   /// @param simulationStream A valid CUDA stream (`cudaStream_t`) managed by the caller.
+   void SetStream(cudaStream_t simulationStream);
+
    ///  Allocate GPU memories to store all vertices' states,
    ///  and copy them from host to GPU memory.
    virtual void allocVerticesDeviceStruct() = 0;

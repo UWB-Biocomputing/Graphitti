@@ -25,7 +25,11 @@
 #include "AllSpikingNeurons.h"
 #include "AllSpikingSynapses.h"
 #include "AllVertices.h"
+#include "AsyncPhilox_d.h"
 #include "OperationManager.h"
+#ifdef USE_GPU
+   #include <cuda_runtime.h>
+#endif
 
 #ifdef VALIDATION_MODE
    #include <fstream>
@@ -115,6 +119,15 @@ protected:
    /// Pointer to device random noise array.
    float *randNoise_d;
 
+   /// Async RNG class instance used to load generator with a seed and request noise device pointers.
+   AsyncPhilox_d AsyncGenerator_;
+#ifdef VALIDATION_MODE
+   /// Buffer used in the validation mode to copy cgraphitti's noise generation into the device noise buffer.
+   float *randNoise_h;
+#endif
+   /// Cuda Stream for kernel use
+   cudaStream_t simulationStream_;
+
 #if defined(USE_GPU)
    /// Pointer to edge index map in device memory.
    EdgeIndexMapDevice *edgeIndexMapDevice_;
@@ -144,10 +157,10 @@ private:
                    Coordinate dest, BGFLOAT deltaT, edgeType type);
 };
 
-#if defined(__CUDACC__)
-extern "C" {
-void normalMTGPU(float *randNoise_d);
-void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, unsigned int nPerRng,
-               unsigned int mt_rng_count);
-}
-#endif
+// #if defined(__CUDACC__)
+// extern "C" {
+// void normalMTGPU(float *randNoise_d);
+// void initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, unsigned int nPerRng,
+//                unsigned int mt_rng_count);
+// }
+// #endif
