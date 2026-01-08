@@ -4,14 +4,14 @@ on:
   push:
     branches: [ master,development ]
     paths-ignore:
-      - 'github/**'        # Ignore .github folder
+      - '.github/**'       # Ignore .github folder
       - '**/Doxyfile'      # Ignore changes to Doxygen config
       - 'docs/**'          # Ignore documentation folder
       - '*.md'             # Ignore Markdown files
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:
-      - 'github/**'        # Ignore .github folder
+      - '.github/**'       # Ignore .github folder
       - '**/Doxyfile'      # Ignore changes to Doxygen config
       - 'docs/**'          # Ignore documentation folder
       - '*.md'             # Ignore Markdown files
