@@ -27,6 +27,8 @@ You can find more on the automation of the publication by navigating to the [Git
 
 All documents used for our pages reside in the docs folder within the Graphitti repo.
 
+`_includes` folder contains `head-custom.html`, which is resposnible for generating Mermaid diagrams. (More info here: [GHActions.md](GHActions.md#mermaid-diagrams-_configyml))
+
 The Developer folder is used for documentation that deals with documenting systems for developers of Graphitti.
 
 The Doxygen folder is used for documentation that refers to the Doxygen system.
