@@ -49,3 +49,18 @@ TEST(OperationManager, OperationExecutionContainsNoFunctionsOfOperationType)
 {
    EXPECT_NO_FATAL_FAILURE(OperationManager::getInstance().executeOperation(Operations::copyToGPU));
 }
+
+TEST(OperationManager, AddingNonEmptySignatureOperation)
+{
+   Foo foo;
+   function<void(uint64_t, uint64_t)> function = std::bind(&Foo::loadEpochInputs, foo, std::placeholders::_1, std::placeholders::_2);
+   EXPECT_NO_FATAL_FAILURE(
+      OperationManager::getInstance().registerOperation(Operations::loadEpochInputs, function));
+}
+
+TEST(OperationManager, NonEmptySignatureOperationExecution)
+{
+   uint64_t currentStep = 10;
+   uint64_t endStep = 20;
+   EXPECT_NO_FATAL_FAILURE(OperationManager::getInstance().executeOperation(Operations::loadEpochInputs, currentStep, endStep));
+}

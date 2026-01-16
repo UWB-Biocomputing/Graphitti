@@ -37,6 +37,12 @@ public:
    {
       cout << "Foo printing parameters" << endl;
    }
+
+   void loadEpochInputs(uint64_t currentStep, uint64_t endStep)
+   {
+      cout << "Foo current step: " << currentStep << endl;
+      cout << "Foo end step: " << endStep << endl;
+   }
 };
 
 

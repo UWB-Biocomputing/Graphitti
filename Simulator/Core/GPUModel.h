@@ -26,6 +26,7 @@
 #include "AllSpikingSynapses.h"
 #include "AllVertices.h"
 #include "OperationManager.h"
+#include "Timer.h"
 
 #ifdef VALIDATION_MODE
    #include <fstream>
@@ -112,6 +113,10 @@ protected:
    /// Deallocates device memories.
    virtual void deleteDeviceStruct();
 
+   /// Takes the input and returns a rounded up number of elements to
+   /// use for generating device noise.
+   int roundUpNumberOfNoiseElements(int input);
+
    /// Pointer to device random noise array.
    float *randNoise_d;
 
@@ -142,6 +147,8 @@ private:
    // TODO
    void createEdge(AllEdges &edges, int vertexIndex, int edgeIndex, Coordinate source,
                    Coordinate dest, BGFLOAT deltaT, edgeType type);
+
+   Timer timer;
 };
 
 #if defined(__CUDACC__)

@@ -8,6 +8,7 @@
 
 #include "CPUModel.h"
 #include "Simulator.h"
+#include "Timer.h"
 
 #if !defined(USE_GPU)
 
@@ -26,9 +27,21 @@ void CPUModel::advance()
    AllEdges &edges = connections_->getEdges();
    EdgeIndexMap &edgeIndexMap = connections_->getEdgeIndexMap();
 
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+   // Elapsed time in us
+   double elapsedTime = 0.0;
+   timer.start();
    vertices.advanceVertices(edges, edgeIndexMap);
+   elapsedTime = timer.lap();
+   LOG4CPLUS_TRACE(consoleLogger, "advanceVertices time: " << elapsedTime);
+   timer.start();
    edges.advanceEdges(vertices, edgeIndexMap);
+   elapsedTime = timer.lap();
+   LOG4CPLUS_TRACE(consoleLogger, "advanceEdges time: " << elapsedTime);
+   timer.start();
    vertices.integrateVertexInputs(edges, edgeIndexMap);
+   elapsedTime = timer.lap();
+   LOG4CPLUS_TRACE(consoleLogger, "integrateVertexInputs time: " << elapsedTime);
 }
 
 /// Update the connection of all the vertices and edges of the simulation.
