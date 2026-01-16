@@ -14,7 +14,7 @@
 
 2. [Developer Documentation](Developer/index.md)
    
-   2.1 [GitFlow Documentation](Developer/GitFlowDiagram.md)
+   2.1 [GitFlow Documentation](Developer/GitFlow.md)
 
    2.2 [Code Formatting Etiquettes](Developer/codingConventions.md)
 
