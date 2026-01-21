@@ -2,7 +2,7 @@ name: Unit and Regression Tests
 # Any changes made to documentation won't trigger tests.
 on:
   push:
-    branches: [master, development, issue-848-replace-simple-regression-tests]
+    branches: [master, development]
     paths-ignore:
       - ".github/**" # Ignore .github folder
       - "**/Doxyfile" # Ignore changes to Doxygen config
