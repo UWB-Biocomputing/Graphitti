@@ -2,7 +2,7 @@ name: Unit and Regression Tests
 
 on:
   push:
-    branches: [master, development]
+    branches: [master, development, issue-848-replace-simple-regression-tests]
   pull_request:
     types: [opened, synchronize, reopened]
 
