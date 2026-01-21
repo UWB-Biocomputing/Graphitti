@@ -26,7 +26,6 @@
 #include "AllSpikingSynapses.h"
 #include "AllVertices.h"
 #include "OperationManager.h"
-#include "Timer.h"
 
 #ifdef VALIDATION_MODE
    #include <fstream>
@@ -147,8 +146,6 @@ private:
    // TODO
    void createEdge(AllEdges &edges, int vertexIndex, int edgeIndex, Coordinate source,
                    Coordinate dest, BGFLOAT deltaT, edgeType type);
-
-   Timer timer;
 };
 
 #if defined(__CUDACC__)
