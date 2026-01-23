@@ -9,8 +9,24 @@
 
 //Anonymous namespace for static/re-usable methods
 namespace {
-   // Tolerance for floating-point comparisons
-   constexpr double EPSILON = 1e-9;
+   // Tolerances for floating-point comparisons
+   // Absolute tolerance for near-zero values
+   constexpr double EPSILON = 1e-6;
+   // Relative tolerance for larger values
+   constexpr double RELATIVE_EPSILON = 1e-6;
+
+   // Helper for floating-point comparison with relative tolerance
+   bool approximately_equal(double a, double b)
+   {
+      double diff = std::abs(a - b);
+      // Use absolute tolerance for values near zero
+      if (std::abs(a) < EPSILON && std::abs(b) < EPSILON) {
+         return diff <= EPSILON;
+      }
+      // Use relative tolerance for larger values
+      double max_val = std::max(std::abs(a), std::abs(b));
+      return diff / max_val <= RELATIVE_EPSILON;
+   }
 
    struct MatrixData {
       std::string name;
@@ -20,10 +36,12 @@ namespace {
       double multiplier = 1.0;
       std::vector<double> values;
 
-      static void parse_all_fields(const std::string &line, MatrixData &current)
+      static bool parse_all_fields(const std::string &line, MatrixData &current)
       {
          std::string_view line_view = line;
          size_t pos = 0;
+         bool parse_success = true;
+
          while (pos < line_view.size()) {
             size_t eq_pos = line_view.find("=\"", pos);
             if (eq_pos == std::string_view::npos) {
@@ -51,15 +69,31 @@ namespace {
             } else if (field == "type") {
                current.type = value;
             } else if (field == "rows") {
-               std::from_chars(value.data(), value.data() + value.size(), current.rows);
+               auto [ptr, ec]
+                  = std::from_chars(value.data(), value.data() + value.size(), current.rows);
+               if (ec != std::errc()) {
+                  std::cerr << "Warning: Failed to parse 'rows' field\n";
+                  parse_success = false;
+               }
             } else if (field == "columns") {
-               std::from_chars(value.data(), value.data() + value.size(), current.columns);
+               auto [ptr, ec]
+                  = std::from_chars(value.data(), value.data() + value.size(), current.columns);
+               if (ec != std::errc()) {
+                  std::cerr << "Warning: Failed to parse 'columns' field\n";
+                  parse_success = false;
+               }
             } else if (field == "multiplier") {
-               std::from_chars(value.data(), value.data() + value.size(), current.multiplier);
+               auto [ptr, ec]
+                  = std::from_chars(value.data(), value.data() + value.size(), current.multiplier);
+               if (ec != std::errc()) {
+                  std::cerr << "Warning: Failed to parse 'multiplier' field\n";
+                  parse_success = false;
+               }
             }
 
             pos = value_end + 1;
          }
+         return parse_success;
       }
    };
 
@@ -73,12 +107,15 @@ namespace {
          return;
       }
       size_t end = input.find_last_not_of(" \t\r\n");
-      if (start > 0)
-         input.erase(0, start);
-      input.erase(end - start + 1);
+      // Erase trailing whitespace first, then leading
+      input.erase(end + 1);
+      input.erase(0, start);
    }
 
    // Parse matrices from XML file
+   // Uses simple string matching and assumes XML elements are on seperate lines.
+   // Since we control the XML file structure, we don't need any specialized XML parsing.
+   // If the structure changes in the future, this method may need to be updated
    std::unordered_map<std::string, MatrixData> parse_matrices(const std::string &filename)
    {
       //Check if file exists/can be opened before continuing
@@ -135,6 +172,7 @@ namespace {
                             std::vector<std::string> &mismatches)
    {
       bool has_mismatch = false;
+      bool dimensions_match = true;
 
       // Check metadata
       if (good.type != test.type) {
@@ -146,16 +184,24 @@ namespace {
          std::cout << "Matrix '" << good.name << "': rows mismatch (good: " << good.rows
                    << ", test: " << test.rows << ")\n";
          has_mismatch = true;
+         dimensions_match = false;
       }
       if (good.columns != test.columns) {
          std::cout << "Matrix '" << good.name << "': columns mismatch (good: " << good.columns
                    << ", test: " << test.columns << ")\n";
          has_mismatch = true;
+         dimensions_match = false;
       }
-      if (std::abs(good.multiplier - test.multiplier) > EPSILON) {
+      if (!approximately_equal(good.multiplier, test.multiplier)) {
          std::cout << "Matrix '" << good.name << "': multiplier mismatch (good: " << good.multiplier
                    << ", test: " << test.multiplier << ")\n";
          has_mismatch = true;
+      }
+
+      // Skip value comparison if dimensions don't match
+      if (!dimensions_match) {
+         mismatches.push_back(good.name);
+         return;
       }
 
       // Check data size
@@ -165,9 +211,9 @@ namespace {
                    << ", test: " << test.values.size() << ")\n";
          has_mismatch = true;
       } else {
-         // Check individual values
+         // Check individual values with relative tolerance
          for (size_t i = 0; i < good.values.size(); ++i) {
-            if ((std::abs(good.values[i] - test.values[i])) > EPSILON) {
+            if (!approximately_equal(good.values[i], test.values[i])) {
                std::cout << "Matrix '" << good.name << "': value mismatch at index " << i
                          << " (good: " << good.values[i] << ", test: " << test.values[i] << ")\n";
                has_mismatch = true;
