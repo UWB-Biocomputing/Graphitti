@@ -1,3 +1,11 @@
+/*
+ * @file compare_matrices.cpp
+ *
+ * @brief This file is used to compare an output matrix against a known good matrix
+ *
+ * @ingroup Testing
+ */
+
 #include <charconv>
 #include <cmath>
 #include <fstream>
@@ -19,11 +27,11 @@ namespace {
    bool approximately_equal(double a, double b)
    {
       double diff = std::abs(a - b);
-      // Use absolute tolerance for values near zero
-      if (std::abs(a) < EPSILON && std::abs(b) < EPSILON) {
-         return diff <= EPSILON;
+      // Pass if absolute difference is small enough (handles near-zero cases)
+      if (diff <= EPSILON) {
+         return true;
       }
-      // Use relative tolerance for larger values
+      // Otherwise, check relative tolerance for larger values
       double max_val = std::max(std::abs(a), std::abs(b));
       return diff / max_val <= RELATIVE_EPSILON;
    }
@@ -113,9 +121,9 @@ namespace {
    }
 
    // Parse matrices from XML file
-   // Uses simple string matching and assumes XML elements are on seperate lines.
+   // Uses simple string matching and assumes XML elements are on separate lines.
    // Since we control the XML file structure, we don't need any specialized XML parsing.
-   // If the structure changes in the future, this method may need to be updated
+   // If the structure changes in the future, this method may need to be updated.
    std::unordered_map<std::string, MatrixData> parse_matrices(const std::string &filename)
    {
       //Check if file exists/can be opened before continuing
