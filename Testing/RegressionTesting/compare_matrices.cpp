@@ -142,7 +142,10 @@ namespace {
          trim_inplace(line);
          if (line.find("<Matrix") == 0) {
             current = MatrixData {};
-            MatrixData::parse_all_fields(line, current);
+            if (!MatrixData::parse_all_fields(line, current)) {
+               std::cerr << "Warning: Failed to parse some fields for matrix '" << current.name
+                         << "'\n";
+            }
 
             // Pre-allocate space for values if we know the size
             int expected_size = current.rows * current.columns;
@@ -246,7 +249,13 @@ int main(int argc, char *argv[])
    auto good = parse_matrices(argv[1]);
    auto test = parse_matrices(argv[2]);
 
-   // Check if parsing succeeded
+   // Check if parsing succeeded for each file independently
+   if (good.empty()) {
+      std::cerr << "Warning: Good file is empty or failed to parse: " << argv[1] << "\n";
+   }
+   if (test.empty()) {
+      std::cerr << "Warning: Test file is empty or failed to parse: " << argv[2] << "\n";
+   }
    if (good.empty() && test.empty()) {
       std::cerr << "Error: Both files are empty or failed to parse.\n";
       return 1;
