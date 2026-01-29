@@ -7,7 +7,7 @@
  */
 
 #include "AllIFNeurons.h"
-#include "Layout.h"
+#include "LayoutNeuro.h"
 #include "MTRand.h"
 #include "Norm.h"
 #include "OperationManager.h"
@@ -116,6 +116,7 @@ void AllIFNeurons::createAllVertices(Layout &layout)
 ///  @param  layout       Layout information of the neural network.
 void AllIFNeurons::createNeuron(int i, Layout &layout)
 {
+   LayoutNeuro &layoutNeuro = dynamic_cast<LayoutNeuro &>(layout);
    // set the neuron info for neurons
    Iinject_[i] = initRNG.inRange(IinjectRange_[0], IinjectRange_[1]);
    Inoise_[i] = initRNG.inRange(InoiseRange_[0], InoiseRange_[1]);
@@ -127,7 +128,7 @@ void AllIFNeurons::createNeuron(int i, Layout &layout)
 
    initNeuronConstsFromParamValues(i, Simulator::getInstance().getDeltaT());
 
-   switch (layout.vertexTypeMap_[i]) {
+   switch (layoutNeuro.vertexTypeMap_[i]) {
       case vertexType::INH:
          LOG4CPLUS_DEBUG(vertexLogger_, "Setting inhibitory neuron: " << i);
          // set inhibitory absolute refractory period
@@ -147,7 +148,7 @@ void AllIFNeurons::createNeuron(int i, Layout &layout)
          break;
    }
    // endogenously_active_neuron_map -> Model State
-   if (layout.starterMap_[i]) {
+   if (layoutNeuro.starterMap_[i]) {
       // set endogenously active threshold voltage, reset voltage, and refractory period
       Vthresh_[i] = initRNG.inRange(starterVthreshRange_[0], starterVthreshRange_[1]);
       Vreset_[i] = initRNG.inRange(starterVresetRange_[0], starterVresetRange_[1]);
