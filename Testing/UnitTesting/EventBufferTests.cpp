@@ -56,7 +56,6 @@ TEST(EventBufferTest, BufferWrapAroundUint64)
 EventBuffer<double> bufferDouble(5);
 
 //GetElement when buffer is empty
-//Assuming getElement() returns uint64_t
 TEST(EventBufferTest, GetElementFromEmptyBufferDouble)
 {
    EXPECT_EQ(std::get<double>(bufferDouble.getElement(0)), std::numeric_limits<double>::max());
