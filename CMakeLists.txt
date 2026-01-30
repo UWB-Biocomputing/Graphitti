@@ -51,6 +51,7 @@ if(ENABLE_CUDA)
         project(Graphitti LANGUAGES CXX CUDA C)
 #Verify CUDA package is present
         find_Package(CUDA REQUIRED)
+        include_directories(${CUDA_INCLUDE_DIRS})
 #Set the USE_GPU preprocessor macro so that GPU code will be compiled.
         add_compile_definitions(USE_GPU)
 #Specify the CUDA architecture / gencode that will be targeted
@@ -364,13 +365,15 @@ add_library(Matrix ${Matrix_Source})
 file(GLOB RNG_Source Simulator/Utils/RNG/*.cpp Simulator/Utils/RNG/*.h Simulator/Utils/RNG/*.cu)
 # Remove demo from file list as it contains a main and it will cause compilation errors
 list(REMOVE_ITEM RNG_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/RNG/MersenneTwister_demo.cu")
+if(NOT ENABLE_CUDA)
+        list(REMOVE_ITEM Utils_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/AsyncPhilox_d.cu")
+endif()
 add_library(RNG STATIC ${RNG_Source})
 
 
 # Create Utils library
 file(GLOB Utils_Source Simulator/Utils/*.cpp Simulator/Utils/*.h)
 list(REMOVE_ITEM Utils_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Utils/Factory.cpp")
-
 if(CMAKE_BUILD_TYPE STREQUAL "Profiling")
         if(ENABLE_CUDA)
 # Find NVTX Library
@@ -393,9 +396,13 @@ add_library(Utils ${Utils_Source})
 
 # Only link NVTX if it was found
 if(NVTX_LIBRARY)
+        
+        message(STATUS "Adding NVTX: to Utils lib")
         target_link_libraries(Utils PRIVATE ${NVTX_LIBRARY})
 endif()
 
+message(STATUS "Linking RNG against Utils")
+target_link_libraries(RNG PRIVATE Utils)
 
 # Used to locate and run other CMakeLists.txt files from Third Party resources for further compilation of the project.
 add_subdirectory(ThirdParty)

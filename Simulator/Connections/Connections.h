@@ -33,6 +33,11 @@
 // cereal
 #include <cereal/types/memory.hpp>
 
+#ifdef USE_GPU
+   #include <cuda_runtime.h>
+#endif
+
+
 using namespace std;
 
 class Connections {
@@ -87,9 +92,11 @@ public:
    ///  @param  allVerticesDevice    GPU address of the allVertices struct on device memory.
    ///  @param  allEdgesDevice       GPU address of the allEdges struct on device memory.
    ///  @param  layout               Layout information of the graph network.
+   ///  @param  simulationStream     The cuda stream for all synchronous kernels.
    virtual void updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &edges,
                                    AllVerticesDeviceProperties *allVerticesDevice,
-                                   AllEdgesDeviceProperties *allEdgesDevice, Layout &layout);
+                                   AllEdgesDeviceProperties *allEdgesDevice, Layout &layout,
+                                   cudaStream_t simulationStream);
 #else
 public:
    ///  Update the weight of the edges in the simulation.

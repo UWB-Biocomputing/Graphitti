@@ -353,7 +353,7 @@ void AllSpikingSynapses::advanceEdges(void *allEdgesDevice, void *allVerticesDev
    const int threadsPerBlock = 256;
    int blocksPerGrid = (totalEdgeCount_ + threadsPerBlock - 1) / threadsPerBlock;
    // Advance synapses ------------->
-   advanceSpikingSynapsesDevice<<<blocksPerGrid, threadsPerBlock>>>(
+   advanceSpikingSynapsesDevice<<<blocksPerGrid, threadsPerBlock, 0, simulationStream_>>>(
       totalEdgeCount_, (EdgeIndexMapDevice *)edgeIndexMapDevice, g_simulationStep,
       Simulator::getInstance().getDeltaT(), (AllSpikingSynapsesDeviceProperties *)allEdgesDevice);
 }

@@ -9,7 +9,9 @@
 
 #include "Simulator.h"
 #include "CPUModel.h"
-#include "GPUModel.h"
+#if defined(USE_GPU)
+   #include "GPUModel.h"
+#endif
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "Utils/Factory.h"
@@ -173,7 +175,7 @@ void Simulator::simulate()
       double total_time = timer.lap() / 1000000.0;
 
       cout << "\ntotal_time: " << total_time << " seconds" << endl;
-      printPerformanceMetrics(total_time, currentEpoch);
+      printPerformanceMetrics(total_time, currentEpoch_);
       cout << endl;
 #endif
    }

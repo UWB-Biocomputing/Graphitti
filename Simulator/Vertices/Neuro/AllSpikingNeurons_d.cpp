@@ -200,7 +200,7 @@ void AllSpikingNeurons::integrateVertexInputs(void *allVerticesDevice,
       = (Simulator::getInstance().getTotalVertices() + threadsPerBlock - 1) / threadsPerBlock;
    int vertex_count = Simulator::getInstance().getTotalVertices();
 
-   calcSummationPointDevice<<<blocksPerGrid, threadsPerBlock>>>(
+   calcSummationPointDevice<<<blocksPerGrid, threadsPerBlock, 0, simulationStream_>>>(
       vertex_count, summationPoints_, edgeIndexMapDevice,
       (AllSpikingSynapsesDeviceProperties *)allEdgesDevice);
 }
