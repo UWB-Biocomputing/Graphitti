@@ -145,7 +145,7 @@ void AllSpikingNeurons::copyFromDevice()
    int maxSpikes = vertexEvents_[0].size();
    for (int i = 0; i < numVertices; i++) {
       HANDLE_ERROR(cudaMemcpy(vertexEvents_[i].data(), pSpikeHistory[i],
-                              maxSpikes * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
+                              maxSpikes * sizeof(uint64_t), cudaMemcpyDeviceToHost));
    }
 }
 
