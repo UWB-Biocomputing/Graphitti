@@ -66,7 +66,6 @@
 #pragma once
 
 #include "AllVertices.h"
-#include "DoubleEventBuffer.h"
 #include "CircularBuffer.h"
 #include "EventBuffer.h"
 #include "Global.h"
@@ -154,18 +153,18 @@ public:
    /// Index each vertex and record it's type
    vector<int> vertexType_;
    /// The starting time for every call
-   vector<EventBuffer> beginTimeHistory_;
+   vector<EventBuffer<uint64_t>> beginTimeHistory_;
    /// The answer time for every call
-   vector<EventBuffer> answerTimeHistory_;
+   vector<EventBuffer<uint64_t>> answerTimeHistory_;
    /// The end time for every call
-   vector<EventBuffer> endTimeHistory_;
+   vector<EventBuffer<uint64_t>> endTimeHistory_;
    /// True if the call was abandoned
-   vector<EventBuffer>
+   vector<EventBuffer<uint64_t>>
       wasAbandonedHistory_;   // changed to bool from unsigned char
    /// The length of the waiting queue at every time-step
-   vector<EventBuffer> queueLengthHistory_;
+   vector<EventBuffer<uint64_t>> queueLengthHistory_;
    /// The portion of servers that are busy at every time-step
-   vector<DoubleEventBuffer> utilizationHistory_;
+   vector<EventBuffer<float>> utilizationHistory_;
 
    /// These are the queues where calls will wait to be served
    vector<CircularBuffer<Call>> vertexQueues_;

@@ -1177,7 +1177,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuQueueFront[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuQueueFront[i] = beginTimeHistory_[i].bufferFront_;
+         cpuQueueFront[i] = beginTimeHistory_[i].getBufferFront();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.beginTimeHistoryBufferFront_, cpuQueueFront, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1186,7 +1186,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuQueueEnd[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuQueueEnd[i] = beginTimeHistory_[i].bufferEnd_;
+         cpuQueueEnd[i] = beginTimeHistory_[i].getBufferEnd();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.beginTimeHistoryBufferEnd_, cpuQueueEnd, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1195,7 +1195,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuEpochStart[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuEpochStart[i] = beginTimeHistory_[i].epochStart_;
+         cpuEpochStart[i] = beginTimeHistory_[i].getEpochStart();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.beginTimeHistoryEpochStart_, cpuEpochStart, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1223,7 +1223,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuQueueFront[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuQueueFront[i] = answerTimeHistory_[i].bufferFront_;
+         cpuQueueFront[i] = answerTimeHistory_[i].getBufferFront();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.answerTimeHistoryBufferFront_, cpuQueueFront, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1232,7 +1232,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuQueueEnd[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuQueueEnd[i] = answerTimeHistory_[i].bufferEnd_;
+         cpuQueueEnd[i] = answerTimeHistory_[i].getBufferEnd();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.answerTimeHistoryBufferEnd_, cpuQueueEnd, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1241,7 +1241,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuEpochStart[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuEpochStart[i] = answerTimeHistory_[i].epochStart_;
+         cpuEpochStart[i] = answerTimeHistory_[i].getEpochStart();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.answerTimeHistoryEpochStart_, cpuEpochStart, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1269,7 +1269,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuQueueFront[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuQueueFront[i] = endTimeHistory_[i].bufferFront_;
+         cpuQueueFront[i] = endTimeHistory_[i].getBufferFront();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.endTimeHistoryBufferFront_, cpuQueueFront, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1278,7 +1278,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuQueueEnd[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuQueueEnd[i] = endTimeHistory_[i].bufferEnd_;
+         cpuQueueEnd[i] = endTimeHistory_[i].getBufferEnd();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.endTimeHistoryBufferEnd_, cpuQueueEnd, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1287,7 +1287,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuEpochStart[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuEpochStart[i] = endTimeHistory_[i].epochStart_;
+         cpuEpochStart[i] = endTimeHistory_[i].getEpochStart();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.endTimeHistoryEpochStart_, cpuEpochStart, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1315,7 +1315,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuQueueFront[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuQueueFront[i] = wasAbandonedHistory_[i].bufferFront_;
+         cpuQueueFront[i] = wasAbandonedHistory_[i].getBufferFront();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.wasAbandonedHistoryBufferFront_, cpuQueueFront, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1324,7 +1324,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuQueueEnd[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuQueueEnd[i] = wasAbandonedHistory_[i].bufferEnd_;
+         cpuQueueEnd[i] = wasAbandonedHistory_[i].getBufferEnd();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.wasAbandonedHistoryBufferEnd_, cpuQueueEnd, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1333,7 +1333,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuEpochStart[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuEpochStart[i] = wasAbandonedHistory_[i].epochStart_;
+         cpuEpochStart[i] = wasAbandonedHistory_[i].getEpochStart();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.wasAbandonedHistoryEpochStart_, cpuEpochStart, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1361,7 +1361,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuQueueFront[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuQueueFront[i] = queueLengthHistory_[i].bufferFront_;
+         cpuQueueFront[i] = queueLengthHistory_[i].getBufferFront();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.queueLengthHistoryBufferFront_, cpuQueueFront, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1370,7 +1370,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuQueueEnd[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuQueueEnd[i] = queueLengthHistory_[i].bufferEnd_;
+         cpuQueueEnd[i] = queueLengthHistory_[i].getBufferEnd();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.queueLengthHistoryBufferEnd_, cpuQueueEnd, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1379,7 +1379,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuEpochStart[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuEpochStart[i] = queueLengthHistory_[i].epochStart_;
+         cpuEpochStart[i] = queueLengthHistory_[i].getEpochStart();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.queueLengthHistoryEpochStart_, cpuEpochStart, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1407,7 +1407,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuQueueFront[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuQueueFront[i] = utilizationHistory_[i].bufferFront_;
+         cpuQueueFront[i] = utilizationHistory_[i].getBufferFront();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.utilizationHistoryBufferFront_, cpuQueueFront, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1416,7 +1416,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuQueueEnd[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuQueueEnd[i] = utilizationHistory_[i].bufferEnd_;
+         cpuQueueEnd[i] = utilizationHistory_[i].getBufferEnd();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.utilizationHistoryBufferEnd_, cpuQueueEnd, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1425,7 +1425,7 @@ void All911Vertices::copyToDevice()
    {
       int cpuEpochStart[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         cpuEpochStart[i] = utilizationHistory_[i].epochStart_;
+         cpuEpochStart[i] = utilizationHistory_[i].getEpochStart();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.utilizationHistoryEpochStart_, cpuEpochStart, numberOfVertices * sizeof(int),
                               cudaMemcpyHostToDevice));
@@ -1943,7 +1943,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuQueueFront, allVertices.beginTimeHistoryBufferFront_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         beginTimeHistory_[i].bufferFront_ = cpuQueueFront[i];
+         beginTimeHistory_[i].setBufferFront(cpuQueueFront[i]);
       }
    }
    // int *beginTimeHistoryBufferEnd_;
@@ -1952,7 +1952,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuQueueEnd, allVertices.beginTimeHistoryBufferEnd_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         beginTimeHistory_[i].bufferEnd_ = cpuQueueEnd[i];
+         beginTimeHistory_[i].setBufferEnd(cpuQueueEnd[i]);
       }
    }
    // int *beginTimeHistoryEpochStart_;
@@ -1961,7 +1961,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuEpochStart, allVertices.beginTimeHistoryEpochStart_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         beginTimeHistory_[i].epochStart_ = cpuEpochStart[i];
+         beginTimeHistory_[i].setEpochStart(cpuEpochStart[i]);
       }
    }
    // int *beginTimeHistoryNumElementsInEpoch_;
@@ -1970,7 +1970,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuElementsInEpoch, allVertices.beginTimeHistoryNumElementsInEpoch_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         beginTimeHistory_[i].numElementsInEpoch_ = cpuElementsInEpoch[i];
+         beginTimeHistory_[i].setNumElementsInEpoch(cpuElementsInEpoch[i]);
       }
    }
    // uint64_t **answerTimeHistory_;
@@ -1989,7 +1989,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuQueueFront, allVertices.answerTimeHistoryBufferFront_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         answerTimeHistory_[i].bufferFront_ = cpuQueueFront[i];
+         answerTimeHistory_[i].setBufferFront(cpuQueueFront[i]);
       }
    }
    // int *answerTimeHistoryBufferEnd_;
@@ -1998,7 +1998,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuQueueEnd, allVertices.answerTimeHistoryBufferEnd_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         answerTimeHistory_[i].bufferEnd_ = cpuQueueEnd[i];
+         answerTimeHistory_[i].setBufferEnd(cpuQueueEnd[i]);
       }
    }
    // int *answerTimeHistoryEpochStart_;
@@ -2007,7 +2007,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuEpochStart, allVertices.answerTimeHistoryEpochStart_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         answerTimeHistory_[i].epochStart_ = cpuEpochStart[i];
+         answerTimeHistory_[i].setEpochStart(cpuEpochStart[i]);
       }
    }
    // int *answerTimeHistoryNumElementsInEpoch_;
@@ -2016,7 +2016,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuElementsInEpoch, allVertices.answerTimeHistoryNumElementsInEpoch_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         answerTimeHistory_[i].numElementsInEpoch_ = cpuElementsInEpoch[i];
+         answerTimeHistory_[i].setNumElementsInEpoch(cpuElementsInEpoch[i]);
       }
    }
    // uint64_t **endTimeHistory_;
@@ -2035,7 +2035,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuQueueFront, allVertices.endTimeHistoryBufferFront_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         endTimeHistory_[i].bufferFront_ = cpuQueueFront[i];
+         endTimeHistory_[i].setBufferFront(cpuQueueFront[i]);
       }
    }
    // int *endTimeHistoryBufferEnd_;
@@ -2044,7 +2044,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuQueueEnd, allVertices.endTimeHistoryBufferEnd_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         endTimeHistory_[i].bufferEnd_ = cpuQueueEnd[i];
+         endTimeHistory_[i].setBufferEnd(cpuQueueEnd[i]);
       }
    }
    // int *endTimeHistoryEpochStart_;
@@ -2053,7 +2053,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuEpochStart, allVertices.endTimeHistoryEpochStart_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         endTimeHistory_[i].epochStart_ = cpuEpochStart[i];
+         endTimeHistory_[i].setEpochStart(cpuEpochStart[i]);
       }
    }
    // int *endTimeHistoryNumElementsInEpoch_;
@@ -2062,7 +2062,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuElementsInEpoch, allVertices.endTimeHistoryNumElementsInEpoch_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         endTimeHistory_[i].numElementsInEpoch_ = cpuElementsInEpoch[i];
+         endTimeHistory_[i].setNumElementsInEpoch(cpuElementsInEpoch[i]);
       }
    }
    // uint64_t **wasAbandonedHistory_;
@@ -2081,7 +2081,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuQueueFront, allVertices.wasAbandonedHistoryBufferFront_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         wasAbandonedHistory_[i].bufferFront_ = cpuQueueFront[i];
+         wasAbandonedHistory_[i].setBufferFront(cpuQueueFront[i]);
       }
    }
    // int *wasAbandonedHistoryBufferEnd_;
@@ -2090,7 +2090,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuQueueEnd, allVertices.wasAbandonedHistoryBufferEnd_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         wasAbandonedHistory_[i].bufferEnd_ = cpuQueueEnd[i];
+         wasAbandonedHistory_[i].setBufferEnd(cpuQueueEnd[i]);
       }
    }
    // int *wasAbandonedHistoryEpochStart_;
@@ -2099,7 +2099,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuEpochStart, allVertices.wasAbandonedHistoryEpochStart_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         wasAbandonedHistory_[i].epochStart_ = cpuEpochStart[i];
+         wasAbandonedHistory_[i].setEpochStart(cpuEpochStart[i]);
       }
    }
    // int *wasAbandonedHistoryNumElementsInEpoch_;
@@ -2108,7 +2108,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuElementsInEpoch, allVertices.wasAbandonedHistoryNumElementsInEpoch_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         wasAbandonedHistory_[i].numElementsInEpoch_ = cpuElementsInEpoch[i];
+         wasAbandonedHistory_[i].setNumElementsInEpoch(cpuElementsInEpoch[i]);
       }
    }
    // uint64_t **queueLengthHistory_;
@@ -2127,7 +2127,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuQueueFront, allVertices.queueLengthHistoryBufferFront_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         queueLengthHistory_[i].bufferFront_ = cpuQueueFront[i];
+         queueLengthHistory_[i].setBufferFront(cpuQueueFront[i]);
       }
    }
    // int *queueLengthHistoryBufferEnd_;
@@ -2136,7 +2136,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuQueueEnd, allVertices.queueLengthHistoryBufferEnd_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         queueLengthHistory_[i].bufferEnd_ = cpuQueueEnd[i];
+         queueLengthHistory_[i].setBufferEnd(cpuQueueEnd[i]);
       }
    }
    // int *queueLengthHistoryEpochStart_;
@@ -2145,7 +2145,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuEpochStart, allVertices.queueLengthHistoryEpochStart_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         queueLengthHistory_[i].epochStart_ = cpuEpochStart[i];
+         queueLengthHistory_[i].setEpochStart(cpuEpochStart[i]);
       }
    }
    // int *queueLengthHistoryNumElementsInEpoch_;
@@ -2154,7 +2154,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuElementsInEpoch, allVertices.queueLengthHistoryNumElementsInEpoch_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         queueLengthHistory_[i].numElementsInEpoch_ = cpuElementsInEpoch[i];
+         queueLengthHistory_[i].setNumElementsInEpoch(cpuElementsInEpoch[i]);
       }
    }
    // BGFLOAT **utilizationHistory_;
@@ -2173,7 +2173,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuQueueFront, allVertices.utilizationHistoryBufferFront_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         utilizationHistory_[i].bufferFront_ = cpuQueueFront[i];
+         utilizationHistory_[i].setBufferFront(cpuQueueFront[i]);
       }
    }
    // int *utilizationHistoryBufferEnd_;
@@ -2182,7 +2182,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuQueueEnd, allVertices.utilizationHistoryBufferEnd_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         utilizationHistory_[i].bufferEnd_ = cpuQueueEnd[i];
+         utilizationHistory_[i].setBufferEnd(cpuQueueEnd[i]);
       }
    }
    // int *utilizationHistoryEpochStart_;
@@ -2191,7 +2191,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuEpochStart, allVertices.utilizationHistoryEpochStart_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         utilizationHistory_[i].epochStart_ = cpuEpochStart[i];
+         utilizationHistory_[i].setEpochStart(cpuEpochStart[i]);
       }
    }
    // int *utilizationHistoryNumElementsInEpoch_;
@@ -2200,7 +2200,7 @@ void All911Vertices::copyFromDevice()
       HANDLE_ERROR(cudaMemcpy(cpuElementsInEpoch, allVertices.utilizationHistoryNumElementsInEpoch_, numberOfVertices * sizeof(int),
                               cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         utilizationHistory_[i].numElementsInEpoch_ = cpuElementsInEpoch[i];
+         utilizationHistory_[i].setNumElementsInEpoch(cpuElementsInEpoch[i]);
       }
    }
    // int **vertexQueuesBufferVertexId_;
@@ -3193,7 +3193,7 @@ void All911Vertices::clearVertexHistory(void *allVerticesDevice)
    {
       vector<int> epochStart(numberOfVertices);
       for (int i = 0; i < epochStart.size(); ++i) {
-         epochStart[i] = beginTimeHistory_[i].bufferEnd_;
+         epochStart[i] = beginTimeHistory_[i].getBufferEnd();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.beginTimeHistoryEpochStart_, epochStart.data(),
                               numberOfVertices * sizeof(int), cudaMemcpyHostToDevice));
@@ -3203,7 +3203,7 @@ void All911Vertices::clearVertexHistory(void *allVerticesDevice)
    {
       vector<int> epochStart(numberOfVertices);
       for (int i = 0; i < epochStart.size(); ++i) {
-         epochStart[i] = answerTimeHistory_[i].bufferEnd_;
+         epochStart[i] = answerTimeHistory_[i].getBufferEnd();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.answerTimeHistoryEpochStart_, epochStart.data(),
                               numberOfVertices * sizeof(int), cudaMemcpyHostToDevice));
@@ -3213,7 +3213,7 @@ void All911Vertices::clearVertexHistory(void *allVerticesDevice)
    {
       vector<int> epochStart(numberOfVertices);
       for (int i = 0; i < epochStart.size(); ++i) {
-         epochStart[i] = endTimeHistory_[i].bufferEnd_;
+         epochStart[i] = endTimeHistory_[i].getBufferEnd();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.endTimeHistoryEpochStart_, epochStart.data(),
                               numberOfVertices * sizeof(int), cudaMemcpyHostToDevice));
@@ -3223,7 +3223,7 @@ void All911Vertices::clearVertexHistory(void *allVerticesDevice)
    {
       vector<int> epochStart(numberOfVertices);
       for (int i = 0; i < epochStart.size(); ++i) {
-         epochStart[i] = wasAbandonedHistory_[i].bufferEnd_;
+         epochStart[i] = wasAbandonedHistory_[i].getBufferEnd();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.wasAbandonedHistoryEpochStart_, epochStart.data(),
                               numberOfVertices * sizeof(int), cudaMemcpyHostToDevice));
@@ -3233,7 +3233,7 @@ void All911Vertices::clearVertexHistory(void *allVerticesDevice)
    {
       vector<int> epochStart(numberOfVertices);
       for (int i = 0; i < epochStart.size(); ++i) {
-         epochStart[i] = queueLengthHistory_[i].bufferEnd_;
+         epochStart[i] = queueLengthHistory_[i].getBufferEnd();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.queueLengthHistoryEpochStart_, epochStart.data(),
                               numberOfVertices * sizeof(int), cudaMemcpyHostToDevice));
@@ -3243,7 +3243,7 @@ void All911Vertices::clearVertexHistory(void *allVerticesDevice)
    {
       vector<int> epochStart(numberOfVertices);
       for (int i = 0; i < epochStart.size(); ++i) {
-         epochStart[i] = utilizationHistory_[i].bufferEnd_;
+         epochStart[i] = utilizationHistory_[i].getBufferEnd();
       }
       HANDLE_ERROR(cudaMemcpy(allVertices.utilizationHistoryEpochStart_, epochStart.data(),
                               numberOfVertices * sizeof(int), cudaMemcpyHostToDevice));

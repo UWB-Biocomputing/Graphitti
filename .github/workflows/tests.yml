@@ -2,119 +2,102 @@ name: Unit and Regression Tests
 # Any changes made to documentation won't trigger tests.
 on:
   push:
-    branches: [ master,development ]
+    branches: [master, development]
     paths-ignore:
-      - '.github/**'       # Ignore .github folder
-      - '**/Doxyfile'      # Ignore changes to Doxygen config
-      - 'docs/**'          # Ignore documentation folder
-      - '*.md'             # Ignore Markdown files
+      - ".github/**" # Ignore .github folder
+      - "**/Doxyfile" # Ignore changes to Doxygen config
+      - "docs/**" # Ignore documentation folder
+      - "*.md" # Ignore Markdown files
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:
-      - '.github/**'       # Ignore .github folder
-      - '**/Doxyfile'      # Ignore changes to Doxygen config
-      - 'docs/**'          # Ignore documentation folder
-      - '*.md'             # Ignore Markdown files
-defaults: 
+      - ".github/**" # Ignore .github folder
+      - "**/Doxyfile" # Ignore changes to Doxygen config
+      - "docs/**" # Ignore documentation folder
+      - "*.md" # Ignore Markdown files
+defaults:
   run:
     working-directory: build
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    # install Boost Graph Library
-    - name: bgl
-      run: sudo apt-get update && sudo apt-get install -yq libboost-graph-dev
-    # configure and build Simulator
-    - name: configure
-      run: cmake ..
-    - id: build
-      name: build
-      run: make -j
-    - name: run unit tests
-      run: ./tests    
+      - uses: actions/checkout@v3
+      # install Boost Graph Library
+      - name: bgl
+        run: sudo apt-get update && sudo apt-get install -yq libboost-graph-dev
+      # configure and build Simulator
+      - name: configure
+        run: cmake ..
+      - id: build
+        name: build
+        run: make -j
+      - name: run unit tests
+        run: ./tests
+      - name: build compare_matrices
+        run: |
+          cd ../Testing/RegressionTesting
+          g++ -std=c++17 -O3 -Wall -Wextra compare_matrices.cpp -o compare_matrices
+          cd ../../build
 
-  # simulator runs
-    - id: tt
-      name: run test-tiny
-      if: always() && steps.build.conclusion == 'success'
-      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
-    - name: verify test-tiny
-      if: always() && steps.tt.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-tiny-out.xml
+      # simulator runs
+      - id: tt
+        name: run test-tiny
+        run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
+      - name: verify test-tiny
+        run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-tiny-out.xml ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml
 
-    - id: ts
-      name: run test-small
-      if: always() && steps.build.conclusion == 'success'
-      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small.xml
-    - name: verify test-small
-      if: always() && steps.ts.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-small-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-out.xml
+      - id: ts
+        name: run test-small
+        run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small.xml
+      - name: verify test-small
+        run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-out.xml ../Testing/RegressionTesting/TestOutput/test-small-out.xml
 
-    - id: tsc
-      name: run test-small-connected
-      if: always() && steps.build.conclusion == 'success'
-      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected.xml
-    - name: verify test-small-connected
-      if: always() && steps.tsc.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-small-connected-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-connected-out.xml
+      - id: tsc
+        name: run test-small-connected
+        run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected.xml
+      - name: verify test-small-connected
+        run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-connected-out.xml ../Testing/RegressionTesting/TestOutput/test-small-connected-out.xml
 
-    - id: tsl
-      name: run test-small-long
-      if: always() && steps.build.conclusion == 'success'
-      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-long.xml
-    - name: verify test-small-long
-      if: always() && steps.tsl.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-small-long-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-long-out.xml
-    
-    - id: tscl
-      name: run test-small-connected-long
-      if: always() && steps.build.conclusion == 'success'
-      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected-long.xml
-    - name: verify test-small-connected-long
-      if: always() && steps.tscl.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-small-connected-long-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-connected-long-out.xml
+      - id: tsl
+        name: run test-small-long
+        run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-long.xml
+      - name: verify test-small-long
+        run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-long-out.xml ../Testing/RegressionTesting/TestOutput/test-small-long-out.xml
 
-    - id: ts911
-      name: run test-small-911
-      if: always() && steps.build.conclusion == 'success'
-      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-911.xml
-    - name: verify test-small-911
-      if: always() && steps.tt.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-small-911-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-911-out.xml
+      - id: tscl
+        name: run test-small-connected-long
+        run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected-long.xml
+      - name: verify test-small-connected-long
+        run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-connected-long-out.xml ../Testing/RegressionTesting/TestOutput/test-small-connected-long-out.xml
 
-    - id: tm
-      name: run test-medium
-      if: always() && steps.build.conclusion == 'success'
-      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium.xml
-    - name: verify test-medium
-      if: always() && steps.tm.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-out.xml
+      - id: ts911
+        name: run test-small-911
+        run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-911.xml
+      - name: verify test-small-911
+        run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-911-out.xml ../Testing/RegressionTesting/TestOutput/test-small-911-out.xml
 
-    - id: tmc
-      name: run test-medium-connected
-      if: always() && steps.build.conclusion == 'success'
-      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-connected.xml
-    - name: verify test-medium-connected
-      if: always() && steps.tmc.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-connected-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-connected-out.xml
+      - id: tm
+        name: run test-medium
+        run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium.xml
+      - name: verify test-medium
+        run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-out.xml ../Testing/RegressionTesting/TestOutput/test-medium-out.xml
 
-    - id: tml
-      name: run test-medium-long
-      if: always() && steps.build.conclusion == 'success'
-      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-long.xml
-    - name: verify test-medium-long
-      if: always() && steps.tml.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-long-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-long-out.xml
+      - id: tmc
+        name: run test-medium-connected
+        run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-connected.xml
+      - name: verify test-medium-connected
+        run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-connected-out.xml ../Testing/RegressionTesting/TestOutput/test-medium-connected-out.xml
 
-    - id: tmcl
-      name: run test-medium-connected-long
-      if: always() && steps.build.conclusion == 'success'
-      run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-connected-long.xml
-    - name: verify test-medium-connected-long
-      if: always() && steps.tmcl.conclusion == 'success'
-      run: diff ../Testing/RegressionTesting/TestOutput/test-medium-connected-long-out.xml ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-connected-long-out.xml
+      - id: tml
+        name: run test-medium-long
+        run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-long.xml
+      - name: verify test-medium-long
+        run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-long-out.xml ../Testing/RegressionTesting/TestOutput/test-medium-long-out.xml
+
+      - id: tmcl
+        name: run test-medium-connected-long
+        run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-connected-long.xml
+      - name: verify test-medium-connected-long
+        run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-connected-long-out.xml ../Testing/RegressionTesting/TestOutput/test-medium-connected-long-out.xml
