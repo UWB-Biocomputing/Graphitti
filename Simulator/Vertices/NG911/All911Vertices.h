@@ -159,8 +159,7 @@ public:
    /// The end time for every call
    vector<EventBuffer<uint64_t>> endTimeHistory_;
    /// True if the call was abandoned
-   vector<EventBuffer<uint64_t>>
-      wasAbandonedHistory_;   // changed to bool from unsigned char
+   vector<EventBuffer<uint64_t>> wasAbandonedHistory_;   // changed to bool from unsigned char
    /// The length of the waiting queue at every time-step
    vector<EventBuffer<uint64_t>> queueLengthHistory_;
    /// The portion of servers that are busy at every time-step
@@ -207,7 +206,7 @@ public:
 
    /// Mapping of the vertex ID to the index in the noise array. Only caller regions
    /// need noise for determining if a redial occurs. Caller regions have a value
-   /// 0 to n where n is the number of caller regions. Non-caller regions have a 
+   /// 0 to n where n is the number of caller regions. Non-caller regions have a
    /// value of -1.
    vector<int> vertexIdToNoiseIndex_;
 
@@ -271,16 +270,21 @@ public:
    /// Copies all inputs scheduled to occur in the upcoming epoch onto device.
    virtual void copyEpochInputsToDevice() override;
    virtual int getNumberOfVerticesNeedingDeviceNoise() const override;
+
 protected:
    ///  Allocate GPU memories to store all vertices' states.
    ///  (Helper function of allocVerticesDeviceStruct)
    ///  @param  allVerticesDevice         Reference to the All911VerticesDeviceProperties struct.
    void allocDeviceStruct(All911VerticesDeviceProperties &allVerticesDevice);
    void deleteDeviceStruct(All911VerticesDeviceProperties &allVerticesDevice);
-   void copyVertexQueuesToDevice(int numberOfVertices, uint64_t stepsPerEpoch, All911VerticesDeviceProperties &allVerticesDevice);
-   void copyVertexQueuesFromDevice(int numberOfVertices, uint64_t stepsPerEpoch, All911VerticesDeviceProperties &allVerticesDevice);
-   void copyServingCallToDevice(int numberOfVertices, All911VerticesDeviceProperties &allVerticesDevice);
-   void copyServingCallFromDevice(int numberOfVertices, All911VerticesDeviceProperties &allVerticesDevice);
+   void copyVertexQueuesToDevice(int numberOfVertices, uint64_t stepsPerEpoch,
+                                 All911VerticesDeviceProperties &allVerticesDevice);
+   void copyVertexQueuesFromDevice(int numberOfVertices, uint64_t stepsPerEpoch,
+                                   All911VerticesDeviceProperties &allVerticesDevice);
+   void copyServingCallToDevice(int numberOfVertices,
+                                All911VerticesDeviceProperties &allVerticesDevice);
+   void copyServingCallFromDevice(int numberOfVertices,
+                                  All911VerticesDeviceProperties &allVerticesDevice);
 #else   // !defined(USE_GPU)
 public:
    ///  Update internal state of the indexed Vertex (called by every simulation step).
@@ -407,7 +411,7 @@ struct All911VerticesDeviceProperties : public AllVerticesDeviceProperties {
 
    /// Mapping of the vertex ID to the index in the noise array. Only caller regions
    /// need noise for determining if a redial occurs. Caller regions have a value
-   /// 0 to n where n is the number of caller regions. Non-caller regions have a 
+   /// 0 to n where n is the number of caller regions. Non-caller regions have a
    /// value of -1.
    //vector<int> vertexIdToNoiseIndex_;
    int *vertexIdToNoiseIndex_;

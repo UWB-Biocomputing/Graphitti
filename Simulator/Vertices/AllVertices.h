@@ -152,7 +152,7 @@ public:
    virtual void integrateVertexInputs(void *allVerticesDevice,
                                       EdgeIndexMapDevice *edgeIndexMapDevice, void *allEdgesDevice)
       = 0;
-   
+
    /// Get the number of vertices that need device noise
    virtual int getNumberOfVerticesNeedingDeviceNoise() const;
 #else   // !defined(USE_GPU)

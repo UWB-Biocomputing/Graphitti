@@ -36,7 +36,8 @@ public:
    void registerOperation(const Operations &operation, const function<void()> &function);
 
    /// Handles function signature: void (uint64_t,uint64_t)
-   void registerOperation(const Operations &operation, const function<void(uint64_t,uint64_t)> &function);
+   void registerOperation(const Operations &operation,
+                          const function<void(uint64_t, uint64_t)> &function);
 
    /// Takes in a operation type and invokes all registered functions that are classified as that operation type.
    void executeOperation(const Operations &operation) const;

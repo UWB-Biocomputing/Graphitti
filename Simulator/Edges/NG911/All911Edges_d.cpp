@@ -33,7 +33,8 @@ void All911Edges::allocEdgeDeviceStruct()
 void All911Edges::allocEdgeDeviceStruct(void **allEdgesDevice, int numVertices,
                                         int maxEdgesPerVertex)
 {
-   LOG4CPLUS_DEBUG(edgeLogger_, "Size of 911 edges device: " << sizeof(All911EdgesDeviceProperties));
+   LOG4CPLUS_DEBUG(edgeLogger_,
+                   "Size of 911 edges device: " << sizeof(All911EdgesDeviceProperties));
    LOG4CPLUS_DEBUG(edgeLogger_, "maxTotalEdges: " << maxEdgesPerVertex * numVertices);
    LOG4CPLUS_DEBUG(edgeLogger_, "Size of edgetype: " << sizeof(edgeType));
    All911EdgesDeviceProperties allEdges;
@@ -176,16 +177,16 @@ void All911Edges::copyHostToDevice(void *allEdgesDevice,
                            maxTotalEdges * sizeof(unsigned char), cudaMemcpyHostToDevice));
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   int* cpuVertexId = new int[maxTotalEdges];
+   int *cpuVertexId = new int[maxTotalEdges];
    for (int i = 0; i < maxTotalEdges; i++) {
       cpuVertexId[i] = call_[i].vertexId;
    }
-   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.vertexId_, cpuVertexId,
-                           maxTotalEdges * sizeof(int), cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.vertexId_, cpuVertexId, maxTotalEdges * sizeof(int),
+                           cudaMemcpyHostToDevice));
    delete[] cpuVertexId;
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   uint64_t* cpuTime = new uint64_t[maxTotalEdges];
+   uint64_t *cpuTime = new uint64_t[maxTotalEdges];
    for (int i = 0; i < maxTotalEdges; i++) {
       cpuTime[i] = call_[i].time;
    }
@@ -194,16 +195,16 @@ void All911Edges::copyHostToDevice(void *allEdgesDevice,
    delete[] cpuTime;
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   int* cpuDuration = new int[maxTotalEdges];
+   int *cpuDuration = new int[maxTotalEdges];
    for (int i = 0; i < maxTotalEdges; i++) {
       cpuDuration[i] = call_[i].duration;
    }
-   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.duration_, cpuDuration,
-                           maxTotalEdges * sizeof(int), cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.duration_, cpuDuration, maxTotalEdges * sizeof(int),
+                           cudaMemcpyHostToDevice));
    delete[] cpuDuration;
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   BGFLOAT* cpuX = new BGFLOAT[maxTotalEdges];
+   BGFLOAT *cpuX = new BGFLOAT[maxTotalEdges];
    for (int i = 0; i < maxTotalEdges; i++) {
       cpuX[i] = call_[i].x;
    }
@@ -212,7 +213,7 @@ void All911Edges::copyHostToDevice(void *allEdgesDevice,
    delete[] cpuX;
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   BGFLOAT* cpuY = new BGFLOAT[maxTotalEdges];
+   BGFLOAT *cpuY = new BGFLOAT[maxTotalEdges];
    for (int i = 0; i < maxTotalEdges; i++) {
       cpuY[i] = call_[i].y;
    }
@@ -221,16 +222,16 @@ void All911Edges::copyHostToDevice(void *allEdgesDevice,
    delete[] cpuY;
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   int* cpuPatience = new int[maxTotalEdges];
+   int *cpuPatience = new int[maxTotalEdges];
    for (int i = 0; i < maxTotalEdges; i++) {
       cpuPatience[i] = call_[i].patience;
    }
-   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.patience_, cpuPatience,
-                           maxTotalEdges * sizeof(int), cudaMemcpyHostToDevice));
+   HANDLE_ERROR(cudaMemcpy(allEdgesDeviceProps.patience_, cpuPatience, maxTotalEdges * sizeof(int),
+                           cudaMemcpyHostToDevice));
    delete[] cpuPatience;
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   int* cpuOnSiteTime = new int[maxTotalEdges];
+   int *cpuOnSiteTime = new int[maxTotalEdges];
    for (int i = 0; i < maxTotalEdges; i++) {
       cpuOnSiteTime[i] = call_[i].onSiteTime;
    }
@@ -239,7 +240,7 @@ void All911Edges::copyHostToDevice(void *allEdgesDevice,
    delete[] cpuOnSiteTime;
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   int* cpuResponderType = new int[maxTotalEdges];
+   int *cpuResponderType = new int[maxTotalEdges];
    for (int i = 0; i < maxTotalEdges; i++) {
       if (call_[i].type == "Law")
          cpuResponderType[i] = 7;
@@ -308,16 +309,16 @@ void All911Edges::copyDeviceToHost(All911EdgesDeviceProperties &allEdgesDevicePr
                            maxTotalEdges * sizeof(unsigned char), cudaMemcpyDeviceToHost));
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   int* cpuVertexId = new int[maxTotalEdges];
-   HANDLE_ERROR(cudaMemcpy(cpuVertexId, allEdgesDeviceProps.vertexId_,
-                           maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
+   int *cpuVertexId = new int[maxTotalEdges];
+   HANDLE_ERROR(cudaMemcpy(cpuVertexId, allEdgesDeviceProps.vertexId_, maxTotalEdges * sizeof(int),
+                           cudaMemcpyDeviceToHost));
    for (int i = 0; i < maxTotalEdges; i++) {
       call_[i].vertexId = cpuVertexId[i];
    }
    delete[] cpuVertexId;
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   uint64_t* cpuTime = new uint64_t[maxTotalEdges];
+   uint64_t *cpuTime = new uint64_t[maxTotalEdges];
    HANDLE_ERROR(cudaMemcpy(cpuTime, allEdgesDeviceProps.time_, maxTotalEdges * sizeof(uint64_t),
                            cudaMemcpyDeviceToHost));
    for (int i = 0; i < maxTotalEdges; i++) {
@@ -326,16 +327,16 @@ void All911Edges::copyDeviceToHost(All911EdgesDeviceProperties &allEdgesDevicePr
    delete[] cpuTime;
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   int* cpuDuration = new int[maxTotalEdges];
-   HANDLE_ERROR(cudaMemcpy(cpuDuration, allEdgesDeviceProps.duration_,
-                           maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
+   int *cpuDuration = new int[maxTotalEdges];
+   HANDLE_ERROR(cudaMemcpy(cpuDuration, allEdgesDeviceProps.duration_, maxTotalEdges * sizeof(int),
+                           cudaMemcpyDeviceToHost));
    for (int i = 0; i < maxTotalEdges; i++) {
       call_[i].duration = cpuDuration[i];
    }
    delete[] cpuDuration;
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   BGFLOAT* cpuX = new BGFLOAT[maxTotalEdges];
+   BGFLOAT *cpuX = new BGFLOAT[maxTotalEdges];
    HANDLE_ERROR(cudaMemcpy(cpuX, allEdgesDeviceProps.x_, maxTotalEdges * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
    for (int i = 0; i < maxTotalEdges; i++) {
@@ -344,7 +345,7 @@ void All911Edges::copyDeviceToHost(All911EdgesDeviceProperties &allEdgesDevicePr
    delete[] cpuX;
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   BGFLOAT* cpuY = new BGFLOAT[maxTotalEdges];
+   BGFLOAT *cpuY = new BGFLOAT[maxTotalEdges];
    HANDLE_ERROR(cudaMemcpy(cpuY, allEdgesDeviceProps.y_, maxTotalEdges * sizeof(BGFLOAT),
                            cudaMemcpyDeviceToHost));
    for (int i = 0; i < maxTotalEdges; i++) {
@@ -353,16 +354,16 @@ void All911Edges::copyDeviceToHost(All911EdgesDeviceProperties &allEdgesDevicePr
    delete[] cpuY;
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   int* cpuPatience = new int[maxTotalEdges];
-   HANDLE_ERROR(cudaMemcpy(cpuPatience, allEdgesDeviceProps.patience_,
-                           maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
+   int *cpuPatience = new int[maxTotalEdges];
+   HANDLE_ERROR(cudaMemcpy(cpuPatience, allEdgesDeviceProps.patience_, maxTotalEdges * sizeof(int),
+                           cudaMemcpyDeviceToHost));
    for (int i = 0; i < maxTotalEdges; i++) {
       call_[i].patience = cpuPatience[i];
    }
    delete[] cpuPatience;
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   int* cpuOnSiteTime = new int[maxTotalEdges];
+   int *cpuOnSiteTime = new int[maxTotalEdges];
    HANDLE_ERROR(cudaMemcpy(cpuOnSiteTime, allEdgesDeviceProps.onSiteTime_,
                            maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
    for (int i = 0; i < maxTotalEdges; i++) {
@@ -371,7 +372,7 @@ void All911Edges::copyDeviceToHost(All911EdgesDeviceProperties &allEdgesDevicePr
    delete[] cpuOnSiteTime;
 
    // Use heap memory by using a dynamic array to prevent stack overflow/segmentation faults
-   int* cpuResponderType = new int[maxTotalEdges];
+   int *cpuResponderType = new int[maxTotalEdges];
    HANDLE_ERROR(cudaMemcpy(cpuResponderType, allEdgesDeviceProps.responderType_,
                            maxTotalEdges * sizeof(int), cudaMemcpyDeviceToHost));
    for (int i = 0; i < maxTotalEdges; i++) {
@@ -521,7 +522,8 @@ void All911Edges::printGPUEdgesProps(void *allEdgesDeviceProps) const
          }
       }
       for (int i = 0; i < countVertices_; i++) {
-         cout << "GPU edgeCounts: " << "vertex[" << i << "]" << edgeCountsPrint[i] << endl;
+         cout << "GPU edgeCounts: "
+              << "vertex[" << i << "]" << edgeCountsPrint[i] << endl;
       }
       cout << "GPU totalEdgeCount: " << totalEdgeCountPrint << endl;
       cout << "GPU maxEdgesPerVertex: " << maxEdgesPerVertexPrint << endl;

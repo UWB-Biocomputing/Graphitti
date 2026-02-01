@@ -57,14 +57,15 @@ void All911Vertices::createAllVertices(Layout &layout)
 {
    // Read Input Events using the InputManager
    inputManager_.readInputs();
-   LOG4CPLUS_DEBUG(vertexLogger_, "Total number of events: " << inputManager_.getTotalNumberOfEvents());
+   LOG4CPLUS_DEBUG(vertexLogger_,
+                   "Total number of events: " << inputManager_.getTotalNumberOfEvents());
 
    Simulator &simulator = Simulator::getInstance();
    // For metrics whose entries are recorded for each time step such as queue length history
    uint64_t stepsPerEpoch = simulator.getEpochDuration() / simulator.getDeltaT();
    // For metrics whose entries are recorded for each call such as begin time history
    int maxEventsPerEpoch = static_cast<int>(Simulator::getInstance().getEpochDuration()
-                                 * Simulator::getInstance().getMaxFiringRate());
+                                            * Simulator::getInstance().getMaxFiringRate());
    LOG4CPLUS_DEBUG(vertexLogger_, "Steps per epoch: " << stepsPerEpoch);
    LOG4CPLUS_DEBUG(vertexLogger_, "Max events per epoch: " << maxEventsPerEpoch);
 
@@ -77,7 +78,7 @@ void All911Vertices::createAllVertices(Layout &layout)
    numberOfVerticesNeedingDeviceNoise_ = 0;
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < size_);
-      
+
       if (gm[*vi].type == "CALR") {
          vertexType_[*vi] = 3;
          vertexIdToNoiseIndex_[*vi] = numberOfVerticesNeedingDeviceNoise_;
@@ -96,13 +97,14 @@ void All911Vertices::createAllVertices(Layout &layout)
          numTrunks_[*vi] = gm[*vi].trunks;
          // We should not have more servers than trunks
          assert(numServers_[*vi] <= numTrunks_[*vi]);
-         if(maxNumberOfServers_ < numServers_[*vi]) {
+         if (maxNumberOfServers_ < numServers_[*vi]) {
             maxNumberOfServers_ = numServers_[*vi];
          }
       }
    }
 
-   LOG4CPLUS_DEBUG(vertexLogger_, "Number of vertices needing device noise: " << numberOfVerticesNeedingDeviceNoise_);
+   LOG4CPLUS_DEBUG(vertexLogger_, "Number of vertices needing device noise: "
+                                     << numberOfVerticesNeedingDeviceNoise_);
    LOG4CPLUS_DEBUG(vertexLogger_, "Max number of servers: " << maxNumberOfServers_);
 
    // Loop over the vertices again to appropriate resize data members such that
@@ -284,17 +286,16 @@ void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIn
                droppedCalls(dst)++;
                // Record that we received a call
                receivedCalls(dst)++;
-               LOG4CPLUS_DEBUG(vertexLogger_,
-                               "Call dropped: " << droppedCalls(dst)
-                                                << ", time: " << all911Edges.call_[edgeIdx].time
-                                                << ", vertex: " << dst
-                                                << ", queue size: " << dstQueueSize);
+               LOG4CPLUS_DEBUG(vertexLogger_, "Call dropped: " << droppedCalls(dst) << ", time: "
+                                                               << all911Edges.call_[edgeIdx].time
+                                                               << ", vertex: " << dst
+                                                               << ", queue size: " << dstQueueSize);
             }
          } else {
-         // int queueFull = (int)((1 - (queueFrontIndex >= queueEndIndex))*(numTrunks_[dst] + 1) + queueFrontIndex - queueEndIndex) >= (dstQueueCapacity - busyServers(dst));
-         // droppedCalls(dst) += queueFull && (!all911Edges.isRedial_[edgeIdx]);
-         // receivedCalls(dst) += queueFull && (!all911Edges.isRedial_[edgeIdx]);
-         // if (!queueFull) {
+            // int queueFull = (int)((1 - (queueFrontIndex >= queueEndIndex))*(numTrunks_[dst] + 1) + queueFrontIndex - queueEndIndex) >= (dstQueueCapacity - busyServers(dst));
+            // droppedCalls(dst) += queueFull && (!all911Edges.isRedial_[edgeIdx]);
+            // receivedCalls(dst) += queueFull && (!all911Edges.isRedial_[edgeIdx]);
+            // if (!queueFull) {
             // Internal CircularBuffer buffer size is capacity + 1
             //
             // Transfer call to destination
@@ -391,7 +392,8 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
    int numberOfServers = numServers_[vertexIdx];
    // Loop over all servers and free the ones finishing serving calls
    int numberOfAvailableServers = 0;
-   vector<unsigned char> availableServers; // Use vector but treat like array to better mirror on GPU
+   vector<unsigned char>
+      availableServers;   // Use vector but treat like array to better mirror on GPU
    availableServers.reserve(numberOfServers);
    // Initialize to no servers having been assigned a call yet
    for (BGSIZE serverIndex = 0; serverIndex < numberOfServers; serverIndex++) {
@@ -465,7 +467,7 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
       } else {
          // The available server starts serving the call
          int availServer;
-         for(BGSIZE serverIndex = 0; serverIndex < numberOfServers; serverIndex++) {
+         for (BGSIZE serverIndex = 0; serverIndex < numberOfServers; serverIndex++) {
             if (availableServers[serverIndex] == true) {
                // If server is available, have that server serve the call
                availServer = serverIndex;
@@ -496,7 +498,8 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
       queueSize = numTrunks_[vertexIdx] + 1 + queueFront - queueEnd;
    }
    queueLengthHistory_[vertexIdx].insertEvent(queueSize);
-   utilizationHistory_[vertexIdx].insertEvent(static_cast<float>(busyServers_[vertexIdx]) / numberOfServers);
+   utilizationHistory_[vertexIdx].insertEvent(static_cast<float>(busyServers_[vertexIdx])
+                                              / numberOfServers);
 }
 
 
@@ -510,7 +513,8 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
    //int numberOfUnits = numServers_[vertexIdx];
    // Free the units finishing up with emergency responses
    int numberOfAvailableUnits = 0;
-   vector<unsigned char> availableUnits; // Use vector but treat like array to better mirror on GPU
+   vector<unsigned char>
+      availableUnits;   // Use vector but treat like array to better mirror on GPU
    availableUnits.reserve(numServers_[vertexIdx]);
    for (BGSIZE unitIndex = 0; unitIndex < numServers_[vertexIdx]; unitIndex++) {
       availableUnits[unitIndex] = false;
@@ -572,7 +576,7 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
 
       // The available unit starts serving the call
       int availUnit;
-      for(BGSIZE unitIndex = 0; unitIndex < numServers_[vertexIdx]; unitIndex++) {
+      for (BGSIZE unitIndex = 0; unitIndex < numServers_[vertexIdx]; unitIndex++) {
          if (availableUnits[unitIndex] == true) {
             // If server is available, have that server serve the call
             availUnit = unitIndex;
@@ -629,7 +633,8 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
       queueSize = numTrunks_[vertexIdx] + 1 + queueFront - queueEnd;
    }
    queueLengthHistory_[vertexIdx].insertEvent(queueSize);
-   utilizationHistory_[vertexIdx].insertEvent(static_cast<float>(busyServers_[vertexIdx]) / numServers_[vertexIdx]);
+   utilizationHistory_[vertexIdx].insertEvent(static_cast<float>(busyServers_[vertexIdx])
+                                              / numServers_[vertexIdx]);
 }
 
 

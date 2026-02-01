@@ -10,7 +10,7 @@
 #pragma once
 
 #include "Operations.h"
-#include <cstdint> ///for uint64_t
+#include <cstdint>   ///for uint64_t
 
 using namespace std;
 

@@ -38,11 +38,9 @@ AllVertices::AllVertices() : size_(0)
    function<void()> printParametersFunc = bind(&AllVertices::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
-   
-   function<void(uint64_t,uint64_t)> loadEpochInputsFunc = std::bind(&AllVertices::loadEpochInputs, 
-                                                                     this, 
-                                                                     std::placeholders::_1, 
-                                                                     std::placeholders::_2);
+
+   function<void(uint64_t, uint64_t)> loadEpochInputsFunc = std::bind(
+      &AllVertices::loadEpochInputs, this, std::placeholders::_1, std::placeholders::_2);
    OperationManager::getInstance().registerOperation(Operations::loadEpochInputs,
                                                      loadEpochInputsFunc);
 
@@ -96,9 +94,9 @@ void AllVertices::printParameters() const
 void AllVertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
 {
    loadEpochInputsToVertices(currentStep, endStep);
-   #if defined(USE_GPU)
+#if defined(USE_GPU)
    copyEpochInputsToDevice();
-   #endif
+#endif
 }
 
 void AllVertices::loadEpochInputsToVertices(uint64_t currentStep, uint64_t endStep)

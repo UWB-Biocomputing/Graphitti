@@ -12,8 +12,8 @@
 #include "AllVertices.h"
 #include "Connections.h"
 #include "Global.h"
-#include "OperationManager.h"
 #include "MersenneTwister_d.h"
+#include "OperationManager.h"
 
 #ifdef VALIDATION_MODE
    #include "AllIFNeurons.h"
@@ -55,7 +55,8 @@ void GPUModel::allocDeviceStruct()
    // Allocate memory for random noise array
    int numVerticesNeedingNoise = layout_->getVertices().getNumberOfVerticesNeedingDeviceNoise();
    int numberOfNoiseElements = roundUpNumberOfNoiseElements(numVerticesNeedingNoise);
-   LOG4CPLUS_DEBUG(fileLogger_, "Number of elements allocated for noise: " << numberOfNoiseElements);
+   LOG4CPLUS_DEBUG(fileLogger_,
+                   "Number of elements allocated for noise: " << numberOfNoiseElements);
    BGSIZE randNoise_d_size = numberOfNoiseElements * sizeof(float);   // size of random noise array
    HANDLE_ERROR(cudaMalloc((void **)&randNoise_d, randNoise_d_size));
 
@@ -96,13 +97,18 @@ void GPUModel::setupSim()
       = 4;   //# of iterations per thread (thread granularity, # of rands generated per thread)
    int numVerticesNeedingNoise = layout_->getVertices().getNumberOfVerticesNeedingDeviceNoise();
    int numberOfNoiseElements = roundUpNumberOfNoiseElements(numVerticesNeedingNoise);
-   int rng_mt_rng_count = numberOfNoiseElements
-                          / rng_nPerRng;   //# of threads to generate for numVertices rand #s
+   int rng_mt_rng_count
+      = numberOfNoiseElements / rng_nPerRng;   //# of threads to generate for numVertices rand #s
    assert(rng_mt_rng_count <= MT_RNG_COUNT);
    int rng_threads = rng_mt_rng_count / rng_blocks;   //# threads per block needed
-   LOG4CPLUS_DEBUG(fileLogger_, "initMTGPU state: " << endl << "Noise seed: " << Simulator::getInstance().getNoiseRngSeed()
-                     << endl << "RNG_blocks: " << rng_blocks << endl << "RNG_threads: " << rng_threads
-                     << endl << "RNG_nPerRng: " << rng_nPerRng << endl << "Count: " << rng_mt_rng_count);
+   LOG4CPLUS_DEBUG(fileLogger_, "initMTGPU state: " << endl
+                                                    << "Noise seed: "
+                                                    << Simulator::getInstance().getNoiseRngSeed()
+                                                    << endl
+                                                    << "RNG_blocks: " << rng_blocks << endl
+                                                    << "RNG_threads: " << rng_threads << endl
+                                                    << "RNG_nPerRng: " << rng_nPerRng << endl
+                                                    << "Count: " << rng_mt_rng_count);
    initMTGPU(Simulator::getInstance().getNoiseRngSeed(), rng_blocks, rng_threads, rng_nPerRng,
              rng_mt_rng_count);
 

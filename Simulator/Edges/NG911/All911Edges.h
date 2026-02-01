@@ -70,7 +70,8 @@ public:
                                       int maxEdgesPerVertex) override;
    virtual void deleteEdgeDeviceStruct() override;
    virtual void copyEdgeHostToDevice() override;
-   virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices, int maxEdgesPerVertex) override;
+   virtual void copyEdgeHostToDevice(void *allEdgesDevice, int numVertices,
+                                     int maxEdgesPerVertex) override;
    virtual void copyEdgeDeviceToHost() override;
    virtual void copyDeviceEdgeCountsToHost(void *allEdgesDevice) override;
    virtual void advanceEdges(void *allEdgesDevice, void *allVerticesDevice,

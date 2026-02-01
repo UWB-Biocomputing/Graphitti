@@ -26,7 +26,10 @@ public:
    virtual bool invokeFunction(const Operations &operation) const override;
 
    /// TODO: Remove when IFunctionNode supports functions with non-empty signatures
-   virtual bool invokeFunction(const Operations &operation, uint64_t arg1, uint64_t arg2) const { return false; }
+   virtual bool invokeFunction(const Operations &operation, uint64_t arg1, uint64_t arg2) const
+   {
+      return false;
+   }
 
 private:
    std::function<void()> function_;   ///< Stored function.
