@@ -100,6 +100,9 @@ void GPUModel::setupSim()
                           / rng_nPerRng;   //# of threads to generate for numVertices rand #s
    assert(rng_mt_rng_count <= MT_RNG_COUNT);
    int rng_threads = rng_mt_rng_count / rng_blocks;   //# threads per block needed
+   LOG4CPLUS_DEBUG(fileLogger_, "initMTGPU state: " << endl << "Noise seed: " << Simulator::getInstance().getNoiseRngSeed()
+                     << endl << "RNG_blocks: " << rng_blocks << endl << "RNG_threads: " << rng_threads
+                     << endl << "RNG_nPerRng: " << rng_nPerRng << endl << "Count: " << rng_mt_rng_count);
    initMTGPU(Simulator::getInstance().getNoiseRngSeed(), rng_blocks, rng_threads, rng_nPerRng,
              rng_mt_rng_count);
 
