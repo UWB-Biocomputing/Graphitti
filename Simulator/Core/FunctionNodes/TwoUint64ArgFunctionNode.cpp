@@ -15,16 +15,15 @@
 
 /// Constructor, Function Signature: void (uint64_t, uint64_t)
 TwoUint64ArgFunctionNode::TwoUint64ArgFunctionNode(
-   const Operations &operation, 
-   const std::function<void(uint64_t, uint64_t)> &func)
+   const Operations &operation, const std::function<void(uint64_t, uint64_t)> &func)
 {
    operationType_ = operation;
    function_ = func;
 }
 
 /// Invokes the stored function if the sent operation type matches the operation type the function is stored as.
-bool TwoUint64ArgFunctionNode::invokeFunction(const Operations &operation, uint64_t arg1, 
-   uint64_t arg2) const
+bool TwoUint64ArgFunctionNode::invokeFunction(const Operations &operation, uint64_t arg1,
+                                              uint64_t arg2) const
 {
    if (operation == operationType_) {
       __invoke(function_, arg1, arg2);
