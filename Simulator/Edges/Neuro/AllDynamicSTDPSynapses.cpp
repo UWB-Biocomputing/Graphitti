@@ -100,7 +100,7 @@ void AllDynamicSTDPSynapses::resetEdge(BGSIZE iEdg, BGFLOAT deltaT)
 {
    AllSTDPSynapses::resetEdge(iEdg, deltaT);
 
-   u_[iEdg] = DEFAULT_U;
+   u_[iEdg] = AllSpikingSynapses::DEFAULT_U;
    r_[iEdg] = 1.0;
    lastSpike_[iEdg] = ULONG_MAX;
 }
@@ -117,7 +117,7 @@ void AllDynamicSTDPSynapses::createEdge(BGSIZE iEdg, int srcVertex, int destVert
 {
    AllSTDPSynapses::createEdge(iEdg, srcVertex, destVertex, deltaT, type);
 
-   U_[iEdg] = DEFAULT_U;
+   U_[iEdg] = AllSpikingSynapses::DEFAULT_U;
 
    BGFLOAT U;
    BGFLOAT D;
