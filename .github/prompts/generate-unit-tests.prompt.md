@@ -204,7 +204,7 @@ EXPECT_NE(nullptr, ptr);
 // Include other necessary headers
 
 // Test fixture for tests requiring shared setup
-class {ClassName}Test : public ::testing::Test {
+class {ClassName}Fixture : public ::testing::Test {
 protected:
    void SetUp() override {
       // Initialize test objects before each test
@@ -217,8 +217,8 @@ protected:
    // Shared test data members
 };
 
-// Standalone test example
-TEST({ClassName}Test, MethodName_ValidInput_ReturnsExpected) {
+// Standalone test example (no fixture needed)
+TEST({ClassName}, MethodName_ValidInput_ReturnsExpected) {
    // Arrange - set up test data
 
    // Act - call the function under test
@@ -226,8 +226,8 @@ TEST({ClassName}Test, MethodName_ValidInput_ReturnsExpected) {
    // Assert - verify the results
 }
 
-// Fixture-based test example
-TEST_F({ClassName}Test, MethodName_EdgeCase_HandlesCorrectly) {
+// Fixture-based test example (uses fixture for shared setup)
+TEST_F({ClassName}Fixture, MethodName_EdgeCase_HandlesCorrectly) {
    // Arrange - fixture provides shared setup
 
    // Act
