@@ -41,16 +41,18 @@ using AllIFNeuronsDeviceProperties = AllSpikingNeuronsDeviceProperties;
 class AllIFNeurons : public AllSpikingNeurons {
 public:
    // Default neuron parameter values
-   static constexpr BGFLOAT DEFAULT_Cm = 3e-8;              // The default membrane capacitance
-   static constexpr BGFLOAT DEFAULT_Rm = 1e6;                // The default membrane resistance
-   static constexpr BGFLOAT DEFAULT_Vrest = 0.0;            // The default resting voltage
-   static constexpr BGFLOAT DEFAULT_Vreset = -0.06;          // The default reset voltage
-   static constexpr BGFLOAT DEFAULT_Trefract = 3e-3;         // The default absolute refractory period
-   static constexpr BGFLOAT DEFAULT_Inoise = 0.0;            // The default synaptic noise
-   static constexpr BGFLOAT DEFAULT_Iinject = 0.0;           // The default injected current
-   static constexpr BGFLOAT DEFAULT_Vthresh = -0.04;        // The default threshold voltage
-   static constexpr BGFLOAT DEFAULT_InhibTrefract = 2.0e-3;  // The default absolute refractory period for inhibitory neurons
-   static constexpr BGFLOAT DEFAULT_ExcitTrefract = 3.0e-3;   // The default absolute refractory period for excitory neurons
+   static constexpr BGFLOAT DEFAULT_Cm = 3e-8;         // The default membrane capacitance
+   static constexpr BGFLOAT DEFAULT_Rm = 1e6;          // The default membrane resistance
+   static constexpr BGFLOAT DEFAULT_Vrest = 0.0;       // The default resting voltage
+   static constexpr BGFLOAT DEFAULT_Vreset = -0.06;    // The default reset voltage
+   static constexpr BGFLOAT DEFAULT_Trefract = 3e-3;   // The default absolute refractory period
+   static constexpr BGFLOAT DEFAULT_Inoise = 0.0;      // The default synaptic noise
+   static constexpr BGFLOAT DEFAULT_Iinject = 0.0;     // The default injected current
+   static constexpr BGFLOAT DEFAULT_Vthresh = -0.04;   // The default threshold voltage
+   static constexpr BGFLOAT DEFAULT_InhibTrefract
+      = 2.0e-3;   // The default absolute refractory period for inhibitory neurons
+   static constexpr BGFLOAT DEFAULT_ExcitTrefract
+      = 3.0e-3;   // The default absolute refractory period for excitory neurons
 
    AllIFNeurons() = default;
 

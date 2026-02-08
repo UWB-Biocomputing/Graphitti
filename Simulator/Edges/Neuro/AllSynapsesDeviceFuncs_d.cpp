@@ -9,8 +9,8 @@
 
 #include "AllDynamicSTDPSynapses.h"
 #include "AllNeuroEdges.h"
-#include "AllSpikingSynapses.h"
 #include "AllSTDPSynapses.h"
+#include "AllSpikingSynapses.h"
 #include "AllSynapsesDeviceFuncs.h"
 #include <vector>
 
