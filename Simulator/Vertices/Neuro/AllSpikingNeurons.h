@@ -121,7 +121,7 @@ public:
    DeviceVector<bool> hasFired_;
 
    /// Holds at least one epoch's worth of event times for every vertex
-   vector<EventBuffer> vertexEvents_;
+   vector<EventBuffer<uint64_t>> vertexEvents_;
 
    ///  The summation point for each vertex.
    ///  Summation points are places where the synapses connected to the vertex
