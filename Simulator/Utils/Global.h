@@ -126,35 +126,8 @@ inline std::ostream &operator<<(std::ostream &os, edgeType eT)
    return os;
 }
 
-// The default membrane capacitance.
-#define DEFAULT_Cm (3e-8)
-// The default membrane resistance.
-#define DEFAULT_Rm (1e6)
-// The default resting voltage.
-#define DEFAULT_Vrest (0.0)
-// The default reset voltage.
-#define DEFAULT_Vreset (-0.06)
-// The default absolute refractory period.
-#define DEFAULT_Trefract (3e-3)
-// The default synaptic noise.
-#define DEFAULT_Inoise (0.0)
-// The default injected current.
-#define DEFAULT_Iinject (0.0)
-// The default threshold voltage.  If \f$V_m >= V_{thresh}\f$ then the neuron fires.
-#define DEFAULT_Vthresh (-0.04)
 // The default time step size.
 #define DEFAULT_dt (1e-4)   // MODEL INDEPENDENT
-// The default absolute refractory period for inhibitory neurons.
-#define DEFAULT_InhibTrefract (2.0e-3)
-// The default absolute refractory period for excitory neurons.
-#define DEFAULT_ExcitTrefract (3.0e-3)
-
-// The default synaptic time constant.
-#define DEFAULT_tau (3e-3)
-// The default synaptic efficiency.
-#define DEFAULT_U (0.4)
-// The default synaptic efficiency.
-#define DEFAULT_delay_weight (0)
 // } NMV-END
 
 // Converts a 1-d index into a coordinate string.
