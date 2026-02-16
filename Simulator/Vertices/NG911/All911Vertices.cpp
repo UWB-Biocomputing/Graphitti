@@ -109,7 +109,8 @@ void All911Vertices::createAllVertices(Layout &layout)
 
    // Loop over the vertices again to appropriate resize data members such that
    // each data member used the same size for all of it's vertices. This is to
-   // help with mirroring the implementation on the GPU.
+   // help with mirroring the implementation on the GPU where we need a consistent
+   // size for all vertices.
    for (int vertexId = 0; vertexId < size_; vertexId++) {
       // Initialize the data structures for system metrics
       beginTimeHistory_[vertexId].resize(maxEventsPerEpoch);
@@ -250,12 +251,9 @@ void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIn
       for (int edge = start; edge < start + count; ++edge) {
          int edgeIdx = edgeIndexMap.incomingEdgeIndexMap_[edge];
 
-         if (!all911Edges.inUse_[edgeIdx]) {
-            continue;
-         }   // Edge isn't in use
-         if (all911Edges.isAvailable_[edgeIdx]) {
-            continue;
-         }   // Edge doesn't have a call
+         if (!all911Edges.inUse_[edgeIdx] || all911Edges.isAvailable_[edgeIdx]) {
+            continue;   // Edge isn't in use and doesn't have a call
+         }
 
          int dst = all911Edges.destVertexIndex_[edgeIdx];
          // The destination vertex should be the one pulling the information
@@ -292,12 +290,6 @@ void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIn
                                                                << ", queue size: " << dstQueueSize);
             }
          } else {
-            // int queueFull = (int)((1 - (queueFrontIndex >= queueEndIndex))*(numTrunks_[dst] + 1) + queueFrontIndex - queueEndIndex) >= (dstQueueCapacity - busyServers(dst));
-            // droppedCalls(dst) += queueFull && (!all911Edges.isRedial_[edgeIdx]);
-            // receivedCalls(dst) += queueFull && (!all911Edges.isRedial_[edgeIdx]);
-            // if (!queueFull) {
-            // Internal CircularBuffer buffer size is capacity + 1
-            //
             // Transfer call to destination
             assert(((queueFrontIndex + 1) % numTrunks_[dst] + 1) != queueEndIndex);
             vector<Call> &queueBuffer = dstQueue.getBuffer();
@@ -340,31 +332,13 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
 void All911Vertices::advanceCALR(BGSIZE vertexIdx, All911Edges &edges911,
                                  const EdgeIndexMap &edgeIndexMap)
 {
-   // There is only one outgoing edge from CALR to a PSAP
-   BGSIZE start = edgeIndexMap.outgoingEdgeBegin_[vertexIdx];
-   BGSIZE edgeIdx = edgeIndexMap.outgoingEdgeIndexMap_[start];
-   //BGSIZE edgeIdx = edgeIndexMap.outgoingEdgeIndexMap_[edgeIndexMap.outgoingEdgeBegin_[vertexIdx]];
+   // // There is only one outgoing edge from CALR to a PSAP
+   BGSIZE edgeIdx = edgeIndexMap.outgoingEdgeIndexMap_[edgeIndexMap.outgoingEdgeBegin_[vertexIdx]];
 
-   // Check for dropped calls, indicated by the edge not being available
-   if (!edges911.isAvailable_[edgeIdx]) {
-      // If the call is still there, it means that there was no space in the PSAP's waiting
-      // queue. Therefore, this is a dropped call.
-      // If readialing, we assume that it happens immediately and the caller tries until
-      // getting through.
-      if (!edges911.isRedial_[edgeIdx] && initRNG.randDblExc() >= redialP_) {
-         // We only make the edge available if no readialing occurs.
-         edges911.isAvailable_[edgeIdx] = true;
-         LOG4CPLUS_DEBUG(vertexLogger_, "Did not redial at time: " << edges911.call_[edgeIdx].time);
-      } else {
-         // Keep the edge unavailable but mark it as a redial
-         edges911.isRedial_[edgeIdx] = true;
-      }
-   }
+   unsigned char makeAvailable = (1 - edges911.isAvailable_[edgeIdx]) * (1 - edges911.isRedial_[edgeIdx]) * (unsigned char)(initRNG.randDblExc() >= redialP_);
 
-   // unsigned char makeAvailable = (1 - edges911.isAvailable_[edgeIdx]) * (1 - edges911.isRedial_[edgeIdx]) * (unsigned char)(initRNG.randDblExc() >= redialP_);
-
-   // edges911.isAvailable_[edgeIdx] |= makeAvailable;
-   // edges911.isRedial_[edgeIdx] |= (1 - edges911.isAvailable_[edgeIdx]) * (1 - makeAvailable);
+   edges911.isAvailable_[edgeIdx] |= makeAvailable;
+   edges911.isRedial_[edgeIdx] |= (1 - edges911.isAvailable_[edgeIdx]) * (1 - makeAvailable);
 
    // We can use CircularBuffer methods because we don't need the caller region queue
    // to behave like it only has a capacity of numTrunks_ like we do for other vertices.
@@ -400,12 +374,20 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
       availableServers[serverIndex] = false;
    }
    for (size_t server = 0; server < numberOfServers; ++server) {
-      if (serverCountdown_[vertexIdx][server] == 0) {
-         // Server is available to take calls. This check is needed because calls
-         // could have duration of zero or server has not been assigned a call yet
-         availableServers[server] = true;
-         numberOfAvailableServers++;
-      } else if (--serverCountdown_[vertexIdx][server] == 0) {
+      int countdown = serverCountdown_[vertexIdx][server];
+      // Check if countdown was already 0
+      int countdownWasZero = countdown == 0;
+
+      // Decrement if it was not already 0
+      countdown -= (1 - countdownWasZero);
+      serverCountdown_[vertexIdx][server] = countdown;
+
+      // Set the available server if it was already available or became available
+      availableServers[server] = (unsigned char)(countdown == 0);
+      numberOfAvailableServers += (countdown == 0);
+
+      // If it became zero, the unit responds to the new incident
+      if ((!countdownWasZero) & (countdown == 0)) {
          // Server becomes free to take calls
          // TODO: What about wrap-up time?
          Call &endingCall = servingCall_[vertexIdx][server];
@@ -430,11 +412,6 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
          endingCall.time = g_simulationStep;
          edges911.call_[respEdge] = endingCall;
          edges911.isAvailable_[respEdge] = false;
-
-         // This assumes that the caller doesn't stay in the line until the responder
-         // arrives on scene. This not true in all instances.
-         availableServers[server] = true;
-         numberOfAvailableServers++;
       }
    }
 
@@ -510,7 +487,6 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
    Layout &layout = Simulator::getInstance().getModel().getLayout();
    Layout911 &layout911 = dynamic_cast<Layout911 &>(layout);
 
-   //int numberOfUnits = numServers_[vertexIdx];
    // Free the units finishing up with emergency responses
    int numberOfAvailableUnits = 0;
    vector<unsigned char>
@@ -520,29 +496,20 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
       availableUnits[unitIndex] = false;
    }
    for (size_t unit = 0; unit < numServers_[vertexIdx]; ++unit) {
-      // int countdown = serverCountdown_[vertexIdx][unit];
-      // // Check if countdown was already 0
-      // int countdownWasZero = countdown == 0;
+      int countdown = serverCountdown_[vertexIdx][unit];
+      // Check if countdown was already 0
+      int countdownWasZero = countdown == 0;
 
-      // // Decrement if it was not already 0
-      // countdown -= (1 - countdownWasZero);
-      // serverCountdown_[vertexIdx][unit] = countdown;
+      // Decrement if it was not already 0
+      countdown -= (1 - countdownWasZero);
+      serverCountdown_[vertexIdx][unit] = countdown;
 
-      // // Countdown became zero after decrement so unit is becoming available
-      // //int countdownNowZero = countdown == 0;
+      // Set the available unit if it was already available or became available
+      availableUnits[unit] = (unsigned char)(countdown == 0);
+      numberOfAvailableUnits += (countdown == 0);
 
-      // // Set the available unit if it was already available or became available
-      // availableUnits[unit] = (unsigned char)(countdown == 0);
-      // numberOfAvailableUnits += (countdown == 0);
-
-      // // If it became zero, the unit responds to the new incident
-      // //int countdownBecameZero = (!countdownWasZero) & countdownNowZero;
-      // if ((!countdownWasZero) & (countdown == 0)) {
-      if (serverCountdown_[vertexIdx][unit] == 0) {
-         // Unit is available
-         availableUnits[unit] = true;
-         numberOfAvailableUnits++;
-      } else if (--serverCountdown_[vertexIdx][unit] == 0) {
+      // If it became zero, the unit responds to the new incident
+      if ((!countdownWasZero) & (countdown == 0)) {
          // Unit becomes available to responde to new incidents
          Call &endingIncident = servingCall_[vertexIdx][unit];
 
@@ -555,10 +522,6 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
                          "Finishing response, begin time: "
                             << endingIncident.time << ", end time: " << g_simulationStep
                             << ", waited: " << answerTime_[vertexIdx][unit] - endingIncident.time);
-
-         // Unit is added to available units
-         availableUnits[unit] = true;
-         numberOfAvailableUnits++;
       }
    }
 
@@ -575,24 +538,13 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
       vertexQueues_[vertexIdx].setEndIndex(newEndIndex);
 
       // The available unit starts serving the call
-      int availUnit;
-      for (BGSIZE unitIndex = 0; unitIndex < numServers_[vertexIdx]; unitIndex++) {
-         if (availableUnits[unitIndex] == true) {
-            // If server is available, have that server serve the call
-            availUnit = unitIndex;
-            availableUnits[unitIndex] = false;
-            break;
-         }
+      int availUnit = -1;
+      for(BGSIZE unitIndex = 0; unitIndex < numServers_[vertexIdx]; unitIndex++) {
+         // Add 0 if unit is not available or 1 + unitIndex if it's available and a unit has not already been found
+         availUnit += (availableUnits[unitIndex] == true && availUnit == -1) * (unitIndex + 1);
+         // Flip value only if the unit is available and a unit has not been found
+         availableUnits[unitIndex] = (unsigned char)(availableUnits[unitIndex] == true - (availableUnits[unitIndex] == true && availUnit == -1));
       }
-      // int availUnit = -1;
-      // for(BGSIZE unitIndex = 0; unitIndex < numServers_[vertexIdx]; unitIndex++) {
-      //    //int unitIsAvailable = availableUnits[unitIndex] == true;
-      //    //int unitNotFound = availUnit == -1;
-      //    // Add 0 if unit is not available or 1 + unitIndex if it's available and a unit has not already been found
-      //    availUnit += (availableUnits[unitIndex] == true && availUnit == -1) * (unitIndex + 1);
-      //    // Flip value only if the unit is available and a unit has not been found
-      //    availableUnits[unitIndex] = (unsigned char)(availableUnits[unitIndex] == true - (availableUnits[unitIndex] == true && availUnit == -1));
-      // }
       servingCall_[vertexIdx][availUnit] = incident;
       answerTime_[vertexIdx][availUnit] = g_simulationStep;
 

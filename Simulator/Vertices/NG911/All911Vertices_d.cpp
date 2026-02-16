@@ -2409,25 +2409,9 @@ __device__ void advanceCALRVerticesDevice(int vertexId, uint64_t stepsPerEpoch,
                                           EdgeIndexMapDevice *edgeIndexMapDevice)
 {
    // There is only one outgoing edge from CALR to a PSAP
-   //BGSIZE start = edgeIndexMapDevice->outgoingEdgeBegin_[vertexId];
    BGSIZE edgeIdx
       = edgeIndexMapDevice->outgoingEdgeIndexMap_[edgeIndexMapDevice->outgoingEdgeBegin_[vertexId]];
 
-   // Check for dropped calls, indicated by the edge not being available
-   // if (!allEdgesDevice->isAvailable_[edgeIdx]) {
-   //    // If the call is still there, it means that there was no space in the PSAP's waiting
-   //    // queue. Therefore, this is a dropped call.
-   //    // If readialing, we assume that it happens immediately and the caller tries until
-   //    // getting through.
-   //    if (!allEdgesDevice->isRedial_[edgeIdx] && redialValue >= redialProbability) {
-   //       // We only make the edge available if no readialing occurs.
-   //       allEdgesDevice->isAvailable_[edgeIdx] = true;
-   //       //LOG4CPLUS_DEBUG(vertexLogger_, "Did not redial at time: " << edges911.call_[edgeIdx].time);
-   //    } else {
-   //       // Keep the edge unavailable but mark it as a redial
-   //       allEdgesDevice->isRedial_[edgeIdx] = true;
-   //    }
-   // }
    unsigned char makeAvailable = (1 - allEdgesDevice->isAvailable_[edgeIdx])
                                  * (1 - allEdgesDevice->isRedial_[edgeIdx])
                                  * (unsigned char)(redialValue >= redialProbability);
@@ -2491,130 +2475,7 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx, int maxEventsPerEpoch,
              vertexIdx);
       return;
    }
-   // Initialize to no servers having been assigned a call yet
-   // for (BGSIZE serverIndex = 0; serverIndex < allVerticesDevice->numServers_[vertexIdx]; serverIndex++) {
-   //    availableServers[serverIndex] = false;
-   // }
    for (size_t server = 0; server < allVerticesDevice->numServers_[vertexIdx]; ++server) {
-      // if (allVerticesDevice->serverCountdown_[vertexIdx][server] == 0) {
-      //    // Server is available to take calls. This check is needed because calls
-      //    // could have duration of zero or server has not been assigned a call yet
-      //    availableServers[server] = true;
-      //    numberOfAvailableServers++;
-      // } else if (--allVerticesDevice->serverCountdown_[vertexIdx][server] == 0) {
-      //    // Server becomes free to take calls
-      //    // TODO: What about wrap-up time?
-
-      //    //Store call metrics
-      //    // Store wasAbandonedHistory
-      //    // EventBuffer::insertEvent
-      //    if (allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
-      //       printf("ERROR: wasAbandonHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx]);
-      //       return;
-      //    }
-      //    int &abandonedHistoryQueueEnd = allVerticesDevice->wasAbandonedHistoryBufferEnd_[vertexIdx];
-      //    allVerticesDevice->wasAbandonedHistory_[vertexIdx][abandonedHistoryQueueEnd] = false;
-      //    abandonedHistoryQueueEnd = (abandonedHistoryQueueEnd + 1) % maxEventsPerEpoch;
-      //    allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx]++;
-      //    // Store beginTimeHistory
-      //    // EventBuffer::insertEvent
-      //    if (allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
-      //       printf("ERROR: beginTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx]);
-      //       return;
-      //    }
-      //    int &beginHistoryQueueEnd = allVerticesDevice->beginTimeHistoryBufferEnd_[vertexIdx];
-      //    allVerticesDevice->beginTimeHistory_[vertexIdx][beginHistoryQueueEnd] = allVerticesDevice->servingCallBufferTime_[vertexIdx][server];
-      //    beginHistoryQueueEnd = (beginHistoryQueueEnd + 1) % maxEventsPerEpoch;
-      //    allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx]++;
-      //    // Store answerTimeHistory
-      //    // EventBuffer::insertEvent
-      //    if (allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
-      //       printf("ERROR: answerTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx]);
-      //       return;
-      //    }
-      //    int &answerHistoryQueueEnd = allVerticesDevice->answerTimeHistoryBufferEnd_[vertexIdx];
-      //    allVerticesDevice->answerTimeHistory_[vertexIdx][answerHistoryQueueEnd] = allVerticesDevice->answerTime_[vertexIdx][server];
-      //    answerHistoryQueueEnd = (answerHistoryQueueEnd + 1) % maxEventsPerEpoch;
-      //    allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx]++;
-      //    // Store endTimeHistory
-      //    // EventBuffer::insertEvent
-      //    if (allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
-      //       printf("ERROR: endTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx]);
-      //       return;
-      //    }
-      //    int &endHistoryQueueEnd = allVerticesDevice->endTimeHistoryBufferEnd_[vertexIdx];
-      //    allVerticesDevice->endTimeHistory_[vertexIdx][endHistoryQueueEnd] = simulationStep;
-      //    endHistoryQueueEnd = (endHistoryQueueEnd + 1) % maxEventsPerEpoch;
-      //    allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx]++;
-
-      //    int requiredType = allVerticesDevice->servingCallBufferResponderType_[vertexIdx][server];
-
-      //    // loop over the outgoing edges looking for the responder with the shortest
-      //    // Euclidean distance to the call's location.
-      //    BGSIZE startOutEdg = edgeIndexMapDevice->outgoingEdgeBegin_[vertexIdx];
-      //    BGSIZE outEdgCount = edgeIndexMapDevice->outgoingEdgeCount_[vertexIdx];
-
-      //    BGSIZE resp, respEdge;
-      //    BGFLOAT minDistance = FLT_MAX;
-      //    for (BGSIZE eIdxMap = startOutEdg; eIdxMap < startOutEdg + outEdgCount; ++eIdxMap) {
-      //       BGSIZE outEdg = edgeIndexMapDevice->outgoingEdgeIndexMap_[eIdxMap];
-      //       if (!allEdgesDevice->inUse_[outEdg]) {
-      //          printf("ERROR: Edge must be in use. Edge ID [%d] Vertex ID [%d]\n", outEdg, vertexIdx);
-      //          return;
-      //       }
-
-      //       BGSIZE dstVertex = allEdgesDevice->destVertexIndex_[outEdg];
-      //       if (allVerticesDevice->vertexType_[dstVertex] == requiredType) {
-      //          //  call x
-      //          BGFLOAT callX = allVerticesDevice->servingCallBufferX_[vertexIdx][server];
-      //          //  call y
-      //          BGFLOAT callY = allVerticesDevice->servingCallBufferY_[vertexIdx][server];
-      //          //  Vertex x
-      //          BGFLOAT dstVertexLocationX = xLocation[dstVertex];
-      //          //  Vertex y
-      //          BGFLOAT dstVertexLocationY = yLocation[dstVertex];
-      //          // Calculates the distance between the given vertex and the (x, y) coordinates of a call
-      //          BGFLOAT distance = sqrtf(powf(callX - dstVertexLocationX, 2) + (powf(callY - dstVertexLocationY, 2)));
-
-      //          if (distance < minDistance) {
-      //             minDistance = distance;
-      //             resp = dstVertex;
-      //             respEdge = outEdg;
-      //          }
-      //       }
-      //    }
-
-      //    // We must have found the closest responder of the right type
-      //    if (minDistance >= FLT_MAX) {
-      //       printf("ERROR: Distance found was not the minimum distance. Distance [%f] Responder Edge ID [%u] Vertex ID [%d]\n", minDistance, respEdge, vertexIdx);
-      //       return;
-      //    }
-      //    if (allVerticesDevice->vertexType_[resp] != requiredType) {
-      //       printf("ERROR: Responder vertex was the wrong type. Responder Type [%d] Required Type [%d]\n", allVerticesDevice->vertexType_[respEdge], requiredType);
-      //       return;
-      //    }
-
-      //    // Place the call in the edge going to the responder
-      //    // Call becomes a dispatch order at this time
-      //    allVerticesDevice->servingCallBufferTime_[vertexIdx][server] = simulationStep;
-
-      //    //edges911.call_[respEdge] = endingCall;
-      //    allEdgesDevice->vertexId_[respEdge] = allVerticesDevice->servingCallBufferVertexId_[vertexIdx][server];
-      //    allEdgesDevice->time_[respEdge] = allVerticesDevice->servingCallBufferTime_[vertexIdx][server];
-      //    allEdgesDevice->duration_[respEdge] = allVerticesDevice->servingCallBufferDuration_[vertexIdx][server];
-      //    allEdgesDevice->x_[respEdge] = allVerticesDevice->servingCallBufferX_[vertexIdx][server];
-      //    allEdgesDevice->y_[respEdge] = allVerticesDevice->servingCallBufferY_[vertexIdx][server];
-      //    allEdgesDevice->patience_[respEdge] = allVerticesDevice->servingCallBufferPatience_[vertexIdx][server];
-      //    allEdgesDevice->onSiteTime_[respEdge] = allVerticesDevice->servingCallBufferOnSiteTime_[vertexIdx][server];
-      //    allEdgesDevice->responderType_[respEdge] = allVerticesDevice->servingCallBufferResponderType_[vertexIdx][server];
-
-      //    allEdgesDevice->isAvailable_[respEdge] = false;
-
-      //    // This assumes that the caller doesn't stay in the line until the responder
-      //    // arrives on scene. This not true in all instances.
-      //    availableServers[server] = true;
-      //    numberOfAvailableServers++;
-      // }
       int countdown = allVerticesDevice->serverCountdown_[vertexIdx][server];
       // Check if countdown was already 0
       int countdownWasZero = countdown == 0;
@@ -2623,15 +2484,11 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx, int maxEventsPerEpoch,
       countdown -= (1 - countdownWasZero);
       allVerticesDevice->serverCountdown_[vertexIdx][server] = countdown;
 
-      // Countdown became zero after decrement so unit is becoming available
-      //int countdownNowZero = countdown == 0;
-
       // Set the available unit if it was already available or became available
       availableServers[server] = (unsigned char)(countdown == 0);
       numberOfAvailableServers += (countdown == 0);
 
       // If it became zero, the unit responds to the new incident
-      //int countdownBecameZero = (!countdownWasZero) & countdownNowZero;
       if ((!countdownWasZero) & (countdown == 0)) {
          // Server becomes free to take calls
          // TODO: What about wrap-up time?
@@ -2714,14 +2571,6 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx, int maxEventsPerEpoch,
                    ->vertexType_[allEdgesDevice->destVertexIndex_
                                     [edgeIndexMapDevice->outgoingEdgeIndexMap_[eIdxMap]]]
                 == allVerticesDevice->servingCallBufferResponderType_[vertexIdx][server]) {
-               //  call x
-               //BGFLOAT callX = allVerticesDevice->servingCallBufferX_[vertexIdx][server];
-               //  call y
-               //BGFLOAT callY = allVerticesDevice->servingCallBufferY_[vertexIdx][server];
-               //  Vertex x
-               //BGFLOAT dstVertexLocationX = xLocation[allEdgesDevice->destVertexIndex_[edgeIndexMapDevice->outgoingEdgeIndexMap_[eIdxMap]]];
-               //  Vertex y
-               //BGFLOAT dstVertexLocationY = yLocation[allEdgesDevice->destVertexIndex_[edgeIndexMapDevice->outgoingEdgeIndexMap_[eIdxMap]]];
                // Calculates the distance between the given vertex and the (x, y) coordinates of a call
                BGFLOAT distance = sqrtf(
                   powf(allVerticesDevice->servingCallBufferX_[vertexIdx][server]
@@ -2867,13 +2716,6 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx, int maxEventsPerEpoch,
          int availServer = -1;
          for (BGSIZE serverIndex = 0; serverIndex < allVerticesDevice->numServers_[vertexIdx];
               serverIndex++) {
-            // if (availableServers[serverIndex] == true) {
-            //    // If server is available, have that server serve the call
-            //    availServer = serverIndex;
-            //    availableServers[serverIndex] = false;
-            //    currentlyAvailableServers--;
-            //    break;
-            // }
             // Add 0 if server is not available or 1 + serverIndex if it's available and a server has not already been found
             availServer
                += (availableServers[serverIndex] == true && availServer == -1) * (serverIndex + 1);
@@ -2914,7 +2756,6 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx, int maxEventsPerEpoch,
    // } else {
    //    queueSize = stepsPerEpoch + queueFrontIndex - queueEndIndex;
    // }
-   //queueSize = stepsPerEpoch * (1 - (queueFrontIndex >= queueEndIndex)) + queueFrontIndex - queueEndIndex;
    // EventBuffer::insertEvent
    if (allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx] >= stepsPerEpoch) {
       printf("ERROR: queueLengthHistory buffer is full. Vertex ID [%d] Buffer size [%" PRIu64
@@ -2926,7 +2767,7 @@ __device__ void advancePSAPVerticesDevice(int vertexIdx, int maxEventsPerEpoch,
    int &queueLengthHistoryQueueEnd = allVerticesDevice->queueLengthHistoryBufferEnd_[vertexIdx];
    allVerticesDevice->queueLengthHistory_[vertexIdx][queueLengthHistoryQueueEnd]
       = stepsPerEpoch * (1 - (allVerticesDevice->vertexQueuesFront_[vertexIdx] >= queueEndIndex))
-        + allVerticesDevice->vertexQueuesFront_[vertexIdx] - queueEndIndex;
+        + allVerticesDevice->vertexQueuesFront_[vertexIdx] - queueEndIndex;//queueSize
    queueLengthHistoryQueueEnd = (queueLengthHistoryQueueEnd + 1) % stepsPerEpoch;
    allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx]++;
    // EventBuffer::insertEvent
@@ -2968,63 +2809,7 @@ __device__ void advanceRESPVerticesDevice(int vertexIdx, int maxEventsPerEpoch,
              vertexIdx);
       return;
    }
-   // for (BGSIZE unitIndex = 0; unitIndex < numberOfUnits; unitIndex++) {
-   //    availableUnits[unitIndex] = false;
-   // }
    for (size_t unit = 0; unit < allVerticesDevice->numServers_[vertexIdx]; ++unit) {
-      // if (allVerticesDevice->serverCountdown_[vertexIdx][unit] == 0) {
-      //    // Unit is available
-      //    availableUnits[unit] = true;
-      //    numberOfAvailableUnits++;
-      // } else if (--allVerticesDevice->serverCountdown_[vertexIdx][unit] == 0) {
-      //    // Unit becomes available to responde to new incidents
-
-      //    //Store incident response metrics
-      //    // Store wasAbandonedHistory
-      //    // EventBuffer::insertEvent
-      //    if (allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
-      //       printf("ERROR: wasAbandonHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx]);
-      //       return;
-      //    }
-      //    int &abandonedHistoryQueueEnd = allVerticesDevice->wasAbandonedHistoryBufferEnd_[vertexIdx];
-      //    allVerticesDevice->wasAbandonedHistory_[vertexIdx][abandonedHistoryQueueEnd] = false;
-      //    abandonedHistoryQueueEnd = (abandonedHistoryQueueEnd + 1) % maxEventsPerEpoch;
-      //    allVerticesDevice->wasAbandonedHistoryNumElementsInEpoch_[vertexIdx]++;
-      //    // Store beginTimeHistory
-      //    // EventBuffer::insertEvent
-      //    if (allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
-      //       printf("ERROR: beginTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx]);
-      //       return;
-      //    }
-      //    int &beginHistoryQueueEnd = allVerticesDevice->beginTimeHistoryBufferEnd_[vertexIdx];
-      //    allVerticesDevice->beginTimeHistory_[vertexIdx][beginHistoryQueueEnd] = allVerticesDevice->servingCallBufferTime_[vertexIdx][unit];
-      //    beginHistoryQueueEnd = (beginHistoryQueueEnd + 1) % maxEventsPerEpoch;
-      //    allVerticesDevice->beginTimeHistoryNumElementsInEpoch_[vertexIdx]++;
-      //    // Store answerTimeHistory
-      //    // EventBuffer::insertEvent
-      //    if (allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
-      //       printf("ERROR: answerTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx]);
-      //       return;
-      //    }
-      //    int &answerHistoryQueueEnd = allVerticesDevice->answerTimeHistoryBufferEnd_[vertexIdx];
-      //    allVerticesDevice->answerTimeHistory_[vertexIdx][answerHistoryQueueEnd] = allVerticesDevice->answerTime_[vertexIdx][unit];
-      //    answerHistoryQueueEnd = (answerHistoryQueueEnd + 1) % maxEventsPerEpoch;
-      //    allVerticesDevice->answerTimeHistoryNumElementsInEpoch_[vertexIdx]++;
-      //    // Store endTimeHistory
-      //    // EventBuffer::insertEvent
-      //    if (allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx] >= maxEventsPerEpoch) {
-      //       printf("ERROR: endTimeHistory buffer is full. Vertex ID [%d] Buffer size [%d] Number of Elements in Epoch [%d]\n", vertexIdx, maxEventsPerEpoch, allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx]);
-      //       return;
-      //    }
-      //    int &endHistoryQueueEnd = allVerticesDevice->endTimeHistoryBufferEnd_[vertexIdx];
-      //    allVerticesDevice->endTimeHistory_[vertexIdx][endHistoryQueueEnd] = simulationStep;
-      //    endHistoryQueueEnd = (endHistoryQueueEnd + 1) % maxEventsPerEpoch;
-      //    allVerticesDevice->endTimeHistoryNumElementsInEpoch_[vertexIdx]++;
-
-      //    // Unit is added to available units
-      //    availableUnits[unit] = true;
-      //    numberOfAvailableUnits++;
-      // }
       int countdown = allVerticesDevice->serverCountdown_[vertexIdx][unit];
       // Check if countdown was already 0
       int countdownWasZero = countdown == 0;
@@ -3033,15 +2818,11 @@ __device__ void advanceRESPVerticesDevice(int vertexIdx, int maxEventsPerEpoch,
       countdown -= (1 - countdownWasZero);
       allVerticesDevice->serverCountdown_[vertexIdx][unit] = countdown;
 
-      // Countdown became zero after decrement so unit is becoming available
-      //int countdownNowZero = countdown == 0;
-
       // Set the available unit if it was already available or became available
       availableUnits[unit] = (unsigned char)(countdown == 0);
       numberOfAvailableUnits += (countdown == 0);
 
       // If it became zero, the unit responds to the new incident
-      //int countdownBecameZero = (!countdownWasZero) & countdownNowZero;
       if ((!countdownWasZero) & (countdown == 0)) {
          // Unit becomes available to responde to new incidents
 
@@ -3110,7 +2891,6 @@ __device__ void advanceRESPVerticesDevice(int vertexIdx, int maxEventsPerEpoch,
 
    // Assign reponse dispatches until no units are available or there are no more
    // incidents in the waiting queue
-   //uint64_t queueFrontIndex = allVerticesDevice->vertexQueuesFront_[vertexIdx];
    uint64_t &queueEndIndex = allVerticesDevice->vertexQueuesEnd_[vertexIdx];
    for (size_t unit = 0; unit < numberOfAvailableUnits
                          && !(allVerticesDevice->vertexQueuesFront_[vertexIdx] == queueEndIndex);
@@ -3131,18 +2911,8 @@ __device__ void advanceRESPVerticesDevice(int vertexIdx, int maxEventsPerEpoch,
 
       // The available unit starts serving the call
       int availUnit = -1;
-      // for(BGSIZE unitIndex = 0; unitIndex < numberOfUnits; unitIndex++) {
-      //    if (availableUnits[unitIndex] == true) {
-      //       // If server is available, have that server serve the call
-      //       availUnit = unitIndex;
-      //       availableUnits[unitIndex] = false;
-      //       break;
-      //    }
-      // }
       for (BGSIZE unitIndex = 0; unitIndex < allVerticesDevice->numServers_[vertexIdx];
            unitIndex++) {
-         //int unitIsAvailable = availableUnits[unitIndex] == true;
-         //int unitNotFound = availUnit == -1;
          // Add 0 if unit is not available or 1 + unitIndex if it's available and a unit has not already been found
          availUnit += (availableUnits[unitIndex] == true && availUnit == -1) * (unitIndex + 1);
          // Flip value only if the unit is available and a unit has not been found
@@ -3196,7 +2966,6 @@ __device__ void advanceRESPVerticesDevice(int vertexIdx, int maxEventsPerEpoch,
    // // } else {
    // //    queueSize = stepsPerEpoch + queueFrontIndex - queueEndIndex;
    // // }
-   // queueSize = stepsPerEpoch * (1 - queueFrontIndex >= queueEndIndex) + queueFrontIndex - queueEndIndex;
    // EventBuffer::insertEvent
    if (allVerticesDevice->queueLengthHistoryNumElementsInEpoch_[vertexIdx] >= stepsPerEpoch) {
       printf("ERROR: queueLengthHistory buffer is full. Vertex ID [%d] Buffer size [%" PRIu64
@@ -3275,12 +3044,6 @@ __global__ void maybeTakeCallFromEdge(int totalVertices, uint64_t stepsPerEpoch,
         ++edge) {
       int edgeIdx = edgeIndexMapDevice->incomingEdgeIndexMap_[edge];
 
-      // if (!allEdgesDevice->inUse_[edgeIdx]) {
-      //    continue;
-      // }   // Edge isn't in use
-      // if (allEdgesDevice->isAvailable_[edgeIdx]) {
-      //    continue;
-      // }   // Edge doesn't have a call
       if (!allEdgesDevice->inUse_[edgeIdx] || allEdgesDevice->isAvailable_[edgeIdx]) {
          continue;   // Edge isn't in use and doesn't have a call
       }
@@ -3295,93 +3058,32 @@ __global__ void maybeTakeCallFromEdge(int totalVertices, uint64_t stepsPerEpoch,
       }
 
       // Compute the size of the destination queue
-      uint64_t dstQueueSize;
       uint64_t queueFrontIndex = allVerticesDevice->vertexQueuesFront_[dstIndex];
-      uint64_t queueEndIndex = allVerticesDevice->vertexQueuesEnd_[dstIndex];
-      if (queueFrontIndex >= queueEndIndex) {
-         dstQueueSize = queueFrontIndex - queueEndIndex;
-      } else {
-         dstQueueSize
-            = allVerticesDevice->numTrunks_[dstIndex] + 1 + queueFrontIndex - queueEndIndex;
-      }
-      //dstQueueSize =  (1 - (queueFrontIndex >= allVerticesDevice->vertexQueuesEnd_[dstIndex])) * (allVerticesDevice->numTrunks_[dstIndex] + 1) + queueFrontIndex - allVerticesDevice->vertexQueuesEnd_[dstIndex];
-
-      // Compute the capacity of the destination queue
-      int dstQueueCapacity = allVerticesDevice->numTrunks_[dstIndex];
-
-      // Get the number fo busy servers at the destination vertex
-      int dstBusyServers = allVerticesDevice->busyServers_[dstIndex];
-
-      // Size can't be negative but we need to be able to compare it to a possible negative waiting queue
-      // so cast the size to an int for comparison
-      if ((int)dstQueueSize >= (dstQueueCapacity - dstBusyServers)) {
-         // Call is dropped because there is no space in the waiting queue
-         if (!allEdgesDevice->isRedial_[edgeIdx]) {
-            // Only count the dropped call if it's not a redial
-            allVerticesDevice->droppedCalls_[dstIndex]++;
-            // Record that we received a call
-            allVerticesDevice->receivedCalls_[dstIndex]++;
-         }
-      } else {
+      int queueFull = (int)((1 - (queueFrontIndex >= allVerticesDevice->vertexQueuesEnd_[dstIndex])) * (allVerticesDevice->numTrunks_[dstIndex] + 1) + queueFrontIndex - allVerticesDevice->vertexQueuesEnd_[dstIndex]) >= (allVerticesDevice->numTrunks_[dstIndex] - allVerticesDevice->busyServers_[dstIndex]);
+      allVerticesDevice->droppedCalls_[dstIndex] += queueFull && (!allEdgesDevice->isRedial_[edgeIdx]);
+      allVerticesDevice->receivedCalls_[dstIndex] += queueFull && (!allEdgesDevice->isRedial_[edgeIdx]);
+      if (!queueFull) {
          // Transfer call to destination
          // We throw an error if the buffer is full
-         if (((queueFrontIndex + 1) % (allVerticesDevice->numTrunks_[dstIndex] + 1))
-             == queueEndIndex) {
-            printf("ERROR: Vertex queue is full. Vertex ID [%d] Front Index [%" PRIu64
-                   "] End Index [%" PRIu64 "] Buffer size [%" PRIu64 "]\n",
-                   dstIndex, queueFrontIndex, queueEndIndex,
-                   (allVerticesDevice->numTrunks_[dstIndex] + 1));
+         if (((queueFrontIndex + 1) % (allVerticesDevice->numTrunks_[dstIndex] + 1)) == allVerticesDevice->vertexQueuesEnd_[dstIndex]) {
+            printf("ERROR: Vertex queue is full. Vertex ID [%d] Front Index [%" PRIu64 "] End Index [%" PRIu64 "] Buffer size [%" PRIu64 "]\n", dstIndex, queueFrontIndex, allVerticesDevice->vertexQueuesEnd_[dstIndex], (allVerticesDevice->numTrunks_[dstIndex] + 1));
             return;
          }
          // Insert the new element and increment the front index
-         allVerticesDevice->vertexQueuesBufferVertexId_[dstIndex][queueFrontIndex]
-            = allEdgesDevice->vertexId_[edgeIdx];
-         allVerticesDevice->vertexQueuesBufferTime_[dstIndex][queueFrontIndex]
-            = allEdgesDevice->time_[edgeIdx];
-         allVerticesDevice->vertexQueuesBufferDuration_[dstIndex][queueFrontIndex]
-            = allEdgesDevice->duration_[edgeIdx];
-         allVerticesDevice->vertexQueuesBufferX_[dstIndex][queueFrontIndex]
-            = allEdgesDevice->x_[edgeIdx];
-         allVerticesDevice->vertexQueuesBufferY_[dstIndex][queueFrontIndex]
-            = allEdgesDevice->y_[edgeIdx];
-         allVerticesDevice->vertexQueuesBufferPatience_[dstIndex][queueFrontIndex]
-            = allEdgesDevice->patience_[edgeIdx];
-         allVerticesDevice->vertexQueuesBufferOnSiteTime_[dstIndex][queueFrontIndex]
-            = allEdgesDevice->onSiteTime_[edgeIdx];
-         allVerticesDevice->vertexQueuesBufferResponderType_[dstIndex][queueFrontIndex]
-            = allEdgesDevice->responderType_[edgeIdx];
-         allVerticesDevice->vertexQueuesFront_[dstIndex]
-            = (queueFrontIndex + 1) % (allVerticesDevice->numTrunks_[dstIndex] + 1);
+         allVerticesDevice->vertexQueuesBufferVertexId_[dstIndex][queueFrontIndex] = allEdgesDevice->vertexId_[edgeIdx];
+         allVerticesDevice->vertexQueuesBufferTime_[dstIndex][queueFrontIndex] = allEdgesDevice->time_[edgeIdx];
+         allVerticesDevice->vertexQueuesBufferDuration_[dstIndex][queueFrontIndex] = allEdgesDevice->duration_[edgeIdx];
+         allVerticesDevice->vertexQueuesBufferX_[dstIndex][queueFrontIndex] = allEdgesDevice->x_[edgeIdx];
+         allVerticesDevice->vertexQueuesBufferY_[dstIndex][queueFrontIndex] = allEdgesDevice->y_[edgeIdx];
+         allVerticesDevice->vertexQueuesBufferPatience_[dstIndex][queueFrontIndex] = allEdgesDevice->patience_[edgeIdx];
+         allVerticesDevice->vertexQueuesBufferOnSiteTime_[dstIndex][queueFrontIndex] = allEdgesDevice->onSiteTime_[edgeIdx];
+         allVerticesDevice->vertexQueuesBufferResponderType_[dstIndex][queueFrontIndex] = allEdgesDevice->responderType_[edgeIdx];
+         allVerticesDevice->vertexQueuesFront_[dstIndex] = (queueFrontIndex + 1) % (allVerticesDevice->numTrunks_[dstIndex] + 1);
          // Record that we received a call
          allVerticesDevice->receivedCalls_[dstIndex]++;
          allEdgesDevice->isAvailable_[edgeIdx] = true;
          allEdgesDevice->isRedial_[edgeIdx] = false;
       }
-      // int queueFull = (int)((1 - (queueFrontIndex >= allVerticesDevice->vertexQueuesEnd_[dstIndex])) * (allVerticesDevice->numTrunks_[dstIndex] + 1) + queueFrontIndex - allVerticesDevice->vertexQueuesEnd_[dstIndex]) >= (allVerticesDevice->numTrunks_[dstIndex] - allVerticesDevice->busyServers_[dstIndex]);
-      // allVerticesDevice->droppedCalls_[dstIndex] += queueFull && (!allEdgesDevice->isRedial_[edgeIdx]);
-      // allVerticesDevice->receivedCalls_[dstIndex] += queueFull && (!allEdgesDevice->isRedial_[edgeIdx]);
-      // if (!queueFull) {
-      //    // Transfer call to destination
-      //    // We throw an error if the buffer is full
-      //    if (((queueFrontIndex + 1) % (allVerticesDevice->numTrunks_[dstIndex] + 1)) == allVerticesDevice->vertexQueuesEnd_[dstIndex]) {
-      //       printf("ERROR: Vertex queue is full. Vertex ID [%d] Front Index [%" PRIu64 "] End Index [%" PRIu64 "] Buffer size [%" PRIu64 "]\n", dstIndex, queueFrontIndex, allVerticesDevice->vertexQueuesEnd_[dstIndex], (allVerticesDevice->numTrunks_[dstIndex] + 1));
-      //       return;
-      //    }
-      //    // Insert the new element and increment the front index
-      //    allVerticesDevice->vertexQueuesBufferVertexId_[dstIndex][queueFrontIndex] = allEdgesDevice->vertexId_[edgeIdx];
-      //    allVerticesDevice->vertexQueuesBufferTime_[dstIndex][queueFrontIndex] = allEdgesDevice->time_[edgeIdx];
-      //    allVerticesDevice->vertexQueuesBufferDuration_[dstIndex][queueFrontIndex] = allEdgesDevice->duration_[edgeIdx];
-      //    allVerticesDevice->vertexQueuesBufferX_[dstIndex][queueFrontIndex] = allEdgesDevice->x_[edgeIdx];
-      //    allVerticesDevice->vertexQueuesBufferY_[dstIndex][queueFrontIndex] = allEdgesDevice->y_[edgeIdx];
-      //    allVerticesDevice->vertexQueuesBufferPatience_[dstIndex][queueFrontIndex] = allEdgesDevice->patience_[edgeIdx];
-      //    allVerticesDevice->vertexQueuesBufferOnSiteTime_[dstIndex][queueFrontIndex] = allEdgesDevice->onSiteTime_[edgeIdx];
-      //    allVerticesDevice->vertexQueuesBufferResponderType_[dstIndex][queueFrontIndex] = allEdgesDevice->responderType_[edgeIdx];
-      //    allVerticesDevice->vertexQueuesFront_[dstIndex] = (queueFrontIndex + 1) % (allVerticesDevice->numTrunks_[dstIndex] + 1);
-      //    // Record that we received a call
-      //    allVerticesDevice->receivedCalls_[dstIndex]++;
-      //    allEdgesDevice->isAvailable_[edgeIdx] = true;
-      //    allEdgesDevice->isRedial_[edgeIdx] = false;
-      // }
    }
 }
 
