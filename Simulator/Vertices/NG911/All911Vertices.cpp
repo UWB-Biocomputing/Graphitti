@@ -335,7 +335,9 @@ void All911Vertices::advanceCALR(BGSIZE vertexIdx, All911Edges &edges911,
    // // There is only one outgoing edge from CALR to a PSAP
    BGSIZE edgeIdx = edgeIndexMap.outgoingEdgeIndexMap_[edgeIndexMap.outgoingEdgeBegin_[vertexIdx]];
 
-   unsigned char makeAvailable = (1 - edges911.isAvailable_[edgeIdx]) * (1 - edges911.isRedial_[edgeIdx]) * (unsigned char)(initRNG.randDblExc() >= redialP_);
+   unsigned char makeAvailable = (1 - edges911.isAvailable_[edgeIdx])
+                                 * (1 - edges911.isRedial_[edgeIdx])
+                                 * (unsigned char)(initRNG.randDblExc() >= redialP_);
 
    edges911.isAvailable_[edgeIdx] |= makeAvailable;
    edges911.isRedial_[edgeIdx] |= (1 - edges911.isAvailable_[edgeIdx]) * (1 - makeAvailable);
@@ -539,11 +541,13 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
 
       // The available unit starts serving the call
       int availUnit = -1;
-      for(BGSIZE unitIndex = 0; unitIndex < numServers_[vertexIdx]; unitIndex++) {
+      for (BGSIZE unitIndex = 0; unitIndex < numServers_[vertexIdx]; unitIndex++) {
          // Add 0 if unit is not available or 1 + unitIndex if it's available and a unit has not already been found
          availUnit += (availableUnits[unitIndex] == true && availUnit == -1) * (unitIndex + 1);
          // Flip value only if the unit is available and a unit has not been found
-         availableUnits[unitIndex] = (unsigned char)(availableUnits[unitIndex] == true - (availableUnits[unitIndex] == true && availUnit == -1));
+         availableUnits[unitIndex]
+            = (unsigned char)(availableUnits[unitIndex]
+                              == true - (availableUnits[unitIndex] == true && availUnit == -1));
       }
       servingCall_[vertexIdx][availUnit] = incident;
       answerTime_[vertexIdx][availUnit] = g_simulationStep;
