@@ -1,89 +1,72 @@
-# Copilot Instructions
+# GitHub Copilot Custom Instructions
 
 ## Overview
 
-The `copilot-instructions.md` file located in `.github/copilot-instructions.md` provides GitHub Copilot with essential context about the Graphitti project. This file serves as an onboarding guide for AI coding agents, ensuring they understand Graphitti's architecture, conventions, and development practices before assisting with code reviews, pull requests, or code generation.
+The `copilot-instructions.md` file is a special configuration file that allows the development team to tailor GitHub Copilot's behavior specifically for this repository. It functions as a **System Prompt**—context that is silently appended to every interaction you have with Copilot Chat or inline code generation within this project.
 
-## Purpose
-
-This instruction file helps Copilot:
-
-- Understand Graphitti's high-level architecture and purpose
-- Follow the project's C++17 coding standards and style conventions
-- Navigate the repository structure efficiently
-- Apply appropriate testing and CI/CD practices
-- Adhere to contribution guidelines and workflow requirements
+Instead of generic coding assistance, this file forces the AI to adopt our specific coding styles, architecture patterns, and contribution guidelines automatically.
 
 ## File Location
 
-```
-.github/copilot-instructions.md
-```
+[.github/copilot-instructions.md](../../.github/copilot-instructions.md)
 
-## Key Sections
+> [!NOTE]
+> This specific path is required by GitHub for the instructions to be automatically detected.\*
 
-### Repository Summary
+## How It Works
 
-Provides a high-level understanding of Graphitti as a C++17 graph-based simulator for neuroscience and emergency communications modeling, including build system and testing framework information.
+When you ask Copilot a question or ask it to generate code:
 
-### Tech Stack and Validated Tool Versions
+1. Copilot scans the repository context.
+2. It reads `.github/copilot-instructions.md`.
+3. It prioritizes rules defined in this file over its general training data.
 
-Lists the specific tools validated for Graphitti development:
+For example, if the general training data suggests using `std::cout` for C++, but our instructions specify a custom logger class, Copilot will default to the custom logger.
 
-- g++ (C++17 compiler)
-- CMake (build system)
-- clang-format (code formatting)
-- Optional dependencies: CUDA, HDF5, Boost Graph library
+## Structure & What to Include
 
-### Project Layout
+This file is written in standard Markdown. To maintain effectiveness, it should be concise and focused on high-impact rules. Recommended sections include:
 
-Maps the high-signal paths in the repository:
+### 1. High-Level Context
 
-- `Simulator/`: Core simulator implementation
-- `Testing/`: Unit and regression tests
-- `ThirdParty/`: Vendored dependencies
-- `Tools/`: Python utilities
-- `docs/`: Documentation
-- `build/`: CMake build output
+Briefly explain what the software does (e.g., "A low-latency network simulator"). This helps the AI understand variable naming context and performance constraints.
 
-### Style and C++ Standards
+### 2. Technology Stack
 
-Enforces strict coding conventions:
+Explicitly list versions and tools.
 
-- 3-space indentation, 100-column limit
-- camelCase naming (classes uppercase, functions/vars lowercase)
-- `#pragma once` header guards
-- Modern C++17 practices (smart pointers, `constexpr`, etc.)
+- **Good:** "Use C++17 standards. Build system is CMake 3.20+."
+- **Why:** This prevents the AI from suggesting C++20 features we cannot compile or C++98 legacy patterns we want to avoid.
 
-### CI and Validation
+### 3. Coding Style & Conventions
 
-Documents the GitHub Actions workflows for:
+Define the "personality" of the code.
 
-- Unit and regression testing
-- Code formatting validation
-- Documentation generation
-- Diagram updates
+- **Naming:** CamelCase vs. snake_case.
+- **Formatting:** Indentation rules, bracket placement.
+- **Idioms:** "Always use smart pointers," "Avoid raw loops," etc.
 
-### Contribution Hygiene
+### 4. Project-Specific Knowledge
 
-Defines workflow requirements:
+List architectural details that an outsider (or AI) wouldn't know.
 
-- Branch naming: `issue-####-short-description`
-- PR title format: `[ISSUE-####] ...`
-- No direct commits to `master`
+- Folder structure explanations.
+- Key libraries (e.g., "Use strict types from the internal `Types` library, not primitives").
+- Testing frameworks used.
 
-## Usage
+## How to Edit and Maintain
 
-Copilot automatically reads this file when working in the Graphitti repository. Developers do not need to manually reference it during normal development work. The file ensures that Copilot-generated code and suggestions align with Graphitti's established practices.
+As the project evolves, this file must be updated to prevent the AI from giving outdated advice.
 
-## Maintenance
+- **When to update:**
+  - When bumping compiler versions (e.g., C++17 to C++20).
+  - When introducing a new major dependency.
+  - When the team decides to change a styling convention.
+- **Best Practices:**
+  - **Be Explicit:** Do not be vague. Instead of "Write good code," say "Write code that passes `clang-tidy` checks."
+  - **Keep it Updated:** If Copilot consistently makes the same mistake, add a rule here to correct it.
 
-When updating project conventions, tools, or workflows, update the copilot-instructions.md file to keep Copilot's understanding current. This ensures consistent AI assistance across the project lifecycle.
+## External Resources
 
-## Verification
-
-At the start of code reviews or pull request reviews, Copilot will indicate that it has been onboarded using this file, confirming that it has loaded and understood the project context.
-
----
-
-[<< Go back to Developer Documentation](index.md)
+- [GitHub Docs: Configuring GitHub Copilot Custom Instructions](https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot)
+- [GitHub Blog: How to use Copilot Custom Instructions](https://github.blog/changelog/2024-02-08-custom-instructions-for-github-copilot-in-vs-code/)
