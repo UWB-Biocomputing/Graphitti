@@ -8,7 +8,7 @@ This technique is often referred to as "Prompt Engineering." It provides the AI 
 
 ## File Location
 
-[.github/prompts/generate-unit-tests.prompt.md](../../.github/prompts/generate-unit-tests.prompt.md)
+[.github/prompts/generate-unit-tests.prompt.md](https://github.com/UWB-Biocomputing/Graphitti/tree/master/.github/prompts/generate-unit-tests.prompt.md)
 
 ## Why Use a Prompt Template?
 

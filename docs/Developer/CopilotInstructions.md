@@ -8,10 +8,10 @@ Instead of generic coding assistance, this file forces the AI to adopt our speci
 
 ## File Location
 
-[.github/copilot-instructions.md](../../.github/copilot-instructions.md)
+[.github/copilot-instructions.md](https://github.com/UWB-Biocomputing/Graphitti/tree/master/.github/copilot-instructions.md)
 
 > [!NOTE]
-> This specific path is required by GitHub for the instructions to be automatically detected.\*
+> This specific path is required by GitHub for the instructions to be automatically detected.
 
 ## How It Works
 

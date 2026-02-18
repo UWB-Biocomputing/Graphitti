@@ -15,7 +15,7 @@ Apply these rules to every code generation or review task:
 ### Language & Modern C++
 
 - **Standard:** C++17 (Strict).
-- **Forbidden:** `new`/`delete` (use `std::unique_ptr`/`std::shared_ptr`), `printf` (use standard streams or log4cplus), raw loops (prefer `<algorithm>`).
+- **Guidance:** Avoid manual `delete` and owning raw pointers; prefer RAII and smart pointers (`std::unique_ptr`/`std::shared_ptr`). Avoid `printf` (use standard streams or log4cplus). Prefer `<algorithm>` when it improves clarity, but traditional loops are acceptable/expected in performance‑critical paths.
 - **Required:**
   - `[[nodiscard]]` for functions with return values.
   - `const` and `constexpr` wherever possible.

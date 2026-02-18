@@ -24,7 +24,7 @@ Target Code:
 
 # Analysis Phase (Internal Monologue)
 
-Before generating code, perform the following analysis:
+Before generating code, perform the following analysis. Do not output analysis/planning; output only the final C++ test code.
 
 1.  **Identify the SUT (System Under Test):** Is this a Class (`Graph`, `Vertex`) or a free function?
 2.  **Determine Dependencies:** What headers are required? (`#include <gtest/gtest.h>`, project headers).

@@ -29,13 +29,13 @@ Students, use this [quickstart guide](StudentSetup.md) to help setup, use, and d
   - Refer to the [GitHub Pages documentation](GHPages.md) section for an overview of how we use GitHub Pages and editing practices
 - GitHub Actions Workflows
   - We have a [Doxygen Action](GHActions.md#doxygen-action) to regenerate the Doxygen documentation automatically
-  - The [GitHub Pages Action](GHActions.md#github-pages-action) is another action ran along with the Doxygen one
+  - The [GitHub Pages Action](GHActions.md#github-pages-action) is another action run along with the Doxygen one
   - Here is our [plantUML Diagrams Action](GHActions.md#plantuml-action) that regenerates our UML image documents
 
 ## Graphitti System Documentation
 
 - Diagrams
-  - Here is a overview [block UML diagram](ClassDiagrams/hand-drawn.pdf)
+  - Here is an overview [block UML diagram](ClassDiagrams/hand-drawn.pdf)
   - Here is a list of [UML class diagrams](classDiagrams.md) of Graphitti
   - Here are the [sequence UML diagrams](sequenceDiagrams.md) for the Graphitti system
 - Doxygen
