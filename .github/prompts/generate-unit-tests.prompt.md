@@ -1,58 +1,102 @@
 ---
 name: generate-unit-tests
 description: Generate comprehensive Google Test cases for C++17 Graphitti code
-model: Auto (copilot)
+agent: agent
+tools: ["search", "read", "edit"]
 ---
 
-# Context
+# Step 1: Understand the Code
 
-You are a Senior C++ Software Engineer in Test (SDET) working on the "Graphitti" project. Your goal is to generate robust, production-grade unit tests using **Google Test (gtest)** and **C++17**.
+Before writing any tests, read and summarize the target code. Answer these questions internally (do not output them):
 
-# Goal
-
-Generate a complete unit test file (or a set of test cases) for the user's selected code, ensuring full coverage of happy paths, edge cases, and error conditions.
-
-1.  **Directory:** All tests MUST go into `Testing/UnitTesting/`.
-2.  **Merge Logic:**
-    - If a test file matching the class name already exists (e.g., `Testing/UnitTesting/VertexTests.cpp`), generate **only the new test cases** to be appended to that file.
-    - If no test file exists, generate the **entire new file** including headers and setup.
-
-# Input Context
+1.  **What is the SUT (System Under Test)?** Is this a class (`Graph`, `Vertex`), a free function, or a template?
+2.  **What are the public methods and their signatures?** List each method, its parameters, return type, and any preconditions.
+3.  **What dependencies does it have?** Other Graphitti classes, standard library containers, external libraries?
+4.  **What invariants does the class maintain?** (e.g., "vertex count must equal the size of the adjacency list")
+5.  **What can go wrong?** Null pointers, empty containers, out-of-range indices, integer overflow, floating point precision.
 
 Target Code:
-{{ selection }}
+${selection}
 
-# Analysis Phase (Internal Monologue)
+# Step 2: Design the Test Plan
 
-Before generating code, perform the following analysis. Do not output analysis/planning; output only the final C++ test code.
+Now that you understand the code, design 5–7 test scenarios covering these categories. For each scenario, write one sentence describing the test and the expected outcome.
 
-1.  **Identify the SUT (System Under Test):** Is this a Class (`Graph`, `Vertex`) or a free function?
-2.  **Determine Dependencies:** What headers are required? (`#include <gtest/gtest.h>`, project headers).
-3.  **Scan for Edge Cases:**
-    - Null pointers or empty containers?
-    - Negative numbers where unsigned is expected?
-    - Floating point precision issues?
-4.  **Graphitti Conventions Check:**
-    - Use `PascalCase` for test names (e.g., `TEST(Graph, AddsVertexCorrectly)`).
-    - Do NOT use `using namespace std;`.
-    - Use `EXPECT_` for assertions that shouldn't abort the test, `ASSERT_` for pointers.
+1.  **Happy Path** — The standard use case works as expected.
+2.  **Boundary Values** — Min/max values (0 nodes, max edges, empty containers, single-element collections).
+3.  **Error Handling** — Verify correct exceptions are thrown or error codes are returned for invalid input.
+4.  **State Preservation** — After an operation, the object is in a valid and expected state.
+5.  **Idempotency / Repeated Calls** — Calling a method twice produces consistent results.
+6.  **Interaction Between Methods** — A sequence of operations (e.g., add then remove) leaves the object in the correct state.
 
-# Test Plan Strategy
+# Step 3: Generate the Test Code
 
-Design 5-7 distinct test scenarios:
+Using the analysis from Step 1 and the plan from Step 2, generate the C++ test code following these rules:
 
-1.  **Happy Path:** The standard use case works as expected.
-2.  **Boundary Analysis:** Min/Max values (e.g., 0 nodes, max edges).
-3.  **Error Handling:** Does it throw the correct exception or return the correct error code?
-4.  **State Preservation:** Does the object remain in a valid state after the operation?
+## Project Conventions
 
-# Output Rules
+- Use `PascalCase` for test names: `TEST(Graph, AddsVertexCorrectly)`.
+- Do NOT use `using namespace std;`.
+- Use `EXPECT_*` for assertions that should not abort the test. Use `ASSERT_*` for pointer validity or preconditions where continuing would crash.
+- Use the AAA pattern: **Arrange** (setup), **Act** (call the method), **Assert** (verify the result). Separate each section with a blank line.
 
-1.  **Headers:** Include necessary local headers (assume relative paths like `Simulator/Core/Vertex.h`).
-2.  **Fixture Usage:** If testing a class with complex setup, create a `class TestFixture : public ::testing::Test`.
-3.  **Modern C++:** Use C++17 features (`auto`, structured bindings, `std::optional`) where appropriate.
-4.  **Comments:** briefly explain _why_ a specific value is being tested.
+## File Placement
 
-# Generation
+- All tests go into `Testing/UnitTesting/`.
+- If a test file already exists (e.g., `Testing/UnitTesting/VertexTests.cpp`), generate **only the new test cases** to append.
+- If no test file exists, generate the **entire file** including headers and fixture setup.
 
-Generate the C++ code block now.
+## Code Style
+
+- Include necessary headers with relative paths (e.g., `#include "Simulator/Core/Vertex.h"`).
+- If the class requires complex setup, create a test fixture: `class VertexTest : public ::testing::Test { ... }`.
+- Use C++17 features where appropriate: `auto`, structured bindings, `std::optional`, `constexpr`.
+- Add a brief inline comment on each test explaining **why** that specific value or scenario is being tested.
+
+## Few-Shot Example
+
+Below is an example of the expected output format. Match this style exactly.
+
+**Input:** A class `Counter` with methods `increment()`, `decrement()`, and `getCount()`.
+
+**Output:**
+
+```cpp
+#include <gtest/gtest.h>
+#include "Simulator/Utils/Counter.h"
+
+class CounterTest : public ::testing::Test {
+protected:
+   Counter counter_;
+
+   void SetUp() override {
+      counter_ = Counter();
+   }
+};
+
+// Happy path: incrementing increases the count by 1
+TEST_F(CounterTest, IncrementIncreasesCount) {
+   counter_.increment();
+
+   EXPECT_EQ(counter_.getCount(), 1);
+}
+
+// Boundary: decrementing from zero should not produce a negative count
+TEST_F(CounterTest, DecrementFromZeroDoesNotGoNegative) {
+   counter_.decrement();
+
+   EXPECT_GE(counter_.getCount(), 0);
+}
+
+// State preservation: increment then decrement returns to original state
+TEST_F(CounterTest, IncrementThenDecrementReturnsToOriginal) {
+   int original = counter_.getCount();
+
+   counter_.increment();
+   counter_.decrement();
+
+   EXPECT_EQ(counter_.getCount(), original);
+}
+```
+
+Now generate the test code for the target selection.
