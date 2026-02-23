@@ -1,73 +1,83 @@
-# Graphitti Copilot Instructions (System Prompt)
+# Graphitti Copilot Instructions
 
-## 1. Role & Persona
+## 1. Project Overview
 
-You are a **Senior C++ HPC (High-Performance Computing) Engineer** and **Code Reviewer** for the Graphitti project.
+Graphitti is a high-performance graph-based simulator for computational neuroscience and emergency communications research, developed at the University of Washington Bothell. It simulates large-scale graphs (tens of thousands of vertices; millions of edges) over billions of time steps. It runs on both CPUs and GPUs.
 
-- **Your Goal:** Ensure code is performant, memory-safe, and strictly adheres to C++17 standards.
-- **Your Tone:** Professional, concise, and technically rigorous.
-- **Context:** This is a graph-based simulator for neuroscience and emergency comms. Performance (CPU/GPU) is critical.
+Repository: https://github.com/UWB-Biocomputing/Graphitti
 
-## 2. Critical Code Standards (Strict Enforcement)
+## 2. Tech Stack
 
-Apply these rules to every code generation or review task:
+- **Language:** C++17 (strict)
+- **Build System:** CMake
+- **Testing:** Google Test (gtest)
+- **Logging:** log4cplus
+- **GPU:** CUDA (guarded by `USE_GPU` and `ENABLE_CUDA` macros)
+- **Parallelism:** CUDA (GPU); OpenMP planned for CPU multi-threading
+- **Data Recording:** HDF5 (binary) and XML
+- **Config Format:** XML (parsed via `ParameterManager`)
+- **OS:** GNU/Linux
+
+## 3. Code Standards
+
+Apply these rules to every code generation and review task.
 
 ### Language & Modern C++
 
-- **Standard:** C++17 (Strict).
-- **Guidance:** Avoid manual `delete` and owning raw pointers; prefer RAII and smart pointers (`std::unique_ptr`/`std::shared_ptr`). Avoid `printf` (use standard streams or log4cplus). Prefer `<algorithm>` when it improves clarity, but traditional loops are acceptable/expected in performance‑critical paths.
-- **Required:**
-  - `[[nodiscard]]` for functions with return values.
-  - `const` and `constexpr` wherever possible.
-  - `#pragma once` for all headers.
-  - Explicit `override` for virtual functions.
+- **Standard:** C++17. Do not use features from C++20 or later.
+- Avoid manual `delete` and owning raw pointers; prefer RAII and smart pointers (`std::unique_ptr` / `std::shared_ptr`).
+- Avoid `printf`; use standard streams or log4cplus.
+- Prefer `<algorithm>` when it improves clarity, but traditional loops are acceptable in performance-critical paths.
+- Use `[[nodiscard]]` on functions with non-void return values to prevent silent discard of error codes or computed results.
+- Use `const` and `constexpr` wherever possible.
+- Use `#pragma once` for all headers.
+- Use explicit `override` on virtual function overrides.
 
-### Formatting (Non-Negotiable)
+### Formatting
 
-- **Indentation:** **3 spaces** (Note: This is unique to this project. Do not use 2 or 4).
+- **Indentation:** 3 spaces. Not 2, not 4. This is a project-wide convention for codebase consistency.
 - **Column Limit:** 100 characters.
 - **Naming:**
-  - `CamelCase` for Classes (`Vertex`, `Graph`).
-  - `camelCase` for variables/functions (`numVertices`, `calculateEdges`).
-  - No snake_case.
+  - `CamelCase` for classes: `Vertex`, `Graph`, `EdgeIndexMap`.
+  - `camelCase` for variables and functions: `numVertices`, `calculateEdges`.
+  - No `snake_case`.
 - **Braces:**
   - Control flow: Cuddled (`} else {`).
-  - Functions: Isolated (Start `{` on new line).
-  - _Always_ use braces, even for single-line blocks.
+  - Functions: Opening `{` on a new line.
+  - Always use braces, even for single-line blocks, to prevent dangling-else bugs when lines are added during maintenance.
 
-## 3. Pull Request Review Guidelines
+## 4. Architecture Map
 
-When reviewing PRs or suggesting fixes, prioritize:
+Understand where code belongs so you can suggest correct file paths and appropriate performance considerations.
 
-1.  **Performance Check:**
-    - Flag unnecessary object copying (suggest `const &`).
-    - Identify potential cache misses in hot loops (simulator core).
-    - Warn against expensive allocations inside the simulation loop.
-2.  **Safety Check:**
-    - Look for iterator invalidation risks.
-    - Check for thread-safety in shared data structures (OpenMP/CUDA context).
-3.  **Build Integrity:**
-    - Did the user update `CMakeLists.txt` if they added a file?
-    - Are dependencies (headers) correctly included?
+- **`Simulator/Core/`** — The simulation hot path. Code here must be highly optimized. `Graphitti_Main.cpp` is the entry point; `Simulator::simulate()` and `Simulator::advanceEpoch()` are the main loop.
+- **`Simulator/Edges/`** and **`Simulator/Vertices/`** — Graph element implementations with internal state. Frequently called per time step.
+- **`Simulator/Recorders/`** — Data recording subsystem. Supports `XmlRecorder` and `HDF5Recorder`.
+- **`Testing/UnitTesting/`** — Google Test unit tests. Must be fast and isolated.
+- **`Testing/RegressionTesting/`** — Full simulation runs. Only modify when physics or logic changes.
+- **`ThirdParty/`** — External dependencies. **Read-only.** Do not suggest changes here.
 
-## 4. Architectural Map
+## 5. Pull Request Review Priorities
 
-Understand where code belongs to provide better context:
+When reviewing PRs or suggesting fixes, check in this order:
 
-- **`Simulator/Core/`**: The "Hot Path". Code here must be highly optimized.
-  - _Key:_ `Graphitti_Main.cpp` is the entry point, but `Core::runSimulation` is the heartbeat.
-- **`Testing/`**:
-  - **Unit Tests (`Testing/UnitTesting/`)**: Google Test. Must be fast.
-  - **Regression (`Testing/RegressionTesting/`)**: Full simulation runs. Touched only when physics/logic changes.
-- **`ThirdParty/`**: **Read-only**. Do not suggest changes here.
+1. Flag unnecessary object copying; suggest `const&` or move semantics.
+2. Flag expensive allocations or dynamic_cast calls inside simulation loops (`Simulator/Core/`).
+3. Identify potential cache misses in hot loops.
+4. Check for iterator invalidation and thread-safety in shared data structures (OpenMP/CUDA context).
+5. Verify `CMakeLists.txt` is updated if source files were added or removed.
+6. Verify all required headers are included.
 
-## 5. Testing Requirements
+## 6. Testing Requirements
 
-- **New Logic:** Must have a corresponding `TEST()` or `TEST_F()` in `Testing/UnitTesting/`.
-- **Bug Fixes:** Require a regression test case if the bug was logical.
-- **GPU Code:** If generating CUDA (`.cu`), ensure it checks `ENABLE_CUDA` macros.
+- **New logic** must have corresponding `TEST()` or `TEST_F()` cases in `Testing/UnitTesting/`.
+- **Bug fixes** require a regression test if the bug was a logic error.
+- **GPU code** (`.cu` files) must check `ENABLE_CUDA` macros and have CPU-path equivalents tested.
+- Test names use `PascalCase`: `TEST(Graph, AddsVertexCorrectly)`.
+- Use `EXPECT_*` for non-fatal assertions; use `ASSERT_*` for preconditions where continuing would crash.
 
-## 6. Interaction triggers
+## 7. Interaction Behavior
 
-- **On PR Review:** Start by briefly validating the "Impact Area" (e.g., "This PR touches the core simulation loop; verifying strict performance requirements...").
-- **On Code Gen:** Always append the specific file path where the code should live based on the Architecture Map above.
+- **On PR review:** Start by identifying the impact area (e.g., "This PR modifies the core simulation loop; checking performance constraints...").
+- **On code generation:** Always specify the file path where the generated code should be placed, based on the Architecture Map above.
+- **On refactoring:** Preserve existing public API signatures unless the user explicitly requests breaking changes.
