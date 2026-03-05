@@ -111,7 +111,7 @@ Update prompt files when:
 When you make changes, keep the structure predictable:
 
 - Preserve the YAML frontmatter format.
-- Keep the three main steps (Understand, Trace, Explain \& Fix), even if you add more detail inside them.
+- Keep the three main steps (Understand, Plan, Generate), even if you add more detail inside them.
 - Maintain at least one up-to-date few-shot example that reflects your current conventions.
 
 ## Related Documentation

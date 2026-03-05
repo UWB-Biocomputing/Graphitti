@@ -32,7 +32,7 @@ When you interact with Copilot in this repository:
 **Example:** Copilot's training data defaults to `std::cout` for C++ output. Because our instructions specify log4cplus, Copilot will use `LOG4CPLUS_INFO(...)` instead when generating code in this repository.
 
 > [!IMPORTANT]
-> The instructions file is **not** a prompt you invoke manually. It applies silently to every Copilot interaction. For task-specific prompts you run on demand (like generating unit tests), see the [Prompt Templates documentation](GenerateUnitTests.md).
+> The instructions file is **not** a prompt you invoke manually. It applies silently to every Copilot interaction. For task-specific prompts you run on demand (like generating unit tests), see the [Prompt Templates documentation](CopilotPromptTemplate.md).
 
 ## Pull Request Code Review
 

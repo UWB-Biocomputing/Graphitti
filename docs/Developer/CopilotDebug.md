@@ -69,7 +69,7 @@ Finally, Copilot produces a structured report with six sections in a fixed order
 
 ## What Happens Next: How Copilot Responds
 
-Because this prompt is configured with `agent: agent`, but doest not have the `edit` tool available, Copilot responds **only in the chat panel**; it does **not** create or edit files directly.
+Because this prompt is configured with `agent: agent`, but does not have the `edit` tool available, Copilot responds **only in the chat panel**; it does **not** create or edit files directly.
 
 You should expect:
 

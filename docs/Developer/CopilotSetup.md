@@ -66,7 +66,7 @@ You may see references to `@workspace` or `#codebase` in Copilot documentation. 
 - **`#codebase`** — A _context tool_ that adds codebase search results to your prompt. Unlike `@workspace` (which handles the entire prompt), `#codebase` can be combined with other tools. It is the recommended approach for adding project-wide context.
 - **`#file`** — Attaches a specific file as context. Example: `#file:Vertex.h Explain this class.`
 
-You generally do **not** need to use `@workspace` or `#codebase` when running prompt files, because the prompt is already configured with `tools: ["search", "read"]`, which give Copilot automatic access to your codebase.
+You generally do **not** need to use `@workspace` or `#codebase` when running prompt files, because those prompts are already configured with tools that give Copilot automatic access to your codebase (the exact tools vary by prompt).
 
 ## Related Documentation
 
