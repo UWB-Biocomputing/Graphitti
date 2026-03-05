@@ -22,7 +22,7 @@ This technique is often referred to as "Prompt Engineering." It provides the AI 
 
 ## File Location
 
-This prompt file is located under the `.github/prompts/` directory in the repository root [here](https://github.com/UWB-Biocomputing/Graphitti/tree/master/.github/prompts/CopilotGenerateUnitTests.prompt.md).
+This prompt file is located under the `.github/prompts/` directory in the repository root [here](https://github.com/UWB-Biocomputing/Graphitti/tree/master/.github/prompts/generate-unit-tests.prompt.md).
 
 ## Prerequisites: Setting Up Copilot in VS Code
 
@@ -34,7 +34,7 @@ See why we use templates and how to structure them in the [CopilotPromptTemplate
 
 ## Unit Test Prompt Format
 
-This is how the `debug.prompt.md` file specifically is structured:
+This is how the `generate-unit-tests.prompt.md` file specifically is structured:
 
 ### Step 1: Understand the Code
 

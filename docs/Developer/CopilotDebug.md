@@ -22,7 +22,7 @@ This prompt guides Copilot through a structured debugging workflow: understandin
 
 ## File Location
 
-This prompt file is located under the `.github/prompts/` directory in the repository root [here](https://github.com/UWB-Biocomputing/Graphitti/tree/master/.github/prompts/CopilotDebug.prompt.md).
+This prompt file is located under the `.github/prompts/` directory in the repository root [here](https://github.com/UWB-Biocomputing/Graphitti/tree/master/.github/prompts/debug.prompt.md).
 
 ## Prerequisites: Setting Up Copilot in VS Code
 
@@ -69,7 +69,7 @@ Finally, Copilot produces a structured report with six sections in a fixed order
 
 ## What Happens Next: How Copilot Responds
 
-Because this prompt is configured with `agent: ask`, Copilot responds **only in the chat panel**; it does **not** create or edit files directly.
+Because this prompt is configured with `agent: agent`, but doest not have the `edit` tool available, Copilot responds **only in the chat panel**; it does **not** create or edit files directly.
 
 You should expect:
 
