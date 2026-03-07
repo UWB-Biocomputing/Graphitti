@@ -4,7 +4,7 @@
 
 - [Overview](#overview)
 - [Instructions](#instructions)
-  - [1. Install the Extension](#1-install-the-extension)
+  - [1. Install and Sign In](#1-install-and-sign-in)
   - [2. Open the Correct Workspace Folder](#2-open-the-correct-workspace-folder)
   - [3. Verify Prompt File Detection](#3-verify-prompt-file-detection)
 - [Using Prompt Files](#using-prompt-files)
@@ -17,12 +17,14 @@ This document describes how to install and configure GitHub Copilot for use in G
 
 ## Instructions
 
-### 1. Install the Extension
+### 1. Install and Sign In
 
 1. Open VS Code.
-2. Go to the **Extensions** sidebar (`Ctrl+Shift+X`).
-3. Search for **"GitHub Copilot"** and install it (this also installs the Copilot Chat component).
-4. Sign in with your GitHub account when prompted. You need an active GitHub Copilot subscription (free tier, Pro, or through an organization).
+2. Go to the **Extensions** sidebar (`Ctrl+Shift+X` on Windows/Linux, `Cmd+Shift+X` on Mac).
+3. Search for **"GitHub Copilot Chat"** and install it.
+4. Ensure you are signed in with a GitHub account that has an active Copilot subscription (free tier, Pro, or through an organization).
+   - **How to check your login status:** Look at the bottom-right corner of the VS Code Status Bar for the **Copilot icon**.  If the icon is visible and doesn't have a warning badge or a slash through it, you are actively logged in. You can also click the **Accounts** (profile gear) icon in the bottom-left corner to verify your active GitHub session.
+   - **How to log in manually:** If you weren't prompted to log in automatically upon installation, simply click the **Accounts** icon (bottom-left) or the **Copilot** icon (bottom-right) and select **Sign in to use Copilot**.
 
 ### 2. Open the Correct Workspace Folder
 
@@ -34,7 +36,7 @@ Prompt files are resolved **relative to the workspace root** — the folder you 
 
 ### 3. Verify Prompt File Detection
 
-1. Open the Copilot Chat panel (`Ctrl+Alt+I`).
+1. Open the Copilot Chat panel (`Ctrl+Alt+I` on Windows/Linux, `Cmd+Ctrl+I` on Mac).
 2. Click the **Configure Chat** gear icon (⚙) at the top of the Chat panel.
 3. Select **Prompt Files** from the menu.
 4. You should see available prompt files (for example, `generate-unit-tests` and `debug`) listed. If they appear, setup is complete.
@@ -49,12 +51,12 @@ If it does not appear, confirm:
 
 You may run prompt files through multiple VS Code entry points listed below:
 
-| Method                  | How                                                                                              |
-| :---------------------- | :----------------------------------------------------------------------------------------------- |
-| **Slash command**       | Type `/command-name` in the Chat input.                                                          |
-| **Command Palette**     | `Ctrl+Shift+P` → **Chat: Run Prompt** → select `command-name`.                                   |
-| **Play button**         | Open `command-name.prompt.md` in the editor and click the ▶ play button in the editor title bar. |
-| **Configure Chat menu** | Click ⚙ in the Chat view → **Prompt Files** → select the `command-name` prompt.                  |
+| Method                  | How                                                                                                                        |
+| :---------------------- | :------------------------------------------------------------------------------------------------------------------------- |
+| **Slash command** | Type `/command-name` in the Chat input.                                                                                    |
+| **Command Palette** | `Ctrl+Shift+P` (Win/Linux) or `Cmd+Shift+P` (Mac) → **Chat: Run Prompt** → select `command-name`.                          |
+| **Play button** | Open `command-name.prompt.md` in the editor and click the ▶ play button in the editor title bar.                           |
+| **Configure Chat menu** | Click ⚙ in the Chat view → **Prompt Files** → select the `command-name` prompt.                                            |
 
 ## Understanding the `@` Syntax and `#` Context
 

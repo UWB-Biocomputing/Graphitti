@@ -64,6 +64,10 @@ tools: ["search", "read", "edit"]
 | `tools`       | Allowed tools (for example, `search`, `read`, `edit`) used by the prompt run. These are only utilized in `agent` mode |
 | `model`       | Optional model override. Omit unless a prompt requires a specific model.                                              |
 
+A full list of YAML fields can be found [here](https://code.visualstudio.com/docs/copilot/customization/prompt-files#_prompt-file-format).
+
+A full list of usable chat tools can be found [here](https://code.visualstudio.com/docs/copilot/reference/copilot-vscode-features#_chat-tools), or by opening the **Chat view**, selecting **Agent** from the agent picker, and then clicking the **Configure Tools** button in the chat input field.
+
 ## Workflow Layout
 
 Prompt workflows should use a clear, sequential structure such as:
@@ -98,6 +102,8 @@ Input variables are placeholders in the prompt body that get replaced with real 
 | `${fileBasenameNoExtension}`        | The filename without its extension (e.g., `Vertex`).                                                                                                   |
 | `${workspaceFolder}`                | The root path of the open workspace.                                                                                                                   |
 | `${input:variableName}`             | Prompts you to type a value when the command runs. For example, `${input:framework:jest or vitest}` shows an input box with the hint "jest or vitest". |
+
+A full list of all possible input variables can be found [here](https://code.visualstudio.com/docs/reference/variables-reference).
 
 ## Maintenance
 
