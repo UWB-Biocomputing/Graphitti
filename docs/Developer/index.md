@@ -23,8 +23,11 @@ Students, use this [quickstart guide](StudentSetup.md) to help setup, use, and d
 - clang-format
   - Refer to the [clang-format documentation](codingConventions.md#clang-format) to help with using this tool
 - GitHub Copilot
-  - [Copilot Instructions](CopilotInstructions.md) - How GitHub Copilot is configured for Graphitti development
-  - [Generate Unit Tests](GenerateUnitTests.md) - Using the AI-assisted unit test generation prompt
+  - [Copilot Prompt Template](CopilotPromptTemplate.md) - Why we use .prompt.md files and how they are structured.
+  - [Copilot Setup](CopilotSetup.md) - How to configure GitHub Copilot for use with VS Code and Graphitti
+  - [Copilot Instructions](CopilotInstructions.md) - How the copilot-instructions.md file is configured for Graphitti development
+  - [Generate Unit Tests](CopilotGenerateUnitTests.md) - Using the AI-assisted unit test generation prompt
+  - [Debug](CopilotDebug.md) - Using Copilot to assist with debugging
 - GitHub Pages
   - Refer to the [GitHub Pages documentation](GHPages.md) section for an overview of how we use GitHub Pages and editing practices
 - GitHub Actions Workflows

@@ -1,3 +1,22 @@
+# GitHub Copilot Custom Instructions
+
+## Overview
+
+The `copilot-instructions.md` file is a configuration file that tailors GitHub Copilot's behavior for this repository. It acts as a **system prompt** — context that is automatically included in every Copilot Chat interaction, inline code generation, and **pull request code review** within this project.
+
+Instead of receiving generic coding assistance, Copilot follows Graphitti's specific coding standards, architecture patterns, and conventions automatically — both when writing code and when reviewing it.
+
+## File Location
+
+[.github/copilot-instructions.md](https://github.com/UWB-Biocomputing/Graphitti/tree/master/.github/copilot-instructions.md)
+
+> [!NOTE]
+> This path is required by GitHub for automatic detection. The file must be at `.github/copilot-instructions.md` in the repository root.
+
+## Prerequisites
+
+To use this file, you need:
+
 1. **GitHub Copilot extension** installed in VS Code (see the [Copilot setup guide](https://code.visualstudio.com/docs/copilot/setup)).
 2. **The correct workspace open** — you must open the repository root folder in VS Code (the folder that directly contains `.github/`). If `.github/` is not visible as a top-level folder in the Explorer sidebar, the instructions file will not be detected.
 3. **VS Code 1.104 or later** — custom instructions are enabled by default in modern versions. On older versions, you may need to set `github.copilot.chat.codeGeneration.useInstructionFiles` to `true` in your VS Code settings.
@@ -13,7 +32,7 @@ When you interact with Copilot in this repository:
 **Example:** Copilot's training data defaults to `std::cout` for C++ output. Because our instructions specify log4cplus, Copilot will use `LOG4CPLUS_INFO(...)` instead when generating code in this repository.
 
 > [!IMPORTANT]
-> The instructions file is **not** a prompt you invoke manually. It applies silently to every Copilot interaction. For task-specific prompts you run on demand (like generating unit tests), see the [Prompt Templates documentation](GenerateUnitTests.md).
+> The instructions file is **not** a prompt you invoke manually. It applies silently to every Copilot interaction. For task-specific prompts you run on demand (like generating unit tests), see the [Prompt Templates documentation](CopilotPromptTemplate.md).
 
 ## Pull Request Code Review
 
