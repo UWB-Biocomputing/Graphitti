@@ -10,6 +10,7 @@
 #include "AllDynamicSTDPSynapses.h"
 #include "AllNeuroEdges.h"
 #include "AllSTDPSynapses.h"
+#include "AllSpikingSynapses.h"
 #include "AllSynapsesDeviceFuncs.h"
 #include <vector>
 
@@ -112,7 +113,7 @@ CUDA_CALLABLE void createSpikingSynapse(AllSpikingSynapsesDeviceProperties *allE
    allEdgesDevice->psr_[iEdg] = 0.0;
    allEdgesDevice->type_[iEdg] = type;
 
-   allEdgesDevice->tau_[iEdg] = DEFAULT_tau;
+   allEdgesDevice->tau_[iEdg] = AllSpikingSynapses::DEFAULT_tau;
 
    BGFLOAT tau;
    switch (type) {
@@ -173,12 +174,12 @@ CUDA_CALLABLE void createDSSynapse(AllDSSynapsesDeviceProperties *allEdgesDevice
 
    allEdgesDevice->psr_[iEdg] = 0.0;
    allEdgesDevice->r_[iEdg] = 1.0;
-   allEdgesDevice->u_[iEdg] = 0.4;   // DEFAULT_U
+   allEdgesDevice->u_[iEdg] = AllSpikingSynapses::DEFAULT_U;
    allEdgesDevice->lastSpike_[iEdg] = ULONG_MAX;
    allEdgesDevice->type_[iEdg] = type;
 
-   allEdgesDevice->U_[iEdg] = DEFAULT_U;
-   allEdgesDevice->tau_[iEdg] = DEFAULT_tau;
+   allEdgesDevice->U_[iEdg] = AllSpikingSynapses::DEFAULT_U;
+   allEdgesDevice->tau_[iEdg] = AllSpikingSynapses::DEFAULT_tau;
 
    BGFLOAT U;
    BGFLOAT D;
@@ -259,7 +260,7 @@ CUDA_CALLABLE void createSTDPSynapse(AllSTDPSynapsesDeviceProperties *allEdgesDe
    allEdgesDevice->psr_[iEdg] = 0.0;
    allEdgesDevice->type_[iEdg] = type;
 
-   allEdgesDevice->tau_[iEdg] = DEFAULT_tau;
+   allEdgesDevice->tau_[iEdg] = AllSpikingSynapses::DEFAULT_tau;
 
    BGFLOAT tau;
    switch (type) {
@@ -341,12 +342,12 @@ CUDA_CALLABLE void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperti
 
    allEdgesDevice->psr_[iEdg] = 0.0;
    allEdgesDevice->r_[iEdg] = 1.0;
-   allEdgesDevice->u_[iEdg] = 0.4;   // DEFAULT_U
+   allEdgesDevice->u_[iEdg] = AllSpikingSynapses::DEFAULT_U;
    allEdgesDevice->lastSpike_[iEdg] = ULONG_MAX;
    allEdgesDevice->type_[iEdg] = type;
 
-   allEdgesDevice->U_[iEdg] = DEFAULT_U;
-   allEdgesDevice->tau_[iEdg] = DEFAULT_tau;
+   allEdgesDevice->U_[iEdg] = AllSpikingSynapses::DEFAULT_U;
+   allEdgesDevice->tau_[iEdg] = AllSpikingSynapses::DEFAULT_tau;
 
    BGFLOAT U;
    BGFLOAT D;
