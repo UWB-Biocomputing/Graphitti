@@ -1,5 +1,5 @@
 ---
-name: debug
+name: debug-code
 description: Trace and explain the root cause of a bug in the C++17 Graphitti code
 agent: agent
 tools: ["search", "read"]
