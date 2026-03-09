@@ -92,7 +92,7 @@ You can then:
 3. Open Copilot Chat and type:
 
 ```text
-/debug The spike count is off by 1 when running large graphs with more than 10,000 vertices.
+/debug-code The spike count is off by 1 when running large graphs with more than 10,000 vertices.
 ```
 
 4. Copilot analyzes the selected code and repository using the debug prompt workflow, then returns a report with an execution trace and a proposed fix.
