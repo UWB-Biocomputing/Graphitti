@@ -39,6 +39,12 @@ AllVertices::AllVertices() : size_(0)
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
 
+   function<void(uint64_t, uint64_t)> loadEpochInputsFunc = std::bind(
+      &AllVertices::loadEpochInputs, this, std::placeholders::_1, std::placeholders::_2);
+   OperationManager::getInstance().registerOperation(Operations::loadEpochInputs,
+                                                     loadEpochInputsFunc);
+
+
    // Register registerHistoryVariables function as a registerHistoryVariables operation in the OperationManager
    function<void()> registerHistoryVarsFunc = bind(&AllVertices::registerHistoryVariables, this);
    OperationManager::getInstance().registerOperation(Operations::registerHistoryVariables,
@@ -87,6 +93,29 @@ void AllVertices::printParameters() const
 /// endStep (exclusive)
 void AllVertices::loadEpochInputs(uint64_t currentStep, uint64_t endStep)
 {
+   loadEpochInputsToVertices(currentStep, endStep);
+#if defined(USE_GPU)
+   copyEpochInputsToDevice();
+#endif
+}
+
+void AllVertices::loadEpochInputsToVertices(uint64_t currentStep, uint64_t endStep)
+{
    // This is an empty implementation so that Neural Network simulation works
    // normally
+   LOG4CPLUS_DEBUG(vertexLogger_, "Calling AllVertices::loadEpochInputsToVertices");
 }
+
+#if defined(USE_GPU)
+void AllVertices::copyEpochInputsToDevice()
+{
+   // This is an empty implementation so that Neural Network simulation works
+   // normally
+   LOG4CPLUS_DEBUG(vertexLogger_, "Calling AllVertices::copyEpochInputsToDevice");
+}
+
+int AllVertices::getNumberOfVerticesNeedingDeviceNoise() const
+{
+   return Simulator::getInstance().getTotalVertices();
+}
+#endif
