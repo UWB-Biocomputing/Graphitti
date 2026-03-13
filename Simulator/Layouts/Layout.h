@@ -44,6 +44,8 @@ public:
    /// @brief Register vertex properties with the GraphManager
    virtual void registerGraphProperties();
 
+   virtual void registerHistoryVariables();
+
    /// Load member variables from configuration files. Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters();
 
@@ -53,9 +55,6 @@ public:
    /// Creates a neurons type map
    virtual void generateVertexTypeMap();
 
-   /// Populates the starter map.
-   /// Selects num_endogenously_active_neurons excitory neurons
-   /// and converts them into starter neurons.
    virtual void initStarterMap();
 
    /// Returns the type of synapse at the given coordinates
@@ -68,22 +67,14 @@ public:
    /// @return The number of vertices managed by the Layout
    virtual int getNumVertices() const;
 
-   VectorMatrix xloc_;   ///< Store neuron i's x location.
-
-   VectorMatrix yloc_;   ///< Store neuron i's y location.
-
    CompleteMatrix dist2_;   ///< Inter-neuron distance squared
 
    CompleteMatrix dist_;   ///< The true inter-neuron distance.
 
    vector<int>
-      probedNeuronList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
+      probedVertexList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
 
    RecordableVector<vertexType> vertexTypeMap_;   ///< The vertex type mao, (INH, EXC).
-
-   vector<bool> starterMap_;   ///< The starter existence map (T/F).
-
-   BGSIZE numEndogenouslyActiveNeurons_;   ///< Number of endogenously active neurons.
 
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);
@@ -99,11 +90,7 @@ protected:
 ///  Cereal serialization method
 template <class Archive> void Layout::serialize(Archive &archive)
 {
-   archive(cereal::make_nvp("xloc", xloc_), cereal::make_nvp("yloc", yloc_),
-           cereal::make_nvp("dist2", dist2_), cereal::make_nvp("dist", dist_),
-           cereal::make_nvp("probedNeuronList", probedNeuronList_),
-           cereal::make_nvp("vertexTypeMap", vertexTypeMap_),
-           cereal::make_nvp("starterMap", starterMap_),
-           cereal::make_nvp("numEndogenouslyActiveNeurons", numEndogenouslyActiveNeurons_),
+   archive(cereal::make_nvp("vertexTypeMap", vertexTypeMap_), cereal::make_nvp("dist2", dist2_),
+           cereal::make_nvp("dist", dist_), cereal::make_nvp("probedVertexList", probedVertexList_),
            cereal::make_nvp("vertices", vertices_), cereal::make_nvp("numVertices", numVertices_));
 }

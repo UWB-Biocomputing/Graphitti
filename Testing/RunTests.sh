@@ -79,7 +79,8 @@ else
                         "test-medium"
                         "test-medium-connected"
                         "test-medium-long"
-                        "test-medium-connected-long")
+                        "test-medium-connected-long"
+                        "test-small-911")
 fi
 
 # This function starts the simulations in parallel

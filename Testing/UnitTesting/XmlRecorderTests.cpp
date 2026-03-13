@@ -49,7 +49,7 @@ TEST(XmlRecorderTest, RegisterVariableTest)
    // Create an instance of XmlRecorder
    XmlRecorder recorder;
    // Create an EventBuffer for testing
-   EventBuffer eventBuffer;
+   EventBuffer<uint64_t> eventBuffer;
 
    // Register the EventBuffer variable
    recorder.registerVariable("eventBuffer", eventBuffer, Recorder::UpdatedType::DYNAMIC);
@@ -131,8 +131,8 @@ TEST(XmlRecorderTest, RegisterVectorVariableTest)
    ASSERT_TRUE(recorderTest_ != nullptr);
 
    // Create mock EventBuffer objects for testing
-   EventBuffer buffer0;
-   EventBuffer buffer1;
+   EventBuffer<uint64_t> buffer0;
+   EventBuffer<uint64_t> buffer1;
 
    // Create a vector of pointers to EventBuffer objects
    std::vector<RecordableBase *> bufferPointers = {&buffer0, &buffer1};
@@ -159,7 +159,7 @@ TEST(XmlRecorderTest, CompileHistoriesTest)
    ASSERT_NE(nullptr, vertices);
    // Create a mock EventBuffer object
    // buffer size is set to 4
-   EventBuffer buffer0(4);
+   EventBuffer<uint64_t> buffer0(4);
 
    // Register variables
    recorderTest_->registerVariable("neuron0", buffer0, Recorder::UpdatedType::DYNAMIC);
@@ -223,7 +223,7 @@ TEST(XmlRecorderTest, SaveSimDataTest)
       = Factory<AllVertices>::getInstance().createType("AllLIFNeurons");
    ASSERT_NE(nullptr, vertices);
    // Create a mock EventBuffer object
-   EventBuffer buffer(4);
+   EventBuffer<uint64_t> buffer(4);
 
    // initialize the XmlRecorder object
    recorderTest_->init();
