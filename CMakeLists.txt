@@ -255,7 +255,8 @@ if(ENABLE_CUDA)
         Simulator/Edges/Neuro/AllSpikingSynapses_d.cpp
         Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp
         Simulator/Edges/Neuro/AllDSSynapses_d.cpp
-        Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp)
+        Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp
+        Simulator/Edges/NG911/All911Edges_d.cpp)
         set_source_files_properties(${cuda_EdgesSources} PROPERTIES LANGUAGE CUDA)
 
         set(cuda_VerticesSources 
@@ -263,7 +264,8 @@ if(ENABLE_CUDA)
         Simulator/Vertices/Neuro/AllLIFNeurons_d.cpp
         Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp
         Simulator/Vertices/Neuro/AllIFNeurons_d.cpp
-        Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp)
+        Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp
+        Simulator/Vertices/NG911/All911Vertices_d.cpp)
         set_source_files_properties(${cuda_VerticesSources} PROPERTIES LANGUAGE CUDA)
 endif()
 
@@ -295,6 +297,7 @@ else()
         list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllIZHNeurons_d.cpp")
         list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllIFNeurons_d.cpp")
         list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/Neuro/AllSpikingNeurons_d.cpp")
+        list(REMOVE_ITEM Vertices_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Vertices/NG911/All911Vertices_d.cpp")
         
         add_library(Vertices STATIC ${Vertices_Source})
         
@@ -313,6 +316,7 @@ else()
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllSTDPSynapses_d.cpp")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllDSSynapses_d.cpp")
         list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/Neuro/AllDynamicSTDPSynapses_d.cpp")
+        list(REMOVE_ITEM Edges_Source "${CMAKE_CURRENT_SOURCE_DIR}/Simulator/Edges/NG911/All911Edges_d.cpp")
         
         add_library(Edges STATIC ${Edges_Source})
         

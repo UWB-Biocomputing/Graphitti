@@ -22,5 +22,6 @@ enum class Operations {
    copyToGPU,
    copyFromGPU,
    allocateGPU,
-   registerHistoryVariables
+   registerHistoryVariables,
+   loadEpochInputs
 };
