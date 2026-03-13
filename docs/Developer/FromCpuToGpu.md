@@ -1,0 +1,5 @@
+## From CPU to GPU
+
+Graphitti is a high-performance simulator of graph-based systems, currently being applied to computational neuroscience and emergency communication systems. It runs on both CPUs and GPUs and can simulate very large graphs (tens of thousands of vertices; hundreds of thousands to millions of edges) for long durations (billions of time steps).
+
+The typical process for implementing a new system using Graphitti is to implement the system on the CPU and then build a corresponding GPU implementation. The CPU implementation is structured such that the GPU can mirror it's implementation. This is done by sharing data members between the implementations in classes such as AllVertices.h and AllEdges.h. Data structures such as DeviceVector.h are also implemented in such a way that they can be shared between implementations without duplicating code.

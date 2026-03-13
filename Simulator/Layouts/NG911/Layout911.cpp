@@ -46,6 +46,9 @@ void Layout911::setup()
    // so we call its method first
    Layout::setup();
 
+   xloc_.assign(numVertices_, 0);
+   yloc_.assign(numVertices_, 0);
+
    // Loop over all vertices and set their x and y locations
    GraphManager<NG911VertexProperties>::VertexIterator vi, vi_end;
    GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
@@ -102,16 +105,14 @@ void Layout911::generateVertexTypeMap()
       vTypeCount[gm[*vi].type] += 1;
    }
 
-   // Register vertexTypes with recorder
-   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   recorder.registerVariable("vertexTypeMap", vertexTypeMap_, Recorder::UpdatedType::CONSTANT);
-
    LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP"
                                    << endl
                                    << "\tTotal vertices: " << numVertices_ << endl
                                    << "\tCaller vertices: " << vTypeCount["CALR"] << endl
                                    << "\tPSAP vertices: " << vTypeCount["PSAP"] << endl
-                                   << "\tResponder vertices: " << vTypeCount["RESP"] << endl);
+                                   << "\tLaw vertices: " << vTypeCount["LAW"] << endl
+                                   << "\tFire vertices: " << vTypeCount["FIRE"] << endl
+                                   << "\tEMS vertices: " << vTypeCount["EMS"] << endl);
 
    LOG4CPLUS_INFO(fileLogger_, "Finished initializing vertex type map");
 }

@@ -1,13 +1,13 @@
 <?xml version="1.0" standalone="no"?>
+<Matrix name="Neuron_0" type="complete" rows="1" columns="5" multiplier="1.0">
+   1965 3127 3780 4684 8630 
+</Matrix>
+<Matrix name="vertexTypeMap" type="complete" rows="1" columns="4" multiplier="1.0">
+   2 1 2 2 
+</Matrix>
 <Matrix name="x_Location" type="complete" rows="1" columns="4" multiplier="1.0">
    0 1 0 1 
 </Matrix>
 <Matrix name="y_Location" type="complete" rows="1" columns="4" multiplier="1.0">
    0 0 1 1 
-</Matrix>
-<Matrix name="vertexTypeMap" type="complete" rows="1" columns="4" multiplier="1.0">
-   2 1 2 2 
-</Matrix>
-<Matrix name="Neuron_0" type="complete" rows="1" columns="5" multiplier="1.0">
-   1965 3127 3780 4684 8630 
 </Matrix>
