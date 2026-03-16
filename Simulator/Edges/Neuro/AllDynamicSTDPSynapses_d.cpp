@@ -344,48 +344,49 @@ void AllDynamicSTDPSynapses::printGPUEdgesProps(void *allEdgesDeviceProps) const
       HANDLE_ERROR(
          cudaMemcpy(FPrint, allSynapsesProps.F_, size * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
 
+      log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
       for (int i = 0; i < maxEdgesPerVertex_ * countVertices_; i++) {
          if (WPrint[i] != 0.0) {
-            cout << "GPU W[" << i << "] = " << WPrint[i];
-            cout << " GPU sourNeuron: " << sourceNeuronIndexPrint[i];
-            cout << " GPU desNeuron: " << destNeuronIndexPrint[i];
-            cout << " GPU type: " << typePrint[i];
-            cout << " GPU psr: " << psrPrint[i];
-            cout << " GPU in_use:" << (inUsePrint[i] == 1 ? "true" : "false");
+            LOG4CPLUS_INFO(consoleLogger, "GPU W[" << i << "] = " << WPrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU sourNeuron: " << sourceNeuronIndexPrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU desNeuron: " << destNeuronIndexPrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU type: " << typePrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU psr: " << psrPrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU in_use:" << (inUsePrint[i] == 1 ? "true" : "false"));
 
-            cout << " GPU decay: " << decayPrint[i];
-            cout << " GPU tau: " << tauPrint[i];
-            cout << " GPU total_delay: " << totalDelayPrint[i];
+            LOG4CPLUS_INFO(consoleLogger, " GPU decay: " << decayPrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU tau: " << tauPrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU total_delay: " << totalDelayPrint[i]);
 
-            cout << " GPU total_delayPost: " << totalDelayPostPrint[i];
-            cout << " GPU tauspost_: " << tauspost_Print[i];
-            cout << " GPU tauspre_: " << tauspre_Print[i];
-            cout << " GPU taupos_: " << taupos_Print[i];
-            cout << " GPU tauneg_: " << tauneg_Print[i];
-            cout << " GPU STDPgap_: " << STDPgap_Print[i];
-            cout << " GPU Wex_: " << Wex_Print[i];
-            cout << " GPU Aneg_: " << Aneg_Print[i];
-            cout << " GPU Apos_: " << Apos_Print[i];
-            cout << " GPU mupos_: " << mupos_Print[i];
-            cout << " GPU muneg_: " << muneg_Print[i];
-            cout << " GPU useFroemkeDanSTDP_: " << useFroemkeDanSTDP_Print[i];
+            LOG4CPLUS_INFO(consoleLogger, " GPU total_delayPost: " << totalDelayPostPrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU tauspost_: " << tauspost_Print[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU tauspre_: " << tauspre_Print[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU taupos_: " << taupos_Print[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU tauneg_: " << tauneg_Print[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU STDPgap_: " << STDPgap_Print[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU Wex_: " << Wex_Print[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU Aneg_: " << Aneg_Print[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU Apos_: " << Apos_Print[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU mupos_: " << mupos_Print[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU muneg_: " << muneg_Print[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU useFroemkeDanSTDP_: " << useFroemkeDanSTDP_Print[i]);
 
-            cout << " GPU lastSpike: " << lastSpikePrint[i];
-            cout << " GPU r: " << rPrint[i];
-            cout << " GPU u: " << uPrint[i];
-            cout << " GPU D: " << DPrint[i];
-            cout << " GPU U: " << UPrint[i];
-            cout << " GPU F: " << FPrint[i] << endl;
+            LOG4CPLUS_INFO(consoleLogger, " GPU lastSpike: " << lastSpikePrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU r: " << rPrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU u: " << uPrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU D: " << DPrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU U: " << UPrint[i]);
+            LOG4CPLUS_INFO(consoleLogger, " GPU F: " << FPrint[i] << endl);
          }
       }
 
       for (int i = 0; i < countVertices_; i++) {
-         cout << "GPU edge_counts:" << "neuron[" << i << "]" << synapseCountsPrint[i] << endl;
+         LOG4CPLUS_INFO(consoleLogger, "GPU edge_counts:" << "neuron[" << i << "]" << synapseCountsPrint[i] << endl);
       }
 
-      cout << "GPU totalSynapseCount:" << totalSynapseCountPrint << endl;
-      cout << "GPU maxEdgesPerVertex:" << maxEdgesPerVertexPrint << endl;
-      cout << "GPU countVertices_:" << countNeuronsPrint << endl;
+      LOG4CPLUS_INFO(consoleLogger, "GPU totalSynapseCount:" << totalSynapseCountPrint << endl);
+      LOG4CPLUS_INFO(consoleLogger, "GPU maxEdgesPerVertex:" << maxEdgesPerVertexPrint << endl);
+      LOG4CPLUS_INFO(consoleLogger, "GPU countVertices_:" << countNeuronsPrint << endl);
 
 
       // Set countVertices_ to 0 to avoid illegal memory deallocation

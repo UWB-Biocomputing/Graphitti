@@ -20,25 +20,26 @@ void getValueList(const string &valString, vector<BGFLOAT> *pList);
 SInputRegular::SInputRegular(TiXmlElement *parms) : values(nullptr)
 {
    fSInput = false;
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 
    // read duration, interval and sync
    TiXmlElement *temp = nullptr;
    string sync;
    if ((temp = parms->FirstChildElement("IntParams")) != nullptr) {
       if (temp->QueryFLOATAttribute("duration", &duration) != TIXML_SUCCESS) {
-         cerr << "error IntParams:duration" << endl;
+         LOG4CPLUS_ERROR(consoleLogger, "error IntParams:duration\n");
          return;
       }
       if (temp->QueryFLOATAttribute("interval", &interval) != TIXML_SUCCESS) {
-         cerr << "error IntParams:interval" << endl;
+         LOG4CPLUS_ERROR(consoleLogger, "error IntParams:interval\n");
          return;
       }
       if (temp->QueryValueAttribute("sync", &sync) != TIXML_SUCCESS) {
-         cerr << "error IntParams:sync" << endl;
+         LOG4CPLUS_ERROR(consoleLogger, "error IntParams:sync\n");
          return;
       }
    } else {
-      cerr << "missing IntParams" << endl;
+      LOG4CPLUS_ERROR(consoleLogger, "missing IntParams\n");
       return;
    }
 
@@ -55,12 +56,12 @@ SInputRegular::SInputRegular(TiXmlElement *parms) : values(nullptr)
          if (strcmp(pNode->Value(), "I") == 0) {
             getValueList(pNode->ToElement()->GetText(), &initValues);
          } else {
-            cerr << "error I" << endl;
+            LOG4CPLUS_ERROR(consoleLogger, "error I\n");
             return;
          }
       }
    } else {
-      cerr << "missing Values" << endl;
+      LOG4CPLUS_ERROR(consoleLogger, "missing Values\n");
       return;
    }
 

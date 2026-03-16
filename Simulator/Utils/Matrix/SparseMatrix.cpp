@@ -7,6 +7,7 @@
  *          Self-allocating and de-allocating.
  */
 
+#include "Simulator.h"
 #include "SparseMatrix.h"
 #include "Global.h"
 #include <algorithm>
@@ -216,6 +217,7 @@ SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, const char *v) :
    Matrix("sparse", "none", r, c, m), theRows(nullptr), theColumns(nullptr),
    theElements(MaxElements(r, c), c, this)
 {
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    DEBUG_SPARSE(cerr << "\tCreating diagonal sparse matrix" << endl;)
    // Bail out if we're being asked to create nonsense
    if (!((rows > 0) && (columns > 0)))
@@ -249,7 +251,7 @@ SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, const char *v) :
          try {
             theElements.insert(el);
          } catch (Matrix_invalid_argument e) {
-            cerr << "Failure during SparseMatrix string constructor: " << e.what() << endl;
+            LOG4CPLUS_ERROR(consoleLogger, "Failure during SparseMatrix string constructor: " << e.what() << endl);
             exit(-1);
          }
       }
@@ -263,7 +265,9 @@ SparseMatrix::SparseMatrix(int r, int c, BGFLOAT m, const char *v) :
          try {
             theElements.insert(el);
          } catch (Matrix_invalid_argument e) {
-            cerr << "Failure during SparseMatrix multiplier only constructor: " << e.what() << endl;
+            string w = e.what();
+            string message = "Failure during SparseMatrix multiplier only constructor: " + w + "\n";
+            LOG4CPLUS_ERROR(consoleLogger, message);
             exit(-1);
          }
       }
@@ -314,6 +318,7 @@ SparseMatrix::SparseMatrix(const SparseMatrix &oldM) :
    dimensions = 2;
 
    DEBUG_SPARSE(cerr << rows << "X" << columns << ":" << endl;)
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 
    // Allocate storage for row and column lists (hash table already
    // allocated at initialization time; see initializer list, above).
@@ -325,8 +330,10 @@ SparseMatrix::SparseMatrix(const SparseMatrix &oldM) :
    try {
       copy(oldM);
    } catch (Matrix_invalid_argument e) {
-      cerr << "Failure during SparseMatrix copy constructor\n"
-           << "\tError was: " << e.what() << endl;
+      string w = e.what();
+      string message = "Failure during SparseMatrix copy constructor\n"
+           + ("\tError was: " + w) + "\n";
+      LOG4CPLUS_ERROR(consoleLogger, message);
       exit(-1);
    }
 }
@@ -345,6 +352,7 @@ SparseMatrix &SparseMatrix::operator=(const SparseMatrix &rhs)
       return *this;
 
    DEBUG_SPARSE(cerr << "SparseMatrix::operator=" << endl;)
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 
    clear();
    DEBUG_SPARSE(cerr << "\t\tclear() complete, setting data member values." << endl;)
@@ -360,8 +368,8 @@ SparseMatrix &SparseMatrix::operator=(const SparseMatrix &rhs)
    try {
       copy(rhs);
    } catch (Matrix_invalid_argument e) {
-      cerr << "\tFailure during SparseMatrix assignment operator\n"
-           << "\tError was: " << e.what() << endl;
+      LOG4CPLUS_ERROR(consoleLogger, "\tFailure during SparseMatrix assignment operator\n"
+           << "\tError was: " << e.what() << endl);
       exit(-1);
    }
    DEBUG_SPARSE(cerr << "\t\tcopy() complete; returning by reference." << endl;)
@@ -415,6 +423,7 @@ void SparseMatrix::copy(const SparseMatrix &source)
 {
    DEBUG_SPARSE(cerr << "\t\t\tcopying " << source.rows << "X" << source.columns
                      << " SparseMatrix...";)
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 
    // We will access the source row-wise, inserting new Elements into
    // the current SparseMatrix's row and column lists.
@@ -427,12 +436,22 @@ void SparseMatrix::copy(const SparseMatrix &source)
          try {
             theElements.insert(el);
          } catch (Matrix_invalid_argument e) {
-            cerr << "\nFailure during SparseMatrix copy() for element " << el->value << " at ("
-                 << el->row << "," << el->column << ")" << endl;
-            cerr << "\twith " << theElements.size << " elements already copied at i=" << i
+            LOG4CPLUS_ERROR(consoleLogger, "\nFailure during SparseMatrix copy() for element " << el->value << " at ("
+                 << el->row << "," << el->column << ")" << endl);
+            LOG4CPLUS_ERROR(consoleLogger, "\twith " << theElements.size << " elements already copied at i=" << i
                  << ", hashed to " << theElements.hash(el) << " in table with capacity "
-                 << theElements.capacity << endl;
-            cerr << "\tSource was: " << source << endl << endl;
+                 << theElements.capacity << endl);
+            LOG4CPLUS_ERROR(consoleLogger, "\tSource was: " << source << endl << endl);
+            string message = "\nFailure during SparseMatrix copy() for element " + to_string(el->value) + " at ("
+               + to_string(el->row) + "," + to_string(el->column) + ")\n";
+            LOG4CPLUS_ERROR(consoleLogger, message);
+
+            message = "\twith " + to_string(theElements.size) + " elements already copied at i=" + to_string(i)
+               + ", hashed to " + to_string(theElements.hash(el)) + " in table with capacity "
+               + to_string(theElements.capacity) + "\n";
+            LOG4CPLUS_ERROR(consoleLogger, message);
+
+            LOG4CPLUS_ERROR(consoleLogger, "\tSource was: " << source << "\n\n");
             throw e;
          }
       }
@@ -445,6 +464,7 @@ void SparseMatrix::copy(const SparseMatrix &source)
 void SparseMatrix::rowFromXML(TiXmlElement *rowElement)
 {
    int rowNum;
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    if (rowElement->QueryIntAttribute("number", &rowNum) != TIXML_SUCCESS)
       throw Matrix_invalid_argument("Attempt to read SparseMatrix row without a number");
 
@@ -464,7 +484,7 @@ void SparseMatrix::rowFromXML(TiXmlElement *rowElement)
       try {
          theElements.insert(el);
       } catch (Matrix_invalid_argument e) {
-         cerr << "Failure during SparseMatrix rowFromXML: " << e.what() << endl;
+         LOG4CPLUS_ERROR(consoleLogger, "Failure during SparseMatrix rowFromXML: " << e.what() << endl);
          exit(-1);
       }
    }
@@ -549,6 +569,7 @@ string SparseMatrix::toXML(string name) const
 BGFLOAT &SparseMatrix::operator()(int r, int c)
 {
    Element *el = theElements.retrieve(r, c);
+   log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
 
    // Because we're a mutator, we need to insert a zero-value element
    // if the element wasn't found. We will rely on other methods to
@@ -561,8 +582,8 @@ BGFLOAT &SparseMatrix::operator()(int r, int c)
       try {
          theElements.insert(el);
       } catch (Matrix_invalid_argument e) {
-         cerr << "Failure during SparseMatrix operator() at row " << r << " column " << c << ": "
-              << e.what() << endl;
+         LOG4CPLUS_ERROR(consoleLogger, "Failure during SparseMatrix operator() at row " << r << " column " << c << ": "
+              << e.what() << endl);
          exit(-1);
       }
    }
