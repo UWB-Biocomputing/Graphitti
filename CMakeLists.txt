@@ -57,16 +57,15 @@ if(ENABLE_CUDA)
 
 # Specify the CUDA architecture / gencode that will be targeted
 # Set gencode and architecture variables to the correct values for your specific NVIDIA hardware
-        set(CMAKE_CUDA_ARCHITECTURES ${TARGET_ARCH})
-# Sets real and visual architecture switch 
+# Sets real and virtual architecture switch 
 # sm_${TARGET_ARCH} = Real architecture
 # compute_${TARGET_ARCH} = Virtual architecture 
-#                         (embs PTX code e.g. Parallel Thread Execution. 
+#                         (embeds PTX code e.g. Parallel Thread Execution. 
 #                          If on a newer GPU, then the CUDA driver compiles a working binary)
-        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} 
-                -gencode=arch=compute_${TARGET_ARCH},
-                code=[sm_${TARGET_ARCH}, compute_${TARGET_ARCH}])    
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}
+                "-gencode=arch=compute_${TARGET_ARCH},code=sm_${TARGET_ARCH},compute_${TARGET_ARCH}")
         message(STATUS "Using CUDA architecture: ${TARGET_ARCH}")
+
             
 else()
         message("\n----Generating Makefile for Graphitti CPU version----")

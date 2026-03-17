@@ -19,7 +19,7 @@ Originally, Graphitti used CUDA Compute Capability (CC 3.5). This later changed 
 
 # Specifying Target Architecture
 
-By default, if not user-specified, TARGET_ARCH to set to `"native"` 
+By default, if not user-specified, `TARGET_ARCH` is set to `"native"` 
 which auto-detects and utilizes local hardware.
 
 Legacy Support: -DTARGET_ARCH=35
