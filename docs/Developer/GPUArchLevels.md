@@ -12,14 +12,14 @@ Originally, Graphitti used CUDA Compute Capability (CC 3.5). This later changed 
 
 ## Compute Capability
 * Binary Compatibility (cubin): Strictly backwards compatible. A binary for raiju (3.7) runs on ghidorah (8.9), but not vice versa.
-- Backwards Compatibility: Any code compiled on a older architecture will work on newer ones.
+- Backwards Compatibility: Any code compiled on an older architecture will work on newer ones.
 
 - Forwards Compatibility (PTX): Any code compiled for a specific architecture will require that or a newer one to run.
     - Parallel Thread Execution (PTX): PTX is included in lab builds.
 
 # Specifying Target Architecture
 
-By default, if not user-specified, TARGET_ARCH to set to `"native"` 
+By default, if not user-specified, `TARGET_ARCH` is set to `"native"` 
 which auto-detects and utilizes local hardware.
 
 Legacy Support: -DTARGET_ARCH=35
