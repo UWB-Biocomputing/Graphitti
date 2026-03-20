@@ -93,18 +93,18 @@ public:
       return dataSeries_;
    }
 
-   /// @brief Gets const pointer to contiguous host memory array
-   /// @return Const pointer to the first element in host memory
-   /// @note Returns nullptr if vector is empty
-   const T *data() const
-   {
-      return dataSeries_.data();
-   }
-
    /// @brief Gets pointer to contiguous host memory array
    /// @return Pointer to the first element in host memory
    /// @note Returns nullptr if vector is empty
    T *data()
+   {
+      return dataSeries_.data();
+   }
+
+   /// @brief Gets const pointer to contiguous host memory array
+   /// @return Const pointer to the first element in host memory
+   /// @note Returns nullptr if vector is empty
+   const T *data() const
    {
       return dataSeries_.data();
    }
