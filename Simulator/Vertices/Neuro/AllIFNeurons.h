@@ -49,6 +49,8 @@ public:
    static constexpr BGFLOAT DEFAULT_Inoise = 0.0;      // The default synaptic noise
    static constexpr BGFLOAT DEFAULT_Iinject = 0.0;     // The default injected current
    static constexpr BGFLOAT DEFAULT_Vthresh = -0.04;   // The default threshold voltage
+   // Keep tau consistent with its biophysical definition: tau = Cm * Rm
+   static constexpr BGFLOAT DEFAULT_Tau = DEFAULT_Cm * DEFAULT_Rm;
    static constexpr BGFLOAT DEFAULT_InhibTrefract
       = 2.0e-3;   // The default absolute refractory period for inhibitory neurons
    static constexpr BGFLOAT DEFAULT_ExcitTrefract

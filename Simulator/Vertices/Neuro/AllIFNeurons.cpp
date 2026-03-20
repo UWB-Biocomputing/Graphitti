@@ -181,7 +181,7 @@ void AllIFNeurons::setNeuronDefaults(int index)
    Trefract_[index] = AllIFNeurons::DEFAULT_Trefract;
    Inoise_[index] = AllIFNeurons::DEFAULT_Inoise;
    Iinject_[index] = AllIFNeurons::DEFAULT_Iinject;
-   Tau_[index] = AllIFNeurons::DEFAULT_Cm * AllIFNeurons::DEFAULT_Rm;
+   Tau_[index] = AllIFNeurons::DEFAULT_Tau;
 }
 
 ///  Initializes the Neuron constants at the indexed location.

@@ -12,6 +12,10 @@
 
 using namespace std;
 
+const BGFLOAT AllSpikingSynapses::DEFAULT_tau = 3e-3;
+const BGFLOAT AllSpikingSynapses::DEFAULT_U = 0.4;
+const BGFLOAT AllSpikingSynapses::DEFAULT_delay_weight = 0;
+
 AllSpikingSynapses::AllSpikingSynapses() : AllNeuroEdges()
 {
    tau_II_ = 0;
