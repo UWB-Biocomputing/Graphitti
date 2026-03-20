@@ -39,9 +39,9 @@ using fpPostSynapsesSpikeHit_t = void (*)(const BGSIZE, AllSpikingSynapsesDevice
 class AllSpikingSynapses : public AllNeuroEdges {
 public:
    // Default synapse parameter values
-   static const BGFLOAT DEFAULT_tau;   // The default synaptic time constant
-   static const BGFLOAT DEFAULT_U;   // The default synaptic efficiency
-   static const BGFLOAT DEFAULT_delay_weight;   // The default delay weight
+   static const BGFLOAT DEFAULT_tau;
+   static const BGFLOAT DEFAULT_U;
+   static const BGFLOAT DEFAULT_delay_weight;
 
    AllSpikingSynapses();
 
