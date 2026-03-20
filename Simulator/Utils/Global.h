@@ -67,7 +67,11 @@ using uint64_t = unsigned long long int;   //included in inttypes.h, which is no
 #include "VectorMatrix.h"
 #include "VertexType.h"
 
-using namespace std;
+using std::ostream;
+using std::string;
+using std::stringstream;
+using std::unique_ptr;
+using std::vector;
 
 // If defined, a table with time and each neuron voltage will output to stdout.
 //#define DUMP_VOLTAGES
@@ -126,8 +130,10 @@ inline std::ostream &operator<<(std::ostream &os, edgeType eT)
    return os;
 }
 
-// The default time step size.
-#define DEFAULT_dt (1e-4)   // MODEL INDEPENDENT
+// The default time step size (model-independent).
+inline constexpr BGFLOAT kDefaultDt = 1e-4;
+// Compatibility alias for legacy call sites.
+#define DEFAULT_dt kDefaultDt
 // } NMV-END
 
 // Converts a 1-d index into a coordinate string.
