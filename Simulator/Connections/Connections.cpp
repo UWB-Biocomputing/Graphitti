@@ -38,11 +38,15 @@ Connections::Connections()
 
    // Register loadParameters function with Operation Manager
    function<void()> loadParamsFunc = bind(&Connections::loadParameters, this);
-   opsManager.registerOperation(Operations::op::loadParameters, loadParamsFunc);
+   opsManager.registerOperation(Operations::loadParameters, loadParamsFunc);
 
    // Register registerGraphProperties as Operations registerGraphProperties
    function<void()> regGraphPropsFunc = bind(&Connections::registerGraphProperties, this);
    opsManager.registerOperation(Operations::registerGraphProperties, regGraphPropsFunc);
+
+   // Register registerHistoryVariables function as a registerHistoryVariables operation in the OperationManager
+   function<void()> registerHistoryVarsFunc = bind(&Connections::registerHistoryVariables, this);
+   opsManager.registerOperation(Operations::registerHistoryVariables, registerHistoryVarsFunc);
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
@@ -81,25 +85,23 @@ void Connections::createEdgeIndexMap()
 
 ///  Update the connections status in every epoch.
 ///
-///  @param  vertices  The vertex list to search from.
 ///  @return true if successful, false otherwise.
-bool Connections::updateConnections(AllVertices &vertices)
+bool Connections::updateConnections()
 {
    return false;
 }
 
 #if defined(USE_GPU)
-void Connections::updateSynapsesWeights(int numVertices, AllVertices &vertices, AllEdges &synapses,
-                                        AllSpikingNeuronsDeviceProperties *allVerticesDevice,
-                                        AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                        Layout &layout)
+void Connections::updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &edges,
+                                     AllVerticesDeviceProperties *allVerticesDevice,
+                                     AllEdgesDeviceProperties *allEdgesDevice, Layout &layout)
 {
 }
 #else
 
-///  Update the weight of the Synapses in the simulation.
+///  Update the weight of the edges in the simulation.
 ///  Note: Platform Dependent.
-void Connections::updateSynapsesWeights()
+void Connections::updateEdgesWeights()
 {
 }
 #endif   // !USE_GPU

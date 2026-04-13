@@ -114,6 +114,10 @@ public:
             hdf5Datatype_ = PredType::NATIVE_FLOAT;
          } else if (dataType_ == typeid(double).name()) {
             hdf5Datatype_ = PredType::NATIVE_DOUBLE;
+         } else if (dataType_ == typeid(vertexType).name()) {
+            hdf5Datatype_ = PredType::NATIVE_INT;
+         } else if (dataType_ == typeid(unsigned char).name()) {
+            hdf5Datatype_ = PredType::NATIVE_UCHAR;
          } else {
             throw runtime_error("Unsupported data type");
          }
@@ -136,7 +140,21 @@ public:
             } else if (hdf5Datatype_ == PredType::NATIVE_INT) {
                vector<int> dataBuffer(variableLocation_.getNumElements());
                for (int i = 0; i < variableLocation_.getNumElements(); ++i) {
-                  dataBuffer[i] = get<int>(variableLocation_.getElement(i));
+                  // For type int, a distinction needs to be made between vertexType and regular integers
+                  // Since vertexType is an enum class, it needs to first be converted to an integer before storing
+
+                  // 'decltype' determines the type at compile time
+                  // 'decay_t' removes any references/const from the type
+                  // This simplifies comparisons through 'is_same_v' to ensure type matches vertexType
+                  if (std::is_same_v<vertexType, std::decay_t<decltype(get<vertexType>(
+                                                    variableLocation_.getElement(i)))>>) {
+                     // If type matches vertexType, convert to int before storing
+                     dataBuffer[i]
+                        = static_cast<int>(get<vertexType>(variableLocation_.getElement(i)));
+                  } else {
+                     // Otherwise, store as a regular integer
+                     dataBuffer[i] = get<int>(variableLocation_.getElement(i));
+                  }
                }
                hdf5DataSet_.write(dataBuffer.data(), hdf5Datatype_);
 
@@ -147,6 +165,19 @@ public:
                }
                hdf5DataSet_.write(dataBuffer.data(), hdf5Datatype_);
 
+            } else if (hdf5Datatype_ == PredType::NATIVE_DOUBLE) {
+               vector<double> dataBuffer(variableLocation_.getNumElements());
+               for (int i = 0; i < variableLocation_.getNumElements(); ++i) {
+                  dataBuffer[i] = get<double>(variableLocation_.getElement(i));
+               }
+               hdf5DataSet_.write(dataBuffer.data(), hdf5Datatype_);
+
+            } else if (hdf5Datatype_ == PredType::NATIVE_UCHAR) {
+               vector<unsigned char> dataBuffer(variableLocation_.getNumElements());
+               for (int i = 0; i < variableLocation_.getNumElements(); ++i) {
+                  dataBuffer[i] = get<unsigned char>(variableLocation_.getElement(i));
+               }
+               hdf5DataSet_.write(dataBuffer.data(), hdf5Datatype_);
             } else {
                // Throw an error if the data type is unsupported
                throw runtime_error("Unsupported data type");

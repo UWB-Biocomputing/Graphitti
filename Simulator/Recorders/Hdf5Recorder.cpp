@@ -189,7 +189,22 @@ void Hdf5Recorder::compileHistories()
                } else if (variableInfo.hdf5Datatype_ == PredType::NATIVE_INT) {
                   vector<int> dataBuffer(variableInfo.variableLocation_.getNumElements());
                   for (size_t i = 0; i < variableInfo.variableLocation_.getNumElements(); ++i) {
-                     dataBuffer[i] = get<int>(variableInfo.variableLocation_.getElement(i));
+                     // For type int, a distinction needs to be made between vertexType and regular integers
+                     // Since vertexType is an enum class, it needs to first be converted to an integer before storing
+
+                     // 'decltype' determines the type at compile time
+                     // 'decay_t' removes any references/const from the type
+                     // This simplifies comparisons through 'is_same_v' to ensure type matches vertexType
+                     if (std::is_same_v<vertexType,
+                                        std::decay_t<decltype(get<vertexType>(
+                                           variableInfo.variableLocation_.getElement(i)))>>) {
+                        // If type matches vertexType, convert to int before storing
+                        dataBuffer[i] = static_cast<int>(
+                           get<vertexType>(variableInfo.variableLocation_.getElement(i)));
+                     } else {
+                        // Otherwise, store as a regular integer
+                        dataBuffer[i] = get<int>(variableInfo.variableLocation_.getElement(i));
+                     }
                   }
                   variableInfo.hdf5DataSet_.write(dataBuffer.data(), variableInfo.hdf5Datatype_,
                                                   memSpace, fileSpace);
@@ -200,6 +215,21 @@ void Hdf5Recorder::compileHistories()
                   }
                   variableInfo.hdf5DataSet_.write(dataBuffer.data(), variableInfo.hdf5Datatype_,
                                                   memSpace, fileSpace);
+               } else if (variableInfo.hdf5Datatype_ == PredType::NATIVE_DOUBLE) {
+                  vector<double> dataBuffer(variableInfo.variableLocation_.getNumElements());
+                  for (size_t i = 0; i < variableInfo.variableLocation_.getNumElements(); ++i) {
+                     dataBuffer[i] = get<double>(variableInfo.variableLocation_.getElement(i));
+                  }
+                  variableInfo.hdf5DataSet_.write(dataBuffer.data(), variableInfo.hdf5Datatype_,
+                                                  memSpace, fileSpace);
+               } else if (variableInfo.hdf5Datatype_ == PredType::NATIVE_UCHAR) {
+                  vector<unsigned char> dataBuffer(variableInfo.variableLocation_.getNumElements());
+                  for (size_t i = 0; i < variableInfo.variableLocation_.getNumElements(); ++i) {
+                     dataBuffer[i]
+                        = get<unsigned char>(variableInfo.variableLocation_.getElement(i));
+                  }
+                  variableInfo.hdf5DataSet_.write(dataBuffer.data(), variableInfo.hdf5Datatype_,
+                                                  memSpace, fileSpace);
                } else {
                   // Throw an exception if the data type is unsupported
                   throw runtime_error("Unsupported data type for variable: "
@@ -207,10 +237,10 @@ void Hdf5Recorder::compileHistories()
                }
             }
          }
+         // Call startNewEpoch() to prepare for new data input
+         // Only done for dynamic variables since constant variables are only captured at end
+         variableInfo.variableLocation_.startNewEpoch();
       }
-
-      // Call startNewEpoch() to prepare for new data input
-      variableInfo.variableLocation_.startNewEpoch();
    }
 }
 

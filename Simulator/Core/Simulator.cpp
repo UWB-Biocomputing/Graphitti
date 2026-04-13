@@ -31,6 +31,7 @@ Simulator::Simulator()
 
    consoleLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   fileLogger_.setLogLevel(log4cplus::DEBUG_LOG_LEVEL);
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
    workbenchLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("workbench"));
 
@@ -187,7 +188,8 @@ void Simulator::advanceEpoch(int currentEpoch) const
    uint64_t count = 0;
    // Compute step number at end of this simulation epoch
    uint64_t endStep = g_simulationStep + static_cast<uint64_t>(epochDuration_ / deltaT_);
-   model_->getLayout().getVertices().loadEpochInputs(g_simulationStep, endStep);
+   OperationManager::getInstance().executeOperation(Operations::loadEpochInputs, g_simulationStep,
+                                                    endStep);
    // DEBUG_MID(model->logSimStep();) // Generic model debug call
    uint64_t onePercent = (epochDuration_ / deltaT_) * numEpochs_ * 0.01;
    while (g_simulationStep < endStep) {

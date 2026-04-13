@@ -24,12 +24,19 @@
 #pragma once
 
 #include "AllSpikingNeurons.h"
+#include "DeviceVector.h"
 #include "Global.h"
 // cereal
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/vector.hpp>
 
-struct AllIFNeuronsDeviceProperties;
+//AllIFNeuronsDeviceProperties is alias for AllSpikingNeuronsDeviceProperties
+//for now, to avoid removing the AllIFNeuronsDeviceProperties struct, but
+//eventually it can be removed from all the places where it is used and
+//instead replaced by AllSpikingNeuronsDeviceProperties(base struct) itself.
+#if defined(USE_GPU)
+using AllIFNeuronsDeviceProperties = AllSpikingNeuronsDeviceProperties;
+#endif   // defined(USE_GPU)
 
 class AllIFNeurons : public AllSpikingNeurons {
 public:
@@ -88,34 +95,29 @@ public:
 
    ///  Allocate GPU memories to store all neurons' states,
    ///  and copy them from host to GPU memory.
-   ///
-   ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void allocNeuronDeviceStruct(void **allVerticesDevice);
+   virtual void allocVerticesDeviceStruct();
 
    ///  Delete GPU memories.
    ///
-   ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void deleteNeuronDeviceStruct(void *allVerticesDevice);
+   virtual void deleteVerticesDeviceStruct();
 
    ///  Clear the spike counts out of all neurons.
    //
    ///  @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void clearNeuronSpikeCounts(void *allVerticesDevice) override;
+   virtual void clearVertexHistory(void *allVerticesDevice) override;
    //Copy all neurons' data from device to host.
-   //@param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void copyFromDevice(void *deviceAddress) override;
+   virtual void copyFromDevice() override;
    //Copy all neurons' data from host to device.
-   // @param  allVerticesDevice   GPU address of the allNeurons struct on device memory.
-   virtual void copyToDevice(void *deviceAddress) override;
+   virtual void copyToDevice() override;
 
 protected:
    ///  Allocate GPU memories to store all neurons' states.
-   ///  (Helper function of allocNeuronDeviceStruct)
+   ///  (Helper function of allocVerticesDeviceStruct)
    ///  @param  allVerticesDevice         Reference to the AllIFNeuronsDeviceProperties struct.
    void allocDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDevice);
 
    ///  Delete GPU memories.
-   ///  (Helper function of deleteNeuronDeviceStruct)
+   ///  (Helper function of deleteVerticesDeviceStruct)
    ///
    ///  @param  allVerticesDevice         Reference to the AllIFNeuronsDeviceProperties struct.
    void deleteDeviceStruct(AllIFNeuronsDeviceProperties &allVerticesDevice);
@@ -166,56 +168,56 @@ protected:
 
 public:
    ///  The length of the absolute refractory period. [units=sec; range=(0,1);]
-   vector<BGFLOAT> Trefract_;
+   DeviceVector<BGFLOAT> Trefract_;
 
    ///  If \f$V_m\f$ exceeds \f$V_{thresh}\f$ a spike is emmited. [units=V; range=(-10,100);]
-   vector<BGFLOAT> Vthresh_;
+   DeviceVector<BGFLOAT> Vthresh_;
 
    ///  The resting membrane voltage. [units=V; range=(-1,1);]
-   vector<BGFLOAT> Vrest_;
+   DeviceVector<BGFLOAT> Vrest_;
 
    ///  The voltage to reset \f$V_m\f$ to after a spike. [units=V; range=(-1,1);]
-   vector<BGFLOAT> Vreset_;
+   DeviceVector<BGFLOAT> Vreset_;
 
    ///  The initial condition for \f$V_m\f$ at time \f$t=0\f$. [units=V; range=(-1,1);]
-   vector<BGFLOAT> Vinit_;
+   DeviceVector<BGFLOAT> Vinit_;
 
    ///  The membrane capacitance \f$C_m\f$ [range=(0,1); units=F;]
    ///  Used to initialize Tau (no use after that)
-   vector<BGFLOAT> Cm_;
+   DeviceVector<BGFLOAT> Cm_;
 
    ///  The membrane resistance \f$R_m\f$ [units=Ohm; range=(0,1e30)]
-   vector<BGFLOAT> Rm_;
+   DeviceVector<BGFLOAT> Rm_;
 
    /// The standard deviation of the noise to be added each integration time constant. [range=(0,1); units=A;]
-   vector<BGFLOAT> Inoise_;
+   DeviceVector<BGFLOAT> Inoise_;
 
    ///  A constant current to be injected into the LIF neuron. [units=A; range=(-1,1);]
-   vector<BGFLOAT> Iinject_;
+   DeviceVector<BGFLOAT> Iinject_;
 
    /// What the hell is this used for???
    ///  It does not seem to be used; seems to be a candidate for deletion.
    ///  Possibly from the old code before using a separate summation point
    ///  The synaptic input current.
-   vector<BGFLOAT> Isyn_;
+   DeviceVector<BGFLOAT> Isyn_;
 
    /// The remaining number of time steps for the absolute refractory period.
-   vector<int> numStepsInRefractoryPeriod_;
+   DeviceVector<int> numStepsInRefractoryPeriod_;
 
    /// Internal constant for the exponential Euler integration of f$V_m\f$.
-   vector<BGFLOAT> C1_;
+   DeviceVector<BGFLOAT> C1_;
 
    /// Internal constant for the exponential Euler integration of \f$V_m\f$.
-   vector<BGFLOAT> C2_;
+   DeviceVector<BGFLOAT> C2_;
 
    /// Internal constant for the exponential Euler integration of \f$V_m\f$.
-   vector<BGFLOAT> I0_;
+   DeviceVector<BGFLOAT> I0_;
 
    /// The membrane voltage \f$V_m\f$ [readonly; units=V;]
-   vector<BGFLOAT> Vm_;
+   DeviceVector<BGFLOAT> Vm_;
 
    /// The membrane time constant \f$(R_m \cdot C_m)\f$
-   vector<BGFLOAT> Tau_;
+   DeviceVector<BGFLOAT> Tau_;
 
 private:
    /// Min/max values of Iinject.
@@ -243,76 +245,26 @@ private:
    BGFLOAT starterVresetRange_[2];
 };
 
-#if defined(USE_GPU)
-struct AllIFNeuronsDeviceProperties : public AllSpikingNeuronsDeviceProperties {
-   ///  The length of the absolute refractory period. [units=sec; range=(0,1);]
-   BGFLOAT *Trefract_;
-
-   ///  If \f$V_m\f$ exceeds \f$V_{thresh}\f$ a spike is emmited. [units=V; range=(-10,100);]
-   BGFLOAT *Vthresh_;
-
-   ///  The resting membrane voltage. [units=V; range=(-1,1);]
-   BGFLOAT *Vrest_;
-
-   ///  The voltage to reset \f$V_m\f$ to after a spike. [units=V; range=(-1,1);]
-   BGFLOAT *Vreset_;
-
-   ///  The initial condition for \f$V_m\f$ at time \f$t=0\f$. [units=V; range=(-1,1);]
-   BGFLOAT *Vinit_;
-
-   ///  The membrane capacitance \f$C_m\f$ [range=(0,1); units=F;]
-   ///  Used to initialize Tau (no use after that)
-   BGFLOAT *Cm_;
-
-   ///  The membrane resistance \f$R_m\f$ [units=Ohm; range=(0,1e30)]
-   BGFLOAT *Rm_;
-
-   /// The standard deviation of the noise to be added each integration time constant. [range=(0,1); units=A;]
-   BGFLOAT *Inoise_;
-
-   ///  A constant current to be injected into the LIF neuron. [units=A; range=(-1,1);]
-   BGFLOAT *Iinject_;
-
-   /// What the hell is this used for???
-   ///  It does not seem to be used; seems to be a candidate for deletion.
-   ///  Possibly from the old code before using a separate summation point
-   ///  The synaptic input current.
-   BGFLOAT *Isyn_;
-
-   /// The remaining number of time steps for the absolute refractory period.
-   int *numStepsInRefractoryPeriod_;
-
-   /// Internal constant for the exponential Euler integration of f$V_m\f$.
-   BGFLOAT *C1_;
-
-   /// Internal constant for the exponential Euler integration of \f$V_m\f$.
-   BGFLOAT *C2_;
-
-   /// Internal constant for the exponential Euler integration of \f$V_m\f$.
-   BGFLOAT *I0_;
-
-   /// The membrane voltage \f$V_m\f$ [readonly; units=V;]
-   BGFLOAT *Vm_;
-
-   /// The membrane time constant \f$(R_m \cdot C_m)\f$
-   BGFLOAT *Tau_;
-};
-#endif   // defined(USE_GPU)
-
 CEREAL_REGISTER_TYPE(AllIFNeurons);
 
 ///  Cereal serialization method
 template <class Archive> void AllIFNeurons::serialize(Archive &archive)
 {
-   archive(cereal::base_class<AllSpikingNeurons>(this), cereal::make_nvp("Trefract", Trefract_),
-           cereal::make_nvp("Vthresh", Vthresh_), cereal::make_nvp("Vrest", Vrest_),
-           cereal::make_nvp("Vreset", Vreset_), cereal::make_nvp("Vinit", Vinit_),
-           cereal::make_nvp("Cm", Cm_), cereal::make_nvp("Rm", Rm_),
-           cereal::make_nvp("Inoise", Inoise_), cereal::make_nvp("Iinject", Iinject_),
-           cereal::make_nvp("Isyn", Isyn_),
-           cereal::make_nvp("numStepsInRefractoryPeriod", numStepsInRefractoryPeriod_),
-           cereal::make_nvp("C1", C1_), cereal::make_nvp("C2", C2_), cereal::make_nvp("I0", I0_),
-           cereal::make_nvp("Vm", Vm_), cereal::make_nvp("Tau", Tau_));
+   archive(
+      cereal::base_class<AllSpikingNeurons>(this),
+      cereal::make_nvp("Trefract", Trefract_.getHostVector()),
+      cereal::make_nvp("Vthresh", Vthresh_.getHostVector()),
+      cereal::make_nvp("Vrest", Vrest_.getHostVector()),
+      cereal::make_nvp("Vreset", Vreset_.getHostVector()),
+      cereal::make_nvp("Vinit", Vinit_.getHostVector()),
+      cereal::make_nvp("Cm", Cm_.getHostVector()), cereal::make_nvp("Rm", Rm_.getHostVector()),
+      cereal::make_nvp("Inoise", Inoise_.getHostVector()),
+      cereal::make_nvp("Iinject", Iinject_.getHostVector()),
+      cereal::make_nvp("Isyn", Isyn_.getHostVector()),
+      cereal::make_nvp("numStepsInRefractoryPeriod", numStepsInRefractoryPeriod_.getHostVector()),
+      cereal::make_nvp("C1", C1_.getHostVector()), cereal::make_nvp("C2", C2_.getHostVector()),
+      cereal::make_nvp("I0", I0_.getHostVector()), cereal::make_nvp("Vm", Vm_.getHostVector()),
+      cereal::make_nvp("Tau", Tau_.getHostVector()));
 
    //Private variables are intentionally excluded from serialization as they are populated from configuration files.
 }

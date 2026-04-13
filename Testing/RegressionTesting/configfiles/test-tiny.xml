@@ -98,13 +98,10 @@
         </ConnectionsParams>
 
         <LayoutParams class="LayoutNeuro" name="LayoutParams">
-            <LayoutFiles name="LayoutFiles">
-            </LayoutFiles>
         </LayoutParams>
         
         <RecorderParams class="XmlRecorder" name="RecorderParams">
             <RecorderFiles name="RecorderFiles">
-                <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList2x2.xml</probedNListFileName>
                 <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-tiny-out.xml</resultFileName>
             </RecorderFiles>
         </RecorderParams>

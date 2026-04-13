@@ -15,6 +15,7 @@
 
 #include "Connections.h"
 #include "InputEvent.h"
+#include "RecordableVector.h"
 #include <vector>
 
 using namespace std;
@@ -33,7 +34,7 @@ public:
       return new Connections911();
    }
    /// Records typeMap history for recorders
-   vector<vertexType> oldTypeMap_;
+   /// vector<vertexType> oldTypeMap_;
 
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///  Initialize the network characterized by parameters:
@@ -48,6 +49,9 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
+   /// Registers history variables for recording during simulation
+   virtual void registerHistoryVariables() override;
+
 private:
    /// number of psaps to erase at the end of 1 epoch
    int psapsToErase_;
@@ -58,13 +62,13 @@ private:
    struct ChangedEdge;
 
    // Edges that were added but later removed are still here
-   vector<ChangedEdge> edgesAdded;
+   vector<ChangedEdge> edgesAdded_;
 
    // New edges = (old edges + edgesAdded) - edgesErased  <-- works
    // New edges = (old edges - edgesErased) + edgesAdded  <-- does not work
-   vector<ChangedEdge> edgesErased;
+   vector<ChangedEdge> edgesErased_;
 
-   vector<int> verticesErased;
+   RecordableVector<int> verticesErased_;
 
 #if !defined(USE_GPU)
 
@@ -72,17 +76,8 @@ public:
    ///  Update the connections status in every epoch.
    ///  Uses the parent definition for USE_GPU
    ///
-   ///  @param  vertices The Vertex list to search from.
    ///  @return true if successful, false otherwise.
-   virtual bool updateConnections(AllVertices &vertices) override;
-
-   /// Finds the outgoing edge from the given vertex to the Responder closest to
-   /// the emergency call location
-   ///
-   /// @param call         The call that needs a Responder
-   /// @param vertexIdx    The index of the vertex serving the call (A PSAP)
-   /// @return    The index of the outgoing edge to the closest Responder
-   BGSIZE getEdgeToClosestResponder(const Call &call, BGSIZE vertexIdx);
+   virtual bool updateConnections() override;
 
    ///  Returns the complete list of all deleted or added edges as a string.
    ///  @return xml representation of all deleted or added edges

@@ -113,7 +113,7 @@ public:
    ///  @param  edgeIndexMapDevice  GPU address of the EdgeIndexMap on device memory.
    virtual void advanceVertices(AllEdges &synapses, void *allVerticesDevice, void *allEdgesDevice,
                                 float randNoise[], EdgeIndexMapDevice *edgeIndexMapDevice) override;
-#else   // !defined(USE_GPU)
+#else    // !defined(USE_GPU)
 protected:
    ///  Helper for #advanceNeuron. Updates state of a single neuron.
    ///
@@ -124,7 +124,6 @@ protected:
    ///
    ///  @param  index Index of the neuron to fire.
    virtual void fire(int index);
-
 #endif   // defined(USE_GPU)
 };
 

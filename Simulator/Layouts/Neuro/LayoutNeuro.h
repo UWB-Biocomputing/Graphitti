@@ -35,6 +35,12 @@ public:
    /// Register vertex properties with the GraphManager
    virtual void registerGraphProperties() override;
 
+   virtual void registerHistoryVariables() override;
+
+   /// Setup the internal structure of the class.
+   /// Allocate memories to store all layout state.
+   virtual void setup() override;
+
    ///  Prints out all parameters to logging file.
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
@@ -56,6 +62,14 @@ public:
    /// Prints the layout, used for debugging.
    void printLayout();
 
+   VectorMatrix xloc_;   ///< Store neuron i's x location.
+
+   VectorMatrix yloc_;   ///< Store neuron i's y location.
+
+   vector<bool> starterMap_;   ///< The starter existence map (T/F).
+
+   BGSIZE numEndogenouslyActiveNeurons_;   ///< Number of endogenously active neurons.
+
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);
 };
@@ -65,5 +79,7 @@ CEREAL_REGISTER_TYPE(LayoutNeuro);
 ///  Cereal serialization method
 template <class Archive> void LayoutNeuro::serialize(Archive &archive)
 {
-   archive(cereal::virtual_base_class<Layout>(this));
+   archive(cereal::virtual_base_class<Layout>(this), cereal::make_nvp("xloc", xloc_),
+           cereal::make_nvp("yloc", yloc_), cereal::make_nvp("starterMap", starterMap_),
+           cereal::make_nvp("numEndogenouslyActiveNeurons", numEndogenouslyActiveNeurons_));
 }

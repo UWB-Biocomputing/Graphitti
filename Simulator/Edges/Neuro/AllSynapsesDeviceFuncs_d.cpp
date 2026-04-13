@@ -15,7 +15,7 @@
 
 
 // a device variable to store synapse class ID.
-CUDA_CALLABLE enumClassSynapses classSynapses_d = undefClassSynapses;
+CUDA_CALLABLE enumClassSynapses classSynapses_d = enumClassSynapses::undefClassSynapses;
 
 /******************************************
  * @name Device Functions for utility
@@ -29,11 +29,11 @@ CUDA_CALLABLE enumClassSynapses classSynapses_d = undefClassSynapses;
 CUDA_CALLABLE int edgSign(edgeType t)
 {
    switch (t) {
-      case II:
-      case IE:
+      case edgeType::II:
+      case edgeType::IE:
          return -1;
-      case EI:
-      case EE:
+      case edgeType::EI:
+      case edgeType::EE:
          return 1;
    }
 
@@ -116,19 +116,19 @@ CUDA_CALLABLE void createSpikingSynapse(AllSpikingSynapsesDeviceProperties *allE
 
    BGFLOAT tau;
    switch (type) {
-      case II:
+      case edgeType::II:
          tau = 6e-3;
          delay = 0.8e-3;
          break;
-      case IE:
+      case edgeType::IE:
          tau = 6e-3;
          delay = 0.8e-3;
          break;
-      case EI:
+      case edgeType::EI:
          tau = 3e-3;
          delay = 0.8e-3;
          break;
-      case EE:
+      case edgeType::EE:
          tau = 3e-3;
          delay = 1.5e-3;
          break;
@@ -185,28 +185,28 @@ CUDA_CALLABLE void createDSSynapse(AllDSSynapsesDeviceProperties *allEdgesDevice
    BGFLOAT F;
    BGFLOAT tau;
    switch (type) {
-      case II:
+      case edgeType::II:
          U = 0.32;
          D = 0.144;
          F = 0.06;
          tau = 6e-3;
          delay = 0.8e-3;
          break;
-      case IE:
+      case edgeType::IE:
          U = 0.25;
          D = 0.7;
          F = 0.02;
          tau = 6e-3;
          delay = 0.8e-3;
          break;
-      case EI:
+      case edgeType::EI:
          U = 0.05;
          D = 0.125;
          F = 1.2;
          tau = 3e-3;
          delay = 0.8e-3;
          break;
-      case EE:
+      case edgeType::EE:
          U = 0.5;
          D = 1.1;
          F = 0.05;
@@ -263,19 +263,19 @@ CUDA_CALLABLE void createSTDPSynapse(AllSTDPSynapsesDeviceProperties *allEdgesDe
 
    BGFLOAT tau;
    switch (type) {
-      case II:
+      case edgeType::II:
          tau = 6e-3;
          delay = 0.8e-3;
          break;
-      case IE:
+      case edgeType::IE:
          tau = 6e-3;
          delay = 0.8e-3;
          break;
-      case EI:
+      case edgeType::EI:
          tau = 3e-3;
          delay = 0.8e-3;
          break;
-      case EE:
+      case edgeType::EE:
          tau = 3e-3;
          delay = 1.5e-3;
          break;
@@ -353,28 +353,28 @@ CUDA_CALLABLE void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperti
    BGFLOAT F;
    BGFLOAT tau;
    switch (type) {
-      case II:
+      case edgeType::II:
          U = 0.32;
          D = 0.144;
          F = 0.06;
          tau = 6e-3;
          delay = 0.8e-3;
          break;
-      case IE:
+      case edgeType::IE:
          U = 0.25;
          D = 0.7;
          F = 0.02;
          tau = 6e-3;
          delay = 0.8e-3;
          break;
-      case EI:
+      case edgeType::EI:
          U = 0.05;
          D = 0.125;
          F = 1.2;
          tau = 3e-3;
          delay = 0.8e-3;
          break;
-      case EE:
+      case edgeType::EE:
          U = 0.5;
          D = 1.1;
          F = 0.05;
@@ -451,19 +451,19 @@ CUDA_CALLABLE void addSpikingSynapse(AllSpikingSynapsesDeviceProperties *allEdge
 
    // create a synapse
    switch (classSynapses_d) {
-      case classAllSpikingSynapses:
+      case enumClassSynapses::classAllSpikingSynapses:
          createSpikingSynapse(allEdgesDevice, destVertex, synapseIndex, sourceIndex, destIndex,
                               deltaT, type);
          break;
-      case classAllDSSynapses:
+      case enumClassSynapses::classAllDSSynapses:
          createDSSynapse(static_cast<AllDSSynapsesDeviceProperties *>(allEdgesDevice), destVertex,
                          synapseIndex, sourceIndex, destIndex, deltaT, type);
          break;
-      case classAllSTDPSynapses:
+      case enumClassSynapses::classAllSTDPSynapses:
          createSTDPSynapse(static_cast<AllSTDPSynapsesDeviceProperties *>(allEdgesDevice),
                            destVertex, synapseIndex, sourceIndex, destIndex, deltaT, type);
          break;
-      case classAllDynamicSTDPSynapses:
+      case enumClassSynapses::classAllDynamicSTDPSynapses:
          createDynamicSTDPSynapse(
             static_cast<AllDynamicSTDPSynapsesDeviceProperties *>(allEdgesDevice), destVertex,
             synapseIndex, sourceIndex, destIndex, deltaT, type);
@@ -499,16 +499,20 @@ CUDA_CALLABLE void eraseSpikingSynapse(AllSpikingSynapsesDeviceProperties *allEd
 /// @param destVertex            Index of the destination neuron.
 CUDA_CALLABLE edgeType edgType(vertexType *neuronTypeMap_d, int srcVertex, int destVertex)
 {
-   if (neuronTypeMap_d[srcVertex] == INH && neuronTypeMap_d[destVertex] == INH)
-      return II;
-   else if (neuronTypeMap_d[srcVertex] == INH && neuronTypeMap_d[destVertex] == EXC)
-      return IE;
-   else if (neuronTypeMap_d[srcVertex] == EXC && neuronTypeMap_d[destVertex] == INH)
-      return EI;
-   else if (neuronTypeMap_d[srcVertex] == EXC && neuronTypeMap_d[destVertex] == EXC)
-      return EE;
+   if (neuronTypeMap_d[srcVertex] == vertexType::INH
+       && neuronTypeMap_d[destVertex] == vertexType::INH)
+      return edgeType::II;
+   else if (neuronTypeMap_d[srcVertex] == vertexType::INH
+            && neuronTypeMap_d[destVertex] == vertexType::EXC)
+      return edgeType::IE;
+   else if (neuronTypeMap_d[srcVertex] == vertexType::EXC
+            && neuronTypeMap_d[destVertex] == vertexType::INH)
+      return edgeType::EI;
+   else if (neuronTypeMap_d[srcVertex] == vertexType::EXC
+            && neuronTypeMap_d[destVertex] == vertexType::EXC)
+      return edgeType::EE;
 
-   return ETYPE_UNDEF;
+   return edgeType::ETYPE_UNDEF;
 }
 ///@}
 

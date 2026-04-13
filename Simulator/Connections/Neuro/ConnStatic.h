@@ -17,10 +17,6 @@
  * every neighbor of \f$v\f$ is connected to every other neighbor of \f$v\f$).
  * Let \f$C_v\f$ denote the fracion of these allowable edges that actually exist.
  * Define \f$C\f$ as the average of \f$C_v\f$ overall \f$v\f$ (Watts et al. 1998).
- *
- * We first create a regular network characterized by two parameters: the number of maximum 
- * connections per neuron and connection radius threshold, then rewire it according 
- * to the small-world rewiring probability.
  */
 
 #pragma once
@@ -48,6 +44,9 @@ public:
       return new ConnStatic();
    }
 
+   /// Register vertex properties with the GraphManager
+   virtual void registerGraphProperties() override;
+
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    ///  Initialize the small world network characterized by parameters:
    ///  number of maximum connections per vertex, connection radius threshold, and
@@ -62,11 +61,8 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
-   ///  Get connection radius threshold
-   BGFLOAT getConnsRadiusThresh() const
-   {
-      return threshConnsRadius_;
-   }
+   /// Registers history variables for recording during simulation
+   virtual void registerHistoryVariables() override;
 
    /// Get array of vertex weights
    const vector<BGFLOAT> &getWCurrentEpoch() const
@@ -78,13 +74,13 @@ public:
    /// Get all edge source vertex indices
    const vector<int> &getSourceVertexIndexCurrentEpoch() const
    {
-      return sourceVertexIndexCurrentEpoch_;
+      return sourceVertexIndexCurrentEpoch_.getVector();
    }
 
    /// Get all edge destination vertex indices
    const vector<int> &getDestVertexIndexCurrentEpoch() const
    {
-      return destVertexIndexCurrentEpoch_;
+      return destVertexIndexCurrentEpoch_.getVector();
    }
 
    ///  Cereal serialization method
@@ -92,33 +88,15 @@ public:
 
 private:
    /// Indices of the source vertex for each edge
-   vector<int> sourceVertexIndexCurrentEpoch_;
+   RecordableVector<int> sourceVertexIndexCurrentEpoch_;
 
    /// Indices of the destination vertex for each edge
-   vector<int> destVertexIndexCurrentEpoch_;
+   RecordableVector<int> destVertexIndexCurrentEpoch_;
 
    /// The weight (scaling factor, strength, maximal amplitude) of each vertex for the current epoch.
    // vector<BGFLOAT> changes to RecordableVector for recording purpose
    RecordableVector<BGFLOAT> WCurrentEpoch_;
    // vector<BGFLOAT> WCurrentEpoch_;
-
-   /// radii size （2020/2/13 add radiiSize for use in serialization/deserialization)
-   int radiiSize_;
-
-   /// number of maximum connections per vertex
-   int connsPerVertex_;
-
-   /// Connection radius threshold
-   BGFLOAT threshConnsRadius_;
-
-   /// Small-world rewiring probability
-   BGFLOAT rewiringProbability_;
-
-   /// Min/max values of excitatory neuron's synapse weight
-   BGFLOAT excWeight_[2];
-
-   /// Min/max values of inhibitory neuron's synapse weight
-   BGFLOAT inhWeight_[2];
 
    struct DistDestVertex {
       BGFLOAT dist;     ///< distance to the destination vertex
@@ -139,10 +117,5 @@ template <class Archive> void ConnStatic::serialize(Archive &archive)
    archive(cereal::base_class<Connections>(this),
            cereal::make_nvp("sourceVertexIndexCurrentEpoch", sourceVertexIndexCurrentEpoch_),
            cereal::make_nvp("destVertexIndexCurrentEpoch", destVertexIndexCurrentEpoch_),
-           cereal::make_nvp("WCurrentEpoch", WCurrentEpoch_),
-           cereal::make_nvp("radiiSize", radiiSize_),
-           cereal::make_nvp("connsPerVertex", connsPerVertex_),
-           cereal::make_nvp("threshConnsRadius", threshConnsRadius_),
-           cereal::make_nvp("rewiringProbability", rewiringProbability_),
-           cereal::make_nvp("excWeight", excWeight_), cereal::make_nvp("inhWeight", inhWeight_));
+           cereal::make_nvp("WCurrentEpoch", WCurrentEpoch_));
 }

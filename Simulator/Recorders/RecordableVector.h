@@ -65,6 +65,12 @@ public:
       dataSeries_.resize(maxEvents);
    }
 
+   /// Assigns the given value to the vector for the specified size.
+   virtual void assign(size_t size, const T &value)
+   {
+      dataSeries_.assign(size, value);
+   }
+
    /// Overload the operator to set the value at a specific index
    T &operator[](int index)
    {
@@ -75,10 +81,32 @@ public:
       }
    }
 
+   /// Add a new value to recordable vector
+   void push_back(const T &value)
+   {
+      dataSeries_.push_back(value);
+   }
+
    /// Method to retrieve the underlying std::vector<T>
    const std::vector<T> &getVector() const
    {
       return dataSeries_;
+   }
+
+   /// @brief Gets pointer to contiguous host memory array
+   /// @return Pointer to the first element in host memory
+   /// @note Returns nullptr if vector is empty
+   T *data()
+   {
+      return dataSeries_.data();
+   }
+
+   /// @brief Gets const pointer to contiguous host memory array
+   /// @return Const pointer to the first element in host memory
+   /// @note Returns nullptr if vector is empty
+   const T *data() const
+   {
+      return dataSeries_.data();
    }
 
    ///  Cereal serialization method

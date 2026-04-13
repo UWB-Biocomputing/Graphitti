@@ -21,11 +21,9 @@ void All911Edges::setupEdges()
    BGSIZE maxTotalEdges = maxEdgesPerVertex_ * countVertices_;
 
    if (maxTotalEdges > 0) {
-      isAvailable_ = make_unique<bool[]>(maxTotalEdges);
-      fill_n(isAvailable_.get(), maxTotalEdges, true);
+      isAvailable_.assign(maxTotalEdges, true);
 
-      isRedial_ = make_unique<bool[]>(maxTotalEdges);
-      fill_n(isRedial_.get(), maxTotalEdges, false);
+      isRedial_.assign(maxTotalEdges, false);
 
       call_.resize(maxTotalEdges);
    }
@@ -46,55 +44,7 @@ void All911Edges::createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT
 ///  Advance all the edges in the simulation.
 void All911Edges::advanceEdges(AllVertices &vertices, EdgeIndexMap &edgeIndexMap)
 {
-   Simulator &simulator = Simulator::getInstance();
-   All911Vertices &all911Vertices = dynamic_cast<All911Vertices &>(vertices);
-
-   for (int vertex = 0; vertex < simulator.getTotalVertices(); ++vertex) {
-      int start = edgeIndexMap.incomingEdgeBegin_[vertex];
-      int count = edgeIndexMap.incomingEdgeCount_[vertex];
-
-      if (simulator.getModel().getLayout().vertexTypeMap_[vertex] == CALR) {
-         continue;   // TODO911: Caller Regions will have different behaviour
-      }
-
-      // Loop over all the edges and pull the data in
-      for (int eIdxMap = start; eIdxMap < start + count; ++eIdxMap) {
-         int edgeIdx = edgeIndexMap.incomingEdgeIndexMap_[eIdxMap];
-
-         if (!inUse_[edgeIdx]) {
-            continue;
-         }   // Edge isn't in use
-         if (isAvailable_[edgeIdx]) {
-            continue;
-         }   // Edge doesn't have a call
-
-         int dst = destVertexIndex_[edgeIdx];
-         // The destination vertex should be the one pulling the information
-         assert(dst == vertex);
-
-         CircularBuffer<Call> &dstQueue = all911Vertices.getQueue(dst);
-         if (dstQueue.size() >= (dstQueue.capacity() - all911Vertices.busyServers(dst))) {
-            // Call is dropped because there is no space in the waiting queue
-            if (!isRedial_[edgeIdx]) {
-               // Only count the dropped call if it's not a redial
-               all911Vertices.droppedCalls(dst)++;
-               // Record that we received a call
-               all911Vertices.receivedCalls(dst)++;
-               LOG4CPLUS_DEBUG(edgeLogger_,
-                               "Call dropped: " << all911Vertices.droppedCalls(dst) << ", time: "
-                                                << call_[edgeIdx].time << ", vertex: " << dst
-                                                << ", queue size: " << dstQueue.size());
-            }
-         } else {
-            // Transfer call to destination
-            dstQueue.put(call_[edgeIdx]);
-            // Record that we received a call
-            all911Vertices.receivedCalls(dst)++;
-            isAvailable_[edgeIdx] = true;
-            isRedial_[edgeIdx] = false;
-         }
-      }
-   }
+   // Edge properties are not updated until the vertex inputs are integrated into each vertex.
 }
 
 ///  Advance one specific edge.

@@ -22,10 +22,34 @@
 #include "log4cplus/configurator.h"
 #include "log4cplus/logger.h"
 #include "log4cplus/loggingmacros.h"
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <unistd.h>
+
 using namespace std;
+
+// Function to check whether there is a file given at a specific path
+bool findFile(string path)
+{
+   // Opens the file at specified path
+   ifstream newFile(path);
+
+   // Checks if file is opened properly, otherwise results in an error and returns false
+   if (newFile.is_open()) {
+      // Use good() to check if the file exists
+      bool found = newFile.good();
+      newFile.close();
+      return found;
+
+   } else {
+      cerr << "ERROR opening file." << endl;
+   }
+
+   return false;
+}
+
 
 ///  Main function calls the Core's runSimulation method which
 ///  handles command line arguments and running the simulation.
@@ -42,7 +66,18 @@ int main(int argc, char *argv[])
 
    // Initialize log4cplus and set properties based on configure file
    ::log4cplus::initialize();
-   ::log4cplus::PropertyConfigurator::doConfigure("RuntimeFiles/log4cplus_configure.ini");
+
+   // This is to find the absolute path of the home directory log4cplus file
+   string absPath = getenv("HOME");
+   absPath = absPath + "/log4cplus_configure.ini";
+
+   // Checks whether the file is in the home directory
+   // otherwise uses the file in RuntimeFiles
+   if (findFile(absPath)) {
+      ::log4cplus::PropertyConfigurator::doConfigure(absPath);
+   } else {
+      ::log4cplus::PropertyConfigurator::doConfigure("RuntimeFiles/log4cplus_configure.ini");
+   }
 
    // storing command line arguments as string
    // required to pass as an argument to setupSimulation

@@ -42,7 +42,7 @@
     <LayoutParams class="Layout911" name="LayoutParams">
     </LayoutParams>
     
-    <RecorderParams class="Xml911Recorder" name="RecorderParams">
+    <RecorderParams class="XmlRecorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
         <resultFileName name="resultFileName">../Testing/RegressionTesting/TestOutput/test-small-911-out.xml</resultFileName>
       </RecorderFiles>

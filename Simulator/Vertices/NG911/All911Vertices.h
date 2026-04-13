@@ -67,12 +67,15 @@
 
 #include "AllVertices.h"
 #include "CircularBuffer.h"
+#include "EventBuffer.h"
 #include "Global.h"
 #include "InputEvent.h"
 #include "InputManager.h"
+#include "RecordableVector.h"
 
 // Forward declaration to avoid circular reference
 class All911Edges;
+struct All911VerticesDeviceProperties;
 
 // Class to hold all data necessary for all the Vertices.
 class All911Vertices : public AllVertices {
@@ -94,7 +97,7 @@ public:
 
    ///  Setup the internal structure of the class.
    ///  Allocate memories to store all vertices' states.
-   virtual void setupVertices();
+   virtual void setupVertices() override;
 
    ///  Creates all the Vertices and assigns initial data for them.
    ///
@@ -118,12 +121,10 @@ public:
    /// Loads all inputs scheduled to occur in the upcoming epoch.
    /// These are inputs occurring in between curStep (inclusive) and
    /// endStep (exclusive)
-   virtual void loadEpochInputs(uint64_t currentStep, uint64_t endStep) override;
+   virtual void loadEpochInputsToVertices(uint64_t currentStep, uint64_t endStep) override;
 
    /// unused virtual function placeholder
-   virtual void registerHistoryVariables() override
-   {
-   }
+   virtual void registerHistoryVariables() override;
 
    /// Accessor for the waiting queue of a vertex
    ///
@@ -149,38 +150,41 @@ public:
    /// @return    The number of busy servers in the given vertex
    int busyServers(int vIdx) const;
 
-private:
+   /// Index each vertex and record it's type
+   vector<int> vertexType_;
    /// The starting time for every call
-   vector<vector<uint64_t>> beginTimeHistory_;
+   vector<EventBuffer<uint64_t>> beginTimeHistory_;
    /// The answer time for every call
-   vector<vector<uint64_t>> answerTimeHistory_;
+   vector<EventBuffer<uint64_t>> answerTimeHistory_;
    /// The end time for every call
-   vector<vector<uint64_t>> endTimeHistory_;
+   vector<EventBuffer<uint64_t>> endTimeHistory_;
    /// True if the call was abandoned
-   vector<vector<unsigned char>> wasAbandonedHistory_;
+   vector<EventBuffer<uint64_t>> wasAbandonedHistory_;   // changed to bool from unsigned char
    /// The length of the waiting queue at every time-step
-   vector<vector<int>> queueLengthHistory_;
+   vector<EventBuffer<uint64_t>> queueLengthHistory_;
    /// The portion of servers that are busy at every time-step
-   vector<vector<double>> utilizationHistory_;
+   vector<EventBuffer<float>> utilizationHistory_;
 
    /// These are the queues where calls will wait to be served
    vector<CircularBuffer<Call>> vertexQueues_;
 
    /// The number of calls that have been dropped (got a busy signal)
-   vector<int> droppedCalls_;
+   RecordableVector<int> droppedCalls_;
 
    /// The number of received calls
-   vector<int> receivedCalls_;
+   RecordableVector<int> receivedCalls_;
 
    /// Number of servers currently serving calls
    vector<int> busyServers_;
 
+   // Record the max number of servers for GPU memory allocation
+   int maxNumberOfServers_;
    /// Number of servers. In a PSAP these are the call takers, in Responder nodes
    /// they are responder units
-   vector<int> numServers_;
+   RecordableVector<int> numServers_;
 
    /// Number of phone lines available. Only valid for PSAPs and Responders
-   vector<int> numTrunks_;
+   RecordableVector<int> numTrunks_;
 
    /// The probability that a caller will redial after receiving the busy signal
    BGFLOAT redialP_;
@@ -200,6 +204,27 @@ private:
    /// The InputManager holds all the Input Events for the simulation
    InputManager<Call> inputManager_;
 
+   /// Mapping of the vertex ID to the index in the noise array. Only caller regions
+   /// need noise for determining if a redial occurs. Caller regions have a value
+   /// 0 to n where n is the number of caller regions. Non-caller regions have a
+   /// value of -1.
+   vector<int> vertexIdToNoiseIndex_;
+
+protected:
+   /// Finds the outgoing edge from the given vertex to the Responder closest to
+   /// the emergency call location
+   ///
+   /// @param call         The call that needs a Responder
+   /// @param vertexIdx    The index of the vertex serving the call (A PSAP)
+   /// @return    The index of the outgoing edge to the closest Responder
+   BGSIZE getEdgeToClosestResponder(const Call &call, BGSIZE vertexIdx);
+
+   /// The number of vertices that needs device noise. Only caller regions need noise for determining
+   /// redial so this is meant to help save memory. A member variable is used so that we don't have to
+   /// recompute this value multiple times.
+   int numberOfVerticesNeedingDeviceNoise_;
+
+private:
    ///  Advance a CALR vertex. Send calls to the appropriate PSAP
    ///
    ///  @param  vertexIdx     Index of the CALR vertex
@@ -225,13 +250,41 @@ private:
    // GPU functionality for 911 simulation is unimplemented.
    // These signatures are required to make the class non-abstract
 public:
-   virtual void allocNeuronDeviceStruct(void **allVerticesDevice) {};
-   virtual void deleteNeuronDeviceStruct(void *allVerticesDevice) {};
-   virtual void copyToDevice(void *allVerticesDevice) {};
-   virtual void copyFromDevice(void *allVerticesDevice) {};
+   virtual void allocVerticesDeviceStruct() override;
+   virtual void deleteVerticesDeviceStruct() override;
+   virtual void copyToDevice() override;
+   virtual void copyFromDevice() override;
    virtual void advanceVertices(AllEdges &edges, void *allVerticesDevice, void *allEdgesDevice,
-                                float randNoise[], EdgeIndexMapDevice *edgeIndexMapDevice) {};
-   virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) {};
+                                float randNoise[], EdgeIndexMapDevice *edgeIndexMapDevice) override;
+   virtual void setAdvanceVerticesDeviceParams(AllEdges &edges) override;
+   virtual void clearVertexHistory(void *allVerticesDevice) override;
+
+   /// Performs an integration operation per vertex using the inputs to the vertex.
+   ///
+   /// @param allVerticesDevice       GPU address of the allVertices struct on device memory.
+   /// @param edgeIndexMapDevice      GPU address of the EdgeIndexMap on device memory.
+   /// @param allEdgesDevice          GPU address of the allEdges struct on device memory.
+   virtual void integrateVertexInputs(void *allVerticesDevice,
+                                      EdgeIndexMapDevice *edgeIndexMapDevice,
+                                      void *allEdgesDevice) override;
+   /// Copies all inputs scheduled to occur in the upcoming epoch onto device.
+   virtual void copyEpochInputsToDevice() override;
+   virtual int getNumberOfVerticesNeedingDeviceNoise() const override;
+
+protected:
+   ///  Allocate GPU memories to store all vertices' states.
+   ///  (Helper function of allocVerticesDeviceStruct)
+   ///  @param  allVerticesDevice         Reference to the All911VerticesDeviceProperties struct.
+   void allocDeviceStruct(All911VerticesDeviceProperties &allVerticesDevice);
+   void deleteDeviceStruct(All911VerticesDeviceProperties &allVerticesDevice);
+   void copyVertexQueuesToDevice(int numberOfVertices, uint64_t stepsPerEpoch,
+                                 All911VerticesDeviceProperties &allVerticesDevice);
+   void copyVertexQueuesFromDevice(int numberOfVertices, uint64_t stepsPerEpoch,
+                                   All911VerticesDeviceProperties &allVerticesDevice);
+   void copyServingCallToDevice(int numberOfVertices,
+                                All911VerticesDeviceProperties &allVerticesDevice);
+   void copyServingCallFromDevice(int numberOfVertices,
+                                  All911VerticesDeviceProperties &allVerticesDevice);
 #else   // !defined(USE_GPU)
 public:
    ///  Update internal state of the indexed Vertex (called by every simulation step).
@@ -241,7 +294,126 @@ public:
    ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
    virtual void advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIndexMap) override;
 
+   /// Performs an integration operation per vertex using the inputs to the vertex.
+   ///
+   ///  @param  edges         The edge list to search from.
+   ///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+   virtual void integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIndexMap) override;
+
 protected:
 
 #endif   // defined(USE_GPU)
 };
+
+#if defined(USE_GPU)
+struct All911VerticesDeviceProperties : public AllVerticesDeviceProperties {
+   /// Index each vertex and record it's type
+   int *vertexType_;
+   /// The starting time for every call
+   //vector<EventBuffer<uint64_t>> beginTimeHistory_;
+   uint64_t **beginTimeHistory_;
+   int *beginTimeHistoryBufferFront_;
+   int *beginTimeHistoryBufferEnd_;
+   int *beginTimeHistoryEpochStart_;
+   int *beginTimeHistoryNumElementsInEpoch_;
+   /// The answer time for every call
+   //vector<EventBuffer<uint64_t>> answerTimeHistory_;
+   uint64_t **answerTimeHistory_;
+   int *answerTimeHistoryBufferFront_;
+   int *answerTimeHistoryBufferEnd_;
+   int *answerTimeHistoryEpochStart_;
+   int *answerTimeHistoryNumElementsInEpoch_;
+   /// The end time for every call
+   //vector<EventBuffer<uint64_t>> endTimeHistory_;
+   uint64_t **endTimeHistory_;
+   int *endTimeHistoryBufferFront_;
+   int *endTimeHistoryBufferEnd_;
+   int *endTimeHistoryEpochStart_;
+   int *endTimeHistoryNumElementsInEpoch_;
+   /// True if the call was abandoned
+   //vector<EventBuffer<uint64_t>> wasAbandonedHistory_;
+   uint64_t **wasAbandonedHistory_;
+   int *wasAbandonedHistoryBufferFront_;
+   int *wasAbandonedHistoryBufferEnd_;
+   int *wasAbandonedHistoryEpochStart_;
+   int *wasAbandonedHistoryNumElementsInEpoch_;
+   /// The length of the waiting queue at every time-step
+   //vector<EventBuffer<uint64_t>> queueLengthHistory_;
+   uint64_t **queueLengthHistory_;
+   int *queueLengthHistoryBufferFront_;
+   int *queueLengthHistoryBufferEnd_;
+   int *queueLengthHistoryEpochStart_;
+   int *queueLengthHistoryNumElementsInEpoch_;
+   /// The portion of servers that are busy at every time-step
+   //vector<EventBuffer<double>> utilizationHistory_;
+   BGFLOAT **utilizationHistory_;
+   int *utilizationHistoryBufferFront_;
+   int *utilizationHistoryBufferEnd_;
+   int *utilizationHistoryEpochStart_;
+   int *utilizationHistoryNumElementsInEpoch_;
+
+   /// These are the queues where calls will wait to be served
+   //vector<CircularBuffer<Call>> vertexQueues_;
+   int **vertexQueuesBufferVertexId_;
+   uint64_t **vertexQueuesBufferTime_;
+   int **vertexQueuesBufferDuration_;
+   BGFLOAT **vertexQueuesBufferX_;
+   BGFLOAT **vertexQueuesBufferY_;
+   int **vertexQueuesBufferPatience_;
+   int **vertexQueuesBufferOnSiteTime_;
+   int **vertexQueuesBufferResponderType_;
+   uint64_t *vertexQueuesFront_;
+   uint64_t *vertexQueuesEnd_;
+   // Replaces calls to buffer.size() on the CPU. It's therefore
+   // the size of the underlying buffer, not the size of the
+   // Circular buffer.
+   uint64_t *vertexQueuesBufferSize_;
+
+   /// The number of calls that have been dropped (got a busy signal)
+   //vector<int> droppedCalls_;
+   int *droppedCalls_;
+
+   /// The number of received calls
+   //vector<int> receivedCalls_;
+   int *receivedCalls_;
+
+   /// Number of servers currently serving calls
+   //vector<int> busyServers_;
+   int *busyServers_;
+
+   /// Number of servers. In a PSAP these are the call takers, in Responder nodes
+   /// they are responder units
+   //vector<int> numServers_;
+   int *numServers_;
+
+   /// Number of phone lines available. Only valid for PSAPs and Responders
+   //vector<int> numTrunks_;
+   int *numTrunks_;
+
+   /// Holds the calls being served by each server
+   //vector<vector<Call>> servingCall_;
+   int **servingCallBufferVertexId_;
+   uint64_t **servingCallBufferTime_;
+   int **servingCallBufferDuration_;
+   BGFLOAT **servingCallBufferX_;
+   BGFLOAT **servingCallBufferY_;
+   int **servingCallBufferPatience_;
+   int **servingCallBufferOnSiteTime_;
+   int **servingCallBufferResponderType_;
+
+   /// The time that the call being served was answered by the server
+   //vector<vector<uint64_t>> answerTime_;
+   uint64_t **answerTime_;
+
+   /// The countdown until the server is available to take another call
+   //vector<vector<int>> serverCountdown_;
+   int **serverCountdown_;
+
+   /// Mapping of the vertex ID to the index in the noise array. Only caller regions
+   /// need noise for determining if a redial occurs. Caller regions have a value
+   /// 0 to n where n is the number of caller regions. Non-caller regions have a
+   /// value of -1.
+   //vector<int> vertexIdToNoiseIndex_;
+   int *vertexIdToNoiseIndex_;
+};
+#endif   // defined(USE_GPU)

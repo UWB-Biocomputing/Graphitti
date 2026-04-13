@@ -24,8 +24,6 @@
 #pragma once
 
 #include "AllEdges.h"
-#include "AllSpikingNeurons.h"
-#include "AllSpikingSynapses.h"
 #include "AllVertices.h"
 #include "EdgeIndexMap.h"
 #include "Layout.h"
@@ -67,46 +65,49 @@ public:
    ///  Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const = 0;
 
+   /// Registers history variables for recording during simulation
+   virtual void registerHistoryVariables() = 0;
+
    ///  Update the connections status in every epoch.
    ///
-   ///  @param  neurons  The Neuron list to search from.
    ///  @return true if successful, false otherwise.
-   virtual bool updateConnections(AllVertices &vertices);
+   virtual bool updateConnections();
 
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);
 
 #if defined(USE_GPU)
 public:
-   ///  Update the weight of the Synapses in the simulation.
+   ///  Update the weight of the edges in the simulation.
    ///  Note: Platform Dependent.
    ///
    ///  @param  numVertices          number of vertices to update.
-   ///  @param  neurons             the Neuron list to search from.
-   ///  @param  synapses            the Synapse list to search from.
+   ///  @param  vertices             the vertex list to search from.
+   ///  @param  edges                the edge list to search from.
    ///  @param  allVerticesDevice    GPU address of the allVertices struct on device memory.
-   ///  @param  allEdgesDevice   GPU address of the allEdges struct on device memory.
-   ///  @param  layout              Layout information of the neural network.
-   virtual void updateSynapsesWeights(int numVertices, AllVertices &vertices, AllEdges &synapses,
-                                      AllSpikingNeuronsDeviceProperties *allVerticesDevice,
-                                      AllSpikingSynapsesDeviceProperties *allEdgesDevice,
-                                      Layout &layout);
+   ///  @param  allEdgesDevice       GPU address of the allEdges struct on device memory.
+   ///  @param  layout               Layout information of the graph network.
+   virtual void updateEdgesWeights(int numVertices, AllVertices &vertices, AllEdges &edges,
+                                   AllVerticesDeviceProperties *allVerticesDevice,
+                                   AllEdgesDeviceProperties *allEdgesDevice, Layout &layout);
 #else
 public:
-   ///  Update the weight of the Synapses in the simulation.
+   ///  Update the weight of the edges in the simulation.
    ///  Note: Platform Dependent.
-   virtual void updateSynapsesWeights();
+   virtual void updateEdgesWeights();
 
 #endif   // USE_GPU
 
 protected:
    unique_ptr<AllEdges> edges_;
+   ///  TODO: Rename to edgeIndexMap_ since this is a base class
    unique_ptr<EdgeIndexMap> synapseIndexMap_;
 
    log4cplus::Logger fileLogger_;
    log4cplus::Logger edgeLogger_;
 };
 
+///  TODO: Rename to synapseIndexMap since this is a base class
 ///  Cereal serialization method
 template <class Archive> void Connections::serialize(Archive &archive)
 {

@@ -14,7 +14,7 @@
 #include <functional>
 
 /// Constructor, Function Signature: void ()
-GenericFunctionNode::GenericFunctionNode(const Operations::op &operation,
+GenericFunctionNode::GenericFunctionNode(const Operations &operation,
                                          const std::function<void()> &func)
 {
    operationType_ = operation;
@@ -22,7 +22,7 @@ GenericFunctionNode::GenericFunctionNode(const Operations::op &operation,
 }
 
 /// Invokes the stored function if the sent operation type matches the operation type the function is stored as.
-bool GenericFunctionNode::invokeFunction(const Operations::op &operation) const
+bool GenericFunctionNode::invokeFunction(const Operations &operation) const
 {
    if (operation == operationType_) {
       __invoke(function_);

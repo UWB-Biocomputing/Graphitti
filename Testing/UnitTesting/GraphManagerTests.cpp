@@ -6,6 +6,7 @@
  * @ingroup Testing/UnitTesting
  */
 
+#include "Global.h"
 #include "GraphManager.h"
 #include "gtest/gtest.h"
 #include <boost/graph/adjacency_list.hpp>
@@ -17,41 +18,43 @@ string emptyGraphFile = "../configfiles/graphs/empty-graph.graphml";
 
 TEST(GraphManager, GetInstanceReturnsInstance)
 {
-   GraphManager *graphManager = &GraphManager::getInstance();
+   GraphManager<NG911VertexProperties> *graphManager
+      = &GraphManager<NG911VertexProperties>::getInstance();
    ASSERT_NE(graphManager, nullptr);
 }
 
 TEST(GraphManager, ReadGraphReturnsTrue)
 {
-   GraphManager &graphManager = GraphManager::getInstance();
+   GraphManager<NG911VertexProperties> &graphManager
+      = GraphManager<NG911VertexProperties>::getInstance();
    graphManager.setFilePath(graphFile);
 
-   graphManager.registerProperty("objectID", &VertexProperty::objectID);
-   graphManager.registerProperty("name", &VertexProperty::name);
-   graphManager.registerProperty("type", &VertexProperty::type);
-   graphManager.registerProperty("y", &VertexProperty::y);
-   graphManager.registerProperty("x", &VertexProperty::x);
-   graphManager.registerProperty("servers", &VertexProperty::servers);
-   graphManager.registerProperty("trunks", &VertexProperty::trunks);
-   graphManager.registerProperty("segments", &VertexProperty::segments);
+   graphManager.registerProperty("objectID", &NG911VertexProperties::objectID);
+   graphManager.registerProperty("name", &NG911VertexProperties::name);
+   graphManager.registerProperty("type", &NG911VertexProperties::type);
+   graphManager.registerProperty("y", &NG911VertexProperties::y);
+   graphManager.registerProperty("x", &NG911VertexProperties::x);
+   graphManager.registerProperty("servers", &NG911VertexProperties::servers);
+   graphManager.registerProperty("trunks", &NG911VertexProperties::trunks);
+   graphManager.registerProperty("segments", &NG911VertexProperties::segments);
 
    ASSERT_TRUE(graphManager.readGraph());
 }
 
 TEST(GraphManager, NumVerticesReturnsEleven)
 {
-   ASSERT_EQ(GraphManager::getInstance().numVertices(), 11);
+   ASSERT_EQ(GraphManager<NG911VertexProperties>::getInstance().numVertices(), 11);
 }
 
 TEST(GraphManager, NumEdgesReturnsTwenty)
 {
-   ASSERT_EQ(GraphManager::getInstance().numEdges(), 20);
+   ASSERT_EQ(GraphManager<NG911VertexProperties>::getInstance().numEdges(), 20);
 }
 
 TEST(GraphManager, GetVertcies)
 {
-   GraphManager::VertexIterator vi, vi_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NG911VertexProperties>::VertexIterator vi, vi_end;
+   GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
    boost::tie(vi, vi_end) = gm.vertices();
    ASSERT_EQ(*vi, 0);
    ASSERT_EQ(*vi_end, 11);
@@ -59,10 +62,10 @@ TEST(GraphManager, GetVertcies)
 
 TEST(GraphManager, GetEdgesAndSource)
 {
-   GraphManager::EdgeIterator ei, ei_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NG911VertexProperties>::EdgeIterator ei, ei_end;
+   GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
 
-   list<GraphManager::EdgeDescriptor> ei_list;
+   list<GraphManager<NG911VertexProperties>::EdgeDescriptor> ei_list;
    for (boost::tie(ei, ei_end) = gm.edges(); ei != ei_end; ++ei) {
       ei_list.push_back(*ei);
    }
@@ -72,10 +75,10 @@ TEST(GraphManager, GetEdgesAndSource)
 
 TEST(GraphManager, GetEdgesAndTarget)
 {
-   GraphManager::EdgeIterator ei, ei_end;
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NG911VertexProperties>::EdgeIterator ei, ei_end;
+   GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
 
-   list<GraphManager::EdgeDescriptor> ei_list;
+   list<GraphManager<NG911VertexProperties>::EdgeDescriptor> ei_list;
    for (boost::tie(ei, ei_end) = gm.edges(); ei != ei_end; ++ei) {
       ei_list.push_back(*ei);
    }
@@ -85,7 +88,7 @@ TEST(GraphManager, GetEdgesAndTarget)
 
 TEST(GraphManager, SortEdges)
 {
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
    auto list = gm.edgesSortByTarget();
    auto start = list.begin();
    ASSERT_EQ(gm.source(*start), 1);
@@ -96,14 +99,16 @@ TEST(GraphManager, SortEdges)
 // the GraphManager singleton is not overwritten with the new graphs.
 TEST(GraphManager, ReadEmptyGraph)
 {
-   GraphManager &graphManager = GraphManager::getInstance();
+   GraphManager<NG911VertexProperties> &graphManager
+      = GraphManager<NG911VertexProperties>::getInstance();
    graphManager.setFilePath(emptyGraphFile);
    ASSERT_TRUE(graphManager.readGraph());
 }
 
 TEST(GraphManager, ReadNonExistentGraph)
 {
-   GraphManager &graphManager = GraphManager::getInstance();
+   GraphManager<NG911VertexProperties> &graphManager
+      = GraphManager<NG911VertexProperties>::getInstance();
    graphManager.setFilePath("nonExistent.graphml");
    ASSERT_FALSE(graphManager.readGraph());
 }

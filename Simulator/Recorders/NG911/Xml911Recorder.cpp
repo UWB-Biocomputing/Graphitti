@@ -27,6 +27,7 @@ void Xml911Recorder::compileHistories()
 /// @param  vertices the Vertex list to search from.
 void Xml911Recorder::saveSimData()
 {
+   /*
    auto &conns = Simulator::getInstance().getModel().getConnections();
    Connections911 &conns911 = dynamic_cast<Connections911 &>(conns);
    All911Vertices &all911Vertices = dynamic_cast<All911Vertices &>(
@@ -34,13 +35,15 @@ void Xml911Recorder::saveSimData()
 
    // create Vertex Types matrix
    VectorMatrix oldTypes(MATRIX_TYPE, MATRIX_INIT, 1, Simulator::getInstance().getTotalVertices(),
-                         EXC);
+                         static_cast<BGFLOAT>(vertexType::EXC));
    VectorMatrix vertexTypes(MATRIX_TYPE, MATRIX_INIT, 1,
-                            Simulator::getInstance().getTotalVertices(), EXC);
+                            Simulator::getInstance().getTotalVertices(),
+                            static_cast<BGFLOAT>(vertexType::EXC));
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
-      vertexTypes[i] = Simulator::getInstance().getModel().getLayout().vertexTypeMap_[i];
-      oldTypes[i] = conns911.oldTypeMap_[i];
+      vertexTypes[i]
+         = static_cast<BGFLOAT>(Simulator::getInstance().getModel().getLayout().vertexTypeMap_[i]);
+      oldTypes[i] = static_cast<BGFLOAT>(conns911.oldTypeMap_[i]);
    }
 
    // Write XML header information:
@@ -102,6 +105,7 @@ void Xml911Recorder::saveSimData()
    resultOut_ << "   " << g_simulationStep * Simulator::getInstance().getDeltaT() << endl;
    resultOut_ << "</Matrix>" << endl;
    resultOut_ << "</SimState>" << endl;
+   */
 }
 
 ///  Prints out all parameters to logging file.

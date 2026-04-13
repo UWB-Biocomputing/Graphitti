@@ -93,6 +93,34 @@ The following options are available:
 high-performance GPU version has been compiled (`ggraphitti`).
 - `-v, --version`: Outputs the current git commit ID and exits.
 
+## Running the GPU version of the simulator (ggraphitti)]
+1. To run:
+
+    ```
+    $ cd build
+
+    $ cmake -D ENABLE_CUDA=YES .. 
+    ```
+
+    This will generate a makefile. Then type:
+
+    ```
+    $ make
+    ```
+
+    You can then run a selection of sample tests to ensure the simulator is able to run:
+
+    ```
+    $ ./tests
+    ```
+
+    You can run ggraphitti on various test files:
+
+    ```
+    $ ./ggraphitti -c ../configfiles/test-small-connected.xml
+    ```
+
+
 ## Using Visual Studio Code 
 1. Install the [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) for IntelliSense and debugging. We recommend setting the IntelliSense Cache Size setting to 10 MB. The default size is 5120 MB, which can result in VSC consuming all of your allotted space on the CSS Linux Machines.
 

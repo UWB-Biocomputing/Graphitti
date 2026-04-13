@@ -98,13 +98,10 @@
     </ConnectionsParams>
 
     <LayoutParams class="LayoutNeuro" name="LayoutParams">
-      <LayoutFiles name="LayoutFiles">
-      </LayoutFiles>
     </LayoutParams>
 
     <RecorderParams class="XmlRecorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
-        <probedNListFileName name="prbNListFileName" type="InputFile">../configfiles/NList/probedNList_10000.xml</probedNListFileName>
         <resultFileName name="resultFileName">Output/Results/test-large-connected-out.xml</resultFileName>
       </RecorderFiles>
     </RecorderParams>

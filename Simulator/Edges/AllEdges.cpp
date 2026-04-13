@@ -16,7 +16,7 @@ AllEdges::AllEdges() : totalEdgeCount_(0), maxEdgesPerVertex_(0), countVertices_
    // OperationManager. This will register the appropriate overridden method
    // for the actual (sub)class of the object being created.
    function<void()> loadParametersFunc = std::bind(&AllEdges::loadParameters, this);
-   OperationManager::getInstance().registerOperation(Operations::op::loadParameters,
+   OperationManager::getInstance().registerOperation(Operations::loadParameters,
                                                      loadParametersFunc);
 
    // Register printParameters function as a printParameters operation in the
@@ -25,6 +25,28 @@ AllEdges::AllEdges() : totalEdgeCount_(0), maxEdgesPerVertex_(0), countVertices_
    function<void()> printParametersFunc = bind(&AllEdges::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
+
+#if defined(USE_GPU)
+   // Register allocNeuronDeviceStruct function as a allocateGPU operation in the OperationManager
+   function<void()> allocateGPU
+      = bind(static_cast<void (AllEdges::*)()>(&AllEdges::allocEdgeDeviceStruct), this);
+   OperationManager::getInstance().registerOperation(Operations::allocateGPU, allocateGPU);
+
+   // Register AllEdges::copyEdgeHostToDevice function as a copyToGPU operation in the OperationManager
+   function<void()> copyCPUtoGPU
+      = bind(static_cast<void (AllEdges::*)()>(&AllEdges::copyEdgeHostToDevice), this);
+   OperationManager::getInstance().registerOperation(Operations::copyToGPU, copyCPUtoGPU);
+
+   // Register copyFromGPU operation for transferring edge data from device to host
+   function<void()> copyFromGPU = bind(&AllEdges::copyEdgeDeviceToHost, this);
+   OperationManager::getInstance().registerOperation(Operations::copyFromGPU, copyFromGPU);
+
+   // Register deleteEdgeDeviceStruct function as a deallocateGPUMemory operation in the OperationManager
+   function<void()> deallocateGPUMemory = bind(&AllEdges::deleteEdgeDeviceStruct, this);
+   OperationManager::getInstance().registerOperation(Operations::deallocateGPUMemory,
+                                                     deallocateGPUMemory);
+
+#endif
 
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
@@ -76,7 +98,7 @@ void AllEdges::setupEdges(int numVertices, int maxEdges)
 
    if (maxTotalEdges != 0) {
       W_.assign(maxTotalEdges, 0);
-      type_.assign(maxTotalEdges, ETYPE_UNDEF);
+      type_.assign(maxTotalEdges, edgeType::ETYPE_UNDEF);
       inUse_.assign(maxTotalEdges, false);
       edgeCounts_.assign(numVertices, 0);
       destVertexIndex_.assign(maxTotalEdges, 0);
@@ -128,25 +150,25 @@ edgeType AllEdges::edgeOrdinalToType(int typeOrdinal)
 {
    switch (typeOrdinal) {
       case 0:
-         return II;
+         return edgeType::II;
       case 1:
-         return IE;
+         return edgeType::IE;
       case 2:
-         return EI;
+         return edgeType::EI;
       case 3:
-         return EE;
+         return edgeType::EE;
       case 4:
-         return CP;
+         return edgeType::CP;
       case 5:
-         return PR;
+         return edgeType::PR;
       case 6:
-         return PC;
+         return edgeType::PC;
       case 7:
-         return PP;
+         return edgeType::PP;
       case 8:
-         return RP;
+         return edgeType::RP;
       default:
-         return ETYPE_UNDEF;
+         return edgeType::ETYPE_UNDEF;
    }
 }
 

@@ -22,7 +22,7 @@ void Connections911::setup()
    AllVertices &vertices = layout.getVertices();
 
    // Get list of edges sorted by target in ascending order from GraphManager
-   GraphManager &gm = GraphManager::getInstance();
+   GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
    auto sorted_edge_list = gm.edgesSortByTarget();
 
    // add sorted edges
@@ -61,9 +61,16 @@ void Connections911::printParameters() const
                       << endl);
 }
 
+/// Registers variable to be recorded
+void Connections911::registerHistoryVariables()
+{
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   recorder.registerVariable("verticesDeleted", verticesErased_, Recorder::UpdatedType::DYNAMIC);
+}
+
 #if !defined(USE_GPU)
 ///  Update the connections status in every epoch.
-bool Connections911::updateConnections(AllVertices &vertices)
+bool Connections911::updateConnections()
 {
    // Only run on the first epoch
    if (Simulator::getInstance().getCurrentStep() != 1) {
@@ -73,7 +80,7 @@ bool Connections911::updateConnections(AllVertices &vertices)
    // Record old type map
    int numVertices = Simulator::getInstance().getTotalVertices();
    Layout &layout = Simulator::getInstance().getModel().getLayout();
-   oldTypeMap_ = layout.vertexTypeMap_;
+   AllVertices &vertices = layout.getVertices();
 
    // Erase PSAPs
    for (int i = 0; i < psapsToErase_; i++) {
@@ -89,52 +96,6 @@ bool Connections911::updateConnections(AllVertices &vertices)
 }
 
 
-/// Finds the outgoing edge from the given vertex to the Responder closest to
-/// the emergency call location
-BGSIZE Connections911::getEdgeToClosestResponder(const Call &call, BGSIZE vertexIdx)
-{
-   All911Edges &edges911 = dynamic_cast<All911Edges &>(*edges_);
-
-   vertexType requiredType;
-   if (call.type == "Law")
-      requiredType = LAW;
-   else if (call.type == "EMS")
-      requiredType = EMS;
-   else if (call.type == "Fire")
-      requiredType = FIRE;
-
-   // loop over the outgoing edges looking for the responder with the shortest
-   // Euclidean distance to the call's location.
-   BGSIZE startOutEdg = synapseIndexMap_->outgoingEdgeBegin_[vertexIdx];
-   BGSIZE outEdgCount = synapseIndexMap_->outgoingEdgeCount_[vertexIdx];
-   Layout911 &layout911
-      = dynamic_cast<Layout911 &>(Simulator::getInstance().getModel().getLayout());
-
-   BGSIZE resp, respEdge;
-   double minDistance = numeric_limits<double>::max();
-   for (BGSIZE eIdxMap = startOutEdg; eIdxMap < startOutEdg + outEdgCount; ++eIdxMap) {
-      BGSIZE outEdg = synapseIndexMap_->outgoingEdgeIndexMap_[eIdxMap];
-      assert(edges911.inUse_[outEdg]);   // Edge must be in use
-
-      BGSIZE dstVertex = edges911.destVertexIndex_[outEdg];
-      if (layout911.vertexTypeMap_[dstVertex] == requiredType) {
-         double distance = layout911.getDistance(dstVertex, call.x, call.y);
-
-         if (distance < minDistance) {
-            minDistance = distance;
-            resp = dstVertex;
-            respEdge = outEdg;
-         }
-      }
-   }
-
-   // We must have found the closest responder of the right type
-   assert(minDistance < numeric_limits<double>::max());
-   assert(layout911.vertexTypeMap_[resp] == requiredType);
-   return respEdge;
-}
-
-
 ///  Randomly delete 1 PSAP and rewire all the edges around it.
 bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
 {
@@ -145,7 +106,7 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
 
    // Find all psaps
    for (int i = 0; i < numVertices; i++) {
-      if (layout.vertexTypeMap_[i] == PSAP) {
+      if (layout.vertexTypeMap_[i] == vertexType::PSAP) {
          psaps.push_back(i);
       }
    }
@@ -183,19 +144,20 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
          erasedEdge.srcV = srcVertex;
          erasedEdge.destV = destVertex;
          erasedEdge.eType = layout.edgType(srcVertex, destVertex);
-         edgesErased.push_back(erasedEdge);
+         edgesErased_.push_back(erasedEdge);
 
          changesMade = true;
          edges_->eraseEdge(destVertex, iEdg);
 
          // Identify all psap-less callers
-         if (layout.vertexTypeMap_[srcVertex] == CALR) {
+         if (layout.vertexTypeMap_[srcVertex] == vertexType::CALR) {
             callersToReroute.push_back(srcVertex);
          }
 
          // Identify all psap-less responders
-         if (layout.vertexTypeMap_[destVertex] == LAW || layout.vertexTypeMap_[destVertex] == FIRE
-             || layout.vertexTypeMap_[destVertex] == EMS) {
+         if (layout.vertexTypeMap_[destVertex] == vertexType::LAW
+             || layout.vertexTypeMap_[destVertex] == vertexType::FIRE
+             || layout.vertexTypeMap_[destVertex] == vertexType::EMS) {
             respsToReroute.push_back(destVertex);
          }
       }
@@ -203,8 +165,8 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
 
    if (changesMade) {
       // This is here so that we don't delete the vertex if we can't find any edges
-      verticesErased.push_back(randPSAP);
-      layout.vertexTypeMap_[randPSAP] = VTYPE_UNDEF;
+      verticesErased_.push_back(randPSAP);
+      layout.vertexTypeMap_[randPSAP] = vertexType::VTYPE_UNDEF;
    }
 
    // Failsafe
@@ -229,15 +191,15 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       }
 
       // Insert Caller to PSAP edge
-      BGSIZE iEdg
-         = edges_->addEdge(CP, srcVertex, closestPSAP, Simulator::getInstance().getDeltaT());
+      BGSIZE iEdg = edges_->addEdge(edgeType::CP, srcVertex, closestPSAP,
+                                    Simulator::getInstance().getDeltaT());
 
       // Record added edge
       ChangedEdge addedEdge;
       addedEdge.srcV = srcVertex;
       addedEdge.destV = closestPSAP;
-      addedEdge.eType = CP;
-      edgesAdded.push_back(addedEdge);
+      addedEdge.eType = edgeType::CP;
+      edgesAdded_.push_back(addedEdge);
    }
 
    // For each psap-less responder, find closest match
@@ -257,15 +219,15 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
       }
 
       // Insert PSAP to Responder edge
-      BGSIZE iEdg
-         = edges_->addEdge(PR, closestPSAP, destVertex, Simulator::getInstance().getDeltaT());
+      BGSIZE iEdg = edges_->addEdge(edgeType::PR, closestPSAP, destVertex,
+                                    Simulator::getInstance().getDeltaT());
 
       // Record added edge
       ChangedEdge addedEdge;
       addedEdge.srcV = closestPSAP;
       addedEdge.destV = destVertex;
-      addedEdge.eType = PR;
-      edgesAdded.push_back(addedEdge);
+      addedEdge.eType = edgeType::PR;
+      edgesAdded_.push_back(addedEdge);
    }
 
    return changesMade;
@@ -281,8 +243,9 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
 
    // Find all resps
    for (int i = 0; i < numVertices; i++) {
-      if (layout.vertexTypeMap_[i] == LAW || layout.vertexTypeMap_[i] == FIRE
-          || layout.vertexTypeMap_[i] == EMS) {
+      if (layout.vertexTypeMap_[i] == vertexType::LAW
+          || layout.vertexTypeMap_[i] == vertexType::FIRE
+          || layout.vertexTypeMap_[i] == vertexType::EMS) {
          resps.push_back(i);
       }
    }
@@ -315,7 +278,7 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
          erasedEdge.srcV = srcVertex;
          erasedEdge.destV = destVertex;
          erasedEdge.eType = layout.edgType(srcVertex, destVertex);
-         edgesErased.push_back(erasedEdge);
+         edgesErased_.push_back(erasedEdge);
 
          changesMade = true;
          edges_->eraseEdge(destVertex, iEdg);
@@ -324,8 +287,8 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
 
    if (changesMade) {
       // This is here so that we don't delete the vertex if we can't find any edges
-      verticesErased.push_back(randRESP);
-      layout.vertexTypeMap_[randRESP] = VTYPE_UNDEF;
+      verticesErased_.push_back(randRESP);
+      layout.vertexTypeMap_[randRESP] = vertexType::VTYPE_UNDEF;
    }
 
    return changesMade;
@@ -339,22 +302,22 @@ string Connections911::ChangedEdge::toString()
    string type_s;
 
    switch (eType) {
-      case CP:
+      case edgeType::CP:
          type_s = "CP";
          break;
-      case PR:
+      case edgeType::PR:
          type_s = "PR";
          break;
-      case PP:
+      case edgeType::PP:
          type_s = "PP";
          break;
-      case PC:
+      case edgeType::PC:
          type_s = "PC";
          break;
-      case RP:
+      case edgeType::RP:
          type_s = "RP";
          break;
-      case RC:
+      case edgeType::RC:
          type_s = "RC";
          break;
       default:
@@ -373,11 +336,11 @@ string Connections911::changedEdgesToXML(bool added)
 {
    stringstream os;
 
-   vector<ChangedEdge> changed = edgesErased;
+   vector<ChangedEdge> changed = edgesErased_;
    string name = "edgesDeleted";
 
    if (added) {
-      changed = edgesAdded;
+      changed = edgesAdded_;
       name = "edgesAdded";
    }
 
@@ -392,22 +355,24 @@ string Connections911::changedEdgesToXML(bool added)
    return os.str();
 }
 
+/*
 ///  Returns the complete list of deleted vertices as a string.
 string Connections911::erasedVerticesToXML()
 {
    stringstream os;
 
    os << "<Matrix name=\"verticesDeleted\" type=\"complete\" rows=\"1\" columns=\""
-      << verticesErased.size() << "\" multiplier=\"1.0\">" << endl;
+      << verticesErased_.size() << "\" multiplier=\"1.0\">" << endl;
    os << "   ";
 
-   sort(verticesErased.begin(), verticesErased.end());
-   for (int i = 0; i < verticesErased.size(); i++) {
-      os << verticesErased[i] << " ";
+   sort(verticesErased_.begin(), verticesErased_.end());
+   for (int i = 0; i < verticesErased_.size(); i++) {
+      os << verticesErased_[i] << " ";
    }
 
    os << endl << "</Matrix>";
    return os.str();
 }
+*/
 
 #endif

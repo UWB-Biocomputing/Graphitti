@@ -121,9 +121,7 @@ protected:
 public:
    ///  Allocate GPU memories to store all synapses' states,
    ///  and copy them from host to GPU memory.
-   ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void allocEdgeDeviceStruct(void **allEdgesDevice) override;
+   virtual void allocEdgeDeviceStruct() override;
 
    ///  Allocate GPU memories to store all synapses' states,
    ///  and copy them from host to GPU memory.
@@ -136,13 +134,11 @@ public:
 
    ///  Delete GPU memories.
    ///
-   ///  @param  allEdgesDevice     GPU address of the allEdges struct on device memory.
-   virtual void deleteEdgeDeviceStruct(void *allEdgesDevice) override;
+   virtual void deleteEdgeDeviceStruct() override;
 
    ///  Copy all synapses' data from host to device.
    ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyEdgeHostToDevice(void *allEdgesDevice) override;
+   virtual void copyEdgeHostToDevice() override;
 
    ///  Copy all synapses' data from host to device.
    ///
@@ -154,8 +150,7 @@ public:
 
    ///  Copy all synapses' data from device to host.
    ///
-   ///  @param  allEdgesDevice  GPU address of the allEdges struct on device memory.
-   virtual void copyEdgeDeviceToHost(void *allEdgesDevice) override;
+   virtual void copyEdgeDeviceToHost() override;
 
    ///  Set synapse class ID defined by enumClassSynapses for the caller's Synapse class.
    ///  The class ID will be set to classSynapses_d in device memory,

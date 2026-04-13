@@ -126,10 +126,12 @@ void ConnGrowth::printParameters() const
 
 ///  Update the connections status in every epoch.
 ///
-///  @param  vertices  The vertex list to search from.
 ///  @return true if successful, false otherwise.
-bool ConnGrowth::updateConnections(AllVertices &vertices)
+bool ConnGrowth::updateConnections()
 {
+   Layout &layout = Simulator::getInstance().getModel().getLayout();
+   AllVertices &vertices = layout.getVertices();
+
    // Update Connections data
    updateConns(vertices);
 
@@ -240,7 +242,7 @@ void ConnGrowth::updateOverlap()
 ///  To be clear, iterates through all source and destination neurons
 ///  and updates their synaptic strengths from the weight matrix.
 ///  Note: Platform Dependent.
-void ConnGrowth::updateSynapsesWeights()
+void ConnGrowth::updateEdgesWeights()
 {
    int numVertices = Simulator::getInstance().getTotalVertices();
    AllNeuroEdges &synapses = dynamic_cast<AllNeuroEdges &>(*edges_);
@@ -327,4 +329,8 @@ void ConnGrowth::printRadii() const
    for (int i = 0; i < radiiSize_; i++) {
       cout << "radii[" << i << "] = " << radii_[i] << endl;
    }
+}
+
+void ConnGrowth::registerHistoryVariables()
+{
 }

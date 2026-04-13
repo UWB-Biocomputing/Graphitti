@@ -20,6 +20,7 @@ void AllSpikingNeurons::setupVertices()
 
    hasFired_.assign(size_, false);
    vertexEvents_.assign(size_, maxSpikes);
+   summationPoints_.assign(size_, 0);
 }
 
 ///  Register spike history variables for all neurons.
@@ -112,6 +113,32 @@ void AllSpikingNeurons::advanceVertices(AllEdges &synapses, const EdgeIndexMap &
 
          hasFired_[idx] = false;
       }
+   }
+}
+
+/// Add psr of all incoming synapses to summation points.
+///
+///  @param  edges         The edge list to search from.
+///  @param  edgeIndexMap  Reference to the EdgeIndexMap.
+void AllSpikingNeurons::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIndexMap)
+{
+   AllNeuroEdges &synapses = dynamic_cast<AllNeuroEdges &>(edges);
+
+   //totalEdgeCount_ and destVertexIndex_ are properties of AllEdges
+   //Access from synapses instead of edges for readability and consistency with the psr_ access call
+   for (BGSIZE i = 0; i < synapses.totalEdgeCount_; i++) {
+      BGSIZE iEdg = edgeIndexMap.incomingEdgeIndexMap_[i];
+      BGFLOAT &psr = synapses.psr_[iEdg];
+      int sumPointIndex = synapses.destVertexIndex_[iEdg];
+   // and apply it to the summation point
+   #ifdef USE_OMP
+      #pragma omp atomic #endif
+   #endif
+      summationPoints_[sumPointIndex] += psr;
+   #ifdef USE_OMP
+   //PAB: atomic above has implied flush (following statement generates error -- can't be member variable)
+   //#pragma omp flush (summationPoint)
+   #endif
    }
 }
 

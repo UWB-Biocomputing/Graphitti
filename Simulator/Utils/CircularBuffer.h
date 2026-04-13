@@ -1,5 +1,5 @@
 /**
- * @file GraphManager.h
+ * @file CircularBuffer.h
  * @author Jardi A. M. Jordan (jardiamj@gmail.com)
  * @date 01-22-2023
  * Supervised by Dr. Michael Stiber, UW Bothell CSSE Division
@@ -147,6 +147,39 @@ public:
       // if end_ is greater than front we substract the spaces between them
       // from the buffer's capacity
       return buffer_.size() + front_ - end_;
+   }
+
+   std::vector<T> &getBuffer()
+   {
+      return buffer_;
+   }
+
+   /// @brief Accessor for the front index of the circular buffer.
+   /// @return Returns the front index of the circular buffer.
+   size_t getFrontIndex()
+   {
+      return front_;
+   }
+
+   /// @brief Accessor for the end index of the circular buffer.
+   /// @return Returns the end index of the circular buffer.
+   size_t getEndIndex()
+   {
+      return end_;
+   }
+
+   /// @brief Accessor for the front index of the circular buffer.
+   /// @return Returns the front index of the circular buffer.
+   void setFrontIndex(unsigned long front)
+   {
+      front_ = front;
+   }
+
+   /// @brief Accessor for the end index of the circular buffer.
+   /// @return Returns the end index of the circular buffer.
+   void setEndIndex(unsigned long end)
+   {
+      end_ = end;
    }
 
 private:

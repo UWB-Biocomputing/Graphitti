@@ -9,7 +9,8 @@
       <deltaT name="Simulation Step Duration">1</deltaT>
     </SimParams>
     <SimConfig name="SimConfig">
-      <maxFiringRate name="maxFiringRate">100</maxFiringRate>
+      <!-- we can only have at most 1 call per second -->
+      <maxFiringRate name="maxFiringRate">1</maxFiringRate>
       <!-- max edges in a vertex for test-small-911.graphml is 20 -->
       <maxEdgesPerVertex name="maxEdgesPerVertex">25</maxEdgesPerVertex>
     </SimConfig>
@@ -42,7 +43,7 @@
     <LayoutParams class="Layout911" name="LayoutParams">
     </LayoutParams>
     
-    <RecorderParams class="Xml911Recorder" name="RecorderParams">
+    <RecorderParams class="XmlRecorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
         <resultFileName name="resultFileName">Output/Results/test-small-911-out.xml</resultFileName>
       </RecorderFiles>

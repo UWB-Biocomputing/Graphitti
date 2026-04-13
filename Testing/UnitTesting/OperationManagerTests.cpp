@@ -26,7 +26,7 @@ TEST(OperationManager, AddingOneOperation)
    Foo foo;
    function<void()> function = std::bind(&Foo::loadParameters, foo);
    EXPECT_NO_FATAL_FAILURE(
-      OperationManager::getInstance().registerOperation(Operations::op::loadParameters, function));
+      OperationManager::getInstance().registerOperation(Operations::loadParameters, function));
 }
 
 TEST(OperationManager, AddingManyOperations)
@@ -34,19 +34,35 @@ TEST(OperationManager, AddingManyOperations)
    Foo foo;
    function<void()> function = std::bind(&Foo::loadParameters, foo);
    for (int i = 0; i < 1000; i++) {
-      EXPECT_NO_FATAL_FAILURE(OperationManager::getInstance().registerOperation(
-         Operations::op::loadParameters, function));
+      EXPECT_NO_FATAL_FAILURE(
+         OperationManager::getInstance().registerOperation(Operations::loadParameters, function));
    }
 }
 
 TEST(OperationManager, OperationExecutionSuccess)
 {
    EXPECT_NO_FATAL_FAILURE(
-      OperationManager::getInstance().executeOperation(Operations::op::loadParameters));
+      OperationManager::getInstance().executeOperation(Operations::loadParameters));
 }
 
 TEST(OperationManager, OperationExecutionContainsNoFunctionsOfOperationType)
 {
+   EXPECT_NO_FATAL_FAILURE(OperationManager::getInstance().executeOperation(Operations::copyToGPU));
+}
+
+TEST(OperationManager, AddingNonEmptySignatureOperation)
+{
+   Foo foo;
+   function<void(uint64_t, uint64_t)> function
+      = std::bind(&Foo::loadEpochInputs, foo, std::placeholders::_1, std::placeholders::_2);
    EXPECT_NO_FATAL_FAILURE(
-      OperationManager::getInstance().executeOperation(Operations::op::copyToGPU));
+      OperationManager::getInstance().registerOperation(Operations::loadEpochInputs, function));
+}
+
+TEST(OperationManager, NonEmptySignatureOperationExecution)
+{
+   uint64_t currentStep = 10;
+   uint64_t endStep = 20;
+   EXPECT_NO_FATAL_FAILURE(OperationManager::getInstance().executeOperation(
+      Operations::loadEpochInputs, currentStep, endStep));
 }

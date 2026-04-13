@@ -44,7 +44,7 @@
     <LayoutParams class="Layout911" name="LayoutParams">
     </LayoutParams>
     
-    <RecorderParams class="Xml911Recorder" name="RecorderParams">
+    <RecorderParams class="XmlRecorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
         <resultFileName name="resultFileName">Output/Results/test-king-county-911-out.xml</resultFileName>
       </RecorderFiles>
