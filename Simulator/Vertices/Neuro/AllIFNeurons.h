@@ -52,7 +52,7 @@ public:
    static constexpr BGFLOAT DEFAULT_InhibTrefract
       = 2.0e-3;   // The default absolute refractory period for inhibitory neurons
    static constexpr BGFLOAT DEFAULT_ExcitTrefract
-      = 3.0e-3;   // The default absolute refractory period for excitory neurons
+      = 3.0e-3;   // The default absolute refractory period for excitatory neurons
 
    AllIFNeurons() = default;
 
