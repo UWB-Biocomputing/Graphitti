@@ -97,7 +97,7 @@ CUDA_CALLABLE void createSpikingSynapse(AllSpikingSynapsesDeviceProperties *allE
                                         int neuronIndex, int synapseOffset, int sourceIndex,
                                         int destIndex, BGFLOAT deltaT, edgeType type)
 {
-   BGFLOAT delay;
+   BGFLOAT delay = 0.8e-3;
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
    BGSIZE iEdg = maxEdges * neuronIndex + synapseOffset;
 
@@ -181,10 +181,10 @@ CUDA_CALLABLE void createDSSynapse(AllDSSynapsesDeviceProperties *allEdgesDevice
    allEdgesDevice->U_[iEdg] = AllSpikingSynapses::DEFAULT_U;
    allEdgesDevice->tau_[iEdg] = AllSpikingSynapses::DEFAULT_tau;
 
-   BGFLOAT U;
-   BGFLOAT D;
-   BGFLOAT F;
-   BGFLOAT tau;
+   BGFLOAT U = AllSpikingSynapses::DEFAULT_U;
+   BGFLOAT D = 0.144;
+   BGFLOAT F = 0.06;
+   BGFLOAT tau = AllSpikingSynapses::DEFAULT_tau;
    switch (type) {
       case edgeType::II:
          U = 0.32;
@@ -215,6 +215,7 @@ CUDA_CALLABLE void createDSSynapse(AllDSSynapsesDeviceProperties *allEdgesDevice
          delay = 1.5e-3;
          break;
       default:
+         assert(false && "Unexpected edgeType in createDSSynapse");
          break;
    }
 
@@ -244,7 +245,7 @@ CUDA_CALLABLE void createSTDPSynapse(AllSTDPSynapsesDeviceProperties *allEdgesDe
                                      int neuronIndex, int synapseOffset, int sourceIndex,
                                      int destIndex, BGFLOAT deltaT, edgeType type)
 {
-   BGFLOAT delay;
+   BGFLOAT delay = 0.8e-3;
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
    BGSIZE iEdg = maxEdges * neuronIndex + synapseOffset;
 
@@ -349,10 +350,10 @@ CUDA_CALLABLE void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperti
    allEdgesDevice->U_[iEdg] = AllSpikingSynapses::DEFAULT_U;
    allEdgesDevice->tau_[iEdg] = AllSpikingSynapses::DEFAULT_tau;
 
-   BGFLOAT U;
-   BGFLOAT D;
-   BGFLOAT F;
-   BGFLOAT tau;
+   BGFLOAT U = AllSpikingSynapses::DEFAULT_U;
+   BGFLOAT D = 0.144;
+   BGFLOAT F = 0.06;
+   BGFLOAT tau = AllSpikingSynapses::DEFAULT_tau;
    switch (type) {
       case edgeType::II:
          U = 0.32;
@@ -383,6 +384,7 @@ CUDA_CALLABLE void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperti
          delay = 1.5e-3;
          break;
       default:
+         assert(false && "Unexpected edgeType in createDynamicSTDPSynapse");
          break;
    }
 
