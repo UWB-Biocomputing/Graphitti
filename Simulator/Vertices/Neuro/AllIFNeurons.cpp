@@ -132,13 +132,13 @@ void AllIFNeurons::createNeuron(int i, Layout &layout)
       case vertexType::INH:
          LOG4CPLUS_DEBUG(vertexLogger_, "Setting inhibitory neuron: " << i);
          // set inhibitory absolute refractory period
-         Trefract_[i] = DEFAULT_InhibTrefract;   // TODO(derek): move defaults inside model.
+         Trefract_[i] = AllIFNeurons::DEFAULT_InhibTrefract;
          break;
 
       case vertexType::EXC:
          LOG4CPLUS_DEBUG(vertexLogger_, "Setting excitatory neuron: " << i);
          // set excitatory absolute refractory period
-         Trefract_[i] = DEFAULT_ExcitTrefract;
+         Trefract_[i] = AllIFNeurons::DEFAULT_ExcitTrefract;
          break;
 
       default:
@@ -152,7 +152,7 @@ void AllIFNeurons::createNeuron(int i, Layout &layout)
       // set endogenously active threshold voltage, reset voltage, and refractory period
       Vthresh_[i] = initRNG.inRange(starterVthreshRange_[0], starterVthreshRange_[1]);
       Vreset_[i] = initRNG.inRange(starterVresetRange_[0], starterVresetRange_[1]);
-      Trefract_[i] = DEFAULT_ExcitTrefract;   // TODO(derek): move defaults inside model.
+      Trefract_[i] = AllIFNeurons::DEFAULT_ExcitTrefract;
    }
 
    LOG4CPLUS_DEBUG(vertexLogger_, "\nCREATE NEURON[" << i << "] {" << endl
@@ -172,16 +172,16 @@ void AllIFNeurons::createNeuron(int i, Layout &layout)
 ///  @param  index    Index of the Neuron that the synapse belongs to.
 void AllIFNeurons::setNeuronDefaults(int index)
 {
-   Cm_[index] = DEFAULT_Cm;
-   Rm_[index] = DEFAULT_Rm;
-   Vthresh_[index] = DEFAULT_Vthresh;
-   Vrest_[index] = DEFAULT_Vrest;
-   Vreset_[index] = DEFAULT_Vreset;
-   Vinit_[index] = DEFAULT_Vreset;
-   Trefract_[index] = DEFAULT_Trefract;
-   Inoise_[index] = DEFAULT_Inoise;
-   Iinject_[index] = DEFAULT_Iinject;
-   Tau_[index] = DEFAULT_Cm * DEFAULT_Rm;
+   Cm_[index] = AllIFNeurons::DEFAULT_Cm;
+   Rm_[index] = AllIFNeurons::DEFAULT_Rm;
+   Vthresh_[index] = AllIFNeurons::DEFAULT_Vthresh;
+   Vrest_[index] = AllIFNeurons::DEFAULT_Vrest;
+   Vreset_[index] = AllIFNeurons::DEFAULT_Vreset;
+   Vinit_[index] = AllIFNeurons::DEFAULT_Vreset;
+   Trefract_[index] = AllIFNeurons::DEFAULT_Trefract;
+   Inoise_[index] = AllIFNeurons::DEFAULT_Inoise;
+   Iinject_[index] = AllIFNeurons::DEFAULT_Iinject;
+   Tau_[index] = AllIFNeurons::DEFAULT_Cm * AllIFNeurons::DEFAULT_Rm;
 }
 
 ///  Initializes the Neuron constants at the indexed location.
