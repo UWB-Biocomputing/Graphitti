@@ -52,6 +52,9 @@
 
 extern int g_debug_mask;
 
+#include "BGTypes.h"
+#include "GraphProperties.h"
+#include "Matrix/MatrixDefaults.h"
 #include <cassert>
 #include <cstdint>
 #include <memory>
@@ -59,10 +62,7 @@ extern int g_debug_mask;
 #include <sstream>
 #include <string>
 #include <vector>
-#include "BGTypes.h"
-#include "GraphProperties.h"
-#include "Matrix/MatrixDefaults.h"
-   //#include "Norm.h"
+//#include "Norm.h"
 #include "Coordinate.h"
 #include "VectorMatrix.h"
 #include "VertexType.h"
@@ -73,7 +73,7 @@ extern int g_debug_mask;
 #if defined(USE_GPU)
 //! CUDA device ID
 extern int g_deviceId;
-#endif  // USE_GPU
+#endif   // USE_GPU
 
 // The constant PI.
 extern const BGFLOAT pi;
@@ -184,5 +184,4 @@ extern double t_gpu_advanceSynapses;
 extern double t_gpu_calcSummation;
 
 void printPerformanceMetrics(const float total_time, int steps);
-#endif  // PERFORMANCE_METRICS
-
+#endif   // PERFORMANCE_METRICS
