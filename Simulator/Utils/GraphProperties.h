@@ -5,8 +5,8 @@
 /// @brief Parent structure to store common properties for all graph vertices
 struct VertexProperties {
    std::string type;
-   double x;
-   double y;
+   double x = 0.0;
+   double y = 0.0;
 };
 
 /// @brief Derived structure for NG911-specific properties
