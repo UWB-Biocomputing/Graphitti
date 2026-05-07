@@ -113,5 +113,5 @@ void printPerformanceMetrics(const float total_time, int steps)
    cout << "t_gpu_advanceSynapses: " << t_gpu_advanceSynapses / steps << " ms/epoch" << endl;
    cout << "t_gpu_calcSummation: " << t_gpu_calcSummation / steps << " ms/epoch" << endl;
 }
-#endif   // PERFORMANCE_METRICS
+#endif  // PERFORMANCE_METRICS
 

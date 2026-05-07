@@ -73,7 +73,7 @@ extern int g_debug_mask;
 #if defined(USE_GPU)
 //! CUDA device ID
 extern int g_deviceId;
-#endif   // USE_GPU
+#endif  // USE_GPU
 
 // The constant PI.
 extern const BGFLOAT pi;
@@ -153,7 +153,8 @@ template <typename T> std::string vectorToXML(const std::vector<T> &v, const std
 }
 
 template <typename T>
-std::string vector2dToXML(const std::vector<T> &v, const std::string &name, const std::string &rowName)
+std::string vector2dToXML(const std::vector<T> &v, const std::string &name,
+                          const std::string &rowName)
 {
    std::stringstream ss;
    ss << "   <Matrix name=\"" << name << "\">\n";
@@ -183,5 +184,5 @@ extern double t_gpu_advanceSynapses;
 extern double t_gpu_calcSummation;
 
 void printPerformanceMetrics(const float total_time, int steps);
-#endif   // PERFORMANCE_METRICS
+#endif  // PERFORMANCE_METRICS
 
