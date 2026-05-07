@@ -53,21 +53,19 @@
 extern int g_debug_mask;
 
 #include <cassert>
+#include <cstdint>
 #include <memory>
+#include <ostream>
 #include <sstream>
-#ifdef _WIN32   //needs to be before #include "bgtypes.h" or the #define BGFLOAT will cause problems
-   #include <windows.h>                    //warning! windows.h also defines BGFLOAT
-using uint64_t = unsigned long long int;   //included in inttypes.h, which is not available in WIN32
-#else
-   #include <inttypes.h>   //used for uint64_t, unavailable in WIN32
-#endif
+#include <string>
+#include <vector>
 #include "BGTypes.h"
+#include "GraphProperties.h"
+#include "Matrix/MatrixDefaults.h"
    //#include "Norm.h"
 #include "Coordinate.h"
 #include "VectorMatrix.h"
 #include "VertexType.h"
-
-using namespace std;
 
 // If defined, a table with time and each neuron voltage will output to stdout.
 //#define DUMP_VOLTAGES
@@ -84,12 +82,12 @@ extern const BGFLOAT pi;
 extern MTRand initRNG;
 
 // A normalized random number generator.
-extern unique_ptr<MTRand> noiseRNG;
+extern std::unique_ptr<MTRand> noiseRNG;
 
 // The current simulation step.
-extern uint64_t g_simulationStep;
+extern std::uint64_t g_simulationStep;
 
-const int g_nMaxChunkSize = 100;
+inline constexpr int g_nMaxChunkSize = 100;
 
 // Edge types.
 // NEURO:
@@ -127,27 +125,27 @@ inline std::ostream &operator<<(std::ostream &os, edgeType eT)
 }
 
 // The default time step size.
-#define DEFAULT_dt (1e-4)   // MODEL INDEPENDENT
+inline constexpr double DEFAULT_dt = 1e-4;   // MODEL INDEPENDENT
 // } NMV-END
 
 // Converts a 1-d index into a coordinate string.
-string index2dToString(int i, int width, int height);
+std::string index2dToString(int i, int width, int height);
 // Converts a 2-d coordinate into a string.
-string coordToString(int x, int y);
+std::string coordToString(int x, int y);
 // Converts a 3-d coordinate into a string.
-string coordToString(int x, int y, int z);
+std::string coordToString(int x, int y, int z);
 
-template <typename T> ostream &operator<<(ostream &os, const vector<T> &v)
+template <typename T> std::ostream &operator<<(std::ostream &os, const std::vector<T> &v)
 {
-   for (T element : v) {
+   for (const auto &element : v) {
       os << element << " ";
    }
    return os;
 }
 
-template <typename T> string vectorToXML(const vector<T> &v, const string &name)
+template <typename T> std::string vectorToXML(const std::vector<T> &v, const std::string &name)
 {
-   stringstream ss;
+   std::stringstream ss;
    ss << "   <Matrix name=\"" << name << "\">\n";
    ss << "   " << v << "\n";
    ss << "   </Matrix>";
@@ -155,11 +153,11 @@ template <typename T> string vectorToXML(const vector<T> &v, const string &name)
 }
 
 template <typename T>
-string vector2dToXML(const vector<T> &v, const string &name, const string &rowName)
+std::string vector2dToXML(const std::vector<T> &v, const std::string &name, const std::string &rowName)
 {
-   stringstream ss;
+   std::stringstream ss;
    ss << "   <Matrix name=\"" << name << "\">\n";
-   for (int i = 0; i < v.size(); ++i) {
+   for (size_t i = 0; i < v.size(); ++i) {
       if (v[i].empty()) {
          continue;
       }   // No log to print
@@ -187,53 +185,3 @@ extern double t_gpu_calcSummation;
 void printPerformanceMetrics(const float total_time, int steps);
 #endif   // PERFORMANCE_METRICS
 
-// TODO comment
-extern const string MATRIX_TYPE;
-// TODO comment
-extern const string MATRIX_INIT;
-
-/*****************************************************************************/
-/* Structures to hold the GraphML properties                                 */
-/*****************************************************************************/
-// We are using the Boost Graph Library (BGL) to load the simulator's initial
-// graph. BGL needs to associate the GraphML properties, we do that by
-// registering them before loading the graph.
-// The following structures are used to register those properties with the
-// GraphManager class, which is just a wrapper around BGL. The corresponding
-// classes (Layout, Connections, etc) need to do this before we can load the
-// graph.
-
-/// @brief Parent structure to store common properties for all graph vertices
-struct VertexProperties {
-   string type;
-   double x;
-   double y;
-};
-
-/// @brief Derived structure for NG911-specific properties
-/// Inherits from VertexProperty and includes attributes specific to 911 networks
-struct NG911VertexProperties : public VertexProperties {
-   string objectID;
-   string name;
-   int servers = 0;
-   int trunks = 0;
-   string segments;
-};
-
-/// @brief Derived structure for Neural Network-specific properties
-struct NeuralVertexProperties : public VertexProperties {
-   bool active;
-};
-
-/// @brief The structure to hold the edge properties
-struct NeuralEdgeProperties {
-   int source;
-   int target;
-   double weight;
-};
-
-
-/// @brief The structure to hold the Graph properties
-struct GraphProperties {
-   // TODO: Graph Properties
-};

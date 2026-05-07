@@ -30,8 +30,8 @@
  *   - The entire GraphManager class is included in the header file to ensure that  
  *     the templated class can be compiled without requiring separate declarations.  
  *
- * The structures for `VertexProperties`, `EdgeProperties`, and `GraphProperties` 
- * are declared in `Global.h`.
+ * The structures for `VertexProperties`, `EdgeProperties`, and `GraphProperties`
+ * are declared in `GraphProperties.h`.
  * 
  * This class follows the Singleton design pattern, ensuring a single instance 
  * is used throughout the simulation for consistent graph management.
@@ -39,10 +39,13 @@
 
 #pragma once
 
-#include "Global.h"
+#include "GraphProperties.h"
 #include "ParameterManager.h"
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphml.hpp>
+#include <fstream>
+#include <iostream>
+#include <list>
 #include <string>
 #include <utility>
 
