@@ -21,7 +21,7 @@ struct NG911VertexProperties : public VertexProperties {
 
 /// @brief Derived structure for Neural Network-specific properties
 struct NeuralVertexProperties : public VertexProperties {
-   bool active;
+   bool active = false;
 };
 
 /// @brief The structure to hold the edge properties
