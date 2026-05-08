@@ -142,9 +142,8 @@ void AllIFNeurons::createNeuron(int i, Layout &layout)
          break;
 
       default:
-         LOG4CPLUS_DEBUG(vertexLogger_,
-                         "ERROR: unknown neuron type: " << layout.getVertices().vertexTypeMap_[i]
-                                                        << "@" << i);
+         LOG4CPLUS_DEBUG(vertexLogger_, "ERROR: unknown neuron type: "
+                                           << layout.getVertices().vertexTypeMap_[i] << "@" << i);
          assert(false);
          break;
    }
