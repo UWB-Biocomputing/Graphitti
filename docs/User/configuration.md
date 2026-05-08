@@ -217,8 +217,8 @@ There are some elements of the main configuration file that is similar to the Ne
 
     <LayoutParams class="Layout911" name="LayoutParams">
     </LayoutParams>
-    
-    <RecorderParams class="Xml911Recorder" name="RecorderParams">
+
+    <RecorderParams class="XmlRecorder" name="RecorderParams">
       <RecorderFiles name="RecorderFiles">
         <resultFileName name="resultFileName">Output/Results/test-small-911-out.xml</resultFileName>
       </RecorderFiles>

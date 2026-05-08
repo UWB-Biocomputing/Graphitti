@@ -333,4 +333,9 @@ void ConnGrowth::printRadii() const
 
 void ConnGrowth::registerHistoryVariables()
 {
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   recorder.registerVariable("radii", radii_, Recorder::UpdatedType::DYNAMIC);
+   recorder.registerVariable("rates", rates_, Recorder::UpdatedType::DYNAMIC);
+   recorder.registerVariable("outgrowth", outgrowth_, Recorder::UpdatedType::DYNAMIC);
+   recorder.registerVariable("deltaR", deltaR_, Recorder::UpdatedType::DYNAMIC);
 }

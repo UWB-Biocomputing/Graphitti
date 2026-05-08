@@ -65,6 +65,9 @@ public:
    /// Registered to OperationManager as Operation::printParameters
    virtual void printParameters() const override;
 
+   /// Registers history variables for recording during simulation.
+   virtual void registerHistoryVariables() override;
+
    /// Creates a vertex type map.
    ///
    /// @param  numVertices number of the vertices to have in the type map.
@@ -83,6 +86,10 @@ public:
    /// @return The distance between the given vertex and the (x, y) coordinates of a point
    double getDistance(int vertexId, double x, double y);
 
-   DeviceVector<BGFLOAT> xloc_;
-   DeviceVector<BGFLOAT> yloc_;
+   DeviceVector<BGFLOAT> xloc_;   ///< Layout x coordinates.
+   DeviceVector<BGFLOAT> yloc_;   ///< Layout y coordinates.
+
+   /// Recorder mirrors; DeviceVector cannot be registered directly.
+   RecordableVector<BGFLOAT> xlocRecorder_;
+   RecordableVector<BGFLOAT> ylocRecorder_;
 };

@@ -11,7 +11,7 @@ The current subsystem is built around:
 - `Recorder`: abstract interface for recorder implementations
 - `XmlRecorder`: text output, stores captured history in memory, writes at the end
 - `Hdf5Recorder`: binary output, appends dynamic data to HDF5 datasets during the run
-- `Xml911Recorder`: a specialized subclass that still exists in the factory, but its overridden `compileHistories()`, `saveSimData()`, and `printParameters()` are effectively empty today
+- `Xml911Recorder`: a legacy specialized subclass that still exists in the factory, but its overridden `compileHistories()`, `saveSimData()`, and `printParameters()` are effectively empty today
 - `RecordableBase`: abstract interface for anything the recorder can observe
 - `RecordableVector<T>`: generic 1-D recordable container
 - `EventBuffer<T>`: epoch-aware event history buffer used by the recorder as a per-epoch view
@@ -180,6 +180,21 @@ This is a `RecordableVector<vertexType>`.
 
 These are `VectorMatrix` objects containing neuron coordinates.
 
+### NG911 layout
+
+`Layout911::registerHistoryVariables()` calls the base layout registration and also registers:
+
+- `x_Location` as `CONSTANT`
+- `y_Location` as `CONSTANT`
+
+These NG911 coordinates are recorded through `RecordableVector<BGFLOAT>` mirrors:
+
+- `xloc_` and `yloc_` remain the simulation/layout coordinate storage.
+- `xlocRecorder_` and `ylocRecorder_` are recorder-compatible mirrors.
+- The mirrors are populated from GraphML coordinates during layout setup.
+- They are registered as `CONSTANT`, so each coordinate is written once at final save time.
+- They do not replace `xloc_` or `yloc_`; they only expose the same coordinates to the recorder.
+
 ### Neuro vertices
 
 `AllSpikingNeurons::registerHistoryVariables()` registers:
@@ -196,13 +211,31 @@ Each variable is an `EventBuffer<uint64_t>` that records spike times for one neu
 - `sourceVertex` as `DYNAMIC`
 - `destinationVertex` as `DYNAMIC`
 
-These are `RecordableVector` objects representing the current epoch's changed or relevant connection data.
+These three `RecordableVector` objects form an active edge list for each epoch:
+
+- one value is recorded per active edge for `weight`
+- one value is recorded per active edge for `sourceVertex`
+- one value is recorded per active edge for `destinationVertex`
+- entries at the same index describe the same active edge
+- the vectors are populated immediately before dynamic histories are compiled
+- the output is the current active edge list per epoch, not only changed edges and not only the initial edge list
 
 ### Growth connections
 
-`ConnGrowth::registerHistoryVariables()` currently does nothing.
+`ConnGrowth::registerHistoryVariables()` registers:
 
-This is important because some older notes discuss growth-specific recorded data such as radii histories, but those are not currently registered by this class.
+- `radii` as `DYNAMIC`
+- `rates` as `DYNAMIC`
+- `outgrowth` as `DYNAMIC`
+- `deltaR` as `DYNAMIC`
+
+These are 1-D `VectorMatrix` values recorded once per epoch.
+
+Growth `CompleteMatrix` fields are intentionally not recorded:
+
+- examples include weights, deltas, and areas
+- `CompleteMatrix` is not a recorder-compatible flat value source
+- issue #722 did not add recorder output for those fields
 
 ### NG911 connections
 
@@ -244,6 +277,15 @@ The corresponding current container types are:
 - `receivedCalls_`: `RecordableVector<int>`
 - `numServers_`: `RecordableVector<int>`
 - `numTrunks_`: `RecordableVector<int>`
+
+Other NG911 setup values remain configuration and log values for now:
+
+- `redialP`
+- `avgDrivingSpeed`
+- `psapsToErase`
+- `respsToErase`
+
+They are not registered as recorder constants unless a future scalar-compatible recordable type is added.
 
 ## `CONSTANT` vs `DYNAMIC`
 
@@ -388,7 +430,11 @@ However, in the current code:
 - `saveSimData()` contains only commented-out legacy code
 - `printParameters()` is empty
 
-As a result, it should be considered a legacy or placeholder specialization rather than an actively maintained recorder implementation.
+As a result:
+
+- `Xml911Recorder` is legacy/placeholder code.
+- It is not the current intended NG911 recorder path.
+- NG911 simulations should use the generic recorder registration system through `XmlRecorder` or, when enabled and appropriate, `Hdf5Recorder`.
 
 ## `RecordableBase`, `RecordableVector`, and `EventBuffer`
 
@@ -504,7 +550,7 @@ The current implementation makes several assumptions that are worth documenting 
 ### Implementation limitations
 
 - `Xml911Recorder` is not an actively functional specialized recorder at present.
-- `ConnGrowth` currently registers no history variables.
+- NG911 scalar setup values remain configuration and log values until there is a scalar-compatible recordable type.
 - Some comments in headers still refer to older planned behavior or planned cleanup.
 - Several recorder diagrams and older notes in the docs describe designs that do not exactly match the current code.
 
