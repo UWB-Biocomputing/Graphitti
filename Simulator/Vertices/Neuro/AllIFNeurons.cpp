@@ -128,7 +128,7 @@ void AllIFNeurons::createNeuron(int i, Layout &layout)
 
    initNeuronConstsFromParamValues(i, Simulator::getInstance().getDeltaT());
 
-   switch (layoutNeuro.vertexTypeMap_[i]) {
+   switch (layout.getVertices().vertexTypeMap_[i]) {
       case vertexType::INH:
          LOG4CPLUS_DEBUG(vertexLogger_, "Setting inhibitory neuron: " << i);
          // set inhibitory absolute refractory period
@@ -143,7 +143,8 @@ void AllIFNeurons::createNeuron(int i, Layout &layout)
 
       default:
          LOG4CPLUS_DEBUG(vertexLogger_,
-                         "ERROR: unknown neuron type: " << layout.vertexTypeMap_[i] << "@" << i);
+                         "ERROR: unknown neuron type: " << layout.getVertices().vertexTypeMap_[i]
+                                                        << "@" << i);
          assert(false);
          break;
    }

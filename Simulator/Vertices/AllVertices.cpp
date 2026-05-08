@@ -8,6 +8,7 @@
 
 #include "AllVertices.h"
 #include "OperationManager.h"
+#include "Recorder.h"
 
 // Utility function to convert a vertexType into a string.
 // MODEL INDEPENDENT FUNCTION NMV-BEGIN {
@@ -79,6 +80,13 @@ AllVertices::AllVertices() : size_(0)
 void AllVertices::setupVertices()
 {
    size_ = Simulator::getInstance().getTotalVertices();
+   vertexTypeMap_.assign(size_, vertexType::VTYPE_UNDEF);
+}
+
+void AllVertices::registerHistoryVariables()
+{
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   recorder.registerVariable("vertexTypeMap", vertexTypeMap_, Recorder::UpdatedType::CONSTANT);
 }
 
 ///  Prints out all parameters of the vertices to logging file.
