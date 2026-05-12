@@ -87,7 +87,7 @@ extern std::unique_ptr<MTRand> noiseRNG;
 // The current simulation step.
 extern std::uint64_t g_simulationStep;
 
-inline constexpr int g_nMaxChunkSize = 100;
+constexpr int g_nMaxChunkSize = 100;
 
 // Edge types.
 // NEURO:
@@ -118,14 +118,14 @@ enum class edgeType {
    ETYPE_UNDEF = -1
 };
 // Custom streaming operator<< for the enum class edgeType
-inline std::ostream &operator<<(std::ostream &os, edgeType eT)
+std::ostream &operator<<(std::ostream &os, edgeType eT)
 {
    os << static_cast<int>(eT);
    return os;
 }
 
 // The default time step size.
-inline constexpr double DEFAULT_dt = 1e-4;   // MODEL INDEPENDENT
+constexpr double DEFAULT_dt = 1e-4;   // MODEL INDEPENDENT
 // } NMV-END
 
 // Converts a 1-d index into a coordinate string.
