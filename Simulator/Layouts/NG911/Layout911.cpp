@@ -153,12 +153,12 @@ edgeType Layout911::edgType(int srcVertex, int destVertex)
       return edgeType::PC;
    else if (vtypes[srcVertex] == vertexType::PSAP && vtypes[destVertex] == vertexType::PSAP)
       return edgeType::PP;
-   else if ((vtypes[srcVertex] == vertexType::LAW || vtypes[destVertex] == vertexType::FIRE
-             || vtypes[destVertex] == vertexType::EMS)
+   else if ((vtypes[srcVertex] == vertexType::LAW || vtypes[srcVertex] == vertexType::FIRE
+             || vtypes[srcVertex] == vertexType::EMS)
             && vtypes[destVertex] == vertexType::PSAP)
       return edgeType::RP;
-   else if ((vtypes[srcVertex] == vertexType::LAW || vtypes[destVertex] == vertexType::FIRE
-             || vtypes[destVertex] == vertexType::EMS)
+   else if ((vtypes[srcVertex] == vertexType::LAW || vtypes[srcVertex] == vertexType::FIRE
+             || vtypes[srcVertex] == vertexType::EMS)
             && vtypes[destVertex] == vertexType::CALR)
       return edgeType::RC;
    else
