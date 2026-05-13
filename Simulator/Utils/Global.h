@@ -118,7 +118,7 @@ enum class edgeType {
    ETYPE_UNDEF = -1
 };
 // Custom streaming operator<< for the enum class edgeType
-std::ostream &operator<<(std::ostream &os, edgeType eT)
+inline std::ostream &operator<<(std::ostream &os, edgeType eT)
 {
    os << static_cast<int>(eT);
    return os;
