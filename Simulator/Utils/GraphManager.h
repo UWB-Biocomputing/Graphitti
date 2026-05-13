@@ -30,8 +30,8 @@
  *   - The entire GraphManager class is included in the header file to ensure that  
  *     the templated class can be compiled without requiring separate declarations.  
  *
- * The structures for `VertexProperties`, `EdgeProperties`, and `GraphProperties`
- * are declared in `GraphProperties.h`.
+ * The structures for `VertexProperties`, `NeuralEdgeProperties`, and
+ * `GraphProperties` are declared in `GraphProperties.h`.
  * 
  * This class follows the Singleton design pattern, ensuring a single instance 
  * is used throughout the simulation for consistent graph management.

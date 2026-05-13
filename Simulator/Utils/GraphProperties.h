@@ -5,8 +5,8 @@
 /// @brief Parent structure to store common properties for all graph vertices
 struct VertexProperties {
    std::string type;
-   double x;
-   double y;
+   double x = 0.0;
+   double y = 0.0;
 };
 
 /// @brief Derived structure for NG911-specific properties
@@ -21,14 +21,14 @@ struct NG911VertexProperties : public VertexProperties {
 
 /// @brief Derived structure for Neural Network-specific properties
 struct NeuralVertexProperties : public VertexProperties {
-   bool active;
+   bool active = false;
 };
 
 /// @brief The structure to hold the edge properties
 struct NeuralEdgeProperties {
-   int source;
-   int target;
-   double weight;
+   int source = 0;
+   int target = 0;
+   double weight = 0.0;
 };
 
 /// @brief The structure to hold the Graph properties
