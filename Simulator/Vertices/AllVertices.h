@@ -26,7 +26,6 @@ using namespace std;
 #include "AllEdges.h"
 #include "BGTypes.h"
 #include "Core/EdgeIndexMap.h"
-#include "Layout.h"
 #include "RecordableVector.h"
 #include "Simulator.h"
 #include "VertexType.h"
