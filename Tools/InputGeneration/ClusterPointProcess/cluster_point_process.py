@@ -1,18 +1,216 @@
 # Import necessary libraries
-import numpy as np
-import math
-import lxml.etree as et
-import pandas as pd
-import sys
+import argparse
+import json
 import os
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QFileDialog, QMessageBox, QDialog, QDialogButtonBox, QGridLayout
-from cluster_point_process_functions import primprocess, add_types, secprocess, add_vertex_events
+import sys
+import time
+
+import lxml.etree as et
+import networkx as nx
+import numpy as np
+from PyQt5.QtWidgets import (
+    QApplication,
+    QWidget,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QVBoxLayout,
+    QFileDialog,
+    QMessageBox,
+    QDialog,
+    QDialogButtonBox,
+    QGridLayout,
+)
+
+from cluster_point_process_functions import (
+    DEFAULT_LEGACY_PROTOTYPE_WEIGHTS,
+    primprocess,
+    add_types,
+    secprocess,
+    add_vertex_events,
+)
 
 # source venv/bin/activate
 # python3 cluster_point_process.py
+# python3 cluster_point_process.py --config params.json
 
 # This script provides a GUI to configure and generate synthetic 911 call data using a cluster point process model.
 # It integrates primary and secondary event generation with user-configurable parameters.
+# All simulation-tuned values are supplied via the UI or a JSON file (--config); no graph path or RNG seed is fixed in code.
+
+
+GRAPH_FILE_FIELD = "Select Graph File (.graphml):"
+
+
+def _coerce_prototype_keys(prototypes, prototype_weights):
+    """Normalize string digit keys (e.g. from JSON) to integers when every key is numeric."""
+    if prototypes and all(isinstance(k, str) and k.isdigit() for k in prototypes):
+        prototypes = {int(k): v for k, v in prototypes.items()}
+    if prototype_weights and all(isinstance(k, str) and k.isdigit() for k in prototype_weights):
+        prototype_weights = {int(k): float(v) for k, v in prototype_weights.items()}
+    return prototypes, prototype_weights
+
+
+def generate_cluster_point_process_xml(
+    graph_file,
+    graph_id,
+    first,
+    last,
+    mu,
+    pp_dead_t,
+    sec_proc_sigma,
+    duration_mean,
+    duration_min,
+    patience_mean,
+    onsite_mean,
+    type_ratios,
+    prototypes,
+    prototype_weights,
+    random_seed=None,
+    output_path=None,
+    clock_tick_size="1",
+    clock_tick_unit="sec",
+):
+    """Run primary and secondary processes and write the Graphitti simulator_inputs XML.
+
+    Parameters mirror the GUI fields. prototype_weights maps each prototype key to a
+    relative frequency (need not sum to exactly 1; values are normalized). If None,
+    legacy 40/50/9/1%% weights apply when there are exactly four prototypes; otherwise
+    selection is uniform.
+
+    random_seed: if None or empty string, the RNG is not re-seeded.
+
+    output_path: full path to the output XML; if None, ``<GRAPH_BASENAME>_cluster_point_process.xml``
+    in the current working directory.
+    """
+    graph_file = os.path.abspath(os.path.expanduser(graph_file))
+    if not os.path.isfile(graph_file):
+        raise FileNotFoundError(f"Graph file not found: {graph_file}")
+
+    prototypes, prototype_weights = _coerce_prototype_keys(prototypes, prototype_weights)
+    if prototype_weights is not None and len(prototype_weights) == 0:
+        prototype_weights = None
+
+    ratio_sum = sum(float(v) for v in type_ratios.values())
+    if abs(ratio_sum - 1.0) > 0.02:
+        raise ValueError(f"type_ratios should sum to 1.0 (got {ratio_sum:g})")
+
+    if random_seed is not None and str(random_seed).strip() != "":
+        np.random.seed(int(random_seed))
+
+    graph = nx.read_graphml(graph_file)
+    gid = str(graph_id)
+    if gid not in graph.nodes:
+        sample = list(graph.nodes)[:25]
+        raise KeyError(
+            f"Graph id {gid!r} not found in graph. Example node ids: {sample}"
+        )
+
+    graph_attribute = graph.nodes[gid]["segments"]
+    graph_grid = np.array(eval(graph_attribute))
+
+    incidents = primprocess(first, last, mu, pp_dead_t, graph_grid)
+    print(f"Number of Primary events: {incidents.shape[0]}")
+
+    incidents_with_types = add_types(incidents, type_ratios)
+
+    start_t = time.time()
+    print("Generating Secondary events...")
+    sec_events = secprocess(
+        sec_proc_sigma,
+        duration_mean,
+        duration_min,
+        patience_mean,
+        onsite_mean,
+        prototypes,
+        incidents_with_types,
+        prototype_weights=prototype_weights,
+    )
+    end_t = time.time()
+    print("Elapsed time:", round(end_t - start_t, 4), "seconds")
+    print("Number of Primary Events:", len(incidents_with_types))
+    print("Number of Secondary Events:", sec_events.shape[0])
+
+    graph_stem = os.path.splitext(os.path.basename(graph_file))[0].upper()
+    if not output_path:
+        output_path = graph_stem + "_cluster_point_process.xml"
+    else:
+        output_path = os.path.abspath(os.path.expanduser(output_path))
+
+    inputs = et.Element("simulator_inputs")
+    data = et.SubElement(
+        inputs,
+        "data",
+        {
+            "description": f"{graph_stem} Calls - Cluster Point Process",
+            "clock_tick_size": str(clock_tick_size),
+            "clock_tick_unit": str(clock_tick_unit),
+        },
+    )
+
+    vertex_name = graph.nodes[gid]["name"]
+    data = add_vertex_events(data, gid, vertex_name, sec_events)
+
+    tree = et.ElementTree(inputs)
+    tree.write(
+        output_path,
+        xml_declaration=True,
+        encoding="UTF-8",
+        pretty_print=True,
+    )
+    print("Secondary process was saved to:", output_path)
+    return output_path
+
+
+def run_from_json_config(config_path):
+    """Load parameters from JSON and generate XML without the GUI."""
+    config_path = os.path.abspath(os.path.expanduser(config_path))
+    config_dir = os.path.dirname(config_path)
+    with open(config_path, encoding="utf-8") as f:
+        cfg = json.load(f)
+
+    graph_file = cfg["graph_file"]
+    if not os.path.isabs(graph_file):
+        graph_file = os.path.join(config_dir, graph_file)
+
+    prototypes_cfg = cfg["prototypes"]
+    prototypes = {}
+    prototype_weights = {}
+    for key, params in prototypes_cfg.items():
+        if not isinstance(params, dict):
+            raise TypeError(f'prototypes["{key}"] must be an object/dict')
+        entry = dict(params)
+        w = entry.pop("weight", None)
+        prototypes[key] = entry
+        if w is not None:
+            prototype_weights[key] = float(w)
+    if not prototype_weights:
+        prototype_weights = None
+
+    out = cfg.get("output_path")
+    if out and not os.path.isabs(out):
+        out = os.path.join(config_dir, out)
+
+    generate_cluster_point_process_xml(
+        graph_file=graph_file,
+        graph_id=cfg["graph_id"],
+        first=float(cfg["first"]),
+        last=float(cfg["last"]),
+        mu=float(cfg["mean_time_interval"]),
+        pp_dead_t=float(cfg["dead_time_after_event"]),
+        sec_proc_sigma=float(cfg["mean_call_interval_after_incident"]),
+        duration_mean=float(cfg["mean_duration"]),
+        duration_min=float(cfg["minimum_duration"]),
+        patience_mean=float(cfg["mean_patience_time"]),
+        onsite_mean=float(cfg["mean_on_site_time"]),
+        type_ratios={k: float(v) for k, v in cfg["type_ratios"].items()},
+        prototypes=prototypes,
+        prototype_weights=prototype_weights,
+        random_seed=cfg.get("random_seed"),
+        output_path=out,
+        clock_tick_size=str(cfg.get("clock_tick_size", "1")),
+        clock_tick_unit=str(cfg.get("clock_tick_unit", "sec")),
+    )
 
 
 # ------------------------------
@@ -28,7 +226,7 @@ class TypeRatioDialog(QDialog):
 
     def init_ui(self):
         layout = QVBoxLayout()
-        
+
         # Labels and input fields for call type ratios
         self.labels = ["Law", "EMS", "Fire"]
         self.entries = {}
@@ -72,12 +270,25 @@ class TypeRatioDialog(QDialog):
             QMessageBox.warning(self, "Input Error", error_message)
         else:
             # Store validated results
-            self.result = {label: float(entry.text().strip()) for label, entry in self.entries.items()}
+            self.result = {
+                label: float(entry.text().strip())
+                for label, entry in self.entries.items()
+            }
+            ratio_sum = sum(self.result.values())
+            if abs(ratio_sum - 1.0) > 0.02:
+                QMessageBox.warning(
+                    self,
+                    "Input Error",
+                    f"Type ratios should sum to 1.0 (currently {ratio_sum:g}).",
+                )
+                return
             super().accept()
 
     def backup_initial_values(self):
         """Stores initial values to restore them if the user cancels."""
-        self.initial_values = {label: entry.text() for label, entry in self.entries.items()}
+        self.initial_values = {
+            label: entry.text() for label, entry in self.entries.items()
+        }
 
     def on_cancel_clicked(self):
         """Restores initial values if the dialog is canceled."""
@@ -88,6 +299,7 @@ class TypeRatioDialog(QDialog):
                     entry.setText(self.initial_values[label])
 
         self.reject()  # Close the dialog
+
 
 # ------------------------------
 # Class: PrototypesDialog
@@ -104,25 +316,33 @@ class PrototypesDialog(QDialog):
         layout = QGridLayout()
         self.entries = {}
 
-        # Labels for prototype parameters
+        # Labels for prototype parameters (spatial/intensity) plus relative selection weight
         labels = ["mu_r:", "sdev_r:", "mu_intensity:", "sdev_intensity:"]
-        
+
         # Add input fields for four prototypes
         for i in range(4):
             prototype_label = QLabel(f"Prototype {i}:")
             layout.addWidget(prototype_label, i, 0)
 
-            for j, label in enumerate(labels):
+            col = 1
+            for label in labels:
                 entry = QLineEdit()
                 self.entries[f"Prototype {i} - {label}"] = entry
-                layout.addWidget(QLabel(label), i, j * 2 + 1)
-                layout.addWidget(entry, i, j * 2 + 2)
+                layout.addWidget(QLabel(label), i, col)
+                layout.addWidget(entry, i, col + 1)
+                col += 2
 
-         # OK and Cancel buttons
+            w_entry = QLineEdit()
+            w_entry.setText(str(DEFAULT_LEGACY_PROTOTYPE_WEIGHTS[i]))
+            self.entries[f"Prototype {i} - weight:"] = w_entry
+            layout.addWidget(QLabel("weight:"), i, col)
+            layout.addWidget(w_entry, i, col + 1)
+
+        # OK and Cancel buttons
         button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
-        layout.addWidget(button_box, 4, 0, 1, 5)
+        layout.addWidget(button_box, 4, 0, 1, col + 2)
 
         self.setLayout(layout)
 
@@ -148,8 +368,24 @@ class PrototypesDialog(QDialog):
                 error_message += f"- {field}\n"
             QMessageBox.warning(self, "Input Error", error_message)
         else:
-            self.result = {label: float(entry.text().strip()) for label, entry in self.entries.items()}
+            weights = [
+                float(self.entries[f"Prototype {i} - weight:"].text().strip())
+                for i in range(4)
+            ]
+            wsum = sum(weights)
+            if abs(wsum - 1.0) > 0.02:
+                QMessageBox.warning(
+                    self,
+                    "Input Error",
+                    f"Prototype weights should sum to 1.0 (currently {wsum:g}).",
+                )
+                return
+            self.result = {
+                label: float(entry.text().strip())
+                for label, entry in self.entries.items()
+            }
             super().accept()
+
 
 class EventGenerator(QWidget):
     def __init__(self):
@@ -159,10 +395,11 @@ class EventGenerator(QWidget):
         # These will allow the user to input custom type ratios and prototypes via separate dialogs
         self.type_ratio_dialog = None
         self.prototypes_dialog = None
-        
+
         # Dictionary for holding type_ratio and prototypes
-        self.type_ratios = {} # Example: {'Law': 0.64, 'EMS': 0.18, 'Fire': 0.18}
-        self.prototypes = {} # Example: {0: {'mu_r': 0.0005, 'sdev_r': 0.0001}, ...}
+        self.type_ratios = {}  # Example: {'Law': 0.64, 'EMS': 0.18, 'Fire': 0.18}
+        self.prototypes = {}  # Example: {0: {'mu_r': 0.0005, 'sdev_r': 0.0001}, ...}
+        self.prototype_weights = {}
 
         self.init_ui()
 
@@ -170,7 +407,7 @@ class EventGenerator(QWidget):
         layout = QVBoxLayout()
 
         # Input field for selecting the graph file (.graphml)
-        graph_file_label = QLabel("Select Graph File (.graphml):")
+        graph_file_label = QLabel(GRAPH_FILE_FIELD)
         self.graph_file_label = QLineEdit()
         layout.addWidget(graph_file_label)
         layout.addWidget(self.graph_file_label)
@@ -183,16 +420,17 @@ class EventGenerator(QWidget):
         # Input labels and fields for various parameters
         # These fields collect user inputs for parameters like event timing, duration, etc.
         self.labels = [
-            "Graph ID:", # Insert graph labels
-            "First (seconds):", #  The time of the first event or call in the dataset, measured in seconds from a reference point (e.g., the start of the logging period).
-            "Last (seconds):", # The time of the last event or call in the dataset, measured in seconds from the same reference point.
-            "Mean Time Interval (seconds):", # The average time interval between consecutive 911 calls, measured in seconds.
-            "Dead Time after Event (seconds):", # The average time period after an event during which no new events or calls are expected to occur, measured in seconds. This could represent a cooldown period or a time when the system is not actively logging new calls.
-            "Mean Call Interval after incident (seconds):", #  The average time interval between the end of an incident and the next 911 call, measured in seconds. This could be used to model the frequency of follow-up calls or related incidents.
-            "Mean Duration (seconds):", # The average duration of a 911 call or incident, measured in seconds. This includes the time from the start of the call to its conclusion.
-            "Minimum Duration (seconds):", # The shortest duration of a 911 call or incident in the dataset, measured in seconds. This could be used to filter out very short or incomplete calls.
-            "Mean Patience Time (seconds):", # The average time a caller is willing to wait on hold before hanging up, measured in seconds. This metric is important for understanding caller behavior and optimizing call center operations.
-            "Mean On-Site Time (seconds):", # The average time emergency responders spend on-site at an incident, measured in seconds. This includes the time from arrival at the scene to departure.
+            "Graph ID:",  # Insert graph labels
+            "First (seconds):",  #  The time of the first event or call in the dataset, measured in seconds from a reference point (e.g., the start of the logging period).
+            "Last (seconds):",  # The time of the last event or call in the dataset, measured in seconds from the same reference point.
+            "Mean Time Interval (seconds):",  # The average time interval between consecutive 911 calls, measured in seconds.
+            "Dead Time after Event (seconds):",  # The average time period after an event during which no new events or calls are expected to occur, measured in seconds. This could represent a cooldown period or a time when the system is not actively logging new calls.
+            "Mean Call Interval after incident (seconds):",  #  The average time interval between the end of an incident and the next 911 call, measured in seconds. This could be used to model the frequency of follow-up calls or related incidents.
+            "Mean Duration (seconds):",  # The average duration of a 911 call or incident, measured in seconds. This includes the time from the start of the call to its conclusion.
+            "Minimum Duration (seconds):",  # The shortest duration of a 911 call or incident in the dataset, measured in seconds. This could be used to filter out very short or incomplete calls.
+            "Mean Patience Time (seconds):",  # The average time a caller is willing to wait on hold before hanging up, measured in seconds. This metric is important for understanding caller behavior and optimizing call center operations.
+            "Mean On-Site Time (seconds):",  # The average time emergency responders spend on-site at an incident, measured in seconds. This includes the time from arrival at the scene to departure.
+            "Random seed (optional, blank for non-deterministic):",  # Integer seed for numpy.random; leave blank for unpredictable runs.
         ]
 
         self.entries = {}
@@ -218,7 +456,7 @@ class EventGenerator(QWidget):
         generate_button = QPushButton("Generate Events")
         generate_button.clicked.connect(self.generate_events)
         layout.addWidget(generate_button)
-        
+
         # Set the layout of the UI
         self.setLayout(layout)
         self.show()
@@ -230,7 +468,10 @@ class EventGenerator(QWidget):
 
         if self.type_ratio_dialog.exec_() == QDialog.Accepted:
             # Use the entered values from the dialog
-            self.type_ratios = {label: float(entry.text()) for label, entry in self.type_ratio_dialog.entries.items()}
+            self.type_ratios = {
+                label: float(entry.text())
+                for label, entry in self.type_ratio_dialog.entries.items()
+            }
 
     def show_prototypes_dialog(self):
         # Opens a dialog to allow the user to set prototypes
@@ -240,24 +481,30 @@ class EventGenerator(QWidget):
         if self.prototypes_dialog.exec_() == QDialog.Accepted:
             # Extract and reformat prototype values
             prototypes_entries = self.prototypes_dialog.entries.items()
-            prototypes_values = {label: float(entry.text()) for label, entry in prototypes_entries}
+            prototypes_values = {
+                label: float(entry.text()) for label, entry in prototypes_entries
+            }
 
             # Organize prototype data into nested dictionaries
             self.prototypes = {}
+            self.prototype_weights = {}
             for label, value in prototypes_values.items():
-                split_label = label.split(' - ')
+                split_label = label.split(" - ")
                 prototype_num = int(split_label[0].split()[-1])
-                var_name = split_label[1].rstrip(':')
+                var_name = split_label[1].rstrip(":")
 
-                if prototype_num not in self.prototypes:
-                    self.prototypes[prototype_num] = {}
+                if var_name == "weight":
+                    self.prototype_weights[prototype_num] = value
+                else:
+                    if prototype_num not in self.prototypes:
+                        self.prototypes[prototype_num] = {}
 
-                self.prototypes[prototype_num][var_name] = value
+                    self.prototypes[prototype_num][var_name] = value
 
     # Function that allows user to browse local files
 
     def browse_file(self):
-         # Allows the user to browse and select a .graphml file
+        # Allows the user to browse and select a .graphml file
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file_dialog = QFileDialog()
@@ -276,19 +523,27 @@ class EventGenerator(QWidget):
                 )
 
     # Moved existing main methods to take user inputted data
-    # Handles invalid inputs (string instead of int, wrong file 
+    # Handles invalid inputs (string instead of int, wrong file
     # type but not invalid logic)
     def generate_events(self):
         # Validates inputs and triggers the event generation process
         error_message = ""
         invalid_fields = []
-        
+
+        seed_label = "Random seed (optional, blank for non-deterministic):"
         # Validate user input fields
         for label_text, entry in self.entries.items():
-            if label_text != "Select Region Grid (.graphml):":
-                text = entry.text().strip()
-                if not text:
-                    invalid_fields.append(label_text)
+            text = entry.text().strip()
+            if not text:
+                if label_text == seed_label:
+                    continue
+                invalid_fields.append(label_text)
+            else:
+                if label_text == seed_label:
+                    try:
+                        int(text)
+                    except ValueError:
+                        invalid_fields.append(label_text)
                 else:
                     try:
                         float(text)  # Attempt to convert to float to check validity
@@ -302,13 +557,15 @@ class EventGenerator(QWidget):
             error_message += "Please set Type Ratio values before generating events."
         elif not self.prototypes:
             error_message += "Please set Prototype values before generating events."
-        
+
         # Validate the graph file input
         graph_file = self.graph_file_label.text().strip()
         if not graph_file:
-            invalid_fields.append("Select Region Grid (.graphml):")
+            invalid_fields.append(GRAPH_FILE_FIELD)
         elif not graph_file.endswith(".graphml"):
-            invalid_fields.append("Select Region Grid (.graphml) must be a .graphml file.")
+            invalid_fields.append(f"{GRAPH_FILE_FIELD} must be a .graphml file.")
+        elif not os.path.isfile(graph_file):
+            invalid_fields.append(f"{GRAPH_FILE_FIELD} path is not an existing file.")
 
         # Handle errors and display warnings
         if invalid_fields:
@@ -327,127 +584,69 @@ class EventGenerator(QWidget):
             last = float(self.entries["Last (seconds):"].text())
             mu = float(self.entries["Mean Time Interval (seconds):"].text())
             pp_dead_t = float(self.entries["Dead Time after Event (seconds):"].text())
-            sec_proc_sigma = float(self.entries["Mean Call Interval after incident (seconds):"].text())
+            sec_proc_sigma = float(
+                self.entries["Mean Call Interval after incident (seconds):"].text()
+            )
             duration_mean = float(self.entries["Mean Duration (seconds):"].text())
             duration_min = float(self.entries["Minimum Duration (seconds):"].text())
             patience_mean = float(self.entries["Mean Patience Time (seconds):"].text())
-            avg_on_site_time = float(self.entries["Mean On-Site Time (seconds):"].text())
-                
-            # Integration of the event generation code
-            if graph_file:
-                ###########################################################################
-                # PRIMARY EVENTS
-                ###########################################################################
-                # Start your event generation process here based on the valid inputs
-                graph_file_path = os.path.join('..', '..', 'gis2graph', 'graph_files', 'spd.graphml')
-                graph = nx.read_graphml(graph_file_path)
-                graph_id = str(self.entries["Graph ID:"].text())
-                graph_attribute = graph.nodes[graph_id]['segments']
-                graph_grid = np.array(eval(graph_attribute))
-                
-               
+            avg_on_site_time = float(
+                self.entries["Mean On-Site Time (seconds):"].text()
+            )
+            seed_text = self.entries[seed_label].text().strip()
+            random_seed = int(seed_text) if seed_text else None
+            graph_id = str(self.entries["Graph ID:"].text())
 
-                # Seed numpy random number to get consistent results
-                np.random.seed(20) ## change it when i make the test set to something else
-                
-                # Call primprocess using the inputs from the interface
-                incidents = primprocess(first, last, mu, pp_dead_t, graph_grid)
-                print(f'Number of Primary events: {incidents.shape[0]}')
+            generate_cluster_point_process_xml(
+                graph_file=graph_file,
+                graph_id=graph_id,
+                first=first,
+                last=last,
+                mu=mu,
+                pp_dead_t=pp_dead_t,
+                sec_proc_sigma=sec_proc_sigma,
+                duration_mean=duration_mean,
+                duration_min=duration_min,
+                patience_mean=patience_mean,
+                onsite_mean=avg_on_site_time,
+                type_ratios=self.type_ratios,
+                prototypes=self.prototypes,
+                prototype_weights=self.prototype_weights,
+                random_seed=random_seed,
+            )
 
-                # Ratios based on NORCOM 2022 report. NORCOM doesn't make a distinction
-                # between EMS and Fire call types, so I split it in half.
-                # type_ratios = {'Law': 0.64,
-                #             'EMS': 0.18,
-                #             'Fire': 0.18}
-                
-                # Generate the incident types based on the type_ratios
-                incidents_with_types = add_types(incidents, self.type_ratios)
-                
-                ###########################################################################
-                # SECONDARY EVENTS
-                ###########################################################################
-                # Define prototypes for location of secondary spatio-temporal points
-                # 0.001° is aproximately 111 meters (one footbal field plus both endzones)
-                # intensity represent the expected number of points per square unit.
-                # TODO: The values used for the prototypes are ballpark values not based on
-                #       real data. Althoug, they give us around 70,000 - 75,000 calls in a month,
-                #       which is close to what Seattle PD receives with 900,000 calls per year.
-                # prototypes = {0: {'mu_r':0.0005, 'sdev_r':0.0001, 'mu_intensity':500000, 'sdev_intensity': 50000},
-                #         1: {'mu_r':0.001, 'sdev_r':0.0001, 'mu_intensity':1000000, 'sdev_intensity': 60000},
-                #         2: {'mu_r':0.0015, 'sdev_r':0.001, 'mu_intensity':1100000, 'sdev_intensity': 70000},
-                #         3: {'mu_r':0.003, 'sdev_r':0.001, 'mu_intensity':1500000, 'sdev_intensity': 60000}}
-                
-                # Time the secondary process generation
-                start_t = time.time()
+            # Display message box indicating completion
+            QMessageBox.information(
+                self, "Process Complete", "Event generation completed successfully."
+            )
 
-                print('Generating Secondary events...')
-
-                sec_events = secprocess(sec_proc_sigma, duration_mean, duration_min, patience_mean,
-                                        avg_on_site_time, self.prototypes, incidents_with_types)
-                
-                end_t = time.time()
-
-                print('Elapsed time:', round(end_t - start_t, 4), 'seconds')
-                print('Number of Primary Events:', len(incidents_with_types))
-                print('Number of Secondary Events:', sec_events.shape[0])
-
-                # Output filenames are generic, will match the filename you inputted
-                graph_file_path = self.graph_file_label.text()
-                output_file_basename = os.path.basename(graph_file_path)
-                output_file_name = os.path.splitext(output_file_basename)[0].upper()
-                output_file = output_file_name + "_cluster_point_process.xml"
-                # Commented out code that saves to a .csv file
-                # sec_events_df = pd.DataFrame(sec_events, columns=['time', 'duration', 'x', 'y', 'type'])
-                # sec_events_df.to_csv(output_file, index=False, header=True)
-
-                ###########################################################################
-                # TURN CALL LIST INTO AN XML TREE AND SAVE TO FILE
-                ###########################################################################
-                # The root element
-                inputs = et.Element('simulator_inputs')
-
-                output_description_name = output_file_name + "Calls "
-                # The data element will contain all calls grouped per vertex
-                # Use the filename to dynamically update the description attribute
-                data = et.SubElement(inputs, 'data', {"description": f"{output_file_name} Calls - Cluster Point Process", 
-                                                    "clock_tick_size": "1",
-                                                    "clock_tick_unit": "sec"})
-
-                # Create the vertex element with all its associated calls (events)
-                vertex_name = graph.nodes[graph_id]['name']
-                data = add_vertex_events(data, graph_id, vertex_name, sec_events)
-
-                tree = et.ElementTree(inputs)
-                tree_out = tree.write(output_file,
-                                    xml_declaration=True,
-                                    encoding='UTF-8',
-                                    pretty_print=True)
-
-                print('Secondary process was saved to:', output_file)
-                
-                # Display message box indicating completion
-                QMessageBox.information(
-                    self, "Process Complete", "Event generation completed successfully."
-                )
-            else:
-                QMessageBox.warning(
-                    self, "Missing File", "Please select a graph file."
-                )
-
-        except ValueError as ve:
+        except (ValueError, FileNotFoundError, KeyError) as ve:
             error_box = QMessageBox()
             error_box.setIcon(QMessageBox.Warning)
             error_box.setWindowTitle("Input Error")
             error_box.setText(str(ve))
             error_box.exec_()
 
+
 def main():
+    parser = argparse.ArgumentParser(
+        description="Generate synthetic 911 call XML (cluster point process) for Graphitti."
+    )
+    parser.add_argument(
+        "--config",
+        metavar="FILE.json",
+        help="Load all tuned parameters from JSON and exit without opening the GUI.",
+    )
+    args = parser.parse_args()
+
+    if args.config:
+        run_from_json_config(args.config)
+        return
+
     app = QApplication(sys.argv)
     window = EventGenerator()
     sys.exit(app.exec_())
 
-if __name__ == '__main__':
-    import pandas as pd
-    import networkx as nx
-    import time
+
+if __name__ == "__main__":
     main()
