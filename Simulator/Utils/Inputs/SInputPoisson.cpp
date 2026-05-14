@@ -108,10 +108,10 @@ void SInputPoisson::init()
         neuronIndex++) {
       edgeType type;
       if (Simulator::getInstance().getModel().getLayout().getVertices().vertexTypeMap_[neuronIndex]
-          == INH)
-         type = EI;
+          == vertexType::INH)
+         type = edgeType::EI;
       else
-         type = EE;
+         type = edgeType::EE;
 
       BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * neuronIndex;
 
