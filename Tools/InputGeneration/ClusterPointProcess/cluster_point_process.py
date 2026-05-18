@@ -75,7 +75,7 @@ def generate_cluster_point_process_xml(
 
     Parameters mirror the GUI fields. prototype_weights maps each prototype key to a
     relative frequency (need not sum to exactly 1; values are normalized). If None,
-    legacy 40/50/9/1%% weights apply when there are exactly four prototypes; otherwise
+    legacy 40/50/9/1% weights apply when there are exactly four prototypes; otherwise
     selection is uniform.
 
     random_seed: if None or empty string, the RNG is not re-seeded.
