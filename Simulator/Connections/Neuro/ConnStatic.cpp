@@ -104,6 +104,10 @@ void ConnStatic::registerHistoryVariables()
 bool ConnStatic::updateConnections()
 {
    AllEdges &edges = getEdges();
+#if defined(USE_GPU)
+   edges.copyEdgeDeviceToHost();
+#endif   // defined(USE_GPU)
+
    const vector<unsigned char> &inUse = edges.getInUse();
    const vector<BGFLOAT> &weights = edges.getWeights();
    const vector<int> &sourceVertices = edges.getSourceVertexIndices();
