@@ -137,9 +137,15 @@ def _normalize_prototype_weights(prototypes, prototype_weights):
                     f"expected keys {list(keys)}"
                 )
             w[i] = float(prototype_weights[k])
+
+    if not np.all(np.isfinite(w)):
+        raise ValueError("prototype weights must all be finite numbers")
+    if np.any(w < 0):
+        raise ValueError("prototype weights must all be non-negative")
+
     s = w.sum()
-    if s <= 0:
-        raise ValueError("prototype weights must sum to a positive value")
+    if not np.isfinite(s) or s <= 0:
+        raise ValueError("prototype weights must sum to a positive finite value")
     return keys, w / s
 
 

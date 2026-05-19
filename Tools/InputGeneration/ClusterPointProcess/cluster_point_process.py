@@ -8,19 +8,41 @@ import time
 import lxml.etree as et
 import networkx as nx
 import numpy as np
-from PyQt5.QtWidgets import (
-    QApplication,
-    QWidget,
-    QLabel,
-    QLineEdit,
-    QPushButton,
-    QVBoxLayout,
-    QFileDialog,
-    QMessageBox,
-    QDialog,
-    QDialogButtonBox,
-    QGridLayout,
-)
+
+
+def _is_headless_config_run():
+    """Return True when the process was started with a JSON config argument."""
+    return "--config" in sys.argv or any(
+        arg.startswith("--config=") for arg in sys.argv[1:]
+    )
+
+
+if _is_headless_config_run():
+    QApplication = None
+    QWidget = None
+    QLabel = None
+    QLineEdit = None
+    QPushButton = None
+    QVBoxLayout = None
+    QFileDialog = None
+    QMessageBox = None
+    QDialog = None
+    QDialogButtonBox = None
+    QGridLayout = None
+else:
+    from PyQt5.QtWidgets import (
+        QApplication,
+        QWidget,
+        QLabel,
+        QLineEdit,
+        QPushButton,
+        QVBoxLayout,
+        QFileDialog,
+        QMessageBox,
+        QDialog,
+        QDialogButtonBox,
+        QGridLayout,
+    )
 
 from cluster_point_process_functions import (
     DEFAULT_LEGACY_PROTOTYPE_WEIGHTS,
@@ -91,7 +113,29 @@ def generate_cluster_point_process_xml(
     if prototype_weights is not None and len(prototype_weights) == 0:
         prototype_weights = None
 
-    ratio_sum = sum(float(v) for v in type_ratios.values())
+    ratio_sum = 0.0
+    for ratio_key, ratio_value in type_ratios.items():
+        try:
+            ratio = float(ratio_value)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(
+                f"type_ratios[{ratio_key!r}] must be a numeric probability "
+                f"(got {ratio_value!r})"
+            ) from exc
+
+        if not np.isfinite(ratio):
+            raise ValueError(
+                f"type_ratios[{ratio_key!r}] must be finite (got {ratio_value!r})"
+            )
+
+        if ratio < 0.0 or ratio > 1.0:
+            raise ValueError(
+                f"type_ratios[{ratio_key!r}] must be between 0.0 and 1.0 "
+                f"(got {ratio:g})"
+            )
+
+        ratio_sum += ratio
+
     if abs(ratio_sum - 1.0) > 0.02:
         raise ValueError(f"type_ratios should sum to 1.0 (got {ratio_sum:g})")
 
@@ -373,11 +417,11 @@ class PrototypesDialog(QDialog):
                 for i in range(4)
             ]
             wsum = sum(weights)
-            if abs(wsum - 1.0) > 0.02:
+            if wsum <= 0.0:
                 QMessageBox.warning(
                     self,
                     "Input Error",
-                    f"Prototype weights should sum to 1.0 (currently {wsum:g}).",
+                    "Prototype weights must have a positive total so they can be normalized.",
                 )
                 return
             self.result = {
@@ -430,7 +474,7 @@ class EventGenerator(QWidget):
             "Minimum Duration (seconds):",  # The shortest duration of a 911 call or incident in the dataset, measured in seconds. This could be used to filter out very short or incomplete calls.
             "Mean Patience Time (seconds):",  # The average time a caller is willing to wait on hold before hanging up, measured in seconds. This metric is important for understanding caller behavior and optimizing call center operations.
             "Mean On-Site Time (seconds):",  # The average time emergency responders spend on-site at an incident, measured in seconds. This includes the time from arrival at the scene to departure.
-            "Random seed (optional, blank for non-deterministic):",  # Integer seed for numpy.random; leave blank for unpredictable runs.
+            "Random seed (optional, blank to use current NumPy RNG state):",  # Integer seed for numpy.random; leave blank to keep the existing RNG state unchanged.
         ]
 
         self.entries = {}
