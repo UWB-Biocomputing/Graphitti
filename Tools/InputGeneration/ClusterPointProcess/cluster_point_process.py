@@ -1,5 +1,6 @@
 # Import necessary libraries
 import argparse
+import ast
 import json
 import os
 import sys
@@ -18,17 +19,8 @@ def _is_headless_config_run():
 
 
 if _is_headless_config_run():
-    QApplication = None
-    QWidget = None
-    QLabel = None
-    QLineEdit = None
-    QPushButton = None
-    QVBoxLayout = None
-    QFileDialog = None
-    QMessageBox = None
-    QDialog = None
-    QDialogButtonBox = None
-    QGridLayout = None
+    _DialogBase = object
+    _WidgetBase = object
 else:
     from PyQt5.QtWidgets import (
         QApplication,
@@ -43,6 +35,9 @@ else:
         QDialogButtonBox,
         QGridLayout,
     )
+
+    _DialogBase = QDialog
+    _WidgetBase = QWidget
 
 from cluster_point_process_functions import (
     DEFAULT_LEGACY_PROTOTYPE_WEIGHTS,
@@ -62,6 +57,69 @@ from cluster_point_process_functions import (
 
 
 GRAPH_FILE_FIELD = "Select Graph File (.graphml):"
+SEED_FIELD_LABEL = "Random seed (optional, blank to use current NumPy RNG state):"
+
+_TYPE_RATIO_SUM_TOLERANCE = 0.02
+
+
+def _validate_and_normalize_type_ratios(type_ratios):
+    """Coerce type_ratios values to float, validate range/sum, and normalize to sum 1."""
+    coerced = {}
+    ratio_sum = 0.0
+    for ratio_key, ratio_value in type_ratios.items():
+        try:
+            ratio = float(ratio_value)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(
+                f"type_ratios[{ratio_key!r}] must be a numeric probability "
+                f"(got {ratio_value!r})"
+            ) from exc
+
+        if not np.isfinite(ratio):
+            raise ValueError(
+                f"type_ratios[{ratio_key!r}] must be finite (got {ratio_value!r})"
+            )
+
+        if ratio < 0.0 or ratio > 1.0:
+            raise ValueError(
+                f"type_ratios[{ratio_key!r}] must be between 0.0 and 1.0 "
+                f"(got {ratio:g})"
+            )
+
+        coerced[ratio_key] = ratio
+        ratio_sum += ratio
+
+    if ratio_sum <= 0.0:
+        raise ValueError("type_ratios must have a positive sum")
+
+    if abs(ratio_sum - 1.0) > _TYPE_RATIO_SUM_TOLERANCE:
+        raise ValueError(f"type_ratios should sum to 1.0 (got {ratio_sum:g})")
+
+    if abs(ratio_sum - 1.0) > 1e-12:
+        coerced = {k: v / ratio_sum for k, v in coerced.items()}
+
+    return coerced
+
+
+def _parse_graph_segments(segments_attr):
+    """Parse a graph node's segments attribute into an (n, 2, 2) region grid."""
+    try:
+        parsed = ast.literal_eval(segments_attr)
+    except (ValueError, SyntaxError) as exc:
+        raise ValueError(
+            "Graph node 'segments' must be a literal list of bounding boxes, "
+            f"not executable code: {exc}"
+        ) from exc
+
+    graph_grid = np.asarray(parsed, dtype=float)
+    if graph_grid.ndim != 3 or graph_grid.shape[1:] != (2, 2):
+        raise ValueError(
+            "Graph node 'segments' must be a list of bounding boxes with shape "
+            f"(n, 2, 2); got array shape {graph_grid.shape}"
+        )
+    if graph_grid.size == 0:
+        raise ValueError("Graph node 'segments' must not be empty")
+    return graph_grid
 
 
 def _coerce_prototype_keys(prototypes, prototype_weights):
@@ -113,31 +171,7 @@ def generate_cluster_point_process_xml(
     if prototype_weights is not None and len(prototype_weights) == 0:
         prototype_weights = None
 
-    ratio_sum = 0.0
-    for ratio_key, ratio_value in type_ratios.items():
-        try:
-            ratio = float(ratio_value)
-        except (TypeError, ValueError) as exc:
-            raise ValueError(
-                f"type_ratios[{ratio_key!r}] must be a numeric probability "
-                f"(got {ratio_value!r})"
-            ) from exc
-
-        if not np.isfinite(ratio):
-            raise ValueError(
-                f"type_ratios[{ratio_key!r}] must be finite (got {ratio_value!r})"
-            )
-
-        if ratio < 0.0 or ratio > 1.0:
-            raise ValueError(
-                f"type_ratios[{ratio_key!r}] must be between 0.0 and 1.0 "
-                f"(got {ratio:g})"
-            )
-
-        ratio_sum += ratio
-
-    if abs(ratio_sum - 1.0) > 0.02:
-        raise ValueError(f"type_ratios should sum to 1.0 (got {ratio_sum:g})")
+    type_ratios = _validate_and_normalize_type_ratios(type_ratios)
 
     if random_seed is not None and str(random_seed).strip() != "":
         np.random.seed(int(random_seed))
@@ -150,8 +184,7 @@ def generate_cluster_point_process_xml(
             f"Graph id {gid!r} not found in graph. Example node ids: {sample}"
         )
 
-    graph_attribute = graph.nodes[gid]["segments"]
-    graph_grid = np.array(eval(graph_attribute))
+    graph_grid = _parse_graph_segments(graph.nodes[gid]["segments"])
 
     incidents = primprocess(first, last, mu, pp_dead_t, graph_grid)
     print(f"Number of Primary events: {incidents.shape[0]}")
@@ -261,7 +294,7 @@ def run_from_json_config(config_path):
 # Class: TypeRatioDialog
 # ------------------------------
 # Provides a dialog to input ratios for different 911 call types (Law, EMS, Fire).
-class TypeRatioDialog(QDialog):
+class TypeRatioDialog(_DialogBase):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Set Type Ratios")
@@ -349,7 +382,7 @@ class TypeRatioDialog(QDialog):
 # Class: PrototypesDialog
 # ------------------------------
 # Allows the user to define prototype configurations for secondary event generation.
-class PrototypesDialog(QDialog):
+class PrototypesDialog(_DialogBase):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Set Prototypes")
@@ -431,7 +464,7 @@ class PrototypesDialog(QDialog):
             super().accept()
 
 
-class EventGenerator(QWidget):
+class EventGenerator(_WidgetBase):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("911 Call Data Generator")
@@ -474,7 +507,7 @@ class EventGenerator(QWidget):
             "Minimum Duration (seconds):",  # The shortest duration of a 911 call or incident in the dataset, measured in seconds. This could be used to filter out very short or incomplete calls.
             "Mean Patience Time (seconds):",  # The average time a caller is willing to wait on hold before hanging up, measured in seconds. This metric is important for understanding caller behavior and optimizing call center operations.
             "Mean On-Site Time (seconds):",  # The average time emergency responders spend on-site at an incident, measured in seconds. This includes the time from arrival at the scene to departure.
-            "Random seed (optional, blank to use current NumPy RNG state):",  # Integer seed for numpy.random; leave blank to keep the existing RNG state unchanged.
+            SEED_FIELD_LABEL,  # Integer seed for numpy.random; leave blank to keep the existing RNG state unchanged.
         ]
 
         self.entries = {}
@@ -574,16 +607,15 @@ class EventGenerator(QWidget):
         error_message = ""
         invalid_fields = []
 
-        seed_label = "Random seed (optional, blank for non-deterministic):"
         # Validate user input fields
         for label_text, entry in self.entries.items():
             text = entry.text().strip()
             if not text:
-                if label_text == seed_label:
+                if label_text == SEED_FIELD_LABEL:
                     continue
                 invalid_fields.append(label_text)
             else:
-                if label_text == seed_label:
+                if label_text == SEED_FIELD_LABEL:
                     try:
                         int(text)
                     except ValueError:
@@ -637,7 +669,7 @@ class EventGenerator(QWidget):
             avg_on_site_time = float(
                 self.entries["Mean On-Site Time (seconds):"].text()
             )
-            seed_text = self.entries[seed_label].text().strip()
+            seed_text = self.entries[SEED_FIELD_LABEL].text().strip()
             random_seed = int(seed_text) if seed_text else None
             graph_id = str(self.entries["Graph ID:"].text())
 
