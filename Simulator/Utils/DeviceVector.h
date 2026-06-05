@@ -180,6 +180,9 @@ public:
 
    /// @brief Gets a copy of the host vector
    /// @return Copy of the host vector
+   /// @warning Do not pass this overload to Cereal archives for load paths: deserialization
+   ///          would update the temporary copy, not hostData_. Use static_cast<std::vector<T>&>(*this)
+   ///          or the implicit std::vector& conversion operator instead.
    std::vector<T> getHostVector()
    {
       return hostData_;

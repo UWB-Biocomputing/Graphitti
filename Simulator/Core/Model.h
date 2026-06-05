@@ -53,6 +53,12 @@ public:
    // todo: put in chain of responsibility.
    virtual void saveResults();
 
+   /// Register OperationManager callbacks for the current Connections, Layout, and Recorder.
+   ///
+   /// Called from constructors and again after deserialization so callbacks always
+   /// target live objects. See Serializer::deserialize() for context.
+   void registerOperations();
+
    /// Set up model state, for a specific simulation run.
    /// Downstream from IModel setupSim()
    virtual void setupSim();

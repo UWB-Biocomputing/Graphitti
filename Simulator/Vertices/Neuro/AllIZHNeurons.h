@@ -306,12 +306,15 @@ CEREAL_REGISTER_TYPE(AllIZHNeurons);
 ///  Cereal serialization method
 template <class Archive> void AllIZHNeurons::serialize(Archive &archive)
 {
+   // See AllIFNeurons::serialize(): archive DeviceVector members by reference, not via
+   // getHostVector(), so deserialization restores live neuron state instead of a copy.
    archive(cereal::base_class<AllIFNeurons>(this),
-           cereal::make_nvp("Aconst", Aconst_.getHostVector()),
-           cereal::make_nvp("Bconst", Bconst_.getHostVector()),
-           cereal::make_nvp("Cconst", Cconst_.getHostVector()),
-           cereal::make_nvp("Dconst", Dconst_.getHostVector()),
-           cereal::make_nvp("u", u_.getHostVector()), cereal::make_nvp("C3", C3_.getHostVector()));
+           cereal::make_nvp("Aconst", static_cast<std::vector<BGFLOAT> &>(Aconst_)),
+           cereal::make_nvp("Bconst", static_cast<std::vector<BGFLOAT> &>(Bconst_)),
+           cereal::make_nvp("Cconst", static_cast<std::vector<BGFLOAT> &>(Cconst_)),
+           cereal::make_nvp("Dconst", static_cast<std::vector<BGFLOAT> &>(Dconst_)),
+           cereal::make_nvp("u", static_cast<std::vector<BGFLOAT> &>(u_)),
+           cereal::make_nvp("C3", static_cast<std::vector<BGFLOAT> &>(C3_)));
 
    //Private variables are intentionally excluded from serialization as they are populated from configuration files.
 }

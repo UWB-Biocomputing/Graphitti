@@ -48,6 +48,14 @@ public:
    /// Takes in the operation enum and returns the enum as a string. Used for debugging purposes.
    string operationToString(const Operations &operation) const;
 
+   /// Clears all registered operation callbacks.
+   ///
+   /// Required after deserialization: Cereal replaces model subgraphs while the
+   /// OperationManager singleton still holds std::bind callbacks bound to destroyed
+   /// objects. Call clearRegisteredOperations(), then registerOperations() on the
+   /// live Simulator and Model to rebuild the callback list.
+   void clearRegisteredOperations();
+
    /// Delete copy and move methods to avoid copy instances of the singleton
    OperationManager(const OperationManager &operationManager) = delete;
    OperationManager &operator=(const OperationManager &operationManager) = delete;

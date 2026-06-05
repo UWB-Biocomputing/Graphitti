@@ -45,6 +45,12 @@ class AllVertices {
 public:
    AllVertices();
 
+   /// Register OperationManager callbacks for this AllVertices instance.
+   ///
+   /// Called by Layout::registerOperations() (not from this constructor) so callbacks are
+   /// registered exactly once and can be rebuilt after deserialization.
+   void registerOperations();
+
    virtual ~AllVertices() = default;
 
    ///  Setup the internal structure of the class.

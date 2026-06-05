@@ -31,18 +31,24 @@ Layout::Layout()
       exit(EXIT_FAILURE);
    }
 
-   // Register loadParameters function as a loadParameters operation in the Operation Manager
+   registerOperations();
+
+   // Get a copy of the file logger to use log4cplus macros
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+}
+
+void Layout::registerOperations()
+{
+   // Propagate registration to vertices_ so both layout- and vertex-level callbacks
+   // reference the objects that survived the most recent construction/deserialization.
    function<void()> loadParametersFunc = std::bind(&Layout::loadParameters, this);
    OperationManager::getInstance().registerOperation(Operations::loadParameters,
                                                      loadParametersFunc);
 
-   // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&Layout::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
 
-   // Register registerGraphProperties method as registerGraphProperties operation
-   // in the OperationManager
    function<void()> registerGraphPropertiesFunc = bind(&Layout::registerGraphProperties, this);
    OperationManager::getInstance().registerOperation((Operations::registerGraphProperties),
                                                      registerGraphPropertiesFunc);
@@ -51,8 +57,9 @@ Layout::Layout()
    OperationManager::getInstance().registerOperation(Operations::registerHistoryVariables,
                                                      registerHistoryVariablesFunc);
 
-   // Get a copy of the file logger to use log4cplus macros
-   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   if (vertices_) {
+      vertices_->registerOperations();
+   }
 }
 
 AllVertices &Layout::getVertices() const

@@ -31,6 +31,12 @@ class Layout {
 public:
    Layout();
 
+   /// Register OperationManager callbacks for this Layout instance and its vertices.
+   ///
+   /// Registration is separated from the constructor so callbacks can be rebuilt after
+   /// deserialization replaces the Layout/vertices unique_ptr subgraph.
+   void registerOperations();
+
    virtual ~Layout() = default;
 
    /// Returns reference to Vertices

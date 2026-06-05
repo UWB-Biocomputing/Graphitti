@@ -264,21 +264,28 @@ CEREAL_REGISTER_TYPE(AllIFNeurons);
 ///  Cereal serialization method
 template <class Archive> void AllIFNeurons::serialize(Archive &archive)
 {
+   // DeviceVector::getHostVector() returns a copy, so cereal would deserialize into a
+   // temporary and never restore simulation state. Cast to std::vector& so load/save
+   // targets the underlying hostData_ used by advanceNeuron() and related CPU paths.
    archive(
       cereal::base_class<AllSpikingNeurons>(this),
-      cereal::make_nvp("Trefract", Trefract_.getHostVector()),
-      cereal::make_nvp("Vthresh", Vthresh_.getHostVector()),
-      cereal::make_nvp("Vrest", Vrest_.getHostVector()),
-      cereal::make_nvp("Vreset", Vreset_.getHostVector()),
-      cereal::make_nvp("Vinit", Vinit_.getHostVector()),
-      cereal::make_nvp("Cm", Cm_.getHostVector()), cereal::make_nvp("Rm", Rm_.getHostVector()),
-      cereal::make_nvp("Inoise", Inoise_.getHostVector()),
-      cereal::make_nvp("Iinject", Iinject_.getHostVector()),
-      cereal::make_nvp("Isyn", Isyn_.getHostVector()),
-      cereal::make_nvp("numStepsInRefractoryPeriod", numStepsInRefractoryPeriod_.getHostVector()),
-      cereal::make_nvp("C1", C1_.getHostVector()), cereal::make_nvp("C2", C2_.getHostVector()),
-      cereal::make_nvp("I0", I0_.getHostVector()), cereal::make_nvp("Vm", Vm_.getHostVector()),
-      cereal::make_nvp("Tau", Tau_.getHostVector()));
+      cereal::make_nvp("Trefract", static_cast<std::vector<BGFLOAT> &>(Trefract_)),
+      cereal::make_nvp("Vthresh", static_cast<std::vector<BGFLOAT> &>(Vthresh_)),
+      cereal::make_nvp("Vrest", static_cast<std::vector<BGFLOAT> &>(Vrest_)),
+      cereal::make_nvp("Vreset", static_cast<std::vector<BGFLOAT> &>(Vreset_)),
+      cereal::make_nvp("Vinit", static_cast<std::vector<BGFLOAT> &>(Vinit_)),
+      cereal::make_nvp("Cm", static_cast<std::vector<BGFLOAT> &>(Cm_)),
+      cereal::make_nvp("Rm", static_cast<std::vector<BGFLOAT> &>(Rm_)),
+      cereal::make_nvp("Inoise", static_cast<std::vector<BGFLOAT> &>(Inoise_)),
+      cereal::make_nvp("Iinject", static_cast<std::vector<BGFLOAT> &>(Iinject_)),
+      cereal::make_nvp("Isyn", static_cast<std::vector<BGFLOAT> &>(Isyn_)),
+      cereal::make_nvp("numStepsInRefractoryPeriod",
+                      static_cast<std::vector<int> &>(numStepsInRefractoryPeriod_)),
+      cereal::make_nvp("C1", static_cast<std::vector<BGFLOAT> &>(C1_)),
+      cereal::make_nvp("C2", static_cast<std::vector<BGFLOAT> &>(C2_)),
+      cereal::make_nvp("I0", static_cast<std::vector<BGFLOAT> &>(I0_)),
+      cereal::make_nvp("Vm", static_cast<std::vector<BGFLOAT> &>(Vm_)),
+      cereal::make_nvp("Tau", static_cast<std::vector<BGFLOAT> &>(Tau_)));
 
    //Private variables are intentionally excluded from serialization as they are populated from configuration files.
 }

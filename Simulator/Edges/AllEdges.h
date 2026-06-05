@@ -25,6 +25,12 @@ public:
    AllEdges(int numVertices, int maxEdges);
    virtual ~AllEdges() = default;
 
+   /// Register OperationManager callbacks for this AllEdges instance.
+   ///
+   /// Called by Connections::registerOperations() (not from this constructor) so callbacks are
+   /// registered exactly once and can be rebuilt after deserialization.
+   void registerOperations();
+
    ///  Setup the internal structure of the class (allocate memories and initialize them).
    virtual void setupEdges();
 

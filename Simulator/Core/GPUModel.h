@@ -105,6 +105,12 @@ public:
    /// Getter for vertex (neuron) structures in device memory
    AllVerticesDeviceProperties *&getAllVerticesDevice();
 
+   /// Rebuild GPU allocations to match CPU state restored by deserialization.
+   ///
+   /// setupSim() allocates device memory before deserialize runs; loading a checkpoint
+   /// replaces Connections/Layout on the host without resizing existing GPU buffers.
+   void reinitializeDeviceAfterDeserialize();
+
 protected:
    /// Allocates  and initializes memories on CUDA device.
    void allocDeviceStruct();
