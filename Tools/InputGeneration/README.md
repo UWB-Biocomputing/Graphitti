@@ -16,8 +16,10 @@ The current input generation scripts are:
 
 - `FromRealData/input_file_from_call_log.py`: Takes a real 911 call log and generates an
     XML input file appropriately formatted.
-- `ClusterPointProcess\cluster_point_process.py`: Generates synthetic calls
-    modeled as a spatio-temporal cluster point process.
+- `ClusterPointProcess/cluster_point_process.py`: Generates synthetic calls
+    modeled as a spatio-temporal cluster point process. See
+    [ClusterPointProcess/README.md](ClusterPointProcess/README.md) for CLI and
+    JSON config usage.
 
 ## Cluster Point Process
 
