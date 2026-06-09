@@ -33,9 +33,8 @@ public:
    };
    virtual ~Recorder() = default;
 
-   /// Initialize data
-   /// @param[in] stateOutputFileName  File name to save histories
-   virtual void init() = 0;
+   /// Setup the internal structure of the class (allocate memories and initialize them).
+   virtual void setup() = 0;
 
    /// Terminate process
    virtual void term() = 0;

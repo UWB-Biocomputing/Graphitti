@@ -26,6 +26,8 @@ Hdf5Recorder::Hdf5Recorder()
    function<void()> printParametersFunc = std::bind(&Hdf5Recorder::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
+   function<void()> setupFunc = std::bind(&Hdf5Recorder::setup, this);
+   OperationManager::getInstance().registerOperation(Operations::setup, setupFunc);
 
    // Initialize the logger for file operations
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
@@ -42,7 +44,7 @@ Hdf5Recorder::~Hdf5Recorder()
 }
 
 // Other member functions implementation...
-void Hdf5Recorder::init()
+void Hdf5Recorder::setup()
 {
    // Check the output file extension is .h5
    string suffix = ".h5";

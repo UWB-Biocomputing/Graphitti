@@ -23,12 +23,14 @@ XmlRecorder::XmlRecorder()
    function<void()> printParametersFunc = std::bind(&XmlRecorder::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
+   function<void()> setupFunc = std::bind(&XmlRecorder::setup, this);
+   OperationManager::getInstance().registerOperation(Operations::setup, setupFunc);
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
-/// Create a new xml file and initialize data
-/// @param[in] stateOutputFileName      File name to save histories
-void XmlRecorder::init()
+/// Setup the internal structure of the class (allocate memories and initialize them).
+/// Registered to OperationManager as Operation::setup
+void XmlRecorder::setup()
 {
    // check the output file extension is .xml
    string suffix = ".xml";

@@ -42,8 +42,9 @@ public:
       return new XmlRecorder();
    }
 
-   /// Initialize data in the newly loadeded xml file
-   virtual void init() override;
+   /// Setup the internal structure of the class (allocate memories and initialize them).
+   /// Registered to OperationManager as Operation::setup
+   virtual void setup() override;
 
    /// Terminate process
    virtual void term() override;

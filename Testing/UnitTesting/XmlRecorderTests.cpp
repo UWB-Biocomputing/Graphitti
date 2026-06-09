@@ -29,12 +29,12 @@ TEST(XmlRecorderTest, CreateInstanceSuccess)
 }
 
 // Test case for open file successfully
-TEST(XmlRecorderTest, InitTest)
+TEST(XmlRecorderTest, SetupTest)
 {
    // Create an instance of XmlRecorder
    std::string outputFile = "../Testing/UnitTesting/TestOutput/test_output.xml";
    XmlRecorder recorder(outputFile);
-   recorder.init();
+   recorder.setup();
    // Test to see if output file exist
    FILE *f = fopen("../Testing/UnitTesting/TestOutput/test_output.xml", "r");
    bool fileExist = f != NULL;
@@ -226,7 +226,7 @@ TEST(XmlRecorderTest, SaveSimDataTest)
    EventBuffer<uint64_t> buffer(4);
 
    // initialize the XmlRecorder object
-   recorderTest_->init();
+   recorderTest_->setup();
 
    // Register a variable
    recorderTest_->registerVariable("neuron0", buffer, Recorder::UpdatedType::DYNAMIC);
@@ -273,7 +273,7 @@ TEST(XmlRecorderTest, SaveSimDataVertexTypeTest)
    recorderTest_->registerVariable("VertexTypes", vertTypes, Recorder::UpdatedType::DYNAMIC);
 
    // initialize the XmlRecorder object
-   recorderTest_->init();
+   recorderTest_->setup();
 
    // Call the compileHistories method
    recorderTest_->compileHistories();

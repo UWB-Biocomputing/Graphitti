@@ -16,6 +16,7 @@
 #include "Model.h"
 #include "Connections.h"
 #include "Factory.h"
+#include "OperationManager.h"
 #include "ParameterManager.h"
 #include "Recorder.h"
 #include "Simulator.h"
@@ -101,10 +102,8 @@ void Model::setupSim()
    // Time to initialization (layout)
    t_host_initialization_layout += Simulator::getInstance().getShort_timer().lap() / 1000000.0;
 #endif
-   // Init radii and rates history matrices with default values
-   if (recorder_ != nullptr) {
-      recorder_->init();
-   }
+   LOG4CPLUS_INFO(fileLogger_, "Setting up Recorder...");
+   OperationManager::getInstance().executeOperation(Operations::setup);
 
    // Creates all the vertices and generates data for them.
    createAllVertices();
