@@ -3,6 +3,7 @@ import argparse
 import ast
 import json
 import os
+import shutil
 import sys
 import time
 
@@ -11,14 +12,15 @@ import networkx as nx
 import numpy as np
 
 
-def _is_headless_config_run():
-    """Return True when the process was started with a JSON config argument."""
-    return "--config" in sys.argv or any(
-        arg.startswith("--config=") for arg in sys.argv[1:]
+def _is_headless_cli_run():
+    """Return True when the process should run without importing the PyQt GUI."""
+    headless_flags = ("--config", "--write-config")
+    return any(flag in sys.argv for flag in headless_flags) or any(
+        arg.startswith(f"{flag}=") for flag in headless_flags for arg in sys.argv[1:]
     )
 
 
-if _is_headless_config_run():
+if _is_headless_cli_run():
     _DialogBase = object
     _WidgetBase = object
 else:
@@ -49,6 +51,7 @@ from cluster_point_process_functions import (
 
 # source venv/bin/activate
 # python3 cluster_point_process.py
+# python3 cluster_point_process.py --write-config params.json
 # python3 cluster_point_process.py --config params.json
 
 # This script provides a GUI to configure and generate synthetic 911 call data using a cluster point process model.
@@ -58,6 +61,9 @@ from cluster_point_process_functions import (
 
 GRAPH_FILE_FIELD = "Select Graph File (.graphml):"
 SEED_FIELD_LABEL = "Random seed (optional, blank to use current NumPy RNG state):"
+BOILERPLATE_CONFIG_TEMPLATE = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "params.example.json"
+)
 
 _TYPE_RATIO_SUM_TOLERANCE = 0.02
 
@@ -236,6 +242,30 @@ def generate_cluster_point_process_xml(
         pretty_print=True,
     )
     print("Secondary process was saved to:", output_path)
+    return output_path
+
+
+def write_boilerplate_json_config(output_path, overwrite=False):
+    """Copy the repo template JSON config to output_path and return that path."""
+    template_path = BOILERPLATE_CONFIG_TEMPLATE
+    if not os.path.isfile(template_path):
+        raise FileNotFoundError(
+            f"Boilerplate template not found: {template_path}"
+        )
+
+    output_path = os.path.abspath(os.path.expanduser(output_path))
+    if os.path.exists(output_path) and not overwrite:
+        raise FileExistsError(
+            f"Refusing to overwrite existing config: {output_path}. "
+            "Pass overwrite=True or choose a different path."
+        )
+
+    out_dir = os.path.dirname(output_path)
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
+
+    shutil.copy2(template_path, output_path)
+    print("Wrote boilerplate config to:", output_path)
     return output_path
 
 
@@ -713,7 +743,18 @@ def main():
         metavar="FILE.json",
         help="Load all tuned parameters from JSON and exit without opening the GUI.",
     )
+    parser.add_argument(
+        "--write-config",
+        metavar="FILE.json",
+        nargs="?",
+        const="params.json",
+        help="Write a boilerplate JSON config to FILE.json (default: params.json) and exit.",
+    )
     args = parser.parse_args()
+
+    if args.write_config is not None:
+        write_boilerplate_json_config(args.write_config)
+        return
 
     if args.config:
         run_from_json_config(args.config)
