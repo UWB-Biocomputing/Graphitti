@@ -8,19 +8,29 @@ classDiagram
 namespace Core {
     class cls_Core["Core"]
     class cls_CPUModel["CPUModel"]
-    class cls_EdgeIndexMap["EdgeIndexMap"]
-    class cls_GenericFunctionNode["GenericFunctionNode"]
+    %%%    class cls_EdgeIndexMap["EdgeIndexMap"]
+    %%%    class cls_GenericFunctionNode["GenericFunctionNode"]
     class cls_GPUModel["GPUModel"]
-    class cls_IFunctionNode["IFunctionNode"] {
-        <<abstract>>
-    }
+    %%%    class cls_IFunctionNode["IFunctionNode"] {
+    %%%    <<abstract>>
+    %%% }
     class cls_Model["Model"] {
         <<abstract>>
     }
-    class cls_OperationManager["OperationManager"]
+    class cls_OperationManager["OperationManager"] {
+        <<singleton>>
+    }
+    class cls_ParameterManager["ParameterManager"] {
+        <<singleton>>
+    }
+    class cls_GraphManager["GraphManager"] {
+        <<singleton>>
+    }
     class cls_Serializer["Serializer"]
-    class cls_Simulator["Simulator"]
-    class cls_TwoUint64ArgFunctionNode["TwoUint64ArgFunctionNode"]
+    class cls_Simulator["Simulator"] {
+        <<singleton>>
+    }
+    %%%    class cls_TwoUint64ArgFunctionNode["TwoUint64ArgFunctionNode"]
 }
 namespace Connections {
     class cls_Connections["Connections"] {
@@ -75,6 +85,7 @@ namespace Recorders {
     class cls_Xml911Recorder["Xml911Recorder"]
     class cls_XmlRecorder["XmlRecorder"]
 }
+%%% Inheritance
 cls_AllEdges <|-- cls_All911Edges
 cls_AllVertices <|-- cls_All911Vertices
 cls_AllSpikingSynapses <|-- cls_AllDSSynapses
@@ -90,15 +101,27 @@ cls_Connections <|-- cls_Connections911
 cls_Connections <|-- cls_ConnGrowth
 cls_Connections <|-- cls_ConnStatic
 cls_Model <|-- cls_CPUModel
-cls_IFunctionNode <|-- cls_GenericFunctionNode
+%%% cls_IFunctionNode <|-- cls_GenericFunctionNode
 cls_Model <|-- cls_GPUModel
 cls_Recorder <|-- cls_Hdf5Recorder
 cls_Layout <|-- cls_Layout911
 cls_Layout <|-- cls_LayoutNeuro
 cls_RecordableBase <|-- cls_RecordableVector
-cls_IFunctionNode <|-- cls_TwoUint64ArgFunctionNode
+%%% cls_IFunctionNode <|-- cls_TwoUint64ArgFunctionNode
 cls_XmlRecorder <|-- cls_Xml911Recorder
 cls_Recorder <|-- cls_XmlRecorder
+%%% Composition
+cls_Model o-- cls_Layout
+cls_Model o-- cls_Connections
+cls_Model o-- cls_Recorder
+cls_Simulator o-- cls_Model
+cls_Layout o-- cls_AllVertices
+cls_Connections o-- cls_AllEdges
+%%% Other relationships
+cls_Core --> cls_Simulator : gets singleton
+cls_Core --> cls_ParameterManager : gets singleton
+cls_Core --> cls_OperationManager : gets singleton
+cls_Core --> cls_GraphManager : gets singleton
 ```
 
 ### Graphitti Class Diagram
@@ -127,11 +150,11 @@ namespace Core {
         +vector~ BGSIZE ~ incomingEdgeCount_
         +serialize(Archive &archive)
     }
-    class cls_GenericFunctionNode["GenericFunctionNode"] {
-        -std::function~ void()~ function_
-        +invokeFunction(const Operations &operation) const override bool
-        +invokeFunction(...) bool
-    }
+%%%    class cls_GenericFunctionNode["GenericFunctionNode"] {
+%%%        -std::function~ void()~ function_
+%%%        +invokeFunction(const Operations &operation) const override bool
+%%%        +invokeFunction(...) bool
+%%%    }
     class cls_GPUModel["GPUModel"] {
         +setupSim() override
         +finish() override
@@ -151,12 +174,12 @@ namespace Core {
         -addEdge(...)
         -createEdge(...)
     }
-    class cls_IFunctionNode["IFunctionNode"] {
-        <<abstract>>
-        #Operations operationType_
-        +invokeFunction(const Operations &operation) const =0* bool
-        +invokeFunction(...)* bool
-    }
+%%%    class cls_IFunctionNode["IFunctionNode"] {
+%%%        <<abstract>>
+%%%        #Operations operationType_
+%%%        +invokeFunction(const Operations &operation) const =0* bool
+%%%        +invokeFunction(...)* bool
+%%%    }
     class cls_Model["Model"] {
         <<abstract>>
         #unique_ptr~ Connections ~ connections_
@@ -206,11 +229,11 @@ namespace Core {
         +saveResults() const
         +instantiateSimulatorObjects() bool
     }
-    class cls_TwoUint64ArgFunctionNode["TwoUint64ArgFunctionNode"] {
-        -std::function~ void(uint64_t, uint64_t)~ function_
-        +invokeFunction(const Operations &operation) const bool
-        +invokeFunction(...) bool
-    }
+%%%    class cls_TwoUint64ArgFunctionNode["TwoUint64ArgFunctionNode"] {
+%%%        -std::function~ void(uint64_t, uint64_t)~ function_
+%%%        +invokeFunction(const Operations &operation) const bool
+%%%        +invokeFunction(...) bool
+%%%    }
 }
 namespace Connections {
     class cls_Connections["Connections"] {
@@ -849,15 +872,25 @@ cls_Connections <|-- cls_Connections911
 cls_Connections <|-- cls_ConnGrowth
 cls_Connections <|-- cls_ConnStatic
 cls_Model <|-- cls_CPUModel
-cls_IFunctionNode <|-- cls_GenericFunctionNode
+%%% cls_IFunctionNode <|-- cls_GenericFunctionNode
 cls_Model <|-- cls_GPUModel
 cls_Recorder <|-- cls_Hdf5Recorder
 cls_Layout <|-- cls_Layout911
 cls_Layout <|-- cls_LayoutNeuro
 cls_RecordableBase <|-- cls_RecordableVector
-cls_IFunctionNode <|-- cls_TwoUint64ArgFunctionNode
+%%% cls_IFunctionNode <|-- cls_TwoUint64ArgFunctionNode
 cls_XmlRecorder <|-- cls_Xml911Recorder
 cls_Recorder <|-- cls_XmlRecorder
+%%% Composition
+cls_Model o-- cls_Layout
+cls_Model o-- cls_Connections
+cls_Model o-- cls_Recorder
+cls_Simulator o-- cls_Model
+cls_Layout o-- cls_AllVertices
+cls_Connections o-- cls_AllEdges
+%%% Other relationships
+cls_Core --> cls_Simulator : gets singleton
+cls_Core --> cls_OperationManager : gets singleton
 ```
 
 
