@@ -66,7 +66,8 @@
 #pragma once
 
 #include "AllVertices.h"
-#include "CircularBuffer.h"
+#include "CallCircularBuffer.h"
+#include "CallSlotArrays.h"
 #include "EventBuffer.h"
 #include "Global.h"
 #include "InputEvent.h"
@@ -130,7 +131,7 @@ public:
    ///
    /// @param vIdx   The index of the vertex
    /// @return    The waiting queue for the given vertex
-   CircularBuffer<Call> &getQueue(int vIdx);
+   CallCircularBuffer &getQueue(int vIdx);
 
    /// Accessor for the droppedCalls counter of a vertex
    ///
@@ -166,7 +167,7 @@ public:
    vector<EventBuffer<float>> utilizationHistory_;
 
    /// These are the queues where calls will wait to be served
-   vector<CircularBuffer<Call>> vertexQueues_;
+   vector<CallCircularBuffer> vertexQueues_;
 
    /// The number of calls that have been dropped (got a busy signal)
    RecordableVector<int> droppedCalls_;
@@ -193,7 +194,7 @@ public:
    BGFLOAT avgDrivingSpeed_;
 
    /// Holds the calls being served by each server
-   vector<vector<Call>> servingCall_;
+   vector<CallSlotArrays> servingCall_;
 
    /// The time that the call being served was answered by the server
    vector<vector<uint64_t>> answerTime_;
@@ -217,7 +218,7 @@ protected:
    /// @param call         The call that needs a Responder
    /// @param vertexIdx    The index of the vertex serving the call (A PSAP)
    /// @return    The index of the outgoing edge to the closest Responder
-   BGSIZE getEdgeToClosestResponder(const Call &call, BGSIZE vertexIdx);
+   BGSIZE getEdgeToClosestResponder(int responderType, BGFLOAT x, BGFLOAT y, BGSIZE vertexIdx);
 
    /// The number of vertices that needs device noise. Only caller regions need noise for determining
    /// redial so this is meant to help save memory. A member variable is used so that we don't have to

@@ -35,6 +35,7 @@
 #pragma once
 
 #include "CircularBuffer.h"
+#include "CallCircularBuffer.h"
 #include "ParameterManager.h"
 #include <boost/foreach.hpp>
 #include <boost/property_tree/exceptions.hpp>
@@ -169,6 +170,21 @@ public:
 
       while (!eventQueue.empty() && eventQueue.front().time < lastStep) {
          // We shouldn't have previous epoch events in the queue
+         assert(eventQueue.front().time >= firstStep);
+         buffer.put(eventQueue.front());
+         eventQueue.pop();
+      }
+
+      return buffer;
+   }
+
+   /// @brief  Inserts events into a CallCircularBuffer for NG911 simulations.
+   CallCircularBuffer &getEvents(const VertexId_t &vertexId, uint64_t firstStep, uint64_t lastStep,
+                                 CallCircularBuffer &buffer)
+   {
+      queue<T> &eventQueue = eventsMap_[vertexId];
+
+      while (!eventQueue.empty() && eventQueue.front().time < lastStep) {
          assert(eventQueue.front().time >= firstStep);
          buffer.put(eventQueue.front());
          eventQueue.pop();
