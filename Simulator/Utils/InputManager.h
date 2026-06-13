@@ -34,8 +34,8 @@
 
 #pragma once
 
-#include "CircularBuffer.h"
 #include "CallCircularBuffer.h"
+#include "CircularBuffer.h"
 #include "ParameterManager.h"
 #include <boost/foreach.hpp>
 #include <boost/property_tree/exceptions.hpp>

@@ -825,8 +825,8 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       HANDLE_ERROR(cudaMemcpy(callDurationCpu, allVerticesDevice.vertexQueuesBufferDuration_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         HANDLE_ERROR(cudaMemcpy(callDurationCpu[i], vertexQueues_[i].duration().data(), bufferBytes,
-                                 cudaMemcpyHostToDevice));
+         HANDLE_ERROR(cudaMemcpy(callDurationCpu[i], vertexQueues_[i].duration().data(),
+                                 bufferBytes, cudaMemcpyHostToDevice));
       }
    }
    // BGFLOAT **vertexQueuesBufferX_;
@@ -1409,8 +1409,8 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       HANDLE_ERROR(cudaMemcpy(callLocationXCpu, allVerticesDevice.vertexQueuesBufferX_,
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         HANDLE_ERROR(cudaMemcpy(vertexQueues_[i].x().data(), callLocationXCpu[i],
-                                 floatBufferBytes, cudaMemcpyDeviceToHost));
+         HANDLE_ERROR(cudaMemcpy(vertexQueues_[i].x().data(), callLocationXCpu[i], floatBufferBytes,
+                                 cudaMemcpyDeviceToHost));
       }
    }
    // BGFLOAT **vertexQueuesBufferY_;
@@ -1419,8 +1419,8 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       HANDLE_ERROR(cudaMemcpy(callLocationYCpu, allVerticesDevice.vertexQueuesBufferY_,
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         HANDLE_ERROR(cudaMemcpy(vertexQueues_[i].y().data(), callLocationYCpu[i],
-                                 floatBufferBytes, cudaMemcpyDeviceToHost));
+         HANDLE_ERROR(cudaMemcpy(vertexQueues_[i].y().data(), callLocationYCpu[i], floatBufferBytes,
+                                 cudaMemcpyDeviceToHost));
       }
    }
    // int **vertexQueuesBufferPatience_;

@@ -8,11 +8,11 @@
 
 #include "All911Vertices.h"
 #include "All911Edges.h"
+#include "CallUtils.h"
 #include "Connections911.h"
 #include "GraphManager.h"
 #include "Layout911.h"
 #include "ParameterManager.h"
-#include "CallUtils.h"
 #include <cmath>
 
 // Allocate memory for all class properties
@@ -423,9 +423,9 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
                             << answerTime_[vertexIdx][server] - endingCall.timeAt(server));
 
          // Dispatch the Responder closest to the emergency location.
-         BGSIZE respEdge = getEdgeToClosestResponder(endingCall.responderTypeAt(server),
-                                                       endingCall.xAt(server),
-                                                       endingCall.yAt(server), vertexIdx);
+         BGSIZE respEdge
+            = getEdgeToClosestResponder(endingCall.responderTypeAt(server), endingCall.xAt(server),
+                                        endingCall.yAt(server), vertexIdx);
          BGSIZE responder = edges911.destVertexIndex_[respEdge];
          LOG4CPLUS_DEBUG(vertexLogger_, "Dispatching Responder: " << responder);
 
@@ -596,8 +596,9 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
       serverCountdown_[vertexIdx][availUnit] = driveTime + vertexQueue.onSiteTime()[queueEnd];
 
       serverCountdown_[vertexIdx][availUnit] = vertexQueue.duration()[queueEnd];
-      LOG4CPLUS_DEBUG(vertexLogger_, "Response, driving time: " << driveTime << ", On-site time: "
-                                                                << vertexQueue.onSiteTime()[queueEnd]);
+      LOG4CPLUS_DEBUG(vertexLogger_,
+                      "Response, driving time: " << driveTime << ", On-site time: "
+                                                 << vertexQueue.onSiteTime()[queueEnd]);
    }
 
    // Update number of busy servers. This is used to check if there is space in the queue
@@ -622,7 +623,7 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
 /// Finds the outgoing edge from the given vertex to the Responder closest to
 /// the emergency call location
 BGSIZE All911Vertices::getEdgeToClosestResponder(int responderType, BGFLOAT x, BGFLOAT y,
-                                                   BGSIZE vertexIdx)
+                                                 BGSIZE vertexIdx)
 {
    Connections &connections = Simulator::getInstance().getModel().getConnections();
    All911Edges &edges911 = dynamic_cast<All911Edges &>(connections.getEdges());
