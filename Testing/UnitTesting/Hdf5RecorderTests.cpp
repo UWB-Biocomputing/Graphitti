@@ -17,14 +17,14 @@ TEST(Hdf5RecorderTest, CreateInstanceSuccess)
 }
 
 // Test case for setup() and term()
-TEST(Hdf5RecorderTest, Hdf5InitAndTermTest)
+TEST(Hdf5RecorderTest, Hdf5SetupAndTermTest)
 {
    // Create an instance of Hdf5Recorder with a specific output file name
    std::string outputFile = "../Testing/UnitTesting/TestOutput/Hdf5test_output_term.h5";
    Hdf5Recorder recorder(outputFile);
    recorder.setup();
 
-   // Ensure the file has been created successfully by the constructor
+   // Ensure the file has been created successfully by setup()
    FILE *f = fopen(outputFile.c_str(), "r");
    ASSERT_TRUE(f != NULL);
    fclose(f);

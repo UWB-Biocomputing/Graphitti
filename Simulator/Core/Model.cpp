@@ -16,7 +16,6 @@
 #include "Model.h"
 #include "Connections.h"
 #include "Factory.h"
-#include "OperationManager.h"
 #include "ParameterManager.h"
 #include "Recorder.h"
 #include "Simulator.h"
@@ -103,7 +102,9 @@ void Model::setupSim()
    t_host_initialization_layout += Simulator::getInstance().getShort_timer().lap() / 1000000.0;
 #endif
    LOG4CPLUS_INFO(fileLogger_, "Setting up Recorder...");
-   OperationManager::getInstance().executeOperation(Operations::setup);
+   if (recorder_ != nullptr) {
+      recorder_->setup();
+   }
 
    // Creates all the vertices and generates data for them.
    createAllVertices();

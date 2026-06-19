@@ -33,7 +33,7 @@ public:
    };
    virtual ~Recorder() = default;
 
-   /// Setup the internal structure of the class (allocate memories and initialize them).
+   /// Setup the internal structure of the class (allocate memory and initialize it).
    virtual void setup() = 0;
 
    /// Terminate process

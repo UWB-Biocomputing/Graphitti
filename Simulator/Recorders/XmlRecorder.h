@@ -42,8 +42,7 @@ public:
       return new XmlRecorder();
    }
 
-   /// Setup the internal structure of the class (allocate memories and initialize them).
-   /// Registered to OperationManager as Operation::setup
+   /// Setup the internal structure of the class (allocate memory and initialize it).
    virtual void setup() override;
 
    /// Terminate process
