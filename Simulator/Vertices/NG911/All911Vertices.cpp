@@ -593,9 +593,8 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
 
       // Calculate the driving time to the incident in seconds
       double driveTime = (dist2incident / avgDrivingSpeed_) * 3600;
-      serverCountdown_[vertexIdx][availUnit] = driveTime + vertexQueue.onSiteTime()[queueEnd];
-
-      serverCountdown_[vertexIdx][availUnit] = vertexQueue.duration()[queueEnd];
+      serverCountdown_[vertexIdx][availUnit]
+         = static_cast<int>(driveTime) + vertexQueue.onSiteTime()[queueEnd];
       LOG4CPLUS_DEBUG(vertexLogger_,
                       "Response, driving time: " << driveTime << ", On-site time: "
                                                  << vertexQueue.onSiteTime()[queueEnd]);
@@ -629,13 +628,15 @@ BGSIZE All911Vertices::getEdgeToClosestResponder(int responderType, BGFLOAT x, B
    All911Edges &edges911 = dynamic_cast<All911Edges &>(connections.getEdges());
    EdgeIndexMap &edgeIndexMap = connections.getEdgeIndexMap();
 
-   vertexType requiredType;
-   if (responderType == 7)
+   vertexType requiredType = vertexType::VTYPE_UNDEF;
+   if (responderType == static_cast<int>(vertexType::LAW)) {
       requiredType = vertexType::LAW;
-   else if (responderType == 5)
+   } else if (responderType == static_cast<int>(vertexType::EMS)) {
       requiredType = vertexType::EMS;
-   else if (responderType == 6)
+   } else if (responderType == static_cast<int>(vertexType::FIRE)) {
       requiredType = vertexType::FIRE;
+   }
+   assert(requiredType != vertexType::VTYPE_UNDEF);
 
    // loop over the outgoing edges looking for the responder with the shortest
    // Euclidean distance to the call's location.

@@ -6,6 +6,7 @@
  * @ingroup Testing/UnitTesting
  */
 
+#include "CallCircularBuffer.h"
 #include "CircularBuffer.h"
 #include "InputEvent.h"
 #include "InputManager.h"
@@ -98,6 +99,44 @@ TEST_F(InputManagerFixture, getEpochEvents)
    ASSERT_EQ(v195Queue.size(), 3);   // should not include 401
    // Check that 3rd event is correct
    // pop and discard the first 2 events
+   v195Queue.get();
+   v195Queue.get();
+   std::optional<Call> call3 = v195Queue.get();
+   EXPECT_EQ(call3->vertexId, 195);
+   EXPECT_EQ(call3->time, 388);
+   EXPECT_EQ(call3->duration, 45);
+   EXPECT_EQ(call3->type, "Law");
+   EXPECT_FLOAT_EQ(call3->x, -122.37746466732693);
+   EXPECT_FLOAT_EQ(call3->y, 47.711139673719046);
+}
+
+TEST_F(InputManagerFixture, getEpochEventsCallCircularBuffer)
+{
+   CallCircularBuffer v194Queue(5);
+   inputManager.getEvents(194, 0, 37, v194Queue);
+   ASSERT_EQ(v194Queue.size(), 2);
+
+   std::optional<Call> call1 = v194Queue.get();
+   ASSERT_TRUE(call1);
+   EXPECT_EQ(call1->vertexId, 194);
+   EXPECT_EQ(call1->time, 0);
+   EXPECT_EQ(call1->duration, 0);
+   EXPECT_EQ(call1->type, "EMS");
+   EXPECT_FLOAT_EQ(call1->x, -122.38496236371942);
+   EXPECT_FLOAT_EQ(call1->y, 47.570236838209546);
+
+   std::optional<Call> call2 = v194Queue.get();
+   ASSERT_TRUE(call2);
+   EXPECT_EQ(call2->vertexId, 194);
+   EXPECT_EQ(call2->time, 34);
+   EXPECT_EQ(call2->duration, 230);
+   EXPECT_EQ(call2->type, "EMS");
+   EXPECT_FLOAT_EQ(call2->x, -122.37482094435583);
+   EXPECT_FLOAT_EQ(call2->y, 47.64839548276973);
+
+   CallCircularBuffer v195Queue(5);
+   inputManager.getEvents(195, 125, 401, v195Queue);
+   ASSERT_EQ(v195Queue.size(), 3);
    v195Queue.get();
    v195Queue.get();
    std::optional<Call> call3 = v195Queue.get();

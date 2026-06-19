@@ -9,6 +9,7 @@
 
 #include "BGTypes.h"
 #include "InputEvent.h"
+#include "VertexType.h"
 #include <cstdint>
 #include <string>
 
@@ -16,26 +17,26 @@
 inline int responderTypeToInt(const std::string &type)
 {
    if (type == "Law") {
-      return 7;
+      return static_cast<int>(vertexType::LAW);
    }
    if (type == "EMS") {
-      return 5;
+      return static_cast<int>(vertexType::EMS);
    }
    if (type == "Fire") {
-      return 6;
+      return static_cast<int>(vertexType::FIRE);
    }
-   return 0;
+   return static_cast<int>(vertexType::VTYPE_UNDEF);
 }
 
 inline std::string responderTypeToString(int responderType)
 {
-   if (responderType == 7) {
+   if (responderType == static_cast<int>(vertexType::LAW)) {
       return "Law";
    }
-   if (responderType == 5) {
+   if (responderType == static_cast<int>(vertexType::EMS)) {
       return "EMS";
    }
-   if (responderType == 6) {
+   if (responderType == static_cast<int>(vertexType::FIRE)) {
       return "Fire";
    }
    return "";
