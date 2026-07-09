@@ -55,7 +55,9 @@ public:
    ///
    /// Recorder is not serialized; re-register after deserialization so printParameters
    /// remains available alongside the rebuilt model callbacks.
-   virtual void registerOperations() {}
+   virtual void registerOperations()
+   {
+   }
 
    /// Receives a recorded variable entity from the variable owner class
    /**
