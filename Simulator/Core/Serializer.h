@@ -37,6 +37,10 @@ public:
    /// Deserializes all member variables of the
    /// Connections, Layout, Edges, Vertices, and associated helper classes.
    ///
+   /// After loading, clears and rebuilds OperationManager callbacks because Cereal
+   /// replaces model subgraph unique_ptrs while stale std::bind(this, ...) entries
+   /// would otherwise remain registered. See Serializer::deserialize() implementation.
+   ///
    /// @returns true if deserialization is successful; false otherwise.
    bool deserialize();
 

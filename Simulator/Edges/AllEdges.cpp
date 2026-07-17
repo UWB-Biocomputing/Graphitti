@@ -12,44 +12,40 @@
 
 AllEdges::AllEdges() : totalEdgeCount_(0), maxEdgesPerVertex_(0), countVertices_(0)
 {
-   // Register loadParameters function as a loadParameters operation in the
-   // OperationManager. This will register the appropriate overridden method
-   // for the actual (sub)class of the object being created.
+   // OperationManager callbacks are registered by Connections::registerOperations() (and again
+   // after deserialization via Model::registerOperations()). Do not register here; doing so
+   // duplicates callbacks when the parent Connections also propagates registration to edges_.
+
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
+}
+
+void AllEdges::registerOperations()
+{
    function<void()> loadParametersFunc = std::bind(&AllEdges::loadParameters, this);
    OperationManager::getInstance().registerOperation(Operations::loadParameters,
                                                      loadParametersFunc);
 
-   // Register printParameters function as a printParameters operation in the
-   // OperationManager. This will register the appropriate overridden method
-   // for the actual (sub)class of the object being created.
    function<void()> printParametersFunc = bind(&AllEdges::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
 
 #if defined(USE_GPU)
-   // Register allocNeuronDeviceStruct function as a allocateGPU operation in the OperationManager
    function<void()> allocateGPU
       = bind(static_cast<void (AllEdges::*)()>(&AllEdges::allocEdgeDeviceStruct), this);
    OperationManager::getInstance().registerOperation(Operations::allocateGPU, allocateGPU);
 
-   // Register AllEdges::copyEdgeHostToDevice function as a copyToGPU operation in the OperationManager
    function<void()> copyCPUtoGPU
       = bind(static_cast<void (AllEdges::*)()>(&AllEdges::copyEdgeHostToDevice), this);
    OperationManager::getInstance().registerOperation(Operations::copyToGPU, copyCPUtoGPU);
 
-   // Register copyFromGPU operation for transferring edge data from device to host
    function<void()> copyFromGPU = bind(&AllEdges::copyEdgeDeviceToHost, this);
    OperationManager::getInstance().registerOperation(Operations::copyFromGPU, copyFromGPU);
 
-   // Register deleteEdgeDeviceStruct function as a deallocateGPUMemory operation in the OperationManager
    function<void()> deallocateGPUMemory = bind(&AllEdges::deleteEdgeDeviceStruct, this);
    OperationManager::getInstance().registerOperation(Operations::deallocateGPUMemory,
                                                      deallocateGPUMemory);
-
 #endif
-
-   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
-   edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
 }
 
 AllEdges::AllEdges(int numVertices, int maxEdges)

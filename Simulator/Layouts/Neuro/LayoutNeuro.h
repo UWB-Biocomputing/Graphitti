@@ -70,6 +70,15 @@ public:
 
    BGSIZE numEndogenouslyActiveNeurons_;   ///< Number of endogenously active neurons.
 
+   /// Indices of endogenously active (starter) neurons; filled in \ref initStarterMap.
+   vector<int> endogenouslyActiveNeuronList_;
+
+   /// Indices of inhibitory neurons; filled in \ref generateVertexTypeMap.
+   vector<int> inhibitoryNeuronLayout_;
+
+   /// Indices of probed neurons for recording (HDF5 / future recorders).
+   vector<int> probedVertexList_;
+
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);
 };
@@ -81,5 +90,8 @@ template <class Archive> void LayoutNeuro::serialize(Archive &archive)
 {
    archive(cereal::virtual_base_class<Layout>(this), cereal::make_nvp("xloc", xloc_),
            cereal::make_nvp("yloc", yloc_), cereal::make_nvp("starterMap", starterMap_),
-           cereal::make_nvp("numEndogenouslyActiveNeurons", numEndogenouslyActiveNeurons_));
+           cereal::make_nvp("numEndogenouslyActiveNeurons", numEndogenouslyActiveNeurons_),
+           cereal::make_nvp("endogenouslyActiveNeuronList", endogenouslyActiveNeuronList_),
+           cereal::make_nvp("inhibitoryNeuronLayout", inhibitoryNeuronLayout_),
+           cereal::make_nvp("probedVertexList", probedVertexList_));
 }

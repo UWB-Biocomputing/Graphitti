@@ -8,6 +8,7 @@
 
 #include "AllVertices.h"
 #include "OperationManager.h"
+#include "Recorder.h"
 
 // Utility function to convert a vertexType into a string.
 // MODEL INDEPENDENT FUNCTION NMV-BEGIN {
@@ -29,12 +30,22 @@ string vertexTypeToString(vertexType t)
 // Default constructor
 AllVertices::AllVertices() : size_(0)
 {
-   // Register loadParameters function as a loadParameters operation in the Operation Manager
+   // OperationManager callbacks are registered by Layout::registerOperations() (and again
+   // after deserialization via Model::registerOperations()). Do not register here; doing so
+   // duplicates callbacks when the parent Layout also propagates registration to vertices_.
+
+   // Get a copy of the file and vertex logger to use log4cplus macros to print to debug files
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+   vertexLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));
+   vertexLogger_.setLogLevel(log4cplus::DEBUG_LOG_LEVEL);
+}
+
+void AllVertices::registerOperations()
+{
    function<void()> loadParametersFunc = std::bind(&AllVertices::loadParameters, this);
    OperationManager::getInstance().registerOperation(Operations::loadParameters,
                                                      loadParametersFunc);
 
-   // Register printParameters function as a printParameters operation in the OperationManager
    function<void()> printParametersFunc = bind(&AllVertices::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
@@ -44,41 +55,37 @@ AllVertices::AllVertices() : size_(0)
    OperationManager::getInstance().registerOperation(Operations::loadEpochInputs,
                                                      loadEpochInputsFunc);
 
-
-   // Register registerHistoryVariables function as a registerHistoryVariables operation in the OperationManager
    function<void()> registerHistoryVarsFunc = bind(&AllVertices::registerHistoryVariables, this);
    OperationManager::getInstance().registerOperation(Operations::registerHistoryVariables,
                                                      registerHistoryVarsFunc);
 
 #if defined(USE_GPU)
-   // Register allocNeuronDeviceStruct function as a allocateGPU operation in the OperationManager
    function<void()> allocateGPU = bind(&AllVertices::allocVerticesDeviceStruct, this);
    OperationManager::getInstance().registerOperation(Operations::allocateGPU, allocateGPU);
 
-   // Register AllVertices::copyToDevice function as a copyToGPU operation in the OperationManager
    function<void()> copyCPUtoGPU = bind(&AllVertices::copyToDevice, this);
    OperationManager::getInstance().registerOperation(Operations::copyToGPU, copyCPUtoGPU);
 
-   // Register copyFromGPU operation for transferring edge data from device to host
    function<void()> copyFromGPU = bind(&AllVertices::copyFromDevice, this);
    OperationManager::getInstance().registerOperation(Operations::copyFromGPU, copyFromGPU);
 
-   // Register deleteNeuronDeviceStruct function as a deallocateGPUMemory operation in the OperationManager
    function<void()> deallocateGPUMemory = bind(&AllVertices::deleteVerticesDeviceStruct, this);
    OperationManager::getInstance().registerOperation(Operations::deallocateGPUMemory,
                                                      deallocateGPUMemory);
 #endif
-
-   // Get a copy of the file and vertex logger to use log4cplus macros to print to debug files
-   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
-   vertexLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("vertex"));
-   vertexLogger_.setLogLevel(log4cplus::DEBUG_LOG_LEVEL);
 }
 
 ///  Setup the internal structure of the class (allocate memories).
 void AllVertices::setupVertices()
 {
    size_ = Simulator::getInstance().getTotalVertices();
+   vertexTypeMap_.assign(size_, vertexType::VTYPE_UNDEF);
+}
+
+void AllVertices::registerHistoryVariables()
+{
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   recorder.registerVariable("vertexTypeMap", vertexTypeMap_, Recorder::UpdatedType::CONSTANT);
 }
 
 ///  Prints out all parameters of the vertices to logging file.

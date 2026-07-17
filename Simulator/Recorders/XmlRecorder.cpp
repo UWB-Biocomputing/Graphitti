@@ -20,10 +20,15 @@ XmlRecorder::XmlRecorder()
 {
    ParameterManager::getInstance().getStringByXpath(
       "//RecorderParams/RecorderFiles/resultFileName/text()", resultFileName_);
+   registerOperations();
+   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
+}
+
+void XmlRecorder::registerOperations()
+{
    function<void()> printParametersFunc = std::bind(&XmlRecorder::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);
-   fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
 /// Create a new xml file and initialize data

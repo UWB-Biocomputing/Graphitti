@@ -51,6 +51,14 @@ public:
    /// Prints loaded parameters to logging file.
    virtual void printParameters() = 0;
 
+   /// Register OperationManager callbacks for this recorder.
+   ///
+   /// Recorder is not serialized; re-register after deserialization so printParameters
+   /// remains available alongside the rebuilt model callbacks.
+   virtual void registerOperations()
+   {
+   }
+
    /// Receives a recorded variable entity from the variable owner class
    /**
    * @brief Registers a single instance of a class derived from RecordableBase.

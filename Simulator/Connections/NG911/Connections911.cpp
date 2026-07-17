@@ -106,7 +106,7 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
 
    // Find all psaps
    for (int i = 0; i < numVertices; i++) {
-      if (layout.vertexTypeMap_[i] == vertexType::PSAP) {
+      if (layout.getVertices().vertexTypeMap_[i] == vertexType::PSAP) {
          psaps.push_back(i);
       }
    }
@@ -150,14 +150,14 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
          edges_->eraseEdge(destVertex, iEdg);
 
          // Identify all psap-less callers
-         if (layout.vertexTypeMap_[srcVertex] == vertexType::CALR) {
+         if (layout.getVertices().vertexTypeMap_[srcVertex] == vertexType::CALR) {
             callersToReroute.push_back(srcVertex);
          }
 
          // Identify all psap-less responders
-         if (layout.vertexTypeMap_[destVertex] == vertexType::LAW
-             || layout.vertexTypeMap_[destVertex] == vertexType::FIRE
-             || layout.vertexTypeMap_[destVertex] == vertexType::EMS) {
+         if (layout.getVertices().vertexTypeMap_[destVertex] == vertexType::LAW
+             || layout.getVertices().vertexTypeMap_[destVertex] == vertexType::FIRE
+             || layout.getVertices().vertexTypeMap_[destVertex] == vertexType::EMS) {
             respsToReroute.push_back(destVertex);
          }
       }
@@ -166,7 +166,7 @@ bool Connections911::erasePSAP(AllVertices &vertices, Layout &layout)
    if (changesMade) {
       // This is here so that we don't delete the vertex if we can't find any edges
       verticesErased_.push_back(randPSAP);
-      layout.vertexTypeMap_[randPSAP] = vertexType::VTYPE_UNDEF;
+      layout.getVertices().vertexTypeMap_[randPSAP] = vertexType::VTYPE_UNDEF;
    }
 
    // Failsafe
@@ -243,9 +243,9 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
 
    // Find all resps
    for (int i = 0; i < numVertices; i++) {
-      if (layout.vertexTypeMap_[i] == vertexType::LAW
-          || layout.vertexTypeMap_[i] == vertexType::FIRE
-          || layout.vertexTypeMap_[i] == vertexType::EMS) {
+      if (layout.getVertices().vertexTypeMap_[i] == vertexType::LAW
+          || layout.getVertices().vertexTypeMap_[i] == vertexType::FIRE
+          || layout.getVertices().vertexTypeMap_[i] == vertexType::EMS) {
          resps.push_back(i);
       }
    }
@@ -288,7 +288,7 @@ bool Connections911::eraseRESP(AllVertices &vertices, Layout &layout)
    if (changesMade) {
       // This is here so that we don't delete the vertex if we can't find any edges
       verticesErased_.push_back(randRESP);
-      layout.vertexTypeMap_[randRESP] = vertexType::VTYPE_UNDEF;
+      layout.getVertices().vertexTypeMap_[randRESP] = vertexType::VTYPE_UNDEF;
    }
 
    return changesMade;

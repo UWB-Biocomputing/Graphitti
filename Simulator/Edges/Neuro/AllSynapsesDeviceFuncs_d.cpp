@@ -10,6 +10,7 @@
 #include "AllDynamicSTDPSynapses.h"
 #include "AllNeuroEdges.h"
 #include "AllSTDPSynapses.h"
+#include "AllSpikingSynapses.h"
 #include "AllSynapsesDeviceFuncs.h"
 #include <vector>
 
@@ -96,7 +97,7 @@ CUDA_CALLABLE void createSpikingSynapse(AllSpikingSynapsesDeviceProperties *allE
                                         int neuronIndex, int synapseOffset, int sourceIndex,
                                         int destIndex, BGFLOAT deltaT, edgeType type)
 {
-   BGFLOAT delay;
+   BGFLOAT delay = 0.8e-3;
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
    BGSIZE iEdg = maxEdges * neuronIndex + synapseOffset;
 
@@ -112,7 +113,7 @@ CUDA_CALLABLE void createSpikingSynapse(AllSpikingSynapsesDeviceProperties *allE
    allEdgesDevice->psr_[iEdg] = 0.0;
    allEdgesDevice->type_[iEdg] = type;
 
-   allEdgesDevice->tau_[iEdg] = DEFAULT_tau;
+   allEdgesDevice->tau_[iEdg] = AllSpikingSynapses::DEFAULT_tau;
 
    BGFLOAT tau;
    switch (type) {
@@ -173,17 +174,17 @@ CUDA_CALLABLE void createDSSynapse(AllDSSynapsesDeviceProperties *allEdgesDevice
 
    allEdgesDevice->psr_[iEdg] = 0.0;
    allEdgesDevice->r_[iEdg] = 1.0;
-   allEdgesDevice->u_[iEdg] = 0.4;   // DEFAULT_U
+   allEdgesDevice->u_[iEdg] = AllSpikingSynapses::DEFAULT_U;
    allEdgesDevice->lastSpike_[iEdg] = ULONG_MAX;
    allEdgesDevice->type_[iEdg] = type;
 
-   allEdgesDevice->U_[iEdg] = DEFAULT_U;
-   allEdgesDevice->tau_[iEdg] = DEFAULT_tau;
+   allEdgesDevice->U_[iEdg] = AllSpikingSynapses::DEFAULT_U;
+   allEdgesDevice->tau_[iEdg] = AllSpikingSynapses::DEFAULT_tau;
 
-   BGFLOAT U;
-   BGFLOAT D;
-   BGFLOAT F;
-   BGFLOAT tau;
+   BGFLOAT U = AllSpikingSynapses::DEFAULT_U;
+   BGFLOAT D = 0.144;
+   BGFLOAT F = 0.06;
+   BGFLOAT tau = AllSpikingSynapses::DEFAULT_tau;
    switch (type) {
       case edgeType::II:
          U = 0.32;
@@ -214,6 +215,7 @@ CUDA_CALLABLE void createDSSynapse(AllDSSynapsesDeviceProperties *allEdgesDevice
          delay = 1.5e-3;
          break;
       default:
+         assert(false && "Unexpected edgeType in createDSSynapse");
          break;
    }
 
@@ -243,7 +245,7 @@ CUDA_CALLABLE void createSTDPSynapse(AllSTDPSynapsesDeviceProperties *allEdgesDe
                                      int neuronIndex, int synapseOffset, int sourceIndex,
                                      int destIndex, BGFLOAT deltaT, edgeType type)
 {
-   BGFLOAT delay;
+   BGFLOAT delay = 0.8e-3;
    BGSIZE maxEdges = allEdgesDevice->maxEdgesPerVertex_;
    BGSIZE iEdg = maxEdges * neuronIndex + synapseOffset;
 
@@ -259,7 +261,7 @@ CUDA_CALLABLE void createSTDPSynapse(AllSTDPSynapsesDeviceProperties *allEdgesDe
    allEdgesDevice->psr_[iEdg] = 0.0;
    allEdgesDevice->type_[iEdg] = type;
 
-   allEdgesDevice->tau_[iEdg] = DEFAULT_tau;
+   allEdgesDevice->tau_[iEdg] = AllSpikingSynapses::DEFAULT_tau;
 
    BGFLOAT tau;
    switch (type) {
@@ -341,17 +343,17 @@ CUDA_CALLABLE void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperti
 
    allEdgesDevice->psr_[iEdg] = 0.0;
    allEdgesDevice->r_[iEdg] = 1.0;
-   allEdgesDevice->u_[iEdg] = 0.4;   // DEFAULT_U
+   allEdgesDevice->u_[iEdg] = AllSpikingSynapses::DEFAULT_U;
    allEdgesDevice->lastSpike_[iEdg] = ULONG_MAX;
    allEdgesDevice->type_[iEdg] = type;
 
-   allEdgesDevice->U_[iEdg] = DEFAULT_U;
-   allEdgesDevice->tau_[iEdg] = DEFAULT_tau;
+   allEdgesDevice->U_[iEdg] = AllSpikingSynapses::DEFAULT_U;
+   allEdgesDevice->tau_[iEdg] = AllSpikingSynapses::DEFAULT_tau;
 
-   BGFLOAT U;
-   BGFLOAT D;
-   BGFLOAT F;
-   BGFLOAT tau;
+   BGFLOAT U = AllSpikingSynapses::DEFAULT_U;
+   BGFLOAT D = 0.144;
+   BGFLOAT F = 0.06;
+   BGFLOAT tau = AllSpikingSynapses::DEFAULT_tau;
    switch (type) {
       case edgeType::II:
          U = 0.32;
@@ -382,6 +384,7 @@ CUDA_CALLABLE void createDynamicSTDPSynapse(AllDynamicSTDPSynapsesDeviceProperti
          delay = 1.5e-3;
          break;
       default:
+         assert(false && "Unexpected edgeType in createDynamicSTDPSynapse");
          break;
    }
 

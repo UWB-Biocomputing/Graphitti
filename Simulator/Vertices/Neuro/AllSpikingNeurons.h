@@ -161,9 +161,12 @@ CEREAL_REGISTER_TYPE(AllSpikingNeurons);
 ///  Cereal serialization method
 template <class Archive> void AllSpikingNeurons::serialize(Archive &archive)
 {
-   archive(cereal::base_class<AllVertices>(this),
-           cereal::make_nvp("hasFired", hasFired_.getHostVector()),
-           cereal::make_nvp("vertexEvents", vertexEvents_),
-           cereal::make_nvp("summationPoints", summationPoints_.getHostVector()),
-           cereal::make_nvp("fAllowBackPropagation", fAllowBackPropagation_));
+   // See AllIFNeurons::serialize(): archive DeviceVector members by reference, not via
+   // getHostVector(), so deserialization restores live neuron state instead of a copy.
+   archive(
+      cereal::base_class<AllVertices>(this),
+      cereal::make_nvp("hasFired", static_cast<std::vector<bool> &>(hasFired_)),
+      cereal::make_nvp("vertexEvents", vertexEvents_),
+      cereal::make_nvp("summationPoints", static_cast<std::vector<BGFLOAT> &>(summationPoints_)),
+      cereal::make_nvp("fAllowBackPropagation", fAllowBackPropagation_));
 }

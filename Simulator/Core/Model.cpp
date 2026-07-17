@@ -71,6 +71,21 @@ void Model::saveResults()
    }
 }
 
+void Model::registerOperations()
+{
+   // Cascade through the model subgraph. Each level re-registers its own callbacks
+   // and delegates to nested unique_ptr children (edges_, vertices_, etc.).
+   if (connections_) {
+      connections_->registerOperations();
+   }
+   if (layout_) {
+      layout_->registerOperations();
+   }
+   if (recorder_) {
+      recorder_->registerOperations();
+   }
+}
+
 /// Creates all the vertices and generates data for them.
 // todo: this is going to go away
 void Model::createAllVertices()

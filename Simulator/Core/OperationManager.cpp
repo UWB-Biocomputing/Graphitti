@@ -57,6 +57,11 @@ void OperationManager::registerOperation(const Operations &operation,
    }
 }
 
+void OperationManager::clearRegisteredOperations()
+{
+   functionList_.clear();
+}
+
 /// Takes in a operation type and invokes all registered functions that are classified as that operation type.
 void OperationManager::executeOperation(const Operations &operation) const
 {

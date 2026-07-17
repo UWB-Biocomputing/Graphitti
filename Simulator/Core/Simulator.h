@@ -37,6 +37,12 @@ public:
 
    void printParameters() const;   /// Prints loaded parameters to logging file.
 
+   /// Register OperationManager callbacks owned by the Simulator singleton.
+   ///
+   /// Extracted from the constructor so callbacks can be re-registered after
+   /// deserialization without reconstructing the Simulator instance.
+   void registerOperations();
+
    void reset();   /// Reset simulation objects.
 
    void simulate();

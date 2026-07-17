@@ -26,6 +26,7 @@
 #include "Serializer.h"
 #include "ConnGrowth.h"
 #include "GPUModel.h"
+#include "OperationManager.h"
 #include <fstream>
 
 // About CEREAL_XML_STRING_VALUE
@@ -42,6 +43,7 @@
 bool Serializer::deserialize()
 {
    Simulator &simulator = Simulator::getInstance();
+   OperationManager &opsManager = OperationManager::getInstance();
 
    // We can deserialize from a variety of archive file formats. Below, comment
    // out all but the line that is compatible with the desired format.
@@ -64,10 +66,19 @@ bool Serializer::deserialize()
       return false;
    }
 
+   // Deserialization rebuilds Connections/Layout subgraphs (and nested edges_/vertices_
+   // unique_ptrs). Constructors register OperationManager callbacks via std::bind(this, ...),
+   // but destroyed objects leave stale entries that segfault on the next executeOperation().
+   // Clear the callback list and re-register from the live Simulator/Model objects only.
+   opsManager.clearRegisteredOperations();
+   simulator.registerOperations();
+   simulator.getModel().registerOperations();
 
 #if defined(USE_GPU)
+   // setupSim() already allocated GPU memory for the pre-checkpoint state. Rebuild device
+   // buffers so they match the deserialized host Connections/Layout subgraph.
    GPUModel &gpuModel = static_cast<GPUModel &>(simulator.getModel());
-   gpuModel.copyCPUtoGPU();
+   gpuModel.reinitializeDeviceAfterDeserialize();
 #endif   // USE_GPU
 
    return true;
