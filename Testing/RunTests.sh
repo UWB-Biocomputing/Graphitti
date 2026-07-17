@@ -110,6 +110,32 @@ function verify_outputs() {
     done
 }
 
+# This function runs the growth-to-STDP integration regression test. It is a dependent,
+# sequential pipeline (the STDP run consumes the growth run's serialized checkpoint), so it
+# runs after the parallel single-simulation tests rather than alongside them.
+function run_growth_to_stdp_test() {
+    local checkpoint=${TEST_OUT_DIR}/test-growth-stdp-checkpoint.xml
+    local stdp_out=${TEST_OUT_DIR}/test-growth-stdp-out.xml
+    local good_out=${GOOD_OUT_DIR}/test-growth-stdp-out.xml
+
+    echo -e "${BLUE}[ RUN TEST ]${NC} Growth-to-STDP: serializing grown network"
+    ${GRAPHITTI} -c ${CONFIG_DIR}/test-growth-stdp-source.xml -s ${checkpoint} > /dev/null
+
+    echo -e "${BLUE}[ RUN TEST ]${NC} Growth-to-STDP: running STDP from grown network"
+    ${GRAPHITTI} -c ${CONFIG_DIR}/test-growth-stdp.xml -d ${checkpoint} > /dev/null
+
+    echo -e "${BLUE}[--------]${NC}Verifying growth-to-STDP simulation output...${NC}"
+    if (cmp -s ${stdp_out} ${good_out}); then
+        echo -e "${GREEN}[        ]${NC} Output file: ${stdp_out}"
+        echo -e "${GREEN}[  AND   ]${NC} Good output: ${good_out}"
+        echo -e "${GREEN}[ PASSED ]${NC} Are equal"
+    else
+        echo -e "${RED}[        ]${NC} Output file: ${stdp_out}"
+        echo -e "${RED}[  AND   ]${NC} Good output: ${good_out}"
+        echo -e "${RED}[ FAILED ]${NC} Are NOT equal"
+    fi
+}
+
 ############################################################################################
 #                                    SCRIPT STARTS HERE                                    #
 ############################################################################################
@@ -153,3 +179,9 @@ wait
 echo
 echo -e "${BLUE}[========]${NC} Start verification"
 verify_outputs
+
+echo
+echo -e "${BLUE}============================================================================${NC}"
+echo -e "${BLUE}|                     GROWTH-TO-STDP INTEGRATION TEST                      |${NC}"
+echo -e "${BLUE}============================================================================${NC}"
+run_growth_to_stdp_test

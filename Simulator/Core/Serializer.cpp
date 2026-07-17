@@ -24,9 +24,14 @@
  */
 
 #include "Serializer.h"
+#include "AllEdges.h"
 #include "ConnGrowth.h"
+#include "Connections.h"
+#include "Factory.h"
 #include "GPUModel.h"
+#include "Model.h"
 #include "OperationManager.h"
+#include "ParameterManager.h"
 #include <fstream>
 
 // About CEREAL_XML_STRING_VALUE
@@ -35,6 +40,67 @@
 #define CEREAL_XML_STRING_VALUE "Graphitti"
 #include <cereal/archives/binary.hpp>
 #include <cereal/archives/xml.hpp>
+
+namespace {
+
+   /// Imports the grown network topology from a deserialized ConnGrowth checkpoint into a
+   /// freshly constructed Connections object of the type requested by the current run's
+   /// configuration file (for example ConnStatic with AllSTDPSynapses).
+   ///
+   /// This enables the output network of a growth simulation to be used as the starting
+   /// point ("input") for a subsequent STDP simulation: only the edge source, destination,
+   /// weight, and type are carried over. The restored vertices/layout and global simulation
+   /// state (RNG, simulation step) are left untouched.
+   ///
+   /// @param connectionClassName  Connections class named in the current configuration file.
+   void importGrowthTopology(const string &connectionClassName)
+   {
+      Simulator &simulator = Simulator::getInstance();
+      Model &model = simulator.getModel();
+
+      // Edges grown during the checkpointed growth simulation (still owned by the model).
+      AllEdges &grownEdges = model.getConnections().getEdges();
+
+      // Build the Connections/Edges objects requested by the current configuration file.
+      unique_ptr<Connections> importedConnections
+         = Factory<Connections>::getInstance().createType(connectionClassName);
+      if (importedConnections == nullptr) {
+         throw runtime_error("Deserialization topology import: unknown Connections class '"
+                             + connectionClassName + "'");
+      }
+
+      AllEdges &importedEdges = importedConnections->getEdges();
+      importedEdges.setupEdges();
+      // Populate per-edge parameters (e.g. STDP constants) from the configuration file so that
+      // addEdge()/createEdge() initialize the new edges with the correct values.
+      importedEdges.loadParameters();
+
+      BGFLOAT deltaT = simulator.getDeltaT();
+      BGSIZE importedCount = 0;
+      for (BGSIZE iEdg = 0; iEdg < grownEdges.inUse_.size(); iEdg++) {
+         if (grownEdges.inUse_[iEdg] == 0) {
+            continue;
+         }
+         int srcVertex = grownEdges.sourceVertexIndex_[iEdg];
+         int destVertex = grownEdges.destVertexIndex_[iEdg];
+         edgeType type = grownEdges.type_[iEdg];
+         BGSIZE newEdg = importedEdges.addEdge(type, srcVertex, destVertex, deltaT);
+         importedEdges.W_[newEdg] = grownEdges.W_[iEdg];
+         ++importedCount;
+      }
+
+      // Install the new connection subgraph (destroys the checkpoint's ConnGrowth) and rebuild
+      // its edge index map from the imported edges.
+      model.setConnections(std::move(importedConnections));
+      model.getConnections().createEdgeIndexMap();
+
+      log4cplus::Logger consoleLogger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("console"));
+      LOG4CPLUS_INFO(consoleLogger, "Imported " << importedCount << " grown edges into a "
+                                                << connectionClassName
+                                                << " network for the current simulation.");
+   }
+
+}   // namespace
 
 /// Deserializes all member variables of the
 /// Connections, Layout, Edges, Vertices, and associated helper classes.
@@ -64,6 +130,18 @@ bool Serializer::deserialize()
    if (!processArchive(archive, simulator)) {
       cerr << "Failed to deserialize" << endl;
       return false;
+   }
+
+   // If a growth checkpoint is being loaded into a non-growth (e.g. STDP) configuration,
+   // carry over only the grown topology rather than resuming the growth model. This is what
+   // enables using a growth simulation's output network as the input for an STDP simulation.
+   string connectionClassName;
+   ParameterManager::getInstance().getStringByXpath("//ConnectionsParams/@class",
+                                                    connectionClassName);
+   bool checkpointIsGrowth
+      = dynamic_cast<ConnGrowth *>(&simulator.getModel().getConnections()) != nullptr;
+   if (checkpointIsGrowth && connectionClassName != "ConnGrowth") {
+      importGrowthTopology(connectionClassName);
    }
 
    // Deserialization rebuilds Connections/Layout subgraphs (and nested edges_/vertices_
