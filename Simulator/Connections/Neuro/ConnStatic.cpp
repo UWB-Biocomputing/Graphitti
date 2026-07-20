@@ -103,6 +103,11 @@ void ConnStatic::registerHistoryVariables()
 
 bool ConnStatic::updateConnections()
 {
+   // GPU STDP is not implemented, so this only uses the CPU edge data.
+   WCurrentEpoch_.startNewEpoch();
+   sourceVertexIndexCurrentEpoch_.startNewEpoch();
+   destVertexIndexCurrentEpoch_.startNewEpoch();
+
    AllEdges &edges = getEdges();
    const vector<unsigned char> &inUse = edges.getInUse();
    const vector<BGFLOAT> &weights = edges.getWeights();
@@ -110,7 +115,7 @@ bool ConnStatic::updateConnections()
    const vector<int> &destVertices = edges.getDestVertexIndices();
 
    // Copy one value per active edge into parallel recorder vectors.
-   // weight/source/destination entries at the same index describe the same edge.
+   // Entries at the same index describe the same edge.
    for (BGSIZE iEdg = 0; iEdg < inUse.size(); iEdg++) {
       if (inUse[iEdg]) {
          WCurrentEpoch_.push_back(weights[iEdg]);
