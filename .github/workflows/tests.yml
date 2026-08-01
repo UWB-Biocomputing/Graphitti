@@ -101,3 +101,23 @@ jobs:
         run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-connected-long.xml
       - name: verify test-medium-connected-long
         run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-connected-long-out.xml ../Testing/RegressionTesting/TestOutput/test-medium-connected-long-out.xml
+
+      # Growth-to-STDP integration: serialize a grown network, then deserialize it as the
+      # input for an STDP simulation and verify the STDP output. This is a sequential,
+      # dependent pipeline (the STDP run consumes the growth run's checkpoint), so it cannot
+      # be part of the parallel single-simulation tests above.
+      # The unit tests below check that the import mechanism itself behaves (the STDP run keeps
+      # its own classes and receives every grown edge); the regression run after them checks that
+      # the resulting simulation output has not changed.
+      - id: gs_unit
+        name: run growth-to-STDP unit tests
+        run: ./run_growth_stdp_test.sh
+
+      - id: gs_source
+        name: run growth source for growth-to-STDP
+        run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-growth-stdp-source.xml -s ../Testing/RegressionTesting/TestOutput/test-growth-stdp-checkpoint.xml
+      - id: gs_stdp
+        name: run STDP from grown network
+        run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-growth-stdp.xml -d ../Testing/RegressionTesting/TestOutput/test-growth-stdp-checkpoint.xml
+      - name: verify growth-to-STDP
+        run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-growth-stdp-out.xml ../Testing/RegressionTesting/TestOutput/test-growth-stdp-out.xml

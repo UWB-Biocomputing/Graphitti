@@ -535,6 +535,30 @@ target_link_libraries(serialFirstHalfTest combinedLib)
 target_link_libraries(serialSecondHalfTest stdc++fs)
 target_link_libraries(serialSecondHalfTest combinedLib)
 
+#------- GROWTH-TO-STDP INTEGRATION TESTS --------------------
+# Like the serialization tests above, each of these runs a simulation from start to finish and so
+# needs its own executable. growthStdpImportTest consumes the checkpoint written by
+# growthStdpSourceTest, so they must run in that order; run_growth_stdp_test.sh sequences them.
+
+add_executable(growthStdpSourceTest
+        Testing/RunTests.cpp
+        Testing/UnitTesting/GrowthToStdpSourceTest.cpp)
+
+add_executable(growthStdpImportTest
+        Testing/RunTests.cpp
+        Testing/UnitTesting/GrowthToStdpImportTest.cpp)
+
+# Links the Googletest framework to each of the growth-to-STDP test executables.
+target_link_libraries(growthStdpSourceTest gtest gtest_main)
+target_link_libraries(growthStdpImportTest gtest gtest_main)
+
+# Link the combined library and filesystem support to the respective test executables.
+target_link_libraries(growthStdpSourceTest stdc++fs)
+target_link_libraries(growthStdpSourceTest combinedLib)
+
+target_link_libraries(growthStdpImportTest stdc++fs)
+target_link_libraries(growthStdpImportTest combinedLib)
+
 # commenting out serialFileAccessTest until issue-754 is resolved
 # add_executable(serialFileAccessTest
 #        Testing/RunTests.cpp
