@@ -106,6 +106,13 @@ jobs:
       # input for an STDP simulation and verify the STDP output. This is a sequential,
       # dependent pipeline (the STDP run consumes the growth run's checkpoint), so it cannot
       # be part of the parallel single-simulation tests above.
+      # The unit tests below check that the import mechanism itself behaves (the STDP run keeps
+      # its own classes and receives every grown edge); the regression run after them checks that
+      # the resulting simulation output has not changed.
+      - id: gs_unit
+        name: run growth-to-STDP unit tests
+        run: ./run_growth_stdp_test.sh
+
       - id: gs_source
         name: run growth source for growth-to-STDP
         run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-growth-stdp-source.xml -s ../Testing/RegressionTesting/TestOutput/test-growth-stdp-checkpoint.xml

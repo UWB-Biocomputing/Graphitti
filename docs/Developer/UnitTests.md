@@ -61,5 +61,29 @@ If the growth model, the STDP model, or the topology-import path changes in a wa
 grown network or how it is imported, this test's output diverges from the known-good file and the
 test fails.
 
+### Growth-to-STDP Unit Tests
+
+The regression test above tells you *that* the simulation output changed; the unit tests tell you
+*whether the import mechanism itself* is still correct. They run the same two-stage pipeline, but
+both stages serialize their final state and the tests assert on the checkpoints:
+
+- `Testing/UnitTesting/GrowthToStdpSourceTest.cpp` — runs the growth configuration with `-s` and
+  checks that the checkpoint holds a `ConnGrowth` network with at least one edge, so that the
+  second stage has something to import.
+- `Testing/UnitTesting/GrowthToStdpImportTest.cpp` — runs the STDP configuration with `-d` on that
+  checkpoint and `-s` on a new one, then checks that the resulting network uses the classes named
+  in the STDP configuration file (`ConnStatic` and `AllSTDPSynapses`) rather than the checkpoint's
+  own classes, and that it contains exactly as many edges as the growth run produced.
+
+Both files share `Testing/UnitTesting/GrowthToStdpHelper.cpp`, which pulls those fields out of a
+Cereal checkpoint.
+
+As with the serialization tests, each stage is a separate executable: a test runs a simulation from
+start to finish, and running two simulations against the same singleton instances causes a
+segmentation fault. The second stage consumes the first stage's checkpoint, so they must run in
+order. From the `build` directory:
+
+    ./run_growth_stdp_test.sh
+
 ---------
 [<< Go back to the Graphitti home page](../index.md)
