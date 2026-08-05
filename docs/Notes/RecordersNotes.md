@@ -35,7 +35,7 @@ It also defines two update frequencies:
 - `CONSTANT`: captured once at final save time
 - `DYNAMIC`: captured once per epoch during simulation
 
-The base class itself does not know anything about neuron spikes, NG911 calls, layouts, or connections. It only manages a file name, a logger, and the abstract lifecycle above.
+The base class itself does not directly implement recorder logic for neuron spikes, NG911 calls, layouts, or connections. However, the `Recorder` interface also defines the `multipleTypes` type alias and declares `getStarterNeuronMatrix(VectorMatrix &matrix, const vector<bool> &starterMap)`.
 
 ## Active Recorder Creation and Use
 
@@ -74,7 +74,7 @@ The current lifecycle is:
 8. `Model::saveResults()` calls `recorder_->saveSimData()`.
 9. After `finish()`, `Core::runSimulation()` calls `simulator.getModel().getRecorder().term()`.
 
-This means the recorder is initialized before vertex creation and connection setup, dynamic data are compiled once per epoch, final output is produced after the run, and the recorder is terminated explicitly at shutdown.
+This means the recorder is initialized after vertex setup, edge setup, and layout setup, but before concrete vertex creation and connection setup. Dynamic data are compiled once per epoch, final output is produced after the run, and the recorder is terminated explicitly at shutdown.
 
 ## Recorder Lifecycle and Call Flow
 
