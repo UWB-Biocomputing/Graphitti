@@ -1,13 +1,25 @@
 <?xml version="1.0" standalone="no"?>
 <Matrix name="Neuron_0" type="complete" rows="1" columns="5" multiplier="1.0">
-   1965 3127 3780 4684 8630 
+   1965 3127 3780 4684 8630
 </Matrix>
 <Matrix name="vertexTypeMap" type="complete" rows="1" columns="4" multiplier="1.0">
-   2 1 2 2 
+   2 1 2 2
 </Matrix>
 <Matrix name="x_Location" type="complete" rows="1" columns="4" multiplier="1.0">
-   0 1 0 1 
+   0 1 0 1
 </Matrix>
 <Matrix name="y_Location" type="complete" rows="1" columns="4" multiplier="1.0">
-   0 0 1 1 
+   0 0 1 1
+</Matrix>
+<Matrix name="radii" type="complete" rows="1" columns="4" multiplier="1.0">
+   0.3999 0.4001 0.4001 0.4001
+</Matrix>
+<Matrix name="rates" type="complete" rows="1" columns="4" multiplier="1.0">
+   5 0 0 0
+</Matrix>
+<Matrix name="outgrowth" type="complete" rows="1" columns="4" multiplier="1.0">
+   -0.999888 0.995055 0.995055 0.995055
+</Matrix>
+<Matrix name="deltaR" type="complete" rows="1" columns="4" multiplier="1.0">
+   -9.99888e-05 9.95055e-05 9.95055e-05 9.95055e-05
 </Matrix>
