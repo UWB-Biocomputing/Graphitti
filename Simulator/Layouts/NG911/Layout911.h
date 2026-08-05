@@ -86,6 +86,14 @@ public:
    /// @return The distance between the given vertex and the (x, y) coordinates of a point
    double getDistance(int vertexId, double x, double y);
 
+   /// Caller vertex count (set during \ref generateVertexTypeMap).
+   BGSIZE numCallerVertices_ = 0;
+
+   /// Vertex indices grouped by NG911 role; filled in \ref generateVertexTypeMap.
+   vector<int> callerVertexList_;
+   vector<int> psapVertexList_;
+   vector<int> responderVertexList_;
+
    DeviceVector<BGFLOAT> xloc_;   ///< Layout x coordinates.
    DeviceVector<BGFLOAT> yloc_;   ///< Layout y coordinates.
 

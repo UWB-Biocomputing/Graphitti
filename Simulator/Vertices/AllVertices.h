@@ -26,8 +26,9 @@ using namespace std;
 #include "AllEdges.h"
 #include "BGTypes.h"
 #include "Core/EdgeIndexMap.h"
-#include "Layout.h"
+#include "RecordableVector.h"
 #include "Simulator.h"
+#include "VertexType.h"
 #include <iostream>
 #include <log4cplus/loggingmacros.h>
 // cereal
@@ -88,10 +89,15 @@ public:
    /// Helper function for recorder to register spike history variables for all vertices.
    /// Option 1: Register vertex information in vertexEvents_ one by one.
    /// Option 2: Register a vector of EventBuffer variables.
-   virtual void registerHistoryVariables() = 0;
+   /// Base implementation registers \c vertexTypeMap_; subclasses should call
+   /// \c AllVertices::registerHistoryVariables() first when overriding.
+   virtual void registerHistoryVariables();
 
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);
+
+   /// Excitatory / inhibitory (neuro) or NG911 role per vertex index.
+   RecordableVector<vertexType> vertexTypeMap_;
 
 protected:
    ///  Total number of vertices.
@@ -179,5 +185,5 @@ struct AllVerticesDeviceProperties {};
 
 template <class Archive> void AllVertices::serialize(Archive &archive)
 {
-   archive(cereal::make_nvp("size", size_));
+   archive(cereal::make_nvp("size", size_), cereal::make_nvp("vertexTypeMap", vertexTypeMap_));
 }

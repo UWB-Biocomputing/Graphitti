@@ -89,6 +89,7 @@ lib/
 
 # log4cplus logging files
 build/Output/Debug/*.txt
+build/Output/Debug/*.txt*
 
 # Result files
 build/Output/*.xml

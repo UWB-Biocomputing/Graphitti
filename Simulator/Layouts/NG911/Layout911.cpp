@@ -118,12 +118,34 @@ void Layout911::generateVertexTypeMap()
    // Add all vertices
    GraphManager<NG911VertexProperties>::VertexIterator vi, vi_end;
    GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
+   callerVertexList_.clear();
+   psapVertexList_.clear();
+   responderVertexList_.clear();
+
    LOG4CPLUS_DEBUG(fileLogger_, "\nvertices in graph: " << gm.numVertices());
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
-      vertexTypeMap_[*vi] = vTypeMap[gm[*vi].type];
+      vertexType vt = vTypeMap[gm[*vi].type];
+      getVertices().vertexTypeMap_[*vi] = vt;
       vTypeCount[gm[*vi].type] += 1;
+
+      switch (vt) {
+         case vertexType::CALR:
+            callerVertexList_.push_back(*vi);
+            break;
+         case vertexType::PSAP:
+            psapVertexList_.push_back(*vi);
+            break;
+         case vertexType::LAW:
+         case vertexType::FIRE:
+         case vertexType::EMS:
+            responderVertexList_.push_back(*vi);
+            break;
+         default:
+            break;
+      }
    }
+   numCallerVertices_ = static_cast<BGSIZE>(callerVertexList_.size());
 
    LOG4CPLUS_DEBUG(fileLogger_, "\nVERTEX TYPE MAP"
                                    << endl
@@ -140,29 +162,24 @@ void Layout911::generateVertexTypeMap()
 // Returns the type of synapse at the given coordinates
 edgeType Layout911::edgType(int srcVertex, int destVertex)
 {
-   if (vertexTypeMap_[srcVertex] == vertexType::CALR
-       && vertexTypeMap_[destVertex] == vertexType::PSAP)
+   auto &vtypes = getVertices().vertexTypeMap_;
+   if (vtypes[srcVertex] == vertexType::CALR && vtypes[destVertex] == vertexType::PSAP)
       return edgeType::CP;
-   else if (vertexTypeMap_[srcVertex] == vertexType::PSAP
-            && (vertexTypeMap_[destVertex] == vertexType::LAW
-                || vertexTypeMap_[destVertex] == vertexType::FIRE
-                || vertexTypeMap_[destVertex] == vertexType::EMS))
+   else if (vtypes[srcVertex] == vertexType::PSAP
+            && (vtypes[destVertex] == vertexType::LAW || vtypes[destVertex] == vertexType::FIRE
+                || vtypes[destVertex] == vertexType::EMS))
       return edgeType::PR;
-   else if (vertexTypeMap_[srcVertex] == vertexType::PSAP
-            && vertexTypeMap_[destVertex] == vertexType::CALR)
+   else if (vtypes[srcVertex] == vertexType::PSAP && vtypes[destVertex] == vertexType::CALR)
       return edgeType::PC;
-   else if (vertexTypeMap_[srcVertex] == vertexType::PSAP
-            && vertexTypeMap_[destVertex] == vertexType::PSAP)
+   else if (vtypes[srcVertex] == vertexType::PSAP && vtypes[destVertex] == vertexType::PSAP)
       return edgeType::PP;
-   else if ((vertexTypeMap_[srcVertex] == vertexType::LAW
-             || vertexTypeMap_[destVertex] == vertexType::FIRE
-             || vertexTypeMap_[destVertex] == vertexType::EMS)
-            && vertexTypeMap_[destVertex] == vertexType::PSAP)
+   else if ((vtypes[srcVertex] == vertexType::LAW || vtypes[srcVertex] == vertexType::FIRE
+             || vtypes[srcVertex] == vertexType::EMS)
+            && vtypes[destVertex] == vertexType::PSAP)
       return edgeType::RP;
-   else if ((vertexTypeMap_[srcVertex] == vertexType::LAW
-             || vertexTypeMap_[destVertex] == vertexType::FIRE
-             || vertexTypeMap_[destVertex] == vertexType::EMS)
-            && vertexTypeMap_[destVertex] == vertexType::CALR)
+   else if ((vtypes[srcVertex] == vertexType::LAW || vtypes[srcVertex] == vertexType::FIRE
+             || vtypes[srcVertex] == vertexType::EMS)
+            && vtypes[destVertex] == vertexType::CALR)
       return edgeType::RC;
    else
       return edgeType::ETYPE_UNDEF;
