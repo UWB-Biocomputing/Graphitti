@@ -59,6 +59,30 @@ public:
    ///  Populate a edge index map.
    virtual void createEdgeIndexMap(EdgeIndexMap &edgeIndexMap);
 
+   /// Get array of source vertex indices.
+   const vector<int> &getSourceVertexIndices() const
+   {
+      return sourceVertexIndex_;
+   }
+
+   /// Get array of destination vertex indices.
+   const vector<int> &getDestVertexIndices() const
+   {
+      return destVertexIndex_;
+   }
+
+   /// Get array of edge weights.
+   const vector<BGFLOAT> &getWeights() const
+   {
+      return W_;
+   }
+
+   /// Get array of active edge flags.
+   const vector<unsigned char> &getInUse() const
+   {
+      return inUse_;
+   }
+
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);
 

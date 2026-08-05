@@ -194,3 +194,9 @@
 <Matrix name="vertexTypeMap" type="complete" rows="1" columns="11" multiplier="1.0">
    4 5 5 5 7 7 7 7 6 6 3 
 </Matrix>
+<Matrix name="x_Location" type="complete" rows="1" columns="11" multiplier="1.0">
+   -122.329 -122.355 -122.38 -122.284 -122.335 -122.337 -122.317 -122.362 -122.309 -122.355 0 
+</Matrix>
+<Matrix name="y_Location" type="complete" rows="1" columns="11" multiplier="1.0">
+   47.6043 47.6821 47.5608 47.6686 47.7029 47.6161 47.6152 47.536 47.5719 47.6821 0 
+</Matrix>
