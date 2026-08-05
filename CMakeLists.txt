@@ -484,6 +484,7 @@ add_executable(tests
         Testing/UnitTesting/OperationManagerTestingClass.h
         Testing/UnitTesting/VerticesFactoryTests.cpp
         Testing/UnitTesting/ConnectionsFactoryTests.cpp
+        Testing/UnitTesting/ConnStaticTests.cpp
         Testing/UnitTesting/EdgesFactoryTests.cpp
         Testing/UnitTesting/LayoutFactoryTests.cpp
         Testing/UnitTesting/RecorderFactoryTests.cpp

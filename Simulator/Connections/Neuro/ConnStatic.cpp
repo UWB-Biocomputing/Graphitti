@@ -93,11 +93,36 @@ void ConnStatic::printParameters() const
 void ConnStatic::registerHistoryVariables()
 {
    // Register the following variables to be recorded
-   // Note: There may be potential duplicate weight, source, destination vertices
    Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
    recorder.registerVariable("weight", WCurrentEpoch_, Recorder::UpdatedType::DYNAMIC);
    recorder.registerVariable("sourceVertex", sourceVertexIndexCurrentEpoch_,
                              Recorder::UpdatedType::DYNAMIC);
    recorder.registerVariable("destinationVertex", destVertexIndexCurrentEpoch_,
                              Recorder::UpdatedType::DYNAMIC);
+}
+
+bool ConnStatic::updateConnections()
+{
+   // GPU STDP is not implemented, so this only uses the CPU edge data.
+   WCurrentEpoch_.startNewEpoch();
+   sourceVertexIndexCurrentEpoch_.startNewEpoch();
+   destVertexIndexCurrentEpoch_.startNewEpoch();
+
+   AllEdges &edges = getEdges();
+   const vector<unsigned char> &inUse = edges.getInUse();
+   const vector<BGFLOAT> &weights = edges.getWeights();
+   const vector<int> &sourceVertices = edges.getSourceVertexIndices();
+   const vector<int> &destVertices = edges.getDestVertexIndices();
+
+   // Copy one value per active edge into parallel recorder vectors.
+   // Entries at the same index describe the same edge.
+   for (BGSIZE iEdg = 0; iEdg < inUse.size(); iEdg++) {
+      if (inUse[iEdg]) {
+         WCurrentEpoch_.push_back(weights[iEdg]);
+         sourceVertexIndexCurrentEpoch_.push_back(sourceVertices[iEdg]);
+         destVertexIndexCurrentEpoch_.push_back(destVertices[iEdg]);
+      }
+   }
+
+   return false;
 }
