@@ -6,7 +6,6 @@
  *  @brief Globally available functions/variables and default parameter values.
  */
 #include "Global.h"
-#include "MTRand.h"
 #include "Norm.h"
 
 // Debugging log data and routines
@@ -23,9 +22,9 @@ int g_debug_mask
 ///  @param  width   width of the two-dimensional array
 ///  @param  height  height of the two-dimensional array
 ///  @return string with the converted indexes and square brackets surrounding them.
-string index2dToString(int i, int width, int height)
+std::string index2dToString(int i, int width, int height)
 {
-   stringstream ss;
+   std::stringstream ss;
    ss << "[" << i % width << "][" << i / height << "]";
    return ss.str();
 }
@@ -34,9 +33,9 @@ string index2dToString(int i, int width, int height)
 ///  @param  x   x coordinate.
 ///  @param  y   y coordinate.
 ///  @return returns the given coordinates surrounded by square brackets.
-string coordToString(int x, int y)
+std::string coordToString(int x, int y)
 {
-   stringstream ss;
+   std::stringstream ss;
    ss << "[" << x << "][" << y << "]";
    return ss.str();
 }
@@ -46,9 +45,9 @@ string coordToString(int x, int y)
 ///  @param  y   y coordinate.
 ///  @param  z   z coordinate.
 ///  @return returns the given coordinates surrounded by square brackets.
-string coordToString(int x, int y, int z)
+std::string coordToString(int x, int y, int z)
 {
-   stringstream ss;
+   std::stringstream ss;
    ss << "[" << x << "][" << y << "][" << z << "]";
    return ss.str();
 }
@@ -62,10 +61,10 @@ int g_deviceId = 0;
 MTRand initRNG;
 
 // A normalized random number generator.
-unique_ptr<MTRand> noiseRNG;
+std::unique_ptr<MTRand> noiseRNG;
 
 //		simulation vars
-uint64_t g_simulationStep = 0;
+std::uint64_t g_simulationStep = 0;
 
 //const BGFLOAT g_synapseStrengthAdjustmentConstant = 1.0e-8;
 
@@ -115,8 +114,3 @@ void printPerformanceMetrics(const float total_time, int steps)
    cout << "t_gpu_calcSummation: " << t_gpu_calcSummation / steps << " ms/epoch" << endl;
 }
 #endif   // PERFORMANCE_METRICS
-
-// TODO comment
-const string MATRIX_TYPE = "complete";
-// TODO comment
-const string MATRIX_INIT = "const";

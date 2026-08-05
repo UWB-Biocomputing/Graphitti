@@ -14,7 +14,6 @@
 #pragma once
 
 #include "AllVertices.h"
-#include "RecordableVector.h"
 #include "Utils/Global.h"
 #include <iostream>
 #include <log4cplus/loggingmacros.h>
@@ -49,8 +48,9 @@ public:
    /// Load member variables from configuration files. Registered to OperationManager as Operation::loadParameters
    virtual void loadParameters();
 
-   /// Prints out all parameters to logging file. Registered to OperationManager as Operation::printParameters
-   virtual void printParameters() const;
+   /// Prints out model-specific parameters to the logging file. Registered to OperationManager as
+   /// Operation::printParameters. Implemented only on concrete layouts (same pattern as loadParameters).
+   virtual void printParameters() const = 0;
 
    /// Creates a neurons type map
    virtual void generateVertexTypeMap();
@@ -71,11 +71,6 @@ public:
 
    CompleteMatrix dist_;   ///< The true inter-neuron distance.
 
-   vector<int>
-      probedVertexList_;   ///< Probed neurons list. // ToDo: Move this to Hdf5 recorder once its implemented in project -chris
-
-   RecordableVector<vertexType> vertexTypeMap_;   ///< The vertex type mao, (INH, EXC).
-
    ///  Cereal serialization method
    template <class Archive> void serialize(Archive &archive);
 
@@ -90,7 +85,6 @@ protected:
 ///  Cereal serialization method
 template <class Archive> void Layout::serialize(Archive &archive)
 {
-   archive(cereal::make_nvp("vertexTypeMap", vertexTypeMap_), cereal::make_nvp("dist2", dist2_),
-           cereal::make_nvp("dist", dist_), cereal::make_nvp("probedVertexList", probedVertexList_),
+   archive(cereal::make_nvp("dist2", dist2_), cereal::make_nvp("dist", dist_),
            cereal::make_nvp("vertices", vertices_), cereal::make_nvp("numVertices", numVertices_));
 }
