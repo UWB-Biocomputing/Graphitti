@@ -31,16 +31,15 @@ Students, use this [quickstart guide](StudentSetup.md) to help setup, use, and d
 - GitHub Pages
   - Refer to the [GitHub Pages documentation](GHPages.md) section for an overview of how we use GitHub Pages and editing practices
 - GitHub Actions Workflows
-  - We have a [Doxygen Action](GHActions.md#doxygen-action) to regenerate the Doxygen documentation automatically
-  - The [GitHub Pages Action](GHActions.md#github-pages-action) is another action run along with the Doxygen one
-  - Here is our [plantUML Diagrams Action](GHActions.md#plantuml-action) that regenerates our UML image documents
+  - We have a [Doxygen and GitHub Pages Action](GHActions.md#doxygen-and-github-pages-action-gh-pagesyml) to regenerate and publish documentation automatically or manually
+  - We have a [Code Style Action](GHActions.md#code-style-check-formatyml) to verify formatting with clang-format
+  - We have a [Unit and Regression Tests Action](GHActions.md#unit-and-regression-tests-testsyml) to run unit and regression tests
 
 ## Graphitti System Documentation
 
 - Diagrams
-  - Here is an overview [block UML diagram](ClassDiagrams/hand-drawn.pdf)
-  - Here is a list of [UML class diagrams](classDiagrams.md) of Graphitti
-  - Here are the [sequence UML diagrams](sequenceDiagrams.md) for the Graphitti system
+  - Here is a list of [UML class diagrams](classDiagrams.md) (in Mermaid) of Graphitti
+  - Here are the [sequence diagrams](sequenceDiagrams.md) (in Mermaid) for the Graphitti system
 - Doxygen
   - Documentation generated from source code
   - Doxygen provides web-based indices and hierarchical views of Graphitti's class and file structures
