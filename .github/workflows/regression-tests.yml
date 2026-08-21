@@ -9,18 +9,34 @@ on:
       - '*Development'
       - 'release-*'
       - 'hotfix-*'
-    paths-ignore:
-      - ".github/**" # Ignore .github folder
-      - "**/Doxyfile" # Ignore changes to Doxygen config
-      - "docs/**" # Ignore documentation folder
-      - "*.md" # Ignore Markdown files
+    paths:
+      - 'Simulator/**'
+      - 'Testing/**'
+      - 'ThirdParty/**'
+      - 'Tools/**'
+      - 'configfiles/**'
+      - 'CMakeLists.txt'
+      - 'config.h.in'
+      - '**.cpp'
+      - '**.h'
+      - '**.cu'
+      - '**.c'
+      - '**.hpp'
   pull_request:
     types: [opened, synchronize, reopened]
-    paths-ignore:
-      - ".github/**" # Ignore .github folder
-      - "**/Doxyfile" # Ignore changes to Doxygen config
-      - "docs/**" # Ignore documentation folder
-      - "*.md" # Ignore Markdown files
+    paths:
+      - 'Simulator/**'
+      - 'Testing/**'
+      - 'ThirdParty/**'
+      - 'Tools/**'
+      - 'configfiles/**'
+      - 'CMakeLists.txt'
+      - 'config.h.in'
+      - '**.cpp'
+      - '**.h'
+      - '**.cu'
+      - '**.c'
+      - '**.hpp'
 defaults:
   run:
     working-directory: build
