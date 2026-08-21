@@ -12,8 +12,6 @@
 #include "OperationManager.h"
 #include "ParameterManager.h"
 #include "ParseParamError.h"
-#include "RecordableBase.h"
-#include "Simulator.h"
 #include "Util.h"
 
 /// Constructor
@@ -83,11 +81,7 @@ void Layout::registerGraphProperties()
 
 void Layout::registerHistoryVariables()
 {
-   // Register vertex type map
-   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
-   recorder.registerVariable("vertexTypeMap", vertexTypeMap_, Recorder::UpdatedType::CONSTANT);
 }
-
 
 /// Setup the internal structure of the class.
 /// Allocate memories to store all layout state, no sequential dependency in this method
@@ -95,47 +89,15 @@ void Layout::setup()
 {
    dist2_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
    dist_ = CompleteMatrix(MATRIX_TYPE, MATRIX_INIT, numVertices_, numVertices_);
-   // Allocation of internal memory
-   vertexTypeMap_.assign(numVertices_, vertexType::VTYPE_UNDEF);
 }
 
-
-/// Prints out all parameters to logging file. Registered to OperationManager as Operation::printParameters
-void Layout::printParameters() const
-{
-   GraphManager<NeuralVertexProperties>::VertexIterator vi, vi_end;
-   GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
-   stringstream output;
-   output << "\nLAYOUT PARAMETERS" << endl;
-   output << "\tEndogenously active neuron positions: ";
-
-   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
-      assert(*vi < numVertices_);
-      if (gm[*vi].active) {
-         output << *vi << " ";
-      }
-   }
-   output << endl;
-
-   output << "\tInhibitory neuron positions: ";
-
-   for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
-      assert(*vi < numVertices_);
-      if (gm[*vi].type == "INH") {
-         output << *vi << " ";
-      }
-   }
-   output << endl;
-
-   LOG4CPLUS_DEBUG(fileLogger_, output.str());
-}
 
 /// Creates a vertex type map.
 /// @param  numVertices number of the vertices to have in the type map.
 void Layout::generateVertexTypeMap()
 {
    DEBUG(cout << "\nInitializing vertex type map: VTYPE_UNDEF" << endl;);
-   vertexTypeMap_.assign(numVertices_, vertexType::VTYPE_UNDEF);
+   getVertices().vertexTypeMap_.assign(numVertices_, vertexType::VTYPE_UNDEF);
 }
 
 void Layout::initStarterMap()

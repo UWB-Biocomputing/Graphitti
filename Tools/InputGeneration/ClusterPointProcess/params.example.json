@@ -1,0 +1,52 @@
+{
+  "graph_file": "../../../../configfiles/graphs/test-medium-911.graphml",
+  "graph_id": "4",
+  "first": 34,
+  "last": 3600,
+  "mean_time_interval": 62.88,
+  "dead_time_after_event": 1,
+  "mean_call_interval_after_incident": 20,
+  "mean_duration": 204,
+  "minimum_duration": 4,
+  "mean_patience_time": 50,
+  "mean_on_site_time": 1200,
+  "type_ratios": {
+    "Law": 0.33,
+    "EMS": 0.33,
+    "Fire": 0.34
+  },
+  "prototypes": {
+    "0": {
+      "mu_r": 0.0005,
+      "sdev_r": 0.0001,
+      "mu_intensity": 500000,
+      "sdev_intensity": 50000,
+      "weight": 0.4
+    },
+    "1": {
+      "mu_r": 0.001,
+      "sdev_r": 0.0001,
+      "mu_intensity": 1000000,
+      "sdev_intensity": 60000,
+      "weight": 0.5
+    },
+    "2": {
+      "mu_r": 0.0015,
+      "sdev_r": 0.001,
+      "mu_intensity": 1100000,
+      "sdev_intensity": 70000,
+      "weight": 0.09
+    },
+    "3": {
+      "mu_r": 0.003,
+      "sdev_r": 0.001,
+      "mu_intensity": 1500000,
+      "sdev_intensity": 60000,
+      "weight": 0.01
+    }
+  },
+  "random_seed": 42,
+  "output_path": "output/cluster_point_process.xml",
+  "clock_tick_size": "1",
+  "clock_tick_unit": "sec"
+}
