@@ -20,6 +20,7 @@ jobs:
       - name: Close linked issues
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_BODY: ${{ github.event.pull_request.body }}
@@ -44,8 +45,7 @@ jobs:
           issue_patterns = [
               re.compile(r'\[issue[-_](\d+)\]', re.IGNORECASE),
               re.compile(r'\bissue[-_/](\d+)\b', re.IGNORECASE),
-              re.compile(r'(?:close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s+#(\d+)', re.IGNORECASE),
-              re.compile(r'#(\d+)')
+              re.compile(r'(?:close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s+#(\d+)', re.IGNORECASE)
           ]
 
           found_issues = set()

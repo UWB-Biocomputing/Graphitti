@@ -29,7 +29,7 @@ This action triggers automatically whenever a pull request is merged into `Share
 
 ### Stale Issue Cleanup cleanup_stale_issues.sh
 
-The script [.github/scripts/cleanup_stale_issues.sh](file:///Users/stiber/GitHub/Graphitti/.github/scripts/cleanup_stale_issues.sh) scans merged pull requests on GitHub to identify referenced issues (such as `[issue-123]`, `fixes #123`, or `closes #123`) that remain in the `OPEN` state, allowing batch closing of issues resolved by merged PRs.
+The script [.github/scripts/cleanup_stale_issues.sh](https://github.com/UWB-Biocomputing/Graphitti/blob/master/.github/scripts/cleanup_stale_issues.sh) scans merged pull requests on GitHub to identify referenced issues (such as `[issue-123]`, `fixes #123`, or `closes #123`) that remain in the `OPEN` state, allowing batch closing of issues resolved by merged PRs.
 
 - **Dry Run (Preview candidate issues without modifying)**:
   ```bash

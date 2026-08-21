@@ -103,24 +103,24 @@ sequenceDiagram
     participant Simulator
     participant Model
     participant Layout
-    participant All Vertices
+    participant AllVertices
     participant Connections
-    participant All Edges
+    participant AllEdges
     participant Recorder
 
     Core->>Simulator: Setup 
     Simulator->>Model: Model Setup
     Model->>Layout: Get Vertices 
-    Layout->>All Vertices: Setup Vertices
+    Layout->>AllVertices: Setup Vertices
     Model->>Connections: Get Edges
-    Connections->>All Edges: Setup Edges
+    Connections->>AllEdges: Setup Edges
     Model->>Layout: Setup Layout
     Layout->>Layout: Initialize Vertices Locations
     Model->>Recorder: Initialize Recorder 
-    Model->>Model: Create All Vertices*
+    Model->>Model: Create AllVertices*
     Model->>Layout: Generate Vertex Map 
     Model->>Layout: Initialize Starter Map 
-    Model->>Layout: Create All Vertices
+    Model->>Layout: Create AllVertices
 ```
 
 # Simulation Sequence Diagram
@@ -132,9 +132,9 @@ sequenceDiagram
     participant Simulator
     participant Model
     participant Layout
-    participant All Vertices
+    participant AllVertices
     participant Connections
-    participant All Edges
+    participant AllEdges
     participant Recorder
 
     loop for i=0 to currentEpoch-1
@@ -142,9 +142,9 @@ sequenceDiagram
         loop for i=0 to epochDuration-1
             Simulator->>Model: Advance
             Model->>Layout: Get Vertices 
-            Layout->>All Vertices: Advance Vertices
+            Layout->>AllVertices: Advance Vertices
             Model->>Connections: Get Edges
-            Connections->>All Edges: Advance Edges
+            Connections->>AllEdges: Advance Edges
         end
         Model->>Connections: Update Connections
         opt if updateConnections returns true

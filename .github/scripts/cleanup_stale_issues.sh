@@ -119,8 +119,7 @@ prs = json.loads(prs_json_str)
 issue_patterns = [
     re.compile(r'\[issue[-_](\d+)\]', re.IGNORECASE),
     re.compile(r'\bissue[-_/](\d+)\b', re.IGNORECASE),
-    re.compile(r'(?:close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s+#(\d+)', re.IGNORECASE),
-    re.compile(r'#(\d+)')
+    re.compile(r'(?:close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s+#(\d+)', re.IGNORECASE)
 ]
 
 # Map issue_number -> list of PR info dicts
