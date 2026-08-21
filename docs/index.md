@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/273115663.svg)](https://zenodo.org/badge/latestdoi/273115663)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.4678632-blue.svg)](https://zenodo.org/badge/latestdoi/273115663)
 [![Documentation](https://img.shields.io/badge/docs-online-blue.svg)](https://uwb-biocomputing.github.io/Graphitti/)
 [![Unit Tests](https://github.com/UWB-Biocomputing/Graphitti/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/UWB-Biocomputing/Graphitti/actions/workflows/unit-tests.yml)
 [![Regression Tests](https://github.com/UWB-Biocomputing/Graphitti/actions/workflows/regression-tests.yml/badge.svg)](https://github.com/UWB-Biocomputing/Graphitti/actions/workflows/regression-tests.yml)
