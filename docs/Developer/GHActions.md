@@ -20,3 +20,28 @@ This action runs on pushes and pull requests (excluding documentation-only chang
 ## Regression Tests regression-tests.yml
 
 This action runs on pushes and pull requests (excluding documentation-only changes). It compiles the simulator binary (`make cgraphitti`) and the matrix verification utility (`compare_matrices`), executing all 10 simulation test configurations against reference output matrices.
+
+## Auto-Close Merged Issues close-merged-issues.yml
+
+This action triggers automatically whenever a pull request is merged into `SharedDevelopment` or `master`. It extracts referenced issue numbers from the PR title, branch name, and PR description (e.g. `[issue-123]`, `fixes #123`, `closes #123`, `issue-123`), checks if the issue is currently open on GitHub, and automatically closes it with a comment linking the merged pull request.
+
+## Maintenance Scripts
+
+### Stale Issue Cleanup cleanup_stale_issues.sh
+
+The script [.github/scripts/cleanup_stale_issues.sh](file:///Users/stiber/GitHub/Graphitti/.github/scripts/cleanup_stale_issues.sh) scans merged pull requests on GitHub to identify referenced issues (such as `[issue-123]`, `fixes #123`, or `closes #123`) that remain in the `OPEN` state, allowing batch closing of issues resolved by merged PRs.
+
+- **Dry Run (Preview candidate issues without modifying)**:
+  ```bash
+  ./.github/scripts/cleanup_stale_issues.sh --dry-run
+  ```
+- **Execute Issue Closure**:
+  ```bash
+  ./.github/scripts/cleanup_stale_issues.sh --execute
+  ```
+- **Options**:
+  - `-d, --dry-run`: Preview candidate issues without closing them (default).
+  - `-x, --execute`: Close the identified open issues with a reference to the merged pull request.
+  - `-l, --limit NUM`: Maximum number of merged PRs to inspect (default: `100`).
+  - `-h, --help`: Display usage help.
+

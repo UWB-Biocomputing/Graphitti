@@ -35,6 +35,9 @@ Students, use this [quickstart guide](StudentSetup.md) to help setup, use, and d
   - We have a [Code Style Action](GHActions.md#code-style-check-formatyml) to verify formatting with clang-format
   - We have a [Unit Tests Action](GHActions.md#unit-tests-unit-testsyml) to run unit tests
   - We have a [Regression Tests Action](GHActions.md#regression-tests-regression-testsyml) to run simulation regression tests
+  - We have an [Auto-Close Merged Issues Action](GHActions.md#auto-close-merged-issues-close-merged-issuesyml) to automatically close issues when pull requests merge into `SharedDevelopment` or `master`
+- Repository Maintenance Scripts
+  - [Stale Issue Cleanup Script](GHActions.md#stale-issue-cleanup-cleanup_stale_issuessh) to audit and batch-close issues resolved in merged pull requests
 
 ## Graphitti System Documentation
 

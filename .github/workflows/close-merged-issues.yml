@@ -1,0 +1,97 @@
+name: Auto-Close Merged Issues
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - SharedDevelopment
+      - master
+
+permissions:
+  issues: write
+  pull-requests: read
+
+jobs:
+  close-issues:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Close linked issues
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          TARGET_BRANCH: ${{ github.event.pull_request.base.ref }}
+        run: |
+          python3 - << 'EOF'
+          import os
+          import re
+          import json
+          import subprocess
+
+          pr_number = os.environ.get("PR_NUMBER")
+          pr_title = os.environ.get("PR_TITLE", "")
+          pr_body = os.environ.get("PR_BODY", "")
+          pr_branch = os.environ.get("PR_BRANCH", "")
+          pr_url = os.environ.get("PR_URL", "")
+          target_branch = os.environ.get("TARGET_BRANCH", "")
+
+          search_texts = [pr_title, pr_branch, pr_body]
+          issue_patterns = [
+              re.compile(r'\[issue[-_](\d+)\]', re.IGNORECASE),
+              re.compile(r'\bissue[-_/](\d+)\b', re.IGNORECASE),
+              re.compile(r'(?:close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s+#(\d+)', re.IGNORECASE),
+              re.compile(r'#(\d+)')
+          ]
+
+          found_issues = set()
+          for text in search_texts:
+              for pattern in issue_patterns:
+                  for match in pattern.finditer(text):
+                      issue_id = int(match.group(1))
+                      if str(issue_id) != str(pr_number):
+                          found_issues.add(issue_id)
+                      #end if
+                  #end for match
+              #end for pattern
+          #end for text
+
+          if not found_issues:
+              print("No linked issues found in PR title, branch, or body.")
+              exit(0)
+          #end if
+
+          print(f"Identified candidate issue(s): {sorted(found_issues)}")
+
+          for issue_id in sorted(found_issues):
+              # Check if issue exists and is currently OPEN
+              cmd = ["gh", "issue", "view", str(issue_id), "--json", "number,state,title"]
+              res = subprocess.run(cmd, capture_output=True, text=True)
+              if res.returncode != 0:
+                  print(f"Issue #{issue_id} not found or inaccessible; skipping.")
+                  continue
+              #end if
+
+              try:
+                  data = json.loads(res.stdout)
+                  if data.get("state") == "OPEN":
+                      comment = f"Automatically closed: resolved by pull request #{pr_number} ({pr_url}) merged into {target_branch}."
+                      close_cmd = ["gh", "issue", "close", str(issue_id), "--comment", comment]
+                      close_res = subprocess.run(close_cmd, capture_output=True, text=True)
+                      if close_res.returncode == 0:
+                          print(f"Successfully closed issue #{issue_id} ('{data.get('title')}').")
+                      else:
+                          print(f"Failed to close issue #{issue_id}: {close_res.stderr.strip()}")
+                      #end if
+                  else:
+                      print(f"Issue #{issue_id} is already in state '{data.get('state')}'; skipping.")
+                  #end if
+              except Exception as e:
+                  print(f"Error processing issue #{issue_id}: {e}")
+              #end try
+          #end for issue_id
+          EOF
