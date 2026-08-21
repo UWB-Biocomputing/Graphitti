@@ -795,26 +795,18 @@ void All911Vertices::deleteDeviceStruct(All911VerticesDeviceProperties &allVerti
 void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t stepsPerEpoch,
                                               All911VerticesDeviceProperties &allVerticesDevice)
 {
+   const size_t bufferBytes = (stepsPerEpoch + 1) * sizeof(int);
+   const size_t timeBufferBytes = (stepsPerEpoch + 1) * sizeof(uint64_t);
+   const size_t floatBufferBytes = (stepsPerEpoch + 1) * sizeof(BGFLOAT);
+
    // int **vertexQueuesBufferVertexId_;
    {
       int *callIdCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callIdCpu, allVerticesDevice.vertexQueuesBufferVertexId_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callIdInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callIdInBuffer.resize(stepsPerEpoch + 1);
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            callIdInBuffer[j] = buffer[j].vertexId;
-         }
-         HANDLE_ERROR(cudaMemcpy(callIdCpu[i], callIdInBuffer.data(),
-                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callIdInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callIdCpu[i], vertexQueues_[i].vertexId().data(), bufferBytes,
+                                 cudaMemcpyHostToDevice));
       }
    }
    // uint64_t **vertexQueuesBufferTime_;
@@ -822,21 +814,9 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       uint64_t *callTimeCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callTimeCpu, allVerticesDevice.vertexQueuesBufferTime_,
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<uint64_t> callTimeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callTimeInBuffer.resize(stepsPerEpoch + 1);
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            callTimeInBuffer[j] = buffer[j].time;
-         }
-         HANDLE_ERROR(cudaMemcpy(callTimeCpu[i], callTimeInBuffer.data(),
-                                 (stepsPerEpoch + 1) * sizeof(uint64_t), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callTimeInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callTimeCpu[i], vertexQueues_[i].time().data(), timeBufferBytes,
+                                 cudaMemcpyHostToDevice));
       }
    }
    // int **vertexQueuesBufferDuration_;
@@ -844,21 +824,9 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       int *callDurationCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callDurationCpu, allVerticesDevice.vertexQueuesBufferDuration_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callDurationInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callDurationInBuffer.resize(stepsPerEpoch + 1);
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            callDurationInBuffer[j] = buffer[j].duration;
-         }
-         HANDLE_ERROR(cudaMemcpy(callDurationCpu[i], callDurationInBuffer.data(),
-                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callDurationInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callDurationCpu[i], vertexQueues_[i].duration().data(),
+                                 bufferBytes, cudaMemcpyHostToDevice));
       }
    }
    // BGFLOAT **vertexQueuesBufferX_;
@@ -866,21 +834,9 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       BGFLOAT *callLocationXCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callLocationXCpu, allVerticesDevice.vertexQueuesBufferX_,
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<BGFLOAT> callLocationXInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callLocationXInBuffer.resize(stepsPerEpoch + 1);
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            callLocationXInBuffer[j] = buffer[j].x;
-         }
-         HANDLE_ERROR(cudaMemcpy(callLocationXCpu[i], callLocationXInBuffer.data(),
-                                 (stepsPerEpoch + 1) * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callLocationXInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callLocationXCpu[i], vertexQueues_[i].x().data(), floatBufferBytes,
+                                 cudaMemcpyHostToDevice));
       }
    }
    // BGFLOAT **vertexQueuesBufferY_;
@@ -888,21 +844,9 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       BGFLOAT *callLocationYCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callLocationYCpu, allVerticesDevice.vertexQueuesBufferY_,
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<BGFLOAT> callLocationYInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callLocationYInBuffer.resize(stepsPerEpoch + 1);
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            callLocationYInBuffer[j] = buffer[j].y;
-         }
-         HANDLE_ERROR(cudaMemcpy(callLocationYCpu[i], callLocationYInBuffer.data(),
-                                 (stepsPerEpoch + 1) * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callLocationYInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callLocationYCpu[i], vertexQueues_[i].y().data(), floatBufferBytes,
+                                 cudaMemcpyHostToDevice));
       }
    }
    // int **vertexQueuesBufferPatience_;
@@ -910,21 +854,9 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       int *callPatienceCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callPatienceCpu, allVerticesDevice.vertexQueuesBufferPatience_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callPatienceInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callPatienceInBuffer.resize(stepsPerEpoch + 1);
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            callPatienceInBuffer[j] = buffer[j].patience;
-         }
-         HANDLE_ERROR(cudaMemcpy(callPatienceCpu[i], callPatienceInBuffer.data(),
-                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callPatienceInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callPatienceCpu[i], vertexQueues_[i].patience().data(),
+                                 bufferBytes, cudaMemcpyHostToDevice));
       }
    }
    // int **vertexQueuesBufferOnSiteTime_;
@@ -932,21 +864,9 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       int *callOnSiteTimeCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callOnSiteTimeCpu, allVerticesDevice.vertexQueuesBufferOnSiteTime_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callOnSiteTimeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callOnSiteTimeInBuffer.resize(stepsPerEpoch + 1);
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            callOnSiteTimeInBuffer[j] = buffer[j].onSiteTime;
-         }
-         HANDLE_ERROR(cudaMemcpy(callOnSiteTimeCpu[i], callOnSiteTimeInBuffer.data(),
-                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callOnSiteTimeInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callOnSiteTimeCpu[i], vertexQueues_[i].onSiteTime().data(),
+                                 bufferBytes, cudaMemcpyHostToDevice));
       }
    }
    // int **vertexQueuesBufferResponderType_;
@@ -955,28 +875,9 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
       HANDLE_ERROR(cudaMemcpy(callResponderTypeCpu,
                               allVerticesDevice.vertexQueuesBufferResponderType_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callResponderTypeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callResponderTypeInBuffer.resize(stepsPerEpoch + 1);
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            std::string typeInBuffer = buffer[j].type;
-            if (typeInBuffer == "EMS") {
-               callResponderTypeInBuffer[j] = 5;
-            } else if (typeInBuffer == "Fire") {
-               callResponderTypeInBuffer[j] = 6;
-            } else if (typeInBuffer == "Law") {
-               callResponderTypeInBuffer[j] = 7;
-            }
-         }
-         HANDLE_ERROR(cudaMemcpy(callResponderTypeCpu[i], callResponderTypeInBuffer.data(),
-                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callResponderTypeInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callResponderTypeCpu[i], vertexQueues_[i].responderType().data(),
+                                 bufferBytes, cudaMemcpyHostToDevice));
       }
    }
    // uint64_t *vertexQueuesFront_;
@@ -1001,7 +902,7 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
    {
       uint64_t queueSizeCpu[numberOfVertices];
       for (int i = 0; i < numberOfVertices; i++) {
-         queueSizeCpu[i] = vertexQueues_[i].getBuffer().size();
+         queueSizeCpu[i] = vertexQueues_[i].bufferSize();
       }
       HANDLE_ERROR(cudaMemcpy(allVerticesDevice.vertexQueuesBufferSize_, queueSizeCpu,
                               numberOfVertices * sizeof(uint64_t), cudaMemcpyHostToDevice));
@@ -1014,29 +915,18 @@ void All911Vertices::copyVertexQueuesToDevice(int numberOfVertices, uint64_t ste
 void All911Vertices::copyServingCallToDevice(int numberOfVertices,
                                              All911VerticesDeviceProperties &allVerticesDevice)
 {
-   // Logic is similar to copyVertexQueuesToDevice but we use max number of servers
-   // for the inner vector dimension
-   //
+   const size_t intBufferBytes = maxNumberOfServers_ * sizeof(int);
+   const size_t timeBufferBytes = maxNumberOfServers_ * sizeof(uint64_t);
+   const size_t floatBufferBytes = maxNumberOfServers_ * sizeof(BGFLOAT);
+
    // int **servingCallBufferVertexId_;
    {
       int *callIdCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callIdCpu, allVerticesDevice.servingCallBufferVertexId_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callIdInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callIdInBuffer.resize(maxNumberOfServers_);
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            callIdInBuffer[j] = buffer[j].vertexId;
-         }
-         HANDLE_ERROR(cudaMemcpy(callIdCpu[i], callIdInBuffer.data(),
-                                 maxNumberOfServers_ * sizeof(int), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callIdInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callIdCpu[i], servingCall_[i].vertexId().data(), intBufferBytes,
+                                 cudaMemcpyHostToDevice));
       }
    }
    // uint64_t **servingCallBufferTime_;
@@ -1044,21 +934,9 @@ void All911Vertices::copyServingCallToDevice(int numberOfVertices,
       uint64_t *callTimeCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callTimeCpu, allVerticesDevice.servingCallBufferTime_,
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<uint64_t> callTimeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callTimeInBuffer.resize(maxNumberOfServers_);
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            callTimeInBuffer[j] = buffer[j].time;
-         }
-         HANDLE_ERROR(cudaMemcpy(callTimeCpu[i], callTimeInBuffer.data(),
-                                 maxNumberOfServers_ * sizeof(uint64_t), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callTimeInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callTimeCpu[i], servingCall_[i].time().data(), timeBufferBytes,
+                                 cudaMemcpyHostToDevice));
       }
    }
    // int **servingCallBufferDuration_;
@@ -1066,21 +944,9 @@ void All911Vertices::copyServingCallToDevice(int numberOfVertices,
       int *callDurationCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callDurationCpu, allVerticesDevice.servingCallBufferDuration_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callDurationInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callDurationInBuffer.resize(maxNumberOfServers_);
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            callDurationInBuffer[j] = buffer[j].duration;
-         }
-         HANDLE_ERROR(cudaMemcpy(callDurationCpu[i], callDurationInBuffer.data(),
-                                 maxNumberOfServers_ * sizeof(int), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callDurationInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callDurationCpu[i], servingCall_[i].duration().data(),
+                                 intBufferBytes, cudaMemcpyHostToDevice));
       }
    }
    // BGFLOAT **servingCallBufferX_;
@@ -1088,21 +954,9 @@ void All911Vertices::copyServingCallToDevice(int numberOfVertices,
       BGFLOAT *callLocationXCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callLocationXCpu, allVerticesDevice.servingCallBufferX_,
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<BGFLOAT> callLocationXInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callLocationXInBuffer.resize(maxNumberOfServers_);
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            callLocationXInBuffer[j] = buffer[j].x;
-         }
-         HANDLE_ERROR(cudaMemcpy(callLocationXCpu[i], callLocationXInBuffer.data(),
-                                 maxNumberOfServers_ * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callLocationXInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callLocationXCpu[i], servingCall_[i].x().data(), floatBufferBytes,
+                                 cudaMemcpyHostToDevice));
       }
    }
    // BGFLOAT **servingCallBufferY_;
@@ -1110,21 +964,9 @@ void All911Vertices::copyServingCallToDevice(int numberOfVertices,
       BGFLOAT *callLocationYCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callLocationYCpu, allVerticesDevice.servingCallBufferY_,
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<BGFLOAT> callLocationYInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callLocationYInBuffer.resize(maxNumberOfServers_);
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            callLocationYInBuffer[j] = buffer[j].y;
-         }
-         HANDLE_ERROR(cudaMemcpy(callLocationYCpu[i], callLocationYInBuffer.data(),
-                                 maxNumberOfServers_ * sizeof(BGFLOAT), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callLocationYInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callLocationYCpu[i], servingCall_[i].y().data(), floatBufferBytes,
+                                 cudaMemcpyHostToDevice));
       }
    }
    // int **servingCallBufferPatience_;
@@ -1132,21 +974,9 @@ void All911Vertices::copyServingCallToDevice(int numberOfVertices,
       int *callPatienceCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callPatienceCpu, allVerticesDevice.servingCallBufferPatience_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callPatienceInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callPatienceInBuffer.resize(maxNumberOfServers_);
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            callPatienceInBuffer[j] = buffer[j].patience;
-         }
-         HANDLE_ERROR(cudaMemcpy(callPatienceCpu[i], callPatienceInBuffer.data(),
-                                 maxNumberOfServers_ * sizeof(int), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callPatienceInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callPatienceCpu[i], servingCall_[i].patience().data(),
+                                 intBufferBytes, cudaMemcpyHostToDevice));
       }
    }
    // int **servingCallBufferOnSiteTime_;
@@ -1154,21 +984,9 @@ void All911Vertices::copyServingCallToDevice(int numberOfVertices,
       int *callOnSiteTimeCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callOnSiteTimeCpu, allVerticesDevice.servingCallBufferOnSiteTime_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callOnSiteTimeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callOnSiteTimeInBuffer.resize(maxNumberOfServers_);
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            callOnSiteTimeInBuffer[j] = buffer[j].onSiteTime;
-         }
-         HANDLE_ERROR(cudaMemcpy(callOnSiteTimeCpu[i], callOnSiteTimeInBuffer.data(),
-                                 maxNumberOfServers_ * sizeof(int), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callOnSiteTimeInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callOnSiteTimeCpu[i], servingCall_[i].onSiteTime().data(),
+                                 intBufferBytes, cudaMemcpyHostToDevice));
       }
    }
    // int **servingCallBufferResponderType_;
@@ -1177,28 +995,9 @@ void All911Vertices::copyServingCallToDevice(int numberOfVertices,
       HANDLE_ERROR(cudaMemcpy(callResponderTypeCpu,
                               allVerticesDevice.servingCallBufferResponderType_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callResponderTypeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callResponderTypeInBuffer.resize(maxNumberOfServers_);
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            std::string typeInBuffer = buffer[j].type;
-            if (typeInBuffer == "EMS") {
-               callResponderTypeInBuffer[j] = 5;
-            } else if (typeInBuffer == "Fire") {
-               callResponderTypeInBuffer[j] = 6;
-            } else if (typeInBuffer == "Law") {
-               callResponderTypeInBuffer[j] = 7;
-            }
-         }
-         HANDLE_ERROR(cudaMemcpy(callResponderTypeCpu[i], callResponderTypeInBuffer.data(),
-                                 maxNumberOfServers_ * sizeof(int), cudaMemcpyHostToDevice));
-         // clear vector before filling with next vertex's call ids
-         callResponderTypeInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(callResponderTypeCpu[i], servingCall_[i].responderType().data(),
+                                 intBufferBytes, cudaMemcpyHostToDevice));
       }
    }
 }
@@ -1570,29 +1369,18 @@ void All911Vertices::copyToDevice()
 void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t stepsPerEpoch,
                                                 All911VerticesDeviceProperties &allVerticesDevice)
 {
-   // TODO: Review implementation with Prof Stiber
+   const size_t bufferBytes = (stepsPerEpoch + 1) * sizeof(int);
+   const size_t timeBufferBytes = (stepsPerEpoch + 1) * sizeof(uint64_t);
+   const size_t floatBufferBytes = (stepsPerEpoch + 1) * sizeof(BGFLOAT);
+
    // int **vertexQueuesBufferVertexId_;
    {
       int *callIdCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callIdCpu, allVerticesDevice.vertexQueuesBufferVertexId_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callIdInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         // Make sure internal buffer can hold all device values
-         callIdInBuffer.resize(stepsPerEpoch + 1);
-         HANDLE_ERROR(cudaMemcpy(callIdInBuffer.data(), callIdCpu[i],
-                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         // Only copy over the number of IDs that we have on the CPU.
-         for (int j = 0; j < buffer.size(); j++) {
-            buffer[j].vertexId = callIdInBuffer[j];
-         }
-         // clear vector before filling with next vertex's call IDs
-         callIdInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(vertexQueues_[i].vertexId().data(), callIdCpu[i], bufferBytes,
+                                 cudaMemcpyDeviceToHost));
       }
    }
    // uint64_t **vertexQueuesBufferTime_;
@@ -1600,21 +1388,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       uint64_t *callTimeCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callTimeCpu, allVerticesDevice.vertexQueuesBufferTime_,
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<uint64_t> callTimeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callTimeInBuffer.resize(stepsPerEpoch + 1);
-         HANDLE_ERROR(cudaMemcpy(callTimeInBuffer.data(), callTimeCpu[i],
-                                 (stepsPerEpoch + 1) * sizeof(uint64_t), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            buffer[j].time = callTimeInBuffer[j];
-         }
-         // clear vector before filling with next vertex's call ids
-         callTimeInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(vertexQueues_[i].time().data(), callTimeCpu[i], timeBufferBytes,
+                                 cudaMemcpyDeviceToHost));
       }
    }
    // int **vertexQueuesBufferDuration_;
@@ -1622,21 +1398,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       int *callDurationCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callDurationCpu, allVerticesDevice.vertexQueuesBufferDuration_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callDurationInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callDurationInBuffer.resize(stepsPerEpoch + 1);
-         HANDLE_ERROR(cudaMemcpy(callDurationInBuffer.data(), callDurationCpu[i],
-                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            buffer[j].duration = callDurationInBuffer[j];
-         }
-         // clear vector before filling with next vertex's call ids
-         callDurationInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(vertexQueues_[i].duration().data(), callDurationCpu[i],
+                                 bufferBytes, cudaMemcpyDeviceToHost));
       }
    }
    // BGFLOAT **vertexQueuesBufferX_;
@@ -1644,21 +1408,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       BGFLOAT *callLocationXCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callLocationXCpu, allVerticesDevice.vertexQueuesBufferX_,
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<BGFLOAT> callLocationXInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callLocationXInBuffer.resize(stepsPerEpoch + 1);
-         HANDLE_ERROR(cudaMemcpy(callLocationXInBuffer.data(), callLocationXCpu[i],
-                                 (stepsPerEpoch + 1) * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            buffer[j].x = callLocationXInBuffer[j];
-         }
-         // clear vector before filling with next vertex's call ids
-         callLocationXInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(vertexQueues_[i].x().data(), callLocationXCpu[i], floatBufferBytes,
+                                 cudaMemcpyDeviceToHost));
       }
    }
    // BGFLOAT **vertexQueuesBufferY_;
@@ -1666,21 +1418,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       BGFLOAT *callLocationYCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callLocationYCpu, allVerticesDevice.vertexQueuesBufferY_,
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<BGFLOAT> callLocationYInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callLocationYInBuffer.resize(stepsPerEpoch + 1);
-         HANDLE_ERROR(cudaMemcpy(callLocationYInBuffer.data(), callLocationYCpu[i],
-                                 (stepsPerEpoch + 1) * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            buffer[j].y = callLocationYInBuffer[j];
-         }
-         // clear vector before filling with next vertex's call ids
-         callLocationYInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(vertexQueues_[i].y().data(), callLocationYCpu[i], floatBufferBytes,
+                                 cudaMemcpyDeviceToHost));
       }
    }
    // int **vertexQueuesBufferPatience_;
@@ -1688,21 +1428,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       int *callPatienceCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callPatienceCpu, allVerticesDevice.vertexQueuesBufferPatience_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callPatienceInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callPatienceInBuffer.resize(stepsPerEpoch + 1);
-         HANDLE_ERROR(cudaMemcpy(callPatienceInBuffer.data(), callPatienceCpu[i],
-                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            buffer[j].patience = callPatienceInBuffer[j];
-         }
-         // clear vector before filling with next vertex's call ids
-         callPatienceInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(vertexQueues_[i].patience().data(), callPatienceCpu[i],
+                                 bufferBytes, cudaMemcpyDeviceToHost));
       }
    }
    // int **vertexQueuesBufferOnSiteTime_;
@@ -1710,21 +1438,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       int *callOnSiteTimeCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callOnSiteTimeCpu, allVerticesDevice.vertexQueuesBufferOnSiteTime_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callOnSiteTimeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callOnSiteTimeInBuffer.resize(stepsPerEpoch + 1);
-         HANDLE_ERROR(cudaMemcpy(callOnSiteTimeInBuffer.data(), callOnSiteTimeCpu[i],
-                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            buffer[j].onSiteTime = callOnSiteTimeInBuffer[j];
-         }
-         // clear vector before filling with next vertex's call ids
-         callOnSiteTimeInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(vertexQueues_[i].onSiteTime().data(), callOnSiteTimeCpu[i],
+                                 bufferBytes, cudaMemcpyDeviceToHost));
       }
    }
    // int **vertexQueuesBufferResponderType_;
@@ -1733,27 +1449,9 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       HANDLE_ERROR(cudaMemcpy(callResponderTypeCpu,
                               allVerticesDevice.vertexQueuesBufferResponderType_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callResponderTypeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callResponderTypeInBuffer.resize(stepsPerEpoch + 1);
-         HANDLE_ERROR(cudaMemcpy(callResponderTypeInBuffer.data(), callResponderTypeCpu[i],
-                                 (stepsPerEpoch + 1) * sizeof(int), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = vertexQueues_[i].getBuffer();
-         for (int j = 0; j < buffer.size(); j++) {
-            if (callResponderTypeInBuffer[j] == 5) {
-               buffer[j].type = "EMS";
-            } else if (callResponderTypeInBuffer[j] == 6) {
-               buffer[j].type = "Fire";
-            } else if (callResponderTypeInBuffer[j] == 7) {
-               buffer[j].type = "Law";
-            }
-         }
-         // clear vector before filling with next vertex's call ids
-         callResponderTypeInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(vertexQueues_[i].responderType().data(), callResponderTypeCpu[i],
+                                 bufferBytes, cudaMemcpyDeviceToHost));
       }
    }
    // uint64_t *vertexQueuesFront_;
@@ -1780,7 +1478,7 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
       HANDLE_ERROR(cudaMemcpy(queueSizeCpu, allVerticesDevice.vertexQueuesBufferSize_,
                               numberOfVertices * sizeof(uint64_t), cudaMemcpyDeviceToHost));
       for (int i = 0; i < numberOfVertices; i++) {
-         vertexQueues_[i].getBuffer().resize(queueSizeCpu[i]);
+         vertexQueues_[i].resizeBuffer(queueSizeCpu[i]);
       }
    }
 }
@@ -1788,26 +1486,18 @@ void All911Vertices::copyVertexQueuesFromDevice(int numberOfVertices, uint64_t s
 void All911Vertices::copyServingCallFromDevice(int numberOfVertices,
                                                All911VerticesDeviceProperties &allVerticesDevice)
 {
+   const size_t intBufferBytes = maxNumberOfServers_ * sizeof(int);
+   const size_t timeBufferBytes = maxNumberOfServers_ * sizeof(uint64_t);
+   const size_t floatBufferBytes = maxNumberOfServers_ * sizeof(BGFLOAT);
+
    // int **servingCallBufferVertexId_;
    {
       int *callIdCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callIdCpu, allVerticesDevice.servingCallBufferVertexId_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callIdInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callIdInBuffer.resize(maxNumberOfServers_);
-         HANDLE_ERROR(cudaMemcpy(callIdInBuffer.data(), callIdCpu[i],
-                                 maxNumberOfServers_ * sizeof(int), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            buffer[j].vertexId = callIdInBuffer[j];
-         }
-         // clear vector before filling with next vertex's call ids
-         callIdInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(servingCall_[i].vertexId().data(), callIdCpu[i], intBufferBytes,
+                                 cudaMemcpyDeviceToHost));
       }
    }
    // uint64_t **servingCallBufferTime_;
@@ -1815,21 +1505,9 @@ void All911Vertices::copyServingCallFromDevice(int numberOfVertices,
       uint64_t *callTimeCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callTimeCpu, allVerticesDevice.servingCallBufferTime_,
                               numberOfVertices * sizeof(uint64_t *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<uint64_t> callTimeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callTimeInBuffer.resize(maxNumberOfServers_);
-         HANDLE_ERROR(cudaMemcpy(callTimeInBuffer.data(), callTimeCpu[i],
-                                 maxNumberOfServers_ * sizeof(uint64_t), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            buffer[j].time = callTimeInBuffer[j];
-         }
-         // clear vector before filling with next vertex's call ids
-         callTimeInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(servingCall_[i].time().data(), callTimeCpu[i], timeBufferBytes,
+                                 cudaMemcpyDeviceToHost));
       }
    }
    // int **servingCallBufferDuration_;
@@ -1837,21 +1515,9 @@ void All911Vertices::copyServingCallFromDevice(int numberOfVertices,
       int *callDurationCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callDurationCpu, allVerticesDevice.servingCallBufferDuration_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callDurationInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callDurationInBuffer.resize(maxNumberOfServers_);
-         HANDLE_ERROR(cudaMemcpy(callDurationInBuffer.data(), callDurationCpu[i],
-                                 maxNumberOfServers_ * sizeof(int), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            buffer[j].duration = callDurationInBuffer[j];
-         }
-         // clear vector before filling with next vertex's call ids
-         callDurationInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(servingCall_[i].duration().data(), callDurationCpu[i],
+                                 intBufferBytes, cudaMemcpyDeviceToHost));
       }
    }
    // BGFLOAT **servingCallBufferX_;
@@ -1859,21 +1525,9 @@ void All911Vertices::copyServingCallFromDevice(int numberOfVertices,
       BGFLOAT *callLocationXCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callLocationXCpu, allVerticesDevice.servingCallBufferX_,
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<BGFLOAT> callLocationXInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callLocationXInBuffer.resize(maxNumberOfServers_);
-         HANDLE_ERROR(cudaMemcpy(callLocationXInBuffer.data(), callLocationXCpu[i],
-                                 maxNumberOfServers_ * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            buffer[j].x = callLocationXInBuffer[j];
-         }
-         // clear vector before filling with next vertex's call ids
-         callLocationXInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(servingCall_[i].x().data(), callLocationXCpu[i], floatBufferBytes,
+                                 cudaMemcpyDeviceToHost));
       }
    }
    // BGFLOAT **servingCallBufferY_;
@@ -1881,21 +1535,9 @@ void All911Vertices::copyServingCallFromDevice(int numberOfVertices,
       BGFLOAT *callLocationYCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callLocationYCpu, allVerticesDevice.servingCallBufferY_,
                               numberOfVertices * sizeof(BGFLOAT *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<BGFLOAT> callLocationYInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callLocationYInBuffer.resize(maxNumberOfServers_);
-         HANDLE_ERROR(cudaMemcpy(callLocationYInBuffer.data(), callLocationYCpu[i],
-                                 maxNumberOfServers_ * sizeof(BGFLOAT), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            buffer[j].y = callLocationYInBuffer[j];
-         }
-         // clear vector before filling with next vertex's call ids
-         callLocationYInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(servingCall_[i].y().data(), callLocationYCpu[i], floatBufferBytes,
+                                 cudaMemcpyDeviceToHost));
       }
    }
    // int **servingCallBufferPatience_;
@@ -1903,21 +1545,9 @@ void All911Vertices::copyServingCallFromDevice(int numberOfVertices,
       int *callPatienceCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callPatienceCpu, allVerticesDevice.servingCallBufferPatience_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callPatienceInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callPatienceInBuffer.resize(maxNumberOfServers_);
-         HANDLE_ERROR(cudaMemcpy(callPatienceInBuffer.data(), callPatienceCpu[i],
-                                 maxNumberOfServers_ * sizeof(int), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            buffer[j].patience = callPatienceInBuffer[j];
-         }
-         // clear vector before filling with next vertex's call ids
-         callPatienceInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(servingCall_[i].patience().data(), callPatienceCpu[i],
+                                 intBufferBytes, cudaMemcpyDeviceToHost));
       }
    }
    // int **servingCallBufferOnSiteTime_;
@@ -1925,21 +1555,9 @@ void All911Vertices::copyServingCallFromDevice(int numberOfVertices,
       int *callOnSiteTimeCpu[numberOfVertices];
       HANDLE_ERROR(cudaMemcpy(callOnSiteTimeCpu, allVerticesDevice.servingCallBufferOnSiteTime_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callOnSiteTimeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callOnSiteTimeInBuffer.resize(maxNumberOfServers_);
-         HANDLE_ERROR(cudaMemcpy(callOnSiteTimeInBuffer.data(), callOnSiteTimeCpu[i],
-                                 maxNumberOfServers_ * sizeof(int), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            buffer[j].onSiteTime = callOnSiteTimeInBuffer[j];
-         }
-         // clear vector before filling with next vertex's call ids
-         callOnSiteTimeInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(servingCall_[i].onSiteTime().data(), callOnSiteTimeCpu[i],
+                                 intBufferBytes, cudaMemcpyDeviceToHost));
       }
    }
    // int **servingCallBufferResponderType_;
@@ -1948,27 +1566,9 @@ void All911Vertices::copyServingCallFromDevice(int numberOfVertices,
       HANDLE_ERROR(cudaMemcpy(callResponderTypeCpu,
                               allVerticesDevice.servingCallBufferResponderType_,
                               numberOfVertices * sizeof(int *), cudaMemcpyDeviceToHost));
-
-      // Using a vector since we are still on the CPU and it's convenient to call data()
-      // in memcpy and using the same vector over and over helps with stack memory
-      // management
-      vector<int> callResponderTypeInBuffer;
       for (int i = 0; i < numberOfVertices; i++) {
-         callResponderTypeInBuffer.resize(maxNumberOfServers_);
-         HANDLE_ERROR(cudaMemcpy(callResponderTypeInBuffer.data(), callResponderTypeCpu[i],
-                                 maxNumberOfServers_ * sizeof(int), cudaMemcpyDeviceToHost));
-         vector<Call> buffer = servingCall_[i];
-         for (int j = 0; j < buffer.size(); j++) {
-            if (callResponderTypeInBuffer[j] == 5) {
-               buffer[j].type = "EMS";
-            } else if (callResponderTypeInBuffer[j] == 6) {
-               buffer[j].type = "Fire";
-            } else if (callResponderTypeInBuffer[j] == 7) {
-               buffer[j].type = "Law";
-            }
-         }
-         // clear vector before filling with next vertex's call ids
-         callResponderTypeInBuffer.clear();
+         HANDLE_ERROR(cudaMemcpy(servingCall_[i].responderType().data(), callResponderTypeCpu[i],
+                                 intBufferBytes, cudaMemcpyDeviceToHost));
       }
    }
 }

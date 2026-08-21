@@ -140,8 +140,15 @@ public:
    /// If the call in the edge is a redial. Store 1 (true) or 0 (false)
    vector<unsigned char> isRedial_;
 
-   /// The call information per edge
-   vector<Call> call_;
+   /// The call information per edge, stored as separate vectors
+   vector<int> callVertexId_;
+   vector<uint64_t> callTime_;
+   vector<int> callDuration_;
+   vector<BGFLOAT> callX_;
+   vector<BGFLOAT> callY_;
+   vector<int> callPatience_;
+   vector<int> callOnSiteTime_;
+   vector<int> callResponderType_;
 };
 
 #if defined(USE_GPU)
