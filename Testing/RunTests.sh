@@ -2,8 +2,8 @@
 ############################################################################################
 # Scrip for running Graphitti unit tests and regression tests.
 #
-# It contains the same tests as the tests.yml workflow that is executed by a
-# GitHub action on Pull Requests:
+# It contains the same tests as the CI workflows that are executed by
+# GitHub actions on Pull Requests:
 #
 #   1. Build Graphitti
 #   2. Runs our unit tests

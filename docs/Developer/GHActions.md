@@ -11,8 +11,12 @@ Since mermaid is set to `true` in `_config.yml`, anytime GitHub Pages action is 
 
 ## Code Style Check format.yml
 
-This action is triggered on pushes to `master` and pull requests that modify C++ source or header files (`.cpp`, `.h`). It executes `clang-format` to verify compliance with the repository style guidelines.
+This action is triggered on pushes and pull requests that modify C++ source or header files (`.cpp`, `.h`). It executes `clang-format` to verify compliance with the repository style guidelines.
 
-## Unit and Regression Tests tests.yml
+## Unit Tests unit-tests.yml
 
-This action runs on pushes and pull requests (excluding documentation-only changes). It compiles the simulator with CMake, runs unit tests (`./tests`), and executes regression test configurations against reference output matrices using `compare_matrices`.
+This action runs on pushes and pull requests (excluding documentation-only changes). It compiles the unit test binary (`make tests`) with CMake and executes `./tests` for rapid feedback on test status.
+
+## Regression Tests regression-tests.yml
+
+This action runs on pushes and pull requests (excluding documentation-only changes). It compiles the simulator binary (`make cgraphitti`) and the matrix verification utility (`compare_matrices`), executing all 10 simulation test configurations against reference output matrices.

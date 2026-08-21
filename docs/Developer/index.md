@@ -33,7 +33,8 @@ Students, use this [quickstart guide](StudentSetup.md) to help setup, use, and d
 - GitHub Actions Workflows
   - We have a [Doxygen and GitHub Pages Action](GHActions.md#doxygen-and-github-pages-action-gh-pagesyml) to regenerate and publish documentation automatically or manually
   - We have a [Code Style Action](GHActions.md#code-style-check-formatyml) to verify formatting with clang-format
-  - We have a [Unit and Regression Tests Action](GHActions.md#unit-and-regression-tests-testsyml) to run unit and regression tests
+  - We have a [Unit Tests Action](GHActions.md#unit-tests-unit-testsyml) to run unit tests
+  - We have a [Regression Tests Action](GHActions.md#regression-tests-regression-testsyml) to run simulation regression tests
 
 ## Graphitti System Documentation
 
