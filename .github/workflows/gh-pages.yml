@@ -1,6 +1,7 @@
 name: Github Pages
 
 on:
+  workflow_dispatch:
   schedule:
     # Triggers at the end of the day on the 1st of every month
     - cron: '0 0 1 * *'

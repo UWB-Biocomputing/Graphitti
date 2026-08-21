@@ -10,11 +10,11 @@ When making edits and changes to the GitHub Pages, you'll create a new feature b
 
 We use markdown files in order to render our documentation in a web browser. These files follow a relatively simple syntax of which a guide can be found [here](https://www.markdownguide.org/basic-syntax/) for.
 
-Once you've completed your edits and changes, commit them to the branch and obtain approval for merger. The changes will not be visible from the gh-pages branch until the first of the month unless you use the publish-gh-pages.yml script which can manually publish the documentation for you. Once merged though, the changes should be seen in the master branch. Find more information on these GitHub Actions [here](GHActions.md#doxygen-and-github-pages-action-gh-pagesyml) and [here](GHActions.md#manual-github-pages-action-publish-gh-pagesyml). 
+Once you've completed your edits and changes, commit them to the branch and obtain approval for merger. The changes will not be visible from the gh-pages branch until the first of the month unless you manually run the gh-pages.yml workflow. Once merged though, the changes should be seen in the master branch. Find more information on this GitHub Action [here](GHActions.md#doxygen-and-github-pages-action-gh-pagesyml). 
 
 ## What is the gh-pages Branch?
 
-This has to do with how the documents for the GitHub Pages are published. When you make changes and merge them into the master branch, you'll notice those changes don't immediately show up. This is due to the fact that the GitHub action that takes care of the publication is only activated at the first of every month. Or, you can manually activate it by using the publish-gh-pages.yml workflow in the actions tab.
+This has to do with how the documents for the GitHub Pages are published. When you make changes and merge them into the master branch, you'll notice those changes don't immediately show up. This is due to the fact that the GitHub action that takes care of the publication is only activated at the first of every month. Or, you can manually activate it by using the gh-pages.yml workflow in the actions tab.
 
 When this publication occurs, all the files within the docs folder are pushed into the gh-pages branch. This branch then becomes the documentation published to the GitHub Pages site. We do this for 2 reasons:
 
