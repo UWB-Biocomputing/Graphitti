@@ -92,8 +92,12 @@ Lawrence Scott
 Star Wong
 
 ## 2026
+<<<<<<< HEAD
+Likitha Nanduri
+=======
 Dhruva Pyapali
 
+>>>>>>> origin/SharedDevelopment
 
 <!-- ---------------------------------------------------------------------------------- -->
 # Graduate

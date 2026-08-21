@@ -1,181 +1,561 @@
 # Recorders
 
-In the Graphitti C++ project, the Recorder subsystem is a critical component for saving simulation data. There are two primary types of recorders: XML and HDF5.
+This note describes the Recorder subsystem as it exists in the current codebase. The code is the source of truth. Older design ideas that no longer match the implementation are summarized near the end so the differences are explicit.
 
-## Hierarchical Data Format (HDF5)
+## Overview
 
-HDF5 is the standard file type for recording data. It's a binary format that is platform-independent, meaning floating-point numbers are not affected by the platform. The file is self-documenting, containing a list of datasets, dimensions, types, and more. Some additional information is available in the lab directory. The HDF5 format is also integrated with MATLAB, enabling the loading of chunks of data, which is useful for our purposes.
+Graphitti uses a `Recorder` object to collect selected simulation data and write it to an output file after or during a run.
 
-## XML
+The current subsystem is built around:
 
-XML is a text-based format. It has advantages for smaller datasets due to its readability but can be challenging to handle with large volumes of data. Custom tools have been developed for MATLAB to facilitate the use of XML.
+- `Recorder`: abstract interface for recorder implementations
+- `XmlRecorder`: text output, stores captured history in memory, writes at the end
+- `Hdf5Recorder`: binary output, appends dynamic data to HDF5 datasets during the run
+- `Xml911Recorder`: a specialized subclass that still exists in the factory, but its overridden `compileHistories()`, `saveSimData()`, and `printParameters()` are effectively empty today
+- `RecordableBase`: abstract interface for anything the recorder can observe
+- `RecordableVector<T>`: generic 1-D recordable container
+- `EventBuffer<T>`: epoch-aware event history buffer used by the recorder as a per-epoch view
 
-## How the Redesigned Recorder Works (Q1 2024)
+The current recorder design is registration-driven. Recorder implementations do not discover data on their own. Instead, simulation subsystems explicitly register recordable objects and assign each one a name and an update cadence.
 
-The redesigned Recorder subsystem (Q1 2024 implementation) aims to accommodate a flexible and simplified data recording process for simulations.
+## What `Recorder` Currently Does
 
-### Supported Data Format
+The abstract `Recorder` interface defines:
 
-In Graphitti, the simulation data can be saved in either an XML or an HDF5 file format by specifying the `XmlRecorder` or `HDF5Recorder` in the input configuration. The main differences in how `XmlRecorder` and `HDF5Recorder` record dynamic simulation data are:
+- `init()`: prepare the output destination
+- `term()`: close the output destination
+- `compileHistories()`: capture per-epoch history for registered dynamic variables
+- `saveSimData()`: write final output
+- `printParameters()`: log recorder parameters
+- `registerVariable(name, recordable, updatedType)`: register a single recordable object
+- `registerVariable(name, vector<RecordableBase*>, updatedType)`: register multiple recordable objects with generated suffixed names
 
-- **XmlRecorder:** Captures all data in vectors during the simulation and writes them to an XML file once the simulation is complete.
-- **HDF5Recorder:** Writes data directly to the HDF5 library routines during the simulation, eliminating the need to store the entire dataset in memory at once.
+It also defines two update frequencies:
 
-### Supported Data Types
+- `CONSTANT`: captured once at final save time
+- `DYNAMIC`: captured once per epoch during simulation
 
-The Recorder system is capable of capturing a wide range of data types using `std::variant` from C++17. The currently supported data types include:
+The base class itself does not directly implement recorder logic for neuron spikes, NG911 calls, layouts, or connections. However, the `Recorder` interface also defines the `multipleTypes` type alias and declares `getStarterNeuronMatrix(VectorMatrix &matrix, const vector<bool> &starterMap)`.
 
-- `unit64_t`
-- `BGFLOAT`
-- `int`
+## Active Recorder Creation and Use
+
+The active recorder is chosen from configuration, not hardcoded.
+
+### Creation path
+
+The current path is:
+
+1. `Core::runSimulation()` loads the XML parameter file.
+2. `Simulator::instantiateSimulatorObjects()` creates a `CPUModel` or `GPUModel`.
+3. `Model::Model()` reads `//RecorderParams/@class` from the parameter file.
+4. `Factory<Recorder>::getInstance().createType(type)` instantiates the requested recorder.
+
+The recorder types currently registered with the factory are:
+
+- `XmlRecorder`
+- `Xml911Recorder`
+- `Hdf5Recorder` only when the build is compiled with `HDF5`
+
+### How the recorder is used at runtime
+
+After creation, the recorder is owned by `Model` and accessed through `Model::getRecorder()`.
+
+The current lifecycle is:
+
+1. `Model::setupSim()` calls `recorder_->init()`.
+2. `Core::runSimulation()` later triggers `registerHistoryVariables` through `OperationManager`.
+3. `Simulator::simulate()` runs epochs.
+4. At the end of each epoch, `Simulator::simulate()` calls:
+   - `model_->updateConnections()`
+   - `model_->updateHistory()`
+5. `Model::updateHistory()` calls `recorder_->compileHistories()`.
+6. After simulation, `Core::runSimulation()` calls `simulator.saveResults()`.
+7. `Simulator::saveResults()` calls `model_->saveResults()`.
+8. `Model::saveResults()` calls `recorder_->saveSimData()`.
+9. After `finish()`, `Core::runSimulation()` calls `simulator.getModel().getRecorder().term()`.
+
+This means the recorder is initialized after vertex setup, edge setup, and layout setup, but before concrete vertex creation and connection setup. Dynamic data are compiled once per epoch, final output is produced after the run, and the recorder is terminated explicitly at shutdown.
+
+## Recorder Lifecycle and Call Flow
+
+### Setup phase
+
+During setup:
+
+- the recorder is instantiated from config
+- the recorder registers its own `printParameters()` callback with `OperationManager` in its constructor
+- `Model::setupSim()` calls `recorder->init()`
+
+At this point, the recorder has an output target but usually has no registered variables yet.
+
+### Registration phase
+
+After setup, `Core::runSimulation()` executes the `registerHistoryVariables` operation through `OperationManager`. Any subsystem that registered a callback for that operation can then register variables with the recorder.
+
+This registration step happens:
+
+- after model setup
+- after parameter loading
+- after optional deserialization
+- before simulation starts
+
+### Per-epoch phase
+
+At the end of every epoch:
+
+- the model may update connections
+- `Model::updateHistory()` calls `Recorder::compileHistories()`
+
+Only `DYNAMIC` variables are handled during this phase.
+
+### Final save phase
+
+After all epochs are complete:
+
+- `Model::saveResults()` calls `Recorder::saveSimData()`
+
+Only then are `CONSTANT` variables captured and written.
+
+### Shutdown phase
+
+Finally:
+
+- `Recorder::term()` closes the file or HDF5 object
+
+## How Variables Are Registered
+
+Registration is explicit and owner-driven.
+
+Each subsystem that owns recordable state typically implements `registerHistoryVariables()` and calls:
+
+```cpp
+recorder.registerVariable("name", someRecordableObject, Recorder::UpdatedType::DYNAMIC);
+```
+
+or:
+
+```cpp
+recorder.registerVariable("baseName", vectorOfRecordablePointers, Recorder::UpdatedType::DYNAMIC);
+```
+
+### What registration stores
+
+For each registered variable, the recorder stores:
+
+- the variable name
+- the variable update frequency
+- a reference to the original `RecordableBase` object
+- the runtime basic type string returned by `RecordableBase::getDataType()`
+
+`XmlRecorder` stores this in `singleVariableInfo`.
+
+`Hdf5Recorder` stores this in `hdf5VariableInfo`, which also converts the runtime type to an HDF5 datatype during registration.
+
+### Important implications
+
+- Registration stores references, not copies.
+- The recordable object must remain alive for the duration of recording.
+- The recorder depends on the recordable object to expose a flat 1-D view through `getNumElements()` and `getElement(index)`.
+- The vector overload generates names by appending an integer index such as `neuron_0`, `neuron_1`, and so on.
+- The vector overload exists and is unit-tested, but the live simulation code currently registers variables one-by-one rather than using it.
+
+## What Subsystems Currently Register Data
+
+The current live `registerHistoryVariables()` call sites are:
+
+### Layout
+
+`Layout::registerHistoryVariables()` registers:
+
+- `vertexTypeMap` as `CONSTANT`
+
+This is a `RecordableVector<vertexType>`.
+
+### Neuro layout
+
+`LayoutNeuro::registerHistoryVariables()` calls the base layout registration and also registers:
+
+- `x_Location` as `CONSTANT`
+- `y_Location` as `CONSTANT`
+
+These are `VectorMatrix` objects containing neuron coordinates.
+
+### Neuro vertices
+
+`AllSpikingNeurons::registerHistoryVariables()` registers:
+
+- `Neuron_0`, `Neuron_1`, ... as `DYNAMIC`
+
+Each variable is an `EventBuffer<uint64_t>` that records spike times for one neuron during an epoch.
+
+### Static neuro connections
+
+`ConnStatic::registerHistoryVariables()` registers:
+
+- `weight` as `DYNAMIC`
+- `sourceVertex` as `DYNAMIC`
+- `destinationVertex` as `DYNAMIC`
+
+These are `RecordableVector` objects representing the current epoch's changed or relevant connection data.
+
+### Growth connections
+
+`ConnGrowth::registerHistoryVariables()` currently does nothing.
+
+This is important because some older notes discuss growth-specific recorded data such as radii histories, but those are not currently registered by this class.
+
+### NG911 connections
+
+`Connections911::registerHistoryVariables()` registers:
+
+- `verticesDeleted` as `DYNAMIC`
+
+This is a `RecordableVector<int>`.
+
+### NG911 vertices
+
+`All911Vertices::registerHistoryVariables()` registers:
+
+Constants:
+
+- `numTrunks`
+- `numServers`
+- `droppedCalls`
+- `receivedCalls`
+
+Dynamic per-vertex histories:
+
+- `BeginTimeHistory_<i>`
+- `AnswerTimeHistory_<i>`
+- `EndTimeHistory_<i>`
+- `WasAbandonedHistory_<i>`
+- `QueueLengthHistory_<i>`
+- `UtilizationHistory_<i>`
+
+The corresponding current container types are:
+
+- `beginTimeHistory_`: `vector<EventBuffer<uint64_t>>`
+- `answerTimeHistory_`: `vector<EventBuffer<uint64_t>>`
+- `endTimeHistory_`: `vector<EventBuffer<uint64_t>>`
+- `wasAbandonedHistory_`: currently declared as `vector<EventBuffer<uint64_t>>`
+- `queueLengthHistory_`: `vector<EventBuffer<uint64_t>>`
+- `utilizationHistory_`: `vector<EventBuffer<float>>`
+- `droppedCalls_`: `RecordableVector<int>`
+- `receivedCalls_`: `RecordableVector<int>`
+- `numServers_`: `RecordableVector<int>`
+- `numTrunks_`: `RecordableVector<int>`
+
+## `CONSTANT` vs `DYNAMIC`
+
+The distinction is implementation-significant.
+
+### `DYNAMIC`
+
+`DYNAMIC` variables are processed in `compileHistories()` once per epoch.
+
+For both XML and HDF5 recorders:
+
+- if `getNumElements() > 0`, the recorder captures the current epoch's values
+- after capture, the recorder calls `startNewEpoch()` on the recordable object
+
+That `startNewEpoch()` call is the main mechanism that tells the recordable object to expose a fresh epoch window next time.
+
+### `CONSTANT`
+
+`CONSTANT` variables are not captured during the epoch loop.
+
+They are captured only during `saveSimData()`, once, at the end of the simulation.
+
+### Practical meaning
+
+- `CONSTANT` is for values that should be written as one final snapshot
+- `DYNAMIC` is for values whose epoch-by-epoch history matters
+
+This is the current behavior regardless of whether the value itself was technically mutable during the run. What matters is how the owner registers it.
+
+## `XmlRecorder` Behavior
+
+`XmlRecorder` is the simpler implementation.
+
+### Initialization
+
+- reads `//RecorderParams/RecorderFiles/resultFileName/text()`
+- requires the file name to end in `.xml`
+- opens an `ofstream`
+
+### Registration
+
+Each registered variable becomes a `singleVariableInfo` containing:
+
+- `variableName_`
+- `dataType_`
+- `variableType_`
+- `variableLocation_`
+- `variableHistory_`
+
+### Dynamic capture
+
+On each `compileHistories()` call:
+
+- iterate over all registered variables
+- for each `DYNAMIC` variable:
+  - append all current elements from the recordable object into `variableHistory_`
+  - call `startNewEpoch()` on the source object
+
+### Final save
+
+On `saveSimData()`:
+
+- write the XML declaration
+- for each registered variable:
+  - if it is `CONSTANT`, capture its values once at this moment
+  - if its accumulated history is non-empty, write one `<Matrix>` element
+
+### Output format
+
+Each variable is written as a flat XML matrix:
+
+- one matrix per registered variable
+- `rows="1"`
+- `columns` equals the total number of captured values
+- values are space-separated in a single flat sequence
+
+The XML writer does not preserve explicit epoch boundaries. If a dynamic variable is captured over multiple epochs, the output is just the concatenated values in time order.
+
+## `Hdf5Recorder` Behavior
+
+`Hdf5Recorder` is only compiled when `HDF5` is enabled.
+
+### Initialization
+
+- reads `//RecorderParams/RecorderFiles/resultFileName/text()`
+- requires the file name to end in `.h5`
+- verifies that the file is writable
+- creates an `H5File` with `H5F_ACC_TRUNC`
+
+### Registration
+
+Each registered variable becomes an `hdf5VariableInfo` containing:
+
+- `variableName_`
+- `dataType_`
+- `hdf5Datatype_`
+- `hdf5DataSet_`
+- `variableType_`
+- `variableLocation_`
+
+During registration, `convertType()` maps the runtime type string to an HDF5 datatype.
+
+### Dynamic capture
+
+On each `compileHistories()` call:
+
+- iterate over all registered variables
+- for each `DYNAMIC` variable:
+  - if the dataset does not exist yet:
+    - create a 1-D dataset with unlimited max size
+    - enable chunking
+    - write the first epoch's values
+  - otherwise:
+    - extend the dataset by the number of current elements
+    - append the new values into the extended region
+  - call `startNewEpoch()` on the source object
+
+### Constant capture
+
+On `saveSimData()`:
+
+- iterate over all registered variables
+- for each `CONSTANT` variable with at least one element:
+  - create a fixed-size 1-D dataset
+  - write the current values once
+
+### Output semantics
+
+Like `XmlRecorder`, the HDF5 implementation currently records flat 1-D data per variable. It does not attach explicit epoch counts, per-epoch offsets, or a higher-dimensional epoch structure. Dynamic data are appended in order.
+
+### Current caveat
+
+The current HDF5 implementation is clearly intended to support `bool`, `int`, and `vertexType`, but its `NATIVE_INT` write path does not cleanly distinguish those cases. The unit tests cover `uint64_t` and `vertexType` scenarios, and the code path should be treated as "current implementation behavior" rather than as a polished, fully generalized type layer.
+
+## `Xml911Recorder`
+
+`Xml911Recorder` still exists and is still registered in the factory, so it can be selected by configuration.
+
+However, in the current code:
+
+- `compileHistories()` is empty
+- `saveSimData()` contains only commented-out legacy code
+- `printParameters()` is empty
+
+As a result, it should be considered a legacy or placeholder specialization rather than an actively maintained recorder implementation.
+
+## `RecordableBase`, `RecordableVector`, and `EventBuffer`
+
+### `RecordableBase`
+
+`RecordableBase` is the recorder-facing interface. Every recordable type must provide:
+
+- `getNumElements()`
+- `getElement(index)`
+- `startNewEpoch()`
+- `setDataType()`
+- `getDataType()`
+
+This is what allows the recorder to treat many different containers in a uniform way.
+
+### `RecordableVector<T>`
+
+`RecordableVector<T>` is the general-purpose 1-D recordable container.
+
+It:
+
+- stores data in `vector<T> dataSeries_`
+- exposes the whole vector through `getNumElements()` and `getElement(index)`
+- clears the vector in `startNewEpoch()`
+- stores the runtime type string using `typeid(T).name()`
+
+It is used for:
+
+- vertex type maps
+- deleted vertex lists
+- per-run counters stored as vectors
+- connection source, destination, and weight histories
+
+### `EventBuffer<T>`
+
+`EventBuffer<T>` is a specialized circular buffer that also acts like a recordable vector from the recorder's point of view.
+
+Its key recorder-facing behavior is different from `RecordableVector<T>`:
+
+- `getNumElements()` returns only the number of elements in the current or just-finished epoch
+- `getElement(index)` returns elements relative to the epoch start
+- `startNewEpoch()` advances the epoch window without clearing the underlying buffer contents
+
+This is what makes it suitable for spike times and other per-epoch event histories where events may need queue semantics internally, but the recorder should only see the epoch-local slice.
+
+## Supported Data Types
+
+### Recorder variant types
+
+The current `RecordableBase` and `Recorder` variant types include:
+
+- `uint64_t`
 - `bool`
+- `int`
+- `BGFLOAT`
+- `vertexType`
+- `double`
+- `unsigned char`
 
-Extending the coverage for new data types involves a two-step process:
+In the current build configuration, `BGFLOAT` is defined as `float`.
 
-1. Expand the `variant` structure data type list (add a new argument to the list of supported data types).
-2. Modify how values are retrieved from the `variant` for data output purposes in the Recorder.
+### XML support
 
-### Supported Data Structures
+`XmlRecorder::toXML()` explicitly handles:
 
-The current Recorder system supports 1-D variables. The recorded variables must have a base interface `RecordableBase`. Current recordable data structures include:
+- `uint64_t`
+- `bool`
+- `int`
+- `BGFLOAT`
+- `vertexType` written as `int`
+- `double`
+- `unsigned char`
 
-- `EventBuffer`
-- `VectorMatrix`
-- Standard library `Vector` (substitutable by `RecordableVector`)
+### HDF5 support
 
-### Updated Type
+`Hdf5Recorder::convertType()` explicitly maps:
 
-The Recorder subsystem supports two types of variables: `DYNAMIC` and `CONSTANT`. These two types are updated at different frequencies:
+- `uint64_t`
+- `bool`
+- `int`
+- `float`
+- `double`
+- `vertexType`
+- `unsigned char`
 
-- `CONSTANT`: Variable value doesn’t change during the simulation epoch. The values can be capture after simulation finishing
-- `DYNAMIC`: Value of dynamic variables is updated in each epoch.
+Because `BGFLOAT` is currently `float`, current `RecordableVector<BGFLOAT>` values map into the HDF5 float path in this build.
 
-### How to Record Data
+## Current Limitations and Assumptions
 
-Recording data with the Recorder subsystem involves several straightforward steps. Below is a general guide:
+The current implementation makes several assumptions that are worth documenting explicitly.
 
-#### Step 1: Variable Registration in Variable Owner Class
+### Data shape assumptions
 
-First, register the variables you intend to record. Each simulation component, especially the variable owner class responsible for its variables, registers for tracking and recording by informing the Recorder of the variable's details. This includes its name, memory address, and update frequency. This is achieved by calling the `registerVariable` method in the Recorder. Note that the registered variable must be a subclass of the `RecordableBase` interface.
+- Recorded data are effectively 1-D.
+- Dynamic histories are flattened across epochs.
+- There is no explicit epoch boundary metadata in XML or HDF5 output.
 
-```cpp
-recorder.registerVariable("variableName", variableAddress, updateType);
-```
+### Lifetime assumptions
 
-#### Step 2: Capturing Data and Saving Data in the Recorder
+- The recorder stores references to registered objects.
+- Registered `RecordableBase` instances must outlive recorder use.
 
-As long as the variable owner class has registered the variable of interest, the Recorder automatically adds each registered variable to the variable table, captures the data, and then outputs them to the output file during the simulation, ensuring that the simulation data is captured at the appropriate moments.
+### Registration assumptions
 
--------------------------------------------------------------------------------------------------
-## Legacy
+- Nothing is recorded unless some subsystem explicitly registers it.
+- The recorder does not introspect the model to find data automatically.
 
-Previously, the focus was not on analyzing individual spikes but on breaking time into bins of 10ms and counting the number of spikes in each bin. This approach was detailed in a 2014 paper. The comment in the code has not been updated since. In the HDF5Recorder.cpp file, there are specific names for datasets:
+### Build assumptions
 
-```cpp
-const H5std_string  nameBurstHist("burstinessHist_");
-const H5std_string  nameSpikesHist("spikesHistory_");
-const H5std_string  nameXloc("xloc");
-const H5std_string  nameYloc("yloc");
-const H5std_string  nameNeuronTypes("neuronTypes");
-const H5std_string  nameNeuronThresh("neuronThresh");
-const H5std_string  nameStarterNeurons("starterNeurons");
-const H5std_string  nameTsim("Tsim");
-const H5std_string  nameSimulationEndTime("simulationEndTime");
-const H5std_string  nameSpikesProbedNeurons("spikesProbedNeurons");
-const H5std_string  nameAttrPNUnit("attrPNUint");
-const H5std_string  nameProbedNeurons("probedNeurons");
-```
+- `Hdf5Recorder` only exists when Graphitti is compiled with HDF5 support.
+- Otherwise, only XML-based recorder types are available through the recorder factory.
 
-init must be called somewhere else.
-this is a wrapper around file. must have been done before initdefault values . blank!
-```cpp
-/*
- * Initialize data
- * Create a new hdf5 file with default properties.
- *
- * @param[in] stateOutputFileName	File name to save histories
- */
-void Hdf5Recorder::init(const string& stateOutputFileName)
-{
-    try
-    {
-        // create a new file using the default property lists
-        stateOut_ = new H5File( stateOutputFileName, H5F_ACC_TRUNC );
+### Implementation limitations
 
-        initDataSet();
-    }
+- `Xml911Recorder` is not an actively functional specialized recorder at present.
+- `ConnGrowth` currently registers no history variables.
+- Some comments in headers still refer to older planned behavior or planned cleanup.
+- Several recorder diagrams and older notes in the docs describe designs that do not exactly match the current code.
 
-    // catch failure caused by the H5File operations
-    catch( FileIException error )
-    {
-        error.printErrorStack();
-        return;
-    }
+## Unit Tests That Reflect Current Expectations
 
-    // catch failure caused by the DataSet operations
-    catch( DataSetIException error )
-    {
-        error.printErrorStack();
-        return;
-    }
+The current recorder unit tests cover:
 
-    // catch failure caused by the DataSpace operations
-    catch( DataSpaceIException error )
-    {
-        error.printErrorStack();
-        return;
-    }
+- recorder factory creation
+- file initialization and termination
+- single-variable registration
+- vector-of-pointers registration
+- XML output generation
+- HDF5 dataset writing and dataset extension
 
-    // catch failure caused by the DataType operations
-    catch( DataTypeIException error )
-    {
-        error.printErrorStack();
-        return;
-    }
-}
-```
-todo: investigate blank initdefaultvalues
-```cpp
-/*
- * Init history matrices with default values
- */
-void Hdf5Recorder::initDefaultValues()
-{
-}
-```
+These tests are useful as a secondary source for intended current behavior, especially for:
 
-Recorders need to record data during the simulation, but the data depends on which model is being simulated.
+- generated names such as `neuron_0`
+- XML `<Matrix>` formatting
+- HDF5 append behavior for dynamic histories
 
-**Growth simulation**: Every neuron has a radius that grows or shrinks.
+They do not fully prove that every live simulation registration path is correct, but they do show what the recorder implementations are expected to do in isolation.
 
-**STDP simulation**: Simulates synapse weight changes during spike times.
+## What Was Removed or Superseded from Older Notes
 
-Depending on the model (growth or STDP), they will generate different types of data because they do different things.
+Older recorder notes mixed current behavior with historical design discussion. The following older details have been superseded by the current implementation and are intentionally not treated as current behavior:
 
-Can't disentangle this structure from the structure of synapses and neurons.
+- old HDF5 dataset names such as `burstinessHist_`, `spikesHistory_`, `Tsim`, and similar legacy examples
+- removed methods such as `init(const string&)`, `initDataSet()`, and `initDefaultValues()`
+- growth-recorder-specific discussions that assume dedicated HDF5 growth recorder subclasses or built-in growth datasets
+- older notes about recorder-specific radius or rate histories as active recorder behavior
+- assumptions that HDF5 output has a richer built-in schema than the current flat dataset-per-variable implementation
 
-**ToDo**: In param file, put which type of sim so that we can select which thing to record.
+The current implementation is simpler:
 
-We record from neurons. For STDP, we need to record from synapses.
+- one active recorder object selected from config
+- owner-driven variable registration
+- per-variable flat histories
+- XML accumulates in memory and writes at the end
+- HDF5 appends dynamic data during simulation and writes constants at the end
 
-Going to be unavoidable interconnectivity between recorders and synapses, neurons. Sort of like a mechanism between synapses and neurons.
+## Summary
 
-**ToDo**: Why does HDF5 growth recorder redo `init`? Couldn't it just inherit it?
+The current recorder subsystem is a generic, registration-based data capture layer. It does not encode model semantics itself. Instead, layouts, vertices, and connections decide what to expose through `RecordableBase` objects.
 
-`Hdf5Recorder` is set up to be a concrete class.
+The practical current model is:
 
-**ToDo**: Why?
+- pick a recorder class from config
+- initialize it during model setup
+- register variables through subsystem `registerHistoryVariables()` callbacks
+- capture dynamic histories once per epoch
+- capture constant values once at final save time
+- write flat per-variable XML or HDF5 output
 
-**ToDo**: Structural issues about getting information from the connections class.
-
-`radiiHistory`/`rateHistory` are member variables of `Hdf5GrowthRecorder`.
-
-Could be expensive to use getters here.
-
-
-
-
-
-
-
-
+That is the behavior the rest of this repository currently implements.
