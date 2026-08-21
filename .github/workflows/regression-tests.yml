@@ -1,40 +1,60 @@
-name: Unit and Regression Tests
+name: Regression Tests
 # Any changes made to documentation won't trigger tests.
 on:
   push:
-    branches: [master, development]
-    paths-ignore:
-      - ".github/**" # Ignore .github folder
-      - "**/Doxyfile" # Ignore changes to Doxygen config
-      - "docs/**" # Ignore documentation folder
-      - "*.md" # Ignore Markdown files
+    branches:
+      - master
+      - SharedDevelopment
+      - '*Dev'
+      - '*Development'
+      - 'release-*'
+      - 'hotfix-*'
+    paths:
+      - 'Simulator/**'
+      - 'Testing/**'
+      - 'ThirdParty/**'
+      - 'Tools/**'
+      - 'configfiles/**'
+      - 'CMakeLists.txt'
+      - 'config.h.in'
+      - '**.cpp'
+      - '**.h'
+      - '**.cu'
+      - '**.c'
+      - '**.hpp'
   pull_request:
     types: [opened, synchronize, reopened]
-    paths-ignore:
-      - ".github/**" # Ignore .github folder
-      - "**/Doxyfile" # Ignore changes to Doxygen config
-      - "docs/**" # Ignore documentation folder
-      - "*.md" # Ignore Markdown files
+    paths:
+      - 'Simulator/**'
+      - 'Testing/**'
+      - 'ThirdParty/**'
+      - 'Tools/**'
+      - 'configfiles/**'
+      - 'CMakeLists.txt'
+      - 'config.h.in'
+      - '**.cpp'
+      - '**.h'
+      - '**.cu'
+      - '**.c'
+      - '**.hpp'
 defaults:
   run:
     working-directory: build
 
 jobs:
-  build:
+  regression-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
       # install Boost Graph Library
       - name: bgl
         run: sudo apt-get update && sudo apt-get install -yq libboost-graph-dev
       # configure and build Simulator
       - name: configure
         run: cmake ..
-      - id: build
-        name: build
-        run: make -j
-      - name: run unit tests
-        run: ./tests
+      - id: build-simulator
+        name: build simulator
+        run: make cgraphitti -j
       - name: build compare_matrices
         run: |
           cd ../Testing/RegressionTesting

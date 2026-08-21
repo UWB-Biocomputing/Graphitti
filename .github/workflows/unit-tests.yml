@@ -1,0 +1,59 @@
+name: Unit Tests
+# Any changes made to documentation won't trigger tests.
+on:
+  push:
+    branches:
+      - master
+      - SharedDevelopment
+      - '*Dev'
+      - '*Development'
+      - 'release-*'
+      - 'hotfix-*'
+    paths:
+      - 'Simulator/**'
+      - 'Testing/**'
+      - 'ThirdParty/**'
+      - 'Tools/**'
+      - 'configfiles/**'
+      - 'CMakeLists.txt'
+      - 'config.h.in'
+      - '**.cpp'
+      - '**.h'
+      - '**.cu'
+      - '**.c'
+      - '**.hpp'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'Simulator/**'
+      - 'Testing/**'
+      - 'ThirdParty/**'
+      - 'Tools/**'
+      - 'configfiles/**'
+      - 'CMakeLists.txt'
+      - 'config.h.in'
+      - '**.cpp'
+      - '**.h'
+      - '**.cu'
+      - '**.c'
+      - '**.hpp'
+defaults:
+  run:
+    working-directory: build
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      # install Boost Graph Library
+      - name: bgl
+        run: sudo apt-get update && sudo apt-get install -yq libboost-graph-dev
+      # configure and build unit tests
+      - name: configure
+        run: cmake ..
+      - id: build-tests
+        name: build tests
+        run: make tests -j
+      - name: run unit tests
+        run: ./tests

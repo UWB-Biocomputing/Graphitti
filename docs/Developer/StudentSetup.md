@@ -128,7 +128,7 @@ high-performance GPU version has been compiled (`ggraphitti`).
 
 3. Install the [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker) to catch any unknowing spelling errors in the code or comments.
 
-4. Install the [PlantUML](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml) to create, edit, and preview PlantUML diagrams directly within Visual Studio Code.
+4. Install [Markdown Preview Mermaid Support](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid) to view and preview Mermaid diagrams directly within Visual Studio Code markdown previews.
 
 ### Building
 VSC can be configured to compile from CMake so that you don't have to type build and launch commands into the terminal every time you want to run. 

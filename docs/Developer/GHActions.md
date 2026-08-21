@@ -4,21 +4,44 @@ This page is dedicated to documentation of any automation files found within the
 
 ## Doxygen and GitHub Pages Action gh-pages.yml
 
-This action is Triggered on a monthly schedule. At the first of every month the doxygen documentation will be regenerated so that any new changes will be updated to the GitHub pages. First, it checks-out the repository using [actions/checkout](https://github.com/actions/checkout). Next, the doxygen files are regenerated using [mattnotmitt/doxygen-action](https://github.com/mattnotmitt/doxygen-action). Lastly, the gh-pages branch is updated with the new docs folder and published using the [peaceiris/actions-gh-pages](https://github.com/peaceiris/actions-gh-pages) action. When this is done, the branch is committed as an orphan to keep the branch as clean as possible.
-
-## Manual GitHub Pages Action publish-gh-pages.yml
-
-The manual GitHub Pages action is a feature that came from wanting to quickly publish changes to documentation files in our docs folder. This action is activated by navigating to the actions tab, selecting the "Publish GitHub Pages Manually" workflow, then toggling the run workflow button on the desired branch. The branch to run this action on will typically be the master branch as that is the one with the most up to date documentation. Once toggled, it will take the docs files from the selected branch and publish them to the gh-pages branch as a forced orphan just like in the gh-pages.yml workflow. This action will also regenerate the Doxygen files in the same way the gh-pages.yml script does. This is done because other branches doesn't hold the Doxygen/html files and would lose this information if not regenerated during this script.
+This action is triggered on a monthly schedule (at the first of every month) or manually via `workflow_dispatch` from the Actions tab. When triggered, the Doxygen documentation is regenerated and published to the `gh-pages` branch. First, it checks out the repository using [actions/checkout](https://github.com/actions/checkout). Next, the Doxygen files are regenerated using [mattnotmitt/doxygen-action](https://github.com/mattnotmitt/doxygen-action). Lastly, the `gh-pages` branch is updated with the `docs` folder and published using the [peaceiris/actions-gh-pages](https://github.com/peaceiris/actions-gh-pages) action. When this is done, the branch is committed as an orphan.
 
 ### Mermaid Diagrams _config.yml
-Since mermaid is set to `true` in _config.yml, anytime GitHub Pages action is triggered, _includes/head-custom.html uses Javascript to seek for any files that contains `mermaid` (once webpage finishes loading), then loads mermaid library.
+Since mermaid is set to `true` in `_config.yml`, anytime GitHub Pages action is triggered, `_includes/head-custom.html` uses JavaScript to seek for any files that contain `mermaid` (once webpage finishes loading), then loads the Mermaid library to render diagrams directly in the browser.
 
-## PlantUML Action plantUML.yml
+## Code Style Check format.yml
 
-The plantUML action occurs anytime a plantUML file is modified or added during a pull request or a push to the master branch. These .puml files are supposed to be located in the UML folder within the Developer folder. This action starts by checking out the repository using [actions/checkout](https://github.com/actions/checkout) with a fetch depth of 0. The next step is to grab all of the .puml files that need to be turned into images. This is done by using a basic bash command to grab all .puml files which is then piped into an awk script to parse out the unnecessary files and construct an output string with all the necessary files. The output string will look like so: "file1.puml file2.puml file3.puml file4.puml\n". This output string is then confirmed by an echo command which prints out the string to the actions terminal. Next, the .png and .svg files are generated from the .puml files in the output string using a fork of [holowinski/plantuml-github-action]. These files are placed within the diagrams folder located within the UML folder. Lastly, the local changes are committed then pushed to the remote repository using [stefanzweifel/git-auto-commit-action](https://github.com/stefanzweifel/git-auto-commit-action).
+This action is triggered on pushes and pull requests that modify C++ source or header files (`.cpp`, `.h`). It executes `clang-format` to verify compliance with the repository style guidelines.
 
+## Unit Tests unit-tests.yml
 
-[//]: # (Moving URL links to the bottom of the document for ease of updating - LS)
-[//]: # (Links to repo items which exist outside of the docs folder need an absolute link.)
+This action runs on pushes and pull requests (excluding documentation-only changes). It compiles the unit test binary (`make tests`) with CMake and executes `./tests` for rapid feedback on test status.
 
-[holowinski/plantuml-github-action]: <https://github.com/UWB-Biocomputing/plantuml-github-action>
+## Regression Tests regression-tests.yml
+
+This action runs on pushes and pull requests (excluding documentation-only changes). It compiles the simulator binary (`make cgraphitti`) and the matrix verification utility (`compare_matrices`), executing all 10 simulation test configurations against reference output matrices.
+
+## Auto-Close Merged Issues close-merged-issues.yml
+
+This action triggers automatically whenever a pull request is merged into `SharedDevelopment` or `master`. It extracts referenced issue numbers from the PR title, branch name, and PR description (e.g. `[issue-123]`, `fixes #123`, `closes #123`, `issue-123`), checks if the issue is currently open on GitHub, and automatically closes it with a comment linking the merged pull request.
+
+## Maintenance Scripts
+
+### Stale Issue Cleanup cleanup_stale_issues.sh
+
+The script [.github/scripts/cleanup_stale_issues.sh](https://github.com/UWB-Biocomputing/Graphitti/blob/master/.github/scripts/cleanup_stale_issues.sh) scans merged pull requests on GitHub to identify referenced issues (such as `[issue-123]`, `fixes #123`, or `closes #123`) that remain in the `OPEN` state, allowing batch closing of issues resolved by merged PRs.
+
+- **Dry Run (Preview candidate issues without modifying)**:
+  ```bash
+  ./.github/scripts/cleanup_stale_issues.sh --dry-run
+  ```
+- **Execute Issue Closure**:
+  ```bash
+  ./.github/scripts/cleanup_stale_issues.sh --execute
+  ```
+- **Options**:
+  - `-d, --dry-run`: Preview candidate issues without closing them (default).
+  - `-x, --execute`: Close the identified open issues with a reference to the merged pull request.
+  - `-l, --limit NUM`: Maximum number of merged PRs to inspect (default: `100`).
+  - `-h, --help`: Display usage help.
+
