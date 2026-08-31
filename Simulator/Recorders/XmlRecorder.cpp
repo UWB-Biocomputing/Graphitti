@@ -26,9 +26,8 @@ XmlRecorder::XmlRecorder()
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
 }
 
-/// Create a new xml file and initialize data
-/// @param[in] stateOutputFileName      File name to save histories
-void XmlRecorder::init()
+/// Setup the internal structure of the class (allocate memory and initialize it).
+void XmlRecorder::setup()
 {
    // check the output file extension is .xml
    string suffix = ".xml";

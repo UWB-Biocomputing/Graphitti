@@ -36,9 +36,8 @@ public:
    }
 
    // Other member functions...
-   /// Initialize data
-   /// @param[in] stateOutputFileName File name to save histories
-   virtual void init() override;
+   /// Setup the internal structure of the class (allocate memory and initialize it).
+   virtual void setup() override;
 
    /// Terminate process
    virtual void term() override;

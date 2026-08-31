@@ -16,15 +16,15 @@ TEST(Hdf5RecorderTest, CreateInstanceSuccess)
    ASSERT_TRUE(recorder != nullptr);
 }
 
-// Test case for init() and term()
-TEST(Hdf5RecorderTest, Hdf5InitAndTermTest)
+// Test case for setup() and term()
+TEST(Hdf5RecorderTest, Hdf5SetupAndTermTest)
 {
    // Create an instance of Hdf5Recorder with a specific output file name
    std::string outputFile = "../Testing/UnitTesting/TestOutput/Hdf5test_output_term.h5";
    Hdf5Recorder recorder(outputFile);
-   recorder.init();
+   recorder.setup();
 
-   // Ensure the file has been created successfully by the constructor
+   // Ensure the file has been created successfully by setup()
    FILE *f = fopen(outputFile.c_str(), "r");
    ASSERT_TRUE(f != NULL);
    fclose(f);
@@ -45,7 +45,7 @@ TEST(Hdf5RecorderTest, RegisterVariableTest)
    // Create an instance of Hdf5Recorder
    std::string outputFile = "../Testing/UnitTesting/TestOutput/Hdf5test_output_register.h5";
    Hdf5Recorder recorder(outputFile);
-   recorder.init();
+   recorder.setup();
 
    // Create an EventBuffer for testing
    EventBuffer<uint64_t> eventBuffer;
@@ -71,7 +71,7 @@ TEST(Hdf5RecorderTest, RegisterVectorVariableTest)
    // Create an instance of Hdf5Recorder
    std::string outputFile = "../Testing/UnitTesting/TestOutput/Hdf5test_output_register.h5";
    Hdf5Recorder recorder(outputFile);
-   recorder.init();
+   recorder.setup();
 
    // Create mock EventBuffer objects for testing
    EventBuffer<uint64_t> buffer0;
@@ -101,7 +101,7 @@ TEST(Hdf5RecorderTest, RegisterVertexTypeTest)
    // Create an instance of Hdf5Recorder
    std::string outputFile = "../Testing/UnitTesting/TestOutput/Hdf5test_output_register.h5";
    Hdf5Recorder recorder(outputFile);
-   recorder.init();
+   recorder.setup();
 
    // Create a vector of NeuronType enums
    RecordableVector<vertexType> neuronTypes;
@@ -133,7 +133,7 @@ TEST(Hdf5RecorderTest, SaveSimDataTest)
 
    // Create an instance of Hdf5Recorder
    Hdf5Recorder recorder(outputFile);
-   recorder.init();
+   recorder.setup();
 
    // Create and configure EventBuffer for testing
    EventBuffer<uint64_t> eventBuffer(5);   // Initialize with a size that matches the mock data
@@ -177,7 +177,7 @@ TEST(Hdf5RecorderTest, SaveSimDataVertexTypeTest)
 
    // Create an instance of Hdf5Recorder
    Hdf5Recorder recorder(outputFile);
-   recorder.init();
+   recorder.setup();
 
    // Create and configure RecordableVector<vertexType> for testing
    RecordableVector<vertexType> neuronTypes;
@@ -223,7 +223,7 @@ TEST(Hdf5RecorderTest, CompileHistoriesTest)
 
    // Create an instance of Hdf5Recorder
    Hdf5Recorder recorder(outputFile);
-   recorder.init();
+   recorder.setup();
 
    // Create and configure variables for testing
    EventBuffer<uint64_t> eventBufferInt(5);   // Example with int type
@@ -274,7 +274,7 @@ TEST(Hdf5RecorderTest, CompileHistoriesVertexTypeTest)
 
    // Create an instance of Hdf5Recorder
    Hdf5Recorder recorder(outputFile);
-   recorder.init();
+   recorder.setup();
 
    // Create and configure EventBuffer for testing (stored as int)
    EventBuffer<uint64_t> eventBufferNeuron(5);

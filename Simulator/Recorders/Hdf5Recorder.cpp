@@ -42,7 +42,7 @@ Hdf5Recorder::~Hdf5Recorder()
 }
 
 // Other member functions implementation...
-void Hdf5Recorder::init()
+void Hdf5Recorder::setup()
 {
    // Check the output file extension is .h5
    string suffix = ".h5";

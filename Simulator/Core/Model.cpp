@@ -101,9 +101,9 @@ void Model::setupSim()
    // Time to initialization (layout)
    t_host_initialization_layout += Simulator::getInstance().getShort_timer().lap() / 1000000.0;
 #endif
-   // Init radii and rates history matrices with default values
+   LOG4CPLUS_INFO(fileLogger_, "Setting up Recorder...");
    if (recorder_ != nullptr) {
-      recorder_->init();
+      recorder_->setup();
    }
 
    // Creates all the vertices and generates data for them.

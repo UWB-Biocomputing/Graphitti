@@ -91,6 +91,8 @@ string OperationManager::operationToString(const Operations &operation) const
          return "printParameters";
       case Operations::loadParameters:
          return "loadParameters";
+      case Operations::setup:
+         return "setup";
       case Operations::serialize:
          return "serialize";
       case Operations::deserialize:
