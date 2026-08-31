@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.12)
 #CONDITIONAL FLAG(to run simulation on CPU or GPU)
 #
 #For GPU:
-#set(ENABLE_CUDA YES) 
+set(ENABLE_CUDA YES) 
 # 
 #For CPU:
 #set(ENABLE_CUDA NO)
@@ -31,12 +31,13 @@ endif()
 #       to your desired architecture:                                                            \
 #
 #cmake -D ENABLE_CUDA=YES -D TARGET_ARCH=70 ..
-#
+# 
 #"YES" / GPU choice only available if CUDA library is installed and the GPU is CUDA capable.
-#If no TARGET_ARCH is passed in then it will default to 37 which is the kepler architecture
+#If TARGET_ARCH is not user-specified then it will default to native.
 ############################################################################################
 if(NOT DEFINED TARGET_ARCH)
-        set(TARGET_ARCH 37)
+# If target not specified by user, use local machine's GPU architecture
+        set(TARGET_ARCH "native")
 endif()
 
 #CONDITIONAL FLAG to turn on the validation mode
@@ -50,14 +51,21 @@ if(ENABLE_CUDA)
         message("\n----Generating Makefile for Graphitti GPU version----")
         project(Graphitti LANGUAGES CXX CUDA C)
 #Verify CUDA package is present
-        find_Package(CUDA REQUIRED)
+        find_package(CUDA REQUIRED)
 #Set the USE_GPU preprocessor macro so that GPU code will be compiled.
         add_compile_definitions(USE_GPU)
-#Specify the CUDA architecture / gencode that will be targeted
-        ### Set gencode and architecture variables to the correct values for your specific NVIDIA hardware
-        set(CMAKE_CUDA_ARCHITECTURES ${TARGET_ARCH})
-        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode=arch=compute_${TARGET_ARCH},code=sm_${TARGET_ARCH})        
+
+# Specify the CUDA architecture / gencode that will be targeted
+# Set gencode and architecture variables to the correct values for your specific NVIDIA hardware
+# Sets real and virtual architecture switch 
+# sm_${TARGET_ARCH} = Real architecture
+# compute_${TARGET_ARCH} = Virtual architecture 
+#                         (embeds PTX code e.g. Parallel Thread Execution. 
+#                          If on a newer GPU, then the CUDA driver compiles a working binary)
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}
+                "-gencode=arch=compute_${TARGET_ARCH},code=sm_${TARGET_ARCH},compute_${TARGET_ARCH}")
         message(STATUS "Using CUDA architecture: ${TARGET_ARCH}")
+
             
 else()
         message("\n----Generating Makefile for Graphitti CPU version----")
