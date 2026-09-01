@@ -1,0 +1,24 @@
+<map id="Simulator/Recorders/XmlRecorder.h" name="Simulator/Recorders/XmlRecorder.h">
+<area shape="rect" id="Node000001" title="Provides an implementation for recording Graph&#45;based simulation variable history in an XML file...." alt="" coords="325,5,464,46"/>
+<area shape="rect" id="Node000002" href="$_conn_static_8cpp.html" title="This class manages the Connections of the Neuro STDP network." alt="" coords="5,94,158,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="311,53,153,96,152,91,310,48"/>
+<area shape="rect" id="Node000003" href="$_xml911_recorder_8h.html" title="Header file for Xml911Recorder.h." alt="" coords="181,94,358,135"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="356,57,299,96,296,91,353,53"/>
+<area shape="rect" id="Node000005" href="$_factory_8h.html" title="A factory template for creating factory class for any subsystem that requires a factory to create a (..." alt="" coords="313,190,477,216"/>
+<area shape="poly" id="edge10_Node000001_Node000005" title=" " alt="" coords="398,62,398,190,392,190,392,62"/>
+<area shape="rect" id="Node000010" href="$_xml_recorder_8cpp.html" title="An implementation for recording variable information on xml file." alt="" coords="432,94,571,135"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="432,54,479,91,476,96,429,58"/>
+<area shape="rect" id="Node000011" href="$_all_spiking_neurons_8cpp.html" title="A container of all spiking neuron data." alt="" coords="596,94,791,135"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="478,48,626,91,625,96,477,53"/>
+<area shape="rect" id="Node000004" href="$_xml911_recorder_8cpp.html" title="Header file for Xml911Recorder.h." alt="" coords="98,183,289,223"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="244,148,213,184,209,180,240,145"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="312,141,379,187,376,192,309,146"/>
+<area shape="rect" id="Node000006" href="$_connections_8cpp.html" title="Methods for creating and updating connections." alt="" coords="32,271,184,312"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="340,223,174,273,173,268,339,218"/>
+<area shape="rect" id="Node000007" href="$_model_8cpp.html" title="Implementation of Model for the graph&#45;based networks." alt="" coords="208,279,379,304"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="371,228,309,281,306,276,368,224"/>
+<area shape="rect" id="Node000008" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="402,279,593,304"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="422,224,485,276,482,281,419,228"/>
+<area shape="rect" id="Node000009" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="617,279,810,304"/>
+<area shape="poly" id="edge8_Node000005_Node000009" title=" " alt="" coords="455,218,669,276,668,281,454,223"/>
+</map>

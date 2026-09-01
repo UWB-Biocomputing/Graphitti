@@ -1,0 +1,9 @@
+<map id="Simulator/Utils/InputEvent.h" name="Simulator/Utils/InputEvent.h">
+<area shape="rect" id="Node000001" title="Structs to hold InputEvent attributes read from input files." alt="" coords="54,5,237,31"/>
+<area shape="rect" id="Node000002" href="$_b_g_types_8h.html" title="Used to define uniform data type sizes based for all operating systems. Also used to test the speed o..." alt="" coords="5,79,91,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,34,78,72,75,68,127,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="115,79,176,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="148,31,148,63,143,63,143,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="200,79,253,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="161,30,203,67,200,71,157,34"/>
+</map>

@@ -1,0 +1,194 @@
+@startuml GraphittiCoreClassDiagram
+
+
+
+
+
+/' Objects '/
+
+class CPUModel {
+	+CPUModel()
+	+{abstract} ~CPUModel()
+	+{abstract} finish() : void <<override>>
+	+{abstract} advance() : void <<override>>
+	+{abstract} updateConnections() : void <<override>>
+	+{abstract} copyGPUtoCPU() : void <<override>>
+	+{abstract} copyCPUtoGPU() : void <<override>>
+}
+
+
+class GPUModel {
+	+GPUModel()
+	+{abstract} ~GPUModel()
+	+{abstract} setupSim() : void <<override>>
+	+{abstract} finish() : void <<override>>
+	+{abstract} advance() : void <<override>>
+	+{abstract} updateConnections() : void <<override>>
+	+{abstract} copyGPUtoCPU() : void <<override>>
+	+{abstract} copyCPUtoGPU() : void <<override>>
+	+printGPUEdgesPropsModel() : void {query}
+	#allocDeviceStruct(void* * allVerticesDevice, void** allEdgesDevice) : void
+	#{abstract} deleteDeviceStruct(void* * allVerticesDevice, void** allEdgesDevice) : void
+	#randNoise_d : float*
+	#edgeIndexMapDevice_ : EdgeIndexMapDevice*
+	#allEdgesDevice_ : AllEdgesDeviceProperties*
+	#allVerticesDevice_ : AllVerticesDeviceProperties*
+	-allocEdgeIndexMap(int count) : void
+	-deleteEdgeIndexMap() : void
+	+copyEdgeIndexMapHostToDevice(EdgeIndexMap& edgeIndexMapHost, int numVertices) : void
+	-updateHistory() : void
+	-eraseEdge(AllEdges& edges, int vertexIndex, int edgeIndex) : void
+	-addEdge(AllEdges& edges, edgeType type, int srcVertex, int destVertex, Coordinate& source, Coordinate& dest, BGFLOAT deltaT) : void
+	-createEdge(AllEdges& edges, int vertexIndex, int edgeIndex, Coordinate source, Coordinate dest, BGFLOAT deltaT, edgeType type) : void
+	+normalMTGPU(float *randNoise_d) : void
+	+initMTGPU(unsigned int seed, unsigned int blocks, unsigned int threads, unsigned int nPerRng, unsigned int mt_rng_count) : void
+}
+
+
+abstract class Model {
+	+Model()
+	+~Model()
+	#fileLogger_ : log4cplus::Logger
+	#connections_ : shared_ptr<Connections>
+	+getConnections() : shared_ptr<Connections> {query}
+	+getRecorder() : shared_ptr<Recorder> {query}
+	#recorder_ : shared_ptr<Recorder>
+	+getLayout() : shared_ptr<Layout> {query}
+	#layout_ : shared_ptr<Layout>
+	+{abstract} advance() : void
+	#{abstract} copyCPUtoGPU() : void
+	#{abstract} copyGPUtoCPU() : void
+	#createAllVertices() : void
+	+{abstract} finish() : void
+	#logSimStep() : void {query}
+	+saveResults() : void
+	+setupSim() : void
+	+{abstract} updateConnections() : void
+	+updateHistory() : void
+}
+
+
+class Simulator {
+	-Simulator()
+	+~Simulator()
+	-deltaT_ : BGFLOAT
+	-epochDuration_ : BGFLOAT
+	+getDeltaT() : BGFLOAT {query}
+	+getEpochDuration() : BGFLOAT {query}
+	+getMaxRate() : BGFLOAT {query}
+	-maxRate_ : BGFLOAT
+	+{static} getInstance() : Simulator&
+	+getShort_timer() : Timer
+	+getTimer() : Timer
+	-short_timer : Timer
+	-timer : Timer
+	+instantiateSimulatorObjects() : bool
+	+getRgEndogenouslyActiveNeuronMap() : bool* {query}
+	-rgEndogenouslyActiveNeuronMap_ : bool*
+	-currentEpoch_ : int
+	+getCurrentStep() : int {query}
+	+getHeight() : int {query}
+	+getMaxEdgesPerVertex() : int {query}
+	+getMaxFiringRate() : int {query}
+	+getNumEpochs() : int {query}
+	+getTotalVertices() : int {query}
+	+getWidth() : int {query}
+	-height_ : int
+	-maxEdgesPerVertex_ : int
+	-maxFiringRate_ : int
+	-numEpochs_ : int
+	-totalNeurons_ : int
+	-width_ : int
+	-consoleLogger_ : log4cplus::Logger
+	-edgeLogger_ : log4cplus::Logger
+	-fileLogger_ : log4cplus::Logger
+	+getInitRngSeed() : long {query}
+	+getNoiseRngSeed() : long {query}
+	-initRngSeed_ : long
+	-noiseRngSeed_ : long
+	+getModel() : shared_ptr<Model> {query}
+	-model_ : shared_ptr<Model>
+	-configFileName_ : string
+	-deserializationFileName_ : string
+	+getConfigFileName() : string {query}
+	+getDeserializationFileName() : string {query}
+	+getSerializationFileName() : string {query}
+	+getStimulusFileName() : string {query}
+	-serializationFileName_ : string
+	-stimulusFileName_ : string
+	+getRgNeuronTypeMap() : vertexType* {query}
+	-rgNeuronTypeMap_ : vertexType*
+	+advanceEpoch(const int& currentEpoch) : void {query}
+	+copyCPUSynapseToGPU() : void
+	+copyGPUSynapseToCPU() : void
+	+finish() : void
+	-freeResources() : void
+	+loadParameters() : void
+	+printParameters() : void {query}
+	+reset() : void
+	+saveResults() : void {query}
+	+setConfigFileName(const string& fileName) : void
+	+setDeserializationFileName(const string& fileName) : void
+	+setSerializationFileName(const string& fileName) : void
+	+setStimulusFileName(const string& fileName) : void
+	+setup() : void
+	+simulate() : void
+}
+
+
+class EdgeIndexMapDevice {
+  +outgoingEdgeIndexMap_ : BGSIZE*
+  +outgoingEdgeBegin_ : BGSIZE*
+  +outgoingEdgeCount_ : BGSIZE*
+  +incomingEdgeIndexMap_ : BGSIZE*
+  +incomingEdgeBegin_ : BGSIZE*
+  +incomingEdgeCount_ : BGSIZE*
+}
+
+
+class AllEdgesDeviceProperties {
+  +sourceVertexIndex_ : int*
+  +destVertexIndex_ : int*
+  +W_ : BGFLOAT*
+  +type_ : edgeType*
+  +inUse_ : unsigned char*
+  +edgeCounts_ : BGSIZE*
+  +totalEdgeCount_ : BGSIZE
+  +maxEdgesPerVertex_ : BGSIZE
+  +countVertices_ : int
+}
+
+
+class AllVerticesDeviceProperties {
+
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+.Model <|-- .CPUModel
+
+
+.Model <|-- .GPUModel
+
+
+
+
+
+/' Aggregation relationships '/
+
+.GPUModel o-- .EdgeIndexMapDevice
+.GPUModel o-- .AllEdgesDeviceProperties
+.GPUModel o-- .AllVerticesDeviceProperties
+
+.Simulator *-- .Model
+
+
+
+
+
+
+@enduml

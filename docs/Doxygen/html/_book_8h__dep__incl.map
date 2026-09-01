@@ -1,0 +1,29 @@
+<map id="Simulator/Utils/Book.h" name="Simulator/Utils/Book.h">
+<area shape="rect" id="Node000001" title="Handles CUDA exceptions." alt="" coords="1212,5,1363,31"/>
+<area shape="rect" id="Node000002" href="$_conn_growth__d_8cpp.html" title="Update the weights of the Synapses in the simulation." alt="" coords="5,79,180,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1196,23,1012,27,762,36,478,54,191,82,180,83,180,78,191,76,478,48,762,31,1011,21,1196,18"/>
+<area shape="rect" id="Node000003" href="$_all911_edges__d_8cpp.html" title="Specialization of the AllEdges class for the NG911 network." alt="" coords="204,79,365,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1196,24,837,40,608,56,378,82,366,83,365,78,377,76,608,51,837,34,1196,19"/>
+<area shape="rect" id="Node000004" href="$_all_d_s_synapses__d_8cpp.html" title="A container of all DS synapse data." alt="" coords="390,79,545,120"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1196,26,910,44,734,60,557,82,546,83,545,78,556,76,733,54,910,38,1196,20"/>
+<area shape="rect" id="Node000005" href="$_all_dynamic_s_t_d_p_synapses__d_8cpp.html" title="A container of all dynamic STDP synapse data." alt="" coords="569,79,789,120"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1196,32,802,82,790,83,789,78,801,76,1196,27"/>
+<area shape="rect" id="Node000006" href="$_all_s_t_d_p_synapses__d_8cpp.html" title="A container of all STDP synapse data." alt="" coords="814,79,984,120"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1213,37,985,83,984,78,1212,32"/>
+<area shape="rect" id="Node000007" href="$_all_spiking_synapses__d_8cpp_source.html" title=" " alt="" coords="1009,79,1187,120"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1245,40,1146,81,1144,76,1243,35"/>
+<area shape="rect" id="Node000008" href="$_gpu_s_input_poisson_8cu.html" title="A class that performs stimulus input (implementation Poisson) on GPU." alt="" coords="1212,79,1363,120"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="1290,46,1290,79,1284,79,1284,46"/>
+<area shape="rect" id="Node000009" href="$_gpu_s_input_regular_8cu.html" title="A class that performs stimulus input (implementation Regular) on GPU." alt="" coords="1386,79,1535,120"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1329,35,1418,76,1416,81,1327,40"/>
+<area shape="rect" id="Node000010" href="$_all911_vertices__d_8cpp.html" title="Specialization of the AllVertices class for the NG911 network." alt="" coords="1559,79,1751,120"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1359,32,1564,76,1563,81,1358,37"/>
+<area shape="rect" id="Node000011" href="$_all_i_f_neurons__d_8cpp.html" title="A container of all Integate and Fire (IF) neuron data." alt="" coords="1775,79,1954,120"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1378,27,1557,48,1764,76,1775,78,1775,84,1763,82,1556,53,1378,32"/>
+<area shape="rect" id="Node000012" href="$_all_i_z_h_neurons__d_8cpp.html" title="A container of all Izhikevich neuron data." alt="" coords="1978,79,2167,120"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="1378,22,1643,42,1804,57,1966,76,1978,78,1977,83,1965,82,1804,63,1642,47,1378,28"/>
+<area shape="rect" id="Node000013" href="$_all_l_i_f_neurons__d_8cpp.html" title="A container of all LIF neuron data." alt="" coords="2191,79,2378,120"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="1378,20,1730,37,1954,53,2179,76,2191,78,2191,83,2179,82,1954,58,1730,42,1378,25"/>
+<area shape="rect" id="Node000014" href="$_all_spiking_neurons__d_8cpp_source.html" title=" " alt="" coords="2401,79,2610,120"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="1379,18,1815,34,2101,51,2390,76,2401,78,2401,83,2390,82,2101,56,1815,39,1379,24"/>
+</map>

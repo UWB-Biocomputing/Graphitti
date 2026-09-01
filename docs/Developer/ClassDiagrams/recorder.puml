@@ -1,0 +1,122 @@
+@startuml RecorderClassDiagram
+
+
+
+
+
+/' Objects '/
+
+
+class Hdf5Recorder {
+	+Hdf5Recorder()
+	#resultOut_ : H5File
+	#variableTable_ : vector<hdf5VariableInfo>
+	+{static} Create() : Recorder*
+	+compileHistories() : void
+	#getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
+	+init() : void
+	#initDataSet() : void
+	+printParameters() : void
+	+saveSimData() : void
+	+term() : void
+	+registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
+	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
+}
+
+struct hdf5VariableInfo {
+	#variableName_ : string
+	#variableLocation_ : RecordableBase&
+	#dataType_ : string
+	#hdf5Datatype_ : DataType
+	#hdf5DataSet_ : DataSet hdf5DataSet_
+	#variableType: UpdatedType
+	+hdf5VariableInfo(string name, RecordableBase &location)
+	+captureData()
+	+convertType()
+}
+
+
+abstract class Recorder {
+	+~Recorder()
+	#fileLogger_ : log4cplus::Logger
+	#resultFileName_ : string
+	+{abstract} compileHistories(AllVertices& vertices) : void
+	#{abstract} getStarterNeuronMatrix(VectorMatrix& matrix, const bool* starterMap) : void
+	+{abstract} init() : void
+	+{abstract} printParameters() : void
+	+{abstract} saveSimData(const AllVertices& vertices) : void
+	+{abstract} term() : void
+	+{abstract} registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
+	+{abstract} registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
+}
+
+
+class RecorderFactory {
+	-RecorderFactory()
+	+~RecorderFactory()
+	-invokeCreateFunction(const string& className) : Recorder*
+	+{static} getInstance() : RecorderFactory*
+	-createFunctions : RecorderFunctionMap
+	+createRecorder(const string& className) : shared_ptr<Recorder>
+	-recorderInstance : shared_ptr<Recorder>
+	-registerClass(const string& className, CreateFunction function) : void
+}
+
+
+class XmlRecorder {
+	+XmlRecorder()
+	+{static} Create() : Recorder*
+	#variableTable_ : vector<singleVariableInfo>
+	#resultOut_ : ofstream
+	+compileHistories() : void
+	+init() : void
+	+printParameters() : void
+	+saveSimData() : void
+	+term() : void
+	+registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
+	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
+	
+	/' methods only used for unit test 
+	+XmlRecorder(string fileName_)
+	+getVariableName(int numIndex) const : const string&
+	+getSingleVariable(int numIndex) const : &RecordableBase
+	+getHistory() const : const &vector<variant<uint64_t, bool, int, BGFLOAT>>
+	'/
+}
+
+struct singleVariableInfo {
+	#variableName_ : string
+	#variableLocation_ : RecordableBase&
+	#variableHistory_ : vector<variant<uint64_t, bool, int, BGFLOAT>
+	#dataType_ : string
+	#variableType: UpdatedType
+	+singleVariableInfo(string name, RecordableBase &location)
+	+captureData()
+}
+
+
+
+/' Inheritance relationships '/
+
+.Recorder <|-- .Hdf5Recorder
+
+
+.Recorder <|-- .XmlRecorder
+
+
+/' Aggregation relationships '/
+
+.RecorderFactory *-- .Recorder
+
+/' Composition relationships '/
+
+.XmlRecorder *-- .singleVariableInfo
+
+.Hdf5Recorder *-- .hdf5VariableInfo
+
+
+/' Nested objects '/
+
+
+
+@enduml

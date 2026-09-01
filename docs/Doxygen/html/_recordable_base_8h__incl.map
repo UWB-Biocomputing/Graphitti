@@ -1,0 +1,19 @@
+<map id="Simulator/Recorders/RecordableBase.h" name="Simulator/Recorders/RecordableBase.h">
+<area shape="rect" id="Node000001" title="An abstract base class defining the interface for recordable variables in the simulator." alt="" coords="254,5,394,46"/>
+<area shape="rect" id="Node000002" href="$_vertex_type_8h.html" title="Enum class of vertex types." alt="" coords="5,94,102,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="257,49,111,92,109,87,256,44"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="126,94,179,120"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="282,49,194,90,191,85,280,44"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="203,94,269,120"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="304,48,263,85,259,81,301,44"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="294,94,354,120"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="327,46,327,78,322,78,322,46"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="378,94,436,120"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="346,44,385,81,381,85,343,48"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="459,94,648,120"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="382,44,505,86,503,91,381,49"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="671,94,822,120"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="395,37,667,88,666,93,394,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="19,168,88,193"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="56,120,56,152,51,152,51,120"/>
+</map>

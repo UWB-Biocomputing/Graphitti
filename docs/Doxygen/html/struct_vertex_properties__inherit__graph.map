@@ -1,0 +1,7 @@
+<map id="VertexProperties" name="VertexProperties">
+<area shape="rect" id="Node000001" title="Parent structure to store common properties for all graph vertices." alt="" coords="116,5,234,31"/>
+<area shape="rect" id="Node000002" href="$struct_n_g911_vertex_properties.html" title="Derived structure for NG911&#45;specific properties Inherits from VertexProperty and includes attributes ..." alt="" coords="5,79,164,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,43,101,81,98,77,146,39"/>
+<area shape="rect" id="Node000003" href="$struct_neural_vertex_properties.html" title="Derived structure for Neural Network&#45;specific properties." alt="" coords="188,79,344,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="204,39,252,77,249,81,201,43"/>
+</map>

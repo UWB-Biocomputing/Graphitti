@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$struct_vertex_properties.html" title="Parent structure to store common properties for all graph vertices." alt="" coords="5,31,123,56"/>
+<area shape="rect" id="Node000001" href="$struct_n_g911_vertex_properties.html" title="Derived structure for NG911&#45;specific properties Inherits from VertexProperty and includes attributes ..." alt="" coords="171,5,329,31"/>
+<area shape="poly" id="edge47_Node000000_Node000001" title=" " alt="" coords="138,31,170,26,171,32,139,36"/>
+<area shape="rect" id="Node000002" href="$struct_neural_vertex_properties.html" title="Derived structure for Neural Network&#45;specific properties." alt="" coords="172,55,328,80"/>
+<area shape="poly" id="edge48_Node000000_Node000002" title=" " alt="" coords="139,50,172,55,172,60,138,56"/>
+</map>

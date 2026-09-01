@@ -1,0 +1,7 @@
+<map id="IFunctionNode" name="IFunctionNode">
+<area shape="rect" id="Node000001" title=" " alt="" coords="120,5,227,31"/>
+<area shape="rect" id="Node000002" href="$class_generic_function_node.html" title=" " alt="" coords="5,79,153,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,43,96,81,93,77,144,39"/>
+<area shape="rect" id="Node000003" href="$class_two_uint64_arg_function_node.html" title=" " alt="" coords="177,79,362,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,38,255,76,252,81,200,43"/>
+</map>
