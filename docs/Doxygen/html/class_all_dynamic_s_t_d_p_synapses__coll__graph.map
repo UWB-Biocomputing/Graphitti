@@ -1,0 +1,11 @@
+<map id="AllDynamicSTDPSynapses" name="AllDynamicSTDPSynapses">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,300,184,326"/>
+<area shape="rect" id="Node000002" href="$class_all_s_t_d_p_synapses.html" title=" " alt="" coords="30,226,159,252"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,267,97,300,92,300,92,267"/>
+<area shape="rect" id="Node000003" href="$class_all_spiking_synapses.html" title=" " alt="" coords="26,153,163,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="97,194,97,226,92,226,92,194"/>
+<area shape="rect" id="Node000004" href="$class_all_neuro_edges.html" title=" " alt="" coords="41,79,148,105"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="97,120,97,152,92,152,92,120"/>
+<area shape="rect" id="Node000005" href="$class_all_edges.html" title=" " alt="" coords="58,5,131,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="97,46,97,79,92,79,92,46"/>
+</map>

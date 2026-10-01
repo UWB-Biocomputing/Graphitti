@@ -1,0 +1,133 @@
+@startuml Agile Recorder Class Diagram Design
+
+class RecorderFactory {
+	-RecorderFactory()
+	+~RecorderFactory()
+	-invokeCreateFunction(const string& className) : Recorder*
+	+{static} getInstance() : RecorderFactory*
+	-createFunctions : RecorderFunctionMap
+	+createRecorder(const string& className) : shared_ptr<Recorder>
+	-recorderInstance : shared_ptr<Recorder>
+	-registerClass(const string& className, CreateFunction function) : void
+}
+
+class Recorder {
+	+~Recorder()
+	#fileLogger_ : log4cplus::Logger
+	#resultFileName_ : string
+	+{abstract} compileHistories() : void
+	+{abstract} init() : void
+	+{abstract} printParameters() : void
+	+{abstract} saveSimData() : void
+	+{abstract} term() : void
+	+{abstract}registerVariable(const string &varName, RecordableBase &recordVar, UpdatedType variableType) : void
+	+{abstract}registerVariable(const string &varName, vector<RecordableBase *> &recordVars, UpdatedType variableType) : void
+}
+
+class HDF5Recorder {
+	-variableHDF5Table : vector<HDF5VariableInfo>
+	#resultOut_ : H5File
+	+{static} Create() : Recorder*
+	+compileHistories() : void
+	+init() : void
+	+printParameters() : void
+	+saveSimData() : void
+	+term() : void
+	/'add more'/
+}
+
+class XmlRecorder {
+	#variableTable_ : vector<XmlVariableInfo>
+	+XmlRecorder()
+	#resultOut_ : ofstream
+	+{static} Create() : Recorder*
+	+compileHistories() : void
+	+init() : void
+	+printParameters() : void
+	+term() : void
+	+saveSimData() : void
+	+registerVariable(const string &varName, RecordableBase &recordVar,  UpdatedType variableType) : void
+	+registerVariable(const string &varName, vector<RecordableBase *> &recordVars) : void
+	
+	/' methods only used for unit test 
+	+XmlRecorder(string fileName_)
+	+getVariableName(int numIndex) const : const string&
+	+getSingleVariable(int numIndex) const : &RecordableBase
+	+getHistory() const : const &vector<variant<uint64_t, bool, int, BGFLOAT>>
+	'/
+}
+
+class BaseVariableInfo {
+	#variableName_ : string
+	#variableLocation_ : RecordableBase&
+	#dataType_ : string
+	#updatedType_ : variableType
+	+singleVariableInfo(string name, RecordableBase &location, UpdatedType variableType)
+	+singleVariableInfo(string name, RecordableBase &location, 
+			UpdatedType variableType, string, constantDataType)
+	+captureData();
+}
+
+class XmlVariableInfo {
+	-variableHistory_: vector<variant<uint64_t, bool, int, BGFLOAT>>
+}
+
+class HDF5VariableInfo {
+	-variableDataset_: Dataset
+	/'add more methods'/
+}
+
+abstract class RecordableBase {
+	#basicDataType_ : string
+	+{abstract} getNumElements() const : int
+	+{abstract} startNewEpoch() : void
+	+{abstract} getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
+	+{abstract} setDataType() : void
+	+{abstract} getDataType() : string
+}
+
+class RecordableConstant<T>{
+	-element : T
+	+getNumElements() const : int
+	+startNewEpoch() : void
+	+getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
+	+setDataType() : void
+	+getDataType() : string
+	/'add more method if needed'/
+}
+
+
+class RecordableVector<T>{
+	-dataSeries__ : vector<T>
+	+getNumElement() const : int
+	+startNewEpoch() : void
+	+getElement(int index) const : variant<uint64_t, bool, int, BGFLOAT>
+	+setDataType() : void
+	+getDataType() : string
+	/'vector methods'/
+	+resize(int maxEvents) : void
+	+operator[](int i) : &T
+}
+
+
+/' relationships '/
+
+.RecorderFactory *-- .Recorder
+
+Recorder <|-- XmlRecorder : inherits
+Recorder <|-- HDF5Recorder : inherits
+
+Recorder *-- BaseVariableInfo : contains
+
+BaseVariableInfo <|-- XmlVariableInfo : inherits
+BaseVariableInfo <|-- HDF5VariableInfo : inherits
+
+XmlRecorder *-- XmlVariableInfo : contains
+HDF5Recorder *-- HDF5VariableInfo : contains
+
+BaseVariableInfo *-- RecordableBase : contains
+
+RecordableBase <|-- RecordableConstant : inherits
+RecordableBase <|-- RecordableVector : inherits
+
+@enduml 

@@ -1,0 +1,343 @@
+@startuml VerticesClassDiagram
+
+
+
+/' Objects '/
+
+class AllIFNeurons {
+	+AllIFNeurons()
+	+{abstract} ~AllIFNeurons()
+	+{abstract} setupVertices() : void <<override>>
+	+{abstract} loadParameters() : void
+	+{abstract} printParameters() : void {query}
+	+{abstract} createAllVertices(Layout& layout) : void
+	+{abstract} toString(int index) : string {query}
+	+{abstract} deserialize(istream& input) : void
+	+{abstract} serialize(ostream& output) : void {query}
+	+serialize(Archive& archive) : void
+	+{abstract} advanceVertices(AllEdges& synapses, void* allVerticesDevice, void* allEdgesDevice, float randNoise[], EdgeIndexMapDevice* edgeIndexMapDevice) : void
+	+{abstract} allocVerticesDeviceStruct(void** allVerticesDevice) : void
+	+{abstract} deleteVerticesDeviceStruct(void* allVerticesDevice) : void
+	+{abstract} clearVertexHistory(void* allVerticesDevice) : void <<override>>
+	+{abstract} copyFromDevice(void* deviceAddress) : void <<override>>
+	+{abstract} copyToDevice(void* deviceAddress) : void <<override>>
+	#allocDeviceStruct(AllIFNeuronsDeviceProperties& allVerticesDevice) : void
+	#deleteDeviceStruct(AllIFNeuronsDeviceProperties& allVerticesDevice) : void
+	#copyDeviceToHost(AllIFNeuronsDeviceProperties& allVerticesDevice) : void
+	#createNeuron(int neuronIndex, Layout& layout) : void
+	#setNeuronDefaults(int index) : void
+	#{abstract} initNeuronConstsFromParamValues(int neuronIndex, BGFLOAT deltaT) : void
+	#readNeuron(istream& input, int i) : void
+	#writeNeuron(ostream& output, int i) : void {query}
+  	+Trefract_ : vector<BGFLOAT>
+  	+Vthresh_ : vector<BGFLOAT>
+  	+Vrest_ : vector<BGFLOAT>
+  	+Vreset_ : vector<BGFLOAT>
+  	+Vinit_ : vector<BGFLOAT>
+  	+Cm_ : vector<BGFLOAT>
+  	+Rm_ : vector<BGFLOAT>
+ 	+Inoise_ : vector<BGFLOAT>
+  	+Iinject_ : vector<BGFLOAT>
+  	+Isyn_ : vector<BGFLOAT>
+  	+numStepsInRefractoryPeriod_ : vector<int>
+  	+C1_ : vector<BGFLOAT>
+  	+C2_ : vector<BGFLOAT>
+  	+I0_ : vector<BGFLOAT>
+  	+Vm_ : vector<BGFLOAT>
+  	+Tau_ : vector<BGFLOAT>
+  	-IinjectRange_ : BGFLOAT[2]
+  	-InoiseRange_ : BGFLOAT[2]
+  	-VthreshRange_ : BGFLOAT[2]
+  	-VrestingRange_ : BGFLOAT[2]
+  	-VresetRange_ : BGFLOAT[2]
+  	-VinitRange_ : BGFLOAT[2]
+  	-starterVthreshRange_ : BGFLOAT[2]
+  	-starterVresetRange_ : BGFLOAT[2]
+}
+
+
+class AllIZHNeurons {
+	+AllIZHNeurons()
+	+{abstract} ~AllIZHNeurons()
+	+{static} Create() : AllVertices*
+	+{abstract} setupVertices() : void <<override>>
+	+{abstract} printParameters() : void {query} <<override>>
+	+{abstract} createAllVertices(Layout& layout) : void <<override>>
+	+{abstract} toString(int index) : string {query} <<override>>
+	+{abstract} deserialize(istream& input) : void <<override>>
+	+{abstract} serialize(ostream& output) : void {query} <<override>>
+	+serialize(Archive& archive) : void
+	+{abstract} advanceVertices(AllEdges& synapses, void* allVerticesDevice, void* allEdgesDevice, float randNoise[], EdgeIndexMapDevice* edgeIndexMapDevice) : void <<override>>
+	+{abstract} allocVerticesDeviceStruct(void** allVerticesDevice) : void <<override>>
+	+{abstract} deleteVerticesDeviceStruct(void* allVerticesDevice) : void <<override>>
+	+{abstract} clearVertexHistory(void* allVerticesDevice) : void <<override>>
+	+{abstract} copyFromDevice(void* deviceAddress) : void <<override>>
+	+{abstract} copyToDevice(void* deviceAddress) : void <<override>>
+	#allocDeviceStruct(AllIZHNeuronsDeviceProperties& allVerticesDevice) : void
+	#deleteDeviceStruct(AllIZHNeuronsDeviceProperties& allVerticesDevice) : void
+	#copyHostToDevice(AllIZHNeuronsDeviceProperties& allVerticesDevice) : void
+	#copyDeviceToHost(AllIZHNeuronsDeviceProperties& allVerticesDevice) : void
+	#{abstract} advanceNeuron(int index) : void
+	#{abstract} fire(int index) : void
+	#createNeuron(int neuronIndex, Layout& layout) : void
+	#setNeuronDefaults(int index) : void
+	#{abstract} initNeuronConstsFromParamValues(int neuronIndex, BGFLOAT deltaT) : void <<override>>
+	#readNeuron(istream& input, int index) : void
+	#writeNeuron(ostream& output, int index) : void {query}
+	+Aconst_ : vector<BGFLOAT>
+	+Bconst_ : vector<BGFLOAT>
+	+Cconst_ : vector<BGFLOAT>
+	+Dconst_ : vector<BGFLOAT>
+	+u_ : vector<BGFLOAT>
+	+C3_ : vector<BGFLOAT>
+	-{static} DEFAULT_a : static constexpr BGFLOAT
+	-{static} DEFAULT_b : static constexpr BGFLOAT
+	-{static} DEFAULT_c : static constexpr BGFLOAT
+	-{static} DEFAULT_d : static constexpr BGFLOAT
+	-excAconst_ : BGFLOAT[2]
+	-inhAconst_ : BGFLOAT[2]
+	-excBconst_ : BGFLOAT[2]
+	-inhBconst_ : BGFLOAT[2]
+	-excCconst_ : BGFLOAT[2]
+	-inhCconst_ : BGFLOAT[2]
+	-excDconst_ : BGFLOAT[2]
+	-inhDconst_ : BGFLOAT[2]
+}
+
+
+class AllLIFNeurons {
+	+AllLIFNeurons()
+	+{abstract} ~AllLIFNeurons()
+	+{static} Create() : AllVertices*
+	+{abstract} printParameters() : void {query} <<override>>
+	+serialize(Archive& archive) : void
+	+{abstract} advanceVertices(AllEdges& synapses, void* allVerticesDevice, void* allEdgesDevice, float randNoise[], EdgeIndexMapDevice* edgeIndexMapDevice) : void <<override>>
+	#{abstract} advanceNeuron(int index) : void
+	#{abstract} fire(int index) : void
+}
+
+
+abstract class AllSpikingNeurons {
+	+AllSpikingNeurons()
+	+{abstract} ~AllSpikingNeurons()
+	+{abstract} setupVertices() : void <<override>>
+	+clearSpikeCounts() : void
+	+{abstract} registerHistoryVariables() : void <<override>>
+	+serialize(Archive& archive) : void
+	+{abstract} setAdvanceVerticesDeviceParams(AllEdges& synapses) : void
+	+{abstract} integrateVertexInputs(void* allVerticesDevice, EdgeIndexMapDevice* edgeIndexMapDevice, void* allEdgesDevice) : void
+	+{abstract} copyFromDevice(void* deviceAddress) : void <<override>>
+	+{abstract} copyToDevice(void* deviceAddress) : void <<override>>
+	#clearDeviceSpikeCounts(AllSpikingNeuronsDeviceProperties& allVerticesDevice) : void
+	+{abstract} advanceVertices(AllEdges& synapses, const EdgeIndexMap& edgeIndexMap) : void
+	+{abstract} integrateVertexInputs(AllEdges& edges, EdgeIndexMap& edgeIndexMap) : void
+	+getSpikeHistory(int index, int offIndex) : uint64_t
+	#{abstract} advanceNeuron(int index) : void
+	#{abstract} fire(int index) : void
+	+hasFired_ : vector<bool>
+	+vertexEvents_ : vector<EventBuffer>
+	+summationPoints_ : vector<BGFLOAT>
+	#fAllowBackPropagation_ : bool
+}
+
+
+abstract class AllVertices {
+	+AllVertices()
+	+{abstract} ~AllVertices()
+	+{abstract} setupVertices() : void
+	+{abstract} printParameters() : void {query}
+	+{abstract} loadEpochInputs(uint64_t currentStep, uint64_t endStep) : void
+	+{abstract} loadParameters() : void
+	+{abstract} createAllVertices(Layout& layout) : void
+	+{abstract} toString(int i) : string {query}
+	+{abstract} registerHistoryVariables() : void
+	+serialize(Archive& archive) : void
+	#size_ : int
+	#fileLogger_ : log4cplus::Logger
+	#vertexLogger_ : log4cplus::Logger
+	+{abstract} allocVerticesDeviceStruct(void** allVerticesDevice) : void
+	+{abstract} deleteVerticesDeviceStruct(void* allVerticesDevice) : void
+	+{abstract} clearVertexHistory(void* allVerticesDevice) : void
+	+{abstract} copyToDevice(void* allVerticesDevice) : void
+	+{abstract} copyFromDevice(void* allVerticesDevice) : void
+	+{abstract} advanceVertices(AllEdges& edges, void* allVerticesDevice, void* allEdgesDevice, float randNoise[], EdgeIndexMapDevice* edgeIndexMapDevice) : void
+	+{abstract} setAdvanceVerticesDeviceParams(AllEdges& edges) : void
+	+{abstract} integrateVertexInputs(void* allVerticesDevice, EdgeIndexMapDevice* edgeIndexMapDevice, void* allEdgesDevice) : void
+	+{abstract} advanceVertices(AllEdges& edges, const EdgeIndexMap* edgeIndexMap) : void
+	+{abstract} integrateVertexInputs(AllEdges& edges, EdgeIndexMap& edgeIndexMap) : void
+}
+
+
+class EventBuffer {
+	+EventBuffer(int maxEvents)
+	-epochStart_ : int
+	+getNumElementsInEpoch() : int {query}
+	-numElementsInEpoch_ : int
+	-bufferEnd_ : int
+	-bufferFront_ : int
+	+getPastEvent(int offset) : uint64_t {query}
+	+operator[](int i) : uint64_t {query}
+	-dataSeries_ : vector<uint64_t>
+	+clear() : void
+	+insertEvent(uint64_t timeStep) : void
+	+resize(int maxEvents) : void
+	+startNewEpoch() : void
+}
+
+
+class VerticesFactory {
+	-VerticesFactory()
+	+~VerticesFactory()
+	-invokeCreateFunction(const string& className) : AllVertices*
+	+{static} getInstance() : VerticesFactory*
+	-createFunctions : VerticesFunctionMap
+	+createVertices(const string& className) : shared_ptr<AllVertices>
+	-verticesInstance : shared_ptr<AllVertices>
+	-registerClass(const string& className, CreateFunction function) : void
+}
+
+
+class All911Vertices {
+  +All911Vertices()
+  +{abstract} ~All911Vertices()
+  +{static} Create() : AllVertices*
+  +{abstract} setupVertices() : void <<override>>
+  +{abstract} createAllVertices(Layout& layout) : void
+  +{abstract} loadParameters() : void
+  +{abstract} printParameters() : void {query} <<override>>
+  +{abstract} toString(int index) : string {query}
+  +{abstract} loadEpochInputs(uint64_t currentStep, uint64_t endStep) : void <<override>>
+  +{abstract} registerHistoryVariables() : void <<override>>
+  +getQueue(int vIdx) : CircularBuffer<Call>&
+  +droppedCalls(int vIdx) : int&
+  +receivedCalls(int vIdx) : int&
+  +busyServers(int vIdx) : int {query}
+  -beginTimeHistory_ : vector<vector<uint64_t>>
+  -answerTimeHistory_ : vector<vector<uint64_t>>
+  -endTimeHistory_ : vector<vector<uint64_t>>
+  -wasAbandonedHistory_ : vector<vector<unsigned char>>
+  -queueLengthHistory_ : vector<vector<int>>
+  -utilizationHistory_ : vector<vector<double>>
+  -vertexQueues_ : vector<CircularBuffer<Call>>
+  -droppedCalls_ : vector<int>
+  -receivedCalls_ : vector<int>
+  -busyServers_ : vector<int>
+  -numServers_ : vector<int>
+  -numTrunks_ : vector<int>
+  -redialP_ : BGFLOAT
+  -avgDrivingSpeed_ : BGFLOAT
+  -servingCall_ : vector<vector<Call>>
+  -answerTime_ : vector<vector<uint64_t>>
+  -serverCountdown_ : vector<vector<int>>
+  -inputManager_ : InputManager<Call>
+  -advanceCALR(BGSIZE vertexIdx, All911Edges& edges911, const EdgeIndexMap& edgeIndexMap) : void
+  -advancePSAP(BGSIZE vertexIdx, All911Edges& edges911, const EdgeIndexMap& edgeIndexMap) : void
+  -advanceRESP(BGSIZE vertexIdx, All911Edges& edges911, const EdgeIndexMap& edgeIndexMap) : void
+  +{abstract} allocVerticesDeviceStruct(void** allVerticesDevice) : void
+  +{abstract} deleteVerticesDeviceStruct(void* allVerticesDevice) : void
+  +{abstract} copyToDevice(void* allVerticesDevice) : void
+  +{abstract} copyFromDevice(void* allVerticesDevice) : void
+  +{abstract} advanceVertices(AllEdges& edges, void* allVerticesDevice, void* allEdgesDevice, float randNoise[], EdgeIndexMapDevice* edgeIndexMapDevice) : void
+  +{abstract} setAdvanceVerticesDeviceParams(AllEdges& edges) : void
+  +{abstract} clearVertexHistory(void* allVerticesDevice) : void
+  +{abstract} integrateVertexInputs(void* allVerticesDevice, EdgeIndexMapDevice* edgeIndexMapDevice, void* allEdgesDevice) : void
+  +{abstract} advanceVertices(AllEdges& edges, const EdgeIndexMap& edgeIndexMap) : void <<override>>
+  +{abstract} integrateVertexInputs(AllEdges& edges, EdgeIndexMap& edgeIndexMap) : void <<override>>
+}
+
+
+class AllIFNeuronsDeviceProperties {
+	+Trefract_ : BGFLOAT*
+	+Vthresh_ : BGFLOAT*
+	+Vrest_ : BGFLOAT*
+	+Vreset_ : BGFLOAT*
+	+Vinit_ : BGFLOAT*
+	+Cm_ : BGFLOAT*
+	+Rm_ : BGFLOAT*
+	+Inoise_ : BGFLOAT*
+	+Iinject_ : BGFLOAT*
+	+Isyn_ : BGFLOAT*
+	+numStepsInRefractoryPeriod_ : int*
+	+C1_ : BGFLOAT*
+	+C2_ : BGFLOAT*
+	+I0_ : BGFLOAT*
+	+Vm_ : BGFLOAT*
+	+Tau_ : BGFLOAT*
+}
+
+
+class AllIZHNeuronsDeviceProperties {
+	+Aconst_ : BGFLOAT*
+	+Bconst_ : BGFLOAT*
+	+Cconst_ : BGFLOAT*
+	+Dconst_ : BGFLOAT*
+	+u_ : BGFLOAT*
+	+C3_ : BGFLOAT*
+}
+
+
+class AllSpikingNeuronsDeviceProperties {
+	+hasFired_ : bool*
+	+spikeHistory_ : uint64_t**
+	+bufferFront_ : int*
+	+bufferEnd_ : int*
+	+epochStart_ : int*
+	+numElementsInEpoch_ : int*
+	+summationPoints_ : BGFLOAT*
+}
+
+
+class AllVerticesDeviceProperties {
+	
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+.AllIFNeurons <|-- .AllIZHNeurons
+
+
+.AllIFNeurons <|-- .AllLIFNeurons
+
+
+.AllIFNeuronsDeviceProperties <|-- .AllIZHNeuronsDeviceProperties
+
+
+.AllSpikingNeurons <|-- .AllIFNeurons
+
+
+.AllSpikingNeuronsDeviceProperties <|-- .AllIFNeuronsDeviceProperties
+
+
+.AllVertices <|-- .AllSpikingNeurons
+
+
+.AllVertices <|-- .All911Vertices
+
+
+.AllVerticesDeviceProperties <|-- .AllSpikingNeuronsDeviceProperties
+
+
+
+
+
+/' Aggregation relationships '/
+
+.AllSpikingNeurons *-- .EventBuffer
+
+
+.VerticesFactory *-- .AllVertices
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

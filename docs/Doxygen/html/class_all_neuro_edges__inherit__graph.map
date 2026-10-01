@@ -1,0 +1,13 @@
+<map id="AllNeuroEdges" name="AllNeuroEdges">
+<area shape="rect" id="Node000001" title=" " alt="" coords="79,79,187,105"/>
+<area shape="rect" id="Node000003" href="$class_all_spiking_synapses.html" title=" " alt="" coords="65,153,201,178"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="136,120,136,152,130,152,130,120"/>
+<area shape="rect" id="Node000002" href="$class_all_edges.html" title=" " alt="" coords="97,5,169,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,46,136,79,130,79,130,46"/>
+<area shape="rect" id="Node000004" href="$class_all_d_s_synapses.html" title=" " alt="" coords="5,226,117,252"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="112,191,75,228,71,224,108,187"/>
+<area shape="rect" id="Node000005" href="$class_all_s_t_d_p_synapses.html" title=" " alt="" coords="141,226,269,252"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="158,187,195,224,191,228,154,191"/>
+<area shape="rect" id="Node000006" href="$class_all_dynamic_s_t_d_p_synapses.html" title=" " alt="" coords="116,300,294,326"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="208,267,208,300,202,300,202,267"/>
+</map>

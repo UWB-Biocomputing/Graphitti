@@ -1,0 +1,7 @@
+<map id="Matrix_domain_error" name="Matrix_domain_error">
+<area shape="rect" id="Node000001" title="Signals value bad for domain for Matrix classes." alt="" coords="5,153,144,178"/>
+<area shape="rect" id="Node000002" href="$class_matrix_exception.html" title="Master base class for Matrix exceptions." alt="" coords="18,79,131,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,120,77,152,72,152,72,120"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="26,5,123,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="77,46,77,79,72,79,72,46"/>
+</map>

@@ -1,0 +1,16 @@
+<map id="ConnGrowth" name="ConnGrowth">
+<area shape="rect" id="Node000001" title=" " alt="" coords="244,289,337,315"/>
+<area shape="rect" id="Node000002" href="$class_connections.html" title=" " alt="" coords="5,155,99,181"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,187,216,263,264,286,262,291,213,267,82,192"/>
+<area shape="rect" id="Node000003" href="$struct_conn_growth_1_1_growth_params.html" title=" " alt="" coords="123,155,309,181"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="221,196,229,230,244,264,256,276,270,286,267,291,252,280,240,266,223,231,216,197"/>
+<area shape="rect" id="Node000004" href="$class_complete_matrix.html" title="An efficient implementation of a dynamically&#45;allocated 2D array." alt="" coords="334,155,445,181"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="381,197,363,231,338,267,311,290,308,286,334,263,358,228,376,194"/>
+<area shape="rect" id="Node000005" href="$class_matrix.html" title=" " alt="" coords="424,80,480,106"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="434,120,402,157,397,153,430,116"/>
+<area shape="rect" id="Node000007" href="$class_vector_matrix.html" title="An efficient implementation of a dynamically&#45;allocated 1D array." alt="" coords="469,155,563,181"/>
+<area shape="poly" id="edge7_Node000007_Node000005" title=" " alt="" coords="475,116,508,153,504,157,471,120"/>
+<area shape="rect" id="Node000006" href="$class_recordable_base.html" title=" " alt="" coords="394,5,510,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="455,46,455,80,449,80,449,46"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="499,195,462,232,415,267,377,284,338,295,337,290,375,279,412,263,459,228,495,191"/>
+</map>
