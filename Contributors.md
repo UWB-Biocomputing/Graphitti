@@ -146,3 +146,6 @@ Xiang Li
 Nayana Yeshlur
 
 Hari Priya Dhanasekaran
+
+## 2026
+Hokan Gillot
