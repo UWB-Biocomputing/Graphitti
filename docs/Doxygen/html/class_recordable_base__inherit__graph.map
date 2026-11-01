@@ -1,0 +1,21 @@
+<map id="RecordableBase" name="RecordableBase">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,112,122,138"/>
+<area shape="rect" id="Node000002" href="$class_recordable_vector.html" title=" " alt="" coords="194,5,354,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,99,124,68,168,40,197,29,199,34,171,45,127,72,91,103"/>
+<area shape="rect" id="Node000003" href="$class_recordable_vector.html" title=" " alt="" coords="170,55,378,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="121,104,169,90,215,78,216,83,170,95,122,109"/>
+<area shape="rect" id="Node000004" href="$class_recordable_vector.html" title=" " alt="" coords="189,104,359,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="137,122,188,122,188,128,137,128"/>
+<area shape="rect" id="Node000005" href="$class_matrix.html" title=" " alt="" coords="246,169,302,195"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="122,140,170,154,246,173,245,178,169,159,121,145"/>
+<area shape="rect" id="Node000009" href="$class_recordable_vector.html" title=" " alt="" coords="197,219,351,244"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="91,147,127,177,171,205,199,216,197,221,168,210,124,182,87,151"/>
+<area shape="rect" id="Node000006" href="$class_complete_matrix.html" title="An efficient implementation of a dynamically&#45;allocated 2D array." alt="" coords="430,95,541,120"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="317,172,377,154,401,142,425,129,449,119,451,123,427,134,404,147,379,159,318,177"/>
+<area shape="rect" id="Node000007" href="$class_sparse_matrix.html" title="An efficient implementation of a dynamically&#45;allocated sparse 2D array." alt="" coords="436,144,534,170"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="317,174,436,160,437,165,318,180"/>
+<area shape="rect" id="Node000008" href="$class_vector_matrix.html" title="An efficient implementation of a dynamically&#45;allocated 1D array." alt="" coords="438,193,532,219"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="318,184,438,198,437,203,317,190"/>
+<area shape="rect" id="Node000010" href="$class_event_buffer.html" title=" " alt="" coords="426,243,544,268"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="366,239,426,246,426,251,365,245"/>
+</map>

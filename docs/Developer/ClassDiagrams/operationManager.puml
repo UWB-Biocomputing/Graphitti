@@ -1,0 +1,70 @@
+@startuml OperationManagerClassDiagram
+
+
+class GenericFunctionNode {
+	+GenericFunctionNode(const Operations::op& operationType, const std::function<void ( )>& function)
+	-function<void()
+	+~GenericFunctionNode()
+	+invokeFunction(const Operations::op& operation) : bool {query}
+}
+
+
+abstract class IFunctionNode {
+	+~IFunctionNode()
+	#operationType_ : Operations::op
+	+{abstract} invokeFunction(const Operations::op& operation) : bool {query}
+}
+
+
+class OperationManager {
+	-OperationManager()
+	+~OperationManager()
+	+{static} getInstance() : OperationManager&
+	-functionList_ : list<unique_ptr<IFunctionNode>>
+	-logger_ : log4cplus::Logger
+	+operationToString(const Operations::op& operation) : string {query}
+	+executeOperation(const Operations::op& operation) : void {query}
+	+registerOperation(const Operations::op& operation, const function<void ( )>& function) : void
+}
+
+
+class Operations {
+}
+
+
+enum Operations::op {
+	copyFromGPU
+	copyToGPU
+	deallocateGPUMemory
+	deserialize
+	loadParameters
+	printParameters
+	restoreToDefault
+	serialize
+}
+
+
+/' Inheritance '/
+
+.IFunctionNode <|-- .GenericFunctionNode
+
+
+/' Aggregation relationships '/
+
+.IFunctionNode *-- .Operations
+
+
+.IFunctionNode *-- .Operations::op
+
+
+.OperationManager *-- .IFunctionNode
+
+
+
+/' Nested objects '/
+
+.Operations +-- .Operations::op
+
+
+
+@enduml

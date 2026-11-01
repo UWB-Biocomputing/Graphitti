@@ -1,0 +1,543 @@
+@startuml ConnectionsClassDiagram
+
+
+
+
+
+/' Objects '/
+
+class AllDSSynapses {
+	+AllDSSynapses()
+	+AllDSSynapses(const int numVertices, const int maxEdges)
+	+~AllDSSynapses()
+	+{static} Create() : AllEdges*
+	+D_ : BGFLOAT*
+	+F_ : BGFLOAT*
+	+U_ : BGFLOAT*
+	+r_ : BGFLOAT*
+	+u_ : BGFLOAT*
+	+lastSpike_ : uint64_t*
+	#allocDeviceStruct(AllDSSynapsesDeviceProperties& allEdges, int numVertices, int maxEdgesPerVertex) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	#copyDeviceToHost(AllDSSynapsesDeviceProperties& allEdgesDeviceProps) : void
+	+copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyHostToDevice(void* allEdgesDevice, AllDSSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	#deleteDeviceStruct(AllDSSynapsesDeviceProperties& allEdgesDeviceProps) : void
+	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class AllDynamicSTDPSynapses {
+	+AllDynamicSTDPSynapses()
+	+AllDynamicSTDPSynapses(const int numVertices, const int maxEdges)
+	+~AllDynamicSTDPSynapses()
+	+{static} Create() : AllEdges*
+	+D_ : BGFLOAT*
+	+F_ : BGFLOAT*
+	+U_ : BGFLOAT*
+	+r_ : BGFLOAT*
+	+u_ : BGFLOAT*
+	+lastSpike_ : uint64_t*
+	#allocDeviceStruct(AllDynamicSTDPSynapsesDeviceProperties& allEdges, int numVertices, int maxEdgesPerVertex) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	#copyDeviceToHost(AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps) : void
+	+copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyHostToDevice(void* allEdgesDevice, AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	#deleteDeviceStruct(AllDynamicSTDPSynapsesDeviceProperties& allEdgesDeviceProps) : void
+	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+abstract class AllEdges {
+	+AllEdges()
+	+AllEdges(const int numVertices, const int maxEdges)
+	+~AllEdges()
+	+W_ : BGFLOAT*
+	+maxEdgesPerVertex_ : BGSIZE
+	+totalEdgeCount_ : BGSIZE
+	+edgeCounts_ : BGSIZE*
+	+inUse_ : bool*
+	#edgeOrdinalToType(const int typeOrdinal) : edgeType
+	+type_ : edgeType*
+	+countVertices_ : int
+	+destVertexIndex_ : int*
+	+sourceVertexIndex_ : int*
+	#edgeLogger_ : log4cplus::Logger
+	#fileLogger_ : log4cplus::Logger
+	+addEdge(edgeType type, const int srcVertex, const int destVertex, const BGFLOAT deltaT) : BGSIZE
+	+{abstract} advanceEdge(const BGSIZE iEdg, AllVertices* vertices) : void
+	+{abstract} advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
+	+advanceEdges(AllVertices* vertices, EdgeIndexMap* edgeIndexMap) : void
+	+{abstract} allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+{abstract} allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	+{abstract} copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void
+	+{abstract} copyDeviceEdgeSumIdxToHost(void* allEdgesDevice) : void
+	+{abstract} copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+{abstract} copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+{abstract} copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	+{abstract} createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	+createEdgeIndexMap(shared_ptr<EdgeIndexMap> edgeIndexMap) : void
+	+{abstract} deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	+eraseEdge(const int neuronIndex, const BGSIZE iEdg) : void
+	+load(Archive& archive) : void
+	+loadParameters() : void
+	+{abstract} printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+save(Archive& archive) : void {query}
+	+{abstract} setAdvanceEdgesDeviceParams() : void
+	+{abstract} setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class All911Edges {
+  +All911Edges()
+  +All911Edges(int numVertices, int maxEdges)
+  +{abstract} ~All911Edges()
+  +{static} Create() : AllEdges*
+  +{abstract} setupEdges() : void <<override>>
+  +{abstract} createEdge(BGSIZE iEdg, int srcVertex, int destVertex, BGFLOAT deltaT, edgeType type) : void <<override>>
+  +{abstract} allocEdgeDeviceStruct(void** allEdgesDevice) :  void
+  +{abstract} allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+  +{abstract} deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+  +{abstract} copyEdgeHostToDevice(void* allEdgesDevice) : void
+  +{abstract} copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+  +{abstract} copyEdgeDeviceToHost(void* allEdgesDevice) : void
+  +{abstract} copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void
+  +{abstract} advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
+  +{abstract} setAdvanceEdgesDeviceParams() : void
+  +{abstract} setEdgeClassID() : void
+  +{abstract} printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+  +{abstract} advanceEdges(AllVertices& vertices, EdgeIndexMap& edgeIndexMap) : void
+  +advance911Edge(BGSIZE iEdg, All911Vertices& vertices) : void
+  +{abstract} advanceEdge(BGSIZE iEdg, AllVertices& vertices) : void <<override>>
+  +isAvailable_ : unique_ptr<bool[]>
+  +isRedial_ : unique_ptr<bool[]>
+  +call_ : vector<Call>
+}
+
+
+class AllNeuroEdges {
+	+AllNeuroEdges()
+	+~AllNeuroEdges()
+	+psr_ : BGFLOAT*
+	+edgSign(const edgeType type) : int
+	+{static} SYNAPSE_STRENGTH_ADJUSTMENT : static constexpr BGFLOAT
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class AllSTDPSynapses {
+	+AllSTDPSynapses()
+	+AllSTDPSynapses(const int numVertices, const int maxEdges)
+	+~AllSTDPSynapses()
+	+{static} Create() : AllEdges*
+	+Aneg_E_ : BGFLOAT
+	+Aneg_I_ : BGFLOAT
+	+Apos_E_ : BGFLOAT
+	+Apos_I_ : BGFLOAT
+	+Wex_E_ : BGFLOAT
+	+Wex_I_ : BGFLOAT
+	+defaultSTDPgap_ : BGFLOAT
+	#synapticWeightModification(const BGSIZE iEdg, BGFLOAT edgeWeight, double delta) : BGFLOAT
+	+tauneg_E_ : BGFLOAT
+	+tauneg_I_ : BGFLOAT
+	+taupos_E_ : BGFLOAT
+	+taupos_I_ : BGFLOAT
+	+tauspost_E_ : BGFLOAT
+	+tauspost_I_ : BGFLOAT
+	+tauspre_E_ : BGFLOAT
+	+tauspre_I_ : BGFLOAT
+	+Aneg_ : BGFLOAT*
+	+Apos_ : BGFLOAT*
+	+STDPgap_ : BGFLOAT*
+	+Wex_ : BGFLOAT*
+	+muneg_ : BGFLOAT*
+	+mupos_ : BGFLOAT*
+	+tauneg_ : BGFLOAT*
+	+taupos_ : BGFLOAT*
+	+tauspost_ : BGFLOAT*
+	+tauspre_ : BGFLOAT*
+	+allowBackPropagation() : bool
+	#isSpikeQueuePost(const BGSIZE iEdg) : bool
+	+delayIndexPost_ : int*
+	+delayQueuePostLength_ : int*
+	+totalDelayPost_ : int*
+	+delayQueuePost_ : uint32_t*
+	+advanceEdge(const BGSIZE iEdg, AllVertices* neurons) : void
+	+advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
+	#allocDeviceStruct(AllSTDPSynapsesDeviceProperties& allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyDeviceToHost(AllSTDPSynapsesDeviceProperties& allEdgesDevice) : void
+	+copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyHostToDevice(void* allEdgesDevice, AllSTDPSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	#deleteDeviceStruct(AllSTDPSynapsesDeviceProperties& allEdgesDevice) : void
+	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	#initSpikeQueue(const BGSIZE iEdg) : void
+	+loadParameters() : void
+	+postSpikeHit(const BGSIZE iEdg) : void
+	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	-stdpLearning(const BGSIZE iEdg, double delta, double epost, double epre, int srcVertex, int destVertex) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class AllSpikingSynapses {
+	+AllSpikingSynapses()
+	+AllSpikingSynapses(const int numVertices, const int maxEdges)
+	+~AllSpikingSynapses()
+	+{static} Create() : AllEdges*
+	+delay_EE_ : BGFLOAT
+	+delay_EI_ : BGFLOAT
+	+delay_IE_ : BGFLOAT
+	+delay_II_ : BGFLOAT
+	+tau_EE_ : BGFLOAT
+	+tau_EI_ : BGFLOAT
+	+tau_IE_ : BGFLOAT
+	+tau_II_ : BGFLOAT
+	+decay_ : BGFLOAT*
+	+tau_ : BGFLOAT*
+	+allowBackPropagation() : bool
+	#isSpikeQueue(const BGSIZE iEdg) : bool
+	#updateDecay(const BGSIZE iEdg, const BGFLOAT deltaT) : bool
+	+delayIndex_ : int*
+	+delayQueueLength_ : int*
+	+totalDelay_ : int*
+	+delayQueue_ : uint32_t*
+	+advanceEdge(const BGSIZE iEdg, AllVertices* neurons) : void
+	+advanceEdges(void* allEdgesDevice, void* allVerticesDevice, void* edgeIndexMapDevice) : void
+	#allocDeviceStruct(AllSpikingSynapsesDeviceProperties& allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice) : void
+	+allocEdgeDeviceStruct(void** allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#changePSR(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+copyDeviceEdgeCountsToHost(void* allEdgesDevice) : void
+	+copyDeviceEdgeSumIdxToHost(void* allEdgesDevice) : void
+	#copyDeviceToHost(AllSpikingSynapsesDeviceProperties& allEdgesDevice) : void
+	+copyEdgeDeviceToHost(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice) : void
+	+copyEdgeHostToDevice(void* allEdgesDevice, int numVertices, int maxEdgesPerVertex) : void
+	#copyHostToDevice(void* allEdgesDevice, AllSpikingSynapsesDeviceProperties& allEdgesDeviceProps, int numVertices, int maxEdgesPerVertex) : void
+	+createEdge(const BGSIZE iEdg, int srcVertex, int destVertex, const BGFLOAT deltaT, edgeType type) : void
+	#deleteDeviceStruct(AllSpikingSynapsesDeviceProperties& allEdgesDevice) : void
+	+deleteEdgeDeviceStruct(void* allEdgesDevice) : void
+	#initSpikeQueue(const BGSIZE iEdg) : void
+	+loadParameters() : void
+	+postSpikeHit(const BGSIZE iEdg) : void
+	+preSpikeHit(const BGSIZE iEdg) : void
+	+printGPUEdgesProps(void* allEdgesDeviceProps) : void {query}
+	+printParameters() : void {query}
+	+printSynapsesProps() : void {query}
+	#readEdge(istream& input, const BGSIZE iEdg) : void
+	+resetEdge(const BGSIZE iEdg, const BGFLOAT deltaT) : void
+	+setAdvanceEdgesDeviceParams() : void
+	+setEdgeClassID() : void
+	+setupEdges() : void
+	#setupEdges(const int numVertices, const int maxEdges) : void
+	#writeEdge(ostream& output, const BGSIZE iEdg) : void {query}
+}
+
+
+class ConnGrowth {
+	+ConnGrowth()
+	+{abstract} ~ConnGrowth()
+	+{static} Create() : Connections*
+	+{abstract} setup() : void <<override>>
+	+{abstract} loadParameters() : void <<override>>
+	+{abstract} printParameters() : void {query} <<override>>
+	+{abstract} updateConnections(AllVertices& vertices) : bool <<override>>
+	+serialize(Archive& archive) : void
+	+printRadii() : void {query}
+	+{abstract} updateEdgesWeights(int numVertices, AllVertices& vertices, AllEdges& edges, AllVerticesDeviceProperties* allVerticesDevice, AllEdgesDeviceProperties* allEdgesDevice, Layout& layout) : void <<override>>
+	+{abstract} updateEdgesWeights() : void <<override>>
+	-updateConns(AllVertices& neurons) : void
+	-updateFrontiers() : void
+	-updateOverlap() : void
+	+growthParams_ : GrowthParams
+	+radiiSize_ : int
+	+W_ : CompleteMatrix
+	+radii_ : VectorMatrix
+	+rates_ : VectorMatrix
+	+delta_ : CompleteMatrix
+	+area_ : CompleteMatrix
+	+outgrowth_ : VectorMatrix
+	+deltaR_ : VectorMatrix
+}
+
+
+class ConnStatic {
+	+ConnStatic()
+	+~ConnStatic()
+	-excWeight_ : BGFLOAT
+	+getConnsRadiusThresh() : BGFLOAT {query}
+	-inhWeight_ : BGFLOAT
+	-rewiringProbability_ : BGFLOAT
+	-threshConnsRadius_ : BGFLOAT
+	-WCurrentEpoch_ : BGFLOAT*
+	+getWCurrentEpoch() : BGFLOAT* {query}
+	+{static} Create() : Connections*
+	-connsPerVertex_ : int
+	-radiiSize_ : int
+	-destVertexIndexCurrentEpoch_ : int*
+	+getDestVertexIndexCurrentEpoch() : int* {query}
+	+getSourceVertexIndexCurrentEpoch() : int* {query}
+	-sourceVertexIndexCurrentEpoch_ : int*
+	+load(Archive& archive) : void
+	+loadParameters() : void
+	+printParameters() : void {query}
+	+save(Archive& archive) : void {query}
+	+setupConnections(Layout* layout, AllVertices* vertices, AllEdges* edges) : void
+}
+
+
+abstract class Connections {
+	+Connections()
+	+{abstract} ~Connections()
+	+getEdges() : AllEdges& {query}
+	+getEdgeIndexMap() : EdgeIndexMap& {query}
+	+createEdgeIndexMap() : void
+	+{abstract} setup() : void
+	+{abstract} registerGraphProperties() : void
+	+{abstract} loadParameters() : void
+	+{abstract} printParameters() : void {query}
+	+{abstract} updateConnections(AllVertices& vertices) : bool
+	+serialize(Archive& archive) : void
+	+{abstract} updateEdgesWeights(int numVertices, AllVertices& vertices, AllEdges& edges, AllVerticesDeviceProperties* allVerticesDevice, AllEdgesDeviceProperties* allEdgesDevice, Layout& layout) : void
+	+{abstract} updateEdgesWeights() : void
+	#edges_ : shared_ptr<AllEdges>
+	#synapseIndexMap_ : shared_ptr<EdgeIndexMap>
+	#fileLogger_ : log4cplus::Logger
+	#edgeLogger_ : log4cplus::Logger
+}
+
+
+class ConnectionsFactory {
+	-ConnectionsFactory()
+	+~ConnectionsFactory()
+	-invokeCreateFunction(const string& className) : Connections*
+	+{static} getInstance() : ConnectionsFactory*
+	-createFunctions : ConnectionsFunctionMap
+	-connectionsInstance : shared_ptr<Connections>
+	+createConnections(const string& className) : shared_ptr<Connections>
+	-registerClass(const string& className, CreateFunction function) : void
+}
+
+
+class EdgesFactory {
+	-EdgesFactory()
+	+~EdgesFactory()
+	-invokeCreateFunction(const string& className) : AllEdges*
+	+{static} getInstance() : EdgesFactory*
+	-createFunctions : EdgesFunctionMap
+	+createEdges(const string& className) : shared_ptr<AllEdges>
+	-edgesInstance_ : shared_ptr<AllEdges>
+	-registerClass(const string& className, CreateFunction function) : void
+}
+
+
+enum enumClassSynapses {
+	classAllDSSynapses
+	classAllDynamicSTDPSynapses
+	classAllSTDPSynapses
+	classAllSpikingSynapses
+	undefClassSynapses
+}
+
+
+class AllDSSynapsesDeviceProperties {
+	+D_ : BGFLOAT*
+	+F_ : BGFLOAT*
+	+U_ : BGFLOAT*
+	+r_ : BGFLOAT*
+	+u_ : BGFLOAT*
+	+lastSpike_ : uint64_t*
+}
+
+
+class AllDynamicSTDPSynapsesDeviceProperties {
+	+D_ : BGFLOAT*
+	+F_ : BGFLOAT*
+	+U_ : BGFLOAT*
+	+r_ : BGFLOAT*
+	+u_ : BGFLOAT*
+	+lastSpike_ : uint64_t*
+}
+
+
+class AllEdgesDeviceProperties {
+	+W_ : BGFLOAT*
+	+psr_ : BGFLOAT*
+	+maxEdgesPerVertex_ : BGSIZE
+	+totalEdgeCount_ : BGSIZE
+	+edgeCounts_ : BGSIZE*
+	+inUse_ : bool*
+	+type_ : edgeType*
+	+countVertices_ : int
+	+destVertexIndex_ : int*
+	+sourceVertexIndex_ : int*
+}
+
+
+class AllSTDPSynapsesDeviceProperties {
+	+Aneg_ : BGFLOAT*
+	+Apos_ : BGFLOAT*
+	+STDPgap_ : BGFLOAT*
+	+Wex_ : BGFLOAT*
+	+muneg_ : BGFLOAT*
+	+mupos_ : BGFLOAT*
+	+tauneg_ : BGFLOAT*
+	+taupos_ : BGFLOAT*
+	+tauspost_ : BGFLOAT*
+	+tauspre_ : BGFLOAT*
+	+useFroemkeDanSTDP_ : bool*
+	+delayIndexPost_ : int*
+	+delayQueuePostLength_ : int*
+	+totalDelayPost_ : int*
+	+delayQueuePost_ : uint32_t*
+}
+
+
+class AllSpikingSynapsesDeviceProperties {
+	+decay_ : BGFLOAT*
+	+tau_ : BGFLOAT*
+	+delayIndex_ : int*
+	+delayQueueLength_ : int*
+	+totalDelay_ : int*
+	+delayQueue_ : uint32_t*
+}
+
+
+class ConnGrowth::GrowthParams {
+	+beta : BGFLOAT
+	+epsilon : BGFLOAT
+	+maxRate : BGFLOAT
+	+minRadius : BGFLOAT
+	+rho : BGFLOAT
+	+startRadius : BGFLOAT
+	+targetRate : BGFLOAT
+}
+
+
+class ConnStatic::DistDestVertex {
+	+dist : BGFLOAT
+	+operator<(DistDestVertex other) : bool {query}
+	+destVertex : int
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+.AllEdges <|-- .AllNeuroEdges
+
+
+.AllEdges <|-- .All911Edges
+
+
+.AllEdgesDeviceProperties <|-- .AllSpikingSynapsesDeviceProperties
+
+
+.AllNeuroEdges <|-- .AllSpikingSynapses
+
+
+.AllSTDPSynapses <|-- .AllDynamicSTDPSynapses
+
+
+.AllSTDPSynapsesDeviceProperties <|-- .AllDynamicSTDPSynapsesDeviceProperties
+
+
+.AllSpikingSynapses <|-- .AllDSSynapses
+
+
+.AllSpikingSynapses <|-- .AllSTDPSynapses
+
+
+.AllSpikingSynapsesDeviceProperties <|-- .AllDSSynapsesDeviceProperties
+
+
+.AllSpikingSynapsesDeviceProperties <|-- .AllSTDPSynapsesDeviceProperties
+
+
+.Connections <|-- .ConnGrowth
+
+
+.Connections <|-- .ConnStatic
+
+
+
+
+
+/' Aggregation relationships '/
+
+.Connections *-- .AllEdges
+
+
+.ConnectionsFactory *-- .Connections
+
+
+.EdgesFactory *-- .AllEdges
+
+
+
+
+
+
+/' Nested objects '/
+
+.ConnGrowth +-- .ConnGrowth::GrowthParams
+
+
+.ConnStatic +-- .ConnStatic::DistDestVertex
+
+
+
+
+@enduml

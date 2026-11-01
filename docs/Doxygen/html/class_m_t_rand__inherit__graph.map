@@ -1,0 +1,5 @@
+<map id="MTRand" name="MTRand">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,76,31"/>
+<area shape="rect" id="Node000002" href="$class_norm.html" title="Generate normally distributed random numbers." alt="" coords="14,79,67,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="43,46,43,79,38,79,38,46"/>
+</map>

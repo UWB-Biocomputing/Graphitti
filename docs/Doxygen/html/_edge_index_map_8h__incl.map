@@ -1,0 +1,9 @@
+<map id="Simulator/Core/EdgeIndexMap.h" name="Simulator/Core/EdgeIndexMap.h">
+<area shape="rect" id="Node000001" title="A structure maintains outgoing and edges list (forward map)." alt="" coords="58,5,230,46"/>
+<area shape="rect" id="Node000002" href="$_b_g_types_8h.html" title="Used to define uniform data type sizes based for all operating systems. Also used to test the speed o..." alt="" coords="5,94,91,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,48,76,86,73,82,119,44"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="115,94,173,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="147,46,147,78,141,78,141,46"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="197,94,352,120"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="178,44,243,83,240,88,175,49"/>
+</map>

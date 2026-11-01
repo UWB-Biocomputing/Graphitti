@@ -1,0 +1,57 @@
+<map id="Simulator/Core/OperationManager.h" name="Simulator/Core/OperationManager.h">
+<area shape="rect" id="Node000001" title="Singleton instance method that registers and executes functions based on operation types." alt="" coords="1144,5,1311,46"/>
+<area shape="rect" id="Node000002" href="$_connections_8cpp.html" title="Methods for creating and updating connections." alt="" coords="210,94,362,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1129,33,794,52,585,71,375,97,363,98,363,93,374,91,584,66,793,47,1129,28"/>
+<area shape="rect" id="Node000003" href="$_conn_growth_8cpp.html" title="The model of the activity&#45;dependent neurite outgrowth." alt="" coords="386,94,546,135"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1129,36,870,59,714,76,559,97,547,98,547,93,558,91,714,70,870,53,1129,31"/>
+<area shape="rect" id="Node000004" href="$_conn_static_8cpp.html" title="This class manages the Connections of the Neuro STDP network." alt="" coords="570,94,722,135"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1129,41,945,64,735,97,724,99,723,93,734,91,945,59,1128,36"/>
+<area shape="rect" id="Node000005" href="$_core_8cpp.html" title="Orchestrates most functionality in the simulation." alt="" coords="746,102,909,127"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1130,51,884,104,883,98,1129,46"/>
+<area shape="rect" id="Node000006" href="$_g_p_u_model_8cpp.html" title="Implementation of Model for the graph&#45;based networks." alt="" coords="5,190,205,216"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1130,43,1048,63,1006,78,966,96,954,106,945,117,937,128,922,137,856,156,772,168,676,175,573,178,372,179,286,181,217,185,170,192,170,187,217,180,286,175,372,173,573,172,676,170,772,163,855,151,920,132,933,124,941,114,950,102,964,92,1004,73,1046,58,1128,38"/>
+<area shape="rect" id="Node000007" href="$_g_p_u_model_8h.html" title="Implementation of Model for the graph&#45;based networks." alt="" coords="1035,102,1220,127"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1195,58,1143,103,1140,99,1192,54"/>
+<area shape="rect" id="Node000009" href="$_simulator_8cpp.html" title="Platform independent base class for the Brain Grid simulator. Simulator is a singleton class (a class..." alt="" coords="228,190,419,216"/>
+<area shape="poly" id="edge22_Node000001_Node000009" title=" " alt="" coords="1137,53,1081,72,1025,96,1008,107,997,118,984,128,966,137,888,161,821,175,760,180,703,180,583,176,513,178,432,185,388,192,387,187,431,180,513,172,583,171,703,175,760,175,820,169,887,156,964,132,981,124,993,114,1005,103,1022,92,1079,67,1135,48"/>
+<area shape="rect" id="Node000021" href="$_operation_manager_8cpp.html" title="Singleton instance method that registers and executes functions based on operation types." alt="" coords="1244,94,1411,135"/>
+<area shape="poly" id="edge21_Node000001_Node000021" title=" " alt="" coords="1264,54,1307,92,1303,96,1260,58"/>
+<area shape="rect" id="Node000022" href="$_all_edges_8cpp.html" title="A container of all edge data." alt="" coords="1435,102,1631,127"/>
+<area shape="poly" id="edge23_Node000001_Node000022" title=" " alt="" coords="1313,48,1491,98,1489,103,1311,53"/>
+<area shape="rect" id="Node000023" href="$_layout_8cpp.html" title="The Layout class defines the layout of neurons in neural networks." alt="" coords="1655,102,1848,127"/>
+<area shape="poly" id="edge24_Node000001_Node000023" title=" " alt="" coords="1327,40,1643,91,1683,98,1682,104,1642,97,1326,45"/>
+<area shape="rect" id="Node000024" href="$_hdf5_recorder_8cpp.html" title="An implementation for recording spikes history on hdf5 file." alt="" coords="1873,94,2012,135"/>
+<area shape="poly" id="edge25_Node000001_Node000024" title=" " alt="" coords="1327,31,1571,53,1716,70,1861,91,1873,93,1872,99,1861,97,1716,75,1570,58,1327,36"/>
+<area shape="rect" id="Node000025" href="$_xml_recorder_8cpp.html" title="An implementation for recording variable information on xml file." alt="" coords="2037,94,2176,135"/>
+<area shape="poly" id="edge26_Node000001_Node000025" title=" " alt="" coords="1327,28,1639,48,1831,66,2024,91,2037,94,2036,99,2023,97,1831,71,1638,53,1327,33"/>
+<area shape="rect" id="Node000026" href="$_all_vertices_8cpp.html" title="A container of the base class of all vertex data." alt="" coords="2200,94,2328,135"/>
+<area shape="poly" id="edge27_Node000001_Node000026" title=" " alt="" coords="1327,26,1492,30,1706,41,1947,61,2188,91,2200,93,2199,99,2187,97,1946,66,1706,47,1491,36,1327,31"/>
+<area shape="rect" id="Node000027" href="$_all_i_f_neurons_8cpp.html" title="A container of all Integate and Fire (IF) neuron data." alt="" coords="2352,94,2516,135"/>
+<area shape="poly" id="edge28_Node000001_Node000027" title=" " alt="" coords="1327,26,1515,31,1767,42,2052,61,2340,91,2352,93,2351,98,2339,97,2052,67,1767,47,1515,36,1327,31"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="1020,132,965,137,755,152,591,158,427,166,217,185,170,192,169,187,217,180,427,160,591,153,755,147,965,132,1019,126"/>
+<area shape="rect" id="Node000008" href="$_serializer_8cpp.html" title="Provides serialization and deserialization functionality using the Cereal library." alt="" coords="1479,190,1667,216"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="1206,128,1511,187,1510,192,1205,133"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="1048,133,1016,137,852,154,724,161,596,168,432,185,387,192,387,187,431,180,595,163,723,156,852,149,1015,132,1047,128"/>
+<area shape="rect" id="Node000010" href="$_all911_edges__d_8cpp.html" title="Specialization of the AllEdges class for the NG911 network." alt="" coords="1691,183,1852,223"/>
+<area shape="poly" id="edge10_Node000007_Node000010" title=" " alt="" coords="1205,128,1232,132,1358,147,1456,155,1554,163,1680,180,1691,182,1690,187,1679,185,1554,169,1456,160,1357,153,1231,137,1204,133"/>
+<area shape="rect" id="Node000011" href="$_all_d_s_synapses__d_8cpp.html" title="A container of all DS synapse data." alt="" coords="1877,183,2032,223"/>
+<area shape="poly" id="edge11_Node000007_Node000011" title=" " alt="" coords="1203,128,1232,132,1410,149,1549,154,1688,161,1865,180,1876,182,1876,187,1865,185,1687,166,1548,160,1409,154,1231,137,1203,133"/>
+<area shape="rect" id="Node000012" href="$_all_dynamic_s_t_d_p_synapses__d_8cpp.html" title="A container of all dynamic STDP synapse data." alt="" coords="2056,183,2276,223"/>
+<area shape="poly" id="edge12_Node000007_Node000012" title=" " alt="" coords="1202,128,1232,132,1355,145,1460,152,1638,158,1816,162,2044,180,2056,181,2056,187,2043,185,1815,168,1637,163,1459,158,1355,150,1231,137,1201,133"/>
+<area shape="rect" id="Node000013" href="$_all_s_t_d_p_synapses__d_8cpp.html" title="A container of all STDP synapse data." alt="" coords="2301,183,2472,223"/>
+<area shape="poly" id="edge13_Node000007_Node000013" title=" " alt="" coords="1201,128,1232,132,1392,147,1528,154,1760,155,1993,156,2129,164,2289,180,2301,182,2301,187,2289,185,2128,169,1992,162,1760,160,1528,159,1392,152,1231,137,1201,133"/>
+<area shape="rect" id="Node000014" href="$_all_spiking_synapses__d_8cpp_source.html" title=" " alt="" coords="2496,183,2674,223"/>
+<area shape="poly" id="edge14_Node000007_Node000014" title=" " alt="" coords="1201,128,1232,132,1422,149,1583,156,1725,158,1858,156,1990,154,2133,155,2294,163,2484,180,2496,182,2495,187,2483,185,2294,168,2132,160,1990,159,1858,161,1725,163,1583,162,1422,154,1231,137,1200,133"/>
+<area shape="rect" id="Node000015" href="$_gpu_s_input_poisson_8h.html" title="A class that performs stimulus input (implementation Poisson on GPU)." alt="" coords="443,183,591,223"/>
+<area shape="poly" id="edge15_Node000007_Node000015" title=" " alt="" coords="1045,133,1016,137,900,152,809,160,718,168,603,185,591,187,590,182,602,180,718,163,808,154,899,146,1015,132,1044,128"/>
+<area shape="rect" id="Node000017" href="$_all911_vertices__d_8cpp.html" title="Specialization of the AllVertices class for the NG911 network." alt="" coords="614,183,806,223"/>
+<area shape="poly" id="edge17_Node000007_Node000017" title=" " alt="" coords="1055,133,806,185,805,179,1054,128"/>
+<area shape="rect" id="Node000018" href="$_all_i_f_neurons__d_8cpp.html" title="A container of all Integate and Fire (IF) neuron data." alt="" coords="830,183,1009,223"/>
+<area shape="poly" id="edge18_Node000007_Node000018" title=" " alt="" coords="1086,136,968,185,966,180,1083,131"/>
+<area shape="rect" id="Node000019" href="$_all_i_z_h_neurons__d_8cpp.html" title="A container of all Izhikevich neuron data." alt="" coords="1034,183,1222,223"/>
+<area shape="poly" id="edge19_Node000007_Node000019" title=" " alt="" coords="1130,143,1130,183,1125,183,1125,143"/>
+<area shape="rect" id="Node000020" href="$_all_spiking_neurons__d_8cpp_source.html" title=" " alt="" coords="1246,183,1455,223"/>
+<area shape="poly" id="edge20_Node000007_Node000020" title=" " alt="" coords="1174,131,1301,180,1299,185,1172,136"/>
+<area shape="rect" id="Node000016" href="$_gpu_s_input_poisson_8cu.html" title="A class that performs stimulus input (implementation Poisson) on GPU." alt="" coords="441,271,593,312"/>
+<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="520,239,520,271,514,271,514,239"/>
+</map>

@@ -1,0 +1,18 @@
+<map id="Simulator/Core/OperationManager.h" name="Simulator/Core/OperationManager.h">
+<area shape="rect" id="Node000001" title="Singleton instance method that registers and executes functions based on operation types." alt="" coords="226,5,394,46"/>
+<area shape="rect" id="Node000002" href="$_i_function_node_8h.html" title="Interface for storing and invoking functions. Used to support different FunctionNode classes that def..." alt="" coords="90,94,207,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="271,49,188,89,186,84,268,44"/>
+<area shape="rect" id="Node000003" href="$_operations_8h.html" title="This class is public reference to the operation types that the OperationManager can register and exec..." alt="" coords="5,168,100,193"/>
+<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="226,34,188,42,149,53,112,71,80,96,63,123,56,153,51,152,59,121,76,92,109,67,147,48,187,36,225,29"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="231,94,308,120"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="302,48,285,81,280,79,298,45"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="332,94,370,120"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="322,45,340,79,335,81,318,48"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="395,94,569,120"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="354,44,443,85,440,90,352,49"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="594,94,661,120"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="390,44,579,91,578,96,388,49"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="134,122,82,161,79,156,131,118"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="124,168,184,193"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="152,120,154,152,149,152,147,120"/>
+</map>

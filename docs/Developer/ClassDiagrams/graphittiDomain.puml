@@ -1,0 +1,367 @@
+@startuml GraphittiDomainDiagram
+
+
+
+
+
+/' Objects '/
+
+class AllDSSynapses {
+}
+
+
+class AllDynamicSTDPSynapses {
+}
+
+
+abstract class AllEdges {
+}
+
+
+class AllIFNeurons {
+}
+
+
+class AllIZHNeurons {
+}
+
+
+class AllLIFNeurons {
+}
+
+
+class AllNeuroEdges {
+}
+
+
+class AllSTDPSynapses {
+}
+
+
+abstract class AllSpikingNeurons {
+}
+
+
+class AllSpikingSynapses {
+}
+
+
+abstract class AllVertices {
+}
+
+
+class CPUModel {
+}
+
+
+class ConnGrowth {
+}
+
+
+class ConnStatic {
+}
+
+
+abstract class Connections {
+}
+
+
+class ConnectionsFactory {
+}
+
+
+class DynamicLayout {
+}
+
+
+class EdgesFactory {
+}
+
+
+class EventBuffer {
+}
+
+
+class FixedLayout {
+}
+
+
+class GPUModel {
+}
+
+
+class GenericFunctionNode {
+}
+
+
+class Hdf5GrowthRecorder {
+}
+
+
+class Hdf5Recorder {
+}
+
+
+abstract class IFunctionNode {
+}
+
+
+abstract class Recorder {
+}
+
+
+abstract class Layout {
+}
+
+
+class LayoutFactory {
+}
+
+
+abstract class Model {
+}
+
+
+class OperationManager {
+}
+
+
+class Operations {
+}
+
+
+class RecorderFactory {
+}
+
+
+class Simulator {
+}
+
+
+class VerticesFactory {
+}
+
+
+class XmlRecorder {
+}
+
+
+enum Operations::op {
+}
+
+
+enum enumClassSynapses {
+}
+
+
+class AllDSSynapsesDeviceProperties {
+}
+
+
+class AllDynamicSTDPSynapsesDeviceProperties {
+}
+
+
+class AllEdgesDeviceProperties {
+}
+
+
+class AllIFNeuronsDeviceProperties {
+}
+
+
+class AllIZHNeuronsDeviceProperties {
+}
+
+
+class AllSTDPSynapsesDeviceProperties {
+}
+
+
+class AllSpikingNeuronsDeviceProperties {
+}
+
+
+class AllSpikingSynapsesDeviceProperties {
+}
+
+
+class AllVerticesDeviceProperties {
+}
+
+
+class ConnGrowth::GrowthParams {
+}
+
+
+class ConnStatic::DistDestVertex {
+}
+
+
+class EdgeIndexMap {
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+.AllEdges <|-- .AllNeuroEdges
+
+
+.AllEdgesDeviceProperties <|-- .AllSpikingSynapsesDeviceProperties
+
+
+.AllIFNeurons <|-- .AllIZHNeurons
+
+
+.AllIFNeurons <|-- .AllLIFNeurons
+
+
+.AllIFNeuronsDeviceProperties <|-- .AllIZHNeuronsDeviceProperties
+
+
+.AllNeuroEdges <|-- .AllSpikingSynapses
+
+
+.AllSTDPSynapses <|-- .AllDynamicSTDPSynapses
+
+
+.AllSTDPSynapsesDeviceProperties <|-- .AllDynamicSTDPSynapsesDeviceProperties
+
+
+.AllSpikingNeurons <|-- .AllIFNeurons
+
+
+.AllSpikingNeuronsDeviceProperties <|-- .AllIFNeuronsDeviceProperties
+
+
+.AllSpikingSynapses <|-- .AllDSSynapses
+
+
+.AllSpikingSynapses <|-- .AllSTDPSynapses
+
+
+.AllSpikingSynapsesDeviceProperties <|-- .AllDSSynapsesDeviceProperties
+
+
+.AllSpikingSynapsesDeviceProperties <|-- .AllSTDPSynapsesDeviceProperties
+
+
+.AllVertices <|-- .AllSpikingNeurons
+
+
+.AllVerticesDeviceProperties <|-- .AllSpikingNeuronsDeviceProperties
+
+
+.Connections <|-- .ConnGrowth
+
+
+.Connections <|-- .ConnStatic
+
+
+.Hdf5Recorder <|-- .Hdf5GrowthRecorder
+
+
+.IFunctionNode <|-- .GenericFunctionNode
+
+
+.Recorder <|-- .Hdf5Recorder
+
+
+.Recorder <|-- .XmlRecorder
+
+
+.Layout <|-- .DynamicLayout
+
+
+.Layout <|-- .FixedLayout
+
+
+.Model <|-- .CPUModel
+
+
+.Model <|-- .GPUModel
+
+
+
+
+
+/' Aggregation relationships '/
+
+.AllSpikingNeurons *-- .EventBuffer
+
+
+.Connections *-- .AllEdges
+
+
+.Connections *-- .EdgeIndexMap
+
+
+.ConnectionsFactory *-- .Connections
+
+
+.EdgesFactory *-- .AllEdges
+
+
+.GPUModel o-- .AllSpikingNeuronsDeviceProperties
+
+
+.GPUModel o-- .AllSpikingSynapsesDeviceProperties
+
+
+.GPUModel o-- .EdgeIndexMap
+
+
+.IFunctionNode *-- .Operations
+
+
+.IFunctionNode *-- .Operations::op
+
+
+.Layout *-- .AllVertices
+
+
+.LayoutFactory *-- .Layout
+
+
+.Model *-- .Connections
+
+
+.Model *-- .Recorder
+
+
+.Model *-- .Layout
+
+
+.OperationManager *-- .IFunctionNode
+
+
+.RecorderFactory *-- .Recorder
+
+
+.Simulator *-- .Model
+
+
+.VerticesFactory *-- .AllVertices
+
+
+
+
+
+
+/' Nested objects '/
+
+.ConnGrowth +-- .ConnGrowth::GrowthParams
+
+
+.ConnStatic +-- .ConnStatic::DistDestVertex
+
+
+.Operations +-- .Operations::op
+
+
+
+
+@enduml
