@@ -172,6 +172,12 @@ Connections &Model::getConnections() const
    return *connections_;
 }
 
+/// Replaces the Connections subgraph with a new instance, taking ownership.
+void Model::setConnections(unique_ptr<Connections> connections)
+{
+   connections_ = std::move(connections);
+}
+
 /// Get the Layout class object.
 /// @return Pointer to the Layout class object.
 Layout &Model::getLayout() const

@@ -42,6 +42,13 @@ public:
    /// Returns reference to Connections
    Connections &getConnections() const;
 
+   /// Replaces the Connections subgraph with a new instance, taking ownership.
+   ///
+   /// Used when deserializing a growth checkpoint into a different (e.g. STDP) model:
+   /// after the checkpoint is loaded, the grown topology is imported into a freshly
+   /// constructed Connections object and installed here. See Serializer::deserialize().
+   void setConnections(unique_ptr<Connections> connections);
+
    /// Returns reference to Layout
    Layout &getLayout() const;
 
