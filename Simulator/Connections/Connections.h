@@ -39,6 +39,12 @@ class Connections {
 public:
    Connections();
 
+   /// Register OperationManager callbacks for this Connections instance and its edges.
+   ///
+   /// Registration is separated from the constructor so callbacks can be rebuilt after
+   /// deserialization replaces the Connections/edges unique_ptr subgraph.
+   void registerOperations();
+
    ///  Destructor
    virtual ~Connections() = default;
 

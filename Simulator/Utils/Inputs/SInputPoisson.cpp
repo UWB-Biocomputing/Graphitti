@@ -67,7 +67,7 @@ SInputPoisson::SInputPoisson(TiXmlElement *parms) :
                TiXmlDocument simDoc(maskNListFileName.c_str());
                if (!simDoc.LoadFile()) {
                   cerr << "Failed loading positions of stimulus input mask neurons list file "
-                       << maskNListFileName << ":" << "\n\t" << simDoc.ErrorDesc() << endl;
+                       << maskNListFileName << ":\n\t" << simDoc.ErrorDesc() << endl;
                   cerr << " error: " << simDoc.ErrorRow() << ", " << simDoc.ErrorCol() << endl;
                   break;
                }
@@ -107,10 +107,11 @@ void SInputPoisson::init()
    for (int neuronIndex = 0; neuronIndex < Simulator::getInstance().getTotalVertices();
         neuronIndex++) {
       edgeType type;
-      if (Simulator::getInstance().getModel().getLayout().vertexTypeMap_[neuronIndex] == INH)
-         type = EI;
+      if (Simulator::getInstance().getModel().getLayout().getVertices().vertexTypeMap_[neuronIndex]
+          == vertexType::INH)
+         type = edgeType::EI;
       else
-         type = EE;
+         type = edgeType::EE;
 
       BGSIZE iEdg = Simulator::getInstance().getMaxEdgesPerVertex() * neuronIndex;
 

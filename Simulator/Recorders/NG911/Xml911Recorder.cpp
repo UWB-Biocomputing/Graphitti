@@ -42,7 +42,8 @@ void Xml911Recorder::saveSimData()
 
    for (int i = 0; i < Simulator::getInstance().getTotalVertices(); i++) {
       vertexTypes[i]
-         = static_cast<BGFLOAT>(Simulator::getInstance().getModel().getLayout().vertexTypeMap_[i]);
+         = static_cast<BGFLOAT>(
+            Simulator::getInstance().getModel().getLayout().getVertices().vertexTypeMap_[i]);
       oldTypes[i] = static_cast<BGFLOAT>(conns911.oldTypeMap_[i]);
    }
 

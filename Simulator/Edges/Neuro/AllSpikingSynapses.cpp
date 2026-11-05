@@ -173,7 +173,7 @@ void AllSpikingSynapses::createEdge(BGSIZE iEdg, int srcVertex, int destVertex, 
    sourceVertexIndex_[iEdg] = srcVertex;
    W_[iEdg] = edgSign(type) * 10.0e-9;
    type_[iEdg] = type;
-   tau_[iEdg] = DEFAULT_tau;
+   tau_[iEdg] = AllSpikingSynapses::DEFAULT_tau;
 
    BGFLOAT tau;
    switch (type) {

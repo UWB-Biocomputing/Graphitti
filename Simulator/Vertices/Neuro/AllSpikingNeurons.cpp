@@ -28,6 +28,8 @@ void AllSpikingNeurons::setupVertices()
 ///  Option 2: Register a vector of EventBuffer variables.
 void AllSpikingNeurons::registerHistoryVariables()
 {
+   AllVertices::registerHistoryVariables();
+
    Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
    string baseName = "Neuron_";
 

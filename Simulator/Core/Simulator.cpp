@@ -35,7 +35,11 @@ Simulator::Simulator()
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
    workbenchLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("workbench"));
 
-   // Register printParameters function as a printParameters operation in the OperationManager
+   registerOperations();
+}
+
+void Simulator::registerOperations()
+{
    function<void()> printParametersFunc = bind(&Simulator::printParameters, this);
    OperationManager::getInstance().registerOperation(Operations::printParameters,
                                                      printParametersFunc);

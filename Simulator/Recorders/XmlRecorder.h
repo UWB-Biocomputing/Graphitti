@@ -37,6 +37,8 @@ public:
    // constructor which opens the xml file to store results
    XmlRecorder();
 
+   void registerOperations() override;
+
    static Recorder *Create()
    {
       return new XmlRecorder();

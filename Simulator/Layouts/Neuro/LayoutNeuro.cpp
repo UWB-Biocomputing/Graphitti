@@ -12,6 +12,7 @@
 #include "ParameterManager.h"
 #include "ParseParamError.h"
 #include "Util.h"
+#include <sstream>
 
 // TODO: I don't think that either of the constructor or destructor is needed here
 LayoutNeuro::LayoutNeuro() : Layout()
@@ -87,9 +88,23 @@ void LayoutNeuro::registerHistoryVariables()
 ///  Registered to OperationManager as Operation::printParameters
 void LayoutNeuro::printParameters() const
 {
-   Layout::printParameters();
+   stringstream output;
+   output << "\nLAYOUT PARAMETERS" << endl;
+   output << "\tEndogenously active neuron positions: ";
+   for (int idx : endogenouslyActiveNeuronList_) {
+      output << idx << " ";
+   }
+   output << endl;
 
-   LOG4CPLUS_DEBUG(fileLogger_, "\n\tLayout type: LayoutNeuro" << endl << endl);
+   output << "\tInhibitory neuron positions: ";
+   for (int idx : inhibitoryNeuronLayout_) {
+      output << idx << " ";
+   }
+   output << endl;
+
+   output << "\n\tLayout type: LayoutNeuro" << endl << endl;
+
+   LOG4CPLUS_DEBUG(fileLogger_, output.str());
 }
 
 ///  Creates a randomly ordered distribution with the specified numbers of vertex types.
@@ -99,8 +114,10 @@ void LayoutNeuro::generateVertexTypeMap()
 {
    LOG4CPLUS_DEBUG(fileLogger_, "\nInitializing vertex type map" << endl);
 
-   int numInhibitoryNeurons;
+   int numInhibitoryNeurons = 0;
    int numExcititoryNeurons;
+
+   inhibitoryNeuronLayout_.clear();
 
    // Set Neuron Type from GraphML File
    GraphManager<NeuralVertexProperties>::VertexIterator vi, vi_end;
@@ -109,12 +126,13 @@ void LayoutNeuro::generateVertexTypeMap()
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
       if (gm[*vi].type == "INH") {
-         vertexTypeMap_[*vi] = vertexType::INH;
+         getVertices().vertexTypeMap_[*vi] = vertexType::INH;
+         inhibitoryNeuronLayout_.push_back(*vi);
          numInhibitoryNeurons++;
       }
       // Default Type is Excitatory
       else {
-         vertexTypeMap_[*vi] = vertexType::EXC;
+         getVertices().vertexTypeMap_[*vi] = vertexType::EXC;
       }
    }
 
@@ -133,6 +151,9 @@ void LayoutNeuro::generateVertexTypeMap()
 ///  @param  numVertices number of vertices to have in the map.
 void LayoutNeuro::initStarterMap()
 {
+   endogenouslyActiveNeuronList_.clear();
+   numEndogenouslyActiveNeurons_ = 0;
+
    // Set Neuron Activity from GraphML File
    GraphManager<NeuralVertexProperties>::VertexIterator vi, vi_end;
    GraphManager<NeuralVertexProperties> &gm = GraphManager<NeuralVertexProperties>::getInstance();
@@ -143,6 +164,7 @@ void LayoutNeuro::initStarterMap()
       assert(*vi < numVertices_);
       if (gm[*vi].active) {
          starterMap_[*vi] = true;
+         endogenouslyActiveNeuronList_.push_back(*vi);
          numEndogenouslyActiveNeurons_++;
       }
    }
@@ -155,17 +177,14 @@ void LayoutNeuro::initStarterMap()
 ///  @return type of the synapse.
 edgeType LayoutNeuro::edgType(int srcVertex, int destVertex)
 {
-   if (vertexTypeMap_[srcVertex] == vertexType::INH
-       && vertexTypeMap_[destVertex] == vertexType::INH)
+   auto &vtypes = getVertices().vertexTypeMap_;
+   if (vtypes[srcVertex] == vertexType::INH && vtypes[destVertex] == vertexType::INH)
       return edgeType::II;
-   else if (vertexTypeMap_[srcVertex] == vertexType::INH
-            && vertexTypeMap_[destVertex] == vertexType::EXC)
+   else if (vtypes[srcVertex] == vertexType::INH && vtypes[destVertex] == vertexType::EXC)
       return edgeType::IE;
-   else if (vertexTypeMap_[srcVertex] == vertexType::EXC
-            && vertexTypeMap_[destVertex] == vertexType::INH)
+   else if (vtypes[srcVertex] == vertexType::EXC && vtypes[destVertex] == vertexType::INH)
       return edgeType::EI;
-   else if (vertexTypeMap_[srcVertex] == vertexType::EXC
-            && vertexTypeMap_[destVertex] == vertexType::EXC)
+   else if (vtypes[srcVertex] == vertexType::EXC && vtypes[destVertex] == vertexType::EXC)
       return edgeType::EE;
 
    return edgeType::ETYPE_UNDEF;

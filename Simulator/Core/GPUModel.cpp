@@ -133,6 +133,20 @@ void GPUModel::setupSim()
    edges.setAdvanceEdgesDeviceParams();
 }
 
+void GPUModel::reinitializeDeviceAfterDeserialize()
+{
+   // Free device memory allocated during pre-deserialize setupSim(), then allocate and
+   // populate fresh buffers that match the deserialized host state.
+   OperationManager::getInstance().executeOperation(Operations::deallocateGPUMemory);
+   OperationManager::getInstance().executeOperation(Operations::allocateGPU);
+   OperationManager::getInstance().executeOperation(Operations::copyToGPU);
+
+   AllEdges &edges = connections_->getEdges();
+   layout_->getVertices().setAdvanceVerticesDeviceParams(edges);
+   edges.setAdvanceEdgesDeviceParams();
+   copyCPUtoGPU();
+}
+
 /// Performs any finalization tasks on network following a simulation.
 void GPUModel::finish()
 {

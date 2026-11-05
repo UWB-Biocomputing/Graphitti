@@ -59,7 +59,7 @@ void ConnGrowth::updateEdgesWeights(int numVertices, AllVertices &vertices, AllE
 
    HANDLE_ERROR(cudaMemcpy(W_d, W_h, W_d_size, cudaMemcpyHostToDevice));
 
-   HANDLE_ERROR(cudaMemcpy(neuronTypeMapD, layout.vertexTypeMap_.data(),
+   HANDLE_ERROR(cudaMemcpy(neuronTypeMapD, layout.getVertices().vertexTypeMap_.data(),
                            simulator.getTotalVertices() * sizeof(vertexType),
                            cudaMemcpyHostToDevice));
 

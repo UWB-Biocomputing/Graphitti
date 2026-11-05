@@ -3,6 +3,13 @@ import math
 import lxml.etree as et
 import pandas as pd
 
+# Upper Tukey fence factor for an exponential(scale): Q3 + 1.5*IQR with Q3=ln(4)*scale, IQR=ln(3)*scale
+EXPONENTIAL_UPPER_TUKEY_FACTOR = math.log(4) + 1.5 * math.log(3)
+
+# Legacy default relative frequencies for exactly four prototype classes (0–3), used when
+# prototype_weights is omitted and four prototypes are supplied (Seattle/SPD-style tuning).
+DEFAULT_LEGACY_PROTOTYPE_WEIGHTS = (0.4, 0.5, 0.09, 0.01)
+
 def primprocess(first, last, pp_mu, pp_dead_t, region_grid):
     """Generates a set of primary spatio-temporal events between 'first' and 'last'.
 
@@ -104,8 +111,46 @@ def add_types(events, type_ratios):
     return np.column_stack((events, type_list))
 
 
+def _normalize_prototype_weights(prototypes, prototype_weights):
+    """Return a probability vector aligned with sorted prototype keys.
+
+    prototype_weights maps each prototype key to a non-negative weight (need not sum to 1).
+    If prototype_weights is None: use DEFAULT_LEGACY_PROTOTYPE_WEIGHTS when there are
+    exactly four prototypes; otherwise uniform weights.
+    """
+    keys = sorted(prototypes.keys(), key=lambda k: (str(type(k)), k))
+    n = len(keys)
+    if n == 0:
+        raise ValueError("prototypes dictionary must not be empty")
+
+    if prototype_weights is None:
+        if n == len(DEFAULT_LEGACY_PROTOTYPE_WEIGHTS):
+            w = np.array(DEFAULT_LEGACY_PROTOTYPE_WEIGHTS, dtype=float)
+        else:
+            w = np.ones(n, dtype=float) / n
+    else:
+        w = np.zeros(n, dtype=float)
+        for i, k in enumerate(keys):
+            if k not in prototype_weights:
+                raise KeyError(
+                    f"prototype_weights is missing an entry for prototype key {k!r}; "
+                    f"expected keys {list(keys)}"
+                )
+            w[i] = float(prototype_weights[k])
+
+    if not np.all(np.isfinite(w)):
+        raise ValueError("prototype weights must all be finite numbers")
+    if np.any(w < 0):
+        raise ValueError("prototype weights must all be non-negative")
+
+    s = w.sum()
+    if not np.isfinite(s) or s <= 0:
+        raise ValueError("prototype weights must sum to a positive finite value")
+    return keys, w / s
+
+
 def secprocess(sp_sigma, duration_mean, duration_min, patience_mean, onsite_mean, prototypes,
-               prim_evts):
+               prim_evts, prototype_weights=None):
     # Secondary process for clustering. Selects a prototype
     # from the dictionary of prototypes, which is used as the magnitude
     # an spread of the primary event. This determines the number of 
@@ -125,21 +170,16 @@ def secprocess(sp_sigma, duration_mean, duration_min, patience_mean, onsite_mean
     # Constraints:
     # 1. Values drawn from an exponential distribution get their outliers removed.
     #    The outliers are determines using Tukey's Fence criteria for the upper fence,
-    #    calculated as (ln(4) + 1.5 * ln(3)) * SPSigma
+    #    calculated as EXPONENTIAL_UPPER_TUKEY_FACTOR * scale
 
-    # The prototypes are selected base of 4 classes (0-3) where:
-    #   class 0 = 40% of events
-    #   class 1 = 50% of events
-    #   class 2 = 9% of events
-    #   class 3 = 1% of events
-    # Each of this classes has a mean and standard deviation for the radius
-    # and intensity of the generated secondary process
-    # Assign prototype class based on predefined probabilities
-    proto_class = np.random.rand(len(prim_evts))
-    proto_class[(proto_class >= 0.99)] = 3 # 1% chance for class 3
-    proto_class[proto_class < 0.4] = 0 # 40% chance for class 0
-    proto_class[(proto_class >= 0.4) & (proto_class < 0.9)] = 1 # 50% for class 1
-    proto_class[(proto_class >= 0.9) & (proto_class < 0.99)] = 2 # 9% for class 2
+    # Prototype keys are chosen randomly according to prototype_weights (see
+    # _normalize_prototype_weights). When prototype_weights is omitted and there are
+    # four prototypes, legacy 40% / 50% / 9% / 1% frequencies are used.
+
+    proto_keys, proto_probs = _normalize_prototype_weights(prototypes, prototype_weights)
+    proto_key_indices = np.random.choice(
+        len(proto_keys), size=len(prim_evts), p=proto_probs
+    )
 
     # Initialize arrays for secondary event attributes
     sec_evts_t = np.zeros(0) #np.zeros(len(primEvts) * expected_points_num)
@@ -151,7 +191,7 @@ def secprocess(sp_sigma, duration_mean, duration_min, patience_mean, onsite_mean
      # Process each primary event to generate secondary events
     for pe_num in range(len(prim_evts)):
         # Select the prototype for this primary event
-        pcls = proto_class[pe_num]
+        pcls = proto_keys[proto_key_indices[pe_num]]
         # print('protoclass:', pcls)
         radius = np.random.normal(prototypes[pcls]['mu_r'],
                                   prototypes[pcls]['sdev_r'],
@@ -175,7 +215,7 @@ def secprocess(sp_sigma, duration_mean, duration_min, patience_mean, onsite_mean
         #   lambda = 1/scale_parameter
         #   Q3 = ln(4)/lambda = ln(4) * scale_parameter
         #   IQR = ln(3)/lambda = ln(3) * scale_parameter
-        upper_fence = (math.log(4) + 1.5 * math.log(3)) * sp_sigma
+        upper_fence = EXPONENTIAL_UPPER_TUKEY_FACTOR * sp_sigma
 
         # Generate the clusters
         actClust = np.random.exponential(scale=sp_sigma, size=expected_points_num)
@@ -214,7 +254,7 @@ def secprocess(sp_sigma, duration_mean, duration_min, patience_mean, onsite_mean
 
     # Draw call duration from an exponential distribution.
     # We also trim outliers using the Tukey's Fences criteria
-    duration_fence = (math.log(4) + 1.5 * math.log(3)) * duration_mean
+    duration_fence = EXPONENTIAL_UPPER_TUKEY_FACTOR * duration_mean
     sec_evts_duration = np.random.exponential(scale=duration_mean, size=len(sec_evts_t))
     outliers = np.where(sec_evts_duration > duration_fence)[0]
     while len(outliers) > 0:

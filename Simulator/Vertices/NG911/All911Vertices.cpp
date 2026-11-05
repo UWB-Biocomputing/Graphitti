@@ -158,7 +158,7 @@ void All911Vertices::loadEpochInputsToVertices(uint64_t currentStep, uint64_t en
    // Load all the calls into the Caller Regions queue by getting the input events
    // from the InputManager.
    for (int idx = 0; idx < simulator.getTotalVertices(); ++idx) {
-      if (layout.vertexTypeMap_[idx] == vertexType::CALR) {
+      if (layout.getVertices().vertexTypeMap_[idx] == vertexType::CALR) {
          // If this is a Caller Region get all calls scheduled for the current epoch,
          // loading them into the aproppriate index of the vertexQueues_ vector
          inputManager_.getEvents(idx, currentStep, endStep, vertexQueues_[idx]);
@@ -168,6 +168,8 @@ void All911Vertices::loadEpochInputsToVertices(uint64_t currentStep, uint64_t en
 
 void All911Vertices::registerHistoryVariables()
 {
+   AllVertices::registerHistoryVariables();
+
    Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
 
    // Registering the following variables to be recorded
@@ -243,7 +245,8 @@ void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIn
       int start = edgeIndexMap.incomingEdgeBegin_[vertex];
       int count = edgeIndexMap.incomingEdgeCount_[vertex];
 
-      if (simulator.getModel().getLayout().vertexTypeMap_[vertex] == vertexType::CALR) {
+      if (simulator.getModel().getLayout().getVertices().vertexTypeMap_[vertex]
+          == vertexType::CALR) {
          continue;   // TODO911: Caller Regions will have different behaviour
       }
 
@@ -315,13 +318,13 @@ void All911Vertices::advanceVertices(AllEdges &edges, const EdgeIndexMap &edgeIn
 
    // Advance vertices
    for (int vertex = 0; vertex < simulator.getTotalVertices(); ++vertex) {
-      if (layout.vertexTypeMap_[vertex] == vertexType::CALR) {
+      if (layout.getVertices().vertexTypeMap_[vertex] == vertexType::CALR) {
          advanceCALR(vertex, edges911, edgeIndexMap);
-      } else if (layout.vertexTypeMap_[vertex] == vertexType::PSAP) {
+      } else if (layout.getVertices().vertexTypeMap_[vertex] == vertexType::PSAP) {
          advancePSAP(vertex, edges911, edgeIndexMap);
-      } else if (layout.vertexTypeMap_[vertex] == vertexType::EMS
-                 || layout.vertexTypeMap_[vertex] == vertexType::FIRE
-                 || layout.vertexTypeMap_[vertex] == vertexType::LAW) {
+      } else if (layout.getVertices().vertexTypeMap_[vertex] == vertexType::EMS
+                 || layout.getVertices().vertexTypeMap_[vertex] == vertexType::FIRE
+                 || layout.getVertices().vertexTypeMap_[vertex] == vertexType::LAW) {
          advanceRESP(vertex, edges911, edgeIndexMap);
       }
    }
@@ -624,7 +627,7 @@ BGSIZE All911Vertices::getEdgeToClosestResponder(const Call &call, BGSIZE vertex
       assert(edges911.inUse_[outEdg]);   // Edge must be in use
 
       BGSIZE dstVertex = edges911.destVertexIndex_[outEdg];
-      if (layout911.vertexTypeMap_[dstVertex] == requiredType) {
+      if (layout911.getVertices().vertexTypeMap_[dstVertex] == requiredType) {
          double distance = layout911.getDistance(dstVertex, call.x, call.y);
 
          if (distance < minDistance) {
@@ -637,7 +640,7 @@ BGSIZE All911Vertices::getEdgeToClosestResponder(const Call &call, BGSIZE vertex
 
    // We must have found the closest responder of the right type
    assert(minDistance < numeric_limits<double>::max());
-   assert(layout911.vertexTypeMap_[resp] == requiredType);
+   assert(layout911.getVertices().vertexTypeMap_[resp] == requiredType);
    return respEdge;
 }
 #endif

@@ -29,28 +29,34 @@ Connections::Connections()
    ParameterManager::getInstance().getStringByXpath("//EdgesParams/@class", type);
    edges_ = Factory<AllEdges>::getInstance().createType(type);
 
-   // Get pointer to operations manager Singleton
-   OperationManager &opsManager = OperationManager::getInstance();
-
-   // Register printParameters function as a printParameters operation in the OperationManager
-   function<void()> printParametersFunc = bind(&Connections::printParameters, this);
-   opsManager.registerOperation(Operations::printParameters, printParametersFunc);
-
-   // Register loadParameters function with Operation Manager
-   function<void()> loadParamsFunc = bind(&Connections::loadParameters, this);
-   opsManager.registerOperation(Operations::loadParameters, loadParamsFunc);
-
-   // Register registerGraphProperties as Operations registerGraphProperties
-   function<void()> regGraphPropsFunc = bind(&Connections::registerGraphProperties, this);
-   opsManager.registerOperation(Operations::registerGraphProperties, regGraphPropsFunc);
-
-   // Register registerHistoryVariables function as a registerHistoryVariables operation in the OperationManager
-   function<void()> registerHistoryVarsFunc = bind(&Connections::registerHistoryVariables, this);
-   opsManager.registerOperation(Operations::registerHistoryVariables, registerHistoryVarsFunc);
+   registerOperations();
 
    // Get a copy of the file logger to use log4cplus macros
    fileLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("file"));
    edgeLogger_ = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("edge"));
+}
+
+void Connections::registerOperations()
+{
+   // Propagate registration to edges_ so both connection- and edge-level callbacks
+   // reference the objects that survived the most recent construction/deserialization.
+   OperationManager &opsManager = OperationManager::getInstance();
+
+   function<void()> printParametersFunc = bind(&Connections::printParameters, this);
+   opsManager.registerOperation(Operations::printParameters, printParametersFunc);
+
+   function<void()> loadParamsFunc = bind(&Connections::loadParameters, this);
+   opsManager.registerOperation(Operations::loadParameters, loadParamsFunc);
+
+   function<void()> regGraphPropsFunc = bind(&Connections::registerGraphProperties, this);
+   opsManager.registerOperation(Operations::registerGraphProperties, regGraphPropsFunc);
+
+   function<void()> registerHistoryVarsFunc = bind(&Connections::registerHistoryVariables, this);
+   opsManager.registerOperation(Operations::registerHistoryVariables, registerHistoryVarsFunc);
+
+   if (edges_) {
+      edges_->registerOperations();
+   }
 }
 
 AllEdges &Connections::getEdges() const
