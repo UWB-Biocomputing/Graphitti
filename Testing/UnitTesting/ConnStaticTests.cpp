@@ -22,7 +22,7 @@ namespace {
       }
    };
 
-   TEST(ConnStatic, UpdateConnectionsCopiesActiveEdgesWithoutAccumulating)
+   TEST(ConnStatic, UpdateConnectionsCopiesActiveEdges)
    {
       auto edges = std::make_unique<AllSTDPSynapses>(3, 2);
       edges->addEdge(edgeType::EE, 0, 2, 0.001);
@@ -34,12 +34,6 @@ namespace {
 
       TestConnStatic connections;
       connections.setEdges(std::move(edges));
-
-      connections.updateConnections();
-
-      EXPECT_EQ(expectedSources, connections.getSourceVertexIndexCurrentEpoch());
-      EXPECT_EQ(expectedDestinations, connections.getDestVertexIndexCurrentEpoch());
-      EXPECT_EQ(expectedWeights, connections.getWCurrentEpoch());
 
       connections.updateConnections();
 

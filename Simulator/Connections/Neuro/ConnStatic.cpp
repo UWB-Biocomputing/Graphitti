@@ -104,9 +104,6 @@ void ConnStatic::registerHistoryVariables()
 bool ConnStatic::updateConnections()
 {
    // GPU STDP is not implemented, so this only uses the CPU edge data.
-   WCurrentEpoch_.startNewEpoch();
-   sourceVertexIndexCurrentEpoch_.startNewEpoch();
-   destVertexIndexCurrentEpoch_.startNewEpoch();
 
    AllEdges &edges = getEdges();
    const vector<unsigned char> &inUse = edges.getInUse();
