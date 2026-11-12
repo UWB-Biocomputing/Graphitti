@@ -46,16 +46,23 @@ void Layout911::setup()
    // so we call its method first
    Layout::setup();
 
+   // xloc_ and yloc_ remain the layout coordinate storage.
    xloc_.assign(numVertices_, 0);
    yloc_.assign(numVertices_, 0);
 
-   // Loop over all vertices and set their x and y locations
+   // Size recorder mirrors to one initialized value per vertex.
+   xlocRecorder_.assign(numVertices_, 0);
+   ylocRecorder_.assign(numVertices_, 0);
+
+   // Populate layout coordinates and recorder mirrors from GraphML.
    GraphManager<NG911VertexProperties>::VertexIterator vi, vi_end;
    GraphManager<NG911VertexProperties> &gm = GraphManager<NG911VertexProperties>::getInstance();
    for (boost::tie(vi, vi_end) = gm.vertices(); vi != vi_end; ++vi) {
       assert(*vi < numVertices_);
       xloc_[*vi] = gm[*vi].x;
       yloc_[*vi] = gm[*vi].y;
+      xlocRecorder_[*vi] = gm[*vi].x;
+      ylocRecorder_[*vi] = gm[*vi].y;
    }
 
    // Now we cache the between each pair of vertices distances^2 into a matrix
@@ -77,6 +84,19 @@ void Layout911::setup()
 // Prints out all parameters to logging file.
 void Layout911::printParameters() const
 {
+}
+
+void Layout911::registerHistoryVariables()
+{
+   Layout::registerHistoryVariables();
+
+   // Register GraphML coordinates as CONSTANT recorder output.
+   Recorder &recorder = Simulator::getInstance().getModel().getRecorder();
+   string baseName = "Location";
+   string xLocation = "x_" + baseName;
+   string yLocation = "y_" + baseName;
+   recorder.registerVariable(xLocation, xlocRecorder_, Recorder::UpdatedType::CONSTANT);
+   recorder.registerVariable(yLocation, ylocRecorder_, Recorder::UpdatedType::CONSTANT);
 }
 
 // Creates a vertex type map.

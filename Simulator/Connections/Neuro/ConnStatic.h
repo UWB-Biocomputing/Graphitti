@@ -64,6 +64,9 @@ public:
    /// Registers history variables for recording during simulation
    virtual void registerHistoryVariables() override;
 
+   /// Populates edge history variables for recording during the current epoch.
+   virtual bool updateConnections() override;
+
    /// Get array of vertex weights
    const vector<BGFLOAT> &getWCurrentEpoch() const
    {
