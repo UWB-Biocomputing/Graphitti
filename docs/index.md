@@ -1,4 +1,10 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4678633.svg)](https://doi.org/10.5281/zenodo.4678633)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.4678632-blue.svg)](https://zenodo.org/badge/latestdoi/273115663)
+[![Documentation](https://img.shields.io/badge/docs-online-blue.svg)](https://uwb-biocomputing.github.io/Graphitti/)
+[![Unit Tests](https://github.com/UWB-Biocomputing/Graphitti/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/UWB-Biocomputing/Graphitti/actions/workflows/unit-tests.yml)
+[![Regression Tests](https://github.com/UWB-Biocomputing/Graphitti/actions/workflows/regression-tests.yml/badge.svg)](https://github.com/UWB-Biocomputing/Graphitti/actions/workflows/regression-tests.yml)
+[![Code Style](https://github.com/UWB-Biocomputing/Graphitti/actions/workflows/format.yml/badge.svg)](https://github.com/UWB-Biocomputing/Graphitti/actions/workflows/format.yml)
+[![GitHub Pages](https://github.com/UWB-Biocomputing/Graphitti/actions/workflows/gh-pages.yml/badge.svg)](https://github.com/UWB-Biocomputing/Graphitti/actions/workflows/gh-pages.yml)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/UWB-Biocomputing/Graphitti/blob/master/LICENSE)
 
 ## Table of Contents
 
