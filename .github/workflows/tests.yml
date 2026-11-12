@@ -11,7 +11,6 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:
-      - ".github/**" # Ignore .github folder
       - "**/Doxyfile" # Ignore changes to Doxygen config
       - "docs/**" # Ignore documentation folder
       - "*.md" # Ignore Markdown files
@@ -36,6 +35,7 @@ jobs:
       - name: run unit tests
         run: ./tests
       - name: build compare_matrices
+        id: comparator
         run: |
           cd ../Testing/RegressionTesting
           g++ -std=c++17 -O3 -Wall -Wextra compare_matrices.cpp -o compare_matrices
@@ -44,60 +44,107 @@ jobs:
       # simulator runs
       - id: tt
         name: run test-tiny
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-tiny.xml
       - name: verify test-tiny
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-tiny-out.xml ../Testing/RegressionTesting/TestOutput/test-tiny-out.xml
 
       - id: ts
         name: run test-small
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small.xml
       - name: verify test-small
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-out.xml ../Testing/RegressionTesting/TestOutput/test-small-out.xml
 
       - id: tsc
         name: run test-small-connected
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected.xml
       - name: verify test-small-connected
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-connected-out.xml ../Testing/RegressionTesting/TestOutput/test-small-connected-out.xml
 
       - id: tsl
         name: run test-small-long
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-long.xml
       - name: verify test-small-long
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-long-out.xml ../Testing/RegressionTesting/TestOutput/test-small-long-out.xml
 
       - id: tscl
         name: run test-small-connected-long
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-connected-long.xml
       - name: verify test-small-connected-long
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-connected-long-out.xml ../Testing/RegressionTesting/TestOutput/test-small-connected-long-out.xml
 
       - id: ts911
         name: run test-small-911
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-small-911.xml
       - name: verify test-small-911
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-small-911-out.xml ../Testing/RegressionTesting/TestOutput/test-small-911-out.xml
 
       - id: tm
         name: run test-medium
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium.xml
       - name: verify test-medium
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-out.xml ../Testing/RegressionTesting/TestOutput/test-medium-out.xml
 
       - id: tmc
         name: run test-medium-connected
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-connected.xml
       - name: verify test-medium-connected
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-connected-out.xml ../Testing/RegressionTesting/TestOutput/test-medium-connected-out.xml
 
       - id: tml
         name: run test-medium-long
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-long.xml
       - name: verify test-medium-long
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-long-out.xml ../Testing/RegressionTesting/TestOutput/test-medium-long-out.xml
 
       - id: tmcl
         name: run test-medium-connected-long
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ./cgraphitti -c ../Testing/RegressionTesting/configfiles/test-medium-connected-long.xml
       - name: verify test-medium-connected-long
+        if: ${{ !cancelled() && steps.comparator.outcome == 'success' }}
         run: ../Testing/RegressionTesting/compare_matrices ../Testing/RegressionTesting/GoodOutput/Cpu/test-medium-connected-long-out.xml ../Testing/RegressionTesting/TestOutput/test-medium-connected-long-out.xml
+
+      # Temporary diagnostics for PR #939; comparison failures still fail the job.
+      - name: Record regression environment
+        if: always()
+        run: |
+          {
+            git rev-parse HEAD
+            gcc --version
+            g++ --version
+            cmake --version
+            uname -a
+            cat /etc/os-release
+            printf 'ImageOS=%s\nImageVersion=%s\nRUNNER_OS=%s\nRUNNER_ARCH=%s\n' \
+              "$ImageOS" "$ImageVersion" "$RUNNER_OS" "$RUNNER_ARCH"
+          } > ci-regression-environment.txt
+
+      - name: Upload regression diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr939-regression-diagnostics
+          path: |
+            Testing/RegressionTesting/TestOutput/*.xml
+            build/ci-regression-environment.txt
+            build/CMakeCache.txt
+            build/CMakeFiles/cgraphitti.dir/flags.make
+            build/CMakeFiles/Vertices.dir/flags.make
