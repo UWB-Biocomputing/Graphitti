@@ -163,9 +163,9 @@ For each registered variable, the recorder stores:
 
 The current live `registerHistoryVariables()` call sites are:
 
-### Layout
+### Vertices
 
-`Layout::registerHistoryVariables()` registers:
+`AllVertices::registerHistoryVariables()` registers:
 
 - `vertexTypeMap` as `CONSTANT`
 
