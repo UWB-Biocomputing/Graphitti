@@ -51,7 +51,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -yq libboost-graph-dev
       # configure and build Simulator
       - name: configure
-        run: cmake ..
+        run: cmake .. -DCMAKE_POLICY_VERSION_MINIMUM=3.5
       - id: build-simulator
         name: build simulator
         run: make cgraphitti -j
