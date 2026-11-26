@@ -46,7 +46,7 @@ defaults:
 
 jobs:
   regression-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # pinned: GCC 15 on ubuntu-26.04 changes neural regression outputs (#957)
     steps:
       - uses: actions/checkout@v5
       # install Boost Graph Library
