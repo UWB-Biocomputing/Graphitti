@@ -1,6 +1,7 @@
 name: Unit Tests
 # Any changes made to documentation won't trigger tests.
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -22,6 +23,7 @@ on:
       - '**.cu'
       - '**.c'
       - '**.hpp'
+      - '.github/workflows/unit-tests.yml'
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
@@ -37,6 +39,7 @@ on:
       - '**.cu'
       - '**.c'
       - '**.hpp'
+      - '.github/workflows/unit-tests.yml'
 defaults:
   run:
     working-directory: build
@@ -51,7 +54,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -yq libboost-graph-dev
       # configure and build unit tests
       - name: configure
-        run: cmake ..
+        run: cmake .. -DCMAKE_POLICY_VERSION_MINIMUM=3.5
       - id: build-tests
         name: build tests
         run: make tests -j
