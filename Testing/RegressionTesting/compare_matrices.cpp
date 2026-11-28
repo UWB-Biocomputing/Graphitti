@@ -141,7 +141,7 @@ namespace {
       while (std::getline(file, line)) {
          trim_inplace(line);
          if (line.find("<Matrix") == 0) {
-            current = MatrixData {};
+            current = MatrixData{};
             if (!MatrixData::parse_all_fields(line, current)) {
                std::cerr << "Warning: Failed to parse some fields for matrix '" << current.name
                          << "'\n";

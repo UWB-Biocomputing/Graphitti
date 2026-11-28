@@ -2533,22 +2533,25 @@ __device__ void advanceRESPVerticesDevice(int vertexIdx, int maxEventsPerEpoch,
       allVerticesDevice->answerTime_[vertexIdx][availUnit] = simulationStep;
 
       // We need to calculate the distance in miles but the x and y coordinates
-      // represent, respectively, degrees of longitude and latitude.
-      // One degree of latitude is aproximately 69 miles regardles of the location. However,
-      // a degree of longitude varies, being 69.172 miles at the equator and gradually shrinking
-      // to zero at the poles.
-      // One degree of longitude can be converted to miles using the following formula:
+      // represent, respectively, degrees of longitude and latitude. One degree
+      // of latitude is aproximately 69 miles regardles of the location.
+      // However, a degree of longitude varies, being 69.172 miles at the
+      // equator and gradually shrinking to zero at the poles. One degree of
+      // longitude can be converted to miles using the following formula:
       //    1 degree of longitude = cos(latitude) * 69.172
       BGFLOAT lngDegreeLength = cos(yLocation[vertexIdx] * (pi / 180)) * 69.172f;
       BGFLOAT latDegreeLength = 69.0;
       BGFLOAT deltaLng = incidentX - xLocation[vertexIdx];
       BGFLOAT deltaLat = incidentY - yLocation[vertexIdx];
-      // The CPU computes in double. The GPU code uses BGFLOAT, which is presumably float in a normal build.
-      // Both then cut driveTime down to an integer. When a drive time lands close to a whole second, the float
-      // and double results can round to different integers, so the countdowns differ by one step. That would show
-      // up as small CPU/GPU differences in completion times.
-      // To match exactly, compute in double on the device. The cost is small for one calculation per dispatch.
-      BGFLOAT dist2incident = sqrt(pow(deltaLng * lngDegreeLength, 2) + pow(deltaLat * latDegreeLength, 2));
+      // The CPU computes in double. The GPU code uses BGFLOAT, which is
+      // presumably float in a normal build. Both then cut driveTime down to an
+      // integer. When a drive time lands close to a whole second, the float and
+      // double results can round to different integers, so the countdowns
+      // differ by one step. That would show up as small CPU/GPU differences in
+      // completion times. To match exactly, compute in double on the device.
+      // The cost is small for one calculation per dispatch.
+      BGFLOAT dist2incident
+         = sqrt(pow(deltaLng * lngDegreeLength, 2) + pow(deltaLat * latDegreeLength, 2));
 
       // Calculate the driving time to the incident in seconds
       BGFLOAT driveTime = (dist2incident / drivingSpeed) * 3600;
