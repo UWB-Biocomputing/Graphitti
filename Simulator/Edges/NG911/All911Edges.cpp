@@ -25,7 +25,14 @@ void All911Edges::setupEdges()
 
       isRedial_.assign(maxTotalEdges, false);
 
-      call_.resize(maxTotalEdges);
+      callVertexId_.assign(maxTotalEdges, 0);
+      callTime_.assign(maxTotalEdges, 0);
+      callDuration_.assign(maxTotalEdges, 0);
+      callX_.assign(maxTotalEdges, 0);
+      callY_.assign(maxTotalEdges, 0);
+      callPatience_.assign(maxTotalEdges, 0);
+      callOnSiteTime_.assign(maxTotalEdges, 0);
+      callResponderType_.assign(maxTotalEdges, 0);
    }
 }
 

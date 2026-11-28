@@ -39,8 +39,8 @@ TEST(ParameterManager, LoadingXMLFile)
 
 TEST(ParameterManager, LoadingMultipleValidXMLFiles)
 {
-   string valid[] {"../configfiles/test-medium-100.xml", "../configfiles/test-small.xml",
-                   "../configfiles/test-tiny.xml"};
+   string valid[]{"../configfiles/test-medium-100.xml", "../configfiles/test-small.xml",
+                  "../configfiles/test-tiny.xml"};
    for (int i = 0; i < 3; i++) {
       ASSERT_TRUE(ParameterManager::getInstance().loadParameterFile(valid[i]));
    }
@@ -58,7 +58,7 @@ TEST(ParameterManager, ValidStringTargeting)
 {
    ASSERT_TRUE(
       ParameterManager::getInstance().loadParameterFile("../configfiles/test-medium-500.xml"));
-   string validXPaths[] {
+   string validXPaths[]{
       "/BGSimParams/ModelParams/RecorderParams/RecorderFiles/resultFileName/text()",
       "//resultFileName/text()", "//VerticesParams/@class"};
    string result[] = {"Output/Results/test-medium-500-out.xml",
