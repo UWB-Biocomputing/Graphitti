@@ -53,16 +53,10 @@ TEST_F(InputManagerFixture, queueFront)
 
 TEST_F(InputManagerFixture, queueFrontException)
 {
-   try {
-      // This should throw an out_of_range exception because
-      // we don't have input calls for vertexId 35
-      Call call = inputManager.queueFront(35);
-      FAIL() << "Expected std::out_of_range";
-   } catch (std::out_of_range const &err) {
-      EXPECT_EQ(err.what(), std::string("map::at"));
-   } catch (...) {
-      FAIL() << "Expected std::out_of_range";
-   }
+   // This should throw an out_of_range exception because we don't have input
+   // calls for vertexId 35. Don't check err.what(): the message text differs
+   // between standard library implementations (libstdc++ vs. libc++).
+   EXPECT_THROW(inputManager.queueFront(35), std::out_of_range);
 }
 
 TEST_F(InputManagerFixture, getEpochEvents)
