@@ -8,6 +8,7 @@
 
 #include "All911Vertices.h"
 #include "All911Edges.h"
+#include "CallUtils.h"
 #include "Connections911.h"
 #include "GraphManager.h"
 #include "Layout911.h"
@@ -210,7 +211,7 @@ void All911Vertices::registerHistoryVariables()
 }
 
 // Accessor for the waiting queue of a vertex
-CircularBuffer<Call> &All911Vertices::getQueue(int vIdx)
+CallCircularBuffer &All911Vertices::getQueue(int vIdx)
 {
    return vertexQueues_[vIdx];
 }
@@ -262,7 +263,7 @@ void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIn
          // The destination vertex should be the one pulling the information
          assert(dst == vertex);
 
-         CircularBuffer<Call> &dstQueue = getQueue(dst);
+         CallCircularBuffer &dstQueue = getQueue(dst);
          // Compute the size of the destination queue
          // Allows us to use larger capacity queues but treat them like they are smaller
          // to simplify the mirroring on the GPU.
@@ -288,15 +289,21 @@ void All911Vertices::integrateVertexInputs(AllEdges &edges, EdgeIndexMap &edgeIn
                // Record that we received a call
                receivedCalls(dst)++;
                LOG4CPLUS_DEBUG(vertexLogger_, "Call dropped: " << droppedCalls(dst) << ", time: "
-                                                               << all911Edges.call_[edgeIdx].time
+                                                               << all911Edges.callTime_[edgeIdx]
                                                                << ", vertex: " << dst
                                                                << ", queue size: " << dstQueueSize);
             }
          } else {
             // Transfer call to destination
             assert(((queueFrontIndex + 1) % numTrunks_[dst] + 1) != queueEndIndex);
-            vector<Call> &queueBuffer = dstQueue.getBuffer();
-            queueBuffer[queueFrontIndex] = all911Edges.call_[edgeIdx];
+            dstQueue.vertexId()[queueFrontIndex] = all911Edges.callVertexId_[edgeIdx];
+            dstQueue.time()[queueFrontIndex] = all911Edges.callTime_[edgeIdx];
+            dstQueue.duration()[queueFrontIndex] = all911Edges.callDuration_[edgeIdx];
+            dstQueue.x()[queueFrontIndex] = all911Edges.callX_[edgeIdx];
+            dstQueue.y()[queueFrontIndex] = all911Edges.callY_[edgeIdx];
+            dstQueue.patience()[queueFrontIndex] = all911Edges.callPatience_[edgeIdx];
+            dstQueue.onSiteTime()[queueFrontIndex] = all911Edges.callOnSiteTime_[edgeIdx];
+            dstQueue.responderType()[queueFrontIndex] = all911Edges.callResponderType_[edgeIdx];
             uint64_t newFrontIndex = (queueFrontIndex + 1) % (numTrunks_[dst] + 1);
             dstQueue.setFrontIndex(newFrontIndex);
             // Record that we received a call
@@ -357,7 +364,14 @@ void All911Vertices::advanceCALR(BGSIZE vertexIdx, All911Edges &edges911,
 
       // Place new call in the edge going to the PSAP
       assert(edges911.isAvailable_[edgeIdx]);
-      edges911.call_[edgeIdx] = nextCall.value();
+      edges911.callVertexId_[edgeIdx] = nextCall->vertexId;
+      edges911.callTime_[edgeIdx] = nextCall->time;
+      edges911.callDuration_[edgeIdx] = nextCall->duration;
+      edges911.callX_[edgeIdx] = nextCall->x;
+      edges911.callY_[edgeIdx] = nextCall->y;
+      edges911.callPatience_[edgeIdx] = nextCall->patience;
+      edges911.callOnSiteTime_[edgeIdx] = nextCall->onSiteTime;
+      edges911.callResponderType_[edgeIdx] = responderTypeToInt(nextCall->type);
       edges911.isAvailable_[edgeIdx] = false;
       LOG4CPLUS_DEBUG(vertexLogger_, "Calling PSAP at time: " << nextCall->time);
    }
@@ -395,27 +409,36 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
       if ((!countdownWasZero) & (countdown == 0)) {
          // Server becomes free to take calls
          // TODO: What about wrap-up time?
-         Call &endingCall = servingCall_[vertexIdx][server];
+         CallSlotArrays &endingCall = servingCall_[vertexIdx];
 
          //Store call metrics
          wasAbandonedHistory_[vertexIdx].insertEvent(false);
-         beginTimeHistory_[vertexIdx].insertEvent(endingCall.time);
+         beginTimeHistory_[vertexIdx].insertEvent(endingCall.timeAt(server));
          answerTimeHistory_[vertexIdx].insertEvent(answerTime_[vertexIdx][server]);
          endTimeHistory_[vertexIdx].insertEvent(g_simulationStep);
          LOG4CPLUS_DEBUG(vertexLogger_,
                          "Finishing call, begin time: "
-                            << endingCall.time << ", end time: " << g_simulationStep
-                            << ", waited: " << answerTime_[vertexIdx][server] - endingCall.time);
+                            << endingCall.timeAt(server) << ", end time: " << g_simulationStep
+                            << ", waited: "
+                            << answerTime_[vertexIdx][server] - endingCall.timeAt(server));
 
          // Dispatch the Responder closest to the emergency location.
-         BGSIZE respEdge = getEdgeToClosestResponder(endingCall, vertexIdx);
+         BGSIZE respEdge
+            = getEdgeToClosestResponder(endingCall.responderTypeAt(server), endingCall.xAt(server),
+                                        endingCall.yAt(server), vertexIdx);
          BGSIZE responder = edges911.destVertexIndex_[respEdge];
          LOG4CPLUS_DEBUG(vertexLogger_, "Dispatching Responder: " << responder);
 
          // Place the call in the edge going to the responder
          // Call becomes a dispatch order at this time
-         endingCall.time = g_simulationStep;
-         edges911.call_[respEdge] = endingCall;
+         edges911.callVertexId_[respEdge] = endingCall.vertexId()[server];
+         edges911.callTime_[respEdge] = g_simulationStep;
+         edges911.callDuration_[respEdge] = endingCall.durationAt(server);
+         edges911.callX_[respEdge] = endingCall.xAt(server);
+         edges911.callY_[respEdge] = endingCall.yAt(server);
+         edges911.callPatience_[respEdge] = endingCall.patienceAt(server);
+         edges911.callOnSiteTime_[respEdge] = endingCall.onSiteTimeAt(server);
+         edges911.callResponderType_[respEdge] = endingCall.responderTypeAt(server);
          edges911.isAvailable_[respEdge] = false;
       }
    }
@@ -429,23 +452,23 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
       // TODO: calls with duration of zero are being added but because countdown will be zero
       //       they don't show up in the logs
       //
-      // Internal CircularBuffer buffer size is capacity + 1
-      vector<Call> queueBuffer = vertexQueues_[vertexIdx].getBuffer();
-      uint64_t queueEnd = vertexQueues_[vertexIdx].getEndIndex();
-      Call call = queueBuffer[queueEnd];
+      CallCircularBuffer &vertexQueue = vertexQueues_[vertexIdx];
+      uint64_t queueEnd = vertexQueue.getEndIndex();
+      uint64_t callTime = vertexQueue.time()[queueEnd];
+      int callPatience = vertexQueue.patience()[queueEnd];
       uint64_t newEndIndex = (queueEnd + 1) % (numTrunks_[vertexIdx] + 1);
-      vertexQueues_[vertexIdx].setEndIndex(newEndIndex);
+      vertexQueue.setEndIndex(newEndIndex);
 
-      if (call.patience < (g_simulationStep - call.time)) {
+      if (callPatience < (g_simulationStep - callTime)) {
          // If the patience time is less than the waiting time, the call is abandoned
          wasAbandonedHistory_[vertexIdx].insertEvent(true);
-         beginTimeHistory_[vertexIdx].insertEvent(call.time);
+         beginTimeHistory_[vertexIdx].insertEvent(callTime);
          // Answer time and end time get zero as sentinel for non-valid values
          answerTimeHistory_[vertexIdx].insertEvent(0);
          endTimeHistory_[vertexIdx].insertEvent(0);
          LOG4CPLUS_DEBUG(vertexLogger_, "Call was abandoned, Patience: "
-                                           << call.patience
-                                           << " Ring Time: " << g_simulationStep - call.time);
+                                           << callPatience
+                                           << " Ring Time: " << g_simulationStep - callTime);
       } else {
          // The available server starts serving the call
          int availServer;
@@ -458,11 +481,11 @@ void All911Vertices::advancePSAP(BGSIZE vertexIdx, All911Edges &edges911,
                break;
             }
          }
-         servingCall_[vertexIdx][availServer] = call;
+         servingCall_[vertexIdx].setAt(availServer, vertexQueue.callAt(queueEnd));
          answerTime_[vertexIdx][availServer] = g_simulationStep;
-         serverCountdown_[vertexIdx][availServer] = call.duration;
+         serverCountdown_[vertexIdx][availServer] = vertexQueue.duration()[queueEnd];
          LOG4CPLUS_DEBUG(vertexLogger_, "Serving Call starting at time: "
-                                           << call.time << ", sim-step: " << g_simulationStep);
+                                           << callTime << ", sim-step: " << g_simulationStep);
       }
    }
 
@@ -516,17 +539,18 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
       // If it became zero, the unit responds to the new incident
       if ((!countdownWasZero) & (countdown == 0)) {
          // Unit becomes available to responde to new incidents
-         Call &endingIncident = servingCall_[vertexIdx][unit];
+         CallSlotArrays &endingIncident = servingCall_[vertexIdx];
 
          //Store incident response metrics
          wasAbandonedHistory_[vertexIdx].insertEvent(false);
-         beginTimeHistory_[vertexIdx].insertEvent(endingIncident.time);
+         beginTimeHistory_[vertexIdx].insertEvent(endingIncident.timeAt(unit));
          answerTimeHistory_[vertexIdx].insertEvent(answerTime_[vertexIdx][unit]);
          endTimeHistory_[vertexIdx].insertEvent(g_simulationStep);
          LOG4CPLUS_DEBUG(vertexLogger_,
                          "Finishing response, begin time: "
-                            << endingIncident.time << ", end time: " << g_simulationStep
-                            << ", waited: " << answerTime_[vertexIdx][unit] - endingIncident.time);
+                            << endingIncident.timeAt(unit) << ", end time: " << g_simulationStep
+                            << ", waited: "
+                            << answerTime_[vertexIdx][unit] - endingIncident.timeAt(unit));
       }
    }
 
@@ -535,12 +559,10 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
    // incidents in the waiting queue
    for (size_t unit = 0; unit < numberOfAvailableUnits && !vertexQueues_[vertexIdx].isEmpty();
         ++unit) {
-      // Internal CircularBuffer buffer size is capacity + 1
-      vector<Call> queueBuffer = vertexQueues_[vertexIdx].getBuffer();
-      uint64_t queueEnd = vertexQueues_[vertexIdx].getEndIndex();
-      Call incident = queueBuffer[queueEnd];
+      CallCircularBuffer &vertexQueue = vertexQueues_[vertexIdx];
+      uint64_t queueEnd = vertexQueue.getEndIndex();
       uint64_t newEndIndex = (queueEnd + 1) % (numTrunks_[vertexIdx] + 1);
-      vertexQueues_[vertexIdx].setEndIndex(newEndIndex);
+      vertexQueue.setEndIndex(newEndIndex);
 
       // The available unit starts serving the call
       int availUnit = -1;
@@ -552,7 +574,7 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
             = (unsigned char)(availableUnits[unitIndex]
                               == true - (availableUnits[unitIndex] == true && availUnit == -1));
       }
-      servingCall_[vertexIdx][availUnit] = incident;
+      servingCall_[vertexIdx].setAt(availUnit, vertexQueue.callAt(queueEnd));
       answerTime_[vertexIdx][availUnit] = g_simulationStep;
 
       // We need to calculate the distance in miles but the x and y coordinates
@@ -564,18 +586,18 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
       //    1 degree of longitude = cos(latitude) * 69.172
       double lngDegreeLength = cos(layout911.yloc_[vertexIdx] * (pi / 180)) * 69.172;
       double latDegreeLength = 69.0;
-      double deltaLng = incident.x - layout911.xloc_[vertexIdx];
-      double deltaLat = incident.y - layout911.yloc_[vertexIdx];
+      double deltaLng = vertexQueue.x()[queueEnd] - layout911.xloc_[vertexIdx];
+      double deltaLat = vertexQueue.y()[queueEnd] - layout911.yloc_[vertexIdx];
       double dist2incident
          = sqrt(pow(deltaLng * lngDegreeLength, 2) + pow(deltaLat * latDegreeLength, 2));
 
       // Calculate the driving time to the incident in seconds
       double driveTime = (dist2incident / avgDrivingSpeed_) * 3600;
-      serverCountdown_[vertexIdx][availUnit] = driveTime + incident.onSiteTime;
-
-      serverCountdown_[vertexIdx][availUnit] = incident.duration;
-      LOG4CPLUS_DEBUG(vertexLogger_, "Response, driving time: " << driveTime << ", On-site time: "
-                                                                << incident.onSiteTime);
+      serverCountdown_[vertexIdx][availUnit]
+         = static_cast<int>(driveTime) + vertexQueue.onSiteTime()[queueEnd];
+      LOG4CPLUS_DEBUG(vertexLogger_,
+                      "Response, driving time: " << driveTime << ", On-site time: "
+                                                 << vertexQueue.onSiteTime()[queueEnd]);
    }
 
    // Update number of busy servers. This is used to check if there is space in the queue
@@ -599,19 +621,22 @@ void All911Vertices::advanceRESP(BGSIZE vertexIdx, All911Edges &edges911,
 
 /// Finds the outgoing edge from the given vertex to the Responder closest to
 /// the emergency call location
-BGSIZE All911Vertices::getEdgeToClosestResponder(const Call &call, BGSIZE vertexIdx)
+BGSIZE All911Vertices::getEdgeToClosestResponder(int responderType, BGFLOAT x, BGFLOAT y,
+                                                 BGSIZE vertexIdx)
 {
    Connections &connections = Simulator::getInstance().getModel().getConnections();
    All911Edges &edges911 = dynamic_cast<All911Edges &>(connections.getEdges());
    EdgeIndexMap &edgeIndexMap = connections.getEdgeIndexMap();
 
-   vertexType requiredType;
-   if (call.type == "Law")
+   vertexType requiredType = vertexType::VTYPE_UNDEF;
+   if (responderType == static_cast<int>(vertexType::LAW)) {
       requiredType = vertexType::LAW;
-   else if (call.type == "EMS")
+   } else if (responderType == static_cast<int>(vertexType::EMS)) {
       requiredType = vertexType::EMS;
-   else if (call.type == "Fire")
+   } else if (responderType == static_cast<int>(vertexType::FIRE)) {
       requiredType = vertexType::FIRE;
+   }
+   assert(requiredType != vertexType::VTYPE_UNDEF);
 
    // loop over the outgoing edges looking for the responder with the shortest
    // Euclidean distance to the call's location.
@@ -628,7 +653,7 @@ BGSIZE All911Vertices::getEdgeToClosestResponder(const Call &call, BGSIZE vertex
 
       BGSIZE dstVertex = edges911.destVertexIndex_[outEdg];
       if (layout911.getVertices().vertexTypeMap_[dstVertex] == requiredType) {
-         double distance = layout911.getDistance(dstVertex, call.x, call.y);
+         double distance = layout911.getDistance(dstVertex, x, y);
 
          if (distance < minDistance) {
             minDistance = distance;

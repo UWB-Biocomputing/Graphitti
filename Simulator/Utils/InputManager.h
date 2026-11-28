@@ -34,6 +34,7 @@
 
 #pragma once
 
+#include "CallCircularBuffer.h"
 #include "CircularBuffer.h"
 #include "ParameterManager.h"
 #include <boost/foreach.hpp>
@@ -129,7 +130,9 @@ public:
                if (evnt.first == "event") {
                   try {
                      const ptree &attributes = evnt.second.get_child("<xmlattr>");
-                     T event;
+                     // Value-initialize so properties missing from the input file are
+                     // zero (or empty) rather than indeterminate.
+                     T event{};
                      // Loop over the set of attributes and add them to the event object.
                      // We only read registered properties, all others are ignored.
                      for (auto propPair : registeredPropMap_) {
@@ -169,6 +172,21 @@ public:
 
       while (!eventQueue.empty() && eventQueue.front().time < lastStep) {
          // We shouldn't have previous epoch events in the queue
+         assert(eventQueue.front().time >= firstStep);
+         buffer.put(eventQueue.front());
+         eventQueue.pop();
+      }
+
+      return buffer;
+   }
+
+   /// @brief  Inserts events into a CallCircularBuffer for NG911 simulations.
+   CallCircularBuffer &getEvents(const VertexId_t &vertexId, uint64_t firstStep, uint64_t lastStep,
+                                 CallCircularBuffer &buffer)
+   {
+      queue<T> &eventQueue = eventsMap_[vertexId];
+
+      while (!eventQueue.empty() && eventQueue.front().time < lastStep) {
          assert(eventQueue.front().time >= firstStep);
          buffer.put(eventQueue.front());
          eventQueue.pop();

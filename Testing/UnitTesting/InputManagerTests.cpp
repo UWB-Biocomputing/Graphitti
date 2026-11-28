@@ -6,6 +6,7 @@
  * @ingroup Testing/UnitTesting
  */
 
+#include "CallCircularBuffer.h"
 #include "CircularBuffer.h"
 #include "InputEvent.h"
 #include "InputManager.h"
@@ -14,7 +15,6 @@
 #include <vector>
 
 using namespace std;
-string configFile = "../configfiles/test-spd-911.xml";
 string inputs911 = "../Testing/TestData/NG_911_inputs.xml";
 string neuroInputs = "../Testing/TestData/neuro_inputs.xml";
 
@@ -30,6 +30,8 @@ public:
       inputManager.registerProperty("duration", &Call::duration);
       inputManager.registerProperty("x", &Call::x);
       inputManager.registerProperty("y", &Call::y);
+      inputManager.registerProperty("patience", &Call::patience);
+      inputManager.registerProperty("on_site_time", &Call::onSiteTime);
       inputManager.registerProperty("type", &Call::type);
 
       inputManager.readInputs();
@@ -45,20 +47,16 @@ TEST_F(InputManagerFixture, queueFront)
    EXPECT_EQ(event.type, "EMS");
    EXPECT_FLOAT_EQ(event.x, -122.38496236371942);
    EXPECT_FLOAT_EQ(event.y, 47.570236838209546);
+   EXPECT_EQ(event.patience, 20);
+   EXPECT_EQ(event.onSiteTime, 600);
 }
 
 TEST_F(InputManagerFixture, queueFrontException)
 {
-   try {
-      // This should throw an out_of_range exception because
-      // we don't have input calls for vertexId 35
-      Call call = inputManager.queueFront(35);
-      FAIL() << "Expected std::out_of_range";
-   } catch (std::out_of_range const &err) {
-      EXPECT_EQ(err.what(), std::string("map::at"));
-   } catch (...) {
-      FAIL() << "Expected std::out_of_range";
-   }
+   // This should throw an out_of_range exception because we don't have input
+   // calls for vertexId 35. Don't check err.what(): the message text differs
+   // between standard library implementations (libstdc++ vs. libc++).
+   EXPECT_THROW(inputManager.queueFront(35), std::out_of_range);
 }
 
 TEST_F(InputManagerFixture, getEpochEvents)
@@ -79,6 +77,8 @@ TEST_F(InputManagerFixture, getEpochEvents)
    EXPECT_EQ(call1->type, "EMS");
    EXPECT_FLOAT_EQ(call1->x, -122.38496236371942);
    EXPECT_FLOAT_EQ(call1->y, 47.570236838209546);
+   EXPECT_EQ(call1->patience, 20);
+   EXPECT_EQ(call1->onSiteTime, 600);
 
    // Check that we ge the correct information for the second
    // expected event
@@ -90,6 +90,8 @@ TEST_F(InputManagerFixture, getEpochEvents)
    EXPECT_EQ(call2->type, "EMS");
    EXPECT_FLOAT_EQ(call2->x, -122.37482094435583);
    EXPECT_FLOAT_EQ(call2->y, 47.64839548276973);
+   EXPECT_EQ(call2->patience, 61);
+   EXPECT_EQ(call2->onSiteTime, 3142);
 
    // Get event for vertex 195
    CircularBuffer<Call> v195Queue(5);
@@ -107,6 +109,52 @@ TEST_F(InputManagerFixture, getEpochEvents)
    EXPECT_EQ(call3->type, "Law");
    EXPECT_FLOAT_EQ(call3->x, -122.37746466732693);
    EXPECT_FLOAT_EQ(call3->y, 47.711139673719046);
+   EXPECT_EQ(call3->patience, 66);
+   EXPECT_EQ(call3->onSiteTime, 182);
+}
+
+TEST_F(InputManagerFixture, getEpochEventsCallCircularBuffer)
+{
+   CallCircularBuffer v194Queue(5);
+   inputManager.getEvents(194, 0, 37, v194Queue);
+   ASSERT_EQ(v194Queue.size(), 2);
+
+   std::optional<Call> call1 = v194Queue.get();
+   ASSERT_TRUE(call1);
+   EXPECT_EQ(call1->vertexId, 194);
+   EXPECT_EQ(call1->time, 0);
+   EXPECT_EQ(call1->duration, 0);
+   EXPECT_EQ(call1->type, "EMS");
+   EXPECT_FLOAT_EQ(call1->x, -122.38496236371942);
+   EXPECT_FLOAT_EQ(call1->y, 47.570236838209546);
+   EXPECT_EQ(call1->patience, 20);
+   EXPECT_EQ(call1->onSiteTime, 600);
+
+   std::optional<Call> call2 = v194Queue.get();
+   ASSERT_TRUE(call2);
+   EXPECT_EQ(call2->vertexId, 194);
+   EXPECT_EQ(call2->time, 34);
+   EXPECT_EQ(call2->duration, 230);
+   EXPECT_EQ(call2->type, "EMS");
+   EXPECT_FLOAT_EQ(call2->x, -122.37482094435583);
+   EXPECT_FLOAT_EQ(call2->y, 47.64839548276973);
+   EXPECT_EQ(call2->patience, 61);
+   EXPECT_EQ(call2->onSiteTime, 3142);
+
+   CallCircularBuffer v195Queue(5);
+   inputManager.getEvents(195, 125, 401, v195Queue);
+   ASSERT_EQ(v195Queue.size(), 3);
+   v195Queue.get();
+   v195Queue.get();
+   std::optional<Call> call3 = v195Queue.get();
+   EXPECT_EQ(call3->vertexId, 195);
+   EXPECT_EQ(call3->time, 388);
+   EXPECT_EQ(call3->duration, 45);
+   EXPECT_EQ(call3->type, "Law");
+   EXPECT_FLOAT_EQ(call3->x, -122.37746466732693);
+   EXPECT_FLOAT_EQ(call3->y, 47.711139673719046);
+   EXPECT_EQ(call3->patience, 66);
+   EXPECT_EQ(call3->onSiteTime, 182);
 }
 
 TEST_F(InputManagerFixture, nonEmptyEventQueue)
@@ -153,6 +201,10 @@ TEST_F(InputManagerFixture, clockTickUnit)
    ASSERT_EQ(inputManager.getClockTickUnit(), "sec");
 }
 
+// The tests above, and InputManagerFixture, are specific to 911 (Call) inputs.
+// readNeuroInputs is only a minimal check, because neural simulations don't
+// currently use external inputs. If they do in the future, these tests need to be
+// revisited and expanded (see issue #963).
 TEST(InputManager, readNeuroInputs)
 {
    InputManager<InputEvent> inputManager;
