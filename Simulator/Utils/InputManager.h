@@ -130,7 +130,9 @@ public:
                if (evnt.first == "event") {
                   try {
                      const ptree &attributes = evnt.second.get_child("<xmlattr>");
-                     T event;
+                     // Value-initialize so properties missing from the input file are
+                     // zero (or empty) rather than indeterminate.
+                     T event{};
                      // Loop over the set of attributes and add them to the event object.
                      // We only read registered properties, all others are ignored.
                      for (auto propPair : registeredPropMap_) {
